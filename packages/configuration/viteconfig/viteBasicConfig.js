@@ -14,33 +14,43 @@ export const viteBasicConfig = (
     dirname,
     base
   }
-) => defineConfig({
-  plugins: [
-    vue(),
-    dtsPlugin({})
-  ],
-  base,
-  build: {
-    sourcemap: false,
-    cssCodeSplit: true,
-    lib: {
-      entry: {
-        index: resolve(dirname, 'src/library.ts')
+) => defineConfig(() => {
+  console.log('a', dtsPlugin({
+    entryRoot: resolve(dirname, 'src'),
+    tsconfig: resolve(dirname, 'tsconfig.json')
+  }))
+
+  return {
+    plugins: [
+      vue(),
+      dtsPlugin({
+        entryRoot: resolve(dirname, 'src'),
+        tsconfig: resolve(dirname, 'tsconfig.json')
+      })
+    ],
+    base,
+    build: {
+      sourcemap: false,
+      cssCodeSplit: true,
+      lib: {
+        entry: {
+          index: resolve(dirname, 'src/library.ts')
+        },
+        name
       },
-      name
+      rollupOptions: {
+        output: {}
+      }
     },
-    rollupOptions: {
-      output: {}
-    }
-  },
-  css: {
-    postcss: {
-      plugins: [
-        autoprefixer(),
-        cssnanoPlugin({
-          preset: 'default'
-        })
-      ]
+    css: {
+      postcss: {
+        plugins: [
+          autoprefixer(),
+          cssnanoPlugin({
+            preset: 'default'
+          })
+        ]
+      }
     }
   }
 })

@@ -1,8 +1,7 @@
-import { viteBasicConfig } from '@dxt-ui/configuration/viteconfig/viteBasicConfig.js'
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
 
 // https://vite.dev/config/
-export default viteBasicConfig({
-  name: 'dxtUiFunctional',
-  dirname: __dirname,
-  base: '/dxt-ui/functional/'
+export default defineConfig({
+  plugins: [vue()]
 })
