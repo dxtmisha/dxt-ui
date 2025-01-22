@@ -1,0 +1,16 @@
+{
+  "xs": "{ref.spacing.4}",
+  "sm": "{ref.spacing.5}",
+  "md": "{ref.spacing.6}",
+  "lg": "{ref.spacing.7}",
+  "xl": "{ref.spacing.8}",
+  "2xl": "{ref.spacing.9}",
+  "headline": {
+    "1": "{ref.spacing.px}*112",
+    "2": "{ref.spacing.px}*72",
+    "3": "{ref.spacing.px}*56",
+    "4": "{ref.spacing.px}*40",
+    "5": "{ref.spacing.px}*24",
+    "6": "{ref.spacing.px}*24"
+  }
+}

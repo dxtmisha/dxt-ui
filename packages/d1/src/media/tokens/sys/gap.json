@@ -1,0 +1,8 @@
+{
+  "none": "0",
+  "sm": "{ref.gap.2}",
+  "md": "{ref.gap.4}",
+  "lg": "{ref.gap.8}",
+  "xl": "{ref.gap.16}",
+  "2xl": "{ref.gap.24}"
+}

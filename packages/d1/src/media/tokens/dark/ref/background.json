@@ -1,0 +1,7 @@
+{
+  "1": "rgb({ref.palette.neutral.950})",
+  "2": "rgb({ref.palette.neutral.900})",
+  "3": "rgb({ref.palette.neutral.800})",
+  "4": "rgb({ref.palette.neutral.700})",
+  "5": "rgb({ref.palette.neutral.600})"
+}

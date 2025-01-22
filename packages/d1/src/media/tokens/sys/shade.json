@@ -1,0 +1,12 @@
+{
+  "normal": "{ref.shade.6}",
+  "variant": "{ref.shade.8}",
+  "secondary": "{ref.shade.3}",
+  "secondaryVariant": "{ref.shade.5}",
+  "dark": {
+    "normal": "{ref.shade.3}",
+    "variant": "{ref.shade.5}",
+    "secondary": "{ref.shade.7}",
+    "secondaryVariant": "{ref.shade.5}"
+  }
+}

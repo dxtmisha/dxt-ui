@@ -1,0 +1,27 @@
+{
+  "family": {
+    "inter": "Inter"
+  },
+  "size": {
+    "2xs": "{ref.spacing.px}*10",
+    "xs": "{ref.spacing.px}*12",
+    "sm": "{ref.spacing.px}*14",
+    "md": "{ref.spacing.px}*16",
+    "lg": "{ref.spacing.px}*18",
+    "xl": "{ref.spacing.px}*20",
+    "2xl": "{ref.spacing.px}*24",
+    "headline": {
+      "1": "{ref.spacing.px}*96",
+      "2": "{ref.spacing.px}*60",
+      "3": "{ref.spacing.px}*48",
+      "4": "{ref.spacing.px}*32",
+      "5": "{ref.spacing.px}*24",
+      "6": "{ref.spacing.px}*20"
+    }
+  },
+  "weight": {
+    "lighter": "300",
+    "normal": "400",
+    "bold": "500"
+  }
+}
