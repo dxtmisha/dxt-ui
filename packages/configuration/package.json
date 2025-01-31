@@ -3,6 +3,13 @@
   "private": false,
   "version": "1.0.0",
   "type": "module",
+  "exports": {
+    "./viteBasic": {
+      "types": "./viteconfig/viteBasic.config.d.ts",
+      "default": "./viteconfig/viteBasic.config.js"
+    },
+    "./tsconfig/*": "./tsconfig/*"
+  },
   "dependencies": {},
   "devDependencies": {}
 }
