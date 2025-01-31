@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { text } from './test.ts'
 </script>
 
 <template>
-  {{ text }}
+  <div>scripts</div>
 </template>
 
-<style></style>
+<style lang="scss"></style>

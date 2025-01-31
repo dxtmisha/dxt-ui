@@ -8,6 +8,13 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },
+  "main": "./src/library.ts",
+  "exports": {
+    ".": {
+      "types": "./src/library.ts",
+      "default": "./src/library.ts"
+    }
+  },
   "dependencies": {},
   "devDependencies": {}
 }
