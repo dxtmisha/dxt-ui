@@ -14,6 +14,7 @@
     "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts",
     ".": {
       "types": "./dist/types/library.d.ts",
+      "import": "./src/library.ts",
       "default": "./dist/library.js"
     }
   },

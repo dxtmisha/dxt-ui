@@ -8,11 +8,16 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },
-  "main": "./src/library.ts",
+  "bin": {
+    "dxt-ui": "./bin/design-ui.ts"
+  },
+  "main": "./dist/library.js",
   "exports": {
+    "./dist/types/*": "./dist/types/*",
+    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts",
     ".": {
-      "types": "./src/library.ts",
-      "default": "./src/library.ts"
+      "types": "./dist/types/library.d.ts",
+      "default": "./dist/library.js"
     }
   },
   "dependencies": {},
