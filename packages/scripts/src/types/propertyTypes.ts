@@ -160,17 +160,74 @@ export enum PropertyType {
 }
 
 export enum PropertyCategory {
+  /**
+   * Indicates that for this branch, paths need to be regenerated
+   *
+   * Указывает, что для этой ветви нужно заново формировать пути
+   */
   root = 'root',
+
+  /**
+   * Indicates that this is a class. It will generate a new class
+   *
+   * Указывает, что это класс. Будет генерировать новый класс
+   */
   class = 'class',
+
+  /**
+   * Indicates that this is a media type for generating adapted properties
+   *
+   * Указывает, что это тип медиа для формирования адаптированных свойств
+   */
   media = 'media',
 
+  /**
+   * Indicates that this is the starting point for generating a class based on the theme
+   *
+   * Указывает, что это начальная точка для формирования класса под тему
+   */
   theme = 'theme',
+
+  /**
+   * Indicates that the current property is a palette for generating custom colors
+   *
+   * Указывает, что текущее свойство — это палитра для формирования пользовательских цветов
+   */
   shade = 'shade',
+
+  /**
+   * Indicates that this is the starting point for generating classes for the palette
+   *
+   * Указывает, что это начальная точка для формирования классов для палитры
+   */
   palette = 'palette',
+
+  /**
+   * Indicates that this branch is not intended for generating the palette
+   *
+   * Указывает, что эта ветка не предназначена для формирования палитры
+   */
   paletteNone = 'palette-none',
+
+  /**
+   * Indicates that this property is a color
+   *
+   * Указывает, что это свойство является цветом
+   */
   color = 'color',
+
+  /**
+   * Indicates that this branch is an enumeration of colors
+   *
+   * Указывает, что эта ветка представляет собой перечисление цветов
+   */
   colors = 'colors',
 
+  /**
+   * Indicates that this branch represents styles for element variations
+   *
+   * Указывает, что эта ветка представляет собой стили для вариаций элемента
+   */
   style = 'style'
 }
 
@@ -178,9 +235,11 @@ export enum PropertyKey {
   value = 'value',
 
   /**
-   * Category is a property used for explicitly grouping multiple properties into one
+   * Category is a property used for explicit grouping of
+   * the property type for selecting the processing mechanism
    *
-   * Категория — это свойство, используемое для явной группировки нескольких свойств в одно
+   * Категория — это свойство, используемое для явной группировки
+   * принадлежности типа свойства для выбора механизма обработки
    */
   category = '_category',
   theme = '_theme',
