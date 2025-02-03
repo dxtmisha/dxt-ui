@@ -234,38 +234,31 @@ export enum PropertyCategory {
 export enum PropertyKey {
   value = 'value',
 
-  /**
-   * Category is a property used for explicit grouping of
-   * the property type for selecting the processing mechanism
-   *
-   * Категория — это свойство, используемое для явной группировки
-   * принадлежности типа свойства для выбора механизма обработки
-   */
-  category = '_category',
-  theme = '_theme',
-
-  /**
-   * Property type, values are taken from `PropertyType`
-   *
-   * Тип свойства, значения берутся из `PropertyType`
-   */
   type = '_type',
+  category = '_category',
+
   state = '_state',
   subclass = '_subclass',
+  varKey = '_var',
+  prop = '_prop',
+  theme = '_theme',
+
   rename = '_rename',
+  replace = '_replace',
+  default = '_default',
+  important = '_important',
+  modification = '_modification',
+
   drag = '_drag',
   dragSetting = '_dragSetting',
-  prop = '_prop',
-  default = '_default',
-  replace = '_replace',
-  important = '_important',
-  varKey = '_var',
-  modification = '_modification',
   settingClone = '_settingClone',
+
   fullName = '_fullName',
   fullValue = '_fullValue',
+
   style = '_style',
   remove = '_remove',
+
   name = '__n',
   nameIndex = '__ni',
   variable = '__v',
@@ -294,26 +287,147 @@ export type PropertyItem = {
   type?: string
   description?: string
 
+  /**
+   * Property type, values are taken from `PropertyType`
+   *
+   * Тип свойства, значения берутся из `PropertyType`
+   */
   _type?: PropertyType | null
-  _state?: boolean
-  _subclass?: boolean
+
+  /**
+   * Category is a property used for explicit grouping of
+   * the property type for selecting the processing mechanism
+   *
+   * Категория — это свойство, используемое для явной группировки
+   * принадлежности типа свойства для выбора механизма обработки
+   */
   _category?: PropertyCategory | string
-  _theme?: string
-  _rename?: string
-  _drag?: string
-  _dragSetting?: string
-  _prop?: string | boolean
-  _default?: string | number | boolean
-  _replace?: string | PropertyReplace
-  _important?: boolean
+
+  /**
+   * Indicates that this is an element variation, and a class for
+   * the variation needs to be generated. It is used as an additional
+   * property to ensure the script generates the variation class along with the subclass
+   *
+   * Указывает, что это вариация элемента, и необходимо
+   * формировать класс для этой вариации. Используется как дополнительное
+   * свойство, чтобы скрипт формировал класс вариации вместе с подклассом
+   */
+  _state?: boolean
+
+  /**
+   * Indicates that this is a subclass of the element. It is used as an additional
+   * property to ensure the script generates the element's subclass
+   *
+   * Указывает, что это подкласс элемента. Используется как дополнительное свойство,
+   * чтобы скрипт формировал подкласс элемента
+   */
+  _subclass?: boolean
+
+  /**
+   * Indicates that this is a custom property.
+   * It is used as an additional property so that the script additionally
+   * generates a custom property
+   *
+   * Указывает, что это пользовательское свойство.
+   * Используется как дополнительное свойство, чтобы скрипт дополнительно
+   * формировал и пользовательское свойство
+   */
   _var?: boolean
+
+  /**
+   * Indicates that this property is a component property with the specified name
+   *
+   * Указывает, что это свойство является свойством компонента с указанным названием
+   */
+  _prop?: string | boolean
+
+  _theme?: string
+
+  /**
+   * Indicates that the property should be renamed to the specified one
+   *
+   * Указывает, что необходимо переименовать свойство на указанное
+   */
+  _rename?: string
+
+  /**
+   * Sets a regular expression for transforming the property's value
+   *
+   * Задает регулярное выражение для преобразования значения свойства
+   */
+  _replace?: string | PropertyReplace
+
+  /**
+   * Default values, if no value is specified in the property
+   *
+   * Значения по умолчанию, если в свойстве не указано значение
+   */
+  _default?: string | number | boolean
+
+  /**
+   * Indicates that the property is a priority
+   *
+   * Указывает, что свойство в приоритете
+   */
+  _important?: boolean
+
+  /**
+   * Indicates whether to use the standard modification for the property. Default is `true`
+   *
+   * Указывает, нужно ли использовать стандартную модификацию для свойства. По умолчанию — `true`
+   */
   _modification?: boolean
+
+  /**
+   * Indicates that the branch should be moved to another branch of the tree
+   *
+   * Указывает, что необходимо перевести ветку на другую ветку дерева
+   */
+  _drag?: string
+
+  /**
+   * Additional data for modifying the branch after relocation
+   *
+   * Дополнительные данные для модификации ветки после перемещения
+   */
+  _dragSetting?: string
+
+  /**
+   * Indicates that the element should be cloned along with its additional properties
+   *
+   * Указывает, что элемент нужно клонировать вместе с его дополнительными свойствами
+   */
   _settingClone?: boolean
+
+  /**
+   * Indicates whether the property name is complete and does not require modification
+   *
+   * Указывает, является ли название свойства полным и не требует модификации
+   */
   _fullName?: boolean
+
+  /**
+   * Indicates whether the property value is complete and does not require modification
+   *
+   * Указывает, является ли значение свойства полным и не требует модификации
+   */
   _fullValue?: boolean
+
+  /**
+   * Indicates whether the property value is for styling. Default is `true`
+   *
+   * Указывает, является ли значение свойства стилевым. По умолчанию — `true`
+   */
   _style?: boolean
+
+  /**
+   * Indicates that the branch is deprecated and needs to be removed
+   *
+   * Указывает, что ветка устарела и ее необходимо удалить
+   */
   _remove?: boolean
 
+  // Далее идет техническое свойство для скриптов
   __i?: string
   __n?: string
   __ni?: string
