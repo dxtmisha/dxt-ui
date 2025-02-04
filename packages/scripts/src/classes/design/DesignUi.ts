@@ -1,4 +1,5 @@
 import { PropertiesCache } from '../properties/PropertiesCache.ts'
+import { Styles } from '../styles/Styles'
 
 export class DesignUi {
   /**
@@ -17,6 +18,7 @@ export class DesignUi {
    */
   make(): void {
     PropertiesCache.clear()
-    console.log('asd')
+
+    new Styles().make()
   }
 }
