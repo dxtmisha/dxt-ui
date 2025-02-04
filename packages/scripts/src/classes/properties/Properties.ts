@@ -30,4 +30,21 @@ export class Properties {
       return {} as PropertyList
     })
   }
+
+  /**
+   * Reads the content from the file and merges all records into a single object.
+   *
+   * Читает содержимое из файла и объединяет все записи в один объект.
+   */
+  private readFiles(): PropertiesItems {
+    const path = new PropertiesPath(this.designs)
+    const settings = new PropertiesSettings(path).get()
+
+    return new PropertiesItems(
+      replaceRecursive(
+        settings,
+        new PropertiesMain(path).getBySettings(settings)
+      )
+    )
+  }
 }
