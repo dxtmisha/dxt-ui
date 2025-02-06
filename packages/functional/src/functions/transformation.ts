@@ -10,11 +10,16 @@ import { type FunctionArgs } from '../types/basicTypes'
  * Based on the string content, it may be transformed into `undefined`,
  * `null`, `true`, `false`, object, number, or function.
  *
- * @param value - Значение, которое необходимо преобразовать / The value to be transformed
+ * @param value - Значение, которое необходимо преобразовать
+ *
+ * The value to be transformed
  * @param isFunction - Флаг, который указывает, необходимо ли проверять функцию
- * в глобальном объекте window / A flag that indicates whether to check for a function
- * in the global window object
- * @returns Преобразованное значение / The transformed value
+ * в глобальном объекте window
+ *
+ * A flag that indicates whether to check for a function in the global window object
+ * @returns Преобразованное значение
+ *
+ * The transformed value
  */
 export function transformation(value: any, isFunction = false): any {
   if (typeof value === 'string') {
