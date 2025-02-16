@@ -1,0 +1,23 @@
+{
+  "name": "@dxt-ui/media",
+  "private": false,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "main": "./dist/library.js",
+  "exports": {
+    "./dist/types/*": "./dist/types/*",
+    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts",
+    ".": {
+      "types": "./dist/types/library.d.ts",
+      "import": "./src/library.ts",
+      "default": "./dist/library.js"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
