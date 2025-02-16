@@ -236,3 +236,37 @@ Removes duplicate entries in an array.
 
 ### [writeClipboardData](src/functions/writeClipboardData.ts)
 Writes data to the buffer.
+
+## Functions/ Render
+
+### [getBind](src/functions/render/getBind.ts)
+A method for generating properties for a subcomponent.
+
+### [getClassName](src/functions/render/getClassName.ts)
+Returns the name of the class from the property.
+
+### [getIndexForRender](src/functions/render/getIndexForRender.ts)
+Returns or generates a new element.
+
+## Functions/ Ref
+
+### [getBindRef](src/functions/ref/getBindRef.ts)
+A method for generating properties for a subcomponent.
+
+### [getComputedAsync](src/functions/ref/getComputedAsync.ts)
+Processes an asynchronous method for wrapping in computed.
+
+### [getRef](src/functions/ref/getRef.ts)
+You return the values of the ref variable or the variable itself if it is not reactive.
+
+### [render](src/functions/ref/render.ts)
+Getting cached, immutable data.
+
+### [setRef](src/functions/ref/setRef.ts)
+Changing the value for the reactive method.
+
+### [toComputed](src/functions/ref/toComputed.ts)
+Packs reactive values into computed to prohibit editing.
+
+### [toRefItem](src/functions/ref/toRefItem.ts)
+Returns a regular variable or wraps it in a regular variable if it is an ordinary variable.

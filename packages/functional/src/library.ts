@@ -74,5 +74,19 @@ export * from './functions/transformation'
 export * from './functions/uniqueArray'
 export * from './functions/writeClipboardData'
 
+export * from './functions/render/getBind'
+export * from './functions/render/getClassName'
+export * from './functions/render/getIndexForRender'
+
+export * from './functions/ref/getRef'
+export * from './functions/ref/getComputedAsync'
+export * from './functions/ref/getBindRef'
+export * from './functions/ref/render'
+export * from './functions/ref/setRef'
+export * from './functions/ref/toComputed'
+export * from './functions/ref/toRefItem'
+
 // Types
 export * from './types/basicTypes'
+export * from './types/geoTypes'
+export * from './types/refTypes'
