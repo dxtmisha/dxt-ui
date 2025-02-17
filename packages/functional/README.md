@@ -1,8 +1,30 @@
 # @dxt-ui/functional
 
 ## Classes
+
+### [Api](src/classes/Api.ts)
+Class for working with requests.
+
+### [Cache](src/classes/Cache.ts)
+Simple class for caching.
+
+### [CacheItem](src/classes/CacheItem.ts)
+Class for managing a single caching value.
+
+### [CacheStatic](src/classes/CacheStatic.ts)
+Class for working with fast cache during code execution.
+
+### [Cookie](src/classes/Cookie.ts)
+Class for working with cookies.
+
+### [CookieBlock](src/classes/CookieBlock.ts)
+Class for changing cookie access status.
+
 ### [DataStorage](src/classes/DataStorage.ts)
 Class for working with localStorage.
+
+### [EventItem](src/classes/EventItem.ts)
+Class for working with events.
 
 ### [Geo](src/classes/Geo.ts)
 Base class for working with geographic data.
@@ -12,6 +34,9 @@ The Intl namespace object contains several constructors as well as functionality
 to the internationalization constructors and other language sensitive functions. Collectively,
 they comprise the ECMAScript Internationalization API, which provides language sensitive
 string comparison, number formatting, date and time formatting, and more.
+
+### [Loading](src/classes/Loading.ts)
+Class for working with global loading.
 
 ### [ScrollbarWidth](src/classes/ScrollbarWidth.ts)
 Class for getting the scroll width.

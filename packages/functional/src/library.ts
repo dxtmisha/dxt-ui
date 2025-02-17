@@ -1,7 +1,15 @@
 // Classes
+export * from './classes/Api'
+export * from './classes/Cache'
+export * from './classes/CacheItem'
+export * from './classes/CacheStatic'
+export * from './classes/Cookie'
+export * from './classes/CookieBlock'
 export * from './classes/DataStorage'
+export * from './classes/EventItem'
 export * from './classes/Geo'
 export * from './classes/GeoIntl'
+export * from './classes/Loading'
 export * from './classes/ScrollbarWidth'
 
 // Functions
