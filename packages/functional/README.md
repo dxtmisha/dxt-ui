@@ -41,14 +41,29 @@ to the internationalization constructors and other language sensitive functions.
 they comprise the ECMAScript Internationalization API, which provides language sensitive
 string comparison, number formatting, date and time formatting, and more.
 
+### [GeoPhone](src/classes/GeoPhone.ts)
+A class for storing and processing phone number masks.
+
+### [Global](src/classes/Global.ts)
+Class for obtaining global data.
+
+### [Hash](src/classes/Hash.ts)
+Working with data stored in hash.
+
 ### [Icons](src/classes/Icons.ts)
 Class for managing icons.
 
 ### [Loading](src/classes/Loading.ts)
 Class for working with global loading.
 
+### [RouterItem](src/classes/RouterItem.ts)
+Router management class.
+
 ### [ScrollbarWidth](src/classes/ScrollbarWidth.ts)
 Class for getting the scroll width.
+
+### [Translate](src/classes/Translate.ts)
+Class for getting the translated text.
 
 ## Functions
 

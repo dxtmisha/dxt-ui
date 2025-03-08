@@ -8,18 +8,28 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },
-  "main": "./dist/library.js",
+  "main": "dist/library.js",
+  "module": "dist/library.js",
+  "types": "dist/types/library.d.ts",
   "exports": {
-    "./dist/types/*": "./dist/types/*",
-    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts",
-    "./flags": {
-      "types": "./dist/types/flags.d.ts",
-      "default": "./dist/flags.js"
-    },
     ".": {
       "types": "./dist/types/library.d.ts",
+      "import": "./src/library.ts",
       "default": "./dist/library.js"
-    }
+    },
+    "./flags": {
+      "types": "./dist/types/flags.d.ts",
+      "import": "./src/flags.ts",
+      "default": "./dist/flags.js"
+    },
+    "./dist/types/*": "./dist/types/*",
+    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
+  },
+  "buildOptions": {
+    "name": "@dxt-ui/media",
+    "formats": [
+      "esm-bundler"
+    ]
   },
   "dependencies": {},
   "devDependencies": {}

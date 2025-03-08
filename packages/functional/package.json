@@ -14,15 +14,22 @@
   "exports": {
     ".": {
       "types": "./dist/types/library.d.ts",
-      "import": "./dist/library.js",
+      "import": "./src/library.ts",
       "default": "./dist/library.js"
     },
-    "./dist/types/*": "./dist/types/*",
-    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts",
     "./flags": {
       "types": "./dist/types/flags.d.ts",
+      "import": "./src/flags.ts",
       "default": "./dist/flags.js"
-    }
+    },
+    "./dist/types/*": "./dist/types/*",
+    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
+  },
+  "buildOptions": {
+    "name": "@dxt-ui/functional",
+    "formats": [
+      "esm-bundler"
+    ]
   },
   "dependencies": {},
   "devDependencies": {}
