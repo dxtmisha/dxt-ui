@@ -65,6 +65,40 @@ Class for getting the scroll width.
 ### [Translate](src/classes/Translate.ts)
 Class for getting the translated text.
 
+## Classes/ Design
+
+### [DesignAbstract](src/classes/design/DesignAbstract.ts)
+Base class for working with the constructor.
+
+### [DesignAsyncAbstract](src/classes/design/DesignAsyncAbstract.ts)
+Base class for working with the constructor (Async).
+
+### [DesignChanged](src/classes/design/DesignChanged.ts)
+The class checks the values that have been edited.
+
+### [DesignComponents](src/classes/design/DesignComponents.ts)
+Class for working with connected components.
+
+### [DesignConstructorAbstract](src/classes/design/DesignConstructorAbstract.ts)
+Class for collecting all functional components.
+
+## Classes/ Ref
+
+### [DatetimeRef](src/classes/ref/DatetimeRef.ts)
+A class for working with dates.
+
+### [EventRef](src/classes/ref/EventRef.ts)
+Class for working with events.
+
+### [GeoFlagRef](src/classes/ref/GeoFlagRef.ts)
+Class for working with Flags.
+
+### [GeoIntlRef](src/classes/ref/GeoIntlRef.ts)
+Reactive class for managing the formatting of numbers and dates.
+
+### [GeoRef](src/classes/ref/GeoRef.ts)
+Reactive class for working with geographic data.
+
 ## Functions
 
 ### [anyToString](src/functions/anyToString.ts)

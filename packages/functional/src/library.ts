@@ -20,6 +20,18 @@ export * from './classes/RouterItem'
 export * from './classes/ScrollbarWidth'
 export * from './classes/Translate'
 
+export * from './classes/design/DesignAbstract'
+export * from './classes/design/DesignAsyncAbstract'
+export * from './classes/design/DesignChanged'
+export * from './classes/design/DesignComponents'
+export * from './classes/design/DesignConstructorAbstract'
+
+export * from './classes/ref/DatetimeRef'
+export * from './classes/ref/EventRef'
+export * from './classes/ref/GeoFlagRef'
+export * from './classes/ref/GeoIntlRef'
+export * from './classes/ref/GeoRef'
+
 // Functions
 export * from './functions/anyToString'
 export * from './functions/arrFill'
@@ -105,5 +117,6 @@ export * from './functions/ref/toRefItem'
 
 // Types
 export * from './types/basicTypes'
+export * from './types/constructorTypes'
 export * from './types/geoTypes'
 export * from './types/refTypes'

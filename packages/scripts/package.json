@@ -1,7 +1,7 @@
 {
   "name": "@dxt-ui/scripts",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,14 +11,28 @@
   "bin": {
     "dxt-ui": "./bin/design-ui.ts"
   },
-  "main": "./dist/library.js",
+  "main": "dist/library.js",
+  "module": "dist/library.js",
+  "types": "dist/types/library.d.ts",
   "exports": {
-    "./dist/types/*": "./dist/types/*",
-    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts",
     ".": {
       "types": "./dist/types/library.d.ts",
+      "import": "./src/library.ts",
       "default": "./dist/library.js"
-    }
+    },
+    "./flags": {
+      "types": "./dist/types/flags.d.ts",
+      "import": "./src/flags.ts",
+      "default": "./dist/flags.js"
+    },
+    "./dist/types/*": "./dist/types/*",
+    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
+  },
+  "buildOptions": {
+    "name": "@dxt-ui/scripts",
+    "formats": [
+      "esm-bundler"
+    ]
   },
   "dependencies": {},
   "devDependencies": {}
