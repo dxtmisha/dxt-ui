@@ -1,6 +1,7 @@
 import { forEach } from './forEach'
 import { isObjectNotArray } from './isObjectNotArray'
 import { setElementItem } from './setElementItem'
+import { isDomRuntime } from './isDomRuntime.ts'
 
 /**
  * In HTML documents, creates an element with the tag that is specified in the argument.
@@ -19,7 +20,11 @@ export function createElement<T extends HTMLElement>(
   tagName = 'div',
   options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void),
   referenceElement?: HTMLElement
-): T {
+): T | undefined {
+  if (!isDomRuntime()) {
+    return undefined
+  }
+
   const element = document.createElement(tagName) as T
 
   if (typeof options === 'function') {

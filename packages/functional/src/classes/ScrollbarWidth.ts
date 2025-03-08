@@ -62,7 +62,7 @@ export class ScrollbarWidth {
    *
    * Создает элементы для проверки ширины скролла.
    */
-  private static createElement(): HTMLDivElement {
+  private static createElement(): HTMLDivElement | undefined {
     return createElement<HTMLDivElement>(document.body, 'div', (element) => {
       element.style.height = '24px'
       element.style.overflowY = 'scroll'
@@ -85,12 +85,16 @@ export class ScrollbarWidth {
       this.calculate = true
       const element = this.createElement()
 
-      requestAnimationFrame(() => {
-        resolve(element.offsetWidth - element.clientWidth)
+      if (element) {
+        requestAnimationFrame(() => {
+          resolve(element.offsetWidth - element.clientWidth)
 
-        element.remove()
-        this.calculate = false
-      })
+          element.remove()
+          this.calculate = false
+        })
+      } else {
+        resolve(0)
+      }
     })
   }
 }

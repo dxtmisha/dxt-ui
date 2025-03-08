@@ -13,7 +13,10 @@ export function anyToString<V>(value: V): string {
     return value.trim()
   }
 
-  if (isArray(value)) {
+  if (
+    isArray(value)
+    && value.findIndex(item => isObject(item)) === -1
+  ) {
     return value.join(', ')
   }
 
