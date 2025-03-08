@@ -8,6 +8,10 @@
       "types": "./viteconfig/viteBasic.config.d.ts",
       "default": "./viteconfig/viteBasic.config.js"
     },
+    "./viteFlags": {
+      "types": "./viteconfig/viteFlags.config.d.ts",
+      "default": "./viteconfig/viteFlags.config.js"
+    },
     "./tsconfig/*": "./tsconfig/*"
   },
   "dependencies": {},

@@ -7,10 +7,12 @@ import dts from 'vite-plugin-dts'
 export const viteBasic = defineConfig({
   build: {
     lib: {
-      entry: 'src/library.ts',
+      entry: [
+        'src/library.ts'
+      ],
       name: 'dxt-ui',
       formats: ['es'],
-      fileName: 'library'
+      fileName: (_, entryName) => `${entryName}.js`
     }
   },
   plugins: [
@@ -21,6 +23,7 @@ export const viteBasic = defineConfig({
       include: [
         'src/functions/**/*.ts',
         'src/types/**/*.ts',
+        'src/flags.ts',
         'src/library.ts'
       ],
       insertTypesEntry: true,

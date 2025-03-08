@@ -78,7 +78,7 @@ export class Api {
   protected static response: ApiResponse[] = []
   protected static responseLoading?: any
   protected static headers: Record<string, string> = {}
-  protected static requestDefault: Record<string, any> = {}
+  protected static requestDefault: RefOrNormal<Record<string, any>>
 
   protected static preparation = false
   protected static preparationItem?: () => Promise<void>
@@ -253,16 +253,20 @@ export class Api {
    * Добавляет данные по умолчанию к запросу.
    */
   static addRequestDefault(request: ApiFetch['request']): ApiFetch['request'] {
-    if (request instanceof FormData) {
-      forEach(this.requestDefault, (value, name) => {
-        if (!request.has(name)) {
-          request.set(name, value)
+    if (this.requestDefault) {
+      const requestDefault = getRef(this.requestDefault)
+
+      if (request instanceof FormData) {
+        forEach(requestDefault, (value, name) => {
+          if (!request.has(name)) {
+            request.set(name, value)
+          }
+        })
+      } else if (isObjectNotArray(request)) {
+        return {
+          ...requestDefault,
+          ...request
         }
-      })
-    } else if (isObjectNotArray(request)) {
-      return {
-        ...this.requestDefault,
-        ...request
       }
     }
 
@@ -287,7 +291,7 @@ export class Api {
    *
    * Изменяет данные запроса по умолчанию.
    */
-  static setRequestDefault(request: Record<string, any>) {
+  static setRequestDefault(request: RefOrNormal<Record<string, any>>) {
     this.requestDefault = request
   }
 
@@ -430,26 +434,23 @@ export class Api {
           || devMode
         )
       ) {
+        const requestItem = this.addRequestDefault(item?.request)
         let response = false
 
-        if (request === item?.request) {
+        if (request === requestItem) {
           response = true
-        }
-
-        if ('*any' === item?.request) {
+        } else if ('*any' === requestItem) {
           response = true
-        }
-
-        if (
+        } else if (
           isFilled(request)
-          && isFilled(item.request)
+          && isFilled(requestItem)
           && isObjectNotArray(request)
-          && isObjectNotArray(item.request)
+          && isObjectNotArray(requestItem)
           && !(request instanceof FormData)
-          && !(item.request instanceof FormData)
-          && Object.values(request).length === Object.values(item.request).length
+          && !(requestItem instanceof FormData)
+          && Object.values(request).length === Object.values(requestItem).length
         ) {
-          response = Object.entries(item.request).reduce(
+          response = Object.entries(requestItem).reduce(
             (accum, [key, value]) => (accum && (value === request?.[key] || value === '*any')),
             true
           )
@@ -476,31 +477,18 @@ export class Api {
    * @param apiFetch property of the request/ свойство запроса
    */
   protected static async fetch<T>(apiFetch: ApiFetch): Promise<T> {
-    const request: ApiFetch['request'] = this.addRequestDefault(apiFetch.request)
     const {
-      path = '',
-      method = ApiMethodItem.get,
       toData = true,
-      global = method === ApiMethodItem.get,
-      devMode = false,
       hideError = false,
       queryReturn = undefined,
       globalPreparation = true,
       globalEnd = true
     } = apiFetch
 
-    if (global || devMode) {
-      const response = this.getResponse(path, method, request, devMode)
+    const emulator = await this.makeEmulator<T>(apiFetch)
 
-      if (response) {
-        const read = (await this.fetchResponse<T>(response, request))
-
-        if (devMode) {
-          console.warn('Response data:', path, request, read)
-        }
-
-        return read
-      }
+    if (emulator) {
+      return emulator
     }
 
     let data: ApiData<T> = {} as ApiData<T>
@@ -581,6 +569,36 @@ export class Api {
         }
       })
     })
+  }
+
+  /**
+   * Выполнение эмулятора, если доступно
+   * @param apiFetch property of the request/ свойство запроса
+   */
+  protected static async makeEmulator<T>(apiFetch: ApiFetch): Promise<T | undefined> {
+    const {
+      path = '',
+      method = ApiMethodItem.get,
+      global = method === ApiMethodItem.get,
+      devMode = false
+    } = apiFetch
+
+    if (global || devMode) {
+      const request: ApiFetch['request'] = this.addRequestDefault(apiFetch.request)
+      const response = this.getResponse(path, method, request, devMode)
+
+      if (response) {
+        const read = (await this.fetchResponse<T>(response, request))
+
+        if (devMode) {
+          console.warn('Response data:', path, request, read)
+        }
+
+        return read
+      }
+    }
+
+    return undefined
   }
 
   /**

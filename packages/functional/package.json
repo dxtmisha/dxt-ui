@@ -1,21 +1,27 @@
 {
   "name": "@dxt-ui/functional",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },
-  "main": "./dist/library.js",
+  "main": "dist/library.js",
+  "module": "dist/library.js",
+  "types": "dist/types/library.d.ts",
   "exports": {
-    "./dist/types/*": "./dist/types/*",
-    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts",
     ".": {
       "types": "./dist/types/library.d.ts",
-      "import": "./src/library.ts",
+      "import": "./dist/library.js",
       "default": "./dist/library.js"
+    },
+    "./dist/types/*": "./dist/types/*",
+    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts",
+    "./flags": {
+      "types": "./dist/types/flags.d.ts",
+      "default": "./dist/flags.js"
     }
   },
   "dependencies": {},

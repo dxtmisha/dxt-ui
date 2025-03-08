@@ -23,17 +23,26 @@ Class for changing cookie access status.
 ### [DataStorage](src/classes/DataStorage.ts)
 Class for working with localStorage.
 
+### [Datetime](src/classes/Datetime.ts)
+A class for working with dates.
+
 ### [EventItem](src/classes/EventItem.ts)
 Class for working with events.
 
 ### [Geo](src/classes/Geo.ts)
 Base class for working with geographic data.
 
+### [GeoFlag](src/classes/GeoFlag.ts)
+Class for working with Flags.
+
 ### [GeoIntl](src/classes/GeoIntl.ts)
 The Intl namespace object contains several constructors as well as functionality common
 to the internationalization constructors and other language sensitive functions. Collectively,
 they comprise the ECMAScript Internationalization API, which provides language sensitive
 string comparison, number formatting, date and time formatting, and more.
+
+### [Icons](src/classes/Icons.ts)
+Class for managing icons.
 
 ### [Loading](src/classes/Loading.ts)
 Class for working with global loading.
@@ -213,6 +222,9 @@ Merge one or more arrays recursively.
 
 ### [replaceTemplate](src/functions/replaceTemplate.ts)
 Replacing the value from replaces in value.
+
+### [secondToTime](src/functions/secondToTime.ts)
+Converts seconds into a time string.
 
 ### [setElementItem](src/functions/setElementItem.ts)
 Modifies the value of an element identified by its key.

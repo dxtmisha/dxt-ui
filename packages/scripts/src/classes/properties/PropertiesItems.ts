@@ -13,5 +13,6 @@ export class PropertiesItems {
   constructor(
     private readonly properties: PropertyList
   ) {
+
   }
 }
