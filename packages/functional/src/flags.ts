@@ -1,6 +1,6 @@
 import flags from '@dxt-ui/media/flags'
 
-import { Icons } from './classes/Icons.ts'
+import { Icons } from './classes/Icons'
 
 export const dxtUiMakeFlags = (): void => {
   Icons.add('flag-ad', flags.AdSvg)

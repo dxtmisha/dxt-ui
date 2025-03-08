@@ -1,4 +1,4 @@
-import { toNumber } from './toNumber.ts'
+import { toNumber } from './toNumber'
 
 /**
  * Converts seconds into a time string.
