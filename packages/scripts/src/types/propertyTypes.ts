@@ -452,6 +452,3 @@ export type PropertyItemInput = Record<string, any> & (PropertyItemPartial | {
 
 export type PropertyList = Record<string, PropertyItem>
 export type PropertyListOrData = Record<string, PropertyItemInput>
-
-export const PROPERTY_CACHE_FILE = 'properties'
-export const PROPERTY_CACHE_DIR_READ = 'read'

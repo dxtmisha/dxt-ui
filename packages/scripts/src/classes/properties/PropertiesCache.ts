@@ -32,13 +32,13 @@ export class PropertiesCache {
    * Reads data from the cache or updates the cache if the data is outdated.
    *
    * Читает данные из кэша или обновляет кэш, если данные устарели.
-   * @param path path to the file / путь к файлу
-   * @param name file name / название файла
+   * @param path path to the file/ путь к файлу
+   * @param name file name/ название файла
    * @param callback if the file is not found, the callback function is called
    * and its result is saved in the current file /
    * если файл не найден, вызывается функция обратного вызова (callback) и её
    * результат сохраняется в текущем файле
-   * @param extension file extension by default is json / расширение файла по умолчанию - json
+   * @param extension file extension by default is json/ расширение файла по умолчанию - json
    */
   static get<T extends PropertiesFileValue>(
     path: PropertiesFilePath,
@@ -68,7 +68,7 @@ export class PropertiesCache {
    * Returns the content of the file by the specified path
    *
    * Возвращает содержимое файла по указанному пути.
-   * @param path filename / имя файла
+   * @param path filename/ имя файла
    */
   static read<R>(path: PropertiesFilePath): R | undefined {
     if (PropertiesFile.is(path)) {
@@ -90,8 +90,8 @@ export class PropertiesCache {
    * Saves intermediate data
    *
    * Сохраняет промежуточные данные.
-   * @param name file name / название файла
-   * @param value values for storage / значения для хранения
+   * @param name file name/ название файла
+   * @param value values for storage/ значения для хранения
    */
   static write<T extends PropertiesFileValue>(name: string, value: T): void {
     this.writeFile<T>(DIR_STEP, name, value)
@@ -110,9 +110,9 @@ export class PropertiesCache {
    * Checks if there are files to read
    *
    * Проверяет наличие файлов для чтения.
-   * @param path path to the file / путь к файлу
-   * @param name file name / название файла
-   * @param extension file extension by default is json / расширение файла по умолчанию - json
+   * @param path path to the file/ путь к файлу
+   * @param name file name/ название файла
+   * @param extension file extension by default is json/ расширение файла по умолчанию - json
    */
   private static is(
     path: PropertiesFilePath,
@@ -126,7 +126,7 @@ export class PropertiesCache {
    * Checks if there are updated files
    *
    * Проверяет, есть ли обновленные файлы.
-   * @param name the name of the cache / название кэша
+   * @param name the name of the cache/ название кэша
    */
   private static isBySystem(name = 'global'): boolean {
     let notUpdate = true
@@ -149,7 +149,7 @@ export class PropertiesCache {
    * Returns the path to the file
    *
    * Возвращает путь к файлу.
-   * @param path path to the file / путь к файлу
+   * @param path path to the file/ путь к файлу
    */
   private static getPath(path: PropertiesFilePath): string[] {
     return [PropertiesFile.getRoot(), ...DIR_CACHE, ...toArray(path)]
@@ -159,9 +159,9 @@ export class PropertiesCache {
    * Returns the full path to the file
    *
    * Возвращает полный путь к файлу.
-   * @param path path to the file / путь к файлу
-   * @param name file name / название файла
-   * @param extension file extension by default is json / расширение файла по умолчанию - json
+   * @param path path to the file/ путь к файлу
+   * @param name file name/ название файла
+   * @param extension file extension by default is json/ расширение файла по умолчанию - json
    */
   private static getPathName(
     path: PropertiesFilePath,
@@ -175,9 +175,9 @@ export class PropertiesCache {
    * Reads the content of the file
    *
    * Читает содержимое файла.
-   * @param path path to the file / путь к файлу
-   * @param name file name / название файла
-   * @param extension file extension by default is json / расширение файла по умолчанию - json
+   * @param path path to the file/ путь к файлу
+   * @param name file name/ название файла
+   * @param extension file extension by default is json/ расширение файла по умолчанию - json
    */
   private static readFile<R>(
     path: PropertiesFilePath,
@@ -191,10 +191,10 @@ export class PropertiesCache {
    * Writing data to a file
    *
    * Запись данных в файл.
-   * @param path path to the file / путь к файлу
-   * @param name file name / название файла
-   * @param value values for storage / значения для хранения
-   * @param extension file extension by default is json / расширение файла по умолчанию - json
+   * @param path path to the file/ путь к файлу
+   * @param name file name/ название файла
+   * @param value values for storage/ значения для хранения
+   * @param extension file extension by default is json/ расширение файла по умолчанию - json
    */
   private static writeFile<T extends PropertiesFileValue>(
     path: PropertiesFilePath,
@@ -229,7 +229,7 @@ export class PropertiesCache {
    * Adding a new message to the console
    *
    * Добавление нового сообщения в консоли.
-   * @param text text of the message / текст сообщения
+   * @param text text of the message/ текст сообщения
    */
   private static console(text: string): void {
     console.info('[Cache]', text)

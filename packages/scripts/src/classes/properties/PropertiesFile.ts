@@ -34,7 +34,7 @@ export class PropertiesFile {
    * Checks whether it is a directory.
    *
    * Проверяет, является ли это директорией.
-   * @param path name of the element being checked / название проверяемого элемента
+   * @param path name of the element being checked/ название проверяемого элемента
    */
   static isDir(path: PropertiesFilePath): boolean {
     if (this.is(path)) {
@@ -60,7 +60,7 @@ export class PropertiesFile {
    * Метод path.joinPath() объединяет все указанные сегменты пути с использованием
    * специфического для платформы разделителя в качестве разделителя,
    * а затем нормализует полученный путь.
-   * @param path a sequence of path segments / последовательность сегментов пути
+   * @param path a sequence of path segments/ последовательность сегментов пути
    */
   static joinPath(path: PropertiesFilePath): string {
     return requirePath.join(...toArray(path))
@@ -70,9 +70,9 @@ export class PropertiesFile {
    * Getting the path to the file by its name and the path to the directory.
    *
    * Получение пути к файлу по его названию и пути к директории.
-   * @param path path to the file / путь к файлу
-   * @param name file name / название файла
-   * @param extension file extension by default is json / расширение файла по умолчанию - json
+   * @param path path to the file/ путь к файлу
+   * @param name file name/ название файла
+   * @param extension file extension by default is json/ расширение файла по умолчанию - json
    */
   static joinPathByName(
     path: PropertiesFilePath,
@@ -95,8 +95,8 @@ export class PropertiesFile {
    * Returns the file name.
    *
    * Возвращает имя файла.
-   * @param name element name / название элемента
-   * @param extension file extension by default is json / расширение файла по умолчанию - json
+   * @param name element name/ название элемента
+   * @param extension file extension by default is json/ расширение файла по умолчанию - json
    */
   static getFileName(
     name: string,
@@ -113,7 +113,7 @@ export class PropertiesFile {
    * Returns the path to the directory, removing the file name from the path.
    *
    * Возвращает путь к директории, убрав название файла из пути.
-   * @param path path to the file / путь к файлу
+   * @param path path to the file/ путь к файлу
    */
   static getPathDir(path: PropertiesFilePath): string {
     if (this.isDir(path)) {
@@ -127,9 +127,9 @@ export class PropertiesFile {
    * Returns the path to the file.
    *
    * Возвращает путь к файлу.
-   * @param path path to the file / путь к файлу
-   * @param name element name / название элемента
-   * @param extension file extension by default is json / расширение файла по умолчанию - json
+   * @param path path to the file/ путь к файлу
+   * @param name element name/ название элемента
+   * @param extension file extension by default is json/ расширение файла по умолчанию - json
    */
   static getPathFile(
     path: PropertiesFilePath,
@@ -143,7 +143,7 @@ export class PropertiesFile {
    * The method splits the path into an array of components.
    *
    * Метод разбивает путь на массив компонентов.
-   * @param path path to the directory / путь к директории
+   * @param path path to the directory/ путь к директории
    */
   static splitForDir(path: PropertiesFilePath): string[] {
     const dir = this.isDir(path) ? path : this.parse(path)?.dir
@@ -154,7 +154,7 @@ export class PropertiesFile {
    * Method returns an object whose properties represent significant elements of the path.
    *
    * Метод возвращает объект, свойства которого представляют существенные элементы пути.
-   * @param path filename / имя файла
+   * @param path filename/ имя файла
    */
   static parse(path: PropertiesFilePath): requirePath.ParsedPath {
     return requirePath.parse(this.joinPath(path))
@@ -173,7 +173,7 @@ export class PropertiesFile {
    * Getting information about the file.
    *
    * Получение информации о файле.
-   * @param path path to the file / путь к файлу
+   * @param path path to the file/ путь к файлу
    */
   static stat(path: PropertiesFilePath): requireFs.Stats | undefined {
     if (this.is(path)) {
@@ -187,7 +187,7 @@ export class PropertiesFile {
    * Reads the contents of the directory.
    *
    * Читает содержимое директории.
-   * @param path path to the directory / путь к директории
+   * @param path path to the directory/ путь к директории
    */
   static readDir(path: PropertiesFilePath): string[] {
     return this.is(path) ? requireFs.readdirSync(this.joinPath(path)) : []
@@ -197,8 +197,8 @@ export class PropertiesFile {
    * Reads the contents of the directory recursively.
    *
    * Читает содержимое директории рекурсивно.
-   * @param path path to the directory / путь к директории
-   * @param fullPath recursive directory / рекурсивная директория
+   * @param path path to the directory/ путь к директории
+   * @param fullPath recursive directory/ рекурсивная директория
    */
   static readDirRecursive(
     path: PropertiesFilePath,
@@ -227,7 +227,7 @@ export class PropertiesFile {
    * Returns the contents of the path.
    *
    * Возвращает содержимое пути.
-   * @param path filename / имя файла
+   * @param path filename/ имя файла
    */
   static readFile<R>(path: PropertiesFilePath): R | undefined {
     if (this.is(path)) {
@@ -243,7 +243,7 @@ export class PropertiesFile {
    * Returns the content of the file, without converting the value.
    *
    * Возвращает содержимое файла, без преобразования значения.
-   * @param path filename / имя файла
+   * @param path filename/ имя файла
    */
   static readFileOnly(path: PropertiesFilePath): string | undefined {
     if (this.is(path)) {
@@ -257,7 +257,7 @@ export class PropertiesFile {
    * Synchronously creates a directory.
    *
    * Синхронно создает директорию.
-   * @param path path to the directory / путь к директории
+   * @param path path to the directory/ путь к директории
    */
   static createDir(path: PropertiesFilePath): void {
     const dir: string[] = [this.root]
@@ -274,10 +274,10 @@ export class PropertiesFile {
    * Writing data to a file.
    *
    * Запись данных в файл.
-   * @param path path to the file / путь к файлу
-   * @param name file name / название файла
-   * @param value values for storage / значения для хранения
-   * @param extension file extension by default is ts / расширение файла по умолчанию - ts
+   * @param path path to the file/ путь к файлу
+   * @param name file name/ название файла
+   * @param value values for storage/ значения для хранения
+   * @param extension file extension by default is ts/ расширение файла по умолчанию - ts
    */
   static write<T extends PropertiesFileValue>(
     path: PropertiesFilePath,
@@ -295,8 +295,8 @@ export class PropertiesFile {
    * Writes to the selected path.
    *
    * Записывает по выбранному пути.
-   * @param path path to the file / путь к файлу
-   * @param value values for storage / значения для хранения
+   * @param path path to the file/ путь к файлу
+   * @param value values for storage/ значения для хранения
    */
   static writeByPath<T extends PropertiesFileValue>(
     path: PropertiesFilePath,
@@ -314,8 +314,8 @@ export class PropertiesFile {
    * Copy a file from the source path to the destination path.
    *
    * Копирования файла из исходного пути в целевой путь.
-   * @param path path to the file / путь к файлу
-   * @param pathsSrc source filename to copy / исходное имя файла для копирования
+   * @param path path to the file/ путь к файлу
+   * @param pathsSrc source filename to copy/ исходное имя файла для копирования
    */
   static copy(
     path: PropertiesFilePath,
@@ -333,7 +333,7 @@ export class PropertiesFile {
    * Directory deletion.
    *
    * Удаление директории.
-   * @param path path to the directory / путь к директории
+   * @param path path to the directory/ путь к директории
    */
   static removeDir(
     path: PropertiesFilePath
@@ -350,7 +350,7 @@ export class PropertiesFile {
    * File deletion.
    *
    * Удаление файла.
-   * @param path path to the file / путь к файлу
+   * @param path path to the file/ путь к файлу
    */
   static removeFile(
     path: PropertiesFilePath
@@ -374,7 +374,7 @@ export class PropertiesFile {
    * Removing root from the path.
    *
    * Удаление root из пути.
-   * @param path path to the directory / путь к директории
+   * @param path path to the directory/ путь к директории
    */
   private static removeRootInPath(path: PropertiesFilePath): string {
     return this.joinPath(path)
