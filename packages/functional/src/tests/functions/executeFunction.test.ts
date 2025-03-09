@@ -2,11 +2,11 @@ import { expect, test } from 'vitest'
 import { executeFunction } from '../../functions/executeFunction.ts'
 
 test(
-  'functions/ executeFunction/ value',
+  'Checking value passing/ Проверка передачи значения',
   () => expect(executeFunction(1)).toBe(1)
 )
 
 test(
-  'functions/ executeFunction/ value',
+  'Checking function passing/ Проверка передачи функции',
   () => expect(executeFunction(() => 1)).toBe(1)
 )

@@ -2,6 +2,6 @@ import { expect, test } from 'vitest'
 import { arrFill } from '../../functions/arrFill.ts'
 
 test(
-  'functions/ arrFill',
-  () => expect(arrFill('test', 3)).toStrictEqual(['test', 'test', 'test'])
+  'Creating an array of 3 values `a`/ Создание массива из 3 значений `a`',
+  () => expect(arrFill('a', 3)).toStrictEqual(['a', 'a', 'a'])
 )

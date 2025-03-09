@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
-import { createElement } from '../../functions/createElement.ts'
+import { getElement } from '../../functions/getElement.ts'
 
 test(
   'Checking execution in the Node environment/ Проверка выполнения в среде Node',
-  () => expect(createElement()).toBe(undefined)
+  () => expect(getElement('body')).toBe(undefined)
 )

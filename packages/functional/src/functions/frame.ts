@@ -1,3 +1,5 @@
+import { isDomRuntime } from './isDomRuntime.ts'
+
 /**
  * Cyclically calls requestAnimationFrame until next returns true
  * The window.requestAnimationFrame() method tells the browser that you wish to perform
@@ -18,7 +20,7 @@ export function frame(
   next?: () => boolean,
   end?: () => void
 ) {
-  requestAnimationFrame(() => {
+  const init = () => {
     callback()
 
     if (next?.()) {
@@ -26,5 +28,11 @@ export function frame(
     } else {
       end?.()
     }
-  })
+  }
+
+  if (isDomRuntime()) {
+    requestAnimationFrame(init)
+  } else {
+    init()
+  }
 }

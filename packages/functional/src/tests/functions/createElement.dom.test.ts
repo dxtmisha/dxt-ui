@@ -4,18 +4,18 @@ import { expect, test } from 'vitest'
 import { createElement } from '../../functions/createElement.ts'
 
 test(
-  'functions/ createElement',
+  'Creating a div element/ Создание элемента div',
   () => expect(createElement()).toStrictEqual(document.createElement('div'))
 )
 
 test(
-  'functions/ createElement/ span',
+  'Creating a span element/ Создание элемента span',
   () => expect(createElement(undefined, 'span'))
     .toStrictEqual(document.createElement('span'))
 )
 
 test(
-  'functions/ createElement/ parent',
+  'Adding an element to the parent element/ Добавление элемента к элементу-предку',
   () => {
     const element = document.createElement('div')
 
@@ -25,7 +25,7 @@ test(
 )
 
 test(
-  'functions/ createElement/ reference',
+  'Inserting an element between other elements/ Добавление элемента между другими элементами',
   () => {
     const element = document.createElement('div')
     const child1 = document.createElement('div')
@@ -42,7 +42,7 @@ test(
 )
 
 test(
-  'functions/ createElement/ options/ object',
+  'Adding an element with attribute passing/ Добавление элемента с передачей атрибутов',
   () => expect(
     createElement<HTMLInputElement>(
       undefined,
@@ -54,7 +54,7 @@ test(
 )
 
 test(
-  'functions/ createElement/ options/ function',
+  'Adding an element with a function call to modify the element/ Добавление элемента с вызовом функции для изменения элемента',
   () => expect(
     createElement<HTMLInputElement>(
       undefined,

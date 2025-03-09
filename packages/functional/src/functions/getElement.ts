@@ -1,3 +1,5 @@
+import { isDomRuntime } from './isDomRuntime'
+import { isString } from './isString'
 import { isWindow } from './isWindow'
 
 import {
@@ -17,18 +19,16 @@ export function getElement<
 >(
   element?: ElementOrString<E>
 ): R | undefined {
+  if (!isDomRuntime()) {
+    return undefined
+  }
+
   if (isWindow(element)) {
     return document.body as R
   }
 
-  if (
-    typeof element === 'string'
-  ) {
-    try {
-      return document.querySelector<R>(element) ?? undefined
-    } catch {
-      return undefined
-    }
+  if (isString(element)) {
+    return document.querySelector<R>(element) ?? undefined
   }
 
   return element as (R | undefined)

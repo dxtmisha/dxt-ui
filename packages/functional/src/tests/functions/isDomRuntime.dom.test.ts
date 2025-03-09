@@ -4,6 +4,6 @@ import { expect, test } from 'vitest'
 import { isDomRuntime } from '../../functions/isDomRuntime.ts'
 
 test(
-  'functions/ isDomRuntime',
+  'Checking the function\'s operation/ Проверка работы функции',
   () => expect(isDomRuntime()).toBe(true)
 )
