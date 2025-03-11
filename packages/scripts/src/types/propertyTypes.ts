@@ -452,3 +452,51 @@ export type PropertyItemInput = Record<string, any> & (PropertyItemPartial | {
 
 export type PropertyList = Record<string, PropertyItem>
 export type PropertyListOrData = Record<string, PropertyItemInput>
+
+export type PropertyItemsParent = {
+  name: string
+  item: PropertyItem
+}
+export type PropertyItemsItem = {
+  design: string
+  component?: string
+  name: string
+  index: string
+  value: PropertyItem['value']
+  item: PropertyItem
+  previous?: PropertyItem
+  parent?: PropertyItem
+  parents: PropertyItemsParent[]
+}
+export type PropertyItemsCallback<T> = (item: PropertyItemsItem) => T
+export type PropertyItemsMedia = Record<string, PropertyList>
+
+export type PropertyLinkItem = {
+  name: string
+  data: PropertyList
+  properties: PropertyList
+}
+
+export type PropertyPaletteItem = {
+  design: string
+  value: PropertyItem['value'][]
+}
+export type PropertyPaletteList = PropertyPaletteItem[]
+
+export type PropertyPaletteUsed = {
+  name: string
+  value: string[]
+}
+
+export type PropertyWrapItem = {
+  values: Record<string, PropertyList[]>
+  quantity: number
+}
+export type PropertyWrapList = {
+  properties: Record<string, PropertyWrapItem>
+  quantity: number
+}
+export type PropertyWrapFocus = {
+  value: string
+  item: PropertyList[]
+}

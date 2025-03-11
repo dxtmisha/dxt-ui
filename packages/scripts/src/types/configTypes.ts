@@ -5,7 +5,25 @@ export type DesignUiConfig = {
    * Название проекта
    */
   name: string
-}
 
-export const DESIGN_UI_NAME_DEFAULT = 'Ui'
-export const DESIGN_UI_FILE_CONFIG_NAME = 'design.config.json'
+  /**
+   * Abbreviation symbol, this key will be used to separate into sub-branches
+   *
+   * Символ сокращения, такой ключ будет разделять на под-ветки
+   */
+  separator?: string
+
+  /**
+   * Name that will be removed when splitting into branches
+   *
+   * Название, которое будет удаляться при разделении на ветки
+   */
+  separatorBasicName?: string
+
+  /**
+   * Limit of key splitting into sub-branches
+   *
+   * Лимит разделения ключа на под-ветки
+   */
+  separatorLimit?: number
+}

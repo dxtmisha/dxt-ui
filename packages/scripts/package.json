@@ -25,6 +25,7 @@
       "import": "./src/flags.ts",
       "default": "./dist/flags.js"
     },
+    "./properties.json": "./src/media/properties.json",
     "./dist/types/*": "./dist/types/*",
     "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
   },

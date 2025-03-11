@@ -1,7 +1,23 @@
-import type { PropertyListOrData } from '../../types/propertyTypes.ts'
-import { PropertiesCache } from './PropertiesCache.ts'
-import { PROPERTY_CACHE_DIR_READ } from '../../types/propertyTypes.ts'
-import { replaceRecursive } from '@dxt-ui/functional'
+import { replaceRecursive, toKebabCase } from '@dxt-ui/functional'
+
+import { PropertiesTool } from './PropertiesTool'
+import { PropertiesFile } from './PropertiesFile'
+import { PropertiesCache } from './PropertiesCache'
+
+import {
+  type PropertyListOrData
+} from '../../types/propertyTypes'
+
+import { PROPERTY_DIR_MAIN } from '../../config'
+
+export type PropertiesPathItem = {
+  design: string
+  paths?: string[]
+}
+
+export type PropertiesPathList = PropertiesPathItem[]
+
+const DIR_CACHE = 'read'
 
 /**
  * Class for working with paths by the given name of the design.
@@ -9,53 +25,118 @@ import { replaceRecursive } from '@dxt-ui/functional'
  * Класс для работы с путями по заданному названию дизайна.
  */
 export class PropertiesPath {
+  private readonly paths: PropertiesPathList
+
   /**
-   * Returns the basic settings of the component.
-   *
-   * Возвращает базовые настройки у компонента.
+   * Constructor
+   * @param designs list of design names corresponding to folder names/
+   * список названий дизайнов, соответствующих названиям папок
    */
-  getSettings(): PropertyList {
-    return this.toAll(DIR_NAME, (path, design) => {
-      let data: PropertyList = {}
+  constructor(
+    private designs: string[]
+  ) {
+    this.paths = []
 
-      PropertiesFile.readDir(path).forEach((dir) => {
-        const properties = PropertiesCache.read([...path, dir, FILE_PROPERTY])
-
-        if (isFilled(properties)) {
-          data = replaceRecursive(data, PropertiesStandard.to({
-            [design]: {
-              [toKebabCase(dir)]: properties
-            }
-          }))
-        }
+    designs.forEach((design) => {
+      this.paths.push({
+        design: toKebabCase(design),
+        paths: this.getDir(design)
       })
+    })
+  }
+
+  /**
+   * Returns the names of available designs.
+   *
+   * Возвращает названия доступных дизайнов.
+   */
+  getDesigns(): string[] {
+    return this.designs
+  }
+
+  /**
+   * Gets a list of available paths to the file of global component settings.
+   *
+   * Получает список доступных путей к файлу глобальных настроек компонента.
+   * @param name design name/ название дизайна
+   */
+  getPath(name: string): PropertiesPathItem | undefined {
+    return this.paths.find(item => item.design === name)
+  }
+
+  /**
+   * List of available paths.
+   *
+   * Список доступных путей.
+   */
+  getPaths(): PropertiesPathList {
+    return this.paths
+  }
+
+  /**
+   * Processes all token values for the selected design and combines them into one-big array.
+   *
+   * Обрабатывает все значения токена у выбранного дизайна и соединяет их в одну-большую массива.
+   * @param name name of the group/ названия группы
+   * @param design design name/ название дизайна
+   * @param callback function for processing/ функция для обработки
+   */
+  to(
+    name: string,
+    design: string,
+    callback: (path: string[] | undefined, design: string) => PropertyListOrData
+  ): PropertyListOrData {
+    return PropertiesCache.get<PropertyListOrData>([DIR_CACHE, name], `${name}-${design}`, () => {
+      let data: PropertyListOrData = {}
+      const item = this.getPath(design)
+
+      if (item) {
+        data = replaceRecursive(
+          data,
+          callback(
+            item.paths,
+            design
+          )
+        )
+      }
 
       return data
-    }) as PropertyList
+    })
   }
 
   /**
    * Processes all token values for all designs and combines them into one-big array.
+   *
    * Обрабатывает все значения токена у всех дизайнов и соединяет их в одну-большую массива.
-   * @param name name of the group / названия группы
-   * @param callback function for processing / функция для обработки
+   * @param name name of the group/ названия группы
+   * @param callback function for processing/ функция для обработки
    */
   toAll(
     name: string,
-    callback: (path: string[], design: string) => PropertyListOrData
+    callback: (path: string[] | undefined, design: string) => PropertyListOrData
   ): PropertyListOrData {
-    return PropertiesCache.get<PropertyListOrData>(
-      [PROPERTY_CACHE_DIR_READ],
-      name,
-      () => {
-        let data: PropertyListOrData = {}
+    return PropertiesCache.get<PropertyListOrData>([DIR_CACHE], name, () => {
+      let data: PropertyListOrData = {}
 
-        this.designs.forEach((design) => {
-          data = replaceRecursive(data, this.to(name, design, callback))
-        })
+      this.designs.forEach((design) => {
+        data = replaceRecursive(data, this.to(name, design, callback))
+      })
 
-        return data
-      }
-    )
+      return data
+    })
+  }
+
+  /**
+   * Returns the path to a file by design name.
+   *
+   * Возвращает путь к файлу по названию дизайна.
+   * @param name design name/ название дизайна
+   */
+  private getDir(name: string): string[] | undefined {
+    if (PropertiesTool.isConstructor(name)) {
+      return undefined
+    }
+
+    return [PropertiesFile.getRoot(), ...PROPERTY_DIR_MAIN]
   }
 }

@@ -1,10 +1,11 @@
-import { PropertiesFile } from './PropertiesFile'
+import { toCamelCase } from '@dxt-ui/functional'
 
-import {
-  DESIGN_UI_FILE_CONFIG_NAME,
-  DESIGN_UI_NAME_DEFAULT,
-  type DesignUiConfig
-} from '../../types/configTypes'
+import { PropertiesConfig } from './PropertiesConfig'
+
+import { PROPERTY_CONSTRUCTOR_BASIC_NAME, PROPERTY_FILE_MAIN } from '../../config'
+import type { PropertyList } from '../../types/propertyTypes.ts'
+import basicProperties from '../../media/properties.json'
+import { PropertiesCache } from './PropertiesCache.ts'
 
 /**
  * A class for static methods of obtaining various data.
@@ -12,24 +13,57 @@ import {
  * Класс для статических методов получения различных данных.
  */
 export class PropertiesTool {
-  protected static config: DesignUiConfig
-
   /**
-   * Returns the project name.
+   * Checks if the names of the design relate to the construction.
    *
-   * Возвращает название проекта.
+   * Проверяет, относятся ли названия дизайна к конструкции.
+   * @param design design name/ название дизайна
    */
-  static getDesignName(): string {
-    return this.config.name ?? DESIGN_UI_NAME_DEFAULT
+  static isConstructor(design: string): boolean {
+    return design === PROPERTY_CONSTRUCTOR_BASIC_NAME
   }
 
-  static {
-    const file = PropertiesFile.readFile<DesignUiConfig>(DESIGN_UI_FILE_CONFIG_NAME)
+  /**
+   * This method returns the names of designs from the environment variable (env).
+   *
+   * Данный метод возвращает названия дизайнов из переменной окружения (env)
+   */
+  static getDesigns(): string[] {
+    return [PROPERTY_CONSTRUCTOR_BASIC_NAME, PropertiesConfig.getDesignName()]
+  }
 
-    if (file) {
-      this.config = file
-    } else {
-      this.config = {} as DesignUiConfig
+  /**
+   * Return a list of component names.
+   *
+   * Возвращаем список названий компонентов.
+   * @param design design name/ название дизайна
+   * @param component component name/ название компонента
+   */
+  static getComponentName(design: string, component?: string): string {
+    return `${design}${component ? `-${toCamelCase(component)}` : ''}`
+  }
+
+  /**
+   * Getting the component name.
+   *
+   * Получения названия компонента.
+   * @param design design name/ название дизайна
+   * @param component component name/ название компонента
+   */
+  static getClassName(design: string, component?: string): string {
+    return `.${this.getComponentName(design, component)}`
+  }
+
+  static readFile(
+    design: string,
+    path: string[] | undefined
+  ): PropertyList | undefined {
+    if (PropertiesTool.isConstructor(design)) {
+      return basicProperties as any as PropertyList
+    }
+
+    if (path) {
+      return PropertiesCache.read<PropertyList>([...path, PROPERTY_FILE_MAIN])
     }
   }
 }

@@ -1,9 +1,9 @@
 import { toCamelCase } from '@dxt-ui/functional'
 
+import { PropertiesConfig } from './PropertiesConfig'
 import { PropertiesTypes } from './PropertiesTypes'
 
 import { type PropertyItem } from '../../types/propertyTypes'
-import { PROPERTY_SEPARATOR } from '../../config'
 
 /**
  * Key with all special keys for token processing.
@@ -42,7 +42,7 @@ export class PropertiesKeys {
    * @private
    */
   static isSeparator(name: string): boolean {
-    return Boolean(name.match(PROPERTY_SEPARATOR))
+    return Boolean(name.match(PropertiesConfig.getSeparator()))
   }
 
   /**
