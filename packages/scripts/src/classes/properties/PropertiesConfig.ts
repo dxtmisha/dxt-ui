@@ -4,7 +4,7 @@ import type { DesignUiConfig } from '../../types/configTypes'
 
 import {
   DESIGN_UI_FILE_CONFIG_NAME
-} from '../../config.ts'
+} from '../../config'
 
 /**
  * Class for retrieving configuration data.

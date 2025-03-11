@@ -1,11 +1,13 @@
 import { toCamelCase } from '@dxt-ui/functional'
 
 import { PropertiesConfig } from './PropertiesConfig'
+import { PropertiesCache } from './PropertiesCache'
+
+import type { PropertyList } from '../../types/propertyTypes'
+
+import basicProperties from '../../media/properties.json'
 
 import { PROPERTY_CONSTRUCTOR_BASIC_NAME, PROPERTY_FILE_MAIN } from '../../config'
-import type { PropertyList } from '../../types/propertyTypes.ts'
-import basicProperties from '../../media/properties.json'
-import { PropertiesCache } from './PropertiesCache.ts'
 
 /**
  * A class for static methods of obtaining various data.
@@ -59,7 +61,7 @@ export class PropertiesTool {
     path: string[] | undefined
   ): PropertyList | undefined {
     if (PropertiesTool.isConstructor(design)) {
-      return basicProperties as any as PropertyList
+      return { [PROPERTY_CONSTRUCTOR_BASIC_NAME]: basicProperties } as any as PropertyList
     }
 
     if (path) {

@@ -1,4 +1,4 @@
-import { PropertiesCache } from '../properties/PropertiesCache.ts'
+import { PropertiesCache } from '../properties/PropertiesCache'
 import { Styles } from '../styles/Styles'
 
 export class DesignUi {

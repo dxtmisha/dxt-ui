@@ -1,3 +1,5 @@
+import { forEach, toCamelCase } from '@dxt-ui/functional'
+
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 import { PropertiesItems } from '../PropertiesItems'
 
@@ -7,7 +9,6 @@ import {
   PropertyKey,
   PropertyType
 } from '../../../types/propertyTypes'
-import { forEach, toCamelCase } from '@dxt-ui/functional'
 
 /**
  * A class for transforming class.

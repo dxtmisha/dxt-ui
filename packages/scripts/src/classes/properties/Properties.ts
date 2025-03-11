@@ -1,3 +1,5 @@
+import { replaceRecursive } from '@dxt-ui/functional'
+
 import { PropertiesCache } from './PropertiesCache'
 import { PropertiesPath } from './PropertiesPath'
 import { PropertiesTool } from './PropertiesTool'
@@ -37,7 +39,6 @@ import { PropertiesToDuplicate } from './to/PropertiesToDuplicate'
 import { PropertiesScss } from './PropertiesScss'
 
 import { type PropertyList } from '../../types/propertyTypes'
-import { replaceRecursive } from '@dxt-ui/functional'
 
 const FILE_CACHE = 'properties'
 
@@ -85,7 +86,6 @@ export class Properties {
 
       const properties = this.readFiles()
 
-      /*
       this.toBasic(properties)
 
       new PropertiesToSimilar(properties).to()
@@ -106,7 +106,6 @@ export class Properties {
       new PropertiesToSort(properties).to()
       new PropertiesToNone(properties).to()
       new PropertiesToDuplicate(properties).to()
-      */
 
       console.info('[Properties]', 'init')
 

@@ -1,6 +1,7 @@
 import { forEach, isFilled, isObjectNotArray } from '@dxt-ui/functional'
 
 import { PropertiesPath } from './PropertiesPath'
+import { PropertiesTool } from './PropertiesTool'
 
 import { PropertiesConvector } from './PropertiesConvector'
 import { PropertiesStandard } from './PropertiesStandard'
@@ -12,7 +13,6 @@ import type {
   PropertyItem,
   PropertyList
 } from '../../types/propertyTypes'
-import { PropertiesTool } from './PropertiesTool.ts'
 
 const DIR_NAME = 'main'
 
