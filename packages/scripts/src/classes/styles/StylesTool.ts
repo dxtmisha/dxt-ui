@@ -1,0 +1,90 @@
+import { strFill } from '@dxt-ui/functional'
+
+import { STYLES_DIR_MAIN } from '../../config'
+
+const SPACE = '  '
+
+/**
+ * CSS style processing class.
+ *
+ * Класс с базовыми функциями для обработки стилей.
+ */
+export class StylesTool {
+  /**
+   * Getting a directory to store a file.
+ *
+   * Получение директории для хранения файла.
+   * @param design design name/ название дизайна
+   */
+  static getDir(design: string): string[] {
+    return [...STYLES_DIR_MAIN, design]
+  }
+
+  /**
+   * Returns a space.
+ *
+   * Возвращает пробел
+   */
+  static getSpace(): string {
+    return SPACE
+  }
+
+  /**
+   * Getting an indent.
+ *
+   * Получение отступа.
+   * @param level level/ уровень
+   */
+  static addSpace(level: number): string {
+    return strFill(SPACE, level)
+  }
+
+  /**
+   * Код строки для импорта файла.
+ *
+   * Code line for file import.
+   * @param path path to the file/ путь к файлу
+   */
+  static addImport(path: string): string {
+    return `@import "${path}";`
+  }
+
+  /**
+   * Getting a reference to a base function.
+ *
+   * Получение ссылки на базовую функцию.
+   * @param path path to the file/ путь к файлу
+   */
+  static addImportProperties(path: string = '..'): string {
+    return this.addImport(`${path}/styles/all`)
+  }
+
+  /**
+   * Combines the elements of an array into one string.
+ *
+   * Объединяет элементы массива в одну строку.
+   * @param data array containing records/ массив, содержащий записи
+   */
+  static join(data: string[]): string {
+    return data.join('\r\n')
+  }
+
+  /**
+   * Adding an access level.
+ *
+   * Добавление уровня доступа.
+   * @param space space/ пробел
+   */
+  static increaseSpace(space: string): string {
+    return `${space}${SPACE}`
+  }
+
+  static toFunctionCss(value: string): string {
+    if (value.match(/@[a-zA-Z0-9]+\(.*?\)( |,|$)/)) {
+      return value
+        .replace(/@([a-zA-Z0-9]+\(.*?\))( |,|$)/g, '#{$1}$2')
+    }
+
+    return value
+  }
+}

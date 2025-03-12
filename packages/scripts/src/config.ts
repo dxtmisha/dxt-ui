@@ -39,3 +39,11 @@ export const PROPERTY_FILE_MAIN = 'properties.json'
  * Название базового токена
  */
 export const PROPERTY_CONSTRUCTOR_BASIC_NAME = 'd'
+
+/**
+ * Name of the path to styles
+ *
+ * Название пути к стилям
+ */
+export const STYLES_DIR_MAIN = ['src', 'styles']
+export const STYLES_FILE_EXTENSION = 'scss'
