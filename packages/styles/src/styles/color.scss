@@ -1,0 +1,507 @@
+@use 'sass:color';
+@use "sass:meta";
+@use "sass:string";
+
+@use "rules";
+
+$designsDesign: 'design' !default;
+$designsPalette: () !default;
+$designsShade: () !default;
+
+/// Checks if a value is a color
+/// Проверяет, является ли значение цветом
+/// @param {Color} $color
+/// @return {Boolean}
+@function isColorRbgOrVar($color) {
+  @return meta.type-of($color) == color or (
+    $color != 'none' and
+    $color != 'transparent' and
+    $color != 'initial' and
+    $color != 'inherit'
+  )
+}
+
+/// Checks if a color is suitable for the palette
+/// Проверяет, является ли цвет подходящим для палитры
+/// @param {Color} $color
+/// @return {Boolean}
+@function isPalette($color) {
+  @return string.index($color, '--') != null
+}
+
+/// Returns color value by its code
+/// Возвращает значение цвета по его коду
+/// @param {Color} $color
+/// @param {Number} $opacity
+/// @param {Boolean} $gradient if true, returns as an image/ если true, возвращает в виде изображения
+/// @return {String}
+@function getColor(
+  $color,
+  $opacity: 1,
+  $gradient: false
+) {
+  $value: $color;
+
+  @if (meta.type-of($color) == color) {
+    $value: rgba(#{toColorRbg($color)}, #{$opacity});
+  }
+
+  @if $gradient {
+    @return toGradient($value);
+  } @else {
+    @return $value;
+  }
+}
+
+/// Checking if a color is part of the list of used colors
+/// Проверка, является ли цвет частью списка используемых цветов
+/// @param {Color} $color
+/// @return {String}
+@function getColorByPalette($color) {
+  @each $name, $value in $designsPalette {
+    @if (string.index($color, #{$name}#{')'}) != null) {
+      @return $value;
+    }
+  }
+
+  @return null;
+}
+
+/// Checking if a color is part of the list of saturation levels
+/// Проверка, является ли цвет частью списка насыщенности
+/// @param {Color} $color
+/// @return {String}
+@function getColorByShade($color) {
+  @each $design, $list in $designsShade {
+    @if ($design == $designsDesign) {
+      @each $value in $list {
+        @if (string.index($color, #{'-'}#{$value}#{')'}) != null) {
+          @return #{'--'}#{$designsDesign}#{'-palette-'}#{$value};
+        }
+      }
+    }
+  }
+
+  @return null;
+}
+
+/// Returns value for palette
+/// Возвращает значение для палитры
+/// @param {Color} $color
+/// @return {String}
+@function getPalette($color) {
+  @if (isPalette($color)) {
+    $palette: getColorByPalette($color);
+
+    @if ($palette != null) {
+      @return getPaletteItem($palette, $color);
+    } @else {
+      $shade: getColorByShade($color);
+
+      @if ($shade) {
+        @return #{var(#{$shade}, #{toColorRbg($color)})};
+      }
+    }
+  }
+  @return #{var(--sys-palette, #{toColorRbg($color)})}
+}
+
+/// Returns value for palette
+/// Возвращает значение для палитры
+/// @param {Color} $color
+/// @return {String}
+@function getPaletteOpacity($color) {
+  @if (isPalette($color)) {
+    $palette: getColorByPalette($color);
+
+    @if ($palette != null) {
+      @return getPaletteItemOpacity($palette, $color);
+    } @else {
+      $shade: getColorByShade($color);
+
+      @if ($shade) {
+        @return #{var(#{$shade}-opacity, #{toColorOpacity($color)})};
+      }
+    }
+  }
+  @return #{var(--sys-palette-opacity, #{toColorOpacity($color)})}
+}
+
+/// Returns value for palette
+/// Возвращает значение для поиск нужный цветов
+/// @param {List} $palette
+/// @param {Color|String} $color
+/// @return {String}
+@function getPaletteItem($palette, $color) {
+  $value: #{toColorRbg($color)};
+
+  @if (meta.type-of($palette) == list) {
+    @each $name in $palette {
+      $value: #{var(#{$name}, #{$value})}
+    }
+
+    @return $value;
+  } @else {
+    @return #{var(#{$palette}, #{$value})};
+  }
+}
+
+/// Returns value for palette
+/// Возвращает значение для поиск нужный цветов
+/// @param {List} $palette
+/// @param {Color|String} $color
+/// @return {String}
+@function getPaletteItemOpacity($palette, $color) {
+  $value: #{toColorOpacity($color)};
+
+  @if (meta.type-of($palette) == list) {
+    @each $name in $palette {
+      $value: #{var(#{$name}-opacity, #{$value})}
+    }
+
+    @return $value;
+  } @else {
+    @return #{var(#{$palette}-opacity, #{$value})};
+  }
+}
+
+/// Getting the color code for insertion into the property
+/// Получение кода цвета для вставки в свойство
+/// @param {String} $name
+/// @param {Color|String} $defaultValue
+/// @return {String}
+@function getColorValue($name, $defaultValue: null) {
+  @if ($defaultValue) {
+    @return rgba(
+                    var(#{$name}, #{toColorRbg($defaultValue)}),
+                    var(#{$name}-opacity, var(#{$name}-opacity-custom, 1))
+    );
+  }
+
+  @return rgba(
+                  var(#{$name}),
+                  var(#{$name}-opacity, var(#{$name}-opacity-custom, 1))
+  );
+}
+
+/// Getting the system color code for insertion into the property
+/// Получение кода системного цвета для вставки в свойство
+/// @param {String} $name
+/// @return {String}
+@function getColorValueSys($name) {
+  @return getColorValue(--sys-#{$name});
+}
+
+/// Color conversion to rgb type
+/// Преобразование цвета в тип RGB
+/// @param {Color} $color
+/// @return {String}
+@function toColorRbg($color) {
+  @if (meta.type-of($color) == color) {
+    @return color.channel($color, 'red', rgb) + ', '
+      + color.channel($color, 'green', rgb) + ', '
+      + color.channel($color, 'blue', rgb);
+  }
+
+  @return $color;
+}
+
+/// Gets the transparency of the color
+/// Получает прозрачность цвета
+/// @param {Color} $color
+/// @return {String}
+@function toColorOpacity($color) {
+  @if (meta.type-of($color) == color) {
+    @return color.alpha($color);
+  } @else if (rules.isCustomVar(#{$color})) {
+    @return toCustomVarOpacity($color);
+  }
+
+  @return $color;
+}
+
+/// Conversion of color into images for working with background-image
+/// Преобразование цвета в изображения для работы с background-image
+/// @param {Color} $color
+/// @return {String}
+@function toGradient($color) {
+  @return linear-gradient(0deg, #{$color}, #{$color});
+}
+
+@function toCustomVarRgb($color) {
+  @if (rules.isCustomVar($color)) {
+    @return rgba(#{$color}, #{toCustomVarOpacity($color, 1)})
+  }
+
+  @return $color
+}
+
+/// Adding the transparency property
+/// Добавление свойства прозрачности
+@function toCustomVarOpacity($color, $defaultValue: null) {
+  @if ($defaultValue) {
+    @return rules.strReplace($color, ')', '-opacity, '#{$defaultValue}')');
+  }
+
+  @return rules.strReplace($color, ')', '-opacity)');
+}
+
+@mixin initPalette {
+  @include colorOpacity(initial);
+  @include backgroundOpacity(initial);
+  @include gradientOpacity(initial);
+}
+
+@mixin colorSys($name, $color, $important: false) {
+  @if ($important) {
+    --sys-#{$name}: #{toColorRbg($color)} !important;
+  } @else {
+    --sys-#{$name}: #{toColorRbg($color)};
+  }
+
+  @if (rules.isCustomVar($color)) {
+    @if ($important) {
+      --sys-#{$name}-opacity-custom: #{toCustomVarOpacity($color)} !important;
+    } @else {
+      --sys-#{$name}-opacity-custom: #{toCustomVarOpacity($color)};
+    }
+  }
+}
+
+@mixin colorSysPalette($name, $color) {
+  --sys-palette-#{$name}: #{getPalette($color)};
+
+  @if (rules.isCustomVar($color)) {
+    --sys-palette-#{$name}-opacity: #{getPaletteOpacity($color)};
+  }
+}
+
+/* Palette */
+
+@mixin palette($color) {
+  --sys-palette: #{toColorRbg($color)};
+}
+
+@mixin paletteVar($color) {
+  @include colorSysPalette('var', $color);
+}
+
+@mixin paletteColor($color) {
+  @include colorSysPalette('color', $color);
+  @include color(#{var(--sys-palette-color)});
+}
+
+@mixin paletteStroke($color) {
+  @include colorSysPalette('color', $color);
+  @include stroke(#{var(--sys-palette-color)});
+}
+
+@mixin paletteBackground($color) {
+  @include colorSysPalette('background', $color);
+  @include backgroundColor(#{var(--sys-palette-background)});
+}
+
+@mixin paletteFill($color) {
+  @include colorSysPalette('background', $color);
+  @include fill(#{var(--sys-palette-background)});
+}
+
+@mixin paletteGradient($color) {
+  @include colorSysPalette('gradient', $color);
+  @include gradient(#{var(--sys-palette-gradient)});
+}
+
+@mixin paletteBorder($color) {
+  @include colorSysPalette('border', $color);
+  @include borderColor(#{var(--sys-palette-border)});
+}
+
+/* Color */
+
+@mixin color($color, $opacity: null, $propertyName: 'color', $important: false) {
+  @if (isColorRbgOrVar($color)) {
+    @include colorSys('color', $color, $important);
+    @include colorOpacity($opacity, $important);
+    @include colorInit($propertyName, $important);
+  } @else {
+    #{$propertyName}: $color;
+  }
+}
+
+@mixin colorOpacity($opacity, $important: false) {
+  @if ($opacity != null) {
+    @if ($important) {
+      --sys-color-opacity: #{$opacity} !important;
+    } @else {
+      --sys-color-opacity: #{$opacity};
+    }
+  }
+}
+
+@mixin colorInit($propertyName: 'color', $important: false) {
+  @if ($important) {
+    #{$propertyName}: getColorValueSys('color') !important;
+  } @else {
+    #{$propertyName}: getColorValueSys('color');
+  }
+}
+
+/* Stroke */
+
+@mixin stroke($color, $opacity: null) {
+  @if (isColorRbgOrVar($color)) {
+    @include colorSys('color', $color);
+    @include strokeOpacity($opacity);
+    @include strokeInit;
+  } @else {
+    stroke: $color;
+  }
+}
+
+@mixin strokeOpacity($opacity, $important: false) {
+  @if ($opacity != null) {
+    @if ($important) {
+      --sys-color-opacity: #{$opacity} !important;
+    } @else {
+      --sys-color-opacity: #{$opacity};
+    }
+  }
+}
+
+@mixin strokeInit() {
+  @include colorInit('stroke');
+}
+
+/* Background */
+
+@mixin backgroundColor($color, $opacity: null, $important: false) {
+  @if ($color == 'as-color') {
+    @include backgroundAsColor;
+  } @else if ($color == transparent) {
+    @include backgroundColor(#000000, 0);
+  } @else if (isColorRbgOrVar($color)) {
+    @include colorSys('background', $color, $important);
+    @include backgroundOpacity($opacity, $important);
+    @include backgroundInit($important);
+  } @else {
+    background-color: $color;
+  }
+}
+
+@mixin backgroundOpacity($opacity, $important: false) {
+  @if ($opacity != null) {
+    @if ($important) {
+      --sys-background-opacity: #{$opacity} !important;
+    } @else {
+      --sys-background-opacity: #{$opacity};
+    }
+  }
+}
+
+@mixin backgroundSize($value) {
+  background-size: #{$value};
+  background-repeat: no-repeat;
+}
+
+@mixin backgroundInit($important: false) {
+  @if ($important) {
+    background-color: #{getColorValueSys('background')} !important;
+  } @else {
+    background-color: getColorValueSys('background');
+  }
+}
+
+/* Fill */
+
+@mixin fill($color, $opacity: null) {
+  @if (isColorRbgOrVar($color)) {
+    @include colorSys('background', $color);
+    @include fillOpacity($opacity);
+    @include fillInit;
+  } @else {
+    fill: $color;
+  }
+}
+
+@mixin fillOpacity($opacity) {
+  @if ($opacity != null) {
+    --sys-background-opacity: #{$opacity};
+  }
+}
+
+@mixin fillInit() {
+  fill: getColorValueSys('background');
+}
+
+/* Gradient */
+
+@mixin gradient($color, $opacity: null, $important: false) {
+  @if (isColorRbgOrVar($color)) {
+    @include colorSys('gradient', $color, $important);
+    @include gradientOpacity($opacity, $important);
+    @include gradientInit($important);
+  } @else {
+    background-image: $color;
+  }
+}
+
+@mixin gradientOpacity($opacity, $important: false) {
+  @if ($opacity != null) {
+    @if ($important) {
+      --sys-gradient-opacity: #{$opacity} !important;
+    } @else {
+      --sys-gradient-opacity: #{$opacity};
+    }
+  }
+}
+
+@mixin gradientInit($important: false) {
+  @if ($important) {
+    background-image: #{toGradient(#{getColorValueSys('gradient')})} !important;
+  } @else {
+    background-image: #{toGradient(#{getColorValueSys('gradient')})};
+  }
+}
+
+/* Border */
+
+@mixin borderColor($color, $opacity: null, $important: false) {
+  @if (isColorRbgOrVar($color)) {
+    @include colorSys('border', $color, $important);
+    @include borderOpacity($opacity, $important);
+    @include borderInit($important);
+  } @else {
+    border-color: $color;
+  }
+}
+
+@mixin borderOpacity($opacity, $important: false) {
+  @if ($opacity != null) {
+    @if ($important) {
+      --sys-border-opacity: #{$opacity} !important;
+    } @else {
+      --sys-border-opacity: #{$opacity};
+    }
+  }
+}
+
+@mixin borderInit($important: false) {
+  @if ($important) {
+    border-color: getColorValueSys('border') !important;
+  } @else {
+    border-color: getColorValueSys('border');
+  }
+}
+
+/* As */
+
+@mixin colorAsPalette() {
+  color: rgba(
+                  var(--sys-palette-color, var(--sys-color)),
+                  var(--sys-palette-color-opacity, var(--sys-color-opacity))
+  );
+}
+
+@mixin backgroundAsColor() {
+  @include backgroundColor(var(--sys-color), var(--sys-color-opacity));
+}

@@ -134,7 +134,7 @@ export class Api {
         ...(value || {})
       }
 
-      if (type) {
+      if (isFilled(type)) {
         headers['Content-Type'] = type
       }
 
@@ -169,14 +169,15 @@ export class Api {
     request: ApiFetch['request'] = {},
     method = ApiMethodItem.get
   ): string | FormData | undefined {
+    if (request instanceof FormData) {
+      return request
+    }
+
     if (
       method !== ApiMethodItem.get
       && isFilled(request)
     ) {
-      if (
-        request instanceof FormData
-        || isString(request)
-      ) {
+      if (isString(request)) {
         return request
       }
 

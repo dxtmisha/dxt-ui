@@ -1,0 +1,9 @@
+@mixin contentVisibility($value, $display: null) {
+  content-visibility: #{$value};
+
+  @if ($display) {
+    @supports not (content-visibility: #{$value}) {
+      display: $display;
+    }
+  }
+}
