@@ -1,0 +1,12 @@
+@mixin scrollbarHide {
+  & {
+    scrollbar-width: none;
+    scroll-behavior: auto;
+
+    &::-webkit-scrollbar {
+      appearance: none;
+      width: 0;
+      height: 0;
+    }
+  }
+}

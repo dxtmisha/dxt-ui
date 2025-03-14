@@ -1,4 +1,4 @@
-import { isDomRuntime } from './isDomRuntime.ts'
+import { isDomRuntime } from './isDomRuntime'
 
 /**
  * Cyclically calls requestAnimationFrame until next returns true

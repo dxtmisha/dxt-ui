@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { executePromise } from '../../functions/executePromise.ts'
+import { executePromise } from '../../functions/executePromise'
 
 test(
   'Checking a synchronous function/ Проверка синхронной функции',

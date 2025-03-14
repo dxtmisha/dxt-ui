@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { expect, test } from 'vitest'
-import { createElement } from '../../functions/createElement.ts'
+import { createElement } from '../../functions/createElement'
 
 test(
   'Creating a div element/ Создание элемента div',

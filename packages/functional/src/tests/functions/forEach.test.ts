@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { forEach } from '../../functions/forEach.ts'
+import { forEach } from '../../functions/forEach'
 
 test(
   'Checking keys when passing an array/ Проверка ключей при передаче массива',

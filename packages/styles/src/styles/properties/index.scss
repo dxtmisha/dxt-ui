@@ -1,0 +1,12 @@
+@forward "properties";
+@forward "propertiesAnimate" hide $designsAnimate;
+@forward "propertiesClass";
+@forward "propertiesMedia";
+@forward "propertiesProperty" hide $designsClassIndex, $designsAnimate;
+@forward "propertiesSelector";
+@forward "propertiesTool" hide $designsDesign, $designsComponent, $designsClassName;
+@forward "propertiesVar";
+@forward "propertiesVirtual";
+
+@forward "propertiesItem" hide $designsProperties, $designsClassName;
+@forward "propertiesMain" hide $designsRoot, $designsClasses;

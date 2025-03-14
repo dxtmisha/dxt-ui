@@ -1,7 +1,7 @@
 import { forEach } from './forEach'
+import { isDomRuntime } from './isDomRuntime'
 import { isObjectNotArray } from './isObjectNotArray'
 import { setElementItem } from './setElementItem'
-import { isDomRuntime } from './isDomRuntime.ts'
 
 /**
  * In HTML documents, creates an element with the tag that is specified in the argument.

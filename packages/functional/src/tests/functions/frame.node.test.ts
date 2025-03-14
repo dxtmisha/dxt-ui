@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { frame } from '../../functions/frame.ts'
+import { frame } from '../../functions/frame'
 
 test(
   'Checking execution in the Node environment/ Проверка выполнения в среде Node',

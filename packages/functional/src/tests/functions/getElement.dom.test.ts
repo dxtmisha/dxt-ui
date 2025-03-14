@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { expect, test } from 'vitest'
-import { getElement } from '../../functions/getElement.ts'
+import { getElement } from '../../functions/getElement'
 
 test(
   'Passing a window/ Передача окна',

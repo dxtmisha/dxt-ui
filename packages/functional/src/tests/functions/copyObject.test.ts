@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { copyObject } from '../../functions/copyObject.ts'
+import { copyObject } from '../../functions/copyObject'
 
 test(
   'Copying an object/ Копирование объекта',

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { executeFunction } from '../../functions/executeFunction.ts'
+import { executeFunction } from '../../functions/executeFunction'
 
 test(
   'Checking value passing/ Проверка передачи значения',

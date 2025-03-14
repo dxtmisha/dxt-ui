@@ -312,6 +312,12 @@ The method parses a string argument and returns a floating point number.
 ### [toNumberByMax](src/functions/toNumberByMax.ts)
 Converts the data into a number, taking into account the maximum permissible value.
 
+### [toPercent](src/functions/toPercent.ts)
+Converts values to percentages.
+
+### [toPercentBy100](src/functions/toPercentBy100.ts)
+Converts values to percentages (three-digit).
+
 ### [transformation](src/functions/transformation.ts)
 Transforms a string into the corresponding data type. Based on the string content, 
 it may be transformed into `undefined`, `null`, `true`, `false`, object, 

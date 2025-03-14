@@ -1,7 +1,7 @@
 {
   "name": "@dxt-ui/styles",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,24 +10,12 @@
     "test": "vitest"
   },
   "files": [
-    "dist"
+    "styles"
   ],
-  "main": "dist/library.js",
-  "module": "dist/library.js",
-  "types": "dist/types/library.d.ts",
+  "main": "src/styles/index.scss",
   "exports": {
-    ".": {
-      "types": "./dist/types/library.d.ts",
-      "import": "./src/library.ts",
-      "default": "./dist/library.js"
-    },
-    "./flags": {
-      "types": "./dist/types/flags.d.ts",
-      "import": "./src/flags.ts",
-      "default": "./dist/flags.js"
-    },
-    "./dist/types/*": "./dist/types/*",
-    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
+    ".": "./src/styles/index.scss",
+    "./properties": "./src/styles/properties/index.scss"
   },
   "buildOptions": {
     "name": "@dxt-ui/styles",

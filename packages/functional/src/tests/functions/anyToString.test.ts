@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { anyToString } from '../../functions/anyToString.ts'
+import { anyToString } from '../../functions/anyToString'
 
 test(
   'Passing a value of type undefined/ Передача значения типа undefined',

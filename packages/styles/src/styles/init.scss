@@ -1,0 +1,17 @@
+@use "color";
+@use "dir";
+@use "font";
+@use "transform";
+
+@mixin initGlobal {
+  @include dir.initDir;
+  @include font.initParagraphSpacing;
+
+  *, *:after, *:before {
+    box-sizing: border-box;
+    border: 0 solid transparent;
+
+    @include color.initPalette;
+    @include transform.initTransform;
+  }
+}

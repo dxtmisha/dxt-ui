@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { expect, test } from 'vitest'
-import { frame } from '../../functions/frame.ts'
+import { frame } from '../../functions/frame'
 
 test(
   'Checking function execution/ Проверка выполнения функции',

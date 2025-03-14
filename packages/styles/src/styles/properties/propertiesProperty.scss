@@ -1,0 +1,197 @@
+@use "sass:map";
+
+$designsClassIndex: 'class' !default;
+$designsAnimate: false !default;
+
+@use "../rules";
+
+@use "../color";
+@use "../dimension";
+@use "../flex";
+@use "../font";
+@use "../margin";
+@use "../padding";
+@use "../position";
+@use "../transform";
+
+@function isAnimate($name) {
+  @return $designsAnimate and (
+    $name == 'left' or
+    $name == 'right'
+  )
+}
+
+/// Generating value
+/// Генерация значения
+/// @param {Map} $property
+@mixin initProperty($property) {
+  @if ($property != null) {
+    $index: rules.getMapByIndex($property, 'index');
+    $name: rules.getMapByIndex($property, 'name');
+    $value: rules.getMapByIndex($property, 'value');
+    $modification: rules.getMapByIndex($property, 'modification', true);
+    $var: rules.getMapByIndex($property, 'var');
+
+    @if ($var) {
+      $nameVar: #{'--'}#{$designsClassIndex}-#{$index};
+
+      #{$nameVar}: #{$value};
+
+      $value: var($nameVar);
+    }
+
+    @if (not $modification or isAnimate($name)) {
+      #{$name}: #{$value};
+    } @else {
+      @include initPropertyValue($name, $value);
+    }
+  }
+}
+
+/// Generating value for property
+/// Генерация значения для свойства
+/// @param {String} $name
+/// @param {String} $value
+@mixin initPropertyValue($name, $value) {
+  @if (
+    /* Flex */
+          $name == 'flex-position'
+  ) {
+    @include flex.flexPosition(#{$value});
+  } @else if ($name == 'flex-dynamic') {
+    @include flex.flexDynamic(#{$value});
+  } @else if ($name == 'justify-content') {
+    @include flex.justifyContent(#{$value});
+  } @else if (
+    /* Position */
+          $name == 'inset'
+  ) {
+    @include position.inset(#{$value});
+  } @else if ($name == 'horizon') {
+    @include position.horizon(#{$value});
+  } @else if ($name == 'vertically') {
+    @include position.vertically(#{$value});
+  } @else if ($name == 'left') {
+    @include position.left(#{$value});
+  } @else if ($name == 'right') {
+    @include position.right(#{$value});
+  } @else if ($name == 'absolute') {
+    @include position.absolute(#{$value});
+  } @else if ($name == 'absoluteAfter') {
+    @include position.absoluteAfter(#{$value});
+  } @else if (
+    /* Padding */
+          $name == 'padding-x'
+  ) {
+    @include padding.paddingX(#{$value});
+  } @else if ($name == 'padding-y') {
+    @include padding.paddingY(#{$value});
+  } @else if ($name == 'padding-left') {
+    @include padding.paddingLeft(#{$value});
+  } @else if ($name == 'padding-right') {
+    @include padding.paddingRight(#{$value});
+  } @else if (
+    /* Margin */
+          $name == 'margin-x'
+  ) {
+    @include margin.marginX(#{$value});
+  } @else if ($name == 'margin-y') {
+    @include margin.marginY(#{$value});
+  } @else if ($name == 'margin-left') {
+    @include margin.marginLeft(#{$value});
+  } @else if ($name == 'margin-right') {
+    @include margin.marginRight(#{$value});
+  } @else if (
+    /* Dimension */
+          $name == 'width'
+  ) {
+    @include dimension.width(#{$value});
+  } @else if ($name == 'height') {
+    @include dimension.height(#{$value});
+  } @else if ($name == 'width-basis') {
+    @include dimension.widthBasis(#{$value});
+  } @else if ($name == 'height-basis') {
+    @include dimension.heightBasis(#{$value});
+  } @else if ($name == 'aspect-ratio') {
+    @include dimension.aspectRatio(#{$value});
+  } @else if ($name == 'aspect-ratio-width') {
+    @include dimension.aspectRatioWidth(#{$value});
+  } @else if ($name == 'aspect-ratio-height') {
+    @include dimension.aspectRatioHeight(#{$value});
+  } @else if ($name == 'squared') {
+    @include dimension.squared(#{$value});
+  } @else if ($name == 'circle') {
+    @include dimension.circle(#{$value});
+  } @else if (
+    /* Font */
+          $name == 'font-size'
+  ) {
+    @include font.fontSize(#{$value});
+  } @else if ($name == 'line-height') {
+    @include font.lineHeight(#{$value});
+  } @else if ($name == 'text-align') {
+    @include font.textAlign(#{$value});
+  } @else if ($name == 'text-overflow') {
+    @include font.textOverflow(#{$value});
+  } @else if ($name == 'clamp') {
+    @include font.clamp(#{$value});
+  } @else if ($name == 'text-select-none') {
+    @include font.textSelectNone;
+  } @else if (
+    /* Color */
+          $name == 'palette'
+  ) {
+    @include color.palette(#{$value});
+  } @else if ($name == 'palette-color') {
+    @include color.paletteColor(#{$value});
+  } @else if ($name == 'palette-stroke') {
+    @include color.paletteStroke(#{$value});
+  } @else if ($name == 'palette-background') {
+    @include color.paletteBackground(#{$value});
+  } @else if ($name == 'palette-fill') {
+    @include color.paletteFill(#{$value});
+  } @else if ($name == 'palette-gradient') {
+    @include color.paletteGradient(#{$value});
+  } @else if ($name == 'palette-border') {
+    @include color.paletteBorder(#{$value});
+  } @else if ($name == 'color') {
+    @include color.color(#{$value});
+  } @else if ($name == 'color-opacity') {
+    @include color.colorOpacity(#{$value});
+  } @else if ($name == 'stroke') {
+    @include color.stroke(#{$value});
+  } @else if ($name == 'stroke-opacity') {
+    @include color.strokeOpacity(#{$value});
+  } @else if ($name == 'background-color') {
+    @include color.backgroundColor(#{$value});
+  } @else if ($name == 'background-opacity') {
+    @include color.backgroundOpacity(#{$value});
+  } @else if ($name == 'background-size') {
+    @include color.backgroundSize(#{$value});
+  } @else if ($name == 'fill') {
+    @include color.fill(#{$value});
+  } @else if ($name == 'fill-opacity') {
+    @include color.fillOpacity(#{$value});
+  } @else if ($name == 'gradient') {
+    @include color.gradient(#{$value});
+  } @else if ($name == 'gradient-opacity') {
+    @include color.gradientOpacity(#{$value});
+  } @else if ($name == 'border-color') {
+    @include color.borderColor(#{$value});
+  } @else if ($name == 'border-opacity') {
+    @include color.borderOpacity(#{$value});
+  } @else if (
+    /* Transform */
+          $name == 'translate-x'
+  ) {
+    @include transform.translateX(#{$value});
+  } @else if ($name == 'translate-y') {
+    @include transform.translateY(#{$value});
+  } @else if ($name == 'scale') {
+    @include transform.scale(#{$value});
+  } @else if ($name == 'rotate') {
+    @include transform.rotate(#{$value});
+  } @else {
+    #{$name}: #{$value};
+  }
+}
