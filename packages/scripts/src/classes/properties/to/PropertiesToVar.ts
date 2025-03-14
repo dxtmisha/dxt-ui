@@ -65,7 +65,7 @@ export class PropertiesToVar extends PropertiesToAbstract {
 
   /**
    * Name transformation for the var type.
- *
+   *
    * Преобразование имени для типа var.
    * @param design design name/ название дизайна
    * @param component component name/ название компонента
@@ -76,10 +76,10 @@ export class PropertiesToVar extends PropertiesToAbstract {
    */
   protected getName({
     design,
-    component,
-    name,
-    item,
-    parents
+                      component,
+                      name,
+                      item,
+                      parents
   }: PropertyItemsItem): string {
     if (component && item?.[PropertyKey.fullName]) {
       return `--${this.items.getLink(design, component, item?.[PropertyKey.index] ?? name, '-')}`
@@ -90,7 +90,7 @@ export class PropertiesToVar extends PropertiesToAbstract {
 
   /**
    * Checks if the value has a mathematical expression.
- *
+   *
    * Проверяет, есть ли у значения математическое выражение.
    * @param value values to process/ значения для преобразования
    * @param full the expression is complete/ выражение является полным
@@ -109,7 +109,7 @@ export class PropertiesToVar extends PropertiesToAbstract {
 
   /**
    * Returns the transformed pointer.
- *
+   *
    * Возвращает преобразованный указатель.
    * @param {string} value values to process/ значения для преобразования
    */
@@ -119,7 +119,7 @@ export class PropertiesToVar extends PropertiesToAbstract {
 
   /**
    * Transformation to the CSS property.
- *
+   *
    * Преобразование в свойство CSS.
    * @param value values to process/ значения для преобразования
    * @param defaultValue default values/ значения по умолчанию
@@ -140,7 +140,7 @@ export class PropertiesToVar extends PropertiesToAbstract {
 
   /**
    * Checks if the values are hidden.
- *
+   *
    * Проверяет, являются ли значения скрытыми.
    * @param parents list of ancestors/ список предков
    */
@@ -156,7 +156,7 @@ export class PropertiesToVar extends PropertiesToAbstract {
 
   /**
    * Checks if the element has transparency.
- *
+   *
    * Проверяет, есть ли прозрачность у элемента.
    * @param property property value/ значение свойства
    */

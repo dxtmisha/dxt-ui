@@ -25,7 +25,7 @@ export class PropertiesToMulti extends PropertiesToAbstract {
 
   /**
    * Converts property records with multiple types.
- *
+   *
    * Преобразует записи свойств со множеством типов.
    */
   protected init(): void {
@@ -46,7 +46,7 @@ export class PropertiesToMulti extends PropertiesToAbstract {
 
   /**
    * Returns a list of properties with multiple values.
- *
+   *
    * Возвращает список свойств с множеством значений.
    */
   private getList(): PropertyItemsItem[] {
@@ -68,7 +68,7 @@ export class PropertiesToMulti extends PropertiesToAbstract {
 
   /**
    * Transformation for the element.
- *
+   *
    * Преобразование для элемента.
    * @param name property name/ название свойства transformed/
    * массив, который нужно преобразовать

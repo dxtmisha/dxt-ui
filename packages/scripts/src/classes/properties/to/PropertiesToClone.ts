@@ -46,7 +46,7 @@ export class PropertiesToClone extends PropertiesToAbstract {
 
   /**
    * Search in child elements for similar properties.
- *
+   *
    * Поиск в дочерних элементах похожих свойств.
    * @param parent starting element for search/ начальный элемент для поиска
    * @param name property name/ название свойства
@@ -75,7 +75,7 @@ export class PropertiesToClone extends PropertiesToAbstract {
 
   /**
    * Data update for selected elements.
- *
+   *
    * Обновление данных для выбранных элементов.
    * @param original original element/ оригинальный элемент
    * @param properties element for update/ элемент для обновления

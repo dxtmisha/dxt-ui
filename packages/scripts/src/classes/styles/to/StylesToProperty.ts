@@ -17,7 +17,7 @@ import { styleTypes } from '../../../media/properties/style'
 export class StylesToProperty extends StylesToAbstract {
   /**
    * Acquiring full ownership.
- *
+   *
    * Получения полного свойства.
    */
   protected treatment(): string[] {
@@ -56,7 +56,7 @@ export class StylesToProperty extends StylesToAbstract {
 
   /**
    * Generating value for property.
- *
+   *
    * Генерация значения для свойства.
    */
   private getPropertyValue(): string {

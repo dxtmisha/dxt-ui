@@ -19,7 +19,7 @@ export class PropertiesToNone extends PropertiesToAbstract {
 
   /**
    * Removes all empty entries from the data.
- *
+   *
    * Удаляет у данных всех пустых записей.
    */
   protected init(): void {

@@ -18,7 +18,7 @@ export class PropertiesToSub extends PropertiesToAbstract {
 
   /**
    * Converting all elements.
- *
+   *
    * Преобразование всех элементов.
    */
   protected init(): void {
@@ -39,7 +39,7 @@ export class PropertiesToSub extends PropertiesToAbstract {
 
   /**
    * Converting all indices to values.
- *
+   *
    * Преобразование всех индексов в значения.
    * @param design design name/ название дизайна
    * @param component component name/ название компонента
@@ -69,7 +69,7 @@ export class PropertiesToSub extends PropertiesToAbstract {
 
   /**
    * Converting all indices to values for a field of values.
- *
+   *
    * Преобразование всех индексов в значения для поля значения.
    */
   private read(

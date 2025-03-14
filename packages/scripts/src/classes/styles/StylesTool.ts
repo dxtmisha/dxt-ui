@@ -12,7 +12,7 @@ const SPACE = '  '
 export class StylesTool {
   /**
    * Getting a directory to store a file.
- *
+   *
    * Получение директории для хранения файла.
    * @param design design name/ название дизайна
    */
@@ -22,7 +22,7 @@ export class StylesTool {
 
   /**
    * Returns a space.
- *
+   *
    * Возвращает пробел
    */
   static getSpace(): string {
@@ -31,7 +31,7 @@ export class StylesTool {
 
   /**
    * Getting an indent.
- *
+   *
    * Получение отступа.
    * @param level level/ уровень
    */
@@ -41,7 +41,7 @@ export class StylesTool {
 
   /**
    * Код строки для импорта файла.
- *
+   *
    * Code line for file import.
    * @param path path to the file/ путь к файлу
    */
@@ -51,17 +51,16 @@ export class StylesTool {
 
   /**
    * Getting a reference to a base function.
- *
+   *
    * Получение ссылки на базовую функцию.
-   * @param path path to the file/ путь к файлу
    */
-  static addImportProperties(path: string = '..'): string {
-    return this.addImport(`${path}/styles/all`)
+  static addImportProperties(): string {
+    return this.addImport(`@use "@dxt-ui/styles" as ui;`)
   }
 
   /**
    * Combines the elements of an array into one string.
- *
+   *
    * Объединяет элементы массива в одну строку.
    * @param data array containing records/ массив, содержащий записи
    */
@@ -71,7 +70,7 @@ export class StylesTool {
 
   /**
    * Adding an access level.
- *
+   *
    * Добавление уровня доступа.
    * @param space space/ пробел
    */

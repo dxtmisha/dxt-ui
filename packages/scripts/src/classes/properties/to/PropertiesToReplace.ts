@@ -17,7 +17,7 @@ export class PropertiesToReplace extends PropertiesToAbstract {
 
   /**
    * Transforming all of its properties.
- *
+   *
    * Преобразование всех своих свойств.
    */
   protected init(): void {
@@ -38,7 +38,7 @@ export class PropertiesToReplace extends PropertiesToAbstract {
 
   /**
    * Getting information about the transformation.
- *
+   *
    * Получение информации о преобразовании.
    * @param info information for verification/ информация для проверки
    */
@@ -60,7 +60,7 @@ export class PropertiesToReplace extends PropertiesToAbstract {
 
   /**
    * Returns the transformed value.
- *
+   *
    * Возвращает преобразованное значение.
    * @param info information for verification/ информация для проверки
    * @param value

@@ -15,14 +15,14 @@ export class PropertiesToProperty extends PropertiesToVar {
 
   /**
    * Name transformation for the var type.
- *
+   *
    * Преобразование имени для типа var.
    * @param name base property name/ базовое название свойства
    * @param item current element/ текущий элемент
    */
   protected getName({
     name,
-    item
+                      item
   }: PropertyItemsItem) {
     return toKebabCase(this.items.getReName(name, item))
   }

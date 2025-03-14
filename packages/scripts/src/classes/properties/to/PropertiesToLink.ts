@@ -36,7 +36,7 @@ export class PropertiesToLink extends PropertiesToAbstract {
 
   /**
    * The method searches for all links and replaces their values with the specified link.
- *
+   *
    * Метод ищет все ссылки и заменяет значения на указанную ссылку.
    */
   protected init(): void {
@@ -52,7 +52,7 @@ export class PropertiesToLink extends PropertiesToAbstract {
 
   /**
    * The method searches for all links and replaces their values with the specified link.
- *
+   *
    * Метод ищет все ссылки и заменяет значения на указанную ссылку.
    * @param design design name/ название дизайна
    * @param component component name/ название компонента
@@ -139,7 +139,7 @@ export class PropertiesToLink extends PropertiesToAbstract {
 
   /**
    * Checks for compliance by type.
- *
+   *
    * Проверяет на соответствие по типу.
    * @param item current element/ текущий элемент
    */
@@ -149,7 +149,7 @@ export class PropertiesToLink extends PropertiesToAbstract {
 
   /**
    * Checks whether a value is a reference.
- *
+   *
    * Проверяет, является ли значение ссылкой.
    * @param value current element/ текущий элемент
    */
@@ -161,7 +161,7 @@ export class PropertiesToLink extends PropertiesToAbstract {
 
   /**
    * Checks if the values are valid, if such values have been checked.
- *
+   *
    * Проверяет, подходят ли значения, проверены ли такие значения.
    * @param value current element/ текущий элемент
    */
@@ -171,7 +171,7 @@ export class PropertiesToLink extends PropertiesToAbstract {
 
   /**
    * Checks if the values are processed for the current link.
- *
+   *
    * Проверяет, обработаны ли значения у текущей ссылки.
    * @param value current element/ текущий элемент
    */
@@ -181,7 +181,7 @@ export class PropertiesToLink extends PropertiesToAbstract {
 
   /**
    * Checks if the given link meets the conditions.
- *
+   *
    * Проверяет, подходит ли данный ссылка под условия.
    * @param value current element/ текущий элемент
    */
@@ -191,7 +191,7 @@ export class PropertiesToLink extends PropertiesToAbstract {
 
   /**
    * Checks if the values are hidden.
- *
+   *
    * Проверяет, являются ли значения скрытыми.
    * @param parents list of ancestors/ список предков
    * @private
@@ -211,7 +211,7 @@ export class PropertiesToLink extends PropertiesToAbstract {
 
   /**
    * Adds new entries.
- *
+   *
    * Добавляет новые записи.
    * @param parent ссылка на предка/ ссылка на предка
    * @param items data for processing/ данные для обработки
@@ -236,7 +236,7 @@ export class PropertiesToLink extends PropertiesToAbstract {
 
   /**
    * We will add the values to the ignore.
- *
+   *
    * Добавим значения в игнор.
    * @param value current element/ текущий элемент
    */
@@ -246,7 +246,7 @@ export class PropertiesToLink extends PropertiesToAbstract {
 
   /**
    * We will add a label that the current link is processed.
- *
+   *
    * Добавим метку, что текущая ссылка обработана.
    * @param value current element/ текущий элемент
    */

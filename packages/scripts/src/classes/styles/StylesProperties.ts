@@ -58,7 +58,7 @@ export class StylesProperties {
 
   /**
    * Generating all properties and variables.
- *
+   *
    * Генерация всех свойств и переменных.
    */
   make(): string[] {
@@ -97,7 +97,7 @@ export class StylesProperties {
 
   /**
    * Checks if the type is one that requires a space at the beginning.
- *
+   *
    * Проверяет, является ли тип тот, для которого надо пробел поставить в начале.
    * @param item element for checking/ элемент для проверки
    */
@@ -109,7 +109,7 @@ export class StylesProperties {
 
   /**
    * Checks if the type is a base property of variables.
- *
+   *
    * Проверяет, является ли тип базовым свойством переменных.
    * @param item element for checking/ элемент для проверки
    */
@@ -119,7 +119,7 @@ export class StylesProperties {
 
   /**
    * Returns a function for iterating over all records.
- *
+   *
    * Возвращает функцию для обхода всех записей.
    * @param property initial variables for processing/ начальные переменные для обработки
    */
@@ -135,7 +135,7 @@ export class StylesProperties {
 
   /**
    * Parameters for a class that converts data by type.
- *
+   *
    * Параметры для класса, который преобразует данные по типу.
    * @param property initial variables for processing/ начальные переменные для обработки
    */
@@ -147,7 +147,7 @@ export class StylesProperties {
 
   /**
    * Converting a value to a string depending on the type.
- *
+   *
    * Преобразования значения в строка в зависимости от типа.
    * @param property initial variables for processing/ начальные переменные для обработки
    */

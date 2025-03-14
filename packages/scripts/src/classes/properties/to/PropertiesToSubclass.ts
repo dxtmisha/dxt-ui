@@ -30,7 +30,7 @@ export class PropertiesToSubclass extends PropertiesToAbstract {
 
   /**
    * Checks if the top-level type is a state.
- *
+   *
    * Проверяет, является ли тип верхнего уровня - это state.
    * @param parents array of all ancestor properties along the tree from the top level/
    * массив со всеми свойствами предков по дереву от верхнего уровня
@@ -47,7 +47,7 @@ export class PropertiesToSubclass extends PropertiesToAbstract {
 
   /**
    * Name transformation for the component type.
- *
+   *
    * Преобразование имени для типа component.
    * @param name base property name/ базовое название свойства
    * @param item current element/ текущий элемент

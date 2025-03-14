@@ -29,7 +29,7 @@ export class PropertiesToState extends PropertiesToAbstract {
 
   /**
    * Name transformation for the state type.
- *
+   *
    * Преобразование имени для типа state.
    * @param name base property name/ базовое название свойства
    * @param item current element/ текущий элемент

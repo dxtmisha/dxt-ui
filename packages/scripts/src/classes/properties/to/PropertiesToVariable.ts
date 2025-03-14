@@ -24,7 +24,7 @@ export class PropertiesToVariable extends PropertiesToAbstract {
 
   /**
    * Determine all properties and their property types in an object.
- *
+   *
    * Определяем все свойства и их типы свойств в объекте.
    */
   protected init(): void {
@@ -46,7 +46,7 @@ export class PropertiesToVariable extends PropertiesToAbstract {
 
   /**
    * If there is a value of category, changes the property to the required one.
- *
+   *
    * Если есть значение категории, изменяет свойство на нужное.
    * @param item current property/ текущее свойство
    */
@@ -63,7 +63,7 @@ export class PropertiesToVariable extends PropertiesToAbstract {
 
   /**
    * If the name matches the name of the design or component.
- *
+   *
    * Если название совпадает с названием дизайна или компонента.
    * @param design design name/ название дизайна
    * @param component component name/ название компонента
@@ -85,7 +85,7 @@ export class PropertiesToVariable extends PropertiesToAbstract {
 
   /**
    * If the name of the property matches the name of the style in CSS.
- *
+   *
    * Если название свойства совпадает с названием стиля в CSS.
    * @param name key name/ название ключа
    */
@@ -95,7 +95,7 @@ export class PropertiesToVariable extends PropertiesToAbstract {
 
   /**
    * If the name of the property matches the name of the pseudo-class.
- *
+   *
    * Если название свойства совпадает с названием псевдо-класса.
    * @param name key name/ название ключа
    */
@@ -105,7 +105,7 @@ export class PropertiesToVariable extends PropertiesToAbstract {
 
   /**
    * If the element has no properties and values.
- *
+   *
    * Если у элемента нет ни одного свойства и значения.
    * @param item current property/ текущее свойство
    */
@@ -122,7 +122,7 @@ export class PropertiesToVariable extends PropertiesToAbstract {
 
   /**
    * If the ancestor has type var.
- *
+   *
    * Если у предка тип var.
    * @param parent object of ancestor/ объект предка
    */
@@ -132,7 +132,7 @@ export class PropertiesToVariable extends PropertiesToAbstract {
 
   /**
    * Checks if the type is hidden.
- *
+   *
    * Проверяет, является ли тип скрытым.
    * @param item current property/ текущее свойство
    */
@@ -142,7 +142,7 @@ export class PropertiesToVariable extends PropertiesToAbstract {
 
   /**
    * If the type is a pseudo-element.
- *
+   *
    * Если тип псевдо-элемента.
    * @param name key name/ название ключа
    */
@@ -152,7 +152,7 @@ export class PropertiesToVariable extends PropertiesToAbstract {
 
   /**
    * Search for a suitable property by name.
- *
+   *
    * Поиск подходящего свойства по названию.
    * @param name key name/ название ключа
    * @param item current property/ текущее свойство

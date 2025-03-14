@@ -28,7 +28,7 @@ export class StylesRoot {
 
   /**
    * Generating all basic token values.
- *
+   *
    * Генерация всех базовых значений токенов.
    */
   init(): string[] {
@@ -44,7 +44,7 @@ export class StylesRoot {
     data.push('}')
 
     return [
-      StylesTool.addImportProperties('../..'),
+      StylesTool.addImportProperties(),
       '',
       this.initCalc(data.join('\r\n'))
     ]
@@ -52,7 +52,7 @@ export class StylesRoot {
 
   /**
    * Getting all properties from base variables.
- *
+   *
    * Получение всех свойств из базовых переменных.
    */
   private getList(): PropertyItemsItem[] {

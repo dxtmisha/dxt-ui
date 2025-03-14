@@ -32,7 +32,7 @@ export class StylesClasses {
 
   /**
    * Generating all base classes.
- *
+   *
    * Генерация всех базовых классов.
    */
   init(): StylesClassesItem {
@@ -55,7 +55,7 @@ export class StylesClasses {
         data.push(StylesTool.addImport(`./classes/${name}.scss`))
 
         classes[name] = [
-          StylesTool.addImportProperties('../../..'),
+          StylesTool.addImportProperties(),
           '',
           `.${name} {`,
           ...(new StylesProperties(space, property)).make(),
@@ -72,7 +72,7 @@ export class StylesClasses {
 
   /**
    * Getting all properties from base variables.
- *
+   *
    * Получение всех свойств из базовых переменных.
    */
   private getList(): PropertyItemsItem[] {

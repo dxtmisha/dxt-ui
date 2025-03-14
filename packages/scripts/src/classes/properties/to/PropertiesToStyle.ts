@@ -19,7 +19,7 @@ export class PropertiesToStyle extends PropertiesToAbstract {
 
   /**
    * Handling a style record.
- *
+   *
    * Обработка записи стиля.
    */
   protected init(): void {

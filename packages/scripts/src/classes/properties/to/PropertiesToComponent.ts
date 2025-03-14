@@ -27,7 +27,7 @@ export class PropertiesToComponent extends PropertiesToAbstract {
 
   /**
    * Name transformation for the component type.
- *
+   *
    * Преобразование имени для типа component.
    * @param name base property name/ базовое название свойства
    * @param item current element/ текущий элемент

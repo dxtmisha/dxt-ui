@@ -29,7 +29,7 @@ export class PropertiesToSimilar extends PropertiesToAbstract {
 
   /**
    * Finding similar data for editing.
- *
+   *
    * Поиск похожих данных для редактирования.
    */
   protected init(): void {
@@ -49,7 +49,7 @@ export class PropertiesToSimilar extends PropertiesToAbstract {
 
   /**
    * Returns similar values by its name.
- *
+   *
    * Возвращает похожие значения по его имени.
    * @param name name of the name/ название имени
    * @param item object for checking/ объект для проверки
@@ -95,7 +95,7 @@ export class PropertiesToSimilar extends PropertiesToAbstract {
 
   /**
    * Checks if the property is available for inheritance.
- *
+   *
    * Проверяет, доступно ли свойство для наследования.
    * @param item object for checking/ объект для проверки
    */
@@ -109,7 +109,7 @@ export class PropertiesToSimilar extends PropertiesToAbstract {
 
   /**
    * Checks if inheriting the property is prohibited.
- *
+   *
    * Проверяет, запрещено ли наследовать свойство.
    * @param item object for checking/ объект для проверки
    */

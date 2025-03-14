@@ -45,7 +45,7 @@ export class Styles {
 
   /**
    * Generating all basic data.
- *
+   *
    * Генерация всех базовых данных.
    */
   make(): this {
@@ -65,7 +65,7 @@ export class Styles {
 
   /**
    * Generating basic variables.
- *
+   *
    * Генерация базовых переменных.
    * @param design design name/ название дизайна
    * @param items current element/ текущий элемент
@@ -88,7 +88,7 @@ export class Styles {
 
   /**
    * Generating all base classes.
- *
+   *
    * Генерация всех базовых классов.
    * @param design design name/ название дизайна
    * @param items current element/ текущий элемент
@@ -152,7 +152,7 @@ export class Styles {
 
   /**
    * Creates files for connection.
- *
+   *
    * Создает файлы для подключения.
    * @param design design name/ название дизайна
    */
@@ -204,7 +204,7 @@ export class Styles {
 
   /**
    * Generating a list of properties from a design.
- *
+   *
    * Получение списка свойств по дизайну.
    * @param callback data processing function/ функция для обработки данных
    */

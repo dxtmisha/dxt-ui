@@ -71,7 +71,7 @@ export class StylesToVar extends StylesToAbstract {
     if (typeof value !== 'string' || value === '') {
       value = 'unset'
     } else if (PropertiesValues.isColor(value)) {
-      value = `#{toColorRbg(${value})}`
+      value = `#{ui.toColorRbg(${value})}`
     }
 
     return `${item?.[PropertyKey.name]}: ${StylesTool.toFunctionCss(value)};`

@@ -35,7 +35,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
 
   /**
    * Adding a class for working with colors.
- *
+   *
    * Добавление класса для работы со цветами.
    */
   protected init(): void {
@@ -50,7 +50,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
 
   /**
    * Adding a group of properties based on the design name.
- *
+   *
    * Добавление группы свойств по названию дизайна.
    * @param category category names/ названия категорий
    * @param parent the property object, by which it will be added/ объект свойства, по которому будет добавлять
@@ -74,7 +74,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
 
   /**
    * Adding a new class with the name of the color.
- *
+   *
    * Добавление нового класса по имени цвета.
    * @param items list of classes/ список классов
    * @param name class name/ название класса
@@ -92,7 +92,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
 
   /**
    * Returns names for light.
- *
+   *
    * Возвращает названия для света.
    * @param theme the name of the theme/ название темы
    * @param name names of colors/ названия цвета
@@ -103,7 +103,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
 
   /**
    * Returns values for color.
- *
+   *
    * Возвращает значения для цвета.
    * @param link base link/ базовая ссылка
    * @param name names of colors/ названия цвета
@@ -114,7 +114,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
 
   /**
    * Checking the default value.
- *
+   *
    * Проверка значения по умолчанию.
    * @param item the value to be checked/ проверяемое значение
    * @param theme the name of the theme/ название темы
@@ -131,7 +131,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
 
   /**
    * Adding a color property by the name of the theme.
- *
+   *
    * Добавление свойства цвета по названию темы.
    * @param root the property object, by which it will be added/
    * объект свойства, по которому будет добавлять
@@ -187,7 +187,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
 
   /**
    * Adding a saturation property.
- *
+   *
    * Добавление свойства насыщенности.
    * @param parent list of available values for the class/ список доступных значений у класса
    * @param link list of classes/ список классов
@@ -214,7 +214,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
 
   /**
    * Adding a default value.
- *
+   *
    * Добавление значения по умолчанию.
    * @param parent list of available values for the class/ список доступных значений у класса
    * @param theme the name of the theme/ название темы
