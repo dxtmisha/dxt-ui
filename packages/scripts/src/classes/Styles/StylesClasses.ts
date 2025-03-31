@@ -1,6 +1,6 @@
 import { isFilled, isObjectNotArray } from '@dxt-ui/functional'
 
-import { PropertiesItems } from '../properties/PropertiesItems'
+import { PropertiesItems } from '../Properties/PropertiesItems'
 
 import { StylesTool } from './StylesTool'
 import { StylesProperties } from './StylesProperties'
@@ -52,7 +52,7 @@ export class StylesClasses {
       ) {
         const name = item[PropertyKey.name] as string
 
-        data.push(StylesTool.addImport(`./classes/${name}.scss`))
+        data.push(StylesTool.addUse(`./classes/${name}.scss`))
 
         classes[name] = [
           StylesTool.addImportProperties(),

@@ -54,9 +54,9 @@ export class Styles {
       items
     ) => {
       this.initRoot(design, items)
-      // this.initClasses(design, items)
-      // this.initProperties(design, items)
-      // this.initList(design, items)
+      this.initClasses(design, items)
+      this.initProperties(design, items)
+      this.initList(design, items)
       // this.initBasic(design)
     })
 

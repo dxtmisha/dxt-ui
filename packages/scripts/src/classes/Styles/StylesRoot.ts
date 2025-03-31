@@ -1,6 +1,6 @@
 import * as sass from 'sass'
 
-import { PropertiesItems } from '../properties/PropertiesItems'
+import { PropertiesItems } from '../Properties/PropertiesItems'
 
 import { StylesTool } from './StylesTool'
 import { StylesToVar } from './to/StylesToVar'

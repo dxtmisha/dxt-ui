@@ -1,6 +1,6 @@
 import { toCamelCase } from '@dxt-ui/functional'
 
-import { PropertiesTool } from '../../properties/PropertiesTool'
+import { PropertiesTool } from '../../Properties/PropertiesTool'
 
 import { StylesTool } from '../StylesTool'
 import { StylesToAbstract } from './StylesToAbstract'
@@ -67,9 +67,15 @@ export class StylesToProperty extends StylesToAbstract {
       this.item?.[PropertyKey.modification] !== false
       && styleTypes.indexOf(name) !== -1
     ) {
-      return `@include ${toCamelCase(name)}(#{${value}});`
+      return `@include ui.${toCamelCase(name)}(#{${value}});`
     }
 
-    return `${name}: ${StylesTool.toFunctionCss(value)};`
+    const property = `${name}: ${StylesTool.toFunctionCss(value)}`
+
+    if (name === 'font-family') {
+      return `${property}, sans-serif;`
+    }
+
+    return `${property};`
   }
 }

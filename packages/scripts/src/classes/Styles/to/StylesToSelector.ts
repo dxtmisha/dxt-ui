@@ -1,6 +1,6 @@
 import { toKebabCase } from '@dxt-ui/functional'
 
-import { PropertiesTool } from '../../properties/PropertiesTool'
+import { PropertiesTool } from '../../Properties/PropertiesTool'
 import { StylesToAbstract } from './StylesToAbstract'
 
 import { PropertyKey } from '../../../types/propertyTypes'

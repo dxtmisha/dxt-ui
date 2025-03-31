@@ -1,4 +1,4 @@
-import { PropertiesItems } from '../properties/PropertiesItems'
+import { PropertiesItems } from '../Properties/PropertiesItems'
 
 import { StylesTool } from './StylesTool'
 

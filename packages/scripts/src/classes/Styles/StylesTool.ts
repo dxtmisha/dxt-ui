@@ -50,6 +50,26 @@ export class StylesTool {
   }
 
   /**
+   * Код строки для импорта файла.
+   *
+   * Code line for file import.
+   * @param path path to the file/ путь к файлу
+   */
+  static addUse(path: string): string {
+    return `@use "${path}";`
+  }
+
+  /**
+   * Код строки для импорта файла.
+   *
+   * Code line for file import.
+   * @param path path to the file/ путь к файлу
+   */
+  static addForward(path: string): string {
+    return `@forward "${path}";`
+  }
+
+  /**
    * Getting a reference to a base function.
    *
    * Получение ссылки на базовую функцию.

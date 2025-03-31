@@ -1,5 +1,5 @@
-import { PropertiesCache } from '../properties/PropertiesCache'
-import { Styles } from '../styles/Styles'
+import { PropertiesCache } from '../Properties/PropertiesCache'
+import { Styles } from '../Styles/Styles'
 
 export class DesignUi {
   /**

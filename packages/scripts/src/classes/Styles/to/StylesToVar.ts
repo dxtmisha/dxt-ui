@@ -1,7 +1,7 @@
 import { isObjectNotArray } from '@dxt-ui/functional'
 
-import { PropertiesItems } from '../../properties/PropertiesItems'
-import { PropertiesValues } from '../../properties/PropertiesValues'
+import { PropertiesItems } from '../../Properties/PropertiesItems'
+import { PropertiesValues } from '../../Properties/PropertiesValues'
 
 import { StylesTool } from '../StylesTool'
 import { StylesToAbstract } from './StylesToAbstract'
