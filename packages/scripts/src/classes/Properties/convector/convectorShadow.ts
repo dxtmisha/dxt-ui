@@ -36,7 +36,7 @@ export function convectorShadow(item: PropertyItemInput): void {
         } = item
 
         const colorValue = color.match(/^{/)
-          ? `@toCustomVarRgb(${color})`
+          ? `@ui.toCustomVarRgb(${color})`
           : color
 
         if (type === 'innerShadow') {

@@ -201,6 +201,12 @@ Generates text.
 ### [getRequestString](src/functions/getRequestString.ts)
 Returns a string in the form of key-value.
 
+### [getStepPercent](src/functions/getStepPercent.ts)
+Returns the unit of measurement for 1 step.
+
+### [getStepValue](src/functions/getStepValue.ts)
+Returns the unit of measurement for a single step relative to the given value.
+
 ### [goScroll](src/functions/goScroll.ts)
 Returns a string in the form of key-value.
 

@@ -4,18 +4,18 @@ var y = (e, n, t) => Bt(e, typeof n != "symbol" ? n + "" : n, t);
 function nt(e) {
   return e instanceof Function || typeof e == "function";
 }
-function mn(e) {
+function Dn(e) {
   return nt(e) ? e() : e;
 }
 async function Ht(e) {
-  const n = mn(e);
+  const n = Dn(e);
   return n instanceof Promise ? await n : n;
 }
-function Dn(e) {
+function Mn(e) {
   return !!(e && typeof e == "object");
 }
 function Le(e, n) {
-  if (Dn(e)) {
+  if (Mn(e)) {
     const t = [];
     return e instanceof Map ? e.forEach((o, s) => t.push(n(o, s, e))) : Array.isArray(e) ? e.forEach((o, s) => t.push(n(o, s, e))) : Object.entries(e).forEach(
       ([o, s]) => t.push(n(s, o, e))
@@ -35,16 +35,16 @@ function Kt(e) {
   for (const t of e.split(",")) n[t] = 1;
   return (t) => t in n;
 }
-const P = process.env.NODE_ENV !== "production" ? Object.freeze({}) : {};
+const x = process.env.NODE_ENV !== "production" ? Object.freeze({}) : {};
 process.env.NODE_ENV !== "production" && Object.freeze([]);
 const ie = () => {
 }, Gt = (e) => e.charCodeAt(0) === 111 && e.charCodeAt(1) === 110 && // uppercase letter
-(e.charCodeAt(2) > 122 || e.charCodeAt(2) < 97), O = Object.assign, Ut = Object.prototype.hasOwnProperty, E = (e, n) => Ut.call(e, n), D = Array.isArray, ue = (e) => Ue(e) === "[object Map]", Wt = (e) => Ue(e) === "[object Set]", z = (e) => typeof e == "function", V = (e) => typeof e == "string", be = (e) => typeof e == "symbol", w = (e) => e !== null && typeof e == "object", Jt = (e) => (w(e) || z(e)) && z(e.then) && z(e.catch), Yt = Object.prototype.toString, Ue = (e) => Yt.call(e), tt = (e) => Ue(e).slice(8, -1), qt = (e) => Ue(e) === "[object Object]", Mn = (e) => V(e) && e !== "NaN" && e[0] !== "-" && "" + parseInt(e, 10) === e, ot = (e) => {
+(e.charCodeAt(2) > 122 || e.charCodeAt(2) < 97), O = Object.assign, Ut = Object.prototype.hasOwnProperty, E = (e, n) => Ut.call(e, n), D = Array.isArray, ue = (e) => Ue(e) === "[object Map]", Wt = (e) => Ue(e) === "[object Set]", z = (e) => typeof e == "function", L = (e) => typeof e == "string", ve = (e) => typeof e == "symbol", N = (e) => e !== null && typeof e == "object", Jt = (e) => (N(e) || z(e)) && z(e.then) && z(e.catch), Yt = Object.prototype.toString, Ue = (e) => Yt.call(e), tt = (e) => Ue(e).slice(8, -1), qt = (e) => Ue(e) === "[object Object]", Cn = (e) => L(e) && e !== "NaN" && e[0] !== "-" && "" + parseInt(e, 10) === e, ot = (e) => {
   const n = /* @__PURE__ */ Object.create(null);
   return (t) => n[t] || (n[t] = e(t));
 }, st = ot((e) => e.charAt(0).toUpperCase() + e.slice(1)), Zt = ot(
   (e) => e ? `on${st(e)}` : ""
-), G = (e, n) => !Object.is(e, n), Qt = (e, n, t, o = !1) => {
+), U = (e, n) => !Object.is(e, n), Qt = (e, n, t, o = !1) => {
   Object.defineProperty(e, n, {
     configurable: !0,
     enumerable: !1,
@@ -52,19 +52,19 @@ const ie = () => {
     value: t
   });
 };
-let xn;
-const We = () => xn || (xn = typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof window < "u" ? window : typeof global < "u" ? global : {});
-function Cn(e) {
+let In;
+const We = () => In || (In = typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof window < "u" ? window : typeof global < "u" ? global : {});
+function _n(e) {
   if (D(e)) {
     const n = {};
     for (let t = 0; t < e.length; t++) {
-      const o = e[t], s = V(o) ? to(o) : Cn(o);
+      const o = e[t], s = L(o) ? to(o) : _n(o);
       if (s)
         for (const r in s)
           n[r] = s[r];
     }
     return n;
-  } else if (V(e) || w(e))
+  } else if (L(e) || N(e))
     return e;
 }
 const Xt = /;(?![^(]*\))/g, eo = /:([^]+)/, no = /\/\*[^]*?\*\//g;
@@ -77,16 +77,16 @@ function to(e) {
     }
   }), n;
 }
-function _n(e) {
+function En(e) {
   let n = "";
-  if (V(e))
+  if (L(e))
     n = e;
   else if (D(e))
     for (let t = 0; t < e.length; t++) {
-      const o = _n(e[t]);
+      const o = En(e[t]);
       o && (n += o + " ");
     }
-  else if (w(e))
+  else if (N(e))
     for (const t in e)
       e[t] && (n += t + " ");
   return n.trim();
@@ -96,7 +96,7 @@ function _n(e) {
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
-function L(e, ...n) {
+function $(e, ...n) {
   console.warn(`[Vue warn] ${e}`, ...n);
 }
 let m;
@@ -120,22 +120,22 @@ class oo {
   run() {
     if (!(this.flags & 1))
       return this.fn();
-    this.flags |= 2, In(this), it(this);
-    const n = m, t = x;
-    m = this, x = !0;
+    this.flags |= 2, Vn(this), it(this);
+    const n = m, t = I;
+    m = this, I = !0;
     try {
       return this.fn();
     } finally {
-      process.env.NODE_ENV !== "production" && m !== this && L(
+      process.env.NODE_ENV !== "production" && m !== this && $(
         "Active effect was not restored correctly - this is likely a Vue internal bug."
-      ), ut(this), m = n, x = t, this.flags &= -3;
+      ), ut(this), m = n, I = t, this.flags &= -3;
     }
   }
   stop() {
     if (this.flags & 1) {
       for (let n = this.deps; n; n = n.nextDep)
-        zn(n);
-      this.deps = this.depsTail = void 0, In(this), this.onStop && this.onStop(), this.flags &= -2;
+        Sn(n);
+      this.deps = this.depsTail = void 0, Vn(this), this.onStop && this.onStop(), this.flags &= -2;
     }
   }
   trigger() {
@@ -151,31 +151,31 @@ class oo {
     return un(this);
   }
 }
-let rt = 0, ge, ye;
+let rt = 0, ye, me;
 function at(e, n = !1) {
   if (e.flags |= 8, n) {
-    e.next = ye, ye = e;
+    e.next = me, me = e;
     return;
   }
-  e.next = ge, ge = e;
-}
-function En() {
-  rt++;
+  e.next = ye, ye = e;
 }
 function An() {
+  rt++;
+}
+function zn() {
   if (--rt > 0)
     return;
-  if (ye) {
-    let n = ye;
-    for (ye = void 0; n; ) {
+  if (me) {
+    let n = me;
+    for (me = void 0; n; ) {
       const t = n.next;
       n.next = void 0, n.flags &= -9, n = t;
     }
   }
   let e;
-  for (; ge; ) {
-    let n = ge;
-    for (ge = void 0; n; ) {
+  for (; ye; ) {
+    let n = ye;
+    for (ye = void 0; n; ) {
       const t = n.next;
       if (n.next = void 0, n.flags &= -9, n.flags & 1)
         try {
@@ -196,7 +196,7 @@ function ut(e) {
   let n, t = e.depsTail, o = t;
   for (; o; ) {
     const s = o.prevDep;
-    o.version === -1 ? (o === t && (t = s), zn(o), so(o)) : n = o, o.dep.activeLink = o.prevActiveLink, o.prevActiveLink = void 0, o = s;
+    o.version === -1 ? (o === t && (t = s), Sn(o), so(o)) : n = o, o.dep.activeLink = o.prevActiveLink, o.prevActiveLink = void 0, o = s;
   }
   e.deps = n, e.depsTail = t;
 }
@@ -207,32 +207,32 @@ function un(e) {
   return !!e._dirty;
 }
 function ct(e) {
-  if (e.flags & 4 && !(e.flags & 16) || (e.flags &= -17, e.globalVersion === _e))
+  if (e.flags & 4 && !(e.flags & 16) || (e.flags &= -17, e.globalVersion === Ee))
     return;
-  e.globalVersion = _e;
+  e.globalVersion = Ee;
   const n = e.dep;
   if (e.flags |= 2, n.version > 0 && !e.isSSR && e.deps && !un(e)) {
     e.flags &= -3;
     return;
   }
-  const t = m, o = x;
-  m = e, x = !0;
+  const t = m, o = I;
+  m = e, I = !0;
   try {
     it(e);
     const s = e.fn(e._value);
-    (n.version === 0 || G(s, e._value)) && (e._value = s, n.version++);
+    (n.version === 0 || U(s, e._value)) && (e._value = s, n.version++);
   } catch (s) {
     throw n.version++, s;
   } finally {
-    m = t, x = o, ut(e), e.flags &= -3;
+    m = t, I = o, ut(e), e.flags &= -3;
   }
 }
-function zn(e, n = !1) {
+function Sn(e, n = !1) {
   const { dep: t, prevSub: o, nextSub: s } = e;
   if (o && (o.nextSub = s, e.prevSub = void 0), s && (s.prevSub = o, e.nextSub = void 0), process.env.NODE_ENV !== "production" && t.subsHead === e && (t.subsHead = s), t.subs === e && (t.subs = o, !o && t.computed)) {
     t.computed.flags &= -5;
     for (let r = t.computed.deps; r; r = r.nextDep)
-      zn(r, !0);
+      Sn(r, !0);
   }
   !n && !--t.sc && t.map && t.map.delete(t.key);
 }
@@ -240,16 +240,16 @@ function so(e) {
   const { prevDep: n, nextDep: t } = e;
   n && (n.nextDep = t, e.prevDep = void 0), t && (t.prevDep = n, e.nextDep = void 0);
 }
-let x = !0;
+let I = !0;
 const lt = [];
 function ke() {
-  lt.push(x), x = !1;
+  lt.push(I), I = !1;
 }
-function ve() {
+function Ne() {
   const e = lt.pop();
-  x = e === void 0 ? !0 : e;
+  I = e === void 0 ? !0 : e;
 }
-function In(e) {
+function Vn(e) {
   const { cleanup: n } = e;
   if (e.cleanup = void 0, n) {
     const t = m;
@@ -261,18 +261,18 @@ function In(e) {
     }
   }
 }
-let _e = 0;
+let Ee = 0;
 class ro {
   constructor(n, t) {
     this.sub = n, this.dep = t, this.version = t.version, this.nextDep = this.prevDep = this.nextSub = this.prevSub = this.prevActiveLink = void 0;
   }
 }
-class Sn {
+class bn {
   constructor(n) {
     this.computed = n, this.version = 0, this.activeLink = void 0, this.subs = void 0, this.map = void 0, this.key = void 0, this.sc = 0, process.env.NODE_ENV !== "production" && (this.subsHead = void 0);
   }
   track(n) {
-    if (!m || !x || m === this.computed)
+    if (!m || !I || m === this.computed)
       return;
     let t = this.activeLink;
     if (t === void 0 || t.sub !== m)
@@ -291,10 +291,10 @@ class Sn {
     ), t;
   }
   trigger(n) {
-    this.version++, _e++, this.notify(n);
+    this.version++, Ee++, this.notify(n);
   }
   notify(n) {
-    En();
+    An();
     try {
       if (process.env.NODE_ENV !== "production")
         for (let t = this.subsHead; t; t = t.nextSub)
@@ -309,7 +309,7 @@ class Sn {
       for (let t = this.subs; t; t = t.prevSub)
         t.sub.notify() && t.sub.dep.notify();
     } finally {
-      An();
+      zn();
     }
   }
 }
@@ -325,29 +325,29 @@ function ft(e) {
     t !== e && (e.prevSub = t, t && (t.nextSub = e)), process.env.NODE_ENV !== "production" && e.dep.subsHead === void 0 && (e.dep.subsHead = e), e.dep.subs = e;
   }
 }
-const $e = /* @__PURE__ */ new WeakMap(), Y = Symbol(
+const $e = /* @__PURE__ */ new WeakMap(), Z = Symbol(
   process.env.NODE_ENV !== "production" ? "Object iterate" : ""
 ), cn = Symbol(
   process.env.NODE_ENV !== "production" ? "Map keys iterate" : ""
-), Ee = Symbol(
+), Ae = Symbol(
   process.env.NODE_ENV !== "production" ? "Array iterate" : ""
 );
 function A(e, n, t) {
-  if (x && m) {
+  if (I && m) {
     let o = $e.get(e);
     o || $e.set(e, o = /* @__PURE__ */ new Map());
     let s = o.get(t);
-    s || (o.set(t, s = new Sn()), s.map = o, s.key = t), process.env.NODE_ENV !== "production" ? s.track({
+    s || (o.set(t, s = new bn()), s.map = o, s.key = t), process.env.NODE_ENV !== "production" ? s.track({
       target: e,
       type: n,
       key: t
     }) : s.track();
   }
 }
-function H(e, n, t, o, s, r) {
+function K(e, n, t, o, s, r) {
   const a = $e.get(e);
   if (!a) {
-    _e++;
+    Ee++;
     return;
   }
   const i = (c) => {
@@ -360,29 +360,29 @@ function H(e, n, t, o, s, r) {
       oldTarget: r
     }) : c.trigger());
   };
-  if (En(), n === "clear")
+  if (An(), n === "clear")
     a.forEach(i);
   else {
-    const c = D(e), l = c && Mn(t);
+    const c = D(e), l = c && Cn(t);
     if (c && t === "length") {
       const p = Number(o);
       a.forEach((u, f) => {
-        (f === "length" || f === Ee || !be(f) && f >= p) && i(u);
+        (f === "length" || f === Ae || !ve(f) && f >= p) && i(u);
       });
     } else
-      switch ((t !== void 0 || a.has(void 0)) && i(a.get(t)), l && i(a.get(Ee)), n) {
+      switch ((t !== void 0 || a.has(void 0)) && i(a.get(t)), l && i(a.get(Ae)), n) {
         case "add":
-          c ? l && i(a.get("length")) : (i(a.get(Y)), ue(e) && i(a.get(cn)));
+          c ? l && i(a.get("length")) : (i(a.get(Z)), ue(e) && i(a.get(cn)));
           break;
         case "delete":
-          c || (i(a.get(Y)), ue(e) && i(a.get(cn)));
+          c || (i(a.get(Z)), ue(e) && i(a.get(cn)));
           break;
         case "set":
-          ue(e) && i(a.get(Y));
+          ue(e) && i(a.get(Z));
           break;
       }
   }
-  An();
+  zn();
 }
 function ao(e, n) {
   const t = $e.get(e);
@@ -390,15 +390,15 @@ function ao(e, n) {
 }
 function ne(e) {
   const n = d(e);
-  return n === e ? n : (A(n, "iterate", Ee), N(e) ? n : n.map(v));
+  return n === e ? n : (A(n, "iterate", Ae), w(e) ? n : n.map(k));
 }
-function bn(e) {
-  return A(e = d(e), "iterate", Ee), e;
+function vn(e) {
+  return A(e = d(e), "iterate", Ae), e;
 }
 const io = {
   __proto__: null,
   [Symbol.iterator]() {
-    return Qe(this, Symbol.iterator, v);
+    return Qe(this, Symbol.iterator, k);
   },
   concat(...e) {
     return ne(this).concat(
@@ -406,29 +406,29 @@ const io = {
     );
   },
   entries() {
-    return Qe(this, "entries", (e) => (e[1] = v(e[1]), e));
+    return Qe(this, "entries", (e) => (e[1] = k(e[1]), e));
   },
   every(e, n) {
-    return $(this, "every", e, n, void 0, arguments);
+    return F(this, "every", e, n, void 0, arguments);
   },
   filter(e, n) {
-    return $(this, "filter", e, n, (t) => t.map(v), arguments);
+    return F(this, "filter", e, n, (t) => t.map(k), arguments);
   },
   find(e, n) {
-    return $(this, "find", e, n, v, arguments);
+    return F(this, "find", e, n, k, arguments);
   },
   findIndex(e, n) {
-    return $(this, "findIndex", e, n, void 0, arguments);
+    return F(this, "findIndex", e, n, void 0, arguments);
   },
   findLast(e, n) {
-    return $(this, "findLast", e, n, v, arguments);
+    return F(this, "findLast", e, n, k, arguments);
   },
   findLastIndex(e, n) {
-    return $(this, "findLastIndex", e, n, void 0, arguments);
+    return F(this, "findLastIndex", e, n, void 0, arguments);
   },
   // flat, flatMap could benefit from ARRAY_ITERATE but are not straight-forward to implement
   forEach(e, n) {
-    return $(this, "forEach", e, n, void 0, arguments);
+    return F(this, "forEach", e, n, void 0, arguments);
   },
   includes(...e) {
     return Xe(this, "includes", e);
@@ -444,7 +444,7 @@ const io = {
     return Xe(this, "lastIndexOf", e);
   },
   map(e, n) {
-    return $(this, "map", e, n, void 0, arguments);
+    return F(this, "map", e, n, void 0, arguments);
   },
   pop() {
     return pe(this, "pop");
@@ -453,17 +453,17 @@ const io = {
     return pe(this, "push", e);
   },
   reduce(e, ...n) {
-    return Vn(this, "reduce", e, n);
+    return Ln(this, "reduce", e, n);
   },
   reduceRight(e, ...n) {
-    return Vn(this, "reduceRight", e, n);
+    return Ln(this, "reduceRight", e, n);
   },
   shift() {
     return pe(this, "shift");
   },
   // slice could use ARRAY_ITERATE but also seems to beg for range tracking
   some(e, n) {
-    return $(this, "some", e, n, void 0, arguments);
+    return F(this, "some", e, n, void 0, arguments);
   },
   splice(...e) {
     return pe(this, "splice", e);
@@ -481,57 +481,57 @@ const io = {
     return pe(this, "unshift", e);
   },
   values() {
-    return Qe(this, "values", v);
+    return Qe(this, "values", k);
   }
 };
 function Qe(e, n, t) {
-  const o = bn(e), s = o[n]();
-  return o !== e && !N(e) && (s._next = s.next, s.next = () => {
+  const o = vn(e), s = o[n]();
+  return o !== e && !w(e) && (s._next = s.next, s.next = () => {
     const r = s._next();
     return r.value && (r.value = t(r.value)), r;
   }), s;
 }
 const uo = Array.prototype;
-function $(e, n, t, o, s, r) {
-  const a = bn(e), i = a !== e && !N(e), c = a[n];
+function F(e, n, t, o, s, r) {
+  const a = vn(e), i = a !== e && !w(e), c = a[n];
   if (c !== uo[n]) {
     const u = c.apply(e, r);
-    return i ? v(u) : u;
+    return i ? k(u) : u;
   }
   let l = t;
   a !== e && (i ? l = function(u, f) {
-    return t.call(this, v(u), f, e);
+    return t.call(this, k(u), f, e);
   } : t.length > 2 && (l = function(u, f) {
     return t.call(this, u, f, e);
   }));
   const p = c.call(a, l, o);
   return i && s ? s(p) : p;
 }
-function Vn(e, n, t, o) {
-  const s = bn(e);
+function Ln(e, n, t, o) {
+  const s = vn(e);
   let r = t;
-  return s !== e && (N(e) ? t.length > 3 && (r = function(a, i, c) {
+  return s !== e && (w(e) ? t.length > 3 && (r = function(a, i, c) {
     return t.call(this, a, i, c, e);
   }) : r = function(a, i, c) {
-    return t.call(this, a, v(i), c, e);
+    return t.call(this, a, k(i), c, e);
   }), s[n](r, ...o);
 }
 function Xe(e, n, t) {
   const o = d(e);
-  A(o, "iterate", Ee);
+  A(o, "iterate", Ae);
   const s = o[n](...t);
-  return (s === -1 || s === !1) && Ae(t[0]) ? (t[0] = d(t[0]), o[n](...t)) : s;
+  return (s === -1 || s === !1) && ze(t[0]) ? (t[0] = d(t[0]), o[n](...t)) : s;
 }
 function pe(e, n, t = []) {
-  ke(), En();
+  ke(), An();
   const o = d(e)[n].apply(e, t);
-  return An(), ve(), o;
+  return zn(), Ne(), o;
 }
 const co = /* @__PURE__ */ Kt("__proto__,__v_isRef,__isVue"), pt = new Set(
-  /* @__PURE__ */ Object.getOwnPropertyNames(Symbol).filter((e) => e !== "arguments" && e !== "caller").map((e) => Symbol[e]).filter(be)
+  /* @__PURE__ */ Object.getOwnPropertyNames(Symbol).filter((e) => e !== "arguments" && e !== "caller").map((e) => Symbol[e]).filter(ve)
 );
 function lo(e) {
-  be(e) || (e = String(e));
+  ve(e) || (e = String(e));
   const n = d(this);
   return A(n, "has", e), n.hasOwnProperty(e);
 }
@@ -568,7 +568,7 @@ class ht {
       // its class methods
       S(n) ? n : o
     );
-    return (be(t) ? pt.has(t) : co(t)) || (s || A(n, "get", t), r) ? i : S(i) ? a && Mn(t) ? i : i.value : w(i) ? s ? Mt(i) : Dt(i) : i;
+    return (ve(t) ? pt.has(t) : co(t)) || (s || A(n, "get", t), r) ? i : S(i) ? a && Cn(t) ? i : i.value : N(i) ? s ? Mt(i) : Dt(i) : i;
   }
 }
 class fo extends ht {
@@ -578,31 +578,31 @@ class fo extends ht {
   set(n, t, o, s) {
     let r = n[t];
     if (!this._isShallow) {
-      const c = j(r);
-      if (!N(o) && !j(o) && (r = d(r), o = d(o)), !D(n) && S(r) && !S(o))
+      const c = B(r);
+      if (!w(o) && !B(o) && (r = d(r), o = d(o)), !D(n) && S(r) && !S(o))
         return c ? !1 : (r.value = o, !0);
     }
-    const a = D(n) && Mn(t) ? Number(t) < n.length : E(n, t), i = Reflect.set(
+    const a = D(n) && Cn(t) ? Number(t) < n.length : E(n, t), i = Reflect.set(
       n,
       t,
       o,
       S(n) ? n : s
     );
-    return n === d(s) && (a ? G(o, r) && H(n, "set", t, o, r) : H(n, "add", t, o)), i;
+    return n === d(s) && (a ? U(o, r) && K(n, "set", t, o, r) : K(n, "add", t, o)), i;
   }
   deleteProperty(n, t) {
     const o = E(n, t), s = n[t], r = Reflect.deleteProperty(n, t);
-    return r && o && H(n, "delete", t, void 0, s), r;
+    return r && o && K(n, "delete", t, void 0, s), r;
   }
   has(n, t) {
     const o = Reflect.has(n, t);
-    return (!be(t) || !pt.has(t)) && A(n, "has", t), o;
+    return (!ve(t) || !pt.has(t)) && A(n, "has", t), o;
   }
   ownKeys(n) {
     return A(
       n,
       "iterate",
-      D(n) ? "length" : Y
+      D(n) ? "length" : Z
     ), Reflect.ownKeys(n);
   }
 }
@@ -611,26 +611,26 @@ class dt extends ht {
     super(!0, n);
   }
   set(n, t) {
-    return process.env.NODE_ENV !== "production" && L(
+    return process.env.NODE_ENV !== "production" && $(
       `Set operation on key "${String(t)}" failed: target is readonly.`,
       n
     ), !0;
   }
   deleteProperty(n, t) {
-    return process.env.NODE_ENV !== "production" && L(
+    return process.env.NODE_ENV !== "production" && $(
       `Delete operation on key "${String(t)}" failed: target is readonly.`,
       n
     ), !0;
   }
 }
-const po = /* @__PURE__ */ new fo(), ho = /* @__PURE__ */ new dt(), go = /* @__PURE__ */ new dt(!0), ln = (e) => e, Oe = (e) => Reflect.getPrototypeOf(e);
+const po = /* @__PURE__ */ new fo(), ho = /* @__PURE__ */ new dt(), go = /* @__PURE__ */ new dt(!0), ln = (e) => e, Re = (e) => Reflect.getPrototypeOf(e);
 function yo(e, n, t) {
   return function(...o) {
-    const s = this.__v_raw, r = d(s), a = ue(r), i = e === "entries" || e === Symbol.iterator && a, c = e === "keys" && a, l = s[e](...o), p = t ? ln : n ? fn : v;
+    const s = this.__v_raw, r = d(s), a = ue(r), i = e === "entries" || e === Symbol.iterator && a, c = e === "keys" && a, l = s[e](...o), p = t ? ln : n ? fn : k;
     return !n && A(
       r,
       "iterate",
-      c ? cn : Y
+      c ? cn : Z
     ), {
       // iterator protocol
       next() {
@@ -647,11 +647,11 @@ function yo(e, n, t) {
     };
   };
 }
-function Re(e) {
+function Te(e) {
   return function(...n) {
     if (process.env.NODE_ENV !== "production") {
       const t = n[0] ? `on key "${n[0]}" ` : "";
-      L(
+      $(
         `${st(e)} operation ${t}failed: target is readonly.`,
         d(this)
       );
@@ -663,8 +663,8 @@ function mo(e, n) {
   const t = {
     get(s) {
       const r = this.__v_raw, a = d(r), i = d(s);
-      e || (G(s, i) && A(a, "get", s), A(a, "get", i));
-      const { has: c } = Oe(a), l = n ? ln : e ? fn : v;
+      e || (U(s, i) && A(a, "get", s), A(a, "get", i));
+      const { has: c } = Re(a), l = n ? ln : e ? fn : k;
       if (c.call(a, s))
         return l(r.get(s));
       if (c.call(a, i))
@@ -673,48 +673,48 @@ function mo(e, n) {
     },
     get size() {
       const s = this.__v_raw;
-      return !e && A(d(s), "iterate", Y), Reflect.get(s, "size", s);
+      return !e && A(d(s), "iterate", Z), Reflect.get(s, "size", s);
     },
     has(s) {
       const r = this.__v_raw, a = d(r), i = d(s);
-      return e || (G(s, i) && A(a, "has", s), A(a, "has", i)), s === i ? r.has(s) : r.has(s) || r.has(i);
+      return e || (U(s, i) && A(a, "has", s), A(a, "has", i)), s === i ? r.has(s) : r.has(s) || r.has(i);
     },
     forEach(s, r) {
-      const a = this, i = a.__v_raw, c = d(i), l = n ? ln : e ? fn : v;
-      return !e && A(c, "iterate", Y), i.forEach((p, u) => s.call(r, l(p), l(u), a));
+      const a = this, i = a.__v_raw, c = d(i), l = n ? ln : e ? fn : k;
+      return !e && A(c, "iterate", Z), i.forEach((p, u) => s.call(r, l(p), l(u), a));
     }
   };
   return O(
     t,
     e ? {
-      add: Re("add"),
-      set: Re("set"),
-      delete: Re("delete"),
-      clear: Re("clear")
+      add: Te("add"),
+      set: Te("set"),
+      delete: Te("delete"),
+      clear: Te("clear")
     } : {
       add(s) {
-        !n && !N(s) && !j(s) && (s = d(s));
+        !n && !w(s) && !B(s) && (s = d(s));
         const r = d(this);
-        return Oe(r).has.call(r, s) || (r.add(s), H(r, "add", s, s)), this;
+        return Re(r).has.call(r, s) || (r.add(s), K(r, "add", s, s)), this;
       },
       set(s, r) {
-        !n && !N(r) && !j(r) && (r = d(r));
-        const a = d(this), { has: i, get: c } = Oe(a);
+        !n && !w(r) && !B(r) && (r = d(r));
+        const a = d(this), { has: i, get: c } = Re(a);
         let l = i.call(a, s);
-        l ? process.env.NODE_ENV !== "production" && Ln(a, i, s) : (s = d(s), l = i.call(a, s));
+        l ? process.env.NODE_ENV !== "production" && $n(a, i, s) : (s = d(s), l = i.call(a, s));
         const p = c.call(a, s);
-        return a.set(s, r), l ? G(r, p) && H(a, "set", s, r, p) : H(a, "add", s, r), this;
+        return a.set(s, r), l ? U(r, p) && K(a, "set", s, r, p) : K(a, "add", s, r), this;
       },
       delete(s) {
-        const r = d(this), { has: a, get: i } = Oe(r);
+        const r = d(this), { has: a, get: i } = Re(r);
         let c = a.call(r, s);
-        c ? process.env.NODE_ENV !== "production" && Ln(r, a, s) : (s = d(s), c = a.call(r, s));
+        c ? process.env.NODE_ENV !== "production" && $n(r, a, s) : (s = d(s), c = a.call(r, s));
         const l = i ? i.call(r, s) : void 0, p = r.delete(s);
-        return c && H(r, "delete", s, void 0, l), p;
+        return c && K(r, "delete", s, void 0, l), p;
       },
       clear() {
         const s = d(this), r = s.size !== 0, a = process.env.NODE_ENV !== "production" ? ue(s) ? new Map(s) : new Set(s) : void 0, i = s.clear();
-        return r && H(
+        return r && K(
           s,
           "clear",
           void 0,
@@ -747,11 +747,11 @@ const Do = {
 }, Co = {
   get: /* @__PURE__ */ kn(!0, !0)
 };
-function Ln(e, n, t) {
+function $n(e, n, t) {
   const o = d(t);
   if (o !== t && n.call(e, o)) {
     const s = tt(e);
-    L(
+    $(
       `Reactive ${s} contains both the raw and reactive versions of the same object${s === "Map" ? " as keys" : ""}, which can lead to inconsistencies. Avoid differentiating between the raw and reactive versions of an object and only use the reactive version if possible.`
     );
   }
@@ -775,7 +775,7 @@ function Ao(e) {
   return e.__v_skip || !Object.isExtensible(e) ? 0 : Eo(tt(e));
 }
 function Dt(e) {
-  return j(e) ? e : vn(
+  return B(e) ? e : Nn(
     e,
     !1,
     po,
@@ -784,7 +784,7 @@ function Dt(e) {
   );
 }
 function Mt(e) {
-  return vn(
+  return Nn(
     e,
     !0,
     ho,
@@ -792,8 +792,8 @@ function Mt(e) {
     yt
   );
 }
-function Te(e) {
-  return vn(
+function Pe(e) {
+  return Nn(
     e,
     !0,
     go,
@@ -801,9 +801,9 @@ function Te(e) {
     mt
   );
 }
-function vn(e, n, t, o, s) {
-  if (!w(e))
-    return process.env.NODE_ENV !== "production" && L(
+function Nn(e, n, t, o, s) {
+  if (!N(e))
+    return process.env.NODE_ENV !== "production" && $(
       `value cannot be made ${n ? "readonly" : "reactive"}: ${String(
         e
       )}`
@@ -823,15 +823,15 @@ function vn(e, n, t, o, s) {
   return s.set(e, i), i;
 }
 function ce(e) {
-  return j(e) ? ce(e.__v_raw) : !!(e && e.__v_isReactive);
+  return B(e) ? ce(e.__v_raw) : !!(e && e.__v_isReactive);
 }
-function j(e) {
+function B(e) {
   return !!(e && e.__v_isReadonly);
 }
-function N(e) {
+function w(e) {
   return !!(e && e.__v_isShallow);
 }
-function Ae(e) {
+function ze(e) {
   return e ? !!e.__v_raw : !1;
 }
 function d(e) {
@@ -841,7 +841,7 @@ function d(e) {
 function zo(e) {
   return !E(e, "__v_skip") && Object.isExtensible(e) && Qt(e, "__v_skip", !0), e;
 }
-const v = (e) => w(e) ? Dt(e) : e, fn = (e) => w(e) ? Mt(e) : e;
+const k = (e) => N(e) ? Dt(e) : e, fn = (e) => N(e) ? Mt(e) : e;
 function S(e) {
   return e ? e.__v_isRef === !0 : !1;
 }
@@ -856,7 +856,7 @@ function Ct(e, n) {
 }
 class So {
   constructor(n, t) {
-    this.dep = new Sn(), this.__v_isRef = !0, this.__v_isShallow = !1, this._rawValue = t ? n : d(n), this._value = t ? n : v(n), this.__v_isShallow = t;
+    this.dep = new bn(), this.__v_isRef = !0, this.__v_isShallow = !1, this._rawValue = t ? n : d(n), this._value = t ? n : k(n), this.__v_isShallow = t;
   }
   get value() {
     return process.env.NODE_ENV !== "production" ? this.dep.track({
@@ -866,8 +866,8 @@ class So {
     }) : this.dep.track(), this._value;
   }
   set value(n) {
-    const t = this._rawValue, o = this.__v_isShallow || N(n) || j(n);
-    n = o ? n : d(n), G(n, t) && (this._rawValue = n, this._value = o ? n : v(n), process.env.NODE_ENV !== "production" ? this.dep.trigger({
+    const t = this._rawValue, o = this.__v_isShallow || w(n) || B(n);
+    n = o ? n : d(n), U(n, t) && (this._rawValue = n, this._value = o ? n : k(n), process.env.NODE_ENV !== "production" ? this.dep.trigger({
       target: this,
       type: "set",
       key: "value",
@@ -887,24 +887,24 @@ function Bs(e) {
 function bo(e) {
   return S(e) ? e.value : e;
 }
-const ko = {
+const vo = {
   get: (e, n, t) => n === "__v_raw" ? e : bo(Reflect.get(e, n, t)),
   set: (e, n, t, o) => {
     const s = e[n];
     return S(s) && !S(t) ? (s.value = t, !0) : Reflect.set(e, n, t, o);
   }
 };
-function vo(e) {
-  return ce(e) ? e : new Proxy(e, ko);
+function ko(e) {
+  return ce(e) ? e : new Proxy(e, vo);
 }
 function Hs(e) {
-  process.env.NODE_ENV !== "production" && !Ae(e) && L("toRefs() expects a reactive object but received a plain one.");
+  process.env.NODE_ENV !== "production" && !ze(e) && $("toRefs() expects a reactive object but received a plain one.");
   const n = D(e) ? new Array(e.length) : {};
   for (const t in e)
-    n[t] = No(e, t);
+    n[t] = wo(e, t);
   return n;
 }
-class wo {
+class No {
   constructor(n, t, o) {
     this._object = n, this._key = t, this._defaultValue = o, this.__v_isRef = !0, this._value = void 0;
   }
@@ -919,13 +919,13 @@ class wo {
     return ao(d(this._object), this._key);
   }
 }
-function No(e, n, t) {
+function wo(e, n, t) {
   const o = e[n];
-  return S(o) ? o : new wo(e, n, t);
+  return S(o) ? o : new No(e, n, t);
 }
 class Oo {
   constructor(n, t, o) {
-    this.fn = n, this.setter = t, this._value = void 0, this.dep = new Sn(this), this.__v_isRef = !0, this.deps = void 0, this.depsTail = void 0, this.flags = 16, this.globalVersion = _e - 1, this.next = void 0, this.effect = this, this.__v_isReadonly = !t, this.isSSR = o;
+    this.fn = n, this.setter = t, this._value = void 0, this.dep = new bn(this), this.__v_isRef = !0, this.deps = void 0, this.depsTail = void 0, this.flags = 16, this.globalVersion = Ee - 1, this.next = void 0, this.effect = this, this.__v_isReadonly = !t, this.isSSR = o;
   }
   /**
    * @internal
@@ -945,7 +945,7 @@ class Oo {
     return ct(this), n && (n.version = this.dep.version), this._value;
   }
   set value(n) {
-    this.setter ? this.setter(n) : process.env.NODE_ENV !== "production" && L("Write operation failed: computed value is readonly");
+    this.setter ? this.setter(n) : process.env.NODE_ENV !== "production" && $("Write operation failed: computed value is readonly");
   }
 }
 function Ro(e, n, t = !1) {
@@ -954,26 +954,26 @@ function Ro(e, n, t = !1) {
   const r = new Oo(o, s, t);
   return process.env.NODE_ENV, r;
 }
-const Pe = {}, Fe = /* @__PURE__ */ new WeakMap();
-let W;
-function To(e, n = !1, t = W) {
+const xe = {}, Fe = /* @__PURE__ */ new WeakMap();
+let Y;
+function To(e, n = !1, t = Y) {
   if (t) {
     let o = Fe.get(t);
     o || Fe.set(t, o = []), o.push(e);
-  } else process.env.NODE_ENV !== "production" && !n && L(
+  } else process.env.NODE_ENV !== "production" && !n && $(
     "onWatcherCleanup() was called when there was no active watcher to associate with."
   );
 }
-function Po(e, n, t = P) {
+function Po(e, n, t = x) {
   const { immediate: o, deep: s, once: r, scheduler: a, augmentJob: i, call: c } = t, l = (g) => {
-    (t.onWarn || L)(
+    (t.onWarn || $)(
       "Invalid watch source: ",
       g,
       "A watch source can only be a getter/effect function, a ref, a reactive object, or an array of these types."
     );
-  }, p = (g) => s ? g : N(g) || s === !1 || s === 0 ? K(g, 1) : K(g);
+  }, p = (g) => s ? g : w(g) || s === !1 || s === 0 ? G(g, 1) : G(g);
   let u, f, h, _, R = !1, we = !1;
-  if (S(e) ? (f = () => e.value, R = N(e)) : ce(e) ? (f = () => p(e), R = !0) : D(e) ? (we = !0, R = e.some((g) => ce(g) || N(g)), f = () => e.map((g) => {
+  if (S(e) ? (f = () => e.value, R = w(e)) : ce(e) ? (f = () => p(e), R = !0) : D(e) ? (we = !0, R = e.some((g) => ce(g) || w(g)), f = () => e.map((g) => {
     if (S(g))
       return g.value;
     if (ce(g))
@@ -987,51 +987,51 @@ function Po(e, n, t = P) {
       try {
         h();
       } finally {
-        ve();
+        Ne();
       }
     }
-    const g = W;
-    W = u;
+    const g = Y;
+    Y = u;
     try {
       return c ? c(e, 3, [_]) : e(_);
     } finally {
-      W = g;
+      Y = g;
     }
   } : (f = ie, process.env.NODE_ENV !== "production" && l(e)), n && s) {
-    const g = f, I = s === !0 ? 1 / 0 : s;
-    f = () => K(g(), I);
+    const g = f, V = s === !0 ? 1 / 0 : s;
+    f = () => G(g(), V);
   }
   const ee = () => {
     u.stop();
   };
   if (r && n) {
     const g = n;
-    n = (...I) => {
-      g(...I), ee();
+    n = (...V) => {
+      g(...V), ee();
     };
   }
-  let U = we ? new Array(e.length).fill(Pe) : Pe;
+  let J = we ? new Array(e.length).fill(xe) : xe;
   const fe = (g) => {
     if (!(!(u.flags & 1) || !u.dirty && !g))
       if (n) {
-        const I = u.run();
-        if (s || R || (we ? I.some((qe, Ne) => G(qe, U[Ne])) : G(I, U))) {
+        const V = u.run();
+        if (s || R || (we ? V.some((qe, Oe) => U(qe, J[Oe])) : U(V, J))) {
           h && h();
-          const qe = W;
-          W = u;
+          const qe = Y;
+          Y = u;
           try {
-            const Ne = [
-              I,
+            const Oe = [
+              V,
               // pass undefined as the old value when it's changed for the first time
-              U === Pe ? void 0 : we && U[0] === Pe ? [] : U,
+              J === xe ? void 0 : we && J[0] === xe ? [] : J,
               _
             ];
-            c ? c(n, 3, Ne) : (
+            c ? c(n, 3, Oe) : (
               // @ts-expect-error
-              n(...Ne)
-            ), U = I;
+              n(...Oe)
+            ), J = V;
           } finally {
-            W = qe;
+            Y = qe;
           }
         }
       } else
@@ -1043,28 +1043,28 @@ function Po(e, n, t = P) {
       if (c)
         c(g, 4);
       else
-        for (const I of g) I();
+        for (const V of g) V();
       Fe.delete(u);
     }
-  }, process.env.NODE_ENV !== "production" && (u.onTrack = t.onTrack, u.onTrigger = t.onTrigger), n ? o ? fe(!0) : U = u.run() : a ? a(fe.bind(null, !0), !0) : u.run(), ee.pause = u.pause.bind(u), ee.resume = u.resume.bind(u), ee.stop = ee, ee;
+  }, process.env.NODE_ENV !== "production" && (u.onTrack = t.onTrack, u.onTrigger = t.onTrigger), n ? o ? fe(!0) : J = u.run() : a ? a(fe.bind(null, !0), !0) : u.run(), ee.pause = u.pause.bind(u), ee.resume = u.resume.bind(u), ee.stop = ee, ee;
 }
-function K(e, n = 1 / 0, t) {
-  if (n <= 0 || !w(e) || e.__v_skip || (t = t || /* @__PURE__ */ new Set(), t.has(e)))
+function G(e, n = 1 / 0, t) {
+  if (n <= 0 || !N(e) || e.__v_skip || (t = t || /* @__PURE__ */ new Set(), t.has(e)))
     return e;
   if (t.add(e), n--, S(e))
-    K(e.value, n, t);
+    G(e.value, n, t);
   else if (D(e))
     for (let o = 0; o < e.length; o++)
-      K(e[o], n, t);
+      G(e[o], n, t);
   else if (Wt(e) || ue(e))
     e.forEach((o) => {
-      K(o, n, t);
+      G(o, n, t);
     });
   else if (qt(e)) {
     for (const o in e)
-      K(e[o], n, t);
+      G(e[o], n, t);
     for (const o of Object.getOwnPropertySymbols(e))
-      Object.prototype.propertyIsEnumerable.call(e, o) && K(e[o], n, t);
+      Object.prototype.propertyIsEnumerable.call(e, o) && G(e[o], n, t);
   }
   return e;
 }
@@ -1073,18 +1073,18 @@ function K(e, n = 1 / 0, t) {
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
-const q = [];
+const Q = [];
 function xo(e) {
-  q.push(e);
+  Q.push(e);
 }
 function Io() {
-  q.pop();
+  Q.pop();
 }
 let en = !1;
 function M(e, ...n) {
   if (en) return;
   en = !0, ke();
-  const t = q.length ? q[q.length - 1].component : null, o = t && t.appContext.config.warnHandler, s = Vo();
+  const t = Q.length ? Q[Q.length - 1].component : null, o = t && t.appContext.config.warnHandler, s = Vo();
   if (o)
     Je(
       o,
@@ -1109,10 +1109,10 @@ function M(e, ...n) {
     s.length && r.push(`
 `, ...Lo(s)), console.warn(...r);
   }
-  ve(), en = !1;
+  Ne(), en = !1;
 }
 function Vo() {
-  let e = q[q.length - 1];
+  let e = Q[Q.length - 1];
   if (!e)
     return [];
   const n = [];
@@ -1149,7 +1149,7 @@ function Fo(e) {
   }), t.length > 3 && n.push(" ..."), n;
 }
 function _t(e, n, t) {
-  return V(n) ? (n = JSON.stringify(n), t ? n : [`${e}=${n}`]) : typeof n == "number" || typeof n == "boolean" || n == null ? t ? n : [`${e}=${n}`] : S(n) ? (n = _t(e, d(n.value), !0), t ? n : [`${e}=Ref<`, n, ">"]) : z(n) ? [`${e}=fn${n.name ? `<${n.name}>` : ""}`] : (n = d(n), t ? n : [`${e}=`, n]);
+  return L(n) ? (n = JSON.stringify(n), t ? n : [`${e}=${n}`]) : typeof n == "number" || typeof n == "boolean" || n == null ? t ? n : [`${e}=${n}`] : S(n) ? (n = _t(e, d(n.value), !0), t ? n : [`${e}=Ref<`, n, ">"]) : z(n) ? [`${e}=fn${n.name ? `<${n.name}>` : ""}`] : (n = d(n), t ? n : [`${e}=`, n]);
 }
 const wn = {
   sp: "serverPrefetch hook",
@@ -1188,27 +1188,27 @@ function Je(e, n, t, o) {
   try {
     return o ? e(...o) : e();
   } catch (s) {
-    On(s, n, t);
+    Rn(s, n, t);
   }
 }
-function Nn(e, n, t, o) {
+function On(e, n, t, o) {
   if (z(e)) {
     const s = Je(e, n, t, o);
     return s && Jt(s) && s.catch((r) => {
-      On(r, n, t);
+      Rn(r, n, t);
     }), s;
   }
   if (D(e)) {
     const s = [];
     for (let r = 0; r < e.length; r++)
-      s.push(Nn(e[r], n, t, o));
+      s.push(On(e[r], n, t, o));
     return s;
   } else process.env.NODE_ENV !== "production" && M(
     `Invalid value type passed to callWithAsyncErrorHandling(): ${typeof e}`
   );
 }
-function On(e, n, t, o = !0) {
-  const s = n ? n.vnode : null, { errorHandler: r, throwUnhandledErrorInProduction: a } = n && n.appContext.config || P;
+function Rn(e, n, t, o = !0) {
+  const s = n ? n.vnode : null, { errorHandler: r, throwUnhandledErrorInProduction: a } = n && n.appContext.config || x;
   if (n) {
     let i = n.parent;
     const c = n.proxy, l = process.env.NODE_ENV !== "production" ? wn[t] : `https://vuejs.org/error-reference/#runtime-${t}`;
@@ -1226,7 +1226,7 @@ function On(e, n, t, o = !0) {
         e,
         c,
         l
-      ]), ve();
+      ]), Ne();
       return;
     }
   }
@@ -1245,9 +1245,9 @@ function jo(e, n, t, o = !0, s = !1) {
   }
 }
 const T = [];
-let F = -1;
+let j = -1;
 const le = [];
-let B = null, oe = 0;
+let H = null, oe = 0;
 const Et = /* @__PURE__ */ Promise.resolve();
 let je = null;
 const Bo = 100;
@@ -1256,49 +1256,49 @@ function Ho(e) {
   return e ? n.then(this ? e.bind(this) : e) : n;
 }
 function Ko(e) {
-  let n = F + 1, t = T.length;
+  let n = j + 1, t = T.length;
   for (; n < t; ) {
-    const o = n + t >>> 1, s = T[o], r = ze(s);
+    const o = n + t >>> 1, s = T[o], r = Se(s);
     r < e || r === e && s.flags & 2 ? n = o + 1 : t = o;
   }
   return n;
 }
-function Rn(e) {
+function Tn(e) {
   if (!(e.flags & 1)) {
-    const n = ze(e), t = T[T.length - 1];
+    const n = Se(e), t = T[T.length - 1];
     !t || // fast path when the job id is larger than the tail
-    !(e.flags & 2) && n >= ze(t) ? T.push(e) : T.splice(Ko(n), 0, e), e.flags |= 1, At();
+    !(e.flags & 2) && n >= Se(t) ? T.push(e) : T.splice(Ko(n), 0, e), e.flags |= 1, At();
   }
 }
 function At() {
   je || (je = Et.then(St));
 }
 function zt(e) {
-  D(e) ? le.push(...e) : B && e.id === -1 ? B.splice(oe + 1, 0, e) : e.flags & 1 || (le.push(e), e.flags |= 1), At();
+  D(e) ? le.push(...e) : H && e.id === -1 ? H.splice(oe + 1, 0, e) : e.flags & 1 || (le.push(e), e.flags |= 1), At();
 }
 function Go(e) {
   if (le.length) {
     const n = [...new Set(le)].sort(
-      (t, o) => ze(t) - ze(o)
+      (t, o) => Se(t) - Se(o)
     );
-    if (le.length = 0, B) {
-      B.push(...n);
+    if (le.length = 0, H) {
+      H.push(...n);
       return;
     }
-    for (B = n, process.env.NODE_ENV !== "production" && (e = e || /* @__PURE__ */ new Map()), oe = 0; oe < B.length; oe++) {
-      const t = B[oe];
+    for (H = n, process.env.NODE_ENV !== "production" && (e = e || /* @__PURE__ */ new Map()), oe = 0; oe < H.length; oe++) {
+      const t = H[oe];
       process.env.NODE_ENV !== "production" && bt(e, t) || (t.flags & 4 && (t.flags &= -2), t.flags & 8 || t(), t.flags &= -2);
     }
-    B = null, oe = 0;
+    H = null, oe = 0;
   }
 }
-const ze = (e) => e.id == null ? e.flags & 2 ? -1 : 1 / 0 : e.id;
+const Se = (e) => e.id == null ? e.flags & 2 ? -1 : 1 / 0 : e.id;
 function St(e) {
   process.env.NODE_ENV !== "production" && (e = e || /* @__PURE__ */ new Map());
   const n = process.env.NODE_ENV !== "production" ? (t) => bt(e, t) : ie;
   try {
-    for (F = 0; F < T.length; F++) {
-      const t = T[F];
+    for (j = 0; j < T.length; j++) {
+      const t = T[j];
       if (t && !(t.flags & 8)) {
         if (process.env.NODE_ENV !== "production" && n(t))
           continue;
@@ -1310,18 +1310,18 @@ function St(e) {
       }
     }
   } finally {
-    for (; F < T.length; F++) {
-      const t = T[F];
+    for (; j < T.length; j++) {
+      const t = T[j];
       t && (t.flags &= -2);
     }
-    F = -1, T.length = 0, Go(e), je = null, (T.length || le.length) && St(e);
+    j = -1, T.length = 0, Go(e), je = null, (T.length || le.length) && St(e);
   }
 }
 function bt(e, n) {
   const t = e.get(n) || 0;
   if (t > Bo) {
     const o = n.i, s = o && Vt(o.type);
-    return On(
+    return Rn(
       `Maximum recursive updates exceeded${s ? ` in component <${s}>` : ""}. This means you have a reactive effect that is mutating its own dependencies and thus recursively triggering itself. Possible sources include component template, render function, updated hook or watcher source function.`,
       null,
       10
@@ -1354,12 +1354,12 @@ function Wo(e, n) {
 function Jo(e, n) {
   const t = Be.get(e);
   if (!t) return;
-  n = He(n), $n(t.initialDef, n);
+  n = He(n), Fn(t.initialDef, n);
   const o = [...t.instances];
   for (let s = 0; s < o.length; s++) {
     const r = o[s], a = He(r.type);
     let i = nn.get(a);
-    i || (a !== t.initialDef && $n(a, n), nn.set(a, i = /* @__PURE__ */ new Set())), i.add(r), r.appContext.propsCache.delete(r.type), r.appContext.emitsCache.delete(r.type), r.appContext.optionsCache.delete(r.type), r.ceReload ? (i.add(r), r.ceReload(n.styles), i.delete(r)) : r.parent ? Rn(() => {
+    i || (a !== t.initialDef && Fn(a, n), nn.set(a, i = /* @__PURE__ */ new Set())), i.add(r), r.appContext.propsCache.delete(r.type), r.appContext.emitsCache.delete(r.type), r.appContext.optionsCache.delete(r.type), r.ceReload ? (i.add(r), r.ceReload(n.styles), i.delete(r)) : r.parent ? Tn(() => {
       r.parent.update(), i.delete(r);
     }) : r.appContext.reload ? r.appContext.reload() : typeof window < "u" ? window.location.reload() : console.warn(
       "[HMR] Root or manually mounted instance modified. Full reload required."
@@ -1369,7 +1369,7 @@ function Jo(e, n) {
     nn.clear();
   });
 }
-function $n(e, n) {
+function Fn(e, n) {
   O(e, n);
   for (const t in e)
     t !== "__file" && !(t in n) && delete e[t];
@@ -1385,31 +1385,31 @@ function tn(e) {
     }
   };
 }
-let se, xe = [];
-function kt(e, n) {
+let se, Ie = [];
+function vt(e, n) {
   var t, o;
-  se = e, se ? (se.enabled = !0, xe.forEach(({ event: s, args: r }) => se.emit(s, ...r)), xe = []) : /* handle late devtools injection - only do this if we are in an actual */ /* browser environment to avoid the timer handle stalling test runner exit */ /* (#4815) */ typeof window < "u" && // some envs mock window but not fully
+  se = e, se ? (se.enabled = !0, Ie.forEach(({ event: s, args: r }) => se.emit(s, ...r)), Ie = []) : /* handle late devtools injection - only do this if we are in an actual */ /* browser environment to avoid the timer handle stalling test runner exit */ /* (#4815) */ typeof window < "u" && // some envs mock window but not fully
   window.HTMLElement && // also exclude jsdom
   // eslint-disable-next-line no-restricted-syntax
   !((o = (t = window.navigator) == null ? void 0 : t.userAgent) != null && o.includes("jsdom")) ? ((n.__VUE_DEVTOOLS_HOOK_REPLAY__ = n.__VUE_DEVTOOLS_HOOK_REPLAY__ || []).push((r) => {
-    kt(r, n);
+    vt(r, n);
   }), setTimeout(() => {
-    se || (n.__VUE_DEVTOOLS_HOOK_REPLAY__ = null, xe = []);
-  }, 3e3)) : xe = [];
+    se || (n.__VUE_DEVTOOLS_HOOK_REPLAY__ = null, Ie = []);
+  }, 3e3)) : Ie = [];
 }
-let Z = null, Yo = null;
+let X = null, Yo = null;
 const qo = (e) => e.__isTeleport;
-function vt(e, n) {
-  e.shapeFlag & 6 && e.component ? (e.transition = n, vt(e.component.subTree, n)) : e.shapeFlag & 128 ? (e.ssContent.transition = n.clone(e.ssContent), e.ssFallback.transition = n.clone(e.ssFallback)) : e.transition = n;
+function kt(e, n) {
+  e.shapeFlag & 6 && e.component ? (e.transition = n, kt(e.component.subTree, n)) : e.shapeFlag & 128 ? (e.ssContent.transition = n.clone(e.ssContent), e.ssFallback.transition = n.clone(e.ssFallback)) : e.transition = n;
 }
 We().requestIdleCallback;
 We().cancelIdleCallback;
-function Zo(e, n, t = X, o = !1) {
+function Zo(e, n, t = P, o = !1) {
   if (t) {
     const s = t[e] || (t[e] = []), r = n.__weh || (n.__weh = (...a) => {
       ke();
-      const i = It(t), c = Nn(n, t, e, a);
-      return i(), ve(), c;
+      const i = It(t), c = On(n, t, e, a);
+      return i(), Ne(), c;
     });
     return o ? s.unshift(r) : s.push(r), r;
   } else if (process.env.NODE_ENV !== "production") {
@@ -1419,31 +1419,31 @@ function Zo(e, n, t = X, o = !1) {
     );
   }
 }
-const Qo = (e) => (n, t = X) => {
-  (!Se || e === "sp") && Zo(e, (...o) => n(...o), t);
-}, Ks = Qo("um"), Xo = Symbol.for("v-ndc"), pn = (e) => e ? Es(e) ? Ss(e) : pn(e.parent) : null, me = (
+const Qo = (e) => (n, t = P) => {
+  (!be || e === "sp") && Zo(e, (...o) => n(...o), t);
+}, Ks = Qo("um"), Xo = Symbol.for("v-ndc"), pn = (e) => e ? Es(e) ? Ss(e) : pn(e.parent) : null, De = (
   // Move PURE marker to new line to workaround compiler discarding it
   // due to type annotation
   /* @__PURE__ */ O(/* @__PURE__ */ Object.create(null), {
     $: (e) => e,
     $el: (e) => e.vnode.el,
     $data: (e) => e.data,
-    $props: (e) => process.env.NODE_ENV !== "production" ? Te(e.props) : e.props,
-    $attrs: (e) => process.env.NODE_ENV !== "production" ? Te(e.attrs) : e.attrs,
-    $slots: (e) => process.env.NODE_ENV !== "production" ? Te(e.slots) : e.slots,
-    $refs: (e) => process.env.NODE_ENV !== "production" ? Te(e.refs) : e.refs,
+    $props: (e) => process.env.NODE_ENV !== "production" ? Pe(e.props) : e.props,
+    $attrs: (e) => process.env.NODE_ENV !== "production" ? Pe(e.attrs) : e.attrs,
+    $slots: (e) => process.env.NODE_ENV !== "production" ? Pe(e.slots) : e.slots,
+    $refs: (e) => process.env.NODE_ENV !== "production" ? Pe(e.refs) : e.refs,
     $parent: (e) => pn(e.parent),
     $root: (e) => pn(e.root),
     $host: (e) => e.ce,
     $emit: (e) => e.emit,
     $options: (e) => ns(e),
     $forceUpdate: (e) => e.f || (e.f = () => {
-      Rn(e.update);
+      Tn(e.update);
     }),
     $nextTick: (e) => e.n || (e.n = Ho.bind(e.proxy)),
     $watch: (e) => fs.bind(e)
   })
-), on = (e, n) => e !== P && !e.__isScriptSetup && E(e, n), es = {
+), on = (e, n) => e !== x && !e.__isScriptSetup && E(e, n), es = {
   get({ _: e }, n) {
     if (n === "__v_skip")
       return !0;
@@ -1467,7 +1467,7 @@ const Qo = (e) => (n, t = X) => {
       else {
         if (on(o, n))
           return a[n] = 1, o[n];
-        if (s !== P && E(s, n))
+        if (s !== x && E(s, n))
           return a[n] = 2, s[n];
         if (
           // only cache other properties when instance has declared (thus stable)
@@ -1475,12 +1475,12 @@ const Qo = (e) => (n, t = X) => {
           (l = e.propsOptions[0]) && E(l, n)
         )
           return a[n] = 3, r[n];
-        if (t !== P && E(t, n))
+        if (t !== x && E(t, n))
           return a[n] = 4, t[n];
         a[n] = 0;
       }
     }
-    const p = me[n];
+    const p = De[n];
     let u, f;
     if (p)
       return n === "$attrs" ? (A(e.attrs, "get", ""), process.env.NODE_ENV !== "production" && void 0) : process.env.NODE_ENV !== "production" && n === "$slots" && A(e, "get", n), p(e);
@@ -1489,7 +1489,7 @@ const Qo = (e) => (n, t = X) => {
       (u = i.__cssModules) && (u = u[n])
     )
       return u;
-    if (t !== P && E(t, n))
+    if (t !== x && E(t, n))
       return a[n] = 4, t[n];
     if (
       // global properties
@@ -1500,7 +1500,7 @@ const Qo = (e) => (n, t = X) => {
   },
   set({ _: e }, n, t) {
     const { data: o, setupState: s, ctx: r } = e;
-    return on(s, n) ? (s[n] = t, !0) : process.env.NODE_ENV !== "production" && s.__isScriptSetup && E(s, n) ? (M(`Cannot mutate <script setup> binding "${n}" from Options API.`), !1) : o !== P && E(o, n) ? (o[n] = t, !0) : E(e.props, n) ? (process.env.NODE_ENV !== "production" && M(`Attempting to mutate prop "${n}". Props are readonly.`), !1) : n[0] === "$" && n.slice(1) in e ? (process.env.NODE_ENV !== "production" && M(
+    return on(s, n) ? (s[n] = t, !0) : process.env.NODE_ENV !== "production" && s.__isScriptSetup && E(s, n) ? (M(`Cannot mutate <script setup> binding "${n}" from Options API.`), !1) : o !== x && E(o, n) ? (o[n] = t, !0) : E(e.props, n) ? (process.env.NODE_ENV !== "production" && M(`Attempting to mutate prop "${n}". Props are readonly.`), !1) : n[0] === "$" && n.slice(1) in e ? (process.env.NODE_ENV !== "production" && M(
       `Attempting to mutate public property "${n}". Properties starting with $ are reserved and readonly.`
     ), !1) : (process.env.NODE_ENV !== "production" && n in e.appContext.config.globalProperties ? Object.defineProperty(r, n, {
       enumerable: !0,
@@ -1512,7 +1512,7 @@ const Qo = (e) => (n, t = X) => {
     _: { data: e, setupState: n, accessCache: t, ctx: o, appContext: s, propsOptions: r }
   }, a) {
     let i;
-    return !!t[a] || e !== P && E(e, a) || on(n, a) || (i = r[0]) && E(i, a) || E(o, a) || E(me, a) || E(s.config.globalProperties, a);
+    return !!t[a] || e !== x && E(e, a) || on(n, a) || (i = r[0]) && E(i, a) || E(o, a) || E(De, a) || E(s.config.globalProperties, a);
   },
   defineProperty(e, n, t) {
     return t.get != null ? e._.accessCache[n] = 0 : E(t, "value") && this.set(e, n, t.value, null), Reflect.defineProperty(e, n, t);
@@ -1522,16 +1522,16 @@ process.env.NODE_ENV !== "production" && (es.ownKeys = (e) => (M(
   "Avoid app logic that relies on enumerating keys on a component instance. The keys will be empty in production mode to avoid performance overhead."
 ), Reflect.ownKeys(e)));
 function Gs() {
-  return wt().slots;
+  return Nt().slots;
 }
 function Us() {
-  return wt().attrs;
+  return Nt().attrs;
 }
-function wt() {
+function Nt() {
   const e = xt();
   return process.env.NODE_ENV !== "production" && !e && M("useContext() called without active instance."), e.setupContext || (e.setupContext = zs(e));
 }
-function Fn(e) {
+function jn(e) {
   return D(e) ? e.reduce(
     (n, t) => (n[t] = null, n),
     {}
@@ -1546,7 +1546,7 @@ function ns(e) {
   let c;
   return i ? c = i : !s.length && !t && !o ? c = n : (c = {}, s.length && s.forEach(
     (l) => Ke(c, l, a, !0)
-  ), Ke(c, n, a)), w(n) && r.set(n, c), c;
+  ), Ke(c, n, a)), N(n) && r.set(n, c), c;
 }
 function Ke(e, n, t, o = !1) {
   const { mixins: s, extends: r } = n;
@@ -1565,12 +1565,12 @@ function Ke(e, n, t, o = !1) {
   return e;
 }
 const ts = {
-  data: jn,
-  props: Hn,
-  emits: Hn,
+  data: Bn,
+  props: Kn,
+  emits: Kn,
   // objects
-  methods: he,
-  computed: he,
+  methods: de,
+  computed: de,
   // lifecycle
   beforeCreate: b,
   created: b,
@@ -1587,15 +1587,15 @@ const ts = {
   errorCaptured: b,
   serverPrefetch: b,
   // assets
-  components: he,
-  directives: he,
+  components: de,
+  directives: de,
   // watch
   watch: ss,
   // provide / inject
-  provide: jn,
+  provide: Bn,
   inject: os
 };
-function jn(e, n) {
+function Bn(e, n) {
   return n ? e ? function() {
     return O(
       z(e) ? e.call(this, this) : e,
@@ -1604,9 +1604,9 @@ function jn(e, n) {
   } : n : e;
 }
 function os(e, n) {
-  return he(Bn(e), Bn(n));
+  return de(Hn(e), Hn(n));
 }
-function Bn(e) {
+function Hn(e) {
   if (D(e)) {
     const n = {};
     for (let t = 0; t < e.length; t++)
@@ -1618,14 +1618,14 @@ function Bn(e) {
 function b(e, n) {
   return e ? [...new Set([].concat(e, n))] : n;
 }
-function he(e, n) {
+function de(e, n) {
   return e ? O(/* @__PURE__ */ Object.create(null), e, n) : n;
 }
-function Hn(e, n) {
+function Kn(e, n) {
   return e ? D(e) && D(n) ? [.../* @__PURE__ */ new Set([...e, ...n])] : O(
     /* @__PURE__ */ Object.create(null),
-    Fn(e),
-    Fn(n ?? {})
+    jn(e),
+    jn(n ?? {})
   ) : n;
 }
 function ss(e, n) {
@@ -1637,8 +1637,17 @@ function ss(e, n) {
   return t;
 }
 let rs = null;
+function Ws(e, n) {
+  if (!P)
+    process.env.NODE_ENV !== "production" && M("provide() can only be used inside setup().");
+  else {
+    let t = P.provides;
+    const o = P.parent && P.parent.provides;
+    o === t && (t = P.provides = Object.create(o)), t[e] = n;
+  }
+}
 function as(e, n, t = !1) {
-  const o = X || Z;
+  const o = P || X;
   if (o || rs) {
     const s = o ? o.parent == null ? o.vnode.appContext && o.vnode.appContext.provides : o.parent.provides : void 0;
     if (s && e in s)
@@ -1648,7 +1657,7 @@ function as(e, n, t = !1) {
     process.env.NODE_ENV !== "production" && M(`injection "${String(e)}" not found.`);
   } else process.env.NODE_ENV !== "production" && M("inject() can only be used inside setup() or functional components.");
 }
-const is = {}, Nt = (e) => Object.getPrototypeOf(e) === is, us = ds, cs = Symbol.for("v-scx"), ls = () => {
+const is = {}, wt = (e) => Object.getPrototypeOf(e) === is, us = ds, cs = Symbol.for("v-scx"), ls = () => {
   {
     const e = as(cs);
     return e || process.env.NODE_ENV !== "production" && M(
@@ -1656,15 +1665,15 @@ const is = {}, Nt = (e) => Object.getPrototypeOf(e) === is, us = ds, cs = Symbol
     ), e;
   }
 };
-function Ws(e, n) {
-  return Tn(e, null, n);
+function Js(e, n) {
+  return Pn(e, null, n);
 }
-function Js(e, n, t) {
+function Ys(e, n, t) {
   return process.env.NODE_ENV !== "production" && !z(n) && M(
     "`watch(fn, options?)` signature has been moved to a separate API. Use `watchEffect(fn, options?)` instead. `watch` now only supports `watch(source, cb, options?) signature."
-  ), Tn(e, n, t);
+  ), Pn(e, n, t);
 }
-function Tn(e, n, t = P) {
+function Pn(e, n, t = x) {
   const { immediate: o, deep: s, flush: r, once: a } = t;
   process.env.NODE_ENV !== "production" && !n && (o !== void 0 && M(
     'watch() "immediate" option is only respected when using the watch(source, callback, options?) signature.'
@@ -1677,7 +1686,7 @@ function Tn(e, n, t = P) {
   process.env.NODE_ENV !== "production" && (i.onWarn = M);
   const c = n && o || !n && r !== "post";
   let l;
-  if (Se) {
+  if (be) {
     if (r === "sync") {
       const h = ls();
       l = h.__watcherHandles || (h.__watcherHandles = []);
@@ -1687,24 +1696,24 @@ function Tn(e, n, t = P) {
       return h.stop = ie, h.resume = ie, h.pause = ie, h;
     }
   }
-  const p = X;
-  i.call = (h, _, R) => Nn(h, p, _, R);
+  const p = P;
+  i.call = (h, _, R) => On(h, p, _, R);
   let u = !1;
   r === "post" ? i.scheduler = (h) => {
     us(h, p && p.suspense);
   } : r !== "sync" && (u = !0, i.scheduler = (h, _) => {
-    _ ? h() : Rn(h);
+    _ ? h() : Tn(h);
   }), i.augmentJob = (h) => {
     n && (h.flags |= 4), u && (h.flags |= 2, p && (h.id = p.uid, h.i = p));
   };
   const f = Po(e, n, i);
-  return Se && (l ? l.push(f) : c && f()), f;
+  return be && (l ? l.push(f) : c && f()), f;
 }
 function fs(e, n, t) {
-  const o = this.proxy, s = V(e) ? e.includes(".") ? ps(o, e) : () => o[e] : e.bind(o, o);
+  const o = this.proxy, s = L(e) ? e.includes(".") ? ps(o, e) : () => o[e] : e.bind(o, o);
   let r;
   z(n) ? r = n : (r = n.handler, t = n);
-  const a = It(this), i = Tn(s, r.bind(o), t);
+  const a = It(this), i = Pn(s, r.bind(o), t);
   return a(), i;
 }
 function ps(e, n) {
@@ -1731,7 +1740,7 @@ const ms = (...e) => Tt(
   ref: e,
   ref_key: n,
   ref_for: t
-}) => (typeof e == "number" && (e = "" + e), e != null ? V(e) || S(e) || z(e) ? { i: Z, r: e, k: n, f: !!t } : e : null);
+}) => (typeof e == "number" && (e = "" + e), e != null ? L(e) || S(e) || z(e) ? { i: X, r: e, k: n, f: !!t } : e : null);
 function Ds(e, n = null, t = null, o = 0, s = null, r = e === Ot ? 0 : 1, a = !1, i = !1) {
   const c = {
     __v_isVNode: !0,
@@ -1760,9 +1769,9 @@ function Ds(e, n = null, t = null, o = 0, s = null, r = e === Ot ? 0 : 1, a = !1
     dynamicProps: s,
     dynamicChildren: null,
     appContext: null,
-    ctx: Z
+    ctx: X
   };
-  return i ? (Pn(c, t), r & 128 && e.normalize(c)) : t && (c.shapeFlag |= V(t) ? 8 : 16), process.env.NODE_ENV !== "production" && c.key !== c.key && M("VNode created with invalid key (NaN). VNode type:", c.type), // avoid a block node from tracking itself
+  return i ? (xn(c, t), r & 128 && e.normalize(c)) : t && (c.shapeFlag |= L(t) ? 8 : 16), process.env.NODE_ENV !== "production" && c.key !== c.key && M("VNode created with invalid key (NaN). VNode type:", c.type), // avoid a block node from tracking itself
   !a && // has current parent block
   re && // presence of a patch flag indicates this node needs patching on updates.
   // component nodes also should always be patched, because even if the
@@ -1772,7 +1781,7 @@ function Ds(e, n = null, t = null, o = 0, s = null, r = e === Ot ? 0 : 1, a = !1
   // vnode should not be considered dynamic due to handler caching.
   c.patchFlag !== 32 && re.push(c), c;
 }
-const de = process.env.NODE_ENV !== "production" ? ms : Tt;
+const ge = process.env.NODE_ENV !== "production" ? ms : Tt;
 function Tt(e, n = null, t = null, o = 0, s = null, r = !1) {
   if ((!e || e === Xo) && (process.env.NODE_ENV !== "production" && !e && M(`Invalid vnode type when creating vnode: ${e}.`), e = ys), hn(e)) {
     const i = Ge(
@@ -1781,15 +1790,15 @@ function Tt(e, n = null, t = null, o = 0, s = null, r = !1) {
       !0
       /* mergeRef: true */
     );
-    return t && Pn(i, t), !r && re && (i.shapeFlag & 6 ? re[re.indexOf(e)] = i : re.push(i)), i.patchFlag = -2, i;
+    return t && xn(i, t), !r && re && (i.shapeFlag & 6 ? re[re.indexOf(e)] = i : re.push(i)), i.patchFlag = -2, i;
   }
   if ($t(e) && (e = e.__vccOpts), n) {
     n = Ms(n);
     let { class: i, style: c } = n;
-    i && !V(i) && (n.class = _n(i)), w(c) && (Ae(c) && !D(c) && (c = O({}, c)), n.style = Cn(c));
+    i && !L(i) && (n.class = En(i)), N(c) && (ze(c) && !D(c) && (c = O({}, c)), n.style = _n(c));
   }
-  const a = V(e) ? 1 : hs(e) ? 128 : qo(e) ? 64 : w(e) ? 4 : z(e) ? 2 : 0;
-  return process.env.NODE_ENV !== "production" && a & 4 && Ae(e) && (e = d(e), M(
+  const a = L(e) ? 1 : hs(e) ? 128 : qo(e) ? 64 : N(e) ? 4 : z(e) ? 2 : 0;
+  return process.env.NODE_ENV !== "production" && a & 4 && ze(e) && (e = d(e), M(
     "Vue received a Component that was made a reactive object. This can lead to unnecessary performance overhead and should be avoided by marking the component with `markRaw` or using `shallowRef` instead of `ref`.",
     `
 Component that was made reactive: `,
@@ -1806,7 +1815,7 @@ Component that was made reactive: `,
   );
 }
 function Ms(e) {
-  return e ? Ae(e) || Nt(e) ? O({}, e) : e : null;
+  return e ? ze(e) || wt(e) ? O({}, e) : e : null;
 }
 function Ge(e, n, t = !1, o = !1) {
   const { props: s, ref: r, patchFlag: a, children: i, transition: c } = e, l = n ? _s(s || {}, n) : s, p = {
@@ -1852,7 +1861,7 @@ function Ge(e, n, t = !1, o = !1) {
     ctx: e.ctx,
     ce: e.ce
   };
-  return c && o && vt(
+  return c && o && kt(
     p,
     c.clone(p)
   ), p;
@@ -1862,9 +1871,9 @@ function Pt(e) {
   return D(e.children) && (n.children = e.children.map(Pt)), n;
 }
 function Cs(e = " ", n = 0) {
-  return de(gs, null, e, n);
+  return ge(gs, null, e, n);
 }
-function Pn(e, n) {
+function xn(e, n) {
   let t = 0;
   const { shapeFlag: o } = e;
   if (n == null)
@@ -1874,11 +1883,11 @@ function Pn(e, n) {
   else if (typeof n == "object")
     if (o & 65) {
       const s = n.default;
-      s && (s._c && (s._d = !1), Pn(e, s()), s._c && (s._d = !0));
+      s && (s._c && (s._d = !1), xn(e, s()), s._c && (s._d = !0));
       return;
     } else
-      t = 32, !n._ && !Nt(n) && (n._ctx = Z);
-  else z(n) ? (n = { default: n, _ctx: Z }, t = 32) : (n = String(n), o & 64 ? (t = 16, n = [Cs(n)]) : t = 8);
+      t = 32, !n._ && !wt(n) && (n._ctx = X);
+  else z(n) ? (n = { default: n, _ctx: X }, t = 32) : (n = String(n), o & 64 ? (t = 16, n = [Cs(n)]) : t = 8);
   e.children = n, e.shapeFlag |= t;
 }
 function _s(...e) {
@@ -1887,9 +1896,9 @@ function _s(...e) {
     const o = e[t];
     for (const s in o)
       if (s === "class")
-        n.class !== o.class && (n.class = _n([n.class, o.class]));
+        n.class !== o.class && (n.class = En([n.class, o.class]));
       else if (s === "style")
-        n.style = Cn([n.style, o.style]);
+        n.style = _n([n.style, o.style]);
       else if (Gt(s)) {
         const r = n[s], a = o[s];
         a && r !== a && !(D(r) && r.includes(a)) && (n[s] = r ? [].concat(r, a) : a);
@@ -1897,8 +1906,8 @@ function _s(...e) {
   }
   return n;
 }
-let X = null;
-const xt = () => X || Z;
+let P = null;
+const xt = () => P || X;
 let dn;
 {
   const e = We(), n = (t, o) => {
@@ -1909,14 +1918,14 @@ let dn;
   };
   dn = n(
     "__VUE_INSTANCE_SETTERS__",
-    (t) => X = t
+    (t) => P = t
   ), n(
     "__VUE_SSR_SETTERS__",
-    (t) => Se = t
+    (t) => be = t
   );
 }
 const It = (e) => {
-  const n = X;
+  const n = P;
   return dn(e), e.scope.on(), () => {
     e.scope.off(), dn(n);
   };
@@ -1924,8 +1933,8 @@ const It = (e) => {
 function Es(e) {
   return e.vnode.shapeFlag & 4;
 }
-let Se = !1;
-const Kn = process.env.NODE_ENV !== "production" ? {
+let be = !1;
+const Gn = process.env.NODE_ENV !== "production" ? {
   get(e, n) {
     return A(e, "get", ""), e[n];
   },
@@ -1961,7 +1970,7 @@ function zs(e) {
     let t, o;
     return Object.freeze({
       get attrs() {
-        return t || (t = new Proxy(e.attrs, Kn));
+        return t || (t = new Proxy(e.attrs, Gn));
       },
       get slots() {
         return o || (o = As(e));
@@ -1973,26 +1982,26 @@ function zs(e) {
     });
   } else
     return {
-      attrs: new Proxy(e.attrs, Kn),
+      attrs: new Proxy(e.attrs, Gn),
       slots: e.slots,
       emit: e.emit,
       expose: n
     };
 }
 function Ss(e) {
-  return e.exposed ? e.exposeProxy || (e.exposeProxy = new Proxy(vo(zo(e.exposed)), {
+  return e.exposed ? e.exposeProxy || (e.exposeProxy = new Proxy(ko(zo(e.exposed)), {
     get(n, t) {
       if (t in n)
         return n[t];
-      if (t in me)
-        return me[t](e);
+      if (t in De)
+        return De[t](e);
     },
     has(n, t) {
-      return t in n || t in me;
+      return t in n || t in De;
     }
   })) : e.proxy;
 }
-const bs = /(?:^|[-_])(\w)/g, ks = (e) => e.replace(bs, (n) => n.toUpperCase()).replace(/[-_]/g, "");
+const bs = /(?:^|[-_])(\w)/g, vs = (e) => e.replace(bs, (n) => n.toUpperCase()).replace(/[-_]/g, "");
 function Vt(e, n = !0) {
   return z(e) ? e.displayName || e.name : e.name || n && e.__name;
 }
@@ -2012,30 +2021,30 @@ function Lt(e, n, t = !1) {
       e.components || e.parent.type.components
     ) || s(e.appContext.components);
   }
-  return o ? ks(o) : t ? "App" : "Anonymous";
+  return o ? vs(o) : t ? "App" : "Anonymous";
 }
 function $t(e) {
   return z(e) && "__vccOpts" in e;
 }
-const Ys = (e, n) => {
-  const t = Ro(e, n, Se);
+const qs = (e, n) => {
+  const t = Ro(e, n, be);
   if (process.env.NODE_ENV !== "production") {
     const o = xt();
     o && o.appContext.config.warnRecursiveComputed && (t._warnRecursive = !0);
   }
   return t;
 };
-function qs(e, n, t) {
+function Zs(e, n, t) {
   const o = arguments.length;
-  return o === 2 ? w(n) && !D(n) ? hn(n) ? de(e, null, [n]) : de(e, n) : de(e, null, n) : (o > 3 ? t = Array.prototype.slice.call(arguments, 2) : o === 3 && hn(t) && (t = [t]), de(e, n, t));
+  return o === 2 ? N(n) && !D(n) ? hn(n) ? ge(e, null, [n]) : ge(e, n) : ge(e, null, n) : (o > 3 ? t = Array.prototype.slice.call(arguments, 2) : o === 3 && hn(t) && (t = [t]), ge(e, n, t));
 }
-function vs() {
+function ks() {
   if (process.env.NODE_ENV === "production" || typeof window > "u")
     return;
   const e = { style: "color:#3ba776" }, n = { style: "color:#1677ff" }, t = { style: "color:#f5222d" }, o = { style: "color:#eb2f96" }, s = {
     __vue_custom_formatter: !0,
     header(u) {
-      return w(u) ? u.__isVue ? ["div", e, "VueInstance"] : S(u) ? [
+      return N(u) ? u.__isVue ? ["div", e, "VueInstance"] : S(u) ? [
         "div",
         {},
         ["span", e, p(u)],
@@ -2046,14 +2055,14 @@ function vs() {
       ] : ce(u) ? [
         "div",
         {},
-        ["span", e, N(u) ? "ShallowReactive" : "Reactive"],
+        ["span", e, w(u) ? "ShallowReactive" : "Reactive"],
         "<",
         i(u),
-        `>${j(u) ? " (readonly)" : ""}`
-      ] : j(u) ? [
+        `>${B(u) ? " (readonly)" : ""}`
+      ] : B(u) ? [
         "div",
         {},
-        ["span", e, N(u) ? "ShallowReadonly" : "Readonly"],
+        ["span", e, w(u) ? "ShallowReadonly" : "Readonly"],
         "<",
         i(u),
         ">"
@@ -2073,7 +2082,7 @@ function vs() {
   };
   function r(u) {
     const f = [];
-    u.type.props && u.props && f.push(a("props", d(u.props))), u.setupState !== P && f.push(a("setup", u.setupState)), u.data !== P && f.push(a("data", d(u.data)));
+    u.type.props && u.props && f.push(a("props", d(u.props))), u.setupState !== x && f.push(a("setup", u.setupState)), u.data !== x && f.push(a("data", d(u.data)));
     const h = c(u, "computed");
     h && f.push(a("computed", h));
     const _ = c(u, "inject");
@@ -2116,7 +2125,7 @@ function vs() {
     ] : ["span", {}];
   }
   function i(u, f = !0) {
-    return typeof u == "number" ? ["span", n, u] : typeof u == "string" ? ["span", t, JSON.stringify(u)] : typeof u == "boolean" ? ["span", o, u] : w(u) ? ["object", { object: f ? d(u) : u }] : ["span", t, String(u)];
+    return typeof u == "number" ? ["span", n, u] : typeof u == "string" ? ["span", t, JSON.stringify(u)] : typeof u == "boolean" ? ["span", o, u] : N(u) ? ["object", { object: f ? d(u) : u }] : ["span", t, String(u)];
   }
   function c(u, f) {
     const h = u.type;
@@ -2129,11 +2138,11 @@ function vs() {
   }
   function l(u, f, h) {
     const _ = u[h];
-    if (D(_) && _.includes(f) || w(_) && f in _ || u.extends && l(u.extends, f, h) || u.mixins && u.mixins.some((R) => l(R, f, h)))
+    if (D(_) && _.includes(f) || N(_) && f in _ || u.extends && l(u.extends, f, h) || u.mixins && u.mixins.some((R) => l(R, f, h)))
       return !0;
   }
   function p(u) {
-    return N(u) ? "ShallowRef" : u.effect ? "ComputedRef" : "Ref";
+    return w(u) ? "ShallowRef" : u.effect ? "ComputedRef" : "Ref";
   }
   window.devtoolsFormatters ? window.devtoolsFormatters.push(s) : window.devtoolsFormatters = [s];
 }
@@ -2145,26 +2154,26 @@ process.env.NODE_ENV;
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
-function ws() {
-  vs();
+function Ns() {
+  ks();
 }
-process.env.NODE_ENV !== "production" && ws();
+process.env.NODE_ENV !== "production" && Ns();
 function sn(e) {
   return S(e) ? e.value : e;
 }
-function Ns(e, n = "=", t = "&") {
+function ws(e, n = "=", t = "&") {
   return Le(
     e,
     (o, s) => `${s}${n}${encodeURIComponent(String(o).trim())}`
   ).sort().join(t);
 }
-function Q() {
+function W() {
   return typeof window < "u";
 }
 function Ye(e) {
   return e == null;
 }
-function Ie(e) {
+function he(e) {
   if (e)
     switch (typeof e) {
       case "bigint":
@@ -2187,30 +2196,23 @@ function Ie(e) {
   return !1;
 }
 function te(e) {
-  return Dn(e) && !Array.isArray(e);
+  return Mn(e) && !Array.isArray(e);
 }
-function Gn(e) {
+function gn(e) {
   return typeof e == "string";
 }
 function Os(e, n) {
   return Math.floor(Math.random() * (n - e + 1) + e);
 }
-function gn(e) {
+function yn(e) {
   return Array.isArray(e) ? e : [e];
 }
 function Ft(e) {
-  return Q() && e === window;
+  return W() && e === window;
 }
 function ae(e) {
-  if (Ft(e))
-    return document.body;
-  if (typeof e == "string")
-    try {
-      return document.querySelector(e) ?? void 0;
-    } catch {
-      return;
-    }
-  return e;
+  if (W())
+    return Ft(e) ? document.body : gn(e) ? document.querySelector(e) ?? void 0 : e;
 }
 function Un(e) {
   return Ft(e) ? e : ae(e);
@@ -2261,7 +2263,7 @@ class Wn {
      */
     y(this, "listenerRecent", (n) => {
       var t, o;
-      Rs(this.elementControl) ? ((t = this.listener) == null || t.call(this.element, n, this.detail), Dn(this.options) && ((o = this.options) != null && o.once) && this.stop()) : this.stop();
+      Rs(this.elementControl) ? ((t = this.listener) == null || t.call(this.element, n, this.detail), Mn(this.options) && ((o = this.options) != null && o.once) && this.stop()) : this.stop();
     });
     /**
      * Event states.
@@ -2270,7 +2272,7 @@ class Wn {
      */
     y(this, "activity", !1);
     y(this, "activityItems", []);
-    this.listener = o, this.options = s, this.detail = r, this.element = Un(n), this.elementControl = ae(n), this.type = gn(t);
+    this.listener = o, this.options = s, this.detail = r, this.element = Un(n), this.elementControl = ae(n), this.type = yn(t);
   }
   /**
    * Checks whether event listening is currently enabled.
@@ -2309,7 +2311,7 @@ class Wn {
    * @param type type/ тип
    */
   setType(n) {
-    return this.type = gn(n), this.reset(), this;
+    return this.type = yn(n), this.reset(), this;
   }
   /**
    * Modifies the object that receives the notification.
@@ -2455,7 +2457,7 @@ class Wn {
     return !1;
   }
 }
-const Jn = "ui-loading", Me = class Me {
+const Jn = "ui-loading", Ce = class Ce {
   /**
    * Check if the loader is active now.
    *
@@ -2502,8 +2504,8 @@ const Jn = "ui-loading", Me = class Me {
     (n = this.event) == null || n.dispatch({ loading: this.is() });
   }
 };
-y(Me, "value", 0), y(Me, "event"), Q() && (Me.event = new Wn(window, Jn));
-let J = Me;
+y(Ce, "value", 0), y(Ce, "event"), W() && (Ce.event = new Wn(window, Jn));
+let q = Ce;
 function Ts(e) {
   return JSON.parse(JSON.stringify(e));
 }
@@ -2555,7 +2557,7 @@ class xs {
    */
   set(n) {
     var t, o;
-    return this.value = mn(n), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? (t = this.getMethod()) == null || t.removeItem(this.getIndex()) : (o = this.getMethod()) == null || o.setItem(this.getIndex(), JSON.stringify({
+    return this.value = Dn(n), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? (t = this.getMethod()) == null || t.removeItem(this.getIndex()) : (o = this.getMethod()) == null || o.setItem(this.getIndex(), JSON.stringify({
       value: this.value,
       age: this.age
     })), this.value;
@@ -2573,7 +2575,7 @@ class xs {
    * Возвращает объект для работы с хранилищем.
    */
   getMethod() {
-    if (Q())
+    if (W())
       return this.isSession ? window == null ? void 0 : window.sessionStorage : window == null ? void 0 : window.localStorage;
   }
   /**
@@ -2598,7 +2600,7 @@ class xs {
       }
   }
 }
-const rn = {}, Is = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlternative":["EN"],"language":"en","languageAlternative":["us"],"firstDay":"Su","zone":"America/New_York","phoneCode":"1","phoneMask":["+1-***-***-****"]},{"country":"GB","countryAlternative":["UK"],"language":"en","firstDay":"Mo","zone":"Europe/London","phoneCode":"44","phoneMask":["+44-**-****-****"]},{"country":"AF","language":"fa","firstDay":"Sa","zone":"Asia/Kabul","phoneCode":"93","phoneMask":["+93-**-***-****"]},{"country":"AL","language":"sq","firstDay":"Mo","zone":"Europe/Tirane","phoneCode":"355","phoneMask":["+355-***-***-***"]},{"country":"DZ","language":"ar","firstDay":"Sa","zone":"Africa/Algiers","phoneCode":"213","phoneMask":["+213-**-***-****"]},{"country":"AS","language":"en","firstDay":null,"zone":"Pacific/Pago_Pago","phoneCode":"1-684","phoneMask":["+1-684-***-****"]},{"country":"AD","language":"ca","firstDay":"Mo","zone":"Europe/Andorra","phoneCode":"376","phoneMask":["+376-***-***"]},{"country":"AO","language":"pt","firstDay":null,"zone":"Africa/Lagos","phoneCode":"244","phoneMask":["+244-***-***-***"]},{"country":"AI","language":"en","firstDay":null,"zone":"America/Port_of_Spain","phoneCode":"1-264","phoneMask":["+1-264-***-****"]},{"country":"AQ","language":"en","firstDay":null,"zone":"Antarctica/Troll","phoneCode":"672","phoneMask":["+672-1-**-***"]},{"country":"AG","language":"en","firstDay":null,"zone":"America/Antigua","phoneCode":"1-268","phoneMask":["+1-268-***-****"]},{"country":"AR","language":"es","firstDay":"Su","zone":"America/Argentina/Buenos_Aires","phoneCode":"54","phoneMask":["+54-***-***-****"]},{"country":"AM","language":"hy","firstDay":"Mo","zone":"Asia/Yerevan","phoneCode":"374","phoneMask":["+374-**-***-***"]},{"country":"AW","language":"nl","firstDay":null,"zone":"America/Curacao","phoneCode":"297","phoneMask":["+297-***-****"]},{"country":"AU","language":"en","firstDay":"Mo","zone":"Australia/Sydney","phoneCode":"61","phoneMask":["+61-*-****-****"]},{"country":"AT","language":"de","firstDay":"Mo","zone":"Europe/Vienna","phoneCode":"43","phoneMask":["+43-***-***-****","+43-***-***-*****"]},{"country":"AZ","language":"az","firstDay":"Mo","zone":"Asia/Baku","phoneCode":"994","phoneMask":"+994-**-***-**-**"},{"country":"BS","language":"en","firstDay":null,"zone":"America/Nassau","phoneCode":"1-242","phoneMask":"+1-242-***-****"},{"country":"BH","language":"ar","firstDay":"Sa","zone":"Asia/Bahrain","phoneCode":"973","phoneMask":"+973-****-****"},{"country":"BD","language":"bn","firstDay":null,"zone":"Asia/Dhaka","phoneCode":"880","phoneMask":"+880-**-***-***"},{"country":"BB","language":"en","firstDay":null,"zone":"America/Barbados","phoneCode":"1-246","phoneMask":"+1-246-***-****"},{"country":"BY","language":"be","firstDay":"Mo","zone":"Europe/Minsk","phoneCode":"375","phoneMask":"+375-**-***-**-**"},{"country":"BE","language":"nl","firstDay":"Mo","zone":"Europe/Brussels","phoneCode":"32","phoneMask":"+32-***-***-***"},{"country":"BZ","language":"en","firstDay":"Su","zone":"America/Belize","phoneCode":"501","phoneMask":"+501-***-****"},{"country":"BJ","language":"fr","firstDay":null,"zone":"Africa/Lagos","phoneCode":"229","phoneMask":"+229-**-**-****"},{"country":"BM","language":"en","firstDay":null,"zone":"Atlantic/Bermuda","phoneCode":"1-441","phoneMask":"+1-441-***-****"},{"country":"BT","language":"dz","firstDay":null,"zone":"Asia/Thimphu","phoneCode":"975","phoneMask":["+975-*-***-***","+975-17-***-***"]},{"country":"BO","language":"es","firstDay":"Su","zone":"America/La_Paz","phoneCode":"591","phoneMask":"+591-*-***-****"},{"country":"BA","language":"bs","firstDay":null,"zone":"Europe/Belgrade","phoneCode":"387","phoneMask":["+387-**-****","+387-**-*****"]},{"country":"BW","language":"en","firstDay":null,"zone":"Africa/Maputo","phoneCode":"267","phoneMask":"+267-**-***-***"},{"country":"BR","language":"pt","firstDay":"Su","zone":"America/Sao_Paulo","phoneCode":"55","phoneMask":["+55-**-****-****","+55-**-*****-****"]},{"country":"IO","language":"en","firstDay":null,"zone":"Indian/Chagos","phoneCode":"246","phoneMask":"+246-***-****"},{"country":"VG","language":"en","firstDay":null,"zone":"America/Port_of_Spain","phoneCode":"1-284","phoneMask":"+1-284-***-****"},{"country":"BN","language":"ms","firstDay":"Mo","zone":"Asia/Brunei","phoneCode":"673","phoneMask":"+673-***-****"},{"country":"BG","language":"bg","firstDay":"Mo","zone":"Europe/Sofia","phoneCode":"359","phoneMask":"+359-***-***-***"},{"country":"BF","language":"fr","firstDay":null,"zone":"Africa/Abidjan","phoneCode":"226","phoneMask":"+226-**-**-****"},{"country":"BI","language":"fr","firstDay":null,"zone":"Africa/Maputo","phoneCode":"257","phoneMask":"+257-**-**-****"},{"country":"KH","language":"km","firstDay":null,"zone":"Asia/Phnom_Penh","phoneCode":"855","phoneMask":"+855-**-***-***"},{"country":"CM","phoneCode":"237","zone":"Africa/Lagos","language":"en","firstDay":null,"phoneMask":"+237-****-****"},{"country":"CA","phoneCode":"1","zone":"America/Toronto","language":"en","firstDay":"Su","phoneMask":"+1-***-***-****"},{"country":"CV","phoneCode":"238","zone":"Atlantic/Cape_Verde","language":"pt","firstDay":null,"phoneMask":"+238-***-**-**"},{"country":"KY","phoneCode":"1-345","zone":"America/Cayman","language":"en","firstDay":null,"phoneMask":"+1-345-***-****"},{"country":"CF","phoneCode":"236","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+236-**-**-****"},{"country":"TD","phoneCode":"235","zone":"Africa/Ndjamena","language":"fr","firstDay":null,"phoneMask":"+235-**-**-**-**"},{"country":"CL","phoneCode":"56","zone":"America/Santiago","language":"es","firstDay":"Su","phoneMask":"+56-*-****-****"},{"country":"CN","phoneCode":"86","zone":"Asia/Shanghai","language":"zh","firstDay":"Su","phoneMask":["+86-***-****-***","+86-***-****-****","+86-**-*****-*****"]},{"country":"CX","phoneCode":"61","zone":"Indian/Christmas","language":"en","firstDay":null},{"country":"CC","phoneCode":"61","zone":"Indian/Cocos","language":"ms","firstDay":null},{"country":"CO","phoneCode":"57","zone":"America/Bogota","language":"es","firstDay":"Su","phoneMask":"+57-***-***-****"},{"country":"KM","phoneCode":"269","zone":"Indian/Comoro","language":"ar","firstDay":null,"phoneMask":"+269-**-*****"},{"country":"CK","phoneCode":"682","zone":"Pacific/Rarotonga","language":"en","firstDay":null,"phoneMask":"+682-**-***"},{"country":"CR","phoneCode":"506","zone":"America/Costa_Rica","language":"es","firstDay":"Su","phoneMask":"+506-****-****"},{"country":"HR","phoneCode":"385","zone":"Europe/Belgrade","language":"hr","firstDay":"Mo","phoneMask":"+385-**-***-***"},{"country":"CU","phoneCode":"53","zone":"America/Havana","language":"es","firstDay":null,"phoneMask":"+53-*-***-****"},{"country":"CW","phoneCode":"599","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":"+599-***-****"},{"country":"CY","phoneCode":"357","zone":"Asia/Nicosia","language":"el","firstDay":null,"phoneMask":"+357-**-***-***"},{"country":"CZ","phoneCode":"420","zone":"Europe/Prague","language":"cs","languageAlternative":["cz"],"firstDay":"Mo","phoneMask":"+420-***-***-***"},{"country":"CD","phoneCode":"243","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+243-***-***-***"},{"country":"DK","phoneCode":"45","zone":"Europe/Copenhagen","language":"da","firstDay":"Mo","phoneMask":"+45-**-**-**-**"},{"country":"DJ","phoneCode":"253","zone":"Africa/Djibouti","language":"fr","firstDay":null,"phoneMask":"+253-**-**-**-**"},{"country":"DM","phoneCode":"1-767","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-767-***-****"},{"country":"DO","phoneCode":"1-809","zone":"North America","language":"America/Santo_Domingo","firstDay":"Su","phoneMask":["+1-809-***-****","+1-829-***-****","+1-849-***-****"]},{"country":"TL","phoneCode":"670","zone":"Asia/Dili","language":"tet","firstDay":null,"phoneMask":["+670-***-****","+670-77-*-*****","+670-78-*-*****"]},{"country":"EC","phoneCode":"593","zone":"America/Guayaquil","language":"es","firstDay":"Su","phoneMask":["+593-*-***-****","+593-**-***-****"]},{"country":"EG","phoneCode":"20","zone":"Africa/Cairo","language":"ar","firstDay":"Sa","phoneMask":"+20-***-***-****"},{"country":"SV","phoneCode":"503","zone":"America/El_Salvador","language":"es","firstDay":"Su","phoneMask":"+503-**-**-****"},{"country":"GQ","phoneCode":"240","zone":"Africa/Lagos","language":"es","firstDay":null,"phoneMask":"+240-**-***-****"},{"country":"ER","phoneCode":"291","zone":"Africa/Asmara","language":"aa","firstDay":null,"phoneMask":"+291-*-***-***"},{"country":"EE","phoneCode":"372","zone":"Europe/Tallinn","language":"et","firstDay":"Mo","phoneMask":["+372-***-****","+372-****-****"]},{"country":"ET","phoneCode":"251","zone":"Africa/Addis_Ababa","language":"am","firstDay":null,"phoneMask":"+251-**-***-****"},{"country":"FK","phoneCode":"500","zone":"Atlantic/Stanley","language":"en","firstDay":null,"phoneMask":"+500-*****"},{"country":"FO","phoneCode":"298","zone":"Atlantic/Faroe","language":"fo","firstDay":null,"phoneMask":"+298-***-***"},{"country":"FJ","phoneCode":"679","zone":"Pacific/Fiji","language":"en","firstDay":null,"phoneMask":"+679-**-*****"},{"country":"FI","phoneCode":"358","zone":"Europe/Helsinki","language":"fi","firstDay":"Mo","phoneMask":["+358-***-***-**-*","+358-***-***-**-**"]},{"country":"FR","phoneCode":"33","zone":"Europe/Paris","language":"fr","firstDay":"Mo","phoneMask":["+33-***-***-***","+262-*****-****","+508-**-****","+590-***-***-***"]},{"country":"PF","phoneCode":"689","zone":"Pacific/Tahiti","language":"fr","firstDay":null,"phoneMask":"+689-**-**-**"},{"country":"GA","phoneCode":"241","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+241-*-**-**-**"},{"country":"GM","phoneCode":"220","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+220-***-**-**"},{"country":"GE","phoneCode":"995","zone":"Asia/Tbilisi","language":"ka","firstDay":"Mo","phoneMask":"+995-***-***-***"},{"country":"DE","phoneCode":"49","zone":"Europe/Berlin","language":"de","firstDay":"Mo","phoneMask":["+49-***-***","+49-***-***-****","+49-****-***-****"]},{"country":"GH","phoneCode":"233","zone":"Africa/Accra","language":"en","firstDay":null,"phoneMask":"+233-***-***-***"},{"country":"GI","phoneCode":"350","zone":"Europe/Gibraltar","language":"en","firstDay":null,"phoneMask":"+350-***-*****"},{"country":"GR","phoneCode":"30","zone":"Europe/Athens","language":"el","firstDay":"Mo","phoneMask":"+30-***-***-****"},{"country":"GL","phoneCode":"299","zone":"America/Godthab","language":"kl","firstDay":null,"phoneMask":"+299-**-**-**"},{"country":"GD","phoneCode":"1-473","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-473-***-****"},{"country":"GU","phoneCode":"1-671","zone":"Pacific/Guam","language":"en","firstDay":null,"phoneMask":"+1-671-***-****"},{"country":"GT","phoneCode":"502","zone":"America/Guatemala","language":"es","firstDay":"Su","phoneMask":"+502-*-***-****"},{"country":"GG","phoneCode":"44-1481","zone":"Europe/London","language":"en","firstDay":null},{"country":"GN","phoneCode":"224","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+224-**-***-***"},{"country":"GW","phoneCode":"245","zone":"Africa/Bissau","language":"pt","firstDay":null,"phoneMask":"+245-*-******"},{"country":"GY","phoneCode":"592","zone":"America/Guyana","language":"en","firstDay":null,"phoneMask":"+592-***-****"},{"country":"HT","phoneCode":"509","zone":"America/Port-au-Prince","language":"ht","firstDay":null,"phoneMask":"+509-**-**-****"},{"country":"HN","phoneCode":"504","zone":"America/Tegucigalpa","language":"es","firstDay":"Su","phoneMask":"+504-****-****"},{"country":"HK","phoneCode":"852","zone":"Asia/Hong_Kong","language":"zh","firstDay":"Su","phoneMask":"+852-****-****"},{"country":"HU","phoneCode":"36","zone":"Europe/Budapest","language":"hu","firstDay":"Mo","phoneMask":"+36-***-***-***","nameFormat":"lf"},{"country":"IS","phoneCode":"354","zone":"Atlantic/Reykjavik","language":"is","firstDay":"Mo","phoneMask":"+354-***-****"},{"country":"IN","phoneCode":"91","zone":"Asia/Kolkata","language":"en","firstDay":"Mo","phoneMask":"+91-****-***-***"},{"country":"ID","phoneCode":"62","zone":"Asia/Jakarta","language":"id","firstDay":"Mo","phoneMask":["+62-**-***-**","+62-**-***-***","+62-**-***-****","+62-8-**-***-***","+62-8-**-***-****","+62-8-**-***-**-***"]},{"country":"IR","phoneCode":"98","zone":"Asia/Tehran","language":"fa","firstDay":"Sa","phoneMask":"+98-***-***-****"},{"country":"IQ","phoneCode":"964","zone":"Asia/Baghdad","language":"ar","firstDay":"Sa","phoneMask":"+964-***-***-****"},{"country":"IE","firstDay":"Mo","language":"en","phoneCode":"353","phoneMask":"+353-***-***-***","zone":"Europe/Dublin"},{"country":"IM","firstDay":null,"language":"Pound","phoneCode":"44-1624","zone":"Isle of Man"},{"country":"IL","firstDay":"Su","language":"he","languageAlternative":["il"],"phoneCode":"972","phoneMask":["+972-*-***-****","+972-5-*-***-****"],"zone":"Asia/Jerusalem"},{"country":"IT","firstDay":"Mo","language":"it","phoneCode":"39","phoneMask":"+39-***-****-***","zone":"Europe/Rome"},{"country":"CI","phoneCode":"225","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+225-**-***-***"},{"country":"JM","phoneCode":"1-876","zone":"America/Jamaica","language":"en","firstDay":"Su","phoneMask":"+1-876-***-****"},{"country":"JP","phoneCode":"81","zone":"Asia/Tokyo","language":"ja","firstDay":"Su","phoneMask":["+81-***-***-***","+81-**-****-****"],"nameFormat":"lf"},{"country":"JE","phoneCode":"44-1534","zone":"Europe/London","language":"en","firstDay":null},{"country":"JO","phoneCode":"962","zone":"Asia/Amman","language":"ar","firstDay":"Sa","phoneMask":"+962-*-****-****"},{"country":"KZ","phoneCode":"7","zone":"Asia/Almaty","language":"kk","firstDay":"Mo","phoneMask":["+7-6-**-***-**-**","+7-7-**-***-**-**"],"nameFormat":"lf"},{"country":"KE","phoneCode":"254","zone":"Africa/Nairobi","language":"en","firstDay":"Su","phoneMask":"+254-***-******"},{"country":"KI","phoneCode":"686","zone":"Pacific/Tarawa","language":"en","firstDay":null,"phoneMask":"+686-**-***"},{"country":"XK","phoneCode":"383","zone":"Europe/Belgrade","language":"sq","firstDay":"Mo"},{"country":"KW","phoneCode":"965","zone":"Asia/Kuwait","language":"ar","firstDay":"Sa","phoneMask":"+965-****-****"},{"country":"KG","phoneCode":"996","zone":"Asia/Bishkek","language":"ky","firstDay":"Mo","phoneMask":"+996-***-***-***"},{"country":"LA","phoneCode":"856","zone":"Asia/Vientiane","language":"lo","firstDay":null,"phoneMask":["+856-**-***-***","+856-20-**-***-***"]},{"country":"LV","phoneCode":"371","zone":"Europe/Riga","language":"lv","firstDay":"Mo","phoneMask":"+371-**-***-***"},{"country":"LB","phoneCode":"961","zone":"Asia/Beirut","language":"ar","firstDay":"Mo","phoneMask":["+961-*-***-***","+961-**-***-***"]},{"country":"LS","phoneCode":"266","zone":"Africa/Johannesburg","language":"en","firstDay":null,"phoneMask":"+266-*-***-****"},{"country":"LR","phoneCode":"231","zone":"Africa/Monrovia","language":"en","firstDay":null,"phoneMask":"+231-**-***-***"},{"country":"LY","phoneCode":"218","zone":"Africa/Tripoli","language":"ar","firstDay":"Sa","phoneMask":["+218-**-***-***","+218-21-***-****"]},{"country":"LI","phoneCode":"423","zone":"Europe/Zurich","language":"de","firstDay":null,"phoneMask":"+423-***-***-****"},{"country":"LT","phoneCode":"370","zone":"Europe/Vilnius","language":"lt","firstDay":"Mo","phoneMask":"+370-***-**-***"},{"country":"LU","phoneCode":"352","zone":"Europe/Luxembourg","language":"lb","firstDay":"Mo","phoneMask":"+352-***-***-***"},{"country":"MO","phoneCode":"853","zone":"Asia/Macau","language":"zh","firstDay":null,"phoneMask":"+853-****-****"},{"country":"MK","phoneCode":"389","zone":"Europe/Belgrade","language":"mk","firstDay":"Mo","phoneMask":"+389-**-***-***"},{"country":"MG","phoneCode":"261","zone":"Indian/Antananarivo","language":"fr","firstDay":null,"phoneMask":"+261-**-**-*****"},{"country":"MW","phoneCode":"265","zone":"Africa/Maputo","language":"ny","firstDay":null,"phoneMask":["+265-*-****-****","+265-1-***-***"]},{"country":"MY","phoneCode":"60","zone":"Asia/Kuala_Lumpur","language":"ms","firstDay":"Mo","phoneMask":["+60-*-***-***","+60-**-***-***","+60-**-***-****","+60-***-***-***"]},{"country":"MV","phoneCode":"960","zone":"Indian/Maldives","language":"dv","firstDay":null,"phoneMask":"+960-***-****"},{"country":"ML","phoneCode":"223","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+223-**-**-****"},{"country":"MT","phoneCode":"356","zone":"Europe/Malta","language":"mt","firstDay":null,"phoneMask":"+356-****-****"},{"country":"MH","phoneCode":"692","zone":"Pacific/Majuro","language":"mh","firstDay":null,"phoneMask":"+692-***-****"},{"country":"MR","phoneCode":"222","zone":"Africa/Abidjan","language":"ar","firstDay":null,"phoneMask":"+222-**-**-****"},{"country":"MU","phoneCode":"230","zone":"Indian/Mauritius","language":"en","firstDay":null,"phoneMask":"+230-***-****"},{"country":"YT","phoneCode":"262","zone":"Indian/Mayotte","language":"fr","firstDay":null},{"country":"MX","phoneCode":"52","zone":"America/Mexico_City","language":"es","firstDay":"Su","phoneMask":["+52-**-**-****","+52-***-***-****"]},{"country":"FM","phoneCode":"691","zone":"Pacific/Pohnpei","language":"en","firstDay":null,"phoneMask":"+691-***-****"},{"country":"MD","phoneCode":"373","zone":"Europe/Chisinau","language":"ro","firstDay":null,"phoneMask":"+373-****-****"},{"country":"MC","phoneCode":"377","zone":"Europe/Monaco","language":"fr","firstDay":"Mo","phoneMask":["+377-**-***-***","+377-***-***-***"]},{"country":"MN","phoneCode":"976","zone":"Asia/Ulaanbaatar","language":"mn","firstDay":"Mo","phoneMask":"+976-**-**-****"},{"country":"ME","phoneCode":"382","zone":"Europe/Belgrade","language":"sr","firstDay":null,"phoneMask":"+382-**-***-***"},{"country":"MS","phoneCode":"1-664","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-664-***-****"},{"country":"MA","phoneCode":"212","zone":"Africa/Casablanca","language":"ar","firstDay":"Mo","phoneMask":"+212-**-****-***"},{"country":"MZ","phoneCode":"258","zone":"Africa/Maputo","language":"pt","firstDay":null,"phoneMask":"+258-**-***-***"},{"country":"MM","phoneCode":"95","zone":"Asia/Rangoon","language":"my","firstDay":null,"phoneMask":["+95-***-***","+95-*-***-***","+95-**-***-***"]},{"country":"NA","phoneCode":"264","zone":"Africa/Windhoek","language":"en","firstDay":null,"phoneMask":"+264-**-***-****"},{"country":"NR","phoneCode":"674","zone":"Pacific/Nauru","language":"na","firstDay":null,"phoneMask":"+674-***-****"},{"country":"NP","phoneCode":"977","zone":"Asia/Kathmandu","language":"ne","firstDay":null,"phoneMask":"+977-**-***-***"},{"country":"NL","phoneCode":"31","zone":"Europe/Amsterdam","language":"nl","firstDay":"Mo","phoneMask":"+31-**-***-****"},{"country":"AN","phoneCode":"599","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":["+599-***-****","+599-9-***-****"]},{"country":"NC","phoneCode":"687","zone":"Pacific/Noumea","language":"fr","firstDay":null,"phoneMask":"+687-**-****"},{"country":"NZ","phoneCode":"64","zone":"Pacific/Auckland","language":"en","firstDay":"Mo","phoneMask":["+64-**-***-***","+64-***-***-***","+64-***-***-****"]},{"country":"NI","phoneCode":"505","zone":"America/Managua","language":"es","firstDay":"Su","phoneMask":"+505-****-****"},{"country":"NE","phoneCode":"227","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+227-**-**-****"},{"country":"NG","phoneCode":"234","zone":"Africa/Lagos","language":"en","firstDay":null,"phoneMask":["+234-**-***-**","+234-**-***-***","+234-***-***-****"]},{"country":"NU","phoneCode":"683","zone":"Pacific/Niue","language":"niu","firstDay":null,"phoneMask":"+683-****"},{"country":"KP","phoneCode":"850","zone":"Asia/Pyongyang","language":"ko","firstDay":null,"phoneMask":["+850-***-***","+850-**-***-***","+850-****-****","+850-***-****-***","+850-****-*************","+850-191-***-****"]},{"country":"MP","phoneCode":"1-670","zone":"Pacific/Saipan","language":"fil","firstDay":null,"phoneMask":"+1-670-***-****"},{"country":"NO","phoneCode":"47","zone":"Europe/Oslo","language":"no","firstDay":"Mo","phoneMask":"+47-***-**-***"},{"country":"OM","phoneCode":"968","zone":"Asia/Muscat","language":"ar","firstDay":"Sa","phoneMask":"+968-**-***-***"},{"country":"PK","phoneCode":"92","zone":"Asia/Karachi","language":"ur","firstDay":"Mo","phoneMask":"+92-***-***-****"},{"country":"PW","phoneCode":"680","zone":"Pacific/Palau","language":"pau","firstDay":null,"phoneMask":"+680-***-****"},{"country":"PS","phoneCode":"970","zone":"Asia/Hebron","language":"ar","firstDay":null,"phoneMask":"+970-**-***-****"},{"country":"PA","phoneCode":"507","zone":"America/Panama","language":"es","firstDay":"Su","phoneMask":"+507-***-****"},{"country":"PG","phoneCode":"675","zone":"Pacific/Port_Moresby","language":"en","firstDay":null,"phoneMask":"+675-***-**-***"},{"country":"PY","phoneCode":"595","zone":"America/Asuncion","language":"es","firstDay":"Mo","phoneMask":"+595-***-***-***"},{"country":"PE","phoneCode":"51","zone":"America/Lima","language":"es","firstDay":"Su","phoneMask":"+51-***-***-***"},{"country":"PH","phoneCode":"63","zone":"Asia/Manila","language":"tl","firstDay":"Su","phoneMask":"+63-***-***-****"},{"country":"PN","phoneCode":"64","zone":"Pacific/Pitcairn","language":"en","firstDay":null},{"country":"PL","phoneCode":"48","zone":"Europe/Warsaw","language":"pl","firstDay":"Mo","phoneMask":"+48-***-***-***"},{"country":"PT","phoneCode":"351","zone":"Europe/Lisbon","language":"pt","firstDay":"Mo","phoneMask":"+351-**-***-****"},{"country":"PR","phoneCode":"1-787","zone":"San Juan","language":"Dollar","firstDay":"Su"},{"country":"QA","phoneCode":"974","zone":"Asia/Qatar","language":"ar","firstDay":"Sa","phoneMask":"+974-****-****"},{"country":"CG","phoneCode":"242","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+242-**-***-****"},{"country":"RE","phoneCode":"262","zone":"Indian/Reunion","language":"fr","firstDay":null,"phoneMask":"+262-*****-****"},{"country":"RO","phoneCode":"40","zone":"Europe/Bucharest","language":"ro","firstDay":"Mo","phoneMask":"+40-**-***-****"},{"country":"RU","phoneCode":"7","phoneWithin":"8","zone":"Europe/Moscow","language":"ru","firstDay":"Mo","phoneMask":"+7-***-***-**-**","nameFormat":"lsf"},{"country":"RW","phoneCode":"250","zone":"Africa/Maputo","language":"rw","firstDay":null,"phoneMask":"+250-***-***-***"},{"country":"BL","phoneCode":"590","zone":"America/Port_of_Spain","language":"fr","firstDay":null},{"country":"SH","phoneCode":"290","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+290-****"},{"country":"KN","phoneCode":"1-869","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-869-***-****"},{"country":"LC","phoneCode":"1-758","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-758-***-****"},{"country":"MF","phoneCode":"590","zone":"America/Port_of_Spain","language":"fr","firstDay":null},{"country":"PM","phoneCode":"508","zone":"America/Miquelon","language":"fr","firstDay":null},{"country":"VC","phoneCode":"1-784","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-784-***-****"},{"country":"WS","phoneCode":"685","zone":"Pacific/Apia","language":"sm","firstDay":null,"phoneMask":"+685-**-****"},{"country":"SM","phoneCode":"378","zone":"Europe/Rome","language":"it","firstDay":null,"phoneMask":"+378-****-******"},{"country":"ST","phoneCode":"239","zone":"Africa/Abidjan","language":"pt","firstDay":null,"phoneMask":"+239-**-*****"},{"country":"SA","phoneCode":"966","zone":"Asia/Riyadh","language":"ar","firstDay":"Sa","phoneMask":["+966-*-***-****","+966-5-****-****"]},{"country":"SN","phoneCode":"221","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+221-**-***-****"},{"country":"RS","phoneCode":"381","zone":"Europe/Belgrade","language":"sr","firstDay":"Mo","phoneMask":"+381-**-***-****"},{"country":"SC","phoneCode":"248","zone":"Indian/Mahe","language":"en","firstDay":null,"phoneMask":"+248-*-***-***"},{"country":"SL","phoneCode":"232","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+232-**-******"},{"country":"SG","phoneCode":"65","zone":"Asia/Singapore","language":"cmn","firstDay":"Mo","phoneMask":"+65-****-****"},{"country":"SX","phoneCode":"1-721","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":"+1-721-***-****"},{"country":"SK","phoneCode":"421","zone":"Europe/Prague","language":"sk","firstDay":"Mo","phoneMask":"+421-***-***-***"},{"country":"SI","phoneCode":"386","zone":"Europe/Belgrade","language":"sl","firstDay":null,"phoneMask":"+386-**-***-***"},{"country":"SB","phoneCode":"677","zone":"Pacific/Guadalcanal","language":"en","firstDay":null,"phoneMask":["+677-*****","+677-***-****"]},{"country":"SO","phoneCode":"252","zone":"Africa/Mogadishu","language":"so","firstDay":null,"phoneMask":["+252-*-***-***","+252-**-***-***"]},{"country":"ZA","phoneCode":"27","zone":"Africa/Johannesburg","language":"zu","firstDay":"Su","phoneMask":"+27-**-***-****"},{"country":"KR","phoneCode":"82","zone":"Asia/Seoul","language":"ko","firstDay":"Su","phoneMask":["+82-**-***-****","+82-**-***-****-**"],"nameFormat":"lf"},{"country":"SS","phoneCode":"211","zone":"Africa/Khartoum","language":"en","firstDay":null,"phoneMask":"+211-**-***-****"},{"country":"ES","phoneCode":"34","zone":"Europe/Madrid","language":"es","firstDay":"Mo","phoneMask":"+34-***-***-***"},{"country":"LK","phoneCode":"94","zone":"Asia/Colombo","language":"si","firstDay":null,"phoneMask":"+94-**-***-****"},{"country":"SD","phoneCode":"249","zone":"Africa/Khartoum","language":"ar","firstDay":null,"phoneMask":"+249-**-***-****"},{"country":"SR","phoneCode":"597","zone":"America/Paramaribo","language":"nl","firstDay":null,"phoneMask":["+597-***-***","+597-***-****"]},{"country":"SJ","phoneCode":"47","zone":"Europe/Oslo","language":"no","firstDay":null},{"country":"SZ","phoneCode":"268","zone":"Africa/Johannesburg","language":"en","firstDay":null,"phoneMask":"+268-**-**-****"},{"country":"SE","phoneCode":"46","zone":"Europe/Stockholm","language":"sv","firstDay":"Mo","phoneMask":"+46-**-***-****"},{"country":"CH","phoneCode":"41","zone":"Europe/Zurich","language":"de","firstDay":"Mo","phoneMask":"+41-**-***-****"},{"country":"SY","phoneCode":"963","zone":"Asia/Damascus","language":"ar","firstDay":"Sa","phoneMask":"+963-**-****-***"},{"country":"TW","phoneCode":"886","zone":"Asia/Taipei","language":"zh","firstDay":"Su","phoneMask":["+886-****-****","+886-*-****-****"]},{"country":"TJ","phoneCode":"992","zone":"Asia/Dushanbe","language":"tg","firstDay":null,"phoneMask":"+992-**-***-****"},{"country":"TZ","phoneCode":"255","zone":"Africa/Dar_es_Salaam","language":"sw","firstDay":null,"phoneMask":"+255-**-***-****"},{"country":"TH","phoneCode":"66","zone":"Asia/Bangkok","language":"th","firstDay":"Mo","phoneMask":"+66-**-***-****"},{"country":"TG","phoneCode":"228","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+228-**-***-***"},{"country":"TK","phoneCode":"690","zone":"Pacific/Fakaofo","language":"tkl","firstDay":null,"phoneMask":"+690-****"},{"country":"TO","phoneCode":"676","zone":"Pacific/Tongatapu","language":"to","firstDay":null,"phoneMask":"+676-*****"},{"country":"TT","phoneCode":"1-868","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-868-***-****"},{"country":"TN","phoneCode":"216","zone":"Africa/Tunis","language":"ar","firstDay":"Mo","phoneMask":"+216-**-***-***"},{"country":"TR","phoneCode":"90","zone":"Europe/Istanbul","language":"tr","firstDay":"Mo","phoneMask":"+90-***-***-****"},{"country":"TM","phoneCode":"993","zone":"Asia/Ashgabat","language":"tk","firstDay":null,"phoneMask":"+993-*-***-****"},{"country":"TC","phoneCode":"1-649","zone":"America/Grand_Turk","language":"en","firstDay":null,"phoneMask":"+1-649-***-****"},{"country":"TV","phoneCode":"688","zone":"Pacific/Funafuti","language":"tvl","firstDay":null,"phoneMask":["+688-2-****","+688-90-****"]},{"country":"VI","phoneCode":"1-340","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-340-***-****"},{"country":"UG","phoneCode":"256","zone":"Africa/Kampala","language":"en","firstDay":null,"phoneMask":"+256-***-***-***"},{"country":"UA","phoneCode":"380","zone":"Europe/Kiev","language":"uk","languageAlternative":["ua"],"firstDay":"Mo","phoneMask":"+380-**-***-**-**"},{"country":"AE","phoneCode":"971","zone":"Asia/Dubai","language":"ar","firstDay":"Sa","phoneMask":["+971-*-***-****","+971-5-*-***-****"]},{"country":"UY","phoneCode":"598","zone":"America/Montevideo","language":"es","firstDay":"Mo","phoneMask":"+598-*-***-**-**"},{"country":"UZ","phoneCode":"998","zone":"Asia/Tashkent","language":"uz","firstDay":"Mo","phoneMask":"+998-**-***-****"},{"country":"VU","phoneCode":"678","zone":"Pacific/Efate","language":"bi","firstDay":null,"phoneMask":["+678-*****","+678-**-*****"]},{"country":"VA","phoneCode":"379","zone":"Europe/Rome","language":"la","firstDay":null,"phoneMask":"+39-6-698-*****"},{"country":"VE","phoneCode":"58","zone":"America/Caracas","language":"es","firstDay":"Su","phoneMask":"+58-***-***-****"},{"country":"VN","phoneCode":"84","zone":"Asia/Ho_Chi_Minh","language":"vi","firstDay":"Mo","phoneMask":["+84-**-****-***","+84-***-****-***"],"nameFormat":"fsl"},{"country":"WF","phoneCode":"681","zone":"Pacific/Wallis","language":"wls","firstDay":null,"phoneMask":"+681-**-****"},{"country":"EH","phoneCode":"212","zone":"Africa/El_Aaiun","language":"ar","firstDay":null},{"country":"YE","phoneCode":"967","zone":"Asia/Aden","language":"ar","firstDay":"Sa","phoneMask":["+967-*-***-***","+967-**-***-***","+967-***-***-***"]},{"country":"ZM","phoneCode":"260","zone":"Africa/Maputo","language":"en","firstDay":null,"phoneMask":"+260-**-***-****"},{"country":"ZW","phoneCode":"263","zone":"Africa/Maputo","language":"en","firstDay":"Su","phoneMask":"+263-*-******"},{"country":"GF","phoneCode":"594","zone":"America/Cayenne","language":"fr","firstDay":"Mo","phoneMask":"+594-*****-****"},{"country":"MQ","phoneCode":"596","zone":"America/Martinique","language":"fr","firstDay":"Mo","phoneMask":"+596-***-**-**-**"},{"country":"NF","phoneCode":"672-3","zone":"Pacific/Norfolk","language":"en","firstDay":"Mo","phoneMask":"+672-3-**-***"},{"country":"IC","phoneCode":"3428","zone":"Europe/Berlin","language":"es","firstDay":"Mo"}]'), Vs = "geo-code", k = class k {
+const rn = {}, Is = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlternative":["EN"],"language":"en","languageAlternative":["us"],"firstDay":"Su","zone":"America/New_York","phoneCode":"1","phoneMask":["+1-***-***-****"]},{"country":"GB","countryAlternative":["UK"],"language":"en","firstDay":"Mo","zone":"Europe/London","phoneCode":"44","phoneMask":["+44-**-****-****"]},{"country":"AF","language":"fa","firstDay":"Sa","zone":"Asia/Kabul","phoneCode":"93","phoneMask":["+93-**-***-****"]},{"country":"AL","language":"sq","firstDay":"Mo","zone":"Europe/Tirane","phoneCode":"355","phoneMask":["+355-***-***-***"]},{"country":"DZ","language":"ar","firstDay":"Sa","zone":"Africa/Algiers","phoneCode":"213","phoneMask":["+213-**-***-****"]},{"country":"AS","language":"en","firstDay":null,"zone":"Pacific/Pago_Pago","phoneCode":"1-684","phoneMask":["+1-684-***-****"]},{"country":"AD","language":"ca","firstDay":"Mo","zone":"Europe/Andorra","phoneCode":"376","phoneMask":["+376-***-***"]},{"country":"AO","language":"pt","firstDay":null,"zone":"Africa/Lagos","phoneCode":"244","phoneMask":["+244-***-***-***"]},{"country":"AI","language":"en","firstDay":null,"zone":"America/Port_of_Spain","phoneCode":"1-264","phoneMask":["+1-264-***-****"]},{"country":"AQ","language":"en","firstDay":null,"zone":"Antarctica/Troll","phoneCode":"672","phoneMask":["+672-1-**-***"]},{"country":"AG","language":"en","firstDay":null,"zone":"America/Antigua","phoneCode":"1-268","phoneMask":["+1-268-***-****"]},{"country":"AR","language":"es","firstDay":"Su","zone":"America/Argentina/Buenos_Aires","phoneCode":"54","phoneMask":["+54-***-***-****"]},{"country":"AM","language":"hy","firstDay":"Mo","zone":"Asia/Yerevan","phoneCode":"374","phoneMask":["+374-**-***-***"]},{"country":"AW","language":"nl","firstDay":null,"zone":"America/Curacao","phoneCode":"297","phoneMask":["+297-***-****"]},{"country":"AU","language":"en","firstDay":"Mo","zone":"Australia/Sydney","phoneCode":"61","phoneMask":["+61-*-****-****"]},{"country":"AT","language":"de","firstDay":"Mo","zone":"Europe/Vienna","phoneCode":"43","phoneMask":["+43-***-***-****","+43-***-***-*****"]},{"country":"AZ","language":"az","firstDay":"Mo","zone":"Asia/Baku","phoneCode":"994","phoneMask":"+994-**-***-**-**"},{"country":"BS","language":"en","firstDay":null,"zone":"America/Nassau","phoneCode":"1-242","phoneMask":"+1-242-***-****"},{"country":"BH","language":"ar","firstDay":"Sa","zone":"Asia/Bahrain","phoneCode":"973","phoneMask":"+973-****-****"},{"country":"BD","language":"bn","firstDay":null,"zone":"Asia/Dhaka","phoneCode":"880","phoneMask":"+880-**-***-***"},{"country":"BB","language":"en","firstDay":null,"zone":"America/Barbados","phoneCode":"1-246","phoneMask":"+1-246-***-****"},{"country":"BY","language":"be","firstDay":"Mo","zone":"Europe/Minsk","phoneCode":"375","phoneMask":"+375-**-***-**-**"},{"country":"BE","language":"nl","firstDay":"Mo","zone":"Europe/Brussels","phoneCode":"32","phoneMask":"+32-***-***-***"},{"country":"BZ","language":"en","firstDay":"Su","zone":"America/Belize","phoneCode":"501","phoneMask":"+501-***-****"},{"country":"BJ","language":"fr","firstDay":null,"zone":"Africa/Lagos","phoneCode":"229","phoneMask":"+229-**-**-****"},{"country":"BM","language":"en","firstDay":null,"zone":"Atlantic/Bermuda","phoneCode":"1-441","phoneMask":"+1-441-***-****"},{"country":"BT","language":"dz","firstDay":null,"zone":"Asia/Thimphu","phoneCode":"975","phoneMask":["+975-*-***-***","+975-17-***-***"]},{"country":"BO","language":"es","firstDay":"Su","zone":"America/La_Paz","phoneCode":"591","phoneMask":"+591-*-***-****"},{"country":"BA","language":"bs","firstDay":null,"zone":"Europe/Belgrade","phoneCode":"387","phoneMask":["+387-**-****","+387-**-*****"]},{"country":"BW","language":"en","firstDay":null,"zone":"Africa/Maputo","phoneCode":"267","phoneMask":"+267-**-***-***"},{"country":"BR","language":"pt","firstDay":"Su","zone":"America/Sao_Paulo","phoneCode":"55","phoneMask":["+55-**-****-****","+55-**-*****-****"]},{"country":"IO","language":"en","firstDay":null,"zone":"Indian/Chagos","phoneCode":"246","phoneMask":"+246-***-****"},{"country":"VG","language":"en","firstDay":null,"zone":"America/Port_of_Spain","phoneCode":"1-284","phoneMask":"+1-284-***-****"},{"country":"BN","language":"ms","firstDay":"Mo","zone":"Asia/Brunei","phoneCode":"673","phoneMask":"+673-***-****"},{"country":"BG","language":"bg","firstDay":"Mo","zone":"Europe/Sofia","phoneCode":"359","phoneMask":"+359-***-***-***"},{"country":"BF","language":"fr","firstDay":null,"zone":"Africa/Abidjan","phoneCode":"226","phoneMask":"+226-**-**-****"},{"country":"BI","language":"fr","firstDay":null,"zone":"Africa/Maputo","phoneCode":"257","phoneMask":"+257-**-**-****"},{"country":"KH","language":"km","firstDay":null,"zone":"Asia/Phnom_Penh","phoneCode":"855","phoneMask":"+855-**-***-***"},{"country":"CM","phoneCode":"237","zone":"Africa/Lagos","language":"en","firstDay":null,"phoneMask":"+237-****-****"},{"country":"CA","phoneCode":"1","zone":"America/Toronto","language":"en","firstDay":"Su","phoneMask":"+1-***-***-****"},{"country":"CV","phoneCode":"238","zone":"Atlantic/Cape_Verde","language":"pt","firstDay":null,"phoneMask":"+238-***-**-**"},{"country":"KY","phoneCode":"1-345","zone":"America/Cayman","language":"en","firstDay":null,"phoneMask":"+1-345-***-****"},{"country":"CF","phoneCode":"236","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+236-**-**-****"},{"country":"TD","phoneCode":"235","zone":"Africa/Ndjamena","language":"fr","firstDay":null,"phoneMask":"+235-**-**-**-**"},{"country":"CL","phoneCode":"56","zone":"America/Santiago","language":"es","firstDay":"Su","phoneMask":"+56-*-****-****"},{"country":"CN","phoneCode":"86","zone":"Asia/Shanghai","language":"zh","firstDay":"Su","phoneMask":["+86-***-****-***","+86-***-****-****","+86-**-*****-*****"]},{"country":"CX","phoneCode":"61","zone":"Indian/Christmas","language":"en","firstDay":null},{"country":"CC","phoneCode":"61","zone":"Indian/Cocos","language":"ms","firstDay":null},{"country":"CO","phoneCode":"57","zone":"America/Bogota","language":"es","firstDay":"Su","phoneMask":"+57-***-***-****"},{"country":"KM","phoneCode":"269","zone":"Indian/Comoro","language":"ar","firstDay":null,"phoneMask":"+269-**-*****"},{"country":"CK","phoneCode":"682","zone":"Pacific/Rarotonga","language":"en","firstDay":null,"phoneMask":"+682-**-***"},{"country":"CR","phoneCode":"506","zone":"America/Costa_Rica","language":"es","firstDay":"Su","phoneMask":"+506-****-****"},{"country":"HR","phoneCode":"385","zone":"Europe/Belgrade","language":"hr","firstDay":"Mo","phoneMask":"+385-**-***-***"},{"country":"CU","phoneCode":"53","zone":"America/Havana","language":"es","firstDay":null,"phoneMask":"+53-*-***-****"},{"country":"CW","phoneCode":"599","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":"+599-***-****"},{"country":"CY","phoneCode":"357","zone":"Asia/Nicosia","language":"el","firstDay":null,"phoneMask":"+357-**-***-***"},{"country":"CZ","phoneCode":"420","zone":"Europe/Prague","language":"cs","languageAlternative":["cz"],"firstDay":"Mo","phoneMask":"+420-***-***-***"},{"country":"CD","phoneCode":"243","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+243-***-***-***"},{"country":"DK","phoneCode":"45","zone":"Europe/Copenhagen","language":"da","firstDay":"Mo","phoneMask":"+45-**-**-**-**"},{"country":"DJ","phoneCode":"253","zone":"Africa/Djibouti","language":"fr","firstDay":null,"phoneMask":"+253-**-**-**-**"},{"country":"DM","phoneCode":"1-767","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-767-***-****"},{"country":"DO","phoneCode":"1-809","zone":"North America","language":"America/Santo_Domingo","firstDay":"Su","phoneMask":["+1-809-***-****","+1-829-***-****","+1-849-***-****"]},{"country":"TL","phoneCode":"670","zone":"Asia/Dili","language":"tet","firstDay":null,"phoneMask":["+670-***-****","+670-77-*-*****","+670-78-*-*****"]},{"country":"EC","phoneCode":"593","zone":"America/Guayaquil","language":"es","firstDay":"Su","phoneMask":["+593-*-***-****","+593-**-***-****"]},{"country":"EG","phoneCode":"20","zone":"Africa/Cairo","language":"ar","firstDay":"Sa","phoneMask":"+20-***-***-****"},{"country":"SV","phoneCode":"503","zone":"America/El_Salvador","language":"es","firstDay":"Su","phoneMask":"+503-**-**-****"},{"country":"GQ","phoneCode":"240","zone":"Africa/Lagos","language":"es","firstDay":null,"phoneMask":"+240-**-***-****"},{"country":"ER","phoneCode":"291","zone":"Africa/Asmara","language":"aa","firstDay":null,"phoneMask":"+291-*-***-***"},{"country":"EE","phoneCode":"372","zone":"Europe/Tallinn","language":"et","firstDay":"Mo","phoneMask":["+372-***-****","+372-****-****"]},{"country":"ET","phoneCode":"251","zone":"Africa/Addis_Ababa","language":"am","firstDay":null,"phoneMask":"+251-**-***-****"},{"country":"FK","phoneCode":"500","zone":"Atlantic/Stanley","language":"en","firstDay":null,"phoneMask":"+500-*****"},{"country":"FO","phoneCode":"298","zone":"Atlantic/Faroe","language":"fo","firstDay":null,"phoneMask":"+298-***-***"},{"country":"FJ","phoneCode":"679","zone":"Pacific/Fiji","language":"en","firstDay":null,"phoneMask":"+679-**-*****"},{"country":"FI","phoneCode":"358","zone":"Europe/Helsinki","language":"fi","firstDay":"Mo","phoneMask":["+358-***-***-**-*","+358-***-***-**-**"]},{"country":"FR","phoneCode":"33","zone":"Europe/Paris","language":"fr","firstDay":"Mo","phoneMask":["+33-***-***-***","+262-*****-****","+508-**-****","+590-***-***-***"]},{"country":"PF","phoneCode":"689","zone":"Pacific/Tahiti","language":"fr","firstDay":null,"phoneMask":"+689-**-**-**"},{"country":"GA","phoneCode":"241","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+241-*-**-**-**"},{"country":"GM","phoneCode":"220","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+220-***-**-**"},{"country":"GE","phoneCode":"995","zone":"Asia/Tbilisi","language":"ka","firstDay":"Mo","phoneMask":"+995-***-***-***"},{"country":"DE","phoneCode":"49","zone":"Europe/Berlin","language":"de","firstDay":"Mo","phoneMask":["+49-***-***","+49-***-***-****","+49-****-***-****"]},{"country":"GH","phoneCode":"233","zone":"Africa/Accra","language":"en","firstDay":null,"phoneMask":"+233-***-***-***"},{"country":"GI","phoneCode":"350","zone":"Europe/Gibraltar","language":"en","firstDay":null,"phoneMask":"+350-***-*****"},{"country":"GR","phoneCode":"30","zone":"Europe/Athens","language":"el","firstDay":"Mo","phoneMask":"+30-***-***-****"},{"country":"GL","phoneCode":"299","zone":"America/Godthab","language":"kl","firstDay":null,"phoneMask":"+299-**-**-**"},{"country":"GD","phoneCode":"1-473","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-473-***-****"},{"country":"GU","phoneCode":"1-671","zone":"Pacific/Guam","language":"en","firstDay":null,"phoneMask":"+1-671-***-****"},{"country":"GT","phoneCode":"502","zone":"America/Guatemala","language":"es","firstDay":"Su","phoneMask":"+502-*-***-****"},{"country":"GG","phoneCode":"44-1481","zone":"Europe/London","language":"en","firstDay":null},{"country":"GN","phoneCode":"224","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+224-**-***-***"},{"country":"GW","phoneCode":"245","zone":"Africa/Bissau","language":"pt","firstDay":null,"phoneMask":"+245-*-******"},{"country":"GY","phoneCode":"592","zone":"America/Guyana","language":"en","firstDay":null,"phoneMask":"+592-***-****"},{"country":"HT","phoneCode":"509","zone":"America/Port-au-Prince","language":"ht","firstDay":null,"phoneMask":"+509-**-**-****"},{"country":"HN","phoneCode":"504","zone":"America/Tegucigalpa","language":"es","firstDay":"Su","phoneMask":"+504-****-****"},{"country":"HK","phoneCode":"852","zone":"Asia/Hong_Kong","language":"zh","firstDay":"Su","phoneMask":"+852-****-****"},{"country":"HU","phoneCode":"36","zone":"Europe/Budapest","language":"hu","firstDay":"Mo","phoneMask":"+36-***-***-***","nameFormat":"lf"},{"country":"IS","phoneCode":"354","zone":"Atlantic/Reykjavik","language":"is","firstDay":"Mo","phoneMask":"+354-***-****"},{"country":"IN","phoneCode":"91","zone":"Asia/Kolkata","language":"en","firstDay":"Mo","phoneMask":"+91-****-***-***"},{"country":"ID","phoneCode":"62","zone":"Asia/Jakarta","language":"id","firstDay":"Mo","phoneMask":["+62-**-***-**","+62-**-***-***","+62-**-***-****","+62-8-**-***-***","+62-8-**-***-****","+62-8-**-***-**-***"]},{"country":"IR","phoneCode":"98","zone":"Asia/Tehran","language":"fa","firstDay":"Sa","phoneMask":"+98-***-***-****"},{"country":"IQ","phoneCode":"964","zone":"Asia/Baghdad","language":"ar","firstDay":"Sa","phoneMask":"+964-***-***-****"},{"country":"IE","firstDay":"Mo","language":"en","phoneCode":"353","phoneMask":"+353-***-***-***","zone":"Europe/Dublin"},{"country":"IM","firstDay":null,"language":"Pound","phoneCode":"44-1624","zone":"Isle of Man"},{"country":"IL","firstDay":"Su","language":"he","languageAlternative":["il"],"phoneCode":"972","phoneMask":["+972-*-***-****","+972-5-*-***-****"],"zone":"Asia/Jerusalem"},{"country":"IT","firstDay":"Mo","language":"it","phoneCode":"39","phoneMask":"+39-***-****-***","zone":"Europe/Rome"},{"country":"CI","phoneCode":"225","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+225-**-***-***"},{"country":"JM","phoneCode":"1-876","zone":"America/Jamaica","language":"en","firstDay":"Su","phoneMask":"+1-876-***-****"},{"country":"JP","phoneCode":"81","zone":"Asia/Tokyo","language":"ja","firstDay":"Su","phoneMask":["+81-***-***-***","+81-**-****-****"],"nameFormat":"lf"},{"country":"JE","phoneCode":"44-1534","zone":"Europe/London","language":"en","firstDay":null},{"country":"JO","phoneCode":"962","zone":"Asia/Amman","language":"ar","firstDay":"Sa","phoneMask":"+962-*-****-****"},{"country":"KZ","phoneCode":"7","zone":"Asia/Almaty","language":"kk","firstDay":"Mo","phoneMask":["+7-6-**-***-**-**","+7-7-**-***-**-**"],"nameFormat":"lf"},{"country":"KE","phoneCode":"254","zone":"Africa/Nairobi","language":"en","firstDay":"Su","phoneMask":"+254-***-******"},{"country":"KI","phoneCode":"686","zone":"Pacific/Tarawa","language":"en","firstDay":null,"phoneMask":"+686-**-***"},{"country":"XK","phoneCode":"383","zone":"Europe/Belgrade","language":"sq","firstDay":"Mo"},{"country":"KW","phoneCode":"965","zone":"Asia/Kuwait","language":"ar","firstDay":"Sa","phoneMask":"+965-****-****"},{"country":"KG","phoneCode":"996","zone":"Asia/Bishkek","language":"ky","firstDay":"Mo","phoneMask":"+996-***-***-***"},{"country":"LA","phoneCode":"856","zone":"Asia/Vientiane","language":"lo","firstDay":null,"phoneMask":["+856-**-***-***","+856-20-**-***-***"]},{"country":"LV","phoneCode":"371","zone":"Europe/Riga","language":"lv","firstDay":"Mo","phoneMask":"+371-**-***-***"},{"country":"LB","phoneCode":"961","zone":"Asia/Beirut","language":"ar","firstDay":"Mo","phoneMask":["+961-*-***-***","+961-**-***-***"]},{"country":"LS","phoneCode":"266","zone":"Africa/Johannesburg","language":"en","firstDay":null,"phoneMask":"+266-*-***-****"},{"country":"LR","phoneCode":"231","zone":"Africa/Monrovia","language":"en","firstDay":null,"phoneMask":"+231-**-***-***"},{"country":"LY","phoneCode":"218","zone":"Africa/Tripoli","language":"ar","firstDay":"Sa","phoneMask":["+218-**-***-***","+218-21-***-****"]},{"country":"LI","phoneCode":"423","zone":"Europe/Zurich","language":"de","firstDay":null,"phoneMask":"+423-***-***-****"},{"country":"LT","phoneCode":"370","zone":"Europe/Vilnius","language":"lt","firstDay":"Mo","phoneMask":"+370-***-**-***"},{"country":"LU","phoneCode":"352","zone":"Europe/Luxembourg","language":"lb","firstDay":"Mo","phoneMask":"+352-***-***-***"},{"country":"MO","phoneCode":"853","zone":"Asia/Macau","language":"zh","firstDay":null,"phoneMask":"+853-****-****"},{"country":"MK","phoneCode":"389","zone":"Europe/Belgrade","language":"mk","firstDay":"Mo","phoneMask":"+389-**-***-***"},{"country":"MG","phoneCode":"261","zone":"Indian/Antananarivo","language":"fr","firstDay":null,"phoneMask":"+261-**-**-*****"},{"country":"MW","phoneCode":"265","zone":"Africa/Maputo","language":"ny","firstDay":null,"phoneMask":["+265-*-****-****","+265-1-***-***"]},{"country":"MY","phoneCode":"60","zone":"Asia/Kuala_Lumpur","language":"ms","firstDay":"Mo","phoneMask":["+60-*-***-***","+60-**-***-***","+60-**-***-****","+60-***-***-***"]},{"country":"MV","phoneCode":"960","zone":"Indian/Maldives","language":"dv","firstDay":null,"phoneMask":"+960-***-****"},{"country":"ML","phoneCode":"223","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+223-**-**-****"},{"country":"MT","phoneCode":"356","zone":"Europe/Malta","language":"mt","firstDay":null,"phoneMask":"+356-****-****"},{"country":"MH","phoneCode":"692","zone":"Pacific/Majuro","language":"mh","firstDay":null,"phoneMask":"+692-***-****"},{"country":"MR","phoneCode":"222","zone":"Africa/Abidjan","language":"ar","firstDay":null,"phoneMask":"+222-**-**-****"},{"country":"MU","phoneCode":"230","zone":"Indian/Mauritius","language":"en","firstDay":null,"phoneMask":"+230-***-****"},{"country":"YT","phoneCode":"262","zone":"Indian/Mayotte","language":"fr","firstDay":null},{"country":"MX","phoneCode":"52","zone":"America/Mexico_City","language":"es","firstDay":"Su","phoneMask":["+52-**-**-****","+52-***-***-****"]},{"country":"FM","phoneCode":"691","zone":"Pacific/Pohnpei","language":"en","firstDay":null,"phoneMask":"+691-***-****"},{"country":"MD","phoneCode":"373","zone":"Europe/Chisinau","language":"ro","firstDay":null,"phoneMask":"+373-****-****"},{"country":"MC","phoneCode":"377","zone":"Europe/Monaco","language":"fr","firstDay":"Mo","phoneMask":["+377-**-***-***","+377-***-***-***"]},{"country":"MN","phoneCode":"976","zone":"Asia/Ulaanbaatar","language":"mn","firstDay":"Mo","phoneMask":"+976-**-**-****"},{"country":"ME","phoneCode":"382","zone":"Europe/Belgrade","language":"sr","firstDay":null,"phoneMask":"+382-**-***-***"},{"country":"MS","phoneCode":"1-664","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-664-***-****"},{"country":"MA","phoneCode":"212","zone":"Africa/Casablanca","language":"ar","firstDay":"Mo","phoneMask":"+212-**-****-***"},{"country":"MZ","phoneCode":"258","zone":"Africa/Maputo","language":"pt","firstDay":null,"phoneMask":"+258-**-***-***"},{"country":"MM","phoneCode":"95","zone":"Asia/Rangoon","language":"my","firstDay":null,"phoneMask":["+95-***-***","+95-*-***-***","+95-**-***-***"]},{"country":"NA","phoneCode":"264","zone":"Africa/Windhoek","language":"en","firstDay":null,"phoneMask":"+264-**-***-****"},{"country":"NR","phoneCode":"674","zone":"Pacific/Nauru","language":"na","firstDay":null,"phoneMask":"+674-***-****"},{"country":"NP","phoneCode":"977","zone":"Asia/Kathmandu","language":"ne","firstDay":null,"phoneMask":"+977-**-***-***"},{"country":"NL","phoneCode":"31","zone":"Europe/Amsterdam","language":"nl","firstDay":"Mo","phoneMask":"+31-**-***-****"},{"country":"AN","phoneCode":"599","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":["+599-***-****","+599-9-***-****"]},{"country":"NC","phoneCode":"687","zone":"Pacific/Noumea","language":"fr","firstDay":null,"phoneMask":"+687-**-****"},{"country":"NZ","phoneCode":"64","zone":"Pacific/Auckland","language":"en","firstDay":"Mo","phoneMask":["+64-**-***-***","+64-***-***-***","+64-***-***-****"]},{"country":"NI","phoneCode":"505","zone":"America/Managua","language":"es","firstDay":"Su","phoneMask":"+505-****-****"},{"country":"NE","phoneCode":"227","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+227-**-**-****"},{"country":"NG","phoneCode":"234","zone":"Africa/Lagos","language":"en","firstDay":null,"phoneMask":["+234-**-***-**","+234-**-***-***","+234-***-***-****"]},{"country":"NU","phoneCode":"683","zone":"Pacific/Niue","language":"niu","firstDay":null,"phoneMask":"+683-****"},{"country":"KP","phoneCode":"850","zone":"Asia/Pyongyang","language":"ko","firstDay":null,"phoneMask":["+850-***-***","+850-**-***-***","+850-****-****","+850-***-****-***","+850-****-*************","+850-191-***-****"]},{"country":"MP","phoneCode":"1-670","zone":"Pacific/Saipan","language":"fil","firstDay":null,"phoneMask":"+1-670-***-****"},{"country":"NO","phoneCode":"47","zone":"Europe/Oslo","language":"no","firstDay":"Mo","phoneMask":"+47-***-**-***"},{"country":"OM","phoneCode":"968","zone":"Asia/Muscat","language":"ar","firstDay":"Sa","phoneMask":"+968-**-***-***"},{"country":"PK","phoneCode":"92","zone":"Asia/Karachi","language":"ur","firstDay":"Mo","phoneMask":"+92-***-***-****"},{"country":"PW","phoneCode":"680","zone":"Pacific/Palau","language":"pau","firstDay":null,"phoneMask":"+680-***-****"},{"country":"PS","phoneCode":"970","zone":"Asia/Hebron","language":"ar","firstDay":null,"phoneMask":"+970-**-***-****"},{"country":"PA","phoneCode":"507","zone":"America/Panama","language":"es","firstDay":"Su","phoneMask":"+507-***-****"},{"country":"PG","phoneCode":"675","zone":"Pacific/Port_Moresby","language":"en","firstDay":null,"phoneMask":"+675-***-**-***"},{"country":"PY","phoneCode":"595","zone":"America/Asuncion","language":"es","firstDay":"Mo","phoneMask":"+595-***-***-***"},{"country":"PE","phoneCode":"51","zone":"America/Lima","language":"es","firstDay":"Su","phoneMask":"+51-***-***-***"},{"country":"PH","phoneCode":"63","zone":"Asia/Manila","language":"tl","firstDay":"Su","phoneMask":"+63-***-***-****"},{"country":"PN","phoneCode":"64","zone":"Pacific/Pitcairn","language":"en","firstDay":null},{"country":"PL","phoneCode":"48","zone":"Europe/Warsaw","language":"pl","firstDay":"Mo","phoneMask":"+48-***-***-***"},{"country":"PT","phoneCode":"351","zone":"Europe/Lisbon","language":"pt","firstDay":"Mo","phoneMask":"+351-**-***-****"},{"country":"PR","phoneCode":"1-787","zone":"San Juan","language":"Dollar","firstDay":"Su"},{"country":"QA","phoneCode":"974","zone":"Asia/Qatar","language":"ar","firstDay":"Sa","phoneMask":"+974-****-****"},{"country":"CG","phoneCode":"242","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+242-**-***-****"},{"country":"RE","phoneCode":"262","zone":"Indian/Reunion","language":"fr","firstDay":null,"phoneMask":"+262-*****-****"},{"country":"RO","phoneCode":"40","zone":"Europe/Bucharest","language":"ro","firstDay":"Mo","phoneMask":"+40-**-***-****"},{"country":"RU","phoneCode":"7","phoneWithin":"8","zone":"Europe/Moscow","language":"ru","firstDay":"Mo","phoneMask":"+7-***-***-**-**","nameFormat":"lsf"},{"country":"RW","phoneCode":"250","zone":"Africa/Maputo","language":"rw","firstDay":null,"phoneMask":"+250-***-***-***"},{"country":"BL","phoneCode":"590","zone":"America/Port_of_Spain","language":"fr","firstDay":null},{"country":"SH","phoneCode":"290","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+290-****"},{"country":"KN","phoneCode":"1-869","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-869-***-****"},{"country":"LC","phoneCode":"1-758","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-758-***-****"},{"country":"MF","phoneCode":"590","zone":"America/Port_of_Spain","language":"fr","firstDay":null},{"country":"PM","phoneCode":"508","zone":"America/Miquelon","language":"fr","firstDay":null},{"country":"VC","phoneCode":"1-784","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-784-***-****"},{"country":"WS","phoneCode":"685","zone":"Pacific/Apia","language":"sm","firstDay":null,"phoneMask":"+685-**-****"},{"country":"SM","phoneCode":"378","zone":"Europe/Rome","language":"it","firstDay":null,"phoneMask":"+378-****-******"},{"country":"ST","phoneCode":"239","zone":"Africa/Abidjan","language":"pt","firstDay":null,"phoneMask":"+239-**-*****"},{"country":"SA","phoneCode":"966","zone":"Asia/Riyadh","language":"ar","firstDay":"Sa","phoneMask":["+966-*-***-****","+966-5-****-****"]},{"country":"SN","phoneCode":"221","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+221-**-***-****"},{"country":"RS","phoneCode":"381","zone":"Europe/Belgrade","language":"sr","firstDay":"Mo","phoneMask":"+381-**-***-****"},{"country":"SC","phoneCode":"248","zone":"Indian/Mahe","language":"en","firstDay":null,"phoneMask":"+248-*-***-***"},{"country":"SL","phoneCode":"232","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+232-**-******"},{"country":"SG","phoneCode":"65","zone":"Asia/Singapore","language":"cmn","firstDay":"Mo","phoneMask":"+65-****-****"},{"country":"SX","phoneCode":"1-721","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":"+1-721-***-****"},{"country":"SK","phoneCode":"421","zone":"Europe/Prague","language":"sk","firstDay":"Mo","phoneMask":"+421-***-***-***"},{"country":"SI","phoneCode":"386","zone":"Europe/Belgrade","language":"sl","firstDay":null,"phoneMask":"+386-**-***-***"},{"country":"SB","phoneCode":"677","zone":"Pacific/Guadalcanal","language":"en","firstDay":null,"phoneMask":["+677-*****","+677-***-****"]},{"country":"SO","phoneCode":"252","zone":"Africa/Mogadishu","language":"so","firstDay":null,"phoneMask":["+252-*-***-***","+252-**-***-***"]},{"country":"ZA","phoneCode":"27","zone":"Africa/Johannesburg","language":"zu","firstDay":"Su","phoneMask":"+27-**-***-****"},{"country":"KR","phoneCode":"82","zone":"Asia/Seoul","language":"ko","firstDay":"Su","phoneMask":["+82-**-***-****","+82-**-***-****-**"],"nameFormat":"lf"},{"country":"SS","phoneCode":"211","zone":"Africa/Khartoum","language":"en","firstDay":null,"phoneMask":"+211-**-***-****"},{"country":"ES","phoneCode":"34","zone":"Europe/Madrid","language":"es","firstDay":"Mo","phoneMask":"+34-***-***-***"},{"country":"LK","phoneCode":"94","zone":"Asia/Colombo","language":"si","firstDay":null,"phoneMask":"+94-**-***-****"},{"country":"SD","phoneCode":"249","zone":"Africa/Khartoum","language":"ar","firstDay":null,"phoneMask":"+249-**-***-****"},{"country":"SR","phoneCode":"597","zone":"America/Paramaribo","language":"nl","firstDay":null,"phoneMask":["+597-***-***","+597-***-****"]},{"country":"SJ","phoneCode":"47","zone":"Europe/Oslo","language":"no","firstDay":null},{"country":"SZ","phoneCode":"268","zone":"Africa/Johannesburg","language":"en","firstDay":null,"phoneMask":"+268-**-**-****"},{"country":"SE","phoneCode":"46","zone":"Europe/Stockholm","language":"sv","firstDay":"Mo","phoneMask":"+46-**-***-****"},{"country":"CH","phoneCode":"41","zone":"Europe/Zurich","language":"de","firstDay":"Mo","phoneMask":"+41-**-***-****"},{"country":"SY","phoneCode":"963","zone":"Asia/Damascus","language":"ar","firstDay":"Sa","phoneMask":"+963-**-****-***"},{"country":"TW","phoneCode":"886","zone":"Asia/Taipei","language":"zh","firstDay":"Su","phoneMask":["+886-****-****","+886-*-****-****"]},{"country":"TJ","phoneCode":"992","zone":"Asia/Dushanbe","language":"tg","firstDay":null,"phoneMask":"+992-**-***-****"},{"country":"TZ","phoneCode":"255","zone":"Africa/Dar_es_Salaam","language":"sw","firstDay":null,"phoneMask":"+255-**-***-****"},{"country":"TH","phoneCode":"66","zone":"Asia/Bangkok","language":"th","firstDay":"Mo","phoneMask":"+66-**-***-****"},{"country":"TG","phoneCode":"228","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+228-**-***-***"},{"country":"TK","phoneCode":"690","zone":"Pacific/Fakaofo","language":"tkl","firstDay":null,"phoneMask":"+690-****"},{"country":"TO","phoneCode":"676","zone":"Pacific/Tongatapu","language":"to","firstDay":null,"phoneMask":"+676-*****"},{"country":"TT","phoneCode":"1-868","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-868-***-****"},{"country":"TN","phoneCode":"216","zone":"Africa/Tunis","language":"ar","firstDay":"Mo","phoneMask":"+216-**-***-***"},{"country":"TR","phoneCode":"90","zone":"Europe/Istanbul","language":"tr","firstDay":"Mo","phoneMask":"+90-***-***-****"},{"country":"TM","phoneCode":"993","zone":"Asia/Ashgabat","language":"tk","firstDay":null,"phoneMask":"+993-*-***-****"},{"country":"TC","phoneCode":"1-649","zone":"America/Grand_Turk","language":"en","firstDay":null,"phoneMask":"+1-649-***-****"},{"country":"TV","phoneCode":"688","zone":"Pacific/Funafuti","language":"tvl","firstDay":null,"phoneMask":["+688-2-****","+688-90-****"]},{"country":"VI","phoneCode":"1-340","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-340-***-****"},{"country":"UG","phoneCode":"256","zone":"Africa/Kampala","language":"en","firstDay":null,"phoneMask":"+256-***-***-***"},{"country":"UA","phoneCode":"380","zone":"Europe/Kiev","language":"uk","languageAlternative":["ua"],"firstDay":"Mo","phoneMask":"+380-**-***-**-**"},{"country":"AE","phoneCode":"971","zone":"Asia/Dubai","language":"ar","firstDay":"Sa","phoneMask":["+971-*-***-****","+971-5-*-***-****"]},{"country":"UY","phoneCode":"598","zone":"America/Montevideo","language":"es","firstDay":"Mo","phoneMask":"+598-*-***-**-**"},{"country":"UZ","phoneCode":"998","zone":"Asia/Tashkent","language":"uz","firstDay":"Mo","phoneMask":"+998-**-***-****"},{"country":"VU","phoneCode":"678","zone":"Pacific/Efate","language":"bi","firstDay":null,"phoneMask":["+678-*****","+678-**-*****"]},{"country":"VA","phoneCode":"379","zone":"Europe/Rome","language":"la","firstDay":null,"phoneMask":"+39-6-698-*****"},{"country":"VE","phoneCode":"58","zone":"America/Caracas","language":"es","firstDay":"Su","phoneMask":"+58-***-***-****"},{"country":"VN","phoneCode":"84","zone":"Asia/Ho_Chi_Minh","language":"vi","firstDay":"Mo","phoneMask":["+84-**-****-***","+84-***-****-***"],"nameFormat":"fsl"},{"country":"WF","phoneCode":"681","zone":"Pacific/Wallis","language":"wls","firstDay":null,"phoneMask":"+681-**-****"},{"country":"EH","phoneCode":"212","zone":"Africa/El_Aaiun","language":"ar","firstDay":null},{"country":"YE","phoneCode":"967","zone":"Asia/Aden","language":"ar","firstDay":"Sa","phoneMask":["+967-*-***-***","+967-**-***-***","+967-***-***-***"]},{"country":"ZM","phoneCode":"260","zone":"Africa/Maputo","language":"en","firstDay":null,"phoneMask":"+260-**-***-****"},{"country":"ZW","phoneCode":"263","zone":"Africa/Maputo","language":"en","firstDay":"Su","phoneMask":"+263-*-******"},{"country":"GF","phoneCode":"594","zone":"America/Cayenne","language":"fr","firstDay":"Mo","phoneMask":"+594-*****-****"},{"country":"MQ","phoneCode":"596","zone":"America/Martinique","language":"fr","firstDay":"Mo","phoneMask":"+596-***-**-**-**"},{"country":"NF","phoneCode":"672-3","zone":"Pacific/Norfolk","language":"en","firstDay":"Mo","phoneMask":"+672-3-**-***"},{"country":"IC","phoneCode":"3428","zone":"Europe/Berlin","language":"es","firstDay":"Mo"}]'), Vs = "geo-code", v = class v {
   /**
    * Information about the current country.
    *
@@ -2779,7 +2781,7 @@ const rn = {}, Is = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlterna
    */
   static findLocation() {
     var n;
-    return Q() && (this.storage.get() || ((n = document.querySelector("html")) == null ? void 0 : n.lang) || navigator.language || navigator.languages[0] || "en-GB") || "en-GB";
+    return W() && (this.storage.get() || ((n = document.querySelector("html")) == null ? void 0 : n.lang) || navigator.language || navigator.languages[0] || "en-GB") || "en-GB";
   }
   /**
    * Determines the current language.
@@ -2822,8 +2824,8 @@ const rn = {}, Is = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlterna
     };
   }
 };
-y(k, "storage", new xs(Vs)), y(k, "location"), y(k, "item"), y(k, "language"), y(k, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), k.location = k.findLocation(), k.language = k.findLanguage(k.location), k.item = k.getByCode(k.location);
-let De = k;
+y(v, "storage", new xs(Vs)), y(v, "location"), y(v, "item"), y(v, "language"), y(v, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), v.location = v.findLocation(), v.language = v.findLanguage(v.location), v.item = v.getByCode(v.location);
+let Me = v;
 var Ls = /* @__PURE__ */ ((e) => (e.get = "GET", e.post = "POST", e.put = "PUT", e.delete = "DELETE", e))(Ls || {});
 const qn = "d-response-loading", Zn = [], C = class C {
   /**
@@ -2863,7 +2865,7 @@ const qn = "d-response-loading", Zn = [], C = class C {
         ...this.headers,
         ...n || {}
       };
-      return t && (o["Content-Type"] = t), o;
+      return he(t) && (o["Content-Type"] = t), o;
     }
   }
   /**
@@ -2874,7 +2876,7 @@ const qn = "d-response-loading", Zn = [], C = class C {
    * @param api adding a path to the site’s API/ добавление пути к API сайта
    */
   static getUrl(n, t = !0) {
-    return `${t ? this.url : ""}${n}`.replace("{locale}", De.getLocation()).replace("{country}", De.getCountry()).replace("{language}", De.getLanguage());
+    return `${t ? this.url : ""}${n}`.replace("{locale}", Me.getLocation()).replace("{country}", Me.getCountry()).replace("{language}", Me.getLanguage());
   }
   /**
    * Getting data for the body.
@@ -2884,8 +2886,10 @@ const qn = "d-response-loading", Zn = [], C = class C {
    * @param method method for request/ метод запрос
    */
   static getBody(n = {}, t = "GET") {
-    if (t !== "GET" && Ie(n))
-      return n instanceof FormData || Gn(n) ? n : JSON.stringify(n);
+    if (n instanceof FormData)
+      return n;
+    if (t !== "GET" && he(n))
+      return gn(n) ? n : JSON.stringify(n);
   }
   /**
    * Getting data for the body of the get method.
@@ -2897,8 +2901,8 @@ const qn = "d-response-loading", Zn = [], C = class C {
    */
   static getBodyForGet(n, t = "", o = "GET") {
     if (o === "GET") {
-      const s = t.match(/\?/) ? "&" : "?", r = typeof n == "object" ? Ns(n) : n;
-      if (Ie(r))
+      const s = t.match(/\?/) ? "&" : "?", r = typeof n == "object" ? ws(n) : n;
+      if (he(r))
         return `${s}${r}`;
     }
     return "";
@@ -3005,7 +3009,7 @@ const qn = "d-response-loading", Zn = [], C = class C {
    * @param pathRequest query string or list of parameters/ строка запроса или список параметров
    */
   static async request(n) {
-    return Gn(n) ? await this.fetch({
+    return gn(n) ? await this.fetch({
       path: n
     }) : await this.fetch(n);
   }
@@ -3068,7 +3072,7 @@ const qn = "d-response-loading", Zn = [], C = class C {
    * @param response data for caching/ данные для кеширования
    */
   static addResponse(n) {
-    return this.response.push(...gn(n)), C;
+    return this.response.push(...yn(n)), C;
   }
   /**
    * Checks if there is a global cached request, if there is, returns it.
@@ -3081,10 +3085,10 @@ const qn = "d-response-loading", Zn = [], C = class C {
    */
   static getResponse(n = "", t, o, s) {
     return this.response.find((r) => {
-      if (mn(sn(r == null ? void 0 : r.disable)) !== !0 && (r.path instanceof RegExp && n.match(r.path) || n === r.path) && t === r.method && (Zn.indexOf(r) === -1 || s)) {
+      if (Dn(sn(r == null ? void 0 : r.disable)) !== !0 && (r.path instanceof RegExp && n.match(r.path) || n === r.path) && t === r.method && (Zn.indexOf(r) === -1 || s)) {
         const a = this.addRequestDefault(r == null ? void 0 : r.request);
         let i = !1;
-        if (o === a || a === "*any" ? i = !0 : Ie(o) && Ie(a) && te(o) && te(a) && !(o instanceof FormData) && !(a instanceof FormData) && Object.values(o).length === Object.values(a).length && (i = Object.entries(a).reduce(
+        if (o === a || a === "*any" ? i = !0 : he(o) && he(a) && te(o) && te(a) && !(o instanceof FormData) && !(a instanceof FormData) && Object.values(o).length === Object.values(a).length && (i = Object.entries(a).reduce(
           (c, [l, p]) => c && (p === (o == null ? void 0 : o[l]) || p === "*any"),
           !0
         )), i)
@@ -3110,17 +3114,17 @@ const qn = "d-response-loading", Zn = [], C = class C {
     if (i)
       return i;
     let c = {};
-    J.show();
+    q.show();
     try {
       this.preparationItem && r && await this.makePreparation();
       const l = await this.makeQuery(n), p = a && this.preparationEndItem ? await this.makePreparationEnd(l) : {};
       if (this.status = l.status, this.statusText = l.statusText, p != null && p.reset)
-        return J.hide(), await this.fetch(n);
+        return q.hide(), await this.fetch(n);
       s ? c = await s(l) : "data" in p ? c = p.data : l.headers.get("Content-Type") === "application/json" ? c = await l.json() : c = { data: await l.text() };
     } catch (l) {
       o && console.error("Api: ", l), this.error = l;
     }
-    return J.hide(), this.makeData(c, t);
+    return q.hide(), this.makeData(c, t);
   }
   /**
    * Emulates an execution request.
@@ -3134,8 +3138,8 @@ const qn = "d-response-loading", Zn = [], C = class C {
       Ht(
         nt(n.response) ? n.response(t) : n.response
       ).then((s) => {
-        sn(n == null ? void 0 : n.lag) ? (J.show(), setTimeout(() => {
-          this.stopResponseLoading(), o(s), J.hide();
+        sn(n == null ? void 0 : n.lag) ? (q.show(), setTimeout(() => {
+          this.stopResponseLoading(), o(s), q.hide();
         }, Os(0, 2e3))) : (this.stopResponseLoading(), o(s));
       });
     });
@@ -3226,7 +3230,7 @@ const qn = "d-response-loading", Zn = [], C = class C {
    * Включить загрузку для эмуляции запроса.
    */
   static startResponseLoading() {
-    this.responseLoading && clearTimeout(this.responseLoading), Q() && document.body.classList.add(qn);
+    this.responseLoading && clearTimeout(this.responseLoading), W() && document.body.classList.add(qn);
   }
   /**
    * Disable loading for request emulation.
@@ -3235,13 +3239,13 @@ const qn = "d-response-loading", Zn = [], C = class C {
    */
   static stopResponseLoading() {
     this.responseLoading = setTimeout(() => {
-      this.responseLoading = void 0, Q() && document.body.classList.remove(qn);
+      this.responseLoading = void 0, W() && document.body.classList.remove(qn);
     }, 1200);
   }
 };
 y(C, "url", "/api/"), y(C, "response", []), y(C, "responseLoading"), y(C, "headers", {}), y(C, "requestDefault"), y(C, "preparation", !1), y(C, "preparationItem"), y(C, "preparationEndItem"), y(C, "status"), y(C, "statusText"), y(C, "error"), y(C, "lastResponse"), y(C, "lastMessage");
-let yn = C;
-const an = "__UI_ICON", Qn = 320, Xn = "--LOAD--", Ce = class Ce {
+let mn = C;
+const an = "__UI_ICON", Qn = 320, Xn = "--LOAD--", _e = class _e {
   /**
    * Checks if the given icon is in the list of connected icons.
    *
@@ -3280,7 +3284,7 @@ const an = "__UI_ICON", Qn = 320, Xn = "--LOAD--", Ce = class Ce {
    * Возвращает глобальную ссылку.
    */
   static getUrlGlobal() {
-    return `${yn.isLocalhost(), ""}${this.url}`;
+    return `${mn.isLocalhost(), ""}${this.url}`;
   }
   /**
    * Adding custom icons.
@@ -3347,34 +3351,36 @@ const an = "__UI_ICON", Qn = 320, Xn = "--LOAD--", Ce = class Ce {
     return new Promise((n) => setTimeout(() => n(), Qn));
   }
 };
-y(Ce, "icons", {}), y(Ce, "url", "/icons/"), Q() && (an in window || (window[an] = {}), Ce.icons = window[an]);
-let et = Ce;
+y(_e, "icons", {}), y(_e, "url", "/icons/"), W() && (an in window || (window[an] = {}), _e.icons = window[an]);
+let et = _e;
 export {
-  yn as A,
-  Ws as B,
-  Ls as C,
+  mn as A,
+  Ps as B,
+  Ts as C,
   xs as D,
   Wn as E,
-  Ht as F,
-  De as G,
-  Un as H,
+  Js as F,
+  Me as G,
+  Ls as H,
   et as I,
-  nt as J,
-  Rs as K,
-  J as L,
-  Ft as M,
-  Ie as a,
+  Ht as J,
+  Un as K,
+  q as L,
+  nt as M,
+  Rs as N,
+  Ft as O,
+  he as a,
   Ye as b,
-  ae as c,
-  Dn as d,
-  mn as e,
+  gn as c,
+  ae as d,
+  Dn as e,
   Le as f,
-  Ns as g,
-  te as h,
-  Q as i,
-  Ys as j,
-  Gn as k,
-  qs as l,
+  ws as g,
+  Mn as h,
+  W as i,
+  te as j,
+  qs as k,
+  Zs as l,
   sn as m,
   Hs as n,
   Gs as o,
@@ -3382,11 +3388,11 @@ export {
   Bs as q,
   Fs as r,
   js as s,
-  gn as t,
+  yn as t,
   Us as u,
   Ks as v,
-  Js as w,
+  Ys as w,
   Os as x,
-  Ps as y,
-  Ts as z
+  as as y,
+  Ws as z
 };

@@ -5,6 +5,7 @@
  * @param callback function or any value/ функция или любое значение
  * @param unmounted delete data from the cache/ удалить ли данные из кеша
  * @param isGlobal is the object global?/ является ли объект глобальным?
+ * @param isProvide execution as a component inheritance/ выполнение как наследие компонента
  */
-export declare function executeUse<R>(callback: () => R, unmounted?: boolean, isGlobal?: boolean): () => R;
+export declare function executeUse<R, O extends any[]>(callback: (...args: O) => R, unmounted?: boolean, isGlobal?: boolean, isProvide?: boolean): ((...args: O) => R) | (() => R);
 export declare function executeUseGlobalInit(): void;

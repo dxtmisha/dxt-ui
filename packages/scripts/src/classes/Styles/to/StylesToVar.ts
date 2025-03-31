@@ -96,6 +96,6 @@ export class StylesToVar extends StylesToAbstract {
       return `${item?.[PropertyKey.name]}-opacity: ${opacity};`
     }
 
-    return `${item?.[PropertyKey.name]}-opacity: #{toColorOpacity(${value})};`
+    return `${item?.[PropertyKey.name]}-opacity: #{ui.toColorOpacity(${value})};`
   }
 }

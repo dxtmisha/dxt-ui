@@ -1,9 +1,9 @@
 import { forEach, isFilled, isObjectNotArray } from '@dxt-ui/functional'
 
-import { Properties } from '../properties/Properties'
-import { PropertiesFile } from '../properties/PropertiesFile'
-import { PropertiesItems } from '../properties/PropertiesItems'
-import { PropertiesScss } from '../properties/PropertiesScss'
+import { Properties } from '../Properties/Properties'
+import { PropertiesFile } from '../Properties/PropertiesFile'
+import { PropertiesItems } from '../Properties/PropertiesItems'
+import { PropertiesScss } from '../Properties/PropertiesScss'
 
 import { StylesTool } from './StylesTool'
 

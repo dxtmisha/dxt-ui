@@ -1,5 +1,6 @@
 import { getColumn } from '../functions/getColumn'
 import { isDomRuntime } from '../functions/isDomRuntime'
+import { isString } from '../functions/isString'
 import { toDate } from '../functions/toDate'
 import { toNumber } from '../functions/toNumber'
 
@@ -315,6 +316,46 @@ export class GeoIntl {
       })
 
     return this.number(number, options)
+  }
+
+  /**
+   * Возвращает отформатированный размер файла
+   * @param value a number, bigint, or string, to format /<br>число для форматирования
+   * @param unitOptions the unit to use in unit formatting /<br>блок для использования
+   * в форматировании блока
+   */
+  sizeFile(
+    value: NumberOrString,
+    unitOptions:
+      'byte' |
+      'kilobyte' |
+      'megabyte' |
+      'gigabyte' |
+      'terabyte' |
+      'petabyte' |
+      Intl.NumberFormatOptions = 'byte'
+  ): string {
+    const number: number = toNumber(value)
+
+    if (
+      number > 1024
+      && isString(unitOptions)
+    ) {
+      switch (unitOptions) {
+        case 'byte':
+          return this.sizeFile(number / 1024, 'kilobyte')
+        case 'kilobyte':
+          return this.sizeFile(number / 1024, 'megabyte')
+        case 'megabyte':
+          return this.sizeFile(number / 1024, 'gigabyte')
+        case 'gigabyte':
+          return this.sizeFile(number / 1024, 'terabyte')
+        case 'terabyte':
+          return this.sizeFile(number / 1024, 'petabyte')
+      }
+    }
+
+    return this.unit(value, unitOptions)
   }
 
   /**

@@ -9,7 +9,6 @@ import {
 } from 'vue'
 
 import { getRef } from '../../functions/ref/getRef'
-import { isObjectNotArray } from '../../functions/isObjectNotArray'
 import { toRefItem } from '../../functions/ref/toRefItem'
 
 import {
@@ -87,14 +86,7 @@ export function useApiRef<R, T = any>(
       })
 
       if (response) {
-        if (
-          isObjectNotArray(response)
-          && 'data' in response
-        ) {
-          responseData = response.data as T
-        } else {
-          responseData = response as T
-        }
+        responseData = response as T
       }
 
       if (transformation) {

@@ -55,7 +55,7 @@ export class StylesTool {
    * Получение ссылки на базовую функцию.
    */
   static addImportProperties(): string {
-    return this.addImport(`@use "@dxt-ui/styles" as ui;`)
+    return '@use "@dxt-ui/styles" as ui;'
   }
 
   /**
@@ -79,9 +79,9 @@ export class StylesTool {
   }
 
   static toFunctionCss(value: string): string {
-    if (value.match(/@[a-zA-Z0-9]+\(.*?\)( |,|$)/)) {
+    if (value.match(/@[a-zA-Z0-9.]+\(.*?\)( |,|$)/)) {
       return value
-        .replace(/@([a-zA-Z0-9]+\(.*?\))( |,|$)/g, '#{$1}$2')
+        .replace(/@([a-zA-Z0-9.]+\(.*?\))( |,|$)/g, '#{$1}$2')
     }
 
     return value

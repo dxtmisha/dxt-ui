@@ -8,6 +8,6 @@ import { type FunctionArgs } from '../types/basicTypes'
  * Выполняется функция и возвращает ее результат. Или возвращает входные данные, если это не функция
  * @param callback function or any value/ функция или любое значение
  */
-export function executeFunction<T>(callback: T): Exclude<T, FunctionArgs<any, T>> {
+export function executeFunction<T>(callback: T | FunctionArgs<any, T>): T {
   return isFunction(callback) ? callback() : callback
 }

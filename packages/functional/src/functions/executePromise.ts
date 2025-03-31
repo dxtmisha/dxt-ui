@@ -9,7 +9,7 @@ import { executeFunction } from './executeFunction'
 export async function executePromise<T>(
   callback: (() => Promise<T>) | (() => T) | T
 ): Promise<T> {
-  const data = executeFunction(callback)
+  const data = executeFunction<Promise<T> | T>(callback)
 
   if (data instanceof Promise) {
     return (await data)
