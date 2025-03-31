@@ -47,3 +47,17 @@ export const PROPERTY_CONSTRUCTOR_BASIC_NAME = 'd'
  */
 export const STYLES_DIR_MAIN = ['src', 'styles']
 export const STYLES_FILE_EXTENSION = 'scss'
+
+/**
+ * Directory for storing generated files for working with libraries
+ *
+ * Директория для хранения сгенерируемых файлов для работы с библиотеками
+ */
+export const LIBRARY_DIR = ['src', 'library']
+
+/**
+ * Directory with the list of components
+ *
+ * Директория со списком компонентов
+ */
+export const LIBRARY_DIR_COMPONENTS = ['src', 'components']

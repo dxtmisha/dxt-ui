@@ -19,6 +19,15 @@ export class PropertiesConfig {
    *
    * Возвращает название проекта.
    */
+  static getProjectName(): string {
+    return this.config.project ?? 'ui'
+  }
+
+  /**
+   * Returns the project name.
+   *
+   * Возвращает название проекта.
+   */
   static getDesignName(): string {
     return this.config.name ?? 'ui'
   }

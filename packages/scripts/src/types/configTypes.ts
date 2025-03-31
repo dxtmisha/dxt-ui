@@ -4,6 +4,13 @@ export type DesignUiConfig = {
    *
    * Название проекта
    */
+  project: string
+
+  /**
+   * Design system name
+   *
+   * Название дизайн-системы
+   */
   name: string
 
   /**
