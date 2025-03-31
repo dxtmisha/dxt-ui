@@ -1,0 +1,6 @@
+@use "./basic";
+@use "@dxt-ui/styles" as ui;
+@use "@dxt-ui/styles/properties" as uiProperties;
+
+@include ui.initGlobal;
+@include uiProperties.initDesignBody('c2.main');

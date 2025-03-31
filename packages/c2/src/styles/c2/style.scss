@@ -1,0 +1,6 @@
+@use "./properties";
+
+$designsDesign: 'c2';
+$designsDesigns: ('c2');
+
+@forward "@dxt-ui/styles/properties";

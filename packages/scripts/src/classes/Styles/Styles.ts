@@ -57,7 +57,7 @@ export class Styles {
       this.initClasses(design, items)
       this.initProperties(design, items)
       this.initList(design, items)
-      // this.initBasic(design)
+      this.initBasic(design)
     })
 
     return this
@@ -163,9 +163,9 @@ export class Styles {
       dir,
       FILE_BASIC,
       [
-        `@import "./${FILE_VAR}";`,
-        `@import "./${FILE_CLASS}";`,
-        `@import "./${FILE_PROPERTIES}";`
+        `@use "./${FILE_VAR}";`,
+        `@use "./${FILE_CLASS}";`,
+        `@use "./${FILE_PROPERTIES}";`
       ].join('\r\n'),
       STYLES_FILE_EXTENSION
     )
@@ -174,11 +174,12 @@ export class Styles {
       dir,
       FILE_STYLE,
       [
-        `@import "../styles/${FILE_PROPERTIES}";`,
-        `@import "../../styles/${FILE_PROPERTIES}";`,
+        `@use "./${FILE_PROPERTIES}";`,
         '',
         `$designsDesign: '${design}';`,
-        `$designsDesigns: ('${design}');`
+        `$designsDesigns: ('${design}');`,
+        '',
+        `@forward "@dxt-ui/styles/${FILE_PROPERTIES}";`
       ].join('\r\n'),
       STYLES_FILE_EXTENSION
     )
@@ -188,12 +189,12 @@ export class Styles {
         dir,
         FILE_MAIN,
         [
-          `@import "./${FILE_BASIC}";`,
-          '@import "../../styles/properties";',
-          '@import "../../styles/init";',
+          `@use "./${FILE_BASIC}";`,
+          `@use "@dxt-ui/styles" as ui;`,
+          `@use "@dxt-ui/styles/${FILE_PROPERTIES}" as uiProperties;`,
           '',
-          '@include initGlobal;',
-          `@include initDesignBody('${design}.main');`
+          '@include ui.initGlobal;',
+          `@include uiProperties.initDesignBody('${design}.main');`
         ].join('\r\n'),
         STYLES_FILE_EXTENSION
       )
