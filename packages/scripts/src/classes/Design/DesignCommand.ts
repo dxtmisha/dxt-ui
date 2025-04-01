@@ -3,7 +3,7 @@ import { toArray } from '@dxt-ui/functional'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignStructure } from './DesignStructure'
 import { DesignReplace } from './DesignReplace'
-import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 
 const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates']
 
