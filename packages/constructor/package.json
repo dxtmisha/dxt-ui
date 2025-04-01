@@ -1,0 +1,29 @@
+{
+  "name": "@dxt-ui/constructor",
+  "private": false,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "main": "src/constructors",
+  "module": "src/constructors",
+  "types": "src/constructors",
+  "exports": {
+    ".": {
+      "types": "./src/constructors",
+      "import": "./src/constructors",
+      "default": "./src/constructors"
+    }
+  },
+  "buildOptions": {
+    "name": "@dxt-ui/constructor",
+    "formats": [
+      "esm-bundler"
+    ]
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

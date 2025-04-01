@@ -10,3 +10,9 @@ export type LibraryItem = {
   components: LibraryData[]
 }
 export type LibraryList = LibraryItem[]
+
+export type LibraryFilesItem = {
+  name: string
+  files: string[]
+}
+export type LibraryFiles = LibraryFilesItem[]

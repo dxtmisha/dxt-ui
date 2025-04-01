@@ -2,7 +2,7 @@ import { toKebabCase } from '@dxt-ui/functional'
 
 import { LibraryItems } from '../Library/LibraryItems'
 import { PropertiesCache } from '../Properties/PropertiesCache'
-import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { Styles } from '../Styles/Styles'
 
 export class DesignUi {

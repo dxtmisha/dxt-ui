@@ -1,6 +1,6 @@
 #!/usr/bin/env vite-node
 
-import { DesignUi } from '../src/classes/design/DesignUi'
+import { DesignUi } from '../src/classes/Design/DesignUi'
 
 const name: string = process.argv?.[2] ?? ''
 
