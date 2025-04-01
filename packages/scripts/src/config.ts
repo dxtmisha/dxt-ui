@@ -5,6 +5,21 @@
  */
 export const DESIGN_UI_FILE_CONFIG_NAME = 'design.config.json'
 
+export const DESIGN_DIR_STRUCTURE = 'structure'
+export const DESIGN_FILE_CLASSES = 'classes'
+
+/**
+ * List available for addition to props.
+ *
+ * Список доступный для добавления в props.
+ */
+export const DESIGN_PROPERTY_TO_PROPS: string[] = [
+  'disabled',
+  'focus',
+  'readonly',
+  'read-only'
+]
+
 /**
  * File name for storing imported data: tokens with all the data needed for the script to work
  *
@@ -39,6 +54,13 @@ export const PROPERTY_DIR_MAIN = [PROPERTY_DIR_IN, 'media']
  * Название главного файла с токенами
  */
 export const PROPERTY_FILE_MAIN = 'properties.json'
+
+/**
+ * Special key for properties with variable values
+ *
+ * Особый ключ для свойства с переменными значениями
+ */
+export const PROPERTY_KEY_CUSTOM = 'custom'
 
 /**
  * Name of the base token

@@ -9,7 +9,7 @@ import {
   PropertyType
 } from '../../../types/propertyTypes'
 
-export const KEY_CUSTOM = 'custom'
+import { PROPERTY_KEY_CUSTOM } from '../../../config'
 
 /**
  * A class for working with properties that support additional values.
@@ -34,10 +34,10 @@ export class PropertiesToStyle extends PropertiesToAbstract {
       if (
         item?.[PropertyKey.style]
         && isObjectNotArray(item.value)
-        && !item.value?.[KEY_CUSTOM]
+        && !item.value?.[PROPERTY_KEY_CUSTOM]
       ) {
         item[PropertyKey.variable] = PropertyType.state
-        item.value[KEY_CUSTOM] = {
+        item.value[PROPERTY_KEY_CUSTOM] = {
           value: {
             [name]: {
               value: `{${design}.${component}.sys.${name}}`,
