@@ -24,8 +24,20 @@ export class LibraryExport {
 
     PropertiesFile.writeByPath(
       LIBRARY_FILE_EXPORT,
-      this.initFile()
+      `${this.initFile()}\r\n`
     )
+
+    console.log('\r\nfinish')
+  }
+
+  /**
+   * Returns the path to the directory
+   *
+   * Возвращает путь к директории
+   * @param directory selected directory/ выбранная директория
+   */
+  protected getPath(directory: string): string[] {
+    return [PROPERTY_DIR_IN, directory]
   }
 
   /**
@@ -38,11 +50,13 @@ export class LibraryExport {
 
     LIBRARY_EXPORT_LIST
       .forEach((directory) => {
-        const list = PropertiesFile.readDirRecursive([PROPERTY_DIR_IN, directory])
+        const path = this.getPath(directory)
+        const list = PropertiesFile.readDirRecursive(path)
 
         if (list.length > 0) {
           files.push({
             name: directory,
+            path,
             files: list
           })
         }
@@ -76,17 +90,29 @@ export class LibraryExport {
       html.push('')
       html.push(`// ${this.getName(name)}`)
 
+      console.log(name)
+
       file.files.forEach(
         (item) => {
           if (item.match(/\.ts$/)) {
-            html.push(`export * from './${name}/${item.replace(/\.ts$/, '')}'`)
+            const path = [...file.path, item]
+            const code = PropertiesFile.readFile<string>(path)
+
+            if (
+              code
+              && !code.match(/\/\/ *export:none/)
+            ) {
+              console.log(`-- ${item}`)
+
+              html.push(`export * from './${name}/${item.replace(/\.ts$/, '')}'`)
+            }
           }
         }
       )
     })
 
     return html
-      .join('\n\r')
+      .join('\r\n')
       .trim()
   }
 }

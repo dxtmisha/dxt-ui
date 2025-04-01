@@ -1,3 +1,5 @@
+// export:none
+
 import { strFill } from '@dxt-ui/functional'
 
 import { STYLES_DIR_MAIN } from '../../config'

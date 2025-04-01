@@ -1,3 +1,5 @@
+// export:none
+
 import { PropertiesFile } from './PropertiesFile'
 
 import type { DesignUiConfig } from '../../types/configTypes'

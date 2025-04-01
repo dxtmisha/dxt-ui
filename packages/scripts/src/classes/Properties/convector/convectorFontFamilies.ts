@@ -1,3 +1,5 @@
+// export:none
+
 import { type PropertyItemInput } from '../../../types/propertyTypes'
 
 /**

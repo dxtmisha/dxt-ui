@@ -1,3 +1,5 @@
+// export:none
+
 import { isString, toCamelCase } from '@dxt-ui/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'

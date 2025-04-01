@@ -1,3 +1,5 @@
+// export:none
+
 import { getColumn, isFilled, isObjectNotArray } from '@dxt-ui/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'

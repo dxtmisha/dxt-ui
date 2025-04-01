@@ -1,3 +1,5 @@
+// export:none
+
 import { PropertiesItems } from '../PropertiesItems'
 
 /**

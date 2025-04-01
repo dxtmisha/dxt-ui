@@ -1,3 +1,5 @@
+// export:none
+
 import { isObjectNotArray, splice } from '@dxt-ui/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'

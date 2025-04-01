@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, isObjectNotArray, type Item } from '@dxt-ui/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'

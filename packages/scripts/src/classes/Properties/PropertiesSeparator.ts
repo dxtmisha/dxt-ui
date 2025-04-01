@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, isObjectNotArray, replaceRecursive } from '@dxt-ui/functional'
 
 import { PropertiesConfig } from './PropertiesConfig'

@@ -1,3 +1,5 @@
+import type { PropertiesFilePath } from '../classes/Properties/PropertiesFile'
+
 export type LibraryData = {
   design: string
   name: string
@@ -13,6 +15,7 @@ export type LibraryList = LibraryItem[]
 
 export type LibraryFilesItem = {
   name: string
+  path: PropertiesFilePath
   files: string[]
 }
 export type LibraryFiles = LibraryFilesItem[]

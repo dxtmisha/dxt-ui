@@ -1,3 +1,5 @@
+// export:none
+
 import { isString } from '@dxt-ui/functional'
 
 import { type PropertyItemInput } from '../../../types/propertyTypes'

@@ -1,3 +1,5 @@
+// export:none
+
 import { isFilled, replaceRecursive, toKebabCase } from '@dxt-ui/functional'
 
 import { PropertiesFile } from './PropertiesFile'

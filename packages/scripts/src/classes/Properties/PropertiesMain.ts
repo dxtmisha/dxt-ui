@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, isFilled, isObjectNotArray } from '@dxt-ui/functional'
 
 import { PropertiesPath } from './PropertiesPath'
