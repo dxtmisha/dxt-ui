@@ -3,8 +3,9 @@ import { toArray } from '@dxt-ui/functional'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignStructure } from './DesignStructure'
 import { DesignReplace } from './DesignReplace'
+import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
 
-const DIR_SAMPLE = [__dirname, '..', '..', 'templates']
+const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates']
 
 /**
  * Base abstract class for generating script files.
@@ -36,9 +37,9 @@ export abstract class DesignCommand {
    */
   make(): void {
     if (this.command) {
-      console.info(`-- ${this.command}:`)
+      console.info(`-- ${PropertiesConfig.getDesignName()}.${this.command}:`)
 
-      // this.initMain()
+      this.initMain()
 
       console.info('-- end')
     } else {
@@ -132,6 +133,7 @@ export abstract class DesignCommand {
    * @param name file name/ название файла
    */
   protected readSample(name: string): string | undefined {
+    console.info('[...DIR_SAMPLE, this.DIR_SAMPLE, name]', [...DIR_SAMPLE, this.DIR_SAMPLE, name])
     return PropertiesFile.readFile<string>([...DIR_SAMPLE, this.DIR_SAMPLE, name])
   }
 
@@ -148,7 +150,7 @@ export abstract class DesignCommand {
     if (this.isFile(fileName)) {
       return this.getReplace(this.read(fileName))
     }
-
+    console.log('fileName', this.readSample(name))
     const replace = this.getReplace(this.readSample(name))
 
     if (callback) {

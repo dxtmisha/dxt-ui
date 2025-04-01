@@ -2,6 +2,8 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { DesignCommand } from './DesignCommand'
 
+import { PROPERTY_DIR_IN } from '../../config'
+
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
 const FILE_TYPES = 'types.ts'
@@ -29,6 +31,7 @@ export class DesignConstructor extends DesignCommand {
     super(command, options)
     this.dir = [
       PropertiesFile.getRoot(),
+      PROPERTY_DIR_IN,
       this.DIR_SAMPLE,
       this.getStructure().getComponentNameFirst()
     ]
@@ -44,8 +47,8 @@ export class DesignConstructor extends DesignCommand {
       .makeProperties()
       .makeProps()
       .makeTypes()
-      .makeStyle()
-      .makeMain()
+      // .makeStyle()
+      // .makeMain()
   }
 
   /**
