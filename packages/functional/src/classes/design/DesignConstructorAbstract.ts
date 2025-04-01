@@ -17,7 +17,6 @@ import { toCamelCase } from '../../functions/toCamelCase'
 
 import { DesignComponents } from './DesignComponents'
 
-import type { RefType } from '../../types/refTypes'
 import type {
   ConstrClass,
   ConstrClasses,
@@ -26,7 +25,6 @@ import type {
   ConstrEmit,
   ConstrItem,
   ConstrOptions,
-  ConstrSetup,
   ConstrStyles
 } from '../../types/constructorTypes'
 
@@ -39,7 +37,6 @@ export abstract class DesignConstructorAbstract<
   E extends Element,
   COMP extends ConstrComponent,
   EMITS extends ConstrItem,
-  SETUP extends ConstrItem,
   EXPOSE extends ConstrItem,
   SLOTS extends ConstrItem,
   CLASSES extends ConstrClasses,
@@ -52,16 +49,15 @@ export abstract class DesignConstructorAbstract<
   protected readonly components: DesignComponents<COMP, P>
   protected readonly emits?: ConstrEmit<EMITS>
 
-  protected readonly classes?: RefType<ConstrClasses>
+  protected readonly classes?: ComputedRef<ConstrClasses>
   protected classesSub?: ComputedRef<Partial<CLASSES>>
 
-  protected readonly styles?: RefType<ConstrStyles>
+  protected readonly styles?: ComputedRef<ConstrStyles>
   protected stylesSub?: ComputedRef<ConstrStyles>
 
   protected attrs?: ConstrItem
   protected slots?: SLOTS
 
-  protected data?: ConstrSetup<E, CLASSES, SETUP>
   protected dataExpose?: EXPOSE
 
   /**
@@ -73,7 +69,7 @@ export abstract class DesignConstructorAbstract<
   protected constructor(
     name: string,
     protected readonly props: Readonly<P>,
-    options?: ConstrOptions<COMP, EMITS, P>
+    protected readonly options?: ConstrOptions<COMP, EMITS, P>
   ) {
     this.name = this.initName(name)
     this.refs = this.props ? toRefs(this.props) : {} as ToRefs<P>
@@ -81,8 +77,8 @@ export abstract class DesignConstructorAbstract<
     this.components = new DesignComponents(options?.components, options?.compMod)
 
     this.emits = options?.emits
-    this.classes = options?.classes
-    this.styles = options?.styles
+    this.classes = computed(() => this.updateClasses())
+    this.styles = computed(() => this.updateStyles())
 
     this.attrs = useAttrs()
     this.slots = useSlots() as SLOTS
@@ -91,15 +87,6 @@ export abstract class DesignConstructorAbstract<
   protected init(): this {
     this.classesSub = computed(() => this.initClasses())
     this.stylesSub = computed(() => this.initStyles())
-
-    this.data = {
-      name: this.getName(),
-      element: this.element,
-      classes: computed(() => this.updateClasses()),
-      styles: computed(() => this.updateStyles()),
-      ...this.initSetup()
-    }
-
     this.dataExpose = this.initExpose()
 
     return this
@@ -173,15 +160,6 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
-   * Execution method to replace setup in Vue.
-   *
-   * Метод выполнения, для замены setup в Vue.
-   */
-  setup(): ConstrSetup<E, CLASSES, SETUP> {
-    return this.data ?? {} as ConstrSetup<E, CLASSES, SETUP>
-  }
-
-  /**
    * List of available external variables.
    *
    * Список доступных переменных извне.
@@ -204,13 +182,6 @@ export abstract class DesignConstructorAbstract<
       return this.initRender()
     }
   }
-
-  /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  protected abstract initSetup(): SETUP
 
   /**
    * Initialization of all the necessary properties for work
@@ -340,7 +311,7 @@ export abstract class DesignConstructorAbstract<
    */
   private updateClasses(): CLASSES {
     const classes = this.classesSub?.value
-    const classesProps = this.classes?.value
+    const classesProps = this.options?.classes?.value
 
     if (
       classes
@@ -351,8 +322,8 @@ export abstract class DesignConstructorAbstract<
         ...classesProps,
         main: {
           ...this.toClass(classes?.main),
-          ...this.toClass(classesProps?.main) // ,
-          // ...this.toClass(this.attrs?.class)
+          ...this.toClass(classesProps?.main),
+          ...this.toClass(this.attrs?.class)
         }
       } as CLASSES
     }
@@ -372,7 +343,7 @@ export abstract class DesignConstructorAbstract<
    */
   private updateStyles(): ConstrStyles {
     const styles = this.stylesSub?.value
-    const stylesProps = this.styles?.value
+    const stylesProps = this.options?.styles?.value
 
     if (
       styles

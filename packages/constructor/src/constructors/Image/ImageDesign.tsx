@@ -5,37 +5,37 @@ import {
   DesignConstructorAbstract
 } from '@dxt-ui/functional'
 
-import { Constructors } from './Constructors'
+import { Image } from './Image'
 
 import {
-  type ConstructorsProps
+  type ImageProps
 } from './props'
 import {
-  type ConstructorsClasses,
-  type ConstructorsComponents,
-  type ConstructorsEmits,
-  type ConstructorsExpose,
-  type ConstructorsSlots
+  type ImageClasses,
+  type ImageComponents,
+  type ImageEmits,
+  type ImageExpose,
+  type ImageSlots
 } from './types'
 
 /**
- * ConstructorsDesign
+ * ImageDesign
  */
-export class ConstructorsDesign<
-  COMP extends ConstructorsComponents,
-  EXPOSE extends ConstructorsExpose,
-  CLASSES extends ConstructorsClasses,
-  P extends ConstructorsProps
+export class ImageDesign<
+  COMP extends ImageComponents,
+  EXPOSE extends ImageExpose,
+  CLASSES extends ImageClasses,
+  P extends ImageProps
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
-    ConstructorsEmits,
+    ImageEmits,
     EXPOSE,
-    ConstructorsSlots,
+    ImageSlots,
     CLASSES,
     P
   > {
-  protected readonly item: Constructors
+  protected readonly item: Image
 
   /**
    * Constructor
@@ -46,7 +46,7 @@ export class ConstructorsDesign<
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ConstructorsEmits, P>
+    options?: ConstrOptions<COMP, ImageEmits, P>
   ) {
     super(
       name,
@@ -54,7 +54,7 @@ export class ConstructorsDesign<
       options
     )
 
-    this.item = new Constructors(
+    this.item = new Image(
       this.props,
       this.refs,
       this.element,

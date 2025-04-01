@@ -5,7 +5,7 @@ import type { ConstrClass } from '@dxt-ui/functional'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type ConstructorsComponents = {
+export type ImageComponents = {
   // componentName: object
 }
 
@@ -14,7 +14,7 @@ export type ConstructorsComponents = {
  *
  * Тип, описывающий доступные события.
  */
-export type ConstructorsEmits = {
+export type ImageEmits = {
   // load: [value: string]
 }
 
@@ -23,7 +23,7 @@ export type ConstructorsEmits = {
  *
  * Тип, описывающий доступные свойства.
  */
-export interface ConstructorsExpose {
+export interface ImageExpose {
 }
 
 /**
@@ -31,7 +31,7 @@ export interface ConstructorsExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface ConstructorsSlots {
+export interface ImageSlots {
   // default? (props: any): any
 }
 
@@ -40,7 +40,7 @@ export interface ConstructorsSlots {
  *
  * Тип, описывающий подклассы.
  */
-export type ConstructorsClasses = {
+export type ImageClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   // :classes [!] System label / Системная метка

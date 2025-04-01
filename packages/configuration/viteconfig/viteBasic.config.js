@@ -21,6 +21,8 @@ export const viteBasic = defineConfig({
       clearPureImport: false,
       copyDtsFiles: true,
       include: [
+        'src/classes/**/*.ts',
+        'src/composables/**/*.ts',
         'src/functions/**/*.ts',
         'src/types/**/*.ts',
         'src/flags.ts',
