@@ -1,6 +1,6 @@
 // export:none
 
-import { toCamelCase } from '@dxt-ui/functional'
+import { copyObject, toCamelCase } from '@dxt-ui/functional'
 
 import { PropertiesConfig } from './PropertiesConfig'
 import { PropertiesCache } from './PropertiesCache'
@@ -63,7 +63,7 @@ export class PropertiesTool {
     path: string[] | undefined
   ): PropertyList | undefined {
     if (PropertiesTool.isConstructor(design)) {
-      return { [PROPERTY_CONSTRUCTOR_BASIC_NAME]: basicProperties } as any as PropertyList
+      return copyObject(basicProperties) as any as PropertyList
     }
 
     if (path) {

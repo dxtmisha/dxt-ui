@@ -8,5 +8,6 @@ export * from './classes/Styles/Styles'
 
 // Types
 export * from './types/configTypes'
+export * from './types/designTypes'
 export * from './types/libraryTypes'
 export * from './types/propertyTypes'

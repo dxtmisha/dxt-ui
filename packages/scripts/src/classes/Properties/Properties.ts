@@ -43,7 +43,8 @@ import { type PropertyList } from '../../types/propertyTypes'
 const FILE_CACHE = 'properties'
 
 /**
- * The main class for working with tokens.<br>
+ * The main class for working with tokens.
+ *
  * Главный класс для работы с токенами.
  */
 export class Properties {
@@ -63,7 +64,8 @@ export class Properties {
   }
 
   /**
-   * Getting structured data for use in an SCSS file.<br>
+   * Getting structured data for use in an SCSS file.
+   *
    * Получение структурированных данных для работы в SCSS файле.
    */
   getScss(): string {
@@ -77,7 +79,8 @@ export class Properties {
   }
 
   /**
-   * Processing of basic data.<br>
+   * Processing of basic data.
+   *
    * Обработка базовых данных.
    */
   protected read(): PropertyList {
@@ -114,7 +117,8 @@ export class Properties {
   }
 
   /**
-   * Returns the name of the cache file. It contains all processed properties.<br>
+   * Returns the name of the cache file. It contains all processed properties.
+   *
    * Возвращает название файла для кэша.
    * Это полный массив со всеми обработанными свойствами.
    */
@@ -123,7 +127,8 @@ export class Properties {
   }
 
   /**
-   * Reads the content from the file and merges all records into a single object.<br>
+   * Reads the content from the file and merges all records into a single object.
+   *
    * Читает содержимое из файла и объединяет все записи в один объект.
    */
   private readFiles(): PropertiesItems {
@@ -139,10 +144,10 @@ export class Properties {
   }
 
   /**
-   * Basic transformations.<br>
+   * Basic transformations.
+   *
    * Базовые преобразования.
    * @param properties a class that contains all data/ класс со всеми данными
-   * @private
    */
   private toBasic(properties: PropertiesItems) {
     new PropertiesToReplace(properties).to()

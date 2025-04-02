@@ -2,6 +2,7 @@
 
 import { replaceRecursive, toKebabCase } from '@dxt-ui/functional'
 
+import { PropertiesConfig } from './PropertiesConfig'
 import { PropertiesTool } from './PropertiesTool'
 import { PropertiesFile } from './PropertiesFile'
 import { PropertiesCache } from './PropertiesCache'
@@ -10,11 +11,12 @@ import {
   type PropertyListOrData
 } from '../../types/propertyTypes'
 
-import { PROPERTY_DIR_MAIN } from '../../config'
+import { LIBRARY_DIR_COMPONENTS, PROPERTY_DIR_MAIN } from '../../config'
 
 export type PropertiesPathItem = {
   design: string
   paths?: string[]
+  pathsComponent?: string[]
 }
 
 export type PropertiesPathList = PropertiesPathItem[]
@@ -42,7 +44,8 @@ export class PropertiesPath {
     designs.forEach((design) => {
       this.paths.push({
         design: toKebabCase(design),
-        paths: this.getDir(design)
+        paths: this.getDir(design),
+        pathsComponent: this.getDirComponents(design)
       })
     })
   }
@@ -86,7 +89,11 @@ export class PropertiesPath {
   to(
     name: string,
     design: string,
-    callback: (path: string[] | undefined, design: string) => PropertyListOrData
+    callback: (
+      path: string[] | undefined,
+      pathsComponent: string[] | undefined,
+      design: string
+    ) => PropertyListOrData
   ): PropertyListOrData {
     return PropertiesCache.get<PropertyListOrData>([DIR_CACHE, name], `${name}-${design}`, () => {
       let data: PropertyListOrData = {}
@@ -97,6 +104,7 @@ export class PropertiesPath {
           data,
           callback(
             item.paths,
+            item.pathsComponent,
             design
           )
         )
@@ -115,7 +123,11 @@ export class PropertiesPath {
    */
   toAll(
     name: string,
-    callback: (path: string[] | undefined, design: string) => PropertyListOrData
+    callback: (
+      path: string[] | undefined,
+      pathsComponent: string[] | undefined,
+      design: string
+    ) => PropertyListOrData
   ): PropertyListOrData {
     return PropertiesCache.get<PropertyListOrData>([DIR_CACHE], name, () => {
       let data: PropertyListOrData = {}
@@ -140,5 +152,23 @@ export class PropertiesPath {
     }
 
     return [PropertiesFile.getRoot(), ...PROPERTY_DIR_MAIN]
+  }
+
+  /**
+   * Returns the path to a file by design name.
+   *
+   * Возвращает путь к файлу по названию дизайна.
+   * @param name design name/ название дизайна
+   */
+  private getDirComponents(name: string): string[] | undefined {
+    if (PropertiesTool.isConstructor(name)) {
+      return undefined
+    }
+
+    return [
+      PropertiesFile.getRoot(),
+      ...LIBRARY_DIR_COMPONENTS,
+      PropertiesConfig.getProjectName()
+    ]
   }
 }

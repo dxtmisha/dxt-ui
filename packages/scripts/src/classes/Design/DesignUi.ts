@@ -54,7 +54,7 @@ export class DesignUi {
 
     if (componentDef !== '') {
       // new DesignConstructor(`d.${componentDef}`).make()
-      new DesignComponent(`${design}.${componentDef}`).make()
+      new DesignComponent(componentDef).make()
     } else {
       /*
       designs.forEach((design) => {

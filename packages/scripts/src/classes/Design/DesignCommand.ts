@@ -1,9 +1,11 @@
+// export:none
+
 import { toArray } from '@dxt-ui/functional'
 
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignStructure } from './DesignStructure'
 import { DesignReplace } from './DesignReplace'
-import { PropertiesConfig } from '../Properties/PropertiesConfig'
 
 const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates']
 
@@ -65,21 +67,6 @@ export abstract class DesignCommand {
   }
 
   /**
-   * Returns the path for importing the module.
-   *
-   * Возвращает путь для подключения модуля.
-   */
-  protected getRoot(): string {
-    const path = __filename.match(/node_modules\/([^/]+)/)
-
-    if (path) {
-      return `${path?.[1]}/`
-    } else {
-      return '../../'
-    }
-  }
-
-  /**
    * Returns the names for the team.
    *
    * Возвращает названия для команды.
@@ -133,7 +120,6 @@ export abstract class DesignCommand {
    * @param name file name/ название файла
    */
   protected readSample(name: string): string | undefined {
-    console.info('[...DIR_SAMPLE, this.DIR_SAMPLE, name]', [...DIR_SAMPLE, this.DIR_SAMPLE, name])
     return PropertiesFile.readFile<string>([...DIR_SAMPLE, this.DIR_SAMPLE, name])
   }
 
@@ -150,7 +136,7 @@ export abstract class DesignCommand {
     if (this.isFile(fileName)) {
       return this.getReplace(this.read(fileName))
     }
-    console.log('fileName', this.readSample(name))
+
     const replace = this.getReplace(this.readSample(name))
 
     if (callback) {

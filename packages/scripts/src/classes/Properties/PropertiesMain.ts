@@ -39,17 +39,21 @@ export class PropertiesMain {
    * Возвращает все основные токены.
    */
   get(): PropertyList {
-    return this.path.toAll(DIR_NAME, (path, design) => {
+    return this.path.toAll(DIR_NAME, (
+      path,
+      _,
+      design
+    ) => {
       let properties = PropertiesTool.readFile(design, path)
 
-      if (
-        path
-        && isFilled(properties)
-      ) {
+      if (isFilled(properties)) {
         PropertiesConvector.to(properties)
 
         properties = PropertiesStandard.to({ [design]: properties })
-        properties = new PropertiesImport(properties, path).to()
+
+        if (path) {
+          properties = new PropertiesImport(properties, path).to()
+        }
 
         if (PropertiesSeparator.is(properties)) {
           properties = PropertiesSeparator.to(properties)

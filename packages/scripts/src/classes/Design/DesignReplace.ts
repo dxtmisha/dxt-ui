@@ -1,9 +1,11 @@
+// export:none
+
 import { forEach, getColumn, toCamelCase, toCamelCaseFirst } from '@dxt-ui/functional'
 
 import { DesignStructure } from './DesignStructure'
 
 import type {
-  DesignStructureClasses,
+  DesignStructureClassesItem,
   DesignStructureItem,
   DesignStructureItemSub,
   DesignStructureList
@@ -292,7 +294,7 @@ export class DesignReplace {
    * @param end symbol at the end of the line/ символ в конце строки
    */
   replaceClasses(
-    template: (item: DesignStructureClasses) => string = (item: DesignStructureClasses) => `${item.index}: string`,
+    template: (item: DesignStructureClassesItem) => string = (item: DesignStructureClassesItem) => `${item.index}: string`,
     end = ''
   ): this {
     const mark = 'classes'
@@ -338,7 +340,7 @@ export class DesignReplace {
    */
   replaceConstructorClasses(): this {
     return this.replaceClasses(
-      (item: DesignStructureClasses) => {
+      (item: DesignStructureClassesItem) => {
         if (item.full) {
           return `${item.index}: '${item.className}'`
         }

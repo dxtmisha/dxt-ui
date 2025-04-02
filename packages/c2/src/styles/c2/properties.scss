@@ -1,10 +1,13 @@
 $designsDesigns: (
-  'd',
-  'c2',);
+  '0',
+  'c2',
+  'd',);
 $designsRoot: (
   'c2.ot',
   'c2.st',
-  'c2.base',);
+  'c2.base',
+  'd.ref',
+  'd.sys',);
 $designsMedia: (
   'c2-sm': 640px,
   'c2-md': 768px,
@@ -18550,6 +18553,282 @@ $designsProperties: (
                 name: '--sys-palette',
                 type: 'var',
                 value: 'var(--c2-ot-light-intent-warning-300)',
+              ),
+            ),
+          ),
+        ),
+      ),
+      'image':(
+        index: 'image',
+        name: 'c2-image',
+        type: 'component',
+        value: (
+          'main':(
+            index: 'main',
+            name: '--c2-image-main',
+            type: 'var',
+            value: 'var(--d-image)',
+          ),
+        ),
+      ),
+    ),
+  ),
+  'd':(
+    index: 'd',
+    name: 'd',
+    type: 'design',
+    value: (
+      'ref':(
+        index: 'ref',
+        name: 'ref',
+        type: 'var',
+        value: (
+          'transitionDuration':(
+            index: 'transitionDuration',
+            name: 'transitionDuration',
+            type: 'var',
+            value: (
+              '1':(
+                index: '1',
+                name: '--d-ref-transitionDuration-1',
+                type: 'var',
+                value: '45ms',
+              ),
+              '2':(
+                index: '2',
+                name: '--d-ref-transitionDuration-2',
+                type: 'var',
+                value: '75ms',
+              ),
+              '3':(
+                index: '3',
+                name: '--d-ref-transitionDuration-3',
+                type: 'var',
+                value: '100ms',
+              ),
+              '4':(
+                index: '4',
+                name: '--d-ref-transitionDuration-4',
+                type: 'var',
+                value: '150ms',
+              ),
+              '5':(
+                index: '5',
+                name: '--d-ref-transitionDuration-5',
+                type: 'var',
+                value: '200ms',
+              ),
+              '6':(
+                index: '6',
+                name: '--d-ref-transitionDuration-6',
+                type: 'var',
+                value: '250ms',
+              ),
+              '7':(
+                index: '7',
+                name: '--d-ref-transitionDuration-7',
+                type: 'var',
+                value: '280ms',
+              ),
+              '8':(
+                index: '8',
+                name: '--d-ref-transitionDuration-8',
+                type: 'var',
+                value: '300ms',
+              ),
+            ),
+          ),
+          'transitionFunction':(
+            index: 'transitionFunction',
+            name: 'transitionFunction',
+            type: 'var',
+            value: (
+              'linear':(
+                index: 'linear',
+                name: '--d-ref-transitionFunction-linear',
+                type: 'var',
+                value: 'linear',
+              ),
+              'e0i80':(
+                index: 'e0i80',
+                name: '--d-ref-transitionFunction-e0i80',
+                type: 'var',
+                value: 'cubic-bezier(0.0, 0.0, 0.2, 1)',
+              ),
+              'e40i0':(
+                index: 'e40i0',
+                name: '--d-ref-transitionFunction-e40i0',
+                type: 'var',
+                value: 'cubic-bezier(0.4, 0.0, 1, 1)',
+              ),
+              'e40i80':(
+                index: 'e40i80',
+                name: '--d-ref-transitionFunction-e40i80',
+                type: 'var',
+                value: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
+              ),
+              'e40i40':(
+                index: 'e40i40',
+                name: '--d-ref-transitionFunction-e40i40',
+                type: 'var',
+                value: 'cubic-bezier(0.4, 0.0, 0.6, 1)',
+              ),
+            ),
+          ),
+        ),
+      ),
+      'sys':(
+        index: 'sys',
+        name: 'sys',
+        type: 'var',
+        value: (
+          'transitionDuration':(
+            index: 'transitionDuration',
+            name: 'transitionDuration',
+            type: 'var',
+            value: (
+              'standard':(
+                index: 'standard',
+                name: '--d-sys-transitionDuration-standard',
+                type: 'var',
+                value: 'var(--d-ref-transitionDuration-4)',
+              ),
+              'xs':(
+                index: 'xs',
+                name: '--d-sys-transitionDuration-xs',
+                type: 'var',
+                value: 'var(--d-ref-transitionDuration-1)',
+              ),
+              'sm':(
+                index: 'sm',
+                name: '--d-sys-transitionDuration-sm',
+                type: 'var',
+                value: 'var(--d-ref-transitionDuration-3)',
+              ),
+              'md':(
+                index: 'md',
+                name: 'md',
+                type: 'var',
+                value: (
+                  'open':(
+                    index: 'open',
+                    name: '--d-sys-transitionDuration-md-open',
+                    type: 'var',
+                    value: 'var(--d-ref-transitionDuration-6)',
+                  ),
+                  'close':(
+                    index: 'close',
+                    name: '--d-sys-transitionDuration-md-close',
+                    type: 'var',
+                    value: 'var(--d-ref-transitionDuration-5)',
+                  ),
+                ),
+              ),
+              'lg':(
+                index: 'lg',
+                name: 'lg',
+                type: 'var',
+                value: (
+                  'open':(
+                    index: 'open',
+                    name: '--d-sys-transitionDuration-lg-open',
+                    type: 'var',
+                    value: 'var(--d-ref-transitionDuration-8)',
+                  ),
+                  'close':(
+                    index: 'close',
+                    name: '--d-sys-transitionDuration-lg-close',
+                    type: 'var',
+                    value: 'var(--d-ref-transitionDuration-6)',
+                  ),
+                ),
+              ),
+              'axis':(
+                index: 'axis',
+                name: '--d-sys-transitionDuration-axis',
+                type: 'var',
+                value: 'var(--d-ref-transitionDuration-8)',
+              ),
+              'container':(
+                index: 'container',
+                name: 'container',
+                type: 'var',
+                value: (
+                  'open':(
+                    index: 'open',
+                    name: '--d-sys-transitionDuration-container-open',
+                    type: 'var',
+                    value: 'var(--d-ref-transitionDuration-8)',
+                  ),
+                  'close':(
+                    index: 'close',
+                    name: '--d-sys-transitionDuration-container-close',
+                    type: 'var',
+                    value: 'var(--d-ref-transitionDuration-6)',
+                  ),
+                ),
+              ),
+              'fade':(
+                index: 'fade',
+                name: 'fade',
+                type: 'var',
+                value: (
+                  'enter':(
+                    index: 'enter',
+                    name: '--d-sys-transitionDuration-fade-enter',
+                    type: 'var',
+                    value: 'var(--d-ref-transitionDuration-4)',
+                  ),
+                  'exit':(
+                    index: 'exit',
+                    name: '--d-sys-transitionDuration-fade-exit',
+                    type: 'var',
+                    value: 'var(--d-ref-transitionDuration-2)',
+                  ),
+                  'through':(
+                    index: 'through',
+                    name: '--d-sys-transitionDuration-fade-through',
+                    type: 'var',
+                    value: 'var(--d-ref-transitionDuration-8)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'transitionFunction':(
+            index: 'transitionFunction',
+            name: 'transitionFunction',
+            type: 'var',
+            value: (
+              'linear':(
+                index: 'linear',
+                name: '--d-sys-transitionFunction-linear',
+                type: 'var',
+                value: 'linear',
+              ),
+              'standard':(
+                index: 'standard',
+                name: '--d-sys-transitionFunction-standard',
+                type: 'var',
+                value: 'var(--d-ref-transitionFunction-e40i80)',
+              ),
+              'emphasized':(
+                index: 'emphasized',
+                name: '--d-sys-transitionFunction-emphasized',
+                type: 'var',
+                value: 'var(--d-ref-transitionFunction-e40i40)',
+              ),
+              'acceleration':(
+                index: 'acceleration',
+                name: '--d-sys-transitionFunction-acceleration',
+                type: 'var',
+                value: 'var(--d-ref-transitionFunction-e40i0)',
+              ),
+              'deceleration':(
+                index: 'deceleration',
+                name: '--d-sys-transitionFunction-deceleration',
+                type: 'var',
+                value: 'var(--d-ref-transitionFunction-e0i80)',
               ),
             ),
           ),

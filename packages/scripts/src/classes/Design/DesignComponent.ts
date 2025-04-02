@@ -1,7 +1,10 @@
+// export:none
+
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignCommand } from './DesignCommand'
 
-import { DESIGN_DIR_CONSTRUCTOR, LIBRARY_DIR_COMPONENTS } from '../../config.ts'
+import { DESIGN_DIR_CONSTRUCTOR, LIBRARY_DIR_COMPONENTS } from '../../config'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -35,7 +38,7 @@ export class DesignComponent extends DesignCommand {
     this.dir = [
       PropertiesFile.getRoot(),
       ...LIBRARY_DIR_COMPONENTS,
-      structure.getDesign(),
+      PropertiesConfig.getProjectName(),
       structure.getComponentNameFirst()
     ]
   }

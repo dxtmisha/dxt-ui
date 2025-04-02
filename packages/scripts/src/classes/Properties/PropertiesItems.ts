@@ -120,6 +120,7 @@ export class PropertiesItems {
    * @param index index for splitting/ индекс для разделения
    */
   getInfo(index: string): PropertyItemsItem | undefined {
+    // console.info('index', index)
     const keys = this.getKeys(index)
     const design = keys.shift() as string
     const component = keys.shift() as string

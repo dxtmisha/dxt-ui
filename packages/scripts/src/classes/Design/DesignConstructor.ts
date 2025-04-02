@@ -1,3 +1,5 @@
+// export:none
+
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { DesignCommand } from './DesignCommand'
@@ -30,6 +32,7 @@ export class DesignConstructor extends DesignCommand {
     options: Record<string, string> = {}
   ) {
     super(command, options)
+
     this.dir = [
       PropertiesFile.getRoot(),
       PROPERTY_DIR_IN,

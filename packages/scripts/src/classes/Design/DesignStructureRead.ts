@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, isFilled, isObjectNotArray, toCamelCase, uniqueArray } from '@dxt-ui/functional'
 
 import { DesignStructureItemAbstract } from './DesignStructureItemAbstract'
