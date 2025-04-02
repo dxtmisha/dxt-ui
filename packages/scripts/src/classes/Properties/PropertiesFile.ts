@@ -91,6 +91,10 @@ export class PropertiesFile {
     return this.root
   }
 
+  static getDirname(): string {
+    return __dirname
+  }
+
   /**
    * Returns the file name.
    *

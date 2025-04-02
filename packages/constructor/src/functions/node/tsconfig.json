@@ -1,0 +1,10 @@
+{
+  "extends": "@dxt-ui/configuration/tsconfig/tsconfig.app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "types": ["node"]
+  },
+  "include": [
+    "*.ts"
+  ]
+}

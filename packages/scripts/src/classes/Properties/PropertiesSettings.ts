@@ -11,7 +11,7 @@ import { PropertiesTool } from './PropertiesTool'
 
 import { type PropertyList } from '../../types/propertyTypes'
 
-import { LIBRARY_DIR_COMPONENTS } from '../../config'
+import { LIBRARY_DIR_COMPONENTS, PROPERTY_CONSTRUCTOR_BASIC_NAME } from '../../config'
 
 const DIR_NAME = 'settings'
 
@@ -92,6 +92,8 @@ export class PropertiesSettings {
   }
 
   protected getConstructors(): PropertyList {
-    return getConstructorProperties(this.getComponentList())
+    return {
+      [PROPERTY_CONSTRUCTOR_BASIC_NAME]: getConstructorProperties(this.getComponentList())
+    } as any as PropertyList
   }
 }

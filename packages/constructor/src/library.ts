@@ -1,2 +1,2 @@
 // Functions
-export * from './functions/getConstructorProperties'
+export * from './functions/node/getConstructorProperties.ts'
