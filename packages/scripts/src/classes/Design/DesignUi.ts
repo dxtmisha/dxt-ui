@@ -1,5 +1,6 @@
 import { toKebabCase } from '@dxt-ui/functional'
 
+import { DesignComponent } from './DesignComponent'
 import { LibraryItems } from '../Library/LibraryItems'
 import { PropertiesCache } from '../Properties/PropertiesCache'
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
@@ -10,7 +11,7 @@ export class DesignUi {
 
   /**
    * Constructor
-   * @param name component name /<br>названия компонента
+   * @param name component name/ названия компонента
    */
   constructor(
     protected readonly name: string = ''
@@ -49,11 +50,11 @@ export class DesignUi {
     const design = PropertiesConfig.getDesignName()
     const componentDef = this.component
 
-    console.log('componentDef', componentDef)
+    console.log('componentDef', design, componentDef)
 
     if (componentDef !== '') {
       // new DesignConstructor(`d.${componentDef}`).make()
-      // new DesignComponent(`${this.design}.${componentDef}`).make()
+      new DesignComponent(`${design}.${componentDef}`).make()
     } else {
       /*
       designs.forEach((design) => {
