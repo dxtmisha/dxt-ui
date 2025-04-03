@@ -8,6 +8,7 @@ export const DESIGN_UI_FILE_CONFIG_NAME = 'design.config.json'
 export const DESIGN_DIR_CONSTRUCTOR = 'constructors'
 export const DESIGN_DIR_STRUCTURE = 'structure'
 export const DESIGN_FILE_CLASSES = 'classes'
+export const DESIGN_FILE_PACKAGE = 'package.json'
 
 /**
  * List available for addition to props.

@@ -52,8 +52,6 @@ export class DesignUi {
     const design = PropertiesConfig.getDesignName()
     const componentDef = this.component
 
-    console.log('componentDef', design, componentDef)
-
     if (componentDef !== '') {
       // new DesignConstructor(`d.${componentDef}`).make()
       new DesignComponent(componentDef).make()

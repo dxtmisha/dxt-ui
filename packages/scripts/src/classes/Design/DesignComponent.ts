@@ -51,7 +51,7 @@ export class DesignComponent extends DesignCommand {
   protected initMain(): void {
     this
       .makeProperties()
-      // .makeProps()
+      .makeProps()
       // .makeStyle()
       // .makeMain()
       // .makeIndex()

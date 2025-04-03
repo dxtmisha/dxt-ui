@@ -92,8 +92,8 @@ export class PropertiesSettings {
   }
 
   protected getConstructors(): PropertyList {
-    return {
+    return PropertiesStandard.to({
       [PROPERTY_CONSTRUCTOR_BASIC_NAME]: getConstructorProperties(this.getComponentList())
-    } as any as PropertyList
+    }) as any as PropertyList
   }
 }

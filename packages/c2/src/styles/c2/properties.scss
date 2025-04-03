@@ -18562,11 +18562,61 @@ $designsProperties: (
         name: 'c2-image',
         type: 'component',
         value: (
-          'main':(
-            index: 'main',
-            name: '--c2-image-main',
-            type: 'var',
-            value: 'var(--d-image)',
+          'turn':(
+            index: 'turn',
+            name: '&--turn',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'disabled':(
+            index: 'disabled',
+            name: '&--disabled',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'hide':(
+            index: 'hide',
+            name: '&--hide',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'adaptive':(
+            index: 'adaptive',
+            name: '&--adaptive',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'size':(
+            index: 'size',
+            name: '&--size',
+            type: 'state',
+            value: (
+              'auto':(
+                index: 'auto',
+                name: '&--auto',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'contain':(
+                index: 'contain',
+                name: '&--contain',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'cover':(
+                index: 'cover',
+                name: '&--cover',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -18828,6 +18878,69 @@ $designsProperties: (
                 name: '--d-sys-transitionFunction-deceleration',
                 type: 'var',
                 value: 'var(--d-ref-transitionFunction-e0i80)',
+              ),
+            ),
+          ),
+        ),
+      ),
+      'image':(
+        index: 'image',
+        name: 'd-image',
+        type: 'component',
+        value: (
+          'turn':(
+            index: 'turn',
+            name: '&--turn',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'disabled':(
+            index: 'disabled',
+            name: '&--disabled',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'hide':(
+            index: 'hide',
+            name: '&--hide',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'adaptive':(
+            index: 'adaptive',
+            name: '&--adaptive',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'size':(
+            index: 'size',
+            name: '&--size',
+            type: 'state',
+            value: (
+              'auto':(
+                index: 'auto',
+                name: '&--auto',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'contain':(
+                index: 'contain',
+                name: '&--contain',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'cover':(
+                index: 'cover',
+                name: '&--cover',
+                type: 'state',
+                value: (
+                ),
               ),
             ),
           ),

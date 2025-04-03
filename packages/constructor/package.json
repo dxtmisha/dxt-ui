@@ -19,7 +19,7 @@
       "import": "./src/library.ts",
       "default": "./dist/library.js"
     },
-    "./constructor": "./src/constructors"
+    "./constructor/": "./src/constructors/"
   },
   "buildOptions": {
     "name": "@dxt-ui/constructor",

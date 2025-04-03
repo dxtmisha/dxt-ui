@@ -4,7 +4,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { DesignCommand } from './DesignCommand'
 
-import { PROPERTY_DIR_IN } from '../../config'
+import { DESIGN_FILE_PACKAGE, PROPERTY_DIR_IN } from '../../config'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -12,6 +12,7 @@ const FILE_TYPES = 'types.ts'
 const FILE_STYLE = 'style.scss'
 const FILE_CODE = 'Constructors.ts'
 const FILE_CLASS = 'ConstructorsDesign.tsx'
+const FILE_INDEX = 'index.ts'
 
 /**
  * Class for generating files based on a constructor.
@@ -54,6 +55,8 @@ export class DesignConstructor extends DesignCommand {
       .makeStyle()
       .makeCode()
       .makeMain()
+      .makeIndex()
+      .makeFilePackage()
   }
 
   /**
@@ -121,12 +124,33 @@ export class DesignConstructor extends DesignCommand {
   }
 
   /**
-   * This code generates the style.scss.
+   * This code generates the Constructors.ts.
    *
-   * Генерация файла style.scss.
+   * Генерация файла Constructors.ts.
    */
   protected makeCode(): this {
-    const file = FILE_CODE
+    return this.makeFileStandard(FILE_CODE)
+  }
+
+  /**
+   * This code generates the ConstructorsDesign.tsx.
+   *
+   * Генерация файла ConstructorsDesign.tsx.
+   */
+  protected makeMain(): this {
+    return this.makeFileStandard(FILE_CLASS)
+  }
+
+  /**
+   * This code generates the index.ts.
+   *
+   * Генерация файла index.ts.
+   */
+  protected makeIndex(): this {
+    return this.makeFileStandard(FILE_INDEX)
+  }
+
+  protected makeFileStandard(file: string): this {
     const sample = this.readDefinable(file)
 
     sample.replaceConstructorClasses()
@@ -135,18 +159,22 @@ export class DesignConstructor extends DesignCommand {
     return this
   }
 
-  /**
-   * This code generates the style.scss.
-   *
-   * Генерация файла style.scss.
-   */
-  protected makeMain(): this {
-    const file = FILE_CLASS
-    const sample = this.readDefinable(file)
+  protected makeFilePackage(): this {
+    const packageFile = PropertiesFile.readFile<Record<string, any>>(DESIGN_FILE_PACKAGE)
+    const command = this.getCommand()
+    const name = `./${command}`
 
-    sample.replaceConstructorClasses()
+    if (
+      packageFile
+      && packageFile.exports
+      && !(name in packageFile.exports)
+    ) {
+      console.log('packageFile.exports', packageFile.exports)
+      packageFile.exports[name] = `./src/constructors/${command}/index.ts`
+      packageFile.exports[`${name}/style`] = `./src/constructors/${command}/style.scss`
 
-    this.write(sample.getNameFile(file), sample.get())
+      PropertiesFile.writeByPath(DESIGN_FILE_PACKAGE, packageFile)
+    }
     return this
   }
 }
