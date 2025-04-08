@@ -11,7 +11,7 @@ import { PropertiesTool } from './PropertiesTool'
 
 import { type PropertyList } from '../../types/propertyTypes'
 
-import { UI_DIRS_COMPONENTS, UI_KEY_CONSTRUCTOR } from '../../config'
+import { UI_DIRS_COMPONENTS, UI_DIRS_CONSTRUCTOR, UI_KEY_CONSTRUCTOR } from '../../config'
 
 const DIR_NAME = 'settings'
 
@@ -49,13 +49,16 @@ export class PropertiesSettings {
    */
   protected getComponentList(): string[] {
     const list: string[] = []
+    let paths: string[] = [
+      ...UI_DIRS_COMPONENTS,
+      PropertiesConfig.getProjectName()
+    ]
 
-    PropertiesFile.readDir(
-      [
-        ...UI_DIRS_COMPONENTS,
-        PropertiesConfig.getProjectName()
-      ]
-    ).forEach(dir => list.push(dir))
+    if (this.path.isConstructor()) {
+      paths = [...UI_DIRS_CONSTRUCTOR]
+    }
+
+    PropertiesFile.readDir(paths).forEach(dir => list.push(dir))
 
     return list
   }

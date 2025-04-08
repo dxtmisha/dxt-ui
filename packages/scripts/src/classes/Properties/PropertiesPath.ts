@@ -30,6 +30,7 @@ const DIR_CACHE = 'read'
  */
 export class PropertiesPath {
   private readonly paths: PropertiesPathList
+  private readonly constructorType: boolean = false
 
   /**
    * Constructor
@@ -53,14 +54,13 @@ export class PropertiesPath {
       this.paths?.[1]
       && PropertiesTool.isConstructor(this.paths?.[1].design)
     ) {
-      this.paths.[1].pathsComponent = [
-        PropertiesFile.getRoot(),
-        ...UI_DIRS_COMPONENTS,
-        PropertiesConfig.getProjectName()
-      ]
+      delete this.paths[1]
+      this.constructorType = true
     }
+  }
 
-    console.log('paths', this.paths)
+  isConstructor(): boolean {
+    return this.constructorType
   }
 
   /**

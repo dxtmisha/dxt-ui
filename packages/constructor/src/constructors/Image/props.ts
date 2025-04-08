@@ -1,5 +1,10 @@
 interface ImagePropsToken {
   // :type [!] System label / Системная метка
+  turn?: boolean
+  disabled?: boolean
+  hide?: boolean
+  adaptive?: boolean
+  size?: string | 'auto' | 'contain' | 'cover'
   // :type [!] System label / Системная метка
 }
 

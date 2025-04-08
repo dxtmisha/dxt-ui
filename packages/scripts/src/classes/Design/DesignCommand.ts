@@ -4,6 +4,7 @@ import { toArray } from '@dxt-ui/functional'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
+import { PropertiesCache } from '../Properties/PropertiesCache'
 import { DesignStructure } from './DesignStructure'
 import { DesignReplace } from './DesignReplace'
 
@@ -41,6 +42,7 @@ export abstract class DesignCommand {
     if (this.command) {
       console.info(`-- ${PropertiesConfig.getDesignName()}.${this.command}:`)
 
+      PropertiesCache.clear()
       this.initMain()
 
       console.info('-- end')
