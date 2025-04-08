@@ -4,7 +4,7 @@ import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignCommand } from './DesignCommand'
 
-import { DESIGN_DIR_CONSTRUCTOR, LIBRARY_DIR_COMPONENTS } from '../../config'
+import { UI_DIR_CONSTRUCTOR, UI_DIRS_COMPONENTS } from '../../config'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -36,7 +36,7 @@ export class DesignComponent extends DesignCommand {
 
     this.dir = [
       PropertiesFile.getRoot(),
-      ...LIBRARY_DIR_COMPONENTS,
+      ...UI_DIRS_COMPONENTS,
       PropertiesConfig.getProjectName(),
       structure.getComponentNameFirst()
     ]
@@ -139,7 +139,7 @@ export class DesignComponent extends DesignCommand {
    * @param file file name/ имя файла
    */
   private getFileConstructor(file: string): string {
-    const path: string[] = ['..', '..', DESIGN_DIR_CONSTRUCTOR, this.getStructure().getComponentNameFirst(), file]
+    const path: string[] = ['..', '..', UI_DIR_CONSTRUCTOR, this.getStructure().getComponentNameFirst(), file]
     const constructor = this.read(path)
 
     return constructor ?? ''

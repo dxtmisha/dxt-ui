@@ -9,7 +9,7 @@ import type { PropertyList } from '../../types/propertyTypes'
 
 import basicProperties from '../../media/properties.json'
 
-import { PROPERTY_CONSTRUCTOR_BASIC_NAME, PROPERTY_FILE_MAIN } from '../../config'
+import { UI_KEY_CONSTRUCTOR, UI_FILE_PROPERTY } from '../../config'
 
 /**
  * A class for static methods of obtaining various data.
@@ -24,7 +24,7 @@ export class PropertiesTool {
    * @param design design name/ название дизайна
    */
   static isConstructor(design: string): boolean {
-    return design === PROPERTY_CONSTRUCTOR_BASIC_NAME
+    return design === UI_KEY_CONSTRUCTOR
   }
 
   /**
@@ -33,7 +33,7 @@ export class PropertiesTool {
    * Данный метод возвращает названия дизайнов из переменной окружения (env)
    */
   static getDesigns(): string[] {
-    return [PROPERTY_CONSTRUCTOR_BASIC_NAME, PropertiesConfig.getDesignName()]
+    return [UI_KEY_CONSTRUCTOR, PropertiesConfig.getDesignName()]
   }
 
   /**
@@ -67,7 +67,7 @@ export class PropertiesTool {
     }
 
     if (path) {
-      return PropertiesCache.read<PropertyList>([...path, PROPERTY_FILE_MAIN])
+      return PropertiesCache.read<PropertyList>([...path, UI_FILE_PROPERTY])
     }
   }
 }

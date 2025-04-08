@@ -16,7 +16,7 @@ import type {
   DesignStructureStateList
 } from '../../types/designTypes'
 
-import { DESIGN_PROPERTY_TO_PROPS } from '../../config'
+import { UI_PROPERTY_FOR_PROPS } from '../../config'
 
 /**
  * Class for processing dependency properties of the component.
@@ -66,7 +66,7 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
     return is !== false && (
       isFilled(is)
       || item?.[PropertyKey.variable] === PropertyType.state
-      || DESIGN_PROPERTY_TO_PROPS.indexOf(item?.[PropertyKey.name] as string) !== -1
+      || UI_PROPERTY_FOR_PROPS.indexOf(item?.[PropertyKey.name] as string) !== -1
     )
   }
 

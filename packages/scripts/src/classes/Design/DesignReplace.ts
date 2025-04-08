@@ -11,7 +11,7 @@ import type {
   DesignStructureList
 } from '../../types/designTypes'
 
-import { PROPERTY_KEY_CUSTOM } from '../../config'
+import { UI_KEY_CUSTOM } from '../../config'
 
 /**
  * Class with basic replacement for templates.
@@ -277,7 +277,7 @@ export class DesignReplace {
 
         if (values) {
           templates.push(`${item.name}: [${values}]`)
-        } else if (item.valueAll?.indexOf(PROPERTY_KEY_CUSTOM) !== -1) {
+        } else if (item.valueAll?.indexOf(UI_KEY_CUSTOM) !== -1) {
           templates.push(`${item.name}: []`)
         }
       }
@@ -469,7 +469,7 @@ export class DesignReplace {
       const types: string[] = []
 
       value.forEach((item) => {
-        if (item !== PROPERTY_KEY_CUSTOM) {
+        if (item !== UI_KEY_CUSTOM) {
           types.push(item === true ? 'true' : `'${item}'`)
         }
       })
@@ -587,12 +587,12 @@ export class DesignReplace {
       }
 
       if ('style' in item && item.style) {
-        templates.push(`'${newParent}--${PROPERTY_KEY_CUSTOM}': isFilled(${index}) && !inArray(propsValues.${name}, ${index})`)
+        templates.push(`'${newParent}--${UI_KEY_CUSTOM}': isFilled(${index}) && !inArray(propsValues.${name}, ${index})`)
       }
 
       if (
         this.isString(value)
-        && !(value.length === 1 && value[0] === PROPERTY_KEY_CUSTOM)
+        && !(value.length === 1 && value[0] === UI_KEY_CUSTOM)
       ) {
         templates.push(`[\`${newParent.match(/-palette$/) ? `${newParent} ` : ''}${newParent}--\${${index}}\`]: inArray(propsValues.${name}, ${index})`)
       }

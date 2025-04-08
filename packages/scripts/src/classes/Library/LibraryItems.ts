@@ -7,7 +7,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { LibraryData, LibraryList } from '../../types/libraryTypes'
 
-import { LIBRARY_DIR, LIBRARY_DIR_COMPONENTS } from '../../config'
+import { UI_DIRS_LIBRARY, UI_DIRS_COMPONENTS } from '../../config'
 
 /**
  * Class for working with the list of components.
@@ -70,7 +70,7 @@ export class LibraryItems {
         ]
 
     PropertiesFile.write(
-      LIBRARY_DIR,
+      UI_DIRS_LIBRARY,
       name,
       file.join('\r\n'),
       extension
@@ -110,7 +110,7 @@ export class LibraryItems {
    * Возвращает путь к директории компонентов дизайн-системы
    */
   protected getComponentsPath(): string[] {
-    return [...LIBRARY_DIR_COMPONENTS, PropertiesConfig.getDesignName()]
+    return [...UI_DIRS_COMPONENTS, PropertiesConfig.getDesignName()]
   }
 
   /**

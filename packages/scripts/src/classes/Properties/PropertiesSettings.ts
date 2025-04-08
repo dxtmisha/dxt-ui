@@ -11,7 +11,7 @@ import { PropertiesTool } from './PropertiesTool'
 
 import { type PropertyList } from '../../types/propertyTypes'
 
-import { LIBRARY_DIR_COMPONENTS, PROPERTY_CONSTRUCTOR_BASIC_NAME } from '../../config'
+import { UI_DIRS_COMPONENTS, UI_KEY_CONSTRUCTOR } from '../../config'
 
 const DIR_NAME = 'settings'
 
@@ -52,7 +52,7 @@ export class PropertiesSettings {
 
     PropertiesFile.readDir(
       [
-        ...LIBRARY_DIR_COMPONENTS,
+        ...UI_DIRS_COMPONENTS,
         PropertiesConfig.getProjectName()
       ]
     ).forEach(dir => list.push(dir))
@@ -93,7 +93,7 @@ export class PropertiesSettings {
 
   protected getConstructors(): PropertyList {
     return PropertiesStandard.to({
-      [PROPERTY_CONSTRUCTOR_BASIC_NAME]: getConstructorProperties(this.getComponentList())
+      [UI_KEY_CONSTRUCTOR]: getConstructorProperties(this.getComponentList())
     }) as any as PropertyList
   }
 }

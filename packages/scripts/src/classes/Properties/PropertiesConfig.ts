@@ -5,7 +5,7 @@ import { PropertiesFile } from './PropertiesFile'
 import type { DesignUiConfig } from '../../types/configTypes'
 
 import {
-  DESIGN_UI_FILE_CONFIG_NAME
+  UI_CONFIG_FILE
 } from '../../config'
 
 /**
@@ -62,7 +62,7 @@ export class PropertiesConfig {
   }
 
   static {
-    const file = PropertiesFile.readFile<DesignUiConfig>(DESIGN_UI_FILE_CONFIG_NAME)
+    const file = PropertiesFile.readFile<DesignUiConfig>(UI_CONFIG_FILE)
 
     if (file) {
       this.config = file

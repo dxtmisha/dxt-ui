@@ -2,7 +2,7 @@
 
 import { strFill } from '@dxt-ui/functional'
 
-import { STYLES_DIR_MAIN } from '../../config'
+import { UI_DIRS_STYLES } from '../../config'
 
 const SPACE = '  '
 
@@ -19,7 +19,7 @@ export class StylesTool {
    * @param design design name/ название дизайна
    */
   static getDir(design: string): string[] {
-    return [...STYLES_DIR_MAIN, design]
+    return [...UI_DIRS_STYLES, design]
   }
 
   /**

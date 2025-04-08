@@ -11,7 +11,7 @@ import {
   type PropertyListOrData
 } from '../../types/propertyTypes'
 
-import { LIBRARY_DIR_COMPONENTS, PROPERTY_DIR_MAIN } from '../../config'
+import { UI_DIRS_COMPONENTS, UI_DIRS_TOKENS } from '../../config'
 
 export type PropertiesPathItem = {
   design: string
@@ -55,7 +55,7 @@ export class PropertiesPath {
     ) {
       this.paths.[1].pathsComponent = [
         PropertiesFile.getRoot(),
-        ...LIBRARY_DIR_COMPONENTS,
+        ...UI_DIRS_COMPONENTS,
         PropertiesConfig.getProjectName()
       ]
     }
@@ -164,7 +164,7 @@ export class PropertiesPath {
       return undefined
     }
 
-    return [PropertiesFile.getRoot(), ...PROPERTY_DIR_MAIN]
+    return [PropertiesFile.getRoot(), ...UI_DIRS_TOKENS]
   }
 
   /**
@@ -180,7 +180,7 @@ export class PropertiesPath {
 
     return [
       PropertiesFile.getRoot(),
-      ...LIBRARY_DIR_COMPONENTS,
+      ...UI_DIRS_COMPONENTS,
       PropertiesConfig.getProjectName()
     ]
   }

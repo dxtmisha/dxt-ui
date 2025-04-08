@@ -8,9 +8,9 @@ import {
 } from '@dxt-ui/scripts'
 
 import {
-  DESIGN_DIR_CONSTRUCTOR,
-  PROPERTY_DIR_IN,
-  PROPERTY_FILE_MAIN
+  UI_DIR_CONSTRUCTOR,
+  UI_DIR_IN,
+  UI_FILE_PROPERTY
 } from '@dxt-ui/scripts/config'
 
 /**
@@ -30,10 +30,10 @@ export const getConstructorProperties = (names: string[]): PropertyList => {
         '..',
         '..',
         '..',
-        PROPERTY_DIR_IN,
-        DESIGN_DIR_CONSTRUCTOR,
+        UI_DIR_IN,
+        UI_DIR_CONSTRUCTOR,
         name,
-        PROPERTY_FILE_MAIN
+        UI_FILE_PROPERTY
       ]
       const item = PropertiesFile.readFile<PropertyItem>(paths)
 

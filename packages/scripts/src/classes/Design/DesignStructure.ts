@@ -14,8 +14,8 @@ import type {
 } from '../../types/designTypes'
 
 import {
-  DESIGN_DIR_STRUCTURE,
-  DESIGN_FILE_CLASSES
+  UI_DIR_STRUCTURE,
+  UI_STRUCTURE_CLASSES
 } from '../../config'
 
 /**
@@ -134,7 +134,7 @@ export class DesignStructure {
    * Возвращает название файла с данными о подклассе.
    */
   protected getPathClasses(): string {
-    return `${this.getPathName()}-${DESIGN_FILE_CLASSES}`
+    return `${this.getPathName()}-${UI_STRUCTURE_CLASSES}`
   }
 
   /**
@@ -144,7 +144,7 @@ export class DesignStructure {
    */
   protected make(): DesignStructureList {
     return PropertiesCache.get<DesignStructureList>(
-      [DESIGN_DIR_STRUCTURE],
+      [UI_DIR_STRUCTURE],
       this.getPathName(),
       () => {
         return new DesignStructureRead(this.component).get()
@@ -153,12 +153,13 @@ export class DesignStructure {
   }
 
   /**
-   * Generation of data for the subclass.<br>
+   * Generation of data for the subclass.
+   *
    * Генерация данных для подкласса.
    */
   protected makeClasses(): DesignStructureClassesList {
     return PropertiesCache.get<DesignStructureClassesList>(
-      [DESIGN_DIR_STRUCTURE],
+      [UI_DIR_STRUCTURE],
       this.getPathClasses(),
       () => {
         return new DesignStructureClasses(this.component).get()

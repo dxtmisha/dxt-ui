@@ -5,9 +5,9 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 import type { LibraryFiles } from '../../types/libraryTypes'
 
 import {
-  LIBRARY_EXPORT_LIST,
-  LIBRARY_FILE_EXPORT,
-  PROPERTY_DIR_IN
+  UI_DIRS_LIST_EXPORT,
+  UI_DIRS_FILE_EXPORT,
+  UI_DIR_IN
 } from '../../config'
 
 /**
@@ -25,7 +25,7 @@ export class LibraryExport {
     console.log('Library export')
 
     PropertiesFile.writeByPath(
-      LIBRARY_FILE_EXPORT,
+      UI_DIRS_FILE_EXPORT,
       `${this.initFile()}\r\n`
     )
 
@@ -39,7 +39,7 @@ export class LibraryExport {
    * @param directory selected directory/ выбранная директория
    */
   protected getPath(directory: string): string[] {
-    return [PROPERTY_DIR_IN, directory]
+    return [UI_DIR_IN, directory]
   }
 
   /**
@@ -50,7 +50,7 @@ export class LibraryExport {
   protected getDirectory(): LibraryFiles {
     const files: LibraryFiles = []
 
-    LIBRARY_EXPORT_LIST
+    UI_DIRS_LIST_EXPORT
       .forEach((directory) => {
         const path = this.getPath(directory)
         const list = PropertiesFile.readDirRecursive(path)

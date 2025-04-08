@@ -22,7 +22,7 @@ import {
   PropertyType
 } from '../../types/propertyTypes'
 
-import { PROPERTY_CONSTRUCTOR_BASIC_NAME } from '../../config'
+import { UI_KEY_CONSTRUCTOR } from '../../config'
 
 const SUPPORT_NAME = [
   PropertyType.design,
@@ -60,7 +60,7 @@ export class PropertiesItems {
       design
       || isNull(this.focusDesign)
       || name === this.focusDesign
-      || name === PROPERTY_CONSTRUCTOR_BASIC_NAME
+      || name === UI_KEY_CONSTRUCTOR
     )
   }
 
@@ -75,7 +75,7 @@ export class PropertiesItems {
 
       forEach(this.properties, (properties, index) => {
         if (
-          index === PROPERTY_CONSTRUCTOR_BASIC_NAME
+          index === UI_KEY_CONSTRUCTOR
           || index === this.focusDesign
         ) {
           data[index] = properties

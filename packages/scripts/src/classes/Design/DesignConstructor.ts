@@ -6,7 +6,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { DesignCommand } from './DesignCommand'
 
-import { DESIGN_FILE_PACKAGE, PROPERTY_DIR_IN } from '../../config'
+import { UI_FILE_PACKAGE, UI_DIR_IN } from '../../config'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -38,7 +38,7 @@ export class DesignConstructor extends DesignCommand {
 
     this.dir = [
       PropertiesFile.getRoot(),
-      PROPERTY_DIR_IN,
+      UI_DIR_IN,
       this.DIR_SAMPLE,
       this.getStructure().getComponentNameFirst()
     ]
@@ -162,7 +162,7 @@ export class DesignConstructor extends DesignCommand {
   }
 
   protected makeFilePackage(): this {
-    const packageFile = PropertiesFile.readFile<Record<string, any>>(DESIGN_FILE_PACKAGE)
+    const packageFile = PropertiesFile.readFile<Record<string, any>>(UI_FILE_PACKAGE)
     const command = toCamelCaseFirst(this.getCommand())
     const name = `./${command}`
 
@@ -174,7 +174,7 @@ export class DesignConstructor extends DesignCommand {
       packageFile.exports[name] = `./src/constructors/${command}/index.ts`
       packageFile.exports[`${name}/style`] = `./src/constructors/${command}/style.scss`
 
-      PropertiesFile.writeByPath(DESIGN_FILE_PACKAGE, packageFile)
+      PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageFile)
     }
 
     return this

@@ -18,7 +18,7 @@ import {
   PropertyType
 } from '../../types/propertyTypes'
 
-import { PROPERTY_CONSTRUCTOR_BASIC_NAME, STYLES_FILE_EXTENSION } from '../../config'
+import { UI_KEY_CONSTRUCTOR, UI_EXTENSION_STYLE } from '../../config'
 
 const FILE_VAR = 'vars'
 const FILE_CLASS = 'classes'
@@ -82,7 +82,7 @@ export class Styles {
       StylesTool.getDir(design),
       FILE_VAR,
       data,
-      STYLES_FILE_EXTENSION
+      UI_EXTENSION_STYLE
     )
 
     return this
@@ -109,7 +109,7 @@ export class Styles {
         [...StylesTool.getDir(design), DIR_CLASS],
         name,
         StylesTool.join(item),
-        STYLES_FILE_EXTENSION
+        UI_EXTENSION_STYLE
       )
     })
 
@@ -117,7 +117,7 @@ export class Styles {
       StylesTool.getDir(design),
       FILE_CLASS,
       StylesTool.join(data),
-      STYLES_FILE_EXTENSION
+      UI_EXTENSION_STYLE
     )
 
     return this
@@ -133,7 +133,7 @@ export class Styles {
       StylesTool.getDir(design),
       FILE_PROPERTIES,
       scss.get(),
-      STYLES_FILE_EXTENSION
+      UI_EXTENSION_STYLE
     )
 
     return this
@@ -169,7 +169,7 @@ export class Styles {
         `@use "./${FILE_CLASS}";`,
         `@use "./${FILE_PROPERTIES}";`
       ].join('\r\n'),
-      STYLES_FILE_EXTENSION
+      UI_EXTENSION_STYLE
     )
 
     PropertiesFile.write(
@@ -183,10 +183,10 @@ export class Styles {
         '',
         `@forward "@dxt-ui/styles/${FILE_PROPERTIES}";`
       ].join('\r\n'),
-      STYLES_FILE_EXTENSION
+      UI_EXTENSION_STYLE
     )
 
-    if (!PropertiesFile.is([...dir, `${FILE_MAIN}.${STYLES_FILE_EXTENSION}`])) {
+    if (!PropertiesFile.is([...dir, `${FILE_MAIN}.${UI_EXTENSION_STYLE}`])) {
       PropertiesFile.write(
         dir,
         FILE_MAIN,
@@ -198,7 +198,7 @@ export class Styles {
           '@include ui.initGlobal;',
           `@include uiProperties.initDesignBody('${design}.main');`
         ].join('\r\n'),
-        STYLES_FILE_EXTENSION
+        UI_EXTENSION_STYLE
       )
     }
 
@@ -218,7 +218,7 @@ export class Styles {
       .get()
       .getDesigns()
       .forEach((design) => {
-        if (design !== PROPERTY_CONSTRUCTOR_BASIC_NAME) {
+        if (design !== UI_KEY_CONSTRUCTOR) {
           callback(
             design,
             new PropertiesItems(properties).setFocusDesign(design)
