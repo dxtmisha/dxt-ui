@@ -16,6 +16,7 @@ export type TranslateItemOrList<T extends string | string[]> = T extends string[
  */
 export class Translate {
   protected static url = '/api/translate'
+  protected static propsName = 'list'
   protected static readonly data: Record<string, string> = {}
 
   protected static cache: string[] = []
@@ -180,6 +181,11 @@ export class Translate {
     return Translate
   }
 
+  static setPropsName(name: string): Translate {
+    this.propsName = name
+    return this
+  }
+
   /**
    * Getting the full title for translation.
    *
@@ -218,16 +224,17 @@ export class Translate {
    * Получение списка переводов с сервера.
    */
   protected static async getResponse(): Promise<Record<string, string>> {
-    const data = (await Api.get<{ data: Record<string, string> }>({
+    const data = (await Api.get<Record<string, string>>({
       api: false,
       path: this.url,
       request: {
-        list: this.cache
+        [this.propsName]: this.cache
       },
+      toData: true,
       global: true
     }))
 
-    return data?.data ?? {}
+    return data ?? {}
   }
 
   /**

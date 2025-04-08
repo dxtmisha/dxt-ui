@@ -19,7 +19,9 @@
       "import": "./src/library.ts",
       "default": "./dist/library.js"
     },
-    "./constructor/": "./src/constructors/"
+    "./constructor/": "./src/constructors/",
+    "./Image": "./src/constructors/Image/index.ts",
+    "./Image/style": "./src/constructors/Image/style.scss"
   },
   "buildOptions": {
     "name": "@dxt-ui/constructor",

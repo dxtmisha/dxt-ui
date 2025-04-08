@@ -1,4 +1,4 @@
-// :component.once import { ComponentPropsBasic, defaultsComponent } from '@dxt-ui/constructor/Component'
+// :component.once import { type ComponentPropsBasic, defaultsComponent } from '@dxt-ui/constructor/Component'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -14,8 +14,7 @@ interface PropsToken {
  * Type describing incoming properties.<br>
  * Тип, описывающий входящие свойства.
  */
-export interface ComponentProps extends PropsToken/* :component.once , ComponentPropsBasic */ {
-
+export interface ComponentProps extends/* :component.once  ComponentPropsBasic, */ PropsToken {
 }
 
 /**

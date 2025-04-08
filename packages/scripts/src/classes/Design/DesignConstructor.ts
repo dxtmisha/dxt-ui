@@ -1,5 +1,7 @@
 // export:none
 
+import { toCamelCaseFirst } from '@dxt-ui/functional'
+
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { DesignCommand } from './DesignCommand'
@@ -161,7 +163,7 @@ export class DesignConstructor extends DesignCommand {
 
   protected makeFilePackage(): this {
     const packageFile = PropertiesFile.readFile<Record<string, any>>(DESIGN_FILE_PACKAGE)
-    const command = this.getCommand()
+    const command = toCamelCaseFirst(this.getCommand())
     const name = `./${command}`
 
     if (
@@ -169,12 +171,12 @@ export class DesignConstructor extends DesignCommand {
       && packageFile.exports
       && !(name in packageFile.exports)
     ) {
-      console.log('packageFile.exports', packageFile.exports)
       packageFile.exports[name] = `./src/constructors/${command}/index.ts`
       packageFile.exports[`${name}/style`] = `./src/constructors/${command}/style.scss`
 
       PropertiesFile.writeByPath(DESIGN_FILE_PACKAGE, packageFile)
     }
+
     return this
   }
 }

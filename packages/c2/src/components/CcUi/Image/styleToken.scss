@@ -1,14 +1,16 @@
 @use "@dxt-ui/styles/properties" as ui;
-// :component.once @use "@dxt-ui/constructor/Component/style" as Component;
+@use "@dxt-ui/constructor/Image/style" as Image;
 
-@include ui.initDesignBasic('[design].[component]') {
+@include ui.initDesignBasic('c2.image') {
   // Basic styles for a component
   // Базовый стили для компонента
-  // :component.once @include Component.mixinComponent;
+  @include Image.mixinImage;
 
   // Styles from tokens
   // Стили из токенов
   // :style [!] System label / Системная метка
+  & {
+  }
   // :style [!] System label / Системная метка
 
   // Here are the user styles

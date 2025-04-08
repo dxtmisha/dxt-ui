@@ -1,4 +1,4 @@
-import { ImagePropsBasic, defaultsImage } from '@dxt-ui/constructor/constructor/Image/index'
+import { type ImagePropsBasic, defaultsImage } from '@dxt-ui/constructor/Image'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -20,8 +20,7 @@ interface PropsToken {
  * Type describing incoming properties.<br>
  * Тип, описывающий входящие свойства.
  */
-export interface ImageProps extends PropsToken, ImagePropsBasic {
-
+export interface ImageProps extends ImagePropsBasic, PropsToken {
 }
 
 /**
