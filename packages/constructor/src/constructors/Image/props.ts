@@ -4,7 +4,20 @@ interface ImagePropsToken {
 }
 
 export interface ImagePropsBasic {
-  // TODO: Location for a custom property / Место для пользовательского свойства
+  // Value
+  value?: string | any
+  coordinator?: number[] | any
+  x?: string | number
+  y?: string | number
+
+  // Adaptive
+  adaptiveGroup?: string
+  adaptiveAlways?: boolean
+  objectWidth?: string | number
+  objectHeight?: string | number
+
+  // Style
+  url?: string
 }
 
 /**
@@ -21,7 +34,7 @@ export interface ImageProps extends ImagePropsToken, ImagePropsBasic {
  * Значение по умолчанию для свойства.
  */
 export const defaultsImage = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
+  adaptiveGroup: 'basic',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

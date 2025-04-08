@@ -48,6 +48,19 @@ export class PropertiesPath {
         pathsComponent: this.getDirComponents(design)
       })
     })
+
+    if (
+      this.paths?.[1]
+      && PropertiesTool.isConstructor(this.paths?.[1].design)
+    ) {
+      this.paths.[1].pathsComponent = [
+        PropertiesFile.getRoot(),
+        ...LIBRARY_DIR_COMPONENTS,
+        PropertiesConfig.getProjectName()
+      ]
+    }
+
+    console.log('paths', this.paths)
   }
 
   /**
