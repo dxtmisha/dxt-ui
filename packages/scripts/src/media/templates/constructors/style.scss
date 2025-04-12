@@ -1,4 +1,5 @@
-@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/styles" as ui;
+@use "@dxt-ui/styles/properties" as uiProperties;
 
 @mixin mixinConstructors {
 

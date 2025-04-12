@@ -10,6 +10,28 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    &--disabled {
+      --c2-image-color: var(--c2-st-content-foreground-color-neutral-disable);
+      --c2-image-color-opacity: #{ui.toColorOpacity(var(--c2-st-content-foreground-color-neutral-disable))};
+    }
+    
+    &--padding {
+      &--sm {
+        @include ui.inset(#{var(--c2-st-global-distance-space-inset-x)});
+      }
+      
+      &--md {
+        @include ui.inset(#{var(--c2-st-global-distance-space-inset-xs)});
+      }
+      
+      &--lg {
+        @include ui.inset(#{var(--c2-st-global-distance-space-inset-md)});
+      }
+      
+      &--xl {
+        @include ui.inset(#{var(--c2-st-global-distance-space-inset-xl)});
+      }
+    }
   }
   // :style [!] System label / Системная метка
 

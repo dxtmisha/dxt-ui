@@ -30,7 +30,7 @@ export interface ImagePropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ImageProps extends ImagePropsToken, ImagePropsBasic {
+export interface ImageProps extends ImagePropsBasic, ImagePropsToken {
 }
 
 /**
@@ -39,7 +39,7 @@ export interface ImageProps extends ImagePropsToken, ImagePropsBasic {
  * Значение по умолчанию для свойства.
  */
 export const defaultsImage = {
-  adaptiveGroup: 'basic',
+  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

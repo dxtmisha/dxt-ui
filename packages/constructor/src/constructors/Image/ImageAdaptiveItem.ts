@@ -1,15 +1,12 @@
-import { computed, ref, watchEffect } from 'vue'
-
-import { getElementId } from '../../functions/getElementId'
-import { toNumber } from '../../functions/toNumber'
+import { computed, type Ref, ref, watchEffect } from 'vue'
+import { getElementId, toNumber } from '@dxt-ui/functional'
 
 import { ImageData } from './ImageData'
 import { ImageAdaptiveGroup } from './ImageAdaptiveGroup'
 import { ImageCalculationList } from './ImageCalculationList'
 
-import type { ConstrValue } from '../../types/constructor'
-import type { ImageProps } from './props'
-import type { ImageElement, ImageItem, ImageSize } from './typesBasic'
+import { type ImageElement, type ImageItem, type ImageSize } from './imageTypes'
+import { type ImageProps } from './props'
 
 enum ImageAdaptiveItemType {
   x = 'x',
@@ -20,14 +17,16 @@ const GROUP_BASIC = 'main'
 
 /**
  * The value in pixels indicating when an element is still considered active,
- * even if it has gone off the screen.<br>
+ * even if it has gone off the screen.
+ *
  * Значение в пикселях, указывающее, когда элемент считается еще активным,
  * даже если он ушел за экран.
  */
 export const MAX_BEYOND = 512
 
 /**
- * A class for managing the adapted scaling of a specific element.<br>
+ * A class for managing the adapted scaling of a specific element.
+ *
  * Класс для управления адаптированным масштабированием конкретного элемента.
  */
 export class ImageAdaptiveItem {
@@ -41,14 +40,14 @@ export class ImageAdaptiveItem {
 
   /**
    * Constructor
-   * @param props input data /<br>входные данные
-   * @param element image element for scaling /<br>элемент изображения для масштабирования
-   * @param data image data /<br>данные изображения
+   * @param props input data/ входные данные
+   * @param element image element for scaling/ элемент изображения для масштабирования
+   * @param data image data/ данные изображения
    */
   constructor(
     protected readonly props: ImageProps,
     protected readonly data: ImageData,
-    public readonly element: ConstrValue<ImageElement>
+    public readonly element: Ref<ImageElement>
   ) {
     watchEffect(() => {
       if (this.is()) {
@@ -60,7 +59,8 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Is the element active for size alignment.<br>
+   * Is the element active for size alignment.
+   *
    * Активен ли элемент для выравнивания размера.
    */
   readonly active = computed<boolean>(
@@ -68,25 +68,29 @@ export class ImageAdaptiveItem {
   )
 
   /**
-   * Returns the name of the group.<br>
+   * Returns the name of the group.
+   *
    * Возвращает название группы.
    */
   readonly group = computed<string>(() => this.props.adaptiveGroup ?? GROUP_BASIC)
 
   /**
-   * Returns the physical width of the object.<br>
+   * Returns the physical width of the object.
+   *
    * Возвращает физическую ширину объекта.
    */
   readonly width = computed<number>(() => toNumber(this.props.objectWidth ?? 0))
 
   /**
-   * Returns the physical height of the object.<br>
+   * Returns the physical height of the object.
+   *
    * Возвращает физическую высоту объекта.
    */
   readonly height = computed<number>(() => toNumber(this.props?.objectHeight ?? 0))
 
   /**
-   * Returns the axis for scaling.<br>
+   * Returns the axis for scaling.
+   *
    * Возвращает ось для масштабирования.
    */
   readonly type = computed<ImageAdaptiveItemType | undefined>(() => {
@@ -108,7 +112,8 @@ export class ImageAdaptiveItem {
   })
 
   /**
-   * Calculation of the base size of the image to determine how to scale the image.<br>
+   * Calculation of the base size of the image to determine how to scale the image.
+   *
    * Вычисление базового размера изображения, чтобы определить, как надо масштабировать изображение.
    */
   readonly size = computed<number>(() => {
@@ -130,7 +135,8 @@ export class ImageAdaptiveItem {
   })
 
   /**
-   * Multiplier for determining the level of image scaling relative to other elements.<br>
+   * Multiplier for determining the level of image scaling relative to other elements.
+   *
    * Множитель для определения уровня масштабирования изображения относительно других элементов.
    */
   readonly factor = computed<number>(() => {
@@ -158,7 +164,8 @@ export class ImageAdaptiveItem {
   })
 
   /**
-   * Checks if the element’s conditions are suitable for scaling.<br>
+   * Checks if the element’s conditions are suitable for scaling.
+   *
    * Проверяет, подходить ли у элемента условия для масштабирования.
    */
   is(): boolean {
@@ -166,16 +173,18 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Checks for compliance with the group.<br>
+   * Checks for compliance with the group.
+   *
    * Проверяет на соответствие группе.
-   * @param name name of the checked group /<br>название проверяемой группы
+   * @param name name of the checked group/ название проверяемой группы
    */
   isGroup(name: string): boolean {
     return this.group.value === name
   }
 
   /**
-   * Is it available for calculation.<br>
+   * Is it available for calculation.
+   *
    * Доступен ли для вычисления.
    */
   isBeyond(): boolean {
@@ -183,7 +192,8 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Is the element visible.<br>
+   * Is the element visible.
+   *
    * Виден ли элемент.
    */
   isVisible(): boolean {
@@ -191,7 +201,8 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Returns the identifier of the element.<br>
+   * Returns the identifier of the element.
+   *
    * Возвращает идентификатор элемента.
    */
   getId(): string {
@@ -199,7 +210,8 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Returns values for the background-size property.<br>
+   * Returns values for the background-size property.
+   *
    * Возвращает значения для свойства background-size.
    */
   getBackgroundSize(): string | null {
@@ -216,10 +228,11 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Size change for calculation.<br>
+   * Size change for calculation.
+   *
    * Изменение размера для вычисления.
-   * @param width width value /<br>значение ширины
-   * @param height height value /<br>значение высоты
+   * @param width width value/ значение ширины
+   * @param height height value/ значение высоты
    */
   setPercent(width: number, height: number): this {
     if (
@@ -236,7 +249,8 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Removal of an element from the scaling list.<br>
+   * Removal of an element from the scaling list.
+   *
    * Удаление элемента из списка для масштабирования.
    */
   remove(): void {
@@ -246,7 +260,8 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Updating the visibility and activity status of the element.<br>
+   * Updating the visibility and activity status of the element.
+   *
    * Обновление статуса видимости и активности элемента.
    */
   make(): this {

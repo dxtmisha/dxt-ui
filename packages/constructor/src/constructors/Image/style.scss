@@ -1,5 +1,93 @@
-@use "@dxt-ui/styles/properties";
+@use "@dxt-ui/styles" as ui;
+@use "@dxt-ui/styles/properties" as uiProperties;
 
 @mixin mixinImage {
+  direction: ltr;
+  @include ui.flexCenter;
+  @include ui.absolute;
+  overflow: hidden;
 
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: inherit;
+
+  transition-property: background-size, filter, opacity, transform, rotate, scale, clip-path;
+  transition-duration: uiProperties.v('d.sys.transitionDuration.standard');
+  transform: none;
+
+  &--type {
+    &--public {
+      -webkit-mask-position: center;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-size: contain;
+      mask-position: center;
+      mask-repeat: no-repeat;
+      mask-size: uiProperties.v('??publicMaskSize', contain);
+
+      @include uiProperties.state('background') {
+        @include ui.backgroundAsColor;
+      }
+    }
+
+    &--icon {
+      background-size: cover;
+    }
+
+    &--color,
+    &--file,
+    &--image {
+      @include ui.disabled(uiProperties.$designsClassName) {
+        filter: grayscale(1) opacity(#{var(--sys-color-opacity, uiProperties.v('??colorOpacity', 1))});
+      }
+    }
+
+    &--pdf {
+      > object {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  &--adaptive {
+    background-size: 100%;
+  }
+
+  &--turn {
+    @include ui.rotate(180deg);
+  }
+
+  &--disabled {
+    color: rgba(var(--sys-color, uiProperties.v('??color')), var(--sys-color-opacity, uiProperties.v('??colorOpacity', 1)));
+  }
+
+  &--hide {
+    opacity: 0;
+    @include ui.scale(.8);
+  }
+
+  &.material-icons {
+    direction: ltr;
+    display: inline-flex;
+    font-size: uiProperties.v('??font-size', 1.5em);
+  }
+
+  &--type {
+    &--outlined {
+      font-family: 'Material Icons Outlined', sans-serif;
+    }
+
+    &--round {
+      font-family: 'Material Icons Round', sans-serif;
+    }
+
+    &--sharp {
+      font-family: 'Material Icons Sharp', sans-serif;
+    }
+
+    &--two-tone {
+      font-family: 'Material Icons Two Tone', sans-serif;
+    }
+  }
 }

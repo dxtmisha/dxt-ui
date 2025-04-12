@@ -1,5 +1,3 @@
-// @node
-
 import { forEach } from '@dxt-ui/functional'
 import {
   PropertiesFile,
@@ -22,26 +20,32 @@ import {
 export const getConstructorProperties = (names: string[]): PropertyList => {
   const data: PropertyList = {}
 
-  forEach(
-    names,
-    (name) => {
-      const paths: string[] = [
-        __dirname,
-        '..',
-        '..',
-        '..',
-        UI_DIR_IN,
-        UI_DIR_CONSTRUCTOR,
-        name,
-        UI_FILE_PROPERTY
-      ]
-      const item = PropertiesFile.readFile<PropertyItem>(paths)
+  try {
+    const dir = __dirname
 
-      if (item) {
-        data[name] = item
+    forEach(
+      names,
+      (name) => {
+        const paths: string[] = [
+          dir,
+          '..',
+          '..',
+          '..',
+          UI_DIR_IN,
+          UI_DIR_CONSTRUCTOR,
+          name,
+          UI_FILE_PROPERTY
+        ]
+        const item = PropertiesFile.readFile<PropertyItem>(paths)
+
+        if (item) {
+          data[name] = item
+        }
       }
-    }
-  )
+    )
+  } catch (e) {
+    console.error('getConstructorProperties', e)
+  }
 
   return data
 }

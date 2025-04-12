@@ -10,3 +10,5 @@
 
 @forward "propertiesItem" hide $designsProperties, $designsClassName;
 @forward "propertiesMain" hide $designsRoot, $designsClasses;
+
+@forward "../index";

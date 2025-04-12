@@ -1,32 +1,31 @@
-import { Ref, ref, watchEffect } from 'vue'
-import { isString } from '../../functions/isString'
+import { type Ref, ref, watchEffect } from 'vue'
+import { Icons, isString, type Undefined } from '@dxt-ui/functional'
 
-import { Icons } from '../../classes/Icons'
 import { ImageFile } from './ImageFile'
 import { ImagePdf } from './ImagePdf'
 
 import { ImageType } from './ImageType'
-import { ImageTypeValue } from './typesBasic'
 
-import type { Undefined } from '../../types/basic'
-import type { ImageProps } from './props'
-import type { ImageEventItem, ImageItem } from './typesBasic'
+import { type ImageEventItem, type ImageItem, ImageTypeValue } from './imageTypes'
+import { type ImageProps } from './props'
 
 /**
- * A class for obtaining image or icon data.<br>
+ * A class for obtaining image or icon data.
+ *
  * Класс для получения данных изображения или иконки.
  */
 export class ImageData {
   /**
-   * Returns images.<br>
+   * Returns images.
+   *
    * Возвращает изображения.
    */
   readonly image = ref<ImageEventItem>()
 
   /**
    * Constructor
-   * @param props input data /<br>входные данные
-   * @param type image type /<br>тип изображения
+   * @param props input data/ входные данные
+   * @param type image type/ тип изображения
    */
   constructor(
     protected readonly props: ImageProps,
@@ -38,7 +37,8 @@ export class ImageData {
   }
 
   /**
-   * Checks if there are values.<br>
+   * Checks if there are values.
+   *
    * Проверяет, есть ли значения.
    */
   is(): this is { image: Exclude<ImageEventItem, Undefined> } {
@@ -46,7 +46,8 @@ export class ImageData {
   }
 
   /**
-   * Checks if the value is a link, that is, a type of string.<br>
+   * Checks if the value is a link, that is, a type of string.
+   *
    * Проверяет, является ли значение ссылкой, то есть видом строки.
    */
   isLink(): this is { image: Ref<string> } {
@@ -54,7 +55,8 @@ export class ImageData {
   }
 
   /**
-   * Checks if the value is an image object.<br>
+   * Checks if the value is an image object.
+   *
    * Проверяет, является ли значение объектом изображения.
    */
   isImage(): this is { image: Ref<ImageItem> } {
@@ -62,7 +64,8 @@ export class ImageData {
   }
 
   /**
-   * Calculates the image value and returns it.<br>
+   * Calculates the image value and returns it.
+   *
    * Вычисляет значение изображения и возвращает его.
    */
   protected async init(): Promise<ImageEventItem> {

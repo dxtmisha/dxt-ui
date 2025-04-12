@@ -1,4 +1,7 @@
-import type { ConstrClass } from '@dxt-ui/functional'
+import { type ComputedRef } from 'vue'
+import { type ConstrClass } from '@dxt-ui/functional'
+
+import type { ImageEventData, ImageEventItem, ImageTypeItem } from './imageTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -15,7 +18,7 @@ export type ImageComponents = {
  * Тип, описывающий доступные события.
  */
 export type ImageEmits = {
-  // load: [value: string]
+  load: [image: ImageEventData]
 }
 
 /**
@@ -24,6 +27,8 @@ export type ImageEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface ImageExpose {
+  type: ComputedRef<ImageTypeItem>
+  data: ComputedRef<ImageEventItem>
 }
 
 /**
@@ -32,7 +37,6 @@ export interface ImageExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ImageSlots {
-  // default? (props: any): any
 }
 
 /**

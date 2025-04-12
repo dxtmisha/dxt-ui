@@ -18574,6 +18574,12 @@ $designsProperties: (
             name: '&--disabled',
             type: 'state',
             value: (
+              'color':(
+                index: 'color',
+                name: '--c2-image-color',
+                type: 'var',
+                value: 'var(--c2-st-content-foreground-color-neutral-disable)',
+              ),
             ),
           ),
           'hide':(
@@ -18612,6 +18618,72 @@ $designsProperties: (
               'cover':(
                 index: 'cover',
                 name: '&--cover',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
+          ),
+          'padding':(
+            index: 'padding',
+            name: '&--padding',
+            type: 'state',
+            value: (
+              'sm':(
+                index: 'sm',
+                name: '&--sm',
+                type: 'state',
+                value: (
+                  'inset':(
+                    index: 'inset',
+                    name: 'inset',
+                    type: 'property',
+                    value: 'var(--c2-st-global-distance-space-inset-x)',
+                  ),
+                ),
+              ),
+              'md':(
+                index: 'md',
+                name: '&--md',
+                type: 'state',
+                value: (
+                  'inset':(
+                    index: 'inset',
+                    name: 'inset',
+                    type: 'property',
+                    value: 'var(--c2-st-global-distance-space-inset-xs)',
+                  ),
+                ),
+              ),
+              'lg':(
+                index: 'lg',
+                name: '&--lg',
+                type: 'state',
+                value: (
+                  'inset':(
+                    index: 'inset',
+                    name: 'inset',
+                    type: 'property',
+                    value: 'var(--c2-st-global-distance-space-inset-md)',
+                  ),
+                ),
+              ),
+              'xl':(
+                index: 'xl',
+                name: '&--xl',
+                type: 'state',
+                value: (
+                  'inset':(
+                    index: 'inset',
+                    name: 'inset',
+                    type: 'property',
+                    value: 'var(--c2-st-global-distance-space-inset-xl)',
+                  ),
+                ),
+              ),
+              'none':(
+                index: 'none',
+                name: '&--none',
                 type: 'state',
                 value: (
                 ),

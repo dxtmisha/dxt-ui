@@ -12,7 +12,7 @@ export interface ConstructorsPropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ConstructorsProps extends ConstructorsPropsToken, ConstructorsPropsBasic {
+export interface ConstructorsProps extends ConstructorsPropsBasic, ConstructorsPropsToken {
 }
 
 /**

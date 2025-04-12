@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import {
   inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxt-ui/functional'
@@ -15,6 +14,10 @@ import {
 import { defaults, type ImageProps, propsValues } from './props'
 import './styleToken.scss'
 
+defineOptions({
+  name: 'C2Image'
+})
+
 const emits = defineEmits<ImageEmits>()
 const props = withDefaults(defineProps<ImageProps>(), defaults)
 
@@ -26,7 +29,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'c2-image--disabled': props.disabled,
     'c2-image--hide': props.hide,
     'c2-image--adaptive': props.adaptive,
-    [`c2-image--size--${props.size}`]: inArray(propsValues.size, props.size)
+    [`c2-image--size--${props.size}`]: inArray(propsValues.size, props.size),
+    [`c2-image--padding--${props.padding}`]: inArray(propsValues.padding, props.padding)
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -45,11 +49,12 @@ const design = new ImageDesign(
   }
 )
 
-defineOptions({
-  name: 'C2Image',
-  render: design.render()
-})
+const render = design.render()
 
 defineSlots<ImageSlots>()
 defineExpose(design.expose())
 </script>
+
+<template>
+  <component :is="render"/>
+</template>

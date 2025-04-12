@@ -1,12 +1,11 @@
-import { forEach } from '../../functions/forEach'
-
-import { EventItem } from '../../classes/EventItem'
+import { EventItem, forEach } from '@dxt-ui/functional'
 
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageCalculationList } from './ImageCalculationList'
 
 /**
- * Class for working with image scaling according to the physical size of the object in the image.<br>
+ * Class for working with image scaling according to the physical size of the object in the image.
+ *
  * Класс для работы с масштабированием изображения по физическому размеру объекта на изображении.
  */
 export class ImageAdaptiveGroup {
@@ -19,18 +18,20 @@ export class ImageAdaptiveGroup {
   protected static time?: number
 
   /**
-   * Checks if an element is present in the list.<br>
+   * Checks if an element is present in the list.
+   *
    * Проверяет, присутствует ли элемент в списке.
-   * @param item object for working with images /<br>объект для работы с изображениями
+   * @param item object for working with images/ объект для работы с изображениями
    */
   static is(item: ImageAdaptiveItem): boolean {
     return this.objects.findIndex(itemValue => itemValue === item) !== -1
   }
 
   /**
-   * Adding a new element for tracking.<br>
+   * Adding a new element for tracking.
+   *
    * Добавление нового элемента для отслеживания.
-   * @param item object for working with images /<br>объект для работы с изображениями
+   * @param item object for working with images/ объект для работы с изображениями
    */
   static add(item: ImageAdaptiveItem): void {
     if (!this.is(item)) {
@@ -40,9 +41,10 @@ export class ImageAdaptiveGroup {
   }
 
   /**
-   * Removal of the element.<br>
+   * Removal of the element.
+   *
    * Удаления элемента.
-   * @param item object for working with images /<br>объект для работы с изображениями
+   * @param item object for working with images/ объект для работы с изображениями
    */
   static remove(item: ImageAdaptiveItem): void {
     const key = this.objects.findIndex(itemValue => itemValue === item)
@@ -56,7 +58,8 @@ export class ImageAdaptiveGroup {
   }
 
   /**
-   * Resets all cached data and rereads scaling for all elements.<br>
+   * Resets all cached data and rereads scaling for all elements.
+   *
    * Обнуляет все кэшированные данные и перечитывает масштабирование для всех элементов.
    */
   static reset(): void {
@@ -65,7 +68,8 @@ export class ImageAdaptiveGroup {
   }
 
   /**
-   * Starts the calculation process or turns it off if there are no active elements in the list.<br>
+   * Starts the calculation process or turns it off if there are no active elements in the list.
+   *
    * Запускает процесс вычисления или отключает его, если в списке нет активных элементов.
    */
   static make(): void {
@@ -83,7 +87,8 @@ export class ImageAdaptiveGroup {
   }
 
   /**
-   * Returns a list of elements that are visible or constantly being calculated.<br>
+   * Returns a list of elements that are visible or constantly being calculated.
+   *
    * Возвращает список элементов, которые видны или постоянно вычисляются.
    */
   protected static getItemIdByVisible(): string[] {
@@ -91,7 +96,8 @@ export class ImageAdaptiveGroup {
   }
 
   /**
-   * Method for starting the calculation of scaling elements in the list.<br>
+   * Method for starting the calculation of scaling elements in the list.
+   *
    * Метод для запуска вычисления масштабирования элементов в списке.
    */
   protected static start(): void {
@@ -114,7 +120,8 @@ export class ImageAdaptiveGroup {
 
   /**
    * Updates the list of elements available for calculation. These are the
-   * elements that are close to the border of the visible area.<br>
+   * elements that are close to the border of the visible area.
+   *
    * Обновляет список доступных для вычисления элементов. Это те элементы,
    * которые близки к границе видимой области.
    */
@@ -131,7 +138,8 @@ export class ImageAdaptiveGroup {
 
   /**
    * Calculates the dimensions of an element relative to the image size,
-   * the size of the element, and its physical location on the image.<br>
+   * the size of the element, and its physical location on the image.
+   *
    * Вычисляет размеры элемента относительно размера изображения,
    * размера элемента и его физического расположения на изображении.
    */
@@ -152,7 +160,8 @@ export class ImageAdaptiveGroup {
   }
 
   /**
-   * Calculation of the basic scaling of an element without taking into account other elements.<br>
+   * Calculation of the basic scaling of an element without taking into account other elements.
+   *
    * Вычисление базового масштабирования элемента без учета других элементов.
    */
   protected static makePercent(): void {
@@ -177,7 +186,8 @@ export class ImageAdaptiveGroup {
   /**
    * Calculation of the largest element to determine the base size.
    * This parameter is used for scaling other elements,
-   * reducing them to the necessary proportion.<br>
+   * reducing them to the necessary proportion.
+   *
    * Вычисление самого большого элемента для определения базового размера.
    * Этот параметр используется для масштабирования других элементов,
    * уменьшая их до нужной пропорции.
@@ -194,7 +204,8 @@ export class ImageAdaptiveGroup {
   }
 
   /**
-   * Checks if there is an active element at the moment.<br>
+   * Checks if there is an active element at the moment.
+   *
    * Проверяет, есть ли в текущий момент активный элемент.
    */
   private static isAdaptive(): boolean {
@@ -202,9 +213,10 @@ export class ImageAdaptiveGroup {
   }
 
   /**
-   * Checks whether the composition of visible elements has changed.<br>
+   * Checks whether the composition of visible elements has changed.
+   *
    * Проверяет, изменился ли состав видимых элементов.
-   * @param visible list of indices of visible elements /<br>список индексов видимых элементов
+   * @param visible list of indices of visible elements/ список индексов видимых элементов
    */
   private static isCache(visible: string[]): boolean {
     return this.cache.join('|') !== visible.join('|')

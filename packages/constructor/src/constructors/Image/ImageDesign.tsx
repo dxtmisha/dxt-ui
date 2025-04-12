@@ -7,6 +7,7 @@ import {
 
 import { Image } from './Image'
 
+import { ImageTypeValue } from './imageTypes'
 import {
   type ImageProps
 } from './props'
@@ -56,38 +57,34 @@ export class ImageDesign<
 
     this.item = new Image(
       this.props,
-      this.refs,
       this.element,
       this.getName(),
-      this.components,
-      this.slots,
       this.emits
     )
-
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
 
     this.init()
   }
 
   /**
-   * Initialization of all the necessary properties for work<br>
+   * Initialization of all the necessary properties for work
+   *
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      type: this.item.type.item,
+      data: this.item.data.image
     } as EXPOSE
   }
 
   /**
-   * Improvement of the obtained list of classes.<br>
+   * Improvement of the obtained list of classes.
+   *
    * Доработка полученного списка классов.
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes.value,
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка
@@ -96,27 +93,45 @@ export class ImageDesign<
   }
 
   /**
-   * Refinement of the received list of styles.<br>
+   * Refinement of the received list of styles.
+   *
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return this.item.styles.value
   }
 
   /**
-   * A method for rendering.<br>
+   * A method for rendering.
+   *
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    return h(
+      'span',
+      {
+        ref: this.element,
+        class: this.classes?.value.main,
+        style: this.styles?.value,
+        translate: 'no',
+        ...this.getAttrs()
+      },
+      this.renderValue()
+    )
+  }
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+  /**
+   * Rendering the value for the component.
+   *
+   * Рендеринг значения для компонента.
+   */
+  protected readonly renderValue = (): string | VNode[] | undefined => {
+    if (
+      this.item.type.item.value === ImageTypeValue.pdf
+    ) {
+      return [h('object', { data: this.item.data.image.value })]
+    }
+
+    return this.item.text.value
   }
 }
