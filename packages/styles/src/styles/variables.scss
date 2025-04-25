@@ -1,0 +1,109 @@
+$designsDesigns: ('design');
+$designsDesign: 'design';
+$designsComponent: 'component';
+$designsRoot: ();
+$designsClasses: ();
+$designsProperties: ();
+$designsMedia: (
+        'xs': 300px,
+        'sm': 640px,
+        'md': 768px,
+        'lg': 1024px,
+        'xl': 1280px,
+        '2xl': 1536px
+);
+$designsShade: ();
+$designsPalette: ();
+
+/// List of types that belong to basic properties and do not extend the class of a property
+/// Список типов, которые относятся к базовым свойствам и не расширяют класс свойства
+$designsBasic: (
+        'var',
+        'property',
+        'scss'
+);
+
+/// List of types that belong to additions and are used for separating class names
+/// Список типов, которые относятся к дополнениям и используются для разделения имени класса
+$designsAuxiliary: (
+        'selector',
+        'virtual'
+);
+
+/// List of types that belong to additions and are used for separating class names
+/// Список типов, которые относятся к дополнениям и используются для разделения имени класса
+$designsActive: (
+        'active',
+        'focus',
+        'hover'
+);
+
+$designsValues: ();
+$designsClassName: 'class';
+$designsClassIndex: 'class';
+
+$designsAnimate: ();
+
+@mixin setDesignsDesigns($designs) {
+  $designsDesigns: $designs !global;
+}
+
+@mixin setDesignsDesign($design) {
+  $designsDesign: $design !global;
+}
+
+@mixin setDesignsComponent($component) {
+  $designsComponent: $component !global;
+}
+
+@mixin setDesignsRoot($root) {
+  $designsRoot: $root !global;
+}
+
+@mixin setDesignsClasses($classes) {
+  $designsClasses: $classes !global;
+}
+
+@mixin setDesignsProperties($properties) {
+  $designsProperties: $properties !global;
+}
+
+@mixin setDesignsMedia($media) {
+  $designsMedia: $media !global;
+}
+
+@mixin setDesignShade($shade) {
+  $designsShade: $shade !global;
+}
+
+@mixin setDesignsPalette($palette) {
+  $designsPalette: $palette !global;
+}
+
+@mixin setDesignsActive($active) {
+  $designsActive: $active !global;
+}
+
+@mixin setDesignsBasic($basic) {
+  $designsBasic: $basic !global;
+}
+
+@mixin setDesignsAuxiliary($auxiliary) {
+  $designsAuxiliary: $auxiliary !global;
+}
+
+@mixin setDesignsValues($values) {
+  $designsValues: $values !global;
+}
+
+@mixin setDesignsClassName($className) {
+  $designsClassName: $className !global;
+}
+
+@mixin setDesignsClassIndex($classIndex) {
+  $designsClassIndex: $classIndex !global;
+}
+
+@mixin setDesignAnimate($status) {
+  $designsAnimate: $status !global;
+}

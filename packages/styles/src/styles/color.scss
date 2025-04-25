@@ -2,11 +2,8 @@
 @use "sass:meta";
 @use "sass:string";
 
+@use "variables";
 @use "rules";
-
-$designsDesign: 'design' !default;
-$designsPalette: () !default;
-$designsShade: () !default;
 
 /// Checks if a value is a color
 /// Проверяет, является ли значение цветом
@@ -58,7 +55,7 @@ $designsShade: () !default;
 /// @param {Color} $color
 /// @return {String}
 @function getColorByPalette($color) {
-  @each $name, $value in $designsPalette {
+  @each $name, $value in variables.$designsPalette {
     @if (string.index($color, #{$name}#{')'}) != null) {
       @return $value;
     }
@@ -72,11 +69,11 @@ $designsShade: () !default;
 /// @param {Color} $color
 /// @return {String}
 @function getColorByShade($color) {
-  @each $design, $list in $designsShade {
-    @if ($design == $designsDesign) {
+  @each $design, $list in variables.$designsShade {
+    @if ($design == variables.$designsDesign) {
       @each $value in $list {
         @if (string.index($color, #{'-'}#{$value}#{')'}) != null) {
-          @return #{'--'}#{$designsDesign}#{'-palette-'}#{$value};
+          @return #{'--'}#{variables.$designsDesign}#{'-palette-'}#{$value};
         }
       }
     }

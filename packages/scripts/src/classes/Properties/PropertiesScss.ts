@@ -11,12 +11,13 @@ import {
   PropertyKey
 } from '../../types/propertyTypes'
 
-const NAME_DESIGNS = '$designsDesigns'
-const NAME_ROOT = '$designsRoot'
-const NAME_MEDIA = '$designsMedia'
-const NAME_PALETTE = '$designsPalette'
-const NAME_SHADE = '$designsShade'
-const NAME_PROPERTIES = '$designsProperties'
+const NAME_DESIGNS = 'setDesignsDesigns'
+const NAME_ROOT = 'setDesignsRoot'
+const NAME_MEDIA = 'setDesignsMedia'
+const NAME_CLASSES = 'setDesignsClasses'
+const NAME_PALETTE = 'setDesignsPalette'
+const NAME_SHADE = 'setDesignShade'
+const NAME_PROPERTIES = 'setDesignsProperties'
 
 /**
  * Class for working with SCSS.
@@ -37,7 +38,7 @@ export class PropertiesScss {
    * Возвращает отформатированную строку для SCSS.
    */
   get() {
-    let data = ''
+    let data = '@use "@dxt-ui/styles" as variables;\r\n\r\n'
 
     data += `${this.getDesigns()}\r\n`
     data += `${this.getRoot()}\r\n`
@@ -57,7 +58,7 @@ export class PropertiesScss {
    */
   protected getDesigns(): string {
     const designs = forEach(this.items.getDesigns(), design => `\r\n  '${design}',`)
-    return `${NAME_DESIGNS}: (${designs.join('')});`
+    return this.getPropertiesValue(NAME_DESIGNS, designs.join(''))
   }
 
   /**
@@ -66,7 +67,7 @@ export class PropertiesScss {
    * Возвращает список свойств для root.
    */
   protected getRoot(): string {
-    return `${NAME_ROOT}: (${this.getByCategory(PropertyCategory.root)});`
+    return this.getPropertiesValue(NAME_ROOT, this.getByCategory(PropertyCategory.root))
   }
 
   /**
@@ -91,7 +92,7 @@ export class PropertiesScss {
       }
     })
 
-    return `${NAME_MEDIA}: (${data});`
+    return this.getPropertiesValue(NAME_MEDIA, data)
   }
 
   /**
@@ -100,7 +101,7 @@ export class PropertiesScss {
    * Возвращает список всех классов для генерации.
    */
   protected getClasses(): string {
-    return `$designsClasses: (${this.getByCategory(['class', 'theme'])});`
+    return this.getPropertiesValue(NAME_CLASSES, this.getByCategory(['class', 'theme']))
   }
 
   /**
@@ -120,7 +121,7 @@ export class PropertiesScss {
         data += `\r\n  '${name}': ('${value.join('\', \'')}'),`
       })
 
-    return `${NAME_PALETTE}: (${data});`
+    return this.getPropertiesValue(NAME_PALETTE, data)
   }
 
   /**
@@ -140,7 +141,7 @@ export class PropertiesScss {
         data += `\r\n  '${design}': (${value.join(',')}),`
       })
 
-    return `${NAME_SHADE}: (${data});`
+    return this.getPropertiesValue(NAME_SHADE, data)
   }
 
   /**
@@ -149,7 +150,7 @@ export class PropertiesScss {
    * Возвращает список свойств.
    */
   getProperties(): string {
-    return `${NAME_PROPERTIES}: (${this.to()});`
+    return this.getPropertiesValue(NAME_PROPERTIES, this.to())
   }
 
   /**
@@ -205,6 +206,10 @@ export class PropertiesScss {
     }
 
     return ''
+  }
+
+  private getPropertiesValue(name: string, data: string) {
+    return `@include variables.${name}((${data}));`
   }
 
   /**

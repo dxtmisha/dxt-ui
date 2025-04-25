@@ -1,6 +1,6 @@
 @use "sass:map";
 
-$designsAnimate: false !default;
+@use "../variables";
 
 /// Mixin for generating an element state
 /// Миксин для генерации анимация
@@ -10,7 +10,7 @@ $designsAnimate: false !default;
     $name: map.get($property, 'name');
     $value: map.get($property, 'value');
 
-    $designsAnimate: true !global;
+    @include variables.setDesignAnimate(true);
 
     @keyframes #{$name} {
       @each $frame, $item in $value {
@@ -22,6 +22,6 @@ $designsAnimate: false !default;
       }
     }
 
-    $designsAnimate: false !global;
+    @include variables.setDesignAnimate(false);
   }
 }

@@ -1,8 +1,6 @@
 @use "sass:selector";
 
-$designsRoot: () !default;
-$designsClasses: () !default;
-
+@use "../variables";
 @use "../init";
 @use "propertiesItem";
 @use "propertiesVar";
@@ -19,7 +17,7 @@ $designsClasses: () !default;
 /// Generating all classes
 /// Генерация всех классов
 @mixin readClasses {
-  @each $class in $designsClasses {
+  @each $class in variables.$designsClasses {
     @include propertiesItem.initClass(propertiesItem.getProperties($class));
   }
 }
@@ -28,7 +26,7 @@ $designsClasses: () !default;
 /// Генерация всех свойств
 @mixin readRoot {
   :root {
-    @each $index in $designsRoot {
+    @each $index in variables.$designsRoot {
       @include propertiesVar.initVars(propertiesItem.getPropertiesValue($index));
     }
   }

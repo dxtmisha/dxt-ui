@@ -176,12 +176,13 @@ export class Styles {
       dir,
       FILE_STYLE,
       [
+        `@use "@dxt-ui/styles" as variables;`,
         `@use "./${FILE_PROPERTIES}";`,
         '',
-        `$designsDesign: '${design}';`,
-        `$designsDesigns: ('${design}');`,
+        `@forward "@dxt-ui/styles/${FILE_PROPERTIES}";`,
         '',
-        `@forward "@dxt-ui/styles/${FILE_PROPERTIES}";`
+        `@include variables.setDesignsDesign('${design}');`,
+        ''
       ].join('\r\n'),
       UI_EXTENSION_STYLE
     )
@@ -192,11 +193,10 @@ export class Styles {
         FILE_MAIN,
         [
           `@use "./${FILE_BASIC}";`,
-          `@use "@dxt-ui/styles" as ui;`,
-          `@use "@dxt-ui/styles/${FILE_PROPERTIES}" as uiProperties;`,
+          `@use "@dxt-ui/styles/${FILE_PROPERTIES}" as ui;`,
           '',
           '@include ui.initGlobal;',
-          `@include uiProperties.initDesignBody('${design}.main');`
+          `@include ui.initDesignBody('${design}.main');`
         ].join('\r\n'),
         UI_EXTENSION_STYLE
       )

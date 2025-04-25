@@ -4,7 +4,7 @@
 <template>
   <div class="app">
     <div class="app__back">
-      <RouterLink to="/">Main</RouterLink>
+      <RouterLink to="/" class="app__main">Main</RouterLink>
     </div>
     <RouterView/>
   </div>

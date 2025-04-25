@@ -1,8 +1,6 @@
 @use "sass:map";
 
-$designsClassIndex: 'class' !default;
-$designsAnimate: false !default;
-
+@use "../variables";
 @use "../rules";
 
 @use "../color";
@@ -15,7 +13,7 @@ $designsAnimate: false !default;
 @use "../transform";
 
 @function isAnimate($name) {
-  @return $designsAnimate and (
+  @return variables.$designsAnimate and (
     $name == 'left' or
     $name == 'right'
   )
@@ -33,7 +31,7 @@ $designsAnimate: false !default;
     $var: rules.getMapByIndex($property, 'var');
 
     @if ($var) {
-      $nameVar: #{'--'}#{$designsClassIndex}-#{$index};
+      $nameVar: #{'--'}#{variables.$designsClassIndex}-#{$index};
 
       #{$nameVar}: #{$value};
 

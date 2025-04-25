@@ -1,14 +1,9 @@
 @use "sass:map";
 @use "sass:string";
 
-$designsDesigns: ('design') !default;
-$designsDesign: 'design' !default;
-$designsComponent: 'component' !default;
-$designsValues: () !default;
-$designsClassName: 'class' !default;
-$designsClassIndex: 'class' !default;
-$designsInit: false !default;
+$designsInit: false ;
 
+@use "../variables";
 @use "../rules";
 @use "../index";
 
@@ -24,22 +19,21 @@ $designsInit: false !default;
   $component: 'design.component',
   $root: false
 ) {
-  $designsValues: propertiesItem.getProperties($component) !global;
   $designsInit: false !global;
+  @include variables.setDesignsValues(propertiesItem.getProperties($component));
 
-  @if ($designsValues != null) {
-    $designsDesign: __getDesign() !global;
-    $designsComponent: __getComponent() !global;
+  @if (variables.$designsValues != null) {
+    @include variables.setDesignsDesign(__getDesign());
+    @include variables.setDesignsComponent(__getComponent());
 
-    $name: map.get($designsValues, 'name');
-    $designsClassIndex: $name !global;
+    $name: map.get(variables.$designsValues, 'name');
+    @include variables.setDesignsClassIndex($name);
 
     @if ($root) {
       @content;
     } @else {
       #{'.'}#{$name} {
-        $designsClassName: & !global;
-
+        @include variables.setDesignsClassName(&);
         @content;
       }
     }
@@ -75,7 +69,7 @@ $designsInit: false !default;
 /// Generating all properties
 /// Генерация всех свойств
 @mixin initPropertiesComponent {
-  $value: map.get($designsValues, 'value');
+  $value: map.get(variables.$designsValues, 'value');
   $designsInit: true !global;
   @include propertiesItem.initProperties($value);
 }
@@ -147,7 +141,7 @@ $designsInit: false !default;
 /// Миксин для генерации класса статуса
 /// @param {String} $name status names / названия статуса
 @mixin state($name) {
-  &#{$designsClassName}--#{$name} {
+  &#{variables.$designsClassName}--#{$name} {
     @content;
   }
 }
@@ -156,7 +150,7 @@ $designsInit: false !default;
 /// Миксин для генерации саб класса
 /// @param {String} $name
 @mixin subclass($name) {
-  #{$designsClassName}__#{$name} {
+  #{variables.$designsClassName}__#{$name} {
     @content;
   }
 }
@@ -165,9 +159,9 @@ $designsInit: false !default;
 /// Возвращает название дизайна
 /// @return {String}
 @function __getDesign() {
-  $component: map.get($designsValues, 'name');
+  $component: map.get(variables.$designsValues, 'name');
 
-  @each $design in $designsDesigns {
+  @each $design in variables.$designsDesigns {
     @if (string.index($component, #{$design}#{'-'})) {
       @return $design;
     }
@@ -180,5 +174,5 @@ $designsInit: false !default;
 /// Возвращает название компонента
 /// @return {String}
 @function __getComponent() {
-  @return map.get($designsValues, 'index');
+  @return map.get(variables.$designsValues, 'index');
 }

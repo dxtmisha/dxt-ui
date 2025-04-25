@@ -2,15 +2,8 @@
 @use "sass:map";
 @use "sass:selector";
 
+@use "../variables";
 @use "../selector" as selectorMixin;
-
-/// List of types that belong to additions and are used for separating class names
-/// Список типов, которые относятся к дополнениям и используются для разделения имени класса
-$designsActive: (
-        'active',
-        'focus',
-        'hover'
-) !default;
 
 /// Mixin for generating a media
 /// Миксин для генерации media
@@ -46,5 +39,5 @@ $designsActive: (
 /// @param {Map} $parent
 /// @return {Boolean}
 @function __isActive($property, $parent: null) {
-  @return list.index($designsActive, map.get($property, 'name')) != null;
+  @return list.index(variables.$designsActive, map.get($property, 'name')) != null;
 }

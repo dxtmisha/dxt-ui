@@ -1,11 +1,12 @@
-@forward "color" hide $designsDesign, $designsPalette, $designsShade;
+@forward "variables";
+@forward "color";
 @forward "content";
 @forward "dimension";
 @forward "dir";
 @forward "flex";
 @forward "font";
 @forward "margin";
-@forward "media" hide $designsDesign, $designsMedia;
+@forward "media";
 @forward "padding";
 @forward "position";
 @forward "scrollbar";

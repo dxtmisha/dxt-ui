@@ -1,10 +1,7 @@
 @use "sass:map";
 @use "sass:string";
 
-$designsDesign: 'design' !default;
-$designsComponent: 'component' !default;
-$designsClassName: 'class' !default;
-
+@use "../variables";
 @use "../color";
 @use "../rules";
 
@@ -50,7 +47,7 @@ $designsClassName: 'class' !default;
 /// Returns the corrected property value from Figma
 /// Возвращает исправленное значение свойства из Figma
 @function t($name, $defaultValue: null) {
-  $token: string.insert($name, #{$designsDesign}-, 3);
+  $token: string.insert($name, #{variables.$designsDesign}-, 3);
 
   @if ($defaultValue) {
     @return #{var($token, #{$defaultValue})}
@@ -62,7 +59,7 @@ $designsClassName: 'class' !default;
 /// Returns the corrected property value for colors from Figma
 /// Возвращает исправленное значение свойства для цветов из Figma
 @function tColor($name, $defaultValue: null) {
-  $token: string.insert($name, #{$designsDesign}-, 3);
+  $token: string.insert($name, #{variables.$designsDesign}-, 3);
   @return color.getColorValue($token, $defaultValue);
 }
 
@@ -92,9 +89,9 @@ $designsClassName: 'class' !default;
 /// @return {String}
 @function toFullName($name) {
   @if (string.index($name, '??') == 1) {
-    @return #{$designsDesign}#{'.'}#{$designsComponent}#{'.'}#{string.slice($name, 3)};
+    @return #{variables.$designsDesign}#{'.'}#{variables.$designsComponent}#{'.'}#{string.slice($name, 3)};
   } @else if (string.index($name, '?') == 1) {
-    @return #{$designsDesign}#{'.'}#{string.slice($name, 2)};
+    @return #{variables.$designsDesign}#{'.'}#{string.slice($name, 2)};
   } @else {
     @return $name;
   }

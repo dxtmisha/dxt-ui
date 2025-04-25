@@ -54,7 +54,7 @@ export class StylesClasses {
       ) {
         const name = item[PropertyKey.name] as string
 
-        data.push(StylesTool.addUse(`./classes/${name}.scss`))
+        data.push(StylesTool.addUse(`./classes/${name}`))
 
         classes[name] = [
           StylesTool.addImportProperties(),

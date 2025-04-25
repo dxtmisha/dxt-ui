@@ -2,25 +2,7 @@
 @use "sass:map";
 @use "sass:meta";
 
-$designsProperties: () !default;
-
-/// List of types that belong to additions and are used for separating class names
-/// Список типов, которые относятся к дополнениям и используются для разделения имени класса
-$designsAuxiliary: (
-        'selector',
-        'virtual'
-) !default;
-
-/// List of types that belong to basic properties and do not extend the class of a property
-/// Список типов, которые относятся к базовым свойствам и не расширяют класс свойства
-$designsBasic: (
-        'var',
-        'property',
-        'scss'
-) !default;
-
-$designsClassName: 'class' !default;
-
+@use "../variables";
 @use "../rules";
 
 @use "propertiesAnimate";
@@ -37,9 +19,9 @@ $designsClassName: 'class' !default;
 /// @return {Map}
 @function getProperties($index: null) {
   @if $index == null {
-    @return $designsProperties;
+    @return variables.$designsProperties;
   } @else {
-    $data: $designsProperties;
+    $data: variables.$designsProperties;
 
     @each $key in rules.strToList($index) {
       @if ($data != null) {
@@ -69,7 +51,7 @@ $designsClassName: 'class' !default;
     $value: map.get($property, 'value');
 
     #{'.'}#{$name} {
-      $designsClassName: & !global;
+      @include variables.setDesignsClassName(&);
       @include initProperties($value);
     }
   }
@@ -99,7 +81,7 @@ $designsClassName: 'class' !default;
 /// @param {Map} $property
 /// @return {Boolean}
 @function __isBasic($property) {
-  @return list.index($designsBasic, map.get($property, 'type')) != null;
+  @return list.index(variables.$designsBasic, map.get($property, 'type')) != null;
 }
 
 /// Checks whether the ancestor is of the type 'addition'
@@ -107,7 +89,7 @@ $designsClassName: 'class' !default;
 /// @param {Map} $parent
 /// @return {Boolean}
 @function __isSelector($parent) {
-  @return $parent and list.index($designsAuxiliary, map.get($parent, 'type')) != null;
+  @return $parent and list.index(variables.$designsAuxiliary, map.get($parent, 'type')) != null;
 }
 
 /// Processing a property
@@ -133,7 +115,7 @@ $designsClassName: 'class' !default;
   } @else if ($type =='property') {
     @include propertiesProperty.initProperty($property);
   } @else if ($type =='selector') {
-    @include propertiesSelector.initSelector($property, $designsClassName) {
+    @include propertiesSelector.initSelector($property, variables.$designsClassName) {
       @content($value);
     }
   } @else if ($type =='state') {
