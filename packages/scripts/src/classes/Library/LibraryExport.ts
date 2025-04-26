@@ -7,7 +7,7 @@ import type { LibraryFiles } from '../../types/libraryTypes'
 import {
   UI_DIRS_LIST_EXPORT,
   UI_DIRS_FILE_EXPORT,
-  UI_DIR_IN
+  UI_DIR_IN, UI_FLAG_NOT_EXPORT
 } from '../../config'
 
 /**
@@ -40,6 +40,16 @@ export class LibraryExport {
    */
   protected getPath(directory: string): string[] {
     return [UI_DIR_IN, directory]
+  }
+
+  /**
+   * Проверяет, нужно ли экспортировать этот файл
+   *
+   * Checks whether this file needs to be exported
+   * @param path filename/ имя файла
+   */
+  protected isExport(path: string | string[]): boolean {
+    return !this.getFile(path).match(UI_FLAG_NOT_EXPORT)
   }
 
   /**
@@ -78,12 +88,23 @@ export class LibraryExport {
   }
 
   /**
+   * Возвращает содержимое файла
+   *
+   * Returns the content of the file
+   * @param path filename/ имя файла
+   */
+  protected getFile(path: string | string[]): string {
+    return PropertiesFile.readFile<string>(path) ?? ''
+  }
+
+  /**
    * File generation for saving
    *
    * Генерация файла для сохранения
    */
   protected initFile(): string {
     const files: LibraryFiles = this.getDirectory()
+    const imports: string[] = []
     const html: string[] = []
 
     files.forEach((file) => {
@@ -96,25 +117,25 @@ export class LibraryExport {
 
       file.files.forEach(
         (item) => {
-          if (item.match(/\.ts$/)) {
-            const path = [...file.path, item]
-            const code = PropertiesFile.readFile<string>(path)
+          if (this.isExport([...file.path, item])) {
+            console.log(`  ${item}`)
 
-            if (
-              code
-              && !code.match(/\/\/ *export:none/)
-            ) {
-              console.log(`-- ${item}`)
-
+            if (item.match(/\.ts$/)) {
               html.push(`export * from './${name}/${item.replace(/\.ts$/, '')}'`)
+            } else if (item.match(/\.vue$/)) {
+              const componentName = item.replace(/\.vue$/, '')
+
+              imports.push(`import _${componentName} from './${name}/${item}'`)
+              html.push(`export const ${componentName} = _${componentName}`)
             }
           }
         }
       )
     })
 
-    return html
-      .join('\r\n')
-      .trim()
+    return imports.join('\r\n').trim()
+      + '\r\n'
+      + '\r\n'
+      + html.join('\r\n').trim()
   }
 }

@@ -1,0 +1,36 @@
+{
+  "name": "@dxt-ui/test",
+  "private": false,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "library": "dxt-library"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/library.js",
+  "module": "dist/library.js",
+  "types": "dist/types/library.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/library.d.ts",
+      "import": "./src/library.ts",
+      "default": "./dist/library.js"
+    },
+    "./dist/types/*": "./dist/types/*",
+    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
+  },
+  "buildOptions": {
+    "name": "@dxt-ui/test",
+    "formats": [
+      "esm-bundler"
+    ]
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

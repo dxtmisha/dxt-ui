@@ -15,6 +15,12 @@ export const UI_KEY_CONSTRUCTOR = 'd'
 export const UI_KEY_CUSTOM = 'custom'
 
 /**
+ * Признак того, что не нужно экспортировать этот файл/
+ * An indicator that this file should not be exported
+ */
+export const UI_FLAG_NOT_EXPORT = /\/\/ *export:none/
+
+/**
  * Folder where all the code is stored/ Папка, где хранится весь код
  */
 export const UI_DIR_IN = 'src'
@@ -51,6 +57,7 @@ export const UI_DIRS_FILE_EXPORT = [UI_DIR_IN, 'library.ts']
  */
 export const UI_DIRS_LIST_EXPORT = [
   'classes',
+  'components',
   'composables',
   'functions',
   'types'

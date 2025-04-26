@@ -1,19 +1,12 @@
 @use "dir";
 
 @mixin inset($value: 0) {
-  & {
-    inset: $value;
-
-    @supports not(inset: $value) {
-      @include horizon($value);
-      @include vertically($value);
-    }
-  }
+  inset: $value;
 }
 
 @mixin horizon($value: 0) {
-  @include left($value);
-  @include right($value);
+  left: $value;
+  right: $value;
 }
 
 @mixin vertically($value: 0) {
@@ -32,25 +25,11 @@
 }
 
 @mixin left($value: 0px) {
-  & {
-    inset-inline-start: #{$value};
-
-    @supports not (inset-inline-start: #{$value}) {
-      @include __positionDir;
-      --sys-position-left: #{$value};
-    }
-  }
+  inset-inline-start: #{$value};
 }
 
 @mixin right($value: 0px) {
-  & {
-    inset-inline-end: #{$value};
-
-    @supports not (inset-inline-end: #{$value}) {
-      @include __positionDir;
-      --sys-position-right: #{$value};
-    }
-  }
+  inset-inline-end: #{$value};
 }
 
 @mixin __positionDir() {
@@ -74,13 +53,11 @@
 }
 
 @mixin absoluteAfter($value: 0) {
-  & {
-    position: relative;
+  position: relative;
 
-    &::after {
-      content: ' ';
-      @include absolute($value);
-      @content;
-    }
+  &::after {
+    content: ' ';
+    @include absolute($value);
+    @content;
   }
 }

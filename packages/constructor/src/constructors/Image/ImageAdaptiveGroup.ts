@@ -15,7 +15,7 @@ export class ImageAdaptiveGroup {
   private static cache: string[] = []
 
   protected static event?: EventItem<Window, Event, any>
-  protected static time?: number
+  protected static time?: boolean
 
   /**
    * Checks if an element is present in the list.
@@ -80,9 +80,17 @@ export class ImageAdaptiveGroup {
       this.event.stop()
       this.event = undefined
     } else if (this.objects.length > 0) {
-      this.event = new EventItem(window, ['scroll-sync'], () => this.start()).start()
+      if (!this.event) {
+        this.event = new EventItem(window, ['scroll-sync'], () => this.start()).start()
+      }
 
-      this.start()
+      if (!this.time) {
+        this.time = true
+        requestAnimationFrame(() => {
+          this.time = false
+          this.start()
+        })
+      }
     }
   }
 
@@ -195,10 +203,8 @@ export class ImageAdaptiveGroup {
   protected static makeFactorMax(): void {
     if (ImageCalculationList.isSize()) {
       this.objectsAdaptive.forEach((item) => {
-        if (item.isVisible()) {
-          ImageCalculationList.get(item.group.value)
-            .makeFactorMax(item.factor.value)
-        }
+        ImageCalculationList.get(item.group.value)
+          .makeFactorMax(item.factor.value)
       })
     }
   }
