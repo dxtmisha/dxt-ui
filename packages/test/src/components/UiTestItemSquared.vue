@@ -25,6 +25,10 @@ const classes = computed(() => ({
 .ui-test-item-squared {
   --ui-test-item-squared-size: 256px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   position: relative;
   @include ui.squared(var(--ui-test-item-squared-size));
   background-color: white;

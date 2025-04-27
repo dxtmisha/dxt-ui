@@ -23,5 +23,7 @@ defineProps<{
   color: white;
   background-color: rgba(0, 0, 0, .64);
   backdrop-filter: blur(8px);
+
+  @include ui.clamp(2);
 }
 </style>

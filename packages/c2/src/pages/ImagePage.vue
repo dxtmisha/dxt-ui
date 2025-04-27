@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import {
+  UiTestButton,
   UiTestContainer,
   UiTestGroup,
+  UiTestItemFull,
   UiTestItemSquared,
   UiTestTitle
 } from '@dxt-ui/test'
@@ -15,10 +18,23 @@ import GalaxyZFlip5 from '../assets/Images/GalaxyZFlip5.png'
 import GalaxyZFold5 from '../assets/Images/GalaxyZFold5.png'
 import { Icons } from '@dxt-ui/functional'
 
+import type { ImageExpose } from '@dxt-ui/constructor/Image'
+
 const image = 'https://drscdn.500px.org/photo/292683549/q%3D90_m%3D2048/v2?sig=57a983b1ae345a1157df3caa67f49360d0dd6741e89a1f8c2393c9e894499492'
 
 Icons.add('fx-135', FX135)
 Icons.add('galaxy-s23', GalaxyS23)
+
+const iconElement = ref<ImageExpose>()
+const imageElement = ref<ImageExpose>()
+
+const disabled = ref<boolean>(false)
+const turn = ref<boolean>(false)
+
+const load = ref<boolean>(false)
+const onLoad = () => {
+  load.value = true
+}
 </script>
 
 <template>
@@ -132,6 +148,34 @@ Icons.add('galaxy-s23', GalaxyS23)
       </UiTestItemSquared>
       <UiTestItemSquared>
         <C2Image :value="FX135" adaptive adaptive-group="lens" adaptive-always object-width="139.5"/>
+      </UiTestItemSquared>
+    </UiTestGroup>
+  </UiTestContainer>
+
+  <UiTestContainer label="Status">
+    <UiTestGroup>
+      <UiTestItemFull is-padding>
+        <UiTestGroup>
+          <UiTestButton :label="`Disabled: ${disabled}`" @click="disabled = !disabled"/>
+          <UiTestButton :label="`Turn: ${turn}`" @click="turn = !turn"/>
+        </UiTestGroup>
+      </UiTestItemFull>
+      <UiTestItemSquared :label="`Type: ${iconElement?.type}, data: ${iconElement?.data}`">
+        <C2Image
+          ref="iconElement"
+          :disabled="disabled"
+          :turn="turn"
+          value="home"
+        />
+      </UiTestItemSquared>
+      <UiTestItemSquared :label="`Load: ${load}, type: ${imageElement?.type}, data: ${imageElement?.data}`">
+        <C2Image
+          ref="imageElement"
+          :disabled="disabled"
+          :turn="turn"
+          :value="image"
+          @load="onLoad"
+        />
       </UiTestItemSquared>
     </UiTestGroup>
   </UiTestContainer>

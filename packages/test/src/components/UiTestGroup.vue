@@ -13,5 +13,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+
+  width: 100%;
 }
 </style>
