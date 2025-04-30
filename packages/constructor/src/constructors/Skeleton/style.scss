@@ -1,0 +1,114 @@
+@use "@dxt-ui/styles/properties" as ui;
+
+@mixin mixinSkeleton {
+  $this: &;
+
+  @include ui.initByCustom('opacity', .32);
+  @include ui.initByCustom('animation', #{ui.n('??animationType1') ui.v('d.ref.transitionFunction.linear') 2.4s infinite});
+
+  &--active {
+    animation: ui.v('??animation');
+
+    @include ui.absoluteAfter {
+      & {
+        z-index: 999999;
+      }
+    }
+
+    *,
+    *::before,
+    *::after,
+    *::placeholder {
+      color: transparent !important;
+      background: transparent !important;
+      border-color: transparent !important;
+
+      box-shadow: none !important;
+    }
+
+    svg {
+      opacity: 0;
+      filter: opacity(0);
+    }
+
+    @include ui.subclass('text') {
+      color: transparent;
+      text-decoration-line: line-through !important;
+      text-decoration-thickness: var(--sys-font-size) !important;
+      text-decoration-skip: #{spaces};
+      -webkit-text-decoration-skip: spaces;
+
+      @include ui.color(ui.v('??color'), ui.v('??colorOpacity'), 'text-decoration-color', true);
+      --sys-color: #{ui.v('??color')} !important;
+      --sys-color-opacity: #{ui.v('??colorOpacity', 1)} !important;
+
+      * {
+        text-decoration-line: line-through !important;
+        text-decoration-thickness: var(--sys-font-size) !important;
+        @include ui.color(ui.v('??color'), ui.v('??colorOpacity'), 'text-decoration-color', true);
+        text-decoration-skip: #{spaces};
+        -webkit-text-decoration-skip: spaces;
+      }
+    }
+
+    @include ui.subclass('background') {
+      @include ui.backgroundColor(ui.v('??backgroundColor'), ui.v('??backgroundOpacity', 1), true);
+    }
+
+    @include ui.subclass('backgroundAfter') {
+      &:after {
+        @include ui.backgroundColor(ui.v('??backgroundColor'), ui.v('??backgroundOpacity', 1), true);
+      }
+    }
+
+    @include ui.subclass('backgroundBefore') {
+      &:before {
+        @include ui.backgroundColor(ui.v('??backgroundColor'), ui.v('??backgroundOpacity', 1), true);
+      }
+    }
+
+    @include ui.subclass('backgroundVariant') {
+      @include ui.backgroundColor(ui.v('??color'), ui.v('??colorOpacity', 1), true);
+    }
+
+    @include ui.subclass('border') {
+      @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity', 1), true);
+    }
+
+    @include ui.subclass('borderVariant') {
+      @include ui.borderColor(ui.v('??color'), ui.v('??colorOpacity', 1), true);
+    }
+
+    @include ui.subclass('none') {
+      color: transparent !important;
+      text-decoration-thickness: 0 !important;
+      background: transparent !important;
+      border-color: transparent !important;
+
+      * {
+        color: transparent !important;
+        text-decoration-thickness: 0 !important;
+        background: transparent !important;
+        border-color: transparent !important;
+      }
+    }
+  }
+
+  @keyframes #{ui.n('??animationType1')} {
+    0% {
+      opacity: 1;
+    }
+    10% {
+      opacity: 1;
+    }
+    50% {
+      opacity: ui.v('??opacity');
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}

@@ -1,5 +1,4 @@
-@use "@dxt-ui/styles" as ui;
-@use "@dxt-ui/styles/properties" as uiProperties;
+@use "@dxt-ui/styles/properties" as ui;
 
 @mixin mixinImage {
   direction: ltr;
@@ -13,7 +12,7 @@
   border-radius: inherit;
 
   transition-property: background-size, filter, opacity, transform, rotate, scale, clip-path;
-  transition-duration: uiProperties.v('d.sys.transitionDuration.standard');
+  transition-duration: ui.v('d.sys.transitionDuration.standard');
   transform: none;
 
   &--type {
@@ -23,9 +22,9 @@
       -webkit-mask-size: contain;
       mask-position: center;
       mask-repeat: no-repeat;
-      mask-size: uiProperties.v('??publicMaskSize', contain);
+      mask-size: ui.v('??publicMaskSize', contain);
 
-      @include uiProperties.state('background') {
+      @include ui.state('background') {
         @include ui.backgroundAsColor;
       }
     }
@@ -37,8 +36,8 @@
     &--color,
     &--file,
     &--image {
-      @include ui.disabled(uiProperties.$designsClassName) {
-        filter: grayscale(1) opacity(#{var(--sys-color-opacity, uiProperties.v('??colorOpacity', 1))});
+      @include ui.disabled(ui.$designsClassName) {
+        filter: grayscale(1) opacity(#{var(--sys-color-opacity, ui.v('??colorOpacity', 1))});
       }
     }
 
@@ -59,7 +58,7 @@
   }
 
   &--disabled {
-    color: rgba(var(--sys-color, uiProperties.v('??color')), var(--sys-color-opacity, uiProperties.v('??colorOpacity', 1)));
+    color: rgba(var(--sys-color, ui.v('??color')), var(--sys-color-opacity, ui.v('??colorOpacity', 1)));
   }
 
   &--hide {
@@ -70,7 +69,7 @@
   &.material-icons {
     direction: ltr;
     display: inline-flex;
-    font-size: uiProperties.v('??font-size', 1.5em);
+    font-size: ui.v('??font-size', 1.5em);
   }
 
   &--type {

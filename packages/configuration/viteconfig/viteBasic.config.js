@@ -29,7 +29,7 @@ export const viteBasic = defineConfig({
         'src/library.ts'
       ],
       insertTypesEntry: true,
-      outDir: 'dist/types',
+      outDir: 'dist',
       staticImport: true,
       tsconfigPath: './tsconfig.app.json'
     })

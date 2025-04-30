@@ -1,0 +1,25 @@
+{
+  "width": {
+    "_type": "var"
+  },
+  "~turn": {},
+  "~disabled": {},
+  "~hide": {},
+  "~asPalette": {},
+  "~dir": {},
+  "~overlay": {},
+  "~dynamic": {},
+  "~start": {
+    "_category": "order"
+  },
+  "~end": {
+    "_category": "order"
+  },
+  "~high": {},
+  "~animation-type": {
+    "~type1": {},
+    "~type2": {},
+    "_default": "type1"
+  },
+  "~animation-show": {}
+}

@@ -1,4 +1,6 @@
-import type { Undefined } from '@dxt-ui/functional'
+import type { ConstrBind, Undefined } from '@dxt-ui/functional'
+import type { ImageEmits } from './types.ts'
+import type { ImagePropsBasic } from './props.ts'
 
 export enum ImageTypeValue {
   pdf = 'pdf',
@@ -53,3 +55,11 @@ export type ImageEventData =
   {
     image: ImageEventItem
   }
+
+export type ImageUseComponents = {
+  image: object
+}
+export type ImageUseEmits = ImageEmits
+export type ImageUseProps<Image extends ImagePropsBasic = ImagePropsBasic> = {
+  image?: string | ConstrBind<Image>
+}

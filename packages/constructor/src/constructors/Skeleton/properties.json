@@ -1,0 +1,24 @@
+{
+  "color": {
+    "_type": "var"
+  },
+  "color-opacity": {
+    "_type": "var"
+  },
+  "background-color": {
+    "_type": "var"
+  },
+  "background-opacity": {
+    "_type": "var"
+  },
+  "border-color": {
+    "_type": "var"
+  },
+  "border-opacity": {
+    "_type": "var"
+  },
+  "opacity": {
+    "_type": "var"
+  },
+  "~active": {}
+}

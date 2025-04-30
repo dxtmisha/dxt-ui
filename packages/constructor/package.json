@@ -8,20 +8,20 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor image"
+    "dxt-constructor": "dxt-constructor skeleton"
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
   "types": "dist/types/library.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/types/library.d.ts",
-      "import": "./src/library.ts",
-      "default": "./dist/library.js"
-    },
+    ".": "./src/library.ts",
     "./constructor/": "./src/constructors/",
     "./Image": "./src/constructors/Image/index.ts",
-    "./Image/style": "./src/constructors/Image/style.scss"
+    "./Image/style": "./src/constructors/Image/style.scss",
+    "./Icon": "./src/constructors/Icon/index.ts",
+    "./Icon/style": "./src/constructors/Icon/style.scss",
+    "./Skeleton": "./src/constructors/Skeleton/index.ts",
+    "./Skeleton/style": "./src/constructors/Skeleton/style.scss"
   },
   "buildOptions": {
     "name": "@dxt-ui/constructor",

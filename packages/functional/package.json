@@ -15,20 +15,12 @@
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/types/library.d.ts",
+  "types": "dist/library.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/types/library.d.ts",
-      "import": "./src/library.ts",
-      "default": "./dist/library.js"
-    },
-    "./flags": {
-      "types": "./dist/types/flags.d.ts",
-      "import": "./src/flags.ts",
-      "default": "./dist/flags.js"
-    },
-    "./dist/types/*": "./dist/types/*",
-    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
+    ".": "./src/library.ts",
+    "./flags": "./src/flags.ts",
+    "./types/*": "./dist/*",
+    "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },
   "buildOptions": {
     "name": "@dxt-ui/functional",

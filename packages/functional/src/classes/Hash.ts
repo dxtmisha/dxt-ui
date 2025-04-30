@@ -73,6 +73,20 @@ export class Hash {
   }
 
   /**
+   * Update hash variable from URL string.
+   *
+   * Обновление переменной хэша из строки URL.
+   */
+  static reload(): void {
+    if (!this.block) {
+      const location = this.getLocation()
+
+      this.makeWatch(location)
+      this.hash = location
+    }
+  }
+
+  /**
    * Obtaining data from the URL string.
    *
    * Получение данных из строки URL.
@@ -103,20 +117,6 @@ export class Hash {
     requestAnimationFrame(() => {
       this.block = false
     })
-  }
-
-  /**
-   * Update hash variable from URL string.
-   *
-   * Обновление переменной хэша из строки URL.
-   */
-  private static reload(): void {
-    if (!this.block) {
-      const location = this.getLocation()
-
-      this.makeWatch(location)
-      this.hash = location
-    }
   }
 
   /**

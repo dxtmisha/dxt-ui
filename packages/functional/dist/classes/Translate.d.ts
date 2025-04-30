@@ -9,6 +9,7 @@ export type TranslateItemOrList<T extends string | string[]> = T extends string[
  */
 export declare class Translate {
     protected static url: string;
+    protected static propsName: string;
     protected static readonly data: Record<string, string>;
     protected static cache: string[];
     protected static resolveList: (() => void)[];
@@ -73,6 +74,7 @@ export declare class Translate {
      * @param url path to the script/ путь к скрипту
      */
     static setUrl(url: string): Translate;
+    static setPropsName(name: string): Translate;
     /**
      * Getting the full title for translation.
      *

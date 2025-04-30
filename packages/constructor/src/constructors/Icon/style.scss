@@ -1,0 +1,106 @@
+@use "@dxt-ui/styles/properties" as ui;
+
+@mixin mixinIcon {
+  $clipPath: clip-path #{ui.v('d.sys.transitionDuration.fade.enter')} #{ui.v('d.sys.transitionFunction.deceleration')};
+  $margin: margin #{ui.v('d.ref.transitionDuration.1')} linear;
+  $background: background #{ui.v('d.sys.transitionDuration.standard')} linear;
+  $opacity: opacity #{ui.v('d.sys.transitionDuration.standard')} linear;
+  $transform: transform #{ui.v('d.sys.transitionDuration.standard')} linear;
+
+  @include ui.initByCustom('_factor', ui.v('??factor', 1.5));
+  @include ui.initByCustom('_width', ui.v('??width', #{calc(var(--sys-font-size, 16px) * #{ui.v('??_factor')})}));
+
+  display: inline-flex;
+  overflow: visible;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+
+  @include ui.squared(#{ui.v('??_width')});
+  min-width: ui.v('??_width');
+
+  @include ui.textSelectNone;
+
+  border-radius: ui.v('??rounded', inherit);
+
+  transition-property: clip-path, margin, opacity, transform;
+  transition-duration: ui.v('d.sys.transitionDuration.standard');
+
+  @include ui.disabled {
+    cursor: default;
+  }
+
+  &--hide {
+    opacity: 0;
+    transform: scale(.8);
+  }
+
+  &--asPalette {
+    @include ui.colorAsPalette;
+  }
+
+  &--dir {
+    transform: scaleX(#{var(--d-dir)});
+  }
+
+  &--overlay {
+    @include ui.backgroundColor(ui.v('??sys.color', var(--sys-color)));
+  }
+
+  &--dynamic {
+    @include ui.gradient(ui.v('??sys.color', var(--sys-color)), 0);
+    cursor: pointer;
+  }
+
+  &--start {
+    order: 1;
+  }
+
+  &--end {
+    order: 99999;
+  }
+
+  &--high {
+    z-index: 16;
+  }
+
+  &--animationType {
+    &--type2 {
+      clip-path: inset(0 0 0 0);
+
+      transition: #{$clipPath}, #{$margin}, #{$background}, #{$opacity}, #{$transform};
+
+      @include ui.state('hide') {
+        clip-path: inset(0 100% 0 0);
+        margin: 0 calc(#{ui.v('??_width')} * -1) 0 0 !important;
+        opacity: 1;
+
+        transition-duration: ui.v('d.sys.transitionDuration.fade.exit');
+        transition-timing-function: linear;
+        transform: none;
+      }
+    }
+  }
+
+  &--animationShow {
+    animation-name: ui.n('??show');
+    animation-duration: ui.v('d.sys.transitionDuration.standard');
+  }
+
+  @keyframes #{ui.n('??show')} {
+    0% {
+      opacity: 0;
+      transform: scale(.6);
+    }
+    20% {
+      transform: scale(.6);
+    }
+    60% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
