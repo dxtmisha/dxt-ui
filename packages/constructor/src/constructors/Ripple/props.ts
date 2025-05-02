@@ -1,10 +1,10 @@
-interface SkeletonPropsToken {
+interface RipplePropsToken {
   // :type [!] System label / Системная метка
-  active?: boolean
   // :type [!] System label / Системная метка
 }
 
-export interface SkeletonPropsBasic {
+export interface RipplePropsBasic {
+  // TODO: Location for a custom property / Место для пользовательского свойства
 }
 
 /**
@@ -12,7 +12,7 @@ export interface SkeletonPropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface SkeletonProps extends SkeletonPropsBasic, SkeletonPropsToken {
+export interface RippleProps extends RipplePropsBasic, RipplePropsToken {
 }
 
 /**
@@ -20,7 +20,8 @@ export interface SkeletonProps extends SkeletonPropsBasic, SkeletonPropsToken {
  *
  * Значение по умолчанию для свойства.
  */
-export const defaultsSkeleton = {
+export const defaultsRipple = {
+  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

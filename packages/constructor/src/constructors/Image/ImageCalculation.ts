@@ -1,4 +1,4 @@
-import { type ImageSize } from './imageTypes'
+import { type ImageSize } from './basicTypes'
 
 /**
  * A class for storing data for adaptive computation of image scaling for a specific group.

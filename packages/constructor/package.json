@@ -21,7 +21,9 @@
     "./Icon": "./src/constructors/Icon/index.ts",
     "./Icon/style": "./src/constructors/Icon/style.scss",
     "./Skeleton": "./src/constructors/Skeleton/index.ts",
-    "./Skeleton/style": "./src/constructors/Skeleton/style.scss"
+    "./Skeleton/style": "./src/constructors/Skeleton/style.scss",
+    "./Ripple": "./src/constructors/Ripple/index.ts",
+    "./Ripple/style": "./src/constructors/Ripple/style.scss"
   },
   "buildOptions": {
     "name": "@dxt-ui/constructor",

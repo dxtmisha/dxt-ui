@@ -1,0 +1,28 @@
+@use "../../../styles/c2/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Skeleton/style" as Skeleton;
+
+@include ui.initDesignBasic('c2.skeleton') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Skeleton.mixinSkeleton;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --c2-skeleton-color: var(--c2-st-content-foreground-color-neutral-disable);
+    --c2-skeleton-color-opacity: #{ui.toColorOpacity(var(--c2-st-content-foreground-color-neutral-disable))};
+    --c2-skeleton-colorOpacity: var(--c2-st-content-foreground-color-neutral-disable-opacity);
+    --c2-skeleton-backgroundColor: var(--c2-st-content-background-color-neutral-disable);
+    --c2-skeleton-backgroundColor-opacity: #{ui.toColorOpacity(var(--c2-st-content-background-color-neutral-disable))};
+    --c2-skeleton-backgroundOpacity: var(--c2-st-content-background-color-neutral-disable-opacity);
+    --c2-skeleton-borderColor: var(--c2-st-content-background-color-neutral-disable);
+    --c2-skeleton-borderColor-opacity: #{ui.toColorOpacity(var(--c2-st-content-background-color-neutral-disable))};
+    --c2-skeleton-borderOpacity: var(--c2-st-content-background-color-neutral-disable-opacity);
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

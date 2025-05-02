@@ -10,9 +10,7 @@
     animation: ui.v('??animation');
 
     @include ui.absoluteAfter {
-      & {
-        z-index: 999999;
-      }
+      z-index: 999999;
     }
 
     *,
@@ -32,22 +30,17 @@
     }
 
     @include ui.subclass('text') {
-      color: transparent;
       text-decoration-line: line-through !important;
       text-decoration-thickness: var(--sys-font-size) !important;
-      text-decoration-skip: #{spaces};
-      -webkit-text-decoration-skip: spaces;
+      text-decoration-skip: #{spaces} !important;
+      -webkit-text-decoration-skip: spaces !important;
 
       @include ui.color(ui.v('??color'), ui.v('??colorOpacity'), 'text-decoration-color', true);
       --sys-color: #{ui.v('??color')} !important;
       --sys-color-opacity: #{ui.v('??colorOpacity', 1)} !important;
 
       * {
-        text-decoration-line: line-through !important;
-        text-decoration-thickness: var(--sys-font-size) !important;
-        @include ui.color(ui.v('??color'), ui.v('??colorOpacity'), 'text-decoration-color', true);
-        text-decoration-skip: #{spaces};
-        -webkit-text-decoration-skip: spaces;
+        text-decoration-color: unset;
       }
     }
 

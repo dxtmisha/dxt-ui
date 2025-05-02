@@ -1,4 +1,4 @@
-import type { ImageItem } from './imageTypes'
+import type { ImageItem } from './basicTypes'
 
 /**
  * Maximum size allowed without conversion.

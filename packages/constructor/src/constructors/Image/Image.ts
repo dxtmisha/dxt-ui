@@ -14,7 +14,7 @@ import { ImagePosition } from './ImagePosition'
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageBackground } from './ImageBackground'
 
-import { ImageTypeValue } from './imageTypes'
+import { ImageTypeValue } from './basicTypes'
 import type { ImageEmits } from './types'
 import type { ImageProps } from './props'
 

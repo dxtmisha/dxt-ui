@@ -1,6 +1,6 @@
 import type { ConstrBind, Undefined } from '@dxt-ui/functional'
-import type { ImageEmits } from './types.ts'
-import type { ImagePropsBasic } from './props.ts'
+import type { ImageEmits } from './types'
+import type { ImagePropsBasic } from './props'
 
 export enum ImageTypeValue {
   pdf = 'pdf',

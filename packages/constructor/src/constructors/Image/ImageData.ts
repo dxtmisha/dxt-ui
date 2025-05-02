@@ -6,7 +6,7 @@ import { ImagePdf } from './ImagePdf'
 
 import { ImageType } from './ImageType'
 
-import { type ImageEventItem, type ImageItem, ImageTypeValue } from './imageTypes'
+import { type ImageEventItem, type ImageItem, ImageTypeValue } from './basicTypes'
 import { type ImageProps } from './props'
 
 /**

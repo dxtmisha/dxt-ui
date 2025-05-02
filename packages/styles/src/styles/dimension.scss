@@ -29,39 +29,19 @@
 }
 
 @mixin widthDevice($value) {
-  & {
-    @include width(#{$value}dvw);
-    @supports not (width: var(--sys-width)) {
-      --sys-width: #{$value}vw;
-    }
-  }
+  @include width(#{$value}dvw);
 }
 
 @mixin heightDevice($value) {
-  & {
-    @include height(#{$value}dvh);
-    @supports not (height: var(--sys-height)) {
-      --sys-height: #{$value}vh;
-    }
-  }
+  @include height(#{$value}dvh);
 }
 
 @mixin maxWidthDevice($value) {
-  & {
-    max-width: #{$value}dvw;
-    @supports not (max-width: #{$value}dvw) {
-      max-width: #{$value}vw;
-    }
-  }
+  max-width: #{$value}dvw;
 }
 
 @mixin maxHeightDevice($value) {
-  & {
-    max-height: #{$value}dvh;
-    @supports not (max-height: #{$value}dvh) {
-      max-height: #{$value}vh;
-    }
-  }
+  max-height: #{$value}dvh;
 }
 
 @mixin widthBasis($value) {
@@ -77,37 +57,23 @@
 }
 
 @mixin aspectRatio($value) {
-  & {
-    aspect-ratio: #{$value};
-    @supports not (aspect-ratio: #{$value}) {
-      @content;
-    }
-  }
+  aspect-ratio: #{$value};
 }
 
 @mixin aspectRatioWidth($value) {
-  @include aspectRatio($value) {
-    height: calc(var(--sys-width) * #{getHeightByRatio($value)} / #{getWidthByRatio($value)});
-    @content;
-  }
+  @include aspectRatio($value);
 }
 
 @mixin aspectRatioHeight($value) {
-  @include aspectRatio($value) {
-    width: calc(var(--sys-height) * #{getWidthByRatio($value)} / #{getHeightByRatio($value)});
-    @content;
-  }
+  @include aspectRatio($value);
 }
 
 @mixin squared($value) {
   @include widthBasis($value);
-  @include aspectRatio(#{1/1}) {
-    @include height($value);
-    @content;
-  }
+  @include aspectRatio(#{1/1});
 }
 
 @mixin circle($value) {
-  border-radius: 100%;
   @include squared($value);
+  border-radius: 100%;
 }

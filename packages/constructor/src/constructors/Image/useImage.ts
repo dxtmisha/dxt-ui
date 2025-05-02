@@ -12,7 +12,7 @@ import type {
   ImageUseComponents,
   ImageUseEmits,
   ImageUseProps
-} from './imageTypes.ts'
+} from './basicTypes'
 
 /**
  * Constructor for working with images.

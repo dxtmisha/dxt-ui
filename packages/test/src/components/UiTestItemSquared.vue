@@ -33,9 +33,6 @@ const classes = computed(() => ({
   @include ui.squared(var(--ui-test-item-squared-size));
   background-color: white;
 
-  &__label {
-  }
-
   &--size {
     &--xs {
       --ui-test-item-squared-size: 40px;

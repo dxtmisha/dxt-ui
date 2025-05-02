@@ -3,7 +3,7 @@ import { GEO_FLAG_ICON_NAME, Icons, isFilled } from '@dxt-ui/functional'
 
 import { ImagePdf } from './ImagePdf'
 
-import { type ImageTypeItem, ImageTypeValue } from './imageTypes'
+import { type ImageTypeItem, ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
 
 /**

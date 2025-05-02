@@ -11,6 +11,7 @@ import { UI_FILE_PACKAGE, UI_DIR_IN } from '../../config'
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
 const FILE_TYPES = 'types.ts'
+const FILE_TYPES_BASIC = 'basicTypes.ts'
 const FILE_STYLE = 'style.scss'
 const FILE_CODE = 'Constructors.ts'
 const FILE_CLASS = 'ConstructorsDesign.tsx'
@@ -54,6 +55,7 @@ export class DesignConstructor extends DesignCommand {
       .makeProperties()
       .makeProps()
       .makeTypes()
+      .makeTypesBasic()
       .makeStyle()
       .makeCode()
       .makeMain()
@@ -107,6 +109,15 @@ export class DesignConstructor extends DesignCommand {
 
     this.write(file, sample.get())
     return this
+  }
+
+  /**
+   * This code generates the properties.json.
+   *
+   * Генерация файла properties.json.
+   */
+  protected makeTypesBasic(): this {
+    return this.makeFileStandard(FILE_TYPES_BASIC)
   }
 
   /**

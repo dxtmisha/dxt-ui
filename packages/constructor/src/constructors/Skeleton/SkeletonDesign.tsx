@@ -64,9 +64,6 @@ export class SkeletonDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -76,8 +73,7 @@ export class SkeletonDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      isActive: this.item.isActive
     } as EXPOSE
   }
 
@@ -100,10 +96,7 @@ export class SkeletonDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -111,12 +104,14 @@ export class SkeletonDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    const children: any[] = []
+
+    this.initSlot('default', children, this.item.classes)
 
     return h('div', {
-      // ...this.getAttrs(),
+      ...this.getAttrs(),
       ref: this.element,
       class: this.classes?.value.main
-    })
+    }, children)
   }
 }

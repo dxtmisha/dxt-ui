@@ -2,12 +2,19 @@
 import { computed } from 'vue'
 import UiTestLabel from './UiTestLabel.vue'
 
-const props = defineProps<{
-  label?: string
-  isPadding?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    label?: string
+    isFlex?: boolean
+    isPadding?: boolean
+  }>(),
+  {
+    isFlex: true
+  }
+)
 
 const classes = computed(() => ({
+  'ui-test-item-full--flex': props.isFlex,
   'ui-test-item-full--padding': props.isPadding
 }))
 </script>
@@ -24,12 +31,15 @@ const classes = computed(() => ({
 
 .ui-test-item-full {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   width: 100%;
   background-color: white;
+
+  &--flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   &--padding {
     padding: 8px 16px;

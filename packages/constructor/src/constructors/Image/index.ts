@@ -1,4 +1,5 @@
 export * from './Image'
 export * from './ImageDesign.tsx'
+export * from './basicTypes'
 export * from './props'
 export * from './types'

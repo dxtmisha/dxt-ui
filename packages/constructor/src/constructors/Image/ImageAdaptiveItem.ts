@@ -5,7 +5,7 @@ import { ImageData } from './ImageData'
 import { ImageAdaptiveGroup } from './ImageAdaptiveGroup'
 import { ImageCalculationList } from './ImageCalculationList'
 
-import { type ImageElement, type ImageItem, type ImageSize } from './imageTypes'
+import { type ImageElement, type ImageItem, type ImageSize } from './basicTypes'
 import { type ImageProps } from './props'
 
 enum ImageAdaptiveItemType {

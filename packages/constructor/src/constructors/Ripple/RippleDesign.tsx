@@ -5,38 +5,37 @@ import {
   DesignConstructorAbstract
 } from '@dxt-ui/functional'
 
-import { Image } from './Image'
+import { Ripple } from './Ripple'
 
-import { ImageTypeValue } from './basicTypes'
 import {
-  type ImageProps
+  type RippleProps
 } from './props'
 import {
-  type ImageClasses,
-  type ImageComponents,
-  type ImageEmits,
-  type ImageExpose,
-  type ImageSlots
+  type RippleClasses,
+  type RippleComponents,
+  type RippleEmits,
+  type RippleExpose,
+  type RippleSlots
 } from './types'
 
 /**
- * ImageDesign
+ * RippleDesign
  */
-export class ImageDesign<
-  COMP extends ImageComponents,
-  EXPOSE extends ImageExpose,
-  CLASSES extends ImageClasses,
-  P extends ImageProps
+export class RippleDesign<
+  COMP extends RippleComponents,
+  EXPOSE extends RippleExpose,
+  CLASSES extends RippleClasses,
+  P extends RippleProps
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
-    ImageEmits,
+    RippleEmits,
     EXPOSE,
-    ImageSlots,
+    RippleSlots,
     CLASSES,
     P
   > {
-  protected readonly item: Image
+  protected readonly item: Ripple
 
   /**
    * Constructor
@@ -47,7 +46,7 @@ export class ImageDesign<
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ImageEmits, P>
+    options?: ConstrOptions<COMP, RippleEmits, P>
   ) {
     super(
       name,
@@ -55,36 +54,40 @@ export class ImageDesign<
       options
     )
 
-    this.item = new Image(
+    this.item = new Ripple(
       this.props,
+      this.refs,
       this.element,
       this.getName(),
+      this.components,
+      this.slots,
       this.emits
     )
+
+    // TODO: Method for initializing base objects
+    // TODO: Метод для инициализации базовых объектов
 
     this.init()
   }
 
   /**
-   * Initialization of all the necessary properties for work
-   *
+   * Initialization of all the necessary properties for work<br>
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
     return {
-      type: this.item.type.item,
-      data: this.item.data.image
+      // TODO: list of properties for export
+      // TODO: список свойств для экспорта
     } as EXPOSE
   }
 
   /**
-   * Improvement of the obtained list of classes.
-   *
+   * Improvement of the obtained list of classes.<br>
    * Доработка полученного списка классов.
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка
@@ -93,45 +96,27 @@ export class ImageDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
-   *
+   * Refinement of the received list of styles.<br>
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return this.item.styles.value
+    return {
+      // TODO: list of user styles
+      // TODO: список пользовательских стилей
+    }
   }
 
   /**
-   * A method for rendering.
-   *
+   * A method for rendering.<br>
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    return h(
-      'span',
-      {
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        translate: 'no',
-        ...this.getAttrs()
-      },
-      this.renderValue()
-    )
-  }
+    // const children: any[] = []
 
-  /**
-   * Rendering the value for the component.
-   *
-   * Рендеринг значения для компонента.
-   */
-  protected readonly renderValue = (): string | VNode[] | undefined => {
-    if (
-      this.item.type.item.value === ImageTypeValue.pdf
-    ) {
-      return [h('object', { data: this.item.data.image.value })]
-    }
-
-    return this.item.text.value
+    return h('div', {
+      // ...this.getAttrs(),
+      ref: this.element,
+      class: this.classes?.value.main
+    })
   }
 }

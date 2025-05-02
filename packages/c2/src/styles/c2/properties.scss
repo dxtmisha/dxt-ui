@@ -18694,6 +18694,56 @@
           ),
         ),
       ),
+      'skeleton':(
+        index: 'skeleton',
+        name: 'c2-skeleton',
+        type: 'component',
+        value: (
+          'color':(
+            index: 'color',
+            name: '--c2-skeleton-color',
+            type: 'var',
+            value: 'var(--c2-st-content-foreground-color-neutral-disable)',
+          ),
+          'colorOpacity':(
+            index: 'colorOpacity',
+            name: '--c2-skeleton-colorOpacity',
+            type: 'var',
+            value: 'var(--c2-st-content-foreground-color-neutral-disable-opacity)',
+          ),
+          'backgroundColor':(
+            index: 'backgroundColor',
+            name: '--c2-skeleton-backgroundColor',
+            type: 'var',
+            value: 'var(--c2-st-content-background-color-neutral-disable)',
+          ),
+          'backgroundOpacity':(
+            index: 'backgroundOpacity',
+            name: '--c2-skeleton-backgroundOpacity',
+            type: 'var',
+            value: 'var(--c2-st-content-background-color-neutral-disable-opacity)',
+          ),
+          'borderColor':(
+            index: 'borderColor',
+            name: '--c2-skeleton-borderColor',
+            type: 'var',
+            value: 'var(--c2-st-content-background-color-neutral-disable)',
+          ),
+          'borderOpacity':(
+            index: 'borderOpacity',
+            name: '--c2-skeleton-borderOpacity',
+            type: 'var',
+            value: 'var(--c2-st-content-background-color-neutral-disable-opacity)',
+          ),
+          'active':(
+            index: 'active',
+            name: '&--active',
+            type: 'state',
+            value: (
+            ),
+          ),
+        ),
+      ),
     ),
   ),
   'd':(
@@ -19016,6 +19066,20 @@
                 value: (
                 ),
               ),
+            ),
+          ),
+        ),
+      ),
+      'skeleton':(
+        index: 'skeleton',
+        name: 'd-skeleton',
+        type: 'component',
+        value: (
+          'active':(
+            index: 'active',
+            name: '&--active',
+            type: 'state',
+            value: (
             ),
           ),
         ),
