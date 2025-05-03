@@ -65,7 +65,7 @@ export class ImageType {
         return ImageTypeValue.flag
       }
 
-      const sub = image.match(/^(filled|outlined|round|sharp|two-tone)-/)
+      const sub = image.match(/^(outlined|round|sharp|material)-/)
 
       if (sub) {
         return sub[1] as ImageTypeItem
@@ -75,7 +75,7 @@ export class ImageType {
         return ImageTypeValue.public
       }
 
-      return ImageTypeValue.material
+      return ImageTypeValue.outlined
     }
 
     return undefined

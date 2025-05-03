@@ -37,7 +37,7 @@
     &--file,
     &--image {
       @include ui.disabled(ui.$designsClassName) {
-        filter: grayscale(1) opacity(#{var(--sys-color-opacity, ui.v('??colorOpacity', 1))});
+        filter: grayscale(1) opacity(#{var(--sys-color-opacity, ui.v('??color.opacity', 1))});
       }
     }
 
@@ -58,7 +58,7 @@
   }
 
   &--disabled {
-    color: rgba(var(--sys-color, ui.v('??color')), var(--sys-color-opacity, ui.v('??colorOpacity', 1)));
+    color: rgba(var(--sys-color, ui.v('??color')), var(--sys-color-opacity, ui.v('??color.opacity', 1)));
   }
 
   &--hide {
@@ -66,27 +66,12 @@
     @include ui.scale(.8);
   }
 
-  &.material-icons {
+  &.material-icons,
+  &.material-symbols-outlined,
+  &.material-symbols-rounded,
+  &.material-symbols-sharp {
     direction: ltr;
     display: inline-flex;
     font-size: ui.v('??font-size', 1.5em);
-  }
-
-  &--type {
-    &--outlined {
-      font-family: 'Material Icons Outlined', sans-serif;
-    }
-
-    &--round {
-      font-family: 'Material Icons Round', sans-serif;
-    }
-
-    &--sharp {
-      font-family: 'Material Icons Sharp', sans-serif;
-    }
-
-    &--two-tone {
-      font-family: 'Material Icons Two Tone', sans-serif;
-    }
   }
 }

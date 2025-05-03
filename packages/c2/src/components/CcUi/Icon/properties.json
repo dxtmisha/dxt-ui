@@ -1,0 +1,119 @@
+{
+  "main": "{d.icon}",
+  "aspect-ratio": "1/1",
+  "~asPalette": {
+    "palette-color": "{st.content.background.color.info.explicit}"
+  },
+  "~circle": {
+    "border-radius": "{st.selectable.borderRadius.size.pill}",
+    "_category": "style"
+  },
+  "~box": {
+    "border-radius": "0",
+    "_category": "style"
+  },
+  "~rect": {
+    "aspect-ratio": "30/20",
+    "width": {
+      "value": "auto",
+      "_type": "property"
+    },
+    "height": "{??-_width}",
+    "border-radius": "0",
+    "_category": "style"
+  },
+  "~round": {
+    "border-radius": "{st.selectable.borderRadius.size.sm}",
+    "_category": "style"
+  },
+  "~size": {
+    "2xs": {
+      "width": "{ot.dimension.75}"
+    },
+    "xs": {
+      "width": "{ot.dimension.100}"
+    },
+    "sm": {
+      "width": "{ot.dimension.125}"
+    },
+    "md": {
+      "width": "{ot.dimension.150}"
+    },
+    "lg": {
+      "width": "{ot.dimension.200}"
+    },
+    "xl": {
+      "width": "{ot.dimension.250}"
+    },
+    "2xl": {
+      "width": "{ot.dimension.350}"
+    },
+    "3xl": {
+      "width": "{ot.dimension.400}"
+    },
+    "4xl": {
+      "width": "{ot.dimension.450}"
+    },
+    "5xl": {
+      "width": "{ot.dimension.500}"
+    },
+    "6xl": {
+      "width": "{ot.dimension.600}"
+    },
+    "7xl": {
+      "width": "{ot.dimension.800}"
+    },
+    "_type": "state"
+  },
+  "~overlay": {
+    "background-color": "{st.action.background.color.neutral.subtle.normal}",
+    "disabled": {
+      "background-opacity": "0"
+    }
+  },
+  "~dynamic": {
+    "hover": {
+      "gradient": "{st.action.background.color.neutral.subtle.hover}",
+      "gradient-opacity": "unset"
+    },
+    "focus": {
+      "gradient": "{st.action.background.color.neutral.subtle.focus}",
+      "gradient-opacity": "unset"
+    },
+    "active": {
+      "gradient": "{st.action.background.color.neutral.subtle.active}",
+      "gradient-opacity": "unset"
+    }
+  },
+  "~secondary": {
+    "color": {
+      "value": "{st.content.foreground.color.neutral.secondary}"
+    }
+  },
+  "~success": {
+    "color": {
+      "value": "{st.action.background.color.positive.normal}"
+    }
+  },
+  "~successInverse": {
+    "color": {
+      "value": "{st.content.background.color.default.subtle.normal}"
+    },
+    "background-color": {
+      "value": "{st.content.background.color.positive.explicit}"
+    }
+  },
+  "~error": {
+    "color": {
+      "value": "{st.content.background.color.negative.explicit}"
+    }
+  },
+  "~errorInverse": {
+    "color": {
+      "value": "{st.content.background.color.default.subtle.normal}"
+    },
+    "background-color": {
+      "value": "{st.content.background.color.negative.explicit}"
+    }
+  }
+}

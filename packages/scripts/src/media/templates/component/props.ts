@@ -11,15 +11,13 @@ interface PropsToken {
 }
 
 /**
- * Type describing incoming properties.<br>
- * Тип, описывающий входящие свойства.
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
 export interface ComponentProps extends/* :component.once  ComponentPropsBasic, */ PropsToken {
 }
 
 /**
- * Default value for property.<br>
- * Значение по умолчанию для свойства.
+ * Default value for property/ Значение по умолчанию для свойства
  */
 export const defaults: object = {
   /* :component.once ...defaultsComponent, */

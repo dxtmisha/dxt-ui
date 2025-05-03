@@ -58,16 +58,42 @@ export class IconDesign<
       this.props,
       this.refs,
       this.element,
+      this.getDesign(),
       this.getName(),
       this.components,
       this.slots,
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
+  }
+
+  /**
+   * Render the main icon.
+   *
+   * Рендер основной иконки.
+   */
+  readonly renderIcon = (): VNode | undefined => {
+    return this.components.renderOne(
+      'image',
+      this.item.iconBind.value,
+      undefined,
+      'icon'
+    )
+  }
+
+  /**
+   * Render the secondary icon.
+   *
+   * Рендер вторичной иконки.
+   */
+  readonly renderIconActive = (): VNode | undefined => {
+    return this.components.renderOne(
+      'image',
+      this.item.iconActiveBind.value,
+      undefined,
+      'iconActive'
+    )
   }
 
   /**
@@ -76,8 +102,7 @@ export class IconDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      isActive: this.item.isActive
     } as EXPOSE
   }
 
@@ -87,7 +112,7 @@ export class IconDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes.value,
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка
@@ -100,10 +125,7 @@ export class IconDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -111,12 +133,25 @@ export class IconDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    const children: any[] = []
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+    this.initSlot('default', children)
+
+    if (this.props.icon) {
+      children.push(this.renderIcon())
+    }
+
+    if (this.props.iconActive) {
+      children.push(this.renderIconActive())
+    }
+
+    return h(
+      'span',
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main
+      },
+      children
+    )
   }
 }

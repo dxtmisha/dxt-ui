@@ -13,6 +13,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+  align-items: center;
 
   width: 100%;
 }

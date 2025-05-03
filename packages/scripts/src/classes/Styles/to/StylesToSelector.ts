@@ -63,7 +63,7 @@ export class StylesToSelector extends StylesToAbstract {
       case 'focus':
       case 'disabled':
       case 'readonly':
-        return `@include ${name}${isClassMain ? '' : `(${className})`}`
+        return `@include ui.${name}${isClassMain ? '' : `(${className})`}`
       default:
         return `&:${toKebabCase(name)}`
     }

@@ -58,6 +58,7 @@ export class ConstructorsDesign<
       this.props,
       this.refs,
       this.element,
+      this.getDesign(),
       this.getName(),
       this.components,
       this.slots,

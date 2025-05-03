@@ -1,5 +1,6 @@
+import type { ComputedRef } from 'vue'
 import type { ConstrClass } from '@dxt-ui/functional'
-import type { ImageUseComponents, ImageUseEmits } from '../Image/basicTypes.ts'
+import type { ImageUseComponents, ImageUseEmits } from '../Image'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -21,6 +22,7 @@ export type IconEmits = ImageUseEmits
  * Тип, описывающий доступные свойства.
  */
 export interface IconExpose {
+  isActive: ComputedRef<boolean>
 }
 
 /**

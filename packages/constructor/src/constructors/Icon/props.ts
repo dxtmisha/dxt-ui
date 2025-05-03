@@ -1,5 +1,5 @@
-import type { ConstrBind } from '@dxt-ui/functional'
-import type { ImageProps } from '../Image'
+import type { ImagePropsBasic } from '../Image'
+import type { IconValue } from './basicTypes.ts'
 
 interface IconPropsToken {
   // :type [!] System label / Системная метка
@@ -18,13 +18,15 @@ interface IconPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface IconPropsBasic {
+export interface IconPropsBasic<
+  Image extends ImagePropsBasic = ImagePropsBasic
+> {
   // Status
   active?: boolean
 
   // Icon
-  icon?: string | ConstrBind<ImageProps> | null
-  iconActive?: string | ConstrBind<ImageProps> | null
+  icon?: IconValue<Image>
+  iconActive?: IconValue<Image>
 
   // Style
   isSkeleton?: boolean

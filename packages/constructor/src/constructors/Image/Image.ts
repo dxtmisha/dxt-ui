@@ -126,11 +126,15 @@ export class Image {
     }
 
     switch (type) {
-      case 'filled':
       case 'outlined':
+        data['material-symbols-outlined'] = true
+        break
       case 'round':
+        data['material-symbols-rounded'] = true
+        break
       case 'sharp':
-      case 'two-tone':
+        data['material-symbols-sharp'] = true
+        break
       case 'material':
         data['material-icons'] = true
         break
