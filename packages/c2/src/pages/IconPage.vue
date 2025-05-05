@@ -22,6 +22,8 @@ import C2Skeleton from '../components/CcUi/Skeleton/C2Skeleton.vue'
 Icons.add('fx-135', FX135)
 Icons.add('galaxy-s23', GalaxyS23)
 
+const image = 'https://drscdn.500px.org/photo/292683549/q%3D90_m%3D2048/v2?sig=57a983b1ae345a1157df3caa67f49360d0dd6741e89a1f8c2393c9e894499492'
+
 const iconElement = ref<Reactive<IconExpose>>()
 
 const active = ref<boolean>(false)
@@ -56,13 +58,64 @@ const onLoad = () => {
       <UiTestItemSquared size="xs">
         <C2Icon icon="galaxy-s23"/>
       </UiTestItemSquared>
+      <UiTestItemSquared size="xs">
+        <C2Icon icon="bonus-possible-01"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared size="xs">
+        <C2Icon icon="check-md"/>
+      </UiTestItemSquared>
     </UiTestGroup>
   </UiTestContainer>
 
   <UiTestContainer label="Size">
     <UiTestGroup>
       <UiTestItemSquared label="2xs" size="md">
-        <C2Icon icon="home" size="2xs"/>
+        <C2Icon icon="mouse" size="2xs"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="xs" size="md">
+        <C2Icon icon="mouse" size="xs"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="sm" size="md">
+        <C2Icon icon="mouse" size="sm"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="md" size="md">
+        <C2Icon icon="mouse" size="md"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="lg" size="md">
+        <C2Icon icon="mouse" size="lg"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="xl" size="md">
+        <C2Icon icon="mouse" size="xl"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="2xl" size="md">
+        <C2Icon icon="mouse" size="2xl"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="3xl" size="md">
+        <C2Icon icon="mouse" size="3xl"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="4xl" size="md">
+        <C2Icon icon="mouse" size="4xl"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="5xl" size="lg">
+        <C2Icon icon="mouse" size="5xl"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="6xl" size="lg">
+        <C2Icon icon="mouse" size="6xl"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="7xl" size="lg">
+        <C2Icon icon="mouse" size="7xl"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="Circle" size="md">
+        <C2Icon :icon="image" circle size="4xl"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="Box" size="md">
+        <C2Icon :icon="image" box size="4xl"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="Box+Round" size="md">
+        <C2Icon :icon="image" box round size="4xl"/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="Rect" size="md">
+        <C2Icon :icon="image" rect size="4xl"/>
       </UiTestItemSquared>
     </UiTestGroup>
   </UiTestContainer>
@@ -89,6 +142,9 @@ const onLoad = () => {
       </UiTestItemSquared>
       <UiTestItemSquared label="Animation show" size="md">
         <C2Icon :icon="{ value: GalaxyS23, size: 'contain' }" size="xl" animation-show/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="Secondary" size="md">
+        <C2Icon icon="mouse" size="xl" secondary/>
       </UiTestItemSquared>
     </UiTestGroup>
   </UiTestContainer>

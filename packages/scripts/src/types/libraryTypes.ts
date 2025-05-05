@@ -19,3 +19,9 @@ export type LibraryFilesItem = {
   files: string[]
 }
 export type LibraryFiles = LibraryFilesItem[]
+
+export type LibraryIconItem = {
+  name: string
+  path: string
+  value: string
+}

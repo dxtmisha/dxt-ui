@@ -1,11 +1,12 @@
-import { type Item, toCamelCase } from '@dxt-ui/functional'
+import { toCamelCase } from '@dxt-ui/functional'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { LibraryItems } from './LibraryItems'
 
-import { UI_DIRS_ICONS, UI_DIRS_TOKENS, UI_FILE_NAME_MEDIA } from '../../config'
+import { UI_DIRS_ICONS, UI_FILE_NAME_MEDIA } from '../../config'
+import type { LibraryIconItem } from '../../types/libraryTypes.ts'
 
 /**
  * Class for generating the media data connection file.
@@ -46,7 +47,7 @@ export class LibraryMedia {
    * Возвращает список доступных иконок.
    */
   private getIconImport() {
-    const data: Item<string>[] = []
+    const data: LibraryIconItem[] = []
     const path = [PropertiesFile.getRoot(), ...UI_DIRS_ICONS]
 
     if (PropertiesFile.is(path)) {
@@ -56,8 +57,9 @@ export class LibraryMedia {
           const icon = iconPath.replace('/', '-')
 
           data.push({
-            index: toCamelCase(this.getIconName(icon)),
-            value: icon
+            name: toCamelCase(this.getIconName(icon)),
+            path: this.getIconPath(iconPath),
+            value: this.getIconName(icon)
           })
         })
     }
@@ -83,7 +85,7 @@ export class LibraryMedia {
    * @param icon icon name/ название иконки
    */
   private getIconPath(icon: string): string {
-    return PropertiesFile.joinPath(['.', '..', '..', ...UI_DIRS_TOKENS, icon])
+    return PropertiesFile.joinPath(['.', '..', '..', ...UI_DIRS_ICONS, icon])
   }
 
   /**
@@ -95,7 +97,7 @@ export class LibraryMedia {
     const data: string[] = []
 
     this.getIconImport().forEach((item) => {
-      data.push(`  Icons.add('${this.getIconName(item.value)}', ${item.index})`)
+      data.push(`  Icons.add('${item.value}', ${item.name})`)
     })
 
     return data
@@ -110,7 +112,7 @@ export class LibraryMedia {
     const data: string[] = []
 
     this.getIconImport().forEach((item) => {
-      data.push(`import ${item.index} from '${this.getIconPath(item.value)}'`)
+      data.push(`import ${item.name} from '${item.path}'`)
     })
 
     return data
