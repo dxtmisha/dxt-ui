@@ -17,8 +17,20 @@
   "module": "dist/library.js",
   "types": "dist/library.d.ts",
   "exports": {
-    ".": "./src/library.ts",
-    "./flags": "./src/flags.ts",
+    ".": {
+      "import": [
+        "./src/library.ts",
+        "./dist/library.js"
+      ],
+      "types": "./dist/library.d.ts"
+    },
+    "./flags": {
+      "import": [
+        "./src/flags.ts",
+        "./dist/flags.js"
+      ],
+      "types": "./dist/flags.d.ts"
+    },
     "./types/*": "./dist/*",
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },

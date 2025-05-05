@@ -1995,6 +1995,17 @@ const S = class S {
     t in this.watch ? this.watch[t].push(e) : this.watch = { [t]: [e] };
   }
   /**
+   * Update hash variable from URL string.
+   *
+   * Обновление переменной хэша из строки URL.
+   */
+  static reload() {
+    if (!this.block) {
+      const t = this.getLocation();
+      this.makeWatch(t), this.hash = t;
+    }
+  }
+  /**
    * Obtaining data from the URL string.
    *
    * Получение данных из строки URL.
@@ -2015,17 +2026,6 @@ const S = class S {
     this.block = !0, history.replaceState(null, "", `#${It(this.hash, "=", ";")}`), requestAnimationFrame(() => {
       this.block = !1;
     });
-  }
-  /**
-   * Update hash variable from URL string.
-   *
-   * Обновление переменной хэша из строки URL.
-   */
-  static reload() {
-    if (!this.block) {
-      const t = this.getLocation();
-      this.makeWatch(t), this.hash = t;
-    }
   }
   /**
    * Calling all functions whose data has changed.

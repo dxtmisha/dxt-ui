@@ -32,6 +32,12 @@ export declare class Hash {
      */
     static addWatch<T>(name: string, callback: (value: T) => void): void;
     /**
+     * Update hash variable from URL string.
+     *
+     * Обновление переменной хэша из строки URL.
+     */
+    static reload(): void;
+    /**
      * Obtaining data from the URL string.
      *
      * Получение данных из строки URL.
@@ -43,12 +49,6 @@ export declare class Hash {
      * Обновление строки хэша в URL.
      */
     private static update;
-    /**
-     * Update hash variable from URL string.
-     *
-     * Обновление переменной хэша из строки URL.
-     */
-    private static reload;
     /**
      * Calling all functions whose data has changed.
      *

@@ -72,7 +72,8 @@ export class DesignComponent extends DesignCommand {
   }
 
   /**
-   * This code generates the props.ts.<br>
+   * This code generates the props.ts.
+   *
    * Генерация файла props.ts.
    */
   protected makeProps(): this {
@@ -91,7 +92,8 @@ export class DesignComponent extends DesignCommand {
   }
 
   /**
-   * This code generates the style.scss.<br>
+   * This code generates the style.scss.
+   *
    * Генерация файла style.scss.
    */
   protected makeStyle(): this {
@@ -106,7 +108,8 @@ export class DesignComponent extends DesignCommand {
   }
 
   /**
-   * This code generates the style.scss.<br>
+   * This code generates the style.scss.
+   *
    * Генерация файла style.scss.
    */
   protected makeMain(): this {
@@ -121,7 +124,8 @@ export class DesignComponent extends DesignCommand {
   }
 
   /**
-   * This code generates the index.ts.<br>
+   * This code generates the index.ts.
+   *
    * Генерация файла index.ts.
    */
   protected makeIndex(): this {

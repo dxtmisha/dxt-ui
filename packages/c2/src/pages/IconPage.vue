@@ -59,6 +59,14 @@ const onLoad = () => {
     </UiTestGroup>
   </UiTestContainer>
 
+  <UiTestContainer label="Size">
+    <UiTestGroup>
+      <UiTestItemSquared label="2xs" size="md">
+        <C2Icon icon="home" size="2xs"/>
+      </UiTestItemSquared>
+    </UiTestGroup>
+  </UiTestContainer>
+
   <UiTestContainer label="Modification">
     <UiTestGroup>
       <UiTestItemSquared class="dir-rtl" label="Dir: false" size="md">
@@ -75,6 +83,12 @@ const onLoad = () => {
       </UiTestItemSquared>
       <UiTestItemSquared label="Dynamic+Overlay" size="md">
         <C2Icon icon="home" size="xl" dynamic overlay/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="Animation show" size="md">
+        <C2Icon icon="home" size="xl" animation-show/>
+      </UiTestItemSquared>
+      <UiTestItemSquared label="Animation show" size="md">
+        <C2Icon :icon="{ value: GalaxyS23, size: 'contain' }" size="xl" animation-show/>
       </UiTestItemSquared>
     </UiTestGroup>
   </UiTestContainer>
@@ -150,6 +164,17 @@ const onLoad = () => {
           :disabled="disabled"
           :hide="hide"
           :turn="turn"
+          icon-active="add_a_photo"
+        />
+      </UiTestItemSquared>
+      <UiTestItemSquared label="Type animation: type2" size="md">
+        <C2Icon
+          :active="active"
+          :disabled="disabled"
+          :hide="hide"
+          :turn="turn"
+          animation-type="type2"
+          icon="photo_camera"
           icon-active="add_a_photo"
         />
       </UiTestItemSquared>

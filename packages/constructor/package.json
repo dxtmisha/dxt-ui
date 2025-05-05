@@ -14,7 +14,10 @@
   "module": "dist/library.js",
   "types": "dist/types/library.d.ts",
   "exports": {
-    ".": "./src/library.ts",
+    ".": [
+      "./src/library.ts",
+      "./dist/library.js"
+    ],
     "./constructor/": "./src/constructors/",
     "./Image": "./src/constructors/Image/index.ts",
     "./Image/style": "./src/constructors/Image/style.scss",

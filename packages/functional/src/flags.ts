@@ -2,7 +2,7 @@ import flags from '@dxt-ui/media/flags'
 
 import { Icons } from './classes/Icons'
 
-export const dxtUiMakeFlags = (): void => {
+export const uiMakeFlags = (): void => {
   Icons.add('flag-ad', flags.AdSvg)
   Icons.add('flag-ae', flags.AeSvg)
   Icons.add('flag-af', flags.AfSvg)

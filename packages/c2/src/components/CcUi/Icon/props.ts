@@ -20,13 +20,13 @@ interface PropsToken {
   start?: boolean
   end?: boolean
   high?: boolean
-  animationType?: string | 'type1' | 'type2'
+  animationType?: 'type1' | 'type2'
   animationShow?: boolean
   circle?: boolean
   box?: boolean
   rect?: boolean
   round?: boolean
-  size?: string | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl'
+  size?: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl'
   secondary?: boolean
   success?: boolean
   successInverse?: boolean

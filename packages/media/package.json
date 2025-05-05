@@ -13,17 +13,21 @@
   "types": "dist/types/library.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/library.d.ts",
-      "import": "./src/library.ts",
-      "default": "./dist/library.js"
+      "import": [
+        "./src/library.ts",
+        "./dist/library.js"
+      ],
+      "types": "./dist/library.d.ts"
     },
     "./flags": {
-      "types": "./dist/types/flags.d.ts",
-      "import": "./src/flags.ts",
-      "default": "./dist/flags.js"
+      "import": [
+        "./src/flags.ts",
+        "./dist/flags.js"
+      ],
+      "types": "./dist/flags.d.ts"
     },
-    "./dist/types/*": "./dist/types/*",
-    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
+    "./types/*": "./dist/*",
+    "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },
   "buildOptions": {
     "name": "@dxt-ui/media",

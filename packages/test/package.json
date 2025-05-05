@@ -18,9 +18,11 @@
   "types": "dist/types/library.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/library.d.ts",
-      "import": "./src/library.ts",
-      "default": "./dist/library.js"
+      "import": [
+        "./src/library.ts",
+        "./dist/library.js"
+      ],
+      "types": "./dist/library.d.ts"
     },
     "./dist/types/*": "./dist/types/*",
     "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"

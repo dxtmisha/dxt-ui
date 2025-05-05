@@ -33,6 +33,10 @@ export const UI_DIR_STRUCTURE = 'structure'
  */
 export const UI_DIRS_TOKENS = [UI_DIR_IN, 'media']
 /**
+ * Directory containing the list of icons/ Директория со списком иконок
+ */
+export const UI_DIRS_ICONS = [...UI_DIRS_TOKENS, 'icons']
+/**
  * Directory with the list of components/ Директория со списком компонентов
  */
 export const UI_DIRS_COMPONENTS = [UI_DIR_IN, UI_DIR_COMPONENTS]
@@ -68,6 +72,16 @@ export const UI_FILE_PACKAGE = 'package.json'
  * Name of the main file with tokens/ Название главного файла с токенами
  */
 export const UI_FILE_PROPERTY = 'properties.json'
+
+/**
+ * File name for storing the list of flags/ Название файла для хранения списка флагов
+ */
+export const UI_FILE_NAME_FLAGS = 'flags'
+
+/**
+ * File name for storing media data and icons/ Название файла для хранения медиа-данных и иконок
+ */
+export const UI_FILE_NAME_MEDIA = 'media'
 
 export const UI_EXTENSION_STYLE = 'scss'
 

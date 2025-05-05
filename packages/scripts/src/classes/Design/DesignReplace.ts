@@ -87,7 +87,8 @@ export class DesignReplace {
   }
 
   /**
-   * Change the path to the file.<br>
+   * Change the path to the file.
+   *
    * Изменение пути к файлу.
    */
   replacePath(): this {
@@ -198,7 +199,7 @@ export class DesignReplace {
         && !this.isNoMark(mark, name)
       ) {
         const typesString = !constructor && !types.match(/string|boolean/) && types.match(/'/)
-          ? `string | ${types}`
+          ? `${types}` // string |
           : types
 
         templates.push(`${name}?: ${typesString}`)

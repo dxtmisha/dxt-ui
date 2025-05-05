@@ -8,6 +8,8 @@ import { PropertiesCache } from '../Properties/PropertiesCache'
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { Styles } from '../Styles/Styles'
 
+import { LibraryMedia } from '../Library/LibraryMedia'
+
 export class DesignUi {
   protected readonly components: LibraryItems
 
@@ -41,6 +43,8 @@ export class DesignUi {
     new Styles().make()
 
     this.makeConstructorComponent()
+
+    new LibraryMedia(this.components).make()
   }
 
   /**

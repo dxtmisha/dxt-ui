@@ -19,14 +19,11 @@
   "types": "dist/types/library.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/library.d.ts",
-      "import": "./src/library.ts",
-      "default": "./dist/library.js"
-    },
-    "./flags": {
-      "types": "./dist/types/flags.d.ts",
-      "import": "./src/flags.ts",
-      "default": "./dist/flags.js"
+      "import": [
+        "./src/library.ts",
+        "./dist/library.js"
+      ],
+      "types": "./dist/library.d.ts"
     },
     "./config": "./src/config.ts",
     "./properties.json": "./src/media/properties.json",
