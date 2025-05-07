@@ -1,14 +1,14 @@
 {
   "name": "@dxt-ui/constructor",
   "private": false,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor skeleton"
+    "dxt-constructor": "dxt-constructor progress"
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
@@ -26,7 +26,9 @@
     "./Skeleton": "./src/constructors/Skeleton/index.ts",
     "./Skeleton/style": "./src/constructors/Skeleton/style.scss",
     "./Ripple": "./src/constructors/Ripple/index.ts",
-    "./Ripple/style": "./src/constructors/Ripple/style.scss"
+    "./Ripple/style": "./src/constructors/Ripple/style.scss",
+    "./Progress": "./src/constructors/Progress/index.ts",
+    "./Progress/style": "./src/constructors/Progress/style.scss"
   },
   "buildOptions": {
     "name": "@dxt-ui/constructor",

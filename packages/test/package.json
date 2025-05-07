@@ -21,8 +21,7 @@
       "import": [
         "./src/library.ts",
         "./dist/library.js"
-      ],
-      "types": "./dist/library.d.ts"
+      ]
     },
     "./dist/types/*": "./dist/types/*",
     "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"

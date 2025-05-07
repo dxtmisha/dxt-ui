@@ -1,0 +1,38 @@
+@use "../../../styles/c2/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Progress/style" as Progress;
+
+@include ui.initDesignBasic('c2.progress') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Progress.mixinProgress;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --c2-progress-height: var(--c2-st-global-distance-space-inline-xs);
+    --c2-progress-backgroundColor: var(--c2-st-action-background-color-primary-solid-normal);
+    --c2-progress-borderRadius: var(--c2-st-selectable-borderRadius-size-pill);
+    --c2-progress-opacity: var(--c2-ot-opacity-25);
+    
+    @include ui.paletteVar(#{var(--c2-st-action-background-color-primary-solid-normal)});
+    
+    &--circular {
+      --c2-progress-inset: var(--c2-st-global-distance-space-inline-md);
+      --c2-progress-width: var(--c2-ot-dimension-300);
+      
+      &.c2-progress--indeterminate {
+        &--type2 {
+          & .c2-progress__circleSub {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

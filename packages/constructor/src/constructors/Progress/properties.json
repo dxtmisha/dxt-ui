@@ -1,0 +1,47 @@
+{
+  "height": {
+    "_type": "var"
+  },
+  "background-color": {
+    "_type": "var"
+  },
+  "border-radius": {
+    "_type": "var"
+  },
+  "opacity": {
+    "_type": "var"
+  },
+  "#circle": {},
+  "#circleSub": {},
+  "point": {
+    "_type": "state",
+    "_subclass": true
+  },
+  "~linear": {
+    "_category": "appearance",
+    "_default": true
+  },
+  "~circular": {
+    "inset": {
+      "_type": "var"
+    },
+    "width": {
+      "_type": "var"
+    },
+    "_category": "appearance"
+  },
+  "~indeterminate": {
+    "~type1": {},
+    "~type2": {},
+    "~type3": {},
+    "_default": "type1"
+  },
+  "~position": {
+    "~top": {},
+    "~bottom": {},
+    "~static": {},
+    "_default": "top"
+  },
+  "~dense": {},
+  "~inverse": {}
+}

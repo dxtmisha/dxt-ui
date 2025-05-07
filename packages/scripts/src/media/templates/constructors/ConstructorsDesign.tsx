@@ -72,7 +72,8 @@ export class ConstructorsDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work<br>
+   * Initialization of all the necessary properties for work
+   *
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
@@ -83,7 +84,8 @@ export class ConstructorsDesign<
   }
 
   /**
-   * Improvement of the obtained list of classes.<br>
+   * Improvement of the obtained list of classes.
+   *
    * Доработка полученного списка классов.
    */
   protected initClasses(): Partial<CLASSES> {
@@ -97,7 +99,8 @@ export class ConstructorsDesign<
   }
 
   /**
-   * Refinement of the received list of styles.<br>
+   * Refinement of the received list of styles.
+   *
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
@@ -108,7 +111,8 @@ export class ConstructorsDesign<
   }
 
   /**
-   * A method for rendering.<br>
+   * A method for rendering.
+   *
    * Метод для рендеринга.
    */
   protected initRender(): VNode {

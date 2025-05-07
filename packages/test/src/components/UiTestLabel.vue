@@ -15,7 +15,7 @@ defineProps<{
 .ui-test-label {
   position: absolute;
   @include ui.top();
-  z-index: 256;
+  z-index: 4;
 
   padding: 4px 8px;
 

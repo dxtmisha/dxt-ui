@@ -5,38 +5,37 @@ import {
   DesignConstructorAbstract
 } from '@dxt-ui/functional'
 
-import { Image } from './Image'
+import { Progress } from './Progress'
 
-import { ImageTypeValue } from './basicTypes'
 import {
-  type ImageProps
+  type ProgressProps
 } from './props'
 import {
-  type ImageClasses,
-  type ImageComponents,
-  type ImageEmits,
-  type ImageExpose,
-  type ImageSlots
+  type ProgressClasses,
+  type ProgressComponents,
+  type ProgressEmits,
+  type ProgressExpose,
+  type ProgressSlots
 } from './types'
 
 /**
- * ImageDesign
+ * ProgressDesign
  */
-export class ImageDesign<
-  COMP extends ImageComponents,
-  EXPOSE extends ImageExpose,
-  CLASSES extends ImageClasses,
-  P extends ImageProps
+export class ProgressDesign<
+  COMP extends ProgressComponents,
+  EXPOSE extends ProgressExpose,
+  CLASSES extends ProgressClasses,
+  P extends ProgressProps
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
-    ImageEmits,
+    ProgressEmits,
     EXPOSE,
-    ImageSlots,
+    ProgressSlots,
     CLASSES,
     P
   > {
-  protected readonly item: Image
+  protected readonly item: Progress
 
   /**
    * Constructor
@@ -47,7 +46,7 @@ export class ImageDesign<
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ImageEmits, P>
+    options?: ConstrOptions<COMP, ProgressEmits, P>
   ) {
     super(
       name,
@@ -55,14 +54,63 @@ export class ImageDesign<
       options
     )
 
-    this.item = new Image(
+    this.item = new Progress(
       this.props,
+      this.refs,
       this.element,
+      this.getDesign(),
       this.getName(),
+      this.components,
+      this.slots,
       this.emits
     )
 
     this.init()
+  }
+
+  /**
+   * Render elements for the circular loader.
+   *
+   * Рендер элементов для кругового загрузчика.
+   */
+  protected readonly renderCircle = (): VNode[] => {
+    if (this.props.circular) {
+      return [
+        h('circle', {
+          class: this.classes?.value.circleSub,
+          cx: '24',
+          cy: '24',
+          r: '20'
+        }),
+        h('circle', {
+          class: this.classes?.value.circle,
+          cx: '24',
+          cy: '24',
+          r: '20'
+        })
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Render dot at the end.
+   *
+   * Рендер точки в конце.
+   */
+  protected readonly renderPoint = (): VNode[] => {
+    if (
+      this.props.linear
+      && this.props.point && (
+        this.props.value
+        || this.props.indeterminate === 'type1'
+      )
+    ) {
+      return [h('span', { class: this.classes?.value.point })]
+    }
+
+    return []
   }
 
   /**
@@ -71,10 +119,7 @@ export class ImageDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {
-      type: this.item.type.item,
-      data: this.item.data.image
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
@@ -87,6 +132,9 @@ export class ImageDesign<
       main: this.item.classes.value,
       ...{
         // :classes [!] System label / Системная метка
+        circle: this.getSubClass('circle'),
+        circleSub: this.getSubClass('circleSub'),
+        point: this.getSubClass('point')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -107,31 +155,21 @@ export class ImageDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
+    const children: any[] = [
+      ...this.renderCircle(),
+      ...this.renderPoint()
+    ]
+
     return h(
-      'span',
+      this.item.tag.value,
       {
         ...this.getAttrs(),
-        ref: this.element,
         class: this.classes?.value.main,
         style: this.styles?.value,
-        translate: 'no'
+        viewBox: '0 0 48 48',
+        onAnimationend: this.item.onAnimation
       },
-      this.renderValue()
+      children
     )
-  }
-
-  /**
-   * Rendering the value for the component.
-   *
-   * Рендеринг значения для компонента.
-   */
-  protected readonly renderValue = (): string | VNode[] | undefined => {
-    if (
-      this.item.type.item.value === ImageTypeValue.pdf
-    ) {
-      return [h('object', { data: this.item.data.image.value })]
-    }
-
-    return this.item.text.value
   }
 }

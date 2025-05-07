@@ -1,0 +1,27 @@
+{
+  "main": "{d.progress}",
+  "height": "{st.global.distance.space.inline.xs}",
+  "background-color": "{st.action.background.color.primary.solid.normal}",
+  "palette-var": "{st.action.background.color.primary.solid.normal}",
+  "border-radius": "{st.selectable.borderRadius.size.pill}",
+  "opacity": "{ot.opacity.25}",
+  "~circular": {
+    "inset": "{st.global.distance.space.inline.md}",
+    "width": "{ot.dimension.300}",
+    "~indeterminate": {
+      "type2": {
+        "circleSub": {
+          "display": "none",
+          "_type": "subclass"
+        }
+      }
+    }
+  },
+  "~point": {
+    "_default": true
+  },
+  "~indeterminate": {
+    "_default": "type3"
+  },
+  "@@palette": "{palette}"
+}

@@ -329,7 +329,8 @@
   '--c2-st-content-background-color-neutral-mute': ('--c2-palette-dark80'),
   '--c2-st-content-background-color-neutral-onsubtle': ('--c2-palette-dark60'),
   '--c2-st-content-background-color-neutral-subtle': ('--c2-palette-dark20'),
-  '--c2-st-content-background-color-neutral-surface': ('--c2-palette-dark0'),));
+  '--c2-st-content-background-color-neutral-surface': ('--c2-palette-dark0'),
+  '--c2-progress-backgroundColor': ('--c2-palette-basic300'),));
 @include variables.setDesignShade((
   'c2': (0,20,40,60,80,100,200,300,400,500,600,700,800,900),));
 @include variables.setDesignsProperties((
@@ -19197,6 +19198,193 @@
           ),
         ),
       ),
+      'progress':(
+        index: 'progress',
+        name: 'c2-progress',
+        type: 'component',
+        value: (
+          'height':(
+            index: 'height',
+            name: '--c2-progress-height',
+            type: 'var',
+            value: 'var(--c2-st-global-distance-space-inline-xs)',
+          ),
+          'backgroundColor':(
+            index: 'backgroundColor',
+            name: '--c2-progress-backgroundColor',
+            type: 'var',
+            value: 'var(--c2-st-action-background-color-primary-solid-normal)',
+          ),
+          'borderRadius':(
+            index: 'borderRadius',
+            name: '--c2-progress-borderRadius',
+            type: 'var',
+            value: 'var(--c2-st-selectable-borderRadius-size-pill)',
+          ),
+          'opacity':(
+            index: 'opacity',
+            name: '--c2-progress-opacity',
+            type: 'var',
+            value: 'var(--c2-ot-opacity-25)',
+          ),
+          'paletteVar':(
+            index: 'paletteVar',
+            name: 'palette-var',
+            type: 'property',
+            value: 'var(--c2-st-action-background-color-primary-solid-normal)',
+          ),
+          'circle':(
+            index: 'circle',
+            name: '&__circle',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'circleSub':(
+            index: 'circleSub',
+            name: '&__circleSub',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'point':(
+            index: 'point',
+            name: '&--point',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'linear':(
+            index: 'linear',
+            name: '&--linear',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'circular':(
+            index: 'circular',
+            name: '&--circular',
+            type: 'state',
+            value: (
+              'inset':(
+                index: 'inset',
+                name: '--c2-progress-inset',
+                type: 'var',
+                value: 'var(--c2-st-global-distance-space-inline-md)',
+              ),
+              'width':(
+                index: 'width',
+                name: '--c2-progress-width',
+                type: 'var',
+                value: 'var(--c2-ot-dimension-300)',
+              ),
+              'indeterminate':(
+                index: 'indeterminate',
+                name: '&.c2-progress--indeterminate',
+                type: 'state',
+                value: (
+                  'type2':(
+                    index: 'type2',
+                    name: '&--type2',
+                    type: 'state',
+                    value: (
+                      'circleSub':(
+                        index: 'circleSub',
+                        name: '& .c2-progress__circleSub',
+                        type: 'subclass',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'indeterminate':(
+            index: 'indeterminate',
+            name: '&--indeterminate',
+            type: 'state',
+            value: (
+              'type1':(
+                index: 'type1',
+                name: '&--type1',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'type2':(
+                index: 'type2',
+                name: '&--type2',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'type3':(
+                index: 'type3',
+                name: '&--type3',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
+          ),
+          'position':(
+            index: 'position',
+            name: '&--position',
+            type: 'state',
+            value: (
+              'top':(
+                index: 'top',
+                name: '&--top',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'bottom':(
+                index: 'bottom',
+                name: '&--bottom',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'static':(
+                index: 'static',
+                name: '&--static',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
+          ),
+          'dense':(
+            index: 'dense',
+            name: '&--dense',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'inverse':(
+            index: 'inverse',
+            name: '&--inverse',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'palette':(
+            index: 'palette',
+            name: 'palette',
+            type: 'link-class',
+            value: '{c2.palette}',
+          ),
+        ),
+      ),
       'skeleton':(
         index: 'skeleton',
         name: 'c2-skeleton',
@@ -19674,6 +19862,118 @@
                 value: (
                 ),
               ),
+            ),
+          ),
+        ),
+      ),
+      'progress':(
+        index: 'progress',
+        name: 'd-progress',
+        type: 'component',
+        value: (
+          'circle':(
+            index: 'circle',
+            name: '&__circle',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'circleSub':(
+            index: 'circleSub',
+            name: '&__circleSub',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'point':(
+            index: 'point',
+            name: '&--point',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'linear':(
+            index: 'linear',
+            name: '&--linear',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'circular':(
+            index: 'circular',
+            name: '&--circular',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'indeterminate':(
+            index: 'indeterminate',
+            name: '&--indeterminate',
+            type: 'state',
+            value: (
+              'type1':(
+                index: 'type1',
+                name: '&--type1',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'type2':(
+                index: 'type2',
+                name: '&--type2',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'type3':(
+                index: 'type3',
+                name: '&--type3',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
+          ),
+          'position':(
+            index: 'position',
+            name: '&--position',
+            type: 'state',
+            value: (
+              'top':(
+                index: 'top',
+                name: '&--top',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'bottom':(
+                index: 'bottom',
+                name: '&--bottom',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'static':(
+                index: 'static',
+                name: '&--static',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
+          ),
+          'dense':(
+            index: 'dense',
+            name: '&--dense',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'inverse':(
+            index: 'inverse',
+            name: '&--inverse',
+            type: 'state',
+            value: (
             ),
           ),
         ),
