@@ -7,6 +7,7 @@
     <RouterLink to="/icon">Icon</RouterLink>
     <RouterLink to="/image">Image</RouterLink>
     <RouterLink to="/progress">Progress</RouterLink>
+    <RouterLink to="/ripple">Ripple</RouterLink>
     <RouterLink to="/skeleton">Skeleton</RouterLink>
   </div>
 </template>

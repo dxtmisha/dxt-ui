@@ -1,0 +1,21 @@
+@use "../../../styles/c2/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Ripple/style" as Ripple;
+
+@include ui.initDesignBasic('c2.ripple') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Ripple.mixinRipple;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --c2-ripple-backgroundColor: var(--c2-st-content-foreground-color-neutral-primary);
+    --c2-ripple-backgroundOpacity: var(--c2-ot-opacity-25);
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

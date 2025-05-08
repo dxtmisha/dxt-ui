@@ -1,5 +1,62 @@
 @use "@dxt-ui/styles/properties" as ui;
 
 @mixin mixinRipple {
+  overflow: hidden;
+  @include ui.absolute;
+  z-index: 24;
 
+  border-radius: inherit;
+
+  &__item {
+    @include ui.absolute;
+
+    @include ui.backgroundColor(
+                    ui.v('??sys.color', var(--sys-color, ui.v('??backgroundColor'))),
+                    ui.v('??backgroundOpacity', 1)
+    );
+  }
+
+  %ripple-end {
+    opacity: 0;
+
+    transition-delay: ui.v('d.sys.transitionDuration.fade.enter');
+    transition-duration: ui.v('d.sys.transitionDuration.fade.through');
+    transition-property: opacity;
+  }
+
+  &__item {
+    animation-duration: ui.v('d.sys.transitionDuration.fade.through');
+    animation-fill-mode: forwards;
+    animation-name: ui.n('??start');
+    animation-timing-function: linear;
+
+    &:not(:last-child) {
+      @include ui.state('end') {
+        @extend %ripple-end;
+      }
+    }
+  }
+
+  &:not(:active) {
+    @include ui.subclass('item') {
+      @include ui.state('end') {
+        @extend %ripple-end;
+      }
+    }
+  }
+
+  @keyframes #{ui.n('??start')} {
+    0% {
+      @include ui.gradientOpacity(0);
+      clip-path: circle(000% at ui.v('??sys.x') ui.v('??sys.y'));
+    }
+    50% {
+      @include ui.gradientOpacity(ui.v('??backgroundOpacity', 1));
+      clip-path: circle(075% at ui.v('??sys.x') ui.v('??sys.y'));
+    }
+    100% {
+      @include ui.gradientOpacity(ui.v('??backgroundOpacity', 1));
+      clip-path: circle(150% at ui.v('??sys.x') ui.v('??sys.y'));
+    }
+  }
 }

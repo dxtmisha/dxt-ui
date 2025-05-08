@@ -4,7 +4,7 @@ interface RipplePropsToken {
 }
 
 export interface RipplePropsBasic {
-  // TODO: Location for a custom property / Место для пользовательского свойства
+  disabled?: boolean
 }
 
 /**
@@ -21,7 +21,6 @@ export interface RippleProps extends RipplePropsBasic, RipplePropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsRipple = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

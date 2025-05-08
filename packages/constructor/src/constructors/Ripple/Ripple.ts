@@ -1,13 +1,19 @@
 import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
 
+import { RippleItem } from './RippleItem.ts'
+
 import type { RippleComponents, RippleEmits, RippleSlots } from './types'
 import type { RippleProps } from './props'
 
 /**
- * Ripple
+ * Base Ripple class for working in Vue.
+ *
+ * Базовый класс Ripple для работы во Vue.
  */
 export class Ripple {
+  protected readonly item: RippleItem
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -21,11 +27,20 @@ export class Ripple {
   constructor(
     protected readonly props: RippleProps,
     protected readonly refs: ToRefs<RippleProps>,
-    protected readonly element: Ref<HTMLElement | undefined>,
+    protected readonly element: Ref<HTMLDivElement | undefined>,
     protected readonly className: string,
     protected readonly components?: DesignComp<RippleComponents, RippleProps>,
     protected readonly slots?: RippleSlots,
     protected readonly emits?: ConstrEmit<RippleEmits>
   ) {
+    this.item = new RippleItem(props, element, className)
   }
+
+  /**
+   * The click event adds a wave effect element.
+   *
+   * Событие клика добавляет элемент эффекта волна.
+   * @param event click event/ событие клика
+   */
+  readonly onClick = (event: MouseEvent) => this.item.add(event.offsetX, event.offsetY)
 }

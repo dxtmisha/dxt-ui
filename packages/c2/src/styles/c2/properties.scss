@@ -330,7 +330,8 @@
   '--c2-st-content-background-color-neutral-onsubtle': ('--c2-palette-dark60'),
   '--c2-st-content-background-color-neutral-subtle': ('--c2-palette-dark20'),
   '--c2-st-content-background-color-neutral-surface': ('--c2-palette-dark0'),
-  '--c2-progress-backgroundColor': ('--c2-palette-basic300'),));
+  '--c2-progress-backgroundColor': ('--c2-palette-basic300'),
+  '--c2-ripple-backgroundColor': ('--c2-palette-basic700'),));
 @include variables.setDesignShade((
   'c2': (0,20,40,60,80,100,200,300,400,500,600,700,800,900),));
 @include variables.setDesignsProperties((
@@ -19385,6 +19386,32 @@
           ),
         ),
       ),
+      'ripple':(
+        index: 'ripple',
+        name: 'c2-ripple',
+        type: 'component',
+        value: (
+          'backgroundColor':(
+            index: 'backgroundColor',
+            name: '--c2-ripple-backgroundColor',
+            type: 'var',
+            value: 'var(--c2-st-content-foreground-color-neutral-primary)',
+          ),
+          'backgroundOpacity':(
+            index: 'backgroundOpacity',
+            name: '--c2-ripple-backgroundOpacity',
+            type: 'var',
+            value: 'var(--c2-ot-opacity-25)',
+          ),
+          'item':(
+            index: 'item',
+            name: '&__item',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+        ),
+      ),
       'skeleton':(
         index: 'skeleton',
         name: 'c2-skeleton',
@@ -19973,6 +20000,20 @@
             index: 'inverse',
             name: '&--inverse',
             type: 'state',
+            value: (
+            ),
+          ),
+        ),
+      ),
+      'ripple':(
+        index: 'ripple',
+        name: 'd-ripple',
+        type: 'component',
+        value: (
+          'item':(
+            index: 'item',
+            name: '&__item',
+            type: 'subclass',
             value: (
             ),
           ),
