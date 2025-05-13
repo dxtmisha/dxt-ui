@@ -519,7 +519,7 @@ export class Api {
         data = await queryReturn(query)
       } else if ('data' in end) {
         data = end.data
-      } else if (query.headers.get('Content-Type') === 'application/json') {
+      } else if ((query.headers.get('Content-Type') ?? '').match('application/json')) {
         data = await query.json()
       } else {
         data = { data: await query.text() } as any

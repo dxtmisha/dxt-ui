@@ -799,11 +799,11 @@ export class GeoIntl {
       options.year = 'numeric'
     }
 
-    if (['full', 'datetime', 'date', undefined, 'year-month', 'month'].indexOf(type) !== -1) {
+    if (['full', 'datetime', 'date', undefined, 'year-month', 'month', 'day-month'].indexOf(type) !== -1) {
       options.month = display
     }
 
-    if (['full', 'datetime', 'date', undefined, 'day'].indexOf(type) !== -1) {
+    if (['full', 'datetime', 'date', undefined, 'day', 'day-month'].indexOf(type) !== -1) {
       options.day = '2-digit'
     }
 

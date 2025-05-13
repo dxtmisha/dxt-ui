@@ -23,14 +23,6 @@ export function executeUse<R, O extends any[]>(
   let item: R | undefined
   const id: string = `__execute_use${globalCode}::${getElementId()}`
 
-  const toUnmounted = () => {
-    if (unmounted) {
-      onUnmounted(() => {
-        item = undefined
-      })
-    }
-  }
-
   const method = (...args: O) => {
     if (
       !isGlobal
@@ -41,14 +33,26 @@ export function executeUse<R, O extends any[]>(
       if (itemInject) {
         return itemInject
       } else {
-        item = callback(...args)
+        let itemProvide: R | undefined = callback(...args)
 
-        provide(id, item)
-        toUnmounted()
+        provide(id, itemProvide)
+
+        if (unmounted) {
+          onUnmounted(() => {
+            itemProvide = undefined
+          })
+        }
+
+        return itemProvide
       }
     } else if (!item) {
       item = callback(...args)
-      toUnmounted()
+
+      if (unmounted) {
+        onUnmounted(() => {
+          item = undefined
+        })
+      }
     }
 
     return item

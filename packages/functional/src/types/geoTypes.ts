@@ -6,6 +6,7 @@ export type GeoDate =
   'year' |
   'month' |
   'day' |
+  'day-month' |
   'time' |
   'hour-minute' |
   'hour' |
