@@ -1,0 +1,87 @@
+@use "@dxt-ui/styles/properties" as ui;
+
+@mixin mixinButton {
+  @include ui.initByCustom('padding', 0);
+
+  @include ui.flexInlineCenter;
+
+  box-sizing: border-box;
+  position: relative;
+
+  padding: 0;
+
+  min-width: var(--sys-height, 0);
+
+  text-decoration: none;
+
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  @include ui.hover {
+    text-decoration: none;
+  }
+
+  @include ui.focus {
+    outline: none;
+  }
+
+  @include ui.disabled {
+    cursor: default;
+  }
+
+  @include ui.readonly {
+    cursor: default;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    order: 4;
+    @include ui.paddingX(ui.v('??padding'));
+    transition: opacity #{ui.v('d.sys.transitionDuration.standard')} linear;
+
+    @include ui.truncate;
+  }
+
+  &__icon,
+  &__trailing {
+    @include ui.initByCustom('margin', #{calc((var(--sys-height) - ui.v('?icon._width')) / 2)});
+    @include ui.marginLeft(ui.v('??margin'));
+    @include ui.marginRight(ui.v('??margin'));
+  }
+
+  &__label ~ &__icon {
+    @include ui.marginRight(#{calc(ui.v('??margin') - ui.v('??padding'))});
+  }
+
+  &__label ~ &__trailing {
+    @include ui.marginLeft(#{calc(ui.v('??margin') - ui.v('??padding'))});
+  }
+
+  &__loading#{'.'}#{ui.n('?progress--visible')} ~ * {
+    opacity: ui.v('??colorOpacity', 0);
+  }
+
+  &--icon {
+    @include ui.initByCustom('padding', #{calc(var(--sys-height) / 2)});
+  }
+
+  &--loading {
+    cursor: default;
+  }
+
+  &--grid {
+    display: inline-grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, auto));
+    grid-template-rows: 1fr;
+  }
+
+  &--inverse {
+    --sys-color: unset !important;
+    --sys-background: var(--sys-color) !important;
+    --sys-gradient: var(--sys-color) !important;
+  }
+}

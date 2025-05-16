@@ -76,7 +76,11 @@ export class Icon {
       }))
     )
 
-    this.skeleton = new SkeletonInclude(classDesign)
+    this.skeleton = new SkeletonInclude(
+      props,
+      classDesign,
+      ['classBackgroundVariant']
+    )
   }
 
   /**
@@ -88,7 +92,7 @@ export class Icon {
    * Values for the class/ Значения для класса
    */
   readonly classes = computed<ConstrClassObject>(() => ({
-    [this.skeleton.classesSkeleton.classBackgroundVariant]: Boolean(this.props.isSkeleton)
+    ...this.skeleton.classes.value
   }))
 
   /**

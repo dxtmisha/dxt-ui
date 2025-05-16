@@ -1,0 +1,66 @@
+{
+  "padding": {
+    "_type": "var"
+  },
+  "border-radius": "0",
+  "transition-property": "grid-template-columns, background-color, background-image, border, box-shadow",
+  "transition-duration": "{d.sys.transitionDuration.fade.enter}",
+  "transition-function": "{d.sys.transitionFunction.standard}",
+  "#label": {},
+  "#icon": {},
+  "#trailing": {},
+  "#loading": {
+    "color-opacity": {
+      "_type": "var"
+    }
+  },
+  "focus": {},
+  "hover": {
+    "transition-duration": "{d.sys.transitionDuration.sm}"
+  },
+  "active": {
+    "transition-duration": "{d.sys.transitionDuration.sm}"
+  },
+  "selected": {
+    "_type": "state"
+  },
+  "readonly": {
+    "_type": "state"
+  },
+  "disabled": {
+    "transition-duration": "{d.sys.transitionDuration.sm}"
+  },
+  "~adaptive": {
+    "~icon": {
+      "justify-content": "flex-start",
+      "& > .??__icon": {
+        "padding": {
+          "value": "calc((var(--sys-height) - {?icon-_width}) / 2)",
+          "_important": true
+        }
+      },
+      "& > *:not(.??__icon)": {
+        "display": "none"
+      }
+    },
+    "~block": {
+      "width": "100%"
+    },
+    "~auto": {
+      "width": "fit-content"
+    }
+  },
+  "~inverse": {},
+  "~grid": {},
+  "~textAlign": {
+    "left": {
+      "text-align": "left"
+    },
+    "center": {
+      "text-align": "center"
+    },
+    "right": {
+      "text-align": "right"
+    }
+  }
+}

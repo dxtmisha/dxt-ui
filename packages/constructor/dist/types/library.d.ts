@@ -1,1 +1,2 @@
-export * from './functions/node/getConstructorProperties.ts';
+export * from '../library'
+export {}

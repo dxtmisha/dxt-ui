@@ -1,5 +1,6 @@
 export * from './Progress'
 export * from './ProgressDesign.tsx'
+export * from './ProgressInclude'
 export * from './props'
 export * from './types'
-export * from './basicTypes.ts'
+export * from './basicTypes'

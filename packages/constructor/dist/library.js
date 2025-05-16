@@ -1,28 +1,6 @@
-var Xn = Object.defineProperty;
-var eo = (t, e, n) => e in t ? Xn(t, e, { enumerable: !0, configurable: !0, writable: !0, value: n }) : t[e] = n;
-var f = (t, e, n) => eo(t, typeof e != "symbol" ? e + "" : e, n);
-function dn(t) {
-  return t instanceof Function || typeof t == "function";
-}
-function q(t) {
-  return dn(t) ? t() : t;
-}
-async function to(t) {
-  const e = q(t);
-  return e instanceof Promise ? await e : e;
-}
-function Ne(t) {
-  return !!(t && typeof t == "object");
-}
-function H(t, e) {
-  if (Ne(t)) {
-    const n = [];
-    return t instanceof Map ? t.forEach((o, s) => n.push(e(o, s, t))) : Array.isArray(t) ? t.forEach((o, s) => n.push(e(o, s, t))) : Object.entries(t).forEach(
-      ([o, s]) => n.push(e(s, o, t))
-    ), n.filter((o) => o !== void 0);
-  }
-  return [];
-}
+var Cn = Object.defineProperty;
+var vn = (t, e, n) => e in t ? Cn(t, e, { enumerable: !0, configurable: !0, writable: !0, value: n }) : t[e] = n;
+var l = (t, e, n) => vn(t, typeof e != "symbol" ? e + "" : e, n);
 /**
 * @vue/shared v3.5.13
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
@@ -30,61 +8,54 @@ function H(t, e) {
 **/
 /*! #__NO_SIDE_EFFECTS__ */
 // @__NO_SIDE_EFFECTS__
-function no(t) {
+function kn(t) {
   const e = /* @__PURE__ */ Object.create(null);
   for (const n of t.split(",")) e[n] = 1;
   return (n) => n in e;
 }
-const L = process.env.NODE_ENV !== "production" ? Object.freeze({}) : {};
+const Ke = process.env.NODE_ENV !== "production" ? Object.freeze({}) : {};
 process.env.NODE_ENV !== "production" && Object.freeze([]);
-const ye = () => {
-}, oo = (t) => t.charCodeAt(0) === 111 && t.charCodeAt(1) === 110 && // uppercase letter
-(t.charCodeAt(2) > 122 || t.charCodeAt(2) < 97), P = Object.assign, so = Object.prototype.hasOwnProperty, _ = (t, e) => so.call(t, e), D = Array.isArray, me = (t) => et(t) === "[object Map]", ro = (t) => et(t) === "[object Set]", z = (t) => typeof t == "function", j = (t) => typeof t == "string", Te = (t) => typeof t == "symbol", N = (t) => t !== null && typeof t == "object", ao = (t) => (N(t) || z(t)) && z(t.then) && z(t.catch), io = Object.prototype.toString, et = (t) => io.call(t), gn = (t) => et(t).slice(8, -1), uo = (t) => et(t) === "[object Object]", bt = (t) => j(t) && t !== "NaN" && t[0] !== "-" && "" + parseInt(t, 10) === t, co = (t) => {
+const Ot = () => {
+}, En = (t) => t.charCodeAt(0) === 111 && t.charCodeAt(1) === 110 && // uppercase letter
+(t.charCodeAt(2) > 122 || t.charCodeAt(2) < 97), Z = Object.assign, _n = Object.prototype.hasOwnProperty, Ue = (t, e) => _n.call(t, e), M = Array.isArray, ce = (t) => Tt(t) === "[object Map]", K = (t) => typeof t == "function", I = (t) => typeof t == "string", ve = (t) => typeof t == "symbol", A = (t) => t !== null && typeof t == "object", An = Object.prototype.toString, Tt = (t) => An.call(t), Pt = (t) => Tt(t).slice(8, -1), Xe = (t) => I(t) && t !== "NaN" && t[0] !== "-" && "" + parseInt(t, 10) === t, zn = (t) => {
   const e = /* @__PURE__ */ Object.create(null);
   return (n) => e[n] || (e[n] = t(n));
-}, lo = co((t) => t.charAt(0).toUpperCase() + t.slice(1)), Q = (t, e) => !Object.is(t, e), ho = (t, e, n, o = !1) => {
-  Object.defineProperty(t, e, {
-    configurable: !0,
-    enumerable: !1,
-    writable: o,
-    value: n
-  });
-};
-let Kt;
-const tt = () => Kt || (Kt = typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof window < "u" ? window : typeof global < "u" ? global : {});
-function vt(t) {
-  if (D(t)) {
+}, Sn = zn((t) => t.charAt(0).toUpperCase() + t.slice(1)), oe = (t, e) => !Object.is(t, e);
+let ft;
+const Oe = () => ft || (ft = typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof window < "u" ? window : typeof global < "u" ? global : {});
+function et(t) {
+  if (M(t)) {
     const e = {};
     for (let n = 0; n < t.length; n++) {
-      const o = t[n], s = j(o) ? yo(o) : vt(o);
+      const o = t[n], s = I(o) ? Rn(o) : et(o);
       if (s)
-        for (const r in s)
-          e[r] = s[r];
+        for (const a in s)
+          e[a] = s[a];
     }
     return e;
-  } else if (j(t) || N(t))
+  } else if (I(t) || A(t))
     return t;
 }
-const fo = /;(?![^(]*\))/g, po = /:([^]+)/, go = /\/\*[^]*?\*\//g;
-function yo(t) {
+const bn = /;(?![^(]*\))/g, wn = /:([^]+)/, Nn = /\/\*[^]*?\*\//g;
+function Rn(t) {
   const e = {};
-  return t.replace(go, "").split(fo).forEach((n) => {
+  return t.replace(Nn, "").split(bn).forEach((n) => {
     if (n) {
-      const o = n.split(po);
+      const o = n.split(wn);
       o.length > 1 && (e[o[0].trim()] = o[1].trim());
     }
   }), e;
 }
-function Nt(t) {
+function tt(t) {
   let e = "";
-  if (j(t))
+  if (I(t))
     e = t;
-  else if (D(t))
+  else if (M(t))
     for (let n = 0; n < t.length; n++) {
-      const o = Nt(t[n]);
+      const o = tt(t[n]);
       o && (e += o + " ");
     }
-  else if (N(t))
+  else if (A(t))
     for (const n in t)
       t[n] && (e += n + " ");
   return e.trim();
@@ -94,86 +65,34 @@ function Nt(t) {
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
-function U(t, ...e) {
+function q(t, ...e) {
   console.warn(`[Vue warn] ${t}`, ...e);
 }
-let m;
-const it = /* @__PURE__ */ new WeakSet();
-class mo {
-  constructor(e) {
-    this.fn = e, this.deps = void 0, this.depsTail = void 0, this.flags = 5, this.next = void 0, this.cleanup = void 0, this.scheduler = void 0;
-  }
-  pause() {
-    this.flags |= 64;
-  }
-  resume() {
-    this.flags & 64 && (this.flags &= -65, it.has(this) && (it.delete(this), this.trigger()));
-  }
-  /**
-   * @internal
-   */
-  notify() {
-    this.flags & 2 && !(this.flags & 32) || this.flags & 8 || mn(this);
-  }
-  run() {
-    if (!(this.flags & 1))
-      return this.fn();
-    this.flags |= 2, Ht(this), Dn(this);
-    const e = m, n = V;
-    m = this, V = !0;
-    try {
-      return this.fn();
-    } finally {
-      process.env.NODE_ENV !== "production" && m !== this && U(
-        "Active effect was not restored correctly - this is likely a Vue internal bug."
-      ), Cn(this), m = e, V = n, this.flags &= -3;
-    }
-  }
-  stop() {
-    if (this.flags & 1) {
-      for (let e = this.deps; e; e = e.nextDep)
-        Rt(e);
-      this.deps = this.depsTail = void 0, Ht(this), this.onStop && this.onStop(), this.flags &= -2;
-    }
-  }
-  trigger() {
-    this.flags & 64 ? it.add(this) : this.scheduler ? this.scheduler() : this.runIfDirty();
-  }
-  /**
-   * @internal
-   */
-  runIfDirty() {
-    Dt(this) && this.run();
-  }
-  get dirty() {
-    return Dt(this);
-  }
-}
-let yn = 0, Se, ze;
-function mn(t, e = !1) {
+let d, It = 0, le, he;
+function On(t, e = !1) {
   if (t.flags |= 8, e) {
-    t.next = ze, ze = t;
+    t.next = he, he = t;
     return;
   }
-  t.next = Se, Se = t;
+  t.next = le, le = t;
 }
-function Ot() {
-  yn++;
+function nt() {
+  It++;
 }
-function Pt() {
-  if (--yn > 0)
+function ot() {
+  if (--It > 0)
     return;
-  if (ze) {
-    let e = ze;
-    for (ze = void 0; e; ) {
+  if (he) {
+    let e = he;
+    for (he = void 0; e; ) {
       const n = e.next;
       e.next = void 0, e.flags &= -9, e = n;
     }
   }
   let t;
-  for (; Se; ) {
-    let e = Se;
-    for (Se = void 0; e; ) {
+  for (; le; ) {
+    let e = le;
+    for (le = void 0; e; ) {
       const n = e.next;
       if (e.next = void 0, e.flags &= -9, e.flags & 1)
         try {
@@ -186,118 +105,106 @@ function Pt() {
   }
   if (t) throw t;
 }
-function Dn(t) {
+function Tn(t) {
   for (let e = t.deps; e; e = e.nextDep)
     e.version = -1, e.prevActiveLink = e.dep.activeLink, e.dep.activeLink = e;
 }
-function Cn(t) {
+function Pn(t) {
   let e, n = t.depsTail, o = n;
   for (; o; ) {
     const s = o.prevDep;
-    o.version === -1 ? (o === n && (n = s), Rt(o), Do(o)) : e = o, o.dep.activeLink = o.prevActiveLink, o.prevActiveLink = void 0, o = s;
+    o.version === -1 ? (o === n && (n = s), xt(o), Ln(o)) : e = o, o.dep.activeLink = o.prevActiveLink, o.prevActiveLink = void 0, o = s;
   }
   t.deps = e, t.depsTail = n;
 }
-function Dt(t) {
+function In(t) {
   for (let e = t.deps; e; e = e.nextDep)
-    if (e.dep.version !== e.version || e.dep.computed && (Mn(e.dep.computed) || e.dep.version !== e.version))
+    if (e.dep.version !== e.version || e.dep.computed && (Lt(e.dep.computed) || e.dep.version !== e.version))
       return !0;
   return !!t._dirty;
 }
-function Mn(t) {
-  if (t.flags & 4 && !(t.flags & 16) || (t.flags &= -17, t.globalVersion === Oe))
+function Lt(t) {
+  if (t.flags & 4 && !(t.flags & 16) || (t.flags &= -17, t.globalVersion === de))
     return;
-  t.globalVersion = Oe;
+  t.globalVersion = de;
   const e = t.dep;
-  if (t.flags |= 2, e.version > 0 && !t.isSSR && t.deps && !Dt(t)) {
+  if (t.flags |= 2, e.version > 0 && !t.isSSR && t.deps && !In(t)) {
     t.flags &= -3;
     return;
   }
-  const n = m, o = V;
-  m = t, V = !0;
+  const n = d, o = $;
+  d = t, $ = !0;
   try {
-    Dn(t);
+    Tn(t);
     const s = t.fn(t._value);
-    (e.version === 0 || Q(s, t._value)) && (t._value = s, e.version++);
+    (e.version === 0 || oe(s, t._value)) && (t._value = s, e.version++);
   } catch (s) {
     throw e.version++, s;
   } finally {
-    m = n, V = o, Cn(t), t.flags &= -3;
+    d = n, $ = o, Pn(t), t.flags &= -3;
   }
 }
-function Rt(t, e = !1) {
+function xt(t, e = !1) {
   const { dep: n, prevSub: o, nextSub: s } = t;
   if (o && (o.nextSub = s, t.prevSub = void 0), s && (s.prevSub = o, t.nextSub = void 0), process.env.NODE_ENV !== "production" && n.subsHead === t && (n.subsHead = s), n.subs === t && (n.subs = o, !o && n.computed)) {
     n.computed.flags &= -5;
-    for (let r = n.computed.deps; r; r = r.nextDep)
-      Rt(r, !0);
+    for (let a = n.computed.deps; a; a = a.nextDep)
+      xt(a, !0);
   }
   !e && !--n.sc && n.map && n.map.delete(n.key);
 }
-function Do(t) {
+function Ln(t) {
   const { prevDep: e, nextDep: n } = t;
   e && (e.nextDep = n, t.prevDep = void 0), n && (n.prevDep = e, t.nextDep = void 0);
 }
-let V = !0;
-const En = [];
-function nt() {
-  En.push(V), V = !1;
+let $ = !0;
+const Vt = [];
+function st() {
+  Vt.push($), $ = !1;
 }
-function ot() {
-  const t = En.pop();
-  V = t === void 0 ? !0 : t;
+function at() {
+  const t = Vt.pop();
+  $ = t === void 0 ? !0 : t;
 }
-function Ht(t) {
-  const { cleanup: e } = t;
-  if (t.cleanup = void 0, e) {
-    const n = m;
-    m = void 0;
-    try {
-      e();
-    } finally {
-      m = n;
-    }
-  }
-}
-let Oe = 0;
-class Co {
+let de = 0;
+class xn {
   constructor(e, n) {
     this.sub = e, this.dep = n, this.version = n.version, this.nextDep = this.prevDep = this.nextSub = this.prevSub = this.prevActiveLink = void 0;
   }
 }
-class Tt {
+class rt {
   constructor(e) {
     this.computed = e, this.version = 0, this.activeLink = void 0, this.subs = void 0, this.map = void 0, this.key = void 0, this.sc = 0, process.env.NODE_ENV !== "production" && (this.subsHead = void 0);
   }
   track(e) {
-    if (!m || !V || m === this.computed)
+    if (!d || !$ || d === this.computed)
       return;
     let n = this.activeLink;
-    if (n === void 0 || n.sub !== m)
-      n = this.activeLink = new Co(m, this), m.deps ? (n.prevDep = m.depsTail, m.depsTail.nextDep = n, m.depsTail = n) : m.deps = m.depsTail = n, _n(n);
+    if (n === void 0 || n.sub !== d)
+      n = this.activeLink = new xn(d, this), d.deps ? (n.prevDep = d.depsTail, d.depsTail.nextDep = n, d.depsTail = n) : d.deps = d.depsTail = n, Ft(n);
     else if (n.version === -1 && (n.version = this.version, n.nextDep)) {
       const o = n.nextDep;
-      o.prevDep = n.prevDep, n.prevDep && (n.prevDep.nextDep = o), n.prevDep = m.depsTail, n.nextDep = void 0, m.depsTail.nextDep = n, m.depsTail = n, m.deps === n && (m.deps = o);
+      o.prevDep = n.prevDep, n.prevDep && (n.prevDep.nextDep = o), n.prevDep = d.depsTail, n.nextDep = void 0, d.depsTail.nextDep = n, d.depsTail = n, d.deps === n && (d.deps = o);
     }
-    return process.env.NODE_ENV !== "production" && m.onTrack && m.onTrack(
-      P(
+    return process.env.NODE_ENV !== "production" && d.onTrack && d.onTrack(
+      Z(
         {
-          effect: m
+          effect: d
         },
         e
       )
     ), n;
   }
   trigger(e) {
-    this.version++, Oe++, this.notify(e);
+    this.version++, de++, this.notify(e);
   }
   notify(e) {
-    Ot();
+    nt();
     try {
       if (process.env.NODE_ENV !== "production")
         for (let n = this.subsHead; n; n = n.nextSub)
           n.sub.onTrigger && !(n.sub.flags & 8) && n.sub.onTrigger(
-            P(
+            Z(
               {
                 effect: n.sub
               },
@@ -307,45 +214,45 @@ class Tt {
       for (let n = this.subs; n; n = n.prevSub)
         n.sub.notify() && n.sub.dep.notify();
     } finally {
-      Pt();
+      ot();
     }
   }
 }
-function _n(t) {
+function Ft(t) {
   if (t.dep.sc++, t.sub.flags & 4) {
     const e = t.dep.computed;
     if (e && !t.dep.subs) {
       e.flags |= 20;
       for (let o = e.deps; o; o = o.nextDep)
-        _n(o);
+        Ft(o);
     }
     const n = t.dep.subs;
     n !== t && (t.prevSub = n, n && (n.nextSub = t)), process.env.NODE_ENV !== "production" && t.dep.subsHead === void 0 && (t.dep.subsHead = t), t.dep.subs = t;
   }
 }
-const Ct = /* @__PURE__ */ new WeakMap(), re = Symbol(
+const Se = /* @__PURE__ */ new WeakMap(), J = Symbol(
   process.env.NODE_ENV !== "production" ? "Object iterate" : ""
-), Mt = Symbol(
+), He = Symbol(
   process.env.NODE_ENV !== "production" ? "Map keys iterate" : ""
-), Pe = Symbol(
+), ye = Symbol(
   process.env.NODE_ENV !== "production" ? "Array iterate" : ""
 );
-function S(t, e, n) {
-  if (V && m) {
-    let o = Ct.get(t);
-    o || Ct.set(t, o = /* @__PURE__ */ new Map());
+function k(t, e, n) {
+  if ($ && d) {
+    let o = Se.get(t);
+    o || Se.set(t, o = /* @__PURE__ */ new Map());
     let s = o.get(n);
-    s || (o.set(n, s = new Tt()), s.map = o, s.key = n), process.env.NODE_ENV !== "production" ? s.track({
+    s || (o.set(n, s = new rt()), s.map = o, s.key = n), process.env.NODE_ENV !== "production" ? s.track({
       target: t,
       type: e,
       key: n
     }) : s.track();
   }
 }
-function J(t, e, n, o, s, r) {
-  const a = Ct.get(t);
-  if (!a) {
-    Oe++;
+function F(t, e, n, o, s, a) {
+  const r = Se.get(t);
+  if (!r) {
+    de++;
     return;
   }
   const i = (c) => {
@@ -355,204 +262,208 @@ function J(t, e, n, o, s, r) {
       key: n,
       newValue: o,
       oldValue: s,
-      oldTarget: r
+      oldTarget: a
     }) : c.trigger());
   };
-  if (Ot(), e === "clear")
-    a.forEach(i);
+  if (nt(), e === "clear")
+    r.forEach(i);
   else {
-    const c = D(t), l = c && bt(n);
+    const c = M(t), h = c && Xe(n);
     if (c && n === "length") {
       const p = Number(o);
-      a.forEach((u, h) => {
-        (h === "length" || h === Pe || !Te(h) && h >= p) && i(u);
+      r.forEach((u, f) => {
+        (f === "length" || f === ye || !ve(f) && f >= p) && i(u);
       });
     } else
-      switch ((n !== void 0 || a.has(void 0)) && i(a.get(n)), l && i(a.get(Pe)), e) {
+      switch ((n !== void 0 || r.has(void 0)) && i(r.get(n)), h && i(r.get(ye)), e) {
         case "add":
-          c ? l && i(a.get("length")) : (i(a.get(re)), me(t) && i(a.get(Mt)));
+          c ? h && i(r.get("length")) : (i(r.get(J)), ce(t) && i(r.get(He)));
           break;
         case "delete":
-          c || (i(a.get(re)), me(t) && i(a.get(Mt)));
+          c || (i(r.get(J)), ce(t) && i(r.get(He)));
           break;
         case "set":
-          me(t) && i(a.get(re));
+          ce(t) && i(r.get(J));
           break;
       }
   }
-  Pt();
+  ot();
 }
-function le(t) {
+function Vn(t, e) {
+  const n = Se.get(t);
+  return n && n.get(e);
+}
+function Q(t) {
   const e = g(t);
-  return e === t ? e : (S(e, "iterate", Pe), O(t) ? e : e.map(v));
+  return e === t ? e : (k(e, "iterate", ye), S(t) ? e : e.map(v));
 }
-function It(t) {
-  return S(t = g(t), "iterate", Pe), t;
+function it(t) {
+  return k(t = g(t), "iterate", ye), t;
 }
-const Mo = {
+const Fn = {
   __proto__: null,
   [Symbol.iterator]() {
-    return ut(this, Symbol.iterator, v);
+    return Pe(this, Symbol.iterator, v);
   },
   concat(...t) {
-    return le(this).concat(
-      ...t.map((e) => D(e) ? le(e) : e)
+    return Q(this).concat(
+      ...t.map((e) => M(e) ? Q(e) : e)
     );
   },
   entries() {
-    return ut(this, "entries", (t) => (t[1] = v(t[1]), t));
+    return Pe(this, "entries", (t) => (t[1] = v(t[1]), t));
   },
   every(t, e) {
-    return F(this, "every", t, e, void 0, arguments);
+    return R(this, "every", t, e, void 0, arguments);
   },
   filter(t, e) {
-    return F(this, "filter", t, e, (n) => n.map(v), arguments);
+    return R(this, "filter", t, e, (n) => n.map(v), arguments);
   },
   find(t, e) {
-    return F(this, "find", t, e, v, arguments);
+    return R(this, "find", t, e, v, arguments);
   },
   findIndex(t, e) {
-    return F(this, "findIndex", t, e, void 0, arguments);
+    return R(this, "findIndex", t, e, void 0, arguments);
   },
   findLast(t, e) {
-    return F(this, "findLast", t, e, v, arguments);
+    return R(this, "findLast", t, e, v, arguments);
   },
   findLastIndex(t, e) {
-    return F(this, "findLastIndex", t, e, void 0, arguments);
+    return R(this, "findLastIndex", t, e, void 0, arguments);
   },
   // flat, flatMap could benefit from ARRAY_ITERATE but are not straight-forward to implement
   forEach(t, e) {
-    return F(this, "forEach", t, e, void 0, arguments);
+    return R(this, "forEach", t, e, void 0, arguments);
   },
   includes(...t) {
-    return ct(this, "includes", t);
+    return Ie(this, "includes", t);
   },
   indexOf(...t) {
-    return ct(this, "indexOf", t);
+    return Ie(this, "indexOf", t);
   },
   join(t) {
-    return le(this).join(t);
+    return Q(this).join(t);
   },
   // keys() iterator only reads `length`, no optimisation required
   lastIndexOf(...t) {
-    return ct(this, "lastIndexOf", t);
+    return Ie(this, "lastIndexOf", t);
   },
   map(t, e) {
-    return F(this, "map", t, e, void 0, arguments);
+    return R(this, "map", t, e, void 0, arguments);
   },
   pop() {
-    return Ee(this, "pop");
+    return ie(this, "pop");
   },
   push(...t) {
-    return Ee(this, "push", t);
+    return ie(this, "push", t);
   },
   reduce(t, ...e) {
-    return Ut(this, "reduce", t, e);
+    return pt(this, "reduce", t, e);
   },
   reduceRight(t, ...e) {
-    return Ut(this, "reduceRight", t, e);
+    return pt(this, "reduceRight", t, e);
   },
   shift() {
-    return Ee(this, "shift");
+    return ie(this, "shift");
   },
   // slice could use ARRAY_ITERATE but also seems to beg for range tracking
   some(t, e) {
-    return F(this, "some", t, e, void 0, arguments);
+    return R(this, "some", t, e, void 0, arguments);
   },
   splice(...t) {
-    return Ee(this, "splice", t);
+    return ie(this, "splice", t);
   },
   toReversed() {
-    return le(this).toReversed();
+    return Q(this).toReversed();
   },
   toSorted(t) {
-    return le(this).toSorted(t);
+    return Q(this).toSorted(t);
   },
   toSpliced(...t) {
-    return le(this).toSpliced(...t);
+    return Q(this).toSpliced(...t);
   },
   unshift(...t) {
-    return Ee(this, "unshift", t);
+    return ie(this, "unshift", t);
   },
   values() {
-    return ut(this, "values", v);
+    return Pe(this, "values", v);
   }
 };
-function ut(t, e, n) {
-  const o = It(t), s = o[e]();
-  return o !== t && !O(t) && (s._next = s.next, s.next = () => {
-    const r = s._next();
-    return r.value && (r.value = n(r.value)), r;
+function Pe(t, e, n) {
+  const o = it(t), s = o[e]();
+  return o !== t && !S(t) && (s._next = s.next, s.next = () => {
+    const a = s._next();
+    return a.value && (a.value = n(a.value)), a;
   }), s;
 }
-const Eo = Array.prototype;
-function F(t, e, n, o, s, r) {
-  const a = It(t), i = a !== t && !O(t), c = a[e];
-  if (c !== Eo[e]) {
-    const u = c.apply(t, r);
+const jn = Array.prototype;
+function R(t, e, n, o, s, a) {
+  const r = it(t), i = r !== t && !S(t), c = r[e];
+  if (c !== jn[e]) {
+    const u = c.apply(t, a);
     return i ? v(u) : u;
   }
-  let l = n;
-  a !== t && (i ? l = function(u, h) {
-    return n.call(this, v(u), h, t);
-  } : n.length > 2 && (l = function(u, h) {
-    return n.call(this, u, h, t);
+  let h = n;
+  r !== t && (i ? h = function(u, f) {
+    return n.call(this, v(u), f, t);
+  } : n.length > 2 && (h = function(u, f) {
+    return n.call(this, u, f, t);
   }));
-  const p = c.call(a, l, o);
+  const p = c.call(r, h, o);
   return i && s ? s(p) : p;
 }
-function Ut(t, e, n, o) {
-  const s = It(t);
-  let r = n;
-  return s !== t && (O(t) ? n.length > 3 && (r = function(a, i, c) {
-    return n.call(this, a, i, c, t);
-  }) : r = function(a, i, c) {
-    return n.call(this, a, v(i), c, t);
-  }), s[e](r, ...o);
+function pt(t, e, n, o) {
+  const s = it(t);
+  let a = n;
+  return s !== t && (S(t) ? n.length > 3 && (a = function(r, i, c) {
+    return n.call(this, r, i, c, t);
+  }) : a = function(r, i, c) {
+    return n.call(this, r, v(i), c, t);
+  }), s[e](a, ...o);
 }
-function ct(t, e, n) {
+function Ie(t, e, n) {
   const o = g(t);
-  S(o, "iterate", Pe);
+  k(o, "iterate", ye);
   const s = o[e](...n);
-  return (s === -1 || s === !1) && Ue(n[0]) ? (n[0] = g(n[0]), o[e](...n)) : s;
+  return (s === -1 || s === !1) && me(n[0]) ? (n[0] = g(n[0]), o[e](...n)) : s;
 }
-function Ee(t, e, n = []) {
-  nt(), Ot();
+function ie(t, e, n = []) {
+  st(), nt();
   const o = g(t)[e].apply(t, n);
-  return Pt(), ot(), o;
+  return ot(), at(), o;
 }
-const _o = /* @__PURE__ */ no("__proto__,__v_isRef,__isVue"), An = new Set(
-  /* @__PURE__ */ Object.getOwnPropertyNames(Symbol).filter((t) => t !== "arguments" && t !== "caller").map((t) => Symbol[t]).filter(Te)
+const $n = /* @__PURE__ */ kn("__proto__,__v_isRef,__isVue"), jt = new Set(
+  /* @__PURE__ */ Object.getOwnPropertyNames(Symbol).filter((t) => t !== "arguments" && t !== "caller").map((t) => Symbol[t]).filter(ve)
 );
-function Ao(t) {
-  Te(t) || (t = String(t));
+function Bn(t) {
+  ve(t) || (t = String(t));
   const e = g(this);
-  return S(e, "has", t), e.hasOwnProperty(t);
+  return k(e, "has", t), e.hasOwnProperty(t);
 }
-class Sn {
+class $t {
   constructor(e = !1, n = !1) {
     this._isReadonly = e, this._isShallow = n;
   }
   get(e, n, o) {
     if (n === "__v_skip") return e.__v_skip;
-    const s = this._isReadonly, r = this._isShallow;
+    const s = this._isReadonly, a = this._isShallow;
     if (n === "__v_isReactive")
       return !s;
     if (n === "__v_isReadonly")
       return s;
     if (n === "__v_isShallow")
-      return r;
+      return a;
     if (n === "__v_raw")
-      return o === (s ? r ? bn : wn : r ? Ro : kn).get(e) || // receiver is not the reactive proxy, but has the same prototype
+      return o === (s ? a ? Qn : Ut : a ? qn : Kt).get(e) || // receiver is not the reactive proxy, but has the same prototype
       // this means the receiver is a user proxy of the reactive proxy
       Object.getPrototypeOf(e) === Object.getPrototypeOf(o) ? e : void 0;
-    const a = D(e);
+    const r = M(e);
     if (!s) {
       let c;
-      if (a && (c = Mo[n]))
+      if (r && (c = Fn[n]))
         return c;
       if (n === "hasOwnProperty")
-        return Ao;
+        return Bn;
     }
     const i = Reflect.get(
       e,
@@ -560,78 +471,78 @@ class Sn {
       // if this is a proxy wrapping a ref, return methods using the raw ref
       // as receiver so that we don't have to call `toRaw` on the ref in all
       // its class methods
-      k(e) ? e : o
+      b(e) ? e : o
     );
-    return (Te(n) ? An.has(n) : _o(n)) || (s || S(e, "get", n), r) ? i : k(i) ? a && bt(n) ? i : i.value : N(i) ? s ? Nn(i) : vn(i) : i;
+    return (ve(n) ? jt.has(n) : $n(n)) || (s || k(e, "get", n), a) ? i : b(i) ? r && Xe(n) ? i : i.value : A(i) ? s ? Wt(i) : Ht(i) : i;
   }
 }
-class So extends Sn {
+class Kn extends $t {
   constructor(e = !1) {
     super(!1, e);
   }
   set(e, n, o, s) {
-    let r = e[n];
+    let a = e[n];
     if (!this._isShallow) {
-      const c = W(r);
-      if (!O(o) && !W(o) && (r = g(r), o = g(o)), !D(e) && k(r) && !k(o))
-        return c ? !1 : (r.value = o, !0);
+      const c = L(a);
+      if (!S(o) && !L(o) && (a = g(a), o = g(o)), !M(e) && b(a) && !b(o))
+        return c ? !1 : (a.value = o, !0);
     }
-    const a = D(e) && bt(n) ? Number(n) < e.length : _(e, n), i = Reflect.set(
+    const r = M(e) && Xe(n) ? Number(n) < e.length : Ue(e, n), i = Reflect.set(
       e,
       n,
       o,
-      k(e) ? e : s
+      b(e) ? e : s
     );
-    return e === g(s) && (a ? Q(o, r) && J(e, "set", n, o, r) : J(e, "add", n, o)), i;
+    return e === g(s) && (r ? oe(o, a) && F(e, "set", n, o, a) : F(e, "add", n, o)), i;
   }
   deleteProperty(e, n) {
-    const o = _(e, n), s = e[n], r = Reflect.deleteProperty(e, n);
-    return r && o && J(e, "delete", n, void 0, s), r;
+    const o = Ue(e, n), s = e[n], a = Reflect.deleteProperty(e, n);
+    return a && o && F(e, "delete", n, void 0, s), a;
   }
   has(e, n) {
     const o = Reflect.has(e, n);
-    return (!Te(n) || !An.has(n)) && S(e, "has", n), o;
+    return (!ve(n) || !jt.has(n)) && k(e, "has", n), o;
   }
   ownKeys(e) {
-    return S(
+    return k(
       e,
       "iterate",
-      D(e) ? "length" : re
+      M(e) ? "length" : J
     ), Reflect.ownKeys(e);
   }
 }
-class zn extends Sn {
+class Un extends $t {
   constructor(e = !1) {
     super(!0, e);
   }
   set(e, n) {
-    return process.env.NODE_ENV !== "production" && U(
+    return process.env.NODE_ENV !== "production" && q(
       `Set operation on key "${String(n)}" failed: target is readonly.`,
       e
     ), !0;
   }
   deleteProperty(e, n) {
-    return process.env.NODE_ENV !== "production" && U(
+    return process.env.NODE_ENV !== "production" && q(
       `Delete operation on key "${String(n)}" failed: target is readonly.`,
       e
     ), !0;
   }
 }
-const zo = /* @__PURE__ */ new So(), ko = /* @__PURE__ */ new zn(), wo = /* @__PURE__ */ new zn(!0), Et = (t) => t, Ve = (t) => Reflect.getPrototypeOf(t);
-function bo(t, e, n) {
+const Hn = /* @__PURE__ */ new Kn(), Wn = /* @__PURE__ */ new Un(), We = (t) => t, ke = (t) => Reflect.getPrototypeOf(t);
+function Jn(t, e, n) {
   return function(...o) {
-    const s = this.__v_raw, r = g(s), a = me(r), i = t === "entries" || t === Symbol.iterator && a, c = t === "keys" && a, l = s[t](...o), p = n ? Et : e ? _t : v;
-    return !e && S(
-      r,
+    const s = this.__v_raw, a = g(s), r = ce(a), i = t === "entries" || t === Symbol.iterator && r, c = t === "keys" && r, h = s[t](...o), p = n ? We : e ? Je : v;
+    return !e && k(
+      a,
       "iterate",
-      c ? Mt : re
+      c ? He : J
     ), {
       // iterator protocol
       next() {
-        const { value: u, done: h } = l.next();
-        return h ? { value: u, done: h } : {
+        const { value: u, done: f } = h.next();
+        return f ? { value: u, done: f } : {
           value: i ? [p(u[0]), p(u[1])] : p(u),
-          done: h
+          done: f
         };
       },
       // iterable protocol
@@ -641,79 +552,79 @@ function bo(t, e, n) {
     };
   };
 }
-function $e(t) {
+function Ee(t) {
   return function(...e) {
     if (process.env.NODE_ENV !== "production") {
       const n = e[0] ? `on key "${e[0]}" ` : "";
-      U(
-        `${lo(t)} operation ${n}failed: target is readonly.`,
+      q(
+        `${Sn(t)} operation ${n}failed: target is readonly.`,
         g(this)
       );
     }
     return t === "delete" ? !1 : t === "clear" ? void 0 : this;
   };
 }
-function vo(t, e) {
+function Gn(t, e) {
   const n = {
     get(s) {
-      const r = this.__v_raw, a = g(r), i = g(s);
-      t || (Q(s, i) && S(a, "get", s), S(a, "get", i));
-      const { has: c } = Ve(a), l = e ? Et : t ? _t : v;
-      if (c.call(a, s))
-        return l(r.get(s));
-      if (c.call(a, i))
-        return l(r.get(i));
-      r !== a && r.get(s);
+      const a = this.__v_raw, r = g(a), i = g(s);
+      t || (oe(s, i) && k(r, "get", s), k(r, "get", i));
+      const { has: c } = ke(r), h = e ? We : t ? Je : v;
+      if (c.call(r, s))
+        return h(a.get(s));
+      if (c.call(r, i))
+        return h(a.get(i));
+      a !== r && a.get(s);
     },
     get size() {
       const s = this.__v_raw;
-      return !t && S(g(s), "iterate", re), Reflect.get(s, "size", s);
+      return !t && k(g(s), "iterate", J), Reflect.get(s, "size", s);
     },
     has(s) {
-      const r = this.__v_raw, a = g(r), i = g(s);
-      return t || (Q(s, i) && S(a, "has", s), S(a, "has", i)), s === i ? r.has(s) : r.has(s) || r.has(i);
+      const a = this.__v_raw, r = g(a), i = g(s);
+      return t || (oe(s, i) && k(r, "has", s), k(r, "has", i)), s === i ? a.has(s) : a.has(s) || a.has(i);
     },
-    forEach(s, r) {
-      const a = this, i = a.__v_raw, c = g(i), l = e ? Et : t ? _t : v;
-      return !t && S(c, "iterate", re), i.forEach((p, u) => s.call(r, l(p), l(u), a));
+    forEach(s, a) {
+      const r = this, i = r.__v_raw, c = g(i), h = e ? We : t ? Je : v;
+      return !t && k(c, "iterate", J), i.forEach((p, u) => s.call(a, h(p), h(u), r));
     }
   };
-  return P(
+  return Z(
     n,
     t ? {
-      add: $e("add"),
-      set: $e("set"),
-      delete: $e("delete"),
-      clear: $e("clear")
+      add: Ee("add"),
+      set: Ee("set"),
+      delete: Ee("delete"),
+      clear: Ee("clear")
     } : {
       add(s) {
-        !e && !O(s) && !W(s) && (s = g(s));
-        const r = g(this);
-        return Ve(r).has.call(r, s) || (r.add(s), J(r, "add", s, s)), this;
+        !e && !S(s) && !L(s) && (s = g(s));
+        const a = g(this);
+        return ke(a).has.call(a, s) || (a.add(s), F(a, "add", s, s)), this;
       },
-      set(s, r) {
-        !e && !O(r) && !W(r) && (r = g(r));
-        const a = g(this), { has: i, get: c } = Ve(a);
-        let l = i.call(a, s);
-        l ? process.env.NODE_ENV !== "production" && Wt(a, i, s) : (s = g(s), l = i.call(a, s));
-        const p = c.call(a, s);
-        return a.set(s, r), l ? Q(r, p) && J(a, "set", s, r, p) : J(a, "add", s, r), this;
+      set(s, a) {
+        !e && !S(a) && !L(a) && (a = g(a));
+        const r = g(this), { has: i, get: c } = ke(r);
+        let h = i.call(r, s);
+        h ? process.env.NODE_ENV !== "production" && gt(r, i, s) : (s = g(s), h = i.call(r, s));
+        const p = c.call(r, s);
+        return r.set(s, a), h ? oe(a, p) && F(r, "set", s, a, p) : F(r, "add", s, a), this;
       },
       delete(s) {
-        const r = g(this), { has: a, get: i } = Ve(r);
-        let c = a.call(r, s);
-        c ? process.env.NODE_ENV !== "production" && Wt(r, a, s) : (s = g(s), c = a.call(r, s));
-        const l = i ? i.call(r, s) : void 0, p = r.delete(s);
-        return c && J(r, "delete", s, void 0, l), p;
+        const a = g(this), { has: r, get: i } = ke(a);
+        let c = r.call(a, s);
+        c ? process.env.NODE_ENV !== "production" && gt(a, r, s) : (s = g(s), c = r.call(a, s));
+        const h = i ? i.call(a, s) : void 0, p = a.delete(s);
+        return c && F(a, "delete", s, void 0, h), p;
       },
       clear() {
-        const s = g(this), r = s.size !== 0, a = process.env.NODE_ENV !== "production" ? me(s) ? new Map(s) : new Set(s) : void 0, i = s.clear();
-        return r && J(
+        const s = g(this), a = s.size !== 0, r = process.env.NODE_ENV !== "production" ? ce(s) ? new Map(s) : new Set(s) : void 0, i = s.clear();
+        return a && F(
           s,
           "clear",
           void 0,
           void 0,
-          a
+          r
         ), i;
       }
     }
@@ -723,35 +634,33 @@ function vo(t, e) {
     "entries",
     Symbol.iterator
   ].forEach((s) => {
-    n[s] = bo(s, t, e);
+    n[s] = Jn(s, t, e);
   }), n;
 }
-function xt(t, e) {
-  const n = vo(t, e);
-  return (o, s, r) => s === "__v_isReactive" ? !t : s === "__v_isReadonly" ? t : s === "__v_raw" ? o : Reflect.get(
-    _(n, s) && s in o ? n : o,
+function Bt(t, e) {
+  const n = Gn(t, e);
+  return (o, s, a) => s === "__v_isReactive" ? !t : s === "__v_isReadonly" ? t : s === "__v_raw" ? o : Reflect.get(
+    Ue(n, s) && s in o ? n : o,
     s,
-    r
+    a
   );
 }
-const No = {
-  get: /* @__PURE__ */ xt(!1, !1)
-}, Oo = {
-  get: /* @__PURE__ */ xt(!0, !1)
-}, Po = {
-  get: /* @__PURE__ */ xt(!0, !0)
+const Yn = {
+  get: /* @__PURE__ */ Bt(!1, !1)
+}, Zn = {
+  get: /* @__PURE__ */ Bt(!0, !1)
 };
-function Wt(t, e, n) {
+function gt(t, e, n) {
   const o = g(n);
   if (o !== n && e.call(t, o)) {
-    const s = gn(t);
-    U(
+    const s = Pt(t);
+    q(
       `Reactive ${s} contains both the raw and reactive versions of the same object${s === "Map" ? " as keys" : ""}, which can lead to inconsistencies. Avoid differentiating between the raw and reactive versions of an object and only use the reactive version if possible.`
     );
   }
 }
-const kn = /* @__PURE__ */ new WeakMap(), Ro = /* @__PURE__ */ new WeakMap(), wn = /* @__PURE__ */ new WeakMap(), bn = /* @__PURE__ */ new WeakMap();
-function To(t) {
+const Kt = /* @__PURE__ */ new WeakMap(), qn = /* @__PURE__ */ new WeakMap(), Ut = /* @__PURE__ */ new WeakMap(), Qn = /* @__PURE__ */ new WeakMap();
+function Xn(t) {
   switch (t) {
     case "Object":
     case "Array":
@@ -765,92 +674,80 @@ function To(t) {
       return 0;
   }
 }
-function Io(t) {
-  return t.__v_skip || !Object.isExtensible(t) ? 0 : To(gn(t));
+function eo(t) {
+  return t.__v_skip || !Object.isExtensible(t) ? 0 : Xn(Pt(t));
 }
-function vn(t) {
-  return W(t) ? t : Lt(
+function Ht(t) {
+  return L(t) ? t : Jt(
     t,
     !1,
-    zo,
-    No,
-    kn
+    Hn,
+    Yn,
+    Kt
   );
 }
-function Nn(t) {
-  return Lt(
+function Wt(t) {
+  return Jt(
     t,
     !0,
-    ko,
-    Oo,
-    wn
+    Wn,
+    Zn,
+    Ut
   );
 }
-function je(t) {
-  return Lt(
-    t,
-    !0,
-    wo,
-    Po,
-    bn
-  );
-}
-function Lt(t, e, n, o, s) {
-  if (!N(t))
-    return process.env.NODE_ENV !== "production" && U(
+function Jt(t, e, n, o, s) {
+  if (!A(t))
+    return process.env.NODE_ENV !== "production" && q(
       `value cannot be made ${e ? "readonly" : "reactive"}: ${String(
         t
       )}`
     ), t;
   if (t.__v_raw && !(e && t.__v_isReactive))
     return t;
-  const r = s.get(t);
-  if (r)
-    return r;
-  const a = Io(t);
-  if (a === 0)
+  const a = s.get(t);
+  if (a)
+    return a;
+  const r = eo(t);
+  if (r === 0)
     return t;
   const i = new Proxy(
     t,
-    a === 2 ? o : n
+    r === 2 ? o : n
   );
   return s.set(t, i), i;
 }
-function De(t) {
-  return W(t) ? De(t.__v_raw) : !!(t && t.__v_isReactive);
+function Gt(t) {
+  return L(t) ? Gt(t.__v_raw) : !!(t && t.__v_isReactive);
 }
-function W(t) {
+function L(t) {
   return !!(t && t.__v_isReadonly);
 }
-function O(t) {
+function S(t) {
   return !!(t && t.__v_isShallow);
 }
-function Ue(t) {
+function me(t) {
   return t ? !!t.__v_raw : !1;
 }
 function g(t) {
   const e = t && t.__v_raw;
   return e ? g(e) : t;
 }
-function xo(t) {
-  return !_(t, "__v_skip") && Object.isExtensible(t) && ho(t, "__v_skip", !0), t;
-}
-const v = (t) => N(t) ? vn(t) : t, _t = (t) => N(t) ? Nn(t) : t;
-function k(t) {
+const v = (t) => A(t) ? Ht(t) : t, Je = (t) => A(t) ? Wt(t) : t;
+function b(t) {
   return t ? t.__v_isRef === !0 : !1;
 }
-function Lo(t) {
-  return On(t, !1);
+function to(t) {
+  return Yt(t, !1);
 }
-function Vo(t) {
-  return On(t, !0);
+function no(t) {
+  return Yt(t, !0);
 }
-function On(t, e) {
-  return k(t) ? t : new $o(t, e);
+function Yt(t, e) {
+  return b(t) ? t : new oo(t, e);
 }
-class $o {
+class oo {
   constructor(e, n) {
-    this.dep = new Tt(), this.__v_isRef = !0, this.__v_isShallow = !1, this._rawValue = n ? e : g(e), this._value = n ? e : v(e), this.__v_isShallow = n;
+    this.dep = new rt(), this.__v_isRef = !0, this.__v_isShallow = !1, this._rawValue = n ? e : g(e), this._value = n ? e : v(e), this.__v_isShallow = n;
   }
   get value() {
     return process.env.NODE_ENV !== "production" ? this.dep.track({
@@ -860,8 +757,8 @@ class $o {
     }) : this.dep.track(), this._value;
   }
   set value(e) {
-    const n = this._rawValue, o = this.__v_isShallow || O(e) || W(e);
-    e = o ? e : g(e), Q(e, n) && (this._rawValue = e, this._value = o ? e : v(e), process.env.NODE_ENV !== "production" ? this.dep.trigger({
+    const n = this._rawValue, o = this.__v_isShallow || S(e) || L(e);
+    e = o ? e : g(e), oe(e, n) && (this._rawValue = e, this._value = o ? e : v(e), process.env.NODE_ENV !== "production" ? this.dep.trigger({
       target: this,
       type: "set",
       key: "value",
@@ -870,30 +767,43 @@ class $o {
     }) : this.dep.trigger());
   }
 }
-function jo(t) {
-  return k(t) ? t.value : t;
+function so(t) {
+  process.env.NODE_ENV !== "production" && !me(t) && q("toRefs() expects a reactive object but received a plain one.");
+  const e = M(t) ? new Array(t.length) : {};
+  for (const n in t)
+    e[n] = ro(t, n);
+  return e;
 }
-const Fo = {
-  get: (t, e, n) => e === "__v_raw" ? t : jo(Reflect.get(t, e, n)),
-  set: (t, e, n, o) => {
-    const s = t[e];
-    return k(s) && !k(n) ? (s.value = n, !0) : Reflect.set(t, e, n, o);
-  }
-};
-function Bo(t) {
-  return De(t) ? t : new Proxy(t, Fo);
-}
-class Ko {
+class ao {
   constructor(e, n, o) {
-    this.fn = e, this.setter = n, this._value = void 0, this.dep = new Tt(this), this.__v_isRef = !0, this.deps = void 0, this.depsTail = void 0, this.flags = 16, this.globalVersion = Oe - 1, this.next = void 0, this.effect = this, this.__v_isReadonly = !n, this.isSSR = o;
+    this._object = e, this._key = n, this._defaultValue = o, this.__v_isRef = !0, this._value = void 0;
+  }
+  get value() {
+    const e = this._object[this._key];
+    return this._value = e === void 0 ? this._defaultValue : e;
+  }
+  set value(e) {
+    this._object[this._key] = e;
+  }
+  get dep() {
+    return Vn(g(this._object), this._key);
+  }
+}
+function ro(t, e, n) {
+  const o = t[e];
+  return b(o) ? o : new ao(t, e, n);
+}
+class io {
+  constructor(e, n, o) {
+    this.fn = e, this.setter = n, this._value = void 0, this.dep = new rt(this), this.__v_isRef = !0, this.deps = void 0, this.depsTail = void 0, this.flags = 16, this.globalVersion = de - 1, this.next = void 0, this.effect = this, this.__v_isReadonly = !n, this.isSSR = o;
   }
   /**
    * @internal
    */
   notify() {
     if (this.flags |= 16, !(this.flags & 8) && // avoid infinite self recursion
-    m !== this)
-      return mn(this, !0), !0;
+    d !== this)
+      return On(this, !0), !0;
     process.env.NODE_ENV;
   }
   get value() {
@@ -902,177 +812,63 @@ class Ko {
       type: "get",
       key: "value"
     }) : this.dep.track();
-    return Mn(this), e && (e.version = this.dep.version), this._value;
+    return Lt(this), e && (e.version = this.dep.version), this._value;
   }
   set value(e) {
-    this.setter ? this.setter(e) : process.env.NODE_ENV !== "production" && U("Write operation failed: computed value is readonly");
+    this.setter ? this.setter(e) : process.env.NODE_ENV !== "production" && q("Write operation failed: computed value is readonly");
   }
 }
-function Ho(t, e, n = !1) {
+function uo(t, e, n = !1) {
   let o, s;
-  z(t) ? o = t : (o = t.get, s = t.set);
-  const r = new Ko(o, s, n);
-  return process.env.NODE_ENV, r;
-}
-const Fe = {}, We = /* @__PURE__ */ new WeakMap();
-let ee;
-function Uo(t, e = !1, n = ee) {
-  if (n) {
-    let o = We.get(n);
-    o || We.set(n, o = []), o.push(t);
-  } else process.env.NODE_ENV !== "production" && !e && U(
-    "onWatcherCleanup() was called when there was no active watcher to associate with."
-  );
-}
-function Wo(t, e, n = L) {
-  const { immediate: o, deep: s, once: r, scheduler: a, augmentJob: i, call: c } = n, l = (y) => {
-    (n.onWarn || U)(
-      "Invalid watch source: ",
-      y,
-      "A watch source can only be a getter/effect function, a ref, a reactive object, or an array of these types."
-    );
-  }, p = (y) => s ? y : O(y) || s === !1 || s === 0 ? Y(y, 1) : Y(y);
-  let u, h, d, E, T = !1, xe = !1;
-  if (k(t) ? (h = () => t.value, T = O(t)) : De(t) ? (h = () => p(t), T = !0) : D(t) ? (xe = !0, T = t.some((y) => De(y) || O(y)), h = () => t.map((y) => {
-    if (k(y))
-      return y.value;
-    if (De(y))
-      return p(y);
-    if (z(y))
-      return c ? c(y, 2) : y();
-    process.env.NODE_ENV !== "production" && l(y);
-  })) : z(t) ? e ? h = c ? () => c(t, 2) : t : h = () => {
-    if (d) {
-      nt();
-      try {
-        d();
-      } finally {
-        ot();
-      }
-    }
-    const y = ee;
-    ee = u;
-    try {
-      return c ? c(t, 3, [E]) : t(E);
-    } finally {
-      ee = y;
-    }
-  } : (h = ye, process.env.NODE_ENV !== "production" && l(t)), e && s) {
-    const y = h, $ = s === !0 ? 1 / 0 : s;
-    h = () => Y(y(), $);
-  }
-  const ce = () => {
-    u.stop();
-  };
-  if (r && e) {
-    const y = e;
-    e = (...$) => {
-      y(...$), ce();
-    };
-  }
-  let X = xe ? new Array(t.length).fill(Fe) : Fe;
-  const Me = (y) => {
-    if (!(!(u.flags & 1) || !u.dirty && !y))
-      if (e) {
-        const $ = u.run();
-        if (s || T || (xe ? $.some((at, Le) => Q(at, X[Le])) : Q($, X))) {
-          d && d();
-          const at = ee;
-          ee = u;
-          try {
-            const Le = [
-              $,
-              // pass undefined as the old value when it's changed for the first time
-              X === Fe ? void 0 : xe && X[0] === Fe ? [] : X,
-              E
-            ];
-            c ? c(e, 3, Le) : (
-              // @ts-expect-error
-              e(...Le)
-            ), X = $;
-          } finally {
-            ee = at;
-          }
-        }
-      } else
-        u.run();
-  };
-  return i && i(Me), u = new mo(h), u.scheduler = a ? () => a(Me, !1) : Me, E = (y) => Uo(y, !1, u), d = u.onStop = () => {
-    const y = We.get(u);
-    if (y) {
-      if (c)
-        c(y, 4);
-      else
-        for (const $ of y) $();
-      We.delete(u);
-    }
-  }, process.env.NODE_ENV !== "production" && (u.onTrack = n.onTrack, u.onTrigger = n.onTrigger), e ? o ? Me(!0) : X = u.run() : a ? a(Me.bind(null, !0), !0) : u.run(), ce.pause = u.pause.bind(u), ce.resume = u.resume.bind(u), ce.stop = ce, ce;
-}
-function Y(t, e = 1 / 0, n) {
-  if (e <= 0 || !N(t) || t.__v_skip || (n = n || /* @__PURE__ */ new Set(), n.has(t)))
-    return t;
-  if (n.add(t), e--, k(t))
-    Y(t.value, e, n);
-  else if (D(t))
-    for (let o = 0; o < t.length; o++)
-      Y(t[o], e, n);
-  else if (ro(t) || me(t))
-    t.forEach((o) => {
-      Y(o, e, n);
-    });
-  else if (uo(t)) {
-    for (const o in t)
-      Y(t[o], e, n);
-    for (const o of Object.getOwnPropertySymbols(t))
-      Object.prototype.propertyIsEnumerable.call(t, o) && Y(t[o], e, n);
-  }
-  return t;
+  K(t) ? o = t : (o = t.get, s = t.set);
+  const a = new io(o, s, n);
+  return process.env.NODE_ENV, a;
 }
 /**
 * @vue/runtime-core v3.5.13
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
-const ae = [];
-function Go(t) {
-  ae.push(t);
+const G = [];
+function co(t) {
+  G.push(t);
 }
-function Jo() {
-  ae.pop();
+function lo() {
+  G.pop();
 }
-let lt = !1;
-function M(t, ...e) {
-  if (lt) return;
-  lt = !0, nt();
-  const n = ae.length ? ae[ae.length - 1].component : null, o = n && n.appContext.config.warnHandler, s = Yo();
+let Le = !1;
+function ae(t, ...e) {
+  if (Le) return;
+  Le = !0, st();
+  const n = G.length ? G[G.length - 1].component : null, o = n && n.appContext.config.warnHandler, s = ho();
   if (o)
-    st(
+    ut(
       o,
       n,
       11,
       [
         // eslint-disable-next-line no-restricted-syntax
-        t + e.map((r) => {
-          var a, i;
-          return (i = (a = r.toString) == null ? void 0 : a.call(r)) != null ? i : JSON.stringify(r);
+        t + e.map((a) => {
+          var r, i;
+          return (i = (r = a.toString) == null ? void 0 : r.call(a)) != null ? i : JSON.stringify(a);
         }).join(""),
         n && n.proxy,
         s.map(
-          ({ vnode: r }) => `at <${Jn(n, r.type)}>`
+          ({ vnode: a }) => `at <${pn(n, a.type)}>`
         ).join(`
 `),
         s
       ]
     );
   else {
-    const r = [`[Vue warn]: ${t}`, ...e];
-    s.length && r.push(`
-`, ...Zo(s)), console.warn(...r);
+    const a = [`[Vue warn]: ${t}`, ...e];
+    s.length && a.push(`
+`, ...fo(s)), console.warn(...a);
   }
-  ot(), lt = !1;
+  at(), Le = !1;
 }
-function Yo() {
-  let t = ae[ae.length - 1];
+function ho() {
+  let t = G[G.length - 1];
   if (!t)
     return [];
   const e = [];
@@ -1087,31 +883,31 @@ function Yo() {
   }
   return e;
 }
-function Zo(t) {
+function fo(t) {
   const e = [];
   return t.forEach((n, o) => {
     e.push(...o === 0 ? [] : [`
-`], ...qo(n));
+`], ...po(n));
   }), e;
 }
-function qo({ vnode: t, recurseCount: e }) {
-  const n = e > 0 ? `... (${e} recursive calls)` : "", o = t.component ? t.component.parent == null : !1, s = ` at <${Jn(
+function po({ vnode: t, recurseCount: e }) {
+  const n = e > 0 ? `... (${e} recursive calls)` : "", o = t.component ? t.component.parent == null : !1, s = ` at <${pn(
     t.component,
     t.type,
     o
-  )}`, r = ">" + n;
-  return t.props ? [s, ...Qo(t.props), r] : [s + r];
+  )}`, a = ">" + n;
+  return t.props ? [s, ...go(t.props), a] : [s + a];
 }
-function Qo(t) {
+function go(t) {
   const e = [], n = Object.keys(t);
   return n.slice(0, 3).forEach((o) => {
-    e.push(...Pn(o, t[o]));
+    e.push(...Zt(o, t[o]));
   }), n.length > 3 && e.push(" ..."), e;
 }
-function Pn(t, e, n) {
-  return j(e) ? (e = JSON.stringify(e), n ? e : [`${t}=${e}`]) : typeof e == "number" || typeof e == "boolean" || e == null ? n ? e : [`${t}=${e}`] : k(e) ? (e = Pn(t, g(e.value), !0), n ? e : [`${t}=Ref<`, e, ">"]) : z(e) ? [`${t}=fn${e.name ? `<${e.name}>` : ""}`] : (e = g(e), n ? e : [`${t}=`, e]);
+function Zt(t, e, n) {
+  return I(e) ? (e = JSON.stringify(e), n ? e : [`${t}=${e}`]) : typeof e == "number" || typeof e == "boolean" || e == null ? n ? e : [`${t}=${e}`] : b(e) ? (e = Zt(t, g(e.value), !0), n ? e : [`${t}=Ref<`, e, ">"]) : K(e) ? [`${t}=fn${e.name ? `<${e.name}>` : ""}`] : (e = g(e), n ? e : [`${t}=`, e]);
 }
-const Rn = {
+const qt = {
   sp: "serverPrefetch hook",
   bc: "beforeCreate hook",
   c: "created hook",
@@ -1144,58 +940,42 @@ const Rn = {
   15: "component update",
   16: "app unmount cleanup function"
 };
-function st(t, e, n, o) {
+function ut(t, e, n, o) {
   try {
     return o ? t(...o) : t();
   } catch (s) {
-    Vt(s, e, n);
+    Qt(s, e, n);
   }
 }
-function Tn(t, e, n, o) {
-  if (z(t)) {
-    const s = st(t, e, n, o);
-    return s && ao(s) && s.catch((r) => {
-      Vt(r, e, n);
-    }), s;
-  }
-  if (D(t)) {
-    const s = [];
-    for (let r = 0; r < t.length; r++)
-      s.push(Tn(t[r], e, n, o));
-    return s;
-  } else process.env.NODE_ENV !== "production" && M(
-    `Invalid value type passed to callWithAsyncErrorHandling(): ${typeof t}`
-  );
-}
-function Vt(t, e, n, o = !0) {
-  const s = e ? e.vnode : null, { errorHandler: r, throwUnhandledErrorInProduction: a } = e && e.appContext.config || L;
+function Qt(t, e, n, o = !0) {
+  const s = e ? e.vnode : null, { errorHandler: a, throwUnhandledErrorInProduction: r } = e && e.appContext.config || Ke;
   if (e) {
     let i = e.parent;
-    const c = e.proxy, l = process.env.NODE_ENV !== "production" ? Rn[n] : `https://vuejs.org/error-reference/#runtime-${n}`;
+    const c = e.proxy, h = process.env.NODE_ENV !== "production" ? qt[n] : `https://vuejs.org/error-reference/#runtime-${n}`;
     for (; i; ) {
       const p = i.ec;
       if (p) {
         for (let u = 0; u < p.length; u++)
-          if (p[u](t, c, l) === !1)
+          if (p[u](t, c, h) === !1)
             return;
       }
       i = i.parent;
     }
-    if (r) {
-      nt(), st(r, null, 10, [
+    if (a) {
+      st(), ut(a, null, 10, [
         t,
         c,
-        l
-      ]), ot();
+        h
+      ]), at();
       return;
     }
   }
-  Xo(t, n, s, o, a);
+  yo(t, n, s, o, r);
 }
-function Xo(t, e, n, o = !0, s = !1) {
+function yo(t, e, n, o = !0, s = !1) {
   if (process.env.NODE_ENV !== "production") {
-    const r = Rn[e];
-    if (n && Go(n), M(`Unhandled error${r ? ` during execution of ${r}` : ""}`), n && Jo(), o)
+    const a = qt[e];
+    if (n && co(n), ae(`Unhandled error${a ? ` during execution of ${a}` : ""}`), n && lo(), o)
       throw t;
     console.error(t);
   } else {
@@ -1204,65 +984,61 @@ function Xo(t, e, n, o = !0, s = !1) {
     console.error(t);
   }
 }
-const I = [];
-let B = -1;
-const Ce = [];
-let G = null, he = 0;
-const In = /* @__PURE__ */ Promise.resolve();
+const _ = [];
+let O = -1;
+const se = [];
+let V = null, X = 0;
+const mo = /* @__PURE__ */ Promise.resolve();
 let Ge = null;
-const es = 100;
-function ts(t) {
-  const e = Ge || In;
-  return t ? e.then(this ? t.bind(this) : t) : e;
-}
-function ns(t) {
-  let e = B + 1, n = I.length;
+const Mo = 100;
+function Do(t) {
+  let e = O + 1, n = _.length;
   for (; e < n; ) {
-    const o = e + n >>> 1, s = I[o], r = Re(s);
-    r < t || r === t && s.flags & 2 ? e = o + 1 : n = o;
+    const o = e + n >>> 1, s = _[o], a = Me(s);
+    a < t || a === t && s.flags & 2 ? e = o + 1 : n = o;
   }
   return e;
 }
-function $t(t) {
+function Co(t) {
   if (!(t.flags & 1)) {
-    const e = Re(t), n = I[I.length - 1];
+    const e = Me(t), n = _[_.length - 1];
     !n || // fast path when the job id is larger than the tail
-    !(t.flags & 2) && e >= Re(n) ? I.push(t) : I.splice(ns(e), 0, t), t.flags |= 1, xn();
+    !(t.flags & 2) && e >= Me(n) ? _.push(t) : _.splice(Do(e), 0, t), t.flags |= 1, Xt();
   }
 }
-function xn() {
-  Ge || (Ge = In.then(Vn));
+function Xt() {
+  Ge || (Ge = mo.then(en));
 }
-function Ln(t) {
-  D(t) ? Ce.push(...t) : G && t.id === -1 ? G.splice(he + 1, 0, t) : t.flags & 1 || (Ce.push(t), t.flags |= 1), xn();
+function vo(t) {
+  M(t) ? se.push(...t) : V && t.id === -1 ? V.splice(X + 1, 0, t) : t.flags & 1 || (se.push(t), t.flags |= 1), Xt();
 }
-function os(t) {
-  if (Ce.length) {
-    const e = [...new Set(Ce)].sort(
-      (n, o) => Re(n) - Re(o)
+function ko(t) {
+  if (se.length) {
+    const e = [...new Set(se)].sort(
+      (n, o) => Me(n) - Me(o)
     );
-    if (Ce.length = 0, G) {
-      G.push(...e);
+    if (se.length = 0, V) {
+      V.push(...e);
       return;
     }
-    for (G = e, process.env.NODE_ENV !== "production" && (t = t || /* @__PURE__ */ new Map()), he = 0; he < G.length; he++) {
-      const n = G[he];
-      process.env.NODE_ENV !== "production" && $n(t, n) || (n.flags & 4 && (n.flags &= -2), n.flags & 8 || n(), n.flags &= -2);
+    for (V = e, process.env.NODE_ENV !== "production" && (t = t || /* @__PURE__ */ new Map()), X = 0; X < V.length; X++) {
+      const n = V[X];
+      process.env.NODE_ENV !== "production" && tn(t, n) || (n.flags & 4 && (n.flags &= -2), n.flags & 8 || n(), n.flags &= -2);
     }
-    G = null, he = 0;
+    V = null, X = 0;
   }
 }
-const Re = (t) => t.id == null ? t.flags & 2 ? -1 : 1 / 0 : t.id;
-function Vn(t) {
+const Me = (t) => t.id == null ? t.flags & 2 ? -1 : 1 / 0 : t.id;
+function en(t) {
   process.env.NODE_ENV !== "production" && (t = t || /* @__PURE__ */ new Map());
-  const e = process.env.NODE_ENV !== "production" ? (n) => $n(t, n) : ye;
+  const e = process.env.NODE_ENV !== "production" ? (n) => tn(t, n) : Ot;
   try {
-    for (B = 0; B < I.length; B++) {
-      const n = I[B];
+    for (O = 0; O < _.length; O++) {
+      const n = _[O];
       if (n && !(n.flags & 8)) {
         if (process.env.NODE_ENV !== "production" && e(n))
           continue;
-        n.flags & 4 && (n.flags &= -2), st(
+        n.flags & 4 && (n.flags &= -2), ut(
           n,
           n.i,
           n.i ? 15 : 14
@@ -1270,18 +1046,18 @@ function Vn(t) {
       }
     }
   } finally {
-    for (; B < I.length; B++) {
-      const n = I[B];
+    for (; O < _.length; O++) {
+      const n = _[O];
       n && (n.flags &= -2);
     }
-    B = -1, I.length = 0, os(t), Ge = null, (I.length || Ce.length) && Vn(t);
+    O = -1, _.length = 0, ko(t), Ge = null, (_.length || se.length) && en(t);
   }
 }
-function $n(t, e) {
+function tn(t, e) {
   const n = t.get(e) || 0;
-  if (n > es) {
-    const o = e.i, s = o && Gn(o.type);
-    return Vt(
+  if (n > Mo) {
+    const o = e.i, s = o && fn(o.type);
+    return Qt(
       `Maximum recursive updates exceeded${s ? ` in component <${s}>` : ""}. This means you have a reactive effect that is mutating its own dependencies and thus recursively triggering itself. Possible sources include component template, render function, updated hook or watcher source function.`,
       null,
       10
@@ -1289,52 +1065,52 @@ function $n(t, e) {
   }
   return t.set(e, n + 1), !1;
 }
-const ht = /* @__PURE__ */ new Map();
-process.env.NODE_ENV !== "production" && (tt().__VUE_HMR_RUNTIME__ = {
-  createRecord: ft(ss),
-  rerender: ft(rs),
-  reload: ft(as)
+const xe = /* @__PURE__ */ new Map();
+process.env.NODE_ENV !== "production" && (Oe().__VUE_HMR_RUNTIME__ = {
+  createRecord: Ve(Eo),
+  rerender: Ve(_o),
+  reload: Ve(Ao)
 });
-const Je = /* @__PURE__ */ new Map();
-function ss(t, e) {
-  return Je.has(t) ? !1 : (Je.set(t, {
-    initialDef: Ye(e),
+const be = /* @__PURE__ */ new Map();
+function Eo(t, e) {
+  return be.has(t) ? !1 : (be.set(t, {
+    initialDef: we(e),
     instances: /* @__PURE__ */ new Set()
   }), !0);
 }
-function Ye(t) {
-  return Yn(t) ? t.__vccOpts : t;
+function we(t) {
+  return gn(t) ? t.__vccOpts : t;
 }
-function rs(t, e) {
-  const n = Je.get(t);
+function _o(t, e) {
+  const n = be.get(t);
   n && (n.initialDef.render = e, [...n.instances].forEach((o) => {
-    e && (o.render = e, Ye(o.type).render = e), o.renderCache = [], o.update();
+    e && (o.render = e, we(o.type).render = e), o.renderCache = [], o.update();
   }));
 }
-function as(t, e) {
-  const n = Je.get(t);
+function Ao(t, e) {
+  const n = be.get(t);
   if (!n) return;
-  e = Ye(e), Gt(n.initialDef, e);
+  e = we(e), dt(n.initialDef, e);
   const o = [...n.instances];
   for (let s = 0; s < o.length; s++) {
-    const r = o[s], a = Ye(r.type);
-    let i = ht.get(a);
-    i || (a !== n.initialDef && Gt(a, e), ht.set(a, i = /* @__PURE__ */ new Set())), i.add(r), r.appContext.propsCache.delete(r.type), r.appContext.emitsCache.delete(r.type), r.appContext.optionsCache.delete(r.type), r.ceReload ? (i.add(r), r.ceReload(e.styles), i.delete(r)) : r.parent ? $t(() => {
-      r.parent.update(), i.delete(r);
-    }) : r.appContext.reload ? r.appContext.reload() : typeof window < "u" ? window.location.reload() : console.warn(
+    const a = o[s], r = we(a.type);
+    let i = xe.get(r);
+    i || (r !== n.initialDef && dt(r, e), xe.set(r, i = /* @__PURE__ */ new Set())), i.add(a), a.appContext.propsCache.delete(a.type), a.appContext.emitsCache.delete(a.type), a.appContext.optionsCache.delete(a.type), a.ceReload ? (i.add(a), a.ceReload(e.styles), i.delete(a)) : a.parent ? Co(() => {
+      a.parent.update(), i.delete(a);
+    }) : a.appContext.reload ? a.appContext.reload() : typeof window < "u" ? window.location.reload() : console.warn(
       "[HMR] Root or manually mounted instance modified. Full reload required."
-    ), r.root.ce && r !== r.root && r.root.ce._removeChildStyle(a);
+    ), a.root.ce && a !== a.root && a.root.ce._removeChildStyle(r);
   }
-  Ln(() => {
-    ht.clear();
+  vo(() => {
+    xe.clear();
   });
 }
-function Gt(t, e) {
-  P(t, e);
+function dt(t, e) {
+  Z(t, e);
   for (const n in t)
     n !== "__file" && !(n in e) && delete t[n];
 }
-function ft(t) {
+function Ve(t) {
   return (e, n) => {
     try {
       return t(e, n);
@@ -1345,327 +1121,49 @@ function ft(t) {
     }
   };
 }
-let fe, Be = [];
-function jn(t, e) {
+let ee, _e = [];
+function nn(t, e) {
   var n, o;
-  fe = t, fe ? (fe.enabled = !0, Be.forEach(({ event: s, args: r }) => fe.emit(s, ...r)), Be = []) : /* handle late devtools injection - only do this if we are in an actual */ /* browser environment to avoid the timer handle stalling test runner exit */ /* (#4815) */ typeof window < "u" && // some envs mock window but not fully
+  ee = t, ee ? (ee.enabled = !0, _e.forEach(({ event: s, args: a }) => ee.emit(s, ...a)), _e = []) : /* handle late devtools injection - only do this if we are in an actual */ /* browser environment to avoid the timer handle stalling test runner exit */ /* (#4815) */ typeof window < "u" && // some envs mock window but not fully
   window.HTMLElement && // also exclude jsdom
   // eslint-disable-next-line no-restricted-syntax
-  !((o = (n = window.navigator) == null ? void 0 : n.userAgent) != null && o.includes("jsdom")) ? ((e.__VUE_DEVTOOLS_HOOK_REPLAY__ = e.__VUE_DEVTOOLS_HOOK_REPLAY__ || []).push((r) => {
-    jn(r, e);
+  !((o = (n = window.navigator) == null ? void 0 : n.userAgent) != null && o.includes("jsdom")) ? ((e.__VUE_DEVTOOLS_HOOK_REPLAY__ = e.__VUE_DEVTOOLS_HOOK_REPLAY__ || []).push((a) => {
+    nn(a, e);
   }), setTimeout(() => {
-    fe || (e.__VUE_DEVTOOLS_HOOK_REPLAY__ = null, Be = []);
-  }, 3e3)) : Be = [];
+    ee || (e.__VUE_DEVTOOLS_HOOK_REPLAY__ = null, _e = []);
+  }, 3e3)) : _e = [];
 }
-let ue = null, is = null;
-const us = (t) => t.__isTeleport;
-function Fn(t, e) {
-  t.shapeFlag & 6 && t.component ? (t.transition = e, Fn(t.component.subTree, e)) : t.shapeFlag & 128 ? (t.ssContent.transition = e.clone(t.ssContent), t.ssFallback.transition = e.clone(t.ssFallback)) : t.transition = e;
+let De = null, zo = null;
+const So = (t) => t.__isTeleport;
+function on(t, e) {
+  t.shapeFlag & 6 && t.component ? (t.transition = e, on(t.component.subTree, e)) : t.shapeFlag & 128 ? (t.ssContent.transition = e.clone(t.ssContent), t.ssFallback.transition = e.clone(t.ssFallback)) : t.transition = e;
 }
-tt().requestIdleCallback;
-tt().cancelIdleCallback;
-const cs = Symbol.for("v-ndc"), At = (t) => t ? Ls(t) ? Vs(t) : At(t.parent) : null, ke = (
-  // Move PURE marker to new line to workaround compiler discarding it
-  // due to type annotation
-  /* @__PURE__ */ P(/* @__PURE__ */ Object.create(null), {
-    $: (t) => t,
-    $el: (t) => t.vnode.el,
-    $data: (t) => t.data,
-    $props: (t) => process.env.NODE_ENV !== "production" ? je(t.props) : t.props,
-    $attrs: (t) => process.env.NODE_ENV !== "production" ? je(t.attrs) : t.attrs,
-    $slots: (t) => process.env.NODE_ENV !== "production" ? je(t.slots) : t.slots,
-    $refs: (t) => process.env.NODE_ENV !== "production" ? je(t.refs) : t.refs,
-    $parent: (t) => At(t.parent),
-    $root: (t) => At(t.root),
-    $host: (t) => t.ce,
-    $emit: (t) => t.emit,
-    $options: (t) => hs(t),
-    $forceUpdate: (t) => t.f || (t.f = () => {
-      $t(t.update);
-    }),
-    $nextTick: (t) => t.n || (t.n = ts.bind(t.proxy)),
-    $watch: (t) => _s.bind(t)
-  })
-), pt = (t, e) => t !== L && !t.__isScriptSetup && _(t, e), ls = {
-  get({ _: t }, e) {
-    if (e === "__v_skip")
-      return !0;
-    const { ctx: n, setupState: o, data: s, props: r, accessCache: a, type: i, appContext: c } = t;
-    if (process.env.NODE_ENV !== "production" && e === "__isVue")
-      return !0;
-    let l;
-    if (e[0] !== "$") {
-      const d = a[e];
-      if (d !== void 0)
-        switch (d) {
-          case 1:
-            return o[e];
-          case 2:
-            return s[e];
-          case 4:
-            return n[e];
-          case 3:
-            return r[e];
-        }
-      else {
-        if (pt(o, e))
-          return a[e] = 1, o[e];
-        if (s !== L && _(s, e))
-          return a[e] = 2, s[e];
-        if (
-          // only cache other properties when instance has declared (thus stable)
-          // props
-          (l = t.propsOptions[0]) && _(l, e)
-        )
-          return a[e] = 3, r[e];
-        if (n !== L && _(n, e))
-          return a[e] = 4, n[e];
-        a[e] = 0;
-      }
-    }
-    const p = ke[e];
-    let u, h;
-    if (p)
-      return e === "$attrs" ? (S(t.attrs, "get", ""), process.env.NODE_ENV !== "production" && void 0) : process.env.NODE_ENV !== "production" && e === "$slots" && S(t, "get", e), p(t);
-    if (
-      // css module (injected by vue-loader)
-      (u = i.__cssModules) && (u = u[e])
-    )
-      return u;
-    if (n !== L && _(n, e))
-      return a[e] = 4, n[e];
-    if (
-      // global properties
-      h = c.config.globalProperties, _(h, e)
-    )
-      return h[e];
-    process.env.NODE_ENV;
-  },
-  set({ _: t }, e, n) {
-    const { data: o, setupState: s, ctx: r } = t;
-    return pt(s, e) ? (s[e] = n, !0) : process.env.NODE_ENV !== "production" && s.__isScriptSetup && _(s, e) ? (M(`Cannot mutate <script setup> binding "${e}" from Options API.`), !1) : o !== L && _(o, e) ? (o[e] = n, !0) : _(t.props, e) ? (process.env.NODE_ENV !== "production" && M(`Attempting to mutate prop "${e}". Props are readonly.`), !1) : e[0] === "$" && e.slice(1) in t ? (process.env.NODE_ENV !== "production" && M(
-      `Attempting to mutate public property "${e}". Properties starting with $ are reserved and readonly.`
-    ), !1) : (process.env.NODE_ENV !== "production" && e in t.appContext.config.globalProperties ? Object.defineProperty(r, e, {
-      enumerable: !0,
-      configurable: !0,
-      value: n
-    }) : r[e] = n, !0);
-  },
-  has({
-    _: { data: t, setupState: e, accessCache: n, ctx: o, appContext: s, propsOptions: r }
-  }, a) {
-    let i;
-    return !!n[a] || t !== L && _(t, a) || pt(e, a) || (i = r[0]) && _(i, a) || _(o, a) || _(ke, a) || _(s.config.globalProperties, a);
-  },
-  defineProperty(t, e, n) {
-    return n.get != null ? t._.accessCache[e] = 0 : _(n, "value") && this.set(t, e, n.value, null), Reflect.defineProperty(t, e, n);
-  }
-};
-process.env.NODE_ENV !== "production" && (ls.ownKeys = (t) => (M(
+Oe().requestIdleCallback;
+Oe().cancelIdleCallback;
+const bo = Symbol.for("v-ndc"), wo = {};
+process.env.NODE_ENV !== "production" && (wo.ownKeys = (t) => (ae(
   "Avoid app logic that relies on enumerating keys on a component instance. The keys will be empty in production mode to avoid performance overhead."
 ), Reflect.ownKeys(t)));
-function Jt(t) {
-  return D(t) ? t.reduce(
-    (e, n) => (e[n] = null, e),
-    {}
-  ) : t;
-}
-function hs(t) {
-  const e = t.type, { mixins: n, extends: o } = e, {
-    mixins: s,
-    optionsCache: r,
-    config: { optionMergeStrategies: a }
-  } = t.appContext, i = r.get(e);
-  let c;
-  return i ? c = i : !s.length && !n && !o ? c = e : (c = {}, s.length && s.forEach(
-    (l) => Ze(c, l, a, !0)
-  ), Ze(c, e, a)), N(e) && r.set(e, c), c;
-}
-function Ze(t, e, n, o = !1) {
-  const { mixins: s, extends: r } = e;
-  r && Ze(t, r, n, !0), s && s.forEach(
-    (a) => Ze(t, a, n, !0)
-  );
-  for (const a in e)
-    if (o && a === "expose")
-      process.env.NODE_ENV !== "production" && M(
-        '"expose" option is ignored when declared in mixins or extends. It should only be declared in the base component itself.'
-      );
-    else {
-      const i = fs[a] || n && n[a];
-      t[a] = i ? i(t[a], e[a]) : e[a];
-    }
-  return t;
-}
-const fs = {
-  data: Yt,
-  props: qt,
-  emits: qt,
-  // objects
-  methods: _e,
-  computed: _e,
-  // lifecycle
-  beforeCreate: w,
-  created: w,
-  beforeMount: w,
-  mounted: w,
-  beforeUpdate: w,
-  updated: w,
-  beforeDestroy: w,
-  beforeUnmount: w,
-  destroyed: w,
-  unmounted: w,
-  activated: w,
-  deactivated: w,
-  errorCaptured: w,
-  serverPrefetch: w,
-  // assets
-  components: _e,
-  directives: _e,
-  // watch
-  watch: ds,
-  // provide / inject
-  provide: Yt,
-  inject: ps
-};
-function Yt(t, e) {
-  return e ? t ? function() {
-    return P(
-      z(t) ? t.call(this, this) : t,
-      z(e) ? e.call(this, this) : e
-    );
-  } : e : t;
-}
-function ps(t, e) {
-  return _e(Zt(t), Zt(e));
-}
-function Zt(t) {
-  if (D(t)) {
-    const e = {};
-    for (let n = 0; n < t.length; n++)
-      e[t[n]] = t[n];
-    return e;
-  }
-  return t;
-}
-function w(t, e) {
-  return t ? [...new Set([].concat(t, e))] : e;
-}
-function _e(t, e) {
-  return t ? P(/* @__PURE__ */ Object.create(null), t, e) : e;
-}
-function qt(t, e) {
-  return t ? D(t) && D(e) ? [.../* @__PURE__ */ new Set([...t, ...e])] : P(
-    /* @__PURE__ */ Object.create(null),
-    Jt(t),
-    Jt(e ?? {})
-  ) : e;
-}
-function ds(t, e) {
-  if (!t) return e;
-  if (!e) return t;
-  const n = P(/* @__PURE__ */ Object.create(null), t);
-  for (const o in e)
-    n[o] = w(t[o], e[o]);
-  return n;
-}
-let gs = null;
-function ys(t, e, n = !1) {
-  const o = Ie || ue;
-  if (o || gs) {
-    const s = o ? o.parent == null ? o.vnode.appContext && o.vnode.appContext.provides : o.parent.provides : void 0;
-    if (s && t in s)
-      return s[t];
-    if (arguments.length > 1)
-      return n && z(e) ? e.call(o && o.proxy) : e;
-    process.env.NODE_ENV !== "production" && M(`injection "${String(t)}" not found.`);
-  } else process.env.NODE_ENV !== "production" && M("inject() can only be used inside setup() or functional components.");
-}
-const ms = {}, Bn = (t) => Object.getPrototypeOf(t) === ms, Ds = zs, Cs = Symbol.for("v-scx"), Ms = () => {
-  {
-    const t = ys(Cs);
-    return t || process.env.NODE_ENV !== "production" && M(
-      "Server rendering context not provided. Make sure to only call useSSRContext() conditionally in the server build."
-    ), t;
-  }
-};
-function Es(t, e, n = L) {
-  const { immediate: o, deep: s, flush: r, once: a } = n;
-  process.env.NODE_ENV !== "production" && !e && (o !== void 0 && M(
-    'watch() "immediate" option is only respected when using the watch(source, callback, options?) signature.'
-  ), s !== void 0 && M(
-    'watch() "deep" option is only respected when using the watch(source, callback, options?) signature.'
-  ), a !== void 0 && M(
-    'watch() "once" option is only respected when using the watch(source, callback, options?) signature.'
-  ));
-  const i = P({}, n);
-  process.env.NODE_ENV !== "production" && (i.onWarn = M);
-  const c = e && o || !e && r !== "post";
-  let l;
-  if (Qe) {
-    if (r === "sync") {
-      const d = Ms();
-      l = d.__watcherHandles || (d.__watcherHandles = []);
-    } else if (!c) {
-      const d = () => {
-      };
-      return d.stop = ye, d.resume = ye, d.pause = ye, d;
-    }
-  }
-  const p = Ie;
-  i.call = (d, E, T) => Tn(d, p, E, T);
-  let u = !1;
-  r === "post" ? i.scheduler = (d) => {
-    Ds(d, p && p.suspense);
-  } : r !== "sync" && (u = !0, i.scheduler = (d, E) => {
-    E ? d() : $t(d);
-  }), i.augmentJob = (d) => {
-    e && (d.flags |= 4), u && (d.flags |= 2, p && (d.id = p.uid, d.i = p));
-  };
-  const h = Wo(t, e, i);
-  return Qe && (l ? l.push(h) : c && h()), h;
-}
-function _s(t, e, n) {
-  const o = this.proxy, s = j(t) ? t.includes(".") ? As(o, t) : () => o[t] : t.bind(o, o);
-  let r;
-  z(e) ? r = e : (r = e.handler, n = e);
-  const a = xs(this), i = Es(s, r.bind(o), n);
-  return a(), i;
-}
-function As(t, e) {
-  const n = e.split(".");
-  return () => {
-    let o = t;
-    for (let s = 0; s < n.length && o; s++)
-      o = o[n[s]];
-    return o;
-  };
-}
-const Ss = (t) => t.__isSuspense;
-function zs(t, e) {
-  e && e.pendingBranch ? D(t) ? e.effects.push(...t) : e.effects.push(t) : Ln(t);
-}
-const Kn = Symbol.for("v-fgt"), ks = Symbol.for("v-txt"), ws = Symbol.for("v-cmt");
-let pe = null;
-function bs(t) {
+const No = {}, sn = (t) => Object.getPrototypeOf(t) === No, Ro = (t) => t.__isSuspense, an = Symbol.for("v-fgt"), Oo = Symbol.for("v-txt"), To = Symbol.for("v-cmt");
+function Ye(t) {
   return t ? t.__v_isVNode === !0 : !1;
 }
-const vs = (...t) => Un(
+const Po = (...t) => un(
   ...t
-), Hn = ({ key: t }) => t ?? null, He = ({
+), rn = ({ key: t }) => t ?? null, ze = ({
   ref: t,
   ref_key: e,
   ref_for: n
-}) => (typeof t == "number" && (t = "" + t), t != null ? j(t) || k(t) || z(t) ? { i: ue, r: t, k: e, f: !!n } : t : null);
-function Ns(t, e = null, n = null, o = 0, s = null, r = t === Kn ? 0 : 1, a = !1, i = !1) {
+}) => (typeof t == "number" && (t = "" + t), t != null ? I(t) || b(t) || K(t) ? { i: De, r: t, k: e, f: !!n } : t : null);
+function Io(t, e = null, n = null, o = 0, s = null, a = t === an ? 0 : 1, r = !1, i = !1) {
   const c = {
     __v_isVNode: !0,
     __v_skip: !0,
     type: t,
     props: e,
-    key: e && Hn(e),
-    ref: e && He(e),
-    scopeId: is,
+    key: e && rn(e),
+    ref: e && ze(e),
+    scopeId: zo,
     slotScopeIds: null,
     children: n,
     component: null,
@@ -1680,75 +1178,67 @@ function Ns(t, e = null, n = null, o = 0, s = null, r = t === Kn ? 0 : 1, a = !1
     targetStart: null,
     targetAnchor: null,
     staticCount: 0,
-    shapeFlag: r,
+    shapeFlag: a,
     patchFlag: o,
     dynamicProps: s,
     dynamicChildren: null,
     appContext: null,
-    ctx: ue
+    ctx: De
   };
-  return i ? (jt(c, n), r & 128 && t.normalize(c)) : n && (c.shapeFlag |= j(n) ? 8 : 16), process.env.NODE_ENV !== "production" && c.key !== c.key && M("VNode created with invalid key (NaN). VNode type:", c.type), // avoid a block node from tracking itself
-  !a && // has current parent block
-  pe && // presence of a patch flag indicates this node needs patching on updates.
-  // component nodes also should always be patched, because even if the
-  // component doesn't need to update, it needs to persist the instance on to
-  // the next vnode so that it can be properly unmounted later.
-  (c.patchFlag > 0 || r & 6) && // the EVENTS flag is only for hydration and if it is the only flag, the
-  // vnode should not be considered dynamic due to handler caching.
-  c.patchFlag !== 32 && pe.push(c), c;
+  return i ? (ct(c, n), a & 128 && t.normalize(c)) : n && (c.shapeFlag |= I(n) ? 8 : 16), process.env.NODE_ENV !== "production" && c.key !== c.key && ae("VNode created with invalid key (NaN). VNode type:", c.type), c;
 }
-const Os = process.env.NODE_ENV !== "production" ? vs : Un;
-function Un(t, e = null, n = null, o = 0, s = null, r = !1) {
-  if ((!t || t === cs) && (process.env.NODE_ENV !== "production" && !t && M(`Invalid vnode type when creating vnode: ${t}.`), t = ws), bs(t)) {
-    const i = qe(
+const ue = process.env.NODE_ENV !== "production" ? Po : un;
+function un(t, e = null, n = null, o = 0, s = null, a = !1) {
+  if ((!t || t === bo) && (process.env.NODE_ENV !== "production" && !t && ae(`Invalid vnode type when creating vnode: ${t}.`), t = To), Ye(t)) {
+    const i = Ne(
       t,
       e,
       !0
       /* mergeRef: true */
     );
-    return n && jt(i, n), !r && pe && (i.shapeFlag & 6 ? pe[pe.indexOf(t)] = i : pe.push(i)), i.patchFlag = -2, i;
+    return n && ct(i, n), i.patchFlag = -2, i;
   }
-  if (Yn(t) && (t = t.__vccOpts), e) {
-    e = Ps(e);
+  if (gn(t) && (t = t.__vccOpts), e) {
+    e = Lo(e);
     let { class: i, style: c } = e;
-    i && !j(i) && (e.class = Nt(i)), N(c) && (Ue(c) && !D(c) && (c = P({}, c)), e.style = vt(c));
+    i && !I(i) && (e.class = tt(i)), A(c) && (me(c) && !M(c) && (c = Z({}, c)), e.style = et(c));
   }
-  const a = j(t) ? 1 : Ss(t) ? 128 : us(t) ? 64 : N(t) ? 4 : z(t) ? 2 : 0;
-  return process.env.NODE_ENV !== "production" && a & 4 && Ue(t) && (t = g(t), M(
+  const r = I(t) ? 1 : Ro(t) ? 128 : So(t) ? 64 : A(t) ? 4 : K(t) ? 2 : 0;
+  return process.env.NODE_ENV !== "production" && r & 4 && me(t) && (t = g(t), ae(
     "Vue received a Component that was made a reactive object. This can lead to unnecessary performance overhead and should be avoided by marking the component with `markRaw` or using `shallowRef` instead of `ref`.",
     `
 Component that was made reactive: `,
     t
-  )), Ns(
+  )), Io(
     t,
     e,
     n,
     o,
     s,
-    a,
     r,
+    a,
     !0
   );
 }
-function Ps(t) {
-  return t ? Ue(t) || Bn(t) ? P({}, t) : t : null;
+function Lo(t) {
+  return t ? me(t) || sn(t) ? Z({}, t) : t : null;
 }
-function qe(t, e, n = !1, o = !1) {
-  const { props: s, ref: r, patchFlag: a, children: i, transition: c } = t, l = e ? Ts(s || {}, e) : s, p = {
+function Ne(t, e, n = !1, o = !1) {
+  const { props: s, ref: a, patchFlag: r, children: i, transition: c } = t, h = e ? Vo(s || {}, e) : s, p = {
     __v_isVNode: !0,
     __v_skip: !0,
     type: t.type,
-    props: l,
-    key: l && Hn(l),
+    props: h,
+    key: h && rn(h),
     ref: e && e.ref ? (
       // #2078 in the case of <component :is="vnode" ref="extra"/>
       // if the vnode itself already has a ref, cloneVNode will need to merge
       // the refs so the single vnode can be set on multiple refs
-      n && r ? D(r) ? r.concat(He(e)) : [r, He(e)] : He(e)
-    ) : r,
+      n && a ? M(a) ? a.concat(ze(e)) : [a, ze(e)] : ze(e)
+    ) : a,
     scopeId: t.scopeId,
     slotScopeIds: t.slotScopeIds,
-    children: process.env.NODE_ENV !== "production" && a === -1 && D(i) ? i.map(Wn) : i,
+    children: process.env.NODE_ENV !== "production" && r === -1 && M(i) ? i.map(cn) : i,
     target: t.target,
     targetStart: t.targetStart,
     targetAnchor: t.targetAnchor,
@@ -1758,7 +1248,7 @@ function qe(t, e, n = !1, o = !1) {
     // existing patch flag to be reliable and need to add the FULL_PROPS flag.
     // note: preserve flag for fragments since they use the flag for children
     // fast paths only.
-    patchFlag: e && t.type !== Kn ? a === -1 ? 16 : a | 16 : a,
+    patchFlag: e && t.type !== an ? r === -1 ? 16 : r | 16 : r,
     dynamicProps: t.dynamicProps,
     dynamicChildren: t.dynamicChildren,
     appContext: t.appContext,
@@ -1770,140 +1260,121 @@ function qe(t, e, n = !1, o = !1) {
     // they will simply be overwritten.
     component: t.component,
     suspense: t.suspense,
-    ssContent: t.ssContent && qe(t.ssContent),
-    ssFallback: t.ssFallback && qe(t.ssFallback),
+    ssContent: t.ssContent && Ne(t.ssContent),
+    ssFallback: t.ssFallback && Ne(t.ssFallback),
     el: t.el,
     anchor: t.anchor,
     ctx: t.ctx,
     ce: t.ce
   };
-  return c && o && Fn(
+  return c && o && on(
     p,
     c.clone(p)
   ), p;
 }
-function Wn(t) {
-  const e = qe(t);
-  return D(t.children) && (e.children = t.children.map(Wn)), e;
+function cn(t) {
+  const e = Ne(t);
+  return M(t.children) && (e.children = t.children.map(cn)), e;
 }
-function Rs(t = " ", e = 0) {
-  return Os(ks, null, t, e);
+function xo(t = " ", e = 0) {
+  return ue(Oo, null, t, e);
 }
-function jt(t, e) {
+function ct(t, e) {
   let n = 0;
   const { shapeFlag: o } = t;
   if (e == null)
     e = null;
-  else if (D(e))
+  else if (M(e))
     n = 16;
   else if (typeof e == "object")
     if (o & 65) {
       const s = e.default;
-      s && (s._c && (s._d = !1), jt(t, s()), s._c && (s._d = !0));
+      s && (s._c && (s._d = !1), ct(t, s()), s._c && (s._d = !0));
       return;
     } else
-      n = 32, !e._ && !Bn(e) && (e._ctx = ue);
-  else z(e) ? (e = { default: e, _ctx: ue }, n = 32) : (e = String(e), o & 64 ? (n = 16, e = [Rs(e)]) : n = 8);
+      n = 32, !e._ && !sn(e) && (e._ctx = De);
+  else K(e) ? (e = { default: e, _ctx: De }, n = 32) : (e = String(e), o & 64 ? (n = 16, e = [xo(e)]) : n = 8);
   t.children = e, t.shapeFlag |= n;
 }
-function Ts(...t) {
+function Vo(...t) {
   const e = {};
   for (let n = 0; n < t.length; n++) {
     const o = t[n];
     for (const s in o)
       if (s === "class")
-        e.class !== o.class && (e.class = Nt([e.class, o.class]));
+        e.class !== o.class && (e.class = tt([e.class, o.class]));
       else if (s === "style")
-        e.style = vt([e.style, o.style]);
-      else if (oo(s)) {
-        const r = e[s], a = o[s];
-        a && r !== a && !(D(r) && r.includes(a)) && (e[s] = r ? [].concat(r, a) : a);
+        e.style = et([e.style, o.style]);
+      else if (En(s)) {
+        const a = e[s], r = o[s];
+        r && a !== r && !(M(a) && a.includes(r)) && (e[s] = a ? [].concat(a, r) : r);
       } else s !== "" && (e[s] = o[s]);
   }
   return e;
 }
-let Ie = null;
-const Is = () => Ie || ue;
-let St;
+let ln = null;
+const Fo = () => ln || De;
 {
-  const t = tt(), e = (n, o) => {
+  const t = Oe(), e = (n, o) => {
     let s;
-    return (s = t[n]) || (s = t[n] = []), s.push(o), (r) => {
-      s.length > 1 ? s.forEach((a) => a(r)) : s[0](r);
+    return (s = t[n]) || (s = t[n] = []), s.push(o), (a) => {
+      s.length > 1 ? s.forEach((r) => r(a)) : s[0](a);
     };
   };
-  St = e(
+  e(
     "__VUE_INSTANCE_SETTERS__",
-    (n) => Ie = n
+    (n) => ln = n
   ), e(
     "__VUE_SSR_SETTERS__",
-    (n) => Qe = n
+    (n) => hn = n
   );
 }
-const xs = (t) => {
-  const e = Ie;
-  return St(t), t.scope.on(), () => {
-    t.scope.off(), St(e);
-  };
-};
-function Ls(t) {
-  return t.vnode.shapeFlag & 4;
-}
-let Qe = !1;
+let hn = !1;
 process.env.NODE_ENV;
-function Vs(t) {
-  return t.exposed ? t.exposeProxy || (t.exposeProxy = new Proxy(Bo(xo(t.exposed)), {
-    get(e, n) {
-      if (n in e)
-        return e[n];
-      if (n in ke)
-        return ke[n](t);
-    },
-    has(e, n) {
-      return n in e || n in ke;
-    }
-  })) : t.proxy;
+const jo = /(?:^|[-_])(\w)/g, $o = (t) => t.replace(jo, (e) => e.toUpperCase()).replace(/[-_]/g, "");
+function fn(t, e = !0) {
+  return K(t) ? t.displayName || t.name : t.name || e && t.__name;
 }
-const $s = /(?:^|[-_])(\w)/g, js = (t) => t.replace($s, (e) => e.toUpperCase()).replace(/[-_]/g, "");
-function Gn(t, e = !0) {
-  return z(t) ? t.displayName || t.name : t.name || e && t.__name;
-}
-function Jn(t, e, n = !1) {
-  let o = Gn(e);
+function pn(t, e, n = !1) {
+  let o = fn(e);
   if (!o && e.__file) {
     const s = e.__file.match(/([^/\\]+)\.\w+$/);
     s && (o = s[1]);
   }
   if (!o && t && t.parent) {
-    const s = (r) => {
-      for (const a in r)
-        if (r[a] === e)
-          return a;
+    const s = (a) => {
+      for (const r in a)
+        if (a[r] === e)
+          return r;
     };
     o = s(
       t.components || t.parent.type.components
     ) || s(t.appContext.components);
   }
-  return o ? js(o) : n ? "App" : "Anonymous";
+  return o ? $o(o) : n ? "App" : "Anonymous";
 }
-function Yn(t) {
-  return z(t) && "__vccOpts" in t;
+function gn(t) {
+  return K(t) && "__vccOpts" in t;
 }
-const Ae = (t, e) => {
-  const n = Ho(t, e, Qe);
+const N = (t, e) => {
+  const n = uo(t, e, hn);
   if (process.env.NODE_ENV !== "production") {
-    const o = Is();
+    const o = Fo();
     o && o.appContext.config.warnRecursiveComputed && (n._warnRecursive = !0);
   }
   return n;
 };
-function Fs() {
+function Bo(t, e, n) {
+  const o = arguments.length;
+  return o === 2 ? A(e) && !M(e) ? Ye(e) ? ue(t, null, [e]) : ue(t, e) : ue(t, null, e) : (o > 3 ? n = Array.prototype.slice.call(arguments, 2) : o === 3 && Ye(n) && (n = [n]), ue(t, e, n));
+}
+function Ko() {
   if (process.env.NODE_ENV === "production" || typeof window > "u")
     return;
   const t = { style: "color:#3ba776" }, e = { style: "color:#1677ff" }, n = { style: "color:#f5222d" }, o = { style: "color:#eb2f96" }, s = {
     __vue_custom_formatter: !0,
     header(u) {
-      return N(u) ? u.__isVue ? ["div", t, "VueInstance"] : k(u) ? [
+      return A(u) ? u.__isVue ? ["div", t, "VueInstance"] : b(u) ? [
         "div",
         {},
         ["span", t, p(u)],
@@ -1911,17 +1382,17 @@ function Fs() {
         // avoid debugger accessing value affecting behavior
         i("_value" in u ? u._value : u),
         ">"
-      ] : De(u) ? [
+      ] : Gt(u) ? [
         "div",
         {},
-        ["span", t, O(u) ? "ShallowReactive" : "Reactive"],
+        ["span", t, S(u) ? "ShallowReactive" : "Reactive"],
         "<",
         i(u),
-        `>${W(u) ? " (readonly)" : ""}`
-      ] : W(u) ? [
+        `>${L(u) ? " (readonly)" : ""}`
+      ] : L(u) ? [
         "div",
         {},
-        ["span", t, O(u) ? "ShallowReadonly" : "Readonly"],
+        ["span", t, S(u) ? "ShallowReadonly" : "Readonly"],
         "<",
         i(u),
         ">"
@@ -1935,17 +1406,17 @@ function Fs() {
         return [
           "div",
           {},
-          ...r(u.$)
+          ...a(u.$)
         ];
     }
   };
-  function r(u) {
-    const h = [];
-    u.type.props && u.props && h.push(a("props", g(u.props))), u.setupState !== L && h.push(a("setup", u.setupState)), u.data !== L && h.push(a("data", g(u.data)));
-    const d = c(u, "computed");
-    d && h.push(a("computed", d));
-    const E = c(u, "inject");
-    return E && h.push(a("injected", E)), h.push([
+  function a(u) {
+    const f = [];
+    u.type.props && u.props && f.push(r("props", g(u.props))), u.setupState !== Ke && f.push(r("setup", u.setupState)), u.data !== Ke && f.push(r("data", g(u.data)));
+    const D = c(u, "computed");
+    D && f.push(r("computed", D));
+    const w = c(u, "inject");
+    return w && f.push(r("injected", w)), f.push([
       "div",
       {},
       [
@@ -1956,10 +1427,10 @@ function Fs() {
         "$ (internal): "
       ],
       ["object", { object: u }]
-    ]), h;
+    ]), f;
   }
-  function a(u, h) {
-    return h = P({}, h), Object.keys(h).length ? [
+  function r(u, f) {
+    return f = Z({}, f), Object.keys(f).length ? [
       "div",
       { style: "line-height:1.25em;margin-bottom:0.6em" },
       [
@@ -1974,34 +1445,34 @@ function Fs() {
         {
           style: "padding-left:1.25em"
         },
-        ...Object.keys(h).map((d) => [
+        ...Object.keys(f).map((D) => [
           "div",
           {},
-          ["span", o, d + ": "],
-          i(h[d], !1)
+          ["span", o, D + ": "],
+          i(f[D], !1)
         ])
       ]
     ] : ["span", {}];
   }
-  function i(u, h = !0) {
-    return typeof u == "number" ? ["span", e, u] : typeof u == "string" ? ["span", n, JSON.stringify(u)] : typeof u == "boolean" ? ["span", o, u] : N(u) ? ["object", { object: h ? g(u) : u }] : ["span", n, String(u)];
+  function i(u, f = !0) {
+    return typeof u == "number" ? ["span", e, u] : typeof u == "string" ? ["span", n, JSON.stringify(u)] : typeof u == "boolean" ? ["span", o, u] : A(u) ? ["object", { object: f ? g(u) : u }] : ["span", n, String(u)];
   }
-  function c(u, h) {
-    const d = u.type;
-    if (z(d))
+  function c(u, f) {
+    const D = u.type;
+    if (K(D))
       return;
-    const E = {};
-    for (const T in u.ctx)
-      l(d, T, h) && (E[T] = u.ctx[T]);
-    return E;
+    const w = {};
+    for (const re in u.ctx)
+      h(D, re, f) && (w[re] = u.ctx[re]);
+    return w;
   }
-  function l(u, h, d) {
-    const E = u[d];
-    if (D(E) && E.includes(h) || N(E) && h in E || u.extends && l(u.extends, h, d) || u.mixins && u.mixins.some((T) => l(T, h, d)))
+  function h(u, f, D) {
+    const w = u[D];
+    if (M(w) && w.includes(f) || A(w) && f in w || u.extends && h(u.extends, f, D) || u.mixins && u.mixins.some((re) => h(re, f, D)))
       return !0;
   }
   function p(u) {
-    return O(u) ? "ShallowRef" : u.effect ? "ComputedRef" : "Ref";
+    return S(u) ? "ShallowRef" : u.effect ? "ComputedRef" : "Ref";
   }
   window.devtoolsFormatters ? window.devtoolsFormatters.push(s) : window.devtoolsFormatters = [s];
 }
@@ -2013,26 +1484,48 @@ process.env.NODE_ENV;
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
 **/
-function Bs() {
-  Fs();
+function Uo() {
+  Ko();
 }
-process.env.NODE_ENV !== "production" && Bs();
-function dt(t) {
-  return k(t) ? t.value : t;
+process.env.NODE_ENV !== "production" && Uo();
+function dn(t) {
+  return t instanceof Function || typeof t == "function";
 }
-function Zn(t, e = "=", n = "&") {
-  return H(
+function B(t) {
+  return dn(t) ? t() : t;
+}
+async function Ho(t) {
+  const e = B(t);
+  return e instanceof Promise ? await e : e;
+}
+function Ce(t) {
+  return !!(t && typeof t == "object");
+}
+function x(t, e) {
+  if (Ce(t)) {
+    const n = [];
+    return t instanceof Map ? t.forEach((o, s) => n.push(e(o, s, t))) : Array.isArray(t) ? t.forEach((o, s) => n.push(e(o, s, t))) : Object.entries(t).forEach(
+      ([o, s]) => n.push(e(s, o, t))
+    ), n.filter((o) => o !== void 0);
+  }
+  return [];
+}
+function Fe(t) {
+  return b(t) ? t.value : t;
+}
+function yn(t, e = "=", n = "&") {
+  return x(
     t,
     (o, s) => `${s}${e}${encodeURIComponent(String(o).trim())}`
   ).sort().join(n);
 }
-function R() {
+function E() {
   return typeof window < "u";
 }
-function rt(t) {
+function Te(t) {
   return t == null;
 }
-function ne(t) {
+function T(t) {
   if (t)
     switch (typeof t) {
       case "bigint":
@@ -2044,7 +1537,7 @@ function ne(t) {
       case "symbol":
         return !0;
       case "object":
-        return Array.isArray(t) ? t.length > 0 : Object.values(t).some((e) => !rt(e));
+        return Array.isArray(t) ? t.length > 0 : Object.values(t).some((e) => !Te(e));
       case "string":
         return !["", "undefined", "null", "0", "false", "[]"].includes(t);
       case "undefined":
@@ -2054,33 +1547,33 @@ function ne(t) {
     }
   return !1;
 }
-function te(t) {
-  return Ne(t) && !Array.isArray(t);
+function U(t) {
+  return Ce(t) && !Array.isArray(t);
 }
-function zt(t) {
+function Ze(t) {
   return typeof t == "string";
 }
-function Ks(t, e) {
+function Wo(t, e) {
   return Math.floor(Math.random() * (e - t + 1) + t);
 }
-function ie(t) {
+function Y(t) {
   return Array.isArray(t) ? t : [t];
 }
-function qn(t) {
-  return R() && t === window;
+function mn(t) {
+  return E() && t === window;
 }
-function Z(t) {
-  if (R())
-    return qn(t) ? document.body : zt(t) ? document.querySelector(t) ?? void 0 : t;
+function j(t) {
+  if (E())
+    return mn(t) ? document.body : Ze(t) ? document.querySelector(t) ?? void 0 : t;
 }
-function Qt(t) {
-  return qn(t) ? t : Z(t);
+function yt(t) {
+  return mn(t) ? t : j(t);
 }
-function Hs(t) {
+function Jo(t) {
   var e;
-  return !!((e = Z(t)) != null && e.closest("html"));
+  return !!((e = j(t)) != null && e.closest("html"));
 }
-class Xt {
+class mt {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -2092,26 +1585,26 @@ class Xt {
    * @param detail an event-dependent value associated with the event/ зависимое от события
    * значение, связанное с событием
    */
-  constructor(e, n = ["click"], o, s, r) {
+  constructor(e, n = ["click"], o, s, a) {
     /**
      * Element.
      *
      * Элемент.
      */
-    f(this, "element");
+    l(this, "element");
     /**
      * Element for checking. If the element is missing in the DOM, the event is turned off.
      *
      * Элемент для проверки. Если элемент отсутствует в DOM, событие выключается.
      */
-    f(this, "elementControl");
-    f(this, "elementControlEdit");
+    l(this, "elementControl");
+    l(this, "elementControlEdit");
     /**
      * A case-sensitive string representing the event type to listen for.
      *
      * Чувствительная к регистру строка, представляющая тип обрабатываемого события.
      */
-    f(this, "type");
+    l(this, "type");
     /**
      * The object that receives a notification (an object that implements the Event interface)
      * when an event of the specified type occurs. This must be null, an object with a
@@ -2120,18 +1613,18 @@ class Xt {
      * Объект, который принимает уведомление, когда событие указанного типа произошло.
      * Это должен быть объект, реализующий интерфейс EventListener или просто функция JavaScript.
      */
-    f(this, "listenerRecent", (e) => {
+    l(this, "listenerRecent", (e) => {
       var n, o;
-      Hs(this.elementControl) ? ((n = this.listener) == null || n.call(this.element, e, this.detail), Ne(this.options) && ((o = this.options) != null && o.once) && this.stop()) : this.stop();
+      Jo(this.elementControl) ? ((n = this.listener) == null || n.call(this.element, e, this.detail), Ce(this.options) && ((o = this.options) != null && o.once) && this.stop()) : this.stop();
     });
     /**
      * Event states.
      *
      * Состояния события.
      */
-    f(this, "activity", !1);
-    f(this, "activityItems", []);
-    this.listener = o, this.options = s, this.detail = r, this.element = Qt(e), this.elementControl = Z(e), this.type = ie(n);
+    l(this, "activity", !1);
+    l(this, "activityItems", []);
+    this.listener = o, this.options = s, this.detail = a, this.element = yt(e), this.elementControl = j(e), this.type = Y(n);
   }
   /**
    * Checks whether event listening is currently enabled.
@@ -2151,8 +1644,8 @@ class Xt {
    * @param elementSelector element/ элемент
    */
   setElement(e) {
-    const n = Qt(e);
-    return this.elementControlEdit || (this.elementControl = Z(e)), this.element = n, this.reset(), this;
+    const n = yt(e);
+    return this.elementControlEdit || (this.elementControl = j(e)), this.element = n, this.reset(), this;
   }
   /**
    * Modifies the object that receives the notification.
@@ -2161,7 +1654,7 @@ class Xt {
    * @param elementSelector element/ элемент
    */
   setElementControl(e) {
-    return this.elementControl = Z(e), this.elementControlEdit = !rt(this.elementControl), this.elementControlEdit || (this.elementControl = Z(this.element)), this;
+    return this.elementControl = j(e), this.elementControlEdit = !Te(this.elementControl), this.elementControlEdit || (this.elementControl = j(this.element)), this;
   }
   /**
    * Changes the type of the handled event.
@@ -2170,7 +1663,7 @@ class Xt {
    * @param type type/ тип
    */
   setType(e) {
-    return this.type = ie(e), this.reset(), this;
+    return this.type = Y(e), this.reset(), this;
   }
   /**
    * Modifies the object that receives the notification.
@@ -2316,7 +1809,7 @@ class Xt {
     return !1;
   }
 }
-const en = "ui-loading", we = class we {
+const Mt = "ui-loading", fe = class fe {
   /**
    * Check if the loader is active now.
    *
@@ -2351,7 +1844,7 @@ const en = "ui-loading", we = class we {
    * @param element element/ элемент
    */
   static registrationEvent(e, n) {
-    new Xt(window, en, e).setElementControl(n).start();
+    new mt(window, Mt, e).setElementControl(n).start();
   }
   /**
    * Calls the event listener.
@@ -2363,30 +1856,30 @@ const en = "ui-loading", we = class we {
     (e = this.event) == null || e.dispatch({ loading: this.is() });
   }
 };
-f(we, "value", 0), f(we, "event"), R() && (we.event = new Xt(window, en));
-let oe = we;
-function Us(t) {
+l(fe, "value", 0), l(fe, "event"), E() && (fe.event = new mt(window, Mt));
+let H = fe;
+function Go(t) {
   return JSON.parse(JSON.stringify(t));
 }
-function Ws(t, e) {
-  return rt(t) ? !1 : Array.isArray(e) ? e.includes(t) : t === e;
+function Yo(t, e) {
+  return Te(t) ? !1 : Array.isArray(e) ? e.includes(t) : t === e;
 }
-let tn = "ui-storage";
-class Ft {
+let Dt = "ui-storage";
+class lt {
   /**
    * Constructor
    * @param name value name /<br>название значения
    * @param isSession should we use a session? /<br>использовать ли сессию?
    */
   constructor(e, n = !1) {
-    f(this, "value");
-    f(this, "age");
+    l(this, "value");
+    l(this, "age");
     this.name = e, this.isSession = n;
     const o = `${n ? "session" : "storage"}#${e}`;
-    if (o in gt)
-      return gt[o];
+    if (o in je)
+      return je[o];
     const s = this.getValue();
-    s && (this.value = s.value, this.age = s.age), gt[o] = this;
+    s && (this.value = s.value, this.age = s.age), je[o] = this;
   }
   /**
    * Changing the prefix in key names. Should be called at the beginning of the code.
@@ -2395,7 +1888,7 @@ class Ft {
    * @param newPrefix new prefix/ новый префикс
    */
   static setPrefix(e) {
-    tn = e;
+    Dt = e;
   }
   /**
    * Getting data from local storage.<br>
@@ -2416,7 +1909,7 @@ class Ft {
    */
   set(e) {
     var n, o;
-    return this.value = q(e), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? (n = this.getMethod()) == null || n.removeItem(this.getIndex()) : (o = this.getMethod()) == null || o.setItem(this.getIndex(), JSON.stringify({
+    return this.value = B(e), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? (n = this.getMethod()) == null || n.removeItem(this.getIndex()) : (o = this.getMethod()) == null || o.setItem(this.getIndex(), JSON.stringify({
       value: this.value,
       age: this.age
     })), this.value;
@@ -2427,14 +1920,14 @@ class Ft {
    * @param cache cache time /<br>время кэширования
    */
   isCache(e) {
-    return rt(e) || this.age && this.age + e * 1e3 >= (/* @__PURE__ */ new Date()).getTime();
+    return Te(e) || this.age && this.age + e * 1e3 >= (/* @__PURE__ */ new Date()).getTime();
   }
   /**
    * Returns an object for working with storage.<br>
    * Возвращает объект для работы с хранилищем.
    */
   getMethod() {
-    if (R())
+    if (E())
       return this.isSession ? window == null ? void 0 : window.sessionStorage : window == null ? void 0 : window.localStorage;
   }
   /**
@@ -2442,7 +1935,7 @@ class Ft {
    * Получение имени пользователя в хранилище.
    */
   getIndex() {
-    return `${tn}${this.name}`;
+    return `${Dt}${this.name}`;
   }
   /**
    * Getting data from storage.<br>
@@ -2459,7 +1952,7 @@ class Ft {
       }
   }
 }
-const gt = {}, Gs = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlternative":["EN"],"language":"en","languageAlternative":["us"],"firstDay":"Su","zone":"America/New_York","phoneCode":"1","phoneMask":["+1-***-***-****"]},{"country":"GB","countryAlternative":["UK"],"language":"en","firstDay":"Mo","zone":"Europe/London","phoneCode":"44","phoneMask":["+44-**-****-****"]},{"country":"AF","language":"fa","firstDay":"Sa","zone":"Asia/Kabul","phoneCode":"93","phoneMask":["+93-**-***-****"]},{"country":"AL","language":"sq","firstDay":"Mo","zone":"Europe/Tirane","phoneCode":"355","phoneMask":["+355-***-***-***"]},{"country":"DZ","language":"ar","firstDay":"Sa","zone":"Africa/Algiers","phoneCode":"213","phoneMask":["+213-**-***-****"]},{"country":"AS","language":"en","firstDay":null,"zone":"Pacific/Pago_Pago","phoneCode":"1-684","phoneMask":["+1-684-***-****"]},{"country":"AD","language":"ca","firstDay":"Mo","zone":"Europe/Andorra","phoneCode":"376","phoneMask":["+376-***-***"]},{"country":"AO","language":"pt","firstDay":null,"zone":"Africa/Lagos","phoneCode":"244","phoneMask":["+244-***-***-***"]},{"country":"AI","language":"en","firstDay":null,"zone":"America/Port_of_Spain","phoneCode":"1-264","phoneMask":["+1-264-***-****"]},{"country":"AQ","language":"en","firstDay":null,"zone":"Antarctica/Troll","phoneCode":"672","phoneMask":["+672-1-**-***"]},{"country":"AG","language":"en","firstDay":null,"zone":"America/Antigua","phoneCode":"1-268","phoneMask":["+1-268-***-****"]},{"country":"AR","language":"es","firstDay":"Su","zone":"America/Argentina/Buenos_Aires","phoneCode":"54","phoneMask":["+54-***-***-****"]},{"country":"AM","language":"hy","firstDay":"Mo","zone":"Asia/Yerevan","phoneCode":"374","phoneMask":["+374-**-***-***"]},{"country":"AW","language":"nl","firstDay":null,"zone":"America/Curacao","phoneCode":"297","phoneMask":["+297-***-****"]},{"country":"AU","language":"en","firstDay":"Mo","zone":"Australia/Sydney","phoneCode":"61","phoneMask":["+61-*-****-****"]},{"country":"AT","language":"de","firstDay":"Mo","zone":"Europe/Vienna","phoneCode":"43","phoneMask":["+43-***-***-****","+43-***-***-*****"]},{"country":"AZ","language":"az","firstDay":"Mo","zone":"Asia/Baku","phoneCode":"994","phoneMask":"+994-**-***-**-**"},{"country":"BS","language":"en","firstDay":null,"zone":"America/Nassau","phoneCode":"1-242","phoneMask":"+1-242-***-****"},{"country":"BH","language":"ar","firstDay":"Sa","zone":"Asia/Bahrain","phoneCode":"973","phoneMask":"+973-****-****"},{"country":"BD","language":"bn","firstDay":null,"zone":"Asia/Dhaka","phoneCode":"880","phoneMask":"+880-**-***-***"},{"country":"BB","language":"en","firstDay":null,"zone":"America/Barbados","phoneCode":"1-246","phoneMask":"+1-246-***-****"},{"country":"BY","language":"be","firstDay":"Mo","zone":"Europe/Minsk","phoneCode":"375","phoneMask":"+375-**-***-**-**"},{"country":"BE","language":"nl","firstDay":"Mo","zone":"Europe/Brussels","phoneCode":"32","phoneMask":"+32-***-***-***"},{"country":"BZ","language":"en","firstDay":"Su","zone":"America/Belize","phoneCode":"501","phoneMask":"+501-***-****"},{"country":"BJ","language":"fr","firstDay":null,"zone":"Africa/Lagos","phoneCode":"229","phoneMask":"+229-**-**-****"},{"country":"BM","language":"en","firstDay":null,"zone":"Atlantic/Bermuda","phoneCode":"1-441","phoneMask":"+1-441-***-****"},{"country":"BT","language":"dz","firstDay":null,"zone":"Asia/Thimphu","phoneCode":"975","phoneMask":["+975-*-***-***","+975-17-***-***"]},{"country":"BO","language":"es","firstDay":"Su","zone":"America/La_Paz","phoneCode":"591","phoneMask":"+591-*-***-****"},{"country":"BA","language":"bs","firstDay":null,"zone":"Europe/Belgrade","phoneCode":"387","phoneMask":["+387-**-****","+387-**-*****"]},{"country":"BW","language":"en","firstDay":null,"zone":"Africa/Maputo","phoneCode":"267","phoneMask":"+267-**-***-***"},{"country":"BR","language":"pt","firstDay":"Su","zone":"America/Sao_Paulo","phoneCode":"55","phoneMask":["+55-**-****-****","+55-**-*****-****"]},{"country":"IO","language":"en","firstDay":null,"zone":"Indian/Chagos","phoneCode":"246","phoneMask":"+246-***-****"},{"country":"VG","language":"en","firstDay":null,"zone":"America/Port_of_Spain","phoneCode":"1-284","phoneMask":"+1-284-***-****"},{"country":"BN","language":"ms","firstDay":"Mo","zone":"Asia/Brunei","phoneCode":"673","phoneMask":"+673-***-****"},{"country":"BG","language":"bg","firstDay":"Mo","zone":"Europe/Sofia","phoneCode":"359","phoneMask":"+359-***-***-***"},{"country":"BF","language":"fr","firstDay":null,"zone":"Africa/Abidjan","phoneCode":"226","phoneMask":"+226-**-**-****"},{"country":"BI","language":"fr","firstDay":null,"zone":"Africa/Maputo","phoneCode":"257","phoneMask":"+257-**-**-****"},{"country":"KH","language":"km","firstDay":null,"zone":"Asia/Phnom_Penh","phoneCode":"855","phoneMask":"+855-**-***-***"},{"country":"CM","phoneCode":"237","zone":"Africa/Lagos","language":"en","firstDay":null,"phoneMask":"+237-****-****"},{"country":"CA","phoneCode":"1","zone":"America/Toronto","language":"en","firstDay":"Su","phoneMask":"+1-***-***-****"},{"country":"CV","phoneCode":"238","zone":"Atlantic/Cape_Verde","language":"pt","firstDay":null,"phoneMask":"+238-***-**-**"},{"country":"KY","phoneCode":"1-345","zone":"America/Cayman","language":"en","firstDay":null,"phoneMask":"+1-345-***-****"},{"country":"CF","phoneCode":"236","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+236-**-**-****"},{"country":"TD","phoneCode":"235","zone":"Africa/Ndjamena","language":"fr","firstDay":null,"phoneMask":"+235-**-**-**-**"},{"country":"CL","phoneCode":"56","zone":"America/Santiago","language":"es","firstDay":"Su","phoneMask":"+56-*-****-****"},{"country":"CN","phoneCode":"86","zone":"Asia/Shanghai","language":"zh","firstDay":"Su","phoneMask":["+86-***-****-***","+86-***-****-****","+86-**-*****-*****"]},{"country":"CX","phoneCode":"61","zone":"Indian/Christmas","language":"en","firstDay":null},{"country":"CC","phoneCode":"61","zone":"Indian/Cocos","language":"ms","firstDay":null},{"country":"CO","phoneCode":"57","zone":"America/Bogota","language":"es","firstDay":"Su","phoneMask":"+57-***-***-****"},{"country":"KM","phoneCode":"269","zone":"Indian/Comoro","language":"ar","firstDay":null,"phoneMask":"+269-**-*****"},{"country":"CK","phoneCode":"682","zone":"Pacific/Rarotonga","language":"en","firstDay":null,"phoneMask":"+682-**-***"},{"country":"CR","phoneCode":"506","zone":"America/Costa_Rica","language":"es","firstDay":"Su","phoneMask":"+506-****-****"},{"country":"HR","phoneCode":"385","zone":"Europe/Belgrade","language":"hr","firstDay":"Mo","phoneMask":"+385-**-***-***"},{"country":"CU","phoneCode":"53","zone":"America/Havana","language":"es","firstDay":null,"phoneMask":"+53-*-***-****"},{"country":"CW","phoneCode":"599","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":"+599-***-****"},{"country":"CY","phoneCode":"357","zone":"Asia/Nicosia","language":"el","firstDay":null,"phoneMask":"+357-**-***-***"},{"country":"CZ","phoneCode":"420","zone":"Europe/Prague","language":"cs","languageAlternative":["cz"],"firstDay":"Mo","phoneMask":"+420-***-***-***"},{"country":"CD","phoneCode":"243","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+243-***-***-***"},{"country":"DK","phoneCode":"45","zone":"Europe/Copenhagen","language":"da","firstDay":"Mo","phoneMask":"+45-**-**-**-**"},{"country":"DJ","phoneCode":"253","zone":"Africa/Djibouti","language":"fr","firstDay":null,"phoneMask":"+253-**-**-**-**"},{"country":"DM","phoneCode":"1-767","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-767-***-****"},{"country":"DO","phoneCode":"1-809","zone":"North America","language":"America/Santo_Domingo","firstDay":"Su","phoneMask":["+1-809-***-****","+1-829-***-****","+1-849-***-****"]},{"country":"TL","phoneCode":"670","zone":"Asia/Dili","language":"tet","firstDay":null,"phoneMask":["+670-***-****","+670-77-*-*****","+670-78-*-*****"]},{"country":"EC","phoneCode":"593","zone":"America/Guayaquil","language":"es","firstDay":"Su","phoneMask":["+593-*-***-****","+593-**-***-****"]},{"country":"EG","phoneCode":"20","zone":"Africa/Cairo","language":"ar","firstDay":"Sa","phoneMask":"+20-***-***-****"},{"country":"SV","phoneCode":"503","zone":"America/El_Salvador","language":"es","firstDay":"Su","phoneMask":"+503-**-**-****"},{"country":"GQ","phoneCode":"240","zone":"Africa/Lagos","language":"es","firstDay":null,"phoneMask":"+240-**-***-****"},{"country":"ER","phoneCode":"291","zone":"Africa/Asmara","language":"aa","firstDay":null,"phoneMask":"+291-*-***-***"},{"country":"EE","phoneCode":"372","zone":"Europe/Tallinn","language":"et","firstDay":"Mo","phoneMask":["+372-***-****","+372-****-****"]},{"country":"ET","phoneCode":"251","zone":"Africa/Addis_Ababa","language":"am","firstDay":null,"phoneMask":"+251-**-***-****"},{"country":"FK","phoneCode":"500","zone":"Atlantic/Stanley","language":"en","firstDay":null,"phoneMask":"+500-*****"},{"country":"FO","phoneCode":"298","zone":"Atlantic/Faroe","language":"fo","firstDay":null,"phoneMask":"+298-***-***"},{"country":"FJ","phoneCode":"679","zone":"Pacific/Fiji","language":"en","firstDay":null,"phoneMask":"+679-**-*****"},{"country":"FI","phoneCode":"358","zone":"Europe/Helsinki","language":"fi","firstDay":"Mo","phoneMask":["+358-***-***-**-*","+358-***-***-**-**"]},{"country":"FR","phoneCode":"33","zone":"Europe/Paris","language":"fr","firstDay":"Mo","phoneMask":["+33-***-***-***","+262-*****-****","+508-**-****","+590-***-***-***"]},{"country":"PF","phoneCode":"689","zone":"Pacific/Tahiti","language":"fr","firstDay":null,"phoneMask":"+689-**-**-**"},{"country":"GA","phoneCode":"241","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+241-*-**-**-**"},{"country":"GM","phoneCode":"220","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+220-***-**-**"},{"country":"GE","phoneCode":"995","zone":"Asia/Tbilisi","language":"ka","firstDay":"Mo","phoneMask":"+995-***-***-***"},{"country":"DE","phoneCode":"49","zone":"Europe/Berlin","language":"de","firstDay":"Mo","phoneMask":["+49-***-***","+49-***-***-****","+49-****-***-****"]},{"country":"GH","phoneCode":"233","zone":"Africa/Accra","language":"en","firstDay":null,"phoneMask":"+233-***-***-***"},{"country":"GI","phoneCode":"350","zone":"Europe/Gibraltar","language":"en","firstDay":null,"phoneMask":"+350-***-*****"},{"country":"GR","phoneCode":"30","zone":"Europe/Athens","language":"el","firstDay":"Mo","phoneMask":"+30-***-***-****"},{"country":"GL","phoneCode":"299","zone":"America/Godthab","language":"kl","firstDay":null,"phoneMask":"+299-**-**-**"},{"country":"GD","phoneCode":"1-473","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-473-***-****"},{"country":"GU","phoneCode":"1-671","zone":"Pacific/Guam","language":"en","firstDay":null,"phoneMask":"+1-671-***-****"},{"country":"GT","phoneCode":"502","zone":"America/Guatemala","language":"es","firstDay":"Su","phoneMask":"+502-*-***-****"},{"country":"GG","phoneCode":"44-1481","zone":"Europe/London","language":"en","firstDay":null},{"country":"GN","phoneCode":"224","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+224-**-***-***"},{"country":"GW","phoneCode":"245","zone":"Africa/Bissau","language":"pt","firstDay":null,"phoneMask":"+245-*-******"},{"country":"GY","phoneCode":"592","zone":"America/Guyana","language":"en","firstDay":null,"phoneMask":"+592-***-****"},{"country":"HT","phoneCode":"509","zone":"America/Port-au-Prince","language":"ht","firstDay":null,"phoneMask":"+509-**-**-****"},{"country":"HN","phoneCode":"504","zone":"America/Tegucigalpa","language":"es","firstDay":"Su","phoneMask":"+504-****-****"},{"country":"HK","phoneCode":"852","zone":"Asia/Hong_Kong","language":"zh","firstDay":"Su","phoneMask":"+852-****-****"},{"country":"HU","phoneCode":"36","zone":"Europe/Budapest","language":"hu","firstDay":"Mo","phoneMask":"+36-***-***-***","nameFormat":"lf"},{"country":"IS","phoneCode":"354","zone":"Atlantic/Reykjavik","language":"is","firstDay":"Mo","phoneMask":"+354-***-****"},{"country":"IN","phoneCode":"91","zone":"Asia/Kolkata","language":"en","firstDay":"Mo","phoneMask":"+91-****-***-***"},{"country":"ID","phoneCode":"62","zone":"Asia/Jakarta","language":"id","firstDay":"Mo","phoneMask":["+62-**-***-**","+62-**-***-***","+62-**-***-****","+62-8-**-***-***","+62-8-**-***-****","+62-8-**-***-**-***"]},{"country":"IR","phoneCode":"98","zone":"Asia/Tehran","language":"fa","firstDay":"Sa","phoneMask":"+98-***-***-****"},{"country":"IQ","phoneCode":"964","zone":"Asia/Baghdad","language":"ar","firstDay":"Sa","phoneMask":"+964-***-***-****"},{"country":"IE","firstDay":"Mo","language":"en","phoneCode":"353","phoneMask":"+353-***-***-***","zone":"Europe/Dublin"},{"country":"IM","firstDay":null,"language":"Pound","phoneCode":"44-1624","zone":"Isle of Man"},{"country":"IL","firstDay":"Su","language":"he","languageAlternative":["il"],"phoneCode":"972","phoneMask":["+972-*-***-****","+972-5-*-***-****"],"zone":"Asia/Jerusalem"},{"country":"IT","firstDay":"Mo","language":"it","phoneCode":"39","phoneMask":"+39-***-****-***","zone":"Europe/Rome"},{"country":"CI","phoneCode":"225","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+225-**-***-***"},{"country":"JM","phoneCode":"1-876","zone":"America/Jamaica","language":"en","firstDay":"Su","phoneMask":"+1-876-***-****"},{"country":"JP","phoneCode":"81","zone":"Asia/Tokyo","language":"ja","firstDay":"Su","phoneMask":["+81-***-***-***","+81-**-****-****"],"nameFormat":"lf"},{"country":"JE","phoneCode":"44-1534","zone":"Europe/London","language":"en","firstDay":null},{"country":"JO","phoneCode":"962","zone":"Asia/Amman","language":"ar","firstDay":"Sa","phoneMask":"+962-*-****-****"},{"country":"KZ","phoneCode":"7","zone":"Asia/Almaty","language":"kk","firstDay":"Mo","phoneMask":["+7-6-**-***-**-**","+7-7-**-***-**-**"],"nameFormat":"lf"},{"country":"KE","phoneCode":"254","zone":"Africa/Nairobi","language":"en","firstDay":"Su","phoneMask":"+254-***-******"},{"country":"KI","phoneCode":"686","zone":"Pacific/Tarawa","language":"en","firstDay":null,"phoneMask":"+686-**-***"},{"country":"XK","phoneCode":"383","zone":"Europe/Belgrade","language":"sq","firstDay":"Mo"},{"country":"KW","phoneCode":"965","zone":"Asia/Kuwait","language":"ar","firstDay":"Sa","phoneMask":"+965-****-****"},{"country":"KG","phoneCode":"996","zone":"Asia/Bishkek","language":"ky","firstDay":"Mo","phoneMask":"+996-***-***-***"},{"country":"LA","phoneCode":"856","zone":"Asia/Vientiane","language":"lo","firstDay":null,"phoneMask":["+856-**-***-***","+856-20-**-***-***"]},{"country":"LV","phoneCode":"371","zone":"Europe/Riga","language":"lv","firstDay":"Mo","phoneMask":"+371-**-***-***"},{"country":"LB","phoneCode":"961","zone":"Asia/Beirut","language":"ar","firstDay":"Mo","phoneMask":["+961-*-***-***","+961-**-***-***"]},{"country":"LS","phoneCode":"266","zone":"Africa/Johannesburg","language":"en","firstDay":null,"phoneMask":"+266-*-***-****"},{"country":"LR","phoneCode":"231","zone":"Africa/Monrovia","language":"en","firstDay":null,"phoneMask":"+231-**-***-***"},{"country":"LY","phoneCode":"218","zone":"Africa/Tripoli","language":"ar","firstDay":"Sa","phoneMask":["+218-**-***-***","+218-21-***-****"]},{"country":"LI","phoneCode":"423","zone":"Europe/Zurich","language":"de","firstDay":null,"phoneMask":"+423-***-***-****"},{"country":"LT","phoneCode":"370","zone":"Europe/Vilnius","language":"lt","firstDay":"Mo","phoneMask":"+370-***-**-***"},{"country":"LU","phoneCode":"352","zone":"Europe/Luxembourg","language":"lb","firstDay":"Mo","phoneMask":"+352-***-***-***"},{"country":"MO","phoneCode":"853","zone":"Asia/Macau","language":"zh","firstDay":null,"phoneMask":"+853-****-****"},{"country":"MK","phoneCode":"389","zone":"Europe/Belgrade","language":"mk","firstDay":"Mo","phoneMask":"+389-**-***-***"},{"country":"MG","phoneCode":"261","zone":"Indian/Antananarivo","language":"fr","firstDay":null,"phoneMask":"+261-**-**-*****"},{"country":"MW","phoneCode":"265","zone":"Africa/Maputo","language":"ny","firstDay":null,"phoneMask":["+265-*-****-****","+265-1-***-***"]},{"country":"MY","phoneCode":"60","zone":"Asia/Kuala_Lumpur","language":"ms","firstDay":"Mo","phoneMask":["+60-*-***-***","+60-**-***-***","+60-**-***-****","+60-***-***-***"]},{"country":"MV","phoneCode":"960","zone":"Indian/Maldives","language":"dv","firstDay":null,"phoneMask":"+960-***-****"},{"country":"ML","phoneCode":"223","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+223-**-**-****"},{"country":"MT","phoneCode":"356","zone":"Europe/Malta","language":"mt","firstDay":null,"phoneMask":"+356-****-****"},{"country":"MH","phoneCode":"692","zone":"Pacific/Majuro","language":"mh","firstDay":null,"phoneMask":"+692-***-****"},{"country":"MR","phoneCode":"222","zone":"Africa/Abidjan","language":"ar","firstDay":null,"phoneMask":"+222-**-**-****"},{"country":"MU","phoneCode":"230","zone":"Indian/Mauritius","language":"en","firstDay":null,"phoneMask":"+230-***-****"},{"country":"YT","phoneCode":"262","zone":"Indian/Mayotte","language":"fr","firstDay":null},{"country":"MX","phoneCode":"52","zone":"America/Mexico_City","language":"es","firstDay":"Su","phoneMask":["+52-**-**-****","+52-***-***-****"]},{"country":"FM","phoneCode":"691","zone":"Pacific/Pohnpei","language":"en","firstDay":null,"phoneMask":"+691-***-****"},{"country":"MD","phoneCode":"373","zone":"Europe/Chisinau","language":"ro","firstDay":null,"phoneMask":"+373-****-****"},{"country":"MC","phoneCode":"377","zone":"Europe/Monaco","language":"fr","firstDay":"Mo","phoneMask":["+377-**-***-***","+377-***-***-***"]},{"country":"MN","phoneCode":"976","zone":"Asia/Ulaanbaatar","language":"mn","firstDay":"Mo","phoneMask":"+976-**-**-****"},{"country":"ME","phoneCode":"382","zone":"Europe/Belgrade","language":"sr","firstDay":null,"phoneMask":"+382-**-***-***"},{"country":"MS","phoneCode":"1-664","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-664-***-****"},{"country":"MA","phoneCode":"212","zone":"Africa/Casablanca","language":"ar","firstDay":"Mo","phoneMask":"+212-**-****-***"},{"country":"MZ","phoneCode":"258","zone":"Africa/Maputo","language":"pt","firstDay":null,"phoneMask":"+258-**-***-***"},{"country":"MM","phoneCode":"95","zone":"Asia/Rangoon","language":"my","firstDay":null,"phoneMask":["+95-***-***","+95-*-***-***","+95-**-***-***"]},{"country":"NA","phoneCode":"264","zone":"Africa/Windhoek","language":"en","firstDay":null,"phoneMask":"+264-**-***-****"},{"country":"NR","phoneCode":"674","zone":"Pacific/Nauru","language":"na","firstDay":null,"phoneMask":"+674-***-****"},{"country":"NP","phoneCode":"977","zone":"Asia/Kathmandu","language":"ne","firstDay":null,"phoneMask":"+977-**-***-***"},{"country":"NL","phoneCode":"31","zone":"Europe/Amsterdam","language":"nl","firstDay":"Mo","phoneMask":"+31-**-***-****"},{"country":"AN","phoneCode":"599","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":["+599-***-****","+599-9-***-****"]},{"country":"NC","phoneCode":"687","zone":"Pacific/Noumea","language":"fr","firstDay":null,"phoneMask":"+687-**-****"},{"country":"NZ","phoneCode":"64","zone":"Pacific/Auckland","language":"en","firstDay":"Mo","phoneMask":["+64-**-***-***","+64-***-***-***","+64-***-***-****"]},{"country":"NI","phoneCode":"505","zone":"America/Managua","language":"es","firstDay":"Su","phoneMask":"+505-****-****"},{"country":"NE","phoneCode":"227","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+227-**-**-****"},{"country":"NG","phoneCode":"234","zone":"Africa/Lagos","language":"en","firstDay":null,"phoneMask":["+234-**-***-**","+234-**-***-***","+234-***-***-****"]},{"country":"NU","phoneCode":"683","zone":"Pacific/Niue","language":"niu","firstDay":null,"phoneMask":"+683-****"},{"country":"KP","phoneCode":"850","zone":"Asia/Pyongyang","language":"ko","firstDay":null,"phoneMask":["+850-***-***","+850-**-***-***","+850-****-****","+850-***-****-***","+850-****-*************","+850-191-***-****"]},{"country":"MP","phoneCode":"1-670","zone":"Pacific/Saipan","language":"fil","firstDay":null,"phoneMask":"+1-670-***-****"},{"country":"NO","phoneCode":"47","zone":"Europe/Oslo","language":"no","firstDay":"Mo","phoneMask":"+47-***-**-***"},{"country":"OM","phoneCode":"968","zone":"Asia/Muscat","language":"ar","firstDay":"Sa","phoneMask":"+968-**-***-***"},{"country":"PK","phoneCode":"92","zone":"Asia/Karachi","language":"ur","firstDay":"Mo","phoneMask":"+92-***-***-****"},{"country":"PW","phoneCode":"680","zone":"Pacific/Palau","language":"pau","firstDay":null,"phoneMask":"+680-***-****"},{"country":"PS","phoneCode":"970","zone":"Asia/Hebron","language":"ar","firstDay":null,"phoneMask":"+970-**-***-****"},{"country":"PA","phoneCode":"507","zone":"America/Panama","language":"es","firstDay":"Su","phoneMask":"+507-***-****"},{"country":"PG","phoneCode":"675","zone":"Pacific/Port_Moresby","language":"en","firstDay":null,"phoneMask":"+675-***-**-***"},{"country":"PY","phoneCode":"595","zone":"America/Asuncion","language":"es","firstDay":"Mo","phoneMask":"+595-***-***-***"},{"country":"PE","phoneCode":"51","zone":"America/Lima","language":"es","firstDay":"Su","phoneMask":"+51-***-***-***"},{"country":"PH","phoneCode":"63","zone":"Asia/Manila","language":"tl","firstDay":"Su","phoneMask":"+63-***-***-****"},{"country":"PN","phoneCode":"64","zone":"Pacific/Pitcairn","language":"en","firstDay":null},{"country":"PL","phoneCode":"48","zone":"Europe/Warsaw","language":"pl","firstDay":"Mo","phoneMask":"+48-***-***-***"},{"country":"PT","phoneCode":"351","zone":"Europe/Lisbon","language":"pt","firstDay":"Mo","phoneMask":"+351-**-***-****"},{"country":"PR","phoneCode":"1-787","zone":"San Juan","language":"Dollar","firstDay":"Su"},{"country":"QA","phoneCode":"974","zone":"Asia/Qatar","language":"ar","firstDay":"Sa","phoneMask":"+974-****-****"},{"country":"CG","phoneCode":"242","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+242-**-***-****"},{"country":"RE","phoneCode":"262","zone":"Indian/Reunion","language":"fr","firstDay":null,"phoneMask":"+262-*****-****"},{"country":"RO","phoneCode":"40","zone":"Europe/Bucharest","language":"ro","firstDay":"Mo","phoneMask":"+40-**-***-****"},{"country":"RU","phoneCode":"7","phoneWithin":"8","zone":"Europe/Moscow","language":"ru","firstDay":"Mo","phoneMask":"+7-***-***-**-**","nameFormat":"lsf"},{"country":"RW","phoneCode":"250","zone":"Africa/Maputo","language":"rw","firstDay":null,"phoneMask":"+250-***-***-***"},{"country":"BL","phoneCode":"590","zone":"America/Port_of_Spain","language":"fr","firstDay":null},{"country":"SH","phoneCode":"290","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+290-****"},{"country":"KN","phoneCode":"1-869","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-869-***-****"},{"country":"LC","phoneCode":"1-758","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-758-***-****"},{"country":"MF","phoneCode":"590","zone":"America/Port_of_Spain","language":"fr","firstDay":null},{"country":"PM","phoneCode":"508","zone":"America/Miquelon","language":"fr","firstDay":null},{"country":"VC","phoneCode":"1-784","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-784-***-****"},{"country":"WS","phoneCode":"685","zone":"Pacific/Apia","language":"sm","firstDay":null,"phoneMask":"+685-**-****"},{"country":"SM","phoneCode":"378","zone":"Europe/Rome","language":"it","firstDay":null,"phoneMask":"+378-****-******"},{"country":"ST","phoneCode":"239","zone":"Africa/Abidjan","language":"pt","firstDay":null,"phoneMask":"+239-**-*****"},{"country":"SA","phoneCode":"966","zone":"Asia/Riyadh","language":"ar","firstDay":"Sa","phoneMask":["+966-*-***-****","+966-5-****-****"]},{"country":"SN","phoneCode":"221","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+221-**-***-****"},{"country":"RS","phoneCode":"381","zone":"Europe/Belgrade","language":"sr","firstDay":"Mo","phoneMask":"+381-**-***-****"},{"country":"SC","phoneCode":"248","zone":"Indian/Mahe","language":"en","firstDay":null,"phoneMask":"+248-*-***-***"},{"country":"SL","phoneCode":"232","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+232-**-******"},{"country":"SG","phoneCode":"65","zone":"Asia/Singapore","language":"cmn","firstDay":"Mo","phoneMask":"+65-****-****"},{"country":"SX","phoneCode":"1-721","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":"+1-721-***-****"},{"country":"SK","phoneCode":"421","zone":"Europe/Prague","language":"sk","firstDay":"Mo","phoneMask":"+421-***-***-***"},{"country":"SI","phoneCode":"386","zone":"Europe/Belgrade","language":"sl","firstDay":null,"phoneMask":"+386-**-***-***"},{"country":"SB","phoneCode":"677","zone":"Pacific/Guadalcanal","language":"en","firstDay":null,"phoneMask":["+677-*****","+677-***-****"]},{"country":"SO","phoneCode":"252","zone":"Africa/Mogadishu","language":"so","firstDay":null,"phoneMask":["+252-*-***-***","+252-**-***-***"]},{"country":"ZA","phoneCode":"27","zone":"Africa/Johannesburg","language":"zu","firstDay":"Su","phoneMask":"+27-**-***-****"},{"country":"KR","phoneCode":"82","zone":"Asia/Seoul","language":"ko","firstDay":"Su","phoneMask":["+82-**-***-****","+82-**-***-****-**"],"nameFormat":"lf"},{"country":"SS","phoneCode":"211","zone":"Africa/Khartoum","language":"en","firstDay":null,"phoneMask":"+211-**-***-****"},{"country":"ES","phoneCode":"34","zone":"Europe/Madrid","language":"es","firstDay":"Mo","phoneMask":"+34-***-***-***"},{"country":"LK","phoneCode":"94","zone":"Asia/Colombo","language":"si","firstDay":null,"phoneMask":"+94-**-***-****"},{"country":"SD","phoneCode":"249","zone":"Africa/Khartoum","language":"ar","firstDay":null,"phoneMask":"+249-**-***-****"},{"country":"SR","phoneCode":"597","zone":"America/Paramaribo","language":"nl","firstDay":null,"phoneMask":["+597-***-***","+597-***-****"]},{"country":"SJ","phoneCode":"47","zone":"Europe/Oslo","language":"no","firstDay":null},{"country":"SZ","phoneCode":"268","zone":"Africa/Johannesburg","language":"en","firstDay":null,"phoneMask":"+268-**-**-****"},{"country":"SE","phoneCode":"46","zone":"Europe/Stockholm","language":"sv","firstDay":"Mo","phoneMask":"+46-**-***-****"},{"country":"CH","phoneCode":"41","zone":"Europe/Zurich","language":"de","firstDay":"Mo","phoneMask":"+41-**-***-****"},{"country":"SY","phoneCode":"963","zone":"Asia/Damascus","language":"ar","firstDay":"Sa","phoneMask":"+963-**-****-***"},{"country":"TW","phoneCode":"886","zone":"Asia/Taipei","language":"zh","firstDay":"Su","phoneMask":["+886-****-****","+886-*-****-****"]},{"country":"TJ","phoneCode":"992","zone":"Asia/Dushanbe","language":"tg","firstDay":null,"phoneMask":"+992-**-***-****"},{"country":"TZ","phoneCode":"255","zone":"Africa/Dar_es_Salaam","language":"sw","firstDay":null,"phoneMask":"+255-**-***-****"},{"country":"TH","phoneCode":"66","zone":"Asia/Bangkok","language":"th","firstDay":"Mo","phoneMask":"+66-**-***-****"},{"country":"TG","phoneCode":"228","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+228-**-***-***"},{"country":"TK","phoneCode":"690","zone":"Pacific/Fakaofo","language":"tkl","firstDay":null,"phoneMask":"+690-****"},{"country":"TO","phoneCode":"676","zone":"Pacific/Tongatapu","language":"to","firstDay":null,"phoneMask":"+676-*****"},{"country":"TT","phoneCode":"1-868","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-868-***-****"},{"country":"TN","phoneCode":"216","zone":"Africa/Tunis","language":"ar","firstDay":"Mo","phoneMask":"+216-**-***-***"},{"country":"TR","phoneCode":"90","zone":"Europe/Istanbul","language":"tr","firstDay":"Mo","phoneMask":"+90-***-***-****"},{"country":"TM","phoneCode":"993","zone":"Asia/Ashgabat","language":"tk","firstDay":null,"phoneMask":"+993-*-***-****"},{"country":"TC","phoneCode":"1-649","zone":"America/Grand_Turk","language":"en","firstDay":null,"phoneMask":"+1-649-***-****"},{"country":"TV","phoneCode":"688","zone":"Pacific/Funafuti","language":"tvl","firstDay":null,"phoneMask":["+688-2-****","+688-90-****"]},{"country":"VI","phoneCode":"1-340","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-340-***-****"},{"country":"UG","phoneCode":"256","zone":"Africa/Kampala","language":"en","firstDay":null,"phoneMask":"+256-***-***-***"},{"country":"UA","phoneCode":"380","zone":"Europe/Kiev","language":"uk","languageAlternative":["ua"],"firstDay":"Mo","phoneMask":"+380-**-***-**-**"},{"country":"AE","phoneCode":"971","zone":"Asia/Dubai","language":"ar","firstDay":"Sa","phoneMask":["+971-*-***-****","+971-5-*-***-****"]},{"country":"UY","phoneCode":"598","zone":"America/Montevideo","language":"es","firstDay":"Mo","phoneMask":"+598-*-***-**-**"},{"country":"UZ","phoneCode":"998","zone":"Asia/Tashkent","language":"uz","firstDay":"Mo","phoneMask":"+998-**-***-****"},{"country":"VU","phoneCode":"678","zone":"Pacific/Efate","language":"bi","firstDay":null,"phoneMask":["+678-*****","+678-**-*****"]},{"country":"VA","phoneCode":"379","zone":"Europe/Rome","language":"la","firstDay":null,"phoneMask":"+39-6-698-*****"},{"country":"VE","phoneCode":"58","zone":"America/Caracas","language":"es","firstDay":"Su","phoneMask":"+58-***-***-****"},{"country":"VN","phoneCode":"84","zone":"Asia/Ho_Chi_Minh","language":"vi","firstDay":"Mo","phoneMask":["+84-**-****-***","+84-***-****-***"],"nameFormat":"fsl"},{"country":"WF","phoneCode":"681","zone":"Pacific/Wallis","language":"wls","firstDay":null,"phoneMask":"+681-**-****"},{"country":"EH","phoneCode":"212","zone":"Africa/El_Aaiun","language":"ar","firstDay":null},{"country":"YE","phoneCode":"967","zone":"Asia/Aden","language":"ar","firstDay":"Sa","phoneMask":["+967-*-***-***","+967-**-***-***","+967-***-***-***"]},{"country":"ZM","phoneCode":"260","zone":"Africa/Maputo","language":"en","firstDay":null,"phoneMask":"+260-**-***-****"},{"country":"ZW","phoneCode":"263","zone":"Africa/Maputo","language":"en","firstDay":"Su","phoneMask":"+263-*-******"},{"country":"GF","phoneCode":"594","zone":"America/Cayenne","language":"fr","firstDay":"Mo","phoneMask":"+594-*****-****"},{"country":"MQ","phoneCode":"596","zone":"America/Martinique","language":"fr","firstDay":"Mo","phoneMask":"+596-***-**-**-**"},{"country":"NF","phoneCode":"672-3","zone":"Pacific/Norfolk","language":"en","firstDay":"Mo","phoneMask":"+672-3-**-***"},{"country":"IC","phoneCode":"3428","zone":"Europe/Berlin","language":"es","firstDay":"Mo"}]'), Js = "geo-code", b = class b {
+const je = {}, Zo = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlternative":["EN"],"language":"en","languageAlternative":["us"],"firstDay":"Su","zone":"America/New_York","phoneCode":"1","phoneMask":["+1-***-***-****"]},{"country":"GB","countryAlternative":["UK"],"language":"en","firstDay":"Mo","zone":"Europe/London","phoneCode":"44","phoneMask":["+44-**-****-****"]},{"country":"AF","language":"fa","firstDay":"Sa","zone":"Asia/Kabul","phoneCode":"93","phoneMask":["+93-**-***-****"]},{"country":"AL","language":"sq","firstDay":"Mo","zone":"Europe/Tirane","phoneCode":"355","phoneMask":["+355-***-***-***"]},{"country":"DZ","language":"ar","firstDay":"Sa","zone":"Africa/Algiers","phoneCode":"213","phoneMask":["+213-**-***-****"]},{"country":"AS","language":"en","firstDay":null,"zone":"Pacific/Pago_Pago","phoneCode":"1-684","phoneMask":["+1-684-***-****"]},{"country":"AD","language":"ca","firstDay":"Mo","zone":"Europe/Andorra","phoneCode":"376","phoneMask":["+376-***-***"]},{"country":"AO","language":"pt","firstDay":null,"zone":"Africa/Lagos","phoneCode":"244","phoneMask":["+244-***-***-***"]},{"country":"AI","language":"en","firstDay":null,"zone":"America/Port_of_Spain","phoneCode":"1-264","phoneMask":["+1-264-***-****"]},{"country":"AQ","language":"en","firstDay":null,"zone":"Antarctica/Troll","phoneCode":"672","phoneMask":["+672-1-**-***"]},{"country":"AG","language":"en","firstDay":null,"zone":"America/Antigua","phoneCode":"1-268","phoneMask":["+1-268-***-****"]},{"country":"AR","language":"es","firstDay":"Su","zone":"America/Argentina/Buenos_Aires","phoneCode":"54","phoneMask":["+54-***-***-****"]},{"country":"AM","language":"hy","firstDay":"Mo","zone":"Asia/Yerevan","phoneCode":"374","phoneMask":["+374-**-***-***"]},{"country":"AW","language":"nl","firstDay":null,"zone":"America/Curacao","phoneCode":"297","phoneMask":["+297-***-****"]},{"country":"AU","language":"en","firstDay":"Mo","zone":"Australia/Sydney","phoneCode":"61","phoneMask":["+61-*-****-****"]},{"country":"AT","language":"de","firstDay":"Mo","zone":"Europe/Vienna","phoneCode":"43","phoneMask":["+43-***-***-****","+43-***-***-*****"]},{"country":"AZ","language":"az","firstDay":"Mo","zone":"Asia/Baku","phoneCode":"994","phoneMask":"+994-**-***-**-**"},{"country":"BS","language":"en","firstDay":null,"zone":"America/Nassau","phoneCode":"1-242","phoneMask":"+1-242-***-****"},{"country":"BH","language":"ar","firstDay":"Sa","zone":"Asia/Bahrain","phoneCode":"973","phoneMask":"+973-****-****"},{"country":"BD","language":"bn","firstDay":null,"zone":"Asia/Dhaka","phoneCode":"880","phoneMask":"+880-**-***-***"},{"country":"BB","language":"en","firstDay":null,"zone":"America/Barbados","phoneCode":"1-246","phoneMask":"+1-246-***-****"},{"country":"BY","language":"be","firstDay":"Mo","zone":"Europe/Minsk","phoneCode":"375","phoneMask":"+375-**-***-**-**"},{"country":"BE","language":"nl","firstDay":"Mo","zone":"Europe/Brussels","phoneCode":"32","phoneMask":"+32-***-***-***"},{"country":"BZ","language":"en","firstDay":"Su","zone":"America/Belize","phoneCode":"501","phoneMask":"+501-***-****"},{"country":"BJ","language":"fr","firstDay":null,"zone":"Africa/Lagos","phoneCode":"229","phoneMask":"+229-**-**-****"},{"country":"BM","language":"en","firstDay":null,"zone":"Atlantic/Bermuda","phoneCode":"1-441","phoneMask":"+1-441-***-****"},{"country":"BT","language":"dz","firstDay":null,"zone":"Asia/Thimphu","phoneCode":"975","phoneMask":["+975-*-***-***","+975-17-***-***"]},{"country":"BO","language":"es","firstDay":"Su","zone":"America/La_Paz","phoneCode":"591","phoneMask":"+591-*-***-****"},{"country":"BA","language":"bs","firstDay":null,"zone":"Europe/Belgrade","phoneCode":"387","phoneMask":["+387-**-****","+387-**-*****"]},{"country":"BW","language":"en","firstDay":null,"zone":"Africa/Maputo","phoneCode":"267","phoneMask":"+267-**-***-***"},{"country":"BR","language":"pt","firstDay":"Su","zone":"America/Sao_Paulo","phoneCode":"55","phoneMask":["+55-**-****-****","+55-**-*****-****"]},{"country":"IO","language":"en","firstDay":null,"zone":"Indian/Chagos","phoneCode":"246","phoneMask":"+246-***-****"},{"country":"VG","language":"en","firstDay":null,"zone":"America/Port_of_Spain","phoneCode":"1-284","phoneMask":"+1-284-***-****"},{"country":"BN","language":"ms","firstDay":"Mo","zone":"Asia/Brunei","phoneCode":"673","phoneMask":"+673-***-****"},{"country":"BG","language":"bg","firstDay":"Mo","zone":"Europe/Sofia","phoneCode":"359","phoneMask":"+359-***-***-***"},{"country":"BF","language":"fr","firstDay":null,"zone":"Africa/Abidjan","phoneCode":"226","phoneMask":"+226-**-**-****"},{"country":"BI","language":"fr","firstDay":null,"zone":"Africa/Maputo","phoneCode":"257","phoneMask":"+257-**-**-****"},{"country":"KH","language":"km","firstDay":null,"zone":"Asia/Phnom_Penh","phoneCode":"855","phoneMask":"+855-**-***-***"},{"country":"CM","phoneCode":"237","zone":"Africa/Lagos","language":"en","firstDay":null,"phoneMask":"+237-****-****"},{"country":"CA","phoneCode":"1","zone":"America/Toronto","language":"en","firstDay":"Su","phoneMask":"+1-***-***-****"},{"country":"CV","phoneCode":"238","zone":"Atlantic/Cape_Verde","language":"pt","firstDay":null,"phoneMask":"+238-***-**-**"},{"country":"KY","phoneCode":"1-345","zone":"America/Cayman","language":"en","firstDay":null,"phoneMask":"+1-345-***-****"},{"country":"CF","phoneCode":"236","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+236-**-**-****"},{"country":"TD","phoneCode":"235","zone":"Africa/Ndjamena","language":"fr","firstDay":null,"phoneMask":"+235-**-**-**-**"},{"country":"CL","phoneCode":"56","zone":"America/Santiago","language":"es","firstDay":"Su","phoneMask":"+56-*-****-****"},{"country":"CN","phoneCode":"86","zone":"Asia/Shanghai","language":"zh","firstDay":"Su","phoneMask":["+86-***-****-***","+86-***-****-****","+86-**-*****-*****"]},{"country":"CX","phoneCode":"61","zone":"Indian/Christmas","language":"en","firstDay":null},{"country":"CC","phoneCode":"61","zone":"Indian/Cocos","language":"ms","firstDay":null},{"country":"CO","phoneCode":"57","zone":"America/Bogota","language":"es","firstDay":"Su","phoneMask":"+57-***-***-****"},{"country":"KM","phoneCode":"269","zone":"Indian/Comoro","language":"ar","firstDay":null,"phoneMask":"+269-**-*****"},{"country":"CK","phoneCode":"682","zone":"Pacific/Rarotonga","language":"en","firstDay":null,"phoneMask":"+682-**-***"},{"country":"CR","phoneCode":"506","zone":"America/Costa_Rica","language":"es","firstDay":"Su","phoneMask":"+506-****-****"},{"country":"HR","phoneCode":"385","zone":"Europe/Belgrade","language":"hr","firstDay":"Mo","phoneMask":"+385-**-***-***"},{"country":"CU","phoneCode":"53","zone":"America/Havana","language":"es","firstDay":null,"phoneMask":"+53-*-***-****"},{"country":"CW","phoneCode":"599","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":"+599-***-****"},{"country":"CY","phoneCode":"357","zone":"Asia/Nicosia","language":"el","firstDay":null,"phoneMask":"+357-**-***-***"},{"country":"CZ","phoneCode":"420","zone":"Europe/Prague","language":"cs","languageAlternative":["cz"],"firstDay":"Mo","phoneMask":"+420-***-***-***"},{"country":"CD","phoneCode":"243","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+243-***-***-***"},{"country":"DK","phoneCode":"45","zone":"Europe/Copenhagen","language":"da","firstDay":"Mo","phoneMask":"+45-**-**-**-**"},{"country":"DJ","phoneCode":"253","zone":"Africa/Djibouti","language":"fr","firstDay":null,"phoneMask":"+253-**-**-**-**"},{"country":"DM","phoneCode":"1-767","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-767-***-****"},{"country":"DO","phoneCode":"1-809","zone":"North America","language":"America/Santo_Domingo","firstDay":"Su","phoneMask":["+1-809-***-****","+1-829-***-****","+1-849-***-****"]},{"country":"TL","phoneCode":"670","zone":"Asia/Dili","language":"tet","firstDay":null,"phoneMask":["+670-***-****","+670-77-*-*****","+670-78-*-*****"]},{"country":"EC","phoneCode":"593","zone":"America/Guayaquil","language":"es","firstDay":"Su","phoneMask":["+593-*-***-****","+593-**-***-****"]},{"country":"EG","phoneCode":"20","zone":"Africa/Cairo","language":"ar","firstDay":"Sa","phoneMask":"+20-***-***-****"},{"country":"SV","phoneCode":"503","zone":"America/El_Salvador","language":"es","firstDay":"Su","phoneMask":"+503-**-**-****"},{"country":"GQ","phoneCode":"240","zone":"Africa/Lagos","language":"es","firstDay":null,"phoneMask":"+240-**-***-****"},{"country":"ER","phoneCode":"291","zone":"Africa/Asmara","language":"aa","firstDay":null,"phoneMask":"+291-*-***-***"},{"country":"EE","phoneCode":"372","zone":"Europe/Tallinn","language":"et","firstDay":"Mo","phoneMask":["+372-***-****","+372-****-****"]},{"country":"ET","phoneCode":"251","zone":"Africa/Addis_Ababa","language":"am","firstDay":null,"phoneMask":"+251-**-***-****"},{"country":"FK","phoneCode":"500","zone":"Atlantic/Stanley","language":"en","firstDay":null,"phoneMask":"+500-*****"},{"country":"FO","phoneCode":"298","zone":"Atlantic/Faroe","language":"fo","firstDay":null,"phoneMask":"+298-***-***"},{"country":"FJ","phoneCode":"679","zone":"Pacific/Fiji","language":"en","firstDay":null,"phoneMask":"+679-**-*****"},{"country":"FI","phoneCode":"358","zone":"Europe/Helsinki","language":"fi","firstDay":"Mo","phoneMask":["+358-***-***-**-*","+358-***-***-**-**"]},{"country":"FR","phoneCode":"33","zone":"Europe/Paris","language":"fr","firstDay":"Mo","phoneMask":["+33-***-***-***","+262-*****-****","+508-**-****","+590-***-***-***"]},{"country":"PF","phoneCode":"689","zone":"Pacific/Tahiti","language":"fr","firstDay":null,"phoneMask":"+689-**-**-**"},{"country":"GA","phoneCode":"241","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+241-*-**-**-**"},{"country":"GM","phoneCode":"220","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+220-***-**-**"},{"country":"GE","phoneCode":"995","zone":"Asia/Tbilisi","language":"ka","firstDay":"Mo","phoneMask":"+995-***-***-***"},{"country":"DE","phoneCode":"49","zone":"Europe/Berlin","language":"de","firstDay":"Mo","phoneMask":["+49-***-***","+49-***-***-****","+49-****-***-****"]},{"country":"GH","phoneCode":"233","zone":"Africa/Accra","language":"en","firstDay":null,"phoneMask":"+233-***-***-***"},{"country":"GI","phoneCode":"350","zone":"Europe/Gibraltar","language":"en","firstDay":null,"phoneMask":"+350-***-*****"},{"country":"GR","phoneCode":"30","zone":"Europe/Athens","language":"el","firstDay":"Mo","phoneMask":"+30-***-***-****"},{"country":"GL","phoneCode":"299","zone":"America/Godthab","language":"kl","firstDay":null,"phoneMask":"+299-**-**-**"},{"country":"GD","phoneCode":"1-473","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-473-***-****"},{"country":"GU","phoneCode":"1-671","zone":"Pacific/Guam","language":"en","firstDay":null,"phoneMask":"+1-671-***-****"},{"country":"GT","phoneCode":"502","zone":"America/Guatemala","language":"es","firstDay":"Su","phoneMask":"+502-*-***-****"},{"country":"GG","phoneCode":"44-1481","zone":"Europe/London","language":"en","firstDay":null},{"country":"GN","phoneCode":"224","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+224-**-***-***"},{"country":"GW","phoneCode":"245","zone":"Africa/Bissau","language":"pt","firstDay":null,"phoneMask":"+245-*-******"},{"country":"GY","phoneCode":"592","zone":"America/Guyana","language":"en","firstDay":null,"phoneMask":"+592-***-****"},{"country":"HT","phoneCode":"509","zone":"America/Port-au-Prince","language":"ht","firstDay":null,"phoneMask":"+509-**-**-****"},{"country":"HN","phoneCode":"504","zone":"America/Tegucigalpa","language":"es","firstDay":"Su","phoneMask":"+504-****-****"},{"country":"HK","phoneCode":"852","zone":"Asia/Hong_Kong","language":"zh","firstDay":"Su","phoneMask":"+852-****-****"},{"country":"HU","phoneCode":"36","zone":"Europe/Budapest","language":"hu","firstDay":"Mo","phoneMask":"+36-***-***-***","nameFormat":"lf"},{"country":"IS","phoneCode":"354","zone":"Atlantic/Reykjavik","language":"is","firstDay":"Mo","phoneMask":"+354-***-****"},{"country":"IN","phoneCode":"91","zone":"Asia/Kolkata","language":"en","firstDay":"Mo","phoneMask":"+91-****-***-***"},{"country":"ID","phoneCode":"62","zone":"Asia/Jakarta","language":"id","firstDay":"Mo","phoneMask":["+62-**-***-**","+62-**-***-***","+62-**-***-****","+62-8-**-***-***","+62-8-**-***-****","+62-8-**-***-**-***"]},{"country":"IR","phoneCode":"98","zone":"Asia/Tehran","language":"fa","firstDay":"Sa","phoneMask":"+98-***-***-****"},{"country":"IQ","phoneCode":"964","zone":"Asia/Baghdad","language":"ar","firstDay":"Sa","phoneMask":"+964-***-***-****"},{"country":"IE","firstDay":"Mo","language":"en","phoneCode":"353","phoneMask":"+353-***-***-***","zone":"Europe/Dublin"},{"country":"IM","firstDay":null,"language":"Pound","phoneCode":"44-1624","zone":"Isle of Man"},{"country":"IL","firstDay":"Su","language":"he","languageAlternative":["il"],"phoneCode":"972","phoneMask":["+972-*-***-****","+972-5-*-***-****"],"zone":"Asia/Jerusalem"},{"country":"IT","firstDay":"Mo","language":"it","phoneCode":"39","phoneMask":"+39-***-****-***","zone":"Europe/Rome"},{"country":"CI","phoneCode":"225","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+225-**-***-***"},{"country":"JM","phoneCode":"1-876","zone":"America/Jamaica","language":"en","firstDay":"Su","phoneMask":"+1-876-***-****"},{"country":"JP","phoneCode":"81","zone":"Asia/Tokyo","language":"ja","firstDay":"Su","phoneMask":["+81-***-***-***","+81-**-****-****"],"nameFormat":"lf"},{"country":"JE","phoneCode":"44-1534","zone":"Europe/London","language":"en","firstDay":null},{"country":"JO","phoneCode":"962","zone":"Asia/Amman","language":"ar","firstDay":"Sa","phoneMask":"+962-*-****-****"},{"country":"KZ","phoneCode":"7","zone":"Asia/Almaty","language":"kk","firstDay":"Mo","phoneMask":["+7-6-**-***-**-**","+7-7-**-***-**-**"],"nameFormat":"lf"},{"country":"KE","phoneCode":"254","zone":"Africa/Nairobi","language":"en","firstDay":"Su","phoneMask":"+254-***-******"},{"country":"KI","phoneCode":"686","zone":"Pacific/Tarawa","language":"en","firstDay":null,"phoneMask":"+686-**-***"},{"country":"XK","phoneCode":"383","zone":"Europe/Belgrade","language":"sq","firstDay":"Mo"},{"country":"KW","phoneCode":"965","zone":"Asia/Kuwait","language":"ar","firstDay":"Sa","phoneMask":"+965-****-****"},{"country":"KG","phoneCode":"996","zone":"Asia/Bishkek","language":"ky","firstDay":"Mo","phoneMask":"+996-***-***-***"},{"country":"LA","phoneCode":"856","zone":"Asia/Vientiane","language":"lo","firstDay":null,"phoneMask":["+856-**-***-***","+856-20-**-***-***"]},{"country":"LV","phoneCode":"371","zone":"Europe/Riga","language":"lv","firstDay":"Mo","phoneMask":"+371-**-***-***"},{"country":"LB","phoneCode":"961","zone":"Asia/Beirut","language":"ar","firstDay":"Mo","phoneMask":["+961-*-***-***","+961-**-***-***"]},{"country":"LS","phoneCode":"266","zone":"Africa/Johannesburg","language":"en","firstDay":null,"phoneMask":"+266-*-***-****"},{"country":"LR","phoneCode":"231","zone":"Africa/Monrovia","language":"en","firstDay":null,"phoneMask":"+231-**-***-***"},{"country":"LY","phoneCode":"218","zone":"Africa/Tripoli","language":"ar","firstDay":"Sa","phoneMask":["+218-**-***-***","+218-21-***-****"]},{"country":"LI","phoneCode":"423","zone":"Europe/Zurich","language":"de","firstDay":null,"phoneMask":"+423-***-***-****"},{"country":"LT","phoneCode":"370","zone":"Europe/Vilnius","language":"lt","firstDay":"Mo","phoneMask":"+370-***-**-***"},{"country":"LU","phoneCode":"352","zone":"Europe/Luxembourg","language":"lb","firstDay":"Mo","phoneMask":"+352-***-***-***"},{"country":"MO","phoneCode":"853","zone":"Asia/Macau","language":"zh","firstDay":null,"phoneMask":"+853-****-****"},{"country":"MK","phoneCode":"389","zone":"Europe/Belgrade","language":"mk","firstDay":"Mo","phoneMask":"+389-**-***-***"},{"country":"MG","phoneCode":"261","zone":"Indian/Antananarivo","language":"fr","firstDay":null,"phoneMask":"+261-**-**-*****"},{"country":"MW","phoneCode":"265","zone":"Africa/Maputo","language":"ny","firstDay":null,"phoneMask":["+265-*-****-****","+265-1-***-***"]},{"country":"MY","phoneCode":"60","zone":"Asia/Kuala_Lumpur","language":"ms","firstDay":"Mo","phoneMask":["+60-*-***-***","+60-**-***-***","+60-**-***-****","+60-***-***-***"]},{"country":"MV","phoneCode":"960","zone":"Indian/Maldives","language":"dv","firstDay":null,"phoneMask":"+960-***-****"},{"country":"ML","phoneCode":"223","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+223-**-**-****"},{"country":"MT","phoneCode":"356","zone":"Europe/Malta","language":"mt","firstDay":null,"phoneMask":"+356-****-****"},{"country":"MH","phoneCode":"692","zone":"Pacific/Majuro","language":"mh","firstDay":null,"phoneMask":"+692-***-****"},{"country":"MR","phoneCode":"222","zone":"Africa/Abidjan","language":"ar","firstDay":null,"phoneMask":"+222-**-**-****"},{"country":"MU","phoneCode":"230","zone":"Indian/Mauritius","language":"en","firstDay":null,"phoneMask":"+230-***-****"},{"country":"YT","phoneCode":"262","zone":"Indian/Mayotte","language":"fr","firstDay":null},{"country":"MX","phoneCode":"52","zone":"America/Mexico_City","language":"es","firstDay":"Su","phoneMask":["+52-**-**-****","+52-***-***-****"]},{"country":"FM","phoneCode":"691","zone":"Pacific/Pohnpei","language":"en","firstDay":null,"phoneMask":"+691-***-****"},{"country":"MD","phoneCode":"373","zone":"Europe/Chisinau","language":"ro","firstDay":null,"phoneMask":"+373-****-****"},{"country":"MC","phoneCode":"377","zone":"Europe/Monaco","language":"fr","firstDay":"Mo","phoneMask":["+377-**-***-***","+377-***-***-***"]},{"country":"MN","phoneCode":"976","zone":"Asia/Ulaanbaatar","language":"mn","firstDay":"Mo","phoneMask":"+976-**-**-****"},{"country":"ME","phoneCode":"382","zone":"Europe/Belgrade","language":"sr","firstDay":null,"phoneMask":"+382-**-***-***"},{"country":"MS","phoneCode":"1-664","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-664-***-****"},{"country":"MA","phoneCode":"212","zone":"Africa/Casablanca","language":"ar","firstDay":"Mo","phoneMask":"+212-**-****-***"},{"country":"MZ","phoneCode":"258","zone":"Africa/Maputo","language":"pt","firstDay":null,"phoneMask":"+258-**-***-***"},{"country":"MM","phoneCode":"95","zone":"Asia/Rangoon","language":"my","firstDay":null,"phoneMask":["+95-***-***","+95-*-***-***","+95-**-***-***"]},{"country":"NA","phoneCode":"264","zone":"Africa/Windhoek","language":"en","firstDay":null,"phoneMask":"+264-**-***-****"},{"country":"NR","phoneCode":"674","zone":"Pacific/Nauru","language":"na","firstDay":null,"phoneMask":"+674-***-****"},{"country":"NP","phoneCode":"977","zone":"Asia/Kathmandu","language":"ne","firstDay":null,"phoneMask":"+977-**-***-***"},{"country":"NL","phoneCode":"31","zone":"Europe/Amsterdam","language":"nl","firstDay":"Mo","phoneMask":"+31-**-***-****"},{"country":"AN","phoneCode":"599","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":["+599-***-****","+599-9-***-****"]},{"country":"NC","phoneCode":"687","zone":"Pacific/Noumea","language":"fr","firstDay":null,"phoneMask":"+687-**-****"},{"country":"NZ","phoneCode":"64","zone":"Pacific/Auckland","language":"en","firstDay":"Mo","phoneMask":["+64-**-***-***","+64-***-***-***","+64-***-***-****"]},{"country":"NI","phoneCode":"505","zone":"America/Managua","language":"es","firstDay":"Su","phoneMask":"+505-****-****"},{"country":"NE","phoneCode":"227","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+227-**-**-****"},{"country":"NG","phoneCode":"234","zone":"Africa/Lagos","language":"en","firstDay":null,"phoneMask":["+234-**-***-**","+234-**-***-***","+234-***-***-****"]},{"country":"NU","phoneCode":"683","zone":"Pacific/Niue","language":"niu","firstDay":null,"phoneMask":"+683-****"},{"country":"KP","phoneCode":"850","zone":"Asia/Pyongyang","language":"ko","firstDay":null,"phoneMask":["+850-***-***","+850-**-***-***","+850-****-****","+850-***-****-***","+850-****-*************","+850-191-***-****"]},{"country":"MP","phoneCode":"1-670","zone":"Pacific/Saipan","language":"fil","firstDay":null,"phoneMask":"+1-670-***-****"},{"country":"NO","phoneCode":"47","zone":"Europe/Oslo","language":"no","firstDay":"Mo","phoneMask":"+47-***-**-***"},{"country":"OM","phoneCode":"968","zone":"Asia/Muscat","language":"ar","firstDay":"Sa","phoneMask":"+968-**-***-***"},{"country":"PK","phoneCode":"92","zone":"Asia/Karachi","language":"ur","firstDay":"Mo","phoneMask":"+92-***-***-****"},{"country":"PW","phoneCode":"680","zone":"Pacific/Palau","language":"pau","firstDay":null,"phoneMask":"+680-***-****"},{"country":"PS","phoneCode":"970","zone":"Asia/Hebron","language":"ar","firstDay":null,"phoneMask":"+970-**-***-****"},{"country":"PA","phoneCode":"507","zone":"America/Panama","language":"es","firstDay":"Su","phoneMask":"+507-***-****"},{"country":"PG","phoneCode":"675","zone":"Pacific/Port_Moresby","language":"en","firstDay":null,"phoneMask":"+675-***-**-***"},{"country":"PY","phoneCode":"595","zone":"America/Asuncion","language":"es","firstDay":"Mo","phoneMask":"+595-***-***-***"},{"country":"PE","phoneCode":"51","zone":"America/Lima","language":"es","firstDay":"Su","phoneMask":"+51-***-***-***"},{"country":"PH","phoneCode":"63","zone":"Asia/Manila","language":"tl","firstDay":"Su","phoneMask":"+63-***-***-****"},{"country":"PN","phoneCode":"64","zone":"Pacific/Pitcairn","language":"en","firstDay":null},{"country":"PL","phoneCode":"48","zone":"Europe/Warsaw","language":"pl","firstDay":"Mo","phoneMask":"+48-***-***-***"},{"country":"PT","phoneCode":"351","zone":"Europe/Lisbon","language":"pt","firstDay":"Mo","phoneMask":"+351-**-***-****"},{"country":"PR","phoneCode":"1-787","zone":"San Juan","language":"Dollar","firstDay":"Su"},{"country":"QA","phoneCode":"974","zone":"Asia/Qatar","language":"ar","firstDay":"Sa","phoneMask":"+974-****-****"},{"country":"CG","phoneCode":"242","zone":"Africa/Lagos","language":"fr","firstDay":null,"phoneMask":"+242-**-***-****"},{"country":"RE","phoneCode":"262","zone":"Indian/Reunion","language":"fr","firstDay":null,"phoneMask":"+262-*****-****"},{"country":"RO","phoneCode":"40","zone":"Europe/Bucharest","language":"ro","firstDay":"Mo","phoneMask":"+40-**-***-****"},{"country":"RU","phoneCode":"7","phoneWithin":"8","zone":"Europe/Moscow","language":"ru","firstDay":"Mo","phoneMask":"+7-***-***-**-**","nameFormat":"lsf"},{"country":"RW","phoneCode":"250","zone":"Africa/Maputo","language":"rw","firstDay":null,"phoneMask":"+250-***-***-***"},{"country":"BL","phoneCode":"590","zone":"America/Port_of_Spain","language":"fr","firstDay":null},{"country":"SH","phoneCode":"290","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+290-****"},{"country":"KN","phoneCode":"1-869","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-869-***-****"},{"country":"LC","phoneCode":"1-758","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-758-***-****"},{"country":"MF","phoneCode":"590","zone":"America/Port_of_Spain","language":"fr","firstDay":null},{"country":"PM","phoneCode":"508","zone":"America/Miquelon","language":"fr","firstDay":null},{"country":"VC","phoneCode":"1-784","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-784-***-****"},{"country":"WS","phoneCode":"685","zone":"Pacific/Apia","language":"sm","firstDay":null,"phoneMask":"+685-**-****"},{"country":"SM","phoneCode":"378","zone":"Europe/Rome","language":"it","firstDay":null,"phoneMask":"+378-****-******"},{"country":"ST","phoneCode":"239","zone":"Africa/Abidjan","language":"pt","firstDay":null,"phoneMask":"+239-**-*****"},{"country":"SA","phoneCode":"966","zone":"Asia/Riyadh","language":"ar","firstDay":"Sa","phoneMask":["+966-*-***-****","+966-5-****-****"]},{"country":"SN","phoneCode":"221","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+221-**-***-****"},{"country":"RS","phoneCode":"381","zone":"Europe/Belgrade","language":"sr","firstDay":"Mo","phoneMask":"+381-**-***-****"},{"country":"SC","phoneCode":"248","zone":"Indian/Mahe","language":"en","firstDay":null,"phoneMask":"+248-*-***-***"},{"country":"SL","phoneCode":"232","zone":"Africa/Abidjan","language":"en","firstDay":null,"phoneMask":"+232-**-******"},{"country":"SG","phoneCode":"65","zone":"Asia/Singapore","language":"cmn","firstDay":"Mo","phoneMask":"+65-****-****"},{"country":"SX","phoneCode":"1-721","zone":"America/Curacao","language":"nl","firstDay":null,"phoneMask":"+1-721-***-****"},{"country":"SK","phoneCode":"421","zone":"Europe/Prague","language":"sk","firstDay":"Mo","phoneMask":"+421-***-***-***"},{"country":"SI","phoneCode":"386","zone":"Europe/Belgrade","language":"sl","firstDay":null,"phoneMask":"+386-**-***-***"},{"country":"SB","phoneCode":"677","zone":"Pacific/Guadalcanal","language":"en","firstDay":null,"phoneMask":["+677-*****","+677-***-****"]},{"country":"SO","phoneCode":"252","zone":"Africa/Mogadishu","language":"so","firstDay":null,"phoneMask":["+252-*-***-***","+252-**-***-***"]},{"country":"ZA","phoneCode":"27","zone":"Africa/Johannesburg","language":"zu","firstDay":"Su","phoneMask":"+27-**-***-****"},{"country":"KR","phoneCode":"82","zone":"Asia/Seoul","language":"ko","firstDay":"Su","phoneMask":["+82-**-***-****","+82-**-***-****-**"],"nameFormat":"lf"},{"country":"SS","phoneCode":"211","zone":"Africa/Khartoum","language":"en","firstDay":null,"phoneMask":"+211-**-***-****"},{"country":"ES","phoneCode":"34","zone":"Europe/Madrid","language":"es","firstDay":"Mo","phoneMask":"+34-***-***-***"},{"country":"LK","phoneCode":"94","zone":"Asia/Colombo","language":"si","firstDay":null,"phoneMask":"+94-**-***-****"},{"country":"SD","phoneCode":"249","zone":"Africa/Khartoum","language":"ar","firstDay":null,"phoneMask":"+249-**-***-****"},{"country":"SR","phoneCode":"597","zone":"America/Paramaribo","language":"nl","firstDay":null,"phoneMask":["+597-***-***","+597-***-****"]},{"country":"SJ","phoneCode":"47","zone":"Europe/Oslo","language":"no","firstDay":null},{"country":"SZ","phoneCode":"268","zone":"Africa/Johannesburg","language":"en","firstDay":null,"phoneMask":"+268-**-**-****"},{"country":"SE","phoneCode":"46","zone":"Europe/Stockholm","language":"sv","firstDay":"Mo","phoneMask":"+46-**-***-****"},{"country":"CH","phoneCode":"41","zone":"Europe/Zurich","language":"de","firstDay":"Mo","phoneMask":"+41-**-***-****"},{"country":"SY","phoneCode":"963","zone":"Asia/Damascus","language":"ar","firstDay":"Sa","phoneMask":"+963-**-****-***"},{"country":"TW","phoneCode":"886","zone":"Asia/Taipei","language":"zh","firstDay":"Su","phoneMask":["+886-****-****","+886-*-****-****"]},{"country":"TJ","phoneCode":"992","zone":"Asia/Dushanbe","language":"tg","firstDay":null,"phoneMask":"+992-**-***-****"},{"country":"TZ","phoneCode":"255","zone":"Africa/Dar_es_Salaam","language":"sw","firstDay":null,"phoneMask":"+255-**-***-****"},{"country":"TH","phoneCode":"66","zone":"Asia/Bangkok","language":"th","firstDay":"Mo","phoneMask":"+66-**-***-****"},{"country":"TG","phoneCode":"228","zone":"Africa/Abidjan","language":"fr","firstDay":null,"phoneMask":"+228-**-***-***"},{"country":"TK","phoneCode":"690","zone":"Pacific/Fakaofo","language":"tkl","firstDay":null,"phoneMask":"+690-****"},{"country":"TO","phoneCode":"676","zone":"Pacific/Tongatapu","language":"to","firstDay":null,"phoneMask":"+676-*****"},{"country":"TT","phoneCode":"1-868","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-868-***-****"},{"country":"TN","phoneCode":"216","zone":"Africa/Tunis","language":"ar","firstDay":"Mo","phoneMask":"+216-**-***-***"},{"country":"TR","phoneCode":"90","zone":"Europe/Istanbul","language":"tr","firstDay":"Mo","phoneMask":"+90-***-***-****"},{"country":"TM","phoneCode":"993","zone":"Asia/Ashgabat","language":"tk","firstDay":null,"phoneMask":"+993-*-***-****"},{"country":"TC","phoneCode":"1-649","zone":"America/Grand_Turk","language":"en","firstDay":null,"phoneMask":"+1-649-***-****"},{"country":"TV","phoneCode":"688","zone":"Pacific/Funafuti","language":"tvl","firstDay":null,"phoneMask":["+688-2-****","+688-90-****"]},{"country":"VI","phoneCode":"1-340","zone":"America/Port_of_Spain","language":"en","firstDay":null,"phoneMask":"+1-340-***-****"},{"country":"UG","phoneCode":"256","zone":"Africa/Kampala","language":"en","firstDay":null,"phoneMask":"+256-***-***-***"},{"country":"UA","phoneCode":"380","zone":"Europe/Kiev","language":"uk","languageAlternative":["ua"],"firstDay":"Mo","phoneMask":"+380-**-***-**-**"},{"country":"AE","phoneCode":"971","zone":"Asia/Dubai","language":"ar","firstDay":"Sa","phoneMask":["+971-*-***-****","+971-5-*-***-****"]},{"country":"UY","phoneCode":"598","zone":"America/Montevideo","language":"es","firstDay":"Mo","phoneMask":"+598-*-***-**-**"},{"country":"UZ","phoneCode":"998","zone":"Asia/Tashkent","language":"uz","firstDay":"Mo","phoneMask":"+998-**-***-****"},{"country":"VU","phoneCode":"678","zone":"Pacific/Efate","language":"bi","firstDay":null,"phoneMask":["+678-*****","+678-**-*****"]},{"country":"VA","phoneCode":"379","zone":"Europe/Rome","language":"la","firstDay":null,"phoneMask":"+39-6-698-*****"},{"country":"VE","phoneCode":"58","zone":"America/Caracas","language":"es","firstDay":"Su","phoneMask":"+58-***-***-****"},{"country":"VN","phoneCode":"84","zone":"Asia/Ho_Chi_Minh","language":"vi","firstDay":"Mo","phoneMask":["+84-**-****-***","+84-***-****-***"],"nameFormat":"fsl"},{"country":"WF","phoneCode":"681","zone":"Pacific/Wallis","language":"wls","firstDay":null,"phoneMask":"+681-**-****"},{"country":"EH","phoneCode":"212","zone":"Africa/El_Aaiun","language":"ar","firstDay":null},{"country":"YE","phoneCode":"967","zone":"Asia/Aden","language":"ar","firstDay":"Sa","phoneMask":["+967-*-***-***","+967-**-***-***","+967-***-***-***"]},{"country":"ZM","phoneCode":"260","zone":"Africa/Maputo","language":"en","firstDay":null,"phoneMask":"+260-**-***-****"},{"country":"ZW","phoneCode":"263","zone":"Africa/Maputo","language":"en","firstDay":"Su","phoneMask":"+263-*-******"},{"country":"GF","phoneCode":"594","zone":"America/Cayenne","language":"fr","firstDay":"Mo","phoneMask":"+594-*****-****"},{"country":"MQ","phoneCode":"596","zone":"America/Martinique","language":"fr","firstDay":"Mo","phoneMask":"+596-***-**-**-**"},{"country":"NF","phoneCode":"672-3","zone":"Pacific/Norfolk","language":"en","firstDay":"Mo","phoneMask":"+672-3-**-***"},{"country":"IC","phoneCode":"3428","zone":"Europe/Berlin","language":"es","firstDay":"Mo"}]'), qo = "geo-code", C = class C {
   /**
    * Information about the current country.
    *
@@ -2525,7 +2018,7 @@ const gt = {}, Gs = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlterna
    * Возвращает полный список стран.
    */
   static getList() {
-    return Gs;
+    return Zo;
   }
   /**
    * Returns the data about the country by its full code.
@@ -2536,7 +2029,7 @@ const gt = {}, Gs = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlterna
    */
   static getByCode(e) {
     let n;
-    return e && (e.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (n = this.getByCodeFull(e)), !n && e.match(/[A-Z]{2}/) && (n = this.getByCountry(this.toCountry(e))), !n && e.match(/[a-z]{2}/) && (n = this.getByLanguage(this.toLanguage(e)))), this.toFull(Us(n ?? this.getList()[0]));
+    return e && (e.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (n = this.getByCodeFull(e)), !n && e.match(/[A-Z]{2}/) && (n = this.getByCountry(this.toCountry(e))), !n && e.match(/[a-z]{2}/) && (n = this.getByLanguage(this.toLanguage(e)))), this.toFull(Go(n ?? this.getList()[0]));
   }
   /**
    * Returns the full data by language and country.
@@ -2546,7 +2039,7 @@ const gt = {}, Gs = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlterna
    */
   static getByCodeFull(e) {
     return this.getList().find(
-      (n) => Ws(e, [
+      (n) => Yo(e, [
         `${n.language}-${n.country}`,
         `${n.country}-${n.language}`
       ])
@@ -2640,7 +2133,7 @@ const gt = {}, Gs = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlterna
    */
   static findLocation() {
     var e;
-    return R() && (this.storage.get() || ((e = document.querySelector("html")) == null ? void 0 : e.lang) || navigator.language || navigator.languages[0] || "en-GB") || "en-GB";
+    return E() && (this.storage.get() || ((e = document.querySelector("html")) == null ? void 0 : e.lang) || navigator.language || navigator.languages[0] || "en-GB") || "en-GB";
   }
   /**
    * Determines the current language.
@@ -2683,9 +2176,9 @@ const gt = {}, Gs = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlterna
     };
   }
 };
-f(b, "storage", new Ft(Js)), f(b, "location"), f(b, "item"), f(b, "language"), f(b, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), b.location = b.findLocation(), b.language = b.findLanguage(b.location), b.item = b.getByCode(b.location);
-let K = b;
-const nn = "d-response-loading", on = [], C = class C {
+l(C, "storage", new lt(qo)), l(C, "location"), l(C, "item"), l(C, "language"), l(C, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), C.location = C.findLocation(), C.language = C.findLanguage(C.location), C.item = C.getByCode(C.location);
+let P = C;
+const Ct = "d-response-loading", vt = [], y = class y {
   /**
    * Is the server local.
    *
@@ -2723,7 +2216,7 @@ const nn = "d-response-loading", on = [], C = class C {
         ...this.headers,
         ...e || {}
       };
-      return ne(n) && (o["Content-Type"] = n), o;
+      return T(n) && (o["Content-Type"] = n), o;
     }
   }
   /**
@@ -2734,7 +2227,7 @@ const nn = "d-response-loading", on = [], C = class C {
    * @param api adding a path to the site’s API/ добавление пути к API сайта
    */
   static getUrl(e, n = !0) {
-    return `${n ? this.url : ""}${e}`.replace("{locale}", K.getLocation()).replace("{country}", K.getCountry()).replace("{language}", K.getLanguage());
+    return `${n ? this.url : ""}${e}`.replace("{locale}", P.getLocation()).replace("{country}", P.getCountry()).replace("{language}", P.getLanguage());
   }
   /**
    * Getting data for the body.
@@ -2746,8 +2239,8 @@ const nn = "d-response-loading", on = [], C = class C {
   static getBody(e = {}, n = "GET") {
     if (e instanceof FormData)
       return e;
-    if (n !== "GET" && ne(e))
-      return zt(e) ? e : JSON.stringify(e);
+    if (n !== "GET" && T(e))
+      return Ze(e) ? e : JSON.stringify(e);
   }
   /**
    * Getting data for the body of the get method.
@@ -2759,9 +2252,9 @@ const nn = "d-response-loading", on = [], C = class C {
    */
   static getBodyForGet(e, n = "", o = "GET") {
     if (o === "GET") {
-      const s = n.match(/\?/) ? "&" : "?", r = typeof e == "object" ? Zn(e) : e;
-      if (ne(r))
-        return `${s}${r}`;
+      const s = n.match(/\?/) ? "&" : "?", a = typeof e == "object" ? yn(e) : e;
+      if (T(a))
+        return `${s}${a}`;
     }
     return "";
   }
@@ -2804,12 +2297,12 @@ const nn = "d-response-loading", on = [], C = class C {
    */
   static addRequestDefault(e) {
     if (this.requestDefault) {
-      const n = dt(this.requestDefault);
+      const n = Fe(this.requestDefault);
       if (e instanceof FormData)
-        H(n, (o, s) => {
+        x(n, (o, s) => {
           e.has(s) || e.set(s, o);
         });
-      else if (te(e))
+      else if (U(e))
         return {
           ...n,
           ...e
@@ -2823,7 +2316,7 @@ const nn = "d-response-loading", on = [], C = class C {
    * Изменяет данные заголовка по умолчанию.
    */
   static setHeaders(e) {
-    return te(e) && (this.headers = e), C;
+    return U(e) && (this.headers = e), y;
   }
   /**
    * Modifies the default request data.
@@ -2840,7 +2333,7 @@ const nn = "d-response-loading", on = [], C = class C {
    * @param url path to the script/ путь к скрипту
    */
   static setUrl(e) {
-    return this.url = e, C;
+    return this.url = e, y;
   }
   /**
    * The function is modified for a call before the request.
@@ -2849,7 +2342,7 @@ const nn = "d-response-loading", on = [], C = class C {
    * @param callback function for call/ функция для вызова
    */
   static setPreparation(e) {
-    return this.preparationItem = e, C;
+    return this.preparationItem = e, y;
   }
   /**
    * Modify the function after the request.
@@ -2858,7 +2351,7 @@ const nn = "d-response-loading", on = [], C = class C {
    * @param callback function for call/ функция для вызова
    */
   static setEnd(e) {
-    return this.preparationEndItem = e, C;
+    return this.preparationEndItem = e, y;
   }
   /**
    * To execute a request.
@@ -2867,7 +2360,7 @@ const nn = "d-response-loading", on = [], C = class C {
    * @param pathRequest query string or list of parameters/ строка запроса или список параметров
    */
   static async request(e) {
-    return zt(e) ? await this.fetch({
+    return Ze(e) ? await this.fetch({
       path: e
     }) : await this.fetch(e);
   }
@@ -2930,7 +2423,7 @@ const nn = "d-response-loading", on = [], C = class C {
    * @param response data for caching/ данные для кеширования
    */
   static addResponse(e) {
-    return this.response.push(...ie(e)), C;
+    return this.response.push(...Y(e)), y;
   }
   /**
    * Checks if there is a global cached request, if there is, returns it.
@@ -2942,15 +2435,15 @@ const nn = "d-response-loading", on = [], C = class C {
    * @param devMode is it developer mode/ является ли режим разработчика
    */
   static getResponse(e = "", n, o, s) {
-    return this.response.find((r) => {
-      if (q(dt(r == null ? void 0 : r.disable)) !== !0 && (r.path instanceof RegExp && e.match(r.path) || e === r.path) && n === r.method && (on.indexOf(r) === -1 || s)) {
-        const a = this.addRequestDefault(r == null ? void 0 : r.request);
+    return this.response.find((a) => {
+      if (B(Fe(a == null ? void 0 : a.disable)) !== !0 && (a.path instanceof RegExp && e.match(a.path) || e === a.path) && n === a.method && (vt.indexOf(a) === -1 || s)) {
+        const r = this.addRequestDefault(a == null ? void 0 : a.request);
         let i = !1;
-        if (o === a || a === "*any" ? i = !0 : ne(o) && ne(a) && te(o) && te(a) && !(o instanceof FormData) && !(a instanceof FormData) && Object.values(o).length === Object.values(a).length && (i = Object.entries(a).reduce(
-          (c, [l, p]) => c && (p === (o == null ? void 0 : o[l]) || p === "*any"),
+        if (o === r || r === "*any" ? i = !0 : T(o) && T(r) && U(o) && U(r) && !(o instanceof FormData) && !(r instanceof FormData) && Object.values(o).length === Object.values(r).length && (i = Object.entries(r).reduce(
+          (c, [h, p]) => c && (p === (o == null ? void 0 : o[h]) || p === "*any"),
           !0
         )), i)
-          return s && console.warn(`Response type: ${r.path}`), on.push(r), !0;
+          return s && console.warn(`Response type: ${a.path}`), vt.push(a), !0;
       }
       return !1;
     });
@@ -2966,23 +2459,23 @@ const nn = "d-response-loading", on = [], C = class C {
       toData: n = !0,
       hideError: o = !1,
       queryReturn: s = void 0,
-      globalPreparation: r = !0,
-      globalEnd: a = !0
+      globalPreparation: a = !0,
+      globalEnd: r = !0
     } = e, i = await this.makeEmulator(e);
     if (i)
       return i;
     let c = {};
-    oe.show();
+    H.show();
     try {
-      this.preparationItem && r && await this.makePreparation();
-      const l = await this.makeQuery(e), p = a && this.preparationEndItem ? await this.makePreparationEnd(l) : {};
-      if (this.status = l.status, this.statusText = l.statusText, p != null && p.reset)
-        return oe.hide(), await this.fetch(e);
-      s ? c = await s(l) : "data" in p ? c = p.data : l.headers.get("Content-Type") === "application/json" ? c = await l.json() : c = { data: await l.text() };
-    } catch (l) {
-      o && console.error("Api: ", l), this.error = l;
+      this.preparationItem && a && await this.makePreparation();
+      const h = await this.makeQuery(e), p = r && this.preparationEndItem ? await this.makePreparationEnd(h) : {};
+      if (this.status = h.status, this.statusText = h.statusText, p != null && p.reset)
+        return H.hide(), await this.fetch(e);
+      s ? c = await s(h) : "data" in p ? c = p.data : (h.headers.get("Content-Type") ?? "").match("application/json") ? c = await h.json() : c = { data: await h.text() };
+    } catch (h) {
+      o && console.error("Api: ", h), this.error = h;
     }
-    return oe.hide(), this.makeData(c, n);
+    return H.hide(), this.makeData(c, n);
   }
   /**
    * Emulates an execution request.
@@ -2993,12 +2486,12 @@ const nn = "d-response-loading", on = [], C = class C {
    */
   static fetchResponse(e, n) {
     return this.startResponseLoading(), new Promise((o) => {
-      to(
+      Ho(
         dn(e.response) ? e.response(n) : e.response
       ).then((s) => {
-        dt(e == null ? void 0 : e.lag) ? (oe.show(), setTimeout(() => {
-          this.stopResponseLoading(), o(s), oe.hide();
-        }, Ks(0, 2e3))) : (this.stopResponseLoading(), o(s));
+        Fe(e == null ? void 0 : e.lag) ? (H.show(), setTimeout(() => {
+          this.stopResponseLoading(), o(s), H.hide();
+        }, Wo(0, 2e3))) : (this.stopResponseLoading(), o(s));
       });
     });
   }
@@ -3011,13 +2504,13 @@ const nn = "d-response-loading", on = [], C = class C {
       path: n = "",
       method: o = "GET",
       global: s = o === "GET",
-      devMode: r = !1
+      devMode: a = !1
     } = e;
-    if (s || r) {
-      const a = this.addRequestDefault(e.request), i = this.getResponse(n, o, a, r);
+    if (s || a) {
+      const r = this.addRequestDefault(e.request), i = this.getResponse(n, o, r, a);
       if (i) {
-        const c = await this.fetchResponse(i, a);
-        return r && console.warn("Response data:", n, a, c), c;
+        const c = await this.fetchResponse(i, r);
+        return a && console.warn("Response data:", n, r, c), c;
       }
     }
   }
@@ -3031,17 +2524,17 @@ const nn = "d-response-loading", on = [], C = class C {
     const n = this.addRequestDefault(e.request), {
       api: o = !0,
       path: s = "",
-      pathFull: r = void 0,
-      method: a = "GET",
+      pathFull: a = void 0,
+      method: r = "GET",
       headers: i = {},
       type: c = "application/json;charset=UTF-8",
-      init: l = {}
-    } = e, p = r ?? this.getUrl(s, o), u = `${p}${this.getBodyForGet(n, p, a)}`, h = this.getHeaders(i, c), d = {
-      ...l,
-      method: a,
-      body: this.getBody(n, a)
+      init: h = {}
+    } = e, p = a ?? this.getUrl(s, o), u = `${p}${this.getBodyForGet(n, p, r)}`, f = this.getHeaders(i, c), D = {
+      ...h,
+      method: r,
+      body: this.getBody(n, r)
     };
-    return h && (d.headers = h), await fetch(u, d);
+    return f && (D.headers = f), await fetch(u, D);
   }
   /**
    * Preparation before executing the request.
@@ -3073,8 +2566,8 @@ const nn = "d-response-loading", on = [], C = class C {
    * @param toData is it necessary to process the data/ нужно ли обрабатывать данные
    */
   static makeData(e, n) {
-    if (this.lastResponse = e, e && te(e) && ("message" in e && (this.lastMessage = String(e.message)), n && "data" in e)) {
-      if (te(e.data)) {
+    if (this.lastResponse = e, e && U(e) && ("message" in e && (this.lastMessage = String(e.message)), n && "data" in e)) {
+      if (U(e.data)) {
         const o = { ...e.data };
         return "success" in e && (o.success = e.success), o;
       }
@@ -3088,7 +2581,7 @@ const nn = "d-response-loading", on = [], C = class C {
    * Включить загрузку для эмуляции запроса.
    */
   static startResponseLoading() {
-    this.responseLoading && clearTimeout(this.responseLoading), R() && document.body.classList.add(nn);
+    this.responseLoading && clearTimeout(this.responseLoading), E() && document.body.classList.add(Ct);
   }
   /**
    * Disable loading for request emulation.
@@ -3097,21 +2590,21 @@ const nn = "d-response-loading", on = [], C = class C {
    */
   static stopResponseLoading() {
     this.responseLoading = setTimeout(() => {
-      this.responseLoading = void 0, R() && document.body.classList.remove(nn);
+      this.responseLoading = void 0, E() && document.body.classList.remove(Ct);
     }, 1200);
   }
 };
-f(C, "url", "/api/"), f(C, "response", []), f(C, "responseLoading"), f(C, "headers", {}), f(C, "requestDefault"), f(C, "preparation", !1), f(C, "preparationItem"), f(C, "preparationEndItem"), f(C, "status"), f(C, "statusText"), f(C, "error"), f(C, "lastResponse"), f(C, "lastMessage");
-let kt = C;
-class Ys {
+l(y, "url", "/api/"), l(y, "response", []), l(y, "responseLoading"), l(y, "headers", {}), l(y, "requestDefault"), l(y, "preparation", !1), l(y, "preparationItem"), l(y, "preparationEndItem"), l(y, "status"), l(y, "statusText"), l(y, "error"), l(y, "lastResponse"), l(y, "lastMessage");
+let qe = y;
+class Qo {
   /**
    * Constructor
    * @param callback function for the cache/ функция для кэша
    */
   constructor(e) {
-    f(this, "cache");
-    f(this, "cacheOld");
-    f(this, "comparisons", []);
+    l(this, "cache");
+    l(this, "cacheOld");
+    l(this, "comparisons", []);
     this.callback = e;
   }
   /**
@@ -3161,9 +2654,9 @@ class Ys {
     return this.cache === void 0 || this.comparisons.length !== e.length || this.comparisons.findIndex((n, o) => n !== e[o]) >= 0 ? (this.comparisons = [...e], !0) : !1;
   }
 }
-class Zs {
+class Xo {
   constructor() {
-    f(this, "cache", {});
+    l(this, "cache", {});
   }
   /**
    * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
@@ -3195,10 +2688,10 @@ class Zs {
    * @param callback function for the cache/ функция для кэша
    */
   getCacheItem(e, n) {
-    return e in this.cache || (this.cache[e] = new Ys(n)), this.cache[e];
+    return e in this.cache || (this.cache[e] = new Qo(n)), this.cache[e];
   }
 }
-const Xe = class Xe {
+const Re = class Re {
   /**
    * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
    *
@@ -3211,9 +2704,9 @@ const Xe = class Xe {
     return this.cache.get(e, n, o);
   }
 };
-f(Xe, "cache"), Xe.cache = new Zs();
-let sn = Xe;
-function Bt(t, e = !1) {
+l(Re, "cache"), Re.cache = new Xo();
+let kt = Re;
+function ht(t, e = !1) {
   if (typeof t == "string") {
     const n = t.trim();
     switch (n) {
@@ -3237,15 +2730,15 @@ function Bt(t, e = !1) {
             return parseFloat(n);
           if (/^[0-9]+$/.exec(n))
             return parseInt(n, 10);
-          if (e && R() && typeof (window == null ? void 0 : window[n]) == "function")
+          if (e && E() && typeof (window == null ? void 0 : window[n]) == "function")
             return window[n];
         }
     }
   }
   return t;
 }
-const qs = "cookie-block";
-class Qn {
+const es = "cookie-block";
+class Mn {
   /**
    * Obtaining status.
    *
@@ -3264,15 +2757,15 @@ class Qn {
     this.storage.set(e);
   }
 }
-f(Qn, "storage", new Ft(qs));
-const Ke = {};
-class rr {
+l(Mn, "storage", new lt(es));
+const Ae = {};
+class ls {
   constructor(e) {
-    f(this, "value");
-    f(this, "options", {});
-    if (this.name = e, e in yt)
-      return yt[e];
-    this.value = Ke == null ? void 0 : Ke[e], yt[e] = this;
+    l(this, "value");
+    l(this, "options", {});
+    if (this.name = e, e in $e)
+      return $e[e];
+    this.value = Ae == null ? void 0 : Ae[e], $e[e] = this;
   }
   /**
    * Get data or update if none.
@@ -3292,7 +2785,7 @@ class rr {
    * @param options additional parameters/ дополнительные параметры
    */
   set(e, n) {
-    this.value = q(e), Object.assign(this.options, n), this.update();
+    this.value = B(e), Object.assign(this.options, n), this.update();
   }
   /**
    * Delete cookie data.
@@ -3318,7 +2811,7 @@ class rr {
    */
   update() {
     var e, n;
-    if (R() && !Qn.get()) {
+    if (E() && !Mn.get()) {
       const o = String(this.value ?? "");
       document.cookie = [
         `${encodeURIComponent(this.name)}=${encodeURIComponent(o)}`,
@@ -3330,13 +2823,13 @@ class rr {
   }
 }
 (() => {
-  if (R())
+  if (E())
     for (const e of document.cookie.split(";")) {
       const [n, o] = e.trim().split("=");
-      n && ne(o) && (Ke[n] = Bt(o));
+      n && T(o) && (Ae[n] = ht(o));
     }
 })();
-const yt = {}, de = class de {
+const $e = {}, te = class te {
   /**
    * Getting an object with information about the phone code and country.
    *
@@ -3354,8 +2847,8 @@ const yt = {}, de = class de {
    */
   static getByPhone(e) {
     let n = this.map, o, s = "";
-    return this.toNumber(e).forEach((r) => {
-      s === "" && r in n ? (o = n[r], n = n[r].next) : s += r;
+    return this.toNumber(e).forEach((a) => {
+      s === "" && a in n ? (o = n[a], n = n[a].next) : s += a;
     }), {
       item: o,
       phone: s
@@ -3397,11 +2890,11 @@ const yt = {}, de = class de {
    * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toMask(e, n) {
-    if (ne(e) && Array.isArray(n) && n.length > 0) {
+    if (T(e) && Array.isArray(n) && n.length > 0) {
       const o = this.removeZero(e), s = o.length;
-      for (const r of n)
-        if (this.getUnnecessaryLength(r) === s)
-          return this.toStandard(o, r);
+      for (const a of n)
+        if (this.getUnnecessaryLength(a) === s)
+          return this.toStandard(o, a);
     }
   }
   /**
@@ -3445,12 +2938,12 @@ const yt = {}, de = class de {
    * Формирование списка для карты.
    */
   static makeList() {
-    const e = H(K.getList(), (n) => {
+    const e = x(P.getList(), (n) => {
       if (n != null && n.phoneMask)
         return {
           phone: (n == null ? void 0 : n.phoneCode) && Number(n.phoneCode.replace(/[^0-9]+/, "")) || void 0,
           within: (n == null ? void 0 : n.phoneWithin) || 0,
-          mask: ie(n.phoneMask),
+          mask: Y(n.phoneMask),
           value: n.country
         };
     });
@@ -3465,19 +2958,19 @@ const yt = {}, de = class de {
     this.list.forEach((e) => {
       e.mask.forEach((n) => {
         let o = this.map, s;
-        if (this.toNumber(n).forEach((r) => {
-          r in o || (o[r] = {
+        if (this.toNumber(n).forEach((a) => {
+          a in o || (o[a] = {
             items: [],
             info: void 0,
             value: void 0,
             mask: [],
             maskFull: [],
             next: {}
-          }), s = o[r], o = o[r].next;
+          }), s = o[a], o = o[a].next;
         }), s) {
           s.value === void 0 && (s.info = e, s.value = e.value);
-          const r = this.toWithin(n, e.within);
-          s.mask.push(r), s.maskFull.push(r.replace(/\d/ig, "*")), s.items.push(e);
+          const a = this.toWithin(n, e.within);
+          s.mask.push(a), s.maskFull.push(a.replace(/\d/ig, "*")), s.items.push(e);
         }
       });
     });
@@ -3513,9 +3006,9 @@ const yt = {}, de = class de {
     return e.replace(/\*/, this.getWithinSymbol(n));
   }
 };
-f(de, "list", []), f(de, "map", {}), de.makeList(), de.makeMap();
-let rn = de;
-const se = class se {
+l(te, "list", []), l(te, "map", {}), te.makeList(), te.makeMap();
+let Et = te;
+const W = class W {
   /**
    * Get data from hash.
    *
@@ -3535,7 +3028,7 @@ const se = class se {
    */
   static set(e, n) {
     var s;
-    const o = q(n);
+    const o = B(n);
     o !== ((s = this.hash) == null ? void 0 : s[e]) && (this.hash[e] = o, this.update());
   }
   /**
@@ -3549,28 +3042,6 @@ const se = class se {
     e in this.watch ? this.watch[e].push(n) : this.watch = { [e]: [n] };
   }
   /**
-   * Obtaining data from the URL string.
-   *
-   * Получение данных из строки URL.
-   */
-  static getLocation() {
-    const e = {};
-    return location.hash.replace(
-      /([\w-]+)[:=]([^;]+)/ig,
-      (...n) => (e[n[1]] = Bt(n[2]), "")
-    ), e;
-  }
-  /**
-   * Update hash string in URL.
-   *
-   * Обновление строки хэша в URL.
-   */
-  static update() {
-    this.block = !0, history.replaceState(null, "", `#${Zn(this.hash, "=", ";")}`), requestAnimationFrame(() => {
-      this.block = !1;
-    });
-  }
-  /**
    * Update hash variable from URL string.
    *
    * Обновление переменной хэша из строки URL.
@@ -3582,21 +3053,43 @@ const se = class se {
     }
   }
   /**
+   * Obtaining data from the URL string.
+   *
+   * Получение данных из строки URL.
+   */
+  static getLocation() {
+    const e = {};
+    return location.hash.replace(
+      /([\w-]+)[:=]([^;]+)/ig,
+      (...n) => (e[n[1]] = ht(n[2]), "")
+    ), e;
+  }
+  /**
+   * Update hash string in URL.
+   *
+   * Обновление строки хэша в URL.
+   */
+  static update() {
+    this.block = !0, history.replaceState(null, "", `#${yn(this.hash, "=", ";")}`), requestAnimationFrame(() => {
+      this.block = !1;
+    });
+  }
+  /**
    * Calling all functions whose data has changed.
    *
    * Вызов всех функций, у которых были изменены данные.
    * @param location fresh data/ свежий данные
    */
   static makeWatch(e) {
-    H(this.watch, (n, o) => {
+    x(this.watch, (n, o) => {
       var s;
-      ((s = this.hash) == null ? void 0 : s[o]) !== (e == null ? void 0 : e[o]) && n.forEach((r) => r(e[o]));
+      ((s = this.hash) == null ? void 0 : s[o]) !== (e == null ? void 0 : e[o]) && n.forEach((a) => a(e[o]));
     });
   }
 };
-f(se, "hash", {}), f(se, "watch", {}), f(se, "block", !1), R() && (se.reload(), addEventListener("hashchange", () => se.reload()));
-let an = se;
-const mt = "__UI_ICON", un = 320, cn = "--LOAD--", be = class be {
+l(W, "hash", {}), l(W, "watch", {}), l(W, "block", !1), E() && (W.reload(), addEventListener("hashchange", () => W.reload()));
+let _t = W;
+const Be = "__UI_ICON", At = 320, zt = "--LOAD--", pe = class pe {
   /**
    * Checks if the given icon is in the list of connected icons.
    *
@@ -3617,9 +3110,9 @@ const mt = "__UI_ICON", un = 320, cn = "--LOAD--", be = class be {
    * время ожидания загрузки картинки
    */
   static async get(e, n = "", o = 1e3 * 60 * 3) {
-    var r, a;
-    const s = ((r = this.icons) == null ? void 0 : r[this.getName(e)]) ?? ((a = this.icons) == null ? void 0 : a[e]) ?? `${e.replace(/^@/, n ?? this.url)}.svg`;
-    return typeof s == "string" ? s === cn && o > 0 ? (await this.wait(), this.get(e, n, o - un)) : s : await s;
+    var a, r;
+    const s = ((a = this.icons) == null ? void 0 : a[this.getName(e)]) ?? ((r = this.icons) == null ? void 0 : r[e]) ?? `${e.replace(/^@/, n ?? this.url)}.svg`;
+    return typeof s == "string" ? s === zt && o > 0 ? (await this.wait(), this.get(e, n, o - At)) : s : await s;
   }
   /**
    * Returns a list of names of all registered icons.
@@ -3627,7 +3120,7 @@ const mt = "__UI_ICON", un = 320, cn = "--LOAD--", be = class be {
    * Возвращает список названий всех зарегистрированных иконок.
    */
   static getNameList() {
-    return H(this.icons, (e, n) => n.replace(/^@/, ""));
+    return x(this.icons, (e, n) => n.replace(/^@/, ""));
   }
   /**
    * Returns a global link.
@@ -3635,7 +3128,7 @@ const mt = "__UI_ICON", un = 320, cn = "--LOAD--", be = class be {
    * Возвращает глобальную ссылку.
    */
   static getUrlGlobal() {
-    return `${kt.isLocalhost(), ""}${this.url}`;
+    return `${qe.isLocalhost(), ""}${this.url}`;
   }
   /**
    * Adding custom icons.
@@ -3654,7 +3147,7 @@ const mt = "__UI_ICON", un = 320, cn = "--LOAD--", be = class be {
    * @param index icon name/ название иконки
    */
   static addLoad(e) {
-    this.icons[this.getName(e)] = cn;
+    this.icons[this.getName(e)] = zt;
   }
   /**
    * Adding custom global icons.
@@ -3673,7 +3166,7 @@ const mt = "__UI_ICON", un = 320, cn = "--LOAD--", be = class be {
    * @param list list of icons/ список иконки
    */
   static addByList(e) {
-    H(e, (n, o) => this.add(o, n));
+    x(e, (n, o) => this.add(o, n));
   }
   /**
    * Changes the file path.
@@ -3699,46 +3192,66 @@ const mt = "__UI_ICON", un = 320, cn = "--LOAD--", be = class be {
    * Задержка выполнения скрипта.
    */
   static wait() {
-    return new Promise((e) => setTimeout(() => e(), un));
+    return new Promise((e) => setTimeout(() => e(), At));
   }
 };
-f(be, "icons", {}), f(be, "url", "/icons/"), R() && (mt in window || (window[mt] = {}), be.icons = window[mt]);
-let ln = be;
-function Qs(t, e, n) {
-  var o;
-  return ((o = Z(t)) == null ? void 0 : o[e]) ?? n;
+l(pe, "icons", {}), l(pe, "url", "/icons/"), E() && (Be in window || (window[Be] = {}), pe.icons = window[Be]);
+let St = pe;
+class Dn {
+  static get() {
+    return this.router;
+  }
+  /**
+   * Site path change.<br>
+   * Изменение пути сайта.
+   * @param to new path/ новый путь
+   */
+  static push(e) {
+    this.router && this.router.push(e).then();
+  }
+  static set(e) {
+    this.router = e;
+  }
+  static setOneTime(e) {
+    this.router || this.set(e);
+  }
 }
-function Xs(t, e, n) {
-  const o = Z(t);
+l(Dn, "router");
+function ts(t, e, n) {
+  var o;
+  return ((o = j(t)) == null ? void 0 : o[e]) ?? n;
+}
+function ns(t, e, n) {
+  const o = j(t);
   if (o) {
-    const s = Qs(o, e);
-    if (Ne(s) && Ne(n))
-      H(n, (r, a) => {
-        s[a] = q(r);
+    const s = ts(o, e);
+    if (Ce(s) && Ce(n))
+      x(n, (a, r) => {
+        s[r] = B(a);
       });
     else {
-      const r = q(n);
-      !(e in o) && typeof r == "string" ? o.setAttribute(e.toString(), r) : o[e] = q(n);
+      const a = B(n);
+      !(e in o) && typeof a == "string" ? o.setAttribute(e.toString(), a) : o[e] = B(n);
     }
   }
   return o;
 }
-function hn(t, e = "div", n, o) {
-  if (!R())
+function bt(t, e = "div", n, o) {
+  if (!E())
     return;
   const s = document.createElement(e);
-  return typeof n == "function" ? n(s) : te(n) && H(n, (r, a) => {
-    Xs(s, a, r);
+  return typeof n == "function" ? n(s) : U(n) && x(n, (a, r) => {
+    ns(s, r, a);
   }), t == null || t.insertBefore(s, null), s;
 }
-const ve = class ve {
+const ge = class ge {
   /**
    * Constructor
    */
   constructor() {
-    f(this, "item", Lo());
-    f(this, "is", Ae(() => this.item.value !== void 0));
-    ve.is().then((e) => {
+    l(this, "item", to());
+    l(this, "is", N(() => this.item.value !== void 0));
+    ge.is().then((e) => {
       this.item.value = e;
     });
   }
@@ -3770,8 +3283,8 @@ const ve = class ve {
    * Создает элементы для проверки ширины скролла.
    */
   static createElement() {
-    return hn(document.body, "div", (e) => {
-      e.style.height = "24px", e.style.overflowY = "scroll", e.style.position = "fixed", e.style.width = "100%", hn(e, "div", (n) => {
+    return bt(document.body, "div", (e) => {
+      e.style.height = "24px", e.style.overflowY = "scroll", e.style.position = "fixed", e.style.width = "100%", bt(e, "div", (n) => {
         n.style.height = "100px";
       });
     });
@@ -3791,9 +3304,20 @@ const ve = class ve {
     });
   }
 };
-f(ve, "storage", new Ft("scrollbar", !0)), f(ve, "calculate", !1);
-let fn = ve;
-const x = class x {
+l(ge, "storage", new lt("scrollbar", !0)), l(ge, "calculate", !1);
+let wt = ge;
+function os(t) {
+  return t && "class" in t && typeof t.class == "string" ? t.class : void 0;
+}
+function ss(t, e, n) {
+  const o = os(e);
+  return n && o ? `${n}.${o}` : n || o || t;
+}
+function Nt(t, e, n, o) {
+  const s = ss(t, e, o);
+  return Bo(t, { key: s, ...e }, n);
+}
+const z = class z {
   /**
     * Information about the current country.
   *
@@ -3842,15 +3366,221 @@ const x = class x {
     * код страны, полный вид язык-страна или один из них
     */
   static set(e) {
-    K.set(e, !0), this.item.value = K.getItem();
+    P.set(e, !0), this.item.value = P.getItem();
   }
 };
-f(x, "item", Vo(K.get())), f(x, "country", Ae(() => x.item.value.country)), f(x, "language", Ae(() => x.item.value.language)), f(x, "standard", Ae(() => x.item.value.standard)), f(x, "firstDay", Ae(() => x.item.value.firstDay));
-let pn = x;
-function er(t) {
+l(z, "item", no(P.get())), l(z, "country", N(() => z.item.value.country)), l(z, "language", N(() => z.item.value.language)), l(z, "standard", N(() => z.item.value.standard)), l(z, "firstDay", N(() => z.item.value.firstDay));
+let Rt = z;
+function as(t) {
   return t.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(new RegExp("(?<=[A-Z])([A-Z])", "g"), (e) => `${e.toLowerCase()}`).replace(/^[A-Z]/, (e) => e.toLowerCase()).replace(new RegExp("(?<=[\\w ])[A-Z]", "g"), (e) => `-${e.toLowerCase()}`).replace(/[A-Z]/g, (e) => e.toLowerCase());
 }
-const A = {}, ge = class ge {
+class hs {
+  /**
+   * Constructor
+   * @param props input property/ входное свойство
+   * @param progress object for working with progress/ объект для работы с прогрессами
+   */
+  constructor(e, n) {
+    /**
+     * Checks if the element is active
+     *
+     * Проверяет, активен ли элемент
+     */
+    l(this, "isEnabled", N(
+      () => !this.props.disabled && !this.props.readonly && (!this.progress || !this.progress.isProgress.value)
+    ));
+    /**
+     * checks if the read-only status is enabled/ проверяет, включён ли статус "только для чтения"
+     */
+    l(this, "isReadonly", N(() => !!this.props.readonly));
+    /**
+     * checks if the element is disabled/ проверяет, отключён ли элемент
+     */
+    l(this, "isDisabled", N(() => !!this.props.disabled));
+    /**
+     * checks if the element is disabled or the value is empty/
+     * проверяет, отключён ли элемент или пустое ли значение
+     */
+    l(this, "isDisabledOrUndefined", N(() => this.isDisabled.value || void 0));
+    this.props = e, this.progress = n;
+  }
+}
+class fs {
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   * @param enabled Object for working with activity status/ Объект для работы со статусом активности
+   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   */
+  constructor(e, n, o) {
+    l(this, "refs");
+    this.props = e, this.enabled = n, this.emits = o, this.refs = so(e);
+  }
+  /**
+   * Exported values
+   *
+   * Экспортируемые значения
+   */
+  get expose() {
+    return {
+      value: this.refs.value,
+      detail: this.refs.detail
+    };
+  }
+  /**
+   * Event trigger function
+   *
+   * Функция вызова события
+   * @param event event object/ объект события
+   * @param options data object/ объект с данными
+   */
+  onClick(e, n) {
+    if (this.emits)
+      if (n)
+        this.emit(e, n);
+      else if (this.toRouter())
+        e.preventDefault();
+      else if (this.enabled) {
+        const o = this.getOptions(e);
+        (this.enabled.isEnabled.value || o.type === "icon-trailing" && !this.enabled.isDisabled.value) && this.emit(e, o);
+      } else
+        this.emit(e, this.getOptions(e));
+  }
+  /**
+   * Parameters for the event
+   *
+   * Параметры для события
+   */
+  getOptions(e) {
+    return {
+      type: this.getTargetType(e),
+      value: this.props.value,
+      detail: this.props.detail
+    };
+  }
+  /**
+   * Returns the type of the selected item
+   *
+   * Возвращает тип выбранного элемента
+   */
+  getTargetType(e) {
+    var o, s, a;
+    return ((a = (s = (o = e.target) == null ? void 0 : o.closest("[data-event-type]")) == null ? void 0 : s.dataset) == null ? void 0 : a.eventType) ?? "click";
+  }
+  /**
+   * Changing the link through the router
+   *
+   * Изменение ссылки через router
+   */
+  toRouter() {
+    return this.props.to ? (Dn.push(this.props.to), !0) : !1;
+  }
+  /**
+   * Triggers the click event
+   *
+   * Вызывает событие клика
+   * @param event event object/ объект события
+   * @param options data object/ объект с данными
+   */
+  emit(e, n) {
+    this.emits && (this.emits("click", e, n), this.emits("clickLite", n));
+  }
+}
+class ps {
+  /**
+   * Constructor
+   * @param props input property/ входное свойство
+   * @param className class name/ название класса
+   * @param classesExtra additional classes/ дополнительные классы
+   * @param slots object for working with slots/ объект для работы со слотами
+   * @param elementsExtra additional elements/ дополнительные элементы
+   * @param labelReplacing additional elements/ дополнительные элементы
+   * @param alternativeSlots alternative slots/ альтернативные слоты
+   */
+  constructor(e, n, o, s, a, r, i) {
+    /** Label presence check/ Проверка наличия метки */
+    l(this, "isLabel", N(() => {
+      var e;
+      return this.props.label || (e = this.labelReplacing) != null && e.value ? !0 : this.slots ? this.alternativeSlots ? "label" in this.slots : "default" in this.slots : !1;
+    }));
+    this.props = e, this.className = n, this.classesExtra = o, this.slots = s, this.elementsExtra = a, this.labelReplacing = r, this.alternativeSlots = i;
+  }
+  /**
+   * Render the label
+   *
+   * Рендер метки
+   * @param childrenExtra additional children/ дополнительные дочерние элементы
+   */
+  render(e) {
+    const n = [];
+    if (this.isLabel.value) {
+      const o = [
+        ...this.initLabel(),
+        ...this.initLabelReplacing(),
+        ...this.initSlot()
+      ];
+      this.elementsExtra && o.push(...this.elementsExtra()), e && o.push(...e), o.length > 0 && n.push(
+        Nt(
+          "span",
+          { class: this.getClassName() },
+          o,
+          "label"
+        )
+      );
+    }
+    return n;
+  }
+  /**
+   * Get the class name for the label
+   *
+   * Получение имени класса для метки
+   */
+  getClassName() {
+    const e = [`${this.className}__label`];
+    return this.classesExtra && e.push(this.classesExtra), e;
+  }
+  /**
+   * Adds the label text if it exists
+   *
+   * Добавляет текст метки, если он есть
+   */
+  initLabel() {
+    return T(this.props.label) ? [this.props.label] : [];
+  }
+  /**
+   * Adds alternative label text if it exists
+   *
+   * Добавляет альтернативный текст метки, если он есть
+   */
+  initLabelReplacing() {
+    var e;
+    return T((e = this.labelReplacing) == null ? void 0 : e.value) ? [
+      Nt(
+        "span",
+        { innerHTML: this.labelReplacing.value },
+        void 0,
+        "highlight"
+      )
+    ] : [];
+  }
+  /**
+   * Adds a slot for the label if it exists
+   *
+   * Добавляет слот для метки, если он есть
+   */
+  initSlot() {
+    var e, n, o, s;
+    if (this.slots) {
+      if (this.alternativeSlots) {
+        if ("label" in this.slots)
+          return [(n = (e = this.slots).label) == null ? void 0 : n.call(e, {})];
+      } else if ("default" in this.slots)
+        return [(s = (o = this.slots).default) == null ? void 0 : s.call(o, {})];
+    }
+    return [];
+  }
+}
+const m = {}, ne = class ne {
   /**
    * The fs.existsSync() method is used to synchronously check if a file already
    * exists in the given path or not. It returns a boolean value which indicates
@@ -3863,7 +3593,7 @@ const A = {}, ge = class ge {
    * это содержит путь к файлу, который необходимо проверить
    */
   static is(e) {
-    return A.existsSync(this.joinPath(e));
+    return m.existsSync(this.joinPath(e));
   }
   /**
    * Checks whether it is a directory.
@@ -3873,7 +3603,7 @@ const A = {}, ge = class ge {
    */
   static isDir(e) {
     var n;
-    return this.is(e) ? ((n = A.statSync(this.joinPath(e))) == null ? void 0 : n.isDirectory()) ?? !1 : !this.joinPath(e).match(/\.\w+$/);
+    return this.is(e) ? ((n = m.statSync(this.joinPath(e))) == null ? void 0 : n.isDirectory()) ?? !1 : !this.joinPath(e).match(/\.\w+$/);
   }
   /**
    * Determines whether the package is connected as a module.
@@ -3893,7 +3623,7 @@ const A = {}, ge = class ge {
    * @param path a sequence of path segments/ последовательность сегментов пути
    */
   static joinPath(e) {
-    return A.join(...ie(e));
+    return m.join(...Y(e));
   }
   /**
    * Getting the path to the file by its name and the path to the directory.
@@ -3904,7 +3634,7 @@ const A = {}, ge = class ge {
    * @param extension file extension by default is json/ расширение файла по умолчанию - json
    */
   static joinPathByName(e, n, o = "json") {
-    return this.joinPath([...ie(e), this.getFileName(n, o)]);
+    return this.joinPath([...Y(e), this.getFileName(n, o)]);
   }
   /**
    * Returns the root path.
@@ -3925,7 +3655,7 @@ const A = {}, ge = class ge {
    * @param extension file extension by default is json/ расширение файла по умолчанию - json
    */
   static getFileName(e, n = "json") {
-    return n && n !== "" ? `${er(e)}.${n}` : e;
+    return n && n !== "" ? `${as(e)}.${n}` : e;
   }
   /**
    * Returns the path to the directory, removing the file name from the path.
@@ -3934,7 +3664,7 @@ const A = {}, ge = class ge {
    * @param path path to the file/ путь к файлу
    */
   static getPathDir(e) {
-    return this.isDir(e) ? this.joinPath(e) : A.dirname(this.joinPath(e));
+    return this.isDir(e) ? this.joinPath(e) : m.dirname(this.joinPath(e));
   }
   /**
    * Returns the path to the file.
@@ -3945,7 +3675,7 @@ const A = {}, ge = class ge {
    * @param extension file extension by default is json/ расширение файла по умолчанию - json
    */
   static getPathFile(e, n, o = "json") {
-    return [...ie(e), this.getFileName(n, o)];
+    return [...Y(e), this.getFileName(n, o)];
   }
   /**
    * The method splits the path into an array of components.
@@ -3956,7 +3686,7 @@ const A = {}, ge = class ge {
   static splitForDir(e) {
     var o;
     const n = this.isDir(e) ? e : (o = this.parse(e)) == null ? void 0 : o.dir;
-    return this.joinPath(n || "").split(A.sep);
+    return this.joinPath(n || "").split(m.sep);
   }
   /**
    * Method returns an object whose properties represent significant elements of the path.
@@ -3965,7 +3695,7 @@ const A = {}, ge = class ge {
    * @param path filename/ имя файла
    */
   static parse(e) {
-    return A.parse(this.joinPath(e));
+    return m.parse(this.joinPath(e));
   }
   /**
    * Returns the directory separator symbol.
@@ -3973,7 +3703,7 @@ const A = {}, ge = class ge {
    * Возвращает символ разделителя директории.
    */
   static sep() {
-    return A.sep;
+    return m.sep;
   }
   /**
    * Getting information about the file.
@@ -3983,7 +3713,7 @@ const A = {}, ge = class ge {
    */
   static stat(e) {
     if (this.is(e))
-      return { ...A.statSync(this.joinPath(e)) };
+      return { ...m.statSync(this.joinPath(e)) };
   }
   /**
    * Reads the contents of the directory.
@@ -3992,7 +3722,7 @@ const A = {}, ge = class ge {
    * @param path path to the directory/ путь к директории
    */
   static readDir(e) {
-    return this.is(e) ? A.readdirSync(this.joinPath(e)) : [];
+    return this.is(e) ? m.readdirSync(this.joinPath(e)) : [];
   }
   /**
    * Reads the contents of the directory recursively.
@@ -4003,12 +3733,12 @@ const A = {}, ge = class ge {
    */
   static readDirRecursive(e, n = []) {
     const o = this.readDir(e), s = [];
-    return o.forEach((r) => {
-      const a = [...e, r];
-      this.isDir(a) ? s.push(...this.readDirRecursive(
-        a,
-        [...n, r]
-      )) : s.push(this.joinPath([...n, r]));
+    return o.forEach((a) => {
+      const r = [...e, a];
+      this.isDir(r) ? s.push(...this.readDirRecursive(
+        r,
+        [...n, a]
+      )) : s.push(this.joinPath([...n, a]));
     }), s;
   }
   /**
@@ -4019,8 +3749,8 @@ const A = {}, ge = class ge {
    */
   static readFile(e) {
     if (this.is(e))
-      return Bt(
-        A.readFileSync(this.joinPath(e)).toString()
+      return ht(
+        m.readFileSync(this.joinPath(e)).toString()
       );
   }
   /**
@@ -4031,7 +3761,7 @@ const A = {}, ge = class ge {
    */
   static readFileOnly(e) {
     if (this.is(e))
-      return A.readFileSync(this.joinPath(e)).toString();
+      return m.readFileSync(this.joinPath(e)).toString();
   }
   /**
    * Synchronously creates a directory.
@@ -4042,7 +3772,7 @@ const A = {}, ge = class ge {
   static createDir(e) {
     const n = [this.root];
     this.splitForDir(this.removeRootInPath(e)).forEach((o) => {
-      n.push(o), this.is(n) || A.mkdirSync(this.joinPath(n));
+      n.push(o), this.is(n) || m.mkdirSync(this.joinPath(n));
     });
   }
   /**
@@ -4068,7 +3798,7 @@ const A = {}, ge = class ge {
    * @param value values for storage/ значения для хранения
    */
   static writeByPath(e, n) {
-    this.createDir(e), A.writeFileSync(
+    this.createDir(e), m.writeFileSync(
       this.joinPath(e),
       typeof n == "object" ? JSON.stringify(n) : n
     );
@@ -4081,7 +3811,7 @@ const A = {}, ge = class ge {
    * @param pathsSrc source filename to copy/ исходное имя файла для копирования
    */
   static copy(e, n) {
-    this.createDir(e), A.copyFileSync(
+    this.createDir(e), m.copyFileSync(
       this.joinPath(n),
       this.joinPath(e)
     );
@@ -4093,7 +3823,7 @@ const A = {}, ge = class ge {
    * @param path path to the directory/ путь к директории
    */
   static removeDir(e) {
-    this.isDir(e) && A.rmSync(this.joinPath(e), {
+    this.isDir(e) && m.rmSync(this.joinPath(e), {
       recursive: !0,
       force: !0
     });
@@ -4105,10 +3835,10 @@ const A = {}, ge = class ge {
    * @param path path to the file/ путь к файлу
    */
   static removeFile(e) {
-    this.is(e) && A.unlinkSync(this.joinPath(e));
+    this.is(e) && m.unlinkSync(this.joinPath(e));
   }
   static rename(e, n) {
-    A.renameSync(
+    m.renameSync(
       this.joinPath(e),
       this.joinPath(n)
     );
@@ -4120,16 +3850,16 @@ const A = {}, ge = class ge {
    * @param path path to the directory/ путь к директории
    */
   static removeRootInPath(e) {
-    return this.joinPath(e).replace(`${this.root}${A.sep}`, "").replace(`${this.root}`, "");
+    return this.joinPath(e).replace(`${this.root}${m.sep}`, "").replace(`${this.root}`, "");
   }
 };
-f(ge, "root"), f(ge, "module"), ge.module = !!__dirname.match("node_modules"), ge.root = process.cwd();
-let wt = ge;
-const tr = "src", nr = "constructors", or = "properties.json", ar = (t) => {
+l(ne, "root"), l(ne, "module"), ne.module = !!__dirname.match("node_modules"), ne.root = process.cwd();
+let Qe = ne;
+const rs = "src", is = "constructors", us = "properties.json", gs = (t) => {
   const e = {};
   try {
     const n = __dirname;
-    H(
+    x(
       t,
       (o) => {
         const s = [
@@ -4137,12 +3867,12 @@ const tr = "src", nr = "constructors", or = "properties.json", ar = (t) => {
           "..",
           "..",
           "..",
-          tr,
-          nr,
+          rs,
+          is,
           o,
-          or
-        ], r = wt.readFile(s);
-        r && (e[o] = r);
+          us
+        ], a = Qe.readFile(s);
+        a && (e[o] = a);
       }
     );
   } catch (n) {
@@ -4151,5 +3881,8 @@ const tr = "src", nr = "constructors", or = "properties.json", ar = (t) => {
   return e;
 };
 export {
-  ar as getConstructorProperties
+  hs as EnabledInclude,
+  fs as EventClickInclude,
+  ps as LabelInclude,
+  gs as getConstructorProperties
 };

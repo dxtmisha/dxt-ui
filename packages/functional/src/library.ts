@@ -1,3 +1,5 @@
+
+
 // Classes
 export * from './classes/Api'
 export * from './classes/Cache'
@@ -115,6 +117,7 @@ export * from './functions/setValues'
 export * from './functions/splice'
 export * from './functions/strFill'
 export * from './functions/toArray'
+export * from './functions/toBind'
 export * from './functions/toCamelCase'
 export * from './functions/toCamelCaseFirst'
 export * from './functions/toDate'

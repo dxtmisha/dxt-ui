@@ -1,7 +1,8 @@
 import { computed, type ComputedRef, inject } from 'vue'
+import type { ConstrClassObject } from '@dxt-ui/functional'
 
 import { Skeleton } from './Skeleton.ts'
-import type { SkeletonClassesList } from './basicTypes.ts'
+import type { SkeletonClassesList, SkeletonPropsInclude } from './basicTypes.ts'
 
 import { SKELETON_NAME_STATUS } from './const.ts'
 
@@ -23,10 +24,14 @@ export class SkeletonInclude {
 
   /**
    * Constructor
+   * @param props input data/ входные данные
    * @param classDesign design name/ название дизайна
+   * @param classesList list of available classes/ список доступных классов
    */
   constructor(
-    classDesign: string
+    protected readonly props: SkeletonPropsInclude,
+    classDesign: string,
+    protected readonly classesList?: (keyof SkeletonClassesList)[]
   ) {
     this.classesSkeleton = Skeleton.getClassesListByDesign(classDesign)
   }
@@ -35,4 +40,22 @@ export class SkeletonInclude {
    * Indicates whether the Skeleton status is enabled/ Указывает, включён ли статус Skeleton
    */
   readonly isSkeleton = computed<boolean>(() => Boolean(this.status && this.status.value))
+
+  /**
+   * Returns the available list for the skeleton/ Возвращает доступный список для скелетона
+   */
+  readonly classes = computed<ConstrClassObject>(() => {
+    const classes: ConstrClassObject = {}
+
+    if (
+      this.classesList
+      && this.props.isSkeleton
+    ) {
+      this.classesList.forEach((className) => {
+        classes[this.classesSkeleton[className]] = true
+      })
+    }
+
+    return classes
+  })
 }

@@ -1,5 +1,8 @@
 import { isObjectNotArray } from '../isObjectNotArray'
+import { toBind } from '../toBind'
+
 import { type ItemList } from '../../types/basicTypes'
+import type { ConstrBind } from '../../types/constructorTypes'
 
 /**
  * A method for generating properties for a subcomponent.
@@ -17,7 +20,7 @@ export function getBind<T, R extends ItemList>(
   nameExtra: ItemList | string = {},
   name = 'value',
   except: boolean = false
-): R {
+): ConstrBind<R> {
   const isName = typeof nameExtra === 'string'
   const index = isName ? nameExtra : name
   const extra = isName ? {} : nameExtra
@@ -28,16 +31,10 @@ export function getBind<T, R extends ItemList>(
       && isObjectNotArray(value)
       && (index in value || except)
     ) {
-      return {
-        ...extra,
-        ...value
-      } as R
+      return toBind<R>(extra, value)
     }
 
-    return {
-      ...extra,
-      [index]: value
-    } as R
+    return toBind<R>(extra, { [index]: value })
   }
 
   if (!isName) {

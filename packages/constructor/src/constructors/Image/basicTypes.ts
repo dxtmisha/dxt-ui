@@ -56,10 +56,14 @@ export type ImageEventData =
     image: ImageEventItem
   }
 
+export type ImageValue<
+  Image extends ImagePropsBasic = ImagePropsBasic
+> = string | ConstrBind<Image> | null
+
 export type ImageUseComponents = {
   image: object
 }
 export type ImageUseEmits = ImageEmits
-export type ImageUseProps<Image extends ImagePropsBasic = ImagePropsBasic> = {
+export interface ImageUseProps<Image extends ImagePropsBasic = ImagePropsBasic> {
   image?: string | ConstrBind<Image>
 }

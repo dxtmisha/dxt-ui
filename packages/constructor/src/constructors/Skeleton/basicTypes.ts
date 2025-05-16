@@ -8,3 +8,8 @@ export type SkeletonClassesList = {
   classBorderVariant: string
   classNone: string
 }
+
+export interface SkeletonPropsInclude {
+  // Style
+  isSkeleton?: boolean
+}

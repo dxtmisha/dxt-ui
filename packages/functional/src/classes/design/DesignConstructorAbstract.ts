@@ -174,13 +174,7 @@ export abstract class DesignConstructorAbstract<
    * Метод рендеринга для метода настройки.
    */
   render(): () => VNode | (VNode | any)[] | undefined {
-    return () => {
-      if (import.meta.env.DEV) {
-        // console.info(`Render: ${this.getName()}`)
-      }
-
-      return this.initRender()
-    }
+    return () => this.initRender()
   }
 
   /**

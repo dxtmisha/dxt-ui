@@ -1,5 +1,5 @@
-import type { ImagePropsBasic } from '../Image'
-import type { IconValue } from './basicTypes.ts'
+import type { ImagePropsBasic, ImageValue } from '../Image'
+import type { SkeletonPropsInclude } from '../Skeleton'
 
 interface IconPropsToken {
   // :type [!] System label / Системная метка
@@ -20,16 +20,13 @@ interface IconPropsToken {
 
 export interface IconPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic
-> {
+> extends SkeletonPropsInclude {
   // Status
   active?: boolean
 
   // Icon
-  icon?: IconValue<Image>
-  iconActive?: IconValue<Image>
-
-  // Style
-  isSkeleton?: boolean
+  icon?: ImageValue<Image>
+  iconActive?: ImageValue<Image>
 }
 
 /**
