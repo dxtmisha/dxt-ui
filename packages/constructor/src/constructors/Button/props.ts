@@ -2,9 +2,9 @@ import type { IconPropsBasic, IconTrailingPropsInclude } from '../Icon'
 import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
-import type { LabelProps } from '../../types/labelTypes.ts'
-import type { EnabledProps } from '../../types/enabledTypes.ts'
-import type { EventClickProps } from '../../types/eventClickTypes.ts'
+import type { LabelProps } from '../../types/labelTypes'
+import type { EnabledProps } from '../../types/enabledTypes'
+import type { EventClickProps } from '../../types/eventClickTypes'
 
 interface ButtonPropsToken {
   // :type [!] System label / Системная метка

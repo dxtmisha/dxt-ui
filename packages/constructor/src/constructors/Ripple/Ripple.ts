@@ -1,7 +1,7 @@
 import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
 
-import { RippleItem } from './RippleItem.ts'
+import { RippleItem } from './RippleItem'
 
 import type { RippleComponents, RippleEmits, RippleSlots } from './types'
 import type { RippleProps } from './props'

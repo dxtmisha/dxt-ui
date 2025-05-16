@@ -8,7 +8,7 @@ import {
 import { Button } from './Button'
 
 import {
-  type ButtonProps
+  type ButtonPropsBasic
 } from './props'
 import {
   type ButtonClasses,
@@ -25,7 +25,7 @@ export class ButtonDesign<
   COMP extends ButtonComponents,
   EXPOSE extends ButtonExpose,
   CLASSES extends ButtonClasses,
-  P extends ButtonProps
+  P extends ButtonPropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,

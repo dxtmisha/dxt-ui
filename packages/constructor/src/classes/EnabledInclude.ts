@@ -1,7 +1,7 @@
 import { computed } from 'vue'
-import { ProgressInclude } from '../constructors/Progress/ProgressInclude.ts'
+import { ProgressInclude } from '../constructors/Progress'
 
-import type { EnabledProps } from '../types/enabledTypes.ts'
+import type { EnabledProps } from '../types/enabledTypes'
 
 /**
  * Use to control the activity of the item.

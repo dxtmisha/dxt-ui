@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue'
 import type { ConstrClass } from '@dxt-ui/functional'
-import type { SkeletonClassesList } from './basicTypes.ts'
+import type { SkeletonClassesList } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.

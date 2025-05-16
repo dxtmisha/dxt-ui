@@ -4,8 +4,8 @@ import type { IconComponentInclude } from '../Icon'
 import type { ProgressComponentInclude } from '../Progress'
 import type { RippleComponentsInclude } from '../Ripple'
 
-import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes.ts'
-import type { LabelSlots } from '../../types/labelTypes.ts'
+import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
+import type { LabelSlots } from '../../types/labelTypes'
 
 /**
  * Interface for describing which components need to be connected for work.

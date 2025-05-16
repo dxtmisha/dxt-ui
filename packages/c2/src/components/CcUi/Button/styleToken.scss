@@ -1,0 +1,667 @@
+@use "../../../styles/c2/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Button/style" as Button;
+
+@include ui.initDesignBasic('c2.button') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Button.mixinButton;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --c2-button-transitionFunction: var(--d-sys-transitionFunction-standard);
+    --c2-button-marginIcon: var(--c2-st-global-distance-space-inset-xs);
+    
+    box-sizing: content-box;
+    
+    @include ui.paletteColor(#{var(--c2-st-action-foreground-color-primary-normal)});
+    
+    border-radius: 0;
+    
+    transition-duration: var(--d-sys-transitionDuration-fade-enter);
+    transition-property: grid-template-columns, background-color, background-image, border, box-shadow;
+    
+    @include ui.hover {
+      @include ui.paletteColor(#{var(--c2-st-action-foreground-color-primary-hover)});
+      
+      transition-duration: var(--d-sys-transitionDuration-sm);
+    }
+    
+    @include ui.active {
+      @include ui.paletteColor(#{var(--c2-st-action-foreground-color-primary-active)});
+      
+      transition-duration: var(--d-sys-transitionDuration-sm);
+    }
+    
+    @include ui.disabled {
+      opacity: 0.5;
+      
+      transition-duration: var(--d-sys-transitionDuration-sm);
+    }
+    
+    &:focus-visible {
+      box-shadow: var(--c2-st-elevation-onLight-focus-md);
+    }
+    
+    &--selected {
+      @include ui.paletteColor(#{var(--c2-st-action-foreground-color-primary-select)});
+    }
+    
+    &--adaptive {
+      &--icon {
+        @include ui.justifyContent(#{flex-start});
+        
+        & > .c2-button__icon {
+          --c2-button-padding: calc((var(--sys-height) - var(--c2-icon-_width)) / 2) !important;
+        }
+        
+        & > *:not(.c2-button__icon) {
+          display: none;
+        }
+      }
+      
+      &--block {
+        @include ui.width(#{100%});
+      }
+      
+      &--auto {
+        @include ui.width(#{fit-content});
+      }
+      
+      &--iconSm {
+        @media screen and (max-width: calc(640px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .c2-button__icon {
+            --c2-button-padding: calc((var(--sys-height) - var(--c2-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.c2-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconMd {
+        @media screen and (max-width: calc(768px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .c2-button__icon {
+            --c2-button-padding: calc((var(--sys-height) - var(--c2-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.c2-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconLg {
+        @media screen and (max-width: calc(1024px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .c2-button__icon {
+            --c2-button-padding: calc((var(--sys-height) - var(--c2-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.c2-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconXl {
+        @media screen and (max-width: calc(1280px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .c2-button__icon {
+            --c2-button-padding: calc((var(--sys-height) - var(--c2-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.c2-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullSm {
+        @media screen and (min-width: 640px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .c2-button__icon {
+            --c2-button-padding: calc((var(--sys-height) - var(--c2-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.c2-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullMd {
+        @media screen and (min-width: 768px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .c2-button__icon {
+            --c2-button-padding: calc((var(--sys-height) - var(--c2-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.c2-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullLg {
+        @media screen and (min-width: 1024px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .c2-button__icon {
+            --c2-button-padding: calc((var(--sys-height) - var(--c2-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.c2-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullXl {
+        @media screen and (min-width: 1280px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .c2-button__icon {
+            --c2-button-padding: calc((var(--sys-height) - var(--c2-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.c2-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--blockToAutoSm {
+        @media screen and (min-width: 640px) {
+          @include ui.width(#{fit-content});
+        }
+        
+        @media screen and (max-width: calc(640px - 1px)) {
+          @include ui.width(#{100%});
+        }
+      }
+      
+      &--blockToAutoMd {
+        @media screen and (min-width: 768px) {
+          @include ui.width(#{fit-content});
+        }
+        
+        @media screen and (max-width: calc(768px - 1px)) {
+          @include ui.width(#{100%});
+        }
+      }
+      
+      &--blockToAutoLg {
+        @media screen and (min-width: 1024px) {
+          @include ui.width(#{fit-content});
+        }
+        
+        @media screen and (max-width: calc(1024px - 1px)) {
+          @include ui.width(#{100%});
+        }
+      }
+    }
+    
+    &--textAlign {
+      &--left {
+        @include ui.textAlign(#{left});
+      }
+      
+      &--center {
+        @include ui.textAlign(#{center});
+      }
+      
+      &--right {
+        @include ui.textAlign(#{right});
+      }
+    }
+    
+    &--primary {
+      @include ui.color(#{var(--c2-st-action-foreground-color-onprimary-normal)});
+      
+      @include ui.paletteBackground(#{var(--c2-st-action-background-color-primary-solid-normal)});
+      
+      @include ui.hover('.c2-button') {
+        @include ui.color(#{var(--c2-st-action-foreground-color-onprimary-hover)});
+        
+        @include ui.paletteBackground(#{var(--c2-st-action-background-color-primary-solid-hover)});
+      }
+      
+      @include ui.active('.c2-button') {
+        @include ui.color(#{var(--c2-st-action-foreground-color-onprimary-active)});
+        
+        @include ui.paletteBackground(#{var(--c2-st-action-background-color-primary-solid-active)});
+      }
+      
+      &.c2-button--selected {
+        @include ui.color(#{var(--c2-st-action-foreground-color-onprimary-select)});
+        
+        @include ui.paletteBackground(#{var(--c2-st-action-background-color-primary-solid-select)});
+      }
+      
+      &.c2-palette--neutral {
+        @include ui.color(#{var(--c2-st-action-background-color-neutral-invert-normal)});
+        
+        @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-solid-normal)});
+        
+        @include ui.hover('.c2-button') {
+          @include ui.color(#{var(--c2-st-action-background-color-neutral-invert-hover)});
+          
+          @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-solid-hover)});
+        }
+        
+        @include ui.active('.c2-button') {
+          @include ui.color(#{var(--c2-st-action-background-color-neutral-invert-active)});
+          
+          @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-solid-active)});
+        }
+        
+        &.c2-button--selected {
+          @include ui.color(#{var(--c2-st-action-background-color-neutral-invert-select)});
+          
+          @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-solid-select)});
+        }
+      }
+    }
+    
+    &--primaryInverse {
+      @include ui.color(#{var(--c2-st-content-foreground-color-neutral-primary)});
+      
+      @include ui.paletteBackground(#{var(--c2-st-action-background-color-neutral-invert-normal)});
+      
+      @include ui.hover('.c2-button') {
+        @include ui.color(#{var(--c2-st-content-foreground-color-neutral-invert-primary)});
+        
+        @include ui.paletteBackground(#{var(--c2-st-action-background-color-neutral-solid-hover)});
+      }
+      
+      @include ui.active('.c2-button') {
+        @include ui.color(#{var(--c2-st-content-foreground-color-neutral-invert-primary)});
+        
+        @include ui.paletteBackground(#{var(--c2-st-action-background-color-neutral-solid-active)});
+      }
+      
+      &.c2-button--selected {
+        @include ui.color(#{var(--c2-st-content-foreground-color-neutral-invert-primary)});
+        
+        @include ui.paletteBackground(#{var(--c2-st-action-background-color-neutral-solid-select)});
+      }
+    }
+    
+    &--secondary {
+      @include ui.paletteBackground(#{var(--c2-st-action-background-color-primary-subtle-normal)});
+      
+      @include ui.hover('.c2-button') {
+        @include ui.paletteBackground(#{var(--c2-st-action-background-color-primary-subtle-hover)});
+      }
+      
+      @include ui.active('.c2-button') {
+        @include ui.paletteBackground(#{var(--c2-st-action-background-color-primary-subtle-active)});
+      }
+      
+      &.c2-button--selected {
+        @include ui.paletteBackground(#{var(--c2-st-action-background-color-primary-subtle-select)});
+      }
+      
+      &.c2-palette--neutral {
+        @include ui.color(#{var(--c2-st-action-foreground-color-neutral-normal)});
+        
+        @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-subtle-normal)});
+        
+        @include ui.hover('.c2-button') {
+          @include ui.color(#{var(--c2-st-action-foreground-color-neutral-hover)});
+          
+          @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-subtle-hover)});
+        }
+        
+        @include ui.active('.c2-button') {
+          @include ui.color(#{var(--c2-st-action-foreground-color-neutral-active)});
+          
+          @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-subtle-active)});
+        }
+        
+        &.c2-button--selected {
+          @include ui.color(#{var(--c2-st-action-foreground-color-neutral-select)});
+          
+          @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-subtle-select)});
+        }
+      }
+    }
+    
+    &--outlined {
+      @include ui.paletteColor(#{var(--c2-st-action-foreground-color-neutral-normal)});
+      
+      @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-invert-normal)});
+      
+      &::before {
+        content: ' ';
+        position: absolute;
+        @include ui.inset(#{0px});
+        
+        border-radius: inherit;
+        border-width: 1px;
+        border-style: solid;
+        @include ui.borderColor(#{var(--c2-st-action-border-color-neutral-subtle-normal)});
+      }
+      
+      @include ui.hover('.c2-button') {
+        @include ui.paletteColor(#{var(--c2-st-action-foreground-color-neutral-hover)});
+        
+        @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-invert-hover)});
+        
+        @include ui.borderColor(#{var(--c2-st-action-border-color-neutral-subtle-hover)});
+      }
+      
+      @include ui.active('.c2-button') {
+        @include ui.paletteColor(#{var(--c2-st-action-foreground-color-neutral-active)});
+        
+        @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-invert-active)});
+        
+        @include ui.borderColor(#{var(--c2-st-action-border-color-neutral-subtle-active)});
+      }
+      
+      &.c2-button--selected {
+        @include ui.paletteColor(#{var(--c2-st-action-foreground-color-neutral-select)});
+        
+        @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-invert-select)});
+        
+        @include ui.borderColor(#{var(--c2-st-action-border-color-neutral-subtle-select)});
+      }
+      
+      &.c2-palette {
+        @include ui.paletteColor(#{var(--c2-st-action-foreground-color-primary-normal)});
+        
+        @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-ghost-normal)});
+        
+        &::before {
+          content: ' ';
+          @include ui.paletteBorder(#{var(--c2-st-action-foreground-color-primary-normal)});
+        }
+        
+        @include ui.hover('.c2-button') {
+          @include ui.paletteColor(#{var(--c2-st-action-foreground-color-primary-hover)});
+          
+          @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-ghost-normal)});
+          
+          @include ui.borderColor(#{var(--c2-st-action-foreground-color-primary-hover)});
+        }
+        
+        @include ui.active('.c2-button') {
+          @include ui.paletteColor(#{var(--c2-st-action-foreground-color-primary-active)});
+          
+          @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-ghost-normal)});
+          
+          @include ui.borderColor(#{var(--c2-st-action-foreground-color-primary-active)});
+        }
+        
+        &.c2-button--selected {
+          @include ui.paletteColor(#{var(--c2-st-action-foreground-color-primary-selected)});
+          
+          @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-ghost-normal)});
+          
+          @include ui.borderColor(#{var(--c2-st-action-foreground-color-primary-selected)});
+        }
+      }
+      
+      &.c2-palette--neutral {
+        @include ui.color(#{var(--c2-st-action-foreground-color-neutral-normal)});
+        
+        &::before {
+          content: ' ';
+          @include ui.borderColor(#{var(--c2-st-action-foreground-color-neutral-normal)});
+        }
+        
+        @include ui.hover('.c2-button') {
+          @include ui.color(#{var(--c2-st-action-foreground-color-neutral-hover)});
+          
+          @include ui.borderColor(#{var(--c2-st-action-foreground-color-neutral-hover)});
+        }
+        
+        @include ui.active('.c2-button') {
+          @include ui.color(#{var(--c2-st-action-foreground-color-neutral-active)});
+          
+          @include ui.borderColor(#{var(--c2-st-action-foreground-color-neutral-active)});
+        }
+        
+        &.c2-button--selected {
+          @include ui.color(#{var(--c2-st-action-foreground-color-neutral-selected)});
+          
+          @include ui.borderColor(#{var(--c2-st-action-foreground-color-neutral-selected)});
+        }
+      }
+    }
+    
+    &--ghost {
+      @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-ghost-normal)});
+      
+      @include ui.focus('.c2-button') {
+        @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-ghost-focus)});
+      }
+      
+      @include ui.hover('.c2-button') {
+        @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-ghost-hover)});
+      }
+      
+      @include ui.active('.c2-button') {
+        @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-ghost-active)});
+      }
+      
+      &.c2-button--selected {
+        @include ui.backgroundColor(#{var(--c2-st-action-background-color-neutral-ghost-select)});
+      }
+      
+      &.c2-palette--neutral {
+        @include ui.color(#{var(--c2-st-action-foreground-color-neutral-normal)});
+        
+        @include ui.hover('.c2-button') {
+          @include ui.color(#{var(--c2-st-action-foreground-color-neutral-hover)});
+        }
+        
+        @include ui.active('.c2-button') {
+          @include ui.color(#{var(--c2-st-action-foreground-color-neutral-active)});
+        }
+        
+        &.c2-button--selected {
+          @include ui.color(#{var(--c2-st-action-foreground-color-neutral-selected)});
+        }
+      }
+    }
+    
+    &--link {
+      --c2-button-padding: 0 !important;
+      
+      gap: var(--c2-st-global-distance-space-inset-xs);
+      
+      @include ui.hover('.c2-button') {
+        & .c2-button__label {
+          text-decoration-style: dashed;
+          text-decoration-line: underline;
+          text-underline-offset: var(--c2-st-global-distance-space-inset-x);
+        }
+      }
+    }
+    
+    &--size {
+      &--x {
+        --c2-button-padding: var(--c2-st-global-distance-space-inset-lg);
+        
+        @include ui.height(#{var(--c2-ot-dimension-200)});
+        
+        font-family: var(--c2-ot-typography-fontFamily-base), sans-serif;
+        @include ui.fontSize(#{var(--c2-ot-typography-fontSize-size-scale-87)});
+        font-weight: var(--c2-ot-typography-fontWeight-500);
+        @include ui.lineHeight(#{var(--c2-ot-typography-lineHeight-100)});
+        letter-spacing: var(--c2-ot-typography-tracking-lg);
+        @include ui.textCase(#{var(--c2-ot-typography-textCase-none)});
+        text-decoration: var(--c2-ot-typography-textDecoration-none);
+        @include ui.paragraphSpacing(#{var(--c2-ot-typography-paragraphSpacing-size-scale-75)});
+        
+        border-radius: var(--c2-st-selectable-borderRadius-size-xs);
+      }
+      
+      &--xs {
+        --c2-button-padding: var(--c2-st-global-distance-space-inset-xl);
+        
+        @include ui.height(#{var(--c2-ot-dimension-225)});
+        
+        font-family: var(--c2-ot-typography-fontFamily-base), sans-serif;
+        @include ui.fontSize(#{var(--c2-ot-typography-fontSize-size-scale-87)});
+        font-weight: var(--c2-ot-typography-fontWeight-500);
+        @include ui.lineHeight(#{var(--c2-ot-typography-lineHeight-100)});
+        letter-spacing: var(--c2-ot-typography-tracking-lg);
+        @include ui.textCase(#{var(--c2-ot-typography-textCase-none)});
+        text-decoration: var(--c2-ot-typography-textDecoration-none);
+        @include ui.paragraphSpacing(#{var(--c2-ot-typography-paragraphSpacing-size-scale-75)});
+        
+        border-radius: var(--c2-st-selectable-borderRadius-size-sm);
+      }
+      
+      &--sm {
+        --c2-button-padding: var(--c2-st-global-distance-space-inset-2xl);
+        
+        @include ui.height(#{var(--c2-ot-dimension-250)});
+        
+        font-family: var(--c2-ot-typography-fontFamily-base), sans-serif;
+        @include ui.fontSize(#{var(--c2-ot-typography-fontSize-size-scale-87)});
+        font-weight: var(--c2-ot-typography-fontWeight-500);
+        @include ui.lineHeight(#{var(--c2-ot-typography-lineHeight-100)});
+        letter-spacing: var(--c2-ot-typography-tracking-lg);
+        @include ui.textCase(#{var(--c2-ot-typography-textCase-none)});
+        text-decoration: var(--c2-ot-typography-textDecoration-none);
+        @include ui.paragraphSpacing(#{var(--c2-ot-typography-paragraphSpacing-size-scale-75)});
+        
+        border-radius: var(--c2-st-selectable-borderRadius-size-sm);
+      }
+      
+      &--md {
+        --c2-button-padding: calc(var(--c2-st-global-distance-space-inset-3xl) - var(--c2-ot-dimension-12));
+        
+        @include ui.height(#{calc(var(--c2-ot-dimension-300) - var(--c2-ot-dimension-25))});
+        
+        font-family: var(--c2-ot-typography-fontFamily-base), sans-serif;
+        @include ui.fontSize(#{var(--c2-ot-typography-fontSize-size-scale-100)});
+        font-weight: var(--c2-ot-typography-fontWeight-500);
+        @include ui.lineHeight(#{var(--c2-ot-typography-lineHeight-125)});
+        letter-spacing: var(--c2-ot-typography-tracking-lg);
+        @include ui.textCase(#{var(--c2-ot-typography-textCase-none)});
+        text-decoration: var(--c2-ot-typography-textDecoration-none);
+        @include ui.paragraphSpacing(#{var(--c2-ot-typography-paragraphSpacing-size-scale-75)});
+        
+        border-radius: var(--c2-st-selectable-borderRadius-size-md);
+      }
+      
+      &--lg {
+        --c2-button-marginIcon: var(--c2-st-global-distance-space-inset-sm);
+        --c2-button-padding: var(--c2-st-global-distance-space-inset-3xl);
+        
+        @include ui.height(#{var(--c2-ot-dimension-300)});
+        
+        font-family: var(--c2-ot-typography-fontFamily-base), sans-serif;
+        @include ui.fontSize(#{var(--c2-ot-typography-fontSize-size-scale-100)});
+        font-weight: var(--c2-ot-typography-fontWeight-500);
+        @include ui.lineHeight(#{var(--c2-ot-typography-lineHeight-125)});
+        letter-spacing: var(--c2-ot-typography-tracking-lg);
+        @include ui.textCase(#{var(--c2-ot-typography-textCase-none)});
+        text-decoration: var(--c2-ot-typography-textDecoration-none);
+        @include ui.paragraphSpacing(#{var(--c2-ot-typography-paragraphSpacing-size-scale-75)});
+        
+        border-radius: var(--c2-st-selectable-borderRadius-size-lg);
+      }
+      
+      &--xl {
+        --c2-button-marginIcon: var(--c2-st-global-distance-space-inset-md);
+        --c2-button-padding: var(--c2-st-global-distance-space-inset-5xl);
+        
+        @include ui.height(#{var(--c2-ot-dimension-350)});
+        
+        font-family: var(--c2-ot-typography-fontFamily-base), sans-serif;
+        @include ui.fontSize(#{var(--c2-ot-typography-fontSize-size-scale-112)});
+        font-weight: var(--c2-ot-typography-fontWeight-500);
+        @include ui.lineHeight(#{var(--c2-ot-typography-lineHeight-150)});
+        letter-spacing: var(--c2-ot-typography-tracking-lg);
+        @include ui.textCase(#{var(--c2-ot-typography-textCase-none)});
+        text-decoration: var(--c2-ot-typography-textDecoration-none);
+        @include ui.paragraphSpacing(#{var(--c2-ot-typography-paragraphSpacing-size-scale-75)});
+        
+        border-radius: var(--c2-st-selectable-borderRadius-size-xl);
+      }
+      
+      &--autoMd {
+        --c2-button-padding: var(--c2-st-global-distance-space-inset-xl);
+        
+        @include ui.paddingY(#{var(--c2-st-global-distance-space-inset-md)});
+        
+        @include ui.height(#{auto});
+        
+        font-family: var(--c2-ot-typography-fontFamily-base), sans-serif;
+        @include ui.fontSize(#{var(--c2-ot-typography-fontSize-size-scale-100)});
+        font-weight: var(--c2-ot-typography-fontWeight-500);
+        @include ui.lineHeight(#{var(--c2-ot-typography-lineHeight-125)});
+        letter-spacing: var(--c2-ot-typography-tracking-lg);
+        @include ui.textCase(#{var(--c2-ot-typography-textCase-none)});
+        text-decoration: var(--c2-ot-typography-textDecoration-none);
+        @include ui.paragraphSpacing(#{var(--c2-ot-typography-paragraphSpacing-size-scale-75)});
+        
+        border-radius: var(--c2-st-selectable-borderRadius-size-md);
+        
+        & .c2-button__label {
+          white-space: wrap;
+        }
+      }
+      
+      &--autoLg {
+        --c2-button-padding: var(--c2-st-global-distance-space-inset-2xl);
+        
+        @include ui.paddingY(#{var(--c2-st-global-distance-space-inset-lg)});
+        
+        @include ui.height(#{auto});
+        
+        font-family: var(--c2-ot-typography-fontFamily-base), sans-serif;
+        @include ui.fontSize(#{var(--c2-ot-typography-fontSize-size-scale-112)});
+        font-weight: var(--c2-ot-typography-fontWeight-500);
+        @include ui.lineHeight(#{var(--c2-ot-typography-lineHeight-150)});
+        letter-spacing: var(--c2-ot-typography-tracking-lg);
+        @include ui.textCase(#{var(--c2-ot-typography-textCase-none)});
+        text-decoration: var(--c2-ot-typography-textDecoration-none);
+        @include ui.paragraphSpacing(#{var(--c2-ot-typography-paragraphSpacing-size-scale-75)});
+        
+        border-radius: var(--c2-st-selectable-borderRadius-size-md);
+        
+        & .c2-button__label {
+          white-space: wrap;
+        }
+      }
+    }
+    
+    &--rounded {
+      border-radius: var(--c2-st-selectable-borderRadius-size-pill);
+    }
+    
+    & &__label ~ .c2-icon {
+      --c2-button-margin: var(--c2-button-padding);
+    }
+    
+    & &__label ~ &__icon {
+      @include ui.marginRight(#{calc(var(--c2-button-padding) * -1 + var(--c2-button-marginIcon))});
+    }
+    
+    & &__label ~ &__trailing {
+      @include ui.marginLeft(#{calc(var(--c2-button-padding) * -1 + var(--c2-button-marginIcon))});
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

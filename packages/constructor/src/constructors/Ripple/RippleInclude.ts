@@ -1,10 +1,10 @@
 import type { VNode } from 'vue'
 import { DesignComponents } from '@dxt-ui/functional'
 
-import { EnabledInclude } from '../../classes/EnabledInclude.ts'
+import { EnabledInclude } from '../../classes/EnabledInclude'
 
-import type { RippleComponentsInclude } from './basicTypes.ts'
-import type { RipplePropsBasic } from './props.ts'
+import type { RippleComponentsInclude } from './basicTypes'
+import type { RipplePropsBasic } from './props'
 
 export class RippleInclude {
   constructor(

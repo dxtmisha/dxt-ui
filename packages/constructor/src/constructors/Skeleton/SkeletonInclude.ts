@@ -1,10 +1,10 @@
 import { computed, type ComputedRef, inject } from 'vue'
 import type { ConstrClassObject } from '@dxt-ui/functional'
 
-import { Skeleton } from './Skeleton.ts'
-import type { SkeletonClassesList, SkeletonPropsInclude } from './basicTypes.ts'
+import { Skeleton } from './Skeleton'
+import type { SkeletonClassesList, SkeletonPropsInclude } from './basicTypes'
 
-import { SKELETON_NAME_STATUS } from './const.ts'
+import { SKELETON_NAME_STATUS } from './const'
 
 /**
  * Класс для подключения и работы с компонентом Skeleton.

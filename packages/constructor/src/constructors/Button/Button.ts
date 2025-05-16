@@ -1,18 +1,18 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrClass, type ConstrEmit, DesignComp } from '@dxt-ui/functional'
 
-import { LabelInclude } from '../../classes/LabelInclude.ts'
-import { EnabledInclude } from '../../classes/EnabledInclude.ts'
+import { LabelInclude } from '../../classes/LabelInclude'
+import { EnabledInclude } from '../../classes/EnabledInclude'
 
 import { IconTrailingInclude } from '../Icon'
 import { ProgressInclude } from '../Progress'
 import { RippleInclude } from '../Ripple'
 import { SkeletonInclude } from '../Skeleton'
 
-import { EventClickInclude } from '../../classes/EventClickInclude.ts'
+import { EventClickInclude } from '../../classes/EventClickInclude'
 
 import type { ButtonComponents, ButtonEmits, ButtonSlots } from './types'
-import type { ButtonProps } from './props'
+import type { ButtonPropsBasic } from './props'
 
 /**
  * Button
@@ -40,12 +40,12 @@ export class Button {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: ButtonProps,
-    protected readonly refs: ToRefs<ButtonProps>,
+    protected readonly props: ButtonPropsBasic,
+    protected readonly refs: ToRefs<ButtonPropsBasic>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
-    protected readonly components?: DesignComp<ButtonComponents, ButtonProps>,
+    protected readonly components?: DesignComp<ButtonComponents, ButtonPropsBasic>,
     protected readonly slots?: ButtonSlots,
     protected readonly emits?: ConstrEmit<ButtonEmits>
   ) {

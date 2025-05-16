@@ -1,7 +1,7 @@
 import { ToRefs } from 'vue';
 import { ConstrEmit } from '@dxt-ui/functional';
-import { EnabledInclude } from './EnabledInclude.ts';
-import { EventClickEmits, EventClickExpose, EventClickProps, EventClickValue } from '../types/eventClickTypes.ts';
+import { EnabledInclude } from './EnabledInclude';
+import { EventClickEmits, EventClickExpose, EventClickProps, EventClickValue } from '../types/eventClickTypes';
 /**
  * Base class for working with button events
  *

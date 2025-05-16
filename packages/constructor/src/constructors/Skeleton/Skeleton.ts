@@ -1,11 +1,11 @@
 import { computed, type ComputedRef, inject, provide, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
 
-import type { SkeletonClassesList } from './basicTypes.ts'
+import type { SkeletonClassesList } from './basicTypes'
 import type { SkeletonComponents, SkeletonEmits, SkeletonSlots } from './types'
 import type { SkeletonProps } from './props'
 
-import { SKELETON_NAME_STATUS } from './const.ts'
+import { SKELETON_NAME_STATUS } from './const'
 
 /**
  * Skeleton

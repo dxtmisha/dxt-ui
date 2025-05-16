@@ -1,7 +1,7 @@
 import { computed, type VNode } from 'vue'
 import { type ConstrEmit, DesignComponents, getBind, getRef, type RefOrNormal } from '@dxt-ui/functional'
 
-import type { ImageEventData, ImageUseComponents, ImageUseEmits, ImageUseProps } from './basicTypes.ts'
+import type { ImageEventData, ImageUseComponents, ImageUseEmits, ImageUseProps } from './basicTypes'
 
 /**
  * Класс для подключения и работы с компонентом изображения.

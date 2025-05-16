@@ -1,14 +1,14 @@
 import { toRefs, type ToRefs } from 'vue'
 import { type ConstrEmit, RouterItem } from '@dxt-ui/functional'
 
-import { EnabledInclude } from './EnabledInclude.ts'
+import { EnabledInclude } from './EnabledInclude'
 
 import type {
   EventClickEmits,
   EventClickExpose,
   EventClickProps,
   EventClickValue
-} from '../types/eventClickTypes.ts'
+} from '../types/eventClickTypes'
 
 /**
  * Base class for working with button events

@@ -1,6 +1,6 @@
 import { Ref, VNode, ComputedRef } from 'vue';
 import { ConstrClass } from '@dxt-ui/functional';
-import { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/labelTypes.ts';
+import { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/labelTypes';
 /**
  * Use for adding text
  *
