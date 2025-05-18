@@ -26,19 +26,22 @@ export class LibraryMedia {
 
   make(): void {
     const name = toCamelCase(PropertiesConfig.getDesignName())
+    const isIcons = this.getIconImport().length > 0
 
-    this.items.write(
-      UI_FILE_NAME_MEDIA,
-      [
-        'import { Icons } from \'@dxt-ui/functional\'',
-        '',
-        ...this.initIconImport(),
-        '',
-        `export const ${name}MakeIcons = (): void => {`,
-        ...this.initIcon(),
-        '}'
-      ]
-    )
+    if (isIcons) {
+      this.items.write(
+        UI_FILE_NAME_MEDIA,
+        [
+          'import { Icons } from \'@dxt-ui/functional\'',
+          '',
+          ...this.initIconImport(),
+          '',
+          `export const ${name}MakeIcons = (): void => {`,
+          ...this.initIcon(),
+          '}'
+        ]
+      )
+    }
   }
 
   /**

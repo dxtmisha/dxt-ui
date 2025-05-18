@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import {
   inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxt-ui/functional'
@@ -12,8 +11,12 @@ import {
   type ButtonSlots
 } from '@dxt-ui/constructor/Button'
 
+import { C2Icon } from '../Icon'
+import { C2Progress } from '../Progress'
+
 import { defaults, type ButtonProps, propsValues } from './props'
 import './styleToken.scss'
+import { C2Ripple } from '../Ripple'
 
 defineOptions({
   name: 'C2Button'
@@ -55,6 +58,11 @@ const design = new ButtonDesign(
   'c2.button',
   props,
   {
+    components: {
+      icon: C2Icon,
+      progress: C2Progress,
+      ripple: C2Ripple
+    },
     emits,
     classes: classesToken,
     styles: stylesToken

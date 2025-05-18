@@ -1,12 +1,15 @@
 <script setup lang="ts">
-defineProps<{
-  label?: string
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+import { writeClipboardData } from '@dxt-ui/functional'
+
+const props = defineProps<{
+  label?: string | number
 }>()
+
+const onClick = () => writeClipboardData(String(props.label)).then()
 </script>
 
 <template>
-  <div class="ui-test-label">{{ label }}</div>
+  <div class="ui-test-label" @click="onClick">{{ label }}</div>
 </template>
 
 <style lang="scss">
@@ -23,6 +26,8 @@ defineProps<{
   color: white;
   background-color: rgba(0, 0, 0, .64);
   backdrop-filter: blur(8px);
+
+  cursor: copy;
 
   @include ui.clamp(2);
 }

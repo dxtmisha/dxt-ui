@@ -1,12 +1,16 @@
 {
-  "normal": "{ref.shade.6}",
-  "variant": "{ref.shade.8}",
-  "secondary": "{ref.shade.3}",
-  "secondaryVariant": "{ref.shade.5}",
+  "primary": "{ref.shade.500}",
+  "primaryVariant": "{ref.shade.600}",
+  "container": "{ref.shade.200}",
+  "containerVariant": "{ref.shade.300}",
+  "on": "{ref.shade.900}",
+  "onContainer": "{ref.shade.800}",
   "dark": {
-    "normal": "{ref.shade.3}",
-    "variant": "{ref.shade.5}",
-    "secondary": "{ref.shade.7}",
-    "secondaryVariant": "{ref.shade.5}"
+    "primary": "{ref.shade.200}",
+    "primaryVariant": "{ref.shade.300}",
+    "container": "{ref.shade.500}",
+    "containerVariant": "{ref.shade.600}",
+    "on": "{ref.shade.100}",
+    "onContainer": "{ref.shade.90}"
   }
 }

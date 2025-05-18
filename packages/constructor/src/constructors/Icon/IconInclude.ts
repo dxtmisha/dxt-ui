@@ -32,8 +32,8 @@ export class IconInclude<
     protected readonly extra?: RefOrNormal<ConstrBind<IconPropsBasic>>,
     protected readonly turn?: RefOrNormal<boolean>,
     protected readonly dir?: RefOrNormal<boolean>,
-    protected readonly start: RefOrNormal<boolean | undefined> = true,
-    protected readonly end: RefOrNormal<boolean | undefined> = true
+    protected readonly start: RefOrNormal<boolean | undefined> = false,
+    protected readonly end: RefOrNormal<boolean | undefined> = false
   ) {
     super(props, className, components, extra)
   }

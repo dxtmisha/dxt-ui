@@ -1,0 +1,9 @@
+{
+  "none": "{ref.letterSpacing.0}",
+  "xs": "{ref.letterSpacing.10}",
+  "sm": "{ref.letterSpacing.15}",
+  "md": "{ref.letterSpacing.25}",
+  "lg": "{ref.letterSpacing.40}",
+  "xl": "{ref.letterSpacing.50}",
+  "compress": "{ref.letterSpacing.m25}"
+}

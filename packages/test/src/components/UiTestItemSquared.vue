@@ -31,6 +31,7 @@ const classes = computed(() => ({
 
   position: relative;
   @include ui.squared(var(--ui-test-item-squared-size));
+
   background-color: white;
 
   &--size {

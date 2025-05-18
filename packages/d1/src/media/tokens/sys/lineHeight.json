@@ -1,0 +1,12 @@
+{
+  "xs": "{ref.lineHeight.16}",
+  "sm": "{ref.lineHeight.20}",
+  "md": "{ref.lineHeight.24}",
+  "lg": "{ref.lineHeight.28}",
+  "headlineSmall": "{ref.lineHeight.32}",
+  "headlineMedium": "{ref.lineHeight.36}",
+  "headlineLarge": "{ref.lineHeight.40}",
+  "displaySmall": "{ref.lineHeight.44}",
+  "displayMedium": "{ref.lineHeight.52}",
+  "displayLarge": "{ref.lineHeight.64}"
+}

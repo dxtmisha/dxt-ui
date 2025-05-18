@@ -1,0 +1,35 @@
+{
+  "ref": {
+    "value": {
+      "file|ref": "tokens/ref.json",
+      "screen": {
+        "_category": "media"
+      },
+      "shade": {
+        "_category": "shade"
+      },
+      "palette": {
+        "_category": "palette",
+        "_default": {
+          "basic": "500",
+          "dark": "200"
+        }
+      }
+    },
+    "_type": "var",
+    "_category": "root"
+  },
+  "sys": {
+    "value": {
+      "file|sys": "tokens/sys.json"
+    },
+    "_type": "var",
+    "_category": "root"
+  },
+  "font": {
+    "value": {
+      "file|font": "tokens/font.json"
+    },
+    "_category": "class"
+  }
+}

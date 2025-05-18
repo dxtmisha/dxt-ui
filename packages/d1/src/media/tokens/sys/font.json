@@ -1,0 +1,23 @@
+{
+  "family": {
+    "basic": "{ref.font.family.roboto}"
+  },
+  "size": {
+    "x": "{ref.font.size.11}",
+    "xs": "{ref.font.size.12}",
+    "sm": "{ref.font.size.14}",
+    "md": "{ref.font.size.16}",
+    "lg": "{ref.font.size.22}",
+    "xl": "{ref.font.size.24}",
+    "headlineMedium": "{ref.font.size.28}",
+    "headlineLarge": "{ref.font.size.32}",
+    "displaySmall": "{ref.font.size.36}",
+    "displayMedium": "{ref.font.size.45}",
+    "displayLarge": "{ref.font.size.57}"
+  },
+  "weight": {
+    "regular": "{ref.font.weight.400}",
+    "medium": "{ref.font.weight.500}",
+    "bold": "{ref.font.weight.600}"
+  }
+}

@@ -4,6 +4,7 @@
 
 <template>
   <div class="app-page-main">
+    <RouterLink to="/button">Button</RouterLink>
     <RouterLink to="/icon">Icon</RouterLink>
     <RouterLink to="/image">Image</RouterLink>
     <RouterLink to="/progress">Progress</RouterLink>

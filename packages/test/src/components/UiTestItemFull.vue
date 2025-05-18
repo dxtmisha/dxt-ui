@@ -37,6 +37,10 @@ const classes = computed(() => ({
 
   &--flex {
     display: flex;
+    gap: 4px;
+  }
+
+  &--flexCenter {
     align-items: center;
     justify-content: center;
   }
