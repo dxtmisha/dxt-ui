@@ -31,5 +31,11 @@
       "file|font": "tokens/font.json"
     },
     "_category": "class"
+  },
+  "opacity": {
+    "value": {
+      "file|opacity": "tokens/opacity.json"
+    },
+    "_category": "class"
   }
 }

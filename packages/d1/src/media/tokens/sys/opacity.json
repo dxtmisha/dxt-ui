@@ -1,0 +1,21 @@
+{
+  "focus": "{ref.opacity.12}",
+  "hover": "{ref.opacity.4}",
+  "pressed": "{ref.opacity.10}",
+  "dragged": "{ref.opacity.8}",
+  "overlay": "{ref.opacity.8}",
+  "selected": "{ref.opacity.8}",
+  "disabled": "{ref.opacity.12}",
+  "outline": "{ref.opacity.12}",
+  "scrim": "{ref.opacity.32}",
+  "primary": {
+    "high": "{ref.opacity.100}",
+    "medium": "{ref.opacity.72}",
+    "disabled": "{ref.opacity.36}"
+  },
+  "surface": {
+    "high": "{ref.opacity.88}",
+    "medium": "{ref.opacity.64}",
+    "disabled": "{ref.opacity.36}"
+  }
+}
