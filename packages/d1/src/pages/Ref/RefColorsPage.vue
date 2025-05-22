@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { UiTestContainer, UiTestGroup, UiTestItemSquared, UiTestTitle } from '@dxt-ui/test'
 
-import tokens from '../styles/d1/list.json'
+import tokens from '../../styles/d1/list.json'
 
 const colors = tokens?.d1?.value?.ref?.value?.palette?.value
 </script>

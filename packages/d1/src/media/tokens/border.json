@@ -1,0 +1,55 @@
+{
+  "primary": {
+    "borderColor": "{sys.palette.primary}"
+  },
+  "primaryVariant": {
+    "borderColor": "{sys.palette.primaryVariant}"
+  },
+  "warning": {
+    "borderColor": "{sys.palette.warning}"
+  },
+  "success": {
+    "borderColor": "{sys.palette.success}"
+  },
+  "error": {
+    "borderColor": "{sys.palette.error}"
+  },
+  "surface": {
+    "borderColor": "{sys.palette.surface}"
+  },
+  "outline": {
+    "borderColor": "{sys.palette.outline}"
+  },
+  "outlineVariant": {
+    "borderColor": "{sys.palette.outlineVariant}"
+  },
+  "inversePrimary": {
+    "borderColor": "{sys.palette.inversePrimary}"
+  },
+  "inversePrimaryVariant": {
+    "borderColor": "{sys.palette.inversePrimaryVariant}"
+  },
+  "inverseSurface": {
+    "borderColor": "{sys.palette.inverseSurface}"
+  },
+  "palette": {
+    "primary": {
+      "paletteBorder": "{sys.palette.primary}"
+    },
+    "primaryVariant": {
+      "paletteBorder": "{sys.palette.primaryVariant}"
+    },
+    "outline": {
+      "paletteBorder": "{sys.palette.outline}"
+    },
+    "outlineVariant": {
+      "paletteBorder": "{sys.palette.outlineVariant}"
+    },
+    "inversePrimary": {
+      "paletteBorder": "{sys.palette.inversePrimary}"
+    },
+    "inversePrimaryVariant": {
+      "paletteBorder": "{sys.palette.inversePrimaryVariant}"
+    }
+  }
+}

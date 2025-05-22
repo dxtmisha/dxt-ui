@@ -166,8 +166,8 @@ export class Styles {
       FILE_BASIC,
       [
         `@use "./${FILE_VAR}";`,
-        `@use "./${FILE_CLASS}";`,
-        `@use "./${FILE_PROPERTIES}";`
+        `@use "./${FILE_PROPERTIES}";`,
+        `@use "./${FILE_CLASS}";`
       ].join('\r\n'),
       UI_EXTENSION_STYLE
     )

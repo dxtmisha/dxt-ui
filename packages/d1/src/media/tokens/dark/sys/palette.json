@@ -1,0 +1,19 @@
+{
+  "primary": "{ref.palette.blue.{sys.shade.dark.primary}}",
+  "primaryVariant": "{ref.palette.blue.{sys.shade.dark.primaryVariant}}",
+  "warning": "{ref.palette.yellow.{sys.shade.dark.primary}}",
+  "success": "{ref.palette.green.{sys.shade.dark.primary}}",
+  "error": "{ref.palette.red.{sys.shade.dark.primary}}",
+  "surface": "{ref.palette.slate.{sys.shade.dark.surface}}",
+  "onPrimary": "{ref.palette.slate.{sys.shade.dark.onPrimary}}",
+  "onSurface": "{ref.palette.slate.{sys.shade.dark.onSurface}}",
+  "outline": "{ref.palette.slate.{sys.shade.dark.outline}}",
+  "outlineVariant": "{ref.palette.slate.{sys.shade.dark.outlineVariant}}",
+  "scrim": "{ref.palette.slate.{sys.shade.dark.scrim}}",
+  "inversePrimary": "{ref.palette.blue.{sys.shade.dark.inversePrimary}}",
+  "inversePrimaryVariant": "{ref.palette.blue.{sys.shade.dark.inversePrimaryVariant}}",
+  "inverseSurface": "{ref.palette.slate.{sys.shade.dark.inverseSurface}}",
+  "inverseOnPrimary": "{ref.palette.slate.{sys.shade.dark.inverseOnPrimary}}",
+  "inverseOnSurface": "{ref.palette.slate.{sys.shade.dark.inverseOnSurface}}",
+  "shadow": "{ref.palette.neutral.{sys.shade.dark.shadow}}"
+}

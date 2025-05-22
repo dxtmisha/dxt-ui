@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { UiTestContainer, UiTestGroup, UiTestItemFull, UiTestTitle } from '@dxt-ui/test'
 
-import fonts from '../media/tokens/font.json'
+import fonts from '../../media/tokens/font.json'
 </script>
 
 <template>

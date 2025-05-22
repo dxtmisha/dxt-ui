@@ -1,0 +1,165 @@
+{
+  "~primary": {
+    "color": {
+      "value": "{sys.palette.primary}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.surface.high}"
+  },
+  "~primaryMedium": {
+    "color": {
+      "value": "{sys.palette.primary}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "~primaryVariant": {
+    "color": {
+      "value": "{sys.palette.primaryVariant}",
+      "_type": "property"
+    }
+  },
+  "~warning": {
+    "color": {
+      "value": "{sys.palette.warning}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.surface.high}"
+  },
+  "~warningMedium": {
+    "color": {
+      "value": "{sys.palette.warning}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "~success": {
+    "color": {
+      "value": "{sys.palette.success}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.surface.high}"
+  },
+  "~successMedium": {
+    "color": {
+      "value": "{sys.palette.success}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "~error": {
+    "color": {
+      "value": "{sys.palette.error}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.surface.high}"
+  },
+  "~errorMedium": {
+    "color": {
+      "value": "{sys.palette.error}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "~onPrimary": {
+    "color": {
+      "value": "{sys.palette.onPrimary}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.primary.high}"
+  },
+  "~onPrimaryMedium": {
+    "color": {
+      "value": "{sys.palette.onPrimary}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.primary.medium}"
+  },
+  "~onPrimaryDisabled": {
+    "color": {
+      "value": "{sys.palette.onPrimary}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.primary.disabled}"
+  },
+  "~onSurface": {
+    "color": {
+      "value": "{sys.palette.onSurface}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.surface.high}"
+  },
+  "~onSurfaceMedium": {
+    "color": {
+      "value": "{sys.palette.onSurface}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "~onSurfaceDisabled": {
+    "color": {
+      "value": "{sys.palette.onSurface}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.surface.disabled}"
+  },
+  "~inverseOnPrimary": {
+    "color": {
+      "value": "{sys.palette.inverseOnPrimary}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.primary.high}"
+  },
+  "~inverseOnPrimaryMedium": {
+    "color": {
+      "value": "{sys.palette.inverseOnPrimary}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.primary.medium}"
+  },
+  "~inverseOnPrimaryDisabled": {
+    "color": {
+      "value": "{sys.palette.inverseOnPrimary}",
+      "_type": "property"
+    },
+    "color-opacity": "{sys.opacity.primary.disabled}"
+  },
+  "palette": {
+    "~primary": {
+      "paletteColor": {
+        "value": "{sys.palette.primary}",
+        "_type": "property"
+      }
+    },
+    "~primaryMedium": {
+      "paletteColor": {
+        "value": "{sys.palette.primary}",
+        "_type": "property"
+      }
+    },
+    "~primaryVariant": {
+      "paletteColor": {
+        "value": "{sys.palette.primaryVariant}",
+        "_type": "property"
+      }
+    },
+    "~onSurface": {
+      "paletteColor": {
+        "value": "{sys.palette.onSurface}",
+        "_type": "property"
+      }
+    },
+    "~onSurfaceMedium": {
+      "paletteColor": {
+        "value": "{sys.palette.onSurface}",
+        "_type": "property"
+      }
+    },
+    "~onSurfaceDisabled": {
+      "paletteColor": {
+        "value": "{sys.palette.onSurface}",
+        "_type": "property"
+      }
+    }
+  }
+}

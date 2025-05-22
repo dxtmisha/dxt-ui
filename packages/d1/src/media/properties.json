@@ -26,6 +26,24 @@
     "_type": "var",
     "_category": "root"
   },
+  "background": {
+    "value": {
+      "file|background": "tokens/background.json"
+    },
+    "_category": "class"
+  },
+  "color": {
+    "value": {
+      "file|color": "tokens/color.json"
+    },
+    "_category": "class"
+  },
+  "border": {
+    "value": {
+      "file|border": "tokens/border.json"
+    },
+    "_category": "class"
+  },
   "font": {
     "value": {
       "file|font": "tokens/font.json"
@@ -37,5 +55,11 @@
       "file|opacity": "tokens/opacity.json"
     },
     "_category": "class"
+  },
+  "dark": {
+    "value": {
+      "file|dark": "tokens/dark.json"
+    },
+    "_category": "theme"
   }
 }

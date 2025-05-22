@@ -1,0 +1,43 @@
+{
+  "primary": {
+    "backgroundColor": "{sys.palette.primary}"
+  },
+  "primaryVariant": {
+    "backgroundColor": "{sys.palette.primaryVariant}"
+  },
+  "warning": {
+    "backgroundColor": "{sys.palette.warning}"
+  },
+  "success": {
+    "backgroundColor": "{sys.palette.success}"
+  },
+  "error": {
+    "backgroundColor": "{sys.palette.error}"
+  },
+  "surface": {
+    "backgroundColor": "{sys.palette.surface}"
+  },
+  "inversePrimary": {
+    "backgroundColor": "{sys.palette.inversePrimary}"
+  },
+  "inversePrimaryVariant": {
+    "backgroundColor": "{sys.palette.inversePrimaryVariant}"
+  },
+  "inverseSurface": {
+    "backgroundColor": "{sys.palette.inverseSurface}"
+  },
+  "palette": {
+    "primary": {
+      "paletteBackground": "{sys.palette.primary}"
+    },
+    "primaryVariant": {
+      "paletteBackground": "{sys.palette.primaryVariant}"
+    },
+    "inversePrimary": {
+      "paletteBackground": "{sys.palette.inversePrimary}"
+    },
+    "inversePrimaryVariant": {
+      "paletteBackground": "{sys.palette.inversePrimaryVariant}"
+    }
+  }
+}

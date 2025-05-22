@@ -7,15 +7,20 @@ const props = withDefaults(
     label?: string
     isFlex?: boolean
     isPadding?: boolean
+    background?: boolean
+    inverse?: boolean
   }>(),
   {
-    isFlex: true
+    isFlex: true,
+    background: true
   }
 )
 
 const classes = computed(() => ({
   'ui-test-item-full--flex': props.isFlex,
-  'ui-test-item-full--padding': props.isPadding
+  'ui-test-item-full--padding': props.isPadding,
+  'ui-test-item-full--background': props.background,
+  'ui-test-item-full--inverse': props.inverse
 }))
 </script>
 
@@ -33,7 +38,8 @@ const classes = computed(() => ({
   position: relative;
 
   width: 100%;
-  background-color: white;
+
+  border-radius: 4px;
 
   &--flex {
     display: flex;
@@ -47,6 +53,14 @@ const classes = computed(() => ({
 
   &--padding {
     padding: 8px 16px;
+  }
+
+  &--background {
+    background-color: white;
+  }
+
+  &--inverse {
+    background-color: oklch(26.9% 0 0);
   }
 }
 </style>

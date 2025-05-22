@@ -2,12 +2,19 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import MainPage from './pages/MainPage.vue'
 
-import ColorsPage from './pages/ColorsPage.vue'
-import FontsPage from './pages/FontsPage.vue'
+import RefColorsPage from './pages/Ref/RefColorsPage.vue'
+
+import ClassesBackgroundsPage from './pages/Classes/ClassesBackgroundsPage.vue'
+import ClassesColorsPage from './pages/Classes/ClassesColorsPage.vue'
+import ClassesFontsPage from './pages/Classes/ClassesFontsPage.vue'
 
 const routes = [
-  { path: '/colors', component: ColorsPage },
-  { path: '/fonts', component: FontsPage },
+  { path: '/ref/colors', component: RefColorsPage },
+
+  { path: '/classes/backgrounds', component: ClassesBackgroundsPage },
+  { path: '/classes/colors', component: ClassesColorsPage },
+  { path: '/classes/fonts', component: ClassesFontsPage },
+
   { path: '/', component: MainPage }
 ]
 
