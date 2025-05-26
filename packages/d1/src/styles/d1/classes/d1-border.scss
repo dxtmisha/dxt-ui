@@ -2,47 +2,99 @@
 
 .d1-border {
   &--primary {
+    border-width: var(--d1-ref-spacing-px);
     @include ui.borderColor(#{var(--d1-sys-palette-primary)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-medium)});
+  }
+  
+  &--primaryBold {
+    border-width: var(--d1-ref-spacing-2px);
+    @include ui.borderColor(#{var(--d1-sys-palette-primary)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-medium)});
+  }
+  
+  &--primaryMuted {
+    border-width: var(--d1-ref-spacing-px);
+    @include ui.borderColor(#{var(--d1-sys-palette-primary)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-disabled)});
   }
   
   &--primaryVariant {
+    border-width: var(--d1-ref-spacing-px);
     @include ui.borderColor(#{var(--d1-sys-palette-primaryVariant)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-medium)});
+  }
+  
+  &--primaryVariantBold {
+    border-width: var(--d1-ref-spacing-2px);
+    @include ui.borderColor(#{var(--d1-sys-palette-primaryVariant)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-medium)});
+  }
+  
+  &--primaryVariantMuted {
+    border-width: var(--d1-ref-spacing-px);
+    @include ui.borderColor(#{var(--d1-sys-palette-primaryVariant)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-disabled)});
   }
   
   &--warning {
+    border-width: var(--d1-ref-spacing-px);
     @include ui.borderColor(#{var(--d1-sys-palette-warning)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-medium)});
+  }
+  
+  &--warningBold {
+    border-width: var(--d1-ref-spacing-2px);
+    @include ui.borderColor(#{var(--d1-sys-palette-warning)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-medium)});
   }
   
   &--success {
+    border-width: var(--d1-ref-spacing-px);
     @include ui.borderColor(#{var(--d1-sys-palette-success)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-medium)});
+  }
+  
+  &--successBold {
+    border-width: var(--d1-ref-spacing-2px);
+    @include ui.borderColor(#{var(--d1-sys-palette-success)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-medium)});
   }
   
   &--error {
+    border-width: var(--d1-ref-spacing-px);
     @include ui.borderColor(#{var(--d1-sys-palette-error)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-medium)});
   }
   
-  &--surface {
-    @include ui.borderColor(#{var(--d1-sys-palette-surface)});
+  &--errorBold {
+    border-width: var(--d1-ref-spacing-2px);
+    @include ui.borderColor(#{var(--d1-sys-palette-error)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-medium)});
   }
   
   &--outline {
+    border-width: var(--d1-ref-spacing-px);
     @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+  }
+  
+  &--outlineBold {
+    border-width: var(--d1-ref-spacing-2px);
+    @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
   }
   
   &--outlineVariant {
+    border-width: var(--d1-ref-spacing-px);
     @include ui.borderColor(#{var(--d1-sys-palette-outlineVariant)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
   }
   
-  &--inversePrimary {
-    @include ui.borderColor(#{var(--d1-sys-palette-inversePrimary)});
-  }
-  
-  &--inversePrimaryVariant {
-    @include ui.borderColor(#{var(--d1-sys-palette-inversePrimaryVariant)});
-  }
-  
-  &--inverseSurface {
-    @include ui.borderColor(#{var(--d1-sys-palette-inverseSurface)});
+  &--outlineVariantBold {
+    border-width: var(--d1-ref-spacing-2px);
+    @include ui.borderColor(#{var(--d1-sys-palette-outlineVariant)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
   }
   
   &--palette {
@@ -60,14 +112,6 @@
     
     &.d1-border--outlineVariant {
       @include ui.paletteBorder(#{var(--d1-sys-palette-outlineVariant)});
-    }
-    
-    &.d1-border--inversePrimary {
-      @include ui.paletteBorder(#{var(--d1-sys-palette-inversePrimary)});
-    }
-    
-    &.d1-border--inversePrimaryVariant {
-      @include ui.paletteBorder(#{var(--d1-sys-palette-inversePrimaryVariant)});
     }
   }
 }

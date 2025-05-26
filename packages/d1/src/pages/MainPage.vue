@@ -6,6 +6,7 @@
   <div class="app-page-main">
     <h2>Styles overview</h2>
     <RouterLink to="/classes/backgrounds">Backgrounds</RouterLink>
+    <RouterLink to="/classes/borders">Borders</RouterLink>
     <RouterLink to="/classes/colors">Colors</RouterLink>
     <RouterLink to="/classes/fonts">Fonts</RouterLink>
     <h4>Reference tokens</h4>

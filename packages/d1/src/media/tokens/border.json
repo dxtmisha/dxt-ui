@@ -1,36 +1,83 @@
 {
   "primary": {
-    "borderColor": "{sys.palette.primary}"
+    "border-width": "{ref.spacing.px}",
+    "borderColor": "{sys.palette.primary}",
+    "borderOpacity": "{sys.opacity.surface.medium}"
+  },
+  "primaryBold": {
+    "border-width": "{ref.spacing.2px}",
+    "borderColor": "{sys.palette.primary}",
+    "borderOpacity": "{sys.opacity.surface.medium}"
+  },
+  "primaryMuted": {
+    "border-width": "{ref.spacing.px}",
+    "borderColor": "{sys.palette.primary}",
+    "borderOpacity": "{sys.opacity.surface.disabled}"
   },
   "primaryVariant": {
-    "borderColor": "{sys.palette.primaryVariant}"
+    "border-width": "{ref.spacing.px}",
+    "borderColor": "{sys.palette.primaryVariant}",
+    "borderOpacity": "{sys.opacity.surface.medium}"
+  },
+  "primaryVariantBold": {
+    "border-width": "{ref.spacing.2px}",
+    "borderColor": "{sys.palette.primaryVariant}",
+    "borderOpacity": "{sys.opacity.surface.medium}"
+  },
+  "primaryVariantMuted": {
+    "border-width": "{ref.spacing.px}",
+    "borderColor": "{sys.palette.primaryVariant}",
+    "borderOpacity": "{sys.opacity.surface.disabled}"
   },
   "warning": {
-    "borderColor": "{sys.palette.warning}"
+    "border-width": "{ref.spacing.px}",
+    "borderColor": "{sys.palette.warning}",
+    "borderOpacity": "{sys.opacity.surface.medium}"
+  },
+  "warningBold": {
+    "border-width": "{ref.spacing.2px}",
+    "borderColor": "{sys.palette.warning}",
+    "borderOpacity": "{sys.opacity.surface.medium}"
   },
   "success": {
-    "borderColor": "{sys.palette.success}"
+    "border-width": "{ref.spacing.px}",
+    "borderColor": "{sys.palette.success}",
+    "borderOpacity": "{sys.opacity.surface.medium}"
+  },
+  "successBold": {
+    "border-width": "{ref.spacing.2px}",
+    "borderColor": "{sys.palette.success}",
+    "borderOpacity": "{sys.opacity.surface.medium}"
   },
   "error": {
-    "borderColor": "{sys.palette.error}"
+    "border-width": "{ref.spacing.px}",
+    "borderColor": "{sys.palette.error}",
+    "borderOpacity": "{sys.opacity.surface.medium}"
   },
-  "surface": {
-    "borderColor": "{sys.palette.surface}"
+  "errorBold": {
+    "border-width": "{ref.spacing.2px}",
+    "borderColor": "{sys.palette.error}",
+    "borderOpacity": "{sys.opacity.surface.medium}"
   },
   "outline": {
-    "borderColor": "{sys.palette.outline}"
+    "border-width": "{ref.spacing.px}",
+    "borderColor": "{sys.palette.outline}",
+    "borderOpacity": "{sys.opacity.outline}"
+  },
+  "outlineBold": {
+    "border-width": "{ref.spacing.2px}",
+    "borderColor": "{sys.palette.outline}",
+    "borderOpacity": "{sys.opacity.outline}"
   },
   "outlineVariant": {
-    "borderColor": "{sys.palette.outlineVariant}"
+    "border-width": "{ref.spacing.px}",
+    "borderColor": "{sys.palette.outlineVariant}",
+    "borderOpacity": "{sys.opacity.outline}"
   },
-  "inversePrimary": {
-    "borderColor": "{sys.palette.inversePrimary}"
-  },
-  "inversePrimaryVariant": {
-    "borderColor": "{sys.palette.inversePrimaryVariant}"
-  },
-  "inverseSurface": {
-    "borderColor": "{sys.palette.inverseSurface}"
+  "outlineVariantBold": {
+    "border-width": "{ref.spacing.2px}",
+    "borderColor": "{sys.palette.outlineVariant}",
+    "borderOpacity": "{sys.opacity.outline}"
   },
   "palette": {
     "primary": {
@@ -44,12 +91,6 @@
     },
     "outlineVariant": {
       "paletteBorder": "{sys.palette.outlineVariant}"
-    },
-    "inversePrimary": {
-      "paletteBorder": "{sys.palette.inversePrimary}"
-    },
-    "inversePrimaryVariant": {
-      "paletteBorder": "{sys.palette.inversePrimaryVariant}"
     }
   }
 }
