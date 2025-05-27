@@ -32,27 +32,57 @@
     },
     "_category": "class"
   },
-  "color": {
-    "value": {
-      "file|color": "tokens/color.json"
-    },
-    "_category": "class"
-  },
   "border": {
     "value": {
       "file|border": "tokens/border.json"
     },
     "_category": "class"
   },
-  "font": {
+  "color": {
     "value": {
-      "file|font": "tokens/font.json"
+      "file|color": "tokens/color.json"
     },
     "_category": "class"
   },
-  "opacity": {
+  "padding": {
     "value": {
-      "file|opacity": "tokens/opacity.json"
+      "file|padding": "tokens/padding.json"
+    },
+    "_category": "class"
+  },
+  "paddingX": {
+    "value": {
+      "file|paddingX": "tokens/paddingX.json"
+    },
+    "_category": "class"
+  },
+  "paddingY": {
+    "value": {
+      "file|paddingX": "tokens/paddingY.json"
+    },
+    "_category": "class"
+  },
+  "margin": {
+    "value": {
+      "file|margin": "tokens/margin.json"
+    },
+    "_category": "class"
+  },
+  "marginX": {
+    "value": {
+      "file|marginX": "tokens/marginX.json"
+    },
+    "_category": "class"
+  },
+  "marginY": {
+    "value": {
+      "file|marginX": "tokens/marginY.json"
+    },
+    "_category": "class"
+  },
+  "font": {
+    "value": {
+      "file|font": "tokens/font.json"
     },
     "_category": "class"
   },

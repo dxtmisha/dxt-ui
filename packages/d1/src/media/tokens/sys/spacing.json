@@ -1,0 +1,28 @@
+{
+  "x": "{ref.spacing.1}",
+  "xs": "{ref.spacing.2}",
+  "sm": "{ref.spacing.3}",
+  "md": "{ref.spacing.4}",
+  "lg": "{ref.spacing.5}",
+  "xl": "{ref.spacing.6}",
+  "block": {
+    "x": "{ref.spacing.1}",
+    "xs": "{ref.spacing.2}",
+    "sm": "{ref.spacing.4}",
+    "md": "{ref.spacing.6}",
+    "lg": "{ref.spacing.8}",
+    "xl": "{ref.spacing.10}"
+  },
+  "size": {
+    "xs": "{ref.spacing.4}",
+    "sm": "{ref.spacing.6}",
+    "md": "{ref.spacing.10}",
+    "lg": "{ref.spacing.12}",
+    "xl": "{ref.spacing.14}",
+    "2xl": "{ref.spacing.16}",
+    "3xl": "{ref.spacing.18}",
+    "4xl": "{ref.spacing.20}",
+    "5xl": "{ref.spacing.22}",
+    "6xl": "{ref.spacing.24}"
+  }
+}

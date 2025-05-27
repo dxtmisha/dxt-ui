@@ -1,0 +1,33 @@
+{
+  "sm": {
+    "marginX": {
+      "value": "{ref.spacing.2}",
+      "_type": "property"
+    }
+  },
+  "md": {
+    "marginX": {
+      "value": "{ref.spacing.4}",
+      "_type": "property"
+    }
+  },
+  "lg": {
+    "marginX": {
+      "value": "{ref.spacing.6}",
+      "_type": "property"
+    }
+  },
+  "smToMd": {
+    "link": "{??sm}",
+    "media|md": {
+      "link": "{??md}"
+    }
+  },
+  "smToLg": {
+    "link": "{??sm}",
+    "media|md": {
+      "link": "{??lg}"
+    }
+  }
+}
+

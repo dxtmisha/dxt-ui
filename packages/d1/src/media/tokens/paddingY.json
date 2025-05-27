@@ -1,0 +1,32 @@
+{
+  "md": {
+    "paddingY": {
+      "value": "{ref.spacing.4}",
+      "_type": "property"
+    }
+  },
+  "lg": {
+    "paddingY": {
+      "value": "{ref.spacing.6}",
+      "_type": "property"
+    }
+  },
+  "xl": {
+    "paddingY": {
+      "value": "{ref.spacing.8}",
+      "_type": "property"
+    }
+  },
+  "mdToLg": {
+    "link": "{??md}",
+    "media|md": {
+      "link": "{??lg}"
+    }
+  },
+  "mdToXl": {
+    "link": "{??md}",
+    "media|md": {
+      "link": "{??xl}"
+    }
+  }
+}

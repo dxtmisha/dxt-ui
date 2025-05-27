@@ -17,10 +17,15 @@
 @include variables.setDesignsClasses((
   'd1.dark',
   'd1.background',
-  'd1.color',
   'd1.border',
+  'd1.color',
+  'd1.padding',
+  'd1.paddingX',
+  'd1.paddingY',
+  'd1.margin',
+  'd1.marginX',
+  'd1.marginY',
   'd1.font',
-  'd1.opacity',
   'd1.palette',));
 @include variables.setDesignsPalette((
   '--d1-sys-palette-primary': ('--d1-palette-basic600', '--d1-palette-dark200'),
@@ -3449,6 +3454,159 @@
               ),
             ),
           ),
+          'spacing':(
+            index: 'spacing',
+            name: 'spacing',
+            type: 'var',
+            value: (
+              'x':(
+                index: 'x',
+                name: '--d1-sys-spacing-x',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-1)',
+              ),
+              'xs':(
+                index: 'xs',
+                name: '--d1-sys-spacing-xs',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'sm':(
+                index: 'sm',
+                name: '--d1-sys-spacing-sm',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-3)',
+              ),
+              'md':(
+                index: 'md',
+                name: '--d1-sys-spacing-md',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'lg':(
+                index: 'lg',
+                name: '--d1-sys-spacing-lg',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-5)',
+              ),
+              'xl':(
+                index: 'xl',
+                name: '--d1-sys-spacing-xl',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+              'block':(
+                index: 'block',
+                name: 'block',
+                type: 'var',
+                value: (
+                  'x':(
+                    index: 'x',
+                    name: '--d1-sys-spacing-block-x',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-1)',
+                  ),
+                  'xs':(
+                    index: 'xs',
+                    name: '--d1-sys-spacing-block-xs',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-2)',
+                  ),
+                  'sm':(
+                    index: 'sm',
+                    name: '--d1-sys-spacing-block-sm',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-4)',
+                  ),
+                  'md':(
+                    index: 'md',
+                    name: '--d1-sys-spacing-block-md',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                  'lg':(
+                    index: 'lg',
+                    name: '--d1-sys-spacing-block-lg',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                  'xl':(
+                    index: 'xl',
+                    name: '--d1-sys-spacing-block-xl',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-10)',
+                  ),
+                ),
+              ),
+              'size':(
+                index: 'size',
+                name: 'size',
+                type: 'var',
+                value: (
+                  'xs':(
+                    index: 'xs',
+                    name: '--d1-sys-spacing-size-xs',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-4)',
+                  ),
+                  'sm':(
+                    index: 'sm',
+                    name: '--d1-sys-spacing-size-sm',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                  'md':(
+                    index: 'md',
+                    name: '--d1-sys-spacing-size-md',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-10)',
+                  ),
+                  'lg':(
+                    index: 'lg',
+                    name: '--d1-sys-spacing-size-lg',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-12)',
+                  ),
+                  'xl':(
+                    index: 'xl',
+                    name: '--d1-sys-spacing-size-xl',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-14)',
+                  ),
+                  '2xl':(
+                    index: '2xl',
+                    name: '--d1-sys-spacing-size-2xl',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-16)',
+                  ),
+                  '3xl':(
+                    index: '3xl',
+                    name: '--d1-sys-spacing-size-3xl',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-18)',
+                  ),
+                  '4xl':(
+                    index: '4xl',
+                    name: '--d1-sys-spacing-size-4xl',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-20)',
+                  ),
+                  '5xl':(
+                    index: '5xl',
+                    name: '--d1-sys-spacing-size-5xl',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-22)',
+                  ),
+                  '6xl':(
+                    index: '6xl',
+                    name: '--d1-sys-spacing-size-6xl',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-24)',
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
       'dark':(
@@ -5660,434 +5818,6 @@
           ),
         ),
       ),
-      'color':(
-        index: 'color',
-        name: 'd1-color',
-        type: 'component',
-        value: (
-          'primary':(
-            index: 'primary',
-            name: '&--primary',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-primary)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-high)',
-              ),
-            ),
-          ),
-          'primaryMedium':(
-            index: 'primaryMedium',
-            name: '&--primaryMedium',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-primary)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-medium)',
-              ),
-            ),
-          ),
-          'primaryVariant':(
-            index: 'primaryVariant',
-            name: '&--primaryVariant',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-primaryVariant)',
-              ),
-            ),
-          ),
-          'warning':(
-            index: 'warning',
-            name: '&--warning',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-warning)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-high)',
-              ),
-            ),
-          ),
-          'warningMedium':(
-            index: 'warningMedium',
-            name: '&--warningMedium',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-warning)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-medium)',
-              ),
-            ),
-          ),
-          'success':(
-            index: 'success',
-            name: '&--success',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-success)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-high)',
-              ),
-            ),
-          ),
-          'successMedium':(
-            index: 'successMedium',
-            name: '&--successMedium',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-success)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-medium)',
-              ),
-            ),
-          ),
-          'error':(
-            index: 'error',
-            name: '&--error',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-error)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-high)',
-              ),
-            ),
-          ),
-          'errorMedium':(
-            index: 'errorMedium',
-            name: '&--errorMedium',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-error)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-medium)',
-              ),
-            ),
-          ),
-          'onPrimary':(
-            index: 'onPrimary',
-            name: '&--onPrimary',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-onPrimary)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-primary-high)',
-              ),
-            ),
-          ),
-          'onPrimaryMedium':(
-            index: 'onPrimaryMedium',
-            name: '&--onPrimaryMedium',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-onPrimary)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-primary-medium)',
-              ),
-            ),
-          ),
-          'onPrimaryDisabled':(
-            index: 'onPrimaryDisabled',
-            name: '&--onPrimaryDisabled',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-onPrimary)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-primary-disabled)',
-              ),
-            ),
-          ),
-          'onSurface':(
-            index: 'onSurface',
-            name: '&--onSurface',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-onSurface)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-high)',
-              ),
-            ),
-          ),
-          'onSurfaceMedium':(
-            index: 'onSurfaceMedium',
-            name: '&--onSurfaceMedium',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-onSurface)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-medium)',
-              ),
-            ),
-          ),
-          'onSurfaceDisabled':(
-            index: 'onSurfaceDisabled',
-            name: '&--onSurfaceDisabled',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-onSurface)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-disabled)',
-              ),
-            ),
-          ),
-          'inverseOnPrimary':(
-            index: 'inverseOnPrimary',
-            name: '&--inverseOnPrimary',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-inverseOnPrimary)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-primary-high)',
-              ),
-            ),
-          ),
-          'inverseOnPrimaryMedium':(
-            index: 'inverseOnPrimaryMedium',
-            name: '&--inverseOnPrimaryMedium',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-inverseOnPrimary)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-primary-medium)',
-              ),
-            ),
-          ),
-          'inverseOnPrimaryDisabled':(
-            index: 'inverseOnPrimaryDisabled',
-            name: '&--inverseOnPrimaryDisabled',
-            type: 'state',
-            value: (
-              'color':(
-                index: 'color',
-                name: 'color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-inverseOnPrimary)',
-              ),
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-primary-disabled)',
-              ),
-            ),
-          ),
-          'palette':(
-            index: 'palette',
-            name: '&--palette',
-            type: 'state',
-            value: (
-              'primary':(
-                index: 'primary',
-                name: '&.d1-color--primary',
-                type: 'state',
-                value: (
-                  'paletteColor':(
-                    index: 'paletteColor',
-                    name: 'palette-color',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-primary)',
-                  ),
-                ),
-              ),
-              'primaryMedium':(
-                index: 'primaryMedium',
-                name: '&.d1-color--primaryMedium',
-                type: 'state',
-                value: (
-                  'paletteColor':(
-                    index: 'paletteColor',
-                    name: 'palette-color',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-primary)',
-                  ),
-                ),
-              ),
-              'primaryVariant':(
-                index: 'primaryVariant',
-                name: '&.d1-color--primaryVariant',
-                type: 'state',
-                value: (
-                  'paletteColor':(
-                    index: 'paletteColor',
-                    name: 'palette-color',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-primaryVariant)',
-                  ),
-                ),
-              ),
-              'onSurface':(
-                index: 'onSurface',
-                name: '&.d1-color--onSurface',
-                type: 'state',
-                value: (
-                  'paletteColor':(
-                    index: 'paletteColor',
-                    name: 'palette-color',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-onSurface)',
-                  ),
-                ),
-              ),
-              'onSurfaceMedium':(
-                index: 'onSurfaceMedium',
-                name: '&.d1-color--onSurfaceMedium',
-                type: 'state',
-                value: (
-                  'paletteColor':(
-                    index: 'paletteColor',
-                    name: 'palette-color',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-onSurface)',
-                  ),
-                ),
-              ),
-              'onSurfaceDisabled':(
-                index: 'onSurfaceDisabled',
-                name: '&.d1-color--onSurfaceDisabled',
-                type: 'state',
-                value: (
-                  'paletteColor':(
-                    index: 'paletteColor',
-                    name: 'palette-color',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-onSurface)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
       'border':(
         index: 'border',
         name: 'd1-border',
@@ -6547,6 +6277,1230 @@
                     name: 'palette-border',
                     type: 'property',
                     value: 'var(--d1-sys-palette-outlineVariant)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'color':(
+        index: 'color',
+        name: 'd1-color',
+        type: 'component',
+        value: (
+          'primary':(
+            index: 'primary',
+            name: '&--primary',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primary)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-high)',
+              ),
+            ),
+          ),
+          'primaryMedium':(
+            index: 'primaryMedium',
+            name: '&--primaryMedium',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primary)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-medium)',
+              ),
+            ),
+          ),
+          'primaryVariant':(
+            index: 'primaryVariant',
+            name: '&--primaryVariant',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primaryVariant)',
+              ),
+            ),
+          ),
+          'warning':(
+            index: 'warning',
+            name: '&--warning',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-warning)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-high)',
+              ),
+            ),
+          ),
+          'warningMedium':(
+            index: 'warningMedium',
+            name: '&--warningMedium',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-warning)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-medium)',
+              ),
+            ),
+          ),
+          'success':(
+            index: 'success',
+            name: '&--success',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-success)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-high)',
+              ),
+            ),
+          ),
+          'successMedium':(
+            index: 'successMedium',
+            name: '&--successMedium',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-success)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-medium)',
+              ),
+            ),
+          ),
+          'error':(
+            index: 'error',
+            name: '&--error',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-error)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-high)',
+              ),
+            ),
+          ),
+          'errorMedium':(
+            index: 'errorMedium',
+            name: '&--errorMedium',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-error)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-medium)',
+              ),
+            ),
+          ),
+          'onPrimary':(
+            index: 'onPrimary',
+            name: '&--onPrimary',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onPrimary)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-primary-high)',
+              ),
+            ),
+          ),
+          'onPrimaryMedium':(
+            index: 'onPrimaryMedium',
+            name: '&--onPrimaryMedium',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onPrimary)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-primary-medium)',
+              ),
+            ),
+          ),
+          'onPrimaryDisabled':(
+            index: 'onPrimaryDisabled',
+            name: '&--onPrimaryDisabled',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onPrimary)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-primary-disabled)',
+              ),
+            ),
+          ),
+          'onSurface':(
+            index: 'onSurface',
+            name: '&--onSurface',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-high)',
+              ),
+            ),
+          ),
+          'onSurfaceMedium':(
+            index: 'onSurfaceMedium',
+            name: '&--onSurfaceMedium',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-medium)',
+              ),
+            ),
+          ),
+          'onSurfaceDisabled':(
+            index: 'onSurfaceDisabled',
+            name: '&--onSurfaceDisabled',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-disabled)',
+              ),
+            ),
+          ),
+          'inverseOnPrimary':(
+            index: 'inverseOnPrimary',
+            name: '&--inverseOnPrimary',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-inverseOnPrimary)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-primary-high)',
+              ),
+            ),
+          ),
+          'inverseOnPrimaryMedium':(
+            index: 'inverseOnPrimaryMedium',
+            name: '&--inverseOnPrimaryMedium',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-inverseOnPrimary)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-primary-medium)',
+              ),
+            ),
+          ),
+          'inverseOnPrimaryDisabled':(
+            index: 'inverseOnPrimaryDisabled',
+            name: '&--inverseOnPrimaryDisabled',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-inverseOnPrimary)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-primary-disabled)',
+              ),
+            ),
+          ),
+          'palette':(
+            index: 'palette',
+            name: '&--palette',
+            type: 'state',
+            value: (
+              'primary':(
+                index: 'primary',
+                name: '&.d1-color--primary',
+                type: 'state',
+                value: (
+                  'paletteColor':(
+                    index: 'paletteColor',
+                    name: 'palette-color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-primary)',
+                  ),
+                ),
+              ),
+              'primaryMedium':(
+                index: 'primaryMedium',
+                name: '&.d1-color--primaryMedium',
+                type: 'state',
+                value: (
+                  'paletteColor':(
+                    index: 'paletteColor',
+                    name: 'palette-color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-primary)',
+                  ),
+                ),
+              ),
+              'primaryVariant':(
+                index: 'primaryVariant',
+                name: '&.d1-color--primaryVariant',
+                type: 'state',
+                value: (
+                  'paletteColor':(
+                    index: 'paletteColor',
+                    name: 'palette-color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-primaryVariant)',
+                  ),
+                ),
+              ),
+              'onSurface':(
+                index: 'onSurface',
+                name: '&.d1-color--onSurface',
+                type: 'state',
+                value: (
+                  'paletteColor':(
+                    index: 'paletteColor',
+                    name: 'palette-color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-onSurface)',
+                  ),
+                ),
+              ),
+              'onSurfaceMedium':(
+                index: 'onSurfaceMedium',
+                name: '&.d1-color--onSurfaceMedium',
+                type: 'state',
+                value: (
+                  'paletteColor':(
+                    index: 'paletteColor',
+                    name: 'palette-color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-onSurface)',
+                  ),
+                ),
+              ),
+              'onSurfaceDisabled':(
+                index: 'onSurfaceDisabled',
+                name: '&.d1-color--onSurfaceDisabled',
+                type: 'state',
+                value: (
+                  'paletteColor':(
+                    index: 'paletteColor',
+                    name: 'palette-color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-onSurface)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'padding':(
+        index: 'padding',
+        name: 'd1-padding',
+        type: 'component',
+        value: (
+          'sm':(
+            index: 'sm',
+            name: '&--sm',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+            ),
+          ),
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'xl':(
+            index: 'xl',
+            name: '&--xl',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-8)',
+              ),
+            ),
+          ),
+          'smToMd':(
+            index: 'smToMd',
+            name: '&--smToMd',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'padding':(
+                    index: 'padding',
+                    name: 'padding',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-4)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'smToLg':(
+            index: 'smToLg',
+            name: '&--smToLg',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'padding':(
+                    index: 'padding',
+                    name: 'padding',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToLg':(
+            index: 'mdToLg',
+            name: '&--mdToLg',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'padding':(
+                    index: 'padding',
+                    name: 'padding',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToXl':(
+            index: 'mdToXl',
+            name: '&--mdToXl',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'padding':(
+                    index: 'padding',
+                    name: 'padding',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'paddingX':(
+        index: 'paddingX',
+        name: 'd1-paddingX',
+        type: 'component',
+        value: (
+          'sm':(
+            index: 'sm',
+            name: '&--sm',
+            type: 'state',
+            value: (
+              'paddingX':(
+                index: 'paddingX',
+                name: 'padding-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+            ),
+          ),
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'paddingX':(
+                index: 'paddingX',
+                name: 'padding-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'paddingX':(
+                index: 'paddingX',
+                name: 'padding-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'smToMd':(
+            index: 'smToMd',
+            name: '&--smToMd',
+            type: 'state',
+            value: (
+              'paddingX':(
+                index: 'paddingX',
+                name: 'padding-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'paddingX':(
+                    index: 'paddingX',
+                    name: 'padding-x',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-4)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'smToLg':(
+            index: 'smToLg',
+            name: '&--smToLg',
+            type: 'state',
+            value: (
+              'paddingX':(
+                index: 'paddingX',
+                name: 'padding-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'paddingX':(
+                    index: 'paddingX',
+                    name: 'padding-x',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'paddingY':(
+        index: 'paddingY',
+        name: 'd1-paddingY',
+        type: 'component',
+        value: (
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'paddingY':(
+                index: 'paddingY',
+                name: 'padding-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'paddingY':(
+                index: 'paddingY',
+                name: 'padding-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'xl':(
+            index: 'xl',
+            name: '&--xl',
+            type: 'state',
+            value: (
+              'paddingY':(
+                index: 'paddingY',
+                name: 'padding-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-8)',
+              ),
+            ),
+          ),
+          'mdToLg':(
+            index: 'mdToLg',
+            name: '&--mdToLg',
+            type: 'state',
+            value: (
+              'paddingY':(
+                index: 'paddingY',
+                name: 'padding-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'paddingY':(
+                    index: 'paddingY',
+                    name: 'padding-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToXl':(
+            index: 'mdToXl',
+            name: '&--mdToXl',
+            type: 'state',
+            value: (
+              'paddingY':(
+                index: 'paddingY',
+                name: 'padding-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'paddingY':(
+                    index: 'paddingY',
+                    name: 'padding-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'margin':(
+        index: 'margin',
+        name: 'd1-margin',
+        type: 'component',
+        value: (
+          'sm':(
+            index: 'sm',
+            name: '&--sm',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+            ),
+          ),
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'xl':(
+            index: 'xl',
+            name: '&--xl',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-8)',
+              ),
+            ),
+          ),
+          '2xl':(
+            index: '2xl',
+            name: '&--2xl',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-10)',
+              ),
+            ),
+          ),
+          'smToMd':(
+            index: 'smToMd',
+            name: '&--smToMd',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'margin':(
+                    index: 'margin',
+                    name: 'margin',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-4)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'smToLg':(
+            index: 'smToLg',
+            name: '&--smToLg',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'margin':(
+                    index: 'margin',
+                    name: 'margin',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToLg':(
+            index: 'mdToLg',
+            name: '&--mdToLg',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'margin':(
+                    index: 'margin',
+                    name: 'margin',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToXl':(
+            index: 'mdToXl',
+            name: '&--mdToXl',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'margin':(
+                    index: 'margin',
+                    name: 'margin',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'marginX':(
+        index: 'marginX',
+        name: 'd1-marginX',
+        type: 'component',
+        value: (
+          'sm':(
+            index: 'sm',
+            name: '&--sm',
+            type: 'state',
+            value: (
+              'marginX':(
+                index: 'marginX',
+                name: 'margin-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+            ),
+          ),
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'marginX':(
+                index: 'marginX',
+                name: 'margin-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'marginX':(
+                index: 'marginX',
+                name: 'margin-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'smToMd':(
+            index: 'smToMd',
+            name: '&--smToMd',
+            type: 'state',
+            value: (
+              'marginX':(
+                index: 'marginX',
+                name: 'margin-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginX':(
+                    index: 'marginX',
+                    name: 'margin-x',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-4)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'smToLg':(
+            index: 'smToLg',
+            name: '&--smToLg',
+            type: 'state',
+            value: (
+              'marginX':(
+                index: 'marginX',
+                name: 'margin-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginX':(
+                    index: 'marginX',
+                    name: 'margin-x',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'marginY':(
+        index: 'marginY',
+        name: 'd1-marginY',
+        type: 'component',
+        value: (
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'xl':(
+            index: 'xl',
+            name: '&--xl',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-8)',
+              ),
+            ),
+          ),
+          '2xl':(
+            index: '2xl',
+            name: '&--2xl',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-10)',
+              ),
+            ),
+          ),
+          'mdToLg':(
+            index: 'mdToLg',
+            name: '&--mdToLg',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginY':(
+                    index: 'marginY',
+                    name: 'margin-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToXl':(
+            index: 'mdToXl',
+            name: '&--mdToXl',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginY':(
+                    index: 'marginY',
+                    name: 'margin-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'lgToXl':(
+            index: 'lgToXl',
+            name: '&--lgToXl',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginY':(
+                    index: 'marginY',
+                    name: 'margin-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'lgTo2xl':(
+            index: 'lgTo2xl',
+            name: '&--lgTo2xl',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginY':(
+                    index: 'marginY',
+                    name: 'margin-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-10)',
                   ),
                 ),
               ),
@@ -7666,208 +8620,6 @@
                 name: 'letter-spacing',
                 type: 'property',
                 value: 'var(--d1-sys-letterSpacing-compress)',
-              ),
-            ),
-          ),
-        ),
-      ),
-      'opacity':(
-        index: 'opacity',
-        name: 'd1-opacity',
-        type: 'component',
-        value: (
-          'focus':(
-            index: 'focus',
-            name: '&--focus',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-focus)',
-              ),
-            ),
-          ),
-          'hover':(
-            index: 'hover',
-            name: '&--hover',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-hover)',
-              ),
-            ),
-          ),
-          'pressed':(
-            index: 'pressed',
-            name: '&--pressed',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-pressed)',
-              ),
-            ),
-          ),
-          'dragged':(
-            index: 'dragged',
-            name: '&--dragged',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-dragged)',
-              ),
-            ),
-          ),
-          'overlay':(
-            index: 'overlay',
-            name: '&--overlay',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-overlay)',
-              ),
-            ),
-          ),
-          'selected':(
-            index: 'selected',
-            name: '&--selected',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-selected)',
-              ),
-            ),
-          ),
-          'disabled':(
-            index: 'disabled',
-            name: '&--disabled',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-disabled)',
-              ),
-            ),
-          ),
-          'outline':(
-            index: 'outline',
-            name: '&--outline',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-outline)',
-              ),
-            ),
-          ),
-          'scrim':(
-            index: 'scrim',
-            name: '&--scrim',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-scrim)',
-              ),
-            ),
-          ),
-          'primaryHigh':(
-            index: 'primaryHigh',
-            name: '&--primaryHigh',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-primary-high)',
-              ),
-            ),
-          ),
-          'primaryMedium':(
-            index: 'primaryMedium',
-            name: '&--primaryMedium',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-primary-medium)',
-              ),
-            ),
-          ),
-          'primaryDisabled':(
-            index: 'primaryDisabled',
-            name: '&--primaryDisabled',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-primary-disabled)',
-              ),
-            ),
-          ),
-          'surfaceHigh':(
-            index: 'surfaceHigh',
-            name: '&--surfaceHigh',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-high)',
-              ),
-            ),
-          ),
-          'surfaceMedium':(
-            index: 'surfaceMedium',
-            name: '&--surfaceMedium',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-medium)',
-              ),
-            ),
-          ),
-          'surfaceDisabled':(
-            index: 'surfaceDisabled',
-            name: '&--surfaceDisabled',
-            type: 'state',
-            value: (
-              'opacity':(
-                index: 'opacity',
-                name: 'opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-disabled)',
               ),
             ),
           ),

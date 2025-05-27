@@ -1,0 +1,31 @@
+@use "@dxt-ui/styles" as ui;
+
+.d1-paddingX {
+  &--sm {
+    @include ui.paddingX(#{var(--d1-ref-spacing-2)});
+  }
+  
+  &--md {
+    @include ui.paddingX(#{var(--d1-ref-spacing-4)});
+  }
+  
+  &--lg {
+    @include ui.paddingX(#{var(--d1-ref-spacing-6)});
+  }
+  
+  &--smToMd {
+    @include ui.paddingX(#{var(--d1-ref-spacing-2)});
+    
+    @media screen and (min-width: 768px) {
+      @include ui.paddingX(#{var(--d1-ref-spacing-4)});
+    }
+  }
+  
+  &--smToLg {
+    @include ui.paddingX(#{var(--d1-ref-spacing-2)});
+    
+    @media screen and (min-width: 768px) {
+      @include ui.paddingX(#{var(--d1-ref-spacing-6)});
+    }
+  }
+}

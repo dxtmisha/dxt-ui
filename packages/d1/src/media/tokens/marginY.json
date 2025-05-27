@@ -1,0 +1,51 @@
+{
+  "md": {
+    "marginY": {
+      "value": "{ref.spacing.4}",
+      "_type": "property"
+    }
+  },
+  "lg": {
+    "marginY": {
+      "value": "{ref.spacing.6}",
+      "_type": "property"
+    }
+  },
+  "xl": {
+    "marginY": {
+      "value": "{ref.spacing.8}",
+      "_type": "property"
+    }
+  },
+  "2xl": {
+    "marginY": {
+      "value": "{ref.spacing.10}",
+      "_type": "property"
+    }
+  },
+  "mdToLg": {
+    "link": "{??md}",
+    "media|md": {
+      "link": "{??lg}"
+    }
+  },
+  "mdToXl": {
+    "link": "{??md}",
+    "media|md": {
+      "link": "{??xl}"
+    }
+  },
+  "lgToXl": {
+    "link": "{??lg}",
+    "media|md": {
+      "link": "{??xl}"
+    }
+  },
+  "lgTo2xl": {
+    "link": "{??lg}",
+    "media|md": {
+      "link": "{??2xl}"
+    }
+  }
+}
+

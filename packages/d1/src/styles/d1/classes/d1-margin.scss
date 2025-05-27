@@ -1,0 +1,55 @@
+@use "@dxt-ui/styles" as ui;
+
+.d1-margin {
+  &--sm {
+    margin: var(--d1-ref-spacing-2);
+  }
+  
+  &--md {
+    margin: var(--d1-ref-spacing-4);
+  }
+  
+  &--lg {
+    margin: var(--d1-ref-spacing-6);
+  }
+  
+  &--xl {
+    margin: var(--d1-ref-spacing-8);
+  }
+  
+  &--2xl {
+    margin: var(--d1-ref-spacing-10);
+  }
+  
+  &--smToMd {
+    margin: var(--d1-ref-spacing-2);
+    
+    @media screen and (min-width: 768px) {
+      margin: var(--d1-ref-spacing-4);
+    }
+  }
+  
+  &--smToLg {
+    margin: var(--d1-ref-spacing-2);
+    
+    @media screen and (min-width: 768px) {
+      margin: var(--d1-ref-spacing-6);
+    }
+  }
+  
+  &--mdToLg {
+    margin: var(--d1-ref-spacing-4);
+    
+    @media screen and (min-width: 768px) {
+      margin: var(--d1-ref-spacing-6);
+    }
+  }
+  
+  &--mdToXl {
+    margin: var(--d1-ref-spacing-4);
+    
+    @media screen and (min-width: 768px) {
+      margin: var(--d1-ref-spacing-8);
+    }
+  }
+}

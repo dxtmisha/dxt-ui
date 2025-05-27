@@ -1,6 +1,6 @@
 // export:none
 
-import { isFilled, isObjectNotArray } from '@dxt-ui/functional'
+import { isFilled, isObjectNotArray, toKebabCase } from '@dxt-ui/functional'
 
 import { PropertiesItems } from '../Properties/PropertiesItems'
 
@@ -54,7 +54,7 @@ export class StylesClasses {
       ) {
         const name = item[PropertyKey.name] as string
 
-        data.push(StylesTool.addUse(`./classes/${name}`))
+        data.push(StylesTool.addUse(`./classes/${toKebabCase(name)}`))
 
         classes[name] = [
           StylesTool.addImportProperties(),
