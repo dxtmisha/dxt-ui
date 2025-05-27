@@ -1,0 +1,9 @@
+{
+  "none": "{ref.shadow.0}",
+  "xs": "{ref.shadow.2}",
+  "sm": "{ref.shadow.3}",
+  "md": "{ref.shadow.4}",
+  "lg": "{ref.shadow.5}",
+  "xl": "{ref.shadow.6}",
+  "2xl": "{ref.shadow.7}"
+}

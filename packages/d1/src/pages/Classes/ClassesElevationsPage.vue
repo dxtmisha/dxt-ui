@@ -26,6 +26,30 @@ import elevations from '../../media/tokens/elevation.json'
       </template>
     </UiTestGroup>
   </UiTestContainer>
+
+  <UiTestContainer
+    class="d1-dark"
+    is-dark
+    label="Dark"
+  >
+    <UiTestGroup>
+      <template
+        v-for="(_, name) in elevations"
+        :key="name"
+      >
+        <UiTestItemFull
+          :background="false"
+          :class="`d1-elevation--${name}`"
+          :rounded="false"
+          size="lg"
+        >
+          <div style="height: 128px;"></div>
+        </UiTestItemFull>
+        <div/>
+        <div/>
+      </template>
+    </UiTestGroup>
+  </UiTestContainer>
 </template>
 
 <style lang="scss"></style>

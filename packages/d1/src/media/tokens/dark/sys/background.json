@@ -1,8 +1,8 @@
 {
   "0": "rgb({ref.palette.slate.950})",
-  "1": "rgb({ref.palette.slate.950})",
-  "2": "rgb({ref.palette.slate.900})",
-  "3": "rgb({ref.palette.slate.900})",
-  "4": "rgb({ref.palette.slate.800})",
-  "5": "rgb({ref.palette.slate.800})"
+  "1": "rgb({ref.palette.slate.900})",
+  "2": "rgb({ref.palette.slate.800})",
+  "3": "rgb({ref.palette.slate.800})",
+  "4": "rgb({ref.palette.slate.700})",
+  "5": "rgb({ref.palette.slate.700})"
 }
