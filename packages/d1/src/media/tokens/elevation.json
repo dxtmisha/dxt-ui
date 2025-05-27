@@ -1,0 +1,37 @@
+{
+  "0": {
+    "background": "{sys.background.0}",
+    "box-shadow": "{sys.shadow.none}",
+    "z-index": "{sys.index.none}"
+  },
+  "1": {
+    "background": "{sys.background.1}",
+    "box-shadow": "{sys.shadow.lg}",
+    "border-radius": "{sys.rounded.lg}",
+    "z-index": "{sys.index.lg}"
+  },
+  "2": {
+    "background": "{sys.background.2}",
+    "box-shadow": "{sys.shadow.lg}",
+    "border-radius": "{sys.rounded.lg}",
+    "z-index": "{sys.index.lg}"
+  },
+  "3": {
+    "background": "{sys.background.3}",
+    "box-shadow": "{sys.shadow.xl}",
+    "border-radius": "{sys.rounded.xl}",
+    "z-index": "{sys.index.xl}"
+  },
+  "4": {
+    "background": "{sys.background.4}",
+    "box-shadow": "{sys.shadow.xl}",
+    "border-radius": "{sys.rounded.xl}",
+    "z-index": "{sys.index.xl}"
+  },
+  "5": {
+    "background": "{sys.background.5}",
+    "box-shadow": "{sys.shadow.2xl}",
+    "border-radius": "{sys.rounded.2xl}",
+    "z-index": "{sys.index.2xl}"
+  }
+}

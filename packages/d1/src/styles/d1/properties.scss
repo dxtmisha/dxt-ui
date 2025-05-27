@@ -19,13 +19,14 @@
   'd1.background',
   'd1.border',
   'd1.color',
+  'd1.elevation',
+  'd1.font',
   'd1.padding',
   'd1.paddingX',
   'd1.paddingY',
   'd1.margin',
   'd1.marginX',
   'd1.marginY',
-  'd1.font',
   'd1.palette',));
 @include variables.setDesignsPalette((
   '--d1-sys-palette-primary': ('--d1-palette-basic600', '--d1-palette-dark200'),
@@ -221,6 +222,79 @@
                     value: 600,
                   ),
                 ),
+              ),
+            ),
+          ),
+          'index':(
+            index: 'index',
+            name: 'index',
+            type: 'var',
+            value: (
+              '0':(
+                index: '0',
+                name: '--d1-ref-index-0',
+                type: 'var',
+                value: 0,
+              ),
+              '1':(
+                index: '1',
+                name: '--d1-ref-index-1',
+                type: 'var',
+                value: 100,
+              ),
+              '2':(
+                index: '2',
+                name: '--d1-ref-index-2',
+                type: 'var',
+                value: 200,
+              ),
+              '3':(
+                index: '3',
+                name: '--d1-ref-index-3',
+                type: 'var',
+                value: 300,
+              ),
+              '4':(
+                index: '4',
+                name: '--d1-ref-index-4',
+                type: 'var',
+                value: 400,
+              ),
+              '5':(
+                index: '5',
+                name: '--d1-ref-index-5',
+                type: 'var',
+                value: 500,
+              ),
+              '6':(
+                index: '6',
+                name: '--d1-ref-index-6',
+                type: 'var',
+                value: 600,
+              ),
+              '7':(
+                index: '7',
+                name: '--d1-ref-index-7',
+                type: 'var',
+                value: 700,
+              ),
+              '8':(
+                index: '8',
+                name: '--d1-ref-index-8',
+                type: 'var',
+                value: 800,
+              ),
+              '9':(
+                index: '9',
+                name: '--d1-ref-index-9',
+                type: 'var',
+                value: 900,
+              ),
+              '10':(
+                index: '10',
+                name: '--d1-ref-index-10',
+                type: 'var',
+                value: 1000,
               ),
             ),
           ),
@@ -2408,11 +2482,72 @@
               ),
             ),
           ),
+          'shadow':(
+            index: 'shadow',
+            name: 'shadow',
+            type: 'var',
+            value: (
+              '0':(
+                index: '0',
+                name: '--d1-ref-shadow-0',
+                type: 'var',
+                value: 'none',
+              ),
+              '1':(
+                index: '1',
+                name: '--d1-ref-shadow-1',
+                type: 'var',
+                value: '0px 1px rgba(0, 0, 0, 0.05)',
+              ),
+              '2':(
+                index: '2',
+                name: '--d1-ref-shadow-2',
+                type: 'var',
+                value: '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
+              ),
+              '3':(
+                index: '3',
+                name: '--d1-ref-shadow-3',
+                type: 'var',
+                value: '0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 1px 2px -1px rgba(0, 0, 0, 0.1)',
+              ),
+              '4':(
+                index: '4',
+                name: '--d1-ref-shadow-4',
+                type: 'var',
+                value: '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)',
+              ),
+              '5':(
+                index: '5',
+                name: '--d1-ref-shadow-5',
+                type: 'var',
+                value: '0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1)',
+              ),
+              '6':(
+                index: '6',
+                name: '--d1-ref-shadow-6',
+                type: 'var',
+                value: '0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 8px 10px -6px rgba(0, 0, 0, 0.1)',
+              ),
+              '7':(
+                index: '7',
+                name: '--d1-ref-shadow-7',
+                type: 'var',
+                value: '0px 25px 50px -12px rgba(0, 0, 0, 0.25)',
+              ),
+            ),
+          ),
           'spacing':(
             index: 'spacing',
             name: 'spacing',
             type: 'var',
             value: (
+              '0':(
+                index: '0',
+                name: '--d1-ref-spacing-0',
+                type: 'var',
+                value: 0,
+              ),
               '1':(
                 index: '1',
                 name: '--d1-ref-spacing-1',
@@ -2818,6 +2953,49 @@
         name: 'sys',
         type: 'var',
         value: (
+          'background':(
+            index: 'background',
+            name: 'background',
+            type: 'var',
+            value: (
+              '0':(
+                index: '0',
+                name: '--d1-sys-background-0',
+                type: 'var',
+                value: 'rgb(var(--d1-ref-palette-white-50))',
+              ),
+              '1':(
+                index: '1',
+                name: '--d1-sys-background-1',
+                type: 'var',
+                value: 'rgb(var(--d1-ref-palette-white-50))',
+              ),
+              '2':(
+                index: '2',
+                name: '--d1-sys-background-2',
+                type: 'var',
+                value: 'rgb(var(--d1-ref-palette-white-50))',
+              ),
+              '3':(
+                index: '3',
+                name: '--d1-sys-background-3',
+                type: 'var',
+                value: 'rgb(var(--d1-ref-palette-white-50))',
+              ),
+              '4':(
+                index: '4',
+                name: '--d1-sys-background-4',
+                type: 'var',
+                value: 'rgb(var(--d1-ref-palette-white-50))',
+              ),
+              '5':(
+                index: '5',
+                name: '--d1-sys-background-5',
+                type: 'var',
+                value: 'rgb(var(--d1-ref-palette-white-50))',
+              ),
+            ),
+          ),
           'font':(
             index: 'font',
             name: 'font',
@@ -2933,6 +3111,55 @@
                     value: 'var(--d1-ref-font-weight-600)',
                   ),
                 ),
+              ),
+            ),
+          ),
+          'index':(
+            index: 'index',
+            name: 'index',
+            type: 'var',
+            value: (
+              'none':(
+                index: 'none',
+                name: '--d1-sys-index-none',
+                type: 'var',
+                value: 'var(--d1-ref-index-0)',
+              ),
+              'xs':(
+                index: 'xs',
+                name: '--d1-sys-index-xs',
+                type: 'var',
+                value: 'var(--d1-ref-index-2)',
+              ),
+              'sm':(
+                index: 'sm',
+                name: '--d1-sys-index-sm',
+                type: 'var',
+                value: 'var(--d1-ref-index-3)',
+              ),
+              'md':(
+                index: 'md',
+                name: '--d1-sys-index-md',
+                type: 'var',
+                value: 'var(--d1-ref-index-5)',
+              ),
+              'lg':(
+                index: 'lg',
+                name: '--d1-sys-index-lg',
+                type: 'var',
+                value: 'var(--d1-ref-index-7)',
+              ),
+              'xl':(
+                index: 'xl',
+                name: '--d1-sys-index-xl',
+                type: 'var',
+                value: 'var(--d1-ref-index-8)',
+              ),
+              '2xl':(
+                index: '2xl',
+                name: '--d1-sys-index-2xl',
+                type: 'var',
+                value: 'var(--d1-ref-index-9)',
               ),
             ),
           ),
@@ -3272,6 +3499,55 @@
               ),
             ),
           ),
+          'rounded':(
+            index: 'rounded',
+            name: 'rounded',
+            type: 'var',
+            value: (
+              'none':(
+                index: 'none',
+                name: '--d1-sys-rounded-none',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-0)',
+              ),
+              'xs':(
+                index: 'xs',
+                name: '--d1-sys-rounded-xs',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-2px)',
+              ),
+              'sm':(
+                index: 'sm',
+                name: '--d1-sys-rounded-sm',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-4px)',
+              ),
+              'md':(
+                index: 'md',
+                name: '--d1-sys-rounded-md',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-6px)',
+              ),
+              'lg':(
+                index: 'lg',
+                name: '--d1-sys-rounded-lg',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-8px)',
+              ),
+              'xl':(
+                index: 'xl',
+                name: '--d1-sys-rounded-xl',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              '2xl':(
+                index: '2xl',
+                name: '--d1-sys-rounded-2xl',
+                type: 'var',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
           'shade':(
             index: 'shade',
             name: 'shade',
@@ -3454,6 +3730,55 @@
               ),
             ),
           ),
+          'shadow':(
+            index: 'shadow',
+            name: 'shadow',
+            type: 'var',
+            value: (
+              'none':(
+                index: 'none',
+                name: '--d1-sys-shadow-none',
+                type: 'var',
+                value: 'var(--d1-ref-shadow-0)',
+              ),
+              'xs':(
+                index: 'xs',
+                name: '--d1-sys-shadow-xs',
+                type: 'var',
+                value: 'var(--d1-ref-shadow-2)',
+              ),
+              'sm':(
+                index: 'sm',
+                name: '--d1-sys-shadow-sm',
+                type: 'var',
+                value: 'var(--d1-ref-shadow-3)',
+              ),
+              'md':(
+                index: 'md',
+                name: '--d1-sys-shadow-md',
+                type: 'var',
+                value: 'var(--d1-ref-shadow-4)',
+              ),
+              'lg':(
+                index: 'lg',
+                name: '--d1-sys-shadow-lg',
+                type: 'var',
+                value: 'var(--d1-ref-shadow-5)',
+              ),
+              'xl':(
+                index: 'xl',
+                name: '--d1-sys-shadow-xl',
+                type: 'var',
+                value: 'var(--d1-ref-shadow-6)',
+              ),
+              '2xl':(
+                index: '2xl',
+                name: '--d1-sys-shadow-2xl',
+                type: 'var',
+                value: 'var(--d1-ref-shadow-7)',
+              ),
+            ),
+          ),
           'spacing':(
             index: 'spacing',
             name: 'spacing',
@@ -3619,6 +3944,49 @@
             name: 'sys',
             type: 'var',
             value: (
+              'background':(
+                index: 'background',
+                name: 'background',
+                type: 'var',
+                value: (
+                  '0':(
+                    index: '0',
+                    name: '--d1-sys-background-0',
+                    type: 'var',
+                    value: 'rgb(var(--d1-ref-palette-slate-950))',
+                  ),
+                  '1':(
+                    index: '1',
+                    name: '--d1-sys-background-1',
+                    type: 'var',
+                    value: 'rgb(var(--d1-ref-palette-slate-950))',
+                  ),
+                  '2':(
+                    index: '2',
+                    name: '--d1-sys-background-2',
+                    type: 'var',
+                    value: 'rgb(var(--d1-ref-palette-slate-900))',
+                  ),
+                  '3':(
+                    index: '3',
+                    name: '--d1-sys-background-3',
+                    type: 'var',
+                    value: 'rgb(var(--d1-ref-palette-slate-900))',
+                  ),
+                  '4':(
+                    index: '4',
+                    name: '--d1-sys-background-4',
+                    type: 'var',
+                    value: 'rgb(var(--d1-ref-palette-slate-800))',
+                  ),
+                  '5':(
+                    index: '5',
+                    name: '--d1-sys-background-5',
+                    type: 'var',
+                    value: 'rgb(var(--d1-ref-palette-slate-800))',
+                  ),
+                ),
+              ),
               'palette':(
                 index: 'palette',
                 name: 'palette',
@@ -6712,797 +7080,188 @@
           ),
         ),
       ),
-      'padding':(
-        index: 'padding',
-        name: 'd1-padding',
+      'elevation':(
+        index: 'elevation',
+        name: 'd1-elevation',
         type: 'component',
         value: (
-          'sm':(
-            index: 'sm',
-            name: '&--sm',
+          '0':(
+            index: '0',
+            name: '&--0',
             type: 'state',
             value: (
-              'padding':(
-                index: 'padding',
-                name: 'padding',
+              'zIndex':(
+                index: 'zIndex',
+                name: 'z-index',
                 type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
+                value: 'var(--d1-sys-index-none)',
+              ),
+              'background':(
+                index: 'background',
+                name: 'background',
+                type: 'property',
+                value: 'var(--d1-sys-background-0)',
+              ),
+              'boxShadow':(
+                index: 'boxShadow',
+                name: 'box-shadow',
+                type: 'property',
+                value: 'var(--d1-sys-shadow-none)',
               ),
             ),
           ),
-          'md':(
-            index: 'md',
-            name: '&--md',
+          '1':(
+            index: '1',
+            name: '&--1',
             type: 'state',
             value: (
-              'padding':(
-                index: 'padding',
-                name: 'padding',
+              'zIndex':(
+                index: 'zIndex',
+                name: 'z-index',
                 type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
+                value: 'var(--d1-sys-index-lg)',
+              ),
+              'background':(
+                index: 'background',
+                name: 'background',
+                type: 'property',
+                value: 'var(--d1-sys-background-1)',
+              ),
+              'borderRadius':(
+                index: 'borderRadius',
+                name: 'border-radius',
+                type: 'property',
+                value: 'var(--d1-sys-rounded-lg)',
+              ),
+              'boxShadow':(
+                index: 'boxShadow',
+                name: 'box-shadow',
+                type: 'property',
+                value: 'var(--d1-sys-shadow-lg)',
               ),
             ),
           ),
-          'lg':(
-            index: 'lg',
-            name: '&--lg',
+          '2':(
+            index: '2',
+            name: '&--2',
             type: 'state',
             value: (
-              'padding':(
-                index: 'padding',
-                name: 'padding',
+              'zIndex':(
+                index: 'zIndex',
+                name: 'z-index',
                 type: 'property',
-                value: 'var(--d1-ref-spacing-6)',
+                value: 'var(--d1-sys-index-lg)',
+              ),
+              'background':(
+                index: 'background',
+                name: 'background',
+                type: 'property',
+                value: 'var(--d1-sys-background-2)',
+              ),
+              'borderRadius':(
+                index: 'borderRadius',
+                name: 'border-radius',
+                type: 'property',
+                value: 'var(--d1-sys-rounded-lg)',
+              ),
+              'boxShadow':(
+                index: 'boxShadow',
+                name: 'box-shadow',
+                type: 'property',
+                value: 'var(--d1-sys-shadow-lg)',
               ),
             ),
           ),
-          'xl':(
-            index: 'xl',
-            name: '&--xl',
+          '3':(
+            index: '3',
+            name: '&--3',
             type: 'state',
             value: (
-              'padding':(
-                index: 'padding',
-                name: 'padding',
+              'zIndex':(
+                index: 'zIndex',
+                name: 'z-index',
                 type: 'property',
-                value: 'var(--d1-ref-spacing-8)',
+                value: 'var(--d1-sys-index-xl)',
+              ),
+              'background':(
+                index: 'background',
+                name: 'background',
+                type: 'property',
+                value: 'var(--d1-sys-background-3)',
+              ),
+              'borderRadius':(
+                index: 'borderRadius',
+                name: 'border-radius',
+                type: 'property',
+                value: 'var(--d1-sys-rounded-xl)',
+              ),
+              'boxShadow':(
+                index: 'boxShadow',
+                name: 'box-shadow',
+                type: 'property',
+                value: 'var(--d1-sys-shadow-xl)',
               ),
             ),
           ),
-          'smToMd':(
-            index: 'smToMd',
-            name: '&--smToMd',
+          '4':(
+            index: '4',
+            name: '&--4',
             type: 'state',
             value: (
-              'padding':(
-                index: 'padding',
-                name: 'padding',
+              'zIndex':(
+                index: 'zIndex',
+                name: 'z-index',
                 type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
+                value: 'var(--d1-sys-index-xl)',
               ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'padding':(
-                    index: 'padding',
-                    name: 'padding',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-4)',
-                  ),
-                ),
+              'background':(
+                index: 'background',
+                name: 'background',
+                type: 'property',
+                value: 'var(--d1-sys-background-4)',
+              ),
+              'borderRadius':(
+                index: 'borderRadius',
+                name: 'border-radius',
+                type: 'property',
+                value: 'var(--d1-sys-rounded-xl)',
+              ),
+              'boxShadow':(
+                index: 'boxShadow',
+                name: 'box-shadow',
+                type: 'property',
+                value: 'var(--d1-sys-shadow-xl)',
               ),
             ),
           ),
-          'smToLg':(
-            index: 'smToLg',
-            name: '&--smToLg',
+          '5':(
+            index: '5',
+            name: '&--5',
             type: 'state',
             value: (
-              'padding':(
-                index: 'padding',
-                name: 'padding',
+              'zIndex':(
+                index: 'zIndex',
+                name: 'z-index',
                 type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
+                value: 'var(--d1-sys-index-2xl)',
               ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'padding':(
-                    index: 'padding',
-                    name: 'padding',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-6)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'mdToLg':(
-            index: 'mdToLg',
-            name: '&--mdToLg',
-            type: 'state',
-            value: (
-              'padding':(
-                index: 'padding',
-                name: 'padding',
+              'background':(
+                index: 'background',
+                name: 'background',
                 type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
+                value: 'var(--d1-sys-background-5)',
               ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'padding':(
-                    index: 'padding',
-                    name: 'padding',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-6)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'mdToXl':(
-            index: 'mdToXl',
-            name: '&--mdToXl',
-            type: 'state',
-            value: (
-              'padding':(
-                index: 'padding',
-                name: 'padding',
+              'borderRadius':(
+                index: 'borderRadius',
+                name: 'border-radius',
                 type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
+                value: 'var(--d1-sys-rounded-2xl)',
               ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'padding':(
-                    index: 'padding',
-                    name: 'padding',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-8)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      'paddingX':(
-        index: 'paddingX',
-        name: 'd1-paddingX',
-        type: 'component',
-        value: (
-          'sm':(
-            index: 'sm',
-            name: '&--sm',
-            type: 'state',
-            value: (
-              'paddingX':(
-                index: 'paddingX',
-                name: 'padding-x',
+              'boxShadow':(
+                index: 'boxShadow',
+                name: 'box-shadow',
                 type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
-              ),
-            ),
-          ),
-          'md':(
-            index: 'md',
-            name: '&--md',
-            type: 'state',
-            value: (
-              'paddingX':(
-                index: 'paddingX',
-                name: 'padding-x',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
-              ),
-            ),
-          ),
-          'lg':(
-            index: 'lg',
-            name: '&--lg',
-            type: 'state',
-            value: (
-              'paddingX':(
-                index: 'paddingX',
-                name: 'padding-x',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-6)',
-              ),
-            ),
-          ),
-          'smToMd':(
-            index: 'smToMd',
-            name: '&--smToMd',
-            type: 'state',
-            value: (
-              'paddingX':(
-                index: 'paddingX',
-                name: 'padding-x',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'paddingX':(
-                    index: 'paddingX',
-                    name: 'padding-x',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-4)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'smToLg':(
-            index: 'smToLg',
-            name: '&--smToLg',
-            type: 'state',
-            value: (
-              'paddingX':(
-                index: 'paddingX',
-                name: 'padding-x',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'paddingX':(
-                    index: 'paddingX',
-                    name: 'padding-x',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-6)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      'paddingY':(
-        index: 'paddingY',
-        name: 'd1-paddingY',
-        type: 'component',
-        value: (
-          'md':(
-            index: 'md',
-            name: '&--md',
-            type: 'state',
-            value: (
-              'paddingY':(
-                index: 'paddingY',
-                name: 'padding-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
-              ),
-            ),
-          ),
-          'lg':(
-            index: 'lg',
-            name: '&--lg',
-            type: 'state',
-            value: (
-              'paddingY':(
-                index: 'paddingY',
-                name: 'padding-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-6)',
-              ),
-            ),
-          ),
-          'xl':(
-            index: 'xl',
-            name: '&--xl',
-            type: 'state',
-            value: (
-              'paddingY':(
-                index: 'paddingY',
-                name: 'padding-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-8)',
-              ),
-            ),
-          ),
-          'mdToLg':(
-            index: 'mdToLg',
-            name: '&--mdToLg',
-            type: 'state',
-            value: (
-              'paddingY':(
-                index: 'paddingY',
-                name: 'padding-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'paddingY':(
-                    index: 'paddingY',
-                    name: 'padding-y',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-6)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'mdToXl':(
-            index: 'mdToXl',
-            name: '&--mdToXl',
-            type: 'state',
-            value: (
-              'paddingY':(
-                index: 'paddingY',
-                name: 'padding-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'paddingY':(
-                    index: 'paddingY',
-                    name: 'padding-y',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-8)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      'margin':(
-        index: 'margin',
-        name: 'd1-margin',
-        type: 'component',
-        value: (
-          'sm':(
-            index: 'sm',
-            name: '&--sm',
-            type: 'state',
-            value: (
-              'margin':(
-                index: 'margin',
-                name: 'margin',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
-              ),
-            ),
-          ),
-          'md':(
-            index: 'md',
-            name: '&--md',
-            type: 'state',
-            value: (
-              'margin':(
-                index: 'margin',
-                name: 'margin',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
-              ),
-            ),
-          ),
-          'lg':(
-            index: 'lg',
-            name: '&--lg',
-            type: 'state',
-            value: (
-              'margin':(
-                index: 'margin',
-                name: 'margin',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-6)',
-              ),
-            ),
-          ),
-          'xl':(
-            index: 'xl',
-            name: '&--xl',
-            type: 'state',
-            value: (
-              'margin':(
-                index: 'margin',
-                name: 'margin',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-8)',
-              ),
-            ),
-          ),
-          '2xl':(
-            index: '2xl',
-            name: '&--2xl',
-            type: 'state',
-            value: (
-              'margin':(
-                index: 'margin',
-                name: 'margin',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-10)',
-              ),
-            ),
-          ),
-          'smToMd':(
-            index: 'smToMd',
-            name: '&--smToMd',
-            type: 'state',
-            value: (
-              'margin':(
-                index: 'margin',
-                name: 'margin',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'margin':(
-                    index: 'margin',
-                    name: 'margin',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-4)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'smToLg':(
-            index: 'smToLg',
-            name: '&--smToLg',
-            type: 'state',
-            value: (
-              'margin':(
-                index: 'margin',
-                name: 'margin',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'margin':(
-                    index: 'margin',
-                    name: 'margin',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-6)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'mdToLg':(
-            index: 'mdToLg',
-            name: '&--mdToLg',
-            type: 'state',
-            value: (
-              'margin':(
-                index: 'margin',
-                name: 'margin',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'margin':(
-                    index: 'margin',
-                    name: 'margin',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-6)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'mdToXl':(
-            index: 'mdToXl',
-            name: '&--mdToXl',
-            type: 'state',
-            value: (
-              'margin':(
-                index: 'margin',
-                name: 'margin',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'margin':(
-                    index: 'margin',
-                    name: 'margin',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-8)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      'marginX':(
-        index: 'marginX',
-        name: 'd1-marginX',
-        type: 'component',
-        value: (
-          'sm':(
-            index: 'sm',
-            name: '&--sm',
-            type: 'state',
-            value: (
-              'marginX':(
-                index: 'marginX',
-                name: 'margin-x',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
-              ),
-            ),
-          ),
-          'md':(
-            index: 'md',
-            name: '&--md',
-            type: 'state',
-            value: (
-              'marginX':(
-                index: 'marginX',
-                name: 'margin-x',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
-              ),
-            ),
-          ),
-          'lg':(
-            index: 'lg',
-            name: '&--lg',
-            type: 'state',
-            value: (
-              'marginX':(
-                index: 'marginX',
-                name: 'margin-x',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-6)',
-              ),
-            ),
-          ),
-          'smToMd':(
-            index: 'smToMd',
-            name: '&--smToMd',
-            type: 'state',
-            value: (
-              'marginX':(
-                index: 'marginX',
-                name: 'margin-x',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'marginX':(
-                    index: 'marginX',
-                    name: 'margin-x',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-4)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'smToLg':(
-            index: 'smToLg',
-            name: '&--smToLg',
-            type: 'state',
-            value: (
-              'marginX':(
-                index: 'marginX',
-                name: 'margin-x',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-2)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'marginX':(
-                    index: 'marginX',
-                    name: 'margin-x',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-6)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      'marginY':(
-        index: 'marginY',
-        name: 'd1-marginY',
-        type: 'component',
-        value: (
-          'md':(
-            index: 'md',
-            name: '&--md',
-            type: 'state',
-            value: (
-              'marginY':(
-                index: 'marginY',
-                name: 'margin-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
-              ),
-            ),
-          ),
-          'lg':(
-            index: 'lg',
-            name: '&--lg',
-            type: 'state',
-            value: (
-              'marginY':(
-                index: 'marginY',
-                name: 'margin-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-6)',
-              ),
-            ),
-          ),
-          'xl':(
-            index: 'xl',
-            name: '&--xl',
-            type: 'state',
-            value: (
-              'marginY':(
-                index: 'marginY',
-                name: 'margin-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-8)',
-              ),
-            ),
-          ),
-          '2xl':(
-            index: '2xl',
-            name: '&--2xl',
-            type: 'state',
-            value: (
-              'marginY':(
-                index: 'marginY',
-                name: 'margin-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-10)',
-              ),
-            ),
-          ),
-          'mdToLg':(
-            index: 'mdToLg',
-            name: '&--mdToLg',
-            type: 'state',
-            value: (
-              'marginY':(
-                index: 'marginY',
-                name: 'margin-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'marginY':(
-                    index: 'marginY',
-                    name: 'margin-y',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-6)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'mdToXl':(
-            index: 'mdToXl',
-            name: '&--mdToXl',
-            type: 'state',
-            value: (
-              'marginY':(
-                index: 'marginY',
-                name: 'margin-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-4)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'marginY':(
-                    index: 'marginY',
-                    name: 'margin-y',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-8)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'lgToXl':(
-            index: 'lgToXl',
-            name: '&--lgToXl',
-            type: 'state',
-            value: (
-              'marginY':(
-                index: 'marginY',
-                name: 'margin-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-6)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'marginY':(
-                    index: 'marginY',
-                    name: 'margin-y',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-8)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'lgTo2xl':(
-            index: 'lgTo2xl',
-            name: '&--lgTo2xl',
-            type: 'state',
-            value: (
-              'marginY':(
-                index: 'marginY',
-                name: 'margin-y',
-                type: 'property',
-                value: 'var(--d1-ref-spacing-6)',
-              ),
-              'mediaMd':(
-                index: 'mediaMd',
-                name: '(min-width: 768px)',
-                type: 'media',
-                value: (
-                  'marginY':(
-                    index: 'marginY',
-                    name: 'margin-y',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-10)',
-                  ),
-                ),
+                value: 'var(--d1-sys-shadow-2xl)',
               ),
             ),
           ),
@@ -8620,6 +8379,802 @@
                 name: 'letter-spacing',
                 type: 'property',
                 value: 'var(--d1-sys-letterSpacing-compress)',
+              ),
+            ),
+          ),
+        ),
+      ),
+      'padding':(
+        index: 'padding',
+        name: 'd1-padding',
+        type: 'component',
+        value: (
+          'sm':(
+            index: 'sm',
+            name: '&--sm',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+            ),
+          ),
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'xl':(
+            index: 'xl',
+            name: '&--xl',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-8)',
+              ),
+            ),
+          ),
+          'smToMd':(
+            index: 'smToMd',
+            name: '&--smToMd',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'padding':(
+                    index: 'padding',
+                    name: 'padding',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-4)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'smToLg':(
+            index: 'smToLg',
+            name: '&--smToLg',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'padding':(
+                    index: 'padding',
+                    name: 'padding',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToLg':(
+            index: 'mdToLg',
+            name: '&--mdToLg',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'padding':(
+                    index: 'padding',
+                    name: 'padding',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToXl':(
+            index: 'mdToXl',
+            name: '&--mdToXl',
+            type: 'state',
+            value: (
+              'padding':(
+                index: 'padding',
+                name: 'padding',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'padding':(
+                    index: 'padding',
+                    name: 'padding',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'paddingX':(
+        index: 'paddingX',
+        name: 'd1-paddingX',
+        type: 'component',
+        value: (
+          'sm':(
+            index: 'sm',
+            name: '&--sm',
+            type: 'state',
+            value: (
+              'paddingX':(
+                index: 'paddingX',
+                name: 'padding-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+            ),
+          ),
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'paddingX':(
+                index: 'paddingX',
+                name: 'padding-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'paddingX':(
+                index: 'paddingX',
+                name: 'padding-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'smToMd':(
+            index: 'smToMd',
+            name: '&--smToMd',
+            type: 'state',
+            value: (
+              'paddingX':(
+                index: 'paddingX',
+                name: 'padding-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'paddingX':(
+                    index: 'paddingX',
+                    name: 'padding-x',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-4)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'smToLg':(
+            index: 'smToLg',
+            name: '&--smToLg',
+            type: 'state',
+            value: (
+              'paddingX':(
+                index: 'paddingX',
+                name: 'padding-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'paddingX':(
+                    index: 'paddingX',
+                    name: 'padding-x',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'paddingY':(
+        index: 'paddingY',
+        name: 'd1-paddingY',
+        type: 'component',
+        value: (
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'paddingY':(
+                index: 'paddingY',
+                name: 'padding-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'paddingY':(
+                index: 'paddingY',
+                name: 'padding-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'xl':(
+            index: 'xl',
+            name: '&--xl',
+            type: 'state',
+            value: (
+              'paddingY':(
+                index: 'paddingY',
+                name: 'padding-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-8)',
+              ),
+            ),
+          ),
+          'mdToLg':(
+            index: 'mdToLg',
+            name: '&--mdToLg',
+            type: 'state',
+            value: (
+              'paddingY':(
+                index: 'paddingY',
+                name: 'padding-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'paddingY':(
+                    index: 'paddingY',
+                    name: 'padding-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToXl':(
+            index: 'mdToXl',
+            name: '&--mdToXl',
+            type: 'state',
+            value: (
+              'paddingY':(
+                index: 'paddingY',
+                name: 'padding-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'paddingY':(
+                    index: 'paddingY',
+                    name: 'padding-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'margin':(
+        index: 'margin',
+        name: 'd1-margin',
+        type: 'component',
+        value: (
+          'sm':(
+            index: 'sm',
+            name: '&--sm',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+            ),
+          ),
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'xl':(
+            index: 'xl',
+            name: '&--xl',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-8)',
+              ),
+            ),
+          ),
+          '2xl':(
+            index: '2xl',
+            name: '&--2xl',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-10)',
+              ),
+            ),
+          ),
+          'smToMd':(
+            index: 'smToMd',
+            name: '&--smToMd',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'margin':(
+                    index: 'margin',
+                    name: 'margin',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-4)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'smToLg':(
+            index: 'smToLg',
+            name: '&--smToLg',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'margin':(
+                    index: 'margin',
+                    name: 'margin',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToLg':(
+            index: 'mdToLg',
+            name: '&--mdToLg',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'margin':(
+                    index: 'margin',
+                    name: 'margin',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToXl':(
+            index: 'mdToXl',
+            name: '&--mdToXl',
+            type: 'state',
+            value: (
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'margin':(
+                    index: 'margin',
+                    name: 'margin',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'marginX':(
+        index: 'marginX',
+        name: 'd1-marginX',
+        type: 'component',
+        value: (
+          'sm':(
+            index: 'sm',
+            name: '&--sm',
+            type: 'state',
+            value: (
+              'marginX':(
+                index: 'marginX',
+                name: 'margin-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+            ),
+          ),
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'marginX':(
+                index: 'marginX',
+                name: 'margin-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'marginX':(
+                index: 'marginX',
+                name: 'margin-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'smToMd':(
+            index: 'smToMd',
+            name: '&--smToMd',
+            type: 'state',
+            value: (
+              'marginX':(
+                index: 'marginX',
+                name: 'margin-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginX':(
+                    index: 'marginX',
+                    name: 'margin-x',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-4)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'smToLg':(
+            index: 'smToLg',
+            name: '&--smToLg',
+            type: 'state',
+            value: (
+              'marginX':(
+                index: 'marginX',
+                name: 'margin-x',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginX':(
+                    index: 'marginX',
+                    name: 'margin-x',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'marginY':(
+        index: 'marginY',
+        name: 'd1-marginY',
+        type: 'component',
+        value: (
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+            ),
+          ),
+          'xl':(
+            index: 'xl',
+            name: '&--xl',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-8)',
+              ),
+            ),
+          ),
+          '2xl':(
+            index: '2xl',
+            name: '&--2xl',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-10)',
+              ),
+            ),
+          ),
+          'mdToLg':(
+            index: 'mdToLg',
+            name: '&--mdToLg',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginY':(
+                    index: 'marginY',
+                    name: 'margin-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'mdToXl':(
+            index: 'mdToXl',
+            name: '&--mdToXl',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-4)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginY':(
+                    index: 'marginY',
+                    name: 'margin-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'lgToXl':(
+            index: 'lgToXl',
+            name: '&--lgToXl',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginY':(
+                    index: 'marginY',
+                    name: 'margin-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'lgTo2xl':(
+            index: 'lgTo2xl',
+            name: '&--lgTo2xl',
+            type: 'state',
+            value: (
+              'marginY':(
+                index: 'marginY',
+                name: 'margin-y',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-6)',
+              ),
+              'mediaMd':(
+                index: 'mediaMd',
+                name: '(min-width: 768px)',
+                type: 'media',
+                value: (
+                  'marginY':(
+                    index: 'marginY',
+                    name: 'margin-y',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-10)',
+                  ),
+                ),
               ),
             ),
           ),

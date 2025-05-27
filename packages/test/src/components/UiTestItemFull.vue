@@ -8,11 +8,13 @@ const props = withDefaults(
     isFlex?: boolean
     isPadding?: boolean
     background?: boolean
+    rounded?: boolean
     inverse?: boolean
   }>(),
   {
     isFlex: true,
-    background: true
+    background: true,
+    rounded: true
   }
 )
 
@@ -20,6 +22,7 @@ const classes = computed(() => ({
   'ui-test-item-full--flex': props.isFlex,
   'ui-test-item-full--padding': props.isPadding,
   'ui-test-item-full--background': props.background,
+  'ui-test-item-full--rounded': props.rounded,
   'ui-test-item-full--inverse': props.inverse
 }))
 </script>
@@ -39,8 +42,6 @@ const classes = computed(() => ({
 
   width: 100%;
 
-  border-radius: 4px;
-
   &--flex {
     display: flex;
     gap: 4px;
@@ -57,6 +58,10 @@ const classes = computed(() => ({
 
   &--background {
     background-color: white;
+  }
+
+  &--rounded {
+    border-radius: 4px;
   }
 
   &--inverse {

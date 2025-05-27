@@ -1,0 +1,61 @@
+@use "@dxt-ui/styles" as ui;
+
+.d1-elevation {
+  &--0 {
+    z-index: var(--d1-sys-index-none);
+    
+    background: var(--d1-sys-background-0);
+    
+    box-shadow: var(--d1-sys-shadow-none);
+  }
+  
+  &--1 {
+    z-index: var(--d1-sys-index-lg);
+    
+    background: var(--d1-sys-background-1);
+    
+    border-radius: var(--d1-sys-rounded-lg);
+    
+    box-shadow: var(--d1-sys-shadow-lg);
+  }
+  
+  &--2 {
+    z-index: var(--d1-sys-index-lg);
+    
+    background: var(--d1-sys-background-2);
+    
+    border-radius: var(--d1-sys-rounded-lg);
+    
+    box-shadow: var(--d1-sys-shadow-lg);
+  }
+  
+  &--3 {
+    z-index: var(--d1-sys-index-xl);
+    
+    background: var(--d1-sys-background-3);
+    
+    border-radius: var(--d1-sys-rounded-xl);
+    
+    box-shadow: var(--d1-sys-shadow-xl);
+  }
+  
+  &--4 {
+    z-index: var(--d1-sys-index-xl);
+    
+    background: var(--d1-sys-background-4);
+    
+    border-radius: var(--d1-sys-rounded-xl);
+    
+    box-shadow: var(--d1-sys-shadow-xl);
+  }
+  
+  &--5 {
+    z-index: var(--d1-sys-index-2xl);
+    
+    background: var(--d1-sys-background-5);
+    
+    border-radius: var(--d1-sys-rounded-2xl);
+    
+    box-shadow: var(--d1-sys-shadow-2xl);
+  }
+}

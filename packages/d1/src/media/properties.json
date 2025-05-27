@@ -44,6 +44,18 @@
     },
     "_category": "class"
   },
+  "elevation": {
+    "value": {
+      "file|elevation": "tokens/elevation.json"
+    },
+    "_category": "class"
+  },
+  "font": {
+    "value": {
+      "file|font": "tokens/font.json"
+    },
+    "_category": "class"
+  },
   "padding": {
     "value": {
       "file|padding": "tokens/padding.json"
@@ -77,12 +89,6 @@
   "marginY": {
     "value": {
       "file|marginX": "tokens/marginY.json"
-    },
-    "_category": "class"
-  },
-  "font": {
-    "value": {
-      "file|font": "tokens/font.json"
     },
     "_category": "class"
   },

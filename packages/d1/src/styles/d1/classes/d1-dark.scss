@@ -1,6 +1,12 @@
 @use "@dxt-ui/styles" as ui;
 
 .d1-dark {
+  --d1-sys-background-0: rgb(var(--d1-ref-palette-slate-950));
+  --d1-sys-background-1: rgb(var(--d1-ref-palette-slate-950));
+  --d1-sys-background-2: rgb(var(--d1-ref-palette-slate-900));
+  --d1-sys-background-3: rgb(var(--d1-ref-palette-slate-900));
+  --d1-sys-background-4: rgb(var(--d1-ref-palette-slate-800));
+  --d1-sys-background-5: rgb(var(--d1-ref-palette-slate-800));
   --d1-sys-palette-primary: var(--d1-ref-palette-blue-200);
   --d1-sys-palette-primaryVariant: var(--d1-ref-palette-blue-400);
   --d1-sys-palette-warning: var(--d1-ref-palette-yellow-200);

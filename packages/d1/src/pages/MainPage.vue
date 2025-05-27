@@ -8,11 +8,13 @@
     <RouterLink to="/classes/backgrounds">Backgrounds</RouterLink>
     <RouterLink to="/classes/borders">Borders</RouterLink>
     <RouterLink to="/classes/colors">Colors</RouterLink>
+    <RouterLink to="/classes/elevations">Elevations</RouterLink>
     <RouterLink to="/classes/fonts">Fonts</RouterLink>
     <RouterLink to="/classes/margins">Margins</RouterLink>
     <RouterLink to="/classes/paddings">Paddings</RouterLink>
     <h4>Reference tokens</h4>
     <RouterLink to="/ref/colors">ref:Colors</RouterLink>
+    <RouterLink to="/ref/shadows">ref:Shadows</RouterLink>
   </div>
 </template>
 

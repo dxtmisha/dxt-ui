@@ -1,0 +1,9 @@
+{
+  "none": "{ref.spacing.0}",
+  "xs": "{ref.spacing.2px}",
+  "sm": "{ref.spacing.4px}",
+  "md": "{ref.spacing.6px}",
+  "lg": "{ref.spacing.8px}",
+  "xl": "{ref.spacing.4}",
+  "2xl": "{ref.spacing.6}"
+}
