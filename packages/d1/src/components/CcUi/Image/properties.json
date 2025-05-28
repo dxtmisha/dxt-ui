@@ -1,3 +1,7 @@
 {
-  "main": "{d.image}"
+  "main": "{d.image}",
+  "disabled": {
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.disabled}"
+  }
 }

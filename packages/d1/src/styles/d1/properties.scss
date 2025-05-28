@@ -16,6 +16,8 @@
   'd1-2xl': 1536px,));
 @include variables.setDesignsClasses((
   'd1.dark',
+  'd1.system',
+  'd1.main',
   'd1.background',
   'd1.border',
   'd1.color',
@@ -45,7 +47,8 @@
   '--d1-sys-palette-inverseSurface': ('--d1-palette-basic800', '--d1-palette-dark200'),
   '--d1-sys-palette-inverseOnPrimary': ('--d1-palette-basic950', '--d1-palette-dark50'),
   '--d1-sys-palette-inverseOnSurface': ('--d1-palette-basic50', '--d1-palette-dark950'),
-  '--d1-sys-palette-shadow': ('--d1-palette-basic950', '--d1-palette-dark700'),));
+  '--d1-sys-palette-shadow': ('--d1-palette-basic950', '--d1-palette-dark700'),
+  '--d1-image-color': ('--d1-palette-basic950'),));
 @include variables.setDesignShade((
   'd1': (50,100,200,300,400,500,600,700,800,900,950),));
 @include variables.setDesignsProperties((
@@ -6101,6 +6104,110 @@
           ),
         ),
       ),
+      'system':(
+        index: 'system',
+        name: 'd1-system',
+        type: 'component',
+        value: (
+          'fontFamily':(
+            index: 'fontFamily',
+            name: 'font-family',
+            type: 'property',
+            value: 'var(--d1-sys-font-family-basic)',
+          ),
+          'fontSize':(
+            index: 'fontSize',
+            name: 'font-size',
+            type: 'property',
+            value: 'var(--d1-sys-font-size-md)',
+          ),
+          'fontWeight':(
+            index: 'fontWeight',
+            name: 'font-weight',
+            type: 'property',
+            value: 'var(--d1-sys-font-weight-regular)',
+          ),
+          'lineHeight':(
+            index: 'lineHeight',
+            name: 'line-height',
+            type: 'property',
+            value: 'var(--d1-sys-lineHeight-md)',
+          ),
+          'letterSpacing':(
+            index: 'letterSpacing',
+            name: 'letter-spacing',
+            type: 'property',
+            value: 'var(--d1-sys-letterSpacing-xl)',
+          ),
+          'color':(
+            index: 'color',
+            name: 'color',
+            type: 'property',
+            value: 'var(--d1-sys-palette-onSurface)',
+          ),
+          'colorOpacity':(
+            index: 'colorOpacity',
+            name: 'color-opacity',
+            type: 'property',
+            value: 'var(--d1-sys-opacity-surface-high)',
+          ),
+        ),
+      ),
+      'main':(
+        index: 'main',
+        name: 'd1-main',
+        type: 'component',
+        value: (
+          'fontFamily':(
+            index: 'fontFamily',
+            name: 'font-family',
+            type: 'property',
+            value: 'var(--d1-sys-font-family-basic)',
+          ),
+          'fontSize':(
+            index: 'fontSize',
+            name: 'font-size',
+            type: 'property',
+            value: 'var(--d1-sys-font-size-md)',
+          ),
+          'fontWeight':(
+            index: 'fontWeight',
+            name: 'font-weight',
+            type: 'property',
+            value: 'var(--d1-sys-font-weight-regular)',
+          ),
+          'lineHeight':(
+            index: 'lineHeight',
+            name: 'line-height',
+            type: 'property',
+            value: 'var(--d1-sys-lineHeight-md)',
+          ),
+          'letterSpacing':(
+            index: 'letterSpacing',
+            name: 'letter-spacing',
+            type: 'property',
+            value: 'var(--d1-sys-letterSpacing-xl)',
+          ),
+          'color':(
+            index: 'color',
+            name: 'color',
+            type: 'property',
+            value: 'var(--d1-sys-palette-onSurface)',
+          ),
+          'colorOpacity':(
+            index: 'colorOpacity',
+            name: 'color-opacity',
+            type: 'property',
+            value: 'var(--d1-sys-opacity-surface-high)',
+          ),
+          'background':(
+            index: 'background',
+            name: 'background',
+            type: 'property',
+            value: 'var(--d1-sys-background-0)',
+          ),
+        ),
+      ),
       'background':(
         index: 'background',
         name: 'd1-background',
@@ -11198,6 +11305,18 @@
             name: '&--disabled',
             type: 'state',
             value: (
+              'color':(
+                index: 'color',
+                name: '--d1-image-color',
+                type: 'var',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: '--d1-image-colorOpacity',
+                type: 'var',
+                value: 'var(--d1-sys-opacity-surface-disabled)',
+              ),
             ),
           ),
           'hide':(

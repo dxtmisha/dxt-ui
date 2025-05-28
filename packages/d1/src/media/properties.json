@@ -26,6 +26,19 @@
     "_type": "var",
     "_category": "root"
   },
+  "system": {
+    "font": "{font.bodyLarge}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.high}",
+    "_category": "class"
+  },
+  "main": {
+    "font": "{font.bodyLarge}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.high}",
+    "background": "{sys.background.0}",
+    "_category": "class"
+  },
   "background": {
     "value": {
       "file|background": "tokens/background.json"

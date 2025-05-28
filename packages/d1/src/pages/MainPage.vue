@@ -4,6 +4,7 @@
 
 <template>
   <div class="app-page-main">
+    <RouterLink to="/image">Image</RouterLink>
     <h2>Styles overview</h2>
     <RouterLink to="/classes/backgrounds">Backgrounds</RouterLink>
     <RouterLink to="/classes/borders">Borders</RouterLink>

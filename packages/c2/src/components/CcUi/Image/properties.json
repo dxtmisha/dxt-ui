@@ -4,6 +4,7 @@
     "color": "{st.content.foreground.color.neutral.disable}"
   },
   "padding": {
+    "none": {},
     "sm": {
       "inset": "{st.global.distance.space.inset.x}"
     },
@@ -15,8 +16,6 @@
     },
     "xl": {
       "inset": "{st.global.distance.space.inset.xl}"
-    },
-    "none": {
     },
     "_default": "none"
   }
