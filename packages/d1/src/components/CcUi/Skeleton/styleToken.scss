@@ -1,0 +1,26 @@
+@use "../../../styles/d1/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Skeleton/style" as Skeleton;
+
+@include ui.initDesignBasic('d1.skeleton') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Skeleton.mixinSkeleton;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-skeleton-color: var(--d1-sys-palette-onSurface);
+    --d1-skeleton-colorOpacity: var(--d1-sys-opacity-surface-disabled);
+    --d1-skeleton-backgroundColor: var(--d1-sys-palette-inverseSurface);
+    --d1-skeleton-backgroundOpacity: var(--d1-sys-opacity-overlay);
+    --d1-skeleton-borderColor: var(--d1-sys-palette-inverseSurface);
+    --d1-skeleton-borderOpacity: var(--d1-sys-opacity-outline);
+    --d1-skeleton-colorOpacityVariant: var(--d1-sys-opacity-disabled);
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

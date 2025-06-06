@@ -63,6 +63,7 @@ export class Skeleton {
   static getClassesList(className: string): SkeletonClassesList {
     return {
       classText: `${className}__text`,
+      classTextVariant: `${className}__textVariant`,
       classBackground: `${className}__background`,
       classBackgroundAfter: `${className}__backgroundAfter`,
       classBackgroundBefore: `${className}__backgroundBefore`,

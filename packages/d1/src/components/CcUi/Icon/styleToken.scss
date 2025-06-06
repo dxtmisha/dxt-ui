@@ -1,0 +1,19 @@
+@use "../../../styles/d1/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Icon/style" as Icon;
+
+@include ui.initDesignBasic('d1.icon') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Icon.mixinIcon;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

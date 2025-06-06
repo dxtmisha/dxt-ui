@@ -48,7 +48,10 @@
   '--d1-sys-palette-inverseOnPrimary': ('--d1-palette-basic950', '--d1-palette-dark50'),
   '--d1-sys-palette-inverseOnSurface': ('--d1-palette-basic50', '--d1-palette-dark950'),
   '--d1-sys-palette-shadow': ('--d1-palette-basic950', '--d1-palette-dark700'),
-  '--d1-image-color': ('--d1-palette-basic950'),));
+  '--d1-image-color': ('--d1-palette-basic950'),
+  '--d1-skeleton-color': ('--d1-palette-basic950'),
+  '--d1-skeleton-backgroundColor': ('--d1-palette-basic800'),
+  '--d1-skeleton-borderColor': ('--d1-palette-basic800'),));
 @include variables.setDesignShade((
   'd1': (50,100,200,300,400,500,600,700,800,900,950),));
 @include variables.setDesignsProperties((
@@ -11288,6 +11291,313 @@
           ),
         ),
       ),
+      'icon':(
+        index: 'icon',
+        name: 'd1-icon',
+        type: 'component',
+        value: (
+          'aspectRatio':(
+            index: 'aspectRatio',
+            name: 'aspect-ratio',
+            type: 'property',
+            value: '1/1',
+          ),
+          'turn':(
+            index: 'turn',
+            name: '&--turn',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'disabled':(
+            index: 'disabled',
+            name: '&--disabled',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'hide':(
+            index: 'hide',
+            name: '&--hide',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'asPalette':(
+            index: 'asPalette',
+            name: '&--asPalette',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dir':(
+            index: 'dir',
+            name: '&--dir',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'overlay':(
+            index: 'overlay',
+            name: '&--overlay',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dynamic':(
+            index: 'dynamic',
+            name: '&--dynamic',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'start':(
+            index: 'start',
+            name: '&--start',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'end':(
+            index: 'end',
+            name: '&--end',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'high':(
+            index: 'high',
+            name: '&--high',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'animationType':(
+            index: 'animationType',
+            name: '&--animationType',
+            type: 'state',
+            value: (
+              'type1':(
+                index: 'type1',
+                name: '&--type1',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'type2':(
+                index: 'type2',
+                name: '&--type2',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
+          ),
+          'animationShow':(
+            index: 'animationShow',
+            name: '&--animationShow',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'size':(
+            index: 'size',
+            name: '&--size',
+            type: 'state',
+            value: (
+              'auto':(
+                index: 'auto',
+                name: '&--auto',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'x':(
+                index: 'x',
+                name: '&--x',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-4)',
+                  ),
+                ),
+              ),
+              'xs':(
+                index: 'xs',
+                name: '&--xs',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-5)',
+                  ),
+                ),
+              ),
+              'sm':(
+                index: 'sm',
+                name: '&--sm',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+              'md':(
+                index: 'md',
+                name: '&--md',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+              'lg':(
+                index: 'lg',
+                name: '&--lg',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-10)',
+                  ),
+                ),
+              ),
+              'xl':(
+                index: 'xl',
+                name: '&--xl',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-12)',
+                  ),
+                ),
+              ),
+              '2xl':(
+                index: '2xl',
+                name: '&--2xl',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-14)',
+                  ),
+                ),
+              ),
+              '4xl':(
+                index: '4xl',
+                name: '&--4xl',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-16)',
+                  ),
+                ),
+              ),
+              '5xl':(
+                index: '5xl',
+                name: '&--5xl',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-18)',
+                  ),
+                ),
+              ),
+              '6xl':(
+                index: '6xl',
+                name: '&--6xl',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-20)',
+                  ),
+                ),
+              ),
+              '7xl':(
+                index: '7xl',
+                name: '&--7xl',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-22)',
+                  ),
+                ),
+              ),
+              '8xl':(
+                index: '8xl',
+                name: '&--8xl',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-24)',
+                  ),
+                ),
+              ),
+              '9xl':(
+                index: '9xl',
+                name: '&--9xl',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-28)',
+                  ),
+                ),
+              ),
+              '10xl':(
+                index: '10xl',
+                name: '&--10xl',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: '--d1-icon-width',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-32)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
       'image':(
         index: 'image',
         name: 'd1-image',
@@ -11359,6 +11669,62 @@
                 value: (
                 ),
               ),
+            ),
+          ),
+        ),
+      ),
+      'skeleton':(
+        index: 'skeleton',
+        name: 'd1-skeleton',
+        type: 'component',
+        value: (
+          'color':(
+            index: 'color',
+            name: '--d1-skeleton-color',
+            type: 'var',
+            value: 'var(--d1-sys-palette-onSurface)',
+          ),
+          'colorOpacity':(
+            index: 'colorOpacity',
+            name: '--d1-skeleton-colorOpacity',
+            type: 'var',
+            value: 'var(--d1-sys-opacity-surface-disabled)',
+          ),
+          'backgroundColor':(
+            index: 'backgroundColor',
+            name: '--d1-skeleton-backgroundColor',
+            type: 'var',
+            value: 'var(--d1-sys-palette-inverseSurface)',
+          ),
+          'backgroundOpacity':(
+            index: 'backgroundOpacity',
+            name: '--d1-skeleton-backgroundOpacity',
+            type: 'var',
+            value: 'var(--d1-sys-opacity-overlay)',
+          ),
+          'borderColor':(
+            index: 'borderColor',
+            name: '--d1-skeleton-borderColor',
+            type: 'var',
+            value: 'var(--d1-sys-palette-inverseSurface)',
+          ),
+          'borderOpacity':(
+            index: 'borderOpacity',
+            name: '--d1-skeleton-borderOpacity',
+            type: 'var',
+            value: 'var(--d1-sys-opacity-outline)',
+          ),
+          'colorOpacityVariant':(
+            index: 'colorOpacityVariant',
+            name: '--d1-skeleton-colorOpacityVariant',
+            type: 'var',
+            value: 'var(--d1-sys-opacity-disabled)',
+          ),
+          'active':(
+            index: 'active',
+            name: '&--active',
+            type: 'state',
+            value: (
             ),
           ),
         ),
@@ -11626,6 +11992,111 @@
           ),
         ),
       ),
+      'icon':(
+        index: 'icon',
+        name: 'd-icon',
+        type: 'component',
+        value: (
+          'turn':(
+            index: 'turn',
+            name: '&--turn',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'disabled':(
+            index: 'disabled',
+            name: '&--disabled',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'hide':(
+            index: 'hide',
+            name: '&--hide',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'asPalette':(
+            index: 'asPalette',
+            name: '&--asPalette',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dir':(
+            index: 'dir',
+            name: '&--dir',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'overlay':(
+            index: 'overlay',
+            name: '&--overlay',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dynamic':(
+            index: 'dynamic',
+            name: '&--dynamic',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'start':(
+            index: 'start',
+            name: '&--start',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'end':(
+            index: 'end',
+            name: '&--end',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'high':(
+            index: 'high',
+            name: '&--high',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'animationType':(
+            index: 'animationType',
+            name: '&--animationType',
+            type: 'state',
+            value: (
+              'type1':(
+                index: 'type1',
+                name: '&--type1',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'type2':(
+                index: 'type2',
+                name: '&--type2',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
+          ),
+          'animationShow':(
+            index: 'animationShow',
+            name: '&--animationShow',
+            type: 'state',
+            value: (
+            ),
+          ),
+        ),
+      ),
       'image':(
         index: 'image',
         name: 'd-image',
@@ -11685,6 +12156,20 @@
                 value: (
                 ),
               ),
+            ),
+          ),
+        ),
+      ),
+      'skeleton':(
+        index: 'skeleton',
+        name: 'd-skeleton',
+        type: 'component',
+        value: (
+          'active':(
+            index: 'active',
+            name: '&--active',
+            type: 'state',
+            value: (
             ),
           ),
         ),

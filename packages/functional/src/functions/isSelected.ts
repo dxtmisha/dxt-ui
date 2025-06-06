@@ -1,4 +1,6 @@
 import { isNull } from './isNull'
+import { isNumber } from './isNumber'
+import { toNumber } from './toNumber'
 
 /**
  * Checks if value is in the array selected or if value equals selected, if selected is a string.
@@ -7,9 +9,9 @@ import { isNull } from './isNull'
  * @param value input value/ входное значение
  * @param selected array or string for comparison/ массив или строка для сравнения
  */
-export function isSelected<T>(
+export function isSelected<T, S>(
   value: T,
-  selected: T | T[]
+  selected: T | T[] | S
 ): boolean {
   if (isNull(value)) {
     return false
@@ -17,6 +19,13 @@ export function isSelected<T>(
 
   if (Array.isArray(selected)) {
     return selected.includes(value)
+  }
+
+  if (
+    isNumber(value)
+    && isNumber(selected)
+  ) {
+    return toNumber(value as number) === toNumber(selected as number)
   }
 
   return value === selected

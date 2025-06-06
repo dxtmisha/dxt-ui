@@ -1,5 +1,6 @@
 export type SkeletonClassesList = {
   classText: string
+  classTextVariant: string
   classBackground: string
   classBackgroundAfter: string
   classBackgroundBefore: string

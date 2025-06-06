@@ -1,0 +1,50 @@
+{
+  "main": "{d.icon}",
+  "aspect-ratio": "1/1",
+  "~size": {
+    "auto": {},
+    "x": {
+      "width": "{ref.spacing.4}"
+    },
+    "xs": {
+      "width": "{ref.spacing.5}"
+    },
+    "sm": {
+      "width": "{ref.spacing.6}"
+    },
+    "md": {
+      "width": "{ref.spacing.8}"
+    },
+    "lg": {
+      "width": "{ref.spacing.10}"
+    },
+    "xl": {
+      "width": "{ref.spacing.12}"
+    },
+    "2xl": {
+      "width": "{ref.spacing.14}"
+    },
+    "4xl": {
+      "width": "{ref.spacing.16}"
+    },
+    "5xl": {
+      "width": "{ref.spacing.18}"
+    },
+    "6xl": {
+      "width": "{ref.spacing.20}"
+    },
+    "7xl": {
+      "width": "{ref.spacing.22}"
+    },
+    "8xl": {
+      "width": "{ref.spacing.24}"
+    },
+    "9xl": {
+      "width": "{ref.spacing.28}"
+    },
+    "10xl": {
+      "width": "{ref.spacing.32}"
+    },
+    "_default": "auto"
+  }
+}

@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from './pages/MainPage.vue'
 
 import ImagePage from './pages/ImagePage.vue'
+import SkeletonPage from './pages/SkeletonPage.vue'
 
 import RefColorsPage from './pages/Ref/RefColorsPage.vue'
 import RefShadowsPage from './pages/Ref/RefShadowsPage.vue'
@@ -17,6 +18,7 @@ import ClassesPaddingsPage from './pages/Classes/ClassesPaddingsPage.vue'
 
 const routes = [
   { path: '/image', component: ImagePage },
+  { path: '/skeleton', component: SkeletonPage },
 
   { path: '/ref/colors', component: RefColorsPage },
   { path: '/ref/shadows', component: RefShadowsPage },

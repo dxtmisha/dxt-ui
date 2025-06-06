@@ -1,5 +1,15 @@
 @use "@dxt-ui/styles/properties" as ui;
 
+@mixin mixinSkeletonText {
+  text-decoration-line: line-through !important;
+  text-decoration-thickness: calc(var(--sys-font-size) * .64) !important;
+  text-decoration-skip: #{spaces} !important;
+  -webkit-text-decoration-skip: spaces !important;
+
+  --sys-color: #{ui.v('??color')} !important;
+  --sys-color-opacity: #{ui.v('??colorOpacity', 1)} !important;
+}
+
 @mixin mixinSkeleton {
   $this: &;
 
@@ -30,18 +40,13 @@
     }
 
     @include ui.subclass('text') {
-      text-decoration-line: line-through !important;
-      text-decoration-thickness: var(--sys-font-size) !important;
-      text-decoration-skip: #{spaces} !important;
-      -webkit-text-decoration-skip: spaces !important;
-
+      @include mixinSkeletonText;
       @include ui.color(ui.v('??color'), ui.v('??colorOpacity'), 'text-decoration-color', true);
-      --sys-color: #{ui.v('??color')} !important;
-      --sys-color-opacity: #{ui.v('??colorOpacity', 1)} !important;
+    }
 
-      * {
-        text-decoration-color: unset;
-      }
+    @include ui.subclass('textVariant') {
+      @include mixinSkeletonText;
+      @include ui.color(ui.v('??color'), ui.v('??borderOpacity'), 'text-decoration-color', true);
     }
 
     @include ui.subclass('background') {

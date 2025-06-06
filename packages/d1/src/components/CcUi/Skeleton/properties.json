@@ -1,0 +1,10 @@
+{
+  "main": "{d.skeleton}",
+  "color": "{sys.palette.onSurface}",
+  "color-opacity": "{sys.opacity.surface.disabled}",
+  "color-opacity-variant": "{sys.opacity.disabled}",
+  "background-color": "{sys.palette.inverseSurface}",
+  "background-opacity": "{sys.opacity.overlay}",
+  "border-color": "{sys.palette.inverseSurface}",
+  "border-opacity": "{sys.opacity.outline}"
+}
