@@ -44,6 +44,7 @@ const classes = computed(() => ({
 
   &--flex {
     display: flex;
+    flex-wrap: wrap;
     gap: 4px;
   }
 

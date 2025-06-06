@@ -12,6 +12,8 @@ import {
   type IconSlots
 } from '@dxt-ui/constructor/Icon'
 
+import { D1Image } from '../Image'
+
 import { defaults, type IconProps, propsValues } from './props'
 import './styleToken.scss'
 
@@ -37,7 +39,13 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-icon--end': props.end,
     'd1-icon--high': props.high,
     [`d1-icon--animationType--${props.animationType}`]: inArray(propsValues.animationType, props.animationType),
-    'd1-icon--animationShow': props.animationShow
+    'd1-icon--animationShow': props.animationShow,
+    'd1-icon--square': props.square && !props.circle && !props.rect,
+    'd1-icon--circle': props.circle,
+    'd1-icon--rect': props.rect,
+    [`d1-icon--size--${props.size}`]: inArray(propsValues.size, props.size),
+    'd1-icon--inverse': props.inverse,
+    [`d1-icon--rounded--${props.rounded}`]: inArray(propsValues.rounded, props.rounded)
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -51,6 +59,9 @@ const design = new IconDesign(
   props,
   {
     emits,
+    components: {
+      image: D1Image
+    },
     classes: classesToken,
     styles: stylesToken
   }

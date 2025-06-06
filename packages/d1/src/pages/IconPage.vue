@@ -10,14 +10,14 @@ import {
   UiTestTitle
 } from '@dxt-ui/test'
 
-import { C2Icon } from '../components/CcUi/Icon'
+import { D1Icon } from '../components/CcUi/Icon'
 
 import DX1228 from '../assets/Images/DX12-28.png'
 import FX135 from '../assets/Images/FX135.png'
 import GalaxyS23 from '../assets/Images/GalaxyS23.png'
 
 import type { IconExpose } from '@dxt-ui/constructor/Icon'
-import C2Skeleton from '../components/CcUi/Skeleton/C2Skeleton.vue'
+import D1Skeleton from '../components/CcUi/Skeleton/D1Skeleton.vue'
 
 Icons.add('fx-135', FX135)
 Icons.add('galaxy-s23', GalaxyS23)
@@ -44,78 +44,101 @@ const onLoad = () => {
   <UiTestContainer label="Icon">
     <UiTestGroup>
       <UiTestItemSquared size="xs">
-        <C2Icon icon="search"/>
+        <D1Icon icon="search"/>
       </UiTestItemSquared>
       <UiTestItemSquared size="xs">
-        <C2Icon icon="menu"/>
+        <D1Icon icon="menu"/>
       </UiTestItemSquared>
       <UiTestItemSquared size="xs">
-        <C2Icon icon="home"/>
+        <D1Icon icon="home"/>
       </UiTestItemSquared>
       <UiTestItemSquared size="xs">
-        <C2Icon icon="fx-135"/>
+        <D1Icon icon="fx-135"/>
       </UiTestItemSquared>
       <UiTestItemSquared size="xs">
-        <C2Icon icon="galaxy-s23"/>
+        <D1Icon icon="galaxy-s23"/>
       </UiTestItemSquared>
       <UiTestItemSquared size="xs">
-        <C2Icon icon="bonus-possible-01"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared size="xs">
-        <C2Icon icon="check-md"/>
+        <D1Icon icon="TX"/>
       </UiTestItemSquared>
     </UiTestGroup>
   </UiTestContainer>
 
   <UiTestContainer label="Size">
     <UiTestGroup>
-      <UiTestItemSquared label="2xs" size="md">
-        <C2Icon icon="mouse" size="2xs"/>
+      <UiTestItemFull :background="false">
+        <UiTestItemSquared label="x" size="md">
+          <D1Icon icon="mouse" overlay size="x"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="xs" size="md">
+          <D1Icon icon="mouse" overlay size="xs"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="sm" size="md">
+          <D1Icon icon="mouse" overlay size="sm"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="md" size="md">
+          <D1Icon icon="mouse" overlay size="md"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="lg" size="md">
+          <D1Icon icon="mouse" overlay size="lg"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="xl" size="md">
+          <D1Icon icon="mouse" overlay size="xl"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="2xl" size="md">
+          <D1Icon icon="mouse" overlay size="2xl"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="3xl" size="md">
+          <D1Icon icon="mouse" overlay size="3xl"/>
+        </UiTestItemSquared>
+      </UiTestItemFull>
+      <UiTestItemFull :background="false">
+        <UiTestItemSquared label="4xl" size="lg">
+          <D1Icon icon="mouse" overlay size="4xl"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="5xl" size="lg">
+          <D1Icon icon="mouse" overlay size="5xl"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="6xl" size="lg">
+          <D1Icon icon="mouse" overlay size="6xl"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="7xl" size="lg">
+          <D1Icon icon="mouse" overlay size="7xl"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="8xl" size="lg">
+          <D1Icon icon="mouse" overlay size="8xl"/>
+        </UiTestItemSquared>
+        <UiTestItemSquared label="9xl" size="lg">
+          <D1Icon icon="mouse" overlay size="9xl"/>
+        </UiTestItemSquared>
+      </UiTestItemFull>
+    </UiTestGroup>
+  </UiTestContainer>
+
+  <UiTestContainer label="Shape">
+    <UiTestGroup>
+      <UiTestItemSquared label="circle" size="md">
+        <D1Icon :icon="image" circle size="4xl"/>
       </UiTestItemSquared>
-      <UiTestItemSquared label="xs" size="md">
-        <C2Icon icon="mouse" size="xs"/>
+      <UiTestItemSquared label="square" size="md">
+        <D1Icon :icon="image" square size="4xl"/>
       </UiTestItemSquared>
+      <UiTestItemSquared label="rect" size="md">
+        <D1Icon :icon="image" rect size="4xl"/>
+      </UiTestItemSquared>
+    </UiTestGroup>
+  </UiTestContainer>
+
+  <UiTestContainer label="Rounded">
+    <UiTestGroup>
       <UiTestItemSquared label="sm" size="md">
-        <C2Icon icon="mouse" size="sm"/>
+        <D1Icon :icon="image" rounded="sm" size="4xl"/>
       </UiTestItemSquared>
       <UiTestItemSquared label="md" size="md">
-        <C2Icon icon="mouse" size="md"/>
+        <D1Icon :icon="image" rounded="md" size="4xl"/>
       </UiTestItemSquared>
       <UiTestItemSquared label="lg" size="md">
-        <C2Icon icon="mouse" size="lg"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="xl" size="md">
-        <C2Icon icon="mouse" size="xl"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="2xl" size="md">
-        <C2Icon icon="mouse" size="2xl"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="3xl" size="md">
-        <C2Icon icon="mouse" size="3xl"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="4xl" size="md">
-        <C2Icon icon="mouse" size="4xl"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="5xl" size="lg">
-        <C2Icon icon="mouse" size="5xl"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="6xl" size="lg">
-        <C2Icon icon="mouse" size="6xl"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="7xl" size="lg">
-        <C2Icon icon="mouse" size="7xl"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="Circle" size="md">
-        <C2Icon :icon="image" circle size="4xl"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="Box" size="md">
-        <C2Icon :icon="image" box size="4xl"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="Box+Round" size="md">
-        <C2Icon :icon="image" box round size="4xl"/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="Rect" size="md">
-        <C2Icon :icon="image" rect size="4xl"/>
+        <D1Icon :icon="image" rounded="lg" size="4xl"/>
       </UiTestItemSquared>
     </UiTestGroup>
   </UiTestContainer>
@@ -123,37 +146,37 @@ const onLoad = () => {
   <UiTestContainer label="Modification">
     <UiTestGroup>
       <UiTestItemSquared class="dir-rtl" label="Dir: false" size="md">
-        <C2Icon icon="more_up"/>
+        <D1Icon icon="more_up"/>
       </UiTestItemSquared>
       <UiTestItemSquared class="dir-rtl" label="Dir: true" size="md">
-        <C2Icon icon="more_up" dir/>
+        <D1Icon icon="more_up" dir/>
       </UiTestItemSquared>
       <UiTestItemSquared label="Overlay" size="md">
-        <C2Icon icon="home" size="xl" overlay/>
+        <D1Icon icon="home" size="xl" overlay/>
       </UiTestItemSquared>
       <UiTestItemSquared label="Dynamic" size="md">
-        <C2Icon icon="home" size="xl" dynamic/>
+        <D1Icon icon="home" size="xl" dynamic/>
       </UiTestItemSquared>
       <UiTestItemSquared label="Dynamic+Overlay" size="md">
-        <C2Icon icon="home" size="xl" dynamic overlay/>
+        <D1Icon icon="home" size="xl" dynamic overlay/>
       </UiTestItemSquared>
       <UiTestItemSquared label="Animation show" size="md">
-        <C2Icon icon="home" size="xl" animation-show/>
+        <D1Icon icon="home" size="xl" animation-show/>
       </UiTestItemSquared>
       <UiTestItemSquared label="Animation show" size="md">
-        <C2Icon :icon="{ value: GalaxyS23, size: 'contain' }" size="xl" animation-show/>
+        <D1Icon :icon="{ value: GalaxyS23, size: 'contain' }" size="xl" animation-show/>
       </UiTestItemSquared>
       <UiTestItemSquared label="Secondary" size="md">
-        <C2Icon icon="mouse" size="xl" secondary/>
+        <D1Icon icon="mouse" size="xl" secondary/>
       </UiTestItemSquared>
     </UiTestGroup>
   </UiTestContainer>
 
   <UiTestContainer label="Position">
     <UiTestGroup>
-      <C2Icon icon="add_circle" start/>
-      <C2Icon icon="cancel" end/>
-      <C2Icon icon="cancel" end high/>
+      <D1Icon icon="add_circle" start/>
+      <D1Icon icon="cancel" end/>
+      <D1Icon icon="cancel" end high/>
       <span style="order: 4">...</span>
     </UiTestGroup>
   </UiTestContainer>
@@ -161,25 +184,22 @@ const onLoad = () => {
   <UiTestContainer label="Palette">
     <UiTestGroup>
       <UiTestItemSquared size="xs">
-        <C2Icon as-palette icon="home"/>
+        <D1Icon as-palette icon="home"/>
       </UiTestItemSquared>
       <UiTestItemSquared size="xs">
-        <C2Icon as-palette icon="home" class="c2-palette--orchid"/>
+        <D1Icon as-palette icon="home" class="d1-palette--cyan"/>
       </UiTestItemSquared>
       <UiTestItemSquared size="xs">
-        <C2Icon icon="home" class="c2-palette--orchid"/>
+        <D1Icon icon="home" class="d1-palette--cyan"/>
       </UiTestItemSquared>
-      <UiTestItemSquared label="Success" size="md">
-        <C2Icon icon="home" success/>
+      <UiTestItemSquared size="xs">
+        <D1Icon icon="home" inverse/>
       </UiTestItemSquared>
-      <UiTestItemSquared label="Success, inverse" size="md">
-        <C2Icon icon="home" success-inverse/>
+      <UiTestItemSquared size="xs">
+        <D1Icon as-palette icon="home" inverse class="d1-palette--cyan"/>
       </UiTestItemSquared>
-      <UiTestItemSquared label="Error" size="md">
-        <C2Icon icon="home" error/>
-      </UiTestItemSquared>
-      <UiTestItemSquared label="Error, inverse" size="md">
-        <C2Icon icon="home" error-inverse/>
+      <UiTestItemSquared size="xs">
+        <D1Icon as-palette icon="home" inverse/>
       </UiTestItemSquared>
     </UiTestGroup>
   </UiTestContainer>
@@ -195,7 +215,7 @@ const onLoad = () => {
         </UiTestGroup>
       </UiTestItemFull>
       <UiTestItemSquared :label="`Is active: ${iconElement?.isActive}`" size="md">
-        <C2Icon
+        <D1Icon
           ref="iconElement"
           :active="active"
           :disabled="disabled"
@@ -206,7 +226,7 @@ const onLoad = () => {
         />
       </UiTestItemSquared>
       <UiTestItemSquared size="md">
-        <C2Icon
+        <D1Icon
           :active="active"
           :disabled="disabled"
           :hide="hide"
@@ -215,7 +235,7 @@ const onLoad = () => {
         />
       </UiTestItemSquared>
       <UiTestItemSquared size="md">
-        <C2Icon
+        <D1Icon
           :active="active"
           :disabled="disabled"
           :hide="hide"
@@ -224,7 +244,7 @@ const onLoad = () => {
         />
       </UiTestItemSquared>
       <UiTestItemSquared label="Type animation: type2" size="md">
-        <C2Icon
+        <D1Icon
           :active="active"
           :disabled="disabled"
           :hide="hide"
@@ -235,7 +255,7 @@ const onLoad = () => {
         />
       </UiTestItemSquared>
       <UiTestItemSquared :label="`Load: ${load}`" size="md">
-        <C2Icon
+        <D1Icon
           :active="active"
           :disabled="disabled"
           :hide="hide"
@@ -244,6 +264,17 @@ const onLoad = () => {
           :turn="turn"
           size="5xl"
           @load="onLoad"
+        />
+      </UiTestItemSquared>
+      <UiTestItemSquared size="md">
+        <D1Icon
+          :active="active"
+          :disabled="disabled"
+          :hide="hide"
+          :icon="image"
+          :icon-active="image"
+          :turn="turn"
+          size="5xl"
         />
       </UiTestItemSquared>
     </UiTestGroup>
@@ -257,12 +288,31 @@ const onLoad = () => {
         </UiTestGroup>
       </UiTestItemFull>
       <UiTestItemSquared size="xs">
-        <C2Skeleton :active="skeleton">
-          <C2Icon
+        <D1Skeleton :active="skeleton">
+          <D1Icon
             :is-skeleton="skeleton"
             icon="home"
           />
-        </C2Skeleton>
+        </D1Skeleton>
+      </UiTestItemSquared>
+      <UiTestItemSquared size="xs">
+        <D1Skeleton :active="skeleton">
+          <D1Icon
+            :is-skeleton="skeleton"
+            icon="home"
+            circle
+          />
+        </D1Skeleton>
+      </UiTestItemSquared>
+      <UiTestItemSquared size="xs">
+        <D1Skeleton :active="skeleton">
+          <D1Icon
+            :is-skeleton="skeleton"
+            icon="home"
+            rect
+            size="md"
+          />
+        </D1Skeleton>
       </UiTestItemSquared>
     </UiTestGroup>
   </UiTestContainer>

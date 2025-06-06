@@ -2,7 +2,9 @@ import { type IconPropsBasic, defaultsIcon } from '@dxt-ui/constructor/Icon'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  animationType: ['type1', 'type2']
+  animationType: ['type1', 'type2'],
+  size: ['auto', 'x', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'],
+  rounded: ['auto', 'sm', 'md', 'lg', 'full']
   // :values [!] System label / Системная метка
 }
 
@@ -20,6 +22,12 @@ interface PropsToken {
   high?: boolean
   animationType?: 'type1' | 'type2'
   animationShow?: boolean
+  square?: boolean
+  circle?: boolean
+  rect?: boolean
+  size?: 'auto' | 'x' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl'
+  inverse?: boolean
+  rounded?: 'auto' | 'sm' | 'md' | 'lg' | 'full'
   // :type [!] System label / Системная метка
 }
 
@@ -36,7 +44,10 @@ export const defaults: object = {
   ...defaultsIcon,
   ...{
     // :default [!] System label / Системная метка
-    animationType: 'type1'
+    animationType: 'type1',
+    square: true,
+    size: 'auto',
+    rounded: 'auto'
     // :default [!] System label / Системная метка
   }
 }
