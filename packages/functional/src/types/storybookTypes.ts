@@ -9,6 +9,7 @@ export enum StorybookControl {
 }
 
 export enum StorybookCategory {
+  adaptive = 'Adaptive',
   status = 'Status',
   value = 'Values',
   style = 'Styles'
