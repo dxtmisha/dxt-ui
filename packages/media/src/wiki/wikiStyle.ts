@@ -16,8 +16,10 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       options: [],
       type: 'string',
-      // Определяет размеры изображения
-      description: 'Specifies the dimensions of the image'
+      description: {
+        en: 'Specifies the dimensions of the image',
+        ru: 'Определяет размеры изображения'
+      }
     }
   }
 }

@@ -4,6 +4,7 @@
 // :component.once import item from './DesignComponent.vue'
 
 // :component.once import type { ComponentProps } from './props'
+// :component.once export type { ComponentProps } from './props'
 
 // :component.once export const DesignComponent: DefineSetupFnComponent<
 // :component.once   ComponentProps,

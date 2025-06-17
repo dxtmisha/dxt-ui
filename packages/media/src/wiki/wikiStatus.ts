@@ -15,8 +15,10 @@ export const wikiStatus: StorybookArgsToList = {
     options: {
       category: StorybookCategory.status,
       defaultValue: false,
-      // Поворачивает элемент на 180 градусов
-      description: 'Rotates the element by 180 degrees'
+      description: {
+        en: 'Rotates the element by 180 degrees',
+        ru: 'Поворачивает элемент на 180 градусов'
+      }
     }
   },
   disabled: {
@@ -24,8 +26,10 @@ export const wikiStatus: StorybookArgsToList = {
     options: {
       category: StorybookCategory.status,
       defaultValue: false,
-      // Переводит элемент в неактивное состояние
-      description: 'Sets the element to an inactive state'
+      description: {
+        en: 'Sets the element to an inactive state',
+        ru: 'Переводит элемент в неактивное состояние'
+      }
     }
   },
   hide: {
@@ -33,8 +37,10 @@ export const wikiStatus: StorybookArgsToList = {
     options: {
       category: StorybookCategory.status,
       defaultValue: false,
-      // Скрывает элемент
-      description: 'Hides the element'
+      description: {
+        en: 'Hides the element',
+        ru: 'Скрывает элемент'
+      }
     }
   }
 }

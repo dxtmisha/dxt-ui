@@ -4,6 +4,7 @@ import type { ImageEmits, ImageSlots } from '@dxt-ui/constructor/Image'
 import item from './D1Image.vue'
 
 import type { ImageProps } from './props'
+export type { ImageProps } from './props'
 
 export const D1Image: DefineSetupFnComponent<
   ImageProps,
