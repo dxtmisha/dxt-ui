@@ -2,6 +2,8 @@
 
 import { strFill } from '@dxt-ui/functional'
 
+import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
+
 import { UI_DIRS_STYLES } from '../../config'
 
 const SPACE = '  '
@@ -16,10 +18,9 @@ export class StylesTool {
    * Getting a directory to store a file.
    *
    * Получение директории для хранения файла.
-   * @param design design name/ название дизайна
    */
-  static getDir(design: string): string[] {
-    return [...UI_DIRS_STYLES, design]
+  static getDir(): string[] {
+    return [...UI_DIRS_STYLES, PropertiesConfig.getProjectName()]
   }
 
   /**

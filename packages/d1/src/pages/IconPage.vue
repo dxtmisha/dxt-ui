@@ -10,14 +10,14 @@ import {
   UiTestTitle
 } from '@dxt-ui/test'
 
-import { D1Icon } from '../components/CcUi/Icon'
+import { D1Icon } from '../components/Ui/Icon'
 
 import DX1228 from '../assets/Images/DX12-28.png'
 import FX135 from '../assets/Images/FX135.png'
 import GalaxyS23 from '../assets/Images/GalaxyS23.png'
 
 import type { IconExpose } from '@dxt-ui/constructor/Icon'
-import D1Skeleton from '../components/CcUi/Skeleton/D1Skeleton.vue'
+import D1Skeleton from '../components/Ui/Skeleton/D1Skeleton.vue'
 
 Icons.add('fx-135', FX135)
 Icons.add('galaxy-s23', GalaxyS23)

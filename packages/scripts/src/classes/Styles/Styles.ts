@@ -55,10 +55,10 @@ export class Styles {
       design,
       items
     ) => {
-      this.initRoot(design, items)
-      this.initClasses(design, items)
-      this.initProperties(design, items)
-      this.initList(design, items)
+      this.initRoot(items)
+      this.initClasses(items)
+      this.initProperties(items)
+      this.initList(items)
       this.initBasic(design)
     })
 
@@ -69,17 +69,15 @@ export class Styles {
    * Generating basic variables.
    *
    * Генерация базовых переменных.
-   * @param design design name/ название дизайна
    * @param items current element/ текущий элемент
    */
   protected initRoot(
-    design: string,
     items: PropertiesItems
   ): this {
     const data = StylesTool.join(new StylesRoot(items).init())
 
     PropertiesFile.write(
-      StylesTool.getDir(design),
+      StylesTool.getDir(),
       FILE_VAR,
       data,
       UI_EXTENSION_STYLE
@@ -92,11 +90,9 @@ export class Styles {
    * Generating all base classes.
    *
    * Генерация всех базовых классов.
-   * @param design design name/ название дизайна
    * @param items current element/ текущий элемент
    */
   protected initClasses(
-    design: string,
     items: PropertiesItems
   ): this {
     const {
@@ -106,7 +102,7 @@ export class Styles {
 
     forEach(classes, (item, name) => {
       PropertiesFile.write(
-        [...StylesTool.getDir(design), DIR_CLASS],
+        [...StylesTool.getDir(), DIR_CLASS],
         name,
         StylesTool.join(item),
         UI_EXTENSION_STYLE
@@ -114,7 +110,7 @@ export class Styles {
     })
 
     PropertiesFile.write(
-      StylesTool.getDir(design),
+      StylesTool.getDir(),
       FILE_CLASS,
       StylesTool.join(data),
       UI_EXTENSION_STYLE
@@ -124,13 +120,12 @@ export class Styles {
   }
 
   protected initProperties(
-    design: string,
     items: PropertiesItems
   ): this {
     const scss = new PropertiesScss(items)
 
     PropertiesFile.write(
-      StylesTool.getDir(design),
+      StylesTool.getDir(),
       FILE_PROPERTIES,
       scss.get(),
       UI_EXTENSION_STYLE
@@ -140,11 +135,10 @@ export class Styles {
   }
 
   protected initList(
-    design: string,
     items: PropertiesItems
   ): this {
     PropertiesFile.write(
-      StylesTool.getDir(design),
+      StylesTool.getDir(),
       FILE_LIST,
       this.removeExcess(items.get())
     )
@@ -159,7 +153,7 @@ export class Styles {
    * @param design design name/ название дизайна
    */
   protected initBasic(design: string): this {
-    const dir = StylesTool.getDir(design)
+    const dir = StylesTool.getDir()
 
     PropertiesFile.write(
       dir,

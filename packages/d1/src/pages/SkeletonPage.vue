@@ -7,7 +7,7 @@ import {
   UiTestTitle
 } from '@dxt-ui/test'
 
-import D1Skeleton from '../components/CcUi/Skeleton/D1Skeleton.vue'
+import D1Skeleton from '../components/Ui/Skeleton/D1Skeleton.vue'
 </script>
 
 <template>

@@ -1,14 +1,10 @@
-import { replaceRecursive } from '../../functions/replaceRecursive.ts'
+import { WikiStorybookItem } from './WikiStorybookItem.ts'
 
 import {
-  type StorybookArgsItem,
-  type StorybookArgsToDescription,
-  type StorybookArgsToList,
-  StorybookCategory, StorybookControl
+  type StorybookArgs,
+  type StorybookArgsToItem,
+  type StorybookArgsToList
 } from '../../types/storybookTypes.ts'
-import { Geo } from '../Geo.ts'
-import { isArray } from '../../functions/isArray.ts'
-import { isObjectNotArray } from '../../functions/isObjectNotArray.ts'
 
 /**
  * Class representing a Storybook wiki
@@ -16,37 +12,61 @@ import { isObjectNotArray } from '../../functions/isObjectNotArray.ts'
  * Класс, представляющий wiki для Storybook
  */
 export class WikiStorybook {
-  protected readonly wiki: StorybookArgsToList
-
   /**
    * Creates a new instance of WikiStorybook
    *
    * Создает новый экземпляр WikiStorybook
-   * @param design - Design name/ Название дизайна
+   * @param component - Component name/ Название компонента
+   * @param propsNames - Name of the props/ Название свойств
    * @param wikiDesign - Design values for the wiki/ Значения дизайна для wiki
-   * @param wikiBasic - Basic values for the wiki (optional)/ Базовые значения для wiki (необязательно)
+   * @param wikiBasic - Basic values for the wiki/ Базовые значения для wiki
    */
   constructor(
-    protected readonly design: string,
+    protected readonly component: string,
+    protected readonly propsNames: string[],
     protected readonly wikiDesign: StorybookArgsToList,
-    protected readonly wikiBasic?: StorybookArgsToList
+    protected readonly wikiBasic: StorybookArgsToList
   ) {
-    this.wiki = this.initWiki()
   }
 
   /**
-   * Initializes the wiki with the design and basic values
+   * Returns the properties wiki for the component
    *
-   * Инициализирует wiki с дизайном и базовыми значениями
+   * Возвращает wiki свойств для компонента
+   * @return The properties wiki for the component/ Wiki свойств для компонента
    */
-  private initWiki(): StorybookArgsToList {
-    if (this.wikiBasic) {
-      return replaceRecursive(
-        this.wikiDesign,
-        this.wikiBasic ?? {}
-      )
-    }
+  getWiki(): StorybookArgs {
+    return this.initPropsWiki()
+  }
 
-    return this.wikiDesign
+  /**
+   * Returns a wiki item by its name
+   *
+   * Возвращает элемент wiki по его имени
+   * @param name - The name of the wiki item/ Имя элемента wiki
+   */
+  protected getWikiItem(name: string): StorybookArgsToItem | undefined {
+    return this.wikiDesign?.[name] ?? this.wikiBasic?.[name]
+  }
+
+  /**
+   * Initializes the properties list for the component
+   *
+   * Инициализирует список свойств для компонента
+   * @return The list of properties for the component/ Список свойств для компонента
+   */
+  initPropsWiki(): StorybookArgs {
+    const list: StorybookArgs = {}
+
+    this.propsNames.forEach((name) => {
+      const nameByComponent = `${this.component}.${name}`
+      const wiki = this.getWikiItem(nameByComponent) ?? this.getWikiItem(name)
+
+      if (wiki) {
+        list[name] = new WikiStorybookItem(wiki).to()
+      }
+    })
+
+    return list
   }
 }

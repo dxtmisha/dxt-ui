@@ -9,7 +9,7 @@ import {
   UiTestTitle
 } from '@dxt-ui/test'
 
-import D1Image from '../components/CcUi/Image/D1Image.vue'
+import D1Image from '../components/Ui/Image/D1Image.vue'
 
 import DX1228 from '../assets/Images/DX12-28.png'
 import FX135 from '../assets/Images/FX135.png'
