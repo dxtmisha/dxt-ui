@@ -6,7 +6,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 import { LibraryItems } from './LibraryItems'
 
 import { UI_DIRS_ICONS, UI_FILE_NAME_MEDIA } from '../../config'
-import type { LibraryIconItem } from '../../types/libraryTypes.ts'
+import type { LibraryIconItem } from '../../types/libraryTypes'
 
 /**
  * Class for generating the media data connection file.

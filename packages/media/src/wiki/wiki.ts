@@ -1,6 +1,4 @@
-import {
-  type StorybookArgsToList
-} from '@dxt-ui/functional'
+import { type StorybookArgsToList } from '@dxt-ui/functional'
 
 import { wikiStatus } from './wikiStatus.ts'
 import { wikiStyle } from './wikiStyle.ts'

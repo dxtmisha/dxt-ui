@@ -4,6 +4,12 @@
  */
 export const UI_CONFIG_FILE = 'design.config.json'
 
+export const UI_PROJECT_NAME = '@dxt-ui'
+export const UI_PROJECT_CONSTRUCTOR_NAME = 'constructor'
+export const UI_PROJECT_CONSTRUCTOR_FULL_NAME = `${UI_PROJECT_NAME}/${UI_PROJECT_CONSTRUCTOR_NAME}`
+
+export const UI_MODULES = 'node_modules'
+
 /**
  * Name of the base token/ Название базового токена
  */
@@ -52,6 +58,12 @@ export const UI_DIRS_STYLES = [UI_DIR_IN, 'styles']
 export const UI_DIRS_LIBRARY = [UI_DIR_IN, 'library']
 
 /**
+ * Directory for storing component structure descriptions/
+ * Директория для хранения описания структуры компонентов
+ */
+export const UI_DIRS_WIKI = [UI_DIR_IN, 'wiki']
+
+/**
  * File with the list of exportable data/ Файл со списком экспортируемых данных
  */
 export const UI_DIRS_FILE_EXPORT = [UI_DIR_IN, 'library.ts']
@@ -82,6 +94,12 @@ export const UI_FILE_NAME_FLAGS = 'flags'
  * File name for storing media data and icons/ Название файла для хранения медиа-данных и иконок
  */
 export const UI_FILE_NAME_MEDIA = 'media'
+
+/**
+ * File name for the list of component descriptions for the wiki/
+ * Название файла для список описаний компонентов для wiki
+ */
+export const UI_FILE_NAME_WIKI = 'wiki'
 
 export const UI_EXTENSION_STYLE = 'scss'
 

@@ -4,13 +4,21 @@ import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignCommand } from './DesignCommand'
 
-import { UI_DIR_CONSTRUCTOR, UI_DIRS_COMPONENTS } from '../../config'
+import {
+  UI_DIR_COMPONENTS,
+  UI_DIR_CONSTRUCTOR,
+  UI_DIR_IN,
+  UI_DIRS_COMPONENTS, UI_PROJECT_CONSTRUCTOR_FULL_NAME,
+  UI_PROJECT_CONSTRUCTOR_NAME
+} from '../../config'
+import { DesignTypescript } from './DesignTypescript.ts'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
 const FILE_STYLE = 'styleToken.scss'
 const FILE_CLASS = 'DesignComponent.vue'
 const FILE_INDEX = 'index.ts'
+const FILE_WIKI = 'wiki.ts'
 
 /**
  * Class for creating a component or updating data.
@@ -54,6 +62,7 @@ export class DesignComponent extends DesignCommand {
       .makeStyle()
       .makeMain()
       .makeIndex()
+      .makeWiki()
   }
 
   /**
@@ -131,6 +140,57 @@ export class DesignComponent extends DesignCommand {
   protected makeIndex(): this {
     const file = FILE_INDEX
     const sample = this.readDefinable(file)
+
+    this.write(file, sample.get())
+    return this
+  }
+
+  /**
+   * This code generates the index.ts.
+   *
+   * Генерация файла index.ts.
+   */
+  protected makeWiki(): this {
+    const file = FILE_WIKI
+    const root = PropertiesFile.getRootProject()
+    const componentName = this.getStructure().getComponentNameFirst()
+    const sample = this.readDefinable(file)
+
+    if (root) {
+      const ts = new DesignTypescript(
+        PropertiesFile.joinPath([
+          PropertiesFile.getRoot(),
+          UI_DIR_IN,
+          UI_DIR_COMPONENTS,
+          PropertiesConfig.getProjectName(),
+          componentName,
+          FILE_PROPS
+        ]),
+        {
+          paths: {
+            [`${UI_PROJECT_CONSTRUCTOR_FULL_NAME}/${componentName}`]: [
+              PropertiesFile.joinPath([
+                root,
+                UI_PROJECT_CONSTRUCTOR_NAME,
+                UI_DIR_IN,
+                UI_DIR_CONSTRUCTOR,
+                componentName,
+                FILE_INDEX
+              ])
+            ]
+          }
+        }
+      )
+
+      console.log(
+        'pathProps',
+        ts.getTypes()
+      )
+    }
+
+    setTimeout(() => 'asd', 1000000)
+
+    // mport(pathProps).then(item => console.log('item', item))
 
     this.write(file, sample.get())
     return this

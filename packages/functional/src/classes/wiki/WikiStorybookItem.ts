@@ -1,7 +1,7 @@
-import { isObjectNotArray } from '../../functions/isObjectNotArray.ts'
-import { isArray } from '../../functions/isArray.ts'
+import { isObjectNotArray } from '../../functions/isObjectNotArray'
+import { isArray } from '../../functions/isArray'
 
-import { Geo } from '../Geo.ts'
+import { Geo } from '../Geo'
 
 import {
   type StorybookArgsItem,
@@ -9,7 +9,7 @@ import {
   type StorybookArgsToItem,
   StorybookCategory,
   StorybookControl
-} from '../../types/storybookTypes.ts'
+} from '../../types/storybookTypes'
 
 /**
  * Class representing a Storybook wiki item

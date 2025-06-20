@@ -2,6 +2,7 @@ import { toArray, toKebabCase, transformation } from '@dxt-ui/functional'
 
 import requireFs from 'fs'
 import requirePath from 'path'
+import { UI_MODULES, UI_PROJECT_NAME } from '../../config.ts'
 
 export type PropertiesFilePath = string | string[]
 export type PropertiesFileValue<T = any> = string | Record<string, T>
@@ -89,6 +90,34 @@ export class PropertiesFile {
    */
   static getRoot(): string {
     return this.root
+  }
+
+  /**
+   * Returns the root project path
+   *
+   * Возвращает корневой путь проекта
+   * @param rootProject root project path/ путь к корневому проекту
+   * @param maxDepth maximum depth of search for the root project/ максимальная глубина поиска корневого проекта
+   */
+  static getRootProject(
+    rootProject: string = this.root,
+    maxDepth: number = 10
+  ): string | undefined {
+    const path = this.joinPath([rootProject, UI_MODULES, UI_PROJECT_NAME])
+
+    if (this.readDir(path).length > 0) {
+      return path
+    } else if (
+      rootProject.match(requirePath.sep)
+      && maxDepth > 0
+    ) {
+      return this.getRootProject(
+        rootProject.replace(/\/[^/]+$/, ''),
+        maxDepth - 1
+      )
+    }
+
+    return undefined
   }
 
   static getDirname(): string {

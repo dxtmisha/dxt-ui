@@ -8,6 +8,8 @@ import { PropertiesCache } from '../Properties/PropertiesCache'
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { Styles } from '../Styles/Styles'
 
+import { DesignWiki } from './DesignWiki'
+
 import { LibraryMedia } from '../Library/LibraryMedia'
 
 export class DesignUi {
@@ -41,6 +43,7 @@ export class DesignUi {
     PropertiesCache.clear()
 
     new Styles().make()
+    new DesignWiki().make()
 
     this.makeConstructorComponent()
 

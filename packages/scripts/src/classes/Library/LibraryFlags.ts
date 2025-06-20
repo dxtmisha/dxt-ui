@@ -3,7 +3,7 @@ import flags from '@dxt-ui/media/flags'
 
 import { LibraryItems } from './LibraryItems'
 
-import { UI_FILE_NAME_FLAGS } from '../../config.ts'
+import { UI_FILE_NAME_FLAGS } from '../../config'
 
 /**
  * Class for generating a file to connect flags.

@@ -2,7 +2,7 @@
 
 import { strFill } from '@dxt-ui/functional'
 
-import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 
 import { UI_DIRS_STYLES } from '../../config'
 

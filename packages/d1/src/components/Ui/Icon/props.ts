@@ -37,6 +37,11 @@ interface PropsToken {
 export interface IconProps extends IconPropsBasic, PropsToken {
 }
 
+export type AA = {
+  /** Type of animation/ Тип анимации */
+  isA: string
+}
+
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */

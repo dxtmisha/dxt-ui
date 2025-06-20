@@ -1,10 +1,10 @@
-import { WikiStorybookItem } from './WikiStorybookItem.ts'
+import { WikiStorybookItem } from './WikiStorybookItem'
 
 import {
   type StorybookArgs,
   type StorybookArgsToItem,
   type StorybookArgsToList
-} from '../../types/storybookTypes.ts'
+} from '../../types/storybookTypes'
 
 /**
  * Class representing a Storybook wiki

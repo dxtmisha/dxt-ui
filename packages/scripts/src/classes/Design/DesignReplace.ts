@@ -70,6 +70,7 @@ export class DesignReplace {
   getNameFile(name: string): string {
     return name
       .replace(/\[design]/g, this.structure.getDesign())
+      .replace(/\[Design]/g, toCamelCaseFirst(this.structure.getDesign()))
       .replace(/\[component]/g, this.structure.getComponentName())
       .replace(/DesignComponent/g, this.structure.getFileName())
       .replace(new RegExp(this.mark, 'g'), this.component)

@@ -36,3 +36,16 @@ export type DesignStructureItem = {
   category?: string
 }
 export type DesignStructureList = Record<string, DesignStructureItem>
+
+export type DesignTypescriptProp = {
+  name: string
+  type: string
+  option?: string[]
+}
+export type DesignTypescriptProps = DesignTypescriptProp[]
+
+export type DesignTypescriptItem = {
+  name: string
+  props: DesignTypescriptProps
+}
+export type DesignTypescriptList = DesignTypescriptItem[]
