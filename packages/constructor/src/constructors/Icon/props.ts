@@ -25,7 +25,15 @@ export interface IconPropsBasic<
   active?: boolean
 
   // Icon
+  /**
+   * Value of the main icon.
+   * Значение основной иконки.
+   */
   icon?: ImageValue<Image>
+  /**
+   * Value of the active icon.
+   * Значение активной иконки.
+   */
   iconActive?: ImageValue<Image>
 }
 
