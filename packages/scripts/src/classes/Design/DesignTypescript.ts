@@ -1,7 +1,12 @@
 import { forEach } from '@dxt-ui/functional'
 import ts from 'typescript'
 
-import type { DesignTypescriptList, DesignTypescriptProp, DesignTypescriptProps } from '../../types/designTypes.ts'
+import type {
+  DesignTypescriptItem,
+  DesignTypescriptList,
+  DesignTypescriptProp,
+  DesignTypescriptProps
+} from '../../types/designTypes.ts'
 
 /**
  * Class for working with TypeScript types
@@ -12,6 +17,7 @@ export class DesignTypescript {
   protected readonly program: ts.Program
   protected readonly checker: ts.TypeChecker
   protected readonly sourceFile?: ts.SourceFile
+  protected types?: DesignTypescriptList
 
   constructor(
     path: string = '',
@@ -23,12 +29,12 @@ export class DesignTypescript {
   }
 
   /**
-   * Returns the TypeScript types from the source file.
+   * Returns the TypeScript types from the source file
    *
-   * Возвращает типы TypeScript из исходного файла.
+   * Возвращает типы TypeScript из исходного файла
    */
-  getTypes(): DesignTypescriptList | undefined {
-    if (this.sourceFile) {
+  getTypes(): DesignTypescriptList {
+    if (!this.types && this.sourceFile) {
       const data: DesignTypescriptList = []
 
       ts.forEachChild(
@@ -54,10 +60,21 @@ export class DesignTypescript {
           }
         })
 
+      this.types = data
       return data
     }
 
-    return undefined
+    return []
+  }
+
+  /**
+   * Returns the TypeScript type by name
+   *
+   * Возвращает тип TypeScript по имени
+   * @param name Name of the type/ имя типа
+   */
+  getType(name: string): DesignTypescriptItem | undefined {
+    return this.getTypes().find(type => type.name === name)
   }
 
   /**

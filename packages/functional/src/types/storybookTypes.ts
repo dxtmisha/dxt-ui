@@ -54,11 +54,13 @@ export type StorybookArgsToOptionsByType = {
   /** Type */
   type?: StorybookControl | string | string[]
   /** Default value / Значение по умолчанию */
-  defaultValue?: string | boolean
+  defaultValue?: string | number | boolean
+  /** Value for the argument / Значение для аргумента */
+  value?: string | number | boolean
   /** Description for the argument / Описание для аргумента */
   description?: StorybookArgsToDescription
   /** Options for select / Опции для выбора */
-  options?: string[] | Record<string, string>
+  options?: (string | number)[] | Record<string, string>
   /** Minimum value / Минимальное значение */
   min?: number
   /** Maximum value / Максимальное значение */
@@ -72,3 +74,19 @@ export type StorybookArgsToItem = {
   options: StorybookArgsToOptionsByType
 }
 export type StorybookArgsToList = Record<string, StorybookArgsToItem>
+
+export type StorybookProp = {
+  /** Name of the property / Название свойства */
+  name: string
+  /** Type of the property / Тип свойства */
+  type: string
+  /** Options for selection in Storybook / Опции для выбора в Storybook */
+  option?: (string | number)[]
+}
+export type StorybookProps = StorybookProp[]
+
+export type StorybookComponentsDescriptionItem = {
+  name: string
+  description: StorybookArgsToDescription
+}
+export type StorybookComponentsDescription = StorybookComponentsDescriptionItem[]

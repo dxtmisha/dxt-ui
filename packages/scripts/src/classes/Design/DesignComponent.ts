@@ -146,9 +146,9 @@ export class DesignComponent extends DesignCommand {
   }
 
   /**
-   * This code generates the index.ts.
+   * This code generates the wiki.ts.
    *
-   * Генерация файла index.ts.
+   * Генерация файла wiki.ts.
    */
   protected makeWiki(): this {
     const file = FILE_WIKI
@@ -157,6 +157,7 @@ export class DesignComponent extends DesignCommand {
     const sample = this.readDefinable(file)
 
     if (root) {
+      const props: string[] = []
       const ts = new DesignTypescript(
         PropertiesFile.joinPath([
           PropertiesFile.getRoot(),
@@ -182,15 +183,36 @@ export class DesignComponent extends DesignCommand {
         }
       )
 
-      console.log(
-        'pathProps',
-        ts.getTypes()
-      )
+      const typeInfo = ts.getType(`${componentName}Props`)?.props
+
+      if (typeInfo) {
+        typeInfo
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .forEach((prop) => {
+            const option = prop.option
+            const item: string[] = []
+
+            item.push(
+              '{',
+              `    name: '${prop.name}',`,
+              `    type: '${prop.type}'`
+            )
+
+            if (
+              option
+              && option.length > 0
+            ) {
+              item[2] += ','
+              item.push(`    option: [${option.map(item => `'${item}'`).join(', ')}]`)
+            }
+
+            item.push('  }')
+            props.push(item.join('\r\n'))
+          })
+
+        sample.replaceMark('propsList', props, ',')
+      }
     }
-
-    setTimeout(() => 'asd', 1000000)
-
-    // mport(pathProps).then(item => console.log('item', item))
 
     this.write(file, sample.get())
     return this

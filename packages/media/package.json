@@ -27,6 +27,7 @@
       "types": "./dist/flags.d.ts"
     },
     "./wiki": "./src/wiki/wiki.ts",
+    "./wiki-descriptions": "./src/wiki/wikiDescriptions.ts",
     "./types/*": "./dist/*",
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },

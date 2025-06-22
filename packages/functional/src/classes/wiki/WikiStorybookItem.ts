@@ -19,12 +19,34 @@ import {
 export class WikiStorybookItem {
   /**
    * Constructor
+   * @param name - The name of the item in the wiki/ Название элемента в wiki
    * @param item - The item to convert to a Storybook args item/
    * Элемент, который нужно преобразовать в элемент аргументов Storybook
    */
   constructor(
+    private readonly name: string,
     private readonly item: StorybookArgsToItem
   ) {
+  }
+
+  /**
+   * Returns the name of the item in the wiki
+   *
+   * Возвращает название элемента в wiki
+   * @return The name of the item in the wiki/ название элемента в wiki
+   */
+  getName(): string {
+    return this.name
+  }
+
+  /**
+   * Returns the value of the item in the wiki
+   *
+   * Возвращает значение элемента в wiki
+   * @return The value of the item in the wiki/ значение элемента в wiki
+   */
+  getValue(): any {
+    return this.item.options.value
   }
 
   /**
@@ -79,7 +101,7 @@ export class WikiStorybookItem {
           value = defaultValue ? 'true' : 'false'
           break
         default:
-          value = defaultValue
+          value = String(defaultValue)
           break
       }
     }
