@@ -12,6 +12,7 @@ import type {
 } from '../../types/designTypes'
 
 import { UI_KEY_CUSTOM } from '../../config'
+import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
 
 /**
  * Class with basic replacement for templates.
@@ -69,6 +70,7 @@ export class DesignReplace {
    */
   getNameFile(name: string): string {
     return name
+      .replace(/\[project]/g, PropertiesConfig.getProjectName())
       .replace(/\[design]/g, this.structure.getDesign())
       .replace(/\[Design]/g, toCamelCaseFirst(this.structure.getDesign()))
       .replace(/\[component]/g, this.structure.getComponentName())

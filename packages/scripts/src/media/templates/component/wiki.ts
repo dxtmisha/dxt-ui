@@ -6,8 +6,8 @@
 // :component.once import { defaults } from './props'
 
 // :component.once const propsNames: StorybookProps = [
-// :propsList [!] System label / Системная метка
-// :propsList [!] System label / Системная метка
+// :component.once   // :propsList [!] System label / Системная метка
+// :component.once   // :propsList [!] System label / Системная метка
 // :component.once ]
 
 // :component.once export const ComponentWikiStorybook = new WikiStorybook(

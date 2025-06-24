@@ -8,7 +8,8 @@ import {
   UI_DIR_COMPONENTS,
   UI_DIR_CONSTRUCTOR,
   UI_DIR_IN,
-  UI_DIRS_COMPONENTS, UI_PROJECT_CONSTRUCTOR_FULL_NAME,
+  UI_DIRS_COMPONENTS,
+  UI_PROJECT_CONSTRUCTOR_FULL_NAME,
   UI_PROJECT_CONSTRUCTOR_NAME
 } from '../../config'
 import { DesignTypescript } from './DesignTypescript.ts'
@@ -19,6 +20,7 @@ const FILE_STYLE = 'styleToken.scss'
 const FILE_CLASS = 'DesignComponent.vue'
 const FILE_INDEX = 'index.ts'
 const FILE_WIKI = 'wiki.ts'
+const FILE_STORIES = 'DesignComponent.stories.ts'
 
 /**
  * Class for creating a component or updating data.
@@ -63,6 +65,7 @@ export class DesignComponent extends DesignCommand {
       .makeMain()
       .makeIndex()
       .makeWiki()
+      .makeStories()
   }
 
   /**
@@ -190,24 +193,19 @@ export class DesignComponent extends DesignCommand {
           .sort((a, b) => a.name.localeCompare(b.name))
           .forEach((prop) => {
             const option = prop.option
-            const item: string[] = []
+            let item: string = ''
 
-            item.push(
-              '{',
-              `    name: '${prop.name}',`,
-              `    type: '${prop.type}'`
-            )
+            item += `{ name: '${prop.name}', type: '${prop.type}'`
 
             if (
               option
               && option.length > 0
             ) {
-              item[2] += ','
-              item.push(`    option: [${option.map(item => `'${item}'`).join(', ')}]`)
+              item += `, option: [${option.map(item => `'${item}'`).join(', ')}]`
             }
 
-            item.push('  }')
-            props.push(item.join('\r\n'))
+            item += ` }`
+            props.push(item)
           })
 
         sample.replaceMark('propsList', props, ',')
@@ -215,6 +213,19 @@ export class DesignComponent extends DesignCommand {
     }
 
     this.write(file, sample.get())
+    return this
+  }
+
+  /**
+   * This code generates the stories.ts.
+   *
+   * Генерация файла stories.ts.
+   */
+  protected makeStories(): this {
+    const file = FILE_STORIES
+    const sample = this.readDefinable(file)
+
+    this.write(sample.getNameFile(file), sample.get())
     return this
   }
 

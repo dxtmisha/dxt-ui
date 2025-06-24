@@ -15,11 +15,12 @@ export const wikiImage: StorybookArgsToList = {
     type: StorybookControl.string,
     options: {
       category: StorybookCategory.value,
-      type: 'string | File',
+      type: ['string', 'File'],
       description: {
         en: 'Accepts the name of an icon, a link to an image, a File object, or a link to a PDF file',
         ru: 'Принимает название иконки, ссылку на изображение, объект File или ссылку на PDF файл'
-      }
+      },
+      value: 'rocket_launch'
     }
   },
   'image.url': {
@@ -91,6 +92,7 @@ export const wikiImage: StorybookArgsToList = {
     type: StorybookControl.array,
     options: {
       category: StorybookCategory.style,
+      type: 'number[]',
       description: {
         en: 'Defines the crop area of the image, accepting an array of values for top, right, bottom, and left',
         ru: 'Определяет область обрезки изображения, принимает массив значений для top, right, bottom, left'

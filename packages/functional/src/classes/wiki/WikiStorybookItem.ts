@@ -92,6 +92,7 @@ export class WikiStorybookItem {
    * Возвращает значения свойства по умолчанию
    */
   private getDefaultValue(): { defaultValue?: StorybookArgsItemSummary } {
+    const type = this.item.options.type
     const defaultValue = this.item.options.defaultValue
     let value: string | undefined = undefined
 
@@ -104,6 +105,8 @@ export class WikiStorybookItem {
           value = String(defaultValue)
           break
       }
+    } else if (type === 'boolean') {
+      value = 'false'
     }
 
     if (value) {
@@ -151,17 +154,17 @@ export class WikiStorybookItem {
     const options = this.item.options.options
     let value: string | undefined = undefined
 
-    if (type) {
-      if (isArray(type)) {
-        value = type.join(' | ')
-      } else {
-        value = type
-      }
-    } else if (options) {
+    if (options) {
       if (isArray(options)) {
         value = options.join(' | ')
       } else if (isObjectNotArray(options)) {
         value = Object.keys(options).join(' | ')
+      }
+    } else if (type) {
+      if (isArray(type)) {
+        value = type.join(' | ')
+      } else {
+        value = type
       }
     } else {
       switch (this.item.type) {

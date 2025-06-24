@@ -1,4 +1,5 @@
 import { isArray } from '../../functions/isArray'
+import { toCamelCase } from '../../functions/toCamelCase.ts'
 
 import { Geo } from '../Geo'
 import { WikiStorybookItem } from './WikiStorybookItem'
@@ -49,6 +50,7 @@ export class WikiStorybook {
    * @return The properties wiki for the component/ wiki свойств для компонента
    */
   getWiki(): StorybookArgs {
+    console.log('this.initPropsWiki()', this.initPropsWiki())
     return this.initPropsWiki()
   }
 
@@ -133,7 +135,7 @@ export class WikiStorybook {
       ...wiki,
       options: {
         ...wiki.options,
-        type: item.type ?? wiki.options?.type,
+        type: wiki.options?.type ?? item.type,
         defaultValue: this.defaults[item.name],
         options: item.option ?? wiki.options?.options ?? undefined
       }
@@ -150,7 +152,7 @@ export class WikiStorybook {
     const list: WikiStorybookItem[] = []
 
     this.props.forEach((item) => {
-      const nameByComponent = `${this.component}.${item.name}`
+      const nameByComponent = `${toCamelCase(this.component)}.${item.name}`
       const wiki = this.getWikiItem(nameByComponent) ?? this.getWikiItem(item.name)
 
       if (wiki) {
