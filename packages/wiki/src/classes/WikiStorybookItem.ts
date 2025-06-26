@@ -1,7 +1,4 @@
-import { isObjectNotArray } from '../../functions/isObjectNotArray'
-import { isArray } from '../../functions/isArray'
-
-import { Geo } from '../Geo'
+import { Geo, isArray, isObjectNotArray } from '@dxt-ui/functional'
 
 import {
   type StorybookArgsItem,
@@ -9,7 +6,7 @@ import {
   type StorybookArgsToItem,
   StorybookCategory,
   StorybookControl
-} from '../../types/storybookTypes'
+} from '../types/storybookTypes'
 
 /**
  * Class representing a Storybook wiki item

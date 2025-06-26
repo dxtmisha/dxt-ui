@@ -1,6 +1,5 @@
-import { type StorybookProps, WikiStorybook } from '@dxt-ui/functional'
-import { wiki } from '@dxt-ui/media/wiki'
-import { wikiDescriptions } from '@dxt-ui/media/wiki-descriptions'
+import { type StorybookProps, WikiStorybook } from '@dxt-ui/wiki'
+import { wiki, wikiDescriptions } from '@dxt-ui/wiki/media'
 
 import { wikiD1 } from '../../../wiki/wiki'
 import { defaults } from './props'

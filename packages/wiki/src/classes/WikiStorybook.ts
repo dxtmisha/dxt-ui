@@ -1,7 +1,5 @@
-import { isArray } from '../../functions/isArray'
-import { toCamelCase } from '../../functions/toCamelCase.ts'
+import { Geo, isArray, toCamelCase } from '@dxt-ui/functional'
 
-import { Geo } from '../Geo'
 import { WikiStorybookItem } from './WikiStorybookItem'
 
 import {
@@ -11,7 +9,7 @@ import {
   type StorybookComponentsDescription,
   type StorybookProp,
   type StorybookProps
-} from '../../types/storybookTypes'
+} from '../types/storybookTypes'
 
 /**
  * Class representing a Storybook wiki

@@ -1,9 +1,9 @@
-var Nt = Object.defineProperty;
-var At = (i, t, e) => t in i ? Nt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
-var c = (i, t, e) => At(i, typeof t != "symbol" ? t + "" : t, e);
-import { i as m, D as q, e as B, a as j, b as Ft, G as p, f as d, c as ot, t as O, g as It, d as J, h as y, j as T, r as v, k as h, A as U, l as Bt, m as g, n as Tt, u as Et, o as Ot, p as bt, w as $, q as Rt, E as Wt, s as P, v as vt, x as Z, L as lt, y as xt, z as jt, B as ft, C as Pt, F as R } from "./Icons-Bt5zw60w.js";
-import { H as bs, I as vs, J as ws, K as Cs, M as Ds, N as ks, O as Ms } from "./Icons-Bt5zw60w.js";
-class Ht {
+var At = Object.defineProperty;
+var It = (i, t, e) => t in i ? At(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
+var c = (i, t, e) => It(i, typeof t != "symbol" ? t + "" : t, e);
+import { i as y, D as q, e as B, a as P, b as Ft, G as p, f as g, t as k, c as ct, d as O, g as Bt, h as J, j as m, k as T, r as b, l as h, A as z, m as Tt, n as d, o as Et, u as Ot, p as Rt, q as Ct, w as $, s as Wt, E as jt, v as x, x as nt, y as Z, L as ft, z as Pt, B as xt, C as dt, F as Ht, H as R } from "./Icons-CylHOsLZ.js";
+import { I as vs, J as bs, K as Cs, M as ws, N as Ds, O as ks, P as Ms, Q as Ls } from "./Icons-CylHOsLZ.js";
+class zt {
   /**
    * Constructor
    * @param callback function for the cache/ функция для кэша
@@ -95,7 +95,7 @@ class Ut {
    * @param callback function for the cache/ функция для кэша
    */
   getCacheItem(t, e) {
-    return t in this.cache || (this.cache[t] = new Ht(e)), this.cache[t];
+    return t in this.cache || (this.cache[t] = new zt(e)), this.cache[t];
   }
 }
 const V = class V {
@@ -137,15 +137,15 @@ function wt(i, t = !1) {
             return parseFloat(e);
           if (/^[0-9]+$/.exec(e))
             return parseInt(e, 10);
-          if (t && m() && typeof (window == null ? void 0 : window[e]) == "function")
+          if (t && y() && typeof (window == null ? void 0 : window[e]) == "function")
             return window[e];
         }
     }
   }
   return i;
 }
-const zt = "cookie-block";
-class Ct {
+const Zt = "cookie-block";
+class Dt {
   /**
    * Obtaining status.
    *
@@ -164,9 +164,9 @@ class Ct {
     this.storage.set(t);
   }
 }
-c(Ct, "storage", new q(zt));
+c(Dt, "storage", new q(Zt));
 const H = {};
-class Zt {
+class Yt {
   constructor(t) {
     c(this, "value");
     c(this, "options", {});
@@ -218,7 +218,7 @@ class Zt {
    */
   update() {
     var t, e;
-    if (m() && !Ct.get()) {
+    if (y() && !Dt.get()) {
       const s = String(this.value ?? "");
       document.cookie = [
         `${encodeURIComponent(this.name)}=${encodeURIComponent(s)}`,
@@ -230,10 +230,10 @@ class Zt {
   }
 }
 (() => {
-  if (m())
+  if (y())
     for (const t of document.cookie.split(";")) {
       const [e, s] = t.trim().split("=");
-      e && j(s) && (H[e] = wt(s));
+      e && P(s) && (H[e] = wt(s));
     }
 })();
 const _ = {};
@@ -249,16 +249,8 @@ function D(i) {
   const s = (/^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) ?? (/^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) ?? (/^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) ?? (/^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) ?? (/^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) ?? (/^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) ?? (/^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) ?? (/^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) ?? t.replace(" ", "T");
   return /* @__PURE__ */ new Date(`${s}${e}`);
 }
-function Yt(i, t) {
-  return d(i, (e) => e == null ? void 0 : e[t]);
-}
-function k(i) {
-  if (typeof i == "number")
-    return i;
-  if (!i)
-    return 0;
-  let t = i.replace(/[^\d., ]+/ig, "");
-  return t.match(/( [0-9]{3}[ ,.]|[0-9] [0-9])/ig) ? t = t.replace(/ /ig, "").replace(/,/ig, ".") : t.match(/,[0-9]{3}[,.]/ig) ? t = t.replace(/,/ig, "") : t.match(/[.][0-9]{3}[,.]/ig) ? t = t.replace(/[.]/ig, "").replace(/,/ig, ".") : t = t.replace(/,/ig, "."), parseFloat(t);
+function Kt(i, t) {
+  return g(i, (e) => e == null ? void 0 : e[t]);
 }
 class X {
   /**
@@ -305,7 +297,7 @@ class X {
       ...e
     });
     try {
-      m() && (t ? n = new Intl.DisplayNames(this.getLocation(), s).of(t) : s.type === "language" ? n = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.language) : s.type === "region" && (n = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.country)));
+      y() && (t ? n = new Intl.DisplayNames(this.getLocation(), s).of(t) : s.type === "language" ? n = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.language) : s.type === "region" && (n = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.country)));
     } catch (a) {
       console.error("display: ", a);
     }
@@ -406,7 +398,7 @@ class X {
     }, a = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...o) => (n.currency = o[2].toUpperCase(), o[1]));
     if (s) {
       const o = this.numberObject(n);
-      return o ? Yt(
+      return o ? Kt(
         o.formatToParts(k(t)).filter((u) => ["literal", "currency"].indexOf(u.type) === -1),
         "value"
       ).join("") : t.toString();
@@ -462,7 +454,7 @@ class X {
    */
   sizeFile(t, e = "byte") {
     const s = k(t);
-    if (s > 1024 && ot(e))
+    if (s > 1024 && ct(e))
       switch (e) {
         case "byte":
           return this.sizeFile(s / 1024, "kilobyte");
@@ -513,7 +505,7 @@ class X {
     const a = k(t), o = e.split("|");
     if (o.length > 1)
       try {
-        if (m()) {
+        if (y()) {
           const l = new Intl.PluralRules(this.getLocation(), s).select(a);
           let f;
           switch (l) {
@@ -616,7 +608,7 @@ class X {
       ...typeof s == "string" ? { style: s } : s || {}
     };
     try {
-      if (m())
+      if (y())
         return new Intl.RelativeTimeFormat(this.getLocation(), n).format(Math.round(k(t)), e);
     } catch (a) {
       console.error("relative: ", a);
@@ -631,7 +623,7 @@ class X {
    */
   month(t, e) {
     try {
-      if (m())
+      if (y())
         return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(D(t));
     } catch (s) {
       console.error("month: ", s);
@@ -650,7 +642,7 @@ class X {
       value: void 0
     }];
     try {
-      if (m()) {
+      if (y()) {
         const s = /* @__PURE__ */ new Date(), n = Intl.DateTimeFormat(this.getLocation(), { month: t || "long" });
         for (let a = 0; a < 12; a++)
           s.setMonth(a), e.push({
@@ -672,7 +664,7 @@ class X {
    */
   weekday(t, e) {
     try {
-      if (m())
+      if (y())
         return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(D(t));
     } catch (s) {
       console.error("weekday: ", s);
@@ -691,7 +683,7 @@ class X {
       value: void 0
     }];
     try {
-      if (m()) {
+      if (y()) {
         const s = /* @__PURE__ */ new Date(), n = Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }), a = s.getDay() + (this.geo.firstDay === "Mo" ? -1 : 1);
         s.setDate(s.getDate() - a);
         for (let o = 0; o < 7; o++)
@@ -722,7 +714,7 @@ class X {
    * @param compareFn a function for sorting/ функция для сортировки
    */
   sort(t, e = (s, n) => [s, n]) {
-    if (m()) {
+    if (y()) {
       const s = new Intl.Collator(this.getLocation());
       return t.sort((n, a) => s.compare(...e(n, a)));
     }
@@ -737,7 +729,7 @@ class X {
    */
   numberObject(t) {
     try {
-      if (m())
+      if (y())
         return new Intl.NumberFormat(this.getLocation(), t);
     } catch (e) {
       console.error("numberObject: ", e);
@@ -752,11 +744,11 @@ class X {
    */
   dateOptions(t, e = "short") {
     const s = {};
-    return ["full", "datetime", "date", void 0, "year-month", "year"].indexOf(t) !== -1 && (s.year = "numeric"), ["full", "datetime", "date", void 0, "year-month", "month"].indexOf(t) !== -1 && (s.month = e), ["full", "datetime", "date", void 0, "day"].indexOf(t) !== -1 && (s.day = "2-digit"), t !== void 0 && (["full", "datetime", "time", "hour-minute", "hour"].indexOf(t) !== -1 && (s.hour = "2-digit"), ["full", "datetime", "time", "hour-minute", "minute"].indexOf(t) !== -1 && (s.minute = "2-digit"), ["full", "time", "second"].indexOf(t) !== -1 && (s.second = "2-digit")), s;
+    return ["full", "datetime", "date", void 0, "year-month", "year"].indexOf(t) !== -1 && (s.year = "numeric"), ["full", "datetime", "date", void 0, "year-month", "month", "day-month"].indexOf(t) !== -1 && (s.month = e), ["full", "datetime", "date", void 0, "day", "day-month"].indexOf(t) !== -1 && (s.day = "2-digit"), t !== void 0 && (["full", "datetime", "time", "hour-minute", "hour"].indexOf(t) !== -1 && (s.hour = "2-digit"), ["full", "datetime", "time", "hour-minute", "minute"].indexOf(t) !== -1 && (s.minute = "2-digit"), ["full", "time", "second"].indexOf(t) !== -1 && (s.second = "2-digit")), s;
   }
 }
 const tt = {};
-class ct {
+class ut {
   /**
    * Constructor
    * @param date date for processing/ дата для обработки
@@ -983,7 +975,7 @@ class ct {
    * @param timeZone add time zone/ добавить временную зону
    */
   standard(t = !0) {
-    const e = new ct(this.date, this.type, "en-GB"), s = [];
+    const e = new ut(this.date, this.type, "en-GB"), s = [];
     let n;
     return e.setHour24(!0), this.type === "hour-minute" ? n = e.locale(this.type, {
       year: "numeric",
@@ -1408,7 +1400,7 @@ class ct {
     ), this;
   }
 }
-const r = "@flag", F = class F {
+const r = "@flag", I = class I {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
@@ -1431,7 +1423,7 @@ const r = "@flag", F = class F {
         language: this.getLanguage(e),
         country: n,
         standard: e.standard,
-        icon: (s = F.flags) == null ? void 0 : s[e.country],
+        icon: (s = I.flags) == null ? void 0 : s[e.country],
         label: n,
         value: e.country
       };
@@ -1454,7 +1446,7 @@ const r = "@flag", F = class F {
    * @param codes country code/ код страны
    */
   getList(t) {
-    return d(this.getCodes(t), (e) => this.get(e));
+    return g(this.getCodes(t), (e) => this.get(e));
   }
   /**
    * Getting a list of countries by an array of codes in national language.
@@ -1463,8 +1455,8 @@ const r = "@flag", F = class F {
    * @param codes country code/ код страны.
    */
   getNational(t) {
-    return d(this.getList(t), (e) => {
-      const s = new F(e.standard).get(e.standard);
+    return g(this.getList(t), (e) => {
+      const s = new I(e.standard).get(e.standard);
       return {
         ...e,
         description: s == null ? void 0 : s.country,
@@ -1497,7 +1489,7 @@ const r = "@flag", F = class F {
    * @param codes country code/ код страны
    */
   getCodes(t) {
-    return t ?? Object.keys(F.flags);
+    return t ?? Object.keys(I.flags);
   }
   /**
    * Getting the name of the language.
@@ -1518,7 +1510,7 @@ const r = "@flag", F = class F {
     return this.getLocation().countryName(t.country);
   }
 };
-c(F, "flags", {
+c(I, "flags", {
   AD: `${r}-ad`,
   AE: `${r}-ae`,
   AF: `${r}-af`,
@@ -1761,8 +1753,8 @@ c(F, "flags", {
   ZM: `${r}-zm`,
   ZW: `${r}-zw`
 });
-let nt = F;
-const I = class I {
+let at = I;
+const F = class F {
   /**
    * Getting an object with information about the phone code and country.
    *
@@ -1823,7 +1815,7 @@ const I = class I {
    * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toMask(t, e) {
-    if (j(t) && Array.isArray(e) && e.length > 0) {
+    if (P(t) && Array.isArray(e) && e.length > 0) {
       const s = this.removeZero(t), n = s.length;
       for (const a of e)
         if (this.getUnnecessaryLength(a) === n)
@@ -1871,7 +1863,7 @@ const I = class I {
    * Формирование списка для карты.
    */
   static makeList() {
-    const t = d(p.getList(), (e) => {
+    const t = g(p.getList(), (e) => {
       if (e != null && e.phoneMask)
         return {
           phone: (e == null ? void 0 : e.phoneCode) && Number(e.phoneCode.replace(/[^0-9]+/, "")) || void 0,
@@ -1939,9 +1931,9 @@ const I = class I {
     return t.replace(/\*/, this.getWithinSymbol(e));
   }
 };
-c(I, "list", []), c(I, "map", {}), I.makeList(), I.makeMap();
-let dt = I, A;
-class ye {
+c(F, "list", []), c(F, "map", {}), F.makeList(), F.makeMap();
+let yt = F, A;
+class $e {
   /**
    * Returns the value by its name.
    *
@@ -2023,7 +2015,7 @@ const S = class S {
    * Обновление строки хэша в URL.
    */
   static update() {
-    this.block = !0, history.replaceState(null, "", `#${It(this.hash, "=", ";")}`), requestAnimationFrame(() => {
+    this.block = !0, history.replaceState(null, "", `#${Bt(this.hash, "=", ";")}`), requestAnimationFrame(() => {
       this.block = !1;
     });
   }
@@ -2034,15 +2026,15 @@ const S = class S {
    * @param location fresh data/ свежий данные
    */
   static makeWatch(t) {
-    d(this.watch, (e, s) => {
+    g(this.watch, (e, s) => {
       var n;
       ((n = this.hash) == null ? void 0 : n[s]) !== (t == null ? void 0 : t[s]) && e.forEach((a) => a(t[s]));
     });
   }
 };
-c(S, "hash", {}), c(S, "watch", {}), c(S, "block", !1), m() && (S.reload(), addEventListener("hashchange", () => S.reload()));
+c(S, "hash", {}), c(S, "watch", {}), c(S, "block", !1), y() && (S.reload(), addEventListener("hashchange", () => S.reload()));
 let W = S;
-class Kt {
+class Gt {
   static get() {
     return this.router;
   }
@@ -2061,17 +2053,17 @@ class Kt {
     this.router || this.set(t);
   }
 }
-c(Kt, "router");
-function Gt(i, t, e) {
+c(Gt, "router");
+function Vt(i, t, e) {
   var s;
   return ((s = J(i)) == null ? void 0 : s[t]) ?? e;
 }
-function Vt(i, t, e) {
+function qt(i, t, e) {
   const s = J(i);
   if (s) {
-    const n = Gt(s, t);
-    if (y(n) && y(e))
-      d(e, (a, o) => {
+    const n = Vt(s, t);
+    if (m(n) && m(e))
+      g(e, (a, o) => {
         n[o] = B(a);
       });
     else {
@@ -2082,21 +2074,21 @@ function Vt(i, t, e) {
   return s;
 }
 function mt(i, t = "div", e, s) {
-  if (!m())
+  if (!y())
     return;
   const n = document.createElement(t);
-  return typeof e == "function" ? e(n) : T(e) && d(e, (a, o) => {
-    Vt(n, o, a);
+  return typeof e == "function" ? e(n) : T(e) && g(e, (a, o) => {
+    qt(n, o, a);
   }), i == null || i.insertBefore(n, s ?? null), n;
 }
-const x = class x {
+const j = class j {
   /**
    * Constructor
    */
   constructor() {
-    c(this, "item", v());
+    c(this, "item", b());
     c(this, "is", h(() => this.item.value !== void 0));
-    x.is().then((t) => {
+    j.is().then((t) => {
       this.item.value = t;
     });
   }
@@ -2149,9 +2141,9 @@ const x = class x {
     });
   }
 };
-c(x, "storage", new q("scrollbar", !0)), c(x, "calculate", !1);
-let at = x;
-const C = class C {
+c(j, "storage", new q("scrollbar", !0)), c(j, "calculate", !1);
+let ot = j;
+const w = class w {
   /**
    * Getting the translation text by its code.
    *
@@ -2161,7 +2153,7 @@ const C = class C {
   static async get(t) {
     var s;
     const e = this.getName(t);
-    return e in this.data ? this.data[e] : (U.isLocalhost() || await this.add(t), ((s = this.data) == null ? void 0 : s[e]) ?? t);
+    return e in this.data ? this.data[e] : (z.isLocalhost() || await this.add(t), ((s = this.data) == null ? void 0 : s[e]) ?? t);
   }
   /**
    * Getting the translation text by its code (Sync).
@@ -2227,8 +2219,8 @@ const C = class C {
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static addSync(t) {
-    d(t, (e, s) => {
-      ot(e) && j(e) && (this.data[this.getName(s)] = e);
+    g(t, (e, s) => {
+      ct(e) && P(e) && (this.data[this.getName(s)] = e);
     });
   }
   /**
@@ -2238,8 +2230,8 @@ const C = class C {
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static async addNormalOrSync(t) {
-    if (j(t))
-      if (U.isLocalhost())
+    if (P(t))
+      if (z.isLocalhost())
         this.addSync(t);
       else {
         const e = Object.keys(t);
@@ -2253,7 +2245,7 @@ const C = class C {
    * @param url path to the script/ путь к скрипту
    */
   static setUrl(t) {
-    return this.url = t, C;
+    return this.url = t, w;
   }
   static setPropsName(t) {
     return this.propsName = t, this;
@@ -2285,7 +2277,7 @@ const C = class C {
    * Получение списка переводов с сервера.
    */
   static async getResponse() {
-    return await U.get({
+    return await z.get({
       api: !1,
       path: this.url,
       request: {
@@ -2307,12 +2299,12 @@ const C = class C {
     }), this.cache = [];
   }
 };
-c(C, "url", "/api/translate"), c(C, "propsName", "list"), c(C, "data", {}), c(C, "cache", []), c(C, "resolveList", []), c(C, "timeout");
-let Y = C;
-function ut(i) {
+c(w, "url", "/api/translate"), c(w, "propsName", "list"), c(w, "data", {}), c(w, "cache", []), c(w, "resolveList", []), c(w, "timeout");
+let Y = w;
+function ht(i) {
   return Array.isArray(i);
 }
-class qt {
+class Jt {
   /**
    * Constructor
    * @param props base data/ базовые данные
@@ -2329,7 +2321,7 @@ class qt {
    * @param name property name/ название свойства
    */
   is(t) {
-    return ut(t) ? !!t.find((e) => this.isDifferent(e)) : this.isDifferent(t);
+    return ht(t) ? !!t.find((e) => this.isDifferent(e)) : this.isDifferent(t);
   }
   /**
    * Checks if there are changes in the data.
@@ -2362,7 +2354,7 @@ class qt {
     return ((e = this.cache) == null ? void 0 : e[t]) !== ((s = this.props) == null ? void 0 : s[t]);
   }
 }
-class Jt {
+class Xt {
   /**
    * Constructor
    * @param props base data/ базовые данные
@@ -2373,7 +2365,7 @@ class Jt {
   constructor(t, e, s) {
     c(this, "event", {});
     c(this, "changed");
-    this.props = t, this.callback = e, this.changed = new qt(t, s);
+    this.props = t, this.callback = e, this.changed = new Jt(t, s);
   }
   /**
    * Calls the callback function.
@@ -2421,7 +2413,7 @@ class Jt {
     this.callback && this.callback(this.event);
   }
 }
-class $e extends Jt {
+class pe extends Xt {
   /**
    * Calls the callback function.
    *
@@ -2441,18 +2433,18 @@ class $e extends Jt {
     (t || this.changed.isChanged()) && (await this.initEvent(), this.makeCallbackItem(), this.changed.update());
   }
 }
-function Xt(i) {
+function Qt(i) {
   return i && "class" in i && typeof i.class == "string" ? i.class : void 0;
 }
-function Qt(i, t, e) {
-  const s = Xt(t);
+function _t(i, t, e) {
+  const s = Qt(t);
   return e && s ? `${e}.${s}` : e || s || i;
 }
-function _t(i, t, e, s) {
-  const n = Qt(i, t, s);
-  return Bt(i, { key: n, ...t }, e);
+function te(i, t, e, s) {
+  const n = _t(i, t, s);
+  return Tt(i, { key: n, ...t }, e);
 }
-class Dt {
+class kt {
   /**
    * Constructor
    * @param components list of connected components/ список подключенных компонентов
@@ -2490,11 +2482,11 @@ class Dt {
   getModification(t, e) {
     var s;
     if (t) {
-      const n = g((s = this.modification) == null ? void 0 : s[t]);
+      const n = d((s = this.modification) == null ? void 0 : s[t]);
       if (n && T(n)) {
         const a = {};
-        return d(n, (o, u) => {
-          a[u] = g(o);
+        return g(n, (o, u) => {
+          a[u] = d(o);
         }), e && Object.assign(a, e), a;
       }
     }
@@ -2530,7 +2522,7 @@ class Dt {
   renderOne(t, e, s, n) {
     if (this.is(t)) {
       const a = n ?? t;
-      return _t(
+      return te(
         this.get(t),
         this.getModification(a, e),
         s,
@@ -2553,9 +2545,9 @@ class Dt {
     return t.push(...this.render(e, s, n, a)), this;
   }
 }
-class pe extends Dt {
+class ve extends kt {
 }
-function kt(i) {
+function Mt(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(new RegExp("(?<=[A-Z])([A-Z])", "g"), (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${t[1].toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
 class be {
@@ -2567,7 +2559,7 @@ class be {
    */
   constructor(t, e, s) {
     c(this, "name");
-    c(this, "element", v());
+    c(this, "element", b());
     c(this, "refs");
     c(this, "components");
     c(this, "emits");
@@ -2578,7 +2570,7 @@ class be {
     c(this, "attrs");
     c(this, "slots");
     c(this, "dataExpose");
-    this.props = e, this.options = s, this.name = this.initName(t), this.refs = this.props ? Tt(this.props) : {}, this.components = new Dt(s == null ? void 0 : s.components, s == null ? void 0 : s.compMod), this.emits = s == null ? void 0 : s.emits, this.classes = h(() => this.updateClasses()), this.styles = h(() => this.updateStyles()), this.attrs = Et(), this.slots = Ot();
+    this.props = e, this.options = s, this.name = this.initName(t), this.refs = this.props ? Et(this.props) : {}, this.components = new kt(s == null ? void 0 : s.components, s == null ? void 0 : s.compMod), this.emits = s == null ? void 0 : s.emits, this.classes = h(() => this.updateClasses()), this.styles = h(() => this.updateStyles()), this.attrs = Ot(), this.slots = Rt();
   }
   init() {
     return this.classesSub = h(() => this.initClasses()), this.stylesSub = h(() => this.initStyles()), this.dataExpose = this.initExpose(), this;
@@ -2683,9 +2675,9 @@ class be {
    * @param classes list of classes/ список классов
    */
   toClassName(t) {
-    if (y(t)) {
+    if (m(t)) {
       const e = {};
-      return d(t, (s, n) => {
+      return g(t, (s, n) => {
         n.match(/\?\?/) ? e[n.replace(/\?\?/, this.getName())] = s : n.match(/\?/) ? e[n.replace(/\?/, this.name[0])] = s : e[n] = s;
       }), e;
     }
@@ -2698,7 +2690,7 @@ class be {
    * @param name component name for transformation/ название компонента для преобразования
    */
   initName(t) {
-    return d(t.split(".", 2), (e) => kt(e));
+    return g(t.split(".", 2), (e) => Mt(e));
   }
   /**
    * Updating data about the class.
@@ -2735,9 +2727,9 @@ class be {
   }
 }
 function M(i) {
-  return bt(i) ? i : v(i);
+  return Ct(i) ? i : b(i);
 }
-class ve {
+class Ce {
   /**
    * Constructor
    * @param date date for processing. дата для обработки
@@ -2756,13 +2748,13 @@ class ve {
     c(this, "hour", h(() => this.date.value && this.datetime.getHour()));
     c(this, "minute", h(() => this.date.value && this.datetime.getMinute()));
     c(this, "second", h(() => this.date.value && this.datetime.getSecond()));
-    this.item = M(t), this.type = M(e), this.code = M(s), this.date = v(D(this.item.value)), this.datetime = new ct(
+    this.item = M(t), this.type = M(e), this.code = M(s), this.date = b(D(this.item.value)), this.datetime = new ut(
       this.date.value,
       this.type.value,
       this.code.value
     ), $(this.item, (n) => {
       this.date.value = D(n);
-    }), $(this.type, (n) => this.datetime.setType(n)), $(this.code, (n) => this.datetime.setCode(n)), $(this.date, (n) => this.datetime.setDate(n)), this.datetime.setWatch(() => Rt(this.date));
+    }), $(this.type, (n) => this.datetime.setType(n)), $(this.code, (n) => this.datetime.setCode(n)), $(this.date, (n) => this.datetime.setDate(n)), this.datetime.setWatch(() => Wt(this.date));
   }
   /**
    * Returns the basic data for the date.
@@ -2882,7 +2874,7 @@ class ve {
     return h(() => this.date.value && this.datetime.standard(t));
   }
 }
-class we extends Wt {
+class we extends jt {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -2906,7 +2898,7 @@ class we extends Wt {
     ), l.value && this.setElementControl(l.value), $(u, (f) => this.setElement(f)), $(l, (f) => this.setElementControl(f));
   }
 }
-class Ce {
+class De {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
@@ -2914,7 +2906,7 @@ class Ce {
   constructor(t = p.getLocation()) {
     c(this, "code");
     c(this, "flag");
-    this.code = M(t), this.flag = new nt(this.code.value), $(this.code, (e) => this.flag.setCode(e));
+    this.code = M(t), this.flag = new at(this.code.value), $(this.code, (e) => this.flag.setCode(e));
   }
   /**
    * Obtaining a reactive object with the country code.
@@ -2964,7 +2956,7 @@ class Ce {
     return h(() => this.flag.getNational(t));
   }
 }
-const b = class b {
+const v = class v {
   /**
     * Information about the current country.
   *
@@ -3016,9 +3008,9 @@ const b = class b {
     p.set(t, !0), this.item.value = p.getItem();
   }
 };
-c(b, "item", P(p.get())), c(b, "country", h(() => b.item.value.country)), c(b, "language", h(() => b.item.value.language)), c(b, "standard", h(() => b.item.value.standard)), c(b, "firstDay", h(() => b.item.value.firstDay));
-let K = b;
-class te {
+c(v, "item", x(p.get())), c(v, "country", h(() => v.item.value.country)), c(v, "language", h(() => v.item.value.language)), c(v, "standard", h(() => v.item.value.standard)), c(v, "firstDay", h(() => v.item.value.firstDay));
+let K = v;
+class ee {
   /**
    * Constructor
    * @param code country code, full form language-country or one of them/
@@ -3038,7 +3030,7 @@ class te {
    * объект с некоторыми или всеми из следующих свойств
    */
   display(t, e) {
-    return h(() => this.intl.value.display(g(t), e));
+    return h(() => this.intl.value.display(d(t), e));
   }
   /**
    * Get display names of language.
@@ -3048,7 +3040,7 @@ class te {
    * @param style the formatting style to use/ используемый стиль форматирования
    */
   languageName(t, e) {
-    return h(() => this.intl.value.languageName(g(t), e));
+    return h(() => this.intl.value.languageName(d(t), e));
   }
   /**
    * Get display names of region.
@@ -3058,7 +3050,7 @@ class te {
    * @param style the formatting style to use/ используемый стиль форматирования
    */
   countryName(t, e) {
-    return h(() => this.intl.value.countryName(g(t), e));
+    return h(() => this.intl.value.countryName(d(t), e));
   }
   /**
    * In basic use without specifying a locale, a formatted string.
@@ -3070,7 +3062,7 @@ class te {
    * или всеми свойствами
    */
   number(t, e) {
-    return h(() => this.intl.value.number(g(t), e));
+    return h(() => this.intl.value.number(d(t), e));
   }
   /**
    * Decimal point symbol.
@@ -3092,8 +3084,8 @@ class te {
   currency(t, e, s = !1) {
     return h(
       () => this.intl.value.currency(
-        g(t),
-        g(e),
+        d(t),
+        d(e),
         s
       )
     );
@@ -3108,7 +3100,7 @@ class te {
    * в форматировании блока
    */
   unit(t, e) {
-    return h(() => this.intl.value.unit(g(t), e));
+    return h(() => this.intl.value.unit(d(t), e));
   }
   /**
    * Number as a percentage.
@@ -3118,7 +3110,7 @@ class te {
    * @param options an object with some or all properties/ объект с некоторыми или всеми свойствами
    */
   percent(t, e) {
-    return h(() => this.intl.value.percent(g(t), e));
+    return h(() => this.intl.value.percent(d(t), e));
   }
   /**
    * Number as a percentage (unit).
@@ -3129,7 +3121,7 @@ class te {
    * объект с некоторыми или всеми свойствами
    */
   percentBy100(t, e) {
-    return h(() => this.intl.value.percentBy100(g(t), e));
+    return h(() => this.intl.value.percentBy100(d(t), e));
   }
   /**
    * Enables language-sensitive date and time formatting.
@@ -3141,7 +3133,7 @@ class te {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   date(t, e, s, n) {
-    return h(() => this.intl.value.date(g(t), e, s, n));
+    return h(() => this.intl.value.date(d(t), e, s, n));
   }
   /**
    * Enables language-sensitive relative time formatting.
@@ -3153,7 +3145,7 @@ class te {
    * @param todayValue current day/ текущий день
    */
   relative(t, e, s) {
-    return h(() => this.intl.value.relative(g(t), e, s));
+    return h(() => this.intl.value.relative(d(t), e, s));
   }
   /**
    * Enables language-sensitive relative time formatting
@@ -3175,7 +3167,7 @@ class te {
    */
   relativeLimit(t, e, s, n, a, o, u) {
     return h(() => this.intl.value.relativeLimit(
-      g(t),
+      d(t),
       e,
       s,
       n,
@@ -3192,7 +3184,7 @@ class te {
    * @param style the representation of the month/ представление месяца
    */
   month(t, e) {
-    return h(() => this.intl.value.month(g(t), e));
+    return h(() => this.intl.value.month(d(t), e));
   }
   /**
    * Array to list of months.
@@ -3211,7 +3203,7 @@ class te {
    * @param style the representation of the weekday/ представление о дне недели
    */
   weekday(t, e) {
-    return h(() => this.intl.value.weekday(g(t), e));
+    return h(() => this.intl.value.weekday(d(t), e));
   }
   /**
    * An array of the list of names of the days of the week.
@@ -3229,36 +3221,36 @@ class te {
    * @param value the date to format/ дата для форматирования
    */
   time(t) {
-    return h(() => this.intl.value.time(g(t)));
+    return h(() => this.intl.value.time(d(t)));
   }
 }
-const ee = (i) => typeof i == "string" ? { method: i } : i || {};
+const se = (i) => typeof i == "string" ? { method: i } : i || {};
 let G;
-function De(i, t, e = !0, s, n, a) {
-  const o = v(), u = M(ee(t)), l = v(!1);
+function ke(i, t, e = !0, s, n, a) {
+  const o = b(), u = M(se(t)), l = b(!1);
   let f = !0, L = 0;
   const N = async () => {
     if (f)
       return;
-    const w = g(i);
-    if ((!s || s.value) && w) {
+    const C = d(i);
+    if ((!s || s.value) && C) {
       l.value = !0;
       let Q = {};
-      const ht = await U.request({
-        path: w,
+      const lt = await z.request({
+        path: C,
         ...u.value
       });
-      ht && (Q = ht), n ? o.value = n(Q) : o.value = Q, l.value = !1;
+      lt && (Q = lt), n ? o.value = n(Q) : o.value = Q, l.value = !1;
     } else o.value !== void 0 && (o.value = void 0);
-  }, St = () => {
-    const w = [];
-    e && w.push(u), bt(i) && w.push(i), s && w.push(s), G && w.push(G), w.length > 0 && $(w, async () => {
+  }, Nt = () => {
+    const C = [];
+    e && C.push(u), Ct(i) && C.push(i), s && C.push(s), G && C.push(G), C.length > 0 && $(C, async () => {
       l.value || await N();
     });
   };
   return {
     get data() {
-      return f && (f = !1, N().then()), St(), a && (L++, vt(() => {
+      return f && (f = !1, N().then()), Nt(), a && (L++, nt(() => {
         L--, L < 1 && (console.warn("useApiRef: unmounted"), o.value = void 0, f = !0, L = 0);
       })), o;
     },
@@ -3269,40 +3261,40 @@ function De(i, t, e = !0, s, n, a) {
     reset: N
   };
 }
-const ke = (i) => {
+const Me = (i) => {
   G || (G = i);
 };
-function Me(i, t, e) {
+function Le(i, t, e) {
   if (i in et)
     return et[i];
-  const s = new Zt(i), n = v(s.get(t, e));
+  const s = new Yt(i), n = b(s.get(t, e));
   return $(n, (a) => {
     s.set(a, e);
   }), et[i] = n, n;
 }
 const et = {};
-function Le() {
-  return new te();
+function Se() {
+  return new ee();
 }
-function Se(i, t) {
+function Ne(i, t) {
   if (i in st)
     return st[i];
-  const e = P(W.get(i, t));
+  const e = x(W.get(i, t));
   return $(e, (s) => W.set(i, s)), W.addWatch(i, (s) => {
     e.value = s;
   }), st[i] = e, e;
 }
 const st = {};
-let yt = Z(1e5, 9e5);
-function z(i, t) {
+let $t = Z(1e5, 9e5);
+function U(i, t) {
   const e = J(i);
-  return e ? (j(e.id) || e.setAttribute("id", `id-${yt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${yt++}`;
+  return e ? (P(e.id) || e.setAttribute("id", `id-${$t++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${$t++}`;
 }
-const Ne = () => {
+const Ae = () => {
   const i = {}, t = "IntersectionObserver" in window ? new IntersectionObserver(
     (s) => {
       s.forEach((n) => {
-        const a = z(n.target);
+        const a = U(n.target);
         a in i && (i[a].status.value = n.isIntersecting);
       });
     },
@@ -3311,7 +3303,7 @@ const Ne = () => {
     }
   ) : void 0, e = (s) => {
     if (s) {
-      const n = z(s);
+      const n = U(s);
       n in i && (t == null || t.unobserve(s), i[n].stopWatch(), delete i[n]);
     }
   };
@@ -3324,11 +3316,11 @@ const Ne = () => {
      * @param element element for tracking/ элемента для отслеживания
      */
     addLazyItem(s) {
-      const n = P(!t);
+      const n = x(!t);
       if (t) {
         const a = $(s, (o, u) => {
           if (u && t.unobserve(u), s.value) {
-            const l = z(s.value);
+            const l = U(s.value);
             i[l] = {
               status: n,
               stopWatch: a
@@ -3353,28 +3345,28 @@ const Ne = () => {
     disconnectLazy: () => t == null ? void 0 : t.disconnect()
   };
 };
-function Ae() {
-  const i = P(lt.is());
-  return lt.registrationEvent(({ detail: t }) => {
+function Ie() {
+  const i = x(ft.is());
+  return ft.registrationEvent(({ detail: t }) => {
     i.value = t.loading;
   }), i;
 }
 function Fe(i, t) {
   if (i in it)
     return it[i];
-  const e = new q(i, !0), s = v(e.get(t));
+  const e = new q(i, !0), s = b(e.get(t));
   return $(s, (n) => e.set(n)), it[i] = s, s;
 }
 const it = {};
-function Ie(i, t, e) {
+function Be(i, t, e) {
   if (i in rt)
     return rt[i];
-  const s = new q(i), n = v(s.get(t, e));
+  const s = new q(i), n = b(s.get(t, e));
   return $(n, (a) => s.set(a)), rt[i] = n, n;
 }
 const rt = {};
-function se(i) {
-  const t = P(Y.getListSync(i, !0)), e = async () => {
+function ie(i) {
+  const t = x(Y.getListSync(i, !0)), e = async () => {
     t.value = { ...await Y.getList(i) };
   };
   $(K.getLanguage(), e);
@@ -3385,152 +3377,155 @@ function se(i) {
     }
   return t;
 }
-const Be = (i) => se(i);
-function Te(i) {
-  return ot(i) ? i.trim() : ut(i) && i.findIndex((t) => y(t)) === -1 ? i.join(", ") : y(i) ? JSON.stringify(i) : i === !0 ? "1" : (i == null ? void 0 : i.toString()) ?? "";
+const Te = (i) => ie(i);
+function Ee(i) {
+  return ct(i) ? i.trim() : ht(i) && i.findIndex((t) => m(t)) === -1 ? i.join(", ") : m(i) ? JSON.stringify(i) : i === !0 ? "1" : (i == null ? void 0 : i.toString()) ?? "";
 }
-function ie(i, t) {
+function re(i, t) {
   return Array(t).fill(i);
 }
-function Ee(i) {
+function Oe(i) {
   i.preventDefault(), i.stopPropagation();
 }
-const Mt = [], re = Z(1e5, 999999);
-function Oe(i, t = !0, e = !1, s = !0) {
+const Lt = [], ne = Z(1e5, 999999);
+function Re(i, t = !0, e = !1, s = !0) {
   let n;
-  const a = `__execute_use${re}::${z()}`, o = () => {
-    t && vt(() => {
-      n = void 0;
-    });
-  }, u = (...l) => {
+  const a = `__execute_use${ne}::${U()}`, o = (...u) => {
     if (!e && s) {
-      const f = xt(a, void 0);
-      if (f)
-        return f;
-      n = i(...l), jt(a, n), o();
-    } else n || (n = i(...l), o());
+      const l = Pt(a, void 0);
+      if (l)
+        return l;
+      {
+        let f = i(...u);
+        return xt(a, f), t && nt(() => {
+          f = void 0;
+        }), f;
+      }
+    } else n || (n = i(...u), t && nt(() => {
+      n = void 0;
+    }));
     return n;
   };
-  return e && Mt.push(u), u;
+  return e && Lt.push(o), o;
 }
-function Re() {
-  Mt.forEach((i) => i());
+function We() {
+  Lt.forEach((i) => i());
 }
-function ne(i, t, e) {
+function ae(i, t, e) {
   const s = () => {
-    i(), t != null && t() ? ne(i, t, e) : e == null || e();
+    i(), t != null && t() ? ae(i, t, e) : e == null || e();
   };
-  m() ? requestAnimationFrame(s) : s();
+  y() ? requestAnimationFrame(s) : s();
 }
-function We(i) {
+function je(i) {
   const t = {}, e = J(i);
   if (e)
     for (const s of e.attributes)
       t[s.name] = ((s == null ? void 0 : s.value) || (s == null ? void 0 : s.textContent)) ?? void 0;
   return t;
 }
-async function xe(i) {
+async function Pe(i) {
   var t;
   return ((t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) ?? (await navigator.clipboard.readText() || "");
 }
-function ae(i, t = "ig", e = ":value") {
+function oe(i, t = "ig", e = ":value") {
   const s = i.replace(/([[\]\\^$.?*+()])/g, "\\$1");
   return new RegExp(e.replace(/:value/g, s), t);
 }
-function oe(i, t) {
+function ce(i, t) {
   const e = t.split(".", 2), s = e[0];
-  return i != null && i[s] && T(i[s]) && (e != null && e[1]) ? oe(i[s], e[1]) : (i == null ? void 0 : i[s]) ?? "";
+  return i != null && i[s] && T(i[s]) && (e != null && e[1]) ? ce(i[s], e[1]) : (i == null ? void 0 : i[s]) ?? "";
 }
-function je(i) {
+function xe(i) {
   var t;
   return (i == null ? void 0 : i.key) ?? (i == null ? void 0 : i.code) ?? ((t = i == null ? void 0 : i.keyCode) == null ? void 0 : t.toString());
 }
-function Lt(i) {
-  return d(i, (t) => t.length);
-}
-function Pe(i) {
-  return Math.max(...Lt(i));
+function St(i) {
+  return g(i, (t) => t.length);
 }
 function He(i) {
-  return Math.min(...Lt(i));
+  return Math.max(...St(i));
 }
-function ce(i) {
+function ze(i) {
+  return Math.min(...St(i));
+}
+function ue(i) {
   var t, e;
   return (i == null ? void 0 : i.clientX) || ((t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0].clientX) || ((e = i == null ? void 0 : i.touches) == null ? void 0 : e[0].clientX) || 0;
 }
-function ue(i) {
+function he(i) {
   var t, e;
   return (i == null ? void 0 : i.clientY) || ((t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0].clientY) || ((e = i == null ? void 0 : i.touches) == null ? void 0 : e[0].clientY) || 0;
 }
 function Ue(i) {
   return {
-    x: ce(i),
-    y: ue(i)
+    x: ue(i),
+    y: he(i)
   };
 }
-function ze(i, t) {
+function Ze(i, t) {
   const e = {};
   return t.forEach((s) => {
     s in i && i[s] !== void 0 && (e[s] = i[s]);
   }), e;
 }
-function Ze(i, t = void 0) {
+function Ye(i, t = void 0) {
   const e = {};
-  return d(i, (s, n) => {
+  return g(i, (s, n) => {
     s !== t && (e[n] = s);
   }), e;
 }
-function Ye(i) {
+function Ke(i) {
   return T(i) ? i : {};
 }
-function he(i, t) {
-  return ie(i, t).join("");
+function le(i, t) {
+  return re(i, t).join("");
 }
-function Ke(i, t, e = "#", s = 2, n = 12) {
+function Ge(i, t, e = "#", s = 2, n = 12) {
   const a = Z(i, t), o = [];
   for (let u = 0; u < a; u++)
-    o.push(he(e, Z(s, n)));
+    o.push(le(e, Z(s, n)));
   return o.join(" ");
-}
-function Ge(i, t) {
-  const e = i ?? 0;
-  return t > e ? 100 / (t - e) : 0;
 }
 function Ve(i, t) {
   const e = i ?? 0;
+  return t > e ? 100 / (t - e) : 0;
+}
+function qe(i, t) {
+  const e = i ?? 0;
   return t > e ? (t - e) / 100 : 0;
 }
-const $t = 0;
-function qe(i, t, e) {
+const pt = 0;
+function Je(i, t, e) {
   const s = t == null ? void 0 : t.closest(i);
   if (t && s && s.scrollHeight !== s.offsetHeight)
     if (e) {
       const n = e.getBoundingClientRect(), a = s.getBoundingClientRect(), o = t.getBoundingClientRect();
       s.scrollTop = t.offsetTop - (n.top - a.top) - (n.height / 2 - o.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
-    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - $t : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + $t);
+    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - pt : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + pt);
 }
-function Je(i, t) {
+function Xe(i, t) {
   return i.indexOf(t) !== -1;
 }
-async function Xe() {
-  if (m()) {
-    const i = await at.get();
+async function Qe() {
+  if (y()) {
+    const i = await ot.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function Qe(i, t) {
+function _e(i, t) {
   const e = {};
-  return y(i) && y(t) && d(i, (s, n) => {
+  return m(i) && m(t) && g(i, (s, n) => {
     n in t && (e[n] = s);
   }), e;
 }
-function _e(i, t) {
+function ts(i, t) {
   let e = Object.keys(i).length !== Object.keys(t).length;
-  return e || d(i, (s, n) => {
+  return e || g(i, (s, n) => {
     s !== (t == null ? void 0 : t[n]) && (e = !0);
   }), e;
 }
-function ts(i) {
+function es(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -3540,42 +3535,33 @@ function ts(i) {
       return !1;
   }
 }
-function es(i, t) {
+function ss(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function ss(i) {
-  switch (typeof i) {
-    case "number":
-      return !0;
-    case "string":
-      return !!i.match(/^[0-9]+$/);
-    default:
-      return !1;
-  }
-}
 function is(i, t) {
-  return Array.isArray(i) ? i.every((e) => ft(e, t)) : ft(i, t);
+  return Array.isArray(i) ? i.every((e) => dt(e, t)) : dt(i, t);
 }
-function le(i, t = {}, e = "value", s = !1) {
+function vt(i, t) {
+  const e = i == null ? void 0 : i.class, s = t == null ? void 0 : t.class, n = i == null ? void 0 : i.style, a = t == null ? void 0 : t.style, o = {
+    ...i,
+    ...t
+  };
+  return (e || s) && (o.class = [], e && o.class.push(e), s && o.class.push(s)), (n || a) && (o.style = [], n && o.style.push(n), a && o.style.push(a)), o;
+}
+function fe(i, t = {}, e = "value", s = !1) {
   const n = typeof t == "string", a = n ? t : e, o = n ? {} : t;
-  return i ? i && T(i) && (a in i || s) ? {
-    ...o,
-    ...i
-  } : {
-    ...o,
-    [a]: i
-  } : n ? {} : { ...o };
+  return i ? i && T(i) && (a in i || s) ? vt(o, i) : vt(o, { [a]: i }) : n ? {} : { ...o };
 }
 function rs(i, t = {}, e = "value") {
-  return h(() => le(g(i), g(t), e));
+  return h(() => fe(d(i), d(t), e));
 }
 const ns = (i, t) => {
-  const e = v();
+  const e = b();
   let s = !0;
   const n = () => {
-    s && (Pt(async () => {
-      const a = g(await i());
+    s && (Ht(async () => {
+      const a = d(await i());
       a !== t && (e.value = a);
     }), s = !1);
   };
@@ -3588,27 +3574,27 @@ function os(i) {
   let t;
   return h(() => (t || (t = i()), t.value));
 }
-function fe(i) {
+function de(i) {
   return [...new Set(i)];
 }
 function E(i, t, e = !0) {
   const s = R(i);
-  return y(i) && y(t) && d(
+  return m(i) && m(t) && g(
     t,
     (n, a) => {
       const o = i == null ? void 0 : i[a];
-      y(o) && y(n) ? e && Array.isArray(o) && Array.isArray(n) ? s[a] = R(fe([...o, ...n])) : s[a] = E(
+      m(o) && m(n) ? e && Array.isArray(o) && Array.isArray(n) ? s[a] = R(de([...o, ...n])) : s[a] = E(
         Array.isArray(o) ? { ...o } : o,
         n,
         e
-      ) : s[a] = y(n) ? R(n) : n;
+      ) : s[a] = m(n) ? R(n) : n;
     }
   ), s;
 }
 function cs(i, t) {
   let e = i;
-  return d(t, (s, n) => {
-    e = e.replace(ae(`[${n}]`), B(s));
+  return g(t, (s, n) => {
+    e = e.replace(oe(`[${n}]`), B(s));
   }), e;
 }
 function us(i) {
@@ -3626,7 +3612,7 @@ function hs(i, t, {
   notEmpty: a = !1
 }) {
   if (e) {
-    if (ut(i)) {
+    if (ht(i)) {
       const o = i.indexOf(t), u = [...i];
       return o !== -1 ? (!a || u.length > 1) && u.splice(o, 1) : (!s || i.length < s) && u.push(t), u;
     }
@@ -3635,37 +3621,37 @@ function hs(i, t, {
   return n || i !== t ? t : i;
 }
 function ls(i, t, e) {
-  if (y(i) && y(t)) {
+  if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
-      return d(i, (a, o) => {
-        !n && (e === o || e === a) ? (n = !0, s = E(s, t)) : n ? s = E(s, { [o]: a }) : s[o] = y(a) ? R(a) : a;
+      return g(i, (a, o) => {
+        !n && (e === o || e === a) ? (n = !0, s = E(s, t)) : n ? s = E(s, { [o]: a }) : s[o] = m(a) ? R(a) : a;
       }), n ? s : E(i, t);
     }
-    if (y(t))
+    if (m(t))
       return E(i, t);
   }
   return R(i);
 }
 function fs(i) {
-  return kt(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+  return Mt(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function gs(i) {
+function ds(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(new RegExp("(?<=[A-Z])([A-Z])", "g"), (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(new RegExp("(?<=[\\w ])[A-Z]", "g"), (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function ds(i, t, e, s) {
+function gs(i, t, e, s) {
   const n = k(i);
-  return t && t < n ? `${pt(t, e, s)}+` : pt(n, e, s);
+  return t && t < n ? `${bt(t, e, s)}+` : bt(n, e, s);
 }
-const pt = (i, t, e) => t ? new X(e).number(i) : i;
+const bt = (i, t, e) => t ? new X(e).number(i) : i;
 function ge(i, t) {
   return 1 / i * t;
 }
-function ms(i, t) {
+function ys(i, t) {
   return ge(i, t) * 100;
 }
-async function ys(i) {
-  if (m())
+async function ms(i) {
+  if (y())
     try {
       await navigator.clipboard.writeText(i);
     } catch {
@@ -3673,132 +3659,133 @@ async function ys(i) {
     }
 }
 export {
-  U as Api,
-  bs as ApiMethodItem,
+  z as Api,
+  vs as ApiMethodItem,
   Ut as Cache,
-  Ht as CacheItem,
+  zt as CacheItem,
   gt as CacheStatic,
-  Zt as Cookie,
-  Ct as CookieBlock,
+  Yt as Cookie,
+  Dt as CookieBlock,
   q as DataStorage,
-  ct as Datetime,
-  ve as DatetimeRef,
-  Jt as DesignAbstract,
-  $e as DesignAsyncAbstract,
-  qt as DesignChanged,
-  pe as DesignComp,
-  Dt as DesignComponents,
+  ut as Datetime,
+  Ce as DatetimeRef,
+  Xt as DesignAbstract,
+  pe as DesignAsyncAbstract,
+  Jt as DesignChanged,
+  ve as DesignComp,
+  kt as DesignComponents,
   be as DesignConstructorAbstract,
-  Wt as EventItem,
+  jt as EventItem,
   we as EventRef,
   r as GEO_FLAG_ICON_NAME,
   p as Geo,
-  nt as GeoFlag,
-  Ce as GeoFlagRef,
+  at as GeoFlag,
+  De as GeoFlagRef,
   X as GeoIntl,
-  te as GeoIntlRef,
-  dt as GeoPhone,
+  ee as GeoIntlRef,
+  yt as GeoPhone,
   K as GeoRef,
-  ye as Global,
+  $e as Global,
   W as Hash,
-  vs as Icons,
-  lt as Loading,
-  Kt as RouterItem,
-  at as ScrollbarWidth,
+  bs as Icons,
+  ft as Loading,
+  Gt as RouterItem,
+  ot as ScrollbarWidth,
   Y as Translate,
-  Te as anyToString,
-  ie as arrFill,
+  Ee as anyToString,
+  re as arrFill,
   R as copyObject,
   mt as createElement,
-  Ee as eventStopPropagation,
+  Oe as eventStopPropagation,
   B as executeFunction,
-  ws as executePromise,
-  Oe as executeUse,
-  Re as executeUseGlobalInit,
-  d as forEach,
-  ne as frame,
-  We as getAttributes,
-  le as getBind,
+  Cs as executePromise,
+  Re as executeUse,
+  We as executeUseGlobalInit,
+  g as forEach,
+  ae as frame,
+  je as getAttributes,
+  fe as getBind,
   rs as getBindRef,
-  Xt as getClassName,
-  xe as getClipboardData,
-  Yt as getColumn,
+  Qt as getClassName,
+  Pe as getClipboardData,
+  Kt as getColumn,
   ns as getComputedAsync,
   J as getElement,
-  z as getElementId,
-  Gt as getElementItem,
-  Cs as getElementOrWindow,
-  ae as getExp,
-  Qt as getIndexForRender,
-  oe as getItemByPath,
-  je as getKey,
-  Lt as getLengthOfAllArray,
-  Pe as getMaxLengthAllArray,
-  He as getMinLengthAllArray,
+  U as getElementId,
+  Vt as getElementItem,
+  ws as getElementOrWindow,
+  oe as getExp,
+  _t as getIndexForRender,
+  ce as getItemByPath,
+  xe as getKey,
+  St as getLengthOfAllArray,
+  He as getMaxLengthAllArray,
+  ze as getMinLengthAllArray,
   Ue as getMouseClient,
-  ce as getMouseClientX,
-  ue as getMouseClientY,
-  ze as getObjectByKeys,
-  Ze as getObjectNoUndefined,
-  Ye as getObjectOrNone,
-  Ke as getRandomText,
-  g as getRef,
-  It as getRequestString,
-  Ge as getStepPercent,
-  Ve as getStepValue,
-  qe as goScroll,
-  Je as inArray,
-  Xe as initScrollbarOffset,
-  Qe as intersectKey,
-  ut as isArray,
-  _e as isDifferent,
-  m as isDomRuntime,
-  j as isFilled,
-  ts as isFloat,
+  ue as getMouseClientX,
+  he as getMouseClientY,
+  Ze as getObjectByKeys,
+  Ye as getObjectNoUndefined,
+  Ke as getObjectOrNone,
+  Ge as getRandomText,
+  d as getRef,
+  Bt as getRequestString,
+  Ve as getStepPercent,
+  qe as getStepValue,
+  Je as goScroll,
+  Xe as inArray,
+  Qe as initScrollbarOffset,
+  _e as intersectKey,
+  ht as isArray,
+  ts as isDifferent,
+  y as isDomRuntime,
+  P as isFilled,
+  es as isFloat,
   Ds as isFunction,
   ks as isInDom,
-  es as isIntegerBetween,
+  ss as isIntegerBetween,
   Ft as isNull,
-  ss as isNumber,
-  y as isObject,
+  Ms as isNumber,
+  m as isObject,
   T as isObjectNotArray,
-  ft as isSelected,
+  dt as isSelected,
   is as isSelectedByList,
-  ot as isString,
-  Ms as isWindow,
+  ct as isString,
+  Ls as isWindow,
   Z as random,
-  _t as render,
+  te as render,
   E as replaceRecursive,
   cs as replaceTemplate,
   us as secondToTime,
-  ke as setApiRefGlobalConditions,
-  Vt as setElementItem,
+  Me as setApiRefGlobalConditions,
+  qt as setElementItem,
   as as setRef,
   hs as setValues,
   ls as splice,
-  he as strFill,
-  Be as t,
+  le as strFill,
+  Te as t,
   O as toArray,
-  kt as toCamelCase,
+  vt as toBind,
+  Mt as toCamelCase,
   fs as toCamelCaseFirst,
   os as toComputed,
   D as toDate,
-  gs as toKebabCase,
+  ds as toKebabCase,
   k as toNumber,
-  ds as toNumberByMax,
+  gs as toNumberByMax,
   ge as toPercent,
-  ms as toPercentBy100,
+  ys as toPercentBy100,
   M as toRefItem,
   wt as transformation,
-  fe as uniqueArray,
-  De as useApiRef,
-  Me as useCookieRef,
-  Le as useGeoIntlRef,
-  Se as useHashRef,
-  Ne as useLazyRef,
-  Ae as useLoadingRef,
+  de as uniqueArray,
+  ke as useApiRef,
+  Le as useCookieRef,
+  Se as useGeoIntlRef,
+  Ne as useHashRef,
+  Ae as useLazyRef,
+  Ie as useLoadingRef,
   Fe as useSessionRef,
-  Ie as useStorageRef,
-  se as useTranslateRef,
-  ys as writeClipboardData
+  Be as useStorageRef,
+  ie as useTranslateRef,
+  ms as writeClipboardData
 };

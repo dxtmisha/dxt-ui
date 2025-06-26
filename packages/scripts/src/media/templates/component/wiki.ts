@@ -1,6 +1,5 @@
-// :component.once import { type StorybookProps, WikiStorybook } from '@dxt-ui/functional'
-// :component.once import { wiki } from '@dxt-ui/media/wiki'
-// :component.once import { wikiDescriptions } from '@dxt-ui/media/wiki-descriptions'
+// :component.once import { type StorybookProps, WikiStorybook } from '@dxt-ui/wiki'
+// :component.once import { wiki, wikiDescriptions } from '@dxt-ui/wiki/media'
 
 // :component.once import { wiki[Design] } from '../../../wiki/wiki'
 // :component.once import { defaults } from './props'

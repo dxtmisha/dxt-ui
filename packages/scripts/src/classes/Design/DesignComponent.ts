@@ -13,6 +13,8 @@ import {
   UI_PROJECT_CONSTRUCTOR_NAME
 } from '../../config'
 import { DesignTypescript } from './DesignTypescript.ts'
+import { wikiDescriptions } from '@dxt-ui/wiki/media'
+import type { StorybookComponentsDescriptionItem } from '@dxt-ui/wiki'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -224,6 +226,28 @@ export class DesignComponent extends DesignCommand {
   protected makeStories(): this {
     const file = FILE_STORIES
     const sample = this.readDefinable(file)
+    const description = this.getWikiDescription()
+
+    if (description) {
+      const design = this.getStructure().getDesignFirst()
+      const component = this.getStructure().getComponentNameFirst()
+      const name = `${design}${component}`
+
+      if (description.render) {
+        sample.replaceMark(
+          'story-main',
+          [
+            'render: (args: any) => ({',
+            `  components: { ${name} },`,
+            '  setup: () => ({ args }),',
+            '  template: `',
+            `    ${description.render.trim()}`,
+            '  `',
+            '})'
+          ]
+        )
+      }
+    }
 
     this.write(sample.getNameFile(file), sample.get())
     return this
@@ -240,5 +264,15 @@ export class DesignComponent extends DesignCommand {
     const constructor = this.read(path)
 
     return constructor ?? ''
+  }
+
+  /**
+   * Returns the description of the component from the wiki
+   *
+   * Возвращает описание компонента из вики
+   */
+  private getWikiDescription(): StorybookComponentsDescriptionItem | undefined {
+    const name = this.getStructure().getComponentNameFirst()
+    return wikiDescriptions.find(item => item.name === name)
   }
 }

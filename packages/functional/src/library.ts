@@ -30,8 +30,6 @@ export * from './classes/ref/EventRef'
 export * from './classes/ref/GeoFlagRef'
 export * from './classes/ref/GeoIntlRef'
 export * from './classes/ref/GeoRef'
-export * from './classes/wiki/WikiStorybook'
-export * from './classes/wiki/WikiStorybookItem'
 
 // Composables
 export * from './composables/ref/useApiRef'
@@ -135,4 +133,3 @@ export * from './types/basicTypes'
 export * from './types/constructorTypes'
 export * from './types/geoTypes'
 export * from './types/refTypes'
-export * from './types/storybookTypes'

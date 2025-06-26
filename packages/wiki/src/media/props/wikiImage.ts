@@ -2,7 +2,7 @@ import {
   type StorybookArgsToList,
   StorybookCategory,
   StorybookControl
-} from '@dxt-ui/functional'
+} from '../../types/storybookTypes'
 
 /**
  * The wikiImage object contains descriptions of all properties for the image component

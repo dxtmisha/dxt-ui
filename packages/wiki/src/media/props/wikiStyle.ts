@@ -2,7 +2,7 @@ import {
   type StorybookArgsToList,
   StorybookCategory,
   StorybookControl
-} from '@dxt-ui/functional'
+} from '../../types/storybookTypes'
 
 /**
  * The wikiStyle object contains common properties for all components in the style category.

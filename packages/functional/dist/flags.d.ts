@@ -1,1 +1,1 @@
-export declare const dxtUiMakeFlags: () => void;
+export declare const uiMakeFlags: () => void;

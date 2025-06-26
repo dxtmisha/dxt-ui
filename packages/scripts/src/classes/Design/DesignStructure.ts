@@ -91,6 +91,15 @@ export class DesignStructure {
   }
 
   /**
+   * Returns the name of the design with a capital letter.
+   *
+   * Возвращает название дизайна с заглавной буквы.
+   */
+  getDesignFirst(): string {
+    return toCamelCaseFirst(PropertiesConfig.getDesignName())
+  }
+
+  /**
    * Returns the name of the component.
    *
    * Возвращает название компонента.

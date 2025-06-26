@@ -15,13 +15,13 @@ export type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToIntersection<
     [K in keyof T]: (evt: K, ...args: T[K]) => void;
 }>>;
 export type ConstrClassObject = Record<string, boolean>;
-export type ConstrClass = string | (string | Undefined)[] | ConstrClassObject;
+export type ConstrClass = string | (string | ConstrClass | Undefined)[] | ConstrClassObject;
 export type ConstrClassList = Record<string, ConstrClass>;
 export type ConstrClasses = {
     main: ConstrClass;
 } & ConstrClassList;
 export type ConstrStylesItem = string | null;
-export type ConstrStyles = Record<string, ConstrStylesItem>;
+export type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[];
 export type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = {
     components?: COMP;
     compMod?: ConstrComponentMod<P>;

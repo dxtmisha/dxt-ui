@@ -1,4 +1,5 @@
 import { ItemList } from '../../types/basicTypes';
+import { ConstrBind } from '../../types/constructorTypes';
 /**
  * A method for generating properties for a subcomponent.
  *
@@ -10,4 +11,4 @@ import { ItemList } from '../../types/basicTypes';
  * @param except exclude the rule requiring the presence of a primary key/
  * исключить правило обязательности наличия главного ключа
  */
-export declare function getBind<T, R extends ItemList>(value: T | R | undefined, nameExtra?: ItemList | string, name?: string, except?: boolean): R;
+export declare function getBind<T, R extends ItemList>(value: T | R | undefined, nameExtra?: ItemList | string, name?: string, except?: boolean): ConstrBind<R>;

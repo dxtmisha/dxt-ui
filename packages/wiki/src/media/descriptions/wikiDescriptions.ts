@@ -1,4 +1,6 @@
-import type { StorybookComponentsDescription } from '@dxt-ui/functional'
+import type { StorybookComponentsDescription } from '../../types/storybookTypes'
+
+import { wikiDescriptionsImage } from './wikiDescriptionsImage'
 
 export const wikiDescriptions: StorybookComponentsDescription = [
   {
@@ -7,5 +9,6 @@ export const wikiDescriptions: StorybookComponentsDescription = [
       en: 'Icon component for displaying icons',
       ru: 'Компонент иконки для отображения иконок'
     }
-  }
+  },
+  wikiDescriptionsImage
 ]

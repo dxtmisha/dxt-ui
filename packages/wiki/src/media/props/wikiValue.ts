@@ -2,7 +2,7 @@ import {
   type StorybookArgsToList,
   StorybookCategory,
   StorybookControl
-} from '@dxt-ui/functional'
+} from '../../types/storybookTypes'
 
 export const wikiValue: StorybookArgsToList = {
   image: {
