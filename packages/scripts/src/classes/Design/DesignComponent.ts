@@ -23,6 +23,7 @@ const FILE_CLASS = 'DesignComponent.vue'
 const FILE_INDEX = 'index.ts'
 const FILE_WIKI = 'wiki.ts'
 const FILE_STORIES = 'DesignComponent.stories.ts'
+const FILE_STORIES_DOCUMENTATION = 'DesignComponent.mdx'
 
 /**
  * Class for creating a component or updating data.
@@ -68,6 +69,7 @@ export class DesignComponent extends DesignCommand {
       .makeIndex()
       .makeWiki()
       .makeStories()
+      .makeStoriesDocumentation()
   }
 
   /**
@@ -248,6 +250,19 @@ export class DesignComponent extends DesignCommand {
         )
       }
     }
+
+    this.write(sample.getNameFile(file), sample.get())
+    return this
+  }
+
+  /**
+   * This code generates the mdx.
+   *
+   * Генерация файла mdx.
+   */
+  protected makeStoriesDocumentation(): this {
+    const file = FILE_STORIES_DOCUMENTATION
+    const sample = this.readDefinable(file)
 
     this.write(sample.getNameFile(file), sample.get())
     return this

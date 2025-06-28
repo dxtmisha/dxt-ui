@@ -1,4 +1,4 @@
-import { Geo, isArray, toCamelCase } from '@dxt-ui/functional'
+import { Geo, isObjectNotArray, toCamelCase } from '@dxt-ui/functional'
 
 import { WikiStorybookItem } from './WikiStorybookItem'
 
@@ -42,13 +42,21 @@ export class WikiStorybook {
   }
 
   /**
+   * Returns the name of the component
+   *
+   * Возвращает имя компонента
+   */
+  getName(): string {
+    return this.component
+  }
+
+  /**
    * Returns the properties wiki for the component
    *
    * Возвращает wiki свойств для компонента
    * @return The properties wiki for the component/ wiki свойств для компонента
    */
   getWiki(): StorybookArgs {
-    console.log('this.initPropsWiki()', this.initPropsWiki())
     return this.initPropsWiki()
   }
 
@@ -63,14 +71,12 @@ export class WikiStorybook {
     const item = this.wikiDescriptions.find(item => item.name === this.component)
 
     if (item) {
-      if (isArray(item.description)) {
+      if (isObjectNotArray(item.description)) {
         return item.description?.[language]
           ?? Object.values(item.description)?.[0]
       }
 
-      if (typeof item.description === 'string') {
-        return item.description
-      }
+      return item.description
     }
 
     return ''

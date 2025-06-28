@@ -9,7 +9,6 @@ import { ImageWikiStorybook } from './wiki.ts'
 const meta = {
   title: 'Ui/Image',
   component: D1Image,
-  tags: ['autodocs'],
   parameters: {
     design: 'd1',
     docs: {
