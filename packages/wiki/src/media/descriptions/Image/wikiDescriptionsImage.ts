@@ -1,10 +1,19 @@
-import type { StorybookComponentsDescriptionItem } from '../../types/storybookTypes'
+import type { StorybookComponentsDescriptionItem } from '../../../types/storybookTypes'
+
+import eventLoadEn from './event.load.en.mdx'
+import eventLoadRu from './event.load.ru.mdx'
 
 export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
   name: 'Image',
   description: {
     en: 'Image component for displaying images',
     ru: 'Компонент для отображения изображений и иконок. Основан на `ImageDesign` и поддерживает работу с файлами, ссылками и именами икон'
+  },
+  descriptions: {
+    'event.load': {
+      en: eventLoadEn,
+      ru: eventLoadRu
+    }
   },
   possibilities: {
     en: [

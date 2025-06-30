@@ -64,6 +64,7 @@ export type StorybookArgsProps = Record<string, StorybookArgsProp>
  * Description of a component/ Описание компонента
  */
 export type StorybookArgsToDescription = string | Record<string, string>
+export type StorybookArgsToDescriptionMdx = string | Record<string, string | any>
 
 /**
  * List of component features/ Перечень возможностей компонента
@@ -146,14 +147,23 @@ export type StorybookComponentsDescriptionItem = {
   name: string
   /** Description of the component/ Описание компонента */
   description: StorybookArgsToDescription
+  /** List of additional descriptions for component arguments/ Список дополнительных описаний для аргументов компонента */
+  descriptions?: Record<string, StorybookArgsToDescriptionMdx>
   /** Component features/ Возможности компонента */
   possibilities?: StorybookArgsToPossibilities
+
   /** Example of rendering the component/ Пример рендеринга компонента */
   render?: string
   /** Additional information for import/ Дополнительная информация для импорта */
   import?: string
   /** Additional examples of component usage/ Дополнительные примеры использования компонента */
   stories?: StorybookComponentsDescriptionStory[]
+
+  /** Documentation for the component/ Документация для компонента */
+  documentation?: {
+    import?: string
+    body: string
+  }
 }
 
 /**

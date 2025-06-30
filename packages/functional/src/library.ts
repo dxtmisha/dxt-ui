@@ -44,6 +44,7 @@ export * from './composables/ref/useTranslateRef'
 
 // Functions
 export * from './functions/anyToString'
+export * from './functions/applyTemplate'
 export * from './functions/arrFill'
 export * from './functions/copyObject'
 export * from './functions/createElement'

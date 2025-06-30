@@ -1,6 +1,6 @@
 import type { StorybookComponentsDescription } from '../../types/storybookTypes'
 
-import { wikiDescriptionsImage } from './wikiDescriptionsImage'
+import { wikiDescriptionsImage } from './Image/wikiDescriptionsImage'
 
 export const wikiDescriptions: StorybookComponentsDescription = [
   {
