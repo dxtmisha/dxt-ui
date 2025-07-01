@@ -112,10 +112,10 @@ export class DesignReplace {
     data: string[],
     end = ''
   ): this {
-    const regName = `\\/\\/[\\]: #]+:${name} `
-    const space = this.sample.match(new RegExp(`^( +)(${regName})`, 'm'))?.[1]
+    const regName = `\\[?\\/\\/[\\]: #\\(]+:${name} `
+    const space = this.sample.match(new RegExp(`^( *)(${regName})`, 'm'))?.[1]
 
-    if (space) {
+    if (typeof space === 'string') {
       const inString = `\r\n${space}`
       const value = data
         .join(`${end}${inString}`)
@@ -124,13 +124,13 @@ export class DesignReplace {
       if (value.trim() !== '') {
         this.sample = this.sample
           .replace(
-            new RegExp(`(^ +)(${regName}.*?$)([\\S\\s]+)(^ +${regName})`, 'gm'),
+            new RegExp(`(^ *)(${regName}.*?$)([\\S\\s]+)(^ *${regName})`, 'gm'),
             `$1$2${inString}${value}\r\n$4`
           )
       } else {
         this.sample = this.sample
           .replace(
-            new RegExp(`(^ +)(${regName}.*?$)([\\S\\s]+)(^ +${regName})`, 'gm'),
+            new RegExp(`(^ *)(${regName}.*?$)([\\S\\s]+)(^ *${regName})`, 'gm'),
             '$1$2\r\n$4'
           )
       }

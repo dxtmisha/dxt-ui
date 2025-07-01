@@ -266,8 +266,24 @@ export class DesignComponent extends DesignCommand {
     const documentation = this.getWikiDescription()?.documentation
 
     if (documentation) {
+      if (documentation.import) {
+        sample.replaceMark('documentation-import', [documentation.import])
+      }
+
+      if (documentation.body) {
+        sample.replaceMark('documentation-body', [documentation.body])
+      }
+
       if (documentation.events) {
         sample.replaceMark('documentation-events', [documentation.events])
+      }
+
+      if (documentation.expose) {
+        sample.replaceMark('documentation-expose', [documentation.expose])
+      }
+
+      if (documentation.slots) {
+        sample.replaceMark('documentation-slots', [documentation.slots])
       }
     }
 

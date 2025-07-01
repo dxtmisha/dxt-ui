@@ -9,7 +9,6 @@ import DesignComponent from './DesignComponent.vue'
 const meta = {
 // :component.once   title: '[project]/Component',
 // :component.once   component: DesignComponent,
-// :component.once   tags: ['autodocs'],
 // :component.once   parameters: {
 // :component.once     design: '[design]',
 // :component.once     docs: {
