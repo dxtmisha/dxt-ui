@@ -147,8 +147,6 @@ export type StorybookComponentsDescriptionItem = {
   name: string
   /** Description of the component/ Описание компонента */
   description: StorybookArgsToDescription
-  /** List of additional descriptions for component arguments/ Список дополнительных описаний для аргументов компонента */
-  descriptions?: Record<string, StorybookArgsToDescriptionMdx>
   /** Component features/ Возможности компонента */
   possibilities?: StorybookArgsToPossibilities
 
@@ -173,3 +171,11 @@ export type StorybookComponentsDescriptionItem = {
  * A list of component descriptions for Storybook/ Список описаний компонентов для Storybook
  */
 export type StorybookComponentsDescription = StorybookComponentsDescriptionItem[]
+
+export type StorybookComponentsMdxItem = {
+  /** Name of the component/ Название компонента */
+  name: string
+  /** List of additional descriptions for component arguments/ Список дополнительных описаний для аргументов компонента */
+  descriptions?: Record<string, StorybookArgsToDescriptionMdx>
+}
+export type StorybookComponentsMdx = StorybookComponentsMdxItem[]

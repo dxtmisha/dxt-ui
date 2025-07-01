@@ -112,7 +112,7 @@ export class DesignReplace {
     data: string[],
     end = ''
   ): this {
-    const regName = `(\\/\\/ |\\[/\\/]: # \\():${name} `
+    const regName = `\\/\\/[\\]: #]+:${name} `
     const space = this.sample.match(new RegExp(`^( +)(${regName})`, 'm'))?.[1]
 
     if (space) {

@@ -1,8 +1,12 @@
 import { executeFunction, Geo, isObjectNotArray } from '@dxt-ui/functional'
 
-import type { StorybookComponentsDescriptionItem } from '../types/storybookTypes'
+import type {
+  StorybookComponentsDescriptionItem,
+  StorybookComponentsMdxItem
+} from '../types/storybookTypes'
 
 import { wikiDescriptions } from '../media/descriptions/wikiDescriptions'
+import { wikiMdx } from '../media/mdx/wikiMdx'
 
 /**
  * Class for working with Storybook component descriptions in the wiki
@@ -11,6 +15,7 @@ import { wikiDescriptions } from '../media/descriptions/wikiDescriptions'
  */
 export class WikiStorybookDescriptions {
   private readonly item?: StorybookComponentsDescriptionItem
+  private readonly mdx?: StorybookComponentsMdxItem
 
   /**
    * Constructor
@@ -18,6 +23,17 @@ export class WikiStorybookDescriptions {
    */
   constructor(name: string) {
     this.item = wikiDescriptions.find(item => item.name === name)
+    this.mdx = wikiMdx.find(item => item.name === name)
+  }
+
+  /**
+   * Get the description of the component
+   *
+   * Возвращает описание компонента
+   * @return The description of the component or undefined if not found/ Описание компонента или undefined, если не найдено
+   */
+  getItem(): StorybookComponentsDescriptionItem | undefined {
+    return this.item
   }
 
   /**
@@ -27,7 +43,7 @@ export class WikiStorybookDescriptions {
    * @param type - Type of the description to retrieve/ тип описания для получения
    */
   getDescriptionByType(type: string): any {
-    const descriptions = this.item?.descriptions?.[type]
+    const descriptions = this.mdx?.descriptions?.[type]
 
     return executeFunction((() => {
       if (descriptions) {
