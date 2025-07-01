@@ -12,10 +12,10 @@ import type { LabelSlots } from '../../types/labelTypes'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type ButtonComponents =
-  IconComponentInclude &
-  ProgressComponentInclude &
-  RippleComponentsInclude
+export type ButtonComponents
+  = IconComponentInclude
+    & ProgressComponentInclude
+    & RippleComponentsInclude
 
 /**
  * Type describing available events.

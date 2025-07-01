@@ -162,7 +162,10 @@ export type StorybookComponentsDescriptionItem = {
   /** Documentation for the component/ Документация для компонента */
   documentation?: {
     import?: string
-    body: string
+    body?: string
+    events?: string
+    expose?: string
+    slots?: string
   }
 }
 

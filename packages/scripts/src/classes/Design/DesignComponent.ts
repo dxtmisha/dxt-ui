@@ -263,6 +263,13 @@ export class DesignComponent extends DesignCommand {
   protected makeStoriesDocumentation(): this {
     const file = FILE_STORIES_DOCUMENTATION
     const sample = this.readDefinable(file)
+    const documentation = this.getWikiDescription()?.documentation
+
+    if (documentation) {
+      if (documentation.events) {
+        sample.replaceMark('documentation-events', [documentation.events])
+      }
+    }
 
     this.write(sample.getNameFile(file), sample.get())
     return this
