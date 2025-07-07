@@ -1,8 +1,13 @@
 // export:none
 
+import type { StorybookComponentsDescriptionItem } from '@dxt-ui/wiki'
+import { wikiDescriptions } from '@dxt-ui/wiki/media'
+
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignCommand } from './DesignCommand'
+import { DesignTypescript } from './DesignTypescript'
+import type { DesignReplace } from './DesignReplace'
 
 import {
   UI_DIR_COMPONENTS,
@@ -12,9 +17,6 @@ import {
   UI_PROJECT_CONSTRUCTOR_FULL_NAME,
   UI_PROJECT_CONSTRUCTOR_NAME
 } from '../../config'
-import { DesignTypescript } from './DesignTypescript.ts'
-import { wikiDescriptions } from '@dxt-ui/wiki/media'
-import type { StorybookComponentsDescriptionItem } from '@dxt-ui/wiki'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -231,24 +233,9 @@ export class DesignComponent extends DesignCommand {
     const description = this.getWikiDescription()
 
     if (description) {
-      const design = this.getStructure().getDesignFirst()
-      const component = this.getStructure().getComponentNameFirst()
-      const name = `${design}${component}`
-
-      if (description.render) {
-        sample.replaceMark(
-          'story-main',
-          [
-            'render: (args: any) => ({',
-            `  components: { ${name} },`,
-            '  setup: () => ({ args }),',
-            '  template: `',
-            `    ${description.render.trim()}`,
-            '  `',
-            '})'
-          ]
-        )
-      }
+      this.replaceMarkStoriesRender(sample, description)
+        .replaceMarkStoriesImport(sample, description)
+        .replaceMarkStoriesStories(sample, description)
     }
 
     this.write(sample.getNameFile(file), sample.get())
@@ -266,25 +253,12 @@ export class DesignComponent extends DesignCommand {
     const documentation = this.getWikiDescription()?.documentation
 
     if (documentation) {
-      if (documentation.import) {
-        sample.replaceMark('documentation-import', [documentation.import])
-      }
-
-      if (documentation.body) {
-        sample.replaceMark('documentation-body', [documentation.body])
-      }
-
-      if (documentation.events) {
-        sample.replaceMark('documentation-events', [documentation.events])
-      }
-
-      if (documentation.expose) {
-        sample.replaceMark('documentation-expose', [documentation.expose])
-      }
-
-      if (documentation.slots) {
-        sample.replaceMark('documentation-slots', [documentation.slots])
-      }
+      this
+        .replaceMarkDocumentation(sample, 'import', documentation.import)
+        .replaceMarkDocumentation(sample, 'body', documentation.body)
+        .replaceMarkDocumentation(sample, 'events', documentation.events)
+        .replaceMarkDocumentation(sample, 'expose', documentation.expose)
+        .replaceMarkDocumentation(sample, 'slots', documentation.slots)
     }
 
     this.write(sample.getNameFile(file), sample.get())
@@ -312,5 +286,120 @@ export class DesignComponent extends DesignCommand {
   private getWikiDescription(): StorybookComponentsDescriptionItem | undefined {
     const name = this.getStructure().getComponentNameFirst()
     return wikiDescriptions.find(item => item.name === name)
+  }
+
+  /**
+   * Replaces the render in the sample.
+   *
+   * Заменяет рендер в сэмпле.
+   * @param sample sample for replacement/ сэмпл для замены
+   * @param description description of the component/ описание компонента
+   */
+  private replaceMarkStoriesRender(
+    sample: DesignReplace,
+    description: StorybookComponentsDescriptionItem
+  ): this {
+    if (description.render) {
+      const name = this.getStructure().getFullComponentName()
+
+      sample.replaceMark(
+        'story-main',
+        [
+          'render: (args: any) => ({',
+          `  components: { ${name} },`,
+          '  setup: () => ({ args }),',
+          '  template: `',
+          `    ${description.render.trim()}`,
+          '  `',
+          '})'
+        ]
+      )
+    }
+
+    return this
+  }
+
+  /**
+   * Replaces the import in the sample.
+   *
+   * Заменяет импорт в сэмпле.
+   * @param sample sample for replacement/ сэмпл для замены
+   * @param description description of the component/ описание компонента
+   */
+  private replaceMarkStoriesImport(
+    sample: DesignReplace,
+    description: StorybookComponentsDescriptionItem
+  ): this {
+    if (description.import) {
+      sample.replaceMark('story-import', description.import)
+    }
+
+    return this
+  }
+
+  /**
+   * Replaces the stories in the sample.
+   *
+   * Заменяет истории в сэмпле.
+   * @param sample sample for replacement/ сэмпл для замены
+   * @param description description of the component/ описание компонента
+   */
+  private replaceMarkStoriesStories(
+    sample: DesignReplace,
+    description: StorybookComponentsDescriptionItem
+  ): this {
+    if (description.stories) {
+      const component = this.getStructure().getComponentNameFirst()
+      const name = this.getStructure().getFullComponentName()
+      const stories: string[] = []
+
+      description.stories.forEach((story) => {
+        stories.push(`export const ${story.id}: Story = {
+  name: ${component}WikiStorybook.getStoryName('${story.id}'),
+  render: () => ({
+    components: { ${name}${story.components ? `, ${story.components.join(', ')}` : ''} },
+    ${story.setup
+        ? `setup() {
+      ${story.setup.trim()}
+    },`
+        : ''
+    }
+    template: \`
+      ${story.template.replace(/DesignComponent/g, name).trim()}
+    \`
+  })
+}`)
+      })
+
+      sample.replaceMark('story-items', stories)
+    }
+
+    return this
+  }
+
+  /**
+   * Replaces the documentation in the sample.
+   *
+   * Заменяет документацию в сэмпле.
+   * @param sample sample for replacement/ сэмпл для замены
+   * @param type type of the documentation to replace/ тип документации для замены
+   * @param documentation documentation text/ текст документации
+   */
+  private replaceMarkDocumentation(
+    sample: DesignReplace,
+    type: string,
+    documentation?: string
+  ): this {
+    if (documentation) {
+      const component = this.getStructure().getComponentNameFirst()
+
+      sample.replaceMark(
+        `documentation-${type}`,
+        [
+          documentation.replace(new RegExp('Component', 'g'), component)
+        ])
+    }
+
+    return this
   }
 }

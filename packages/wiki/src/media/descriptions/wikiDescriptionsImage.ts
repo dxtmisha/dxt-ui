@@ -1,4 +1,4 @@
-import type { StorybookComponentsDescriptionItem } from '../../../types/storybookTypes'
+import type { StorybookComponentsDescriptionItem } from '../../types/storybookTypes'
 
 export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
   name: 'Image',
@@ -23,11 +23,53 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
     ]
   },
   render: `
-      <div style="position: relative; width: 128px; height: 128px; border: 1px solid #ccc;">
+      <div class="wiki-storybook-item wiki-storybook-item--squared--md">
         <D1Image v-bind="args"/>
       </div>
     `,
+  import: [
+    'import { demoPdf, image1, phone1 } from \'@dxt-ui/wiki/media\''
+  ],
+  stories: [
+    {
+      id: 'ImageType',
+      name: {
+        en: 'Value type',
+        ru: 'Тип значения'
+      },
+      setup: `
+      return {
+        phone1,
+        image1,
+        demoPdf
+      }
+      `,
+      template: `
+      <div class="wiki-storybook-group">
+        <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+          <div class="wiki-storybook-item__label">Icon</div>
+          <DesignComponent value="home"/>
+        </div>
+        <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+          <div class="wiki-storybook-item__label">Image</div>
+          <DesignComponent :value="image1"/>
+        </div>
+        <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+          <div class="wiki-storybook-item__label">Image/ contain</div>
+          <DesignComponent :value="phone1" size="contain"/>
+        </div>
+        <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+          <div class="wiki-storybook-item__label">PDF</div>
+          <DesignComponent :value="demoPdf"/>
+        </div>
+      </div>
+      `
+    }
+  ],
   documentation: {
+    body: `
+<Canvas of={Component.ImageType}/>
+    `,
     events: `
 <StorybookDescriptions componentName={'Image'} type={'event.load'}/>
     `,

@@ -12,7 +12,7 @@ import type {
 } from '../../types/designTypes'
 
 import { UI_KEY_CUSTOM } from '../../config'
-import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 
 /**
  * Class with basic replacement for templates.

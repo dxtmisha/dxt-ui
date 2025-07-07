@@ -1,11 +1,11 @@
-import {Meta} from '@storybook/addon-docs/blocks'
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
 import {
     StorybookDescriptions,
     StorybookMain
 } from '@dxt-ui/wiki/storybook'
 
 import * as Image from './D1Image.stories'
-import {ImageWikiStorybook} from './wiki.js'
+import {ImageWikiStorybook} from './wiki'
 
 [//]: # (:documentation-import [!] System label / Системная метка)
 [//]: # (:documentation-import [!] System label / Системная метка)
@@ -18,6 +18,9 @@ import {ImageWikiStorybook} from './wiki.js'
 />
 
 [//]: # (:documentation-body [!] System label / Системная метка)
+
+<Canvas of={Image.ImageType}/>
+    
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 ## Events

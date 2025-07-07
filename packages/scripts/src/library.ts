@@ -1,4 +1,7 @@
 // Classes
+export * from './classes/Design/DesignTypescript'
+export * from './classes/Library/LibraryFlags'
+export * from './classes/Library/LibraryMedia'
 export * from './classes/Properties/PropertiesFile'
 
 // Types

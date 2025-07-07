@@ -4,9 +4,12 @@ import { WikiStorybookItem } from './WikiStorybookItem'
 
 import {
   type StorybookArgs,
+  type StorybookArgsToDescription,
   type StorybookArgsToItem,
   type StorybookArgsToList,
   type StorybookComponentsDescription,
+  type StorybookComponentsDescriptionItem,
+  type StorybookComponentsDescriptionStory,
   type StorybookProp,
   type StorybookProps
 } from '../types/storybookTypes'
@@ -67,19 +70,7 @@ export class WikiStorybook {
    * @return The description of the component/ описание компонента
    */
   getDescription(): string {
-    const language = Geo.getLanguage()
-    const item = this.wikiDescriptions.find(item => item.name === this.component)
-
-    if (item) {
-      if (isObjectNotArray(item.description)) {
-        return item.description?.[language]
-          ?? Object.values(item.description)?.[0]
-      }
-
-      return item.description
-    }
-
-    return ''
+    return this.toDescriptionText(this.getDescriptionItem()?.description)
   }
 
   /**
@@ -104,6 +95,37 @@ export class WikiStorybook {
   }
 
   /**
+   * Returns a Storybook item by its ID
+   *
+   * Возвращает элемент Storybook по его ID
+   * @param id - The ID of the story/ ID истории
+   */
+  getStoryItem(id: string): StorybookComponentsDescriptionStory | undefined {
+    const item = this.getDescriptionItem()
+
+    if (
+      item
+      && item.stories
+    ) {
+      return item.stories.find(story => story.id === id)
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns the name of the story by its ID
+   *
+   * Возвращает имя истории по ее ID
+   * @param id - The ID of the story/ ID истории
+   */
+  getStoryName(id: string): string | undefined {
+    return this.toDescriptionText(
+      this.getStoryItem(id)?.name
+    )
+  }
+
+  /**
    * Returns a wiki item by its name
    *
    * Возвращает элемент wiki по его имени
@@ -121,6 +143,16 @@ export class WikiStorybook {
     }
 
     return undefined
+  }
+
+  /**
+   * Returns the description item for the component
+   *
+   * Возвращает элемент описания для компонента
+   * @return The description item for the component/ элемент описания для компонента
+   */
+  private getDescriptionItem(): StorybookComponentsDescriptionItem | undefined {
+    return this.wikiDescriptions.find(item => item.name === this.component)
   }
 
   /**
@@ -144,6 +176,27 @@ export class WikiStorybook {
         options: item.option ?? wiki.options?.options ?? undefined
       }
     }
+  }
+
+  /**
+   * Converts the descriptions to text format
+   *
+   * Преобразует описания в текстовый формат
+   * @param descriptions - The descriptions to convert/ Описания для преобразования
+   */
+  private toDescriptionText(descriptions?: StorybookArgsToDescription): string {
+    if (descriptions) {
+      const language = Geo.getLanguage()
+
+      if (isObjectNotArray(descriptions)) {
+        return descriptions?.[language]
+          ?? Object.values(descriptions)?.[0]
+      }
+
+      return descriptions
+    }
+
+    return ''
   }
 
   /**

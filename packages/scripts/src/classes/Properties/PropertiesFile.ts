@@ -2,7 +2,7 @@ import { toArray, toKebabCase, transformation } from '@dxt-ui/functional'
 
 import requireFs from 'fs'
 import requirePath from 'path'
-import { UI_MODULES, UI_PROJECT_NAME } from '../../config.ts'
+import { UI_MODULES, UI_PROJECT_NAME } from '../../config'
 
 export type PropertiesFilePath = string | string[]
 export type PropertiesFileValue<T = any> = string | Record<string, T>

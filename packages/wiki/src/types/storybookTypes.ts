@@ -129,10 +129,12 @@ export type StorybookProps = StorybookProp[]
  * Represents a story for a component in Storybook/ Представляет историю для компонента в Storybook
  */
 export type StorybookComponentsDescriptionStory = {
+  /** Unique identifier for the story/ Уникальный идентификатор истории */
+  id: string
   /** Name of the story/ Название истории */
   name: StorybookArgsToDescription
   /** Components used in the story/ Компоненты, используемые в истории */
-  components?: string
+  components?: string[]
   /** Setup script for the story/ Скрипт настройки для истории */
   setup?: string
   /** Template for the story/ Шаблон для истории */
@@ -153,7 +155,7 @@ export type StorybookComponentsDescriptionItem = {
   /** Example of rendering the component/ Пример рендеринга компонента */
   render?: string
   /** Additional information for import/ Дополнительная информация для импорта */
-  import?: string
+  import?: string[]
   /** Additional examples of component usage/ Дополнительные примеры использования компонента */
   stories?: StorybookComponentsDescriptionStory[]
 

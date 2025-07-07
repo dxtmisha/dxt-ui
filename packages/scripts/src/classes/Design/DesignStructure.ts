@@ -118,6 +118,18 @@ export class DesignStructure {
   }
 
   /**
+   * Returns the full name of the component, including design and component name.
+   *
+   * Возвращает полное название компонента, включая название дизайна и компонента.
+   */
+  getFullComponentName(): string {
+    const design = this.getDesignFirst()
+    const component = this.getComponentNameFirst()
+
+    return `${design}${component}`
+  }
+
+  /**
    * Returns the names of component files.
    *
    * Возвращает названия файлов компонентов.

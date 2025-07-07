@@ -1,4 +1,3 @@
-import { viteBasic } from '@dxt-ui/configuration/viteBasic'
+import { viteMdx } from '@dxt-ui/configuration/viteMdx'
 
-// https://vite.dev/config/
-export default viteBasic
+export default viteMdx

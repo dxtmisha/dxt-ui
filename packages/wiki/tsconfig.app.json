@@ -6,7 +6,6 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.vue",
-    "src/**/*.mdx"
+    "src/**/*.vue"
   ]
 }

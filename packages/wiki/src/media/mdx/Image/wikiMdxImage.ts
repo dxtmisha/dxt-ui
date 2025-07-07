@@ -1,5 +1,7 @@
 import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
+import adaptiveRu from './adaptive.ru.mdx'
+
 import eventLoadEn from './event.load.en.mdx'
 import eventLoadRu from './event.load.ru.mdx'
 
@@ -11,6 +13,9 @@ import exposeDataRu from './expose.data.ru.mdx'
 export const wikiMdxImage: StorybookComponentsMdxItem = {
   name: 'Image',
   descriptions: {
+    'adaptive': {
+      ru: adaptiveRu
+    },
     'event.load': {
       en: eventLoadEn,
       ru: eventLoadRu

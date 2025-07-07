@@ -25,6 +25,7 @@
     },
     "./media": "./src/media.ts",
     "./storybook": "./src/documentation/storybook/storybook.tsx",
+    "./storybook/styles": "./src/styles/storybookStyle.scss",
     "./types/*": "./dist/*",
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },

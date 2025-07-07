@@ -12,6 +12,10 @@
       "types": "./viteconfig/viteFlags.config.d.ts",
       "default": "./viteconfig/viteFlags.config.js"
     },
+    "./viteMdx": {
+      "types": "./viteconfig/viteMdx.config.d.ts",
+      "default": "./viteconfig/viteMdx.config.js"
+    },
     "./tsconfig/*": "./tsconfig/*"
   },
   "dependencies": {},

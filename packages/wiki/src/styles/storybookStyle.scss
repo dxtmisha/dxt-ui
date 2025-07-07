@@ -1,0 +1,47 @@
+@use '@dxt-ui/styles' as ui;
+
+.wiki-storybook {
+  &-group {
+    @include ui.flexX;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  &-item {
+    position: relative;
+    overflow: hidden;
+
+    border: 1px solid oklch(87.2% 0.01 258.338);
+    border-radius: 8px;
+
+    &__label {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: auto;
+      z-index: 8;
+      @include ui.paddingX(8px);
+      @include ui.paddingY(4px);
+
+      font-size: 12px;
+      line-height: 1.2;
+      background: rgba(249, 250, 251, .48);
+      backdrop-filter: blur(8px);
+      border-radius: 4px;
+    }
+
+    &--squared {
+      &--sm {
+        @include ui.squared(128px);
+      }
+
+      &--md {
+        @include ui.squared(256px);
+      }
+
+      &--lg {
+        @include ui.squared(384px);
+      }
+    }
+  }
+}
