@@ -11,8 +11,8 @@ export const wikiValue: StorybookArgsToList = {
       category: StorybookCategory.value,
       type: 'string | File | ImageProps',
       description: {
-        en: 'Specifies the dimensions of the image',
-        ru: 'Определяет размеры изображения'
+        en: 'Specifies the image value for the component',
+        ru: 'Указывает значение изображения для компонента'
       }
     }
   }

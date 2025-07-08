@@ -1,0 +1,43 @@
+## Icon State Management
+
+The `icon`, `iconActive`, and `active` properties control the display of the icon based on its state. This allows for the creation of dynamic and interactive elements.
+
+### Properties
+
+- **icon** — The main icon displayed by default.
+- **iconActive** — The icon that is displayed when the component is in an active state (`active` = `true`).
+- **active** — A boolean property that toggles the component's state between normal and active.
+
+### Description
+
+- The `icon` property is essential for displaying the icon.
+- If `iconActive` is not provided, there will be no visual change when the `active` state changes.
+- When `active` is set to `true`, the component will attempt to display the icon specified in `iconActive`.
+- The `active` property can be used to create toggles, indicators, and other interactive elements.
+
+### Recommendations
+
+- Use `iconActive` to provide visual feedback upon user interaction (e.g., on click or selection).
+- Ensure that `icon` and `iconActive` are visually distinct enough for the user to easily identify the state change.
+
+### Usage Example
+
+```html
+<!-- Normal icon -->
+<Icon icon="home" />
+
+<!-- Active icon -->
+<!-- `favorite` will be displayed because active=true -->
+<Icon icon="favorite_border" iconActive="favorite" :active="true" />
+
+<!-- Dynamic state toggle -->
+<template>
+  <Icon
+    icon="visibility"
+    iconActive="visibility_off"
+    :active="isVisible"
+    @click="isVisible = !isVisible"
+  />
+</template>
+```
+

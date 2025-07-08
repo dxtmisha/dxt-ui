@@ -22,6 +22,7 @@ export interface IconPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic
 > extends SkeletonPropsInclude {
   // Status
+  /** Активное состояние иконки/ Active state of the icon */
   active?: boolean
 
   // Icon
