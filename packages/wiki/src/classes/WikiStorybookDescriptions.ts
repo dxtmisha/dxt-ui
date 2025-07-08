@@ -51,7 +51,9 @@ export class WikiStorybookDescriptions {
           return descriptions[Geo.getLanguage()]
         }
 
-        return descriptions
+        console.log('descriptions', descriptions)
+
+        return descriptions.replace(/DesignComponent/g, 'asd')
       }
 
       return ''

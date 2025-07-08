@@ -1,0 +1,32 @@
+## Image display control
+
+### Description
+
+The `size`, `coordinator`, `x`, and `y` properties allow you to precisely control image scaling, visible area, and positioning within the container. Each parameter is responsible for its own aspect of display and can be used individually or together to achieve the desired visual effect.
+
+### Properties
+
+- **size** — Defines the scaling and fill mode of the image inside the container. Possible values: `auto` (default), `contain` (fit completely), `cover` (fill the container, possibly cropping the image).
+- **coordinator** — An array of four values that defines the visible area of the image: cropping from the left, top, right, and bottom, specified as percentages relative to the original image. Format: `[left, top, right, bottom]`.
+- **x** — Horizontal offset (X axis) of the image relative to the container or selected area. Can be set in pixels, percentages, or other supported units.
+- **y** — Vertical offset (Y axis) of the image relative to the container or selected area. Can be set in pixels, percentages, or other supported units.
+
+### Recommendations
+
+- Use `size` to select the appropriate image display mode for your layout and task.
+- The `coordinator` property is convenient for cropping or highlighting the desired part of the image.
+- Use the `x` and `y` parameters for precise image positioning within the container.
+- Combine parameters to achieve complex display effects.
+
+### Usage example
+
+```html
+<!-- Image with content mode -->
+<Image value="image.png" size="contain" />
+
+<!-- Cropping the image by coordinates -->
+<Image value="image.png" :coordinator="[10, 20, 100, 80]" />
+
+<!-- Shifting the image by X and Y -->
+<Image value="image.png" x="15" y="-10" />
+```

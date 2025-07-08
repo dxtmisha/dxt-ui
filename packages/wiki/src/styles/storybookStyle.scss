@@ -2,9 +2,11 @@
 
 .wiki-storybook {
   &-group {
-    @include ui.flexX;
-    flex-wrap: wrap;
-    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    align-content: stretch;
+    gap: 8px;
   }
 
   &-item {
@@ -12,12 +14,14 @@
     overflow: hidden;
 
     border: 1px solid oklch(87.2% 0.01 258.338);
-    border-radius: 8px;
+    border-radius: 12px;
+
+    @include ui.aspectRatio('1/1');
 
     &__label {
       position: absolute;
-      top: 8px;
-      left: 8px;
+      top: 4px;
+      left: 4px;
       right: auto;
       z-index: 8;
       @include ui.paddingX(8px);
@@ -27,20 +31,60 @@
       line-height: 1.2;
       background: rgba(249, 250, 251, .48);
       backdrop-filter: blur(8px);
-      border-radius: 4px;
+      border-radius: 8px;
+    }
+
+    &--rectangle {
+      @include ui.aspectRatio('16/9');
+    }
+
+    &--widescreen {
+      @include ui.aspectRatio('32/9');
     }
 
     &--squared {
       &--sm {
-        @include ui.squared(128px);
+        grid-column: span 6;
       }
 
       &--md {
-        @include ui.squared(256px);
+        grid-column: span 12;
       }
 
       &--lg {
-        @include ui.squared(384px);
+        grid-column: span 12;
+      }
+
+      &--max {
+        grid-column: span 12;
+      }
+
+      @media screen and (min-width: 640px) {
+        &--sm {
+          grid-column: span 4;
+        }
+
+        &--md {
+          grid-column: span 6;
+        }
+
+        &--lg {
+          grid-column: span 6;
+        }
+      }
+
+      @media screen and (min-width: 1024px) {
+        &--sm {
+          grid-column: span 2;
+        }
+
+        &--md {
+          grid-column: span 4;
+        }
+
+        &--lg {
+          grid-column: span 6;
+        }
       }
     }
   }

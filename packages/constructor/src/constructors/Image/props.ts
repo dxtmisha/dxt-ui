@@ -10,19 +10,38 @@ interface ImagePropsToken {
 
 export interface ImagePropsBasic {
   // Value
+  /**
+   * Accepts icon name, image URL, File object or PDF link/
+   * Принимает название иконки, ссылку на изображение, объект File или ссылку на PDF файл
+   */
   value?: string | any
-  coordinator?: number[] | any
-  x?: string | number
-  y?: string | number
+
+  /** Image URL/ URL изображения */
+  url?: string
 
   // Adaptive
+  /**
+   * Adaptive group (e.g. for different resolutions)/
+   * Группа адаптивности (например, для разных разрешений)
+   */
   adaptiveGroup?: string
+  /** Always use adaptivity/ Всегда использовать адаптивность */
   adaptiveAlways?: boolean
+  /** Image object width/ Ширина объекта изображения */
   objectWidth?: string | number
+  /** Image object height/ Высота объекта изображения */
   objectHeight?: string | number
 
   // Style
-  url?: string
+  /**
+   * Image coordinates (e.g. for cropping or positioning)/
+   * Координаты изображения (например, для обрезки или позиционирования)
+   */
+  coordinator?: number[] | any
+  /** X position/ Позиция по оси X */
+  x?: string | number
+  /** Y position/ Позиция по оси Y */
+  y?: string | number
 }
 
 /**

@@ -256,9 +256,9 @@ export class DesignComponent extends DesignCommand {
       this
         .replaceMarkDocumentation(sample, 'import', documentation.import)
         .replaceMarkDocumentation(sample, 'body', documentation.body)
-        .replaceMarkDocumentation(sample, 'events', documentation.events)
-        .replaceMarkDocumentation(sample, 'expose', documentation.expose)
-        .replaceMarkDocumentation(sample, 'slots', documentation.slots)
+        .replaceMarkDocumentation(sample, 'events', documentation.events, 'Events')
+        .replaceMarkDocumentation(sample, 'expose', documentation.expose, 'Expose')
+        .replaceMarkDocumentation(sample, 'slots', documentation.slots, 'Slots')
     }
 
     this.write(sample.getNameFile(file), sample.get())
@@ -365,7 +365,7 @@ export class DesignComponent extends DesignCommand {
         : ''
     }
     template: \`
-      ${story.template.replace(/DesignComponent/g, name).trim()}
+        ${story.template.replace(/DesignComponent/g, name).trim()}
     \`
   })
 }`)
@@ -384,20 +384,24 @@ export class DesignComponent extends DesignCommand {
    * @param sample sample for replacement/ сэмпл для замены
    * @param type type of the documentation to replace/ тип документации для замены
    * @param documentation documentation text/ текст документации
+   * @param name name of the documentation section/ название секции документации
    */
   private replaceMarkDocumentation(
     sample: DesignReplace,
     type: string,
-    documentation?: string
+    documentation?: string,
+    name?: string
   ): this {
     if (documentation) {
       const component = this.getStructure().getComponentNameFirst()
+      const data = []
 
-      sample.replaceMark(
-        `documentation-${type}`,
-        [
-          documentation.replace(new RegExp('Component', 'g'), component)
-        ])
+      if (name) {
+        data.push(`## ${name}`)
+      }
+
+      data.push(documentation.replace(new RegExp('Component', 'g'), component))
+      sample.replaceMark(`documentation-${type}`, data)
     }
 
     return this

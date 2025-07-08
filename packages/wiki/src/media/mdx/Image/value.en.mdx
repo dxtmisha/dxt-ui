@@ -1,0 +1,40 @@
+## Property value
+
+The `value` property is responsible for the main content. It is a universal property that supports multiple types of values, making it as flexible as possible for various use cases.
+
+### Supported value types
+
+- **Icon name** — The name of a built-in or custom icon (if supported by the system).
+- **String (URL)** — A direct link to an image file (e.g., PNG, JPG, SVG, GIF, WebP, etc.).
+- **File object** — A JavaScript `File` object, for example, obtained from `<input type="file">`.
+- **PDF link** — A direct link to a PDF file (the PDF document itself will be displayed inside).
+
+### Description
+
+- The `value` property is **optional**. If not set, nothing will be displayed.
+- When a `File` object is passed, the component will try to read and display the image or file preview.
+- If a PDF link is provided, the PDF document itself will be displayed inside (for example, with page navigation).
+- If an icon name is provided, the corresponding icon will be displayed.
+- The property is reactive and can be updated dynamically.
+
+### Recommendations
+
+- For the best performance, use optimized image formats (WebP, SVG, etc.).
+- Always validate the file type when accepting user uploads.
+
+### Usage example
+
+```html
+<!-- Icon by name -->
+<Image value="icon-user" />
+
+<!-- Image by URL -->
+<Image value="https://example.com/image.png" />
+
+<!-- Image from a File object -->
+<input type="file" @change="onFileChange" />
+<Image :value="selectedFile" />
+
+<!-- PDF by link -->
+<Image value="https://example.com/file.pdf" />
+```

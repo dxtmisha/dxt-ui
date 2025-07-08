@@ -23,12 +23,12 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
     ]
   },
   render: `
-      <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+      <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm">
         <D1Image v-bind="args"/>
       </div>
     `,
   import: [
-    'import { demoPdf, image1, phone1 } from \'@dxt-ui/wiki/media\''
+    'import { demoPdf, image1, phone1, phone2, phone3 } from \'@dxt-ui/wiki/media\''
   ],
   stories: [
     {
@@ -39,36 +39,101 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
       },
       setup: `
       return {
-        phone1,
         image1,
         demoPdf
       }
       `,
       template: `
-      <div class="wiki-storybook-group">
-        <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-          <div class="wiki-storybook-item__label">Icon</div>
-          <DesignComponent value="home"/>
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg">
+            <div class="wiki-storybook-item__label">Icon</div>
+            <DesignComponent value="home"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg">
+            <div class="wiki-storybook-item__label">Image/ contain</div>
+            <DesignComponent :value="image1"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--squared--max">
+            <div class="wiki-storybook-item__label">PDF</div>
+            <DesignComponent :value="demoPdf"/>
+          </div>
         </div>
-        <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-          <div class="wiki-storybook-item__label">Image</div>
-          <DesignComponent :value="image1"/>
+      `
+    },
+    {
+      id: 'ImageSize',
+      name: {
+        en: 'Display control',
+        ru: 'Отображение'
+      },
+      setup: `
+      return {
+        image1
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">size: auto (default)</div>
+            <DesignComponent :value="image1" size="auto"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">size: contain</div>
+            <DesignComponent :value="image1" size="contain"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">size: cover</div>
+            <DesignComponent :value="image1" size="cover"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">coordinator</div>
+            <DesignComponent :value="image1" :coordinator="[60, 10, 10, 40]"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">x, y</div>
+            <DesignComponent :value="image1" x="20" y="-10"/>
+          </div>
         </div>
-        <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-          <div class="wiki-storybook-item__label">Image/ contain</div>
-          <DesignComponent :value="phone1" size="contain"/>
+      `
+    },
+    {
+      id: 'ImageAdaptive',
+      name: {
+        en: 'Adapted images',
+        ru: 'Адаптированные изображения'
+      },
+      setup: `
+      return {
+        phone1,
+        phone2,
+        phone3
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <DesignComponent :value="phone1" adaptive object-width="76.2"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <DesignComponent :value="phone2" adaptive object-width="71.9"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <DesignComponent :value="phone3" adaptive object-width="129.9"/>
+          </div>
         </div>
-        <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-          <div class="wiki-storybook-item__label">PDF</div>
-          <DesignComponent :value="demoPdf"/>
-        </div>
-      </div>
       `
     }
   ],
   documentation: {
     body: `
+<StorybookDescriptions componentName={'Image'} type={'value'}/>
 <Canvas of={Component.ImageType}/>
+
+<StorybookDescriptions componentName={'Image'} type={'size'}/>
+<Canvas of={Component.ImageSize}/>
+
+<StorybookDescriptions componentName={'Image'} type={'adaptive'}/>
+<Canvas of={Component.ImageAdaptive}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Image'} type={'event.load'}/>

@@ -1,0 +1,32 @@
+## Adaptive scaling and related properties
+
+### Description
+
+The `adaptive` property enables automatic scaling and alignment of images. For correct operation, it is recommended to use it together with additional properties that allow you to precisely control the behavior and display of the image.
+
+### Properties
+
+- **adaptive** — Enables adaptive scaling mode for the image relative to other elements with the same `adaptive-group`.
+- **object-width** — The physical width of the object in the image (in millimeters, pixels, or other units). Used for scale calculation.
+- **object-height** — The physical height of the object in the image. Can be used instead of or together with `object-width`.
+- **adaptive-group** — Adaptivity group. Elements with the same value of this property will be scaled proportionally to each other.
+- **adaptive-always** — If specified, scaling and calculations will always be performed, even if the element is hidden off-screen.
+
+### Recommendations
+
+- Always specify at least one of the parameters: `object-width` or `object-height` for correct adaptivity.
+- Use `adaptive-group` if you need to synchronize the scale of several images.
+- Use `adaptive-always` only when necessary to avoid unnecessary calculations.
+
+### Usage example
+
+```html
+<!-- Adaptive image with specified object width -->
+<Image adaptive object-width="63.5" />
+
+<!-- Adaptive image with height and group -->
+<Image adaptive object-height="40" adaptive-group="products" />
+
+<!-- Constant scaling regardless of visibility -->
+<Image adaptive object-width="50" adaptive-always />
+```
