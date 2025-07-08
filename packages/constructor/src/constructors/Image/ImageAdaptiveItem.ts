@@ -254,7 +254,7 @@ export class ImageAdaptiveItem {
    * Удаление элемента из списка для масштабирования.
    */
   remove(): void {
-    if (this.is()) {
+    if (this.active.value) {
       ImageAdaptiveGroup.remove(this)
     }
   }
