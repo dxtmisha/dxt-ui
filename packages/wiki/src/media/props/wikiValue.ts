@@ -4,6 +4,11 @@ import {
   StorybookControl
 } from '../../types/storybookTypes'
 
+/**
+ * The wikiValue object contains common properties for all components in the value category
+ *
+ * Объект wikiValue содержит общие свойства для всех компонентов в категории значение
+ */
 export const wikiValue: StorybookArgsToList = {
   image: {
     type: StorybookControl.string,

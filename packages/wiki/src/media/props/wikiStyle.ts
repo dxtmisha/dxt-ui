@@ -54,6 +54,17 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  isSkeleton: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      defaultValue: false,
+      description: {
+        en: 'Displays the component in skeleton mode',
+        ru: 'Отображает компонент в режиме скелетона'
+      }
+    }
+  },
   overlay: {
     type: StorybookControl.boolean,
     options: {

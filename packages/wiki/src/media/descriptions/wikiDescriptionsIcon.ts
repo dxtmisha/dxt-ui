@@ -28,11 +28,11 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
       },
       template: `
         <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Default</div>
             <DesignComponent icon="home"/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Active</div>
             <DesignComponent icon="heart_minus" iconActive="favorite" :active="true"/>
           </div>
@@ -40,24 +40,20 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
       `
     },
     {
-      id: 'IconShape',
+      id: 'IconDirection',
       name: {
-        en: 'Icon shape',
-        ru: 'Форма иконки'
+        en: 'Direction',
+        ru: 'Направление компонента'
       },
       template: `
         <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Rect</div>
-            <DesignComponent icon="apps" rect overlay/>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">LTR</div>
+            <DesignComponent dir icon="arrow_forward"/>
           </div>
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Circle</div>
-            <DesignComponent icon="person" circle overlay/>
-          </div>
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Square</div>
-            <DesignComponent icon="square" square overlay/>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center wiki-storybook-item--rtl">
+            <div class="wiki-storybook-item__label">RTL</div>
+            <DesignComponent dir icon="arrow_forward"/>
           </div>
         </div>
       `
@@ -67,6 +63,9 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'Icon'} type={'icon'}/>
 <Canvas of={Component.IconState}/>
+
+<StorybookDescriptions componentName={'Style'} type={'dir'}/>
+<Canvas of={Component.IconDirection}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Icon'} type={'event.click'}/>

@@ -23,7 +23,7 @@ const propsNames: StorybookProps = [
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'overlay', type: 'boolean' },
   { name: 'rect', type: 'boolean' },
-  { name: 'rounded', type: 'string', option: ['auto', 'sm', 'md', 'lg', 'full'] },
+  { name: 'rounded', type: 'string', option: ['auto', 'sm', 'md', 'lg', 'xl', 'full'] },
   { name: 'size', type: 'string', option: ['auto', 'x', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'] },
   { name: 'square', type: 'boolean' },
   { name: 'start', type: 'boolean' },

@@ -96,7 +96,10 @@
       "border-radius": "{sys.rounded.sm}"
     },
     "lg": {
-      "border-radius": "{sys.rounded.md}"
+      "border-radius": "{sys.rounded.lg}"
+    },
+    "xl": {
+      "border-radius": "{sys.rounded.xl}"
     },
     "full": {
       "border-radius": "{sys.rounded.full}"

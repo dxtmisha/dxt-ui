@@ -43,6 +43,10 @@
     }
 
     &--squared {
+      &--xs {
+        grid-column: span 3;
+      }
+
       &--sm {
         grid-column: span 6;
       }
@@ -60,6 +64,10 @@
       }
 
       @media screen and (min-width: 640px) {
+        &--xs {
+          grid-column: span 2;
+        }
+
         &--sm {
           grid-column: span 4;
         }
@@ -74,6 +82,10 @@
       }
 
       @media screen and (min-width: 1024px) {
+        &--xs {
+          grid-column: span 2;
+        }
+
         &--sm {
           grid-column: span 2;
         }
@@ -90,6 +102,10 @@
 
     &--center {
       @include ui.flexCenter;
+    }
+
+    &--rtl {
+      @include ui.dirToRtl;
     }
   }
 }

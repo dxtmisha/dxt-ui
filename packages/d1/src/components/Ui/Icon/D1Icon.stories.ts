@@ -38,11 +38,11 @@ export const IconState: Story = {
     
     template: `
         <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Default</div>
             <D1Icon icon="home"/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Active</div>
             <D1Icon icon="heart_minus" iconActive="favorite" :active="true"/>
           </div>
@@ -50,24 +50,20 @@ export const IconState: Story = {
     `
   })
 }
-export const IconShape: Story = {
-  name: IconWikiStorybook.getStoryName('IconShape'),
+export const IconDirection: Story = {
+  name: IconWikiStorybook.getStoryName('IconDirection'),
   render: () => ({
     components: { D1Icon },
     
     template: `
         <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Rect</div>
-            <D1Icon icon="apps" rect overlay/>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">LTR</div>
+            <D1Icon dir icon="arrow_forward"/>
           </div>
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Circle</div>
-            <D1Icon icon="person" circle overlay/>
-          </div>
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Square</div>
-            <D1Icon icon="square" square overlay/>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center wiki-storybook-item--rtl">
+            <div class="wiki-storybook-item__label">RTL</div>
+            <D1Icon dir icon="arrow_forward"/>
           </div>
         </div>
     `

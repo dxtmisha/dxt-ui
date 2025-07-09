@@ -24,32 +24,7 @@
 
   html[dir="rtl"],
   .dir-rtl {
-    direction: rtl;
-
-    --d-dir: -1;
-    --d-dir-status: 0;
-    --d-dir-left: 0;
-    --d-dir-right: 1;
-    --d-dir-auto: unset;
-    --d-dir-auto-rtl: auto;
-    --d-dir-inherit: unset;
-    --d-dir-inherit-rtl: inherit;
-    --d-dir-initial: unset;
-    --d-dir-initial-rtl: initial;
-    --d-dir-start: flex-end;
-    --d-dir-end: flex-start;
-    --d-dir-text-left: right;
-    --d-dir-text-right: left;
-    --d-dir-order: 999999;
-
-    *, *:after, *:before {
-      --d-dir-position-left: var(--sys-position-right, initial);
-      --d-dir-position-right: var(--sys-position-left, initial);
-      --d-dir-margin-left: var(--sys-margin-right, 0);
-      --d-dir-margin-right: var(--sys-margin-left, 0);
-      --d-dir-padding-left: var(--sys-padding-right, 0);
-      --d-dir-padding-right: var(--sys-padding-left, 0);
-    }
+    @include dirToRtl;
   }
 }
 
@@ -140,4 +115,33 @@
 /// @return {String}
 @function dirOrder($value) {
   @return calc(var(--d-dir-order) + (var(--d-dir) * #{$value}));
+}
+
+@mixin dirToRtl {
+  direction: rtl;
+
+  --d-dir: -1;
+  --d-dir-status: 0;
+  --d-dir-left: 0;
+  --d-dir-right: 1;
+  --d-dir-auto: unset;
+  --d-dir-auto-rtl: auto;
+  --d-dir-inherit: unset;
+  --d-dir-inherit-rtl: inherit;
+  --d-dir-initial: unset;
+  --d-dir-initial-rtl: initial;
+  --d-dir-start: flex-end;
+  --d-dir-end: flex-start;
+  --d-dir-text-left: right;
+  --d-dir-text-right: left;
+  --d-dir-order: 999999;
+
+  *, *:after, *:before {
+    --d-dir-position-left: var(--sys-position-right, initial);
+    --d-dir-position-right: var(--sys-position-left, initial);
+    --d-dir-margin-left: var(--sys-margin-right, 0);
+    --d-dir-margin-right: var(--sys-margin-left, 0);
+    --d-dir-padding-left: var(--sys-padding-right, 0);
+    --d-dir-padding-right: var(--sys-padding-left, 0);
+  }
 }

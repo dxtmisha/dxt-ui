@@ -12246,7 +12246,20 @@
                     index: 'borderRadius',
                     name: 'border-radius',
                     type: 'property',
-                    value: 'var(--d1-sys-rounded-md)',
+                    value: 'var(--d1-sys-rounded-lg)',
+                  ),
+                ),
+              ),
+              'xl':(
+                index: 'xl',
+                name: '&--xl',
+                type: 'state',
+                value: (
+                  'borderRadius':(
+                    index: 'borderRadius',
+                    name: 'border-radius',
+                    type: 'property',
+                    value: 'var(--d1-sys-rounded-xl)',
                   ),
                 ),
               ),

@@ -221,7 +221,11 @@
       }
       
       &--lg {
-        border-radius: var(--d1-sys-rounded-md);
+        border-radius: var(--d1-sys-rounded-lg);
+      }
+      
+      &--xl {
+        border-radius: var(--d1-sys-rounded-xl);
       }
       
       &--full {
