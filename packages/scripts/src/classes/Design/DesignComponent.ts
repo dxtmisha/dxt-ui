@@ -17,6 +17,7 @@ import {
   UI_PROJECT_CONSTRUCTOR_FULL_NAME,
   UI_PROJECT_CONSTRUCTOR_NAME
 } from '../../config'
+import { forEach, isObjectNotArray } from '@dxt-ui/functional'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -234,8 +235,8 @@ export class DesignComponent extends DesignCommand {
 
     if (description) {
       this.replaceMarkStoriesRender(sample, description)
-        .replaceMarkStoriesImport(sample, description)
         .replaceMarkStoriesStories(sample, description)
+        .replaceMarkStoriesImport(sample, description)
     }
 
     this.write(sample.getNameFile(file), sample.get())
@@ -289,6 +290,30 @@ export class DesignComponent extends DesignCommand {
   }
 
   /**
+   * Returns the import of components for stories.
+   *
+   * Возвращает импорт компонентов для сториз.
+   * @param description description of the component/ описание компонента
+   */
+  private getStoriesComponentsImport(description: StorybookComponentsDescriptionItem): string[] {
+    if (description.stories) {
+      const components: string[] = []
+
+      description.stories.forEach((story) => {
+        if (story.components) {
+          story.components.forEach((component) => {
+            components.push(component)
+          })
+        }
+      })
+
+      return components
+    }
+
+    return []
+  }
+
+  /**
    * Replaces the render in the sample.
    *
    * Заменяет рендер в сэмпле.
@@ -330,10 +355,19 @@ export class DesignComponent extends DesignCommand {
     sample: DesignReplace,
     description: StorybookComponentsDescriptionItem
   ): this {
+    const design = this.getStructure().getDesignFirst()
+    const imports: string[] = []
+
+    this.getStoriesComponentsImport(description).forEach((component) => {
+      const name = `${design}${component}`
+      imports.push(`import ${name} from '../${component}/${name}.vue'`)
+    })
+
     if (description.import) {
-      sample.replaceMark('story-import', description.import)
+      imports.push(...description.import)
     }
 
+    sample.replaceMark('story-import', imports)
     return this
   }
 
@@ -349,26 +383,37 @@ export class DesignComponent extends DesignCommand {
     description: StorybookComponentsDescriptionItem
   ): this {
     if (description.stories) {
-      const component = this.getStructure().getComponentNameFirst()
+      const wikiLanguage = PropertiesConfig.getWikiLanguage()
+      const design = this.getStructure().getDesignFirst()
       const name = this.getStructure().getFullComponentName()
       const stories: string[] = []
 
       description.stories.forEach((story) => {
-        stories.push(`export const ${story.id}: Story = {
-  name: ${component}WikiStorybook.getStoryName('${story.id}'),
-  render: () => ({
-    components: { ${name}${story.components ? `, ${story.components.join(', ')}` : ''} },
-    ${story.setup
-        ? `setup() {
-      ${story.setup.trim()}
-    },`
-        : ''
-    }
-    template: \`
-        ${story.template.replace(/DesignComponent/g, name).trim()}
-    \`
-  })
-}`)
+        const components = story.components && forEach(story.components, component => `${design}${component}`)
+        const template = story.template
+          .replace(/DesignComponent/g, name).trim()
+          .replace(/<(\/?)Design/g, `<$1${design}`)
+
+        stories.push(`export const ${story.id}: Story = {`)
+
+        if (isObjectNotArray(story.name) && story.name?.[wikiLanguage]) {
+          stories.push(`  name: '${story.name?.[wikiLanguage]}',`)
+        }
+
+        stories.push(`  render: () => ({`)
+        stories.push(`    components: { ${name}${components ? `, ${components.join(', ')}` : ''} },`)
+
+        if (story.setup) {
+          stories.push(`    setup() {`)
+          stories.push(`      ${story.setup.trim()}`)
+          stories.push(`    },`)
+        }
+
+        stories.push(`    template: \``)
+        stories.push(`        ${template}`)
+        stories.push(`    \``)
+        stories.push(`  })`)
+        stories.push(`}`)
       })
 
       sample.replaceMark('story-items', stories)

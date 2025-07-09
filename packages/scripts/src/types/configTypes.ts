@@ -33,4 +33,11 @@ export type DesignUiConfig = {
    * Лимит разделения ключа на под-ветки
    */
   separatorLimit?: number
+
+  /**
+   * Wiki language
+   *
+   * Язык wiki
+   */
+  wikiLanguage?: string
 }

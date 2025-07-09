@@ -61,6 +61,15 @@ export class PropertiesConfig {
     return this.config.separatorLimit ?? 6
   }
 
+  /**
+   * Returns the wiki language.
+   *
+   * Возвращает язык wiki.
+   */
+  static getWikiLanguage(): string {
+    return this.config.wikiLanguage ?? 'en'
+  }
+
   static {
     const file = PropertiesFile.readFile<DesignUiConfig>(UI_CONFIG_FILE)
 

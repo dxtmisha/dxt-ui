@@ -1,0 +1,13 @@
+### `isActive`
+
+Computed property that determines whether the additional icon is active.
+
+```ts
+readonly isActive: ComputedRef<boolean>
+```
+
+Returns `true` only when both conditions are met:
+- The `active` property is set to `true`
+- The `iconActive` property is defined (not empty)
+
+This property is used internally by the component to control the display of primary and additional icons.

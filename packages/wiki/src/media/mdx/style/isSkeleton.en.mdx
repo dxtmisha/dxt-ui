@@ -1,0 +1,19 @@
+## Skeleton Mode
+
+The `isSkeleton` property works in conjunction with the `Skeleton` component. When an element is a child of the `Skeleton` component and has the `isSkeleton` property, its display depends on the parent `Skeleton`'s state.
+
+### Properties
+
+- **isSkeleton** — Boolean property. Determines whether the element participates in skeleton mode.
+
+### Description
+
+- When `active=false` on the `Skeleton` component, all child elements display normally, regardless of the `isSkeleton` value.
+- When `active=true` on the `Skeleton` component, all child elements enter skeleton mode, but behavior depends on `isSkeleton`:
+  - If the element has `isSkeleton=true` — the element displays as a skeleton
+  - If the element has `isSkeleton=false` — the element becomes invisible
+
+### Recommendations
+
+- Use only inside the `Skeleton` component.
+- Suitable for creating interactive loading states with smooth transitions.
