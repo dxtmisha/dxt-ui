@@ -42,5 +42,16 @@ export const wikiStatus: StorybookArgsToList = {
         ru: 'Скрывает элемент'
       }
     }
+  },
+  active: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      defaultValue: false,
+      description: {
+        en: 'Sets the element to an active state',
+        ru: 'Переводит элемент в активное состояние'
+      }
+    }
   }
 }

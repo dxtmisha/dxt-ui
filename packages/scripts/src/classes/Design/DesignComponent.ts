@@ -17,7 +17,7 @@ import {
   UI_PROJECT_CONSTRUCTOR_FULL_NAME,
   UI_PROJECT_CONSTRUCTOR_NAME
 } from '../../config'
-import { forEach, isObjectNotArray } from '@dxt-ui/functional'
+import { forEach, isObjectNotArray, toKebabCase } from '@dxt-ui/functional'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -314,6 +314,22 @@ export class DesignComponent extends DesignCommand {
   }
 
   /**
+   * Converts the code to the component name.
+   *
+   * Преобразует код в название компонента.
+   * @param code code to convert/ код для преобразования
+   */
+  private toComponentName(code: string): string {
+    const design = this.getStructure().getDesignFirst()
+    const name = this.getStructure().getFullComponentName()
+
+    return code
+      .replace(/DesignComponent/g, name).trim()
+      .replace(/design-component/g, toKebabCase(name)).trim()
+      .replace(/<(\/?)Design/g, `<$1${design}`)
+  }
+
+  /**
    * Replaces the render in the sample.
    *
    * Заменяет рендер в сэмпле.
@@ -334,7 +350,7 @@ export class DesignComponent extends DesignCommand {
           `  components: { ${name} },`,
           '  setup: () => ({ args }),',
           '  template: `',
-          `    ${description.render.trim()}`,
+          `    ${this.toComponentName(description.render.trim())}`,
           '  `',
           '})'
         ]
@@ -390,9 +406,7 @@ export class DesignComponent extends DesignCommand {
 
       description.stories.forEach((story) => {
         const components = story.components && forEach(story.components, component => `${design}${component}`)
-        const template = story.template
-          .replace(/DesignComponent/g, name).trim()
-          .replace(/<(\/?)Design/g, `<$1${design}`)
+        const template = this.toComponentName(story.template)
 
         stories.push(`export const ${story.id}: Story = {`)
 

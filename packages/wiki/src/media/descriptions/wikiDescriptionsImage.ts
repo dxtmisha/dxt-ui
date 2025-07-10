@@ -24,7 +24,7 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
   },
   render: `
       <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm">
-        <D1Image v-bind="args"/>
+        <DesignComponent v-bind="args"/>
       </div>
     `,
   import: [

@@ -108,4 +108,59 @@
       @include ui.dirToRtl;
     }
   }
+
+  &-card {
+    overflow: hidden;
+    width: 320px;
+
+    border: 1px solid oklch(87.2% 0.01 258.338);
+    border-radius: 12px;
+
+    &__image {
+      height: 128px;
+      background-size: cover;
+    }
+
+    &__content {
+      @include ui.flexY;
+      align-items: stretch;
+      gap: 16px;
+
+      @include ui.paddingX(16px);
+      @include ui.paddingY(16px);
+    }
+
+    &__label {
+      @include ui.fontSize(20px);
+      line-height: 1.2;
+    }
+
+    &__information {
+      @include ui.fontSize(14px);
+      line-height: 1.2;
+      color: oklch(55.1% 0.027 264.364);
+    }
+
+    &__actions {
+      @include ui.flexX;
+      gap: 8px;
+    }
+  }
+
+  &-button {
+    @include ui.paddingX(16px);
+    @include ui.paddingY(8px);
+
+    background: none;
+    border: 1px solid oklch(92.8% 0.006 264.531);
+    border-radius: 8px;
+
+    &:hover {
+      background-color: oklch(98.5% 0.002 247.839);
+    }
+
+    &:active {
+      background-color: oklch(87.2% 0.01 258.338);
+    }
+  }
 }
