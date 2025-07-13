@@ -7,9 +7,20 @@ import { type EmptyValue } from '../types/basicTypes'
  *
  * Проверяет, заполнено ли поле.
  * @param value input value/ входное значение
+ * @param zeroTrue if true, '0' is considered filled/ если true, то '0' считается заполненным
  */
-export function isFilled<T>(value: T): value is Exclude<T, EmptyValue> {
+export function isFilled<T>(
+  value: T,
+  zeroTrue?: boolean
+): value is Exclude<T, EmptyValue> {
   if (value) {
+    if (
+      zeroTrue
+      && value === '0'
+    ) {
+      return true
+    }
+
     switch (typeof value) {
       case 'bigint':
       case 'number':

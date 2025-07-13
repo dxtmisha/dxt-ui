@@ -1,5 +1,27 @@
 import { forEach } from './forEach'
 
+const LIST_NAME = [
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'v'
+]
+
 /**
  * Applies a template to the text, replacing keys with values from the replacement object
  *
@@ -11,13 +33,21 @@ import { forEach } from './forEach'
  */
 export const applyTemplate = (
   text: string,
-  replacement: Record<string, string | number> = {}
+  replacement: Record<string, string | number> | string[] = {}
 ) => {
   let content = String(text)
 
-  forEach(replacement, (value, key) => {
-    content = content.replace(new RegExp(`\\[${key}\\]`, 'g'), String(value))
-  })
+  if (text.match(/%[a-z]/)) {
+    let code = 0
+
+    forEach(replacement, (value) => {
+      content = content.replace(new RegExp(`%${LIST_NAME[code++]}`, 'g'), String(value))
+    })
+  } else {
+    forEach(replacement, (value, key) => {
+      content = content.replace(new RegExp(`\\[${key}\\]`, 'g'), String(value))
+    })
+  }
 
   return content
 }

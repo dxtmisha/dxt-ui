@@ -1,3 +1,4 @@
+import { applyTemplate } from '../functions/applyTemplate'
 import { forEach } from '../functions/forEach'
 import { isFilled } from '../functions/isFilled'
 import { isString } from '../functions/isString'
@@ -6,8 +7,11 @@ import { toArray } from '../functions/toArray'
 import { Api } from './Api'
 import { Geo } from './Geo'
 
-export type TranslateList<T extends string[]> = { [K in T[number]]: string }
-export type TranslateItemOrList<T extends string | string[]> = T extends string[] ? TranslateList<T> : string
+export type TranslateCode = string | string[]
+export type TranslateList<T extends TranslateCode[]> = {
+  [K in T[number] as K extends readonly string[] ? K[0] : K]: string
+}
+export type TranslateItemOrList<T extends TranslateCode> = T extends string[] ? TranslateList<T> : string
 
 /**
  * Class for getting the translated text.
@@ -28,19 +32,23 @@ export class Translate {
    *
    * Получение текста перевода по его коду.
    * @param name code name/ название кода
+   * @param replacement If set, replaces the text with the specified values/ если установлено, заменяет текст на указанные значения
    */
-  static async get(name: string): Promise<string> {
+  static async get(
+    name: string,
+    replacement?: string[] | Record<string, string | number>
+  ): Promise<string> {
     const fullName = this.getName(name)
 
     if (fullName in this.data) {
-      return this.data[fullName]
+      return this.replacement(this.data[fullName], replacement)
     }
 
     if (!Api.isLocalhost()) {
       await this.add(name)
     }
 
-    return this.data?.[fullName] ?? name
+    return this.replacement(this.data?.[fullName] ?? name)
   }
 
   /**
@@ -50,12 +58,18 @@ export class Translate {
    * @param name code name/ название кода
    * @param first If set to false, returns an empty string if there is no text/
    * если установлено false, возвращает пустую строку, если нет текста
+   * @param replacement If set, replaces the text with the specified values/
+   * если установлено, заменяет текст на указанные значения
    */
-  static getSync(name: string, first: boolean = false): string {
+  static getSync(
+    name: string,
+    first: boolean = false,
+    replacement?: string[] | Record<string, string | number>
+  ): string {
     const fullName = this.getName(name)
 
     if (fullName in this.data) {
-      return this.data[fullName]
+      return this.replacement(this.data[fullName], replacement)
     }
 
     return first ? ' ' : name
@@ -67,19 +81,23 @@ export class Translate {
    * Получение списка переводов по массиву кодов текста.
    * @param names list of codes to get translations/ список кодов для получения переводов
    */
-  static getList<T extends string[]>(names: T): Promise<TranslateList<T>> {
+  static getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>> {
     return new Promise((resolve) => {
       const list: Record<string, string> = {}
       let end = 0
 
       for (const name of names) {
-        this.get(name).then((text) => {
-          list[name] = text
+        const code = Array.isArray(name) ? name[0] : name
+        const replacement = Array.isArray(name) ? name.slice(1) : undefined
 
-          if (++end >= names.length) {
-            resolve(list as TranslateList<T>)
-          }
-        })
+        this.get(code, replacement)
+          .then((text) => {
+            list[code] = text
+
+            if (++end >= names.length) {
+              resolve(list as TranslateList<T>)
+            }
+          })
       }
     })
   }
@@ -92,11 +110,14 @@ export class Translate {
    * @param first If set to false, returns an empty string if there is no text/
    * если установлено false, возвращает пустую строку, если нет текста
    */
-  static getListSync<T extends string[]>(names: T, first: boolean = false): TranslateList<T> {
+  static getListSync<T extends TranslateCode[]>(names: T, first: boolean = false): TranslateList<T> {
     const list: Record<string, string> = {}
 
     for (const name of names) {
-      list[name] = this.getSync(name, first)
+      const code = Array.isArray(name) ? name[0] : name
+      const replacement = Array.isArray(name) ? name.slice(1) : undefined
+
+      list[code] = this.getSync(code, first, replacement)
     }
 
     return list as TranslateList<T>
@@ -235,6 +256,24 @@ export class Translate {
     }))
 
     return data ?? {}
+  }
+
+  /**
+   * Replaces the text with the specified values.
+   *
+   * Заменяет текст на указанные значения.
+   * @param text text to replace/ текст для замены
+   * @param replacement values for replacement/ значения для замены
+   */
+  protected static replacement(
+    text: string,
+    replacement?: string[] | Record<string, string | number>
+  ): any {
+    if (replacement) {
+      return applyTemplate(text, replacement)
+    }
+
+    return text
   }
 
   /**

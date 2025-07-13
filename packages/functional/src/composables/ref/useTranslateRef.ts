@@ -17,7 +17,7 @@ import {
  * @param names a string or an array with keys/ строка или массив с ключами
  */
 export function useTranslateRef<
-  T extends string[]
+  T extends (string | string[])[]
 >(
   names: T
 ): ShallowRef<TranslateList<T>> {
