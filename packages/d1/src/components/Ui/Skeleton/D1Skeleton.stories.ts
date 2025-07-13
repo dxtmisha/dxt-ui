@@ -59,50 +59,71 @@ export const SkeletonBasic: Story = {
   name: 'Базовое использование',
   render: () => ({
     components: { D1Skeleton },
-    setup() {
-      return {}
-    },
     template: `
         <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Active skeleton</div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">text</div>
             <D1Skeleton :active="true">
-              <div>Loading content...</div>
+              <div class="d1-skeleton__text">Text placeholder</div>
+              <div class="d1-skeleton__text">Text placeholder</div>
+              <div class="d1-skeleton__text">Text placeholder</div>
             </D1Skeleton>
           </div>
 
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Inactive skeleton</div>
-            <D1Skeleton :active="false">
-              <div>Loaded content</div>
-            </D1Skeleton>
-          </div>
-        </div>
-    `
-  })
-}
-export const SkeletonWithChildElements: Story = {
-  name: 'С дочерними элементами',
-  render: () => ({
-    components: { D1Skeleton },
-    setup() {
-      return {}
-    },
-    template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Child elements with isSkeleton=true</div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">textVariant</div>
             <D1Skeleton :active="true">
-              <div :isSkeleton="true">Visible in skeleton mode</div>
-              <div :isSkeleton="false">Hidden in skeleton mode</div>
+              <div class="d1-skeleton__textVariant">Text placeholder</div>
+              <div class="d1-skeleton__textVariant">Text placeholder</div>
+              <div class="d1-skeleton__textVariant">Text placeholder</div>
             </D1Skeleton>
           </div>
 
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Normal state</div>
-            <D1Skeleton :active="false">
-              <div :isSkeleton="true">Normal content 1</div>
-              <div :isSkeleton="false">Normal content 2</div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">background</div>
+            <D1Skeleton :active="true">
+              <div
+                class="d1-skeleton__background"
+                style="width: 128px; height: 128px;"
+              >
+                Text placeholder
+              </div>
+            </D1Skeleton>
+          </div>
+
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">backgroundVariant</div>
+            <D1Skeleton :active="true">
+              <div
+                class="d1-skeleton__backgroundVariant"
+                style="width: 128px; height: 128px;"
+              >
+                Background Variant
+              </div>
+            </D1Skeleton>
+          </div>
+
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">border</div>
+            <D1Skeleton :active="true">
+              <div
+                class="d1-skeleton__border"
+                style="width: 128px; height: 128px; border: 2px solid #ccc;"
+              >
+                Border placeholder
+              </div>
+            </D1Skeleton>
+          </div>
+
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">borderVariant</div>
+            <D1Skeleton :active="true">
+              <div
+                class="d1-skeleton__borderVariant"
+                style="width: 128px; height: 128px; border: 2px solid #ccc;"
+              >
+                Border Variant
+              </div>
             </D1Skeleton>
           </div>
         </div>

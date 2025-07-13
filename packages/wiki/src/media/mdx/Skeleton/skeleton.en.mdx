@@ -1,0 +1,44 @@
+## Skeleton State Management
+
+The `Skeleton` component is used to display placeholders during content loading. The `active` property controls the visibility of all child elements within the component.
+
+### Properties
+
+- **active** — Boolean property that activates skeleton mode and controls the visibility of child elements.
+
+### How it works
+
+When `active` is set to `true`, the Skeleton component hides all its child elements, **except**:
+
+1. **Elements with special skeleton CSS classes:**
+   - `skeleton__text` — for text placeholders
+   - `skeleton__textVariant` — alternative variant of text placeholders
+   - `skeleton__background` — for background placeholders
+   - `skeleton__backgroundAfter` — background placeholder via ::after pseudo-element
+   - `skeleton__backgroundBefore` — background placeholder via ::before pseudo-element
+   - `skeleton__backgroundVariant` — alternative variant of background placeholders
+   - `skeleton__border` — for border placeholders
+   - `skeleton__borderVariant` — alternative variant of border placeholders
+   - `skeleton__none` — elements that are always hidden in skeleton mode (even if they have other special classes)
+
+2. **Components with `isSkeleton=true` property**
+
+When `active` is set to `false`, all child elements are displayed in normal mode.
+
+### Recommendations
+
+- Use the component to improve user experience during data loading
+- Apply special skeleton classes to elements that should display as placeholders
+- Place placeholders where real content will appear
+
+### Usage example
+
+```html
+<!-- Active skeleton -->
+<Skeleton :active="true">
+  <div class="skeleton__text">Visible text placeholder</div>
+  <div class="skeleton__background">Visible background placeholder</div>
+  <div>Hidden element</div>
+  <ComponentWithSkeleton isSkeleton="true">Visible component</ComponentWithSkeleton>
+</Skeleton>
+```

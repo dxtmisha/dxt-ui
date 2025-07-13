@@ -49,55 +49,84 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
         en: 'Basic usage',
         ru: 'Базовое использование'
       },
-      setup: `
-      return {}
-      `,
       template: `
         <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Active skeleton</div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">text</div>
             <DesignComponent :active="true">
-              <div>Loading content...</div>
+              <div class="design-component__text">Text placeholder</div>
+              <div class="design-component__text">Text placeholder</div>
+              <div class="design-component__text">Text placeholder</div>
             </DesignComponent>
           </div>
 
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Inactive skeleton</div>
-            <DesignComponent :active="false">
-              <div>Loaded content</div>
-            </DesignComponent>
-          </div>
-        </div>
-      `
-    },
-    {
-      id: 'SkeletonWithChildElements',
-      name: {
-        en: 'With child elements',
-        ru: 'С дочерними элементами'
-      },
-      setup: `
-      return {}
-      `,
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Child elements with isSkeleton=true</div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">textVariant</div>
             <DesignComponent :active="true">
-              <div :isSkeleton="true">Visible in skeleton mode</div>
-              <div :isSkeleton="false">Hidden in skeleton mode</div>
+              <div class="design-component__textVariant">Text placeholder</div>
+              <div class="design-component__textVariant">Text placeholder</div>
+              <div class="design-component__textVariant">Text placeholder</div>
             </DesignComponent>
           </div>
 
-          <div class="wiki-storybook-item">
-            <div class="wiki-storybook-item__label">Normal state</div>
-            <DesignComponent :active="false">
-              <div :isSkeleton="true">Normal content 1</div>
-              <div :isSkeleton="false">Normal content 2</div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">background</div>
+            <DesignComponent :active="true">
+              <div
+                class="design-component__background"
+                style="width: 128px; height: 128px;"
+              >
+                Text placeholder
+              </div>
+            </DesignComponent>
+          </div>
+
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">backgroundVariant</div>
+            <DesignComponent :active="true">
+              <div
+                class="design-component__backgroundVariant"
+                style="width: 128px; height: 128px;"
+              >
+                Background Variant
+              </div>
+            </DesignComponent>
+          </div>
+
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">border</div>
+            <DesignComponent :active="true">
+              <div
+                class="design-component__border"
+                style="width: 128px; height: 128px; border: 2px solid #ccc;"
+              >
+                Border placeholder
+              </div>
+            </DesignComponent>
+          </div>
+
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">borderVariant</div>
+            <DesignComponent :active="true">
+              <div
+                class="design-component__borderVariant"
+                style="width: 128px; height: 128px; border: 2px solid #ccc;"
+              >
+                Border Variant
+              </div>
             </DesignComponent>
           </div>
         </div>
       `
     }
-  ]
+  ],
+  documentation: {
+    body: `
+<StorybookDescriptions componentName={'Skeleton'} type={'active'}/>
+<Canvas of={Component.SkeletonBasic}/>
+    `,
+    expose: `
+<StorybookDescriptions componentName={'Skeleton'} type={'expose.isActive'}/>
+    `
+  }
 }

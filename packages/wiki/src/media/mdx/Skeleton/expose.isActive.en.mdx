@@ -1,0 +1,45 @@
+### `isActive`
+
+The `Skeleton` component exports a computed property `isActive` that provides access to the current activation state of the skeleton.
+
+#### Description
+
+- **isActive** — A computed property of type `ComputedRef<boolean>` that reflects the current state of the component's `active` property.
+
+#### Purpose
+
+The exported `isActive` value provides external access to the skeleton's activation state. This is useful for:
+
+- Synchronizing state with parent components
+- Creating dependent computations in the parent component
+- Programmatically controlling behavior of other elements based on skeleton state
+
+#### Usage
+
+Access the exported value through a template reference:
+
+```html
+<template>
+  <div>
+    <Skeleton ref="skeletonRef" :active="isLoading">
+      <div class="skeleton__text">Loading content</div>
+    </Skeleton>
+
+    <p v-if="skeletonRef?.isActive">Loading...</p>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+const skeletonRef = ref()
+const isLoading = ref(true)
+
+// Programmatic state access
+const checkSkeletonState = () => {
+  if (skeletonRef.value?.isActive) {
+    console.log('Skeleton is active')
+  }
+}
+</script>
+```
