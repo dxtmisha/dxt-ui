@@ -1,15 +1,19 @@
-// :component.once @use "../../../styles/[project]/properties";
+@use "../../../styles/Ui/properties";
 @use "@dxt-ui/styles/properties" as ui;
-// :component.once @use "@dxt-ui/constructor/Component/style" as Component;
+@use "@dxt-ui/constructor/Ripple/style" as Ripple;
 
-@include ui.initDesignBasic('[design].[component]') {
+@include ui.initDesignBasic('d1.ripple') {
   // Basic styles for a component
   // Базовый стили для компонента
-  // :component.once @include Component.mixinComponent;
+  @include Ripple.mixinRipple;
 
   // Styles from tokens
   // Стили из токенов
   // :style [!] System label / Системная метка
+  & {
+    --d1-ripple-backgroundColor: var(--d1-sys-palette-onSurface);
+    --d1-ripple-backgroundOpacity: var(--d1-sys-opacity-pressed);
+  }
   // :style [!] System label / Системная метка
 
   // Here are the user styles

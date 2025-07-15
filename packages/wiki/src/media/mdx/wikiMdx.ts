@@ -5,6 +5,7 @@ import { wikiMdxSlot } from './slot/wikiMdxSlot'
 
 import { wikiMdxIcon } from './Icon/wikiMdxIcon'
 import { wikiMdxImage } from './Image/wikiMdxImage'
+import { wikiMdxRipple } from './Ripple/wikiMdxRipple'
 import { wikiMdxSkeleton } from './Skeleton/wikiMdxSkeleton'
 
 export const wikiMdx: StorybookComponentsMdx = [
@@ -13,5 +14,6 @@ export const wikiMdx: StorybookComponentsMdx = [
 
   wikiMdxIcon,
   wikiMdxImage,
+  wikiMdxRipple,
   wikiMdxSkeleton
 ]

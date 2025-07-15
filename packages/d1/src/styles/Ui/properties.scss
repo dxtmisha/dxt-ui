@@ -49,6 +49,7 @@
   '--d1-sys-palette-inverseOnSurface': ('--d1-palette-basic50', '--d1-palette-dark950'),
   '--d1-sys-palette-shadow': ('--d1-palette-basic950', '--d1-palette-dark700'),
   '--d1-image-color': ('--d1-palette-basic950'),
+  '--d1-ripple-backgroundColor': ('--d1-palette-basic950'),
   '--d1-skeleton-color': ('--d1-palette-basic950'),
   '--d1-skeleton-backgroundColor': ('--d1-palette-basic800'),
   '--d1-skeleton-borderColor': ('--d1-palette-basic800'),));
@@ -12355,6 +12356,32 @@
           ),
         ),
       ),
+      'ripple':(
+        index: 'ripple',
+        name: 'd1-ripple',
+        type: 'component',
+        value: (
+          'backgroundColor':(
+            index: 'backgroundColor',
+            name: '--d1-ripple-backgroundColor',
+            type: 'var',
+            value: 'var(--d1-sys-palette-onSurface)',
+          ),
+          'backgroundOpacity':(
+            index: 'backgroundOpacity',
+            name: '--d1-ripple-backgroundOpacity',
+            type: 'var',
+            value: 'var(--d1-sys-opacity-pressed)',
+          ),
+          'item':(
+            index: 'item',
+            name: '&__item',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+        ),
+      ),
       'skeleton':(
         index: 'skeleton',
         name: 'd1-skeleton',
@@ -12838,6 +12865,20 @@
                 value: (
                 ),
               ),
+            ),
+          ),
+        ),
+      ),
+      'ripple':(
+        index: 'ripple',
+        name: 'd-ripple',
+        type: 'component',
+        value: (
+          'item':(
+            index: 'item',
+            name: '&__item',
+            type: 'subclass',
+            value: (
             ),
           ),
         ),
