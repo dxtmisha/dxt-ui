@@ -34,12 +34,28 @@
       border-radius: 8px;
     }
 
+    &--padding {
+      padding: 16px 16px;
+    }
+
     &--rectangle {
+      grid-column: span 12;
       @include ui.aspectRatio('16/9');
     }
 
     &--widescreen {
+      grid-column: span 12;
       @include ui.aspectRatio('32/9');
+    }
+
+    &--compact {
+      grid-column: span 12;
+      @include ui.aspectRatio('64/9');
+    }
+
+    &--auto {
+      grid-column: span 12;
+      @include ui.aspectRatio('auto');
     }
 
     &--squared {

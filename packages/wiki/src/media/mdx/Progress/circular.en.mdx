@@ -1,0 +1,37 @@
+## Circular Progress and Related Parameters
+
+The `circular` property enables circular progress indicator display mode. For optimal control over the appearance and behavior of circular progress, it is recommended to use it together with additional styling properties.
+
+### Properties
+
+- **circular** — Enables circular progress display mode as a ring indicator.
+- **dense** — Removes internal padding, allowing the indicator to be used in small elements where space is limited.
+
+### Description
+
+- The `circular` property activates a ring progress indicator that fills around the circumference proportionally to the current value.
+- `dense` removes padding, making the indicator more compact for placement in limited space.
+- Both properties work together to create a flexible and adaptive circular progress indicator.
+
+### Recommendations
+
+- Use `circular` to display progress in compact interfaces or when a central focus is needed.
+- Apply `dense` in small elements where space-saving is important and padding needs to be removed.
+- Combine properties depending on available space and design requirements.
+- Circular progress is particularly effective for displaying process completion.
+
+### Usage Example
+
+```html
+<!-- Basic circular progress -->
+<Progress circular />
+
+<!-- Compact circular progress -->
+<Progress circular dense />
+
+<!-- Circular progress with specific value -->
+<Progress circular :value="75" />
+
+<!-- Compact circular progress with value -->
+<Progress circular dense :value="50" />
+```

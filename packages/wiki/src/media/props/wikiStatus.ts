@@ -53,5 +53,15 @@ export const wikiStatus: StorybookArgsToList = {
         ru: 'Переводит элемент в активное состояние'
       }
     }
+  },
+  visible: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Controls the visibility of the component',
+        ru: 'Управляет видимостью компонента'
+      }
+    }
   }
 }

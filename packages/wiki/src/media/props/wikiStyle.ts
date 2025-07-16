@@ -21,6 +21,17 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  dense: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      defaultValue: false,
+      description: {
+        en: 'Enables compact display variant',
+        ru: 'Включает компактный вариант отображения'
+      }
+    }
+  },
   dir: {
     type: StorybookControl.boolean,
     options: {
@@ -73,6 +84,18 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Adds a background overlay to the component',
         ru: 'Добавляет наложение фона компоненту'
+      }
+    }
+  },
+  palette: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      options: [],
+      type: 'string',
+      description: {
+        en: 'Sets the color palette for the element',
+        ru: 'Устанавливает цветовую палитру для элемента'
       }
     }
   },

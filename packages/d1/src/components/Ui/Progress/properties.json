@@ -1,0 +1,24 @@
+{
+  "main": "{d.progress}",
+  "background-color": "{sys.palette.primary}",
+  "palette-var": "{sys.palette.primary}",
+  "border-radius": "{sys.rounded.full}",
+  "opacity": "{sys.opacity.overlay}",
+  "circular": {
+    "inset": "{sys.spacing.x}",
+    "width": "{ref.spacing.12}"
+  },
+  "size": {
+    "sm": {
+      "height": "{ref.spacing.2px}"
+    },
+    "md": {
+      "height": "{ref.spacing.1}"
+    },
+    "lg": {
+      "height": "{ref.spacing.2}"
+    },
+    "_default": "md"
+  },
+  "@@palette": "{palette}"
+}

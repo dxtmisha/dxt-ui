@@ -6,6 +6,7 @@ import { wikiStyle } from './wikiStyle'
 
 import { wikiIcon } from './wikiIcon'
 import { wikiImage } from './wikiImage'
+import { wikiProgress } from './wikiProgress'
 
 export const wiki: StorybookArgsToList = {
   ...wikiStatus,
@@ -13,5 +14,6 @@ export const wiki: StorybookArgsToList = {
   ...wikiStyle,
 
   ...wikiIcon,
-  ...wikiImage
+  ...wikiImage,
+  ...wikiProgress
 }

@@ -10,6 +10,29 @@ import {
  * Объект wikiValue содержит общие свойства для всех компонентов в категории значение
  */
 export const wikiValue: StorybookArgsToList = {
+  value: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      type: ['number', 'string'],
+      description: {
+        en: 'Current value',
+        ru: 'Текущее значение'
+      }
+    }
+  },
+  max: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      type: ['number', 'string'],
+      defaultValue: 100,
+      description: {
+        en: 'Maximum value',
+        ru: 'Максимальное значение'
+      }
+    }
+  },
   image: {
     type: StorybookControl.string,
     options: {

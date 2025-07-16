@@ -1,0 +1,37 @@
+## Progress Delay Management
+
+The `delay` and `delayHide` properties control timing parameters for showing and hiding the progress indicator. These properties allow creating a smoother user experience by avoiding flickers during fast operations.
+
+### Properties
+
+- **delay** — Delay before showing the progress indicator in milliseconds. Defaults to 360 ms.
+- **delayHide** — Delay before hiding the progress indicator in milliseconds. Defaults to 200 ms.
+
+### Description
+
+- The `delay` property prevents the progress indicator from appearing for short operations, eliminating unnecessary flickers in the interface.
+- `delayHide` ensures smooth hiding of the indicator, even if the operation completed very quickly, creating a more natural transition.
+- Both properties work together to create an optimal user experience when displaying loading states.
+
+### Recommendations
+
+- Use the standard `delay="360"` value for most cases - it's been proven in practice.
+- Increase `delay` for rapid operations where the indicator might interfere with perception.
+- Decrease `delay` for long operations where users need immediate feedback.
+- Adjust `delayHide` based on context—for critical operations you can increase the value.
+
+### Usage Example
+
+```html
+<!-- Standard delays -->
+<Progress delay="360" delayHide="200" />
+
+<!-- Fast appearance for long operations -->
+<Progress delay="100" delayHide="200" />
+
+<!-- Slow appearance for fast operations -->
+<Progress delay="800" delayHide="300" />
+
+<!-- No delays -->
+<Progress delay="0" delayHide="0" />
+```

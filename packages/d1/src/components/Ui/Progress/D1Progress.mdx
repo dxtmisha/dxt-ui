@@ -1,0 +1,46 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxt-ui/wiki/storybook'
+
+import * as Progress from './D1Progress.stories'
+import {ProgressWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Progress}/>
+<StorybookMain
+    name={ProgressWikiStorybook.getName()}
+    description={ProgressWikiStorybook.getDescription()}
+    story={Progress.Progress}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Progress'} type={'progress'}/>
+<Canvas of={Progress.ProgressTypes}/>
+
+<StorybookDescriptions componentName={'Progress'} type={'linear'}/>
+<Canvas of={Progress.ProgressLinear}/>
+
+<StorybookDescriptions componentName={'Progress'} type={'circular'}/>
+<Canvas of={Progress.ProgressCircular}/>
+
+<StorybookDescriptions componentName={'Progress'} type={'values'}/>
+<Canvas of={Progress.ProgressValues}/>
+
+<StorybookDescriptions componentName={'Progress'} type={'delays'}/>
+<Canvas of={Progress.ProgressDelays}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+[//]: # (:documentation-slots [!] System label / Системная метка)
