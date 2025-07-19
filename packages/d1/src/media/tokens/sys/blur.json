@@ -1,0 +1,8 @@
+{
+  "none": "{ref.blur.0}",
+  "xs": "{ref.blur.8}",
+  "sm": "{ref.blur.24}",
+  "md": "{ref.blur.48}",
+  "lg": "{ref.blur.64}",
+  "xl": "{ref.blur.80}"
+}

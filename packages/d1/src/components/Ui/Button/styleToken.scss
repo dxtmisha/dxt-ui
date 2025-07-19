@@ -1,0 +1,254 @@
+@use "../../../styles/Ui/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Button/style" as Button;
+
+@include ui.initDesignBasic('d1.button') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Button.mixinButton;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-button-padding: calc(var(--sys-height) * .4);
+    --d1-button-transitionFunction: var(--d-sys-transitionFunction-standard);
+    
+    border-radius: calc(var(--sys-height) * .2);
+    
+    transition-duration: var(--d-sys-transitionDuration-fade-enter);
+    transition-property: grid-template-columns, background-color, background-image, border, box-shadow;
+    
+    @include ui.focus {
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)});
+      @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
+    }
+    
+    @include ui.hover {
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)});
+      @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
+      
+      transition-duration: var(--d-sys-transitionDuration-sm);
+    }
+    
+    @include ui.active {
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)});
+      @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
+      
+      transition-duration: var(--d-sys-transitionDuration-sm);
+    }
+    
+    @include ui.disabled {
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+      
+      transition-duration: var(--d-sys-transitionDuration-sm);
+    }
+    
+    &--adaptive {
+      &--icon {
+        @include ui.justifyContent(#{flex-start});
+        
+        & > .d1-button__icon {
+          --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+        }
+        
+        & > *:not(.d1-button__icon) {
+          display: none;
+        }
+      }
+      
+      &--block {
+        @include ui.width(#{100%});
+      }
+      
+      &--auto {
+        @include ui.width(#{fit-content});
+      }
+    }
+    
+    &--textAlign {
+      &--left {
+        @include ui.justifyContent(#{flex-start});
+        
+        @include ui.textAlign(#{left});
+      }
+      
+      &--right {
+        @include ui.justifyContent(#{flex-end});
+        
+        @include ui.textAlign(#{right});
+      }
+    }
+    
+    &--primary {
+      @include ui.color(#{var(--d1-sys-palette-onPrimary)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      backdrop-filter: var(--d1-sys-blur-md);
+      
+      @include ui.focus('.d1-button') {
+        @include ui.gradient(#{var(--d1-sys-palette-onPrimary)});
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)});
+      }
+      
+      @include ui.hover('.d1-button') {
+        @include ui.gradient(#{var(--d1-sys-palette-onPrimary)});
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)});
+      }
+      
+      @include ui.active('.d1-button') {
+        @include ui.gradient(#{var(--d1-sys-palette-onPrimary)});
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)});
+      }
+      
+      @include ui.disabled('.d1-button') {
+        @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-disabled)});
+      }
+      
+      &.d1-button--selected {
+        @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+      }
+    }
+    
+    &--secondary {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+      @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      backdrop-filter: var(--d1-sys-blur-md);
+      
+      @include ui.disabled('.d1-button') {
+        @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+      }
+      
+      &.d1-button--selected {
+        @include ui.color(#{var(--d1-sys-palette-primaryVariant)});
+        
+        @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+      }
+    }
+    
+    &--outline {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+      @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
+      
+      &::after {
+        content: ' ';
+        position: absolute;
+        @include ui.inset(#{0});
+        
+        border-radius: inherit;
+        border-width: var(--d1-sys-spacing-border);
+        border-style: solid;
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+        @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
+      }
+      
+      @include ui.disabled('.d1-button') {
+        &::after {
+          content: ' ';
+          @include ui.borderColor(#{var(--d1-sys-palette-onSurface)});
+        }
+      }
+      
+      &.d1-button--selected {
+        @include ui.color(#{var(--d1-sys-palette-primaryVariant)});
+        
+        @include ui.paletteBorder(#{var(--d1-sys-palette-primaryVariant)});
+      }
+    }
+    
+    &--text {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+      @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
+      
+      &::after {
+        content: ' ';
+        position: absolute;
+        @include ui.inset(#{0});
+        
+        opacity: 0;
+        
+        border-radius: inherit;
+        border-width: var(--d1-sys-spacing-border);
+        border-style: solid;
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-scrim)});
+        @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
+        
+        transition-timing-function: linear;
+        transition-duration: var(--d-sys-transitionDuration-lg-open);
+      }
+      
+      &.d1-button--selected {
+        @include ui.color(#{var(--d1-sys-palette-primaryVariant)});
+      }
+    }
+    
+    &--size {
+      &--xs {
+        @include ui.height(#{var(--d1-ref-spacing-8)});
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+        letter-spacing: var(--d1-sys-letterSpacing-xs);
+      }
+      
+      &--sm {
+        @include ui.height(#{var(--d1-ref-spacing-10)});
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+        letter-spacing: var(--d1-sys-letterSpacing-xs);
+      }
+      
+      &--md {
+        @include ui.height(#{var(--d1-ref-spacing-12)});
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+        letter-spacing: var(--d1-sys-letterSpacing-sm);
+      }
+      
+      &--lg {
+        @include ui.height(#{var(--d1-ref-spacing-14)});
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-headlineSmall)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineSmall)});
+        letter-spacing: var(--d1-sys-letterSpacing-none);
+      }
+      
+      &--xl {
+        @include ui.height(#{var(--d1-ref-spacing-16)});
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-headlineMedium)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineMedium)});
+        letter-spacing: var(--d1-sys-letterSpacing-none);
+      }
+    }
+    
+    &--roundedFull {
+      border-radius: var(--d1-sys-rounded-full);
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

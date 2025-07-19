@@ -54,12 +54,12 @@
   "~grid": {},
   "~textAlign": {
     "left": {
+      "justify-content": "flex-start",
       "text-align": "left"
     },
-    "center": {
-      "text-align": "center"
-    },
+    "center": {},
     "right": {
+      "justify-content": "flex-end",
       "text-align": "right"
     }
   }

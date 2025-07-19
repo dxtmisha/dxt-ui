@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrBind, DesignComponents, getBind, type RefOrNormal } from '@dxt-ui/functional'
+import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal } from '@dxt-ui/functional'
 
 import type { ProgressComponentInclude, ProgressPropsInclude } from './basicTypes'
 import type { ProgressProps } from './props'
@@ -34,7 +34,7 @@ export class ProgressInclude {
    * list of properties for the progress component/ список свойств для компонента Progress
    */
   readonly progressBind = computed(() => {
-    const extra = getBind(this.extra)
+    const extra = getRef(this.extra)
 
     return getBind(
       this.props.loading,

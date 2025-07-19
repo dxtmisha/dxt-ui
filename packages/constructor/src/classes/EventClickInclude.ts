@@ -51,10 +51,10 @@ export class EventClickInclude {
    * @param event event object/ объект события
    * @param options data object/ объект с данными
    */
-  onClick(
+  readonly onClick = (
     event: MouseEvent,
     options?: EventClickValue
-  ) {
+  ) => {
     if (this.emits) {
       if (options) {
         this.emit(event, options)

@@ -33,7 +33,7 @@ export function getBind<T, R extends ItemList>(
     ) {
       return toBind<R>(extra, value)
     }
-
+    console.log('extra', extra)
     return toBind<R>(extra, { [index]: value })
   }
 

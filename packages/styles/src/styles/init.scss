@@ -9,7 +9,9 @@
 
   *, *:after, *:before {
     box-sizing: border-box;
-    border: 0 solid transparent;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 0;
 
     @include color.initPalette;
     @include transform.initTransform;

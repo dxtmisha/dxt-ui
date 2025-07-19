@@ -5,6 +5,7 @@
   "md": "{ref.spacing.4}",
   "lg": "{ref.spacing.5}",
   "xl": "{ref.spacing.6}",
+  "border": "{ref.spacing.px}",
   "block": {
     "x": "{ref.spacing.1}",
     "xs": "{ref.spacing.2}",

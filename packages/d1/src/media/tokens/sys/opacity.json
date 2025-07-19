@@ -9,12 +9,12 @@
   "outline": "{ref.opacity.12}",
   "scrim": "{ref.opacity.32}",
   "primary": {
-    "high": "{ref.opacity.100}",
+    "high": "{ref.opacity.92}",
     "medium": "{ref.opacity.72}",
     "disabled": "{ref.opacity.36}"
   },
   "surface": {
-    "high": "{ref.opacity.88}",
+    "high": "{ref.opacity.80}",
     "medium": "{ref.opacity.64}",
     "disabled": "{ref.opacity.36}"
   }

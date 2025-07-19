@@ -10,15 +10,60 @@ import {
  * Объект wikiValue содержит общие свойства для всех компонентов в категории значение
  */
 export const wikiValue: StorybookArgsToList = {
-  value: {
-    type: StorybookControl.number,
+  detail: {
+    type: StorybookControl.object,
     options: {
       category: StorybookCategory.value,
-      type: ['number', 'string'],
+      type: 'Record<string, any>',
       description: {
-        en: 'Current value',
-        ru: 'Текущее значение'
+        en: 'Additional data passed by the component when events are triggered',
+        ru: 'Дополнительные данные, передаваемые компонентом при срабатывании событий'
       }
+    }
+  },
+  icon: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: ['string', 'File'],
+      description: {
+        en: 'Value of the main icon',
+        ru: 'Значение основной иконки'
+      }
+    }
+  },
+  iconTrailing: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: ['string', 'File'],
+      description: {
+        en: 'Value of the trailing icon',
+        ru: 'Значение завершающей иконки'
+      }
+    }
+  },
+  image: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string | File | ImageProps',
+      description: {
+        en: 'Specifies the image value for the component',
+        ru: 'Указывает значение изображения для компонента'
+      }
+    }
+  },
+  label: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Text label for the component',
+        ru: 'Текстовая метка для компонента'
+      },
+      value: 'Label'
     }
   },
   max: {
@@ -33,14 +78,25 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  image: {
+  to: {
     type: StorybookControl.string,
     options: {
       category: StorybookCategory.value,
-      type: 'string | File | ImageProps',
+      type: 'RouteLocationRaw',
       description: {
-        en: 'Specifies the image value for the component',
-        ru: 'Указывает значение изображения для компонента'
+        en: 'Navigation target or destination for the component',
+        ru: 'Цель навигации или назначение для компонента'
+      }
+    }
+  },
+  value: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: ['number', 'string'],
+      description: {
+        en: 'Current value',
+        ru: 'Текущее значение'
       }
     }
   }

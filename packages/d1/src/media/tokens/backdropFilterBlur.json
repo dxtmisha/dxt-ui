@@ -1,0 +1,17 @@
+{
+  "xs": {
+    "backdrop-filter": "{sys.blur.xs}"
+  },
+  "sm": {
+    "backdrop-filter": "{sys.blur.sm}"
+  },
+  "md": {
+    "backdrop-filter": "{sys.blur.md}"
+  },
+  "lg": {
+    "backdrop-filter": "{sys.blur.lg}"
+  },
+  "xl": {
+    "backdrop-filter": "{sys.blur.xl}"
+  }
+}

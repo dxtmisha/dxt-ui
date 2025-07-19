@@ -10,14 +10,14 @@ import {
  * Объект wikiStatus содержит общие свойства для всех компонентов в категории статус
  */
 export const wikiStatus: StorybookArgsToList = {
-  turn: {
+  active: {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
       defaultValue: false,
       description: {
-        en: 'Rotates the element by 180 degrees',
-        ru: 'Поворачивает элемент на 180 градусов'
+        en: 'Sets the element to an active state',
+        ru: 'Переводит элемент в активное состояние'
       }
     }
   },
@@ -32,6 +32,16 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
+  focus: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Visual focus state',
+        ru: 'Визуальное состояние фокуса'
+      }
+    }
+  },
   hide: {
     type: StorybookControl.boolean,
     options: {
@@ -43,14 +53,67 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
-  active: {
+  iconHide: {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
       defaultValue: false,
       description: {
-        en: 'Sets the element to an active state',
-        ru: 'Переводит элемент в активное состояние'
+        en: 'Hides the icon',
+        ru: 'Скрывает иконку'
+      }
+    }
+  },
+  iconTurn: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      defaultValue: false,
+      description: {
+        en: 'Turns the icon',
+        ru: 'Поворачивает иконку'
+      }
+    }
+  },
+  loading: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      defaultValue: false,
+      description: {
+        en: 'Sets the element to a loading state',
+        ru: 'Переводит элемент в состояние загрузки'
+      }
+    }
+  },
+  readonly: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Read-only state of the element',
+        ru: 'Состояние только для чтения элемента'
+      }
+    }
+  },
+  selected: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Selected state of the element',
+        ru: 'Состояние выбора элемента'
+      }
+    }
+  },
+  turn: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      defaultValue: false,
+      description: {
+        en: 'Rotates the element by 180 degrees',
+        ru: 'Поворачивает элемент на 180 градусов'
       }
     }
   },
