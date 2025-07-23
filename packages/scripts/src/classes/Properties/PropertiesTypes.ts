@@ -68,6 +68,16 @@ export class PropertiesTypes {
   }
 
   /**
+   * Checks if it is a container type.
+   *
+   * Проверяет, если в тип контейнера.
+   * @param type list of types/ список типы
+   */
+  static isContainer(type: PropertyItem['_type']): boolean {
+    return this.isInType(type, [PropertyType.container, PropertyType.containerMax])
+  }
+
+  /**
    * Is the property a SCSS selector.
    *
    * Является ли свойство выборки SCSS.

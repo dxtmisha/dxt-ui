@@ -32,31 +32,63 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
   import: [],
   stories: [
     {
-      id: 'ButtonVariants',
+      id: 'ButtonBasic',
       name: {
-        en: 'Button variants',
-        ru: 'Варианты кнопок'
+        en: 'Basic',
+        ru: 'Базовые'
       },
       template: `
         <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Primary</div>
-            <DesignComponent primary>Button</DesignComponent>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Basic</div>
+            <DesignComponent>Button</DesignComponent>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Secondary</div>
-            <DesignComponent secondary>Button</DesignComponent>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">With left icon</div>
+            <DesignComponent icon="home">Button</DesignComponent>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Outline</div>
-            <DesignComponent outline>Button</DesignComponent>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">With right icon</div>
+            <DesignComponent icon-trailing="arrow_forward">Button</DesignComponent>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Text</div>
-            <DesignComponent text>Button</DesignComponent>
+        </div>
+      `
+    },
+    {
+      id: 'ButtonAdaptive',
+      name: {
+        en: 'Adaptive',
+        ru: 'Адаптивные'
+      },
+      template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Default</div>
+            <DesignComponent>Button</DesignComponent>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Adaptive</div>
+            <DesignComponent adaptive>Button</DesignComponent>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Container</div>
+            <DesignComponent container>Button</DesignComponent>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Adaptive + Container</div>
+            <DesignComponent adaptive container>Button</DesignComponent>
           </div>
         </div>
       `
     }
-  ]
+  ],
+  documentation: {
+    body: `
+<StorybookDescriptions componentName={'Button'} type={'button'}/>
+<Canvas of={Component.ButtonBasic}/>
+
+<StorybookDescriptions componentName={'Style'} type={'adaptive'}/>
+<Canvas of={Component.ButtonAdaptive}/>
+    `
+  }
 }

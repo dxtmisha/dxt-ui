@@ -12,25 +12,37 @@
 }
 
 @mixin mediaMinWidth($width) {
-  & {
-    @media screen and (min-width: media($width)) {
-      @content;
-    }
+  @media screen and (min-width: media($width)) {
+    @content;
   }
 }
 
 @mixin mediaMaxWidth($width) {
-  & {
-    @media screen and (max-width: media($width) - 1) {
-      @content;
-    }
+  @media screen and (max-width: media($width) - 1) {
+    @content;
   }
 }
 
 @mixin mediaMinMaxWidth($min, $max) {
-  & {
-    @media screen and (min-width: media($min)) and (max-width: media($max) - 1) {
-      @content;
-    }
+  @media screen and (min-width: media($min)) and (max-width: media($max) - 1) {
+    @content;
+  }
+}
+
+@mixin containerMinWidth($width) {
+  @container (min-width: media($width)) {
+    @content;
+  }
+}
+
+@mixin containerMaxWidth($width) {
+  @container (max-width: media($width) - 1) {
+    @content;
+  }
+}
+
+@mixin containerMinMaxWidth($min, $max) {
+  @container (min-width: media($min)) and (max-width: media($max) - 1) {
+    @content;
   }
 }

@@ -31,7 +31,7 @@
     "transition-duration": "{d.sys.transitionDuration.sm}"
   },
   "~adaptive": {
-    "~icon": {
+    "~iconAlways": {
       "justify-content": "flex-start",
       "& > .??__icon": {
         "padding": {

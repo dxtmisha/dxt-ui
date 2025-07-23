@@ -20,20 +20,20 @@
     transition-property: grid-template-columns, background-color, background-image, border, box-shadow;
     
     @include ui.focus {
+      @include ui.gradient(#{var(--sys-color)});
       @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)});
-      @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
     }
     
     @include ui.hover {
+      @include ui.gradient(#{var(--sys-color)});
       @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)});
-      @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
       
       transition-duration: var(--d-sys-transitionDuration-sm);
     }
     
     @include ui.active {
+      @include ui.gradient(#{var(--sys-color)});
       @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)});
-      @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
       
       transition-duration: var(--d-sys-transitionDuration-sm);
     }
@@ -46,7 +46,7 @@
     }
     
     &--adaptive {
-      &--icon {
+      &--iconAlways {
         @include ui.justifyContent(#{flex-start});
         
         & > .d1-button__icon {
@@ -64,6 +64,146 @@
       
       &--auto {
         @include ui.width(#{fit-content});
+      }
+      
+      &--iconSm {
+        @media screen and (min-width: 640px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconMd {
+        @media screen and (min-width: 768px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconLg {
+        @media screen and (min-width: 1024px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconXl {
+        @media screen and (min-width: 1280px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--icon2xl {
+        @media screen and (min-width: 1536px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullSm {
+        @media screen and (max-width: calc(640px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullMd {
+        @media screen and (max-width: calc(768px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullLg {
+        @media screen and (max-width: calc(1024px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullXl {
+        @media screen and (max-width: calc(1280px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--full2xl {
+        @media screen and (max-width: calc(1536px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
       }
     }
     
@@ -89,21 +229,6 @@
       @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
       
       backdrop-filter: var(--d1-sys-blur-md);
-      
-      @include ui.focus('.d1-button') {
-        @include ui.gradient(#{var(--d1-sys-palette-onPrimary)});
-        @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)});
-      }
-      
-      @include ui.hover('.d1-button') {
-        @include ui.gradient(#{var(--d1-sys-palette-onPrimary)});
-        @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)});
-      }
-      
-      @include ui.active('.d1-button') {
-        @include ui.gradient(#{var(--d1-sys-palette-onPrimary)});
-        @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)});
-      }
       
       @include ui.disabled('.d1-button') {
         @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
@@ -149,6 +274,19 @@
         border-style: solid;
         @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
         @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
+        
+        transition-timing-function: linear;
+        transition-duration: var(--d-sys-transitionDuration-lg-open);
+        transition-property: border;
+      }
+      
+      @include ui.active('.d1-button') {
+        &::after {
+          content: ' ';
+          border-width: var(--d1-sys-spacing-2px);
+          
+          transition-duration: var(--d-sys-transitionDuration-xs);
+        }
       }
       
       @include ui.disabled('.d1-button') {
@@ -177,13 +315,23 @@
         opacity: 0;
         
         border-radius: inherit;
-        border-width: var(--d1-sys-spacing-border);
+        border-width: var(--d1-sys-spacing-2px);
         border-style: solid;
         @include ui.borderOpacity(#{var(--d1-sys-opacity-scrim)});
         @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
         
         transition-timing-function: linear;
         transition-duration: var(--d-sys-transitionDuration-lg-open);
+        transition-property: opacity;
+      }
+      
+      @include ui.active('.d1-button') {
+        &::after {
+          content: ' ';
+          opacity: 1;
+          
+          transition-duration: var(--d-sys-transitionDuration-xs);
+        }
       }
       
       &.d1-button--selected {
@@ -245,6 +393,148 @@
     
     &--roundedFull {
       border-radius: var(--d1-sys-rounded-full);
+    }
+    
+    &--container {
+      &--iconSm {
+        @container (min-width: 640px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconMd {
+        @container (min-width: 768px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconLg {
+        @container (min-width: 1024px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconXl {
+        @container (min-width: 1280px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--icon2xl {
+        @container (min-width: 1536px) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullSm {
+        @container (max-width: calc(640px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullMd {
+        @container (max-width: calc(768px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullLg {
+        @container (max-width: calc(1024px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullXl {
+        @container (max-width: calc(1280px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--full2xl {
+        @container (max-width: calc(1536px - 1px)) {
+          @include ui.justifyContent(#{flex-start});
+          
+          & > .d1-button__icon {
+            --d1-button-padding: calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important;
+          }
+          
+          & > *:not(.d1-button__icon) {
+            display: none;
+          }
+        }
+      }
     }
   }
   // :style [!] System label / Системная метка

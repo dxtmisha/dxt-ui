@@ -3,15 +3,15 @@
   "padding": "var(--sys-height) * .4",
   "border-radius": "var(--sys-height) * .2",
   "focus": {
-    "palette-gradient": "{sys.palette.primary}",
+    "gradient": "var(--sys-color)",
     "gradient-opacity": "{sys.opacity.focus}"
   },
   "hover": {
-    "palette-gradient": "{sys.palette.primary}",
+    "gradient": "var(--sys-color)",
     "gradient-opacity": "{sys.opacity.hover}"
   },
   "active": {
-    "palette-gradient": "{sys.palette.primary}",
+    "gradient": "var(--sys-color)",
     "gradient-opacity": "{sys.opacity.pressed}"
   },
   "disabled": {
@@ -24,18 +24,6 @@
     "palette-background": "{sys.palette.primary}",
     "background-opacity": "{sys.opacity.primary.high}",
     "backdrop-filter": "{sys.blur.md}",
-    "focus": {
-      "gradient": "{sys.palette.onPrimary}",
-      "gradient-opacity": "{sys.opacity.focus}"
-    },
-    "hover": {
-      "gradient": "{sys.palette.onPrimary}",
-      "gradient-opacity": "{sys.opacity.hover}"
-    },
-    "active": {
-      "gradient": "{sys.palette.onPrimary}",
-      "gradient-opacity": "{sys.opacity.pressed}"
-    },
     "selected": {
       "palette-background": "{sys.palette.primaryVariant}"
     },
@@ -71,7 +59,16 @@
       "border-width": "{sys.spacing.border}",
       "palette-border": "{sys.palette.primary}",
       "border-opacity": "{sys.opacity.outline}",
-      "border-radius": "inherit"
+      "border-radius": "inherit",
+      "transition-property": "border",
+      "transition-duration": "{d.sys.transitionDuration.lg.open}",
+      "transition-timing-function": "linear"
+    },
+    "active": {
+      "after": {
+        "border-width": "{sys.spacing.2px}",
+        "transition-duration": "{d.sys.transitionDuration.xs}"
+      }
     },
     "selected": {
       "color": "{sys.palette.primaryVariant}",
@@ -92,12 +89,19 @@
       "inset": "0",
       "opacity": "0",
       "border-style": "solid",
-      "border-width": "{sys.spacing.border}",
+      "border-width": "{sys.spacing.2px}",
       "palette-border": "{sys.palette.primary}",
       "border-opacity": "{sys.opacity.scrim}",
       "border-radius": "inherit",
+      "transition-property": "opacity",
       "transition-duration": "{d.sys.transitionDuration.lg.open}",
       "transition-timing-function": "linear"
+    },
+    "active": {
+      "after": {
+        "opacity": "1",
+        "transition-duration": "{d.sys.transitionDuration.xs}"
+      }
     },
     "selected": {
       "color": "{sys.palette.primaryVariant}"
@@ -129,6 +133,26 @@
   },
   "~roundedFull": {
     "border-radius": "{sys.rounded.full}"
+  },
+  "adaptive": {
+    "group|icon": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "media-group"
+    },
+    "group|full": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "media-max-group"
+    }
+  },
+  "container": {
+    "group|icon": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "container-group"
+    },
+    "group|full": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "container-max-group"
+    }
   },
   "@@palette": "{palette}"
 }

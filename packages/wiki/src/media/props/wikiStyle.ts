@@ -17,8 +17,8 @@ export const wikiStyle: StorybookArgsToList = {
       type: 'string',
       options: [],
       description: {
-        en: 'Adaptive display mode for different screen sizes',
-        ru: 'Адаптивный режим отображения для разных размеров экрана'
+        en: 'Controls adaptive display behavior for different screen sizes and media queries',
+        ru: 'Управляет адаптивным поведением отображения для различных размеров экрана и медиа-запросов'
       }
     }
   },
@@ -30,6 +30,18 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Changes the color depending on the palette class; otherwise, uses the default color',
         ru: 'Изменяет цвет в зависимости от класса палитры; иначе используется стандартный цвет'
+      }
+    }
+  },
+  container: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Controls container-based layout behavior with adaptive width constraints and containment context',
+        ru: 'Управляет поведением контейнерной раскладки с адаптивными ограничениями ширины и контекстом сдерживания'
       }
     }
   },

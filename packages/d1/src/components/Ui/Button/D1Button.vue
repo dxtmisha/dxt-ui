@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import {
   inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxt-ui/functional'
@@ -14,6 +13,7 @@ import {
 
 import D1Icon from '../Icon/D1Icon.vue'
 import D1Progress from '../Progress/D1Progress.vue'
+import D1Ripple from '../Ripple/D1Ripple.vue'
 
 import { defaults, type ButtonProps, propsValues } from './props'
 import './styleToken.scss'
@@ -43,6 +43,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-button--text': props.text,
     [`d1-button--size--${props.size}`]: inArray(propsValues.size, props.size),
     'd1-button--roundedFull': props.roundedFull,
+    [`d1-button--container--${props.container}`]: inArray(propsValues.container, props.container),
     [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }
@@ -61,7 +62,8 @@ const design = new ButtonDesign(
     styles: stylesToken,
     components: {
       icon: D1Icon,
-      progress: D1Progress
+      progress: D1Progress,
+      ripple: D1Ripple
     }
   }
 )

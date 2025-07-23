@@ -2,6 +2,8 @@
 
 :root {
   --d1-ref-blur-0: blur(0);
+  --d1-ref-blur-2: blur(.2px);
+  --d1-ref-blur-4: blur(.4px);
   --d1-ref-blur-8: blur(.8px);
   --d1-ref-blur-16: blur(1.6px);
   --d1-ref-blur-24: blur(2.4px);
@@ -468,6 +470,7 @@
   --d1-sys-background-4: rgb(var(--d1-ref-palette-white-50));
   --d1-sys-background-5: rgb(var(--d1-ref-palette-white-50));
   --d1-sys-blur-none: var(--d1-ref-blur-0);
+  --d1-sys-blur-x: var(--d1-ref-blur-4);
   --d1-sys-blur-xs: var(--d1-ref-blur-8);
   --d1-sys-blur-sm: var(--d1-ref-blur-24);
   --d1-sys-blur-md: var(--d1-ref-blur-48);

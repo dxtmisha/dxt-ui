@@ -2,9 +2,10 @@ import { type ButtonPropsBasic, defaultsButton } from '@dxt-ui/constructor/Butto
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  adaptive: ['icon', 'block', 'auto'],
+  adaptive: ['iconAlways', 'block', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'],
   textAlign: ['left', 'center', 'right'],
   size: ['xs', 'sm', 'md', 'lg', 'xl'],
+  container: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'],
   palette: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white']
   // :values [!] System label / Системная метка
 }
@@ -15,7 +16,7 @@ interface PropsToken {
   disabled?: boolean
   selected?: boolean
   readonly?: boolean
-  adaptive?: 'icon' | 'block' | 'auto'
+  adaptive?: 'iconAlways' | 'block' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl'
   inverse?: boolean
   grid?: boolean
   textAlign?: 'left' | 'center' | 'right'
@@ -25,6 +26,7 @@ interface PropsToken {
   text?: boolean
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   roundedFull?: boolean
+  container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl'
   palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }

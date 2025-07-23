@@ -120,7 +120,6 @@ export class PropertiesItems {
    * @param index index for splitting/ индекс для разделения
    */
   getInfo(index: string): PropertyItemsItem | undefined {
-    // console.info('index', index)
     const keys = this.getKeys(index)
     const design = keys.shift() as string
     const component = keys.shift() as string
@@ -246,7 +245,7 @@ export class PropertiesItems {
   }
 
   /**
-   * Returns a list of information about media file list.
+   * Returns a list of information about a file list.
    *
    * Возвращает список информации о списках медиафайлов.
    */

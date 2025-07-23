@@ -47,6 +47,31 @@ export class WikiStorybookItem {
   }
 
   /**
+   * Returns the order of the item in the wiki
+   *
+   * Возвращает порядок элемента в wiki
+   * @return The order of the item in the wiki/ порядок элемента в wiki
+   */
+  getOrder(): number {
+    if (this.item.options.order) {
+      return this.item.options.order
+    }
+
+    const category = this.item.options.category
+
+    switch (category) {
+      case StorybookCategory.status:
+        return 3000
+      case StorybookCategory.value:
+        return 5000
+      case StorybookCategory.style:
+        return 9000
+      default:
+        return 9999
+    }
+  }
+
+  /**
    * Converts the Wiki item to a Storybook args item
    *
    * Преобразует элемент Wiki в элемент аргументов Storybook

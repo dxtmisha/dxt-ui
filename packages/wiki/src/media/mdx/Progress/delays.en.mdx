@@ -7,12 +7,6 @@ The `delay` and `delayHide` properties control timing parameters for showing and
 - **delay** — Delay before showing the progress indicator in milliseconds. Defaults to 360 ms.
 - **delayHide** — Delay before hiding the progress indicator in milliseconds. Defaults to 200 ms.
 
-### Description
-
-- The `delay` property prevents the progress indicator from appearing for short operations, eliminating unnecessary flickers in the interface.
-- `delayHide` ensures smooth hiding of the indicator, even if the operation completed very quickly, creating a more natural transition.
-- Both properties work together to create an optimal user experience when displaying loading states.
-
 ### Recommendations
 
 - Use the standard `delay="360"` value for most cases - it's been proven in practice.

@@ -91,6 +91,8 @@ export type StorybookArgsToOptionsByType = {
   min?: number
   /** Maximum value/ Максимальное значение */
   max?: number
+  /** Sorting order/ Порядок сортировки */
+  order?: number
 }
 
 /**

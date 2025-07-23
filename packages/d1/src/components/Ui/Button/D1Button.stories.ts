@@ -31,27 +31,49 @@ export const Button: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const ButtonVariants: Story = {
-  name: 'Варианты кнопок',
+export const ButtonBasic: Story = {
+  name: 'Базовые',
   render: () => ({
     components: { D1Button },
     template: `
         <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Primary</div>
-            <D1Button primary>Button</D1Button>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Basic</div>
+            <D1Button>Button</D1Button>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Secondary</div>
-            <D1Button secondary>Button</D1Button>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">With left icon</div>
+            <D1Button icon="home">Button</D1Button>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Outline</div>
-            <D1Button outline>Button</D1Button>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">With right icon</div>
+            <D1Button icon-trailing="arrow_forward">Button</D1Button>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Text</div>
-            <D1Button text>Button</D1Button>
+        </div>
+    `
+  })
+}
+export const ButtonAdaptive: Story = {
+  name: 'Адаптивные',
+  render: () => ({
+    components: { D1Button },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Default</div>
+            <D1Button>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Adaptive</div>
+            <D1Button adaptive>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Container</div>
+            <D1Button container>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Adaptive + Container</div>
+            <D1Button adaptive container>Button</D1Button>
           </div>
         </div>
     `

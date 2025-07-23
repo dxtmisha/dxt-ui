@@ -1,5 +1,6 @@
 {
   "none": "{ref.blur.0}",
+  "x": "{ref.blur.4}",
   "xs": "{ref.blur.8}",
   "sm": "{ref.blur.24}",
   "md": "{ref.blur.48}",

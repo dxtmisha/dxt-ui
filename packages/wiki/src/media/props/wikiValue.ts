@@ -29,7 +29,8 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Value of the main icon',
         ru: 'Значение основной иконки'
-      }
+      },
+      value: 'home'
     }
   },
   iconTrailing: {

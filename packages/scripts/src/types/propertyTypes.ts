@@ -85,6 +85,48 @@ export enum PropertyType {
   mediaMax = 'media-max',
 
   /**
+   * Defines properties for a media group
+   *
+   * Определяет свойства для группы медиа
+   */
+  mediaGroup = 'media-group',
+
+  /**
+   * Defines properties for a media group with a maximum width
+   *
+   * Определяет свойства для группы медиа с максимальной шириной
+   */
+  mediaMaxGroup = 'media-max-group',
+
+  /**
+   * Defines container properties for responsive layout
+   *
+   * Определяет свойства контейнера для адаптивной верстки
+   */
+  container = 'container',
+
+  /**
+   * Defines container properties with maximum width constraints
+   *
+   * Определяет свойства контейнера с ограничениями максимальной ширины
+   */
+  containerMax = 'container-max',
+
+  /**
+   * Defines properties for a container group
+   *
+   * Определяет свойства для группы контейнеров
+   */
+  containerGroup = 'container-group',
+
+  /**
+   * Defines properties for a container group with maximum width constraints
+   *
+   * Определяет свойства для группы контейнеров с ограничениями максимальной ширины
+   */
+  containerMaxGroup = 'container-max-group',
+
+  /**
    * Defines properties for animation
    *
    * Определяет свойства для анимации

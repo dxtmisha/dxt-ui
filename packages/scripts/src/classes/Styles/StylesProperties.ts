@@ -11,6 +11,7 @@ import { StylesToProperty } from './to/StylesToProperty'
 import { StylesToSelector } from './to/StylesToSelector'
 import { StylesToVirtual } from './to/StylesToVirtual'
 import { StylesToMedia } from './to/StylesToMedia'
+import { StylesToContainer } from './to/StylesToContainer'
 import { StylesToAnimate } from './to/StylesToAnimate'
 import { StylesToRoot } from './to/StylesToRoot'
 
@@ -170,6 +171,9 @@ export class StylesProperties {
       case PropertyType.media:
       case PropertyType.mediaMax:
         return new StylesToMedia(...argumentsValue).make()
+      case PropertyType.container:
+      case PropertyType.containerMax:
+        return new StylesToContainer(...argumentsValue).make()
       case PropertyType.animate:
         return new StylesToAnimate(...argumentsValue).make()
       case PropertyType.root:

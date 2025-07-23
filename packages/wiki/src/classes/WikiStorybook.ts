@@ -83,12 +83,7 @@ export class WikiStorybook {
     const values: Record<string, any> = {}
 
     this.list.forEach((item) => {
-      const name = item.getName()
-      const value = item.getValue()
-
-      if (value !== undefined) {
-        values[name] = value
-      }
+      values[item.getName()] = item.getValue()
     })
 
     return values
@@ -220,6 +215,17 @@ export class WikiStorybook {
           )
         )
       }
+    })
+
+    list.sort((a, b) => {
+      const aOrder = a.getOrder()
+      const bOrder = b.getOrder()
+
+      if (aOrder === bOrder) {
+        return a.getName() > b.getName() ? 1 : -1
+      }
+
+      return aOrder > bOrder ? 1 : -1
     })
 
     return list

@@ -91,6 +91,13 @@ export class PropertiesKeys {
       }
 
       if (
+        PropertiesTypes.isContainer(type)
+        && !name.match(/^container[A-Z]/)
+      ) {
+        return toCamelCase(`${type}-${name}`)
+      }
+
+      if (
         PropertiesTypes.isScss(type)
       ) {
         return `&${this.getName(key, false)}`
