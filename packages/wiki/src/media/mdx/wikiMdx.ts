@@ -1,7 +1,9 @@
 import type { StorybookComponentsMdx } from '../../types/storybookTypes'
 
-import { wikiMdxStyle } from './style/wikiMdxStyle'
+import { wikiMdxEvent } from './event/wikiMdxEvent'
+import { wikiMdxExpose } from './expose/wikiMdxExpose'
 import { wikiMdxSlot } from './slot/wikiMdxSlot'
+import { wikiMdxStyle } from './style/wikiMdxStyle'
 import { wikiMdxValue } from './value/wikiMdxValue'
 
 import { wikiMdxButton } from './Button/wikiMdxButton'
@@ -12,8 +14,10 @@ import { wikiMdxRipple } from './Ripple/wikiMdxRipple'
 import { wikiMdxSkeleton } from './Skeleton/wikiMdxSkeleton'
 
 export const wikiMdx: StorybookComponentsMdx = [
-  wikiMdxStyle,
+  wikiMdxEvent,
+  wikiMdxExpose,
   wikiMdxSlot,
+  wikiMdxStyle,
   wikiMdxValue,
 
   wikiMdxButton,

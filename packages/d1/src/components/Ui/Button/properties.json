@@ -82,6 +82,7 @@
     "_category": "style"
   },
   "~text": {
+    "compressed": ".64",
     "palette-color": "{sys.palette.primary}",
     "color-opacity": "{sys.opacity.surface.high}",
     "after": {

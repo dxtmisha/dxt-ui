@@ -114,6 +114,66 @@ export const ButtonSecondary: Story = {
     `
   })
 }
+export const ButtonOutline: Story = {
+  name: 'Контурные',
+  render: () => ({
+    components: { D1Button },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Default</div>
+            <D1Button>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Outline</div>
+            <D1Button outline>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Outline + Icon</div>
+            <D1Button outline icon="home">Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Selected</div>
+            <D1Button outline selected>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Disabled</div>
+            <D1Button outline disabled>Button</D1Button>
+          </div>
+        </div>
+    `
+  })
+}
+export const ButtonText: Story = {
+  name: 'Текстовые',
+  render: () => ({
+    components: { D1Button },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Default</div>
+            <D1Button>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Text</div>
+            <D1Button text>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Text + Icon</div>
+            <D1Button text icon="home">Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Selected</div>
+            <D1Button text selected>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Disabled</div>
+            <D1Button text disabled>Button</D1Button>
+          </div>
+        </div>
+    `
+  })
+}
 export const ButtonAdaptive: Story = {
   name: 'Адаптивные',
   render: () => ({
@@ -122,15 +182,15 @@ export const ButtonAdaptive: Story = {
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Default</div>
-            <D1Button icon="home" label="Label"/>
+            <D1Button icon="home" label="Button"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Adaptive</div>
-            <D1Button adaptive="fullSm" icon="home" label="Label"/>
+            <D1Button adaptive="fullSm" icon="home" label="Button"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center wiki-storybook-container">
             <div class="wiki-storybook-item__label">Container</div>
-            <D1Button container="fullSm" icon="home" label="Label"/>
+            <D1Button container="fullSm" icon="home" label="Button"/>
           </div>
         </div>
     `

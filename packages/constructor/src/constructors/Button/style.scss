@@ -2,6 +2,7 @@
 
 @mixin mixinButton {
   @include ui.initByCustom('padding', 0);
+  @include ui.initByCustom('compressed', 1);
 
   @include ui.flexInlineCenter;
 
@@ -40,7 +41,7 @@
     justify-content: center;
 
     order: 4;
-    @include ui.paddingX(ui.v('??padding'));
+    @include ui.paddingX(calc(ui.v('??padding') * ui.v('??compressed')));
     transition: opacity #{ui.v('d.sys.transitionDuration.standard')} linear;
 
     @include ui.truncate;
@@ -49,8 +50,8 @@
   &__icon,
   &__trailing {
     @include ui.initByCustom('margin', #{calc((var(--sys-height) - ui.v('?icon._width')) / 2)});
-    @include ui.marginLeft(ui.v('??margin'));
-    @include ui.marginRight(ui.v('??margin'));
+    @include ui.marginLeft(calc(ui.v('??margin') * ui.v('??compressed')));
+    @include ui.marginRight(calc(ui.v('??margin') * ui.v('??compressed')));
   }
 
   &__label ~ &__icon {

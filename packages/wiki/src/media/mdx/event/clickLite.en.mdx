@@ -1,0 +1,18 @@
+### `clickLite`
+
+Lightweight click event of the component, passing only data without the original DOM event.
+
+```ts
+function onClickLite (value: EventClickValue) {
+    // lightweight click event handling
+}
+
+type EventClickValue = {
+  /** Click location identifier, set through data-event-type attribute on the element */
+  type: string
+  /** Component value */
+  value: any
+  /** Additional event data */
+  detail: Record<string, any> | undefined
+}
+```

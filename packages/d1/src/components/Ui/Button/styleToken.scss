@@ -304,6 +304,8 @@
     }
     
     &--text {
+      --d1-button-compressed: .64;
+      
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
       @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
       

@@ -1,0 +1,18 @@
+### `click`
+
+Component click event triggered by user interaction with the element.
+
+```ts
+function onClick (event: MouseEvent, value: EventClickValue) {
+    // click event handling
+}
+
+type EventClickValue = {
+  /** Click location identifier, set through data-event-type attribute on the element */
+  type: string
+  /** Component value */
+  value: any
+  /** Additional event data */
+  detail: Record<string, any> | undefined
+}
+```

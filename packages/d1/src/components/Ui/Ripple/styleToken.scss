@@ -13,10 +13,6 @@
   & {
     --d1-ripple-backgroundColor: var(--d1-sys-palette-onSurface);
     --d1-ripple-backgroundOpacity: var(--d1-sys-opacity-pressed);
-    
-    &__item {
-      backdrop-filter: var(--d1-sys-blur-x);
-    }
   }
   // :style [!] System label / Системная метка
 

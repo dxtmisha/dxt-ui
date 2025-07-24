@@ -12526,6 +12526,12 @@
             name: '&--text',
             type: 'state',
             value: (
+              'compressed':(
+                index: 'compressed',
+                name: '--d1-button-compressed',
+                type: 'var',
+                value: '.64',
+              ),
               'colorOpacity':(
                 index: 'colorOpacity',
                 name: 'color-opacity',
