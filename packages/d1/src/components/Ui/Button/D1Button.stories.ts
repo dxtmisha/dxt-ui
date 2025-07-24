@@ -4,6 +4,7 @@ import D1Button from './D1Button.vue'
 import { ButtonWikiStorybook } from './wiki.ts'
 
 // :story-import [!] System label / Системная метка
+import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -53,8 +54,8 @@ export const ButtonBasic: Story = {
     `
   })
 }
-export const ButtonAdaptive: Story = {
-  name: 'Адаптивные',
+export const ButtonPrimary: Story = {
+  name: 'Основные',
   render: () => ({
     components: { D1Button },
     template: `
@@ -64,16 +65,100 @@ export const ButtonAdaptive: Story = {
             <D1Button>Button</D1Button>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Primary</div>
+            <D1Button primary>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Primary + Icon</div>
+            <D1Button primary icon="home">Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Selected</div>
+            <D1Button primary selected>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Disabled</div>
+            <D1Button primary disabled>Button</D1Button>
+          </div>
+        </div>
+    `
+  })
+}
+export const ButtonSecondary: Story = {
+  name: 'Второстепенные',
+  render: () => ({
+    components: { D1Button },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Default</div>
+            <D1Button>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Secondary</div>
+            <D1Button secondary>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Secondary + Icon</div>
+            <D1Button secondary icon="home">Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Selected</div>
+            <D1Button secondary selected>Button</D1Button>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Disabled</div>
+            <D1Button secondary disabled>Button</D1Button>
+          </div>
+        </div>
+    `
+  })
+}
+export const ButtonAdaptive: Story = {
+  name: 'Адаптивные',
+  render: () => ({
+    components: { D1Button },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Default</div>
+            <D1Button icon="home" label="Label"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Adaptive</div>
-            <D1Button adaptive>Button</D1Button>
+            <D1Button adaptive="fullSm" icon="home" label="Label"/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center wiki-storybook-container">
             <div class="wiki-storybook-item__label">Container</div>
-            <D1Button container>Button</D1Button>
+            <D1Button container="fullSm" icon="home" label="Label"/>
+          </div>
+        </div>
+    `
+  })
+}
+export const ButtonSkeleton: Story = {
+  name: 'Скелетон',
+  render: () => ({
+    components: { D1Button, D1Skeleton },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Basic</div>
+            <D1Skeleton>
+              <D1Button>Button</D1Button>
+            </D1Skeleton>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Adaptive + Container</div>
-            <D1Button adaptive container>Button</D1Button>
+            <div class="wiki-storybook-item__label">Active</div>
+            <D1Skeleton :active="true">
+              <D1Button isSkeleton>Button</D1Button>
+            </D1Skeleton>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Hidden</div>
+            <D1Skeleton :active="true">
+              <D1Button>Button</D1Button>
+            </D1Skeleton>
           </div>
         </div>
     `

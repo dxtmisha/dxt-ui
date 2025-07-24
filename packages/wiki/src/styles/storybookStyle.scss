@@ -1,6 +1,9 @@
 @use '@dxt-ui/styles' as ui;
 
 .wiki-storybook {
+  &-container {
+    container-type: inline-size;
+  }
   &-group {
     display: grid;
     grid-template-columns: repeat(12, 1fr);

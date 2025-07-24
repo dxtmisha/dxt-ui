@@ -1,7 +1,8 @@
 // export:none
 
-import type { StorybookComponentsDescriptionItem } from '@dxt-ui/wiki'
+import { forEach, isObjectNotArray, toKebabCase } from '@dxt-ui/functional'
 import { wikiDescriptions } from '@dxt-ui/wiki/media'
+import type { StorybookComponentsDescriptionItem } from '@dxt-ui/wiki'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
@@ -17,7 +18,6 @@ import {
   UI_PROJECT_CONSTRUCTOR_FULL_NAME,
   UI_PROJECT_CONSTRUCTOR_NAME
 } from '../../config'
-import { forEach, isObjectNotArray, toKebabCase } from '@dxt-ui/functional'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -453,13 +453,18 @@ export class DesignComponent extends DesignCommand {
   ): this {
     if (documentation) {
       const component = this.getStructure().getComponentNameFirst()
+      const componentFull = this.getStructure().getFullComponentName()
       const data = []
 
       if (name) {
         data.push(`## ${name}`)
       }
 
-      data.push(documentation.replace(new RegExp('Component', 'g'), component))
+      data.push(
+        documentation
+          .replace(new RegExp('DesignComponent', 'g'), componentFull)
+          .replace(new RegExp('Component', 'g'), component)
+      )
       sample.replaceMark(`documentation-${type}`, data)
     }
 

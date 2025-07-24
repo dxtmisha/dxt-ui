@@ -2,6 +2,7 @@ import type { StorybookComponentsMdx } from '../../types/storybookTypes'
 
 import { wikiMdxStyle } from './style/wikiMdxStyle'
 import { wikiMdxSlot } from './slot/wikiMdxSlot'
+import { wikiMdxValue } from './value/wikiMdxValue'
 
 import { wikiMdxButton } from './Button/wikiMdxButton'
 import { wikiMdxIcon } from './Icon/wikiMdxIcon'
@@ -13,6 +14,7 @@ import { wikiMdxSkeleton } from './Skeleton/wikiMdxSkeleton'
 export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxStyle,
   wikiMdxSlot,
+  wikiMdxValue,
 
   wikiMdxButton,
   wikiMdxIcon,

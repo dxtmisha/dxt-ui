@@ -1,8 +1,5 @@
 {
   "main": "{d.ripple}",
   "background-color": "{sys.palette.onSurface}",
-  "background-opacity": "{sys.opacity.pressed}",
-  "#item": {
-    "backdrop-filter": "{sys.blur.x}"
-  }
+  "background-opacity": "{sys.opacity.pressed}"
 }
