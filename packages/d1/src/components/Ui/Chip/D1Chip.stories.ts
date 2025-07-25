@@ -58,6 +58,58 @@ export const ChipBasic: Story = {
     `
   })
 }
+export const ChipInput: Story = {
+  name: 'Ввод (input)',
+  render: () => ({
+    components: { D1Chip },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Default</div>
+            <D1Chip>Chip</D1Chip>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Input</div>
+            <D1Chip input>Tag</D1Chip>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">With icon</div>
+            <D1Chip input icon="person">Contact</D1Chip>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Selected</div>
+            <D1Chip input selected icon="tag">Keyword</D1Chip>
+          </div>
+        </div>
+    `
+  })
+}
+export const ChipAssistive: Story = {
+  name: 'Вспомогательные (assistive)',
+  render: () => ({
+    components: { D1Chip },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Default</div>
+            <D1Chip>Chip</D1Chip>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Assistive</div>
+            <D1Chip assistive>Chip</D1Chip>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">With icon</div>
+            <D1Chip assistive icon="lightbulb">Suggestion</D1Chip>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Selected</div>
+            <D1Chip assistive selected icon="check">Recommended</D1Chip>
+          </div>
+        </div>
+    `
+  })
+}
 export const ChipAdaptive: Story = {
   name: 'Адаптивные',
   render: () => ({
@@ -66,15 +118,15 @@ export const ChipAdaptive: Story = {
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Default</div>
-            <D1Chip icon="star">Chip</D1Chip>
+            <D1Chip icon="star" label="Chip"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Adaptive</div>
-            <D1Chip adaptive="iconAlways" icon="star">Chip</D1Chip>
+            <D1Chip adaptive="fullSm" icon="star" label="Chip"/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Block</div>
-            <D1Chip adaptive="block" icon="star">Chip</D1Chip>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center wiki-storybook-container">
+            <div class="wiki-storybook-item__label">Container</div>
+            <D1Chip container="fullSm" icon="star" label="Chip"/>
           </div>
         </div>
     `

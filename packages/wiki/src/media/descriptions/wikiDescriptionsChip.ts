@@ -59,6 +59,62 @@ export const wikiDescriptionsChip: StorybookComponentsDescriptionItem = {
       `
     },
     {
+      id: 'ChipInput',
+      name: {
+        en: 'Input',
+        ru: 'Ввод (input)'
+      },
+      template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Default</div>
+            <DesignComponent>Chip</DesignComponent>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Input</div>
+            <DesignComponent input>Tag</DesignComponent>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">With icon</div>
+            <DesignComponent input icon="person">Contact</DesignComponent>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Selected</div>
+            <DesignComponent input selected icon="tag">Keyword</DesignComponent>
+          </div>
+        </div>
+      `,
+      propsName: 'input'
+    },
+    {
+      id: 'ChipAssistive',
+      name: {
+        en: 'Assistive',
+        ru: 'Вспомогательные (assistive)'
+      },
+      template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Default</div>
+            <DesignComponent>Chip</DesignComponent>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Assistive</div>
+            <DesignComponent assistive>Chip</DesignComponent>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">With icon</div>
+            <DesignComponent assistive icon="lightbulb">Suggestion</DesignComponent>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Selected</div>
+            <DesignComponent assistive selected icon="check">Recommended</DesignComponent>
+          </div>
+        </div>
+      `,
+      propsName: 'assistive'
+    },
+    {
       id: 'ChipAdaptive',
       name: {
         en: 'Adaptive',
@@ -68,15 +124,15 @@ export const wikiDescriptionsChip: StorybookComponentsDescriptionItem = {
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Default</div>
-            <DesignComponent icon="star">Chip</DesignComponent>
+            <DesignComponent icon="star" label="Chip"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">Adaptive</div>
-            <DesignComponent adaptive="iconAlways" icon="star">Chip</DesignComponent>
+            <DesignComponent adaptive="fullSm" icon="star" label="Chip"/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Block</div>
-            <DesignComponent adaptive="block" icon="star">Chip</DesignComponent>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center wiki-storybook-container">
+            <div class="wiki-storybook-item__label">Container</div>
+            <DesignComponent container="fullSm" icon="star" label="Chip"/>
           </div>
         </div>
       `,
@@ -118,6 +174,16 @@ export const wikiDescriptionsChip: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'Chip'} type={'chip'}/>
 <Canvas of={Component.ChipBasic}/>
+
+<template prop="input">
+<StorybookDescriptions componentName={'Chip'} type={'input'}/>
+<Canvas of={Component.ChipInput}/>
+</template>
+
+<template prop="assistive">
+<StorybookDescriptions componentName={'Chip'} type={'assistive'}/>
+<Canvas of={Component.ChipAssistive}/>
+</template>
 
 <StorybookDescriptions componentName={'Value'} type={'value'}/>
 
