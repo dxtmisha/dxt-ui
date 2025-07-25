@@ -31,7 +31,7 @@ export class LabelInclude {
   }
 
   /** Label presence check/ Проверка наличия метки */
-  readonly isLabel = computed<boolean>(() => {
+  readonly is = computed<boolean>(() => {
     if (
       this.props.label
       || this.labelReplacing?.value
@@ -61,7 +61,7 @@ export class LabelInclude {
   ): VNode[] {
     const elements: any[] = []
 
-    if (this.isLabel.value) {
+    if (this.is.value) {
       const children: any[] = [
         ...this.initLabel(),
         ...this.initLabelReplacing(),

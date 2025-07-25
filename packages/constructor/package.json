@@ -8,7 +8,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor chip"
+    "dxt-constructor": "dxt-constructor cell"
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
@@ -18,9 +18,12 @@
       "./src/library.ts",
       "./dist/library.js"
     ],
-    "./constructor/": "./src/constructors/",
     "./Button": "./src/constructors/Button/index.ts",
     "./Button/style": "./src/constructors/Button/style.scss",
+    "./Cell": "./src/constructors/Cell/index.ts",
+    "./Cell/style": "./src/constructors/Cell/style.scss",
+    "./Chip": "./src/constructors/Chip/index.ts",
+    "./Chip/style": "./src/constructors/Chip/style.scss",
     "./Icon": "./src/constructors/Icon/index.ts",
     "./Icon/style": "./src/constructors/Icon/style.scss",
     "./Image": "./src/constructors/Image/index.ts",
@@ -31,8 +34,7 @@
     "./Ripple/style": "./src/constructors/Ripple/style.scss",
     "./Skeleton": "./src/constructors/Skeleton/index.ts",
     "./Skeleton/style": "./src/constructors/Skeleton/style.scss",
-    "./Chip": "./src/constructors/Chip/index.ts",
-    "./Chip/style": "./src/constructors/Chip/style.scss"
+    "./constructor/": "./src/constructors/"
   },
   "buildOptions": {
     "name": "@dxt-ui/constructor",

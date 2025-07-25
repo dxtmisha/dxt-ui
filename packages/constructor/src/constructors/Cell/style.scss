@@ -1,0 +1,55 @@
+@use "@dxt-ui/styles/properties" as ui;
+
+@mixin mixinCell {
+  display: flex;
+  align-items: center;
+
+  &__context {
+    display: flex;
+    flex-direction: column;
+
+    flex-grow: 1;
+    order: 4;
+  }
+
+  &__slot {
+    display: flex;
+    align-items: center;
+    gap: inherit;
+
+    order: 8;
+  }
+
+  &__loading {
+    order: 12;
+  }
+
+  &--dynamic {
+    cursor: pointer;
+  }
+
+  @include ui.readonly {
+    cursor: default;
+  }
+
+  @include ui.disabled {
+    cursor: default;
+  }
+
+  &--dividerLabel {
+    &__context {
+      border-bottom-style: solid;
+      border-bottom-width: ui.v('??borderWidth');
+      @include ui.borderColor(ui.v('??borderColor'));
+    }
+  }
+
+  @at-root {
+    [data-divider="active"] + &[data-divider="active"],
+    [data-divider="active"] + * > &[data-divider="active"] {
+      border-top-style: solid;
+      border-top-width: ui.v('??borderWidth');
+      @include ui.borderColor(ui.v('??borderColor'));
+    }
+  }
+}

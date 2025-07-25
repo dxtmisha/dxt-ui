@@ -1,0 +1,38 @@
+{
+  "border-width": {
+    "_type": "var"
+  },
+  "border-color": {
+    "_type": "var"
+  },
+  "transition-property": "background-color, background-image, border, box-shadow",
+  "transition-duration": "{d.sys.transitionDuration.fade.enter}",
+  "transition-function": "{d.sys.transitionFunction.standard}",
+  "#context": {},
+  "#contextTrailing": {},
+  "#label": {},
+  "#description": {},
+  "#caption": {},
+  "#icon": {},
+  "#trailing": {},
+  "#loading": {},
+  "~focus": {},
+  "~selected": {},
+  "~readonly": {},
+  "~disabled": {},
+  "~dynamic": {},
+  "~divider": {
+    "_default": true
+  },
+  "~dividerLabel": {
+    "~always": {
+      "#context": {
+        "border-bottom-style": "solid",
+        "border-bottom-width": "{??borderWidth}",
+        "border-color": "{'??borderColor}"
+      }
+    },
+    "none": {}
+  },
+  "~dynamicHover": {}
+}

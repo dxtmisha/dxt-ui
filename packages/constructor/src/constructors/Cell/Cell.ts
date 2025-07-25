@@ -1,8 +1,14 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrClass, type ConstrEmit, DesignComp } from '@dxt-ui/functional'
-import { getClassTegAStatic } from '../../functions/getClassTegAStatic'
+import {
+  type ConstrClass,
+  type ConstrEmit,
+  DesignComp
+} from '@dxt-ui/functional'
+import { getClassTegAStatic } from '../../functions/getClassTegAStatic.ts'
 
 import { LabelInclude } from '../../classes/LabelInclude'
+import { CaptionInclude } from '../../classes/CaptionInclude'
+import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
 
 import { IconTrailingInclude } from '../Icon'
@@ -12,14 +18,17 @@ import { SkeletonInclude } from '../Skeleton'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
-import type { ButtonComponents, ButtonEmits, ButtonSlots } from './types'
-import type { ButtonPropsBasic } from './props'
+import type { CellComponents, CellEmits, CellSlots } from './types'
+import type { CellPropsBasic } from './props'
+import type { CellClassesSub } from './basicTypes.ts'
 
 /**
- * Button
+ * Cell
  */
-export class Button {
+export class Cell {
   readonly label: LabelInclude
+  readonly description: DescriptionInclude
+  readonly caption: CaptionInclude
   readonly enabled: EnabledInclude
 
   readonly icon: IconTrailingInclude
@@ -41,14 +50,14 @@ export class Button {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: ButtonPropsBasic,
-    protected readonly refs: ToRefs<ButtonPropsBasic>,
+    protected readonly props: CellPropsBasic,
+    protected readonly refs: ToRefs<CellPropsBasic>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
-    protected readonly components?: DesignComp<ButtonComponents, ButtonPropsBasic>,
-    protected readonly slots?: ButtonSlots,
-    protected readonly emits?: ConstrEmit<ButtonEmits>
+    protected readonly components?: DesignComp<CellComponents, CellPropsBasic>,
+    protected readonly slots?: CellSlots,
+    protected readonly emits?: ConstrEmit<CellEmits>
   ) {
     const progress = new ProgressInclude(
       props,
@@ -61,6 +70,8 @@ export class Button {
     )
 
     this.label = new LabelInclude(props, className, undefined, slots)
+    this.caption = new CaptionInclude(props, className, slots)
+    this.description = new DescriptionInclude(props, className, slots)
     this.enabled = new EnabledInclude(props, progress)
 
     this.icon = new IconTrailingInclude(props, className, components)
@@ -79,10 +90,28 @@ export class Button {
     )
   }
 
-  /** values for the class/ значения для класса */
+  /**
+   * Computed CSS classes for the cell component.
+   *
+   * Вычисляемые CSS классы для компонента ячейки.
+   */
   readonly classes = computed<ConstrClass>(() => ({
-    [`${this.className}--icon`]: this.icon.isIcon.value,
+    [`${this.className}--description`]: this.description.is.value,
     [getClassTegAStatic(this.classDesign)]: true,
     ...this.skeleton.classes.value
   }))
+
+  /**
+   * Returns a list of sub-element CSS classes for the cell component.
+   *
+   * Возвращает список CSS классов для под-элементов компонента ячейки.
+   */
+  getClassesSub(): CellClassesSub {
+    return {
+      label: `${this.className}__label`,
+      description: `${this.className}__description`,
+      caption: `${this.className}__caption`,
+      trailing: `${this.className}__trailing`
+    }
+  }
 }
