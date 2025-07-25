@@ -228,7 +228,12 @@
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
       @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
       
+      box-shadow: var(--d1-sys-shadow-md);
       backdrop-filter: var(--d1-sys-blur-md);
+      
+      @include ui.active('.d1-button') {
+        box-shadow: var(--d1-sys-shadow-lg);
+      }
       
       @include ui.disabled('.d1-button') {
         @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});

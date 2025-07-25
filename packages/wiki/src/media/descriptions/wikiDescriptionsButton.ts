@@ -58,7 +58,7 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
       id: 'ButtonPrimary',
       name: {
         en: 'Primary',
-        ru: 'Основные'
+        ru: 'Основные (primary)'
       },
       template: `
         <div class="wiki-storybook-group">
@@ -83,13 +83,14 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
             <DesignComponent primary disabled>Button</DesignComponent>
           </div>
         </div>
-      `
+      `,
+      propsName: 'primary'
     },
     {
       id: 'ButtonSecondary',
       name: {
         en: 'Secondary',
-        ru: 'Второстепенные'
+        ru: 'Второстепенные (secondary)'
       },
       template: `
         <div class="wiki-storybook-group">
@@ -114,13 +115,14 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
             <DesignComponent secondary disabled>Button</DesignComponent>
           </div>
         </div>
-      `
+      `,
+      propsName: 'secondary'
     },
     {
       id: 'ButtonOutline',
       name: {
         en: 'Outline',
-        ru: 'Контурные'
+        ru: 'Контурные (outline)'
       },
       template: `
         <div class="wiki-storybook-group">
@@ -145,13 +147,14 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
             <DesignComponent outline disabled>Button</DesignComponent>
           </div>
         </div>
-      `
+      `,
+      propsName: 'outline'
     },
     {
       id: 'ButtonText',
       name: {
         en: 'Text',
-        ru: 'Текстовые'
+        ru: 'Текстовые (text)'
       },
       template: `
         <div class="wiki-storybook-group">
@@ -176,7 +179,8 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
             <DesignComponent text disabled>Button</DesignComponent>
           </div>
         </div>
-      `
+      `,
+      propsName: 'text'
     },
     {
       id: 'ButtonAdaptive',
@@ -237,17 +241,25 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Button'} type={'button'}/>
 <Canvas of={Component.ButtonBasic}/>
 
+<template prop="primary">
 <StorybookDescriptions componentName={'Button'} type={'primary'}/>
 <Canvas of={Component.ButtonPrimary}/>
+</template>
 
+<template prop="secondary">
 <StorybookDescriptions componentName={'Button'} type={'secondary'}/>
 <Canvas of={Component.ButtonSecondary}/>
+</template>
 
+<template prop="outline">
 <StorybookDescriptions componentName={'Button'} type={'outline'}/>
 <Canvas of={Component.ButtonOutline}/>
+</template>
 
+<template prop="text">
 <StorybookDescriptions componentName={'Button'} type={'text'}/>
 <Canvas of={Component.ButtonText}/>
+</template>
 
 <StorybookDescriptions componentName={'Value'} type={'value'}/>
 

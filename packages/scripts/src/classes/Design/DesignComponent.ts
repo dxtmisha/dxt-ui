@@ -1,6 +1,6 @@
 // export:none
 
-import { forEach, isObjectNotArray, toKebabCase } from '@dxt-ui/functional'
+import { forEach, isObjectNotArray, toArray, toKebabCase } from '@dxt-ui/functional'
 import { wikiDescriptions } from '@dxt-ui/wiki/media'
 import type { StorybookComponentsDescriptionItem } from '@dxt-ui/wiki'
 
@@ -18,6 +18,7 @@ import {
   UI_PROJECT_CONSTRUCTOR_FULL_NAME,
   UI_PROJECT_CONSTRUCTOR_NAME
 } from '../../config'
+import type { DesignTypescriptProp } from '../../types/designTypes.ts'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -36,6 +37,7 @@ const FILE_STORIES_DOCUMENTATION = 'DesignComponent.mdx'
 export class DesignComponent extends DesignCommand {
   protected DIR_SAMPLE: string = 'component'
   protected dir: string[]
+  protected propsType: DesignTypescriptProp[] | undefined
 
   /**
    * Constructor
@@ -162,61 +164,31 @@ export class DesignComponent extends DesignCommand {
    */
   protected makeWiki(): this {
     const file = FILE_WIKI
-    const root = PropertiesFile.getRootProject()
-    const componentName = this.getStructure().getComponentNameFirst()
+    const typeInfo = this.getPropsList()
     const sample = this.readDefinable(file)
+    const props: string[] = []
 
-    if (root) {
-      const props: string[] = []
-      const ts = new DesignTypescript(
-        PropertiesFile.joinPath([
-          PropertiesFile.getRoot(),
-          UI_DIR_IN,
-          UI_DIR_COMPONENTS,
-          PropertiesConfig.getProjectName(),
-          componentName,
-          FILE_PROPS
-        ]),
-        {
-          paths: {
-            [`${UI_PROJECT_CONSTRUCTOR_FULL_NAME}/${componentName}`]: [
-              PropertiesFile.joinPath([
-                root,
-                UI_PROJECT_CONSTRUCTOR_NAME,
-                UI_DIR_IN,
-                UI_DIR_CONSTRUCTOR,
-                componentName,
-                FILE_INDEX
-              ])
-            ]
+    if (typeInfo) {
+      typeInfo
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .forEach((prop) => {
+          const option = prop.option
+          let item: string = ''
+
+          item += `{ name: '${prop.name}', type: '${prop.type}'`
+
+          if (
+            option
+            && option.length > 0
+          ) {
+            item += `, option: [${option.map(item => `'${item}'`).join(', ')}]`
           }
-        }
-      )
 
-      const typeInfo = ts.getType(`${componentName}Props`)?.props
+          item += ` }`
+          props.push(item)
+        })
 
-      if (typeInfo) {
-        typeInfo
-          .sort((a, b) => a.name.localeCompare(b.name))
-          .forEach((prop) => {
-            const option = prop.option
-            let item: string = ''
-
-            item += `{ name: '${prop.name}', type: '${prop.type}'`
-
-            if (
-              option
-              && option.length > 0
-            ) {
-              item += `, option: [${option.map(item => `'${item}'`).join(', ')}]`
-            }
-
-            item += ` }`
-            props.push(item)
-          })
-
-        sample.replaceMark('propsList', props, ',')
-      }
+      sample.replaceMark('propsList', props, ',')
     }
 
     this.write(file, sample.get())
@@ -277,6 +249,49 @@ export class DesignComponent extends DesignCommand {
     const constructor = this.read(path)
 
     return constructor ?? ''
+  }
+
+  /**
+   * Getting a list of all properties of a component.
+   *
+   * Получение списка всех свойств компонента.
+   */
+  private getPropsList(): DesignTypescriptProp[] | undefined {
+    if (!this.propsType) {
+      const root = PropertiesFile.getRootProject()
+      const componentName = this.getStructure().getComponentNameFirst()
+
+      if (root) {
+        const ts = new DesignTypescript(
+          PropertiesFile.joinPath([
+            PropertiesFile.getRoot(),
+            UI_DIR_IN,
+            UI_DIR_COMPONENTS,
+            PropertiesConfig.getProjectName(),
+            componentName,
+            FILE_PROPS
+          ]),
+          {
+            paths: {
+              [`${UI_PROJECT_CONSTRUCTOR_FULL_NAME}/${componentName}`]: [
+                PropertiesFile.joinPath([
+                  root,
+                  UI_PROJECT_CONSTRUCTOR_NAME,
+                  UI_DIR_IN,
+                  UI_DIR_CONSTRUCTOR,
+                  componentName,
+                  FILE_INDEX
+                ])
+              ]
+            }
+          }
+        )
+
+        this.propsType = ts.getType(`${componentName}Props`)?.props
+      }
+    }
+
+    return this.propsType
   }
 
   /**
@@ -403,8 +418,19 @@ export class DesignComponent extends DesignCommand {
       const design = this.getStructure().getDesignFirst()
       const name = this.getStructure().getFullComponentName()
       const stories: string[] = []
+      const propsType = this.getPropsList()
 
       description.stories.forEach((story) => {
+        if (
+          propsType
+          && story.propsName
+          && !toArray(story.propsName as string).every(
+            name => propsType.some(prop => prop.name === name)
+          )
+        ) {
+          return
+        }
+
         const components = story.components && forEach(story.components, component => `${design}${component}`)
         const template = this.toComponentName(story.template)
 
@@ -455,6 +481,7 @@ export class DesignComponent extends DesignCommand {
       const component = this.getStructure().getComponentNameFirst()
       const componentFull = this.getStructure().getFullComponentName()
       const data = []
+      const propsType = this.getPropsList()
 
       if (name) {
         data.push(`## ${name}`)
@@ -462,6 +489,17 @@ export class DesignComponent extends DesignCommand {
 
       data.push(
         documentation
+          .replace(/<template prop="([^"]+)">([\S\s]*?)<\/template>/ig, (
+            _,
+            name: string,
+            code: string
+          ) => {
+            if (propsType?.some(prop => prop.name === name)) {
+              return code.trim()
+            }
+
+            return ''
+          })
           .replace(new RegExp('DesignComponent', 'g'), componentFull)
           .replace(new RegExp('Component', 'g'), component)
       )

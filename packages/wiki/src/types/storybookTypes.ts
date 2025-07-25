@@ -141,6 +141,11 @@ export type StorybookComponentsDescriptionStory = {
   setup?: string
   /** Template for the story/ Шаблон для истории */
   template: string
+  /**
+   * Name of the component property to which the description belongs/
+   * Название свойства компонента, которому принадлежит описание
+   */
+  propsName?: string | string[]
 }
 
 /**

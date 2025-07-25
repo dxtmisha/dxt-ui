@@ -12261,11 +12261,30 @@
                 type: 'property',
                 value: 'var(--d1-sys-palette-primary)',
               ),
+              'boxShadow':(
+                index: 'boxShadow',
+                name: 'box-shadow',
+                type: 'property',
+                value: 'var(--d1-sys-shadow-md)',
+              ),
               'backdropFilter':(
                 index: 'backdropFilter',
                 name: 'backdrop-filter',
                 type: 'property',
                 value: 'var(--d1-sys-blur-md)',
+              ),
+              'active':(
+                index: 'active',
+                name: 'active',
+                type: 'selector',
+                value: (
+                  'boxShadow':(
+                    index: 'boxShadow',
+                    name: 'box-shadow',
+                    type: 'property',
+                    value: 'var(--d1-sys-shadow-lg)',
+                  ),
+                ),
               ),
               'disabled':(
                 index: 'disabled',

@@ -1,0 +1,6 @@
+@use "@dxt-ui/styles/properties" as ui;
+@use "../Button/style" as button;
+
+@mixin mixinChip {
+  @include button.mixinButton;
+}

@@ -23,7 +23,11 @@
     "color-opacity": "{sys.opacity.primary.high}",
     "palette-background": "{sys.palette.primary}",
     "background-opacity": "{sys.opacity.primary.high}",
+    "box-shadow": "{sys.shadow.md}",
     "backdrop-filter": "{sys.blur.md}",
+    "active": {
+      "box-shadow": "{sys.shadow.lg}"
+    },
     "selected": {
       "palette-background": "{sys.palette.primaryVariant}"
     },

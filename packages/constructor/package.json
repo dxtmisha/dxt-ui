@@ -8,7 +8,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor button"
+    "dxt-constructor": "dxt-constructor chip"
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
@@ -30,7 +30,9 @@
     "./Ripple": "./src/constructors/Ripple/index.ts",
     "./Ripple/style": "./src/constructors/Ripple/style.scss",
     "./Skeleton": "./src/constructors/Skeleton/index.ts",
-    "./Skeleton/style": "./src/constructors/Skeleton/style.scss"
+    "./Skeleton/style": "./src/constructors/Skeleton/style.scss",
+    "./Chip": "./src/constructors/Chip/index.ts",
+    "./Chip/style": "./src/constructors/Chip/style.scss"
   },
   "buildOptions": {
     "name": "@dxt-ui/constructor",
