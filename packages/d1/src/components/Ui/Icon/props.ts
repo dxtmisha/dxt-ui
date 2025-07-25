@@ -1,4 +1,5 @@
 import { type IconPropsBasic, defaultsIcon } from '@dxt-ui/constructor/Icon'
+import type { ImageProps } from '../Image'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -34,7 +35,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface IconProps extends IconPropsBasic, PropsToken {
+export interface IconProps extends IconPropsBasic<ImageProps>, PropsToken {
 }
 
 /**

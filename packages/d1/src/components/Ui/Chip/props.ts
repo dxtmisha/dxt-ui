@@ -1,4 +1,4 @@
-import { type ButtonPropsBasic, defaultsButton } from '@dxt-ui/constructor/Button'
+import { type ChipPropsBasic, defaultsChip } from '@dxt-ui/constructor/Chip'
 import type { IconProps } from '../Icon'
 import type { ProgressProps } from '../Progress'
 
@@ -6,7 +6,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
   adaptive: ['iconAlways', 'block', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'],
   textAlign: ['left', 'center', 'right'],
-  size: ['xs', 'sm', 'md', 'lg', 'xl'],
+  size: ['sm', 'md', 'lg'],
   container: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'],
   palette: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white']
   // :values [!] System label / Системная метка
@@ -22,11 +22,9 @@ interface PropsToken {
   inverse?: boolean
   grid?: boolean
   textAlign?: 'left' | 'center' | 'right'
-  primary?: boolean
-  secondary?: boolean
-  outline?: boolean
-  text?: boolean
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  input?: boolean
+  assistive?: boolean
+  size?: 'sm' | 'md' | 'lg'
   roundedFull?: boolean
   container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl'
   palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
@@ -36,17 +34,17 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ButtonProps extends ButtonPropsBasic<IconProps, ProgressProps>, PropsToken {
+export interface ChipProps extends ChipPropsBasic<IconProps, ProgressProps>, PropsToken {
 }
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export const defaults: object = {
-  ...defaultsButton,
+  ...defaultsChip,
   ...{
     // :default [!] System label / Системная метка
-    primary: true,
+    input: true,
     size: 'md'
     // :default [!] System label / Системная метка
   }

@@ -1,4 +1,3 @@
-export * from './Chip'
 export * from './ChipDesign.tsx'
 export * from './props'
 export * from './types'

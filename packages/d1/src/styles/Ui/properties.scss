@@ -3767,6 +3767,37 @@
                 type: 'var',
                 value: 'var(--d1-ref-spacing-32)',
               ),
+              'adaptive':(
+                index: 'adaptive',
+                name: 'adaptive',
+                type: 'var',
+                value: (
+                  'sm':(
+                    index: 'sm',
+                    name: '--d1-sys-rounded-adaptive-sm',
+                    type: 'var',
+                    value: '.12',
+                  ),
+                  'md':(
+                    index: 'md',
+                    name: '--d1-sys-rounded-adaptive-md',
+                    type: 'var',
+                    value: '.24',
+                  ),
+                  'lg':(
+                    index: 'lg',
+                    name: '--d1-sys-rounded-adaptive-lg',
+                    type: 'var',
+                    value: '.32',
+                  ),
+                  'xl':(
+                    index: 'xl',
+                    name: '--d1-sys-rounded-adaptive-xl',
+                    type: 'var',
+                    value: '.48',
+                  ),
+                ),
+              ),
             ),
           ),
           'shade':(
@@ -11484,7 +11515,7 @@
             index: 'borderRadius',
             name: 'border-radius',
             type: 'property',
-            value: 'calc(var(--sys-height) * .2)',
+            value: 'calc(var(--sys-height) * var(--d1-sys-rounded-adaptive-md))',
           ),
           'transitionDuration':(
             index: 'transitionDuration',
@@ -12509,11 +12540,11 @@
                     name: 'after',
                     type: 'virtual',
                     value: (
-                      'borderColor':(
-                        index: 'borderColor',
-                        name: 'border-color',
+                      'borderOpacity':(
+                        index: 'borderOpacity',
+                        name: 'border-opacity',
                         type: 'property',
-                        value: 'var(--d1-sys-palette-onSurface)',
+                        value: 0,
                       ),
                     ),
                   ),
@@ -13363,6 +13394,1571 @@
                       '& > *:not(.??__icon)':(
                         index: '& > *:not(.??__icon)',
                         name: '& > *:not(.d1-button__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'palette':(
+            index: 'palette',
+            name: 'palette',
+            type: 'link-class',
+            value: '{d1.palette}',
+          ),
+        ),
+      ),
+      'chip':(
+        index: 'chip',
+        name: 'd1-chip',
+        type: 'component',
+        value: (
+          'padding':(
+            index: 'padding',
+            name: '--d1-chip-padding',
+            type: 'var',
+            value: 'calc(var(--sys-height) * .32)',
+          ),
+          'transitionFunction':(
+            index: 'transitionFunction',
+            name: '--d1-chip-transitionFunction',
+            type: 'var',
+            value: 'var(--d-sys-transitionFunction-standard)',
+          ),
+          'fontFamily':(
+            index: 'fontFamily',
+            name: 'font-family',
+            type: 'property',
+            value: 'var(--d1-sys-font-family-basic)',
+          ),
+          'fontSize':(
+            index: 'fontSize',
+            name: 'font-size',
+            type: 'property',
+            value: 'var(--d1-sys-font-size-sm)',
+          ),
+          'fontWeight':(
+            index: 'fontWeight',
+            name: 'font-weight',
+            type: 'property',
+            value: 'var(--d1-sys-font-weight-medium)',
+          ),
+          'lineHeight':(
+            index: 'lineHeight',
+            name: 'line-height',
+            type: 'property',
+            value: 'var(--d1-sys-lineHeight-sm)',
+          ),
+          'letterSpacing':(
+            index: 'letterSpacing',
+            name: 'letter-spacing',
+            type: 'property',
+            value: 'var(--d1-sys-letterSpacing-xs)',
+          ),
+          'borderRadius':(
+            index: 'borderRadius',
+            name: 'border-radius',
+            type: 'property',
+            value: 'calc(var(--sys-height) * var(--d1-sys-rounded-adaptive-sm))',
+          ),
+          'transitionDuration':(
+            index: 'transitionDuration',
+            name: 'transition-duration',
+            type: 'property',
+            value: 'var(--d-sys-transitionDuration-fade-enter)',
+          ),
+          'transitionProperty':(
+            index: 'transitionProperty',
+            name: 'transition-property',
+            type: 'property',
+            value: 'grid-template-columns, background-color, background-image, border, box-shadow',
+          ),
+          'label':(
+            index: 'label',
+            name: '&__label',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'icon':(
+            index: 'icon',
+            name: '&__icon',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'trailing':(
+            index: 'trailing',
+            name: '&__trailing',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'loading':(
+            index: 'loading',
+            name: '&__loading',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'focus':(
+            index: 'focus',
+            name: 'focus',
+            type: 'selector',
+            value: (
+              'gradient':(
+                index: 'gradient',
+                name: 'gradient',
+                type: 'property',
+                value: 'var(--sys-color)',
+              ),
+              'gradientOpacity':(
+                index: 'gradientOpacity',
+                name: 'gradient-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-focus)',
+              ),
+            ),
+          ),
+          'hover':(
+            index: 'hover',
+            name: 'hover',
+            type: 'selector',
+            value: (
+              'gradient':(
+                index: 'gradient',
+                name: 'gradient',
+                type: 'property',
+                value: 'var(--sys-color)',
+              ),
+              'gradientOpacity':(
+                index: 'gradientOpacity',
+                name: 'gradient-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-hover)',
+              ),
+              'transitionDuration':(
+                index: 'transitionDuration',
+                name: 'transition-duration',
+                type: 'property',
+                value: 'var(--d-sys-transitionDuration-sm)',
+              ),
+            ),
+          ),
+          'active':(
+            index: 'active',
+            name: 'active',
+            type: 'selector',
+            value: (
+              'gradient':(
+                index: 'gradient',
+                name: 'gradient',
+                type: 'property',
+                value: 'var(--sys-color)',
+              ),
+              'gradientOpacity':(
+                index: 'gradientOpacity',
+                name: 'gradient-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-pressed)',
+              ),
+              'transitionDuration':(
+                index: 'transitionDuration',
+                name: 'transition-duration',
+                type: 'property',
+                value: 'var(--d-sys-transitionDuration-sm)',
+              ),
+            ),
+          ),
+          'disabled':(
+            index: 'disabled',
+            name: 'disabled',
+            type: 'selector',
+            value: (
+              'transitionDuration':(
+                index: 'transitionDuration',
+                name: 'transition-duration',
+                type: 'property',
+                value: 'var(--d-sys-transitionDuration-sm)',
+              ),
+            ),
+          ),
+          'selected':(
+            index: 'selected',
+            name: '&--selected',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'readonly':(
+            index: 'readonly',
+            name: '&--readonly',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'adaptive':(
+            index: 'adaptive',
+            name: '&--adaptive',
+            type: 'state',
+            value: (
+              'iconAlways':(
+                index: 'iconAlways',
+                name: '&--iconAlways',
+                type: 'state',
+                value: (
+                  'justifyContent':(
+                    index: 'justifyContent',
+                    name: 'justify-content',
+                    type: 'property',
+                    value: 'flex-start',
+                  ),
+                  '& > .??__icon':(
+                    index: '& > .??__icon',
+                    name: '& > .d1-chip__icon',
+                    type: 'scss',
+                    value: (
+                      'padding':(
+                        index: 'padding',
+                        name: '--d1-chip-padding',
+                        type: 'var',
+                        value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                      ),
+                    ),
+                  ),
+                  '& > *:not(.??__icon)':(
+                    index: '& > *:not(.??__icon)',
+                    name: '& > *:not(.d1-chip__icon)',
+                    type: 'scss',
+                    value: (
+                      'display':(
+                        index: 'display',
+                        name: 'display',
+                        type: 'property',
+                        value: 'none',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'block':(
+                index: 'block',
+                name: '&--block',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: 'width',
+                    type: 'property',
+                    value: 100%,
+                  ),
+                ),
+              ),
+              'auto':(
+                index: 'auto',
+                name: '&--auto',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: 'width',
+                    type: 'property',
+                    value: 'fit-content',
+                  ),
+                ),
+              ),
+              'iconSm':(
+                index: 'iconSm',
+                name: '&--iconSm',
+                type: 'state',
+                value: (
+                  'mediaSm':(
+                    index: 'mediaSm',
+                    name: '(min-width: 640px)',
+                    type: 'media',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'iconMd':(
+                index: 'iconMd',
+                name: '&--iconMd',
+                type: 'state',
+                value: (
+                  'mediaMd':(
+                    index: 'mediaMd',
+                    name: '(min-width: 768px)',
+                    type: 'media',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'iconLg':(
+                index: 'iconLg',
+                name: '&--iconLg',
+                type: 'state',
+                value: (
+                  'mediaLg':(
+                    index: 'mediaLg',
+                    name: '(min-width: 1024px)',
+                    type: 'media',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'iconXl':(
+                index: 'iconXl',
+                name: '&--iconXl',
+                type: 'state',
+                value: (
+                  'mediaXl':(
+                    index: 'mediaXl',
+                    name: '(min-width: 1280px)',
+                    type: 'media',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'icon2xl':(
+                index: 'icon2xl',
+                name: '&--icon2xl',
+                type: 'state',
+                value: (
+                  'media2xl':(
+                    index: 'media2xl',
+                    name: '(min-width: 1536px)',
+                    type: 'media',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullSm':(
+                index: 'fullSm',
+                name: '&--fullSm',
+                type: 'state',
+                value: (
+                  'mediaMaxSm':(
+                    index: 'mediaMaxSm',
+                    name: '(max-width: calc(640px - 1px))',
+                    type: 'media-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullMd':(
+                index: 'fullMd',
+                name: '&--fullMd',
+                type: 'state',
+                value: (
+                  'mediaMaxMd':(
+                    index: 'mediaMaxMd',
+                    name: '(max-width: calc(768px - 1px))',
+                    type: 'media-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullLg':(
+                index: 'fullLg',
+                name: '&--fullLg',
+                type: 'state',
+                value: (
+                  'mediaMaxLg':(
+                    index: 'mediaMaxLg',
+                    name: '(max-width: calc(1024px - 1px))',
+                    type: 'media-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullXl':(
+                index: 'fullXl',
+                name: '&--fullXl',
+                type: 'state',
+                value: (
+                  'mediaMaxXl':(
+                    index: 'mediaMaxXl',
+                    name: '(max-width: calc(1280px - 1px))',
+                    type: 'media-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'full2xl':(
+                index: 'full2xl',
+                name: '&--full2xl',
+                type: 'state',
+                value: (
+                  'mediaMax2xl':(
+                    index: 'mediaMax2xl',
+                    name: '(max-width: calc(1536px - 1px))',
+                    type: 'media-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'inverse':(
+            index: 'inverse',
+            name: '&--inverse',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'grid':(
+            index: 'grid',
+            name: '&--grid',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'textAlign':(
+            index: 'textAlign',
+            name: '&--textAlign',
+            type: 'state',
+            value: (
+              'left':(
+                index: 'left',
+                name: '&--left',
+                type: 'state',
+                value: (
+                  'justifyContent':(
+                    index: 'justifyContent',
+                    name: 'justify-content',
+                    type: 'property',
+                    value: 'flex-start',
+                  ),
+                  'textAlign':(
+                    index: 'textAlign',
+                    name: 'text-align',
+                    type: 'property',
+                    value: 'left',
+                  ),
+                ),
+              ),
+              'center':(
+                index: 'center',
+                name: '&--center',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'right':(
+                index: 'right',
+                name: '&--right',
+                type: 'state',
+                value: (
+                  'justifyContent':(
+                    index: 'justifyContent',
+                    name: 'justify-content',
+                    type: 'property',
+                    value: 'flex-end',
+                  ),
+                  'textAlign':(
+                    index: 'textAlign',
+                    name: 'text-align',
+                    type: 'property',
+                    value: 'right',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'input':(
+            index: 'input',
+            name: '&--input',
+            type: 'state',
+            value: (
+              'after':(
+                index: 'after',
+                name: 'after',
+                type: 'virtual',
+                value: (
+                  'position':(
+                    index: 'position',
+                    name: 'position',
+                    type: 'property',
+                    value: 'absolute',
+                  ),
+                  'inset':(
+                    index: 'inset',
+                    name: 'inset',
+                    type: 'property',
+                    value: 0,
+                  ),
+                  'borderRadius':(
+                    index: 'borderRadius',
+                    name: 'border-radius',
+                    type: 'property',
+                    value: 'inherit',
+                  ),
+                  'borderWidth':(
+                    index: 'borderWidth',
+                    name: 'border-width',
+                    type: 'property',
+                    value: 'var(--d1-sys-spacing-border)',
+                  ),
+                  'borderStyle':(
+                    index: 'borderStyle',
+                    name: 'border-style',
+                    type: 'property',
+                    value: 'solid',
+                  ),
+                  'borderOpacity':(
+                    index: 'borderOpacity',
+                    name: 'border-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-outline)',
+                  ),
+                  'paletteBorder':(
+                    index: 'paletteBorder',
+                    name: 'palette-border',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-primary)',
+                  ),
+                  'transitionTimingFunction':(
+                    index: 'transitionTimingFunction',
+                    name: 'transition-timing-function',
+                    type: 'property',
+                    value: 'linear',
+                  ),
+                  'transitionDuration':(
+                    index: 'transitionDuration',
+                    name: 'transition-duration',
+                    type: 'property',
+                    value: 'var(--d-sys-transitionDuration-lg-open)',
+                  ),
+                  'transitionProperty':(
+                    index: 'transitionProperty',
+                    name: 'transition-property',
+                    type: 'property',
+                    value: 'border',
+                  ),
+                ),
+              ),
+              'active':(
+                index: 'active',
+                name: 'active',
+                type: 'selector',
+                value: (
+                  'after':(
+                    index: 'after',
+                    name: 'after',
+                    type: 'virtual',
+                    value: (
+                      'borderWidth':(
+                        index: 'borderWidth',
+                        name: 'border-width',
+                        type: 'property',
+                        value: 'var(--d1-sys-spacing-2px)',
+                      ),
+                      'transitionDuration':(
+                        index: 'transitionDuration',
+                        name: 'transition-duration',
+                        type: 'property',
+                        value: 'var(--d-sys-transitionDuration-xs)',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'disabled':(
+                index: 'disabled',
+                name: 'disabled',
+                type: 'selector',
+                value: (
+                  'color':(
+                    index: 'color',
+                    name: 'color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-onSurface)',
+                  ),
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-surface-disabled)',
+                  ),
+                  'after':(
+                    index: 'after',
+                    name: 'after',
+                    type: 'virtual',
+                    value: (
+                      'borderOpacity':(
+                        index: 'borderOpacity',
+                        name: 'border-opacity',
+                        type: 'property',
+                        value: 0,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'selected':(
+                index: 'selected',
+                name: '&.d1-chip--selected',
+                type: 'state',
+                value: (
+                  'backgroundOpacity':(
+                    index: 'backgroundOpacity',
+                    name: 'background-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-overlay)',
+                  ),
+                  'paletteBackground':(
+                    index: 'paletteBackground',
+                    name: 'palette-background',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-primaryVariant)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'assistive':(
+            index: 'assistive',
+            name: '&--assistive',
+            type: 'state',
+            value: (
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-high)',
+              ),
+              'paletteColor':(
+                index: 'paletteColor',
+                name: 'palette-color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primary)',
+              ),
+              'backgroundOpacity':(
+                index: 'backgroundOpacity',
+                name: 'background-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-overlay)',
+              ),
+              'paletteBackground':(
+                index: 'paletteBackground',
+                name: 'palette-background',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primary)',
+              ),
+              'backdropFilter':(
+                index: 'backdropFilter',
+                name: 'backdrop-filter',
+                type: 'property',
+                value: 'var(--d1-sys-blur-md)',
+              ),
+              'disabled':(
+                index: 'disabled',
+                name: 'disabled',
+                type: 'selector',
+                value: (
+                  'color':(
+                    index: 'color',
+                    name: 'color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-onSurface)',
+                  ),
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-surface-disabled)',
+                  ),
+                  'backgroundColor':(
+                    index: 'backgroundColor',
+                    name: 'background-color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-onSurface)',
+                  ),
+                ),
+              ),
+              'selected':(
+                index: 'selected',
+                name: '&.d1-chip--selected',
+                type: 'state',
+                value: (
+                  'color':(
+                    index: 'color',
+                    name: 'color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-onPrimary)',
+                  ),
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-primary-high)',
+                  ),
+                  'backgroundOpacity':(
+                    index: 'backgroundOpacity',
+                    name: 'background-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-primary-high)',
+                  ),
+                  'paletteBackground':(
+                    index: 'paletteBackground',
+                    name: 'palette-background',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-primaryVariant)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'size':(
+            index: 'size',
+            name: '&--size',
+            type: 'state',
+            value: (
+              'sm':(
+                index: 'sm',
+                name: '&--sm',
+                type: 'state',
+                value: (
+                  'height':(
+                    index: 'height',
+                    name: 'height',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+              'md':(
+                index: 'md',
+                name: '&--md',
+                type: 'state',
+                value: (
+                  'height':(
+                    index: 'height',
+                    name: 'height',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+              'lg':(
+                index: 'lg',
+                name: '&--lg',
+                type: 'state',
+                value: (
+                  'height':(
+                    index: 'height',
+                    name: 'height',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-10)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'roundedFull':(
+            index: 'roundedFull',
+            name: '&--roundedFull',
+            type: 'state',
+            value: (
+              'borderRadius':(
+                index: 'borderRadius',
+                name: 'border-radius',
+                type: 'property',
+                value: 'var(--d1-sys-rounded-full)',
+              ),
+            ),
+          ),
+          'container':(
+            index: 'container',
+            name: '&--container',
+            type: 'state',
+            value: (
+              'iconSm':(
+                index: 'iconSm',
+                name: '&--iconSm',
+                type: 'state',
+                value: (
+                  'containerSm':(
+                    index: 'containerSm',
+                    name: '(min-width: 640px)',
+                    type: 'container',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'iconMd':(
+                index: 'iconMd',
+                name: '&--iconMd',
+                type: 'state',
+                value: (
+                  'containerMd':(
+                    index: 'containerMd',
+                    name: '(min-width: 768px)',
+                    type: 'container',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'iconLg':(
+                index: 'iconLg',
+                name: '&--iconLg',
+                type: 'state',
+                value: (
+                  'containerLg':(
+                    index: 'containerLg',
+                    name: '(min-width: 1024px)',
+                    type: 'container',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'iconXl':(
+                index: 'iconXl',
+                name: '&--iconXl',
+                type: 'state',
+                value: (
+                  'containerXl':(
+                    index: 'containerXl',
+                    name: '(min-width: 1280px)',
+                    type: 'container',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'icon2xl':(
+                index: 'icon2xl',
+                name: '&--icon2xl',
+                type: 'state',
+                value: (
+                  'container2xl':(
+                    index: 'container2xl',
+                    name: '(min-width: 1536px)',
+                    type: 'container',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullSm':(
+                index: 'fullSm',
+                name: '&--fullSm',
+                type: 'state',
+                value: (
+                  'containerMaxSm':(
+                    index: 'containerMaxSm',
+                    name: '(max-width: calc(640px - 1px))',
+                    type: 'container-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullMd':(
+                index: 'fullMd',
+                name: '&--fullMd',
+                type: 'state',
+                value: (
+                  'containerMaxMd':(
+                    index: 'containerMaxMd',
+                    name: '(max-width: calc(768px - 1px))',
+                    type: 'container-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullLg':(
+                index: 'fullLg',
+                name: '&--fullLg',
+                type: 'state',
+                value: (
+                  'containerMaxLg':(
+                    index: 'containerMaxLg',
+                    name: '(max-width: calc(1024px - 1px))',
+                    type: 'container-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullXl':(
+                index: 'fullXl',
+                name: '&--fullXl',
+                type: 'state',
+                value: (
+                  'containerMaxXl':(
+                    index: 'containerMaxXl',
+                    name: '(max-width: calc(1280px - 1px))',
+                    type: 'container-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'full2xl':(
+                index: 'full2xl',
+                name: '&--full2xl',
+                type: 'state',
+                value: (
+                  'containerMax2xl':(
+                    index: 'containerMax2xl',
+                    name: '(max-width: calc(1536px - 1px))',
+                    type: 'container-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-chip__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-chip-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-chip__icon)',
                         type: 'scss',
                         value: (
                           'display':(
@@ -15139,6 +16735,263 @@
                   '& > *:not(.??__icon)':(
                     index: '& > *:not(.??__icon)',
                     name: '& > *:not(.d-button__icon)',
+                    type: 'scss',
+                    value: (
+                      'display':(
+                        index: 'display',
+                        name: 'display',
+                        type: 'property',
+                        value: 'none',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'block':(
+                index: 'block',
+                name: '&--block',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: 'width',
+                    type: 'property',
+                    value: 100%,
+                  ),
+                ),
+              ),
+              'auto':(
+                index: 'auto',
+                name: '&--auto',
+                type: 'state',
+                value: (
+                  'width':(
+                    index: 'width',
+                    name: 'width',
+                    type: 'property',
+                    value: 'fit-content',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'inverse':(
+            index: 'inverse',
+            name: '&--inverse',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'grid':(
+            index: 'grid',
+            name: '&--grid',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'textAlign':(
+            index: 'textAlign',
+            name: '&--textAlign',
+            type: 'state',
+            value: (
+              'left':(
+                index: 'left',
+                name: '&--left',
+                type: 'state',
+                value: (
+                  'justifyContent':(
+                    index: 'justifyContent',
+                    name: 'justify-content',
+                    type: 'property',
+                    value: 'flex-start',
+                  ),
+                  'textAlign':(
+                    index: 'textAlign',
+                    name: 'text-align',
+                    type: 'property',
+                    value: 'left',
+                  ),
+                ),
+              ),
+              'center':(
+                index: 'center',
+                name: '&--center',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'right':(
+                index: 'right',
+                name: '&--right',
+                type: 'state',
+                value: (
+                  'justifyContent':(
+                    index: 'justifyContent',
+                    name: 'justify-content',
+                    type: 'property',
+                    value: 'flex-end',
+                  ),
+                  'textAlign':(
+                    index: 'textAlign',
+                    name: 'text-align',
+                    type: 'property',
+                    value: 'right',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'chip':(
+        index: 'chip',
+        name: 'd-chip',
+        type: 'component',
+        value: (
+          'transitionFunction':(
+            index: 'transitionFunction',
+            name: '--d-chip-transitionFunction',
+            type: 'var',
+            value: 'var(--d-sys-transitionFunction-standard)',
+          ),
+          'borderRadius':(
+            index: 'borderRadius',
+            name: 'border-radius',
+            type: 'property',
+            value: 0,
+          ),
+          'transitionDuration':(
+            index: 'transitionDuration',
+            name: 'transition-duration',
+            type: 'property',
+            value: 'var(--d-sys-transitionDuration-fade-enter)',
+          ),
+          'transitionProperty':(
+            index: 'transitionProperty',
+            name: 'transition-property',
+            type: 'property',
+            value: 'grid-template-columns, background-color, background-image, border, box-shadow',
+          ),
+          'label':(
+            index: 'label',
+            name: '&__label',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'icon':(
+            index: 'icon',
+            name: '&__icon',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'trailing':(
+            index: 'trailing',
+            name: '&__trailing',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'loading':(
+            index: 'loading',
+            name: '&__loading',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'focus':(
+            index: 'focus',
+            name: 'focus',
+            type: 'selector',
+            value: (
+            ),
+          ),
+          'hover':(
+            index: 'hover',
+            name: 'hover',
+            type: 'selector',
+            value: (
+              'transitionDuration':(
+                index: 'transitionDuration',
+                name: 'transition-duration',
+                type: 'property',
+                value: 'var(--d-sys-transitionDuration-sm)',
+              ),
+            ),
+          ),
+          'active':(
+            index: 'active',
+            name: 'active',
+            type: 'selector',
+            value: (
+              'transitionDuration':(
+                index: 'transitionDuration',
+                name: 'transition-duration',
+                type: 'property',
+                value: 'var(--d-sys-transitionDuration-sm)',
+              ),
+            ),
+          ),
+          'disabled':(
+            index: 'disabled',
+            name: 'disabled',
+            type: 'selector',
+            value: (
+              'transitionDuration':(
+                index: 'transitionDuration',
+                name: 'transition-duration',
+                type: 'property',
+                value: 'var(--d-sys-transitionDuration-sm)',
+              ),
+            ),
+          ),
+          'selected':(
+            index: 'selected',
+            name: '&--selected',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'readonly':(
+            index: 'readonly',
+            name: '&--readonly',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'adaptive':(
+            index: 'adaptive',
+            name: '&--adaptive',
+            type: 'state',
+            value: (
+              'iconAlways':(
+                index: 'iconAlways',
+                name: '&--iconAlways',
+                type: 'state',
+                value: (
+                  'justifyContent':(
+                    index: 'justifyContent',
+                    name: 'justify-content',
+                    type: 'property',
+                    value: 'flex-start',
+                  ),
+                  '& > .??__icon':(
+                    index: '& > .??__icon',
+                    name: '& > .d-chip__icon',
+                    type: 'scss',
+                    value: (
+                      'padding':(
+                        index: 'padding',
+                        name: '--d-chip-padding',
+                        type: 'var',
+                        value: 'calc((var(--sys-height) - var(--d-icon-_width)) / 2) !important',
+                      ),
+                    ),
+                  ),
+                  '& > *:not(.??__icon)':(
+                    index: '& > *:not(.??__icon)',
+                    name: '& > *:not(.d-chip__icon)',
                     type: 'scss',
                     value: (
                       'display':(

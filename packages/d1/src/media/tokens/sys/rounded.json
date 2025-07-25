@@ -6,5 +6,11 @@
   "lg": "{ref.spacing.8px}",
   "xl": "{ref.spacing.4}",
   "2xl": "{ref.spacing.6}",
-  "full": "{ref.spacing.32}"
+  "full": "{ref.spacing.32}",
+  "adaptive": {
+    "sm": ".12",
+    "md": ".24",
+    "lg": ".32",
+    "xl": ".48"
+  }
 }

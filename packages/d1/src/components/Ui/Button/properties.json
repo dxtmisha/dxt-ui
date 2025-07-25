@@ -1,7 +1,7 @@
 {
   "main": "{d.button}",
   "padding": "var(--sys-height) * .4",
-  "border-radius": "var(--sys-height) * .2",
+  "border-radius": "var(--sys-height) * {sys.rounded.adaptive.md}",
   "focus": {
     "gradient": "var(--sys-color)",
     "gradient-opacity": "{sys.opacity.focus}"
@@ -80,7 +80,7 @@
     },
     "disabled": {
       "after": {
-        "border-color": "{sys.palette.onSurface}"
+        "border-opacity": "0"
       }
     },
     "_category": "style"
