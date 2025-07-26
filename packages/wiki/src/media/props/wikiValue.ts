@@ -10,6 +10,30 @@ import {
  * Объект wikiValue содержит общие свойства для всех компонентов в категории значение
  */
 export const wikiValue: StorybookArgsToList = {
+  caption: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Caption text for additional information',
+        ru: 'Текст подписи для дополнительной информации'
+      },
+      value: 'Caption'
+    }
+  },
+  description: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Description text providing additional context',
+        ru: 'Текст описания, предоставляющий дополнительный контекст'
+      },
+      value: 'Description'
+    }
+  },
   detail: {
     type: StorybookControl.object,
     options: {

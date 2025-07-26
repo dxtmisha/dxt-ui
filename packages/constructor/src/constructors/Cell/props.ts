@@ -15,9 +15,10 @@ interface CellPropsToken {
   readonly?: boolean
   disabled?: boolean
   dynamic?: boolean
+  dynamicHover?: boolean
   divider?: boolean
   dividerLabel?: 'always' | 'none'
-  dynamicHover?: boolean
+  iconTop?: boolean
   // :type [!] System label / Системная метка
 }
 

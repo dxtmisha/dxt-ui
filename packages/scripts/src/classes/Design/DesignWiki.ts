@@ -42,7 +42,7 @@ export class DesignWiki {
         UI_DIRS_WIKI,
         UI_FILE_NAME_WIKI,
         [
-          'import type { StorybookArgsToList } from \'@dxt-ui/functional\'',
+          'import type { StorybookArgsToList } from \'@dxt-ui/wiki\'',
           '',
           `export const wiki${toCamelCaseFirst(designName)}: StorybookArgsToList = {}`,
           ''

@@ -67,6 +67,28 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  divider: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      defaultValue: false,
+      description: {
+        en: 'Enables visual divider between elements',
+        ru: 'Включает визуальный разделитель между элементами'
+      }
+    }
+  },
+  dividerLabel: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      description: {
+        en: 'Adds divider only under the label',
+        ru: 'Добавляет разделитель только под меткой'
+      }
+    }
+  },
   dynamic: {
     type: StorybookControl.boolean,
     options: {
@@ -118,6 +140,17 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Changes the icon color depending on the palette class',
         ru: 'Изменяет цвет иконки в зависимости от класса палитры'
+      }
+    }
+  },
+  iconTop: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      defaultValue: false,
+      description: {
+        en: 'Aligns the icon to the top of the container',
+        ru: 'Выравнивает иконку по верхнему краю контейнера'
       }
     }
   },
@@ -184,6 +217,18 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Adds a background overlay to the component',
         ru: 'Добавляет наложение фона компоненту'
+      }
+    }
+  },
+  padding: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets internal spacing around the element content',
+        ru: 'Устанавливает внутренние отступы вокруг содержимого элемента'
       }
     }
   },

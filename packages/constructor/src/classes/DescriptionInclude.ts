@@ -48,8 +48,8 @@ export class DescriptionInclude {
     if (children.length > 0) {
       return [
         render(
-          'span',
-          { class: `$this.{className}__description` },
+          'div',
+          { class: `${this.className}__description` },
           children,
           'description'
         )

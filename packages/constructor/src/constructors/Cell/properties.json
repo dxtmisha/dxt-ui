@@ -15,12 +15,14 @@
   "#caption": {},
   "#icon": {},
   "#trailing": {},
+  "#body": {},
   "#loading": {},
   "~focus": {},
   "~selected": {},
   "~readonly": {},
   "~disabled": {},
   "~dynamic": {},
+  "~dynamicHover": {},
   "~divider": {
     "_default": true
   },
@@ -32,7 +34,19 @@
         "border-color": "{'??borderColor}"
       }
     },
+    "group|adaptive": {
+      "link|adaptive-dividerLabel": "{??dividerLabel.always}",
+      "_type": "media-max-group"
+    },
+    "group|container": {
+      "link|adaptive-dividerLabel": "{??dividerLabel.always}",
+      "_type": "container-max-group"
+    },
     "none": {}
   },
-  "~dynamicHover": {}
+  "~iconTop": {
+    "#icon": {
+      "align-self": "start"
+    }
+  }
 }

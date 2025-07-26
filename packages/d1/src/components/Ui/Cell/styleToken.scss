@@ -1,0 +1,242 @@
+@use "../../../styles/Ui/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Cell/style" as Cell;
+
+@include ui.initDesignBasic('d1.cell') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Cell.mixinCell;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-cell-borderWidth: var(--d1-sys-spacing-border);
+    --d1-cell-borderColor: var(--d1-sys-palette-outline);
+    --d1-cell-transitionFunction: var(--d-sys-transitionFunction-standard);
+    
+    gap: var(--d1-sys-spacing-md);
+    
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+    
+    transition-duration: var(--d-sys-transitionDuration-fade-enter);
+    transition-property: background-color, background-image, border, box-shadow;
+    
+    &__context {
+      column-gap: var(--d1-sys-spacing-x);
+    }
+    
+    &__description {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-md);
+      
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+    }
+    
+    &__caption {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-md);
+      
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+    }
+    
+    &--selected {
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+    }
+    
+    &--disabled {
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+      
+      & .d1-cell__caption {
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+      }
+      
+      & .d1-cell__description {
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+      }
+    }
+    
+    &--dynamic {
+      @include ui.focus('.d1-cell') {
+        @include ui.gradient(#{var(--sys-color)});
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)});
+      }
+      
+      @include ui.hover('.d1-cell') {
+        @include ui.gradient(#{var(--sys-color)});
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)});
+      }
+      
+      @include ui.active('.d1-cell') {
+        @include ui.gradient(#{var(--sys-color)});
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)});
+      }
+    }
+    
+    &--dynamicHover {
+      @include ui.hover('.d1-cell') {
+        @include ui.gradient(#{var(--sys-color)});
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)});
+      }
+    }
+    
+    &--dividerLabel {
+      &--always {
+        & .d1-cell__context {
+          @include ui.borderColor(#{var(--d1-cell-borderColor)});
+          border-bottom-width: var(--d1-cell-borderWidth);
+          border-bottom-style: solid;
+        }
+      }
+      
+      &--adaptiveSm {
+        @media screen and (max-width: calc(640px - 1px)) {
+          & .d1-cell__context {
+            @include ui.borderColor(#{var(--d1-cell-borderColor)});
+            border-bottom-width: var(--d1-cell-borderWidth);
+            border-bottom-style: solid;
+          }
+        }
+      }
+      
+      &--adaptiveMd {
+        @media screen and (max-width: calc(768px - 1px)) {
+          & .d1-cell__context {
+            @include ui.borderColor(#{var(--d1-cell-borderColor)});
+            border-bottom-width: var(--d1-cell-borderWidth);
+            border-bottom-style: solid;
+          }
+        }
+      }
+      
+      &--adaptiveLg {
+        @media screen and (max-width: calc(1024px - 1px)) {
+          & .d1-cell__context {
+            @include ui.borderColor(#{var(--d1-cell-borderColor)});
+            border-bottom-width: var(--d1-cell-borderWidth);
+            border-bottom-style: solid;
+          }
+        }
+      }
+      
+      &--adaptiveXl {
+        @media screen and (max-width: calc(1280px - 1px)) {
+          & .d1-cell__context {
+            @include ui.borderColor(#{var(--d1-cell-borderColor)});
+            border-bottom-width: var(--d1-cell-borderWidth);
+            border-bottom-style: solid;
+          }
+        }
+      }
+      
+      &--adaptive2xl {
+        @media screen and (max-width: calc(1536px - 1px)) {
+          & .d1-cell__context {
+            @include ui.borderColor(#{var(--d1-cell-borderColor)});
+            border-bottom-width: var(--d1-cell-borderWidth);
+            border-bottom-style: solid;
+          }
+        }
+      }
+      
+      &--containerSm {
+        @container (max-width: calc(640px - 1px)) {
+          & .d1-cell__context {
+            @include ui.borderColor(#{var(--d1-cell-borderColor)});
+            border-bottom-width: var(--d1-cell-borderWidth);
+            border-bottom-style: solid;
+          }
+        }
+      }
+      
+      &--containerMd {
+        @container (max-width: calc(768px - 1px)) {
+          & .d1-cell__context {
+            @include ui.borderColor(#{var(--d1-cell-borderColor)});
+            border-bottom-width: var(--d1-cell-borderWidth);
+            border-bottom-style: solid;
+          }
+        }
+      }
+      
+      &--containerLg {
+        @container (max-width: calc(1024px - 1px)) {
+          & .d1-cell__context {
+            @include ui.borderColor(#{var(--d1-cell-borderColor)});
+            border-bottom-width: var(--d1-cell-borderWidth);
+            border-bottom-style: solid;
+          }
+        }
+      }
+      
+      &--containerXl {
+        @container (max-width: calc(1280px - 1px)) {
+          & .d1-cell__context {
+            @include ui.borderColor(#{var(--d1-cell-borderColor)});
+            border-bottom-width: var(--d1-cell-borderWidth);
+            border-bottom-style: solid;
+          }
+        }
+      }
+      
+      &--container2xl {
+        @container (max-width: calc(1536px - 1px)) {
+          & .d1-cell__context {
+            @include ui.borderColor(#{var(--d1-cell-borderColor)});
+            border-bottom-width: var(--d1-cell-borderWidth);
+            border-bottom-style: solid;
+          }
+        }
+      }
+    }
+    
+    &--iconTop {
+      & .d1-cell__icon {
+        align-self: start;
+      }
+    }
+    
+    &--padding {
+      &--sm {
+        @include ui.paddingX(#{var(--d1-sys-spacing-x)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
+      }
+      
+      &--md {
+        @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
+      }
+      
+      &--lg {
+        @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-md)});
+      }
+      
+      &--ySm {
+        @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
+      }
+      
+      &--yMd {
+        @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
+      }
+      
+      &--yLg {
+        @include ui.paddingY(#{var(--d1-sys-spacing-md)});
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

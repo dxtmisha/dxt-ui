@@ -48,6 +48,24 @@
     },
     "~auto": {
       "width": "fit-content"
+    },
+    "group|icon": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "media-group"
+    },
+    "group|full": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "media-max-group"
+    }
+  },
+  "container": {
+    "group|icon": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "container-group"
+    },
+    "group|full": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "container-max-group"
     }
   },
   "~inverse": {},

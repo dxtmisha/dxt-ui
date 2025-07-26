@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxt-ui/functional'
@@ -12,7 +10,7 @@ import {
   type RippleSlots
 } from '@dxt-ui/constructor/Ripple'
 
-import { defaults, type RippleProps, propsValues } from './props'
+import { defaults, type RippleProps } from './props'
 import './styleToken.scss'
 
 defineOptions({

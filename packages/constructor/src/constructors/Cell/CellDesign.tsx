@@ -96,6 +96,7 @@ export class CellDesign<
         caption: this.getSubClass('caption'),
         icon: this.getSubClass('icon'),
         trailing: this.getSubClass('trailing'),
+        body: this.getSubClass('body'),
         loading: this.getSubClass('loading')
         // :classes [!] System label / Системная метка
       }
@@ -130,6 +131,8 @@ export class CellDesign<
         ...this.item.icon.render(),
         ...this.renderContext(),
         ...this.renderTrailing(),
+        ...this.renderBody(),
+        ...this.item.ripple.render(),
         ...this.item.progress.render()
       ]
     )
@@ -143,12 +146,12 @@ export class CellDesign<
   protected renderContext = (): VNode[] => {
     return [
       h(
-        'span',
+        'div',
         { class: this.classes?.value.context },
         [
           ...this.item.label.render(),
-          ...this.item.description.render(),
-          ...this.item.caption.render()
+          ...this.item.caption.render(),
+          ...this.item.description.render()
         ]
       )
     ]
@@ -166,9 +169,31 @@ export class CellDesign<
     ) {
       return [
         h(
-          'span',
+          'div',
           { class: this.classes?.value.contextTrailing },
           this.initSlot('trailing', undefined, this.item.getClassesSub())
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Generates a slot for elements on the right.
+   *
+   * Генерирует слот для элементов справа.
+   */
+  protected renderBody = (): VNode[] => {
+    if (
+      this.slots
+      && 'body' in this.slots
+    ) {
+      return [
+        h(
+          'div',
+          { class: this.classes?.value.body },
+          this.initSlot('body', undefined, this.item.getClassesSub())
         )
       ]
     }

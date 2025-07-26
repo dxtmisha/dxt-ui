@@ -48,8 +48,8 @@ export class CaptionInclude {
     if (children.length > 0) {
       return [
         render(
-          'span',
-          { class: `$this.{className}__caption` },
+          'div',
+          { class: `${this.className}__caption` },
           children,
           'caption'
         )

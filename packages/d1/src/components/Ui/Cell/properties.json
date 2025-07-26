@@ -1,0 +1,79 @@
+{
+  "main": "{d.cell}",
+  "border-width": "{sys.spacing.border}",
+  "border-color": "{sys.palette.outline}",
+  "border-opacity": "{sys.opacity.outline}",
+  "gap": "{sys.spacing.md}",
+  "#context": {
+    "column-gap": "{sys.spacing.x}"
+  },
+  "#caption": {
+    "link|font": "{font.bodyMedium}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "#description": {
+    "link|font": "{font.bodyMedium}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "~dynamic": {
+    "focus": {
+      "gradient": "var(--sys-color)",
+      "gradient-opacity": "{sys.opacity.focus}"
+    },
+    "hover": {
+      "gradient": "var(--sys-color)",
+      "gradient-opacity": "{sys.opacity.hover}"
+    },
+    "active": {
+      "gradient": "var(--sys-color)",
+      "gradient-opacity": "{sys.opacity.pressed}"
+    }
+  },
+  "~dynamicHover": {
+    "hover": {
+      "gradient": "var(--sys-color)",
+      "gradient-opacity": "{sys.opacity.hover}"
+    }
+  },
+  "selected": {
+    "palette-background": "{sys.palette.primaryVariant}",
+    "background-opacity": "{sys.opacity.overlay}"
+  },
+  "disabled": {
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.disabled}",
+    "#caption": {
+      "color-opacity": "{sys.opacity.surface.disabled}"
+    },
+    "#description": {
+      "color-opacity": "{sys.opacity.surface.disabled}"
+    }
+  },
+  "~padding": {
+    "sm": {
+      "paddingX": "{sys.spacing.x}",
+      "paddingY": "{sys.spacing.xs}"
+    },
+    "md": {
+      "paddingX": "{sys.spacing.xs}",
+      "paddingY": "{sys.spacing.sm}"
+    },
+    "lg": {
+      "paddingX": "{sys.spacing.sm}",
+      "paddingY": "{sys.spacing.md}"
+    },
+    "ySm": {
+      "paddingY": "{sys.spacing.xs}"
+    },
+    "yMd": {
+      "paddingY": "{sys.spacing.sm}"
+    },
+    "yLg": {
+      "paddingY": "{sys.spacing.md}"
+    },
+    "none": {},
+    "_default": "yMd"
+  }
+}

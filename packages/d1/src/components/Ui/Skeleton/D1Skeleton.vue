@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxt-ui/functional'
@@ -12,7 +10,7 @@ import {
   type SkeletonSlots
 } from '@dxt-ui/constructor/Skeleton'
 
-import { defaults, type SkeletonProps, propsValues } from './props'
+import { defaults, type SkeletonProps } from './props'
 import './styleToken.scss'
 
 defineOptions({

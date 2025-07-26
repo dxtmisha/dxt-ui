@@ -48,6 +48,7 @@
   '--d1-sys-palette-inverseOnPrimary': ('--d1-palette-basic950', '--d1-palette-dark50'),
   '--d1-sys-palette-inverseOnSurface': ('--d1-palette-basic50', '--d1-palette-dark950'),
   '--d1-sys-palette-shadow': ('--d1-palette-basic950', '--d1-palette-dark700'),
+  '--d1-cell-borderColor': ('--d1-palette-basic800'),
   '--d1-image-color': ('--d1-palette-basic950'),
   '--d1-progress-backgroundColor': ('--d1-palette-basic600'),
   '--d1-ripple-backgroundColor': ('--d1-palette-basic950'),
@@ -12197,6 +12198,473 @@
               ),
             ),
           ),
+          'container':(
+            index: 'container',
+            name: '&--container',
+            type: 'state',
+            value: (
+              'iconSm':(
+                index: 'iconSm',
+                name: '&--iconSm',
+                type: 'state',
+                value: (
+                  'containerSm':(
+                    index: 'containerSm',
+                    name: '(min-width: 640px)',
+                    type: 'container',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-button__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-button-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-button__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'iconMd':(
+                index: 'iconMd',
+                name: '&--iconMd',
+                type: 'state',
+                value: (
+                  'containerMd':(
+                    index: 'containerMd',
+                    name: '(min-width: 768px)',
+                    type: 'container',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-button__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-button-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-button__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'iconLg':(
+                index: 'iconLg',
+                name: '&--iconLg',
+                type: 'state',
+                value: (
+                  'containerLg':(
+                    index: 'containerLg',
+                    name: '(min-width: 1024px)',
+                    type: 'container',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-button__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-button-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-button__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'iconXl':(
+                index: 'iconXl',
+                name: '&--iconXl',
+                type: 'state',
+                value: (
+                  'containerXl':(
+                    index: 'containerXl',
+                    name: '(min-width: 1280px)',
+                    type: 'container',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-button__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-button-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-button__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'icon2xl':(
+                index: 'icon2xl',
+                name: '&--icon2xl',
+                type: 'state',
+                value: (
+                  'container2xl':(
+                    index: 'container2xl',
+                    name: '(min-width: 1536px)',
+                    type: 'container',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-button__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-button-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-button__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullSm':(
+                index: 'fullSm',
+                name: '&--fullSm',
+                type: 'state',
+                value: (
+                  'containerMaxSm':(
+                    index: 'containerMaxSm',
+                    name: '(max-width: calc(640px - 1px))',
+                    type: 'container-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-button__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-button-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-button__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullMd':(
+                index: 'fullMd',
+                name: '&--fullMd',
+                type: 'state',
+                value: (
+                  'containerMaxMd':(
+                    index: 'containerMaxMd',
+                    name: '(max-width: calc(768px - 1px))',
+                    type: 'container-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-button__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-button-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-button__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullLg':(
+                index: 'fullLg',
+                name: '&--fullLg',
+                type: 'state',
+                value: (
+                  'containerMaxLg':(
+                    index: 'containerMaxLg',
+                    name: '(max-width: calc(1024px - 1px))',
+                    type: 'container-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-button__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-button-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-button__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'fullXl':(
+                index: 'fullXl',
+                name: '&--fullXl',
+                type: 'state',
+                value: (
+                  'containerMaxXl':(
+                    index: 'containerMaxXl',
+                    name: '(max-width: calc(1280px - 1px))',
+                    type: 'container-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-button__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-button-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-button__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'full2xl':(
+                index: 'full2xl',
+                name: '&--full2xl',
+                type: 'state',
+                value: (
+                  'containerMax2xl':(
+                    index: 'containerMax2xl',
+                    name: '(max-width: calc(1536px - 1px))',
+                    type: 'container-max',
+                    value: (
+                      'justifyContent':(
+                        index: 'justifyContent',
+                        name: 'justify-content',
+                        type: 'property',
+                        value: 'flex-start',
+                      ),
+                      '& > .??__icon':(
+                        index: '& > .??__icon',
+                        name: '& > .d1-button__icon',
+                        type: 'scss',
+                        value: (
+                          'padding':(
+                            index: 'padding',
+                            name: '--d1-button-padding',
+                            type: 'var',
+                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
+                          ),
+                        ),
+                      ),
+                      '& > *:not(.??__icon)':(
+                        index: '& > *:not(.??__icon)',
+                        name: '& > *:not(.d1-button__icon)',
+                        type: 'scss',
+                        value: (
+                          'display':(
+                            index: 'display',
+                            name: 'display',
+                            type: 'property',
+                            value: 'none',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
           'inverse':(
             index: 'inverse',
             name: '&--inverse',
@@ -12943,50 +13411,465 @@
               ),
             ),
           ),
-          'container':(
-            index: 'container',
-            name: '&--container',
+          'palette':(
+            index: 'palette',
+            name: 'palette',
+            type: 'link-class',
+            value: '{d1.palette}',
+          ),
+        ),
+      ),
+      'cell':(
+        index: 'cell',
+        name: 'd1-cell',
+        type: 'component',
+        value: (
+          'borderWidth':(
+            index: 'borderWidth',
+            name: '--d1-cell-borderWidth',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-border)',
+          ),
+          'borderColor':(
+            index: 'borderColor',
+            name: '--d1-cell-borderColor',
+            type: 'var',
+            value: 'var(--d1-sys-palette-outline)',
+          ),
+          'transitionFunction':(
+            index: 'transitionFunction',
+            name: '--d1-cell-transitionFunction',
+            type: 'var',
+            value: 'var(--d-sys-transitionFunction-standard)',
+          ),
+          'gap':(
+            index: 'gap',
+            name: 'gap',
+            type: 'property',
+            value: 'var(--d1-sys-spacing-md)',
+          ),
+          'borderOpacity':(
+            index: 'borderOpacity',
+            name: 'border-opacity',
+            type: 'property',
+            value: 'var(--d1-sys-opacity-outline)',
+          ),
+          'transitionDuration':(
+            index: 'transitionDuration',
+            name: 'transition-duration',
+            type: 'property',
+            value: 'var(--d-sys-transitionDuration-fade-enter)',
+          ),
+          'transitionProperty':(
+            index: 'transitionProperty',
+            name: 'transition-property',
+            type: 'property',
+            value: 'background-color, background-image, border, box-shadow',
+          ),
+          'context':(
+            index: 'context',
+            name: '&__context',
+            type: 'subclass',
+            value: (
+              'columnGap':(
+                index: 'columnGap',
+                name: 'column-gap',
+                type: 'property',
+                value: 'var(--d1-sys-spacing-x)',
+              ),
+            ),
+          ),
+          'contextTrailing':(
+            index: 'contextTrailing',
+            name: '&__contextTrailing',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'label':(
+            index: 'label',
+            name: '&__label',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'description':(
+            index: 'description',
+            name: '&__description',
+            type: 'subclass',
+            value: (
+              'fontFamily':(
+                index: 'fontFamily',
+                name: 'font-family',
+                type: 'property',
+                value: 'var(--d1-sys-font-family-basic)',
+              ),
+              'fontSize':(
+                index: 'fontSize',
+                name: 'font-size',
+                type: 'property',
+                value: 'var(--d1-sys-font-size-sm)',
+              ),
+              'fontWeight':(
+                index: 'fontWeight',
+                name: 'font-weight',
+                type: 'property',
+                value: 'var(--d1-sys-font-weight-regular)',
+              ),
+              'lineHeight':(
+                index: 'lineHeight',
+                name: 'line-height',
+                type: 'property',
+                value: 'var(--d1-sys-lineHeight-sm)',
+              ),
+              'letterSpacing':(
+                index: 'letterSpacing',
+                name: 'letter-spacing',
+                type: 'property',
+                value: 'var(--d1-sys-letterSpacing-md)',
+              ),
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-medium)',
+              ),
+            ),
+          ),
+          'caption':(
+            index: 'caption',
+            name: '&__caption',
+            type: 'subclass',
+            value: (
+              'fontFamily':(
+                index: 'fontFamily',
+                name: 'font-family',
+                type: 'property',
+                value: 'var(--d1-sys-font-family-basic)',
+              ),
+              'fontSize':(
+                index: 'fontSize',
+                name: 'font-size',
+                type: 'property',
+                value: 'var(--d1-sys-font-size-sm)',
+              ),
+              'fontWeight':(
+                index: 'fontWeight',
+                name: 'font-weight',
+                type: 'property',
+                value: 'var(--d1-sys-font-weight-regular)',
+              ),
+              'lineHeight':(
+                index: 'lineHeight',
+                name: 'line-height',
+                type: 'property',
+                value: 'var(--d1-sys-lineHeight-sm)',
+              ),
+              'letterSpacing':(
+                index: 'letterSpacing',
+                name: 'letter-spacing',
+                type: 'property',
+                value: 'var(--d1-sys-letterSpacing-md)',
+              ),
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-medium)',
+              ),
+            ),
+          ),
+          'icon':(
+            index: 'icon',
+            name: '&__icon',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'trailing':(
+            index: 'trailing',
+            name: '&__trailing',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'body':(
+            index: 'body',
+            name: '&__body',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'loading':(
+            index: 'loading',
+            name: '&__loading',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'focus':(
+            index: 'focus',
+            name: '&--focus',
             type: 'state',
             value: (
-              'iconSm':(
-                index: 'iconSm',
-                name: '&--iconSm',
+            ),
+          ),
+          'selected':(
+            index: 'selected',
+            name: '&--selected',
+            type: 'state',
+            value: (
+              'backgroundOpacity':(
+                index: 'backgroundOpacity',
+                name: 'background-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-overlay)',
+              ),
+              'paletteBackground':(
+                index: 'paletteBackground',
+                name: 'palette-background',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primaryVariant)',
+              ),
+            ),
+          ),
+          'readonly':(
+            index: 'readonly',
+            name: '&--readonly',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'disabled':(
+            index: 'disabled',
+            name: '&--disabled',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-disabled)',
+              ),
+              'caption':(
+                index: 'caption',
+                name: '& .d1-cell__caption',
+                type: 'subclass',
+                value: (
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-surface-disabled)',
+                  ),
+                ),
+              ),
+              'description':(
+                index: 'description',
+                name: '& .d1-cell__description',
+                type: 'subclass',
+                value: (
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-surface-disabled)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'dynamic':(
+            index: 'dynamic',
+            name: '&--dynamic',
+            type: 'state',
+            value: (
+              'focus':(
+                index: 'focus',
+                name: 'focus',
+                type: 'selector',
+                value: (
+                  'gradient':(
+                    index: 'gradient',
+                    name: 'gradient',
+                    type: 'property',
+                    value: 'var(--sys-color)',
+                  ),
+                  'gradientOpacity':(
+                    index: 'gradientOpacity',
+                    name: 'gradient-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-focus)',
+                  ),
+                ),
+              ),
+              'hover':(
+                index: 'hover',
+                name: 'hover',
+                type: 'selector',
+                value: (
+                  'gradient':(
+                    index: 'gradient',
+                    name: 'gradient',
+                    type: 'property',
+                    value: 'var(--sys-color)',
+                  ),
+                  'gradientOpacity':(
+                    index: 'gradientOpacity',
+                    name: 'gradient-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-hover)',
+                  ),
+                ),
+              ),
+              'active':(
+                index: 'active',
+                name: 'active',
+                type: 'selector',
+                value: (
+                  'gradient':(
+                    index: 'gradient',
+                    name: 'gradient',
+                    type: 'property',
+                    value: 'var(--sys-color)',
+                  ),
+                  'gradientOpacity':(
+                    index: 'gradientOpacity',
+                    name: 'gradient-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-pressed)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'dynamicHover':(
+            index: 'dynamicHover',
+            name: '&--dynamicHover',
+            type: 'state',
+            value: (
+              'hover':(
+                index: 'hover',
+                name: 'hover',
+                type: 'selector',
+                value: (
+                  'gradient':(
+                    index: 'gradient',
+                    name: 'gradient',
+                    type: 'property',
+                    value: 'var(--sys-color)',
+                  ),
+                  'gradientOpacity':(
+                    index: 'gradientOpacity',
+                    name: 'gradient-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-hover)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'divider':(
+            index: 'divider',
+            name: '&--divider',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dividerLabel':(
+            index: 'dividerLabel',
+            name: '&--dividerLabel',
+            type: 'state',
+            value: (
+              'always':(
+                index: 'always',
+                name: '&--always',
                 type: 'state',
                 value: (
-                  'containerSm':(
-                    index: 'containerSm',
-                    name: '(min-width: 640px)',
-                    type: 'container',
+                  'context':(
+                    index: 'context',
+                    name: '& .d1-cell__context',
+                    type: 'subclass',
                     value: (
-                      'justifyContent':(
-                        index: 'justifyContent',
-                        name: 'justify-content',
+                      'borderColor':(
+                        index: 'borderColor',
+                        name: 'border-color',
                         type: 'property',
-                        value: 'flex-start',
+                        value: 'var(--d1-cell-borderColor)',
                       ),
-                      '& > .??__icon':(
-                        index: '& > .??__icon',
-                        name: '& > .d1-button__icon',
-                        type: 'scss',
-                        value: (
-                          'padding':(
-                            index: 'padding',
-                            name: '--d1-button-padding',
-                            type: 'var',
-                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
-                          ),
-                        ),
+                      'borderBottomWidth':(
+                        index: 'borderBottomWidth',
+                        name: 'border-bottom-width',
+                        type: 'property',
+                        value: 'var(--d1-cell-borderWidth)',
                       ),
-                      '& > *:not(.??__icon)':(
-                        index: '& > *:not(.??__icon)',
-                        name: '& > *:not(.d1-button__icon)',
-                        type: 'scss',
+                      'borderBottomStyle':(
+                        index: 'borderBottomStyle',
+                        name: 'border-bottom-style',
+                        type: 'property',
+                        value: 'solid',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'none':(
+                index: 'none',
+                name: '&--none',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'adaptiveSm':(
+                index: 'adaptiveSm',
+                name: '&--adaptiveSm',
+                type: 'state',
+                value: (
+                  'mediaMaxSm':(
+                    index: 'mediaMaxSm',
+                    name: '(max-width: calc(640px - 1px))',
+                    type: 'media-max',
+                    value: (
+                      'context':(
+                        index: 'context',
+                        name: '& .d1-cell__context',
+                        type: 'subclass',
                         value: (
-                          'display':(
-                            index: 'display',
-                            name: 'display',
+                          'borderColor':(
+                            index: 'borderColor',
+                            name: 'border-color',
                             type: 'property',
-                            value: 'none',
+                            value: 'var(--d1-cell-borderColor)',
+                          ),
+                          'borderBottomWidth':(
+                            index: 'borderBottomWidth',
+                            name: 'border-bottom-width',
+                            type: 'property',
+                            value: 'var(--d1-cell-borderWidth)',
+                          ),
+                          'borderBottomStyle':(
+                            index: 'borderBottomStyle',
+                            name: 'border-bottom-style',
+                            type: 'property',
+                            value: 'solid',
                           ),
                         ),
                       ),
@@ -12994,45 +13877,38 @@
                   ),
                 ),
               ),
-              'iconMd':(
-                index: 'iconMd',
-                name: '&--iconMd',
+              'adaptiveMd':(
+                index: 'adaptiveMd',
+                name: '&--adaptiveMd',
                 type: 'state',
                 value: (
-                  'containerMd':(
-                    index: 'containerMd',
-                    name: '(min-width: 768px)',
-                    type: 'container',
+                  'mediaMaxMd':(
+                    index: 'mediaMaxMd',
+                    name: '(max-width: calc(768px - 1px))',
+                    type: 'media-max',
                     value: (
-                      'justifyContent':(
-                        index: 'justifyContent',
-                        name: 'justify-content',
-                        type: 'property',
-                        value: 'flex-start',
-                      ),
-                      '& > .??__icon':(
-                        index: '& > .??__icon',
-                        name: '& > .d1-button__icon',
-                        type: 'scss',
+                      'context':(
+                        index: 'context',
+                        name: '& .d1-cell__context',
+                        type: 'subclass',
                         value: (
-                          'padding':(
-                            index: 'padding',
-                            name: '--d1-button-padding',
-                            type: 'var',
-                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
-                          ),
-                        ),
-                      ),
-                      '& > *:not(.??__icon)':(
-                        index: '& > *:not(.??__icon)',
-                        name: '& > *:not(.d1-button__icon)',
-                        type: 'scss',
-                        value: (
-                          'display':(
-                            index: 'display',
-                            name: 'display',
+                          'borderColor':(
+                            index: 'borderColor',
+                            name: 'border-color',
                             type: 'property',
-                            value: 'none',
+                            value: 'var(--d1-cell-borderColor)',
+                          ),
+                          'borderBottomWidth':(
+                            index: 'borderBottomWidth',
+                            name: 'border-bottom-width',
+                            type: 'property',
+                            value: 'var(--d1-cell-borderWidth)',
+                          ),
+                          'borderBottomStyle':(
+                            index: 'borderBottomStyle',
+                            name: 'border-bottom-style',
+                            type: 'property',
+                            value: 'solid',
                           ),
                         ),
                       ),
@@ -13040,45 +13916,38 @@
                   ),
                 ),
               ),
-              'iconLg':(
-                index: 'iconLg',
-                name: '&--iconLg',
+              'adaptiveLg':(
+                index: 'adaptiveLg',
+                name: '&--adaptiveLg',
                 type: 'state',
                 value: (
-                  'containerLg':(
-                    index: 'containerLg',
-                    name: '(min-width: 1024px)',
-                    type: 'container',
+                  'mediaMaxLg':(
+                    index: 'mediaMaxLg',
+                    name: '(max-width: calc(1024px - 1px))',
+                    type: 'media-max',
                     value: (
-                      'justifyContent':(
-                        index: 'justifyContent',
-                        name: 'justify-content',
-                        type: 'property',
-                        value: 'flex-start',
-                      ),
-                      '& > .??__icon':(
-                        index: '& > .??__icon',
-                        name: '& > .d1-button__icon',
-                        type: 'scss',
+                      'context':(
+                        index: 'context',
+                        name: '& .d1-cell__context',
+                        type: 'subclass',
                         value: (
-                          'padding':(
-                            index: 'padding',
-                            name: '--d1-button-padding',
-                            type: 'var',
-                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
-                          ),
-                        ),
-                      ),
-                      '& > *:not(.??__icon)':(
-                        index: '& > *:not(.??__icon)',
-                        name: '& > *:not(.d1-button__icon)',
-                        type: 'scss',
-                        value: (
-                          'display':(
-                            index: 'display',
-                            name: 'display',
+                          'borderColor':(
+                            index: 'borderColor',
+                            name: 'border-color',
                             type: 'property',
-                            value: 'none',
+                            value: 'var(--d1-cell-borderColor)',
+                          ),
+                          'borderBottomWidth':(
+                            index: 'borderBottomWidth',
+                            name: 'border-bottom-width',
+                            type: 'property',
+                            value: 'var(--d1-cell-borderWidth)',
+                          ),
+                          'borderBottomStyle':(
+                            index: 'borderBottomStyle',
+                            name: 'border-bottom-style',
+                            type: 'property',
+                            value: 'solid',
                           ),
                         ),
                       ),
@@ -13086,45 +13955,38 @@
                   ),
                 ),
               ),
-              'iconXl':(
-                index: 'iconXl',
-                name: '&--iconXl',
+              'adaptiveXl':(
+                index: 'adaptiveXl',
+                name: '&--adaptiveXl',
                 type: 'state',
                 value: (
-                  'containerXl':(
-                    index: 'containerXl',
-                    name: '(min-width: 1280px)',
-                    type: 'container',
+                  'mediaMaxXl':(
+                    index: 'mediaMaxXl',
+                    name: '(max-width: calc(1280px - 1px))',
+                    type: 'media-max',
                     value: (
-                      'justifyContent':(
-                        index: 'justifyContent',
-                        name: 'justify-content',
-                        type: 'property',
-                        value: 'flex-start',
-                      ),
-                      '& > .??__icon':(
-                        index: '& > .??__icon',
-                        name: '& > .d1-button__icon',
-                        type: 'scss',
+                      'context':(
+                        index: 'context',
+                        name: '& .d1-cell__context',
+                        type: 'subclass',
                         value: (
-                          'padding':(
-                            index: 'padding',
-                            name: '--d1-button-padding',
-                            type: 'var',
-                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
-                          ),
-                        ),
-                      ),
-                      '& > *:not(.??__icon)':(
-                        index: '& > *:not(.??__icon)',
-                        name: '& > *:not(.d1-button__icon)',
-                        type: 'scss',
-                        value: (
-                          'display':(
-                            index: 'display',
-                            name: 'display',
+                          'borderColor':(
+                            index: 'borderColor',
+                            name: 'border-color',
                             type: 'property',
-                            value: 'none',
+                            value: 'var(--d1-cell-borderColor)',
+                          ),
+                          'borderBottomWidth':(
+                            index: 'borderBottomWidth',
+                            name: 'border-bottom-width',
+                            type: 'property',
+                            value: 'var(--d1-cell-borderWidth)',
+                          ),
+                          'borderBottomStyle':(
+                            index: 'borderBottomStyle',
+                            name: 'border-bottom-style',
+                            type: 'property',
+                            value: 'solid',
                           ),
                         ),
                       ),
@@ -13132,45 +13994,38 @@
                   ),
                 ),
               ),
-              'icon2xl':(
-                index: 'icon2xl',
-                name: '&--icon2xl',
+              'adaptive2xl':(
+                index: 'adaptive2xl',
+                name: '&--adaptive2xl',
                 type: 'state',
                 value: (
-                  'container2xl':(
-                    index: 'container2xl',
-                    name: '(min-width: 1536px)',
-                    type: 'container',
+                  'mediaMax2xl':(
+                    index: 'mediaMax2xl',
+                    name: '(max-width: calc(1536px - 1px))',
+                    type: 'media-max',
                     value: (
-                      'justifyContent':(
-                        index: 'justifyContent',
-                        name: 'justify-content',
-                        type: 'property',
-                        value: 'flex-start',
-                      ),
-                      '& > .??__icon':(
-                        index: '& > .??__icon',
-                        name: '& > .d1-button__icon',
-                        type: 'scss',
+                      'context':(
+                        index: 'context',
+                        name: '& .d1-cell__context',
+                        type: 'subclass',
                         value: (
-                          'padding':(
-                            index: 'padding',
-                            name: '--d1-button-padding',
-                            type: 'var',
-                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
-                          ),
-                        ),
-                      ),
-                      '& > *:not(.??__icon)':(
-                        index: '& > *:not(.??__icon)',
-                        name: '& > *:not(.d1-button__icon)',
-                        type: 'scss',
-                        value: (
-                          'display':(
-                            index: 'display',
-                            name: 'display',
+                          'borderColor':(
+                            index: 'borderColor',
+                            name: 'border-color',
                             type: 'property',
-                            value: 'none',
+                            value: 'var(--d1-cell-borderColor)',
+                          ),
+                          'borderBottomWidth':(
+                            index: 'borderBottomWidth',
+                            name: 'border-bottom-width',
+                            type: 'property',
+                            value: 'var(--d1-cell-borderWidth)',
+                          ),
+                          'borderBottomStyle':(
+                            index: 'borderBottomStyle',
+                            name: 'border-bottom-style',
+                            type: 'property',
+                            value: 'solid',
                           ),
                         ),
                       ),
@@ -13178,9 +14033,9 @@
                   ),
                 ),
               ),
-              'fullSm':(
-                index: 'fullSm',
-                name: '&--fullSm',
+              'containerSm':(
+                index: 'containerSm',
+                name: '&--containerSm',
                 type: 'state',
                 value: (
                   'containerMaxSm':(
@@ -13188,35 +14043,28 @@
                     name: '(max-width: calc(640px - 1px))',
                     type: 'container-max',
                     value: (
-                      'justifyContent':(
-                        index: 'justifyContent',
-                        name: 'justify-content',
-                        type: 'property',
-                        value: 'flex-start',
-                      ),
-                      '& > .??__icon':(
-                        index: '& > .??__icon',
-                        name: '& > .d1-button__icon',
-                        type: 'scss',
+                      'context':(
+                        index: 'context',
+                        name: '& .d1-cell__context',
+                        type: 'subclass',
                         value: (
-                          'padding':(
-                            index: 'padding',
-                            name: '--d1-button-padding',
-                            type: 'var',
-                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
-                          ),
-                        ),
-                      ),
-                      '& > *:not(.??__icon)':(
-                        index: '& > *:not(.??__icon)',
-                        name: '& > *:not(.d1-button__icon)',
-                        type: 'scss',
-                        value: (
-                          'display':(
-                            index: 'display',
-                            name: 'display',
+                          'borderColor':(
+                            index: 'borderColor',
+                            name: 'border-color',
                             type: 'property',
-                            value: 'none',
+                            value: 'var(--d1-cell-borderColor)',
+                          ),
+                          'borderBottomWidth':(
+                            index: 'borderBottomWidth',
+                            name: 'border-bottom-width',
+                            type: 'property',
+                            value: 'var(--d1-cell-borderWidth)',
+                          ),
+                          'borderBottomStyle':(
+                            index: 'borderBottomStyle',
+                            name: 'border-bottom-style',
+                            type: 'property',
+                            value: 'solid',
                           ),
                         ),
                       ),
@@ -13224,9 +14072,9 @@
                   ),
                 ),
               ),
-              'fullMd':(
-                index: 'fullMd',
-                name: '&--fullMd',
+              'containerMd':(
+                index: 'containerMd',
+                name: '&--containerMd',
                 type: 'state',
                 value: (
                   'containerMaxMd':(
@@ -13234,35 +14082,28 @@
                     name: '(max-width: calc(768px - 1px))',
                     type: 'container-max',
                     value: (
-                      'justifyContent':(
-                        index: 'justifyContent',
-                        name: 'justify-content',
-                        type: 'property',
-                        value: 'flex-start',
-                      ),
-                      '& > .??__icon':(
-                        index: '& > .??__icon',
-                        name: '& > .d1-button__icon',
-                        type: 'scss',
+                      'context':(
+                        index: 'context',
+                        name: '& .d1-cell__context',
+                        type: 'subclass',
                         value: (
-                          'padding':(
-                            index: 'padding',
-                            name: '--d1-button-padding',
-                            type: 'var',
-                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
-                          ),
-                        ),
-                      ),
-                      '& > *:not(.??__icon)':(
-                        index: '& > *:not(.??__icon)',
-                        name: '& > *:not(.d1-button__icon)',
-                        type: 'scss',
-                        value: (
-                          'display':(
-                            index: 'display',
-                            name: 'display',
+                          'borderColor':(
+                            index: 'borderColor',
+                            name: 'border-color',
                             type: 'property',
-                            value: 'none',
+                            value: 'var(--d1-cell-borderColor)',
+                          ),
+                          'borderBottomWidth':(
+                            index: 'borderBottomWidth',
+                            name: 'border-bottom-width',
+                            type: 'property',
+                            value: 'var(--d1-cell-borderWidth)',
+                          ),
+                          'borderBottomStyle':(
+                            index: 'borderBottomStyle',
+                            name: 'border-bottom-style',
+                            type: 'property',
+                            value: 'solid',
                           ),
                         ),
                       ),
@@ -13270,9 +14111,9 @@
                   ),
                 ),
               ),
-              'fullLg':(
-                index: 'fullLg',
-                name: '&--fullLg',
+              'containerLg':(
+                index: 'containerLg',
+                name: '&--containerLg',
                 type: 'state',
                 value: (
                   'containerMaxLg':(
@@ -13280,35 +14121,28 @@
                     name: '(max-width: calc(1024px - 1px))',
                     type: 'container-max',
                     value: (
-                      'justifyContent':(
-                        index: 'justifyContent',
-                        name: 'justify-content',
-                        type: 'property',
-                        value: 'flex-start',
-                      ),
-                      '& > .??__icon':(
-                        index: '& > .??__icon',
-                        name: '& > .d1-button__icon',
-                        type: 'scss',
+                      'context':(
+                        index: 'context',
+                        name: '& .d1-cell__context',
+                        type: 'subclass',
                         value: (
-                          'padding':(
-                            index: 'padding',
-                            name: '--d1-button-padding',
-                            type: 'var',
-                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
-                          ),
-                        ),
-                      ),
-                      '& > *:not(.??__icon)':(
-                        index: '& > *:not(.??__icon)',
-                        name: '& > *:not(.d1-button__icon)',
-                        type: 'scss',
-                        value: (
-                          'display':(
-                            index: 'display',
-                            name: 'display',
+                          'borderColor':(
+                            index: 'borderColor',
+                            name: 'border-color',
                             type: 'property',
-                            value: 'none',
+                            value: 'var(--d1-cell-borderColor)',
+                          ),
+                          'borderBottomWidth':(
+                            index: 'borderBottomWidth',
+                            name: 'border-bottom-width',
+                            type: 'property',
+                            value: 'var(--d1-cell-borderWidth)',
+                          ),
+                          'borderBottomStyle':(
+                            index: 'borderBottomStyle',
+                            name: 'border-bottom-style',
+                            type: 'property',
+                            value: 'solid',
                           ),
                         ),
                       ),
@@ -13316,9 +14150,9 @@
                   ),
                 ),
               ),
-              'fullXl':(
-                index: 'fullXl',
-                name: '&--fullXl',
+              'containerXl':(
+                index: 'containerXl',
+                name: '&--containerXl',
                 type: 'state',
                 value: (
                   'containerMaxXl':(
@@ -13326,35 +14160,28 @@
                     name: '(max-width: calc(1280px - 1px))',
                     type: 'container-max',
                     value: (
-                      'justifyContent':(
-                        index: 'justifyContent',
-                        name: 'justify-content',
-                        type: 'property',
-                        value: 'flex-start',
-                      ),
-                      '& > .??__icon':(
-                        index: '& > .??__icon',
-                        name: '& > .d1-button__icon',
-                        type: 'scss',
+                      'context':(
+                        index: 'context',
+                        name: '& .d1-cell__context',
+                        type: 'subclass',
                         value: (
-                          'padding':(
-                            index: 'padding',
-                            name: '--d1-button-padding',
-                            type: 'var',
-                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
-                          ),
-                        ),
-                      ),
-                      '& > *:not(.??__icon)':(
-                        index: '& > *:not(.??__icon)',
-                        name: '& > *:not(.d1-button__icon)',
-                        type: 'scss',
-                        value: (
-                          'display':(
-                            index: 'display',
-                            name: 'display',
+                          'borderColor':(
+                            index: 'borderColor',
+                            name: 'border-color',
                             type: 'property',
-                            value: 'none',
+                            value: 'var(--d1-cell-borderColor)',
+                          ),
+                          'borderBottomWidth':(
+                            index: 'borderBottomWidth',
+                            name: 'border-bottom-width',
+                            type: 'property',
+                            value: 'var(--d1-cell-borderWidth)',
+                          ),
+                          'borderBottomStyle':(
+                            index: 'borderBottomStyle',
+                            name: 'border-bottom-style',
+                            type: 'property',
+                            value: 'solid',
                           ),
                         ),
                       ),
@@ -13362,9 +14189,9 @@
                   ),
                 ),
               ),
-              'full2xl':(
-                index: 'full2xl',
-                name: '&--full2xl',
+              'container2xl':(
+                index: 'container2xl',
+                name: '&--container2xl',
                 type: 'state',
                 value: (
                   'containerMax2xl':(
@@ -13372,35 +14199,28 @@
                     name: '(max-width: calc(1536px - 1px))',
                     type: 'container-max',
                     value: (
-                      'justifyContent':(
-                        index: 'justifyContent',
-                        name: 'justify-content',
-                        type: 'property',
-                        value: 'flex-start',
-                      ),
-                      '& > .??__icon':(
-                        index: '& > .??__icon',
-                        name: '& > .d1-button__icon',
-                        type: 'scss',
+                      'context':(
+                        index: 'context',
+                        name: '& .d1-cell__context',
+                        type: 'subclass',
                         value: (
-                          'padding':(
-                            index: 'padding',
-                            name: '--d1-button-padding',
-                            type: 'var',
-                            value: 'calc((var(--sys-height) - var(--d1-icon-_width)) / 2) !important',
-                          ),
-                        ),
-                      ),
-                      '& > *:not(.??__icon)':(
-                        index: '& > *:not(.??__icon)',
-                        name: '& > *:not(.d1-button__icon)',
-                        type: 'scss',
-                        value: (
-                          'display':(
-                            index: 'display',
-                            name: 'display',
+                          'borderColor':(
+                            index: 'borderColor',
+                            name: 'border-color',
                             type: 'property',
-                            value: 'none',
+                            value: 'var(--d1-cell-borderColor)',
+                          ),
+                          'borderBottomWidth':(
+                            index: 'borderBottomWidth',
+                            name: 'border-bottom-width',
+                            type: 'property',
+                            value: 'var(--d1-cell-borderWidth)',
+                          ),
+                          'borderBottomStyle':(
+                            index: 'borderBottomStyle',
+                            name: 'border-bottom-style',
+                            type: 'property',
+                            value: 'solid',
                           ),
                         ),
                       ),
@@ -13410,11 +14230,135 @@
               ),
             ),
           ),
-          'palette':(
-            index: 'palette',
-            name: 'palette',
-            type: 'link-class',
-            value: '{d1.palette}',
+          'iconTop':(
+            index: 'iconTop',
+            name: '&--iconTop',
+            type: 'state',
+            value: (
+              'icon':(
+                index: 'icon',
+                name: '& .d1-cell__icon',
+                type: 'subclass',
+                value: (
+                  'alignSelf':(
+                    index: 'alignSelf',
+                    name: 'align-self',
+                    type: 'property',
+                    value: 'start',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'padding':(
+            index: 'padding',
+            name: '&--padding',
+            type: 'state',
+            value: (
+              'sm':(
+                index: 'sm',
+                name: '&--sm',
+                type: 'state',
+                value: (
+                  'paddingX':(
+                    index: 'paddingX',
+                    name: 'padding-x',
+                    type: 'property',
+                    value: 'var(--d1-sys-spacing-x)',
+                  ),
+                  'paddingY':(
+                    index: 'paddingY',
+                    name: 'padding-y',
+                    type: 'property',
+                    value: 'var(--d1-sys-spacing-xs)',
+                  ),
+                ),
+              ),
+              'md':(
+                index: 'md',
+                name: '&--md',
+                type: 'state',
+                value: (
+                  'paddingX':(
+                    index: 'paddingX',
+                    name: 'padding-x',
+                    type: 'property',
+                    value: 'var(--d1-sys-spacing-xs)',
+                  ),
+                  'paddingY':(
+                    index: 'paddingY',
+                    name: 'padding-y',
+                    type: 'property',
+                    value: 'var(--d1-sys-spacing-sm)',
+                  ),
+                ),
+              ),
+              'lg':(
+                index: 'lg',
+                name: '&--lg',
+                type: 'state',
+                value: (
+                  'paddingX':(
+                    index: 'paddingX',
+                    name: 'padding-x',
+                    type: 'property',
+                    value: 'var(--d1-sys-spacing-sm)',
+                  ),
+                  'paddingY':(
+                    index: 'paddingY',
+                    name: 'padding-y',
+                    type: 'property',
+                    value: 'var(--d1-sys-spacing-md)',
+                  ),
+                ),
+              ),
+              'ySm':(
+                index: 'ySm',
+                name: '&--ySm',
+                type: 'state',
+                value: (
+                  'paddingY':(
+                    index: 'paddingY',
+                    name: 'padding-y',
+                    type: 'property',
+                    value: 'var(--d1-sys-spacing-xs)',
+                  ),
+                ),
+              ),
+              'yMd':(
+                index: 'yMd',
+                name: '&--yMd',
+                type: 'state',
+                value: (
+                  'paddingY':(
+                    index: 'paddingY',
+                    name: 'padding-y',
+                    type: 'property',
+                    value: 'var(--d1-sys-spacing-sm)',
+                  ),
+                ),
+              ),
+              'yLg':(
+                index: 'yLg',
+                name: '&--yLg',
+                type: 'state',
+                value: (
+                  'paddingY':(
+                    index: 'paddingY',
+                    name: 'padding-y',
+                    type: 'property',
+                    value: 'var(--d1-sys-spacing-md)',
+                  ),
+                ),
+              ),
+              'none':(
+                index: 'none',
+                name: '&--none',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -14139,375 +15083,6 @@
               ),
             ),
           ),
-          'inverse':(
-            index: 'inverse',
-            name: '&--inverse',
-            type: 'state',
-            value: (
-            ),
-          ),
-          'grid':(
-            index: 'grid',
-            name: '&--grid',
-            type: 'state',
-            value: (
-            ),
-          ),
-          'textAlign':(
-            index: 'textAlign',
-            name: '&--textAlign',
-            type: 'state',
-            value: (
-              'left':(
-                index: 'left',
-                name: '&--left',
-                type: 'state',
-                value: (
-                  'justifyContent':(
-                    index: 'justifyContent',
-                    name: 'justify-content',
-                    type: 'property',
-                    value: 'flex-start',
-                  ),
-                  'textAlign':(
-                    index: 'textAlign',
-                    name: 'text-align',
-                    type: 'property',
-                    value: 'left',
-                  ),
-                ),
-              ),
-              'center':(
-                index: 'center',
-                name: '&--center',
-                type: 'state',
-                value: (
-                ),
-              ),
-              'right':(
-                index: 'right',
-                name: '&--right',
-                type: 'state',
-                value: (
-                  'justifyContent':(
-                    index: 'justifyContent',
-                    name: 'justify-content',
-                    type: 'property',
-                    value: 'flex-end',
-                  ),
-                  'textAlign':(
-                    index: 'textAlign',
-                    name: 'text-align',
-                    type: 'property',
-                    value: 'right',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'input':(
-            index: 'input',
-            name: '&--input',
-            type: 'state',
-            value: (
-              'after':(
-                index: 'after',
-                name: 'after',
-                type: 'virtual',
-                value: (
-                  'position':(
-                    index: 'position',
-                    name: 'position',
-                    type: 'property',
-                    value: 'absolute',
-                  ),
-                  'inset':(
-                    index: 'inset',
-                    name: 'inset',
-                    type: 'property',
-                    value: 0,
-                  ),
-                  'borderRadius':(
-                    index: 'borderRadius',
-                    name: 'border-radius',
-                    type: 'property',
-                    value: 'inherit',
-                  ),
-                  'borderWidth':(
-                    index: 'borderWidth',
-                    name: 'border-width',
-                    type: 'property',
-                    value: 'var(--d1-sys-spacing-border)',
-                  ),
-                  'borderStyle':(
-                    index: 'borderStyle',
-                    name: 'border-style',
-                    type: 'property',
-                    value: 'solid',
-                  ),
-                  'borderOpacity':(
-                    index: 'borderOpacity',
-                    name: 'border-opacity',
-                    type: 'property',
-                    value: 'var(--d1-sys-opacity-outline)',
-                  ),
-                  'paletteBorder':(
-                    index: 'paletteBorder',
-                    name: 'palette-border',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-primary)',
-                  ),
-                  'transitionTimingFunction':(
-                    index: 'transitionTimingFunction',
-                    name: 'transition-timing-function',
-                    type: 'property',
-                    value: 'linear',
-                  ),
-                  'transitionDuration':(
-                    index: 'transitionDuration',
-                    name: 'transition-duration',
-                    type: 'property',
-                    value: 'var(--d-sys-transitionDuration-lg-open)',
-                  ),
-                  'transitionProperty':(
-                    index: 'transitionProperty',
-                    name: 'transition-property',
-                    type: 'property',
-                    value: 'border',
-                  ),
-                ),
-              ),
-              'active':(
-                index: 'active',
-                name: 'active',
-                type: 'selector',
-                value: (
-                  'after':(
-                    index: 'after',
-                    name: 'after',
-                    type: 'virtual',
-                    value: (
-                      'borderWidth':(
-                        index: 'borderWidth',
-                        name: 'border-width',
-                        type: 'property',
-                        value: 'var(--d1-sys-spacing-2px)',
-                      ),
-                      'transitionDuration':(
-                        index: 'transitionDuration',
-                        name: 'transition-duration',
-                        type: 'property',
-                        value: 'var(--d-sys-transitionDuration-xs)',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              'disabled':(
-                index: 'disabled',
-                name: 'disabled',
-                type: 'selector',
-                value: (
-                  'color':(
-                    index: 'color',
-                    name: 'color',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-onSurface)',
-                  ),
-                  'colorOpacity':(
-                    index: 'colorOpacity',
-                    name: 'color-opacity',
-                    type: 'property',
-                    value: 'var(--d1-sys-opacity-surface-disabled)',
-                  ),
-                  'after':(
-                    index: 'after',
-                    name: 'after',
-                    type: 'virtual',
-                    value: (
-                      'borderOpacity':(
-                        index: 'borderOpacity',
-                        name: 'border-opacity',
-                        type: 'property',
-                        value: 0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              'selected':(
-                index: 'selected',
-                name: '&.d1-chip--selected',
-                type: 'state',
-                value: (
-                  'backgroundOpacity':(
-                    index: 'backgroundOpacity',
-                    name: 'background-opacity',
-                    type: 'property',
-                    value: 'var(--d1-sys-opacity-overlay)',
-                  ),
-                  'paletteBackground':(
-                    index: 'paletteBackground',
-                    name: 'palette-background',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-primaryVariant)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'assistive':(
-            index: 'assistive',
-            name: '&--assistive',
-            type: 'state',
-            value: (
-              'colorOpacity':(
-                index: 'colorOpacity',
-                name: 'color-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-surface-high)',
-              ),
-              'paletteColor':(
-                index: 'paletteColor',
-                name: 'palette-color',
-                type: 'property',
-                value: 'var(--d1-sys-palette-primary)',
-              ),
-              'backgroundOpacity':(
-                index: 'backgroundOpacity',
-                name: 'background-opacity',
-                type: 'property',
-                value: 'var(--d1-sys-opacity-overlay)',
-              ),
-              'paletteBackground':(
-                index: 'paletteBackground',
-                name: 'palette-background',
-                type: 'property',
-                value: 'var(--d1-sys-palette-primary)',
-              ),
-              'backdropFilter':(
-                index: 'backdropFilter',
-                name: 'backdrop-filter',
-                type: 'property',
-                value: 'var(--d1-sys-blur-md)',
-              ),
-              'disabled':(
-                index: 'disabled',
-                name: 'disabled',
-                type: 'selector',
-                value: (
-                  'color':(
-                    index: 'color',
-                    name: 'color',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-onSurface)',
-                  ),
-                  'colorOpacity':(
-                    index: 'colorOpacity',
-                    name: 'color-opacity',
-                    type: 'property',
-                    value: 'var(--d1-sys-opacity-surface-disabled)',
-                  ),
-                  'backgroundColor':(
-                    index: 'backgroundColor',
-                    name: 'background-color',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-onSurface)',
-                  ),
-                ),
-              ),
-              'selected':(
-                index: 'selected',
-                name: '&.d1-chip--selected',
-                type: 'state',
-                value: (
-                  'color':(
-                    index: 'color',
-                    name: 'color',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-onPrimary)',
-                  ),
-                  'colorOpacity':(
-                    index: 'colorOpacity',
-                    name: 'color-opacity',
-                    type: 'property',
-                    value: 'var(--d1-sys-opacity-primary-high)',
-                  ),
-                  'backgroundOpacity':(
-                    index: 'backgroundOpacity',
-                    name: 'background-opacity',
-                    type: 'property',
-                    value: 'var(--d1-sys-opacity-primary-high)',
-                  ),
-                  'paletteBackground':(
-                    index: 'paletteBackground',
-                    name: 'palette-background',
-                    type: 'property',
-                    value: 'var(--d1-sys-palette-primaryVariant)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'size':(
-            index: 'size',
-            name: '&--size',
-            type: 'state',
-            value: (
-              'sm':(
-                index: 'sm',
-                name: '&--sm',
-                type: 'state',
-                value: (
-                  'height':(
-                    index: 'height',
-                    name: 'height',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-6)',
-                  ),
-                ),
-              ),
-              'md':(
-                index: 'md',
-                name: '&--md',
-                type: 'state',
-                value: (
-                  'height':(
-                    index: 'height',
-                    name: 'height',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-8)',
-                  ),
-                ),
-              ),
-              'lg':(
-                index: 'lg',
-                name: '&--lg',
-                type: 'state',
-                value: (
-                  'height':(
-                    index: 'height',
-                    name: 'height',
-                    type: 'property',
-                    value: 'var(--d1-ref-spacing-10)',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          'roundedFull':(
-            index: 'roundedFull',
-            name: '&--roundedFull',
-            type: 'state',
-            value: (
-              'borderRadius':(
-                index: 'borderRadius',
-                name: 'border-radius',
-                type: 'property',
-                value: 'var(--d1-sys-rounded-full)',
-              ),
-            ),
-          ),
           'container':(
             index: 'container',
             name: '&--container',
@@ -14972,6 +15547,375 @@
                     ),
                   ),
                 ),
+              ),
+            ),
+          ),
+          'inverse':(
+            index: 'inverse',
+            name: '&--inverse',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'grid':(
+            index: 'grid',
+            name: '&--grid',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'textAlign':(
+            index: 'textAlign',
+            name: '&--textAlign',
+            type: 'state',
+            value: (
+              'left':(
+                index: 'left',
+                name: '&--left',
+                type: 'state',
+                value: (
+                  'justifyContent':(
+                    index: 'justifyContent',
+                    name: 'justify-content',
+                    type: 'property',
+                    value: 'flex-start',
+                  ),
+                  'textAlign':(
+                    index: 'textAlign',
+                    name: 'text-align',
+                    type: 'property',
+                    value: 'left',
+                  ),
+                ),
+              ),
+              'center':(
+                index: 'center',
+                name: '&--center',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'right':(
+                index: 'right',
+                name: '&--right',
+                type: 'state',
+                value: (
+                  'justifyContent':(
+                    index: 'justifyContent',
+                    name: 'justify-content',
+                    type: 'property',
+                    value: 'flex-end',
+                  ),
+                  'textAlign':(
+                    index: 'textAlign',
+                    name: 'text-align',
+                    type: 'property',
+                    value: 'right',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'input':(
+            index: 'input',
+            name: '&--input',
+            type: 'state',
+            value: (
+              'after':(
+                index: 'after',
+                name: 'after',
+                type: 'virtual',
+                value: (
+                  'position':(
+                    index: 'position',
+                    name: 'position',
+                    type: 'property',
+                    value: 'absolute',
+                  ),
+                  'inset':(
+                    index: 'inset',
+                    name: 'inset',
+                    type: 'property',
+                    value: 0,
+                  ),
+                  'borderRadius':(
+                    index: 'borderRadius',
+                    name: 'border-radius',
+                    type: 'property',
+                    value: 'inherit',
+                  ),
+                  'borderWidth':(
+                    index: 'borderWidth',
+                    name: 'border-width',
+                    type: 'property',
+                    value: 'var(--d1-sys-spacing-border)',
+                  ),
+                  'borderStyle':(
+                    index: 'borderStyle',
+                    name: 'border-style',
+                    type: 'property',
+                    value: 'solid',
+                  ),
+                  'borderOpacity':(
+                    index: 'borderOpacity',
+                    name: 'border-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-outline)',
+                  ),
+                  'paletteBorder':(
+                    index: 'paletteBorder',
+                    name: 'palette-border',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-primary)',
+                  ),
+                  'transitionTimingFunction':(
+                    index: 'transitionTimingFunction',
+                    name: 'transition-timing-function',
+                    type: 'property',
+                    value: 'linear',
+                  ),
+                  'transitionDuration':(
+                    index: 'transitionDuration',
+                    name: 'transition-duration',
+                    type: 'property',
+                    value: 'var(--d-sys-transitionDuration-lg-open)',
+                  ),
+                  'transitionProperty':(
+                    index: 'transitionProperty',
+                    name: 'transition-property',
+                    type: 'property',
+                    value: 'border',
+                  ),
+                ),
+              ),
+              'active':(
+                index: 'active',
+                name: 'active',
+                type: 'selector',
+                value: (
+                  'after':(
+                    index: 'after',
+                    name: 'after',
+                    type: 'virtual',
+                    value: (
+                      'borderWidth':(
+                        index: 'borderWidth',
+                        name: 'border-width',
+                        type: 'property',
+                        value: 'var(--d1-sys-spacing-2px)',
+                      ),
+                      'transitionDuration':(
+                        index: 'transitionDuration',
+                        name: 'transition-duration',
+                        type: 'property',
+                        value: 'var(--d-sys-transitionDuration-xs)',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'disabled':(
+                index: 'disabled',
+                name: 'disabled',
+                type: 'selector',
+                value: (
+                  'color':(
+                    index: 'color',
+                    name: 'color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-onSurface)',
+                  ),
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-surface-disabled)',
+                  ),
+                  'after':(
+                    index: 'after',
+                    name: 'after',
+                    type: 'virtual',
+                    value: (
+                      'borderOpacity':(
+                        index: 'borderOpacity',
+                        name: 'border-opacity',
+                        type: 'property',
+                        value: 0,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'selected':(
+                index: 'selected',
+                name: '&.d1-chip--selected',
+                type: 'state',
+                value: (
+                  'backgroundOpacity':(
+                    index: 'backgroundOpacity',
+                    name: 'background-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-overlay)',
+                  ),
+                  'paletteBackground':(
+                    index: 'paletteBackground',
+                    name: 'palette-background',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-primaryVariant)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'assistive':(
+            index: 'assistive',
+            name: '&--assistive',
+            type: 'state',
+            value: (
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-high)',
+              ),
+              'paletteColor':(
+                index: 'paletteColor',
+                name: 'palette-color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primary)',
+              ),
+              'backgroundOpacity':(
+                index: 'backgroundOpacity',
+                name: 'background-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-overlay)',
+              ),
+              'paletteBackground':(
+                index: 'paletteBackground',
+                name: 'palette-background',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primary)',
+              ),
+              'backdropFilter':(
+                index: 'backdropFilter',
+                name: 'backdrop-filter',
+                type: 'property',
+                value: 'var(--d1-sys-blur-md)',
+              ),
+              'disabled':(
+                index: 'disabled',
+                name: 'disabled',
+                type: 'selector',
+                value: (
+                  'color':(
+                    index: 'color',
+                    name: 'color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-onSurface)',
+                  ),
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-surface-disabled)',
+                  ),
+                  'backgroundColor':(
+                    index: 'backgroundColor',
+                    name: 'background-color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-onSurface)',
+                  ),
+                ),
+              ),
+              'selected':(
+                index: 'selected',
+                name: '&.d1-chip--selected',
+                type: 'state',
+                value: (
+                  'color':(
+                    index: 'color',
+                    name: 'color',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-onPrimary)',
+                  ),
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-primary-high)',
+                  ),
+                  'backgroundOpacity':(
+                    index: 'backgroundOpacity',
+                    name: 'background-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-primary-high)',
+                  ),
+                  'paletteBackground':(
+                    index: 'paletteBackground',
+                    name: 'palette-background',
+                    type: 'property',
+                    value: 'var(--d1-sys-palette-primaryVariant)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'size':(
+            index: 'size',
+            name: '&--size',
+            type: 'state',
+            value: (
+              'sm':(
+                index: 'sm',
+                name: '&--sm',
+                type: 'state',
+                value: (
+                  'height':(
+                    index: 'height',
+                    name: 'height',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-6)',
+                  ),
+                ),
+              ),
+              'md':(
+                index: 'md',
+                name: '&--md',
+                type: 'state',
+                value: (
+                  'height':(
+                    index: 'height',
+                    name: 'height',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+              'lg':(
+                index: 'lg',
+                name: '&--lg',
+                type: 'state',
+                value: (
+                  'height':(
+                    index: 'height',
+                    name: 'height',
+                    type: 'property',
+                    value: 'var(--d1-ref-spacing-10)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'roundedFull':(
+            index: 'roundedFull',
+            name: '&--roundedFull',
+            type: 'state',
+            value: (
+              'borderRadius':(
+                index: 'borderRadius',
+                name: 'border-radius',
+                type: 'property',
+                value: 'var(--d1-sys-rounded-full)',
               ),
             ),
           ),
@@ -16775,6 +17719,13 @@
               ),
             ),
           ),
+          'container':(
+            index: 'container',
+            name: '&--container',
+            type: 'state',
+            value: (
+            ),
+          ),
           'inverse':(
             index: 'inverse',
             name: '&--inverse',
@@ -16836,6 +17787,209 @@
                     name: 'text-align',
                     type: 'property',
                     value: 'right',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'cell':(
+        index: 'cell',
+        name: 'd-cell',
+        type: 'component',
+        value: (
+          'transitionFunction':(
+            index: 'transitionFunction',
+            name: '--d-cell-transitionFunction',
+            type: 'var',
+            value: 'var(--d-sys-transitionFunction-standard)',
+          ),
+          'transitionDuration':(
+            index: 'transitionDuration',
+            name: 'transition-duration',
+            type: 'property',
+            value: 'var(--d-sys-transitionDuration-fade-enter)',
+          ),
+          'transitionProperty':(
+            index: 'transitionProperty',
+            name: 'transition-property',
+            type: 'property',
+            value: 'background-color, background-image, border, box-shadow',
+          ),
+          'context':(
+            index: 'context',
+            name: '&__context',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'contextTrailing':(
+            index: 'contextTrailing',
+            name: '&__contextTrailing',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'label':(
+            index: 'label',
+            name: '&__label',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'description':(
+            index: 'description',
+            name: '&__description',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'caption':(
+            index: 'caption',
+            name: '&__caption',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'icon':(
+            index: 'icon',
+            name: '&__icon',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'trailing':(
+            index: 'trailing',
+            name: '&__trailing',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'body':(
+            index: 'body',
+            name: '&__body',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'loading':(
+            index: 'loading',
+            name: '&__loading',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'focus':(
+            index: 'focus',
+            name: '&--focus',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'selected':(
+            index: 'selected',
+            name: '&--selected',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'readonly':(
+            index: 'readonly',
+            name: '&--readonly',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'disabled':(
+            index: 'disabled',
+            name: '&--disabled',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dynamic':(
+            index: 'dynamic',
+            name: '&--dynamic',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dynamicHover':(
+            index: 'dynamicHover',
+            name: '&--dynamicHover',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'divider':(
+            index: 'divider',
+            name: '&--divider',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dividerLabel':(
+            index: 'dividerLabel',
+            name: '&--dividerLabel',
+            type: 'state',
+            value: (
+              'always':(
+                index: 'always',
+                name: '&--always',
+                type: 'state',
+                value: (
+                  'context':(
+                    index: 'context',
+                    name: '& .d-cell__context',
+                    type: 'subclass',
+                    value: (
+                      'borderColor':(
+                        index: 'borderColor',
+                        name: 'border-color',
+                        type: 'property',
+                        value: 'var(--d-cell-borderColor)',
+                      ),
+                      'borderBottomWidth':(
+                        index: 'borderBottomWidth',
+                        name: 'border-bottom-width',
+                        type: 'property',
+                        value: 'var(--d-cell-borderWidth)',
+                      ),
+                      'borderBottomStyle':(
+                        index: 'borderBottomStyle',
+                        name: 'border-bottom-style',
+                        type: 'property',
+                        value: 'solid',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              'none':(
+                index: 'none',
+                name: '&--none',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
+          ),
+          'iconTop':(
+            index: 'iconTop',
+            name: '&--iconTop',
+            type: 'state',
+            value: (
+              'icon':(
+                index: 'icon',
+                name: '& .d-cell__icon',
+                type: 'subclass',
+                value: (
+                  'alignSelf':(
+                    index: 'alignSelf',
+                    name: 'align-self',
+                    type: 'property',
+                    value: 'start',
                   ),
                 ),
               ),
@@ -17030,6 +18184,13 @@
                   ),
                 ),
               ),
+            ),
+          ),
+          'container':(
+            index: 'container',
+            name: '&--container',
+            type: 'state',
+            value: (
             ),
           ),
           'inverse':(

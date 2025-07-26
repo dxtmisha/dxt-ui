@@ -43,6 +43,7 @@ export interface CellExpose extends EventClickExpose {
  */
 export interface CellSlots extends LabelSlots, DescriptionSlots, CaptionSlots {
   trailing? (props: CellClassesSub): any
+  body? (props: CellClassesSub): any
 }
 
 /**
@@ -60,6 +61,7 @@ export type CellClasses = {
   caption: string
   icon: string
   trailing: string
+  body: string
   loading: string
   // :classes [!] System label / Системная метка
 }
