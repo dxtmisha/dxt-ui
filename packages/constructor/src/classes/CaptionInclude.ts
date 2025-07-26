@@ -1,6 +1,8 @@
 import { computed, type VNode } from 'vue'
 import { isFilled, render } from '@dxt-ui/functional'
 
+import { SkeletonInclude } from '../constructors/Skeleton'
+
 import type { CaptionProps, CaptionSlots } from '../types/captionTypes'
 
 /**
@@ -14,11 +16,13 @@ export class CaptionInclude {
    * @param props input property/ входное свойство
    * @param className class name/ название класса
    * @param slots object for working with slots/ объект для работы со слотами
+   * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    */
   constructor(
     protected readonly props: Readonly<CaptionProps>,
     protected readonly className: string,
-    protected readonly slots?: CaptionSlots
+    protected readonly slots?: CaptionSlots,
+    protected readonly skeleton?: SkeletonInclude
   ) {
   }
 
@@ -49,7 +53,12 @@ export class CaptionInclude {
       return [
         render(
           'div',
-          { class: `${this.className}__caption` },
+          {
+            class: {
+              [`${this.className}__caption`]: true,
+              ...this.skeleton?.classes.value
+            }
+          },
           children,
           'caption'
         )

@@ -4,6 +4,7 @@ import D1Cell from './D1Cell.vue'
 import { CellWikiStorybook } from './wiki.ts'
 
 // :story-import [!] System label / Системная метка
+import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -40,117 +41,46 @@ export const Cell: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const CellBasic: Story = {
-  name: 'Базовые',
-  render: () => ({
-    components: { D1Cell },
-    template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Simple cell</div>
-            <D1Cell label="Cell label">Cell</D1Cell>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">With description</div>
-            <D1Cell label="Cell label" description="Cell description">Cell</D1Cell>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">With caption</div>
-            <D1Cell label="Cell label" description="Cell description" caption="Caption">Cell</D1Cell>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">With icon</div>
-            <D1Cell label="Cell label" description="Cell description" icon="home">Cell</D1Cell>
-          </div>
-        </div>
-    `
-  })
-}
-export const CellStates: Story = {
-  name: 'Состояния',
-  render: () => ({
-    components: { D1Cell },
-    template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Default</div>
-            <D1Cell label="Cell label" description="Default state">Cell</D1Cell>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <D1Cell label="Cell label" description="Selected state" :selected="true">Cell</D1Cell>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Disabled</div>
-            <D1Cell label="Cell label" description="Disabled state" :disabled="true">Cell</D1Cell>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Read only</div>
-            <D1Cell label="Cell label" description="Read only state" :readonly="true">Cell</D1Cell>
-          </div>
-        </div>
-    `
-  })
-}
-export const CellDivider: Story = {
-  name: 'Варианты разделителей',
-  render: () => ({
-    components: { D1Cell },
-    template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">With divider</div>
-            <D1Cell label="Cell label" description="With divider" :divider="true">Cell</D1Cell>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Divider always</div>
-            <D1Cell label="Cell label" description="Divider always visible" :divider="true" dividerLabel="always">Cell</D1Cell>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Divider none</div>
-            <D1Cell label="Cell label" description="No divider label" :divider="true" dividerLabel="none">Cell</D1Cell>
-          </div>
-        </div>
-    `
-  })
-}
-export const CellDynamic: Story = {
-  name: 'Динамическое поведение',
-  render: () => ({
-    components: { D1Cell },
-    template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Dynamic</div>
-            <D1Cell label="Cell label" description="Dynamic cell" :dynamic="true">Cell</D1Cell>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Dynamic hover</div>
-            <D1Cell label="Cell label" description="Dynamic with hover" :dynamic="true" :dynamicHover="true">Cell</D1Cell>
-          </div>
-        </div>
-    `
-  })
-}
 export const CellSkeleton: Story = {
   name: 'Загрузка скелетона',
   render: () => ({
+    components: { D1Cell, D1Skeleton },
+    template: `
+        <D1Skeleton :active="true">
+          <D1Cell
+            :isSkeleton="true"
+            caption="Caption"
+            description="Short desc."
+            label="A"
+          />
+          <D1Cell
+            :isSkeleton="true"
+            caption="Caption"
+            description="A bit longer description for the cell component."
+            label="Label Example"
+          />
+          <D1Cell
+            :isSkeleton="true"
+            caption="Caption"
+            description="This is a much longer description to demonstrate how the skeleton adapts to different content lengths in the cell."
+            label="Very Long Label Example for Skeleton"
+          />
+        </D1Skeleton>
+    `
+  })
+}
+export const CellSlots: Story = {
+  name: 'Использование слотов',
+  render: () => ({
     components: { D1Cell },
     template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">With skeleton</div>
-            <D1Skeleton :active="true">
-              <D1Cell label="Cell label" description="Cell description" :isSkeleton="true">Cell</D1Cell>
-            </D1Skeleton>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Without skeleton</div>
-            <D1Skeleton :active="true">
-              <D1Cell label="Cell label" description="Cell description" :isSkeleton="false">Cell</D1Cell>
-            </D1Skeleton>
-          </div>
-        </div>
+        <D1Cell icon="home">
+          <template #default>Default slot</template>
+          <template #description>Description slot</template>
+          <template #caption>Caption slot</template>
+          <template #trailing>Trailing slot</template>
+          <template #body>Body slot</template>
+        </D1Cell>
     `
   })
 }

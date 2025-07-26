@@ -41,123 +41,66 @@ export const wikiDescriptionsCell: StorybookComponentsDescriptionItem = {
   import: [],
   stories: [
     {
-      id: 'CellBasic',
-      name: {
-        en: 'Basic',
-        ru: 'Базовые'
-      },
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Simple cell</div>
-            <DesignComponent label="Cell label">Cell</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">With description</div>
-            <DesignComponent label="Cell label" description="Cell description">Cell</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">With caption</div>
-            <DesignComponent label="Cell label" description="Cell description" caption="Caption">Cell</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">With icon</div>
-            <DesignComponent label="Cell label" description="Cell description" icon="home">Cell</DesignComponent>
-          </div>
-        </div>
-      `
-    },
-    {
-      id: 'CellStates',
-      name: {
-        en: 'States',
-        ru: 'Состояния'
-      },
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Default</div>
-            <DesignComponent label="Cell label" description="Default state">Cell</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <DesignComponent label="Cell label" description="Selected state" :selected="true">Cell</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Disabled</div>
-            <DesignComponent label="Cell label" description="Disabled state" :disabled="true">Cell</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Read only</div>
-            <DesignComponent label="Cell label" description="Read only state" :readonly="true">Cell</DesignComponent>
-          </div>
-        </div>
-      `
-    },
-    {
-      id: 'CellDivider',
-      name: {
-        en: 'Divider options',
-        ru: 'Варианты разделителей'
-      },
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">With divider</div>
-            <DesignComponent label="Cell label" description="With divider" :divider="true">Cell</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Divider always</div>
-            <DesignComponent label="Cell label" description="Divider always visible" :divider="true" dividerLabel="always">Cell</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Divider none</div>
-            <DesignComponent label="Cell label" description="No divider label" :divider="true" dividerLabel="none">Cell</DesignComponent>
-          </div>
-        </div>
-      `
-    },
-    {
-      id: 'CellDynamic',
-      name: {
-        en: 'Dynamic behavior',
-        ru: 'Динамическое поведение'
-      },
-      template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Dynamic</div>
-            <DesignComponent label="Cell label" description="Dynamic cell" :dynamic="true">Cell</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Dynamic hover</div>
-            <DesignComponent label="Cell label" description="Dynamic with hover" :dynamic="true" :dynamicHover="true">Cell</DesignComponent>
-          </div>
-        </div>
-      `
-    },
-    {
       id: 'CellSkeleton',
       name: {
         en: 'Skeleton loading',
         ru: 'Загрузка скелетона'
       },
+      components: ['Skeleton'],
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">With skeleton</div>
-            <DesignSkeleton :active="true">
-              <DesignComponent label="Cell label" description="Cell description" :isSkeleton="true">Cell</DesignComponent>
-            </DesignSkeleton>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label">Without skeleton</div>
-            <DesignSkeleton :active="true">
-              <DesignComponent label="Cell label" description="Cell description" :isSkeleton="false">Cell</DesignComponent>
-            </DesignSkeleton>
-          </div>
-        </div>
+        <DesignSkeleton :active="true">
+          <DesignComponent
+            :isSkeleton="true"
+            caption="Caption"
+            description="Short desc."
+            label="A"
+          />
+          <DesignComponent
+            :isSkeleton="true"
+            caption="Caption"
+            description="A bit longer description for the cell component."
+            label="Label Example"
+          />
+          <DesignComponent
+            :isSkeleton="true"
+            caption="Caption"
+            description="This is a much longer description to demonstrate how the skeleton adapts to different content lengths in the cell."
+            label="Very Long Label Example for Skeleton"
+          />
+        </DesignSkeleton>
+      `
+    },
+    {
+      id: 'CellSlots',
+      name: {
+        en: 'Slots usage',
+        ru: 'Использование слотов'
+      },
+      template: `
+        <DesignComponent icon="home">
+          <template #default>Default slot</template>
+          <template #description>Description slot</template>
+          <template #caption>Caption slot</template>
+          <template #trailing>Trailing slot</template>
+          <template #body>Body slot</template>
+        </DesignComponent>
       `
     }
-  ]
+  ],
+  documentation: {
+    body: `
+<StorybookDescriptions componentName={'Cell'} type={'cell'}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Component.CellSkeleton}/>
+`,
+    slots: `
+<Canvas of={Component.CellSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+<StorybookDescriptions componentName={'Slot'} type={'caption'}/>
+<StorybookDescriptions componentName={'Cell'} type={'slot.trailing'}/>
+<StorybookDescriptions componentName={'Cell'} type={'slot.body'}/>
+`
+  }
 }

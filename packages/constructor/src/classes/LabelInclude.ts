@@ -1,6 +1,8 @@
 import { computed, type Ref, type VNode } from 'vue'
 import { type ConstrClass, isFilled, render } from '@dxt-ui/functional'
 
+import { SkeletonInclude } from '../constructors/Skeleton'
+
 import type { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/labelTypes'
 
 /**
@@ -18,6 +20,7 @@ export class LabelInclude {
    * @param elementsExtra additional elements/ дополнительные элементы
    * @param labelReplacing additional elements/ дополнительные элементы
    * @param alternativeSlots alternative slots/ альтернативные слоты
+   * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    */
   constructor(
     protected readonly props: Readonly<LabelProps>,
@@ -26,7 +29,8 @@ export class LabelInclude {
     protected readonly slots?: LabelSlots | LabelAlternativeSlots,
     protected readonly elementsExtra?: () => VNode[],
     protected readonly labelReplacing?: Ref<string | number | undefined>,
-    protected readonly alternativeSlots?: boolean
+    protected readonly alternativeSlots?: boolean,
+    protected readonly skeleton?: SkeletonInclude
   ) {
   }
 
@@ -101,6 +105,10 @@ export class LabelInclude {
 
     if (this.classesExtra) {
       classes.push(this.classesExtra)
+    }
+
+    if (this.skeleton) {
+      classes.push(this.skeleton.classes.value)
     }
 
     return classes

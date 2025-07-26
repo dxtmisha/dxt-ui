@@ -26,15 +26,16 @@ import type { CellClassesSub } from './basicTypes.ts'
  * Cell
  */
 export class Cell {
+  readonly progress: ProgressInclude
+  readonly skeleton: SkeletonInclude
+
   readonly label: LabelInclude
   readonly description: DescriptionInclude
   readonly caption: CaptionInclude
   readonly enabled: EnabledInclude
 
   readonly icon: IconTrailingInclude
-  readonly progress: ProgressInclude
   readonly ripple: RippleInclude
-  readonly skeleton: SkeletonInclude
 
   readonly event: EventClickInclude
 
@@ -69,19 +70,29 @@ export class Cell {
       }
     )
 
-    this.label = new LabelInclude(props, className, undefined, slots)
+    this.skeleton = new SkeletonInclude(
+      props,
+      classDesign,
+      ['classText']
+    )
+
+    this.label = new LabelInclude(
+      props,
+      className,
+      undefined,
+      slots,
+      undefined,
+      undefined,
+      undefined,
+      this.skeleton
+    )
     this.caption = new CaptionInclude(props, className, slots)
-    this.description = new DescriptionInclude(props, className, slots)
+    this.description = new DescriptionInclude(props, className, slots, this.skeleton)
     this.enabled = new EnabledInclude(props, progress)
 
     this.icon = new IconTrailingInclude(props, className, components)
     this.progress = progress
     this.ripple = new RippleInclude(className, components, this.enabled)
-    this.skeleton = new SkeletonInclude(
-      props,
-      classDesign,
-      ['classBackground']
-    )
 
     this.event = new EventClickInclude(
       props,
@@ -97,8 +108,7 @@ export class Cell {
    */
   readonly classes = computed<ConstrClass>(() => ({
     [`${this.className}--description`]: this.description.is.value,
-    [getClassTegAStatic(this.classDesign)]: true,
-    ...this.skeleton.classes.value
+    [getClassTegAStatic(this.classDesign)]: true
   }))
 
   /**

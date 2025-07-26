@@ -18,6 +18,12 @@ import {CellWikiStorybook} from './wiki'
 />
 
 [//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Cell'} type={'cell'}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Cell.CellSkeleton}/>
+
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 [//]: # (:documentation-events [!] System label / Системная метка)
@@ -27,4 +33,13 @@ import {CellWikiStorybook} from './wiki'
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
 [//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={Cell.CellSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+<StorybookDescriptions componentName={'Slot'} type={'caption'}/>
+<StorybookDescriptions componentName={'Cell'} type={'slot.trailing'}/>
+<StorybookDescriptions componentName={'Cell'} type={'slot.body'}/>
+
 [//]: # (:documentation-slots [!] System label / Системная метка)
