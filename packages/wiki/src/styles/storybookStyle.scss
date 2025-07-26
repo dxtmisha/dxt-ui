@@ -4,11 +4,18 @@
   &-container {
     container-type: inline-size;
   }
+
   &-group {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: auto;
     align-content: stretch;
+    gap: 8px;
+  }
+
+  &-flex {
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
   }
 

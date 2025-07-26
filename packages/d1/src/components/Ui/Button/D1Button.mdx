@@ -36,20 +36,6 @@ import {ButtonWikiStorybook} from './wiki'
 
 <StorybookDescriptions componentName={'Value'} type={'value'}/>
 
-```html
-<D1Button
-  value="save-action"
-  :detail="{ id: 'btn-1', category: 'primary', step: 1 }"
-  @click="handleClick"
-/>
-
-<D1Button
-  :value="buttonValue"
-  :detail="{ userId: currentUser.id, timestamp: Date.now() }"
-  @click="handleAction"
-/>
-```
-
 <StorybookDescriptions componentName={'Style'} type={'adaptive'}/>
 <Canvas of={Button.ButtonAdaptive}/>
 

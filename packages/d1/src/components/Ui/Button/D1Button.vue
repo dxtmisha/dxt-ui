@@ -34,6 +34,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-button--selected': props.selected,
     'd1-button--readonly': props.readonly,
     [`d1-button--adaptive--${props.adaptive}`]: inArray(propsValues.adaptive, props.adaptive),
+    [`d1-button--container--${props.container}`]: inArray(propsValues.container, props.container),
     'd1-button--inverse': props.inverse,
     'd1-button--grid': props.grid,
     [`d1-button--textAlign--${props.textAlign}`]: inArray(propsValues.textAlign, props.textAlign),
@@ -43,7 +44,6 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-button--text': props.text,
     [`d1-button--size--${props.size}`]: inArray(propsValues.size, props.size),
     'd1-button--roundedFull': props.roundedFull,
-    [`d1-button--container--${props.container}`]: inArray(propsValues.container, props.container),
     [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }

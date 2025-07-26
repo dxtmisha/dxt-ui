@@ -38,19 +38,10 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
         ru: 'Базовые'
       },
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Basic</div>
-            <DesignComponent>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">With left icon</div>
-            <DesignComponent icon="home">Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">With right icon</div>
-            <DesignComponent icon-trailing="arrow_forward">Button</DesignComponent>
-          </div>
+        <div class="wiki-storybook-flex">
+          <DesignComponent>Button</DesignComponent>
+          <DesignComponent icon="home">Button</DesignComponent>
+          <DesignComponent icon-trailing="arrow_forward">Button</DesignComponent>
         </div>
       `
     },
@@ -61,27 +52,11 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
         ru: 'Основные (primary)'
       },
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Default</div>
-            <DesignComponent>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Primary</div>
-            <DesignComponent primary>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Primary + Icon</div>
-            <DesignComponent primary icon="home">Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <DesignComponent primary selected>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Disabled</div>
-            <DesignComponent primary disabled>Button</DesignComponent>
-          </div>
+        <div class="wiki-storybook-flex">
+          <DesignComponent primary>Button</DesignComponent>
+          <DesignComponent primary icon="home">Button</DesignComponent>
+          <DesignComponent primary selected>Button</DesignComponent>
+          <DesignComponent primary disabled>Button</DesignComponent>
         </div>
       `,
       propsName: 'primary'
@@ -93,27 +68,11 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
         ru: 'Второстепенные (secondary)'
       },
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Default</div>
-            <DesignComponent>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Secondary</div>
-            <DesignComponent secondary>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Secondary + Icon</div>
-            <DesignComponent secondary icon="home">Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <DesignComponent secondary selected>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Disabled</div>
-            <DesignComponent secondary disabled>Button</DesignComponent>
-          </div>
+        <div class="wiki-storybook-flex">
+          <DesignComponent secondary>Button</DesignComponent>
+          <DesignComponent secondary icon="home">Button</DesignComponent>
+          <DesignComponent secondary selected>Button</DesignComponent>
+          <DesignComponent secondary disabled>Button</DesignComponent>
         </div>
       `,
       propsName: 'secondary'
@@ -125,27 +84,11 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
         ru: 'Контурные (outline)'
       },
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Default</div>
-            <DesignComponent>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Outline</div>
-            <DesignComponent outline>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Outline + Icon</div>
-            <DesignComponent outline icon="home">Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <DesignComponent outline selected>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Disabled</div>
-            <DesignComponent outline disabled>Button</DesignComponent>
-          </div>
+        <div class="wiki-storybook-flex">
+          <DesignComponent outline>Button</DesignComponent>
+          <DesignComponent outline icon="home">Button</DesignComponent>
+          <DesignComponent outline selected>Button</DesignComponent>
+          <DesignComponent outline disabled>Button</DesignComponent>
         </div>
       `,
       propsName: 'outline'
@@ -157,27 +100,11 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
         ru: 'Текстовые (text)'
       },
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Default</div>
-            <DesignComponent>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Text</div>
-            <DesignComponent text>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Text + Icon</div>
-            <DesignComponent text icon="home">Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Selected</div>
-            <DesignComponent text selected>Button</DesignComponent>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Disabled</div>
-            <DesignComponent text disabled>Button</DesignComponent>
-          </div>
+        <div class="wiki-storybook-flex">
+          <DesignComponent text>Button</DesignComponent>
+          <DesignComponent text icon="home">Button</DesignComponent>
+          <DesignComponent text selected>Button</DesignComponent>
+          <DesignComponent text disabled>Button</DesignComponent>
         </div>
       `,
       propsName: 'text'
@@ -213,26 +140,9 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
       },
       components: ['Skeleton'],
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Basic</div>
-            <DesignSkeleton>
-              <DesignComponent>Button</DesignComponent>
-            </DesignSkeleton>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Active</div>
-            <DesignSkeleton :active="true">
-              <DesignComponent isSkeleton>Button</DesignComponent>
-            </DesignSkeleton>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--sm wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Hidden</div>
-            <DesignSkeleton :active="true">
-              <DesignComponent>Button</DesignComponent>
-            </DesignSkeleton>
-          </div>
-        </div>
+        <DesignSkeleton :active="true">
+          <DesignComponent isSkeleton>Button</DesignComponent>
+        </DesignSkeleton>
       `
     }
   ],
@@ -262,20 +172,6 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
 </template>
 
 <StorybookDescriptions componentName={'Value'} type={'value'}/>
-
-\`\`\`html
-<DesignComponent
-  value="save-action"
-  :detail="{ id: 'btn-1', category: 'primary', step: 1 }"
-  @click="handleClick"
-/>
-
-<DesignComponent
-  :value="buttonValue"
-  :detail="{ userId: currentUser.id, timestamp: Date.now() }"
-  @click="handleAction"
-/>
-\`\`\`
 
 <StorybookDescriptions componentName={'Style'} type={'adaptive'}/>
 <Canvas of={Component.ButtonAdaptive}/>

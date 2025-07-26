@@ -33,7 +33,8 @@
     },
     "disabled": {
       "background-color": "{sys.palette.onSurface}",
-      "background-opacity": "{sys.opacity.disabled}"
+      "background-opacity": "{sys.opacity.disabled}",
+      "box-shadow": "none"
     },
     "_category": "style",
     "_default": true
