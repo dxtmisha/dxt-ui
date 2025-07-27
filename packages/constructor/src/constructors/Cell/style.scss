@@ -1,6 +1,7 @@
 @use "@dxt-ui/styles/properties" as ui;
 
 @mixin mixinCell {
+  position: relative;
   display: flex;
   align-items: center;
 
@@ -48,8 +49,7 @@
     order: 16;
   }
 
-  &--dynamic,
-  &--dynamicHover {
+  &--dynamic {
     cursor: pointer;
   }
 

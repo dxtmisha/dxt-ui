@@ -100,6 +100,17 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  dynamicHover: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      defaultValue: false,
+      description: {
+        en: 'Enables dynamic hover effect for the component',
+        ru: 'Включает динамический эффект наведения для компонента'
+      }
+    }
+  },
   grid: {
     type: StorybookControl.boolean,
     options: {
