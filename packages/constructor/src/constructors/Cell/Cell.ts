@@ -4,7 +4,7 @@ import {
   type ConstrEmit,
   DesignComp
 } from '@dxt-ui/functional'
-import { getClassTegAStatic } from '../../functions/getClassTegAStatic.ts'
+import { getClassTegAStatic } from '../../functions/getClassTegAStatic'
 
 import { LabelInclude } from '../../classes/LabelInclude'
 import { CaptionInclude } from '../../classes/CaptionInclude'
@@ -20,7 +20,7 @@ import { EventClickInclude } from '../../classes/EventClickInclude'
 
 import type { CellComponents, CellEmits, CellSlots } from './types'
 import type { CellPropsBasic } from './props'
-import type { CellClassesSub } from './basicTypes.ts'
+import type { CellClassesSub } from './basicTypes'
 
 /**
  * Cell

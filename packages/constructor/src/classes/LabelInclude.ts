@@ -120,7 +120,10 @@ export class LabelInclude {
    * Добавляет текст метки, если он есть
    */
   protected initLabel(): any[] {
-    if (isFilled(this.props.label)) {
+    if (
+      !this.labelReplacing?.value
+      && isFilled(this.props.label)
+    ) {
       return [this.props.label]
     }
 

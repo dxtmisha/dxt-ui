@@ -1,0 +1,35 @@
+{
+  "padding": {
+    "_type": "var"
+  },
+  "dotSize": {
+    "_type": "var"
+  },
+  "transition-property": "clip-path, mask-image, mask-size, opacity, transform",
+  "transition-duration": "{d.sys.transitionDuration.md.open}",
+  "transition-function": "{d.sys.transitionFunction.standard}",
+  "#label": {},
+  "#icon": {},
+  "~hide": {
+    "transition-duration": "{d.sys.transitionDuration.md.close}"
+  },
+  "~dot": {},
+  "~overlap": {
+    "~rectangular": {},
+    "~circular": {},
+    "~static": {},
+    "_default": "rectangular"
+  },
+  "~vertical": {
+    "~top": {},
+    "~center": {},
+    "~bottom": {},
+    "_default": "top"
+  },
+  "~horizontal": {
+    "~right": {},
+    "~center": {},
+    "~left": {},
+    "_default": "right"
+  }
+}

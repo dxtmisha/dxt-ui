@@ -5,37 +5,37 @@ import {
   DesignConstructorAbstract
 } from '@dxt-ui/functional'
 
-import { Constructors } from './Constructors'
+import { Badge } from './Badge'
 
 import {
-  type ConstructorsProps
+  type BadgeProps
 } from './props'
 import {
-  type ConstructorsClasses,
-  type ConstructorsComponents,
-  type ConstructorsEmits,
-  type ConstructorsExpose,
-  type ConstructorsSlots
+  type BadgeClasses,
+  type BadgeComponents,
+  type BadgeEmits,
+  type BadgeExpose,
+  type BadgeSlots
 } from './types'
 
 /**
- * ConstructorsDesign
+ * BadgeDesign
  */
-export class ConstructorsDesign<
-  COMP extends ConstructorsComponents,
-  EXPOSE extends ConstructorsExpose,
-  CLASSES extends ConstructorsClasses,
-  P extends ConstructorsProps
+export class BadgeDesign<
+  COMP extends BadgeComponents,
+  EXPOSE extends BadgeExpose,
+  CLASSES extends BadgeClasses,
+  P extends BadgeProps
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
-    ConstructorsEmits,
+    BadgeEmits,
     EXPOSE,
-    ConstructorsSlots,
+    BadgeSlots,
     CLASSES,
     P
   > {
-  protected readonly item: Constructors
+  protected readonly item: Badge
 
   /**
    * Constructor
@@ -46,7 +46,7 @@ export class ConstructorsDesign<
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ConstructorsEmits, P>
+    options?: ConstrOptions<COMP, BadgeEmits, P>
   ) {
     super(
       name,
@@ -54,7 +54,7 @@ export class ConstructorsDesign<
       options
     )
 
-    this.item = new Constructors(
+    this.item = new Badge(
       this.props,
       this.refs,
       this.element,
@@ -65,9 +65,6 @@ export class ConstructorsDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -77,10 +74,7 @@ export class ConstructorsDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
@@ -90,9 +84,11 @@ export class ConstructorsDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes.value,
       ...{
         // :classes [!] System label / Системная метка
+        label: this.getSubClass('label'),
+        icon: this.getSubClass('icon')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -104,10 +100,7 @@ export class ConstructorsDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -116,12 +109,19 @@ export class ConstructorsDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    const children: any[] = []
 
-    return h('div', {
-      // ...this.getAttrs(),
+    if (!this.props.dot) {
+      children.push(
+        ...this.item.label.render(),
+        ...this.item.icon.renderIcon()
+      )
+    }
+
+    return h('span', {
+      ...this.getAttrs(),
       ref: this.element,
       class: this.classes?.value.main
-    })
+    }, children)
   }
 }

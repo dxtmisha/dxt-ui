@@ -1,0 +1,79 @@
+@use "@dxt-ui/styles/properties" as ui;
+@use "../Button/style" as button;
+
+@mixin mixinBadge {
+  @include button.mixinButton;
+
+  @include ui.initByCustom('_shift', ui.v('??shift', var(--sys-height, 0)) / 2);
+  @include ui.initByCustom('_shiftOverlap', 0px);
+
+  position: absolute;
+  z-index: 4;
+  opacity: 1;
+
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-image: none;
+  mask-size: 100%;
+
+  @include ui.scale(1);
+
+  &--hide,
+  &--hideAuto {
+    opacity: 1;
+
+    mask-image: radial-gradient(circle at center, transparent 10%, white 20%);
+    mask-size: 1000%;
+
+    @include ui.scale(1.12);
+  }
+
+  &--dot {
+    @include ui.aspectRatio(#{1/1});
+    @include ui.height(#{ui.v('??dotSize', ui.v('??dotFactor', calc(100% / 3))) !important});
+
+    @include ui.subclass('label') {
+      display: none;
+    }
+  }
+
+  &--overlap {
+    &--circular {
+      @include ui.initByCustom('_shiftOverlap', -16%);
+    }
+
+    &--static {
+      position: static;
+    }
+  }
+
+  &--vertical {
+    &--top {
+      top: calc(0% - #{ui.v('??_shiftOverlap')} - #{ui.v('??_shift')});
+    }
+
+    &--center {
+      top: 50%;
+      @include ui.translateY(-50%);
+    }
+
+    &--bottom {
+      bottom: calc(0% - #{ui.v('??_shiftOverlap')} - #{ ui.v('??_shift')});
+    }
+  }
+
+  &--horizontal {
+    &--right {
+      @include ui.left(calc(100% + #{ui.v('??_shiftOverlap')} - #{ui.v('??_shift')}));
+    }
+
+    &--center {
+      left: 50%;
+      @include ui.translateX(-50%);
+    }
+
+    &--left {
+      @include ui.right(calc(100% + #{ui.v('??_shiftOverlap')} - #{ui.v('??_shift')}));
+    }
+  }
+}
