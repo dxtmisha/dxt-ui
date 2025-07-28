@@ -1,6 +1,6 @@
 {
   "main": "{d.button}",
-  "padding": "var(--sys-height) * .4",
+  "padding": "var(--sys-height) * {sys.spacing.adaptive.md}",
   "border-radius": "var(--sys-height) * {sys.rounded.adaptive.md}",
   "focus": {
     "gradient": "var(--sys-color)",
@@ -44,7 +44,7 @@
     "color-opacity": "{sys.opacity.surface.high}",
     "palette-background": "{sys.palette.primary}",
     "background-opacity": "{sys.opacity.overlay}",
-    "backdrop-filter": "{sys.blur.md}",
+    "backdrop-filter": "{sys.blur.sm}",
     "selected": {
       "color": "{sys.palette.primaryVariant}",
       "palette-background": "{sys.palette.primaryVariant}"

@@ -16,11 +16,13 @@
   mask-image: none;
   mask-size: 100%;
 
+  cursor: unset;
+
   @include ui.scale(1);
 
   &--hide,
   &--hideAuto {
-    opacity: 1;
+    opacity: 0;
 
     mask-image: radial-gradient(circle at center, transparent 10%, white 20%);
     mask-size: 1000%;

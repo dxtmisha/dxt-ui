@@ -1,0 +1,69 @@
+{
+  "main": "{d.badge}",
+  "padding": "var(--sys-height) * {sys.spacing.adaptive.md}",
+  "font": "{font.bodySmall}",
+  "border-radius": "{sys.rounded.full}",
+  "~primary": {
+    "color": "{sys.palette.onPrimary}",
+    "color-opacity": "{sys.opacity.primary.high}",
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.primary.high}",
+    "backdrop-filter": "{sys.blur.md}",
+    "selected": {
+      "palette-background": "{sys.palette.primaryVariant}"
+    },
+    "_category": "style",
+    "_default": true
+  },
+  "~secondary": {
+    "palette-color": "{sys.palette.primary}",
+    "color-opacity": "{sys.opacity.surface.high}",
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.overlay}",
+    "backdrop-filter": "{sys.blur.sm}",
+    "selected": {
+      "color": "{sys.palette.primaryVariant}",
+      "palette-background": "{sys.palette.primaryVariant}"
+    },
+    "_category": "style"
+  },
+  "~outline": {
+    "palette-color": "{sys.palette.primary}",
+    "color-opacity": "{sys.opacity.surface.high}",
+    "after": {
+      "position": "absolute",
+      "inset": "0",
+      "border-style": "solid",
+      "border-width": "{sys.spacing.border}",
+      "palette-border": "{sys.palette.primary}",
+      "border-opacity": "{sys.opacity.outline}",
+      "border-radius": "inherit"
+    },
+    "selected": {
+      "color": "{sys.palette.primaryVariant}",
+      "palette-border": "{sys.palette.primaryVariant}"
+    },
+    "_category": "style"
+  },
+  "~size": {
+    "sm": {
+      "dotSize": "{ref.spacing.6px}",
+      "height": "{ref.spacing.5}"
+    },
+    "md": {
+      "dotSize": "{ref.spacing.2}",
+      "height": "{ref.spacing.6}"
+    },
+    "lg": {
+      "dotSize": "{ref.spacing.3}",
+      "height": "{ref.spacing.7}",
+      "font": "{font.bodyMedium}"
+    },
+    "none": {},
+    "_default": "md"
+  },
+  "~dot": {
+    "paddingX": "0",
+    "box-shadow": "0px 0px 0px 2px rgba({sys.palette.onPrimary}, {sys.opacity.primary.medium})"
+  }
+}

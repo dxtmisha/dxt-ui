@@ -45,6 +45,17 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  formatting: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.value,
+      defaultValue: false,
+      description: {
+        en: 'Whether to format values before displaying',
+        ru: 'Нужно ли форматировать значения перед отображением'
+      }
+    }
+  },
   icon: {
     type: StorybookControl.string,
     options: {
@@ -89,6 +100,17 @@ export const wikiValue: StorybookArgsToList = {
         ru: 'Текстовая метка для компонента'
       },
       value: 'Label'
+    }
+  },
+  labelMax: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      type: 'number',
+      description: {
+        en: 'Maximum length of the label text before truncation',
+        ru: 'Максимальная длина текста метки перед обрезкой'
+      }
     }
   },
   max: {

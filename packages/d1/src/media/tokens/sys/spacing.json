@@ -25,5 +25,10 @@
     "4xl": "{ref.spacing.20}",
     "5xl": "{ref.spacing.22}",
     "6xl": "{ref.spacing.24}"
+  },
+  "adaptive": {
+    "sm": ".2",
+    "md": ".4",
+    "lg": ".6"
   }
 }

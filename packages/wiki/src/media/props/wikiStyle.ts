@@ -89,6 +89,17 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  dot: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      defaultValue: false,
+      description: {
+        en: 'Displays the component as a dot indicator',
+        ru: 'Отображает компонент как точечный индикатор'
+      }
+    }
+  },
   dynamic: {
     type: StorybookControl.boolean,
     options: {
@@ -119,6 +130,18 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Grid layout mode',
         ru: 'Режим сеточной разметки'
+      }
+    }
+  },
+  horizontal: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Horizontal alignment of elements',
+        ru: 'Горизонтальное выравнивание элементов'
       }
     }
   },
@@ -231,6 +254,18 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  overlap: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Defines the way the element is positioned relative to other elements',
+        ru: 'Определяет способ расположения элемента относительно других элементов'
+      }
+    }
+  },
   padding: {
     type: StorybookControl.select,
     options: {
@@ -312,6 +347,18 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Text alignment within the element',
         ru: 'Выравнивание текста внутри элемента'
+      }
+    }
+  },
+  vertical: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Vertical alignment of elements',
+        ru: 'Вертикальное выравнивание элементов'
       }
     }
   }

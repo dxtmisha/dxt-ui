@@ -5,13 +5,14 @@
   "dotSize": {
     "_type": "var"
   },
-  "transition-property": "clip-path, mask-image, mask-size, opacity, transform",
-  "transition-duration": "{d.sys.transitionDuration.md.open}",
+  "transition-property": "clip-path, mask-image, mask-size, opacity, transform, scale",
+  "transition-duration": "{d.sys.transitionDuration.lg.open}",
   "transition-function": "{d.sys.transitionFunction.standard}",
   "#label": {},
   "#icon": {},
+  "selected": {},
   "~hide": {
-    "transition-duration": "{d.sys.transitionDuration.md.close}"
+    "transition-duration": "{d.sys.transitionDuration.lg.close}"
   },
   "~dot": {},
   "~overlap": {
