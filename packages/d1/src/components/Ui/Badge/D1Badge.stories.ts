@@ -42,4 +42,65 @@ export const Badge: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const BadgeBasic: Story = {
+  name: 'Базовые',
+  render: () => ({
+    components: { D1Badge },
+    template: `
+        <div class="wiki-storybook-flex">
+          <D1Badge overlap="static">Badge</D1Badge>
+          <D1Badge overlap="static" icon="home">Badge</D1Badge>
+          <D1Badge overlap="static">99</D1Badge>
+          <D1Badge overlap="static" label="999" label-max="99"/>
+        </div>
+    `
+  })
+}
+export const BadgeDot: Story = {
+  name: 'Точечные (dot)',
+  render: () => ({
+    components: { D1Badge },
+    template: `
+        <div class="wiki-storybook-flex">
+          <D1Badge dot overlap="static"/>
+        </div>
+    `
+  })
+}
+export const BadgePrimary: Story = {
+  name: 'Основные (primary)',
+  render: () => ({
+    components: { D1Badge },
+    template: `
+        <div class="wiki-storybook-flex">
+          <D1Badge primary overlap="static" icon="home"/>
+          <D1Badge primary overlap="static">Badge</D1Badge>
+        </div>
+    `
+  })
+}
+export const BadgeSecondary: Story = {
+  name: 'Второстепенные (secondary)',
+  render: () => ({
+    components: { D1Badge },
+    template: `
+        <div class="wiki-storybook-flex">
+          <D1Badge secondary overlap="static" icon="home"/>
+          <D1Badge secondary overlap="static">Badge</D1Badge>
+        </div>
+    `
+  })
+}
+export const BadgeOutline: Story = {
+  name: 'Контурные (outline)',
+  render: () => ({
+    components: { D1Badge },
+    template: `
+        <div class="wiki-storybook-flex">
+          <D1Badge outline overlap="static" icon="home"/>
+          <D1Badge outline overlap="static">Badge</D1Badge>
+        </div>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

@@ -5,7 +5,8 @@ export const propsValues = {
   overlap: ['rectangular', 'circular', 'static'],
   vertical: ['top', 'center', 'bottom'],
   horizontal: ['right', 'center', 'left'],
-  size: ['sm', 'md', 'lg', 'none']
+  size: ['sm', 'md', 'lg', 'none'],
+  palette: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white']
   // :values [!] System label / Системная метка
 }
 
@@ -21,6 +22,7 @@ interface PropsToken {
   secondary?: boolean
   outline?: boolean
   size?: 'sm' | 'md' | 'lg' | 'none'
+  palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }
 

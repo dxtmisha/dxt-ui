@@ -10,7 +10,7 @@ import {
  * Свойства компонента Badge для Storybook
  */
 export const wikiBadge: StorybookArgsToList = {
-  outline: {
+  'badge.outline': {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
@@ -21,7 +21,7 @@ export const wikiBadge: StorybookArgsToList = {
       }
     }
   },
-  primary: {
+  'badge.primary': {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
@@ -32,7 +32,7 @@ export const wikiBadge: StorybookArgsToList = {
       }
     }
   },
-  secondary: {
+  'badge.secondary': {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,

@@ -37,7 +37,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-badge--primary': props.primary && !props.secondary && !props.outline,
     'd1-badge--secondary': props.secondary,
     'd1-badge--outline': props.outline,
-    [`d1-badge--size--${props.size}`]: inArray(propsValues.size, props.size)
+    [`d1-badge--size--${props.size}`]: inArray(propsValues.size, props.size),
+    [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }
 }))
