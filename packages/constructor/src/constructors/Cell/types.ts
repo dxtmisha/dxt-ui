@@ -42,8 +42,9 @@ export interface CellExpose extends EventClickExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface CellSlots extends LabelSlots, DescriptionSlots, CaptionSlots {
-  trailing? (props: CellClassesSub): any
-  body? (props: CellClassesSub): any
+  trailing?(props: CellClassesSub): any
+
+  body?(props: CellClassesSub): any
 }
 
 /**

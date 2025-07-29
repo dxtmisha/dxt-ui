@@ -3,14 +3,14 @@ import { isFilled, render } from '@dxt-ui/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
-import type { CaptionProps, CaptionSlots } from '../types/captionTypes'
+import type { PrefixProps, PrefixSlots } from '../types/prefixTypes'
 
 /**
- * Class for working with caption.
+ * Class for working with prefix.
  *
- * Класс для работы с caption.
+ * Класс для работы с prefix.
  */
-export class CaptionInclude {
+export class PrefixInclude {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -19,34 +19,34 @@ export class CaptionInclude {
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    */
   constructor(
-    protected readonly props: Readonly<CaptionProps>,
+    protected readonly props: Readonly<PrefixProps>,
     protected readonly className: string,
-    protected readonly slots?: CaptionSlots,
+    protected readonly slots?: PrefixSlots,
     protected readonly skeleton?: SkeletonInclude
   ) {
   }
 
   /**
-   * Returns true if caption is filled
+   * Returns true if prefix is filled
    *
-   * Возвращает true, если caption заполнен
+   * Возвращает true, если prefix заполнен
    */
-  readonly is = computed(() => Boolean(this.props.caption || this.slots?.caption))
+  readonly is = computed(() => Boolean(this.props.prefix || this.slots?.prefix))
 
   /**
-   * Renders caption element with content from props or slots.
+   * Renders prefix element with content from props or slots.
    *
-   * Отображает элемент caption с содержимым из props или slots.
+   * Отображает элемент prefix с содержимым из props или slots.
    */
   render(): VNode[] {
     const children: any[] = []
 
-    if (isFilled(this.props.caption)) {
-      children.push(this.props.caption)
+    if (isFilled(this.props.prefix)) {
+      children.push(this.props.prefix)
     }
 
-    if (this.slots?.caption) {
-      children.push(this.slots.caption?.({}))
+    if (this.slots?.prefix) {
+      children.push(this.slots.prefix?.({}))
     }
 
     if (children.length > 0) {
@@ -55,13 +55,13 @@ export class CaptionInclude {
           'div',
           {
             'class': {
-              [`${this.className}__caption`]: true,
+              [`${this.className}__prefix`]: true,
               ...this.skeleton?.classes.value
             },
-            'data-event-type': 'caption'
+            'data-event-type': 'prefix'
           },
           children,
-          'caption'
+          'prefix'
         )
       ]
     }

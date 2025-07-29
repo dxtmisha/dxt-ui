@@ -1,7 +1,7 @@
 import type { ConstrClass } from '@dxt-ui/functional'
 
-import type { LabelNumberSlots } from '../../types/labelNumberTypes'
 import type { IconComponentInclude } from '../Icon'
+import type { LabelNumberSlots } from '../../types/labelTypes'
 
 /**
  * Interface for describing which components need to be connected for work.

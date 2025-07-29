@@ -1,2 +1,48 @@
 {
+  "paddingX": {
+    "_type": "var"
+  },
+  "paddingY": {
+    "_type": "var"
+  },
+  "height": {
+    "_type": "var"
+  },
+  "border-width": {
+    "_type": "var"
+  },
+  "border-color": {
+    "_type": "var"
+  },
+  "transition-property": "background-color, background-image, border, box-shadow",
+  "transition-duration": "{d.sys.transitionDuration.fade.enter}",
+  "transition-function": "{d.sys.transitionFunction.standard}",
+  "#body": {},
+  "#context": {},
+  "#label": {},
+  "#highlight": {},
+  "#prefix": {},
+  "#caption": {},
+  "#description": {},
+  "#icon": {},
+  "#trailing": {},
+  "#badge": {},
+  "#input": {},
+  "~focus": {},
+  "~open": {},
+  "~selected": {},
+  "~readonly": {},
+  "~disabled": {},
+  "~iconTop": {},
+  "~iconAlign": {
+    "~center": {},
+    "~text": {},
+    "_default": "center"
+  },
+  "~fill": {
+    "_type": "state",
+    "_var": true,
+    "_style": true
+  },
+  "~divider": {}
 }

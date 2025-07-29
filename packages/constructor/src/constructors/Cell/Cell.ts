@@ -65,8 +65,8 @@ export class Cell {
       className,
       components,
       {
-        circular: true,
-        inverse: true
+        inverse: true,
+        position: 'bottom'
       }
     )
 

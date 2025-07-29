@@ -5,6 +5,7 @@ export * from './classes/LabelInclude'
 
 // Functions
 export * from './functions/node/getConstructorProperties'
+export * from './functions/getClassTegAStatic'
 
 // Types
 export * from './types/enabledTypes'

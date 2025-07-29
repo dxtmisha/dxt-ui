@@ -27,14 +27,14 @@ export class ListItemDesign<
   CLASSES extends ListItemClasses,
   P extends ListItemProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    ListItemEmits,
-    EXPOSE,
-    ListItemSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  ListItemEmits,
+  EXPOSE,
+  ListItemSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: ListItem
 
   /**
@@ -75,8 +75,7 @@ export class ListItemDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      ...this.item.event.expose
     } as EXPOSE
   }
 
@@ -87,9 +86,20 @@ export class ListItemDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes.value,
       ...{
         // :classes [!] System label / Системная метка
+        body: this.getSubClass('body'),
+        context: this.getSubClass('context'),
+        label: this.getSubClass('label'),
+        highlight: this.getSubClass('highlight'),
+        prefix: this.getSubClass('prefix'),
+        caption: this.getSubClass('caption'),
+        description: this.getSubClass('description'),
+        icon: this.getSubClass('icon'),
+        trailing: this.getSubClass('trailing'),
+        badge: this.getSubClass('badge'),
+        input: this.getSubClass('input')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -101,10 +111,7 @@ export class ListItemDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -113,12 +120,74 @@ export class ListItemDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    const children: any[] = []
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+    this.initSlot('leading', children)
+    children.push(...this.renderBody())
+    this.initSlot('trailing', children)
+
+    children.push(
+      ...this.item.icon.renderIconTrailing(),
+      ...this.item.progress.render(),
+      ...this.item.ripple.render()
+    )
+
+    return h(
+      this.props.tag ?? 'div',
+      {
+        ...this.getAttrs(),
+        'ref': this.element,
+        'class': this.classes?.value.main,
+        'data-value': this.props.index ?? this.props.value,
+        'data-divider': this.props.divider ? 'active' : undefined,
+        'onClick': this.item.event.onClick
+      },
+      children
+    )
+  }
+
+  /**
+   * Method for rendering the main part of the component.
+   *
+   * Метод для рендеринга основной части компонента.
+   */
+  protected readonly renderBody = (): VNode[] => {
+    const children: any[] = [
+      ...this.renderContext(),
+      ...this.item.description.render()
+    ]
+
+    this.initSlot('body', children)
+
+    return [
+      h(
+        'div',
+        { class: this.classes?.value.body },
+        children
+      )
+    ]
+  }
+
+  /**
+   * Method for rendering the context part of the component.
+   * This includes prefix, caption, suffix, badge, and label.
+   *
+   * Метод для рендеринга контекстной части компонента.
+   * Включает в себя префикс, подпись, суффикс, значок и метку.
+   */
+  protected readonly renderContext = (): VNode[] => {
+    return [
+      h(
+        'div',
+        { class: this.classes?.value.context },
+        [
+          ...this.item.prefix.render(),
+          ...this.item.caption.render(),
+          ...this.item.suffix.render(),
+          ...this.item.badge.render(),
+          ...this.item.label.render()
+        ]
+      )
+    ]
   }
 }

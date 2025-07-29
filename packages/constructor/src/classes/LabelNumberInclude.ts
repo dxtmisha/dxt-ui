@@ -4,7 +4,7 @@ import { type ConstrClass, GeoRef, isNumber, toNumberByMax } from '@dxt-ui/funct
 import { LabelInclude } from './LabelInclude'
 import { SkeletonInclude } from '../constructors/Skeleton'
 
-import type { LabelNumberProps, LabelNumberSlots } from '../types/labelNumberTypes'
+import type { LabelNumberProps, LabelNumberSlots } from '../types/labelTypes'
 
 /**
  * The LabelNumberInclude class extends LabelInclude to handle numeric labels.

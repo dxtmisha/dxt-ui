@@ -5,6 +5,11 @@ import type { BadgeComponentInclude } from '../Badge'
 import type { ProgressComponentInclude } from '../Progress'
 import type { RippleComponentsInclude } from '../Ripple'
 
+import type { LabelHighlightSlots } from '../../types/labelTypes'
+import type { DescriptionSlots } from '../../types/descriptionTypes'
+import type { PrefixSlots } from '../../types/prefixTypes'
+import type { CaptionSlots } from '../../types/captionTypes'
+import type { SuffixSlots } from '../../types/suffixTypes'
 import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
 
 /**
@@ -38,8 +43,16 @@ export interface ListItemExpose extends EventClickExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface ListItemSlots {
-  // default? (props: any): any
+export interface ListItemSlots extends LabelHighlightSlots,
+  DescriptionSlots,
+  PrefixSlots,
+  CaptionSlots,
+  SuffixSlots {
+  leading?(props: any): any
+
+  trailing?(props: any): any
+
+  body?(props: any): any
 }
 
 /**
@@ -50,5 +63,16 @@ export interface ListItemSlots {
 export type ListItemClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  body: string
+  context: string
+  label: string
+  highlight: string
+  prefix: string
+  caption: string
+  description: string
+  icon: string
+  trailing: string
+  badge: string
+  input: string
   // :classes [!] System label / Системная метка
 }

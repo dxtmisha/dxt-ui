@@ -1,5 +1,165 @@
 @use "@dxt-ui/styles/properties" as ui;
 
 @mixin mixinListItem {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  position: relative;
 
+  padding: 0;
+
+  --sys-height: ui.v('??height', 0);
+  min-height: ui.v('??height', 0);
+
+  cursor: pointer;
+
+  & > * {
+    order: 16;
+    z-index: 4;
+  }
+
+  &__body,
+  &__context,
+  &__label {
+    flex-grow: 1;
+  }
+
+  &__body {
+    & > * {
+      display: block;
+    }
+  }
+
+  &__context {
+    @include ui.flexX;
+
+    & > * {
+      order: 16;
+    }
+
+    @include ui.subclass('prefix') {
+      order: 8;
+    }
+
+    @include ui.subclass('caption') {
+      order: 24;
+    }
+
+    @include ui.subclass('suffix') {
+      order: 24;
+    }
+
+    @include ui.subclass('badge') {
+      order: 32;
+    }
+  }
+
+  &__icon,
+  &__trailing {
+    @include ui.marginLeft(ui.v('??margin'));
+    @include ui.marginRight(ui.v('??margin'));
+  }
+
+  &__icon {
+    order: 8;
+  }
+
+  &__trailing {
+    order: 24;
+  }
+
+  &__body,
+  & > &__context,
+  & > &__label {
+    @include ui.paddingX(ui.v('??paddingX', 0));
+    @include ui.paddingY(ui.v('??paddingY', 0));
+    align-self: center;
+
+    & ~ {
+      @include ui.subclass('icon') {
+        @include ui.marginRight(#{calc(ui.v('??margin') - ui.v('??paddingX', 0) - ui.v('??shift', 0))});
+      }
+
+      @include ui.subclass('trailing') {
+        @include ui.marginLeft(#{calc(ui.v('??margin') - ui.v('??paddingX', 0))});
+      }
+    }
+  }
+
+  &__ripple {
+    z-index: 16;
+  }
+
+  &--iconAlign {
+    &--center {
+      @include ui.subclass('icon') {
+        @include ui.initByCustom('margin', #{calc((ui.v('??height') - ui.v('?icon._width')) / 2)});
+      }
+      @include ui.subclass('trailing') {
+        @include ui.initByCustom('margin', #{calc((ui.v('??height') - ui.v('?icon._width')) / 2)});
+      }
+    }
+
+    &--text {
+      @include ui.subclass('icon') {
+        @include ui.initByCustom('margin', #{ui.v('??paddingX')});
+      }
+      @include ui.subclass('trailing') {
+        @include ui.initByCustom('margin', #{ui.v('??paddingX')});
+      }
+    }
+  }
+
+  &--icon {
+    @include ui.initByCustom('paddingX', #{calc(ui.v('??height', 0) / 2)});
+  }
+
+  &--loading {
+    cursor: default;
+  }
+
+  &--fill {
+    &--custom {
+      position: relative;
+      overflow: hidden;
+
+      &:before {
+        position: absolute;
+        @include ui.inset();
+        z-index: 2;
+
+        background-color: ui.v('??fill', transparent);
+        content: ' ';
+      }
+    }
+  }
+
+  &--iconTop {
+    @include ui.state('description') {
+      align-items: flex-start;
+
+      @include ui.subclass('icon') {
+        @include ui.translateY(#{calc((ui.v('??paddingY') - ((ui.v('?icon._width') - var(--sys-line-height)) / 2)))});
+      }
+
+      @include ui.subclass('trailing') {
+        @include ui.translateY(#{calc((ui.v('??paddingY') - ((ui.v('?icon._width') - var(--sys-line-height)) / 2)))});
+      }
+    }
+  }
+
+  &--readonly,
+  &--disabled {
+    cursor: default;
+  }
+
+  @at-root {
+    & + &[data-divider="divider"],
+    #{ui.c('?listGroup')} + &[data-divider="divider"],
+    [data-divider="divider"] + &[data-divider="divider"] {
+      border-top-style: solid;
+      border-top-width: ui.v('??borderWidth');
+      @include ui.borderColor(ui.v('??borderColor'));
+    }
+  }
 }

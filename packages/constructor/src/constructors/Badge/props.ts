@@ -1,5 +1,5 @@
 import type { IconPropsBasic, IconPropsInclude } from '../Icon'
-import type { LabelNumberProps } from '../../types/labelNumberTypes.ts'
+import type { LabelNumberProps } from '../../types/labelTypes'
 
 interface BadgePropsToken {
   // :type [!] System label / Системная метка

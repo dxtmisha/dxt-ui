@@ -1,13 +1,45 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+import { computed, type Ref, type ToRefs } from 'vue'
+import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+
+import { getClassTegAStatic } from '../../functions/getClassTegAStatic'
+
+import { IconTrailingInclude } from '../Icon'
+import { ProgressInclude } from '../Progress'
+import { RippleInclude } from '../Ripple'
+import { SkeletonInclude } from '../Skeleton'
+
+import { LabelHighlightInclude } from '../../classes/LabelHighlightInclude'
+import { PrefixInclude } from '../../classes/PrefixInclude'
+import { CaptionInclude } from '../../classes/CaptionInclude'
+import { SuffixInclude } from '../../classes/SuffixInclude'
+import { DescriptionInclude } from '../../classes/DescriptionInclude'
+import { BadgeInclude } from '../Badge/BadgeInclude'
+
+import { EnabledInclude } from '../../classes/EnabledInclude'
 
 import type { ListItemComponents, ListItemEmits, ListItemSlots } from './types'
 import type { ListItemProps } from './props'
+import { EventClickInclude } from '../../classes/EventClickInclude.ts'
 
 /**
  * ListItem
  */
 export class ListItem {
+  readonly icon: IconTrailingInclude
+  readonly label: LabelHighlightInclude
+  readonly prefix: PrefixInclude
+  readonly caption: CaptionInclude
+  readonly suffix: SuffixInclude
+  readonly description: DescriptionInclude
+  readonly badge: BadgeInclude
+
+  readonly ripple: RippleInclude
+  readonly progress: ProgressInclude
+  readonly skeleton: SkeletonInclude
+
+  readonly enabled: EnabledInclude
+  readonly event: EventClickInclude
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -29,5 +61,42 @@ export class ListItem {
     protected readonly slots?: ListItemSlots,
     protected readonly emits?: ConstrEmit<ListItemEmits>
   ) {
+    const progress = new ProgressInclude(
+      props,
+      className,
+      components,
+      {
+        circular: true,
+        inverse: true
+      }
+    )
+    const skeleton = new SkeletonInclude(
+      props,
+      classDesign,
+      ['classText']
+    )
+    const enabled = new EnabledInclude(props, progress)
+
+    this.icon = new IconTrailingInclude(props, className, components)
+    this.label = new LabelHighlightInclude(props, className, undefined, slots)
+    this.prefix = new PrefixInclude(props, className, slots, skeleton)
+    this.caption = new CaptionInclude(props, className, slots, skeleton)
+    this.suffix = new SuffixInclude(props, className, slots, skeleton)
+    this.description = new DescriptionInclude(props, className, slots, skeleton)
+    this.badge = new BadgeInclude(props, className, components)
+
+    this.ripple = new RippleInclude(className, components, enabled)
+    this.progress = progress
+    this.skeleton = skeleton
+
+    this.enabled = enabled
+    this.event = new EventClickInclude(props, enabled, emits)
   }
+
+  /** values for the class/ значения для класса */
+  readonly classes = computed<ConstrClassObject>(() => ({
+    [`${this.className}--description`]: this.description.is.value,
+    [getClassTegAStatic(this.classDesign)]: true,
+    ...this.skeleton.classes.value
+  }))
 }
