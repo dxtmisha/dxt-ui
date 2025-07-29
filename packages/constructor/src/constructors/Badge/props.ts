@@ -31,7 +31,6 @@ export interface BadgeProps extends BadgePropsBasic, BadgePropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsBadge = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     overlap: 'rectangular',

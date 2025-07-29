@@ -37,6 +37,7 @@ export interface UseApiRef<R> {
   data: Ref<R | undefined>
   isStarting: ComputedRef<boolean>
   loading: Ref<boolean>
+  reading: ComputedRef<boolean>
 
   reset(): Promise<void>
 }
@@ -65,6 +66,7 @@ export function useApiRef<R, T = any>(
   const item = ref<R | undefined>()
   const request = toRefItem(getOptions(options))
   const loading = ref<boolean>(false)
+  const reading = ref<boolean>(false)
 
   let first = true
   let stop = 0
@@ -78,6 +80,7 @@ export function useApiRef<R, T = any>(
 
     if ((!conditions || conditions.value) && pathValue) {
       loading.value = true
+      reading.value = true
 
       let responseData: R | T | undefined = {} as R
       const response = await Api.request<Record<string, any>>({
@@ -158,6 +161,9 @@ export function useApiRef<R, T = any>(
       return computed<boolean>(() => item.value === undefined)
     },
     loading,
+    get reading() {
+      return computed<boolean>(() => reading.value)
+    },
     reset
   }
 }
