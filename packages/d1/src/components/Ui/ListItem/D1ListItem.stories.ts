@@ -59,23 +59,27 @@ export const ListItemBasic: Story = {
     `
   })
 }
-export const ListItemBody: Story = {
-  name: 'Body',
+export const ListItemHighlight: Story = {
+  name: 'Выделение',
   render: () => ({
     components: { D1ListItem },
     template: `
-        <D1ListItem>
-          Basic Item
-          <template #body>Additional content in body slot</template>
-        </D1ListItem>
-        <D1ListItem icon="info" description="Item with description">
-          Item with Description
-          <template #body>Extra information or controls</template>
-        </D1ListItem>
-        <D1ListItem caption="Caption" prefix="01">
-          Complex Item
-          <template #body>Metadata, secondary actions, or details</template>
-        </D1ListItem>
+        <D1ListItem highlight="search" label="Search result item"/>
+        <D1ListItem highlight="tex" :highlightLengthStart="3" label="Text with highlighting"/>
+        <D1ListItem highlight="te" :highlightLengthStart="3" label="Text without highlighting (too short)"/>
+        <D1ListItem highlight="example" :highlightLengthStart="2" label="Example text for highlighting"/>
+    `
+  })
+}
+export const ListItemFill: Story = {
+  name: 'Заливка',
+  render: () => ({
+    components: { D1ListItem },
+    template: `
+        <D1ListItem label="Default fill"/>
+        <D1ListItem fill="#ff0000" label="Red fill"/>
+        <D1ListItem fill="rgb(0, 128, 255)" label="Blue fill"/>
+        <D1ListItem fill="rgba(255, 165, 0, 0.7)" label="Orange transparent fill"/>
     `
   })
 }

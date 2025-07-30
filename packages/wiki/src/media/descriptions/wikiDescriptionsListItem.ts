@@ -62,24 +62,29 @@ export const wikiDescriptionsListItem: StorybookComponentsDescriptionItem = {
       `
     },
     {
-      id: 'ListItemBody',
+      id: 'ListItemHighlight',
       name: {
-        en: 'Body',
-        ru: 'Body'
+        en: 'Highlighting',
+        ru: 'Выделение'
       },
       template: `
-        <DesignComponent>
-          Basic Item
-          <template #body>Additional content in body slot</template>
-        </DesignComponent>
-        <DesignComponent icon="info" description="Item with description">
-          Item with Description
-          <template #body>Extra information or controls</template>
-        </DesignComponent>
-        <DesignComponent caption="Caption" prefix="01">
-          Complex Item
-          <template #body>Metadata, secondary actions, or details</template>
-        </DesignComponent>
+        <DesignComponent highlight="search" label="Search result item"/>
+        <DesignComponent highlight="tex" :highlightLengthStart="3" label="Text with highlighting"/>
+        <DesignComponent highlight="te" :highlightLengthStart="3" label="Text without highlighting (too short)"/>
+        <DesignComponent highlight="example" :highlightLengthStart="2" label="Example text for highlighting"/>
+      `
+    },
+    {
+      id: 'ListItemFill',
+      name: {
+        en: 'Fill',
+        ru: 'Заливка'
+      },
+      template: `
+        <DesignComponent label="Default fill"/>
+        <DesignComponent fill="#ff0000" label="Red fill"/>
+        <DesignComponent fill="rgb(0, 128, 255)" label="Blue fill"/>
+        <DesignComponent fill="rgba(255, 165, 0, 0.7)" label="Orange transparent fill"/>
       `
     },
     {
@@ -115,10 +120,31 @@ export const wikiDescriptionsListItem: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'ListItem'} type={'basic'}/>
 <Canvas of={Component.ListItemBasic}/>
 
+<StorybookDescriptions componentName={'Value'} type={'highlight'}/>
+<Canvas of={Component.ListItemHighlight}/>
+
+<StorybookDescriptions componentName={'ListItem'} type={'fill'}/>
+<Canvas of={Component.ListItemFill}/>
+
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={Component.ListItemSkeleton}/>
     `,
+    events: `
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+<StorybookDescriptions componentName={'Event'} type={'clickLite'}/>
+    `,
+    expose: `
+<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'detail'}/>
+    `,
     slots: `
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Slot'} type={'prefix'}/>
+<StorybookDescriptions componentName={'Slot'} type={'caption'}/>
+<StorybookDescriptions componentName={'Slot'} type={'suffix'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+<StorybookDescriptions componentName={'ListItem'} type={'slot.trailing'}/>
+<StorybookDescriptions componentName={'ListItem'} type={'slot.body'}/>
     `
   }
 }

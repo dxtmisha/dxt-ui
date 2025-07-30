@@ -4,7 +4,7 @@
   "paddingX": "{sys.spacing.xs}",
   "paddingY": "{sys.spacing.x}",
   "shift": "{sys.spacing.x} * -1",
-  "gradient": "{sys.palette.primary}",
+  "palette-gradient": "{sys.palette.primary}",
   "gradient-opacity": "0",
   "border-width": "{sys.spacing.border}",
   "border-color": "{sys.palette.outline}",

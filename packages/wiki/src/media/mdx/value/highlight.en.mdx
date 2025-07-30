@@ -1,0 +1,18 @@
+## Text Highlighting Properties
+
+The `highlight` and `highlightLengthStart` properties are designed to control text highlighting functionality in components.
+
+### Properties
+
+- **highlight** — Text to highlight within the component content
+- **highlightLengthStart** — Minimum length of highlight value to start highlighting
+
+### Property Relationships
+
+The properties work together to provide intelligent text highlighting. `highlight` defines what to highlight, while `highlightLengthStart` controls when to start highlighting.
+
+- `highlight` contains the text string that needs to be found and highlighted in the component
+- `highlightLengthStart` sets the minimum search string length to activate the highlighting function
+- Highlighting is activated only when the length of `highlight` reaches the `highlightLengthStart` value
+- This prevents unwanted highlighting when entering short search strings
+- Both properties ensure optimal user experience when working with search and filtering

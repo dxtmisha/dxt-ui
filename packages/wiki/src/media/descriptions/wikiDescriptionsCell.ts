@@ -94,11 +94,19 @@ export const wikiDescriptionsCell: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={Component.CellSkeleton}/>
 `,
+    events: `
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+<StorybookDescriptions componentName={'Event'} type={'clickLite'}/>
+    `,
+    expose: `
+<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'detail'}/>
+    `,
     slots: `
 <Canvas of={Component.CellSlots}/>
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
-<StorybookDescriptions componentName={'Slot'} type={'description'}/>
 <StorybookDescriptions componentName={'Slot'} type={'caption'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
 <StorybookDescriptions componentName={'Cell'} type={'slot.trailing'}/>
 <StorybookDescriptions componentName={'Cell'} type={'slot.body'}/>
 `

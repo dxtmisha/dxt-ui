@@ -20,8 +20,8 @@
     
     margin: var(--d1-sys-spacing-x);
     
-    @include ui.gradient(#{var(--d1-sys-palette-primary)});
     @include ui.gradientOpacity(#{0});
+    @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
     
     border-radius: calc(var(--sys-height) * var(--d1-sys-rounded-adaptive-sm));
     @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});

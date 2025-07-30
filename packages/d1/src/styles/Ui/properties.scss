@@ -17568,17 +17568,17 @@
             type: 'property',
             value: 'var(--d1-sys-spacing-x)',
           ),
-          'gradient':(
-            index: 'gradient',
-            name: 'gradient',
-            type: 'property',
-            value: 'var(--d1-sys-palette-primary)',
-          ),
           'gradientOpacity':(
             index: 'gradientOpacity',
             name: 'gradient-opacity',
             type: 'property',
             value: 0,
+          ),
+          'paletteGradient':(
+            index: 'paletteGradient',
+            name: 'palette-gradient',
+            type: 'property',
+            value: 'var(--d1-sys-palette-primary)',
           ),
           'borderRadius':(
             index: 'borderRadius',
