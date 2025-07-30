@@ -13,9 +13,7 @@
     "color-opacity": "{sys.opacity.surface.medium}"
   },
   "#description": {
-    "link|font": "{font.bodyMedium}",
-    "color": "{sys.palette.onSurface}",
-    "color-opacity": "{sys.opacity.surface.medium}"
+    "link|caption": "{??caption}"
   },
   "~dynamic": {
     "focus": {
@@ -45,7 +43,7 @@
     "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.disabled}",
     "#caption": {
-      "color-opacity": "{sys.opacity.surface.disabled}"
+      "color-opacity": "0"
     },
     "#description": {
       "color-opacity": "{sys.opacity.surface.disabled}"

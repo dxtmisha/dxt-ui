@@ -9,6 +9,7 @@ import { wikiButton } from './wikiButton'
 import { wikiChip } from './wikiChip'
 import { wikiIcon } from './wikiIcon'
 import { wikiImage } from './wikiImage'
+import { wikiListItem } from './wikiListItem'
 import { wikiProgress } from './wikiProgress'
 
 export const wiki: StorybookArgsToList = {
@@ -21,5 +22,6 @@ export const wiki: StorybookArgsToList = {
   ...wikiChip,
   ...wikiIcon,
   ...wikiImage,
+  ...wikiListItem,
   ...wikiProgress
 }

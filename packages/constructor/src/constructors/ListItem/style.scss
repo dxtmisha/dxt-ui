@@ -8,54 +8,15 @@
 
   padding: 0;
 
-  --sys-height: ui.v('??height', 0);
+  --sys-height: #{ui.v('??height', 0)};
   min-height: ui.v('??height', 0);
 
   cursor: pointer;
 
-  & > * {
-    order: 16;
-    z-index: 4;
-  }
-
-  &__body,
-  &__context,
-  &__label {
-    flex-grow: 1;
-  }
-
-  &__body {
-    & > * {
-      display: block;
-    }
-  }
-
-  &__context {
-    @include ui.flexX;
-
-    & > * {
-      order: 16;
-    }
-
-    @include ui.subclass('prefix') {
-      order: 8;
-    }
-
-    @include ui.subclass('caption') {
-      order: 24;
-    }
-
-    @include ui.subclass('suffix') {
-      order: 24;
-    }
-
-    @include ui.subclass('badge') {
-      order: 32;
-    }
-  }
-
   &__icon,
   &__trailing {
+    z-index: 4;
+
     @include ui.marginLeft(ui.v('??margin'));
     @include ui.marginRight(ui.v('??margin'));
   }
@@ -64,16 +25,14 @@
     order: 8;
   }
 
-  &__trailing {
-    order: 24;
-  }
+  &__body {
+    align-self: center;
+    flex-grow: 1;
+    order: 16;
+    z-index: 4;
 
-  &__body,
-  & > &__context,
-  & > &__label {
     @include ui.paddingX(ui.v('??paddingX', 0));
     @include ui.paddingY(ui.v('??paddingY', 0));
-    align-self: center;
 
     & ~ {
       @include ui.subclass('icon') {
@@ -86,34 +45,48 @@
     }
   }
 
+  &__context {
+    @include ui.flexX;
+    order: 16;
+
+    @include ui.subclass('prefix') {
+      order: 8;
+    }
+
+    @include ui.subclass('label') {
+      order: 16;
+    }
+
+    @include ui.subclass('caption') {
+      @include ui.flexDynamic;
+      order: 24;
+    }
+
+    @include ui.subclass('suffix') {
+      @include ui.flexDynamic;
+      order: 32;
+
+      @include ui.textAlign('right');
+    }
+
+    @include ui.subclass('badge') {
+      order: 40;
+      @include ui.marginLeft(auto);
+    }
+  }
+
+  &__trailing {
+    order: 24;
+    z-index: 4;
+  }
+
   &__ripple {
-    z-index: 16;
+    order: 32;
+    z-index: 4;
   }
 
-  &--iconAlign {
-    &--center {
-      @include ui.subclass('icon') {
-        @include ui.initByCustom('margin', #{calc((ui.v('??height') - ui.v('?icon._width')) / 2)});
-      }
-      @include ui.subclass('trailing') {
-        @include ui.initByCustom('margin', #{calc((ui.v('??height') - ui.v('?icon._width')) / 2)});
-      }
-    }
-
-    &--text {
-      @include ui.subclass('icon') {
-        @include ui.initByCustom('margin', #{ui.v('??paddingX')});
-      }
-      @include ui.subclass('trailing') {
-        @include ui.initByCustom('margin', #{ui.v('??paddingX')});
-      }
-    }
-  }
-
-  &--icon {
-    @include ui.initByCustom('paddingX', #{calc(ui.v('??height', 0) / 2)});
-  }
-
+  &--readonly,
+  &--disabled,
   &--loading {
     cursor: default;
   }
@@ -134,6 +107,26 @@
     }
   }
 
+  &--iconAlign {
+    &--center {
+      @include ui.subclass('icon') {
+        @include ui.initByCustom('margin', #{calc((ui.v('??height') - ui.v('?icon._width')) / 2)});
+      }
+      @include ui.subclass('trailing') {
+        @include ui.initByCustom('margin', #{calc((ui.v('??height') - ui.v('?icon._width')) / 2)});
+      }
+    }
+
+    &--edge {
+      @include ui.subclass('icon') {
+        @include ui.initByCustom('margin', #{ui.v('??paddingX')});
+      }
+      @include ui.subclass('trailing') {
+        @include ui.initByCustom('margin', #{ui.v('??paddingX')});
+      }
+    }
+  }
+
   &--iconTop {
     @include ui.state('description') {
       align-items: flex-start;
@@ -148,15 +141,10 @@
     }
   }
 
-  &--readonly,
-  &--disabled {
-    cursor: default;
-  }
-
   @at-root {
-    & + &[data-divider="divider"],
-    #{ui.c('?listGroup')} + &[data-divider="divider"],
-    [data-divider="divider"] + &[data-divider="divider"] {
+    & + &[data-divider="active"],
+    #{ui.c('?listGroup')} + &[data-divider="active"],
+    [data-divider="active"] + &[data-divider="active"] {
       border-top-style: solid;
       border-top-width: ui.v('??borderWidth');
       @include ui.borderColor(ui.v('??borderColor'));

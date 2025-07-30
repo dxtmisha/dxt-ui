@@ -122,6 +122,17 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  fill: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      description: {
+        en: 'Fill color or pattern for the component',
+        ru: 'Цвет заливки или узор для компонента'
+      }
+    }
+  },
   grid: {
     type: StorybookControl.boolean,
     options: {
@@ -142,6 +153,18 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Horizontal alignment of elements',
         ru: 'Горизонтальное выравнивание элементов'
+      }
+    }
+  },
+  iconAlign: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: ['center', 'text'],
+      description: {
+        en: 'Icon alignment within the component',
+        ru: 'Выравнивание иконки внутри компонента'
       }
     }
   },

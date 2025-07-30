@@ -86,6 +86,17 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
+  open: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      defaultValue: false,
+      description: {
+        en: 'Sets the element to an open state',
+        ru: 'Переводит элемент в открытое состояние'
+      }
+    }
+  },
   readonly: {
     type: StorybookControl.boolean,
     options: {

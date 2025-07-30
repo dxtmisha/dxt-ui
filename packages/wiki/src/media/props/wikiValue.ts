@@ -10,6 +10,28 @@ import {
  * Объект wikiValue содержит общие свойства для всех компонентов в категории значение
  */
 export const wikiValue: StorybookArgsToList = {
+  badge: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Badge text or value to display',
+        ru: 'Текст или значение значка для отображения'
+      }
+    }
+  },
+  badgeDot: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.value,
+      defaultValue: false,
+      description: {
+        en: 'Display badge as a dot indicator',
+        ru: 'Отображать значок как точечный индикатор'
+      }
+    }
+  },
   caption: {
     type: StorybookControl.string,
     options: {
@@ -56,6 +78,28 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  highlight: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Text to highlight within the component content',
+        ru: 'Текст для выделения в содержимом компонента'
+      }
+    }
+  },
+  highlightLengthStart: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      type: 'number',
+      description: {
+        en: 'Minimum length of highlight value to start highlighting',
+        ru: 'Минимальная длина значения highlight для начала выделения'
+      }
+    }
+  },
   icon: {
     type: StorybookControl.string,
     options: {
@@ -66,6 +110,17 @@ export const wikiValue: StorybookArgsToList = {
         ru: 'Значение основной иконки'
       },
       value: 'home'
+    }
+  },
+  index: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      type: 'number',
+      description: {
+        en: 'Index value for the component',
+        ru: 'Значение индекса для компонента'
+      }
     }
   },
   iconTrailing: {
@@ -123,6 +178,30 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Maximum value',
         ru: 'Максимальное значение'
       }
+    }
+  },
+  prefix: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Prefix text displayed before the main content',
+        ru: 'Текст префикса, отображаемый перед основным содержимым'
+      },
+      value: 'Prefix'
+    }
+  },
+  suffix: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Suffix text displayed after the main content',
+        ru: 'Текст суффикса, отображаемый после основного содержимого'
+      },
+      value: 'Suffix'
     }
   },
   to: {

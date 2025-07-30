@@ -5,6 +5,9 @@
   "paddingY": {
     "_type": "var"
   },
+  "shift": {
+    "_type": "var"
+  },
   "height": {
     "_type": "var"
   },
@@ -36,7 +39,7 @@
   "~iconTop": {},
   "~iconAlign": {
     "~center": {},
-    "~text": {},
+    "~edge": {},
     "_default": "center"
   },
   "~fill": {

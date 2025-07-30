@@ -50,6 +50,7 @@
   '--d1-sys-palette-shadow': ('--d1-palette-basic950', '--d1-palette-dark700'),
   '--d1-cell-borderColor': ('--d1-palette-basic800'),
   '--d1-image-color': ('--d1-palette-basic950'),
+  '--d1-listItem-borderColor': ('--d1-palette-basic800'),
   '--d1-progress-backgroundColor': ('--d1-palette-basic600'),
   '--d1-ripple-backgroundColor': ('--d1-palette-basic950'),
   '--d1-skeleton-color': ('--d1-palette-basic950'),
@@ -14213,7 +14214,7 @@
                     index: 'colorOpacity',
                     name: 'color-opacity',
                     type: 'property',
-                    value: 'var(--d1-sys-opacity-surface-disabled)',
+                    value: 0,
                   ),
                 ),
               ),
@@ -17520,6 +17521,660 @@
           ),
         ),
       ),
+      'listItem':(
+        index: 'listItem',
+        name: 'd1-listItem',
+        type: 'component',
+        value: (
+          'paddingX':(
+            index: 'paddingX',
+            name: '--d1-listItem-paddingX',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-xs)',
+          ),
+          'paddingY':(
+            index: 'paddingY',
+            name: '--d1-listItem-paddingY',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-x)',
+          ),
+          'shift':(
+            index: 'shift',
+            name: '--d1-listItem-shift',
+            type: 'var',
+            value: 'calc(var(--d1-sys-spacing-x) * -1)',
+          ),
+          'borderWidth':(
+            index: 'borderWidth',
+            name: '--d1-listItem-borderWidth',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-border)',
+          ),
+          'borderColor':(
+            index: 'borderColor',
+            name: '--d1-listItem-borderColor',
+            type: 'var',
+            value: 'var(--d1-sys-palette-outline)',
+          ),
+          'transitionFunction':(
+            index: 'transitionFunction',
+            name: '--d1-listItem-transitionFunction',
+            type: 'var',
+            value: 'var(--d-sys-transitionFunction-standard)',
+          ),
+          'margin':(
+            index: 'margin',
+            name: 'margin',
+            type: 'property',
+            value: 'var(--d1-sys-spacing-x)',
+          ),
+          'gradient':(
+            index: 'gradient',
+            name: 'gradient',
+            type: 'property',
+            value: 'var(--d1-sys-palette-primary)',
+          ),
+          'gradientOpacity':(
+            index: 'gradientOpacity',
+            name: 'gradient-opacity',
+            type: 'property',
+            value: 0,
+          ),
+          'borderRadius':(
+            index: 'borderRadius',
+            name: 'border-radius',
+            type: 'property',
+            value: 'calc(var(--sys-height) * var(--d1-sys-rounded-adaptive-sm))',
+          ),
+          'borderOpacity':(
+            index: 'borderOpacity',
+            name: 'border-opacity',
+            type: 'property',
+            value: 'var(--d1-sys-opacity-outline)',
+          ),
+          'transitionDuration':(
+            index: 'transitionDuration',
+            name: 'transition-duration',
+            type: 'property',
+            value: 'var(--d-sys-transitionDuration-fade-enter)',
+          ),
+          'transitionProperty':(
+            index: 'transitionProperty',
+            name: 'transition-property',
+            type: 'property',
+            value: 'background-color, background-image, border, box-shadow',
+          ),
+          'body':(
+            index: 'body',
+            name: '&__body',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'context':(
+            index: 'context',
+            name: '&__context',
+            type: 'subclass',
+            value: (
+              'gap':(
+                index: 'gap',
+                name: 'gap',
+                type: 'property',
+                value: 'var(--d1-sys-spacing-xs)',
+              ),
+            ),
+          ),
+          'label':(
+            index: 'label',
+            name: '&__label',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'highlight':(
+            index: 'highlight',
+            name: '&__highlight',
+            type: 'subclass',
+            value: (
+              'backgroundColor':(
+                index: 'backgroundColor',
+                name: 'background-color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-warning)',
+              ),
+              'backgroundOpacity':(
+                index: 'backgroundOpacity',
+                name: 'background-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-scrim)',
+              ),
+            ),
+          ),
+          'prefix':(
+            index: 'prefix',
+            name: '&__prefix',
+            type: 'subclass',
+            value: (
+              'fontFamily':(
+                index: 'fontFamily',
+                name: 'font-family',
+                type: 'property',
+                value: 'var(--d1-sys-font-family-basic)',
+              ),
+              'fontSize':(
+                index: 'fontSize',
+                name: 'font-size',
+                type: 'property',
+                value: 'var(--d1-sys-font-size-sm)',
+              ),
+              'fontWeight':(
+                index: 'fontWeight',
+                name: 'font-weight',
+                type: 'property',
+                value: 'var(--d1-sys-font-weight-regular)',
+              ),
+              'lineHeight':(
+                index: 'lineHeight',
+                name: 'line-height',
+                type: 'property',
+                value: 'var(--d1-sys-lineHeight-sm)',
+              ),
+              'letterSpacing':(
+                index: 'letterSpacing',
+                name: 'letter-spacing',
+                type: 'property',
+                value: 'var(--d1-sys-letterSpacing-md)',
+              ),
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-medium)',
+              ),
+            ),
+          ),
+          'caption':(
+            index: 'caption',
+            name: '&__caption',
+            type: 'subclass',
+            value: (
+              'fontFamily':(
+                index: 'fontFamily',
+                name: 'font-family',
+                type: 'property',
+                value: 'var(--d1-sys-font-family-basic)',
+              ),
+              'fontSize':(
+                index: 'fontSize',
+                name: 'font-size',
+                type: 'property',
+                value: 'var(--d1-sys-font-size-sm)',
+              ),
+              'fontWeight':(
+                index: 'fontWeight',
+                name: 'font-weight',
+                type: 'property',
+                value: 'var(--d1-sys-font-weight-regular)',
+              ),
+              'lineHeight':(
+                index: 'lineHeight',
+                name: 'line-height',
+                type: 'property',
+                value: 'var(--d1-sys-lineHeight-sm)',
+              ),
+              'letterSpacing':(
+                index: 'letterSpacing',
+                name: 'letter-spacing',
+                type: 'property',
+                value: 'var(--d1-sys-letterSpacing-md)',
+              ),
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-medium)',
+              ),
+            ),
+          ),
+          'description':(
+            index: 'description',
+            name: '&__description',
+            type: 'subclass',
+            value: (
+              'fontFamily':(
+                index: 'fontFamily',
+                name: 'font-family',
+                type: 'property',
+                value: 'var(--d1-sys-font-family-basic)',
+              ),
+              'fontSize':(
+                index: 'fontSize',
+                name: 'font-size',
+                type: 'property',
+                value: 'var(--d1-sys-font-size-sm)',
+              ),
+              'fontWeight':(
+                index: 'fontWeight',
+                name: 'font-weight',
+                type: 'property',
+                value: 'var(--d1-sys-font-weight-regular)',
+              ),
+              'lineHeight':(
+                index: 'lineHeight',
+                name: 'line-height',
+                type: 'property',
+                value: 'var(--d1-sys-lineHeight-sm)',
+              ),
+              'letterSpacing':(
+                index: 'letterSpacing',
+                name: 'letter-spacing',
+                type: 'property',
+                value: 'var(--d1-sys-letterSpacing-md)',
+              ),
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-medium)',
+              ),
+            ),
+          ),
+          'icon':(
+            index: 'icon',
+            name: '&__icon',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'trailing':(
+            index: 'trailing',
+            name: '&__trailing',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'badge':(
+            index: 'badge',
+            name: '&__badge',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'input':(
+            index: 'input',
+            name: '&__input',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'suffix':(
+            index: 'suffix',
+            name: '&__suffix',
+            type: 'subclass',
+            value: (
+              'fontFamily':(
+                index: 'fontFamily',
+                name: 'font-family',
+                type: 'property',
+                value: 'var(--d1-sys-font-family-basic)',
+              ),
+              'fontSize':(
+                index: 'fontSize',
+                name: 'font-size',
+                type: 'property',
+                value: 'var(--d1-sys-font-size-sm)',
+              ),
+              'fontWeight':(
+                index: 'fontWeight',
+                name: 'font-weight',
+                type: 'property',
+                value: 'var(--d1-sys-font-weight-regular)',
+              ),
+              'lineHeight':(
+                index: 'lineHeight',
+                name: 'line-height',
+                type: 'property',
+                value: 'var(--d1-sys-lineHeight-sm)',
+              ),
+              'letterSpacing':(
+                index: 'letterSpacing',
+                name: 'letter-spacing',
+                type: 'property',
+                value: 'var(--d1-sys-letterSpacing-md)',
+              ),
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-medium)',
+              ),
+            ),
+          ),
+          'hover':(
+            index: 'hover',
+            name: 'hover',
+            type: 'selector',
+            value: (
+              'gradientOpacity':(
+                index: 'gradientOpacity',
+                name: 'gradient-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-hover)',
+              ),
+            ),
+          ),
+          'active':(
+            index: 'active',
+            name: 'active',
+            type: 'selector',
+            value: (
+              'gradientOpacity':(
+                index: 'gradientOpacity',
+                name: 'gradient-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-pressed)',
+              ),
+            ),
+          ),
+          'focus':(
+            index: 'focus',
+            name: '&--focus',
+            type: 'state',
+            value: (
+              'gradientOpacity':(
+                index: 'gradientOpacity',
+                name: 'gradient-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-focus)',
+              ),
+            ),
+          ),
+          'open':(
+            index: 'open',
+            name: '&--open',
+            type: 'state',
+            value: (
+              'backgroundOpacity':(
+                index: 'backgroundOpacity',
+                name: 'background-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-pressed)',
+              ),
+              'paletteBackground':(
+                index: 'paletteBackground',
+                name: 'palette-background',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primary)',
+              ),
+            ),
+          ),
+          'selected':(
+            index: 'selected',
+            name: '&--selected',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onPrimary)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-primary-high)',
+              ),
+              'backgroundOpacity':(
+                index: 'backgroundOpacity',
+                name: 'background-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-primary-high)',
+              ),
+              'paletteBackground':(
+                index: 'paletteBackground',
+                name: 'palette-background',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primaryVariant)',
+              ),
+              'gradient':(
+                index: 'gradient',
+                name: 'gradient',
+                type: 'property',
+                value: 'var(--sys-color)',
+              ),
+            ),
+          ),
+          'readonly':(
+            index: 'readonly',
+            name: '&--readonly',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'disabled':(
+            index: 'disabled',
+            name: '&--disabled',
+            type: 'state',
+            value: (
+              'color':(
+                index: 'color',
+                name: 'color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-onSurface)',
+              ),
+              'colorOpacity':(
+                index: 'colorOpacity',
+                name: 'color-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-surface-disabled)',
+              ),
+              'prefix':(
+                index: 'prefix',
+                name: '& .d1-listItem__prefix',
+                type: 'subclass',
+                value: (
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-surface-disabled)',
+                  ),
+                ),
+              ),
+              'caption':(
+                index: 'caption',
+                name: '& .d1-listItem__caption',
+                type: 'subclass',
+                value: (
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 0,
+                  ),
+                ),
+              ),
+              'suffix':(
+                index: 'suffix',
+                name: '& .d1-listItem__suffix',
+                type: 'subclass',
+                value: (
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 0,
+                  ),
+                ),
+              ),
+              'description':(
+                index: 'description',
+                name: '& .d1-listItem__description',
+                type: 'subclass',
+                value: (
+                  'colorOpacity':(
+                    index: 'colorOpacity',
+                    name: 'color-opacity',
+                    type: 'property',
+                    value: 'var(--d1-sys-opacity-surface-disabled)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'iconTop':(
+            index: 'iconTop',
+            name: '&--iconTop',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'iconAlign':(
+            index: 'iconAlign',
+            name: '&--iconAlign',
+            type: 'state',
+            value: (
+              'center':(
+                index: 'center',
+                name: '&--center',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'edge':(
+                index: 'edge',
+                name: '&--edge',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
+          ),
+          'fill':(
+            index: 'fill',
+            name: '&--fill',
+            type: 'state',
+            value: (
+              'custom':(
+                index: 'custom',
+                name: '&--custom',
+                type: 'state',
+                value: (
+                  'fill':(
+                    index: 'fill',
+                    name: '--d1-listItem-fill',
+                    type: 'var',
+                    value: 'var(--d1-listItem-sys-fill)',
+                  ),
+                ),
+              ),
+            ),
+            var: true,
+          ),
+          'divider':(
+            index: 'divider',
+            name: '&--divider',
+            type: 'state',
+            value: (
+              'paddingX':(
+                index: 'paddingX',
+                name: '--d1-listItem-paddingX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-sm)',
+              ),
+              'margin':(
+                index: 'margin',
+                name: 'margin',
+                type: 'property',
+                value: 0,
+              ),
+              'borderRadius':(
+                index: 'borderRadius',
+                name: 'border-radius',
+                type: 'property',
+                value: 0,
+              ),
+            ),
+          ),
+          'size':(
+            index: 'size',
+            name: '&--size',
+            type: 'state',
+            value: (
+              'sm':(
+                index: 'sm',
+                name: '&--sm',
+                type: 'state',
+                value: (
+                  'height':(
+                    index: 'height',
+                    name: '--d1-listItem-height',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-8)',
+                  ),
+                ),
+              ),
+              'md':(
+                index: 'md',
+                name: '&--md',
+                type: 'state',
+                value: (
+                  'height':(
+                    index: 'height',
+                    name: '--d1-listItem-height',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-10)',
+                  ),
+                ),
+              ),
+              'lg':(
+                index: 'lg',
+                name: '&--lg',
+                type: 'state',
+                value: (
+                  'height':(
+                    index: 'height',
+                    name: '--d1-listItem-height',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-12)',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          'palette':(
+            index: 'palette',
+            name: 'palette',
+            type: 'link-class',
+            value: '{d1.palette}',
+          ),
+        ),
+      ),
       'progress':(
         index: 'progress',
         name: 'd1-progress',
@@ -19110,6 +19765,199 @@
                 value: (
                 ),
               ),
+            ),
+          ),
+        ),
+      ),
+      'listItem':(
+        index: 'listItem',
+        name: 'd-listItem',
+        type: 'component',
+        value: (
+          'transitionFunction':(
+            index: 'transitionFunction',
+            name: '--d-listItem-transitionFunction',
+            type: 'var',
+            value: 'var(--d-sys-transitionFunction-standard)',
+          ),
+          'transitionDuration':(
+            index: 'transitionDuration',
+            name: 'transition-duration',
+            type: 'property',
+            value: 'var(--d-sys-transitionDuration-fade-enter)',
+          ),
+          'transitionProperty':(
+            index: 'transitionProperty',
+            name: 'transition-property',
+            type: 'property',
+            value: 'background-color, background-image, border, box-shadow',
+          ),
+          'body':(
+            index: 'body',
+            name: '&__body',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'context':(
+            index: 'context',
+            name: '&__context',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'label':(
+            index: 'label',
+            name: '&__label',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'highlight':(
+            index: 'highlight',
+            name: '&__highlight',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'prefix':(
+            index: 'prefix',
+            name: '&__prefix',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'caption':(
+            index: 'caption',
+            name: '&__caption',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'description':(
+            index: 'description',
+            name: '&__description',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'icon':(
+            index: 'icon',
+            name: '&__icon',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'trailing':(
+            index: 'trailing',
+            name: '&__trailing',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'badge':(
+            index: 'badge',
+            name: '&__badge',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'input':(
+            index: 'input',
+            name: '&__input',
+            type: 'subclass',
+            value: (
+            ),
+          ),
+          'focus':(
+            index: 'focus',
+            name: '&--focus',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'open':(
+            index: 'open',
+            name: '&--open',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'selected':(
+            index: 'selected',
+            name: '&--selected',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'readonly':(
+            index: 'readonly',
+            name: '&--readonly',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'disabled':(
+            index: 'disabled',
+            name: '&--disabled',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'iconTop':(
+            index: 'iconTop',
+            name: '&--iconTop',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'iconAlign':(
+            index: 'iconAlign',
+            name: '&--iconAlign',
+            type: 'state',
+            value: (
+              'center':(
+                index: 'center',
+                name: '&--center',
+                type: 'state',
+                value: (
+                ),
+              ),
+              'edge':(
+                index: 'edge',
+                name: '&--edge',
+                type: 'state',
+                value: (
+                ),
+              ),
+            ),
+          ),
+          'fill':(
+            index: 'fill',
+            name: '&--fill',
+            type: 'state',
+            value: (
+              'custom':(
+                index: 'custom',
+                name: '&--custom',
+                type: 'state',
+                value: (
+                  'fill':(
+                    index: 'fill',
+                    name: '--d-listItem-fill',
+                    type: 'var',
+                    value: 'var(--d-listItem-sys-fill)',
+                  ),
+                ),
+              ),
+            ),
+            var: true,
+          ),
+          'divider':(
+            index: 'divider',
+            name: '&--divider',
+            type: 'state',
+            value: (
             ),
           ),
         ),

@@ -35,6 +35,7 @@ export interface CellPropsBasic<
   EventClickProps {
   // Style
   tag?: string
+  divider?: boolean
 }
 
 /**

@@ -8,7 +8,7 @@ import {
 import { ListItem } from './ListItem'
 
 import {
-  type ListItemProps
+  type ListItemPropsBasic
 } from './props'
 import {
   type ListItemClasses,
@@ -25,7 +25,7 @@ export class ListItemDesign<
   COMP extends ListItemComponents,
   EXPOSE extends ListItemExpose,
   CLASSES extends ListItemClasses,
-  P extends ListItemProps
+  P extends ListItemPropsBasic
 > extends DesignConstructorAbstract<
   HTMLDivElement,
   COMP,
@@ -127,7 +127,7 @@ export class ListItemDesign<
     this.initSlot('trailing', children)
 
     children.push(
-      ...this.item.icon.renderIconTrailing(),
+      ...this.item.icon.render(),
       ...this.item.progress.render(),
       ...this.item.ripple.render()
     )
@@ -138,6 +138,7 @@ export class ListItemDesign<
         ...this.getAttrs(),
         'ref': this.element,
         'class': this.classes?.value.main,
+        'style': this.styles?.value,
         'data-value': this.props.index ?? this.props.value,
         'data-divider': this.props.divider ? 'active' : undefined,
         'onClick': this.item.event.onClick
@@ -184,8 +185,8 @@ export class ListItemDesign<
           ...this.item.prefix.render(),
           ...this.item.caption.render(),
           ...this.item.suffix.render(),
-          ...this.item.badge.render(),
-          ...this.item.label.render()
+          ...this.item.label.render(),
+          ...this.item.badge.render()
         ]
       )
     ]

@@ -1,0 +1,91 @@
+{
+  "main": "{d.listItem}",
+  "margin": "{sys.spacing.x}",
+  "paddingX": "{sys.spacing.xs}",
+  "paddingY": "{sys.spacing.x}",
+  "shift": "{sys.spacing.x} * -1",
+  "gradient": "{sys.palette.primary}",
+  "gradient-opacity": "0",
+  "border-width": "{sys.spacing.border}",
+  "border-color": "{sys.palette.outline}",
+  "border-opacity": "{sys.opacity.outline}",
+  "border-radius": "var(--sys-height) * {sys.rounded.adaptive.sm}",
+  "#context": {
+    "gap": "{sys.spacing.xs}"
+  },
+  "#highlight": {
+    "background-color": "{sys.palette.warning}",
+    "background-opacity": "{sys.opacity.scrim}"
+  },
+  "#prefix": {
+    "link|font": "{font.bodyMedium}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "#suffix": {
+    "link|caption": "{??prefix}"
+  },
+  "#caption": {
+    "link|caption": "{??prefix}"
+  },
+  "#description": {
+    "link|caption": "{??prefix}"
+  },
+  "focus": {
+    "gradient-opacity": "{sys.opacity.focus}"
+  },
+  "hover": {
+    "gradient-opacity": "{sys.opacity.hover}"
+  },
+  "active": {
+    "gradient-opacity": "{sys.opacity.pressed}"
+  },
+  "selected": {
+    "color": "{sys.palette.onPrimary}",
+    "color-opacity": "{sys.opacity.primary.high}",
+    "palette-background": "{sys.palette.primaryVariant}",
+    "background-opacity": "{sys.opacity.primary.high}",
+    "gradient": "var(--sys-color)"
+  },
+  "open": {
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.pressed}"
+  },
+  "disabled": {
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.disabled}",
+    "#prefix": {
+      "color-opacity": "{sys.opacity.surface.disabled}"
+    },
+    "#caption": {
+      "color-opacity": "0"
+    },
+    "#suffix": {
+      "color-opacity": "0"
+    },
+    "#description": {
+      "color-opacity": "{sys.opacity.surface.disabled}"
+    }
+  },
+  "~size": {
+    "sm": {
+      "height": "{ref.spacing.8}"
+    },
+    "md": {
+      "height": "{ref.spacing.10}"
+    },
+    "lg": {
+      "height": "{ref.spacing.12}"
+    },
+    "_default": "md"
+  },
+  "~divider": {
+    "margin": "0",
+    "paddingX": "{sys.spacing.sm}",
+    "border-radius": "0"
+  },
+  "iconAlign": {
+    "_default": "edge"
+  },
+  "@@palette": "{palette}"
+}

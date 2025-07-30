@@ -18,7 +18,7 @@ import { BadgeInclude } from '../Badge/BadgeInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
 
 import type { ListItemComponents, ListItemEmits, ListItemSlots } from './types'
-import type { ListItemProps } from './props'
+import type { ListItemPropsBasic } from './props'
 import { EventClickInclude } from '../../classes/EventClickInclude.ts'
 
 /**
@@ -52,12 +52,12 @@ export class ListItem {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: ListItemProps,
-    protected readonly refs: ToRefs<ListItemProps>,
+    protected readonly props: ListItemPropsBasic,
+    protected readonly refs: ToRefs<ListItemPropsBasic>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
-    protected readonly components?: DesignComp<ListItemComponents, ListItemProps>,
+    protected readonly components?: DesignComp<ListItemComponents, ListItemPropsBasic>,
     protected readonly slots?: ListItemSlots,
     protected readonly emits?: ConstrEmit<ListItemEmits>
   ) {
@@ -73,17 +73,31 @@ export class ListItem {
     const skeleton = new SkeletonInclude(
       props,
       classDesign,
-      ['classText']
+      ['classTextVariant']
     )
     const enabled = new EnabledInclude(props, progress)
 
     this.icon = new IconTrailingInclude(props, className, components)
-    this.label = new LabelHighlightInclude(props, className, undefined, slots)
+    this.label = new LabelHighlightInclude(
+      props,
+      className,
+      undefined,
+      slots,
+      undefined,
+      skeleton
+    )
     this.prefix = new PrefixInclude(props, className, slots, skeleton)
-    this.caption = new CaptionInclude(props, className, slots, skeleton)
-    this.suffix = new SuffixInclude(props, className, slots, skeleton)
+    this.caption = new CaptionInclude(props, className, slots)
+    this.suffix = new SuffixInclude(props, className, slots)
     this.description = new DescriptionInclude(props, className, slots, skeleton)
-    this.badge = new BadgeInclude(props, className, components)
+    this.badge = new BadgeInclude(
+      props,
+      className,
+      components,
+      {
+        overlap: 'static'
+      }
+    )
 
     this.ripple = new RippleInclude(className, components, enabled)
     this.progress = progress
@@ -96,7 +110,6 @@ export class ListItem {
   /** values for the class/ значения для класса */
   readonly classes = computed<ConstrClassObject>(() => ({
     [`${this.className}--description`]: this.description.is.value,
-    [getClassTegAStatic(this.classDesign)]: true,
-    ...this.skeleton.classes.value
+    [getClassTegAStatic(this.classDesign)]: true
   }))
 }

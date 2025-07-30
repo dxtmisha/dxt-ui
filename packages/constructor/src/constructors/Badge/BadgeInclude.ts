@@ -2,7 +2,7 @@ import { computed, type VNode } from 'vue'
 import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal } from '@dxt-ui/functional'
 
 import type { BadgeComponentInclude, BadgePropsInclude } from './basicTypes'
-import type { BadgePropsBasic } from './props'
+import type { BadgeProps } from './props'
 
 /**
  * BadgeInclude class provides functionality for conditionally rendering badge components
@@ -27,7 +27,7 @@ export class BadgeInclude<Props extends BadgePropsInclude = BadgePropsInclude> {
     protected readonly props: Readonly<Props>,
     protected readonly className: string,
     protected readonly components?: DesignComponents<BadgeComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<ConstrBind<BadgePropsBasic>>
+    protected readonly extra?: RefOrNormal<ConstrBind<BadgeProps>>
   ) {
   }
 
