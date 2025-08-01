@@ -8,7 +8,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor listGroup"
+    "dxt-constructor": "dxt-constructor bars"
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
@@ -20,6 +20,8 @@
     ],
     "./Badge": "./src/constructors/Badge/index.ts",
     "./Badge/style": "./src/constructors/Badge/style.scss",
+    "./Bars": "./src/constructors/Bars/index.ts",
+    "./Bars/style": "./src/constructors/Bars/style.scss",
     "./Button": "./src/constructors/Button/index.ts",
     "./Button/style": "./src/constructors/Button/style.scss",
     "./Cell": "./src/constructors/Cell/index.ts",
@@ -32,6 +34,8 @@
     "./Image/style": "./src/constructors/Image/style.scss",
     "./ListItem": "./src/constructors/ListItem/index.ts",
     "./ListItem/style": "./src/constructors/ListItem/style.scss",
+    "./MotionTransform": "./src/constructors/MotionTransform/index.ts",
+    "./MotionTransform/style": "./src/constructors/MotionTransform/style.scss",
     "./Progress": "./src/constructors/Progress/index.ts",
     "./Progress/style": "./src/constructors/Progress/style.scss",
     "./Ripple": "./src/constructors/Ripple/index.ts",
