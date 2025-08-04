@@ -2,20 +2,21 @@ import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
 import scrollbarEn from './scrollbar.en.mdx'
 import scrollbarRu from './scrollbar.ru.mdx'
-import topEn from './top.en.mdx'
-import topRu from './top.ru.mdx'
-import reachTopEn from './reachTop.en.mdx'
-import reachTopRu from './reachTop.ru.mdx'
-import leaveTopEn from './leaveTop.en.mdx'
-import leaveTopRu from './leaveTop.ru.mdx'
-import bottomEn from './bottom.en.mdx'
-import bottomRu from './bottom.ru.mdx'
-import reachBottomEn from './reachBottom.en.mdx'
-import reachBottomRu from './reachBottom.ru.mdx'
-import leaveBottomEn from './leaveBottom.en.mdx'
-import leaveBottomRu from './leaveBottom.ru.mdx'
-import edgeEn from './edge.en.mdx'
-import edgeRu from './edge.ru.mdx'
+
+import eventBottomEn from './event.bottom.en.mdx'
+import eventBottomRu from './event.bottom.ru.mdx'
+import eventEdgeEn from './event.edge.en.mdx'
+import eventEdgeRu from './event.edge.ru.mdx'
+import eventLeaveBottomEn from './event.leaveBottom.en.mdx'
+import eventLeaveBottomRu from './event.leaveBottom.ru.mdx'
+import eventLeaveTopEn from './event.leaveTop.en.mdx'
+import eventLeaveTopRu from './event.leaveTop.ru.mdx'
+import eventReachBottomEn from './event.reachBottom.en.mdx'
+import eventReachBottomRu from './event.reachBottom.ru.mdx'
+import eventReachTopEn from './event.reachTop.en.mdx'
+import eventReachTopRu from './event.reachTop.ru.mdx'
+import eventTopEn from './event.top.en.mdx'
+import eventTopRu from './event.top.ru.mdx'
 
 /**
  * MDX files for Scrollbar component
@@ -25,37 +26,37 @@ import edgeRu from './edge.ru.mdx'
 export const wikiMdxScrollbar: StorybookComponentsMdxItem = {
   name: 'Scrollbar',
   descriptions: {
-    scrollbar: {
+    'scrollbar': {
       en: scrollbarEn,
       ru: scrollbarRu
     },
-    top: {
-      en: topEn,
-      ru: topRu
+    'event.top': {
+      en: eventTopEn,
+      ru: eventTopRu
     },
-    reachTop: {
-      en: reachTopEn,
-      ru: reachTopRu
+    'event.reachTop': {
+      en: eventReachTopEn,
+      ru: eventReachTopRu
     },
-    leaveTop: {
-      en: leaveTopEn,
-      ru: leaveTopRu
+    'event.leaveTop': {
+      en: eventLeaveTopEn,
+      ru: eventLeaveTopRu
     },
-    bottom: {
-      en: bottomEn,
-      ru: bottomRu
+    'event.bottom': {
+      en: eventBottomEn,
+      ru: eventBottomRu
     },
-    reachBottom: {
-      en: reachBottomEn,
-      ru: reachBottomRu
+    'event.reachBottom': {
+      en: eventReachBottomEn,
+      ru: eventReachBottomRu
     },
-    leaveBottom: {
-      en: leaveBottomEn,
-      ru: leaveBottomRu
+    'event.leaveBottom': {
+      en: eventLeaveBottomEn,
+      ru: eventLeaveBottomRu
     },
-    edge: {
-      en: edgeEn,
-      ru: edgeRu
+    'event.edge': {
+      en: eventEdgeEn,
+      ru: eventEdgeRu
     }
   }
 }
