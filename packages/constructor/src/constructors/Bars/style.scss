@@ -1,5 +1,18 @@
 @use "@dxt-ui/styles/properties" as ui;
 
 @mixin mixinBars {
+  display: flex;
 
+  transition: background-color ui.v('d.sys.transitionDuration.sm') linear;
+
+  &__context,
+  &__label {
+    @include ui.flexDynamic;
+  }
+
+  &__context > &__label {
+    width: calc(100% - 64px);
+    min-width: 72%;
+    @include ui.clamp(2);
+  }
 }

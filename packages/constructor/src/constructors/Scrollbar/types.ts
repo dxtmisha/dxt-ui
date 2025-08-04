@@ -1,30 +1,34 @@
 import type { ConstrClass } from '@dxt-ui/functional'
-
-import type { ButtonComponentInclude } from '../Button'
-import type { EventClickEmits } from '../../types/eventClickTypes.ts'
-import type { LabelSlots } from '../../types/labelTypes.ts'
-import type { DescriptionSlots } from '../../types/descriptionTypes.ts'
+import type { ScrollbarEdgeType } from './basicTypes.ts'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type BarsComponents = ButtonComponentInclude
+export type ScrollbarComponents = {}
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type BarsEmits = EventClickEmits
+export type ScrollbarEmits = {
+  top: [isTop: boolean]
+  reachTop: []
+  leaveTop: []
+  bottom: [isBottom: boolean]
+  reachBottom: []
+  leaveBottom: []
+  edge: [isTop: boolean, isBottom: boolean, edge: ScrollbarEdgeType]
+}
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface BarsExpose {
+export interface ScrollbarExpose {
 }
 
 /**
@@ -32,9 +36,8 @@ export interface BarsExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface BarsSlots extends LabelSlots, DescriptionSlots {
-  bars? (props: any): any
-  actionBars? (props: any): any
+export interface ScrollbarSlots {
+  default?(props: any): any
 }
 
 /**
@@ -42,7 +45,7 @@ export interface BarsSlots extends LabelSlots, DescriptionSlots {
  *
  * Тип, описывающий подклассы.
  */
-export type BarsClasses = {
+export type ScrollbarClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   // :classes [!] System label / Системная метка

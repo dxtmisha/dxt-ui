@@ -1,6 +1,10 @@
 import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
 
+import { LabelInclude } from '../../classes/LabelInclude'
+import { DescriptionInclude } from '../../classes/DescriptionInclude'
+import { EventClickInclude } from '../../classes/EventClickInclude'
+
 import type { BarsComponents, BarsEmits, BarsSlots } from './types'
 import type { BarsPropsBasic } from './props'
 
@@ -8,6 +12,11 @@ import type { BarsPropsBasic } from './props'
  * Bars
  */
 export class Bars {
+  readonly label: LabelInclude
+  readonly description: DescriptionInclude
+
+  readonly event: EventClickInclude
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -29,5 +38,9 @@ export class Bars {
     protected readonly slots?: BarsSlots,
     protected readonly emits?: ConstrEmit<BarsEmits>
   ) {
+    this.label = new LabelInclude({ label: this.props.actionLabel }, className, undefined, slots)
+    this.description = new DescriptionInclude({ description: this.props.actionDescription }, className, slots)
+
+    this.event = new EventClickInclude({}, undefined, emits)
   }
 }

@@ -1,0 +1,110 @@
+@use "@dxt-ui/styles/properties" as ui;
+
+@mixin mixinScrollbar {
+  $thisBorder: &;
+
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  -webkit-overflow-scrolling: touch;
+
+  &:not(#{ui.c('??-disabled')}) {
+    @-moz-document url-prefix() {
+      scrollbar-color: rgba(ui.v('??thumb.background'), ui.v('??thumb.opacity', .12)) ui.v('??background');
+      scrollbar-width: thin;
+    }
+
+    &::-webkit-scrollbar {
+      appearance: none;
+      width: ui.v('??size');
+      height: ui.v('??size');
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @include ui.backgroundColor(ui.v('??thumb.background'), ui.v('??thumb.opacity'));
+      border: none;
+      border-radius: ui.v('??thumb.rounded');
+    }
+
+    &::-webkit-scrollbar-track {
+      @include ui.backgroundColor(ui.v('??background'), ui.v('??backgroundOpacity'));
+    }
+
+    &:hover {
+      @include ui.initByCustom('thumb.opacity', ui.v('??thumb.hover.opacity'));
+    }
+  }
+
+  &--divider,
+  &--dividerTop,
+  &--dividerBottom {
+    @include ui.initByCustom('sys.outline.top', 0);
+    @include ui.initByCustom('sys.outline.bottom', 0);
+    @include ui.initByCustom('sys.outline.opacity.top', ui.v('??sys.outline.top'));
+    @include ui.initByCustom('sys.outline.opacity.bottom', ui.v('??sys.outline.bottom'));
+
+    &::before,
+    &::after {
+      display: block;
+      position: sticky;
+      margin-left: ui.v('??sys.outline.marginX', 0);
+      margin-right: calc(#{ui.v('??sys.outline.marginX', 0)} - #{ui.v('??size', var(--sys-scrollbar-offset, 0))});
+
+      transition-property: border-color;
+      transition-duration: ui.v('d.sys.transitionDuration.standard');
+      transition-timing-function: linear;
+    }
+
+    &--top {
+      @include ui.initByCustom('sys.outline.top', #{ui.v('??outline.opacity')})
+    }
+
+    &--bottom {
+      @include ui.initByCustom('sys.outline.bottom', #{ui.v('??outline.opacity')})
+    }
+
+    @include ui.state('inverse') {
+      @include ui.initByCustom('sys.outline.opacity.top', ui.v('??sys.outline.bottom'));
+      @include ui.initByCustom('sys.outline.opacity.bottom', ui.v('??sys.outline.top'));
+
+      &#{$thisBorder}--divider--top#{$thisBorder}--divider--bottom {
+        @include ui.initByCustom('sys.outline.opacity.top', 0);
+        @include ui.initByCustom('sys.outline.opacity.bottom', 0);
+      }
+    }
+  }
+
+  &--divider,
+  &--dividerTop {
+    &::before {
+      top: 0;
+
+      content: " ";
+
+      border-top-style: solid;
+      border-top-width: ui.v('??sys.outline.width', ui.v('??outline.width'));
+      border-top-color: rgba(ui.v('??outline.color'), ui.v('??sys.outline.opacity.top'));
+    }
+  }
+
+  &--divider,
+  &--dividerBottom {
+    &::after {
+      bottom: 0;
+
+      content: " ";
+
+      border-bottom-style: solid;
+      border-bottom-width: ui.v('??sys.outline.width', ui.v('??outline.width'));
+      border-bottom-color: rgba(ui.v('??outline.color'), ui.v('??sys.outline.opacity.bottom'));
+    }
+  }
+
+  &--visible {
+    overflow-x: visible;
+    overflow-y: visible;
+
+    height: auto !important;
+  }
+}
