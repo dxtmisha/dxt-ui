@@ -9,6 +9,7 @@ import { wikiDescriptionsImage } from './wikiDescriptionsImage'
 import { wikiDescriptionsListItem } from './wikiDescriptionsListItem'
 import { wikiDescriptionsProgress } from './wikiDescriptionsProgress'
 import { wikiDescriptionsRipple } from './wikiDescriptionsRipple'
+import { wikiDescriptionsScrollbar } from './wikiDescriptionsScrollbar'
 import { wikiDescriptionsSkeleton } from './wikiDescriptionsSkeleton'
 
 export const wikiDescriptions: StorybookComponentsDescription = [
@@ -21,5 +22,6 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsListItem,
   wikiDescriptionsProgress,
   wikiDescriptionsRipple,
+  wikiDescriptionsScrollbar,
   wikiDescriptionsSkeleton
 ]

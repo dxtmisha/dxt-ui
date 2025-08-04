@@ -15,6 +15,7 @@ import { wikiMdxImage } from './Image/wikiMdxImage'
 import { wikiMdxListItem } from './ListItem/wikiMdxListItem'
 import { wikiMdxProgress } from './Progress/wikiMdxProgress'
 import { wikiMdxRipple } from './Ripple/wikiMdxRipple'
+import { wikiMdxScrollbar } from './Scrollbar/wikiMdxScrollbar'
 import { wikiMdxSkeleton } from './Skeleton/wikiMdxSkeleton'
 
 export const wikiMdx: StorybookComponentsMdx = [
@@ -33,5 +34,6 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxListItem,
   wikiMdxProgress,
   wikiMdxRipple,
+  wikiMdxScrollbar,
   wikiMdxSkeleton
 ]

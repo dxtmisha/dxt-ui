@@ -53,6 +53,8 @@
   '--d1-listItem-borderColor': ('--d1-palette-basic800'),
   '--d1-progress-backgroundColor': ('--d1-palette-basic600'),
   '--d1-ripple-backgroundColor': ('--d1-palette-basic950'),
+  '--d1-scrollbar-thumb-backgroundColor': ('--d1-palette-basic950'),
+  '--d1-scrollbar-outline-color': ('--d1-palette-basic800'),
   '--d1-skeleton-color': ('--d1-palette-basic950'),
   '--d1-skeleton-backgroundColor': ('--d1-palette-basic800'),
   '--d1-skeleton-borderColor': ('--d1-palette-basic800'),));
@@ -18401,6 +18403,124 @@
           ),
         ),
       ),
+      'scrollbar':(
+        index: 'scrollbar',
+        name: 'd1-scrollbar',
+        type: 'component',
+        value: (
+          'size':(
+            index: 'size',
+            name: '--d1-scrollbar-size',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-1)',
+          ),
+          'background':(
+            index: 'background',
+            name: '--d1-scrollbar-background',
+            type: 'var',
+            value: 'transparent',
+          ),
+          'thumb':(
+            index: 'thumb',
+            name: 'thumb',
+            type: 'var',
+            value: (
+              'rounded':(
+                index: 'rounded',
+                name: '--d1-scrollbar-thumb-rounded',
+                type: 'var',
+                value: 'var(--d1-sys-rounded-full)',
+              ),
+              'hover':(
+                index: 'hover',
+                name: 'hover',
+                type: 'var',
+                value: (
+                ),
+              ),
+              'backgroundColor':(
+                index: 'backgroundColor',
+                name: '--d1-scrollbar-thumb-backgroundColor',
+                type: 'var',
+                value: 'var(--d1-sys-palette-scrim)',
+              ),
+              'backgroundOpacity':(
+                index: 'backgroundOpacity',
+                name: '--d1-scrollbar-thumb-backgroundOpacity',
+                type: 'var',
+                value: 'var(--d1-sys-opacity-scrim)',
+              ),
+            ),
+          ),
+          'outline':(
+            index: 'outline',
+            name: 'outline',
+            type: 'var',
+            value: (
+              'width':(
+                index: 'width',
+                name: '--d1-scrollbar-outline-width',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-border)',
+              ),
+              'color':(
+                index: 'color',
+                name: '--d1-scrollbar-outline-color',
+                type: 'var',
+                value: 'var(--d1-sys-palette-outline)',
+              ),
+              'opacity':(
+                index: 'opacity',
+                name: '--d1-scrollbar-outline-opacity',
+                type: 'var',
+                value: 'var(--d1-sys-opacity-outline)',
+              ),
+            ),
+          ),
+          'visible':(
+            index: 'visible',
+            name: '&--visible',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'divider':(
+            index: 'divider',
+            name: '&--divider',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dividerTop':(
+            index: 'dividerTop',
+            name: '&--dividerTop',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dividerBottom':(
+            index: 'dividerBottom',
+            name: '&--dividerBottom',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dividerHide':(
+            index: 'dividerHide',
+            name: '&--dividerHide',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'inverse':(
+            index: 'inverse',
+            name: '&--inverse',
+            type: 'state',
+            value: (
+            ),
+          ),
+        ),
+      ),
       'skeleton':(
         index: 'skeleton',
         name: 'd1-skeleton',
@@ -20083,6 +20203,76 @@
             index: 'item',
             name: '&__item',
             type: 'subclass',
+            value: (
+            ),
+          ),
+        ),
+      ),
+      'scrollbar':(
+        index: 'scrollbar',
+        name: 'd-scrollbar',
+        type: 'component',
+        value: (
+          'thumb':(
+            index: 'thumb',
+            name: 'thumb',
+            type: 'var',
+            value: (
+              'hover':(
+                index: 'hover',
+                name: 'hover',
+                type: 'var',
+                value: (
+                ),
+              ),
+            ),
+          ),
+          'outline':(
+            index: 'outline',
+            name: 'outline',
+            type: 'var',
+            value: (
+            ),
+          ),
+          'visible':(
+            index: 'visible',
+            name: '&--visible',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'divider':(
+            index: 'divider',
+            name: '&--divider',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dividerTop':(
+            index: 'dividerTop',
+            name: '&--dividerTop',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dividerBottom':(
+            index: 'dividerBottom',
+            name: '&--dividerBottom',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'dividerHide':(
+            index: 'dividerHide',
+            name: '&--dividerHide',
+            type: 'state',
+            value: (
+            ),
+          ),
+          'inverse':(
+            index: 'inverse',
+            name: '&--inverse',
+            type: 'state',
             value: (
             ),
           ),

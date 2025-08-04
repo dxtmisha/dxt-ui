@@ -1,0 +1,27 @@
+@use "../../../styles/Ui/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Scrollbar/style" as Scrollbar;
+
+@include ui.initDesignBasic('d1.scrollbar') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Scrollbar.mixinScrollbar;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-scrollbar-size: var(--d1-sys-spacing-1);
+    --d1-scrollbar-background: transparent;
+    --d1-scrollbar-thumb-rounded: var(--d1-sys-rounded-full);
+    --d1-scrollbar-thumb-backgroundColor: var(--d1-sys-palette-scrim);
+    --d1-scrollbar-thumb-backgroundOpacity: var(--d1-sys-opacity-scrim);
+    --d1-scrollbar-outline-width: var(--d1-sys-spacing-border);
+    --d1-scrollbar-outline-color: var(--d1-sys-palette-outline);
+    --d1-scrollbar-outline-opacity: var(--d1-sys-opacity-outline);
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

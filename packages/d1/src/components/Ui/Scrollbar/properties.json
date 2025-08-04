@@ -1,0 +1,15 @@
+{
+  "main": "{d.scrollbar}",
+  "size": "{sys.spacing.1}",
+  "background": "transparent",
+  "thumb": {
+    "background-color": "{sys.palette.scrim}",
+    "background-opacity": "{sys.opacity.scrim}",
+    "rounded": "{sys.rounded.full}"
+  },
+  "outline": {
+    "width": "{sys.spacing.border}",
+    "color": "{sys.palette.outline}",
+    "opacity": "{sys.opacity.outline}"
+  }
+}

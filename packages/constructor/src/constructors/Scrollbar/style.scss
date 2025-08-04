@@ -101,6 +101,13 @@
     }
   }
 
+  &--dividerHide {
+    &::before,
+    &::after {
+      content: none;
+    }
+  }
+
   &--visible {
     overflow-x: visible;
     overflow-y: visible;
