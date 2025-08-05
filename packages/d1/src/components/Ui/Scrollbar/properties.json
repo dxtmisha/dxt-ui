@@ -1,11 +1,14 @@
 {
   "main": "{d.scrollbar}",
-  "size": "{sys.spacing.1}",
+  "size": "{sys.spacing.xs}",
   "background": "transparent",
   "thumb": {
-    "background-color": "{sys.palette.scrim}",
-    "background-opacity": "{sys.opacity.scrim}",
-    "rounded": "{sys.rounded.full}"
+    "background": "{sys.palette.scrim}",
+    "opacity": "0",
+    "rounded": "{sys.rounded.full}",
+    "hover": {
+      "opacity": "{sys.opacity.scrim}"
+    }
   },
   "outline": {
     "width": "{sys.spacing.border}",

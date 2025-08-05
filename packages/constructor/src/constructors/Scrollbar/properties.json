@@ -28,5 +28,6 @@
   "~divider-top": {},
   "~divider-bottom": {},
   "~divider-hide": {},
-  "~inverse": {}
+  "~inverse": {},
+  "~standard": {}
 }

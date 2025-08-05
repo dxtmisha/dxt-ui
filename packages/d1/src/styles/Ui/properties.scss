@@ -53,7 +53,7 @@
   '--d1-listItem-borderColor': ('--d1-palette-basic800'),
   '--d1-progress-backgroundColor': ('--d1-palette-basic600'),
   '--d1-ripple-backgroundColor': ('--d1-palette-basic950'),
-  '--d1-scrollbar-thumb-backgroundColor': ('--d1-palette-basic950'),
+  '--d1-scrollbar-thumb-background': ('--d1-palette-basic950'),
   '--d1-scrollbar-outline-color': ('--d1-palette-basic800'),
   '--d1-skeleton-color': ('--d1-palette-basic950'),
   '--d1-skeleton-backgroundColor': ('--d1-palette-basic800'),
@@ -18412,7 +18412,7 @@
             index: 'size',
             name: '--d1-scrollbar-size',
             type: 'var',
-            value: 'var(--d1-sys-spacing-1)',
+            value: 'var(--d1-sys-spacing-xs)',
           ),
           'background':(
             index: 'background',
@@ -18425,6 +18425,18 @@
             name: 'thumb',
             type: 'var',
             value: (
+              'background':(
+                index: 'background',
+                name: '--d1-scrollbar-thumb-background',
+                type: 'var',
+                value: 'var(--d1-sys-palette-scrim)',
+              ),
+              'opacity':(
+                index: 'opacity',
+                name: '--d1-scrollbar-thumb-opacity',
+                type: 'var',
+                value: 0,
+              ),
               'rounded':(
                 index: 'rounded',
                 name: '--d1-scrollbar-thumb-rounded',
@@ -18436,19 +18448,13 @@
                 name: 'hover',
                 type: 'var',
                 value: (
+                  'opacity':(
+                    index: 'opacity',
+                    name: '--d1-scrollbar-thumb-hover-opacity',
+                    type: 'var',
+                    value: 'var(--d1-sys-opacity-scrim)',
+                  ),
                 ),
-              ),
-              'backgroundColor':(
-                index: 'backgroundColor',
-                name: '--d1-scrollbar-thumb-backgroundColor',
-                type: 'var',
-                value: 'var(--d1-sys-palette-scrim)',
-              ),
-              'backgroundOpacity':(
-                index: 'backgroundOpacity',
-                name: '--d1-scrollbar-thumb-backgroundOpacity',
-                type: 'var',
-                value: 'var(--d1-sys-opacity-scrim)',
               ),
             ),
           ),

@@ -9,7 +9,7 @@
 
   -webkit-overflow-scrolling: touch;
 
-  &:not(#{ui.c('??-disabled')}) {
+  &:not(#{ui.c('??-disabled')}, #{ui.c('??-standard')}) {
     @-moz-document url-prefix() {
       scrollbar-color: rgba(ui.v('??thumb.background'), ui.v('??thumb.opacity', .12)) ui.v('??background');
       scrollbar-width: thin;

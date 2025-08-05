@@ -65,6 +65,17 @@ export const wikiScrollbar: StorybookArgsToList = {
       }
     }
   },
+  'scrollbar.standard': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      defaultValue: false,
+      description: {
+        en: 'Use standard browser scrollbar',
+        ru: 'Использовать стандартный скролл браузера'
+      }
+    }
+  },
   'scrollbar.visible': {
     type: StorybookControl.boolean,
     options: {
