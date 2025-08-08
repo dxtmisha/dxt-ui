@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, Teleport, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -27,14 +27,14 @@ export class WindowDesign<
   CLASSES extends WindowClasses,
   P extends WindowPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    WindowEmits,
-    EXPOSE,
-    WindowSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  WindowEmits,
+  EXPOSE,
+  WindowSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Window
 
   /**
@@ -65,9 +65,6 @@ export class WindowDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -78,8 +75,11 @@ export class WindowDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      id: this.item.classes.getId(),
+      open: this.item.open.item,
+      setOpen: this.item.open.set,
+      toggle: this.item.open.toggle,
+      control: this.item.slotData
     } as EXPOSE
   }
 
@@ -90,7 +90,7 @@ export class WindowDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classesList.value,
       ...{
         // :classes [!] System label / Системная метка
         body: this.getSubClass('body'),
@@ -111,10 +111,7 @@ export class WindowDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -122,13 +119,159 @@ export class WindowDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
-    // const children: any[] = []
+  protected initRender(): VNode[] {
+    const main: any[] = []
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+    this.initSlot('control', main, this.item.slotData)
+
+    if (this.item.open.inDom) {
+      if (this.item.staticMode.item.value) {
+        main.push(this.renderMain())
+      } else {
+        main.push(
+          h(
+            Teleport,
+            {
+              key: 'teleport',
+              to: 'body'
+            },
+            h(
+              'div',
+              {
+                'class': this.classes?.value.teleport,
+                'data-window-teleport': this.item.classes.getId()
+              },
+              this.renderMain()
+            )
+          )
+        )
+      }
+    }
+
+    return main
+  }
+
+  /**
+   * Render main window element.
+   *
+   * Рендер главного элемента окна.
+   */
+  protected readonly renderMain = (): VNode => {
+    return h(
+      'div',
+      {
+        'key': 'main',
+        'ref': this.element,
+        'class': this.classes?.value.main,
+        'style': this.styles?.value,
+        'data-window': this.item.classes.getId(),
+        'onTransitionend': this.item.event.onTransition
+      },
+      this.renderBody()
+    )
+  }
+
+  /**
+   * Render body element.
+   *
+   * Рендер элемента тела.
+   */
+  protected readonly renderBody = (): VNode => {
+    return h(
+      'div',
+      {
+        key: 'body',
+        ...this.getAttrs(),
+        class: {
+          [String(this.classes?.value.body)]: true,
+          ...this.toClass(this.attrs?.class)
+        }
+      },
+      [
+        ...this.renderBodyImage(),
+        ...this.renderBodyImage(),
+        ...this.renderBodyClose(),
+        ...this.renderBodyGroup()
+      ]
+    )
+  }
+
+  /**
+   * Generates an element to group the displayed data.
+   *
+   * Генерирует элемент для группировки выводимых данных.
+   */
+  protected readonly renderBodyGroup = (): VNode[] => {
+    const children: any[] = []
+
+    this.initSlot('title', children, this.item.slotData)
+    children.push(this.renderBodyContext())
+    this.initSlot('footer', children, this.item.slotData)
+
+    return [
+      h('div', {
+        key: 'group',
+        class: this.classes?.value.bodyGroup
+      }, children)
+    ]
+  }
+
+  /**
+   * Render context element.
+   *
+   * Рендер элемента контекста.
+   */
+  protected readonly renderBodyContext = (): VNode[] => {
+    return this.item.scrollbar.render(
+      'div',
+      {
+        'key': 'bodyContext',
+        'class': this.classes?.value.bodyContext,
+        'divider': this.props.divider,
+        'data-window-body': '1'
+      },
+      () => this.initSlot('default', undefined, this.item.slotData)
+    )
+  }
+
+  /**
+   * Generates an element to display the image.
+   *
+   * Генерирует элемент для вывода изображения
+   */
+  protected readonly renderBodyImage = (): VNode[] => {
+    if (this.props.image) {
+      return [h(
+        'div',
+        {
+          class: this.classes?.value.image
+        },
+        this.item.image.render()
+      )]
+    }
+
+    return []
+  }
+
+  /**
+   * Generates an element to display the close button.
+   *
+   * Генерирует элемент для вывода кнопки закрытия.
+   */
+  protected readonly renderBodyClose = (): VNode[] => {
+    if (this.props.closeButton) {
+      return this.components.render(
+        'button',
+        {
+          class: [
+            this.item.classes.list.close,
+            `${this.getName()}--close`
+          ],
+          icon: this.props.iconClose
+        }
+      )
+    }
+
+    return []
   }
 }

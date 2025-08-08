@@ -13,6 +13,7 @@ interface PropsToken {
   dividerBottom?: boolean
   dividerHide?: boolean
   inverse?: boolean
+  standard?: boolean
   // :type [!] System label / Системная метка
 }
 

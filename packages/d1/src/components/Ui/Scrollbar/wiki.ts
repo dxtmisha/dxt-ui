@@ -11,6 +11,7 @@ const propsNames: StorybookProps = [
   { name: 'dividerHide', type: 'boolean' },
   { name: 'dividerTop', type: 'boolean' },
   { name: 'inverse', type: 'boolean' },
+  { name: 'standard', type: 'boolean' },
   { name: 'tag', type: 'string' },
   { name: 'visible', type: 'boolean' }
   // :propsList [!] System label / Системная метка

@@ -29,7 +29,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-scrollbar--dividerTop': props.dividerTop,
     'd1-scrollbar--dividerBottom': props.dividerBottom,
     'd1-scrollbar--dividerHide': props.dividerHide,
-    'd1-scrollbar--inverse': props.inverse
+    'd1-scrollbar--inverse': props.inverse,
+    'd1-scrollbar--standard': props.standard
     // :classes-values [!] System label / Системная метка
   }
 }))

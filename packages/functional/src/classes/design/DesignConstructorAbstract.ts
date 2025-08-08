@@ -49,7 +49,7 @@ export abstract class DesignConstructorAbstract<
   protected readonly components: DesignComponents<COMP, P>
   protected readonly emits?: ConstrEmit<EMITS>
 
-  protected readonly classes?: ComputedRef<ConstrClasses>
+  protected readonly classes?: ComputedRef<CLASSES>
   protected classesSub?: ComputedRef<Partial<CLASSES>>
 
   protected readonly styles?: ComputedRef<ConstrStyles>

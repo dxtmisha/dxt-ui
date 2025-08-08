@@ -1,5 +1,7 @@
-import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ElementOrString, NormalOrPromise } from '@dxt-ui/functional'
+
+import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
+import type { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar'
 
 interface WindowPropsToken {
   // :type [!] System label / Системная метка
@@ -20,14 +22,15 @@ interface WindowPropsToken {
 }
 
 export interface WindowPropsBasic<
+  Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic,
   Image extends ImagePropsBasic = ImagePropsBasic
-> extends ImagePropsInclude<Image> {
+> extends ScrollbarPropsInclude<Scrollbar>, ImagePropsInclude<Image> {
   // Status
   open?: boolean
   disabled?: boolean
 
   // Hook
-  preparation?(): NormalOrPromise<boolean>
+  preparation?(): NormalOrPromise<void>
 
   beforeOpening?(): NormalOrPromise<boolean>
 

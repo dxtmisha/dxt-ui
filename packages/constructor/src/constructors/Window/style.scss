@@ -1,5 +1,262 @@
 @use "@dxt-ui/styles/properties" as ui;
 
 @mixin mixinWindow {
+  @include ui.initByCustom('opacity', 0);
+  @include ui.initByCustom('transform', none);
+  @include ui.initByCustom('transformPreparation', scale(.8));
+  @include ui.initByCustom('transformOrigin', center);
+  @include ui.initByCustom('transition', none);
+  @include ui.initByCustom('transitionBody', none);
 
+  display: none;
+  @include ui.contentVisibility(hidden);
+  position: sticky;
+  @include ui.inset;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: ui.v('??padding', 0);
+  height: 100%;
+
+  @include ui.backgroundColor(ui.v('??backgroundColor'), 0);
+
+  transition: ui.v('??transition');
+
+  &__body {
+    content: ui.v('??padding');
+    display: flex;
+    overflow-y: auto;
+    position: relative;
+
+    flex-flow: column;
+    flex-shrink: 1;
+
+    width: calc(#{ui.v('??width', auto)} * #{ui.v('??menuSizeMultiplier')});
+    height: ui.v('??height', auto);
+    max-width: 100%;
+    max-height: 100%;
+
+    opacity: ui.v('??opacity');
+
+    transform: ui.v('??transform');
+    transform-origin: ui.v('??transformOrigin');
+    transition: ui.v('??transitionBody');
+
+    &__group {
+      display: flex;
+      overflow-y: auto;
+
+      flex-flow: column;
+      flex-grow: 1;
+    }
+
+    &__context {
+      flex-grow: 1;
+      flex-shrink: 1;
+    }
+  }
+
+  &__image {
+    position: relative;
+    height: ui.v('??imageSize');
+  }
+
+  & &__close {
+    position: absolute;
+    top: ui.v('??iconPaddingY', 0);
+    @include ui.right(ui.v('??iconPaddingX', 0));
+    z-index: 24;
+  }
+
+  &__teleport {
+    visibility: hidden;
+    position: fixed;
+    @include ui.inset;
+    overflow-y: scroll;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: contain;
+
+    scrollbar-width: none;
+    scroll-behavior: auto;
+
+    &::-webkit-scrollbar {
+      appearance: none;
+      width: 0;
+      height: 0;
+    }
+
+    &:after {
+      display: block;
+
+      height: 120vh;
+
+      content: " ";
+    }
+
+    &:has(>[data-window-menu="menu"]),
+    &[data-window-menu="menu"] {
+      position: static;
+      @include ui.inset(auto);
+      width: 0;
+      height: 0;
+
+      &:after {
+        content: none;
+      }
+    }
+
+    &:has(>[data-status="display"]),
+    &:has(>[data-status="preparation"]),
+    &:has(>[data-status="flash"]),
+    &:has(>[data-status="open"]),
+    &:has(>[data-status="hide"]),
+    &[data-status="display"],
+    &[data-status="preparation"],
+    &[data-status="flash"],
+    &[data-status="open"],
+    &[data-status="hide"] {
+      visibility: visible;
+    }
+  }
+
+  &--hide {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  &--staticMode {
+    display: block;
+    @include ui.contentVisibility(visible);
+    position: static;
+
+    padding: 0;
+
+    background-color: transparent;
+
+    @include ui.subclass('body') {
+      opacity: 1;
+      background: transparent;
+      box-shadow: none;
+
+      &__context {
+        overscroll-behavior-x: auto;
+        overscroll-behavior-y: auto;
+      }
+    }
+  }
+
+  &--overscroll {
+    @include ui.subclass('body') {
+      &__context {
+        overscroll-behavior-x: contain;
+        overscroll-behavior-y: contain;
+      }
+    }
+  }
+
+  &--imagePosition {
+    &--left {
+      @include ui.subclass('body') {
+        flex-flow: row;
+
+        &__group {
+          flex-grow: 1;
+          flex-shrink: 1;
+        }
+      }
+
+      @include ui.subclass('image') {
+        flex-basis: ui.v('??imageSize');
+        min-width: ui.v('??imageSize');
+        height: auto;
+      }
+    }
+  }
+
+  &--persistent {
+    animation-duration: ui.v('d.sys.transitionDuration.fade.through');
+    animation-name: ui.n('??persistent');
+    animation-timing-function: ui.v('d.sys.transitionFunction.standard');
+    transform-origin: center;
+  }
+
+  &--closeMobileHide {
+    @include ui.subclass('close') {
+      @media (hover: none) and (pointer: coarse) {
+        display: none;
+      }
+    }
+  }
+
+  &[data-status="display"] {
+    display: flex;
+    @include ui.contentVisibility(visible);
+  }
+
+  &[data-status="preparation"] {
+    @include ui.initByCustom('transform', ui.v('??transformPreparation'));
+
+    display: flex;
+    @include ui.contentVisibility(visible);
+  }
+
+  &[data-status="flash"] {
+    @include ui.initByCustom('opacity', 1);
+    @include ui.initByCustom('transform', none);
+    @include ui.initByCustom('transition', none);
+    @include ui.initByCustom('transitionBody', none);
+
+    display: flex;
+    @include ui.contentVisibility(visible);
+
+    @include ui.backgroundOpacity(ui.v('??backgroundOpacity'));
+  }
+
+  &[data-status="open"] {
+    @include ui.initByCustom('opacity', 1);
+    @include ui.initByCustom('transform', none);
+    @include ui.initByCustom('transition', background #{ui.v('d.sys.transitionDuration.fade.enter')} linear);
+    @include ui.initByCustom('transitionBody', #{opacity #{ui.v('d.sys.transitionDuration.xs')} linear, transform #{ui.v('d.sys.transitionDuration.fade.enter')} #{ui.v('d.sys.transitionFunction.deceleration')}});
+
+    display: flex;
+    @include ui.contentVisibility(visible);
+
+    @include ui.backgroundOpacity(ui.v('??backgroundOpacity'));
+  }
+
+  &[data-status="hide"] {
+    @include ui.initByCustom('opacity', 0);
+    @include ui.initByCustom('transform', none);
+    @include ui.initByCustom('transition', background #{ui.v('d.sys.transitionDuration.fade.exit')} linear);
+    @include ui.initByCustom('transitionBody', opacity #{ui.v('d.sys.transitionDuration.fade.exit')} linear);
+
+    display: flex;
+    @include ui.contentVisibility(visible);
+  }
+
+  @at-root {
+    body[data-scroll="scroll"] {
+      &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="display"]),
+      &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="preparation"]),
+      &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="flash"]),
+      &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="open"]),
+      &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="hide"]) {
+        overflow-y: hidden;
+        padding-right: var(--sys-scrollbar-offset);
+      }
+    }
+  }
+
+  @keyframes #{ui.n('??persistent')} {
+    0% {
+      transform: scale(1)
+    }
+    50% {
+      transform: scale(1.02)
+    }
+    100% {
+      transform: scale(1)
+    }
+  }
 }

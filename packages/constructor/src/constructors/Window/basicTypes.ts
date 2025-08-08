@@ -1,6 +1,49 @@
 import type { Ref } from 'vue'
 
 /**
+ * Window status items for different states of window lifecycle/
+ * Элементы статуса окна для различных состояний жизненного цикла окна
+ */
+export enum WindowStatusItem {
+  /** Display state/ Состояние отображения */
+  display = 'display',
+  /** Preparation state/ Состояние подготовки */
+  preparation = 'preparation',
+  /** Flash state/ Состояние вспышки */
+  flash = 'flash',
+  /** Open state/ Состояние открытия */
+  open = 'open',
+  /** Hide state/ Состояние скрытия */
+  hide = 'hide',
+  /** Close state/ Состояние закрытия */
+  close = 'close'
+}
+
+/**
+ * Window status control items for managing window behavior and appearance.
+ *
+ * Элементы управления статусом окна для управления поведением и внешним видом окна.
+ */
+export enum WindowStatusControlItem {
+  /** Block interaction/ Блокировка взаимодействия */
+  block = 'block',
+  /** Block children interaction/ Блокировка взаимодействия дочерних элементов */
+  blockChildren = 'blockChildren',
+  /** Close window/ Закрыть окно */
+  close = 'close',
+  /** Static positioning/ Статическое позиционирование */
+  static = 'static',
+  /** Static control/ Статическое управление */
+  controlStatic = 'controlStatic',
+  /** Control only when open/ Управление только когда открыто */
+  controlOpenOnly = 'controlOpenOnly',
+  /** Active control/ Активное управление */
+  controlActive = 'controlActive',
+  /** Persistent window/ Постоянное окно */
+  persistent = 'persistent'
+}
+
+/**
  * Options for window events/
  * Опции для событий окна
  */

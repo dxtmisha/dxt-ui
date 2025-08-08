@@ -58,13 +58,13 @@ export type ConstrRegistration = {
   translate?: Record<string, string>
 }
 
-export type ConstrBind<T> =
-  T &
-  Record<string, any> &
-  {
-    class?: ConstrClass
-    style?: ConstrStyles
-  }
+export type ConstrBind<T>
+  = T
+    & Record<string, any>
+    & {
+      class?: ConstrClass
+      style?: ConstrStyles
+    }
 
 export type ConstrPropItemOptions<T = any> = {
   type?: PropType<T>
