@@ -134,12 +134,66 @@ export class DesignTypescript {
   }
 
   /**
-   * Returns information about the property
+   * Extracts literal options from a property TypeNode union
    *
-   * Возвращает информацию о свойстве
-   * @param node Type alias or interface declaration/ объявление псевдонима типа или интерфейса
-   * @param prop Symbol of the property/ символ свойства
+   * Извлекает литеральные опции из узла типа свойства (union)
+   * @param type Property type AST node/ узел AST типа свойства
+   * @returns Array of literal values or undefined/ Массив литеральных значений или undefined
    */
+  protected getPropOptionByNode(type: ts.TypeNode): DesignTypescriptProp['option'] {
+    if (ts.isUnionTypeNode(type)) {
+      const list: string[] = []
+
+      for (const item of type.types) {
+        if (
+          ts.isLiteralTypeNode(item)
+          && ts.isStringLiteral(item.literal)
+        ) {
+          list.push(item.literal.text)
+        }
+      }
+
+      return list
+    }
+
+    return undefined
+  }
+
+  /**
+   * Extracts literal options from property declarations by reading their type nodes
+   *
+   * Извлекает литеральные опции из деклараций свойства, анализируя их узлы типа
+   * @param declarations Symbol declarations/ декларации символа
+   * @returns Array of literal values or empty array/ Массив литеральных значений или пустой массив
+   */
+  protected getPropOptionByDeclarations(declarations?: ts.Declaration[]): DesignTypescriptProp['option'] {
+    if (declarations) {
+      for (const declaration of declarations) {
+        if (
+          (
+            ts.isPropertySignature(declaration)
+            || ts.isPropertyDeclaration(declaration)
+          )
+          && declaration.type
+        ) {
+          const types = this.getPropOptionByNode(declaration.type)
+          if (types && types.length > 0) {
+            return types
+          }
+        }
+      }
+    }
+
+    return []
+  }
+
+  /**
+  * Returns information about the property
+  *
+  * Возвращает информацию о свойстве
+  * @param node Type alias or interface declaration/ объявление псевдонима типа или интерфейса
+  * @param prop Symbol of the property/ символ свойства
+  */
   protected getPropInformation(
     node: ts.TypeAliasDeclaration | ts.InterfaceDeclaration,
     prop: ts.Symbol
@@ -149,7 +203,7 @@ export class DesignTypescript {
     return {
       name: prop.name,
       type: this.getPropType(type),
-      option: this.getPropOption(type)
+      option: this.getPropOption(type) ?? this.getPropOptionByDeclarations(prop.getDeclarations())
     }
   }
 }

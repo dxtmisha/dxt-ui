@@ -17,6 +17,7 @@ import { wikiMdxProgress } from './Progress/wikiMdxProgress'
 import { wikiMdxRipple } from './Ripple/wikiMdxRipple'
 import { wikiMdxScrollbar } from './Scrollbar/wikiMdxScrollbar'
 import { wikiMdxSkeleton } from './Skeleton/wikiMdxSkeleton'
+import { wikiMdxWindow } from './Window/wikiMdxWindow'
 
 export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxEvent,
@@ -35,5 +36,6 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxProgress,
   wikiMdxRipple,
   wikiMdxScrollbar,
-  wikiMdxSkeleton
+  wikiMdxSkeleton,
+  wikiMdxWindow
 ]

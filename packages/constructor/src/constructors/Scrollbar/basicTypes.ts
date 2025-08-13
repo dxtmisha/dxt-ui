@@ -13,7 +13,7 @@ export type ScrollbarEdgeType = 'top' | 'bottom'
  * Interface for describing which components need to be connected for work/
  * Интерфейс для описания, какие компоненты надо подключить для работы
  */
-export interface ScrollbarComponentsInclude {
+export type ScrollbarComponentsInclude = {
   scrollbar?: object
 }
 
@@ -21,7 +21,7 @@ export interface ScrollbarComponentsInclude {
  * Interface for describing available events with scrollbar prefix/
  * Интерфейс для описания доступных событий с префиксом scrollbar
  */
-export interface ScrollbarEmitsInclude {
+export type ScrollbarEmitsInclude = {
   scrollbarTop: ScrollbarEmits['top']
   scrollbarReachTop: ScrollbarEmits['reachTop']
   scrollbarLeaveTop: ScrollbarEmits['leaveTop']

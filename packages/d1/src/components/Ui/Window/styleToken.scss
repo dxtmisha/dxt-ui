@@ -1,0 +1,300 @@
+@use "../../../styles/Ui/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Window/style" as Window;
+
+@include ui.initDesignBasic('d1.window') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Window.mixinWindow;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-window-menuSizeMultiplier: 1;
+    --d1-window-padding: var(--d1-sys-spacing-md);
+    --d1-window-imageSize-sm: calc(var(--d1-ref-spacing-px) * 128);
+    --d1-window-imageSize-md: calc(var(--d1-ref-spacing-px) * 256);
+    --d1-window-imageSize-lg: calc(var(--d1-ref-spacing-px) * 384);
+    --d1-window-backgroundColor: var(--d1-sys-palette-scrim);
+    --d1-window-backgroundOpacity: var(--d1-sys-opacity-scrim);
+    
+    z-index: var(--d1-sys-index-xl);
+    
+    &__body {
+      background: var(--d1-sys-background-4);
+      
+      border-radius: var(--d1-sys-rounded-xl);
+      
+      box-shadow: var(--d1-sys-shadow-xl);
+    }
+    
+    &__teleport {
+      z-index: var(--d1-sys-index-xl);
+    }
+    
+    &--width {
+      &--auto {
+        --d1-window-width: auto;
+      }
+      
+      &--max {
+        --d1-window-width: 100%;
+      }
+      
+      &--sm {
+        --d1-window-width: calc(var(--d1-ref-spacing-px) * 512);
+      }
+      
+      &--md {
+        --d1-window-width: calc(var(--d1-ref-spacing-px) * 768);
+      }
+      
+      &--lg {
+        --d1-window-width: calc(var(--d1-ref-spacing-px) * 1024);
+      }
+      
+      &--custom {
+        --d1-window-width: var(--d1-window-sys-width);
+      }
+    }
+    
+    &--height {
+      &--auto {
+        --d1-window-height: auto;
+      }
+      
+      &--max {
+        --d1-window-height: 100%;
+      }
+      
+      &--sm {
+        --d1-window-height: calc(var(--d1-ref-spacing-px) * 256);
+      }
+      
+      &--md {
+        --d1-window-height: calc(var(--d1-ref-spacing-px) * 384);
+      }
+      
+      &--lg {
+        --d1-window-height: calc(var(--d1-ref-spacing-px) * 512);
+      }
+      
+      &--custom {
+        --d1-window-height: var(--d1-window-sys-height);
+      }
+    }
+    
+    &--dense {
+      padding: 0 !important;
+      
+      & .d1-window__body {
+        border-radius: 0;
+      }
+    }
+    
+    &--alignment {
+      &--top {
+        align-items: flex-start;
+      }
+      
+      &--topRight {
+        align-items: flex-start;
+        @include ui.justifyContent(#{flex-end});
+      }
+      
+      &--topLeft {
+        align-items: flex-start;
+        @include ui.justifyContent(#{flex-start});
+      }
+      
+      &--topFull {
+        align-items: flex-start;
+        
+        & .d1-window__body {
+          @include ui.width(#{100%});
+        }
+      }
+      
+      &--right {
+        @include ui.justifyContent(#{flex-end});
+      }
+      
+      &--rightFull {
+        @include ui.justifyContent(#{flex-end});
+        
+        & .d1-window__body {
+          top: auto !important;
+          
+          @include ui.height(#{100%});
+        }
+      }
+      
+      &--bottom {
+        align-items: flex-end;
+      }
+      
+      &--bottomRight {
+        align-items: flex-end;
+        @include ui.justifyContent(#{flex-end});
+      }
+      
+      &--bottomLeft {
+        align-items: flex-end;
+        @include ui.justifyContent(#{flex-start});
+      }
+      
+      &--bottomFull {
+        align-items: flex-end;
+        
+        & .d1-window__body {
+          @include ui.width(#{100%});
+        }
+      }
+      
+      &--left {
+        @include ui.justifyContent(#{flex-start});
+      }
+      
+      &--leftFull {
+        @include ui.justifyContent(#{flex-start});
+        
+        & .d1-window__body {
+          top: auto !important;
+          
+          @include ui.height(#{100%});
+        }
+      }
+    }
+    
+    &--origin {
+      &--center {
+        --d1-window-transformOrigin: center;
+      }
+      
+      &--top {
+        --d1-window-transformOrigin: top center;
+      }
+      
+      &--right {
+        --d1-window-transformOrigin: center #{dirRight()};
+      }
+      
+      &--bottom {
+        --d1-window-transformOrigin: bottom center;
+      }
+      
+      &--left {
+        --d1-window-transformOrigin: center #{dirLeft()};
+      }
+      
+      &--topToBottom {
+        --d1-window-transformPreparation: translateY(-64px);
+        --d1-window-transformOrigin: top center;
+      }
+      
+      &--rightToLeft {
+        --d1-window-transformPreparation: translateX(calc(64px * #{isDir()}));
+        --d1-window-transformOrigin: center #{dirRight()};
+      }
+      
+      &--bottomToTop {
+        --d1-window-transformPreparation: translateY(64px);
+        --d1-window-transformOrigin: bottom center;
+      }
+      
+      &--leftToRight {
+        --d1-window-transformPreparation: translateX(calc(-64px * #{isDir()}));
+        --d1-window-transformOrigin: center #{dirLeft()};
+      }
+    }
+    
+    &--adaptive {
+      &--menu {
+        --d1-window-menuSizeMultiplier: 0.5;
+        --d1-window-backgroundOpacity: 0;
+        --d1-window-transformPreparation: scale(.8);
+        --d1-window-transformOrigin: var(--d1-window-origin-x) var(--d1-window-origin-y);
+        
+        position: fixed;
+        top: var(--d1-window-sys-inset-y);
+        @include ui.right(#{auto});
+        bottom: auto;
+        left: var(--d1-window-sys-inset-x);
+        
+        padding: 0;
+        
+        @include ui.height(#{auto});
+        
+        content: '--MENU--';
+        
+        & .d1-window__body {
+          top: auto;
+          
+          max-width: calc(100dvw - (var(--d1-window-padding) * 2));
+          max-height: calc(100dvh - (var(--d1-window-padding) * 2));
+          
+          background: var(--d1-sys-background-3);
+          
+          border-radius: var(--d1-sys-rounded-lg);
+          
+          box-shadow: var(--d1-sys-shadow-lg);
+        }
+        
+        & .d1-window__teleport {
+          position: static;
+          z-index: var(--d1-sys-index-lg);
+          
+          &::after {
+            content: ' ';
+            content: none;
+          }
+        }
+        
+        &.d1-window--widthMatch {
+          & .d1-window__body {
+            min-width: var(--d1-window-sys-control-width);
+          }
+        }
+      }
+      
+      &--menuWindow {
+        content: '--MENU-WINDOW--';
+      }
+      
+      &--modalDynamic {
+        align-items: flex-start;
+        
+        & .d1-window__body {
+          position: relative;
+          top: var(--d1-window-sys-location);
+        }
+      }
+      
+      &--static {
+        content: '--STATIC--';
+      }
+    }
+    
+    &--fullscreen {
+      --d1-window-padding: 0;
+      
+      & .d1-window__body {
+        @include ui.width(#{100%});
+        max-width: none;
+        @include ui.height(#{100%});
+        max-height: none;
+        
+        border-radius: 0;
+      }
+    }
+    
+    @media screen and (min-width: 1024px) {
+      --d1-window-padding: var(--d1-sys-spacing-xl);
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

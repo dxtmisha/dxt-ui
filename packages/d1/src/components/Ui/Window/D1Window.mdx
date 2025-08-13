@@ -1,0 +1,40 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxt-ui/wiki/storybook'
+
+import * as Window from './D1Window.stories'
+import {WindowWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Window}/>
+<StorybookMain
+    name={WindowWikiStorybook.getName()}
+    description={WindowWikiStorybook.getDescription()}
+    story={Window.Window}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Window'} type={'window'}/>
+<StorybookDescriptions componentName={'Window'} type={'staticMode'}/>
+<Canvas of={Window.WindowStaticMode}/>
+<StorybookDescriptions componentName={'Window'} type={'classes'}/>
+<StorybookDescriptions componentName={'Window'} type={'hooks'}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+[//]: # (:documentation-slots [!] System label / Системная метка)

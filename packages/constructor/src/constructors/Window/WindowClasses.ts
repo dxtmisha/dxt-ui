@@ -119,6 +119,31 @@ export class WindowClasses {
   }
 
   /**
+   * Search and return of the window body element for other components (not current)
+   * with additional selectors.
+   *
+   * Поиск и возврат элемента тела окна для других компонентов (не текущего)
+   * с дополнительными селекторами.
+   * @param selectors additional CSS selectors/ дополнительные CSS селекторы
+   * @param status status of the window/ статус окна
+   */
+  findBodyOther(selectors: string, status: WindowStatusItem = WindowStatusItem.open): HTMLDivElement | undefined {
+    if (status === WindowStatusItem.open) {
+      const element = document.querySelector<HTMLDivElement>(
+        `.${this.className}:not(.${this.id})[data-status="${WindowStatusItem.flash}"] .${this.className}__body ${selectors}`
+      )
+
+      if (element) {
+        return element
+      }
+    }
+
+    return document.querySelector<HTMLDivElement>(
+      `.${this.className}:not(.${this.id})[data-status="${status}"] .${this.className}__body ${selectors}`
+    ) ?? undefined
+  }
+
+  /**
    * Returns the list of available classes.
    *
    * Возвращает список доступных классов.
@@ -129,6 +154,7 @@ export class WindowClasses {
     return {
       block: `${className}--${WindowStatusControlItem.block}`,
       blockChildren: `${className}--${WindowStatusControlItem.blockChildren}`,
+      blockOther: `${className}--${WindowStatusControlItem.blockOther}`,
       close: `${className}--${WindowStatusControlItem.close}`,
       static: `${className}--${WindowStatusControlItem.static}`,
 

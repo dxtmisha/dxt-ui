@@ -12,6 +12,7 @@ import { wikiImage } from './wikiImage'
 import { wikiListItem } from './wikiListItem'
 import { wikiProgress } from './wikiProgress'
 import { wikiScrollbar } from './wikiScrollbar'
+import { wikiWindow } from './wikiWindow'
 
 export const wiki: StorybookArgsToList = {
   ...wikiStatus,
@@ -25,5 +26,6 @@ export const wiki: StorybookArgsToList = {
   ...wikiImage,
   ...wikiListItem,
   ...wikiProgress,
-  ...wikiScrollbar
+  ...wikiScrollbar,
+  ...wikiWindow
 }

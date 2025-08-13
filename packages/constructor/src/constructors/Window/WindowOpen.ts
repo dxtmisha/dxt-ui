@@ -139,7 +139,7 @@ export class WindowOpen {
     if (this.status.isHide()) {
       this.toClose()
     } else if (propertyName === 'transform') {
-      // this.hook.closing().then()
+      this.hook.closing().then()
     }
   }
 

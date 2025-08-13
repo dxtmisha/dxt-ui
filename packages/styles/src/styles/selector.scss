@@ -9,15 +9,13 @@
 /// @param {String} $name
 /// @param {List} $parent
 @mixin selector($name, $parent: &) {
-  & {
-    @if ($name == 'focus') {
-      &:focus, &:focus-within, &#{$parent}--focus {
-        @content;
-      }
-    } @else {
-      &#{':'}#{$name} {
-        @content;
-      }
+  @if ($name == 'focus') {
+    &:focus, &:focus-within, &#{$parent}--focus {
+      @content;
+    }
+  } @else {
+    &#{':'}#{$name} {
+      @content;
     }
   }
 }
@@ -29,23 +27,21 @@
   $first: rules.getFirstSelector(&);
   $separator: ' ';
 
-  & {
-    @if (__isEnabled()) {
+  @if (__isEnabled()) {
+    @content;
+  } @else if ($first == #{$parent}) {
+    @at-root
+    #{selector.replace(&, $parent, #{$parent}#{':not(:disabled,#{$parent}--disabled,#{$parent}--readonly,#{$parent}--loading)'})} {
       @content;
-    } @else if ($first == #{$parent}) {
-      @at-root
-      #{selector.replace(&, $parent, #{$parent}#{':not(:disabled,#{$parent}--disabled,#{$parent}--readonly,#{$parent}--loading)'})} {
-        @content;
-      }
-    } @else {
-      @if (string.index($first, #{$parent}#{'--'})) {
-        $separator: '';
-      }
+    }
+  } @else {
+    @if (string.index($first, #{$parent}#{'--'})) {
+      $separator: '';
+    }
 
-      @at-root
-      #{$parent}#{':not(:disabled,#{$parent}--disabled,#{$parent}--readonly,#{$parent}--loading)'}#{$separator}#{&} {
-        @content;
-      }
+    @at-root
+    #{$parent}#{':not(:disabled,#{$parent}--disabled,#{$parent}--readonly,#{$parent}--loading)'}#{$separator}#{&} {
+      @content;
     }
   }
 }
@@ -81,18 +77,14 @@
 }
 
 @mixin disabled($parent: &) {
-  & {
-    &:disabled, &#{$parent}--disabled, &--disabled {
-      @content;
-    }
+  &:disabled, &#{$parent}--disabled, &--disabled {
+    @content;
   }
 }
 
 @mixin readonly($parent: &) {
-  & {
-    &#{$parent}--readonly, &--readonly {
-      @content;
-    }
+  &#{$parent}--readonly, &--readonly {
+    @content;
   }
 }
 

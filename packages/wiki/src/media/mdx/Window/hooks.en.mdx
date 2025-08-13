@@ -1,0 +1,52 @@
+## Lifecycle Hooks
+
+The Window component provides a lifecycle hooks system for managing various stages of the window lifecycle.
+
+### Opening Hooks
+
+**`preparation`** - Called during the window preparation phase before opening.
+Allows executing preliminary setup and data initialization.
+
+**`beforeOpening`** - Called immediately before the window opening process begins.
+Returning `false` prevents the window from opening.
+
+**`opening`** - Called during the window opening process while animation is running.
+Returning `false` interrupts the window opening process.
+
+### Closing Hooks
+
+**`beforeClosing`** - Called immediately before the window closing process begins.
+Returning `false` prevents the window from closing.
+
+**`closing`** - Called during the window closing process while animation is running.
+Returning `false` interrupts the window closing process.
+
+### Usage
+
+All hooks are asynchronous functions and can return `Promise<boolean>` or `boolean`. Returning `false` stops the execution of the corresponding action.
+
+```typescript
+{
+  preparation: async () => {
+    // Data preparation
+    await loadData()
+  },
+  beforeOpening: () => {
+    // Condition checking
+    return userCanOpenWindow()
+  },
+  opening: () => {
+    // Logic during opening
+    return true
+  },
+  beforeClosing: () => {
+    // Check before closing
+    return confirmClose()
+  },
+  closing: () => {
+    // Cleanup on closing
+    cleanup()
+    return true
+  }
+}
+```

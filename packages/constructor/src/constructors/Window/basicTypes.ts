@@ -27,8 +27,13 @@ export enum WindowStatusItem {
 export enum WindowStatusControlItem {
   /** Block interaction/ Блокировка взаимодействия */
   block = 'block',
-  /** Block children interaction/ Блокировка взаимодействия дочерних элементов */
+  /**
+   * Block window closing, class added to elements inside window/
+   * Блокировка закрытия окна, класс добавляется к элементам внутри окна
+   */
   blockChildren = 'blockChildren',
+  /** Block other windows/ Блокировка других окон */
+  blockOther = 'blockOther',
   /** Close window/ Закрыть окно */
   close = 'close',
   /** Static positioning/ Статическое позиционирование */
@@ -85,6 +90,11 @@ export type WindowClassesList = {
    * Класс дочерних элементов блока
    */
   blockChildren: string
+  /**
+   * Block other windows class/
+   * Класс блокировки других окон
+   */
+  blockOther: string
   /**
    * Close button class/
    * Класс кнопки закрытия

@@ -18,7 +18,7 @@ export const wikiStyle: StorybookArgsToList = {
       options: [],
       description: {
         en: 'Controls adaptive display behavior for different screen sizes and media queries',
-        ru: 'Управляет адаптивным поведением отображения для различных размеров экрана и медиа-запросов'
+        ru: 'Управляет адаптивным поведением отображения для разных размеров экрана и медиа‑запросов'
       }
     }
   },
@@ -28,8 +28,8 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       defaultValue: false,
       description: {
-        en: 'Changes the color depending on the palette class; otherwise, uses the default color',
-        ru: 'Изменяет цвет в зависимости от класса палитры; иначе используется стандартный цвет'
+        en: 'Sets color based on palette class; otherwise uses default color',
+        ru: 'Задает цвет на основе класса палитры; иначе используется стандартный цвет'
       }
     }
   },
@@ -40,8 +40,8 @@ export const wikiStyle: StorybookArgsToList = {
       type: 'string',
       options: [],
       description: {
-        en: 'Controls container-based layout behavior with adaptive width constraints and containment context',
-        ru: 'Управляет поведением контейнерной раскладки с адаптивными ограничениями ширины и контекстом сдерживания'
+        en: 'Controls container‑based layout behavior with adaptive width constraints',
+        ru: 'Управляет контейнерной раскладкой с адаптивными ограничениями ширины'
       }
     }
   },
@@ -62,7 +62,7 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       defaultValue: false,
       description: {
-        en: 'Mirrors the component depending on the site direction (RTL/LTR)',
+        en: 'Mirrors the component depending on site direction (RTL/LTR)',
         ru: 'Зеркально отражает компонент в зависимости от направления сайта (RTL/LTR)'
       }
     }
@@ -106,8 +106,8 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       defaultValue: false,
       description: {
-        en: 'Makes the component dynamic, reacting to events like hover and focus',
-        ru: 'Делает компонент динамичным, реагируя на события, такие как hover и focus'
+        en: 'Enables dynamic reactions to hover and focus',
+        ru: 'Включает динамическую реакцию на hover и focus'
       }
     }
   },
@@ -128,8 +128,8 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       type: 'string',
       description: {
-        en: 'Fill color or pattern for the component',
-        ru: 'Цвет заливки или узор для компонента'
+        en: 'Sets fill color for the component',
+        ru: 'Задает цвет заливки компонента'
       }
     }
   },
@@ -139,8 +139,20 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       defaultValue: false,
       description: {
-        en: 'Grid layout mode',
-        ru: 'Режим сеточной разметки'
+        en: 'Enables grid layout mode',
+        ru: 'Включает режим сетки'
+      }
+    }
+  },
+  height: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets component height',
+        ru: 'Задает высоту компонента'
       }
     }
   },
@@ -151,8 +163,8 @@ export const wikiStyle: StorybookArgsToList = {
       type: 'string',
       options: [],
       description: {
-        en: 'Horizontal alignment of elements',
-        ru: 'Горизонтальное выравнивание элементов'
+        en: 'Sets horizontal alignment of elements',
+        ru: 'Задает горизонтальное выравнивание элементов'
       }
     }
   },
@@ -163,8 +175,8 @@ export const wikiStyle: StorybookArgsToList = {
       type: 'string',
       options: ['center', 'text'],
       description: {
-        en: 'Icon alignment within the component',
-        ru: 'Выравнивание иконки внутри компонента'
+        en: 'Sets icon alignment within the component',
+        ru: 'Задает выравнивание иконки внутри компонента'
       }
     }
   },
@@ -173,8 +185,8 @@ export const wikiStyle: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Additional attributes for the icon element',
-        ru: 'Дополнительные атрибуты для элемента иконки'
+        en: 'Sets additional attributes for the icon element',
+        ru: 'Задает дополнительные атрибуты для элемента иконки'
       }
     }
   },
@@ -184,7 +196,7 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       defaultValue: false,
       description: {
-        en: 'Mirrors the icon depending on the site direction (RTL/LTR)',
+        en: 'Mirrors the icon depending on site direction (RTL/LTR)',
         ru: 'Зеркально отражает иконку в зависимости от направления сайта (RTL/LTR)'
       }
     }
@@ -195,8 +207,8 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       defaultValue: false,
       description: {
-        en: 'Changes the icon color depending on the palette class',
-        ru: 'Изменяет цвет иконки в зависимости от класса палитры'
+        en: 'Sets icon color based on palette class',
+        ru: 'Задает цвет иконки на основе класса палитры'
       }
     }
   },
@@ -206,7 +218,7 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       defaultValue: false,
       description: {
-        en: 'Aligns the icon to the top of the container',
+        en: 'Aligns icon to the top of the container',
         ru: 'Выравнивает иконку по верхнему краю контейнера'
       }
     }
@@ -228,8 +240,8 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       defaultValue: false,
       description: {
-        en: 'Changes the trailing icon color depending on the palette class',
-        ru: 'Изменяет цвет завершающей иконки в зависимости от класса палитры'
+        en: 'Sets trailing icon color based on palette class',
+        ru: 'Задает цвет завершающей иконки на основе класса палитры'
       }
     }
   },
@@ -239,7 +251,7 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       defaultValue: false,
       description: {
-        en: 'Applies turn only to the trailing icon',
+        en: 'Applies rotation only to the trailing icon',
         ru: 'Применяет поворот только к завершающей иконке'
       }
     }
@@ -250,7 +262,7 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       defaultValue: false,
       description: {
-        en: 'Inverts the colors of the component',
+        en: 'Inverts component colors',
         ru: 'Инвертирует цвета компонента'
       }
     }
@@ -272,8 +284,8 @@ export const wikiStyle: StorybookArgsToList = {
       category: StorybookCategory.style,
       defaultValue: false,
       description: {
-        en: 'Adds a background overlay to the component',
-        ru: 'Добавляет наложение фона компоненту'
+        en: 'Adds background overlay to the component',
+        ru: 'Добавляет фоновое наложение компоненту'
       }
     }
   },
@@ -284,8 +296,8 @@ export const wikiStyle: StorybookArgsToList = {
       type: 'string',
       options: [],
       description: {
-        en: 'Defines the way the element is positioned relative to other elements',
-        ru: 'Определяет способ расположения элемента относительно других элементов'
+        en: 'Defines element positioning relative to other elements',
+        ru: 'Определяет расположение элемента относительно других элементов'
       }
     }
   },
@@ -296,8 +308,8 @@ export const wikiStyle: StorybookArgsToList = {
       type: 'string',
       options: [],
       description: {
-        en: 'Sets internal spacing around the element content',
-        ru: 'Устанавливает внутренние отступы вокруг содержимого элемента'
+        en: 'Sets internal spacing around the content',
+        ru: 'Задает внутренние отступы вокруг содержимого'
       }
     }
   },
@@ -308,8 +320,8 @@ export const wikiStyle: StorybookArgsToList = {
       options: [],
       type: 'string',
       description: {
-        en: 'Sets the color palette for the element',
-        ru: 'Устанавливает цветовую палитру для элемента'
+        en: 'Sets color palette for the element',
+        ru: 'Задает цветовую палитру для элемента'
       }
     }
   },
@@ -343,8 +355,8 @@ export const wikiStyle: StorybookArgsToList = {
       options: [],
       type: 'string',
       description: {
-        en: 'Specifies the dimensions of the element',
-        ru: 'Определяет размеры элемента'
+        en: 'Sets component size',
+        ru: 'Задает размер компонента'
       }
     }
   },
@@ -356,8 +368,8 @@ export const wikiStyle: StorybookArgsToList = {
       defaultValue: 'div',
       options: [],
       description: {
-        en: 'HTML tag for the component element',
-        ru: 'HTML тег для элемента компонента'
+        en: 'Sets HTML tag for the component element',
+        ru: 'Задает HTML‑тег для элемента компонента'
       }
     }
   },
@@ -368,8 +380,8 @@ export const wikiStyle: StorybookArgsToList = {
       type: 'string',
       options: [],
       description: {
-        en: 'Text alignment within the element',
-        ru: 'Выравнивание текста внутри элемента'
+        en: 'Sets text alignment within the element',
+        ru: 'Задает выравнивание текста внутри элемента'
       }
     }
   },
@@ -380,8 +392,20 @@ export const wikiStyle: StorybookArgsToList = {
       type: 'string',
       options: [],
       description: {
-        en: 'Vertical alignment of elements',
-        ru: 'Вертикальное выравнивание элементов'
+        en: 'Sets vertical alignment of elements',
+        ru: 'Задает вертикальное выравнивание элементов'
+      }
+    }
+  },
+  width: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets component width',
+        ru: 'Задает ширину компонента'
       }
     }
   }

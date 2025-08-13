@@ -1,0 +1,28 @@
+## CSS Classes for Behavior Control
+
+The Window component uses a system of helper CSS classes to manage various window states and behaviors.
+
+### Blocking Classes
+
+**`*--block`** - Class prevents the window from closing when clicking outside its boundaries.
+Can be added to any element that is outside the current window.
+
+**`*--blockChildren`** - Class prevents the current window from closing.
+Can be added to any element that is inside the current window.
+
+**`*--blockOther`** - Class prevents other windows from closing until the current one is closed.
+Can be added to any element that is inside the current window.
+
+### Control Classes
+
+**`*--close`** - Class applies to elements for closing the window (e.g., close button).
+Can be added to any close control element.
+
+**`*--controlOpenOnly`** - Class applies to control elements that only open the window and never close it.
+Can be added to any open control element.
+
+**`*--controlStatic`** - Class applies to control elements in static mode, preventing any actions.
+Can be added to any control element that should remain static.
+
+**`*--static`** - Class applies to elements inside the window, canceling all actions.
+Can be added to any element within the window.

@@ -19,7 +19,8 @@ export enum StorybookCategory {
   status = 'Status',
   value = 'Values',
   style = 'Styles',
-  technical = 'Technical'
+  technical = 'Technical',
+  hook = 'Hook'
 }
 
 /**

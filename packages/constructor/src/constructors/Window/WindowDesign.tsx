@@ -124,7 +124,7 @@ export class WindowDesign<
 
     this.initSlot('control', main, this.item.slotData)
 
-    if (this.item.open.inDom) {
+    if (this.item.open.inDom.value) {
       if (this.item.staticMode.item.value) {
         main.push(this.renderMain())
       } else {
@@ -264,8 +264,8 @@ export class WindowDesign<
         'button',
         {
           class: [
-            this.item.classes.list.close,
-            `${this.getName()}--close`
+            this.classes?.value.close,
+            this.item.classes.list.close
           ],
           icon: this.props.iconClose
         }

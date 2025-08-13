@@ -1,5 +1,5 @@
 export * from './Window'
-export * from './WindowDesign.tsx'
+export * from './WindowDesign'
 export * from './props'
-export * from './types'
-export * from './basicTypes'
+export type * from './types'
+export type * from './basicTypes'

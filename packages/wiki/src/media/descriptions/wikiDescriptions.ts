@@ -11,6 +11,7 @@ import { wikiDescriptionsProgress } from './wikiDescriptionsProgress'
 import { wikiDescriptionsRipple } from './wikiDescriptionsRipple'
 import { wikiDescriptionsScrollbar } from './wikiDescriptionsScrollbar'
 import { wikiDescriptionsSkeleton } from './wikiDescriptionsSkeleton'
+import { wikiDescriptionsWindow } from './wikiDescriptionsWindow'
 
 export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsBadge,
@@ -23,5 +24,6 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsProgress,
   wikiDescriptionsRipple,
   wikiDescriptionsScrollbar,
-  wikiDescriptionsSkeleton
+  wikiDescriptionsSkeleton,
+  wikiDescriptionsWindow
 ]

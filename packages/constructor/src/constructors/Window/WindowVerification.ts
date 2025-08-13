@@ -54,7 +54,10 @@ export class WindowVerification {
     }
 
     if (this.open.item.value) {
-      if (this.isOpenOnly()) {
+      if (
+        this.isOpenOnly()
+        || this.isBlockOther()
+      ) {
         return
       } else if (this.isContextmenu()) {
         await this.open
@@ -209,6 +212,10 @@ export class WindowVerification {
   protected isNotBlockChildren(): boolean {
     return !this.classes.findBody()?.querySelector(`.${this.classes.list.blockChildren}`)
       && !this.classes.findBody()?.querySelector('[data-window-open="open"]')
+  }
+
+  protected isBlockOther(): boolean {
+    return Boolean(this.classes.findBodyOther(`.${this.classes.list.blockOther}`))
   }
 
   /**
