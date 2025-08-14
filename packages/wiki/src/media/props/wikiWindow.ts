@@ -15,8 +15,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Enables automatic window closing when clicking anywhere inside the window content.',
-        ru: 'Включает автоматическое закрытие окна при клике в любом месте содержимого окна.'
+        en: 'Closes window when clicking anywhere inside content',
+        ru: 'Закрывает окно при клике в любом месте содержимого'
       }
     }
   },
@@ -25,8 +25,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.hook,
       description: {
-        en: 'Hook function called before window closing. Return false to prevent closing.',
-        ru: 'Функция-хук, вызываемая перед закрытием окна. Возврат false предотвращает закрытие.'
+        en: 'Hook called before closing; return false to prevent closing',
+        ru: 'Хук вызывается перед закрытием; возврат false предотвращает закрытие'
       }
     }
   },
@@ -35,8 +35,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.hook,
       description: {
-        en: 'Hook function called before window opening. Return false to prevent opening.',
-        ru: 'Функция-хук, вызываемая перед открытием окна. Возврат false предотвращает открытие.'
+        en: 'Hook called before opening; return false to prevent opening',
+        ru: 'Хук вызывается перед открытием; возврат false предотвращает открытие'
       }
     }
   },
@@ -45,8 +45,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Enables display of close button in the window header.',
-        ru: 'Включает отображение кнопки закрытия в заголовке окна.'
+        en: 'Shows close button in header',
+        ru: 'Показывает кнопку закрытия в заголовке'
       }
     }
   },
@@ -55,8 +55,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.hook,
       description: {
-        en: 'Hook function called during window closing process. Return false to interrupt closing.',
-        ru: 'Функция-хук, вызываемая в процессе закрытия окна. Возврат false прерывает закрытие.'
+        en: 'Hook called during closing; return false to interrupt',
+        ru: 'Хук вызывается во время закрытия; возврат false прерывает процесс'
       }
     }
   },
@@ -65,8 +65,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Enables window opening on right-click (context menu).',
-        ru: 'Включает открытие окна по правому клику (контекстное меню).'
+        en: 'Allows opening on right‑click (context menu)',
+        ru: 'Позволяет открывать по правому клику (контекстное меню)'
       }
     }
   },
@@ -75,8 +75,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Adds divider lines at the top or bottom depending on scroll position.',
-        ru: 'Добавляет разделительные линии сверху или снизу в зависимости от положения скролла.'
+        en: 'Displays top/bottom divider depending on scroll position',
+        ru: 'Отображает разделитель сверху/снизу в зависимости от положения скролла'
       }
     }
   },
@@ -85,8 +85,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Disables opening and closing animations for instant window display.',
-        ru: 'Отключает анимации открытия и закрытия для мгновенного отображения окна.'
+        en: 'Disables animations for instant display',
+        ru: 'Отключает анимации для мгновенного отображения'
       }
     }
   },
@@ -95,8 +95,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Custom icon for the close button in the window header.',
-        ru: 'Пользовательская иконка для кнопки закрытия в заголовке окна.'
+        en: 'Sets icon for close button',
+        ru: 'Задает иконку для кнопки закрытия'
       }
     }
   },
@@ -105,8 +105,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.status,
       description: {
-        en: 'Indicates whether the window element is present in the DOM.',
-        ru: 'Указывает, присутствует ли элемент окна в DOM.'
+        en: 'Indicates whether the window is in the DOM',
+        ru: 'Указывает, присутствует ли окно в DOM'
       }
     }
   },
@@ -115,8 +115,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Window positioning offset values from edges or reference element. Works only in menu mode (adaptive = "menu").',
-        ru: 'Значения смещения позиционирования окна от краев или опорного элемента. Работает только в режиме меню (adaptive = "menu").'
+        en: 'Sets offsets for positioning relative to edges or anchor; works only in menu mode (adaptive = "menu")',
+        ru: 'Задает отступы для позиционирования относительно краев или якоря; работает только в режиме меню (adaptive = "menu")'
       }
     }
   },
@@ -125,8 +125,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.hook,
       description: {
-        en: 'Hook function called during window opening process. Return false to interrupt opening.',
-        ru: 'Функция-хук, вызываемая в процессе открытия окна. Возврат false прерывает открытие.'
+        en: 'Hook called during opening; return false to interrupt',
+        ru: 'Хук вызывается в процессе открытия; возврат false прерывает процесс'
       }
     }
   },
@@ -135,8 +135,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Element over which the window should be positioned.',
-        ru: 'Элемент, над которым должно быть позиционировано окно.'
+        en: 'Sets anchor element for positioning',
+        ru: 'Задает опорный элемент для позиционирования'
       }
     }
   },
@@ -145,8 +145,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Prevents window from closing when clicking outside the window boundaries.',
-        ru: 'Предотвращает закрытие окна при клике за пределами границ окна.'
+        en: 'Prevents closing when clicking outside',
+        ru: 'Предотвращает закрытие при клике за пределами окна'
       }
     }
   },
@@ -155,8 +155,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.hook,
       description: {
-        en: 'Hook function called during window preparation phase before opening.',
-        ru: 'Функция-хук, вызываемая на этапе подготовки окна перед открытием.'
+        en: 'Hook called during preparation before opening',
+        ru: 'Хук вызывается на этапе подготовки перед открытием'
       }
     }
   },
@@ -165,8 +165,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Enables static mode - transforms window into embedded component without modal behavior, animations, or dynamic positioning.',
-        ru: 'Включает статический режим - преобразует окно во встроенный компонент без модального поведения, анимаций и динамического позиционирования.'
+        en: 'Enables static mode: displays as embedded component without modal behavior, animations, or dynamic positioning',
+        ru: 'Включает статичный режим: отображает как встроенный компонент без модального поведения, анимаций и динамического позиционирования'
       }
     }
   }
