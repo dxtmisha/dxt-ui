@@ -189,7 +189,6 @@ export class WindowDesign<
       },
       [
         ...this.renderBodyImage(),
-        ...this.renderBodyImage(),
         ...this.renderBodyClose(),
         ...this.renderBodyGroup()
       ]

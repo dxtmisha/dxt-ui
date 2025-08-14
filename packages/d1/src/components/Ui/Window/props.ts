@@ -8,7 +8,8 @@ export const propsValues = {
   imagePosition: ['top', 'left'],
   alignment: ['center', 'top', 'topRight', 'topLeft', 'topFull', 'right', 'rightFull', 'bottom', 'bottomRight', 'bottomLeft', 'bottomFull', 'left', 'leftFull'],
   origin: ['center', 'top', 'right', 'bottom', 'left', 'topToBottom', 'rightToLeft', 'bottomToTop', 'leftToRight'],
-  adaptive: ['menu', 'menuWindow', 'modal', 'modalDynamic', 'static']
+  adaptive: ['menu', 'menuWindow', 'modal', 'modalDynamic', 'static'],
+  imageSize: ['sm', 'md', 'lg', 'quarter', 'half']
   // :values [!] System label / Системная метка
 }
 
@@ -27,6 +28,7 @@ interface PropsToken {
   overscroll?: boolean
   closeMobileHide?: boolean
   widthMatch?: boolean
+  imageSize?: 'sm' | 'md' | 'lg' | 'quarter' | 'half'
   // :type [!] System label / Системная метка
 }
 
@@ -47,7 +49,8 @@ export const defaults: object = {
     width: 'md',
     axis: 'y',
     imagePosition: 'top',
-    overscroll: true
+    overscroll: true,
+    imageSize: 'md'
     // :default [!] System label / Системная метка
   }
 }

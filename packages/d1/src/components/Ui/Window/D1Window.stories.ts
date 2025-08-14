@@ -96,4 +96,64 @@ export const WindowStaticMode: Story = {
     `
   })
 }
+export const WindowAxis: Story = {
+  name: 'Позиционирование по оси',
+  render: () => ({
+    components: { D1Window },
+    template: `
+        <div class="wiki-storybook-flex wiki-storybook-gap">
+          <!-- Axis: x -->
+          <D1Window axis="x" adaptive="menu" :indent="8">
+            <template #control="{binds}">
+              <button class="wiki-storybook-button" v-bind="binds">Open (axis: x)</button>
+            </template>
+            <template #default>
+              <div class="wiki-storybook-item--padding">
+                <strong>axis = x</strong>
+                <p>Window aligns horizontally (left/right) near the trigger.</p>
+              </div>
+            </template>
+          </D1Window>
+
+          <!-- Axis: y -->
+          <D1Window axis="y" adaptive="menu" :indent="8">
+            <template #control="{binds}">
+              <button class="wiki-storybook-button" v-bind="binds">Open (axis: y)</button>
+            </template>
+            <template #default>
+              <div class="wiki-storybook-item--padding">
+                <strong>axis = y</strong>
+                <p>Window aligns vertically (top/bottom) near the trigger.</p>
+              </div>
+            </template>
+          </D1Window>
+
+          <!-- Axis: on -->
+          <D1Window axis="on" adaptive="menu" overElement=".axis-on-target">
+            <template #control="{binds}">
+              <button class="wiki-storybook-button" v-bind="binds">Open (axis: on)</button>
+            </template>
+            <template #default>
+              <div class="wiki-storybook-item--padding">
+                <strong>axis = on</strong>
+                <p>Window positions over the target element; scroll adjusts to keep it visible.</p>
+                <ul style="max-height: 160px; overflow: auto; margin: 8px 0; padding-left: 20px;">
+                  <li>Item 1</li>
+                  <li>Item 2</li>
+                  <li>Item 3</li>
+                  <li>Item 4</li>
+                  <li class="axis-on-target"><strong>Focused item (target)</strong></li>
+                  <li>Item 6</li>
+                  <li>Item 7</li>
+                  <li>Item 8</li>
+                  <li>Item 9</li>
+                  <li>Item 10</li>
+                </ul>
+              </div>
+            </template>
+          </D1Window>
+        </div>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

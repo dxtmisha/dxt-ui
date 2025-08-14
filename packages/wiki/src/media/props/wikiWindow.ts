@@ -20,6 +20,17 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
+  'window.axis': {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets the positioning axis for the window',
+        ru: 'Задает ось позиционирования для окна'
+      },
+      options: []
+    }
+  },
   'window.beforeClosing': {
     type: StorybookControl.object,
     options: {
@@ -98,6 +109,28 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Sets icon for close button',
         ru: 'Задает иконку для кнопки закрытия'
       }
+    }
+  },
+  'window.imagePosition': {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Defines image placement in the window layout',
+        ru: 'Определяет расположение изображения в макете окна'
+      },
+      options: ['left', 'top']
+    }
+  },
+  'window.imageSize': {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets image size inside the window',
+        ru: 'Задает размер изображения внутри окна'
+      },
+      options: ['half', 'lg', 'md', 'quarter', 'sm']
     }
   },
   'window.inDom': {

@@ -59,7 +59,7 @@
 
   &__image {
     position: relative;
-    height: ui.v('??imageSize');
+    height: ui.v('??imageSizeValue');
   }
 
   & &__close {
@@ -167,8 +167,8 @@
       }
 
       @include ui.subclass('image') {
-        flex-basis: ui.v('??imageSize');
-        min-width: ui.v('??imageSize');
+        flex-basis: ui.v('??imageSizeValue');
+        min-width: ui.v('??imageSizeValue');
         height: auto;
       }
     }

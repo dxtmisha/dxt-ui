@@ -44,7 +44,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-window--fullscreen': props.fullscreen,
     'd1-window--overscroll': props.overscroll,
     'd1-window--closeMobileHide': props.closeMobileHide,
-    'd1-window--widthMatch': props.widthMatch
+    'd1-window--widthMatch': props.widthMatch,
+    [`d1-window--imageSize--${props.imageSize}`]: inArray(propsValues.imageSize, props.imageSize)
     // :classes-values [!] System label / Системная метка
   }
 }))

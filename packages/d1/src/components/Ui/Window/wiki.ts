@@ -26,6 +26,7 @@ const propsNames: StorybookProps = [
   { name: 'iconClose', type: 'string' },
   { name: 'image', type: 'string | ConstrBind<ImagePropsBasic>' },
   { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
+  { name: 'imageSize', type: 'string', option: ['sm', 'md', 'lg', 'quarter', 'half'] },
   { name: 'indent', type: 'number' },
   { name: 'inDom', type: 'boolean' },
   { name: 'open', type: 'boolean' },

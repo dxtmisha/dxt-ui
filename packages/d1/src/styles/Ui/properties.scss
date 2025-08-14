@@ -18608,31 +18608,6 @@
             type: 'var',
             value: 'var(--d1-sys-spacing-md)',
           ),
-          'imageSize':(
-            index: 'imageSize',
-            name: 'imageSize',
-            type: 'var',
-            value: (
-              'sm':(
-                index: 'sm',
-                name: '--d1-window-imageSize-sm',
-                type: 'var',
-                value: 'calc(var(--d1-ref-spacing-px) * 128)',
-              ),
-              'md':(
-                index: 'md',
-                name: '--d1-window-imageSize-md',
-                type: 'var',
-                value: 'calc(var(--d1-ref-spacing-px) * 256)',
-              ),
-              'lg':(
-                index: 'lg',
-                name: '--d1-window-imageSize-lg',
-                type: 'var',
-                value: 'calc(var(--d1-ref-spacing-px) * 384)',
-              ),
-            ),
-          ),
           'backgroundColor':(
             index: 'backgroundColor',
             name: '--d1-window-backgroundColor',
@@ -19700,6 +19675,78 @@
             name: '&--widthMatch',
             type: 'state',
             value: (
+            ),
+          ),
+          'imageSize':(
+            index: 'imageSize',
+            name: '&--imageSize',
+            type: 'state',
+            value: (
+              'sm':(
+                index: 'sm',
+                name: '&--sm',
+                type: 'state',
+                value: (
+                  'imageSizeValue':(
+                    index: 'imageSizeValue',
+                    name: '--d1-window-imageSizeValue',
+                    type: 'var',
+                    value: 'calc(var(--d1-ref-spacing-px) * 128)',
+                  ),
+                ),
+              ),
+              'md':(
+                index: 'md',
+                name: '&--md',
+                type: 'state',
+                value: (
+                  'imageSizeValue':(
+                    index: 'imageSizeValue',
+                    name: '--d1-window-imageSizeValue',
+                    type: 'var',
+                    value: 'calc(var(--d1-ref-spacing-px) * 256)',
+                  ),
+                ),
+              ),
+              'lg':(
+                index: 'lg',
+                name: '&--lg',
+                type: 'state',
+                value: (
+                  'imageSizeValue':(
+                    index: 'imageSizeValue',
+                    name: '--d1-window-imageSizeValue',
+                    type: 'var',
+                    value: 'calc(var(--d1-ref-spacing-px) * 384)',
+                  ),
+                ),
+              ),
+              'quarter':(
+                index: 'quarter',
+                name: '&--quarter',
+                type: 'state',
+                value: (
+                  'imageSizeValue':(
+                    index: 'imageSizeValue',
+                    name: '--d1-window-imageSizeValue',
+                    type: 'var',
+                    value: 25%,
+                  ),
+                ),
+              ),
+              'half':(
+                index: 'half',
+                name: '&--half',
+                type: 'state',
+                value: (
+                  'imageSizeValue':(
+                    index: 'imageSizeValue',
+                    name: '--d1-window-imageSizeValue',
+                    type: 'var',
+                    value: 50%,
+                  ),
+                ),
+              ),
             ),
           ),
           'mediaLg':(

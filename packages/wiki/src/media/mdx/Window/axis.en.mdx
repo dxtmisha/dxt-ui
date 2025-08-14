@@ -1,0 +1,25 @@
+## Positioning axis (axis)
+
+The `axis` property controls the primary positioning axis of the window relative to the anchor element (`overElement`) or the invocation area.
+Default value: `y`.
+
+> Works only in menu mode (`adaptive="menu"`).
+
+### Values
+
+- `x` — Horizontal axis: the window is placed to the left or right of the anchor/cursor. The `indent` is applied horizontally.
+- `y` — Vertical axis: the window is placed above or below the anchor/cursor. The `indent` is applied vertically.
+- `on` — “Over element” mode: the window is positioned over the selected element/area vertically, using its center as a reference. If needed, the window’s internal scroll adjusts to keep the selected element visible.
+
+### Common behavior
+
+- Automatic side selection (left/right for `x`, top/bottom for `y`) based on available space. If both sides lack space, the window is centered within the available area.
+- Along the orthogonal axis, the window is fitted into the viewport to avoid overflow.
+- Context menu mode (`contextmenu = true`) uses cursor coordinates instead of the anchor’s bounding box.
+- Viewport constraints and container paddings are respected.
+
+### Recommendations
+
+- `x` — side menus, tooltips, and panels next to an element.
+- `y` — dropdowns, menus, and hints opening above/below.
+- `on` — popovers that overlay and focus a specific element in the content.

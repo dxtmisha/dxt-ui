@@ -8,6 +8,8 @@ import staticModeEn from './staticMode.en.mdx'
 import staticModeRu from './staticMode.ru.mdx'
 import windowEn from './window.en.mdx'
 import windowRu from './window.ru.mdx'
+import axisEn from './axis.en.mdx'
+import axisRu from './axis.ru.mdx'
 
 /**
  * MDX files for Window component
@@ -17,6 +19,10 @@ import windowRu from './window.ru.mdx'
 export const wikiMdxWindow: StorybookComponentsMdxItem = {
   name: 'Window',
   descriptions: {
+    axis: {
+      en: axisEn,
+      ru: axisRu
+    },
     classes: {
       en: classesEn,
       ru: classesRu
