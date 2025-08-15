@@ -17,7 +17,7 @@ export interface LabelProps {
 }
 
 export interface LabelNumberProps extends LabelProps {
-  labelMax?: number
+  labelMax?: string | number
   formatting?: boolean
 }
 

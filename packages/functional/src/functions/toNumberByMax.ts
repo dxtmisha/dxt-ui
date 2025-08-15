@@ -12,14 +12,15 @@ import { GeoIntl } from '../classes/GeoIntl'
  */
 export function toNumberByMax(
   value: string | number,
-  max?: number,
+  max?: string | number,
   formatting?: boolean,
   language?: string
 ) {
   const number = toNumber(value)
+  const maxNumber = toNumber(max)
 
-  if (max && max < number) {
-    return `${getFormatting(max, formatting, language)}+`
+  if (max && maxNumber < number) {
+    return `${getFormatting(maxNumber, formatting, language)}+`
   }
 
   return getFormatting(number, formatting, language)

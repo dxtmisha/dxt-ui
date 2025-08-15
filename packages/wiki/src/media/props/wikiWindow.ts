@@ -15,8 +15,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Sets window placement in viewport (center/edges/corners)',
-        ru: 'Задает размещение окна во вьюпорте (центр/стороны/углы)'
+        en: 'Places window in viewport: center, edges or corners',
+        ru: 'Позиционирует окно во вьюпорте: центр, края или углы'
       },
       options: []
     }
@@ -137,8 +137,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Expands window to full screen',
-        ru: 'Разворачивает окно на весь экран'
+        en: 'Fills the screen without margins',
+        ru: 'Заполняет экран без отступов'
       }
     }
   },
@@ -230,8 +230,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Controls overscroll behavior',
-        ru: 'Управляет поведением overscroll'
+        en: 'Keeps horizontal scrolling inside the window',
+        ru: 'Удерживает горизонтальный скролл внутри окна'
       }
     }
   },

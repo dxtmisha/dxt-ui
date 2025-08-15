@@ -274,7 +274,7 @@
     }
     
     &--fullscreen {
-      --d1-window-padding: 0;
+      padding: 0 !important;
       
       & .d1-window__body {
         @include ui.width(#{100%});

@@ -12,7 +12,7 @@ export interface LabelProps {
     label?: string | number;
 }
 export interface LabelNumberProps extends LabelProps {
-    labelMax?: number;
+    labelMax?: string | number;
     formatting?: boolean;
 }
 export interface LabelHighlightProps extends LabelProps {
