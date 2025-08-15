@@ -1,0 +1,118 @@
+@use "@dxt-ui/styles" as ui;
+
+.& .d1-color {
+  &--primary {
+    @include ui.color(#{var(--d1-sys-palette-primary)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+  }
+  
+  &--primaryMedium {
+    @include ui.color(#{var(--d1-sys-palette-primary)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+  }
+  
+  &--primaryVariant {
+    @include ui.color(#{var(--d1-sys-palette-primaryVariant)});
+  }
+  
+  &--warning {
+    @include ui.color(#{var(--d1-sys-palette-warning)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+  }
+  
+  &--warningMedium {
+    @include ui.color(#{var(--d1-sys-palette-warning)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+  }
+  
+  &--success {
+    @include ui.color(#{var(--d1-sys-palette-success)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+  }
+  
+  &--successMedium {
+    @include ui.color(#{var(--d1-sys-palette-success)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+  }
+  
+  &--error {
+    @include ui.color(#{var(--d1-sys-palette-error)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+  }
+  
+  &--errorMedium {
+    @include ui.color(#{var(--d1-sys-palette-error)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+  }
+  
+  &--onPrimary {
+    @include ui.color(#{var(--d1-sys-palette-onPrimary)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+  }
+  
+  &--onPrimaryMedium {
+    @include ui.color(#{var(--d1-sys-palette-onPrimary)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-medium)});
+  }
+  
+  &--onPrimaryDisabled {
+    @include ui.color(#{var(--d1-sys-palette-onPrimary)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-disabled)});
+  }
+  
+  &--onSurface {
+    @include ui.color(#{var(--d1-sys-palette-onSurface)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+  }
+  
+  &--onSurfaceMedium {
+    @include ui.color(#{var(--d1-sys-palette-onSurface)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+  }
+  
+  &--onSurfaceDisabled {
+    @include ui.color(#{var(--d1-sys-palette-onSurface)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+  }
+  
+  &--inverseOnPrimary {
+    @include ui.color(#{var(--d1-sys-palette-inverseOnPrimary)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+  }
+  
+  &--inverseOnPrimaryMedium {
+    @include ui.color(#{var(--d1-sys-palette-inverseOnPrimary)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-medium)});
+  }
+  
+  &--inverseOnPrimaryDisabled {
+    @include ui.color(#{var(--d1-sys-palette-inverseOnPrimary)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-disabled)});
+  }
+  
+  &--palette {
+    &.& .d1-color--primary {
+      @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &.& .d1-color--primaryMedium {
+      @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &.& .d1-color--primaryVariant {
+      @include ui.paletteColor(#{var(--d1-sys-palette-primaryVariant)});
+    }
+    
+    &.& .d1-color--onSurface {
+      @include ui.paletteColor(#{var(--d1-sys-palette-onSurface)});
+    }
+    
+    &.& .d1-color--onSurfaceMedium {
+      @include ui.paletteColor(#{var(--d1-sys-palette-onSurface)});
+    }
+    
+    &.& .d1-color--onSurfaceDisabled {
+      @include ui.paletteColor(#{var(--d1-sys-palette-onSurface)});
+    }
+  }
+}

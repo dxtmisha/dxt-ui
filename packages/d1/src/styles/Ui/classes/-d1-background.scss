@@ -1,0 +1,57 @@
+@use "@dxt-ui/styles" as ui;
+
+.& .d1-background {
+  &--primary {
+    @include ui.backgroundColor(#{var(--d1-sys-palette-primary)});
+  }
+  
+  &--primaryVariant {
+    @include ui.backgroundColor(#{var(--d1-sys-palette-primaryVariant)});
+  }
+  
+  &--warning {
+    @include ui.backgroundColor(#{var(--d1-sys-palette-warning)});
+  }
+  
+  &--success {
+    @include ui.backgroundColor(#{var(--d1-sys-palette-success)});
+  }
+  
+  &--error {
+    @include ui.backgroundColor(#{var(--d1-sys-palette-error)});
+  }
+  
+  &--surface {
+    @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
+  }
+  
+  &--inversePrimary {
+    @include ui.backgroundColor(#{var(--d1-sys-palette-inversePrimary)});
+  }
+  
+  &--inversePrimaryVariant {
+    @include ui.backgroundColor(#{var(--d1-sys-palette-inversePrimaryVariant)});
+  }
+  
+  &--inverseSurface {
+    @include ui.backgroundColor(#{var(--d1-sys-palette-inverseSurface)});
+  }
+  
+  &--palette {
+    &.& .d1-background--primary {
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &.& .d1-background--primaryVariant {
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+    }
+    
+    &.& .d1-background--inversePrimary {
+      @include ui.paletteBackground(#{var(--d1-sys-palette-inversePrimary)});
+    }
+    
+    &.& .d1-background--inversePrimaryVariant {
+      @include ui.paletteBackground(#{var(--d1-sys-palette-inversePrimaryVariant)});
+    }
+  }
+}

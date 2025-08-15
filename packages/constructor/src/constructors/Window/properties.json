@@ -132,29 +132,29 @@
       "transform-origin": "top center"
     },
     "~right": {
-      "transform-origin": "center #{dirRight()}"
+      "transform-origin": "center \\#{ui.dirRight()}"
     },
     "~bottom": {
       "transform-origin": "bottom center"
     },
     "~left": {
-      "transform-origin": "center #{dirLeft()}"
+      "transform-origin": "center \\#{ui.dirLeft()}"
     },
     "~topToBottom": {
       "transform-preparation": "translateY(-64px)",
       "transform-origin": "top center"
     },
     "~rightToLeft": {
-      "transform-preparation": "translateX(calc(64px * #{isDir()}))",
-      "transform-origin": "center #{dirRight()}"
+      "transform-preparation": "translateX(calc(64px * \\#{ui.isDir()}))",
+      "transform-origin": "center \\#{ui.dirRight()}"
     },
     "~bottomToTop": {
       "transform-preparation": "translateY(64px)",
       "transform-origin": "bottom center"
     },
     "~leftToRight": {
-      "transform-preparation": "translateX(calc(-64px * #{isDir()}))",
-      "transform-origin": "center #{dirLeft()}"
+      "transform-preparation": "translateX(calc(-64px * \\#{ui.isDir()}))",
+      "transform-origin": "center \\#{ui.dirLeft()}"
     }
   },
   "~adaptive": {

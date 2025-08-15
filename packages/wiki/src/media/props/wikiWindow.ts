@@ -10,6 +10,28 @@ import {
  * Объект wikiWindow содержит описание всех свойств для компонента Window
  */
 export const wikiWindow: StorybookArgsToList = {
+  'window.alignment': {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets window placement in viewport (center/edges/corners)',
+        ru: 'Задает размещение окна во вьюпорте (центр/стороны/углы)'
+      },
+      options: []
+    }
+  },
+  'window.axis': {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Primary positioning axis relative to anchor or cursor; works only in menu mode (adaptive = "menu")',
+        ru: 'Основная ось позиционирования относительно якоря или курсора; работает только в режиме меню (adaptive = "menu")'
+      },
+      options: []
+    }
+  },
   'window.autoClose': {
     type: StorybookControl.boolean,
     options: {
@@ -18,17 +40,6 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Closes window when clicking anywhere inside content',
         ru: 'Закрывает окно при клике в любом месте содержимого'
       }
-    }
-  },
-  'window.axis': {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Sets the positioning axis for the window',
-        ru: 'Задает ось позиционирования для окна'
-      },
-      options: []
     }
   },
   'window.beforeClosing': {
@@ -61,6 +72,16 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
+  'window.closeMobileHide': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Hides close control on mobile',
+        ru: 'Скрывает управление закрытием на мобильных'
+      }
+    }
+  },
   'window.closing': {
     type: StorybookControl.object,
     options: {
@@ -78,6 +99,16 @@ export const wikiWindow: StorybookArgsToList = {
       description: {
         en: 'Allows opening on right‑click (context menu)',
         ru: 'Позволяет открывать по правому клику (контекстное меню)'
+      }
+    }
+  },
+  'window.dense': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Compact layout: reduces internal paddings for a denser window',
+        ru: 'Компактное оформление: уменьшает внутренние отступы для более плотного окна'
       }
     }
   },
@@ -101,6 +132,16 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
+  'window.fullscreen': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Expands window to full screen',
+        ru: 'Разворачивает окно на весь экран'
+      }
+    }
+  },
   'window.iconClose': {
     type: StorybookControl.string,
     options: {
@@ -116,8 +157,8 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Defines image placement in the window layout',
-        ru: 'Определяет расположение изображения в макете окна'
+        en: 'Defines image placement within the window layout',
+        ru: 'Определяет расположение изображения внутри макета окна'
       },
       options: ['left', 'top']
     }
@@ -127,20 +168,10 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Sets image size inside the window',
-        ru: 'Задает размер изображения внутри окна'
+        en: 'Controls the relative size of the image area in the layout without tying to concrete values',
+        ru: 'Управляет относительным размером области изображения в макете без привязки к конкретным значениям'
       },
       options: ['half', 'lg', 'md', 'quarter', 'sm']
-    }
-  },
-  'window.inDom': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.status,
-      description: {
-        en: 'Indicates whether the window is in the DOM',
-        ru: 'Указывает, присутствует ли окно в DOM'
-      }
     }
   },
   'window.indent': {
@@ -150,6 +181,16 @@ export const wikiWindow: StorybookArgsToList = {
       description: {
         en: 'Sets offsets for positioning relative to edges or anchor; works only in menu mode (adaptive = "menu")',
         ru: 'Задает отступы для позиционирования относительно краев или якоря; работает только в режиме меню (adaptive = "menu")'
+      }
+    }
+  },
+  'window.inDom': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Indicates whether the window is in the DOM',
+        ru: 'Указывает, присутствует ли окно в DOM'
       }
     }
   },
@@ -163,6 +204,17 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
+  'window.origin': {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets transform origin for opening animation',
+        ru: 'Задает точку трансформации для анимации открытия'
+      },
+      options: []
+    }
+  },
   'window.overElement': {
     type: StorybookControl.object,
     options: {
@@ -170,6 +222,16 @@ export const wikiWindow: StorybookArgsToList = {
       description: {
         en: 'Sets anchor element for positioning',
         ru: 'Задает опорный элемент для позиционирования'
+      }
+    }
+  },
+  'window.overscroll': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Controls overscroll behavior',
+        ru: 'Управляет поведением overscroll'
       }
     }
   },
@@ -200,6 +262,16 @@ export const wikiWindow: StorybookArgsToList = {
       description: {
         en: 'Enables static mode: displays as embedded component without modal behavior, animations, or dynamic positioning',
         ru: 'Включает статичный режим: отображает как встроенный компонент без модального поведения, анимаций и динамического позиционирования'
+      }
+    }
+  },
+  'window.widthMatch': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Matches window width to control width (menu)',
+        ru: 'Подгоняет ширину окна под ширину контрола (меню)'
       }
     }
   }

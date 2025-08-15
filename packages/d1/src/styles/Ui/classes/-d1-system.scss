@@ -1,0 +1,12 @@
+@use "@dxt-ui/styles" as ui;
+
+.& .d1-system {
+  font-family: var(--d1-sys-font-family-basic), sans-serif;
+  @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+  font-weight: var(--d1-sys-font-weight-regular);
+  @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+  letter-spacing: var(--d1-sys-letterSpacing-xl);
+  
+  @include ui.color(#{var(--d1-sys-palette-onSurface)});
+  @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+}

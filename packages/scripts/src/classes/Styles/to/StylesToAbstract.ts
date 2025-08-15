@@ -56,7 +56,13 @@ export abstract class StylesToAbstract {
    * Получает значение свойства.
    */
   protected getValue(): string | undefined {
-    return this.item?.[PropertyKey.css]
+    const value = this.item?.[PropertyKey.css]
+
+    if (value) {
+      return value.replace(/\\#/g, '#')
+    }
+
+    return undefined
   }
 
   /**

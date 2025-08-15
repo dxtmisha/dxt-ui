@@ -8,7 +8,7 @@ import { PropertiesPalette } from './PropertiesPalette'
 import {
   PropertyCategory,
   type PropertyItem,
-  PropertyKey
+  PropertyKey, PropertyType
 } from '../../types/propertyTypes'
 
 const NAME_DESIGNS = 'setDesignsDesigns'
@@ -234,7 +234,13 @@ export class PropertiesScss {
         data += `\r\n${space}  index: '${name}',`
         data += `\r\n${space}  name: '${property?.[PropertyKey.name] || name}',`
         data += `\r\n${space}  type: '${property?.[PropertyKey.variable]}',`
-        data += `\r\n${space}  ${this.getValue(property, space)}`
+
+        if (
+          property?.[PropertyKey.category]
+          || property?.[PropertyKey.variable] !== PropertyType.component
+        ) {
+          data += `\r\n${space}  ${this.getValue(property, space)}`
+        }
 
         if (property?.[PropertyKey.modification] === false) {
           data += `\r\n${space}  modification: false,`
