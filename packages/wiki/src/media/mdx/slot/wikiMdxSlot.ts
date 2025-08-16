@@ -2,14 +2,20 @@ import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
 import slotCaptionEn from './caption.en.mdx'
 import slotCaptionRu from './caption.ru.mdx'
+import slotControlEn from './control.en.mdx'
+import slotControlRu from './control.ru.mdx'
 import slotDefaultEn from './default.en.mdx'
 import slotDefaultRu from './default.ru.mdx'
 import slotDescriptionEn from './description.en.mdx'
 import slotDescriptionRu from './description.ru.mdx'
+import slotFooterEn from './footer.en.mdx'
+import slotFooterRu from './footer.ru.mdx'
 import slotPrefixEn from './prefix.en.mdx'
 import slotPrefixRu from './prefix.ru.mdx'
 import slotSuffixEn from './suffix.en.mdx'
 import slotSuffixRu from './suffix.ru.mdx'
+import slotTitleEn from './title.en.mdx'
+import slotTitleRu from './title.ru.mdx'
 
 export const wikiMdxSlot: StorybookComponentsMdxItem = {
   name: 'Slot',
@@ -17,6 +23,10 @@ export const wikiMdxSlot: StorybookComponentsMdxItem = {
     caption: {
       en: slotCaptionEn,
       ru: slotCaptionRu
+    },
+    control: {
+      en: slotControlEn,
+      ru: slotControlRu
     },
     default: {
       en: slotDefaultEn,
@@ -26,6 +36,10 @@ export const wikiMdxSlot: StorybookComponentsMdxItem = {
       en: slotDescriptionEn,
       ru: slotDescriptionRu
     },
+    footer: {
+      en: slotFooterEn,
+      ru: slotFooterRu
+    },
     prefix: {
       en: slotPrefixEn,
       ru: slotPrefixRu
@@ -33,6 +47,10 @@ export const wikiMdxSlot: StorybookComponentsMdxItem = {
     suffix: {
       en: slotSuffixEn,
       ru: slotSuffixRu
+    },
+    title: {
+      en: slotTitleEn,
+      ru: slotTitleRu
     }
   }
 }

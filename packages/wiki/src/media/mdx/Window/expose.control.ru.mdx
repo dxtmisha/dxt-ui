@@ -1,0 +1,15 @@
+### `control`
+
+Данные элемента управления для управления окном.
+
+```ts
+const control: WindowControlItem
+```
+
+Состав:
+- `class` — `string` — CSS‑класс для элемента‑триггера
+- `open` — `Ref<boolean>` — реактивное состояние открытия окна
+- `onclick` — `WindowEventClick` — обработчик клика по контролу
+- `oncontextmenu` — `WindowEventClick` — обработчик контекстного меню по контролу
+- `classesWindow` — `WindowClassesList` — набор CSS‑классов окна
+- `binds` — `{ class: string; onclick: WindowEventClick; oncontextmenu: WindowEventClick }` — готовые биндинги для `v-bind`

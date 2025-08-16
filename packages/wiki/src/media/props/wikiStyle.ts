@@ -348,6 +348,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  scrollbarAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets attributes for the internal scrollbar',
+        ru: 'Задает атрибуты встроенного скроллбара'
+      }
+    }
+  },
   size: {
     type: StorybookControl.select,
     options: {

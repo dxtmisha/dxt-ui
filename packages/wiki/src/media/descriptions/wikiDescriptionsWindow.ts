@@ -173,6 +173,30 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Window'} type={'hooks'}/>
     `,
     events: `
+<StorybookDescriptions componentName={'Window'} type={'event.window'}/>
+
+<StorybookDescriptions componentName={'Event'} type={'scrollbarTop'}/>
+<StorybookDescriptions componentName={'Event'} type={'scrollbarReachTop'}/>
+<StorybookDescriptions componentName={'Event'} type={'scrollbarLeaveTop'}/>
+<StorybookDescriptions componentName={'Event'} type={'scrollbarBottom'}/>
+<StorybookDescriptions componentName={'Event'} type={'scrollbarReachBottom'}/>
+<StorybookDescriptions componentName={'Event'} type={'scrollbarLeaveBottom'}/>
+<StorybookDescriptions componentName={'Event'} type={'scrollbarEdge'}/>
+
+<StorybookDescriptions componentName={'Image'} type={'event.load'}/>
+    `,
+    expose: `
+<StorybookDescriptions componentName={'Window'} type={'expose.control'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.id'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.open'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.setOpen'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.toggle'}/>
+    `,
+    slots: `
+<StorybookDescriptions componentName={'Slot'} type={'control'}/>
+<StorybookDescriptions componentName={'Slot'} type={'title'}/>
+<StorybookDescriptions componentName={'Slot'} type={'footer'}/>
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
     `
   }
 }

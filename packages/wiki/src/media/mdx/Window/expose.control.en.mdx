@@ -1,0 +1,15 @@
+### `control`
+
+Control item data for window management.
+
+```ts
+const control: WindowControlItem
+```
+
+Structure:
+- `class` — `string` — CSS class for the trigger element
+- `open` — `Ref<boolean>` — reactive open state of the window
+- `onclick` — `WindowEventClick` — click handler for the control
+- `oncontextmenu` — `WindowEventClick` — context‑menu handler for the control
+- `classesWindow` — `WindowClassesList` — set of window CSS classes
+- `binds` — `{ class: string; onclick: WindowEventClick; oncontextmenu: WindowEventClick }` — ready‑to‑use bindings for `v-bind`

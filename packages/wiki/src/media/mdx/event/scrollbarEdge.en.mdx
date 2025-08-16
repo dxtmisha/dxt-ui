@@ -1,0 +1,15 @@
+### `scrollbarEdge`
+
+Event that triggers when the scroll boundary state changes (top or bottom).
+
+```ts
+function onScrollbarEdge (isTop: boolean, isBottom: boolean, edge: ScrollbarEdgeType) {
+    // handle scroll boundary change event
+}
+```
+
+Parameters:
+- `isTop` — `boolean` — true if scroll is at the top position
+- `isBottom` — `boolean` — true if scroll is at the bottom position
+- `edge` — `ScrollbarEdgeType` — current active scroll boundary
+
