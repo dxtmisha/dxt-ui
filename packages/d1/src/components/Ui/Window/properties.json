@@ -36,6 +36,30 @@
         "border-radius": "{sys.rounded.lg}",
         "box-shadow": "{sys.shadow.lg}"
       }
+    },
+    "~actionSheetBottom": {
+      "#body": {
+        "max-height": "calc(100dvh - {ref.spacing.16})",
+        "border-top-left-radius": "{sys.rounded.xl}",
+        "border-top-right-radius": "{sys.rounded.xl}"
+      }
+    },
+    "~actionSheet": {
+      "media|md": {
+        "link|actionSheetRight": "{??adaptive.actionSheetRight}"
+      },
+      "media-max|md": {
+        "link|actionSheetBottom": "{??adaptive.actionSheetBottom}"
+      }
+    },
+    "~actionSheetToModal": {
+      "media-max|md": {
+        "link|actionSheetBottom": "{??adaptive.actionSheetBottom}"
+      }
+    },
+    "group|autoStatic": {
+      "link|static": "{??adaptive.static}",
+      "_type": "media-group"
     }
   },
   "~imageSize": {

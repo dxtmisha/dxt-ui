@@ -205,6 +205,16 @@
         "top": "{??sys.location}"
       }
     },
+    "~actionSheetRight": {
+      "link|dense": "{??dense}",
+      "link|alignment": "{??alignment.rightFull}",
+      "link|origin": "{??origin.rightToLeft}"
+    },
+    "~actionSheetBottom": {
+      "link|dense": "{??dense}",
+      "link|alignment": "{??alignment.bottomFull}",
+      "link|origin": "{??origin.bottomToTop}"
+    },
     "~static": {
       "content": "'--STATIC--'"
     }

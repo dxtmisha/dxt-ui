@@ -8,7 +8,7 @@ export const propsValues = {
   imagePosition: ['top', 'left'],
   alignment: ['center', 'top', 'topRight', 'topLeft', 'topFull', 'right', 'rightFull', 'bottom', 'bottomRight', 'bottomLeft', 'bottomFull', 'left', 'leftFull'],
   origin: ['center', 'top', 'right', 'bottom', 'left', 'topToBottom', 'rightToLeft', 'bottomToTop', 'leftToRight'],
-  adaptive: ['menu', 'menuWindow', 'modal', 'modalDynamic', 'static'],
+  adaptive: ['menu', 'menuWindow', 'modal', 'modalDynamic', 'actionSheetRight', 'actionSheetBottom', 'static', 'actionSheet', 'actionSheetToModal', 'autoStaticSm', 'autoStaticMd', 'autoStaticLg', 'autoStaticXl', 'autoStatic2xl'],
   imageSize: ['sm', 'md', 'lg', 'quarter', 'half']
   // :values [!] System label / Системная метка
 }
@@ -23,7 +23,7 @@ interface PropsToken {
   dense?: boolean
   alignment?: 'center' | 'top' | 'topRight' | 'topLeft' | 'topFull' | 'right' | 'rightFull' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'bottomFull' | 'left' | 'leftFull'
   origin?: 'center' | 'top' | 'right' | 'bottom' | 'left' | 'topToBottom' | 'rightToLeft' | 'bottomToTop' | 'leftToRight'
-  adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'static'
+  adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static' | 'actionSheet' | 'actionSheetToModal' | 'autoStaticSm' | 'autoStaticMd' | 'autoStaticLg' | 'autoStaticXl' | 'autoStatic2xl'
   fullscreen?: boolean
   overscroll?: boolean
   closeMobileHide?: boolean
