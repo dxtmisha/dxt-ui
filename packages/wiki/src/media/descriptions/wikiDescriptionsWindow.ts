@@ -37,6 +37,9 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
       'адаптивный дизайн с оптимизацией для мобильных устройств и десктопа'
     ]
   },
+  import: [
+    'import { ref } from \'vue\''
+  ],
   render: `
       <DesignComponent v-bind="args">
         <template #control="{binds}">
@@ -160,6 +163,25 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
           </DesignComponent>
         </div>
       `
+    },
+    {
+      id: 'WindowVModel',
+      name: {
+        en: 'Two-way binding (v-model)',
+        ru: 'Двусторонняя привязка (v-model)'
+      },
+      setup: `
+      return {
+        open: ref(false)
+      }
+      `,
+      template: `
+        <button class="wiki-storybook-button" @click="open = true">Open via v-model ({{ open }})</button>
+
+        <DesignComponent v-model:open="open">
+          <div class="wiki-storybook-item--padding">Your content here</div>
+        </DesignComponent>
+      `
     }
   ],
   documentation: {
@@ -171,6 +193,8 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
 <Canvas of={Component.WindowAxis}/>
 <StorybookDescriptions componentName={'Window'} type={'classes'}/>
 <StorybookDescriptions componentName={'Window'} type={'hooks'}/>
+<StorybookDescriptions componentName={'Window'} type={'v-model'}/>
+<Canvas of={Component.WindowVModel}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Window'} type={'event.window'}/>

@@ -26,36 +26,41 @@ export interface WindowPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic
 > extends ScrollbarPropsInclude<Scrollbar>, ImagePropsInclude<Image> {
   // Status
-  open?: boolean
-  disabled?: boolean
+  'open'?: boolean
+  'disabled'?: boolean
 
   // Hook
-  preparation?(): NormalOrPromise<void>
+  'preparation'?(): NormalOrPromise<void>
 
-  beforeOpening?(): NormalOrPromise<boolean>
+  'beforeOpening'?(): NormalOrPromise<boolean>
 
-  opening?(): NormalOrPromise<boolean>
+  'opening'?(): NormalOrPromise<boolean>
 
-  beforeClosing?(): NormalOrPromise<boolean>
+  'beforeClosing'?(): NormalOrPromise<boolean>
 
-  closing?(): NormalOrPromise<boolean>
+  'closing'?(): NormalOrPromise<boolean>
 
   // Style
-  contextmenu?: boolean
-  staticMode?: boolean
-  overElement?: ElementOrString<HTMLElement>
+  'contextmenu'?: boolean
+  'staticMode'?: boolean
+  'overElement'?: ElementOrString<HTMLElement>
 
-  autoClose?: boolean
-  persistent?: boolean
+  'autoClose'?: boolean
+  'persistent'?: boolean
 
-  flash?: boolean
-  inDom?: boolean
+  'flash'?: boolean
+  'inDom'?: boolean
 
-  indent?: number
-  divider?: boolean
+  'indent'?: number
+  'divider'?: boolean
 
-  closeButton?: boolean
-  iconClose?: string
+  'closeButton'?: boolean
+  'iconClose'?: string
+
+  // Event
+  'modelOpen'?: boolean
+  'onUpdate:open'?: (value: boolean) => void
+  'onUpdate:modelOpen'?: (value: boolean) => void
 }
 
 /**

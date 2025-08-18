@@ -26,7 +26,10 @@ export type WindowEmits
   = ScrollbarEmitsInclude
     & ImageEmitsInclude
     & {
-      window: [options: WindowEmitOptions]
+      'window': [options: WindowEmitOptions]
+
+      'update:open': [value: boolean]
+      'update:modelOpen': [value: boolean]
     }
 
 /**

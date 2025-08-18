@@ -214,6 +214,11 @@ export class WindowVerification {
       && !this.classes.findBody()?.querySelector('[data-window-open="open"]')
   }
 
+  /**
+   * Checks if there is a blocking element from other windows.
+   *
+   * Проверяет, есть ли блокирующий элемент от других окон.
+   */
   protected isBlockOther(): boolean {
     return Boolean(this.classes.findBodyOther(`.${this.classes.list.blockOther}`))
   }

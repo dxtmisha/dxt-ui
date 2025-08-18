@@ -3,6 +3,7 @@ import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxt-ui/fun
 
 import { ScrollbarInclude } from '../Scrollbar/ScrollbarInclude'
 import { ImageInclude } from '../Image/ImageInclude'
+import { ModelInclude } from '../../classes/ModelInclude'
 
 import { WindowClient } from './WindowClient'
 import { WindowHook } from './WindowHook'
@@ -138,6 +139,7 @@ export class Window {
       this.emit,
       this.styles
     )
+
     this.verification = new WindowVerification(
       props,
       this.persistent,
@@ -179,6 +181,8 @@ export class Window {
         oncontextmenu: this.event.onContextmenu
       }
     }
+
+    new ModelInclude('open', this.emits, this.open.item)
 
     onMounted(() => {
       watch([refs.open], () => this.open.set(props.open), { immediate: true })

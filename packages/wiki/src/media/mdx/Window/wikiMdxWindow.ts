@@ -20,6 +20,8 @@ import hooksEn from './hooks.en.mdx'
 import hooksRu from './hooks.ru.mdx'
 import staticModeEn from './staticMode.en.mdx'
 import staticModeRu from './staticMode.ru.mdx'
+import vModelEn from './v-model.en.mdx'
+import vModelRu from './v-model.ru.mdx'
 import windowEn from './window.en.mdx'
 import windowRu from './window.ru.mdx'
 
@@ -70,6 +72,10 @@ export const wikiMdxWindow: StorybookComponentsMdxItem = {
     'staticMode': {
       en: staticModeEn,
       ru: staticModeRu
+    },
+    'v-model': {
+      en: vModelEn,
+      ru: vModelRu
     },
     'window': {
       en: windowEn,

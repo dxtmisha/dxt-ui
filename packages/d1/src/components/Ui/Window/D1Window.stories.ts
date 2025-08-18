@@ -4,6 +4,7 @@ import D1Window from './D1Window.vue'
 import { WindowWikiStorybook } from './wiki.ts'
 
 // :story-import [!] System label / Системная метка
+import { ref } from 'vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -153,6 +154,24 @@ export const WindowAxis: Story = {
             </template>
           </D1Window>
         </div>
+    `
+  })
+}
+export const WindowVModel: Story = {
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: { D1Window },
+    setup() {
+      return {
+        open: ref(false)
+      }
+    },
+    template: `
+        <button class="wiki-storybook-button" @click="open = true">Open via v-model ({{ open }})</button>
+
+        <D1Window v-model:open="open">
+          <div class="wiki-storybook-item--padding">Your content here</div>
+        </D1Window>
     `
   })
 }
