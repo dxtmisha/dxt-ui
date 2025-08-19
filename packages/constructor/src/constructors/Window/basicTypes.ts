@@ -1,4 +1,8 @@
 import type { Ref } from 'vue'
+import type { ConstrBind } from '@dxt-ui/functional'
+
+import type { WindowExpose } from './types'
+import type { WindowPropsBasic } from './props'
 
 /**
  * Window status items for different states of window lifecycle/
@@ -20,9 +24,8 @@ export enum WindowStatusItem {
 }
 
 /**
- * Window status control items for managing window behavior and appearance.
- *
- * Элементы управления статусом окна для управления поведением и внешним видом окна.
+ * Window status control items for managing window behavior and appearance/
+ * Элементы управления статусом окна для управления поведением и внешним видом окна
  */
 export enum WindowStatusControlItem {
   /** Block interaction/ Блокировка взаимодействия */
@@ -53,25 +56,13 @@ export enum WindowStatusControlItem {
  * Опции для событий окна
  */
 export type WindowEmitOptions = {
-  /**
-   * Unique window identifier/
-   * Уникальный идентификатор окна
-   */
+  /** Unique window identifier/ Уникальный идентификатор окна */
   id: string
-  /**
-   * Window DOM element/
-   * DOM элемент окна
-   */
+  /** Window DOM element/ DOM элемент окна */
   element: HTMLDivElement
-  /**
-   * Control DOM element/
-   * DOM элемент управления
-   */
+  /** Control DOM element/ DOM элемент управления */
   control: HTMLElement
-  /**
-   * Window open state/
-   * Состояние открытия окна
-   */
+  /** Window open state/ Состояние открытия окна */
   open: boolean
 }
 
@@ -80,62 +71,29 @@ export type WindowEmitOptions = {
  * Список CSS классов для стилизации окна
  */
 export type WindowClassesList = {
-  /**
-   * Main block class/
-   * Основной класс блока
-   */
+  /** Main block class/ Основной класс блока */
   block: string
-  /**
-   * Block children class/
-   * Класс дочерних элементов блока
-   */
+  /** Block children class/ Класс дочерних элементов блока */
   blockChildren: string
-  /**
-   * Block other windows class/
-   * Класс блокировки других окон
-   */
+  /** Block other windows class/ Класс блокировки других окон */
   blockOther: string
-  /**
-   * Close button class/
-   * Класс кнопки закрытия
-   */
+  /** Close button class/ Класс кнопки закрытия */
   close: string
-  /**
-   * Static positioning class/
-   * Класс статического позиционирования
-   */
+  /** Static positioning class/ Класс статического позиционирования */
   static: string
 
-  /**
-   * Control element class/
-   * Класс элемента управления
-   */
+  /** Control element class/ Класс элемента управления */
   control: string
-  /**
-   * Control ID class/
-   * Класс ID управления
-   */
+  /** Control ID class/ Класс ID управления */
   controlId: string
-  /**
-   * Static control class/
-   * Класс статического управления
-   */
+  /** Static control class/ Класс статического управления */
   controlStatic: string
-  /**
-   * Open-only control class/
-   * Класс управления только для открытого состояния
-   */
+  /** Open-only control class/ Класс управления только для открытого состояния */
   controlOpenOnly: string
-  /**
-   * Active control class/
-   * Класс активного управления
-   */
+  /** Active control class/ Класс активного управления */
   controlActive: string
 
-  /**
-   * Persistent window class/
-   * Класс постоянного окна
-   */
+  /** Persistent window class/ Класс постоянного окна */
   persistent: string
 }
 
@@ -150,10 +108,7 @@ export type WindowEventClick = (event: MouseEvent & TouchEvent) => Promise<void>
  * Интерфейс для включения классов окна
  */
 export type WindowClassesInclude = {
-  /**
-   * Window CSS classes list/
-   * Список CSS классов окна
-   */
+  /** Window CSS classes list/ Список CSS классов окна */
   classesWindow: WindowClassesList
 }
 
@@ -161,48 +116,53 @@ export type WindowClassesInclude = {
  * Control item data for window management/
  * Данные элемента управления для управления окном
  */
-export type WindowControlItem
-  = WindowClassesInclude
-    & {
-      /**
-       * CSS class string/
-       * Строка CSS класса
-       */
+export type WindowControlItem = WindowClassesInclude
+  & {
+  /** CSS class string/ Строка CSS класса */
+    class: string
+    /** Reactive open state/ Реактивное состояние открытия */
+    open: Ref<boolean>
+    /** Click event handler/ Обработчик события клика */
+    onclick: WindowEventClick
+    /** Context menu event handler/ Обработчик события контекстного меню */
+    oncontextmenu: WindowEventClick
+    /** Binding properties/ Свойства привязки */
+    binds: {
+    /** Binding class/ Класс привязки */
       class: string
-      /**
-       * Reactive open state/
-       * Реактивное состояние открытия
-       */
-      open: Ref<boolean>
-      /**
-       * Click event handler/
-       * Обработчик события клика
-       */
+      /** Click event handler for binding/ Обработчик события клика для привязки */
       onclick: WindowEventClick
-      /**
-       * Context menu event handler/
-       * Обработчик события контекстного меню
-       */
+      /** Context menu event handler for binding/ Обработчик события контекстного меню для привязки */
       oncontextmenu: WindowEventClick
-      /**
-       * Binding properties/
-       * Свойства привязки
-       */
-      binds: {
-        /**
-         * Binding class/
-         * Класс привязки
-         */
-        class: string
-        /**
-         * Click event handler for binding/
-         * Обработчик события клика для привязки
-         */
-        onclick: WindowEventClick
-        /**
-         * Context menu event handler for binding/
-         * Обработчик события контекстного меню для привязки
-         */
-        oncontextmenu: WindowEventClick
-      }
     }
+  }
+
+/**
+ * Component map for including the Window component/
+ * Карта компонентов для подключения компонента Window
+ */
+export type WindowComponentInclude = {
+  window?: object
+}
+
+/**
+ * Interface for window expose inclusion/
+ * Интерфейс для включения expose окна
+ */
+export interface WindowExposeInclude extends WindowExpose {
+}
+
+/**
+ * Props used to include and configure the Window component/
+ * Свойства для подключения и настройки компонента Window
+ */
+export interface WindowPropsInclude<
+  Window extends WindowPropsBasic = WindowPropsBasic
+> {
+  /** Disabled state/ Отключённое состояние */
+  disabled?: boolean
+  /** Enable auto close on outside click/ Включить авто-закрытие при клике вне */
+  autoClose?: boolean
+  /** Additional attributes for Window component/ Дополнительные атрибуты для компонента Window */
+  windowAttrs?: ConstrBind<Window>
+}
