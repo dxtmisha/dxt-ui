@@ -1,0 +1,24 @@
+@use "../../../styles/Ui/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/MotionTransform/style" as MotionTransform;
+
+@include ui.initDesignBasic('d1.motionTransform') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include MotionTransform.mixinMotionTransform;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &--adaptive {
+      &--plane {
+        content: none;
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

@@ -4,6 +4,7 @@ import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
 import { LabelInclude } from '../../classes/LabelInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { WindowClassesInclude } from '../Window'
 
 import type { BarsComponents, BarsEmits, BarsSlots } from './types'
 import type { BarsPropsBasic } from './props'
@@ -16,6 +17,8 @@ export class Bars {
   readonly description: DescriptionInclude
 
   readonly event: EventClickInclude
+
+  readonly windowClasses: WindowClassesInclude
 
   /**
    * Constructor
@@ -42,5 +45,7 @@ export class Bars {
     this.description = new DescriptionInclude({ description: this.props.actionDescription }, className, slots)
 
     this.event = new EventClickInclude({}, undefined, emits)
+
+    this.windowClasses = new WindowClassesInclude(classDesign)
   }
 }

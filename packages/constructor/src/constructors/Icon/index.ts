@@ -1,5 +1,5 @@
 export * from './Icon'
-export * from './IconDesign.tsx'
+export * from './IconDesign'
 export * from './IconInclude'
 export * from './IconLiteInclude'
 export * from './IconTrailingInclude'

@@ -1,13 +1,14 @@
+import type { ComputedRef, Ref } from 'vue'
 import type { ConstrClass } from '@dxt-ui/functional'
+
+import type { MotionTransformControlItem, MotionTransformEmitOptions } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type MotionTransformComponents = {
-  // componentName: object
-}
+export type MotionTransformComponents = {}
 
 /**
  * Type describing available events.
@@ -15,7 +16,13 @@ export type MotionTransformComponents = {
  * Тип, описывающий доступные события.
  */
 export type MotionTransformEmits = {
-  // load: [value: string]
+  transform: [
+    event: Event | undefined,
+    options: MotionTransformEmitOptions
+  ]
+  transformLite: [
+    options: MotionTransformEmitOptions
+  ]
 }
 
 /**
@@ -24,6 +31,22 @@ export type MotionTransformEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface MotionTransformExpose {
+  /** Reactive state of window visibility/ Реактивное состояние видимости окна */
+  open: Ref<boolean>
+
+  isShow: ComputedRef<boolean>
+
+  /** Sets open state/ Устанавливает состояние открытия */
+  setOpen(open: boolean): void
+
+  /** Transition to opening state/ Переход в состояние открытия */
+  toOpen(): void
+
+  /** Transition to closing state/ Переход в состояние закрытия */
+  toClose(): void
+
+  /** Toggles open state/ Переключает состояние открытия */
+  toggle(): void
 }
 
 /**
@@ -32,7 +55,10 @@ export interface MotionTransformExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface MotionTransformSlots {
-  // default? (props: any): any
+  /** Head slot for controls/ Слот шапки для элементов управления */
+  head? (props: MotionTransformControlItem): any
+  /** Body slot for content/ Слот тела для содержимого */
+  body? (props: MotionTransformControlItem): any
 }
 
 /**
@@ -43,5 +69,11 @@ export interface MotionTransformSlots {
 export type MotionTransformClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  context: string
+  head: string
+  body: string
+  backdrop: string
+  background: string
+  clickNone: string
   // :classes [!] System label / Системная метка
 }

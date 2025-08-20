@@ -1,5 +1,175 @@
 @use "@dxt-ui/styles/properties" as ui;
 
 @mixin mixinMotionTransform {
+  @include ui.initByCustom('sys.left', auto);
+  @include ui.initByCustom('sys.top', auto);
+  @include ui.initByCustom('sys.height', auto);
+  @include ui.initByCustom('sys.scale', 1);
+  @include ui.initByCustom('sys.context.width', auto);
+  @include ui.initByCustom('sys.context.height', auto);
+  @include ui.initByCustom('sys.head.width', auto);
+  @include ui.initByCustom('sys.head.height', auto);
+  @include ui.initByCustom('sys.head.scale', 1);
+  @include ui.initByCustom('sys.body.height', auto);
 
+  position: relative;
+
+  height: ui.v('??sys.head.height', auto);
+
+  background-color: transparent;
+  box-shadow: none;
+
+  content: "--WINDOW--";
+
+  transition-property: background-color, box-shadow, height, transform, scale;
+  transition-timing-function: ui.v('d.ref.transitionFunction.e40i80');
+  transition-duration: ui.v('d.sys.transitionDuration.container.close');
+
+  &__context {
+    width: ui.v('??sys.context.width', auto);
+    height: ui.v('??sys.context.height', auto);
+
+    content: "--ANIMATION--";
+  }
+
+  &__head {
+    opacity: 1;
+  }
+
+  &__body {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+
+    transition: opacity 67ms linear 50ms;
+  }
+
+  &__backdrop {
+    position: sticky;
+    top: 0;
+  }
+
+  &__background {
+    visibility: hidden;
+    position: fixed;
+    inset: 0;
+    opacity: 0;
+
+    transition-property: opacity, visibility;
+    transition-timing-function: ui.v('d.ref.transitionFunction.e40i80');
+    transition-duration: ui.v('d.sys.transitionDuration.container.close');
+  }
+
+  &[data-teleport="teleport"] {
+    position: fixed;
+    overflow-x: hidden;
+    overflow-y: auto;
+    @include ui.inset();
+    z-index: ui.v('??zIndex');
+
+    height: ui.v('??sys.height', auto);
+
+    @include ui.backgroundColor(ui.v('??backgroundColor'));
+    @include ui.scale(ui.v('??sys.scale', 1));
+    transform-origin: ui.v('??sys.left', auto) ui.v('??sys.top', auto);
+
+    @include ui.subclass('head') {
+      width: ui.v('??sys.head.width', auto);
+
+      @include ui.scale(ui.v('??sys.head.scale', 1));
+      transform-origin: ui.dirLeft() top;
+    }
+  }
+
+  &[data-show="show"] {
+    overflow-y: hidden;
+
+    @include ui.subclass('head') {
+      transition: opacity 67ms linear 50ms, visibility 67ms linear 50ms;
+
+      > * {
+        margin-top: 0 !important;
+      }
+    }
+  }
+
+  &[data-open="open"] {
+    height: ui.v('??sys.body.height', auto);
+
+    @include ui.subclass('head') {
+      visibility: hidden;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      opacity: 0;
+    }
+
+    @include ui.subclass('body') {
+      position: static;
+      opacity: 1;
+
+      transition: opacity 60ms linear 60ms;
+    }
+
+    &[data-show="show"] {
+      @include ui.subclass('head') {
+        transition: opacity 60ms linear 60ms, visibility 60ms linear 60ms;
+      }
+    }
+
+    &[data-teleport="teleport"] {
+      height: 100%;
+
+      box-shadow: ui.v('??boxShadow');
+
+      @include ui.scale(none);
+
+      transition-duration: ui.v('d.sys.transitionDuration.container.open');
+    }
+  }
+
+  &--section {
+    @include ui.subclass('head') {
+      visibility: visible;
+      position: static;
+      opacity: 1;
+
+      transition-property: transform, scale;
+      transition-timing-function: ui.v('d.ref.transitionFunction.e40i80');
+      transition-duration: ui.v('d.sys.transitionDuration.container.close');
+    }
+
+    @include ui.subclass('body') {
+      position: static;
+    }
+
+    &[data-open="open"] {
+      @include ui.subclass('head') {
+        visibility: visible;
+        position: static;
+        opacity: 1;
+
+        @include ui.scale(none);
+
+        transition-property: transform, scale;
+        transition-timing-function: ui.v('d.ref.transitionFunction.e40i80');
+        transition-duration: ui.v('d.sys.transitionDuration.container.open');
+      }
+    }
+  }
+
+  &--position--bottom:not([data-teleport="teleport"]) {
+    @include ui.subclass('body') {
+      top: auto;
+      bottom: 0;
+    }
+
+    &[data-open="open"] {
+      @include ui.subclass('head') {
+        top: auto;
+        bottom: 0;
+      }
+    }
+  }
 }

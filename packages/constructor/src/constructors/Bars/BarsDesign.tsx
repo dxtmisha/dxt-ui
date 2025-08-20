@@ -65,9 +65,6 @@ export class BarsDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -77,10 +74,7 @@ export class BarsDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
@@ -93,6 +87,9 @@ export class BarsDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        context: this.getSubClass('context'),
+        label: this.getSubClass('label'),
+        description: this.getSubClass('description')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -104,10 +101,7 @@ export class BarsDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**

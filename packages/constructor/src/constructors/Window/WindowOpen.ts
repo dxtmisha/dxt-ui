@@ -82,6 +82,20 @@ export class WindowOpen {
   }
 
   /**
+   * Opens the window.
+   *
+   * Открывает окно.
+   */
+  readonly open = async (): Promise<void> => this.set(true)
+
+  /**
+   * Closes the window.
+   *
+   * Закрывает окно.
+   */
+  readonly close = async (): Promise<void> => this.set(false)
+
+  /**
    * Switches the state, that is, opens or closes the window, depending on the value of item.
    *
    * Переключает состояние, то есть открывает или закрывает окно, в зависимости от значения item.
@@ -131,11 +145,11 @@ export class WindowOpen {
   }
 
   /**
-   * The method closes the window.
+   * Close handler on animation end.
    *
-   * Метод закрывает окно.
+   * Обработчик закрытия по окончании анимации.
    */
-  close(propertyName?: string): void {
+  closeForEvent(propertyName?: string): void {
     if (this.status.isHide()) {
       this.toClose()
     } else if (propertyName === 'transform') {

@@ -1,5 +1,5 @@
 export * from './Ripple'
-export * from './RippleDesign.tsx'
+export * from './RippleDesign'
 export * from './RippleInclude'
 export * from './props'
 export * from './types'

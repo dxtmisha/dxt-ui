@@ -12,7 +12,7 @@
 
   &__context > &__label {
     width: calc(100% - 64px);
-    min-width: 72%;
+    min-width: 80%;
     @include ui.clamp(2);
   }
 }

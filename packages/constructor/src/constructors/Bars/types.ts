@@ -45,5 +45,8 @@ export interface BarsSlots extends LabelSlots, DescriptionSlots {
 export type BarsClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  context: string
+  label: string
+  description: string
   // :classes [!] System label / Системная метка
 }

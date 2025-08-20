@@ -1,5 +1,5 @@
 export * from './ListItem'
-export * from './ListItemDesign.tsx'
+export * from './ListItemDesign'
 export * from './props'
 export * from './types'
 export * from './basicTypes'

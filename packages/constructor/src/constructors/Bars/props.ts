@@ -6,6 +6,7 @@ import type { DescriptionProps } from '../../types/descriptionTypes.ts'
 
 interface BarsPropsToken {
   // :type [!] System label / Системная метка
+  action?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -22,11 +23,11 @@ export interface BarsPropsBasic<
   actionDescription?: DescriptionProps['description']
   actionBars?: ConstrBind<Button>[]
 
-  iconBack?: IconValue<Icon>
-  iconClose?: IconValue<Icon>
-
   // Style
   buttonAttrs?: ConstrBind<Button>
+
+  iconBack?: IconValue<Icon>
+  iconClose?: IconValue<Icon>
 }
 
 /**

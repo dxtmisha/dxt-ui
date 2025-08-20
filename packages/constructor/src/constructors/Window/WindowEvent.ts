@@ -80,7 +80,7 @@ export class WindowEvent {
    * Событие окончания анимации при закрытии окна.
    */
   readonly onTransition = ({ propertyName }: TransitionEvent): void => {
-    this.open.close(propertyName)
+    this.open.closeForEvent(propertyName)
   }
 
   /**

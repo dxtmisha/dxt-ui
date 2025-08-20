@@ -1,2 +1,28 @@
 {
+  "z-index": {
+    "_type": "var"
+  },
+  "background-color": {
+    "_type": "var"
+  },
+  "box-shadow": {
+    "_type": "var"
+  },
+  "#context": {},
+  "#head": {},
+  "#body": {},
+  "#backdrop": {},
+  "#background": {},
+  "#clickNone": {},
+  "~section": {},
+  "~position": {
+    "~top": {},
+    "~bottom": {},
+    "_default": "top"
+  },
+  "~adaptive": {
+    "~plane": {
+      "content": "none"
+    }
+  }
 }

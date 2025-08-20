@@ -1,5 +1,5 @@
 export * from './Button'
-export * from './ButtonDesign.tsx'
+export * from './ButtonDesign'
 export * from './props'
 export * from './types'
 export * from './basicTypes'

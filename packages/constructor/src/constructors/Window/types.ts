@@ -62,6 +62,11 @@ export interface WindowExpose {
    */
   setOpen(open: boolean): Promise<void>
 
+  /** Transition to opening state/ Переход в состояние открытия */
+  toOpen(): Promise<void>
+  /** Transition to closing state/ Переход в состояние закрытия */
+  toClose(): Promise<void>
+
   /**
    * Toggles window visibility/
    * Переключает видимость окна

@@ -1,5 +1,5 @@
 export * from './MotionTransform'
-export * from './MotionTransformDesign.tsx'
+export * from './MotionTransformDesign'
 export * from './props'
 export * from './types'
 export * from './basicTypes'

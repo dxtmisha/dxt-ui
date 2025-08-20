@@ -78,6 +78,8 @@ export class WindowDesign<
       id: this.item.classes.getId(),
       open: this.item.open.item,
       setOpen: this.item.open.set,
+      toOpen: this.item.open.open,
+      toClose: this.item.open.close,
       toggle: this.item.open.toggle,
       control: this.item.slotData
     } as EXPOSE

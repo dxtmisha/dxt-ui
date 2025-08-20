@@ -1,10 +1,23 @@
 interface MotionTransformPropsToken {
   // :type [!] System label / Системная метка
+  section?: boolean
+  position?: 'top' | 'bottom'
+  adaptive?: 'plane'
   // :type [!] System label / Системная метка
 }
 
 export interface MotionTransformPropsBasic {
-  // TODO: Location for a custom property / Место для пользовательского свойства
+  // Status
+  open?: boolean
+
+  // Value
+  ignore?: string
+  ignoreSelector?: string
+
+  // Style
+  clickOpen?: boolean
+  autoClose?: boolean
+  animationShow?: boolean
 }
 
 /**
@@ -21,9 +34,12 @@ export interface MotionTransformProps extends MotionTransformPropsBasic, MotionT
  * Значение по умолчанию для свойства.
  */
 export const defaultsMotionTransform = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
+  clickOpen: true,
+  autoClose: true,
+  animationShow: true,
   ...{
     // :default [!] System label / Системная метка
+    position: 'top'
     // :default [!] System label / Системная метка
   }
 }

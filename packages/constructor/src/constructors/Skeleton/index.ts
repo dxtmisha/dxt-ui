@@ -1,5 +1,5 @@
 export * from './Skeleton'
-export * from './SkeletonDesign.tsx'
+export * from './SkeletonDesign'
 export * from './SkeletonInclude'
 export * from './basicTypes'
 export * from './props'
