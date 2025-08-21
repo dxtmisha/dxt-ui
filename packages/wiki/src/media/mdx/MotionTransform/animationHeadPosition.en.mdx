@@ -1,0 +1,30 @@
+## Head position animation
+
+The `animationHeadPosition` property controls how the Head area behaves during show/hide animations.
+
+```
+animationHeadPosition?: 'top' | 'toBottom'
+```
+
+### Values
+
+- **`top`** — Keeps the Head at the top during transition (default)
+- **`toBottom`** — Animates the Head toward the bottom together with content
+
+### When to use
+
+- **Collapsing layouts** — When the header should travel with expanding/collapsing content
+- **Smooth transitions** — For creating more natural motion perception
+- **Content hierarchy** — When header position affects content flow understanding
+
+### Features
+
+- **Motion coordination** — Synchronizes header movement with content animation
+- **Flexible positioning** — Adapts to different layout requirements
+- **Performance optimized** — Uses CSS transforms for smooth animations
+
+### Limitations
+
+- **When `section` is enabled** — If the `section` property is set to `true`, then `animationHeadPosition` is ignored and does not affect animation behavior
+
+> Combine with `animationShow` to fine‑tune the overall motion experience.

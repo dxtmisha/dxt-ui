@@ -11559,6 +11559,11 @@
         name: 'd1-listItem',
         type: 'component',
       ),
+      'motionTransform':(
+        index: 'motionTransform',
+        name: 'd1-motionTransform',
+        type: 'component',
+      ),
       'progress':(
         index: 'progress',
         name: 'd1-progress',
@@ -11880,6 +11885,11 @@
       'listItem':(
         index: 'listItem',
         name: 'd-listItem',
+        type: 'component',
+      ),
+      'motionTransform':(
+        index: 'motionTransform',
+        name: 'd-motionTransform',
         type: 'component',
       ),
       'progress':(

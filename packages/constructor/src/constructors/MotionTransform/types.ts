@@ -73,7 +73,7 @@ export type MotionTransformClasses = {
   head: string
   body: string
   backdrop: string
-  background: string
+  scrim: string
   clickNone: string
   // :classes [!] System label / Системная метка
 }

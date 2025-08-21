@@ -1,3 +1,13 @@
 {
-  "main": "{d.motionTransform}"
+  "main": "{d.motionTransform}",
+  "z-index": "{sys.index.xl}",
+  "background-full": "{sys.background.4}",
+  "box-shadow": "{sys.shadow.xl}",
+  "#scrim": {
+    "background-color": "{sys.palette.scrim}",
+    "background-opacity": "{sys.opacity.scrim}"
+  },
+  "adaptive": {
+    "_default": "planeMd"
+  }
 }

@@ -101,7 +101,7 @@ export class MotionTransformDesign<
         head: this.getSubClass('head'),
         body: this.getSubClass('body'),
         backdrop: this.getSubClass('backdrop'),
-        background: this.getSubClass('background'),
+        scrim: this.getSubClass('scrim'),
         clickNone: this.getSubClass('clickNone')
         // :classes [!] System label / Системная метка
       }
@@ -125,7 +125,7 @@ export class MotionTransformDesign<
   protected initRender(): VNode {
     const children: any[] = [
       ...this.renderMain(),
-      ...this.renderBackground()
+      ...this.renderScrim()
     ]
 
     return h(
@@ -224,14 +224,14 @@ export class MotionTransformDesign<
    *
    * Рендеринг задника.
    */
-  protected readonly renderBackground = (): VNode[] => {
+  protected readonly renderScrim = (): VNode[] => {
     if (this.item.state.teleport.value) {
       return [
         h(
           'div',
           {
-            key: 'background',
-            class: this.classes?.value.background
+            key: 'scrim',
+            class: this.classes?.value.scrim
           }
         )
       ]

@@ -1,8 +1,8 @@
 interface MotionTransformPropsToken {
   // :type [!] System label / Системная метка
   section?: boolean
-  position?: 'top' | 'bottom'
-  adaptive?: 'plane'
+  animationHeadPosition?: 'top' | 'toBottom'
+  adaptive?: 'planeAlways'
   // :type [!] System label / Системная метка
 }
 
@@ -11,7 +11,7 @@ export interface MotionTransformPropsBasic {
   open?: boolean
 
   // Value
-  ignore?: string
+  ignore?: HTMLElement | string
   ignoreSelector?: string
 
   // Style
@@ -39,7 +39,7 @@ export const defaultsMotionTransform = {
   animationShow: true,
   ...{
     // :default [!] System label / Системная метка
-    position: 'top'
+    animationHeadPosition: 'top'
     // :default [!] System label / Системная метка
   }
 }

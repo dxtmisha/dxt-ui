@@ -19,6 +19,17 @@
     gap: 8px;
   }
 
+  &-flex-column {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &-decreased {
+    width: 72%;
+  }
+
   &-item {
     position: relative;
     overflow: hidden;

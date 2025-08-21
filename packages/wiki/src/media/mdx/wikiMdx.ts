@@ -13,6 +13,7 @@ import { wikiMdxChip } from './Chip/wikiMdxChip'
 import { wikiMdxIcon } from './Icon/wikiMdxIcon'
 import { wikiMdxImage } from './Image/wikiMdxImage'
 import { wikiMdxListItem } from './ListItem/wikiMdxListItem'
+import { wikiMdxMotionTransform } from './MotionTransform/wikiMdxMotionTransform'
 import { wikiMdxProgress } from './Progress/wikiMdxProgress'
 import { wikiMdxRipple } from './Ripple/wikiMdxRipple'
 import { wikiMdxScrollbar } from './Scrollbar/wikiMdxScrollbar'
@@ -33,6 +34,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxIcon,
   wikiMdxImage,
   wikiMdxListItem,
+  wikiMdxMotionTransform,
   wikiMdxProgress,
   wikiMdxRipple,
   wikiMdxScrollbar,

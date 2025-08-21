@@ -1,37 +1,36 @@
-import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import type { StorybookComponentsDescriptionItem } from '../../types/storybookTypes'
 
-import D1MotionTransform from './D1MotionTransform.vue'
-import { MotionTransformWikiStorybook } from './wiki.ts'
-
-// :story-import [!] System label / Системная метка
-// :story-import [!] System label / Системная метка
-
-const meta = {
-  title: 'Ui/MotionTransform',
-  component: D1MotionTransform,
-  parameters: {
-    design: 'd1',
-    docs: {
-      description: {
-        component: MotionTransformWikiStorybook.getDescription()
-      }
-    }
+/**
+ * Descriptions for MotionTransform utility
+ *
+ * Описания утилиты MotionTransform
+ */
+export const wikiDescriptionsMotionTransform: StorybookComponentsDescriptionItem = {
+  name: 'MotionTransform',
+  description: {
+    en: 'Low-level motion system that manages element transforms, state transitions, and interaction events for contextual UI like windows and menus',
+    ru: 'Низкоуровневая система анимаций, управляющая трансформациями элементов, переходами состояний и событиями взаимодействия для контекстных интерфейсов (окна, меню)'
   },
-  argTypes: MotionTransformWikiStorybook.getWiki(),
-  args: MotionTransformWikiStorybook.getValues()
-} satisfies Meta<typeof D1MotionTransform>
-
-export default meta
-
-type Story = StoryObj<typeof meta>
-
-export const MotionTransform: Story = {
-  // :story-main [!] System label / Системная метка
-  render: (args: any) => ({
-    components: { D1MotionTransform },
-    setup: () => ({ args }),
-    template: `
-      <D1MotionTransform class="wiki-storybook-decreased" v-bind="args">
+  possibilities: {
+    en: [
+      'centralized state for open/show/teleport with computed accessors',
+      'size measurement and CSS variable updates for smooth animations',
+      'teleport control for window-like behavior and off-DOM rendering',
+      'click/close/auto-close handling with ignore areas',
+      'programmatic API for open/close/toggle and state transitions',
+      'designed to be embedded into higher-level components (Window, Dropdown, etc.)'
+    ],
+    ru: [
+      'централизованное состояние open/show/teleport с вычисляемыми аксессорами',
+      'измерение размеров и обновление CSS‑переменных для плавных анимаций',
+      'управление телепортацией для «оконного» поведения и рендера вне DOM',
+      'обработка кликов/закрытия/автозакрытия с зонами игнорирования',
+      'программный API для open/close/toggle и переходов состояний',
+      'предназначена для встраивания в компоненты верхнего уровня (Window, Dropdown и т. п.)'
+    ]
+  },
+  render: `
+      <DesignComponent class="wiki-storybook-decreased" v-bind="args">
         <template #head>
           <div class="wiki-storybook-item--padding">
             <h3>MotionTransform Demo</h3>
@@ -55,20 +54,19 @@ export const MotionTransform: Story = {
             </div>
           </div>
         </template>
-      </D1MotionTransform>
-    `
-  })
-  // :story-main [!] System label / Системная метка
-}
-
-// :story-items [!] System label / Системная метка
-export const MotionTransformIgnore: Story = {
-  name: 'Зоны игнорирования',
-  render: () => ({
-    components: { D1MotionTransform },
-    template: `
+      </DesignComponent>
+    `,
+  import: [],
+  stories: [
+    {
+      id: 'MotionTransformIgnore',
+      name: {
+        en: 'Ignore zones',
+        ru: 'Зоны игнорирования'
+      },
+      template: `
         <div class="wiki-storybook-flex-column">
-          <D1MotionTransform ignoreSelector=".mt-ignore">
+          <DesignComponent ignoreSelector=".mt-ignore">
             <template #head>
               <div class="wiki-storybook-item--padding">
                 <h4>Ignore zones behavior</h4>
@@ -88,7 +86,7 @@ export const MotionTransformIgnore: Story = {
                 </ul>
               </div>
             </template>
-          </D1MotionTransform>
+          </DesignComponent>
 
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding mt-ignore">
             <h5>External ignore zone</h5>
@@ -96,16 +94,17 @@ export const MotionTransformIgnore: Story = {
             <button class="wiki-storybook-button">Ignored button</button>
           </div>
         </div>
-    `
-  })
-}
-export const MotionTransformAnimationHeadPosition: Story = {
-  name: 'Анимация позиции заголовка',
-  render: () => ({
-    components: { D1MotionTransform },
-    template: `
+      `
+    },
+    {
+      id: 'MotionTransformAnimationHeadPosition',
+      name: {
+        en: 'Head position animation',
+        ru: 'Анимация позиции заголовка'
+      },
+      template: `
         <div class="wiki-storybook-flex-column">
-          <D1MotionTransform animationHeadPosition="top">
+          <DesignComponent animationHeadPosition="top">
             <template #head>
               <div class="wiki-storybook-item--padding">
                 <h4>animationHeadPosition: top</h4>
@@ -126,9 +125,9 @@ export const MotionTransformAnimationHeadPosition: Story = {
                 </ul>
               </div>
             </template>
-          </D1MotionTransform>
+          </DesignComponent>
 
-          <D1MotionTransform animationHeadPosition="toBottom">
+          <DesignComponent animationHeadPosition="toBottom">
             <template #head>
               <div class="wiki-storybook-item--padding">
                 <h4>animationHeadPosition: toBottom</h4>
@@ -149,9 +148,18 @@ export const MotionTransformAnimationHeadPosition: Story = {
                 </ul>
               </div>
             </template>
-          </D1MotionTransform>
+          </DesignComponent>
         </div>
+      `
+    }
+  ],
+  documentation: {
+    body: `
+<StorybookDescriptions componentName={'MotionTransform'} type={'motionTransform'}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'animationHeadPosition'}/>
+<Canvas of={Component.MotionTransformAnimationHeadPosition}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'ignore'}/>
+<Canvas of={Component.MotionTransformIgnore}/>
     `
-  })
+  }
 }
-// :story-items [!] System label / Системная метка

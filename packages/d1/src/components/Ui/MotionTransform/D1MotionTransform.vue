@@ -27,7 +27,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     // :classes-values [!] System label / Системная метка
     'd1-motionTransform': true,
     'd1-motionTransform--section': props.section,
-    [`d1-motionTransform--position--${props.position}`]: inArray(propsValues.position, props.position),
+    [`d1-motionTransform--animationHeadPosition--${props.animationHeadPosition}`]: inArray(propsValues.animationHeadPosition, props.animationHeadPosition),
     [`d1-motionTransform--adaptive--${props.adaptive}`]: inArray(propsValues.adaptive, props.adaptive)
     // :classes-values [!] System label / Системная метка
   }

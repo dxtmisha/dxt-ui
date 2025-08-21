@@ -7,6 +7,7 @@ import { wikiDescriptionsChip } from './wikiDescriptionsChip'
 import { wikiDescriptionsIcon } from './wikiDescriptionsIcon'
 import { wikiDescriptionsImage } from './wikiDescriptionsImage'
 import { wikiDescriptionsListItem } from './wikiDescriptionsListItem'
+import { wikiDescriptionsMotionTransform } from './wikiDescriptionsMotionTransform'
 import { wikiDescriptionsProgress } from './wikiDescriptionsProgress'
 import { wikiDescriptionsRipple } from './wikiDescriptionsRipple'
 import { wikiDescriptionsScrollbar } from './wikiDescriptionsScrollbar'
@@ -21,6 +22,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsIcon,
   wikiDescriptionsImage,
   wikiDescriptionsListItem,
+  wikiDescriptionsMotionTransform,
   wikiDescriptionsProgress,
   wikiDescriptionsRipple,
   wikiDescriptionsScrollbar,

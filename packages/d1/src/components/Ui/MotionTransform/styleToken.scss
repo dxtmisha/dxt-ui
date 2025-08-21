@@ -11,9 +11,48 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    --d1-motionTransform-zIndex: var(--d1-sys-index-xl);
+    --d1-motionTransform-backgroundFull: var(--d1-sys-background-4);
+    --d1-motionTransform-boxShadow: var(--d1-sys-shadow-xl);
+    
+    &__scrim {
+      @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
+    }
+    
     &--adaptive {
-      &--plane {
+      &--planeAlways {
         content: none;
+      }
+      
+      &--planeSm {
+        @media screen and (min-width: 640px) {
+          content: none;
+        }
+      }
+      
+      &--planeMd {
+        @media screen and (min-width: 768px) {
+          content: none;
+        }
+      }
+      
+      &--planeLg {
+        @media screen and (min-width: 1024px) {
+          content: none;
+        }
+      }
+      
+      &--planeXl {
+        @media screen and (min-width: 1280px) {
+          content: none;
+        }
+      }
+      
+      &--plane2xl {
+        @media screen and (min-width: 1536px) {
+          content: none;
+        }
       }
     }
   }

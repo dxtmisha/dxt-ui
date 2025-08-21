@@ -2,16 +2,16 @@ import { type MotionTransformPropsBasic, defaultsMotionTransform } from '@dxt-ui
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  position: ['top', 'bottom'],
-  adaptive: ['plane']
+  animationHeadPosition: ['top', 'toBottom'],
+  adaptive: ['planeAlways', 'planeSm', 'planeMd', 'planeLg', 'planeXl', 'plane2xl']
   // :values [!] System label / Системная метка
 }
 
 interface PropsToken {
   // :type [!] System label / Системная метка
   section?: boolean
-  position?: 'top' | 'bottom'
-  adaptive?: 'plane'
+  animationHeadPosition?: 'top' | 'toBottom'
+  adaptive?: 'planeAlways' | 'planeSm' | 'planeMd' | 'planeLg' | 'planeXl' | 'plane2xl'
   // :type [!] System label / Системная метка
 }
 
@@ -28,7 +28,8 @@ export const defaults: object = {
   ...defaultsMotionTransform,
   ...{
     // :default [!] System label / Системная метка
-    position: 'top'
+    animationHeadPosition: 'top',
+    adaptive: 'planeMd'
     // :default [!] System label / Системная метка
   }
 }

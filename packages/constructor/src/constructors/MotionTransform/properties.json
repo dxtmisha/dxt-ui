@@ -2,6 +2,9 @@
   "z-index": {
     "_type": "var"
   },
+  "background-full": {
+    "_type": "var"
+  },
   "background-color": {
     "_type": "var"
   },
@@ -12,17 +15,21 @@
   "#head": {},
   "#body": {},
   "#backdrop": {},
-  "#background": {},
+  "#scrim": {},
   "#clickNone": {},
   "~section": {},
-  "~position": {
+  "~animationHeadPosition": {
     "~top": {},
-    "~bottom": {},
+    "~toBottom": {},
     "_default": "top"
   },
   "~adaptive": {
-    "~plane": {
+    "~planeAlways": {
       "content": "none"
+    },
+    "group|plane": {
+      "link|plane": "{??adaptive.planeAlways}",
+      "_type": "media-group"
     }
   }
 }

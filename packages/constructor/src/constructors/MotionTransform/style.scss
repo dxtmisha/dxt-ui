@@ -69,7 +69,8 @@
 
     height: ui.v('??sys.height', auto);
 
-    @include ui.backgroundColor(ui.v('??backgroundColor'));
+    background: ui.v('??backgroundFull');
+    @include ui.gradient(ui.v('??backgroundColor'));
     @include ui.scale(ui.v('??sys.scale', 1));
     transform-origin: ui.v('??sys.left', auto) ui.v('??sys.top', auto);
 
@@ -159,17 +160,21 @@
     }
   }
 
-  &--position--bottom:not([data-teleport="teleport"]) {
+  &--animationHeadPosition--toBottom:not([data-teleport="teleport"]):not(&--section) {
+    &[data-show="show"] {
+      @include ui.subclass('head') {
+        position: absolute;
+      }
+    }
+
     @include ui.subclass('body') {
       top: auto;
       bottom: 0;
     }
 
-    &[data-open="open"] {
-      @include ui.subclass('head') {
-        top: auto;
-        bottom: 0;
-      }
+    @include ui.subclass('head') {
+      top: auto;
+      bottom: 0;
     }
   }
 }

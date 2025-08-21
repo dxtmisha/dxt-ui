@@ -1,0 +1,34 @@
+## Ignore zones
+
+Properties that exclude elements from outside-click checks and auto-close logic: `ignore` accepts a DOM element or selector, while `ignoreSelector` accepts any CSS selector for multiple/dynamic matches.
+
+```
+ignore?: HTMLElement | string
+ignoreSelector?: string
+```
+
+### Properties
+
+- **`ignore`** — Element reference or CSS selector to exclude from outside-click detection
+- **`ignoreSelector`** — CSS selector that can match multiple elements for exclusion
+
+### When to use
+
+- **Trigger buttons** — Prevent the trigger from closing the component when clicked
+- **Helper controls** — Keep auxiliary UI elements from interfering with auto-close
+- **Nested interactive areas** — Maintain functionality of embedded components
+- **Dynamic content** — Handle elements that appear/disappear during interaction
+
+### Comparison
+
+- **`ignore`** — More precise, can reference a specific DOM element directly
+- **`ignoreSelector`** — More flexible, can match multiple elements with a single selector
+- **Performance** — `ignore` is faster for single elements, `ignoreSelector` is better for collections
+
+### Features
+
+- **Event coordination** — Both properties work together during outside-click evaluation
+- **Selector flexibility** — Support for any valid CSS selector patterns
+- **Dynamic updates** — Changes are reflected immediately in click detection
+
+> Keep selectors specific to avoid unintended matches that could prevent auto-close functionality.
