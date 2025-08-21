@@ -1,0 +1,51 @@
+### `transform`
+
+Событие, которое срабатывает при изменении состояния MotionTransform с полным контекстом события.
+
+```
+@transform="onTransform"
+```
+
+Сигнатура обработчика:
+```
+function onTransform (event: Event | undefined, options: MotionTransformEmitOptions)
+```
+
+Параметры:
+- `event` — DOM‑событие, которое вызвало изменение (если есть)
+- `options` — данные трансформации: тип, состояние открытия
+
+### `transformLite`
+
+Облегчённое событие, которое срабатывает при изменении состояния MotionTransform без контекста события.
+
+```
+@transform-lite="onTransformLite"
+```
+
+Сигнатура обработчика:
+```
+function onTransformLite (options: MotionTransformEmitOptions)
+```
+
+Параметры:
+- `options` — данные трансформации: тип ('head' | 'body' | 'top' | 'script') и состояние открытия
+
+#### MotionTransformEmitOptions
+
+Объект с данными о состоянии трансформации, передаваемый в обработчики событий.
+
+```
+MotionTransformEmitOptions: {
+  type: 'head' | 'body' | 'top' | 'script'
+  open: boolean
+}
+```
+
+Поля:
+- **`type`** — тип области, которая инициировала событие:
+  - `'head'` — область заголовка
+  - `'body'` — область содержимого
+  - `'top'` — верхняя область
+  - `'script'` — программное изменение
+- **`open`** — текущее состояние открытия (true = открыто, false = закрыто)

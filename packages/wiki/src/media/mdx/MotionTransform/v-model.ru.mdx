@@ -1,0 +1,36 @@
+## Двусторонняя привязка (v-model)
+
+Компонент MotionTransform поддерживает двустороннюю привязку для состояния `open` с использованием директивы `v-model:open`.
+
+### Использование
+
+Это позволяет синхронизировать видимость компонента с локальным свойством данных в вашем родительском компоненте.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <button @click="isOpen = !isOpen">Переключить MotionTransform</button>
+
+  <MotionTransform v-model:open="isOpen">
+    <template #head>
+      <div>Нажми на меня, чтобы переключить</div>
+    </template>
+    <template #body>
+      <div>Содержимое {{ isOpen ? 'видно' : 'скрыто' }}</div>
+    </template>
+  </MotionTransform>
+</template>
+```
+
+### Как это работает
+
+`v-model:open` является сокращением для привязки свойства `open` и прослушивания события `update:open`.
+
+- **`:open="isOpen"`**: Видимость компонента управляется `isOpen` ref.
+- **`@update:open="isOpen = $event"`**: Когда внутреннее состояние компонента изменяется (например, при клике на заголовок), он генерирует событие для обновления `isOpen` ref родительского компонента.
+

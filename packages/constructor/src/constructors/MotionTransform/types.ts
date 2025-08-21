@@ -16,13 +16,16 @@ export type MotionTransformComponents = {}
  * Тип, описывающий доступные события.
  */
 export type MotionTransformEmits = {
-  transform: [
+  'transform': [
     event: Event | undefined,
     options: MotionTransformEmitOptions
   ]
-  transformLite: [
+  'transformLite': [
     options: MotionTransformEmitOptions
   ]
+
+  'update:open': [value: boolean]
+  'update:modelOpen': [value: boolean]
 }
 
 /**
@@ -34,6 +37,10 @@ export interface MotionTransformExpose {
   /** Reactive state of window visibility/ Реактивное состояние видимости окна */
   open: Ref<boolean>
 
+  /**
+   * Computed state indicating if component is shown or being prepared for display/
+   * Вычисляемое состояние, указывающее отображается ли компонент или готовится к отображению
+   */
   isShow: ComputedRef<boolean>
 
   /** Sets open state/ Устанавливает состояние открытия */

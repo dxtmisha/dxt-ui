@@ -10,6 +10,7 @@ import { MotionTransformGo } from './MotionTransformGo'
 import type { MotionTransformComponents, MotionTransformEmits, MotionTransformSlots } from './types'
 import type { MotionTransformProps } from './props'
 import type { MotionTransformControlItem } from './basicTypes.ts'
+import { ModelInclude } from '../../classes/ModelInclude.ts'
 
 /**
  * MotionTransform
@@ -63,6 +64,8 @@ export class MotionTransform {
 
     this.event = new MotionTransformEvent(props, this.element, this.state, emits)
     this.go = new MotionTransformGo(this.state)
+
+    new ModelInclude('open', this.emits, this.state.open)
 
     watch([refs.open], () => this.state.set(Boolean(props.open)))
 

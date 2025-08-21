@@ -1,0 +1,51 @@
+### `transform`
+
+Event that triggers when MotionTransform state changes with full event context.
+
+```
+@transform="onTransform"
+```
+
+Handler signature:
+```
+function onTransform (event: Event | undefined, options: MotionTransformEmitOptions)
+```
+
+Parameters:
+- `event` — the DOM event that triggered the change (if any)
+- `options` — transform data: type, open state
+
+### `transformLite`
+
+Lightweight event that triggers when MotionTransform state changes without event context.
+
+```
+@transform-lite="onTransformLite"
+```
+
+Handler signature:
+```
+function onTransformLite (options: MotionTransformEmitOptions)
+```
+
+Parameters:
+- `options` — transform data: type ('head' | 'body' | 'top' | 'script') and open state
+
+#### MotionTransformEmitOptions
+
+Object with transform state data passed to event handlers.
+
+```
+MotionTransformEmitOptions: {
+  type: 'head' | 'body' | 'top' | 'script'
+  open: boolean
+}
+```
+
+Fields:
+- **`type`** — the area type that initiated the event:
+  - `'head'` — header area
+  - `'body'` — content area
+  - `'top'` — top area
+  - `'script'` — programmatic change
+- **`open`** — current open state (true = open, false = closed)

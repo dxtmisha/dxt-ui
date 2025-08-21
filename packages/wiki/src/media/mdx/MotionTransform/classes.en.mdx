@@ -1,0 +1,32 @@
+## Helper Classes
+
+The MotionTransform component provides a set of helper CSS classes to manage the states and styling of its elements.
+
+### State Classes
+
+These classes are dynamically added to the component's root element to reflect its current state.
+
+- **`*--open`**: Indicates that the component is fully open and its content is visible.
+- **`*--show`**: Added when the component is visible or in the process of an open/close animation. Useful for managing transitions.
+- **`*--window`**: Applied when the component is operating in a window-like mode (e.g., with teleportation).
+- **`*--click`**: Added briefly on click for creating feedback effects.
+
+### Control Classes
+
+These classes can be added to child elements to control the component's behavior.
+
+- **`*--close`**: Applied to an element that should trigger the closing of MotionTransform on click.
+- **`*--none`**: Disables the default behavior (e.g., open/close) for the element it is applied to.
+- **`*--noneGlobal`**: Globally disables MotionTransform-related events while this class is present on an element.
+
+### Element Classes
+
+These classes are used for styling the internal parts of the component.
+
+- **`*__context`**: Class for the context element, which can be used for positioning.
+- **`*__head`**: Class for the header area, which often acts as a trigger.
+- **`*__body`**: Class for the content area that appears and disappears.
+- **`*__backdrop`**: Class for the backdrop element, which can be used to create an overlay effect.
+- **`*__scrim`**: Class for the scrim layer, often used in modal modes.
+- **`*__clickNone`**: Class for an element that should ignore clicks.
+

@@ -4,6 +4,7 @@ import D1MotionTransform from './D1MotionTransform.vue'
 import { MotionTransformWikiStorybook } from './wiki.ts'
 
 // :story-import [!] System label / Системная метка
+import { ref } from 'vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -62,6 +63,37 @@ export const MotionTransform: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const MotionTransformVModel: Story = {
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: { D1MotionTransform },
+    setup() {
+      return {
+        open: ref(false)
+      }
+    },
+    template: `
+        <div class="wiki-storybook-item--padding">
+          <button class="wiki-storybook-button" @click="open = !open">Toggle ({{ open }})</button>
+        </div>
+        <D1MotionTransform v-model:open="open">
+          <template #head>
+            <div class="wiki-storybook-item--padding">
+              <h4>v-model controlled</h4>
+              <p>This component's visibility is controlled by an external ref via v-model:open.</p>
+            </div>
+          </template>
+          <template #body>
+            <div class="wiki-storybook-item--padding">
+              <p>Content is {{ open ? 'visible' : 'hidden' }}</p>
+              <p>Using <code>v-model:open</code> provides a clean and declarative way to manage the component's state from the parent. It simplifies the logic by removing the need for manual event handling (<code>@update:open</code>) and prop binding (<code>:open</code>).</p>
+              <p>This two-way binding is ideal for scenarios where the parent component needs to know about and control the visibility of the MotionTransform component, such as in complex forms or coordinated UI interactions.</p>
+            </div>
+          </template>
+        </D1MotionTransform>
+    `
+  })
+}
 export const MotionTransformIgnore: Story = {
   name: 'Зоны игнорирования',
   render: () => ({

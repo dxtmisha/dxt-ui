@@ -56,8 +56,42 @@ export const wikiDescriptionsMotionTransform: StorybookComponentsDescriptionItem
         </template>
       </DesignComponent>
     `,
-  import: [],
+  import: [
+    'import { ref } from \'vue\''
+  ],
   stories: [
+    {
+      id: 'MotionTransformVModel',
+      name: {
+        en: 'Two-way binding (v-model)',
+        ru: 'Двусторонняя привязка (v-model)'
+      },
+      setup: `
+      return {
+        open: ref(false)
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-item--padding">
+          <button class="wiki-storybook-button" @click="open = !open">Toggle ({{ open }})</button>
+        </div>
+        <DesignComponent v-model:open="open">
+          <template #head>
+            <div class="wiki-storybook-item--padding">
+              <h4>v-model controlled</h4>
+              <p>This component's visibility is controlled by an external ref via v-model:open.</p>
+            </div>
+          </template>
+          <template #body>
+            <div class="wiki-storybook-item--padding">
+              <p>Content is {{ open ? 'visible' : 'hidden' }}</p>
+              <p>Using <code>v-model:open</code> provides a clean and declarative way to manage the component's state from the parent. It simplifies the logic by removing the need for manual event handling (<code>@update:open</code>) and prop binding (<code>:open</code>).</p>
+              <p>This two-way binding is ideal for scenarios where the parent component needs to know about and control the visibility of the MotionTransform component, such as in complex forms or coordinated UI interactions.</p>
+            </div>
+          </template>
+        </DesignComponent>
+      `
+    },
     {
       id: 'MotionTransformIgnore',
       name: {
@@ -160,6 +194,24 @@ export const wikiDescriptionsMotionTransform: StorybookComponentsDescriptionItem
 <Canvas of={Component.MotionTransformAnimationHeadPosition}/>
 <StorybookDescriptions componentName={'MotionTransform'} type={'ignore'}/>
 <Canvas of={Component.MotionTransformIgnore}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'classes'}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'v-model'}/>
+<Canvas of={Component.MotionTransformVModel}/>
+    `,
+    events: `
+<StorybookDescriptions componentName={'MotionTransform'} type={'events'}/>
+    `,
+    expose: `
+<StorybookDescriptions componentName={'MotionTransform'} type={'expose.isShow'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.open'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.setOpen'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.toOpen'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.toClose'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.toggle'}/>
+    `,
+    slots: `
+<StorybookDescriptions componentName={'MotionTransform'} type={'slot.head'}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'slot.body'}/>
     `
   }
 }

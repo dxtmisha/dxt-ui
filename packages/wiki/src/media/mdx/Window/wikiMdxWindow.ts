@@ -14,6 +14,10 @@ import exposeOpenEn from './expose.open.en.mdx'
 import exposeOpenRu from './expose.open.ru.mdx'
 import exposeSetOpenEn from './expose.setOpen.en.mdx'
 import exposeSetOpenRu from './expose.setOpen.ru.mdx'
+import exposeToCloseEn from './expose.toClose.en.mdx'
+import exposeToCloseRu from './expose.toClose.ru.mdx'
+import exposeToOpenEn from './expose.toOpen.en.mdx'
+import exposeToOpenRu from './expose.toOpen.ru.mdx'
 import exposeToggleEn from './expose.toggle.en.mdx'
 import exposeToggleRu from './expose.toggle.ru.mdx'
 import hooksEn from './hooks.en.mdx'
@@ -60,6 +64,14 @@ export const wikiMdxWindow: StorybookComponentsMdxItem = {
     'expose.setOpen': {
       en: exposeSetOpenEn,
       ru: exposeSetOpenRu
+    },
+    'expose.toClose': {
+      en: exposeToCloseEn,
+      ru: exposeToCloseRu
+    },
+    'expose.toOpen': {
+      en: exposeToOpenEn,
+      ru: exposeToOpenRu
     },
     'expose.toggle': {
       en: exposeToggleEn,

@@ -8,16 +8,21 @@ interface MotionTransformPropsToken {
 
 export interface MotionTransformPropsBasic {
   // Status
-  open?: boolean
+  'open'?: boolean
 
   // Value
-  ignore?: HTMLElement | string
-  ignoreSelector?: string
+  'ignore'?: HTMLElement | string
+  'ignoreSelector'?: string
 
   // Style
-  clickOpen?: boolean
-  autoClose?: boolean
-  animationShow?: boolean
+  'clickOpen'?: boolean
+  'autoClose'?: boolean
+  'animationShow'?: boolean
+
+  // Event
+  'modelOpen'?: boolean
+  'onUpdate:open'?: (value: boolean) => void
+  'onUpdate:modelOpen'?: (value: boolean) => void
 }
 
 /**

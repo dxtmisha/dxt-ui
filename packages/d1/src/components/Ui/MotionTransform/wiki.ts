@@ -13,6 +13,9 @@ const propsNames: StorybookProps = [
   { name: 'clickOpen', type: 'boolean' },
   { name: 'ignore', type: 'string | HTMLElement' },
   { name: 'ignoreSelector', type: 'string' },
+  { name: 'modelOpen', type: 'boolean' },
+  { name: 'onUpdate:modelOpen', type: '(value: boolean) => void' },
+  { name: 'onUpdate:open', type: '(value: boolean) => void' },
   { name: 'open', type: 'boolean' },
   { name: 'section', type: 'boolean' }
   // :propsList [!] System label / Системная метка
