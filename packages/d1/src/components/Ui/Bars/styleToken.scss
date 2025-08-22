@@ -1,0 +1,19 @@
+@use "../../../styles/Ui/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Bars/style" as Bars;
+
+@include ui.initDesignBasic('d1.bars') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Bars.mixinBars;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

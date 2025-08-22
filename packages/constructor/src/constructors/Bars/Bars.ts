@@ -1,13 +1,15 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+import { computed, reactive, type Ref, type ToRefs } from 'vue'
+import { type ConstrEmit, DesignComp, forEach, getBind, toBind } from '@dxt-ui/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
+
 import { WindowClassesInclude } from '../Window'
+import { MotionTransformClassesInclude } from '../MotionTransform'
 
 import type { BarsComponents, BarsEmits, BarsSlots } from './types'
-import type { BarsPropsBasic } from './props'
+import type { BarsProps } from './props'
 
 /**
  * Bars
@@ -18,7 +20,10 @@ export class Bars {
 
   readonly event: EventClickInclude
 
+  /** Helper for Window CSS classes/ Вспомогательный класс для CSS‑классов Window */
   readonly windowClasses: WindowClassesInclude
+  /** Helper for MotionTransform CSS classes/ Вспомогательный класс для CSS‑классов MotionTransform */
+  readonly motionTransformClasses: MotionTransformClassesInclude
 
   /**
    * Constructor
@@ -32,20 +37,110 @@ export class Bars {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: BarsPropsBasic,
-    protected readonly refs: ToRefs<BarsPropsBasic>,
+    protected readonly props: BarsProps,
+    protected readonly refs: ToRefs<BarsProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
-    protected readonly components?: DesignComp<BarsComponents, BarsPropsBasic>,
+    protected readonly components?: DesignComp<BarsComponents, BarsProps>,
     protected readonly slots?: BarsSlots,
     protected readonly emits?: ConstrEmit<BarsEmits>
   ) {
-    this.label = new LabelInclude({ label: this.props.actionLabel }, className, undefined, slots)
-    this.description = new DescriptionInclude({ description: this.props.actionDescription }, className, slots)
+    this.label = new LabelInclude(this.labelBinds, className, undefined, slots)
+    this.description = new DescriptionInclude(this.descriptionBinds, className, slots)
 
     this.event = new EventClickInclude({}, undefined, emits)
 
     this.windowClasses = new WindowClassesInclude(classDesign)
+    this.motionTransformClasses = new MotionTransformClassesInclude(classDesign)
+  }
+
+  /** Returns the button data/ Возвращает данные кнопки */
+  readonly backBinds = computed<BarsProps['buttonAttrs']>(
+    () => this.initItem(
+      toBind(
+        {
+          icon: {
+            icon: this.props.iconBack,
+            iconActive: this.props.iconClose
+          },
+          iconDir: true,
+          value: 'back',
+          class: [
+            this.windowClasses.get().close,
+            this.motionTransformClasses.get().close
+          ]
+        },
+        this.props.backButton ?? {}
+      ),
+      'main-back'
+    )
+  )
+
+  /** Returns the list of control buttons/ Возвращает список кнопок управления */
+  readonly barsBinds = computed<BarsProps['bars']>(() => this.initList(this.props.bars))
+
+  /**
+   * Returns the list of active control buttons/
+   * Возвращает список активных кнопок управления
+   */
+  readonly actionBarsBinds = computed<BarsProps['bars']>(() => this.initList(this.props.actionBars, true))
+
+  /** Returns the button name/ Возвращает название кнопки */
+  readonly backLabel = computed<string | number | undefined>(() => this.props.action ? undefined : this.backBinds.value?.label)
+
+  /** Binds for label text/ Привязки для текста метки */
+  protected readonly labelBinds = reactive({
+    label: computed(() => this.props.action ? this.props.actionLabel : this.props.label)
+  })
+
+  /** Binds for description text/ Привязки для текста описания */
+  protected readonly descriptionBinds = reactive({
+    description: computed(() => this.props.action ? this.props.actionDescription : this.props.description)
+  })
+
+  /**
+   * Prepares all parameters for the button.
+   *
+   * Подготавливает все параметры для кнопки.
+   * @param item list of buttons/ список параметры
+   * @param key button identifier/ идентификатор кнопки
+   * @param isAction is action button/ является ли кнопка действия
+   */
+  protected initItem(
+    item: BarsProps['buttonAttrs'],
+    key: string | number,
+    isAction: boolean = false
+  ): BarsProps['buttonAttrs'] {
+    return {
+      icon: getBind(item?.icon, { animationShow: isAction }, 'icon'),
+      onClick: this.event.onClick,
+      ...toBind(
+        this.props.buttonAttrs ?? {},
+        item ?? {}
+      ),
+      key: `${isAction ? 'action' : ''}Bar-${item?.value ?? key}`
+    }
+  }
+
+  /**
+   * Prepares all parameters for the button.
+   *
+   * Подготавливает список параметры для кнопки.
+   * @param bars list of buttons/ >список кнопок
+   * @param isAction is action button/ является ли кнопка действия
+   */
+  protected initList(
+    bars?: BarsProps['bars'],
+    isAction: boolean = false
+  ): BarsProps['bars'] {
+    if (bars) {
+      return forEach(
+        bars,
+        (item, key) => this.initItem(item, key, isAction)
+      ) as BarsProps['bars']
+    }
+
+    return undefined
   }
 }

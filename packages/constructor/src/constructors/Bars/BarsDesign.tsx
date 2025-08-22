@@ -8,7 +8,7 @@ import {
 import { Bars } from './Bars'
 
 import {
-  type BarsPropsBasic
+  type BarsProps
 } from './props'
 import {
   type BarsClasses,
@@ -25,16 +25,16 @@ export class BarsDesign<
   COMP extends BarsComponents,
   EXPOSE extends BarsExpose,
   CLASSES extends BarsClasses,
-  P extends BarsPropsBasic
+  P extends BarsProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    BarsEmits,
-    EXPOSE,
-    BarsSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  BarsEmits,
+  EXPOSE,
+  BarsSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Bars
 
   /**
@@ -110,12 +110,114 @@ export class BarsDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    return h(
+      'div',
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main
+      },
+      [
+        ...this.renderBackButton(),
+        ...this.renderContext(),
+        ...this.renderBars(),
+        ...this.renderActionBars()
+      ]
+    )
+  }
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+  /**
+   * Rendering the close button.
+   *
+   * Рендеринг кнопки закрытия.
+   */
+  protected readonly renderBackButton = (): VNode[] => {
+    if (this.props.backHide) {
+      return []
+    }
+
+    return [
+      this.components.renderOne(
+        'button',
+        {
+          label: this.item.backLabel.value,
+          selected: this.props.action,
+          ...this.item.backBinds.value
+        }
+      ) as VNode
+    ]
+  }
+
+  /**
+   * Rendering the content.
+   *
+   * Рендеринг контента.
+   */
+  protected readonly renderContext = (): VNode[] => {
+    return [
+      h(
+        'div',
+        {
+          class: this.classes?.value.context
+        },
+        [
+          ...this.item.label.render(),
+          ...this.item.description.render()
+        ]
+      )
+    ]
+  }
+
+  /**
+   * Rendering the control button.
+   *
+   * Рендеринг кнопки управления.
+   */
+  protected readonly renderBars = (): VNode[] => {
+    const children: any[] = []
+
+    if (this.props.action) {
+      return children
+    }
+
+    children.push(...this.renderList(this.item.barsBinds.value))
+    this.initSlot('bars', children)
+
+    return children
+  }
+
+  /**
+   * Rendering the control button.
+   *
+   * Рендеринг кнопки управления.
+   */
+  protected readonly renderActionBars = (): VNode[] => {
+    const children: any[] = []
+
+    if (this.props.action) {
+      children.push(...this.renderList(this.item.actionBarsBinds.value))
+      this.initSlot('actionBars', children)
+    }
+
+    return children
+  }
+
+  /**
+   * Rendering a list of buttons from the list.
+   *
+   * Рендеринг списка кнопок по списку.
+   * @param list list of data for the button/ список данных для кнопки
+   */
+  protected readonly renderList = (
+    list: BarsProps['bars']
+  ): VNode[] => {
+    const children: VNode[] = []
+
+    if (list) {
+      list.forEach(
+        item => this.components.renderAdd(children, 'button', item)
+      )
+    }
+
+    return children
   }
 }
