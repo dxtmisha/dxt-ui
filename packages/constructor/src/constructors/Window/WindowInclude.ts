@@ -1,6 +1,6 @@
 import { computed, ref, type VNode } from 'vue'
 import {
-  type ConstrBind,
+  type ConstrBind, type ConstrEmit,
   DesignComponents,
   getRef,
   type RefOrNormal,
@@ -9,7 +9,12 @@ import {
 
 import type { WindowProps } from './props'
 import type { WindowExpose, WindowSlots } from './types'
-import type { WindowComponentInclude, WindowPropsInclude } from './basicTypes'
+import type {
+  WindowComponentInclude,
+  WindowEmitOptions,
+  WindowEmitsInclude,
+  WindowPropsInclude
+} from './basicTypes'
 
 /**
  * The class returns data for working with the Window component
@@ -25,6 +30,7 @@ export class WindowInclude<
    * @param props input parameter/ входной параметр
    * @param className class name/ название класса
    * @param components object for working with components/ объект для работы с компонентами
+   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
@@ -32,6 +38,7 @@ export class WindowInclude<
     protected readonly props: Readonly<Props>,
     protected readonly className: string,
     protected readonly components?: DesignComponents<WindowComponentInclude, Props>,
+    protected readonly emits?: ConstrEmit<WindowEmitsInclude>,
     protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly index?: string
   ) {
@@ -84,6 +91,7 @@ export class WindowInclude<
       return this.components.render(
         'window',
         {
+          onWindow: this.onWindow,
           ...toBind(
             attrs ?? {},
             this.binds.value
@@ -109,4 +117,13 @@ export class WindowInclude<
   /** Returns closing result/ Возвращает результат closing */
   protected readonly getClosing = () =>
     getRef(this.extra)?.closing?.() ?? this.props.windowAttrs?.closing?.() ?? true
+
+  /**
+   * Emits 'window' event upward/
+   * Поднимает событие 'window' наверх
+   * @param options event payload/ параметры события
+   */
+  protected readonly onWindow = (options: WindowEmitOptions) => {
+    this.emits?.('window', options)
+  }
 }

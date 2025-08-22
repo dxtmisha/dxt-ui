@@ -146,6 +146,14 @@ export type WindowComponentInclude = {
 }
 
 /**
+ * Event map for Window include/
+ * Карта событий для подключения Window
+ */
+export type WindowEmitsInclude = {
+  window: [options: WindowEmitOptions]
+}
+
+/**
  * Interface for window expose inclusion/
  * Интерфейс для включения expose окна
  */

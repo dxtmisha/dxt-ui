@@ -212,6 +212,7 @@ export const wikiDescriptionsMotionTransform: StorybookComponentsDescriptionItem
     slots: `
 <StorybookDescriptions componentName={'MotionTransform'} type={'slot.head'}/>
 <StorybookDescriptions componentName={'MotionTransform'} type={'slot.body'}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'slot.params'}/>
     `
   }
 }
