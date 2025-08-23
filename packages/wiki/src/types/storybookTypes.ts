@@ -84,7 +84,7 @@ export type StorybookArgsToOptionsByType = {
   /** Default value/ Значение по умолчанию */
   defaultValue?: string | number | boolean
   /** Value for the argument/ Значение для аргумента */
-  value?: string | number | boolean
+  value?: any
   /** Description for the argument/ Описание для аргумента */
   description?: StorybookArgsToDescription
   /** Options for select/ Опции для выбора */

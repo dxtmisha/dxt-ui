@@ -16,7 +16,7 @@ import type {
  * Базовый класс для работы с событиями кнопки
  */
 export class EventClickInclude {
-  protected readonly refs: ToRefs<EventClickProps>
+  protected readonly refs?: ToRefs<EventClickProps>
 
   /**
    * Constructor
@@ -25,11 +25,11 @@ export class EventClickInclude {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: EventClickProps,
+    protected readonly props?: EventClickProps,
     protected readonly enabled?: EnabledInclude,
     protected readonly emits?: ConstrEmit<EventClickEmits>
   ) {
-    this.refs = toRefs(props)
+    this.refs = props ? toRefs(props) : undefined
   }
 
   /**
@@ -39,8 +39,8 @@ export class EventClickInclude {
    */
   get expose(): EventClickExpose {
     return {
-      value: this.refs.value,
-      detail: this.refs.detail
+      value: this.refs?.value,
+      detail: this.refs?.detail
     }
   }
 
@@ -86,8 +86,8 @@ export class EventClickInclude {
   protected getOptions(event: MouseEvent): EventClickValue {
     return {
       type: this.getTargetType(event),
-      value: this.props.value,
-      detail: this.props.detail
+      value: this.props?.value,
+      detail: this.props?.detail
     }
   }
 
@@ -111,8 +111,8 @@ export class EventClickInclude {
    * Изменение ссылки через router
    */
   protected toRouter(): boolean {
-    if (this.props.to) {
-      RouterItem.push(this.props.to)
+    if (this.props?.to) {
+      RouterItem.push(this.props?.to)
       return true
     }
 

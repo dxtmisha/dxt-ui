@@ -1,0 +1,38 @@
+{
+  "media-max|md": {
+    "=?grid-paddingX": {
+      "value": "{sys.spacing.grid.paddingX.md}",
+      "_type": "var"
+    },
+    "=?grid-paddingY": {
+      "value": "{sys.spacing.grid.paddingY}",
+      "_type": "var"
+    },
+    "=?grid-gapX": {
+      "value": "{sys.spacing.grid.gapX.md}",
+      "_type": "var"
+    },
+    "=?grid-gapY": {
+      "value": "{sys.spacing.grid.gapY.md}",
+      "_type": "var"
+    }
+  },
+  "media|md": {
+    "=?grid-paddingX": {
+      "value": "{sys.spacing.grid.paddingX.lg}",
+      "_type": "var"
+    },
+    "=?grid-paddingY": {
+      "value": "{sys.spacing.grid.paddingY}",
+      "_type": "var"
+    },
+    "=?grid-gapX": {
+      "value": "{sys.spacing.grid.gapX.lg}",
+      "_type": "var"
+    },
+    "=?grid-gapY": {
+      "value": "{sys.spacing.grid.gapY.lg}",
+      "_type": "var"
+    }
+  }
+}

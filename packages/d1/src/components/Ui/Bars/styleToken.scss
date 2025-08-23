@@ -11,6 +11,48 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    gap: var(--d1-sys-spacing-adaptive-xs);
+    
+    @include ui.paddingX(#{var(--d1-ref-spacing-2px)});
+    
+    @include ui.backgroundColor(#{var(--d1-sys-palette-onPrimary)});
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+    
+    backdrop-filter: var(--d1-sys-blur-md);
+    
+    &__label {
+      padding-top: var(--d1-ref-spacing-2px);
+      
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-lg)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-lg)});
+      letter-spacing: var(--d1-sys-letterSpacing-none);
+      
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+    }
+    
+    &__description {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-md);
+      
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+      
+      &:first-child {
+        padding-top: var(--d1-ref-spacing-6px);
+      }
+    }
+    
+    &--action {
+      @include ui.color(#{var(--d1-sys-palette-inverseOnPrimary)});
+      
+      @include ui.backgroundColor(#{var(--d1-sys-palette-inversePrimary)});
+    }
   }
   // :style [!] System label / Системная метка
 

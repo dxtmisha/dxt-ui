@@ -53,7 +53,7 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Description text providing additional context',
         ru: 'Текст описания, предоставляющий дополнительный контекст'
       },
-      value: 'Description'
+      value: 'Here is a detailed description of the component'
     }
   },
   detail: {

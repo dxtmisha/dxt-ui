@@ -1,3 +1,26 @@
 {
-  "main": "{d.bars}"
+  "main": "{d.bars}",
+  "gap": "{sys.spacing.adaptive.xs}",
+  "padding-x": "{ref.spacing.2px}",
+  "background-color": "{sys.palette.onPrimary}",
+  "background-opacity": "{sys.opacity.primary.high}",
+  "backdrop-filter": "{sys.blur.md}",
+  "#label": {
+    "padding-top": "{ref.spacing.2px}",
+    "link|font": "{font.titleLarge}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.high}"
+  },
+  "#description": {
+    "link|font": "{font.bodyMedium}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.medium}",
+    "&:first-child": {
+      "padding-top": "{ref.spacing.6px}"
+    }
+  },
+  "~action": {
+    "color": "{sys.palette.inverseOnPrimary}",
+    "background-color": "{sys.palette.inversePrimary}"
+  }
 }

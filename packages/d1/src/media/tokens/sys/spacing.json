@@ -6,6 +6,21 @@
   "lg": "{ref.spacing.5}",
   "xl": "{ref.spacing.6}",
   "border": "{ref.spacing.px}",
+  "grid": {
+    "paddingX": {
+      "md": "{ref.spacing.2}",
+      "lg": "{ref.spacing.3}"
+    },
+    "paddingY": "{ref.spacing.2}",
+    "gapX": {
+      "md": "{ref.spacing.4}",
+      "lg": "{ref.spacing.6}"
+    },
+    "gapY": {
+      "md": "{ref.spacing.6}",
+      "lg": "{ref.spacing.8}"
+    }
+  },
   "block": {
     "x": "{ref.spacing.1}",
     "xs": "{ref.spacing.2}",

@@ -49,7 +49,7 @@ export class Bars {
     this.label = new LabelInclude(this.labelBinds, className, undefined, slots)
     this.description = new DescriptionInclude(this.descriptionBinds, className, slots)
 
-    this.event = new EventClickInclude({}, undefined, emits)
+    this.event = new EventClickInclude(undefined, undefined, emits)
 
     this.windowClasses = new WindowClassesInclude(classDesign)
     this.motionTransformClasses = new MotionTransformClassesInclude(classDesign)

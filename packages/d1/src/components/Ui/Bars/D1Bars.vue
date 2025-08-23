@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxt-ui/functional'
@@ -12,7 +10,9 @@ import {
   type BarsSlots
 } from '@dxt-ui/constructor/Bars'
 
-import { defaults, type BarsProps, propsValues } from './props'
+import { D1Button } from '../Button'
+
+import { defaults, type BarsProps } from './props'
 import './styleToken.scss'
 
 defineOptions({
@@ -41,7 +41,17 @@ const design = new BarsDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      button: D1Button
+    },
+    compMod: {
+      button: {
+        text: true,
+        size: 'xs',
+        inverse: true
+      }
+    }
   }
 )
 

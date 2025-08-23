@@ -23,6 +23,7 @@
   'd1.color',
   'd1.elevation',
   'd1.font',
+  'd1.grid',
   'd1.padding',
   'd1.paddingX',
   'd1.paddingY',
@@ -4083,6 +4084,76 @@
                 type: 'var',
                 value: 'var(--d1-ref-spacing-px)',
               ),
+              'grid':(
+                index: 'grid',
+                name: 'grid',
+                type: 'var',
+                value: (
+                  'paddingX':(
+                    index: 'paddingX',
+                    name: 'paddingX',
+                    type: 'var',
+                    value: (
+                      'md':(
+                        index: 'md',
+                        name: '--d1-sys-spacing-grid-paddingX-md',
+                        type: 'var',
+                        value: 'var(--d1-ref-spacing-2)',
+                      ),
+                      'lg':(
+                        index: 'lg',
+                        name: '--d1-sys-spacing-grid-paddingX-lg',
+                        type: 'var',
+                        value: 'var(--d1-ref-spacing-3)',
+                      ),
+                    ),
+                  ),
+                  'paddingY':(
+                    index: 'paddingY',
+                    name: '--d1-sys-spacing-grid-paddingY',
+                    type: 'var',
+                    value: 'var(--d1-ref-spacing-2)',
+                  ),
+                  'gapX':(
+                    index: 'gapX',
+                    name: 'gapX',
+                    type: 'var',
+                    value: (
+                      'md':(
+                        index: 'md',
+                        name: '--d1-sys-spacing-grid-gapX-md',
+                        type: 'var',
+                        value: 'var(--d1-ref-spacing-4)',
+                      ),
+                      'lg':(
+                        index: 'lg',
+                        name: '--d1-sys-spacing-grid-gapX-lg',
+                        type: 'var',
+                        value: 'var(--d1-ref-spacing-6)',
+                      ),
+                    ),
+                  ),
+                  'gapY':(
+                    index: 'gapY',
+                    name: 'gapY',
+                    type: 'var',
+                    value: (
+                      'md':(
+                        index: 'md',
+                        name: '--d1-sys-spacing-grid-gapY-md',
+                        type: 'var',
+                        value: 'var(--d1-ref-spacing-6)',
+                      ),
+                      'lg':(
+                        index: 'lg',
+                        name: '--d1-sys-spacing-grid-gapY-lg',
+                        type: 'var',
+                        value: 'var(--d1-ref-spacing-8)',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               'block':(
                 index: 'block',
                 name: 'block',
@@ -6387,6 +6458,68 @@
             type: 'property',
             value: 'var(--d1-sys-opacity-surface-high)',
           ),
+          'mediaMaxMd':(
+            index: 'mediaMaxMd',
+            name: '(max-width: calc(768px - 1px))',
+            type: 'media-max',
+            value: (
+              'gridPaddingX':(
+                index: 'gridPaddingX',
+                name: '--d1-grid-paddingX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingX-md)',
+              ),
+              'gridPaddingY':(
+                index: 'gridPaddingY',
+                name: '--d1-grid-paddingY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingY)',
+              ),
+              'gridGapX':(
+                index: 'gridGapX',
+                name: '--d1-grid-gapX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapX-md)',
+              ),
+              'gridGapY':(
+                index: 'gridGapY',
+                name: '--d1-grid-gapY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapY-md)',
+              ),
+            ),
+          ),
+          'mediaMd':(
+            index: 'mediaMd',
+            name: '(min-width: 768px)',
+            type: 'media',
+            value: (
+              'gridPaddingX':(
+                index: 'gridPaddingX',
+                name: '--d1-grid-paddingX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingX-lg)',
+              ),
+              'gridPaddingY':(
+                index: 'gridPaddingY',
+                name: '--d1-grid-paddingY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingY)',
+              ),
+              'gridGapX':(
+                index: 'gridGapX',
+                name: '--d1-grid-gapX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapX-lg)',
+              ),
+              'gridGapY':(
+                index: 'gridGapY',
+                name: '--d1-grid-gapY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapY-lg)',
+              ),
+            ),
+          ),
         ),
       ),
       'main':(
@@ -6441,6 +6574,68 @@
             name: 'background',
             type: 'property',
             value: 'var(--d1-sys-background-0)',
+          ),
+          'mediaMaxMd':(
+            index: 'mediaMaxMd',
+            name: '(max-width: calc(768px - 1px))',
+            type: 'media-max',
+            value: (
+              'gridPaddingX':(
+                index: 'gridPaddingX',
+                name: '--d1-grid-paddingX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingX-md)',
+              ),
+              'gridPaddingY':(
+                index: 'gridPaddingY',
+                name: '--d1-grid-paddingY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingY)',
+              ),
+              'gridGapX':(
+                index: 'gridGapX',
+                name: '--d1-grid-gapX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapX-md)',
+              ),
+              'gridGapY':(
+                index: 'gridGapY',
+                name: '--d1-grid-gapY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapY-md)',
+              ),
+            ),
+          ),
+          'mediaMd':(
+            index: 'mediaMd',
+            name: '(min-width: 768px)',
+            type: 'media',
+            value: (
+              'gridPaddingX':(
+                index: 'gridPaddingX',
+                name: '--d1-grid-paddingX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingX-lg)',
+              ),
+              'gridPaddingY':(
+                index: 'gridPaddingY',
+                name: '--d1-grid-paddingY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingY)',
+              ),
+              'gridGapX':(
+                index: 'gridGapX',
+                name: '--d1-grid-gapX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapX-lg)',
+              ),
+              'gridGapY':(
+                index: 'gridGapY',
+                name: '--d1-grid-gapY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapY-lg)',
+              ),
+            ),
           ),
         ),
       ),
@@ -8820,6 +9015,75 @@
                 name: 'letter-spacing',
                 type: 'property',
                 value: 'var(--d1-sys-letterSpacing-compress)',
+              ),
+            ),
+          ),
+        ),
+      ),
+      'grid':(
+        index: 'grid',
+        name: 'd1-grid',
+        type: 'component',
+        value: (
+          'mediaMaxMd':(
+            index: 'mediaMaxMd',
+            name: '(max-width: calc(768px - 1px))',
+            type: 'media-max',
+            value: (
+              'gridPaddingX':(
+                index: 'gridPaddingX',
+                name: '--d1-grid-paddingX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingX-md)',
+              ),
+              'gridPaddingY':(
+                index: 'gridPaddingY',
+                name: '--d1-grid-paddingY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingY)',
+              ),
+              'gridGapX':(
+                index: 'gridGapX',
+                name: '--d1-grid-gapX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapX-md)',
+              ),
+              'gridGapY':(
+                index: 'gridGapY',
+                name: '--d1-grid-gapY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapY-md)',
+              ),
+            ),
+          ),
+          'mediaMd':(
+            index: 'mediaMd',
+            name: '(min-width: 768px)',
+            type: 'media',
+            value: (
+              'gridPaddingX':(
+                index: 'gridPaddingX',
+                name: '--d1-grid-paddingX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingX-lg)',
+              ),
+              'gridPaddingY':(
+                index: 'gridPaddingY',
+                name: '--d1-grid-paddingY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-paddingY)',
+              ),
+              'gridGapX':(
+                index: 'gridGapX',
+                name: '--d1-grid-gapX',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapX-lg)',
+              ),
+              'gridGapY':(
+                index: 'gridGapY',
+                name: '--d1-grid-gapY',
+                type: 'var',
+                value: 'var(--d1-sys-spacing-grid-gapY-lg)',
               ),
             ),
           ),
@@ -11529,6 +11793,11 @@
         name: 'd1-badge',
         type: 'component',
       ),
+      'bars':(
+        index: 'bars',
+        name: 'd1-bars',
+        type: 'component',
+      ),
       'button':(
         index: 'button',
         name: 'd1-button',
@@ -11855,6 +12124,11 @@
       'badge':(
         index: 'badge',
         name: 'd-badge',
+        type: 'component',
+      ),
+      'bars':(
+        index: 'bars',
+        name: 'd-bars',
         type: 'component',
       ),
       'button':(

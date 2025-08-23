@@ -11,7 +11,7 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-button-padding: calc(var(--sys-height) * .4);
+    --d1-button-padding: calc(var(--sys-height) * var(--d1-sys-spacing-adaptive-md));
     --d1-button-transitionFunction: var(--d-sys-transitionFunction-standard);
     
     border-radius: calc(var(--sys-height) * var(--d1-sys-rounded-adaptive-md));
@@ -396,7 +396,7 @@
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
       @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
       
-      backdrop-filter: var(--d1-sys-blur-md);
+      backdrop-filter: var(--d1-sys-blur-sm);
       
       @include ui.disabled('.d1-button') {
         @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
@@ -487,6 +487,10 @@
       
       &.d1-button--selected {
         @include ui.color(#{var(--d1-sys-palette-primaryVariant)});
+      }
+      
+      @media screen and (max-width: calc(768px - 1px)) {
+        --d1-button-compressed: .40;
       }
     }
     

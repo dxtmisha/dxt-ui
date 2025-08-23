@@ -54,8 +54,16 @@
     @include ui.marginRight(calc(ui.v('??margin') * ui.v('??compressed')));
   }
 
+  &__label:has(~ &__icon) {
+    @include ui.paddingLeft(ui.v('??padding'));
+  }
+
   &__label ~ &__icon {
     @include ui.marginRight(#{calc(ui.v('??margin') - ui.v('??padding'))});
+  }
+
+  &__label:has(~ &__trailing) {
+    @include ui.paddingRight(ui.v('??padding'));
   }
 
   &__label ~ &__trailing {

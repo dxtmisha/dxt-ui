@@ -27,12 +27,14 @@
     "_category": "root"
   },
   "system": {
+    "grid": "{grid}",
     "font": "{font.bodyLarge}",
     "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.high}",
     "_category": "class"
   },
   "main": {
+    "grid": "{grid}",
     "font": "{font.bodyLarge}",
     "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.high}",
@@ -66,6 +68,12 @@
   "font": {
     "value": {
       "file|font": "tokens/font.json"
+    },
+    "_category": "class"
+  },
+  "grid": {
+    "value": {
+      "file|grid": "tokens/grid.json"
     },
     "_category": "class"
   },

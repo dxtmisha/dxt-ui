@@ -11,4 +11,18 @@
   @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
   
   background: var(--d1-sys-background-0);
+  
+  @media screen and (max-width: calc(768px - 1px)) {
+    --d1-grid-paddingX: var(--d1-sys-spacing-grid-paddingX-md);
+    --d1-grid-paddingY: var(--d1-sys-spacing-grid-paddingY);
+    --d1-grid-gapX: var(--d1-sys-spacing-grid-gapX-md);
+    --d1-grid-gapY: var(--d1-sys-spacing-grid-gapY-md);
+  }
+  
+  @media screen and (min-width: 768px) {
+    --d1-grid-paddingX: var(--d1-sys-spacing-grid-paddingX-lg);
+    --d1-grid-paddingY: var(--d1-sys-spacing-grid-paddingY);
+    --d1-grid-gapX: var(--d1-sys-spacing-grid-gapX-lg);
+    --d1-grid-gapY: var(--d1-sys-spacing-grid-gapY-lg);
+  }
 }

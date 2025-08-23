@@ -112,6 +112,9 @@
     "selected": {
       "color": "{sys.palette.primaryVariant}"
     },
+    "media-max|md": {
+      "compressed": ".40"
+    },
     "_category": "style"
   },
   "~size": {
