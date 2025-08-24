@@ -7,17 +7,8 @@ The Window component supports two-way binding of the open state via the `v-model
 - `open: boolean` — window visibility state
 - `update:open(boolean)` — update event emitted when the state changes
 
-### Example
-
 ```html
-<template>
-  <button @click="isOpen = true">Open</button>
-
-  <!-- Two-way binding of visibility -->
-  <Window v-model:open="isOpen" title="Dialog title">
-    Your content here
-  </Window>
-</template>
+<Window v-model:open="isOpen"/>
 ```
 
 ### Notes

@@ -10,6 +10,7 @@ const propsNames: StorybookProps = [
   { name: 'actionBars', type: 'ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]' },
   { name: 'actionDescription', type: 'string | number' },
   { name: 'actionLabel', type: 'string | number' },
+  { name: 'backActionHide', type: 'boolean' },
   { name: 'backButton', type: 'ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>' },
   { name: 'backHide', type: 'boolean' },
   { name: 'bars', type: 'ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]' },
@@ -17,7 +18,10 @@ const propsNames: StorybookProps = [
   { name: 'description', type: 'string | number' },
   { name: 'iconBack', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
   { name: 'iconClose', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
-  { name: 'label', type: 'string | number' }
+  { name: 'label', type: 'string | number' },
+  { name: 'modelAction', type: 'boolean' },
+  { name: 'onUpdate:action', type: '(value: boolean) => void' },
+  { name: 'onUpdate:modelAction', type: '(value: boolean) => void' }
   // :propsList [!] System label / Системная метка
 ]
 

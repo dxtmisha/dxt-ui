@@ -7,24 +7,7 @@
 Это позволяет синхронизировать видимость компонента с локальным свойством данных в вашем родительском компоненте.
 
 ```html
-<script setup>
-import { ref } from 'vue'
-
-const isOpen = ref(false)
-</script>
-
-<template>
-  <button @click="isOpen = !isOpen">Переключить MotionTransform</button>
-
-  <MotionTransform v-model:open="isOpen">
-    <template #head>
-      <div>Нажми на меня, чтобы переключить</div>
-    </template>
-    <template #body>
-      <div>Содержимое {{ isOpen ? 'видно' : 'скрыто' }}</div>
-    </template>
-  </MotionTransform>
-</template>
+<MotionTransform v-model:open="isOpen"/>
 ```
 
 ### Как это работает

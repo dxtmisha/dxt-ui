@@ -7,6 +7,7 @@ import { wikiMdxStyle } from './style/wikiMdxStyle'
 import { wikiMdxValue } from './value/wikiMdxValue'
 
 import { wikiMdxBadge } from './Badge/wikiMdxBadge'
+import { wikiMdxBars } from './Bars/wikiMdxBars'
 import { wikiMdxButton } from './Button/wikiMdxButton'
 import { wikiMdxCell } from './Cell/wikiMdxCell'
 import { wikiMdxChip } from './Chip/wikiMdxChip'
@@ -28,6 +29,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxValue,
 
   wikiMdxBadge,
+  wikiMdxBars,
   wikiMdxButton,
   wikiMdxCell,
   wikiMdxChip,

@@ -4,6 +4,7 @@ import D1Bars from './D1Bars.vue'
 import { BarsWikiStorybook } from './wiki.ts'
 
 // :story-import [!] System label / Системная метка
+import { ref } from 'vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -31,4 +32,66 @@ export const Bars: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const BarsBasic: Story = {
+  name: 'Базовые',
+  render: () => ({
+    components: { D1Bars },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <D1Bars
+            label="Page Title"
+            description="Short page description"
+            :bars="[
+              { icon: 'search' },
+              { icon: 'refresh' },
+              { icon: 'more_vert' }
+            ]"
+          />
+
+          <D1Bars
+            action
+            action-label="2 selected"
+            action-description="Choose an action to apply"
+            :action-bars="[
+              { icon: 'share' },
+              { icon: 'edit' },
+              { icon: 'delete' }
+            ]"
+          />
+        </div>
+    `
+  })
+}
+export const BarsVModel: Story = {
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: { D1Bars },
+    setup() {
+      return {
+        isAction: ref(false)
+      }
+    },
+    template: `
+        <button class="wiki-storybook-button" @click="isAction = !isAction">Toggle action ({{ isAction ? 'on' : 'off' }})</button>
+        <D1Bars
+          v-model:action="isAction"
+          label="Page Title"
+          description="Short description"
+          :bars="[
+            { icon: 'search' },
+            { icon: 'refresh' },
+            { icon: 'more_vert' }
+          ]"
+          action-label="2 selected"
+          action-description="Choose an action to apply"
+          :action-bars="[
+            { icon: 'share' },
+            { icon: 'edit' },
+            { icon: 'delete' }
+          ]"
+          style="margin-top: 8px;"
+        />
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

@@ -17,19 +17,25 @@ export interface BarsPropsBasic<
   Button extends ButtonPropsBasic = ButtonPropsBasic
 > extends LabelProps, DescriptionProps {
   // Value
-  backButton?: ConstrBind<Button>
-  backHide?: boolean
-  bars?: ConstrBind<Button>[]
+  'backButton'?: ConstrBind<Button>
+  'backHide'?: boolean
+  'backActionHide'?: boolean
+  'bars'?: ConstrBind<Button>[]
 
-  actionLabel?: LabelProps['label']
-  actionDescription?: DescriptionProps['description']
-  actionBars?: ConstrBind<Button>[]
+  'actionLabel'?: LabelProps['label']
+  'actionDescription'?: DescriptionProps['description']
+  'actionBars'?: ConstrBind<Button>[]
 
   // Style
-  buttonAttrs?: ConstrBind<Button>
+  'buttonAttrs'?: ConstrBind<Button>
 
-  iconBack?: IconValue<Icon>
-  iconClose?: IconValue<Icon>
+  'iconBack'?: IconValue<Icon>
+  'iconClose'?: IconValue<Icon>
+
+  // Event
+  'modelAction'?: boolean
+  'onUpdate:action'?: (value: boolean) => void
+  'onUpdate:modelAction'?: (value: boolean) => void
 }
 
 /**

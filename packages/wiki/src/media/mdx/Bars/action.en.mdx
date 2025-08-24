@@ -1,0 +1,40 @@
+## Action mode
+
+Properties that switch Bars into a contextual action bar when selecting items or entering bulk-edit mode: `action` activates the mode, `actionLabel` and `actionDescription` replace the main content, `actionBars` provides a specialized button set for operations.
+
+```
+action?: boolean
+actionLabel?: string | number
+actionDescription?: string
+actionBars?: Button[]
+```
+
+### Properties
+
+- **`action`** — Switches the bar into action context with full content replacement
+- **`actionLabel`** — Primary action mode title (typically a count of selected items)
+- **`actionDescription`** — Additional description or instruction for the current action
+- **`actionBars`** — Array of action buttons for operations on selected elements
+
+### When to use
+
+- **Item selection** — User has selected one or more items in a list or table
+- **Bulk operations** — Actions are needed on a group of selected objects
+- **Contextual menus** — Replace the standard bar with specialized actions
+- **Temporary modes** — Focus the interface on a specific task with exit capability
+
+### Comparison
+
+- **`label` vs `actionLabel`** — Regular title is replaced with selection count or description
+- **`description` vs `actionDescription`** — Standard description becomes action instruction
+- **`bars` vs `actionBars`** — Regular buttons are replaced with context-specific ones
+- **Navigation** — Back button becomes an exit button for leaving action mode
+
+### Features
+
+- **Complete content replacement** — All text areas and buttons are replaced with action variants
+- **Configuration preservation** — Shared button attributes (buttonAttrs) apply to actionBars
+- **Unified styling** — Action mode inherits all styling and behavior from the main component
+- **Programmatic control** — Mode is controlled by external selection state
+
+> Use short, clear labels in actionLabel and limit actionBars to 3–4 key actions for better user experience.

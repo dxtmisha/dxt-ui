@@ -7,17 +7,8 @@
 - `open: boolean` — состояние видимости окна
 - `update:open(boolean)` — событие обновления при изменении состояния
 
-### Пример
-
 ```html
-<template>
-  <button @click="isOpen = true">Открыть</button>
-
-  <!-- Двусторонняя привязка видимости -->
-  <Window v-model:open="isOpen" title="Заголовок окна">
-    Ваш контент
-  </Window>
-</template>
+<Window v-model:open="isOpen"/>
 ```
 
 ### Заметки

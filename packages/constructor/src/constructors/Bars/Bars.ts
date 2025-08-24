@@ -4,17 +4,23 @@ import { type ConstrEmit, DesignComp, forEach, getBind, toBind } from '@dxt-ui/f
 import { LabelInclude } from '../../classes/LabelInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { ModelInclude } from '../../classes/ModelInclude'
 
 import { WindowClassesInclude } from '../Window'
 import { MotionTransformClassesInclude } from '../MotionTransform'
+import { BarsAction } from './BarsAction'
 
 import type { BarsComponents, BarsEmits, BarsSlots } from './types'
 import type { BarsProps } from './props'
+import type { EventClickValue } from '../../types/eventClickTypes.ts'
 
 /**
  * Bars
  */
 export class Bars {
+  /** Управление action‑режимом */
+  readonly action: BarsAction
+
   readonly label: LabelInclude
   readonly description: DescriptionInclude
 
@@ -46,6 +52,8 @@ export class Bars {
     protected readonly slots?: BarsSlots,
     protected readonly emits?: ConstrEmit<BarsEmits>
   ) {
+    this.action = new BarsAction(this.props, this.refs)
+
     this.label = new LabelInclude(this.labelBinds, className, undefined, slots)
     this.description = new DescriptionInclude(this.descriptionBinds, className, slots)
 
@@ -53,6 +61,8 @@ export class Bars {
 
     this.windowClasses = new WindowClassesInclude(classDesign)
     this.motionTransformClasses = new MotionTransformClassesInclude(classDesign)
+
+    new ModelInclude('action', this.emits, this.action.action)
   }
 
   /** Returns the button data/ Возвращает данные кнопки */
@@ -69,7 +79,8 @@ export class Bars {
           class: [
             this.windowClasses.get().close,
             this.motionTransformClasses.get().close
-          ]
+          ],
+          onClick: this.onClickBack
         },
         this.props.backButton ?? {}
       ),
@@ -87,16 +98,16 @@ export class Bars {
   readonly actionBarsBinds = computed<BarsProps['bars']>(() => this.initList(this.props.actionBars, true))
 
   /** Returns the button name/ Возвращает название кнопки */
-  readonly backLabel = computed<string | number | undefined>(() => this.props.action ? undefined : this.backBinds.value?.label)
+  readonly backLabel = computed<string | number | undefined>(() => this.action.is.value ? undefined : this.backBinds.value?.label)
 
   /** Binds for label text/ Привязки для текста метки */
   protected readonly labelBinds = reactive({
-    label: computed(() => this.props.action ? this.props.actionLabel : this.props.label)
+    label: computed(() => this.action.is.value ? this.props.actionLabel : this.props.label)
   })
 
   /** Binds for description text/ Привязки для текста описания */
   protected readonly descriptionBinds = reactive({
-    description: computed(() => this.props.action ? this.props.actionDescription : this.props.description)
+    description: computed(() => this.action.is.value ? this.props.actionDescription : this.props.description)
   })
 
   /**
@@ -113,13 +124,13 @@ export class Bars {
     isAction: boolean = false
   ): BarsProps['buttonAttrs'] {
     return {
-      icon: getBind(item?.icon, { animationShow: isAction }, 'icon'),
       onClick: this.event.onClick,
       ...toBind(
         this.props.buttonAttrs ?? {},
         item ?? {}
       ),
-      key: `${isAction ? 'action' : ''}Bar-${item?.value ?? key}`
+      key: `${isAction ? 'action' : ''}Bar-${item?.value ?? key}`,
+      icon: getBind(item?.icon, { animationShow: isAction }, 'icon')
     }
   }
 
@@ -142,5 +153,21 @@ export class Bars {
     }
 
     return undefined
+  }
+
+  /**
+   * Back button click handler: closes action mode and proxies click event.
+   *
+   * Обработчик клика по кнопке «назад»: закрывает action‑режим и проксирует событие.
+   */
+  protected readonly onClickBack = (
+    event: MouseEvent,
+    options?: EventClickValue
+  ) => {
+    if (options?.value === 'back') {
+      this.action.close()
+    }
+
+    this.event.onClick(event, options)
   }
 }

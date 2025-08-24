@@ -7,24 +7,7 @@ The MotionTransform component supports two-way binding for the `open` state usin
 This allows you to synchronize the component's visibility with a local data property in your parent component.
 
 ```html
-<script setup>
-import { ref } from 'vue'
-
-const isOpen = ref(false)
-</script>
-
-<template>
-  <button @click="isOpen = !isOpen">Toggle MotionTransform</button>
-
-  <MotionTransform v-model:open="isOpen">
-    <template #head>
-      <div>Click me to toggle</div>
-    </template>
-    <template #body>
-      <div>Content is {{ isOpen ? 'visible' : 'hidden' }}</div>
-    </template>
-  </MotionTransform>
-</template>
+<MotionTransform v-model:open="isOpen"/>
 ```
 
 ### How it works

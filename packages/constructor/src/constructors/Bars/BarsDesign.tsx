@@ -131,7 +131,13 @@ export class BarsDesign<
    * Рендеринг кнопки закрытия.
    */
   protected readonly renderBackButton = (): VNode[] => {
-    if (this.props.backHide) {
+    if (
+      this.props.backHide
+      && (
+        !this.item.action.is.value
+        || this.props.backActionHide
+      )
+    ) {
       return []
     }
 
@@ -140,7 +146,7 @@ export class BarsDesign<
         'button',
         {
           label: this.item.backLabel.value,
-          selected: this.props.action,
+          selected: this.item.action.is.value,
           ...this.item.backBinds.value
         }
       ) as VNode
@@ -175,7 +181,7 @@ export class BarsDesign<
   protected readonly renderBars = (): VNode[] => {
     const children: any[] = []
 
-    if (this.props.action) {
+    if (this.item.action.is.value) {
       return children
     }
 
@@ -193,7 +199,7 @@ export class BarsDesign<
   protected readonly renderActionBars = (): VNode[] => {
     const children: any[] = []
 
-    if (this.props.action) {
+    if (this.item.action.is.value) {
       children.push(...this.renderList(this.item.actionBarsBinds.value))
       this.initSlot('actionBars', children)
     }

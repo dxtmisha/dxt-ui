@@ -17,7 +17,12 @@ export type BarsComponents = ButtonComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type BarsEmits = EventClickEmits
+export type BarsEmits
+  = EventClickEmits
+    & {
+      'update:action': [value: boolean]
+      'update:modelAction': [value: boolean]
+    }
 
 /**
  * Type describing available properties.
@@ -33,8 +38,9 @@ export interface BarsExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface BarsSlots extends LabelSlots, DescriptionSlots {
-  bars? (props: any): any
-  actionBars? (props: any): any
+  bars?(props: any): any
+
+  actionBars?(props: any): any
 }
 
 /**

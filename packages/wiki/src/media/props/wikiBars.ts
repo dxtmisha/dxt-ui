@@ -60,17 +60,27 @@ export const wikiBars: StorybookArgsToList = {
   'bars.backButton': {
     type: StorybookControl.object,
     options: {
-      category: StorybookCategory.value,
+      category: StorybookCategory.style,
       description: {
         en: 'Provides configuration for the back button',
         ru: 'Предоставляет конфигурацию для кнопки назад'
       }
     }
   },
+  'bars.backActionHide': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Hide back button in action',
+        ru: 'Скрыть кнопку назад в action'
+      }
+    }
+  },
   'bars.backHide': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.value,
+      category: StorybookCategory.style,
       description: {
         en: 'Hides the back button',
         ru: 'Скрывает кнопку назад'
