@@ -38,7 +38,7 @@
       @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
       letter-spacing: var(--d1-sys-letterSpacing-md);
       
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
       
       &:first-child {
         padding-top: var(--d1-ref-spacing-6px);

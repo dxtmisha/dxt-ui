@@ -1,6 +1,6 @@
 // export:none
 
-import { toCamelCase } from '@dxt-ui/functional'
+import { isObjectNotArray, toCamelCase } from '@dxt-ui/functional'
 
 import { PropertiesTool } from '../../Properties/PropertiesTool'
 
@@ -69,7 +69,7 @@ export class StylesToProperty extends StylesToAbstract {
       this.item?.[PropertyKey.modification] !== false
       && styleTypes.indexOf(name) !== -1
     ) {
-      return `@include ui.${toCamelCase(name)}(#{${value}});`
+      return `@include ui.${toCamelCase(name)}(#{${value}});${this.initAuxiliaryValue()}`
     }
 
     const property = `${name}: ${StylesTool.toFunctionCss(value)}`
@@ -79,5 +79,45 @@ export class StylesToProperty extends StylesToAbstract {
     }
 
     return `${property};`
+  }
+
+  /**
+   * Initialization of auxiliary values.
+   *
+   * Инициализация вспомогательных значений.
+   */
+  private initAuxiliaryValue(): string {
+    const name = this.getName()
+    const properties = this.property.parent?.value
+
+    if (isObjectNotArray(properties)) {
+      switch (name) {
+        case 'color-opacity':
+          if (!('color' in properties)) {
+            return ` @include ui.color('init');`
+          }
+          break
+
+        case 'background-opacity':
+          if (!('backgroundColor' in properties)) {
+            return ` @include ui.backgroundColor('init');`
+          }
+          break
+
+        case 'gradient-opacity':
+          if (!('gradient' in properties)) {
+            return ` @include ui.gradient('init');`
+          }
+          break
+
+        case 'border-opacity':
+          if (!('borderColor' in properties)) {
+            return ` @include ui.borderColor('init');`
+          }
+          break
+      }
+    }
+
+    return ''
   }
 }

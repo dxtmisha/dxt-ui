@@ -357,7 +357,9 @@
 /// @param {Boolean} $important add !important
 /// @param {String} $propertyName CSS property name (default 'color')
 @mixin color($color, $opacity: null, $important: false, $propertyName: 'color') {
-  @if (isColorRbgOrVar($color)) {
+  @if ($color == 'init') {
+    @include colorInit($important, $propertyName);
+  } @else if (isColorRbgOrVar($color)) {
     @include colorSys('color', $color, $important);
     @include colorOpacity($opacity, $important, false, $propertyName);
     @include colorInit($important, $propertyName);
@@ -372,7 +374,7 @@
 /// @param {Boolean} $important add !important
 /// @param {Boolean} $init immediately apply computed color
 /// @param {String} $propertyName CSS property name
-@mixin colorOpacity($opacity, $important: false, $init: true, $propertyName: 'color') {
+@mixin colorOpacity($opacity, $important: false, $init: false, $propertyName: 'color') {
   @if ($opacity != null) {
     @if ($important) {
       --sys-color-opacity: #{$opacity} !important;
@@ -414,7 +416,7 @@
 /// @param {Number} $opacity opacity [0..1]
 /// @param {Boolean} $important add !important
 /// @param {Boolean} $init immediately apply computed stroke
-@mixin strokeOpacity($opacity, $important: false, $init: true) {
+@mixin strokeOpacity($opacity, $important: false, $init: false) {
   @include colorOpacity($opacity, $important, $init, 'stroke');
 }
 
@@ -434,7 +436,9 @@
 /// @param {Boolean} $important add !important
 /// @param {String} $propertyName CSS property name (default 'background-color')
 @mixin backgroundColor($color, $opacity: null, $important: false, $propertyName: 'background-color') {
-  @if ($color == 'as-color') {
+  @if ($color == 'init') {
+    @include backgroundInit($important, $propertyName);
+  } @else if ($color == 'as-color') {
     @include backgroundAsColor;
   } @else if ($color == transparent) {
     @include backgroundColor(#000000, 0, $important, $propertyName);
@@ -453,7 +457,7 @@
 /// @param {Boolean} $important add !important
 /// @param {Boolean} $init immediately apply computed background
 /// @param {String} $propertyName CSS property name
-@mixin backgroundOpacity($opacity, $important: false, $init: true, $propertyName: 'background-color') {
+@mixin backgroundOpacity($opacity, $important: false, $init: false, $propertyName: 'background-color') {
   @if ($opacity != null) {
     @if ($important) {
       --sys-background-opacity: #{$opacity} !important;
@@ -503,7 +507,7 @@
 /// @param {Number} $opacity opacity [0..1]
 /// @param {Boolean} $important add !important
 /// @param {Boolean} $init immediately apply computed fill
-@mixin fillOpacity($opacity, $important: false, $init: true) {
+@mixin fillOpacity($opacity, $important: false, $init: false) {
   @include backgroundOpacity($opacity, $important, $init);
 }
 
@@ -522,7 +526,9 @@
 /// @param {Number|null} $opacity optional opacity [0..1]
 /// @param {Boolean} $important add !important
 @mixin gradient($color, $opacity: null, $important: false) {
-  @if (isColorRbgOrVar($color)) {
+  @if ($color == 'init') {
+    @include gradientInit($important);
+  } @else if (isColorRbgOrVar($color)) {
     @include colorSys('gradient', $color, $important);
     @include gradientOpacity($opacity, $important, false);
     @include gradientInit($important);
@@ -536,7 +542,7 @@
 /// @param {Number} $opacity opacity [0..1]
 /// @param {Boolean} $important add !important
 /// @param {Boolean} $init immediately apply computed gradient
-@mixin gradientOpacity($opacity, $important: false, $init: true) {
+@mixin gradientOpacity($opacity, $important: false, $init: false) {
   @if ($opacity != null) {
     @if ($important) {
       --sys-gradient-opacity: #{$opacity} !important;
@@ -569,7 +575,9 @@
 /// @param {Number|null} $opacity optional opacity [0..1]
 /// @param {Boolean} $important add !important
 @mixin borderColor($color, $opacity: null, $important: false) {
-  @if (isColorRbgOrVar($color)) {
+  @if ($color == 'init') {
+    @include borderInit($important);
+  } @else if (isColorRbgOrVar($color)) {
     @include colorSys('border', $color, $important);
     @include borderOpacity($opacity, $important, false);
     @include borderInit($important);
@@ -583,7 +591,7 @@
 /// @param {Number} $opacity opacity [0..1]
 /// @param {Boolean} $important add !important
 /// @param {Boolean} $init immediately apply computed border
-@mixin borderOpacity($opacity, $important: false, $init: true) {
+@mixin borderOpacity($opacity, $important: false, $init: false) {
   @if ($opacity != null) {
     @if ($important) {
       --sys-border-opacity: #{$opacity} !important;

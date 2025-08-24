@@ -145,7 +145,12 @@ export class StylesProperties {
   private getArgumentsForTo(
     property: PropertyItemsItem
   ): [PropertyItemsItem, string, () => string[], boolean] {
-    return [property, this.space, this.getContent(property), this.first]
+    return [
+      property,
+      this.space,
+      this.getContent(property),
+      this.first
+    ]
   }
 
   /**
