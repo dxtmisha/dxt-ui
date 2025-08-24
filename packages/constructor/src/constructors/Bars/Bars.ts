@@ -8,6 +8,7 @@ import { ModelInclude } from '../../classes/ModelInclude'
 
 import { WindowClassesInclude } from '../Window'
 import { MotionTransformClassesInclude } from '../MotionTransform'
+import { SkeletonInclude } from '../Skeleton'
 import { BarsAction } from './BarsAction'
 
 import type { BarsComponents, BarsEmits, BarsSlots } from './types'
@@ -30,6 +31,8 @@ export class Bars {
   readonly windowClasses: WindowClassesInclude
   /** Helper for MotionTransform CSS classes/ Вспомогательный класс для CSS‑классов MotionTransform */
   readonly motionTransformClasses: MotionTransformClassesInclude
+  /** Подключение скелетона для текста/описания */
+  readonly skeleton: SkeletonInclude
 
   /**
    * Constructor
@@ -52,15 +55,26 @@ export class Bars {
     protected readonly slots?: BarsSlots,
     protected readonly emits?: ConstrEmit<BarsEmits>
   ) {
+    const skeleton = new SkeletonInclude(this.props, this.classDesign, ['classTextVariant'])
+
     this.action = new BarsAction(this.props, this.refs)
 
-    this.label = new LabelInclude(this.labelBinds, className, undefined, slots)
-    this.description = new DescriptionInclude(this.descriptionBinds, className, slots)
+    this.label = new LabelInclude(this.labelBinds,
+      className,
+      undefined,
+      slots,
+      undefined,
+      undefined,
+      undefined,
+      skeleton
+    )
+    this.description = new DescriptionInclude(this.descriptionBinds, className, slots, skeleton)
 
     this.event = new EventClickInclude(undefined, undefined, emits)
 
     this.windowClasses = new WindowClassesInclude(classDesign)
     this.motionTransformClasses = new MotionTransformClassesInclude(classDesign)
+    this.skeleton = skeleton
 
     new ModelInclude('action', this.emits, this.action.action)
   }
@@ -124,6 +138,7 @@ export class Bars {
     isAction: boolean = false
   ): BarsProps['buttonAttrs'] {
     return {
+      isSkeleton: this.props.isSkeleton,
       onClick: this.event.onClick,
       ...toBind(
         this.props.buttonAttrs ?? {},
@@ -158,7 +173,7 @@ export class Bars {
   /**
    * Back button click handler: closes action mode and proxies click event.
    *
-   * Обработчик клика по кнопке «назад»: закрывает action‑режим и проксирует событие.
+   * Обработчик кл��ка по кнопке «назад»: закрывает action‑режим и проксирует событие.
    */
   protected readonly onClickBack = (
     event: MouseEvent,

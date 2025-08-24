@@ -41,7 +41,7 @@ export const wikiDescriptionsBars: StorybookComponentsDescriptionItem = {
         <div class="wiki-storybook-flex-column">
           <DesignComponent
             label="Page Title"
-            description="Short page description"
+            description="A concise description for this page"
             :bars="[
               { icon: 'search' },
               { icon: 'refresh' },
@@ -78,7 +78,7 @@ export const wikiDescriptionsBars: StorybookComponentsDescriptionItem = {
         <DesignComponent
           v-model:action="isAction"
           label="Page Title"
-          description="Short description"
+          description="A concise description for this example"
           :bars="[
             { icon: 'search' },
             { icon: 'refresh' },
@@ -94,6 +94,28 @@ export const wikiDescriptionsBars: StorybookComponentsDescriptionItem = {
           style="margin-top: 8px;"
         />
       `
+    },
+    {
+      id: 'BarsSkeleton',
+      name: {
+        en: 'Skeleton loading',
+        ru: 'Загрузка скелетона'
+      },
+      components: ['Skeleton'],
+      template: `
+        <DesignSkeleton :active="true">
+          <DesignComponent
+            :isSkeleton="true"
+            label="Page Title"
+            description="A concise description for this header"
+            :bars="[
+              { icon: 'search' },
+              { icon: 'refresh' },
+              { icon: 'more_vert' }
+            ]"
+          />
+        </DesignSkeleton>
+      `
     }
   ],
   documentation: {
@@ -103,6 +125,8 @@ export const wikiDescriptionsBars: StorybookComponentsDescriptionItem = {
 <Canvas of={Component.BarsBasic}/>
 <StorybookDescriptions componentName={'Bars'} type={'v-model'}/>
 <Canvas of={Component.BarsVModel}/>
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Component.BarsSkeleton}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>

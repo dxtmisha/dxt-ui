@@ -2,6 +2,7 @@ import type { ConstrBind } from '@dxt-ui/functional'
 
 import type { IconPropsBasic, IconValue } from '../Icon'
 import type { ButtonPropsBasic } from '../Button'
+import type { SkeletonPropsInclude } from '../Skeleton'
 
 import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
@@ -15,7 +16,10 @@ interface BarsPropsToken {
 export interface BarsPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Button extends ButtonPropsBasic = ButtonPropsBasic
-> extends LabelProps, DescriptionProps {
+> extends LabelProps,
+  DescriptionProps,
+  SkeletonPropsInclude
+{
   // Value
   'backButton'?: ConstrBind<Button>
   'backHide'?: boolean

@@ -18,6 +18,7 @@ const propsNames: StorybookProps = [
   { name: 'description', type: 'string | number' },
   { name: 'iconBack', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
   { name: 'iconClose', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
+  { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'string | number' },
   { name: 'modelAction', type: 'boolean' },
   { name: 'onUpdate:action', type: '(value: boolean) => void' },
