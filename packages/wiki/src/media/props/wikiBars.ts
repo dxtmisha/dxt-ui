@@ -27,7 +27,12 @@ export const wikiBars: StorybookArgsToList = {
       description: {
         en: 'An array of buttons for the action',
         ru: 'Массив кнопок для действия'
-      }
+      },
+      value: [
+        { icon: 'share' },
+        { icon: 'edit' },
+        { icon: 'delete' }
+      ]
     }
   },
   'bars.actionDescription': {
@@ -37,7 +42,8 @@ export const wikiBars: StorybookArgsToList = {
       description: {
         en: 'Description for the action',
         ru: 'Описание для действия'
-      }
+      },
+      value: 'Select items to perform actions'
     }
   },
   'bars.actionLabel': {
@@ -47,7 +53,8 @@ export const wikiBars: StorybookArgsToList = {
       description: {
         en: 'Label for the action',
         ru: 'Метка для действия'
-      }
+      },
+      value: 'Action'
     }
   },
   'bars.backButton': {

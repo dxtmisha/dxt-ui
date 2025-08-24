@@ -41,12 +41,12 @@
 
     @include ui.subclass('text') {
       @include mixinSkeletonText;
-      @include ui.color(ui.v('??color'), ui.v('??colorOpacity'), 'text-decoration-color', true);
+      @include ui.color(ui.v('??color'), ui.v('??colorOpacity'), true, 'text-decoration-color');
     }
 
     @include ui.subclass('textVariant') {
       @include mixinSkeletonText;
-      @include ui.color(ui.v('??color'), ui.v('??borderOpacity'), 'text-decoration-color', true);
+      @include ui.color(ui.v('??color'), ui.v('??borderOpacity'), true, 'text-decoration-color');
     }
 
     @include ui.subclass('background') {

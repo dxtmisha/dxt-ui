@@ -1,26 +1,24 @@
 {
   "main": "{d.bars}",
-  "gap": "{sys.spacing.adaptive.xs}",
-  "padding-x": "{ref.spacing.2px}",
-  "background-color": "{sys.palette.onPrimary}",
+  "gap": "{sys.spacing.xs}",
+  "padding-x": "{grid.paddingX}",
+  "padding-Y": "{grid.paddingY}",
+  "background-color": "{sys.palette.surface}",
   "background-opacity": "{sys.opacity.primary.high}",
   "backdrop-filter": "{sys.blur.md}",
   "#label": {
     "padding-top": "{ref.spacing.2px}",
-    "link|font": "{font.titleLarge}",
-    "color": "{sys.palette.onSurface}",
-    "color-opacity": "{sys.opacity.surface.high}"
+    "link|font": "{font.titleLarge}"
   },
   "#description": {
     "link|font": "{font.bodyMedium}",
-    "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.medium}",
     "&:first-child": {
       "padding-top": "{ref.spacing.6px}"
     }
   },
   "~action": {
-    "color": "{sys.palette.inverseOnPrimary}",
-    "background-color": "{sys.palette.inversePrimary}"
+    "color": "{sys.palette.inverseOnSurface}",
+    "background-color": "{sys.palette.inverseSurface}"
   }
 }

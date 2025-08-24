@@ -243,12 +243,19 @@
   @return rules.strReplace($color, ')', '-opacity)');
 }
 
+/// Initializes palette-related opacity variables
+/// Инициализирует связанные с палитрой переменные прозрачности
 @mixin initPalette {
   @include colorOpacity(initial);
   @include backgroundOpacity(initial);
   @include gradientOpacity(initial);
 }
 
+/// Defines system color variables (RGB and opacity)
+/// Определяет системные цветовые переменные (RGB и непрозрачность)
+/// @param {String} $name variable suffix (e.g. 'color')
+/// @param {Color|String} $color input color or CSS var
+/// @param {Boolean} $important add !important to declarations
 @mixin colorSys($name, $color, $important: false) {
   @if ($important) {
     --sys-#{$name}: #{toColorRbg($color)} !important;
@@ -265,6 +272,10 @@
   }
 }
 
+/// Defines system palette variables (RGB and opacity)
+/// Определяет системные переменные палитры (RGB и непрозрачность)
+/// @param {String} $name palette key suffix
+/// @param {Color|String} $color input color or CSS var
 @mixin colorSysPalette($name, $color) {
   --sys-palette-#{$name}: #{getPalette($color)};
 
@@ -275,39 +286,63 @@
 
 /* Palette */
 
+/// Sets base palette RGB value
+/// Устанавливает базовое RGB‑значение палитры
+/// @param {Color|String} $color input color or CSS var
 @mixin palette($color) {
   --sys-palette: #{toColorRbg($color)};
 }
 
+/// Maps a custom variable into palette chain
+/// Привязывает пользовательскую переменную к палитре
+/// @param {Color|String} $color CSS custom property
 @mixin paletteVar($color) {
   @include colorSysPalette('var', $color);
 }
 
+/// Applies palette color to text
+/// Применяет цвет палитры к тексту
+/// @param {Color|String} $color palette reference or color
 @mixin paletteColor($color) {
   @include colorSysPalette('color', $color);
   @include color(#{var(--sys-palette-color)});
 }
 
+/// Applies palette color to stroke
+/// Применяет цвет палитры к обводке (stroke)
+/// @param {Color|String} $color palette reference or color
 @mixin paletteStroke($color) {
   @include colorSysPalette('color', $color);
   @include stroke(#{var(--sys-palette-color)});
 }
 
+/// Applies palette color to background
+/// Применяет цвет палитры к фону
+/// @param {Color|String} $color palette reference or color
 @mixin paletteBackground($color) {
   @include colorSysPalette('background', $color);
   @include backgroundColor(#{var(--sys-palette-background)});
 }
 
+/// Applies palette color to fill
+/// Применяет цвет палитры к заливке (fill)
+/// @param {Color|String} $color palette reference or color
 @mixin paletteFill($color) {
   @include colorSysPalette('background', $color);
   @include fill(#{var(--sys-palette-background)});
 }
 
+/// Applies palette gradient to background-image
+/// Применяет градиент палитры к background-image
+/// @param {Color|String} $color palette reference or color
 @mixin paletteGradient($color) {
   @include colorSysPalette('gradient', $color);
   @include gradient(#{var(--sys-palette-gradient)});
 }
 
+/// Applies palette color to border
+/// Применяет цвет палитры к границе (border)
+/// @param {Color|String} $color palette reference or color
 @mixin paletteBorder($color) {
   @include colorSysPalette('border', $color);
   @include borderColor(#{var(--sys-palette-border)});
@@ -315,27 +350,47 @@
 
 /* Color */
 
-@mixin color($color, $opacity: null, $propertyName: 'color', $important: false) {
+/// Sets text color via system variables
+/// Устанавливает цвет текста через системные переменные
+/// @param {Color|String} $color color or CSS var
+/// @param {Number|null} $opacity optional opacity [0..1]
+/// @param {Boolean} $important add !important
+/// @param {String} $propertyName CSS property name (default 'color')
+@mixin color($color, $opacity: null, $important: false, $propertyName: 'color') {
   @if (isColorRbgOrVar($color)) {
     @include colorSys('color', $color, $important);
-    @include colorOpacity($opacity, $important);
-    @include colorInit($propertyName, $important);
+    @include colorOpacity($opacity, $important, false, $propertyName);
+    @include colorInit($important, $propertyName);
   } @else {
     #{$propertyName}: $color;
   }
 }
 
-@mixin colorOpacity($opacity, $important: false) {
+/// Sets text color opacity variable; can init property
+/// Устанавливает переменную непрозрачности текста; может инициализировать свойство
+/// @param {Number} $opacity opacity [0..1]
+/// @param {Boolean} $important add !important
+/// @param {Boolean} $init immediately apply computed color
+/// @param {String} $propertyName CSS property name
+@mixin colorOpacity($opacity, $important: false, $init: true, $propertyName: 'color') {
   @if ($opacity != null) {
     @if ($important) {
       --sys-color-opacity: #{$opacity} !important;
     } @else {
       --sys-color-opacity: #{$opacity};
     }
+
+    @if ($init) {
+      @include colorInit($propertyName, $important);
+    }
   }
 }
 
-@mixin colorInit($propertyName: 'color', $important: false) {
+/// Applies computed system text color
+/// Применяет вычисленный системный цвет текста
+/// @param {Boolean} $important add !important
+/// @param {String} $propertyName CSS property name
+@mixin colorInit($important: false, $propertyName: 'color') {
   @if ($important) {
     #{$propertyName}: getColorValueSys('color') !important;
   } @else {
@@ -345,113 +400,159 @@
 
 /* Stroke */
 
-@mixin stroke($color, $opacity: null) {
-  @if (isColorRbgOrVar($color)) {
-    @include colorSys('color', $color);
-    @include strokeOpacity($opacity);
-    @include strokeInit;
-  } @else {
-    stroke: $color;
-  }
+/// Sets stroke color via system variables
+/// Устанавливает цвет обводки (stroke) через системные переменные
+/// @param {Color|String} $color color or CSS var
+/// @param {Number|null} $opacity optional opacity [0..1]
+/// @param {Boolean} $important add !important
+@mixin stroke($color, $opacity: null, $important: false) {
+  @include color($color, $opacity, $important, 'stroke');
 }
 
-@mixin strokeOpacity($opacity, $important: false) {
-  @if ($opacity != null) {
-    @if ($important) {
-      --sys-color-opacity: #{$opacity} !important;
-    } @else {
-      --sys-color-opacity: #{$opacity};
-    }
-  }
+/// Sets stroke opacity variable; can init property
+/// Устанавливает переменную непрозрачности обводки; может инициализировать свойство
+/// @param {Number} $opacity opacity [0..1]
+/// @param {Boolean} $important add !important
+/// @param {Boolean} $init immediately apply computed stroke
+@mixin strokeOpacity($opacity, $important: false, $init: true) {
+  @include colorOpacity($opacity, $important, $init, 'stroke');
 }
 
-@mixin strokeInit() {
-  @include colorInit('stroke');
+/// Applies computed stroke color
+/// Применяет вычисленный цвет обводки
+/// @param {Boolean} $important add !important
+@mixin strokeInit($important: false) {
+  @include colorInit($important, 'stroke');
 }
 
 /* Background */
 
-@mixin backgroundColor($color, $opacity: null, $important: false) {
+/// Sets background color via system variables
+/// Устанавливает цвет фона через системные переменные
+/// @param {Color|String} $color color, 'as-color', transparent or CSS var
+/// @param {Number|null} $opacity optional opacity [0..1]
+/// @param {Boolean} $important add !important
+/// @param {String} $propertyName CSS property name (default 'background-color')
+@mixin backgroundColor($color, $opacity: null, $important: false, $propertyName: 'background-color') {
   @if ($color == 'as-color') {
     @include backgroundAsColor;
   } @else if ($color == transparent) {
-    @include backgroundColor(#000000, 0);
+    @include backgroundColor(#000000, 0, $important, $propertyName);
   } @else if (isColorRbgOrVar($color)) {
     @include colorSys('background', $color, $important);
-    @include backgroundOpacity($opacity, $important);
-    @include backgroundInit($important);
+    @include backgroundOpacity($opacity, $important, false, $propertyName);
+    @include backgroundInit($important, $propertyName);
   } @else {
-    background-color: $color;
+    #{$propertyName}: $color;
   }
 }
 
-@mixin backgroundOpacity($opacity, $important: false) {
+/// Sets background opacity variable; can init property
+/// Устанавливает переменную непрозрачности фона; может инициализировать свойство
+/// @param {Number} $opacity opacity [0..1]
+/// @param {Boolean} $important add !important
+/// @param {Boolean} $init immediately apply computed background
+/// @param {String} $propertyName CSS property name
+@mixin backgroundOpacity($opacity, $important: false, $init: true, $propertyName: 'background-color') {
   @if ($opacity != null) {
     @if ($important) {
       --sys-background-opacity: #{$opacity} !important;
     } @else {
       --sys-background-opacity: #{$opacity};
     }
+
+    @if ($init) {
+      @include backgroundInit($propertyName, $important);
+    }
   }
 }
 
+/// Sets background-size and disables repeat
+/// Устанавливает background-size и отключает повтор
+/// @param {String} $value background-size value
 @mixin backgroundSize($value) {
   background-size: #{$value};
   background-repeat: no-repeat;
 }
 
-@mixin backgroundInit($important: false) {
+/// Applies computed background color
+/// Применяет вычисленный цвет фона
+/// @param {Boolean} $important add !important
+/// @param {String} $propertyName CSS property name
+@mixin backgroundInit($important: false, $propertyName: 'background-color') {
   @if ($important) {
-    background-color: #{getColorValueSys('background')} !important;
+    #{$propertyName}: #{getColorValueSys('background')} !important;
   } @else {
-    background-color: getColorValueSys('background');
+    #{$propertyName}: getColorValueSys('background');
   }
 }
 
 /* Fill */
 
-@mixin fill($color, $opacity: null) {
-  @if (isColorRbgOrVar($color)) {
-    @include colorSys('background', $color);
-    @include fillOpacity($opacity);
-    @include fillInit;
-  } @else {
-    fill: $color;
-  }
+/// Sets fill color via background helpers
+/// Устанавливает цвет заливки (fill) через фоновые миксины
+/// @param {Color|String} $color color or CSS var
+/// @param {Number|null} $opacity optional opacity [0..1]
+/// @param {Boolean} $important add !important
+@mixin fill($color, $opacity: null, $important: false) {
+  @include backgroundColor($color, $opacity, $important, 'fill');
 }
 
-@mixin fillOpacity($opacity) {
-  @if ($opacity != null) {
-    --sys-background-opacity: #{$opacity};
-  }
+/// Sets fill opacity variable; can init property
+/// Устанавливает переменную непрозрачности заливки; может инициализировать свойство
+/// @param {Number} $opacity opacity [0..1]
+/// @param {Boolean} $important add !important
+/// @param {Boolean} $init immediately apply computed fill
+@mixin fillOpacity($opacity, $important: false, $init: true) {
+  @include backgroundOpacity($opacity, $important, $init);
 }
 
-@mixin fillInit() {
-  fill: getColorValueSys('background');
+/// Applies computed fill color
+/// Применяет вычисленный цвет заливки
+/// @param {Boolean} $important add !important
+@mixin fillInit($important: false) {
+  @include backgroundInit($important, 'fill');
 }
 
 /* Gradient */
 
+/// Sets gradient (background-image) via system variables
+/// Устанавливает градиент (background-image) через системные переменные
+/// @param {Color|String} $color color or CSS var
+/// @param {Number|null} $opacity optional opacity [0..1]
+/// @param {Boolean} $important add !important
 @mixin gradient($color, $opacity: null, $important: false) {
   @if (isColorRbgOrVar($color)) {
     @include colorSys('gradient', $color, $important);
-    @include gradientOpacity($opacity, $important);
+    @include gradientOpacity($opacity, $important, false);
     @include gradientInit($important);
   } @else {
     background-image: $color;
   }
 }
 
-@mixin gradientOpacity($opacity, $important: false) {
+/// Sets gradient opacity variable; can init property
+/// Устанавливает переменную непрозрачности градиента; может инициализировать свойство
+/// @param {Number} $opacity opacity [0..1]
+/// @param {Boolean} $important add !important
+/// @param {Boolean} $init immediately apply computed gradient
+@mixin gradientOpacity($opacity, $important: false, $init: true) {
   @if ($opacity != null) {
     @if ($important) {
       --sys-gradient-opacity: #{$opacity} !important;
     } @else {
       --sys-gradient-opacity: #{$opacity};
     }
+
+    @if ($init) {
+      @include gradientInit($important);
+    }
   }
 }
 
+/// Applies computed gradient background image
+/// Применяет вычисленный градиент для background-image
+/// @param {Boolean} $important add !important
 @mixin gradientInit($important: false) {
   @if ($important) {
     background-image: #{toGradient(#{getColorValueSys('gradient')})} !important;
@@ -462,26 +563,43 @@
 
 /* Border */
 
+/// Sets border color via system variables
+/// Устанавливает цвет границы (border) через системные переменные
+/// @param {Color|String} $color color or CSS var
+/// @param {Number|null} $opacity optional opacity [0..1]
+/// @param {Boolean} $important add !important
 @mixin borderColor($color, $opacity: null, $important: false) {
   @if (isColorRbgOrVar($color)) {
     @include colorSys('border', $color, $important);
-    @include borderOpacity($opacity, $important);
+    @include borderOpacity($opacity, $important, false);
     @include borderInit($important);
   } @else {
     border-color: $color;
   }
 }
 
-@mixin borderOpacity($opacity, $important: false) {
+/// Sets border opacity variable; can init property
+/// Устанавливает переменную непрозрачности границы; может инициализировать свойство
+/// @param {Number} $opacity opacity [0..1]
+/// @param {Boolean} $important add !important
+/// @param {Boolean} $init immediately apply computed border
+@mixin borderOpacity($opacity, $important: false, $init: true) {
   @if ($opacity != null) {
     @if ($important) {
       --sys-border-opacity: #{$opacity} !important;
     } @else {
       --sys-border-opacity: #{$opacity};
     }
+
+    @if ($init) {
+      @include borderInit($important);
+    }
   }
 }
 
+/// Applies computed border color
+/// Применяет вычисленный цвет границы
+/// @param {Boolean} $important add !important
 @mixin borderInit($important: false) {
   @if ($important) {
     border-color: getColorValueSys('border') !important;
@@ -492,6 +610,8 @@
 
 /* As */
 
+/// Renders text color using palette variables
+/// Рендерит цвет текста, используя переменные палитры
 @mixin colorAsPalette() {
   color: rgba(
                   var(--sys-palette-color, var(--sys-color)),
@@ -499,7 +619,16 @@
   );
 }
 
+/// Sets background from --sys-color variables
+/// Устанавливает фон из переменных --sys-color
 @mixin backgroundAsColor() {
   @include backgroundColor(var(--sys-color), var(--sys-color-opacity));
   --sys-background-opacity-custom: var(--sys-color-opacity-custom);
+}
+
+/// Sets border from --sys-color variables
+/// Устанавливает границу из переменных --sys-color
+@mixin borderAsColor() {
+  @include borderColor(var(--sys-color), var(--sys-color-opacity));
+  --sys-border-opacity-custom: var(--sys-color-opacity-custom);
 }
