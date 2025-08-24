@@ -33,8 +33,7 @@
       @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
       letter-spacing: var(--d1-sys-letterSpacing-md);
       
-      @include ui.color(#{var(--d1-sys-palette-onSurface)});
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }
     
     &__caption {
@@ -44,12 +43,11 @@
       @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
       letter-spacing: var(--d1-sys-letterSpacing-md);
       
-      @include ui.color(#{var(--d1-sys-palette-onSurface)});
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }
     
     &--selected {
-      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
       @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
     }
     
@@ -58,11 +56,11 @@
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
       
       & .d1-cell__caption {
-        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+        @include ui.colorOpacity(#{0}); @include ui.color('init');
       }
       
       & .d1-cell__description {
-        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
       }
     }
     

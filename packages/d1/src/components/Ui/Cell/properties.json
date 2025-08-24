@@ -9,7 +9,6 @@
   },
   "#caption": {
     "link|font": "{font.bodyMedium}",
-    "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.medium}"
   },
   "#description": {

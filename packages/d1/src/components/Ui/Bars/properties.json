@@ -19,6 +19,10 @@
   },
   "~action": {
     "color": "{sys.palette.inverseOnSurface}",
-    "background-color": "{sys.palette.inverseSurface}"
+    "color-opacity": "{sys.opacity.primary.high}",
+    "background-color": "{sys.palette.inverseSurface}",
+    "#description": {
+      "color-opacity": "{sys.opacity.primary.medium}"
+    }
   }
 }

@@ -577,6 +577,8 @@
 @mixin borderColor($color, $opacity: null, $important: false) {
   @if ($color == 'init') {
     @include borderInit($important);
+  } @else if ($color == 'as-color') {
+    @include borderAsColor;
   } @else if (isColorRbgOrVar($color)) {
     @include colorSys('border', $color, $important);
     @include borderOpacity($opacity, $important, false);

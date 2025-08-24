@@ -14,26 +14,26 @@
     --d1-button-padding: calc(var(--sys-height) * var(--d1-sys-spacing-adaptive-md));
     --d1-button-transitionFunction: var(--d-sys-transitionFunction-standard);
     
+    @include ui.gradient(#{var(--sys-color)});
+    @include ui.gradientOpacity(#{0});
+    
     border-radius: calc(var(--sys-height) * var(--d1-sys-rounded-adaptive-md));
     
     transition-duration: var(--d-sys-transitionDuration-fade-enter);
     transition-property: grid-template-columns, background-color, background-image, border, box-shadow;
     
     @include ui.focus {
-      @include ui.gradient(#{var(--sys-color)});
-      @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)});
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.gradient('init');
     }
     
     @include ui.hover {
-      @include ui.gradient(#{var(--sys-color)});
-      @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)});
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
       
       transition-duration: var(--d-sys-transitionDuration-sm);
     }
     
     @include ui.active {
-      @include ui.gradient(#{var(--sys-color)});
-      @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)});
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.gradient('init');
       
       transition-duration: var(--d-sys-transitionDuration-sm);
     }
@@ -367,7 +367,7 @@
       @include ui.color(#{var(--d1-sys-palette-onPrimary)});
       @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
       
-      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
       @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
       
       box-shadow: var(--d1-sys-shadow-md);
@@ -390,10 +390,10 @@
     }
     
     &--secondary {
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)}); @include ui.color('init');
       @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
       
-      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
       @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
       
       backdrop-filter: var(--d1-sys-blur-sm);
@@ -410,7 +410,7 @@
     }
     
     &--outline {
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)}); @include ui.color('init');
       @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
       
       &::after {
@@ -421,7 +421,7 @@
         border-radius: inherit;
         border-width: var(--d1-sys-spacing-border);
         border-style: solid;
-        @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)}); @include ui.borderColor('init');
         @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
         
         transition-timing-function: linear;
@@ -441,7 +441,7 @@
       @include ui.disabled('.d1-button') {
         &::after {
           content: ' ';
-          @include ui.borderOpacity(#{0});
+          @include ui.borderOpacity(#{0}); @include ui.borderColor('init');
         }
       }
       
@@ -455,7 +455,7 @@
     &--text {
       --d1-button-compressed: .64;
       
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)}); @include ui.color('init');
       @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
       
       &::after {
@@ -468,8 +468,8 @@
         border-radius: inherit;
         border-width: var(--d1-sys-spacing-2px);
         border-style: solid;
+        @include ui.borderColor(#{as-color});
         @include ui.borderOpacity(#{var(--d1-sys-opacity-scrim)});
-        @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
         
         transition-timing-function: linear;
         transition-duration: var(--d-sys-transitionDuration-lg-open);

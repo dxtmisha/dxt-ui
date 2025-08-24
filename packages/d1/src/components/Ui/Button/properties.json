@@ -1,17 +1,16 @@
 {
   "main": "{d.button}",
   "padding": "var(--sys-height) * {sys.spacing.adaptive.md}",
+  "gradient": "var(--sys-color)",
+  "gradient-opacity": "0",
   "border-radius": "var(--sys-height) * {sys.rounded.adaptive.md}",
   "focus": {
-    "gradient": "var(--sys-color)",
     "gradient-opacity": "{sys.opacity.focus}"
   },
   "hover": {
-    "gradient": "var(--sys-color)",
     "gradient-opacity": "{sys.opacity.hover}"
   },
   "active": {
-    "gradient": "var(--sys-color)",
     "gradient-opacity": "{sys.opacity.pressed}"
   },
   "disabled": {
@@ -96,7 +95,7 @@
       "opacity": "0",
       "border-style": "solid",
       "border-width": "{sys.spacing.2px}",
-      "palette-border": "{sys.palette.primary}",
+      "border-color": "as-color",
       "border-opacity": "{sys.opacity.scrim}",
       "border-radius": "inherit",
       "transition-property": "opacity",
