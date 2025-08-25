@@ -1,4 +1,5 @@
-import type { ConstrBind } from './constructorTypes.ts'
+import type { ConstrBind } from './constructorTypes'
+import type { NumberOrString, NumberOrStringOrBoolean } from './basicTypes'
 
 /**
  * Type of list item/ Тип элемента списка
@@ -16,7 +17,7 @@ export type ListType = 'item'
  * Basic data structure for list item/ Базовая структура данных для элемента списка
  */
 export type ListDataBasic = {
-  label?: string
+  label?: NumberOrString
   value?: any
   search?: string
 }
@@ -87,7 +88,7 @@ export type ListListInput<
 /**
  * Single selected item identifier/ Идентификатор одного выбранного элемента
  */
-export type ListSelectedItem = string | number
+export type ListSelectedItem = NumberOrStringOrBoolean
 
 /**
  * Single or multiple selected items/ Один или несколько выбранных элементов

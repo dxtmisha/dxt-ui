@@ -1,3 +1,5 @@
+import type { NumberOrString } from '@dxt-ui/functional'
+
 export interface LabelSlots {
   default?(props: any): any
 }
@@ -13,11 +15,11 @@ export interface LabelHighlightSlots extends LabelSlots {
 }
 
 export interface LabelProps {
-  label?: string | number
+  label?: NumberOrString
 }
 
 export interface LabelNumberProps extends LabelProps {
-  labelMax?: string | number
+  labelMax?: NumberOrString
   formatting?: boolean
 }
 

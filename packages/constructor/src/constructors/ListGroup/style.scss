@@ -1,0 +1,13 @@
+@use "@dxt-ui/styles/properties" as ui;
+
+@mixin mixinListGroup {
+  @at-root {
+    & + &[data-divider="divider"],
+    #{ui.c('?listItem')} + &[data-divider="divider"],
+    #{ui.c('?list__menuGroup--divider')}:not(:first-child) > &[data-divider="divider"] {
+      border-top-style: solid;
+      border-top-width: ui.v('??borderWidth');
+      @include ui.borderColor(ui.v('??borderColor'));
+    }
+  }
+}

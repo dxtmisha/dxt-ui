@@ -13,11 +13,11 @@ export class DesignConstructors {
   }
 
   make(): void {
+    PropertiesCache.clear()
+
     if (isFilled(this.name)) {
       new DesignConstructor(this.name).make()
     } else {
-      PropertiesCache.clear()
-
       this.getComponents()
         .forEach((component) => {
           console.log(`Constructor update: ${component}`)

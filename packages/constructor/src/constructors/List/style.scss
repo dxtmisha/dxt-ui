@@ -1,0 +1,36 @@
+@use "@dxt-ui/styles/properties" as ui;
+
+@mixin mixinList {
+  &__menuGroup {
+    @include ui.subclass('menu') {
+      display: none;
+    }
+  }
+
+  &--axis {
+    &--x {
+      display: flex;
+      align-items: stretch;
+
+      @include ui.subclass('space') {
+        width: var(--sys-height);
+        height: auto;
+      }
+
+      @include ui.subclass('line') {
+        @include ui.marginY(0);
+
+        width: var(--sys-height);
+        height: 100%;
+      }
+
+      @include ui.subclass('subtitle') {
+        display: none;
+      }
+
+      @include ui.subclass('group') {
+        display: none;
+      }
+    }
+  }
+}

@@ -8,7 +8,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor"
+    "dxt-constructor": "dxt-constructor listGroup"
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
@@ -32,10 +32,16 @@
     "./Icon/style": "./src/constructors/Icon/style.scss",
     "./Image": "./src/constructors/Image/index.ts",
     "./Image/style": "./src/constructors/Image/style.scss",
+    "./List": "./src/constructors/List/index.ts",
+    "./List/style": "./src/constructors/List/style.scss",
+    "./ListGroup": "./src/constructors/ListGroup/index.ts",
+    "./ListGroup/style": "./src/constructors/ListGroup/style.scss",
     "./ListItem": "./src/constructors/ListItem/index.ts",
     "./ListItem/style": "./src/constructors/ListItem/style.scss",
     "./MotionTransform": "./src/constructors/MotionTransform/index.ts",
     "./MotionTransform/style": "./src/constructors/MotionTransform/style.scss",
+    "./Motiontransform": "./src/constructors/Motiontransform/index.ts",
+    "./Motiontransform/style": "./src/constructors/Motiontransform/style.scss",
     "./Progress": "./src/constructors/Progress/index.ts",
     "./Progress/style": "./src/constructors/Progress/style.scss",
     "./Ripple": "./src/constructors/Ripple/index.ts",
@@ -44,11 +50,9 @@
     "./Scrollbar/style": "./src/constructors/Scrollbar/style.scss",
     "./Skeleton": "./src/constructors/Skeleton/index.ts",
     "./Skeleton/style": "./src/constructors/Skeleton/style.scss",
-    "./constructor/": "./src/constructors/",
     "./Window": "./src/constructors/Window/index.ts",
     "./Window/style": "./src/constructors/Window/style.scss",
-    "./Motiontransform": "./src/constructors/Motiontransform/index.ts",
-    "./Motiontransform/style": "./src/constructors/Motiontransform/style.scss"
+    "./constructor/": "./src/constructors/"
   },
   "buildOptions": {
     "name": "@dxt-ui/constructor",

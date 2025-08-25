@@ -1,0 +1,11 @@
+{
+  "border-width": {
+    "_type": "var"
+  },
+  "border-color": {
+    "_type": "var"
+  },
+  "#head": {},
+  "#list": {},
+  "~divider": {}
+}

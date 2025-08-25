@@ -15,7 +15,8 @@ import type {
   ListListInput,
   ListListInputItem,
   ListNames,
-  ListSelectedItem
+  ListSelectedItem,
+  ListSelectedList
 } from '../types/listTypes'
 
 /**
@@ -29,7 +30,7 @@ export class ListData {
     protected readonly focus?: RefType<ListSelectedItem | undefined>,
     protected readonly highlight?: RefType<string | undefined>,
     protected readonly highlightLengthStart?: RefType<number | undefined>,
-    protected readonly selected?: RefType<ListSelectedItem | undefined>,
+    protected readonly selected?: RefType<ListSelectedList | undefined>,
     protected readonly keyValue?: RefType<string | undefined>,
     protected readonly keyLabel?: RefType<string | undefined>,
     protected readonly lite?: RefType<number | undefined>
@@ -293,7 +294,7 @@ export class ListData {
    *
    * Возвращает выбранное значение.
    */
-  getSelected(): ListSelectedItem | undefined {
+  getSelected(): ListSelectedList | undefined {
     return this.selected?.value
   }
 

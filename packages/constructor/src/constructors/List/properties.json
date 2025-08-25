@@ -1,0 +1,15 @@
+{
+  "#space": {},
+  "#line": {},
+  "#subtitle": {},
+  "#html": {},
+  "#group": {},
+  "#menu": {},
+  "#menuGroup": {},
+  "~axis": {
+    "~x": {},
+    "~y": {},
+    "_default": "y"
+  },
+  "~divider": {}
+}
