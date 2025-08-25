@@ -12,7 +12,8 @@ interface ButtonPropsToken {
   disabled?: boolean
   selected?: boolean
   readonly?: boolean
-  adaptive?: 'icon' | 'block' | 'auto'
+  adaptive?: 'iconAlways' | 'block' | 'auto'
+  container?: boolean
   inverse?: boolean
   grid?: boolean
   textAlign?: 'left' | 'center' | 'right'

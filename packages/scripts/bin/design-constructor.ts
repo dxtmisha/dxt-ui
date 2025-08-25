@@ -1,7 +1,7 @@
 #!/usr/bin/env vite-node
 
-import { DesignConstructor } from '../src/classes/Design/DesignConstructor'
+import { DesignConstructors } from '../src/classes/Design/DesignConstructors'
 
 const name: string = process.argv?.[2] ?? ''
 
-new DesignConstructor(name).make()
+new DesignConstructors(name).make()

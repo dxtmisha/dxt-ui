@@ -73,7 +73,7 @@ export class Cell {
     this.skeleton = new SkeletonInclude(
       props,
       classDesign,
-      ['classText']
+      ['classTextVariant']
     )
 
     this.label = new LabelInclude(

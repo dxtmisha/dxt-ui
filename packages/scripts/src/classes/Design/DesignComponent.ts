@@ -18,7 +18,7 @@ import {
   UI_PROJECT_CONSTRUCTOR_FULL_NAME,
   UI_PROJECT_CONSTRUCTOR_NAME
 } from '../../config'
-import type { DesignTypescriptProp } from '../../types/designTypes.ts'
+import type { DesignTypescriptProp } from '../../types/designTypes'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'

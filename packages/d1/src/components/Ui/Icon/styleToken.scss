@@ -12,7 +12,7 @@
   // :style [!] System label / Системная метка
   & {
     &--asPalette {
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)}); @include ui.color('init');
       @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
       
       &.d1-icon--inverse {
@@ -28,7 +28,7 @@
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
       
       @include ui.disabled('.d1-icon') {
-        @include ui.backgroundOpacity(#{0});
+        @include ui.backgroundOpacity(#{0}); @include ui.backgroundColor('init');
       }
     }
     

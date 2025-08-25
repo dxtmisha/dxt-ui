@@ -6,7 +6,7 @@ import type {
   DesignTypescriptList,
   DesignTypescriptProp,
   DesignTypescriptProps
-} from '../../types/designTypes.ts'
+} from '../../types/designTypes'
 
 /**
  * Class for working with TypeScript types

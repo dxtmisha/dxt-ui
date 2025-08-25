@@ -110,7 +110,7 @@ export class LibraryItems {
    * Возвращает путь к директории компонентов дизайн-системы
    */
   protected getComponentsPath(): string[] {
-    return [...UI_DIRS_COMPONENTS, PropertiesConfig.getDesignName()]
+    return [...UI_DIRS_COMPONENTS, PropertiesConfig.getProjectName()]
   }
 
   /**

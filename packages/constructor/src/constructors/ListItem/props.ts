@@ -19,7 +19,7 @@ interface ListItemPropsToken {
   readonly?: boolean
   disabled?: boolean
   iconTop?: boolean
-  iconAlign?: 'center' | 'text'
+  iconAlign?: 'center' | 'edge'
   fill?: string | 'custom'
   divider?: boolean
   // :type [!] System label / Системная метка

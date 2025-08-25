@@ -4,7 +4,9 @@ interface ScrollbarPropsToken {
   divider?: boolean
   dividerTop?: boolean
   dividerBottom?: boolean
+  dividerHide?: boolean
   inverse?: boolean
+  standard?: boolean
   // :type [!] System label / Системная метка
 }
 

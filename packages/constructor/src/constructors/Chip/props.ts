@@ -9,6 +9,7 @@ interface ChipPropsToken {
   selected?: boolean
   readonly?: boolean
   adaptive?: 'iconAlways' | 'block' | 'auto'
+  container?: boolean
   inverse?: boolean
   grid?: boolean
   textAlign?: 'left' | 'center' | 'right'

@@ -5,7 +5,6 @@ import { toKebabCase } from '@dxt-ui/functional'
 import { DesignComponent } from './DesignComponent'
 import { LibraryItems } from '../Library/LibraryItems'
 import { PropertiesCache } from '../Properties/PropertiesCache'
-import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { Styles } from '../Styles/Styles'
 
 import { DesignWiki } from './DesignWiki'
@@ -56,29 +55,17 @@ export class DesignUi {
    * Создает или обновляет список компонентов.
    */
   protected makeConstructorComponent(): this {
-    const design = PropertiesConfig.getDesignName()
     const componentDef = this.component
 
     if (componentDef !== '') {
-      // new DesignConstructor(`d.${componentDef}`).make()
       new DesignComponent(componentDef).make()
     } else {
-      /*
-      designs.forEach((design) => {
-        if (this.isDesign(design.name)) {
-          new DesignIcons(design.name).make()
+      this.components.getComponentList()
+        .forEach((component) => {
+          console.log(`Component update: ${component.alias}`)
 
-          design.components.forEach((component) => {
-            if (this.isComponent(component.name)) {
-              console.log(`Component update: ${component.alias}`)
-
-              new DesignConstructor(`d.${component.name}`).make()
-              new DesignComponent(component.alias).make()
-            }
-          })
-        }
-      })
-      */
+          new DesignComponent(component.name).make()
+        })
     }
 
     return this

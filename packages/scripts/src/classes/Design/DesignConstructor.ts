@@ -6,7 +6,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { DesignCommand } from './DesignCommand'
 
-import { UI_FILE_PACKAGE, UI_DIR_IN } from '../../config'
+import { UI_FILE_PACKAGE, UI_DIR_IN, UI_DIR_CONSTRUCTOR } from '../../config'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -23,7 +23,7 @@ const FILE_INDEX = 'index.ts'
  * Класс для генерации файлов по конструктору.
  */
 export class DesignConstructor extends DesignCommand {
-  protected DIR_SAMPLE: string = 'constructors'
+  protected DIR_SAMPLE: string = UI_DIR_CONSTRUCTOR
   protected dir: string[]
 
   /**

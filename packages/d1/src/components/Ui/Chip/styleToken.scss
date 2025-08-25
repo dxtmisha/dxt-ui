@@ -210,105 +210,6 @@
       }
     }
     
-    &--textAlign {
-      &--left {
-        @include ui.justifyContent(#{flex-start});
-        
-        @include ui.textAlign(#{left});
-      }
-      
-      &--right {
-        @include ui.justifyContent(#{flex-end});
-        
-        @include ui.textAlign(#{right});
-      }
-    }
-    
-    &--input {
-      &::after {
-        content: ' ';
-        position: absolute;
-        @include ui.inset(#{0});
-        
-        border-radius: inherit;
-        border-width: var(--d1-sys-spacing-border);
-        border-style: solid;
-        @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
-        @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
-        
-        transition-timing-function: linear;
-        transition-duration: var(--d-sys-transitionDuration-lg-open);
-        transition-property: border;
-      }
-      
-      @include ui.active('.d1-chip') {
-        &::after {
-          content: ' ';
-          border-width: var(--d1-sys-spacing-2px);
-          
-          transition-duration: var(--d-sys-transitionDuration-xs);
-        }
-      }
-      
-      @include ui.disabled('.d1-chip') {
-        @include ui.color(#{var(--d1-sys-palette-onSurface)});
-        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
-        
-        &::after {
-          content: ' ';
-          @include ui.borderOpacity(#{0});
-        }
-      }
-      
-      &.d1-chip--selected {
-        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
-        @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
-      }
-    }
-    
-    &--assistive {
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
-      @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
-      
-      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
-      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
-      
-      backdrop-filter: var(--d1-sys-blur-md);
-      
-      @include ui.disabled('.d1-chip') {
-        @include ui.color(#{var(--d1-sys-palette-onSurface)});
-        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
-        
-        @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
-      }
-      
-      &.d1-chip--selected {
-        @include ui.color(#{var(--d1-sys-palette-onPrimary)});
-        @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
-        
-        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
-        @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
-      }
-    }
-    
-    &--size {
-      &--sm {
-        @include ui.height(#{var(--d1-ref-spacing-6)});
-      }
-      
-      &--md {
-        @include ui.height(#{var(--d1-ref-spacing-8)});
-      }
-      
-      &--lg {
-        @include ui.height(#{var(--d1-ref-spacing-10)});
-      }
-    }
-    
-    &--roundedFull {
-      border-radius: var(--d1-sys-rounded-full);
-    }
-    
     &--container {
       &--iconSm {
         @container (min-width: 640px) {
@@ -449,6 +350,105 @@
           }
         }
       }
+    }
+    
+    &--textAlign {
+      &--left {
+        @include ui.justifyContent(#{flex-start});
+        
+        @include ui.textAlign(#{left});
+      }
+      
+      &--right {
+        @include ui.justifyContent(#{flex-end});
+        
+        @include ui.textAlign(#{right});
+      }
+    }
+    
+    &--input {
+      &::after {
+        content: ' ';
+        position: absolute;
+        @include ui.inset(#{0});
+        
+        border-radius: inherit;
+        border-width: var(--d1-sys-spacing-border);
+        border-style: solid;
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)}); @include ui.borderColor('init');
+        @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
+        
+        transition-timing-function: linear;
+        transition-duration: var(--d-sys-transitionDuration-lg-open);
+        transition-property: border;
+      }
+      
+      @include ui.active('.d1-chip') {
+        &::after {
+          content: ' ';
+          border-width: var(--d1-sys-spacing-2px);
+          
+          transition-duration: var(--d-sys-transitionDuration-xs);
+        }
+      }
+      
+      @include ui.disabled('.d1-chip') {
+        @include ui.color(#{var(--d1-sys-palette-onSurface)});
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+        
+        &::after {
+          content: ' ';
+          @include ui.borderOpacity(#{0}); @include ui.borderColor('init');
+        }
+      }
+      
+      &.d1-chip--selected {
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+        @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+      }
+    }
+    
+    &--assistive {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)}); @include ui.color('init');
+      @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      backdrop-filter: var(--d1-sys-blur-md);
+      
+      @include ui.disabled('.d1-chip') {
+        @include ui.color(#{var(--d1-sys-palette-onSurface)});
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+        
+        @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+      }
+      
+      &.d1-chip--selected {
+        @include ui.color(#{var(--d1-sys-palette-onPrimary)});
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+        
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
+        @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+      }
+    }
+    
+    &--size {
+      &--sm {
+        @include ui.height(#{var(--d1-ref-spacing-6)});
+      }
+      
+      &--md {
+        @include ui.height(#{var(--d1-ref-spacing-8)});
+      }
+      
+      &--lg {
+        @include ui.height(#{var(--d1-ref-spacing-10)});
+      }
+    }
+    
+    &--roundedFull {
+      border-radius: var(--d1-sys-rounded-full);
     }
   }
   // :style [!] System label / Системная метка

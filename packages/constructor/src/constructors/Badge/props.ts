@@ -3,6 +3,7 @@ import type { LabelNumberProps } from '../../types/labelTypes'
 
 interface BadgePropsToken {
   // :type [!] System label / Системная метка
+  selected?: boolean
   hide?: boolean
   dot?: boolean
   overlap?: 'rectangular' | 'circular' | 'static'

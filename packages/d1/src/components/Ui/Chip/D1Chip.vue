@@ -34,6 +34,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-chip--selected': props.selected,
     'd1-chip--readonly': props.readonly,
     [`d1-chip--adaptive--${props.adaptive}`]: inArray(propsValues.adaptive, props.adaptive),
+    [`d1-chip--container--${props.container}`]: inArray(propsValues.container, props.container),
     'd1-chip--inverse': props.inverse,
     'd1-chip--grid': props.grid,
     [`d1-chip--textAlign--${props.textAlign}`]: inArray(propsValues.textAlign, props.textAlign),
@@ -41,7 +42,6 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-chip--assistive': props.assistive,
     [`d1-chip--size--${props.size}`]: inArray(propsValues.size, props.size),
     'd1-chip--roundedFull': props.roundedFull,
-    [`d1-chip--container--${props.container}`]: inArray(propsValues.container, props.container),
     [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }

@@ -13,7 +13,7 @@ interface WindowPropsToken {
   dense?: boolean
   alignment?: 'center' | 'top' | 'topRight' | 'topLeft' | 'topFull' | 'right' | 'rightFull' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'bottomFull' | 'left' | 'leftFull'
   origin?: 'center' | 'top' | 'right' | 'bottom' | 'left' | 'topToBottom' | 'rightToLeft' | 'bottomToTop' | 'leftToRight'
-  adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'static'
+  adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static'
   fullscreen?: boolean
   overscroll?: boolean
   closeMobileHide?: boolean
