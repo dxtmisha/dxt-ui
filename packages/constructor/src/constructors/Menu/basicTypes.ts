@@ -1,6 +1,8 @@
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConstrBind, ListList, ListNames } from '@dxt-ui/functional'
 import type { WindowControlItem } from '../Window'
+
+import type { MenuExpose } from './types.ts'
 import type { MenuProps } from './props'
 
 export type MenuControlBasic = {
@@ -20,7 +22,11 @@ export type MenuControlItem
 export interface MenuExposeInclude {
   open: ComputedRef<boolean>
   setOpen(open: boolean): Promise<void>
+  toOpen: MenuExpose['toOpen']
+  toClose: MenuExpose['toClose']
   toggle(): Promise<void>
+
+  menuElement: Ref<ConstrBind<MenuExpose> | undefined>
 }
 
 /** Interface for menu include props/ Интерфейс для свойств включения меню */

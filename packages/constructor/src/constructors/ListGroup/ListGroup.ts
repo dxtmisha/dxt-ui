@@ -1,5 +1,5 @@
 import { toRef, type Ref, type ToRefs, computed } from 'vue'
-import { type ConstrBind, type ConstrEmit, DesignComp, ListData, toBind } from '@dxt-ui/functional'
+import { type ConstrBind, type ConstrEmit, DesignComp, ListData, toBinds } from '@dxt-ui/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
@@ -68,11 +68,9 @@ export class ListGroup {
 
     return {
       divider: this.props.divider,
-      ...toBind(
-        toBind(
-          this.props.itemAttrs ?? {},
-          this.props.head ?? {}
-        ),
+      ...toBinds(
+        this.props.itemAttrs,
+        this.props.head,
         {
           class: [
             `${this.className}__head`,

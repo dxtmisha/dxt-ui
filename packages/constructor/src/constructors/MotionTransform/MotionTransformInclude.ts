@@ -12,7 +12,7 @@ import type { MotionTransformProps } from './props'
 import type { MotionTransformEmits, MotionTransformExpose, MotionTransformSlots } from './types'
 import type {
   MotionTransformComponentInclude,
-  MotionTransformEmitOptions,
+  MotionTransformEmitOptions, MotionTransformExposeInclude,
   MotionTransformPropsInclude
 } from './basicTypes'
 
@@ -67,13 +67,15 @@ export class MotionTransformInclude<
    * Expose helpers for MotionTransform state and actions/
    * Вспомогательные методы expose для состояния и действий MotionTransform
    */
-  readonly expose = {
+  readonly expose: MotionTransformExposeInclude = {
     open: computed(() => Boolean(this.element.value?.open)),
     isShow: computed(() => Boolean(this.element.value?.isShow)),
     setOpen: async (open: boolean) => this.element.value?.setOpen(open),
     toOpen: async () => this.element.value?.toOpen(),
     toClose: async () => this.element.value?.toClose(),
-    toggle: async () => this.element.value?.toggle()
+    toggle: async () => this.element.value?.toggle(),
+
+    motionTransformElement: this.element
   }
 
   /**

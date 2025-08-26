@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrBind, DesignComponents, getBind, isFilled, type RefOrNormal } from '@dxt-ui/functional'
+import { type ConstrBind, DesignComponents, getBind, isFilled, type RefOrNormal, toBinds } from '@dxt-ui/functional'
 
 import { IconInclude } from './IconInclude'
 
@@ -61,9 +61,11 @@ export class IconTrailingInclude<
       dir: this.props.iconDir,
       end: true,
       high: true,
-      ...this.getExtra(),
-      ...this.props.iconAttrs,
-      ...this.getClasses(this.props.iconAttrs?.class, 'trailing'),
+      ...toBinds(
+        this.getExtra(),
+        this.props.iconAttrs,
+        this.getClasses(this.props.iconAttrs?.class, 'trailing')
+      ),
       ...this.getEventType('icon-trailing')
     },
     'icon'

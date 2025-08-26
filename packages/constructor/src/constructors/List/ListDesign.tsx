@@ -3,7 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract, isObject,
-  type ListDataItem, toBind
+  type ListDataItem, toBind, toBinds
 } from '@dxt-ui/functional'
 
 import { List } from './List'
@@ -268,14 +268,10 @@ export class ListDesign<
    */
   protected readonly renderGroup = (item: ListDataItem): VNode => {
     return this.components.renderOne('listGroup', {
-      ...toBind(
-        toBind(
-          this.props,
-          this.props.groupAttrs ?? {}
-        ),
-        {
-          class: this.classes?.value.group
-        }
+      ...toBinds(
+        this.props,
+        this.props.groupAttrs,
+        { class: this.classes?.value.group }
       ),
       head: {
         ...item,

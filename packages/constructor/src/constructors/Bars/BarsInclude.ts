@@ -5,7 +5,7 @@ import {
   DesignComponents,
   getRef,
   type RefOrNormal,
-  toBind
+  toBinds
 } from '@dxt-ui/functional'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
@@ -57,9 +57,10 @@ export class BarsInclude<
 
   /** Computed bindings for the bars/ Вычисляемые привязки для панелей */
   readonly binds = computed<PropsExtra>(() => {
-    const props = toBind<PropsExtra>(
-      getRef(this.extra) ?? {},
-      this.props.barsAttrs ?? {}
+    const props = toBinds<PropsExtra>(
+      getRef(this.extra),
+      this.props.barsAttrs,
+      { class: `${this.className}__bars` }
     )
 
     return {
@@ -68,9 +69,7 @@ export class BarsInclude<
       label: this.props.barsLabel,
       description: this.props.barsDescription,
       backHide: this.props.barsBackHide,
-      bars: this.props.barsList,
-
-      class: `${this.className}__bars`
+      bars: this.props.barsList
     }
   })
 

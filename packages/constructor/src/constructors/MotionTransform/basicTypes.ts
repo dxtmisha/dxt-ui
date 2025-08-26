@@ -1,4 +1,4 @@
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConstrBind } from '@dxt-ui/functional'
 
 import type { MotionTransformEmits, MotionTransformExpose } from './types'
@@ -102,6 +102,7 @@ export type MotionTransformEmitsInclude = {
  * Интерфейс для включения expose MotionTransform
  */
 export interface MotionTransformExposeInclude extends MotionTransformExpose {
+  motionTransformElement: Ref<ConstrBind<MotionTransformExpose> | undefined>
 }
 
 /**

@@ -77,7 +77,9 @@ export class WindowInclude<
     setOpen: async (open: boolean) => this.element.value?.setOpen(open),
     toOpen: async () => this.element.value?.toOpen(),
     toClose: async () => this.element.value?.toClose(),
-    toggle: async () => this.element.value?.toggle()
+    toggle: async () => this.element.value?.toggle(),
+
+    windowElement: this.element
   }
 
   /**

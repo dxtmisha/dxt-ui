@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal } from '@dxt-ui/functional'
+import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal, toBinds } from '@dxt-ui/functional'
 
 import { IconLiteInclude } from './IconLiteInclude'
 
@@ -52,9 +52,11 @@ export class IconInclude<
       dir: getRef(this.dir) ?? this.props.iconDir,
       start: this.start,
       end: this.end,
-      ...this.getExtra(),
-      ...this.props.iconAttrs,
-      ...this.getClasses(this.props.iconAttrs?.class),
+      ...toBinds(
+        this.getExtra(),
+        this.props.iconAttrs,
+        this.getClasses(this.props.iconAttrs?.class)
+      ),
       ...this.getEventType()
     },
     'icon'

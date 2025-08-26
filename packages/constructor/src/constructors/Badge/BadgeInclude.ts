@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal } from '@dxt-ui/functional'
+import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal, toBind } from '@dxt-ui/functional'
 
 import type { BadgeComponentInclude, BadgePropsInclude } from './basicTypes'
 import type { BadgeProps } from './props'
@@ -43,9 +43,13 @@ export class BadgeInclude<Props extends BadgePropsInclude = BadgePropsInclude> {
   readonly binds = computed(() => getBind(
     this.props.badgeDot ? {} : this.props.badge,
     {
-      class: `${this.className}__badge`,
       dot: this.props.badgeDot,
-      ...getRef(this.extra)
+      ...toBind(
+        getRef(this.extra) ?? {},
+        {
+          class: `${this.className}__badge`
+        }
+      )
     },
     'label',
     true

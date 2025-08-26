@@ -166,6 +166,8 @@ export interface WindowExposeInclude {
   toOpen: WindowExpose['toOpen']
   toClose: WindowExpose['toClose']
   toggle: WindowExpose['toggle']
+
+  windowElement: Ref<ConstrBind<WindowExpose> | undefined>
 }
 
 /**

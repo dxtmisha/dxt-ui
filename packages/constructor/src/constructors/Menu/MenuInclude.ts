@@ -4,12 +4,13 @@ import {
   type ConstrEmit,
   DesignComponents,
   getRef,
+  type RawSlots,
   type RefOrNormal,
   toBind
 } from '@dxt-ui/functional'
 
 import type { MenuExposeInclude, MenuPropsInclude } from './basicTypes'
-import type { MenuComponents, MenuEmits, MenuSlots } from './types'
+import type { MenuComponents, MenuEmits, MenuExpose, MenuSlots } from './types'
 import type { MenuProps } from './props'
 
 /**
@@ -26,7 +27,7 @@ export class MenuInclude<
   PropsExtra extends ConstrBind<MenuProps> = ConstrBind<MenuProps>
 > {
   /** Reference to menu element/ Ссылка на элемент меню */
-  protected readonly element = ref<any>()
+  protected readonly element = ref<ConstrBind<MenuExpose> | undefined>()
 
   /**
    * Constructor
@@ -48,36 +49,36 @@ export class MenuInclude<
   }
 
   /**
-   * Checks whether menu should be displayed
+   * Checks whether menu should be displayed/
    * Проверяет, нужно ли отображать меню
    */
-  readonly is = computed(() => Boolean(
-    !this.props.disabled && this.components
-  ))
+  readonly is = computed(() => Boolean(!this.props.disabled && this.components))
 
   /** Computed bindings for the menu/ Вычисляемые привязки для меню */
   readonly binds = computed<PropsExtra>(() => {
     const props = toBind<PropsExtra>(
-      getRef(this.extra) ?? {},
-      this.props.menuAttrs ?? {}
+      toBind(
+        getRef(this.extra) ?? {},
+        this.props.menuAttrs ?? {}
+      ),
+      { class: `${this.className}__menu` }
     )
 
     return {
       ...props,
-      disabled: this.props.disabled,
-      class: `${this.className}__menu`
+      disabled: this.props.disabled
     }
   })
 
-  /**
-   * Menu expose functionality
-   *
-   * Функциональность экспорта меню
-   */
+  /** Menu expose functionality/ Функциональность экспорта меню */
   readonly expose: MenuExposeInclude = {
     open: computed(() => Boolean(this.element.value?.open)),
     setOpen: async (open: boolean) => this.element.value?.setOpen(open),
-    toggle: async () => this.element.value?.toggle()
+    toOpen: async () => this.element.value?.toOpen(),
+    toClose: async () => this.element.value?.toClose(),
+    toggle: async () => this.element.value?.toggle(),
+
+    menuElement: this.element
   }
 
   /**
@@ -97,10 +98,12 @@ export class MenuInclude<
         'window',
         {
           ref: this.element,
-          ...attrs,
-          ...this.binds.value
+          ...toBind(
+            attrs ?? {},
+            this.binds.value
+          )
         },
-        slotsChildren as any,
+        slotsChildren as RawSlots,
         this.index ?? 'menu'
       )
     }
