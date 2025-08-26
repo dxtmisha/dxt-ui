@@ -27,6 +27,7 @@ export interface MenuPropsBasic<
   WindowPropsInclude<Window> {
   // Status
   selected?: ListSelectedList
+  highlightLengthStart?: number
 
   // Value
   list?: ListRecord<ListItem>

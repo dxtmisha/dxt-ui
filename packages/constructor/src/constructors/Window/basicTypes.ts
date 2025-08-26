@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConstrBind } from '@dxt-ui/functional'
 
 import type { WindowExpose } from './types'
@@ -157,7 +157,15 @@ export type WindowEmitsInclude = {
  * Interface for window expose inclusion/
  * Интерфейс для включения expose окна
  */
-export interface WindowExposeInclude extends WindowExpose {
+export interface WindowExposeInclude {
+  id: ComputedRef<string | undefined>
+  open: ComputedRef<boolean>
+  control: ComputedRef<WindowControlItem | undefined>
+
+  setOpen: WindowExpose['setOpen']
+  toOpen: WindowExpose['toOpen']
+  toClose: WindowExpose['toClose']
+  toggle: WindowExpose['toggle']
 }
 
 /**

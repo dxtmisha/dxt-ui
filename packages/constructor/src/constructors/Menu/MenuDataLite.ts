@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import { ListData } from '@dxt-ui/functional'
+import { ListData, type ListList } from '@dxt-ui/functional'
 
 import { MenuOpen } from './MenuOpen'
 import { MenuFocus } from './MenuFocus'
@@ -27,7 +27,7 @@ export class MenuDataLite {
   }
 
   /** Returns a list of menu items/ Возвращает список элементов меню */
-  readonly item = computed(() => {
+  readonly item = computed<ListList | undefined>(() => {
     if (this.is.value) {
       return this.data.liteData.value
     }

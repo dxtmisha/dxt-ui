@@ -2,7 +2,7 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract, type RawSlots, toBind
 } from '@dxt-ui/functional'
 
 import { Menu } from './Menu'
@@ -17,6 +17,8 @@ import {
   type MenuExpose,
   type MenuSlots
 } from './types'
+import type { WindowControlItem } from '../Window'
+import type { MenuControlItem } from './basicTypes.ts'
 
 /**
  * MenuDesign
@@ -27,14 +29,14 @@ export class MenuDesign<
   CLASSES extends MenuClasses,
   P extends MenuPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    MenuEmits,
-    EXPOSE,
-    MenuSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  MenuEmits,
+  EXPOSE,
+  MenuSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Menu
 
   /**
@@ -65,9 +67,6 @@ export class MenuDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -78,8 +77,14 @@ export class MenuDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      ...this.item.window.expose,
+
+      list: this.item.dataLite.item,
+
+      isSelected: this.item.data.isSelected,
+      selectedList: this.item.data.selectedList,
+      selectedNames: this.item.data.selectedNames,
+      selectedValues: this.item.data.selectedValues
     } as EXPOSE
   }
 
@@ -106,10 +111,7 @@ export class MenuDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -117,13 +119,112 @@ export class MenuDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
-    // const children: any[] = []
+  protected initRender(): VNode[] {
+    return this.item.window.render(
+      {
+        control: this.renderControl,
+        title: this.renderTitle,
+        default: this.renderList,
+        footer: this.renderFooter
+      }
+    )
+  }
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+  /**
+   * Generates data for control.
+   *
+   * Генерирует данные для контроля.
+   * @param props data for the transferable property/ данные для передаваемого свойства
+   */
+  protected readonly renderControl = (
+    props: WindowControlItem
+  ): VNode | undefined => {
+    return this.initSlot('control', undefined, this.getBinds(props))
+  }
+
+  /**
+   * Render title element.
+   *
+   * Рендер элемента заголовка.
+   */
+  protected readonly renderTitle = (
+    props: WindowControlItem
+  ): VNode | undefined => {
+    return this.initSlot('title', undefined, this.getBinds(props))
+  }
+
+  /**
+   * Render list element.
+   *
+   * Рендер элемента списка.
+   */
+  protected readonly renderList = (): VNode | undefined => {
+    const list = this.item.dataLite.item.value
+
+    if (list) {
+      const children: any[] = []
+
+      if (this.item.bars.is) {
+        children.push(...this.item.bars.render())
+      }
+
+      children.push(
+        this.components.render(
+          'list',
+          toBind(
+            this.props.listAttrs ?? {},
+            {
+              tag: this.props.tag,
+              focus: this.item.focus.focus.value,
+              selected: this.props.selected,
+              list: list,
+              highlight: this.item.search.item.value,
+              class: this.classes?.value.list,
+              onClick: this.item.event.onClick
+            }
+          ),
+          this.slots as RawSlots
+        )
+      )
+
+      return h(
+        'div',
+        {
+          ...this.getAttrs(),
+          ref: this.element,
+          class: this.classes?.value.main,
+          onClick: this.item.onClickSlot
+        },
+        children
+      )
+    }
+
+    return undefined
+  }
+
+  /**
+   * Render footer element.
+   *
+   * Рендер элемента футера.
+   */
+  protected readonly renderFooter = (
+    props: WindowControlItem
+  ): VNode | undefined => {
+    return this.initSlot('footer', undefined, this.getBinds(props))
+  }
+
+  /**
+   * Generates data for control.
+   *
+   * Генерирует данные для контроля.
+   * @param props data for the transferable property/ данные для передаваемого свойства
+   */
+  protected getBinds(
+    props: WindowControlItem
+  ): MenuControlItem {
+    return {
+      ...props,
+      ...this.item.getControlBinds()
+    }
   }
 }

@@ -12,7 +12,7 @@ import type { WindowExpose, WindowSlots } from './types'
 import type {
   WindowComponentInclude,
   WindowEmitOptions,
-  WindowEmitsInclude,
+  WindowEmitsInclude, WindowExposeInclude,
   WindowPropsInclude
 } from './basicTypes'
 
@@ -70,10 +70,13 @@ export class WindowInclude<
    * Expose helpers for window state and actions/
    * Вспомогательные методы expose для состояния и действий окна
    */
-  readonly expose = {
-    id: computed(() => this.element.value?.id),
+  readonly expose: WindowExposeInclude = {
+    id: computed(() => String(this.element.value?.id)),
     open: computed(() => Boolean(this.element.value?.open)),
+    control: computed(() => this.element.value?.control),
     setOpen: async (open: boolean) => this.element.value?.setOpen(open),
+    toOpen: async () => this.element.value?.toOpen(),
+    toClose: async () => this.element.value?.toClose(),
     toggle: async () => this.element.value?.toggle()
   }
 

@@ -17,6 +17,7 @@ import { MenuWindow } from './MenuWindow'
 
 import type { MenuComponents, MenuEmits, MenuSlots } from './types'
 import type { MenuProps } from './props'
+import type { MenuControlBasic } from './basicTypes.ts'
 
 /**
  * Menu
@@ -72,7 +73,7 @@ export class Menu {
     this.data = new ListData(
       this.request.item,
       undefined,
-      this.search.item,
+      undefined,
       undefined,
       this.refs.selected,
       this.refs.keyValue,
@@ -116,5 +117,38 @@ export class Menu {
     )
 
     this.event = new EventClickInclude(undefined, undefined, this.emits)
+  }
+
+  /**
+   * Returns properties for keyboard control.
+   *
+   * Возвращает свойства для клавиатурного управления.
+   */
+  getControlBinds(): MenuControlBasic {
+    return {
+      list: this.data.fullData,
+      isSelected: this.data.isSelected,
+      selectedList: this.data.selectedList,
+      selectedNames: this.data.selectedNames,
+      selectedValues: this.data.selectedValues
+    }
+  }
+
+  /**
+   * Click on the slot handler.
+   *
+   * Обработчик клика по слоту.
+   * @param event event object/ объект события
+   */
+  readonly onClickSlot = (event: Event) => {
+    const element = event.target as HTMLElement
+    const item = element.closest<HTMLElement>('*[data-value]')
+
+    if (
+      item
+      && !element.closest(`.${this.className}__list`)
+    ) {
+      this.emits?.('clickSlot', item.dataset.value)
+    }
   }
 }

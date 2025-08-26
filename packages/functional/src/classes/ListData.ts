@@ -207,6 +207,15 @@ export class ListData {
   })
 
   /**
+   * Returns a list of selected item values on the map.
+   *
+   * Возвращает список значений выделенных элементов на карте.
+   */
+  readonly selectedValues = computed<any[]>(() => {
+    return getColumn(this.selectedList.value, 'value')
+  })
+
+  /**
    * Checks whether it is necessary to first display a simplified version.
    *
    * Проверяет, надо ли сначала вывести упрощенную версию.
