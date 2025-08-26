@@ -1,0 +1,17 @@
+@use "@dxt-ui/styles/properties" as ui;
+
+@mixin mixinMenu {
+  &__bars {
+    display: ui.v('??barsDisplay', none) !important;
+  }
+
+  &__list {
+    overflow: hidden;
+  }
+
+  &--hideList {
+    @include ui.subclass('list') {
+      display: none;
+    }
+  }
+}

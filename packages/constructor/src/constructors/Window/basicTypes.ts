@@ -107,7 +107,7 @@ export type WindowEventClick = (event: MouseEvent & TouchEvent) => Promise<void>
  * Interface for window classes inclusion/
  * Интерфейс для включения классов окна
  */
-export type WindowClassesInclude = {
+export type WindowControlBasic = {
   /** Window CSS classes list/ Список CSS классов окна */
   classesWindow: WindowClassesList
 }
@@ -116,7 +116,7 @@ export type WindowClassesInclude = {
  * Control item data for window management/
  * Данные элемента управления для управления окном
  */
-export type WindowControlItem = WindowClassesInclude
+export type WindowControlItem = WindowControlBasic
   & {
   /** CSS class string/ Строка CSS класса */
     class: string

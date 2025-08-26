@@ -26,13 +26,4 @@ export declare class ModelInclude<Value = string> {
      * @param value The new value to set/ Новое значение для установки
      */
     emit(value: Value): void;
-    /**
-     * Capitalizes the first letter of the index string.
-     * Converts the index to proper case for event naming.
-     *
-     * Преобразует первую букву строки индекса в заглавную.
-     * Преобразует индекс в правильный регистр для именования событий.
-     * @returns The capitalized index string/ Строка индекса с заглавной буквы
-     */
-    protected capitalize(): string;
 }

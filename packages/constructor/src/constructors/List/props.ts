@@ -23,6 +23,7 @@ export interface ListPropsBasic<
   selected?: ListSelectedList
   highlight?: string
   highlightLengthStart?: number
+  disabled?: boolean
 
   // Value
   list?: ListRecord<ListItem>
@@ -37,6 +38,7 @@ export interface ListPropsBasic<
   itemAttrs?: ConstrBind<ListItem>
   groupAttrs?: Record<string, any>
   groupItemAttrs?: ConstrBind<ListItem>
+  menuAttrs?: Record<string, any>
 
   iconArrowDown?: IconValue<Icon>
   iconArrowRight?: IconValue<Icon>

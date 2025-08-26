@@ -13,7 +13,7 @@ import { BarsAction } from './BarsAction'
 
 import type { BarsComponents, BarsEmits, BarsSlots } from './types'
 import type { BarsProps } from './props'
-import type { EventClickValue } from '../../types/eventClickTypes.ts'
+import type { EventClickValue } from '../../types/eventClickTypes'
 
 /**
  * Bars

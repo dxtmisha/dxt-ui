@@ -4,7 +4,7 @@ import { WindowClasses } from './WindowClasses'
 import { WindowElement } from './WindowElement'
 
 import type { WindowEmits } from './types'
-import type { WindowEmitOptions } from './basicTypes.ts'
+import type { WindowEmitOptions } from './basicTypes'
 
 /**
  * Class triggering a click status change event.

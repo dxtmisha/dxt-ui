@@ -1,0 +1,13 @@
+{
+  "barsDisplay": {
+    "_type": "var"
+  },
+  "#bars": {},
+  "#list": {},
+  "~barsAdaptive": {
+    "always": {
+      "barsDisplay": "flex"
+    }
+  },
+  "~hideList": {}
+}

@@ -19,7 +19,7 @@ import { EnabledInclude } from '../../classes/EnabledInclude'
 
 import type { ListItemComponents, ListItemEmits, ListItemSlots } from './types'
 import type { ListItemPropsBasic } from './props'
-import { EventClickInclude } from '../../classes/EventClickInclude.ts'
+import { EventClickInclude } from '../../classes/EventClickInclude'
 
 /**
  * ListItem

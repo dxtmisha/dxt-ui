@@ -8,17 +8,17 @@ import { EventClickEmits, EventClickExpose, EventClickProps, EventClickValue } f
  * Базовый класс для работы с событиями кнопки
  */
 export declare class EventClickInclude {
-    protected readonly props: EventClickProps;
+    protected readonly props?: EventClickProps | undefined;
     protected readonly enabled?: EnabledInclude | undefined;
     protected readonly emits?: ConstrEmit<EventClickEmits> | undefined;
-    protected readonly refs: ToRefs<EventClickProps>;
+    protected readonly refs?: ToRefs<EventClickProps>;
     /**
      * Constructor
      * @param props input data/ входные данные
      * @param enabled Object for working with activity status/ Объект для работы со статусом активности
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      */
-    constructor(props: EventClickProps, enabled?: EnabledInclude | undefined, emits?: ConstrEmit<EventClickEmits> | undefined);
+    constructor(props?: EventClickProps | undefined, enabled?: EnabledInclude | undefined, emits?: ConstrEmit<EventClickEmits> | undefined);
     /**
      * Exported values
      *

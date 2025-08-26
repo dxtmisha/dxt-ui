@@ -1,9 +1,9 @@
 import type { ConstrClass } from '@dxt-ui/functional'
 
 import type { ButtonComponentInclude } from '../Button'
-import type { EventClickEmits } from '../../types/eventClickTypes.ts'
-import type { LabelSlots } from '../../types/labelTypes.ts'
-import type { DescriptionSlots } from '../../types/descriptionTypes.ts'
+import type { EventClickEmits } from '../../types/eventClickTypes'
+import type { LabelSlots } from '../../types/labelTypes'
+import type { DescriptionSlots } from '../../types/descriptionTypes'
 
 /**
  * Interface for describing which components need to be connected for work.

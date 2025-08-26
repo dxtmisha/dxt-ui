@@ -9,8 +9,8 @@ import { MotionTransformGo } from './MotionTransformGo'
 
 import type { MotionTransformComponents, MotionTransformEmits, MotionTransformSlots } from './types'
 import type { MotionTransformProps } from './props'
-import type { MotionTransformControlItem } from './basicTypes.ts'
-import { ModelInclude } from '../../classes/ModelInclude.ts'
+import type { MotionTransformControlItem } from './basicTypes'
+import { ModelInclude } from '../../classes/ModelInclude'
 
 /**
  * MotionTransform

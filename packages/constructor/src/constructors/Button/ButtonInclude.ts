@@ -36,7 +36,13 @@ export class ButtonInclude<Props extends ButtonPropsInclude = ButtonPropsInclude
   /**
    * Computed bindings for the button/ Вычисляемые привязки для кнопки
    */
-  readonly binds = computed(() => getBind(getRef(this.props), this.extra, 'label'))
+  readonly binds = computed(
+    () => getBind(
+      getRef(this.props),
+      getRef(this.extra),
+      'label'
+    )
+  )
 
   /**
    * Renders the button component with provided properties and configuration.

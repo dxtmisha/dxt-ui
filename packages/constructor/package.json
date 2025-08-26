@@ -8,7 +8,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor listGroup"
+    "dxt-constructor": "dxt-constructor"
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
@@ -38,6 +38,8 @@
     "./ListGroup/style": "./src/constructors/ListGroup/style.scss",
     "./ListItem": "./src/constructors/ListItem/index.ts",
     "./ListItem/style": "./src/constructors/ListItem/style.scss",
+    "./Menu": "./src/constructors/Menu/index.ts",
+    "./Menu/style": "./src/constructors/Menu/style.scss",
     "./MotionTransform": "./src/constructors/MotionTransform/index.ts",
     "./MotionTransform/style": "./src/constructors/MotionTransform/style.scss",
     "./Motiontransform": "./src/constructors/Motiontransform/index.ts",

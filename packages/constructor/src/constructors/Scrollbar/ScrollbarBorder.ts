@@ -6,7 +6,7 @@ import {
 } from '@dxt-ui/functional'
 
 import type { ScrollbarProps } from './props'
-import type { ScrollbarEmits } from './types.ts'
+import type { ScrollbarEmits } from './types'
 
 const SCROLLBAR_SHIFT = 8
 
