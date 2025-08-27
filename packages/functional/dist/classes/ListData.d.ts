@@ -1,5 +1,5 @@
 import { RefType } from '../types/refTypes';
-import { ListDataFull, ListDataItem, ListList, ListListInput, ListNames, ListSelectedItem } from '../types/listTypes';
+import { ListDataFull, ListDataItem, ListList, ListListInput, ListNames, ListSelectedItem, ListSelectedList } from '../types/listTypes';
 import { ComputedRef } from 'vue';
 /**
  * Class for managing the data list.
@@ -11,11 +11,11 @@ export declare class ListData {
     protected readonly focus?: RefType<ListSelectedItem | undefined> | undefined;
     protected readonly highlight?: RefType<string | undefined> | undefined;
     protected readonly highlightLengthStart?: RefType<number | undefined> | undefined;
-    protected readonly selected?: RefType<ListSelectedItem | undefined> | undefined;
+    protected readonly selected?: RefType<ListSelectedList | undefined> | undefined;
     protected readonly keyValue?: RefType<string | undefined> | undefined;
     protected readonly keyLabel?: RefType<string | undefined> | undefined;
     protected readonly lite?: RefType<number | undefined> | undefined;
-    constructor(list: RefType<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, selected?: RefType<ListSelectedItem | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined);
+    constructor(list: RefType<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined);
     /**
      * Returns a list for forming a list.
      *
@@ -70,6 +70,12 @@ export declare class ListData {
      * Возвращает список выделенных элементов на карте.
      */
     readonly selectedNames: ComputedRef<ListNames>;
+    /**
+     * Returns a list of selected item values on the map.
+     *
+     * Возвращает список значений выделенных элементов на карте.
+     */
+    readonly selectedValues: ComputedRef<any[]>;
     /**
      * Checks whether it is necessary to first display a simplified version.
      *
@@ -129,7 +135,7 @@ export declare class ListData {
      *
      * Возвращает выбранное значение.
      */
-    getSelected(): ListSelectedItem | undefined;
+    getSelected(): ListSelectedList | undefined;
     /**
      * Returns the index for the list item.
      *

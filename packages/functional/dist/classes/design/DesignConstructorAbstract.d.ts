@@ -14,7 +14,7 @@ export declare abstract class DesignConstructorAbstract<E extends Element, COMP 
     protected readonly refs: ToRefs<P>;
     protected readonly components: DesignComponents<COMP, P>;
     protected readonly emits?: ConstrEmit<EMITS>;
-    protected readonly classes?: ComputedRef<ConstrClasses>;
+    protected readonly classes?: ComputedRef<CLASSES>;
     protected classesSub?: ComputedRef<Partial<CLASSES>>;
     protected readonly styles?: ComputedRef<ConstrStyles>;
     protected stylesSub?: ComputedRef<ConstrStyles>;

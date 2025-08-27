@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import D1List from './components/Ui/List/D1List.vue'
 </script>
 
 <template>
   <div class="app">
     <div class="test">
       <div class="test__item">width > 400</div>
+      <D1List/>
     </div>
     <div class="app__back">
       <h1>D1</h1>

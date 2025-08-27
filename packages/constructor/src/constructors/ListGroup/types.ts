@@ -1,7 +1,9 @@
 import type { ComputedRef } from 'vue'
 import type { ConstrClass } from '@dxt-ui/functional'
+
 import type { EventClickEmits } from '../../types/eventClickTypes'
-import type { ListComponentInclude } from '../List'
+
+import type { ListComponentInclude } from '../List/basicTypes'
 import type { ListItemComponentInclude } from '../ListItem'
 import type { MotionTransformComponentInclude } from '../MotionTransform'
 

@@ -3,6 +3,7 @@ import { type ConstrEmit, DesignComp, ListData } from '@dxt-ui/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
+import { MenuInclude } from '../Menu'
 import { WindowClassesInclude } from '../Window'
 
 import type { ListComponents, ListEmits, ListSlots } from './types'
@@ -15,6 +16,8 @@ export class List {
   readonly data: ListData
   readonly event: EventClickInclude
 
+  /** Include for working with the Menu component/ Подключение для работы с компонентом Menu */
+  readonly menu: MenuInclude
   readonly windowClasses: WindowClassesInclude
 
   /**
@@ -51,6 +54,11 @@ export class List {
 
     this.event = new EventClickInclude(undefined, undefined, emits)
 
+    this.menu = new MenuInclude(
+      this.props,
+      this.classDesign,
+      this.components
+    )
     this.windowClasses = new WindowClassesInclude(classDesign)
   }
 }

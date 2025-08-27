@@ -1,3 +1,5 @@
+import { isDomRuntime } from '@dxt-ui/functional'
+
 import { WindowPersistent } from './WindowPersistent'
 import { WindowClasses } from './WindowClasses'
 import { WindowElement } from './WindowElement'
@@ -44,6 +46,10 @@ export class WindowVerification {
   async update(target: HTMLElement): Promise<void> {
     this.target = target
     this.focus = this.getFocus()
+
+    if (!isDomRuntime()) {
+      return
+    }
 
     if (!this.isTargetInBody()) {
       return

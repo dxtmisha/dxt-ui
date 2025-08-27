@@ -1,8 +1,8 @@
 var Tt = Object.defineProperty;
 var Et = (i, t, e) => t in i ? Tt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
 var c = (i, t, e) => Et(i, typeof t != "symbol" ? t + "" : t, e);
-import { i as m, D as J, e as T, a as H, b as Ot, G as p, f, t as L, c as ht, d as O, g as Rt, h as u, j as R, k as y, l as N, m as X, r as b, A as U, n as Wt, o as d, p as xt, u as jt, q as Ht, s as Ct, w as $, v as Pt, E as zt, x as P, y as ot, z as Y, L as dt, B as Ut, C as Zt, F as Yt, H as W } from "./Icons-j54ibm4Y.js";
-import { I as Ds, J as Ls, K as Ss, M as ks, N as Ms, O as As, P as Ns, Q as Is } from "./Icons-j54ibm4Y.js";
+import { i as m, D as J, e as T, a as H, b as Ot, G as p, f, t as D, c as gt, d as O, g as Rt, h as u, j as R, k as y, l as N, m as X, r as b, A as U, n as Wt, o as d, p as xt, u as jt, q as Ht, s as Dt, w as $, v as Pt, E as zt, x as P, y as ot, z as Y, L as mt, B as Ut, C as Zt, F as Yt, H as W } from "./Icons-j54ibm4Y.js";
+import { I as Ls, J as Ss, K as ks, M as Ms, N as As, O as Ns, P as Is, Q as Fs } from "./Icons-j54ibm4Y.js";
 class Kt {
   /**
    * Constructor
@@ -112,8 +112,8 @@ const q = class q {
   }
 };
 c(q, "cache"), q.cache = new Gt();
-let yt = q;
-function Dt(i, t = !1) {
+let $t = q;
+function Lt(i, t = !1) {
   if (typeof i == "string") {
     const e = i.trim();
     switch (e) {
@@ -145,7 +145,7 @@ function Dt(i, t = !1) {
   return i;
 }
 const Vt = "cookie-block";
-class Lt {
+class St {
   /**
    * Obtaining status.
    *
@@ -164,7 +164,7 @@ class Lt {
     this.storage.set(t);
   }
 }
-c(Lt, "storage", new J(Vt));
+c(St, "storage", new J(Vt));
 const z = {};
 class qt {
   constructor(t) {
@@ -218,7 +218,7 @@ class qt {
    */
   update() {
     var t, e;
-    if (m() && !Lt.get()) {
+    if (m() && !St.get()) {
       const s = String(this.value ?? "");
       document.cookie = [
         `${encodeURIComponent(this.name)}=${encodeURIComponent(s)}`,
@@ -233,11 +233,11 @@ class qt {
   if (m())
     for (const t of document.cookie.split(";")) {
       const [e, s] = t.trim().split("=");
-      e && H(s) && (z[e] = Dt(s));
+      e && H(s) && (z[e] = Lt(s));
     }
 })();
 const et = {};
-function D(i) {
+function L(i) {
   if (i instanceof Date)
     return i;
   if (Ot(i))
@@ -249,7 +249,7 @@ function D(i) {
   const s = (/^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) ?? (/^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) ?? (/^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) ?? (/^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) ?? (/^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) ?? (/^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) ?? (/^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) ?? (/^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) ?? t.replace(" ", "T");
   return /* @__PURE__ */ new Date(`${s}${e}`);
 }
-function St(i, t) {
+function ct(i, t) {
   return f(i, (e) => e == null ? void 0 : e[t]);
 }
 class Q {
@@ -370,7 +370,7 @@ class Q {
    */
   number(t, e) {
     var s, n;
-    return ((n = (s = this.numberObject(e)) == null ? void 0 : s.format) == null ? void 0 : n.call(s, L(t))) || t.toString();
+    return ((n = (s = this.numberObject(e)) == null ? void 0 : s.format) == null ? void 0 : n.call(s, D(t))) || t.toString();
   }
   /**
    * Decimal point symbol.
@@ -398,8 +398,8 @@ class Q {
     }, a = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...o) => (n.currency = o[2].toUpperCase(), o[1]));
     if (s) {
       const o = this.numberObject(n);
-      return o ? St(
-        o.formatToParts(L(t)).filter((h) => ["literal", "currency"].indexOf(h.type) === -1),
+      return o ? ct(
+        o.formatToParts(D(t)).filter((h) => ["literal", "currency"].indexOf(h.type) === -1),
         "value"
       ).join("") : t.toString();
     } else return "currency" in n ? this.number(
@@ -453,8 +453,8 @@ class Q {
    * в форматировании блока
    */
   sizeFile(t, e = "byte") {
-    const s = L(t);
-    if (s > 1024 && ht(e))
+    const s = D(t);
+    if (s > 1024 && gt(e))
       switch (e) {
         case "byte":
           return this.sizeFile(s / 1024, "kilobyte");
@@ -491,7 +491,7 @@ class Q {
    * объект с некоторыми или всеми свойствами
    */
   percentBy100(t, e) {
-    return this.percent(L(t) / 100, e);
+    return this.percent(D(t) / 100, e);
   }
   /**
    * Применять форматирование, учитывающее множественное число, и языковые правила, связанные с множественным числом
@@ -502,7 +502,7 @@ class Q {
    * @param optionsNumber an object with some or all properties/ объект с некоторыми или всеми свойствами
    */
   plural(t, e, s, n) {
-    const a = L(t), o = e.split("|");
+    const a = D(t), o = e.split("|");
     if (o.length > 1)
       try {
         if (m()) {
@@ -545,7 +545,7 @@ class Q {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   date(t, e, s, n) {
-    const a = D(t), o = typeof s == "string", h = this.dateOptions(e, o ? s : "short");
+    const a = L(t), o = typeof s == "string", h = this.dateOptions(e, o ? s : "short");
     return n && (h.hour12 = !1), o || Object.assign(h, s), a.toLocaleString(this.getLocation(), h);
   }
   /**
@@ -558,7 +558,7 @@ class Q {
    * @param todayValue current day/ текущий день
    */
   relative(t, e, s) {
-    const n = D(t), a = s || /* @__PURE__ */ new Date(), o = {
+    const n = L(t), a = s || /* @__PURE__ */ new Date(), o = {
       numeric: "auto",
       ...typeof e == "string" ? { style: e } : e || {}
     };
@@ -584,7 +584,7 @@ class Q {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   relativeLimit(t, e, s, n, a, o, h) {
-    const l = D(t), g = s || /* @__PURE__ */ new Date(), k = new Date(g), M = new Date(g);
+    const l = L(t), g = s || /* @__PURE__ */ new Date(), k = new Date(g), M = new Date(g);
     return k.setDate(g.getDate() - e), M.setDate(g.getDate() + e), l >= k && l <= M ? this.relative(
       l,
       n,
@@ -609,7 +609,7 @@ class Q {
     };
     try {
       if (m())
-        return new Intl.RelativeTimeFormat(this.getLocation(), n).format(Math.round(L(t)), e);
+        return new Intl.RelativeTimeFormat(this.getLocation(), n).format(Math.round(D(t)), e);
     } catch (a) {
       console.error("relative: ", a);
     }
@@ -624,7 +624,7 @@ class Q {
   month(t, e) {
     try {
       if (m())
-        return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(D(t));
+        return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(L(t));
     } catch (s) {
       console.error("month: ", s);
     }
@@ -665,7 +665,7 @@ class Q {
   weekday(t, e) {
     try {
       if (m())
-        return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(D(t));
+        return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(L(t));
     } catch (s) {
       console.error("weekday: ", s);
     }
@@ -748,7 +748,7 @@ class Q {
   }
 }
 const st = {};
-class lt {
+class ft {
   /**
    * Constructor
    * @param date date for processing/ дата для обработки
@@ -759,7 +759,7 @@ class lt {
     c(this, "date");
     c(this, "hour24", !1);
     c(this, "watch");
-    this.type = e, this.code = s, this.date = D(t);
+    this.type = e, this.code = s, this.date = L(t);
   }
   /**
    * Returns an object for working with formatting.
@@ -975,7 +975,7 @@ class lt {
    * @param timeZone add time zone/ добавить временную зону
    */
   standard(t = !0) {
-    const e = new lt(this.date, this.type, "en-GB"), s = [];
+    const e = new ft(this.date, this.type, "en-GB"), s = [];
     let n;
     return e.setHour24(!0), this.type === "hour-minute" ? n = e.locale(this.type, {
       year: "numeric",
@@ -991,7 +991,7 @@ class lt {
    * целочисленное значение, представляющее число
    */
   setDate(t) {
-    return this.date = D(t), this.update(), this;
+    return this.date = L(t), this.update(), this;
   }
   /**
    * Change the type of data output.
@@ -1753,7 +1753,7 @@ c(F, "flags", {
   ZM: `${r}-zm`,
   ZW: `${r}-zw`
 });
-let ct = F;
+let ut = F;
 const B = class B {
   /**
    * Getting an object with information about the phone code and country.
@@ -1932,7 +1932,7 @@ const B = class B {
   }
 };
 c(B, "list", []), c(B, "map", {}), B.makeList(), B.makeMap();
-let mt = B, I;
+let pt = B, I;
 class we {
   /**
    * Returns the value by its name.
@@ -2006,7 +2006,7 @@ const A = class A {
     const t = {};
     return location.hash.replace(
       /([\w-]+)[:=]([^;]+)/ig,
-      (...e) => (t[e[1]] = Dt(e[2]), "")
+      (...e) => (t[e[1]] = Lt(e[2]), "")
     ), t;
   }
   /**
@@ -2164,7 +2164,13 @@ class Mt {
      *
      * Возвращает список выделенных элементов на карте.
      */
-    c(this, "selectedNames", u(() => St(this.selectedList.value, "label")));
+    c(this, "selectedNames", u(() => ct(this.selectedList.value, "label")));
+    /**
+     * Returns a list of selected item values on the map.
+     *
+     * Возвращает список значений выделенных элементов на карте.
+     */
+    c(this, "selectedValues", u(() => ct(this.selectedList.value, "value")));
     this.list = t, this.focus = e, this.highlight = s, this.highlightLengthStart = n, this.selected = a, this.keyValue = o, this.keyLabel = h, this.lite = l;
   }
   /**
@@ -2336,7 +2342,7 @@ function Qt(i, t, e) {
   }
   return s;
 }
-function $t(i, t = "div", e, s) {
+function vt(i, t = "div", e, s) {
   if (!m())
     return;
   const n = document.createElement(t);
@@ -2383,8 +2389,8 @@ const j = class j {
    * Создает элементы для проверки ширины скролла.
    */
   static createElement() {
-    return $t(document.body, "div", (t) => {
-      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", $t(t, "div", (e) => {
+    return vt(document.body, "div", (t) => {
+      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", vt(t, "div", (e) => {
         e.style.height = "100px";
       });
     });
@@ -2405,7 +2411,7 @@ const j = class j {
   }
 };
 c(j, "storage", new J("scrollbar", !0)), c(j, "calculate", !1);
-let ut = j;
+let ht = j;
 const _t = [
   "d",
   "e",
@@ -2522,7 +2528,7 @@ const _t = [
    */
   static addSync(t) {
     f(t, (e, s) => {
-      ht(e) && H(e) && (this.data[this.getName(s)] = e);
+      gt(e) && H(e) && (this.data[this.getName(s)] = e);
     });
   }
   /**
@@ -2613,7 +2619,7 @@ const _t = [
 };
 c(C, "url", "/api/translate"), c(C, "propsName", "list"), c(C, "data", {}), c(C, "cache", []), c(C, "resolveList", []), c(C, "timeout");
 let K = C;
-function gt(i) {
+function dt(i) {
   return Array.isArray(i);
 }
 class ee {
@@ -2633,7 +2639,7 @@ class ee {
    * @param name property name/ название свойства
    */
   is(t) {
-    return gt(t) ? !!t.find((e) => this.isDifferent(e)) : this.isDifferent(t);
+    return dt(t) ? !!t.find((e) => this.isDifferent(e)) : this.isDifferent(t);
   }
   /**
    * Checks if there are changes in the data.
@@ -3039,7 +3045,7 @@ class Le {
   }
 }
 function S(i) {
-  return Ct(i) ? i : b(i);
+  return Dt(i) ? i : b(i);
 }
 class Se {
   /**
@@ -3060,12 +3066,12 @@ class Se {
     c(this, "hour", u(() => this.date.value && this.datetime.getHour()));
     c(this, "minute", u(() => this.date.value && this.datetime.getMinute()));
     c(this, "second", u(() => this.date.value && this.datetime.getSecond()));
-    this.item = S(t), this.type = S(e), this.code = S(s), this.date = b(D(this.item.value)), this.datetime = new lt(
+    this.item = S(t), this.type = S(e), this.code = S(s), this.date = b(L(this.item.value)), this.datetime = new ft(
       this.date.value,
       this.type.value,
       this.code.value
     ), $(this.item, (n) => {
-      this.date.value = D(n);
+      this.date.value = L(n);
     }), $(this.type, (n) => this.datetime.setType(n)), $(this.code, (n) => this.datetime.setCode(n)), $(this.date, (n) => this.datetime.setDate(n)), this.datetime.setWatch(() => Pt(this.date));
   }
   /**
@@ -3218,7 +3224,7 @@ class Me {
   constructor(t = p.getLocation()) {
     c(this, "code");
     c(this, "flag");
-    this.code = S(t), this.flag = new ct(this.code.value), $(this.code, (e) => this.flag.setCode(e));
+    this.code = S(t), this.flag = new ut(this.code.value), $(this.code, (e) => this.flag.setCode(e));
   }
   /**
    * Obtaining a reactive object with the country code.
@@ -3548,15 +3554,15 @@ function Ae(i, t, e = !0, s, n, a) {
     if ((!s || s.value) && w) {
       l.value = !0, g.value = !0;
       let tt = {};
-      const ft = await U.request({
+      const yt = await U.request({
         path: w,
         ...h.value
       });
-      ft && (tt = ft), n ? o.value = n(tt) : o.value = tt, l.value = !1;
+      yt && (tt = yt), n ? o.value = n(tt) : o.value = tt, l.value = !1;
     } else o.value !== void 0 && (o.value = void 0);
   }, Bt = () => {
     const w = [];
-    e && w.push(h), Ct(i) && w.push(i), s && w.push(s), V && w.push(V), w.length > 0 && $(w, async () => {
+    e && w.push(h), Dt(i) && w.push(i), s && w.push(s), V && w.push(V), w.length > 0 && $(w, async () => {
       l.value || await _();
     });
   };
@@ -3600,10 +3606,10 @@ function Be(i, t) {
   }), rt[i] = e, e;
 }
 const rt = {};
-let pt = Y(1e5, 9e5);
+let bt = Y(1e5, 9e5);
 function Z(i, t) {
   const e = X(i);
-  return e ? (H(e.id) || e.setAttribute("id", `id-${pt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${pt++}`;
+  return e ? (H(e.id) || e.setAttribute("id", `id-${bt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${bt++}`;
 }
 const Te = () => {
   const i = {}, t = "IntersectionObserver" in window ? new IntersectionObserver(
@@ -3661,8 +3667,8 @@ const Te = () => {
   };
 };
 function Ee() {
-  const i = P(dt.is());
-  return dt.registrationEvent(({ detail: t }) => {
+  const i = P(mt.is());
+  return mt.registrationEvent(({ detail: t }) => {
     i.value = t.loading;
   }), i;
 }
@@ -3694,7 +3700,7 @@ function ce(i) {
 }
 const We = (i) => ce(i);
 function xe(i) {
-  return ht(i) ? i.trim() : gt(i) && i.findIndex((t) => y(t)) === -1 ? i.join(", ") : y(i) ? JSON.stringify(i) : i === !0 ? "1" : (i == null ? void 0 : i.toString()) ?? "";
+  return gt(i) ? i.trim() : dt(i) && i.findIndex((t) => y(t)) === -1 ? i.join(", ") : y(i) ? JSON.stringify(i) : i === !0 ? "1" : (i == null ? void 0 : i.toString()) ?? "";
 }
 function ue(i, t) {
   return Array(t).fill(i);
@@ -3806,21 +3812,21 @@ function _e(i, t) {
   const e = i ?? 0;
   return t > e ? (t - e) / 100 : 0;
 }
-const vt = 0;
+const wt = 0;
 function ts(i, t, e) {
   const s = t == null ? void 0 : t.closest(i);
   if (t && s && s.scrollHeight !== s.offsetHeight)
     if (e) {
       const n = e.getBoundingClientRect(), a = s.getBoundingClientRect(), o = t.getBoundingClientRect();
       s.scrollTop = t.offsetTop - (n.top - a.top) - (n.height / 2 - o.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
-    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - vt : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + vt);
+    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - wt : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + wt);
 }
 function es(i, t) {
   return i.indexOf(t) !== -1;
 }
 async function ss() {
   if (m()) {
-    const i = await ut.get();
+    const i = await ht.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
@@ -3853,7 +3859,7 @@ function as(i, t) {
 function os(i, t) {
   return Array.isArray(i) ? i.every((e) => R(e, t)) : R(i, t);
 }
-function bt(i, t) {
+function lt(i, t) {
   const e = i == null ? void 0 : i.class, s = t == null ? void 0 : t.class, n = i == null ? void 0 : i.style, a = t == null ? void 0 : t.style, o = {
     ...i,
     ...t
@@ -3862,7 +3868,7 @@ function bt(i, t) {
 }
 function me(i, t = {}, e = "value", s = !1) {
   const n = typeof t == "string", a = n ? t : e, o = n ? {} : t;
-  return i ? i && N(i) && (a in i || s) ? bt(o, i) : bt(o, { [a]: i }) : n ? {} : { ...o };
+  return i ? i && N(i) && (a in i || s) ? lt(o, i) : lt(o, { [a]: i }) : n ? {} : { ...o };
 }
 function cs(i, t = {}, e = "value") {
   return u(() => me(d(i), d(t), e));
@@ -3909,7 +3915,7 @@ function gs(i, t) {
   }), e;
 }
 function fs(i) {
-  const t = L(i);
+  const t = D(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
     return `${e}:${s}`;
@@ -3923,7 +3929,7 @@ function ds(i, t, {
   notEmpty: a = !1
 }) {
   if (e) {
-    if (gt(i)) {
+    if (dt(i)) {
       const o = i.indexOf(t), h = [...i];
       return o !== -1 ? (!a || h.length > 1) && h.splice(o, 1) : (!s || i.length < s) && h.push(t), h;
     }
@@ -3944,24 +3950,30 @@ function ys(i, t, e) {
   }
   return W(i);
 }
-function ms(i) {
-  return Nt(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+function ms(...i) {
+  let t = {};
+  return i.forEach((e) => {
+    e && (t = lt(t, e));
+  }), t;
 }
 function $s(i) {
+  return Nt(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+}
+function ps(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(new RegExp("(?<=[A-Z])([A-Z])", "g"), (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(new RegExp("(?<=[\\w ])[A-Z]", "g"), (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function ps(i, t, e, s) {
-  const n = L(i);
-  return t && t < n ? `${wt(t, e, s)}+` : wt(n, e, s);
+function vs(i, t, e, s) {
+  const n = D(i), a = D(t);
+  return t && a < n ? `${Ct(a, e, s)}+` : Ct(n, e, s);
 }
-const wt = (i, t, e) => t ? new Q(e).number(i) : i;
+const Ct = (i, t, e) => t ? new Q(e).number(i) : i;
 function pe(i, t) {
   return 1 / i * t;
 }
-function vs(i, t) {
+function bs(i, t) {
   return pe(i, t) * 100;
 }
-async function bs(i) {
+async function ws(i) {
   if (m())
     try {
       await navigator.clipboard.writeText(i);
@@ -3971,14 +3983,14 @@ async function bs(i) {
 }
 export {
   U as Api,
-  Ds as ApiMethodItem,
+  Ls as ApiMethodItem,
   Gt as Cache,
   Kt as CacheItem,
-  yt as CacheStatic,
+  $t as CacheStatic,
   qt as Cookie,
-  Lt as CookieBlock,
+  St as CookieBlock,
   J as DataStorage,
-  lt as Datetime,
+  ft as Datetime,
   Se as DatetimeRef,
   se as DesignAbstract,
   Ce as DesignAsyncAbstract,
@@ -3990,28 +4002,28 @@ export {
   ke as EventRef,
   r as GEO_FLAG_ICON_NAME,
   p as Geo,
-  ct as GeoFlag,
+  ut as GeoFlag,
   Me as GeoFlagRef,
   Q as GeoIntl,
   ae as GeoIntlRef,
-  mt as GeoPhone,
+  pt as GeoPhone,
   G as GeoRef,
   we as Global,
   x as Hash,
-  Ls as Icons,
+  Ss as Icons,
   Mt as ListData,
-  dt as Loading,
+  mt as Loading,
   Jt as RouterItem,
-  ut as ScrollbarWidth,
+  ht as ScrollbarWidth,
   K as Translate,
   xe as anyToString,
   te as applyTemplate,
   ue as arrFill,
   W as copyObject,
-  $t as createElement,
+  vt as createElement,
   je as eventStopPropagation,
   T as executeFunction,
-  Ss as executePromise,
+  ks as executePromise,
   He as executeUse,
   Pe as executeUseGlobalInit,
   f as forEach,
@@ -4021,12 +4033,12 @@ export {
   cs as getBindRef,
   ie as getClassName,
   Ue as getClipboardData,
-  St as getColumn,
+  ct as getColumn,
   us as getComputedAsync,
   X as getElement,
   Z as getElementId,
   Xt as getElementItem,
-  ks as getElementOrWindow,
+  Ms as getElementOrWindow,
   kt as getExp,
   re as getIndexForRender,
   ge as getItemByPath,
@@ -4049,22 +4061,22 @@ export {
   es as inArray,
   ss as initScrollbarOffset,
   is as intersectKey,
-  gt as isArray,
+  dt as isArray,
   rs as isDifferent,
   m as isDomRuntime,
   H as isFilled,
   ns as isFloat,
-  Ms as isFunction,
-  As as isInDom,
+  As as isFunction,
+  Ns as isInDom,
   as as isIntegerBetween,
   Ot as isNull,
-  Ns as isNumber,
+  Is as isNumber,
   y as isObject,
   N as isObjectNotArray,
   R as isSelected,
   os as isSelectedByList,
-  ht as isString,
-  Is as isWindow,
+  gt as isString,
+  Fs as isWindow,
   Y as random,
   ne as render,
   E as replaceRecursive,
@@ -4078,18 +4090,19 @@ export {
   ye as strFill,
   We as t,
   O as toArray,
-  bt as toBind,
+  lt as toBind,
+  ms as toBinds,
   Nt as toCamelCase,
-  ms as toCamelCaseFirst,
+  $s as toCamelCaseFirst,
   ls as toComputed,
-  D as toDate,
-  $s as toKebabCase,
-  L as toNumber,
-  ps as toNumberByMax,
+  L as toDate,
+  ps as toKebabCase,
+  D as toNumber,
+  vs as toNumberByMax,
   pe as toPercent,
-  vs as toPercentBy100,
+  bs as toPercentBy100,
   S as toRefItem,
-  Dt as transformation,
+  Lt as transformation,
   $e as uniqueArray,
   Ae as useApiRef,
   Ie as useCookieRef,
@@ -4100,5 +4113,5 @@ export {
   Oe as useSessionRef,
   Re as useStorageRef,
   ce as useTranslateRef,
-  bs as writeClipboardData
+  ws as writeClipboardData
 };

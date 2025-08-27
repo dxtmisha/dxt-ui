@@ -1,4 +1,4 @@
-import { getElement } from '@dxt-ui/functional'
+import { getElement, isDomRuntime } from '@dxt-ui/functional'
 
 import { WindowClient } from './WindowClient'
 import { WindowElement } from './WindowElement'
@@ -149,11 +149,13 @@ export class WindowPosition {
    * Обновляет статус отображения скролла у элемента.
    */
   updateBody(): void {
-    const body = document.body
-    const value = body.offsetHeight > window.innerHeight ? 'scroll' : 'none'
+    if (isDomRuntime()) {
+      const body = document.body
+      const value = body.offsetHeight > window.innerHeight ? 'scroll' : 'none'
 
-    if (body.dataset.scroll !== value) {
-      body.dataset.scroll = value
+      if (body.dataset.scroll !== value) {
+        body.dataset.scroll = value
+      }
     }
   }
 

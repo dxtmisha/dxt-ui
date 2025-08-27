@@ -18,6 +18,10 @@
       "./src/library.ts",
       "./dist/library.js"
     ],
+    "./node": [
+      "./src/library-node.ts",
+      "./dist/library-node.js"
+    ],
     "./Badge": "./src/constructors/Badge/index.ts",
     "./Badge/style": "./src/constructors/Badge/style.scss",
     "./Bars": "./src/constructors/Bars/index.ts",

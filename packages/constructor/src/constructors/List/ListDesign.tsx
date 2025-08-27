@@ -2,12 +2,16 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract, isObject,
-  type ListDataItem, toBind, toBinds
+  DesignConstructorAbstract,
+  isObject,
+  type ListDataItem,
+  toBind,
+  toBinds
 } from '@dxt-ui/functional'
 
 import { List } from './List'
 
+import type { MenuControlItem } from '../Menu'
 import {
   type ListProps
 } from './props'
@@ -152,10 +156,10 @@ export class ListDesign<
             children.push(this.renderGroup(item))
             break
           case 'menu':
-            // children.push(...setup.renderMenuItem(item))
+            children.push(...this.renderMenuItem(item))
             break
           case 'menu-group':
-            // children.push(setup.renderMenuGroup(item))
+            children.push(this.renderMenuGroup(item))
             break
           default:
             children.push(this.renderItem(item))
@@ -288,18 +292,18 @@ export class ListDesign<
    * Генерирует группу меню.
    * @param item selected element/ выбранный элемент
    */
-  /* protected readonly renderMenuItem = (item: ListDataItem): VNode[] => {
-    return setup.renderMenu(
+  protected readonly renderMenuItem = (item: ListDataItem): VNode[] => {
+    return this.item.menu.render(
       {
-        control: (binds: UseMenuControl) => this.renderMenuControl(item, binds)
+        control: (binds: MenuControlItem) => this.renderMenuControl(item, binds)
       },
       {
         ...item?.menuAttrs,
         list: item.value,
-        onClick: setup.onClick
+        onClick: this.item.event.onClick
       }
     )
-  } */
+  }
 
   /**
    * Generates a control element for the menu.
@@ -308,31 +312,36 @@ export class ListDesign<
    * @param item selected element/ выбранный элемент
    * @param binds data for working with the menu/ данные для работы с меню
    */
-  /* protected readonly renderMenuControl = (
+  protected readonly renderMenuControl = (
     item: ListDataItem,
-    binds: UseMenuControl
+    binds: MenuControlItem
   ) => {
-    return setup.renderItem({
+    return this.renderItem({
       iconTrailing: this.props.axis === 'x' ? this.props.iconArrowDown : this.props.iconArrowRight,
       iconTrailingTurnOnly: true,
+      iconTurn: binds.open.value,
 
-      ...item,
-      type: undefined,
-      value: undefined,
-      menuAttrs: undefined,
-
-      ...binds.binds,
+      ...toBinds(
+        item,
+        binds.binds,
+        {
+          class: [
+            binds.class,
+            this.classes?.value.menu,
+            this.item.windowClasses.get().static
+          ]
+        }
+      ),
 
       focus: this.props.focus === item?.index,
       open: binds.open.value || binds.isSelected.value,
-      iconTurn: binds.open.value,
-      class: [
-        binds.class,
-        this.classes?.value.menu,
-        this.item.windowClasses.get().static
-      ]
+
+      type: 'item',
+      value: undefined,
+
+      menuAttrs: undefined
     })
-  } */
+  }
 
   /**
    * Generates an adapted group with changes in the menu when the rail status is active.
@@ -340,22 +349,22 @@ export class ListDesign<
    * Генерирует адаптированную группу с изменениями в меню при активности статуса rail.
    * @param item selected element/ выбранный элемент
    */
-  /* protected readonly renderMenuGroup = (item: ListDataItem): VNode => {
+  protected readonly renderMenuGroup = (item: ListDataItem): VNode => {
     const divider = item.divider || this.props.divider
 
     return h(
       'div',
       {
         'class': {
-          [this.classes?.value.menuGroup]: true,
+          [`${this.classes?.value.menuGroup}`]: true,
           [`${this.classes?.value.menuGroup}--divider`]: divider
         },
         'data-divider': divider ? 'divider' : undefined
       },
       [
-        setup.renderGroup(item),
-        setup.renderMenuItem(item)
+        this.renderGroup(item),
+        this.renderMenuItem(item)
       ]
     )
-  } */
+  }
 }

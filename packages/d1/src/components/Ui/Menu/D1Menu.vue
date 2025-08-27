@@ -1,0 +1,64 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import {
+  inArray,
+  isFilled,
+  type ConstrClasses,
+  type ConstrStyles
+} from '@dxt-ui/functional'
+import {
+  MenuDesign,
+  type MenuEmits,
+  type MenuSlots
+} from '@dxt-ui/constructor/Menu'
+
+import { D1ListAny } from '../List'
+import { D1Bars } from '../Bars'
+import { D1Window } from '../Window'
+
+import { defaults, type MenuProps, propsValues } from './props'
+import './styleToken.scss'
+
+defineOptions({
+  name: 'D1Menu'
+})
+
+const emits = defineEmits<MenuEmits>()
+const props = withDefaults(defineProps<MenuProps>(), defaults)
+
+const classesToken = computed<ConstrClasses>(() => ({
+  main: {
+    // :classes-values [!] System label / Системная метка
+    'd1-menu': true
+    // :classes-values [!] System label / Системная метка
+  }
+}))
+const stylesToken = computed<ConstrStyles>(() => ({
+  // :styles-values [!] System label / Системная метка
+  // :styles-values [!] System label / Системная метка
+}))
+
+const design = new MenuDesign(
+  'd1.menu',
+  props,
+  {
+    emits,
+    classes: classesToken,
+    styles: stylesToken,
+    components: {
+      list: D1ListAny,
+      bars: D1Bars,
+      window: D1Window
+    }
+  }
+)
+
+const render = design.render()
+
+defineSlots<MenuSlots>()
+defineExpose(design.expose())
+</script>
+
+<template>
+  <component :is="render"/>
+</template>

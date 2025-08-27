@@ -1,4 +1,5 @@
 import type { ImageItem } from './basicTypes'
+import { isDomRuntime } from '@dxt-ui/functional'
 
 /**
  * Maximum size allowed without conversion.
@@ -107,10 +108,12 @@ export class ImageFile {
     maxSize = MAX_SIZE as number
   ): string {
     if (
-      (
+      isDomRuntime()
+      && (
         src instanceof File
         || src === undefined
-      ) && (
+      )
+      && (
         image.naturalHeight > maxSize
         || image.naturalWidth > maxSize
       )

@@ -1,8 +1,11 @@
 import type { ConstrClass } from '@dxt-ui/functional'
+
 import type { EventClickEmits } from '../../types/eventClickTypes'
-import type { ListComponentInclude } from '../List'
+
+import type { ListComponentInclude } from '../List/basicTypes'
 import type { BarsComponentInclude, BarsEmitsInclude } from '../Bars'
 import type { WindowComponentInclude, WindowEmitsInclude, WindowExposeInclude } from '../Window'
+
 import type { MenuControlBasic, MenuControlItem } from './basicTypes'
 
 /**

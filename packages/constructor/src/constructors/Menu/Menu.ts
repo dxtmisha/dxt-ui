@@ -17,7 +17,7 @@ import { MenuWindow } from './MenuWindow'
 
 import type { MenuComponents, MenuEmits, MenuSlots } from './types'
 import type { MenuProps } from './props'
-import type { MenuControlBasic } from './basicTypes.ts'
+import type { MenuControlBasic } from './basicTypes'
 
 /**
  * Menu

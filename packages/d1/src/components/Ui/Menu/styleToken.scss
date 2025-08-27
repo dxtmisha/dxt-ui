@@ -1,0 +1,17 @@
+@use "../../../styles/Ui/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Menu/style" as Menu;
+
+@include ui.initDesignBasic('d1.menu') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Menu.mixinMenu;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

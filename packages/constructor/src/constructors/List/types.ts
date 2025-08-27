@@ -1,8 +1,9 @@
 import type { ConstrClass } from '@dxt-ui/functional'
 import type { EventClickEmits } from '../../types/eventClickTypes'
 
-import type { ListGroupComponentInclude } from '../ListGroup'
+import type { ListGroupComponentInclude } from '../ListGroup/basicTypes'
 import type { ListItemComponentInclude } from '../ListItem'
+import type { MenuComponentInclude } from '../Menu/basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -12,6 +13,7 @@ import type { ListItemComponentInclude } from '../ListItem'
 export type ListComponents
   = ListGroupComponentInclude
     & ListItemComponentInclude
+    & MenuComponentInclude
 
 /**
  * Type describing available events.

@@ -2,7 +2,7 @@ import type { ComputedRef, Ref } from 'vue'
 import type { ConstrBind, ListList, ListNames } from '@dxt-ui/functional'
 import type { WindowControlItem } from '../Window'
 
-import type { MenuExpose } from './types.ts'
+import type { MenuExpose } from './types'
 import type { MenuProps } from './props'
 
 export type MenuControlBasic = {
@@ -17,6 +17,10 @@ export type MenuControlBasic = {
 export type MenuControlItem
   = MenuControlBasic
     & WindowControlItem
+
+export type MenuComponentInclude = {
+  menu?: object
+}
 
 /** Type for menu expose functionality/ Тип для функциональности экспорта меню */
 export interface MenuExposeInclude {

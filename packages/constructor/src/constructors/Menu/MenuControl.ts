@@ -1,10 +1,10 @@
+import { watch } from 'vue'
 import { EventItem, isDomRuntime, ListData } from '@dxt-ui/functional'
 
 import { WindowInclude } from '../Window'
 import { MenuOpen } from './MenuOpen'
 import { MenuFocus } from './MenuFocus'
 import { MenuSearch } from './MenuSearch'
-import { watch } from 'vue'
 
 /**
  * Class for managing the menu.
@@ -67,13 +67,15 @@ export class MenuControl {
   }
 
   protected getActiveElement(): HTMLInputElement | undefined {
-    const element = document.activeElement as HTMLInputElement
+    if (isDomRuntime()) {
+      const element = document.activeElement as HTMLInputElement
 
-    if (
-      element
-      && element.dataset?.menuControl === '1'
-    ) {
-      return element
+      if (
+        element
+        && element.dataset?.menuControl === '1'
+      ) {
+        return element
+      }
     }
 
     return undefined

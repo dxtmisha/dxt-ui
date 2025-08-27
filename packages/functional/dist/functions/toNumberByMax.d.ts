@@ -6,4 +6,4 @@
  * @param formatting format the number /<br>форматировать число
  * @param language formatting language /<br>язык форматирования
  */
-export declare function toNumberByMax(value: string | number, max?: number, formatting?: boolean, language?: string): string | number;
+export declare function toNumberByMax(value: string | number, max?: string | number, formatting?: boolean, language?: string): string | number;

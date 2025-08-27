@@ -1,7 +1,6 @@
 import { computed, ref, type VNode } from 'vue'
 import {
   type ConstrBind,
-  type ConstrEmit,
   DesignComponents,
   getRef,
   type RawSlots,
@@ -9,8 +8,8 @@ import {
   toBind
 } from '@dxt-ui/functional'
 
-import type { MenuExposeInclude, MenuPropsInclude } from './basicTypes'
-import type { MenuComponents, MenuEmits, MenuExpose, MenuSlots } from './types'
+import type { MenuComponentInclude, MenuExposeInclude, MenuPropsInclude } from './basicTypes'
+import type { MenuExpose, MenuSlots } from './types'
 import type { MenuProps } from './props'
 
 /**
@@ -34,15 +33,13 @@ export class MenuInclude<
    * @param props input parameter/ входной параметр
    * @param className class name/ название класса
    * @param components object for working with components/ объект для работы с компонентами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
   constructor(
     protected readonly props: Readonly<Props>,
     protected readonly className: string,
-    protected readonly components?: DesignComponents<MenuComponents, Props>,
-    protected readonly emits?: ConstrEmit<MenuEmits>,
+    protected readonly components?: DesignComponents<MenuComponentInclude, Props>,
     protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly index?: string
   ) {
@@ -95,7 +92,7 @@ export class MenuInclude<
   ): VNode[] => {
     if (this.components && this.is.value) {
       return this.components.render(
-        'window',
+        'menu',
         {
           ref: this.element,
           ...toBind(
@@ -104,7 +101,7 @@ export class MenuInclude<
           )
         },
         slotsChildren as RawSlots,
-        this.index ?? 'menu'
+        this.index
       )
     }
 

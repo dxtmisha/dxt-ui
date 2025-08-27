@@ -1,0 +1,64 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import {
+  inArray,
+  isFilled,
+  type ConstrClasses,
+  type ConstrStyles
+} from '@dxt-ui/functional'
+import {
+  ListGroupDesign,
+  type ListGroupEmits,
+  type ListGroupSlots
+} from '@dxt-ui/constructor/ListGroup'
+
+import { D1List } from '../List'
+import { D1ListItem } from '../ListItem'
+import { D1MotionTransform } from '../MotionTransform'
+
+import { defaults, type ListGroupProps, propsValues } from './props'
+import './styleToken.scss'
+
+defineOptions({
+  name: 'D1ListGroup'
+})
+
+const emits = defineEmits<ListGroupEmits>()
+const props = withDefaults(defineProps<ListGroupProps>(), defaults)
+
+const classesToken = computed<ConstrClasses>(() => ({
+  main: {
+    // :classes-values [!] System label / Системная метка
+    'd1-listGroup': true
+    // :classes-values [!] System label / Системная метка
+  }
+}))
+const stylesToken = computed<ConstrStyles>(() => ({
+  // :styles-values [!] System label / Системная метка
+  // :styles-values [!] System label / Системная метка
+}))
+
+const design = new ListGroupDesign(
+  'd1.listGroup',
+  props,
+  {
+    emits,
+    classes: classesToken,
+    styles: stylesToken,
+    components: {
+      list: D1List,
+      listItem: D1ListItem,
+      motionTransform: D1MotionTransform
+    }
+  }
+)
+
+const render = design.render()
+
+defineSlots<ListGroupSlots>()
+defineExpose(design.expose())
+</script>
+
+<template>
+  <component :is="render"/>
+</template>

@@ -7,6 +7,8 @@ import {
 
 import { Menu } from './Menu'
 
+import type { WindowControlItem } from '../Window'
+import type { MenuControlItem } from './basicTypes'
 import {
   type MenuPropsBasic
 } from './props'
@@ -17,8 +19,6 @@ import {
   type MenuExpose,
   type MenuSlots
 } from './types'
-import type { WindowControlItem } from '../Window'
-import type { MenuControlItem } from './basicTypes.ts'
 
 /**
  * MenuDesign
