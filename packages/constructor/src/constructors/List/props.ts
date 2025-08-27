@@ -27,7 +27,6 @@ export interface ListPropsBasic<
 
   // Value
   list?: ListRecord<ListItem>
-  lite?: number
 
   keyLabel?: string
   keyValue?: string
@@ -36,12 +35,12 @@ export interface ListPropsBasic<
   tag?: 'div' | 'button' | 'a' | 'span' | string
 
   itemAttrs?: ConstrBind<ListItem>
-  groupAttrs?: Record<string, any>
-  groupItemAttrs?: ConstrBind<ListItem>
-  menuAttrs?: Record<string, any>
 
   iconArrowDown?: IconValue<Icon>
   iconArrowRight?: IconValue<Icon>
+
+  // Technical
+  lite?: number
 }
 
 /**

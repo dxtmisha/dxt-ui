@@ -12,9 +12,7 @@ import {
   type ListSlots
 } from '@dxt-ui/constructor/List'
 
-import { D1ListGroupAny } from '../ListGroup'
-// import { D1ListItem } from '../ListItem'
-// import { D1Menu } from '../Menu'
+import { D1ListItem } from '../ListItem'
 
 import { defaults, type ListProps, propsValues } from './props'
 import './styleToken.scss'
@@ -29,7 +27,9 @@ const props = withDefaults(defineProps<ListProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-list': true
+    'd1-list': true,
+    [`d1-list--axis--${props.axis}`]: inArray(propsValues.axis, props.axis),
+    'd1-list--divider': props.divider
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -46,9 +46,7 @@ const design = new ListDesign(
     classes: classesToken,
     styles: stylesToken,
     components: {
-      listGroup: D1ListGroupAny
-      // listItem: D1ListItem
-      // menu: D1Menu
+      listItem: D1ListItem
     }
   }
 )

@@ -8,6 +8,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'ajax', type: 'string | (() => NormalOrPromise<ListRecord<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>>)' },
   { name: 'autoClose', type: 'boolean' },
+  { name: 'barsAdaptive', type: '"always"' },
   { name: 'barsAttrs', type: 'ConstrBind<BarsPropsBasic<IconPropsBasic<ImagePropsBasic>, ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>>' },
   { name: 'barsBackHide', type: 'boolean' },
   { name: 'barsDescription', type: 'string' },
@@ -16,6 +17,7 @@ const propsNames: StorybookProps = [
   { name: 'barsList', type: 'ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]' },
   { name: 'cache', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
+  { name: 'hideList', type: 'boolean' },
   { name: 'highlightLengthStart', type: 'number' },
   { name: 'itemAttrs', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
   { name: 'keyLabel', type: 'string' },

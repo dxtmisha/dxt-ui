@@ -26,7 +26,7 @@ const propsNames: StorybookProps = [
   { name: 'input', type: 'boolean' },
   { name: 'inverse', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
-  { name: 'label', type: 'string | number' },
+  { name: 'label', type: 'NumberOrString' },
   { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },
   { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'readonly', type: 'boolean' },

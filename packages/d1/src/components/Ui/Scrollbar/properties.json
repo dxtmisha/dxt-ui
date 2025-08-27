@@ -11,7 +11,7 @@
     }
   },
   "outline": {
-    "width": "{sys.spacing.border}",
+    "width": "{sys.spacing.outline}",
     "color": "{sys.palette.outline}",
     "opacity": "{sys.opacity.outline}"
   }

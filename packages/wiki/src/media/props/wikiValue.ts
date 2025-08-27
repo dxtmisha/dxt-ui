@@ -100,6 +100,28 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  keyLabel: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Object key to use as label text',
+        ru: 'Ключ объекта для использования в качестве текста метки'
+      }
+    }
+  },
+  keyValue: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Object key to use as value text',
+        ru: 'Ключ объекта для использования в качестве текста значения'
+      }
+    }
+  },
   icon: {
     type: StorybookControl.string,
     options: {

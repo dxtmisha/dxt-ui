@@ -2,14 +2,17 @@
   "main": "{d.listItem}",
   "margin": "{sys.spacing.x}",
   "paddingX": "{sys.spacing.xs}",
-  "paddingY": "{sys.spacing.x}",
+  "paddingY": "{sys.spacing.xs}",
   "shift": "{sys.spacing.x} * -1",
   "palette-gradient": "{sys.palette.primary}",
   "gradient-opacity": "0",
-  "border-width": "{sys.spacing.border}",
+  "border-width": "{sys.spacing.outline}",
   "border-color": "{sys.palette.outline}",
   "border-opacity": "{sys.opacity.outline}",
   "border-radius": "var(--sys-height) * {sys.rounded.adaptive.sm}",
+  "media|md": {
+    "paddingY": "{sys.spacing.x}"
+  },
   "#context": {
     "gap": "{sys.spacing.xs}"
   },
@@ -19,7 +22,6 @@
   },
   "#prefix": {
     "link|font": "{font.bodyMedium}",
-    "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.medium}"
   },
   "#suffix": {
@@ -45,7 +47,8 @@
     "color-opacity": "{sys.opacity.primary.high}",
     "palette-background": "{sys.palette.primaryVariant}",
     "background-opacity": "{sys.opacity.primary.high}",
-    "gradient": "var(--sys-color)"
+    "gradient": "var(--sys-color)",
+    "backdrop-filter": "{sys.blur.md}"
   },
   "open": {
     "palette-background": "{sys.palette.primary}",

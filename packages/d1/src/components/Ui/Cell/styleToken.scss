@@ -11,7 +11,7 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-cell-borderWidth: var(--d1-sys-spacing-border);
+    --d1-cell-borderWidth: var(--d1-sys-spacing-outline);
     --d1-cell-borderColor: var(--d1-sys-palette-outline);
     --d1-cell-transitionFunction: var(--d-sys-transitionFunction-standard);
     

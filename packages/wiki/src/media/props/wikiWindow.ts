@@ -142,16 +142,6 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
-  'window.iconClose': {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Sets icon for close button',
-        ru: 'Задает иконку для кнопки закрытия'
-      }
-    }
-  },
   'window.imagePosition': {
     type: StorybookControl.select,
     options: {

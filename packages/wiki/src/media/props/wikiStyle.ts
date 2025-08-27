@@ -33,6 +33,18 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  axis: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets the axis direction for component layout or scrolling',
+        ru: 'Задает направление оси для раскладки или прокрутки компонента'
+      }
+    }
+  },
   container: {
     type: StorybookControl.select,
     options: {
@@ -220,6 +232,36 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Aligns icon to the top of the container',
         ru: 'Выравнивает иконку по верхнему краю контейнера'
+      }
+    }
+  },
+  iconClose: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon for close button',
+        ru: 'Задает иконку для кнопки закрытия'
+      }
+    }
+  },
+  iconArrowDown: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon for down arrow',
+        ru: 'Задает иконку стрелки вниз'
+      }
+    }
+  },
+  iconArrowRight: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon for right arrow',
+        ru: 'Задает иконку стрелки вправо'
       }
     }
   },

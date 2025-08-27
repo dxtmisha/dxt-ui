@@ -9,7 +9,7 @@ const propsNames: StorybookProps = [
   { name: 'action', type: 'boolean' },
   { name: 'actionBars', type: 'ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]' },
   { name: 'actionDescription', type: 'string | number' },
-  { name: 'actionLabel', type: 'string | number' },
+  { name: 'actionLabel', type: 'NumberOrString' },
   { name: 'backActionHide', type: 'boolean' },
   { name: 'backButton', type: 'ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>' },
   { name: 'backHide', type: 'boolean' },
@@ -19,7 +19,7 @@ const propsNames: StorybookProps = [
   { name: 'iconBack', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
   { name: 'iconClose', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
   { name: 'isSkeleton', type: 'boolean' },
-  { name: 'label', type: 'string | number' },
+  { name: 'label', type: 'NumberOrString' },
   { name: 'modelAction', type: 'boolean' },
   { name: 'onUpdate:action', type: '(value: boolean) => void' },
   { name: 'onUpdate:modelAction', type: '(value: boolean) => void' }

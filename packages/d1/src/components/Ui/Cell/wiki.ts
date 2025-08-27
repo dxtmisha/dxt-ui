@@ -27,7 +27,7 @@ const propsNames: StorybookProps = [
   { name: 'iconTrailingTurnOnly', type: 'boolean' },
   { name: 'iconTurn', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
-  { name: 'label', type: 'string | number' },
+  { name: 'label', type: 'NumberOrString' },
   { name: 'loading', type: 'boolean | ConstrBind<ProgressPropsBasic>' },
   { name: 'padding', type: 'string', option: ['none', 'sm', 'md', 'lg', 'ySm', 'yMd', 'yLg'] },
   { name: 'readonly', type: 'boolean' },

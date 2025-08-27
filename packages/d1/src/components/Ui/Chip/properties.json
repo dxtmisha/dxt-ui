@@ -20,7 +20,7 @@
       "position": "absolute",
       "inset": "0",
       "border-style": "solid",
-      "border-width": "{sys.spacing.border}",
+      "border-width": "{sys.spacing.outline}",
       "palette-border": "{sys.palette.primary}",
       "border-opacity": "{sys.opacity.outline}",
       "border-radius": "inherit",

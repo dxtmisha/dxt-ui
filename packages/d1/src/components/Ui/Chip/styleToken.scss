@@ -373,7 +373,7 @@
         @include ui.inset(#{0});
         
         border-radius: inherit;
-        border-width: var(--d1-sys-spacing-border);
+        border-width: var(--d1-sys-spacing-outline);
         border-style: solid;
         @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)}); @include ui.borderColor('init');
         @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});

@@ -5,13 +5,11 @@ import {
   DesignConstructorAbstract,
   isObject,
   type ListDataItem,
-  toBind,
-  toBinds
+  toBind
 } from '@dxt-ui/functional'
 
 import { List } from './List'
 
-import type { MenuControlItem } from '../Menu/basicTypes'
 import {
   type ListProps
 } from './props'
@@ -153,13 +151,13 @@ export class ListDesign<
             children.push(this.renderHtml(item))
             break
           case 'group':
-            children.push(this.renderGroup(item))
+            // children.push(this.renderGroup(item))
             break
           case 'menu':
-            children.push(...this.renderMenuItem(item))
+            // children.push(...this.renderMenuItem(item))
             break
           case 'menu-group':
-            children.push(this.renderMenuGroup(item))
+            // children.push(this.renderMenuGroup(item))
             break
           default:
             children.push(this.renderItem(item))
@@ -270,7 +268,7 @@ export class ListDesign<
    * Генерирует группу списков.
    * @param item selected element/ выбранный элемент
    */
-  protected readonly renderGroup = (item: ListDataItem): VNode => {
+  /* protected readonly renderGroup = (item: ListDataItem): VNode => {
     return this.components.renderOne('listGroup', {
       ...toBinds(
         this.props,
@@ -284,7 +282,7 @@ export class ListDesign<
       list: item.value,
       onClick: this.item.event.onClick
     }) as VNode
-  }
+  } */
 
   /**
    * Generates a menu group.
@@ -292,7 +290,7 @@ export class ListDesign<
    * Генерирует группу меню.
    * @param item selected element/ выбранный элемент
    */
-  protected readonly renderMenuItem = (item: ListDataItem): VNode[] => {
+  /* protected readonly renderMenuItem = (item: ListDataItem): VNode[] => {
     return this.item.menu.render(
       {
         control: (binds: MenuControlItem) => this.renderMenuControl(item, binds)
@@ -303,7 +301,7 @@ export class ListDesign<
         onClick: this.item.event.onClick
       }
     )
-  }
+  } */
 
   /**
    * Generates a control element for the menu.
@@ -312,7 +310,7 @@ export class ListDesign<
    * @param item selected element/ выбранный элемент
    * @param binds data for working with the menu/ данные для работы с меню
    */
-  protected readonly renderMenuControl = (
+  /* protected readonly renderMenuControl = (
     item: ListDataItem,
     binds: MenuControlItem
   ) => {
@@ -341,7 +339,7 @@ export class ListDesign<
 
       menuAttrs: undefined
     })
-  }
+  } */
 
   /**
    * Generates an adapted group with changes in the menu when the rail status is active.
@@ -349,7 +347,7 @@ export class ListDesign<
    * Генерирует адаптированную группу с изменениями в меню при активности статуса rail.
    * @param item selected element/ выбранный элемент
    */
-  protected readonly renderMenuGroup = (item: ListDataItem): VNode => {
+  /* protected readonly renderMenuGroup = (item: ListDataItem): VNode => {
     const divider = item.divider || this.props.divider
 
     return h(
@@ -366,5 +364,5 @@ export class ListDesign<
         this.renderMenuItem(item)
       ]
     )
-  }
+  } */
 }

@@ -15,7 +15,6 @@ export function toNumber<T extends NumberOrString>(value?: T): (T & number) | nu
     return 0
   }
 
-  console.log('value', value)
   let number = value.replace(/[^\d., ]+/ig, '')
 
   if (number.match(/( [0-9]{3}[ ,.]|[0-9] [0-9])/ig)) {

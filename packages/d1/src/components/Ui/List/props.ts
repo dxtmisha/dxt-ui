@@ -2,11 +2,14 @@ import { type ListPropsBasic, defaultsList } from '@dxt-ui/constructor/List'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  axis: ['x', 'y']
   // :values [!] System label / Системная метка
 }
 
 interface PropsToken {
   // :type [!] System label / Системная метка
+  axis?: 'x' | 'y'
+  divider?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -23,6 +26,7 @@ export const defaults: object = {
   ...defaultsList,
   ...{
     // :default [!] System label / Системная метка
+    axis: 'y'
     // :default [!] System label / Системная метка
   }
 }

@@ -5,7 +5,7 @@
   "md": "{ref.spacing.4}",
   "lg": "{ref.spacing.5}",
   "xl": "{ref.spacing.6}",
-  "border": "{ref.spacing.px}",
+  "outline": "{ref.spacing.px}",
   "grid": {
     "paddingX": {
       "md": "{ref.spacing.2}",

@@ -1,6 +1,6 @@
 {
   "main": "{d.cell}",
-  "border-width": "{sys.spacing.border}",
+  "border-width": "{sys.spacing.outline}",
   "border-color": "{sys.palette.outline}",
   "border-opacity": "{sys.opacity.outline}",
   "gap": "{sys.spacing.md}",

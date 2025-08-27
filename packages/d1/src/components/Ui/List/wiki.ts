@@ -6,10 +6,10 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'axis', type: 'string', option: ['x', 'y'] },
   { name: 'disabled', type: 'boolean' },
+  { name: 'divider', type: 'boolean' },
   { name: 'focus', type: 'NumberOrStringOrBoolean' },
-  { name: 'groupAttrs', type: 'Record<string, any>' },
-  { name: 'groupItemAttrs', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
   { name: 'highlight', type: 'string' },
   { name: 'highlightLengthStart', type: 'number' },
   { name: 'iconArrowDown', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
@@ -19,7 +19,6 @@ const propsNames: StorybookProps = [
   { name: 'keyValue', type: 'string' },
   { name: 'list', type: 'ListRecord<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
   { name: 'lite', type: 'number' },
-  { name: 'menuAttrs', type: 'Record<string, any>' },
   { name: 'selected', type: 'ListSelectedList' },
   { name: 'tag', type: 'string', option: ['div', 'button', 'a', 'span'] }
   // :propsList [!] System label / Системная метка

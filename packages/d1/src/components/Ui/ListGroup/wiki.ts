@@ -10,8 +10,6 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean' },
   { name: 'divider', type: 'boolean' },
   { name: 'focus', type: 'NumberOrStringOrBoolean' },
-  { name: 'groupAttrs', type: 'Record<string, any>' },
-  { name: 'groupItemAttrs', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
   { name: 'head', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
   { name: 'highlight', type: 'string' },
   { name: 'highlightLengthStart', type: 'number' },
@@ -22,7 +20,6 @@ const propsNames: StorybookProps = [
   { name: 'keyValue', type: 'string' },
   { name: 'list', type: 'ListRecord<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
   { name: 'lite', type: 'number' },
-  { name: 'menuAttrs', type: 'Record<string, any>' },
   { name: 'selected', type: 'ListSelectedList' },
   { name: 'tag', type: 'string', option: ['div', 'button', 'a', 'span'] }
   // :propsList [!] System label / Системная метка

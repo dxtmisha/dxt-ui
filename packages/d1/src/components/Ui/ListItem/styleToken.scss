@@ -12,9 +12,9 @@
   // :style [!] System label / Системная метка
   & {
     --d1-listItem-paddingX: var(--d1-sys-spacing-xs);
-    --d1-listItem-paddingY: var(--d1-sys-spacing-x);
+    --d1-listItem-paddingY: var(--d1-sys-spacing-xs);
     --d1-listItem-shift: calc(var(--d1-sys-spacing-x) * -1);
-    --d1-listItem-borderWidth: var(--d1-sys-spacing-border);
+    --d1-listItem-borderWidth: var(--d1-sys-spacing-outline);
     --d1-listItem-borderColor: var(--d1-sys-palette-outline);
     --d1-listItem-transitionFunction: var(--d-sys-transitionFunction-standard);
     
@@ -45,8 +45,7 @@
       @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
       letter-spacing: var(--d1-sys-letterSpacing-md);
       
-      @include ui.color(#{var(--d1-sys-palette-onSurface)});
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }
     
     &__caption {
@@ -56,8 +55,7 @@
       @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
       letter-spacing: var(--d1-sys-letterSpacing-md);
       
-      @include ui.color(#{var(--d1-sys-palette-onSurface)});
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }
     
     &__description {
@@ -67,8 +65,7 @@
       @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
       letter-spacing: var(--d1-sys-letterSpacing-md);
       
-      @include ui.color(#{var(--d1-sys-palette-onSurface)});
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }
     
     &__suffix {
@@ -78,8 +75,7 @@
       @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
       letter-spacing: var(--d1-sys-letterSpacing-md);
       
-      @include ui.color(#{var(--d1-sys-palette-onSurface)});
-      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }
     
     @include ui.hover {
@@ -155,6 +151,10 @@
       &--lg {
         --d1-listItem-height: var(--d1-ref-spacing-12);
       }
+    }
+    
+    @media screen and (min-width: 768px) {
+      --d1-listItem-paddingY: var(--d1-sys-spacing-x);
     }
   }
   // :style [!] System label / Системная метка

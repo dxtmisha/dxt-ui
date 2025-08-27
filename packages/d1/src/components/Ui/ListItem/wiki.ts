@@ -31,7 +31,7 @@ const propsNames: StorybookProps = [
   { name: 'iconTurn', type: 'boolean' },
   { name: 'index', type: 'any' },
   { name: 'isSkeleton', type: 'boolean' },
-  { name: 'label', type: 'string | number' },
+  { name: 'label', type: 'NumberOrString' },
   { name: 'loading', type: 'boolean | ConstrBind<ProgressPropsBasic>' },
   { name: 'open', type: 'boolean' },
   { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },

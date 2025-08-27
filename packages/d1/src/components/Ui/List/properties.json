@@ -1,3 +1,21 @@
 {
-  "main": "{d.list}"
+  "main": "{d.list}",
+  "space": {
+    "height": "{sys.spacing.lg}"
+  },
+  "line": {
+    "margin-x": "{sys.spacing.x}",
+    "margin-y": "{sys.spacing.sm}",
+    "height": "{sys.spacing.outline}",
+    "background-color": "{sys.palette.outline}",
+    "background-opacity": "{sys.opacity.outline}"
+  },
+  "subtitle": {
+    "margin-x": "{sys.spacing.x} + {sys.spacing.xs}",
+    "margin-top": "{sys.spacing.lg}",
+    "margin-bottom": "{sys.spacing.sm}",
+    "link|font": "{font.labelMedium}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  }
 }

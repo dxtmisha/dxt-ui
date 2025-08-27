@@ -4078,9 +4078,9 @@
                 type: 'var',
                 value: 'var(--d1-ref-spacing-6)',
               ),
-              'border':(
-                index: 'border',
-                name: '--d1-sys-spacing-border',
+              'outline':(
+                index: 'outline',
+                name: '--d1-sys-spacing-outline',
                 type: 'var',
                 value: 'var(--d1-ref-spacing-px)',
               ),
@@ -11838,6 +11838,11 @@
         name: 'd1-listItem',
         type: 'component',
       ),
+      'menu':(
+        index: 'menu',
+        name: 'd1-menu',
+        type: 'component',
+      ),
       'motionTransform':(
         index: 'motionTransform',
         name: 'd1-motionTransform',
@@ -12179,6 +12184,11 @@
       'listItem':(
         index: 'listItem',
         name: 'd-listItem',
+        type: 'component',
+      ),
+      'menu':(
+        index: 'menu',
+        name: 'd-menu',
         type: 'component',
       ),
       'motionTransform':(

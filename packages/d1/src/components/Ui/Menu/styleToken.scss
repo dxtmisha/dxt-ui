@@ -10,6 +10,13 @@
   // Styles from tokens
   // Стили из токенов
   // :style [!] System label / Системная метка
+  & {
+    &--barsAdaptive {
+      &--always {
+        --d1-menu-barsDisplay: flex;
+      }
+    }
+  }
   // :style [!] System label / Системная метка
 
   // Here are the user styles

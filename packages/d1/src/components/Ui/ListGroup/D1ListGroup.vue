@@ -29,7 +29,8 @@ const props = withDefaults(defineProps<ListGroupProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-listGroup': true
+    'd1-listGroup': true,
+    'd1-listGroup--divider': props.divider
     // :classes-values [!] System label / Системная метка
   }
 }))

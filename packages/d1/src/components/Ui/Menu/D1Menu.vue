@@ -29,7 +29,9 @@ const props = withDefaults(defineProps<MenuProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-menu': true
+    'd1-menu': true,
+    [`d1-menu--barsAdaptive--${props.barsAdaptive}`]: inArray(propsValues.barsAdaptive, props.barsAdaptive),
+    'd1-menu--hideList': props.hideList
     // :classes-values [!] System label / Системная метка
   }
 }))
