@@ -3,7 +3,7 @@ import { type ConstrEmit, DesignComp, ListData } from '@dxt-ui/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
-import { MenuInclude } from '../Menu'
+import { MenuInclude } from '../Menu/MenuInclude'
 import { WindowClassesInclude } from '../Window'
 
 import type { ListComponents, ListEmits, ListSlots } from './types'

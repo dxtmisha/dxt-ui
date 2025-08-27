@@ -12,7 +12,7 @@ import {
   type ListGroupSlots
 } from '@dxt-ui/constructor/ListGroup'
 
-import { D1List } from '../List'
+import { D1ListAny } from '../List'
 import { D1ListItem } from '../ListItem'
 import { D1MotionTransform } from '../MotionTransform'
 
@@ -46,7 +46,7 @@ const design = new ListGroupDesign(
     classes: classesToken,
     styles: stylesToken,
     components: {
-      list: D1List,
+      list: D1ListAny,
       listItem: D1ListItem,
       motionTransform: D1MotionTransform
     }

@@ -7,7 +7,7 @@ import { WindowClassesInclude } from '../Window'
 import { ListGroupOpen } from './ListGroupOpen'
 
 import type { MotionTransformProps } from '../MotionTransform'
-import type { ListProps } from '../List'
+import type { ListProps } from '../List/props'
 import type { ListGroupComponents, ListGroupEmits, ListGroupSlots } from './types'
 import type { ListGroupPropsBasic } from './props'
 

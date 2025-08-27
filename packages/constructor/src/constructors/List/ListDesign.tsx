@@ -11,7 +11,7 @@ import {
 
 import { List } from './List'
 
-import type { MenuControlItem } from '../Menu'
+import type { MenuControlItem } from '../Menu/basicTypes'
 import {
   type ListProps
 } from './props'
