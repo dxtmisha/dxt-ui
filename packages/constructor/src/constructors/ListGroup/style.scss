@@ -7,7 +7,7 @@
     #{ui.c('?list__menuGroup--divider')}:not(:first-child) > &[data-divider="divider"] {
       border-top-style: solid;
       border-top-width: ui.v('??borderWidth');
-      @include ui.borderColor(ui.v('??borderColor'));
+      @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
     }
   }
 }

@@ -1,12 +1,12 @@
 import { computed, ref } from 'vue'
-import { ListData } from '@dxt-ui/functional'
 import type { MotionTransformEmitOptions } from '../MotionTransform'
+import type { ListGroupPropsBasic } from './props'
 
 export class ListGroupOpen {
   readonly open = ref<boolean>(false)
 
   constructor(
-    protected readonly data: ListData
+    protected readonly props: ListGroupPropsBasic
   ) {
   }
 
@@ -15,10 +15,8 @@ export class ListGroupOpen {
    *
    * Возвращает информацию о статусе открытия.
    */
-  readonly is = computed<boolean>(() => this.open.value
-    || this.data.isSelected.value
-    || this.data.isFocus()
-    || this.data.isHighlight()
+  readonly is = computed<boolean>(
+    () => this.open.value || Boolean(this.props.open)
   )
 
   /**

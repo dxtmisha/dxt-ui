@@ -45,6 +45,7 @@ export type ListClasses = {
   line: string
   subtitle: string
   html: string
+  management: string
   group: string
   menu: string
   menuGroup: string

@@ -102,6 +102,8 @@
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
       @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
       @include ui.gradient(#{var(--sys-color)});
+      
+      backdrop-filter: var(--d1-sys-blur-md);
     }
     
     &--disabled {

@@ -4,8 +4,7 @@ import {
   type ConstrStyles,
   DesignConstructorAbstract,
   isObject,
-  type ListDataItem,
-  toBind
+  type ListDataItem
 } from '@dxt-ui/functional'
 
 import { List } from './List'
@@ -94,6 +93,7 @@ export class ListDesign<
         line: this.getSubClass('line'),
         subtitle: this.getSubClass('subtitle'),
         html: this.getSubClass('html'),
+        management: this.getSubClass('management'),
         group: this.getSubClass('group'),
         menu: this.getSubClass('menu'),
         menuGroup: this.getSubClass('menuGroup')
@@ -177,13 +177,23 @@ export class ListDesign<
    * @param item selected element/ выбранный элемент
    */
   protected readonly renderItem = (item: ListDataItem): VNode => {
-    return this.components.renderOne('listItem', {
-      key: item.value,
-      tag: this.props.tag,
-      divider: this.props.divider,
-      ...toBind(this.props.itemAttrs ?? {}, item),
-      onClick: this.item.event.onClick
-    }) as VNode
+    return this.components.renderOne(
+      'listItem',
+      this.item.getItem(item)
+    ) as VNode
+  }
+
+  /**
+   * Generates a group element.
+   *
+   * Генерирует групповой элемент.
+   * @param item selected element/ выбранный элемент
+   */
+  protected readonly renderItemGroup = (item: ListDataItem): VNode => {
+    return this.components.renderOne(
+      'listItem',
+      this.item.getItemGroup(item)
+    ) as VNode
   }
 
   /**

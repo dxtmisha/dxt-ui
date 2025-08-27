@@ -1,3 +1,6 @@
 {
-  "main": "{d.listGroup}"
+  "main": "{d.listGroup}",
+  "border-width": "{sys.spacing.outline}",
+  "border-color": "{sys.palette.outline}",
+  "border-opacity": "{sys.opacity.outline}"
 }

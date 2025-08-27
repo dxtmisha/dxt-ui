@@ -1,10 +1,6 @@
 import type { ComputedRef } from 'vue'
 import type { ConstrClass } from '@dxt-ui/functional'
 
-import type { EventClickEmits } from '../../types/eventClickTypes'
-
-import type { ListComponentInclude } from '../List/basicTypes'
-import type { ListItemComponentInclude } from '../ListItem'
 import type { MotionTransformComponentInclude } from '../MotionTransform'
 
 /**
@@ -13,16 +9,14 @@ import type { MotionTransformComponentInclude } from '../MotionTransform'
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
 export type ListGroupComponents
-  = ListComponentInclude
-    & ListItemComponentInclude
-    & MotionTransformComponentInclude
+  = MotionTransformComponentInclude
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type ListGroupEmits = EventClickEmits
+export type ListGroupEmits = {}
 
 /**
  * Type describing available properties.
@@ -39,6 +33,8 @@ export interface ListGroupExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ListGroupSlots {
+  head?(props: { open: boolean }): any
+  list?(props: any): any
 }
 
 /**

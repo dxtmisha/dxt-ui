@@ -5,6 +5,9 @@
   "border-color": {
     "_type": "var"
   },
+  "border-opacity": {
+    "_type": "var"
+  },
   "#head": {},
   "#list": {},
   "~divider": {}

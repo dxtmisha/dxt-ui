@@ -15,6 +15,8 @@ const propsNames: StorybookProps = [
   { name: 'iconArrowDown', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
   { name: 'iconArrowRight', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
   { name: 'itemAttrs', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
+  { name: 'itemGroupAttrs', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
+  { name: 'itemManagementAttrs', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },
   { name: 'list', type: 'ListRecord<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },

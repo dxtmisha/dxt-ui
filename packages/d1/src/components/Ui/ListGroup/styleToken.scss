@@ -11,6 +11,9 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    --d1-listGroup-borderWidth: var(--d1-sys-spacing-outline);
+    --d1-listGroup-borderColor: var(--d1-sys-palette-outline);
+    --d1-listGroup-borderOpacity: var(--d1-sys-opacity-outline);
   }
   // :style [!] System label / Системная метка
 

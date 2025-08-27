@@ -8,7 +8,7 @@ import {
 import { ListGroup } from './ListGroup'
 
 import {
-  type ListGroupPropsBasic
+  type ListGroupProps
 } from './props'
 import {
   type ListGroupClasses,
@@ -25,7 +25,7 @@ export class ListGroupDesign<
   COMP extends ListGroupComponents,
   EXPOSE extends ListGroupExpose,
   CLASSES extends ListGroupClasses,
-  P extends ListGroupPropsBasic
+  P extends ListGroupProps
 > extends DesignConstructorAbstract<
   HTMLDivElement,
   COMP,
@@ -111,20 +111,16 @@ export class ListGroupDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    const children: any[] = []
-
-    if (this.props.head) {
-      children.push(this.renderTransform())
-    } else {
-      children.push(this.renderList())
-    }
-
-    return h('div', {
-      ...this.getAttrs(),
-      'class': this.classes?.value.main,
-      'data-open': this.item.open.is.value ? 'open' : 'close',
-      'data-divider': this.props.divider ? 'divider' : undefined
-    }, children)
+    return h(
+      'div',
+      {
+        ...this.getAttrs(),
+        'class': this.classes?.value.main,
+        'data-open': this.item.open.is.value ? 'open' : 'close',
+        'data-divider': this.props.divider ? 'divider' : undefined
+      },
+      this.renderTransform()
+    )
   }
 
   /**
@@ -151,15 +147,20 @@ export class ListGroupDesign<
    *
    * Рендер элемента заголовка.
    */
-  protected readonly renderHead = (): VNode | undefined => {
-    if (this.props.head) {
-      return this.components.renderOne(
-        'listItem',
-        this.item.headBinds.value
+  protected readonly renderHead = (): VNode => {
+    return h(
+      'div',
+      {
+        class: this.classes?.value.head
+      },
+      this.initSlot(
+        'head',
+        undefined,
+        {
+          open: this.item.open.is.value
+        }
       )
-    }
-
-    return undefined
+    )
   }
 
   /**
@@ -167,10 +168,13 @@ export class ListGroupDesign<
    *
    * Рендер элемента списка.
    */
-  protected readonly renderList = (): VNode | undefined => {
-    return this.components.renderOne('list', {
-      ...this.item.listBind.value,
-      onClick: this.item.event.onClick
-    })
+  protected readonly renderList = (): VNode => {
+    return h(
+      'div',
+      {
+        class: this.classes?.value.list
+      },
+      this.initSlot('list')
+    )
   }
 }

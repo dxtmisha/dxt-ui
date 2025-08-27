@@ -35,6 +35,8 @@ export interface ListPropsBasic<
   tag?: 'div' | 'button' | 'a' | 'span' | string
 
   itemAttrs?: ConstrBind<ListItem>
+  itemManagementAttrs?: ConstrBind<ListItem>
+  itemGroupAttrs?: ConstrBind<ListItem>
 
   iconArrowDown?: IconValue<Icon>
   iconArrowRight?: IconValue<Icon>
