@@ -1,0 +1,54 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxt-ui/wiki/storybook'
+
+import * as ListMenu from './D1ListMenu.stories'
+import {ListMenuWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={ListMenu}/>
+<StorybookMain
+    name={ListMenuWikiStorybook.getName()}
+    description={ListMenuWikiStorybook.getDescription()}
+    story={ListMenu.ListMenu}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'ListMenu'} type={'listMenu'}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Window'} type={'event.window'}/>
+
+<StorybookDescriptions componentName={'Image'} type={'event.load'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Window'} type={'expose.control'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.id'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.open'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.setOpen'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.toOpen'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.toClose'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.toggle'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'ListGroup'} type={'slot.head'}/>
+<StorybookDescriptions componentName={'ListGroup'} type={'slot.list'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

@@ -11839,6 +11839,11 @@
         name: 'd1-listItem',
         type: 'component',
       ),
+      'listMenu':(
+        index: 'listMenu',
+        name: 'd1-listMenu',
+        type: 'component',
+      ),
       'menu':(
         index: 'menu',
         name: 'd1-menu',
@@ -12185,6 +12190,11 @@
       'listItem':(
         index: 'listItem',
         name: 'd-listItem',
+        type: 'component',
+      ),
+      'listMenu':(
+        index: 'listMenu',
+        name: 'd-listMenu',
         type: 'component',
       ),
       'menu':(

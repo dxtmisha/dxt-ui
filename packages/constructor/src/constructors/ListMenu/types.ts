@@ -1,33 +1,33 @@
 import type { ConstrClass } from '@dxt-ui/functional'
-import type { EventClickEmits } from '../../types/eventClickTypes'
-
-import type { ListItemComponentInclude } from '../ListItem'
-import type { ListGroupComponentInclude } from '../ListGroup'
-import type { ListMenuComponentInclude } from '../ListMenu'
+import type {
+  WindowComponentInclude,
+  WindowControlItem,
+  WindowEmitsInclude,
+  WindowExposeInclude
+} from '../Window'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type ListComponents
-  = ListItemComponentInclude
-    & ListGroupComponentInclude
-    & ListMenuComponentInclude
+export type ListMenuComponents
+  = WindowComponentInclude
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type ListEmits = EventClickEmits
+export type ListMenuEmits
+  = WindowEmitsInclude
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface ListExpose {
+export interface ListMenuExpose extends WindowExposeInclude {
 }
 
 /**
@@ -35,23 +35,20 @@ export interface ListExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export type ListSlots = Record<string, (props: any) => any>
+export interface ListMenuSlots {
+  head?(props: WindowControlItem): any
+  list?(props: any): any
+}
 
 /**
  * Type describing subclasses.
  *
  * Тип, описывающий подклассы.
  */
-export type ListClasses = {
+export type ListMenuClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  space: string
-  line: string
-  subtitle: string
-  html: string
-  management: string
-  group: string
-  menu: string
-  menuGroup: string
+  head: string
+  list: string
   // :classes [!] System label / Системная метка
 }

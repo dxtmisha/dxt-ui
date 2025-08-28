@@ -18,10 +18,6 @@
       "./src/library.ts",
       "./dist/library.js"
     ],
-    "./node": [
-      "./src/library-node.ts",
-      "./dist/library-node.js"
-    ],
     "./Badge": "./src/constructors/Badge/index.ts",
     "./Badge/style": "./src/constructors/Badge/style.scss",
     "./Bars": "./src/constructors/Bars/index.ts",
@@ -42,6 +38,8 @@
     "./ListGroup/style": "./src/constructors/ListGroup/style.scss",
     "./ListItem": "./src/constructors/ListItem/index.ts",
     "./ListItem/style": "./src/constructors/ListItem/style.scss",
+    "./ListMenu": "./src/constructors/ListMenu/index.ts",
+    "./ListMenu/style": "./src/constructors/ListMenu/style.scss",
     "./Menu": "./src/constructors/Menu/index.ts",
     "./Menu/style": "./src/constructors/Menu/style.scss",
     "./MotionTransform": "./src/constructors/MotionTransform/index.ts",
@@ -58,7 +56,11 @@
     "./Skeleton/style": "./src/constructors/Skeleton/style.scss",
     "./Window": "./src/constructors/Window/index.ts",
     "./Window/style": "./src/constructors/Window/style.scss",
-    "./constructor/": "./src/constructors/"
+    "./constructor/": "./src/constructors/",
+    "./node": [
+      "./src/library-node.ts",
+      "./dist/library-node.js"
+    ]
   },
   "buildOptions": {
     "name": "@dxt-ui/constructor",

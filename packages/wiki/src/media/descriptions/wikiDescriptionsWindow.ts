@@ -213,9 +213,9 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Window'} type={'expose.control'}/>
 <StorybookDescriptions componentName={'Window'} type={'expose.id'}/>
 <StorybookDescriptions componentName={'Window'} type={'expose.open'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose.setOpen'}/>
 <StorybookDescriptions componentName={'Window'} type={'expose.toOpen'}/>
 <StorybookDescriptions componentName={'Window'} type={'expose.toClose'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.setOpen'}/>
 <StorybookDescriptions componentName={'Window'} type={'expose.toggle'}/>
     `,
     slots: `

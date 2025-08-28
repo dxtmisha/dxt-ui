@@ -5,13 +5,13 @@ import { ListGroupOpen } from './ListGroupOpen'
 
 import type { MotionTransformProps } from '../MotionTransform'
 import type { ListGroupComponents, ListGroupEmits, ListGroupSlots } from './types'
-import type { ListGroupPropsBasic } from './props'
+import type { ListGroupProps } from './props'
 
 /**
  * ListGroup
  */
 export class ListGroup {
-  readonly open: ListGroupOpen
+  readonly open: ListGroupOpen<ListGroupProps>
 
   /**
    * Constructor
@@ -25,12 +25,12 @@ export class ListGroup {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: ListGroupPropsBasic,
-    protected readonly refs: ToRefs<ListGroupPropsBasic>,
+    protected readonly props: ListGroupProps,
+    protected readonly refs: ToRefs<ListGroupProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
-    protected readonly components?: DesignComp<ListGroupComponents, ListGroupPropsBasic>,
+    protected readonly components?: DesignComp<ListGroupComponents, ListGroupProps>,
     protected readonly slots?: ListGroupSlots,
     protected readonly emits?: ConstrEmit<ListGroupEmits>
   ) {

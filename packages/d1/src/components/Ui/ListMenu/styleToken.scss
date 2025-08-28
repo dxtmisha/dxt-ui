@@ -1,0 +1,19 @@
+@use "../../../styles/Ui/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/ListMenu/style" as ListMenu;
+
+@include ui.initDesignBasic('d1.listMenu') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include ListMenu.mixinListMenu;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}
