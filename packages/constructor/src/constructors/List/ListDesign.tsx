@@ -3,7 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  isObject,
+  isObject, type ListDataFull,
   type ListDataItem
 } from '@dxt-ui/functional'
 
@@ -133,41 +133,7 @@ export class ListDesign<
    * Генерирует все элементы из списка.
    */
   protected readonly renderData = (): VNode[] => {
-    const children: VNode[] = []
-
-    this.item.data.fullData.value
-      .forEach((item) => {
-        switch (item.type) {
-          case 'space':
-            children.push(this.renderSpace(item))
-            break
-          case 'line':
-            children.push(this.renderLine(item))
-            break
-          case 'subtitle':
-            children.push(this.renderSubtitle(item))
-            break
-          case 'html':
-            children.push(this.renderHtml(item))
-            break
-          case 'group':
-            // children.push(this.renderGroup(item))
-            break
-          case 'menu':
-            // children.push(...this.renderMenuItem(item))
-            break
-          case 'menu-group':
-            // children.push(this.renderMenuGroup(item))
-            break
-          default:
-            children.push(this.renderItem(item))
-            break
-        }
-      })
-
-    children.push(h('div'))
-
-    return children
+    return this.renderDataByItem(this.item.data.fullData.value)
   }
 
   /**
@@ -188,11 +154,12 @@ export class ListDesign<
    *
    * Генерирует групповой элемент.
    * @param item selected element/ выбранный элемент
+   * @param open is the group open/ открыта ли группа
    */
-  protected readonly renderItemGroup = (item: ListDataItem): VNode => {
+  protected readonly renderItemGroup = (item: ListDataItem, open: boolean): VNode => {
     return this.components.renderOne(
       'listItem',
-      this.item.getItemGroup(item)
+      this.item.getItemManagementFormGroup(item, open)
     ) as VNode
   }
 
@@ -278,21 +245,19 @@ export class ListDesign<
    * Генерирует группу списков.
    * @param item selected element/ выбранный элемент
    */
-  /* protected readonly renderGroup = (item: ListDataItem): VNode => {
-    return this.components.renderOne('listGroup', {
-      ...toBinds(
-        this.props,
-        this.props.groupAttrs,
-        { class: this.classes?.value.group }
-      ),
-      head: {
-        ...item,
-        value: item?.index
+  protected readonly renderGroup = (item: ListDataItem): VNode => {
+    return this.components.renderOne(
+      'listGroup',
+      {
+        open: this.item.isOpenGroup(item),
+        divider: this.props.divider
       },
-      list: item.value,
-      onClick: this.item.event.onClick
-    }) as VNode
-  } */
+      {
+        head: ({ open }: { open: boolean }) => this.renderItemGroup(item, open),
+        list: () => this.renderDataByItem(this.item.getList(item))
+      }
+    ) as VNode
+  }
 
   /**
    * Generates a menu group.
@@ -357,6 +322,7 @@ export class ListDesign<
    * Генерирует адаптированную группу с изменениями в меню при активности статуса rail.
    * @param item selected element/ выбранный элемент
    */
+
   /* protected readonly renderMenuGroup = (item: ListDataItem): VNode => {
     const divider = item.divider || this.props.divider
 
@@ -375,4 +341,48 @@ export class ListDesign<
       ]
     )
   } */
+
+  /**
+   * Generates all elements from the list.
+   *
+   * Генерирует все элементы из списка.
+   * @param data selected element/ выбранный элемент
+   */
+  protected renderDataByItem(
+    data: ListDataFull
+  ): VNode[] {
+    const children: VNode[] = []
+
+    data.forEach((item) => {
+      switch (item.type) {
+        case 'space':
+          children.push(this.renderSpace(item))
+          break
+        case 'line':
+          children.push(this.renderLine(item))
+          break
+        case 'subtitle':
+          children.push(this.renderSubtitle(item))
+          break
+        case 'html':
+          children.push(this.renderHtml(item))
+          break
+        case 'group':
+          children.push(this.renderGroup(item))
+          break
+        case 'menu':
+          // children.push(...this.renderMenuItem(item))
+          break
+        case 'menu-group':
+          // children.push(this.renderMenuGroup(item))
+          break
+        default:
+          children.push(this.renderItem(item))
+          break
+      }
+    })
+
+    children.push(h('div'))
+    return children
+  }
 }

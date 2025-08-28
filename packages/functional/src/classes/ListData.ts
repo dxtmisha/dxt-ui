@@ -1,13 +1,14 @@
-import { computed } from 'vue'
+import { computed, isRef, watch } from 'vue'
 
 import { forEach } from '../functions/forEach'
+import { getRef } from '../functions/ref/getRef'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { isObject } from '../functions/isObject'
 import { isSelected } from '../functions/isSelected'
 import { getExp } from '../functions/getExp'
 import { getColumn } from '../functions/getColumn'
 
-import type { RefType } from '../types/refTypes'
+import type { RefOrNormal, RefType } from '../types/refTypes'
 import type {
   ListDataFull,
   ListDataItem,
@@ -25,8 +26,10 @@ import type {
  * Класс для управления списком данных.
  */
 export class ListData {
+  protected subList: Record<any, ListData> = {}
+
   constructor(
-    protected readonly list: RefType<ListListInput | undefined>,
+    protected readonly list: RefOrNormal<ListListInput | undefined>,
     protected readonly focus?: RefType<ListSelectedItem | undefined>,
     protected readonly highlight?: RefType<string | undefined>,
     protected readonly highlightLengthStart?: RefType<number | undefined>,
@@ -35,6 +38,11 @@ export class ListData {
     protected readonly keyLabel?: RefType<string | undefined>,
     protected readonly lite?: RefType<number | undefined>
   ) {
+    if (isRef(list)) {
+      watch(list, () => {
+        this.subList = {}
+      })
+    }
   }
 
   /**
@@ -44,7 +52,7 @@ export class ListData {
    */
   readonly data = computed<ListList>(
     () => forEach(
-      this.list.value as ListListInputItem || [],
+      getRef(this.list) as ListListInputItem || [],
       (item, key) => this.initItem(key, item)
     )
   )
@@ -112,17 +120,7 @@ export class ListData {
         case 'menu-group':
           map.push(
             item,
-            ...new ListData(
-              item.value,
-              this.focus,
-              this.highlight,
-              this.highlightLengthStart,
-              this.selected,
-              this.keyValue,
-              this.keyLabel,
-              this.lite
-            )
-              .map.value
+            ...this.getSubList(item).map.value
           )
           break
       }
@@ -305,6 +303,29 @@ export class ListData {
    */
   getSelected(): ListSelectedList | undefined {
     return this.selected?.value
+  }
+
+  /**
+   * Returns a sublist object for a group item.
+   *
+   * Возвращает объект подсписка для группового элемента.
+   * @param item List item data/ данные элемента списка
+   */
+  getSubList(item: ListDataItem): ListData {
+    if (!(item.index in this.subList)) {
+      this.subList[item.index] = new ListData(
+        item.value,
+        this.focus,
+        this.highlight,
+        this.highlightLengthStart,
+        this.selected,
+        this.keyValue,
+        this.keyLabel,
+        this.lite
+      )
+    }
+
+    return this.subList[item.index]
   }
 
   /**

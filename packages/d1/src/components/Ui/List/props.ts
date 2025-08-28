@@ -24,6 +24,8 @@ export interface ListProps extends ListPropsBasic, PropsToken {
  */
 export const defaults: object = {
   ...defaultsList,
+  iconArrowDown: 'keyboard_arrow_down',
+  iconArrowRight: 'keyboard_arrow_right',
   ...{
     // :default [!] System label / Системная метка
     axis: 'y'

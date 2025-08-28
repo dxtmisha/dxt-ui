@@ -78,6 +78,75 @@ export const wikiList: StorybookArgsToList = {
           icon: 'folder',
           suffix: 245
         },
+        {
+          type: 'group',
+          index: 'g1',
+          label: 'Маркетинг',
+          value: [
+            {
+              label: 'Email рассылки',
+              value: 'email-campaigns',
+              icon: 'email'
+            },
+            {
+              label: 'Социальные сети',
+              value: 'social-media',
+              icon: 'share'
+            },
+            {
+              label: 'Реклама',
+              value: 'ads',
+              icon: 'ads_click'
+            }
+          ],
+          icon: 'campaign'
+        },
+        {
+          type: 'group',
+          index: 'g2',
+          label: 'Разработка',
+          value: [
+            {
+              label: 'Репозиторий кода',
+              value: 'repository',
+              icon: 'code'
+            },
+            {
+              label: 'Система сборки',
+              value: 'build-system',
+              icon: 'build'
+            },
+            {
+              type: 'group',
+              index: 'g2-1',
+              label: 'Тестирование',
+              value: [
+                {
+                  label: 'Unit тесты',
+                  value: 'unit-tests',
+                  icon: 'science'
+                },
+                {
+                  label: 'Интеграционные тесты',
+                  value: 'integration-tests',
+                  icon: 'integration_instructions'
+                },
+                {
+                  label: 'E2E тесты',
+                  value: 'e2e-tests',
+                  icon: 'web'
+                }
+              ],
+              icon: 'bug_report'
+            },
+            {
+              label: 'Документация API',
+              value: 'api-docs',
+              icon: 'description'
+            }
+          ],
+          icon: 'developer_mode'
+        },
         { type: 'line' },
         {
           label: 'Уведомления',

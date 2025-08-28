@@ -1,12 +1,11 @@
 interface ListGroupPropsToken {
   // :type [!] System label / Системная метка
+  open?: boolean
   divider?: boolean
   // :type [!] System label / Системная метка
 }
 
 export interface ListGroupPropsBasic {
-  // Status
-  open?: boolean
 }
 
 /**

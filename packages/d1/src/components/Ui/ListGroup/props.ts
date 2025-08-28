@@ -7,6 +7,7 @@ export const propsValues = {
 
 interface PropsToken {
   // :type [!] System label / Системная метка
+  open?: boolean
   divider?: boolean
   // :type [!] System label / Системная метка
 }

@@ -2,5 +2,17 @@
   "main": "{d.listGroup}",
   "border-width": "{sys.spacing.outline}",
   "border-color": "{sys.palette.outline}",
-  "border-opacity": "{sys.opacity.outline}"
+  "border-opacity": "{sys.opacity.outline}",
+  "#head": {
+    "& > .?listItem:not(.?listItem--divider)": {
+      "margin-y": "{sys.spacing.x} / 2"
+    }
+  },
+  "#list": {
+    "margin-left": "{sys.spacing.md}"
+  },
+  "&[data-open=\"open\"]": {
+    "background-color": "{sys.palette.onSurface}",
+    "background-opacity": "{sys.opacity.hover}"
+  }
 }

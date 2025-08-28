@@ -1,6 +1,11 @@
 @use "@dxt-ui/styles/properties" as ui;
 
 @mixin mixinListGroup {
+  &__head,
+  &__list {
+    display: flow-root;
+  }
+
   @at-root {
     & + &[data-divider="divider"],
     #{ui.c('?listItem')} + &[data-divider="divider"],

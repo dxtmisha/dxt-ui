@@ -16,6 +16,7 @@ import { D1ListItem } from '../ListItem'
 
 import { defaults, type ListProps, propsValues } from './props'
 import './styleToken.scss'
+import { D1ListGroup } from '../ListGroup'
 
 defineOptions({
   name: 'D1List'
@@ -46,7 +47,8 @@ const design = new ListDesign(
     classes: classesToken,
     styles: stylesToken,
     components: {
-      listItem: D1ListItem
+      listItem: D1ListItem,
+      listGroup: D1ListGroup
     }
   }
 )

@@ -75,6 +75,22 @@ export class List {
   })
 
   /**
+   * Returns information about the opening status of a group item.
+   *
+   * Возвращает информацию о статусе открытия группового элемента.
+   * @param item List item data/ данные элемента списка
+   */
+  isOpenGroup(
+    item: ConstrBind<ListDataItem>
+  ): boolean {
+    const data = this.data.getSubList(item)
+
+    return data.isSelected.value
+      || data.isFocus()
+      || data.isHighlight()
+  }
+
+  /**
    * Gets binding properties for a list item
    *
    * Получает привязочные свойства для элемента списка
@@ -144,6 +160,18 @@ export class List {
       open,
       this.props.iconArrowRight
     )
+  }
+
+  /**
+   * Returns a sublist for a group item.
+   *
+   * Возвращает подсписок для группового элемента.
+   * @param item List item data/ данные элемента списка
+   */
+  getList(
+    item: ConstrBind<ListDataItem>
+  ) {
+    return this.data.getSubList(item).fullData.value
   }
 
   /**
