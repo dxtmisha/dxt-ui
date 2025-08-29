@@ -13,10 +13,11 @@ import {
 } from '@dxt-ui/constructor/List'
 
 import { D1ListItem } from '../ListItem'
+import { D1ListGroup } from '../ListGroup'
+import { D1ListMenu } from '../ListMenu'
 
 import { defaults, type ListProps, propsValues } from './props'
 import './styleToken.scss'
-import { D1ListGroup } from '../ListGroup'
 
 defineOptions({
   name: 'D1List'
@@ -48,7 +49,8 @@ const design = new ListDesign(
     styles: stylesToken,
     components: {
       listItem: D1ListItem,
-      listGroup: D1ListGroup
+      listGroup: D1ListGroup,
+      listMenu: D1ListMenu
     }
   }
 )

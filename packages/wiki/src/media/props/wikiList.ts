@@ -147,6 +147,52 @@ export const wikiList: StorybookArgsToList = {
           ],
           icon: 'developer_mode'
         },
+        {
+          type: 'menu',
+          index: 'm1',
+          label: 'Администрирование',
+          value: [
+            {
+              label: 'Управление пользователями',
+              value: 'user-management',
+              icon: 'people'
+            },
+            {
+              label: 'Права доступа',
+              value: 'permissions',
+              icon: 'security'
+            },
+            {
+              type: 'menu',
+              index: 'm1-1',
+              label: 'Системные настройки',
+              value: [
+                {
+                  label: 'Конфигурация сервера',
+                  value: 'server-config',
+                  icon: 'dns'
+                },
+                {
+                  label: 'База данных',
+                  value: 'database-config',
+                  icon: 'storage'
+                },
+                {
+                  label: 'Резервное копирование',
+                  value: 'backup',
+                  icon: 'backup'
+                }
+              ],
+              icon: 'tune'
+            },
+            {
+              label: 'Мониторинг системы',
+              value: 'monitoring',
+              icon: 'monitor_heart'
+            }
+          ],
+          icon: 'admin_panel_settings'
+        },
         { type: 'line' },
         {
           label: 'Уведомления',

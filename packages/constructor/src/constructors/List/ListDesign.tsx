@@ -3,8 +3,10 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  isObject, type ListDataFull,
-  type ListDataItem
+  isObject,
+  type ListDataFull,
+  type ListDataItem, type ListType,
+  toBinds
 } from '@dxt-ui/functional'
 
 import { List } from './List'
@@ -19,6 +21,7 @@ import {
   type ListExpose,
   type ListSlots
 } from './types'
+import type { WindowControlItem } from '../Window'
 
 /**
  * ListDesign
@@ -133,19 +136,23 @@ export class ListDesign<
    * Генерирует все элементы из списка.
    */
   protected readonly renderData = (): VNode[] => {
-    return this.renderDataByItem(this.item.data.fullData.value)
+    return this.renderDataByItem('item', this.item.data.fullData.value, true)
   }
 
   /**
    * Generates an element.
    *
    * Генерирует элемент.
+   * @param type type of list/ тип списка
    * @param item selected element/ выбранный элемент
    */
-  protected readonly renderItem = (item: ListDataItem): VNode => {
+  protected readonly renderItem = (
+    type: ListType,
+    item: ListDataItem
+  ): VNode => {
     return this.components.renderOne(
       'listItem',
-      this.item.getItem(item)
+      this.getItemAttrs(type, item)
     ) as VNode
   }
 
@@ -160,6 +167,26 @@ export class ListDesign<
     return this.components.renderOne(
       'listItem',
       this.item.getItemManagementFormGroup(item, open)
+    ) as VNode
+  }
+
+  /**
+   * Generates a menu element.
+   *
+   * Генерирует элемент меню.
+   * @param item selected element/ выбранный элемент
+   * @param props data for working with the menu/ данные для работы с меню
+   */
+  protected readonly renderItemMenu = (
+    item: ListDataItem,
+    props: WindowControlItem
+  ): VNode => {
+    return this.components.renderOne(
+      'listItem',
+      toBinds(
+        this.item.getItemManagementFormMenu(item, Boolean(props.open.value)),
+        props.binds
+      )
     ) as VNode
   }
 
@@ -254,29 +281,32 @@ export class ListDesign<
       },
       {
         head: ({ open }: { open: boolean }) => this.renderItemGroup(item, open),
-        list: () => this.renderDataByItem(this.item.getList(item))
+        list: () => this.renderDataByItem('group', this.item.getList(item))
       }
     ) as VNode
   }
 
   /**
-   * Generates a menu group.
+   * Generates a menu of lists.
    *
-   * Генерирует группу меню.
+   * Генерирует меню списков.
    * @param item selected element/ выбранный элемент
+   * @param first is the first element/ является ли первым элементом
    */
-  /* protected readonly renderMenuItem = (item: ListDataItem): VNode[] => {
-    return this.item.menu.render(
+  protected readonly renderMenu = (item: ListDataItem, first: boolean): VNode => {
+    return this.components.renderOne(
+      'listMenu',
       {
-        control: (binds: MenuControlItem) => this.renderMenuControl(item, binds)
+        open: this.item.isOpenGroup(item),
+        divider: this.props.divider,
+        axis: first ? (this.props.axis === 'x' ? 'y' : 'x') : 'x'
       },
       {
-        ...item?.menuAttrs,
-        list: item.value,
-        onClick: this.item.event.onClick
+        head: (props: WindowControlItem) => this.renderItemMenu(item, props),
+        list: () => this.renderDataByItem('menu', this.item.getList(item))
       }
-    )
-  } */
+    ) as VNode
+  }
 
   /**
    * Generates a control element for the menu.
@@ -290,21 +320,6 @@ export class ListDesign<
     binds: MenuControlItem
   ) => {
     return this.renderItem({
-      iconTrailing: this.props.axis === 'x' ? this.props.iconArrowDown : this.props.iconArrowRight,
-      iconTrailingTurnOnly: true,
-      iconTurn: binds.open.value,
-
-      ...toBinds(
-        item,
-        binds.binds,
-        {
-          class: [
-            binds.class,
-            this.classes?.value.menu,
-            this.item.windowClasses.get().static
-          ]
-        }
-      ),
 
       focus: this.props.focus === item?.index,
       open: binds.open.value || binds.isSelected.value,
@@ -343,13 +358,38 @@ export class ListDesign<
   } */
 
   /**
+   * Returns binding properties for the item.
+   *
+   * Возвращает привязочные свойства для элемента.
+   * @param type type of list/ тип списка
+   * @param item selected element/ выбранный элемент
+   */
+  protected getItemAttrs(
+    type: ListType,
+    item: ListDataItem
+  ) {
+    switch (type) {
+      case 'group':
+        return this.item.getItemGroup(item)
+      case 'menu':
+        return this.item.getItemMenu(item)
+      default:
+        return this.item.getItem(item)
+    }
+  }
+
+  /**
    * Generates all elements from the list.
    *
    * Генерирует все элементы из списка.
+   * @param type type of list/ тип списка
    * @param data selected element/ выбранный элемент
+   * @param first is the first element/ является ли первым элементом
    */
   protected renderDataByItem(
-    data: ListDataFull
+    type: ListType,
+    data: ListDataFull,
+    first: boolean = false
   ): VNode[] {
     const children: VNode[] = []
 
@@ -371,13 +411,13 @@ export class ListDesign<
           children.push(this.renderGroup(item))
           break
         case 'menu':
-          // children.push(...this.renderMenuItem(item))
+          children.push(this.renderMenu(item, first))
           break
         case 'menu-group':
           // children.push(this.renderMenuGroup(item))
           break
         default:
-          children.push(this.renderItem(item))
+          children.push(this.renderItem(type, item))
           break
       }
     })

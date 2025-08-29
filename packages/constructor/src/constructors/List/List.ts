@@ -127,6 +127,26 @@ export class List {
   }
 
   /**
+   * Gets binding properties for a menu item in the list
+   *
+   * Получает привязочные свойства для элемента меню в списке
+   * @param item List item data/ данные элемента списка
+   */
+  getItemMenu(
+    item: ConstrBind<ListDataItem>
+  ) {
+    return toBinds(
+      this.itemBinds.value,
+      this.props.itemMenuAttrs,
+      item,
+      {
+        key: item.value,
+        class: `${this.className}__menu`
+      }
+    )
+  }
+
+  /**
    * Gets binding properties for a group management item with down arrow
    *
    * Получает привязочные свойства для элемента управления группой со стрелкой вниз

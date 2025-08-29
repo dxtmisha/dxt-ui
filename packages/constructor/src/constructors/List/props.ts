@@ -37,6 +37,7 @@ export interface ListPropsBasic<
   itemAttrs?: ConstrBind<ListItem>
   itemManagementAttrs?: ConstrBind<ListItem>
   itemGroupAttrs?: ConstrBind<ListItem>
+  itemMenuAttrs?: ConstrBind<ListItem>
 
   iconArrowDown?: IconValue<Icon>
   iconArrowRight?: IconValue<Icon>
