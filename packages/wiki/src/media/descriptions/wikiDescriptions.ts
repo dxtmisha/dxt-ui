@@ -7,6 +7,7 @@ import { wikiDescriptionsCell } from './wikiDescriptionsCell'
 import { wikiDescriptionsChip } from './wikiDescriptionsChip'
 import { wikiDescriptionsIcon } from './wikiDescriptionsIcon'
 import { wikiDescriptionsImage } from './wikiDescriptionsImage'
+import { wikiDescriptionsList } from './wikiDescriptionsList'
 import { wikiDescriptionsListGroup } from './wikiDescriptionsListGroup'
 import { wikiDescriptionsListItem } from './wikiDescriptionsListItem'
 import { wikiDescriptionsListMenu } from './wikiDescriptionsListMenu'
@@ -25,6 +26,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsChip,
   wikiDescriptionsIcon,
   wikiDescriptionsImage,
+  wikiDescriptionsList,
   wikiDescriptionsListGroup,
   wikiDescriptionsListItem,
   wikiDescriptionsListMenu,

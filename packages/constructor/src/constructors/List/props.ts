@@ -21,14 +21,14 @@ export interface ListPropsBasic<
   // Status
   focus?: ListSelectedItem
   selected?: ListSelectedList
-  highlight?: string
-  highlightLengthStart?: number
   disabled?: boolean
   lite?: boolean
 
   // Value
   list?: ListRecord<ListItem>
   liteThreshold?: number
+  highlight?: string
+  highlightLengthStart?: number
 
   keyLabel?: string
   keyValue?: string

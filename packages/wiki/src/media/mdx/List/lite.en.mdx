@@ -1,0 +1,19 @@
+## Lightweight list mode
+
+The `lite` and `liteThreshold` properties control the simplified (lightweight) rendering mode of the list.
+
+### Properties
+
+- **lite** — Enables the lightweight rendering mode
+- **liteThreshold** — Item count threshold that is applied when `lite` is enabled
+
+### Property relationship
+
+The properties work together to decide when the simplified rendering should be applied:
+
+- If `lite = false` (or not set), the list always renders in full mode and `liteThreshold` is ignored
+- If `lite = true`, the component compares the total item count with `liteThreshold`
+  - When `count <= liteThreshold`, full mode is used (no simplification)
+  - When `count > liteThreshold`, lightweight mode turns on to reduce visual complexity and speed up rendering
+
+This approach helps avoid unnecessary load with large datasets while keeping the familiar full rendering for short lists.

@@ -18,13 +18,32 @@ import {ListWikiStorybook} from './wiki'
 />
 
 [//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'List'} type={'list'}/>
+
+<StorybookDescriptions componentName={'List'} type={'lite'}/>
+<Canvas of={List.ListLiteMode}/>
+
+<StorybookDescriptions componentName={'Value'} type={'highlight'}/>
+<Canvas of={List.ListHighlight}/>
+    
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 [//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+<StorybookDescriptions componentName={'Event'} type={'clickLite'}/>
+<StorybookDescriptions componentName={'List'} type={'event.close'}/>
+    
 [//]: # (:documentation-events [!] System label / Системная метка)
 
 [//]: # (:documentation-expose [!] System label / Системная метка)
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
 [//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'List'} type={'slot.html'}/>
+    
 [//]: # (:documentation-slots [!] System label / Системная метка)

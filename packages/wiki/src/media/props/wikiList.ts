@@ -235,8 +235,7 @@ export const wikiList: StorybookArgsToList = {
       description: {
         en: 'Threshold value that works when lite mode is enabled (lite: true). Defines the maximum number of items before additional optimizations are applied in lite mode.',
         ru: 'Пороговое значение, которое работает когда включен lite режим (lite: true). Определяет максимальное количество элементов перед применением дополнительных оптимизаций в lite режиме.'
-      },
-      value: 50
+      }
     }
   },
   'list.selected': {

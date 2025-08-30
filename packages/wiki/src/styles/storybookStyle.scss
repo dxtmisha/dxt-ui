@@ -30,6 +30,16 @@
     width: 72%;
   }
 
+  &-decreasedX2 {
+    @include ui.mediaMinWidth('md') {
+      width: 64%;
+    }
+
+    @include ui.mediaMinWidth('lg') {
+      width: 48%;
+    }
+  }
+
   &-item {
     position: relative;
     overflow: hidden;

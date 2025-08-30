@@ -1,0 +1,31 @@
+### `slot: html`
+
+List supports named slots for items with `type: 'html'`. The slot name must match the item's `value`.
+
+Usage rules
+
+- The list item must have `type: 'html'` and a string `value` used as the slot key
+- If a slot with the same name exists, its content replaces the item rendering
+- If no slot exists, the component renders raw HTML from the item's `label` via `innerHTML`
+
+Example
+
+```html
+<List
+  :list="[
+    { type: 'html', value: 'promoBlock', label: '<strong>Fallback HTML</strong>' },
+    { label: 'Regular item', value: 'item1' }
+  ]"
+>
+  <template #promoBlock>
+    <div class="custom-promo">Custom slot content</div>
+  </template>
+</List>
+```
+
+Notes
+
+- The slot receives no props; use static content or app state
+- Prefer slots for Vue-rendered content; use `label` with HTML only for simple, trusted markup
+
+
