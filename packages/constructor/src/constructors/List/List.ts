@@ -5,6 +5,7 @@ import {
   DesignComp,
   ListData,
   type ListDataItem,
+  type ListList,
   toBinds
 } from '@dxt-ui/functional'
 
@@ -12,18 +13,35 @@ import { EventClickInclude } from '../../classes/EventClickInclude'
 
 import { WindowClassesInclude } from '../Window'
 
+import { ListSearch } from './ListSearch'
+import { ListFocus } from './ListFocus'
+import { ListGo } from './ListGo'
+import { ListControl } from './ListControl'
+
 import type { ListComponents, ListEmits, ListSlots } from './types'
 import type { ListProps } from './props'
 import type { IconValue } from '../Icon'
+
+/** Maximum number of lists/ Максимальное количество списков */
+let listIdMax = 1
 
 /**
  * List
  */
 export class List {
+  readonly search: ListSearch
+  readonly focus: ListFocus
+
   readonly data: ListData
   readonly event: EventClickInclude
 
+  readonly go: ListGo
+  readonly control: ListControl
+
   readonly windowClasses: WindowClassesInclude
+
+  /** Unique list identifier/ Уникальный идентификатор списка */
+  protected readonly id: number = ++listIdMax
 
   /**
    * Constructor
@@ -46,20 +64,39 @@ export class List {
     protected readonly slots?: ListSlots,
     protected readonly emits?: ConstrEmit<ListEmits>
   ) {
+    this.search = new ListSearch(this.props)
+    this.focus = new ListFocus(this.props, this.element, this.id)
+
     this.data = new ListData(
       toRef(this.props, 'list'),
-      this.refs.focus,
-      this.refs.highlight,
+      this.focus.focus,
+      this.search.highlight,
       this.refs.highlightLengthStart,
       this.refs.selected,
       this.refs.keyValue,
       this.refs.keyLabel,
-      this.refs.lite
+      this.refs.liteThreshold
     )
+
+    this.go = new ListGo(this.props, this.focus, this.data)
+    this.control = new ListControl(this.props, this.search, this.data, this.go)
 
     this.event = new EventClickInclude(undefined, undefined, emits)
     this.windowClasses = new WindowClassesInclude(classDesign)
   }
+
+  /**
+   * Computed list data
+   *
+   * Вычисляемые данные списка
+   * */
+  readonly list = computed<ListList>(() => {
+    if (this.props.lite) {
+      return this.data.liteData.value
+    }
+
+    return this.data.fullData.value
+  })
 
   /**
    * Computed binding properties for list items/
@@ -70,7 +107,8 @@ export class List {
       tag: this.props.tag,
       divider: this.props.divider,
       onClick: this.event.onClick,
-      ...this.props.itemAttrs ?? {}
+      ...(this.props.itemAttrs ?? {}),
+      listId: this.id
     }
   })
 
@@ -207,24 +245,22 @@ export class List {
     open: boolean,
     icon?: IconValue
   ): ConstrBind<ListDataItem> {
-    return {
-      divider: this.props.divider,
-      ...toBinds(
-        this.props.itemAttrs,
-        this.props.itemManagementAttrs,
-        item,
-        {
-          class: [
-            `${this.className}__management`,
-            this.windowClasses.get().static
-          ]
-        }
-      ),
-      focus: this.props.focus === item?.index,
-      open,
-      iconTurn: open,
-      iconTrailing: icon,
-      iconTrailingTurnOnly: true
-    }
+    return toBinds(
+      this.itemBinds.value,
+      this.props.itemManagementAttrs,
+      item,
+      {
+        'class': [
+          `${this.className}__management`,
+          this.windowClasses.get().static
+        ],
+        'focus': item?.index === this.focus.focus.value,
+        open,
+        'iconTurn': open,
+        'iconTrailing': icon,
+        'iconTrailingTurnOnly': true,
+        'data-status': open ? 'open' : 'close'
+      }
+    )
   }
 }

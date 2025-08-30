@@ -96,12 +96,12 @@ export class WindowInclude<
       return this.components.render(
         'window',
         {
-          onWindow: this.onWindow,
           ...toBind(
             attrs ?? {},
             this.binds.value
           ),
-          ref: this.element
+          ref: this.element,
+          onWindow: this.onWindow
         },
         slotsChildren as unknown as Record<string, any>,
         this.index

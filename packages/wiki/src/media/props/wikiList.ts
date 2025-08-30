@@ -10,6 +10,16 @@ import {
  * Объект wikiList содержит описание всех свойств для компонента List
  */
 export const wikiList: StorybookArgsToList = {
+  'list.control': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Control object for managing list state and behavior. Provides programmatic access to list operations like navigation, selection, and focus management.',
+        ru: 'Объект управления для контроля состояния и поведения списка. Предоставляет программный доступ к операциям списка, таким как навигация, выбор и управление фокусом.'
+      }
+    }
+  },
   'list.focus': {
     type: StorybookControl.string,
     options: {
@@ -209,13 +219,24 @@ export const wikiList: StorybookArgsToList = {
     }
   },
   'list.lite': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Enable lightweight display mode. Reduces visual complexity by showing simplified item styling with minimal decorative elements.',
+        ru: 'Включить упрощенный режим отображения. Уменьшает визуальную сложность, показывая упрощенную стилизацию элементов с минимальными декоративными элементами.'
+      }
+    }
+  },
+  'list.liteThreshold': {
     type: StorybookControl.number,
     options: {
-      category: StorybookCategory.technical,
+      category: StorybookCategory.style,
       description: {
-        en: 'Simplified display mode. When enabled, shows a lightweight version of the list with minimal styling and reduced visual elements.',
-        ru: 'Упрощенный режим отображения. При включении показывает облегченную версию списка с минимальной стилизацией и уменьшенными визуальными элементами.'
-      }
+        en: 'Threshold value that works when lite mode is enabled (lite: true). Defines the maximum number of items before additional optimizations are applied in lite mode.',
+        ru: 'Пороговое значение, которое работает когда включен lite режим (lite: true). Определяет максимальное количество элементов перед применением дополнительных оптимизаций в lite режиме.'
+      },
+      value: 50
     }
   },
   'list.selected': {

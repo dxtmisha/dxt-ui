@@ -118,7 +118,7 @@ export type WindowControlBasic = {
  */
 export type WindowControlItem = WindowControlBasic
   & {
-  /** CSS class string/ Строка CSS класса */
+    /** CSS class string/ Строка CSS класса */
     class: string
     /** Reactive open state/ Реактивное состояние открытия */
     open: Ref<boolean>
@@ -128,7 +128,7 @@ export type WindowControlItem = WindowControlBasic
     oncontextmenu: WindowEventClick
     /** Binding properties/ Свойства привязки */
     binds: {
-    /** Binding class/ Класс привязки */
+      /** Binding class/ Класс привязки */
       class: string
       /** Click event handler for binding/ Обработчик события клика для привязки */
       onclick: WindowEventClick

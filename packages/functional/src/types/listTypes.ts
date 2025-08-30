@@ -30,6 +30,7 @@ export type ListDataItem<
 > = ConstrBind<
   Item
   & {
+    parent?: string
     type: ListType
     index: string
   }

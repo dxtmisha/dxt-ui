@@ -173,7 +173,6 @@ export class MenuFocus {
       item.type === 'item'
       || item.type === 'group'
       || item.type === 'menu'
-      || item.type === 'menu-group'
     ) {
       this.item.value = item
     } else {

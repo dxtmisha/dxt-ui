@@ -141,6 +141,8 @@ export class ListItemDesign<
         'style': this.styles?.value,
         'data-value': this.props.index ?? this.props.value,
         'data-divider': this.props.divider ? 'active' : undefined,
+        'data-parent': this.props.parent,
+        'data-list-id': this.props.listId,
         'onClick': this.item.event.onClick
       },
       children

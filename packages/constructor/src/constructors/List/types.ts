@@ -20,7 +20,11 @@ export type ListComponents
  *
  * Тип, описывающий доступные события.
  */
-export type ListEmits = EventClickEmits
+export type ListEmits
+  = EventClickEmits
+    & {
+      close: []
+    }
 
 /**
  * Type describing available properties.

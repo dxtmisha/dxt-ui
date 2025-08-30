@@ -28,6 +28,20 @@ import type {
 export class ListData {
   protected subList: Record<any, ListData> = {}
 
+  /**
+   * Creates an instance of ListData for managing list data.
+   *
+   * Создает экземпляр ListData для управления данными списка.
+   * @param list List data / данные списка
+   * @param focus Focused item / элемент в фокусе
+   * @param highlight Search text for highlighting / текст поиска для выделения
+   * @param highlightLengthStart Minimum length to start highlighting / минимальная длина для начала выделения
+   * @param selected Selected items / выбранные элементы
+   * @param keyValue Key for getting item value / ключ для получения значения элемента
+   * @param keyLabel Key for getting item label / ключ для получения метки элемента
+   * @param lite Threshold for lite mode / порог для облегченного режима
+   * @param parent Parent identifier / идентификатор родителя
+   */
   constructor(
     protected readonly list: RefOrNormal<ListListInput | undefined>,
     protected readonly focus?: RefType<ListSelectedItem | undefined>,
@@ -36,7 +50,8 @@ export class ListData {
     protected readonly selected?: RefType<ListSelectedList | undefined>,
     protected readonly keyValue?: RefType<string | undefined>,
     protected readonly keyLabel?: RefType<string | undefined>,
-    protected readonly lite?: RefType<number | undefined>
+    protected readonly lite?: RefType<number | undefined>,
+    protected readonly parent?: string
   ) {
     if (isRef(list)) {
       watch(list, () => {
@@ -67,12 +82,20 @@ export class ListData {
       const lite: ListList = []
 
       for (const item of this.data.value) {
-        lite.push({
+        const newItem = {
+          parent: this.parent,
           index: item.index,
           type: item.type,
           label: item.label,
+          description: item.description,
           value: item.value
-        })
+        }
+
+        if ('description' in item) {
+          newItem.description = item.description
+        }
+
+        lite.push(newItem)
       }
 
       return lite
@@ -95,9 +118,9 @@ export class ListData {
       this.data.value,
       item => ({
         ...item,
-        focus: focus === item.value,
+        focus: focus === item.index,
         highlight,
-        selected: isSelected(item.value, selected)
+        selected: isSelected(item.index, selected)
       })
     )
   })
@@ -117,7 +140,6 @@ export class ListData {
           break
         case 'group':
         case 'menu':
-        case 'menu-group':
           map.push(
             item,
             ...this.getSubList(item).map.value
@@ -139,7 +161,6 @@ export class ListData {
       item => item.type === 'item'
         || item.type === 'group'
         || item.type === 'menu'
-        || item.type === 'menu-group'
     )
   })
 
@@ -157,7 +178,7 @@ export class ListData {
     if (exp) {
       return this.map.value.findIndex(
         item => item.label?.toString().match(exp)
-          || item.value?.toString().match(exp)
+          || item.index?.toString().match(exp)
           || item.search?.toString().match(exp)
       )
     }
@@ -174,7 +195,7 @@ export class ListData {
     const selected = this.getSelected()
 
     return Boolean(selected)
-      && this.map.value.findIndex(item => isSelected(item.value, selected)) !== -1
+      && this.map.value.findIndex(item => isSelected(item.index, selected)) !== -1
   })
 
   /**
@@ -189,7 +210,7 @@ export class ListData {
       selected
       && this.isSelected.value
     ) {
-      return this.map.value.filter(item => isSelected(item.value, selected))
+      return this.map.value.filter(item => isSelected(item.index, selected))
     }
 
     return []
@@ -229,8 +250,7 @@ export class ListData {
    */
   isFocus(): boolean {
     const focus = this.getFocus()
-
-    return Boolean(focus && this.map.value.findIndex(item => item.value === focus) !== -1)
+    return Boolean(focus && this.map.value.findIndex(item => item.index === focus) !== -1)
   }
 
   /**
@@ -306,6 +326,58 @@ export class ListData {
   }
 
   /**
+   * Returns an item by its index.
+   *
+   * Возвращает элемент по его индексу.
+   * @param index item index/ индекс элемента
+   */
+  getItemByIndex(index?: string): { key: number, item: ListDataItem } | undefined {
+    const item = this.map.value.findIndex(item => item.index === index)
+
+    if (item !== -1) {
+      return {
+        key: item,
+        item: this.map.value[item]
+      }
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns an item by its key.
+   *
+   * Возвращает элемент по его ключу.
+   * @param key item key/ ключ элемента
+   */
+  getItemByKey(key: number): ListDataItem | undefined {
+    return this.map.value?.[key]
+  }
+
+  /**
+   * Returns the first item with the specified parent.
+   *
+   * Возвращает первый элемент с указанным родителем.
+   * @param parent parent identifier to search for / идентификатор родителя для поиска
+   */
+  getFirstItemByParent(parent: string): ListDataItem | undefined {
+    return this.map.value
+      .find(item => this.isInParent(parent, item))
+  }
+
+  /**
+   * Returns the last item with the specified parent.
+   *
+   * Возвращает последний элемент с указанным родителем.
+   * @param parent parent identifier to search for / идентификатор родителя для поиска
+   */
+  getLastItemByParent(parent: string): ListDataItem | undefined {
+    return this.map.value
+      .filter(item => this.isInParent(parent, item))
+      .pop()
+  }
+
+  /**
    * Returns a sublist object for a group item.
    *
    * Возвращает объект подсписка для группового элемента.
@@ -321,11 +393,36 @@ export class ListData {
         this.selected,
         this.keyValue,
         this.keyLabel,
-        this.lite
+        this.lite,
+        item.index
       )
     }
 
     return this.subList[item.index]
+  }
+
+  /**
+   * Checks if the item is an item, group, or menu.
+   *
+   * Проверяет, является ли элемент элементом, группой или меню.
+   * @param item List item data/ данные элемента списка
+   */
+  protected isItem(item: ListDataItem): boolean {
+    return item.type === 'item'
+      || item.type === 'group'
+      || item.type === 'menu'
+  }
+
+  /**
+   * Checks if the item is in the specified parent.
+   *
+   * Проверяет, находится ли элемент в указанном родителе.
+   * @param parent parent identifier to search for / идентификатор родителя для поиска
+   * @param item List item data/ данные элемента списка
+   */
+
+  protected isInParent(parent: string, item: ListDataItem): boolean {
+    return item.parent === parent && this.isItem(item)
   }
 
   /**
@@ -377,6 +474,7 @@ export class ListData {
 
       return {
         ...item,
+        parent: this.parent,
         index,
         type: item?.type ?? 'item',
         label,
@@ -385,6 +483,7 @@ export class ListData {
     }
 
     return {
+      parent: this.parent,
       index: key.toString(),
       type: 'item',
       label: item,

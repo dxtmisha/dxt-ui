@@ -7,6 +7,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'axis', type: 'string', option: ['x', 'y'] },
+  { name: 'control', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
   { name: 'divider', type: 'boolean' },
   { name: 'focus', type: 'NumberOrStringOrBoolean' },
@@ -17,10 +18,12 @@ const propsNames: StorybookProps = [
   { name: 'itemAttrs', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
   { name: 'itemGroupAttrs', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
   { name: 'itemManagementAttrs', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
+  { name: 'itemMenuAttrs', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },
   { name: 'list', type: 'ListRecord<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
-  { name: 'lite', type: 'number' },
+  { name: 'lite', type: 'boolean' },
+  { name: 'liteThreshold', type: 'number' },
   { name: 'selected', type: 'ListSelectedList' },
   { name: 'tag', type: 'string', option: ['div', 'button', 'a', 'span'] }
   // :propsList [!] System label / Системная метка

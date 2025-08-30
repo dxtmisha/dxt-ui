@@ -4,8 +4,9 @@ import {
   type ConstrStyles,
   DesignConstructorAbstract,
   isObject,
-  type ListDataFull,
-  type ListDataItem, type ListType,
+  type ListDataItem,
+  type ListList,
+  type ListType,
   toBinds
 } from '@dxt-ui/functional'
 
@@ -124,6 +125,7 @@ export class ListDesign<
       'div',
       {
         ...this.getAttrs(),
+        ref: this.element,
         class: this.classes?.value.main
       },
       this.renderData()
@@ -136,7 +138,7 @@ export class ListDesign<
    * Генерирует все элементы из списка.
    */
   protected readonly renderData = (): VNode[] => {
-    return this.renderDataByItem('item', this.item.data.fullData.value, true)
+    return this.renderDataByItem('item', this.item.list.value, true)
   }
 
   /**
@@ -309,55 +311,6 @@ export class ListDesign<
   }
 
   /**
-   * Generates a control element for the menu.
-   *
-   * Генерирует элемент управления для меню.
-   * @param item selected element/ выбранный элемент
-   * @param binds data for working with the menu/ данные для работы с меню
-   */
-  /* protected readonly renderMenuControl = (
-    item: ListDataItem,
-    binds: MenuControlItem
-  ) => {
-    return this.renderItem({
-
-      focus: this.props.focus === item?.index,
-      open: binds.open.value || binds.isSelected.value,
-
-      type: 'item',
-      value: undefined,
-
-      menuAttrs: undefined
-    })
-  } */
-
-  /**
-   * Generates an adapted group with changes in the menu when the rail status is active.
-   *
-   * Генерирует адаптированную группу с изменениями в меню при активности статуса rail.
-   * @param item selected element/ выбранный элемент
-   */
-
-  /* protected readonly renderMenuGroup = (item: ListDataItem): VNode => {
-    const divider = item.divider || this.props.divider
-
-    return h(
-      'div',
-      {
-        'class': {
-          [`${this.classes?.value.menuGroup}`]: true,
-          [`${this.classes?.value.menuGroup}--divider`]: divider
-        },
-        'data-divider': divider ? 'divider' : undefined
-      },
-      [
-        this.renderGroup(item),
-        this.renderMenuItem(item)
-      ]
-    )
-  } */
-
-  /**
    * Returns binding properties for the item.
    *
    * Возвращает привязочные свойства для элемента.
@@ -388,7 +341,7 @@ export class ListDesign<
    */
   protected renderDataByItem(
     type: ListType,
-    data: ListDataFull,
+    data: ListList,
     first: boolean = false
   ): VNode[] {
     const children: VNode[] = []
@@ -412,9 +365,6 @@ export class ListDesign<
           break
         case 'menu':
           children.push(this.renderMenu(item, first))
-          break
-        case 'menu-group':
-          // children.push(this.renderMenuGroup(item))
           break
         default:
           children.push(this.renderItem(type, item))

@@ -47,8 +47,10 @@ export interface ListItemPropsBasic<
   tag?: 'button' | 'a' | 'span' | 'div' | string
   divider?: boolean
 
-  // Hide
+  // Technical
   type?: string
+  parent?: string
+  listId?: number
   search?: string
 }
 

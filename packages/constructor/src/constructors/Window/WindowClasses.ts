@@ -159,7 +159,7 @@ export class WindowClasses {
       static: `${className}--${WindowStatusControlItem.static}`,
 
       control: `${className}__control`,
-      controlId: `${className}__control ${id}`,
+      controlId: `${className}__control window__control ${id}`,
       controlStatic: `${className}--${WindowStatusControlItem.controlStatic}`,
       controlOpenOnly: `${className}--${WindowStatusControlItem.controlOpenOnly}`,
       controlActive: `${className}--${WindowStatusControlItem.controlActive}`,

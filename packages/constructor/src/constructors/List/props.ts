@@ -24,9 +24,11 @@ export interface ListPropsBasic<
   highlight?: string
   highlightLengthStart?: number
   disabled?: boolean
+  lite?: boolean
 
   // Value
   list?: ListRecord<ListItem>
+  liteThreshold?: number
 
   keyLabel?: string
   keyValue?: string
@@ -43,7 +45,7 @@ export interface ListPropsBasic<
   iconArrowRight?: IconValue<Icon>
 
   // Technical
-  lite?: number
+  control?: boolean
 }
 
 /**
