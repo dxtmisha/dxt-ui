@@ -101,5 +101,35 @@ export const wikiBars: StorybookArgsToList = {
         { icon: 'settings', label: 'Settings' }
       ]
     }
+  },
+  'bars.modelAction': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Two-way binding for action state (v-model:action)',
+        ru: 'Двусторонняя привязка состояния action (v-model:action)'
+      }
+    }
+  },
+  'bars.onUpdate:action': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.hook,
+      description: {
+        en: 'Event handler called on update:action with the new boolean value',
+        ru: 'Обработчик события update:action, вызывается с новым булевым значением'
+      }
+    }
+  },
+  'bars.onUpdate:modelAction': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.hook,
+      description: {
+        en: 'Event handler called on update:modelAction with the new boolean value',
+        ru: 'Обработчик события update:modelAction, вызывается с новым булевым значением'
+      }
+    }
   }
 }

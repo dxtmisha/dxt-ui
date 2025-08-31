@@ -3,6 +3,8 @@ import type { StorybookArgsToList } from '../../types/storybookTypes'
 import { wikiStatus } from './wikiStatus'
 import { wikiValue } from './wikiValue'
 import { wikiStyle } from './wikiStyle'
+import { wikiTechnical } from './wikiTechnical'
+import { wikiHook } from './wikiHook'
 
 import { wikiBadge } from './wikiBadge'
 import { wikiBars } from './wikiBars'
@@ -22,6 +24,8 @@ export const wiki: StorybookArgsToList = {
   ...wikiStatus,
   ...wikiValue,
   ...wikiStyle,
+  ...wikiTechnical,
+  ...wikiHook,
 
   ...wikiBadge,
   ...wikiBars,

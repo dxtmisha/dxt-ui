@@ -65,6 +65,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  buttonAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for button elements',
+        ru: 'Дополнительные атрибуты для элементов кнопок'
+      }
+    }
+  },
   axis: {
     type: StorybookControl.select,
     options: {
@@ -274,6 +284,16 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Sets icon for close button',
         ru: 'Задает иконку для кнопки закрытия'
+      }
+    }
+  },
+  iconBack: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon for back button',
+        ru: 'Задает иконку для кнопки назад'
       }
     }
   },

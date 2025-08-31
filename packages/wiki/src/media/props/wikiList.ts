@@ -40,6 +40,36 @@ export const wikiList: StorybookArgsToList = {
       }
     }
   },
+  'list.itemGroupAttrs': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for group container elements in the list.',
+        ru: 'Дополнительные атрибуты для элементов контейнера группы в списке.'
+      }
+    }
+  },
+  'list.itemManagementAttrs': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for management control elements in the list.',
+        ru: 'Дополнительные атрибуты для элементов управления в списке.'
+      }
+    }
+  },
+  'list.itemMenuAttrs': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for menu container elements in the list.',
+        ru: 'Дополнительные атрибуты для элементов контейнера меню в списке.'
+      }
+    }
+  },
   'list.list': {
     type: StorybookControl.array,
     options: {
