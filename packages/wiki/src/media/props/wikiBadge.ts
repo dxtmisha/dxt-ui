@@ -5,9 +5,9 @@ import {
 } from '../../types/storybookTypes'
 
 /**
- * Badge component properties for Storybook
+ * The wikiBadge object contains descriptions of all properties for the Badge component
  *
- * Свойства компонента Badge для Storybook
+ * Объект wikiBadge содержит описание всех свойств для компонента Badge
  */
 export const wikiBadge: StorybookArgsToList = {
   'badge.outline': {

@@ -1,6 +1,10 @@
-import { StorybookControl, StorybookCategory } from '../../types/storybookTypes'
+import {
+  type StorybookArgsToList,
+  StorybookCategory,
+  StorybookControl
+} from '../../types/storybookTypes'
 
-export const wikiIcon = {
+export const wikiIcon: StorybookArgsToList = {
   // Status
   'icon.active': {
     type: StorybookControl.boolean,
