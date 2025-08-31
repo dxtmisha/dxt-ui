@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import D1Cell from './D1Cell.vue'
-import { CellWikiStorybook } from './wiki.ts'
+import { CellWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 import D1Skeleton from '../Skeleton/D1Skeleton.vue'

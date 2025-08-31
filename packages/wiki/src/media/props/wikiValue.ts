@@ -32,6 +32,43 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  barsDescription: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Description text displayed in the bars area (subtitle/help)',
+        ru: 'Текст описания, отображаемый в области бара (подзаголовок/подсказка)'
+      }
+    }
+  },
+  barsLabel: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: ['string', 'number'],
+      description: {
+        en: 'Label or numeric indicator shown in the bars header',
+        ru: 'Метка или числовой индикатор, отображаемый в заголовке бара'
+      }
+    }
+  },
+  barsList: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Array of buttons displayed in the bars area (actions)',
+        ru: 'Массив кнопок, отображаемых в области бара (действия)'
+      },
+      value: [
+        { icon: 'home', label: 'Home' },
+        { icon: 'search', label: 'Search' },
+        { icon: 'settings', label: 'Settings' }
+      ]
+    }
+  },
   caption: {
     type: StorybookControl.string,
     options: {

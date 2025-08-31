@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import D1Window from './D1Window.vue'
-import { WindowWikiStorybook } from './wiki.ts'
+import { WindowWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 import { ref } from 'vue'

@@ -214,6 +214,8 @@ export class WikiStorybook {
             this.toWikiItemChanged(item, wiki)
           )
         )
+      } else {
+        console.error(`[WikiStorybook] ${item.name} not found`)
       }
     })
 

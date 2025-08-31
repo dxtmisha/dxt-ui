@@ -12,7 +12,7 @@ import { Menu } from './Menu'
 import type { WindowControlItem } from '../Window'
 import type { MenuControlItem } from './basicTypes'
 import {
-  type MenuPropsBasic
+  type MenuProps
 } from './props'
 import {
   type MenuClasses,
@@ -29,7 +29,7 @@ export class MenuDesign<
   COMP extends MenuComponents,
   EXPOSE extends MenuExpose,
   CLASSES extends MenuClasses,
-  P extends MenuPropsBasic
+  P extends MenuProps
 > extends DesignConstructorAbstract<
   HTMLDivElement,
   COMP,
@@ -172,22 +172,27 @@ export class MenuDesign<
 
       this.initSlot('contextTop', children, this.getBinds(props))
 
-      children.push(
-        this.components.render(
-          'list',
-          toBinds(
-            {
-              ...this.item.binds.value,
-              class: this.classes?.value.list,
+      if (!this.props.hideList) {
+        children.push(
+          this.components.render(
+            'list',
+            toBinds(
+              {
+                ...this.item.binds.value,
+                class: this.classes?.value.list,
 
-              selected: this.props.selected,
-              highlight: this.item.search.item.value
-            },
-            this.props.listAttrs
-          ),
-          this.slots as RawSlots
+                selected: this.props.selected,
+                highlight: this.item.search.item.value,
+
+                lite: this.item.menuWindow.lite.value,
+                control: this.item.menuWindow.control.value
+              },
+              this.props.listAttrs
+            ),
+            this.slots as RawSlots
+          )
         )
-      )
+      }
 
       this.initSlot('contextBottom', children, this.getBinds(props))
 

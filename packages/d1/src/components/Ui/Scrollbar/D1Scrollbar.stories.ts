@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import D1Scrollbar from './D1Scrollbar.vue'
-import { ScrollbarWikiStorybook } from './wiki.ts'
+import { ScrollbarWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 // :story-import [!] System label / Системная метка

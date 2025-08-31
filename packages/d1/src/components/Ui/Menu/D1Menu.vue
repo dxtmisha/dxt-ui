@@ -12,7 +12,7 @@ import {
   type MenuSlots
 } from '@dxt-ui/constructor/Menu'
 
-import { D1ListAny } from '../List'
+import { D1List } from '../List'
 import { D1Bars } from '../Bars'
 import { D1Window } from '../Window'
 
@@ -29,9 +29,7 @@ const props = withDefaults(defineProps<MenuProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-menu': true,
-    [`d1-menu--barsAdaptive--${props.barsAdaptive}`]: inArray(propsValues.barsAdaptive, props.barsAdaptive),
-    'd1-menu--hideList': props.hideList
+    'd1-menu': true
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -48,7 +46,7 @@ const design = new MenuDesign(
     classes: classesToken,
     styles: stylesToken,
     components: {
-      list: D1ListAny,
+      list: D1List,
       bars: D1Bars,
       window: D1Window
     }

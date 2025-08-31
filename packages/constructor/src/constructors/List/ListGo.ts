@@ -4,10 +4,10 @@ import {
   ListData
 } from '@dxt-ui/functional'
 
-import { ListFocus } from './ListFocus.ts'
+import { ListFocus } from './ListFocus'
 
 import type { ListProps } from './props'
-import type { ListEmits } from './types.ts'
+import type { ListEmits } from './types'
 
 /**
  * Class for working with element focus.
@@ -135,8 +135,13 @@ export class ListGo {
    * Открывает окно, если элемент в нем.
    */
   open(): void {
-    this.focus.click()
-    this.nextByType()
+    if (
+      this.focus.isGroup()
+      || this.focus.isMenu()
+    ) {
+      this.focus.click()
+      this.nextByType()
+    }
   }
 
   /**
@@ -219,12 +224,9 @@ export class ListGo {
       && !this.focus.isOpen()
     ) {
       return this.focus.getElement(parent)
-    } else if (
-      this.focus.isGroup()
-      || this.focus.isMenu()
-    ) {
-      return this.focus.getElement()
     }
+
+    return undefined
   }
 
   /**

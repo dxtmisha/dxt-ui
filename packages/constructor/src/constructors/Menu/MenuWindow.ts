@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { ListData } from '@dxt-ui/functional'
 
 import { MenuRequest } from './MenuRequest'
+import type { WindowProps } from '../Window'
 
 /**
  * Window manager for Menu component
@@ -29,8 +30,9 @@ export class MenuWindow {
    * Возвращает дополнительные методы для управления окном
    * @returns object with window management methods/ объект с методами управления окном
    */
-  getExtra() {
+  getExtra(): WindowProps {
     return {
+      adaptive: 'menu',
       preparation: this.preparation,
       opening: this.opening,
       closing: this.closing

@@ -33,6 +33,38 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  autoClose: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      defaultValue: false,
+      description: {
+        en: 'Closes the window/menu when clicking inside the content area',
+        ru: 'Закрывает окно/меню при клике внутри области содержимого'
+      }
+    }
+  },
+  barsAdaptive: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      defaultValue: false,
+      description: {
+        en: 'Indicates whether the bars (header toolbar) should be shown',
+        ru: 'Показывает, нужно ли отображать бар (верхнюю панель)'
+      }
+    }
+  },
+  barsAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the bars (header toolbar) container',
+        ru: 'Дополнительные атрибуты для контейнера бара (верхней панели)'
+      }
+    }
+  },
   axis: {
     type: StorybookControl.select,
     options: {
@@ -434,6 +466,16 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Sets text alignment within the element',
         ru: 'Задает выравнивание текста внутри элемента'
+      }
+    }
+  },
+  windowAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the Window root container',
+        ru: 'Дополнительные атрибуты для корневого контейнера Window'
       }
     }
   },

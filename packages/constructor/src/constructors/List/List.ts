@@ -78,7 +78,7 @@ export class List {
       this.refs.liteThreshold
     )
 
-    this.go = new ListGo(this.props, this.focus, this.data)
+    this.go = new ListGo(this.props, this.focus, this.data, this.emits)
     this.control = new ListControl(this.props, this.search, this.data, this.go)
 
     this.event = new EventClickInclude(undefined, undefined, emits)

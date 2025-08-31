@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import D1Ripple from './D1Ripple.vue'
-import { RippleWikiStorybook } from './wiki.ts'
+import { RippleWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 // :story-import [!] System label / Системная метка

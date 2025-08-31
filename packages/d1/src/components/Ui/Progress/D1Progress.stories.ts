@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import D1Progress from './D1Progress.vue'
-import { ProgressWikiStorybook } from './wiki.ts'
+import { ProgressWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 import { ref } from 'vue'

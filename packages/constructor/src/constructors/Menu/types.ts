@@ -61,9 +61,6 @@ export type MenuSlots
 
       /** Context slot for bottom area / Слот контекстной области снизу */
       contextBottom?(props: MenuControlItem): any
-
-      /** Default slot for main content/ Основной слот для главного содержимого */
-      default?(props: MenuControlItem): any
     }
 
 /**

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import D1Skeleton from './D1Skeleton.vue'
-import { SkeletonWikiStorybook } from './wiki.ts'
+import { SkeletonWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 import { image1 } from '@dxt-ui/wiki/media'

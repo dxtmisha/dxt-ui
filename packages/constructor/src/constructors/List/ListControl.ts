@@ -1,8 +1,8 @@
-import { computed, watch } from 'vue'
+import { computed, onUnmounted, watch } from 'vue'
 import { EventItem, isDomRuntime, ListData } from '@dxt-ui/functional'
 
 import { ListSearch } from './ListSearch'
-import { ListGo } from './ListGo.ts'
+import { ListGo } from './ListGo'
 
 import type { ListProps } from './props'
 
@@ -42,6 +42,8 @@ export class ListControl {
       },
       { immediate: true }
     )
+
+    onUnmounted(() => this.stop())
   }
 
   /**

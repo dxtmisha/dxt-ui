@@ -4,10 +4,14 @@
   },
   "#bars": {},
   "#list": {},
+  "~hideList": {},
   "~barsAdaptive": {
-    "always": {
+    "showAlways": {
       "barsDisplay": "flex"
+    },
+    "group|show": {
+      "link|adaptive-show": "{??adaptive.showAlways}",
+      "_type": "media-group"
     }
-  },
-  "~hideList": {}
+  }
 }

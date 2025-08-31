@@ -11,11 +11,7 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    &--barsAdaptive {
-      &--always {
-        --d1-menu-barsDisplay: flex;
-      }
-    }
+    --d1-menu-main: var(--d-menu);
   }
   // :style [!] System label / Системная метка
 

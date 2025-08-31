@@ -2,7 +2,7 @@ import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
 
 import type { ConstructorsComponents, ConstructorsEmits, ConstructorsSlots } from './types'
-import type { ConstructorsPropsBasic } from './props'
+import type { ConstructorsProps } from './props'
 
 /**
  * Constructors
@@ -20,12 +20,12 @@ export class Constructors {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: ConstructorsPropsBasic,
-    protected readonly refs: ToRefs<ConstructorsPropsBasic>,
+    protected readonly props: ConstructorsProps,
+    protected readonly refs: ToRefs<ConstructorsProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
-    protected readonly components?: DesignComp<ConstructorsComponents, ConstructorsPropsBasic>,
+    protected readonly components?: DesignComp<ConstructorsComponents, ConstructorsProps>,
     protected readonly slots?: ConstructorsSlots,
     protected readonly emits?: ConstrEmit<ConstructorsEmits>
   ) {

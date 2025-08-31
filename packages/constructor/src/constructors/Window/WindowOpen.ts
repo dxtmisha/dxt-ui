@@ -149,10 +149,10 @@ export class WindowOpen {
    *
    * Обработчик закрытия по окончании анимации.
    */
-  closeForEvent(propertyName?: string): void {
+  closeForEvent(): void {
     if (this.status.isHide()) {
       this.toClose()
-    } else if (propertyName === 'transform') {
+    } else if (!this.status.isOpen()) {
       this.hook.closing().then()
     }
   }

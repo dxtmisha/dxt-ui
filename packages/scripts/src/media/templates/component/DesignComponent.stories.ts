@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import DesignComponent from './DesignComponent.vue'
-// :component.once import { ComponentWikiStorybook } from './wiki.ts'
+// :component.once import { ComponentWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 // :story-import [!] System label / Системная метка

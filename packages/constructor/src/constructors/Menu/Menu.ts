@@ -101,7 +101,8 @@ export class Menu {
       keyValue: this.props.keyValue,
 
       tag: this.props.tag,
-      onClick: this.event.onClick
+      onClick: this.event.onClick,
+      onClose: this.window.expose.toClose
     }
   })
 

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import D1Image from './D1Image.vue'
-import { ImageWikiStorybook } from './wiki.ts'
+import { ImageWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 import { demoPdf, image1, phone1, phone2, phone3 } from '@dxt-ui/wiki/media'

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import D1MotionTransform from './D1MotionTransform.vue'
-import { MotionTransformWikiStorybook } from './wiki.ts'
+import { MotionTransformWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 import { ref } from 'vue'

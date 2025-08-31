@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import D1Badge from './D1Badge.vue'
-import { BadgeWikiStorybook } from './wiki.ts'
+import { BadgeWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
 // :story-import [!] System label / Системная метка

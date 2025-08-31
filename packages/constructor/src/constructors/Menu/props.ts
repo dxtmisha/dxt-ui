@@ -13,8 +13,8 @@ import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
 
 interface MenuPropsToken {
   // :type [!] System label / Системная метка
-  barsAdaptive?: 'always'
   hideList?: boolean
+  barsAdaptive?: 'showAlways'
   // :type [!] System label / Системная метка
 }
 
@@ -61,7 +61,7 @@ export interface MenuProps extends MenuPropsBasic, MenuPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsMenu = {
-  lite: 40,
+  liteThreshold: 40,
   barsHide: true,
   barsBackHide: true,
   tag: 'a',

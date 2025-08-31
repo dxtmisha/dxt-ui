@@ -11,5 +11,3 @@ export const D1List: DefineSetupFnComponent<
   ShortEmitsToObject<ListEmits>,
   SlotsType<ListSlots>
 > = item
-
-export const D1ListAny = item as any
