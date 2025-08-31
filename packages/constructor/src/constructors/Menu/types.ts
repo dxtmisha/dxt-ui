@@ -2,7 +2,7 @@ import type { ConstrClass } from '@dxt-ui/functional'
 
 import type { EventClickEmits } from '../../types/eventClickTypes'
 
-import type { ListComponentInclude } from '../List/basicTypes'
+import type { ListComponentInclude, ListSlots } from '../List'
 import type { BarsComponentInclude, BarsEmitsInclude } from '../Bars'
 import type { WindowComponentInclude, WindowEmitsInclude, WindowExposeInclude } from '../Window'
 
@@ -44,31 +44,27 @@ export interface MenuExpose extends WindowExposeInclude, MenuControlBasic {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface MenuSlots {
-  /**
-   * Control slot for window management/
-   * Слот управления для управления окном
-   */
-  control?(props: MenuControlItem): any
+export type MenuSlots
+  = ListSlots
+    & {
+      /** Control slot for window management / Слот управления для управления окном */
+      control?(props: MenuControlItem): any
 
-  /**
-   * Title slot for window header/
-   * Слот заголовка для шапки окна
-   */
-  title?(props: MenuControlItem): any
+      /** Footer slot for window bottom / Слот подвала для низа окна */
+      title?(props: MenuControlItem): any
 
-  /**
-   * Footer slot for window bottom/
-   * Слот подвала для низа окна
-   */
-  footer?(props: MenuControlItem): any
+      /** Footer slot for window bottom/ Слот подвала для низа окна */
+      footer?(props: MenuControlItem): any
 
-  /**
-   * Default slot for main content/
-   * Основной слот для главного содержимого
-   */
-  default?(props: MenuControlItem): any
-}
+      /** Context slot for top area / Слот контекстной области сверху */
+      contextTop?(props: MenuControlItem): any
+
+      /** Context slot for bottom area / Слот контекстной области снизу */
+      contextBottom?(props: MenuControlItem): any
+
+      /** Default slot for main content/ Основной слот для главного содержимого */
+      default?(props: MenuControlItem): any
+    }
 
 /**
  * Type describing subclasses.

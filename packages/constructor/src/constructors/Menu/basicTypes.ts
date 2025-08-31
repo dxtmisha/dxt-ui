@@ -6,8 +6,6 @@ import type { MenuExpose } from './types'
 import type { MenuProps } from './props'
 
 export type MenuControlBasic = {
-  list: ComputedRef<ListList | undefined>
-
   isSelected: ComputedRef<boolean>
   selectedList: ComputedRef<ListList>
   selectedNames: ComputedRef<ListNames>

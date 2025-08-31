@@ -24,7 +24,7 @@ const propsNames: StorybookProps = [
   { name: 'keyValue', type: 'string' },
   { name: 'list', type: 'ListRecord<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
   { name: 'listAttrs', type: 'ConstrBind<ListPropsBasic<IconPropsBasic<ImagePropsBasic>, ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>>' },
-  { name: 'lite', type: 'number' },
+  { name: 'liteThreshold', type: 'number' },
   { name: 'request', type: 'ApiFetch' },
   { name: 'selected', type: 'ListSelectedList' },
   { name: 'tag', type: 'string' },

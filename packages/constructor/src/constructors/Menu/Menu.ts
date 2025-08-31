@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp, ListData } from '@dxt-ui/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -9,15 +9,12 @@ import { WindowInclude } from '../Window'
 import { MenuRequest } from './MenuRequest'
 import { MenuSearch } from './MenuSearch'
 
-import { MenuOpen } from './MenuOpen'
-import { MenuFocus } from './MenuFocus'
-import { MenuControl } from './MenuControl'
-import { MenuDataLite } from './MenuDataLite'
 import { MenuWindow } from './MenuWindow'
 
 import type { MenuComponents, MenuEmits, MenuSlots } from './types'
 import type { MenuProps } from './props'
 import type { MenuControlBasic } from './basicTypes'
+import type { ListPropsBasic } from '../List'
 
 /**
  * Menu
@@ -32,17 +29,8 @@ export class Menu {
   /** Include for working with the Window component/ Подключение для работы с компонентом Window */
   readonly window: WindowInclude
 
-  /** Open state manager for Menu/ Класс управления состоянием открытия Menu */
-  readonly open: MenuOpen
-  /** Focus manager for Menu/ Класс управления фокусом Menu */
-  readonly focus: MenuFocus
-
-  readonly dataLite: MenuDataLite
   /** Window manager for Menu/ Класс управления окном Menu */
   readonly menuWindow: MenuWindow
-
-  /** Keyboard control for Menu/ Клавиатурное управление для Menu */
-  readonly control: MenuControl
 
   readonly event: EventClickInclude
 
@@ -70,6 +58,7 @@ export class Menu {
     this.request = new MenuRequest(this.props)
     this.search = new MenuSearch()
 
+    // TODO: DELETE
     this.data = new ListData(
       this.request.item,
       undefined,
@@ -77,8 +66,7 @@ export class Menu {
       undefined,
       this.refs.selected,
       this.refs.keyValue,
-      this.refs.keyLabel,
-      this.refs.lite
+      this.refs.keyLabel
     )
 
     this.bars = new BarsInclude(
@@ -88,18 +76,7 @@ export class Menu {
       this.emits
     )
 
-    this.open = new MenuOpen(this.element)
-    this.focus = new MenuFocus(props, this.data, this.element)
-
-    this.dataLite = new MenuDataLite(this.data, this.open, this.focus)
-    this.menuWindow = new MenuWindow(
-      this.request,
-      this.data,
-      this.dataLite,
-      this.open,
-      this.focus
-    )
-
+    this.menuWindow = new MenuWindow(this.request, this.data)
     this.window = new WindowInclude(
       this.props,
       this.className,
@@ -108,25 +85,34 @@ export class Menu {
       this.menuWindow.getExtra()
     )
 
-    this.control = new MenuControl(
-      this.data,
-      this.open,
-      this.focus,
-      this.search,
-      this.window
-    )
-
     this.event = new EventClickInclude(undefined, undefined, this.emits)
   }
 
   /**
-   * Returns properties for keyboard control.
+   * Getting data for binding to the List component.
    *
-   * Возвращает свойства для клавиатурного управления.
+   * Получение данных для привязки к компоненту List.
+   */
+  readonly binds = computed<ListPropsBasic>(() => {
+    return {
+      list: this.props.list,
+      liteThreshold: this.props.liteThreshold,
+      keyLabel: this.props.keyLabel,
+      keyValue: this.props.keyValue,
+
+      tag: this.props.tag,
+      onClick: this.event.onClick
+    }
+  })
+
+  /**
+   * Getting data for binding to controls.
+   *
+   * Получение данных для привязки к контролам.
+   * @returns data for binding to controls/ данные для привязки к контролам
    */
   getControlBinds(): MenuControlBasic {
     return {
-      list: this.data.fullData,
       isSelected: this.data.isSelected,
       selectedList: this.data.selectedList,
       selectedNames: this.data.selectedNames,

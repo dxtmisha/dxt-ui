@@ -100,6 +100,7 @@ export class ListControl {
         )
       }
 
+      this.go.reset()
       this.event.start()
     }
   }

@@ -1,11 +1,7 @@
+import { ref } from 'vue'
 import { ListData } from '@dxt-ui/functional'
 
-import { type WindowEmitOptions } from '../Window'
-
 import { MenuRequest } from './MenuRequest'
-import { MenuDataLite } from './MenuDataLite'
-import { MenuOpen } from './MenuOpen'
-import { MenuFocus } from './MenuFocus'
 
 /**
  * Window manager for Menu component
@@ -13,20 +9,17 @@ import { MenuFocus } from './MenuFocus'
  * Класс управления окном для компонента Menu
  */
 export class MenuWindow {
+  readonly lite = ref<boolean>()
+  readonly control = ref<boolean>()
+
   /**
    * Constructor
    * @param request menu request handler/ обработчик запросов меню
    * @param data list data manager/ менеджер данных списка
-   * @param dataLite lite data manager/ менеджер облегченных данных
-   * @param open open state manager/ менеджер состояния открытия
-   * @param focus focus manager/ менеджер фокуса
    */
   constructor(
     protected readonly request: MenuRequest,
-    protected readonly data: ListData,
-    protected readonly dataLite: MenuDataLite,
-    protected readonly open: MenuOpen,
-    protected readonly focus: MenuFocus
+    protected readonly data: ListData
   ) {
   }
 
@@ -40,8 +33,7 @@ export class MenuWindow {
     return {
       preparation: this.preparation,
       opening: this.opening,
-      closing: this.closing,
-      onWindow: this.onWindow
+      closing: this.closing
     }
   }
 
@@ -54,7 +46,7 @@ export class MenuWindow {
    */
   protected readonly preparation = async (): Promise<void> => {
     await this.request.preparation()
-    this.dataLite.activate()
+    this.lite.value = true
   }
 
   /**
@@ -65,7 +57,8 @@ export class MenuWindow {
    * Promise, который разрешается в true после завершения действий открытия
    */
   protected readonly opening = async (): Promise<boolean> => {
-    this.dataLite.deactivate()
+    this.lite.value = false
+    this.control.value = true
 
     return true
   }
@@ -78,20 +71,9 @@ export class MenuWindow {
    * Promise, который разрешается в true после завершения действий закрытия
    */
   protected readonly closing = async (): Promise<boolean> => {
-    this.dataLite.deactivate()
-    this.focus.reset()
+    this.lite.value = false
+    this.control.value = false
 
     return true
-  }
-
-  /**
-   * Event listener for the window state changes
-   *
-   * Обработчик событий изменения состояния окна
-   * @param options window emit options containing open status/
-   * параметры события окна, содержащие статус открытия
-   */
-  protected readonly onWindow = ({ open }: WindowEmitOptions) => {
-    this.open.set(open)
   }
 }

@@ -6,7 +6,7 @@ import type {
   NormalOrPromise
 } from '@dxt-ui/functional'
 
-import type { ListPropsBasic } from '../List/props'
+import type { ListPropsBasic } from '../List'
 import type { ListItemProps, ListItemPropsBasic } from '../ListItem'
 import type { BarsPropsBasic, BarsPropsInclude } from '../Bars'
 import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
@@ -31,7 +31,7 @@ export interface MenuPropsBasic<
 
   // Value
   list?: ListRecord<ListItem>
-  lite?: number
+  liteThreshold?: number
 
   ajax?: string | (() => NormalOrPromise<ListRecord<ListItem>>)
   request?: ApiFetch

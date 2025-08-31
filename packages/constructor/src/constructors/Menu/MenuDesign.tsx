@@ -2,7 +2,9 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract, type RawSlots, toBind
+  DesignConstructorAbstract,
+  type RawSlots,
+  toBinds
 } from '@dxt-ui/functional'
 
 import { Menu } from './Menu'
@@ -78,13 +80,7 @@ export class MenuDesign<
   protected initExpose(): EXPOSE {
     return {
       ...this.item.window.expose,
-
-      list: this.item.dataLite.item,
-
-      isSelected: this.item.data.isSelected,
-      selectedList: this.item.data.selectedList,
-      selectedNames: this.item.data.selectedNames,
-      selectedValues: this.item.data.selectedValues
+      ...this.item.getControlBinds()
     } as EXPOSE
   }
 
@@ -146,46 +142,54 @@ export class MenuDesign<
    * Render title element.
    *
    * Рендер элемента заголовка.
+   * @param props data for the transferable property/ данные для передаваемого свойства
    */
   protected readonly renderTitle = (
     props: WindowControlItem
-  ): VNode | undefined => {
-    return this.initSlot('title', undefined, this.getBinds(props))
+  ): VNode[] => {
+    const children: any[] = []
+
+    if (this.item.bars.is) {
+      children.push(...this.item.bars.render())
+    }
+
+    this.initSlot('title', children, this.getBinds(props))
+
+    return children
   }
 
   /**
    * Render list element.
    *
    * Рендер элемента списка.
+   * @param props data for the transferable property/ данные для передаваемого свойства
    */
-  protected readonly renderList = (): VNode | undefined => {
-    const list = this.item.dataLite.item.value
-
-    if (list) {
+  protected readonly renderList = (
+    props: WindowControlItem
+  ): VNode | undefined => {
+    if (this.props.list) {
       const children: any[] = []
 
-      if (this.item.bars.is) {
-        children.push(...this.item.bars.render())
-      }
+      this.initSlot('contextTop', children, this.getBinds(props))
 
       children.push(
         this.components.render(
           'list',
-          toBind(
-            this.props.listAttrs ?? {},
+          toBinds(
             {
-              tag: this.props.tag,
-              focus: this.item.focus.focus.value,
-              selected: this.props.selected,
-              list: list,
-              highlight: this.item.search.item.value,
+              ...this.item.binds.value,
               class: this.classes?.value.list,
-              onClick: this.item.event.onClick
-            }
+
+              selected: this.props.selected,
+              highlight: this.item.search.item.value
+            },
+            this.props.listAttrs
           ),
           this.slots as RawSlots
         )
       )
+
+      this.initSlot('contextBottom', children, this.getBinds(props))
 
       return h(
         'div',
@@ -206,6 +210,7 @@ export class MenuDesign<
    * Render footer element.
    *
    * Рендер элемента футера.
+   * @param props data for the transferable property/ данные для передаваемого свойства
    */
   protected readonly renderFooter = (
     props: WindowControlItem
