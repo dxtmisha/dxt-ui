@@ -36,11 +36,63 @@ export const wikiDescriptionsMenu: StorybookComponentsDescriptionItem = {
       </template>
     </DesignComponent>
   `,
-  stories: [],
+  stories: [
+    {
+      id: 'MenuAjax',
+      name: {
+        en: 'AJAX Loading',
+        ru: 'AJAX Загрузка'
+      },
+      setup: `
+        const loadMenuData = () => new Promise(resolve => setTimeout(() => resolve([
+          {label: 'Dashboard', value: 'dashboard', icon: 'dashboard'},
+          {label: 'Users', value: 'users', icon: 'people'},
+          {label: 'Settings', value: 'settings', icon: 'settings'},
+          {label: 'Reports', value: 'reports', icon: 'assessment'}
+        ]), 512))
+
+        return { loadMenuData }
+      `,
+      template: `
+        <DesignComponent :ajax="loadMenuData" selected="settings">
+          <template #control="{binds, loading}">
+            <button class="wiki-storybook-button" v-bind="binds">
+              Open AJAX Menu (loading: {{ loading }})
+            </button>
+          </template>
+        </DesignComponent>
+      `
+    }
+  ],
   documentation: {
-    body: ``,
-    events: ``,
-    expose: ``,
-    slots: ``
+    body: `
+<StorybookDescriptions componentName={'Menu'} type={'menu'}/>
+
+<StorybookDescriptions componentName={'Menu'} type={'ajax'}/>
+<Canvas of={Component.MenuAjax}/>
+    `,
+    events: `
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+<StorybookDescriptions componentName={'Event'} type={'clickLite'}/>
+
+<StorybookDescriptions componentName={'Event'} type={'bars'}/>
+<StorybookDescriptions componentName={'Event'} type={'barsLite'}/>
+<StorybookDescriptions componentName={'Event'} type={'barsBack'}/>
+<StorybookDescriptions componentName={'Event'} type={'window'}/>
+    `,
+    expose: `
+<StorybookDescriptions componentName={'Expose'} type={'isSelected'}/>
+<StorybookDescriptions componentName={'Expose'} type={'selectedList'}/>
+<StorybookDescriptions componentName={'Expose'} type={'selectedNames'}/>
+<StorybookDescriptions componentName={'Expose'} type={'selectedValues'}/>
+    `,
+    slots: `
+<StorybookDescriptions componentName={'Menu'} type={'slot.control'}/>
+<StorybookDescriptions componentName={'Menu'} type={'slot.title'}/>
+<StorybookDescriptions componentName={'Menu'} type={'slot.footer'}/>
+<StorybookDescriptions componentName={'Menu'} type={'slot.contextTop'}/>
+<StorybookDescriptions componentName={'Menu'} type={'slot.contextBottom'}/>
+<StorybookDescriptions componentName={'List'} type={'slot.html'}/>
+    `
   }
 }

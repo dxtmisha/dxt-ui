@@ -42,4 +42,29 @@ export const Menu: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const MenuAjax: Story = {
+  name: 'AJAX Загрузка',
+  render: () => ({
+    components: { D1Menu },
+    setup() {
+      const loadMenuData = () => new Promise(resolve => setTimeout(() => resolve([
+          {label: 'Dashboard', value: 'dashboard', icon: 'dashboard'},
+          {label: 'Users', value: 'users', icon: 'people'},
+          {label: 'Settings', value: 'settings', icon: 'settings'},
+          {label: 'Reports', value: 'reports', icon: 'assessment'}
+        ]), 512))
+
+        return { loadMenuData }
+    },
+    template: `
+        <D1Menu :ajax="loadMenuData" selected="settings">
+          <template #control="{binds, loading}">
+            <button class="wiki-storybook-button" v-bind="binds">
+              Open AJAX Menu (loading: {{ loading }})
+            </button>
+          </template>
+        </D1Menu>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

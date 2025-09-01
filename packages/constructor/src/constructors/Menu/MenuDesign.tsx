@@ -122,6 +122,9 @@ export class MenuDesign<
         title: this.renderTitle,
         default: this.renderList,
         footer: this.renderFooter
+      },
+      {
+        class: this.classes?.value.main
       }
     )
   }
@@ -148,9 +151,9 @@ export class MenuDesign<
     props: WindowControlItem
   ): VNode[] => {
     const children: any[] = []
-
-    if (this.item.bars.is) {
+    if (this.item.bars.is.value) {
       children.push(...this.item.bars.render())
+      console.log('this.item.bars.is.value', children)
     }
 
     this.initSlot('title', children, this.getBinds(props))
@@ -167,7 +170,9 @@ export class MenuDesign<
   protected readonly renderList = (
     props: WindowControlItem
   ): VNode | undefined => {
-    if (this.props.list) {
+    const list = this.item.request.item.value
+
+    if (list) {
       const children: any[] = []
 
       this.initSlot('contextTop', children, this.getBinds(props))
@@ -184,8 +189,8 @@ export class MenuDesign<
                 selected: this.props.selected,
                 highlight: this.item.search.item.value,
 
-                lite: this.item.menuWindow.lite.value,
-                control: this.item.menuWindow.control.value
+                list,
+                lite: this.item.menuWindow.lite.value
               },
               this.props.listAttrs
             ),
@@ -201,7 +206,6 @@ export class MenuDesign<
         {
           ...this.getAttrs(),
           ref: this.element,
-          class: this.classes?.value.main,
           onClick: this.item.onClickSlot
         },
         children

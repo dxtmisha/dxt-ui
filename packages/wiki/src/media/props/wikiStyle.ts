@@ -26,7 +26,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Sets color based on palette class; otherwise uses default color',
         ru: 'Задает цвет на основе класса палитры; иначе используется стандартный цвет'
@@ -37,7 +37,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Closes the window/menu when clicking inside the content area',
         ru: 'Закрывает окно/меню при клике внутри области содержимого'
@@ -45,10 +45,9 @@ export const wikiStyle: StorybookArgsToList = {
     }
   },
   barsAdaptive: {
-    type: StorybookControl.boolean,
+    type: StorybookControl.select,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
       description: {
         en: 'Indicates whether the bars (header toolbar) should be shown',
         ru: 'Показывает, нужно ли отображать бар (верхнюю панель)'
@@ -103,7 +102,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Enables compact display variant',
         ru: 'Включает компактный вариант отображения'
@@ -114,7 +113,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Mirrors the component depending on site direction (RTL/LTR)',
         ru: 'Зеркально отражает компонент в зависимости от направления сайта (RTL/LTR)'
@@ -125,7 +124,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Enables visual divider between elements',
         ru: 'Включает визуальный разделитель между элементами'
@@ -147,7 +146,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Displays the component as a dot indicator',
         ru: 'Отображает компонент как точечный индикатор'
@@ -158,7 +157,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Enables dynamic reactions to hover and focus',
         ru: 'Включает динамическую реакцию на hover и focus'
@@ -169,7 +168,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Enables dynamic hover effect for the component',
         ru: 'Включает динамический эффект наведения для компонента'
@@ -191,7 +190,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Enables grid layout mode',
         ru: 'Включает режим сетки'
@@ -248,7 +247,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Mirrors the icon depending on site direction (RTL/LTR)',
         ru: 'Зеркально отражает иконку в зависимости от направления сайта (RTL/LTR)'
@@ -259,7 +258,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Sets icon color based on palette class',
         ru: 'Задает цвет иконки на основе класса палитры'
@@ -270,7 +269,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Aligns icon to the top of the container',
         ru: 'Выравнивает иконку по верхнему краю контейнера'
@@ -321,7 +320,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Applies direction mirroring only to the trailing icon',
         ru: 'Применяет зеркальное отражение только к завершающей иконке'
@@ -332,7 +331,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Sets trailing icon color based on palette class',
         ru: 'Задает цвет завершающей иконки на основе класса палитры'
@@ -343,7 +342,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Applies rotation only to the trailing icon',
         ru: 'Применяет поворот только к завершающей иконке'
@@ -354,7 +353,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Inverts component colors',
         ru: 'Инвертирует цвета компонента'
@@ -365,7 +364,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Displays the component in skeleton mode',
         ru: 'Отображает компонент в режиме скелетона'
@@ -376,7 +375,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Adds background overlay to the component',
         ru: 'Добавляет фоновое наложение компоненту'
@@ -435,7 +434,7 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Makes the component fully rounded (circular)',
         ru: 'Делает компонент полностью скругленным (круглым)'
@@ -469,7 +468,6 @@ export const wikiStyle: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       type: 'string',
-      defaultValue: 'div',
       options: [],
       description: {
         en: 'Sets HTML tag for the component element',

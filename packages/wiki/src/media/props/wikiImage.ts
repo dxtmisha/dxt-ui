@@ -39,7 +39,7 @@ export const wikiImage: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.adaptive,
-      defaultValue: false,
+
       description: {
         en: 'Adjusts the image size for proportional alignment with other elements',
         ru: 'Регулирует размер изображения для пропорционального выравнивания относительно других элементов'

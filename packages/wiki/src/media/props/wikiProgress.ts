@@ -16,7 +16,6 @@ export const wikiProgress: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       type: ['number', 'string'],
-      defaultValue: 360,
       description: {
         en: 'Delay before showing the progress indicator in milliseconds',
         ru: 'Задержка перед показом индикатора прогресса в миллисекундах'
@@ -28,7 +27,6 @@ export const wikiProgress: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       type: ['number', 'string'],
-      defaultValue: 200,
       description: {
         en: 'Delay before hiding the progress indicator in milliseconds',
         ru: 'Задержка перед скрытием индикатора прогресса в миллисекундах'
@@ -49,7 +47,6 @@ export const wikiProgress: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: true,
       description: {
         en: 'Enables linear progress bar display',
         ru: 'Включает отображение линейной полосы прогресса'
@@ -70,7 +67,6 @@ export const wikiProgress: StorybookArgsToList = {
     type: StorybookControl.select,
     options: {
       category: StorybookCategory.style,
-      defaultValue: 'type1',
       options: ['type1', 'type2', 'type3'],
       description: {
         en: 'Type of indeterminate progress animation',
@@ -82,7 +78,6 @@ export const wikiProgress: StorybookArgsToList = {
     type: StorybookControl.select,
     options: {
       category: StorybookCategory.style,
-      defaultValue: 'top',
       options: ['top', 'bottom', 'static'],
       description: {
         en: 'Position of the progress indicator',

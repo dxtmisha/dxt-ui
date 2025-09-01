@@ -1,8 +1,9 @@
 import { ref } from 'vue'
-import { ListData } from '@dxt-ui/functional'
 
 import { MenuRequest } from './MenuRequest'
+
 import type { WindowProps } from '../Window'
+import type { MenuProps } from './props'
 
 /**
  * Window manager for Menu component
@@ -15,12 +16,12 @@ export class MenuWindow {
 
   /**
    * Constructor
+   * @param props input data/ входные данные
    * @param request menu request handler/ обработчик запросов меню
-   * @param data list data manager/ менеджер данных списка
    */
   constructor(
-    protected readonly request: MenuRequest,
-    protected readonly data: ListData
+    protected readonly props: MenuProps,
+    protected readonly request: MenuRequest
   ) {
   }
 
@@ -48,7 +49,14 @@ export class MenuWindow {
    */
   protected readonly preparation = async (): Promise<void> => {
     await this.request.preparation()
-    this.lite.value = true
+
+    if (
+      this.props.list
+      && this.props.liteThreshold
+      && Number(this.props.liteThreshold) <= Object.keys(this.props.list).length
+    ) {
+      this.lite.value = true
+    }
   }
 
   /**

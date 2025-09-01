@@ -1,16 +1,16 @@
 import type { ComputedRef, Ref } from 'vue'
-import type { ConstrBind, ListList, ListNames } from '@dxt-ui/functional'
+import type { ConstrBind } from '@dxt-ui/functional'
 import type { WindowControlItem } from '../Window'
 
+import type { ListExpose } from '../List'
 import type { MenuExpose } from './types'
 import type { MenuProps } from './props'
 
-export type MenuControlBasic = {
-  isSelected: ComputedRef<boolean>
-  selectedList: ComputedRef<ListList>
-  selectedNames: ComputedRef<ListNames>
-  selectedValues: ComputedRef<any[]>
-}
+export type MenuControlBasic
+  = ListExpose
+    & {
+      loading: Ref<boolean>
+    }
 
 export type MenuControlItem
   = MenuControlBasic
@@ -23,9 +23,12 @@ export type MenuComponentInclude = {
 /** Type for menu expose functionality/ Тип для функциональности экспорта меню */
 export interface MenuExposeInclude {
   open: ComputedRef<boolean>
+
   setOpen(open: boolean): Promise<void>
+
   toOpen: MenuExpose['toOpen']
   toClose: MenuExpose['toClose']
+
   toggle(): Promise<void>
 
   menuElement: Ref<ConstrBind<MenuExpose> | undefined>

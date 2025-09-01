@@ -20,11 +20,15 @@ import type { ListPropsBasic } from '../List'
  * Menu
  */
 export class Menu {
+  /** Request handler for list data/ Обработчик запросов данных списка */
   readonly request: MenuRequest
+  /** Search helper for menu filtering/ Вспомогательный класс поиска для фильтрации меню */
   readonly search: MenuSearch
 
+  /** Data manager for list selection and mapping/ Менеджер данных списка для выбора и сопоставления */
   readonly data: ListData
 
+  /** Include for working with the Bars component/ Подключение для работы с компонентом Bars */
   readonly bars: BarsInclude
   /** Include for working with the Window component/ Подключение для работы с компонентом Window */
   readonly window: WindowInclude
@@ -32,7 +36,11 @@ export class Menu {
   /** Window manager for Menu/ Класс управления окном Menu */
   readonly menuWindow: MenuWindow
 
+  /** Click event helper to unify click emissions/ Вспомогательный класс кликов для унифицированной отправки событий */
   readonly event: EventClickInclude
+
+  /** Data for binding to controls/ Данные для привязки к контролам */
+  readonly slotData: MenuControlBasic
 
   /**
    * Constructor
@@ -58,7 +66,6 @@ export class Menu {
     this.request = new MenuRequest(this.props)
     this.search = new MenuSearch()
 
-    // TODO: DELETE
     this.data = new ListData(
       this.request.item,
       undefined,
@@ -76,7 +83,7 @@ export class Menu {
       this.emits
     )
 
-    this.menuWindow = new MenuWindow(this.request, this.data)
+    this.menuWindow = new MenuWindow(this.props, this.request)
     this.window = new WindowInclude(
       this.props,
       this.className,
@@ -86,6 +93,15 @@ export class Menu {
     )
 
     this.event = new EventClickInclude(undefined, undefined, this.emits)
+
+    this.slotData = {
+      loading: this.request.progress,
+
+      isSelected: this.data.isSelected,
+      selectedList: this.data.selectedList,
+      selectedNames: this.data.selectedNames,
+      selectedValues: this.data.selectedValues
+    }
   }
 
   /**
@@ -95,14 +111,15 @@ export class Menu {
    */
   readonly binds = computed<ListPropsBasic>(() => {
     return {
-      list: this.props.list,
       liteThreshold: this.props.liteThreshold,
       keyLabel: this.props.keyLabel,
       keyValue: this.props.keyValue,
 
       tag: this.props.tag,
       onClick: this.event.onClick,
-      onClose: this.window.expose.toClose
+      onClose: this.window.expose.toClose,
+
+      control: true
     }
   })
 
@@ -113,12 +130,7 @@ export class Menu {
    * @returns data for binding to controls/ данные для привязки к контролам
    */
   getControlBinds(): MenuControlBasic {
-    return {
-      isSelected: this.data.isSelected,
-      selectedList: this.data.selectedList,
-      selectedNames: this.data.selectedNames,
-      selectedValues: this.data.selectedValues
-    }
+    return this.slotData
   }
 
   /**

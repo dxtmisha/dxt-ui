@@ -14,7 +14,7 @@ export const wikiScrollbar: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Show divider lines at top and bottom depending on scroll position',
         ru: 'Показывать разделительные линии сверху и снизу в зависимости от положения скролла'
@@ -25,7 +25,7 @@ export const wikiScrollbar: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Show divider line at the bottom',
         ru: 'Показывать разделительную линию снизу'
@@ -36,7 +36,7 @@ export const wikiScrollbar: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Hide divider lines',
         ru: 'Скрыть разделительные линии'
@@ -47,7 +47,7 @@ export const wikiScrollbar: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Show divider line at the top',
         ru: 'Показывать разделительную линию сверху'
@@ -58,7 +58,7 @@ export const wikiScrollbar: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Invert divider line behavior - show lines when scroll is at beginning/end',
         ru: 'Инвертировать поведение разделительных линий - показывать линии когда скролл в начале/конце'
@@ -69,7 +69,7 @@ export const wikiScrollbar: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Use standard browser scrollbar',
         ru: 'Использовать стандартный скролл браузера'
@@ -80,7 +80,6 @@ export const wikiScrollbar: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: true,
       description: {
         en: 'Controls element visibility and scrolling behavior (overflow: visible)',
         ru: 'Управляет видимостью элемента и поведением прокрутки (overflow: visible)'

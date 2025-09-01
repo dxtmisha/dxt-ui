@@ -1,0 +1,56 @@
+## AJAX Menu Loading
+
+The `ajax`, `request`, and `cache` properties are designed for managing asynchronous loading and caching of menu data.
+
+### Properties
+
+- **ajax** — Enables remote data loading mode for the menu list (URL string or function)
+- **request** — Object of type `ApiFetch` with HTTP request settings
+- **cache** — Enables/configures caching of loaded menu items
+
+### Request Type
+
+The `request` parameter has type `ApiFetch` and accepts the following properties:
+
+```ts
+interface ApiFetch {
+  // Use base API URL
+  api?: boolean
+  // Relative request path
+  path?: string
+  // Full URL (ignores api)
+  pathFull?: string
+  // HTTP method
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
+  // Request data
+  request?: FormData | Record<string, any> | string
+  // Add authorization headers
+  auth?: boolean
+  // Custom headers
+  headers?: Record<string, string> | null
+  // Content-Type
+  type?: string
+  // Wrap response in data object
+  toData?: boolean
+  // Use global settings
+  global?: boolean
+  // Hide errors from user
+  hideError?: boolean
+  // Response handler
+  queryReturn?: (response: Response) => Promise<any>
+  // Additional fetch options
+  init?: RequestInit
+}
+```
+
+### Property Relationships
+
+The properties work together to provide efficient data loading:
+
+- If `ajax = false` (or not specified), the menu uses local data, and `request` and `cache` are ignored
+- If `ajax = true` or specified as a URL string, network loading is activated:
+  - `request` defines HTTP request parameters (method, headers, request body)
+  - `cache` manages saving and reusing received data
+  - When `cache` is enabled, subsequent menu openings use saved data instead of new requests
+
+This approach reduces server load, speeds up interface response, and allows flexible configuration of data loading strategies for different usage scenarios.

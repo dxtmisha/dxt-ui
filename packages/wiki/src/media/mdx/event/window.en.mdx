@@ -1,0 +1,20 @@
+### `window`
+
+Fires on Window state changes and passes a summary of parameters.
+
+```ts
+function onWindow (options: {
+  id: string
+  element: HTMLDivElement
+  control: HTMLElement
+  open: boolean
+}) {
+  // handle window state change
+}
+```
+
+Where:
+- `id` — unique window identifier
+- `element` — window DOM element
+- `control` — control/trigger DOM element
+- `open` — current open state (true/false)

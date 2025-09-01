@@ -2,11 +2,14 @@ import { type MenuPropsBasic, defaultsMenu } from '@dxt-ui/constructor/Menu'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  barsAdaptive: ['showAlways', 'showSm', 'showMd', 'showLg', 'showXl', 'show2xl']
   // :values [!] System label / Системная метка
 }
 
 interface PropsToken {
   // :type [!] System label / Системная метка
+  hideList?: boolean
+  barsAdaptive?: 'showAlways' | 'showSm' | 'showMd' | 'showLg' | 'showXl' | 'show2xl'
   // :type [!] System label / Системная метка
 }
 

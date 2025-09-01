@@ -1,0 +1,14 @@
+### `barsBack`
+
+Fires when the "Back" button in Bars is clicked. Passes only the structured click payload.
+
+```ts
+function onBarsBack (value: { type: string; value: any; detail?: Record<string, any> }) {
+  // handle Back button click
+}
+```
+
+Where:
+- `type` — click/button type (will be "back")
+- `value` — arbitrary button value
+- `detail` — extra data if provided

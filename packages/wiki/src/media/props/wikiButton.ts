@@ -14,7 +14,7 @@ export const wikiButton: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Outline button style',
         ru: 'Стиль кнопки с обводкой'
@@ -25,7 +25,7 @@ export const wikiButton: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Primary button style',
         ru: 'Основной стиль кнопки'
@@ -36,7 +36,7 @@ export const wikiButton: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Secondary button style',
         ru: 'Вторичный стиль кнопки'
@@ -47,7 +47,7 @@ export const wikiButton: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Text button style',
         ru: 'Текстовый стиль кнопки'

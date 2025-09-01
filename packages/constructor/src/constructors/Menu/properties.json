@@ -10,7 +10,7 @@
       "barsDisplay": "flex"
     },
     "group|show": {
-      "link|adaptive-show": "{??adaptive.showAlways}",
+      "link|barsAdaptive-show": "{??barsAdaptive.showAlways}",
       "_type": "media-group"
     }
   }

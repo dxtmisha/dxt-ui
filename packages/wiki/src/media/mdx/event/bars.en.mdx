@@ -1,0 +1,17 @@
+### `bars`
+
+Fires when a Bars item is clicked. Passes the native mouse event and a structured payload about the click.
+
+```ts
+function onBars (
+  event: MouseEvent,
+  value: { type: string; value: any; detail?: Record<string, any> }
+) {
+  // handle toolbar button click
+}
+```
+
+Where:
+- `type` — click/button type (e.g., "back" for the Back button)
+- `value` — arbitrary button value
+- `detail` — extra data if provided

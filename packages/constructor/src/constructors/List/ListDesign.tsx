@@ -80,7 +80,12 @@ export class ListDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {} as EXPOSE
+    return {
+      isSelected: this.item.data.isSelected,
+      selectedList: this.item.data.selectedList,
+      selectedNames: this.item.data.selectedNames,
+      selectedValues: this.item.data.selectedValues
+    } as EXPOSE
   }
 
   /**

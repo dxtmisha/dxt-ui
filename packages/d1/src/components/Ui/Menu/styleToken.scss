@@ -11,7 +11,41 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-menu-main: var(--d-menu);
+    &--barsAdaptive {
+      &--showAlways {
+        --d1-menu-barsDisplay: flex;
+      }
+      
+      &--showSm {
+        @media screen and (min-width: 640px) {
+          --d1-menu-barsDisplay: flex;
+        }
+      }
+      
+      &--showMd {
+        @media screen and (min-width: 768px) {
+          --d1-menu-barsDisplay: flex;
+        }
+      }
+      
+      &--showLg {
+        @media screen and (min-width: 1024px) {
+          --d1-menu-barsDisplay: flex;
+        }
+      }
+      
+      &--showXl {
+        @media screen and (min-width: 1280px) {
+          --d1-menu-barsDisplay: flex;
+        }
+      }
+      
+      &--show2xl {
+        @media screen and (min-width: 1536px) {
+          --d1-menu-barsDisplay: flex;
+        }
+      }
+    }
   }
   // :style [!] System label / Системная метка
 

@@ -25,7 +25,6 @@ export const wikiValue: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.value,
-      defaultValue: false,
       description: {
         en: 'Display badge as a dot indicator',
         ru: 'Отображать значок как точечный индикатор'
@@ -108,7 +107,6 @@ export const wikiValue: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.value,
-      defaultValue: false,
       description: {
         en: 'Whether to format values before displaying',
         ru: 'Нужно ли форматировать значения перед отображением'
@@ -232,7 +230,6 @@ export const wikiValue: StorybookArgsToList = {
     options: {
       category: StorybookCategory.value,
       type: ['number', 'string'],
-      defaultValue: 100,
       description: {
         en: 'Maximum value',
         ru: 'Максимальное значение'

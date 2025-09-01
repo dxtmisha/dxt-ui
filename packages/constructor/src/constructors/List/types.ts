@@ -1,9 +1,10 @@
-import type { ConstrClass } from '@dxt-ui/functional'
+import type { ConstrClass, ListList, ListNames } from '@dxt-ui/functional'
 import type { EventClickEmits } from '../../types/eventClickTypes'
 
 import type { ListItemComponentInclude } from '../ListItem'
 import type { ListGroupComponentInclude } from '../ListGroup'
 import type { ListMenuComponentInclude } from '../ListMenu'
+import type { ComputedRef } from 'vue'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -32,6 +33,10 @@ export type ListEmits
  * Тип, описывающий доступные свойства.
  */
 export interface ListExpose {
+  isSelected: ComputedRef<boolean>
+  selectedList: ComputedRef<ListList>
+  selectedNames: ComputedRef<ListNames>
+  selectedValues: ComputedRef<any[]>
 }
 
 /**

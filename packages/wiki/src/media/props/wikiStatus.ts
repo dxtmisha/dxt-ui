@@ -14,7 +14,7 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-      defaultValue: false,
+
       description: {
         en: 'Sets the element to an active state',
         ru: 'Переводит элемент в активное состояние'
@@ -25,7 +25,7 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-      defaultValue: false,
+
       description: {
         en: 'Hides the back button in the bars header',
         ru: 'Скрывает кнопку «назад» в заголовке бара'
@@ -36,7 +36,7 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-      defaultValue: false,
+
       description: {
         en: 'Hides the bars (header toolbar)',
         ru: 'Скрывает бар (верхнюю панель)'
@@ -47,7 +47,7 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-      defaultValue: false,
+
       description: {
         en: 'Sets the element to an inactive state',
         ru: 'Переводит элемент в неактивное состояние'
@@ -68,7 +68,7 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-      defaultValue: false,
+
       description: {
         en: 'Hides the element',
         ru: 'Скрывает элемент'
@@ -79,7 +79,7 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-      defaultValue: false,
+
       description: {
         en: 'Hides the icon',
         ru: 'Скрывает иконку'
@@ -90,7 +90,7 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-      defaultValue: false,
+
       description: {
         en: 'Turns the icon',
         ru: 'Поворачивает иконку'
@@ -101,7 +101,7 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-      defaultValue: false,
+
       description: {
         en: 'Sets the element to a loading state',
         ru: 'Переводит элемент в состояние загрузки'
@@ -112,7 +112,7 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-      defaultValue: false,
+
       description: {
         en: 'Sets the element to an open state',
         ru: 'Переводит элемент в открытое состояние'
@@ -143,7 +143,7 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-      defaultValue: false,
+
       description: {
         en: 'Rotates the element by 180 degrees',
         ru: 'Поворачивает элемент на 180 градусов'

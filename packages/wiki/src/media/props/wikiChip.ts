@@ -14,7 +14,7 @@ export const wikiChip: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Alternative visual appearance style',
         ru: 'Альтернативный стиль внешнего вида'
@@ -25,7 +25,7 @@ export const wikiChip: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-      defaultValue: false,
+
       description: {
         en: 'Input-style visual appearance',
         ru: 'Внешний вид в стиле поля ввода'

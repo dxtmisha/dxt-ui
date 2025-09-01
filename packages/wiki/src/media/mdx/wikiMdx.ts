@@ -17,6 +17,7 @@ import { wikiMdxList } from './List/wikiMdxList'
 import { wikiMdxListGroup } from './ListGroup/wikiMdxListGroup'
 import { wikiMdxListItem } from './ListItem/wikiMdxListItem'
 import { wikiMdxListMenu } from './ListMenu/wikiMdxListMenu'
+import { wikiMdxMenu } from './Menu/wikiMdxMenu'
 import { wikiMdxMotionTransform } from './MotionTransform/wikiMdxMotionTransform'
 import { wikiMdxProgress } from './Progress/wikiMdxProgress'
 import { wikiMdxRipple } from './Ripple/wikiMdxRipple'
@@ -43,6 +44,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxListItem,
   wikiMdxListMenu,
   wikiMdxMotionTransform,
+  wikiMdxMenu,
   wikiMdxProgress,
   wikiMdxRipple,
   wikiMdxScrollbar,

@@ -1,0 +1,20 @@
+### `window`
+
+Срабатывает при изменении состояния окна (Window) и передаёт сводку параметров.
+
+```ts
+function onWindow (options: {
+  id: string
+  element: HTMLDivElement
+  control: HTMLElement
+  open: boolean
+}) {
+  // обработка изменения состояния окна
+}
+```
+
+Где:
+- `id` — уникальный идентификатор окна
+- `element` — DOM‑элемент окна
+- `control` — DOM‑элемент управляющей кнопки/контрола
+- `open` — текущее состояние открытия окна (true/false)

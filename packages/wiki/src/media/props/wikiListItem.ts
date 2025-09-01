@@ -24,7 +24,7 @@ export const wikiListItem: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-      defaultValue: false,
+
       description: {
         en: 'Visual open state of the list item',
         ru: 'Визуальное открытое состояние элемента списка'

@@ -5,6 +5,13 @@ import clickRu from './click.ru.mdx'
 import clickLiteEn from './clickLite.en.mdx'
 import clickLiteRu from './clickLite.ru.mdx'
 
+import barsEn from './bars.en.mdx'
+import barsRu from './bars.ru.mdx'
+import barsLiteEn from './barsLite.en.mdx'
+import barsLiteRu from './barsLite.ru.mdx'
+import barsBackEn from './barsBack.en.mdx'
+import barsBackRu from './barsBack.ru.mdx'
+
 import scrollbarBottomEn from './scrollbarBottom.en.mdx'
 import scrollbarBottomRu from './scrollbarBottom.ru.mdx'
 import scrollbarEdgeEn from './scrollbarEdge.en.mdx'
@@ -20,6 +27,9 @@ import scrollbarReachTopRu from './scrollbarReachTop.ru.mdx'
 import scrollbarTopEn from './scrollbarTop.en.mdx'
 import scrollbarTopRu from './scrollbarTop.ru.mdx'
 
+import windowEn from './window.en.mdx'
+import windowRu from './window.ru.mdx'
+
 export const wikiMdxEvent: StorybookComponentsMdxItem = {
   name: 'Event',
   descriptions: {
@@ -30,6 +40,19 @@ export const wikiMdxEvent: StorybookComponentsMdxItem = {
     clickLite: {
       en: clickLiteEn,
       ru: clickLiteRu
+    },
+
+    bars: {
+      en: barsEn,
+      ru: barsRu
+    },
+    barsLite: {
+      en: barsLiteEn,
+      ru: barsLiteRu
+    },
+    barsBack: {
+      en: barsBackEn,
+      ru: barsBackRu
     },
 
     scrollbarBottom: {
@@ -59,6 +82,10 @@ export const wikiMdxEvent: StorybookComponentsMdxItem = {
     scrollbarTop: {
       en: scrollbarTopEn,
       ru: scrollbarTopRu
+    },
+    window: {
+      en: windowEn,
+      ru: windowRu
     }
   }
 }
