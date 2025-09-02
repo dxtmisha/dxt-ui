@@ -10,11 +10,13 @@ import { MenuRequest } from './MenuRequest'
 import { MenuSearch } from './MenuSearch'
 
 import { MenuWindow } from './MenuWindow'
+import { MenuValue } from './MenuValue'
 
 import type { MenuComponents, MenuEmits, MenuSlots } from './types'
 import type { MenuProps } from './props'
 import type { MenuControlBasic } from './basicTypes'
 import type { ListPropsBasic } from '../List'
+import type { EventClickValue } from '../../types/eventClickTypes.ts'
 
 /**
  * Menu
@@ -24,6 +26,8 @@ export class Menu {
   readonly request: MenuRequest
   /** Search helper for menu filtering/ Вспомогательный класс поиска для фильтрации меню */
   readonly search: MenuSearch
+  /** Value manager for selected handling/ Менеджер выбранного значения */
+  readonly value: MenuValue
 
   /** Data manager for list selection and mapping/ Менеджер данных списка для выбора и сопоставления */
   readonly data: ListData
@@ -65,13 +69,14 @@ export class Menu {
   ) {
     this.request = new MenuRequest(this.props)
     this.search = new MenuSearch()
+    this.value = new MenuValue(this.props, this.refs, this.emits)
 
     this.data = new ListData(
       this.request.item,
       undefined,
       undefined,
       undefined,
-      this.refs.selected,
+      this.value.selected,
       this.refs.keyValue,
       this.refs.keyLabel
     )
@@ -116,7 +121,7 @@ export class Menu {
       keyValue: this.props.keyValue,
 
       tag: this.props.tag,
-      onClick: this.event.onClick,
+      onClick: this.onClick,
       onClose: this.window.expose.toClose,
 
       control: true
@@ -131,6 +136,27 @@ export class Menu {
    */
   getControlBinds(): MenuControlBasic {
     return this.slotData
+  }
+
+  /**
+   * Click handler.
+   *
+   * Обработчик клика.
+   * @param event event object/ объект события
+   * @param options data object/ объект с данными
+   */
+  readonly onClick = (
+    event: MouseEvent,
+    options?: EventClickValue
+  ): void => {
+    if (
+      options
+      && 'value' in options
+    ) {
+      this.value.setValue(options.value)
+    }
+
+    this.event.onClick(event, options)
   }
 
   /**

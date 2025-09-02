@@ -16,6 +16,7 @@ interface ListItemPropsToken {
   focus?: boolean
   open?: boolean
   selected?: boolean
+  selectedChild?: boolean
   readonly?: boolean
   disabled?: boolean
   iconTop?: boolean

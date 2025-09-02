@@ -304,7 +304,6 @@ export class ListDesign<
     return this.components.renderOne(
       'listMenu',
       {
-        open: this.item.isOpenGroup(item),
         divider: this.props.divider,
         axis: first ? (this.props.axis === 'x' ? 'y' : 'x') : 'x'
       },

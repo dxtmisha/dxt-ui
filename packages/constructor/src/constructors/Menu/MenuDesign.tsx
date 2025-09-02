@@ -186,7 +186,7 @@ export class MenuDesign<
                 ...this.item.binds.value,
                 class: this.classes?.value.list,
 
-                selected: this.props.selected,
+                selected: this.item.value.selected.value,
                 highlight: this.item.search.item.value,
 
                 list,

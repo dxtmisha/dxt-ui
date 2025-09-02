@@ -52,6 +52,16 @@ export const wikiListItem: StorybookArgsToList = {
       }
     }
   },
+  'listItem.selectedChild': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Indicates if any child element of this list item is selected',
+        ru: 'Указывает, выбран ли какой-либо дочерний элемент данного элемента списка'
+      }
+    }
+  },
   'listItem.type': {
     type: StorybookControl.string,
     options: {

@@ -34,6 +34,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-listItem--focus': props.focus,
     'd1-listItem--open': props.open,
     'd1-listItem--selected': props.selected,
+    'd1-listItem--selectedChild': props.selectedChild,
     'd1-listItem--readonly': props.readonly,
     'd1-listItem--disabled': props.disabled,
     'd1-listItem--iconTop': props.iconTop,

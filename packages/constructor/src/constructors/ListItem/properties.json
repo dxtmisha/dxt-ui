@@ -34,6 +34,7 @@
   "~focus": {},
   "~open": {},
   "~selected": {},
+  "~selectedChild": {},
   "~readonly": {},
   "~disabled": {},
   "~iconTop": {},

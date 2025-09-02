@@ -41,6 +41,7 @@ const propsNames: StorybookProps = [
   { name: 'readonly', type: 'boolean' },
   { name: 'search', type: 'string' },
   { name: 'selected', type: 'boolean' },
+  { name: 'selectedChild', type: 'boolean' },
   { name: 'size', type: 'string', option: ['sm', 'md', 'lg'] },
   { name: 'suffix', type: 'string | number' },
   { name: 'tag', type: 'string', option: ['button', 'a', 'span', 'div'] },

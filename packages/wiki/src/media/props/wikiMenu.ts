@@ -42,6 +42,16 @@ export const wikiMenu: StorybookArgsToList = {
       }
     }
   },
+  'menu.isSelectedByValue': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Enables v-model support for selected value with two-way data binding.',
+        ru: 'Включает поддержку v-model для выбранного значения с двусторонней привязкой данных.'
+      }
+    }
+  },
   'menu.itemAttrs': {
     type: StorybookControl.object,
     options: {

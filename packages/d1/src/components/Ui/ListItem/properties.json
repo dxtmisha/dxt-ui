@@ -50,6 +50,10 @@
     "gradient": "var(--sys-color)",
     "backdrop-filter": "{sys.blur.md}"
   },
+  "selectedChild": {
+    "palette-background": "{sys.palette.primaryVariant}",
+    "background-opacity": "{sys.opacity.pressed}"
+  },
   "open": {
     "palette-background": "{sys.palette.primary}",
     "background-opacity": "{sys.opacity.pressed}"

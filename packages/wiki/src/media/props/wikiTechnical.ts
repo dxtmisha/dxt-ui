@@ -19,5 +19,15 @@ export const wikiTechnical: StorybookArgsToList = {
         ru: 'Двусторонняя привязка состояния открытия (v-model:open)'
       }
     }
+  },
+  modelValue: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Two-way binding for component value (v-model)',
+        ru: 'Двусторонняя привязка значения компонента (v-model)'
+      }
+    }
   }
 }

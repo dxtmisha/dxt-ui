@@ -151,6 +151,11 @@ export class ListData {
     return map
   })
 
+  /**  Returns a list consisting only of items/ Возвращает список, состоящий только из элементов. */
+  readonly mapItems = computed<ListList>(() => {
+    return this.map.value.filter(item => item.type === 'item')
+  })
+
   /**
    * Returns a list consisting only of values for selection.
    *
@@ -195,7 +200,7 @@ export class ListData {
     const selected = this.getSelected()
 
     return Boolean(selected)
-      && this.map.value.findIndex(item => isSelected(item.index, selected)) !== -1
+      && this.mapItems.value.findIndex(item => isSelected(item.index, selected)) !== -1
   })
 
   /**
@@ -210,7 +215,7 @@ export class ListData {
       selected
       && this.isSelected.value
     ) {
-      return this.map.value.filter(item => isSelected(item.index, selected))
+      return this.mapItems.value.filter(item => isSelected(item.index, selected))
     }
 
     return []

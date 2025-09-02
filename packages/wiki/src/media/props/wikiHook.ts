@@ -20,6 +20,16 @@ export const wikiHook: StorybookArgsToList = {
       }
     }
   },
+  'onUpdate:modelValue': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.hook,
+      description: {
+        en: 'Event handler called on update:modelValue with the new value',
+        ru: 'Обработчик события update:modelValue, вызывается с новым значением'
+      }
+    }
+  },
   'onUpdate:open': {
     type: StorybookControl.object,
     options: {
@@ -27,6 +37,16 @@ export const wikiHook: StorybookArgsToList = {
       description: {
         en: 'Event handler called on update:open with the new boolean value',
         ru: 'Обработчик события update:open, вызывается с новым булевым значением'
+      }
+    }
+  },
+  'onUpdate:value': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.hook,
+      description: {
+        en: 'Event handler called on update:value with the new value',
+        ru: 'Обработчик события update:value, вызывается с новым значением'
       }
     }
   }

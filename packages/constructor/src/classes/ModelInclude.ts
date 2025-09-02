@@ -2,7 +2,8 @@ import { watch } from 'vue'
 import {
   isFunction,
   type RefType,
-  toCamelCase, toCamelCaseFirst
+  toCamelCase,
+  toCamelCaseFirst
 } from '@dxt-ui/functional'
 
 /**

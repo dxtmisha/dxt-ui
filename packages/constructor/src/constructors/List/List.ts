@@ -255,6 +255,7 @@ export class List {
           this.windowClasses.get().static
         ],
         'focus': item?.index === this.focus.focus.value,
+        'selectedChild': this.isOpenGroup(item),
         open,
         'iconTurn': open,
         'iconTrailing': icon,
