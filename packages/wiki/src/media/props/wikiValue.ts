@@ -80,6 +80,18 @@ export const wikiValue: StorybookArgsToList = {
       value: 'Caption'
     }
   },
+  counter: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      type: ['number', 'string'],
+      description: {
+        en: 'Current character count',
+        ru: 'Текущее количество символов'
+      },
+      value: 25
+    }
+  },
   description: {
     type: StorybookControl.string,
     options: {
@@ -234,6 +246,18 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Maximum value',
         ru: 'Максимальное значение'
       }
+    }
+  },
+  maxlength: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      type: ['number', 'string'],
+      description: {
+        en: 'Maximum allowed characters',
+        ru: 'Максимально допустимое количество символов'
+      },
+      value: 100
     }
   },
   prefix: {

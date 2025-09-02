@@ -8,7 +8,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor"
+    "dxt-constructor": "dxt-constructor fieldCounter"
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
@@ -60,7 +60,9 @@
     "./node": [
       "./src/library-node.ts",
       "./dist/library-node.js"
-    ]
+    ],
+    "./FieldCounter": "./src/constructors/FieldCounter/index.ts",
+    "./FieldCounter/style": "./src/constructors/FieldCounter/style.scss"
   },
   "buildOptions": {
     "name": "@dxt-ui/constructor",

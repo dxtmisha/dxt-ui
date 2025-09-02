@@ -1,0 +1,35 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxt-ui/wiki/storybook'
+
+import * as FieldCounter from './D1FieldCounter.stories'
+import {FieldCounterWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={FieldCounter}/>
+<StorybookMain
+    name={FieldCounterWikiStorybook.getName()}
+    description={FieldCounterWikiStorybook.getDescription()}
+    story={FieldCounter.FieldCounter}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'FieldCounter'} type={'fieldCounter'}/>
+<StorybookDescriptions componentName={'FieldCounter'} type={'templates'}/>
+<Canvas of={FieldCounter.FieldCounterTemplate}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+[//]: # (:documentation-slots [!] System label / Системная метка)

@@ -487,6 +487,17 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  template: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      description: {
+        en: 'Custom display template used by the component',
+        ru: 'Пользовательский шаблон отображения, используемый компонентом'
+      }
+    }
+  },
   windowAttrs: {
     type: StorybookControl.object,
     options: {

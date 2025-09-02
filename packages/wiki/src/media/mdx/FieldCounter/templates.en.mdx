@@ -1,0 +1,19 @@
+## Custom Templates
+
+Use simple string templates with placeholders to format the counter.
+
+### Placeholders
+
+- `[c]` - current character count
+- `[m]` - maximum character limit
+
+### Examples
+
+```html
+<!-- Descriptive format -->
+<FieldCounter
+  :counter="75"
+  :maxlength="150"
+  template="Characters: [c] of [m]"
+/>
+```

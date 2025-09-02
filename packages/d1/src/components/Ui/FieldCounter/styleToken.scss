@@ -1,0 +1,20 @@
+@use "../../../styles/Ui/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/FieldCounter/style" as FieldCounter;
+
+@include ui.initDesignBasic('d1.fieldCounter') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include FieldCounter.mixinFieldCounter;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    white-space: nowrap;
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}
