@@ -1,4 +1,8 @@
 import { type MenuPropsBasic, defaultsMenu } from '@dxt-ui/constructor/Menu'
+import type { ListProps } from '../List'
+import type { ListItemProps } from '../ListItem'
+import type { BarsProps } from '../Bars'
+import type { WindowProps } from '../Window'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -16,7 +20,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface MenuProps extends MenuPropsBasic, PropsToken {
+export interface MenuProps extends MenuPropsBasic<ListProps, ListItemProps, BarsProps, WindowProps>, PropsToken {
 }
 
 /**

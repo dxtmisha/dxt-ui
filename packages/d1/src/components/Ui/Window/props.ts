@@ -1,4 +1,6 @@
 import { type WindowPropsBasic, defaultsWindow } from '@dxt-ui/constructor/Window'
+import type { ScrollbarProps } from '../Scrollbar'
+import type { ImageProps } from '../Image'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -35,7 +37,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface WindowProps extends WindowPropsBasic, PropsToken {
+export interface WindowProps extends WindowPropsBasic<ScrollbarProps, ImageProps>, PropsToken {
 }
 
 /**

@@ -3,7 +3,7 @@ interface ConstructorsPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface ConstructorsProps {
+export interface ConstructorsPropsBasic {
   // TODO: Location for a custom property / Место для пользовательского свойства
 }
 
@@ -12,7 +12,7 @@ export interface ConstructorsProps {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ConstructorsProps extends ConstructorsProps, ConstructorsPropsToken {
+export interface ConstructorsProps extends ConstructorsPropsBasic, ConstructorsPropsToken {
 }
 
 /**

@@ -1,4 +1,5 @@
 import { type BarsPropsBasic, defaultsBars } from '@dxt-ui/constructor/Bars'
+import type { ButtonProps } from '../Button'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -14,7 +15,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface BarsProps extends BarsPropsBasic, PropsToken {
+export interface BarsProps extends BarsPropsBasic<ButtonProps>, PropsToken {
 }
 
 /**

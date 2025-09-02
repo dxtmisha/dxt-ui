@@ -8,7 +8,7 @@ import {
 import { Bars } from './Bars'
 
 import {
-  type BarsProps
+  type BarsPropsBasic
 } from './props'
 import {
   type BarsClasses,
@@ -25,7 +25,7 @@ export class BarsDesign<
   COMP extends BarsComponents,
   EXPOSE extends BarsExpose,
   CLASSES extends BarsClasses,
-  P extends BarsProps
+  P extends BarsPropsBasic
 > extends DesignConstructorAbstract<
   HTMLDivElement,
   COMP,
@@ -214,7 +214,7 @@ export class BarsDesign<
    * @param list list of data for the button/ список данных для кнопки
    */
   protected readonly renderList = (
-    list: BarsProps['bars']
+    list: BarsPropsBasic['bars']
   ): VNode[] => {
     const children: VNode[] = []
 

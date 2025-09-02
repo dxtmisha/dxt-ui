@@ -8,7 +8,7 @@ import {
 import { Constructors } from './Constructors'
 
 import {
-  type ConstructorsProps
+  type ConstructorsPropsBasic
 } from './props'
 import {
   type ConstructorsClasses,
@@ -25,7 +25,7 @@ export class ConstructorsDesign<
   COMP extends ConstructorsComponents,
   EXPOSE extends ConstructorsExpose,
   CLASSES extends ConstructorsClasses,
-  P extends ConstructorsProps
+  P extends ConstructorsPropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,

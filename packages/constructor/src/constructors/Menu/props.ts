@@ -30,6 +30,7 @@ export interface MenuPropsBasic<
   // Status
   selected?: ListSelectedList
   highlightLengthStart?: number
+  hideList?: boolean
 
   // Value
   list?: ListRecord<ListItem>

@@ -8,7 +8,7 @@ import {
 import { Badge } from './Badge'
 
 import {
-  type BadgeProps
+  type BadgePropsBasic
 } from './props'
 import {
   type BadgeClasses,
@@ -25,7 +25,7 @@ export class BadgeDesign<
   COMP extends BadgeComponents,
   EXPOSE extends BadgeExpose,
   CLASSES extends BadgeClasses,
-  P extends BadgeProps
+  P extends BadgePropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,

@@ -12,7 +12,7 @@ import { Menu } from './Menu'
 import type { WindowControlItem } from '../Window'
 import type { MenuControlItem } from './basicTypes'
 import {
-  type MenuProps
+  type MenuPropsBasic
 } from './props'
 import {
   type MenuClasses,
@@ -29,7 +29,7 @@ export class MenuDesign<
   COMP extends MenuComponents,
   EXPOSE extends MenuExpose,
   CLASSES extends MenuClasses,
-  P extends MenuProps
+  P extends MenuPropsBasic
 > extends DesignConstructorAbstract<
   HTMLDivElement,
   COMP,

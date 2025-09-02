@@ -9,7 +9,7 @@ import { Image } from './Image'
 
 import { ImageTypeValue } from './basicTypes'
 import {
-  type ImageProps
+  type ImagePropsBasic
 } from './props'
 import {
   type ImageClasses,
@@ -26,7 +26,7 @@ export class ImageDesign<
   COMP extends ImageComponents,
   EXPOSE extends ImageExpose,
   CLASSES extends ImageClasses,
-  P extends ImageProps
+  P extends ImagePropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,

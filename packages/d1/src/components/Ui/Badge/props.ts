@@ -1,4 +1,5 @@
 import { type BadgePropsBasic, defaultsBadge } from '@dxt-ui/constructor/Badge'
+import type { IconProps } from '../Icon'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -29,7 +30,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface BadgeProps extends BadgePropsBasic, PropsToken {
+export interface BadgeProps extends BadgePropsBasic<IconProps>, PropsToken {
 }
 
 /**

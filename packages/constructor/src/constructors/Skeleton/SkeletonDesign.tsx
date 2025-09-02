@@ -8,7 +8,7 @@ import {
 import { Skeleton } from './Skeleton'
 
 import {
-  type SkeletonProps
+  type SkeletonPropsBasic
 } from './props'
 import {
   type SkeletonClasses,
@@ -25,7 +25,7 @@ export class SkeletonDesign<
   COMP extends SkeletonComponents,
   EXPOSE extends SkeletonExpose,
   CLASSES extends SkeletonClasses,
-  P extends SkeletonProps
+  P extends SkeletonPropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,

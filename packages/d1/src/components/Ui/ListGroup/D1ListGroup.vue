@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxt-ui/functional'
@@ -14,7 +12,7 @@ import {
 
 import { D1MotionTransform } from '../MotionTransform'
 
-import { defaults, type ListGroupProps, propsValues } from './props'
+import { defaults, type ListGroupProps } from './props'
 import './styleToken.scss'
 
 defineOptions({

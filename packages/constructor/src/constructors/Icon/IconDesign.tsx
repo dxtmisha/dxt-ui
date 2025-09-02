@@ -8,7 +8,7 @@ import {
 import { Icon } from './Icon'
 
 import {
-  type IconProps
+  type IconPropsBasic
 } from './props'
 import {
   type IconClasses,
@@ -25,7 +25,7 @@ export class IconDesign<
   COMP extends IconComponents,
   EXPOSE extends IconExpose,
   CLASSES extends IconClasses,
-  P extends IconProps
+  P extends IconPropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,

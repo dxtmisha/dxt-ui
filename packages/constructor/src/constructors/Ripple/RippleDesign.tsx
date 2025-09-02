@@ -8,7 +8,7 @@ import {
 import { Ripple } from './Ripple'
 
 import {
-  type RippleProps
+  type RipplePropsBasic
 } from './props'
 import {
   type RippleClasses,
@@ -25,7 +25,7 @@ export class RippleDesign<
   COMP extends RippleComponents,
   EXPOSE extends RippleExpose,
   CLASSES extends RippleClasses,
-  P extends RippleProps
+  P extends RipplePropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,

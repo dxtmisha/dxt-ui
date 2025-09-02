@@ -8,7 +8,7 @@ import {
 import { ListGroup } from './ListGroup'
 
 import {
-  type ListGroupProps
+  type ListGroupPropsBasic
 } from './props'
 import {
   type ListGroupClasses,
@@ -25,7 +25,7 @@ export class ListGroupDesign<
   COMP extends ListGroupComponents,
   EXPOSE extends ListGroupExpose,
   CLASSES extends ListGroupClasses,
-  P extends ListGroupProps
+  P extends ListGroupPropsBasic
 > extends DesignConstructorAbstract<
   HTMLDivElement,
   COMP,

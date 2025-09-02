@@ -16,6 +16,7 @@ export interface BadgePropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic
 > extends IconPropsInclude<Icon>,
   LabelNumberProps {
+  dot?: boolean
 }
 
 /**

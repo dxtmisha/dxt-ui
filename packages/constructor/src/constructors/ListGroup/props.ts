@@ -6,6 +6,7 @@ interface ListGroupPropsToken {
 }
 
 export interface ListGroupPropsBasic {
+  divider?: boolean
 }
 
 /**

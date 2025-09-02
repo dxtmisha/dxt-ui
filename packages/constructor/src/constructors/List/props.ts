@@ -36,6 +36,9 @@ export interface ListPropsBasic<
   // Style
   tag?: 'div' | 'button' | 'a' | 'span' | string
 
+  axis?: 'x' | 'y'
+  divider?: boolean
+
   itemAttrs?: ConstrBind<ListItem>
   itemManagementAttrs?: ConstrBind<ListItem>
   itemGroupAttrs?: ConstrBind<ListItem>

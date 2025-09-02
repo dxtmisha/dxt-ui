@@ -1,4 +1,6 @@
 import { type ListPropsBasic, defaultsList } from '@dxt-ui/constructor/List'
+import type { IconProps } from '../Icon'
+import type { ListItemProps } from '../ListItem'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -16,7 +18,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ListProps extends ListPropsBasic, PropsToken {
+export interface ListProps extends ListPropsBasic<IconProps, ListItemProps>, PropsToken {
 }
 
 /**

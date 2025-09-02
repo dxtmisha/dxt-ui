@@ -9,7 +9,7 @@ import { ListMenu } from './ListMenu'
 
 import type { WindowControlItem } from '../Window'
 import {
-  type ListMenuProps
+  type ListMenuPropsBasic
 } from './props'
 import {
   type ListMenuClasses,
@@ -26,7 +26,7 @@ export class ListMenuDesign<
   COMP extends ListMenuComponents,
   EXPOSE extends ListMenuExpose,
   CLASSES extends ListMenuClasses,
-  P extends ListMenuProps
+  P extends ListMenuPropsBasic
 > extends DesignConstructorAbstract<
   HTMLDivElement,
   COMP,

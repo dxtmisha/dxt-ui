@@ -19,6 +19,10 @@ export interface ProgressPropsBasic {
   max?: number | string
 
   // Style
+  linear?: boolean
+  circular?: boolean
+  point?: boolean
+
   delay?: number | string
   delayHide?: number | string
 }

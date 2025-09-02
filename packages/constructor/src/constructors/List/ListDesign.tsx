@@ -13,7 +13,7 @@ import {
 import { List } from './List'
 
 import {
-  type ListProps
+  type ListPropsBasic
 } from './props'
 import {
   type ListClasses,
@@ -31,7 +31,7 @@ export class ListDesign<
   COMP extends ListComponents,
   EXPOSE extends ListExpose,
   CLASSES extends ListClasses,
-  P extends ListProps
+  P extends ListPropsBasic
 > extends DesignConstructorAbstract<
   HTMLDivElement,
   COMP,

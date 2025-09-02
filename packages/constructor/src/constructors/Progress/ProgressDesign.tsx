@@ -8,7 +8,7 @@ import {
 import { Progress } from './Progress'
 
 import {
-  type ProgressProps
+  type ProgressPropsBasic
 } from './props'
 import {
   type ProgressClasses,
@@ -25,7 +25,7 @@ export class ProgressDesign<
   COMP extends ProgressComponents,
   EXPOSE extends ProgressExpose,
   CLASSES extends ProgressClasses,
-  P extends ProgressProps
+  P extends ProgressPropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
@@ -104,7 +104,7 @@ export class ProgressDesign<
       this.props.linear
       && this.props.point && (
         this.props.value
-        || this.props.indeterminate === 'type1'
+        || ((this.props as any).indeterminate) === 'type1'
       )
     ) {
       return [h('span', { class: this.classes?.value.point })]
