@@ -1,0 +1,12 @@
+### `validation`
+
+Slot for rendering a validation (error) message below an input field. It lets you fully override the text, markup, and styling of the error message, and optionally add custom content.
+
+This slot allows you to:
+- Render custom markup instead of the default error text
+- Add icons/links/formatting inside the message
+- Control visibility and states via scoped props (e.g., error type)
+- Localize and swap the text depending on context
+
+Typically, the `validation` area is placed under the input and has higher priority than `helper` — if a validation message is present, it’s displayed instead of the helper.
+

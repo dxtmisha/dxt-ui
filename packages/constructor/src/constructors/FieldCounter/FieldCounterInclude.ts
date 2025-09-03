@@ -66,20 +66,18 @@ export class FieldCounterInclude<
   /**
    * Render the FieldCounter component/
    * Рендер компонента FieldCounter
-   * @param attrs additional attributes/ дополнительные атрибуты
    */
-  readonly render = (attrs?: Record<string, any>): VNode[] => {
+  readonly render = (): VNode[] => {
     if (this.components && this.isCounter.value) {
       return this.components.render(
         'fieldCounter',
         {
           ...toBinds(
-            attrs,
             this.binds.value,
             { class: `${this.className}__fieldCounter` }
           )
         },
-        {},
+        undefined,
         this.index
       )
     }

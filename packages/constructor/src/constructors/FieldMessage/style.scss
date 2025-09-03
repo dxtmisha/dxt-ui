@@ -1,0 +1,13 @@
+@use "@dxt-ui/styles/properties" as ui;
+
+@mixin mixinFieldMessage {
+  display: flex;
+  align-items: ui.dirFlexLeft();
+
+  @include ui.paddingX(ui.v('??-padding', 0));
+
+  &__info {
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+}

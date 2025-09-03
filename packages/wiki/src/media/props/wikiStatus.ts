@@ -43,6 +43,17 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
+  counterShow: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+
+      description: {
+        en: 'Shows the counter element',
+        ru: 'Показывает элемент счетчика'
+      }
+    }
+  },
   disabled: {
     type: StorybookControl.boolean,
     options: {
@@ -61,6 +72,17 @@ export const wikiStatus: StorybookArgsToList = {
       description: {
         en: 'Visual focus state',
         ru: 'Визуальное состояние фокуса'
+      }
+    }
+  },
+  forceShow: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+
+      description: {
+        en: 'Forces the display of the element regardless of other conditions',
+        ru: 'Принудительно отображает элемент независимо от других условий'
       }
     }
   },

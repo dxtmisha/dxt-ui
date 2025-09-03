@@ -125,6 +125,18 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  helperMessage: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Helper text providing guidance or additional information',
+        ru: 'Вспомогательный текст, предоставляющий руководство или дополнительную информацию'
+      },
+      value: 'This is a helpful message'
+    }
+  },
   highlight: {
     type: StorybookControl.string,
     options: {
@@ -181,17 +193,6 @@ export const wikiValue: StorybookArgsToList = {
       value: 'home'
     }
   },
-  index: {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.value,
-      type: 'number',
-      description: {
-        en: 'Index value for the component',
-        ru: 'Значение индекса для компонента'
-      }
-    }
-  },
   iconTrailing: {
     type: StorybookControl.string,
     options: {
@@ -211,6 +212,17 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Specifies the image value for the component',
         ru: 'Указывает значение изображения для компонента'
+      }
+    }
+  },
+  index: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      type: 'number',
+      description: {
+        en: 'Index value for the component',
+        ru: 'Значение индекса для компонента'
       }
     }
   },
@@ -292,6 +304,17 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Navigation target or destination for the component',
         ru: 'Цель навигации или назначение для компонента'
+      }
+    }
+  },
+  validationMessage: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Error or validation message text',
+        ru: 'Текст сообщения об ошибке или валидации'
       }
     }
   },

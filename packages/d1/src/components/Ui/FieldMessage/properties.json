@@ -1,0 +1,11 @@
+{
+  "main": "{d.fieldMessage}",
+  "gap": "{sys.spacing.xs}",
+  "padding-top": "{sys.spacing.x}",
+  "link|font": "{font.bodyMedium}",
+  "color-opacity": "{sys.opacity.surface.medium}",
+  "validation": {
+    "color": "{sys.palette.error}",
+    "color-opacity": "{sys.opacity.surface.high}"
+  }
+}

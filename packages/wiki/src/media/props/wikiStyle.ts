@@ -98,6 +98,17 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  counterTemplate: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      description: {
+        en: 'Custom display template for the counter component',
+        ru: 'Пользовательский шаблон отображения для компонента счетчика'
+      }
+    }
+  },
   dense: {
     type: StorybookControl.boolean,
     options: {
@@ -172,6 +183,16 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Enables dynamic hover effect for the component',
         ru: 'Включает динамический эффект наведения для компонента'
+      }
+    }
+  },
+  fieldCounterAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the field counter component',
+        ru: 'Дополнительные атрибуты для компонента счетчика поля'
       }
     }
   },

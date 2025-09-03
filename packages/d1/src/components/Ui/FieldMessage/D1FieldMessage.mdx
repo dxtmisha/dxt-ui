@@ -1,0 +1,39 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxt-ui/wiki/storybook'
+
+import * as FieldMessage from './D1FieldMessage.stories'
+import {FieldMessageWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={FieldMessage}/>
+<StorybookMain
+    name={FieldMessageWikiStorybook.getName()}
+    description={FieldMessageWikiStorybook.getDescription()}
+    story={FieldMessage.FieldMessage}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'FieldMessage'} type={'fieldMessage'}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'FieldMessage'} type={'slot.helper'}/>
+<StorybookDescriptions componentName={'FieldMessage'} type={'slot.validation'}/>
+<Canvas of={FieldMessage.FieldMessageSlots}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

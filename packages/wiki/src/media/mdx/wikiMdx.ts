@@ -12,6 +12,7 @@ import { wikiMdxButton } from './Button/wikiMdxButton'
 import { wikiMdxCell } from './Cell/wikiMdxCell'
 import { wikiMdxChip } from './Chip/wikiMdxChip'
 import { wikiMdxFieldCounter } from './FieldCounter/wikiMdxFieldCounter'
+import { wikiMdxFieldMessage } from './FieldMessage/wikiMdxFieldMessage'
 import { wikiMdxIcon } from './Icon/wikiMdxIcon'
 import { wikiMdxImage } from './Image/wikiMdxImage'
 import { wikiMdxList } from './List/wikiMdxList'
@@ -39,6 +40,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxCell,
   wikiMdxChip,
   wikiMdxFieldCounter,
+  wikiMdxFieldMessage,
   wikiMdxIcon,
   wikiMdxImage,
   wikiMdxList,
