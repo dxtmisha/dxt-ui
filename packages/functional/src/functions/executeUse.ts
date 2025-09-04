@@ -33,7 +33,7 @@ export function executeUse<R, O extends any[]>(
       if (itemInject) {
         return itemInject
       } else {
-        let itemProvide: R | undefined = callback(...args)
+        let itemProvide: R | undefined = Object.freeze(callback(...args))
 
         provide(id, itemProvide)
 
@@ -46,7 +46,7 @@ export function executeUse<R, O extends any[]>(
         return itemProvide
       }
     } else if (!item) {
-      item = callback(...args)
+      item = Object.freeze(callback(...args))
 
       if (unmounted) {
         onUnmounted(() => {

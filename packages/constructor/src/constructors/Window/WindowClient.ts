@@ -1,4 +1,15 @@
 /**
+ * Sentinel value for an "unset" client coordinate.
+ * Used to distinguish the absence of data from a valid point (including 0,0).
+ * -1 is chosen as a value that cannot occur for clientX/clientY within the visible viewport.
+ *
+ * Маркерное значение для «не заданных» координат клика пользователя.
+ * Используется, чтобы отличать отсутствие данных от валидной точки (включая 0,0).
+ * -1 выбран как значение, невозможное для clientX/clientY в видимой области.
+ */
+const WINDOW_NULL_VALUE = -1
+
+/**
  * The class stores the coordinates of the mouse click. It is used for the opening
  * animation, when the element appears from the point of click. And also for the contextmenu event.
  *
@@ -6,8 +17,8 @@
  * когда элемент появляется от точки нажатия. А также для события contextmenu.
  */
 export class WindowClient {
-  protected x: number = 0
-  protected y: number = 0
+  protected x: number = WINDOW_NULL_VALUE
+  protected y: number = WINDOW_NULL_VALUE
 
   /**
    * Checks if the button was pressed.
@@ -15,7 +26,7 @@ export class WindowClient {
    * Проверяет, было ли нажатие на кнопку.
    */
   is(): boolean {
-    return this.x !== 0 || this.y !== 0
+    return this.x !== WINDOW_NULL_VALUE && this.y !== WINDOW_NULL_VALUE
   }
 
   /**
@@ -74,8 +85,8 @@ export class WindowClient {
    * Сбрасывает все данные к начальным значениям.
    */
   reset(): this {
-    this.x = 0
-    this.y = 0
+    this.x = WINDOW_NULL_VALUE
+    this.y = WINDOW_NULL_VALUE
 
     return this
   }

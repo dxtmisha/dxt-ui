@@ -1,4 +1,4 @@
-import { getElementId } from '@dxt-ui/functional'
+import { domQuerySelector, getElementId } from '@dxt-ui/functional'
 import { type WindowClassesList, WindowStatusControlItem, WindowStatusItem } from './basicTypes'
 
 /**
@@ -83,7 +83,7 @@ export class WindowClasses {
    * Поиск и возврат элемента управления текущего компонента.
    */
   findControl(): HTMLElement | undefined {
-    return document.querySelector<HTMLElement>(`.${this.list.control}.${this.id}`) ?? undefined
+    return domQuerySelector<HTMLElement>(`.${this.list.control}.${this.id}`)
   }
 
   /**
@@ -94,7 +94,7 @@ export class WindowClasses {
    */
   findControlByElement(element?: HTMLElement): HTMLElement | undefined {
     if (element) {
-      return document.querySelector<HTMLElement>(`.${this.list.control}.${element.dataset?.window}`) ?? undefined
+      return domQuerySelector<HTMLElement>(`.${this.list.control}.${element.dataset?.window}`)
     }
 
     return undefined
@@ -106,7 +106,7 @@ export class WindowClasses {
    * Поиск и возврат элемента тела окна для текущего компонента.
    */
   findBody(): HTMLDivElement | undefined {
-    return document.querySelector<HTMLDivElement>(`.${this.className}.${this.id} .${this.className}__body`) ?? undefined
+    return domQuerySelector<HTMLDivElement>(`.${this.className}.${this.id} .${this.className}__body`)
   }
 
   /**
@@ -115,7 +115,7 @@ export class WindowClasses {
    * Поиск и возврат элемента контекста тела окна для текущего компонента.
    */
   findBodyContext(): HTMLDivElement | undefined {
-    return document.querySelector<HTMLDivElement>(`.${this.className}.${this.id} .${this.className}__body__context`) ?? undefined
+    return domQuerySelector<HTMLDivElement>(`.${this.className}.${this.id} .${this.className}__body__context`)
   }
 
   /**
@@ -129,7 +129,7 @@ export class WindowClasses {
    */
   findBodyOther(selectors: string, status: WindowStatusItem = WindowStatusItem.open): HTMLDivElement | undefined {
     if (status === WindowStatusItem.open) {
-      const element = document.querySelector<HTMLDivElement>(
+      const element = domQuerySelector<HTMLDivElement>(
         `.${this.className}:not(.${this.id})[data-status="${WindowStatusItem.flash}"] .${this.className}__body ${selectors}`
       )
 
@@ -138,9 +138,9 @@ export class WindowClasses {
       }
     }
 
-    return document.querySelector<HTMLDivElement>(
+    return domQuerySelector<HTMLDivElement>(
       `.${this.className}:not(.${this.id})[data-status="${status}"] .${this.className}__body ${selectors}`
-    ) ?? undefined
+    )
   }
 
   /**

@@ -182,7 +182,7 @@ export class Window {
       }
     }
 
-    new ModelInclude('open', this.emits, this.open.item)
+    new ModelInclude<boolean>('open', this.emits, this.open.item)
 
     onMounted(() => {
       watch([refs.open], () => this.open.set(props.open), { immediate: true })

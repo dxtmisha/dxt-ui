@@ -29,6 +29,8 @@ export class WindowPersistent {
 
       if (element) {
         if (value) {
+          this.removeEvent()
+
           element.classList.add(this.classes.list.persistent)
           element.addEventListener('animationend', this.onTransitionend)
         } else {
@@ -71,9 +73,17 @@ export class WindowPersistent {
    * Событие окончания анимации запрета на закрытие.
    */
   protected readonly onTransitionend = (): void => {
+    this.removeEvent()
+    this.disabled()
+  }
+
+  /**
+   * Removes the event of the end of the animation.
+   *
+   * Удаляет событие окончания анимации.
+   */
+  protected removeEvent() {
     this.element.getMain()
       ?.removeEventListener('animationend', this.onTransitionend)
-
-    this.disabled()
   }
 }

@@ -1,4 +1,4 @@
-import { isDomRuntime } from '@dxt-ui/functional'
+import { isDomRuntime, isFilled } from '@dxt-ui/functional'
 
 import { WindowPersistent } from './WindowPersistent'
 import { WindowClasses } from './WindowClasses'
@@ -44,12 +44,18 @@ export class WindowVerification {
    * @param target the selected window/ выбранное окно
    */
   async update(target: HTMLElement): Promise<void> {
+    if (this.open.isClicks()) {
+      return
+    }
+
     this.target = target
     this.focus = this.getFocus()
 
     if (!isDomRuntime()) {
       return
     }
+
+    this.open.pressed()
 
     if (!this.isTargetInBody()) {
       return
@@ -69,7 +75,7 @@ export class WindowVerification {
         await this.open
           .reset()
           .watchPosition()
-      } else if (this.focus === null) {
+      } else if (!isFilled(this.focus)) {
         await this.open.toggle()
       } else if (!this.isFocus()) {
         if (this.isNotBlock()) {

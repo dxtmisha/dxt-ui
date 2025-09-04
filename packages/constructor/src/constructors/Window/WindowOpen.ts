@@ -22,9 +22,10 @@ import type { WindowProps } from './props'
  * Класс для управления статусом открытого окна.
  */
 export class WindowOpen {
-  protected readonly first = ref<boolean>(false)
-
   readonly item = ref<boolean>(false)
+
+  protected readonly first = ref<boolean>(false)
+  protected clicks: number = 0
 
   /**
    * Constructor
@@ -70,6 +71,15 @@ export class WindowOpen {
   })
 
   /**
+   * Checks if the window is open.
+   *
+   * Проверяет, открыто ли окно.
+   */
+  isClicks(): boolean {
+    return this.clicks > 0
+  }
+
+  /**
    * Changes the current state.
    *
    * Изменяет текущее состояние.
@@ -101,6 +111,10 @@ export class WindowOpen {
    * Переключает состояние, то есть открывает или закрывает окно, в зависимости от значения item.
    */
   readonly toggle = async (): Promise<void> => {
+    if (this.clicks > 1) {
+      return
+    }
+
     const toOpen = !this.item.value
 
     if (await this.hook.before(toOpen)) {
@@ -127,7 +141,10 @@ export class WindowOpen {
                 this.status.toOpen()
               }
 
-              requestAnimationFrame(() => this.hook.opening())
+              requestAnimationFrame(() => {
+                this.hook.opening()
+                this.resetClicks()
+              })
               this.emit.on(this.item.value)
             })
           })
@@ -138,7 +155,10 @@ export class WindowOpen {
         if (this.flash.isOpen()) {
           this.toClose()
         } else {
-          requestAnimationFrame(() => this.status.toHide())
+          requestAnimationFrame(() => {
+            this.status.toHide()
+            this.resetClicks()
+          })
         }
       }
     }
@@ -166,6 +186,26 @@ export class WindowOpen {
     this.coordinates.reset()
     this.origin.reset()
 
+    return this
+  }
+
+  /**
+   * The method increases the number of clicks.
+   *
+   * Метод увеличивает количество кликов.
+   */
+  pressed(): this {
+    this.clicks++
+    return this
+  }
+
+  /**
+   * The method resets the number of clicks.
+   *
+   * Метод сбрасывает количество кликов.
+   */
+  resetClicks(): this {
+    this.clicks = 0
     return this
   }
 
@@ -242,6 +282,8 @@ export class WindowOpen {
       await this.setOpen(false)
 
       await this.hook.closing()
+
+      this.resetClicks()
       this.emit.on(this.item.value)
     }, 48)
 

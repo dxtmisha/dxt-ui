@@ -63,7 +63,7 @@ export class WindowPosition {
    *
    * Возвращает позицию X для стилей.
    */
-  getStyleX(): string | null {
+  getStyleX(): string {
     return `${this.x}px`
   }
 
@@ -72,7 +72,7 @@ export class WindowPosition {
    *
    * Возвращает позицию Y для стилей.
    */
-  getStyleY(): string | null {
+  getStyleY(): string {
     return `${this.y}px`
   }
 
