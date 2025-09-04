@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { isFilled } from '@dxt-ui/functional'
 
 import type { FieldMessageProps } from './props'
-import type { FieldMessageSlots } from './types.ts'
+import type { FieldMessageSlots } from './types'
 
 /**
  * Class for working with text

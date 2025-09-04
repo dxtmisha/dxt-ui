@@ -63,6 +63,17 @@ export class FieldCounterInclude<
     )
   })
 
+  /** Intermediate bindings for FieldCounter/ Промежуточные привязки для FieldCounter */
+  readonly bindsIntermediary = computed<FieldCounterPropsInclude>(() => {
+    return {
+      counter: this.props.counter,
+      counterShow: this.props.counterShow,
+      counterTemplate: this.props.counterTemplate,
+      maxlength: this.props.maxlength,
+      fieldCounterAttrs: this.props.fieldCounterAttrs
+    }
+  })
+
   /**
    * Render the FieldCounter component/
    * Рендер компонента FieldCounter

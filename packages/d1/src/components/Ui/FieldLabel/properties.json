@@ -1,0 +1,9 @@
+{
+  "main": "{d.fieldLabel}",
+  "gap": "{sys.spacing.xs}",
+  "padding-bottom": "{sys.spacing.x}",
+  "font": "{font.bodyMedium}",
+  "required": {
+    "color": "{sys.palette.error}"
+  }
+}

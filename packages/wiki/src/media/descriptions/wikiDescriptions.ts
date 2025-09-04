@@ -6,6 +6,7 @@ import { wikiDescriptionsButton } from './wikiDescriptionsButton'
 import { wikiDescriptionsCell } from './wikiDescriptionsCell'
 import { wikiDescriptionsChip } from './wikiDescriptionsChip'
 import { wikiDescriptionsFieldCounter } from './wikiDescriptionsFieldCounter'
+import { wikiDescriptionsFieldLabel } from './wikiDescriptionsFieldLabel'
 import { wikiDescriptionsFieldMessage } from './wikiDescriptionsFieldMessage'
 import { wikiDescriptionsIcon } from './wikiDescriptionsIcon'
 import { wikiDescriptionsImage } from './wikiDescriptionsImage'
@@ -28,6 +29,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsCell,
   wikiDescriptionsChip,
   wikiDescriptionsFieldCounter,
+  wikiDescriptionsFieldLabel,
   wikiDescriptionsFieldMessage,
   wikiDescriptionsIcon,
   wikiDescriptionsImage,

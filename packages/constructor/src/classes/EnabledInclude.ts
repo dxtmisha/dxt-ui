@@ -30,7 +30,7 @@ export class EnabledInclude {
     && !this.props.readonly
     && (
       !this.progress
-      || !this.progress.isProgress.value
+      || !this.progress.is.value
     )
     && Boolean(
       !('dynamic' in this.props)

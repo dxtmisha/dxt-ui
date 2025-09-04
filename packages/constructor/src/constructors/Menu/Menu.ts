@@ -16,7 +16,7 @@ import type { MenuComponents, MenuEmits, MenuSlots } from './types'
 import type { MenuProps } from './props'
 import type { MenuControlBasic } from './basicTypes'
 import type { ListPropsBasic } from '../List'
-import type { EventClickValue } from '../../types/eventClickTypes.ts'
+import type { EventClickValue } from '../../types/eventClickTypes'
 
 /**
  * Menu

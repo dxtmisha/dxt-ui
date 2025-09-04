@@ -28,12 +28,12 @@ export class ProgressInclude {
   /**
    * Checks if data is available for the Progress component/ Проверяет, есть ли данные для компонента Progress
    */
-  readonly isProgress = computed<boolean>(() => Boolean(this.props.loading))
+  readonly is = computed<boolean>(() => Boolean(this.props.loading))
 
   /**
    * list of properties for the progress component/ список свойств для компонента Progress
    */
-  readonly progressBind = computed(() => {
+  readonly binds = computed(() => {
     const extra = getRef(this.extra)
 
     return getBind(
@@ -56,7 +56,7 @@ export class ProgressInclude {
     ) {
       return this.components.render(
         'progress',
-        this.progressBind.value,
+        this.binds.value,
         undefined,
         'progress'
       )

@@ -11819,6 +11819,11 @@
         name: 'd1-fieldCounter',
         type: 'component',
       ),
+      'fieldLabel':(
+        index: 'fieldLabel',
+        name: 'd1-fieldLabel',
+        type: 'component',
+      ),
       'fieldMessage':(
         index: 'fieldMessage',
         name: 'd1-fieldMessage',
@@ -12180,6 +12185,11 @@
       'fieldCounter':(
         index: 'fieldCounter',
         name: 'd-fieldCounter',
+        type: 'component',
+      ),
+      'fieldLabel':(
+        index: 'fieldLabel',
+        name: 'd-fieldLabel',
         type: 'component',
       ),
       'fieldMessage':(

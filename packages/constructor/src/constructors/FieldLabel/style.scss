@@ -1,0 +1,10 @@
+@use "@dxt-ui/styles/properties" as ui;
+
+@mixin mixinFieldLabel {
+  display: flex;
+  @include ui.justifyContent('flex-end');
+
+  &__label {
+    @include ui.flexDynamic;
+  }
+}
