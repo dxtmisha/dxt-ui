@@ -138,7 +138,7 @@ export class FieldLabelDesign<
    *
    * Вывод звездочки, признак обязательного заполнения.
    */
-  protected readonly renderRequired = (): VNode[] => {
+  readonly renderRequired = (): VNode[] => {
     if (this.props.required) {
       return [
         h(

@@ -392,14 +392,23 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  isValue: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Indicates that the control has a value and adjusts visuals (e.g., floating label)',
+        ru: 'Указывает, что у элемента есть значение, и корректирует визуальное состояние (например, плавающая метка)'
+      }
+    }
+  },
   overlay: {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-
       description: {
         en: 'Adds background overlay to the component',
-        ru: 'Добавляет фоновое наложение компоненту'
+        ru: 'Добавляет фоновую подложку к компоненту'
       }
     }
   },

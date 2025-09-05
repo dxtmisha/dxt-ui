@@ -4,7 +4,7 @@ import {
   DesignComponents,
   getRef,
   isFilled,
-  type RefOrNormal,
+  type RefOrNormal, type RefType,
   toBinds
 } from '@dxt-ui/functional'
 
@@ -30,6 +30,7 @@ export class FieldLabelInclude<
    * @param props input parameter/ входной параметр
    * @param className class name/ название класса
    * @param components object for working with components/ объект для работы с компонентами
+   * @param isCounter whether to display the counter/ отображать ли счетчик
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
@@ -37,6 +38,7 @@ export class FieldLabelInclude<
     protected readonly props: Readonly<Props>,
     protected readonly className: string,
     protected readonly components?: DesignComponents<FieldLabelComponentInclude, Props>,
+    protected readonly isCounter?: RefType<boolean | undefined>,
     protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly index?: string
   ) {
@@ -50,7 +52,9 @@ export class FieldLabelInclude<
   readonly binds = computed<PropsExtra>(() =>
     toBinds<PropsExtra>(
       getRef(this.extra),
-      this.fieldCounter.bindsIntermediary.value,
+      this.isCounter?.value
+        ? this.fieldCounter.bindsIntermediary.value
+        : {},
       {
         label: this.props.label,
         required: this.props.required

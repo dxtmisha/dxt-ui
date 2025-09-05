@@ -9,9 +9,24 @@ import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { FieldLabelPropsBasic, FieldLabelPropsInclude } from '../FieldLabel'
 import type { FieldCounterPropsBasic } from '../FieldCounter'
 import type { FieldMessagePropsBasic, FieldMessagePropsInclude } from '../FieldMessage'
+import type { SkeletonPropsInclude } from '../Skeleton'
 
 interface FieldPropsToken {
   // :type [!] System label / Системная метка
+  focus?: boolean
+  disabled?: boolean
+  selected?: boolean
+  readonly?: boolean
+  block?: boolean
+  isValue?: boolean
+  basic?: boolean
+  classic?: boolean
+  tonal?: boolean
+  filled?: boolean
+  outlined?: boolean
+  arrow?: boolean
+  align?: 'center' | 'right' | 'left'
+  width?: string | 'custom'
   // :type [!] System label / Системная метка
 }
 
@@ -21,15 +36,16 @@ export interface FieldPropsBasic<
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
   Icon extends IconPropsBasic = IconPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> extends FieldMessagePropsInclude<FieldMessage>,
+> extends IconTrailingPropsInclude<Icon>,
   PrefixProps,
   SuffixProps,
   CaptionProps,
-  IconTrailingPropsInclude<Icon>,
   FieldLabelPropsInclude<FieldLabel, FieldCounter>,
+  FieldMessagePropsInclude<FieldMessage>,
   ProgressPropsInclude<Progress>,
   EnabledProps,
-  EventClickProps {
+  EventClickProps,
+  SkeletonPropsInclude {
   // Status
   disabledPrevious?: boolean
   disabledNext?: boolean
@@ -63,6 +79,7 @@ export const defaultsField = {
   cancel: true,
   ...{
     // :default [!] System label / Системная метка
+    align: 'center'
     // :default [!] System label / Системная метка
   }
 }

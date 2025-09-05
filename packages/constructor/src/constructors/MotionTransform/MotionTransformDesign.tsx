@@ -151,7 +151,7 @@ export class MotionTransformDesign<
    *
    * Рендеринг главного элемента.
    */
-  protected readonly renderMain = (): VNode[] => {
+  readonly renderMain = (): VNode[] => {
     return [
       h(
         'div',
@@ -175,7 +175,7 @@ export class MotionTransformDesign<
    *
    * Рендеринг заголовка.
    */
-  protected readonly renderHead = (): VNode[] => {
+  readonly renderHead = (): VNode[] => {
     return [
       h(
         'div',
@@ -198,7 +198,7 @@ export class MotionTransformDesign<
    *
    * Рендеринг содержимого.
    */
-  protected readonly renderBody = (): VNode[] => {
+  readonly renderBody = (): VNode[] => {
     if (this.item.state.isShow.value) {
       return [
         h(
@@ -224,7 +224,7 @@ export class MotionTransformDesign<
    *
    * Рендеринг задника.
    */
-  protected readonly renderScrim = (): VNode[] => {
+  readonly renderScrim = (): VNode[] => {
     if (this.item.state.teleport.value) {
       return [
         h(

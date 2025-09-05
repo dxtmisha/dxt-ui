@@ -1,0 +1,22 @@
+Field is the base container for form controls that composes label, messages, counter, icons, and progress. It provides a unified skeleton and classes for consistent layout.
+
+### Purpose
+
+- **Composition of subcomponents** — FieldLabel, FieldMessage, FieldCounter, Progress, icons
+- **Unified scaffold** — Wrapper template for the input area and helper zones (caption/prefix/suffix)
+- **State styles** — Manages focus, disabled, readonly, selected, block
+- **Slot support** — Integrates caption, prefix, suffix at the container level
+
+### Core capabilities
+
+- **Validation highlighting** — Based on `validationMessage` and a force show flag
+- **Character counter** — Position toggle via `counterTop`
+- **Control icons** — Cancel and navigation (arrows) with visibility flags
+- **Sizing helpers** — Built-in FieldSize and FieldIcons
+- **Progress integration** — Compact static progress for loading/status
+
+### Integration
+
+Use Field as a foundation for constructing any input fields. It easily integrates labels, icons, messages, and progress. The component handles markup, classes, and consistency; concrete inputs provide the input logic.
+
+> Field is a constructor wrapper: it doesn’t input data by itself, it organizes structure and auxiliary visuals.

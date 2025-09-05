@@ -154,7 +154,7 @@ export class ListItemDesign<
    *
    * Метод для рендеринга основной части компонента.
    */
-  protected readonly renderBody = (): VNode[] => {
+  readonly renderBody = (): VNode[] => {
     const children: any[] = [
       ...this.renderContext(),
       ...this.item.description.render()
@@ -178,7 +178,7 @@ export class ListItemDesign<
    * Метод для рендеринга контекстной части компонента.
    * Включает в себя префикс, подпись, суффикс, значок и метку.
    */
-  protected readonly renderContext = (): VNode[] => {
+  readonly renderContext = (): VNode[] => {
     return [
       h(
         'div',

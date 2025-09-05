@@ -142,7 +142,7 @@ export class ListDesign<
    *
    * Генерирует все элементы из списка.
    */
-  protected readonly renderData = (): VNode[] => {
+  readonly renderData = (): VNode[] => {
     return this.renderDataByItem('item', this.item.list.value, true)
   }
 
@@ -153,7 +153,7 @@ export class ListDesign<
    * @param type type of list/ тип списка
    * @param item selected element/ выбранный элемент
    */
-  protected readonly renderItem = (
+  readonly renderItem = (
     type: ListType,
     item: ListDataItem
   ): VNode => {
@@ -170,7 +170,7 @@ export class ListDesign<
    * @param item selected element/ выбранный элемент
    * @param open is the group open/ открыта ли группа
    */
-  protected readonly renderItemGroup = (item: ListDataItem, open: boolean): VNode => {
+  readonly renderItemGroup = (item: ListDataItem, open: boolean): VNode => {
     return this.components.renderOne(
       'listItem',
       this.item.getItemManagementFormGroup(item, open)
@@ -184,7 +184,7 @@ export class ListDesign<
    * @param item selected element/ выбранный элемент
    * @param props data for working with the menu/ данные для работы с меню
    */
-  protected readonly renderItemMenu = (
+  readonly renderItemMenu = (
     item: ListDataItem,
     props: WindowControlItem
   ): VNode => {
@@ -203,7 +203,7 @@ export class ListDesign<
    * Генерирует разрыв между элементами.
    * @param item selected element/ выбранный элемент
    */
-  protected readonly renderSpace = (item: ListDataItem): VNode => {
+  readonly renderSpace = (item: ListDataItem): VNode => {
     return h('div', {
       key: item.value,
       class: [
@@ -219,7 +219,7 @@ export class ListDesign<
    * Генерирует линию разделения.
    * @param item selected element/ выбранный элемент
    */
-  protected readonly renderLine = (item: ListDataItem): VNode => {
+  readonly renderLine = (item: ListDataItem): VNode => {
     return h('div', {
       key: item.value,
       class: [
@@ -235,7 +235,7 @@ export class ListDesign<
    * Генерирует подзаголовок.
    * @param item selected element/ выбранный элемент
    */
-  protected readonly renderSubtitle = (item: ListDataItem): VNode => {
+  readonly renderSubtitle = (item: ListDataItem): VNode => {
     return h('div', {
       key: item.value,
       class: [
@@ -251,7 +251,7 @@ export class ListDesign<
    * Генерирует HTML-код по названию слота или значению поля `label`.
    * @param item selected element/ выбранный элемент
    */
-  protected readonly renderHtml = (item: ListDataItem): VNode => {
+  readonly renderHtml = (item: ListDataItem): VNode => {
     const props = {
       key: item.label && isObject(item.value) ? item.label : item.value,
       class: [
@@ -279,7 +279,7 @@ export class ListDesign<
    * Генерирует группу списков.
    * @param item selected element/ выбранный элемент
    */
-  protected readonly renderGroup = (item: ListDataItem): VNode => {
+  readonly renderGroup = (item: ListDataItem): VNode => {
     return this.components.renderOne(
       'listGroup',
       {
@@ -300,7 +300,7 @@ export class ListDesign<
    * @param item selected element/ выбранный элемент
    * @param first is the first element/ является ли первым элементом
    */
-  protected readonly renderMenu = (item: ListDataItem, first: boolean): VNode => {
+  readonly renderMenu = (item: ListDataItem, first: boolean): VNode => {
     return this.components.renderOne(
       'listMenu',
       {

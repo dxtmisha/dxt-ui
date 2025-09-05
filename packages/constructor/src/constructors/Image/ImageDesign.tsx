@@ -125,7 +125,7 @@ export class ImageDesign<
    *
    * Рендеринг значения для компонента.
    */
-  protected readonly renderValue = (): string | VNode[] | undefined => {
+  readonly renderValue = (): string | VNode[] | undefined => {
     if (
       this.item.type.item.value === ImageTypeValue.pdf
     ) {

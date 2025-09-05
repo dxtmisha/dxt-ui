@@ -1,5 +1,546 @@
 @use "@dxt-ui/styles/properties" as ui;
 
-@mixin mixinField {
+@mixin borderFull($this) {
+  @include ui.initByCustom('sys.border.width', ui.v('??borderWidth'));
+  @include ui.initByCustom('sys.border.color', ui.v('??borderColor'));
+  @include ui.initByCustom('sys.border.opacity', ui.v('??borderOpacity'));
 
+  @include ui.subclass('body') {
+    &__title {
+      &::before,
+      &::after,
+      &__label::after {
+        border-top-width: ui.v('??sys.border.width');
+        @include ui.borderColor(ui.v('??sys.border.color'));
+        @include ui.borderOpacity(ui.v('??sys.border.opacity', 1));
+      }
+
+      &::before {
+        border-left-width: ui.v('??sys.border.width');
+      }
+
+      &::after {
+        border-right-width: ui.v('??sys.border.width');
+      }
+    }
+
+    &__border {
+      border-top-width: 0;
+      border-right-width: ui.v('??sys.border.width', 0);
+      border-bottom-width: ui.v('??sys.border.width', 0);
+      border-left-width: ui.v('??sys.border.width', 0);
+      @include ui.borderColor(ui.v('??sys.border.color'));
+      @include ui.borderOpacity(ui.v('??sys.border.opacity', 1));
+    }
+  }
+
+  @include ui.active($this) {
+    @include ui.initByCustom('sys.border.width', ui.v('??focusWithin.borderWidth'));
+    @include ui.initByCustom('sys.border.color', ui.v('??focusWithin.borderColor'));
+    @include ui.initByCustom('sys.border.opacity', ui.v('??focusWithin.borderOpacity'));
+  }
+
+  @include ui.focus($this) {
+    @include ui.initByCustom('sys.border.width', ui.v('??focusWithin.borderWidth'));
+    @include ui.initByCustom('sys.border.color', ui.v('??focusWithin.borderColor'));
+    @include ui.initByCustom('sys.border.opacity', ui.v('??focusWithin.borderOpacity'));
+  }
+}
+
+@mixin shiftMixin($this) {
+  @include ui.subclass('body') {
+    &__input:placeholder-shown ~ *,
+    &__input:autofill ~ *,
+    &__input:-webkit-autofill ~ * {
+      @content;
+    }
+  }
+
+  @include ui.state('isValue') {
+    @content;
+  }
+
+  @include ui.active($this) {
+    @content;
+  }
+
+  @include ui.focus($this) {
+    @content;
+  }
+}
+
+@mixin textHide {
+  @include ui.subclass('body') {
+    &__title {
+      &__label {
+        &__text {
+          opacity: 0;
+        }
+      }
+    }
+  }
+}
+
+@mixin mixinField {
+  $this: &;
+
+  @include ui.initByCustom('sys.shift', 0px);
+  @include ui.initByCustom('sys.half', calc(ui.v('??height') / 2));
+  @include ui.initByCustom('sys.title.half', calc(ui.v('??height') / 4));
+  @include ui.initByCustom('sys.title.translateX', calc(ui.v('??sys.title') - ui.v('??padding') - ui.v('??space')));
+  @include ui.initByCustom('sys.title.translateY', ui.v('??sys.title.half'));
+
+  box-sizing: border-box;
+  display: block;
+
+  border-radius: ui.v('??borderRadius', 0);
+
+  transition: none;
+
+  &__body {
+    display: block;
+    position: relative;
+    overflow: hidden;
+
+    max-width: 100%;
+
+    border-radius: inherit;
+
+    transition-timing-function: inherit;
+    transition-duration: inherit;
+
+    &__input {
+      position: relative;
+      box-sizing: border-box;
+      order: 4;
+      z-index: 12;
+
+      @include ui.paddingTop(calc(ui.v('??sys.half') - ui.v('??sys.title.half') + ui.v('??sys.shift')));
+      @include ui.paddingRight(calc((ui.v('??sys.right') * ui.isDirLeft()) + (ui.v('??sys.left') * ui.isDirRight())));
+      @include ui.paddingBottom(calc(ui.v('??sys.half') - ui.v('??sys.title.half') - ui.v('??sys.shift')));
+      @include ui.paddingLeft(calc((ui.v('??sys.left') * ui.isDirLeft()) + (ui.v('??sys.right') * ui.isDirRight())));
+
+      width: 100%;
+      min-height: ui.v('??height');
+
+      font: inherit;
+      line-height: calc((#{ui.v('??sys.half') - ui.v('??sys.title.half')}) * 2);
+
+      background-color: transparent;
+      border: none;
+      border-radius: inherit;
+
+      &::-webkit-clear-button,
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button,
+      &::-webkit-search-cancel-button {
+        -webkit-appearance: none;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &__hidden {
+      display: none;
+    }
+
+    &__title {
+      display: flex;
+      @include ui.absoluteTop;
+      order: 8;
+      z-index: 4;
+
+      height: ui.v('??sys.half');
+
+      border-radius: inherit;
+
+      transition-timing-function: inherit;
+      transition-duration: inherit;
+
+      &::before,
+      &::after {
+        content: " ";
+        flex-basis: ui.v('??padding');
+        min-width: ui.v('??padding');
+
+        transition-timing-function: inherit;
+        transition-duration: inherit;
+      }
+
+      &::before {
+        border-top-left-radius: calc(var(--d-dir-left) * #{ui.v('??borderRadius')});
+        border-top-right-radius: calc(var(--d-dir-right) * #{ui.v('??borderRadius')});
+      }
+
+      &::after {
+        border-top-left-radius: calc(var(--d-dir-right) * #{ui.v('??borderRadius')});
+        border-top-right-radius: calc(var(--d-dir-left) * #{ui.v('??borderRadius')});
+        flex-grow: 1;
+      }
+
+      &__label {
+        @include ui.flexX;
+        position: relative;
+        @include ui.paddingX(ui.v('??space'));
+
+        max-width: calc(100% - (#{ui.v('??padding')} * 2) - #{ui.v('??sys.right')});
+
+        transition-timing-function: inherit;
+        transition-duration: inherit;
+
+        &::after {
+          @include ui.absoluteTop;
+
+          content: " ";
+
+          transition-timing-function: inherit;
+          transition-duration: inherit;
+        }
+
+        &__text {
+          opacity: ui.v('??sys.title.opacity', 1);
+
+          max-width: 100%;
+
+          @include ui.truncate;
+
+          @include ui.translateX(calc(ui.v('??sys.title.translateX') * #{ui.isDir()}));
+          @include ui.translateY(calc(ui.v('??sys.title.translateY') - ui.v('??sys.title.shift', 0px)));
+          @include ui.scale(ui.v('??sys.title.scale', 1));
+          transform-origin: var(--d-dir-text-left);
+        }
+      }
+    }
+
+    &__scoreboard {
+      @include ui.flexX;
+      position: absolute;
+      top: 0;
+      order: 12;
+      z-index: 16;
+      gap: ui.v('??space');
+      @include ui.paddingX(calc(ui.v('??padding')));
+
+      width: 100%;
+      height: 0;
+
+      @include ui.translateY(ui.v('??sys.half'));
+
+      &__space {
+        @include ui.flexX;
+        flex-grow: 1;
+        flex-shrink: 1;
+        order: 48;
+        @include ui.truncate;
+
+        @include ui.marginX(ui.v('??space'));
+        @include ui.textSelectNone;
+
+        pointer-events: none;
+      }
+
+      &__input {
+        visibility: hidden;
+        opacity: 0;
+      }
+    }
+
+    &__border {
+      @include ui.absolute;
+      top: var(--d1-field-sys-half);
+      order: 16;
+      z-index: 8;
+
+      border-bottom-right-radius: inherit;
+      border-bottom-left-radius: inherit;
+
+      transition-timing-function: inherit;
+      transition-duration: inherit;
+    }
+  }
+
+  &__required::after {
+    content: '*';
+  }
+
+  &__previous {
+    order: 4;
+  }
+
+  &__icon {
+    order: 8;
+  }
+
+  &__left {
+    order: 12;
+  }
+
+  &__prefix,
+  &__suffix {
+    opacity: 0;
+    @include ui.translateY(ui.v('??sys.shift'));
+
+    pointer-events: none;
+  }
+
+  &__prefix {
+    order: 16;
+  }
+
+  &__suffix {
+    order: 80;
+  }
+
+  &__caption {
+    @include ui.truncate;
+    flex-grow: 1;
+    flex-shrink: 1;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__left {
+    order: 84;
+  }
+
+  &__cancel {
+    order: 88;
+  }
+
+  &__loading {
+    order: 90;
+  }
+
+  &__trailing {
+    order: 92;
+
+    cursor: pointer;
+  }
+
+  &__next {
+    order: 96;
+  }
+
+  &--isValue,
+  &--classic,
+  &__body__input:placeholder-shown ~ * {
+    @include ui.subclass('prefix') {
+      opacity: 1;
+    }
+
+    @include ui.subclass('suffix') {
+      opacity: 1;
+    }
+
+    @include ui.subclass('caption') {
+      opacity: 1;
+    }
+  }
+
+  @include ui.active($this) {
+    @include ui.subclass('body') {
+      &__title {
+        @include ui.color(ui.v('??focusWithin.color'), ui.v('??focusWithin.colorOpacity'));
+      }
+    }
+
+    @extend #{$this}--isValue;
+  }
+
+  @include ui.focus($this) {
+    @include ui.subclass('body') {
+      &__title {
+        @include ui.color(ui.v('??focusWithin.color'), ui.v('??focusWithin.colorOpacity'));
+      }
+    }
+
+    @extend #{$this}--isValue;
+
+    @include ui.subclass('caption') {
+      opacity: ui.v('??focusWithin.caption.opacity', initial);
+    }
+  }
+
+  &--show {
+    transition-timing-function: linear;
+    transition-duration: ui.v('d.sys.transitionDuration.standard');
+
+    @include ui.subclass('body') {
+      &__title {
+        &__label {
+          &__text {
+            transition-timing-function: ui.v('d.ref.transitionFunction.e40i80');
+            transition-duration: inherit;
+            transition-property: font-size, opacity, transform, translate, scale;
+          }
+        }
+      }
+    }
+  }
+
+  &--validation {
+    @include ui.initByCustom('focusWithin.color', ui.v('??validation.color'));
+    @include ui.initByCustom('focusWithin.colorOpacity', ui.v('??validation.colorOpacity'));
+
+    @include ui.initByCustom('borderColor', ui.v('??validation.borderColor'), true);
+    @include ui.initByCustom('borderOpacity', ui.v('??validation.borderOpacity'), true);
+    @include ui.initByCustom('focusWithin.borderColor', ui.v('??validation.borderColor'));
+    @include ui.initByCustom('focusWithin.borderOpacity', ui.v('??validation.borderOpacity'));
+
+    @include ui.color(ui.v('??validation.color'));
+  }
+
+  &--basic {
+    @include shiftMixin($this) {
+      @include textHide;
+    }
+
+    @include borderFull($this);
+  }
+
+  &--classic {
+    @include textHide;
+
+    @include borderFull($this);
+  }
+
+  &--tonal {
+    @include ui.initByCustom('borderWidth', 0px);
+    @include shiftMixin($this) {
+      @include textHide;
+    }
+
+    @include borderFull($this);
+  }
+
+  &--filled {
+    @include ui.initByCustom('sys.shift', calc(ui.v('??sys.half') / 3));
+    @include shiftMixin($this) {
+      @include ui.initByCustom('sys.title.shift', ui.v('??sys.shift'));
+      @include ui.initByCustom('sys.title.scale', .875);
+    }
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+
+    @include ui.subclass('body') {
+      overflow: visible;
+
+      &__border {
+        &::before,
+        &::after {
+          @include ui.absoluteBottom;
+          content: " ";
+        }
+
+        &::before {
+          height: ui.v('??borderWidth');
+          @include ui.backgroundColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
+        }
+
+        &::after {
+          clip-path: inset(0 50%);
+          z-index: 4;
+
+          height: ui.v('??focusWithin.borderWidth');
+          @include ui.backgroundColor(ui.v('??focusWithin.borderColor'), ui.v('??focusWithin.borderOpacity'));
+
+          transition-duration: inherit;
+          transition-property: clip-path;
+        }
+      }
+    }
+
+    @include ui.active($this) {
+      @include ui.subclass('body') {
+        &__border {
+          &::after {
+            clip-path: inset(0 0);
+          }
+        }
+      }
+    }
+
+    @include ui.focus($this) {
+      @include ui.subclass('body') {
+        &__border {
+          &::after {
+            clip-path: inset(0 0);
+          }
+        }
+      }
+    }
+  }
+
+  &--outlined {
+    @include shiftMixin($this) {
+      @include ui.initByCustom('sys.title.shift', ui.v('??sys.half'));
+      @include ui.initByCustom('sys.title.translateX', 0px);
+
+      @include ui.subclass('body') {
+        &__title {
+          &__label {
+            &::after {
+              @include ui.borderOpacity(0);
+              transition: none;
+            }
+
+            &__text {
+              font-size: 0.9em;
+            }
+          }
+        }
+      }
+    }
+    @include borderFull($this);
+
+    @include ui.subclass('body') {
+      overflow: visible;
+    }
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  &--right {
+    @include ui.subclass('body') {
+      &__scoreboard {
+        &__space {
+          @include ui.marginRight(0);
+        }
+      }
+    }
+
+    @include ui.subclass('body') {
+      &__input {
+        text-align: right;
+      }
+    }
+  }
+
+  &--align {
+    &--right {
+      @include ui.subclass('previous') {
+        order: 94;
+      }
+    }
+
+    &--left {
+      @include ui.subclass('next') {
+        order: 6;
+      }
+    }
+
+    &--center {
+      @include ui.state('arrow') {
+        @include ui.subclass('body') {
+          &__input {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
 }

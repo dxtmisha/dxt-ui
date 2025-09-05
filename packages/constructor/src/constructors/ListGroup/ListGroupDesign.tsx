@@ -128,7 +128,7 @@ export class ListGroupDesign<
    *
    * Рендер элемента трансформации.
    */
-  protected readonly renderTransform = (): VNode[] => {
+  readonly renderTransform = (): VNode[] => {
     return this.components.render(
       'motionTransform',
       {
@@ -147,7 +147,7 @@ export class ListGroupDesign<
    *
    * Рендер элемента заголовка.
    */
-  protected readonly renderHead = (): VNode => {
+  readonly renderHead = (): VNode => {
     return h(
       'div',
       {
@@ -168,7 +168,7 @@ export class ListGroupDesign<
    *
    * Рендер элемента списка.
    */
-  protected readonly renderList = (): VNode => {
+  readonly renderList = (): VNode => {
     return h(
       'div',
       {

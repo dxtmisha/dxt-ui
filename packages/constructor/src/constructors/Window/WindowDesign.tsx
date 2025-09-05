@@ -158,7 +158,7 @@ export class WindowDesign<
    *
    * Рендер главного элемента окна.
    */
-  protected readonly renderMain = (): VNode => {
+  readonly renderMain = (): VNode => {
     return h(
       'div',
       {
@@ -178,7 +178,7 @@ export class WindowDesign<
    *
    * Рендер элемента тела.
    */
-  protected readonly renderBody = (): VNode => {
+  readonly renderBody = (): VNode => {
     return h(
       'div',
       {
@@ -202,7 +202,7 @@ export class WindowDesign<
    *
    * Генерирует элемент для группировки выводимых данных.
    */
-  protected readonly renderBodyGroup = (): VNode[] => {
+  readonly renderBodyGroup = (): VNode[] => {
     const children: any[] = []
 
     this.initSlot('title', children, this.item.slotData)
@@ -222,7 +222,7 @@ export class WindowDesign<
    *
    * Рендер элемента контекста.
    */
-  protected readonly renderBodyContext = (): VNode[] => {
+  readonly renderBodyContext = (): VNode[] => {
     return this.item.scrollbar.render(
       'div',
       {
@@ -240,7 +240,7 @@ export class WindowDesign<
    *
    * Генерирует элемент для вывода изображения
    */
-  protected readonly renderBodyImage = (): VNode[] => {
+  readonly renderBodyImage = (): VNode[] => {
     if (this.props.image) {
       return [h(
         'div',
@@ -259,7 +259,7 @@ export class WindowDesign<
    *
    * Генерирует элемент для вывода кнопки закрытия.
    */
-  protected readonly renderBodyClose = (): VNode[] => {
+  readonly renderBodyClose = (): VNode[] => {
     if (this.props.closeButton) {
       return this.components.render(
         'button',

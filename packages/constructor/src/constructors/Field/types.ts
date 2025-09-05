@@ -9,6 +9,9 @@ import type { FieldMessageComponentInclude } from '../FieldMessage'
 import type { ProgressComponentInclude } from '../Progress'
 
 import type { FieldControl } from './basicTypes'
+import type { LabelSlots } from '../../types/labelTypes.ts'
+import type { PrefixSlots } from '../../types/prefixTypes.ts'
+import type { SuffixSlots } from '../../types/suffixTypes.ts'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -41,10 +44,15 @@ export interface FieldExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface FieldSlots extends CaptionSlots {
-  leading? (props: FieldControl): any
-  trailing? (props: FieldControl): any
-  default? (props: FieldControl): any
+export interface FieldSlots extends LabelSlots,
+  CaptionSlots,
+  PrefixSlots,
+  SuffixSlots {
+  leading?(props: FieldControl): any
+
+  trailing?(props: FieldControl): any
+
+  default?(props: FieldControl): any
 }
 
 /**
@@ -55,5 +63,17 @@ export interface FieldSlots extends CaptionSlots {
 export type FieldClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  body: string
+  bodyInput: string
+  bodyTitle: string
+  bodyTitleLabel: string
+  bodyTitleLabelText: string
+  bodyScoreboard: string
+  bodyScoreboardLeft: string
+  bodyScoreboardRight: string
+  bodyScoreboardSpace: string
+  bodyScoreboardInput: string
+  bodyBorder: string
+  required: string
   // :classes [!] System label / Системная метка
 }

@@ -1,0 +1,82 @@
+{
+  "main": "{d.field}",
+  "padding": "{sys.spacing.md}",
+  "space": "{sys.spacing.x}",
+  "height": "{ref.spacing.12}",
+  "link|font": "{font.bodyLarge}",
+  "border-width": "{sys.spacing.outline}",
+  "border-color": "{sys.palette.outline}",
+  "border-opacity": "{sys.opacity.outline}",
+  "border-radius": "{??height} * {?sys.rounded.adaptive.md}",
+  "focusWithin": {
+    "border-color": "{sys.palette.primaryVariant}",
+    "border-width": "{ref.spacing.2px}",
+    "caption": {
+      "opacity": "{sys.opacity.surface.disabled}"
+    }
+  },
+  "validation": {
+    "border-color": "{sys.palette.error}"
+  },
+  "#body": {
+    "background-color": "{sys.palette.surface}",
+    "background-opacity": "{sys.opacity.primary.high}",
+    "gradient": "{sys.palette.primary}",
+    "gradient-opacity": "0",
+    "backdrop-filter": "{sys.blur.md}",
+    "input": {
+      "gradient": "{sys.palette.primary}",
+      "gradient-opacity": "0",
+      "hover": {
+        "gradient-opacity": "{sys.opacity.hover}"
+      },
+      "active": {
+        "gradient-opacity": "{sys.opacity.pressed}"
+      },
+      "::placeholder": {
+        "color-opacity": "{sys.opacity.surface.medium}"
+      }
+    },
+    "focus": {
+      "gradient-opacity": "{sys.opacity.focus}"
+    }
+  },
+  "#prefix": {
+    "link|font": "{font.bodyMedium}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "#suffix": {
+    "link|font": "{font.bodyMedium}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "#caption": {
+    "link|font": "{font.bodyLarge}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "#trailing": {
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "classic": {
+    "_default": true
+  },
+  "~tonal": {
+    "border-width": "0",
+    "focusWithin": {
+      "border-width": "0"
+    },
+    "#body": {
+      "background-color": "{sys.palette.primary}",
+      "background-opacity": "{sys.opacity.overlay}",
+      "backdrop-filter": "{sys.blur.xl}"
+    },
+    "&.??--validation": {
+      "#body": {
+        "background-color": "{sys.palette.error}",
+        "gradient": "{sys.palette.error}",
+        "#input": {
+          "gradient": "{sys.palette.error}"
+        }
+      }
+    }
+  }
+}

@@ -135,7 +135,7 @@ export class MenuDesign<
    * Генерирует данные для контроля.
    * @param props data for the transferable property/ данные для передаваемого свойства
    */
-  protected readonly renderControl = (
+  readonly renderControl = (
     props: WindowControlItem
   ): VNode | undefined => {
     return this.initSlot('control', undefined, this.getBinds(props))
@@ -147,7 +147,7 @@ export class MenuDesign<
    * Рендер элемента заголовка.
    * @param props data for the transferable property/ данные для передаваемого свойства
    */
-  protected readonly renderTitle = (
+  readonly renderTitle = (
     props: WindowControlItem
   ): VNode[] => {
     const children: any[] = []
@@ -167,7 +167,7 @@ export class MenuDesign<
    * Рендер элемента списка.
    * @param props data for the transferable property/ данные для передаваемого свойства
    */
-  protected readonly renderList = (
+  readonly renderList = (
     props: WindowControlItem
   ): VNode | undefined => {
     const list = this.item.request.item.value
@@ -221,7 +221,7 @@ export class MenuDesign<
    * Рендер элемента футера.
    * @param props data for the transferable property/ данные для передаваемого свойства
    */
-  protected readonly renderFooter = (
+  readonly renderFooter = (
     props: WindowControlItem
   ): VNode | undefined => {
     return this.initSlot('footer', undefined, this.getBinds(props))

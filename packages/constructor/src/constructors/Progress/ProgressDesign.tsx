@@ -73,7 +73,7 @@ export class ProgressDesign<
    *
    * Рендер элементов для кругового загрузчика.
    */
-  protected readonly renderCircle = (): VNode[] => {
+  readonly renderCircle = (): VNode[] => {
     if (this.props.circular) {
       return [
         h('circle', {
@@ -99,7 +99,7 @@ export class ProgressDesign<
    *
    * Рендер точки в конце.
    */
-  protected readonly renderPoint = (): VNode[] => {
+  readonly renderPoint = (): VNode[] => {
     if (
       this.props.linear
       && this.props.point && (

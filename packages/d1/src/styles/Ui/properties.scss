@@ -50,6 +50,9 @@
   '--d1-sys-palette-inverseOnSurface': ('--d1-palette-basic50', '--d1-palette-dark950'),
   '--d1-sys-palette-shadow': ('--d1-palette-basic950', '--d1-palette-dark700'),
   '--d1-cell-borderColor': ('--d1-palette-basic800'),
+  '--d1-field-borderColor': ('--d1-palette-basic800'),
+  '--d1-field-focusWithin-borderColor': ('--d1-palette-basic800'),
+  '--d1-field-validation-borderColor': ('--d1-palette-basic600'),
   '--d1-image-color': ('--d1-palette-basic950'),
   '--d1-listGroup-borderColor': ('--d1-palette-basic800'),
   '--d1-listItem-borderColor': ('--d1-palette-basic800'),
@@ -11814,6 +11817,11 @@
         name: 'd1-chip',
         type: 'component',
       ),
+      'field':(
+        index: 'field',
+        name: 'd1-field',
+        type: 'component',
+      ),
       'fieldCounter':(
         index: 'fieldCounter',
         name: 'd1-fieldCounter',
@@ -12180,6 +12188,11 @@
       'chip':(
         index: 'chip',
         name: 'd-chip',
+        type: 'component',
+      ),
+      'field':(
+        index: 'field',
+        name: 'd-field',
         type: 'component',
       ),
       'fieldCounter':(

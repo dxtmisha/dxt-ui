@@ -130,7 +130,7 @@ export class BarsDesign<
    *
    * Рендеринг кнопки закрытия.
    */
-  protected readonly renderBackButton = (): VNode[] => {
+  readonly renderBackButton = (): VNode[] => {
     if (
       this.props.backHide
       && (
@@ -158,7 +158,7 @@ export class BarsDesign<
    *
    * Рендеринг контента.
    */
-  protected readonly renderContext = (): VNode[] => {
+  readonly renderContext = (): VNode[] => {
     return [
       h(
         'div',
@@ -178,7 +178,7 @@ export class BarsDesign<
    *
    * Рендеринг кнопки управления.
    */
-  protected readonly renderBars = (): VNode[] => {
+  readonly renderBars = (): VNode[] => {
     const children: any[] = []
 
     if (this.item.action.is.value) {
@@ -196,7 +196,7 @@ export class BarsDesign<
    *
    * Рендеринг кнопки управления.
    */
-  protected readonly renderActionBars = (): VNode[] => {
+  readonly renderActionBars = (): VNode[] => {
     const children: any[] = []
 
     if (this.item.action.is.value) {
@@ -213,7 +213,7 @@ export class BarsDesign<
    * Рендеринг списка кнопок по списку.
    * @param list list of data for the button/ список данных для кнопки
    */
-  protected readonly renderList = (
+  readonly renderList = (
     list: BarsPropsBasic['bars']
   ): VNode[] => {
     const children: VNode[] = []

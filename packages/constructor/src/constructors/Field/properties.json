@@ -1,2 +1,77 @@
 {
+  "padding": {
+    "_type": "var"
+  },
+  "space": {
+    "_type": "var"
+  },
+  "height": {
+    "_type": "var"
+  },
+  "border-width": {
+    "_type": "var"
+  },
+  "border-color": {
+    "_type": "var"
+  },
+  "border-opacity": {
+    "_type": "var"
+  },
+  "border-radius": {
+    "_type": "var"
+  },
+  "focusWithin": {
+    "_type": "var"
+  },
+  "validation": {
+    "_type": "var"
+  },
+  "#body": {
+    "#input": {},
+    "#title": {
+      "#label": {
+        "#text": {}
+      }
+    },
+    "#scoreboard": {
+      "#left": {},
+      "#right": {},
+      "#space": {},
+      "#input": {}
+    },
+    "#border": {}
+  },
+  "#required": {},
+  "focus": {},
+  "active": {},
+  "~selected": {},
+  "readonly": {},
+  "disabled": {},
+  "~block": {},
+  "~isValue": {},
+  "~basic": {
+    "_category": "style"
+  },
+  "~classic": {
+    "_category": "style"
+  },
+  "~tonal": {
+    "_category": "style"
+  },
+  "~filled": {
+    "_category": "style"
+  },
+  "~outlined": {
+    "_category": "style"
+  },
+  "~arrow": {},
+  "~align": {
+    "~center": {},
+    "~right": {},
+    "~left": {},
+    "_default": "center"
+  },
+  "~width": {
+    "_style": true
+  }
 }
