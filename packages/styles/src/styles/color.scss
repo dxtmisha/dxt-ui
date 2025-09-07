@@ -14,7 +14,8 @@
     $color != 'none' and
     $color != 'transparent' and
     $color != 'initial' and
-    $color != 'inherit'
+    $color != 'inherit' and
+    $color != 'unset'
   )
 }
 

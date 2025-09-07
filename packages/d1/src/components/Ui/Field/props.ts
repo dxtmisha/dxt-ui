@@ -16,10 +16,11 @@ interface PropsToken {
   block?: boolean
   isValue?: boolean
   basic?: boolean
-  classic?: boolean
+  boxed?: boolean
   tonal?: boolean
   filled?: boolean
   outlined?: boolean
+  classic?: boolean
   arrow?: boolean
   align?: 'center' | 'right' | 'left'
   width?: string | 'custom'

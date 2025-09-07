@@ -1,6 +1,7 @@
 import type { LabelProps } from '../../types/labelTypes'
 import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounter'
+import type { SkeletonPropsInclude } from '../Skeleton'
 
 interface FieldLabelPropsToken {
   // :type [!] System label / Системная метка
@@ -12,7 +13,8 @@ export interface FieldLabelPropsBasic<
   Progress extends ProgressPropsBasic = ProgressPropsBasic
 > extends LabelProps,
   FieldCounterPropsInclude<FieldCounter>,
-  ProgressPropsInclude<Progress> {
+  ProgressPropsInclude<Progress>,
+  SkeletonPropsInclude {
   // Style
   required?: boolean
 }

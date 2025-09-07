@@ -1,9 +1,10 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+import { computed, type Ref, type ToRefs } from 'vue'
+import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxt-ui/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
 import { FieldCounterInclude } from '../FieldCounter'
 import { ProgressInclude } from '../Progress'
+import { SkeletonInclude } from '../Skeleton'
 
 import type { FieldLabelComponents, FieldLabelEmits, FieldLabelSlots } from './types'
 import type { FieldLabelProps } from './props'
@@ -20,6 +21,9 @@ export class FieldLabel {
 
   /** Progress include/ Подключение прогресса */
   readonly progress: ProgressInclude
+
+  /** Skeleton include/ Подключение скелетона */
+  readonly skeleton: SkeletonInclude
 
   /**
    * Constructor
@@ -42,11 +46,17 @@ export class FieldLabel {
     protected readonly slots?: FieldLabelSlots,
     protected readonly emits?: ConstrEmit<FieldLabelEmits>
   ) {
+    const skeleton = new SkeletonInclude(this.props, this.classDesign, ['classTextVariant'])
+
     this.label = new LabelInclude(
       this.props,
       this.className,
       undefined,
-      this.slots
+      this.slots,
+      undefined,
+      undefined,
+      undefined,
+      skeleton
     )
 
     this.fieldCounter = new FieldCounterInclude(
@@ -65,5 +75,19 @@ export class FieldLabel {
         dense: true
       }
     )
+
+    this.skeleton = skeleton
   }
+
+  /**
+   * Values for the class.
+   *
+   * Значения для класса.
+   * Возвращает объект классов, включающий классы скелетона, если он активен.
+   */
+  readonly classes = computed<ConstrClassObject>(() => {
+    return {
+      ...this.skeleton.classes.value
+    }
+  })
 }

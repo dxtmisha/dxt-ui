@@ -41,7 +41,7 @@ export interface FieldPropsBasic<
   SuffixProps,
   CaptionProps,
   FieldLabelPropsInclude<FieldLabel, FieldCounter>,
-  FieldMessagePropsInclude<FieldMessage>,
+  FieldMessagePropsInclude<FieldMessage, FieldCounter>,
   ProgressPropsInclude<Progress>,
   EnabledProps,
   EventClickProps,

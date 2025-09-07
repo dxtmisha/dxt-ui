@@ -43,17 +43,6 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
-  counterShow: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.status,
-
-      description: {
-        en: 'Shows the counter element',
-        ru: 'Показывает элемент счетчика'
-      }
-    }
-  },
   disabled: {
     type: StorybookControl.boolean,
     options: {
@@ -116,6 +105,16 @@ export const wikiStatus: StorybookArgsToList = {
       description: {
         en: 'Turns the icon',
         ru: 'Поворачивает иконку'
+      }
+    }
+  },
+  isValue: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Indicates that the control has a value and adjusts visuals (e.g., floating label)',
+        ru: 'Указывает, что у элемента есть значение, и корректирует визуальное состояние (например, плавающая метка)'
       }
     }
   },

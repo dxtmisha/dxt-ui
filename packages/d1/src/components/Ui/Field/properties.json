@@ -1,21 +1,25 @@
 {
   "main": "{d.field}",
-  "padding": "{sys.spacing.md}",
+  "padding": "{??height} * {?sys.spacing.adaptive.md}",
   "space": "{sys.spacing.x}",
   "height": "{ref.spacing.12}",
   "link|font": "{font.bodyLarge}",
+  "color": "{sys.palette.onSurface}",
   "border-width": "{sys.spacing.outline}",
   "border-color": "{sys.palette.outline}",
   "border-opacity": "{sys.opacity.outline}",
   "border-radius": "{??height} * {?sys.rounded.adaptive.md}",
   "focusWithin": {
-    "border-color": "{sys.palette.primaryVariant}",
+    "color": "{sys.palette.primary}",
+    "color-opacity": "{sys.opacity.surface.high}",
+    "border-color": "{sys.palette.primary}",
     "border-width": "{ref.spacing.2px}",
     "caption": {
       "opacity": "{sys.opacity.surface.disabled}"
     }
   },
   "validation": {
+    "color": "{sys.palette.error}",
     "border-color": "{sys.palette.error}"
   },
   "#body": {
@@ -24,7 +28,7 @@
     "gradient": "{sys.palette.primary}",
     "gradient-opacity": "0",
     "backdrop-filter": "{sys.blur.md}",
-    "input": {
+    "#input": {
       "gradient": "{sys.palette.primary}",
       "gradient-opacity": "0",
       "hover": {
@@ -56,8 +60,41 @@
   "#trailing": {
     "color-opacity": "{sys.opacity.surface.medium}"
   },
-  "classic": {
-    "_default": true
+  "disabled": {
+    "color-opacity": "{sys.opacity.surface.disabled}",
+    "border-opacity": "{sys.opacity.outline} * {sys.opacity.surface.disabled}",
+    "#body": {
+      "background-color": "{sys.palette.surface}",
+      "#input": {
+        "color": "inherit",
+        "::placeholder": {
+          "color": "inherit"
+        }
+      }
+    },
+    "#prefix": {
+      "color": "inherit"
+    },
+    "#suffix": {
+      "color": "inherit"
+    },
+    "#caption": {
+      "color": "inherit"
+    }
+  },
+  "selected": {
+    "#body": {
+      "gradient-opacity": "{sys.opacity.selected}"
+    }
+  },
+  "~basic": {
+    "padding": "{grid.paddingX}",
+    "border-opacity": "0",
+    "background-opacity": "0",
+    "backdrop-filter": "unset",
+    "disabled": {
+      "border-opacity": "0"
+    }
   },
   "~tonal": {
     "border-width": "0",
@@ -78,5 +115,38 @@
         }
       }
     }
+  },
+  "~filled": {
+    "#body": {
+      "background-color": "{sys.palette.scrim}",
+      "background-opacity": "{sys.opacity.overlay}",
+      "backdrop-filter": "{sys.blur.xl}"
+    }
+  },
+  "~outlined": {
+    "#body": {
+      "#input": {
+        "hover": {
+          "gradient-opacity": "0"
+        },
+        "active": {
+          "gradient-opacity": "0"
+        }
+      },
+      "focus": {
+        "gradient-opacity": "0"
+      }
+    },
+    "~selected": {
+      "border-width": "{ref.spacing.2px}",
+      "border-color": "{sys.palette.primaryVariant}",
+      "border-opacity": "{sys.opacity.scrim}",
+      "#body": {
+        "gradient-opacity": "0"
+      }
+    }
+  },
+  "~classic": {
+    "_default": true
   }
 }

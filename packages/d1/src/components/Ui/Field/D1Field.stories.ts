@@ -4,6 +4,7 @@ import D1Field from './D1Field.vue'
 import { FieldWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -42,4 +43,19 @@ export const Field: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const FieldSkeleton: Story = {
+  name: 'Скелетон',
+  render: () => ({
+    components: { D1Field, D1Skeleton },
+    template: `
+        <D1Skeleton :active="true" style="max-width:280px">
+          <D1Field isSkeleton label="Skeleton" counter="12" helper-message="Helper text">
+            <template #default="{id, className}">
+              <input :id="id" :class="className" readonly/>
+            </template>
+          </D1Field>
+        </D1Skeleton>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

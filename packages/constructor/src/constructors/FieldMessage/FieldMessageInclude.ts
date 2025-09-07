@@ -5,8 +5,11 @@ import {
   getRef,
   isFilled,
   type RefOrNormal,
+  type RefType,
   toBinds
 } from '@dxt-ui/functional'
+
+import { FieldCounterInclude } from '../FieldCounter'
 
 import type {
   FieldMessageComponentInclude,
@@ -23,12 +26,16 @@ export class FieldMessageInclude<
   Props extends FieldMessagePropsInclude = FieldMessagePropsInclude,
   PropsExtra extends ConstrBind<FieldMessagePropsBasic> = ConstrBind<FieldMessagePropsBasic>
 > {
+  /** Field counter include/ Подключение счетчика поля */
+  private readonly fieldCounter: FieldCounterInclude
+
   /**
    * Constructor
    * @param props input parameter/ входной параметр
    * @param className class name/ название класса
    * @param components object for working with components/ объект для работы с компонентами
    * @param validationMessage error line/ строка ошибки
+   * @param isCounter whether to display the counter/ отображать ли счетчик
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
@@ -37,9 +44,11 @@ export class FieldMessageInclude<
     protected readonly className: string,
     protected readonly components?: DesignComponents<FieldMessageComponentInclude, Props>,
     protected readonly validationMessage?: RefOrNormal<string>,
+    protected readonly isCounter?: RefType<boolean | undefined>,
     protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly index?: string
   ) {
+    this.fieldCounter = new FieldCounterInclude(this.props, this.className)
   }
 
   /** Validation message computed/ Вычисляемое сообщение валидации */
@@ -58,6 +67,9 @@ export class FieldMessageInclude<
   readonly binds = computed<PropsExtra>(() => {
     return toBinds<PropsExtra>(
       getRef(this.extra),
+      this.isCounter?.value
+        ? this.fieldCounter.bindsIntermediary.value
+        : {},
       {
         disabled: this.props.disabled,
         forceShow: this.props.forceShowMessage,

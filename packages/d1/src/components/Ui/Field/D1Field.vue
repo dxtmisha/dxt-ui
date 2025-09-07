@@ -38,10 +38,11 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-field--block': props.block,
     'd1-field--isValue': props.isValue,
     'd1-field--basic': props.basic,
-    'd1-field--classic': props.classic && !props.basic && !props.tonal && !props.filled && !props.outlined,
+    'd1-field--boxed': props.boxed,
     'd1-field--tonal': props.tonal,
     'd1-field--filled': props.filled,
     'd1-field--outlined': props.outlined,
+    'd1-field--classic': props.classic && !props.basic && !props.boxed && !props.tonal && !props.filled && !props.outlined,
     'd1-field--arrow': props.arrow,
     [`d1-field--align--${props.align}`]: inArray(propsValues.align, props.align),
     'd1-field--width--custom': isFilled(props.width) && !inArray(propsValues.width, props.width)

@@ -46,7 +46,7 @@
 
     @include ui.subclass('textVariant') {
       @include mixinSkeletonText;
-      @include ui.color(ui.v('??color'), ui.v('??borderOpacity'), true, 'text-decoration-color');
+      @include ui.color(ui.v('??backgroundColor'), ui.v('??backgroundOpacity'), true, 'text-decoration-color');
     }
 
     @include ui.subclass('background') {

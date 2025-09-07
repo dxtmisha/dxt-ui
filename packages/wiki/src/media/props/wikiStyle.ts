@@ -98,6 +98,17 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  counterShow: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+
+      description: {
+        en: 'Shows the counter element',
+        ru: 'Показывает элемент счетчика'
+      }
+    }
+  },
   counterTemplate: {
     type: StorybookControl.string,
     options: {
@@ -106,6 +117,16 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Custom display template for the counter component',
         ru: 'Пользовательский шаблон отображения для компонента счетчика'
+      }
+    }
+  },
+  counterTop: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Displays the counter above the field',
+        ru: 'Отображает счетчик над полем'
       }
     }
   },
@@ -307,6 +328,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  iconCancel: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon for cancel/clear action',
+        ru: 'Задает иконку для действия отмены/очистки'
+      }
+    }
+  },
   iconBack: {
     type: StorybookControl.string,
     options: {
@@ -324,6 +355,16 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Sets icon for down arrow',
         ru: 'Задает иконку стрелки вниз'
+      }
+    }
+  },
+  iconArrowLeft: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon for left arrow',
+        ru: 'Задает иконку стрелки влево'
       }
     }
   },
@@ -389,16 +430,6 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Displays the component in skeleton mode',
         ru: 'Отображает компонент в режиме скелетона'
-      }
-    }
-  },
-  isValue: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Indicates that the control has a value and adjusts visuals (e.g., floating label)',
-        ru: 'Указывает, что у элемента есть значение, и корректирует визуальное состояние (например, плавающая метка)'
       }
     }
   },

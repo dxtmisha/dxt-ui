@@ -72,12 +72,17 @@ export class Field {
       this.props,
       this.className,
       this.components,
-      this.refs.counterTop
+      this.refs.counterTop,
+      computed(() => ({
+        isSkeleton: this.props.isSkeleton
+      }))
     )
     this.fieldMessage = new FieldMessageInclude(
       this.props,
       this.className,
-      this.components
+      this.components,
+      undefined,
+      computed(() => !this.props.counterTop)
     )
 
     this.progress = new ProgressInclude(

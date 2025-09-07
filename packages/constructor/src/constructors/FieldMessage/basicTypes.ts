@@ -1,6 +1,7 @@
 import type { ConstrBind } from '@dxt-ui/functional'
 
 import type { FieldMessagePropsBasic } from './props'
+import type { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounter'
 
 /**
  * Interface for describing which components need to be connected for FieldMessage work/
@@ -15,8 +16,9 @@ export type FieldMessageComponentInclude = {
  * Свойства, которые можно передать в FieldMessageInclude
  */
 export interface FieldMessagePropsInclude<
-  FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic
-> {
+  FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
+  FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic
+> extends FieldCounterPropsInclude<FieldCounter> {
   forceShowMessage?: boolean
   disabled?: boolean
   helperMessage?: string

@@ -84,7 +84,7 @@ export class FieldLabelDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes.value,
       ...{
         // :classes [!] System label / Системная метка
         label: this.getSubClass('label'),

@@ -39,10 +39,31 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
         </template>
       </DesignComponent>
     `,
-  stories: [],
+  stories: [
+    {
+      id: 'FieldSkeleton',
+      name: {
+        en: 'Skeleton',
+        ru: 'Скелетон'
+      },
+      components: ['Skeleton'],
+      template: `
+        <DesignSkeleton :active="true" style="max-width:280px">
+          <DesignComponent isSkeleton label="Skeleton" counter="12" helper-message="Helper text">
+            <template #default="{id, className}">
+              <input :id="id" :class="className" readonly/>
+            </template>
+          </DesignComponent>
+        </DesignSkeleton>
+      `
+    }
+  ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Field'} type={'field'}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Component.FieldSkeleton}/>
     `
   }
 }

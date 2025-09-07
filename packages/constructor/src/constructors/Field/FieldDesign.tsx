@@ -122,7 +122,14 @@ export class FieldDesign<
   protected initRender(): VNode {
     const children: any[] = []
 
-    if ((this.props as any).classic) {
+    if (
+      (this.props as any).classic
+      && !(this.props as any).basic
+      && !(this.props as any).boxed
+      && !(this.props as any).filled
+      && !(this.props as any).outlined
+      && !(this.props as any).tonal
+    ) {
       children.push(...this.item.fieldLabel.render())
     }
 

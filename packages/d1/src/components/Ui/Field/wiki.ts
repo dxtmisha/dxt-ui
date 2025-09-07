@@ -10,6 +10,7 @@ const propsNames: StorybookProps = [
   { name: 'arrow', type: 'boolean' },
   { name: 'basic', type: 'boolean' },
   { name: 'block', type: 'boolean' },
+  { name: 'boxed', type: 'boolean' },
   { name: 'cancel', type: 'boolean' },
   { name: 'cancelAlways', type: 'boolean' },
   { name: 'cancelShow', type: 'boolean' },
