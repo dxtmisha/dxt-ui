@@ -49,7 +49,7 @@ export const FieldSkeleton: Story = {
     components: { D1Field, D1Skeleton },
     template: `
         <D1Skeleton :active="true" style="max-width:280px">
-          <D1Field isSkeleton label="Skeleton" counter="12" helper-message="Helper text">
+          <D1Field isSkeleton label="Skeleton" counter="12" helper-message="Helper message: loading description.">
             <template #default="{id, className}">
               <input :id="id" :class="className" readonly/>
             </template>

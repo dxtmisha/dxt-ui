@@ -73,16 +73,15 @@ export class Field {
       this.className,
       this.components,
       this.refs.counterTop,
-      computed(() => ({
-        isSkeleton: this.props.isSkeleton
-      }))
+      this.propsSkeleton
     )
     this.fieldMessage = new FieldMessageInclude(
       this.props,
       this.className,
       this.components,
       undefined,
-      computed(() => !this.props.counterTop)
+      computed(() => !this.props.counterTop),
+      this.propsSkeleton
     )
 
     this.progress = new ProgressInclude(
@@ -139,4 +138,9 @@ export class Field {
       classHidden: `${this.className}__body__hidden`
     }
   }
+
+  /** Values for the skeleton/ Значения для скелетона */
+  protected readonly propsSkeleton = computed(() => ({
+    isSkeleton: this.props.isSkeleton
+  }))
 }

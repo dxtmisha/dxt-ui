@@ -49,7 +49,7 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
       components: ['Skeleton'],
       template: `
         <DesignSkeleton :active="true" style="max-width:280px">
-          <DesignComponent isSkeleton label="Skeleton" counter="12" helper-message="Helper text">
+          <DesignComponent isSkeleton label="Skeleton" counter="12" helper-message="Helper message: loading description.">
             <template #default="{id, className}">
               <input :id="id" :class="className" readonly/>
             </template>

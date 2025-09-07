@@ -1,4 +1,5 @@
 import type { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounter'
+import type { SkeletonPropsInclude } from '../Skeleton'
 
 interface FieldMessagePropsToken {
   // :type [!] System label / Системная метка
@@ -7,7 +8,8 @@ interface FieldMessagePropsToken {
 
 export interface FieldMessagePropsBasic<
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic
-> extends FieldCounterPropsInclude<FieldCounter> {
+> extends FieldCounterPropsInclude<FieldCounter>,
+  SkeletonPropsInclude {
   // Status
   forceShow?: boolean
   disabled?: boolean

@@ -3,6 +3,7 @@ import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxt-ui/fun
 
 import { FieldCounterInclude } from '../FieldCounter'
 import { FieldMessageMessage } from './FieldMessageMessage'
+import { SkeletonInclude } from '../Skeleton'
 
 import type { FieldMessageComponents, FieldMessageEmits, FieldMessageSlots } from './types'
 import type { FieldMessageProps } from './props'
@@ -16,6 +17,9 @@ export class FieldMessage {
 
   /** Message functionality/ Функциональность сообщений */
   readonly message: FieldMessageMessage
+
+  /** Skeleton include/ Подключение скелетона */
+  readonly skeleton: SkeletonInclude
 
   /**
    * Constructor
@@ -45,6 +49,11 @@ export class FieldMessage {
     )
 
     this.message = new FieldMessageMessage(this.props, this.slots)
+    this.skeleton = new SkeletonInclude(
+      this.props as any,
+      this.classDesign,
+      ['classTextVariant']
+    )
   }
 
   /**

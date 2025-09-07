@@ -135,7 +135,10 @@ export class FieldMessageDesign<
     const children: VNode[] = []
     const props: Record<string, any> = {
       key: 'message',
-      class: this.classes?.value.info
+      class: [
+        this.classes?.value.info,
+        this.item.skeleton.classes.value
+      ]
     }
 
     this.initSlot('helper', children)
