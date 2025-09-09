@@ -10,7 +10,7 @@ import {
 
 import { FieldCounterInclude } from '../FieldCounter'
 
-import type { FieldLabelComponentInclude, FieldLabelPropsInclude } from './basicTypes'
+import type { FieldLabelComponentInclude, FieldLabelPropsInclude, FieldLabelSlotsInclude } from './basicTypes'
 import type { FieldLabelPropsBasic } from './props'
 
 /**
@@ -30,6 +30,7 @@ export class FieldLabelInclude<
    * @param props input parameter/ входной параметр
    * @param className class name/ название класса
    * @param components object for working with components/ объект для работы с компонентами
+   * @param slots object for working with slots/ объект для работы со слотами
    * @param isCounter whether to display the counter/ отображать ли счетчик
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
@@ -38,6 +39,7 @@ export class FieldLabelInclude<
     protected readonly props: Readonly<Props>,
     protected readonly className: string,
     protected readonly components?: DesignComponents<FieldLabelComponentInclude, Props>,
+    protected readonly slots?: FieldLabelSlotsInclude,
     protected readonly isCounter?: RefType<boolean | undefined>,
     protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly index?: string
@@ -79,7 +81,7 @@ export class FieldLabelInclude<
             { class: `${this.className}__fieldLabel` }
           )
         },
-        undefined,
+        this.slots,
         this.index
       )
     }

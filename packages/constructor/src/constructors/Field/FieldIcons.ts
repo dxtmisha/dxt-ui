@@ -27,7 +27,13 @@ export class FieldIcons {
    * Определяет, требуется ли отображение стрелок.
    */
   readonly isArrow = computed<boolean>(
-    () => Boolean(this.props.arrow && !this.props.disabled)
+    () => Boolean(
+      (
+        this.props.arrowCarousel
+        || this.props.arrowStepper
+      )
+      && !this.props.disabled
+    )
   )
 
   /**
@@ -39,10 +45,11 @@ export class FieldIcons {
     this.props.cancel
     && !this.props.readonly
     && !this.props.disabled
-    && !this.props.arrow
+    && !this.props.arrowCarousel
+    && !this.props.arrowStepper
     && (
-      this.props.cancelShow
-      || this.props.cancelAlways
+      (this.props.cancel === 'auto' && this.props.cancelShow)
+      || this.props.cancel === 'always'
     )
   ))
 
@@ -54,7 +61,7 @@ export class FieldIcons {
   readonly cancelBind = computed<ConstrBind<IconProps>>(() => {
     return {
       'class': `${this.className}__cancel`,
-      'icon': this.props.iconCancel,
+      'icon': this.props.iconClose,
       'dynamic': true,
       'data-event-type': 'cancel'
     }
@@ -68,9 +75,8 @@ export class FieldIcons {
   readonly previousBind = computed<ConstrBind<IconProps>>(() => {
     return {
       'class': `${this.className}__previous`,
-      'icon': this.props.iconArrowLeft,
+      'icon': this.props.arrowCarousel ? this.props.iconArrowLeft : this.props.iconMinus,
       'disabled': this.props.disabled || this.props.disabledPrevious,
-      'overlay': true,
       'dynamic': true,
       'data-event-type': 'previous'
     }
@@ -84,9 +90,8 @@ export class FieldIcons {
   readonly nextBind = computed<ConstrBind<IconProps>>(() => {
     return {
       'class': `${this.className}__next`,
-      'icon': this.props.iconArrowRight,
+      'icon': this.props.arrowCarousel ? this.props.iconArrowRight : this.props.iconPlus,
       'disabled': this.props.disabled || this.props.disabledNext,
-      'overlay': true,
       'dynamic': true,
       'data-event-type': 'next'
     }

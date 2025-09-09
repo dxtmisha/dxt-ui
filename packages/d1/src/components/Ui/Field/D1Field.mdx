@@ -21,16 +21,44 @@ import {FieldWikiStorybook} from './wiki'
 
 <StorybookDescriptions componentName={'Field'} type={'field'}/>
 
+<StorybookDescriptions componentName={'Field'} type={'value'}/>
+<Canvas of={Field.FieldValue}/>
+
+<StorybookDescriptions componentName={'Field'} type={'width'}/>
+<Canvas of={Field.FieldWidth}/>
+
+<StorybookDescriptions componentName={'Field'} type={'cancel'}/>
+<Canvas of={Field.FieldCancel}/>
+
+<StorybookDescriptions componentName={'Field'} type={'arrows'}/>
+<Canvas of={Field.FieldNavigation}/>
+
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={Field.FieldSkeleton}/>
     
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 [//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+<StorybookDescriptions componentName={'Event'} type={'clickLite'}/>
+    
 [//]: # (:documentation-events [!] System label / Системная метка)
 
 [//]: # (:documentation-expose [!] System label / Системная метка)
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
 [//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={Field.FieldSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'default'} />
+<StorybookDescriptions componentName={'Field'} type={'slot.leading'} />
+<StorybookDescriptions componentName={'Field'} type={'slot.trailing'} />
+<StorybookDescriptions componentName={'Slot'} type={'label'} />
+<StorybookDescriptions componentName={'Slot'} type={'prefix'} />
+<StorybookDescriptions componentName={'Slot'} type={'suffix'} />
+<StorybookDescriptions componentName={'Slot'} type={'caption'} />
+    
 [//]: # (:documentation-slots [!] System label / Системная метка)

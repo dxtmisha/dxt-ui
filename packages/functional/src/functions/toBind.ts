@@ -23,7 +23,7 @@ export function toBind<R extends ItemList = ItemList>(
     ...value
   } as ConstrBind<R>
 
-  if (extraClass || valueClass) {
+  if (extraClass && valueClass) {
     data.class = []
 
     if (extraClass) {
@@ -35,7 +35,7 @@ export function toBind<R extends ItemList = ItemList>(
     }
   }
 
-  if (extraStyle || valueStyle) {
+  if (extraStyle && valueStyle) {
     data.style = []
 
     if (extraStyle) {

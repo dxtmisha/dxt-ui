@@ -106,7 +106,7 @@ export class FieldCounterDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
+  protected initRender(): VNode | undefined {
     if (this.item.is.value) {
       return h(
         'div', {

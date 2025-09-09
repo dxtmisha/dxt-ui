@@ -1,0 +1,17 @@
+## Cancel / clear mode
+
+The `cancel` and `cancelShow` properties control when a clear (cancel) icon is displayed.
+
+### Properties
+
+- **cancel** — Display mode: `auto` or `always`.
+- **cancelShow** — Condition flag used only in `auto` mode.
+
+### Behaviour
+
+- `cancel = auto`: Shown only if `cancelShow` is true, field is active (not disabled / readonly) and no arrow mode (carousel / stepper) is enabled.
+- `cancel = always`: Forced display (still hidden if disabled / readonly or arrows active).
+- In `always` mode `cancelShow` is ignored.
+
+Typical usage: bind `cancelShow` to a computed "has value" state.
+

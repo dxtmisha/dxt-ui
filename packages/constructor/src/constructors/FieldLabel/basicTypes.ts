@@ -1,7 +1,8 @@
 import type { ConstrBind } from '@dxt-ui/functional'
-import type { LabelProps } from '../../types/labelTypes'
+import type { LabelAlternativeSlots, LabelProps } from '../../types/labelTypes'
 import type { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounter'
 import type { FieldLabelPropsBasic } from './props'
+import type { FieldLabelSlots } from './types.ts'
 
 /**
  * Interface for describing which components need to be connected for FieldLabel work/
@@ -9,6 +10,16 @@ import type { FieldLabelPropsBasic } from './props'
  */
 export type FieldLabelComponentInclude = {
   fieldLabel: object
+}
+
+/**
+ * Slots contract that FieldLabelInclude can expose or map to Label component slots.
+ * Extends LabelAlternativeSlots to reuse standard label-related slots (leading, trailing, etc.).
+ *
+ * Контракт слотов, которые может предоставлять FieldLabelInclude или прокидывать в Label.
+ * Расширяет LabelAlternativeSlots, чтобы переиспользовать стандартные слоты лейбла (leading, trailing и др.).
+ */
+export interface FieldLabelSlotsInclude extends LabelAlternativeSlots {
 }
 
 /**

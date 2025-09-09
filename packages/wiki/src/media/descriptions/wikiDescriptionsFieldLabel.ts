@@ -30,6 +30,9 @@ export const wikiDescriptionsFieldLabel: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'FieldLabel'} type={'fieldLabel'}/>
+    `,
+    slots: `
+<StorybookDescriptions componentName={'Slot'} type={'label'} />
     `
   }
 }

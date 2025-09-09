@@ -39,7 +39,6 @@ export class PropertiesStandard {
         newItem.value = this.to(newItem.value)
       }
 
-      // this.addRename(key, newItem)
       this.addValue(newItem)
 
       newItem[PropertyKey.index] = index.replace(/^=/, '')

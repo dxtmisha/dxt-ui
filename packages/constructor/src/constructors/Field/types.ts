@@ -1,17 +1,16 @@
 import type { ConstrClass } from '@dxt-ui/functional'
 
 import type { CaptionSlots } from '../../types/captionTypes'
+import type { PrefixSlots } from '../../types/prefixTypes'
+import type { SuffixSlots } from '../../types/suffixTypes'
 import type { EventClickEmits } from '../../types/eventClickTypes'
 
 import type { IconComponentInclude } from '../Icon'
-import type { FieldLabelComponentInclude } from '../FieldLabel'
+import type { FieldLabelComponentInclude, FieldLabelSlotsInclude } from '../FieldLabel'
 import type { FieldMessageComponentInclude } from '../FieldMessage'
 import type { ProgressComponentInclude } from '../Progress'
 
 import type { FieldControl } from './basicTypes'
-import type { LabelSlots } from '../../types/labelTypes.ts'
-import type { PrefixSlots } from '../../types/prefixTypes.ts'
-import type { SuffixSlots } from '../../types/suffixTypes.ts'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -44,10 +43,10 @@ export interface FieldExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface FieldSlots extends LabelSlots,
-  CaptionSlots,
+export interface FieldSlots extends CaptionSlots,
   PrefixSlots,
-  SuffixSlots {
+  SuffixSlots,
+  FieldLabelSlotsInclude {
   leading?(props: FieldControl): any
 
   trailing?(props: FieldControl): any

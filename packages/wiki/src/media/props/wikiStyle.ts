@@ -22,6 +22,18 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  align: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'General alignment depending on component semantics',
+        ru: 'Общее выравнивание в зависимости от семантики компонента'
+      }
+    }
+  },
   asPalette: {
     type: StorybookControl.boolean,
     options: {
@@ -61,6 +73,16 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Additional attributes for the bars (header toolbar) container',
         ru: 'Дополнительные атрибуты для контейнера бара (верхней панели)'
+      }
+    }
+  },
+  block: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Enables block mode (component expands to full width)',
+        ru: 'Включает блочный режим (компонент растягивается на всю ширину)'
       }
     }
   },
@@ -214,6 +236,26 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Additional attributes for the field counter component',
         ru: 'Дополнительные атрибуты для компонента счетчика поля'
+      }
+    }
+  },
+  fieldLabelAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the FieldLabel element',
+        ru: 'Дополнительные атрибуты для элемента FieldLabel'
+      }
+    }
+  },
+  fieldMessageAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the FieldMessage element',
+        ru: 'Дополнительные атрибуты для элемента FieldMessage'
       }
     }
   },
@@ -375,6 +417,26 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Sets icon for right arrow',
         ru: 'Задает иконку стрелки вправо'
+      }
+    }
+  },
+  iconMinus: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon for decrement / minus action',
+        ru: 'Задает иконку для действия уменьшения (минус)'
+      }
+    }
+  },
+  iconPlus: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon for increment / plus action',
+        ru: 'Задает иконку для действия увеличения (плюс)'
       }
     }
   },

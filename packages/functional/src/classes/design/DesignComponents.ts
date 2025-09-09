@@ -1,9 +1,11 @@
+import { computed, type ComputedRef, type VNode } from 'vue'
+
 import { forEach } from '../../functions/forEach'
 import { getRef } from '../../functions/ref/getRef'
 import { isObjectNotArray } from '../../functions/isObjectNotArray'
 import { render } from '../../functions/ref/render'
+import { toBinds } from '../../functions/toBinds'
 
-import type { VNode } from 'vue'
 import type {
   RawChildren,
   RawSlots
@@ -23,6 +25,9 @@ export class DesignComponents<
   COMP extends ConstrComponent,
   P extends ConstrItem
 > {
+  /** Cache for computed properties/ Кэш для вычисляемых свойств */
+  protected caching: Record<string, ComputedRef<any>> = {}
+
   /**
    * Constructor
    * @param components list of connected components/ список подключенных компонентов
@@ -67,24 +72,15 @@ export class DesignComponents<
     props?: P[K] | Record<string, any>
   ): Record<string, any> | undefined {
     if (index) {
-      const modification = getRef(this.modification?.[index])
-
-      if (
-        modification
-        && isObjectNotArray(modification)
-      ) {
-        const value: Record<string, any> = {}
-
-        forEach(modification, (item, name: string) => {
-          value[name] = getRef(item)
-        })
-
-        if (props) {
-          Object.assign(value, props)
-        }
-
-        return value
+      if (!(index in this.caching)) {
+        this.caching[index] = computed(() => this.computeModification(index))
       }
+
+      if (props) {
+        return toBinds(this.caching[index].value, props)
+      }
+
+      return this.caching[index].value
     }
 
     return props
@@ -178,5 +174,32 @@ export class DesignComponents<
     item.push(...this.render(name, props, children, index))
 
     return this
+  }
+
+  /**
+   * Calculates modified input data for connected components.
+   *
+   * Вычисляет модифицированные входные данные для подключенных компонентов.
+   * @param index the name of this/ название данного
+   */
+  protected computeModification<K extends keyof P>(
+    index: K & string | string
+  ): Record<string, any> {
+    const modification = getRef(this.modification?.[index])
+
+    if (
+      modification
+      && isObjectNotArray(modification)
+    ) {
+      const value: Record<string, any> = {}
+
+      forEach(modification, (item, name: string) => {
+        value[name] = getRef(item)
+      })
+
+      return value
+    }
+
+    return {}
   }
 }

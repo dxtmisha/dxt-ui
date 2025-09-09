@@ -20,11 +20,14 @@ interface FieldPropsToken {
   block?: boolean
   isValue?: boolean
   basic?: boolean
-  classic?: boolean
+  boxed?: boolean
   tonal?: boolean
   filled?: boolean
   outlined?: boolean
-  arrow?: boolean
+  classic?: boolean
+  arrowCarousel?: boolean
+  arrowStepper?: boolean
+  cancel?: 'auto' | 'always'
   align?: 'center' | 'right' | 'left'
   width?: string | 'custom'
   // :type [!] System label / Системная метка
@@ -53,13 +56,13 @@ export interface FieldPropsBasic<
   // Style
   counterTop?: boolean
 
-  cancel?: boolean
   cancelShow?: boolean
-  cancelAlways?: boolean
 
   iconArrowLeft?: IconValue<Icon>
   iconArrowRight?: IconValue<Icon>
-  iconCancel?: IconValue<Icon>
+  iconPlus?: IconValue<Icon>
+  iconMinus?: IconValue<Icon>
+  iconClose?: IconValue<Icon>
 }
 
 /**
@@ -76,9 +79,9 @@ export interface FieldProps extends FieldPropsBasic, FieldPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsField = {
-  cancel: true,
   ...{
     // :default [!] System label / Системная метка
+    cancel: 'auto',
     align: 'center'
     // :default [!] System label / Системная метка
   }

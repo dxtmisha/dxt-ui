@@ -58,7 +58,7 @@
   }
 
   &--disabled {
-    color: rgba(var(--sys-color, ui.v('??color')), var(--sys-color-opacity, ui.v('??color.opacity', 1)));
+    color: rgba(var(--sys-color, ui.v('??color')), var(--sys-color-opacity, ui.v('??colorOpacity', 1)));
   }
 
   &--hide {

@@ -67,7 +67,13 @@
   "~classic": {
     "_category": "style"
   },
-  "~arrow": {},
+  "~arrowCarousel": {},
+  "~arrowStepper": {},
+  "~cancel": {
+    "~auto": {},
+    "~always": {},
+    "_default": "auto"
+  },
   "~align": {
     "~center": {},
     "~right": {},

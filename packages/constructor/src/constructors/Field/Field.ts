@@ -18,7 +18,7 @@ import { FieldSize } from './FieldSize'
 
 import type { FieldComponents, FieldEmits, FieldSlots } from './types'
 import type { FieldProps } from './props'
-import type { FieldControl } from './basicTypes.ts'
+import type { FieldControl } from './basicTypes'
 
 /**
  * Field
@@ -72,6 +72,7 @@ export class Field {
       this.props,
       this.className,
       this.components,
+      this.slots,
       this.refs.counterTop,
       this.propsSkeleton
     )

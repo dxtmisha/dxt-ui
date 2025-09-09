@@ -1,5 +1,5 @@
 import type { ConstrClass } from '@dxt-ui/functional'
-import type { LabelSlots } from '../../types/labelTypes'
+import type { LabelAlternativeSlots } from '../../types/labelTypes'
 import { type FieldCounterComponentInclude } from '../FieldCounter'
 import { type ProgressComponentInclude } from '../Progress'
 
@@ -32,7 +32,7 @@ export interface FieldLabelExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface FieldLabelSlots extends LabelSlots {
+export interface FieldLabelSlots extends LabelAlternativeSlots {
 }
 
 /**

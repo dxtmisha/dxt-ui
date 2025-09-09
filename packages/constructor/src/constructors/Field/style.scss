@@ -228,6 +228,10 @@
 
       @include ui.translateY(ui.v('??sys.half'));
 
+      &__left {
+        order: 12;
+      }
+
       &__space {
         @include ui.flexX;
         flex-grow: 1;
@@ -238,6 +242,10 @@
         @include ui.textSelectNone;
 
         pointer-events: none;
+      }
+
+      &__right {
+        order: 84;
       }
 
       &__input {
@@ -273,10 +281,6 @@
     order: 8;
   }
 
-  &__left {
-    order: 12;
-  }
-
   &__prefix,
   &__suffix {
     opacity: 0;
@@ -300,10 +304,6 @@
     flex-shrink: 1;
     opacity: 0;
     pointer-events: none;
-  }
-
-  &__left {
-    order: 84;
   }
 
   &__cancel {

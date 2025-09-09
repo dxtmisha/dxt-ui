@@ -43,7 +43,9 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-field--filled': props.filled,
     'd1-field--outlined': props.outlined,
     'd1-field--classic': props.classic && !props.basic && !props.boxed && !props.tonal && !props.filled && !props.outlined,
-    'd1-field--arrow': props.arrow,
+    'd1-field--arrowCarousel': props.arrowCarousel,
+    'd1-field--arrowStepper': props.arrowStepper,
+    [`d1-field--cancel--${props.cancel}`]: inArray(propsValues.cancel, props.cancel),
     [`d1-field--align--${props.align}`]: inArray(propsValues.align, props.align),
     'd1-field--width--custom': isFilled(props.width) && !inArray(propsValues.width, props.width)
     // :classes-values [!] System label / Системная метка
@@ -67,6 +69,23 @@ const design = new FieldDesign(
       fieldLabel: D1FieldLabel,
       fieldMessage: D1FieldMessage,
       progress: D1Progress
+    },
+    compMod: {
+      icon: {
+        rounded: 'full'
+      },
+      iconTrailing: {
+        rounded: 'full'
+      },
+      cancel: {
+        rounded: 'full'
+      },
+      previous: {
+        rounded: 'full'
+      },
+      next: {
+        rounded: 'full'
+      }
     }
   }
 )

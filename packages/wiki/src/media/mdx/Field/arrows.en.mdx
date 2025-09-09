@@ -1,0 +1,25 @@
+## Navigation & alignment
+
+The properties `arrowCarousel`, `arrowStepper`, `disabledPrevious`, `disabledNext`, and `align` control inline navigation controls and text alignment inside Field.
+
+### Properties
+
+- **arrowCarousel** – Enables left/right navigation arrows (previous/next) using arrow icons.
+- **arrowStepper** – Enables numeric step control (minus / plus). Mutually exclusive with `arrowCarousel`.
+- **disabledPrevious** – Disables the left / minus control.
+- **disabledNext** – Disables the right / plus control.
+- **align** (`left | center | right`) – Horizontal alignment for the input/content zone.
+
+### Interaction rules
+
+1. Only one mode is active: if `arrowCarousel` is true, stepper mode (`arrowStepper`) is ignored and vice‑versa.
+2. When an arrow mode is active, the cancel (clear) button is suppressed (takes priority space).
+3. `disabledPrevious` / `disabledNext` apply to the currently active arrow mode only.
+4. Alignment (`align`) affects the text/input area, not the arrow buttons (they stay at the edges defined by design).
+
+### Typical usage
+
+- Carousel navigation between items: `arrowCarousel` + manage `disabledPrevious/disabledNext`.
+- Numeric increment/decrement: `arrowStepper` + internal value logic.
+- Centered value display with step controls: combine `arrowStepper` + `align="center"`.
+

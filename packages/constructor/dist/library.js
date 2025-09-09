@@ -4283,7 +4283,7 @@ class Go {
      * Проверяет, активен ли элемент
      */
     h(this, "isEnabled", k(
-      () => !this.props.disabled && !this.props.readonly && (!this.progress || !this.progress.isProgress.value) && !!(!("dynamic" in this.props) || this.props.dynamic)
+      () => !this.props.disabled && !this.props.readonly && (!this.progress || !this.progress.is.value) && !!(!("dynamic" in this.props) || this.props.dynamic)
     ));
     /**
      * checks if the read-only status is enabled/ проверяет, включён ли статус "только для чтения"

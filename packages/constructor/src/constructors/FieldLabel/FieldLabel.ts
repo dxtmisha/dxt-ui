@@ -55,7 +55,7 @@ export class FieldLabel {
       this.slots,
       undefined,
       undefined,
-      undefined,
+      true,
       skeleton
     )
 

@@ -1,0 +1,10 @@
+### `trailing`
+
+Slot for placing custom content at the end of the interactive field area (after the main input content flow but before internal control icons).
+
+- Positioned at the logical end (right in LTR, left in RTL)
+- Good for action icons (clear, open, toggle), counters, lightweight status badges
+- Receives the same control props object (`{ id, className, classHidden }`) as the default slot
+- Keep it concise; avoid large buttons that disrupt layout
+- Does not replace `suffix` — use `suffix` for semantic ending text, `trailing` for functional / dynamic UI
+

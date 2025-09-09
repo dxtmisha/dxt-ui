@@ -75,6 +75,16 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
+  forceShowMessage: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Forces display of helper / validation message ignoring usual visibility rules',
+        ru: 'Принудительно показывает сообщение (helper / validation), игнорируя обычные условия видимости'
+      }
+    }
+  },
   hide: {
     type: StorybookControl.boolean,
     options: {
