@@ -16,6 +16,7 @@ export type ListDataBasic = {
  * Extended list item with type and index/ Расширенный элемент списка с типом и индексом
  */
 export type ListDataItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item & {
+    parent?: string;
     type: ListType;
     index: string;
 }>;

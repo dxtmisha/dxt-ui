@@ -17,6 +17,7 @@
     "@dxt-ui/configuration": "workspace:*",
     "@dxt-ui/d1": "workspace:*",
     "@dxt-ui/functional": "workspace:*",
+    "@dxt-ui/main": "workspace:*",
     "@dxt-ui/media": "workspace:*",
     "@dxt-ui/scripts": "workspace:*",
     "@dxt-ui/styles": "workspace:*",

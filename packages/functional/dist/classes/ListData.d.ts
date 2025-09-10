@@ -1,4 +1,4 @@
-import { RefType } from '../types/refTypes';
+import { RefOrNormal, RefType } from '../types/refTypes';
 import { ListDataFull, ListDataItem, ListList, ListListInput, ListNames, ListSelectedItem, ListSelectedList } from '../types/listTypes';
 import { ComputedRef } from 'vue';
 /**
@@ -7,7 +7,7 @@ import { ComputedRef } from 'vue';
  * Класс для управления списком данных.
  */
 export declare class ListData {
-    protected readonly list: RefType<ListListInput | undefined>;
+    protected readonly list: RefOrNormal<ListListInput | undefined>;
     protected readonly focus?: RefType<ListSelectedItem | undefined> | undefined;
     protected readonly highlight?: RefType<string | undefined> | undefined;
     protected readonly highlightLengthStart?: RefType<number | undefined> | undefined;
@@ -15,7 +15,23 @@ export declare class ListData {
     protected readonly keyValue?: RefType<string | undefined> | undefined;
     protected readonly keyLabel?: RefType<string | undefined> | undefined;
     protected readonly lite?: RefType<number | undefined> | undefined;
-    constructor(list: RefType<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined);
+    protected readonly parent?: string | undefined;
+    protected subList: Record<any, ListData>;
+    /**
+     * Creates an instance of ListData for managing list data.
+     *
+     * Создает экземпляр ListData для управления данными списка.
+     * @param list List data / данные списка
+     * @param focus Focused item / элемент в фокусе
+     * @param highlight Search text for highlighting / текст поиска для выделения
+     * @param highlightLengthStart Minimum length to start highlighting / минимальная длина для начала выделения
+     * @param selected Selected items / выбранные элементы
+     * @param keyValue Key for getting item value / ключ для получения значения элемента
+     * @param keyLabel Key for getting item label / ключ для получения метки элемента
+     * @param lite Threshold for lite mode / порог для облегченного режима
+     * @param parent Parent identifier / идентификатор родителя
+     */
+    constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, parent?: string | undefined);
     /**
      * Returns a list for forming a list.
      *
@@ -40,6 +56,8 @@ export declare class ListData {
      * Возвращает карту всех записей.
      */
     readonly map: ComputedRef<ListList>;
+    /**  Returns a list consisting only of items/ Возвращает список, состоящий только из элементов. */
+    readonly mapItems: ComputedRef<ListList>;
     /**
      * Returns a list consisting only of values for selection.
      *
@@ -136,6 +154,59 @@ export declare class ListData {
      * Возвращает выбранное значение.
      */
     getSelected(): ListSelectedList | undefined;
+    /**
+     * Returns an item by its index.
+     *
+     * Возвращает элемент по его индексу.
+     * @param index item index/ индекс элемента
+     */
+    getItemByIndex(index?: string): {
+        key: number;
+        item: ListDataItem;
+    } | undefined;
+    /**
+     * Returns an item by its key.
+     *
+     * Возвращает элемент по его ключу.
+     * @param key item key/ ключ элемента
+     */
+    getItemByKey(key: number): ListDataItem | undefined;
+    /**
+     * Returns the first item with the specified parent.
+     *
+     * Возвращает первый элемент с указанным родителем.
+     * @param parent parent identifier to search for / идентификатор родителя для поиска
+     */
+    getFirstItemByParent(parent: string): ListDataItem | undefined;
+    /**
+     * Returns the last item with the specified parent.
+     *
+     * Возвращает последний элемент с указанным родителем.
+     * @param parent parent identifier to search for / идентификатор родителя для поиска
+     */
+    getLastItemByParent(parent: string): ListDataItem | undefined;
+    /**
+     * Returns a sublist object for a group item.
+     *
+     * Возвращает объект подсписка для группового элемента.
+     * @param item List item data/ данные элемента списка
+     */
+    getSubList(item: ListDataItem): ListData;
+    /**
+     * Checks if the item is an item, group, or menu.
+     *
+     * Проверяет, является ли элемент элементом, группой или меню.
+     * @param item List item data/ данные элемента списка
+     */
+    protected isItem(item: ListDataItem): boolean;
+    /**
+     * Checks if the item is in the specified parent.
+     *
+     * Проверяет, находится ли элемент в указанном родителе.
+     * @param parent parent identifier to search for / идентификатор родителя для поиска
+     * @param item List item data/ данные элемента списка
+     */
+    protected isInParent(parent: string, item: ListDataItem): boolean;
     /**
      * Returns the index for the list item.
      *

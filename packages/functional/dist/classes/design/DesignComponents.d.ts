@@ -1,4 +1,4 @@
-import { VNode } from 'vue';
+import { ComputedRef, VNode } from 'vue';
 import { RawChildren, RawSlots } from '../../types/refTypes';
 import { ConstrComponent, ConstrComponentMod, ConstrItem } from '../../types/constructorTypes';
 /**
@@ -9,6 +9,8 @@ import { ConstrComponent, ConstrComponentMod, ConstrItem } from '../../types/con
 export declare class DesignComponents<COMP extends ConstrComponent, P extends ConstrItem> {
     protected readonly components: COMP;
     protected readonly modification?: ConstrComponentMod<P> | undefined;
+    /** Cache for computed properties/ Кэш для вычисляемых свойств */
+    protected caching: Record<string, ComputedRef<any>>;
     /**
      * Constructor
      * @param components list of connected components/ список подключенных компонентов
@@ -69,4 +71,11 @@ export declare class DesignComponents<COMP extends ConstrComponent, P extends Co
      * @param index the name of the key/ названия ключа
      */
     renderAdd<K extends keyof COMP, PK extends keyof P>(item: any[], name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): this;
+    /**
+     * Calculates modified input data for connected components.
+     *
+     * Вычисляет модифицированные входные данные для подключенных компонентов.
+     * @param index the name of this/ название данного
+     */
+    protected computeModification<K extends keyof P>(index: K & string | string): Record<string, any>;
 }
