@@ -1,11 +1,54 @@
 import type { NumberOrString } from '@dxt-ui/functional'
 import type { ModelProps } from './modelTypes'
 
-export type FieldElementInput = HTMLInputElement
-  | HTMLTextAreaElement
+export type FieldElementDom = HTMLInputElement | HTMLTextAreaElement
+export type FieldElementInput = FieldElementDom
   | HTMLElement
   | Record<string, any>
   | undefined
+
+export type FieldValidityCodeItem = {
+  [K in keyof ValidityState]?: string
+}
+export type FieldValidityCode = string | FieldValidityCodeItem
+
+export type FieldPatternElement = Partial<HTMLInputElement>
+export type FieldPatternItem = string | FieldPatternElement
+// TODO: replace any with MaskGroup type / Заменить any на тип MaskGroup
+export type FieldPatternItemOrFunction = FieldPatternItem | ((item: any) => FieldPatternItem)
+export type FieldPatternList = Record<string, FieldPatternItemOrFunction>
+
+export type FieldMatchItem = {
+  name?: string | HTMLInputElement
+  validationMessage?: string
+}
+export type FieldMatch = string | HTMLInputElement | FieldMatchItem
+
+export type FieldCheckMain = {
+  group: string
+  input?: FieldElementDom
+  pattern?: FieldPatternItemOrFunction
+}
+export type FieldCheckItem<Value = any>
+  = FieldCheckMain
+    & {
+      check(value: Value): FieldValidationItem<Value>
+    }
+export type FieldCheckList = Record<string, FieldCheckItem>
+
+export type FieldValidationItem<Value = any>
+  = FieldCheckMain
+    & {
+      type?: string
+      status?: boolean
+      required?: boolean
+      isFull?: boolean
+      validationMessage?: string
+      validity?: ValidityState
+      value: Value
+      valueInput?: Value
+      detail?: Record<string, any>
+    }
 
 /**
  * Properties that describe the value and its handling/
@@ -14,7 +57,7 @@ export type FieldElementInput = HTMLInputElement
  * Used by the ValueInclude class to read/write value and constraints/
  * Используется классом ValueInclude для чтения/записи значения и ограничений
  */
-export interface FieldValueProps<Value = string> extends ModelProps<Value> {
+export interface FieldValueProps<Value = any> extends ModelProps<Value> {
   /** Placeholder text shown when value is empty/ Текст подсказки при пустом значении */
   placeholder?: string
   /** Multiple selection/value mode/ Режим множественного значения/выбора */
@@ -29,7 +72,7 @@ export interface FieldValueProps<Value = string> extends ModelProps<Value> {
  * Basic HTML input attributes without value-length specifics/
  * Базовые HTML атрибуты инпута без ограничений длины и multiple
  */
-export interface FieldBasicProps<Value = string>
+export interface FieldBasicProps<Value = any>
   extends Omit<FieldValueProps<Value>, 'multiple' | 'maxlength'> {
   /** Input type/ Тип инпута */
   type?: string
@@ -37,18 +80,34 @@ export interface FieldBasicProps<Value = string>
   name?: string
   /** Input id attribute/ Атрибут id */
   id?: string
+
   /** Required flag/ Обязательное поле */
   required?: boolean
-  /** Form id this input belongs to/ ID формы, к которой относится инпут */
-  form?: string
-  /** Disabled state/ Состояние отключения */
-  disabled?: boolean
   /** Readonly state/ Режим только для чтения */
   readonly?: boolean
-  /** Tab index order/ Порядок табуляции */
-  tabindex?: number
+  /** Disabled state/ Состояние отключения */
+  disabled?: boolean
+
   /** Autofocus flag/ Автофокус при загрузке */
   autofocus?: boolean
+  /** Tab index order/ Порядок табуляции */
+  tabindex?: number
+
+  /** Form id this input belongs to/ ID формы, к которой относится инпут */
+  form?: string
+
+  /** Validation error text or map of texts/ Текст ошибки валидации или карта текстов */
+  validationCode?: FieldValidityCode
+  /**
+   * Standard validation message (overrides default)/
+   * Стандартное сообщение валидации (перекрывает дефолтное)
+   */
+  validationMessage?: string
+
+  match?: FieldMatch
+
+  /** Additional attributes for the input element/ Дополнительные атрибуты для элемента инпута */
+  inputAttrs?: Record<string, any>
 }
 
 /**
@@ -98,7 +157,7 @@ export interface FieldUxProps {
  * Composite props for standard textual / numeric inputs/
  * Составные свойства стандартных текстовых / числовых инпутов
  */
-export interface FieldInputProps<Value = string>
+export interface FieldInputProps<Value = any>
   extends FieldBasicProps<Value>, FieldStepProps, FieldLength, FieldUxProps {
   /** Validation pattern (regexp)/ Паттерн валидации (рег. выражение) */
   pattern?: string
@@ -110,7 +169,7 @@ export interface FieldInputProps<Value = string>
  * Props for file input elements (type="file")/
  * Свойства для инпутов выбора файлов (type="file")
  */
-export interface FieldInputFileProps<Value = string>
+export interface FieldInputFileProps<Value = any>
   extends Omit<FieldBasicProps<Value>, 'type'>, FieldLength, FieldUxProps {
   /** Multiple files selection flag/ Флаг выбора нескольких файлов */
   multiple?: boolean
@@ -118,13 +177,16 @@ export interface FieldInputFileProps<Value = string>
   accept?: string
   /** Capture mode for media input (mobile)/ Режим захвата для медиа (мобильные устройства) */
   capture?: string | boolean
+
+  /** Show number input arrows (type="number" only)/ Показать стрелки числового ввода (только для type="number") */
+  arrow?: string
 }
 
 /**
  * Props for checkbox & radio inputs (excluding type field)/
  * Свойства для инпутов checkbox и radio (без поля type)
  */
-export interface FieldInputCheckProps<Value = string>
+export interface FieldInputCheckProps<Value = any>
   extends Omit<FieldBasicProps<Value>, 'type'>, FieldUxProps {
   /** Checked state/ Состояние выбора */
   checked?: boolean
@@ -136,7 +198,7 @@ export interface FieldInputCheckProps<Value = string>
  * Props for textarea elements with sizing & wrapping/
  * Свойства для textarea с поддержкой размеров и переноса
  */
-export interface FieldTextareaProps<Value = string>
+export interface FieldTextareaProps<Value = any>
   extends Omit<FieldBasicProps<Value>, 'type'>, FieldLength, FieldUxProps {
   /** Number of visible text lines/ Количество видимых строк */
   rows?: NumberOrString
@@ -152,7 +214,7 @@ export interface FieldTextareaProps<Value = string>
  * Props for select elements (single & multiple)/
  * Свойства для select элементов (одиночный и множественный выбор)
  */
-export interface FieldSelectProps<Value = string>
+export interface FieldSelectProps<Value = any>
   extends Omit<FieldBasicProps<Value>, 'type'> {
   /** Multiple selection mode/ Режим множественного выбора */
   multiple?: boolean
@@ -162,11 +224,10 @@ export interface FieldSelectProps<Value = string>
  * All possible field properties combined/
  * Все возможные свойства поля в одном интерфейсе
  */
-export interface FieldAllProps<Value = string>
+export interface FieldAllProps<Value = any>
   extends FieldInputProps<Value>,
   FieldInputFileProps<Value>,
   FieldInputCheckProps<Value>,
   FieldTextareaProps<Value>,
   FieldSelectProps<Value> {
-
 }

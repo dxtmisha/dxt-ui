@@ -13,13 +13,14 @@ import {
 import { FieldElementInclude } from './FieldElementInclude'
 
 import type { FieldValueProps } from '../../types/fieldTypes'
+import { toArray } from 'vite-node/utils'
 
 /**
  * Class for working with input values.
  *
  * Класс для работы со значениями инпута.
  */
-export class FieldValueInclude<Value = string> {
+export class FieldValueInclude<Value = any> {
   /** Current value/ Текущее значение */
   readonly item = ref<Value>()
   /** Indicates if the value is complete/ Указывает, полное ли значение */
@@ -39,7 +40,7 @@ export class FieldValueInclude<Value = string> {
   constructor(
     protected readonly props: FieldValueProps<Value>,
     protected readonly refs: ToRefs<FieldValueProps<Value>>,
-    protected readonly element: FieldElementInclude,
+    protected readonly element?: FieldElementInclude,
     protected readonly original?: RefOrNormal<Value>
   ) {
     this.item.value = this.getOriginal()
@@ -97,6 +98,15 @@ export class FieldValueInclude<Value = string> {
   })
 
   /**
+   * Returns the current value as an array.
+   *
+   * Возвращает текущее значение в виде массива.
+   */
+  getToArray(): Value[] {
+    return toArray(this.item.value)
+  }
+
+  /**
    * Changes the value.
    *
    * Изменяет значение.
@@ -113,10 +123,11 @@ export class FieldValueInclude<Value = string> {
         }
       ) as Value
 
-      const element = this.element.getElement()
+      const element = this.element?.getElement()
 
       if (
-        element.value
+        element
+        && element.value
         && 'setValue' in element.value
       ) {
         element.value?.setValue(this.item.value)
@@ -242,7 +253,7 @@ export class FieldValueInclude<Value = string> {
    */
   clear(): this {
     this.item.value = getRef(this.original)
-    this.element.clear()
+    this.element?.clear()
 
     this.hasEdit.value = false
     this.isFull.value = true

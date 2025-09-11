@@ -1,29 +1,28 @@
 import { computed } from 'vue'
-import { InputVisibility } from './InputVisibility'
 
-import type { InputPropsBasicForValue } from './typesBasic'
+import { FieldVisibilityInclude } from './FieldVisibilityInclude'
+
+import type { FieldAllProps } from '../../types/fieldTypes'
 
 /**
- * Class for working with the input type.<br>
+ * Class for working with the input type.
+ *
  * Класс для работы с типом ввода.
  */
 export class FieldTypeInclude {
   /**
    * Constructor
-   * @param props input data /<br>входные данные
-   * @param visibility object for working with visualization /<br>объект для работы с визуализацией
+   * @param props input data/ входные данные
+   * @param visibility object for working with visualization/ объект для работы с визуализацией
    */
 
   constructor(
-    protected readonly props: InputPropsBasicForValue,
-    protected readonly visibility: InputVisibility
+    protected readonly props: FieldAllProps,
+    protected readonly visibility?: FieldVisibilityInclude
   ) {
   }
 
-  /**
-   * Returns the input type.<br>
-   * Возвращает тип ввода.
-   */
+  /** Returns the input type/ Возвращает тип ввода */
   readonly item = computed<string>(() => {
     if (this.props.arrow) {
       return 'number'
@@ -33,7 +32,7 @@ export class FieldTypeInclude {
 
     if (
       type === 'password'
-      && this.visibility.item.value
+      && this.visibility?.item.value
     ) {
       return 'text'
     }

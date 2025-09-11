@@ -81,8 +81,9 @@ export class FieldMessageInclude<
   })
 
   /**
-   * Render the FieldMessage component/
-   * Рендер компонента FieldMessage
+   * Render the FieldMessage component.
+   *
+   * Рендер компонента FieldMessage.
    */
   readonly render = (): VNode[] => {
     if (this.components) {

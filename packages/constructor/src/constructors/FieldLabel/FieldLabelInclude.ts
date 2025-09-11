@@ -3,7 +3,7 @@ import {
   type ConstrBind,
   DesignComponents,
   getRef,
-  isFilled,
+  isFilled, type RawSlots,
   type RefOrNormal, type RefType,
   toBinds
 } from '@dxt-ui/functional'
@@ -81,7 +81,7 @@ export class FieldLabelInclude<
             { class: `${this.className}__fieldLabel` }
           )
         },
-        this.slots,
+        this.slots as RawSlots,
         this.index
       )
     }

@@ -1,50 +1,53 @@
 import { computed, ref } from 'vue'
-import { isArray } from '../../functions/isArray'
 
-import { type InputCheckItem, useInputCheck } from './useInputCheck'
+import { FieldInputCheckInclude } from './FieldInputCheckInclude'
 
-import { InputElement } from './InputElement'
-import { InputChange } from './InputChange'
-import { InputValue } from './InputValue'
-import { InputMatch } from './InputMatch'
-import { InputCode } from './InputCode'
+import type { FieldElementInclude } from './FieldElementInclude'
+import type { FieldAttributesInclude } from './FieldAttributesInclude'
+import type { FieldChangeInclude } from './FieldChangeInclude'
+import type { FieldValueInclude } from './FieldValueInclude'
+import type { FieldCodeInclude } from './FieldCodeInclude'
+import type { FieldMatchInclude } from './FieldMatchInclude'
 
-import { InputPropsBasicForValue, InputValidationItem } from './typesBasic'
+import type { FieldAllProps, FieldValidationItem } from '../../types/fieldTypes'
 
 /**
- * Class for working with validity.<br>
- * Класс для работы с валидностью.
+ * Class for working with validity
+ *
+ * Класс для работы с валидностью
  */
 export class InputValidation {
-  protected readonly validation = ref<InputValidationItem>()
+  /** Internal validation state/ Внутреннее состояние валидации */
+  protected readonly validation = ref<FieldValidationItem>()
 
   /**
    * Constructor
-   * @param props input data /<br>входные данные
-   * @param element object for working with the input element /<br>объект для работы с элементом ввода
-   * @param change object for working with data change label /<br>объект для работы с меткой об изменении данных
-   * @param value object for working with values /<br>объект для работы со значениями
-   * @param match object for working with checks for value matches /<br>объект для работы с проверкой на совпадение значений
-   * @param code object for working with error codes /<br>объект для работы с кодами ошибок
+   * @param props input data/ входные данные
+   * @param element object for working with input element/ объект для работы с элементом ввода
+   * @param attributes object for working with input attributes/ объект для работы с атрибутами ввода
+   * @param value object for value work/ объект для работы со значениями
+   * @param change object for change state/ объект для состояния изменения
+   * @param code object for error codes/ объект для работы с кодами ошибок
+   * @param match object for match checking/ объект для проверки совпадений
    */
-
   constructor(
-    protected readonly props: InputPropsBasicForValue,
-    protected readonly element: InputElement,
-    protected readonly change: InputChange,
-    protected readonly value: InputValue,
-    protected readonly code: InputCode,
-    protected readonly match?: InputMatch
+    protected readonly props: FieldAllProps,
+    protected readonly element: FieldElementInclude,
+    protected readonly attributes: FieldAttributesInclude,
+    protected readonly value: FieldValueInclude,
+    protected readonly change?: FieldChangeInclude,
+    protected readonly code?: FieldCodeInclude,
+    protected readonly match?: FieldMatchInclude
   ) {
   }
 
-  protected readonly input = computed<InputCheckItem>(() => useInputCheck(this.element.dataForCheck.value))
+  /** Hidden input element for native validation/ Скрытый input для нативной валидации */
+  protected readonly input = computed<FieldInputCheckInclude>(
+    () => new FieldInputCheckInclude(this.attributes.listForCheck.value)
+  )
 
-  /**
-   * Returns error data.<br>
-   * Возвращает данные об ошибке.
-   */
-  readonly item = computed<InputValidationItem>(() => {
+  /** Returns error data/ Возвращает данные об ошибке */
+  readonly item = computed<FieldValidationItem>(() => {
     const global = this.checkGlobal()
 
     if (global) {
@@ -57,64 +60,60 @@ export class InputValidation {
       return check
     }
 
-    return {
-      value: undefined
-    } as InputValidationItem
+    return this.getValidationItemNone()
   })
 
-  /**
-   * Returns error string.<br>
-   * Возвращает строку об ошибке.
-   */
+  /** Returns error string/ Возвращает строку об ошибке */
   readonly message = computed<string>(() => {
+    if (this.props.validationMessage) {
+      return this.props.validationMessage
+    }
+
     if (
-      this.checkGlobal()
+      !this.change
       || this.change.is()
     ) {
       const data = this.item.value
 
-      if (data.validity) {
-        const code = this.code.get(data.validity)
-
-        if (code) {
-          return code
-        }
-      }
-
-      return data.validationMessage ?? ''
+      return this.code?.get(data.validity)
+        ?? data.validationMessage
+        ?? ''
     }
 
     return ''
   })
 
   /**
-   * Checks if there is an error.<br>
-   * Проверяет, есть ли ошибка.
+   * Checks if there is an error
+   *
+   * Проверяет, есть ли ошибка
    */
   isError(): boolean {
     return !this.item.value?.status
   }
 
   /**
-   * Checks whether the element has any constraints and whether it meets them.<br>
-   * Проверяет, имеет ли элемент какие-либо ограничения и удовлетворяет ли он им.
+   * Checks whether the element has constraints and satisfies them
+   *
+   * Проверяет, имеет ли элемент ограничения и удовлетворяет ли им
    */
   readonly checkValidity = (): boolean => {
     return !this.isError()
   }
 
   /**
-   * Changes the validity data.<br>
-   * Изменяет данные о валидности.
-   * @param validation values for validity /<br>значения для валидности
+   * Changes the validity data
+   *
+   * Изменяет данные о валидности
+   * @param validation values for validity/ значения для валидности
    */
-  set(validation: Record<string, any> | InputValidationItem): this {
+  set(validation: Record<string, any> | FieldValidationItem): this {
     if (
       'status' in validation
       && 'validationMessage' in validation
       && 'value' in validation
     ) {
-      this.validation.value = validation as InputValidationItem
+      this.validation.value = validation as FieldValidationItem
     } else if (
       'target' in validation
       && (
@@ -123,15 +122,7 @@ export class InputValidation {
       )
       && Number(validation.target.minLength) > -1
     ) {
-      const input = validation.target
-
-      this.validation.value = {
-        status: input.checkValidity(),
-        input,
-        validationMessage: input.validationMessage,
-        validity: input.validity,
-        value: this.value.item.value
-      }
+      this.validation.value = this.input.value.checkByInput(validation.target)
     } else {
       this.validation.value = undefined
     }
@@ -140,12 +131,27 @@ export class InputValidation {
   }
 
   /**
-   * Check for global data.<br>
-   * Проверка для глобальных данных.
+   * Returns an empty validation item
+   *
+   * Возвращает пустой элемент валидации
    */
-  protected checkGlobal(): InputValidationItem | undefined {
+  protected getValidationItemNone(): FieldValidationItem {
+    return {
+      group: FieldInputCheckInclude.getGroupDefault(),
+      status: true,
+      value: undefined
+    }
+  }
+
+  /**
+   * Check for global data
+   *
+   * Проверка для глобальных данных
+   */
+  protected checkGlobal(): FieldValidationItem | undefined {
     if (this.props.validationMessage) {
       return {
+        group: FieldInputCheckInclude.getGroupDefault(),
         status: false,
         validationMessage: this.props.validationMessage,
         value: this.value.item.value
@@ -156,22 +162,15 @@ export class InputValidation {
   }
 
   /**
-   * Check for selected data.<br>
-   * Проверка для выбранных данных.
+   * Check for selected data
+   *
+   * Проверка для выбранных данных
    */
-  protected checkItem(): InputValidationItem | undefined {
-    const values = this.value.itemByFull.value
+  protected checkItem(): FieldValidationItem | undefined {
+    const values = this.value.getToArray()
 
-    if (isArray(values)) {
-      for (const value of values) {
-        const check = this.input.value.check(value)
-
-        if (!check.status) {
-          return check
-        }
-      }
-    } else {
-      const check = this.input.value.check(values)
+    for (const value of values) {
+      const check = this.checkByInput(value)
 
       if (!check.status) {
         return check
@@ -179,5 +178,15 @@ export class InputValidation {
     }
 
     return undefined
+  }
+
+  /**
+   * Checks the value using hidden input element
+   * @param value value to check/ значение для проверки
+   *
+   * Проверяет значение с помощью скрытого input
+   */
+  protected checkByInput(value: any): FieldValidationItem {
+    return this.input.value.check(value)
   }
 }
