@@ -1,5 +1,8 @@
 import { type FieldLabelPropsBasic, defaultsFieldLabel } from '@dxt-ui/constructor/FieldLabel'
 
+import type { FieldCounterProps } from '../FieldCounter'
+import type { ProgressProps } from '../Progress'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   // :values [!] System label / Системная метка
@@ -13,7 +16,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface FieldLabelProps extends FieldLabelPropsBasic, PropsToken {
+export interface FieldLabelProps extends FieldLabelPropsBasic<FieldCounterProps, ProgressProps>, PropsToken {
 }
 
 /**

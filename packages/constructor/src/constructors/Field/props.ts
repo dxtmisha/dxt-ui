@@ -34,10 +34,10 @@ interface FieldPropsToken {
 }
 
 export interface FieldPropsBasic<
+  Icon extends IconPropsBasic = IconPropsBasic,
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
-  Icon extends IconPropsBasic = IconPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
 > extends IconTrailingPropsInclude<Icon>,
   PrefixProps,

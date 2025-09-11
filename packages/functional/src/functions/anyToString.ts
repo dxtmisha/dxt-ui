@@ -17,7 +17,7 @@ export function anyToString<V>(value: V): string {
     isArray(value)
     && value.findIndex(item => isObject(item)) === -1
   ) {
-    return value.join(', ')
+    return value.join(',')
   }
 
   if (isObject(value)) {
@@ -26,6 +26,10 @@ export function anyToString<V>(value: V): string {
 
   if (value === true) {
     return '1'
+  }
+
+  if (value === false) {
+    return '0'
   }
 
   return value?.toString() ?? ''

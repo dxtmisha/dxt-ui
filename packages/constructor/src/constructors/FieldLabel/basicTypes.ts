@@ -2,7 +2,6 @@ import type { ConstrBind } from '@dxt-ui/functional'
 import type { LabelAlternativeSlots, LabelProps } from '../../types/labelTypes'
 import type { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounter'
 import type { FieldLabelPropsBasic } from './props'
-import type { FieldLabelSlots } from './types.ts'
 
 /**
  * Interface for describing which components need to be connected for FieldLabel work/

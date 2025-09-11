@@ -284,6 +284,16 @@ export const wikiValue: StorybookArgsToList = {
       value: 'Prefix'
     }
   },
+  required: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Marks the field as required and shows the required indicator',
+        ru: 'Помечает поле как обязательное и показывает индикатор обязательности'
+      }
+    }
+  },
   suffix: {
     type: StorybookControl.string,
     options: {

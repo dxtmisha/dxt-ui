@@ -564,16 +564,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  required: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Marks the field as required and shows the required indicator',
-        ru: 'Помечает поле как обязательное и показывает индикатор обязательности'
-      }
-    }
-  },
   scrollbarAttrs: {
     type: StorybookControl.object,
     options: {

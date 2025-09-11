@@ -1,5 +1,11 @@
 import { type FieldPropsBasic, defaultsField } from '@dxt-ui/constructor/Field'
 
+import type { IconProps } from '../Icon'
+import type { FieldLabelProps } from '../FieldLabel'
+import type { FieldMessageProps } from '../FieldMessage'
+import type { FieldCounterProps } from '../FieldCounter'
+import type { ProgressProps } from '../Progress'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   cancel: ['auto', 'always'],
@@ -33,7 +39,8 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface FieldProps extends FieldPropsBasic, PropsToken {
+export interface FieldProps extends FieldPropsBasic<IconProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps>,
+  PropsToken {
 }
 
 /**

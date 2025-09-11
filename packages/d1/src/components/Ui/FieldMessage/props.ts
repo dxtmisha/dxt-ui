@@ -1,5 +1,7 @@
 import { type FieldMessagePropsBasic, defaultsFieldMessage } from '@dxt-ui/constructor/FieldMessage'
 
+import type { FieldCounterProps } from '../FieldCounter'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   // :values [!] System label / Системная метка
@@ -13,7 +15,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface FieldMessageProps extends FieldMessagePropsBasic, PropsToken {
+export interface FieldMessageProps extends FieldMessagePropsBasic<FieldCounterProps>, PropsToken {
 }
 
 /**
