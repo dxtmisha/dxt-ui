@@ -124,3 +124,5 @@ export class FieldInputCheckInclude<Value = any> {
     return 'check'
   }
 }
+
+export type FieldInputCheckListInclude = Record<string, FieldInputCheckInclude>

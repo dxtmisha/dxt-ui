@@ -1,5 +1,101 @@
 @use "@dxt-ui/styles/properties" as ui;
 
 @mixin mixinMask {
+  @include ui.initByCustom('sys.align', left);
+  @include ui.initByCustom('sys.align.flex', flex-start);
+  @include ui.initByCustom('sys.color', ui.v('??color', var(--sys-color, inherit)));
+  @include ui.initByCustom('sys.opacity', 0);
+  @include ui.initByCustom('sys.opacity.all', 0);
 
+  display: inline-block;
+
+  box-sizing: border-box;
+  position: relative;
+
+  text-align: ui.v('??sys.align');
+
+  &__input {
+    box-sizing: border-box;
+    position: absolute;
+    @include ui.inset(0);
+    z-index: 4;
+
+    padding: inherit;
+
+    width: 100%;
+
+    font: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    color: transparent;
+    @include ui.color(ui.v('??sys.color'), ui.v('??caretOpacity', 1), 'caret-color');
+    text-align: ui.v('??sys.align');
+
+    background: transparent;
+    border: none;
+
+    -webkit-tap-highlight-color: transparent;
+
+    &:focus {
+      outline: none !important;
+    }
+  }
+
+  &__character {
+    display: flex;
+    align-items: center;
+    justify-content: ui.v('??sys.align.flex');
+    opacity: ui.v('??sys.opacity.all');
+    position: relative;
+    z-index: 8;
+    pointer-events: none;
+
+    &__item {
+      @include ui.color(ui.v('??sys.color'), ui.v('??colorOpacity', 1));
+
+      &--placeholder {
+        opacity: ui.v('??sys.opacity');
+      }
+    }
+  }
+
+  &--visible {
+    @include ui.initByCustom('sys.opacity', 1);
+    @include ui.initByCustom('sys.opacity.all', 1);
+  }
+
+  &--visiblePartly {
+    @include ui.initByCustom('sys.opacity.all', 1);
+  }
+
+  &--value,
+  &:focus-within {
+    @include ui.initByCustom('sys.opacity.all', 1);
+
+    @include ui.subclass('input') {
+      &:-webkit-autofill {
+        -webkit-text-fill-color: transparent;
+      }
+    }
+  }
+
+  &--right,
+  &--end {
+    @include ui.initByCustom('sys.align', ui.dirRight());
+    @include ui.initByCustom('sys.align.flex', flex-end);
+  }
+
+  &--left {
+    @include ui.initByCustom('sys.align', ui.dirLeft());
+  }
+
+  &--center {
+    @include ui.subclass('input') {
+      text-align: center;
+    }
+
+    @include ui.subclass('character') {
+      justify-content: center;
+    }
+  }
 }

@@ -1,34 +1,47 @@
-import type { MaskList } from './basicTypes.ts'
+import type { FieldPatternItemOrFunction } from '../../types/fieldTypes'
+import type {
+  MaskFractionItem,
+  MaskList,
+  MaskMatchItem,
+  MaskSpecialProp,
+  MaskTypeItem
+} from './basicTypes'
 
 interface MaskPropsToken {
   // :type [!] System label / Системная метка
+  visible?: boolean
+  visiblePartly?: boolean
+  left?: boolean
+  right?: boolean
+  center?: boolean
+  dir?: 'ltr' | 'rtl'
   // :type [!] System label / Системная метка
 }
 
 export interface MaskPropsBasic {
   // Value
+  name?: string
   value?: string | number
   valueDefault?: string | number
   currency?: string
   currencyHide?: boolean
   fullOnly?: boolean
 
-  // Mask
   mask?: MaskList
   special?: MaskSpecialProp
-  groupSave?: boolean
-  pattern?: InputPatternItemOrFunction
-  check?: InputPatternItemOrFunction
-  fraction?: MaskFractionItem
-  view?: string
-
-  // Input
-  type?: MaskTypeItem
-  name?: string
   match?: MaskMatchItem
-  inputAttrs?: Partial<HTMLInputElement>
+  groupSave?: boolean
+
+  pattern?: FieldPatternItemOrFunction
+  check?: FieldPatternItemOrFunction
+  fraction?: MaskFractionItem
 
   // Style
+  type?: MaskTypeItem
+  view?: string
+
+  inputAttrs?: Partial<HTMLInputElement>
+
   language?: string
 }
 
@@ -46,9 +59,14 @@ export interface MaskProps extends MaskPropsBasic, MaskPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsMask = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
+  special: '*',
+  match: /[0-9]/,
+  type: 'text',
+  groupSave: true,
+  view: '_',
   ...{
     // :default [!] System label / Системная метка
+    visible: true
     // :default [!] System label / Системная метка
   }
 }

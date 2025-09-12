@@ -64,5 +64,8 @@ export interface MaskSlots {
 export type MaskClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  input: string
+  character: string
+  characterItem: string
   // :classes [!] System label / Системная метка
 }

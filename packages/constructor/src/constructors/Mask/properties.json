@@ -1,2 +1,28 @@
 {
+  "color": {
+    "_type": "var"
+  },
+  "color-opacity": {
+    "_type": "var"
+  },
+  "caret-opacity": {
+    "_type": "var"
+  },
+  "#input": {},
+  "#character": {
+    "#item": {
+      "~placeholder": {}
+    }
+  },
+  "~visible": {
+    "_default": true
+  },
+  "~visiblePartly": {},
+  "~left": {},
+  "~right": {},
+  "~center": {},
+  "~dir": {
+    "~ltr": {},
+    "~rtl": {}
+  }
 }
