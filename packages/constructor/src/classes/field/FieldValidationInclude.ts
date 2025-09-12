@@ -43,7 +43,11 @@ export class InputValidation {
 
   /** Hidden input element for native validation/ Скрытый input для нативной валидации */
   protected readonly input = computed<FieldInputCheckInclude>(
-    () => new FieldInputCheckInclude(this.attributes.listForCheck.value)
+    () => new FieldInputCheckInclude(
+      this.attributes.listForCheck.value,
+      undefined,
+      this.code
+    )
   )
 
   /** Returns error data/ Возвращает данные об ошибке */
@@ -75,7 +79,7 @@ export class InputValidation {
     ) {
       const data = this.item.value
 
-      return this.code?.get(data.validity)
+      return data.validityMessage
         ?? data.validationMessage
         ?? ''
     }

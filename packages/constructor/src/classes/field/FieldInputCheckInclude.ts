@@ -6,6 +6,8 @@ import {
   isString
 } from '@dxt-ui/functional'
 
+import type { FieldCodeInclude } from './FieldCodeInclude'
+
 import type {
   FieldElementDom,
   FieldPatternElement,
@@ -26,10 +28,12 @@ export class FieldInputCheckInclude<Value = any> {
    * Constructor
    * @param pattern property for verification/ свойство для проверки
    * @param group group name/ название группы
+   * @param code object for error codes/ объект для работы с кодами ошибок
    */
   constructor(
     readonly pattern: FieldPatternItemOrFunction,
-    readonly group: string = FieldInputCheckInclude.getGroupDefault()
+    readonly group: string = FieldInputCheckInclude.getGroupDefault(),
+    protected readonly code?: FieldCodeInclude
   ) {
     this.input = createElement<HTMLInputElement>(
       undefined,
@@ -81,6 +85,7 @@ export class FieldInputCheckInclude<Value = any> {
       status: input.checkValidity(),
       validationMessage: input.validationMessage,
       validity: input.validity,
+      validityMessage: this.code?.get(input.validity),
       required: input.required,
       pattern: this.pattern,
       value: input.value

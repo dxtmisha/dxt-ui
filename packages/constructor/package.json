@@ -1,14 +1,14 @@
 {
   "name": "@dxt-ui/constructor",
   "private": false,
-  "version": "0.21.0",
+  "version": "0.22.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor field"
+    "dxt-constructor": "dxt-constructor mask"
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
@@ -68,7 +68,9 @@
     "./FieldLabel": "./src/constructors/FieldLabel/index.ts",
     "./FieldLabel/style": "./src/constructors/FieldLabel/style.scss",
     "./Field": "./src/constructors/Field/index.ts",
-    "./Field/style": "./src/constructors/Field/style.scss"
+    "./Field/style": "./src/constructors/Field/style.scss",
+    "./Mask": "./src/constructors/Mask/index.ts",
+    "./Mask/style": "./src/constructors/Mask/style.scss"
   },
   "buildOptions": {
     "name": "@dxt-ui/constructor",
