@@ -84,7 +84,9 @@ export class MaskPattern {
    * Возвращает объект проверки по названию группы.
    * @param groupName group name (default: check)/ имя группы (по умолчанию: check)
    */
-  getInput(groupName: string = 'check'): FieldInputCheckInclude | undefined {
+  getInput(
+    groupName: string = FieldInputCheckInclude.getGroupDefault()
+  ): FieldInputCheckInclude | undefined {
     return this.item.value?.[groupName]
   }
 

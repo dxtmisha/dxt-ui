@@ -12,9 +12,19 @@ import { MaskFormat } from './MaskFormat'
 import { MaskSpecial } from './MaskSpecial'
 import { MaskMatch } from './MaskMatch'
 import { MaskPattern } from './MaskPattern'
-
 import { MaskRight } from './MaskRight'
+import { MaskRubber } from './MaskRubber'
+import { MaskItem } from './MaskItem'
+import { MaskSelection } from './MaskSelection'
+import { MaskCharacter } from './MaskCharacter'
+import { MaskValueBasic } from './MaskValueBasic'
+import { MaskValue } from './MaskValue'
+import { MaskValidation } from './MaskValidation'
+import { MaskView } from './MaskView'
+import { MaskEmit } from './MaskEmit'
+import { MaskData } from './MaskData'
 
+import type { MaskElementInput } from './basicTypes'
 import type { MaskComponents, MaskEmits, MaskSlots } from './types'
 import type { MaskProps } from './props'
 
@@ -31,7 +41,7 @@ export class Mask {
   /** Entered characters length helper/ Объект длины введённых символов */
   readonly characterLength: MaskCharacterLength
   /** Rubber groups length helper/ Объект длины резиновых групп */
-  readonly rubber: MaskRubberItem
+  readonly rubberItem: MaskRubberItem
   /** Rubber transition symbol helper/ Объект символа перехода резины */
   readonly rubberTransition: MaskRubberTransition
 
@@ -49,6 +59,27 @@ export class Mask {
   /** Alignment helper/ Объект выравнивания */
   readonly right: MaskRight
 
+  /** Rubber groups helper/ Объект для работы с резиновыми группами */
+  readonly rubber: MaskRubber
+  /** Mask item helper/ Объект для работы с маской */
+  readonly item: MaskItem
+  /** Selection helper/ Объект для работы с выделением */
+  readonly selection: MaskSelection
+  /** Characters helper/ Объект для работы с введёнными символами */
+  readonly character: MaskCharacter
+  /** Basic value helper/ Объект для работы с базовыми значениями */
+  readonly valueBasic: MaskValueBasic
+  /** Value helper/ Объект для работы с итоговым значением */
+  readonly value: MaskValue
+  /** Validation helper/ Объект для работы с валидацией */
+  readonly validation: MaskValidation
+  /** View helper/ Объект для работы с отображением */
+  readonly view: MaskView
+  /** Emit helper/ Объект для работы с событиями */
+  readonly emit: MaskEmit
+  /** Data helper/ Объект для работы с вводом */
+  readonly data: MaskData
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -63,7 +94,7 @@ export class Mask {
   constructor(
     protected readonly props: MaskProps,
     protected readonly refs: ToRefs<MaskProps>,
-    protected readonly element: Ref<HTMLElement | undefined>,
+    protected readonly element: Ref<MaskElementInput>,
     protected readonly classDesign: string,
     protected readonly className: string,
     protected readonly components?: DesignComp<MaskComponents, MaskProps>,
@@ -74,11 +105,11 @@ export class Mask {
     this.buffer = new MaskBuffer()
     this.focus = new MaskFocus(this.buffer)
     this.characterLength = new MaskCharacterLength()
-    this.rubber = new MaskRubberItem()
+    this.rubberItem = new MaskRubberItem()
     this.rubberTransition = new MaskRubberTransition()
 
     this.date = new MaskDate(this.props, this.type)
-    this.format = new MaskFormat(this.props, this.type, this.rubber)
+    this.format = new MaskFormat(this.props, this.type, this.rubberItem)
 
     this.special = new MaskSpecial(
       this.props,
@@ -96,5 +127,97 @@ export class Mask {
     )
 
     this.right = new MaskRight(this.props, this.type)
+
+    this.rubber = new MaskRubber(
+      this.props,
+      this.type,
+      this.rubberItem,
+      this.rubberTransition,
+      this.special,
+      this.match,
+      this.format
+    )
+
+    this.item = new MaskItem(
+      this.props,
+      this.type,
+      this.rubberItem,
+      this.characterLength,
+      this.date,
+      this.format,
+      this.special
+    )
+
+    this.selection = new MaskSelection(
+      this.special,
+      this.item
+    )
+
+    this.character = new MaskCharacter(
+      this.props,
+      this.rubberItem,
+      this.characterLength,
+      this.special,
+      this.item,
+      this.selection
+    )
+
+    this.valueBasic = new MaskValueBasic(
+      this.rubberTransition,
+      this.item,
+      this.special,
+      this.character
+    )
+
+    this.value = new MaskValue(
+      this.props,
+      this.type,
+      this.date,
+      this.format,
+      this.item,
+      this.special,
+      this.valueBasic
+    )
+
+    this.validation = new MaskValidation(
+      this.pattern,
+      this.value
+    )
+
+    this.view = new MaskView(
+      this.props,
+      this.type,
+      this.date,
+      this.format,
+      this.special,
+      this.rubber,
+      this.item,
+      this.valueBasic,
+      this.validation,
+      this.className
+    )
+
+    this.emit = new MaskEmit(
+      this.validation,
+      this.emits
+    )
+
+    this.data = new MaskData(
+      this.type,
+      this.buffer,
+      this.focus,
+      this.rubberTransition,
+      this.date,
+      this.special,
+      this.match,
+      this.rubber,
+      this.item,
+      this.selection,
+      this.character,
+      this.valueBasic,
+      this.value,
+      this.emit,
+      this.element
+    )
   }
 }

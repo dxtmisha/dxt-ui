@@ -7,6 +7,7 @@ export type MaskTypeItem = GeoDate
   | 'number-format'
   | 'currency'
 
+export type MaskElementInput = HTMLInputElement | undefined
 export type MaskMatchItem = RegExp | string
 export type MaskFractionItem = string | boolean | number
 
@@ -20,7 +21,29 @@ export type MaskSpecialItem = {
   pattern?: FieldPatternItemOrFunction
   view?: string
 }
+export type MaskSpecialInfo = {
+  index: number
+  key: number
+  char: string
+}
 export type MaskSpecialList = Record<string, MaskSpecialItem>
 export type MaskSpecialProp = string | string[] | MaskSpecialList
 
+export type MaskViewItem = {
+  className: string
+  value: string
+}
+export type MaskViewList = MaskViewItem[]
+
 export type MaskList = string | string[]
+
+export type MaskEventData = InputValidationItem
+export type MaskEventSelection = {
+  target: HTMLInputElement
+  start: number
+  end: number
+  length: number
+}
+
+export const MASK_CHAR_DELETE = '~'
+export const MASK_VIEW_DEFAULT = '_'
