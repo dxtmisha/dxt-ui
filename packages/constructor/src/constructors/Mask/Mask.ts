@@ -1,5 +1,12 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+import { computed, type Ref, type ToRefs, watch } from 'vue'
+import {
+  anyToString,
+  type ConstrClassObject,
+  type ConstrEmit,
+  DesignComp,
+  GeoRef,
+  isFloat
+} from '@dxt-ui/functional'
 
 import { MaskType } from './MaskType'
 import { MaskBuffer } from './MaskBuffer'
@@ -23,13 +30,16 @@ import { MaskValidation } from './MaskValidation'
 import { MaskView } from './MaskView'
 import { MaskEmit } from './MaskEmit'
 import { MaskData } from './MaskData'
+import { MaskEvent } from './MaskEvent'
 
 import type { MaskElementInput } from './basicTypes'
 import type { MaskComponents, MaskEmits, MaskSlots } from './types'
 import type { MaskProps } from './props'
 
 /**
- * Mask
+ * Class for working with input masking.
+ *
+ * Класс для работы с маской ввода.
  */
 export class Mask {
   /** Type helper/ Объект для работы с типом */
@@ -79,6 +89,8 @@ export class Mask {
   readonly emit: MaskEmit
   /** Data helper/ Объект для работы с вводом */
   readonly data: MaskData
+  /** Event helper/ Объект для работы с DOM-событиями */
+  readonly event: MaskEvent
 
   /**
    * Constructor
@@ -219,5 +231,91 @@ export class Mask {
       this.emit,
       this.element
     )
+
+    this.event = new MaskEvent(
+      this.buffer,
+      this.focus,
+      this.characterLength,
+      this.right,
+      this.selection,
+      this.valueBasic,
+      this.emit,
+      this.data
+    )
+
+    watch([refs.value], () => this.reset(props.value))
+    watch(this.basic, () => this.data.goSelection(false))
+
+    watch([GeoRef.getStandard(), refs.language], () => this.reset(this.value.getValueCache()))
+
+    if (props.value) {
+      this.data.reset(anyToString(props.value))
+    }
+  }
+
+  /** Receiving basic standard values/ Получение базовых стандартных значений */
+  readonly basic = computed<string>(() => {
+    if (this.right.isRight()) {
+      let data = ''
+
+      this.view.item.value.forEach((item) => {
+        data += item.value
+      })
+
+      return data
+    }
+
+    return this.view.input.value
+  })
+
+  /** Values for CSS class/ Значения для CSS-класса */
+  readonly classes = computed<ConstrClassObject>(() => ({
+    [`${this.className}--value`]: this.characterLength.is(),
+    [`${this.className}--end`]: this.right.isEnd()
+  }))
+
+  /**
+   * Sets new value and reinitializes mask.
+   *
+   * Устанавливает новое значение и переинициализирует маску.
+   * @param value new value/ новое значение
+   */
+  readonly set = (value: string) => this.reset(value)
+
+  /**
+   * Resets all values or updates to the new one.
+   *
+   * Сбрасывает все значения или обновляется до нового.
+   * @param value new values/ новые значения
+   */
+  reset(value?: string | number): boolean {
+    const newValue = anyToString(value)
+
+    if (newValue !== this.props.valueDefault) {
+      if (
+        this.value.item.value !== newValue
+        || (
+          this.valueBasic.item.value !== newValue
+          && !isFloat(newValue)
+        )
+      ) {
+        this.data.reset(newValue)
+        this.emit.set('reset', {} as Event).go()
+        return true
+      }
+    }
+
+    return false
+  }
+
+  /**
+   * Clears value to default and focuses input.
+   *
+   * Очищает значение до значения по умолчанию и фокусирует поле ввода.
+   */
+  readonly clear = () => {
+    this.data.reset((this.props.valueDefault ?? '').toString())
+    this.emit.set('reset', {} as Event).go()
+    this.element.value?.focus()
   }
 }

@@ -27,14 +27,14 @@ export class MaskDesign<
   CLASSES extends MaskClasses,
   P extends MaskPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    MaskEmits,
-    EXPOSE,
-    MaskSlots,
-    CLASSES,
-    P
-  > {
+  HTMLInputElement,
+  COMP,
+  MaskEmits,
+  EXPOSE,
+  MaskSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Mask
 
   /**
@@ -65,9 +65,6 @@ export class MaskDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -78,8 +75,10 @@ export class MaskDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      valueBasic: this.item.basic,
+      value: this.item.value.item,
+      setValue: this.item.set,
+      clear: this.item.clear
     } as EXPOSE
   }
 
@@ -90,7 +89,7 @@ export class MaskDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes.value,
       ...{
         // :classes [!] System label / Системная метка
         input: this.getSubClass('input'),
@@ -107,10 +106,7 @@ export class MaskDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -119,12 +115,101 @@ export class MaskDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    const children: any[] = [
+      ...this.renderData(),
+      ...this.renderInput(),
+      ...this.renderView()
+    ]
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
+    return h('span', {
+      ...this.getAttrs(),
       class: this.classes?.value.main
-    })
+    }, children)
+  }
+
+  /**
+   * Element for storing the final data.
+   *
+   * Элемент для хранения конечных данных.
+   */
+  protected renderData = (): VNode[] => {
+    if (this.props.name) {
+      return [
+        h('input', {
+          type: 'hidden',
+          name: this.props.name,
+          value: this.item.value.item.value
+        })
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Rendering method for input.
+   *
+   * Метод рендеринга для ввода.
+   */
+  protected renderInput = (): VNode[] => {
+    return [
+      h(
+        'input',
+        {
+          ...this.props.inputAttrs,
+
+          ref: this.element,
+          class: this.classes?.value.input,
+
+          type: 'text',
+          value: this.item.basic.value,
+
+          onFocus: this.item.event.onFocus,
+          onBlur: this.item.event.onBlur,
+          onKeydown: this.item.event.onKeydown,
+          onKeyup: this.item.event.onKeyup,
+          onBeforeinput: this.item.event.onBeforeinput,
+          onInput: this.item.event.onInput,
+          onChange: this.item.event.onChange,
+          onPaste: this.item.event.onPaste,
+          onClick: this.item.event.onClick
+        }
+      )
+    ]
+  }
+
+  /**
+   * Rendering method for displaying the mask and the input data.
+   *
+   * Метод рендеринга для вывода маски и вводимых данных.
+   */
+  protected renderView = (): VNode[] => {
+    const view = this.item.view.item.value
+    const children: any[] = []
+
+    if (view.length > 0) {
+      view.forEach((character, key) => {
+        children.push(
+          h('span', {
+            key,
+            class: character.className,
+            innerHTML: character.value === ' ' ? '&nbsp;' : character.value
+          })
+        )
+      })
+    } else {
+      children.push('&nbsp;')
+    }
+
+    return [
+      h(
+        'span',
+        {
+          'class': this.classes?.value.character,
+          'data-length': '1'
+        },
+        children
+      )
+    ]
   }
 }

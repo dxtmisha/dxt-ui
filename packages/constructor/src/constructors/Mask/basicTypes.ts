@@ -1,5 +1,5 @@
 import type { GeoDate } from '@dxt-ui/functional'
-import type { FieldPatternItemOrFunction } from '../../types/fieldTypes'
+import type { FieldPatternItemOrFunction, FieldValidationItem } from '../../types/fieldTypes'
 
 export type MaskTypeItem = GeoDate
   | 'text'
@@ -37,7 +37,7 @@ export type MaskViewList = MaskViewItem[]
 
 export type MaskList = string | string[]
 
-export type MaskEventData = InputValidationItem
+export type MaskEventData = FieldValidationItem
 export type MaskEventSelection = {
   target: HTMLInputElement
   start: number
