@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import D1List from './components/Ui/List/D1List.vue'
+import D1Mask from './components/Ui/Mask/D1Mask.vue'
 </script>
 
 <template>
@@ -7,6 +8,9 @@ import D1List from './components/Ui/List/D1List.vue'
     <div class="test">
       <div class="test__item">width > 400</div>
       <D1List/>
+      <div style="border: 1px solid #eee;">
+        <D1Mask mask="***-***"/>
+      </div>
     </div>
     <div class="app__back">
       <h1>D1</h1>

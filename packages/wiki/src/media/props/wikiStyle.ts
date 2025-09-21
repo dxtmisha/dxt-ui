@@ -621,6 +621,18 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  type: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Selects the visual type/variant of the component',
+        ru: 'Выбирает визуальный тип/вариант компонента'
+      }
+    }
+  },
   windowAttrs: {
     type: StorybookControl.object,
     options: {

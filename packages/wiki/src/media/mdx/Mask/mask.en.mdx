@@ -1,0 +1,45 @@
+# Input Mask
+
+The `mask` property defines a template for real-time user input formatting. Allows creating structured fields for phones, dates, cards and other formatted data.
+
+### Purpose
+
+- **Structured input** — Guides users when entering data in the required format
+- **Automatic formatting** — Adds separators and symbols during typing
+- **Error prevention** — Restricts input to only allowed characters
+- **UX improvement** — Makes the input process more clear and predictable
+
+### Key features
+
+- **Flexible templates** — Support for single and multiple masks
+- **Special characters** — Customizable positions for different data types
+- **Automatic selection** — With multiple masks, the most suitable one is selected
+- **Validation integration** — Works together with the data validation system
+
+### Usage
+
+Use masks for:
+- Phone numbers (`+7 *** *** ** **`)
+- Bank cards (`**** **** **** ****`)
+- Dates (`**.**.****`)
+- Postal codes (`******`)
+- Any structured data
+
+### Syntax
+
+```javascript
+// Single mask
+mask: "+7 *** *** ** **"
+
+// Multiple masks
+mask: ["+7 *** *** ** **", "8 *** *** ** **"]
+```
+
+**Special characters** (default `*`) indicate input positions, **literal characters** are inserted automatically.
+
+### Recommendations
+
+- Use clear separators to improve readability
+- When supporting multiple formats, use an array of masks
+- Configure special characters via the `special` property
+- Combine with validation for complete input control

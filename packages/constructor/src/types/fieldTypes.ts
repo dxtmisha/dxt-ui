@@ -56,7 +56,7 @@ export type FieldMatch = string | HTMLInputElement | FieldMatchItem
 /** Base data for validation check/ Базовые данные проверки */
 export type FieldCheckMain = {
   /** Group key/ Ключ группы */
-  group: string
+  group?: string
   /** Related input element/ Связанный элемент ввода */
   input?: FieldElementDom
   /** Pattern used/ Используемый шаблон */

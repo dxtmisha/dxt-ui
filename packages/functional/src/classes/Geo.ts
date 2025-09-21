@@ -189,10 +189,10 @@ export class Geo {
     const minutes = Math.abs(this.timezone % 60).toString().padStart(2, '0')
 
     if (this.timezone >= 0) {
-      return `+${hours}:${minutes}`
+      return `-${hours}:${minutes}`
     }
 
-    return `-${hours}:${minutes}`
+    return `+${hours}:${minutes}`
   }
 
   /**

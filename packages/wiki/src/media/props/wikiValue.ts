@@ -92,6 +92,17 @@ export const wikiValue: StorybookArgsToList = {
       value: 25
     }
   },
+  currency: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Currency code for formatting monetary values',
+        ru: 'Код валюты для форматирования денежных значений'
+      }
+    }
+  },
   description: {
     type: StorybookControl.string,
     options: {
@@ -122,6 +133,17 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Whether to format values before displaying',
         ru: 'Нужно ли форматировать значения перед отображением'
+      }
+    }
+  },
+  fraction: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: ['string', 'number', 'boolean'],
+      description: {
+        en: 'Fraction configuration for numeric masks (digits count or special mode)',
+        ru: 'Настройка дробной части для числовых масок (количество знаков или режим)'
       }
     }
   },
@@ -272,6 +294,17 @@ export const wikiValue: StorybookArgsToList = {
       value: 100
     }
   },
+  name: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Name attribute for the input field',
+        ru: 'Атрибут name для поля ввода'
+      }
+    }
+  },
   prefix: {
     type: StorybookControl.string,
     options: {
@@ -325,6 +358,17 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Error or validation message text',
         ru: 'Текст сообщения об ошибке или валидации'
+      }
+    }
+  },
+  valueDefault: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: ['string', 'number'],
+      description: {
+        en: 'Default value for the input field',
+        ru: 'Значение по умолчанию для поля ввода'
       }
     }
   },

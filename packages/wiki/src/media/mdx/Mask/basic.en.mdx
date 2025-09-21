@@ -1,0 +1,24 @@
+The Mask component provides structured data input with real-time automatic formatting. Allows creating convenient fields for phones, dates, bank cards and other formatted data.
+
+### Key features
+
+- **Automatic formatting**: Adds separators and symbols during typing
+- **Flexible templates**: Support for single and multiple masks with automatic selection
+- **Error prevention**: Restricts input to only allowed characters
+- **Validation integration**: Works together with the data validation system
+- **Data type support**: Built-in presets for numbers, currencies and dates
+
+### Usage
+
+Use the component to create input fields with a defined structure: phone numbers, bank cards, dates, postal codes and any other data requiring a specific format.
+
+### Recommendations
+
+Keep templates short and clear for the user. When supporting multiple formats, use an array of masks — the component will automatically select the most suitable template as the user types.
+
+- Define a pattern with special characters for input groups
+- Literals are auto-inserted during typing
+- Multiple patterns can be provided; the best match is selected dynamically
+- Works with validation, number/currency formats, and date/time helpers
+
+Tip: keep patterns short and explicit to improve usability.

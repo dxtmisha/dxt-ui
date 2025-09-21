@@ -50,7 +50,7 @@ export class MaskEvent {
    * Перехват события при получении фокуса.
    * @param event event object/ объект события
    */
-  onFocus(event: FocusEvent): void {
+  readonly onFocus = (event: FocusEvent): void => {
     this.change = false
     this.focus.in()
 
@@ -65,7 +65,7 @@ export class MaskEvent {
    * Перехват события при потере фокуса.
    * @param event event object/ объект события
    */
-  onBlur(event: FocusEvent): void {
+  readonly onBlur = (event: FocusEvent): void => {
     if (this.change) {
       this.emit
         .setType('change')
@@ -84,7 +84,7 @@ export class MaskEvent {
    * Перехват нажатия клавиши для получения символа.
    * @param event invoked event/ вызываемое событие
    */
-  onKeydown(event: KeyboardEvent): void {
+  readonly onKeydown = (event: KeyboardEvent): void => {
     const info = this.getSelectionInfo(event)
     const { start, end } = info
 
@@ -124,7 +124,7 @@ export class MaskEvent {
    * Перехват отпускания клавиши для проверки нажатия стрелок.
    * @param event invoked event/ вызываемое событие
    */
-  onKeyup(event: KeyboardEvent): void {
+  readonly onKeyup = (event: KeyboardEvent): void => {
     this.emit
       .set('keyup', event)
       .go()
@@ -153,7 +153,7 @@ export class MaskEvent {
    * Перехват события перед изменением данных.
    * @param event invoked event/ вызываемое событие
    */
-  onBeforeinput(event: InputEvent): void {
+  readonly onBeforeinput = (event: InputEvent): void => {
     this.emit
       .set('beforeinput', event)
       .go()
@@ -170,7 +170,7 @@ export class MaskEvent {
    * Перехват события при изменении данных.
    * @param event invoked event/ вызываемое событие
    */
-  onInput(event: InputEvent): void {
+  readonly onInput = (event: InputEvent): void => {
     if (this.unidentified) {
       const target = event.target as HTMLInputElement
 
@@ -203,7 +203,7 @@ export class MaskEvent {
    * Перехват события вставки данных из буфера обмена.
    * @param event invoked event/ вызываемое событие
    */
-  onPaste(event: ClipboardEvent): void {
+  readonly onPaste = (event: ClipboardEvent): void => {
     const { start, end } = this.getSelectionInfo(event)
 
     getClipboardData(event)
@@ -232,7 +232,7 @@ export class MaskEvent {
    * Перехват события изменения (поддержка автозаполнения).
    * @param event invoked event/ вызываемое событие
    */
-  onChange(event: Event): void {
+  readonly onChange = (event: Event): void => {
     const target = event.target as HTMLInputElement
 
     this.data.reset(target.value)
@@ -247,7 +247,7 @@ export class MaskEvent {
    * Перехват клика для корректировки выделения при необходимости.
    * @param event invoked event/ вызываемое событие
    */
-  onClick(event: MouseEvent): void {
+  readonly onClick = (event: MouseEvent): void => {
     this.makeToEnd(event)
     this.makeToStart(event)
   }

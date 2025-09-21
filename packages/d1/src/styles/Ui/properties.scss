@@ -11869,6 +11869,11 @@
         name: 'd1-listMenu',
         type: 'component',
       ),
+      'mask':(
+        index: 'mask',
+        name: 'd1-mask',
+        type: 'component',
+      ),
       'menu':(
         index: 'menu',
         name: 'd1-menu',
@@ -12240,6 +12245,11 @@
       'listMenu':(
         index: 'listMenu',
         name: 'd-listMenu',
+        type: 'component',
+      ),
+      'mask':(
+        index: 'mask',
+        name: 'd-mask',
         type: 'component',
       ),
       'menu':(

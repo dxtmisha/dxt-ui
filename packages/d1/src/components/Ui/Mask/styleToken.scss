@@ -1,0 +1,19 @@
+@use "../../../styles/Ui/properties";
+@use "@dxt-ui/styles/properties" as ui;
+@use "@dxt-ui/constructor/Mask/style" as Mask;
+
+@include ui.initDesignBasic('d1.mask') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Mask.mixinMask;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

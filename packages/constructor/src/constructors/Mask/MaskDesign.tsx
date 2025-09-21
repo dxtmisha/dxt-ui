@@ -186,6 +186,7 @@ export class MaskDesign<
   protected renderView = (): VNode[] => {
     const view = this.item.view.item.value
     const children: any[] = []
+    let innerHTML: undefined | string = undefined
 
     if (view.length > 0) {
       view.forEach((character, key) => {
@@ -198,7 +199,7 @@ export class MaskDesign<
         )
       })
     } else {
-      children.push('&nbsp;')
+      innerHTML = '&nbsp;'
     }
 
     return [
@@ -206,7 +207,8 @@ export class MaskDesign<
         'span',
         {
           'class': this.classes?.value.character,
-          'data-length': '1'
+          'data-length': '1',
+          innerHTML
         },
         children
       )

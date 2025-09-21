@@ -15,6 +15,7 @@ import { wikiIcon } from './wikiIcon'
 import { wikiImage } from './wikiImage'
 import { wikiList } from './wikiList'
 import { wikiListItem } from './wikiListItem'
+import { wikiMask } from './wikiMask'
 import { wikiMenu } from './wikiMenu'
 import { wikiMotionTransform } from './wikiMotionTransform'
 import { wikiProgress } from './wikiProgress'
@@ -37,6 +38,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiImage,
   ...wikiList,
   ...wikiListItem,
+  ...wikiMask,
   ...wikiMenu,
   ...wikiMotionTransform,
   ...wikiProgress,

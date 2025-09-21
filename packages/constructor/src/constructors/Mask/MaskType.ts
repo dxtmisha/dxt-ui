@@ -84,9 +84,11 @@ export class MaskType {
     return this.isTime()
       || [
         'date',
+        'year',
         'year-month',
         'month',
-        'day'
+        'day',
+        'day-month'
       ].indexOf(this.item.value) !== -1
   }
 

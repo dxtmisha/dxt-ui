@@ -87,7 +87,6 @@ export class MaskValidation {
       }
 
       return {
-        group: FieldInputCheckInclude.getGroupDefault(),
         status: true,
         value: item.value,
         isFull: true
@@ -95,7 +94,6 @@ export class MaskValidation {
     }
 
     return {
-      group: FieldInputCheckInclude.getGroupDefault(),
       status: true,
       value: this.value.item.value,
       isFull: false

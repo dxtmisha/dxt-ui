@@ -1,17 +1,17 @@
-export type GeoDate =
-  'full' |
-  'datetime' |
-  'date' |
-  'year-month' |
-  'year' |
-  'month' |
-  'day' |
-  'day-month' |
-  'time' |
-  'hour-minute' |
-  'hour' |
-  'minute' |
-  'second'
+export type GeoDate
+  = 'full'
+    | 'datetime'
+    | 'date'
+    | 'year-month'
+    | 'year'
+    | 'month'
+    | 'day'
+    | 'day-month'
+    | 'time'
+    | 'hour-minute'
+    | 'hour'
+    | 'minute'
+    | 'second'
 export type GeoFirstDay = 1 | 6 | 0
 export type GeoHours = '12' | '24'
 export type GeoTimeZoneStyle = 'minute' | 'hour' | 'ISO8601' | 'RFC'
