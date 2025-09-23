@@ -22,9 +22,7 @@ export type ListDataBasic = {
   search?: string
 }
 
-/**
- * Extended list item with type and index/ Расширенный элемент списка с типом и индексом
- */
+/** Extended list item with type and index/ Расширенный элемент списка с типом и индексом */
 export type ListDataItem<
   Item extends ListDataBasic = ListDataBasic
 > = ConstrBind<

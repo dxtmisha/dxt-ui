@@ -231,9 +231,37 @@ export class PropertiesFile {
    *
    * Читает содержимое директории рекурсивно.
    * @param path path to the directory/ путь к директории
-   * @param fullPath recursive directory/ рекурсивная директория
    */
   static readDirRecursive(
+    path: PropertiesFilePath
+  ): string[] {
+    return this
+      .readDirAndFileRecursive(path)
+      .filter(paths => !this.isDir(paths))
+  }
+
+  /**
+   * Reads only directories recursively.
+   *
+   * Читает только директории рекурсивно.
+   * @param path path to the directory/ путь к директории
+   */
+  static readDirOnlyRecursive(
+    path: PropertiesFilePath
+  ): string[] {
+    return this
+      .readDirAndFileRecursive(path)
+      .filter(paths => this.isDir(paths))
+  }
+
+  /**
+   * Reads the contents of the directory and files recursively.
+   *
+   * Читает содержимое директории и файлы рекурсивно.
+   * @param path path to the directory/ путь к директории
+   * @param fullPath full path for recursion/ полный путь для рекурсии
+   */
+  static readDirAndFileRecursive(
     path: PropertiesFilePath,
     fullPath: PropertiesFilePath = []
   ): string[] {
@@ -242,14 +270,13 @@ export class PropertiesFile {
 
     dirs.forEach((dir) => {
       const paths = [...path, dir]
+      data.push(this.joinPath([...fullPath, dir]))
 
       if (this.isDir(paths)) {
-        data.push(...this.readDirRecursive(
+        data.push(...this.readDirAndFileRecursive(
           paths,
           [...fullPath, dir]
         ))
-      } else {
-        data.push(this.joinPath([...fullPath, dir]))
       }
     })
 

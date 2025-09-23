@@ -10,6 +10,7 @@
     "dxt-library": "dxt-library"
   },
   "bin": {
+    "dxt-component": "./bin/design-component.ts",
     "dxt-constructor": "./bin/design-constructor.ts",
     "dxt-library": "./bin/design-library.ts",
     "dxt-ui": "./bin/design-ui.ts"
