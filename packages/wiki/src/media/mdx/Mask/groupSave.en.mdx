@@ -1,0 +1,59 @@
+## Cursor Behavior Control
+
+The `groupSave` property controls cursor behavior when navigating between different special character groups in the mask. When set to `true` (default), it enables intelligent navigation that improves user experience when working with complex masks.
+
+### Navigation Mechanism
+
+During mask navigation, the system checks:
+- Current cursor position
+- Type of special character at current position
+- Type of the next special character
+- If characters belong to different groups, special movement logic is applied
+
+### Usage Examples
+
+```html
+// Standard behavior (default)
+<Mask
+  :mask="'***-###-XXX'"
+  :special="['*', '#', 'X']"
+  :groupSave="true"
+/>
+
+// Disable smart navigation
+<Mask
+  :mask="'***-###-XXX'"
+  :special="['*', '#', 'X']"
+  :groupSave="false"
+/>
+
+// Complex mask with multiple groups
+<Mask
+  :mask="'AAA-111-BBB-222'"
+  :special="['A', '1', 'B', '2']"
+  :groupSave="true"
+/>
+```
+
+### When to Use
+
+#### groupSave: true (recommended)
+- For masks with multiple group types
+- When smooth navigation between groups is needed
+- In most user interface scenarios
+
+#### groupSave: false
+- For simple masks with single symbol type
+- When standard cursor behavior is required
+- In specific cases with custom navigation logic
+
+### Behavior Features
+
+- With **groupSave: true**, cursor "understands" boundaries between groups
+- Improves navigation in masks like phone numbers with area codes
+- Works only with rubber (non-fixed) groups
+- Doesn't affect data validation or formatting
+
+### Application
+
+Use this property to create more intuitive input interfaces, especially when the mask contains multiple logically separated data groups (country code, area code, number, etc.).

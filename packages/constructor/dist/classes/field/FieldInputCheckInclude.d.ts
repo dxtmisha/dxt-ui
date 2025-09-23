@@ -1,3 +1,4 @@
+import { FieldCodeInclude } from './FieldCodeInclude';
 import { FieldElementDom, FieldPatternElement, FieldPatternItemOrFunction, FieldValidationItem } from '../../types/fieldTypes';
 /**
  * The class creates hidden input and runs native validation for pattern
@@ -7,14 +8,16 @@ import { FieldElementDom, FieldPatternElement, FieldPatternItemOrFunction, Field
 export declare class FieldInputCheckInclude<Value = any> {
     readonly pattern: FieldPatternItemOrFunction;
     readonly group: string;
+    protected readonly code?: FieldCodeInclude | undefined;
     /** Hidden input element for native validation/ Скрытый input для нативной валидации */
     readonly input: HTMLInputElement | undefined;
     /**
      * Constructor
      * @param pattern property for verification/ свойство для проверки
      * @param group group name/ название группы
+     * @param code object for error codes/ объект для работы с кодами ошибок
      */
-    constructor(pattern: FieldPatternItemOrFunction, group?: string);
+    constructor(pattern: FieldPatternItemOrFunction, group?: string, code?: FieldCodeInclude | undefined);
     /**
      * Runs validation and returns result
      *
@@ -41,3 +44,4 @@ export declare class FieldInputCheckInclude<Value = any> {
      */
     static getGroupDefault(): string;
 }
+export type FieldInputCheckListInclude = Record<string, FieldInputCheckInclude>;

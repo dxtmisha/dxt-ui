@@ -440,6 +440,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  inputAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the native input element',
+        ru: 'Дополнительные атрибуты для нативного элемента input'
+      }
+    }
+  },
   iconTrailingDirOnly: {
     type: StorybookControl.boolean,
     options: {

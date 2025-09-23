@@ -1,0 +1,127 @@
+## Special characters (special)
+
+The `special` property defines special characters for mask groups and their advanced settings.
+
+### Purpose
+
+Special characters in a mask denote places where users can input data. The `special` property allows configuring the behavior of these input groups with additional capabilities.
+
+### Value types
+
+```ts
+type MaskSpecialProp = string | string[] | MaskSpecialList
+
+// Extended group configuration
+interface MaskSpecialItem {
+  defaultValue?: string           // Default value
+  rubber?: boolean               // Rubber group (variable length)
+  transitionChar?: string | string[]  // Transition characters
+  minLength?: number             // Minimum length
+  maxLength?: number             // Maximum length
+  match?: RegExp | string        // Validation pattern
+  pattern?: FieldPatternItemOrFunction  // Validation pattern
+  view?: string                  // Display character
+}
+```
+
+### Usage methods
+
+**1. Simple string (single special character)**
+```javascript
+special: '*'           // Symbol * denotes input places
+// Mask: "***-***" → groups: *, *, *, *, *, *
+```
+
+**2. Character array (multiple group types)**
+```javascript
+special: ['*', '#', 'A']
+// * - any characters, # - digits, A - letters
+// Mask: "A**-###" → different group types
+```
+
+**3. Object with extended settings**
+```javascript
+special: {
+  '*': {
+    pattern: '\\d',        // Digits only
+    view: '_',             // Show _ as placeholder
+    rubber: false          // Fixed length
+  },
+  '#': {
+    pattern: '[A-Z]',      // Uppercase letters only
+    defaultValue: 'X',     // Default value
+    rubber: true,          // Variable length
+    minLength: 1,
+    maxLength: 5
+  }
+}
+```
+
+### Rubber groups
+
+Rubber groups allow entering a variable number of characters:
+
+```javascript
+special: {
+  '*': {
+    rubber: true,
+    minLength: 2,
+    maxLength: 8,
+    pattern: '\\d'
+  }
+}
+// Mask: "***-***" can accept 2 to 8 digits in each group
+```
+
+### Default values
+
+```javascript
+special: {
+  'Y': { defaultValue: '2024' },    // Default year
+  'M': { defaultValue: '01' },      // Default month
+  'D': { defaultValue: '01' }       // Default day
+}
+// Mask: "DD/MM/YYYY" → autofill: "01/01/2024"
+```
+
+### Transition characters
+
+Define characters that automatically move the cursor to the next group:
+
+```javascript
+special: {
+  '*': {
+    transitionChar: [' ', '-'],     // Space or dash moves forward
+    pattern: '\\d'
+  }
+}
+// When typing "123 " cursor automatically moves to next group
+```
+
+### Display (view)
+
+Configure placeholder characters for unfilled positions:
+
+```javascript
+special: {
+  '*': { view: '_' },       // Show underscores
+  '#': { view: '0' }        // Show zeros
+}
+// Mask: "***-###" displays as "___-000"
+```
+
+### Integration with mask types
+
+For built-in types (`currency`, `number`, date/time) the system automatically generates corresponding special characters:
+
+- **currency/number**: special characters for digits and decimal parts
+- **date/time**: characters for day, month, year, hours, minutes, seconds
+- **text**: uses settings from the `special` property
+
+### Interaction with other properties
+
+- `pattern` — complements special characters with group patterns
+- `check` — applied after filling all special groups
+- `mask` — uses special characters to define input places
+
+Special characters are the foundation of the mask system, providing flexible definition of input groups with individual validation rules and behavior.

@@ -18,9 +18,10 @@
     "_default": true
   },
   "~visiblePartly": {},
-  "~left": {},
-  "~right": {},
-  "~center": {},
+  "~align": {
+    "~left": {},
+    "~right": {}
+  },
   "~dir": {
     "~ltr": {},
     "~rtl": {}

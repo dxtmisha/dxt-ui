@@ -1,38 +1,86 @@
 import { NumberOrString } from '@dxt-ui/functional';
 import { ModelProps } from './modelTypes';
+/** Base input or textarea element/ Базовый элемент input или textarea */
 export type FieldElementDom = HTMLInputElement | HTMLTextAreaElement;
+/** Any supported field element (native, wrapper, record)/ Любой поддерживаемый элемент поля (нативный, обёртка, объект) */
 export type FieldElementInput = FieldElementDom | HTMLElement | Record<string, any> | undefined;
+/** Map validity flags to custom messages/ Отображение флагов валидности в кастомные сообщения */
 export type FieldValidityCodeItem = {
     [K in keyof ValidityState]?: string;
 };
+/** Global validation message or map/ Глобальное сообщение или карта сообщений */
 export type FieldValidityCode = string | FieldValidityCodeItem;
+/** Single mask fragment meta/ Один фрагмент маски с мета‑данными */
+export type FieldMaskItem = {
+    /** Group key/ Ключ группы */
+    group: string;
+    /** Accumulated value/ Накопленное значение */
+    value: string;
+    /** Max length for fragment/ Максимальная длина фрагмента */
+    maxLength: number;
+    /** Fragment filled flag/ Фрагмент заполнен */
+    full: boolean;
+    /** Caret end flag/ Флаг конца ввода */
+    end: boolean;
+    /** Characters extracted from value (value split into array)/ Символы извлечённые из value (value разделено на массив символов) */
+    chars: string[];
+};
+/** Masks data split by groups/ Данные маски, разделённые на группы */
+export type FieldMasks = Record<string, FieldMaskItem>;
+/** Partial input element for pattern/ Частичный элемент для pattern */
 export type FieldPatternElement = Partial<HTMLInputElement>;
+/** Pattern string or element/ Строка шаблона или элемент */
 export type FieldPatternItem = string | FieldPatternElement;
-export type FieldPatternItemOrFunction = FieldPatternItem | ((item: any) => FieldPatternItem);
+/** Pattern or factory function/ Шаблон или функция‑генератор */
+export type FieldPatternItemOrFunction = FieldPatternItem | ((item: FieldMasks) => FieldPatternItem);
+/** Named pattern list/ Список именованных шаблонов */
 export type FieldPatternList = Record<string, FieldPatternItemOrFunction>;
+/** Match config object/ Объект конфигурации совпадения */
 export type FieldMatchItem = {
+    /** Target name or element/ Имя цели или элемент */
     name?: string | HTMLInputElement;
+    /** Custom validation message/ Кастомное сообщение ошибки */
     validationMessage?: string;
 };
+/** Match definition (string | element | object)/ Описание совпадения (строка | элемент | объект) */
 export type FieldMatch = string | HTMLInputElement | FieldMatchItem;
+/** Base data for validation check/ Базовые данные проверки */
 export type FieldCheckMain = {
-    group: string;
+    /** Group key/ Ключ группы */
+    group?: string;
+    /** Related input element/ Связанный элемент ввода */
     input?: FieldElementDom;
+    /** Pattern used/ Используемый шаблон */
     pattern?: FieldPatternItemOrFunction;
 };
+/** Check item interface/ Элемент проверки */
 export type FieldCheckItem<Value = any> = FieldCheckMain & {
+    /** Run validation for value/ Выполнить проверку значения */
     check(value: Value): FieldValidationItem<Value>;
 };
+/** Map of check items/ Карта элементов проверки */
 export type FieldCheckList = Record<string, FieldCheckItem>;
+/** Single validation result/ Результат одной проверки */
 export type FieldValidationItem<Value = any> = FieldCheckMain & {
+    /** Custom type marker/ Произвольный тип */
     type?: string;
+    /** Pass status/ Статус успешности */
     status?: boolean;
+    /** Required flag/ Флаг обязательности */
     required?: boolean;
+    /** Full value flag/ Флаг полноты значения */
     isFull?: boolean;
+    /** Message text/ Текст сообщения */
     validationMessage?: string;
+    /** Native validity state/ Нативное состояние валидности */
     validity?: ValidityState;
+    /** Custom validity message (overrides native)/ Кастомное сообщение валидности (перекрывает нативное) */
+    validityMessage?: string;
+    /** Original value/ Исходное значение */
     value: Value;
+    /** Raw input value/ Введённое значение */
     valueInput?: Value;
+    /** Extra details/ Дополнительные данные */
     detail?: Record<string, any>;
 };
 /**
@@ -82,6 +130,7 @@ export interface FieldBasicProps<Value = any> extends Omit<FieldValueProps<Value
      * Стандартное сообщение валидации (перекрывает дефолтное)
      */
     validationMessage?: string;
+    /** Match config to compare with another field/ Конфигурация сравнения со вторым полем */
     match?: FieldMatch;
     /** Additional attributes for the input element/ Дополнительные атрибуты для элемента инпута */
     inputAttrs?: Record<string, any>;

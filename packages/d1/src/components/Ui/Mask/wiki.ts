@@ -6,7 +6,7 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'center', type: 'boolean' },
+  { name: 'align', type: 'string', option: ['left', 'right'] },
   { name: 'check', type: 'FieldPatternItemOrFunction' },
   { name: 'currency', type: 'string' },
   { name: 'currencyHide', type: 'boolean' },
@@ -16,12 +16,10 @@ const propsNames: StorybookProps = [
   { name: 'groupSave', type: 'boolean' },
   { name: 'inputAttrs', type: 'Partial<HTMLInputElement>' },
   { name: 'language', type: 'string' },
-  { name: 'left', type: 'boolean' },
   { name: 'mask', type: 'MaskList' },
   { name: 'match', type: 'MaskMatchItem' },
   { name: 'name', type: 'string' },
   { name: 'pattern', type: 'FieldPatternItemOrFunction' },
-  { name: 'right', type: 'boolean' },
   { name: 'special', type: 'MaskSpecialProp' },
   { name: 'type', type: 'string', option: ['number', 'full', 'datetime', 'date', 'year-month', 'year', 'month', 'day', 'day-month', 'time', 'hour-minute', 'hour', 'minute', 'second', 'text', 'number-format', 'currency'] },
   { name: 'value', type: 'string | number' },

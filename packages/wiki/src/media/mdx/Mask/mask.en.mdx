@@ -1,45 +1,75 @@
-# Input Mask
+## Mask template
 
-The `mask` property defines a template for real-time user input formatting. Allows creating structured fields for phones, dates, cards and other formatted data.
-
-### Purpose
-
-- **Structured input** — Guides users when entering data in the required format
-- **Automatic formatting** — Adds separators and symbols during typing
-- **Error prevention** — Restricts input to only allowed characters
-- **UX improvement** — Makes the input process more clear and predictable
+The `mask` property defines a template for structured data input with real-time automatic formatting. It provides guided user input with format error prevention.
 
 ### Key features
 
-- **Flexible templates** — Support for single and multiple masks
-- **Special characters** — Customizable positions for different data types
-- **Automatic selection** — With multiple masks, the most suitable one is selected
-- **Validation integration** — Works together with the data validation system
+- **Automatic formatting**: Adds separators and literal characters during typing
+- **Multiple templates**: Support for mask arrays with automatic selection of the most suitable one
+- **Special characters**: Customizable input positions through the `special` property
+- **Error prevention**: Restricts input to only allowed characters in corresponding positions
+- **Validation integration**: Works together with the data validation system through `pattern` and `check`
 
-### Usage
+### Value type
 
-Use masks for:
-- Phone numbers (`+7 *** *** ** **`)
-- Bank cards (`**** **** **** ****`)
-- Dates (`**.**.****`)
-- Postal codes (`******`)
-- Any structured data
-
-### Syntax
-
-```javascript
-// Single mask
-mask: "+7 *** *** ** **"
-
-// Multiple masks
-mask: ["+7 *** *** ** **", "8 *** *** ** **"]
+```typescript
+type MaskList = string | string[]
 ```
 
-**Special characters** (default `*`) indicate input positions, **literal characters** are inserted automatically.
+- **string** — single mask for fixed format
+- **string[]** — array of masks to support multiple formats
+
+### Mask syntax
+
+The mask template uses two types of characters:
+
+- **Special characters** (default `*`) — denote positions for user input
+- **Literal characters** — inserted automatically and cannot be changed by the user
+
+### Usage examples
+
+```javascript
+// Phone number
+mask: "+1 *** *** ****"
+
+// Credit card
+mask: "**** **** **** ****"
+
+// Date format
+mask: "**/**/****"
+
+// Multiple phone formats
+mask: [
+  "+1 *** *** ****",      // +1 999 123 4567
+  "*** *** ****"          // 999 123 4567
+]
+
+// Postal code
+mask: "******"
+```
+
+### Automatic mask selection
+
+When using an array of masks, the system automatically selects the most suitable template based on the entered data:
+
+```javascript
+mask: [
+  "+1 *** *** ****",      // Selected when typing +1
+  "1 *** *** ****",       // Selected when typing 1
+  "*** *** ****"          // Fallback option
+]
+```
+
+### Interaction with other properties
+
+- **special** — defines which characters are considered special and their behavior
+- **pattern** — sets validation patterns for special character groups
+- **check** — applies additional validation to the complete value after mask completion
+- **type** — for built-in types (`currency`, `number`, `date`) automatically generates corresponding masks
 
 ### Recommendations
 
-- Use clear separators to improve readability
-- When supporting multiple formats, use an array of masks
-- Configure special characters via the `special` property
-- Combine with validation for complete input control
+- Use clear separators to improve readability (spaces, dashes, parentheses)
+- When supporting multiple formats, place more specific masks first in the array
+- Combine with validation through `pattern` and `check` for complete input control
+- For complex cases, configure special characters through the `special` property

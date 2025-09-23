@@ -28,9 +28,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-mask': true,
     'd1-mask--visible': props.visible,
     'd1-mask--visiblePartly': props.visiblePartly,
-    'd1-mask--left': props.left,
-    'd1-mask--right': props.right,
-    'd1-mask--center': props.center,
+    [`d1-mask--align--${props.align}`]: inArray(propsValues.align, props.align),
     [`d1-mask--dir--${props.dir}`]: inArray(propsValues.dir, props.dir)
     // :classes-values [!] System label / Системная метка
   }

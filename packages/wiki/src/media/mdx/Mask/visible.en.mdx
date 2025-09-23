@@ -1,0 +1,48 @@
+## Mask Visibility Control
+
+The `visible` and `visiblePartly` properties control the display of mask placeholder characters and overall component visibility.
+
+### Properties
+
+- **visible** — Primary property for controlling complete visibility of the mask component
+- **visiblePartly** — Controls partial visibility of mask placeholder characters
+
+### How it works
+
+**visible** controls complete visibility of the mask component. When set to `false`, hides the entire mask component including all placeholder characters.
+
+**visiblePartly** controls partial visibility of mask placeholder characters. When set to `true`, shows only filled positions while hiding empty placeholder characters.
+
+### Usage Examples
+
+```html
+// Complete mask hiding
+<Mask
+  :mask="'+1 (***) ***-****'"
+  :visible="false"
+/>
+
+// Show only filled positions
+<Mask
+  :mask="'+1 (***) ***-****'"
+  :visiblePartly="true"
+/>
+
+// Conditional display with partial visibility
+<Mask
+  :mask="'+1 (***) ***-****'"
+  :visible="showMask"
+  :visiblePartly="compactMode"
+/>
+```
+
+### Behavior Features
+
+- When **visible: false**, the mask component is completely hidden
+- When **visiblePartly: true**, only filled mask positions are displayed
+- If **visible: false**, the **visiblePartly** property is ignored
+- Visibility changes don't affect validation logic and data processing
+
+### Application
+
+Use these properties to create adaptive interfaces where the mask can be displayed conditionally or in abbreviated form depending on the usage context.

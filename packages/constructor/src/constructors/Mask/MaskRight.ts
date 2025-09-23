@@ -25,7 +25,7 @@ export class MaskRight {
    * Возвращает, нужно ли визуально выравнивать по концу (числа, rtl, валюта).
    */
   isEnd(): boolean {
-    return !this.props.left && (
+    return this.props.align !== 'left' && (
       this.props.dir === 'rtl'
       || (this.type.isCurrency() && !this.props.currencyHide)
       || this.type.isNumberFormat()
@@ -38,6 +38,6 @@ export class MaskRight {
    * Проверяет, что выравнивание справа (явно right или конечное).
    */
   isRight(): boolean {
-    return !this.props.left && (this.props.right || this.isEnd())
+    return this.props.align === 'right' || this.isEnd()
   }
 }

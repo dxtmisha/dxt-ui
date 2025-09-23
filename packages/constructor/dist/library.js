@@ -2370,7 +2370,7 @@ const lt = {}, wo = /* @__PURE__ */ JSON.parse('[{"country":"US","countryAlterna
    */
   static getTimezoneFormat() {
     const e = Math.abs(Math.trunc(this.timezone / 60)).toString().padStart(2, "0"), n = Math.abs(this.timezone % 60).toString().padStart(2, "0");
-    return this.timezone >= 0 ? `+${e}:${n}` : `-${e}:${n}`;
+    return this.timezone >= 0 ? `-${e}:${n}` : `+${e}:${n}`;
   }
   /**
    * Determines the current country by its full name.

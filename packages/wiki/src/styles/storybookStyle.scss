@@ -63,6 +63,12 @@
       background: rgba(249, 250, 251, .48);
       backdrop-filter: blur(8px);
       border-radius: 8px;
+
+      &--static {
+        position: static;
+        @include ui.padding(0);
+        background: transparent;
+      }
     }
 
     &--overflowVisible {

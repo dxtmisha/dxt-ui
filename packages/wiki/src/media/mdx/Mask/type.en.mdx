@@ -1,0 +1,46 @@
+## Mask Types
+
+The `type` property defines the mask operation mode and automatically generates the appropriate structure for different data types.
+
+### Type Categories
+
+#### Text Type
+- **text** — Basic text mask (default)
+
+Used to create custom masks using the `mask` property. All characters are processed as-is, without additional formatting.
+
+#### Numeric Types
+- **number** — Simple numeric mask
+- **number-format** — Numbers with thousand separators
+- **currency** — Currency formatting
+
+Automatically create rubber masks with validation, localization, and specialized formatting.
+
+#### Date and Time Types
+- **date** — Full date
+- **datetime** — Date and time
+- **time** — Time
+- **year**, **month**, **day** — Date components
+- **hour-minute** — Time components
+
+Generate masks according to local formats with date correctness validation.
+
+### Automatic Generation
+
+When using specialized types, the `mask` property is ignored — the mask is created automatically:
+
+```html
+<!-- Text mask — requires explicit mask specification -->
+<Mask :mask="'+1 *** *** ****'" type="text" />
+
+<!-- Specialized types — mask generated automatically -->
+<Mask type="date" language="en-US" />
+<Mask type="currency" currency="USD" />
+<Mask type="number-format" :fraction="2" />
+```
+
+### Type Selection
+
+- **text** — for phones, codes, custom formats
+- **Numeric types** — for quantities, amounts, percentages
+- **Date types** — for timestamps, periods, schedules

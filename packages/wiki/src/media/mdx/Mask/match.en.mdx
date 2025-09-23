@@ -1,0 +1,36 @@
+## Global character pattern (match)
+
+The `match` property defines a global pattern for allowed characters during input. Applied when a group doesn't override this rule with its own pattern.
+
+### Validation priority
+
+1. **Local group pattern** (`special[GROUP].match`)
+2. **Global pattern** (`match`)
+3. **Default** (`/[0-9]/`)
+
+### Value types
+
+```ts
+type MaskMatchItem = RegExp | string
+
+match: /[A-F0-9]/        // RegExp object
+match: "[A-F0-9]"        // String (converted to RegExp)
+match: "\\d"             // With escaping
+```
+
+### Examples
+
+```html
+<!-- HEX characters -->
+<Mask :mask="'***-***'" match="[A-F0-9]" />
+
+<!-- Letters only -->
+<Mask :mask="'***-***'" match="[A-Za-z]" />
+
+<!-- Combined with groups -->
+<Mask
+  :mask="'***-###'"
+  :special="{ '*': {}, '#': { match: '[A-Za-z]' } }"
+  match="\\d"
+/>
+```

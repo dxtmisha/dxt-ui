@@ -1,3 +1,21 @@
 {
-  "main": "{d.mask}"
+  "main": "{d.mask}",
+  "color-opacity": "{sys.opacity.surface.disabled}",
+  "character": {
+    "item": {
+      "standard": {
+        "color-opacity": "{sys.opacity.surface.medium}"
+      },
+      "transition": {
+        "color-opacity": "{sys.opacity.surface.medium}"
+      },
+      "special": {
+        "color-opacity": "{sys.opacity.surface.high}"
+      },
+      "error": {
+        "color": "{sys.palette.error}",
+        "color-opacity": "{sys.opacity.surface.high}"
+      }
+    }
+  }
 }

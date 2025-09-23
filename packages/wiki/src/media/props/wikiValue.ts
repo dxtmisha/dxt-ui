@@ -103,6 +103,17 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  language: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Language/locale code (BCP 47) used for formatting values (e.g., en-US, ru-RU)',
+        ru: 'Код языка/локали (BCP 47) для форматирования значений (например, ru-RU, en-US)'
+      }
+    }
+  },
   description: {
     type: StorybookControl.string,
     options: {

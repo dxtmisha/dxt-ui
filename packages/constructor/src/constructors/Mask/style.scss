@@ -28,7 +28,7 @@
     line-height: inherit;
     letter-spacing: inherit;
     color: transparent;
-    @include ui.color(ui.v('??sys.color'), ui.v('??caretOpacity', 1), 'caret-color');
+    @include ui.color(ui.v('??sys.color'), ui.v('??caretOpacity', 1), null, 'caret-color');
     text-align: ui.v('??sys.align');
 
     background: transparent;
@@ -52,6 +52,7 @@
 
     &__item {
       @include ui.color(ui.v('??sys.color'), ui.v('??colorOpacity', 1));
+      pointer-events: none;
 
       &--placeholder {
         opacity: ui.v('??sys.opacity');
@@ -79,23 +80,25 @@
     }
   }
 
-  &--right,
-  &--end {
-    @include ui.initByCustom('sys.align', ui.dirRight());
-    @include ui.initByCustom('sys.align.flex', flex-end);
-  }
-
-  &--left {
-    @include ui.initByCustom('sys.align', ui.dirLeft());
-  }
-
-  &--center {
-    @include ui.subclass('input') {
-      text-align: center;
+  &--align {
+    &--right,
+    &--end {
+      @include ui.initByCustom('sys.align', ui.dirRight());
+      @include ui.initByCustom('sys.align.flex', flex-end);
     }
 
-    @include ui.subclass('character') {
-      justify-content: center;
+    &--left {
+      @include ui.initByCustom('sys.align', ui.dirLeft());
+    }
+
+    &--center {
+      @include ui.subclass('input') {
+        text-align: center;
+      }
+
+      @include ui.subclass('character') {
+        justify-content: center;
+      }
     }
   }
 }

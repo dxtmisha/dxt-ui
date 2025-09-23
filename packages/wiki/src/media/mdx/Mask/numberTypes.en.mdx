@@ -1,0 +1,81 @@
+## Numeric mask types
+
+Numeric types in Mask provide specialized formatting and validation for working with numbers, currencies, and financial data.
+
+### Available types
+
+- **number** — Simple numeric mask with rubber structure
+- **number-format** — Formatted numbers with thousand separators and localization
+- **currency** — Currency mask with automatic currency symbol
+
+### Features
+
+**number:**
+- Rubber mask, numeric character validation
+- Support for negative values and `min`/`max` constraints
+- Decimal places configuration via `fraction`
+
+**number-format:**
+- Automatic thousand separators
+- Format localization (depends on `language`)
+- Rubber structure for large numbers
+
+**currency:**
+- Automatic currency symbol and localized separators
+- Option to hide currency symbol (`currencyHide`)
+- Support for various currencies (RUB, USD, EUR)
+
+### Decimal places configuration (fraction)
+
+The `fraction` property controls the number of digits after the decimal point:
+
+- **number** — exact number of digits (e.g., `:fraction="2"`)
+- **true** — automatic detection based on user input
+- **false/0** — no decimal places
+
+### Examples
+
+```html
+<!-- Simple number -->
+<Mask type="number" />
+
+<!-- Number with constraints -->
+<Mask type="number" :min="0" :max="100" :fraction="1" />
+
+<!-- Formatted number (Russian format: 1 234,56) -->
+<Mask type="number-format" language="ru" :fraction="2" />
+
+<!-- Formatted number (US format: 1,234.56) -->
+<Mask type="number-format" language="en-US" :fraction="2" />
+
+<!-- Currency with symbol ($1,234.56) -->
+<Mask type="currency" currency="USD" language="en-US" />
+
+<!-- Currency without symbol (1,234.56) -->
+<Mask type="currency" currency="USD" :currencyHide="true" />
+
+<!-- No decimal places -->
+<Mask type="number-format" :fraction="0" />
+
+<!-- High precision -->
+<Mask type="number" :fraction="4" />
+```
+
+### Localization
+
+Formats automatically adapt to locale:
+- **ru**: space + comma (1 234,56)
+- **en-US**: comma + dot (1,234.56)
+- **de**: dot + comma (1.234.567,89)
+
+### Validation
+
+- Character filtering (only numbers and separators)
+- Value range via `min`/`max`
+- Compliance with local standards
+
+### Usage
+
+- **number** — simple numeric fields, percentages, coefficients
+- **number-format** — large numbers, quantitative indicators
+- **currency** — monetary amounts, product prices

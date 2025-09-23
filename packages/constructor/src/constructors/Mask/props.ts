@@ -11,9 +11,7 @@ interface MaskPropsToken {
   // :type [!] System label / Системная метка
   visible?: boolean
   visiblePartly?: boolean
-  left?: boolean
-  right?: boolean
-  center?: boolean
+  align?: 'left' | 'right' | 'center'
   dir?: 'ltr' | 'rtl'
   // :type [!] System label / Системная метка
 }
