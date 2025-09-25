@@ -431,6 +431,23 @@ export class PropertiesFile {
   }
 
   /**
+   * Changing file permissions.
+   *
+   * Изменение прав доступа к файлу.
+   * @param path path to the file/ путь к файлу
+   * @param mode file permissions/ права доступа к файлу
+   */
+  static chmod(
+    path: PropertiesFilePath,
+    mode: string | number = 0o755
+  ): void {
+    requireFs.chmodSync(
+      this.joinPath(path),
+      mode
+    )
+  }
+
+  /**
    * Removing root from the path.
    *
    * Удаление root из пути.
