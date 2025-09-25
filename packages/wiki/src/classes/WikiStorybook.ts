@@ -37,9 +37,9 @@ export class WikiStorybook {
     protected readonly component: string,
     protected readonly props: StorybookProps,
     protected readonly defaults: Record<string, any>,
-    protected readonly wikiDesign: StorybookArgsToList,
-    protected readonly wikiBasic: StorybookArgsToList,
-    protected readonly wikiDescriptions: StorybookComponentsDescription
+    protected readonly wikiDesign: StorybookArgsToList = {},
+    protected readonly wikiBasic: StorybookArgsToList = {},
+    protected readonly wikiDescriptions: StorybookComponentsDescription = []
   ) {
     this.list = this.initList()
   }
