@@ -11,6 +11,7 @@
   },
   "bin": {
     "dxt-component": "./bin/design-component.ts",
+    "dxt-component-wiki": "./bin/design-component-wiki.ts",
     "dxt-constructor": "./bin/design-constructor.ts",
     "dxt-library": "./bin/design-library.ts",
     "dxt-ui": "./bin/design-ui.ts"
@@ -28,7 +29,6 @@
     },
     "./config": "./src/config.ts",
     "./properties.json": "./src/media/properties.json",
-    "./ComponentWiki": "./src/classes/Component/ComponentWiki.ts",
     "./dist/types/*": "./dist/types/*",
     "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
   },

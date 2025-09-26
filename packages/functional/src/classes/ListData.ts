@@ -342,7 +342,7 @@ export class ListData {
     if (item !== -1) {
       return {
         key: item,
-        item: this.map.value[item]
+        item: this.map.value[item] as ListDataItem
       }
     }
 
@@ -403,7 +403,7 @@ export class ListData {
       )
     }
 
-    return this.subList[item.index]
+    return this.subList[item.index] as ListData
   }
 
   /**

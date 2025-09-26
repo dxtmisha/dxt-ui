@@ -1,4 +1,4 @@
-import { isDomRuntime } from './isDomRuntime.ts'
+import { isDomRuntime } from './isDomRuntime'
 
 /**
  * Selects all elements that match the specified selectors.

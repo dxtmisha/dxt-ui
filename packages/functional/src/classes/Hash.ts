@@ -66,7 +66,7 @@ export class Hash {
     callback: (value: T) => void
   ): void {
     if (name in this.watch) {
-      this.watch[name].push(callback)
+      this.watch[name]?.push(callback)
     } else {
       this.watch = { [name]: [callback] }
     }
@@ -97,7 +97,7 @@ export class Hash {
     location.hash.replace(
       /([\w-]+)[:=]([^;]+)/ig,
       (...item: string[]) => {
-        hash[item[1]] = transformation(item[2])
+        hash[String(item[1])] = transformation(item[2])
         return ''
       }
     )

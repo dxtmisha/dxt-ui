@@ -41,7 +41,7 @@ export class Translate {
     const fullName = this.getName(name)
 
     if (fullName in this.data) {
-      return this.replacement(this.data[fullName], replacement)
+      return this.replacement(this.data[fullName] as string, replacement)
     }
 
     if (!Api.isLocalhost()) {
@@ -69,7 +69,7 @@ export class Translate {
     const fullName = this.getName(name)
 
     if (fullName in this.data) {
-      return this.replacement(this.data[fullName], replacement)
+      return this.replacement(String(this.data[fullName]), replacement)
     }
 
     return first ? ' ' : name
@@ -87,7 +87,7 @@ export class Translate {
       let end = 0
 
       for (const name of names) {
-        const code = Array.isArray(name) ? name[0] : name
+        const code = (Array.isArray(name) ? name[0] : name) as string
         const replacement = Array.isArray(name) ? name.slice(1) : undefined
 
         this.get(code, replacement)
@@ -114,7 +114,7 @@ export class Translate {
     const list: Record<string, string> = {}
 
     for (const name of names) {
-      const code = Array.isArray(name) ? name[0] : name
+      const code = (Array.isArray(name) ? name[0] : name) as string
       const replacement = Array.isArray(name) ? name.slice(1) : undefined
 
       list[code] = this.getSync(code, first, replacement)

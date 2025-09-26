@@ -70,6 +70,10 @@ export const UI_FILE_NAME_MEDIA = 'media'
 /** File name for the list of component descriptions for the wiki/ Название файла для список описаний компонентов для wiki */
 export const UI_FILE_NAME_WIKI = 'wiki'
 
+export const UI_FILE_NAME_VITE = 'vite.config.ts'
+
+export const UI_FILE_NAME_VITE_WORKERS = 'vite-workers.config.ts'
+
 /** SCSS file extension/ Расширение файлов SCSS */
 export const UI_EXTENSION_STYLE = 'scss'
 

@@ -28,7 +28,7 @@ export const useLazyRef = () => {
               const id = getElementId(entry.target as HTMLElement)
 
               if (id in list) {
-                list[id].status.value = entry.isIntersecting
+                (list[id] as LazyItem).status.value = entry.isIntersecting
               }
             })
           },
@@ -45,7 +45,7 @@ export const useLazyRef = () => {
 
       if (id in list) {
         intersectionObserver?.unobserve(element)
-        list[id].stopWatch()
+        list[id]?.stopWatch()
 
         delete list[id]
       }

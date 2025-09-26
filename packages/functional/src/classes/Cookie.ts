@@ -26,7 +26,7 @@ export class Cookie<T> {
 
   constructor(private name: string) {
     if (name in items) {
-      return items[name]
+      return items[name] as Cookie<T>
     }
 
     this.value = cookie?.[name]

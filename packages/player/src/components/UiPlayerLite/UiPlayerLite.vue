@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { toArray } from '@dxt-ui/functional'
 import {
   UiPlayerLiteDefaults,
   type UiPlayerLiteEmits,
@@ -14,12 +13,10 @@ defineOptions({
 withDefaults(defineProps<UiPlayerLiteProps>(), UiPlayerLiteDefaults)
 defineEmits<UiPlayerLiteEmits>()
 defineSlots<UiPlayerLiteSlots>()
-
-const array = toArray('test')
 </script>
 
 <template>
-  <div class="ui-player-lite">{{ array }}</div>
+  <div class="ui-player-lite"></div>
 </template>
 
 <style lang="scss">

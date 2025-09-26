@@ -1,4 +1,4 @@
-import { isDomRuntime } from './isDomRuntime.ts'
+import { isDomRuntime } from './isDomRuntime'
 
 /**
  * Selects the first element that matches the specified selectors.

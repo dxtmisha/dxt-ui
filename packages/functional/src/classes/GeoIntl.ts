@@ -29,6 +29,17 @@ import {
  * языка-зависимых функций
  */
 export class GeoIntl {
+  /**
+   * Returns an instance of the class according to the specified country code.
+   *
+   * Возвращает экземпляр класса по указанному коду страны.
+   * @param code country code, full form language-country or one of them/
+   * код страны, полный вид язык-страна или один из них
+   */
+  static getInstance(code: string = Geo.getLocation()) {
+    return new GeoIntl(code)
+  }
+
   private readonly geo: GeoItemFull
 
   /**
@@ -42,7 +53,7 @@ export class GeoIntl {
     const location = this.getLocation()
 
     if (location in items) {
-      return items[location]
+      return items[location] as GeoIntl
     }
 
     items[location] = this
@@ -236,8 +247,8 @@ export class GeoIntl {
     const number: string = value
       .toString()
       .replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...text: string[]): string => {
-        options.currency = text[2].toUpperCase()
-        return text[1]
+        options.currency = String(text[2]).toUpperCase()
+        return String(text[1])
       })
 
     if (numberOnly) {
@@ -311,8 +322,8 @@ export class GeoIntl {
     const number: string = value
       .toString()
       .replace(/^([\S\s]+[\d ])([a-zA-Z]+)$/i, (...text: string[]): string => {
-        options.unit = text[2].toLowerCase()
-        return text[1]
+        options.unit = String(text[2]).toLowerCase()
+        return String(text[1])
       })
 
     return this.number(number, options)
@@ -327,13 +338,13 @@ export class GeoIntl {
   sizeFile(
     value: NumberOrString,
     unitOptions:
-      'byte' |
-      'kilobyte' |
-      'megabyte' |
-      'gigabyte' |
-      'terabyte' |
-      'petabyte' |
-      Intl.NumberFormatOptions = 'byte'
+      'byte'
+      | 'kilobyte'
+      | 'megabyte'
+      | 'gigabyte'
+      | 'terabyte'
+      | 'petabyte'
+      | Intl.NumberFormatOptions = 'byte'
   ): string {
     const number: number = toNumber(value)
 

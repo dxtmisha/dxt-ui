@@ -5,5 +5,5 @@
  * @param event event object/ объект события
  */
 export function getMouseClientY(event: MouseEvent & TouchEvent): number {
-  return event?.clientY || event?.targetTouches?.[0].clientY || event?.touches?.[0].clientY || 0
+  return event?.clientY || event?.targetTouches?.[0]?.clientY || event?.touches?.[0]?.clientY || 0
 }

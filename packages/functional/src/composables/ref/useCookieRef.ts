@@ -23,7 +23,7 @@ export function useCookieRef<T>(
   options?: CookieOptions
 ): Ref<T | string | undefined> {
   if (name in items) {
-    return items[name]
+    return items[name] as Ref<T | string | undefined>
   }
 
   const cookie = new Cookie<T>(name)

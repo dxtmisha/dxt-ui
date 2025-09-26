@@ -134,7 +134,7 @@ export class WikiStorybook {
       return {
         ...(this.wikiBasic?.[name] ?? {}),
         ...(this.wikiDesign?.[name] ?? {})
-      }
+      } as StorybookArgsToItem
     }
 
     return undefined
@@ -184,8 +184,10 @@ export class WikiStorybook {
       const language = Geo.getLanguage()
 
       if (isObjectNotArray(descriptions)) {
-        return descriptions?.[language]
+        return String(
+          descriptions?.[language]
           ?? Object.values(descriptions)?.[0]
+        )
       }
 
       return descriptions

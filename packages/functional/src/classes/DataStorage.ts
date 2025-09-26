@@ -39,7 +39,7 @@ export class DataStorage<T> {
     const nameCache = `${isSession ? 'session' : 'storage'}#${name}`
 
     if (nameCache in items) {
-      return items[nameCache]
+      return items[nameCache] as DataStorage<T>
     }
 
     const value = this.getValue()

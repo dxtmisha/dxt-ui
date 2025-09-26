@@ -12,6 +12,10 @@
       "types": "./viteconfig/viteBasicFunction.config.d.ts",
       "default": "./viteconfig/viteBasicFunction.config.js"
     },
+    "./viteComponentOnly": {
+      "types": "./viteconfig/viteComponentOnly.config.d.ts",
+      "default": "./viteconfig/viteComponentOnly.config.js"
+    },
     "./viteFlags": {
       "types": "./viteconfig/viteFlags.config.d.ts",
       "default": "./viteconfig/viteFlags.config.js"

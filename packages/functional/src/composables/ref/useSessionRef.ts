@@ -13,7 +13,7 @@ export function useSessionRef<T>(
   defaultValue?: T | (() => T)
 ): Ref<T | undefined> {
   if (name in items) {
-    return items[name]
+    return items[name] as Ref<T | undefined>
   }
 
   const storage = new DataStorage<T>(name, true)

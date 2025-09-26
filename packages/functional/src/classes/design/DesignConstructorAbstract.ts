@@ -107,7 +107,7 @@ export abstract class DesignConstructorAbstract<
    * Получение названия дизайна.
    */
   getDesign(): string {
-    return this.name[0]
+    return String(this.name[0])
   }
 
   /**
@@ -276,7 +276,7 @@ export abstract class DesignConstructorAbstract<
         if (name.match(/\?\?/)) {
           data[name.replace(/\?\?/, this.getName())] = value
         } else if (name.match(/\?/)) {
-          data[name.replace(/\?/, this.name[0])] = value
+          data[name.replace(/\?/, this.getDesign())] = value
         } else {
           data[name] = value
         }

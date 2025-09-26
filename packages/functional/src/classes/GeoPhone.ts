@@ -45,7 +45,7 @@ export class GeoPhone {
         && number in focus
       ) {
         item = focus[number]
-        focus = focus[number].next
+        focus = item?.next ?? {}
       } else {
         value += number
       }
@@ -211,7 +211,7 @@ export class GeoPhone {
           }
 
           value = focus[number]
-          focus = focus[number].next
+          focus = value?.next ?? {}
         })
 
         if (value) {
@@ -251,7 +251,7 @@ export class GeoPhone {
    */
   protected static toStandard(phone: string, mask: string): string {
     let character = 0
-    return mask.replace(/\*/ig, () => phone[character++])
+    return mask.replace(/\*/ig, () => String(phone[character++]))
   }
 
   /**

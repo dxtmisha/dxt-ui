@@ -76,11 +76,15 @@ export class DesignComponents<
         this.caching[index] = computed(() => this.computeModification(index))
       }
 
-      if (props) {
-        return toBinds(this.caching[index].value, props)
-      }
+      const caching = this.caching[index]
 
-      return this.caching[index].value
+      if (caching) {
+        if (props) {
+          return toBinds(caching.value, props)
+        }
+
+        return caching.value
+      }
     }
 
     return props

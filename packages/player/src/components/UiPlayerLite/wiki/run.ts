@@ -1,9 +1,15 @@
 #!/usr/bin/env vite-node
 
-// import { ComponentWiki } from '@dxt-ui/scripts/ComponentWiki'
+import { exec } from 'node:child_process'
+import { promisify } from 'node:util'
 
-// new ComponentWiki().make()
+const execAsync = promisify(exec)
 
-import { exec } from 'child_process'
-
-exec('dxt-component')
+;(async () => {
+  try {
+    const { stdout, stderr } = await execAsync('npx dxt-component-wiki UiPlayerLite')
+    console.log(stderr ? stderr : stdout)
+  } catch (error) {
+    console.error('Error:', error)
+  }
+})()

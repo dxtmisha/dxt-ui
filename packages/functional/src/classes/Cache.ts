@@ -55,6 +55,6 @@ export class Cache {
       this.cache[name] = new CacheItem(callback)
     }
 
-    return this.cache[name]
+    return this.cache[name] as CacheItem<T>
   }
 }

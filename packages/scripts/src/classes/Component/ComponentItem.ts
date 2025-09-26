@@ -52,7 +52,7 @@ export class ComponentItem {
    */
   protected getName(): string {
     const parts = PropertiesFile.splitForDir(this.path)
-    return parts[parts.length - 1]
+    return String(parts[parts.length - 1])
   }
 
   /**
@@ -134,5 +134,6 @@ export class ComponentItem {
       .replace(/ComponentDoc/g, this.getName())
       .replace(/component-doc/g, toKebabCase(this.getName()))
       .replace(/\[project]/g, this.getProjectName())
+      .replace(/\[path]/g, this.path)
   }
 }

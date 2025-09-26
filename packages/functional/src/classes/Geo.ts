@@ -126,7 +126,7 @@ export class Geo {
       }
     }
 
-    return this.toFull(copyObject(item ?? this.getList()[0]))
+    return this.toFull(copyObject(item ?? this.getList()[0] as GeoItem))
   }
 
   /**
