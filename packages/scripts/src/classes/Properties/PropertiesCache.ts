@@ -79,7 +79,7 @@ export class PropertiesCache {
       this.listenerName.forEach((name) => {
         if (!(name in this.files)) {
           this.files[name] = [value]
-        } else if (this.files[name].indexOf(value) === -1) {
+        } else if (this.files?.[name]?.indexOf(value) === -1) {
           this.files[name].push(value)
         }
       })
@@ -134,7 +134,7 @@ export class PropertiesCache {
     let notUpdate = true
 
     if (name in this.files) {
-      this.files[name].forEach((path) => {
+      this.files?.[name]?.forEach((path) => {
         const stat = PropertiesFile.stat(path)
 
         if (stat && stat.mtimeMs > this.time) {

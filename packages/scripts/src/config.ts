@@ -27,6 +27,10 @@ export const UI_DIR_COMPONENTS = 'components'
 export const UI_DIR_CONSTRUCTOR = 'constructors'
 /** Structure directory name/ Название директории структуры */
 export const UI_DIR_STRUCTURE = 'structure'
+export const UI_DIR_WIKI = 'wiki'
+export const UI_DIR_TEMPORARY = 'temporary'
+export const UI_DIR_DIST = 'dist'
+export const UI_DIR_PROMPT = 'prompt'
 
 /** Name of the path to tokens/ Название пути к токенам */
 export const UI_DIRS_TOKENS = [UI_DIR_IN, 'media']
@@ -42,7 +46,7 @@ export const UI_DIRS_STYLES = [UI_DIR_IN, 'styles']
 export const UI_DIRS_LIBRARY = [UI_DIR_IN, 'library']
 
 /** Directory for storing component structure descriptions/ Директория для хранения описания структуры компонентов */
-export const UI_DIRS_WIKI = [UI_DIR_IN, 'wiki']
+export const UI_DIRS_WIKI = [UI_DIR_IN, UI_DIR_WIKI]
 
 /** File with the list of exportable data/ Файл со списком экспортируемых данных */
 export const UI_DIRS_FILE_EXPORT = [UI_DIR_IN, 'library.ts']

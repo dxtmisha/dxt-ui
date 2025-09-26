@@ -23,6 +23,7 @@
     "@dxt-ui/styles": "workspace:*",
     "@dxt-ui/test": "workspace:*",
     "@dxt-ui/wiki": "workspace:*",
+    "@google/genai": "^1.21.0",
     "@storybook/addon-a11y": "^9.1.8",
     "@storybook/addon-docs": "^9.1.8",
     "@storybook/addon-onboarding": "^9.1.8",

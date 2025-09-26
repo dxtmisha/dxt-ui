@@ -1,0 +1,239 @@
+```ts
+// types.ts
+/**
+ * Определяет события, генерируемые компонентом UiPlayerLite.
+ */
+export type UiPlayerLiteEmits = {
+  /**
+   * Событие изменения статуса воспроизведения плеера.
+   * @param status - Новый статус плеера ('play' | 'pause' | 'stop').
+   */
+  status: [status: string]
+}
+
+/**
+ * Определяет слоты, доступные в компоненте UiPlayerLite.
+ */
+export interface UiPlayerLiteSlots {
+  /**
+   * Слот для размещения контента в верхней части компонента, над видеоплеером.
+   * @param props - Дополнительные свойства слота (пока не используются).
+   */
+  top? (props: any): any
+  /**
+   * Слот для размещения контента в нижней части компонента, под видеоплеером.
+   * @param props - Дополнительные свойства слота (пока не используются).
+   */
+  default? (props: any): any
+}
+
+/**
+ * Определяет свойства (props), принимаемые компонентом UiPlayerLite.
+ */
+export interface UiPlayerLiteProps {
+  /**
+   * URL-адрес видеофайла для воспроизведения.
+   */
+  url?: string
+  /**
+   * Текущий статус воспроизведения плеера. Может быть 'play', 'pause' или 'stop'.
+   */
+  status?: 'play' | 'pause' | 'stop'
+}
+
+/**
+ * Определяет значения по умолчанию для свойств компонента UiPlayerLite.
+ */
+export const UiPlayerLiteDefaults: UiPlayerLiteProps = {
+  status: 'stop'
+}
+
+```
+#########
+// ComponentDoc.stories.ts
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
+
+import UiPlayerLite from './../UiPlayerLite.vue'
+import { UiPlayerLiteWikiStorybook } from './wiki'
+
+const meta = {
+  title: '@dxt-ui/player/UiPlayerLite',
+  component: UiPlayerLite,
+  parameters: {
+    docs: {
+      description: {
+        component: UiPlayerLiteWikiStorybook.getDescription()
+      }
+    }
+  },
+  argTypes: UiPlayerLiteWikiStorybook.getWiki(),
+  args: UiPlayerLiteWikiStorybook.getValues()
+} satisfies Meta<typeof UiPlayerLite>
+
+export default meta
+
+type Story = StoryObj<typeof meta>
+
+export const Component: Story = {
+  render: args => ({
+    components: { UiPlayerLite },
+    setup() {
+      return { args }
+    },
+    template: `<div>
+      <UiPlayerLite v-bind="args" />
+    </div>`
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Основной пример компонента UiPlayerLite с интерактивными свойствами и контролем через панель "Controls".'
+      }
+    }
+  }
+}
+
+export const Default: Story = {
+  args: {}, // Использует значения по умолчанию из meta.args
+  parameters: {
+    docs: {
+      description: {
+        story: 'Базовый пример компонента UiPlayerLite без дополнительных свойств, использующий значения по умолчанию (статус "stop").'
+      }
+    }
+  }
+}
+
+export const WithVideoUrl: Story = {
+  args: {
+    url: 'https://www.w3schools.com/html/mov_bbb.mp4', // Пример URL-адреса видео
+    status: 'stop'
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Пример использования компонента UiPlayerLite с указанным URL для воспроизведения видео. Видео не управляется автоматически, но отображается.'
+      }
+    }
+  }
+}
+
+export const WithSlots: Story = {
+  render: args => ({
+    components: { UiPlayerLite },
+    setup() {
+      return { args }
+    },
+    template: `
+      <div style="border: 1px dashed gray; padding: 10px; border-radius: 4px;">
+        <UiPlayerLite v-bind="args">
+          <template #top>
+            <div style="background: rgba(173, 216, 230, 0.5); padding: 5px; margin-bottom: 5px; border-radius: 3px;">
+              <!-- Пример контента в слоте 'top' -->
+              <p style="margin: 0;">Это контент в слоте <b>"top"</b>, расположенный над видеоплеером.</p>
+            </div>
+          </template>
+          <template #default>
+            <div style="background: rgba(144, 238, 144, 0.5); padding: 5px; margin-top: 5px; border-radius: 3px;">
+              <!-- Пример контента в слоте 'default' -->
+              <p style="margin: 0;">Это контент в слоте <b>"default"</b>, расположенный под видеоплеером.</p>
+            </div>
+          </template>
+        </UiPlayerLite>
+      </div>
+    `
+  }),
+  args: {
+    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    status: 'stop'
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Пример использования компонента UiPlayerLite со слотами `top` и `default` для размещения произвольного дополнительного контента сверху и снизу от видео.'
+      }
+    }
+  }
+}
+
+export const InitialPlayStatus: Story = {
+  args: {
+    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    status: 'play' // Устанавливаем начальный статус на 'play'
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Пример компонента UiPlayerLite, инициализированного со статусом "play". Видеоэлемент отображает URL, но статус "play" только индицируется, не начиная автоматического воспроизведения.'
+      }
+    }
+  }
+}
+
+```
+#########
+// UiPlayerLite.mdx
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxt-ui/wiki/storybook'
+
+import * as Component from './UiPlayerLite.stories'
+
+<Meta of={Component}/>
+<StorybookMain
+    name={'UiPlayerLite'}
+    description={'Компонент UiPlayerLite предназначен для отображения видеоконтента с базовым управлением статусом воспроизведения.'}
+    story={Component.Component}
+/>
+
+UiPlayerLite — это легковесный компонент для встраивания и отображения видеоконтента. Он предоставляет базовые возможности для отображения видео по URL и индикации статуса воспроизведения (например, 'play', 'pause', 'stop'). Компонент также позволяет расширять его функциональность с помощью слотов, предоставляя гибкие точки для размещения дополнительного контента как сверху, так и снизу от основного видеоплеера.
+
+Видеоэлемент компонента (`<video>`) автоматически адаптируется под заданные размеры через стили CSS, определенные в файле `player.css` (`.ui-player-lite__video`).
+
+## Слоты
+### `top`
+
+Слот для размещения произвольного контента в верхней части компонента, непосредственно над видеоплеером. Это полезно для добавления заголовков, индикаторов, дополнительных элементов управления или любой другой информации, которую необходимо отобразить над видео.
+
+```ts
+interface TopSlotProps {
+  // В текущей реализации слот 'top' не передает никаких пропсов в свой контент.
+  // Если в будущем потребуется передать данные из компонента в этот слот,
+  // они будут описаны здесь.
+}
+```
+
+### `default`
+
+Слот для размещения произвольного контента в нижней части компонента, под видеоплеером. Этот слот может быть использован для отображения элементов управления, описаний видео, связанных материалов, комментариев или рекламных блоков.
+
+```ts
+interface DefaultSlotProps {
+  // В текущей реализации слот 'default' не передает никаких пропсов в свой контент.
+  // Если в будущем потребуется передать данные из компонента в этот слот,
+  // они будут описаны здесь.
+}
+```
+
+## События
+### `status`
+
+Событие, которое генерируется при запросе изменения статуса воспроизведения плеера.
+В текущей реализации компонента, событие `status` со значением `'play'` генерируется при клике на внутреннюю кнопку "Go". Это событие сигнализирует внешнему коду о желании пользователя изменить статус воспроизведения.
+
+```ts
+/**
+ * Обработчик события, генерируемого при запросе изменения статуса плеера.
+ * @param newStatus - Новый статус, который запрошен для плеера.
+ *                    На данный момент, при клике на кнопку, всегда передается 'play'.
+ */
+function onStatus(newStatus: 'play' | 'pause' | 'stop'): void {
+  // Пример обработки изменения статуса воспроизведения:
+  // - Запуск или остановка видео на основе newStatus
+  // - Обновление состояния внешнего компонента
+  console.log(`Запрошено изменение статуса плеера на: ${newStatus}`);
+}
+```
+```

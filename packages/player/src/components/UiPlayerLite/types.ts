@@ -1,15 +1,17 @@
 export type UiPlayerLiteEmits = {
-  // click: [value: string]
+  status: [status: string]
 }
 
 export interface UiPlayerLiteSlots {
-  // default? (props: any): any
+  top? (props: any): any
+  default? (props: any): any
 }
 
 export interface UiPlayerLiteProps {
-  // value?: string
+  url?: string
+  status?: 'play' | 'pause' | 'stop'
 }
 
 export const UiPlayerLiteDefaults: UiPlayerLiteProps = {
-  // value: 'value'
+  status: 'stop'
 }

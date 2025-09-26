@@ -19,7 +19,7 @@ export const viteComponentOnly = (
     plugins: [vue()],
 
     build: {
-      outDir: nodePath.join(nodePath.dirname(path), 'wiki', 'template', 'dist'),
+      outDir: nodePath.join(nodePath.dirname(path), 'wiki', 'temporary', 'dist'),
 
       lib: {
         entry: path,

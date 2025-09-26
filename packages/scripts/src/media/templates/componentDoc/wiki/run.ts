@@ -8,7 +8,12 @@ const execAsync = promisify(exec)
 ;(async () => {
   try {
     const { stdout, stderr } = await execAsync('npx dxt-component-wiki [path]')
-    console.log(stderr ? stderr : stdout)
+
+    console.log(stdout)
+
+    if (stderr) {
+      console.error(stderr)
+    }
   } catch (error) {
     console.error('Error:', error)
   }

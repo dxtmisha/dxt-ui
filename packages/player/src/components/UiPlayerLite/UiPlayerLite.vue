@@ -16,11 +16,20 @@ defineSlots<UiPlayerLiteSlots>()
 </script>
 
 <template>
-  <div class="ui-player-lite"></div>
+  <div class="ui-player-lite">
+    <slot name="top"/>
+    status: {{ status }}
+    <button @click="$emit('status', 'play')">Go</button>
+    <video :src="url" class="ui-player-lite__video"/>
+    <slot/>
+  </div>
 </template>
 
 <style lang="scss">
 .ui-player-lite {
-  // Your styles here
+  &__video {
+    width: 480px;
+    height: 270px;
+  }
 }
 </style>

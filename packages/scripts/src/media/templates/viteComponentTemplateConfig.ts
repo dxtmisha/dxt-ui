@@ -9,6 +9,6 @@ export default mergeConfig(
   {}, // viteWorkers,
   viteComponentOnly(
     resolve(__dirname, './[path]/index.ts'),
-    resolve(__dirname, './[packages]')
+    resolve(__dirname, './src')
   )
 )

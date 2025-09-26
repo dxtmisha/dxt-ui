@@ -134,6 +134,6 @@ export class ComponentItem {
       .replace(/ComponentDoc/g, this.getName())
       .replace(/component-doc/g, toKebabCase(this.getName()))
       .replace(/\[project]/g, this.getProjectName())
-      .replace(/\[path]/g, this.path)
+      .replace(/\[path]/g, PropertiesFile.splitForDir(this.path).join('/'))
   }
 }

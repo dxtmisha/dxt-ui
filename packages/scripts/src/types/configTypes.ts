@@ -1,3 +1,10 @@
+export type AiType = 'gemini'
+
+/**
+ * Configuration structure for the design system UI project.
+ *
+ * Структура конфигурации для проекта дизайн-системы UI.
+ */
 export type DesignUiConfig = {
   /**
    * Project name
@@ -40,4 +47,25 @@ export type DesignUiConfig = {
    * Язык wiki
    */
   wikiLanguage?: string
+
+  /**
+   * AI type for generating content
+   *
+   * Тип ИИ для генерации контента
+   */
+  aiType?: 'gemini'
+
+  /**
+   * AI model for generating content
+   *
+   * Модель ИИ для генерации контента
+   */
+  aiModel?: string
+
+  /**
+   * Google API key for accessing Google services
+   *
+   * Ключ Google API для доступа к сервисам Google
+   */
+  aiKey?: string
 }

@@ -1,0 +1,245 @@
+1) изучи текуший код
+```
+// File: component-template.js
+import { defineComponent, mergeDefaults, createElementBlock, openBlock, renderSlot, createTextVNode, createElementVNode, toDisplayString } from "/Volumes/T7/Git/dxt-ui/node_modules/vue/dist/vue.runtime.esm-bundler.js";
+const UiPlayerLiteDefaults = {
+  status: "stop"
+};
+const _sfc_main = /* @__PURE__ */ defineComponent({
+  ...{
+    name: "UiPlayerLite"
+  },
+  __name: "UiPlayerLite",
+  props: /* @__PURE__ */ mergeDefaults({
+    url: { type: String, required: false },
+    status: { type: String, required: false }
+  }, UiPlayerLiteDefaults),
+  emits: ["status"],
+  setup(__props, { expose: __expose }) {
+    __expose();
+    const __returned__ = {};
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+const _export_sfc = (sfc, props) => {
+  const target = sfc.__vccOpts || sfc;
+  for (const [key, val] of props) {
+    target[key] = val;
+  }
+  return target;
+};
+const _hoisted_1 = { class: "ui-player-lite" };
+const _hoisted_2 = ["src"];
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock("div", _hoisted_1, [
+    renderSlot(_ctx.$slots, "top"),
+    createTextVNode(
+      " status: " + toDisplayString($props.status) + " ",
+      1
+      /* TEXT */
+    ),
+    createElementVNode("button", {
+      onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("status", "play"))
+    }, "Go"),
+    createElementVNode("video", {
+      src: $props.url,
+      class: "ui-player-lite__video"
+    }, null, 8, _hoisted_2),
+    renderSlot(_ctx.$slots, "default")
+  ]);
+}
+const item = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "/Volumes/T7/Git/dxt-ui/packages/player/src/components/UiPlayerLite/UiPlayerLite.vue"]]);
+const UiPlayerLite = item;
+export {
+  UiPlayerLite
+};
+//# sourceMappingURL=component-template.js.map
+// File: component-template.js.map
+{"version":3,"file":"component-template.js","sources":["../../../types.ts","../../../UiPlayerLite.vue","../../../index.ts"],"sourcesContent":["export type UiPlayerLiteEmits = {\n  status: [status: string]\n}\n\nexport interface UiPlayerLiteSlots {\n  top? (props: any): any\n  default? (props: any): any\n}\n\nexport interface UiPlayerLiteProps {\n  url?: string\n  status?: 'play' | 'pause' | 'stop'\n}\n\nexport const UiPlayerLiteDefaults: UiPlayerLiteProps = {\n  status: 'stop'\n}\n","<script setup lang=\"ts\">\nimport {\n  UiPlayerLiteDefaults,\n  type UiPlayerLiteEmits,\n  type UiPlayerLiteProps,\n  type UiPlayerLiteSlots\n} from './types'\n\ndefineOptions({\n  name: 'UiPlayerLite'\n})\n\nwithDefaults(defineProps<UiPlayerLiteProps>(), UiPlayerLiteDefaults)\ndefineEmits<UiPlayerLiteEmits>()\ndefineSlots<UiPlayerLiteSlots>()\n</script>\n\n<template>\n  <div class=\"ui-player-lite\">\n    <slot name=\"top\"/>\n    status: {{ status }}\n    <button @click=\"$emit('status', 'play')\">Go</button>\n    <video :src=\"url\" class=\"ui-player-lite__video\"/>\n    <slot/>\n  </div>\n</template>\n\n<style lang=\"scss\">\n.ui-player-lite {\n  &__video {\n    width: 480px;\n    height: 270px;\n  }\n}\n</style>\n","import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'\nimport type { UiPlayerLiteEmits, UiPlayerLiteProps, UiPlayerLiteSlots } from './types'\n\nimport item from './UiPlayerLite.vue'\n\nexport type * from './types'\n\nexport const UiPlayerLite: DefineSetupFnComponent<\n  UiPlayerLiteProps,\n  ShortEmitsToObject<UiPlayerLiteEmits>,\n  SlotsType<UiPlayerLiteSlots>\n> = item\n"],"names":["_openBlock","_createElementBlock","_renderSlot","_createTextVNode","_toDisplayString","_createElementVNode"],"mappings":";AAcO,MAAM,uBAA0C;AAAA,EACrD,QAAQ;AACV;;;;;;;;;;;;;;;;;;;;;;;;;ACEO,MAAA,aAAA,EAAA,OAAM,iBAAA;;;AAAX,SAAAA,UAAA,GAAAC,mBAMM,OANN,YAMM;AAAA,IALJC,WAAkB,KAAA,QAAA,KAAA;AAAA,IAAAC;AAAAA,MAAA,cACVC,gBAAG,aAAM,IAAG;AAAA,MACpB;AAAA;AAAA,IAAA;AAAA,IAAAC,mBAAoD,UAAA;AAAA,MAA3C,SAAK,sCAAE,KAAA,MAAK,UAAA,MAAA;AAAA,IAAA,GAAoB,IAAE;AAAA,IAC3CA,mBAAiD,SAAA;AAAA,MAAzC,KAAK,OAAA;AAAA,MAAK,OAAM;AAAA,IAAA,GAAA,MAAA,GAAA,UAAA;AAAA,IACxBH,WAAO,KAAA,QAAA,SAAA;AAAA,EAAA,CAAA;;;AChBJ,MAAM,eAIT;"}
+// File: player.css
+.ui-player-lite__video {
+  width: 480px;
+  height: 270px;
+}
+```
+
+2) добав нехватаюший комиты на ru
+```ts
+// types.ts
+export type UiPlayerLiteEmits = {
+  status: [status: string]
+}
+
+export interface UiPlayerLiteSlots {
+  top? (props: any): any
+  default? (props: any): any
+}
+
+export interface UiPlayerLiteProps {
+  url?: string
+  status?: 'play' | 'pause' | 'stop'
+}
+
+export const UiPlayerLiteDefaults: UiPlayerLiteProps = {
+  status: 'stop'
+}
+
+```
+[types]
+
+3) (это файл для работа storybook) добав сториы для примеры, если думаешь что нужно, на ru. Примеры дольжен быть минимальный, как можно меньшее лишнее элементы
+```ts
+// ComponentDoc.stories.ts
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
+
+import UiPlayerLite from './../UiPlayerLite.vue'
+import { UiPlayerLiteWikiStorybook } from './wiki'
+
+const meta = {
+  title: '@dxt-ui/player/UiPlayerLite',
+  component: UiPlayerLite,
+  parameters: {
+    docs: {
+      description: {
+        component: UiPlayerLiteWikiStorybook.getDescription()
+      }
+    }
+  },
+  argTypes: UiPlayerLiteWikiStorybook.getWiki(),
+  args: UiPlayerLiteWikiStorybook.getValues()
+} satisfies Meta<typeof UiPlayerLite>
+
+export default meta
+
+type Story = StoryObj<typeof meta>
+
+export const Component: Story = {
+  render: args => ({
+    components: { UiPlayerLite },
+    setup() {
+      return { args }
+    },
+    template: `<div>
+      <UiPlayerLite v-bind="args" />
+    </div>`
+  })
+}
+
+```
+
+4) (это файл для описания в storybook) добав польный описания компонента для документации на ru
+```md
+// UiPlayerLite.mdx
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxt-ui/wiki/storybook'
+
+import * as Component from './UiPlayerLite.stories'
+
+<Meta of={Component}/>
+<StorybookMain
+    name={'UiPlayerLite'}
+    description={'[description]'}
+    story={Component.Component}
+/>
+
+[doc]
+
+```
+где [description] - это описание компонента
+[doc] - это документация по компоненту
+[doc] - док начинаеится бес заголовка
+обезаното указываит какие есть слоты и события
+слоты и события в такой формате
+```
+## слоты
+### названия слота
+описания слота
+```ts
+описания тип слота
+```
+
+## события
+### названия события
+описания события
+```ts
+описания тип события
+```
+
+если нету метка, не добавляем нечего
+не каких таблиц
+не надо писанить props виде таблица
+props надо писанить только, если она принимает сложные типы, или несколько props отвечает за одну функцию
+пример использования дольжен быть в конце самой описания этого примера
+примеры (stories) дольжен только у тех, у кого есть описания
+
+Пример описания слота
+```
+### `prefix`
+
+Слот для размещения контента в начале компонента, перед основным содержимым.
+
+- Отображается в левой части компонента (или справа в RTL режиме)
+- Подходит для иконок, номеров, индикаторов или коротких меток
+- Не влияет на основную структуру компонента
+- Обеспечивает визуальную идентификацию или дополнительную информацию
+
+```
+
+Пример описания события
+```
+### `click`
+
+Событие клика компонента, возникающее при взаимодействии пользователя с элементом.
+
+```ts
+function onClick (event: MouseEvent, value: EventClickValue) {
+    // обработка события клика
+}
+
+type EventClickValue = {
+  /** Идентификатор места нажатия, задается через атрибут data-event-type у элемента */
+  type: string
+  /** Значение компонента */
+  value: any
+  /** Дополнительные данные события */
+  detail: Record<string, any> | undefined
+}
+```
+```
+
+Пример описания props
+```
+## Свойства выделения текста
+
+Свойства `highlight` и `highlightLengthStart` предназначены для управления выделением текста в компонентах.
+
+### Свойства
+
+- **highlight** — Текст для выделения в содержимом компоненте
+- **highlightLengthStart** — Минимальная длина значения highlight для начала выделения
+
+### Взаимосвязь свойств
+
+Свойства работают совместно для обеспечения интеллектуального выделения текста. `highlight` определяет что выделять, а `highlightLengthStart` контролирует когда начинать выделение.
+
+- `highlight` содержит строку текста, которую нужно найти и выделить в компоненте
+- `highlightLengthStart` устанавливает минимальную длину строки поиска для активации функции выделения
+- Выделение активируется только когда длина `highlight` достигает значения `highlightLengthStart`
+- Это предотвращает нежелательное выделение при вводе коротких строк поиска
+- Оба свойства обеспечивают оптимальный пользовательский опыт при работе с поиском и фильтрацией
+```
+
+5) собери результат виде:
+// types.ts
+[types.ts]
+#########
+// ComponentDoc.stories.ts
+[ComponentDoc.stories.ts]
+#########
+// UiPlayerLite.mdx
+[UiPlayerLite.mdx]
+и верни его мне (нечего лишнего)

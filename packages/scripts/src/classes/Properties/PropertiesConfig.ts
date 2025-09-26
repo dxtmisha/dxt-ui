@@ -2,7 +2,7 @@
 
 import { PropertiesFile } from './PropertiesFile'
 
-import type { DesignUiConfig } from '../../types/configTypes'
+import type { AiType, DesignUiConfig } from '../../types/configTypes'
 
 import {
   UI_CONFIG_FILE
@@ -68,6 +68,33 @@ export class PropertiesConfig {
    */
   static getWikiLanguage(): string {
     return this.config.wikiLanguage ?? 'en'
+  }
+
+  /**
+   * Returns the AI type.
+   *
+   * Возвращает тип ИИ.
+   */
+  static getAiType(): AiType {
+    return this.config.aiType ?? ''
+  }
+
+  /**
+   * Returns the AI model.
+   *
+   * Возвращает модель ИИ.
+   */
+  static getAiModel(): string {
+    return this.config.aiModel ?? ''
+  }
+
+  /**
+   * Returns the AI API key.
+   *
+   * Возвращает API ключ ИИ.
+   */
+  static getAiKey(): string {
+    return this.config.aiKey ?? ''
   }
 
   static {

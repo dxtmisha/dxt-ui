@@ -1,0 +1,124 @@
+```ts
+// types.ts
+export type UiPlayerLiteEmits = {
+  status: [status: string]
+}
+
+export interface UiPlayerLiteSlots {
+  top? (props: any): any
+  default? (props: any): any
+}
+
+export interface UiPlayerLiteProps {
+  url?: string
+  status?: 'play' | 'pause' | 'stop'
+}
+
+export const UiPlayerLiteDefaults: UiPlayerLiteProps = {
+  status: 'stop'
+}
+#########
+// ComponentDoc.stories.ts
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
+
+import UiPlayerLite from './../UiPlayerLite.vue'
+import { UiPlayerLiteWikiStorybook } from './wiki'
+
+const meta = {
+  title: '@dxt-ui/player/UiPlayerLite',
+  component: UiPlayerLite,
+  parameters: {
+    docs: {
+      description: {
+        component: UiPlayerLiteWikiStorybook.getDescription()
+      }
+    }
+  },
+  argTypes: UiPlayerLiteWikiStorybook.getWiki(),
+  args: UiPlayerLiteWikiStorybook.getValues()
+} satisfies Meta<typeof UiPlayerLite>
+
+export default meta
+
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+  args: {
+    url: 'https://www.w3schools.com/html/mov_bbb.mp4', // Пример URL для демонстрации
+    status: 'play'
+  },
+  render: args => ({
+    components: { UiPlayerLite },
+    setup() {
+      return { args }
+    },
+    template: `
+      <div>
+        <UiPlayerLite v-bind="args">
+          <template #top>
+            <div style="background-color: lightblue; padding: 10px; border-radius: 4px;">
+              <!-- Контент для верхнего слота -->
+              Это верхний слот (top)
+            </div>
+          </template>
+          <template #default>
+            <div style="background-color: lightgreen; padding: 10px; border-radius: 4px;">
+              <!-- Контент для основного слота -->
+              Это основной слот (default)
+            </div>
+          </template>
+        </UiPlayerLite>
+      </div>`
+  })
+}
+#########
+// UiPlayerLite.mdx
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxt-ui/wiki/storybook'
+
+import * as Component from './UiPlayerLite.stories'
+
+<Meta of={Component}/>
+<StorybookMain
+    name={'UiPlayerLite'}
+    description={'UiPlayerLite — это легковесный компонент видеоплеера, предназначенный для отображения видеоконтента из заданного URL и управления его статусом воспроизведения (воспроизведение, пауза, остановка). Компонент обеспечивает базовую функциональность видеоплеера с возможностью расширения через слоты.'}
+    story={Component.Default}
+/>
+
+Компонент UiPlayerLite предоставляет простой и гибкий способ встраивания видеоплеера в ваше приложение. Он поддерживает отображение видео по `url` и позволяет управлять его состоянием через свойство `status` ('play', 'pause', 'stop', по умолчанию 'stop'). Компонент также имеет точки расширения для добавления пользовательского контента до и после видеоплеера.
+
+## слоты
+### `top`
+
+Слот для размещения контента в верхней части компонента, над видеоплеером и информацией о статусе.
+
+-   Идеально подходит для заголовков, элементов управления или дополнительных индикаторов, которые должны отображаться до видео.
+-   Обеспечивает гибкость в организации макета компонента.
+
+```ts
+(props: any): any
+```
+
+### `default`
+
+Слот для размещения контента в нижней части компонента, под видеоплеером.
+
+-   Может быть использован для отображения дополнительной информации, элементов управления, связанных с видео, или других компонентов.
+-   Позволяет расширить функциональность компонента, добавляя пользовательские элементы.
+
+```ts
+(props: any): any
+```
+
+<h2>события</h2>
+<h3>`status`</h3>
+
+Событие, которое испускается при запросе изменения статуса воспроизведения плеера (например, при нажатии кнопки "Go"). Это событие может быть использовано родительским компонентом для реагирования на действия пользователя и управления состоянием видеоплеера.
+
+```ts
+(status: 'play' | 'pause' | 'stop'): void
+```
+```

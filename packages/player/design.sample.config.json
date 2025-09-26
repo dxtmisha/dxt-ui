@@ -1,0 +1,6 @@
+{
+  "wikiLanguage": "ru",
+  "aiType": "gemini",
+  "aiModel": "gemini-2.5-flash",
+  "aiKey": "key"
+}
