@@ -214,6 +214,12 @@ ${content}
     const generate = await useAi()?.generate(prompt)
 
     if (generate) {
+      const files = generate.split('#########')
+
+      this.typesFile.write(files[0] ?? '')
+      this.storiesFile.write(files[1] ?? '')
+      this.mdFile.write(files[2] ?? '')
+
       this.aiFile.write(generate)
     }
   }

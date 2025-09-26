@@ -1,19 +1,60 @@
-```ts
 // types.ts
+/**
+ * Определяет события, генерируемые компонентом UiPlayerLite.
+ * Defines the events emitted by the UiPlayerLite component.
+ */
 export type UiPlayerLiteEmits = {
+  /**
+   * Событие изменения статуса проигрывателя.
+   * Испускается при попытке изменить статус воспроизведения, например, при нажатии кнопки "Go".
+   * Emitted when there's an attempt to change the player's status, e.g., by clicking "Go".
+   * @event
+   * @param {string} status - Новый статус проигрывателя ('play', 'pause', 'stop').
+   */
   status: [status: string]
 }
 
+/**
+ * Определяет слоты, доступные в компоненте UiPlayerLite.
+ * Defines the slots available in the UiPlayerLite component.
+ */
 export interface UiPlayerLiteSlots {
+  /**
+   * Слот для размещения контента в верхней части компонента, перед статусом и видео.
+   * Slot for content at the top of the component, before status and video.
+   */
   top? (props: any): any
+  /**
+   * Слот для размещения контента в основной части компонента, после элемента видео.
+   * Default slot for content, placed after the video element.
+   */
   default? (props: any): any
 }
 
+/**
+ * Определяет свойства (props) компонента UiPlayerLite.
+ * Defines the properties (props) for the UiPlayerLite component.
+ */
 export interface UiPlayerLiteProps {
+  /**
+   * URL видеофайла для воспроизведения.
+   * The URL of the video file to play.
+   */
   url?: string
+  /**
+   * Текущий статус проигрывателя. По умолчанию 'stop'.
+   * The current status of the player. Defaults to 'stop'.
+   * @values 'play', 'pause', 'stop'
+   */
   status?: 'play' | 'pause' | 'stop'
 }
 
+/**
+ * Значения по умолчанию для свойств компонента UiPlayerLite.
+ * Default values for UiPlayerLite component props.
+ * @constant
+ * @type {UiPlayerLiteProps}
+ */
 export const UiPlayerLiteDefaults: UiPlayerLiteProps = {
   status: 'stop'
 }
@@ -35,39 +76,42 @@ const meta = {
     }
   },
   argTypes: UiPlayerLiteWikiStorybook.getWiki(),
-  args: UiPlayerLiteWikiStorybook.getValues()
+  args: {
+    url: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4',
+    status: 'stop',
+    ...UiPlayerLiteWikiStorybook.getValues()
+  }
 } satisfies Meta<typeof UiPlayerLite>
 
 export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  args: {
-    url: 'https://www.w3schools.com/html/mov_bbb.mp4', // Пример URL для демонстрации
-    status: 'play'
-  },
+export const Component: Story = {
   render: args => ({
     components: { UiPlayerLite },
     setup() {
-      return { args }
+      const handleStatusChange = (newStatus: string) => {
+        console.log('Status changed:', newStatus);
+      };
+      return { args, handleStatusChange }
     },
     template: `
       <div>
-        <UiPlayerLite v-bind="args">
+        <p>Текущий статус: <strong>{{ args.status }}</strong></p>
+        <UiPlayerLite v-bind="args" @status="handleStatusChange">
           <template #top>
-            <div style="background-color: lightblue; padding: 10px; border-radius: 4px;">
-              <!-- Контент для верхнего слота -->
-              Это верхний слот (top)
+            <div style="padding: 5px; background: #e0e0e0; border-radius: 4px; margin-bottom: 10px;">
+              Верхний контент слота \`top\`
             </div>
           </template>
           <template #default>
-            <div style="background-color: lightgreen; padding: 10px; border-radius: 4px;">
-              <!-- Контент для основного слота -->
-              Это основной слот (default)
+            <div style="padding: 5px; background: #e0e0e0; border-radius: 4px; margin-top: 10px;">
+              Нижний контент слота \`default\`
             </div>
           </template>
         </UiPlayerLite>
+        <p style="margin-top: 10px;">Нажмите "Go", чтобы увидеть изменение статуса в консоли.</p>
       </div>`
   })
 }
@@ -84,41 +128,86 @@ import * as Component from './UiPlayerLite.stories'
 <Meta of={Component}/>
 <StorybookMain
     name={'UiPlayerLite'}
-    description={'UiPlayerLite — это легковесный компонент видеоплеера, предназначенный для отображения видеоконтента из заданного URL и управления его статусом воспроизведения (воспроизведение, пауза, остановка). Компонент обеспечивает базовую функциональность видеоплеера с возможностью расширения через слоты.'}
-    story={Component.Default}
+    description={'UiPlayerLite — это легковесный компонент-обёртка для HTML5-видеоплеера, предназначенный для базового отображения видеоконтента и управления его статусом. Он предоставляет простой интерфейс для воспроизведения видео по URL, отображения текущего статуса и базовой интеракции.'}
+    story={Component.Component}
 />
 
-Компонент UiPlayerLite предоставляет простой и гибкий способ встраивания видеоплеера в ваше приложение. Он поддерживает отображение видео по `url` и позволяет управлять его состоянием через свойство `status` ('play', 'pause', 'stop', по умолчанию 'stop'). Компонент также имеет точки расширения для добавления пользовательского контента до и после видеоплеера.
+Компонент `UiPlayerLite` инкапсулирует HTML5 `<video>` элемент, позволяя легко интегрировать функционал видеоплеера в ваше приложение. Он принимает URL видеофайла, отображает его текущий статус и предоставляет кнопку для запуска воспроизведения (эмулируя изменение статуса).
 
 ## слоты
 ### `top`
+Слот для размещения контента в верхней части компонента, перед информацией о статусе и видеоплеером. Идеально подходит для добавления заголовков, элементов управления или других вспомогательных элементов, которые должны располагаться над основным видеоплеером.
+- Используется для декоративного или функционального контента.
+- Не влияет на логику воспроизведения видео.
 
-Слот для размещения контента в верхней части компонента, над видеоплеером и информацией о статусе.
-
--   Идеально подходит для заголовков, элементов управления или дополнительных индикаторов, которые должны отображаться до видео.
--   Обеспечивает гибкость в организации макета компонента.
-
-```ts
-(props: any): any
+```html
+<UiPlayerLite>
+  <template #top>
+    <h3>Моё видео</h3>
+  </template>
+  <!-- ... -->
+</UiPlayerLite>
 ```
 
 ### `default`
+Слот для размещения контента в основной части компонента, после элемента `<video>`. Может быть использован для добавления описаний, элементов управления или других блоков информации, связанных с видео, но расположенных под ним.
+- Позволяет расширить компонент дополнительными элементами.
+- Содержимое слота отображается под видео.
 
-Слот для размещения контента в нижней части компонента, под видеоплеером.
-
--   Может быть использован для отображения дополнительной информации, элементов управления, связанных с видео, или других компонентов.
--   Позволяет расширить функциональность компонента, добавляя пользовательские элементы.
-
-```ts
-(props: any): any
+```html
+<UiPlayerLite>
+  <!-- ... -->
+  <template #default>
+    <p>Краткое описание видео.</p>
+  </template>
+</UiPlayerLite>
 ```
 
-<h2>события</h2>
-<h3>`status`</h3>
-
-Событие, которое испускается при запросе изменения статуса воспроизведения плеера (например, при нажатии кнопки "Go"). Это событие может быть использовано родительским компонентом для реагирования на действия пользователя и управления состоянием видеоплеера.
+## события
+### `status`
+Событие `status` испускается, когда пользователь взаимодействует с компонентом для изменения статуса воспроизведения. В текущей реализации оно генерируется при нажатии на кнопку "Go", передавая новый статус `'play'`. Предполагается, что внешний компонент будет реагировать на это событие и, при необходимости, обновлять пропс `status` для `UiPlayerLite`.
+- Событие содержит текущий статус проигрывателя.
+- Используется для внешней реакции на действия пользователя.
 
 ```ts
-(status: 'play' | 'pause' | 'stop'): void
+function onStatusChange(status: 'play' | 'pause' | 'stop') {
+  console.log('Новый статус:', status);
+}
 ```
+
+Пример использования компонента:
+```html
+<template>
+  <div class="video-container">
+    <UiPlayerLite
+      :url="videoUrl"
+      :status="playerStatus"
+      @status="handlePlayerStatusChange"
+    >
+      <template #top>
+        <p>Сейчас играет: {{ videoTitle }}</p>
+      </template>
+      <template #default>
+        <p>Продолжительность: {{ videoDuration }}</p>
+      </template>
+    </UiPlayerLite>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { UiPlayerLite } from '@dxt-ui/player' // Путь к вашему компоненту
+
+const videoUrl = ref('https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4')
+const playerStatus = ref<'play' | 'pause' | 'stop'>('stop')
+const videoTitle = ref('Трейлер "Вид с голубой луны"')
+const videoDuration = ref('2:30')
+
+const handlePlayerStatusChange = (newStatus: 'play' | 'pause' | 'stop') => {
+  playerStatus.value = newStatus
+  console.log('Изменение статуса плеера:', newStatus)
+  // Здесь можно добавить логику для реального управления видеоэлементом,
+  // например, через refs или более сложную логику.
+}
+</script>
 ```
