@@ -199,11 +199,14 @@ export class DesignTypescript {
     prop: ts.Symbol
   ): DesignTypescriptProp {
     const type = this.checker.getTypeOfSymbolAtLocation(prop, node.name)
+    const descriptionRaw = ts.displayPartsToString(prop.getDocumentationComment(this.checker)).trim()
+    const description = descriptionRaw.length > 0 ? descriptionRaw : undefined
 
     return {
       name: prop.name,
       type: this.getPropType(type),
-      option: this.getPropOption(type) ?? this.getPropOptionByDeclarations(prop.getDeclarations())
+      option: this.getPropOption(type) ?? this.getPropOptionByDeclarations(prop.getDeclarations()),
+      description
     }
   }
 }

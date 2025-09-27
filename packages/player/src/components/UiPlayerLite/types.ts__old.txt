@@ -42,9 +42,6 @@ export interface UiPlayerLiteProps {
    */
   status?: 'play' | 'pause' | 'stop'
 
-  /**
-   * Определяет, должно ли видео начинать воспроизведение автоматически.
-   */
   autoplay?: boolean
 }
 

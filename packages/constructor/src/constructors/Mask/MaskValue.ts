@@ -62,7 +62,7 @@ export class MaskValue {
           this.isStandard(index)
           && standard[index] !== MASK_CHAR_DELETE
         ) {
-          value.chars.push(standard[index])
+          value.chars.push(String(standard[index]))
         }
 
         value.maxLength++
@@ -150,7 +150,7 @@ export class MaskValue {
     for (const index in mask) {
       if (index in basic) {
         data += basic[index]
-      } else {
+      } else if (mask[index]) {
         const defaultValue = this.special.getDefault(mask[index])
 
         if (defaultValue) {
@@ -220,6 +220,6 @@ export class MaskValue {
       }
     }
 
-    return data[groupName]
+    return data[groupName] as FieldMaskItem
   }
 }

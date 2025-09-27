@@ -68,7 +68,7 @@ export class ListGo {
     if (index) {
       this.index = index
 
-      if (index in map) {
+      if (map?.[index]) {
         this.focus.toElementSelected(map[index].index)
       }
     }
@@ -249,9 +249,12 @@ export class ListGo {
     const item = this.data.map.value[this.index]
 
     if (
-      item.type === 'item'
-      || item.type === 'group'
-      || item.type === 'menu'
+      item
+      && (
+        item.type === 'item'
+        || item.type === 'group'
+        || item.type === 'menu'
+      )
     ) {
       this.focus.set(item)
     } else {

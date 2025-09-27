@@ -1,5 +1,3 @@
-// export:none
-
 import { PropertiesFile } from './PropertiesFile'
 
 import type { AiType, DesignUiConfig } from '../../types/configTypes'
@@ -76,7 +74,7 @@ export class PropertiesConfig {
    * Возвращает тип ИИ.
    */
   static getAiType(): AiType {
-    return this.config.aiType ?? ''
+    return this.config.aiType ?? 'gemini'
   }
 
   /**

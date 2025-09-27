@@ -1,5 +1,3 @@
-// export:none
-
 import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
 
 /**

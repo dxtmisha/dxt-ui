@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, isFilled, isObjectNotArray, toCamelCase, uniqueArray } from '@dxt-ui/functional'
 
 import { DesignStructureItemAbstract } from './DesignStructureItemAbstract'
@@ -191,7 +189,7 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
       index,
       item
     }) => {
-      this.data[index].value.push(...this.toValue(item?.value))
+      this.data?.[index]?.value.push(...this.toValue(item?.value))
     })
 
     return this
@@ -211,7 +209,7 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
     }) => {
       if (index in this.data) {
         const value = this.toValue(item?.value)
-        this.data[index].valueAll.push(...value)
+        this.data?.[index]?.valueAll.push(...value)
 
         if (state && value.indexOf(true) !== -1) {
           this.makeValueAll(state)

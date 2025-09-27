@@ -1,5 +1,3 @@
-// export:none
-
 import { replaceRecursive } from '@dxt-ui/functional'
 
 import { PropertiesCache } from './PropertiesCache'

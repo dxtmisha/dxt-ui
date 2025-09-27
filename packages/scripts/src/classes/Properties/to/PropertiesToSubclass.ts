@@ -1,5 +1,3 @@
-// export:none
-
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 
 import {
@@ -38,7 +36,7 @@ export class PropertiesToSubclass extends PropertiesToAbstract {
    * массив со всеми свойствами предков по дереву от верхнего уровня
    */
   private isParentState(parents: PropertyItemsItem['parents']): boolean {
-    const type = parents[parents.length - 1].item?.[PropertyKey.variable] ?? PropertyType.subclass
+    const type = parents?.[parents.length - 1]?.item?.[PropertyKey.variable] ?? PropertyType.subclass
 
     return [
       PropertyType.component,

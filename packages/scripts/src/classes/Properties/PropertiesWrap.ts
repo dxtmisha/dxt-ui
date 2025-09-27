@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, isObjectNotArray } from '@dxt-ui/functional'
 
 import {
@@ -79,7 +77,7 @@ export class PropertiesWrap {
       }
     }
 
-    return data[name]
+    return data[name] as PropertyWrapItem
   }
 
   /**
@@ -148,7 +146,7 @@ export class PropertiesWrap {
       selector.values[value] = []
     }
 
-    return selector.values[value]
+    return selector.values[value] as PropertyList[]
   }
 
   /**

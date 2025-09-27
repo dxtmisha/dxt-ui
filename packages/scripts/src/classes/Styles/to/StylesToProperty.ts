@@ -1,5 +1,3 @@
-// export:none
-
 import { isObjectNotArray, toCamelCase } from '@dxt-ui/functional'
 
 import { PropertiesTool } from '../../Properties/PropertiesTool'

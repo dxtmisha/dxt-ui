@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, isFilled, isObjectNotArray, replaceRecursive } from '@dxt-ui/functional'
 
 import {
@@ -110,7 +108,7 @@ export class PropertiesImport {
     const link = value.split('#', 2)
 
     return {
-      path: this.getPath(root, link[0]),
+      path: this.getPath(root, link[0] as string),
       link: link?.[1]
     }
   }
@@ -142,9 +140,9 @@ export class PropertiesImport {
   ): PropertyListOrData | undefined {
     let data = read
 
-    if (data && link) {
+    if (link) {
       for (const name of link.split('.')) {
-        if (name in data) {
+        if (data && (name in data)) {
           data = data[name]
         } else {
           return undefined

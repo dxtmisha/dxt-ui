@@ -23,8 +23,11 @@ interface PropsToken {
   inverse?: boolean
   grid?: boolean
   textAlign?: 'left' | 'center' | 'right'
+  /** Primary (filled accent)/ Основной акцентный стиль */
   primary?: boolean
+  /** Secondary (neutral)/ Вторичный нейтральный стиль */
   secondary?: boolean
+  /** Outlined (bordered)/ Стиль с обводкой без заливки */
   outline?: boolean
   text?: boolean
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'

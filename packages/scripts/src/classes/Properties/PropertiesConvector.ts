@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, isObjectNotArray } from '@dxt-ui/functional'
 
 import { convectorColor } from './convector/convectorColor'
@@ -34,7 +32,7 @@ export class PropertiesConvector {
         item?.type
         && item.type in LIST
       ) {
-        LIST[item.type](item)
+        LIST[item.type]?.(item)
       } else if (
         item?.value
         && isObjectNotArray(item.value)

@@ -1,5 +1,3 @@
-// export:none
-
 import { isFilled, isSelected, toKebabCase } from '@dxt-ui/functional'
 
 import {

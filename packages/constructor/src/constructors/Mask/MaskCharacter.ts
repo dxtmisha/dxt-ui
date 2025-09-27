@@ -158,15 +158,16 @@ export class MaskCharacter {
       && selection <= length
     ) {
       const info = this.mask.info.value
-      const char = info[selection].char
+      const char = info?.[selection]?.char
 
-      if (!this.rubberItem.is(char)) {
+      if (char && !this.rubberItem.is(char)) {
         for (let i: number = selection; i < length; i++) {
-          if (i in info) {
-            const charNext = info[i].char
+          if (info?.[i]) {
+            const charNext = info[i]?.char
 
             if (
-              this.special.isSpecial(charNext)
+              charNext
+              && this.special.isSpecial(charNext)
               && char !== charNext
             ) {
               return true

@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, isObjectNotArray, toArray, toKebabCase } from '@dxt-ui/functional'
 import { wikiDescriptions } from '@dxt-ui/wiki/media'
 import type { StorybookComponentsDescriptionItem } from '@dxt-ui/wiki'
@@ -7,6 +5,7 @@ import type { StorybookComponentsDescriptionItem } from '@dxt-ui/wiki'
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignCommand } from './DesignCommand'
+
 import { DesignTypescript } from './DesignTypescript'
 import type { DesignReplace } from './DesignReplace'
 
@@ -290,6 +289,8 @@ export class DesignComponent extends DesignCommand {
         this.propsType = ts.getType(`${componentName}Props`)?.props
       }
     }
+
+    console.log('this.propsType', this.propsType)
 
     return this.propsType
   }

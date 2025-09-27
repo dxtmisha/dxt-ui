@@ -1,5 +1,3 @@
-// export:none
-
 import { isFilled, replaceRecursive, toKebabCase } from '@dxt-ui/functional'
 import { getConstructorProperties } from '@dxt-ui/constructor/node'
 

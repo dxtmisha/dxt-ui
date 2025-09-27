@@ -229,8 +229,8 @@ export class WindowPosition {
       }
 
       this.x = this.calculationInner(
-        argumentValues[0],
-        argumentValues[1],
+        argumentValues[0] as number,
+        argumentValues[1] as number,
         element.offsetWidth,
         window.innerWidth,
         this.coordinates.getWidth()
@@ -271,8 +271,8 @@ export class WindowPosition {
       }
 
       this.y = this.calculationInner(
-        argumentValues[0],
-        argumentValues[1],
+        argumentValues[0] as number,
+        argumentValues[1] as number,
         element.offsetHeight,
         window.innerHeight,
         this.coordinates.getHeight()

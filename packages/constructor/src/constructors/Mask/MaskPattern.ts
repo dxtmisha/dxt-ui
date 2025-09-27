@@ -56,13 +56,15 @@ export class MaskPattern {
     for (const index in patterns) {
       const item = this.getPattern(index)
 
-      if (isString(item)) {
-        Object.assign(patterns[index], { pattern: item })
-      } else if (
-        isObjectNotArray(item)
-        && isObjectNotArray(patterns[index])
-      ) {
-        Object.assign(patterns[index], item)
+      if (patterns[index]) {
+        if (isString(item)) {
+          Object.assign(patterns[index], { pattern: item })
+        } else if (
+          isObjectNotArray(item)
+          && isObjectNotArray(patterns[index])
+        ) {
+          Object.assign(patterns[index], item)
+        }
       }
     }
 

@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, isObjectNotArray, replaceRecursive } from '@dxt-ui/functional'
 
 import { PropertiesConfig } from './PropertiesConfig'
@@ -36,7 +34,7 @@ export class PropertiesSeparator {
           return true
         }
 
-        const value = properties[index].value
+        const value = properties?.[index]?.value
 
         if (
           value

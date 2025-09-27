@@ -1,5 +1,3 @@
-// export:none
-
 import { isObjectNotArray } from '@dxt-ui/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'

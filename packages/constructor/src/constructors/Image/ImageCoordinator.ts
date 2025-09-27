@@ -33,25 +33,25 @@ export class ImageCoordinator {
       switch (coordinator.length) {
         case 1:
           return [
-            coordinator[0],
-            coordinator[0],
-            coordinator[0],
-            coordinator[0]
+            coordinator[0] ?? 0,
+            coordinator[0] ?? 0,
+            coordinator[0] ?? 0,
+            coordinator[0] ?? 0
           ]
         case 2:
           return [
-            coordinator[0],
-            coordinator[1],
-            coordinator[0],
-            coordinator[1]
+            coordinator[0] ?? 0,
+            coordinator[1] ?? 0,
+            coordinator[0] ?? 0,
+            coordinator[1] ?? 0
           ]
 
         case 3:
           return [
-            coordinator[0],
-            coordinator[1],
-            coordinator[2],
-            coordinator[1]
+            coordinator[0] ?? 0,
+            coordinator[1] ?? 0,
+            coordinator[2] ?? 0,
+            coordinator[1] ?? 0
           ]
         case 4:
           return coordinator as ImageCoordinatorItemFull

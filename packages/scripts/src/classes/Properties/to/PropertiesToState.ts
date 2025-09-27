@@ -1,5 +1,3 @@
-// export:none
-
 import { isObjectNotArray } from '@dxt-ui/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
@@ -48,16 +46,16 @@ export class PropertiesToState extends PropertiesToAbstract {
       return `&.${newName}`
     }
 
-    const value = parents?.[1].item.value
+    const value = parents?.[1]?.item.value
 
     if (
       !item?.[PropertyKey.state]
       && parents.length > 2
       && isObjectNotArray(value)
-      && name in value
+      && value?.[name]
       && value[name][PropertyKey.variable] === PropertyType.state
     ) {
-      return `&.${parents?.[1].item[PropertyKey.name]}--${newName}`
+      return `&.${parents?.[1]?.item[PropertyKey.name]}--${newName}`
     }
 
     return `&--${newName}`

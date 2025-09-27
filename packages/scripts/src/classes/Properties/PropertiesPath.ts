@@ -1,5 +1,3 @@
-// export:none
-
 import { replaceRecursive, toKebabCase } from '@dxt-ui/functional'
 
 import { PropertiesConfig } from './PropertiesConfig'

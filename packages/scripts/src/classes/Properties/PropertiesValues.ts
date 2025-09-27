@@ -1,5 +1,3 @@
-// export:none
-
 import { type PropertyItemPartial } from '../../types/propertyTypes'
 
 /**

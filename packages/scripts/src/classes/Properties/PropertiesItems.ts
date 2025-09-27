@@ -1,5 +1,3 @@
-// export:none
-
 import {
   forEach,
   getColumn,
@@ -127,14 +125,14 @@ export class PropertiesItems {
     const parents: PropertyItemsItem['parents'] = [
       {
         name: design,
-        item: this.properties?.[design]
+        item: this.properties?.[design] ?? { value: '' }
       }
     ]
 
     if (isObjectNotArray(value)) {
       let name: string = component
       let item: PropertyItem | undefined = value?.[component]
-      let parent: PropertyItem = parents[0].item
+      let parent: PropertyItem | undefined = parents?.[0]?.item
 
       if (item) {
         for (const key of keys) {

@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, getColumn, toCamelCase, toCamelCaseFirst } from '@dxt-ui/functional'
 
 import { DesignStructure } from './DesignStructure'
@@ -158,7 +156,7 @@ export class DesignReplace {
 
     const replacement = (...data: string[]) => {
       if (typeof removeReplacement === 'function') {
-        return `${removeReplacement(data[1])}${data[2]}`
+        return `${removeReplacement(data[1] as string)}${data[2]}`
       } else if (removeReplacement) {
         return ''
       }

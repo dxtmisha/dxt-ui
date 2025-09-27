@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, isObjectNotArray } from '@dxt-ui/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
@@ -104,7 +102,7 @@ export class PropertiesToClone extends PropertiesToAbstract {
         && isObjectNotArray(property.value)
       ) {
         forEach(property.value, (item, index) => {
-          if (index in originalValue) {
+          if (originalValue?.[index]) {
             this.update(originalValue[index], [item])
           }
         })

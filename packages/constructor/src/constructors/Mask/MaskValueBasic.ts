@@ -40,7 +40,7 @@ export class MaskValueBasic {
       if (!this.special.isSpecial(char)) {
         value.push(char)
       } else if (key in character) {
-        value.push(character[key++])
+        value.push(String(character[key++]))
 
         if (
           key > character.length

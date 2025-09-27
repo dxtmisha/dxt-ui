@@ -1,11 +1,11 @@
-// export:none
-
 import { toArray } from '@dxt-ui/functional'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignStructure } from './DesignStructure'
 import { DesignReplace } from './DesignReplace'
+
+import { UI_KEY_CONSTRUCTOR } from '../../config'
 
 const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates']
 
@@ -83,7 +83,10 @@ export abstract class DesignCommand {
   protected getStructure(): DesignStructure {
     if (!this.structure) {
       const [design, component] = this.getCommand().split('.', 2)
-      this.structure = new DesignStructure(design, component)
+      this.structure = new DesignStructure(
+        design ?? UI_KEY_CONSTRUCTOR,
+        component ?? 'component'
+      )
     }
 
     return this.structure

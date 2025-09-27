@@ -1,5 +1,3 @@
-// export:none
-
 import { toKebabCase } from '@dxt-ui/functional'
 
 import { PropertiesToVar } from './PropertiesToVar'
@@ -24,7 +22,7 @@ export class PropertiesToProperty extends PropertiesToVar {
    */
   protected getName({
     name,
-                      item
+    item
   }: PropertyItemsItem) {
     return toKebabCase(this.items.getReName(name, item))
   }

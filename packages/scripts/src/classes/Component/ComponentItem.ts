@@ -1,5 +1,3 @@
-// export:none
-
 import { toKebabCase } from '@dxt-ui/functional'
 import { getComponentPaths } from '../../functions/getComponentPaths'
 

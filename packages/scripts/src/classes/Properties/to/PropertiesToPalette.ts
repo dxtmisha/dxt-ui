@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, isFilled, isObject, isObjectNotArray } from '@dxt-ui/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
@@ -82,7 +80,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
    * @param name class name/ название класса
    */
   private getClass(items: PropertyList, name: string): PropertyList {
-    if (!(name in items)) {
+    if (!items?.[name]) {
       items[name] = {
         value: {},
         [PropertyKey.type]: PropertyType.state
@@ -157,7 +155,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
         if (!themeName || themeName === theme) {
           const list = this.getParent(
             root ? PropertyCategory.colors : PropertyCategory.class,
-            root ?? (parents?.[0].item.value as PropertyList)
+            root ?? (parents?.[0]?.item.value as PropertyList)
           )
 
           if (
@@ -231,7 +229,7 @@ export class PropertiesToPalette extends PropertiesToAbstract {
     const defaultValue = this.getValueDefault(palette, theme)
     const name = this.getName(theme, defaultValue)
 
-    if (name in parent) {
+    if (parent?.[name]) {
       parent['sys-palette'] = {
         ...parent[name],
         [PropertyKey.fullName]: true

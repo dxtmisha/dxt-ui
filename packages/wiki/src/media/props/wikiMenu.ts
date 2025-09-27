@@ -1,6 +1,7 @@
 import { wikiList } from './wikiList'
 
 import {
+  type StorybookArgsToItem,
   type StorybookArgsToList,
   StorybookCategory,
   StorybookControl
@@ -62,7 +63,7 @@ export const wikiMenu: StorybookArgsToList = {
       }
     }
   },
-  'menu.list': wikiList['list.list'],
+  'menu.list': wikiList['list.list'] as StorybookArgsToItem,
   'menu.listAttrs': {
     type: StorybookControl.object,
     options: {
@@ -73,7 +74,7 @@ export const wikiMenu: StorybookArgsToList = {
       }
     }
   },
-  'menu.liteThreshold': wikiList['list.liteThreshold'],
+  'menu.liteThreshold': wikiList['list.liteThreshold'] as StorybookArgsToItem,
   'menu.request': {
     type: StorybookControl.object,
     options: {
@@ -84,5 +85,5 @@ export const wikiMenu: StorybookArgsToList = {
       }
     }
   },
-  'menu.selected': wikiList['list.selected']
+  'menu.selected': wikiList['list.selected'] as StorybookArgsToItem
 }

@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, isObjectNotArray, type Item } from '@dxt-ui/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
@@ -92,26 +90,28 @@ export class PropertiesToSort extends PropertiesToAbstract {
 
     if (sortIndex !== -1) {
       const sort = sortList[sortIndex]
-      const order = sort.value.findIndex(names => names.indexOf(item?.[PropertyKey.name] ?? '') !== -1)
-      let value = (sortIndex + 1) * 1_000_000
+      if (sort) {
+        const order = sort.value.findIndex(names => names.indexOf(item?.[PropertyKey.name] ?? '') !== -1)
+        let value = (sortIndex + 1) * 1_000_000
 
-      if (order !== -1) {
-        const key = sort.value[order]?.findIndex(name => name === item?.[PropertyKey.name])
+        if (order !== -1) {
+          const key = sort.value[order]?.findIndex(name => name === item?.[PropertyKey.name]) ?? -1
 
-        value += order * 1_000
+          value += order * 1_000
 
-        if (key !== -1) {
-          value += key
+          if (key !== -1) {
+            value += key
+          } else {
+            value += 999
+          }
         } else {
-          value += 999
+          value += 999_999
         }
-      } else {
-        value += 999_999
-      }
 
-      return {
-        index: `${sort.index}${order > 0 ? `@${order}` : ''}`,
-        value
+        return {
+          index: `${sort.index}${order > 0 ? `@${order}` : ''}`,
+          value
+        }
       }
     }
 

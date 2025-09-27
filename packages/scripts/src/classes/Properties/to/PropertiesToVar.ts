@@ -1,5 +1,3 @@
-// export:none
-
 import { isString, toCamelCase } from '@dxt-ui/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
@@ -78,10 +76,10 @@ export class PropertiesToVar extends PropertiesToAbstract {
    */
   protected getName({
     design,
-                      component,
-                      name,
-                      item,
-                      parents
+    component,
+    name,
+    item,
+    parents
   }: PropertyItemsItem): string {
     if (component && item?.[PropertyKey.fullName]) {
       return `--${this.items.getLink(design, component, item?.[PropertyKey.index] ?? name, '-')}`

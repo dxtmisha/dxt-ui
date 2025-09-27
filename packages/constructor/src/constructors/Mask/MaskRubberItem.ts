@@ -17,7 +17,7 @@ export class MaskRubberItem {
    * @param groupName group name / название группы
    */
   is(groupName: string): boolean {
-    return groupName in this.item.value && this.item.value[groupName] > 0
+    return Number(this.item.value?.[groupName]) > 0
   }
 
   /**

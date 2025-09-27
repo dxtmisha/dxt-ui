@@ -1,5 +1,3 @@
-// export:none
-
 import { isObjectNotArray } from '@dxt-ui/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
@@ -115,8 +113,11 @@ export class PropertiesToSimilar extends PropertiesToAbstract {
    * Проверяет, запрещено ли наследовать свойство.
    * @param item object for checking/ объект для проверки
    */
-  private isException(item: PropertyItem): boolean {
-    if (item?.[PropertyKey.variable]) {
+  private isException(item?: PropertyItem): boolean {
+    if (
+      item
+      && item?.[PropertyKey.variable]
+    ) {
       return EXCEPTION.indexOf(item[PropertyKey.variable]) !== -1
     }
 

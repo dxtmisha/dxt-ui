@@ -1,5 +1,3 @@
-// export:none
-
 import { PropertiesItems } from '../Properties/PropertiesItems'
 
 import { StylesTool } from './StylesTool'

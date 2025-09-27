@@ -30,12 +30,19 @@ export class ComponentWikiFile {
   /** Writes content to file / Записывает содержимое в файл */
   write(content: string): void {
     if (isFilled(content)) {
-      const segments = [...this.paths]
+      const contentOld = this.read()
+      const contentEdit = content
+        .trim()
+        .replace(/^```(ts|md)/, '')
+        .replace(/```$/, '')
 
-      segments.splice(segments.length - 1, 0, 'old')
-
-      PropertiesFile.writeByPath(segments, this.read())
-      PropertiesFile.writeByPath(this.paths, content.trim())
+      if (contentEdit !== contentOld.trim()) {
+        PropertiesFile.writeByPath(
+          `${PropertiesFile.joinPath(this.paths)}__old.txt`,
+          contentOld
+        )
+        PropertiesFile.writeByPath(this.paths, contentEdit + '\r\n')
+      }
     }
   }
 }

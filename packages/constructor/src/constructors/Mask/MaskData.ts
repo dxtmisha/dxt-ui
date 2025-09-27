@@ -195,38 +195,40 @@ export class MaskData {
     if (match) {
       for (const index in list) {
         const maskChar = list[index]
-        if (this.special.isSpecial(maskChar)) {
-          for (let indexChar = key; indexChar < data.length; indexChar++) {
-            key++
+        if (maskChar) {
+          if (this.special.isSpecial(maskChar)) {
+            for (let indexChar = key; indexChar < data.length; indexChar++) {
+              key++
 
-            if (data[indexChar].match(match)) {
-              break
-            }
-          }
-
-          match = this.match.get(maskChar)
-        } else if (maskChar.match(match)) {
-          let exit = false
-
-          for (let indexChar = key; indexChar < data.length; indexChar++) {
-            const dataChar = data[indexChar]
-
-            key++
-
-            if (dataChar.match(match)) {
-              if (maskChar === dataChar) {
-                data.splice(indexChar, 1)
-                key--
-              } else {
-                exit = true
+              if (data?.[indexChar]?.match(match)) {
+                break
               }
+            }
 
+            match = this.match.get(maskChar)
+          } else if (maskChar.match(match)) {
+            let exit = false
+
+            for (let indexChar = key; indexChar < data.length; indexChar++) {
+              const dataChar = data[indexChar]
+
+              key++
+
+              if (dataChar?.match(match)) {
+                if (maskChar === dataChar) {
+                  data.splice(indexChar, 1)
+                  key--
+                } else {
+                  exit = true
+                }
+
+                break
+              }
+            }
+
+            if (exit) {
               break
             }
-          }
-
-          if (exit) {
-            break
           }
         }
       }

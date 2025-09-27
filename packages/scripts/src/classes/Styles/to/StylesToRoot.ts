@@ -1,5 +1,3 @@
-// export:none
-
 import { StylesToAbstract } from './StylesToAbstract'
 
 export class StylesToRoot extends StylesToAbstract {

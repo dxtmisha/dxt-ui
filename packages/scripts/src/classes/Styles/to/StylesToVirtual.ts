@@ -1,5 +1,3 @@
-// export:none
-
 import { StylesTool } from '../StylesTool'
 import { StylesToAbstract } from './StylesToAbstract'
 

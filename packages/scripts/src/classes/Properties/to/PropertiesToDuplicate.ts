@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, getColumn, isObjectNotArray, toCamelCase } from '@dxt-ui/functional'
 
 import { PropertiesConfig } from '../PropertiesConfig'
@@ -61,7 +59,7 @@ export class PropertiesToDuplicate extends PropertiesToAbstract {
         if (!(parentName in list)) {
           list[parentName] = [name]
         } else {
-          list[parentName].push(name)
+          list[parentName]?.push(name)
         }
 
         parentName = name

@@ -41,6 +41,7 @@ export type DesignTypescriptProp = {
   name: string
   type: string
   option?: string[]
+  description?: string
 }
 export type DesignTypescriptProps = DesignTypescriptProp[]
 

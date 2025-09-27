@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, isFilled, isObjectNotArray, replaceRecursive } from '@dxt-ui/functional'
 
 import { PropertiesKeys } from './PropertiesKeys'
@@ -44,7 +42,7 @@ export class PropertiesStandard {
       newItem[PropertyKey.index] = index.replace(/^=/, '')
 
       if (key in newItem) {
-        data[key] = replaceRecursive(data[key], newItem) as PropertyItem
+        data[key] = replaceRecursive(data[key] ?? {}, newItem) as PropertyItem
       } else {
         data[key] = newItem
       }

@@ -40,7 +40,7 @@ export class MaskSelection {
    * Возвращает номер выделения для первого элемента, являющегося специальным символом.
    */
   getFirst(): number {
-    return this.mask.info.value?.[0]?.key
+    return this.mask.info.value?.[0]?.key ?? 0
   }
 
   /**

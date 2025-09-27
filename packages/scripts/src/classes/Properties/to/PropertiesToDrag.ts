@@ -1,5 +1,3 @@
-// export:none
-
 import { forEach, isFilled, isObjectNotArray } from '@dxt-ui/functional'
 
 import { PropertiesConfig } from '../PropertiesConfig'
@@ -142,7 +140,7 @@ export class PropertiesToDrag extends PropertiesToAbstract {
 
     if (parents.length > 0) {
       let focusParent = parents.length - 1
-      let focus: PropertyItem = parents[focusParent].item
+      let focus: PropertyItem = (parents[focusParent] as PropertyItemsParent).item
       let blockTop = false
 
       paths.forEach((dir) => {
@@ -150,7 +148,7 @@ export class PropertiesToDrag extends PropertiesToAbstract {
           case '.':
             if (!blockTop) {
               focusParent = 0
-              focus = parents[focusParent].item
+              focus = (parents[focusParent] as PropertyItemsParent).item
             }
             break
           case '..':
@@ -159,7 +157,7 @@ export class PropertiesToDrag extends PropertiesToAbstract {
                 focusParent = 0
               }
 
-              focus = parents[focusParent].item
+              focus = (parents[focusParent] as PropertyItemsParent).item
             }
             break
           default:
@@ -172,7 +170,7 @@ export class PropertiesToDrag extends PropertiesToAbstract {
               }
 
               blockTop = true
-              focus = focus.value[dir]
+              focus = focus.value[dir] as PropertyItem
             }
 
             break
@@ -205,7 +203,7 @@ export class PropertiesToDrag extends PropertiesToAbstract {
     ) {
       if (isObjectNotArray(item.value)) {
         forEach(item.value, (value, index) => {
-          if (!(index in itemDragValue)) {
+          if (!(itemDragValue?.[index])) {
             itemDragValue[index] = value
           } else if (!isFilled(itemDragValue[index].value)) {
             itemDragValue[index].value = value.value
@@ -215,7 +213,7 @@ export class PropertiesToDrag extends PropertiesToAbstract {
         const index = item?.[PropertyKey.index]
 
         if (index) {
-          if (!(index in itemDragValue)) {
+          if (!(itemDragValue?.[index])) {
             itemDragValue[index] = item
           } else if (!isFilled(itemDragValue[index].value)) {
             itemDragValue[index].value = item.value

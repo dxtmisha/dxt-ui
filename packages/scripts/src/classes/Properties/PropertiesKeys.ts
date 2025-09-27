@@ -1,5 +1,3 @@
-// export:none
-
 import { toCamelCase } from '@dxt-ui/functional'
 
 import { PropertiesConfig } from './PropertiesConfig'
