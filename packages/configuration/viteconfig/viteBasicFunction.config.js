@@ -36,7 +36,10 @@ export const viteBasicFunction = (
     'vue-router',
     '@vue/runtime-core',
     '@vue/runtime-dom',
-    '@vue/reactivity'
+    '@vue/reactivity',
+    '@dxtmisha/configuration',
+    '@dxtmisha/media',
+    '@dxtmisha/functional'
   ],
   externalExtended = []
 ) => defineConfig({

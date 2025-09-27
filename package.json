@@ -16,7 +16,7 @@
     "@dxt-ui/c2": "workspace:*",
     "@dxtmisha/configuration": "^0.3.3",
     "@dxt-ui/d1": "workspace:*",
-    "@dxtmisha/functional": "workspace:*",
+    "@dxtmisha/functional": "^1.0.0",
     "@dxt-ui/main": "workspace:*",
     "@dxtmisha/media": "^0.3.0",
     "@dxt-ui/scripts": "workspace:*",
