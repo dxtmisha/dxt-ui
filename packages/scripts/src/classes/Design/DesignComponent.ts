@@ -290,8 +290,6 @@ export class DesignComponent extends DesignCommand {
       }
     }
 
-    console.log('this.propsType', this.propsType)
-
     return this.propsType
   }
 

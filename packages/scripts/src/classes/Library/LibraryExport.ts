@@ -24,7 +24,7 @@ export class LibraryExport {
 
     PropertiesFile.writeByPath(
       UI_DIRS_FILE_EXPORT,
-      `${this.initFile()}\r\n`.trim()
+      `${this.initFile().trim()}\r\n`
     )
 
     console.log('\r\nfinish')

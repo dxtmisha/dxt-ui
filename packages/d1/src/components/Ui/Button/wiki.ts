@@ -12,12 +12,12 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean' },
   { name: 'focus', type: 'boolean' },
   { name: 'grid', type: 'boolean' },
-  { name: 'icon', type: 'IconValue<IconProps>' },
-  { name: 'iconAttrs', type: 'ConstrBind<IconProps>' },
+  { name: 'icon', type: 'IconValue<Icon>' },
+  { name: 'iconAttrs', type: 'ConstrBind<Icon>' },
   { name: 'iconDir', type: 'boolean' },
   { name: 'iconHide', type: 'boolean' },
   { name: 'iconPalette', type: 'boolean' },
-  { name: 'iconTrailing', type: 'IconValue<IconProps>' },
+  { name: 'iconTrailing', type: 'IconValue<Icon>' },
   { name: 'iconTrailingDirOnly', type: 'boolean' },
   { name: 'iconTrailingPalette', type: 'boolean' },
   { name: 'iconTrailingTurnOnly', type: 'boolean' },
@@ -25,7 +25,7 @@ const propsNames: StorybookProps = [
   { name: 'inverse', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },
-  { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },
+  { name: 'loading', type: 'boolean | ConstrBind<Progress>' },
   { name: 'outline', type: 'boolean' },
   { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'primary', type: 'boolean' },
@@ -38,7 +38,7 @@ const propsNames: StorybookProps = [
   { name: 'text', type: 'boolean' },
   { name: 'textAlign', type: 'string', option: ['left', 'center', 'right'] },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },
-  { name: 'value', type: 'any' }
+  { name: 'value', type: 'EventClickValue['value']' }
   // :propsList [!] System label / Системная метка
 ]
 

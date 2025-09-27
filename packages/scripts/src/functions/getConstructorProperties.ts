@@ -1,17 +1,11 @@
 // export:none
 
 import { forEach } from '@dxt-ui/functional'
-import {
-  PropertiesFile,
-  type PropertyItem,
-  type PropertyList
-} from '@dxt-ui/scripts'
 
-import {
-  UI_DIR_CONSTRUCTOR,
-  UI_DIR_IN,
-  UI_FILE_PROPERTY
-} from '@dxt-ui/scripts/config'
+import { PropertiesFile } from '../classes/Properties/PropertiesFile'
+import type { PropertyItem, PropertyList } from '../types/propertyTypes'
+
+import { UI_DIR_CONSTRUCTOR, UI_DIR_IN, UI_FILE_PROPERTY } from '../config'
 
 /**
  * Returns properties of the constructor.
@@ -33,11 +27,13 @@ export const getConstructorProperties = (names: string[]): PropertyList => {
           '..',
           '..',
           '..',
+          'constructor',
           UI_DIR_IN,
           UI_DIR_CONSTRUCTOR,
           name,
           UI_FILE_PROPERTY
         ]
+
         const item = PropertiesFile.readFile<PropertyItem>(paths)
 
         if (item) {

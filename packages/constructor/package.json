@@ -57,10 +57,6 @@
     "./Window": "./src/constructors/Window/index.ts",
     "./Window/style": "./src/constructors/Window/style.scss",
     "./constructor/": "./src/constructors/",
-    "./node": [
-      "./src/library-node.ts",
-      "./dist/library-node.js"
-    ],
     "./FieldCounter": "./src/constructors/FieldCounter/index.ts",
     "./FieldCounter/style": "./src/constructors/FieldCounter/style.scss",
     "./FieldMessage": "./src/constructors/FieldMessage/index.ts",

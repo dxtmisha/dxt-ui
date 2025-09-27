@@ -82,8 +82,12 @@ export class DesignTypescript {
    *
    * Возвращает тип свойства
    * @param type TypeScript type/ тип TypeScript
+   * @param prop Symbol of the property/ символ свойства
    */
-  protected getPropType(type: ts.Type): string {
+  protected getPropType(
+    type: ts.Type,
+    prop?: ts.Symbol
+  ): string {
     const option = this.getPropOption(type)
 
     if (
@@ -102,7 +106,26 @@ export class DesignTypescript {
       return 'string'
     }
 
-    return this.checker.typeToString(type)
+    let text = this.checker.typeToString(type)
+
+    if (
+      prop
+      && (
+        text === 'any'
+        || text === '{}'
+        || text === 'unknown'
+      )
+    ) {
+      const decl = prop.getDeclarations()?.find(d =>
+        ts.isPropertySignature(d) || ts.isPropertyDeclaration(d)
+      )
+
+      if (decl?.type) {
+        text = decl.type.getText().trim() || text
+      }
+    }
+
+    return text
   }
 
   /**
@@ -188,12 +211,12 @@ export class DesignTypescript {
   }
 
   /**
-  * Returns information about the property
-  *
-  * Возвращает информацию о свойстве
-  * @param node Type alias or interface declaration/ объявление псевдонима типа или интерфейса
-  * @param prop Symbol of the property/ символ свойства
-  */
+   * Returns information about the property
+   *
+   * Возвращает информацию о свойстве
+   * @param node Type alias or interface declaration/ объявление псевдонима типа или интерфейса
+   * @param prop Symbol of the property/ символ свойства
+   */
   protected getPropInformation(
     node: ts.TypeAliasDeclaration | ts.InterfaceDeclaration,
     prop: ts.Symbol
@@ -204,7 +227,7 @@ export class DesignTypescript {
 
     return {
       name: prop.name,
-      type: this.getPropType(type),
+      type: this.getPropType(type, prop),
       option: this.getPropOption(type) ?? this.getPropOptionByDeclarations(prop.getDeclarations()),
       description
     }
