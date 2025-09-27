@@ -62,14 +62,10 @@
     "node": ">=18.0.0"
   },
   "peerDependencies": {
-    "vue": ">=3.0.0",
-    "@dxtmisha/media": ">=0.3.0"
+    "vue": ">=3.0.0"
   },
   "peerDependenciesMeta": {
     "vue": {
-      "optional": true
-    },
-    "@dxtmisha/media": {
       "optional": true
     }
   },
@@ -78,9 +74,5 @@
   },
   "dependencies": {},
   "devDependencies": {},
-  "sideEffects": false,
-  "relatedPackages": [
-    "@dxtmisha/media",
-    "@dxtmisha/configuration"
-  ]
+  "sideEffects": false
 }
