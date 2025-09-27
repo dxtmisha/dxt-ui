@@ -1,4 +1,4 @@
-import { forEach, isObjectNotArray } from '@dxt-ui/functional'
+import { forEach, isObjectNotArray } from '@dxtmisha/functional'
 
 import {
   PropertyKey,

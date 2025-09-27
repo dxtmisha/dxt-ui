@@ -1,4 +1,4 @@
-import { replaceRecursive } from '@dxt-ui/functional'
+import { replaceRecursive } from '@dxtmisha/functional'
 
 import { PropertiesCache } from './PropertiesCache'
 import { PropertiesPath } from './PropertiesPath'

@@ -1,4 +1,4 @@
-import { toArray } from '@dxt-ui/functional'
+import { toArray } from '@dxtmisha/functional'
 
 import {
   PropertiesFile,

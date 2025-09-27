@@ -1,4 +1,4 @@
-import { isObjectNotArray, toCamelCase } from '@dxt-ui/functional'
+import { isObjectNotArray, toCamelCase } from '@dxtmisha/functional'
 
 import { PropertiesTool } from '../../Properties/PropertiesTool'
 

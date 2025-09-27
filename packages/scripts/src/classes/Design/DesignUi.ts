@@ -1,4 +1,4 @@
-import { toKebabCase } from '@dxt-ui/functional'
+import { toKebabCase } from '@dxtmisha/functional'
 
 import { DesignComponent } from './DesignComponent'
 import { LibraryItems } from '../Library/LibraryItems'

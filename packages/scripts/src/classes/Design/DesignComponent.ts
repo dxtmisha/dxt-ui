@@ -1,4 +1,4 @@
-import { forEach, isObjectNotArray, toArray, toKebabCase } from '@dxt-ui/functional'
+import { forEach, isObjectNotArray, toArray, toKebabCase } from '@dxtmisha/functional'
 import { wikiDescriptions } from '@dxt-ui/wiki/media'
 import type { StorybookComponentsDescriptionItem } from '@dxt-ui/wiki'
 

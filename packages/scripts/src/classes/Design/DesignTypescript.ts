@@ -1,4 +1,4 @@
-import { forEach } from '@dxt-ui/functional'
+import { forEach } from '@dxtmisha/functional'
 import ts from 'typescript'
 
 import type {

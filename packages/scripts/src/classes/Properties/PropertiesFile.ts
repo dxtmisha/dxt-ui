@@ -1,4 +1,4 @@
-import { toArray, toKebabCase, transformation } from '@dxt-ui/functional'
+import { toArray, toKebabCase, transformation } from '@dxtmisha/functional'
 
 import requireFs from 'fs'
 import requirePath from 'path'

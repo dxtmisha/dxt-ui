@@ -1,4 +1,4 @@
-import { isFilled, replaceRecursive, toKebabCase } from '@dxt-ui/functional'
+import { isFilled, replaceRecursive, toKebabCase } from '@dxtmisha/functional'
 import { getConstructorProperties } from '../../functions/getConstructorProperties'
 
 import { PropertiesConfig } from './PropertiesConfig'

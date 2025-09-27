@@ -1,4 +1,4 @@
-import { toKebabCase } from '@dxt-ui/functional'
+import { toKebabCase } from '@dxtmisha/functional'
 import { getComponentPaths } from '../../functions/getComponentPaths'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'

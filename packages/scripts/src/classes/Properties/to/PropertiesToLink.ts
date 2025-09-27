@@ -1,4 +1,4 @@
-import { isObjectNotArray, splice } from '@dxt-ui/functional'
+import { isObjectNotArray, splice } from '@dxtmisha/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 import { PropertiesTypes } from '../PropertiesTypes'

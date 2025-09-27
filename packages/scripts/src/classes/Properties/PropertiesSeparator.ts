@@ -1,4 +1,4 @@
-import { forEach, isObjectNotArray, replaceRecursive } from '@dxt-ui/functional'
+import { forEach, isObjectNotArray, replaceRecursive } from '@dxtmisha/functional'
 
 import { PropertiesConfig } from './PropertiesConfig'
 import { PropertiesKeys } from './PropertiesKeys'

@@ -1,4 +1,4 @@
-import type { Item } from '@dxt-ui/functional'
+import type { Item } from '@dxtmisha/functional'
 
 import {
   PropertyCategory,

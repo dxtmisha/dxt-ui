@@ -1,4 +1,4 @@
-import { replaceRecursive, toKebabCase } from '@dxt-ui/functional'
+import { replaceRecursive, toKebabCase } from '@dxtmisha/functional'
 
 import { PropertiesConfig } from './PropertiesConfig'
 import { PropertiesTool } from './PropertiesTool'

@@ -1,4 +1,4 @@
-import { isFilled, isSelected, toKebabCase } from '@dxt-ui/functional'
+import { isFilled, isSelected, toKebabCase } from '@dxtmisha/functional'
 
 import {
   type PropertyItem,

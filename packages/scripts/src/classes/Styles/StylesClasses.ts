@@ -1,4 +1,4 @@
-import { isFilled, isObjectNotArray, toKebabCase } from '@dxt-ui/functional'
+import { isFilled, isObjectNotArray, toKebabCase } from '@dxtmisha/functional'
 
 import { PropertiesItems } from '../Properties/PropertiesItems'
 

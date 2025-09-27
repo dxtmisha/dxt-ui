@@ -1,4 +1,4 @@
-import { isFilled } from '@dxt-ui/functional'
+import { isFilled } from '@dxtmisha/functional'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignConstructor } from './DesignConstructor'

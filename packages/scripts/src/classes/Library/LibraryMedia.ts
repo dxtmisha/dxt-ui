@@ -1,4 +1,4 @@
-import { toCamelCase } from '@dxt-ui/functional'
+import { toCamelCase } from '@dxtmisha/functional'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
@@ -32,7 +32,7 @@ export class LibraryMedia {
       this.items.write(
         UI_FILE_NAME_MEDIA,
         [
-          'import { Icons } from \'@dxt-ui/functional\'',
+          'import { Icons } from \'@dxtmisha/functional\'',
           '',
           ...this.initIconImport(),
           '',

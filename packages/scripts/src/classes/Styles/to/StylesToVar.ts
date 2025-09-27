@@ -1,4 +1,4 @@
-import { isObjectNotArray } from '@dxt-ui/functional'
+import { isObjectNotArray } from '@dxtmisha/functional'
 
 import { PropertiesItems } from '../../Properties/PropertiesItems'
 import { PropertiesValues } from '../../Properties/PropertiesValues'

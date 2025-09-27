@@ -1,4 +1,4 @@
-import { strFill } from '@dxt-ui/functional'
+import { strFill } from '@dxtmisha/functional'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 

@@ -1,4 +1,4 @@
-import { toKebabCase } from '@dxt-ui/functional'
+import { toKebabCase } from '@dxtmisha/functional'
 
 import { PropertiesTool } from '../../Properties/PropertiesTool'
 import { StylesToAbstract } from './StylesToAbstract'

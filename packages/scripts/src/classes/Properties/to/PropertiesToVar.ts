@@ -1,4 +1,4 @@
-import { isString, toCamelCase } from '@dxt-ui/functional'
+import { isString, toCamelCase } from '@dxtmisha/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 import { PropertiesValues } from '../PropertiesValues'

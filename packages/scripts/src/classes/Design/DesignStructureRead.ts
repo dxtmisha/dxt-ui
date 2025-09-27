@@ -1,4 +1,4 @@
-import { forEach, isFilled, isObjectNotArray, toCamelCase, uniqueArray } from '@dxt-ui/functional'
+import { forEach, isFilled, isObjectNotArray, toCamelCase, uniqueArray } from '@dxtmisha/functional'
 
 import { DesignStructureItemAbstract } from './DesignStructureItemAbstract'
 

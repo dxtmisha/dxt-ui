@@ -1,4 +1,4 @@
-import { forEach, isFilled, isObjectNotArray, replaceRecursive } from '@dxt-ui/functional'
+import { forEach, isFilled, isObjectNotArray, replaceRecursive } from '@dxtmisha/functional'
 
 import {
   PropertiesFile,

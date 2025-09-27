@@ -1,4 +1,4 @@
-import { toCamelCase } from '@dxt-ui/functional'
+import { toCamelCase } from '@dxtmisha/functional'
 
 import { PropertiesConfig } from './PropertiesConfig'
 import { PropertiesTypes } from './PropertiesTypes'

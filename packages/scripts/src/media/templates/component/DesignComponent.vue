@@ -5,7 +5,7 @@
 // :component.once   isFilled,
 // :component.once   type ConstrClasses,
 // :component.once   type ConstrStyles
-// :component.once } from '@dxt-ui/functional'
+// :component.once } from '@dxtmisha/functional'
 // :component.once import {
 // :component.once   ComponentDesign,
 // :component.once   type ComponentEmits,

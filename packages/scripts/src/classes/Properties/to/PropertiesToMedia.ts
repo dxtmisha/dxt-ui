@@ -1,4 +1,4 @@
-import { forEach, isObjectNotArray, toCamelCase } from '@dxt-ui/functional'
+import { forEach, isObjectNotArray, toCamelCase } from '@dxtmisha/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 import { PropertiesItems } from '../PropertiesItems'

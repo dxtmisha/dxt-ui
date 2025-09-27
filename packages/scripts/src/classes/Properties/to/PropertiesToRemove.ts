@@ -1,4 +1,4 @@
-import { getColumn, isObjectNotArray } from '@dxt-ui/functional'
+import { getColumn, isObjectNotArray } from '@dxtmisha/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 

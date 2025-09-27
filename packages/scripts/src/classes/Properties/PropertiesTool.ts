@@ -1,4 +1,4 @@
-import { copyObject, toCamelCase } from '@dxt-ui/functional'
+import { copyObject, toCamelCase } from '@dxtmisha/functional'
 
 import { PropertiesConfig } from './PropertiesConfig'
 import { PropertiesCache } from './PropertiesCache'

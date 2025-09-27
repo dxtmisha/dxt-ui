@@ -1,4 +1,4 @@
-import { toCamelCaseFirst, toKebabCase } from '@dxt-ui/functional'
+import { toCamelCaseFirst, toKebabCase } from '@dxtmisha/functional'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'

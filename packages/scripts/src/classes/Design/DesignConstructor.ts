@@ -1,4 +1,4 @@
-import { toCamelCaseFirst } from '@dxt-ui/functional'
+import { toCamelCaseFirst } from '@dxtmisha/functional'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 

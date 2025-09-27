@@ -1,4 +1,4 @@
-import { isFilled, isObjectNotArray, toKebabCase } from '@dxt-ui/functional'
+import { isFilled, isObjectNotArray, toKebabCase } from '@dxtmisha/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 import { PropertiesTypes } from '../PropertiesTypes'
