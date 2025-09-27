@@ -7,13 +7,13 @@ import {
   isObject,
   type RefOrNormal,
   setValues,
+  toArray,
   toNumber
 } from '@dxt-ui/functional'
 
 import { FieldElementInclude } from './FieldElementInclude'
 
 import type { FieldValueProps } from '../../types/fieldTypes'
-import { toArray } from 'vite-node/utils'
 
 /**
  * Class for working with input values.
@@ -103,7 +103,7 @@ export class FieldValueInclude<Value = any> {
    * Возвращает текущее значение в виде массива.
    */
   getToArray(): Value[] {
-    return toArray(this.item.value)
+    return toArray(this.item.value) as Value[]
   }
 
   /**
