@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import { mergeConfig } from 'vite'
 
-import { viteComponentOnly } from '@dxt-ui/configuration/viteComponentOnly'
+import { viteComponentOnly } from '@dxtmisha/configuration/viteComponentOnly'
 // import viteWorkers from './vite-workers.config.ts'
 
 // https://vite.dev/config/

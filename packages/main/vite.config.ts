@@ -1,4 +1,4 @@
-import { viteBasicFunction } from '@dxt-ui/configuration/viteBasicFunction'
+import { viteBasicFunction } from '@dxtmisha/configuration/viteBasicFunction'
 
 // https://vite.dev/config/
 export default viteBasicFunction(

@@ -1,15 +1,15 @@
-# @dxt-ui/configuration
+# @dxtmisha/configuration
 
 🔧 **Общие конфигурационные файлы** для проектов DXT UI - готовые настройки Vite и TypeScript для разработки UI компонентов.
 
-[![npm version](https://badge.fury.io/js/@dxt-ui%2Fconfiguration.svg)](https://www.npmjs.com/package/@dxt-ui/configuration)
+[![npm version](https://badge.fury.io/js/@dxt-ui%2Fconfiguration.svg)](https://www.npmjs.com/package/@dxtmisha/configuration)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 
 ## 🚀 Установка
 
 ```bash
-npm install @dxt-ui/configuration
+npm install @dxtmisha/configuration
 ```
 
 ## 📦 Что включено
@@ -31,34 +31,34 @@ npm install @dxt-ui/configuration
 
 ```javascript
 // vite.config.js - базовая конфигурация
-import { viteBasic } from '@dxt-ui/configuration/viteBasic'
+import { viteBasic } from '@dxtmisha/configuration/viteBasic'
 export default viteBasic
 
 // vite.config.js - функциональная версия с кастомизацией
-import { viteBasicFunction } from '@dxt-ui/configuration/viteBasicFunction'
+import { viteBasicFunction } from '@dxtmisha/configuration/viteBasicFunction'
 export default viteBasicFunction({
   // ваши дополнительные настройки
 })
 
 // vite.config.js - только компоненты
-import { viteComponentOnly } from '@dxt-ui/configuration/viteComponentOnly'
+import { viteComponentOnly } from '@dxtmisha/configuration/viteComponentOnly'
 export default viteComponentOnly
 
 // vite.config.js - для пакетов с флагами
-import { viteFlags } from '@dxt-ui/configuration/viteFlags'
+import { viteFlags } from '@dxtmisha/configuration/viteFlags'
 export default viteFlags
 
 // vite.config.js - с поддержкой MDX
-import { viteMdx } from '@dxt-ui/configuration/viteMdx'
+import { viteMdx } from '@dxtmisha/configuration/viteMdx'
 export default viteMdx
 ```
 
 ### TypeScript конфигурации
 
-```json
+```json lines
 // tsconfig.app.json
 {
-  "extends": "@dxt-ui/configuration/tsconfig/tsconfig.app.json",
+  "extends": "@dxtmisha/configuration/tsconfig/tsconfig.app.json",
   "compilerOptions": {
     // ваши дополнительные настройки
   }
@@ -66,7 +66,7 @@ export default viteMdx
 
 // tsconfig.node.json  
 {
-  "extends": "@dxt-ui/configuration/tsconfig/tsconfig.node.json"
+  "extends": "@dxtmisha/configuration/tsconfig/tsconfig.node.json"
 }
 ```
 

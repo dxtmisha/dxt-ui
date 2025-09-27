@@ -1,3 +1,3 @@
-import { viteMdx } from '@dxt-ui/configuration/viteMdx'
+import { viteMdx } from '@dxtmisha/configuration/viteMdx'
 
 export default viteMdx

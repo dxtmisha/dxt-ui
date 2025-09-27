@@ -1,7 +1,7 @@
 {
-  "name": "@dxt-ui/configuration",
+  "name": "@dxtmisha/configuration",
   "private": false,
-  "version": "1.0.0",
+  "version": "0.3.1",
   "type": "module",
   "description": "Shared configuration files for DXT UI - Vite configs and TypeScript configs for building UI components",
   "keywords": [
