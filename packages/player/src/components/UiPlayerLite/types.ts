@@ -1,59 +1,50 @@
-// types.ts
 /**
- * Определяет события, генерируемые компонентом UiPlayerLite.
- * Defines the events emitted by the UiPlayerLite component.
+ * Типы событий компонента UiPlayerLite.
  */
 export type UiPlayerLiteEmits = {
   /**
-   * Событие изменения статуса проигрывателя.
-   * Испускается при попытке изменить статус воспроизведения, например, при нажатии кнопки "Go".
-   * Emitted when there's an attempt to change the player's status, e.g., by clicking "Go".
-   * @event
-   * @param {string} status - Новый статус проигрывателя ('play', 'pause', 'stop').
+   * Событие, испускаемое при изменении статуса проигрывателя.
+   * Передает текущий статус проигрывателя.
    */
   status: [status: string]
 }
 
 /**
- * Определяет слоты, доступные в компоненте UiPlayerLite.
- * Defines the slots available in the UiPlayerLite component.
+ * Типы слотов компонента UiPlayerLite.
  */
 export interface UiPlayerLiteSlots {
   /**
-   * Слот для размещения контента в верхней части компонента, перед статусом и видео.
-   * Slot for content at the top of the component, before status and video.
+   * Слот для размещения контента в верхней части компонента.
+   * @param props - Пропсы, переданные в слот (если есть).
    */
-  top? (props: any): any
+  top?(props: any): any
+
   /**
-   * Слот для размещения контента в основной части компонента, после элемента видео.
-   * Default slot for content, placed after the video element.
+   * Основной слот для размещения контента в нижней части компонента.
+   * @param props - Пропсы, переданные в слот (если есть).
    */
-  default? (props: any): any
+  default?(props: any): any
 }
 
 /**
- * Определяет свойства (props) компонента UiPlayerLite.
- * Defines the properties (props) for the UiPlayerLite component.
+ * Типы свойств компонента UiPlayerLite.
  */
 export interface UiPlayerLiteProps {
   /**
-   * URL видеофайла для воспроизведения.
-   * The URL of the video file to play.
+   * URL видеоисточника для проигрывателя.
+   * Если не указан, видео не будет загружено.
    */
   url?: string
   /**
-   * Текущий статус проигрывателя. По умолчанию 'stop'.
-   * The current status of the player. Defaults to 'stop'.
-   * @values 'play', 'pause', 'stop'
+   * Текущий статус проигрывателя.
+   * @values 'play' | 'pause' | 'stop'
+   * @default 'stop'
    */
   status?: 'play' | 'pause' | 'stop'
 }
 
 /**
  * Значения по умолчанию для свойств компонента UiPlayerLite.
- * Default values for UiPlayerLite component props.
- * @constant
- * @type {UiPlayerLiteProps}
  */
 export const UiPlayerLiteDefaults: UiPlayerLiteProps = {
   status: 'stop'

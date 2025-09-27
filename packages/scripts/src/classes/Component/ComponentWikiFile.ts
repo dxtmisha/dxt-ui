@@ -1,5 +1,6 @@
-import { PropertiesFile, type PropertiesFilePath } from '../Properties/PropertiesFile'
 import { isFilled } from '@dxt-ui/functional'
+
+import { PropertiesFile } from '../Properties/PropertiesFile'
 
 /**
  * Utility class for reading and writing a single wiki component file.
@@ -12,7 +13,7 @@ export class ComponentWikiFile {
    * @param paths сегменты пути целевого файла
    */
   constructor(
-    protected readonly paths: PropertiesFilePath
+    protected readonly paths: string[]
   ) {
   }
 
@@ -29,14 +30,12 @@ export class ComponentWikiFile {
   /** Writes content to file / Записывает содержимое в файл */
   write(content: string): void {
     if (isFilled(content)) {
-      const segments = PropertiesFile.splitForDir(
-        PropertiesFile.joinPath(this.paths)
-      )
+      const segments = [...this.paths]
 
       segments.splice(segments.length - 1, 0, 'old')
 
       PropertiesFile.writeByPath(segments, this.read())
-      PropertiesFile.writeByPath(this.paths, content)
+      PropertiesFile.writeByPath(this.paths, content.trim())
     }
   }
 }

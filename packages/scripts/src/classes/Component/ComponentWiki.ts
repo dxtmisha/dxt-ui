@@ -16,23 +16,45 @@ import {
   UI_FILE_NAME_VITE_WORKERS
 } from '../../config'
 
+// Sample Vite config template path / Путь к шаблону Vite-конфига
 const FILE_VITE_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'viteComponentTemplateConfig.ts']
+// Sample AI prompt template path / Путь к шаблону AI-промпта
 const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'componentPrompt.txt']
 
+// Async exec wrapper / Обёртка для асинхронного exec
 const execAsync = promisify(exec)
 
+/**
+ * Generates wiki artifacts (code snapshot, stories, mdx) for a component.
+ * Uses a temporary build + AI prompt to (re)create documentation.
+ *
+ * Генерирует wiki-артефакты (снимок кода, stories, mdx) для компонента.
+ * Использует временный билд + AI промпт для (пере)создания документации.
+ */
 export class ComponentWiki {
+  // Template vite config file / Файл шаблона vite-конфига
   protected readonly viteSample: ComponentWikiFile
+  // Template prompt file / Файл шаблона промпта
   protected readonly promptSample: ComponentWikiFile
 
+  // Aggregated built code file / Файл агрегированного собранного кода
   protected readonly codeFile: ComponentWikiFile
+  // Types file (original or AI regenerated) / Файл типов (оригинал или пересозданный ИИ)
   protected readonly typesFile: ComponentWikiFile
+  // Stories file (Storybook) / Файл сторис (Storybook)
   protected readonly storiesFile: ComponentWikiFile
+  // MDX documentation file / Файл MDX документации
   protected readonly mdFile: ComponentWikiFile
 
+  // Prepared AI prompt file / Файл подготовленного AI промпта
   protected readonly promptFile: ComponentWikiFile
+  // Raw AI output file / Файл «сырого» вывода ИИ
   protected readonly aiFile: ComponentWikiFile
 
+  /**
+   * @param path component relative path inside components dirs
+   * @param path относительный путь компонента внутри директорий компонентов
+   */
   constructor(
     protected readonly path: string
   ) {
@@ -70,6 +92,11 @@ export class ComponentWiki {
     ])
   }
 
+  /**
+   * Orchestrates build + file extraction + AI generation.
+   *
+   * Оркестрирует билд + извлечение файлов + генерацию через ИИ.
+   */
   make(): void {
     console.log('Component wiki: ', this.path)
 
@@ -86,6 +113,11 @@ export class ComponentWiki {
       })
   }
 
+  /**
+   * Returns root path segments for the component.
+   *
+   * Возвращает сегменты корневого пути компонента.
+   */
   protected getRootComponent(): string[] {
     return [
       ...UI_DIRS_COMPONENTS,
@@ -93,6 +125,11 @@ export class ComponentWiki {
     ]
   }
 
+  /**
+   * Returns wiki directory path segments.
+   *
+   * Возвращает сегменты пути wiki директории.
+   */
   protected getPathWiki(): string[] {
     return [
       ...this.getRootComponent(),
@@ -100,6 +137,11 @@ export class ComponentWiki {
     ]
   }
 
+  /**
+   * Returns temporary directory path segments.
+   *
+   * Возвращает сегменты пути временной директории.
+   */
   protected getPathTemporary(): string[] {
     return [
       ...this.getPathWiki(),
@@ -107,6 +149,11 @@ export class ComponentWiki {
     ]
   }
 
+  /**
+   * Returns distribution temp directory path segments.
+   *
+   * Возвращает сегменты пути дистрибутива (temp).
+   */
   protected getPathTemporaryDist(): string[] {
     return [
       ...this.getPathTemporary(),
@@ -114,10 +161,20 @@ export class ComponentWiki {
     ]
   }
 
+  /**
+   * Derives component folder name.
+   *
+   * Получает имя директории компонента.
+   */
   protected getName(): string {
     return String(getNameDirByPaths(this.getRootComponent()))
   }
 
+  /**
+   * Saves existing vite config aside (rename) before custom build.
+   *
+   * Сохраняет существующий vite-конфиг (переименовывает) перед кастомным билдом.
+   */
   protected saveViteConfig() {
     if (
       !PropertiesFile.is(UI_FILE_NAME_VITE_WORKERS)
@@ -129,6 +186,11 @@ export class ComponentWiki {
     }
   }
 
+  /**
+   * Restores original vite config after build.
+   *
+   * Восстанавливает оригинальный vite-конфиг после билда.
+   */
   protected resetViteConfig() {
     if (
       PropertiesFile.is(UI_FILE_NAME_VITE_WORKERS)
@@ -141,6 +203,11 @@ export class ComponentWiki {
     }
   }
 
+  /**
+   * Runs build command (npm run build) capturing stdout/stderr.
+   *
+   * Запускает команду билда (npm run build), перехватывая stdout/stderr.
+   */
   protected async run(): Promise<boolean> {
     try {
       const { stdout, stderr } = await execAsync('npm run build')
@@ -159,6 +226,11 @@ export class ComponentWiki {
     return false
   }
 
+  /**
+   * Prepares temporary vite config, triggers build, then restores original.
+   *
+   * Готовит временный vite-конфиг, запускает билд, затем восстанавливает оригинал.
+   */
   protected async build(): Promise<boolean> {
     this.saveViteConfig()
 
@@ -176,6 +248,12 @@ export class ComponentWiki {
     return status
   }
 
+  /**
+   * Reads built file content and wraps with header comment (file name).
+   *
+   * Читает содержимое собранного файла и оборачивает заголовком с именем файла.
+   * @param path relative built file path / относительный путь собранного файла
+   */
   protected readFile(path: string): string {
     const pathFull = PropertiesFile.joinPath([...this.getPathTemporaryDist(), path])
     const content = PropertiesFile.readFileOnly(pathFull)
@@ -186,6 +264,11 @@ ${content}
     `.trim()
   }
 
+  /**
+   * Aggregates all built files into a single code snapshot file.
+   *
+   * Агрегирует все собранные файлы в единый снимок кода.
+   */
   protected readAndWriteALlFiles(): void {
     const list = PropertiesFile.readDirRecursive(this.getPathTemporaryDist())
     const content: string[] = []
@@ -197,6 +280,11 @@ ${content}
     this.codeFile.write(content.join('\r\n'))
   }
 
+  /**
+   * Builds AI prompt by injecting dynamic code/types/stories/mdx content.
+   *
+   * Формирует AI промпт, подставляя динамический код/типы/stories/mdx.
+   */
   protected readAndWritePrompt(): void {
     this.promptFile.write(
       this.promptSample
@@ -209,6 +297,11 @@ ${content}
     )
   }
 
+  /**
+   * Invokes AI generation and splits result into types / stories / mdx.
+   *
+   * Вызывает генерацию через ИИ и делит результат на types / stories / mdx.
+   */
   protected async aiGenerate(): Promise<void> {
     const prompt = this.promptFile.read()
     const generate = await useAi()?.generate(prompt)
@@ -221,6 +314,8 @@ ${content}
       this.mdFile.write(files[2] ?? '')
 
       this.aiFile.write(generate)
+
+      PropertiesFile.removeDir(this.getPathTemporary())
     }
   }
 }
