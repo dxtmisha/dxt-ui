@@ -1,29 +1,51 @@
 {
   "name": "@dxt-ui/media",
   "private": false,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
+  "description": "Media resources library for DXT UI containing country flags and geographical data",
+  "keywords": [
+    "flags",
+    "countries",
+    "svg",
+    "geo",
+    "ui",
+    "dxt",
+    "media"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/media",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/media"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json",
+    "LICENSE"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
   "types": "dist/types/library.d.ts",
   "exports": {
     ".": {
-      "import": [
-        "./src/library.ts",
-        "./dist/library.js"
-      ],
+      "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
     },
     "./flags": {
-      "import": [
-        "./src/flags.ts",
-        "./dist/flags.js"
-      ],
+      "import": "./dist/flags.js",
       "types": "./dist/flags.d.ts"
     },
     "./types/*": "./dist/*",
@@ -36,5 +58,9 @@
     ]
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "sideEffects": false
 }
