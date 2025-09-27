@@ -14,7 +14,7 @@
   "dependencies": {
     "@chromatic-com/storybook": "^4.1.1",
     "@dxt-ui/c2": "workspace:*",
-    "@dxt-ui/configuration": "workspace:*",
+    "@dxtmisha/configuration": "^0.3.2",
     "@dxt-ui/d1": "workspace:*",
     "@dxt-ui/functional": "workspace:*",
     "@dxt-ui/main": "workspace:*",

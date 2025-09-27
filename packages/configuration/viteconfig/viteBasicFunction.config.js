@@ -13,6 +13,8 @@ import dts from 'vite-plugin-dts'
  * @param entry entry points / входные точки сборки
  * @param include glob patterns for d.ts / паттерны для генерации d.ts
  * @param includeExtended extra patterns / дополнительные паттерны
+ * @param external external dependencies / внешние зависимости
+ * @param externalExtended extra dependencies / дополнительные зависимости
  * @returns Vite config / конфигурация Vite
  */
 export const viteBasicFunction = (
@@ -28,7 +30,15 @@ export const viteBasicFunction = (
     'src/flags.ts',
     'src/library.ts'
   ],
-  includeExtended = []
+  includeExtended = [],
+  external = [
+    'vue',
+    'vue-router',
+    '@vue/runtime-core',
+    '@vue/runtime-dom',
+    '@vue/reactivity'
+  ],
+  externalExtended = []
 ) => defineConfig({
   build: {
     lib: {
@@ -36,6 +46,12 @@ export const viteBasicFunction = (
       name,
       formats: ['es'],
       fileName: (_, entryName) => `${entryName}.js`
+    },
+    rollupOptions: {
+      external: [
+        ...external,
+        ...externalExtended
+      ]
     }
   },
   plugins: [

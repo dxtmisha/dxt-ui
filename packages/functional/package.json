@@ -1,45 +1,86 @@
 {
-  "name": "@dxt-ui/functional",
+  "name": "@dxtmisha/functional",
   "private": false,
-  "version": "0.2.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Comprehensive functional utilities library for DXT UI - classes, composables, functions and types for modern web development",
+  "keywords": [
+    "functional",
+    "utilities",
+    "helpers",
+    "typescript",
+    "vue",
+    "composables",
+    "classes",
+    "geo",
+    "datetime",
+    "cache",
+    "api",
+    "ui",
+    "dxt"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/functional",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/functional"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "library": "dxt-library"
+    "library": "dxt-library",
+    "prepublishOnly": "npm run build"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "package.json",
+    "LICENSE"
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
   "types": "dist/library.d.ts",
   "exports": {
     ".": {
-      "import": [
-        "./src/library.ts",
-        "./dist/library.js"
-      ]
+      "import": "./dist/library.js",
+      "types": "./dist/library.d.ts"
     },
     "./flags": {
-      "import": [
-        "./src/flags.ts",
-        "./dist/flags.js"
-      ],
+      "import": "./dist/flags.js",
       "types": "./dist/flags.d.ts"
     },
-    "./wiki": "./src/wiki/wiki.ts",
-    "./types/*": "./dist/*",
-    "./types/**/*.d.ts": "./dist/**/*.d.ts"
+    "./types/*": "./dist/*"
   },
-  "buildOptions": {
-    "name": "@dxt-ui/functional",
-    "formats": [
-      "esm-bundler"
-    ]
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "vue": ">=3.0.0",
+    "@dxtmisha/media": ">=0.3.0"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    },
+    "@dxtmisha/media": {
+      "optional": true
+    }
+  },
+  "optionalDependencies": {
+    "@dxtmisha/media": "^0.3.0"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "sideEffects": false,
+  "relatedPackages": [
+    "@dxtmisha/media",
+    "@dxtmisha/configuration"
+  ]
 }

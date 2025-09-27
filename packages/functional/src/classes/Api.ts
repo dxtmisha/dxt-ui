@@ -52,12 +52,12 @@ export type ApiResponse = {
   lag?: RefOrNormal<boolean | undefined>
 }
 
-export type ApiData<T> =
-  T &
-  {
-    data?: T
-    success?: boolean
-  }
+export type ApiData<T>
+  = T
+    & {
+      data?: T
+      success?: boolean
+    }
 
 export type ApiPreparationEnd = {
   reset?: boolean
