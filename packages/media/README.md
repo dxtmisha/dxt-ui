@@ -1,55 +1,55 @@
 # @dxtmisha/media
 
-🏳️ **Библиотека медиа-ресурсов** содержащая флаги стран и географические данные для UI проектов.
+🏳️ **Media resources library** containing country flags and geographical data for UI projects.
 
 [![npm version](https://badge.fury.io/js/@dxtmisha%2Fmedia.svg)](https://www.npmjs.com/package/@dxtmisha/media)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 
-## 🚀 Установка
+## 🚀 Installation
 
 ```bash
 npm install @dxtmisha/media
 ```
 
-## ✨ Особенности
+## ✨ Features
 
-- 🏳️ **250+ флагов стран** в формате SVG высокого качества
-- 🌍 **Географические данные** (временные зоны, телефонные коды, языки)
-- ⚡ **Tree-shaking** поддержка для оптимизации
-- 📦 **TypeScript** полная типизация
-- 🎯 **ESM** современные ES модули
+- 🏳️ **250+ country flags** in high-quality SVG format
+- 🌍 **Geographical data** (timezones, phone codes, languages)
+- ⚡ **Tree-shaking** support for optimization
+- 📦 **TypeScript** full typing support
+- 🎯 **ESM** modern ES modules
 
-## 📖 Быстрый старт
+## 📖 Quick Start
 
-### Импорт флагов
+### Import flags
 
 ```typescript
-// Конкретные флаги (рекомендуется)
+// Specific flags (recommended)
 import { UsSvg, RuSvg, DeSvg } from '@dxtmisha/media/flags'
 
-// Все флаги
+// All flags
 import flags from '@dxtmisha/media/flags'
 const usFlag = flags.UsSvg
 ```
 
-### Географические данные
+### Geographical data
 
 ```typescript
 import { geo } from '@dxtmisha/media'
 
-// Найти страну по коду
+// Find country by code
 const usa = geo.find(country => country.country === 'US')
 console.log(usa.phoneCode) // "1"
 console.log(usa.zone) // "America/New_York"
 ```
 
-### Vue.js пример
+### Vue.js example
 
 ```vue
 <template>
   <div class="country-selector">
-    <img :src="UsSvg" alt="США" class="flag" />
+    <img :src="UsSvg" alt="United States" class="flag" />
     <select v-model="selected">
       <option v-for="country in countries" :value="country.country">
         {{ country.country }} (+{{ country.phoneCode }})
@@ -73,20 +73,20 @@ const selected = ref('US')
 
 ## 📚 API
 
-### Флаги стран
+### Country flags
 
 ```typescript
 import { 
-  UsSvg,  // США
-  RuSvg,  // Россия
-  DeSvg,  // Германия
-  FrSvg,  // Франция
-  GbSvg   // Великобритания
-  // ... все страны ISO 3166-1 alpha-2
+  UsSvg,  // United States
+  RuSvg,  // Russia
+  DeSvg,  // Germany
+  FrSvg,  // France
+  GbSvg   // United Kingdom
+  // ... all countries ISO 3166-1 alpha-2
 } from '@dxtmisha/media/flags'
 ```
 
-### Географические данные
+### Geographical data
 
 ```typescript
 interface GeoData {
@@ -103,9 +103,9 @@ interface GeoData {
 import { geo } from '@dxtmisha/media'
 ```
 
-## 🛠️ Практические примеры
+## 🛠️ Practical examples
 
-### Телефонный input с маской
+### Phone input with mask
 
 ```javascript
 import { geo } from '@dxtmisha/media'
@@ -118,7 +118,7 @@ function getPhoneMask(countryCode) {
 console.log(getPhoneMask('US')) // "+1-***-***-****"
 ```
 
-### Группировка по временным зонам
+### Group by timezones
 
 ```javascript
 import { geo } from '@dxtmisha/media'
@@ -130,7 +130,7 @@ const timeZones = geo.reduce((acc, country) => {
 }, {})
 ```
 
-### React компонент с флагами
+### React component with flags
 
 ```jsx
 import { UsSvg, RuSvg } from '@dxtmisha/media/flags'
@@ -141,59 +141,59 @@ function CountryFlag({ code }) {
 }
 ```
 
-## 🌍 Доступные страны
+## 🌍 Available countries
 
-Пакет включает флаги **всех стран** по стандарту ISO 3166-1 alpha-2:
+Package includes flags for **all countries** according to ISO 3166-1 alpha-2 standard:
 
-| Код | Страна | Код | Страна |
-|-----|--------|-----|--------|
-| US | США | RU | Россия |
-| DE | Германия | FR | Франция |
-| GB | Великобритания | CN | Китай |
-| JP | Япония | IN | Индия |
-| ... | +240 других | ... | ... |
+| Code | Country | Code | Country |
+|------|---------|------|---------|
+| US | United States | RU | Russia |
+| DE | Germany | FR | France |
+| GB | United Kingdom | CN | China |
+| JP | Japan | IN | India |
+| ... | +240 others | ... | ... |
 
-## 📊 Размеры
+## 📊 Bundle sizes
 
-- **Географические данные**: ~15KB
-- **Один флаг**: 1-3KB (SVG)
-- **При tree-shaking**: только выбранные флаги
-- **Весь пакет**: ~800KB (если импортировать все флаги)
+- **Geographical data**: ~15KB
+- **Single flag**: 1-3KB (SVG)
+- **With tree-shaking**: only selected flags
+- **Entire package**: ~800KB (if importing all flags)
 
-## 🔧 Требования
+## 🔧 Requirements
 
 - **Node.js**: ≥18.0.0
-- **Поддержка ESM**: Vite, Webpack 5, Rollup
-- **TypeScript**: 4.0+ (опционально)
+- **ESM support**: Vite, Webpack 5, Rollup
+- **TypeScript**: 4.0+ (optional)
 
-## 📁 Структура экспортов
+## 📁 Export structure
 
 ```
 @dxtmisha/media
-├── /                 # geo данные
-├── /flags           # все флаги стран
-├── /types/*         # TypeScript типы
-└── /types/**/*.d.ts # Подтипы
+├── /                 # geo data
+├── /flags           # all country flags
+├── /types/*         # TypeScript types
+└── /types/**/*.d.ts # Subtypes
 ```
 
-## 🤝 Совместимость
+## 🤝 Compatibility
 
-| Технология | Поддержка |
-|------------|-----------|
+| Technology | Support |
+|------------|---------|
 | **Vue.js** | ✅ 3+ |
 | **React** | ✅ 16+ |
 | **Angular** | ✅ 12+ |
 | **Svelte** | ✅ 3+ |
 | **Vanilla JS** | ✅ ES2020+ |
 
-## 📄 Лицензия
+## 📄 License
 
 MIT © [dxtmisha](https://github.com/dxtmisha)
 
-## 🐛 Сообщить о проблеме
+## 🐛 Report an issue
 
 [GitHub Issues](https://github.com/dxtmisha/dxt-ui/issues)
 
 ---
 
-⭐ **Поставьте звезду** если проект оказался полезным!
+⭐ **Give us a star** if this project was helpful!
