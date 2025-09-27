@@ -38,7 +38,7 @@
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/types/library.d.ts",
+  "types": "./dist/library.d.ts",
   "exports": {
     ".": {
       "import": "./dist/library.js",
