@@ -1,5 +1,5 @@
 {
-  "name": "@dxt-ui/media",
+  "name": "@dxtmisha/media",
   "private": false,
   "version": "0.3.0",
   "type": "module",
@@ -52,7 +52,7 @@
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },
   "buildOptions": {
-    "name": "@dxt-ui/media",
+    "name": "@dxtmisha/media",
     "formats": [
       "esm-bundler"
     ]

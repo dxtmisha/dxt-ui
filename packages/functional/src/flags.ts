@@ -1,4 +1,4 @@
-import flags from '@dxt-ui/media/flags'
+import flags from '@dxtmisha/media/flags'
 
 import { Icons } from './classes/Icons'
 

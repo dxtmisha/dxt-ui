@@ -4,7 +4,7 @@ import { isSelected } from '../functions/isSelected'
 
 import { DataStorage } from './DataStorage'
 
-import { geo } from '@dxt-ui/media'
+import { geo } from '@dxtmisha/media'
 
 import {
   type GeoItem,

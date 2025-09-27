@@ -1,5 +1,5 @@
 import { forEach, toCamelCaseFirst, toKebabCase } from '@dxt-ui/functional'
-import flags from '@dxt-ui/media/flags'
+import flags from '@dxtmisha/media/flags'
 
 import { LibraryItems } from './LibraryItems'
 
@@ -41,7 +41,7 @@ export class LibraryFlags {
       UI_FILE_NAME_FLAGS,
       [
         'import { Icons } from \'@dxt-ui/functional\'',
-        'import flags from \'@dxt-ui/media/flags\'',
+        'import flags from \'@dxtmisha/media/flags\'',
         '',
         'export const makeFlags = (): void => {',
         ...data,
