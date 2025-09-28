@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/configuration",
   "private": false,
-  "version": "0.3.5",
+  "version": "0.3.7",
   "type": "module",
   "description": "Shared configuration files for DXT UI - Vite configs and TypeScript configs for building UI components",
   "keywords": [
@@ -19,7 +19,7 @@
   "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/configuration",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dxtmisha/dxt-ui.git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
     "directory": "packages/configuration"
   },
   "bugs": {

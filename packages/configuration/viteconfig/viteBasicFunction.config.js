@@ -39,8 +39,14 @@ export const viteBasicFunction = (
     '@vue/reactivity',
     'react',
     '@dxtmisha/configuration',
+    '@dxtmisha/constructor',
+    '@dxtmisha/d1',
+    '@dxtmisha/functional',
     '@dxtmisha/media',
-    '@dxtmisha/functional'
+    '@dxtmisha/player',
+    '@dxtmisha/scripts',
+    '@dxtmisha/styles',
+    '@dxtmisha/wiki'
   ],
   externalExtended = []
 ) => defineConfig({
