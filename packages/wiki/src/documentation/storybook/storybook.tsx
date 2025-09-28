@@ -1,4 +1,4 @@
-export * from './StorybookMain.tsx'
+export * from './StorybookMain'
 
 // Event
-export * from './StorybookDescriptions.tsx'
+export * from './StorybookDescriptions'

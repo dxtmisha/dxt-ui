@@ -25,7 +25,9 @@ export const viteBasicFunction = (
   include = [
     'src/classes/**/*.ts',
     'src/composables/**/*.ts',
+    'src/documentation/**/*.ts',
     'src/functions/**/*.ts',
+    'src/media/**/*.ts',
     'src/types/**/*.ts',
     'src/flags.ts',
     'src/library.ts'
