@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/scripts",
   "private": false,
-  "version": "0.3.0",
+  "version": "0.3.2",
   "type": "module",
   "description": "Development scripts and CLI tools for DXT UI projects - automated component generation, library building and project management tools",
   "keywords": [
@@ -37,11 +37,11 @@
   "main": "./src/library.ts",
   "module": "./src/library.ts",
   "bin": {
-    "dxt-component": "./bin/design-component.ts",
-    "dxt-component-wiki": "./bin/design-component-wiki.ts",
-    "dxt-constructor": "./bin/design-constructor.ts",
-    "dxt-library": "./bin/design-library.ts",
-    "dxt-ui": "./bin/design-ui.ts"
+    "dxt-component": "bin/design-component.ts",
+    "dxt-component-wiki": "bin/design-component-wiki.ts",
+    "dxt-constructor": "bin/design-constructor.ts",
+    "dxt-library": "bin/design-library.ts",
+    "dxt-ui": "bin/design-ui.ts"
   },
   "exports": {
     ".": "./src/library.ts",
@@ -52,12 +52,11 @@
     "node": ">=18.0.0"
   },
   "peerDependencies": {
-    "@dxtmisha/configuration": ">=0.3.0",
-    "@dxtmisha/constructor": ">=0.22.0",
-    "@dxtmisha/functional": ">=0.3.0",
-    "@dxtmisha/styles": ">=0.3.0",
-    "@dxtmisha/wiki": ">=0.3.0",
-    "typescript": ">=4.5.0",
+    "@dxtmisha/configuration": ">=0.3.9",
+    "@dxtmisha/functional": ">=1.0.3",
+    "@dxtmisha/styles": ">=1.0.2",
+    "@dxtmisha/wiki": ">=0.23.5",
+    "typescript": ">=5.0.0",
     "vue": ">=3.0.0"
   },
   "dependencies": {},

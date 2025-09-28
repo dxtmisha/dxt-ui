@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/wiki",
   "private": false,
-  "version": "0.23.4",
+  "version": "0.23.5",
   "type": "module",
   "description": "Wiki documentation and storybook utilities for DXT UI design system",
   "keywords": [
@@ -63,6 +63,7 @@
     "node": ">=18.0.0"
   },
   "peerDependencies": {
+    "@dxtmisha/functional": ">=1.0.0",
     "vue": ">=3.0.0"
   },
   "peerDependenciesMeta": {

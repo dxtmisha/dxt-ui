@@ -12,137 +12,207 @@
 npm install -D @dxtmisha/scripts
 ```
 
-## 📦 What's included
+> **Note:** TypeScript sources are shipped directly. Requires a TypeScript runner like `vite-node`, `tsx` or manual transpilation.
 
-### CLI Commands:
-- **dxt-component** - generate new UI components
-- **dxt-component-wiki** - generate component documentation  
-- **dxt-constructor** - build component constructors
-- **dxt-library** - build component libraries
-- **dxt-ui** - build complete UI packages
+## ✨ Features
 
-### Classes & Tools:
-- **AI Integration** - Google AI for automated tasks (`AiGoogle`, `AiAbstract`)
-- **Component Management** - creation and wiki generation (`ComponentCreator`, `ComponentWiki`)
-- **Design System** - structure and styling tools (`DesignComponent`, `DesignStructure`)
-- **Library Export** - automated export management (`LibraryExport`)
-- **Properties Management** - configuration and properties handling
-- **Styles Tools** - SCSS generation and styling utilities
+- 🏗️ **Component scaffolding** - automatic Vue component generation with TypeScript
+- 🎯 **AI integration** - Google AI (Gemini) powered code generation
+- 🔧 **CLI commands** - ready-to-use command line tools
+- 📝 **Documentation generation** - automatic Storybook and MDX creation  
+- ⚡ **Library management** - export barrel file maintenance
+- 🎨 **Design system tools** - constructor and properties management
+- 📦 **TypeScript source** - no build step required
 
-## 🛠️ Usage
+## 📖 Quick Start
 
 ### CLI Commands
 
 ```bash
-# Generate new component
-npx dxt-component MyComponent
+# Generate component scaffolds in empty directories
+npx dxt-component
 
-# Generate component wiki documentation
-npx dxt-component-wiki MyComponent
+# Generate wiki documentation for specific component
+npx dxt-component-wiki MyButton
 
-# Build component constructor
+# Build component constructors
 npx dxt-constructor
 
-# Build component library
+# Rebuild library exports
 npx dxt-library
 
-# Build complete UI package
+# Full UI project build
 npx dxt-ui
 ```
 
-### Programmatic API
+### Programmatic Usage
 
 ```typescript
-import { ComponentCreator, DesignComponent, AiGoogle } from '@dxtmisha/scripts'
+import { 
+  ComponentCreator, 
+  DesignComponent, 
+  AiGoogle,
+  LibraryExport 
+} from '@dxtmisha/scripts'
 
-// Create new component
+// Generate component scaffolds
 const creator = new ComponentCreator()
-await creator.create('MyComponent')
+creator.make() // Scans and creates templates for empty component dirs
 
-// Build design system
-const design = new DesignComponent()
-await design.build()
-
-// Use AI for code generation
+// AI-powered generation
 const ai = new AiGoogle()
-const result = await ai.generateCode('Create a button component')
+ai.addPrompt('You are a Vue component expert')
+ai.setModel('gemini-1.5-flash')
+const result = await ai.generate('Create props interface for Button component')
+
+// Library export management
+const library = new LibraryExport()
+library.make() // Rebuilds barrel export files
 ```
 
-## 📚 Available tools
+## 📚 Available utilities
 
-| Tool | Description |
-|------|-------------|
-| `ComponentCreator` | Generate Vue components with TypeScript |
-| `ComponentWiki` | Generate Storybook documentation |
-| `DesignComponent` | Build design system components |
-| `DesignConstructor` | Build component constructors |
-| `DesignTypescript` | TypeScript analysis and generation |
-| `LibraryExport` | Manage library exports |
-| `AiGoogle` | AI-powered code generation |
+### 🏗️ Core Classes
 
-## 🎯 Who is this package for
+#### Component Generation
+```typescript
+import { ComponentCreator, ComponentItem, ComponentWiki } from '@dxtmisha/scripts'
 
-- **UI library developers** - component generation tools
-- **Design system teams** - automated documentation
-- **DXT UI ecosystem** - official development tools
-- **Vue.js developers** - optimized for Vue components
+// Bulk component scaffolding
+const creator = new ComponentCreator()
+creator.make() // Creates templates in all empty component directories
 
-## ✨ Features
+// Single component generation
+const item = new ComponentItem('/path/to/component')
+item.make() // Creates complete component file set
 
-- ✅ **Component generation** with TypeScript
-- ✅ **Automated documentation** via Storybook
-- ✅ **AI integration** for smart generation
-- ✅ **Library management** and exports
-- ✅ **Design system** structure tools
-- ✅ **CLI commands** for easy usage
-- ✅ **Properties management** and configuration
-- ✅ **SCSS/Styles generation** utilities
+// Documentation generation
+const wiki = new ComponentWiki('Button')
+wiki.make() // Generates Storybook files
+```
 
-## 🔧 Requirements
+#### AI Integration
+```typescript
+import { AiAbstract, AiGoogle } from '@dxtmisha/scripts'
 
-### Core Dependencies
-- **Node.js**: ≥18.0.0
-- **Vue.js**: 3+ (peer dependency)
-- **TypeScript**: ≥4.5.0
+const ai = new AiGoogle()
 
-### DXT UI Dependencies (peer dependencies)
-- **@dxtmisha/functional**: ≥0.3.0 - utility functions
-- **@dxtmisha/configuration**: ≥0.3.0 - Vite and TS configurations
-- **@dxtmisha/wiki**: ≥0.3.0 - Storybook documentation tools
-- **@dxtmisha/constructor**: ≥0.22.0 - component constructors
-- **@dxtmisha/styles**: ≥0.3.0 - styling system
+// Prompt management
+ai.addPrompt('Context line 1')
+ai.addPrompt('Context line 2')
+ai.resetPrompt() // Clear all prompts
 
-## 🤝 Compatibility
+// Configuration
+ai.setKey('your-api-key')
+ai.setModel('gemini-1.5-flash')
 
-| Tool | Version |
-|------|---------|
-| **Vue** | 3+ |
-| **TypeScript** | ≥4.5.0 |
-| **Node.js** | ≥18.0.0 |
-| **@dxtmisha/functional** | ≥0.3.0 |
-| **@dxtmisha/configuration** | ≥0.3.0 |
-| **@dxtmisha/wiki** | ≥0.3.0 |
-| **@dxtmisha/constructor** | ≥0.22.0 |
-| **@dxtmisha/styles** | ≥0.3.0 |
+// Generation
+const response = await ai.generate('Generate TypeScript interface')
+```
 
-## 📁 Project Structure
+#### Design System Tools
+```typescript
+import { 
+  DesignComponent, 
+  DesignConstructor, 
+  DesignTypescript,
+  DesignStructure 
+} from '@dxtmisha/scripts'
+
+// Component orchestration
+const component = new DesignComponent('Button', { variant: 'primary' })
+component.make() // Creates: props.ts, styleToken.scss, Component.vue, etc.
+
+// TypeScript analysis
+const ts = new DesignTypescript('/path/to/props.ts')
+const props = ts.getType('ButtonProps')?.props // Extract prop definitions
+```
+
+### 🎯 Vue Composables
+
+```typescript
+import { useAi } from '@dxtmisha/scripts'
+
+// Reactive AI integration
+const { ai, generate, loading, error } = useAi()
+
+// Usage in Vue component
+const result = await generate('Create component documentation')
+```
+
+### 🔧 Utility Functions
+
+```typescript
+import { 
+  getComponentPaths, 
+  getConstructorProperties,
+  getNameDirByPaths 
+} from '@dxtmisha/scripts'
+
+// Path utilities
+const paths = getComponentPaths('/components/Button')
+const properties = getConstructorProperties()
+const dirName = getNameDirByPaths(['src', 'components', 'Button'])
+```
+
+## 🎯 CLI Commands Reference
+
+| Command | Purpose | Arguments | Output |
+|---------|---------|-----------|---------|
+| `dxt-component` | Component scaffolding | None (scans all) | Creates templates in empty dirs |
+| `dxt-component-wiki` | Wiki generation | `<ComponentName>` | Generates .stories.ts and .mdx |
+| `dxt-constructor` | Constructor build | None | Updates constructor files |
+| `dxt-library` | Library exports | None | Rebuilds barrel exports |
+| `dxt-ui` | Full UI build | None | Complete project generation |
+
+## 🏗️ Generated File Structure
+
+When using `DesignComponent`, the following files are created:
 
 ```
-src/
-├── classes/         # Main classes for tools
-│   ├── Ai/          # AI integration tools
-│   ├── Component/   # Component generation
-│   ├── Design/      # Design system tools
-│   ├── Library/     # Library management
-│   ├── Properties/  # Properties handling
-│   └── Styles/      # Styling utilities
-├── composables/     # Vue composables
-├── functions/       # Utility functions
-├── media/           # Templates and properties
-└── types/           # TypeScript type definitions
-
-bin/                 # CLI executable scripts
+MyComponent/
+├── properties.json         # Design tokens binding
+├── props.ts                # TypeScript props + defaults
+├── styleToken.scss         # SCSS tokens and imports
+├── MyComponent.vue         # Vue SFC template
+├── index.ts                # Component export
+├── wiki.ts                 # Storybook controls
+├── MyComponent.stories.ts  # Storybook configuration
+└── MyComponent.mdx         # MDX documentation
 ```
+
+## 🎯 Use cases
+
+### AI-Assisted Development
+```typescript
+import { AiGoogle } from '@dxtmisha/scripts'
+
+async function generateComponentDocs(componentName: string) {
+  const ai = new AiGoogle()
+  ai.addPrompt('You are a technical writer for Vue components')
+  ai.addPrompt('Write clear, concise documentation')
+  
+  const docs = await ai.generate(`
+    Create documentation for ${componentName} component.
+    Include usage examples and prop descriptions.
+  `)
+  
+  return docs
+}
+```
+
+## 📦 Requirements
+
+**Core Dependencies:**
+- Node.js ≥18.0.0
+- TypeScript ≥5.0.0
+
+**Peer Dependencies (install separately):**
+- `@dxtmisha/functional` ≥1.0.3 - utility functions
+- `@dxtmisha/configuration` ≥0.3.9 - build configurations
+- `@dxtmisha/wiki` ≥0.23.5 - storybook utilities
+- `@dxtmisha/styles` ≥1.0.2 - styling system
+- `vue` ≥3.0.0 - Vue framework (when needed)
 
 ## 📄 License
 
@@ -154,4 +224,4 @@ MIT © [dxtmisha](https://github.com/dxtmisha)
 
 ---
 
-⭐ **Give us a star** if these scripts were helpful!
+⭐ **Give us a star** if these scripts helped accelerate your development!
