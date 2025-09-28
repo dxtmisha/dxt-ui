@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional",
   "private": false,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "Comprehensive functional utilities library for DXT UI - classes, composables, functions and types for modern web development",
   "keywords": [
@@ -24,7 +24,7 @@
   "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/functional",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dxtmisha/dxt-ui.git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
     "directory": "packages/functional"
   },
   "bugs": {
