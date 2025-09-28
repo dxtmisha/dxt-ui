@@ -1,4 +1,4 @@
-import { getElement, isDomRuntime } from '@dxt-ui/functional'
+import { getElement, isDomRuntime } from '@dxtmisha/functional'
 
 import { WindowClient } from './WindowClient'
 import { WindowElement } from './WindowElement'

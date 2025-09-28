@@ -3,7 +3,7 @@ import {
   type ConstrClass,
   type ConstrEmit,
   DesignComp
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import { getClassTegAStatic } from '../../functions/getClassTegAStatic'
 
 import { LabelInclude } from '../../classes/LabelInclude'

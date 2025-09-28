@@ -1,5 +1,5 @@
 import { onUnmounted, type Ref, type ToRefs, watch } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { MotionTransformElement } from './MotionTransformElement'
 import { MotionTransformSize } from './MotionTransformSize'

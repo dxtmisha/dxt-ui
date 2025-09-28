@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { getMaxLengthAllArray, isArray } from '@dxt-ui/functional'
+import { getMaxLengthAllArray, isArray } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'
 import { MaskRubberItem } from './MaskRubberItem'

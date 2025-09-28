@@ -1,4 +1,4 @@
-import { isDomRuntime, isFilled } from '@dxt-ui/functional'
+import { isDomRuntime, isFilled } from '@dxtmisha/functional'
 
 import { WindowPersistent } from './WindowPersistent'
 import { WindowClasses } from './WindowClasses'

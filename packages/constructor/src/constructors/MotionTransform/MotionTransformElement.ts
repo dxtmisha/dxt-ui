@@ -1,5 +1,5 @@
 import { computed, type Ref } from 'vue'
-import { getElementId } from '@dxt-ui/functional'
+import { getElementId } from '@dxtmisha/functional'
 
 import type { MotionTransformClassList, MotionTransformStyle } from './basicTypes'
 import type { MotionTransformProps } from './props'

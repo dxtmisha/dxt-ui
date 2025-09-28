@@ -1,4 +1,4 @@
-import type { NumberOrString } from '@dxt-ui/functional'
+import type { NumberOrString } from '@dxtmisha/functional'
 
 export interface LabelSlots {
   default?(props: any): any

@@ -1,5 +1,5 @@
 import type { ImageItem } from './basicTypes'
-import { isDomRuntime } from '@dxt-ui/functional'
+import { isDomRuntime } from '@dxtmisha/functional'
 
 /**
  * Maximum size allowed without conversion.

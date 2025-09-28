@@ -1,5 +1,5 @@
 import { computed, type ComputedRef, inject } from 'vue'
-import type { ConstrClassObject } from '@dxt-ui/functional'
+import type { ConstrClassObject } from '@dxtmisha/functional'
 
 import { Skeleton } from './Skeleton'
 import type { SkeletonClassesList, SkeletonPropsInclude } from './basicTypes'

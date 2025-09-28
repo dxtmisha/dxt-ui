@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref } from 'vue'
-import type { ConstrBind } from '@dxt-ui/functional'
+import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { MotionTransformEmits, MotionTransformExpose } from './types'
 import type { MotionTransformProps } from './props'

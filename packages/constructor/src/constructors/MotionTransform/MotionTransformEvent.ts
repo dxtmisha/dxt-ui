@@ -1,5 +1,5 @@
 import { watch } from 'vue'
-import { type ConstrEmit, EventItem } from '@dxt-ui/functional'
+import { type ConstrEmit, EventItem } from '@dxtmisha/functional'
 
 import { MotionTransformElement } from './MotionTransformElement'
 import { MotionTransformState } from './MotionTransformState'

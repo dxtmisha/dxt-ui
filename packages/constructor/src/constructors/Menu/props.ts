@@ -4,7 +4,7 @@ import type {
   ListRecord,
   ListSelectedList,
   NormalOrPromise
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import type { ListPropsBasic } from '../List'
 import type { ListItemProps, ListItemPropsBasic } from '../ListItem'

@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal, toBind } from '@dxt-ui/functional'
+import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal, toBind } from '@dxtmisha/functional'
 
 import type { BadgeComponentInclude, BadgePropsInclude } from './basicTypes'
 import type { BadgeProps } from './props'

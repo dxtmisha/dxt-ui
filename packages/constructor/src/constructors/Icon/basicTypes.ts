@@ -1,4 +1,4 @@
-import type { ConstrBind, ConstrItem } from '@dxt-ui/functional'
+import type { ConstrBind, ConstrItem } from '@dxtmisha/functional'
 
 import type { IconPropsBasic } from './props'
 

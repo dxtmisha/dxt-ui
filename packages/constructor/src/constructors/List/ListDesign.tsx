@@ -8,7 +8,7 @@ import {
   type ListList,
   type ListType,
   toBinds
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { List } from './List'
 

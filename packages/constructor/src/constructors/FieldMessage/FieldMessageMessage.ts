@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { isFilled } from '@dxt-ui/functional'
+import { isFilled } from '@dxtmisha/functional'
 
 import type { FieldMessageProps } from './props'
 import type { FieldMessageSlots } from './types'

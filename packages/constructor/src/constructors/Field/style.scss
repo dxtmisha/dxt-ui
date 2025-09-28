@@ -1,4 +1,4 @@
-@use "@dxt-ui/styles/properties" as ui;
+@use "@dxtmisha/styles/properties" as ui;
 
 @mixin borderFull($this) {
   @include ui.initByCustom('sys.border.width', ui.v('??borderWidth'));

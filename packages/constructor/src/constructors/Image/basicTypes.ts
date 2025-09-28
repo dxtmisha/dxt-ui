@@ -1,4 +1,4 @@
-import type { ConstrBind, Undefined } from '@dxt-ui/functional'
+import type { ConstrBind, Undefined } from '@dxtmisha/functional'
 import type { ImageEmits } from './types'
 import type { ImagePropsBasic } from './props'
 

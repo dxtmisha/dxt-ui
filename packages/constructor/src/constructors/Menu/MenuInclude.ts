@@ -6,7 +6,7 @@ import {
   type RawSlots,
   type RefOrNormal,
   toBind
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import type { MenuComponentInclude, MenuExposeInclude, MenuPropsInclude } from './basicTypes'
 import type { MenuExpose, MenuSlots } from './types'

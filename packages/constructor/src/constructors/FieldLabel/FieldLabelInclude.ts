@@ -6,7 +6,7 @@ import {
   isFilled, type RawSlots,
   type RefOrNormal, type RefType,
   toBinds
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { FieldCounterInclude } from '../FieldCounter'
 

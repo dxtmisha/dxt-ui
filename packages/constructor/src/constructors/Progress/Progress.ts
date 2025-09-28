@@ -1,5 +1,5 @@
 import { computed, ref, type Ref, type ToRefs, watch } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type ConstrStyles, DesignComp, toNumber } from '@dxt-ui/functional'
+import { type ConstrClassObject, type ConstrEmit, type ConstrStyles, DesignComp, toNumber } from '@dxtmisha/functional'
 
 import type { ProgressComponents, ProgressEmits, ProgressSlots } from './types'
 import type { ProgressProps } from './props'

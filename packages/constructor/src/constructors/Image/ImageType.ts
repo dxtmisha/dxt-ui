@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { GEO_FLAG_ICON_NAME, Icons, isFilled } from '@dxt-ui/functional'
+import { GEO_FLAG_ICON_NAME, Icons, isFilled } from '@dxtmisha/functional'
 
 import { ImagePdf } from './ImagePdf'
 

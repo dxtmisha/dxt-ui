@@ -1,5 +1,5 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { FieldCounterInclude } from '../FieldCounter'
 import { FieldMessageMessage } from './FieldMessageMessage'

@@ -1,5 +1,5 @@
 import type { VNode } from 'vue'
-import { DesignComponents } from '@dxt-ui/functional'
+import { DesignComponents } from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
 

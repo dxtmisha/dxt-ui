@@ -3,7 +3,7 @@ import type {
   ListRecord,
   ListSelectedItem,
   ListSelectedList
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import type { IconPropsBasic, IconValue } from '../Icon'
 import type { ListItemPropsBasic } from '../ListItem'
 

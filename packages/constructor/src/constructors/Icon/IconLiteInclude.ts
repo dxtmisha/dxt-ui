@@ -7,7 +7,7 @@ import {
   getRef,
   isFilled,
   type RefOrNormal
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import type { IconComponentInclude, IconLitePropsInclude } from './basicTypes'
 import type { IconPropsBasic } from './props'

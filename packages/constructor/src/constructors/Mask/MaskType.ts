@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import type { GeoDate } from '@dxt-ui/functional'
+import type { GeoDate } from '@dxtmisha/functional'
 
 import type { MaskTypeItem } from './basicTypes'
 import type { MaskProps } from './props'

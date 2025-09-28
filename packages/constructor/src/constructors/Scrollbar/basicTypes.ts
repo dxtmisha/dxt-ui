@@ -1,4 +1,4 @@
-import type { ConstrBind } from '@dxt-ui/functional'
+import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { ScrollbarPropsBasic } from './props'
 import type { ScrollbarEmits } from './types'

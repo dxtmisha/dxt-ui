@@ -1,4 +1,4 @@
-import { EventItem, forEach } from '@dxt-ui/functional'
+import { EventItem, forEach } from '@dxtmisha/functional'
 
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageCalculationList } from './ImageCalculationList'

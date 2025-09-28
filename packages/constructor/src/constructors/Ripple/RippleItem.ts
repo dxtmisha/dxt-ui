@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { createElement } from '@dxt-ui/functional'
+import { createElement } from '@dxtmisha/functional'
 
 import type { RippleProps } from './props'
 

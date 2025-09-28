@@ -1,4 +1,4 @@
-import type { NumberOrString } from '@dxt-ui/functional'
+import type { NumberOrString } from '@dxtmisha/functional'
 import type { ModelProps } from './modelTypes'
 
 /** Base input or textarea element/ Базовый элемент input или textarea */

@@ -3,7 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { MotionTransform } from './MotionTransform'
 
@@ -27,14 +27,14 @@ export class MotionTransformDesign<
   CLASSES extends MotionTransformClasses,
   P extends MotionTransformPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  MotionTransformEmits,
-  EXPOSE,
-  MotionTransformSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    MotionTransformEmits,
+    EXPOSE,
+    MotionTransformSlots,
+    CLASSES,
+    P
+  > {
   protected elementContext = ref<HTMLDivElement>()
   protected readonly item: MotionTransform
 

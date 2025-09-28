@@ -4,7 +4,7 @@ import {
   type ConstrStyles,
   DesignConstructorAbstract,
   isString
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { Field } from './Field'
 

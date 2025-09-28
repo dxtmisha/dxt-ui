@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref } from 'vue'
-import { type ConstrClass } from '@dxt-ui/functional'
+import { type ConstrClass } from '@dxtmisha/functional'
 
 import type { ImageEventData, ImageEventItem, ImageTypeItem } from './basicTypes'
 

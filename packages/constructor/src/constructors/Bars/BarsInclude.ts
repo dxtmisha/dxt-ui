@@ -6,7 +6,7 @@ import {
   getRef,
   type RefOrNormal,
   toBinds
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
 

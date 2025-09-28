@@ -1,4 +1,4 @@
-import type { GeoDate } from '@dxt-ui/functional'
+import type { GeoDate } from '@dxtmisha/functional'
 import type { FieldPatternItemOrFunction, FieldValidationItem } from '../../types/fieldTypes'
 
 export type MaskTypeItem = GeoDate

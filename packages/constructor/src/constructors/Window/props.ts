@@ -1,4 +1,4 @@
-import type { ElementOrString, NormalOrPromise } from '@dxt-ui/functional'
+import type { ElementOrString, NormalOrPromise } from '@dxtmisha/functional'
 
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar'

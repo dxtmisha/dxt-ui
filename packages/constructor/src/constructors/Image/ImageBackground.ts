@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { isFilled, type NumberOrString } from '@dxt-ui/functional'
+import { isFilled, type NumberOrString } from '@dxtmisha/functional'
 
 import { ImageData } from './ImageData'
 import { ImageCoordinator } from './ImageCoordinator'

@@ -4,7 +4,7 @@ import {
   type ConstrEmit,
   type DesignComp,
   ScrollbarWidth
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { ScrollbarBorder } from './ScrollbarBorder'
 

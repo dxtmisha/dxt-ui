@@ -3,7 +3,7 @@ import {
   type ConstrEmit,
   type ConstrValue,
   EventItem
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import type { ScrollbarProps } from './props'
 import type { ScrollbarEmits } from './types'

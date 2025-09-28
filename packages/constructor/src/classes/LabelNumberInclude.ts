@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrClass, GeoRef, isNumber, toNumberByMax } from '@dxt-ui/functional'
+import { type ConstrClass, GeoRef, isNumber, toNumberByMax } from '@dxtmisha/functional'
 
 import { LabelInclude } from './LabelInclude'
 import { SkeletonInclude } from '../constructors/Skeleton'

@@ -1,5 +1,5 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, getElementId } from '@dxt-ui/functional'
+import { type ConstrEmit, DesignComp, getElementId } from '@dxtmisha/functional'
 
 import { CaptionInclude } from '../../classes/CaptionInclude'
 import { PrefixInclude } from '../../classes/PrefixInclude'

@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import { Api, executePromise, isFunction, type ListRecord } from '@dxt-ui/functional'
+import { Api, executePromise, isFunction, type ListRecord } from '@dxtmisha/functional'
 
 import type { MenuProps } from './props'
 

@@ -1,5 +1,5 @@
 import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { RippleItem } from './RippleItem'
 

@@ -1,4 +1,4 @@
-import type { ConstrClass } from '@dxt-ui/functional'
+import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { CaptionSlots } from '../../types/captionTypes'
 import type { PrefixSlots } from '../../types/prefixTypes'

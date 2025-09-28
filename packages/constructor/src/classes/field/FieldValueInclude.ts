@@ -9,7 +9,7 @@ import {
   setValues,
   toArray,
   toNumber
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { FieldElementInclude } from './FieldElementInclude'
 

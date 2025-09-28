@@ -3,7 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { Window } from './Window'
 
@@ -27,14 +27,14 @@ export class WindowDesign<
   CLASSES extends WindowClasses,
   P extends WindowPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  WindowEmits,
-  EXPOSE,
-  WindowSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    WindowEmits,
+    EXPOSE,
+    WindowSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Window
 
   /**

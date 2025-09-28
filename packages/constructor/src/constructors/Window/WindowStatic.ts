@@ -1,5 +1,5 @@
 import { ref, type ToRefs, watch } from 'vue'
-import { EventItem, setRef } from '@dxt-ui/functional'
+import { EventItem, setRef } from '@dxtmisha/functional'
 
 import { WindowElement } from './WindowElement'
 

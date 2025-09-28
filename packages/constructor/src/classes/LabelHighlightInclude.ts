@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrClass, getExp, isFilled } from '@dxt-ui/functional'
+import { type ConstrClass, getExp, isFilled } from '@dxtmisha/functional'
 
 import { LabelInclude } from './LabelInclude'
 import { SkeletonInclude } from '../constructors/Skeleton'

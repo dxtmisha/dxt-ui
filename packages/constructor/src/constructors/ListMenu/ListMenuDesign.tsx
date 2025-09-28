@@ -3,7 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { ListMenu } from './ListMenu'
 
@@ -28,14 +28,14 @@ export class ListMenuDesign<
   CLASSES extends ListMenuClasses,
   P extends ListMenuPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ListMenuEmits,
-  EXPOSE,
-  ListMenuSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ListMenuEmits,
+    EXPOSE,
+    ListMenuSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: ListMenu
 
   /**

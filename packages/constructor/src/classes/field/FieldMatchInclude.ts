@@ -1,4 +1,4 @@
-import { anyToString, isObject, Translate } from '@dxt-ui/functional'
+import { anyToString, isObject, Translate } from '@dxtmisha/functional'
 
 import { FieldElementInclude } from './FieldElementInclude'
 import { FieldValueInclude } from './FieldValueInclude'

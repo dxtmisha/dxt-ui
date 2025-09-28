@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { forEach, isObjectNotArray, isString } from '@dxt-ui/functional'
+import { forEach, isObjectNotArray, isString } from '@dxtmisha/functional'
 
 import {
   FieldInputCheckInclude,

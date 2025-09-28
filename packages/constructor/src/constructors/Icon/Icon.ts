@@ -4,7 +4,7 @@ import {
   type ConstrEmit,
   DesignComp,
   getBindRef
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { type ImageEventData } from '../Image'
 import { SkeletonInclude } from '../Skeleton'

@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { GeoIntl, strFill } from '@dxt-ui/functional'
+import { GeoIntl, strFill } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'
 import { MaskRubberItem } from './MaskRubberItem'

@@ -1,5 +1,5 @@
 import { watch } from 'vue'
-import { EventItem, getMouseClientX, getMouseClientY } from '@dxt-ui/functional'
+import { EventItem, getMouseClientX, getMouseClientY } from '@dxtmisha/functional'
 
 import { WindowStatus } from './WindowStatus'
 import { WindowClient } from './WindowClient'

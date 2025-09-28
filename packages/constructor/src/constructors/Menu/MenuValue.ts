@@ -1,5 +1,5 @@
 import { computed, ref, type ToRefs, watch } from 'vue'
-import { type ConstrEmit, isObject, type ListSelectedList } from '@dxt-ui/functional'
+import { type ConstrEmit, isObject, type ListSelectedList } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
 

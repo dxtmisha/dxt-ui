@@ -1,4 +1,4 @@
-import { domQuerySelector, getElementId } from '@dxt-ui/functional'
+import { domQuerySelector, getElementId } from '@dxtmisha/functional'
 import { type WindowClassesList, WindowStatusControlItem, WindowStatusItem } from './basicTypes'
 
 /**

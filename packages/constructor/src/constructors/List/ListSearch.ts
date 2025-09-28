@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import { isFilled } from '@dxt-ui/functional'
+import { isFilled } from '@dxtmisha/functional'
 
 import type { ListProps } from './props'
 

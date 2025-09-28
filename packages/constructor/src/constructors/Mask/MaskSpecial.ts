@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { forEach, isArray, isObject, isObjectNotArray } from '@dxt-ui/functional'
+import { forEach, isArray, isObject, isObjectNotArray } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'
 import { MaskDate } from './MaskDate'

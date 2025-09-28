@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { forEach, getExp, strFill } from '@dxt-ui/functional'
+import { forEach, getExp, strFill } from '@dxtmisha/functional'
 
 /**
  * Class for storing counts of entered characters for elastic ("rubber") groups.

@@ -5,7 +5,7 @@ import {
   DesignConstructorAbstract,
   type RawSlots,
   toBinds
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { Menu } from './Menu'
 

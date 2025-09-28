@@ -1,4 +1,4 @@
-import { isString } from '@dxt-ui/functional'
+import { isString } from '@dxtmisha/functional'
 
 import { ImageFile } from './ImageFile'
 

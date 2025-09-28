@@ -1,4 +1,4 @@
-import type { ConstrEmit } from '@dxt-ui/functional'
+import type { ConstrEmit } from '@dxtmisha/functional'
 
 import { WindowClasses } from './WindowClasses'
 import { WindowElement } from './WindowElement'

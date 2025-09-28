@@ -1,5 +1,5 @@
 import { onMounted, onUnmounted, onUpdated, type Ref, watch } from 'vue'
-import { EventItem, isDomRuntime } from '@dxt-ui/functional'
+import { EventItem, isDomRuntime } from '@dxtmisha/functional'
 
 /**
  * Input field margin control class.

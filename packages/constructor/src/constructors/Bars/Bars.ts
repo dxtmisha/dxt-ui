@@ -1,5 +1,5 @@
 import { computed, reactive, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, forEach, getBind, toBind } from '@dxt-ui/functional'
+import { type ConstrEmit, DesignComp, forEach, getBind, toBind } from '@dxtmisha/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'

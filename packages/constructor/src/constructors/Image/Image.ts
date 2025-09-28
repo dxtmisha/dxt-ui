@@ -4,7 +4,7 @@ import {
   type ConstrEmit,
   type ConstrStyles,
   isString
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { ImageType } from './ImageType'
 import { ImageData } from './ImageData'

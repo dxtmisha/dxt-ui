@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { ConstrClass } from '@dxt-ui/functional'
+import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { ScrollbarComponentsInclude, ScrollbarEmitsInclude } from '../Scrollbar'
 import type { ButtonComponentInclude } from '../Button'

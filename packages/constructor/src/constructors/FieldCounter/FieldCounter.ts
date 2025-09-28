@@ -1,5 +1,5 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, isFilled, toNumber } from '@dxt-ui/functional'
+import { type ConstrEmit, DesignComp, isFilled, toNumber } from '@dxtmisha/functional'
 
 import type { FieldCounterComponents, FieldCounterEmits, FieldCounterSlots } from './types'
 import type { FieldCounterProps } from './props'

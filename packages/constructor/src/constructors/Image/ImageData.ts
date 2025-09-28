@@ -1,5 +1,5 @@
 import { type Ref, ref, watchEffect } from 'vue'
-import { Icons, isString, type Undefined } from '@dxt-ui/functional'
+import { Icons, isString, type Undefined } from '@dxtmisha/functional'
 
 import { ImageFile } from './ImageFile'
 import { ImagePdf } from './ImagePdf'

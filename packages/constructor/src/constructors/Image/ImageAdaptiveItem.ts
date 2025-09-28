@@ -1,5 +1,5 @@
 import { computed, type Ref, ref, watchEffect } from 'vue'
-import { getElementId, toNumber } from '@dxt-ui/functional'
+import { getElementId, toNumber } from '@dxtmisha/functional'
 
 import { ImageData } from './ImageData'
 import { ImageAdaptiveGroup } from './ImageAdaptiveGroup'

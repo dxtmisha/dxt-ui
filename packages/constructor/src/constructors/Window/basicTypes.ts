@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref } from 'vue'
-import type { ConstrBind } from '@dxt-ui/functional'
+import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { WindowExpose } from './types'
 import type { WindowPropsBasic } from './props'

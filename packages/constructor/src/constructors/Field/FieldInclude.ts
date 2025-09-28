@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { type ConstrBind, type RefOrNormal, toBinds, getRef } from '@dxt-ui/functional'
+import { type ConstrBind, type RefOrNormal, toBinds, getRef } from '@dxtmisha/functional'
 
 import type { FieldPropsInclude } from './basicTypes'
 import type { FieldPropsBasic } from './props'

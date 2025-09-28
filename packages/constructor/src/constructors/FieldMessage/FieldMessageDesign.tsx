@@ -3,7 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { FieldMessage } from './FieldMessage'
 
@@ -27,14 +27,14 @@ export class FieldMessageDesign<
   CLASSES extends FieldMessageClasses,
   P extends FieldMessagePropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  FieldMessageEmits,
-  EXPOSE,
-  FieldMessageSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    FieldMessageEmits,
+    EXPOSE,
+    FieldMessageSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: FieldMessage
 
   /**

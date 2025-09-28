@@ -1,4 +1,4 @@
-import { executePromise } from '@dxt-ui/functional'
+import { executePromise } from '@dxtmisha/functional'
 
 import type { WindowProps } from './props'
 

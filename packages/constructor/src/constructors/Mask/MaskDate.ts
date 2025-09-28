@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { Datetime } from '@dxt-ui/functional'
+import { Datetime } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'
 

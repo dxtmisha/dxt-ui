@@ -3,7 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { ListItem } from './ListItem'
 
@@ -27,14 +27,14 @@ export class ListItemDesign<
   CLASSES extends ListItemClasses,
   P extends ListItemPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ListItemEmits,
-  EXPOSE,
-  ListItemSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ListItemEmits,
+    EXPOSE,
+    ListItemSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: ListItem
 
   /**

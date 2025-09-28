@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { isFilled } from '@dxt-ui/functional'
+import { isFilled } from '@dxtmisha/functional'
 
 /**
  * Class for working with search.

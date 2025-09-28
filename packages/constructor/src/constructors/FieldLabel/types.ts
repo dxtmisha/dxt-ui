@@ -1,4 +1,4 @@
-import type { ConstrClass } from '@dxt-ui/functional'
+import type { ConstrClass } from '@dxtmisha/functional'
 import type { LabelAlternativeSlots } from '../../types/labelTypes'
 import { type FieldCounterComponentInclude } from '../FieldCounter'
 import { type ProgressComponentInclude } from '../Progress'

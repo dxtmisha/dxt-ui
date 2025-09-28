@@ -1,5 +1,5 @@
 import { computed, onMounted, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { ScrollbarInclude } from '../Scrollbar/ScrollbarInclude'
 import { ImageInclude } from '../Image/ImageInclude'

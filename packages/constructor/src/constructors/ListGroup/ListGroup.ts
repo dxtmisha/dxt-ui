@@ -1,5 +1,5 @@
 import { type Ref, type ToRefs } from 'vue'
-import { type ConstrBind, type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+import { type ConstrBind, type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { ListGroupOpen } from './ListGroupOpen'
 

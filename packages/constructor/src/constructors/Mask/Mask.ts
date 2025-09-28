@@ -6,7 +6,7 @@ import {
   DesignComp,
   GeoRef,
   isFloat
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'
 import { MaskBuffer } from './MaskBuffer'

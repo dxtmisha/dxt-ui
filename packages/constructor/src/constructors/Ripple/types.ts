@@ -1,4 +1,4 @@
-import type { ConstrClass } from '@dxt-ui/functional'
+import type { ConstrClass } from '@dxtmisha/functional'
 
 /**
  * Interface for describing which components need to be connected for work.

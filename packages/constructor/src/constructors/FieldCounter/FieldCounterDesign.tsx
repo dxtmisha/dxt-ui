@@ -3,7 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { FieldCounter } from './FieldCounter'
 
@@ -27,14 +27,14 @@ export class FieldCounterDesign<
   CLASSES extends FieldCounterClasses,
   P extends FieldCounterPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  FieldCounterEmits,
-  EXPOSE,
-  FieldCounterSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    FieldCounterEmits,
+    EXPOSE,
+    FieldCounterSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: FieldCounter
 
   /**

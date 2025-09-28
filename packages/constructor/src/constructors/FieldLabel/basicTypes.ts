@@ -1,4 +1,4 @@
-import type { ConstrBind } from '@dxt-ui/functional'
+import type { ConstrBind } from '@dxtmisha/functional'
 import type { LabelAlternativeSlots, LabelProps } from '../../types/labelTypes'
 import type { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounter'
 import type { FieldLabelPropsBasic } from './props'

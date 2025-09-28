@@ -1,5 +1,5 @@
 import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import type { ChipComponents, ChipEmits, ChipSlots } from './types'
 import type { ChipPropsBasic } from './props'

@@ -1,8 +1,36 @@
 {
-  "name": "@dxt-ui/constructor",
+  "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.22.0",
+  "version": "0.23.0",
   "type": "module",
+  "description": "Vue component constructors for DXT UI design system - ready-to-use constructors with TypeScript support and SCSS styling",
+  "keywords": [
+    "constructor",
+    "vue",
+    "components",
+    "typescript",
+    "scss",
+    "ui",
+    "design-system",
+    "dxt",
+    "button",
+    "field",
+    "mask",
+    "window",
+    "list",
+    "menu"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/constructor",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/constructor"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
@@ -10,14 +38,17 @@
     "dxt-library": "dxt-library",
     "dxt-constructor": "dxt-constructor mask"
   },
-  "main": "dist/library.js",
-  "module": "dist/library.js",
-  "types": "dist/types/library.d.ts",
+  "files": [
+    "src/",
+    "README.md",
+    "package.json",
+    "LICENSE"
+  ],
+  "main": "./src/library.ts",
+  "module": "./src/library.ts",
+  "types": "./src/library.ts",
   "exports": {
-    ".": [
-      "./src/library.ts",
-      "./dist/library.js"
-    ],
+    ".": "./src/library.ts",
     "./Badge": "./src/constructors/Badge/index.ts",
     "./Badge/style": "./src/constructors/Badge/style.scss",
     "./Bars": "./src/constructors/Bars/index.ts",
@@ -28,6 +59,14 @@
     "./Cell/style": "./src/constructors/Cell/style.scss",
     "./Chip": "./src/constructors/Chip/index.ts",
     "./Chip/style": "./src/constructors/Chip/style.scss",
+    "./Field": "./src/constructors/Field/index.ts",
+    "./Field/style": "./src/constructors/Field/style.scss",
+    "./FieldCounter": "./src/constructors/FieldCounter/index.ts",
+    "./FieldCounter/style": "./src/constructors/FieldCounter/style.scss",
+    "./FieldLabel": "./src/constructors/FieldLabel/index.ts",
+    "./FieldLabel/style": "./src/constructors/FieldLabel/style.scss",
+    "./FieldMessage": "./src/constructors/FieldMessage/index.ts",
+    "./FieldMessage/style": "./src/constructors/FieldMessage/style.scss",
     "./Icon": "./src/constructors/Icon/index.ts",
     "./Icon/style": "./src/constructors/Icon/style.scss",
     "./Image": "./src/constructors/Image/index.ts",
@@ -40,6 +79,8 @@
     "./ListItem/style": "./src/constructors/ListItem/style.scss",
     "./ListMenu": "./src/constructors/ListMenu/index.ts",
     "./ListMenu/style": "./src/constructors/ListMenu/style.scss",
+    "./Mask": "./src/constructors/Mask/index.ts",
+    "./Mask/style": "./src/constructors/Mask/style.scss",
     "./Menu": "./src/constructors/Menu/index.ts",
     "./Menu/style": "./src/constructors/Menu/style.scss",
     "./MotionTransform": "./src/constructors/MotionTransform/index.ts",
@@ -55,25 +96,29 @@
     "./Skeleton": "./src/constructors/Skeleton/index.ts",
     "./Skeleton/style": "./src/constructors/Skeleton/style.scss",
     "./Window": "./src/constructors/Window/index.ts",
-    "./Window/style": "./src/constructors/Window/style.scss",
-    "./constructor/": "./src/constructors/",
-    "./FieldCounter": "./src/constructors/FieldCounter/index.ts",
-    "./FieldCounter/style": "./src/constructors/FieldCounter/style.scss",
-    "./FieldMessage": "./src/constructors/FieldMessage/index.ts",
-    "./FieldMessage/style": "./src/constructors/FieldMessage/style.scss",
-    "./FieldLabel": "./src/constructors/FieldLabel/index.ts",
-    "./FieldLabel/style": "./src/constructors/FieldLabel/style.scss",
-    "./Field": "./src/constructors/Field/index.ts",
-    "./Field/style": "./src/constructors/Field/style.scss",
-    "./Mask": "./src/constructors/Mask/index.ts",
-    "./Mask/style": "./src/constructors/Mask/style.scss"
+    "./Window/style": "./src/constructors/Window/style.scss"
   },
   "buildOptions": {
-    "name": "@dxt-ui/constructor",
+    "name": "@dxtmisha/constructor",
     "formats": [
       "esm-bundler"
     ]
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "@dxtmisha/functional": ">=1.0.3",
+    "vue": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@dxtmisha/functional": {
+      "optional": false
+    },
+    "vue": {
+      "optional": false
+    }
+  },
   "dependencies": {},
-  "devDependencies": {}
+  "sideEffects": false
 }

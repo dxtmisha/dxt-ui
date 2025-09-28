@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { getColumn, isArray, isSelected, isString, replaceRecursive } from '@dxt-ui/functional'
+import { getColumn, isArray, isSelected, isString, replaceRecursive } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'
 import { MaskRubberItem } from './MaskRubberItem'

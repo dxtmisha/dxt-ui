@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import type { ConstrBind } from '@dxt-ui/functional'
+import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { IconProps } from '../Icon'
 import type { FieldProps } from './props'

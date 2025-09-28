@@ -1,4 +1,4 @@
-@use "@dxt-ui/styles/properties" as ui;
+@use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinIcon {
   $clipPath: clip-path #{ui.v('d.sys.transitionDuration.fade.enter')} #{ui.v('d.sys.transitionFunction.deceleration')};

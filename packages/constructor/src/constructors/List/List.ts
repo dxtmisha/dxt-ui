@@ -7,7 +7,7 @@ import {
   type ListDataItem,
   type ListList,
   toBinds
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 

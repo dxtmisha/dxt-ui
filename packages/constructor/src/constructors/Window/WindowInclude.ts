@@ -5,7 +5,7 @@ import {
   getRef,
   type RefOrNormal,
   toBind
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import type { WindowProps } from './props'
 import type { WindowExpose, WindowSlots } from './types'

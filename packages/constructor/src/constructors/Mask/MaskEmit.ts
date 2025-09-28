@@ -1,5 +1,5 @@
 import { MaskValidation } from './MaskValidation'
-import type { ConstrEmit } from '@dxt-ui/functional'
+import type { ConstrEmit } from '@dxtmisha/functional'
 
 import type { MaskEventData } from './basicTypes'
 import type { MaskEmits } from './types'

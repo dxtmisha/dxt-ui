@@ -1,4 +1,4 @@
-import { eventStopPropagation, getClipboardData } from '@dxt-ui/functional'
+import { eventStopPropagation, getClipboardData } from '@dxtmisha/functional'
 
 import { MaskBuffer } from './MaskBuffer'
 import { MaskFocus } from './MaskFocus'

@@ -1,5 +1,5 @@
 import { MaskSpecial } from './MaskSpecial'
-import { isString } from '@dxt-ui/functional'
+import { isString } from '@dxtmisha/functional'
 
 import type { MaskMatchItem } from './basicTypes'
 import type { MaskProps } from './props'

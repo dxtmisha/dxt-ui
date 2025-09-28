@@ -6,7 +6,7 @@ import {
   type RefOrNormal,
   toBind,
   type ConstrEmit
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import type { MotionTransformProps } from './props'
 import type { MotionTransformEmits, MotionTransformExpose, MotionTransformSlots } from './types'

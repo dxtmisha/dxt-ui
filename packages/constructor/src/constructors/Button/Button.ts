@@ -1,5 +1,5 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrClass, type ConstrEmit, DesignComp } from '@dxt-ui/functional'
+import { type ConstrClass, type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 import { getClassTegAStatic } from '../../functions/getClassTegAStatic'
 
 import { LabelInclude } from '../../classes/LabelInclude'

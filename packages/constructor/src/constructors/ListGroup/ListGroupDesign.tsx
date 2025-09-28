@@ -3,7 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { ListGroup } from './ListGroup'
 
@@ -27,14 +27,14 @@ export class ListGroupDesign<
   CLASSES extends ListGroupClasses,
   P extends ListGroupPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ListGroupEmits,
-  EXPOSE,
-  ListGroupSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ListGroupEmits,
+    EXPOSE,
+    ListGroupSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: ListGroup
 
   /**

@@ -4,7 +4,7 @@ import {
   type RefType,
   toCamelCase,
   toCamelCaseFirst
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 /**
  * Class for managing model synchronization and event emission.

@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { isArray, type Undefined } from '@dxt-ui/functional'
+import { isArray, type Undefined } from '@dxtmisha/functional'
 
 import type { ImageCoordinatorItem, ImageSize } from './basicTypes'
 import type { ImageProps } from './props'

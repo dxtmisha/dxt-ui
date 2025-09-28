@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal, toBinds } from '@dxt-ui/functional'
+import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal, toBinds } from '@dxtmisha/functional'
 
 import { IconLiteInclude } from './IconLiteInclude'
 

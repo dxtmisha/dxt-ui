@@ -1,5 +1,5 @@
 import { toRefs, type ToRefs } from 'vue'
-import { type ConstrEmit, RouterItem } from '@dxt-ui/functional'
+import { type ConstrEmit, RouterItem } from '@dxtmisha/functional'
 
 import { EnabledInclude } from './EnabledInclude'
 

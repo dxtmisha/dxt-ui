@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrEmit, DesignComponents, getBind, getRef, type RefOrNormal } from '@dxt-ui/functional'
+import { type ConstrEmit, DesignComponents, getBind, getRef, type RefOrNormal } from '@dxtmisha/functional'
 
 import type { ImageEventData, ImageComponentsInclude, ImageEmitsInclude, ImagePropsInclude } from './basicTypes'
 

@@ -3,7 +3,7 @@ import {
   goScroll,
   type ListDataItem,
   type ListSelectedItem
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import type { ListProps } from './props'
 
 /**

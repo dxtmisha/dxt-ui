@@ -2,7 +2,7 @@ import {
   type ConstrEmit,
   isSelected,
   ListData
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import { ListFocus } from './ListFocus'
 

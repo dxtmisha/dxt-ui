@@ -1,4 +1,4 @@
-import type { ConstrClass, ListList, ListNames } from '@dxt-ui/functional'
+import type { ConstrClass, ListList, ListNames } from '@dxtmisha/functional'
 import type { EventClickEmits } from '../../types/eventClickTypes'
 
 import type { ListItemComponentInclude } from '../ListItem'

@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import { frame } from '@dxt-ui/functional'
+import { frame } from '@dxtmisha/functional'
 
 import { WindowStatus } from './WindowStatus'
 import { WindowClient } from './WindowClient'

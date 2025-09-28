@@ -1,5 +1,5 @@
 import { computed, onUnmounted, watch } from 'vue'
-import { EventItem, isDomRuntime, ListData } from '@dxt-ui/functional'
+import { EventItem, isDomRuntime, ListData } from '@dxtmisha/functional'
 
 import { ListSearch } from './ListSearch'
 import { ListGo } from './ListGo'

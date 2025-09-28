@@ -4,7 +4,7 @@ import {
   executeFunction,
   isFilled,
   isString
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 
 import type { FieldCodeInclude } from './FieldCodeInclude'
 
