@@ -37,6 +37,7 @@ export const viteBasicFunction = (
     '@vue/runtime-core',
     '@vue/runtime-dom',
     '@vue/reactivity',
+    'react',
     '@dxtmisha/configuration',
     '@dxtmisha/media',
     '@dxtmisha/functional'

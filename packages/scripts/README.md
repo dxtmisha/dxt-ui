@@ -1,1 +1,1 @@
-# @dxt-ui/scripts
+# @dxtmisha/scripts

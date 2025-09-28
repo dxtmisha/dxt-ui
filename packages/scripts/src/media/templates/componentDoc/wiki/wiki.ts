@@ -1,4 +1,4 @@
-import { type StorybookProps, WikiStorybook } from '@dxt-ui/wiki'
+import { type StorybookProps, WikiStorybook } from '@dxtmisha/wiki'
 
 import { ComponentDocDefaults } from '../types'
 

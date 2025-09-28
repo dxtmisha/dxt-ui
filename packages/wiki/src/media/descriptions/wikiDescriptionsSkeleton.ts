@@ -40,7 +40,7 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
     </DesignComponent>
   `,
   import: [
-    'import { image1 } from \'@dxt-ui/wiki/media\''
+    'import { image1 } from \'@dxtmisha/wiki/media\''
   ],
   stories: [
     {

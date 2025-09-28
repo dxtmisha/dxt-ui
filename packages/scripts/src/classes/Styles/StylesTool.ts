@@ -76,7 +76,7 @@ export class StylesTool {
    * Получение ссылки на базовую функцию.
    */
   static addImportProperties(): string {
-    return '@use "@dxt-ui/styles" as ui;'
+    return '@use "@dxtmisha/styles" as ui;'
   }
 
   /**

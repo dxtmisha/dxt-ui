@@ -1,4 +1,4 @@
-import { Geo, isArray, isObjectNotArray } from '@dxt-ui/functional'
+import { Geo, isArray, isObjectNotArray } from '@dxtmisha/functional'
 
 import {
   type StorybookArgsItem,

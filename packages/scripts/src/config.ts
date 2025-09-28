@@ -2,7 +2,7 @@
 export const UI_CONFIG_FILE = 'design.config.json'
 
 /** Project name and constructor configuration/ Название проекта и конфигурация конструктора */
-export const UI_PROJECT_NAME = '@dxt-ui'
+export const UI_PROJECT_NAME = '@dxtmisha'
 /** Constructor package name/ Название пакета конструктора */
 export const UI_PROJECT_CONSTRUCTOR_NAME = 'constructor'
 /** Full constructor package name/ Полное название пакета конструктора */

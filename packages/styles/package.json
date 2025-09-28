@@ -1,28 +1,51 @@
 {
-  "name": "@dxt-ui/styles",
+  "name": "@dxtmisha/styles",
   "private": false,
-  "version": "0.2.0",
+  "version": "1.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "preview": "vite preview",
-    "test": "vitest"
+  "description": "SCSS styles and utilities for DXT UI design system",
+  "keywords": [
+    "scss",
+    "styles",
+    "css",
+    "design-system",
+    "ui",
+    "dxt",
+    "mixins",
+    "utilities"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/styles",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/styles"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
   },
   "files": [
-    "styles"
+    "src",
+    "README.md",
+    "package.json",
+    "LICENSE"
   ],
   "main": "src/styles/index.scss",
   "exports": {
     ".": "./src/styles/index.scss",
     "./properties": "./src/styles/properties/index.scss"
   },
-  "buildOptions": {
-    "name": "@dxt-ui/styles",
-    "formats": [
-      "esm-bundler"
-    ]
+  "engines": {
+    "node": ">=18.0.0"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "peerDependencies": {
+    "sass": "^1.50.0"
+  },
+  "peerDependenciesMeta": {
+    "sass": {
+      "optional": false
+    }
+  },
+  "sideEffects": false
 }

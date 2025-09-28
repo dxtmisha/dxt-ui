@@ -1,5 +1,5 @@
 // :component.once import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-// :component.once import type { ComponentEmits, ComponentSlots } from '@dxt-ui/constructor/Component'
+// :component.once import type { ComponentEmits, ComponentSlots } from '@dxtmisha/constructor/Component'
 
 // :component.once import item from './DesignComponent.vue'
 

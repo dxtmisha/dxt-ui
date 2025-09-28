@@ -1,4 +1,4 @@
-import { executeFunction, Geo, isObjectNotArray } from '@dxt-ui/functional'
+import { executeFunction, Geo, isObjectNotArray } from '@dxtmisha/functional'
 
 import type {
   StorybookComponentsDescriptionItem,

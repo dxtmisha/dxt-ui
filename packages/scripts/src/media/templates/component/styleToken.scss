@@ -1,6 +1,6 @@
 // :component.once @use "../../../styles/[project]/properties";
-@use "@dxt-ui/styles/properties" as ui;
-// :component.once @use "@dxt-ui/constructor/Component/style" as Component;
+@use "@dxtmisha/styles/properties" as ui;
+// :component.once @use "@dxtmisha/constructor/Component/style" as Component;
 
 @include ui.initDesignBasic('[design].[component]') {
   // Basic styles for a component

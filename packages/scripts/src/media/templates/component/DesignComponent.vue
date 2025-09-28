@@ -10,7 +10,7 @@
 // :component.once   ComponentDesign,
 // :component.once   type ComponentEmits,
 // :component.once   type ComponentSlots
-// :component.once } from '@dxt-ui/constructor/Component'
+// :component.once } from '@dxtmisha/constructor/Component'
 
 // :component.once import { defaults, type ComponentProps, propsValues } from './props'
 // :component.once import './styleToken.scss'

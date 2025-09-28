@@ -1,4 +1,4 @@
-import { Geo, isObjectNotArray, toCamelCase } from '@dxt-ui/functional'
+import { Geo, isObjectNotArray, toCamelCase } from '@dxtmisha/functional'
 
 import { WikiStorybookItem } from './WikiStorybookItem'
 

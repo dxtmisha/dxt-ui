@@ -1,4 +1,4 @@
-// :component.once import { type ComponentPropsBasic, defaultsComponent } from '@dxt-ui/constructor/Component'
+// :component.once import { type ComponentPropsBasic, defaultsComponent } from '@dxtmisha/constructor/Component'
 
 export const propsValues = {
   // :values [!] System label / Системная метка

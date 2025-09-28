@@ -1,5 +1,5 @@
 {
-  "name": "@dxt-ui/scripts",
+  "name": "@dxtmisha/scripts",
   "private": false,
   "version": "0.1.0",
   "type": "module",
@@ -16,24 +16,15 @@
     "dxt-library": "./bin/design-library.ts",
     "dxt-ui": "./bin/design-ui.ts"
   },
-  "main": "dist/library.js",
-  "module": "dist/library.js",
-  "types": "dist/types/library.d.ts",
+  "main": "src/library.ts",
+  "module": "src/library.ts",
   "exports": {
-    ".": {
-      "import": [
-        "./src/library.ts",
-        "./dist/library.js"
-      ],
-      "types": "./dist/library.d.ts"
-    },
+    ".": "./src/library.ts",
     "./config": "./src/config.ts",
-    "./properties.json": "./src/media/properties.json",
-    "./dist/types/*": "./dist/types/*",
-    "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
+    "./properties.json": "./src/media/properties.json"
   },
   "buildOptions": {
-    "name": "@dxt-ui/scripts",
+    "name": "@dxtmisha/scripts",
     "formats": [
       "esm-bundler"
     ]

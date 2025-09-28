@@ -1,40 +1,74 @@
 {
-  "name": "@dxt-ui/wiki",
+  "name": "@dxtmisha/wiki",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.23.0",
   "type": "module",
+  "description": "Wiki documentation and storybook utilities for DXT UI design system",
+  "keywords": [
+    "wiki",
+    "storybook",
+    "documentation",
+    "ui",
+    "dxt",
+    "design-system",
+    "components",
+    "utilities"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/wiki",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/wiki"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "library": "dxt-library"
+    "library": "dxt-library",
+    "prepublishOnly": "npm run build"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "package.json",
+    "LICENSE"
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
   "types": "dist/library.d.ts",
   "exports": {
     ".": {
-      "import": [
-        "./src/library.ts",
-        "./dist/library.js"
-      ]
+      "import": "./dist/library.js",
+      "types": "./dist/library.d.ts"
     },
-    "./media": "./src/media.ts",
-    "./storybook": "./src/documentation/storybook/storybook.tsx",
+    "./media": {
+      "import": "./dist/media.js",
+      "types": "./dist/media.d.ts"
+    },
+    "./storybook": {
+      "import": "./dist/storybook.js",
+      "types": "./dist/storybook.d.ts"
+    },
     "./storybook/styles": "./src/styles/storybookStyle.scss",
-    "./types/*": "./dist/*",
-    "./types/**/*.d.ts": "./dist/**/*.d.ts"
+    "./types/*": "./dist/*"
   },
-  "buildOptions": {
-    "name": "@dxt-ui/wiki",
-    "formats": [
-      "esm-bundler"
-    ]
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "vue": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    }
   },
   "dependencies": {},
-  "devDependencies": {}
+  "sideEffects": false
 }

@@ -168,10 +168,10 @@ export class Styles {
       dir,
       FILE_STYLE,
       [
-        `@use "@dxt-ui/styles" as variables;`,
+        `@use "@dxtmisha/styles" as variables;`,
         `@use "./${FILE_PROPERTIES}";`,
         '',
-        `@forward "@dxt-ui/styles/${FILE_PROPERTIES}";`,
+        `@forward "@dxtmisha/styles/${FILE_PROPERTIES}";`,
         '',
         `@include variables.setDesignsDesign('${design}');`,
         ''
@@ -185,7 +185,7 @@ export class Styles {
         FILE_MAIN,
         [
           `@use "./${FILE_BASIC}";`,
-          `@use "@dxt-ui/styles/${FILE_PROPERTIES}" as ui;`,
+          `@use "@dxtmisha/styles/${FILE_PROPERTIES}" as ui;`,
           '',
           '@include ui.initGlobal;',
           `@include ui.initDesignBody('${design}.main');`

@@ -28,7 +28,7 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
       </div>
     `,
   import: [
-    'import { demoPdf, image1, phone1, phone2, phone3 } from \'@dxt-ui/wiki/media\''
+    'import { demoPdf, image1, phone1, phone2, phone3 } from \'@dxtmisha/wiki/media\''
   ],
   stories: [
     {

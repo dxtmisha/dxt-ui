@@ -36,7 +36,7 @@ export class PropertiesScss {
    * Возвращает отформатированную строку для SCSS.
    */
   get() {
-    let data = '@use "@dxt-ui/styles" as variables;\r\n\r\n'
+    let data = '@use "@dxtmisha/styles" as variables;\r\n\r\n'
 
     data += `${this.getDesigns()}\r\n`
     data += `${this.getRoot()}\r\n`

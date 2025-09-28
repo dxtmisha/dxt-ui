@@ -1,6 +1,6 @@
 import { forEach, isObjectNotArray, toArray, toKebabCase } from '@dxtmisha/functional'
-import { wikiDescriptions } from '@dxt-ui/wiki/media'
-import type { StorybookComponentsDescriptionItem } from '@dxt-ui/wiki'
+import { wikiDescriptions } from '@dxtmisha/wiki/media'
+import type { StorybookComponentsDescriptionItem } from '@dxtmisha/wiki'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
