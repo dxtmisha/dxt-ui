@@ -22,7 +22,7 @@
     "@dxtmisha/scripts": "workspace:*",
     "@dxtmisha/styles": "^1.0.0",
     "@dxt-ui/test": "workspace:*",
-    "@dxt-ui/wiki": "workspace:*",
+    "@dxtmisha/wiki": "^0.23.1",
     "@google/genai": "^1.21.0",
     "@storybook/addon-a11y": "^9.1.8",
     "@storybook/addon-docs": "^9.1.8",

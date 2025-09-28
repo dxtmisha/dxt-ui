@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/wiki",
   "private": false,
-  "version": "0.23.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "Wiki documentation and storybook utilities for DXT UI design system",
   "keywords": [
@@ -35,6 +35,7 @@
   },
   "files": [
     "dist",
+    "src/styles/storybookStyle.scss",
     "README.md",
     "package.json",
     "LICENSE"
