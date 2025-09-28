@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/styles",
   "private": false,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "SCSS styles and utilities for DXT UI design system",
   "keywords": [
@@ -19,7 +19,7 @@
   "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/styles",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dxtmisha/dxt-ui.git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
     "directory": "packages/styles"
   },
   "bugs": {

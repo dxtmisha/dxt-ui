@@ -92,6 +92,7 @@ export * from './composables/useAi'
 
 // Functions
 export * from './functions/getComponentPaths'
+export * from './functions/getConstructorProperties'
 export * from './functions/getNameDirByPaths'
 
 // Types

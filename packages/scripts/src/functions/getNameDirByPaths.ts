@@ -1,4 +1,4 @@
-import { PropertiesFile, type PropertiesFilePath } from '../classes/Properties/PropertiesFile.ts'
+import { PropertiesFile, type PropertiesFilePath } from '../classes/Properties/PropertiesFile'
 
 /**
  * Get the name of the last directory from the given paths.

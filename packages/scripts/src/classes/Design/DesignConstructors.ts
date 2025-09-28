@@ -1,10 +1,10 @@
 import { isFilled } from '@dxtmisha/functional'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
+import { PropertiesCache } from '../Properties/PropertiesCache'
 import { DesignConstructor } from './DesignConstructor'
 
 import { UI_DIR_CONSTRUCTOR, UI_DIR_IN } from '../../config'
-import { PropertiesCache } from '../Properties/PropertiesCache.ts'
 
 export class DesignConstructors {
   constructor(

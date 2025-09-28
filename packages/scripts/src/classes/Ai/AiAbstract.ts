@@ -1,4 +1,4 @@
-import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 
 /**
  * Abstract AI base class providing common mechanics for AI integrations.

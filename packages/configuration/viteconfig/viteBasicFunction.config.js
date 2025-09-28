@@ -30,7 +30,8 @@ export const viteBasicFunction = (
     'src/media/**/*.ts',
     'src/types/**/*.ts',
     'src/flags.ts',
-    'src/library.ts'
+    'src/library.ts',
+    'src/media.ts'
   ],
   includeExtended = [],
   external = [

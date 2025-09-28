@@ -1,14 +1,41 @@
 {
   "name": "@dxtmisha/scripts",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.3.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "preview": "vite preview",
-    "dxt-library": "dxt-library"
+  "description": "Development scripts and CLI tools for DXT UI projects - automated component generation, library building and project management tools",
+  "keywords": [
+    "scripts",
+    "cli",
+    "development",
+    "component-generator",
+    "ui-library",
+    "dxt-ui",
+    "automation",
+    "build-tools",
+    "typescript",
+    "vue"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/scripts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/scripts"
   },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
+  "files": [
+    "src/",
+    "bin/",
+    "README.md",
+    "package.json",
+    "LICENSE"
+  ],
+  "main": "./src/library.ts",
+  "module": "./src/library.ts",
   "bin": {
     "dxt-component": "./bin/design-component.ts",
     "dxt-component-wiki": "./bin/design-component-wiki.ts",
@@ -16,19 +43,23 @@
     "dxt-library": "./bin/design-library.ts",
     "dxt-ui": "./bin/design-ui.ts"
   },
-  "main": "src/library.ts",
-  "module": "src/library.ts",
   "exports": {
     ".": "./src/library.ts",
     "./config": "./src/config.ts",
     "./properties.json": "./src/media/properties.json"
   },
-  "buildOptions": {
-    "name": "@dxtmisha/scripts",
-    "formats": [
-      "esm-bundler"
-    ]
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "@dxtmisha/configuration": ">=0.3.0",
+    "@dxtmisha/constructor": ">=0.22.0",
+    "@dxtmisha/functional": ">=0.3.0",
+    "@dxtmisha/styles": ">=0.3.0",
+    "@dxtmisha/wiki": ">=0.3.0",
+    "typescript": ">=4.5.0",
+    "vue": ">=3.0.0"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "sideEffects": false
 }

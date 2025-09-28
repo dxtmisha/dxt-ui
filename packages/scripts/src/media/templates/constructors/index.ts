@@ -1,5 +1,5 @@
 export * from './Constructors'
-export * from './ConstructorsDesign.tsx'
+export * from './ConstructorsDesign'
 export * from './props'
 export * from './types'
 export * from './basicTypes'

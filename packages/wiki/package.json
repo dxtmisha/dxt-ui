@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/wiki",
   "private": false,
-  "version": "0.23.3",
+  "version": "0.23.4",
   "type": "module",
   "description": "Wiki documentation and storybook utilities for DXT UI design system",
   "keywords": [
@@ -19,7 +19,7 @@
   "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/wiki",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dxtmisha/dxt-ui.git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
     "directory": "packages/wiki"
   },
   "bugs": {
