@@ -4,12 +4,12 @@ import {
   inArray,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   IconDesign,
   type IconEmits,
   type IconSlots
-} from '@dxt-ui/constructor/Icon'
+} from '@dxtmisha/constructor/Icon'
 
 import { D1Image } from '../Image'
 

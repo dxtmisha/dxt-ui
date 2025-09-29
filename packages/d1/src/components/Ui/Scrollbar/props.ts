@@ -1,4 +1,4 @@
-import { type ScrollbarPropsBasic, defaultsScrollbar } from '@dxt-ui/constructor/Scrollbar'
+import { type ScrollbarPropsBasic, defaultsScrollbar } from '@dxtmisha/constructor/Scrollbar'
 
 export const propsValues = {
   // :values [!] System label / Системная метка

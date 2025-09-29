@@ -4,7 +4,7 @@ import D1Skeleton from './D1Skeleton.vue'
 import { SkeletonWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
-import { image1 } from '@dxt-ui/wiki/media'
+import { image1 } from '@dxtmisha/wiki/media'
 // :story-import [!] System label / Системная метка
 
 const meta = {

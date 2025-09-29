@@ -4,12 +4,12 @@ import {
   inArray,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   MenuDesign,
   type MenuEmits,
   type MenuSlots
-} from '@dxt-ui/constructor/Menu'
+} from '@dxtmisha/constructor/Menu'
 
 import { D1List } from '../List'
 import { D1Bars } from '../Bars'

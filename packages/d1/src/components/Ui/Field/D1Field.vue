@@ -5,12 +5,12 @@ import {
   isFilled,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   FieldDesign,
   type FieldEmits,
   type FieldSlots
-} from '@dxt-ui/constructor/Field'
+} from '@dxtmisha/constructor/Field'
 
 import { D1Icon } from '../Icon'
 import { D1FieldLabel } from '../FieldLabel'

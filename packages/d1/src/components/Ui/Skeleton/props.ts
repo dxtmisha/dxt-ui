@@ -1,4 +1,4 @@
-import { type SkeletonPropsBasic, defaultsSkeleton } from '@dxt-ui/constructor/Skeleton'
+import { type SkeletonPropsBasic, defaultsSkeleton } from '@dxtmisha/constructor/Skeleton'
 
 export const propsValues = {
   // :values [!] System label / Системная метка

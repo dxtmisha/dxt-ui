@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
-@use "@dxt-ui/styles/properties" as ui;
-@use "@dxt-ui/constructor/Progress/style" as Progress;
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Progress/style" as Progress;
 
 @include ui.initDesignBasic('d1.progress') {
   // Basic styles for a component
@@ -14,23 +14,23 @@
     --d1-progress-backgroundColor: var(--d1-sys-palette-primary);
     --d1-progress-borderRadius: var(--d1-sys-rounded-full);
     --d1-progress-opacity: var(--d1-sys-opacity-overlay);
-    
+
     @include ui.paletteVar(#{var(--d1-sys-palette-primary)});
-    
+
     &--circular {
       --d1-progress-inset: var(--d1-sys-spacing-x);
       --d1-progress-width: var(--d1-ref-spacing-12);
     }
-    
+
     &--size {
       &--sm {
         --d1-progress-height: var(--d1-ref-spacing-2px);
       }
-      
+
       &--md {
         --d1-progress-height: var(--d1-ref-spacing-1);
       }
-      
+
       &--lg {
         --d1-progress-height: var(--d1-ref-spacing-2);
       }

@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
-@use "@dxt-ui/styles/properties" as ui;
-@use "@dxt-ui/constructor/Ripple/style" as Ripple;
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Ripple/style" as Ripple;
 
 @include ui.initDesignBasic('d1.ripple') {
   // Basic styles for a component

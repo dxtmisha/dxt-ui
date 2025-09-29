@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
-@use "@dxt-ui/styles/properties" as ui;
-@use "@dxt-ui/constructor/Cell/style" as Cell;
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Cell/style" as Cell;
 
 @include ui.initDesignBasic('d1.cell') {
   // Basic styles for a component
@@ -14,80 +14,80 @@
     --d1-cell-borderWidth: var(--d1-sys-spacing-outline);
     --d1-cell-borderColor: var(--d1-sys-palette-outline);
     --d1-cell-transitionFunction: var(--d-sys-transitionFunction-standard);
-    
+
     gap: var(--d1-sys-spacing-md);
-    
+
     @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
-    
+
     transition-duration: var(--d-sys-transitionDuration-fade-enter);
     transition-property: background-color, background-image, border, box-shadow;
-    
+
     &__context {
       column-gap: var(--d1-sys-spacing-x);
     }
-    
+
     &__description {
       font-family: var(--d1-sys-font-family-basic), sans-serif;
       @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
       font-weight: var(--d1-sys-font-weight-regular);
       @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
       letter-spacing: var(--d1-sys-letterSpacing-md);
-      
+
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }
-    
+
     &__caption {
       font-family: var(--d1-sys-font-family-basic), sans-serif;
       @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
       font-weight: var(--d1-sys-font-weight-regular);
       @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
       letter-spacing: var(--d1-sys-letterSpacing-md);
-      
+
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }
-    
+
     &--selected {
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
       @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
     }
-    
+
     &--disabled {
       @include ui.color(#{var(--d1-sys-palette-onSurface)});
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
-      
+
       & .d1-cell__caption {
         @include ui.colorOpacity(#{0}); @include ui.color('init');
       }
-      
+
       & .d1-cell__description {
         @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
       }
     }
-    
+
     &--dynamic {
       @include ui.focus('.d1-cell') {
         @include ui.gradient(#{var(--sys-color)});
         @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)});
       }
-      
+
       @include ui.hover('.d1-cell') {
         @include ui.gradient(#{var(--sys-color)});
         @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)});
       }
-      
+
       @include ui.active('.d1-cell') {
         @include ui.gradient(#{var(--sys-color)});
         @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)});
       }
     }
-    
+
     &--dynamicHover {
       @include ui.hover('.d1-cell') {
         @include ui.gradient(#{var(--sys-color)});
         @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)});
       }
     }
-    
+
     &--dividerLabel {
       &--always {
         & .d1-cell__context {
@@ -96,7 +96,7 @@
           border-bottom-style: solid;
         }
       }
-      
+
       &--adaptiveSm {
         @media screen and (max-width: calc(640px - 1px)) {
           & .d1-cell__context {
@@ -106,7 +106,7 @@
           }
         }
       }
-      
+
       &--adaptiveMd {
         @media screen and (max-width: calc(768px - 1px)) {
           & .d1-cell__context {
@@ -116,7 +116,7 @@
           }
         }
       }
-      
+
       &--adaptiveLg {
         @media screen and (max-width: calc(1024px - 1px)) {
           & .d1-cell__context {
@@ -126,7 +126,7 @@
           }
         }
       }
-      
+
       &--adaptiveXl {
         @media screen and (max-width: calc(1280px - 1px)) {
           & .d1-cell__context {
@@ -136,7 +136,7 @@
           }
         }
       }
-      
+
       &--adaptive2xl {
         @media screen and (max-width: calc(1536px - 1px)) {
           & .d1-cell__context {
@@ -146,7 +146,7 @@
           }
         }
       }
-      
+
       &--containerSm {
         @container (max-width: calc(640px - 1px)) {
           & .d1-cell__context {
@@ -156,7 +156,7 @@
           }
         }
       }
-      
+
       &--containerMd {
         @container (max-width: calc(768px - 1px)) {
           & .d1-cell__context {
@@ -166,7 +166,7 @@
           }
         }
       }
-      
+
       &--containerLg {
         @container (max-width: calc(1024px - 1px)) {
           & .d1-cell__context {
@@ -176,7 +176,7 @@
           }
         }
       }
-      
+
       &--containerXl {
         @container (max-width: calc(1280px - 1px)) {
           & .d1-cell__context {
@@ -186,7 +186,7 @@
           }
         }
       }
-      
+
       &--container2xl {
         @container (max-width: calc(1536px - 1px)) {
           & .d1-cell__context {
@@ -197,37 +197,37 @@
         }
       }
     }
-    
+
     &--iconTop {
       & .d1-cell__icon {
         align-self: start;
       }
     }
-    
+
     &--padding {
       &--sm {
         @include ui.paddingX(#{var(--d1-sys-spacing-x)});
         @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
       }
-      
+
       &--md {
         @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
         @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
       }
-      
+
       &--lg {
         @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
         @include ui.paddingY(#{var(--d1-sys-spacing-md)});
       }
-      
+
       &--ySm {
         @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
       }
-      
+
       &--yMd {
         @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
       }
-      
+
       &--yLg {
         @include ui.paddingY(#{var(--d1-sys-spacing-md)});
       }

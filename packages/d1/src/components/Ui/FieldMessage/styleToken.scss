@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
-@use "@dxt-ui/styles/properties" as ui;
-@use "@dxt-ui/constructor/FieldMessage/style" as FieldMessage;
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/FieldMessage/style" as FieldMessage;
 
 @include ui.initDesignBasic('d1.fieldMessage') {
   // Basic styles for a component
@@ -12,17 +12,17 @@
   // :style [!] System label / Системная метка
   & {
     gap: var(--d1-sys-spacing-xs);
-    
+
     padding-top: var(--d1-sys-spacing-x);
-    
+
     font-family: var(--d1-sys-font-family-basic), sans-serif;
     @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
     font-weight: var(--d1-sys-font-weight-regular);
     @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
     letter-spacing: var(--d1-sys-letterSpacing-md);
-    
+
     @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
-    
+
     &--validation {
       @include ui.color(#{var(--d1-sys-palette-error)});
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});

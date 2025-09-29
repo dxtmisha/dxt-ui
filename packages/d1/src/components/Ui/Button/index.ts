@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { ButtonEmits, ButtonSlots } from '@dxt-ui/constructor/Button'
+import type { ButtonEmits, ButtonSlots } from '@dxtmisha/constructor/Button'
 
 import item from './D1Button.vue'
 

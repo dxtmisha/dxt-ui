@@ -5,12 +5,12 @@ import {
   isFilled,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   ListItemDesign,
   type ListItemEmits,
   type ListItemSlots
-} from '@dxt-ui/constructor/ListItem'
+} from '@dxtmisha/constructor/ListItem'
 
 import D1Icon from '../Icon/D1Icon.vue'
 import D1Badge from '../Badge/D1Badge.vue'

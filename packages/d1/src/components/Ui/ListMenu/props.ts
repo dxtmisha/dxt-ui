@@ -1,4 +1,4 @@
-import { type ListMenuPropsBasic, defaultsListMenu } from '@dxt-ui/constructor/ListMenu'
+import { type ListMenuPropsBasic, defaultsListMenu } from '@dxtmisha/constructor/ListMenu'
 import type { WindowProps } from '../Window'
 
 export const propsValues = {

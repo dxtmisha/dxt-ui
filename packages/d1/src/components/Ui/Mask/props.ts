@@ -1,4 +1,4 @@
-import { type MaskPropsBasic, defaultsMask } from '@dxt-ui/constructor/Mask'
+import { type MaskPropsBasic, defaultsMask } from '@dxtmisha/constructor/Mask'
 
 export const propsValues = {
   // :values [!] System label / Системная метка

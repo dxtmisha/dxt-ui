@@ -1,4 +1,4 @@
-import { type FieldPropsBasic, defaultsField } from '@dxt-ui/constructor/Field'
+import { type FieldPropsBasic, defaultsField } from '@dxtmisha/constructor/Field'
 
 import type { IconProps } from '../Icon'
 import type { FieldLabelProps } from '../FieldLabel'

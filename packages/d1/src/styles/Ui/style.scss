@@ -1,6 +1,6 @@
-@use "@dxt-ui/styles" as variables;
+@use "@dxtmisha/styles" as variables;
 @use "./properties";
 
-@forward "@dxt-ui/styles/properties";
+@forward "@dxtmisha/styles/properties";
 
 @include variables.setDesignsDesign('d1');

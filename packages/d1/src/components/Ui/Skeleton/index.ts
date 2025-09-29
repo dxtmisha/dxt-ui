@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { SkeletonEmits, SkeletonSlots } from '@dxt-ui/constructor/Skeleton'
+import type { SkeletonEmits, SkeletonSlots } from '@dxtmisha/constructor/Skeleton'
 
 import item from './D1Skeleton.vue'
 

@@ -1,4 +1,4 @@
-import { type BadgePropsBasic, defaultsBadge } from '@dxt-ui/constructor/Badge'
+import { type BadgePropsBasic, defaultsBadge } from '@dxtmisha/constructor/Badge'
 import type { IconProps } from '../Icon'
 
 export const propsValues = {

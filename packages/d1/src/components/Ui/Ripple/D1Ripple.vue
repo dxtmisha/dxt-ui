@@ -3,12 +3,12 @@ import { computed } from 'vue'
 import {
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   RippleDesign,
   type RippleEmits,
   type RippleSlots
-} from '@dxt-ui/constructor/Ripple'
+} from '@dxtmisha/constructor/Ripple'
 
 import { defaults, type RippleProps } from './props'
 import './styleToken.scss'

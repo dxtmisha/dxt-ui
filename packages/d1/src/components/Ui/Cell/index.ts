@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { CellEmits, CellSlots } from '@dxt-ui/constructor/Cell'
+import type { CellEmits, CellSlots } from '@dxtmisha/constructor/Cell'
 
 import item from './D1Cell.vue'
 

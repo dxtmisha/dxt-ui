@@ -125,7 +125,7 @@ export class DesignTypescript {
       }
     }
 
-    return text
+    return text.replace(/'/g, '\\\'')
   }
 
   /**

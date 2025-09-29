@@ -1,4 +1,4 @@
-import { type BarsPropsBasic, defaultsBars } from '@dxt-ui/constructor/Bars'
+import { type BarsPropsBasic, defaultsBars } from '@dxtmisha/constructor/Bars'
 import type { ButtonProps } from '../Button'
 
 export const propsValues = {

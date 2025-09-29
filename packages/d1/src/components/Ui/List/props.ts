@@ -1,4 +1,4 @@
-import { type ListPropsBasic, defaultsList } from '@dxt-ui/constructor/List'
+import { type ListPropsBasic, defaultsList } from '@dxtmisha/constructor/List'
 import type { IconProps } from '../Icon'
 import type { ListItemProps } from '../ListItem'
 

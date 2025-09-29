@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { WindowEmits, WindowSlots } from '@dxt-ui/constructor/Window'
+import type { WindowEmits, WindowSlots } from '@dxtmisha/constructor/Window'
 
 import item from './D1Window.vue'
 

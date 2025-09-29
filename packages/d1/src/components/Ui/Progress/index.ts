@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { ProgressEmits, ProgressSlots } from '@dxt-ui/constructor/Progress'
+import type { ProgressEmits, ProgressSlots } from '@dxtmisha/constructor/Progress'
 
 import item from './D1Progress.vue'
 

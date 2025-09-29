@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
-@use "@dxt-ui/styles/properties" as ui;
-@use "@dxt-ui/constructor/List/style" as List;
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/List/style" as List;
 
 @include ui.initDesignBasic('d1.list') {
   // Basic styles for a component
@@ -14,28 +14,28 @@
     &__space {
       @include ui.height(#{var(--d1-sys-spacing-lg)});
     }
-    
+
     &__line {
       @include ui.marginX(#{var(--d1-sys-spacing-x)});
       @include ui.marginY(#{var(--d1-sys-spacing-sm)});
-      
+
       @include ui.height(#{var(--d1-sys-spacing-outline)});
-      
+
       @include ui.backgroundColor(#{var(--d1-sys-palette-outline)});
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-outline)});
     }
-    
+
     &__subtitle {
       margin-top: var(--d1-sys-spacing-lg);
       margin-bottom: var(--d1-sys-spacing-sm);
       @include ui.marginX(#{calc(var(--d1-sys-spacing-x) + var(--d1-sys-spacing-xs))});
-      
+
       font-family: var(--d1-sys-font-family-basic), sans-serif;
       @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
       font-weight: var(--d1-sys-font-weight-medium);
       @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
       letter-spacing: var(--d1-sys-letterSpacing-xl);
-      
+
       @include ui.color(#{var(--d1-sys-palette-onSurface)});
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
     }

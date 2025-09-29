@@ -3,12 +3,12 @@ import { computed } from 'vue'
 import {
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   ScrollbarDesign,
   type ScrollbarEmits,
   type ScrollbarSlots
-} from '@dxt-ui/constructor/Scrollbar'
+} from '@dxtmisha/constructor/Scrollbar'
 
 import { defaults, type ScrollbarProps } from './props'
 import './styleToken.scss'

@@ -3,12 +3,12 @@ import { computed } from 'vue'
 import {
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   FieldMessageDesign,
   type FieldMessageEmits,
   type FieldMessageSlots
-} from '@dxt-ui/constructor/FieldMessage'
+} from '@dxtmisha/constructor/FieldMessage'
 
 import { D1FieldCounter } from '../FieldCounter'
 

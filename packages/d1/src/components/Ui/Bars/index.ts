@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { BarsEmits, BarsSlots } from '@dxt-ui/constructor/Bars'
+import type { BarsEmits, BarsSlots } from '@dxtmisha/constructor/Bars'
 
 import item from './D1Bars.vue'
 

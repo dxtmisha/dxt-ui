@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
-@use "@dxt-ui/styles/properties" as ui;
-@use "@dxt-ui/constructor/ListMenu/style" as ListMenu;
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/ListMenu/style" as ListMenu;
 
 @include ui.initDesignBasic('d1.listMenu') {
   // Basic styles for a component

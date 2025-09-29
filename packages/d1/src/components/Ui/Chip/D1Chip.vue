@@ -4,12 +4,12 @@ import {
   inArray,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   ChipDesign,
   type ChipEmits,
   type ChipSlots
-} from '@dxt-ui/constructor/Chip'
+} from '@dxtmisha/constructor/Chip'
 
 import D1Icon from '../Icon/D1Icon.vue'
 import D1Progress from '../Progress/D1Progress.vue'

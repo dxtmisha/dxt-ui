@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { FieldEmits, FieldSlots } from '@dxt-ui/constructor/Field'
+import type { FieldEmits, FieldSlots } from '@dxtmisha/constructor/Field'
 
 import item from './D1Field.vue'
 

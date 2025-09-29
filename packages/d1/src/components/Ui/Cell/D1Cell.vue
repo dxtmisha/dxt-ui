@@ -4,12 +4,12 @@ import {
   inArray,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   CellDesign,
   type CellEmits,
   type CellSlots
-} from '@dxt-ui/constructor/Cell'
+} from '@dxtmisha/constructor/Cell'
 
 import D1Icon from '../Icon/D1Icon.vue'
 import D1Progress from '../Progress/D1Progress.vue'

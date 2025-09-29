@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { MotionTransformEmits, MotionTransformSlots } from '@dxt-ui/constructor/MotionTransform'
+import type { MotionTransformEmits, MotionTransformSlots } from '@dxtmisha/constructor/MotionTransform'
 
 import item from './D1MotionTransform.vue'
 

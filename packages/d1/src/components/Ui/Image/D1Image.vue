@@ -5,12 +5,12 @@ import {
   // isFilled,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   ImageDesign,
   type ImageEmits,
   type ImageSlots
-} from '@dxt-ui/constructor/Image'
+} from '@dxtmisha/constructor/Image'
 
 import { defaults, type ImageProps, propsValues } from './props'
 import './styleToken.scss'

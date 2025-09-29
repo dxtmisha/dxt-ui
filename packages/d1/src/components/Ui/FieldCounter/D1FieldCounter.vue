@@ -3,12 +3,12 @@ import { computed } from 'vue'
 import {
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   FieldCounterDesign,
   type FieldCounterEmits,
   type FieldCounterSlots
-} from '@dxt-ui/constructor/FieldCounter'
+} from '@dxtmisha/constructor/FieldCounter'
 
 import { defaults, type FieldCounterProps } from './props'
 import './styleToken.scss'

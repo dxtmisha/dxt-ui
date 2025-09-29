@@ -1,4 +1,4 @@
-import { type ChipPropsBasic, defaultsChip } from '@dxt-ui/constructor/Chip'
+import { type ChipPropsBasic, defaultsChip } from '@dxtmisha/constructor/Chip'
 import type { IconProps } from '../Icon'
 import type { ProgressProps } from '../Progress'
 

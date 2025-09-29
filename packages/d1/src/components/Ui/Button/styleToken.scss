@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
-@use "@dxt-ui/styles/properties" as ui;
-@use "@dxt-ui/constructor/Button/style" as Button;
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Button/style" as Button;
 
 @include ui.initDesignBasic('d1.button') {
   // Basic styles for a component

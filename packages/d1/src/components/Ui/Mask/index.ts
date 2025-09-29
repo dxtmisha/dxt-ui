@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { MaskEmits, MaskSlots } from '@dxt-ui/constructor/Mask'
+import type { MaskEmits, MaskSlots } from '@dxtmisha/constructor/Mask'
 
 import item from './D1Mask.vue'
 

@@ -4,12 +4,12 @@ import {
   inArray,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   ProgressDesign,
   type ProgressEmits,
   type ProgressSlots
-} from '@dxt-ui/constructor/Progress'
+} from '@dxtmisha/constructor/Progress'
 
 import { defaults, type ProgressProps, propsValues } from './props'
 import './styleToken.scss'

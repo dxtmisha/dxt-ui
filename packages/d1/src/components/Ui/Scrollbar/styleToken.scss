@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
-@use "@dxt-ui/styles/properties" as ui;
-@use "@dxt-ui/constructor/Scrollbar/style" as Scrollbar;
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Scrollbar/style" as Scrollbar;
 
 @include ui.initDesignBasic('d1.scrollbar') {
   // Basic styles for a component

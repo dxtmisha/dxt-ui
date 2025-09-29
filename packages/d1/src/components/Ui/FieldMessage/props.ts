@@ -1,4 +1,4 @@
-import { type FieldMessagePropsBasic, defaultsFieldMessage } from '@dxt-ui/constructor/FieldMessage'
+import { type FieldMessagePropsBasic, defaultsFieldMessage } from '@dxtmisha/constructor/FieldMessage'
 
 import type { FieldCounterProps } from '../FieldCounter'
 

@@ -4,12 +4,12 @@ import {
   inArray,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   ListDesign,
   type ListEmits,
   type ListSlots
-} from '@dxt-ui/constructor/List'
+} from '@dxtmisha/constructor/List'
 
 import { D1ListItem } from '../ListItem'
 import { D1ListGroup } from '../ListGroup'

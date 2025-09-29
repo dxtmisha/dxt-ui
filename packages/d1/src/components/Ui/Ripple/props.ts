@@ -1,4 +1,4 @@
-import { type RipplePropsBasic, defaultsRipple } from '@dxt-ui/constructor/Ripple'
+import { type RipplePropsBasic, defaultsRipple } from '@dxtmisha/constructor/Ripple'
 
 export const propsValues = {
   // :values [!] System label / Системная метка

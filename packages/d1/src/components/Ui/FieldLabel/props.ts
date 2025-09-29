@@ -1,4 +1,4 @@
-import { type FieldLabelPropsBasic, defaultsFieldLabel } from '@dxt-ui/constructor/FieldLabel'
+import { type FieldLabelPropsBasic, defaultsFieldLabel } from '@dxtmisha/constructor/FieldLabel'
 
 import type { FieldCounterProps } from '../FieldCounter'
 import type { ProgressProps } from '../Progress'

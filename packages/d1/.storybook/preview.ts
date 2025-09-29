@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/vue3-vite'
 
 import '../src/style.scss'
-import { Geo } from '@dxt-ui/functional'
+import { Geo } from '@dxtmisha/functional'
 
 Geo.set('ru-RU')
 

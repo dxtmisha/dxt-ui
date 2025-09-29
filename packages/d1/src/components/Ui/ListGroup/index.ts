@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { ListGroupEmits, ListGroupSlots } from '@dxt-ui/constructor/ListGroup'
+import type { ListGroupEmits, ListGroupSlots } from '@dxtmisha/constructor/ListGroup'
 
 import item from './D1ListGroup.vue'
 

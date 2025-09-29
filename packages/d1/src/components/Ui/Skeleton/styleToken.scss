@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
-@use "@dxt-ui/styles/properties" as ui;
-@use "@dxt-ui/constructor/Skeleton/style" as Skeleton;
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Skeleton/style" as Skeleton;
 
 @include ui.initDesignBasic('d1.skeleton') {
   // Basic styles for a component

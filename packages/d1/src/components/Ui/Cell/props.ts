@@ -1,4 +1,4 @@
-import { type CellPropsBasic, defaultsCell } from '@dxt-ui/constructor/Cell'
+import { type CellPropsBasic, defaultsCell } from '@dxtmisha/constructor/Cell'
 import type { IconProps } from '../Icon'
 import type { ProgressProps } from '../Progress'
 

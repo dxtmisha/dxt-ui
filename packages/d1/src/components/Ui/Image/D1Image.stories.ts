@@ -4,7 +4,7 @@ import D1Image from './D1Image.vue'
 import { ImageWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
-import { demoPdf, image1, phone1, phone2, phone3 } from '@dxt-ui/wiki/media'
+import { demoPdf, image1, phone1, phone2, phone3 } from '@dxtmisha/wiki/media'
 // :story-import [!] System label / Системная метка
 
 const meta = {

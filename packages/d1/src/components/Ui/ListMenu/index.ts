@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { ListMenuEmits, ListMenuSlots } from '@dxt-ui/constructor/ListMenu'
+import type { ListMenuEmits, ListMenuSlots } from '@dxtmisha/constructor/ListMenu'
 
 import item from './D1ListMenu.vue'
 

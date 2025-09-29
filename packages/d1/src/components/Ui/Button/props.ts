@@ -1,4 +1,4 @@
-import { type ButtonPropsBasic, defaultsButton } from '@dxt-ui/constructor/Button'
+import { type ButtonPropsBasic, defaultsButton } from '@dxtmisha/constructor/Button'
 import type { IconProps } from '../Icon'
 import type { ProgressProps } from '../Progress'
 

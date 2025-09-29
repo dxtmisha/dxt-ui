@@ -1,4 +1,4 @@
-import { type WindowPropsBasic, defaultsWindow } from '@dxt-ui/constructor/Window'
+import { type WindowPropsBasic, defaultsWindow } from '@dxtmisha/constructor/Window'
 import type { ScrollbarProps } from '../Scrollbar'
 import type { ImageProps } from '../Image'
 

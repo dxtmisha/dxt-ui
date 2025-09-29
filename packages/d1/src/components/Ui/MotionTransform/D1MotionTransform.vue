@@ -4,12 +4,12 @@ import {
   inArray,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   MotionTransformDesign,
   type MotionTransformEmits,
   type MotionTransformSlots
-} from '@dxt-ui/constructor/MotionTransform'
+} from '@dxtmisha/constructor/MotionTransform'
 
 import { defaults, type MotionTransformProps, propsValues } from './props'
 import './styleToken.scss'

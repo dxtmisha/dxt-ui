@@ -1,3 +1,3 @@
-import type { StorybookArgsToList } from '@dxt-ui/wiki'
+import type { StorybookArgsToList } from '@dxtmisha/wiki'
 
 export const wikiD1: StorybookArgsToList = {}

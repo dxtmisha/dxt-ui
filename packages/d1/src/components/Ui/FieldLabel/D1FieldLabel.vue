@@ -3,12 +3,12 @@ import { computed } from 'vue'
 import {
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   FieldLabelDesign,
   type FieldLabelEmits,
   type FieldLabelSlots
-} from '@dxt-ui/constructor/FieldLabel'
+} from '@dxtmisha/constructor/FieldLabel'
 
 import { D1FieldCounter } from '../FieldCounter'
 import { D1Progress } from '../Progress'

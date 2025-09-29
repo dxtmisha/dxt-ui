@@ -4,12 +4,12 @@ import {
   inArray,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   ButtonDesign,
   type ButtonEmits,
   type ButtonSlots
-} from '@dxt-ui/constructor/Button'
+} from '@dxtmisha/constructor/Button'
 
 import D1Icon from '../Icon/D1Icon.vue'
 import D1Progress from '../Progress/D1Progress.vue'

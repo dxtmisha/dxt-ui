@@ -4,12 +4,12 @@ import {
   inArray,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   BadgeDesign,
   type BadgeEmits,
   type BadgeSlots
-} from '@dxt-ui/constructor/Badge'
+} from '@dxtmisha/constructor/Badge'
 
 import D1Icon from '../Icon/D1Icon.vue'
 

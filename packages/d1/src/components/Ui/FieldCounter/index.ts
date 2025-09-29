@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { FieldCounterEmits, FieldCounterSlots } from '@dxt-ui/constructor/FieldCounter'
+import type { FieldCounterEmits, FieldCounterSlots } from '@dxtmisha/constructor/FieldCounter'
 
 import item from './D1FieldCounter.vue'
 

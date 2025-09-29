@@ -3,12 +3,12 @@ import { computed } from 'vue'
 import {
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   ListGroupDesign,
   type ListGroupEmits,
   type ListGroupSlots
-} from '@dxt-ui/constructor/ListGroup'
+} from '@dxtmisha/constructor/ListGroup'
 
 import { D1MotionTransform } from '../MotionTransform'
 

@@ -3,12 +3,12 @@ import { computed } from 'vue'
 import {
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   SkeletonDesign,
   type SkeletonEmits,
   type SkeletonSlots
-} from '@dxt-ui/constructor/Skeleton'
+} from '@dxtmisha/constructor/Skeleton'
 
 import { defaults, type SkeletonProps } from './props'
 import './styleToken.scss'

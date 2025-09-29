@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
-@use "@dxt-ui/styles/properties" as ui;
-@use "@dxt-ui/constructor/FieldLabel/style" as FieldLabel;
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/FieldLabel/style" as FieldLabel;
 
 @include ui.initDesignBasic('d1.fieldLabel') {
   // Basic styles for a component
@@ -12,15 +12,15 @@
   // :style [!] System label / Системная метка
   & {
     gap: var(--d1-sys-spacing-xs);
-    
+
     padding-bottom: var(--d1-sys-spacing-x);
-    
+
     font-family: var(--d1-sys-font-family-basic), sans-serif;
     @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
     font-weight: var(--d1-sys-font-weight-regular);
     @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
     letter-spacing: var(--d1-sys-letterSpacing-md);
-    
+
     &__required {
       @include ui.color(#{var(--d1-sys-palette-error)});
     }

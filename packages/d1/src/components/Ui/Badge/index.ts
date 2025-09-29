@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { BadgeEmits, BadgeSlots } from '@dxt-ui/constructor/Badge'
+import type { BadgeEmits, BadgeSlots } from '@dxtmisha/constructor/Badge'
 
 import item from './D1Badge.vue'
 

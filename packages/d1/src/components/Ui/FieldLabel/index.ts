@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { FieldLabelEmits, FieldLabelSlots } from '@dxt-ui/constructor/FieldLabel'
+import type { FieldLabelEmits, FieldLabelSlots } from '@dxtmisha/constructor/FieldLabel'
 
 import item from './D1FieldLabel.vue'
 

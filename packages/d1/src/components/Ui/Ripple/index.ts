@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { RippleEmits, RippleSlots } from '@dxt-ui/constructor/Ripple'
+import type { RippleEmits, RippleSlots } from '@dxtmisha/constructor/Ripple'
 
 import item from './D1Ripple.vue'
 

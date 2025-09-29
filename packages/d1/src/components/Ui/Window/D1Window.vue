@@ -5,12 +5,12 @@ import {
   isFilled,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   WindowDesign,
   type WindowEmits,
   type WindowSlots
-} from '@dxt-ui/constructor/Window'
+} from '@dxtmisha/constructor/Window'
 
 import D1Scrollbar from '../Scrollbar/D1Scrollbar.vue'
 import D1Button from '../Button/D1Button.vue'

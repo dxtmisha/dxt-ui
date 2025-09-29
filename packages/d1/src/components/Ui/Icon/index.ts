@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { IconEmits, IconSlots } from '@dxt-ui/constructor/Icon'
+import type { IconEmits, IconSlots } from '@dxtmisha/constructor/Icon'
 
 import item from './D1Icon.vue'
 

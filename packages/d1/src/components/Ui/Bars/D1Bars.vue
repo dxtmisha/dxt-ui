@@ -3,12 +3,12 @@ import { computed } from 'vue'
 import {
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   BarsDesign,
   type BarsEmits,
   type BarsSlots
-} from '@dxt-ui/constructor/Bars'
+} from '@dxtmisha/constructor/Bars'
 
 import { D1Button } from '../Button'
 

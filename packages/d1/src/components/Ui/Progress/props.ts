@@ -1,4 +1,4 @@
-import { type ProgressPropsBasic, defaultsProgress } from '@dxt-ui/constructor/Progress'
+import { type ProgressPropsBasic, defaultsProgress } from '@dxtmisha/constructor/Progress'
 
 export const propsValues = {
   // :values [!] System label / Системная метка

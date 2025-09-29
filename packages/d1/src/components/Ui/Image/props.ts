@@ -1,4 +1,4 @@
-import { type ImagePropsBasic, defaultsImage } from '@dxt-ui/constructor/Image'
+import { type ImagePropsBasic, defaultsImage } from '@dxtmisha/constructor/Image'
 
 export const propsValues = {
   // :values [!] System label / Системная метка

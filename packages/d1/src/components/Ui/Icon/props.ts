@@ -1,4 +1,4 @@
-import { type IconPropsBasic, defaultsIcon } from '@dxt-ui/constructor/Icon'
+import { type IconPropsBasic, defaultsIcon } from '@dxtmisha/constructor/Icon'
 import type { ImageProps } from '../Image'
 
 export const propsValues = {

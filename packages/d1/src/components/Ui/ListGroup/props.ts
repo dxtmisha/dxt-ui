@@ -1,4 +1,4 @@
-import { type ListGroupPropsBasic, defaultsListGroup } from '@dxt-ui/constructor/ListGroup'
+import { type ListGroupPropsBasic, defaultsListGroup } from '@dxtmisha/constructor/ListGroup'
 
 export const propsValues = {
   // :values [!] System label / Системная метка

@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { ImageEmits, ImageSlots } from '@dxt-ui/constructor/Image'
+import type { ImageEmits, ImageSlots } from '@dxtmisha/constructor/Image'
 
 import item from './D1Image.vue'
 

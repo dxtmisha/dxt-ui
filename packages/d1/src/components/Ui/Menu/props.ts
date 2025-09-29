@@ -1,4 +1,4 @@
-import { type MenuPropsBasic, defaultsMenu } from '@dxt-ui/constructor/Menu'
+import { type MenuPropsBasic, defaultsMenu } from '@dxtmisha/constructor/Menu'
 import type { ListProps } from '../List'
 import type { ListItemProps } from '../ListItem'
 import type { BarsProps } from '../Bars'

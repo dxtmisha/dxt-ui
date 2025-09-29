@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { FieldMessageEmits, FieldMessageSlots } from '@dxt-ui/constructor/FieldMessage'
+import type { FieldMessageEmits, FieldMessageSlots } from '@dxtmisha/constructor/FieldMessage'
 
 import item from './D1FieldMessage.vue'
 

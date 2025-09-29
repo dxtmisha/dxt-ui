@@ -1,4 +1,4 @@
-import { type MotionTransformPropsBasic, defaultsMotionTransform } from '@dxt-ui/constructor/MotionTransform'
+import { type MotionTransformPropsBasic, defaultsMotionTransform } from '@dxtmisha/constructor/MotionTransform'
 
 export const propsValues = {
   // :values [!] System label / Системная метка

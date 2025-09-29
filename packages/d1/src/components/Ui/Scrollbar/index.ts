@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { ScrollbarEmits, ScrollbarSlots } from '@dxt-ui/constructor/Scrollbar'
+import type { ScrollbarEmits, ScrollbarSlots } from '@dxtmisha/constructor/Scrollbar'
 
 import item from './D1Scrollbar.vue'
 

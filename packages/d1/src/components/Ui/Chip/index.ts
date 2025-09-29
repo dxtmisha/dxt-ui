@@ -1,5 +1,5 @@
 import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'
-import type { ChipEmits, ChipSlots } from '@dxt-ui/constructor/Chip'
+import type { ChipEmits, ChipSlots } from '@dxtmisha/constructor/Chip'
 
 import item from './D1Chip.vue'
 

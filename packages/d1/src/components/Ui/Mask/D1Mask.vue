@@ -4,12 +4,12 @@ import {
   inArray,
   type ConstrClasses,
   type ConstrStyles
-} from '@dxt-ui/functional'
+} from '@dxtmisha/functional'
 import {
   MaskDesign,
   type MaskEmits,
   type MaskSlots
-} from '@dxt-ui/constructor/Mask'
+} from '@dxtmisha/constructor/Mask'
 
 import { defaults, type MaskProps, propsValues } from './props'
 import './styleToken.scss'

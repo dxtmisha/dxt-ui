@@ -1,4 +1,4 @@
-import { type FieldCounterPropsBasic, defaultsFieldCounter } from '@dxt-ui/constructor/FieldCounter'
+import { type FieldCounterPropsBasic, defaultsFieldCounter } from '@dxtmisha/constructor/FieldCounter'
 
 export const propsValues = {
   // :values [!] System label / Системная метка

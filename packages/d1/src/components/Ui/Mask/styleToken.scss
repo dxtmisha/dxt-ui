@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
-@use "@dxt-ui/styles/properties" as ui;
-@use "@dxt-ui/constructor/Mask/style" as Mask;
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Mask/style" as Mask;
 
 @include ui.initDesignBasic('d1.mask') {
   // Basic styles for a component
@@ -12,21 +12,21 @@
   // :style [!] System label / Системная метка
   & {
     --d1-mask-colorOpacity: var(--d1-sys-opacity-surface-disabled);
-    
+
     &__character {
       &__item {
         &--standard {
           @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
         }
-        
+
         &--transition {
           @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
         }
-        
+
         &--special {
           @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)}); @include ui.color('init');
         }
-        
+
         &--error {
           @include ui.color(#{var(--d1-sys-palette-error)});
           @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
