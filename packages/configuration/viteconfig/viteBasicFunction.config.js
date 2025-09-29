@@ -58,6 +58,10 @@ export const viteBasicFunction = (
     },
     rollupOptions: {
       external: (id) => {
+        if (id.includes('react/')) {
+          // return false
+        }
+
         if (id.includes('node_modules')) {
           return true
         }
