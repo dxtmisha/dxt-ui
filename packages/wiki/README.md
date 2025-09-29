@@ -6,26 +6,25 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 
-## 🚀 Installation
+## Installation
 
 ```bash
 npm install @dxtmisha/wiki
 ```
 
-## ✨ Features
+## Features
 
 - 📚 **Documentation utilities** for component libraries
 - 📖 **Storybook integration** with TypeScript support
 - 🎨 **Design system wiki** components and utilities
 - 🧩 **Component descriptions** and metadata management
 - 📝 **MDX documentation** support
-- ⚡ **Tree-shaking** support for optimization
 - 📦 **TypeScript** full typing support
 - 🎯 **ESM** modern ES modules
 
-## 📖 Quick Start
+## Usage
 
-### Import main library
+### Main library
 
 ```typescript
 import { WikiStorybook } from '@dxtmisha/wiki'
@@ -33,16 +32,22 @@ import { WikiStorybook } from '@dxtmisha/wiki'
 const wiki = new WikiStorybook()
 ```
 
-### Import media utilities
+### Media utilities
 
 ```typescript
 import { mediaDescriptions } from '@dxtmisha/wiki/media'
 ```
 
-### Import storybook utilities
+### Storybook utilities
 
 ```typescript
 import { StorybookComponent } from '@dxtmisha/wiki/storybook'
+```
+
+### Storybook styles
+
+```scss
+@import '@dxtmisha/wiki/storybook/styles';
 ```
 
 ### Vue.js example
@@ -63,13 +68,9 @@ const componentArgs = {
   props: ['size', 'variant', 'disabled']
 }
 </script>
-
-<style>
-@import '@dxtmisha/wiki/storybook/styles';
-</style>
 ```
 
-## 📚 API
+## API Reference
 
 ### Main library
 
@@ -95,9 +96,6 @@ import {
 
 ```typescript
 import { StorybookComponent } from '@dxtmisha/wiki/storybook'
-
-// Storybook styles
-import '@dxtmisha/wiki/storybook/styles'
 ```
 
 ### Type definitions
@@ -111,7 +109,7 @@ import type {
 } from '@dxtmisha/wiki/types/storybookTypes'
 ```
 
-## 🛠️ Practical examples
+## Examples
 
 ### Component documentation
 
@@ -155,69 +153,6 @@ const buttonArgs = {
 }
 ```
 
-### Media descriptions
-
-```typescript
-import { mediaDescriptions } from '@dxtmisha/wiki/media'
-
-// Access component descriptions
-const buttonDescription = mediaDescriptions.button
-const iconDescription = mediaDescriptions.icon
-```
-
-## 📊 Bundle sizes
-
-| Export | Size | Description |
-|--------|------|-------------|
-| **Main library** | ~25KB | Core wiki utilities |
-| **Media utilities** | ~15KB | Component descriptions and props |
-| **Storybook integration** | ~10KB | Storybook components and utilities |
-| **Storybook styles** | ~8KB | CSS styles for storybook |
-
-## 🔧 Requirements
-
-- **Node.js**: ≥18.0.0
-- **ESM support**: Vite, Webpack 5, Rollup
-- **TypeScript**: 4.0+ (optional)
-- **Vue.js**: 3.0+ (for storybook components)
-
-## 📁 Export structure
-
-```
-@dxtmisha/wiki
-├── /                    # Main wiki utilities
-├── /media              # Component descriptions and media
-├── /storybook          # Storybook integration
-├── /storybook/styles   # CSS styles
-├── /types/*            # TypeScript types
-└── /types/**/*.d.ts    # Subtypes
-```
-
-## 🤝 Compatibility
-
-| Technology | Support |
-|------------|---------|
-| **Vite** | ✅ Full support |
-| **Webpack** | ✅ Full support |
-| **Storybook** | ✅ Recommended |
-| **Vue.js** | ✅ Recommended |
-| **React** | ✅ Compatible |
-| **TypeScript** | ✅ Full support |
-
-## 🌐 Browser Support
-
-Modern browsers that support:
-- ES modules
-- CSS custom properties
-- JavaScript ES2020+
-
-## 📄 License
+## License
 
 MIT © [dxtmisha@gmail.com](mailto:dxtmisha@gmail.com)
-
-## 🔗 Links
-
-- [📦 NPM Package](https://www.npmjs.com/package/@dxtmisha/wiki)
-- [🏠 Homepage](https://github.com/dxtmisha/dxt-ui/tree/main/packages/wiki)
-- [🐛 Issues](https://github.com/dxtmisha/dxt-ui/issues)
-- [📚 Repository](https://github.com/dxtmisha/dxt-ui)

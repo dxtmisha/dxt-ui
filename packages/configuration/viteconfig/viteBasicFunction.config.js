@@ -37,6 +37,15 @@ export const viteBasicFunction = (
   ],
   includeExtended = [],
   external = [
+    'vue',
+    'vue-router',
+    '@vue/runtime-core',
+    '@vue/runtime-dom',
+    '@vue/reactivity',
+    'react',
+    'react/jsx-runtime',
+    '@storybook',
+    '@storybook/addon-docs',
     '@dxtmisha/configuration',
     '@dxtmisha/constructor',
     '@dxtmisha/d1',
@@ -45,7 +54,9 @@ export const viteBasicFunction = (
     '@dxtmisha/player',
     '@dxtmisha/scripts',
     '@dxtmisha/styles',
-    '@dxtmisha/wiki'
+    '@dxtmisha/wiki',
+    '@emotion/react',
+    '@emotion/styled'
   ],
   externalExtended = []
 ) => defineConfig({
@@ -58,10 +69,6 @@ export const viteBasicFunction = (
     },
     rollupOptions: {
       external: (id) => {
-        if (id.includes('react/')) {
-          // return false
-        }
-
         if (id.includes('node_modules')) {
           return true
         }

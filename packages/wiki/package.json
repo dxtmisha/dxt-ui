@@ -34,28 +34,18 @@
     "prepublishOnly": "npm run build"
   },
   "files": [
-    "dist",
-    "src/styles",
+    "src",
     "README.md",
     "package.json",
     "LICENSE"
   ],
-  "main": "dist/library.js",
-  "module": "dist/library.js",
-  "types": "dist/library.d.ts",
+  "main": "src/library.ts",
+  "module": "src/library.ts",
+  "types": "src/library.ts",
   "exports": {
-    ".": {
-      "import": "./dist/library.js",
-      "types": "./dist/library.d.ts"
-    },
-    "./media": {
-      "import": "./dist/media.js",
-      "types": "./dist/media.d.ts"
-    },
-    "./storybook": {
-      "import": "./dist/storybook.js",
-      "types": "./dist/storybook.d.ts"
-    },
+    ".": "./src/library.ts",
+    "./media": "./src/media.ts",
+    "./storybook": "./src/storybook.ts",
     "./storybook/styles": "./src/styles/storybookStyle.scss",
     "./types/*": "./dist/*"
   },
@@ -64,13 +54,35 @@
   },
   "peerDependencies": {
     "@dxtmisha/functional": ">=1.0.0",
+    "@dxtmisha/media": ">=0.3.0",
+    "@storybook/addon-docs": ">=7.0.0",
+    "@storybook/blocks": ">=7.0.0",
+    "@mdx-js/react": ">=2.0.0",
+    "react": ">=17.0.0",
     "vue": ">=3.0.0"
   },
   "peerDependenciesMeta": {
+    "@dxtmisha/functional": {
+      "optional": true
+    },
+    "@dxtmisha/media": {
+      "optional": true
+    },
+    "@storybook/addon-docs": {
+      "optional": true
+    },
+    "@storybook/blocks": {
+      "optional": true
+    },
+    "@mdx-js/react": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
     "vue": {
       "optional": true
     }
   },
-  "dependencies": {},
-  "sideEffects": false
+  "dependencies": {}
 }

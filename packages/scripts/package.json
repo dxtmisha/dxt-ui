@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/scripts",
   "private": false,
-  "version": "0.3.2",
+  "version": "0.3.3",
   "type": "module",
   "description": "Development scripts and CLI tools for DXT UI projects - automated component generation, library building and project management tools",
   "keywords": [
@@ -59,6 +59,5 @@
     "typescript": ">=5.0.0",
     "vue": ">=3.0.0"
   },
-  "dependencies": {},
-  "sideEffects": false
+  "dependencies": {}
 }
