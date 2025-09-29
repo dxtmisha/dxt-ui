@@ -8,7 +8,7 @@ export default mergeConfig(
       lib: {
         entry: [
           'src/media.ts',
-          'src/documentation/storybook/storybook.tsx'
+          'src/storybook.tsx'
         ]
       }
     }

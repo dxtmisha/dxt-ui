@@ -26,21 +26,17 @@ export const viteBasicFunction = (
     'src/classes/**/*.ts',
     'src/composables/**/*.ts',
     'src/documentation/**/*.ts',
+    'src/documentation/**/*.tsx',
     'src/functions/**/*.ts',
     'src/media/**/*.ts',
     'src/types/**/*.ts',
     'src/flags.ts',
     'src/library.ts',
-    'src/media.ts'
+    'src/media.ts',
+    'src/storybook.tsx'
   ],
   includeExtended = [],
   external = [
-    'vue',
-    'vue-router',
-    '@vue/runtime-core',
-    '@vue/runtime-dom',
-    '@vue/reactivity',
-    'react',
     '@dxtmisha/configuration',
     '@dxtmisha/constructor',
     '@dxtmisha/d1',
@@ -61,10 +57,18 @@ export const viteBasicFunction = (
       fileName: (_, entryName) => `${entryName}.js`
     },
     rollupOptions: {
-      external: [
-        ...external,
-        ...externalExtended
-      ]
+      external: (id) => {
+        if (id.includes('node_modules')) {
+          return true
+        }
+
+        const externalsList = [
+          ...external,
+          ...externalExtended
+        ]
+
+        return externalsList.some(ext => id === ext || id.startsWith(ext + '/'))
+      }
     }
   },
   plugins: [

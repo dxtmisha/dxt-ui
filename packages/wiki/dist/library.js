@@ -1,6 +1,6 @@
 import { Geo as u, isObjectNotArray as a, isArray as c, toCamelCase as l } from "@dxtmisha/functional";
 import { S as n, a as o } from "./storybookTypes-CclC7CaM.js";
-import { W as k } from "./WikiStorybookDescriptions-Bpk3d4l6.js";
+import { W as k } from "./WikiStorybookDescriptions-CwhHsvbq.js";
 class p {
   /**
    * Constructor
