@@ -1,19 +1,9 @@
 # @dxtmisha/wiki
 
 Storybook + MDX–oriented documentation toolkit for the DXT UI design system.  
-Provides strongly‑typed description builders, Storybook doc page components, media asset exports, and utilities to standardize how you document and present components.
+Provides strongly‑typed description builders, Storybook documentation components, media/asset integration, and utilities to standardize component knowledge across your UI library.
 
-<div align="left">
-
-[![npm version](https://img.shields.io/npm/v/@dxtmisha/wiki.svg)](https://www.npmjs.com/package/@dxtmisha/wiki)
-[![npm downloads](https://img.shields.io/npm/dm/@dxtmisha/wiki.svg)](https://www.npmjs.com/package/@dxtmisha/wiki)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/@dxtmisha/wiki)](https://bundlephobia.com/package/@dxtmisha/wiki)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](./LICENSE)
-![Types](https://img.shields.io/badge/types-TypeScript-blue)
-![Node >=18](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)
-![ESM only](https://img.shields.io/badge/module-ESM-orange)
-
-</div>
+> This package publishes **TypeScript ESM source from `src/`** (no prebuilt `dist/`). Your toolchain (Vite / Webpack / ts-node / Next.js / etc.) must compile TypeScript & handle native ESM.
 
 ---
 
@@ -21,14 +11,16 @@ Provides strongly‑typed description builders, Storybook doc page components, m
 
 - [Features](#features)
 - [Installation](#installation)
-- [Why Use It](#why-use-it)
+- [Peer Dependencies](#peer-dependencies)
 - [Entry Points](#entry-points)
 - [Quick Start](#quick-start)
 - [API Overview](#api-overview)
-- [Typing Storybook Args](#typing-storybook-args)
-- [Media Assets](#media-assets)
+- [Storybook Integration](#storybook-integration)
+- [Typing Arguments](#typing-arguments)
+- [Media & Assets](#media--assets)
 - [MDX Content](#mdx-content)
 - [Architecture](#architecture)
+- [Source Distribution Notes](#source-distribution-notes)
 - [Tree Shaking](#tree-shaking)
 - [Versioning](#versioning)
 - [Troubleshooting](#troubleshooting)
@@ -45,45 +37,51 @@ Provides strongly‑typed description builders, Storybook doc page components, m
 
 | Area | Description |
 |------|-------------|
-| Structured Metadata | Classes to register component descriptions, possible states, and stories. |
-| Storybook Docs Components | Pre‑built doc layout parts (`StorybookMain`, `StorybookDescriptions`). |
-| Strong Typing | Enums & type helpers for Storybook args and control categories. |
-| Media Layer | Centralized exports for design assets (images, demo PDF, etc.). |
-| MDX Friendly | Ships MDX guidance fragments you can integrate in docs pipelines. |
-| Multiple Entrypoints | Fine‑grained imports: `media`, `storybook`, styles, types. |
-| ESM + Side‑Effect Free | Optimized for modern bundlers and tree shaking. |
-| Design System Ready | Built for monorepo usage and scalable component documentation. |
+| Structured Metadata | Classes for registering component descriptions, states, stories, argument metadata. |
+| Storybook Doc Components | Prebuilt React blocks (`StorybookMain`, `StorybookDescriptions`) combining Title, Subtitle, Canvas, Controls. |
+| Strong Typing | Enums (`StorybookControl`, `StorybookCategory`) and typed arg schemas. |
+| Hybrid Ecosystem | Designed for Vue component libraries with React-based Storybook Docs. |
+| Media Layer | Centralized exports (images, PDFs, description utilities). |
+| MDX Ready | Content and layout compatible with Storybook MDX flows. |
+| Granular Entrypoints | Import only what you need (`media`, `storybook`, `storybook/styles`). |
+| Pure ESM + Side‑Effect Free | Optimized for modern bundlers and tree shaking. |
+| Source Publishing | Ships raw TypeScript for maximum transparency & compilation flexibility. |
 
 ---
 
 ## Installation
 
 ```bash
-# npm
 npm install @dxtmisha/wiki
-
-# pnpm
+# or
 pnpm add @dxtmisha/wiki
-
-# yarn
+# or
 yarn add @dxtmisha/wiki
 ```
 
-Peer requirements (not auto‑installed):
-- @dxtmisha/functional >= 1.0.0
-- vue >= 3.0.0 (optional — only if you integrate with Vue parts of your system)
-
-Runtime requirement: Node >= 18.
+Then install required peers (see below).
 
 ---
 
-## Why Use It
+## Peer Dependencies
 
-- Consistent documentation output across your component library.
-- Declarative approach: describe once, render across Storybook & MDX.
-- Reduces boilerplate in Storybook Docs pages.
-- Enforces type safety for argument tables and control metadata.
-- Allows bundlers to keep footprint minimal via isolated entrypoints.
+These must exist in your workspace (they are not auto-installed):
+
+| Package | Minimum Version | Purpose |
+|---------|-----------------|---------|
+| @dxtmisha/functional | >= 1.0.0 | Shared functional utilities |
+| @dxtmisha/media | >= 0.3.0 | Shared media layer used by wiki exports |
+| @storybook/addon-docs | >= 7.0.0 | Storybook Docs runtime |
+| @storybook/blocks | >= 7.0.0 | Blocks API for docs composition |
+| @mdx-js/react | >= 2.0.0 | MDX runtime provider |
+| react | >= 17.0.0 | Rendering docs components |
+| vue | >= 3.0.0 | Consuming side for Vue components in your DS |
+
+Example combined install:
+
+```bash
+npm install @dxtmisha/functional @dxtmisha/media @storybook/addon-docs @storybook/blocks @mdx-js/react react vue
+```
 
 ---
 
@@ -91,16 +89,14 @@ Runtime requirement: Node >= 18.
 
 | Import Path | Purpose |
 |-------------|---------|
-| `@dxtmisha/wiki` | Core classes & public types. |
-| `@dxtmisha/wiki/media` | Media assets & description utilities. |
-| `@dxtmisha/wiki/storybook` | Storybook doc components. |
-| `@dxtmisha/wiki/storybook/styles` | Uncompiled SCSS styles for Storybook integration. |
+| `@dxtmisha/wiki` | Core classes & types. |
+| `@dxtmisha/wiki/media` | Media asset + description exports. |
+| `@dxtmisha/wiki/storybook` | Storybook docs layout components. |
+| `@dxtmisha/wiki/storybook/styles` | SCSS style layer for docs components. |
 
 ---
 
 ## Quick Start
-
-### 1. Register Component Descriptions
 
 ```ts
 import {
@@ -108,25 +104,61 @@ import {
   WikiStorybookItem
 } from '@dxtmisha/wiki'
 
-const descriptions = new WikiStorybookDescriptions()
+const registry = new WikiStorybookDescriptions()
 
-descriptions.add({
+registry.add({
   name: 'Button',
   description: 'Interactive button component',
   possibilities: ['Primary action', 'Secondary action', 'Disabled state'],
-  stories: [{
-    id: 'ButtonDefault',
-    name: 'Default Button'
-  }]
+  stories: [
+    { id: 'ButtonDefault', name: 'Default Button' }
+  ]
 } as WikiStorybookItem)
 ```
 
-### 2. Use in a Storybook Docs Page (React)
+---
+
+## API Overview
+
+```ts
+import {
+  WikiStorybook,
+  WikiStorybookDescriptions,
+  WikiStorybookItem,
+  StorybookControl,
+  StorybookCategory,
+  type StorybookArgs,
+  type StorybookArgsItem
+} from '@dxtmisha/wiki'
+
+import {
+  image1,
+  image2,
+  phone1,
+  phone2,
+  phone3,
+  demoPdf,
+  mediaDescriptions,
+  mediaProps
+} from '@dxtmisha/wiki/media'
+
+import {
+  StorybookMain,
+  StorybookDescriptions
+} from '@dxtmisha/wiki/storybook'
+
+import '@dxtmisha/wiki/storybook/styles'
+```
+
+---
+
+## Storybook Integration
+
+Minimal docs page (React):
 
 ```tsx
 import React from 'react'
 import { StorybookMain } from '@dxtmisha/wiki/storybook'
-// import your actual story reference
 import { Default as ButtonStory } from './Button.stories'
 
 export default function ButtonDocs() {
@@ -140,66 +172,15 @@ export default function ButtonDocs() {
 }
 ```
 
-### 3. Import Styles (if needed)
+Add SCSS (configure your bundler to handle SCSS):
 
 ```ts
 import '@dxtmisha/wiki/storybook/styles'
 ```
 
-### 4. Consume Media Assets
-
-```ts
-import { image1, demoPdf } from '@dxtmisha/wiki/media'
-```
-
 ---
 
-## API Overview
-
-Core exports (from root):
-
-```ts
-import {
-  WikiStorybook,
-  WikiStorybookDescriptions,
-  WikiStorybookItem,
-  StorybookControl,
-  StorybookCategory,
-  type StorybookArgs,
-  type StorybookArgsItem
-} from '@dxtmisha/wiki'
-```
-
-Storybook utilities:
-
-```ts
-import {
-  StorybookMain,
-  StorybookDescriptions // (if you leverage extended doc layout)
-} from '@dxtmisha/wiki/storybook'
-```
-
-Media exports:
-
-```ts
-import {
-  image1,
-  image2,
-  phone1,
-  phone2,
-  phone3,
-  demoPdf,
-  // plus description / prop utilities re-exported internally
-  mediaDescriptions,
-  mediaProps
-} from '@dxtmisha/wiki/media'
-```
-
----
-
-## Typing Storybook Args
-
-A strongly typed approach improves consistency:
+## Typing Arguments
 
 ```ts
 import {
@@ -209,151 +190,179 @@ import {
 } from '@dxtmisha/wiki'
 
 export const args: StorybookArgs = {
-  size: {
+  variant: {
     control: StorybookControl.select,
-    options: ['sm', 'md', 'lg'],
+    options: ['primary', 'secondary', 'ghost'],
     table: {
       category: StorybookCategory.style,
-      defaultValue: { summary: 'md' },
-      type: { summary: '"sm" | "md" | "lg"' }
+      defaultValue: { summary: 'primary' },
+      type: { summary: '"primary" | "secondary" | "ghost"' }
     },
-    description: 'Visual size of the component'
+    description: 'Visual emphasis style.'
   },
   disabled: {
     control: StorybookControl.boolean,
-    table: {
-      category: StorybookCategory.status,
-      defaultValue: { summary: 'false' }
-    },
-    description: 'Disable user interaction'
+    table: { category: StorybookCategory.status, defaultValue: { summary: 'false' } },
+    description: 'Disables user interaction.'
   }
 }
 ```
 
 ---
 
-## Media Assets
-
-Centralized image and PDF assets ensure consistent referencing in documentation.
+## Media & Assets
 
 ```ts
-import { image1, demoPdf } from '@dxtmisha/wiki/media'
+import {
+  image1,
+  image2,
+  phone1,
+  phone2,
+  phone3,
+  demoPdf
+} from '@dxtmisha/wiki/media'
 ```
 
-Use cases:
-- Embedding UI previews
-- Attaching UX illustration
-- Linking supporting PDF design guidelines
+Use for:
+- Visual previews in docs
+- Embedding design references
+- Linking design guideline PDFs
 
 ---
 
 ## MDX Content
 
-The package includes MDX fragments conveying usage guidance (e.g. direction handling, variant semantics, UX rationale).  
-Integrate them by adding an MDX loader in your Storybook + Vite configuration, then importing fragments as needed.
+The repository includes MDX fragments (e.g. direction management, variant behaviors).  
+Ensure Storybook is configured with Docs + MDX:
 
-> Only built outputs defined in the `files` whitelist are published. Internal MDX sources may not be directly importable unless explicitly re-exported.
+```ts
+// .storybook/main.ts
+export default {
+  addons: ['@storybook/addon-docs'],
+  framework: '@storybook/react-vite'
+}
+```
+
+Install `@mdx-js/react` to satisfy MDX runtime needs.
 
 ---
 
 ## Architecture
 
-| Layer | Role |
-|-------|------|
-| Classes | Descriptive abstractions for Storybook-compatible metadata. |
-| Documentation / Storybook | React-based doc blocks to unify page layout. |
-| Media | Curated asset exports and supporting descriptive utilities. |
-| Types | Enums, categories, and argument schema definitions. |
-| Build | Vite library mode, multiple entrypoints, ESM only. |
-
-Monorepo sample structure:
-
 ```
-packages/
-  wiki/
-    src/
-      classes/
-      documentation/
-      media/
-      types/
-    dist/
+src/
+  classes/                # Metadata + registry abstractions
+  documentation/storybook # React doc components
+  media/                  # Asset exports + MDX/description assets
+  types/                  # Enums & shared type definitions
+  styles/                 # SCSS styling for docs
+  library.ts              # Root barrel export
+  media.ts                # Media entrypoint
+  storybook.ts            # Storybook entrypoint
+```
+
+---
+
+## Source Distribution Notes
+
+Because only raw `.ts` / `.tsx` sources are published:
+- Your bundler must process TypeScript (Vite / esbuild / SWC / ts-loader).
+- The `types` field points to `src/library.ts`; TypeScript will walk the source tree.
+- If you require generated declaration files in your build output, run `tsc --emitDeclarationOnly` in your own pipeline.
+- CommonJS environments must either switch to ESM or use dynamic `import()` with a transpile step.
+
+Suggested consumer `tsconfig.json` excerpt:
+
+```jsonc
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true
+  }
+}
 ```
 
 ---
 
 ## Tree Shaking
 
-The package sets `sideEffects: false` and ships pure ESM.  
-Example minimal import:
+Static ESM exports + no side effects → bundlers remove unused symbols automatically.
 
 ```ts
 import { WikiStorybookDescriptions } from '@dxtmisha/wiki'
+// Only this class is included if nothing else is referenced.
 ```
-
-Your bundler will exclude unused exports automatically (Vite / Rollup / Webpack 5 / Turbopack).
 
 ---
 
 ## Versioning
 
 Semantic Versioning:
-- Patch: Bug fixes / documentation changes.
-- Minor: Backwards-compatible feature additions.
-- Major: Breaking API or structural changes.
+- Patch: bug fixes / internal refactors / documentation.
+- Minor: additive backwards-compatible features.
+- Major: breaking changes / removals / structural shifts.
 
 ---
 
 ## Troubleshooting
 
-| Problem | Cause | Solution |
-|---------|-------|----------|
-| "Cannot use import statement" | CJS environment not ESM-aware | Enable ESM or transpile via bundler. |
-| Missing Storybook styles | Styles not imported | `import '@dxtmisha/wiki/storybook/styles'`. |
-| Asset 404 | Direct path import | Use named exports from `@dxtmisha/wiki/media`. |
-| Control table mis-render | Wrong enum | Use `StorybookControl` and `StorybookCategory` constants. |
+| Problem | Cause | Resolution |
+|---------|-------|-----------|
+| "Cannot use import statement" | CJS environment only | Enable ESM or transpile to CJS. |
+| Missing React runtime | React not installed | Install `react` (peer). |
+| Vue integration errors | Vue peer missing | Install `vue@^3`. |
+| Storybook docs blank | Addon not present | Install `@storybook/addon-docs` + config. |
+| SCSS not loading | No SCSS support | Add appropriate loader (e.g. Vite handles automatically with plugin). |
+| Type warnings for peers | Peers not installed | Install listed peer dependencies. |
+| MDX components fail | MDX runtime missing | Install `@mdx-js/react` and ensure addon-docs enabled. |
 
 ---
 
 ## FAQ
 
-**Is React a peer dependency?**  
-No. React is used internally for Storybook doc components; you typically have React available in Storybook if you use those components.
+**Do I get precompiled JavaScript?**  
+No—intentional for transparency and flexible consumer builds.
 
-**Can I extend component description shape?**  
-Yes—compose a higher-order wrapper around `WikiStorybookItem` or maintain additional metadata externally.
+**Will this work in Node-only environments?**  
+It targets design system + Storybook workflows; pure Node usage is not primary.
 
-**Does this replace all Storybook docs files?**  
-It standardizes common layout and metadata; you can still write custom MDX where needed.
+**Can I extend metadata objects?**  
+Yes—compose or wrap `WikiStorybookItem` shape.
 
-**Can I import raw MDX fragments directly?**  
-Only if they are exported through an entrypoint and your bundler is configured for MDX.
+**Do I have to use Storybook?**  
+You can still leverage the metadata classes outside Storybook, but doc components assume Storybook context.
+
+**React + Vue both required?**  
+React: for docs components. Vue: for component layer integration. If you only use metadata & not Vue, you can still have Vue installed as a lightweight peer satisfaction.
 
 ---
 
 ## Roadmap
 
-- Automated prop extraction
-- CLI for scaffolding description objects & MDX docs
-- Multilingual description layering
-- Programmatic story args inference
+- Prop / arg inference from component source
+- CLI scaffolding for description & MDX templates
+- Localized documentation layering
+- Optional prebuilt ESM + declaration bundle
+- Extended asset manifest generation
 
 ---
 
 ## Contributing
 
-1. Fork repository
-2. Create a branch: `feat/<short-name>`
-3. Run build: `npm run build`
-4. Include concise examples & typings
-5. Open a PR with a clear summary
+1. Fork
+2. Branch: `feat/<short-name>`
+3. Implement & keep examples minimal
+4. Ensure type correctness
+5. Open PR with concise rationale
 
 ---
 
 ## Security
 
-No network calls are performed at runtime.  
-Report vulnerabilities via email: `dxtmisha@gmail.com` (subject: SECURITY @dxtmisha/wiki).  
-Please avoid filing public issues for undisclosed vulnerabilities.
+No runtime network operations.  
+Report vulnerabilities privately: `dxtmisha@gmail.com` (subject: SECURITY @dxtmisha/wiki).
 
 ---
 
@@ -372,9 +381,9 @@ import {
   StorybookControl,
   StorybookCategory
 } from '@dxtmisha/wiki'
-import { image1 } from '@dxtmisha/wiki/media'
+import { image1, demoPdf } from '@dxtmisha/wiki/media'
 import { StorybookMain } from '@dxtmisha/wiki/storybook'
 import '@dxtmisha/wiki/storybook/styles'
 ```
 
-Happy documenting!
+Happy documenting.
