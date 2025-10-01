@@ -41,6 +41,7 @@
     "dxt-component-wiki": "bin/design-component-wiki.ts",
     "dxt-constructor": "bin/design-constructor.ts",
     "dxt-library": "bin/design-library.ts",
+    "dxt-package": "bin/design-package.ts",
     "dxt-ui": "bin/design-ui.ts"
   },
   "exports": {

@@ -31,6 +31,7 @@ export const UI_DIR_WIKI = 'wiki'
 export const UI_DIR_TEMPORARY = 'temporary'
 export const UI_DIR_DIST = 'dist'
 export const UI_DIR_PROMPT = 'prompt'
+export const UI_DIR_PACKAGES = 'packages'
 
 /** Name of the path to tokens/ Название пути к токенам */
 export const UI_DIRS_TOKENS = [UI_DIR_IN, 'media']
