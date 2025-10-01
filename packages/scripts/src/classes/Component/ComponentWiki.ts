@@ -52,11 +52,13 @@ export class ComponentWiki {
   protected readonly aiFile: ComponentWikiFile
 
   /**
-   * @param path component relative path inside components dirs
-   * @param path относительный путь компонента внутри директорий компонентов
+   * Constructor
+   * @param path component relative path inside components dirs/ относительный путь компонента внутри директорий компонентов
+   * @param prompt additional custom prompt text to append/ дополнительный кастомный текст промпта для добавления
    */
   constructor(
-    protected readonly path: string
+    protected readonly path: string,
+    protected readonly prompt: string = ''
   ) {
     this.viteSample = new ComponentWikiFile(FILE_VITE_SAMPLE)
     this.promptSample = new ComponentWikiFile(FILE_PROMPT_SAMPLE)
@@ -98,7 +100,7 @@ export class ComponentWiki {
    * Оркестрирует билд + извлечение файлов + генерацию через ИИ.
    */
   make(): void {
-    console.log('Component wiki: ', this.path)
+    console.log('Component wiki:', this.path)
 
     this.build()
       .then((status) => {
@@ -294,6 +296,7 @@ ${content}
         .replace('[stories]', this.storiesFile.read())
         .replace('[md]', this.mdFile.read())
         .replace(/\[wikiLanguage]/g, PropertiesConfig.getWikiLanguage())
+        + ` ${this.prompt}`
     )
   }
 

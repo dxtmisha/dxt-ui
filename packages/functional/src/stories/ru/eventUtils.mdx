@@ -1,0 +1,46 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Event Utils'/>
+
+# Утилиты для работы с событиями
+
+Набор функций для обработки и управления DOM событиями.
+
+## `eventStopPropagation`
+
+Останавливает распространение события и предотвращает выполнение действия по умолчанию. Комбинирует `preventDefault()` и `stopPropagation()`.
+
+**Параметры:**
+- `event: Event` — экземпляр события для остановки
+
+```javascript
+import { eventStopPropagation } from '@dxtmisha/functional'
+
+// Остановка события клика
+button.addEventListener('click', (event) => {
+  eventStopPropagation(event)
+  // Событие не всплывет к родителям и не выполнит действие по умолчанию
+})
+
+// В обработчике формы
+form.addEventListener('submit', (event) => {
+  if (!isValid) {
+    eventStopPropagation(event) // предотвращает отправку формы
+  }
+})
+
+// Остановка клавиатурных событий
+input.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    eventStopPropagation(event)
+    // Enter не вызовет отправку формы
+  }
+})
+
+// В обработчике ссылки
+link.addEventListener('click', (event) => {
+  eventStopPropagation(event)
+  // Переход по ссылке не произойдет
+  showModal()
+})
+```

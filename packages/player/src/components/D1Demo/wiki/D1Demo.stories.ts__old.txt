@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
-import ComponentDoc from './../ComponentDoc.vue'
+import D1Demo from './../D1Demo.vue'
 
 const meta = {
-  title: '[project]/ComponentDoc',
-  component: ComponentDoc
-} satisfies Meta<typeof ComponentDoc>
+  title: '@dxtmisha/player/D1Demo',
+  component: D1Demo
+} satisfies Meta<typeof D1Demo>
 
 export default meta
 
@@ -13,12 +13,12 @@ type Story = StoryObj<typeof meta>
 
 export const Component: Story = {
   render: args => ({
-    components: { ComponentDoc },
+    components: { D1Demo },
     setup() {
       return { args }
     },
     template: `<div>
-      <ComponentDoc v-bind="args" />
+      <D1Demo v-bind="args" />
     </div>`
   })
 }

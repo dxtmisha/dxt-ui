@@ -9,7 +9,7 @@ import { spawn } from 'node:child_process'
 
     const child = spawn(
       'npx',
-      ['dxt-component-wiki', '[path]', prompt],
+      ['dxt-component-wiki', 'D1Demo', prompt],
       { stdio: 'inherit' }
     )
 

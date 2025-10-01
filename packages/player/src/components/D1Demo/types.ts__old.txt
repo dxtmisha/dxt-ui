@@ -1,0 +1,17 @@
+export type D1DemoEmits = {
+  click: []
+}
+
+export interface D1DemoSlots {
+  top? (props: any): any
+  default? (props: any): any
+}
+
+export interface D1DemoProps {
+  x?: string
+  y?: string
+}
+
+export const D1DemoDefaults: D1DemoProps = {
+  // value: 'value'
+}

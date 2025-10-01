@@ -1,11 +1,11 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 import {StorybookMain} from '@dxtmisha/wiki/storybook'
 
-import * as Component from './ComponentDoc.stories'
+import * as Component from './D1Demo.stories'
 
 <Meta of={Component}/>
 <StorybookMain
-    name={'ComponentDoc'}
+    name={'D1Demo'}
     description={'[description]'}
     story={Component.Component}
 />

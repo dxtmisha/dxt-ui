@@ -1,0 +1,258 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Data Utils'/>
+
+# Утилиты для работы с данными
+
+Набор функций для обработки, итерации и управления данными.
+
+## `executeUse`
+
+Возвращает функцию для использования при инициализации методов управления в Vue компонентах. Поддерживает кеширование, наследование через provide/inject и автоматическую очистку при размонтировании.
+
+**Параметры:**
+- `callback: (...args: O) => R` — функция для инициализации
+- `unmounted: boolean` — удалять ли данные из кеша при размонтировании (по умолчанию `true`)
+- `isGlobal: boolean` — является ли объект глобальным (по умолчанию `false`)
+- `isProvide: boolean` — выполнение как наследие компонента (по умолчанию `true`)
+
+```javascript
+import { executeUse } from '@dxtmisha/functional'
+
+// Простое кеширование
+const useCounter = executeUse(() => {
+  return { count: 0, increment: () => count++ }
+})
+
+const counter = useCounter() // создается один раз
+const sameCounter = useCounter() // возвращает тот же объект
+
+// С параметрами
+const useStore = executeUse((initialState) => {
+  return reactive({ ...initialState })
+})
+
+const store = useStore({ user: null, loading: false })
+
+// Глобальное состояние
+const useGlobalConfig = executeUse(
+  () => ({ theme: 'dark', lang: 'ru' }),
+  true,   // unmounted
+  true,   // isGlobal
+  false   // isProvide
+)
+
+// Без автоочистки
+const usePersistentData = executeUse(
+  () => loadFromStorage(),
+  false   // не удалять при размонтировании
+)
+```
+
+## `forEach`
+
+Универсальная функция итерации для массивов, объектов и Map. Выполняет указанную функцию для каждого элемента и возвращает массив результатов.
+
+**Параметры:**
+- `data: D` — объект для итерации (массив, объект или Map)
+- `callback: (item: T, key: K, dataMain: typeof data) => R` — функция, вызываемая для каждого элемента
+
+```javascript
+import { forEach } from '@dxtmisha/functional'
+
+// Итерация по массиву
+forEach([1, 2, 3], (item, index) => {
+  console.log(`Item ${index}: ${item}`)
+  return item * 2
+})
+// Возвращает: [2, 4, 6]
+
+// Итерация по объекту
+forEach({ a: 1, b: 2, c: 3 }, (value, key) => {
+  console.log(`${key}: ${value}`)
+  return `${key}=${value}`
+})
+// Возвращает: ['a=1', 'b=2', 'c=3']
+
+// Итерация по Map
+const map = new Map([['x', 10], ['y', 20]])
+forEach(map, (value, key) => {
+  return `${key}:${value}`
+})
+// Возвращает: ['x:10', 'y:20']
+
+// Фильтрация через undefined
+forEach([1, 2, 3], (item) => {
+  return item % 2 === 0 ? item : undefined
+})
+// Возвращает: [2] (undefined отфильтрованы)
+```
+
+## `getClipboardData`
+
+Асинхронно получает текстовые данные из буфера обмена. Работает как с событиями clipboard, так и с прямым доступом к navigator.clipboard.
+
+**Параметры:**
+- `event?: ClipboardEvent` — событие буфера обмена (опционально)
+
+```javascript
+import { getClipboardData } from '@dxtmisha/functional'
+
+// Получение данных из события paste
+document.addEventListener('paste', async (event) => {
+  const text = await getClipboardData(event)
+  console.log('Вставленный текст:', text)
+})
+
+// Прямое чтение из буфера обмена
+const readClipboard = async () => {
+  const text = await getClipboardData()
+  inputElement.value = text
+}
+
+// В обработчике drag&drop
+dropZone.addEventListener('paste', async (event) => {
+  event.preventDefault()
+  const clipboardText = await getClipboardData(event)
+  processText(clipboardText)
+})
+
+// Безопасное чтение с обработкой ошибок
+try {
+  const content = await getClipboardData()
+  if (content) {
+    handleClipboardContent(content)
+  }
+} catch (error) {
+  console.log('Нет доступа к буферу обмена')
+}
+```
+
+## `getColumn`
+
+Извлекает значения определенного столбца (свойства) из массива объектов, возвращая новый массив значений.
+
+**Параметры:**
+- `array: ObjectOrArray<T>` — массив объектов для обработки
+- `column: K` — ключ столбца, значения которого нужно извлечь
+
+```javascript
+import { getColumn } from '@dxtmisha/functional'
+
+// Извлечение имен из массива пользователей
+const users = [
+  { id: 1, name: 'Alice', age: 25 },
+  { id: 2, name: 'Bob', age: 30 },
+  { id: 3, name: 'Charlie', age: 35 }
+]
+const names = getColumn(users, 'name')
+// Возвращает: ['Alice', 'Bob', 'Charlie']
+
+// Извлечение ID
+const ids = getColumn(users, 'id')
+// Возвращает: [1, 2, 3]
+
+// Работа с вложенными свойствами
+const products = [
+  { title: 'Phone', price: { value: 999, currency: 'USD' } },
+  { title: 'Laptop', price: { value: 1299, currency: 'USD' } }
+]
+const prices = getColumn(products, 'price')
+// Возвращает: [{ value: 999, currency: 'USD' }, { value: 1299, currency: 'USD' }]
+
+// Обработка undefined значений
+const mixed = [
+  { name: 'John' },
+  { name: 'Jane' },
+  { age: 25 } // нет свойства name
+]
+const allNames = getColumn(mixed, 'name')
+// Возвращает: ['John', 'Jane', undefined]
+```
+
+## `getExp`
+
+Создает регулярное выражение для безопасного поиска текста с автоматическим экранированием специальных символов.
+
+**Параметры:**
+- `value: string` — текст для поиска (будет экранирован)
+- `flags: string` — флаги регулярного выражения (по умолчанию `'ig'`)
+- `pattern: string` — шаблон, где `:value` заменится на экранированное значение (по умолчанию `:value`)
+
+```javascript
+import { getExp } from '@dxtmisha/functional'
+
+// Простой поиск
+const regex = getExp('hello')
+// Создает: /hello/ig
+
+// Поиск со специальными символами
+const regexSpecial = getExp('$100 (discount)')
+// Создает: /\$100 \(discount\)/ig (символы автоматически экранированы)
+
+// Пользовательские флаги
+const regexCaseSensitive = getExp('Test', 'g')
+// Создает: /Test/g (без игнорирования регистра)
+
+// Пользовательский шаблон
+const regexWordBoundary = getExp('word', 'gi', '\\b:value\\b')
+// Создает: /\bword\b/gi (поиск целого слова)
+
+// Использование в поиске
+const text = 'Hello world! Hello everyone!'
+const matches = text.match(getExp('hello'))
+console.log(matches) // ['Hello', 'Hello'] (с флагом 'i')
+```
+
+## `getItemByPath`
+
+Получает значение из вложенного объекта по строковому пути с точечной нотацией.
+
+**Параметры:**
+- `item: T` — объект для обхода
+- `path: string` — путь к данным через точку (например, `'user.profile.name'`)
+
+```javascript
+import { getItemByPath } from '@dxtmisha/functional'
+
+// Простое извлечение
+const user = {
+  name: 'John',
+  profile: {
+    email: 'john@example.com',
+    settings: {
+      theme: 'dark'
+    }
+  }
+}
+
+const name = getItemByPath(user, 'name')
+// Возвращает: 'John'
+
+const email = getItemByPath(user, 'profile.email')
+// Возвращает: 'john@example.com'
+
+const theme = getItemByPath(user, 'profile.settings.theme')
+// Возвращает: 'dark'
+
+// Несуществующий путь
+const notFound = getItemByPath(user, 'profile.age')
+// Возвращает: '' (пустая строка)
+
+const deepNotFound = getItemByPath(user, 'profile.settings.language.locale')
+// Возвращает: '' (пустая строка)
+
+// Практическое использование
+const config = {
+  api: {
+    endpoints: {
+      users: '/api/users',
+      posts: '/api/posts'
+    }
+  }
+}
+
+const usersEndpoint = getItemByPath(config, 'api.endpoints.users')
+// Возвращает: '/api/users'
+```
+

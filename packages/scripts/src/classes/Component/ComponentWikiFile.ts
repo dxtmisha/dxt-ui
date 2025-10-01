@@ -35,6 +35,7 @@ export class ComponentWikiFile {
         .trim()
         .replace(/^```(ts|md)/, '')
         .replace(/```$/, '')
+        .trim()
 
       if (contentEdit !== contentOld.trim()) {
         PropertiesFile.writeByPath(

@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/wiki",
   "private": false,
-  "version": "0.23.7",
+  "version": "0.23.9",
   "type": "module",
   "description": "Wiki documentation and storybook utilities for DXT UI design system",
   "keywords": [
@@ -37,7 +37,7 @@
   "exports": {
     ".": "./src/library.ts",
     "./media": "./src/media.ts",
-    "./storybook": "./src/storybook.ts",
+    "./storybook": "./src/storybook.tsx",
     "./storybook/styles": "./src/styles/storybookStyle.scss"
   },
   "engines": {
@@ -46,8 +46,7 @@
   "peerDependencies": {
     "@dxtmisha/functional": ">=1.0.0",
     "@dxtmisha/media": ">=0.3.0",
-    "@storybook/addon-docs": ">=7.0.0",
-    "@storybook/blocks": ">=7.0.0",
+    "@storybook/addon-docs": ">=9.0.0",
     "@mdx-js/react": ">=2.0.0",
     "react": ">=17.0.0",
     "vue": ">=3.0.0"

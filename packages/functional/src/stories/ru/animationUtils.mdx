@@ -1,0 +1,67 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Animation Utils'/>
+
+# Утилиты для анимации
+
+Набор функций для создания и управления анимациями.
+
+## `frame`
+
+Циклически вызывает `requestAnimationFrame` для создания плавных анимаций. Выполняет callback-функцию в каждом кадре до тех пор, пока функция `next` возвращает `true`.
+
+**Параметры:**
+- `callback: () => void` — функция, выполняемая в каждом кадре анимации
+- `next?: () => boolean` — функция условия продолжения анимации (опционально)
+- `end?: () => void` — функция, выполняемая при завершении анимации (опционально)
+
+```javascript
+import { frame } from '@dxtmisha/functional'
+
+// Простая анимация
+let position = 0
+frame(
+  () => {
+    element.style.left = position + 'px'
+    position += 2
+  },
+  () => position < 300,  // продолжать пока position < 300
+  () => console.log('Анимация завершена')
+)
+
+// Анимация с временными ограничениями
+let startTime = Date.now()
+const duration = 1000 // 1 секунда
+
+frame(
+  () => {
+    const elapsed = Date.now() - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    element.style.opacity = progress
+  },
+  () => Date.now() - startTime < duration,
+  () => element.style.opacity = '1'
+)
+
+// Бесконечная анимация
+let angle = 0
+frame(
+  () => {
+    angle += 0.1
+    element.style.transform = `rotate(${angle}rad)`
+  },
+  () => true  // бесконечно
+)
+
+// Анимация счетчика
+let count = 0
+const target = 100
+frame(
+  () => {
+    count += 2
+    counterElement.textContent = count
+  },
+  () => count < target,
+  () => counterElement.textContent = target
+)
+```
