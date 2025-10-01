@@ -1,5 +1,5 @@
 {
-  "wikiLanguage": "ru",
+  "wikiLanguage": "en",
   "aiType": "gemini",
   "aiModel": "gemini-2.5-flash",
   "aiKey": "key"

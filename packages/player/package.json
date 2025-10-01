@@ -21,7 +21,6 @@
         "./dist/library.js"
       ]
     },
-    "./wiki": "./src/wiki/wiki.ts",
     "./types/*": "./dist/*",
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },

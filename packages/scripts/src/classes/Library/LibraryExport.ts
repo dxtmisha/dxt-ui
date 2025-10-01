@@ -61,7 +61,7 @@ export class LibraryExport {
     UI_DIRS_LIST_EXPORT
       .forEach((directory) => {
         const path = this.getPath(directory)
-        const list = PropertiesFile.readDirRecursive(path)
+        const list = PropertiesFile.readDirRecursiveWithIndex(path)
 
         if (list.length > 0) {
           files.push({

@@ -2,7 +2,7 @@ import { toArray, toKebabCase, transformation } from '@dxtmisha/functional'
 
 import requireFs from 'fs'
 import requirePath from 'path'
-import { UI_MODULES, UI_PROJECT_NAME } from '../../config'
+import { UI_FILE_INDEX, UI_MODULES, UI_PROJECT_NAME } from '../../config'
 
 export type PropertiesFilePath = string | string[]
 export type PropertiesFileValue<T = any> = string | Record<string, T>
@@ -241,6 +241,20 @@ export class PropertiesFile {
   }
 
   /**
+   * Reads the contents of the directory recursively.
+   *
+   * Читает содержимое директории рекурсивно.
+   * @param path path to the directory/ путь к директории
+   */
+  static readDirRecursiveWithIndex(
+    path: PropertiesFilePath
+  ): string[] {
+    return this
+      .readDirAndFileRecursive(path, undefined, true)
+      .filter(paths => !this.isDir(paths))
+  }
+
+  /**
    * Reads only directories recursively.
    *
    * Читает только директории рекурсивно.
@@ -260,23 +274,34 @@ export class PropertiesFile {
    * Читает содержимое директории и файлы рекурсивно.
    * @param path path to the directory/ путь к директории
    * @param fullPath full path for recursion/ полный путь для рекурсии
+   * @param isIndex whether to include the root directory in the list/ включать ли корневую директорию в список
    */
   static readDirAndFileRecursive(
     path: PropertiesFilePath,
-    fullPath: PropertiesFilePath = []
+    fullPath: PropertiesFilePath = [],
+    isIndex: boolean = false
   ): string[] {
     const dirs = this.readDir(path)
     const data: string[] = []
 
     dirs.forEach((dir) => {
       const paths = [...path, dir]
-      data.push(this.joinPath([...fullPath, dir]))
+      const fullPaths = [...fullPath, dir]
+
+      data.push(this.joinPath(fullPaths))
 
       if (this.isDir(paths)) {
-        data.push(...this.readDirAndFileRecursive(
-          paths,
-          [...fullPath, dir]
-        ))
+        if (
+          isIndex
+          && this.is([...paths, UI_FILE_INDEX])
+        ) {
+          data.push(this.joinPath([...fullPaths, UI_FILE_INDEX]))
+        } else {
+          data.push(...this.readDirAndFileRecursive(
+            paths,
+            [...fullPath, dir]
+          ))
+        }
       }
     })
 
