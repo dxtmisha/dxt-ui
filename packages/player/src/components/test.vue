@@ -6,6 +6,9 @@
 
 </template>
 
-<style scoped lang="scss">
-
+<style lang="scss">
+.test {
+  color: blue;
+  background-color: #0b2a32;
+}
 </style>

@@ -1,3 +1,5 @@
+import { toPathStandardSep } from '../../functions/toPathStandardSep'
+
 import { PropertiesFile } from './PropertiesFile'
 
 import type { AiType, DesignUiConfig } from '../../types/configTypes'
@@ -95,8 +97,44 @@ export class PropertiesConfig {
     return this.config.aiKey ?? ''
   }
 
+  /**
+   * Recursively retrieves and merges extended configuration files.
+   *
+   * Рекурсивно получает и объединяет расширенные файлы конфигурации.
+   * @param file path to the configuration file/ путь к файлу конфигурации
+   * @param dir array of directory paths/ массив путей директорий
+   */
+  protected static getExtends(
+    file: string,
+    dir: string[] = []
+  ): DesignUiConfig {
+    const path = [...dir, toPathStandardSep(file)]
+    const read = PropertiesFile.readFile<DesignUiConfig>(path)
+
+    if (read?.extends) {
+      return {
+        ...this.getExtends(
+          read.extends,
+          [PropertiesFile.getPathDir(path)]
+        ),
+        ...read
+      }
+    }
+
+    return read ?? ({} as DesignUiConfig)
+  }
+
   static {
-    const file = PropertiesFile.readFile<DesignUiConfig>(UI_CONFIG_FILE)
+    let file = PropertiesFile.readFile<DesignUiConfig>(UI_CONFIG_FILE)
+
+    if (
+      file?.extends
+    ) {
+      file = {
+        ...this.getExtends(file.extends),
+        ...file
+      }
+    }
 
     if (file) {
       this.config = file

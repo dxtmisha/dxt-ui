@@ -15,6 +15,7 @@ import dts from 'vite-plugin-dts'
  * @param includeExtended extra patterns / дополнительные паттерны
  * @param external external dependencies / внешние зависимости
  * @param externalExtended extra dependencies / дополнительные зависимости
+ * @param fileCssName name of the output CSS file / имя выходного CSS файла
  * @returns Vite config / конфигурация Vite
  */
 export const viteBasicFunction = (
@@ -58,7 +59,8 @@ export const viteBasicFunction = (
     '@emotion/react',
     '@emotion/styled'
   ],
-  externalExtended = []
+  externalExtended = [],
+  fileCssName = 'style.css'
 ) => defineConfig({
   build: {
     lib: {
@@ -79,6 +81,21 @@ export const viteBasicFunction = (
         ]
 
         return externalsList.some(ext => id === ext || id.startsWith(ext + '/'))
+      },
+      output: {
+        assetFileNames: (assetInfo) => {
+          const fileName = assetInfo.names?.[0] || assetInfo.originalFileName
+
+          if (
+            fileCssName
+            && fileName
+            && fileName.endsWith('.css')
+          ) {
+            return fileCssName
+          }
+
+          return '[name]-[hash][extname]'
+        }
       }
     }
   },

@@ -1,8 +1,9 @@
 {
-  "name": "@dxtmisha/player",
-  "private": false,
+  "name": "@packages/library",
+  "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "[description]",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
@@ -11,6 +12,11 @@
     "component": "dxt-component",
     "library": "dxt-library"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
   "main": "dist/library.js",
   "module": "dist/library.js",
   "types": "dist/library.d.ts",
@@ -25,12 +31,6 @@
     "./style": "./dist/style.css",
     "./types/*": "./dist/*",
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
-  },
-  "buildOptions": {
-    "name": "@dxt-ui/player",
-    "formats": [
-      "esm-bundler"
-    ]
   },
   "dependencies": {},
   "devDependencies": {}

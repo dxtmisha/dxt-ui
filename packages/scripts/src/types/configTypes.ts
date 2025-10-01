@@ -3,6 +3,9 @@ export type AiType = 'gemini'
 
 /** Configuration structure for the design system UI project / Структура конфигурации для проекта дизайн-системы UI */
 export type DesignUiConfig = {
+  /** Extends another configuration file / Расширяет другой файл конфигурации */
+  extends?: string
+
   /** Project name / Название проекта */
   project: string
 
