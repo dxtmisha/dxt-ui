@@ -95,9 +95,15 @@ export abstract class AiAbstract<AI = any> {
   async generate(contents: string): Promise<string> {
     if (!this.ai) {
       this.init()
+
+      console.log(
+        `[Ai] Initialized AI client with model: ${this.model}`
+      )
     }
 
     if (this.ai) {
+      console.log('[Ai] Generating')
+
       return await this.response(
         this.model,
         this.getContents(contents)

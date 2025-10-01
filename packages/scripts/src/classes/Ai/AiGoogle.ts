@@ -24,7 +24,6 @@ export class AiGoogle extends AiAbstract<GoogleGenAI> {
    * Инициализирует экземпляр клиента GoogleGenAI.
    */
   protected init(): void {
-    console.log('this.key', this.key)
     this.ai = new GoogleGenAI({ apiKey: this.key })
   }
 
