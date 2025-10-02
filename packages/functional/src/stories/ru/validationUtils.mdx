@@ -1,0 +1,284 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Validation Utils'/>
+
+# Утилиты валидации
+
+Набор функций для проверки типов данных и валидации значений.
+
+## `inArray`
+
+Проверяет, содержится ли значение в массиве.
+
+**Параметры:**
+- `array: T[]` — массив для проверки
+- `value: T` — проверяемое значение
+
+```javascript
+import { inArray } from '@dxtmisha/functional'
+
+inArray([1, 2, 3], 2) // true
+inArray(['a', 'b'], 'c') // false
+inArray([{id: 1}, {id: 2}], {id: 1}) // false (разные ссылки)
+```
+
+## `intersectKey`
+
+Проверяет пересечение ключей между объектами или массивами.
+
+**Параметры:**
+- `data1: Record<string, any> | any[]` — первый объект или массив
+- `data2: Record<string, any> | any[]` — второй объект или массив
+
+```javascript
+import { intersectKey } from '@dxtmisha/functional'
+
+intersectKey({a: 1, b: 2}, {b: 3, c: 4}) // true (есть общий ключ 'b')
+intersectKey([1, 2], [3, 4]) // false
+intersectKey({}, {a: 1}) // false
+```
+
+## `isArray`
+
+Проверяет, является ли значение массивом.
+
+**Параметры:**
+- `value: T` — проверяемое значение
+
+```javascript
+import { isArray } from '@dxtmisha/functional'
+
+isArray([1, 2, 3]) // true
+isArray('string') // false
+isArray({}) // false
+```
+
+## `isDifferent`
+
+Проверяет, отличаются ли два значения.
+
+**Параметры:**
+- `value1: any` — первое значение
+- `value2: any` — второе значение
+
+```javascript
+import { isDifferent } from '@dxtmisha/functional'
+
+isDifferent(1, 2) // true
+isDifferent('hello', 'hello') // false
+isDifferent({a: 1}, {a: 1}) // true (разные ссылки)
+```
+
+## `isDomRuntime`
+
+Проверяет, выполняется ли код в браузерной среде (есть ли DOM).
+
+```javascript
+import { isDomRuntime } from '@dxtmisha/functional'
+
+isDomRuntime() // true в браузере, false в Node.js
+```
+
+## `isFilled`
+
+Проверяет, заполнено ли значение (не пустое и не undefined/null).
+
+**Параметры:**
+- `value: any` — проверяемое значение
+
+```javascript
+import { isFilled } from '@dxtmisha/functional'
+
+isFilled('hello') // true
+isFilled('') // false
+isFilled(0) // true
+isFilled(null) // false
+```
+
+## `isFloat`
+
+Проверяет, является ли значение числом с плавающей точкой.
+
+**Параметры:**
+- `value: any` — проверяемое значение
+
+```javascript
+import { isFloat } from '@dxtmisha/functional'
+
+isFloat(3.14) // true
+isFloat(5) // false
+isFloat('3.14') // false
+```
+
+## `isFunction`
+
+Проверяет, является ли значение функцией.
+
+**Параметры:**
+- `value: any` — проверяемое значение
+
+```javascript
+import { isFunction } from '@dxtmisha/functional'
+
+isFunction(() => {}) // true
+isFunction(function() {}) // true
+isFunction('string') // false
+```
+
+## `isInDom`
+
+Проверяет, находится ли элемент в DOM дереве.
+
+**Параметры:**
+- `element: Element` — проверяемый элемент
+
+```javascript
+import { isInDom } from '@dxtmisha/functional'
+
+const element = document.createElement('div')
+isInDom(element) // false (не добавлен в DOM)
+document.body.appendChild(element)
+isInDom(element) // true
+```
+
+## `isIntegerBetween`
+
+Проверяет, является ли значение целым числом в указанном диапазоне.
+
+**Параметры:**
+- `value: any` — проверяемое значение
+- `min: number` — минимальное значение
+- `max: number` — максимальное значение
+
+```javascript
+import { isIntegerBetween } from '@dxtmisha/functional'
+
+isIntegerBetween(5, 1, 10) // true
+isIntegerBetween(3.5, 1, 10) // false (не целое)
+isIntegerBetween(15, 1, 10) // false (вне диапазона)
+```
+
+## `isNull`
+
+Проверяет, является ли значение null или undefined.
+
+**Параметры:**
+- `value: any` — проверяемое значение
+
+```javascript
+import { isNull } from '@dxtmisha/functional'
+
+isNull(null) // true
+isNull(undefined) // true
+isNull(0) // false
+isNull('') // false
+```
+
+## `isNumber`
+
+Проверяет, является ли значение числом.
+
+**Параметры:**
+- `value: any` — проверяемое значение
+
+```javascript
+import { isNumber } from '@dxtmisha/functional'
+
+isNumber(42) // true
+isNumber(3.14) // true
+isNumber('42') // false
+isNumber(NaN) // false
+```
+
+## `isObject`
+
+Проверяет, является ли значение объектом (включая массивы).
+
+**Параметры:**
+- `value: any` — проверяемое значение
+
+```javascript
+import { isObject } from '@dxtmisha/functional'
+
+isObject({}) // true
+isObject([]) // true
+isObject(null) // false
+isObject('string') // false
+```
+
+## `isObjectNotArray`
+
+Проверяет, является ли значение объектом, но не массивом.
+
+**Параметры:**
+- `value: any` — проверяемое значение
+
+```javascript
+import { isObjectNotArray } from '@dxtmisha/functional'
+
+isObjectNotArray({}) // true
+isObjectNotArray([]) // false
+isObjectNotArray(null) // false
+```
+
+## `isSelected`
+
+Проверяет, соответствует ли элемент условиям выбора.
+
+**Параметры:**
+- `item: any` — проверяемый элемент
+- `selected: any` — условие выбора
+
+```javascript
+import { isSelected } from '@dxtmisha/functional'
+
+isSelected('apple', 'apple') // true
+isSelected({id: 1}, {id: 1}) // false (разные ссылки)
+isSelected('apple', ['apple', 'banana']) // true
+```
+
+## `isSelectedByList`
+
+Проверяет, соответствует ли элемент одному из условий в списке.
+
+**Параметры:**
+- `item: any` — проверяемый элемент
+- `selected: any[]` — список условий выбора
+
+```javascript
+import { isSelectedByList } from '@dxtmisha/functional'
+
+isSelectedByList('apple', ['apple', 'banana']) // true
+isSelectedByList('grape', ['apple', 'banana']) // false
+isSelectedByList(1, [1, 2, 3]) // true
+```
+
+## `isString`
+
+Проверяет, является ли значение строкой.
+
+**Параметры:**
+- `value: any` — проверяемое значение
+
+```javascript
+import { isString } from '@dxtmisha/functional'
+
+isString('hello') // true
+isString(42) // false
+isString('') // true
+```
+
+## `isWindow`
+
+Проверяет, является ли значение объектом window.
+
+**Параметры:**
+- `value: any` — проверяемое значение
+
+```javascript
+import { isWindow } from '@dxtmisha/functional'
+
+isWindow(window) // true в браузере
+isWindow(document) // false
+isWindow({}) // false
+```

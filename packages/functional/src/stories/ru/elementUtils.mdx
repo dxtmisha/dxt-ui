@@ -145,3 +145,14 @@ import { goScroll } from '@dxtmisha/functional'
 goScroll(window, 0) // прокрутка наверх
 goScroll('#container', 100, 50) // прокрутка элемента
 ```
+
+## `initScrollbarOffset`
+
+Инициализирует данные для управления скроллом, устанавливая CSS-переменную с шириной полосы прокрутки.
+
+```javascript
+import { initScrollbarOffset } from '@dxtmisha/functional'
+
+// Инициализация при загрузке приложения
+await initScrollbarOffset() // устанавливает --sys-scrollbar-offset в CSS
+```
