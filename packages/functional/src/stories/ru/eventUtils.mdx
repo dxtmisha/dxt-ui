@@ -24,3 +24,59 @@ form.addEventListener('submit', (event) => {
   if (!isValid) eventStopPropagation(event) // предотвращает отправку
 })
 ```
+
+## `getKey`
+
+Возвращает нажатую клавишу из события клавиатуры.
+
+**Параметры:**
+- `event: KeyboardEvent` — объект события клавиатуры
+
+```javascript
+import { getKey } from '@dxtmisha/functional'
+
+document.addEventListener('keydown', (event) => {
+  const key = getKey(event) // 'Enter', 'Escape', 'a', etc.
+})
+```
+
+## `getMouseClient`
+
+Возвращает координаты позиции курсора мыши или места касания.
+
+**Параметры:**
+- `event: MouseEvent & TouchEvent` — объект события мыши или касания
+
+```javascript
+import { getMouseClient } from '@dxtmisha/functional'
+
+element.addEventListener('click', (event) => {
+  const { x, y } = getMouseClient(event) // { x: 100, y: 200 }
+})
+```
+
+## `getMouseClientX`
+
+Возвращает X-координату позиции курсора мыши или места касания.
+
+**Параметры:**
+- `event: MouseEvent & TouchEvent` — объект события мыши или касания
+
+```javascript
+import { getMouseClientX } from '@dxtmisha/functional'
+
+const x = getMouseClientX(event) // 100
+```
+
+## `getMouseClientY`
+
+Возвращает Y-координату позиции курсора мыши или места касания.
+
+**Параметры:**
+- `event: MouseEvent & TouchEvent` — объект события мыши или касания
+
+```javascript
+import { getMouseClientY } from '@dxtmisha/functional'
+
+const y = getMouseClientY(event) // 200
+```

@@ -53,3 +53,95 @@ const buttons = domQuerySelectorAll('button') // NodeList | undefined
 const items = domQuerySelectorAll('.menu-item') // NodeList | undefined
 const links = domQuerySelectorAll('a[href]') // NodeList | undefined
 ```
+
+## `getAttributes`
+
+Получает все атрибуты HTML элемента в виде объекта ключ-значение.
+
+**Параметры:**
+- `element?: ElementOrString<E>` — селектор или элемент для получения атрибутов
+
+```javascript
+import { getAttributes } from '@dxtmisha/functional'
+
+const attrs = getAttributes('#my-element') // { id: 'my-element', class: 'btn' }
+const buttonAttrs = getAttributes(button) // { type: 'submit', disabled: '' }
+```
+
+## `getElement`
+
+Универсальная функция для получения DOM элемента. Принимает CSS селектор, элемент или window.
+
+**Параметры:**
+- `element?: ElementOrString<E>` — селектор, элемент или window
+
+```javascript
+import { getElement } from '@dxtmisha/functional'
+
+const header = getElement('#header') // HTMLElement | undefined
+const sameEl = getElement(existingEl) // возвращает existingEl
+const bodyEl = getElement(window) // возвращает document.body
+```
+
+## `getElementId`
+
+Получает ID элемента или создает уникальный ID, если элемент не имеет атрибута `id`.
+
+**Параметры:**
+- `element?: ElementOrString<E>` — элемент для получения ID
+- `selector?: string` — дополнительный селектор для добавления к ID
+
+```javascript
+import { getElementId } from '@dxtmisha/functional'
+
+const id1 = getElementId(elementWithId) // 'existing'
+const id2 = getElementId(elementNoId) // 'id-123456' (сгенерированный)
+const id3 = getElementId('#header', ' .title') // '#header .title'
+```
+
+## `getElementItem`
+
+Получает значение свойства элемента по ключу с возможностью указания значения по умолчанию.
+
+**Параметры:**
+- `element: ElementOrString<T>` — элемент для проверки
+- `index: K | string` — ключ свойства для получения
+- `defaultValue?: D` — значение по умолчанию
+
+```javascript
+import { getElementItem } from '@dxtmisha/functional'
+
+const value = getElementItem(input, 'value') // значение input
+const type = getElementItem(input, 'type', 'text') // тип или 'text' по умолчанию
+const width = getElementItem(element, 'offsetWidth')
+```
+
+## `getElementOrWindow`
+
+Возвращает window объект как есть или получает DOM элемент.
+
+**Параметры:**
+- `element?: ElementOrString<E>` — селектор, элемент или window
+
+```javascript
+import { getElementOrWindow } from '@dxtmisha/functional'
+
+const windowObj = getElementOrWindow(window) // window
+const element = getElementOrWindow('#container') // HTMLElement
+```
+
+## `goScroll`
+
+Плавно прокручивает страницу или элемент к указанной позиции.
+
+**Параметры:**
+- `element?: ElementOrString<E>` — элемент для прокрутки (по умолчанию window)
+- `top?: number` — позиция по вертикали
+- `left?: number` — позиция по горизонтали
+
+```javascript
+import { goScroll } from '@dxtmisha/functional'
+
+goScroll(window, 0) // прокрутка наверх
+goScroll('#container', 100, 50) // прокрутка элемента
+```

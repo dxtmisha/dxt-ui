@@ -52,3 +52,146 @@ forEach([1, 2, 3], (item, index) => item * 2) // [2, 4, 6]
 forEach({ a: 1, b: 2 }, (value, key) => `${key}=${value}`) // ['a=1', 'b=2']
 forEach(new Map([['x', 10]]), (value, key) => `${key}:${value}`) // ['x:10']
 ```
+
+## `getClipboardData`
+
+Асинхронно получает текстовые данные из буфера обмена.
+
+**Параметры:**
+- `event?: ClipboardEvent` — событие буфера обмена (опционально)
+
+```javascript
+import { getClipboardData } from '@dxtmisha/functional'
+
+const text = await getClipboardData(event) // из события paste
+const clipboardText = await getClipboardData() // прямое чтение
+```
+
+## `getColumn`
+
+Извлекает значения определенного столбца из массива объектов.
+
+**Параметры:**
+- `array: ObjectOrArray<T>` — массив объектов для обработки
+- `column: K` — ключ столбца для извлечения
+
+```javascript
+import { getColumn } from '@dxtmisha/functional'
+
+const users = [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
+const names = getColumn(users, 'name') // ['Alice', 'Bob']
+```
+
+## `getExp`
+
+Создает регулярное выражение для безопасного поиска текста с экранированием.
+
+**Параметры:**
+- `value: string` — текст для поиска
+- `flags: string` — флаги регулярного выражения (по умолчанию `'ig'`)
+- `pattern: string` — шаблон (по умолчанию `:value`)
+
+```javascript
+import { getExp } from '@dxtmisha/functional'
+
+const regex = getExp('hello') // /hello/ig
+const regexSpecial = getExp('$100') // /\$100/ig (экранировано)
+```
+
+## `getItemByPath`
+
+Получает значение из вложенного объекта по строковому пути.
+
+**Параметры:**
+- `item: T` — объект для обхода
+- `path: string` — путь через точку (например, `'user.profile.name'`)
+
+```javascript
+import { getItemByPath } from '@dxtmisha/functional'
+
+const data = { user: { profile: { name: 'John' } } }
+const name = getItemByPath(data, 'user.profile.name') // 'John'
+```
+
+## `getLengthOfAllArray`
+
+Возвращает массив с длинами всех строк.
+
+**Параметры:**
+- `value: ObjectOrArray<string>` — массив строк или объект
+
+```javascript
+import { getLengthOfAllArray } from '@dxtmisha/functional'
+
+getLengthOfAllArray(['hello', 'world']) // [5, 5]
+```
+
+## `getMaxLengthAllArray`
+
+Находит максимальную длину строки в массиве.
+
+**Параметры:**
+- `data: ObjectOrArray<string>` — массив строк или объект
+
+```javascript
+import { getMaxLengthAllArray } from '@dxtmisha/functional'
+
+getMaxLengthAllArray(['hello', 'world']) // 5
+```
+
+## `getMinLengthAllArray`
+
+Находит минимальную длину строки в массиве.
+
+**Параметры:**
+- `data: ObjectOrArray<string>` — массив строк или объект
+
+```javascript
+import { getMinLengthAllArray } from '@dxtmisha/functional'
+
+getMinLengthAllArray(['hello', 'hi']) // 2
+```
+
+## `getObjectByKeys`
+
+Возвращает новый объект с указанными ключами из исходного объекта.
+
+**Параметры:**
+- `data: Record<string, any>` — исходный объект
+- `keys: string[]` — список ключей для извлечения
+
+```javascript
+import { getObjectByKeys } from '@dxtmisha/functional'
+
+const obj = { a: 1, b: 2, c: 3 }
+const filtered = getObjectByKeys(obj, ['a', 'c']) // { a: 1, c: 3 }
+```
+
+## `getObjectNoUndefined`
+
+Удаляет из объекта все свойства с указанным значением (по умолчанию undefined).
+
+**Параметры:**
+- `data: T` — объект для обработки
+- `exception: any` — значение для исключения (по умолчанию undefined)
+
+```javascript
+import { getObjectNoUndefined } from '@dxtmisha/functional'
+
+const obj = { a: 1, b: undefined, c: 3 }
+const cleaned = getObjectNoUndefined(obj) // { a: 1, c: 3 }
+```
+
+## `getObjectOrNone`
+
+Возвращает объект если он не пустой, иначе возвращает undefined.
+
+**Параметры:**
+- `data: T` — объект для проверки
+
+```javascript
+import { getObjectOrNone } from '@dxtmisha/functional'
+
+getObjectOrNone({ a: 1 }) // { a: 1 }
+getObjectOrNone({}) // undefined
+```
