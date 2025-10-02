@@ -1,0 +1,616 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/GeoIntl'/>
+
+# GeoIntl Class
+
+Class for working with internationalization based on browser Intl API. Provides methods for localized formatting of numbers, dates, currencies, measurement units and other data considering geographic locale.
+
+## Key Features
+
+- **Localized number formatting** — displays numbers according to regional standards
+- **Currency handling** — formats monetary amounts with currency symbols
+- **Date and time formatting** — various date display formats
+- **Relative time** — displays time in "2 days ago", "in 1 hour" format
+- **Measurement units** — formatting with units (km, kg, °C etc.)
+- **File sizes** — automatic conversion of bytes to appropriate units
+- **Plural forms** — correct endings for different languages
+- **Sorting** — string sorting considering language features
+- **Singleton pattern** — instance caching for each locale
+
+## Instance Creation
+
+### `constructor`
+
+Creates GeoIntl instance for specified locale. Uses singleton pattern.
+
+**Parameters:**
+- `code?: string` — locale code (optional)
+
+```javascript
+import { GeoIntl } from '@dxtmisha/functional'
+
+// Create with auto-detected locale from Geo
+const intl = new GeoIntl()
+
+// Create for specific locale
+const intlRU = new GeoIntl('ru-RU')
+const intlUS = new GeoIntl('en-US')
+
+// Repeated creation returns same instance
+const sameIntl = new GeoIntl('ru-RU') // same object as intlRU
+```
+
+### `static getInstance`
+
+Static method to get instance (alias for constructor).
+
+**Parameters:**
+- `code?: string` — locale code (optional)
+
+```javascript
+const intl = GeoIntl.getInstance('en-US')
+```
+
+## Locale Information
+
+### `getLocation`
+
+Returns locale code in language-country format.
+
+```javascript
+const intl = new GeoIntl('en-US')
+intl.getLocation() // 'en-US'
+```
+
+### `getFirstDay`
+
+Returns first day of week for current locale.
+
+```javascript
+const intl = new GeoIntl('en-US')
+intl.getFirstDay() // 'Su' (Sunday)
+
+const intlRU = new GeoIntl('ru-RU')
+intlRU.getFirstDay() // 'Mo' (Monday)
+```
+
+## Display Names
+
+### `display`
+
+Returns localized names of languages, countries and other elements.
+
+**Parameters:**
+- `value?: string` — code to display (optional)
+- `typeOptions?: string | Intl.DisplayNamesOptions` — type or options object
+
+```javascript
+const intl = new GeoIntl('en-US')
+
+// Language names
+intl.display('ru', 'language') // 'Russian'
+intl.display('fr', 'language') // 'French'
+
+// Country names
+intl.display('RU', 'region') // 'Russia'
+intl.display('DE', 'region') // 'Germany'
+
+// With options object
+intl.display('ru', { type: 'language', style: 'short' })
+```
+
+### `languageName`
+
+Returns language name for specified code.
+
+**Parameters:**
+- `value?: string` — language code (optional)
+- `style?: Intl.RelativeTimeFormatStyle` — display style (optional)
+
+```javascript
+intl.languageName('ru') // 'Russian'
+intl.languageName('de') // 'German'
+intl.languageName('en') // 'English'
+```
+
+### `countryName`
+
+Returns country name for specified code.
+
+**Parameters:**
+- `value?: string` — country code (optional)
+- `style?: Intl.RelativeTimeFormatStyle` — display style (optional)
+
+```javascript
+intl.countryName('RU') // 'Russia'
+intl.countryName('GB') // 'United Kingdom'
+intl.countryName('DE') // 'Germany'
+```
+
+## Name Formatting
+
+### `fullName`
+
+Formats full name according to regional cultural features.
+
+**Parameters:**
+- `last: string` — last name
+- `first: string` — first name
+- `surname?: string` — middle name (optional)
+- `short?: boolean` — shortened format (optional)
+
+```javascript
+const intl = new GeoIntl('en-US')
+
+// Full names
+intl.fullName('Smith', 'John', 'William') // 'John William Smith' (fsl format)
+intl.fullName('Doe', 'Jane') // 'Jane Doe'
+
+// Shortened names
+intl.fullName('Smith', 'John', 'William', true) // 'J. W. Smith'
+
+// For other locales format may differ
+const intlRU = new GeoIntl('ru-RU')
+intlRU.fullName('Иванов', 'Иван') // 'Иван Иванов' (fl format)
+```
+
+## Number Formatting
+
+### `number`
+
+Formats numbers according to local standards.
+
+**Parameters:**
+- `value: NumberOrString` — number to format
+- `options?: Intl.NumberFormatOptions` — formatting options (optional)
+
+```javascript
+const intl = new GeoIntl('en-US')
+
+intl.number(1234.56) // '1,234.56'
+intl.number(1000000) // '1,000,000'
+intl.number(0.123, { minimumFractionDigits: 3 }) // '0.123'
+
+const intlRU = new GeoIntl('ru-RU')
+intlRU.number(1234.56) // '1 234,56'
+```
+
+### `decimal`
+
+Returns decimal point symbol for current locale.
+
+```javascript
+const intl = new GeoIntl('en-US')
+intl.decimal() // '.'
+
+const intlRU = new GeoIntl('ru-RU')
+intlRU.decimal() // ','
+```
+
+## Currency Handling
+
+### `currency`
+
+Formats currency amounts. Supports automatic currency code extraction from string.
+
+**Parameters:**
+- `value: NumberOrString` — amount to format
+- `currencyOptions?: string | Intl.NumberFormatOptions` — currency code or formatting options (optional)
+- `numberOnly?: boolean` — show only number without currency symbol (optional)
+
+```javascript
+const intl = new GeoIntl('en-US')
+
+// Simple formatting
+intl.currency(1234.56, 'USD') // '$1,234.56'
+intl.currency(1000, 'EUR') // '€1,000.00'
+
+// Automatic currency extraction from string
+intl.currency('1234.56 USD') // '$1,234.56'
+
+// Number only without currency symbol
+intl.currency(1234.56, 'USD', true) // '1,234.56'
+
+// With additional options
+intl.currency(1234.56, {
+  currency: 'EUR',
+  currencyDisplay: 'code'
+}) // '1,234.56 EUR'
+```
+
+### `currencySymbol`
+
+Returns currency symbol for current locale.
+
+**Parameters:**
+- `currency: string` — currency code
+- `currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry` — currency display type (optional)
+
+```javascript
+intl.currencySymbol('USD') // '$'
+intl.currencySymbol('EUR') // '€'
+intl.currencySymbol('USD', 'code') // 'USD'
+```
+
+## Measurement Units
+
+### `unit`
+
+Formats numbers with measurement units. Supports automatic unit extraction from string.
+
+**Parameters:**
+- `value: NumberOrString` — value to format
+- `unitOptions?: string | Intl.NumberFormatOptions` — measurement unit or formatting options (optional)
+
+```javascript
+const intl = new GeoIntl('en-US')
+
+intl.unit(25, 'celsius') // '25°C'
+intl.unit(100, 'kilometer') // '100 km'
+intl.unit(2.5, 'kilogram') // '2.5 kg'
+
+// Automatic unit extraction
+intl.unit('100 meter') // '100 m'
+intl.unit('25 celsius') // '25°C'
+```
+
+### `sizeFile`
+
+Formats file sizes with automatic selection of appropriate units.
+
+**Parameters:**
+- `value: NumberOrString` — size in bytes
+- `unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions` — unit or formatting options (optional)
+
+```javascript
+intl.sizeFile(1024) // '1 kB' (automatically converts to kilobytes)
+intl.sizeFile(1048576) // '1 MB' (automatically to megabytes)
+intl.sizeFile(500, 'byte') // '500 B'
+intl.sizeFile(1500, 'kilobyte') // '1.46 MB' (automatic conversion)
+```
+
+## Percentages
+
+### `percent`
+
+Formats percentages (value from 0 to 1).
+
+**Parameters:**
+- `value: NumberOrString` — value from 0 to 1
+- `options?: Intl.NumberFormatOptions` — formatting options (optional)
+
+```javascript
+intl.percent(0.1234) // '12.34%'
+intl.percent(0.5) // '50%'
+intl.percent(1.25) // '125%'
+```
+
+### `percentBy100`
+
+Formats percentages for values from 0 to 100.
+
+**Parameters:**
+- `value: NumberOrString` — value from 0 to 100
+- `options?: Intl.NumberFormatOptions` — formatting options (optional)
+
+```javascript
+intl.percentBy100(12.34) // '12.34%'
+intl.percentBy100(50) // '50%'
+intl.percentBy100(125) // '125%'
+```
+
+## Plural Forms
+
+### `plural`
+
+Applies plural rules for different languages.
+
+**Parameters:**
+- `value: NumberOrString` — number to determine form for
+- `words: string` — word variants in format `one|two|few|many|other|zero`
+- `options?: Intl.PluralRulesOptions` — plural rules options (optional)
+- `optionsNumber?: Intl.NumberFormatOptions` — number formatting options (optional)
+
+**Words format:** `one|two|few|many|other|zero` (order matters!)
+
+```javascript
+const intl = new GeoIntl('en-US')
+
+// English plural forms
+intl.plural(1, 'item|items') // '1 item'
+intl.plural(5, 'item|items') // '5 items'
+intl.plural(0, 'item|items') // '0 items'
+
+const intlRU = new GeoIntl('ru-RU')
+// Russian plural forms (more complex)
+intlRU.plural(1, 'товар|товара|товаров') // '1 товар'
+intlRU.plural(2, 'товар|товара|товаров') // '2 товара'
+intlRU.plural(5, 'товар|товара|товаров') // '5 товаров'
+```
+
+## Date Handling
+
+### `date`
+
+Formats date and time according to type and style.
+
+**Parameters:**
+- `value: NumberOrStringOrDate` — date to format
+- `type?: GeoDate` — date formatting type (optional)
+- `styleOptions?: string | Intl.DateTimeFormatOptions` — style or formatting options (optional)
+- `hour24?: boolean` — use 24-hour format (optional)
+
+**Date types:** `'full'`, `'datetime'`, `'date'`, `'time'`, `'year-month'`, `'year'`, `'month'`, `'day-month'`, `'day'`, `'hour-minute'`, `'hour'`, `'minute'`, `'second'`
+
+```javascript
+const intl = new GeoIntl('en-US')
+const date = new Date('2024-03-15T14:30:45')
+
+intl.date(date) // '3/15/2024' (default)
+intl.date(date, 'full') // '3/15/2024, 2:30:45 PM'
+intl.date(date, 'time') // '2:30:45 PM'
+intl.date(date, 'year-month') // 'Mar 2024'
+intl.date(date, 'day-month') // 'Mar 15'
+
+// With 24-hour format
+intl.date(date, 'time', undefined, true) // '14:30:45'
+
+// With custom options
+intl.date(date, 'date', { weekday: 'long' }) // 'Friday, 3/15/2024'
+```
+
+### `month`
+
+Returns month name.
+
+**Parameters:**
+- `value?: NumberOrStringOrDate` — date (optional)
+- `style?: Intl.DateTimeFormatOptions['month']` — display style (optional)
+
+```javascript
+intl.month(new Date('2024-03-15')) // 'March'
+intl.month(new Date('2024-03-15'), 'short') // 'Mar'
+intl.month(new Date('2024-03-15'), 'narrow') // 'M'
+```
+
+### `months`
+
+Returns list of all months in dropdown format.
+
+**Parameters:**
+- `style?: Intl.DateTimeFormatOptions['month']` — display style (optional)
+
+```javascript
+const monthsList = intl.months()
+// [
+//   { label: '', value: undefined },
+//   { label: 'January', value: 1 },
+//   { label: 'February', value: 2 },
+//   ...
+//   { label: 'December', value: 12 }
+// ]
+
+const monthsShort = intl.months('short')
+// [{ label: '', value: undefined }, { label: 'Jan', value: 1 }, ...]
+```
+
+### `weekday`
+
+Returns weekday name.
+
+**Parameters:**
+- `value?: NumberOrStringOrDate` — date (optional)
+- `style?: Intl.DateTimeFormatOptions['weekday']` — display style (optional)
+
+```javascript
+intl.weekday(new Date('2024-03-15')) // 'Friday'
+intl.weekday(new Date('2024-03-15'), 'short') // 'Fri'
+intl.weekday(new Date('2024-03-15'), 'narrow') // 'F'
+```
+
+### `weekdays`
+
+Returns list of weekdays considering first day of week for locale.
+
+**Parameters:**
+- `style?: Intl.DateTimeFormatOptions['weekday']` — display style (optional)
+
+```javascript
+const weekdaysList = intl.weekdays()
+// For en-US (first day is Sunday):
+// [
+//   { label: '', value: undefined },
+//   { label: 'Sunday', value: 0 },
+//   { label: 'Monday', value: 1 },
+//   ...
+//   { label: 'Saturday', value: 6 }
+// ]
+```
+
+### `time`
+
+Formats time only.
+
+**Parameters:**
+- `value: NumberOrStringOrDate` — date/time to format
+
+```javascript
+intl.time(new Date('2024-03-15T14:30:45')) // '2:30:45 PM'
+```
+
+## Relative Time
+
+### `relative`
+
+Automatically calculates and formats relative time.
+
+**Parameters:**
+- `value: NumberOrStringOrDate` — date to compare
+- `styleOptions?: string | Intl.RelativeTimeFormatOptions` — style or formatting options (optional)
+- `todayValue?: Date` — base date for comparison (optional)
+
+```javascript
+const now = new Date()
+const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000)
+const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+
+intl.relative(yesterday) // 'yesterday'
+intl.relative(tomorrow) // 'tomorrow'
+intl.relative(new Date(now.getTime() - 2 * 60 * 60 * 1000)) // '2 hours ago'
+
+// With style options
+intl.relative(yesterday, 'short') // 'yesterday'
+intl.relative(yesterday, { numeric: 'always' }) // '1 day ago'
+```
+
+### `relativeLimit`
+
+Formats relative time with limit. If difference exceeds limit days, shows regular date.
+
+**Parameters:**
+- `value: NumberOrStringOrDate` — date to compare
+- `limit: number` — day limit for relative time
+- `todayValue?: Date` — base date for comparison (optional)
+- `relativeOptions?: string | Intl.RelativeTimeFormatOptions` — relative time options (optional)
+- `dateOptions?: string | Intl.DateTimeFormatOptions` — regular date options (optional)
+- `type?: GeoDate` — date formatting type (optional)
+- `hour24?: boolean` — use 24-hour format (optional)
+
+```javascript
+const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+
+// 10 day limit
+intl.relativeLimit(weekAgo, 10) // '1 week ago'
+intl.relativeLimit(monthAgo, 10) // '2/15/2024' (regular date)
+```
+
+### `relativeByValue`
+
+Formats relative time for specified value and unit.
+
+**Parameters:**
+- `value: NumberOrString` — value (number of units)
+- `unit: Intl.RelativeTimeFormatUnit` — time unit (`'day'`, `'hour'`, `'month'` etc.)
+- `styleOptions?: string | Intl.RelativeTimeFormatOptions` — style or formatting options (optional)
+
+```javascript
+intl.relativeByValue(-2, 'day') // '2 days ago'
+intl.relativeByValue(3, 'hour') // 'in 3 hours'
+intl.relativeByValue(-1, 'month') // 'last month'
+```
+
+## Sorting
+
+### `sort`
+
+Sorts array considering locale language features.
+
+**Parameters:**
+- `data: T[]` — array to sort
+- `compareFn?: (a: T, b: T) => [string, string]` — comparison function (optional)
+
+```javascript
+const names = ['Zebra', 'Apple', 'Ñoño', 'Beta']
+intl.sort(names) // ['Apple', 'Beta', 'Ñoño', 'Zebra'] (correct order for English)
+
+// With custom comparison function
+const users = [{ name: 'Zebra' }, { name: 'Apple' }]
+intl.sort(users, (a, b) => [a.name, b.name])
+```
+
+## Practical Usage Examples
+
+### Calendar Component
+
+```javascript
+class Calendar {
+  constructor(locale = 'en-US') {
+    this.intl = new GeoIntl(locale)
+  }
+
+  getCalendarData() {
+    return {
+      months: this.intl.months('long'), // for dropdown
+      weekdays: this.intl.weekdays('short'), // for day headers
+      firstDay: this.intl.getFirstDay() // for week start
+    }
+  }
+
+  formatDate(date) {
+    return this.intl.date(date, 'date', { weekday: 'long' })
+  }
+}
+```
+
+### Financial Application
+
+```javascript
+class FinanceFormatter {
+  constructor(locale) {
+    this.intl = new GeoIntl(locale)
+  }
+
+  formatBalance(amount, currency) {
+    return this.intl.currency(amount, currency)
+  }
+
+  formatChange(change, currency) {
+    const formatted = this.intl.currency(Math.abs(change), currency, true)
+    return change >= 0 ? `+${formatted}` : `-${formatted}`
+  }
+
+  formatPercent(value) {
+    return this.intl.percentBy100(value)
+  }
+}
+
+const finance = new FinanceFormatter('en-US')
+finance.formatBalance(1234567.89, 'USD') // '$1,234,567.89'
+finance.formatChange(-123.45, 'USD') // '-123.45'
+finance.formatPercent(12.34) // '12.34%'
+```
+
+### Notification System
+
+```javascript
+class NotificationSystem {
+  constructor(locale) {
+    this.intl = new GeoIntl(locale)
+  }
+
+  formatNotificationTime(date) {
+    return this.intl.relativeLimit(date, 7) // show relative time for last week
+  }
+
+  formatFileSize(bytes) {
+    return this.intl.sizeFile(bytes)
+  }
+
+  formatItemCount(count, itemType) {
+    const words = {
+      message: 'message|messages',
+      file: 'file|files',
+      user: 'user|users'
+    }
+
+    return this.intl.plural(count, words[itemType] || 'item|items')
+  }
+}
+
+const notifications = new NotificationSystem('en-US')
+notifications.formatNotificationTime(yesterday) // 'yesterday'
+notifications.formatFileSize(1048576) // '1 MB'
+notifications.formatItemCount(5, 'message') // '5 messages'
+```
+
+## System Integration
+
+The GeoIntl class integrates with:
+- **Geo** — automatic retrieval of current locale and geographic settings
+- **Browser Intl API** — using native capabilities for formatting
+- **Singleton pattern** — instance caching for performance optimization
+- **Vue components** — providing localized data for interface
+
+This makes it the main tool for creating localized interfaces with proper display of all data types according to cultural and linguistic features of the region.

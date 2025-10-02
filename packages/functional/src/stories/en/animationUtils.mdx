@@ -1,0 +1,35 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Animation Utils'/>
+
+# Animation Utilities
+
+A set of functions for working with animations and rendering frames.
+
+## `frame`
+
+Cyclically calls requestAnimationFrame until the stop condition is met. Used to create smooth animations.
+
+**Parameters:**
+- `callback: () => void` — function called on each animation frame
+- `next?: () => boolean` — continuation condition function (optional)
+- `end?: () => void` — function executed when animation completes (optional)
+
+```javascript
+import { frame } from '@dxtmisha/functional'
+
+// Simple animation
+let count = 0
+frame(
+  () => console.log(`Frame ${count++}`), // executed every frame
+  () => count < 10, // continuation condition
+  () => console.log('Animation completed') // executed on stop
+)
+
+// Element movement animation
+let position = 0
+frame(
+  () => element.style.left = `${position++}px`,
+  () => position < 200
+)
+```

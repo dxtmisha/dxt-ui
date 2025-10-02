@@ -1,0 +1,292 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Geo'/>
+
+# Класс Geo
+
+Базовый класс для работы с географическими данными. Предоставляет статические методы для определения текущей локации, работы с кодами стран и языков, а также управления временными зонами.
+
+## Основные возможности
+
+- **Автоматическое определение локации** — определяет текущую страну и язык на основе браузерных данных
+- **Работа с кодами стран и языков** — поддерживает формат `язык-страна` (например, `ru-RU`, `en-US`)
+- **Управление временными зонами** — получение и установка часовых поясов
+- **Кеширование в localStorage** — сохранение выбранной локации пользователя
+- **Поддержка альтернативных кодов** — работа с различными вариантами кодов стран и языков
+
+## Статические свойства
+
+Класс использует следующие внутренние статические свойства:
+- `storage` — экземпляр DataStorage для сохранения данных в localStorage
+- `location` — текущая локация в формате `язык-страна`
+- `item` — объект с полными данными о текущей стране
+- `language` — текущий язык
+- `timezone` — текущая временная зона (смещение в минутах)
+
+## Методы получения данных
+
+### `get(): GeoItemFull`
+
+Возвращает информацию о текущей стране.
+
+```javascript
+import { Geo } from '@dxtmisha/functional'
+
+const currentGeo = Geo.get()
+console.log(currentGeo)
+// {
+//   country: 'RU',
+//   language: 'ru',
+//   standard: 'ru-RU',
+//   firstDay: 'Mo',
+//   countryAlternative: ['...'],
+//   languageAlternative: ['...']
+// }
+```
+
+### `getCountry(): string`
+
+Возвращает код текущей страны.
+
+```javascript
+const country = Geo.getCountry() // 'RU'
+```
+
+### `getLanguage(): string`
+
+Возвращает код текущего языка.
+
+```javascript
+const language = Geo.getLanguage() // 'ru'
+```
+
+### `getStandard(): string`
+
+Возвращает полный формат согласно стандарту (язык-страна).
+
+```javascript
+const standard = Geo.getStandard() // 'ru-RU'
+```
+
+### `getFirstDay(): string`
+
+Возвращает первый день недели для текущей локации.
+
+```javascript
+const firstDay = Geo.getFirstDay() // 'Mo'
+```
+
+### `getLocation(): string`
+
+Возвращает полный формат текущей локации.
+
+```javascript
+const location = Geo.getLocation() // 'ru-RU'
+```
+
+### `getItem(): GeoItemFull`
+
+Возвращает обработанные данные с включением текущего языка.
+
+```javascript
+const item = Geo.getItem()
+// Включает все данные плюс актуальный язык
+```
+
+### `getList(): GeoItem[]`
+
+Возвращает полный список доступных стран.
+
+```javascript
+const allCountries = Geo.getList()
+console.log(allCountries.length) // количество поддерживаемых стран
+```
+
+## Методы поиска по кодам
+
+### `getByCode(code?: string): GeoItemFull`
+
+Возвращает данные о стране по её коду. Поддерживает различные форматы:
+- Полный формат: `ru-RU`, `en-US`
+- Только страна: `RU`, `US`
+- Только язык: `ru`, `en`
+
+```javascript
+// Полный код
+const byFull = Geo.getByCode('ru-RU')
+
+// Только страна
+const byCountry = Geo.getByCode('RU')
+
+// Только язык
+const byLanguage = Geo.getByCode('ru')
+
+// Если код не найден, вернётся первая страна из списка
+const fallback = Geo.getByCode('invalid-code')
+```
+
+### `getByCodeFull(code: string): GeoItem | undefined`
+
+Возвращает данные по точному совпадению полного кода.
+
+```javascript
+const exact = Geo.getByCodeFull('ru-RU')
+// Возвращает данные только если код точно соответствует формату язык-страна
+```
+
+### `getByCountry(country: string): GeoItem | undefined`
+
+Возвращает данные по коду страны.
+
+```javascript
+const russia = Geo.getByCountry('RU')
+// Поддерживает основные и альтернативные коды стран
+```
+
+### `getByLanguage(language: string): GeoItem | undefined`
+
+Возвращает данные по коду языка.
+
+```javascript
+const russian = Geo.getByLanguage('ru')
+// Поддерживает основные и альтернативные коды языков
+```
+
+### `find(code: string): GeoItemFull`
+
+Универсальный метод поиска (алиас для `getByCode`).
+
+```javascript
+const found = Geo.find('en-GB')
+```
+
+## Работа с временными зонами
+
+### `getTimezone(): number`
+
+Возвращает текущую временную зону в минутах.
+
+```javascript
+const timezone = Geo.getTimezone() // например, -180 для UTC+3
+```
+
+### `getTimezoneFormat(): string`
+
+Возвращает отформатированную временную зону.
+
+```javascript
+const formatted = Geo.getTimezoneFormat() // '+03:00' или '-05:00'
+```
+
+### `setTimezone(timezone: number): void`
+
+Устанавливает новую временную зону.
+
+```javascript
+Geo.setTimezone(-180) // установить UTC+3
+```
+
+## Управление локацией
+
+### `set(code: string, save?: boolean): void`
+
+Изменяет текущую локацию по коду.
+
+```javascript
+// Изменить локацию без сохранения
+Geo.set('en-US')
+
+// Изменить и сохранить в localStorage
+Geo.set('en-US', true)
+
+// После изменения все get* методы вернут данные для новой локации
+console.log(Geo.getCountry()) // 'US'
+console.log(Geo.getLanguage()) // 'en'
+```
+
+## Утилитарные методы
+
+### `toStandard(item: GeoItem): string`
+
+Преобразует объект GeoItem в стандартный формат строки.
+
+```javascript
+const item = { language: 'ru', country: 'RU', /* другие поля */ }
+const standard = Geo.toStandard(item) // 'ru-RU'
+```
+
+## Автоматическая инициализация
+
+Класс автоматически инициализируется при первом обращении:
+
+1. **Определение локации** из источников (по приоритету):
+   - Сохранённое значение в localStorage
+   - Атрибут `lang` HTML элемента
+   - `navigator.language`
+   - `navigator.languages[0]`
+   - Fallback: `'en-GB'`
+
+2. **Определение языка** на основе найденной локации
+
+3. **Получение данных** о стране по определённой локации
+
+## Практические примеры использования
+
+### Настройка локализации приложения
+
+```javascript
+// Получить текущую локаль пользователя
+const userLocale = Geo.getStandard()
+
+// Настроить i18n
+i18n.locale = Geo.getLanguage()
+
+// Получить первый день недели для календаря
+const firstDayOfWeek = Geo.getFirstDay()
+```
+
+### Переключение языка
+
+```javascript
+// Переключить на английский и сохранить выбор
+Geo.set('en-US', true)
+
+// Обновить интерфейс
+updateUI(Geo.getLanguage())
+```
+
+### Работа с временными зонами
+
+```javascript
+// Получить локальную временную зону
+const localTimezone = new Date().getTimezoneOffset()
+Geo.setTimezone(localTimezone)
+
+// Отформатировать для отображения
+const timezoneDisplay = Geo.getTimezoneFormat() // '+03:00'
+```
+
+### Валидация и fallback для пользовательского ввода
+
+```javascript
+function setUserLocale(userInput) {
+  try {
+    // Попытаться установить пользовательскую локаль
+    Geo.set(userInput, true)
+    return Geo.getStandard()
+  } catch (error) {
+    // Fallback к локали по умолчанию
+    console.warn('Invalid locale, using default')
+    return Geo.getStandard()
+  }
+}
+```
+
+## Интеграция с другими частями системы
+
+Класс Geo интегрируется с:
+- **DataStorage** — для сохранения настроек пользователя
+- **@dxtmisha/media** — источник данных о странах и языках
+- **DOM API** — для автоматического определения локали браузера
+
+Это делает его центральным компонентом для всех задач, связанных с локализацией и географическими данными в приложении.

@@ -1,0 +1,175 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Element Utils'/>
+
+# DOM Element Utilities
+
+A set of functions for creating, searching and manipulating DOM elements.
+
+## `createElement`
+
+Creates a new HTML element with specified tag and optionally adds it to parent element.
+
+**Parameters:**
+- `parentElement?: HTMLElement` — parent element for insertion (optional)
+- `tagName: string` — tag of element to create (default `'div'`)
+- `options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void)` — attributes object or setup function (optional)
+- `referenceElement?: HTMLElement` — element before which to insert new one (optional)
+
+```javascript
+import { createElement } from '@dxtmisha/functional'
+
+const div = createElement() // <div>
+const button = createElement(parent, 'button') // <button> in parent
+const input = createElement(parent, 'input', { type: 'text' }) // <input type="text">
+```
+
+## `domQuerySelector`
+
+Safely searches for first element matching CSS selector.
+
+**Parameters:**
+- `selectors: string` — CSS selector to search
+
+```javascript
+import { domQuerySelector } from '@dxtmisha/functional'
+
+const header = domQuerySelector('#header') // HTMLElement | undefined
+const button = domQuerySelector('.submit-btn') // HTMLElement | undefined
+const input = domQuerySelector('input[type="email"]') // HTMLInputElement | undefined
+```
+
+## `domQuerySelectorAll`
+
+Safely searches for all elements matching CSS selector.
+
+**Parameters:**
+- `selectors: string` — CSS selector to search
+
+```javascript
+import { domQuerySelectorAll } from '@dxtmisha/functional'
+
+const buttons = domQuerySelectorAll('button') // NodeList | undefined
+const items = domQuerySelectorAll('.menu-item') // NodeList | undefined
+const links = domQuerySelectorAll('a[href]') // NodeList | undefined
+```
+
+## `getAttributes`
+
+Gets all HTML element attributes as key-value object.
+
+**Parameters:**
+- `element?: ElementOrString<E>` — selector or element to get attributes from
+
+```javascript
+import { getAttributes } from '@dxtmisha/functional'
+
+const attrs = getAttributes('#my-element') // { id: 'my-element', class: 'btn' }
+const buttonAttrs = getAttributes(button) // { type: 'submit', disabled: '' }
+```
+
+## `getElement`
+
+Universal function to get DOM element. Accepts CSS selector, element or window.
+
+**Parameters:**
+- `element?: ElementOrString<E>` — selector, element or window
+
+```javascript
+import { getElement } from '@dxtmisha/functional'
+
+const header = getElement('#header') // HTMLElement | undefined
+const sameEl = getElement(existingEl) // returns existingEl
+const bodyEl = getElement(window) // returns document.body
+```
+
+## `getElementId`
+
+Gets element ID or creates unique ID if element doesn't have `id` attribute.
+
+**Parameters:**
+- `element?: ElementOrString<E>` — element to get ID from
+- `selector?: string` — additional selector to add to ID
+
+```javascript
+import { getElementId } from '@dxtmisha/functional'
+
+const id1 = getElementId(elementWithId) // 'existing'
+const id2 = getElementId(elementNoId) // 'id-123456' (generated)
+const id3 = getElementId('#header', ' .title') // '#header .title'
+```
+
+## `getElementItem`
+
+Gets element property value by key with ability to specify default value.
+
+**Parameters:**
+- `element: ElementOrString<T>` — element to check
+- `index: K | string` — property key to get
+- `defaultValue?: D` — default value
+
+```javascript
+import { getElementItem } from '@dxtmisha/functional'
+
+const value = getElementItem(input, 'value') // input value
+const type = getElementItem(input, 'type', 'text') // type or 'text' by default
+const width = getElementItem(element, 'offsetWidth')
+```
+
+## `getElementOrWindow`
+
+Returns window object as is or gets DOM element.
+
+**Parameters:**
+- `element?: ElementOrString<E>` — selector, element or window
+
+```javascript
+import { getElementOrWindow } from '@dxtmisha/functional'
+
+const windowObj = getElementOrWindow(window) // window
+const element = getElementOrWindow('#container') // HTMLElement
+```
+
+## `goScroll`
+
+Smoothly scrolls page or element to specified position.
+
+**Parameters:**
+- `element?: ElementOrString<E>` — element to scroll (default window)
+- `top?: number` — vertical position
+- `left?: number` — horizontal position
+
+```javascript
+import { goScroll } from '@dxtmisha/functional'
+
+goScroll(window, 0) // scroll to top
+goScroll('#container', 100, 50) // scroll element
+```
+
+## `initScrollbarOffset`
+
+Initializes scroll management data by setting CSS variable with scrollbar width.
+
+```javascript
+import { initScrollbarOffset } from '@dxtmisha/functional'
+
+// Initialize on app load
+await initScrollbarOffset() // sets --sys-scrollbar-offset in CSS
+```
+
+## `setElementItem`
+
+Sets element property value by key.
+
+**Parameters:**
+- `element: ElementOrString<T>` — element to modify
+- `index: K | string` — property key to set
+- `value: any` — new value
+
+```javascript
+import { setElementItem } from '@dxtmisha/functional'
+
+setElementItem(input, 'value', 'new value')
+setElementItem('#my-element', 'textContent', 'Hello World')
+setElementItem(button, 'disabled', true)
+```

@@ -1,0 +1,617 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/GeoIntl'/>
+
+# Класс GeoIntl
+
+Класс для работы с интернационализацией на основе браузерного API Intl. Предоставляет методы для локализованного форматирования чисел, дат, валют, единиц измерения и других данных с учётом географической локали.
+
+## Основные возможности
+
+- **Локализованное форматирование чисел** — отображение чисел согласно региональным стандартам
+- **Работа с валютами** — форматирование денежных сумм с символами валют
+- **Форматирование дат и времени** — различные форматы отображения дат
+- **Относительное время** — отображение времени в формате "2 дня назад", "через час"
+- **Единицы измерения** — форматирование с единицами (км, кг, °C и т.д.)
+- **Размеры файлов** — автоматическое преобразование байт в подходящие единицы
+- **Множественные формы** — правильные окончания для разных языков
+- **Сортировка** — сортировка строк с учётом языковых особенностей
+- **Singleton паттерн** — кеширование экземпляров для каждой локали
+
+## Создание экземпляра
+
+### `constructor`
+
+Создаёт экземпляр GeoIntl для указанной локали. Использует singleton паттерн.
+
+**Параметры:**
+- `code?: string` — код локали (опционально)
+
+```javascript
+import { GeoIntl } from '@dxtmisha/functional'
+
+// Создание с автоопределением локали из Geo
+const intl = new GeoIntl()
+
+// Создание для конкретной локали
+const intlRU = new GeoIntl('ru-RU')
+const intlUS = new GeoIntl('en-US')
+
+// Повторное создание вернёт тот же экземпляр
+const sameIntl = new GeoIntl('ru-RU') // тот же объект что intlRU
+```
+
+### `static getInstance`
+
+Статический метод для получения экземпляра (алиас для constructor).
+
+**Параметры:**
+- `code?: string` — код локали (опционально)
+
+```javascript
+const intl = GeoIntl.getInstance('ru-RU')
+```
+
+## Получение информации о локали
+
+### `getLocation`
+
+Возвращает код локали в формате язык-страна.
+
+```javascript
+const intl = new GeoIntl('ru-RU')
+intl.getLocation() // 'ru-RU'
+```
+
+### `getFirstDay`
+
+Возвращает первый день недели для текущей локали.
+
+```javascript
+const intl = new GeoIntl('ru-RU')
+intl.getFirstDay() // 'Mo' (понедельник)
+
+const intlUS = new GeoIntl('en-US')
+intlUS.getFirstDay() // 'Su' (воскресенье)
+```
+
+## Отображение названий
+
+### `display`
+
+Возвращает локализованные названия языков, стран и других элементов.
+
+**Параметры:**
+- `value?: string` — код для отображения (опционально)
+- `typeOptions?: string | Intl.DisplayNamesOptions` — тип или объект опций
+
+```javascript
+const intl = new GeoIntl('ru-RU')
+
+// Названия языков
+intl.display('en', 'language') // 'английский'
+intl.display('fr', 'language') // 'французский'
+
+// Названия стран
+intl.display('US', 'region') // 'США'
+intl.display('DE', 'region') // 'Германия'
+
+// С объектом опций
+intl.display('en', { type: 'language', style: 'short' })
+```
+
+### `languageName`
+
+Возвращает название языка для указанного кода.
+
+**Параметры:**
+- `value?: string` — код языка (опционально)
+- `style?: Intl.RelativeTimeFormatStyle` — стиль отображения (опционально)
+
+```javascript
+intl.languageName('en') // 'английский'
+intl.languageName('de') // 'немецкий'
+intl.languageName('ru') // 'русский'
+```
+
+### `countryName`
+
+Возвращает название страны для указанного кода.
+
+**Параметры:**
+- `value?: string` — код страны (опционально)
+- `style?: Intl.RelativeTimeFormatStyle` — стиль отображения (опционально)
+
+```javascript
+intl.countryName('US') // 'США'
+intl.countryName('GB') // 'Великобритания'
+intl.countryName('DE') // 'Германия'
+```
+
+## Форматирование имён
+
+### `fullName`
+
+Форматирует полное имя согласно культурным особенностям региона.
+
+**Параметры:**
+- `last: string` — фамилия
+- `first: string` — имя
+- `surname?: string` — отчество (опционально)
+- `short?: boolean` — сокращённый формат (опционально)
+
+```javascript
+const intl = new GeoIntl('ru-RU')
+
+// Полные имена
+intl.fullName('Иванов', 'Иван', 'Петрович') // 'Иван Петрович Иванов' (fsl формат)
+intl.fullName('Петров', 'Иван') // 'Иван Петров'
+
+// Сокращённые имена
+intl.fullName('Иванов', 'Иван', 'Петрович', true) // 'И. П. Иванов'
+
+// Для других локалей формат может отличаться
+const intlUS = new GeoIntl('en-US')
+intlUS.fullName('Smith', 'John') // 'John Smith' (fl формат)
+```
+
+## Форматирование чисел
+
+### `number`
+
+Форматирует числа согласно локальным стандартам.
+
+**Параметры:**
+- `value: NumberOrString` — число для форматирования
+- `options?: Intl.NumberFormatOptions` — опции форматирования (опционально)
+
+```javascript
+const intl = new GeoIntl('ru-RU')
+
+intl.number(1234.56) // '1 234,56'
+intl.number(1000000) // '1 000 000'
+intl.number(0.123, { minimumFractionDigits: 3 }) // '0,123'
+
+const intlUS = new GeoIntl('en-US')
+intlUS.number(1234.56) // '1,234.56'
+```
+
+### `decimal`
+
+Возвращает символ десятичной точки для текущей локали.
+
+```javascript
+const intl = new GeoIntl('ru-RU')
+intl.decimal() // ','
+
+const intlUS = new GeoIntl('en-US')
+intlUS.decimal() // '.'
+```
+
+## Работа с валютами
+
+### `currency`
+
+Форматирует валютные суммы. Поддерживает автоматическое извлечение кода валюты из строки.
+
+**Параметры:**
+- `value: NumberOrString` — сумма для форматирования
+- `currencyOptions?: string | Intl.NumberFormatOptions` — код валюты или опции форматирования (опционально)
+- `numberOnly?: boolean` — показывать только число без символа валюты (опционально)
+
+```javascript
+const intl = new GeoIntl('ru-RU')
+
+// Простое форматирование
+intl.currency(1234.56, 'RUB') // '1 234,56 ₽'
+intl.currency(1000, 'USD') // '1 000,00 $'
+
+// Автоматическое извлечение валюты из строки
+intl.currency('1234.56 USD') // '1 234,56 $'
+
+// Только число без символа валюты
+intl.currency(1234.56, 'RUB', true) // '1 234,56'
+
+// С дополнительными опциями
+intl.currency(1234.56, {
+  currency: 'EUR',
+  currencyDisplay: 'code'
+}) // '1 234,56 EUR'
+```
+
+### `currencySymbol`
+
+Возвращает символ валюты для текущей локали.
+
+**Параметры:**
+- `currency: string` — код валюты
+- `currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry` — тип отображения валюты (опционально)
+
+```javascript
+intl.currencySymbol('RUB') // '₽'
+intl.currencySymbol('USD') // '$'
+intl.currencySymbol('EUR', 'code') // 'EUR'
+```
+
+## Единицы измерения
+
+### `unit`
+
+Форматирует числа с единицами измерения. Поддерживает автоматическое извлечение единицы из строки.
+
+**Параметры:**
+- `value: NumberOrString` — значение для форматирования
+- `unitOptions?: string | Intl.NumberFormatOptions` — единица измерения или опции форматирования (опционально)
+
+```javascript
+const intl = new GeoIntl('ru-RU')
+
+intl.unit(25, 'celsius') // '25°C'
+intl.unit(100, 'kilometer') // '100 км'
+intl.unit(2.5, 'kilogram') // '2,5 кг'
+
+// Автоматическое извлечение единицы
+intl.unit('100 meter') // '100 м'
+intl.unit('25 celsius') // '25°C'
+```
+
+### `sizeFile`
+
+Форматирует размеры файлов с автоматическим выбором подходящих единиц.
+
+**Параметры:**
+- `value: NumberOrString` — размер в байтах
+- `unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions` — единица измерения или опции форматирования (опционально)
+
+```javascript
+intl.sizeFile(1024) // '1 КБ' (автоматически переводит в килобайты)
+intl.sizeFile(1048576) // '1 МБ' (автоматически в мегабайты)
+intl.sizeFile(500, 'byte') // '500 Б'
+intl.sizeFile(1500, 'kilobyte') // '1,46 МБ' (автоматический пересчёт)
+```
+
+## Проценты
+
+### `percent`
+
+Форматирует проценты (значение от 0 до 1).
+
+**Параметры:**
+- `value: NumberOrString` — значение от 0 до 1
+- `options?: Intl.NumberFormatOptions` — опции форматирования (опционально)
+
+```javascript
+intl.percent(0.1234) // '12,34%'
+intl.percent(0.5) // '50%'
+intl.percent(1.25) // '125%'
+```
+
+### `percentBy100`
+
+Форматирует проценты для значений от 0 до 100.
+
+**Параметры:**
+- `value: NumberOrString` — значение от 0 до 100
+- `options?: Intl.NumberFormatOptions` — опции форматирования (опционально)
+
+```javascript
+intl.percentBy100(12.34) // '12,34%'
+intl.percentBy100(50) // '50%'
+intl.percentBy100(125) // '125%'
+```
+
+## Множественные формы
+
+### `plural`
+
+Применяет правила множественного числа для разных языков.
+
+**Параметры:**
+- `value: NumberOrString` — число для которого определяется форма
+- `words: string` — варианты слов в формате `one|two|few|many|other|zero`
+- `options?: Intl.PluralRulesOptions` — опции правил множественного числа (опционально)
+- `optionsNumber?: Intl.NumberFormatOptions` — опции форматирования числа (опционально)
+
+**Формат words:** `one|two|few|many|other|zero` (порядок важен!)
+
+```javascript
+const intl = new GeoIntl('ru-RU')
+
+// Русские множественные формы
+intl.plural(1, 'товар|товара|товаров') // '1 товар'
+intl.plural(2, 'товар|товара|товаров') // '2 товара'
+intl.plural(5, 'товар|товара|товаров') // '5 товаров'
+
+// Полный формат с нулем
+intl.plural(0, 'день|дня|дней|много дней|дней|нет дней') // '0 нет дней'
+
+const intlEN = new GeoIntl('en-US')
+intlEN.plural(1, 'item|items') // '1 item'
+intlEN.plural(5, 'item|items') // '5 items'
+```
+
+## Работа с датами
+
+### `date`
+
+Форматирует дату и время согласно типу и стилю.
+
+**Параметры:**
+- `value: NumberOrStringOrDate` — дата для форматирования
+- `type?: GeoDate` — тип форматирования даты (опционально)
+- `styleOptions?: string | Intl.DateTimeFormatOptions` — стиль или опции форматирования (опционально)
+- `hour24?: boolean` — использовать 24-часовой формат (опционально)
+
+**Типы дат:** `'full'`, `'datetime'`, `'date'`, `'time'`, `'year-month'`, `'year'`, `'month'`, `'day-month'`, `'day'`, `'hour-minute'`, `'hour'`, `'minute'`, `'second'`
+
+```javascript
+const intl = new GeoIntl('ru-RU')
+const date = new Date('2024-03-15T14:30:45')
+
+intl.date(date) // '15.03.2024' (по умолчанию)
+intl.date(date, 'full') // '15.03.2024, 14:30:45'
+intl.date(date, 'time') // '14:30:45'
+intl.date(date, 'year-month') // 'мар. 2024 г.'
+intl.date(date, 'day-month') // '15 мар.'
+
+// С 12-часовым форматом
+intl.date(date, 'time', undefined, false) // '2:30:45 PM'
+
+// С пользовательскими опциями
+intl.date(date, 'date', { weekday: 'long' }) // 'пятница, 15.03.2024'
+```
+
+### `month`
+
+Возвращает название месяца.
+
+**Параметры:**
+- `value?: NumberOrStringOrDate` — дата (опционально)
+- `style?: Intl.DateTimeFormatOptions['month']` — стиль отображения (опционально)
+
+```javascript
+intl.month(new Date('2024-03-15')) // 'март'
+intl.month(new Date('2024-03-15'), 'short') // 'мар.'
+intl.month(new Date('2024-03-15'), 'narrow') // 'М'
+```
+
+### `months`
+
+Возвращает список всех месяцев в формате для выпадающих списков.
+
+**Параметры:**
+- `style?: Intl.DateTimeFormatOptions['month']` — стиль отображения (опционально)
+
+```javascript
+const monthsList = intl.months()
+// [
+//   { label: '', value: undefined },
+//   { label: 'Январь', value: 1 },
+//   { label: 'Февраль', value: 2 },
+//   ...
+//   { label: 'Декабрь', value: 12 }
+// ]
+
+const monthsShort = intl.months('short')
+// [{ label: '', value: undefined }, { label: 'Янв.', value: 1 }, ...]
+```
+
+### `weekday`
+
+Возвращает название дня недели.
+
+**Параметры:**
+- `value?: NumberOrStringOrDate` — дата (опционально)
+- `style?: Intl.DateTimeFormatOptions['weekday']` — стиль отображения (опционально)
+
+```javascript
+intl.weekday(new Date('2024-03-15')) // 'пятница'
+intl.weekday(new Date('2024-03-15'), 'short') // 'пт'
+intl.weekday(new Date('2024-03-15'), 'narrow') // 'П'
+```
+
+### `weekdays`
+
+Возвращает список дней недели с учётом первого дня недели для локали.
+
+**Параметры:**
+- `style?: Intl.DateTimeFormatOptions['weekday']` — стиль отображения (опционально)
+
+```javascript
+const weekdaysList = intl.weekdays()
+// Для ru-RU (первый день — понедельник):
+// [
+//   { label: '', value: undefined },
+//   { label: 'Понедельник', value: 1 },
+//   { label: 'Вторник', value: 2 },
+//   ...
+//   { label: 'Воскресенье', value: 0 }
+// ]
+```
+
+### `time`
+
+Форматирует только время.
+
+**Параметры:**
+- `value: NumberOrStringOrDate` — дата/время для форматирования
+
+```javascript
+intl.time(new Date('2024-03-15T14:30:45')) // '14:30:45'
+```
+
+## Относительное время
+
+### `relative`
+
+Автоматически вычисляет и форматирует относительное время.
+
+**Параметры:**
+- `value: NumberOrStringOrDate` — дата для сравнения
+- `styleOptions?: string | Intl.RelativeTimeFormatOptions` — стиль или опции форматирования (опционально)
+- `todayValue?: Date` — базовая дата для сравнения (опционально)
+
+```javascript
+const now = new Date()
+const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000)
+const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+
+intl.relative(yesterday) // 'вчера'
+intl.relative(tomorrow) // 'завтра'
+intl.relative(new Date(now.getTime() - 2 * 60 * 60 * 1000)) // '2 часа назад'
+
+// С опциями стиля
+intl.relative(yesterday, 'short') // 'вчера'
+intl.relative(yesterday, { numeric: 'always' }) // '1 день назад'
+```
+
+### `relativeLimit`
+
+Форматирует относительное время с ограничением. Если разница превышает лимит дней, показывает обычную дату.
+
+**Параметры:**
+- `value: NumberOrStringOrDate` — дата для сравнения
+- `limit: number` — лимит дней для относительного времени
+- `todayValue?: Date` — базовая дата для сравнения (опционально)
+- `relativeOptions?: string | Intl.RelativeTimeFormatOptions` — опции относительного времени (опционально)
+- `dateOptions?: string | Intl.DateTimeFormatOptions` — опции обычной даты (опционально)
+- `type?: GeoDate` — тип форматирования даты (опционально)
+- `hour24?: boolean` — использовать 24-часовой формат (опционально)
+
+```javascript
+const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+
+// Лимит 10 дней
+intl.relativeLimit(weekAgo, 10) // 'неделю назад'
+intl.relativeLimit(monthAgo, 10) // '15.02.2024' (обычная дата)
+```
+
+### `relativeByValue`
+
+Форматирует относительное время для указанного значения и единицы.
+
+**Параметры:**
+- `value: NumberOrString` — значение (количество единиц)
+- `unit: Intl.RelativeTimeFormatUnit` — единица времени (`'day'`, `'hour'`, `'month'` и т.д.)
+- `styleOptions?: string | Intl.RelativeTimeFormatOptions` — стиль или опции форматирования (опционально)
+
+```javascript
+intl.relativeByValue(-2, 'day') // '2 дня назад'
+intl.relativeByValue(3, 'hour') // 'через 3 часа'
+intl.relativeByValue(-1, 'month') // 'в прошлом месяце'
+```
+
+## Сортировка
+
+### `sort`
+
+Сортирует массив с учётом языковых особенностей локали.
+
+**Параметры:**
+- `data: T[]` — массив для сортировки
+- `compareFn?: (a: T, b: T) => [string, string]` — функция сравнения (опционально)
+
+```javascript
+const names = ['Яков', 'Анна', 'Борис', 'Ёлка']
+intl.sort(names) // ['Анна', 'Борис', 'Ёлка', 'Яков'] (правильный порядок для русского)
+
+// С пользовательской функцией сравнения
+const users = [{ name: 'Яков' }, { name: 'Анна' }]
+intl.sort(users, (a, b) => [a.name, b.name])
+```
+
+## Практические примеры использования
+
+### Компонент календаря
+
+```javascript
+class Calendar {
+  constructor(locale = 'ru-RU') {
+    this.intl = new GeoIntl(locale)
+  }
+
+  getCalendarData() {
+    return {
+      months: this.intl.months('long'), // для выпадающего списка
+      weekdays: this.intl.weekdays('short'), // для заголовков дней
+      firstDay: this.intl.getFirstDay() // для начала недели
+    }
+  }
+
+  formatDate(date) {
+    return this.intl.date(date, 'date', { weekday: 'long' })
+  }
+}
+```
+
+### Финансовое приложение
+
+```javascript
+class FinanceFormatter {
+  constructor(locale) {
+    this.intl = new GeoIntl(locale)
+  }
+
+  formatBalance(amount, currency) {
+    return this.intl.currency(amount, currency)
+  }
+
+  formatChange(change, currency) {
+    const formatted = this.intl.currency(Math.abs(change), currency, true)
+    return change >= 0 ? `+${formatted}` : `-${formatted}`
+  }
+
+  formatPercent(value) {
+    return this.intl.percentBy100(value)
+  }
+}
+
+const finance = new FinanceFormatter('ru-RU')
+finance.formatBalance(1234567.89, 'RUB') // '1 234 567,89 ₽'
+finance.formatChange(-123.45, 'RUB') // '-123,45'
+finance.formatPercent(12.34) // '12,34%'
+```
+
+### Система уведомлений
+
+```javascript
+class NotificationSystem {
+  constructor(locale) {
+    this.intl = new GeoIntl(locale)
+  }
+
+  formatNotificationTime(date) {
+    return this.intl.relativeLimit(date, 7) // показать относительное время для последней недели
+  }
+
+  formatFileSize(bytes) {
+    return this.intl.sizeFile(bytes)
+  }
+
+  formatItemCount(count, itemType) {
+    const words = {
+      message: 'сообщение|сообщения|сообщений',
+      file: 'файл|файла|файлов',
+      user: 'пользователь|пользователя|пользователей'
+    }
+
+    return this.intl.plural(count, words[itemType] || 'элемент|элемента|элементов')
+  }
+}
+
+const notifications = new NotificationSystem('ru-RU')
+notifications.formatNotificationTime(yesterday) // 'вчера'
+notifications.formatFileSize(1048576) // '1 МБ'
+notifications.formatItemCount(5, 'message') // '5 сообщений'
+```
+
+## Интеграция с системой
+
+Класс GeoIntl интегрируется с:
+- **Geo** — автоматическое получение текущей локали и географических настроек
+- **Браузерный Intl API** — использование нативных возможностей для форматирования
+- **Singleton паттерн** — кеширование экземпляров для оптимизации производительности
+- **Vue компоненты** — предоставление локализованных данных для интерфейса
+
+Это делает его основным инструментом для создания локализованных интерфейсов с правильным отображением всех типов данных согласно культурным и языковым особенностям региона.

@@ -1,0 +1,91 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Math Utils'/>
+
+# Mathematical Utilities
+
+A set of functions for mathematical calculations and working with numeric values.
+
+## `getRandomText`
+
+Generates random text from specified number of words.
+
+**Parameters:**
+- `min: number` — minimum number of words
+- `max: number` — maximum number of words
+- `symbol: string` — symbol to replace letters (default 'x')
+- `lengthMin: number` — minimum word length (default 3)
+- `lengthMax: number` — maximum word length (default 8)
+
+```javascript
+import { getRandomText } from '@dxtmisha/functional'
+
+getRandomText(1, 3) // 'xxx xxxx xx'
+getRandomText(2, 2, 'o', 4, 6) // 'oooo oooooo'
+getRandomText(1, 1, '*', 5, 5) // '*****'
+```
+
+## `getRequestString`
+
+Converts parameter object to URL query string.
+
+**Parameters:**
+- `data: Record<string, any>` — object with parameters
+
+```javascript
+import { getRequestString } from '@dxtmisha/functional'
+
+getRequestString({ name: 'John', age: 30 }) // 'name=John&age=30'
+getRequestString({ q: 'search term', page: 1 }) // 'q=search%20term&page=1'
+getRequestString({}) // ''
+```
+
+## `getStepPercent`
+
+Calculates percentage value of step between minimum and maximum values.
+
+**Parameters:**
+- `value: number` — current value
+- `min: number` — minimum value
+- `max: number` — maximum value
+
+```javascript
+import { getStepPercent } from '@dxtmisha/functional'
+
+getStepPercent(25, 0, 100) // 25
+getStepPercent(50, 20, 80) // 50
+getStepPercent(15, 10, 20) // 50
+```
+
+## `getStepValue`
+
+Calculates value by percentage between minimum and maximum values.
+
+**Parameters:**
+- `percent: number` — percentage value
+- `min: number` — minimum value
+- `max: number` — maximum value
+
+```javascript
+import { getStepValue } from '@dxtmisha/functional'
+
+getStepValue(50, 0, 100) // 50
+getStepValue(25, 10, 20) // 12.5
+getStepValue(75, 0, 200) // 150
+```
+
+## `random`
+
+Generates random integer within specified range.
+
+**Parameters:**
+- `min: number` — minimum value (inclusive)
+- `max: number` — maximum value (inclusive)
+
+```javascript
+import { random } from '@dxtmisha/functional'
+
+random(1, 10) // e.g., 7
+random(0, 100) // e.g., 42
+random(5, 5) // 5
+```

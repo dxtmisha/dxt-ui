@@ -1,0 +1,129 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Execution Utils'/>
+
+# Execution Utilities
+
+A set of functions for universal execution of synchronous and asynchronous operations.
+
+## `executeFunction`
+
+Executes a function and returns its result, or returns input data if it's not a function.
+
+**Parameters:**
+- `callback: T | FunctionArgs<any, T>` — function or any value
+
+```javascript
+import { executeFunction } from '@dxtmisha/functional'
+
+executeFunction(() => 'Hello World') // 'Hello World'
+executeFunction('Static value') // 'Static value'
+executeFunction(() => 42 + 8) // 50
+executeFunction({ data: 'object' }) // { data: 'object' }
+```
+
+## `executePromise`
+
+Executes an asynchronous function or returns a value, automatically handling Promise.
+
+**Parameters:**
+- `callback: (() => Promise<T>) | (() => T) | T` — async function, sync function or value
+
+```javascript
+import { executePromise } from '@dxtmisha/functional'
+
+await executePromise(async () => fetch('/api').then(r => r.json())) // Promise result
+await executePromise(() => 'Sync result') // 'Sync result'
+await executePromise('Static value') // 'Static value'
+```
+
+## `executeUse`
+
+Returns a function for caching and reusing initialization results in Vue components. Supports various modes: local caching, global state, inheritance via provide/inject and automatic cleanup on unmount.
+
+**Parameters:**
+- `callback: (...args: O) => R` — initialization function whose result will be cached
+- `unmounted: boolean` — whether to delete data from cache on component unmount (default `true`)
+- `isGlobal: boolean` — whether object is global for entire application (default `false`)
+- `isProvide: boolean` — whether to use provide/inject for inheritance in child components (default `true`)
+
+**Returns:**
+Function that executes callback and caches result on first call, returns cached value on subsequent calls.
+
+```javascript
+import { executeUse } from '@dxtmisha/functional'
+import { reactive, ref } from 'vue'
+
+// Simple state caching
+const useCounter = executeUse(() => {
+  return reactive({
+    count: 0,
+    increment() { this.count++ },
+    decrement() { this.count-- }
+  })
+})
+
+// In component
+const counter = useCounter() // created once
+counter.increment()
+
+// Caching with parameters
+const useStore = executeUse((initialData) => {
+  return reactive({
+    data: initialData,
+    loading: false,
+    error: null,
+    async fetch() {
+      this.loading = true
+      try {
+        this.data = await api.getData()
+      } catch (err) {
+        this.error = err
+      } finally {
+        this.loading = false
+      }
+    }
+  })
+})
+
+// Global state (persists between components)
+const useGlobalTheme = executeUse(
+  () => reactive({ theme: 'dark', language: 'en' }),
+  false,  // don't delete on unmount
+  true,   // global state
+  false   // without provide/inject
+)
+
+// API client caching
+const useApiClient = executeUse(() => {
+  const baseURL = process.env.VUE_APP_API_URL
+
+  return {
+    async get(endpoint) {
+      const response = await fetch(`${baseURL}${endpoint}`)
+      return response.json()
+    },
+    async post(endpoint, data) {
+      const response = await fetch(`${baseURL}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      return response.json()
+    }
+  }
+})
+
+// Usage in components
+export default {
+  setup() {
+    // All calls return the same object
+    const counter = useCounter()
+    const store = useStore({ items: [] })
+    const theme = useGlobalTheme()
+    const api = useApiClient()
+
+    return { counter, store, theme, api }
+  }
+}
+```

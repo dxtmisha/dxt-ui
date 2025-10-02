@@ -1,0 +1,284 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Validation Utils'/>
+
+# Validation Utilities
+
+A set of functions for data type checking and value validation.
+
+## `inArray`
+
+Checks if value is contained in array.
+
+**Parameters:**
+- `array: T[]` — array to check
+- `value: T` — value to check
+
+```javascript
+import { inArray } from '@dxtmisha/functional'
+
+inArray([1, 2, 3], 2) // true
+inArray(['a', 'b'], 'c') // false
+inArray([{id: 1}, {id: 2}], {id: 1}) // false (different references)
+```
+
+## `intersectKey`
+
+Checks key intersection between objects or arrays.
+
+**Parameters:**
+- `data1: Record<string, any> | any[]` — first object or array
+- `data2: Record<string, any> | any[]` — second object or array
+
+```javascript
+import { intersectKey } from '@dxtmisha/functional'
+
+intersectKey({a: 1, b: 2}, {b: 3, c: 4}) // true (common key 'b')
+intersectKey([1, 2], [3, 4]) // false
+intersectKey({}, {a: 1}) // false
+```
+
+## `isArray`
+
+Checks if value is an array.
+
+**Parameters:**
+- `value: T` — value to check
+
+```javascript
+import { isArray } from '@dxtmisha/functional'
+
+isArray([1, 2, 3]) // true
+isArray('string') // false
+isArray({}) // false
+```
+
+## `isDifferent`
+
+Checks if two values are different.
+
+**Parameters:**
+- `value1: any` — first value
+- `value2: any` — second value
+
+```javascript
+import { isDifferent } from '@dxtmisha/functional'
+
+isDifferent(1, 2) // true
+isDifferent('hello', 'hello') // false
+isDifferent({a: 1}, {a: 1}) // true (different references)
+```
+
+## `isDomRuntime`
+
+Checks if code is running in browser environment (DOM exists).
+
+```javascript
+import { isDomRuntime } from '@dxtmisha/functional'
+
+isDomRuntime() // true in browser, false in Node.js
+```
+
+## `isFilled`
+
+Checks if value is filled (not empty and not undefined/null).
+
+**Parameters:**
+- `value: any` — value to check
+
+```javascript
+import { isFilled } from '@dxtmisha/functional'
+
+isFilled('hello') // true
+isFilled('') // false
+isFilled(0) // true
+isFilled(null) // false
+```
+
+## `isFloat`
+
+Checks if value is a floating point number.
+
+**Parameters:**
+- `value: any` — value to check
+
+```javascript
+import { isFloat } from '@dxtmisha/functional'
+
+isFloat(3.14) // true
+isFloat(5) // false
+isFloat('3.14') // false
+```
+
+## `isFunction`
+
+Checks if value is a function.
+
+**Parameters:**
+- `value: any` — value to check
+
+```javascript
+import { isFunction } from '@dxtmisha/functional'
+
+isFunction(() => {}) // true
+isFunction(function() {}) // true
+isFunction('string') // false
+```
+
+## `isInDom`
+
+Checks if element is in DOM tree.
+
+**Parameters:**
+- `element: Element` — element to check
+
+```javascript
+import { isInDom } from '@dxtmisha/functional'
+
+const element = document.createElement('div')
+isInDom(element) // false (not added to DOM)
+document.body.appendChild(element)
+isInDom(element) // true
+```
+
+## `isIntegerBetween`
+
+Checks if value is an integer within specified range.
+
+**Parameters:**
+- `value: any` — value to check
+- `min: number` — minimum value
+- `max: number` — maximum value
+
+```javascript
+import { isIntegerBetween } from '@dxtmisha/functional'
+
+isIntegerBetween(5, 1, 10) // true
+isIntegerBetween(3.5, 1, 10) // false (not integer)
+isIntegerBetween(15, 1, 10) // false (out of range)
+```
+
+## `isNull`
+
+Checks if value is null or undefined.
+
+**Parameters:**
+- `value: any` — value to check
+
+```javascript
+import { isNull } from '@dxtmisha/functional'
+
+isNull(null) // true
+isNull(undefined) // true
+isNull(0) // false
+isNull('') // false
+```
+
+## `isNumber`
+
+Checks if value is a number.
+
+**Parameters:**
+- `value: any` — value to check
+
+```javascript
+import { isNumber } from '@dxtmisha/functional'
+
+isNumber(42) // true
+isNumber(3.14) // true
+isNumber('42') // false
+isNumber(NaN) // false
+```
+
+## `isObject`
+
+Checks if value is an object (including arrays).
+
+**Parameters:**
+- `value: any` — value to check
+
+```javascript
+import { isObject } from '@dxtmisha/functional'
+
+isObject({}) // true
+isObject([]) // true
+isObject(null) // false
+isObject('string') // false
+```
+
+## `isObjectNotArray`
+
+Checks if value is an object but not an array.
+
+**Parameters:**
+- `value: any` — value to check
+
+```javascript
+import { isObjectNotArray } from '@dxtmisha/functional'
+
+isObjectNotArray({}) // true
+isObjectNotArray([]) // false
+isObjectNotArray(null) // false
+```
+
+## `isSelected`
+
+Checks if element matches selection conditions.
+
+**Parameters:**
+- `item: any` — element to check
+- `selected: any` — selection condition
+
+```javascript
+import { isSelected } from '@dxtmisha/functional'
+
+isSelected('apple', 'apple') // true
+isSelected({id: 1}, {id: 1}) // false (different references)
+isSelected('apple', ['apple', 'banana']) // true
+```
+
+## `isSelectedByList`
+
+Checks if element matches one of conditions in list.
+
+**Parameters:**
+- `item: any` — element to check
+- `selected: any[]` — list of selection conditions
+
+```javascript
+import { isSelectedByList } from '@dxtmisha/functional'
+
+isSelectedByList('apple', ['apple', 'banana']) // true
+isSelectedByList('grape', ['apple', 'banana']) // false
+isSelectedByList(1, [1, 2, 3]) // true
+```
+
+## `isString`
+
+Checks if value is a string.
+
+**Parameters:**
+- `value: any` — value to check
+
+```javascript
+import { isString } from '@dxtmisha/functional'
+
+isString('hello') // true
+isString(42) // false
+isString('') // true
+```
+
+## `isWindow`
+
+Checks if value is window object.
+
+**Parameters:**
+- `value: any` — value to check
+
+```javascript
+import { isWindow } from '@dxtmisha/functional'
+
+isWindow(window) // true in browser
+isWindow(document) // false
+isWindow({}) // false
+```

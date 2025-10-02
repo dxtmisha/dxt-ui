@@ -1,0 +1,353 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Conversions'/>
+
+# Conversion Functions
+
+A set of functions for converting values between different data types.
+
+## `anyToString`
+
+Converts any value to a string with intelligent handling of various data types.
+
+**Parameters:**
+- `value: V` — value to convert to string
+
+```javascript
+import { anyToString } from '@dxtmisha/functional'
+
+anyToString('  hello  ') // 'hello'
+anyToString(true) // '1'
+anyToString([1, 2, 3]) // '1,2,3'
+anyToString({ name: 'John' }) // '{"name":"John"}'
+```
+
+## `applyTemplate`
+
+Applies a template to text, replacing keys with values from the replacement object. Supports three formats: square brackets `[key]`, positional parameters `%d`, `%e`, `%f` and tags with content `[tag]content[/tag]`.
+
+**Parameters:**
+- `text: string` — template text containing keys in square brackets `[key]`, positional parameters `%d`, `%e` etc., or tags with content `[tag]content[/tag]`
+- `replacement: Record<string, string | number> | string[]` — object or array for key replacement
+
+```javascript
+import { applyTemplate } from '@dxtmisha/functional'
+
+// Square bracket key replacement
+applyTemplate('Hello, [name]!', { name: 'Anna' }) // 'Hello, Anna!'
+applyTemplate('[item] - [price]', { item: 'Phone', price: 15000 })
+
+// Positional parameters
+applyTemplate('Order %d for %e rubles', ['#123', '1500']) // 'Order #123 for 1500 rubles'
+
+// Tags with content ([content] replaced with tag content)
+applyTemplate('This is [bold]bold text[/bold]', { bold: '<b>[content]</b>' }) // 'This is <b>bold text</b>'
+applyTemplate('Text with [red]colored[/red] word', { red: '<span style="color:red">[content]</span>' })
+```
+
+## `replaceRecursive`
+
+Recursively replaces values in an object or array.
+
+**Parameters:**
+- `data: any` — object or array to process
+- `search: any` — value to search for
+- `replace: any` — replacement value
+
+```javascript
+import { replaceRecursive } from '@dxtmisha/functional'
+
+replaceRecursive({a: 'old', b: {c: 'old'}}, 'old', 'new') // {a: 'new', b: {c: 'new'}}
+replaceRecursive(['old', {x: 'old'}], 'old', 'new') // ['new', {x: 'new'}]
+```
+
+## `replaceTemplate`
+
+Replaces template values in a string based on replacement object. Uses `[key]` format for search and replace. Supports both string values and functions.
+
+**Parameters:**
+- `value: string` — template string with keys in `[key]` format
+- `replaces: Record<string, string | FunctionReturn<string>>` — object with replacement data (values can be strings or functions)
+
+```javascript
+import { replaceTemplate } from '@dxtmisha/functional'
+
+replaceTemplate('Hello [name]!', {name: 'World'}) // 'Hello World!'
+replaceTemplate('[x] + [y] = [sum]', {x: '2', y: '3', sum: '5'}) // '2 + 3 = 5'
+replaceTemplate('User [id]: [name]', {id: '123', name: 'John'}) // 'User 123: John'
+replaceTemplate('Time: [time]', {time: () => new Date().toLocaleString()}) // with function
+```
+
+## `secondToTime`
+
+Converts seconds to time format (hours:minutes:seconds).
+
+**Parameters:**
+- `seconds: number` — number of seconds
+
+```javascript
+import { secondToTime } from '@dxtmisha/functional'
+
+secondToTime(3661) // '01:01:01'
+secondToTime(125) // '00:02:05'
+secondToTime(45) // '00:00:45'
+```
+
+## `strFill`
+
+Fills a string with specified character to desired length.
+
+**Parameters:**
+- `value: string | number` — source value
+- `length: number` — target length
+- `fill: string` — fill character (default '0')
+- `start: boolean` — fill at start (default true)
+
+```javascript
+import { strFill } from '@dxtmisha/functional'
+
+strFill('5', 3) // '005'
+strFill('hello', 8, '*', false) // 'hello***'
+strFill(42, 4) // '0042'
+```
+
+## `toArray`
+
+Converts a value to an array.
+
+**Parameters:**
+- `value: any` — value to convert
+
+```javascript
+import { toArray } from '@dxtmisha/functional'
+
+toArray('hello') // ['hello']
+toArray([1, 2]) // [1, 2]
+toArray(null) // [null]
+```
+
+## `toBind`
+
+Merges two property objects with smart handling of classes and styles. When merging objects, classes and styles are combined into arrays rather than overwritten.
+
+**Parameters:**
+- `extra: ItemList` — additional properties (base object)
+- `value: ItemList` — input properties to merge
+
+**Returns:**
+Merged property object with properly handled classes and styles.
+
+**Features:**
+- Regular properties are overwritten (priority to `value`)
+- Classes (`class`) are combined into array `[extraClass, valueClass]`
+- Styles (`style`) are combined into array `[extraStyle, valueStyle]`
+- Allows creating composite property objects for components
+
+```javascript
+import { toBind } from '@dxtmisha/functional'
+
+// Regular property merging
+toBind({id: 'base', disabled: false}, {id: 'new', type: 'button'})
+// Result: {id: 'new', disabled: false, type: 'button'}
+
+// Smart class merging
+toBind({class: 'btn'}, {class: 'primary'})
+// Result: {class: ['btn', 'primary']}
+
+// Smart style merging
+toBind(
+  {style: {color: 'red', fontSize: '14px'}},
+  {style: {color: 'blue', margin: '10px'}}
+)
+// Result: {style: [{color: 'red', fontSize: '14px'}, {color: 'blue', margin: '10px'}]}
+
+// Complex merging
+toBind(
+  {class: 'btn', style: {padding: '10px'}, disabled: false},
+  {class: 'primary', style: {color: 'white'}, type: 'button'}
+)
+// Result: {
+//   class: ['btn', 'primary'],
+//   style: [{padding: '10px'}, {color: 'white'}],
+//   disabled: false,
+//   type: 'button'
+// }
+```
+
+## `toBinds`
+
+Merges multiple property objects by sequentially applying `toBind` to each. Smartly handles classes and styles, creating composite property objects.
+
+**Parameters:**
+- `...values: (ItemList | undefined)[]` — list of property objects to merge
+
+**Returns:**
+Final merged object with all properties, classes and styles.
+
+```javascript
+import { toBinds } from '@dxtmisha/functional'
+
+// Merging multiple objects
+toBinds(
+  {class: 'btn', disabled: false},
+  {class: 'primary', type: 'button'},
+  {class: 'large', id: 'submit-btn'}
+)
+// Result: {
+//   class: ['btn', 'primary', 'large'],
+//   disabled: false,
+//   type: 'button',
+//   id: 'submit-btn'
+// }
+
+// With undefined values (ignored)
+toBinds(
+  {class: 'base'},
+  undefined,
+  {style: {color: 'red'}},
+  null,
+  {class: 'modifier'}
+)
+// Result: {class: ['base', 'modifier'], style: {color: 'red'}}
+
+// Style merging
+toBinds(
+  {style: {padding: '10px'}},
+  {style: {margin: '5px'}},
+  {style: {color: 'blue'}}
+)
+// Result: {style: [{padding: '10px'}, {margin: '5px'}, {color: 'blue'}]}
+```
+
+## `toCamelCase`
+
+Converts string to camelCase.
+
+**Parameters:**
+- `value: string` — string to convert
+
+```javascript
+import { toCamelCase } from '@dxtmisha/functional'
+
+toCamelCase('hello-world') // 'helloWorld'
+toCamelCase('hello_world') // 'helloWorld'
+toCamelCase('hello world') // 'helloWorld'
+```
+
+## `toCamelCaseFirst`
+
+Converts string to PascalCase (first letter uppercase).
+
+**Parameters:**
+- `value: string` — string to convert
+
+```javascript
+import { toCamelCaseFirst } from '@dxtmisha/functional'
+
+toCamelCaseFirst('hello-world') // 'HelloWorld'
+toCamelCaseFirst('component_name') // 'ComponentName'
+```
+
+## `toDate`
+
+Converts value to Date object.
+
+**Parameters:**
+- `value: any` — value to convert
+
+```javascript
+import { toDate } from '@dxtmisha/functional'
+
+toDate('2023-01-01') // Date object
+toDate(1672531200000) // Date object
+toDate(new Date()) // Date object
+```
+
+## `toKebabCase`
+
+Converts string to kebab-case.
+
+**Parameters:**
+- `value: string` — string to convert
+
+```javascript
+import { toKebabCase } from '@dxtmisha/functional'
+
+toKebabCase('HelloWorld') // 'hello-world'
+toKebabCase('helloWorld') // 'hello-world'
+toKebabCase('hello_world') // 'hello-world'
+```
+
+## `toNumber`
+
+Converts value to number.
+
+**Parameters:**
+- `value: any` — value to convert
+
+```javascript
+import { toNumber } from '@dxtmisha/functional'
+
+toNumber('42') // 42
+toNumber('3.14') // 3.14
+toNumber('abc') // 0
+```
+
+## `toNumberByMax`
+
+Converts value to number with maximum value limit.
+
+**Parameters:**
+- `value: any` — value to convert
+- `max: number` — maximum value
+
+```javascript
+import { toNumberByMax } from '@dxtmisha/functional'
+
+toNumberByMax('100', 50) // 50
+toNumberByMax('25', 50) // 25
+```
+
+## `toPercent`
+
+Converts number to percentage value.
+
+**Parameters:**
+- `value: number` — number from 0 to 1
+
+```javascript
+import { toPercent } from '@dxtmisha/functional'
+
+toPercent(0.5) // 50
+toPercent(0.25) // 25
+toPercent(1) // 100
+```
+
+## `toPercentBy100`
+
+Converts number to percentage value (for numbers from 0 to 100).
+
+**Parameters:**
+- `value: number` — number from 0 to 100
+
+```javascript
+import { toPercentBy100 } from '@dxtmisha/functional'
+
+toPercentBy100(50) // '50%'
+toPercentBy100(25.5) // '25.5%'
+```
+
+## `transformation`
+
+Applies transformation function to a value.
+
+**Parameters:**
+- `value: any` — source value
+- `callback: Function` — transformation function
+
+```javascript
+import { transformation } from '@dxtmisha/functional'
+
+transformation('hello', s => s.toUpperCase()) // 'HELLO'
+transformation(5, n => n * 2) // 10
+```

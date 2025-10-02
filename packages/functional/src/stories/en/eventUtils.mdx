@@ -1,0 +1,82 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Event Utils'/>
+
+# Event Utilities
+
+A set of functions for handling and managing DOM events.
+
+## `eventStopPropagation`
+
+Stops event propagation and prevents default action.
+
+**Parameters:**
+- `event: Event` — event object to stop
+
+```javascript
+import { eventStopPropagation } from '@dxtmisha/functional'
+
+button.addEventListener('click', (event) => {
+  eventStopPropagation(event) // stops bubbling and default action
+})
+
+form.addEventListener('submit', (event) => {
+  if (!isValid) eventStopPropagation(event) // prevents submission
+})
+```
+
+## `getKey`
+
+Returns pressed key from keyboard event.
+
+**Parameters:**
+- `event: KeyboardEvent` — keyboard event object
+
+```javascript
+import { getKey } from '@dxtmisha/functional'
+
+document.addEventListener('keydown', (event) => {
+  const key = getKey(event) // 'Enter', 'Escape', 'a', etc.
+})
+```
+
+## `getMouseClient`
+
+Returns mouse cursor or touch position coordinates.
+
+**Parameters:**
+- `event: MouseEvent & TouchEvent` — mouse or touch event object
+
+```javascript
+import { getMouseClient } from '@dxtmisha/functional'
+
+element.addEventListener('click', (event) => {
+  const { x, y } = getMouseClient(event) // { x: 100, y: 200 }
+})
+```
+
+## `getMouseClientX`
+
+Returns X-coordinate of mouse cursor or touch position.
+
+**Parameters:**
+- `event: MouseEvent & TouchEvent` — mouse or touch event object
+
+```javascript
+import { getMouseClientX } from '@dxtmisha/functional'
+
+const x = getMouseClientX(event) // 100
+```
+
+## `getMouseClientY`
+
+Returns Y-coordinate of mouse cursor or touch position.
+
+**Parameters:**
+- `event: MouseEvent & TouchEvent` — mouse or touch event object
+
+```javascript
+import { getMouseClientY } from '@dxtmisha/functional'
+
+const y = getMouseClientY(event) // 200
+```

@@ -1,0 +1,257 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Data Utils'/>
+
+# Data Utilities
+
+A set of functions for data processing, iteration and management.
+
+## `arrFill`
+
+Creates an array of a specified number of elements filled with the same value.
+
+**Parameters:**
+- `value: T` — value to fill the array with
+- `count: number` — number of elements in the array
+
+```javascript
+import { arrFill } from '@dxtmisha/functional'
+
+arrFill('hello', 3) // ['hello', 'hello', 'hello']
+arrFill(0, 5) // [0, 0, 0, 0, 0]
+arrFill({ id: 1 }, 2) // [{ id: 1 }, { id: 1 }]
+```
+
+## `copyObject`
+
+Creates a deep copy of an object via JSON serialization.
+
+**Parameters:**
+- `value: T` — object to copy
+
+```javascript
+import { copyObject } from '@dxtmisha/functional'
+
+const original = { name: 'John', data: { age: 30 } }
+const copy = copyObject(original)
+copy.data.age = 25 // original.data.age remains 30
+```
+
+## `forEach`
+
+Universal iteration function for arrays, objects and Map.
+
+**Parameters:**
+- `data: D` — object to iterate (array, object or Map)
+- `callback: (item: T, key: K, dataMain: typeof data) => R` — function called for each element
+
+```javascript
+import { forEach } from '@dxtmisha/functional'
+
+forEach([1, 2, 3], (item, index) => item * 2) // [2, 4, 6]
+forEach({ a: 1, b: 2 }, (value, key) => `${key}=${value}`) // ['a=1', 'b=2']
+forEach(new Map([['x', 10]]), (value, key) => `${key}:${value}`) // ['x:10']
+```
+
+## `getClipboardData`
+
+Asynchronously gets text data from clipboard.
+
+**Parameters:**
+- `event?: ClipboardEvent` — clipboard event (optional)
+
+```javascript
+import { getClipboardData } from '@dxtmisha/functional'
+
+const text = await getClipboardData(event) // from paste event
+const clipboardText = await getClipboardData() // direct read
+```
+
+## `getColumn`
+
+Extracts values of a specific column from array of objects.
+
+**Parameters:**
+- `array: ObjectOrArray<T>` — array of objects to process
+- `column: K` — column key to extract
+
+```javascript
+import { getColumn } from '@dxtmisha/functional'
+
+const users = [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]
+const names = getColumn(users, 'name') // ['Alice', 'Bob']
+```
+
+## `getExp`
+
+Creates a regular expression for safe text search with escaping.
+
+**Parameters:**
+- `value: string` — text to search for
+- `flags: string` — regular expression flags (default `'ig'`)
+- `pattern: string` — pattern (default `:value`)
+
+```javascript
+import { getExp } from '@dxtmisha/functional'
+
+const regex = getExp('hello') // /hello/ig
+const regexSpecial = getExp('$100') // /\$100/ig (escaped)
+```
+
+## `getItemByPath`
+
+Gets value from nested object by string path.
+
+**Parameters:**
+- `item: T` — object to traverse
+- `path: string` — path through dots (e.g., `'user.profile.name'`)
+
+```javascript
+import { getItemByPath } from '@dxtmisha/functional'
+
+const data = { user: { profile: { name: 'John' } } }
+const name = getItemByPath(data, 'user.profile.name') // 'John'
+```
+
+## `getLengthOfAllArray`
+
+Returns array with lengths of all strings.
+
+**Parameters:**
+- `value: ObjectOrArray<string>` — array of strings or object
+
+```javascript
+import { getLengthOfAllArray } from '@dxtmisha/functional'
+
+getLengthOfAllArray(['hello', 'world']) // [5, 5]
+```
+
+## `getMaxLengthAllArray`
+
+Finds maximum string length in array.
+
+**Parameters:**
+- `data: ObjectOrArray<string>` — array of strings or object
+
+```javascript
+import { getMaxLengthAllArray } from '@dxtmisha/functional'
+
+getMaxLengthAllArray(['hello', 'world']) // 5
+```
+
+## `getMinLengthAllArray`
+
+Finds minimum string length in array.
+
+**Parameters:**
+- `data: ObjectOrArray<string>` — array of strings or object
+
+```javascript
+import { getMinLengthAllArray } from '@dxtmisha/functional'
+
+getMinLengthAllArray(['hello', 'hi']) // 2
+```
+
+## `getObjectByKeys`
+
+Returns new object with specified keys from source object.
+
+**Parameters:**
+- `data: Record<string, any>` — source object
+- `keys: string[]` — list of keys to extract
+
+```javascript
+import { getObjectByKeys } from '@dxtmisha/functional'
+
+const obj = { a: 1, b: 2, c: 3 }
+const filtered = getObjectByKeys(obj, ['a', 'c']) // { a: 1, c: 3 }
+```
+
+## `getObjectNoUndefined`
+
+Removes all properties with specified value (default undefined) from object.
+
+**Parameters:**
+- `data: T` — object to process
+- `exception: any` — value to exclude (default undefined)
+
+```javascript
+import { getObjectNoUndefined } from '@dxtmisha/functional'
+
+const obj = { a: 1, b: undefined, c: 3 }
+const cleaned = getObjectNoUndefined(obj) // { a: 1, c: 3 }
+```
+
+## `getObjectOrNone`
+
+Returns object if it's not empty, otherwise returns undefined.
+
+**Parameters:**
+- `data: T` — object to check
+
+```javascript
+import { getObjectOrNone } from '@dxtmisha/functional'
+
+getObjectOrNone({ a: 1 }) // { a: 1 }
+getObjectOrNone({}) // undefined
+```
+
+## `setValues`
+
+Sets values in object by specified paths.
+
+**Parameters:**
+- `target: Record<string, any>` — target object
+- `values: Record<string, any>` — object with values to set
+
+```javascript
+import { setValues } from '@dxtmisha/functional'
+
+const obj = {}
+setValues(obj, { 'user.name': 'John', 'user.age': 30 })
+// obj is now { user: { name: 'John', age: 30 } }
+```
+
+## `splice`
+
+Removes elements from array and returns new array.
+
+**Parameters:**
+- `array: T[]` — source array
+- `index: number` — start index for removal
+- `deleteCount?: number` — number of elements to remove
+
+```javascript
+import { splice } from '@dxtmisha/functional'
+
+splice([1, 2, 3, 4], 1, 2) // [1, 4]
+splice(['a', 'b', 'c'], 0, 1) // ['b', 'c']
+```
+
+## `uniqueArray`
+
+Removes duplicates from array.
+
+**Parameters:**
+- `array: T[]` — array to process
+
+```javascript
+import { uniqueArray } from '@dxtmisha/functional'
+
+uniqueArray([1, 2, 2, 3, 1]) // [1, 2, 3]
+uniqueArray(['a', 'b', 'a', 'c']) // ['a', 'b', 'c']
+```
+
+## `writeClipboardData`
+
+Writes data to clipboard.
+
+**Parameters:**
+- `data: string` — data to write to clipboard
+
+```javascript
+import { writeClipboardData } from '@dxtmisha/functional'
+
+await writeClipboardData('Hello, World!') // writes text to clipboard
+await writeClipboardData(JSON.stringify({key: 'value'})) // writes JSON
+```
