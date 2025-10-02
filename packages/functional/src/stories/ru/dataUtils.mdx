@@ -195,3 +195,63 @@ import { getObjectOrNone } from '@dxtmisha/functional'
 getObjectOrNone({ a: 1 }) // { a: 1 }
 getObjectOrNone({}) // undefined
 ```
+
+## `setValues`
+
+Устанавливает значения в объекте по указанным путям.
+
+**Параметры:**
+- `target: Record<string, any>` — целевой объект
+- `values: Record<string, any>` — объект со значениями для установки
+
+```javascript
+import { setValues } from '@dxtmisha/functional'
+
+const obj = {}
+setValues(obj, { 'user.name': 'John', 'user.age': 30 })
+// obj теперь { user: { name: 'John', age: 30 } }
+```
+
+## `splice`
+
+Удаляет элементы из массива и возвращает новый массив.
+
+**Параметры:**
+- `array: T[]` — исходный массив
+- `index: number` — индекс начала удаления
+- `deleteCount?: number` — количество удаляемых элементов
+
+```javascript
+import { splice } from '@dxtmisha/functional'
+
+splice([1, 2, 3, 4], 1, 2) // [1, 4]
+splice(['a', 'b', 'c'], 0, 1) // ['b', 'c']
+```
+
+## `uniqueArray`
+
+Удаляет дубликаты из массива.
+
+**Параметры:**
+- `array: T[]` — массив для обработки
+
+```javascript
+import { uniqueArray } from '@dxtmisha/functional'
+
+uniqueArray([1, 2, 2, 3, 1]) // [1, 2, 3]
+uniqueArray(['a', 'b', 'a', 'c']) // ['a', 'b', 'c']
+```
+
+## `writeClipboardData`
+
+Записывает данные в буфер обмена.
+
+**Параметры:**
+- `data: string` — данные для записи в буфер обмена
+
+```javascript
+import { writeClipboardData } from '@dxtmisha/functional'
+
+await writeClipboardData('Hello, World!') // записывает текст в буфер
+await writeClipboardData(JSON.stringify({key: 'value'})) // записывает JSON
+```

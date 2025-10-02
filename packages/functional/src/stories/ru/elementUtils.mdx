@@ -156,3 +156,20 @@ import { initScrollbarOffset } from '@dxtmisha/functional'
 // Инициализация при загрузке приложения
 await initScrollbarOffset() // устанавливает --sys-scrollbar-offset в CSS
 ```
+
+## `setElementItem`
+
+Устанавливает значение свойства элемента по ключу.
+
+**Параметры:**
+- `element: ElementOrString<T>` — элемент для изменения
+- `index: K | string` — ключ свойства для установки
+- `value: any` — новое значение
+
+```javascript
+import { setElementItem } from '@dxtmisha/functional'
+
+setElementItem(input, 'value', 'новое значение')
+setElementItem('#my-element', 'textContent', 'Hello World')
+setElementItem(button, 'disabled', true)
+```

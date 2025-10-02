@@ -73,3 +73,19 @@ getStepValue(50, 0, 100) // 50
 getStepValue(25, 10, 20) // 12.5
 getStepValue(75, 0, 200) // 150
 ```
+
+## `random`
+
+Генерирует случайное целое число в указанном диапазоне.
+
+**Параметры:**
+- `min: number` — минимальное значение (включительно)
+- `max: number` — максимальное значение (включительно)
+
+```javascript
+import { random } from '@dxtmisha/functional'
+
+random(1, 10) // например, 7
+random(0, 100) // например, 42
+random(5, 5) // 5
+```

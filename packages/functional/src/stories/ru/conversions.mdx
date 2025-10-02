@@ -44,3 +44,310 @@ applyTemplate('Заказ %d на %e руб', ['#123', '1500']) // 'Заказ #
 applyTemplate('Это [bold]жирный текст[/bold]', { bold: '<b>[content]</b>' }) // 'Это <b>жирный текст</b>'
 applyTemplate('Text with [red]colored[/red] word', { red: '<span style="color:red">[content]</span>' })
 ```
+
+## `replaceRecursive`
+
+Рекурсивно заменяет значения в объекте или массиве.
+
+**Параметры:**
+- `data: any` — объект или массив для обработки
+- `search: any` — искомое значение
+- `replace: any` — значение для замены
+
+```javascript
+import { replaceRecursive } from '@dxtmisha/functional'
+
+replaceRecursive({a: 'old', b: {c: 'old'}}, 'old', 'new') // {a: 'new', b: {c: 'new'}}
+replaceRecursive(['old', {x: 'old'}], 'old', 'new') // ['new', {x: 'new'}]
+```
+
+## `replaceTemplate`
+
+Заменяет шаблонные значения в строке на основе объекта замены. Использует формат `[ключ]` для поиска и замены. Поддерживает как строковые значения, так и функции.
+
+**Параметры:**
+- `value: string` — строка шаблона с ключами в формате `[ключ]`
+- `replaces: Record<string, string | FunctionReturn<string>>` — объект с данными для замены (значения могут быть строками или функциями)
+
+```javascript
+import { replaceTemplate } from '@dxtmisha/functional'
+
+replaceTemplate('Hello [name]!', {name: 'World'}) // 'Hello World!'
+replaceTemplate('[x] + [y] = [sum]', {x: '2', y: '3', sum: '5'}) // '2 + 3 = 5'
+replaceTemplate('User [id]: [name]', {id: '123', name: 'John'}) // 'User 123: John'
+replaceTemplate('Time: [time]', {time: () => new Date().toLocaleString()}) // с функцией
+```
+
+## `secondToTime`
+
+Преобразует секунды в формат времени (часы:минуты:секунды).
+
+**Параметры:**
+- `seconds: number` — количество секунд
+
+```javascript
+import { secondToTime } from '@dxtmisha/functional'
+
+secondToTime(3661) // '01:01:01'
+secondToTime(125) // '00:02:05'
+secondToTime(45) // '00:00:45'
+```
+
+## `strFill`
+
+Заполняет строку указанным символом до нужной длины.
+
+**Параметры:**
+- `value: string | number` — исходное значение
+- `length: number` — целевая длина
+- `fill: string` — символ заполнения (по умолчанию '0')
+- `start: boolean` — заполнять в начале (по умолчанию true)
+
+```javascript
+import { strFill } from '@dxtmisha/functional'
+
+strFill('5', 3) // '005'
+strFill('hello', 8, '*', false) // 'hello***'
+strFill(42, 4) // '0042'
+```
+
+## `toArray`
+
+Преобразует значение в массив.
+
+**Параметры:**
+- `value: any` — значение для преобразования
+
+```javascript
+import { toArray } from '@dxtmisha/functional'
+
+toArray('hello') // ['hello']
+toArray([1, 2]) // [1, 2]
+toArray(null) // [null]
+```
+
+## `toBind`
+
+Объединяет два объекта со свойствами, с умной обработкой классов и стилей. При слиянии объектов классы и стили объединяются в массивы, а не перезаписываются.
+
+**Параметры:**
+- `extra: ItemList` — дополнительные свойства (базовый объект)
+- `value: ItemList` — входные свойства для объединения
+
+**Возвращает:**
+Объединённый объект свойств с правильно обработанными классами и стилями.
+
+**Особенности:**
+- Обычные свойства перезаписываются (приоритет у `value`)
+- Классы (`class`) объединяются в массив `[extraClass, valueClass]`
+- Стили (`style`) объединяются в массив `[extraStyle, valueStyle]`
+- Позволяет создавать составные объекты свойств для компонентов
+
+```javascript
+import { toBind } from '@dxtmisha/functional'
+
+// Обычное объединение свойств
+toBind({id: 'base', disabled: false}, {id: 'new', type: 'button'})
+// Результат: {id: 'new', disabled: false, type: 'button'}
+
+// Умное объединение классов
+toBind({class: 'btn'}, {class: 'primary'})
+// Результат: {class: ['btn', 'primary']}
+
+// Умное объединение стилей
+toBind(
+  {style: {color: 'red', fontSize: '14px'}},
+  {style: {color: 'blue', margin: '10px'}}
+)
+// Результат: {style: [{color: 'red', fontSize: '14px'}, {color: 'blue', margin: '10px'}]}
+
+// Комплексное объединение
+toBind(
+  {class: 'btn', style: {padding: '10px'}, disabled: false},
+  {class: 'primary', style: {color: 'white'}, type: 'button'}
+)
+// Результат: {
+//   class: ['btn', 'primary'],
+//   style: [{padding: '10px'}, {color: 'white'}],
+//   disabled: false,
+//   type: 'button'
+// }
+```
+
+## `toBinds`
+
+Объединяет несколько объектов со свойствами, последовательно применяя `toBind` к каждому. Умно обрабатывает классы и стили, создавая составные объекты свойств.
+
+**Параметры:**
+- `...values: (ItemList | undefined)[]` — список объектов свойств для объединения
+
+**Возвращает:**
+Итоговый объединённый объект со всеми свойствами, классами и стилями.
+
+```javascript
+import { toBinds } from '@dxtmisha/functional'
+
+// Объединение нескольких объектов
+toBinds(
+  {class: 'btn', disabled: false},
+  {class: 'primary', type: 'button'},
+  {class: 'large', id: 'submit-btn'}
+)
+// Результат: {
+//   class: ['btn', 'primary', 'large'],
+//   disabled: false,
+//   type: 'button',
+//   id: 'submit-btn'
+// }
+
+// С undefined значениями (игнорируются)
+toBinds(
+  {class: 'base'},
+  undefined,
+  {style: {color: 'red'}},
+  null,
+  {class: 'modifier'}
+)
+// Результат: {class: ['base', 'modifier'], style: {color: 'red'}}
+
+// Объединение стилей
+toBinds(
+  {style: {padding: '10px'}},
+  {style: {margin: '5px'}},
+  {style: {color: 'blue'}}
+)
+// Результат: {style: [{padding: '10px'}, {margin: '5px'}, {color: 'blue'}]}
+```
+
+## `toCamelCase`
+
+Преобразует строку в camelCase.
+
+**Параметры:**
+- `value: string` — строка для преобразования
+
+```javascript
+import { toCamelCase } from '@dxtmisha/functional'
+
+toCamelCase('hello-world') // 'helloWorld'
+toCamelCase('hello_world') // 'helloWorld'
+toCamelCase('hello world') // 'helloWorld'
+```
+
+## `toCamelCaseFirst`
+
+Преобразует строку в PascalCase (первая буква заглавная).
+
+**Параметры:**
+- `value: string` — строка для преобразования
+
+```javascript
+import { toCamelCaseFirst } from '@dxtmisha/functional'
+
+toCamelCaseFirst('hello-world') // 'HelloWorld'
+toCamelCaseFirst('component_name') // 'ComponentName'
+```
+
+## `toDate`
+
+Преобразует значение в объект Date.
+
+**Параметры:**
+- `value: any` — значение для преобразования
+
+```javascript
+import { toDate } from '@dxtmisha/functional'
+
+toDate('2023-01-01') // Date object
+toDate(1672531200000) // Date object
+toDate(new Date()) // Date object
+```
+
+## `toKebabCase`
+
+Преобразует строку в kebab-case.
+
+**Параметры:**
+- `value: string` — строка для преобразования
+
+```javascript
+import { toKebabCase } from '@dxtmisha/functional'
+
+toKebabCase('HelloWorld') // 'hello-world'
+toKebabCase('helloWorld') // 'hello-world'
+toKebabCase('hello_world') // 'hello-world'
+```
+
+## `toNumber`
+
+Преобразует значение в число.
+
+**Параметры:**
+- `value: any` — значение для преобразования
+
+```javascript
+import { toNumber } from '@dxtmisha/functional'
+
+toNumber('42') // 42
+toNumber('3.14') // 3.14
+toNumber('abc') // 0
+```
+
+## `toNumberByMax`
+
+Преобразует значение в число с ограничением максимального значения.
+
+**Параметры:**
+- `value: any` — значение для преобразования
+- `max: number` — максимальное значение
+
+```javascript
+import { toNumberByMax } from '@dxtmisha/functional'
+
+toNumberByMax('100', 50) // 50
+toNumberByMax('25', 50) // 25
+```
+
+## `toPercent`
+
+Преобразует число в процентное значение.
+
+**Параметры:**
+- `value: number` — число от 0 до 1
+
+```javascript
+import { toPercent } from '@dxtmisha/functional'
+
+toPercent(0.5) // 50
+toPercent(0.25) // 25
+toPercent(1) // 100
+```
+
+## `toPercentBy100`
+
+Преобразует число в процентное значение (для чисел от 0 до 100).
+
+**Параметры:**
+- `value: number` — число от 0 до 100
+
+```javascript
+import { toPercentBy100 } from '@dxtmisha/functional'
+
+toPercentBy100(50) // '50%'
+toPercentBy100(25.5) // '25.5%'
+```
+
+## `transformation`
+
+Применяет функцию преобразования к значению.
+
+**Параметры:**
+- `value: any` — исходное значение
+- `callback: Function` — функция преобразования
+
+```javascript
+import { transformation } from '@dxtmisha/functional'
+
+transformation('hello', s => s.toUpperCase()) // 'HELLO'
+transformation(5, n => n * 2) // 10
+```
