@@ -15,7 +15,7 @@ export function getExp(
   flags = 'ig',
   pattern = ':value'
 ): RegExp {
-  const data = value.replace(/([[\]\\^$.?*+()])/g, '\\$1')
+  const data = value.replace(/([[\]\\^$.?*+()/])/g, '\\$1')
 
   return new RegExp(pattern.replace(/:value/g, data), flags)
 }

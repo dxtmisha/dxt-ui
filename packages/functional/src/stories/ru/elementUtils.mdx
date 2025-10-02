@@ -8,44 +8,25 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## `createElement`
 
-Создает новый HTML элемент с указанным тегом и опционально добавляет его в родительский элемент. Поддерживает настройку атрибутов и свойств.
+Создает новый HTML элемент с указанным тегом и опционально добавляет его в родительский элемент.
 
 **Параметры:**
-- `parentElement?: HTMLElement` — родительский элемент для вставки
+- `parentElement?: HTMLElement` — родительский элемент для вставки (опционально)
 - `tagName: string` — тег создаваемого элемента (по умолчанию `'div'`)
-- `options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void)` — объект атрибутов или функция настройки
-- `referenceElement?: HTMLElement` — элемент, перед которым вставить новый
+- `options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void)` — объект атрибутов или функция настройки (опционально)
+- `referenceElement?: HTMLElement` — элемент, перед которым вставить новый (опционально)
 
 ```javascript
 import { createElement } from '@dxtmisha/functional'
 
-// Простое создание div
-const div = createElement()
-
-// Создание элемента с родителем
-const parent = document.body
-const button = createElement(parent, 'button')
-
-// Создание с атрибутами
-const input = createElement(parent, 'input', {
-  type: 'text',
-  placeholder: 'Введите текст',
-  className: 'my-input'
-})
-
-// Создание с функцией настройки
-const span = createElement(parent, 'span', (element) => {
-  element.textContent = 'Hello World'
-  element.style.color = 'red'
-})
-
-// Вставка перед определенным элементом
-const newDiv = createElement(parent, 'div', { id: 'new' }, existingElement)
+const div = createElement() // <div>
+const button = createElement(parent, 'button') // <button> в parent
+const input = createElement(parent, 'input', { type: 'text' }) // <input type="text">
 ```
 
 ## `domQuerySelector`
 
-Безопасно ищет первый элемент, соответствующий CSS селектору. Возвращает `undefined` если элемент не найден или выполняется не в браузере.
+Безопасно ищет первый элемент, соответствующий CSS селектору.
 
 **Параметры:**
 - `selectors: string` — CSS селектор для поиска
@@ -53,28 +34,14 @@ const newDiv = createElement(parent, 'div', { id: 'new' }, existingElement)
 ```javascript
 import { domQuerySelector } from '@dxtmisha/functional'
 
-// Поиск по ID
-const header = domQuerySelector('#header')
-
-// Поиск по классу
-const button = domQuerySelector<HTMLButtonElement>('.submit-button')
-
-// Поиск по атрибуту
-const input = domQuerySelector<HTMLInputElement>('input[type="email"]')
-
-// Комплексный селектор
-const item = domQuerySelector('.menu .item:first-child')
-
-// Безопасное использование
-const element = domQuerySelector('.non-existing')
-if (element) {
-  element.click() // выполнится только если элемент найден
-}
+const header = domQuerySelector('#header') // HTMLElement | undefined
+const button = domQuerySelector('.submit-btn') // HTMLElement | undefined
+const input = domQuerySelector('input[type="email"]') // HTMLInputElement | undefined
 ```
 
 ## `domQuerySelectorAll`
 
-Безопасно ищет все элементы, соответствующие CSS селектору. Возвращает `undefined` если выполняется не в браузере.
+Безопасно ищет все элементы, соответствующие CSS селектору.
 
 **Параметры:**
 - `selectors: string` — CSS селектор для поиска
@@ -82,173 +49,7 @@ if (element) {
 ```javascript
 import { domQuerySelectorAll } from '@dxtmisha/functional'
 
-// Поиск всех кнопок
-const buttons = domQuerySelectorAll<HTMLButtonElement>('button')
-buttons?.forEach(btn => btn.disabled = true)
-
-// Поиск по классу
-const menuItems = domQuerySelectorAll('.menu-item')
-console.log(`Найдено ${menuItems?.length || 0} элементов`)
-
-// Поиск вложенных элементов
-const links = domQuerySelectorAll<HTMLAnchorElement>('.nav a[href]')
-
-// Безопасная итерация
-const inputs = domQuerySelectorAll<HTMLInputElement>('input')
-if (inputs) {
-  for (const input of inputs) {
-    input.value = ''
-  }
-}
-```
-
-## `getAttributes`
-
-Получает все атрибуты HTML элемента в виде объекта ключ-значение.
-
-**Параметры:**
-- `element?: ElementOrString<E>` — селектор или элемент для получения атрибутов
-
-```javascript
-import { getAttributes } from '@dxtmisha/functional'
-
-// Получение атрибутов по селектору
-const attrs = getAttributes('#my-element')
-// Возвращает: { id: 'my-element', class: 'btn primary', 'data-value': '123' }
-
-// Получение атрибутов элемента
-const button = document.querySelector('button')
-const buttonAttrs = getAttributes(button)
-// Возвращает: { type: 'submit', disabled: '', class: 'btn' }
-
-// Проверка наличия атрибутов
-const input = getAttributes('input[type="email"]')
-if (input.required !== undefined) {
-  console.log('Поле обязательно для заполнения')
-}
-
-// Работа с data-атрибутами
-const element = getAttributes('.widget')
-// element = { 'data-config': '{"theme":"dark"}', 'data-id': '42' }
-const config = JSON.parse(element['data-config'] || '{}')
-```
-
-## `getElement`
-
-Универсальная функция для получения DOM элемента. Принимает CSS селектор, элемент или window, возвращает соответствующий элемент или `undefined`.
-
-**Параметры:**
-- `element?: ElementOrString<E>` — селектор, элемент или window
-
-```javascript
-import { getElement } from '@dxtmisha/functional'
-
-// Поиск по селектору
-const header = getElement('#header')
-const button = getElement('.submit-btn')
-
-// Возврат переданного элемента
-const existingEl = document.querySelector('.item')
-const sameEl = getElement(existingEl) // возвращает existingEl
-
-// Обработка window
-const bodyEl = getElement(window) // возвращает document.body
-
-// Безопасное использование
-const maybeElement = getElement('.non-existing')
-if (maybeElement) {
-  maybeElement.classList.add('active')
-}
-```
-
-## `getElementId`
-
-Получает ID элемента или создает уникальный ID, если элемент не имеет атрибута `id`. Опционально добавляет селектор к ID.
-
-**Параметры:**
-- `element?: ElementOrString<E>` — элемент для получения ID
-- `selector?: string` — дополнительный селектор для добавления к ID
-
-```javascript
-import { getElementId } from '@dxtmisha/functional'
-
-// Получение существующего ID
-const elementWithId = document.querySelector('#existing')
-const id1 = getElementId(elementWithId) // 'existing'
-
-// Создание нового ID для элемента без ID
-const elementNoId = document.querySelector('.no-id')
-const id2 = getElementId(elementNoId) // 'id-123456' (сгенерированный)
-
-// Добавление селектора к ID
-const id3 = getElementId('#header', ' .title') // '#header .title'
-
-// Генерация ID без элемента
-const uniqueId = getElementId() // 'id-123457'
-
-// Практическое использование
-const labelId = getElementId(inputElement)
-labelElement.setAttribute('for', labelId)
-```
-
-## `getElementItem`
-
-Получает значение свойства элемента по ключу с возможностью указания значения по умолчанию.
-
-**Параметры:**
-- `element: ElementOrString<T>` — элемент для проверки
-- `index: K | string` — ключ свойства для получения
-- `defaultValue?: D` — значение по умолчанию, если свойство отсутствует
-
-```javascript
-import { getElementItem } from '@dxtmisha/functional'
-
-// Получение свойств элемента
-const input = document.querySelector('input')
-const value = getElementItem(input, 'value') // значение input
-const type = getElementItem(input, 'type', 'text') // тип или 'text' по умолчанию
-
-// Работа с вычисленными стилями
-const width = getElementItem(element, 'offsetWidth')
-const height = getElementItem(element, 'offsetHeight')
-
-// Получение атрибутов
-const className = getElementItem(button, 'className')
-const disabled = getElementItem(button, 'disabled', false)
-
-// С селектором
-const titleText = getElementItem('.page-title', 'textContent', 'Без названия')
-
-// Проверка наличия свойства
-const hasCustomData = getElementItem(element, 'dataset') !== undefined
-```
-
-## `getElementOrWindow`
-
-Возвращает window объект как есть или получает DOM элемент. Полезно для функций, которые могут работать как с window, так и с элементами.
-
-**Параметры:**
-- `element?: ElementOrString<E>` — селектор, элемент или window
-
-```javascript
-import { getElementOrWindow } from '@dxtmisha/functional'
-
-// Возврат window
-const windowObj = getElementOrWindow(window) // window
-
-// Получение элемента
-const element = getElementOrWindow('#container') // HTMLElement
-
-// Универсальная функция
-function addScrollListener(target) {
-  const element = getElementOrWindow(target)
-  if (element) {
-    element.addEventListener('scroll', handleScroll)
-  }
-}
-
-// Использование с разными типами
-addScrollListener(window)           // слушает scroll на window
-addScrollListener('.scroll-area')   // слушает scroll на элементе
-addScrollListener(scrollableDiv)    // слушает scroll на переданном элементе
+const buttons = domQuerySelectorAll('button') // NodeList | undefined
+const items = domQuerySelectorAll('.menu-item') // NodeList | undefined
+const links = domQuerySelectorAll('a[href]') // NodeList | undefined
 ```

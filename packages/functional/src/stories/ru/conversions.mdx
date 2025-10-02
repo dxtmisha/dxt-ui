@@ -8,12 +8,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 ## `anyToString`
 
-Преобразует любое значение в строку с умной логикой:
-- Строки обрезаются от пробелов
-- Массивы без объектов → строка через запятую
-- Объекты → JSON
-- `true` → `'1'`, `false` → `'0'`
-- `null`/`undefined` → пустая строка
+Преобразует любое значение в строку с интеллектуальной обработкой различных типов данных.
 
 **Параметры:**
 - `value: V` — значение для преобразования в строку
@@ -21,138 +16,31 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ```javascript
 import { anyToString } from '@dxtmisha/functional'
 
-anyToString('  hello  ')           // 'hello'
-anyToString(42)                    // '42'
-anyToString(true)                  // '1'
-anyToString(false)                 // '0'
-anyToString([1, 2, 3])             // '1,2,3'
-anyToString({ name: 'John' })      // '{"name":"John"}'
-anyToString(null)                  // ''
+anyToString('  hello  ') // 'hello'
+anyToString(true) // '1'
+anyToString([1, 2, 3]) // '1,2,3'
+anyToString({ name: 'John' }) // '{"name":"John"}'
 ```
 
 ## `applyTemplate`
 
-Применяет шаблон к тексту, заменяя ключи на значения из объекта замены. Поддерживает два формата:
-- `[key]` — замена по имени ключа
-- `%d`, `%e`, `%f`... — замена по позиции в массиве/объекте
+Применяет шаблон к тексту, заменяя ключи на значения из объекта замены. Поддерживает три формата: квадратные скобки `[key]`, позиционные параметры `%d`, `%e`, `%f` и теги с содержимым `[tag]content[/tag]`.
 
 **Параметры:**
-- `text: string` — текст с шаблоном для обработки
-- `replacement: Record<string, string | number> | string[]` — объект или массив значений для замены
+- `text: string` — текст с шаблоном, содержащим ключи в квадратных скобках `[key]`, позиционные параметры `%d`, `%e` и т.д., или теги с содержимым `[tag]content[/tag]`
+- `replacement: Record<string, string | number> | string[]` — объект или массив для замены ключей
 
 ```javascript
 import { applyTemplate } from '@dxtmisha/functional'
 
-// Замена по ключам
-applyTemplate('Hello [name]!', { name: 'John' })
-// 'Hello John!'
+// Замена по ключам в квадратных скобках
+applyTemplate('Привет, [name]!', { name: 'Анна' }) // 'Привет, Анна!'
+applyTemplate('[item] - [price]', { item: 'Телефон', price: 15000 })
 
-applyTemplate('User [name] has [count] items', {
-  name: 'Alice',
-  count: 5
-})
-// 'User Alice has 5 items'
+// Позиционные параметры
+applyTemplate('Заказ %d на %e руб', ['#123', '1500']) // 'Заказ #123 на 1500 руб'
 
-// Замена по позиции
-applyTemplate('Value: %d, Name: %e', ['100', 'Test'])
-// 'Value: 100, Name: Test'
-
-applyTemplate('%d + %e = %f', { 0: '2', 1: '3', 2: '5' })
-// '2 + 3 = 5'
-```
-
-## `arrFill`
-
-Создает массив из заданного количества элементов, заполненных одинаковым значением.
-
-**Параметры:**
-- `value: T` — значение для заполнения массива
-- `count: number` — количество элементов в массиве
-
-```javascript
-import { arrFill } from '@dxtmisha/functional'
-
-arrFill('hello', 3)                // ['hello', 'hello', 'hello']
-arrFill(0, 5)                      // [0, 0, 0, 0, 0]
-arrFill(true, 2)                   // [true, true]
-arrFill({ id: 1 }, 3)              // [{ id: 1 }, { id: 1 }, { id: 1 }]
-```
-
-## `copyObject`
-
-Создает глубокую копию объекта через JSON сериализацию.
-
-**Параметры:**
-- `value: T` — объект для копирования
-
-```javascript
-import { copyObject } from '@dxtmisha/functional'
-
-const original = { name: 'John', age: 30 }
-const copy = copyObject(original)
-copy.name = 'Jane'
-// original.name остается 'John'
-
-copyObject([1, 2, 3])              // [1, 2, 3]
-copyObject({ a: { b: { c: 1 } } }) // { a: { b: { c: 1 } } }
-copyObject('simple string')        // 'simple string'
-```
-
-## `executeFunction`
-
-Выполняет функцию и возвращает её результат, или возвращает входные данные, если это не функция.
-
-**Параметры:**
-- `callback: T | FunctionArgs<any, T>` — функция или любое значение
-
-```javascript
-import { executeFunction } from '@dxtmisha/functional'
-
-// Выполнение функции
-executeFunction(() => 'Hello World')      // 'Hello World'
-executeFunction(() => 42 + 8)             // 50
-
-// Возврат значения, если это не функция
-executeFunction('Static value')            // 'Static value'
-executeFunction(123)                       // 123
-executeFunction({ data: 'object' })        // { data: 'object' }
-
-// Полезно для условного выполнения
-const getValue = (dynamic) => {
-  return executeFunction(dynamic ? () => new Date() : 'cached')
-}
-```
-
-## `executePromise`
-
-Выполняет асинхронную функцию или возвращает значение, автоматически обрабатывая Promise.
-
-**Параметры:**
-- `callback: (() => Promise<T>) | (() => T) | T` — асинхронная функция, синхронная функция или значение
-
-```javascript
-import { executePromise } from '@dxtmisha/functional'
-
-// Выполнение асинхронной функции
-await executePromise(async () => {
-  const response = await fetch('/api/data')
-  return response.json()
-})
-
-// Выполнение синхронной функции
-await executePromise(() => 'Sync result')  // 'Sync result'
-
-// Возврат статического значения
-await executePromise('Static value')       // 'Static value'
-
-// Полезно для универсальной обработки
-const processData = async (source) => {
-  const data = await executePromise(source)
-  return data.processed = true
-}
-
-// Использование с разными типами источников
-await processData(() => fetch('/api'))     // Promise
-await processData(() => localData)        // Функция
-await processData(cachedData)              // Значение
+// Теги с содержимым ([content] заменяется на содержимое тега)
+applyTemplate('Это [bold]жирный текст[/bold]', { bold: '<b>[content]</b>' }) // 'Это <b>жирный текст</b>'
+applyTemplate('Text with [red]colored[/red] word', { red: '<span style="color:red">[content]</span>' })
 ```
