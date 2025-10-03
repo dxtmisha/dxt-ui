@@ -152,227 +152,87 @@ console.log(anotherStorage.get()) // undefined
 
 ## Practical Examples
 
-### User Preferences Management
+### User Settings
 
 ```javascript
-class UserPreferences {
+class UserSettings {
   constructor() {
-    this.storage = new DataStorage('user-preferences')
+    this.storage = new DataStorage('user-settings')
   }
 
   getTheme() {
-    return this.storage.get('light') // Default to light theme
+    return this.storage.get('theme', 'light')
   }
 
   setTheme(theme) {
-    const prefs = this.storage.get({})
-    return this.storage.set({ ...prefs, theme })
+    this.storage.set('theme', theme)
   }
 
   getLanguage() {
-    const prefs = this.storage.get({})
-    return prefs.language || 'en'
+    return this.storage.get('language', 'en')
   }
 
   setLanguage(language) {
-    const prefs = this.storage.get({})
-    return this.storage.set({ ...prefs, language })
+    this.storage.set('language', language)
   }
 
-  getNotificationSettings() {
-    const prefs = this.storage.get({})
-    return prefs.notifications || { email: true, push: false, sms: false }
-  }
-
-  setNotificationSettings(notifications) {
-    const prefs = this.storage.get({})
-    return this.storage.set({ ...prefs, notifications })
-  }
-
-  clearAll() {
-    this.storage.remove()
+  exportSettings() {
+    return {
+      theme: this.getTheme(),
+      language: this.getLanguage(),
+      notifications: this.storage.get('notifications', true)
+    }
   }
 }
 
 // Usage
-const userPrefs = new UserPreferences()
-
-console.log('Current theme:', userPrefs.getTheme()) // 'light' (default)
-userPrefs.setTheme('dark')
-console.log('Updated theme:', userPrefs.getTheme()) // 'dark'
-
-userPrefs.setLanguage('es')
-userPrefs.setNotificationSettings({ email: false, push: true, sms: false })
-
-console.log('Language:', userPrefs.getLanguage()) // 'es'
-console.log('Notifications:', userPrefs.getNotificationSettings())
+const settings = new UserSettings()
+settings.setTheme('dark')
+console.log('Settings:', settings.exportSettings())
 ```
 
-### Session Data Management
+### Application Cache
 
 ```javascript
-class SessionManager {
-  constructor() {
-    // Use sessionStorage for temporary data
-    this.sessionData = new DataStorage('session-data', true)
-    this.pageViews = new DataStorage('page-views', true)
-  }
+const appCache = new DataStorage('app-cache', 'sessionStorage')
 
-  startSession() {
-    return this.sessionData.set({
-      startTime: Date.now(),
-      sessionId: Math.random().toString(36).substr(2, 9),
-      userAgent: navigator.userAgent
-    })
-  }
+function cacheApiData(endpoint, data) {
+  const key = `api_${endpoint.replace(/\//g, '_')}`
+  appCache.set(key, { data, timestamp: Date.now() }, 5 * 60 * 1000) // 5 minutes
+}
 
-  getSessionInfo() {
-    return this.sessionData.get()
-  }
-
-  recordPageView(path) {
-    const views = this.pageViews.get([])
-    views.push({
-      path,
-      timestamp: Date.now(),
-      referrer: document.referrer
-    })
-    return this.pageViews.set(views)
-  }
-
-  getPageViews() {
-    return this.pageViews.get([])
-  }
-
-  endSession() {
-    const session = this.getSessionInfo()
-    if (session) {
-      session.endTime = Date.now()
-      session.duration = session.endTime - session.startTime
-      this.sessionData.set(session)
-    }
-    return session
-  }
-
-  clearSession() {
-    this.sessionData.remove()
-    this.pageViews.remove()
-  }
+function getCachedData(endpoint) {
+  const key = `api_${endpoint.replace(/\//g, '_')}`
+  return appCache.get(key)
 }
 
 // Usage
-const sessionManager = new SessionManager()
-
-// Start tracking
-sessionManager.startSession()
-console.log('Session started:', sessionManager.getSessionInfo())
-
-// Track page views
-sessionManager.recordPageView('/home')
-sessionManager.recordPageView('/about')
-sessionManager.recordPageView('/contact')
-
-console.log('Page views:', sessionManager.getPageViews())
-
-// End session
-const finalSession = sessionManager.endSession()
-console.log('Session duration:', finalSession.duration, 'ms')
+cacheApiData('/users', [{ id: 1, name: 'John' }])
+const cached = getCachedData('/users')
+console.log('Cached data:', cached)
 ```
 
-### Cached API Responses with Expiration
+### Form State
 
 ```javascript
-class APIStorageCache {
-  constructor() {
-    this.cache = new DataStorage('api-cache')
-  }
+const formStorage = new DataStorage('form-draft')
 
-  async getUserData(userId) {
-    const cacheKey = `user-${userId}`
+function saveFormDraft(formData) {
+  formStorage.set('draft', formData)
+}
 
-    // Try to get cached data (valid for 5 minutes)
-    const cached = this.cache.get(null, 300) // 5 minutes cache
+function loadFormDraft() {
+  return formStorage.get('draft', {})
+}
 
-    if (cached && cached[cacheKey]) {
-      console.log(`Using cached data for user ${userId}`)
-      return cached[cacheKey]
-    }
-
-    // Fetch from API
-    console.log(`Fetching user ${userId} from API`)
-    const response = await fetch(`/api/users/${userId}`)
-    const userData = await response.json()
-
-    // Update cache
-    const allCached = this.cache.get({})
-    allCached[cacheKey] = userData
-    this.cache.set(allCached)
-
-    return userData
-  }
-
-  async getPostsData(userId) {
-    const cacheKey = `posts-${userId}`
-    const cached = this.cache.get(null, 600) // 10 minutes cache for posts
-
-    if (cached && cached[cacheKey]) {
-      console.log(`Using cached posts for user ${userId}`)
-      return cached[cacheKey]
-    }
-
-    console.log(`Fetching posts for user ${userId} from API`)
-    const response = await fetch(`/api/users/${userId}/posts`)
-    const postsData = await response.json()
-
-    const allCached = this.cache.get({})
-    allCached[cacheKey] = postsData
-    this.cache.set(allCached)
-
-    return postsData
-  }
-
-  clearExpiredCache() {
-    // Cache validation happens automatically on get()
-    // This forces a check by trying to get with very short cache time
-    this.cache.get(null, 0) // Forces expiration check
-    console.log('Expired cache entries cleared')
-  }
-
-  clearAllCache() {
-    this.cache.remove()
-    console.log('All API cache cleared')
-  }
+function clearFormDraft() {
+  formStorage.remove('draft')
 }
 
 // Usage
-const apiCache = new APIStorageCache()
-
-// First call - fetches from API and caches
-const user1 = await apiCache.getUserData(1)
-console.log('User 1:', user1.name)
-
-// Second call within 5 minutes - uses cache
-const user1Cached = await apiCache.getUserData(1)
-console.log('User 1 (cached):', user1Cached.name)
-
-// Different data with different cache time
-const posts1 = await apiCache.getPostsData(1) // 10 minute cache
-console.log('Posts count:', posts1.length)
-
-// Clear operations
-apiCache.clearExpiredCache()
-apiCache.clearAllCache()
+saveFormDraft({ name: 'John', email: 'john@example.com' })
+const draft = loadFormDraft()
+console.log('Form draft:', draft)
 ```
 
-## Integration Patterns
-
-The DataStorage class is perfect for:
-- **User preferences** — theme, language, UI settings
-- **Session management** — temporary data that should persist across page reloads
-- **API response caching** — with configurable expiration times
-- **Form data persistence** — saving draft content
-- **Application state** — persisting important application state
-- **Shopping cart data** — e-commerce cart persistence
-- **User authentication** — storing auth tokens and user data
-
-The singleton pattern ensures that multiple parts of your application can access the same storage instance, making data sharing seamless and efficient.
+The DataStorage class provides a unified interface for working with browser storage, ensuring type safety, automatic serialization, and flexible TTL management.

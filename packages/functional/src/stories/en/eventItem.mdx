@@ -388,463 +388,87 @@ scrollEvent.start()
 
 ## Practical Examples
 
-### Modal Management System
+### Modal Management
 
 ```javascript
 class ModalManager {
   constructor() {
-    this.modals = new Map()
     this.overlayEvent = null
     this.escapeEvent = null
   }
 
-  createModal(id, element) {
-    // Event for opening modal
-    const openEvent = new EventItem(
-      `[data-modal-trigger="${id}"]`,
-      'click',
-      (event) => {
-        event.preventDefault()
-        this.openModal(id)
+  openModal(element) {
+    element.classList.add('modal-open')
+
+    this.overlayEvent = new EventItem(document, 'click', (event) => {
+      if (event.target.classList.contains('modal-overlay')) {
+        this.closeModal(element)
       }
-    )
-
-    // Event for closing with button
-    const closeEvent = new EventItem(
-      element.querySelector('.modal-close'),
-      'click',
-      () => this.closeModal(id)
-    )
-
-    this.modals.set(id, {
-      element,
-      openEvent,
-      closeEvent,
-      isOpen: false
     })
 
-    // Start events
-    openEvent.start()
-    closeEvent.start()
-  }
-
-  openModal(id) {
-    const modal = this.modals.get(id)
-    if (!modal || modal.isOpen) return
-
-    modal.element.classList.add('modal-open')
-    modal.isOpen = true
-
-    // Create closing events
-    this.setupGlobalCloseEvents(id)
-  }
-
-  closeModal(id) {
-    const modal = this.modals.get(id)
-    if (!modal || !modal.isOpen) return
-
-    modal.element.classList.remove('modal-open')
-    modal.isOpen = false
-
-    // Remove global events
-    this.removeGlobalCloseEvents()
-  }
-
-  setupGlobalCloseEvents(id) {
-    // Close on overlay click
-    this.overlayEvent = new EventItem(
-      document,
-      'click',
-      (event) => {
-        if (event.target.classList.contains('modal-overlay')) {
-          this.closeModal(id)
-        }
-      }
-    )
-
-    // Close on Escape
-    this.escapeEvent = new EventItem(
-      document,
-      'keydown',
-      (event) => {
-        if (event.key === 'Escape') {
-          this.closeModal(id)
-        }
-      }
-    )
+    this.escapeEvent = new EventItem(document, 'keydown', (event) => {
+      if (event.key === 'Escape') this.closeModal(element)
+    })
 
     this.overlayEvent.start()
     this.escapeEvent.start()
   }
 
-  removeGlobalCloseEvents() {
+  closeModal(element) {
+    element.classList.remove('modal-open')
     this.overlayEvent?.stop()
     this.escapeEvent?.stop()
-    this.overlayEvent = null
-    this.escapeEvent = null
-  }
-
-  destroy() {
-    this.modals.forEach((modal) => {
-      modal.openEvent.stop()
-      modal.closeEvent.stop()
-    })
-    this.removeGlobalCloseEvents()
-    this.modals.clear()
   }
 }
 
 // Usage
-const modalManager = new ModalManager()
-
-// Create modals
-modalManager.createModal('login', document.getElementById('login-modal'))
-modalManager.createModal('settings', document.getElementById('settings-modal'))
-```
-
-### Responsive Navigation System
-
-```javascript
-class ResponsiveNavigation {
-  constructor(navElement, mobileBreakpoint = 768) {
-    this.nav = navElement
-    this.mobileBreakpoint = mobileBreakpoint
-    this.isMobile = false
-    this.isMenuOpen = false
-
-    this.initEvents()
-  }
-
-  initEvents() {
-    // Window resize tracking
-    this.resizeEvent = new EventItem(
-      window,
-      'resize',
-      () => this.handleResize()
-    )
-
-    // Mobile menu toggle
-    this.toggleEvent = new EventItem(
-      this.nav.querySelector('.nav-toggle'),
-      'click',
-      () => this.toggleMobileMenu()
-    )
-
-    // Close menu on outside click
-    this.outsideClickEvent = new EventItem(
-      document,
-      'click',
-      (event) => this.handleOutsideClick(event)
-    )
-
-    // Keyboard navigation handling
-    this.keyboardEvent = new EventItem(
-      this.nav,
-      'keydown',
-      (event) => this.handleKeyboard(event)
-    )
-
-    // Start events
-    this.resizeEvent.start()
-    this.toggleEvent.start()
-
-    // Initial size check
-    this.handleResize()
-  }
-
-  handleResize() {
-    const newIsMobile = window.innerWidth < this.mobileBreakpoint
-
-    if (newIsMobile !== this.isMobile) {
-      this.isMobile = newIsMobile
-
-      if (this.isMobile) {
-        this.setupMobileMode()
-      } else {
-        this.setupDesktopMode()
-      }
-    }
-  }
-
-  setupMobileMode() {
-    this.nav.classList.add('nav-mobile')
-    this.outsideClickEvent.start()
-    this.keyboardEvent.start()
-
-    if (this.isMenuOpen) {
-      this.closeMenu()
-    }
-  }
-
-  setupDesktopMode() {
-    this.nav.classList.remove('nav-mobile', 'nav-open')
-    this.outsideClickEvent.stop()
-    this.keyboardEvent.stop()
-    this.isMenuOpen = false
-  }
-
-  toggleMobileMenu() {
-    if (!this.isMobile) return
-
-    this.isMenuOpen = !this.isMenuOpen
-    this.nav.classList.toggle('nav-open', this.isMenuOpen)
-
-    // Set focus for accessibility
-    if (this.isMenuOpen) {
-      this.nav.querySelector('a')?.focus()
-    }
-  }
-
-  closeMenu() {
-    if (this.isMenuOpen) {
-      this.isMenuOpen = false
-      this.nav.classList.remove('nav-open')
-    }
-  }
-
-  handleOutsideClick(event) {
-    if (this.isMobile && this.isMenuOpen && !this.nav.contains(event.target)) {
-      this.closeMenu()
-    }
-  }
-
-  handleKeyboard(event) {
-    if (event.key === 'Escape' && this.isMenuOpen) {
-      this.closeMenu()
-      this.nav.querySelector('.nav-toggle')?.focus()
-    }
-  }
-
-  destroy() {
-    this.resizeEvent.stop()
-    this.toggleEvent.stop()
-    this.outsideClickEvent.stop()
-    this.keyboardEvent.stop()
-  }
-}
-
-// Usage
-const navigation = new ResponsiveNavigation(
-  document.querySelector('.main-nav'),
-  768
-)
+const modal = new ModalManager()
+document.getElementById('open-btn').addEventListener('click', () => {
+  modal.openModal(document.getElementById('modal'))
+})
 ```
 
 ### Drag and Drop System
 
 ```javascript
 class DragDropManager {
-  constructor() {
-    this.dragEvents = new Map()
-    this.dropZones = new Map()
-    this.currentDragging = null
-  }
-
   makeDraggable(element, data = {}) {
-    const dragStartEvent = new EventItem(
-      element,
-      'dragstart',
-      (event) => this.handleDragStart(event, element, data)
-    )
+    const dragStart = new EventItem(element, 'dragstart', (event) => {
+      event.dataTransfer.setData('text/plain', JSON.stringify(data))
+      element.classList.add('dragging')
+    })
 
-    const dragEndEvent = new EventItem(
-      element,
-      'dragend',
-      (event) => this.handleDragEnd(event, element)
-    )
+    const dragEnd = new EventItem(element, 'dragend', () => {
+      element.classList.remove('dragging')
+    })
 
     element.draggable = true
-    element.classList.add('draggable')
-
-    dragStartEvent.start()
-    dragEndEvent.start()
-
-    this.dragEvents.set(element, {
-      dragStartEvent,
-      dragEndEvent,
-      data
-    })
+    dragStart.start()
+    dragEnd.start()
   }
 
-  createDropZone(element, onDrop, acceptTypes = []) {
-    const dragOverEvent = new EventItem(
-      element,
-      ['dragover', 'dragenter'],
-      (event) => this.handleDragOver(event, element),
-      { passive: false }
-    )
+  createDropZone(element, onDrop) {
+    const dropEvent = new EventItem(element, 'drop', (event) => {
+      event.preventDefault()
+      const data = JSON.parse(event.dataTransfer.getData('text/plain'))
+      onDrop(data)
+    }, { passive: false })
 
-    const dragLeaveEvent = new EventItem(
-      element,
-      'dragleave',
-      (event) => this.handleDragLeave(event, element)
-    )
+    const dragOver = new EventItem(element, 'dragover', (event) => {
+      event.preventDefault()
+    }, { passive: false })
 
-    const dropEvent = new EventItem(
-      element,
-      'drop',
-      (event) => this.handleDrop(event, element, onDrop),
-      { passive: false }
-    )
-
-    element.classList.add('drop-zone')
-
-    dragOverEvent.start()
-    dragLeaveEvent.start()
     dropEvent.start()
-
-    this.dropZones.set(element, {
-      dragOverEvent,
-      dragLeaveEvent,
-      dropEvent,
-      onDrop,
-      acceptTypes
-    })
-  }
-
-  handleDragStart(event, element, data) {
-    this.currentDragging = { element, data }
-    element.classList.add('dragging')
-
-    // Set data for drag operation
-    event.dataTransfer.effectAllowed = 'move'
-    event.dataTransfer.setData('text/plain', JSON.stringify(data))
-
-    // Highlight available drop zones
-    this.highlightDropZones(true)
-  }
-
-  handleDragEnd(event, element) {
-    element.classList.remove('dragging')
-    this.highlightDropZones(false)
-    this.currentDragging = null
-  }
-
-  handleDragOver(event, element) {
-    event.preventDefault()
-
-    if (this.canAcceptDrop(element)) {
-      element.classList.add('drag-over')
-      event.dataTransfer.dropEffect = 'move'
-    } else {
-      event.dataTransfer.dropEffect = 'none'
-    }
-  }
-
-  handleDragLeave(event, element) {
-    // Check if we actually left the element
-    if (!element.contains(event.relatedTarget)) {
-      element.classList.remove('drag-over')
-    }
-  }
-
-  handleDrop(event, element, onDrop) {
-    event.preventDefault()
-    element.classList.remove('drag-over')
-
-    if (this.canAcceptDrop(element) && this.currentDragging) {
-      const dropData = {
-        draggedElement: this.currentDragging.element,
-        draggedData: this.currentDragging.data,
-        dropZone: element,
-        event
-      }
-
-      onDrop(dropData)
-    }
-  }
-
-  canAcceptDrop(dropZone) {
-    const dropZoneData = this.dropZones.get(dropZone)
-    if (!dropZoneData || !this.currentDragging) return false
-
-    // Check types if specified
-    if (dropZoneData.acceptTypes.length > 0) {
-      const dragType = this.currentDragging.data.type
-      return dropZoneData.acceptTypes.includes(dragType)
-    }
-
-    return true
-  }
-
-  highlightDropZones(highlight) {
-    this.dropZones.forEach((_, element) => {
-      if (this.canAcceptDrop(element)) {
-        element.classList.toggle('drop-zone-available', highlight)
-      }
-    })
-  }
-
-  removeDraggable(element) {
-    const events = this.dragEvents.get(element)
-    if (events) {
-      events.dragStartEvent.stop()
-      events.dragEndEvent.stop()
-      this.dragEvents.delete(element)
-    }
-
-    element.draggable = false
-    element.classList.remove('draggable')
-  }
-
-  removeDropZone(element) {
-    const events = this.dropZones.get(element)
-    if (events) {
-      events.dragOverEvent.stop()
-      events.dragLeaveEvent.stop()
-      events.dropEvent.stop()
-      this.dropZones.delete(element)
-    }
-
-    element.classList.remove('drop-zone')
-  }
-
-  destroy() {
-    this.dragEvents.forEach((events) => {
-      events.dragStartEvent.stop()
-      events.dragEndEvent.stop()
-    })
-
-    this.dropZones.forEach((events) => {
-      events.dragOverEvent.stop()
-      events.dragLeaveEvent.stop()
-      events.dropEvent.stop()
-    })
-
-    this.dragEvents.clear()
-    this.dropZones.clear()
+    dragOver.start()
   }
 }
 
 // Usage
 const dragDrop = new DragDropManager()
-
-// Create draggable elements
-document.querySelectorAll('.draggable-item').forEach(item => {
-  dragDrop.makeDraggable(item, {
-    type: item.dataset.type,
-    id: item.id,
-    content: item.textContent
-  })
+dragDrop.makeDraggable(document.getElementById('item'), { id: '1', type: 'product' })
+dragDrop.createDropZone(document.getElementById('basket'), (data) => {
+  console.log('Added to basket:', data)
 })
-
-// Create drop zones
-dragDrop.createDropZone(
-  document.getElementById('trash'),
-  (data) => {
-    console.log('Element deleted:', data.draggedData)
-    data.draggedElement.remove()
-  }
-)
-
-dragDrop.createDropZone(
-  document.getElementById('category-a'),
-  (data) => {
-    console.log('Moved to category A:', data.draggedData)
-    data.dropZone.appendChild(data.draggedElement)
-  },
-  ['category-a', 'universal'] // accepts only specific types
-)
 ```
 
 The EventItem class provides a powerful and flexible tool for managing DOM events in JavaScript applications, ensuring type safety, automatic lifecycle management, and optimized performance.

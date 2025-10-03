@@ -87,7 +87,7 @@ console.log('Обновлённые настройки:', userPrefs.get()) // { 
 
 ## Практические примеры
 
-### Реализация согласия на cookie по GDPR
+### Согласие на cookie по GDPR
 
 ```javascript
 class CookieConsent {
@@ -96,124 +96,42 @@ class CookieConsent {
   }
 
   showConsentBanner() {
-    // Проверить, сделал ли пользователь уже выбор
     const consent = this.consentCookie.get()
 
     if (consent === undefined) {
-      // Показать баннер - пользователь ещё не решил
+      CookieBlock.set(true) // Блокировать до согласия
       this.displayBanner()
-
-      // Заблокировать cookie пока пользователь не решит
-      CookieBlock.set(true)
-
       return 'banner-shown'
     } else {
-      // Пользователь уже решил
       CookieBlock.set(!consent.accepted)
       return consent.accepted ? 'cookies-allowed' : 'cookies-blocked'
     }
   }
 
   acceptCookies() {
-    // Пользователь принимает cookie
     this.consentCookie.set({
       accepted: true,
-      timestamp: Date.now(),
-      version: '1.0'
-    }, {
-      age: 365 * 24 * 60 * 60 // Запомнить на 1 год
-    })
+      timestamp: Date.now()
+    }, { age: 365 * 24 * 60 * 60 })
 
-    // Разрешить cookie
     CookieBlock.set(false)
-
     this.hideBanner()
-
-    // Теперь другие cookie могут быть установлены
-    this.enableAnalytics()
-    this.enableMarketing()
   }
 
   rejectCookies() {
-    // Пользователь отклоняет не-необходимые cookie
     this.consentCookie.set({
       accepted: false,
-      timestamp: Date.now(),
-      version: '1.0'
-    }, {
-      age: 365 * 24 * 60 * 60
-    })
+      timestamp: Date.now()
+    }, { age: 365 * 24 * 60 * 60 })
 
-    // Оставить cookie заблокированными
     CookieBlock.set(true)
-
     this.hideBanner()
-
-    // Очистить любые существующие не-необходимые cookie
-    this.clearNonEssentialCookies()
-  }
-
-  enableAnalytics() {
-    if (!CookieBlock.get()) {
-      const analyticsCookie = new Cookie('analytics')
-      analyticsCookie.set({ enabled: true, userId: 'anonymous' })
-      console.log('Аналитика включена')
-    }
-  }
-
-  enableMarketing() {
-    if (!CookieBlock.get()) {
-      const marketingCookie = new Cookie('marketing')
-      marketingCookie.set({ campaigns: [], lastShown: Date.now() })
-      console.log('Маркетинговые cookie включены')
-    }
-  }
-
-  clearNonEssentialCookies() {
-    const analytics = new Cookie('analytics')
-    const marketing = new Cookie('marketing')
-
-    analytics.remove()
-    marketing.remove()
-
-    console.log('Не-необходимые cookie очищены')
-  }
-
-  displayBanner() {
-    console.log('🍪 Баннер согласия на cookie отображён')
-  }
-
-  hideBanner() {
-    console.log('Баннер согласия на cookie скрыт')
-  }
-
-  getConsentStatus() {
-    return this.consentCookie.get()
   }
 }
 
 // Использование
-const cookieConsent = new CookieConsent()
-
-// Проверить согласие при загрузке страницы
-const status = cookieConsent.showConsentBanner()
-console.log('Статус согласия:', status)
-
-// Взаимодействия пользователя
-if (status === 'banner-shown') {
-  // Имитация принятия cookie пользователем
-  setTimeout(() => {
-    cookieConsent.acceptCookies()
-    console.log('Пользователь принял cookie')
-  }, 2000)
-}
-
-// Проверить финальный статус
-setTimeout(() => {
-  const finalStatus = cookieConsent.getConsentStatus()
-  console.log('Финальное согласие:', finalStatus)
-  console.log('Cookie в данный момент заблокированы:', CookieBlock.get())
-}, 3000)
+const consent = new CookieConsent()
+const status = consent.showConsentBanner()
 ```
 
 ### Управление настройками приватности
@@ -224,69 +142,16 @@ class PrivacyManager {
     this.privacySettings = new Cookie('privacy-settings')
   }
 
-  getPrivacySettings() {
-    return this.privacySettings.get({
-      essential: true,        // Всегда разрешены
-      functional: false,      // Выбор пользователя
-      analytics: false,       // Выбор пользователя
-      marketing: false        // Выбор пользователя
-    })
-  }
-
   updatePrivacySettings(settings) {
-    this.privacySettings.set(settings, {
-      age: 365 * 24 * 60 * 60 // 1 год
-    })
+    this.privacySettings.set(settings, { age: 365 * 24 * 60 * 60 })
 
-    // Обновить глобальную блокировку cookie на основе настроек
     const shouldBlock = !(settings.functional || settings.analytics || settings.marketing)
     CookieBlock.set(shouldBlock)
-
-    // Применить настройки к отдельным типам cookie
-    this.applyCookieSettings(settings)
-  }
-
-  applyCookieSettings(settings) {
-    if (!settings.analytics) {
-      const analyticsCookies = ['_ga', '_gtag', 'analytics-data']
-      analyticsCookies.forEach(name => {
-        const cookie = new Cookie(name)
-        cookie.remove()
-      })
-    }
-
-    if (!settings.marketing) {
-      const marketingCookies = ['marketing-data', 'campaign-tracking', 'ad-preferences']
-      marketingCookies.forEach(name => {
-        const cookie = new Cookie(name)
-        cookie.remove()
-      })
-    }
-
-    if (!settings.functional) {
-      const functionalCookies = ['user-preferences', 'ui-state', 'form-data']
-      functionalCookies.forEach(name => {
-        const cookie = new Cookie(name)
-        cookie.remove()
-      })
-    }
   }
 
   hasConsentFor(category) {
-    const settings = this.getPrivacySettings()
+    const settings = this.privacySettings.get({ essential: true })
     return settings[category] || false
-  }
-
-  showPrivacyCenter() {
-    const current = this.getPrivacySettings()
-
-    console.log('Настройки Центра Приватности:')
-    console.log('Необходимые:', current.essential, '(всегда требуются)')
-    console.log('Функциональные:', current.functional, '(опциональные)')
-    console.log('Аналитика:', current.analytics, '(опциональные)')
-    console.log('Маркетинг:', current.marketing, '(опциональные)')
-
-    return current
   }
 
   acceptAll() {
@@ -296,47 +161,25 @@ class PrivacyManager {
       analytics: true,
       marketing: true
     })
-    console.log('Все cookie приняты')
   }
 
   rejectAll() {
     this.updatePrivacySettings({
-      essential: true,  // Необходимые cookie нельзя отключить
+      essential: true,
       functional: false,
       analytics: false,
       marketing: false
     })
-    console.log('Не-необходимые cookie отклонены')
   }
 }
 
 // Использование
-const privacyManager = new PrivacyManager()
-
-// Показать текущие настройки
-privacyManager.showPrivacyCenter()
-
-// Проверить конкретное согласие
-console.log('Аналитика разрешена:', privacyManager.hasConsentFor('analytics'))
-console.log('Маркетинг разрешён:', privacyManager.hasConsentFor('marketing'))
-
-// Обновить настройки
-privacyManager.updatePrivacySettings({
-  essential: true,
-  functional: true,
-  analytics: true,
-  marketing: false
-})
-
-console.log('Обновлённые настройки - Маркетинг отключён')
-console.log('Cookie заблокированы глобально:', CookieBlock.get())
-
-// Быстрые действия
-// privacyManager.acceptAll()
-// privacyManager.rejectAll()
+const privacy = new PrivacyManager()
+privacy.acceptAll()
+console.log('Аналитика разрешена:', privacy.hasConsentFor('analytics'))
 ```
 
-### Проверка cookie при запуске приложения
+### Инициализация приложения
 
 ```javascript
 class AppInitializer {
@@ -345,70 +188,20 @@ class AppInitializer {
     const consentData = consent.get()
 
     if (!consentData) {
-      // Первый визит - заблокировать cookie пока пользователь не решит
-      CookieBlock.set(true)
-      console.log('Обнаружен первый визит - cookie заблокированы до получения согласия')
+      CookieBlock.set(true) // Первый визит
       return 'pending-consent'
     } else {
-      // Возвращающийся пользователь - применить их предыдущий выбор
       CookieBlock.set(!consentData.accepted)
-
-      if (consentData.accepted) {
-        console.log('Возвращающийся пользователь - cookie разрешены')
-        return 'cookies-allowed'
-      } else {
-        console.log('Возвращающийся пользователь - cookie заблокированы по предпочтениям')
-        return 'cookies-blocked'
-      }
-    }
-  }
-
-  static checkCookieStatus() {
-    return {
-      blocked: CookieBlock.get(),
-      hasConsent: new Cookie('cookie-consent').get() !== undefined,
-      canSetCookies: !CookieBlock.get()
+      return consentData.accepted ? 'cookies-allowed' : 'cookies-blocked'
     }
   }
 }
 
 // Запуск приложения
 document.addEventListener('DOMContentLoaded', () => {
-  const initStatus = AppInitializer.initializeCookieCompliance()
-  const cookieStatus = AppInitializer.checkCookieStatus()
-
-  console.log('Статус инициализации приложения:', initStatus)
-  console.log('Статус cookie:', cookieStatus)
-
-  // На основе статуса показать соответствующий UI
-  if (initStatus === 'pending-consent') {
-    showCookieConsentBanner()
-  } else if (initStatus === 'cookies-blocked') {
-    showPrivacyFriendlyMessage()
-  } else {
-    enableFullFeatures()
-  }
+  const status = AppInitializer.initializeCookieCompliance()
+  console.log('Cookie статус:', status)
 })
-
-function showCookieConsentBanner() {
-  console.log('Показ баннера согласия на cookie...')
-}
-
-function showPrivacyFriendlyMessage() {
-  console.log('Работа в режиме, дружественном к приватности')
-}
-
-function enableFullFeatures() {
-  console.log('Все функции включены с поддержкой cookie')
-}
 ```
 
-## Интеграция с законами о приватности
-
-CookieBlock помогает обеспечить соответствие с:
-- **GDPR** (Общий регламент по защите данных)
-- **CCPA** (Закон о конфиденциальности потребителей Калифорнии)
-- **ePrivacy Directive** (Директива ЕС о cookie)
-- **Другие региональные законы о приватности**
-
-Класс предоставляет основу для реализации управления cookie, соответствующего приватности, которое учитывает пользовательские выборы и регулятивные требования.
+Класс CookieBlock помогает обеспечить соответствие с GDPR, CCPA и другими законами о приватности, предоставляя основу для реализации управления cookie.

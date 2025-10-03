@@ -87,7 +87,7 @@ console.log('Updated preferences:', userPrefs.get()) // { theme: 'light', langua
 
 ## Practical Examples
 
-### GDPR Cookie Consent Implementation
+### GDPR Cookie Consent
 
 ```javascript
 class CookieConsent {
@@ -96,124 +96,42 @@ class CookieConsent {
   }
 
   showConsentBanner() {
-    // Check if user has already made a choice
     const consent = this.consentCookie.get()
 
     if (consent === undefined) {
-      // Show banner - user hasn't decided yet
+      CookieBlock.set(true) // Block until consent
       this.displayBanner()
-
-      // Block cookies until user decides
-      CookieBlock.set(true)
-
       return 'banner-shown'
     } else {
-      // User has already decided
       CookieBlock.set(!consent.accepted)
       return consent.accepted ? 'cookies-allowed' : 'cookies-blocked'
     }
   }
 
   acceptCookies() {
-    // User accepts cookies
     this.consentCookie.set({
       accepted: true,
-      timestamp: Date.now(),
-      version: '1.0'
-    }, {
-      age: 365 * 24 * 60 * 60 // Remember for 1 year
-    })
+      timestamp: Date.now()
+    }, { age: 365 * 24 * 60 * 60 })
 
-    // Allow cookies
     CookieBlock.set(false)
-
     this.hideBanner()
-
-    // Now other cookies can be set
-    this.enableAnalytics()
-    this.enableMarketing()
   }
 
   rejectCookies() {
-    // User rejects non-essential cookies
     this.consentCookie.set({
       accepted: false,
-      timestamp: Date.now(),
-      version: '1.0'
-    }, {
-      age: 365 * 24 * 60 * 60
-    })
+      timestamp: Date.now()
+    }, { age: 365 * 24 * 60 * 60 })
 
-    // Keep cookies blocked
     CookieBlock.set(true)
-
     this.hideBanner()
-
-    // Clear any existing non-essential cookies
-    this.clearNonEssentialCookies()
-  }
-
-  enableAnalytics() {
-    if (!CookieBlock.get()) {
-      const analyticsCookie = new Cookie('analytics')
-      analyticsCookie.set({ enabled: true, userId: 'anonymous' })
-      console.log('Analytics enabled')
-    }
-  }
-
-  enableMarketing() {
-    if (!CookieBlock.get()) {
-      const marketingCookie = new Cookie('marketing')
-      marketingCookie.set({ campaigns: [], lastShown: Date.now() })
-      console.log('Marketing cookies enabled')
-    }
-  }
-
-  clearNonEssentialCookies() {
-    const analytics = new Cookie('analytics')
-    const marketing = new Cookie('marketing')
-
-    analytics.remove()
-    marketing.remove()
-
-    console.log('Non-essential cookies cleared')
-  }
-
-  displayBanner() {
-    console.log('🍪 Cookie consent banner displayed')
-  }
-
-  hideBanner() {
-    console.log('Cookie consent banner hidden')
-  }
-
-  getConsentStatus() {
-    return this.consentCookie.get()
   }
 }
 
 // Usage
-const cookieConsent = new CookieConsent()
-
-// Check consent on page load
-const status = cookieConsent.showConsentBanner()
-console.log('Consent status:', status)
-
-// User interactions
-if (status === 'banner-shown') {
-  // Simulate user accepting cookies
-  setTimeout(() => {
-    cookieConsent.acceptCookies()
-    console.log('User accepted cookies')
-  }, 2000)
-}
-
-// Check final status
-setTimeout(() => {
-  const finalStatus = cookieConsent.getConsentStatus()
-  console.log('Final consent:', finalStatus)
-  console.log('Cookies currently blocked:', CookieBlock.get())
-}, 3000)
+const consent = new CookieConsent()
+const status = consent.showConsentBanner()
 ```
 
 ### Privacy Settings Management
@@ -224,69 +142,16 @@ class PrivacyManager {
     this.privacySettings = new Cookie('privacy-settings')
   }
 
-  getPrivacySettings() {
-    return this.privacySettings.get({
-      essential: true,        // Always allowed
-      functional: false,      // User choice
-      analytics: false,       // User choice
-      marketing: false        // User choice
-    })
-  }
-
   updatePrivacySettings(settings) {
-    this.privacySettings.set(settings, {
-      age: 365 * 24 * 60 * 60 // 1 year
-    })
+    this.privacySettings.set(settings, { age: 365 * 24 * 60 * 60 })
 
-    // Update global cookie blocking based on settings
     const shouldBlock = !(settings.functional || settings.analytics || settings.marketing)
     CookieBlock.set(shouldBlock)
-
-    // Apply settings to individual cookie types
-    this.applyCookieSettings(settings)
-  }
-
-  applyCookieSettings(settings) {
-    if (!settings.analytics) {
-      const analyticsCookies = ['_ga', '_gtag', 'analytics-data']
-      analyticsCookies.forEach(name => {
-        const cookie = new Cookie(name)
-        cookie.remove()
-      })
-    }
-
-    if (!settings.marketing) {
-      const marketingCookies = ['marketing-data', 'campaign-tracking', 'ad-preferences']
-      marketingCookies.forEach(name => {
-        const cookie = new Cookie(name)
-        cookie.remove()
-      })
-    }
-
-    if (!settings.functional) {
-      const functionalCookies = ['user-preferences', 'ui-state', 'form-data']
-      functionalCookies.forEach(name => {
-        const cookie = new Cookie(name)
-        cookie.remove()
-      })
-    }
   }
 
   hasConsentFor(category) {
-    const settings = this.getPrivacySettings()
+    const settings = this.privacySettings.get({ essential: true })
     return settings[category] || false
-  }
-
-  showPrivacyCenter() {
-    const current = this.getPrivacySettings()
-
-    console.log('Privacy Center Settings:')
-    console.log('Essential:', current.essential, '(always required)')
-    console.log('Functional:', current.functional, '(optional)')
-    console.log('Analytics:', current.analytics, '(optional)')
-    console.log('Marketing:', current.marketing, '(optional)')
-
-    return current
   }
 
   acceptAll() {
@@ -296,47 +161,25 @@ class PrivacyManager {
       analytics: true,
       marketing: true
     })
-    console.log('All cookies accepted')
   }
 
   rejectAll() {
     this.updatePrivacySettings({
-      essential: true,  // Essential cookies cannot be disabled
+      essential: true,
       functional: false,
       analytics: false,
       marketing: false
     })
-    console.log('Non-essential cookies rejected')
   }
 }
 
 // Usage
-const privacyManager = new PrivacyManager()
-
-// Show current settings
-privacyManager.showPrivacyCenter()
-
-// Check specific consent
-console.log('Analytics allowed:', privacyManager.hasConsentFor('analytics'))
-console.log('Marketing allowed:', privacyManager.hasConsentFor('marketing'))
-
-// Update settings
-privacyManager.updatePrivacySettings({
-  essential: true,
-  functional: true,
-  analytics: true,
-  marketing: false
-})
-
-console.log('Updated settings - Marketing disabled')
-console.log('Cookies blocked globally:', CookieBlock.get())
-
-// Quick actions
-// privacyManager.acceptAll()
-// privacyManager.rejectAll()
+const privacy = new PrivacyManager()
+privacy.acceptAll()
+console.log('Analytics allowed:', privacy.hasConsentFor('analytics'))
 ```
 
-### Application Startup Cookie Check
+### Application Initialization
 
 ```javascript
 class AppInitializer {
@@ -345,70 +188,20 @@ class AppInitializer {
     const consentData = consent.get()
 
     if (!consentData) {
-      // First visit - block cookies until user decides
-      CookieBlock.set(true)
-      console.log('First visit detected - cookies blocked pending consent')
+      CookieBlock.set(true) // First visit
       return 'pending-consent'
     } else {
-      // Returning user - apply their previous choice
       CookieBlock.set(!consentData.accepted)
-
-      if (consentData.accepted) {
-        console.log('Returning user - cookies allowed')
-        return 'cookies-allowed'
-      } else {
-        console.log('Returning user - cookies blocked by preference')
-        return 'cookies-blocked'
-      }
-    }
-  }
-
-  static checkCookieStatus() {
-    return {
-      blocked: CookieBlock.get(),
-      hasConsent: new Cookie('cookie-consent').get() !== undefined,
-      canSetCookies: !CookieBlock.get()
+      return consentData.accepted ? 'cookies-allowed' : 'cookies-blocked'
     }
   }
 }
 
 // Application startup
 document.addEventListener('DOMContentLoaded', () => {
-  const initStatus = AppInitializer.initializeCookieCompliance()
-  const cookieStatus = AppInitializer.checkCookieStatus()
-
-  console.log('App initialization status:', initStatus)
-  console.log('Cookie status:', cookieStatus)
-
-  // Based on status, show appropriate UI
-  if (initStatus === 'pending-consent') {
-    showCookieConsentBanner()
-  } else if (initStatus === 'cookies-blocked') {
-    showPrivacyFriendlyMessage()
-  } else {
-    enableFullFeatures()
-  }
+  const status = AppInitializer.initializeCookieCompliance()
+  console.log('Cookie status:', status)
 })
-
-function showCookieConsentBanner() {
-  console.log('Showing cookie consent banner...')
-}
-
-function showPrivacyFriendlyMessage() {
-  console.log('Operating in privacy-friendly mode')
-}
-
-function enableFullFeatures() {
-  console.log('All features enabled with cookie support')
-}
 ```
 
-## Integration with Privacy Laws
-
-CookieBlock helps ensure compliance with:
-- **GDPR** (General Data Protection Regulation)
-- **CCPA** (California Consumer Privacy Act)
-- **ePrivacy Directive** (EU Cookie Law)
-- **Other regional privacy laws**
-
-The class provides a foundation for implementing privacy-compliant cookie management that respects user choices and regulatory requirements.
+The CookieBlock class helps ensure compliance with GDPR, CCPA, and other privacy laws by providing a foundation for implementing privacy-compliant cookie management.

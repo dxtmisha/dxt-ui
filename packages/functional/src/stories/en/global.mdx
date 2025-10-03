@@ -81,498 +81,77 @@ console.log(nonExistent) // undefined
 ```javascript
 class AppConfig {
   static initialize() {
-    // Initialize application configuration
     Global.add({
-      // API settings
       api: {
         baseUrl: process.env.API_BASE_URL || 'https://api.myapp.com',
         timeout: 10000,
         retries: 3
       },
-
-      // UI settings
       ui: {
         theme: 'light',
         language: 'en',
-        animations: true,
-        sidebar: {
-          collapsed: false,
-          width: 280
-        }
+        animations: true
       },
-
-      // Feature flags
       features: {
         newDashboard: true,
-        advancedSearch: false,
-        experimentalFeatures: false
+        advancedSearch: false
       },
-
-      // Performance settings
-      performance: {
-        cacheTimeout: 5 * 60 * 1000, // 5 minutes
-        maxCacheSize: 100,
-        enableLogging: process.env.NODE_ENV === 'development'
-      },
-
-      // Meta information
       app: {
         name: 'MyApplication',
         version: '2.1.0',
-        buildDate: new Date().toISOString(),
         environment: process.env.NODE_ENV || 'production'
       }
     })
   }
 
-  // Convenient getters for frequently used configurations
   static getApiConfig() {
-    return Global.get<{
-      baseUrl: string
-      timeout: number
-      retries: number
-    }>('api')
+    return Global.get('api')
   }
 
-  static getUIConfig() {
-    return Global.get<{
-      theme: string
-      language: string
-      animations: boolean
-      sidebar: { collapsed: boolean; width: number }
-    }>('ui')
-  }
-
-  static getFeatureFlags() {
-    return Global.get<Record<string, boolean>>('features')
-  }
-
-  static isFeatureEnabled(featureName: string): boolean {
-    const features = this.getFeatureFlags()
+  static isFeatureEnabled(featureName) {
+    const features = Global.get('features')
     return features ? features[featureName] || false : false
   }
-
-  static getAppInfo() {
-    return Global.get<{
-      name: string
-      version: string
-      buildDate: string
-      environment: string
-    }>('app')
-  }
 }
 
-// Initialize on application startup
+// Usage
 AppConfig.initialize()
-
-// Usage in components
 const apiConfig = AppConfig.getApiConfig()
 console.log(`API URL: ${apiConfig.baseUrl}`)
-
-const uiConfig = AppConfig.getUIConfig()
-console.log(`Theme: ${uiConfig.theme}, Language: ${uiConfig.language}`)
-
-// Check feature flags
-if (AppConfig.isFeatureEnabled('newDashboard')) {
-  console.log('Loading new dashboard')
-}
 ```
 
-### Environment Management System
+### Constants System
 
 ```javascript
-class EnvironmentManager {
-  static setup() {
-    const isDevelopment = process.env.NODE_ENV === 'development'
-    const isProduction = process.env.NODE_ENV === 'production'
-    const isTesting = process.env.NODE_ENV === 'test'
-
-    Global.add({
-      environment: {
-        type: process.env.NODE_ENV || 'development',
-        isDevelopment,
-        isProduction,
-        isTesting,
-
-        // Development settings
-        debug: {
-          enabled: isDevelopment,
-          logLevel: isDevelopment ? 'debug' : 'error',
-          showPerformanceMetrics: isDevelopment,
-          enableDevTools: isDevelopment
-        },
-
-        // API settings based on environment
-        api: {
-          baseUrl: this.getApiUrl(),
-          enableMocking: isDevelopment || isTesting,
-          timeout: isProduction ? 15000 : 30000
-        },
-
-        // Security settings
-        security: {
-          enableCSP: isProduction,
-          allowEval: isDevelopment,
-          enableLogging: !isProduction
-        },
-
-        // Performance settings
-        performance: {
-          enableCaching: isProduction,
-          enableMinification: isProduction,
-          enableSourceMaps: isDevelopment
-        }
-      }
-    })
-  }
-
-  static getApiUrl() {
-    switch (process.env.NODE_ENV) {
-      case 'production':
-        return 'https://api.myapp.com'
-      case 'staging':
-        return 'https://staging-api.myapp.com'
-      case 'development':
-        return 'http://localhost:3001'
-      default:
-        return 'http://localhost:3001'
-    }
-  }
-
-  static isDevelopment(): boolean {
-    return Global.get<{ isDevelopment: boolean }>('environment')?.isDevelopment || false
-  }
-
-  static isProduction(): boolean {
-    return Global.get<{ isProduction: boolean }>('environment')?.isProduction || false
-  }
-
-  static getDebugConfig() {
-    return Global.get<{
-      enabled: boolean
-      logLevel: string
-      showPerformanceMetrics: boolean
-      enableDevTools: boolean
-    }>('environment')?.debug
-  }
-
-  static shouldLog(level: 'debug' | 'info' | 'warn' | 'error'): boolean {
-    const debugConfig = this.getDebugConfig()
-    if (!debugConfig?.enabled) return false
-
-    const levels = ['debug', 'info', 'warn', 'error']
-    const currentLevelIndex = levels.indexOf(debugConfig.logLevel)
-    const messageIndex = levels.indexOf(level)
-
-    return messageIndex >= currentLevelIndex
-  }
-}
-
-// Initialize
-EnvironmentManager.setup()
-
-// Usage
-if (EnvironmentManager.isDevelopment()) {
-  console.log('Development mode is active')
-}
-
-if (EnvironmentManager.shouldLog('debug')) {
-  console.debug('Debug information')
-}
-```
-
-### Multi-language Settings System
-
-```javascript
-class LocalizationManager {
-  static initialize() {
-    const userLanguage = navigator.language || 'en'
-    const supportedLanguages = ['en', 'ru', 'es', 'fr', 'de']
-    const defaultLanguage = supportedLanguages.includes(userLanguage) ? userLanguage : 'en'
-
-    Global.add({
-      localization: {
-        // Current language settings
-        current: {
-          language: defaultLanguage,
-          region: this.getRegionFromLanguage(defaultLanguage),
-          direction: this.getTextDirection(defaultLanguage)
-        },
-
-        // Supported languages
-        supported: supportedLanguages,
-
-        // Formatting settings
-        formatting: {
-          currency: this.getCurrencyForLanguage(defaultLanguage),
-          dateFormat: this.getDateFormatForLanguage(defaultLanguage),
-          numberFormat: this.getNumberFormatForLanguage(defaultLanguage)
-        },
-
-        // Translation loading settings
-        loading: {
-          strategy: 'lazy', // 'eager' | 'lazy'
-          fallbackLanguage: 'en',
-          cacheTranslations: true
-        },
-
-        // Regional settings
-        regional: {
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          firstDayOfWeek: this.getFirstDayOfWeek(defaultLanguage)
-        }
-      }
-    })
-  }
-
-  static getRegionFromLanguage(language: string): string {
-    const regionMap: Record<string, string> = {
-      'en': 'US',
-      'ru': 'RU',
-      'es': 'ES',
-      'fr': 'FR',
-      'de': 'DE'
-    }
-    return regionMap[language] || 'US'
-  }
-
-  static getTextDirection(language: string): 'ltr' | 'rtl' {
-    const rtlLanguages = ['ar', 'he', 'fa', 'ur']
-    return rtlLanguages.includes(language) ? 'rtl' : 'ltr'
-  }
-
-  static getCurrencyForLanguage(language: string): string {
-    const currencyMap: Record<string, string> = {
-      'en': 'USD',
-      'ru': 'RUB',
-      'es': 'EUR',
-      'fr': 'EUR',
-      'de': 'EUR'
-    }
-    return currencyMap[language] || 'USD'
-  }
-
-  static getDateFormatForLanguage(language: string): string {
-    const dateFormatMap: Record<string, string> = {
-      'en': 'MM/dd/yyyy',
-      'ru': 'dd.MM.yyyy',
-      'es': 'dd/MM/yyyy',
-      'fr': 'dd/MM/yyyy',
-      'de': 'dd.MM.yyyy'
-    }
-    return dateFormatMap[language] || 'MM/dd/yyyy'
-  }
-
-  static getNumberFormatForLanguage(language: string): { decimal: string; thousand: string } {
-    const formatMap: Record<string, { decimal: string; thousand: string }> = {
-      'en': { decimal: '.', thousand: ',' },
-      'ru': { decimal: ',', thousand: ' ' },
-      'es': { decimal: ',', thousand: '.' },
-      'fr': { decimal: ',', thousand: ' ' },
-      'de': { decimal: ',', thousand: '.' }
-    }
-    return formatMap[language] || { decimal: '.', thousand: ',' }
-  }
-
-  static getFirstDayOfWeek(language: string): number {
-    // 0 = Sunday, 1 = Monday
-    const firstDayMap: Record<string, number> = {
-      'en': 0, // Sunday in US
-      'ru': 1, // Monday in Russia
-      'es': 1, // Monday in Spain
-      'fr': 1, // Monday in France
-      'de': 1  // Monday in Germany
-    }
-    return firstDayMap[language] || 1
-  }
-
-  static getCurrentLanguage(): string {
-    return Global.get<{ current: { language: string } }>('localization')?.current?.language || 'en'
-  }
-
-  static getSupportedLanguages(): string[] {
-    return Global.get<{ supported: string[] }>('localization')?.supported || ['en']
-  }
-
-  static getFormattingConfig() {
-    return Global.get<{
-      currency: string
-      dateFormat: string
-      numberFormat: { decimal: string; thousand: string }
-    }>('localization')?.formatting
-  }
-
-  static getRegionalConfig() {
-    return Global.get<{
-      timezone: string
-      firstDayOfWeek: number
-    }>('localization')?.regional
-  }
-
-  static isRTL(): boolean {
-    return Global.get<{ current: { direction: string } }>('localization')?.current?.direction === 'rtl'
-  }
-}
-
-// Initialize
-LocalizationManager.initialize()
-
-// Usage
-const currentLang = LocalizationManager.getCurrentLanguage()
-console.log(`Current language: ${currentLang}`)
-
-const formatting = LocalizationManager.getFormattingConfig()
-console.log(`Number format: ${formatting?.numberFormat.decimal}`)
-
-if (LocalizationManager.isRTL()) {
-  document.dir = 'rtl'
-}
-```
-
-### Global Constants System
-
-```javascript
-class AppConstants {
-  static setup() {
+const AppConstants = {
+  setup() {
     Global.add({
       constants: {
-        // Limits and restrictions
         limits: {
           maxFileSize: 10 * 1024 * 1024, // 10MB
-          maxFileUploads: 5,
-          maxUsernameLength: 50,
-          minPasswordLength: 8,
-          sessionTimeout: 30 * 60 * 1000, // 30 minutes
-          requestTimeout: 30000 // 30 seconds
+          sessionTimeout: 30 * 60 * 1000 // 30 minutes
         },
-
-        // Keys for localStorage and sessionStorage
-        storageKeys: {
-          authToken: 'auth_token',
-          userPreferences: 'user_prefs',
-          themeSettings: 'theme_settings',
-          recentSearches: 'recent_searches',
-          cart: 'shopping_cart'
-        },
-
-        // URL endpoints
         endpoints: {
           auth: '/api/auth',
-          users: '/api/users',
-          products: '/api/products',
-          orders: '/api/orders',
-          uploads: '/api/uploads'
+          users: '/api/users'
         },
-
-        // HTTP statuses
-        httpStatus: {
-          ok: 200,
-          created: 201,
-          badRequest: 400,
-          unauthorized: 401,
-          forbidden: 403,
-          notFound: 404,
-          internalError: 500
-        },
-
-        // Regular expressions
         patterns: {
           email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-          phone: /^\+?[\d\s\-\(\)]+$/,
-          url: /^https?:\/\/.+/,
-          slug: /^[a-z0-9-]+$/
-        },
-
-        // System colors
-        colors: {
-          primary: '#007bff',
-          secondary: '#6c757d',
-          success: '#28a745',
-          danger: '#dc3545',
-          warning: '#ffc107',
-          info: '#17a2b8'
+          phone: /^\+?[\d\s\-\(\)]+$/
         }
       }
     })
-  }
+  },
 
-  static getLimits() {
-    return Global.get<{
-      maxFileSize: number
-      maxFileUploads: number
-      maxUsernameLength: number
-      minPasswordLength: number
-      sessionTimeout: number
-      requestTimeout: number
-    }>('constants')?.limits
-  }
-
-  static getStorageKeys() {
-    return Global.get<{
-      authToken: string
-      userPreferences: string
-      themeSettings: string
-      recentSearches: string
-      cart: string
-    }>('constants')?.storageKeys
-  }
-
-  static getEndpoints() {
-    return Global.get<{
-      auth: string
-      users: string
-      products: string
-      orders: string
-      uploads: string
-    }>('constants')?.endpoints
-  }
-
-  static getHttpStatus() {
-    return Global.get<Record<string, number>>('constants')?.httpStatus
-  }
-
-  static getPatterns() {
-    return Global.get<Record<string, RegExp>>('constants')?.patterns
-  }
-
-  static getColors() {
-    return Global.get<Record<string, string>>('constants')?.colors
-  }
-
-  static validateEmail(email: string): boolean {
-    const patterns = this.getPatterns()
+  validateEmail(email) {
+    const patterns = Global.get('constants')?.patterns
     return patterns ? patterns.email.test(email) : false
   }
-
-  static validatePhone(phone: string): boolean {
-    const patterns = this.getPatterns()
-    return patterns ? patterns.phone.test(phone) : false
-  }
-
-  static isValidFileSize(size: number): boolean {
-    const limits = this.getLimits()
-    return limits ? size <= limits.maxFileSize : false
-  }
 }
-
-// Initialize
-AppConstants.setup()
 
 // Usage
-const limits = AppConstants.getLimits()
-console.log(`Max file size: ${limits?.maxFileSize} bytes`)
-
-const storageKeys = AppConstants.getStorageKeys()
-const token = localStorage.getItem(storageKeys?.authToken || '')
-
-// Validation
-if (AppConstants.validateEmail('user@example.com')) {
-  console.log('Email is valid')
-}
-
-if (AppConstants.isValidFileSize(5000000)) {
-  console.log('File size is acceptable')
-}
+AppConstants.setup()
+console.log(AppConstants.validateEmail('user@example.com')) // true
 ```
 
 The Global class provides a simple and reliable way to manage global application data, ensuring centralized storage of configurations with protection against accidental overwrites.

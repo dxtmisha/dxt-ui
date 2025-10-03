@@ -398,23 +398,6 @@ class Calendar {
     }
   }
 
-  getWeekDays() {
-    const startOfWeek = this.current.cloneDayFirst().cloneWeekdayFirstByMonth()
-    const days = []
-
-    for (let i = 0; i < 42; i++) { // 6 weeks × 7 days
-      const day = startOfWeek.cloneClass().moveByDay(i)
-      days.push({
-        date: day.getDay(),
-        fullDate: day.locale(),
-        isCurrentMonth: day.getMonth() === this.current.getMonth(),
-        isToday: day.standard() === new Datetime().standard()
-      })
-    }
-
-    return days
-  }
-
   nextMonth() {
     this.current.moveMonthNext()
     return this.getCurrentMonth()
@@ -429,20 +412,15 @@ class Calendar {
 // Usage
 const calendar = new Calendar()
 console.log(calendar.getCurrentMonth())
-console.log(calendar.getWeekDays())
 ```
 
-### Multi-Locale Formatting
+### Date Formatting
 
 ```javascript
-class MultiLocaleDate {
-  constructor(date) {
-    this.date = date
-  }
-
-  formatForLocales(locales) {
+const formatDates = {
+  formatForLocales(date, locales) {
     return locales.map(locale => {
-      const datetime = new Datetime(this.date, 'full', locale)
+      const datetime = new Datetime(date, 'full', locale)
       return {
         locale,
         formatted: datetime.locale(),
@@ -453,15 +431,11 @@ class MultiLocaleDate {
 }
 
 // Usage
-const multiDate = new MultiLocaleDate('2023-12-25 15:30:00')
-const formatted = multiDate.formatForLocales(['en-US', 'ru-RU', 'de-DE', 'fr-FR'])
-
-formatted.forEach(({ locale, formatted }) => {
-  console.log(`${locale}: ${formatted}`)
-})
+const formatted = formatDates.formatForLocales('2023-12-25', ['en-US', 'ru-RU'])
+console.log(formatted)
 ```
 
-### Business Day Operations
+### Business Days
 
 ```javascript
 class BusinessDays {
@@ -471,7 +445,7 @@ class BusinessDays {
 
   isWeekend(date) {
     const dayOfWeek = date.getDate().getDay()
-    return dayOfWeek === 0 || dayOfWeek === 6 // Sunday or Saturday
+    return dayOfWeek === 0 || dayOfWeek === 6
   }
 
   addBusinessDays(days) {
@@ -487,102 +461,12 @@ class BusinessDays {
 
     return result
   }
-
-  getBusinessDaysInMonth() {
-    const firstDay = this.start.cloneDayFirst()
-    const lastDay = this.start.cloneDayLast()
-    const businessDays = []
-
-    const current = firstDay.cloneClass()
-    while (current.getDay() <= lastDay.getDay()) {
-      if (!this.isWeekend(current)) {
-        businessDays.push({
-          date: current.getDay(),
-          formatted: current.locale()
-        })
-      }
-      current.moveDayNext()
-    }
-
-    return businessDays
-  }
 }
 
 // Usage
 const businessDays = new BusinessDays('2023-10-01')
 const futureDate = businessDays.addBusinessDays(10)
 console.log('10 business days later:', futureDate.locale())
-
-const monthBusinessDays = businessDays.getBusinessDaysInMonth()
-console.log('Business days in month:', monthBusinessDays.length)
-```
-
-### Time Intervals and Duration
-
-```javascript
-class DateInterval {
-  constructor(startDate, endDate, locale = 'en-US') {
-    this.start = new Datetime(startDate, 'datetime', locale)
-    this.end = new Datetime(endDate, 'datetime', locale)
-  }
-
-  getDifference() {
-    const startTime = this.start.getDate().getTime()
-    const endTime = this.end.getDate().getTime()
-    const diff = Math.abs(endTime - startTime)
-
-    return {
-      milliseconds: diff,
-      seconds: Math.floor(diff / 1000),
-      minutes: Math.floor(diff / (1000 * 60)),
-      hours: Math.floor(diff / (1000 * 60 * 60)),
-      days: Math.floor(diff / (1000 * 60 * 60 * 24))
-    }
-  }
-
-  formatDuration() {
-    const diff = this.getDifference()
-
-    if (diff.days > 0) {
-      return `${diff.days}d ${diff.hours % 24}h`
-    } else if (diff.hours > 0) {
-      return `${diff.hours}h ${diff.minutes % 60}m`
-    } else {
-      return `${diff.minutes}m`
-    }
-  }
-
-  getIntermediateDates(interval = 'day') {
-    const dates = []
-    const current = this.start.cloneClass()
-
-    while (current.getDate().getTime() <= this.end.getDate().getTime()) {
-      dates.push({
-        datetime: current.cloneClass(),
-        formatted: current.locale()
-      })
-
-      switch (interval) {
-        case 'day':
-          current.moveDayNext()
-          break
-        case 'week':
-          current.moveByDay(7)
-          break
-        case 'month':
-          current.moveMonthNext()
-          break
-      }
-    }
-
-    return dates
-  }
-}
-
-// Usage
-const interval = new DateInterval('2023-10-01', '2023-10-15')
-console.log('Difference:', interval.formatDuration())
-console.log('Dates in interval:', interval.getIntermediateDates().length)
 ```
 
 The Datetime class provides a powerful and flexible tool for working with dates in JavaScript applications, supporting localization, manipulation, and formatting according to regional settings and application requirements.

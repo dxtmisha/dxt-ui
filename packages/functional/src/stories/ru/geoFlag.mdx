@@ -234,362 +234,71 @@ console.log(info?.country) // 'Россия'
 ```javascript
 class CountrySelector {
   constructor(targetElement, options = {}) {
-    this.element = targetElement
     this.geoFlag = new GeoFlag(options.locale || 'ru-RU')
-    this.selectedCountries = options.countries || []
+    this.element = targetElement
     this.onSelect = options.onSelect || (() => {})
-
-    this.init()
-  }
-
-  init() {
     this.render()
-    this.attachEvents()
   }
 
   render() {
-    const countries = this.selectedCountries.length > 0
-      ? this.geoFlag.getList(this.selectedCountries)
-      : this.geoFlag.getList()
-
-    const html = countries.map(country => `
-      <div class="country-item" data-code="${country.value}">
-        <img src="/flags/${country.icon.replace('@flag-', '')}.svg"
-             alt="${country.country}"
-             class="country-flag">
-        <span class="country-name">${country.country}</span>
-        <span class="country-code">${country.value}</span>
-      </div>
+    const countries = this.geoFlag.getList()
+    this.element.innerHTML = countries.map(country => `
+      <div data-code="${country.value}">${country.country}</div>
     `).join('')
 
-    this.element.innerHTML = `
-      <div class="country-selector">
-        <div class="country-search">
-          <input type="text" placeholder="Поиск страны..." class="search-input">
-        </div>
-        <div class="country-list">
-          ${html}
-        </div>
-      </div>
-    `
-  }
-
-  attachEvents() {
-    const searchInput = this.element.querySelector('.search-input')
-    const countryItems = this.element.querySelectorAll('.country-item')
-
-    // Поиск стран
-    searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase()
-
-      countryItems.forEach(item => {
-        const countryName = item.querySelector('.country-name').textContent.toLowerCase()
-        const countryCode = item.querySelector('.country-code').textContent.toLowerCase()
-
-        if (countryName.includes(query) || countryCode.includes(query)) {
-          item.style.display = ''
-        } else {
-          item.style.display = 'none'
-        }
-      })
+    this.element.addEventListener('click', (e) => {
+      const code = e.target.dataset.code
+      if (code) this.onSelect(this.geoFlag.get(code))
     })
-
-    // Выбор страны
-    countryItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const code = item.dataset.code
-        const countryInfo = this.geoFlag.get(code)
-
-        this.onSelect(countryInfo)
-
-        // Выделение выбранной страны
-        countryItems.forEach(i => i.classList.remove('selected'))
-        item.classList.add('selected')
-      })
-    })
-  }
-
-  setLocale(locale) {
-    this.geoFlag.setCode(locale)
-    this.render()
-    this.attachEvents()
-  }
-
-  setCountries(countries) {
-    this.selectedCountries = countries
-    this.render()
-    this.attachEvents()
   }
 }
 
 // Использование
-const selector = new CountrySelector(
-  document.getElementById('country-selector'),
-  {
-    locale: 'ru-RU',
-    countries: ['RU', 'US', 'DE', 'FR', 'IT', 'ES', 'CN', 'JP'], // Популярные страны
-    onSelect: (country) => {
-      console.log('Выбрана страна:', country)
-      document.getElementById('selected-country').textContent = country.country
-    }
-  }
-)
+new CountrySelector(document.getElementById('selector'), {
+  locale: 'ru-RU',
+  onSelect: (country) => console.log('Выбрана:', country.country)
+})
 ```
 
-### Многоязычный справочник стран
+### Многоязычная информация
 
 ```javascript
-class CountryGuide {
-  constructor() {
-    this.currentLocale = 'ru-RU'
-    this.geoFlag = new GeoFlag(this.currentLocale)
-    this.availableLocales = ['ru-RU', 'en-US', 'de-DE', 'fr-FR', 'es-ES']
-  }
-
-  // Получение полной информации о стране
-  getCountryInfo(countryCode) {
-    const basicInfo = this.geoFlag.get(countryCode)
-    const nationalInfo = this.geoFlag.getNational([countryCode])[0]
-
-    return {
-      ...basicInfo,
-      national: nationalInfo
-    }
-  }
-
-  // Получение информации на всех доступных языках
-  getMultilingualInfo(countryCode) {
-    const result = {}
-
-    this.availableLocales.forEach(locale => {
-      const geoFlag = new GeoFlag(locale)
-      const info = geoFlag.get(countryCode)
-
-      if (info) {
-        result[locale] = {
-          language: locale.split('-')[0],
-          country: info.country,
-          languageName: info.language
-        }
-      }
-    })
-
-    return result
-  }
-
-  // Группировка стран по континентам
-  getCountriesByContinent() {
-    const continents = {
-      europe: ['RU', 'DE', 'FR', 'IT', 'ES', 'GB', 'PL', 'NL', 'BE', 'AT', 'CH', 'SE', 'NO', 'DK', 'FI'],
-      asia: ['CN', 'JP', 'KR', 'IN', 'TH', 'VN', 'SG', 'MY', 'ID', 'PH', 'KZ', 'UZ', 'TJ', 'KG'],
-      america: ['US', 'CA', 'MX', 'BR', 'AR', 'CL', 'PE', 'CO', 'VE', 'UY', 'PY', 'BO', 'EC'],
-      africa: ['ZA', 'EG', 'NG', 'KE', 'GH', 'MA', 'TN', 'ET', 'UG', 'TZ', 'ZW', 'ZM', 'MW', 'BW'],
-      oceania: ['AU', 'NZ', 'FJ', 'PG', 'SB', 'VU', 'NC', 'PF', 'AS', 'GU', 'MP', 'FM', 'MH', 'PW']
-    }
-
-    const result = {}
-
-    Object.keys(continents).forEach(continent => {
-      result[continent] = this.geoFlag.getList(continents[continent])
-    })
-
-    return result
-  }
-
-  // Поиск стран по названию
-  searchCountries(query) {
-    const allCountries = this.geoFlag.getList()
-    const searchTerm = query.toLowerCase()
-
-    return allCountries.filter(country =>
-      country.country.toLowerCase().includes(searchTerm) ||
-      country.value.toLowerCase().includes(searchTerm) ||
-      country.language.toLowerCase().includes(searchTerm)
-    )
-  }
-
-  // Получение соседних стран (упрощённая версия)
-  getNeighboringCountries(countryCode) {
-    const neighbors = {
-      'RU': ['BY', 'UA', 'KZ', 'CN', 'MN', 'KP', 'FI', 'NO', 'EE', 'LV', 'LT', 'PL', 'GE', 'AZ'],
-      'DE': ['FR', 'AT', 'CH', 'CZ', 'PL', 'NL', 'BE', 'LU', 'DK'],
-      'US': ['CA', 'MX'],
-      'CN': ['RU', 'IN', 'KZ', 'KG', 'TJ', 'AF', 'PK', 'BT', 'NP', 'MM', 'LA', 'VN', 'KP', 'MN'],
-      'FR': ['ES', 'IT', 'CH', 'DE', 'BE', 'LU', 'AD', 'MC'],
-      // ... больше стран
-    }
-
-    const neighborCodes = neighbors[countryCode] || []
-    return this.geoFlag.getList(neighborCodes)
-  }
-
-  setLocale(locale) {
-    this.currentLocale = locale
-    this.geoFlag.setCode(locale)
+const guide = {
+  getCountryInfo(code) {
+    const locales = ['ru-RU', 'en-US', 'de-DE']
+    return locales.reduce((acc, locale) => {
+      acc[locale] = new GeoFlag(locale).get(code)
+      return acc
+    }, {})
   }
 }
 
 // Использование
-const guide = new CountryGuide()
-
-// Полная информация о России
-const russiaInfo = guide.getCountryInfo('RU')
-console.log('Россия:', russiaInfo)
-
-// Информация о Германии на разных языках
-const germanyMultilingual = guide.getMultilingualInfo('DE')
-console.log('Германия на разных языках:', germanyMultilingual)
-
-// Страны Европы
-const europeanCountries = guide.getCountriesByContinent().europe
-console.log('Европейские страны:', europeanCountries)
-
-// Поиск стран
-const searchResults = guide.searchCountries('стан')
-console.log('Страны со словом "стан":', searchResults)
-
-// Соседи России
-const russiaNeighbors = guide.getNeighboringCountries('RU')
-console.log('Соседи России:', russiaNeighbors)
+const info = guide.getCountryInfo('DE')
+console.log(info['ru-RU'].country) // 'Германия'
+console.log(info['en-US'].country) // 'Germany'
 ```
 
-### Система статистики по странам
+### Статистика по странам
 
 ```javascript
-class CountryStatistics {
-  constructor() {
-    this.geoFlag = new GeoFlag('ru-RU')
-    this.stats = new Map()
-  }
+const stats = {
+  getLanguageStats() {
+    const countries = new GeoFlag().getList()
+    const langStats = {}
 
-  // Подсчёт стран по языкам
-  getLanguageStatistics() {
-    const allCountries = this.geoFlag.getList()
-    const languageStats = {}
-
-    allCountries.forEach(country => {
-      const language = country.language
-      if (!languageStats[language]) {
-        languageStats[language] = []
-      }
-      languageStats[language].push(country)
+    countries.forEach(country => {
+      const lang = country.language
+      langStats[lang] = (langStats[lang] || 0) + 1
     })
 
-    // Сортировка по количеству стран
-    return Object.entries(languageStats)
-      .sort(([,a], [,b]) => b.length - a.length)
-      .reduce((acc, [language, countries]) => {
-        acc[language] = {
-          count: countries.length,
-          countries: countries.map(c => ({ name: c.country, code: c.value }))
-        }
-        return acc
-      }, {})
-  }
-
-  // Анализ популярности стран (на основе условных данных)
-  getPopularityAnalysis(viewCounts = {}) {
-    const allCountries = this.geoFlag.getList()
-
-    return allCountries.map(country => ({
-      ...country,
-      views: viewCounts[country.value] || 0,
-      popularity: this.calculatePopularity(viewCounts[country.value] || 0)
-    })).sort((a, b) => b.views - a.views)
-  }
-
-  calculatePopularity(views) {
-    if (views > 10000) return 'Очень популярная'
-    if (views > 5000) return 'Популярная'
-    if (views > 1000) return 'Средняя популярность'
-    if (views > 100) return 'Низкая популярность'
-    return 'Не популярная'
-  }
-
-  // Группировка по алфавиту
-  getAlphabeticalGroups() {
-    const allCountries = this.geoFlag.getList()
-    const groups = {}
-
-    allCountries.forEach(country => {
-      const firstLetter = country.country.charAt(0).toUpperCase()
-      if (!groups[firstLetter]) {
-        groups[firstLetter] = []
-      }
-      groups[firstLetter].push(country)
-    })
-
-    // Сортировка внутри каждой группы
-    Object.keys(groups).forEach(letter => {
-      groups[letter].sort((a, b) => a.country.localeCompare(b.country))
-    })
-
-    return groups
-  }
-
-  // Экспорт данных в различных форматах
-  exportToJSON(countries = null) {
-    const data = countries || this.geoFlag.getList()
-    return JSON.stringify(data, null, 2)
-  }
-
-  exportToCSV(countries = null) {
-    const data = countries || this.geoFlag.getList()
-    const headers = ['Код', 'Страна', 'Язык', 'Стандарт', 'Иконка']
-    const rows = data.map(country => [
-      country.value,
-      country.country,
-      country.language,
-      country.standard,
-      country.icon
-    ])
-
-    return [headers, ...rows]
-      .map(row => row.map(cell => `"${cell}"`).join(','))
-      .join('\n')
-  }
-
-  generateReport() {
-    const languageStats = this.getLanguageStatistics()
-    const alphabetGroups = this.getAlphabeticalGroups()
-    const totalCountries = this.geoFlag.getList().length
-
-    return {
-      summary: {
-        totalCountries,
-        totalLanguages: Object.keys(languageStats).length,
-        totalLetters: Object.keys(alphabetGroups).length
-      },
-      languageDistribution: languageStats,
-      alphabeticalDistribution: Object.keys(alphabetGroups).map(letter => ({
-        letter,
-        count: alphabetGroups[letter].length
-      })),
-      topLanguages: Object.entries(languageStats)
-        .slice(0, 10)
-        .map(([language, data]) => ({ language, count: data.count }))
-    }
+    return Object.entries(langStats)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 10)
   }
 }
 
-// Использование
-const stats = new CountryStatistics()
-
-// Статистика по языкам
-const languageStats = stats.getLanguageStatistics()
-console.log('Топ-5 языков:', Object.entries(languageStats).slice(0, 5))
-
-// Группировка по алфавиту
-const alphabetGroups = stats.getAlphabeticalGroups()
-console.log('Страны на букву "Р":', alphabetGroups['Р'])
-
-// Полный отчёт
-const report = stats.generateReport()
-console.log('Отчёт по странам:', report)
-
-// Экспорт в CSV
-const csvData = stats.exportToCSV()
-console.log('CSV данные готовы для загрузки')
+console.log(stats.getLanguageStats()) // Топ-10 языков
 ```
 
 Класс GeoFlag предоставляет мощный инструмент для работы с флагами и информацией о странах, поддерживая локализацию, типобезопасность и гибкие возможности для создания международных приложений.

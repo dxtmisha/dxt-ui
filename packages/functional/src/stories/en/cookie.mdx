@@ -177,24 +177,19 @@ class AuthManager {
   }
 
   login(credentials) {
-    // Simulate login API call
     const authResponse = {
       token: 'jwt-token-here',
       user: { id: 1, name: 'John Doe', role: 'admin' },
       expiresIn: 24 * 60 * 60 // 24 hours
     }
 
-    // Store auth token
     this.tokenCookie.set(authResponse.token, {
       age: authResponse.expiresIn,
-      sameSite: 'strict',
-      arguments: ['Secure', 'HttpOnly']
+      sameSite: 'strict'
     })
 
-    // Store user data
     this.userCookie.set(authResponse.user, {
-      age: authResponse.expiresIn,
-      sameSite: 'strict'
+      age: authResponse.expiresIn
     })
 
     return authResponse
@@ -204,14 +199,8 @@ class AuthManager {
     return this.userCookie.get()
   }
 
-  getAuthToken() {
-    return this.tokenCookie.get()
-  }
-
   isAuthenticated() {
-    const token = this.getAuthToken()
-    const user = this.getCurrentUser()
-    return !!(token && user)
+    return !!(this.tokenCookie.get() && this.userCookie.get())
   }
 
   logout() {
@@ -222,21 +211,11 @@ class AuthManager {
 
 // Usage
 const auth = new AuthManager()
-
-// Login
-const loginResult = auth.login({ username: 'john', password: 'secret' })
-console.log('Login successful:', loginResult.user.name)
-
-// Check authentication
-console.log('Is authenticated:', auth.isAuthenticated()) // true
-console.log('Current user:', auth.getCurrentUser().name)
-
-// Logout
-auth.logout()
-console.log('Is authenticated after logout:', auth.isAuthenticated()) // false
+auth.login({ username: 'john', password: 'secret' })
+console.log('Authenticated:', auth.isAuthenticated())
 ```
 
-### Shopping Cart Persistence
+### Shopping Cart
 
 ```javascript
 class ShoppingCart {
@@ -245,7 +224,7 @@ class ShoppingCart {
   }
 
   getItems() {
-    return this.cartCookie.get([]) // Default to empty array
+    return this.cartCookie.get([])
   }
 
   addItem(product, quantity = 1) {
@@ -258,43 +237,14 @@ class ShoppingCart {
       items.push({ ...product, quantity })
     }
 
-    this.cartCookie.set(items, {
-      age: 30 * 24 * 60 * 60 // 30 days
-    })
-
-    return items
-  }
-
-  removeItem(productId) {
-    const items = this.getItems().filter(item => item.id !== productId)
-    this.cartCookie.set(items)
-    return items
-  }
-
-  updateQuantity(productId, quantity) {
-    const items = this.getItems()
-    const item = items.find(item => item.id === productId)
-
-    if (item) {
-      if (quantity <= 0) {
-        return this.removeItem(productId)
-      } else {
-        item.quantity = quantity
-        this.cartCookie.set(items)
-      }
-    }
-
+    this.cartCookie.set(items, { age: 30 * 24 * 60 * 60 }) // 30 days
     return items
   }
 
   getTotalPrice() {
-    const items = this.getItems()
-    return items.reduce((total, item) => total + (item.price * item.quantity), 0)
-  }
-
-  getItemCount() {
-    const items = this.getItems()
-    return items.reduce((count, item) => count + item.quantity, 0)
+    return this.getItems().reduce((total, item) =>
+      total + (item.price * item.quantity), 0
+    )
   }
 
   clear() {
@@ -304,115 +254,30 @@ class ShoppingCart {
 
 // Usage
 const cart = new ShoppingCart()
-
-// Add products
-cart.addItem({ id: 1, name: 'Laptop', price: 999.99 }, 1)
-cart.addItem({ id: 2, name: 'Mouse', price: 29.99 }, 2)
-
-console.log('Cart items:', cart.getItems())
+cart.addItem({ id: 1, name: 'Laptop', price: 999.99 })
 console.log('Total price:', cart.getTotalPrice())
-console.log('Item count:', cart.getItemCount())
-
-// Update quantities
-cart.updateQuantity(2, 1) // Reduce mouse quantity to 1
-cart.removeItem(1) // Remove laptop
-
-console.log('Updated cart:', cart.getItems())
 ```
 
-### User Preferences with Privacy Compliance
+### User Settings
 
 ```javascript
-class PrivacyAwarePreferences {
-  constructor() {
-    this.essentialCookie = new Cookie('essential-prefs')
-    this.analyticsCookie = new Cookie('analytics-prefs')
-    this.marketingCookie = new Cookie('marketing-prefs')
-  }
+const userSettings = new Cookie('user-settings')
 
-  // Essential cookies (always allowed)
-  setTheme(theme) {
-    this.essentialCookie.set({ theme }, {
-      age: 365 * 24 * 60 * 60, // 1 year
-      sameSite: 'strict'
-    })
-  }
+// Get settings with defaults
+const settings = userSettings.get({
+  theme: 'light',
+  language: 'en',
+  notifications: true
+})
 
-  getTheme() {
-    const prefs = this.essentialCookie.get({})
-    return prefs.theme || 'light'
-  }
-
-  // Analytics cookies (requires consent)
-  enableAnalytics(settings) {
-    this.analyticsCookie.set(settings, {
-      age: 365 * 24 * 60 * 60,
-      sameSite: 'lax'
-    })
-  }
-
-  getAnalyticsSettings() {
-    return this.analyticsCookie.get()
-  }
-
-  // Marketing cookies (requires consent)
-  setMarketingPreferences(preferences) {
-    this.marketingCookie.set(preferences, {
-      age: 30 * 24 * 60 * 60, // 30 days
-      sameSite: 'lax'
-    })
-  }
-
-  getMarketingPreferences() {
-    return this.marketingCookie.get()
-  }
-
-  clearNonEssential() {
-    this.analyticsCookie.remove()
-    this.marketingCookie.remove()
-  }
+// Update settings
+function updateTheme(newTheme) {
+  const current = userSettings.get()
+  userSettings.set({ ...current, theme: newTheme })
 }
 
-// Usage
-const prefs = new PrivacyAwarePreferences()
-
-// Essential preferences (always work)
-prefs.setTheme('dark')
-console.log('Theme:', prefs.getTheme()) // 'dark'
-
-// Analytics and marketing (only if CookieBlock allows)
-prefs.enableAnalytics({ trackPageViews: true, trackClicks: false })
-prefs.setMarketingPreferences({ personalizedAds: true, emailMarketing: false })
-
-console.log('Analytics:', prefs.getAnalyticsSettings())
-console.log('Marketing:', prefs.getMarketingPreferences())
-
-// Clear non-essential cookies
-prefs.clearNonEssential()
+updateTheme('dark')
+console.log('Theme:', userSettings.get().theme)
 ```
 
-## Integration with CookieBlock
-
-The Cookie class automatically respects CookieBlock settings to ensure privacy compliance:
-
-```javascript
-import { CookieBlock } from '@dxtmisha/functional'
-
-// Block cookies (simulating user privacy choice)
-CookieBlock.set(true)
-
-const marketingCookie = new Cookie('marketing-data')
-
-// This will not actually set the cookie because CookieBlock is active
-marketingCookie.set('marketing-value')
-console.log('Marketing cookie:', marketingCookie.get()) // undefined
-
-// Allow cookies
-CookieBlock.set(false)
-
-// Now cookies work normally
-marketingCookie.set('marketing-value')
-console.log('Marketing cookie:', marketingCookie.get()) // 'marketing-value'
-```
-
-The Cookie class provides a powerful, privacy-compliant way to manage browser cookies with automatic serialization and flexible configuration options, making it perfect for modern web applications that need to respect user privacy preferences.
+The Cookie class provides a powerful, privacy-compliant way to manage browser cookies with automatic serialization and flexible configuration options, making it ideal for modern web applications.

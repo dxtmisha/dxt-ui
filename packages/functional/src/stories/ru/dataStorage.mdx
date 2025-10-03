@@ -152,227 +152,87 @@ console.log(anotherStorage.get()) // undefined
 
 ## Практические примеры
 
-### Управление настройками пользователя
+### Настройки пользователя
 
 ```javascript
-class UserPreferences {
+class UserSettings {
   constructor() {
-    this.storage = new DataStorage('user-preferences')
+    this.storage = new DataStorage('user-settings')
   }
 
   getTheme() {
-    return this.storage.get('light') // По умолчанию светлая тема
+    return this.storage.get('theme', 'light')
   }
 
   setTheme(theme) {
-    const prefs = this.storage.get({})
-    return this.storage.set({ ...prefs, theme })
+    this.storage.set('theme', theme)
   }
 
   getLanguage() {
-    const prefs = this.storage.get({})
-    return prefs.language || 'ru'
+    return this.storage.get('language', 'ru')
   }
 
   setLanguage(language) {
-    const prefs = this.storage.get({})
-    return this.storage.set({ ...prefs, language })
+    this.storage.set('language', language)
   }
 
-  getNotificationSettings() {
-    const prefs = this.storage.get({})
-    return prefs.notifications || { email: true, push: false, sms: false }
-  }
-
-  setNotificationSettings(notifications) {
-    const prefs = this.storage.get({})
-    return this.storage.set({ ...prefs, notifications })
-  }
-
-  clearAll() {
-    this.storage.remove()
+  exportSettings() {
+    return {
+      theme: this.getTheme(),
+      language: this.getLanguage(),
+      notifications: this.storage.get('notifications', true)
+    }
   }
 }
 
 // Использование
-const userPrefs = new UserPreferences()
-
-console.log('Текущая тема:', userPrefs.getTheme()) // 'light' (по умолчанию)
-userPrefs.setTheme('dark')
-console.log('Обновлённая тема:', userPrefs.getTheme()) // 'dark'
-
-userPrefs.setLanguage('ru')
-userPrefs.setNotificationSettings({ email: false, push: true, sms: false })
-
-console.log('Язык:', userPrefs.getLanguage()) // 'ru'
-console.log('Уведомления:', userPrefs.getNotificationSettings())
+const settings = new UserSettings()
+settings.setTheme('dark')
+console.log('Настройки:', settings.exportSettings())
 ```
 
-### Управление данными сессии
+### Кеш данных приложения
 
 ```javascript
-class SessionManager {
-  constructor() {
-    // Использовать sessionStorage для временных данных
-    this.sessionData = new DataStorage('session-data', true)
-    this.pageViews = new DataStorage('page-views', true)
-  }
+const appCache = new DataStorage('app-cache', 'sessionStorage')
 
-  startSession() {
-    return this.sessionData.set({
-      startTime: Date.now(),
-      sessionId: Math.random().toString(36).substr(2, 9),
-      userAgent: navigator.userAgent
-    })
-  }
+function cacheApiData(endpoint, data) {
+  const key = `api_${endpoint.replace(/\//g, '_')}`
+  appCache.set(key, { data, timestamp: Date.now() }, 5 * 60 * 1000) // 5 минут
+}
 
-  getSessionInfo() {
-    return this.sessionData.get()
-  }
-
-  recordPageView(path) {
-    const views = this.pageViews.get([])
-    views.push({
-      path,
-      timestamp: Date.now(),
-      referrer: document.referrer
-    })
-    return this.pageViews.set(views)
-  }
-
-  getPageViews() {
-    return this.pageViews.get([])
-  }
-
-  endSession() {
-    const session = this.getSessionInfo()
-    if (session) {
-      session.endTime = Date.now()
-      session.duration = session.endTime - session.startTime
-      this.sessionData.set(session)
-    }
-    return session
-  }
-
-  clearSession() {
-    this.sessionData.remove()
-    this.pageViews.remove()
-  }
+function getCachedData(endpoint) {
+  const key = `api_${endpoint.replace(/\//g, '_')}`
+  return appCache.get(key)
 }
 
 // Использование
-const sessionManager = new SessionManager()
-
-// Начать отслеживание
-sessionManager.startSession()
-console.log('Сессия начата:', sessionManager.getSessionInfo())
-
-// Отслеживать просмотры страниц
-sessionManager.recordPageView('/home')
-sessionManager.recordPageView('/about')
-sessionManager.recordPageView('/contact')
-
-console.log('Просмотры страниц:', sessionManager.getPageViews())
-
-// Завершить сессию
-const finalSession = sessionManager.endSession()
-console.log('Продолжительность сессии:', finalSession.duration, 'мс')
+cacheApiData('/users', [{ id: 1, name: 'Иван' }])
+const cached = getCachedData('/users')
+console.log('Кешированные данные:', cached)
 ```
 
-### Кеширование API ответов с истечением
+### Состояние формы
 
 ```javascript
-class APIStorageCache {
-  constructor() {
-    this.cache = new DataStorage('api-cache')
-  }
+const formStorage = new DataStorage('form-draft')
 
-  async getUserData(userId) {
-    const cacheKey = `user-${userId}`
+function saveFormDraft(formData) {
+  formStorage.set('draft', formData)
+}
 
-    // Попытаться получить кешированные данные (действительны 5 минут)
-    const cached = this.cache.get(null, 300) // 5 минут кеша
+function loadFormDraft() {
+  return formStorage.get('draft', {})
+}
 
-    if (cached && cached[cacheKey]) {
-      console.log(`Использование кешированных данных для пользователя ${userId}`)
-      return cached[cacheKey]
-    }
-
-    // Получить из API
-    console.log(`Получение пользователя ${userId} из API`)
-    const response = await fetch(`/api/users/${userId}`)
-    const userData = await response.json()
-
-    // Обновить кеш
-    const allCached = this.cache.get({})
-    allCached[cacheKey] = userData
-    this.cache.set(allCached)
-
-    return userData
-  }
-
-  async getPostsData(userId) {
-    const cacheKey = `posts-${userId}`
-    const cached = this.cache.get(null, 600) // 10 минут кеша для постов
-
-    if (cached && cached[cacheKey]) {
-      console.log(`Использование кешированных постов для пользователя ${userId}`)
-      return cached[cacheKey]
-    }
-
-    console.log(`Получение постов для пользователя ${userId} из API`)
-    const response = await fetch(`/api/users/${userId}/posts`)
-    const postsData = await response.json()
-
-    const allCached = this.cache.get({})
-    allCached[cacheKey] = postsData
-    this.cache.set(allCached)
-
-    return postsData
-  }
-
-  clearExpiredCache() {
-    // Валидация кеша происходит автоматически при get()
-    // Это принудительно проверяет, пытаясь получить с очень коротким временем кеша
-    this.cache.get(null, 0) // Принудительная проверка истечения
-    console.log('Истёкшие записи кеша очищены')
-  }
-
-  clearAllCache() {
-    this.cache.remove()
-    console.log('Весь API кеш очищен')
-  }
+function clearFormDraft() {
+  formStorage.remove('draft')
 }
 
 // Использование
-const apiCache = new APIStorageCache()
-
-// Первый вызов - получает из API и кеширует
-const user1 = await apiCache.getUserData(1)
-console.log('Пользователь 1:', user1.name)
-
-// Второй вызов в течение 5 минут - использует кеш
-const user1Cached = await apiCache.getUserData(1)
-console.log('Пользователь 1 (кеш):', user1Cached.name)
-
-// Разные данные с разным временем кеша
-const posts1 = await apiCache.getPostsData(1) // 10 минут кеша
-console.log('Количество постов:', posts1.length)
-
-// Операции очистки
-apiCache.clearExpiredCache()
-apiCache.clearAllCache()
+saveFormDraft({ name: 'Иван', email: 'ivan@example.com' })
+const draft = loadFormDraft()
+console.log('Черновик формы:', draft)
 ```
 
-## Паттерны интеграции
-
-Класс DataStorage идеален для:
-- **Настройки пользователя** — тема, язык, настройки UI
-- **Управление сессией** — временные данные, которые должны сохраняться между перезагрузками страниц
-- **Кеширование API ответов** — с настраиваемым временем истечения
-- **Постоянство данных форм** — сохранение черновиков контента
-- **Состояние приложения** — сохранение важного состояния приложения
-- **Данные корзины покупок** — постоянство корзины в e-commerce
-- **Аутентификация пользователя** — хранение токенов аутентификации и данных пользователя
-
-Singleton паттерн гарантирует, что разные части вашего приложения могут получить доступ к одному и тому же экземпляру хранилища, делая обмен данными простым и эффективным.
+Класс DataStorage предоставляет единый интерфейс для работы с браузерными хранилищами, обеспечивая типобезопасность, автоматическую сериализацию и гибкое управление TTL.
