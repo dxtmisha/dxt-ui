@@ -1,0 +1,320 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/CacheStatic'/>
+
+# Класс CacheStatic
+
+Статический класс-обёртка вокруг Cache для глобального кеширования во время выполнения кода. Предоставляет singleton экземпляр Cache, доступный из любого места приложения для обмена данными между компонентами и оптимизации производительности.
+
+## Основные возможности
+
+- **Глобальный singleton кеш** — единый общий экземпляр Cache для всего приложения
+- **Статический интерфейс** — доступ к кешу без создания экземпляров
+- **Обмен данными между компонентами** — обмен кешированными данными между разными частями приложения
+- **Оптимизация производительности** — сокращение избыточных вычислений между компонентами
+- **Простой API** — тот же интерфейс что у класса Cache, но доступный статически
+- **Автоматическое управление жизненным циклом** — экземпляр Cache создаётся автоматически
+
+## Основное использование
+
+### `get`
+
+Синхронно получает данные из глобального кеша или выполняет callback для генерации новых данных.
+
+**Параметры:**
+- `name: string` — уникальное имя/ключ кеша в глобальном кеше
+- `callback: () => T` — функция для выполнения при промахе кеша или инвалидации
+- `comparison?: any[]` — массив значений для сравнения при инвалидации кеша (опционально)
+
+**Возвращает:** `T` — кешированные данные или результат выполнения callback
+
+```javascript
+import { CacheStatic } from '@dxtmisha/functional'
+
+// Глобальное кеширование дорогих вычислений
+const expensiveResult = CacheStatic.get('global-computation', () => {
+  console.log('Выполнение дорогих вычислений...')
+  // Имитация тяжёлых вычислений
+  let sum = 0
+  for (let i = 0; i < 1000000; i++) {
+    sum += Math.random()
+  }
+  return { result: sum, timestamp: Date.now() }
+})
+
+// Доступно из любого места в приложении
+const sameResult = CacheStatic.get('global-computation', () => {
+  console.log('Это не выполнится')
+  return { result: 0, timestamp: 0 }
+})
+// Возвращает кешированные данные без пересчёта
+
+// Разные компоненты могут использовать кешированные данные
+class ComponentA {
+  getData() {
+    return CacheStatic.get('shared-data', () => {
+      console.log('ComponentA: Загрузка общих данных')
+      return { source: 'ComponentA', data: [1, 2, 3] }
+    })
+  }
+}
+
+class ComponentB {
+  getData() {
+    return CacheStatic.get('shared-data', () => {
+      console.log('ComponentB: Это не выполнится')
+      return { source: 'ComponentB', data: [4, 5, 6] }
+    })
+  }
+}
+
+const compA = new ComponentA()
+const compB = new ComponentB()
+
+const dataA = compA.getData() // Выполняет callback
+const dataB = compB.getData() // Возвращает кешированные данные из ComponentA
+console.log(dataA === dataB) // true - тот же кешированный объект
+```
+
+## Инвалидация кеша
+
+Инвалидация глобального кеша работает так же, как у обычного класса Cache:
+
+```javascript
+// Глобальный кеш с зависимостями
+let currentTheme = 'dark'
+let currentLanguage = 'ru'
+
+const getAppConfig = () => CacheStatic.get(
+  'app-config',
+  () => {
+    console.log(`Загрузка конфигурации: тема=${currentTheme}, язык=${currentLanguage}`)
+    return {
+      theme: currentTheme,
+      language: currentLanguage,
+      features: getFeaturesByTheme(currentTheme),
+      translations: getTranslationsByLanguage(currentLanguage)
+    }
+  },
+  [currentTheme, currentLanguage] // Глобальный кеш инвалидируется при изменении этих значений
+)
+
+// Первый вызов
+const config1 = getAppConfig() // Выполняет callback
+console.log(config1.theme) // 'dark'
+
+// Кешированный вызов
+const config1Cached = getAppConfig() // Возвращает кешированные данные
+
+// Изменение зависимости - глобальный кеш инвалидируется
+currentTheme = 'light'
+const config2 = getAppConfig() // Кеш инвалидирован, выполняет callback снова
+console.log(config2.theme) // 'light'
+
+function getFeaturesByTheme(theme) {
+  return theme === 'dark' ? ['night-mode', 'blue-light-filter'] : ['day-mode']
+}
+
+function getTranslationsByLanguage(lang) {
+  return lang === 'ru' ? { hello: 'Привет' } : { hello: 'Hello' }
+}
+```
+
+## Практические примеры
+
+### Конфигурация приложения
+
+```javascript
+// Глобальный кеш конфигурации приложения
+class AppConfig {
+  static getConfig() {
+    return CacheStatic.get('app-config', () => {
+      console.log('Загрузка конфигурации приложения...')
+      return {
+        apiUrl: process.env.REACT_APP_API_URL || '/api',
+        features: {
+          darkMode: true,
+          notifications: true,
+          analytics: false
+        },
+        version: '1.0.0',
+        buildTime: Date.now()
+      }
+    })
+  }
+
+  static getFeatureFlags() {
+    const config = this.getConfig() // Использует глобальный кеш
+    return config.features
+  }
+
+  static isFeatureEnabled(featureName) {
+    const features = this.getFeatureFlags()
+    return features[featureName] || false
+  }
+}
+
+// Использование в разных модулях
+// В модуле A
+console.log('Модуль A:', AppConfig.getConfig().version)
+
+// В модуле B
+console.log('Модуль B:', AppConfig.isFeatureEnabled('darkMode'))
+
+// В модуле C
+const config = AppConfig.getConfig() // Возвращает тот же кешированный экземпляр
+console.log('Модуль C:', config.apiUrl)
+```
+
+### Обмен данными между компонентами
+
+```javascript
+// Общие данные пользовательской сессии
+class UserSession {
+  static getCurrentUser() {
+    return CacheStatic.get('current-user', () => {
+      console.log('Загрузка текущей пользовательской сессии...')
+
+      // Имитация получения пользователя из токена/localStorage
+      const token = localStorage.getItem('auth-token')
+      if (!token) return null
+
+      return {
+        id: 1,
+        name: 'Иван Иванов',
+        email: 'ivan@example.com',
+        role: 'admin',
+        permissions: ['read', 'write', 'delete']
+      }
+    })
+  }
+
+  static getUserPermissions() {
+    const user = this.getCurrentUser() // Использует глобальный кеш
+    return user?.permissions || []
+  }
+
+  static hasPermission(permission) {
+    const permissions = this.getUserPermissions()
+    return permissions.includes(permission)
+  }
+}
+
+// Разные компоненты используют общую сессию
+class HeaderComponent {
+  render() {
+    const user = UserSession.getCurrentUser()
+    return user ? `Добро пожаловать, ${user.name}` : 'Пожалуйста, войдите'
+  }
+}
+
+class SidebarComponent {
+  getMenuItems() {
+    const items = []
+
+    if (UserSession.hasPermission('read')) {
+      items.push({ label: 'Просмотр данных', path: '/data' })
+    }
+
+    if (UserSession.hasPermission('write')) {
+      items.push({ label: 'Создать', path: '/create' })
+    }
+
+    if (UserSession.hasPermission('delete')) {
+      items.push({ label: 'Администрирование', path: '/admin' })
+    }
+
+    return items
+  }
+}
+
+class PermissionGuard {
+  canAccess(requiredPermission) {
+    return UserSession.hasPermission(requiredPermission)
+  }
+}
+
+// Все компоненты используют одни и те же кешированные данные пользователя
+const header = new HeaderComponent()
+const sidebar = new SidebarComponent()
+const guard = new PermissionGuard()
+
+console.log(header.render()) // Может загрузить данные пользователя
+console.log(sidebar.getMenuItems()) // Использует кешированные данные пользователя
+console.log(guard.canAccess('write')) // Использует кешированные данные пользователя
+```
+
+### Глобальное кеширование API ответов
+
+```javascript
+// Глобальное кеширование API ответов для производительности
+class GlobalAPICache {
+  static async getCountries() {
+    return await CacheStatic.get('countries-list', async () => {
+      console.log('Получение стран из API...')
+      const response = await fetch('/api/countries')
+      const countries = await response.json()
+
+      return countries.map(country => ({
+        code: country.code,
+        name: country.name,
+        flag: country.flag
+      }))
+    })
+  }
+
+  static async getTimezones() {
+    return await CacheStatic.get('timezones-list', async () => {
+      console.log('Получение часовых поясов из API...')
+      const response = await fetch('/api/timezones')
+      return await response.json()
+    })
+  }
+
+  static async getCurrencies() {
+    return await CacheStatic.get('currencies-list', async () => {
+      console.log('Получение валют из API...')
+      const response = await fetch('/api/currencies')
+      return await response.json()
+    })
+  }
+}
+
+// Использование в разных частях приложения
+class CountrySelector {
+  async getOptions() {
+    const countries = await GlobalAPICache.getCountries()
+    return countries.map(c => ({ value: c.code, label: c.name }))
+  }
+}
+
+class CurrencyConverter {
+  async getSupportedCurrencies() {
+    const currencies = await GlobalAPICache.getCurrencies()
+    const countries = await GlobalAPICache.getCountries() // Использует кешированные данные
+
+    return currencies.map(currency => ({
+      ...currency,
+      country: countries.find(c => c.code === currency.countryCode)
+    }))
+  }
+}
+
+// Оба компонента используют глобально кешированные API ответы
+const selector = new CountrySelector()
+const converter = new CurrencyConverter()
+
+const options = await selector.getOptions() // Может получить из API
+const currencies = await converter.getSupportedCurrencies() // Использует кешированные страны
+```
+
+## Интеграция с другими системами
+
+CacheStatic хорошо интегрируется с:
+- **Vue глобальные свойства** — для кешированных данных приложения
+- **React context providers** — для оптимизации общего состояния
+- **Node.js приложения** — для кеширования серверных запросов
+- **Браузерные расширения** — для обмена данными между вкладками
+- **Web workers** — для кеширования фоновых вычислений
+
+Глобальная природа CacheStatic делает его идеальным для кеширования данных, которые должны быть общими для всего приложения, сокращая избыточные операции и улучшая общую производительность.

@@ -1,0 +1,154 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Cache'/>
+
+# Класс Cache
+
+Высокоуровневый класс для управления множественными кешированными значениями с использованием экземпляров CacheItem внутри. Предоставляет простой интерфейс для кеширования с автоматическим созданием и управлением CacheItem, интеллектуальной инвалидацией на основе сравнения и синхронными/асинхронными операциями.
+
+## Основные возможности
+
+- **Управление множественными кешами** — управляет коллекцией именованных записей кеша с использованием экземпляров CacheItem
+- **Автоматическое создание CacheItem** — создаёт и управляет экземплярами CacheItem внутренне для каждого имени кеша
+- **Инвалидация на основе сравнения** — автоматическая инвалидация кеша при изменении параметров сравнения
+- **Синхронный и асинхронный режимы** — как синхронное, так и асинхронное получение данных
+- **Типобезопасность** — полная поддержка TypeScript с дженериками для каждой записи кеша
+- **Эффективное использование памяти** — переиспользует экземпляры CacheItem для одинаковых имён кеша
+- **Простой интерфейс** — абстрагирует сложность CacheItem за удобными методами
+
+## Основное использование
+
+### `get`
+
+Синхронно получает кешированные данные или выполняет callback для генерации и кеширования новых данных.
+
+**Параметры:**
+- `name: string` — уникальное имя/ключ кеша для этой записи кеша
+- `callback: () => T` — функция для выполнения при промахе кеша или инвалидации
+- `comparison?: any[]` — массив значений для сравнения при инвалидации кеша (опционально)
+
+**Возвращает:** `T` — кешированные данные или результат выполнения callback
+
+```javascript
+import { Cache } from '@dxtmisha/functional'
+
+const cache = new Cache()
+
+// Простое кеширование без сравнения
+const userData = cache.get('user-profile', () => {
+  console.log('Вычисление профиля пользователя...')
+  return { id: 1, name: 'Иван Иванов', email: 'ivan@example.com', computed: Date.now() }
+})
+
+// Последующие вызовы возвращают кешированные данные без выполнения callback
+const cachedData = cache.get('user-profile', () => {
+  console.log('Это не выполнится')
+  return { id: 1, name: 'Иван Иванов', email: 'ivan@example.com', computed: Date.now() }
+})
+// Возвращает точно тот же кешированный объект
+
+// Другое имя кеша создаёт отдельный CacheItem
+const settingsData = cache.get('user-settings', () => {
+  console.log('Загрузка настроек пользователя...')
+  return { theme: 'dark', language: 'ru' }
+})
+```
+
+### `getAsync`
+
+Асинхронно получает кешированные данные или выполняет асинхронный callback для генерации новых данных.
+
+**Параметры:**
+- `name: string` — уникальное имя/ключ кеша для этой записи кеша
+- `callback: () => T | Promise<T>` — функция для выполнения при промахе кеша или инвалидации
+- `comparison?: any[]` — массив значений для сравнения при инвалидации кеша (опционально)
+
+**Возвращает:** `Promise<T>` — промис, разрешающийся в кешированные данные или результат callback
+
+```javascript
+// Асинхронное кеширование с API вызовами
+const userData = await cache.getAsync('api-user-1', async () => {
+  console.log('Запрос к API...')
+  const response = await fetch('/api/user/1')
+  return await response.json()
+})
+
+// Кешируется при последующих вызовах (переиспользуется тот же экземпляр CacheItem)
+const cachedUser = await cache.getAsync('api-user-1', async () => {
+  console.log('Это не выполнится')
+  return await fetch('/api/user/1').then(r => r.json())
+})
+// Возвращает кешированные данные без API вызова
+
+// Другое имя кеша создаёт новый CacheItem
+const userPosts = await cache.getAsync('api-user-posts-1', async () => {
+  console.log('Получение постов пользователя...')
+  const response = await fetch('/api/user/1/posts')
+  return await response.json()
+})
+```
+
+## Инвалидация кеша с помощью сравнения
+
+Каждая именованная запись кеша поддерживает свой собственный CacheItem с независимой инвалидацией:
+
+```javascript
+const cache = new Cache()
+
+// Кеш данных пользователя с отслеживанием зависимостей
+let userId = 1
+let includeProfile = true
+
+const getUserData = (id, withProfile) => cache.get(
+  'user-data', // Одно имя кеша переиспользует тот же CacheItem
+  () => {
+    console.log(`Загрузка пользователя ${id}, профиль: ${withProfile}`)
+    return {
+      id,
+      name: `Пользователь ${id}`,
+      profile: withProfile ? { bio: 'Биография пользователя', avatar: 'avatar.jpg' } : null
+    }
+  },
+  [id, withProfile] // CacheItem инвалидируется при изменении любого значения
+)
+
+console.log(getUserData(1, true)) // Создаёт CacheItem, выполняет callback
+console.log(getUserData(1, true)) // Переиспользует тот же CacheItem, возвращает кешированные данные
+
+// Изменение зависимости - тот же CacheItem инвалидируется и перегенерируется
+userId = 2
+console.log(getUserData(2, true)) // Тот же CacheItem, инвалидирован, выполняет callback
+
+// Другое имя кеша создаёт отдельный CacheItem
+const getUserSettings = (id) => cache.get(
+  'user-settings', // Другое имя = другой CacheItem
+  () => {
+    console.log(`Загрузка настроек для пользователя ${id}`)
+    return { theme: 'dark', notifications: true }
+  },
+  [id]
+)
+
+console.log(getUserSettings(1)) // Создаёт новый экземпляр CacheItem
+```
+
+## Внутреннее управление CacheItem
+
+Класс Cache автоматически управляет жизненным циклом CacheItem:
+
+```javascript
+const cache = new Cache()
+
+// Каждое уникальное имя кеша получает свой экземпляр CacheItem
+cache.get('cache-1', () => 'data-1') // Создаёт CacheItem внутренне
+cache.get('cache-2', () => 'data-2') // Создаёт другой CacheItem
+cache.get('cache-1', () => 'data-1-updated') // Переиспользует существующий CacheItem
+
+// Экземпляры Cache полностью изолированы
+const cache2 = new Cache()
+cache2.get('cache-1', () => 'different-data') // Независимый CacheItem в cache2
+
+// Проверка изоляции
+console.log(cache.get('cache-1', () => 'fallback')) // 'data-1'
+console.log(cache2.get('cache-1', () => 'fallback')) // 'different-data'
+```

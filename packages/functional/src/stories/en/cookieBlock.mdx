@@ -1,0 +1,414 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/CookieBlock'/>
+
+# CookieBlock Class
+
+Static class for managing cookie access status and privacy compliance. Provides a simple interface to block or allow cookies throughout the application, integrating with the Cookie class to ensure privacy regulations compliance like GDPR.
+
+## Key Features
+
+- **Global cookie control** — centralized control over cookie usage across entire application
+- **Privacy compliance** — helps implement GDPR, CCPA, and other privacy regulations
+- **Persistent settings** — uses DataStorage to remember user's cookie preferences
+- **Integration with Cookie class** — Cookie class automatically respects CookieBlock settings
+- **Simple API** — just two methods for getting and setting cookie block status
+- **Browser compatibility** — works safely in all environments
+
+## Basic Usage
+
+### `get`
+
+Gets current cookie block status.
+
+**Returns:** `boolean` — true if cookies are blocked, false if allowed
+
+```javascript
+import { CookieBlock } from '@dxtmisha/functional'
+
+// Check if cookies are currently blocked
+const isBlocked = CookieBlock.get()
+console.log('Cookies blocked:', isBlocked) // false by default
+
+if (isBlocked) {
+  console.log('Cookies are blocked by user preference')
+} else {
+  console.log('Cookies are allowed')
+}
+```
+
+### `set`
+
+Sets cookie block status and persists the setting.
+
+**Parameters:**
+- `value: boolean` — true to block cookies, false to allow
+
+```javascript
+// Block all cookies
+CookieBlock.set(true)
+console.log('Cookies blocked:', CookieBlock.get()) // true
+
+// Allow cookies
+CookieBlock.set(false)
+console.log('Cookies allowed:', CookieBlock.get()) // false
+
+// Setting persists across browser sessions
+// User preference is saved in localStorage
+```
+
+## Integration with Cookie Class
+
+The CookieBlock class automatically prevents Cookie operations when blocking is enabled:
+
+```javascript
+import { Cookie, CookieBlock } from '@dxtmisha/functional'
+
+// Create cookie instance
+const userPrefs = new Cookie('user-preferences')
+
+// Initially cookies are allowed
+CookieBlock.set(false)
+userPrefs.set({ theme: 'dark', language: 'en' })
+console.log('Stored preferences:', userPrefs.get()) // { theme: 'dark', language: 'en' }
+
+// Block cookies
+CookieBlock.set(true)
+
+// Cookie operations are now prevented
+userPrefs.set({ theme: 'light', language: 'es' }) // This won't actually set the cookie
+console.log('Preferences after blocking:', userPrefs.get()) // Still { theme: 'dark', language: 'en' }
+
+// Allow cookies again
+CookieBlock.set(false)
+userPrefs.set({ theme: 'light', language: 'es' }) // Now this works
+console.log('Updated preferences:', userPrefs.get()) // { theme: 'light', language: 'es' }
+```
+
+## Practical Examples
+
+### GDPR Cookie Consent Implementation
+
+```javascript
+class CookieConsent {
+  constructor() {
+    this.consentCookie = new Cookie('cookie-consent')
+  }
+
+  showConsentBanner() {
+    // Check if user has already made a choice
+    const consent = this.consentCookie.get()
+
+    if (consent === undefined) {
+      // Show banner - user hasn't decided yet
+      this.displayBanner()
+
+      // Block cookies until user decides
+      CookieBlock.set(true)
+
+      return 'banner-shown'
+    } else {
+      // User has already decided
+      CookieBlock.set(!consent.accepted)
+      return consent.accepted ? 'cookies-allowed' : 'cookies-blocked'
+    }
+  }
+
+  acceptCookies() {
+    // User accepts cookies
+    this.consentCookie.set({
+      accepted: true,
+      timestamp: Date.now(),
+      version: '1.0'
+    }, {
+      age: 365 * 24 * 60 * 60 // Remember for 1 year
+    })
+
+    // Allow cookies
+    CookieBlock.set(false)
+
+    this.hideBanner()
+
+    // Now other cookies can be set
+    this.enableAnalytics()
+    this.enableMarketing()
+  }
+
+  rejectCookies() {
+    // User rejects non-essential cookies
+    this.consentCookie.set({
+      accepted: false,
+      timestamp: Date.now(),
+      version: '1.0'
+    }, {
+      age: 365 * 24 * 60 * 60
+    })
+
+    // Keep cookies blocked
+    CookieBlock.set(true)
+
+    this.hideBanner()
+
+    // Clear any existing non-essential cookies
+    this.clearNonEssentialCookies()
+  }
+
+  enableAnalytics() {
+    if (!CookieBlock.get()) {
+      const analyticsCookie = new Cookie('analytics')
+      analyticsCookie.set({ enabled: true, userId: 'anonymous' })
+      console.log('Analytics enabled')
+    }
+  }
+
+  enableMarketing() {
+    if (!CookieBlock.get()) {
+      const marketingCookie = new Cookie('marketing')
+      marketingCookie.set({ campaigns: [], lastShown: Date.now() })
+      console.log('Marketing cookies enabled')
+    }
+  }
+
+  clearNonEssentialCookies() {
+    const analytics = new Cookie('analytics')
+    const marketing = new Cookie('marketing')
+
+    analytics.remove()
+    marketing.remove()
+
+    console.log('Non-essential cookies cleared')
+  }
+
+  displayBanner() {
+    console.log('🍪 Cookie consent banner displayed')
+  }
+
+  hideBanner() {
+    console.log('Cookie consent banner hidden')
+  }
+
+  getConsentStatus() {
+    return this.consentCookie.get()
+  }
+}
+
+// Usage
+const cookieConsent = new CookieConsent()
+
+// Check consent on page load
+const status = cookieConsent.showConsentBanner()
+console.log('Consent status:', status)
+
+// User interactions
+if (status === 'banner-shown') {
+  // Simulate user accepting cookies
+  setTimeout(() => {
+    cookieConsent.acceptCookies()
+    console.log('User accepted cookies')
+  }, 2000)
+}
+
+// Check final status
+setTimeout(() => {
+  const finalStatus = cookieConsent.getConsentStatus()
+  console.log('Final consent:', finalStatus)
+  console.log('Cookies currently blocked:', CookieBlock.get())
+}, 3000)
+```
+
+### Privacy Settings Management
+
+```javascript
+class PrivacyManager {
+  constructor() {
+    this.privacySettings = new Cookie('privacy-settings')
+  }
+
+  getPrivacySettings() {
+    return this.privacySettings.get({
+      essential: true,        // Always allowed
+      functional: false,      // User choice
+      analytics: false,       // User choice
+      marketing: false        // User choice
+    })
+  }
+
+  updatePrivacySettings(settings) {
+    this.privacySettings.set(settings, {
+      age: 365 * 24 * 60 * 60 // 1 year
+    })
+
+    // Update global cookie blocking based on settings
+    const shouldBlock = !(settings.functional || settings.analytics || settings.marketing)
+    CookieBlock.set(shouldBlock)
+
+    // Apply settings to individual cookie types
+    this.applyCookieSettings(settings)
+  }
+
+  applyCookieSettings(settings) {
+    if (!settings.analytics) {
+      const analyticsCookies = ['_ga', '_gtag', 'analytics-data']
+      analyticsCookies.forEach(name => {
+        const cookie = new Cookie(name)
+        cookie.remove()
+      })
+    }
+
+    if (!settings.marketing) {
+      const marketingCookies = ['marketing-data', 'campaign-tracking', 'ad-preferences']
+      marketingCookies.forEach(name => {
+        const cookie = new Cookie(name)
+        cookie.remove()
+      })
+    }
+
+    if (!settings.functional) {
+      const functionalCookies = ['user-preferences', 'ui-state', 'form-data']
+      functionalCookies.forEach(name => {
+        const cookie = new Cookie(name)
+        cookie.remove()
+      })
+    }
+  }
+
+  hasConsentFor(category) {
+    const settings = this.getPrivacySettings()
+    return settings[category] || false
+  }
+
+  showPrivacyCenter() {
+    const current = this.getPrivacySettings()
+
+    console.log('Privacy Center Settings:')
+    console.log('Essential:', current.essential, '(always required)')
+    console.log('Functional:', current.functional, '(optional)')
+    console.log('Analytics:', current.analytics, '(optional)')
+    console.log('Marketing:', current.marketing, '(optional)')
+
+    return current
+  }
+
+  acceptAll() {
+    this.updatePrivacySettings({
+      essential: true,
+      functional: true,
+      analytics: true,
+      marketing: true
+    })
+    console.log('All cookies accepted')
+  }
+
+  rejectAll() {
+    this.updatePrivacySettings({
+      essential: true,  // Essential cookies cannot be disabled
+      functional: false,
+      analytics: false,
+      marketing: false
+    })
+    console.log('Non-essential cookies rejected')
+  }
+}
+
+// Usage
+const privacyManager = new PrivacyManager()
+
+// Show current settings
+privacyManager.showPrivacyCenter()
+
+// Check specific consent
+console.log('Analytics allowed:', privacyManager.hasConsentFor('analytics'))
+console.log('Marketing allowed:', privacyManager.hasConsentFor('marketing'))
+
+// Update settings
+privacyManager.updatePrivacySettings({
+  essential: true,
+  functional: true,
+  analytics: true,
+  marketing: false
+})
+
+console.log('Updated settings - Marketing disabled')
+console.log('Cookies blocked globally:', CookieBlock.get())
+
+// Quick actions
+// privacyManager.acceptAll()
+// privacyManager.rejectAll()
+```
+
+### Application Startup Cookie Check
+
+```javascript
+class AppInitializer {
+  static initializeCookieCompliance() {
+    const consent = new Cookie('cookie-consent')
+    const consentData = consent.get()
+
+    if (!consentData) {
+      // First visit - block cookies until user decides
+      CookieBlock.set(true)
+      console.log('First visit detected - cookies blocked pending consent')
+      return 'pending-consent'
+    } else {
+      // Returning user - apply their previous choice
+      CookieBlock.set(!consentData.accepted)
+
+      if (consentData.accepted) {
+        console.log('Returning user - cookies allowed')
+        return 'cookies-allowed'
+      } else {
+        console.log('Returning user - cookies blocked by preference')
+        return 'cookies-blocked'
+      }
+    }
+  }
+
+  static checkCookieStatus() {
+    return {
+      blocked: CookieBlock.get(),
+      hasConsent: new Cookie('cookie-consent').get() !== undefined,
+      canSetCookies: !CookieBlock.get()
+    }
+  }
+}
+
+// Application startup
+document.addEventListener('DOMContentLoaded', () => {
+  const initStatus = AppInitializer.initializeCookieCompliance()
+  const cookieStatus = AppInitializer.checkCookieStatus()
+
+  console.log('App initialization status:', initStatus)
+  console.log('Cookie status:', cookieStatus)
+
+  // Based on status, show appropriate UI
+  if (initStatus === 'pending-consent') {
+    showCookieConsentBanner()
+  } else if (initStatus === 'cookies-blocked') {
+    showPrivacyFriendlyMessage()
+  } else {
+    enableFullFeatures()
+  }
+})
+
+function showCookieConsentBanner() {
+  console.log('Showing cookie consent banner...')
+}
+
+function showPrivacyFriendlyMessage() {
+  console.log('Operating in privacy-friendly mode')
+}
+
+function enableFullFeatures() {
+  console.log('All features enabled with cookie support')
+}
+```
+
+## Integration with Privacy Laws
+
+CookieBlock helps ensure compliance with:
+- **GDPR** (General Data Protection Regulation)
+- **CCPA** (California Consumer Privacy Act)
+- **ePrivacy Directive** (EU Cookie Law)
+- **Other regional privacy laws**
+
+The class provides a foundation for implementing privacy-compliant cookie management that respects user choices and regulatory requirements.

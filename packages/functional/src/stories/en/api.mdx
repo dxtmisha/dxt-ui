@@ -1,0 +1,769 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Api'/>
+
+# Api Class
+
+Static class for handling HTTP requests with advanced features like caching, emulation, loading indicators, and automatic locale-aware URL generation. Provides methods for REST API operations with comprehensive error handling and response processing.
+
+## Key Features
+
+- **HTTP Methods** — GET, POST, PUT, DELETE requests with proper handling
+- **Request Caching** — intelligent response caching and emulation system
+- **Loading Management** — automatic loading indicators with Loading class integration
+- **Locale Support** — automatic locale/country/language placeholder replacement in URLs
+- **Error Handling** — comprehensive error catching with status tracking
+- **Header Management** — flexible header configuration and default values
+- **Body Processing** — automatic JSON/FormData/string body handling
+- **Development Mode** — request emulation and debugging features
+- **Preparation Hooks** — before/after request lifecycle management
+- **Response Transformation** — automatic data extraction and formatting
+
+## Configuration Methods
+
+### `setUrl`
+
+Sets the base API URL for all requests.
+
+**Parameters:**
+- `url: string` — base API path
+
+**Returns:** `Api` — class reference for chaining
+
+```javascript
+import { Api } from '@dxtmisha/functional'
+
+// Set base API URL
+Api.setUrl('/api/v2/')
+
+// All subsequent requests will use this base
+// request('/users') → '/api/v2/users'
+```
+
+### `setHeaders`
+
+Sets default headers for all requests.
+
+**Parameters:**
+- `headers: Record<string, string>` — default headers object
+
+**Returns:** `Api` — class reference for chaining
+
+```javascript
+// Set default headers
+Api.setHeaders({
+  'Authorization': 'Bearer token123',
+  'X-API-Key': 'your-api-key',
+  'Accept-Language': 'en-US'
+})
+
+// Headers will be included in all requests
+```
+
+### `setRequestDefault`
+
+Sets default request data that will be merged with each request.
+
+**Parameters:**
+- `request: RefOrNormal<Record<string, any>>` — default request data
+
+```javascript
+// Set default request parameters
+Api.setRequestDefault({
+  version: '1.0',
+  clientId: 'web-app'
+})
+
+// These will be merged with each request body
+```
+
+### `setPreparation`
+
+Sets a function to run before each request (e.g., token refresh).
+
+**Parameters:**
+- `callback: () => Promise<void>` — async function to execute before requests
+
+**Returns:** `Api` — class reference for chaining
+
+```javascript
+// Set preparation function
+Api.setPreparation(async () => {
+  await refreshAuthToken()
+  console.log('Token refreshed before request')
+})
+```
+
+### `setEnd`
+
+Sets a function to run after each request for response analysis.
+
+**Parameters:**
+- `callback: (query: Response) => Promise<ApiPreparationEnd>` — async function to analyze response
+
+**Returns:** `Api` — class reference for chaining
+
+```javascript
+// Set post-request handler
+Api.setEnd(async (response) => {
+  if (response.status === 401) {
+    return { reset: true } // Retry request
+  }
+
+  if (response.status === 403) {
+    redirectToLogin()
+  }
+
+  return {}
+})
+```
+
+## Request Methods
+
+### `request`
+
+Generic request method that accepts either URL string or configuration object.
+
+**Parameters:**
+- `pathRequest: string | ApiFetch` — URL string or request configuration
+
+**Returns:** `Promise<T>` — response data
+
+```javascript
+// Simple string request
+const users = await Api.request('/users')
+
+// Full configuration object
+const user = await Api.request({
+  path: '/users/123',
+  method: 'GET',
+  headers: { 'Cache-Control': 'no-cache' }
+})
+```
+
+### `get`
+
+Sends GET request.
+
+**Parameters:**
+- `request: ApiFetch` — request configuration
+
+**Returns:** `Promise<T>` — response data
+
+```javascript
+// Simple GET request
+const users = await Api.get({ path: '/users' })
+
+// GET with query parameters
+const filteredUsers = await Api.get({
+  path: '/users',
+  request: { status: 'active', limit: 10 }
+})
+// Results in: GET /users?status=active&limit=10
+```
+
+### `post`
+
+Sends POST request.
+
+**Parameters:**
+- `request: ApiFetch` — request configuration
+
+**Returns:** `Promise<T>` — response data
+
+```javascript
+// Create new user
+const newUser = await Api.post({
+  path: '/users',
+  request: {
+    name: 'John Doe',
+    email: 'john@example.com'
+  }
+})
+
+// Upload file with FormData
+const formData = new FormData()
+formData.append('file', fileInput.files[0])
+
+const uploadResult = await Api.post({
+  path: '/upload',
+  request: formData,
+  type: '' // Remove Content-Type for FormData
+})
+```
+
+### `put`
+
+Sends PUT request.
+
+**Parameters:**
+- `request: ApiFetch` — request configuration
+
+**Returns:** `Promise<T>` — response data
+
+```javascript
+// Update user
+const updatedUser = await Api.put({
+  path: '/users/123',
+  request: {
+    name: 'John Smith',
+    email: 'john.smith@example.com'
+  }
+})
+```
+
+### `delete`
+
+Sends DELETE request.
+
+**Parameters:**
+- `request: ApiFetch` — request configuration
+
+**Returns:** `Promise<T>` — response data
+
+```javascript
+// Delete user
+await Api.delete({
+  path: '/users/123'
+})
+
+// Delete with confirmation
+await Api.delete({
+  path: '/users/123',
+  request: { force: true }
+})
+```
+
+## Response Caching & Emulation
+
+### `addResponse`
+
+Adds cached responses for development/testing or offline mode.
+
+**Parameters:**
+- `response: ApiResponse | ApiResponse[]` — response configuration(s)
+
+**Returns:** `Api` — class reference for chaining
+
+```javascript
+// Add single cached response
+Api.addResponse({
+  path: '/users',
+  method: 'GET',
+  response: [
+    { id: 1, name: 'John Doe' },
+    { id: 2, name: 'Jane Smith' }
+  ]
+})
+
+// Add multiple responses
+Api.addResponse([
+  {
+    path: '/users',
+    method: 'GET',
+    response: () => generateUserList(), // Dynamic response
+    lag: true // Simulate network delay
+  },
+  {
+    path: /^\/users\/\d+$/, // RegExp path matching
+    method: 'GET',
+    response: (request) => getUserById(request.id)
+  }
+])
+```
+
+## Information Methods
+
+### `isLocalhost`
+
+Checks if the current environment is localhost.
+
+**Returns:** `boolean` — true if running on localhost
+
+```javascript
+if (Api.isLocalhost()) {
+  console.log('Development environment detected')
+  Api.addResponse(mockData) // Use mock data in development
+}
+```
+
+### `getHeaders`
+
+Gets combined headers for request, merging default headers with provided ones.
+
+**Parameters:**
+- `value?: Record<string, string> | null` — additional headers (optional)
+- `type?: string` — Content-Type header value (default: 'application/json;charset=UTF-8')
+
+**Returns:** `Record<string, string> | undefined` — merged headers object or undefined if value is null
+
+```javascript
+// Get default headers only
+const headers = Api.getHeaders()
+// Returns: default headers with Content-Type
+
+// Merge with custom headers
+const customHeaders = Api.getHeaders({
+  'Authorization': 'Bearer token123',
+  'X-Custom-Header': 'value'
+})
+// Returns: default headers + custom headers + Content-Type
+
+// Exclude headers completely
+const noHeaders = Api.getHeaders(null)
+// Returns: undefined
+
+// Custom Content-Type
+const xmlHeaders = Api.getHeaders({}, 'application/xml')
+// Returns: headers with Content-Type: application/xml
+```
+
+### `getLastResponse`
+
+Returns the raw data from the last request.
+
+**Returns:** `T` — last response data
+
+```javascript
+const users = await Api.get({ path: '/users' })
+const rawResponse = Api.getLastResponse()
+console.log('Raw response:', rawResponse)
+```
+
+### `getLastMessage`
+
+Returns the message from the last response.
+
+**Returns:** `string` — last response message
+
+```javascript
+try {
+  await Api.post({ path: '/users', request: userData })
+} catch (error) {
+  const message = Api.getLastMessage()
+  showNotification(message || 'Unknown error occurred')
+}
+```
+
+### `getStatus`
+
+Returns the HTTP status code of the last request.
+
+**Returns:** `number | undefined` — HTTP status code
+
+```javascript
+await Api.get({ path: '/users' })
+const status = Api.getStatus()
+
+if (status === 200) {
+  console.log('Request successful')
+} else if (status === 404) {
+  console.log('Resource not found')
+}
+```
+
+### `getStatusText`
+
+Returns the HTTP status text of the last request.
+
+**Returns:** `string | undefined` — HTTP status text
+
+```javascript
+await Api.get({ path: '/users' })
+console.log('Status:', Api.getStatus(), Api.getStatusText())
+// Output: "Status: 200 OK"
+```
+
+### `getError`
+
+Returns the error from the last failed request.
+
+**Returns:** `string | undefined` — error message
+
+```javascript
+try {
+  await Api.get({ path: '/invalid-endpoint' })
+} catch (e) {
+  const error = Api.getError()
+  console.error('Request failed:', error)
+}
+```
+
+## Utility Methods
+
+### `getUrl`
+
+Gets the full path to the request script with locale placeholder replacement.
+
+**Parameters:**
+- `path: string` — path to the script
+- `api?: boolean` — whether to add API base path (default: true)
+
+**Returns:** `string` — full URL with locale placeholders replaced
+
+```javascript
+// With API base path
+const url = Api.getUrl('/users')
+// Returns: '/api/users' (or '/api/en-US/users' if locale placeholders used)
+
+// Without API base path
+const fullUrl = Api.getUrl('https://external-api.com/data', false)
+// Returns: 'https://external-api.com/data'
+
+// With locale placeholders
+Api.setUrl('/api/{locale}/')
+const localizedUrl = Api.getUrl('/users')
+// Returns: '/api/en-US/users' (based on current locale)
+```
+
+### `getBody`
+
+Gets processed body data for the request based on method and data type.
+
+**Parameters:**
+- `request?: ApiFetch['request']` — request data (default: {})
+- `method?: ApiMethod` — HTTP method (default: 'GET')
+
+**Returns:** `string | FormData | undefined` — processed body data
+
+```javascript
+// JSON body for POST request
+const jsonBody = Api.getBody({ name: 'John', email: 'john@example.com' }, 'POST')
+// Returns: '{"name":"John","email":"john@example.com"}'
+
+// FormData body
+const formData = new FormData()
+formData.append('file', fileInput.files[0])
+const formBody = Api.getBody(formData, 'POST')
+// Returns: FormData object
+
+// No body for GET request
+const getBody = Api.getBody({ limit: 10 }, 'GET')
+// Returns: undefined (GET params go to URL)
+```
+
+### `getBodyForGet`
+
+Gets query string parameters for GET requests.
+
+**Parameters:**
+- `request?: ApiFetch['request']` — request data
+- `path?: string` — current request path (default: '')
+- `method?: ApiMethod` — HTTP method (default: 'GET')
+
+**Returns:** `string` — query string with ? or & prefix
+
+```javascript
+// First parameters
+const queryString = Api.getBodyForGet({ limit: 10, status: 'active' }, '/users')
+// Returns: '?limit=10&status=active'
+
+// Additional parameters (path already has ?)
+const additionalQuery = Api.getBodyForGet({ sort: 'name' }, '/users?limit=10')
+// Returns: '&sort=name'
+
+// Non-GET method
+const noQuery = Api.getBodyForGet({ data: 'test' }, '/users', 'POST')
+// Returns: '' (empty string)
+```
+
+### `getResponseList`
+
+Returns a list of cached response configurations (excluding global ones).
+
+**Returns:** `(ApiResponse & Record<string, any>)[]` — array of response configurations
+
+```javascript
+// Add some cached responses
+Api.addResponse([
+  { path: '/users', method: 'GET', response: userData },
+  { path: '/posts', method: 'GET', response: postsData, isForGlobal: true }
+])
+
+// Get non-global responses
+const responses = Api.getResponseList()
+// Returns: [{ path: '/users', method: 'GET', response: userData }]
+// Excludes the global one (isForGlobal: true)
+
+// Useful for debugging and development
+console.log('Active mock responses:', responses.map(r => r.path))
+```
+
+### `addRequestDefault`
+
+Adds default request data to the provided request, merging with existing data.
+
+**Parameters:**
+- `request: ApiFetch['request']` — request data to merge with defaults
+
+**Returns:** `ApiFetch['request']` — merged request data
+
+```javascript
+// Set default request data
+Api.setRequestDefault({
+  version: '1.0',
+  clientId: 'web-app'
+})
+
+// Merge with specific request
+const mergedRequest = Api.addRequestDefault({
+  userId: 123,
+  action: 'update'
+})
+// Returns: { version: '1.0', clientId: 'web-app', userId: 123, action: 'update' }
+
+// Works with FormData too
+const formData = new FormData()
+formData.append('file', file)
+const mergedFormData = Api.addRequestDefault(formData)
+// FormData will have default fields added if they don't exist
+```
+
+## Advanced Configuration
+
+### Request Configuration (`ApiFetch`)
+
+Complete interface for configuring API requests with all available options:
+
+```typescript
+interface ApiFetch {
+  /** Use base API URL (default: true) */
+  api?: boolean
+
+  /** Endpoint path relative to base URL */
+  path?: string
+
+  /** Complete URL (overrides api + path combination) */
+  pathFull?: string
+
+  /** HTTP method: GET, POST, PUT, DELETE (default: 'GET') */
+  method?: ApiMethod
+
+  /** Request body/parameters */
+  request?: FormData | Record<string, any> | string
+
+  /** Include authentication headers */
+  auth?: boolean
+
+  /** Custom headers (null = no headers) */
+  headers?: Record<string, string> | null
+
+  /** Content-Type header value (default: 'application/json;charset=UTF-8') */
+  type?: string
+
+  /** Extract 'data' field from response (default: true) */
+  toData?: boolean
+
+  /** Use global response cache (default: true for GET, false for others) */
+  global?: boolean
+
+  /** Enable development logging and debugging (default: false) */
+  devMode?: boolean
+
+  /** Suppress error logging in console (default: false) */
+  hideError?: boolean
+
+  /** Custom response processor */
+  queryReturn?: (query: Response) => Promise<any>
+
+  /** Run global preparation hooks (default: true) */
+  globalPreparation?: boolean
+
+  /** Run global end hooks (default: true) */
+  globalEnd?: boolean
+
+  /** Additional fetch() options */
+  init?: RequestInit
+}
+```
+
+#### Property Details:
+
+**`api?: boolean`** (default: `true`)
+- When `true`, prepends the base URL set via `setUrl()` to the path
+- When `false`, uses the path as-is without base URL modification
+```javascript
+// With api: true (default)
+{ path: '/users', api: true }     // → '/api/users'
+
+// With api: false
+{ path: 'https://external.com/api', api: false }  // → 'https://external.com/api'
+```
+
+**`path?: string`**
+- Endpoint path relative to the base URL
+- Supports locale placeholders: `{locale}`, `{country}`, `{language}`
+```javascript
+{ path: '/users/{locale}/profile' }  // → '/users/en-US/profile'
+```
+
+**`pathFull?: string`**
+- Complete URL that overrides the combination of base URL + path
+- When provided, ignores `api` and `path` properties
+```javascript
+{ pathFull: 'https://api.example.com/v2/users' }  // Uses this exact URL
+```
+
+**`method?: ApiMethod`** (default: `'GET'`)
+- HTTP method for the request
+- Available values: `'GET'`, `'POST'`, `'PUT'`, `'DELETE'`
+
+**`request?: FormData | Record<string, any> | string`**
+- Request body data or query parameters
+- For GET requests: converted to query string parameters
+- For other methods: sent as request body
+- Supports objects (JSON), FormData, and raw strings
+```javascript
+// Object (JSON)
+{ request: { name: 'John', email: 'john@example.com' } }
+
+// FormData (file uploads)
+const formData = new FormData()
+formData.append('file', file)
+{ request: formData }
+
+// Raw string
+{ request: '{"custom": "json"}' }
+```
+
+**`auth?: boolean`**
+- Controls whether authentication headers should be included
+- Implementation depends on your authentication setup
+
+**`headers?: Record<string, string> | null`**
+- Custom headers to include with the request
+- Merged with default headers set via `setHeaders()`
+- Set to `null` to exclude all headers (including defaults)
+```javascript
+// Add custom headers
+{ headers: { 'X-Custom': 'value', 'Authorization': 'Bearer token' } }
+
+// Exclude all headers
+{ headers: null }
+```
+
+**`type?: string`** (default: `'application/json;charset=UTF-8'`)
+- Sets the Content-Type header
+- Use empty string `''` to let browser set automatically (useful for FormData)
+```javascript
+// JSON content
+{ type: 'application/json' }
+
+// Form data (let browser set)
+{ type: '' }
+
+// XML content
+{ type: 'application/xml' }
+```
+
+**`toData?: boolean`** (default: `true`)
+- When `true`, automatically extracts `data` field from response if it exists
+- When `false`, returns the raw response object
+```javascript
+// Response: { data: { id: 1, name: 'John' }, success: true }
+
+// With toData: true (default)
+const result = await Api.get({ path: '/user' })
+// result = { id: 1, name: 'John' }
+
+// With toData: false
+const result = await Api.get({ path: '/user', toData: false })
+// result = { data: { id: 1, name: 'John' }, success: true }
+```
+
+**`global?: boolean`** (default: `true` for GET, `false` for others)
+- Enables global response caching and emulation
+- When `true`, checks for cached responses added via `addResponse()`
+
+**`devMode?: boolean`** (default: `false`)
+- Enables development logging and debugging features
+- Logs cache hits, request data, and response information
+- Allows repeated use of cached responses (normally used once)
+```javascript
+// Enable dev mode logging
+const users = await Api.get({ path: '/users', devMode: true })
+// Console output: "Response type: /users", "Response data: /users {...}"
+```
+
+**`hideError?: boolean`** (default: `false`)
+- When `true`, suppresses error logging to console
+- Errors are still thrown, just not logged
+- Useful for expected errors or custom error handling
+
+**`queryReturn?: (query: Response) => Promise<any>`**
+- Custom function to process the raw Response object
+- Overrides default JSON/text parsing
+- Useful for custom response handling or binary data
+```javascript
+// Custom response processing
+const result = await Api.get({
+  path: '/download',
+  queryReturn: async (response) => {
+    return await response.blob()  // Return binary data
+  }
+})
+```
+
+**`globalPreparation?: boolean`** (default: `true`)
+- Controls whether global preparation hooks run before this request
+- Set to `false` to skip preparation for specific requests
+
+**`globalEnd?: boolean`** (default: `true`)
+- Controls whether global end hooks run after this request
+- Set to `false` to skip post-processing for specific requests
+
+**`init?: RequestInit`**
+- Additional options passed directly to the `fetch()` API
+- Allows fine-grained control over request behavior
+```javascript
+// Custom fetch options
+{
+  init: {
+    cache: 'no-cache',
+    credentials: 'include',
+    redirect: 'follow',
+    signal: abortController.signal
+  }
+}
+```
+
+#### Usage Examples:
+
+```javascript
+// Minimal request
+const users = await Api.get({ path: '/users' })
+
+// Full configuration
+const result = await Api.post({
+  api: true,
+  path: '/users',
+  method: 'POST',
+  request: { name: 'John', email: 'john@example.com' },
+  headers: { 'X-Custom-Header': 'value' },
+  type: 'application/json',
+  toData: true,
+  devMode: false,
+  hideError: false,
+  globalPreparation: true,
+  globalEnd: true,
+  init: { cache: 'no-cache' }
+})
+
+// File upload with FormData
+const formData = new FormData()
+formData.append('file', fileInput.files[0])
+
+const uploadResult = await Api.post({
+  path: '/upload',
+  request: formData,
+  type: '',  // Let browser set Content-Type
+  headers: { 'X-Upload-Session': 'abc123' }
+})
+
+// External API call
+const externalData = await Api.get({
+  pathFull: 'https://jsonplaceholder.typicode.com/posts/1',
+  api: false,
+  toData: false  // Don't try to extract 'data' field
+})
+```

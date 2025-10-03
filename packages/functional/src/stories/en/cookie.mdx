@@ -1,0 +1,418 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Cookie'/>
+
+# Cookie Class
+
+Class for working with browser cookies with automatic serialization, singleton pattern, and integration with CookieBlock for privacy compliance. Provides type-safe cookie operations with configurable options like max-age, SameSite, and custom attributes.
+
+## Key Features
+
+- **Type-safe cookie management** — full TypeScript support with generics for cookie data
+- **Automatic serialization** — handles JSON serialization/deserialization of complex data
+- **Singleton pattern** — reuses instances for same cookie names
+- **Privacy compliance** — integrates with CookieBlock to respect user cookie preferences
+- **Configurable options** — supports max-age, SameSite, and custom cookie attributes
+- **Function value support** — accepts functions as values for dynamic cookie generation
+- **Browser compatibility** — safe usage with server-side rendering
+- **Automatic initialization** — reads existing cookies on class load
+
+## Constructor
+
+### `constructor`
+
+Creates Cookie instance for specified cookie name. Uses singleton pattern.
+
+**Parameters:**
+- `name: string` — cookie name
+
+```javascript
+import { Cookie } from '@dxtmisha/functional'
+
+// Create cookie instances
+const userTheme = new Cookie('user-theme')
+const sessionToken = new Cookie('session-token')
+
+// Singleton behavior
+const sameInstance = new Cookie('user-theme')
+console.log(userTheme === sameInstance) // true
+```
+
+## Data Operations
+
+### `get`
+
+Retrieves cookie value with optional default value and cookie options.
+
+**Parameters:**
+- `defaultValue?: T | string | (() => (T | string))` — default value or function if cookie doesn't exist (optional)
+- `options?: CookieOptions` — cookie options for setting default (optional)
+
+**Returns:** `T | string | undefined` — cookie value, default value, or undefined
+
+```javascript
+const themeCookie = new Cookie('theme')
+
+// Get existing cookie
+const currentTheme = themeCookie.get()
+console.log(currentTheme) // undefined if not set, or stored value
+
+// Get with default value
+const theme = themeCookie.get('light')
+console.log(theme) // 'light' if cookie doesn't exist, sets and returns default
+
+// Get with default function
+const settings = new Cookie('settings')
+const config = settings.get(() => ({
+  theme: 'dark',
+  language: 'en',
+  notifications: true
+}))
+
+// Get with options for default setting
+const preferences = new Cookie('preferences')
+const prefs = preferences.get(
+  { sidebar: true, tooltips: false },
+  { age: 30 * 24 * 60 * 60 } // 30 days
+)
+```
+
+### `set`
+
+Updates cookie data with optional configuration.
+
+**Parameters:**
+- `value?: T | string | (() => (T | string))` — value to store or function that returns value (optional)
+- `options?: CookieOptions` — cookie configuration options (optional)
+
+**Returns:** `void`
+
+```javascript
+const userCookie = new Cookie('user-data')
+
+// Set simple value
+userCookie.set('john_doe')
+
+// Set object (automatically serialized)
+userCookie.set({
+  id: 1,
+  name: 'John Doe',
+  preferences: { theme: 'dark' }
+})
+
+// Set with function
+userCookie.set(() => ({
+  sessionId: Math.random().toString(36),
+  timestamp: Date.now()
+}))
+
+// Set with options
+userCookie.set('important-data', {
+  age: 365 * 24 * 60 * 60, // 1 year in seconds
+  sameSite: 'strict',
+  arguments: ['Secure', 'HttpOnly']
+})
+```
+
+### `remove`
+
+Removes cookie by setting empty value.
+
+```javascript
+userCookie.remove()
+// Equivalent to: userCookie.set('')
+```
+
+## Cookie Options
+
+### `CookieOptions` Interface
+
+```typescript
+interface CookieOptions {
+  /** Cookie max-age in seconds (default: 7 days) */
+  age?: number
+
+  /** SameSite attribute: 'strict' | 'lax' (default: 'strict') */
+  sameSite?: 'strict' | 'lax'
+
+  /** Additional cookie attributes */
+  arguments?: string[]
+}
+```
+
+### Options Examples
+
+```javascript
+const secureCookie = new Cookie('secure-data')
+
+// Basic options
+secureCookie.set('sensitive-data', {
+  age: 60 * 60, // 1 hour
+  sameSite: 'strict'
+})
+
+// Advanced options with custom attributes
+secureCookie.set('auth-token', {
+  age: 24 * 60 * 60, // 24 hours
+  sameSite: 'lax',
+  arguments: ['Secure', 'HttpOnly', 'Path=/api']
+})
+
+// Long-term storage
+const rememberMeCookie = new Cookie('remember-me')
+rememberMeCookie.set(true, {
+  age: 365 * 24 * 60 * 60 // 1 year
+})
+```
+
+## Practical Examples
+
+### User Authentication
+
+```javascript
+class AuthManager {
+  constructor() {
+    this.tokenCookie = new Cookie('auth-token')
+    this.userCookie = new Cookie('user-data')
+  }
+
+  login(credentials) {
+    // Simulate login API call
+    const authResponse = {
+      token: 'jwt-token-here',
+      user: { id: 1, name: 'John Doe', role: 'admin' },
+      expiresIn: 24 * 60 * 60 // 24 hours
+    }
+
+    // Store auth token
+    this.tokenCookie.set(authResponse.token, {
+      age: authResponse.expiresIn,
+      sameSite: 'strict',
+      arguments: ['Secure', 'HttpOnly']
+    })
+
+    // Store user data
+    this.userCookie.set(authResponse.user, {
+      age: authResponse.expiresIn,
+      sameSite: 'strict'
+    })
+
+    return authResponse
+  }
+
+  getCurrentUser() {
+    return this.userCookie.get()
+  }
+
+  getAuthToken() {
+    return this.tokenCookie.get()
+  }
+
+  isAuthenticated() {
+    const token = this.getAuthToken()
+    const user = this.getCurrentUser()
+    return !!(token && user)
+  }
+
+  logout() {
+    this.tokenCookie.remove()
+    this.userCookie.remove()
+  }
+}
+
+// Usage
+const auth = new AuthManager()
+
+// Login
+const loginResult = auth.login({ username: 'john', password: 'secret' })
+console.log('Login successful:', loginResult.user.name)
+
+// Check authentication
+console.log('Is authenticated:', auth.isAuthenticated()) // true
+console.log('Current user:', auth.getCurrentUser().name)
+
+// Logout
+auth.logout()
+console.log('Is authenticated after logout:', auth.isAuthenticated()) // false
+```
+
+### Shopping Cart Persistence
+
+```javascript
+class ShoppingCart {
+  constructor() {
+    this.cartCookie = new Cookie('shopping-cart')
+  }
+
+  getItems() {
+    return this.cartCookie.get([]) // Default to empty array
+  }
+
+  addItem(product, quantity = 1) {
+    const items = this.getItems()
+    const existingIndex = items.findIndex(item => item.id === product.id)
+
+    if (existingIndex >= 0) {
+      items[existingIndex].quantity += quantity
+    } else {
+      items.push({ ...product, quantity })
+    }
+
+    this.cartCookie.set(items, {
+      age: 30 * 24 * 60 * 60 // 30 days
+    })
+
+    return items
+  }
+
+  removeItem(productId) {
+    const items = this.getItems().filter(item => item.id !== productId)
+    this.cartCookie.set(items)
+    return items
+  }
+
+  updateQuantity(productId, quantity) {
+    const items = this.getItems()
+    const item = items.find(item => item.id === productId)
+
+    if (item) {
+      if (quantity <= 0) {
+        return this.removeItem(productId)
+      } else {
+        item.quantity = quantity
+        this.cartCookie.set(items)
+      }
+    }
+
+    return items
+  }
+
+  getTotalPrice() {
+    const items = this.getItems()
+    return items.reduce((total, item) => total + (item.price * item.quantity), 0)
+  }
+
+  getItemCount() {
+    const items = this.getItems()
+    return items.reduce((count, item) => count + item.quantity, 0)
+  }
+
+  clear() {
+    this.cartCookie.remove()
+  }
+}
+
+// Usage
+const cart = new ShoppingCart()
+
+// Add products
+cart.addItem({ id: 1, name: 'Laptop', price: 999.99 }, 1)
+cart.addItem({ id: 2, name: 'Mouse', price: 29.99 }, 2)
+
+console.log('Cart items:', cart.getItems())
+console.log('Total price:', cart.getTotalPrice())
+console.log('Item count:', cart.getItemCount())
+
+// Update quantities
+cart.updateQuantity(2, 1) // Reduce mouse quantity to 1
+cart.removeItem(1) // Remove laptop
+
+console.log('Updated cart:', cart.getItems())
+```
+
+### User Preferences with Privacy Compliance
+
+```javascript
+class PrivacyAwarePreferences {
+  constructor() {
+    this.essentialCookie = new Cookie('essential-prefs')
+    this.analyticsCookie = new Cookie('analytics-prefs')
+    this.marketingCookie = new Cookie('marketing-prefs')
+  }
+
+  // Essential cookies (always allowed)
+  setTheme(theme) {
+    this.essentialCookie.set({ theme }, {
+      age: 365 * 24 * 60 * 60, // 1 year
+      sameSite: 'strict'
+    })
+  }
+
+  getTheme() {
+    const prefs = this.essentialCookie.get({})
+    return prefs.theme || 'light'
+  }
+
+  // Analytics cookies (requires consent)
+  enableAnalytics(settings) {
+    this.analyticsCookie.set(settings, {
+      age: 365 * 24 * 60 * 60,
+      sameSite: 'lax'
+    })
+  }
+
+  getAnalyticsSettings() {
+    return this.analyticsCookie.get()
+  }
+
+  // Marketing cookies (requires consent)
+  setMarketingPreferences(preferences) {
+    this.marketingCookie.set(preferences, {
+      age: 30 * 24 * 60 * 60, // 30 days
+      sameSite: 'lax'
+    })
+  }
+
+  getMarketingPreferences() {
+    return this.marketingCookie.get()
+  }
+
+  clearNonEssential() {
+    this.analyticsCookie.remove()
+    this.marketingCookie.remove()
+  }
+}
+
+// Usage
+const prefs = new PrivacyAwarePreferences()
+
+// Essential preferences (always work)
+prefs.setTheme('dark')
+console.log('Theme:', prefs.getTheme()) // 'dark'
+
+// Analytics and marketing (only if CookieBlock allows)
+prefs.enableAnalytics({ trackPageViews: true, trackClicks: false })
+prefs.setMarketingPreferences({ personalizedAds: true, emailMarketing: false })
+
+console.log('Analytics:', prefs.getAnalyticsSettings())
+console.log('Marketing:', prefs.getMarketingPreferences())
+
+// Clear non-essential cookies
+prefs.clearNonEssential()
+```
+
+## Integration with CookieBlock
+
+The Cookie class automatically respects CookieBlock settings to ensure privacy compliance:
+
+```javascript
+import { CookieBlock } from '@dxtmisha/functional'
+
+// Block cookies (simulating user privacy choice)
+CookieBlock.set(true)
+
+const marketingCookie = new Cookie('marketing-data')
+
+// This will not actually set the cookie because CookieBlock is active
+marketingCookie.set('marketing-value')
+console.log('Marketing cookie:', marketingCookie.get()) // undefined
+
+// Allow cookies
+CookieBlock.set(false)
+
+// Now cookies work normally
+marketingCookie.set('marketing-value')
+console.log('Marketing cookie:', marketingCookie.get()) // 'marketing-value'
+```
+
+The Cookie class provides a powerful, privacy-compliant way to manage browser cookies with automatic serialization and flexible configuration options, making it perfect for modern web applications that need to respect user privacy preferences.

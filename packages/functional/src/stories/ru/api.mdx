@@ -1,0 +1,769 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Api'/>
+
+# Класс Api
+
+Статический класс для обработки HTTP-запросов с расширенными возможностями: кеширование, эмуляция, индикаторы загрузки и автоматическая генерация URL с учётом локали. Предоставляет методы для REST API операций с комплексной обработкой ошибок и ответов.
+
+## Основные возможности
+
+- **HTTP методы** — GET, POST, PUT, DELETE запросы с правильной обработкой
+- **Кеширование запросов** — интеллектуальная система кеширования и эмуляции ответов
+- **Управление загрузкой** — автоматические индикаторы загрузки с интеграцией класса Loading
+- **Поддержка локали** — автоматическая замена плейсхолдеров локали/страны/языка в URL
+- **Обработка ошибок** — комплексная обработка ошибок с отслеживанием статуса
+- **Управление заголовками** — гибкая настройка заголовков и значений по умолчанию
+- **Обработка тела запроса** — автоматическая обработка JSON/FormData/строковых данных
+- **Режим разработки** — эмуляция запросов и возможности отладки
+- **Хуки подготовки** — управление жизненным циклом до/после запроса
+- **Преобразование ответов** — автоматическое извлечение и форматирование данных
+
+## Методы конфигурации
+
+### `setUrl`
+
+Устанавливает базовый URL API для всех запросов.
+
+**Параметры:**
+- `url: string` — базовый путь API
+
+**Возвращает:** `Api` — ссылка на класс для цепочки вызовов
+
+```javascript
+import { Api } from '@dxtmisha/functional'
+
+// Установить базовый URL API
+Api.setUrl('/api/v2/')
+
+// Все последующие запросы будут использовать этот базовый URL
+// request('/users') → '/api/v2/users'
+```
+
+### `setHeaders`
+
+Устанавливает заголовки по умолчанию для всех запросов.
+
+**Параметры:**
+- `headers: Record<string, string>` — объект заголовков по умолчанию
+
+**Возвращает:** `Api` — ссылка на класс для цепочки вызовов
+
+```javascript
+// Установить заголовки по умолчанию
+Api.setHeaders({
+  'Authorization': 'Bearer token123',
+  'X-API-Key': 'your-api-key',
+  'Accept-Language': 'ru-RU'
+})
+
+// Заголовки будут включены во все запросы
+```
+
+### `setRequestDefault`
+
+Устанавливает данные запроса по умолчанию, которые будут объединяться с каждым запросом.
+
+**Параметры:**
+- `request: RefOrNormal<Record<string, any>>` — данные запроса по умолчанию
+
+```javascript
+// Установить параметры запроса по умолчанию
+Api.setRequestDefault({
+  version: '1.0',
+  clientId: 'web-app'
+})
+
+// Эти данные будут объединены с каждым телом запроса
+```
+
+### `setPreparation`
+
+Устанавливает функцию для выполнения перед каждым запросом (например, обновление токена).
+
+**Параметры:**
+- `callback: () => Promise<void>` — асинхронная функция для выполнения перед запросами
+
+**Возвращает:** `Api` — ссылка на класс для цепочки вызовов
+
+```javascript
+// Установить функцию подготовки
+Api.setPreparation(async () => {
+  await refreshAuthToken()
+  console.log('Токен обновлён перед запросом')
+})
+```
+
+### `setEnd`
+
+Устанавливает функцию для выполнения после каждого запроса для анализа ответа.
+
+**Параметры:**
+- `callback: (query: Response) => Promise<ApiPreparationEnd>` — асинхронная функция для анализа ответа
+
+**Возвращает:** `Api` — ссылка на класс для цепочки вызовов
+
+```javascript
+// Установить обработчик после запроса
+Api.setEnd(async (response) => {
+  if (response.status === 401) {
+    return { reset: true } // Повторить запрос
+  }
+
+  if (response.status === 403) {
+    redirectToLogin()
+  }
+
+  return {}
+})
+```
+
+## Методы запросов
+
+### `request`
+
+Универсальный метод запроса, принимающий строку URL или объект конфигурации.
+
+**Параметры:**
+- `pathRequest: string | ApiFetch` — строка URL или конфигурация запроса
+
+**Возвращает:** `Promise<T>` — данные ответа
+
+```javascript
+// Простой запрос строкой
+const users = await Api.request('/users')
+
+// Полный объект конфигурации
+const user = await Api.request({
+  path: '/users/123',
+  method: 'GET',
+  headers: { 'Cache-Control': 'no-cache' }
+})
+```
+
+### `get`
+
+Отправляет GET запрос.
+
+**Параметры:**
+- `request: ApiFetch` — конфигурация запроса
+
+**Возвращает:** `Promise<T>` — данные ответа
+
+```javascript
+// Простой GET запрос
+const users = await Api.get({ path: '/users' })
+
+// GET с параметрами запроса
+const filteredUsers = await Api.get({
+  path: '/users',
+  request: { status: 'active', limit: 10 }
+})
+// Результат: GET /users?status=active&limit=10
+```
+
+### `post`
+
+Отправляет POST запрос.
+
+**Параметры:**
+- `request: ApiFetch` — конфигурация запроса
+
+**Возвращает:** `Promise<T>` — данные ответа
+
+```javascript
+// Создать нового пользователя
+const newUser = await Api.post({
+  path: '/users',
+  request: {
+    name: 'Иван Иванов',
+    email: 'ivan@example.com'
+  }
+})
+
+// Загрузка файла с FormData
+const formData = new FormData()
+formData.append('file', fileInput.files[0])
+
+const uploadResult = await Api.post({
+  path: '/upload',
+  request: formData,
+  type: '' // Убрать Content-Type для FormData
+})
+```
+
+### `put`
+
+Отправляет PUT запрос.
+
+**Параметры:**
+- `request: ApiFetch` — конфигурация запроса
+
+**Возвращает:** `Promise<T>` — данные ответа
+
+```javascript
+// Обновить пользователя
+const updatedUser = await Api.put({
+  path: '/users/123',
+  request: {
+    name: 'Иван Петров',
+    email: 'ivan.petrov@example.com'
+  }
+})
+```
+
+### `delete`
+
+Отправляет DELETE запрос.
+
+**Параметры:**
+- `request: ApiFetch` — конфигурация запроса
+
+**Возвращает:** `Promise<T>` — данные ответа
+
+```javascript
+// Удалить пользователя
+await Api.delete({
+  path: '/users/123'
+})
+
+// Удаление с подтверждением
+await Api.delete({
+  path: '/users/123',
+  request: { force: true }
+})
+```
+
+## Кеширование и эмуляция ответов
+
+### `addResponse`
+
+Добавляет кешированные ответы для разработки/тестирования или офлайн режима.
+
+**Параметры:**
+- `response: ApiResponse | ApiResponse[]` — конфигурация ответа(ов)
+
+**Возвращает:** `Api` — ссылка на класс для цепочки вызовов
+
+```javascript
+// Добавить один кешированный ответ
+Api.addResponse({
+  path: '/users',
+  method: 'GET',
+  response: [
+    { id: 1, name: 'Иван Иванов' },
+    { id: 2, name: 'Мария Петрова' }
+  ]
+})
+
+// Добавить несколько ответов
+Api.addResponse([
+  {
+    path: '/users',
+    method: 'GET',
+    response: () => generateUserList(), // Динамический ответ
+    lag: true // Имитация задержки сети
+  },
+  {
+    path: /^\/users\/\d+$/, // RegExp для сопоставления пути
+    method: 'GET',
+    response: (request) => getUserById(request.id)
+  }
+])
+```
+
+## Информационные методы
+
+### `isLocalhost`
+
+Проверяет, выполняется ли код в среде localhost.
+
+**Возвращает:** `boolean` — true если выполняется на localhost
+
+```javascript
+if (Api.isLocalhost()) {
+  console.log('Обнаружена среда разработки')
+  Api.addResponse(mockData) // Использовать мок-данные в разработке
+}
+```
+
+### `getHeaders`
+
+Получает объединённые заголовки для запроса, соединяя заголовки по умолчанию с переданными.
+
+**Параметры:**
+- `value?: Record<string, string> | null` — дополнительные заголовки (опционально)
+- `type?: string` — значение заголовка Content-Type (по умолчанию: 'application/json;charset=UTF-8')
+
+**Возвращает:** `Record<string, string> | undefined` — объект объединённых заголовков или undefined если value равно null
+
+```javascript
+// Получить только заголовки по умолчанию
+const headers = Api.getHeaders()
+// Возвращает: заголовки по умолчанию + Content-Type
+
+// Объединить с пользовательскими заголовками
+const customHeaders = Api.getHeaders({
+  'Authorization': 'Bearer token123',
+  'X-Custom-Header': 'value'
+})
+// Возвращает: заголовки по умолчанию + пользовательские + Content-Type
+
+// Полностью исключить заголовки
+const noHeaders = Api.getHeaders(null)
+// Возвращает: undefined
+
+// Пользовательский Content-Type
+const xmlHeaders = Api.getHeaders({}, 'application/xml')
+// Возвращает: заголовки с Content-Type: application/xml
+```
+
+### `getLastResponse`
+
+Возвращает сырые данные последнего запроса.
+
+**Возвращает:** `T` — данные последнего ответа
+
+```javascript
+const users = await Api.get({ path: '/users' })
+const rawResponse = Api.getLastResponse()
+console.log('Сырой ответ:', rawResponse)
+```
+
+### `getLastMessage`
+
+Возвращает сообщение из последнего ответа.
+
+**Возвращает:** `string` — сообщение последнего ответа
+
+```javascript
+try {
+  await Api.post({ path: '/users', request: userData })
+} catch (error) {
+  const message = Api.getLastMessage()
+  showNotification(message || 'Произошла неизвестная ошибка')
+}
+```
+
+### `getStatus`
+
+Возвращает HTTP статус код последнего запроса.
+
+**Возвращает:** `number | undefined` — HTTP статус код
+
+```javascript
+await Api.get({ path: '/users' })
+const status = Api.getStatus()
+
+if (status === 200) {
+  console.log('Запрос успешен')
+} else if (status === 404) {
+  console.log('Ресурс не найден')
+}
+```
+
+### `getStatusText`
+
+Возвращает HTTP статус текст последнего запроса.
+
+**Возвращает:** `string | undefined` — HTTP статус текст
+
+```javascript
+await Api.get({ path: '/users' })
+console.log('Статус:', Api.getStatus(), Api.getStatusText())
+// Вывод: "Статус: 200 OK"
+```
+
+### `getError`
+
+Возвращает ошибку последнего неудавшегося запроса.
+
+**Возвращает:** `string | undefined` — сообщение об ошибке
+
+```javascript
+try {
+  await Api.get({ path: '/invalid-endpoint' })
+} catch (e) {
+  const error = Api.getError()
+  console.error('Запрос не удался:', error)
+}
+```
+
+## Утилитарные методы
+
+### `getUrl`
+
+Получает полный путь к скрипту запроса с заменой плейсхолдеров локали.
+
+**Параметры:**
+- `path: string` — путь к скрипту
+- `api?: boolean` — добавлять ли базовый путь API (по умолчанию: true)
+
+**Возвращает:** `string` — полный URL с замененными плейсхолдерами локали
+
+```javascript
+// С базовым путём API
+const url = Api.getUrl('/users')
+// Возвращает: '/api/users' (или '/api/ru-RU/users' если используются плейсхолдеры)
+
+// Без базового пути API
+const fullUrl = Api.getUrl('https://external-api.com/data', false)
+// Возвращает: 'https://external-api.com/data'
+
+// С плейсхолдерами локали
+Api.setUrl('/api/{locale}/')
+const localizedUrl = Api.getUrl('/users')
+// Возвращает: '/api/ru-RU/users' (на основе текущей локали)
+```
+
+### `getBody`
+
+Получает обработанные данные тела запроса на основе метода и типа данных.
+
+**Параметры:**
+- `request?: ApiFetch['request']` — данные запроса (по умолчанию: {})
+- `method?: ApiMethod` — HTTP метод (по умолчанию: 'GET')
+
+**Возвращает:** `string | FormData | undefined` — обработанные данные тела
+
+```javascript
+// JSON тело для POST запроса
+const jsonBody = Api.getBody({ name: 'Иван', email: 'ivan@example.com' }, 'POST')
+// Возвращает: '{"name":"Иван","email":"ivan@example.com"}'
+
+// FormData тело
+const formData = new FormData()
+formData.append('file', fileInput.files[0])
+const formBody = Api.getBody(formData, 'POST')
+// Возвращает: объект FormData
+
+// Нет тела для GET запроса
+const getBody = Api.getBody({ limit: 10 }, 'GET')
+// Возвращает: undefined (GET параметры идут в URL)
+```
+
+### `getBodyForGet`
+
+Получает параметры строки запроса для GET запросов.
+
+**Параметры:**
+- `request?: ApiFetch['request']` — данные запроса
+- `path?: string` — текущий путь запроса (по умолчанию: '')
+- `method?: ApiMethod` — HTTP метод (по умолчанию: 'GET')
+
+**Возвращает:** `string` — строка запроса с префиксом ? или &
+
+```javascript
+// Первые параметры
+const queryString = Api.getBodyForGet({ limit: 10, status: 'active' }, '/users')
+// Возвращает: '?limit=10&status=active'
+
+// Дополнительные параметры (в пути уже есть ?)
+const additionalQuery = Api.getBodyForGet({ sort: 'name' }, '/users?limit=10')
+// Возвращает: '&sort=name'
+
+// Не-GET метод
+const noQuery = Api.getBodyForGet({ data: 'test' }, '/users', 'POST')
+// Возвращает: '' (пустая строка)
+```
+
+### `getResponseList`
+
+Возвращает список конфигураций кешированных ответов (исключая глобальные).
+
+**Возвращает:** `(ApiResponse & Record<string, any>)[]` — массив конфигураций ответов
+
+```javascript
+// Добавить кешированные ответы
+Api.addResponse([
+  { path: '/users', method: 'GET', response: userData },
+  { path: '/posts', method: 'GET', response: postsData, isForGlobal: true }
+])
+
+// Получить не-глобальные ответы
+const responses = Api.getResponseList()
+// Возвращает: [{ path: '/users', method: 'GET', response: userData }]
+// Исключает глобальный (isForGlobal: true)
+
+// Полезно для отладки и разработки
+console.log('Активные мок-ответы:', responses.map(r => r.path))
+```
+
+### `addRequestDefault`
+
+Добавляет данные запроса по умолчанию к предоставленному запросу, объединяя с существующими данными.
+
+**Параметры:**
+- `request: ApiFetch['request']` — данные запроса для объединения с умолчаниями
+
+**Возвращает:** `ApiFetch['request']` — объединённые данные запроса
+
+```javascript
+// Установить данные запроса по умолчанию
+Api.setRequestDefault({
+  version: '1.0',
+  clientId: 'web-app'
+})
+
+// Объединить с конкретным запросом
+const mergedRequest = Api.addRequestDefault({
+  userId: 123,
+  action: 'update'
+})
+// Возвращает: { version: '1.0', clientId: 'web-app', userId: 123, action: 'update' }
+
+// Работает и с FormData
+const formData = new FormData()
+formData.append('file', file)
+const mergedFormData = Api.addRequestDefault(formData)
+// В FormData будут добавлены поля по умолчанию, если их нет
+```
+
+## Расширенная конфигурация
+
+### Конфигурация запроса (`ApiFetch`)
+
+Полный интерфейс для настройки API запросов со всеми доступными опциями:
+
+```typescript
+interface ApiFetch {
+  /** Использовать базовый URL API (по умолчанию: true) */
+  api?: boolean
+
+  /** Путь endpoint относительно базового URL */
+  path?: string
+
+  /** Полный URL (переопределяет комбинацию api + path) */
+  pathFull?: string
+
+  /** HTTP метод: GET, POST, PUT, DELETE (по умолчанию: 'GET') */
+  method?: ApiMethod
+
+  /** Тело запроса/параметры */
+  request?: FormData | Record<string, any> | string
+
+  /** Включить заголовки аутентификации */
+  auth?: boolean
+
+  /** Пользовательские заголовки (null = без заголовков) */
+  headers?: Record<string, string> | null
+
+  /** Значение заголовка Content-Type (по умолчанию: 'application/json;charset=UTF-8') */
+  type?: string
+
+  /** Извлечь поле 'data' из ответа (по умолчанию: true) */
+  toData?: boolean
+
+  /** Использовать глобальный кеш ответов (по умолчанию: true для GET, false для других) */
+  global?: boolean
+
+  /** Включить логирование разработки и отладку (по умолчанию: false) */
+  devMode?: boolean
+
+  /** Подавить логирование ошибок в консоль (по умолчанию: false) */
+  hideError?: boolean
+
+  /** Пользовательский процессор ответа */
+  queryReturn?: (query: Response) => Promise<any>
+
+  /** Запускать глобальные хуки подготовки (по умолчанию: true) */
+  globalPreparation?: boolean
+
+  /** Запускать глобальные хуки завершения (по умолчанию: true) */
+  globalEnd?: boolean
+
+  /** Дополнительные опции fetch() */
+  init?: RequestInit
+}
+```
+
+#### Детали свойств:
+
+**`api?: boolean`** (по умолчанию: `true`)
+- При `true` добавляет базовый URL, установленный через `setUrl()`, к пути
+- При `false` использует путь как есть без модификации базового URL
+```javascript
+// С api: true (по умолчанию)
+{ path: '/users', api: true }     // → '/api/users'
+
+// С api: false
+{ path: 'https://external.com/api', api: false }  // → 'https://external.com/api'
+```
+
+**`path?: string`**
+- Путь endpoint относительно базового URL
+- Поддерживает плейсхолдеры локали: `{locale}`, `{country}`, `{language}`
+```javascript
+{ path: '/users/{locale}/profile' }  // → '/users/ru-RU/profile'
+```
+
+**`pathFull?: string`**
+- Полный URL, который переопределяет комбинацию базового URL + путь
+- При указании игнорирует свойства `api` и `path`
+```javascript
+{ pathFull: 'https://api.example.com/v2/users' }  // Использует этот точный URL
+```
+
+**`method?: ApiMethod`** (по умолчанию: `'GET'`)
+- HTTP метод для запроса
+- Доступные значения: `'GET'`, `'POST'`, `'PUT'`, `'DELETE'`
+
+**`request?: FormData | Record<string, any> | string`**
+- Данные тела запроса или параметры запроса
+- Для GET запросов: преобразуется в параметры строки запроса
+- Для других методов: отправляется как тело запроса
+- Поддерживает объекты (JSON), FormData и сырые строки
+```javascript
+// Объект (JSON)
+{ request: { name: 'Иван', email: 'ivan@example.com' } }
+
+// FormData (загрузка файлов)
+const formData = new FormData()
+formData.append('file', file)
+{ request: formData }
+
+// Сырая строка
+{ request: '{"custom": "json"}' }
+```
+
+**`auth?: boolean`**
+- Контролирует, должны ли включаться заголовки аутентификации
+- Реализация зависит от вашей настройки аутентификации
+
+**`headers?: Record<string, string> | null`**
+- Пользовательские заголовки для включения в запрос
+- Объединяются с заголовками по умолчанию, установленными через `setHeaders()`
+- Установите в `null` для исключения всех заголовков (включая по умолчанию)
+```javascript
+// Добавить пользовательские заголовки
+{ headers: { 'X-Custom': 'value', 'Authorization': 'Bearer token' } }
+
+// Исключить все заголовки
+{ headers: null }
+```
+
+**`type?: string`** (по умолчанию: `'application/json;charset=UTF-8'`)
+- Устанавливает заголовок Content-Type
+- Используйте пустую строку `''` чтобы позволить браузеру установить автоматически (полезно для FormData)
+```javascript
+// JSON контент
+{ type: 'application/json' }
+
+// Form data (позволить браузеру установить)
+{ type: '' }
+
+// XML контент
+{ type: 'application/xml' }
+```
+
+**`toData?: boolean`** (по умолчанию: `true`)
+- При `true` автоматически извлекает поле `data` из ответа, если оно существует
+- При `false` возвращает сырой объект ответа
+```javascript
+// Ответ: { data: { id: 1, name: 'Иван' }, success: true }
+
+// С toData: true (по умолчанию)
+const result = await Api.get({ path: '/user' })
+// result = { id: 1, name: 'Иван' }
+
+// С toData: false
+const result = await Api.get({ path: '/user', toData: false })
+// result = { data: { id: 1, name: 'Иван' }, success: true }
+```
+
+**`global?: boolean`** (по умолчанию: `true` для GET, `false` для других)
+- Включает глобальное кеширование и эмуляцию ответов
+- При `true` проверяет кешированные ответы, добавленные через `addResponse()`
+
+**`devMode?: boolean`** (по умолчанию: `false`)
+- Включает функции логирования и отладки разработки
+- Логирует попадания в кеш, данные запроса и информацию об ответе
+- Разрешает повторное использование кешированных ответов (обычно используются один раз)
+```javascript
+// Включить логирование режима разработки
+const users = await Api.get({ path: '/users', devMode: true })
+// Вывод в консоль: "Response type: /users", "Response data: /users {...}"
+```
+
+**`hideError?: boolean`** (по умолчанию: `false`)
+- При `true` подавляет логирование ошибок в консоль
+- Ошибки все еще выбрасываются, просто не логируются
+- Полезно для ожидаемых ошибок или пользовательской обработки ошибок
+
+**`queryReturn?: (query: Response) => Promise<any>`**
+- Пользовательская функция для обработки сырого объекта Response
+- Переопределяет стандартный парсинг JSON/text
+- Полезно для пользовательской обработки ответов или бинарных данных
+```javascript
+// Пользовательская обработка ответа
+const result = await Api.get({
+  path: '/download',
+  queryReturn: async (response) => {
+    return await response.blob()  // Вернуть бинарные данные
+  }
+})
+```
+
+**`globalPreparation?: boolean`** (по умолчанию: `true`)
+- Контролирует, запускаются ли глобальные хуки подготовки перед этим запросом
+- Установите в `false` чтобы пропустить подготовку для конкретных запросов
+
+**`globalEnd?: boolean`** (по умолчанию: `true`)
+- Контролирует, запускаются ли глобальные хуки завершения после этого запроса
+- Установите в `false` чтобы пропустить пост-обработку для конкретных запросов
+
+**`init?: RequestInit`**
+- Дополнительные опции, передаваемые напрямую в API `fetch()`
+- Позволяет точно контролировать поведение запроса
+```javascript
+// Пользовательские опции fetch
+{
+  init: {
+    cache: 'no-cache',
+    credentials: 'include',
+    redirect: 'follow',
+    signal: abortController.signal
+  }
+}
+```
+
+#### Примеры использования:
+
+```javascript
+// Минимальный запрос
+const users = await Api.get({ path: '/users' })
+
+// Полная конфигурация
+const result = await Api.post({
+  api: true,
+  path: '/users',
+  method: 'POST',
+  request: { name: 'Иван', email: 'ivan@example.com' },
+  headers: { 'X-Custom-Header': 'value' },
+  type: 'application/json',
+  toData: true,
+  devMode: false,
+  hideError: false,
+  globalPreparation: true,
+  globalEnd: true,
+  init: { cache: 'no-cache' }
+})
+
+// Загрузка файла с FormData
+const formData = new FormData()
+formData.append('file', fileInput.files[0])
+
+const uploadResult = await Api.post({
+  path: '/upload',
+  request: formData,
+  type: '',  // Позволить браузеру установить Content-Type
+  headers: { 'X-Upload-Session': 'abc123' }
+})
+
+// Вызов внешнего API
+const externalData = await Api.get({
+  pathFull: 'https://jsonplaceholder.typicode.com/posts/1',
+  api: false,
+  toData: false  // Не пытаться извлечь поле 'data'
+})
+```

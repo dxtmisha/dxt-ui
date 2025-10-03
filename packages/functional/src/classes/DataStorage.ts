@@ -10,7 +10,8 @@ type DataStorageValue<T> = {
 let prefix: string = 'ui-storage'
 
 /**
- * Class for working with localStorage.<br>
+ * Class for working with localStorage.
+ *
  * Класс для работы с localStorage.
  */
 export class DataStorage<T> {
@@ -29,8 +30,8 @@ export class DataStorage<T> {
 
   /**
    * Constructor
-   * @param name value name /<br>название значения
-   * @param isSession should we use a session? /<br>использовать ли сессию?
+   * @param name value name/ название значения
+   * @param isSession should we use a session/ использовать ли сессию
    */
   constructor(
     private name: string,
@@ -53,10 +54,11 @@ export class DataStorage<T> {
   }
 
   /**
-   * Getting data from local storage.<br>
+   * Getting data from local storage.
+   *
    * Получение данных из локального хранилища.
-   * @param defaultValue default value /<br>значение по умолчанию
-   * @param cache cache time /<br>время кэширования
+   * @param defaultValue default value/ значение по умолчанию
+   * @param cache cache time/ время кэширования
    */
   get(
     defaultValue?: T | (() => T),
@@ -78,16 +80,17 @@ export class DataStorage<T> {
   }
 
   /**
-   * Changing data in storage.<br>
+   * Changing data in storage.
+   *
    * Изменение данных в хранилище.
-   * @param value new values /<br>новые значения
+   * @param value new values/ новые значения
    */
   set(value?: T | (() => T)): T | undefined {
     this.value = executeFunction(value)
     this.age = new Date().getTime()
 
     if (this.value === undefined) {
-      this.getMethod()?.removeItem(this.getIndex())
+      this.remove()
     } else {
       this.getMethod()?.setItem(this.getIndex(), JSON.stringify({
         value: this.value,
@@ -99,9 +102,20 @@ export class DataStorage<T> {
   }
 
   /**
-   * Checks for storage time limit.<br>
+   * Removing data from storage.
+   *
+   * Удаление данных из хранилища.
+   */
+  remove(): this {
+    this.getMethod()?.removeItem(this.getIndex())
+    return this
+  }
+
+  /**
+   * Checks for storage time limit.
+   *
    * Проверяет на лимит времени хранения.
-   * @param cache cache time /<br>время кэширования
+   * @param cache cache time/ время кэширования
    */
   private isCache(cache?: number) {
     return isNull(cache) || (
@@ -111,7 +125,8 @@ export class DataStorage<T> {
   }
 
   /**
-   * Returns an object for working with storage.<br>
+   * Returns an object for working with storage.
+   *
    * Возвращает объект для работы с хранилищем.
    */
   private getMethod(): Storage | undefined {
@@ -125,15 +140,17 @@ export class DataStorage<T> {
   }
 
   /**
-   * Getting the user name in the storage.<br>
-   * Получение имени пользователя в хранилище.
+   * Getting the storage key name.
+   *
+   * Получение имени ключа в хранилище.
    */
   private getIndex() {
     return `${prefix}${this.name}`
   }
 
   /**
-   * Getting data from storage.<br>
+   * Getting data from storage.
+   *
    * Получение данных из хранилища.
    */
   private getValue(): DataStorageValue<T> | undefined {

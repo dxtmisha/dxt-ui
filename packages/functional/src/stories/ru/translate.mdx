@@ -1,0 +1,305 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Translate'/>
+
+# Класс Translate
+
+Статический класс для управления переводами и локализованным текстом. Предоставляет методы для получения, кеширования и отображения переведённого контента с поддержкой замены шаблонов и автоматическим определением локали.
+
+## Основные возможности
+
+- **Получение переводов** — извлекает переводы с серверного API
+- **Кеширование текста** — интеллектуальная система кеширования с пакетными запросами
+- **Замена шаблонов** — поддержка замены плейсхолдеров в переводах
+- **Учёт локали** — автоматически использует текущую географическую локаль
+- **Пакетная обработка** — группирует множественные запросы переводов для эффективности
+- **Синхронный и асинхронный режимы** — как синхронное, так и асинхронное получение текста
+- **Операции со списками** — получение нескольких переводов одним вызовом
+- **Динамическая загрузка** — загружает переводы по требованию
+
+## Базовое использование
+
+### `get`
+
+Асинхронно получает текст перевода по коду с опциональной заменой шаблона.
+
+**Параметры:**
+- `name: string` — код перевода
+- `replacement?: string[] | Record<string, string | number>` — значения для замены шаблона (опционально)
+
+**Возвращает:** `Promise<string>` — переведённый текст
+
+```javascript
+import { Translate } from '@dxtmisha/functional'
+
+// Базовый перевод
+const text = await Translate.get('welcome.message')
+// Возвращает: "Добро пожаловать в наше приложение"
+
+// С заменой массивом
+const greeting = await Translate.get('hello.user', ['Иван'])
+// Шаблон: "Привет, [0]!" → Результат: "Привет, Иван!"
+
+// С заменой объектом
+const message = await Translate.get('items.count', { count: 5, type: 'товаров' })
+// Шаблон: "У вас [count] [type]" → Результат: "У вас 5 товаров"
+```
+
+### `getSync`
+
+Синхронно получает текст перевода (возвращает из кеша или запасной вариант).
+
+**Параметры:**
+- `name: string` — код перевода
+- `first?: boolean` — если false, возвращает пустую строку когда текст не найден (по умолчанию: false)
+- `replacement?: string[] | Record<string, string | number>` — значения для замены шаблона (опционально)
+
+**Возвращает:** `string` — переведённый текст или запасной вариант
+
+```javascript
+// Получить кешированный перевод
+const text = Translate.getSync('button.save')
+// Возвращает: "Сохранить" (из кеша) или "button.save" (запасной вариант)
+
+// Вернуть пустую строку если не найдено
+const empty = Translate.getSync('missing.key', false)
+// Возвращает: "" если нет в кеше
+
+// С заменой
+const message = Translate.getSync('welcome.user', true, ['Алиса'])
+// Возвращает: "Добро пожаловать, Алиса!" или запасной вариант
+```
+
+## Пакетные операции
+
+### `getList`
+
+Асинхронно получает несколько переводов как объект.
+
+**Параметры:**
+- `names: TranslateCode[]` — массив кодов переводов или массивов [код, ...замены]
+
+**Возвращает:** `Promise<TranslateList<T>>` — объект с парами код-текст
+
+```javascript
+// Простой список
+const texts = await Translate.getList(['save', 'cancel', 'submit'])
+// Возвращает: { save: "Сохранить", cancel: "Отмена", submit: "Отправить" }
+
+// С заменами
+const messages = await Translate.getList([
+  'welcome.user',
+  ['items.count', '5', 'книг'],
+  'goodbye.message'
+])
+// Возвращает объект с обработанными шаблонами
+```
+
+### `getListSync`
+
+Синхронно получает несколько переводов из кеша.
+
+**Параметры:**
+- `names: TranslateCode[]` — массив кодов переводов
+- `first?: boolean` — поведение запасного варианта когда текст не найден (по умолчанию: false)
+
+**Возвращает:** `TranslateList<T>` — объект с парами код-текст
+
+```javascript
+// Получить кешированные переводы
+const texts = Translate.getListSync(['save', 'cancel', 'delete'])
+// Возвращает: { save: "Сохранить", cancel: "Отмена", delete: "Удалить" }
+
+// С поведением запасного варианта
+const empty = Translate.getListSync(['missing.key'], false)
+// Возвращает: { 'missing.key': '' }
+```
+
+## Управление данными
+
+### `add`
+
+Добавляет коды переводов в очередь загрузки для пакетного получения.
+
+**Параметры:**
+- `names: string | string[]` — код(ы) перевода для загрузки
+
+**Возвращает:** `Promise<void>` — разрешается когда переводы загружены
+
+```javascript
+// Добавить один перевод
+await Translate.add('new.message')
+
+// Добавить несколько переводов
+await Translate.add(['header.title', 'footer.copyright', 'menu.items'])
+
+// Автоматическая пакетировка (запросы группируются в течение 160мс)
+Translate.add('text1') // В очереди
+Translate.add('text2') // В очереди
+Translate.add('text3') // Все отправлены одним запросом
+```
+
+### `addSync`
+
+Напрямую добавляет переводы в кеш (для разработки/тестирования).
+
+**Параметры:**
+- `data: Record<string, string>` — пары ключ-значение переводов
+
+```javascript
+// Добавить переводы напрямую
+Translate.addSync({
+  'welcome.message': 'Добро пожаловать в наше приложение',
+  'button.save': 'Сохранить изменения',
+  'error.required': 'Это поле обязательно'
+})
+
+// Переводы доступны немедленно
+const text = Translate.getSync('welcome.message') // "Добро пожаловать в наше приложение"
+```
+
+### `addNormalOrSync`
+
+Интеллектуально добавляет переводы в зависимости от окружения (вызов API vs прямое).
+
+**Параметры:**
+- `data: Record<string, string>` — данные переводов
+
+**Возвращает:** `Promise<void>` — разрешается когда добавлено
+
+```javascript
+// Автоматически выбирает метод на основе Api.isLocalhost()
+await Translate.addNormalOrSync({
+  'app.title': 'Моё приложение',
+  'nav.home': 'Главная',
+  'nav.about': 'О нас'
+})
+// Разработка: добавляет напрямую в кеш
+// Продакшен: ставит в очередь для API запроса
+```
+
+## Конфигурация
+
+### `setUrl`
+
+Изменяет API endpoint для запросов переводов.
+
+**Параметры:**
+- `url: string` — путь к API endpoint
+
+**Возвращает:** `Translate` — ссылка на класс для цепочки вызовов
+
+```javascript
+// Изменить endpoint API переводов
+Translate.setUrl('/api/v2/translations')
+
+// Цепочка вызовов
+Translate.setUrl('/custom/translate').setPropsName('translations')
+```
+
+### `setPropsName`
+
+Изменяет имя параметра запроса для кодов переводов.
+
+**Параметры:**
+- `name: string` — имя параметра для API запросов
+
+**Возвращает:** `Translate` — ссылка на класс для цепочки вызовов
+
+```javascript
+// Изменить имя параметра запроса
+Translate.setPropsName('codes')
+
+// API запрос будет использовать: { codes: ['text1', 'text2'] }
+// Вместо по умолчанию: { list: ['text1', 'text2'] }
+```
+
+## Примеры
+
+### Базовая настройка переводов
+
+```javascript
+import { Translate } from '@dxtmisha/functional'
+
+// Настроить endpoint переводов
+Translate.setUrl('/api/translations')
+
+// Загрузить начальные переводы
+await Translate.add(['app.title', 'nav.menu', 'footer.copyright'])
+
+// Использовать переводы
+const title = await Translate.get('app.title')
+document.title = title
+```
+
+### Сообщения валидации формы
+
+```javascript
+// Загрузить сообщения валидации
+const validationTexts = await Translate.getList([
+  'validation.required',
+  'validation.email',
+  ['validation.minLength', '8'], // С заменой
+  'validation.password'
+])
+
+// Использовать в валидации
+if (!email) {
+  showError(validationTexts['validation.required'])
+}
+if (password.length < 8) {
+  showError(validationTexts['validation.minLength']) // "Минимум 8 символов"
+}
+```
+
+### Динамическая загрузка контента
+
+```javascript
+// Инициализация компонента
+class MyComponent {
+  async loadTexts() {
+    // Добавить нужные переводы в очередь
+    await Translate.add([
+      'component.title',
+      'component.description',
+      'button.action'
+    ])
+
+    // Обновить UI
+    this.updateTexts()
+  }
+
+  updateTexts() {
+    // Получить кешированные переводы немедленно
+    this.title = Translate.getSync('component.title')
+    this.description = Translate.getSync('component.description')
+    this.buttonText = Translate.getSync('button.action')
+  }
+}
+```
+
+### Примеры замены шаблонов
+
+```javascript
+// Замена на основе массива
+const welcome = await Translate.get('welcome.user', ['Иван', 'Иванов'])
+// Шаблон: "Добро пожаловать, [0] [1]!" → "Добро пожаловать, Иван Иванов!"
+
+// Замена на основе объекта
+const notification = await Translate.get('notification.message', {
+  user: 'Алиса',
+  count: 3,
+  item: 'сообщения'
+})
+// Шаблон: "Привет [user], у вас [count] новых [item]"
+// Результат: "Привет Алиса, у вас 3 новых сообщения"
+
+// Сложный шаблон
+const status = await Translate.get('order.status', {
+  id: '#12345',
+  status: 'отправлен',
+  date: '15.01.2024'
+})
+// Шаблон: "Заказ [id] [status] [date]"
+// Результат: "Заказ #12345 отправлен 15.01.2024"
+```

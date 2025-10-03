@@ -1,0 +1,401 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/CacheStatic'/>
+
+# CacheStatic Class
+
+Static wrapper class around Cache for global caching during code execution. Provides a singleton Cache instance accessible from anywhere in the application for cross-component data sharing and performance optimization.
+
+## Key Features
+
+- **Global singleton cache** — single shared Cache instance for entire application
+- **Static interface** — access cache without creating instances
+- **Cross-component sharing** — share cached data between different parts of application
+- **Performance optimization** — reduce redundant computations across components
+- **Simple API** — same interface as Cache class but accessible statically
+- **Automatic lifecycle management** — Cache instance created automatically
+
+## Basic Usage
+
+### `get`
+
+Synchronously retrieves data from global cache or executes callback to generate new data.
+
+**Parameters:**
+- `name: string` — unique cache name/key in global cache
+- `callback: () => T` — function to execute if cache miss or invalidation
+- `comparison?: any[]` — array of values for cache invalidation comparison (optional)
+
+**Returns:** `T` — cached data or result of callback execution
+
+```javascript
+import { CacheStatic } from '@dxtmisha/functional'
+
+// Cache expensive computation globally
+const expensiveResult = CacheStatic.get('global-computation', () => {
+  console.log('Performing expensive computation...')
+  // Simulate heavy computation
+  let sum = 0
+  for (let i = 0; i < 1000000; i++) {
+    sum += Math.random()
+  }
+  return { result: sum, timestamp: Date.now() }
+})
+
+// Accessible from anywhere in application
+const sameResult = CacheStatic.get('global-computation', () => {
+  console.log('This will not execute')
+  return { result: 0, timestamp: 0 }
+})
+// Returns cached data without re-computation
+
+// Different components can share cached data
+class ComponentA {
+  getData() {
+    return CacheStatic.get('shared-data', () => {
+      console.log('ComponentA: Loading shared data')
+      return { source: 'ComponentA', data: [1, 2, 3] }
+    })
+  }
+}
+
+class ComponentB {
+  getData() {
+    return CacheStatic.get('shared-data', () => {
+      console.log('ComponentB: This will not execute')
+      return { source: 'ComponentB', data: [4, 5, 6] }
+    })
+  }
+}
+
+const compA = new ComponentA()
+const compB = new ComponentB()
+
+const dataA = compA.getData() // Executes callback
+const dataB = compB.getData() // Returns cached data from ComponentA
+console.log(dataA === dataB) // true - same cached object
+```
+
+## Cache Invalidation
+
+Global cache invalidation works the same as regular Cache class:
+
+```javascript
+// Global cache with dependencies
+let currentTheme = 'dark'
+let currentLanguage = 'en'
+
+const getAppConfig = () => CacheStatic.get(
+  'app-config',
+  () => {
+    console.log(`Loading config: theme=${currentTheme}, lang=${currentLanguage}`)
+    return {
+      theme: currentTheme,
+      language: currentLanguage,
+      features: getFeaturesByTheme(currentTheme),
+      translations: getTranslationsByLanguage(currentLanguage)
+    }
+  },
+  [currentTheme, currentLanguage] // Global cache invalidates when these change
+)
+
+// First call
+const config1 = getAppConfig() // Executes callback
+console.log(config1.theme) // 'dark'
+
+// Cached call
+const config1Cached = getAppConfig() // Returns cached data
+
+// Change dependency - global cache invalidates
+currentTheme = 'light'
+const config2 = getAppConfig() // Cache invalidated, executes callback again
+console.log(config2.theme) // 'light'
+
+function getFeaturesByTheme(theme) {
+  return theme === 'dark' ? ['night-mode', 'blue-light-filter'] : ['day-mode']
+}
+
+function getTranslationsByLanguage(lang) {
+  return lang === 'en' ? { hello: 'Hello' } : { hello: 'Привет' }
+}
+```
+
+## Practical Examples
+
+### Application Configuration
+
+```javascript
+// Global application configuration cache
+class AppConfig {
+  static getConfig() {
+    return CacheStatic.get('app-config', () => {
+      console.log('Loading application configuration...')
+      return {
+        apiUrl: process.env.REACT_APP_API_URL || '/api',
+        features: {
+          darkMode: true,
+          notifications: true,
+          analytics: false
+        },
+        version: '1.0.0',
+        buildTime: Date.now()
+      }
+    })
+  }
+
+  static getFeatureFlags() {
+    const config = this.getConfig() // Uses global cache
+    return config.features
+  }
+
+  static isFeatureEnabled(featureName) {
+    const features = this.getFeatureFlags()
+    return features[featureName] || false
+  }
+}
+
+// Usage across different modules
+// In module A
+console.log('Module A:', AppConfig.getConfig().version)
+
+// In module B
+console.log('Module B:', AppConfig.isFeatureEnabled('darkMode'))
+
+// In module C
+const config = AppConfig.getConfig() // Returns same cached instance
+console.log('Module C:', config.apiUrl)
+```
+
+### Cross-Component Data Sharing
+
+```javascript
+// Shared user session data
+class UserSession {
+  static getCurrentUser() {
+    return CacheStatic.get('current-user', () => {
+      console.log('Loading current user session...')
+
+      // Simulate getting user from token/localStorage
+      const token = localStorage.getItem('auth-token')
+      if (!token) return null
+
+      return {
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        role: 'admin',
+        permissions: ['read', 'write', 'delete']
+      }
+    })
+  }
+
+  static getUserPermissions() {
+    const user = this.getCurrentUser() // Uses global cache
+    return user?.permissions || []
+  }
+
+  static hasPermission(permission) {
+    const permissions = this.getUserPermissions()
+    return permissions.includes(permission)
+  }
+}
+
+// Different components using shared session
+class HeaderComponent {
+  render() {
+    const user = UserSession.getCurrentUser()
+    return user ? `Welcome, ${user.name}` : 'Please login'
+  }
+}
+
+class SidebarComponent {
+  getMenuItems() {
+    const items = []
+
+    if (UserSession.hasPermission('read')) {
+      items.push({ label: 'View Data', path: '/data' })
+    }
+
+    if (UserSession.hasPermission('write')) {
+      items.push({ label: 'Create', path: '/create' })
+    }
+
+    if (UserSession.hasPermission('delete')) {
+      items.push({ label: 'Admin', path: '/admin' })
+    }
+
+    return items
+  }
+}
+
+class PermissionGuard {
+  canAccess(requiredPermission) {
+    return UserSession.hasPermission(requiredPermission)
+  }
+}
+
+// All components share the same cached user data
+const header = new HeaderComponent()
+const sidebar = new SidebarComponent()
+const guard = new PermissionGuard()
+
+console.log(header.render()) // May load user data
+console.log(sidebar.getMenuItems()) // Uses cached user data
+console.log(guard.canAccess('write')) // Uses cached user data
+```
+
+### Global API Response Caching
+
+```javascript
+// Global API response caching for performance
+class GlobalAPICache {
+  static async getCountries() {
+    return await CacheStatic.get('countries-list', async () => {
+      console.log('Fetching countries from API...')
+      const response = await fetch('/api/countries')
+      const countries = await response.json()
+
+      return countries.map(country => ({
+        code: country.code,
+        name: country.name,
+        flag: country.flag
+      }))
+    })
+  }
+
+  static async getTimezones() {
+    return await CacheStatic.get('timezones-list', async () => {
+      console.log('Fetching timezones from API...')
+      const response = await fetch('/api/timezones')
+      return await response.json()
+    })
+  }
+
+  static async getCurrencies() {
+    return await CacheStatic.get('currencies-list', async () => {
+      console.log('Fetching currencies from API...')
+      const response = await fetch('/api/currencies')
+      return await response.json()
+    })
+  }
+}
+
+// Usage in different parts of application
+class CountrySelector {
+  async getOptions() {
+    const countries = await GlobalAPICache.getCountries()
+    return countries.map(c => ({ value: c.code, label: c.name }))
+  }
+}
+
+class CurrencyConverter {
+  async getSupportedCurrencies() {
+    const currencies = await GlobalAPICache.getCurrencies()
+    const countries = await GlobalAPICache.getCountries() // Uses cached data
+
+    return currencies.map(currency => ({
+      ...currency,
+      country: countries.find(c => c.code === currency.countryCode)
+    }))
+  }
+}
+
+// Both components share globally cached API responses
+const selector = new CountrySelector()
+const converter = new CurrencyConverter()
+
+const options = await selector.getOptions() // May fetch from API
+const currencies = await converter.getSupportedCurrencies() // Uses cached countries
+```
+
+### Performance Optimization Pattern
+
+```javascript
+// Heavy computation that should be cached globally
+class PerformanceUtils {
+  static getExpensiveStats(dataset) {
+    const datasetHash = JSON.stringify(dataset)
+
+    return CacheStatic.get(
+      'dataset-stats',
+      () => {
+        console.log('Computing expensive statistics...')
+        const start = performance.now()
+
+        const stats = {
+          count: dataset.length,
+          sum: dataset.reduce((a, b) => a + b, 0),
+          average: dataset.reduce((a, b) => a + b, 0) / dataset.length,
+          min: Math.min(...dataset),
+          max: Math.max(...dataset),
+          median: this.calculateMedian(dataset),
+          standardDeviation: this.calculateStdDev(dataset)
+        }
+
+        const duration = performance.now() - start
+        console.log(`Statistics computed in ${duration.toFixed(2)}ms`)
+
+        return { ...stats, computationTime: duration }
+      },
+      [datasetHash] // Invalidate when dataset changes
+    )
+  }
+
+  static calculateMedian(arr) {
+    const sorted = [...arr].sort((a, b) => a - b)
+    const mid = Math.floor(sorted.length / 2)
+    return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2
+  }
+
+  static calculateStdDev(arr) {
+    const avg = arr.reduce((a, b) => a + b) / arr.length
+    const squareDiffs = arr.map(value => Math.pow(value - avg, 2))
+    const avgSquareDiff = squareDiffs.reduce((a, b) => a + b) / squareDiffs.length
+    return Math.sqrt(avgSquareDiff)
+  }
+}
+
+// Multiple components using same expensive computation
+const dataset = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+class ChartComponent {
+  render() {
+    const stats = PerformanceUtils.getExpensiveStats(dataset)
+    return `Chart: min=${stats.min}, max=${stats.max}, avg=${stats.average.toFixed(2)}`
+  }
+}
+
+class TableComponent {
+  render() {
+    const stats = PerformanceUtils.getExpensiveStats(dataset) // Uses cached result
+    return `Table: ${stats.count} items, computed in ${stats.computationTime}ms`
+  }
+}
+
+class SummaryComponent {
+  render() {
+    const stats = PerformanceUtils.getExpensiveStats(dataset) // Uses cached result
+    return `Summary: σ=${stats.standardDeviation.toFixed(2)}, median=${stats.median}`
+  }
+}
+
+// All components get same cached computation result
+const chart = new ChartComponent()
+const table = new TableComponent()
+const summary = new SummaryComponent()
+
+console.log(chart.render()) // Computes statistics
+console.log(table.render()) // Uses cached statistics
+console.log(summary.render()) // Uses cached statistics
+```
+
+## Integration with Other Systems
+
+CacheStatic integrates well with:
+- **Vue global properties** — for application-wide cached data
+- **React context providers** — for shared state optimization
+- **Node.js applications** — for server-side request caching
+- **Browser extensions** — for cross-tab data sharing
+- **Web workers** — for background computation caching
+
+The global nature of CacheStatic makes it perfect for caching data that should be shared across the entire application, reducing redundant operations and improving overall performance.

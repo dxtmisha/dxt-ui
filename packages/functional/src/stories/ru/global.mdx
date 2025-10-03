@@ -1,0 +1,578 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Global'/>
+
+# Класс Global
+
+Статический класс для управления глобальными данными приложения. Предоставляет простой и безопасный способ хранения и получения глобальных конфигураций, настроек и данных с защитой от повторной инициализации.
+
+## Основные возможности
+
+- **Единоразовая инициализация** — данные можно добавить только один раз для предотвращения случайного перезаписывания
+- **Типобезопасное получение данных** — поддержка дженериков TypeScript для типизированного доступа
+- **Глобальное хранилище** — централизованное место для хранения конфигураций приложения
+- **Простой API** — всего два метода для работы с глобальными данными
+- **Защита от конфликтов** — предотвращает повторную инициализацию глобальных данных
+- **Память эффективность** — использует простое копирование объекта без глубокого клонирования
+
+## Статические методы
+
+### `add`
+
+Добавляет глобальные данные. Метод работает только один раз для предотвращения случайного перезаписывания.
+
+**Параметры:**
+- `data: Record<string, any>` — объект с глобальными данными
+
+**Возвращает:** `void`
+
+```javascript
+import { Global } from '@dxtmisha/functional'
+
+// Инициализация глобальных данных (выполняется один раз)
+Global.add({
+  apiUrl: 'https://api.example.com',
+  appName: 'MyApplication',
+  version: '1.0.0',
+  features: {
+    darkMode: true,
+    notifications: false
+  },
+  maxRetries: 3
+})
+
+// Попытка повторной инициализации будет проигнорирована
+Global.add({
+  apiUrl: 'https://different-api.com' // Это не перезапишет данные
+})
+```
+
+### `get`
+
+Возвращает значение по его имени с поддержкой типизации.
+
+**Параметры:**
+- `name: string` — название свойства для получения
+
+**Возвращает:** `R` — значение указанного типа или undefined
+
+```javascript
+// Получение данных с автоматическим выводом типов
+const apiUrl = Global.get('apiUrl')
+console.log(apiUrl) // 'https://api.example.com'
+
+// Получение с явным указанием типа
+const features = Global.get<{ darkMode: boolean; notifications: boolean }>('features')
+console.log(features.darkMode) // true
+
+// Получение примитивных типов
+const maxRetries = Global.get<number>('maxRetries')
+console.log(maxRetries) // 3
+
+// Получение несуществующего свойства
+const nonExistent = Global.get('nonExistent')
+console.log(nonExistent) // undefined
+```
+
+## Практические примеры
+
+### Конфигурация приложения
+
+```javascript
+class AppConfig {
+  static initialize() {
+    // Инициализация конфигурации приложения
+    Global.add({
+      // API настройки
+      api: {
+        baseUrl: process.env.API_BASE_URL || 'https://api.myapp.com',
+        timeout: 10000,
+        retries: 3
+      },
+
+      // Настройки интерфейса
+      ui: {
+        theme: 'light',
+        language: 'ru',
+        animations: true,
+        sidebar: {
+          collapsed: false,
+          width: 280
+        }
+      },
+
+      // Функциональные флаги
+      features: {
+        newDashboard: true,
+        advancedSearch: false,
+        experimentalFeatures: false
+      },
+
+      // Настройки производительности
+      performance: {
+        cacheTimeout: 5 * 60 * 1000, // 5 минут
+        maxCacheSize: 100,
+        enableLogging: process.env.NODE_ENV === 'development'
+      },
+
+      // Метаинформация
+      app: {
+        name: 'MyApplication',
+        version: '2.1.0',
+        buildDate: new Date().toISOString(),
+        environment: process.env.NODE_ENV || 'production'
+      }
+    })
+  }
+
+  // Удобные геттеры для часто используемых конфигураций
+  static getApiConfig() {
+    return Global.get<{
+      baseUrl: string
+      timeout: number
+      retries: number
+    }>('api')
+  }
+
+  static getUIConfig() {
+    return Global.get<{
+      theme: string
+      language: string
+      animations: boolean
+      sidebar: { collapsed: boolean; width: number }
+    }>('ui')
+  }
+
+  static getFeatureFlags() {
+    return Global.get<Record<string, boolean>>('features')
+  }
+
+  static isFeatureEnabled(featureName: string): boolean {
+    const features = this.getFeatureFlags()
+    return features ? features[featureName] || false : false
+  }
+
+  static getAppInfo() {
+    return Global.get<{
+      name: string
+      version: string
+      buildDate: string
+      environment: string
+    }>('app')
+  }
+}
+
+// Инициализация при запуске приложения
+AppConfig.initialize()
+
+// Использование в компонентах
+const apiConfig = AppConfig.getApiConfig()
+console.log(`API URL: ${apiConfig.baseUrl}`)
+
+const uiConfig = AppConfig.getUIConfig()
+console.log(`Theme: ${uiConfig.theme}, Language: ${uiConfig.language}`)
+
+// Проверка функциональных флагов
+if (AppConfig.isFeatureEnabled('newDashboard')) {
+  console.log('Загружается новая панель управления')
+}
+```
+
+### Система управления средой выполнения
+
+```javascript
+class EnvironmentManager {
+  static setup() {
+    const isDevelopment = process.env.NODE_ENV === 'development'
+    const isProduction = process.env.NODE_ENV === 'production'
+    const isTesting = process.env.NODE_ENV === 'test'
+
+    Global.add({
+      environment: {
+        type: process.env.NODE_ENV || 'development',
+        isDevelopment,
+        isProduction,
+        isTesting,
+
+        // Настройки для разработки
+        debug: {
+          enabled: isDevelopment,
+          logLevel: isDevelopment ? 'debug' : 'error',
+          showPerformanceMetrics: isDevelopment,
+          enableDevTools: isDevelopment
+        },
+
+        // Настройки API в зависимости от среды
+        api: {
+          baseUrl: this.getApiUrl(),
+          enableMocking: isDevelopment || isTesting,
+          timeout: isProduction ? 15000 : 30000
+        },
+
+        // Настройки безопасности
+        security: {
+          enableCSP: isProduction,
+          allowEval: isDevelopment,
+          enableLogging: !isProduction
+        },
+
+        // Настройки производительности
+        performance: {
+          enableCaching: isProduction,
+          enableMinification: isProduction,
+          enableSourceMaps: isDevelopment
+        }
+      }
+    })
+  }
+
+  static getApiUrl() {
+    switch (process.env.NODE_ENV) {
+      case 'production':
+        return 'https://api.myapp.com'
+      case 'staging':
+        return 'https://staging-api.myapp.com'
+      case 'development':
+        return 'http://localhost:3001'
+      default:
+        return 'http://localhost:3001'
+    }
+  }
+
+  static isDevelopment(): boolean {
+    return Global.get<{ isDevelopment: boolean }>('environment')?.isDevelopment || false
+  }
+
+  static isProduction(): boolean {
+    return Global.get<{ isProduction: boolean }>('environment')?.isProduction || false
+  }
+
+  static getDebugConfig() {
+    return Global.get<{
+      enabled: boolean
+      logLevel: string
+      showPerformanceMetrics: boolean
+      enableDevTools: boolean
+    }>('environment')?.debug
+  }
+
+  static shouldLog(level: 'debug' | 'info' | 'warn' | 'error'): boolean {
+    const debugConfig = this.getDebugConfig()
+    if (!debugConfig?.enabled) return false
+
+    const levels = ['debug', 'info', 'warn', 'error']
+    const currentLevelIndex = levels.indexOf(debugConfig.logLevel)
+    const messageIndex = levels.indexOf(level)
+
+    return messageIndex >= currentLevelIndex
+  }
+}
+
+// Инициализация
+EnvironmentManager.setup()
+
+// Использование
+if (EnvironmentManager.isDevelopment()) {
+  console.log('Режим разработки активен')
+}
+
+if (EnvironmentManager.shouldLog('debug')) {
+  console.debug('Отладочная информация')
+}
+```
+
+### Многоязычная система настроек
+
+```javascript
+class LocalizationManager {
+  static initialize() {
+    const userLanguage = navigator.language || 'en'
+    const supportedLanguages = ['en', 'ru', 'es', 'fr', 'de']
+    const defaultLanguage = supportedLanguages.includes(userLanguage) ? userLanguage : 'en'
+
+    Global.add({
+      localization: {
+        // Текущие настройки языка
+        current: {
+          language: defaultLanguage,
+          region: this.getRegionFromLanguage(defaultLanguage),
+          direction: this.getTextDirection(defaultLanguage)
+        },
+
+        // Поддерживаемые языки
+        supported: supportedLanguages,
+
+        // Настройки форматирования
+        formatting: {
+          currency: this.getCurrencyForLanguage(defaultLanguage),
+          dateFormat: this.getDateFormatForLanguage(defaultLanguage),
+          numberFormat: this.getNumberFormatForLanguage(defaultLanguage)
+        },
+
+        // Настройки загрузки переводов
+        loading: {
+          strategy: 'lazy', // 'eager' | 'lazy'
+          fallbackLanguage: 'en',
+          cacheTranslations: true
+        },
+
+        // Региональные настройки
+        regional: {
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          firstDayOfWeek: this.getFirstDayOfWeek(defaultLanguage)
+        }
+      }
+    })
+  }
+
+  static getRegionFromLanguage(language: string): string {
+    const regionMap: Record<string, string> = {
+      'en': 'US',
+      'ru': 'RU',
+      'es': 'ES',
+      'fr': 'FR',
+      'de': 'DE'
+    }
+    return regionMap[language] || 'US'
+  }
+
+  static getTextDirection(language: string): 'ltr' | 'rtl' {
+    const rtlLanguages = ['ar', 'he', 'fa', 'ur']
+    return rtlLanguages.includes(language) ? 'rtl' : 'ltr'
+  }
+
+  static getCurrencyForLanguage(language: string): string {
+    const currencyMap: Record<string, string> = {
+      'en': 'USD',
+      'ru': 'RUB',
+      'es': 'EUR',
+      'fr': 'EUR',
+      'de': 'EUR'
+    }
+    return currencyMap[language] || 'USD'
+  }
+
+  static getDateFormatForLanguage(language: string): string {
+    const dateFormatMap: Record<string, string> = {
+      'en': 'MM/dd/yyyy',
+      'ru': 'dd.MM.yyyy',
+      'es': 'dd/MM/yyyy',
+      'fr': 'dd/MM/yyyy',
+      'de': 'dd.MM.yyyy'
+    }
+    return dateFormatMap[language] || 'MM/dd/yyyy'
+  }
+
+  static getNumberFormatForLanguage(language: string): { decimal: string; thousand: string } {
+    const formatMap: Record<string, { decimal: string; thousand: string }> = {
+      'en': { decimal: '.', thousand: ',' },
+      'ru': { decimal: ',', thousand: ' ' },
+      'es': { decimal: ',', thousand: '.' },
+      'fr': { decimal: ',', thousand: ' ' },
+      'de': { decimal: ',', thousand: '.' }
+    }
+    return formatMap[language] || { decimal: '.', thousand: ',' }
+  }
+
+  static getFirstDayOfWeek(language: string): number {
+    // 0 = воскресенье, 1 = понедельник
+    const firstDayMap: Record<string, number> = {
+      'en': 0, // воскресенье в США
+      'ru': 1, // понедельник в России
+      'es': 1, // понедельник в Испании
+      'fr': 1, // понедельник во Франции
+      'de': 1  // понедельник в Германии
+    }
+    return firstDayMap[language] || 1
+  }
+
+  static getCurrentLanguage(): string {
+    return Global.get<{ current: { language: string } }>('localization')?.current?.language || 'en'
+  }
+
+  static getSupportedLanguages(): string[] {
+    return Global.get<{ supported: string[] }>('localization')?.supported || ['en']
+  }
+
+  static getFormattingConfig() {
+    return Global.get<{
+      currency: string
+      dateFormat: string
+      numberFormat: { decimal: string; thousand: string }
+    }>('localization')?.formatting
+  }
+
+  static getRegionalConfig() {
+    return Global.get<{
+      timezone: string
+      firstDayOfWeek: number
+    }>('localization')?.regional
+  }
+
+  static isRTL(): boolean {
+    return Global.get<{ current: { direction: string } }>('localization')?.current?.direction === 'rtl'
+  }
+}
+
+// Инициализация
+LocalizationManager.initialize()
+
+// Использование
+const currentLang = LocalizationManager.getCurrentLanguage()
+console.log(`Текущий язык: ${currentLang}`)
+
+const formatting = LocalizationManager.getFormattingConfig()
+console.log(`Формат чисел: ${formatting?.numberFormat.decimal}`)
+
+if (LocalizationManager.isRTL()) {
+  document.dir = 'rtl'
+}
+```
+
+### Система глобальных констант
+
+```javascript
+class AppConstants {
+  static setup() {
+    Global.add({
+      constants: {
+        // Лимиты и ограничения
+        limits: {
+          maxFileSize: 10 * 1024 * 1024, // 10MB
+          maxFileUploads: 5,
+          maxUsernameLength: 50,
+          minPasswordLength: 8,
+          sessionTimeout: 30 * 60 * 1000, // 30 минут
+          requestTimeout: 30000 // 30 секунд
+        },
+
+        // Ключи для localStorage и sessionStorage
+        storageKeys: {
+          authToken: 'auth_token',
+          userPreferences: 'user_prefs',
+          themeSettings: 'theme_settings',
+          recentSearches: 'recent_searches',
+          cart: 'shopping_cart'
+        },
+
+        // URL endpoints
+        endpoints: {
+          auth: '/api/auth',
+          users: '/api/users',
+          products: '/api/products',
+          orders: '/api/orders',
+          uploads: '/api/uploads'
+        },
+
+        // Статусы HTTP
+        httpStatus: {
+          ok: 200,
+          created: 201,
+          badRequest: 400,
+          unauthorized: 401,
+          forbidden: 403,
+          notFound: 404,
+          internalError: 500
+        },
+
+        // Регулярные выражения
+        patterns: {
+          email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+          phone: /^\+?[\d\s\-\(\)]+$/,
+          url: /^https?:\/\/.+/,
+          slug: /^[a-z0-9-]+$/
+        },
+
+        // Цвета системы
+        colors: {
+          primary: '#007bff',
+          secondary: '#6c757d',
+          success: '#28a745',
+          danger: '#dc3545',
+          warning: '#ffc107',
+          info: '#17a2b8'
+        }
+      }
+    })
+  }
+
+  static getLimits() {
+    return Global.get<{
+      maxFileSize: number
+      maxFileUploads: number
+      maxUsernameLength: number
+      minPasswordLength: number
+      sessionTimeout: number
+      requestTimeout: number
+    }>('constants')?.limits
+  }
+
+  static getStorageKeys() {
+    return Global.get<{
+      authToken: string
+      userPreferences: string
+      themeSettings: string
+      recentSearches: string
+      cart: string
+    }>('constants')?.storageKeys
+  }
+
+  static getEndpoints() {
+    return Global.get<{
+      auth: string
+      users: string
+      products: string
+      orders: string
+      uploads: string
+    }>('constants')?.endpoints
+  }
+
+  static getHttpStatus() {
+    return Global.get<Record<string, number>>('constants')?.httpStatus
+  }
+
+  static getPatterns() {
+    return Global.get<Record<string, RegExp>>('constants')?.patterns
+  }
+
+  static getColors() {
+    return Global.get<Record<string, string>>('constants')?.colors
+  }
+
+  static validateEmail(email: string): boolean {
+    const patterns = this.getPatterns()
+    return patterns ? patterns.email.test(email) : false
+  }
+
+  static validatePhone(phone: string): boolean {
+    const patterns = this.getPatterns()
+    return patterns ? patterns.phone.test(phone) : false
+  }
+
+  static isValidFileSize(size: number): boolean {
+    const limits = this.getLimits()
+    return limits ? size <= limits.maxFileSize : false
+  }
+}
+
+// Инициализация
+AppConstants.setup()
+
+// Использование
+const limits = AppConstants.getLimits()
+console.log(`Максимальный размер файла: ${limits?.maxFileSize} байт`)
+
+const storageKeys = AppConstants.getStorageKeys()
+const token = localStorage.getItem(storageKeys?.authToken || '')
+
+// Валидация
+if (AppConstants.validateEmail('user@example.com')) {
+  console.log('Email корректен')
+}
+
+if (AppConstants.isValidFileSize(5000000)) {
+  console.log('Размер файла допустим')
+}
+```
+
+Класс Global предоставляет простой и надежный способ управления глобальными данными приложения, обеспечивая централизованное хранение конфигураций с защитой от случайного перезаписывания.

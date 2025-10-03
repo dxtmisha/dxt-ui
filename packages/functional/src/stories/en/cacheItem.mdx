@@ -1,0 +1,591 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/CacheItem'/>
+
+# CacheItem Class
+
+Low-level class for managing a single caching value with automatic invalidation based on comparison data. This class is used internally by the Cache class but can also be used directly for fine-grained cache control.
+
+## Key Features
+
+- **Single value caching** — manages one cached value with intelligent invalidation
+- **Comparison-based invalidation** — automatically invalidates cache when comparison data changes
+- **Previous value tracking** — maintains reference to old cached value during updates
+- **Synchronous and asynchronous support** — both sync and async callback execution
+- **Type safety** — full TypeScript support with generics
+- **Memory efficient** — minimal overhead for single value storage
+
+## Constructor
+
+### `constructor`
+
+Creates a new CacheItem instance with the provided callback function.
+
+**Parameters:**
+- `callback: () => T` — function to execute when cache needs to be generated or updated
+
+```javascript
+import { CacheItem } from '@dxtmisha/functional'
+
+// Simple cache item for expensive computation
+const expensiveComputation = new CacheItem(() => {
+  console.log('Performing expensive computation...')
+  return Math.random() * 1000
+})
+
+// Cache item for API data
+const apiData = new CacheItem(() => {
+  console.log('Fetching from API...')
+  return fetch('/api/data').then(r => r.json())
+})
+```
+
+## Data Retrieval Methods
+
+### `getCache`
+
+Gets cached data or executes callback to generate new data if cache is invalid.
+
+**Parameters:**
+- `comparison: any[]` — array of values used for cache invalidation comparison
+
+**Returns:** `T` — cached data or result of callback execution
+
+```javascript
+const userCache = new CacheItem(() => {
+  console.log('Loading user data...')
+  return { id: 1, name: 'John Doe', role: 'admin' }
+})
+
+let userId = 1
+let userRole = 'admin'
+
+// First call - executes callback
+const user1 = userCache.getCache([userId, userRole])
+console.log(user1) // Logs: "Loading user data..." then returns user object
+
+// Second call with same comparison - returns cached data
+const user1Cached = userCache.getCache([userId, userRole])
+console.log(user1Cached) // Returns cached data without logging
+
+// Change comparison data - cache invalidated
+userId = 2
+const user2 = userCache.getCache([userId, userRole])
+console.log(user2) // Logs: "Loading user data..." then returns new user object
+```
+
+### `getCacheAsync`
+
+Asynchronously gets cached data or executes async callback to generate new data.
+
+**Parameters:**
+- `comparison: any[]` — array of values used for cache invalidation comparison
+
+**Returns:** `Promise<T>` — promise resolving to cached data or callback result
+
+```javascript
+const apiCache = new CacheItem(async () => {
+  console.log('Fetching user from API...')
+  const response = await fetch('/api/user/1')
+  return await response.json()
+})
+
+// First call - executes async callback
+const user = await apiCache.getCacheAsync([])
+console.log(user) // Logs: "Fetching user from API..." then returns user data
+
+// Second call - returns cached data
+const userCached = await apiCache.getCacheAsync([])
+console.log(userCached) // Returns cached data without API call
+```
+
+### `getCacheOld`
+
+Returns the previous cached value (before last update).
+
+**Returns:** `T | undefined` — previous cached value or undefined if no previous value
+
+```javascript
+const dataCache = new CacheItem(() => ({ timestamp: Date.now() }))
+
+// Get initial data
+const data1 = dataCache.getCache(['v1'])
+console.log(dataCache.getCacheOld()) // undefined (no previous value)
+
+// Update cache with new comparison
+const data2 = dataCache.getCache(['v2'])
+console.log(dataCache.getCacheOld()) // Returns data1 (previous value)
+
+// Update again
+const data3 = dataCache.getCache(['v3'])
+console.log(dataCache.getCacheOld()) // Returns data2 (previous value)
+```
+
+## Practical Examples
+
+### Form Validation with History
+
+```javascript
+class FieldValidator {
+  constructor(validationRules) {
+    this.validationCache = new CacheItem(() => {
+      console.log(`Validating field with rules: ${this.currentRules.join(', ')}`)
+
+      return this.currentRules.map(rule => ({
+        rule,
+        isValid: this.applyRule(rule, this.currentValue),
+        message: this.getRuleMessage(rule, this.currentValue)
+      }))
+    })
+
+    this.rules = validationRules
+    this.currentValue = ''
+    this.currentRules = []
+  }
+
+  validate(value, activeRules = this.rules) {
+    this.currentValue = value
+    this.currentRules = activeRules
+
+    const validation = this.validationCache.getCache([value, activeRules.join(',')])
+    const previousValidation = this.validationCache.getCacheOld()
+
+    return {
+      current: validation,
+      previous: previousValidation,
+      hasChanged: !!previousValidation &&
+                  JSON.stringify(validation) !== JSON.stringify(previousValidation)
+    }
+  }
+
+  applyRule(rule, value) {
+    switch (rule) {
+      case 'required': return value.length > 0
+      case 'minLength': return value.length >= 3
+      case 'email': return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+      default: return true
+    }
+  }
+
+  getRuleMessage(rule, value) {
+    if (this.applyRule(rule, value)) return null
+
+    switch (rule) {
+      case 'required': return 'Field is required'
+      case 'minLength': return 'Minimum 3 characters required'
+      case 'email': return 'Invalid email format'
+      default: return 'Invalid value'
+    }
+  }
+}
+
+// Usage
+const validator = new FieldValidator(['required', 'email'])
+
+// Validate empty field
+const result1 = validator.validate('')
+console.log(result1.current) // Validates and shows required error
+console.log(result1.previous) // undefined
+
+// Validate invalid email
+const result2 = validator.validate('invalid-email')
+console.log(result2.current) // Validates and shows email error
+console.log(result2.previous) // Previous validation result
+console.log(result2.hasChanged) // true
+
+// Validate valid email (cached if same rules)
+const result3 = validator.validate('invalid-email')
+console.log(result3.hasChanged) // false (cached result)
+```
+
+### Computed Properties with Dependencies
+
+```javascript
+class DataProcessor {
+  constructor(initialData = []) {
+    this.rawData = initialData
+    this.filters = { status: 'active', category: 'all' }
+
+    this.processedDataCache = new CacheItem(() => {
+      console.log('Processing data with filters:', this.filters)
+
+      const start = performance.now()
+      const result = this.rawData
+        .filter(item => this.filters.status === 'all' || item.status === this.filters.status)
+        .filter(item => this.filters.category === 'all' || item.category === this.filters.category)
+        .map(item => ({
+          ...item,
+          processed: true,
+          processedAt: new Date().toISOString()
+        }))
+
+      const duration = performance.now() - start
+      console.log(`Processing completed in ${duration.toFixed(2)}ms`)
+
+      return result
+    })
+  }
+
+  getProcessedData() {
+    const processed = this.processedDataCache.getCache([
+      this.rawData.length,
+      JSON.stringify(this.filters)
+    ])
+
+    const previous = this.processedDataCache.getCacheOld()
+
+    return {
+      data: processed,
+      previousData: previous,
+      stats: {
+        total: processed.length,
+        previousTotal: previous?.length || 0,
+        changed: previous ? processed.length !== previous.length : true
+      }
+    }
+  }
+
+  updateFilters(newFilters) {
+    this.filters = { ...this.filters, ...newFilters }
+    console.log('Filters updated, cache will invalidate on next access')
+  }
+
+  addData(newItems) {
+    this.rawData.push(...newItems)
+    console.log(`Added ${newItems.length} items, cache will invalidate`)
+  }
+
+  removeData(predicate) {
+    const originalLength = this.rawData.length
+    this.rawData = this.rawData.filter(item => !predicate(item))
+    console.log(`Removed ${originalLength - this.rawData.length} items`)
+  }
+}
+
+// Usage
+const processor = new DataProcessor([
+  { id: 1, status: 'active', category: 'tech' },
+  { id: 2, status: 'inactive', category: 'design' },
+  { id: 3, status: 'active', category: 'tech' }
+])
+
+// Initial processing
+const result1 = processor.getProcessedData()
+console.log('First result:', result1.stats) // Processes data
+
+// Cached call
+const result2 = processor.getProcessedData()
+console.log('Cached result:', result2.stats) // Returns cached data
+
+// Filter change
+processor.updateFilters({ category: 'tech' })
+const result3 = processor.getProcessedData()
+console.log('After filter change:', result3.stats) // Reprocesses with new filter
+console.log('Previous data length:', result3.stats.previousTotal) // Shows old count
+
+// Add new data
+processor.addData([{ id: 4, status: 'active', category: 'tech' }])
+const result4 = processor.getProcessedData()
+console.log('After adding data:', result4.stats) // Reprocesses with new data
+```
+
+### Async API Cache with Error Recovery
+
+```javascript
+class APIManager {
+  constructor(baseURL, options = {}) {
+    this.baseURL = baseURL
+    this.options = { retries: 3, timeout: 5000, ...options }
+    this.authToken = null
+
+    this.apiCache = new CacheItem(async () => {
+      const endpoint = this.currentEndpoint
+      const headers = this.getCurrentHeaders()
+
+      console.log(`Fetching: ${endpoint}`)
+
+      let lastError
+      for (let attempt = 1; attempt <= this.options.retries; attempt++) {
+        try {
+          const controller = new AbortController()
+          const timeoutId = setTimeout(() => controller.abort(), this.options.timeout)
+
+          const response = await fetch(`${this.baseURL}${endpoint}`, {
+            headers,
+            signal: controller.signal
+          })
+
+          clearTimeout(timeoutId)
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+          }
+
+          const data = await response.json()
+          console.log(`Successfully fetched: ${endpoint}`)
+
+          return {
+            data,
+            meta: {
+              endpoint,
+              timestamp: new Date().toISOString(),
+              attempt,
+              status: response.status
+            }
+          }
+
+        } catch (error) {
+          lastError = error
+          console.warn(`Attempt ${attempt} failed:`, error.message)
+
+          if (attempt < this.options.retries) {
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt))
+          }
+        }
+      }
+
+      throw new Error(`All ${this.options.retries} attempts failed. Last error: ${lastError.message}`)
+    })
+  }
+
+  async fetchData(endpoint) {
+    this.currentEndpoint = endpoint
+
+    try {
+      const result = await this.apiCache.getCacheAsync([
+        endpoint,
+        this.authToken,
+        this.options.timeout
+      ])
+
+      const previous = this.apiCache.getCacheOld()
+
+      return {
+        success: true,
+        result: result.data,
+        meta: result.meta,
+        cached: result === previous,
+        previousMeta: previous?.meta
+      }
+
+    } catch (error) {
+      const previous = this.apiCache.getCacheOld()
+
+      return {
+        success: false,
+        error: error.message,
+        fallbackData: previous?.data,
+        hasFallback: !!previous
+      }
+    }
+  }
+
+  getCurrentHeaders() {
+    const headers = { 'Content-Type': 'application/json' }
+    if (this.authToken) {
+      headers.Authorization = `Bearer ${this.authToken}`
+    }
+    return headers
+  }
+
+  setAuthToken(token) {
+    this.authToken = token
+    console.log('Auth token updated, cache will invalidate')
+  }
+
+  updateOptions(newOptions) {
+    this.options = { ...this.options, ...newOptions }
+    console.log('Options updated, cache will invalidate')
+  }
+}
+
+// Usage
+const apiManager = new APIManager('https://api.example.com')
+
+async function demonstrateAPI() {
+  try {
+    // Set authentication
+    apiManager.setAuthToken('abc123')
+
+    // First call - fetches from API
+    const result1 = await apiManager.fetchData('/users/1')
+    console.log('First call:', result1.success ? 'Success' : 'Failed')
+    console.log('Data:', result1.result || result1.error)
+
+    // Cached call
+    const result2 = await apiManager.fetchData('/users/1')
+    console.log('Second call cached:', result2.cached)
+
+    // Different endpoint
+    const result3 = await apiManager.fetchData('/users/2')
+    console.log('Different endpoint:', result3.meta)
+
+    // Token change invalidates cache
+    apiManager.setAuthToken('xyz789')
+    const result4 = await apiManager.fetchData('/users/1')
+    console.log('After token change:', result4.cached === false)
+
+  } catch (error) {
+    console.error('Demo error:', error)
+  }
+}
+
+// demonstrateAPI()
+```
+
+### Memoized Component State
+
+```javascript
+class ComponentState {
+  constructor(initialState = {}) {
+    this.state = { ...initialState }
+    this.computedCache = new Map()
+  }
+
+  createComputed(name, computeFn, dependencies) {
+    this.computedCache.set(name, new CacheItem(computeFn))
+
+    // Return getter function
+    return () => {
+      const deps = dependencies.map(dep => this.getStateValue(dep))
+      return this.computedCache.get(name).getCache(deps)
+    }
+  }
+
+  createAsyncComputed(name, computeFn, dependencies) {
+    this.computedCache.set(name, new CacheItem(computeFn))
+
+    // Return async getter function
+    return async () => {
+      const deps = dependencies.map(dep => this.getStateValue(dep))
+      return await this.computedCache.get(name).getCacheAsync(deps)
+    }
+  }
+
+  setState(updates) {
+    this.state = { ...this.state, ...updates }
+  }
+
+  getState(key) {
+    return key ? this.state[key] : this.state
+  }
+
+  getStateValue(path) {
+    return path.split('.').reduce((obj, key) => obj?.[key], this.state)
+  }
+
+  getComputedHistory(name) {
+    const cacheItem = this.computedCache.get(name)
+    if (!cacheItem) return null
+
+    return {
+      current: cacheItem.getCache([]), // Get current without changing deps
+      previous: cacheItem.getCacheOld()
+    }
+  }
+}
+
+// Usage example
+const appState = new ComponentState({
+  user: { id: 1, name: 'John' },
+  posts: [],
+  filters: { status: 'published' }
+})
+
+// Create computed properties
+const getFilteredPosts = appState.createComputed(
+  'filteredPosts',
+  () => {
+    console.log('Computing filtered posts...')
+    return appState.getState('posts').filter(post =>
+      post.status === appState.getState('filters.status')
+    )
+  },
+  ['posts', 'filters.status']
+)
+
+const getUserProfile = appState.createAsyncComputed(
+  'userProfile',
+  async () => {
+    console.log('Fetching user profile...')
+    const user = appState.getState('user')
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 100))
+    return { ...user, profileComplete: !!user.name }
+  },
+  ['user.id', 'user.name']
+)
+
+// Usage
+async function demo() {
+  // Initial computation
+  console.log('Filtered posts:', getFilteredPosts()) // Computes
+  console.log('Filtered posts (cached):', getFilteredPosts()) // Cached
+
+  // State change that affects dependency
+  appState.setState({
+    posts: [
+      { id: 1, status: 'published' },
+      { id: 2, status: 'draft' }
+    ]
+  })
+
+  console.log('After posts update:', getFilteredPosts()) // Recomputes
+
+  // Check history
+  const history = appState.getComputedHistory('filteredPosts')
+  console.log('Previous result:', history.previous) // Shows old filtered posts
+  console.log('Current result:', history.current) // Shows new filtered posts
+
+  // Async computed
+  const profile1 = await getUserProfile() // Fetches
+  const profile2 = await getUserProfile() // Cached
+  console.log('Profile cached:', profile1 === profile2)
+}
+
+// demo()
+```
+
+## Integration Patterns
+
+### With Vue Composition API
+
+```javascript
+import { ref, computed } from 'vue'
+import { CacheItem } from '@dxtmisha/functional'
+
+export function useExpensiveComputation(dependencies) {
+  const cache = new CacheItem(() => {
+    // Expensive computation here
+    return dependencies.value.reduce((sum, item) => sum + item.value, 0)
+  })
+
+  return computed(() => {
+    return cache.getCache([JSON.stringify(dependencies.value)])
+  })
+}
+```
+
+### With React Hooks
+
+```javascript
+import { useMemo, useRef } from 'react'
+import { CacheItem } from '@dxtmisha/functional'
+
+export function useExpensiveComputation(dependencies) {
+  const cacheRef = useRef(null)
+
+  if (!cacheRef.current) {
+    cacheRef.current = new CacheItem(() => {
+      // Expensive computation here
+      return dependencies.reduce((sum, item) => sum + item.value, 0)
+    })
+  }
+
+  return useMemo(() => {
+    return cacheRef.current.getCache([JSON.stringify(dependencies)])
+  }, [dependencies])
+}
+```
+
+The CacheItem class provides fine-grained control over individual cached values, making it perfect for scenarios where you need to track value history, implement custom invalidation logic, or integrate with reactive systems while maintaining optimal performance.

@@ -1,0 +1,850 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/EventItem'/>
+
+# EventItem Class
+
+A powerful class for managing DOM events with TypeScript support, automatic element lifecycle tracking, and optimized event handlers. Provides a flexible API for working with events, including special handlers for resize and scroll.
+
+## Key Features
+
+- **Type-safe event management** — full TypeScript support with generics
+- **Automatic DOM tracking** — events automatically disconnect when elements are removed from DOM
+- **Multiple event types** — support for handling multiple event types simultaneously
+- **Special handlers** — optimized handlers for resize (ResizeObserver) and scroll
+- **Flexible state management** — easy enabling/disabling of events
+- **Configurable options** — support for all standard addEventListener options
+- **Event dispatching** — ability to programmatically trigger events
+- **Element control** — separate element control for DOM state tracking
+
+## Constructor
+
+### `constructor`
+
+Creates an EventItem instance with specified parameters.
+
+**Parameters:**
+- `elementSelector?: ElementOrString<E>` — element or selector to bind event to (optional)
+- `type: string | string[]` — event type or array of types (defaults to ['click'])
+- `listener?: EventListenerDetail<O, D>` — event handler function (optional)
+- `options?: EventOptions` — options for addEventListener (optional)
+- `detail?: D` — data to pass to the event (optional)
+
+```javascript
+import { EventItem } from '@dxtmisha/functional'
+
+// Simple click event creation
+const clickEvent = new EventItem(
+  document.getElementById('button'),
+  'click',
+  (event, detail) => {
+    console.log('Button clicked!', event, detail)
+  }
+)
+
+// Multiple events
+const multiEvent = new EventItem(
+  '.interactive-element',
+  ['mouseenter', 'mouseleave'],
+  (event) => {
+    console.log(`Event: ${event.type}`)
+  }
+)
+
+// With additional data
+const dataEvent = new EventItem(
+  '#form',
+  'submit',
+  (event, detail) => {
+    console.log('Form submitted:', detail)
+  },
+  { passive: false },
+  { formId: 'contact-form', timestamp: Date.now() }
+)
+```
+
+## State Query Methods
+
+### `isActive`
+
+Checks if event listening is currently active.
+
+**Returns:** `boolean` — true if events are being listened to
+
+```javascript
+const event = new EventItem('#button', 'click', () => {})
+
+console.log(event.isActive()) // false
+
+event.start()
+console.log(event.isActive()) // true
+
+event.stop()
+console.log(event.isActive()) // false
+```
+
+### `getElement`
+
+Returns the element the event is bound to.
+
+**Returns:** `E | undefined` — element or undefined
+
+```javascript
+const event = new EventItem('#button', 'click', () => {})
+const element = event.getElement()
+
+if (element) {
+  console.log('Element found:', element.tagName)
+} else {
+  console.log('Element not found')
+}
+```
+
+## Configuration Methods
+
+### `setElement`
+
+Changes the element for event tracking.
+
+**Parameters:**
+- `elementSelector?: ElementOrString<E>` — new element or selector
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const event = new EventItem()
+
+// Set element
+event.setElement('#button')
+  .setType('click')
+  .setListener(() => console.log('Click!'))
+  .start()
+
+// Change element
+event.setElement('#another-button') // automatically restarts event
+```
+
+### `setElementControl`
+
+Sets a separate element for DOM state control.
+
+**Parameters:**
+- `elementSelector?: ElementOrString<EC>` — element for control
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const event = new EventItem(window, 'resize', () => {
+  console.log('Window resized')
+})
+
+// Control specific element presence
+event.setElementControl('#main-container')
+  .start()
+
+// Event will automatically stop if #main-container is removed from DOM
+```
+
+### `setType`
+
+Changes the type or types of events being handled.
+
+**Parameters:**
+- `type: string | string[]` — new event type or array of types
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const event = new EventItem('#element')
+
+// Single event type
+event.setType('click')
+
+// Multiple types
+event.setType(['mouseenter', 'mouseleave', 'focus', 'blur'])
+
+// Changing type restarts active events
+event.start()
+event.setType('dblclick') // automatically restarts with new type
+```
+
+### `setListener`
+
+Changes the event handler function.
+
+**Parameters:**
+- `listener: EventListenerDetail<O, D>` — new handler function
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const event = new EventItem('#button', 'click')
+
+// Set first handler
+event.setListener((event, detail) => {
+  console.log('First handler')
+})
+
+// Replace handler
+event.setListener((event, detail) => {
+  console.log('New handler', detail)
+})
+```
+
+### `setOptions`
+
+Changes options for addEventListener.
+
+**Parameters:**
+- `options?: EventOptions` — new options
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const event = new EventItem('#element', 'scroll')
+
+// Set options
+event.setOptions({
+  passive: true,
+  capture: false
+})
+
+// Options for one-time event
+event.setOptions({
+  once: true,
+  passive: false
+})
+```
+
+### `setDetail`
+
+Changes data passed to the event handler.
+
+**Parameters:**
+- `detail?: D` — new data
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const event = new EventItem('#form', 'submit', (event, detail) => {
+  console.log('Form data:', detail)
+})
+
+// Set initial data
+event.setDetail({
+  formType: 'contact',
+  validation: true
+})
+
+// Update data
+event.setDetail({
+  formType: 'newsletter',
+  validation: false,
+  timestamp: Date.now()
+})
+```
+
+## Event Management
+
+### `start`
+
+Starts event listening.
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const event = new EventItem('#button', 'click', () => {
+  console.log('Button clicked!')
+})
+
+// Start listening
+event.start()
+
+// Check state
+console.log(event.isActive()) // true
+```
+
+### `stop`
+
+Stops event listening.
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const event = new EventItem('#button', 'click', () => {
+  console.log('This handler will no longer be called')
+})
+
+event.start()
+// ... event is active ...
+event.stop()
+
+console.log(event.isActive()) // false
+```
+
+### `toggle`
+
+Toggles event listening state.
+
+**Parameters:**
+- `activity: boolean` — true to start, false to stop
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const event = new EventItem('#toggle-btn', 'click', () => {
+  console.log('Toggle!')
+})
+
+let isListening = false
+
+// Toggle state
+document.getElementById('control-btn').addEventListener('click', () => {
+  isListening = !isListening
+  event.toggle(isListening)
+  console.log('Listening:', isListening)
+})
+```
+
+### `reset`
+
+Restarts event listening (stops and starts again).
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const event = new EventItem('#element', 'click', () => {
+  console.log('Click!')
+})
+
+event.start()
+
+// Changing settings requires restart
+event.setOptions({ passive: true })
+  .reset() // Applies new options
+```
+
+### `dispatch`
+
+Programmatically triggers the event.
+
+**Parameters:**
+- `detail?: D` — data for the event (defaults to this.detail)
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const event = new EventItem('#button', 'custom-event', (event, detail) => {
+  console.log('Custom event:', detail)
+})
+
+event.start()
+
+// Programmatic event trigger
+event.dispatch({
+  message: 'Hello from code!',
+  timestamp: Date.now()
+})
+
+// Or with new data
+event.dispatch({
+  message: 'Different message',
+  source: 'manual'
+})
+```
+
+## Special Event Types
+
+### `resize` Event
+
+EventItem automatically uses ResizeObserver for optimized element resize tracking.
+
+```javascript
+const resizeEvent = new EventItem('#resizable-element', 'resize', (entry) => {
+  console.log('New dimensions:', {
+    width: entry.contentRect.width,
+    height: entry.contentRect.height
+  })
+})
+
+resizeEvent.start()
+
+// ResizeObserver will be used automatically for better performance
+```
+
+### `scroll-sync` Event
+
+Special event for synchronized scroll with requestAnimationFrame optimization.
+
+```javascript
+const scrollEvent = new EventItem('#scrollable-container', 'scroll-sync', () => {
+  console.log('Synchronized scroll')
+})
+
+scrollEvent.start()
+
+// Handler will be called no more than once per animation frame
+```
+
+## Practical Examples
+
+### Modal Management System
+
+```javascript
+class ModalManager {
+  constructor() {
+    this.modals = new Map()
+    this.overlayEvent = null
+    this.escapeEvent = null
+  }
+
+  createModal(id, element) {
+    // Event for opening modal
+    const openEvent = new EventItem(
+      `[data-modal-trigger="${id}"]`,
+      'click',
+      (event) => {
+        event.preventDefault()
+        this.openModal(id)
+      }
+    )
+
+    // Event for closing with button
+    const closeEvent = new EventItem(
+      element.querySelector('.modal-close'),
+      'click',
+      () => this.closeModal(id)
+    )
+
+    this.modals.set(id, {
+      element,
+      openEvent,
+      closeEvent,
+      isOpen: false
+    })
+
+    // Start events
+    openEvent.start()
+    closeEvent.start()
+  }
+
+  openModal(id) {
+    const modal = this.modals.get(id)
+    if (!modal || modal.isOpen) return
+
+    modal.element.classList.add('modal-open')
+    modal.isOpen = true
+
+    // Create closing events
+    this.setupGlobalCloseEvents(id)
+  }
+
+  closeModal(id) {
+    const modal = this.modals.get(id)
+    if (!modal || !modal.isOpen) return
+
+    modal.element.classList.remove('modal-open')
+    modal.isOpen = false
+
+    // Remove global events
+    this.removeGlobalCloseEvents()
+  }
+
+  setupGlobalCloseEvents(id) {
+    // Close on overlay click
+    this.overlayEvent = new EventItem(
+      document,
+      'click',
+      (event) => {
+        if (event.target.classList.contains('modal-overlay')) {
+          this.closeModal(id)
+        }
+      }
+    )
+
+    // Close on Escape
+    this.escapeEvent = new EventItem(
+      document,
+      'keydown',
+      (event) => {
+        if (event.key === 'Escape') {
+          this.closeModal(id)
+        }
+      }
+    )
+
+    this.overlayEvent.start()
+    this.escapeEvent.start()
+  }
+
+  removeGlobalCloseEvents() {
+    this.overlayEvent?.stop()
+    this.escapeEvent?.stop()
+    this.overlayEvent = null
+    this.escapeEvent = null
+  }
+
+  destroy() {
+    this.modals.forEach((modal) => {
+      modal.openEvent.stop()
+      modal.closeEvent.stop()
+    })
+    this.removeGlobalCloseEvents()
+    this.modals.clear()
+  }
+}
+
+// Usage
+const modalManager = new ModalManager()
+
+// Create modals
+modalManager.createModal('login', document.getElementById('login-modal'))
+modalManager.createModal('settings', document.getElementById('settings-modal'))
+```
+
+### Responsive Navigation System
+
+```javascript
+class ResponsiveNavigation {
+  constructor(navElement, mobileBreakpoint = 768) {
+    this.nav = navElement
+    this.mobileBreakpoint = mobileBreakpoint
+    this.isMobile = false
+    this.isMenuOpen = false
+
+    this.initEvents()
+  }
+
+  initEvents() {
+    // Window resize tracking
+    this.resizeEvent = new EventItem(
+      window,
+      'resize',
+      () => this.handleResize()
+    )
+
+    // Mobile menu toggle
+    this.toggleEvent = new EventItem(
+      this.nav.querySelector('.nav-toggle'),
+      'click',
+      () => this.toggleMobileMenu()
+    )
+
+    // Close menu on outside click
+    this.outsideClickEvent = new EventItem(
+      document,
+      'click',
+      (event) => this.handleOutsideClick(event)
+    )
+
+    // Keyboard navigation handling
+    this.keyboardEvent = new EventItem(
+      this.nav,
+      'keydown',
+      (event) => this.handleKeyboard(event)
+    )
+
+    // Start events
+    this.resizeEvent.start()
+    this.toggleEvent.start()
+
+    // Initial size check
+    this.handleResize()
+  }
+
+  handleResize() {
+    const newIsMobile = window.innerWidth < this.mobileBreakpoint
+
+    if (newIsMobile !== this.isMobile) {
+      this.isMobile = newIsMobile
+
+      if (this.isMobile) {
+        this.setupMobileMode()
+      } else {
+        this.setupDesktopMode()
+      }
+    }
+  }
+
+  setupMobileMode() {
+    this.nav.classList.add('nav-mobile')
+    this.outsideClickEvent.start()
+    this.keyboardEvent.start()
+
+    if (this.isMenuOpen) {
+      this.closeMenu()
+    }
+  }
+
+  setupDesktopMode() {
+    this.nav.classList.remove('nav-mobile', 'nav-open')
+    this.outsideClickEvent.stop()
+    this.keyboardEvent.stop()
+    this.isMenuOpen = false
+  }
+
+  toggleMobileMenu() {
+    if (!this.isMobile) return
+
+    this.isMenuOpen = !this.isMenuOpen
+    this.nav.classList.toggle('nav-open', this.isMenuOpen)
+
+    // Set focus for accessibility
+    if (this.isMenuOpen) {
+      this.nav.querySelector('a')?.focus()
+    }
+  }
+
+  closeMenu() {
+    if (this.isMenuOpen) {
+      this.isMenuOpen = false
+      this.nav.classList.remove('nav-open')
+    }
+  }
+
+  handleOutsideClick(event) {
+    if (this.isMobile && this.isMenuOpen && !this.nav.contains(event.target)) {
+      this.closeMenu()
+    }
+  }
+
+  handleKeyboard(event) {
+    if (event.key === 'Escape' && this.isMenuOpen) {
+      this.closeMenu()
+      this.nav.querySelector('.nav-toggle')?.focus()
+    }
+  }
+
+  destroy() {
+    this.resizeEvent.stop()
+    this.toggleEvent.stop()
+    this.outsideClickEvent.stop()
+    this.keyboardEvent.stop()
+  }
+}
+
+// Usage
+const navigation = new ResponsiveNavigation(
+  document.querySelector('.main-nav'),
+  768
+)
+```
+
+### Drag and Drop System
+
+```javascript
+class DragDropManager {
+  constructor() {
+    this.dragEvents = new Map()
+    this.dropZones = new Map()
+    this.currentDragging = null
+  }
+
+  makeDraggable(element, data = {}) {
+    const dragStartEvent = new EventItem(
+      element,
+      'dragstart',
+      (event) => this.handleDragStart(event, element, data)
+    )
+
+    const dragEndEvent = new EventItem(
+      element,
+      'dragend',
+      (event) => this.handleDragEnd(event, element)
+    )
+
+    element.draggable = true
+    element.classList.add('draggable')
+
+    dragStartEvent.start()
+    dragEndEvent.start()
+
+    this.dragEvents.set(element, {
+      dragStartEvent,
+      dragEndEvent,
+      data
+    })
+  }
+
+  createDropZone(element, onDrop, acceptTypes = []) {
+    const dragOverEvent = new EventItem(
+      element,
+      ['dragover', 'dragenter'],
+      (event) => this.handleDragOver(event, element),
+      { passive: false }
+    )
+
+    const dragLeaveEvent = new EventItem(
+      element,
+      'dragleave',
+      (event) => this.handleDragLeave(event, element)
+    )
+
+    const dropEvent = new EventItem(
+      element,
+      'drop',
+      (event) => this.handleDrop(event, element, onDrop),
+      { passive: false }
+    )
+
+    element.classList.add('drop-zone')
+
+    dragOverEvent.start()
+    dragLeaveEvent.start()
+    dropEvent.start()
+
+    this.dropZones.set(element, {
+      dragOverEvent,
+      dragLeaveEvent,
+      dropEvent,
+      onDrop,
+      acceptTypes
+    })
+  }
+
+  handleDragStart(event, element, data) {
+    this.currentDragging = { element, data }
+    element.classList.add('dragging')
+
+    // Set data for drag operation
+    event.dataTransfer.effectAllowed = 'move'
+    event.dataTransfer.setData('text/plain', JSON.stringify(data))
+
+    // Highlight available drop zones
+    this.highlightDropZones(true)
+  }
+
+  handleDragEnd(event, element) {
+    element.classList.remove('dragging')
+    this.highlightDropZones(false)
+    this.currentDragging = null
+  }
+
+  handleDragOver(event, element) {
+    event.preventDefault()
+
+    if (this.canAcceptDrop(element)) {
+      element.classList.add('drag-over')
+      event.dataTransfer.dropEffect = 'move'
+    } else {
+      event.dataTransfer.dropEffect = 'none'
+    }
+  }
+
+  handleDragLeave(event, element) {
+    // Check if we actually left the element
+    if (!element.contains(event.relatedTarget)) {
+      element.classList.remove('drag-over')
+    }
+  }
+
+  handleDrop(event, element, onDrop) {
+    event.preventDefault()
+    element.classList.remove('drag-over')
+
+    if (this.canAcceptDrop(element) && this.currentDragging) {
+      const dropData = {
+        draggedElement: this.currentDragging.element,
+        draggedData: this.currentDragging.data,
+        dropZone: element,
+        event
+      }
+
+      onDrop(dropData)
+    }
+  }
+
+  canAcceptDrop(dropZone) {
+    const dropZoneData = this.dropZones.get(dropZone)
+    if (!dropZoneData || !this.currentDragging) return false
+
+    // Check types if specified
+    if (dropZoneData.acceptTypes.length > 0) {
+      const dragType = this.currentDragging.data.type
+      return dropZoneData.acceptTypes.includes(dragType)
+    }
+
+    return true
+  }
+
+  highlightDropZones(highlight) {
+    this.dropZones.forEach((_, element) => {
+      if (this.canAcceptDrop(element)) {
+        element.classList.toggle('drop-zone-available', highlight)
+      }
+    })
+  }
+
+  removeDraggable(element) {
+    const events = this.dragEvents.get(element)
+    if (events) {
+      events.dragStartEvent.stop()
+      events.dragEndEvent.stop()
+      this.dragEvents.delete(element)
+    }
+
+    element.draggable = false
+    element.classList.remove('draggable')
+  }
+
+  removeDropZone(element) {
+    const events = this.dropZones.get(element)
+    if (events) {
+      events.dragOverEvent.stop()
+      events.dragLeaveEvent.stop()
+      events.dropEvent.stop()
+      this.dropZones.delete(element)
+    }
+
+    element.classList.remove('drop-zone')
+  }
+
+  destroy() {
+    this.dragEvents.forEach((events) => {
+      events.dragStartEvent.stop()
+      events.dragEndEvent.stop()
+    })
+
+    this.dropZones.forEach((events) => {
+      events.dragOverEvent.stop()
+      events.dragLeaveEvent.stop()
+      events.dropEvent.stop()
+    })
+
+    this.dragEvents.clear()
+    this.dropZones.clear()
+  }
+}
+
+// Usage
+const dragDrop = new DragDropManager()
+
+// Create draggable elements
+document.querySelectorAll('.draggable-item').forEach(item => {
+  dragDrop.makeDraggable(item, {
+    type: item.dataset.type,
+    id: item.id,
+    content: item.textContent
+  })
+})
+
+// Create drop zones
+dragDrop.createDropZone(
+  document.getElementById('trash'),
+  (data) => {
+    console.log('Element deleted:', data.draggedData)
+    data.draggedElement.remove()
+  }
+)
+
+dragDrop.createDropZone(
+  document.getElementById('category-a'),
+  (data) => {
+    console.log('Moved to category A:', data.draggedData)
+    data.dropZone.appendChild(data.draggedElement)
+  },
+  ['category-a', 'universal'] // accepts only specific types
+)
+```
+
+The EventItem class provides a powerful and flexible tool for managing DOM events in JavaScript applications, ensuring type safety, automatic lifecycle management, and optimized performance.

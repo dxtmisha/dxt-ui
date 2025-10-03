@@ -4,7 +4,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Geo Class
 
-Base class for working with geographic data. Provides static methods for determining current location, working with country and language codes, and managing time zones.
+Static class for working with geographic data. Provides methods for determining current location, working with country and language codes, and managing time zones with automatic browser-based detection and localStorage caching.
 
 ## Key Features
 
@@ -13,21 +13,16 @@ Base class for working with geographic data. Provides static methods for determi
 - **Time zone management** — getting and setting time zones
 - **localStorage caching** — saves user's selected location
 - **Alternative code support** — works with various country and language code variants
-
-## Static Properties
-
-The class uses the following internal static properties:
-- `storage` — DataStorage instance for saving data in localStorage
-- `location` — current location in `language-country` format
-- `item` — object with full data about current country
-- `language` — current language
-- `timezone` — current time zone (offset in minutes)
+- **Complete country database** — access to full list of countries with their data
+- **Flexible code parsing** — handles full codes, country codes, or language codes separately
 
 ## Data Retrieval Methods
 
-### `get(): GeoItemFull`
+### `get`
 
-Returns information about the current country.
+Returns complete information about the current country.
+
+**Returns:** `GeoItemFull` — full geographic data object
 
 ```javascript
 import { Geo } from '@dxtmisha/functional'
@@ -39,254 +34,313 @@ console.log(currentGeo)
 //   language: 'en',
 //   standard: 'en-US',
 //   firstDay: 'Su',
-//   countryAlternative: ['...'],
-//   languageAlternative: ['...']
+//   countryAlternative: ['USA', 'United States'],
+//   languageAlternative: ['eng', 'english']
 // }
 ```
 
-### `getCountry(): string`
+### `getCountry`
 
 Returns current country code.
 
+**Returns:** `string` — ISO country code (e.g., 'US', 'GB', 'RU')
+
 ```javascript
-const country = Geo.getCountry() // 'US'
+const country = Geo.getCountry()
+console.log(country) // 'US'
 ```
 
-### `getLanguage(): string`
+### `getLanguage`
 
 Returns current language code.
 
+**Returns:** `string` — ISO language code (e.g., 'en', 'ru', 'fr')
+
 ```javascript
-const language = Geo.getLanguage() // 'en'
+const language = Geo.getLanguage()
+console.log(language) // 'en'
 ```
 
-### `getStandard(): string`
+### `getStandard`
 
 Returns full format according to standard (language-country).
 
+**Returns:** `string` — standard locale format
+
 ```javascript
-const standard = Geo.getStandard() // 'en-US'
+const standard = Geo.getStandard()
+console.log(standard) // 'en-US'
 ```
 
-### `getFirstDay(): string`
+### `getFirstDay`
 
 Returns first day of week for current location.
 
+**Returns:** `string` — first day code ('Su' for Sunday, 'Mo' for Monday)
+
 ```javascript
-const firstDay = Geo.getFirstDay() // 'Su' or 'Mo'
+const firstDay = Geo.getFirstDay()
+console.log(firstDay) // 'Su' (US) or 'Mo' (Europe)
 ```
 
-### `getLocation(): string`
+### `getLocation`
 
 Returns full format of current location.
 
+**Returns:** `string` — current location in language-country format
+
 ```javascript
-const location = Geo.getLocation() // 'en-US'
+const location = Geo.getLocation()
+console.log(location) // 'en-US'
 ```
 
-### `getItem(): GeoItemFull`
+### `getItem`
 
 Returns processed data with current language included.
 
+**Returns:** `GeoItemFull` — geographic data with actual language
+
 ```javascript
 const item = Geo.getItem()
-// Includes all data plus actual language
+console.log(item)
+// Includes all data plus actual language from browser/settings
 ```
 
-### `getList(): GeoItem[]`
+### `getList`
 
 Returns complete list of available countries.
 
+**Returns:** `GeoItem[]` — array of all supported countries
+
 ```javascript
 const allCountries = Geo.getList()
-console.log(allCountries.length) // number of supported countries
+console.log(allCountries.length) // 200+ countries
+console.log(allCountries[0])
+// { country: 'AD', language: 'ca', standard: 'ca-AD', firstDay: 'Mo', ... }
 ```
 
-## Code-based Search Methods
+## Data Search Methods
 
-### `getByCode(code?: string): GeoItemFull`
+### `getByCode`
 
-Returns country data by its code. Supports various formats:
-- Full format: `ru-RU`, `en-US`
-- Country only: `RU`, `US`
-- Language only: `ru`, `en`
+Returns country data by its code (full, country, or language).
+
+**Parameters:**
+- `code?: string` — country code in various formats (optional)
+
+**Returns:** `GeoItemFull` — geographic data for specified code
 
 ```javascript
 // Full code
-const byFull = Geo.getByCode('en-US')
+const dataFull = Geo.getByCode('en-US')
+console.log(dataFull.country) // 'US'
 
-// Country only
-const byCountry = Geo.getByCode('US')
+// Country code only
+const dataCountry = Geo.getByCode('GB')
+console.log(dataCountry.language) // 'en'
 
-// Language only
-const byLanguage = Geo.getByCode('en')
+// Language code only
+const dataLanguage = Geo.getByCode('fr')
+console.log(dataLanguage.country) // 'FR'
 
-// If code not found, returns first country from list
-const fallback = Geo.getByCode('invalid-code')
+// Fallback to first country if invalid
+const dataDefault = Geo.getByCode('invalid')
+console.log(dataDefault) // First country from list
 ```
 
-### `getByCodeFull(code: string): GeoItem | undefined`
+### `getByCodeFull`
 
-Returns data by exact match of full code.
+Returns country data by full language-country code.
+
+**Parameters:**
+- `code: string` — string in language-country format
+
+**Returns:** `GeoItem | undefined` — country data or undefined if not found
 
 ```javascript
-const exact = Geo.getByCodeFull('en-US')
-// Returns data only if code exactly matches language-country format
+const data = Geo.getByCodeFull('ru-RU')
+if (data) {
+  console.log(data.country) // 'RU'
+  console.log(data.language) // 'ru'
+}
+
+// Also supports reverse format
+const dataReverse = Geo.getByCodeFull('GB-en')
+console.log(dataReverse?.country) // 'GB'
 ```
 
-### `getByCountry(country: string): GeoItem | undefined`
+### `getByCountry`
 
-Returns data by country code.
+Returns country data by country code.
+
+**Parameters:**
+- `country: string` — ISO country code
+
+**Returns:** `GeoItem | undefined` — country data or undefined if not found
 
 ```javascript
-const usa = Geo.getByCountry('US')
-// Supports main and alternative country codes
+const data = Geo.getByCountry('DE')
+if (data) {
+  console.log(data.language) // 'de'
+  console.log(data.standard) // 'de-DE'
+}
 ```
 
-### `getByLanguage(language: string): GeoItem | undefined`
+### `getByLanguage`
 
-Returns data by language code.
+Returns country data by language code.
+
+**Parameters:**
+- `language: string` — ISO language code
+
+**Returns:** `GeoItem | undefined` — country data or undefined if not found
 
 ```javascript
-const english = Geo.getByLanguage('en')
-// Supports main and alternative language codes
+const data = Geo.getByLanguage('es')
+if (data) {
+  console.log(data.country) // 'ES'
+  console.log(data.standard) // 'es-ES'
+}
 ```
 
-### `find(code: string): GeoItemFull`
+## Configuration Methods
 
-Universal search method (alias for `getByCode`).
+### `set`
+
+Sets new location and saves it to localStorage.
+
+**Parameters:**
+- `code?: string` — location code in various formats (optional)
+
+**Returns:** `Geo` — class reference for chaining
 
 ```javascript
-const found = Geo.find('en-GB')
+// Set by full code
+Geo.set('fr-FR')
+
+// Set by country code
+Geo.set('IT')
+
+// Set by language code
+Geo.set('ja')
+
+// Chaining
+Geo.set('de-DE').setTimezone(-60)
 ```
 
-## Time Zone Management
+### `setTimezone`
 
-### `getTimezone(): number`
+Sets time zone offset.
 
-Returns current time zone in minutes.
+**Parameters:**
+- `timezone: number` — time zone offset in minutes
 
-```javascript
-const timezone = Geo.getTimezone() // e.g., 300 for UTC-5
-```
-
-### `getTimezoneFormat(): string`
-
-Returns formatted time zone.
+**Returns:** `Geo` — class reference for chaining
 
 ```javascript
-const formatted = Geo.getTimezoneFormat() // '+03:00' or '-05:00'
-```
+// Set UTC+3 (Moscow time)
+Geo.setTimezone(-180)
 
-### `setTimezone(timezone: number): void`
+// Set UTC-5 (New York time)
+Geo.setTimezone(300)
 
-Sets new time zone.
-
-```javascript
-Geo.setTimezone(300) // set UTC-5
-```
-
-## Location Management
-
-### `set(code: string, save?: boolean): void`
-
-Changes current location by code.
-
-```javascript
-// Change location without saving
-Geo.set('en-US')
-
-// Change and save to localStorage
-Geo.set('en-US', true)
-
-// After change, all get* methods return data for new location
-console.log(Geo.getCountry()) // 'US'
-console.log(Geo.getLanguage()) // 'en'
+// Chaining
+Geo.setTimezone(-60).set('de-DE')
 ```
 
 ## Utility Methods
 
-### `toStandard(item: GeoItem): string`
+### `toCountry`
 
-Converts GeoItem object to standard string format.
+Converts country code to uppercase format.
 
-```javascript
-const item = { language: 'en', country: 'US', /* other fields */ }
-const standard = Geo.toStandard(item) // 'en-US'
-```
+**Parameters:**
+- `country: string` — country code in any case
 
-## Automatic Initialization
-
-The class automatically initializes on first access:
-
-1. **Location detection** from sources (by priority):
-   - Saved value in localStorage
-   - HTML element `lang` attribute
-   - `navigator.language`
-   - `navigator.languages[0]`
-   - Fallback: `'en-GB'`
-
-2. **Language determination** based on found location
-
-3. **Country data retrieval** for determined location
-
-## Practical Usage Examples
-
-### Application Localization Setup
+**Returns:** `string` — uppercase country code
 
 ```javascript
-// Get user's current locale
-const userLocale = Geo.getStandard()
-
-// Configure i18n
-i18n.locale = Geo.getLanguage()
-
-// Get first day of week for calendar
-const firstDayOfWeek = Geo.getFirstDay()
+const country = Geo.toCountry('us')
+console.log(country) // 'US'
 ```
 
-### Language Switching
+### `toLanguage`
+
+Converts language code to lowercase format.
+
+**Parameters:**
+- `language: string` — language code in any case
+
+**Returns:** `string` — lowercase language code
 
 ```javascript
-// Switch to English and save choice
-Geo.set('en-US', true)
-
-// Update UI
-updateUI(Geo.getLanguage())
+const language = Geo.toLanguage('EN')
+console.log(language) // 'en'
 ```
 
-### Time Zone Operations
+### `toFull`
+
+Converts basic geo item to full format with additional data.
+
+**Parameters:**
+- `item: GeoItem` — basic geographic item
+
+**Returns:** `GeoItemFull` — extended geographic data
 
 ```javascript
-// Get local time zone
-const localTimezone = new Date().getTimezoneOffset()
-Geo.setTimezone(localTimezone)
-
-// Format for display
-const timezoneDisplay = Geo.getTimezoneFormat() // '+03:00'
+const basicItem = { country: 'US', language: 'en', standard: 'en-US', firstDay: 'Su' }
+const fullItem = Geo.toFull(basicItem)
+console.log(fullItem.countryAlternative) // ['USA', 'United States', ...]
 ```
 
-### User Input Validation and Fallback
+## Examples
+
+### Basic Usage
 
 ```javascript
-function setUserLocale(userInput) {
-  try {
-    // Try to set user locale
-    Geo.set(userInput, true)
-    return Geo.getStandard()
-  } catch (error) {
-    // Fallback to default locale
-    console.warn('Invalid locale, using default')
-    return Geo.getStandard()
-  }
-}
+import { Geo } from '@dxtmisha/functional'
+
+// Get current location info
+console.log('Current country:', Geo.getCountry())
+console.log('Current language:', Geo.getLanguage())
+console.log('Full location:', Geo.getLocation())
+console.log('First day of week:', Geo.getFirstDay())
 ```
 
-## Integration with Other System Parts
+### Setting Custom Location
 
-The Geo class integrates with:
-- **DataStorage** — for saving user preferences
-- **@dxtmisha/media** — data source for countries and languages
-- **DOM API** — for automatic browser locale detection
+```javascript
+// Set location to Germany
+Geo.set('de-DE')
 
-This makes it a central component for all localization and geographic data tasks in the application.
+console.log('New country:', Geo.getCountry()) // 'DE'
+console.log('New language:', Geo.getLanguage()) // 'de'
+console.log('First day:', Geo.getFirstDay()) // 'Mo'
+```
+
+### Working with Country Data
+
+```javascript
+// Find country by different codes
+const russiaByFull = Geo.getByCode('ru-RU')
+const russiaByCountry = Geo.getByCode('RU')
+const russiaByLanguage = Geo.getByCode('ru')
+
+console.log('All return Russia:', russiaByFull.country) // 'RU'
+```
+
+### Building Country Selector
+
+```javascript
+// Get all countries for dropdown
+const countries = Geo.getList()
+
+const countryOptions = countries.map(country => ({
+  value: country.standard,
+  label: `${country.language}-${country.country}`,
+  country: country.country,
+  language: country.language
+}))
+
+console.log('Total countries:', countryOptions.length)
+```

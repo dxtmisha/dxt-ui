@@ -58,6 +58,8 @@ const intl = GeoIntl.getInstance('en-US')
 
 Returns locale code in language-country format.
 
+**Returns:** `string` — locale code in standard format
+
 ```javascript
 const intl = new GeoIntl('en-US')
 intl.getLocation() // 'en-US'
@@ -66,6 +68,8 @@ intl.getLocation() // 'en-US'
 ### `getFirstDay`
 
 Returns first day of week for current locale.
+
+**Returns:** `string` — first day code ('Su' for Sunday, 'Mo' for Monday)
 
 ```javascript
 const intl = new GeoIntl('en-US')
@@ -84,6 +88,8 @@ Returns localized names of languages, countries and other elements.
 **Parameters:**
 - `value?: string` — code to display (optional)
 - `typeOptions?: string | Intl.DisplayNamesOptions` — type or options object
+
+**Returns:** `string` — localized name
 
 ```javascript
 const intl = new GeoIntl('en-US')
@@ -108,6 +114,8 @@ Returns language name for specified code.
 - `value?: string` — language code (optional)
 - `style?: Intl.RelativeTimeFormatStyle` — display style (optional)
 
+**Returns:** `string` — language name
+
 ```javascript
 intl.languageName('ru') // 'Russian'
 intl.languageName('de') // 'German'
@@ -121,6 +129,8 @@ Returns country name for specified code.
 **Parameters:**
 - `value?: string` — country code (optional)
 - `style?: Intl.RelativeTimeFormatStyle` — display style (optional)
+
+**Returns:** `string` — country name
 
 ```javascript
 intl.countryName('RU') // 'Russia'
@@ -139,6 +149,8 @@ Formats full name according to regional cultural features.
 - `first: string` — first name
 - `surname?: string` — middle name (optional)
 - `short?: boolean` — shortened format (optional)
+
+**Returns:** `string` — formatted full name
 
 ```javascript
 const intl = new GeoIntl('en-US')
@@ -165,6 +177,8 @@ Formats numbers according to local standards.
 - `value: NumberOrString` — number to format
 - `options?: Intl.NumberFormatOptions` — formatting options (optional)
 
+**Returns:** `string` — formatted number
+
 ```javascript
 const intl = new GeoIntl('en-US')
 
@@ -179,6 +193,8 @@ intlRU.number(1234.56) // '1 234,56'
 ### `decimal`
 
 Returns decimal point symbol for current locale.
+
+**Returns:** `string` — decimal separator symbol
 
 ```javascript
 const intl = new GeoIntl('en-US')
@@ -198,6 +214,8 @@ Formats currency amounts. Supports automatic currency code extraction from strin
 - `value: NumberOrString` — amount to format
 - `currencyOptions?: string | Intl.NumberFormatOptions` — currency code or formatting options (optional)
 - `numberOnly?: boolean` — show only number without currency symbol (optional)
+
+**Returns:** `string` — formatted currency amount
 
 ```javascript
 const intl = new GeoIntl('en-US')
@@ -227,21 +245,25 @@ Returns currency symbol for current locale.
 - `currency: string` — currency code
 - `currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry` — currency display type (optional)
 
+**Returns:** `string` — currency symbol or code
+
 ```javascript
 intl.currencySymbol('USD') // '$'
 intl.currencySymbol('EUR') // '€'
-intl.currencySymbol('USD', 'code') // 'USD'
+intl.currencySymbol('EUR', 'code') // 'EUR'
 ```
 
-## Measurement Units
+## Units of Measurement
 
 ### `unit`
 
-Formats numbers with measurement units. Supports automatic unit extraction from string.
+Formats numbers with units of measurement. Supports automatic unit extraction from string.
 
 **Parameters:**
 - `value: NumberOrString` — value to format
-- `unitOptions?: string | Intl.NumberFormatOptions` — measurement unit or formatting options (optional)
+- `unitOptions?: string | Intl.NumberFormatOptions` — unit of measurement or formatting options (optional)
+
+**Returns:** `string` — formatted value with unit
 
 ```javascript
 const intl = new GeoIntl('en-US')
@@ -261,7 +283,9 @@ Formats file sizes with automatic selection of appropriate units.
 
 **Parameters:**
 - `value: NumberOrString` — size in bytes
-- `unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions` — unit or formatting options (optional)
+- `unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions` — unit of measurement or formatting options (optional)
+
+**Returns:** `string` — formatted file size
 
 ```javascript
 intl.sizeFile(1024) // '1 kB' (automatically converts to kilobytes)
@@ -280,6 +304,8 @@ Formats percentages (value from 0 to 1).
 - `value: NumberOrString` — value from 0 to 1
 - `options?: Intl.NumberFormatOptions` — formatting options (optional)
 
+**Returns:** `string` — formatted percentage
+
 ```javascript
 intl.percent(0.1234) // '12.34%'
 intl.percent(0.5) // '50%'
@@ -293,6 +319,8 @@ Formats percentages for values from 0 to 100.
 **Parameters:**
 - `value: NumberOrString` — value from 0 to 100
 - `options?: Intl.NumberFormatOptions` — formatting options (optional)
+
+**Returns:** `string` — formatted percentage
 
 ```javascript
 intl.percentBy100(12.34) // '12.34%'
@@ -312,7 +340,9 @@ Applies plural rules for different languages.
 - `options?: Intl.PluralRulesOptions` — plural rules options (optional)
 - `optionsNumber?: Intl.NumberFormatOptions` — number formatting options (optional)
 
-**Words format:** `one|two|few|many|other|zero` (order matters!)
+**Word format:** `one|two|few|many|other|zero` (order matters!)
+
+**Returns:** `string` — formatted number with appropriate plural form
 
 ```javascript
 const intl = new GeoIntl('en-US')
@@ -320,16 +350,16 @@ const intl = new GeoIntl('en-US')
 // English plural forms
 intl.plural(1, 'item|items') // '1 item'
 intl.plural(5, 'item|items') // '5 items'
-intl.plural(0, 'item|items') // '0 items'
+
+// Full format with zero
+intl.plural(0, 'day|days|days|days|days|no days') // '0 no days'
 
 const intlRU = new GeoIntl('ru-RU')
-// Russian plural forms (more complex)
 intlRU.plural(1, 'товар|товара|товаров') // '1 товар'
-intlRU.plural(2, 'товар|товара|товаров') // '2 товара'
 intlRU.plural(5, 'товар|товара|товаров') // '5 товаров'
 ```
 
-## Date Handling
+## Date and Time
 
 ### `date`
 
@@ -342,6 +372,8 @@ Formats date and time according to type and style.
 - `hour24?: boolean` — use 24-hour format (optional)
 
 **Date types:** `'full'`, `'datetime'`, `'date'`, `'time'`, `'year-month'`, `'year'`, `'month'`, `'day-month'`, `'day'`, `'hour-minute'`, `'hour'`, `'minute'`, `'second'`
+
+**Returns:** `string` — formatted date or time
 
 ```javascript
 const intl = new GeoIntl('en-US')
@@ -368,6 +400,8 @@ Returns month name.
 - `value?: NumberOrStringOrDate` — date (optional)
 - `style?: Intl.DateTimeFormatOptions['month']` — display style (optional)
 
+**Returns:** `string` — month name
+
 ```javascript
 intl.month(new Date('2024-03-15')) // 'March'
 intl.month(new Date('2024-03-15'), 'short') // 'Mar'
@@ -376,10 +410,12 @@ intl.month(new Date('2024-03-15'), 'narrow') // 'M'
 
 ### `months`
 
-Returns list of all months in dropdown format.
+Returns list of all months in format for dropdown lists.
 
 **Parameters:**
 - `style?: Intl.DateTimeFormatOptions['month']` — display style (optional)
+
+**Returns:** `{ label: string, value: number }[]` — array of objects with month labels and values
 
 ```javascript
 const monthsList = intl.months()
@@ -403,6 +439,8 @@ Returns weekday name.
 - `value?: NumberOrStringOrDate` — date (optional)
 - `style?: Intl.DateTimeFormatOptions['weekday']` — display style (optional)
 
+**Returns:** `string` — weekday name
+
 ```javascript
 intl.weekday(new Date('2024-03-15')) // 'Friday'
 intl.weekday(new Date('2024-03-15'), 'short') // 'Fri'
@@ -416,9 +454,11 @@ Returns list of weekdays considering first day of week for locale.
 **Parameters:**
 - `style?: Intl.DateTimeFormatOptions['weekday']` — display style (optional)
 
+**Returns:** `{ label: string, value: number }[]` — array of objects with weekday labels and values
+
 ```javascript
 const weekdaysList = intl.weekdays()
-// For en-US (first day is Sunday):
+// For en-US (first day — Sunday):
 // [
 //   { label: '', value: undefined },
 //   { label: 'Sunday', value: 0 },
@@ -435,6 +475,8 @@ Formats time only.
 **Parameters:**
 - `value: NumberOrStringOrDate` — date/time to format
 
+**Returns:** `string` — formatted time
+
 ```javascript
 intl.time(new Date('2024-03-15T14:30:45')) // '2:30:45 PM'
 ```
@@ -449,6 +491,8 @@ Automatically calculates and formats relative time.
 - `value: NumberOrStringOrDate` — date to compare
 - `styleOptions?: string | Intl.RelativeTimeFormatOptions` — style or formatting options (optional)
 - `todayValue?: Date` — base date for comparison (optional)
+
+**Returns:** `string` — formatted relative time
 
 ```javascript
 const now = new Date()
@@ -477,12 +521,14 @@ Formats relative time with limit. If difference exceeds limit days, shows regula
 - `type?: GeoDate` — date formatting type (optional)
 - `hour24?: boolean` — use 24-hour format (optional)
 
+**Returns:** `string` — formatted relative time or date
+
 ```javascript
 const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
 const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
 
 // 10 day limit
-intl.relativeLimit(weekAgo, 10) // '1 week ago'
+intl.relativeLimit(weekAgo, 10) // 'last week'
 intl.relativeLimit(monthAgo, 10) // '2/15/2024' (regular date)
 ```
 
@@ -492,8 +538,10 @@ Formats relative time for specified value and unit.
 
 **Parameters:**
 - `value: NumberOrString` — value (number of units)
-- `unit: Intl.RelativeTimeFormatUnit` — time unit (`'day'`, `'hour'`, `'month'` etc.)
+- `unit: Intl.RelativeTimeFormatUnit` — time unit (`'day'`, `'hour'`, `'month'`, etc.)
 - `styleOptions?: string | Intl.RelativeTimeFormatOptions` — style or formatting options (optional)
+
+**Returns:** `string` — formatted relative time
 
 ```javascript
 intl.relativeByValue(-2, 'day') // '2 days ago'
@@ -511,12 +559,14 @@ Sorts array considering locale language features.
 - `data: T[]` — array to sort
 - `compareFn?: (a: T, b: T) => [string, string]` — comparison function (optional)
 
+**Returns:** `T[]` — sorted array
+
 ```javascript
-const names = ['Zebra', 'Apple', 'Ñoño', 'Beta']
-intl.sort(names) // ['Apple', 'Beta', 'Ñoño', 'Zebra'] (correct order for English)
+const names = ['Zoe', 'Anna', 'Bob', 'Charlie']
+intl.sort(names) // ['Anna', 'Bob', 'Charlie', 'Zoe'] (correct order for English)
 
 // With custom comparison function
-const users = [{ name: 'Zebra' }, { name: 'Apple' }]
+const users = [{ name: 'Zoe' }, { name: 'Anna' }]
 intl.sort(users, (a, b) => [a.name, b.name])
 ```
 

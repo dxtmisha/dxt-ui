@@ -1,0 +1,796 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/GeoPhone'/>
+
+# GeoPhone Class
+
+A static class for storing and processing phone number masks. Provides methods for working with international phone codes, formatting numbers according to masks, and identifying countries by phone numbers.
+
+## Key Features
+
+- **International phone codes** — support for all international country codes
+- **Phone masks** — automatic number formatting according to national standards
+- **Country detection by number** — identifying country based on phone number
+- **Tree structure for codes** — efficient search and number matching
+- **Internal country codes** — support for special symbols for national numbers
+- **Number validation** — verification of phone number correctness
+- **Static methods** — all operations available without creating an instance
+
+## Static Methods
+
+### `get`
+
+Gets an object with information about the phone code and country.
+
+**Parameters:**
+- `code: string` — country and language code
+
+**Returns:** `GeoPhoneValue | undefined` — object with phone code information or undefined
+
+```javascript
+import { GeoPhone } from '@dxtmisha/functional'
+
+// Get information about Russia
+const russiaPhone = GeoPhone.get('RU')
+console.log(russiaPhone)
+// {
+//   phone: 7,           // international code
+//   within: 8,          // internal code
+//   mask: [             // array of masks
+//     '+7 *** ***-**-**',
+//     '+7 (***) ***-**-**'
+//   ],
+//   value: 'RU'         // country code
+// }
+
+// Get information about USA
+const usaPhone = GeoPhone.get('US')
+console.log(usaPhone)
+// {
+//   phone: 1,
+//   within: 1,
+//   mask: ['+1 (***) ***-****'],
+//   value: 'US'
+// }
+
+// Get information about non-existent country
+const unknown = GeoPhone.get('XX')
+console.log(unknown) // undefined
+```
+
+### `getByPhone`
+
+Gets information by phone number.
+
+**Parameters:**
+- `phone: string` — phone number
+
+**Returns:** `GeoPhoneMapInfo` — object with number information
+
+```javascript
+// Analyze Russian number
+const russianNumber = GeoPhone.getByPhone('+79161234567')
+console.log(russianNumber)
+// {
+//   item: {
+//     items: [...],      // array of possible countries
+//     info: {...},       // main information
+//     value: 'RU',       // country code
+//     mask: [...],       // available masks
+//     maskFull: [...],   // full masks
+//     next: {...}        // next possible digits
+//   },
+//   phone: '9161234567'  // number without country code
+// }
+
+// Analyze American number
+const americanNumber = GeoPhone.getByPhone('+12125551234')
+console.log(americanNumber)
+// {
+//   item: { value: 'US', ... },
+//   phone: '2125551234'
+// }
+
+// Analyze partial number
+const partialNumber = GeoPhone.getByPhone('+7916')
+console.log(partialNumber)
+// {
+//   item: { value: 'RU', ... },
+//   phone: '916'
+// }
+```
+
+### `getByCode`
+
+Gets complete mask data by country code.
+
+**Parameters:**
+- `code: string` — country and language code
+
+**Returns:** `GeoPhoneMap | undefined` — object with mask data or undefined
+
+```javascript
+// Get mask for Russia
+const russiaMask = GeoPhone.getByCode('RU')
+console.log(russiaMask)
+// {
+//   items: [...],        // array of items
+//   info: {...},         // country information
+//   value: 'RU',         // country code
+//   mask: [              // masks with internal symbols
+//     '+7 ~ *** ***-**-**',
+//     '+7 (~***) ***-**-**'
+//   ],
+//   maskFull: [          // full masks
+//     '+7 * *** ***-**-**',
+//     '+7 (****) ***-**-**'
+//   ],
+//   next: {...}          // possible next digits
+// }
+
+// Get mask for Germany
+const germanyMask = GeoPhone.getByCode('DE')
+console.log(germanyMask?.mask) // ['+49 *** ******', ...]
+```
+
+### `getList`
+
+Gets an array from the list of all phone codes.
+
+**Returns:** `GeoPhoneValue[]` — array of all phone codes
+
+```javascript
+// Get complete list
+const allPhones = GeoPhone.getList()
+console.log(allPhones.length) // number of countries with phone codes
+
+// Example data structure
+console.log(allPhones[0])
+// {
+//   phone: 1,             // country code
+//   within: 1,            // internal code
+//   mask: ['+1 (***) ***-****'],
+//   value: 'US'           // country code
+// }
+
+// Find countries with code +7
+const code7Countries = allPhones.filter(item => item.phone === 7)
+console.log(code7Countries) // Russia, Kazakhstan
+```
+
+### `getMap`
+
+Gets a tree map sorted by codes.
+
+**Returns:** `Record<string, GeoPhoneMap>` — search tree map
+
+```javascript
+// Get complete map
+const phoneMap = GeoPhone.getMap()
+
+// Navigate tree for number +7916...
+console.log(phoneMap['7'])        // information about code +7
+console.log(phoneMap['7'].next)   // possible next digits
+console.log(phoneMap['7'].next['9']) // information about +79...
+
+// Check available codes
+const availableCodes = Object.keys(phoneMap)
+console.log(availableCodes) // ['1', '7', '33', '49', ...]
+```
+
+### `toMask`
+
+Convert number to mask format.
+
+**Parameters:**
+- `phone: string` — phone number
+- `masks?: string[]` — array of masks for conversion
+
+**Returns:** `string | undefined` — formatted number or undefined
+
+```javascript
+// Format Russian number
+const ruMasks = ['+7 (***) ***-**-**', '+7 *** ***-**-**']
+const formatted1 = GeoPhone.toMask('9161234567', ruMasks)
+console.log(formatted1) // '+7 (916) 123-45-67'
+
+// Format American number
+const usMasks = ['+1 (***) ***-****']
+const formatted2 = GeoPhone.toMask('2125551234', usMasks)
+console.log(formatted2) // '+1 (212) 555-1234'
+
+// Format with inappropriate mask
+const wrongFormat = GeoPhone.toMask('123', usMasks)
+console.log(wrongFormat) // undefined (length doesn't match)
+
+// Automatic detection and formatting
+const phoneInfo = GeoPhone.getByPhone('+79161234567')
+if (phoneInfo.item && phoneInfo.phone) {
+  const autoFormatted = GeoPhone.toMask(phoneInfo.phone, phoneInfo.item.mask)
+  console.log(autoFormatted) // '+7 ~ 916 123-45-67'
+}
+```
+
+### `removeZero`
+
+Removes country code from input number.
+
+**Parameters:**
+- `phone: string` — phone number
+
+**Returns:** `string` — number without leading symbols
+
+```javascript
+// Remove leading zero
+const withZero = GeoPhone.removeZero('09161234567')
+console.log(withZero) // '9161234567'
+
+// Replace 8 with 9 for Russian numbers
+const withEight = GeoPhone.removeZero('89161234567')
+console.log(withEight) // '9161234567'
+
+// Number without changes
+const normal = GeoPhone.removeZero('9161234567')
+console.log(normal) // '9161234567'
+
+// International number without changes
+const international = GeoPhone.removeZero('+79161234567')
+console.log(international) // '+79161234567'
+```
+
+## Practical Examples
+
+### Phone Input Component
+
+```javascript
+class PhoneInput {
+  constructor(inputElement, options = {}) {
+    this.input = inputElement
+    this.countryCode = options.countryCode || 'US'
+    this.autoFormat = options.autoFormat !== false
+    this.onCountryChange = options.onCountryChange || (() => {})
+
+    this.init()
+  }
+
+  init() {
+    this.setupMask()
+    this.attachEvents()
+    this.createCountrySelector()
+  }
+
+  setupMask() {
+    const phoneData = GeoPhone.get(this.countryCode)
+    if (phoneData && phoneData.mask.length > 0) {
+      this.currentMask = phoneData.mask[0]
+      this.input.placeholder = this.currentMask
+    }
+  }
+
+  attachEvents() {
+    this.input.addEventListener('input', (e) => {
+      if (this.autoFormat) {
+        this.formatInput(e)
+      }
+      this.detectCountry(e.target.value)
+    })
+
+    this.input.addEventListener('keydown', (e) => {
+      this.handleSpecialKeys(e)
+    })
+
+    this.input.addEventListener('paste', (e) => {
+      setTimeout(() => this.formatInput(e), 0)
+    })
+  }
+
+  formatInput(event) {
+    const input = event.target
+    const value = input.value.replace(/\D/g, '')
+
+    if (value.length === 0) {
+      input.value = ''
+      return
+    }
+
+    const phoneData = GeoPhone.get(this.countryCode)
+    if (phoneData && phoneData.mask.length > 0) {
+      const formatted = GeoPhone.toMask(value, phoneData.mask)
+      if (formatted) {
+        const cursorPosition = this.calculateCursorPosition(input.value, formatted, input.selectionStart)
+        input.value = formatted
+        input.setSelectionRange(cursorPosition, cursorPosition)
+      }
+    }
+  }
+
+  detectCountry(phoneNumber) {
+    const phoneInfo = GeoPhone.getByPhone(phoneNumber)
+
+    if (phoneInfo.item && phoneInfo.item.value !== this.countryCode) {
+      this.countryCode = phoneInfo.item.value
+      this.setupMask()
+      this.updateCountrySelector()
+      this.onCountryChange(this.countryCode, phoneInfo.item)
+    }
+  }
+
+  createCountrySelector() {
+    const selector = document.createElement('select')
+    selector.className = 'country-selector'
+
+    const allCountries = GeoPhone.getList()
+    allCountries.forEach(country => {
+      const option = document.createElement('option')
+      option.value = country.value
+      option.textContent = `${country.value} (+${country.phone})`
+      if (country.value === this.countryCode) {
+        option.selected = true
+      }
+      selector.appendChild(option)
+    })
+
+    selector.addEventListener('change', (e) => {
+      this.countryCode = e.target.value
+      this.setupMask()
+      this.input.value = ''
+      this.input.focus()
+      this.onCountryChange(this.countryCode)
+    })
+
+    this.input.parentNode.insertBefore(selector, this.input)
+    this.countrySelector = selector
+  }
+
+  updateCountrySelector() {
+    if (this.countrySelector) {
+      this.countrySelector.value = this.countryCode
+    }
+  }
+
+  calculateCursorPosition(oldValue, newValue, oldPosition) {
+    // Simple algorithm to preserve cursor position
+    let newPosition = oldPosition
+
+    for (let i = 0; i < oldPosition && i < newValue.length; i++) {
+      if (oldValue[i] !== newValue[i] && !/\d/.test(newValue[i])) {
+        newPosition++
+      }
+    }
+
+    return Math.min(newPosition, newValue.length)
+  }
+
+  handleSpecialKeys(event) {
+    // Allow backspace, delete, tab, escape, enter
+    if ([8, 9, 27, 13, 46].indexOf(event.keyCode) !== -1 ||
+        // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+        (event.keyCode === 65 && event.ctrlKey) ||
+        (event.keyCode === 67 && event.ctrlKey) ||
+        (event.keyCode === 86 && event.ctrlKey) ||
+        (event.keyCode === 88 && event.ctrlKey)) {
+      return
+    }
+
+    // Allow only numbers
+    if ((event.shiftKey || (event.keyCode < 48 || event.keyCode > 57)) &&
+        (event.keyCode < 96 || event.keyCode > 105)) {
+      event.preventDefault()
+    }
+  }
+
+  getValue() {
+    return this.input.value
+  }
+
+  getCleanValue() {
+    return this.input.value.replace(/\D/g, '')
+  }
+
+  isValid() {
+    const phoneData = GeoPhone.get(this.countryCode)
+    if (!phoneData) return false
+
+    const cleanValue = this.getCleanValue()
+    return phoneData.mask.some(mask => {
+      const requiredLength = mask.replace(/[^*]/g, '').length
+      return cleanValue.length === requiredLength
+    })
+  }
+}
+
+// Usage
+const phoneInput = new PhoneInput(
+  document.getElementById('phone-input'),
+  {
+    countryCode: 'US',
+    autoFormat: true,
+    onCountryChange: (countryCode, phoneData) => {
+      console.log(`Country changed to: ${countryCode}`)
+      console.log('Data:', phoneData)
+    }
+  }
+)
+```
+
+### Phone Number Validator
+
+```javascript
+class PhoneValidator {
+  constructor() {
+    this.phoneList = GeoPhone.getList()
+    this.phoneMap = GeoPhone.getMap()
+  }
+
+  // Validate number
+  validate(phoneNumber, countryCode = null) {
+    const result = {
+      isValid: false,
+      country: null,
+      formattedNumber: null,
+      errors: []
+    }
+
+    // Clean number
+    const cleanNumber = this.cleanPhoneNumber(phoneNumber)
+
+    if (!cleanNumber) {
+      result.errors.push('Phone number cannot be empty')
+      return result
+    }
+
+    // Detect country
+    const phoneInfo = GeoPhone.getByPhone(cleanNumber)
+
+    if (!phoneInfo.item) {
+      result.errors.push('Could not determine country from number')
+      return result
+    }
+
+    result.country = phoneInfo.item.value
+
+    // Check match with specified country
+    if (countryCode && result.country !== countryCode) {
+      result.errors.push(`Number does not match country ${countryCode}`)
+      return result
+    }
+
+    // Check number length
+    const isValidLength = phoneInfo.item.mask.some(mask => {
+      const requiredLength = mask.replace(/[^*]/g, '').length
+      return phoneInfo.phone.length === requiredLength
+    })
+
+    if (!isValidLength) {
+      result.errors.push('Invalid number length')
+      return result
+    }
+
+    // Format number
+    const formatted = GeoPhone.toMask(phoneInfo.phone, phoneInfo.item.mask)
+    if (formatted) {
+      result.formattedNumber = formatted
+      result.isValid = true
+    } else {
+      result.errors.push('Could not format number')
+    }
+
+    return result
+  }
+
+  // Clean number from non-numeric characters
+  cleanPhoneNumber(phone) {
+    if (typeof phone !== 'string') return ''
+
+    // Remove all characters except digits and +
+    let cleaned = phone.replace(/[^\d+]/g, '')
+
+    // If number starts with +, keep it
+    if (cleaned.startsWith('+')) {
+      cleaned = '+' + cleaned.slice(1).replace(/[^0-9]/g, '')
+    } else {
+      cleaned = cleaned.replace(/[^0-9]/g, '')
+    }
+
+    return cleaned
+  }
+
+  // Get all possible formats for country
+  getCountryFormats(countryCode) {
+    const phoneData = GeoPhone.get(countryCode)
+    if (!phoneData) return []
+
+    return phoneData.mask.map(mask => ({
+      mask,
+      example: this.generateExample(mask),
+      description: this.getMaskDescription(mask)
+    }))
+  }
+
+  // Generate example number by mask
+  generateExample(mask) {
+    return mask.replace(/\*/g, () => Math.floor(Math.random() * 10))
+  }
+
+  // Mask description
+  getMaskDescription(mask) {
+    const descriptions = {
+      '+7 (***) ***-**-**': 'Russian mobile number',
+      '+7 *** ***-**-**': 'Russian number (alternative format)',
+      '+1 (***) ***-****': 'American number',
+      '+49 *** ******': 'German number',
+      '+33 * ** ** ** **': 'French number'
+    }
+
+    return descriptions[mask] || 'International number'
+  }
+
+  // Batch validation
+  validateBatch(phoneNumbers, countryCode = null) {
+    return phoneNumbers.map(phone => ({
+      original: phone,
+      validation: this.validate(phone, countryCode)
+    }))
+  }
+
+  // Validation statistics
+  getValidationStats(results) {
+    const total = results.length
+    const valid = results.filter(r => r.validation.isValid).length
+    const invalid = total - valid
+
+    const countryCounts = {}
+    results.forEach(r => {
+      if (r.validation.country) {
+        countryCounts[r.validation.country] = (countryCounts[r.validation.country] || 0) + 1
+      }
+    })
+
+    return {
+      total,
+      valid,
+      invalid,
+      validPercent: Math.round((valid / total) * 100),
+      countryCounts
+    }
+  }
+}
+
+// Usage
+const validator = new PhoneValidator()
+
+// Validate single number
+const result = validator.validate('+1 (212) 555-1234')
+console.log('Validation result:', result)
+
+// Validate with country specification
+const resultWithCountry = validator.validate('2125551234', 'US')
+console.log('Validation for US:', resultWithCountry)
+
+// Get formats for country
+const usFormats = validator.getCountryFormats('US')
+console.log('Formats for US:', usFormats)
+
+// Batch validation
+const phoneNumbers = [
+  '+1 (212) 555-1234',
+  '+7 916 123-45-67',
+  '+49 30 12345678',
+  'invalid phone',
+  '+33 1 23 45 67 89'
+]
+
+const batchResults = validator.validateBatch(phoneNumbers)
+console.log('Batch validation results:', batchResults)
+
+// Statistics
+const stats = validator.getValidationStats(batchResults)
+console.log('Statistics:', stats)
+```
+
+### Phone Number Analyzer
+
+```javascript
+class PhoneAnalyzer {
+  constructor() {
+    this.phoneList = GeoPhone.getList()
+    this.phoneMap = GeoPhone.getMap()
+  }
+
+  // Detailed number analysis
+  analyzePhone(phoneNumber) {
+    const cleanNumber = phoneNumber.replace(/\D/g, '')
+    const phoneInfo = GeoPhone.getByPhone(phoneNumber)
+
+    const analysis = {
+      original: phoneNumber,
+      cleaned: cleanNumber,
+      country: null,
+      countryCode: null,
+      nationalNumber: null,
+      possibleFormats: [],
+      isValid: false,
+      confidence: 0
+    }
+
+    if (phoneInfo.item) {
+      analysis.country = phoneInfo.item.value
+      analysis.countryCode = phoneInfo.item.info?.phone
+      analysis.nationalNumber = phoneInfo.phone
+      analysis.possibleFormats = phoneInfo.item.mask
+
+      // Check validity
+      const validFormat = phoneInfo.item.mask.find(mask => {
+        const requiredLength = mask.replace(/[^*]/g, '').length
+        return phoneInfo.phone.length === requiredLength
+      })
+
+      analysis.isValid = !!validFormat
+      analysis.confidence = this.calculateConfidence(phoneInfo, cleanNumber)
+    }
+
+    return analysis
+  }
+
+  // Calculate confidence in country detection
+  calculateConfidence(phoneInfo, cleanNumber) {
+    if (!phoneInfo.item) return 0
+
+    let confidence = 50 // base confidence
+
+    // Increase confidence if there's exact length match
+    const exactMatch = phoneInfo.item.mask.some(mask => {
+      const requiredLength = mask.replace(/[^*]/g, '').length
+      return phoneInfo.phone.length === requiredLength
+    })
+
+    if (exactMatch) confidence += 30
+
+    // Increase confidence if country code is exactly determined
+    if (phoneInfo.item.info?.phone &&
+        cleanNumber.startsWith(phoneInfo.item.info.phone.toString())) {
+      confidence += 20
+    }
+
+    return Math.min(confidence, 100)
+  }
+
+  // Compare numbers
+  comparePhones(phone1, phone2) {
+    const analysis1 = this.analyzePhone(phone1)
+    const analysis2 = this.analyzePhone(phone2)
+
+    return {
+      areSame: analysis1.cleaned === analysis2.cleaned,
+      sameCountry: analysis1.country === analysis2.country,
+      phone1: analysis1,
+      phone2: analysis2,
+      similarity: this.calculateSimilarity(analysis1.cleaned, analysis2.cleaned)
+    }
+  }
+
+  // Calculate number similarity
+  calculateSimilarity(num1, num2) {
+    if (num1 === num2) return 100
+
+    const maxLength = Math.max(num1.length, num2.length)
+    const minLength = Math.min(num1.length, num2.length)
+
+    let matches = 0
+    for (let i = 0; i < minLength; i++) {
+      if (num1[i] === num2[i]) matches++
+    }
+
+    return Math.round((matches / maxLength) * 100)
+  }
+
+  // Find similar formats
+  findSimilarFormats(phoneNumber) {
+    const analysis = this.analyzePhone(phoneNumber)
+    if (!analysis.country) return []
+
+    const countryData = GeoPhone.get(analysis.country)
+    if (!countryData) return []
+
+    return countryData.mask.map(mask => {
+      const formatted = GeoPhone.toMask(analysis.nationalNumber, [mask])
+      return {
+        mask,
+        formatted,
+        description: this.getMaskDescription(mask)
+      }
+    }).filter(item => item.formatted)
+  }
+
+  getMaskDescription(mask) {
+    // Analyze mask to create description
+    const digitCount = (mask.match(/\*/g) || []).length
+    const hasParentheses = mask.includes('(') && mask.includes(')')
+    const hasDashes = mask.includes('-')
+    const hasSpaces = mask.includes(' ')
+
+    let description = `${digitCount} digits`
+
+    if (hasParentheses) description += ', with parentheses'
+    if (hasDashes) description += ', with dashes'
+    if (hasSpaces) description += ', with spaces'
+
+    return description
+  }
+
+  // Extract numbers from text
+  extractPhonesFromText(text) {
+    // Regular expressions for finding numbers
+    const patterns = [
+      /\+\d{1,3}\s*\(?\d{1,4}\)?\s*[\d\s\-\(\)]{6,}/g,  // international numbers
+      /\b\d{3}[\s\-]?\d{3}[\s\-]?\d{4}\b/g,              // american numbers
+      /\b[78]\d{10}\b/g,                                  // russian numbers
+      /\b\d{1,4}[\s\-]\d{3,4}[\s\-]\d{3,4}[\s\-]?\d{0,4}\b/g // general patterns
+    ]
+
+    const foundNumbers = new Set()
+
+    patterns.forEach(pattern => {
+      const matches = text.match(pattern) || []
+      matches.forEach(match => foundNumbers.add(match.trim()))
+    })
+
+    return Array.from(foundNumbers).map(phone => this.analyzePhone(phone))
+  }
+
+  // Statistics for all available countries
+  getGlobalPhoneStatistics() {
+    const stats = {
+      totalCountries: this.phoneList.length,
+      codeDistribution: {},
+      maskComplexity: {},
+      averageMasks: 0
+    }
+
+    this.phoneList.forEach(country => {
+      // Distribution by codes
+      const code = country.phone
+      stats.codeDistribution[code] = (stats.codeDistribution[code] || 0) + 1
+
+      // Mask complexity
+      const complexity = country.mask.reduce((acc, mask) => {
+        return acc + (mask.match(/\*/g) || []).length
+      }, 0) / country.mask.length
+
+      stats.maskComplexity[country.value] = Math.round(complexity)
+    })
+
+    // Average masks per country
+    const totalMasks = this.phoneList.reduce((acc, country) => acc + country.mask.length, 0)
+    stats.averageMasks = Math.round(totalMasks / this.phoneList.length * 100) / 100
+
+    return stats
+  }
+}
+
+// Usage
+const analyzer = new PhoneAnalyzer()
+
+// Analyze number
+const analysis = analyzer.analyzePhone('+1 (212) 555-1234')
+console.log('Number analysis:', analysis)
+
+// Compare numbers
+const comparison = analyzer.comparePhones('+1 212 555-1234', '(212) 555-1234')
+console.log('Comparison:', comparison)
+
+// Find similar formats
+const similarFormats = analyzer.findSimilarFormats('+12125551234')
+console.log('Similar formats:', similarFormats)
+
+// Extract numbers from text
+const text = 'Call me: +1 (212) 555-1234 or +7 916 123-45-67. German number: +49 30 12345678'
+const extractedPhones = analyzer.extractPhonesFromText(text)
+console.log('Found numbers:', extractedPhones)
+
+// Global statistics
+const globalStats = analyzer.getGlobalPhoneStatistics()
+console.log('Global statistics:', globalStats)
+```
+
+The GeoPhone class provides a powerful toolkit for working with phone numbers, including validation, formatting, country detection, and number analysis with support for international standards.

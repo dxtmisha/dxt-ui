@@ -1,0 +1,850 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/EventItem'/>
+
+# Класс EventItem
+
+Мощный класс для управления событиями DOM с поддержкой TypeScript, автоматическим отслеживанием жизненного цикла элементов и оптимизированными обработчиками событий. Предоставляет гибкий API для работы с событиями, включая специальные обработчики для resize и scroll.
+
+## Основные возможности
+
+- **Типобезопасное управление событиями** — полная поддержка TypeScript с дженериками
+- **Автоматическое отслеживание DOM** — события автоматически отключаются при удалении элементов из DOM
+- **Множественные типы событий** — поддержка обработки нескольких типов событий одновременно
+- **Специальные обработчики** — оптимизированные обработчики для resize (ResizeObserver) и scroll
+- **Гибкое управление состоянием** — легкое включение/выключение событий
+- **Настраиваемые опции** — поддержка всех стандартных опций addEventListener
+- **Диспетчеризация событий** — возможность программного вызова событий
+- **Контроль элементов** — отдельный контроль элемента для отслеживания состояния DOM
+
+## Конструктор
+
+### `constructor`
+
+Создаёт экземпляр EventItem с указанными параметрами.
+
+**Параметры:**
+- `elementSelector?: ElementOrString<E>` — элемент или селектор для привязки события (опционально)
+- `type: string | string[]` — тип события или массив типов (по умолчанию ['click'])
+- `listener?: EventListenerDetail<O, D>` — функция-обработчик события (опционально)
+- `options?: EventOptions` — опции для addEventListener (опционально)
+- `detail?: D` — данные для передачи в событие (опционально)
+
+```javascript
+import { EventItem } from '@dxtmisha/functional'
+
+// Простое создание события клика
+const clickEvent = new EventItem(
+  document.getElementById('button'),
+  'click',
+  (event, detail) => {
+    console.log('Кнопка нажата!', event, detail)
+  }
+)
+
+// Множественные события
+const multiEvent = new EventItem(
+  '.interactive-element',
+  ['mouseenter', 'mouseleave'],
+  (event) => {
+    console.log(`Событие: ${event.type}`)
+  }
+)
+
+// С дополнительными данными
+const dataEvent = new EventItem(
+  '#form',
+  'submit',
+  (event, detail) => {
+    console.log('Форма отправлена:', detail)
+  },
+  { passive: false },
+  { formId: 'contact-form', timestamp: Date.now() }
+)
+```
+
+## Методы получения состояния
+
+### `isActive`
+
+Проверяет, активно ли прослушивание событий в данный момент.
+
+**Возвращает:** `boolean` — true если события прослушиваются
+
+```javascript
+const event = new EventItem('#button', 'click', () => {})
+
+console.log(event.isActive()) // false
+
+event.start()
+console.log(event.isActive()) // true
+
+event.stop()
+console.log(event.isActive()) // false
+```
+
+### `getElement`
+
+Возвращает элемент, к которому привязано событие.
+
+**Возвращает:** `E | undefined` — элемент или undefined
+
+```javascript
+const event = new EventItem('#button', 'click', () => {})
+const element = event.getElement()
+
+if (element) {
+  console.log('Элемент найден:', element.tagName)
+} else {
+  console.log('Элемент не найден')
+}
+```
+
+## Методы настройки
+
+### `setElement`
+
+Изменяет элемент для отслеживания событий.
+
+**Параметры:**
+- `elementSelector?: ElementOrString<E>` — новый элемент или селектор
+
+**Возвращает:** `this` — для цепочки вызовов
+
+```javascript
+const event = new EventItem()
+
+// Установка элемента
+event.setElement('#button')
+  .setType('click')
+  .setListener(() => console.log('Клик!'))
+  .start()
+
+// Изменение элемента
+event.setElement('#another-button') // автоматически перезапускает событие
+```
+
+### `setElementControl`
+
+Устанавливает отдельный элемент для контроля состояния DOM.
+
+**Параметры:**
+- `elementSelector?: ElementOrString<EC>` — элемент для контроля
+
+**Возвращает:** `this` — для цепочки вызовов
+
+```javascript
+const event = new EventItem(window, 'resize', () => {
+  console.log('Размер окна изменился')
+})
+
+// Контролировать наличие специфического элемента
+event.setElementControl('#main-container')
+  .start()
+
+// Событие автоматически остановится, если #main-container будет удален из DOM
+```
+
+### `setType`
+
+Изменяет тип или типы обрабатываемых событий.
+
+**Параметры:**
+- `type: string | string[]` — новый тип события или массив типов
+
+**Возвращает:** `this` — для цепочки вызовов
+
+```javascript
+const event = new EventItem('#element')
+
+// Один тип события
+event.setType('click')
+
+// Множественные типы
+event.setType(['mouseenter', 'mouseleave', 'focus', 'blur'])
+
+// Изменение типа перезапускает активные события
+event.start()
+event.setType('dblclick') // автоматически перезапускается с новым типом
+```
+
+### `setListener`
+
+Изменяет функцию-обработчик события.
+
+**Параметры:**
+- `listener: EventListenerDetail<O, D>` — новая функция-обработчик
+
+**Возвращает:** `this` — для цепочки вызовов
+
+```javascript
+const event = new EventItem('#button', 'click')
+
+// Установка первого обработчика
+event.setListener((event, detail) => {
+  console.log('Первый обработчик')
+})
+
+// Замена обработчика
+event.setListener((event, detail) => {
+  console.log('Новый обработчик', detail)
+})
+```
+
+### `setOptions`
+
+Изменяет опции для addEventListener.
+
+**Параметры:**
+- `options?: EventOptions` — новые опции
+
+**Возвращает:** `this` — для цепочки вызовов
+
+```javascript
+const event = new EventItem('#element', 'scroll')
+
+// Установка опций
+event.setOptions({
+  passive: true,
+  capture: false
+})
+
+// Опции для одноразового события
+event.setOptions({
+  once: true,
+  passive: false
+})
+```
+
+### `setDetail`
+
+Изменяет данные, передаваемые в обработчик события.
+
+**Параметры:**
+- `detail?: D` — новые данные
+
+**Возвращает:** `this` — для цепочки вызовов
+
+```javascript
+const event = new EventItem('#form', 'submit', (event, detail) => {
+  console.log('Данные формы:', detail)
+})
+
+// Установка начальных данных
+event.setDetail({
+  formType: 'contact',
+  validation: true
+})
+
+// Обновление данных
+event.setDetail({
+  formType: 'newsletter',
+  validation: false,
+  timestamp: Date.now()
+})
+```
+
+## Управление событиями
+
+### `start`
+
+Запускает прослушивание событий.
+
+**Возвращает:** `this` — для цепочки вызовов
+
+```javascript
+const event = new EventItem('#button', 'click', () => {
+  console.log('Кнопка нажата!')
+})
+
+// Запуск прослушивания
+event.start()
+
+// Проверка состояния
+console.log(event.isActive()) // true
+```
+
+### `stop`
+
+Останавливает прослушивание событий.
+
+**Возвращает:** `this` — для цепочки вызовов
+
+```javascript
+const event = new EventItem('#button', 'click', () => {
+  console.log('Этот обработчик больше не вызывается')
+})
+
+event.start()
+// ... событие активно ...
+event.stop()
+
+console.log(event.isActive()) // false
+```
+
+### `toggle`
+
+Переключает состояние прослушивания событий.
+
+**Параметры:**
+- `activity: boolean` — true для запуска, false для остановки
+
+**Возвращает:** `this` — для цепочки вызовов
+
+```javascript
+const event = new EventItem('#toggle-btn', 'click', () => {
+  console.log('Переключатель!')
+})
+
+let isListening = false
+
+// Переключение состояния
+document.getElementById('control-btn').addEventListener('click', () => {
+  isListening = !isListening
+  event.toggle(isListening)
+  console.log('Прослушивание:', isListening)
+})
+```
+
+### `reset`
+
+Перезапускает прослушивание событий (останавливает и запускает заново).
+
+**Возвращает:** `this` — для цепочки вызовов
+
+```javascript
+const event = new EventItem('#element', 'click', () => {
+  console.log('Клик!')
+})
+
+event.start()
+
+// Изменение настроек требует перезапуска
+event.setOptions({ passive: true })
+  .reset() // Применяет новые опции
+```
+
+### `dispatch`
+
+Программно запускает событие.
+
+**Параметры:**
+- `detail?: D` — данные для события (по умолчанию используется this.detail)
+
+**Возвращает:** `this` — для цепочки вызовов
+
+```javascript
+const event = new EventItem('#button', 'custom-event', (event, detail) => {
+  console.log('Пользовательское событие:', detail)
+})
+
+event.start()
+
+// Программный вызов события
+event.dispatch({
+  message: 'Привет из кода!',
+  timestamp: Date.now()
+})
+
+// Или с новыми данными
+event.dispatch({
+  message: 'Другое сообщение',
+  source: 'manual'
+})
+```
+
+## Специальные типы событий
+
+### Событие `resize`
+
+EventItem автоматически использует ResizeObserver для оптимизированного отслеживания изменений размера элементов.
+
+```javascript
+const resizeEvent = new EventItem('#resizable-element', 'resize', (entry) => {
+  console.log('Новые размеры:', {
+    width: entry.contentRect.width,
+    height: entry.contentRect.height
+  })
+})
+
+resizeEvent.start()
+
+// ResizeObserver будет использован автоматически для лучшей производительности
+```
+
+### Событие `scroll-sync`
+
+Специальное событие для синхронизированного скролла с оптимизацией через requestAnimationFrame.
+
+```javascript
+const scrollEvent = new EventItem('#scrollable-container', 'scroll-sync', () => {
+  console.log('Синхронизированный скролл')
+})
+
+scrollEvent.start()
+
+// Обработчик будет вызываться не чаще одного раза за кадр анимации
+```
+
+## Практические примеры
+
+### Система управления модальными окнами
+
+```javascript
+class ModalManager {
+  constructor() {
+    this.modals = new Map()
+    this.overlayEvent = null
+    this.escapeEvent = null
+  }
+
+  createModal(id, element) {
+    // Событие для открытия модального окна
+    const openEvent = new EventItem(
+      `[data-modal-trigger="${id}"]`,
+      'click',
+      (event) => {
+        event.preventDefault()
+        this.openModal(id)
+      }
+    )
+
+    // Событие для закрытия по кнопке
+    const closeEvent = new EventItem(
+      element.querySelector('.modal-close'),
+      'click',
+      () => this.closeModal(id)
+    )
+
+    this.modals.set(id, {
+      element,
+      openEvent,
+      closeEvent,
+      isOpen: false
+    })
+
+    // Запуск событий
+    openEvent.start()
+    closeEvent.start()
+  }
+
+  openModal(id) {
+    const modal = this.modals.get(id)
+    if (!modal || modal.isOpen) return
+
+    modal.element.classList.add('modal-open')
+    modal.isOpen = true
+
+    // Создание событий для закрытия
+    this.setupGlobalCloseEvents(id)
+  }
+
+  closeModal(id) {
+    const modal = this.modals.get(id)
+    if (!modal || !modal.isOpen) return
+
+    modal.element.classList.remove('modal-open')
+    modal.isOpen = false
+
+    // Удаление глобальных событий
+    this.removeGlobalCloseEvents()
+  }
+
+  setupGlobalCloseEvents(id) {
+    // Закрытие по клику на overlay
+    this.overlayEvent = new EventItem(
+      document,
+      'click',
+      (event) => {
+        if (event.target.classList.contains('modal-overlay')) {
+          this.closeModal(id)
+        }
+      }
+    )
+
+    // Закрытие по Escape
+    this.escapeEvent = new EventItem(
+      document,
+      'keydown',
+      (event) => {
+        if (event.key === 'Escape') {
+          this.closeModal(id)
+        }
+      }
+    )
+
+    this.overlayEvent.start()
+    this.escapeEvent.start()
+  }
+
+  removeGlobalCloseEvents() {
+    this.overlayEvent?.stop()
+    this.escapeEvent?.stop()
+    this.overlayEvent = null
+    this.escapeEvent = null
+  }
+
+  destroy() {
+    this.modals.forEach((modal) => {
+      modal.openEvent.stop()
+      modal.closeEvent.stop()
+    })
+    this.removeGlobalCloseEvents()
+    this.modals.clear()
+  }
+}
+
+// Использование
+const modalManager = new ModalManager()
+
+// Создание модальных окон
+modalManager.createModal('login', document.getElementById('login-modal'))
+modalManager.createModal('settings', document.getElementById('settings-modal'))
+```
+
+### Адаптивная система навигации
+
+```javascript
+class ResponsiveNavigation {
+  constructor(navElement, mobileBreakpoint = 768) {
+    this.nav = navElement
+    this.mobileBreakpoint = mobileBreakpoint
+    this.isMobile = false
+    this.isMenuOpen = false
+
+    this.initEvents()
+  }
+
+  initEvents() {
+    // Отслеживание изменения размера окна
+    this.resizeEvent = new EventItem(
+      window,
+      'resize',
+      () => this.handleResize()
+    )
+
+    // Переключатель мобильного меню
+    this.toggleEvent = new EventItem(
+      this.nav.querySelector('.nav-toggle'),
+      'click',
+      () => this.toggleMobileMenu()
+    )
+
+    // Закрытие меню при клике вне его
+    this.outsideClickEvent = new EventItem(
+      document,
+      'click',
+      (event) => this.handleOutsideClick(event)
+    )
+
+    // Обработка клавиатурной навигации
+    this.keyboardEvent = new EventItem(
+      this.nav,
+      'keydown',
+      (event) => this.handleKeyboard(event)
+    )
+
+    // Запуск событий
+    this.resizeEvent.start()
+    this.toggleEvent.start()
+
+    // Первоначальная проверка размера
+    this.handleResize()
+  }
+
+  handleResize() {
+    const newIsMobile = window.innerWidth < this.mobileBreakpoint
+
+    if (newIsMobile !== this.isMobile) {
+      this.isMobile = newIsMobile
+
+      if (this.isMobile) {
+        this.setupMobileMode()
+      } else {
+        this.setupDesktopMode()
+      }
+    }
+  }
+
+  setupMobileMode() {
+    this.nav.classList.add('nav-mobile')
+    this.outsideClickEvent.start()
+    this.keyboardEvent.start()
+
+    if (this.isMenuOpen) {
+      this.closeMenu()
+    }
+  }
+
+  setupDesktopMode() {
+    this.nav.classList.remove('nav-mobile', 'nav-open')
+    this.outsideClickEvent.stop()
+    this.keyboardEvent.stop()
+    this.isMenuOpen = false
+  }
+
+  toggleMobileMenu() {
+    if (!this.isMobile) return
+
+    this.isMenuOpen = !this.isMenuOpen
+    this.nav.classList.toggle('nav-open', this.isMenuOpen)
+
+    // Установка фокуса для доступности
+    if (this.isMenuOpen) {
+      this.nav.querySelector('a')?.focus()
+    }
+  }
+
+  closeMenu() {
+    if (this.isMenuOpen) {
+      this.isMenuOpen = false
+      this.nav.classList.remove('nav-open')
+    }
+  }
+
+  handleOutsideClick(event) {
+    if (this.isMobile && this.isMenuOpen && !this.nav.contains(event.target)) {
+      this.closeMenu()
+    }
+  }
+
+  handleKeyboard(event) {
+    if (event.key === 'Escape' && this.isMenuOpen) {
+      this.closeMenu()
+      this.nav.querySelector('.nav-toggle')?.focus()
+    }
+  }
+
+  destroy() {
+    this.resizeEvent.stop()
+    this.toggleEvent.stop()
+    this.outsideClickEvent.stop()
+    this.keyboardEvent.stop()
+  }
+}
+
+// Использование
+const navigation = new ResponsiveNavigation(
+  document.querySelector('.main-nav'),
+  768
+)
+```
+
+### Система drag-and-drop
+
+```javascript
+class DragDropManager {
+  constructor() {
+    this.dragEvents = new Map()
+    this.dropZones = new Map()
+    this.currentDragging = null
+  }
+
+  makeDraggable(element, data = {}) {
+    const dragStartEvent = new EventItem(
+      element,
+      'dragstart',
+      (event) => this.handleDragStart(event, element, data)
+    )
+
+    const dragEndEvent = new EventItem(
+      element,
+      'dragend',
+      (event) => this.handleDragEnd(event, element)
+    )
+
+    element.draggable = true
+    element.classList.add('draggable')
+
+    dragStartEvent.start()
+    dragEndEvent.start()
+
+    this.dragEvents.set(element, {
+      dragStartEvent,
+      dragEndEvent,
+      data
+    })
+  }
+
+  createDropZone(element, onDrop, acceptTypes = []) {
+    const dragOverEvent = new EventItem(
+      element,
+      ['dragover', 'dragenter'],
+      (event) => this.handleDragOver(event, element),
+      { passive: false }
+    )
+
+    const dragLeaveEvent = new EventItem(
+      element,
+      'dragleave',
+      (event) => this.handleDragLeave(event, element)
+    )
+
+    const dropEvent = new EventItem(
+      element,
+      'drop',
+      (event) => this.handleDrop(event, element, onDrop),
+      { passive: false }
+    )
+
+    element.classList.add('drop-zone')
+
+    dragOverEvent.start()
+    dragLeaveEvent.start()
+    dropEvent.start()
+
+    this.dropZones.set(element, {
+      dragOverEvent,
+      dragLeaveEvent,
+      dropEvent,
+      onDrop,
+      acceptTypes
+    })
+  }
+
+  handleDragStart(event, element, data) {
+    this.currentDragging = { element, data }
+    element.classList.add('dragging')
+
+    // Установка данных для drag operation
+    event.dataTransfer.effectAllowed = 'move'
+    event.dataTransfer.setData('text/plain', JSON.stringify(data))
+
+    // Подсветка доступных drop zones
+    this.highlightDropZones(true)
+  }
+
+  handleDragEnd(event, element) {
+    element.classList.remove('dragging')
+    this.highlightDropZones(false)
+    this.currentDragging = null
+  }
+
+  handleDragOver(event, element) {
+    event.preventDefault()
+
+    if (this.canAcceptDrop(element)) {
+      element.classList.add('drag-over')
+      event.dataTransfer.dropEffect = 'move'
+    } else {
+      event.dataTransfer.dropEffect = 'none'
+    }
+  }
+
+  handleDragLeave(event, element) {
+    // Проверяем, что мы действительно покинули элемент
+    if (!element.contains(event.relatedTarget)) {
+      element.classList.remove('drag-over')
+    }
+  }
+
+  handleDrop(event, element, onDrop) {
+    event.preventDefault()
+    element.classList.remove('drag-over')
+
+    if (this.canAcceptDrop(element) && this.currentDragging) {
+      const dropData = {
+        draggedElement: this.currentDragging.element,
+        draggedData: this.currentDragging.data,
+        dropZone: element,
+        event
+      }
+
+      onDrop(dropData)
+    }
+  }
+
+  canAcceptDrop(dropZone) {
+    const dropZoneData = this.dropZones.get(dropZone)
+    if (!dropZoneData || !this.currentDragging) return false
+
+    // Проверка типов, если указаны
+    if (dropZoneData.acceptTypes.length > 0) {
+      const dragType = this.currentDragging.data.type
+      return dropZoneData.acceptTypes.includes(dragType)
+    }
+
+    return true
+  }
+
+  highlightDropZones(highlight) {
+    this.dropZones.forEach((_, element) => {
+      if (this.canAcceptDrop(element)) {
+        element.classList.toggle('drop-zone-available', highlight)
+      }
+    })
+  }
+
+  removeDraggable(element) {
+    const events = this.dragEvents.get(element)
+    if (events) {
+      events.dragStartEvent.stop()
+      events.dragEndEvent.stop()
+      this.dragEvents.delete(element)
+    }
+
+    element.draggable = false
+    element.classList.remove('draggable')
+  }
+
+  removeDropZone(element) {
+    const events = this.dropZones.get(element)
+    if (events) {
+      events.dragOverEvent.stop()
+      events.dragLeaveEvent.stop()
+      events.dropEvent.stop()
+      this.dropZones.delete(element)
+    }
+
+    element.classList.remove('drop-zone')
+  }
+
+  destroy() {
+    this.dragEvents.forEach((events) => {
+      events.dragStartEvent.stop()
+      events.dragEndEvent.stop()
+    })
+
+    this.dropZones.forEach((events) => {
+      events.dragOverEvent.stop()
+      events.dragLeaveEvent.stop()
+      events.dropEvent.stop()
+    })
+
+    this.dragEvents.clear()
+    this.dropZones.clear()
+  }
+}
+
+// Использование
+const dragDrop = new DragDropManager()
+
+// Создание перетаскиваемых элементов
+document.querySelectorAll('.draggable-item').forEach(item => {
+  dragDrop.makeDraggable(item, {
+    type: item.dataset.type,
+    id: item.id,
+    content: item.textContent
+  })
+})
+
+// Создание зон сброса
+dragDrop.createDropZone(
+  document.getElementById('trash'),
+  (data) => {
+    console.log('Элемент удален:', data.draggedData)
+    data.draggedElement.remove()
+  }
+)
+
+dragDrop.createDropZone(
+  document.getElementById('category-a'),
+  (data) => {
+    console.log('Перемещено в категорию A:', data.draggedData)
+    data.dropZone.appendChild(data.draggedElement)
+  },
+  ['category-a', 'universal'] // принимает только определенные типы
+)
+```
+
+Класс EventItem предоставляет мощный и гибкий инструмент для управления событиями DOM в JavaScript-приложениях, обеспечивая типобезопасность, автоматическое управление жизненным циклом и оптимизированную производительность.

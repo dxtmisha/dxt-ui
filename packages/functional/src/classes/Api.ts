@@ -25,21 +25,52 @@ export enum ApiMethodItem {
 
 export type ApiMethod = string & ApiMethodItem
 export type ApiFetch = {
+  /** Use base API URL/ Использовать базовый URL API */
   api?: boolean
+
+  /** Endpoint path relative to base URL/ Путь endpoint относительно базового URL */
   path?: string
+
+  /** Complete URL (overrides api + path)/ Полный URL (переопределяет api + path) */
   pathFull?: string
+
+  /** HTTP method/ HTTP метод */
   method?: ApiMethod
+
+  /** Request body data or query parameters/ Данные тела запроса или параметры запроса */
   request?: FormData | Record<string, any> | string
+
+  /** Include authentication headers/ Включить заголовки аутентификации */
   auth?: boolean
+
+  /** Custom headers (null = no headers)/ Пользовательские заголовки (null = без заголовков) */
   headers?: Record<string, string> | null
+
+  /** Content-Type header value/ Значение заголовка Content-Type */
   type?: string
+
+  /** Extract 'data' field from response/ Извлечь поле 'data' из ответа */
   toData?: boolean
+
+  /** Use global response cache/ Использовать глобальный кеш ответов */
   global?: boolean
+
+  /** Enable development logging/ Включить логирование разработки */
   devMode?: boolean
+
+  /** Suppress error logging/ Подавить логирование ошибок */
   hideError?: boolean
+
+  /** Custom response processor/ Пользовательский процессор ответа */
   queryReturn?: (query: Response) => Promise<any>
+
+  /** Run global preparation hooks/ Запускать глобальные хуки подготовки */
   globalPreparation?: boolean
+
+  /** Run global end hooks/ Запускать глобальные хуки завершения */
   globalEnd?: boolean
+
+  /** Additional fetch() options/ Дополнительные опции fetch() */
   init?: RequestInit
 }
 export type ApiResponse = {

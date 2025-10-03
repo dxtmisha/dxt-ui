@@ -1,0 +1,347 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Cookie'/>
+
+# Класс Cookie
+
+Класс для работы с браузерными cookie с автоматической сериализацией, singleton паттерном и интеграцией с CookieBlock для соблюдения приватности. Предоставляет типобезопасные операции с cookie с настраиваемыми опциями как max-age, SameSite и пользовательские атрибуты.
+
+## Основные возможности
+
+- **Типобезопасное управление cookie** — полная поддержка TypeScript с дженериками для данных cookie
+- **Автоматическая сериализация** — обрабатывает JSON сериализацию/десериализацию сложных данных
+- **Singleton паттерн** — переиспользует экземпляры для одинаковых имён cookie
+- **Соблюдение приватности** — интегрируется с CookieBlock для учёта пользовательских настроек cookie
+- **Настраиваемые опции** — поддерживает max-age, SameSite и пользовательские атрибуты cookie
+- **Поддержка функций как значений** — принимает функции как значения для динамической генерации cookie
+- **Совместимость с браузерами** — безопасное использование с серверным рендерингом
+- **Автоматическая инициализация** — читает существующие cookie при загрузке класса
+
+## Конструктор
+
+### `constructor`
+
+Создаёт экземпляр Cookie для указанного имени cookie. Использует singleton паттерн.
+
+**Параметры:**
+- `name: string` — имя cookie
+
+```javascript
+import { Cookie } from '@dxtmisha/functional'
+
+// Создать экземпляры cookie
+const userTheme = new Cookie('user-theme')
+const sessionToken = new Cookie('session-token')
+
+// Поведение singleton
+const sameInstance = new Cookie('user-theme')
+console.log(userTheme === sameInstance) // true
+```
+
+## Операции с данными
+
+### `get`
+
+Получает значение cookie с опциональным значением по умолчанию и опциями cookie.
+
+**Параметры:**
+- `defaultValue?: T | string | (() => (T | string))` — значение по умолчанию или функция, если cookie не существует (опционально)
+- `options?: CookieOptions` — опции cookie для установки значения по умолчанию (опционально)
+
+**Возвращает:** `T | string | undefined` — значение cookie, значение по умолчанию или undefined
+
+```javascript
+const themeCookie = new Cookie('theme')
+
+// Получить существующий cookie
+const currentTheme = themeCookie.get()
+console.log(currentTheme) // undefined если не установлен, или сохранённое значение
+
+// Получить со значением по умолчанию
+const theme = themeCookie.get('light')
+console.log(theme) // 'light' если cookie не существует, устанавливает и возвращает значение по умолчанию
+
+// Получить с функцией по умолчанию
+const settings = new Cookie('settings')
+const config = settings.get(() => ({
+  theme: 'dark',
+  language: 'ru',
+  notifications: true
+}))
+
+// Получить с опциями для установки по умолчанию
+const preferences = new Cookie('preferences')
+const prefs = preferences.get(
+  { sidebar: true, tooltips: false },
+  { age: 30 * 24 * 60 * 60 } // 30 дней
+)
+```
+
+### `set`
+
+Обновляет данные cookie с опциональной конфигурацией.
+
+**Параметры:**
+- `value?: T | string | (() => (T | string))` — значение для сохранения или функция, возвращающая значение (опционально)
+- `options?: CookieOptions` — опции конфигурации cookie (опционально)
+
+**Возвращает:** `void`
+
+```javascript
+const userCookie = new Cookie('user-data')
+
+// Установить простое значение
+userCookie.set('ivan_petrov')
+
+// Установить объект (автоматически сериализуется)
+userCookie.set({
+  id: 1,
+  name: 'Иван Петров',
+  preferences: { theme: 'dark' }
+})
+
+// Установить с функцией
+userCookie.set(() => ({
+  sessionId: Math.random().toString(36),
+  timestamp: Date.now()
+}))
+
+// Установить с опциями
+userCookie.set('important-data', {
+  age: 365 * 24 * 60 * 60, // 1 год в секундах
+  sameSite: 'strict',
+  arguments: ['Secure', 'HttpOnly']
+})
+```
+
+### `remove`
+
+Удаляет cookie, устанавливая пустое значение.
+
+```javascript
+userCookie.remove()
+// Эквивалентно: userCookie.set('')
+```
+
+## Опции Cookie
+
+### Интерфейс `CookieOptions`
+
+```typescript
+interface CookieOptions {
+  /** Cookie max-age в секундах (по умолчанию: 7 дней) */
+  age?: number
+
+  /** Атрибут SameSite: 'strict' | 'lax' (по умолчанию: 'strict') */
+  sameSite?: 'strict' | 'lax'
+
+  /** Дополнительные атрибуты cookie */
+  arguments?: string[]
+}
+```
+
+### Примеры опций
+
+```javascript
+const secureCookie = new Cookie('secure-data')
+
+// Базовые опции
+secureCookie.set('sensitive-data', {
+  age: 60 * 60, // 1 час
+  sameSite: 'strict'
+})
+
+// Продвинутые опции с пользовательскими атрибутами
+secureCookie.set('auth-token', {
+  age: 24 * 60 * 60, // 24 часа
+  sameSite: 'lax',
+  arguments: ['Secure', 'HttpOnly', 'Path=/api']
+})
+
+// Долгосрочное хранение
+const rememberMeCookie = new Cookie('remember-me')
+rememberMeCookie.set(true, {
+  age: 365 * 24 * 60 * 60 // 1 год
+})
+```
+
+## Практические примеры
+
+### Аутентификация пользователя
+
+```javascript
+class AuthManager {
+  constructor() {
+    this.tokenCookie = new Cookie('auth-token')
+    this.userCookie = new Cookie('user-data')
+  }
+
+  login(credentials) {
+    // Имитация API вызова входа
+    const authResponse = {
+      token: 'jwt-token-here',
+      user: { id: 1, name: 'Иван Петров', role: 'admin' },
+      expiresIn: 24 * 60 * 60 // 24 часа
+    }
+
+    // Сохранить токен аутентификации
+    this.tokenCookie.set(authResponse.token, {
+      age: authResponse.expiresIn,
+      sameSite: 'strict',
+      arguments: ['Secure', 'HttpOnly']
+    })
+
+    // Сохранить данные пользователя
+    this.userCookie.set(authResponse.user, {
+      age: authResponse.expiresIn,
+      sameSite: 'strict'
+    })
+
+    return authResponse
+  }
+
+  getCurrentUser() {
+    return this.userCookie.get()
+  }
+
+  getAuthToken() {
+    return this.tokenCookie.get()
+  }
+
+  isAuthenticated() {
+    const token = this.getAuthToken()
+    const user = this.getCurrentUser()
+    return !!(token && user)
+  }
+
+  logout() {
+    this.tokenCookie.remove()
+    this.userCookie.remove()
+  }
+}
+
+// Использование
+const auth = new AuthManager()
+
+// Вход
+const loginResult = auth.login({ username: 'ivan', password: 'secret' })
+console.log('Вход успешен:', loginResult.user.name)
+
+// Проверка аутентификации
+console.log('Аутентифицирован:', auth.isAuthenticated()) // true
+console.log('Текущий пользователь:', auth.getCurrentUser().name)
+
+// Выход
+auth.logout()
+console.log('Аутентифицирован после выхода:', auth.isAuthenticated()) // false
+```
+
+### Постоянство корзины покупок
+
+```javascript
+class ShoppingCart {
+  constructor() {
+    this.cartCookie = new Cookie('shopping-cart')
+  }
+
+  getItems() {
+    return this.cartCookie.get([]) // По умолчанию пустой массив
+  }
+
+  addItem(product, quantity = 1) {
+    const items = this.getItems()
+    const existingIndex = items.findIndex(item => item.id === product.id)
+
+    if (existingIndex >= 0) {
+      items[existingIndex].quantity += quantity
+    } else {
+      items.push({ ...product, quantity })
+    }
+
+    this.cartCookie.set(items, {
+      age: 30 * 24 * 60 * 60 // 30 дней
+    })
+
+    return items
+  }
+
+  removeItem(productId) {
+    const items = this.getItems().filter(item => item.id !== productId)
+    this.cartCookie.set(items)
+    return items
+  }
+
+  updateQuantity(productId, quantity) {
+    const items = this.getItems()
+    const item = items.find(item => item.id === productId)
+
+    if (item) {
+      if (quantity <= 0) {
+        return this.removeItem(productId)
+      } else {
+        item.quantity = quantity
+        this.cartCookie.set(items)
+      }
+    }
+
+    return items
+  }
+
+  getTotalPrice() {
+    const items = this.getItems()
+    return items.reduce((total, item) => total + (item.price * item.quantity), 0)
+  }
+
+  getItemCount() {
+    const items = this.getItems()
+    return items.reduce((count, item) => count + item.quantity, 0)
+  }
+
+  clear() {
+    this.cartCookie.remove()
+  }
+}
+
+// Использование
+const cart = new ShoppingCart()
+
+// Добавить продукты
+cart.addItem({ id: 1, name: 'Ноутбук', price: 79999.99 }, 1)
+cart.addItem({ id: 2, name: 'Мышь', price: 2499.99 }, 2)
+
+console.log('Элементы корзины:', cart.getItems())
+console.log('Общая цена:', cart.getTotalPrice())
+console.log('Количество элементов:', cart.getItemCount())
+
+// Обновить количества
+cart.updateQuantity(2, 1) // Уменьшить количество мышей до 1
+cart.removeItem(1) // Удалить ноутбук
+
+console.log('Обновлённая корзина:', cart.getItems())
+```
+
+## Интеграция с CookieBlock
+
+Класс Cookie автоматически учитывает настройки CookieBlock для обеспечения соблюдения приватности:
+
+```javascript
+import { CookieBlock } from '@dxtmisha/functional'
+
+// Заблокировать cookie (имитация выбора пользователя по приватности)
+CookieBlock.set(true)
+
+const marketingCookie = new Cookie('marketing-data')
+
+// Это фактически не установит cookie, потому что CookieBlock активен
+marketingCookie.set('marketing-value')
+console.log('Marketing cookie:', marketingCookie.get()) // undefined
+
+// Разрешить cookie
+CookieBlock.set(false)
+
+// Теперь cookie работают нормально
+marketingCookie.set('marketing-value')
+console.log('Marketing cookie:', marketingCookie.get()) // 'marketing-value'
+```
+
+Класс Cookie предоставляет мощный, соответствующий приватности способ управления браузерными cookie с автоматической сериализацией и гибкими опциями конфигурации, делая его идеальным для современных веб-приложений, которые должны учитывать пользовательские настройки приватности.

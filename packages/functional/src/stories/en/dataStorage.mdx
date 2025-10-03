@@ -1,0 +1,378 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/DataStorage'/>
+
+# DataStorage Class
+
+Class for working with browser localStorage and sessionStorage with automatic serialization, caching, and singleton pattern. Provides type-safe storage operations with cache time validation and automatic prefix management.
+
+## Key Features
+
+- **Type-safe storage** — full TypeScript support with generics for stored data
+- **Dual storage support** — works with both localStorage and sessionStorage
+- **Automatic serialization** — JSON serialization/deserialization handled automatically
+- **Cache time validation** — optional cache expiration with automatic cleanup
+- **Singleton pattern** — reuses instances for same storage keys
+- **Prefix management** — configurable prefix for all storage keys
+- **Function value support** — accepts functions as values for dynamic data generation
+- **Browser compatibility** — safe usage with server-side rendering
+
+## Configuration
+
+### `static setPrefix`
+
+Sets the global prefix for all storage keys. Should be called at application startup.
+
+**Parameters:**
+- `newPrefix: string` — new prefix for storage keys
+
+```javascript
+import { DataStorage } from '@dxtmisha/functional'
+
+// Set application-wide prefix
+DataStorage.setPrefix('myapp-storage')
+
+// All storage keys will now use this prefix:
+// 'user-settings' → 'myapp-storage-user-settings'
+```
+
+## Constructor
+
+### `constructor`
+
+Creates DataStorage instance for specified key. Uses singleton pattern.
+
+**Parameters:**
+- `name: string` — storage key name
+- `isSession?: boolean` — use sessionStorage instead of localStorage (default: false)
+
+```javascript
+// localStorage instance
+const userPrefs = new DataStorage('user-preferences')
+
+// sessionStorage instance
+const tempData = new DataStorage('temp-data', true)
+
+// Singleton behavior
+const sameInstance = new DataStorage('user-preferences')
+console.log(userPrefs === sameInstance) // true
+```
+
+## Data Operations
+
+### `get`
+
+Retrieves data from storage with optional default value and cache validation.
+
+**Parameters:**
+- `defaultValue?: T | (() => T)` — default value or function if no data found (optional)
+- `cache?: number` — cache time in seconds for validation (optional)
+
+**Returns:** `T | undefined` — stored data, default value, or undefined
+
+```javascript
+const settings = new DataStorage('app-settings')
+
+// Get data without default
+const theme = settings.get()
+console.log(theme) // undefined if no data stored
+
+// Get with default value
+const language = settings.get('en')
+console.log(language) // 'en' if no stored data, or stored value
+
+// Get with default function
+const config = settings.get(() => ({
+  theme: 'dark',
+  notifications: true,
+  created: Date.now()
+}))
+
+// Get with cache validation (10 minutes)
+const cachedData = settings.get(null, 600) // Returns null if data older than 10 minutes
+```
+
+### `set`
+
+Stores data in storage with automatic serialization.
+
+**Parameters:**
+- `value?: T | (() => T)` — value to store or function that returns value (optional)
+
+**Returns:** `T | undefined` — the stored value
+
+```javascript
+const userStorage = new DataStorage('user-data')
+
+// Store simple value
+const stored = userStorage.set({ name: 'John', age: 30 })
+console.log(stored) // { name: 'John', age: 30 }
+
+// Store with function
+userStorage.set(() => ({
+  timestamp: Date.now(),
+  sessionId: Math.random().toString(36)
+}))
+
+// Store undefined to clear
+userStorage.set(undefined) // Removes from storage
+```
+
+### `remove`
+
+Removes data from storage.
+
+**Returns:** `this` — DataStorage instance for method chaining
+
+```javascript
+const userStorage = new DataStorage('user-data')
+
+// First set some data
+userStorage.set({ name: 'John', preferences: { theme: 'dark' } })
+console.log(userStorage.get()) // { name: 'John', preferences: { theme: 'dark' } }
+
+// Simple removal
+userStorage.remove()
+console.log(userStorage.get()) // undefined
+
+// Method chaining with other DataStorage instances
+const tempStorage = new DataStorage('temp-data')
+const anotherStorage = new DataStorage('another-data')
+
+// Chain operations across different instances
+tempStorage.set({ temp: true })
+anotherStorage.set({ another: true })
+
+tempStorage.remove() // Remove temp data
+anotherStorage.remove() // Remove another data
+
+console.log(tempStorage.get()) // undefined
+console.log(anotherStorage.get()) // undefined
+```
+
+## Practical Examples
+
+### User Preferences Management
+
+```javascript
+class UserPreferences {
+  constructor() {
+    this.storage = new DataStorage('user-preferences')
+  }
+
+  getTheme() {
+    return this.storage.get('light') // Default to light theme
+  }
+
+  setTheme(theme) {
+    const prefs = this.storage.get({})
+    return this.storage.set({ ...prefs, theme })
+  }
+
+  getLanguage() {
+    const prefs = this.storage.get({})
+    return prefs.language || 'en'
+  }
+
+  setLanguage(language) {
+    const prefs = this.storage.get({})
+    return this.storage.set({ ...prefs, language })
+  }
+
+  getNotificationSettings() {
+    const prefs = this.storage.get({})
+    return prefs.notifications || { email: true, push: false, sms: false }
+  }
+
+  setNotificationSettings(notifications) {
+    const prefs = this.storage.get({})
+    return this.storage.set({ ...prefs, notifications })
+  }
+
+  clearAll() {
+    this.storage.remove()
+  }
+}
+
+// Usage
+const userPrefs = new UserPreferences()
+
+console.log('Current theme:', userPrefs.getTheme()) // 'light' (default)
+userPrefs.setTheme('dark')
+console.log('Updated theme:', userPrefs.getTheme()) // 'dark'
+
+userPrefs.setLanguage('es')
+userPrefs.setNotificationSettings({ email: false, push: true, sms: false })
+
+console.log('Language:', userPrefs.getLanguage()) // 'es'
+console.log('Notifications:', userPrefs.getNotificationSettings())
+```
+
+### Session Data Management
+
+```javascript
+class SessionManager {
+  constructor() {
+    // Use sessionStorage for temporary data
+    this.sessionData = new DataStorage('session-data', true)
+    this.pageViews = new DataStorage('page-views', true)
+  }
+
+  startSession() {
+    return this.sessionData.set({
+      startTime: Date.now(),
+      sessionId: Math.random().toString(36).substr(2, 9),
+      userAgent: navigator.userAgent
+    })
+  }
+
+  getSessionInfo() {
+    return this.sessionData.get()
+  }
+
+  recordPageView(path) {
+    const views = this.pageViews.get([])
+    views.push({
+      path,
+      timestamp: Date.now(),
+      referrer: document.referrer
+    })
+    return this.pageViews.set(views)
+  }
+
+  getPageViews() {
+    return this.pageViews.get([])
+  }
+
+  endSession() {
+    const session = this.getSessionInfo()
+    if (session) {
+      session.endTime = Date.now()
+      session.duration = session.endTime - session.startTime
+      this.sessionData.set(session)
+    }
+    return session
+  }
+
+  clearSession() {
+    this.sessionData.remove()
+    this.pageViews.remove()
+  }
+}
+
+// Usage
+const sessionManager = new SessionManager()
+
+// Start tracking
+sessionManager.startSession()
+console.log('Session started:', sessionManager.getSessionInfo())
+
+// Track page views
+sessionManager.recordPageView('/home')
+sessionManager.recordPageView('/about')
+sessionManager.recordPageView('/contact')
+
+console.log('Page views:', sessionManager.getPageViews())
+
+// End session
+const finalSession = sessionManager.endSession()
+console.log('Session duration:', finalSession.duration, 'ms')
+```
+
+### Cached API Responses with Expiration
+
+```javascript
+class APIStorageCache {
+  constructor() {
+    this.cache = new DataStorage('api-cache')
+  }
+
+  async getUserData(userId) {
+    const cacheKey = `user-${userId}`
+
+    // Try to get cached data (valid for 5 minutes)
+    const cached = this.cache.get(null, 300) // 5 minutes cache
+
+    if (cached && cached[cacheKey]) {
+      console.log(`Using cached data for user ${userId}`)
+      return cached[cacheKey]
+    }
+
+    // Fetch from API
+    console.log(`Fetching user ${userId} from API`)
+    const response = await fetch(`/api/users/${userId}`)
+    const userData = await response.json()
+
+    // Update cache
+    const allCached = this.cache.get({})
+    allCached[cacheKey] = userData
+    this.cache.set(allCached)
+
+    return userData
+  }
+
+  async getPostsData(userId) {
+    const cacheKey = `posts-${userId}`
+    const cached = this.cache.get(null, 600) // 10 minutes cache for posts
+
+    if (cached && cached[cacheKey]) {
+      console.log(`Using cached posts for user ${userId}`)
+      return cached[cacheKey]
+    }
+
+    console.log(`Fetching posts for user ${userId} from API`)
+    const response = await fetch(`/api/users/${userId}/posts`)
+    const postsData = await response.json()
+
+    const allCached = this.cache.get({})
+    allCached[cacheKey] = postsData
+    this.cache.set(allCached)
+
+    return postsData
+  }
+
+  clearExpiredCache() {
+    // Cache validation happens automatically on get()
+    // This forces a check by trying to get with very short cache time
+    this.cache.get(null, 0) // Forces expiration check
+    console.log('Expired cache entries cleared')
+  }
+
+  clearAllCache() {
+    this.cache.remove()
+    console.log('All API cache cleared')
+  }
+}
+
+// Usage
+const apiCache = new APIStorageCache()
+
+// First call - fetches from API and caches
+const user1 = await apiCache.getUserData(1)
+console.log('User 1:', user1.name)
+
+// Second call within 5 minutes - uses cache
+const user1Cached = await apiCache.getUserData(1)
+console.log('User 1 (cached):', user1Cached.name)
+
+// Different data with different cache time
+const posts1 = await apiCache.getPostsData(1) // 10 minute cache
+console.log('Posts count:', posts1.length)
+
+// Clear operations
+apiCache.clearExpiredCache()
+apiCache.clearAllCache()
+```
+
+## Integration Patterns
+
+The DataStorage class is perfect for:
+- **User preferences** — theme, language, UI settings
+- **Session management** — temporary data that should persist across page reloads
+- **API response caching** — with configurable expiration times
+- **Form data persistence** — saving draft content
+- **Application state** — persisting important application state
+- **Shopping cart data** — e-commerce cart persistence
+- **User authentication** — storing auth tokens and user data
+
+The singleton pattern ensures that multiple parts of your application can access the same storage instance, making data sharing seamless and efficient.

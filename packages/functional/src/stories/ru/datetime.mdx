@@ -1,0 +1,602 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Datetime'/>
+
+# Класс Datetime
+
+Класс для работы с датами, предоставляющий мощные возможности форматирования, манипуляции и локализации. Интегрируется с географическими настройками и поддерживает различные форматы вывода с учётом часовых поясов и региональных особенностей.
+
+## Основные возможности
+
+- **Локализованное форматирование** — автоматическое форматирование дат согласно региональным настройкам
+- **Манипуляции с датами** — удобные методы для изменения и перемещения дат
+- **Поддержка часовых поясов** — работа с часовыми поясами и их смещениями
+- **Клонирование объектов** — безопасное создание копий дат для операций
+- **Гибкие форматы вывода** — поддержка различных типов представления дат
+- **Интеграция с Geo** — использует географические настройки для локализации
+- **Стандартные форматы** — вывод в ISO и других стандартных форматах
+- **Наблюдение за изменениями** — система колбэков для отслеживания изменений
+
+## Конструктор
+
+### `constructor`
+
+Создаёт экземпляр Datetime с указанной датой, типом вывода и кодом локали.
+
+**Параметры:**
+- `date?: NumberOrStringOrDate` — дата для обработки (опционально, по умолчанию текущая дата)
+- `type?: GeoDate` — тип формата даты для вывода (по умолчанию 'date')
+- `code?: string` — код страны и языка (по умолчанию из Geo.getLocation())
+
+```javascript
+import { Datetime } from '@dxtmisha/functional'
+
+// Создание с текущей датой
+const now = new Datetime()
+
+// Создание с конкретной датой
+const birthday = new Datetime('1990-05-15')
+const timestamp = new Datetime(1234567890000)
+
+// С настройками форматирования
+const fullDate = new Datetime('2023-12-25', 'full', 'ru-RU')
+const timeOnly = new Datetime(new Date(), 'time', 'en-US')
+```
+
+## Получение информации о дате
+
+### `getIntl`
+
+Возвращает объект для работы с форматированием.
+
+```javascript
+const datetime = new Datetime('2023-10-15', 'date', 'ru-RU')
+const intl = datetime.getIntl()
+// Возвращает экземпляр GeoIntl для работы с локализацией
+```
+
+### `getDate`
+
+Возвращает объект Date.
+
+```javascript
+const datetime = new Datetime('2023-10-15')
+const dateObj = datetime.getDate()
+console.log(dateObj) // Date объект с 2023-10-15
+```
+
+### `getType`
+
+Возвращает тип вывода данных.
+
+```javascript
+const datetime = new Datetime('2023-10-15', 'datetime')
+console.log(datetime.getType()) // 'datetime'
+```
+
+### `getHoursType`
+
+Возвращает формат часов (12 или 24-часовой).
+
+```javascript
+const datetime = new Datetime()
+console.log(datetime.getHoursType()) // '24' или '12'
+```
+
+### `getHour24`
+
+Проверяет, используется ли 24-часовой формат времени.
+
+```javascript
+const datetime = new Datetime()
+console.log(datetime.getHour24()) // false по умолчанию
+```
+
+### `getFirstDayCode`
+
+Возвращает код первого дня недели.
+
+```javascript
+const datetime = new Datetime('2023-10-15', 'date', 'ru-RU')
+console.log(datetime.getFirstDayCode()) // 1 (понедельник) для большинства локалей
+// 0 - воскресенье, 1 - понедельник, 6 - суббота
+```
+
+### `getMaxDay`
+
+Возвращает последний день месяца.
+
+```javascript
+const datetime = new Datetime('2023-02-15') // февраль
+console.log(datetime.getMaxDay()) // 28 для февраля 2023 года
+
+const datetime2 = new Datetime('2023-01-15') // январь
+console.log(datetime2.getMaxDay()) // 31 для января
+```
+
+## Работа с компонентами даты
+
+### Получение компонентов
+
+```javascript
+const datetime = new Datetime('2023-10-15 14:30:45')
+
+console.log(datetime.getYear())    // 2023
+console.log(datetime.getMonth())   // 10 (месяцы с 1)
+console.log(datetime.getDay())     // 15
+console.log(datetime.getHour())    // 14
+console.log(datetime.getMinute())  // 30
+console.log(datetime.getSecond())  // 45
+```
+
+### Установка компонентов
+
+```javascript
+const datetime = new Datetime()
+
+datetime
+  .setYear(2025)
+  .setMonth(3)
+  .setDay(20)
+  .setHour(15)
+  .setMinute(45)
+  .setSecond(30)
+
+console.log(datetime.locale()) // Отформатированная дата
+```
+
+## Часовые пояса
+
+### `getTimeZoneOffset`
+
+Возвращает смещение часового пояса в минутах.
+
+```javascript
+const datetime = new Datetime()
+const offset = datetime.getTimeZoneOffset()
+console.log(offset) // например, -180 для UTC+3
+```
+
+### `getTimeZone`
+
+Возвращает временную зону в различных форматах.
+
+```javascript
+const datetime = new Datetime()
+
+console.log(datetime.getTimeZone())        // '+03:00'
+console.log(datetime.getTimeZone('hour'))  // '+3'
+console.log(datetime.getTimeZone('minute')) // '180'
+console.log(datetime.getTimeZone('RFC'))   // '+0300'
+```
+
+## Локализованное форматирование
+
+### `locale`
+
+Основной метод для форматирования дат с учётом локали.
+
+```javascript
+const datetime = new Datetime('2023-12-25 15:30:00', 'full', 'ru-RU')
+
+console.log(datetime.locale())                    // Полная дата и время
+console.log(datetime.locale('date'))              // Только дата
+console.log(datetime.locale('time'))              // Только время
+console.log(datetime.locale('year'))              // Только год
+console.log(datetime.locale('month', 'short'))    // Короткое название месяца
+```
+
+### Специализированные методы форматирования
+
+```javascript
+const datetime = new Datetime('2023-12-25', 'date', 'ru-RU')
+
+console.log(datetime.localeYear())              // '2023'
+console.log(datetime.localeMonth())             // 'декабрь'
+console.log(datetime.localeMonth('short'))      // 'дек.'
+console.log(datetime.localeDay())               // '25'
+console.log(datetime.localeHour())              // текущий час
+console.log(datetime.localeMinute())            // текущая минута
+console.log(datetime.localeSecond())            // текущая секунда
+```
+
+## Стандартное форматирование
+
+### `standard`
+
+Возвращает дату в стандартном формате (ISO-подобном).
+
+```javascript
+const datetime = new Datetime('2023-12-25 15:30:45')
+
+console.log(datetime.standard())        // '2023-12-25T15:30:45+03:00'
+console.log(datetime.standard(false))   // '2023-12-25T15:30:45' (без часового пояса)
+
+// Разные типы
+const timeOnly = new Datetime('2023-12-25 15:30:45', 'time')
+console.log(timeOnly.standard())        // 'T15:30:45+03:00'
+
+const dateOnly = new Datetime('2023-12-25', 'date')
+console.log(dateOnly.standard())        // '2023-12-25'
+```
+
+## Перемещение дат
+
+### Перемещение по единицам времени
+
+```javascript
+const datetime = new Datetime('2023-10-15')
+
+// Перемещение на указанное количество единиц
+datetime.moveByYear(1)     // +1 год
+datetime.moveByMonth(-2)   // -2 месяца
+datetime.moveByDay(10)     // +10 дней
+datetime.moveByHour(5)     // +5 часов
+datetime.moveByMinute(30)  // +30 минут
+datetime.moveBySecond(45)  // +45 секунд
+
+console.log(datetime.locale()) // Результирующая дата
+```
+
+### Перемещение к границам периодов
+
+```javascript
+const datetime = new Datetime('2023-07-15')
+
+// Месяцы
+datetime.moveMonthFirst()    // 1 января
+datetime.moveMonthLast()     // 31 декабря
+datetime.moveMonthNext()     // 1-е число следующего месяца
+datetime.moveMonthPrevious() // 1-е число предыдущего месяца
+
+// Дни месяца
+datetime.moveDayFirst()      // 1-е число текущего месяца
+datetime.moveDayLast()       // последнее число текущего месяца
+datetime.moveDayNext()       // следующий день
+datetime.moveDayPrevious()   // предыдущий день
+```
+
+### Работа с неделями
+
+```javascript
+const datetime = new Datetime('2023-07-15') // суббота
+
+// Перемещение в пределах недели
+datetime.moveWeekdayFirst()  // понедельник текущей недели
+datetime.moveWeekdayLast()   // воскресенье текущей недели
+
+// Перемещение по неделям
+datetime.moveWeekdayNext()     // понедельник следующей недели
+datetime.moveWeekdayPrevious() // понедельник предыдущей недели
+
+// Недели в контексте месяца
+datetime.moveWeekdayFirstByMonth() // первый день первой недели месяца
+datetime.moveWeekdayLastByMonth()  // последний день последней недели месяца
+```
+
+## Клонирование и создание вариантов
+
+### Базовое клонирование
+
+```javascript
+const original = new Datetime('2023-10-15')
+
+const dateClone = original.clone()        // Date объект
+const classClone = original.cloneClass()  // Datetime объект
+```
+
+### Клонирование с перемещением
+
+```javascript
+const datetime = new Datetime('2023-07-15')
+
+// Клонирование месяцев
+const january = datetime.cloneMonthFirst()    // январь текущего года
+const december = datetime.cloneMonthLast()    // декабрь текущего года
+const nextMonth = datetime.cloneMonthNext()   // следующий месяц
+const prevMonth = datetime.cloneMonthPrevious() // предыдущий месяц
+
+// Клонирование дней
+const firstDay = datetime.cloneDayFirst()     // 1-е число месяца
+const lastDay = datetime.cloneDayLast()       // последнее число месяца
+const tomorrow = datetime.cloneDayNext()      // завтра
+const yesterday = datetime.cloneDayPrevious() // вчера
+
+// Клонирование недель
+const weekStart = datetime.cloneWeekdayFirst()    // начало недели
+const weekEnd = datetime.cloneWeekdayLast()       // конец недели
+const nextWeek = datetime.cloneWeekdayNext()      // следующая неделя
+const prevWeek = datetime.cloneWeekdayPrevious()  // предыдущая неделя
+```
+
+## Настройки и конфигурация
+
+### `setType`
+
+Изменяет тип вывода данных.
+
+```javascript
+const datetime = new Datetime('2023-10-15')
+
+datetime.setType('full')     // полная дата и время
+datetime.setType('date')     // только дата
+datetime.setType('time')     // только время
+datetime.setType('year')     // только год
+```
+
+### `setHour24`
+
+Устанавливает формат времени (12 или 24 часа).
+
+```javascript
+const datetime = new Datetime()
+
+datetime.setHour24(true)   // 24-часовой формат
+datetime.setHour24(false)  // 12-часовой формат
+```
+
+### `setCode`
+
+Изменяет локаль.
+
+```javascript
+const datetime = new Datetime()
+
+datetime.setCode('ru-RU')  // русская локаль
+datetime.setCode('en-US')  // американская локаль
+datetime.setCode('de-DE')  // немецкая локаль
+```
+
+### `setWatch`
+
+Устанавливает функцию наблюдения за изменениями.
+
+```javascript
+const datetime = new Datetime()
+
+datetime.setWatch((date, type, hour24) => {
+  console.log('Дата изменилась:', date)
+  console.log('Тип:', type)
+  console.log('24-часовой формат:', hour24)
+})
+
+datetime.setYear(2025) // Вызовет функцию наблюдения
+```
+
+### `setDate`
+
+Полностью изменяет дату.
+
+```javascript
+const datetime = new Datetime('2023-10-15')
+
+// Установить новую дату
+datetime.setDate('2025-12-25')
+datetime.setDate(new Date('2024-06-01'))
+datetime.setDate(1672531200000) // timestamp
+
+console.log(datetime.locale()) // Новая установленная дата
+```
+
+## Практические примеры
+
+### Календарные операции
+
+```javascript
+class Calendar {
+  constructor(date = new Date()) {
+    this.current = new Datetime(date, 'date', 'ru-RU')
+  }
+
+  getCurrentMonth() {
+    return {
+      year: this.current.getYear(),
+      month: this.current.getMonth(),
+      monthName: this.current.localeMonth(),
+      firstDay: this.current.cloneDayFirst().locale(),
+      lastDay: this.current.cloneDayLast().locale()
+    }
+  }
+
+  getWeekDays() {
+    const startOfWeek = this.current.cloneDayFirst().cloneWeekdayFirstByMonth()
+    const days = []
+
+    for (let i = 0; i < 42; i++) { // 6 недель по 7 дней
+      const day = startOfWeek.cloneClass().moveByDay(i)
+      days.push({
+        date: day.getDay(),
+        fullDate: day.locale(),
+        isCurrentMonth: day.getMonth() === this.current.getMonth(),
+        isToday: day.standard() === new Datetime().standard()
+      })
+    }
+
+    return days
+  }
+
+  nextMonth() {
+    this.current.moveMonthNext()
+    return this.getCurrentMonth()
+  }
+
+  previousMonth() {
+    this.current.moveMonthPrevious()
+    return this.getCurrentMonth()
+  }
+}
+
+// Использование
+const calendar = new Calendar()
+console.log(calendar.getCurrentMonth())
+console.log(calendar.getWeekDays())
+```
+
+### Форматирование для разных локалей
+
+```javascript
+class MultiLocaleDate {
+  constructor(date) {
+    this.date = date
+  }
+
+  formatForLocales(locales) {
+    return locales.map(locale => {
+      const datetime = new Datetime(this.date, 'full', locale)
+      return {
+        locale,
+        formatted: datetime.locale(),
+        standard: datetime.standard()
+      }
+    })
+  }
+}
+
+// Использование
+const multiDate = new MultiLocaleDate('2023-12-25 15:30:00')
+const formatted = multiDate.formatForLocales(['ru-RU', 'en-US', 'de-DE', 'fr-FR'])
+
+formatted.forEach(({ locale, formatted }) => {
+  console.log(`${locale}: ${formatted}`)
+})
+```
+
+### Операции с рабочими днями
+
+```javascript
+class BusinessDays {
+  constructor(startDate, locale = 'ru-RU') {
+    this.start = new Datetime(startDate, 'date', locale)
+  }
+
+  isWeekend(date) {
+    const dayOfWeek = date.getDate().getDay()
+    return dayOfWeek === 0 || dayOfWeek === 6 // воскресенье или суббота
+  }
+
+  addBusinessDays(days) {
+    const result = this.start.cloneClass()
+    let addedDays = 0
+
+    while (addedDays < days) {
+      result.moveDayNext()
+      if (!this.isWeekend(result)) {
+        addedDays++
+      }
+    }
+
+    return result
+  }
+
+  getBusinessDaysInMonth() {
+    const firstDay = this.start.cloneDayFirst()
+    const lastDay = this.start.cloneDayLast()
+    const businessDays = []
+
+    const current = firstDay.cloneClass()
+    while (current.getDay() <= lastDay.getDay()) {
+      if (!this.isWeekend(current)) {
+        businessDays.push({
+          date: current.getDay(),
+          formatted: current.locale()
+        })
+      }
+      current.moveDayNext()
+    }
+
+    return businessDays
+  }
+}
+
+// Использование
+const businessDays = new BusinessDays('2023-10-01')
+const futureDate = businessDays.addBusinessDays(10)
+console.log('Через 10 рабочих дней:', futureDate.locale())
+
+const monthBusinessDays = businessDays.getBusinessDaysInMonth()
+console.log('Рабочие дни в месяце:', monthBusinessDays.length)
+```
+
+### Временные интервалы и длительность
+
+```javascript
+class DateInterval {
+  constructor(startDate, endDate, locale = 'ru-RU') {
+    this.start = new Datetime(startDate, 'datetime', locale)
+    this.end = new Datetime(endDate, 'datetime', locale)
+  }
+
+  getDifference() {
+    const startTime = this.start.getDate().getTime()
+    const endTime = this.end.getDate().getTime()
+    const diff = Math.abs(endTime - startTime)
+
+    return {
+      milliseconds: diff,
+      seconds: Math.floor(diff / 1000),
+      minutes: Math.floor(diff / (1000 * 60)),
+      hours: Math.floor(diff / (1000 * 60 * 60)),
+      days: Math.floor(diff / (1000 * 60 * 60 * 24))
+    }
+  }
+
+  formatDuration() {
+    const diff = this.getDifference()
+
+    if (diff.days > 0) {
+      return `${diff.days} дн. ${diff.hours % 24} ч.`
+    } else if (diff.hours > 0) {
+      return `${diff.hours} ч. ${diff.minutes % 60} мин.`
+    } else {
+      return `${diff.minutes} мин.`
+    }
+  }
+
+  getIntermediateDates(interval = 'day') {
+    const dates = []
+    const current = this.start.cloneClass()
+
+    while (current.getDate().getTime() <= this.end.getDate().getTime()) {
+      dates.push({
+        datetime: current.cloneClass(),
+        formatted: current.locale()
+      })
+
+      switch (interval) {
+        case 'day':
+          current.moveDayNext()
+          break
+        case 'week':
+          current.moveByDay(7)
+          break
+        case 'month':
+          current.moveMonthNext()
+          break
+      }
+    }
+
+    return dates
+  }
+}
+
+// Использование
+const interval = new DateInterval('2023-10-01', '2023-10-15')
+console.log('Разница:', interval.formatDuration())
+console.log('Даты в интервале:', interval.getIntermediateDates().length)
+```
+
+Класс Datetime предоставляет мощный и гибкий инструмент для работы с датами в JavaScript-приложениях, поддерживая локализацию, манипуляции и форматирование в соответствии с региональными настройками и требованиями приложения.
+
+## Внутренние методы
+
+### `update` (защищенный метод)
+
+Внутренний метод для обновления всех значений и вызова функции наблюдения.
+
+```javascript
+// Этот метод вызывается автоматически при изменении даты
+// Он недоступен для прямого использования, так как является защищенным
+// Вызывает функцию watch, если она была установлена через setWatch()
+```
+
+**Примечание:** Этот метод автоматически вызывается всеми методами изменения даты (`setYear`, `setMonth`, `setDay`, `setHour`, `setMinute`, `setSecond`, `setDate`, `setType`, `setHour24`) для обеспечения согласованности состояния и уведомления наблюдателей об изменениях.

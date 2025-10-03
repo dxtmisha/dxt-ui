@@ -32,6 +32,11 @@ export class CacheItem<T> {
     return this.cache as T
   }
 
+  /**
+   * Getting the previous value of the cache.
+   *
+   * Получение предыдущего значения кэша.
+   */
   getCacheOld(): T | undefined {
     return this.cacheOld
   }

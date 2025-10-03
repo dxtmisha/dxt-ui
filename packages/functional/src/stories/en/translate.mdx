@@ -1,0 +1,305 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Translate'/>
+
+# Translate Class
+
+Static class for managing translations and localized text. Provides methods for fetching, caching, and displaying translated content with template replacement support and automatic locale detection.
+
+## Key Features
+
+- **Translation fetching** — retrieves translations from server API
+- **Text caching** — intelligent caching system with batch requests
+- **Template replacement** — supports placeholder replacement in translations
+- **Locale awareness** — automatically uses current geographic locale
+- **Batch processing** — groups multiple translation requests for efficiency
+- **Sync and async modes** — both synchronous and asynchronous text retrieval
+- **List operations** — fetch multiple translations in single call
+- **Dynamic loading** — loads translations on demand
+
+## Basic Usage
+
+### `get`
+
+Asynchronously retrieves translation text by code with optional template replacement.
+
+**Parameters:**
+- `name: string` — translation code
+- `replacement?: string[] | Record<string, string | number>` — values for template replacement (optional)
+
+**Returns:** `Promise<string>` — translated text
+
+```javascript
+import { Translate } from '@dxtmisha/functional'
+
+// Basic translation
+const text = await Translate.get('welcome.message')
+// Returns: "Welcome to our application"
+
+// With array replacement
+const greeting = await Translate.get('hello.user', ['John'])
+// Template: "Hello, [0]!" → Returns: "Hello, John!"
+
+// With object replacement
+const message = await Translate.get('items.count', { count: 5, type: 'products' })
+// Template: "You have [count] [type]" → Returns: "You have 5 products"
+```
+
+### `getSync`
+
+Synchronously retrieves translation text (returns from cache or fallback).
+
+**Parameters:**
+- `name: string` — translation code
+- `first?: boolean` — if false, returns empty string when text not found (default: false)
+- `replacement?: string[] | Record<string, string | number>` — values for template replacement (optional)
+
+**Returns:** `string` — translated text or fallback
+
+```javascript
+// Get cached translation
+const text = Translate.getSync('button.save')
+// Returns: "Save" (from cache) or "button.save" (fallback)
+
+// Return empty string if not found
+const empty = Translate.getSync('missing.key', false)
+// Returns: "" if not in cache
+
+// With replacement
+const message = Translate.getSync('welcome.user', true, ['Alice'])
+// Returns: "Welcome, Alice!" or fallback
+```
+
+## Batch Operations
+
+### `getList`
+
+Asynchronously retrieves multiple translations as an object.
+
+**Parameters:**
+- `names: TranslateCode[]` — array of translation codes or [code, ...replacements] arrays
+
+**Returns:** `Promise<TranslateList<T>>` — object with code-text pairs
+
+```javascript
+// Simple list
+const texts = await Translate.getList(['save', 'cancel', 'submit'])
+// Returns: { save: "Save", cancel: "Cancel", submit: "Submit" }
+
+// With replacements
+const messages = await Translate.getList([
+  'welcome.user',
+  ['items.count', '5', 'books'],
+  'goodbye.message'
+])
+// Returns object with processed templates
+```
+
+### `getListSync`
+
+Synchronously retrieves multiple translations from cache.
+
+**Parameters:**
+- `names: TranslateCode[]` — array of translation codes
+- `first?: boolean` — fallback behavior when text not found (default: false)
+
+**Returns:** `TranslateList<T>` — object with code-text pairs
+
+```javascript
+// Get cached translations
+const texts = Translate.getListSync(['save', 'cancel', 'delete'])
+// Returns: { save: "Save", cancel: "Cancel", delete: "Delete" }
+
+// With fallback behavior
+const empty = Translate.getListSync(['missing.key'], false)
+// Returns: { 'missing.key': '' }
+```
+
+## Data Management
+
+### `add`
+
+Adds translation codes to loading queue for batch fetching.
+
+**Parameters:**
+- `names: string | string[]` — translation code(s) to load
+
+**Returns:** `Promise<void>` — resolves when translations are loaded
+
+```javascript
+// Add single translation
+await Translate.add('new.message')
+
+// Add multiple translations
+await Translate.add(['header.title', 'footer.copyright', 'menu.items'])
+
+// Automatic batching (requests are grouped within 160ms)
+Translate.add('text1') // Queued
+Translate.add('text2') // Queued
+Translate.add('text3') // All sent in single request
+```
+
+### `addSync`
+
+Directly adds translations to cache (for development/testing).
+
+**Parameters:**
+- `data: Record<string, string>` — key-value pairs of translations
+
+```javascript
+// Add translations directly
+Translate.addSync({
+  'welcome.message': 'Welcome to our app',
+  'button.save': 'Save Changes',
+  'error.required': 'This field is required'
+})
+
+// Translations available immediately
+const text = Translate.getSync('welcome.message') // "Welcome to our app"
+```
+
+### `addNormalOrSync`
+
+Intelligently adds translations based on environment (API call vs direct).
+
+**Parameters:**
+- `data: Record<string, string>` — translation data
+
+**Returns:** `Promise<void>` — resolves when added
+
+```javascript
+// Automatically chooses method based on Api.isLocalhost()
+await Translate.addNormalOrSync({
+  'app.title': 'My Application',
+  'nav.home': 'Home',
+  'nav.about': 'About'
+})
+// Development: adds directly to cache
+// Production: queues for API request
+```
+
+## Configuration
+
+### `setUrl`
+
+Changes the API endpoint for translation requests.
+
+**Parameters:**
+- `url: string` — API endpoint path
+
+**Returns:** `Translate` — class reference for chaining
+
+```javascript
+// Change translation API endpoint
+Translate.setUrl('/api/v2/translations')
+
+// Chaining
+Translate.setUrl('/custom/translate').setPropsName('translations')
+```
+
+### `setPropsName`
+
+Changes the request parameter name for translation codes.
+
+**Parameters:**
+- `name: string` — parameter name for API requests
+
+**Returns:** `Translate` — class reference for chaining
+
+```javascript
+// Change request parameter name
+Translate.setPropsName('codes')
+
+// API request will use: { codes: ['text1', 'text2'] }
+// Instead of default: { list: ['text1', 'text2'] }
+```
+
+## Examples
+
+### Basic Translation Setup
+
+```javascript
+import { Translate } from '@dxtmisha/functional'
+
+// Configure translation endpoint
+Translate.setUrl('/api/translations')
+
+// Load initial translations
+await Translate.add(['app.title', 'nav.menu', 'footer.copyright'])
+
+// Use translations
+const title = await Translate.get('app.title')
+document.title = title
+```
+
+### Form Validation Messages
+
+```javascript
+// Load validation messages
+const validationTexts = await Translate.getList([
+  'validation.required',
+  'validation.email',
+  ['validation.minLength', '8'], // With replacement
+  'validation.password'
+])
+
+// Use in validation
+if (!email) {
+  showError(validationTexts['validation.required'])
+}
+if (password.length < 8) {
+  showError(validationTexts['validation.minLength']) // "Minimum 8 characters"
+}
+```
+
+### Dynamic Content Loading
+
+```javascript
+// Component initialization
+class MyComponent {
+  async loadTexts() {
+    // Add needed translations to queue
+    await Translate.add([
+      'component.title',
+      'component.description',
+      'button.action'
+    ])
+
+    // Update UI
+    this.updateTexts()
+  }
+
+  updateTexts() {
+    // Get cached translations immediately
+    this.title = Translate.getSync('component.title')
+    this.description = Translate.getSync('component.description')
+    this.buttonText = Translate.getSync('button.action')
+  }
+}
+```
+
+### Template Replacement Examples
+
+```javascript
+// Array-based replacement
+const welcome = await Translate.get('welcome.user', ['John', 'Doe'])
+// Template: "Welcome, [0] [1]!" → "Welcome, John Doe!"
+
+// Object-based replacement
+const notification = await Translate.get('notification.message', {
+  user: 'Alice',
+  count: 3,
+  item: 'messages'
+})
+// Template: "Hi [user], you have [count] new [item]"
+// Result: "Hi Alice, you have 3 new messages"
+
+// Complex template
+const status = await Translate.get('order.status', {
+  id: '#12345',
+  status: 'shipped',
+  date: '2024-01-15'
+})
+// Template: "Order [id] is [status] on [date]"
+// Result: "Order #12345 is shipped on 2024-01-15"
+```

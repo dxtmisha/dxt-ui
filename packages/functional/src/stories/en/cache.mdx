@@ -1,0 +1,154 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Cache'/>
+
+# Cache Class
+
+High-level class for managing multiple cached values using CacheItem instances internally. Provides a simple interface for caching with automatic CacheItem creation and management, intelligent comparison-based invalidation, and both synchronous and asynchronous operations.
+
+## Key Features
+
+- **Multiple cache management** — manages collection of named cache entries using CacheItem instances
+- **Automatic CacheItem creation** — creates and manages CacheItem instances internally for each cache name
+- **Comparison-based invalidation** — automatic cache invalidation when comparison parameters change
+- **Sync and async modes** — both synchronous and asynchronous text retrieval
+- **Type safety** — full TypeScript support with generics for each cache entry
+- **Memory efficient** — reuses CacheItem instances for same cache names
+- **Simple interface** — abstracts CacheItem complexity behind easy-to-use methods
+
+## Basic Usage
+
+### `get`
+
+Synchronously retrieves cached data or executes callback to generate and cache new data.
+
+**Parameters:**
+- `name: string` — unique cache name/key for this cache entry
+- `callback: () => T` — function to execute if cache miss or invalidation
+- `comparison?: any[]` — array of values for cache invalidation comparison (optional)
+
+**Returns:** `T` — cached data or result of callback execution
+
+```javascript
+import { Cache } from '@dxtmisha/functional'
+
+const cache = new Cache()
+
+// Simple caching without comparison
+const userData = cache.get('user-profile', () => {
+  console.log('Computing user profile...')
+  return { id: 1, name: 'John Doe', email: 'john@example.com', computed: Date.now() }
+})
+
+// Subsequent calls return cached data without executing callback
+const cachedData = cache.get('user-profile', () => {
+  console.log('This will not execute')
+  return { id: 1, name: 'John Doe', email: 'john@example.com', computed: Date.now() }
+})
+// Returns exact same cached object
+
+// Different cache name creates separate CacheItem
+const settingsData = cache.get('user-settings', () => {
+  console.log('Loading user settings...')
+  return { theme: 'dark', language: 'en' }
+})
+```
+
+### `getAsync`
+
+Asynchronously retrieves cached data or executes async callback to generate new data.
+
+**Parameters:**
+- `name: string` — unique cache name/key for this cache entry
+- `callback: () => T | Promise<T>` — function to execute if cache miss or invalidation
+- `comparison?: any[]` — array of values for cache invalidation comparison (optional)
+
+**Returns:** `Promise<T>` — promise resolving to cached data or callback result
+
+```javascript
+// Async caching with API calls
+const userData = await cache.getAsync('api-user-1', async () => {
+  console.log('Fetching from API...')
+  const response = await fetch('/api/user/1')
+  return await response.json()
+})
+
+// Cached on subsequent calls (same CacheItem instance reused)
+const cachedUser = await cache.getAsync('api-user-1', async () => {
+  console.log('This will not execute')
+  return await fetch('/api/user/1').then(r => r.json())
+})
+// Returns cached data without API call
+
+// Different cache name creates new CacheItem
+const userPosts = await cache.getAsync('api-user-posts-1', async () => {
+  console.log('Fetching user posts...')
+  const response = await fetch('/api/user/1/posts')
+  return await response.json()
+})
+```
+
+## Cache Invalidation with Comparison
+
+Each named cache entry maintains its own CacheItem with independent invalidation:
+
+```javascript
+const cache = new Cache()
+
+// User data cache with dependency tracking
+let userId = 1
+let includeProfile = true
+
+const getUserData = (id, withProfile) => cache.get(
+  'user-data', // Same cache name reuses same CacheItem
+  () => {
+    console.log(`Loading user ${id}, profile: ${withProfile}`)
+    return {
+      id,
+      name: `User ${id}`,
+      profile: withProfile ? { bio: 'User bio', avatar: 'avatar.jpg' } : null
+    }
+  },
+  [id, withProfile] // CacheItem invalidates when any value changes
+)
+
+console.log(getUserData(1, true)) // Creates CacheItem, executes callback
+console.log(getUserData(1, true)) // Reuses same CacheItem, returns cached data
+
+// Change dependency - same CacheItem invalidates and regenerates
+userId = 2
+console.log(getUserData(2, true)) // Same CacheItem, invalidated, executes callback
+
+// Different cache name creates separate CacheItem
+const getUserSettings = (id) => cache.get(
+  'user-settings', // Different name = different CacheItem
+  () => {
+    console.log(`Loading settings for user ${id}`)
+    return { theme: 'dark', notifications: true }
+  },
+  [id]
+)
+
+console.log(getUserSettings(1)) // Creates new CacheItem instance
+```
+
+## Internal CacheItem Management
+
+The Cache class automatically manages CacheItem lifecycle:
+
+```javascript
+const cache = new Cache()
+
+// Each unique cache name gets its own CacheItem instance
+cache.get('cache-1', () => 'data-1') // Creates CacheItem internally
+cache.get('cache-2', () => 'data-2') // Creates different CacheItem
+cache.get('cache-1', () => 'data-1-updated') // Reuses existing CacheItem
+
+// Cache instances are completely isolated
+const cache2 = new Cache()
+cache2.get('cache-1', () => 'different-data') // Independent CacheItem in cache2
+
+// Verify isolation
+console.log(cache.get('cache-1', () => 'fallback')) // 'data-1'
+console.log(cache2.get('cache-1', () => 'fallback')) // 'different-data'
+```

@@ -4,30 +4,25 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс Geo
 
-Базовый класс для работы с географическими данными. Предоставляет статические методы для определения текущей локации, работы с кодами стран и языков, а также управления временными зонами.
+Статический класс для работы с географическими данными. Предоставляет методы для определения текущего местоположения, работы с кодами стран и языков, и управления часовыми поясами с автоматическим определением через браузер и кешированием в localStorage.
 
 ## Основные возможности
 
-- **Автоматическое определение локации** — определяет текущую страну и язык на основе браузерных данных
-- **Работа с кодами стран и языков** — поддерживает формат `язык-страна` (например, `ru-RU`, `en-US`)
-- **Управление временными зонами** — получение и установка часовых поясов
-- **Кеширование в localStorage** — сохранение выбранной локации пользователя
-- **Поддержка альтернативных кодов** — работа с различными вариантами кодов стран и языков
-
-## Статические свойства
-
-Класс использует следующие внутренние статические свойства:
-- `storage` — экземпляр DataStorage для сохранения данных в localStorage
-- `location` — текущая локация в формате `язык-страна`
-- `item` — объект с полными данными о текущей стране
-- `language` — текущий язык
-- `timezone` — текущая временная зона (смещение в минутах)
+- **Автоматическое определение местоположения** — определяет текущую страну и язык на основе данных браузера
+- **Обработка кодов стран и языков** — поддерживает формат `язык-страна` (например, `ru-RU`, `en-US`)
+- **Управление часовыми поясами** — получение и установка часовых поясов
+- **Кеширование в localStorage** — сохраняет выбранное пользователем местоположение
+- **Поддержка альтернативных кодов** — работает с различными вариантами кодов стран и языков
+- **Полная база данных стран** — доступ к полному списку стран с их данными
+- **Гибкий парсинг кодов** — обрабатывает полные коды, коды стран или языков отдельно
 
 ## Методы получения данных
 
-### `get(): GeoItemFull`
+### `get`
 
-Возвращает информацию о текущей стране.
+Возвращает полную информацию о текущей стране.
+
+**Возвращает:** `GeoItemFull` — объект с полными географическими данными
 
 ```javascript
 import { Geo } from '@dxtmisha/functional'
@@ -39,254 +34,313 @@ console.log(currentGeo)
 //   language: 'ru',
 //   standard: 'ru-RU',
 //   firstDay: 'Mo',
-//   countryAlternative: ['...'],
-//   languageAlternative: ['...']
+//   countryAlternative: ['Россия', 'Russia'],
+//   languageAlternative: ['русский', 'russian']
 // }
 ```
 
-### `getCountry(): string`
+### `getCountry`
 
 Возвращает код текущей страны.
 
+**Возвращает:** `string` — ISO код страны (например, 'RU', 'US', 'GB')
+
 ```javascript
-const country = Geo.getCountry() // 'RU'
+const country = Geo.getCountry()
+console.log(country) // 'RU'
 ```
 
-### `getLanguage(): string`
+### `getLanguage`
 
 Возвращает код текущего языка.
 
+**Возвращает:** `string` — ISO код языка (например, 'ru', 'en', 'fr')
+
 ```javascript
-const language = Geo.getLanguage() // 'ru'
+const language = Geo.getLanguage()
+console.log(language) // 'ru'
 ```
 
-### `getStandard(): string`
+### `getStandard`
 
 Возвращает полный формат согласно стандарту (язык-страна).
 
-```javascript
-const standard = Geo.getStandard() // 'ru-RU'
-```
-
-### `getFirstDay(): string`
-
-Возвращает первый день недели для текущей локации.
+**Возвращает:** `string` — стандартный формат локали
 
 ```javascript
-const firstDay = Geo.getFirstDay() // 'Mo'
+const standard = Geo.getStandard()
+console.log(standard) // 'ru-RU'
 ```
 
-### `getLocation(): string`
+### `getFirstDay`
 
-Возвращает полный формат текущей локации.
+Возвращает первый день недели для текущего местоположения.
+
+**Возвращает:** `string` — код первого дня ('Su' для воскресенья, 'Mo' для понедельника)
 
 ```javascript
-const location = Geo.getLocation() // 'ru-RU'
+const firstDay = Geo.getFirstDay()
+console.log(firstDay) // 'Mo' (Россия/Европа) или 'Su' (США)
 ```
 
-### `getItem(): GeoItemFull`
+### `getLocation`
 
-Возвращает обработанные данные с включением текущего языка.
+Возвращает полный формат текущего местоположения.
+
+**Возвращает:** `string` — текущее местоположение в формате язык-страна
+
+```javascript
+const location = Geo.getLocation()
+console.log(location) // 'ru-RU'
+```
+
+### `getItem`
+
+Возвращает обработанные данные с включённым текущим языком.
+
+**Возвращает:** `GeoItemFull` — географические данные с актуальным языком
 
 ```javascript
 const item = Geo.getItem()
-// Включает все данные плюс актуальный язык
+console.log(item)
+// Включает все данные плюс актуальный язык из браузера/настроек
 ```
 
-### `getList(): GeoItem[]`
+### `getList`
 
 Возвращает полный список доступных стран.
 
+**Возвращает:** `GeoItem[]` — массив всех поддерживаемых стран
+
 ```javascript
 const allCountries = Geo.getList()
-console.log(allCountries.length) // количество поддерживаемых стран
+console.log(allCountries.length) // 200+ стран
+console.log(allCountries[0])
+// { country: 'AD', language: 'ca', standard: 'ca-AD', firstDay: 'Mo', ... }
 ```
 
-## Методы поиска по кодам
+## Методы поиска данных
 
-### `getByCode(code?: string): GeoItemFull`
+### `getByCode`
 
-Возвращает данные о стране по её коду. Поддерживает различные форматы:
-- Полный формат: `ru-RU`, `en-US`
-- Только страна: `RU`, `US`
-- Только язык: `ru`, `en`
+Возвращает данные страны по её коду (полному, стране или языку).
+
+**Параметры:**
+- `code?: string` — код страны в различных форматах (опционально)
+
+**Возвращает:** `GeoItemFull` — географические данные для указанного кода
 
 ```javascript
 // Полный код
-const byFull = Geo.getByCode('ru-RU')
+const dataFull = Geo.getByCode('ru-RU')
+console.log(dataFull.country) // 'RU'
 
-// Только страна
-const byCountry = Geo.getByCode('RU')
+// Только код страны
+const dataCountry = Geo.getByCode('GB')
+console.log(dataCountry.language) // 'en'
 
-// Только язык
-const byLanguage = Geo.getByCode('ru')
+// Только код языка
+const dataLanguage = Geo.getByCode('fr')
+console.log(dataLanguage.country) // 'FR'
 
-// Если код не найден, вернётся первая страна из списка
-const fallback = Geo.getByCode('invalid-code')
+// Запасной вариант при неверном коде
+const dataDefault = Geo.getByCode('invalid')
+console.log(dataDefault) // Первая страна из списка
 ```
 
-### `getByCodeFull(code: string): GeoItem | undefined`
+### `getByCodeFull`
 
-Возвращает данные по точному совпадению полного кода.
+Возвращает данные страны по полному коду язык-страна.
+
+**Параметры:**
+- `code: string` — строка в формате язык-страна
+
+**Возвращает:** `GeoItem | undefined` — данные страны или undefined если не найдено
 
 ```javascript
-const exact = Geo.getByCodeFull('ru-RU')
-// Возвращает данные только если код точно соответствует формату язык-страна
+const data = Geo.getByCodeFull('ru-RU')
+if (data) {
+  console.log(data.country) // 'RU'
+  console.log(data.language) // 'ru'
+}
+
+// Также поддерживает обратный формат
+const dataReverse = Geo.getByCodeFull('GB-en')
+console.log(dataReverse?.country) // 'GB'
 ```
 
-### `getByCountry(country: string): GeoItem | undefined`
+### `getByCountry`
 
-Возвращает данные по коду страны.
+Возвращает данные страны по коду страны.
+
+**Параметры:**
+- `country: string` — ISO код страны
+
+**Возвращает:** `GeoItem | undefined` — данные страны или undefined если не найдено
 
 ```javascript
-const russia = Geo.getByCountry('RU')
-// Поддерживает основные и альтернативные коды стран
+const data = Geo.getByCountry('DE')
+if (data) {
+  console.log(data.language) // 'de'
+  console.log(data.standard) // 'de-DE'
+}
 ```
 
-### `getByLanguage(language: string): GeoItem | undefined`
+### `getByLanguage`
 
-Возвращает данные по коду языка.
+Возвращает данные страны по коду языка.
+
+**Параметры:**
+- `language: string` — ISO код языка
+
+**Возвращает:** `GeoItem | undefined` — данные страны или undefined если не найдено
 
 ```javascript
-const russian = Geo.getByLanguage('ru')
-// Поддерживает основные и альтернативные коды языков
+const data = Geo.getByLanguage('es')
+if (data) {
+  console.log(data.country) // 'ES'
+  console.log(data.standard) // 'es-ES'
+}
 ```
 
-### `find(code: string): GeoItemFull`
+## Методы конфигурации
 
-Универсальный метод поиска (алиас для `getByCode`).
+### `set`
+
+Устанавливает новое местоположение и сохраняет его в localStorage.
+
+**Параметры:**
+- `code?: string` — код местоположения в различных форматах (опционально)
+
+**Возвращает:** `Geo` — ссылка на класс для цепочки вызовов
 
 ```javascript
-const found = Geo.find('en-GB')
+// Установка полным кодом
+Geo.set('fr-FR')
+
+// Установка кодом страны
+Geo.set('IT')
+
+// Установка кодом языка
+Geo.set('ja')
+
+// Цепочка вызовов
+Geo.set('de-DE').setTimezone(-60)
 ```
 
-## Работа с временными зонами
+### `setTimezone`
 
-### `getTimezone(): number`
+Устанавливает смещение часового пояса.
 
-Возвращает текущую временную зону в минутах.
+**Параметры:**
+- `timezone: number` — смещение часового пояса в минутах
 
-```javascript
-const timezone = Geo.getTimezone() // например, -180 для UTC+3
-```
-
-### `getTimezoneFormat(): string`
-
-Возвращает отформатированную временную зону.
+**Возвращает:** `Geo` — ссылка на класс для цепочки вызовов
 
 ```javascript
-const formatted = Geo.getTimezoneFormat() // '+03:00' или '-05:00'
-```
+// Установка UTC+3 (московское время)
+Geo.setTimezone(-180)
 
-### `setTimezone(timezone: number): void`
+// Установка UTC-5 (нью-йоркское время)
+Geo.setTimezone(300)
 
-Устанавливает новую временную зону.
-
-```javascript
-Geo.setTimezone(-180) // установить UTC+3
-```
-
-## Управление локацией
-
-### `set(code: string, save?: boolean): void`
-
-Изменяет текущую локацию по коду.
-
-```javascript
-// Изменить локацию без сохранения
-Geo.set('en-US')
-
-// Изменить и сохранить в localStorage
-Geo.set('en-US', true)
-
-// После изменения все get* методы вернут данные для новой локации
-console.log(Geo.getCountry()) // 'US'
-console.log(Geo.getLanguage()) // 'en'
+// Цепочка вызовов
+Geo.setTimezone(-60).set('de-DE')
 ```
 
 ## Утилитарные методы
 
-### `toStandard(item: GeoItem): string`
+### `toCountry`
 
-Преобразует объект GeoItem в стандартный формат строки.
+Преобразует код страны в формат верхнего регистра.
 
-```javascript
-const item = { language: 'ru', country: 'RU', /* другие поля */ }
-const standard = Geo.toStandard(item) // 'ru-RU'
-```
+**Параметры:**
+- `country: string` — код страны в любом регистре
 
-## Автоматическая инициализация
-
-Класс автоматически инициализируется при первом обращении:
-
-1. **Определение локации** из источников (по приоритету):
-   - Сохранённое значение в localStorage
-   - Атрибут `lang` HTML элемента
-   - `navigator.language`
-   - `navigator.languages[0]`
-   - Fallback: `'en-GB'`
-
-2. **Определение языка** на основе найденной локации
-
-3. **Получение данных** о стране по определённой локации
-
-## Практические примеры использования
-
-### Настройка локализации приложения
+**Возвращает:** `string` — код страны в верхнем регистре
 
 ```javascript
-// Получить текущую локаль пользователя
-const userLocale = Geo.getStandard()
-
-// Настроить i18n
-i18n.locale = Geo.getLanguage()
-
-// Получить первый день недели для календаря
-const firstDayOfWeek = Geo.getFirstDay()
+const country = Geo.toCountry('ru')
+console.log(country) // 'RU'
 ```
 
-### Переключение языка
+### `toLanguage`
+
+Преобразует код языка в формат нижнего регистра.
+
+**Параметры:**
+- `language: string` — код языка в любом регистре
+
+**Возвращает:** `string` — код языка в нижнем регистре
 
 ```javascript
-// Переключить на английский и сохранить выбор
-Geo.set('en-US', true)
-
-// Обновить интерфейс
-updateUI(Geo.getLanguage())
+const language = Geo.toLanguage('EN')
+console.log(language) // 'en'
 ```
 
-### Работа с временными зонами
+### `toFull`
+
+Преобразует базовый географический элемент в полный формат с дополнительными данными.
+
+**Параметры:**
+- `item: GeoItem` — базовый географический элемент
+
+**Возвращает:** `GeoItemFull` — расширенные географические данные
 
 ```javascript
-// Получить локальную временную зону
-const localTimezone = new Date().getTimezoneOffset()
-Geo.setTimezone(localTimezone)
-
-// Отформатировать для отображения
-const timezoneDisplay = Geo.getTimezoneFormat() // '+03:00'
+const basicItem = { country: 'RU', language: 'ru', standard: 'ru-RU', firstDay: 'Mo' }
+const fullItem = Geo.toFull(basicItem)
+console.log(fullItem.countryAlternative) // ['Россия', 'Russia', ...]
 ```
 
-### Валидация и fallback для пользовательского ввода
+## Примеры
+
+### Базовое использование
 
 ```javascript
-function setUserLocale(userInput) {
-  try {
-    // Попытаться установить пользовательскую локаль
-    Geo.set(userInput, true)
-    return Geo.getStandard()
-  } catch (error) {
-    // Fallback к локали по умолчанию
-    console.warn('Invalid locale, using default')
-    return Geo.getStandard()
-  }
-}
+import { Geo } from '@dxtmisha/functional'
+
+// Получить информацию о текущем местоположении
+console.log('Текущая страна:', Geo.getCountry())
+console.log('Текущий язык:', Geo.getLanguage())
+console.log('Полное местоположение:', Geo.getLocation())
+console.log('Первый день недели:', Geo.getFirstDay())
 ```
 
-## Интеграция с другими частями системы
+### Установка пользовательского местоположения
 
-Класс Geo интегрируется с:
-- **DataStorage** — для сохранения настроек пользователя
-- **@dxtmisha/media** — источник данных о странах и языках
-- **DOM API** — для автоматического определения локали браузера
+```javascript
+// Установить местоположение на Германию
+Geo.set('de-DE')
 
-Это делает его центральным компонентом для всех задач, связанных с локализацией и географическими данными в приложении.
+console.log('Новая страна:', Geo.getCountry()) // 'DE'
+console.log('Новый язык:', Geo.getLanguage()) // 'de'
+console.log('Первый день:', Geo.getFirstDay()) // 'Mo'
+```
+
+### Работа с данными стран
+
+```javascript
+// Найти страну по разным кодам
+const russiaByFull = Geo.getByCode('ru-RU')
+const russiaByCountry = Geo.getByCode('RU')
+const russiaByLanguage = Geo.getByCode('ru')
+
+console.log('Все возвращают Россию:', russiaByFull.country) // 'RU'
+```
+
+### Создание селектора стран
+
+```javascript
+// Получить все страны для выпадающего списка
+const countries = Geo.getList()
+
+const countryOptions = countries.map(country => ({
+  value: country.standard,
+  label: `${country.language}-${country.country}`,
+  country: country.country,
+  language: country.language
+}))
+
+console.log('Всего стран:', countryOptions.length)
+```
