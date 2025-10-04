@@ -1,0 +1,425 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Types/basicTypes'/>
+
+# Basic Types (basicTypes)
+
+A set of fundamental TypeScript utility types for the functional library. Provides basic types for working with data, functions, DOM elements, and events.
+
+## Basic Utility Types
+
+### `Undefined`
+
+Union type for undefined and null values.
+
+```typescript
+type Undefined = undefined | null
+
+// Usage
+function checkValue(value: string | Undefined): boolean {
+  return value !== null && value !== undefined
+}
+```
+
+### `EmptyValue`
+
+Union type for all "empty" values including falsy primitives and string representations.
+
+```typescript
+type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'null' | '0' | 'false' | '[]'
+
+// Usage
+function isEmpty(value: any): value is EmptyValue {
+  return value === null || value === undefined || value === 0 || value === false ||
+         value === '' || value === 'undefined' || value === 'null' ||
+         value === '0' || value === 'false' || value === '[]'
+}
+```
+
+### `NumberOrString`
+
+Union type for numeric and string values.
+
+```typescript
+type NumberOrString = number | string
+
+// Usage
+function formatValue(value: NumberOrString): string {
+  return value.toString()
+}
+```
+
+### `NumberOrStringOrBoolean`
+
+Union type for numeric, string, and boolean values.
+
+```typescript
+type NumberOrStringOrBoolean = number | string | boolean
+
+// Usage
+function convertToString(value: NumberOrStringOrBoolean): string {
+  return String(value)
+}
+```
+
+### `NumberOrStringOrDate`
+
+Union type for numeric, string, and Date values.
+
+```typescript
+type NumberOrStringOrDate = NumberOrString | Date
+
+// Usage
+function parseDate(value: NumberOrStringOrDate): Date {
+  return new Date(value)
+}
+```
+
+## Generic Utility Types
+
+### `NormalOrArray<T>`
+
+Generic type for single value or array of values.
+
+```typescript
+type NormalOrArray<T = NumberOrString> = T | T[]
+
+// Usage
+function processValues(values: NormalOrArray<string>): string[] {
+  return Array.isArray(values) ? values : [values]
+}
+```
+
+### `NormalOrPromise<T>`
+
+Generic type for direct value or Promise.
+
+```typescript
+type NormalOrPromise<T> = T | Promise<T>
+
+// Usage
+async function getValue<T>(value: NormalOrPromise<T>): Promise<T> {
+  return await value
+}
+```
+
+### `ObjectItem<T>`
+
+Generic record/object type with string keys.
+
+```typescript
+type ObjectItem<T = any> = Record<string, T>
+
+// Usage
+const config: ObjectItem<string> = {
+  apiUrl: 'https://api.example.com',
+  version: '1.0.0'
+}
+```
+
+### `ObjectOrArray<T>`
+
+Generic type for array or object.
+
+```typescript
+type ObjectOrArray<T = any> = T[] | ObjectItem<T>
+
+// Usage
+function processData<T>(data: ObjectOrArray<T>): T[] {
+  return Array.isArray(data) ? data : Object.values(data)
+}
+```
+
+## Function Types
+
+### `FunctionReturn<R>`
+
+Function type that returns a value of type R.
+
+```typescript
+type FunctionReturn<R = any> = () => R
+
+// Usage
+const getRandomNumber: FunctionReturn<number> = () => Math.random()
+const getUserName: FunctionReturn<string> = () => 'John Doe'
+```
+
+### `FunctionVoid`
+
+Function type that returns void.
+
+```typescript
+type FunctionVoid = () => void
+
+// Usage
+const logMessage: FunctionVoid = () => console.log('Hello')
+const cleanup: FunctionVoid = () => { /* cleanup code */ }
+```
+
+### `FunctionArgs<T, R>`
+
+Function type with variable arguments.
+
+```typescript
+type FunctionArgs<T, R> = (...args: T[]) => R
+
+// Usage
+const sum: FunctionArgs<number, number> = (...numbers) => {
+  return numbers.reduce((a, b) => a + b, 0)
+}
+```
+
+### `FunctionAnyType<T, R>`
+
+Most generic function type.
+
+```typescript
+type FunctionAnyType<T = any, R = any> = (...args: T[]) => R
+
+// Usage
+const genericProcessor: FunctionAnyType = (...args) => {
+  return args.map(arg => String(arg)).join(' ')
+}
+```
+
+## Data Item Types
+
+### `ItemList<T>`
+
+Generic record type for lists with string keys.
+
+```typescript
+type ItemList<T = any> = Record<string, T>
+
+// Usage
+const userList: ItemList<{ name: string; age: number }> = {
+  user1: { name: 'John', age: 30 },
+  user2: { name: 'Jane', age: 25 }
+}
+```
+
+### `Item<V>`
+
+Generic item type with index and value properties.
+
+```typescript
+type Item<V> = {
+  index: string
+  value: V
+}
+
+// Usage
+const menuItem: Item<string> = {
+  index: 'home',
+  value: 'Home Page'
+}
+```
+
+### `ItemValue<V>`
+
+Generic item type with label and value properties.
+
+```typescript
+type ItemValue<V> = {
+  label: string
+  value: V
+}
+
+// Usage
+const selectOption: ItemValue<number> = {
+  label: 'Select age',
+  value: 25
+}
+
+const options: ItemValue<string>[] = [
+  { label: 'Red', value: 'red' },
+  { label: 'Blue', value: 'blue' }
+]
+```
+
+### `ItemName<V>`
+
+Generic item type with name and value properties.
+
+```typescript
+type ItemName<V> = {
+  name: string | number
+  value: V
+}
+
+// Usage
+const configItem: ItemName<boolean> = {
+  name: 'debugMode',
+  value: true
+}
+```
+
+## DOM and Elements
+
+### `ElementOrWindow`
+
+Union type for HTML elements and Window object.
+
+```typescript
+type ElementOrWindow = HTMLElement | Window
+
+// Usage
+function addEventListenerToTarget(target: ElementOrWindow, event: string, handler: Function) {
+  target.addEventListener(event, handler as EventListener)
+}
+```
+
+### `ElementOrString<E>`
+
+Generic type for element or string selector.
+
+```typescript
+type ElementOrString<E extends ElementOrWindow> = E | string
+
+// Usage
+function getElement<T extends HTMLElement>(selector: ElementOrString<T>): T | null {
+  if (typeof selector === 'string') {
+    return document.querySelector(selector)
+  }
+  return selector
+}
+```
+
+## Event Types
+
+### `EventOptions`
+
+Type for event listener options.
+
+```typescript
+type EventOptions = AddEventListenerOptions | boolean | undefined
+
+// Usage
+function setupEventListener(
+  element: HTMLElement,
+  event: string,
+  handler: Function,
+  options: EventOptions
+) {
+  element.addEventListener(event, handler as EventListener, options)
+}
+```
+
+### `EventListenerDetail<O, D>`
+
+Generic event listener function type with additional detail parameter.
+
+```typescript
+type EventListenerDetail<
+  O extends Event,
+  D extends Record<string, any>
+> = (event: O, detail?: D) => void
+
+// Usage
+const clickHandler: EventListenerDetail<MouseEvent, { userId: number }> = (event, detail) => {
+  console.log('Clicked at:', event.clientX, event.clientY)
+  if (detail) {
+    console.log('User ID:', detail.userId)
+  }
+}
+```
+
+### `EventActivityItem<E>`
+
+Type for tracking active event listeners and observers.
+
+```typescript
+type EventActivityItem<E extends ElementOrWindow> = {
+  element: E | undefined
+  type: string
+  listener?: (event: any | Event) => void
+  observer?: ResizeObserver
+}
+
+// Usage
+const activeEvents: EventActivityItem<HTMLElement>[] = [
+  {
+    element: document.getElementById('button'),
+    type: 'click',
+    listener: (event) => console.log('Button clicked')
+  }
+]
+```
+
+## Coordinate Types
+
+### `ImageCoordinator`
+
+Type for 2D coordinates.
+
+```typescript
+type ImageCoordinator = {
+  x: number
+  y: number
+}
+
+// Usage
+function calculateDistance(point1: ImageCoordinator, point2: ImageCoordinator): number {
+  const dx = point2.x - point1.x
+  const dy = point2.y - point1.y
+  return Math.sqrt(dx * dx + dy * dy)
+}
+
+const mousePosition: ImageCoordinator = { x: 100, y: 200 }
+```
+
+## Practical Examples
+
+### Composable using basic types
+
+```typescript
+import type {
+  NumberOrString,
+  ItemValue,
+  ElementOrString,
+  FunctionVoid
+} from '@dxtmisha/functional'
+
+export function useFormField<T>(
+  selector: ElementOrString<HTMLInputElement>,
+  initialValue: NumberOrString,
+  onChange?: FunctionVoid
+) {
+  const element = getElement(selector)
+  const value = ref<NumberOrString>(initialValue)
+
+  const options: ItemValue<T>[] = [
+    { label: 'Option 1', value: 'opt1' as T },
+    { label: 'Option 2', value: 'opt2' as T }
+  ]
+
+  return { element, value, options, onChange }
+}
+```
+
+### Utility functions with types
+
+```typescript
+import type {
+  NormalOrArray,
+  ObjectItem,
+  FunctionArgs
+} from '@dxtmisha/functional'
+
+// Function for processing values
+function processItems<T>(items: NormalOrArray<T>): T[] {
+  return Array.isArray(items) ? items : [items]
+}
+
+// Function for working with configuration
+function mergeConfig(...configs: ObjectItem[]): ObjectItem {
+  return Object.assign({}, ...configs)
+}
+
+// Aggregator function
+const aggregate: FunctionArgs<number, number> = (...values) => {
+  return values.reduce((sum, val) => sum + val, 0)
+}
+```
+
+These basic types ensure type safety and consistency throughout the @dxtmisha/functional library.

@@ -1,0 +1,327 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Types/refTypes'/>
+
+# Vue реактивные типы (refTypes)
+
+Набор специализированных TypeScript типов для работы с Vue реактивными ссылками, слотами и дочерними элементами. Обеспечивает типобезопасность при работе с Vue реактивной системой.
+
+## Vue реактивные ссылки
+
+### `RefType<T>`
+
+Объединенный тип для Vue реактивных ссылок (computed или ref).
+
+```typescript
+type RefType<T> = ComputedRef<T> | Ref<T>
+
+// Использование
+import { ref, computed } from 'vue'
+
+function useReactiveValue<T>(initialValue: T): RefType<T> {
+  return ref(initialValue) // или computed(() => someValue)
+}
+
+const count: RefType<number> = ref(0)
+const doubleCount: RefType<number> = computed(() => count.value * 2)
+```
+
+### `RefUndefined<T>`
+
+Объединенный тип для Vue реактивных ссылок, которые могут быть undefined.
+
+```typescript
+type RefUndefined<T> = RefType<T | undefined>
+
+// Использование
+function useOptionalValue<T>(value?: T): RefUndefined<T> {
+  return ref(value)
+}
+
+const optionalUser: RefUndefined<User> = ref(undefined)
+const maybeData: RefUndefined<string> = computed(() => {
+  return condition ? 'data' : undefined
+})
+```
+
+### `RefOrNormal<T>`
+
+Объединенный тип, который может быть либо Vue реактивной ссылкой, либо обычным значением.
+
+```typescript
+type RefOrNormal<T> = RefType<T> | T
+
+// Использование
+function processValue<T>(value: RefOrNormal<T>): T {
+  return typeof value === 'object' && 'value' in value ? value.value : value
+}
+
+// Функция принимает как ref, так и обычные значения
+const result1 = processValue(ref('hello'))     // из ref
+const result2 = processValue('world')          // обычное значение
+const result3 = processValue(computed(() => 42)) // из computed
+
+// В props компонента
+interface Props {
+  title: RefOrNormal<string>
+  count: RefOrNormal<number>
+}
+```
+
+## Vue контент и слоты
+
+### `RawChildren`
+
+Объединенный тип для Vue сырого содержимого дочерних элементов.
+
+```typescript
+type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any)
+
+// Использование в render функциях
+import { h, VNode } from 'vue'
+
+function createCustomElement(children: RawChildren): VNode {
+  return h('div', { class: 'custom-wrapper' }, children)
+}
+
+// Различные типы children
+const stringChild: RawChildren = 'Hello World'
+const numberChild: RawChildren = 42
+const booleanChild: RawChildren = true
+const vnodeChild: RawChildren = h('span', 'VNode content')
+const arrayChild: RawChildren = [
+  'Text',
+  h('span', 'VNode'),
+  42
+]
+const functionChild: RawChildren = () => h('div', 'Dynamic content')
+```
+
+### `RawSlots`
+
+Тип для Vue сырых слотов с опциональным флагом стабильности.
+
+```typescript
+type RawSlots = {
+  [name: string]: unknown
+  $stable?: boolean
+}
+
+// Использование в компонентах
+function createComponentWithSlots(slots: RawSlots): VNode {
+  return h('div', [
+    slots.header?.(),
+    h('main', slots.default?.()),
+    slots.footer?.()
+  ])
+}
+
+// Создание слотов
+const mySlots: RawSlots = {
+  default: () => h('p', 'Default content'),
+  header: () => h('h1', 'Header'),
+  footer: () => h('footer', 'Footer'),
+  $stable: true // Флаг для оптимизации производительности
+}
+
+// В JSX/TSX
+const jsxSlots: RawSlots = {
+  default: () => <p>Default JSX content</p>,
+  sidebar: () => <aside>Sidebar content</aside>
+}
+```
+
+## Практические примеры
+
+### Composable с реактивными типами
+
+```typescript
+import { ref, computed, type Ref } from 'vue'
+import type { RefOrNormal, RefType } from '@dxtmisha/functional'
+
+export function useCounter(initialValue: RefOrNormal<number> = 0) {
+  // Преобразуем RefOrNormal в ref
+  const count: Ref<number> = ref(
+    typeof initialValue === 'object' && 'value' in initialValue
+      ? initialValue.value
+      : initialValue
+  )
+
+  const doubled: RefType<number> = computed(() => count.value * 2)
+  const isEven: RefType<boolean> = computed(() => count.value % 2 === 0)
+
+  function increment() {
+    count.value++
+  }
+
+  function decrement() {
+    count.value--
+  }
+
+  return {
+    count,
+    doubled,
+    isEven,
+    increment,
+    decrement
+  }
+}
+```
+
+### Компоне��т с гибкими props
+
+```vue
+<template>
+  <div class="flexible-component">
+    <h2>{{ resolvedTitle }}</h2>
+    <p>Count: {{ resolvedCount }}</p>
+    <slot name="content" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { RefOrNormal } from '@dxtmisha/functional'
+
+interface Props {
+  title: RefOrNormal<string>
+  count: RefOrNormal<number>
+  enabled?: RefOrNormal<boolean>
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  enabled: true
+})
+
+// Резолвим RefOrNormal значения
+const resolvedTitle = computed(() => {
+  return typeof props.title === 'object' && 'value' in props.title
+    ? props.title.value
+    : props.title
+})
+
+const resolvedCount = computed(() => {
+  return typeof props.count === 'object' && 'value' in props.count
+    ? props.count.value
+    : props.count
+})
+</script>
+```
+
+### Render функция с типизированными children
+
+```typescript
+import { h, type VNode } from 'vue'
+import type { RawChildren, RawSlots } from '@dxtmisha/functional'
+
+interface CardProps {
+  title: string
+  children?: RawChildren
+  slots?: RawSlots
+}
+
+function Card(props: CardProps): VNode {
+  const { title, children, slots } = props
+
+  return h('div', { class: 'card' }, [
+    h('header', { class: 'card-header' }, [
+      h('h3', title),
+      slots?.actions?.()
+    ]),
+    h('main', { class: 'card-content' }, [
+      children,
+      slots?.default?.()
+    ]),
+    slots?.footer && h('footer', { class: 'card-footer' }, slots.footer())
+  ])
+}
+
+// Использование
+const cardWithChildren = Card({
+  title: 'My Card',
+  children: [
+    'Some text content',
+    h('button', 'Click me'),
+    42
+  ]
+})
+
+const cardWithSlots = Card({
+  title: 'Card with Slots',
+  slots: {
+    default: () => h('p', 'Main content'),
+    actions: () => h('button', 'Action'),
+    footer: () => h('small', 'Footer info'),
+    $stable: true
+  }
+})
+```
+
+### Универсальная функция для работы с ref значениями
+
+```typescript
+import type { RefOrNormal, RefType } from '@dxtmisha/functional'
+
+// Утилитарная функция для извлечения значения
+function unref<T>(value: RefOrNormal<T>): T {
+  return typeof value === 'object' && 'value' in value ? value.value : value
+}
+
+// Утилитарная функция для проверки ref
+function isRef<T>(value: RefOrNormal<T>): value is RefType<T> {
+  return typeof value === 'object' && value !== null && 'value' in value
+}
+
+// Использование в различных сценариях
+function processData<T>(input: RefOrNormal<T[]>): T[] {
+  const data = unref(input)
+  return data.filter(item => item !== null)
+}
+
+function watchValue<T>(value: RefOrNormal<T>, callback: (val: T) => void) {
+  if (isRef(value)) {
+    watch(value, callback, { immediate: true })
+  } else {
+    callback(value)
+  }
+}
+```
+
+### Типизированные слоты в composable
+
+```typescript
+import type { RawSlots, RawChildren } from '@dxtmisha/functional'
+
+export function useModal() {
+  const isVisible = ref(false)
+
+  function show() {
+    isVisible.value = true
+  }
+
+  function hide() {
+    isVisible.value = false
+  }
+
+  function renderModal(slots: RawSlots): VNode | null {
+    if (!isVisible.value) return null
+
+    return h('div', { class: 'modal-overlay' }, [
+      h('div', { class: 'modal-content' }, [
+        slots.header?.(),
+        h('div', { class: 'modal-body' }, slots.default?.()),
+        slots.footer?.()
+      ])
+    ])
+  }
+
+  return {
+    isVisible: readonly(isVisible),
+    show,
+    hide,
+    renderModal
+  }
+}
+```
+
+Эти Vue реактивные типы обеспечивают типобезопасность и гибкость при работе с Vue композиционным API, render функциями и реактивной системой.

@@ -1,0 +1,327 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Types/refTypes'/>
+
+# Vue Reactive Types (refTypes)
+
+A set of specialized TypeScript types for working with Vue reactive references, slots, and children elements. Ensures type safety when working with Vue's reactive system.
+
+## Vue Reactive References
+
+### `RefType<T>`
+
+Union type for Vue reactive references (computed or ref).
+
+```typescript
+type RefType<T> = ComputedRef<T> | Ref<T>
+
+// Usage
+import { ref, computed } from 'vue'
+
+function useReactiveValue<T>(initialValue: T): RefType<T> {
+  return ref(initialValue) // or computed(() => someValue)
+}
+
+const count: RefType<number> = ref(0)
+const doubleCount: RefType<number> = computed(() => count.value * 2)
+```
+
+### `RefUndefined<T>`
+
+Union type for Vue reactive references that can be undefined.
+
+```typescript
+type RefUndefined<T> = RefType<T | undefined>
+
+// Usage
+function useOptionalValue<T>(value?: T): RefUndefined<T> {
+  return ref(value)
+}
+
+const optionalUser: RefUndefined<User> = ref(undefined)
+const maybeData: RefUndefined<string> = computed(() => {
+  return condition ? 'data' : undefined
+})
+```
+
+### `RefOrNormal<T>`
+
+Union type that can be either a Vue reactive reference or a normal value.
+
+```typescript
+type RefOrNormal<T> = RefType<T> | T
+
+// Usage
+function processValue<T>(value: RefOrNormal<T>): T {
+  return typeof value === 'object' && 'value' in value ? value.value : value
+}
+
+// Function accepts both ref and normal values
+const result1 = processValue(ref('hello'))     // from ref
+const result2 = processValue('world')          // normal value
+const result3 = processValue(computed(() => 42)) // from computed
+
+// In component props
+interface Props {
+  title: RefOrNormal<string>
+  count: RefOrNormal<number>
+}
+```
+
+## Vue Content and Slots
+
+### `RawChildren`
+
+Union type for Vue raw children content.
+
+```typescript
+type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any)
+
+// Usage in render functions
+import { h, VNode } from 'vue'
+
+function createCustomElement(children: RawChildren): VNode {
+  return h('div', { class: 'custom-wrapper' }, children)
+}
+
+// Different types of children
+const stringChild: RawChildren = 'Hello World'
+const numberChild: RawChildren = 42
+const booleanChild: RawChildren = true
+const vnodeChild: RawChildren = h('span', 'VNode content')
+const arrayChild: RawChildren = [
+  'Text',
+  h('span', 'VNode'),
+  42
+]
+const functionChild: RawChildren = () => h('div', 'Dynamic content')
+```
+
+### `RawSlots`
+
+Type for Vue raw slots with optional stability flag.
+
+```typescript
+type RawSlots = {
+  [name: string]: unknown
+  $stable?: boolean
+}
+
+// Usage in components
+function createComponentWithSlots(slots: RawSlots): VNode {
+  return h('div', [
+    slots.header?.(),
+    h('main', slots.default?.()),
+    slots.footer?.()
+  ])
+}
+
+// Creating slots
+const mySlots: RawSlots = {
+  default: () => h('p', 'Default content'),
+  header: () => h('h1', 'Header'),
+  footer: () => h('footer', 'Footer'),
+  $stable: true // Flag for performance optimization
+}
+
+// In JSX/TSX
+const jsxSlots: RawSlots = {
+  default: () => <p>Default JSX content</p>,
+  sidebar: () => <aside>Sidebar content</aside>
+}
+```
+
+## Practical Examples
+
+### Composable with Reactive Types
+
+```typescript
+import { ref, computed, type Ref } from 'vue'
+import type { RefOrNormal, RefType } from '@dxtmisha/functional'
+
+export function useCounter(initialValue: RefOrNormal<number> = 0) {
+  // Convert RefOrNormal to ref
+  const count: Ref<number> = ref(
+    typeof initialValue === 'object' && 'value' in initialValue
+      ? initialValue.value
+      : initialValue
+  )
+
+  const doubled: RefType<number> = computed(() => count.value * 2)
+  const isEven: RefType<boolean> = computed(() => count.value % 2 === 0)
+
+  function increment() {
+    count.value++
+  }
+
+  function decrement() {
+    count.value--
+  }
+
+  return {
+    count,
+    doubled,
+    isEven,
+    increment,
+    decrement
+  }
+}
+```
+
+### Component with Flexible Props
+
+```vue
+<template>
+  <div class="flexible-component">
+    <h2>{{ resolvedTitle }}</h2>
+    <p>Count: {{ resolvedCount }}</p>
+    <slot name="content" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { RefOrNormal } from '@dxtmisha/functional'
+
+interface Props {
+  title: RefOrNormal<string>
+  count: RefOrNormal<number>
+  enabled?: RefOrNormal<boolean>
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  enabled: true
+})
+
+// Resolve RefOrNormal values
+const resolvedTitle = computed(() => {
+  return typeof props.title === 'object' && 'value' in props.title
+    ? props.title.value
+    : props.title
+})
+
+const resolvedCount = computed(() => {
+  return typeof props.count === 'object' && 'value' in props.count
+    ? props.count.value
+    : props.count
+})
+</script>
+```
+
+### Render Function with Typed Children
+
+```typescript
+import { h, type VNode } from 'vue'
+import type { RawChildren, RawSlots } from '@dxtmisha/functional'
+
+interface CardProps {
+  title: string
+  children?: RawChildren
+  slots?: RawSlots
+}
+
+function Card(props: CardProps): VNode {
+  const { title, children, slots } = props
+
+  return h('div', { class: 'card' }, [
+    h('header', { class: 'card-header' }, [
+      h('h3', title),
+      slots?.actions?.()
+    ]),
+    h('main', { class: 'card-content' }, [
+      children,
+      slots?.default?.()
+    ]),
+    slots?.footer && h('footer', { class: 'card-footer' }, slots.footer())
+  ])
+}
+
+// Usage
+const cardWithChildren = Card({
+  title: 'My Card',
+  children: [
+    'Some text content',
+    h('button', 'Click me'),
+    42
+  ]
+})
+
+const cardWithSlots = Card({
+  title: 'Card with Slots',
+  slots: {
+    default: () => h('p', 'Main content'),
+    actions: () => h('button', 'Action'),
+    footer: () => h('small', 'Footer info'),
+    $stable: true
+  }
+})
+```
+
+### Universal Function for Working with Ref Values
+
+```typescript
+import type { RefOrNormal, RefType } from '@dxtmisha/functional'
+
+// Utility function to extract value
+function unref<T>(value: RefOrNormal<T>): T {
+  return typeof value === 'object' && 'value' in value ? value.value : value
+}
+
+// Utility function to check ref
+function isRef<T>(value: RefOrNormal<T>): value is RefType<T> {
+  return typeof value === 'object' && value !== null && 'value' in value
+}
+
+// Usage in various scenarios
+function processData<T>(input: RefOrNormal<T[]>): T[] {
+  const data = unref(input)
+  return data.filter(item => item !== null)
+}
+
+function watchValue<T>(value: RefOrNormal<T>, callback: (val: T) => void) {
+  if (isRef(value)) {
+    watch(value, callback, { immediate: true })
+  } else {
+    callback(value)
+  }
+}
+```
+
+### Typed Slots in Composable
+
+```typescript
+import type { RawSlots, RawChildren } from '@dxtmisha/functional'
+
+export function useModal() {
+  const isVisible = ref(false)
+
+  function show() {
+    isVisible.value = true
+  }
+
+  function hide() {
+    isVisible.value = false
+  }
+
+  function renderModal(slots: RawSlots): VNode | null {
+    if (!isVisible.value) return null
+
+    return h('div', { class: 'modal-overlay' }, [
+      h('div', { class: 'modal-content' }, [
+        slots.header?.(),
+        h('div', { class: 'modal-body' }, slots.default?.()),
+        slots.footer?.()
+      ])
+    ])
+  }
+
+  return {
+    isVisible: readonly(isVisible),
+    show,
+    hide,
+    renderModal
+  }
+}
+```
+
+These Vue reactive types ensure type safety and flexibility when working with Vue's Composition API, render functions, and reactive system.

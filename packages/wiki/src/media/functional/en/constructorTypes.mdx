@@ -1,0 +1,559 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Types/constructorTypes'/>
+
+# Constructor Types (constructorTypes)
+
+A set of specialized TypeScript types for the component constructor system. Provides types for creating, configuring, and managing Vue components with support for reactivity, styling, and events.
+
+## Basic Constructor Types
+
+### `ConstrItem`
+
+Generic record type for constructor items.
+
+```typescript
+type ConstrItem = Record<string, any>
+
+// Usage
+interface MyComponentData extends ConstrItem {
+  title: string
+  count: number
+  visible: boolean
+}
+
+const componentData: ConstrItem = {
+  name: 'MyComponent',
+  version: '1.0.0',
+  config: { theme: 'dark' }
+}
+```
+
+### `ConstrValue<T>`
+
+Constructor value wrapper with optional value property.
+
+```typescript
+type ConstrValue<T = any> = {
+  value?: T
+}
+
+// Usage
+const stringValue: ConstrValue<string> = { value: 'Hello' }
+const numberValue: ConstrValue<number> = { value: 42 }
+const emptyValue: ConstrValue<boolean> = {} // value is optional
+
+function processValue<T>(wrapper: ConstrValue<T>): T | undefined {
+  return wrapper.value
+}
+```
+
+### `ConstrComponent`
+
+Generic record type for constructor components.
+
+```typescript
+type ConstrComponent = Record<string, any>
+
+// Usage
+const components: ConstrComponent = {
+  Button: defineComponent({ /* ... */ }),
+  Input: defineComponent({ /* ... */ }),
+  Modal: defineComponent({ /* ... */ })
+}
+```
+
+## Component Modification
+
+### `ConstrComponentMod<P>`
+
+Constructor component modification type with reactive or normal values.
+
+```typescript
+type ConstrComponentMod<P extends ConstrItem> = ConstrItem | {
+  [K in keyof P]?: RefOrNormal<P[K]>
+}
+
+// Usage
+interface ButtonProps {
+  text: string
+  disabled: boolean
+  variant: 'primary' | 'secondary'
+}
+
+const buttonMod: ConstrComponentMod<ButtonProps> = {
+  text: ref('Click me'), // reactive value
+  disabled: false,       // normal value
+  variant: computed(() => theme.value === 'dark' ? 'primary' : 'secondary')
+}
+```
+
+## Event System
+
+### `UnionToIntersection<U>`
+
+Utility type to convert union types to intersection types.
+
+```typescript
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never
+
+// Usage
+type A = { a: string }
+type B = { b: number }
+type C = { c: boolean }
+
+type Combined = UnionToIntersection<A | B | C>
+// Result: { a: string } & { b: number } & { c: boolean }
+```
+
+### `ConstrEmitItem<T>`
+
+Extract emit item type from constructor item.
+
+```typescript
+type ConstrEmitItem<T extends ConstrItem> = T[keyof T]
+
+// Usage
+interface MyEmits {
+  click: [MouseEvent]
+  change: [string, number]
+  close: []
+}
+
+type EmitItem = ConstrEmitItem<MyEmits>
+// Result: [MouseEvent] | [string, number] | []
+```
+
+### `ConstrEmit<T>`
+
+Constructor emit type with proper event handler signatures.
+
+```typescript
+type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToIntersection<ConstrEmitItem<{
+  [K in keyof T]: (evt: K, ...args: T[K]) => void
+}>>
+
+// Usage
+interface ComponentEmits {
+  click: [MouseEvent]
+  input: [string]
+  change: [string, number]
+}
+
+const emitHandlers: ConstrEmit<ComponentEmits> = (evt, ...args) => {
+  if (evt === 'click') {
+    // args are typed as [MouseEvent]
+    console.log('Click at:', args[0].clientX, args[0].clientY)
+  } else if (evt === 'input') {
+    // args are typed as [string]
+    console.log('Input value:', args[0])
+  }
+}
+```
+
+## Styling System
+
+### `ConstrClassObject`
+
+Object type for CSS class names with boolean values.
+
+```typescript
+type ConstrClassObject = Record<string, boolean>
+
+// Usage
+const classObject: ConstrClassObject = {
+  'btn': true,
+  'btn-primary': true,
+  'btn-disabled': false,
+  'btn-large': true
+}
+```
+
+### `ConstrClass`
+
+Constructor class type supporting strings, arrays, and objects.
+
+```typescript
+type ConstrClass = string | (string | ConstrClass | Undefined)[] | ConstrClassObject
+
+// Usage
+const stringClass: ConstrClass = 'btn btn-primary'
+
+const arrayClass: ConstrClass = [
+  'btn',
+  'btn-primary',
+  condition ? 'btn-large' : null,
+  ['nested', 'classes']
+]
+
+const objectClass: ConstrClass = {
+  'btn': true,
+  'btn-primary': isPrimary,
+  'btn-disabled': isDisabled
+}
+```
+
+### `ConstrClassList`
+
+Record type for mapping class names to class definitions.
+
+```typescript
+type ConstrClassList = Record<string, ConstrClass>
+
+// Usage
+const classList: ConstrClassList = {
+  button: 'btn btn-primary',
+  input: ['form-control', { 'is-invalid': hasError }],
+  modal: {
+    'modal': true,
+    'modal-open': isOpen,
+    'modal-large': size === 'large'
+  }
+}
+```
+
+### `ConstrClasses`
+
+Constructor classes with required main class and additional class list.
+
+```typescript
+type ConstrClasses = { main: ConstrClass } & ConstrClassList
+
+// Usage
+const componentClasses: ConstrClasses = {
+  main: 'component-root',
+  header: 'component-header',
+  body: ['component-body', { 'is-expanded': isExpanded }],
+  footer: {
+    'component-footer': true,
+    'has-actions': hasActions
+  }
+}
+```
+
+### `ConstrStylesItem`
+
+Constructor style item type for individual style properties.
+
+```typescript
+type ConstrStylesItem = string | null
+
+// Usage
+const width: ConstrStylesItem = '100px'
+const height: ConstrStylesItem = null // not applied
+const color: ConstrStylesItem = '#ff0000'
+```
+
+### `ConstrStyles`
+
+Constructor styles type supporting objects and arrays of style definitions.
+
+```typescript
+type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[]
+
+// Usage as object
+const objectStyles: ConstrStyles = {
+  width: '100px',
+  height: '50px',
+  backgroundColor: '#f0f0f0',
+  borderRadius: null // not applied
+}
+
+// Usage as array
+const arrayStyles: ConstrStyles = [
+  { width: '100px', height: '50px' },
+  { backgroundColor: theme.value === 'dark' ? '#333' : '#fff' },
+  conditionalStyles ? { border: '1px solid red' } : {}
+]
+```
+
+## Component Configuration
+
+### `ConstrOptions<COMP, EMITS, P>`
+
+Constructor options interface for component configuration.
+
+```typescript
+type ConstrOptions<
+  COMP extends ConstrComponent,
+  EMITS extends ConstrItem,
+  P extends ConstrItem
+> = {
+  components?: COMP
+  compMod?: ConstrComponentMod<P>
+  emits?: ConstrEmit<EMITS>
+  classes?: RefType<ConstrClasses>
+  styles?: RefType<ConstrStyles>
+}
+
+// Usage
+interface MyComponentProps {
+  title: string
+  count: number
+}
+
+interface MyComponentEmits {
+  click: [MouseEvent]
+  change: [number]
+}
+
+const options: ConstrOptions<ConstrComponent, MyComponentEmits, MyComponentProps> = {
+  components: {
+    Button: ButtonComponent,
+    Icon: IconComponent
+  },
+  compMod: {
+    title: ref('Dynamic Title'),
+    count: computed(() => store.count)
+  },
+  emits: (evt, ...args) => {
+    console.log('Event:', evt, args)
+  },
+  classes: computed(() => ({
+    main: 'my-component',
+    header: 'my-component__header'
+  })),
+  styles: ref({
+    width: '300px',
+    height: '200px'
+  })
+}
+```
+
+### `ConstrSetup<E, CLASSES, SETUP>`
+
+Constructor setup interface for component initialization.
+
+```typescript
+type ConstrSetup<
+  E extends Element,
+  CLASSES extends ConstrClasses,
+  SETUP extends ConstrItem
+> = {
+  name: string
+  element: Ref<E | undefined>
+  classes: RefType<CLASSES>
+  styles: RefType<ConstrStyles>
+} & SETUP
+
+// Usage
+interface MySetupData {
+  count: Ref<number>
+  increment: () => void
+}
+
+const setup: ConstrSetup<HTMLDivElement, ConstrClasses, MySetupData> = {
+  name: 'MyComponent',
+  element: ref<HTMLDivElement>(),
+  classes: computed(() => ({
+    main: 'my-component',
+    button: 'my-component__button'
+  })),
+  styles: ref({
+    padding: '16px',
+    backgroundColor: '#f5f5f5'
+  }),
+  count: ref(0),
+  increment: () => setup.count.value++
+}
+```
+
+## Registration and Binding
+
+### `ConstrRegistration`
+
+Constructor registration configuration.
+
+```typescript
+type ConstrRegistration = {
+  flag?: boolean
+  translate?: Record<string, string>
+}
+
+// Usage
+const registration: ConstrRegistration = {
+  flag: true,
+  translate: {
+    'button.save': 'Save',
+    'button.cancel': 'Cancel',
+    'message.success': 'Successfully completed'
+  }
+}
+```
+
+### `ConstrBind<T>`
+
+Constructor bind type for component binding with class and style support.
+
+```typescript
+type ConstrBind<T> = T & Record<string, any> & {
+  class?: ConstrClass
+  style?: ConstrStyles
+}
+
+// Usage
+interface ButtonProps {
+  text: string
+  disabled: boolean
+}
+
+const boundButton: ConstrBind<ButtonProps> = {
+  text: 'Click me',
+  disabled: false,
+  onClick: () => console.log('Clicked'),
+  class: ['btn', 'btn-primary'],
+  style: {
+    width: '120px',
+    height: '40px'
+  }
+}
+```
+
+## Props System
+
+### `ConstrPropItemOptions<T>`
+
+Constructor prop item options for Vue prop definitions.
+
+```typescript
+type ConstrPropItemOptions<T = any> = {
+  type?: PropType<T>
+  required?: boolean
+  default?: any
+  validator?(value: any, props: any): boolean
+}
+
+// Usage
+const titleProp: ConstrPropItemOptions<string> = {
+  type: String,
+  required: true,
+  validator: (value) => value.length > 0
+}
+
+const countProp: ConstrPropItemOptions<number> = {
+  type: Number,
+  default: 0,
+  validator: (value) => value >= 0
+}
+```
+
+### `ConstrPropItem<T>`
+
+Constructor prop item type with options or direct PropType.
+
+```typescript
+type ConstrPropItem<T = any> = ConstrPropItemOptions<T> | PropType<T>
+
+// Usage with simple PropType
+const simpleProp: ConstrPropItem<string> = String
+
+// Usage with options
+const complexProp: ConstrPropItem<number> = {
+  type: Number,
+  required: true,
+  default: 42,
+  validator: (value) => value > 0
+}
+```
+
+### `ConstrProps<P>`
+
+Constructor props type for component prop definitions.
+
+```typescript
+type ConstrProps<P = Record<string, any>> = {
+  [K in keyof P]: ConstrPropItem<P[K]>
+}
+
+// Usage
+interface ComponentProps {
+  title: string
+  count: number
+  enabled: boolean
+  items: string[]
+}
+
+const props: ConstrProps<ComponentProps> = {
+  title: {
+    type: String,
+    required: true
+  },
+  count: {
+    type: Number,
+    default: 0,
+    validator: (value) => value >= 0
+  },
+  enabled: Boolean,
+  items: {
+    type: Array as PropType<string[]>,
+    default: () => []
+  }
+}
+```
+
+## Practical Examples
+
+### Creating a Fully Typed Component
+
+```typescript
+import { defineComponent } from 'vue'
+import type {
+  ConstrSetup,
+  ConstrOptions,
+  ConstrProps,
+  ConstrClasses
+} from '@dxtmisha/functional'
+
+interface ButtonProps {
+  text: string
+  variant: 'primary' | 'secondary'
+  disabled: boolean
+}
+
+interface ButtonEmits {
+  click: [MouseEvent]
+}
+
+interface ButtonSetup {
+  handleClick: (event: MouseEvent) => void
+}
+
+const buttonProps: ConstrProps<ButtonProps> = {
+  text: { type: String, required: true },
+  variant: {
+    type: String as PropType<'primary' | 'secondary'>,
+    default: 'primary'
+  },
+  disabled: { type: Boolean, default: false }
+}
+
+export default defineComponent({
+  name: 'ConstructorButton',
+  props: buttonProps,
+  emits: ['click'],
+  setup(props, { emit }) {
+    const setup: ConstrSetup<HTMLButtonElement, ConstrClasses, ButtonSetup> = {
+      name: 'ConstructorButton',
+      element: ref<HTMLButtonElement>(),
+      classes: computed(() => ({
+        main: 'btn',
+        variant: `btn-${props.variant}`,
+        disabled: props.disabled ? 'btn-disabled' : ''
+      })),
+      styles: computed(() => ({
+        opacity: props.disabled ? '0.6' : '1',
+        cursor: props.disabled ? 'not-allowed' : 'pointer'
+      })),
+      handleClick: (event: MouseEvent) => {
+        if (!props.disabled) {
+          emit('click', event)
+        }
+      }
+    }
+
+    return setup
+  }
+})
+```
+
+These constructor types provide complete type safety and a structured approach to creating Vue components with support for reactivity, styling, and events.

@@ -1,0 +1,441 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Types/geoTypes'/>
+
+# Географические типы (geoTypes)
+
+Набор специализированных TypeScript типов для работы с географическими данными, локализацией, форматированием дат и телефонными номерами. Обеспечивает типобезопасность при работе с международными стандартами и региональными настройками.
+
+## Типы форматирования даты
+
+### `GeoDate`
+
+Объединенный тип для опций формата даты в географическом контексте.
+
+```typescript
+type GeoDate = 'full' | 'datetime' | 'date' | 'year-month' | 'year' | 'month' | 'day' | 'day-month' | 'time' | 'hour-minute' | 'hour' | 'minute' | 'second'
+
+// Использование
+function formatDate(date: Date, format: GeoDate): string {
+  const intl = new Intl.DateTimeFormat('ru-RU', getDateFormatOptions(format))
+  return intl.format(date)
+}
+
+const formats: GeoDate[] = [
+  'full',        // Полная дата и время
+  'datetime',    // Дата с временем
+  'date',        // Только дата
+  'year-month',  // Год и месяц
+  'time',        // Только время
+  'hour-minute'  // Часы и минуты
+]
+```
+
+### `GeoFirstDay`
+
+Код первого дня недели (0=воскресенье, 1=понедельник, 6=суббота).
+
+```typescript
+type GeoFirstDay = 1 | 6 | 0
+
+// Использование
+function getWeekStart(locale: string): GeoFirstDay {
+  // Россия, Европа - понедельник
+  if (locale.startsWith('ru') || locale.startsWith('de')) return 1
+  // США, Канада - воскресенье
+  if (locale.startsWith('en-US') || locale.startsWith('en-CA')) return 0
+  // Ближний Восток - суббота
+  if (locale.startsWith('ar')) return 6
+  return 1 // По умолчанию понедельник
+}
+
+const firstDay: GeoFirstDay = getWeekStart('ru-RU') // 1
+```
+
+### `GeoHours`
+
+Тип формата часов (12-часовой или 24-часовой).
+
+```typescript
+type GeoHours = '12' | '24'
+
+// Использование
+function formatTime(date: Date, hoursFormat: GeoHours): string {
+  const options = {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: hoursFormat === '12'
+  }
+  return new Intl.DateTimeFormat('ru-RU', options).format(date)
+}
+
+const time12 = formatTime(new Date(), '12') // "2:30 PM"
+const time24 = formatTime(new Date(), '24') // "14:30"
+```
+
+### `GeoTimeZoneStyle`
+
+Опции стиля отображения часового пояса.
+
+```typescript
+type GeoTimeZoneStyle = 'minute' | 'hour' | 'ISO8601' | 'RFC'
+
+// Использование
+function formatTimeZone(date: Date, style: GeoTimeZoneStyle): string {
+  switch (style) {
+    case 'minute': return '+0300'
+    case 'hour': return '+03'
+    case 'ISO8601': return '+03:00'
+    case 'RFC': return '+0300 (MSK)'
+    default: return '+03:00'
+  }
+}
+```
+
+## Интерфейсы географических данных
+
+### `GeoItem`
+
+Интерфейс географического элемента для данных страны и языка.
+
+```typescript
+interface GeoItem {
+  country: string
+  countryAlternative?: string[]
+  language: string
+  languageAlternative?: string[]
+  firstDay?: string | null
+  zone?: string | null
+  phoneCode?: string
+  phoneWithin?: string
+  phoneMask?: string | string[]
+  nameFormat?: 'fl' | 'fsl' | 'lf' | 'lsf' | string
+}
+
+// Использование
+const russiaItem: GeoItem = {
+  country: 'RU',
+  countryAlternative: ['RUS'],
+  language: 'ru',
+  languageAlternative: ['rus'],
+  firstDay: '1',
+  zone: 'Europe/Moscow',
+  phoneCode: '+7',
+  phoneWithin: '8',
+  phoneMask: '+7 (###) ###-##-##',
+  nameFormat: 'fl' // имя фамилия
+}
+
+const usaItem: GeoItem = {
+  country: 'US',
+  language: 'en',
+  firstDay: '0',
+  zone: 'America/New_York',
+  phoneCode: '+1',
+  phoneMask: '+1 (###) ###-####',
+  nameFormat: 'fl'
+}
+```
+
+### `GeoItemFull`
+
+Расширенный географический элемент с обязательными полями.
+
+```typescript
+interface GeoItemFull extends Omit<GeoItem, 'firstDay'> {
+  standard: string
+  firstDay: string
+}
+
+// Использование
+const fullGeoData: GeoItemFull = {
+  country: 'RU',
+  language: 'ru',
+  standard: 'ru-RU',
+  firstDay: '1', // обязательное поле
+  zone: 'Europe/Moscow',
+  phoneCode: '+7',
+  phoneMask: '+7 (###) ###-##-##'
+}
+
+function processGeoData(data: GeoItemFull) {
+  console.log(`Locale: ${data.standard}`)
+  console.log(`First day: ${data.firstDay}`)
+  console.log(`Phone: ${data.phoneCode}`)
+}
+```
+
+## Интерфейсы флагов стран
+
+### `GeoFlagItem`
+
+Элемент географического флага для отображения флага страны.
+
+```typescript
+interface GeoFlagItem {
+  language: string
+  country: string
+  standard: string
+  icon?: string
+  label: string
+  value: string
+}
+
+// Использование
+const countryFlags: GeoFlagItem[] = [
+  {
+    language: 'русский',
+    country: 'Россия',
+    standard: 'ru-RU',
+    icon: '@flag-ru',
+    label: 'Россия',
+    value: 'RU'
+  },
+  {
+    language: 'English',
+    country: 'United States',
+    standard: 'en-US',
+    icon: '@flag-us',
+    label: 'United States',
+    value: 'US'
+  }
+]
+
+function renderCountrySelect(flags: GeoFlagItem[]) {
+  return flags.map(flag => ({
+    label: flag.label,
+    value: flag.value,
+    icon: flag.icon
+  }))
+}
+```
+
+### `GeoFlagNational`
+
+Расширенный элемент географического флага с информацией о национальном языке.
+
+```typescript
+interface GeoFlagNational extends GeoFlagItem {
+  description: string
+  nationalLanguage: string
+  nationalCountry: string
+}
+
+// Использование
+const nationalFlags: GeoFlagNational[] = [
+  {
+    language: 'русский',
+    country: 'Россия',
+    standard: 'ru-RU',
+    icon: '@flag-ru',
+    label: 'Россия',
+    value: 'RU',
+    description: 'Российская Федерация',
+    nationalLanguage: 'русский',
+    nationalCountry: 'Россия'
+  },
+  {
+    language: 'English',
+    country: 'США',
+    standard: 'en-US',
+    icon: '@flag-us',
+    label: 'США',
+    value: 'US',
+    description: 'United States of America',
+    nationalLanguage: 'English',
+    nationalCountry: 'United States'
+  }
+]
+```
+
+## Интерфейсы телефонных номеров
+
+### `GeoPhoneValue`
+
+Значение телефонного номера с кодами и маской.
+
+```typescript
+interface GeoPhoneValue {
+  phone: number
+  within: number
+  mask: string[]
+  value: string
+}
+
+// Использование
+const russiaPhone: GeoPhoneValue = {
+  phone: 7,     // международный код
+  within: 8,    // код для внутренних звонков
+  mask: ['+7 (###) ###-##-##', '8 (###) ###-##-##'],
+  value: 'RU'
+}
+
+const usaPhone: GeoPhoneValue = {
+  phone: 1,
+  within: 1,
+  mask: ['+1 (###) ###-####'],
+  value: 'US'
+}
+```
+
+### `GeoPhoneMap`
+
+Карта телефонных номеров с вложенными элементами.
+
+```typescript
+interface GeoPhoneMap {
+  items: GeoPhoneValue[]
+  info: GeoPhoneValue | undefined
+  value: string | undefined
+  mask: string[]
+  maskFull: string[]
+  next: Record<string, GeoPhoneMap>
+}
+
+// Использование
+const phoneMap: GeoPhoneMap = {
+  items: [russiaPhone, usaPhone],
+  info: russiaPhone,
+  value: 'RU',
+  mask: ['+7 (###) ###-##-##'],
+  maskFull: ['+7 (###) ###-##-##', '8 (###) ###-##-##'],
+  next: {
+    '7': {
+      items: [russiaPhone],
+      info: russiaPhone,
+      value: 'RU',
+      mask: ['(###) ###-##-##'],
+      maskFull: ['+7 (###) ###-##-##'],
+      next: {}
+    }
+  }
+}
+```
+
+### `GeoPhoneMapInfo`
+
+Информация о карте телефонных номеров.
+
+```typescript
+interface GeoPhoneMapInfo {
+  item?: GeoPhoneMap
+  phone?: string
+}
+
+// Использование
+function getPhoneInfo(phoneNumber: string): GeoPhoneMapInfo {
+  const phoneCode = phoneNumber.substring(0, 1)
+
+  if (phoneCode === '7') {
+    return {
+      item: phoneMap.next['7'],
+      phone: '+7'
+    }
+  }
+
+  return {}
+}
+
+const phoneInfo = getPhoneInfo('79991234567')
+// { item: GeoPhoneMap, phone: '+7' }
+```
+
+## Практические примеры
+
+### Система локализации
+
+```typescript
+import type { GeoItemFull, GeoDate, GeoHours } from '@dxtmisha/functional'
+
+class LocalizationSystem {
+  constructor(private geoData: GeoItemFull) {}
+
+  formatDate(date: Date, format: GeoDate): string {
+    const locale = this.geoData.standard
+    const options = this.getDateOptions(format)
+    return new Intl.DateTimeFormat(locale, options).format(date)
+  }
+
+  formatTime(date: Date): string {
+    const is24Hour = this.geoData.standard.startsWith('ru') ||
+                     this.geoData.standard.startsWith('de')
+    const hoursFormat: GeoHours = is24Hour ? '24' : '12'
+
+    return new Intl.DateTimeFormat(this.geoData.standard, {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: hoursFormat === '12'
+    }).format(date)
+  }
+
+  getWeekStart(): number {
+    return parseInt(this.geoData.firstDay)
+  }
+}
+```
+
+### Селектор стран с флагами
+
+```typescript
+import type { GeoFlagNational } from '@dxtmisha/functional'
+
+interface CountrySelectProps {
+  countries: GeoFlagNational[]
+  selected?: string
+  onSelect: (country: GeoFlagNational) => void
+}
+
+function CountrySelect({ countries, selected, onSelect }: CountrySelectProps) {
+  return countries.map(country => ({
+    id: country.value,
+    label: country.country,
+    description: country.description,
+    nationalName: country.nationalCountry,
+    icon: country.icon,
+    selected: selected === country.value,
+    onClick: () => onSelect(country)
+  }))
+}
+```
+
+### Валидатор телефонных номеров
+
+```typescript
+import type { GeoPhoneValue, GeoPhoneMap } from '@dxtmisha/functional'
+
+class PhoneValidator {
+  constructor(private phoneMap: GeoPhoneMap) {}
+
+  validate(phoneNumber: string): boolean {
+    const cleanNumber = phoneNumber.replace(/\D/g, '')
+
+    for (const phoneData of this.phoneMap.items) {
+      if (cleanNumber.startsWith(phoneData.phone.toString())) {
+        return this.validateWithMask(cleanNumber, phoneData.mask)
+      }
+    }
+
+    return false
+  }
+
+  private validateWithMask(number: string, masks: string[]): boolean {
+    return masks.some(mask => {
+      const expectedLength = mask.replace(/\D/g, '').length
+      return number.length === expectedLength
+    })
+  }
+
+  format(phoneNumber: string): string {
+    const cleanNumber = phoneNumber.replace(/\D/g, '')
+    const phoneData = this.findPhoneData(cleanNumber)
+
+    if (phoneData && phoneData.mask.length > 0) {
+      return this.applyMask(cleanNumber, phoneData.mask[0])
+    }
+
+    return phoneNumber
+  }
+}
+```
+
+Эти географические типы обеспечивают полную типизацию для работы с международными стандартами, локализацией и региональными настройками в приложениях.

@@ -1,0 +1,425 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Types/basicTypes'/>
+
+# Базовые типы (basicTypes)
+
+Набор основных утилитарных типов TypeScript для функциональной библиотеки. Предоставляет базовые типы для работы с данными, функциями, DOM элементами и событиями.
+
+## Основные утилитарные типы
+
+### `Undefined`
+
+Объединенный тип для undefined и null значений.
+
+```typescript
+type Undefined = undefined | null
+
+// Использование
+function checkValue(value: string | Undefined): boolean {
+  return value !== null && value !== undefined
+}
+```
+
+### `EmptyValue`
+
+Объединенный тип для всех "пустых" значений, включая ложные примитивы и строковые представления.
+
+```typescript
+type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'null' | '0' | 'false' | '[]'
+
+// Использование
+function isEmpty(value: any): value is EmptyValue {
+  return value === null || value === undefined || value === 0 || value === false ||
+         value === '' || value === 'undefined' || value === 'null' ||
+         value === '0' || value === 'false' || value === '[]'
+}
+```
+
+### `NumberOrString`
+
+Объединенный тип для числовых и строковых значений.
+
+```typescript
+type NumberOrString = number | string
+
+// Использование
+function formatValue(value: NumberOrString): string {
+  return value.toString()
+}
+```
+
+### `NumberOrStringOrBoolean`
+
+Объединенный тип для числовых, строковых и булевых значений.
+
+```typescript
+type NumberOrStringOrBoolean = number | string | boolean
+
+// Использование
+function convertToString(value: NumberOrStringOrBoolean): string {
+  return String(value)
+}
+```
+
+### `NumberOrStringOrDate`
+
+Объединенный тип для числовых, строковых значений и Date.
+
+```typescript
+type NumberOrStringOrDate = NumberOrString | Date
+
+// Использование
+function parseDate(value: NumberOrStringOrDate): Date {
+  return new Date(value)
+}
+```
+
+## Дженерик утилитарные типы
+
+### `NormalOrArray<T>`
+
+Дженерик тип для одиночного значения или массива значений.
+
+```typescript
+type NormalOrArray<T = NumberOrString> = T | T[]
+
+// Использование
+function processValues(values: NormalOrArray<string>): string[] {
+  return Array.isArray(values) ? values : [values]
+}
+```
+
+### `NormalOrPromise<T>`
+
+Дженерик тип для прямого значения или Promise.
+
+```typescript
+type NormalOrPromise<T> = T | Promise<T>
+
+// Использование
+async function getValue<T>(value: NormalOrPromise<T>): Promise<T> {
+  return await value
+}
+```
+
+### `ObjectItem<T>`
+
+Дженерик тип записи/объекта со строковыми ключами.
+
+```typescript
+type ObjectItem<T = any> = Record<string, T>
+
+// Использование
+const config: ObjectItem<string> = {
+  apiUrl: 'https://api.example.com',
+  version: '1.0.0'
+}
+```
+
+### `ObjectOrArray<T>`
+
+Дженерик тип для массива или объекта.
+
+```typescript
+type ObjectOrArray<T = any> = T[] | ObjectItem<T>
+
+// Использование
+function processData<T>(data: ObjectOrArray<T>): T[] {
+  return Array.isArray(data) ? data : Object.values(data)
+}
+```
+
+## Функциональные типы
+
+### `FunctionReturn<R>`
+
+Тип функции, возвращающей значение типа R.
+
+```typescript
+type FunctionReturn<R = any> = () => R
+
+// Использование
+const getRandomNumber: FunctionReturn<number> = () => Math.random()
+const getUserName: FunctionReturn<string> = () => 'John Doe'
+```
+
+### `FunctionVoid`
+
+Тип функции, возвращающей void.
+
+```typescript
+type FunctionVoid = () => void
+
+// Использование
+const logMessage: FunctionVoid = () => console.log('Hello')
+const cleanup: FunctionVoid = () => { /* cleanup code */ }
+```
+
+### `FunctionArgs<T, R>`
+
+Тип функции с переменными аргументами.
+
+```typescript
+type FunctionArgs<T, R> = (...args: T[]) => R
+
+// Использование
+const sum: FunctionArgs<number, number> = (...numbers) => {
+  return numbers.reduce((a, b) => a + b, 0)
+}
+```
+
+### `FunctionAnyType<T, R>`
+
+Наиболее общий тип функции.
+
+```typescript
+type FunctionAnyType<T = any, R = any> = (...args: T[]) => R
+
+// Использование
+const genericProcessor: FunctionAnyType = (...args) => {
+  return args.map(arg => String(arg)).join(' ')
+}
+```
+
+## Типы элементов данных
+
+### `ItemList<T>`
+
+Дженерик тип записи для списков со строковыми ключами.
+
+```typescript
+type ItemList<T = any> = Record<string, T>
+
+// Использование
+const userList: ItemList<{ name: string; age: number }> = {
+  user1: { name: 'John', age: 30 },
+  user2: { name: 'Jane', age: 25 }
+}
+```
+
+### `Item<V>`
+
+Дженерик тип элемента со свойствами index и value.
+
+```typescript
+type Item<V> = {
+  index: string
+  value: V
+}
+
+// Использование
+const menuItem: Item<string> = {
+  index: 'home',
+  value: 'Home Page'
+}
+```
+
+### `ItemValue<V>`
+
+Дженерик тип элемента со свойствами label и value.
+
+```typescript
+type ItemValue<V> = {
+  label: string
+  value: V
+}
+
+// Использование
+const selectOption: ItemValue<number> = {
+  label: 'Выберите возраст',
+  value: 25
+}
+
+const options: ItemValue<string>[] = [
+  { label: 'Красный', value: 'red' },
+  { label: 'Синий', value: 'blue' }
+]
+```
+
+### `ItemName<V>`
+
+Дженерик тип элемента со свойствами name и value.
+
+```typescript
+type ItemName<V> = {
+  name: string | number
+  value: V
+}
+
+// Использование
+const configItem: ItemName<boolean> = {
+  name: 'debugMode',
+  value: true
+}
+```
+
+## DOM и элементы
+
+### `ElementOrWindow`
+
+Объединенный тип для HTML элементов и объекта Window.
+
+```typescript
+type ElementOrWindow = HTMLElement | Window
+
+// Использование
+function addEventListenerToTarget(target: ElementOrWindow, event: string, handler: Function) {
+  target.addEventListener(event, handler as EventListener)
+}
+```
+
+### `ElementOrString<E>`
+
+Дженерик тип для элемента или строкового селектора.
+
+```typescript
+type ElementOrString<E extends ElementOrWindow> = E | string
+
+// Использование
+function getElement<T extends HTMLElement>(selector: ElementOrString<T>): T | null {
+  if (typeof selector === 'string') {
+    return document.querySelector(selector)
+  }
+  return selector
+}
+```
+
+## Типы событий
+
+### `EventOptions`
+
+Тип для опций обработчика событий.
+
+```typescript
+type EventOptions = AddEventListenerOptions | boolean | undefined
+
+// Использование
+function setupEventListener(
+  element: HTMLElement,
+  event: string,
+  handler: Function,
+  options: EventOptions
+) {
+  element.addEventListener(event, handler as EventListener, options)
+}
+```
+
+### `EventListenerDetail<O, D>`
+
+Дженерик тип функции обработчика событий с дополнительным параметром detail.
+
+```typescript
+type EventListenerDetail<
+  O extends Event,
+  D extends Record<string, any>
+> = (event: O, detail?: D) => void
+
+// Использование
+const clickHandler: EventListenerDetail<MouseEvent, { userId: number }> = (event, detail) => {
+  console.log('Clicked at:', event.clientX, event.clientY)
+  if (detail) {
+    console.log('User ID:', detail.userId)
+  }
+}
+```
+
+### `EventActivityItem<E>`
+
+Тип для отслеживания активных обработчиков событий и наблюдателей.
+
+```typescript
+type EventActivityItem<E extends ElementOrWindow> = {
+  element: E | undefined
+  type: string
+  listener?: (event: any | Event) => void
+  observer?: ResizeObserver
+}
+
+// Использование
+const activeEvents: EventActivityItem<HTMLElement>[] = [
+  {
+    element: document.getElementById('button'),
+    type: 'click',
+    listener: (event) => console.log('Button clicked')
+  }
+]
+```
+
+## Типы координат
+
+### `ImageCoordinator`
+
+Тип для 2D координат.
+
+```typescript
+type ImageCoordinator = {
+  x: number
+  y: number
+}
+
+// Использование
+function calculateDistance(point1: ImageCoordinator, point2: ImageCoordinator): number {
+  const dx = point2.x - point1.x
+  const dy = point2.y - point1.y
+  return Math.sqrt(dx * dx + dy * dy)
+}
+
+const mousePosition: ImageCoordinator = { x: 100, y: 200 }
+```
+
+## Практические примеры
+
+### Composable с использованием базовых типов
+
+```typescript
+import type {
+  NumberOrString,
+  ItemValue,
+  ElementOrString,
+  FunctionVoid
+} from '@dxtmisha/functional'
+
+export function useFormField<T>(
+  selector: ElementOrString<HTMLInputElement>,
+  initialValue: NumberOrString,
+  onChange?: FunctionVoid
+) {
+  const element = getElement(selector)
+  const value = ref<NumberOrString>(initialValue)
+
+  const options: ItemValue<T>[] = [
+    { label: 'Option 1', value: 'opt1' as T },
+    { label: 'Option 2', value: 'opt2' as T }
+  ]
+
+  return { element, value, options, onChange }
+}
+```
+
+### Утилитарные функции с типами
+
+```typescript
+import type {
+  NormalOrArray,
+  ObjectItem,
+  FunctionArgs
+} from '@dxtmisha/functional'
+
+// Функция для обработки значений
+function processItems<T>(items: NormalOrArray<T>): T[] {
+  return Array.isArray(items) ? items : [items]
+}
+
+// Функция для работы с конфигурацией
+function mergeConfig(...configs: ObjectItem[]): ObjectItem {
+  return Object.assign({}, ...configs)
+}
+
+// Функция-агрегатор
+const aggregate: FunctionArgs<number, number> = (...values) => {
+  return values.reduce((sum, val) => sum + val, 0)
+}
+```
+
+Эти базовые типы обеспечивают типобезопасность и консистентность во всей функциональной библиотеке @dxtmisha/functional.
