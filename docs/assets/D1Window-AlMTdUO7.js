@@ -1,0 +1,34 @@
+import{j as o}from"./jsx-runtime-D_zvdyIk.js";import{useMDXComponents as i}from"./index-Df0ZKz4J.js";import{M as a,C as p}from"./blocks-DbLYQUM8.js";import{S as r,a as e}from"./StorybookDescriptions-BfBoWmug.js";import{W as c,a as x,b as m,c as d,d as j,e as l}from"./D1Window.stories-DZIzwtIH.js";import"./preload-helper-PPVm8Dsz.js";import"./_commonjsHelpers-CqkleIqs.js";import"./iframe-BGVIV1-M.js";import"./wiki-BNdC282o.js";import"./D1Window-C4b3BrhT.js";import"./D1Scrollbar-CmnNCCAt.js";import"./D1Button-GXwQqyvn.js";import"./D1Icon-BgbSUe0A.js";import"./D1Image-ospKwdTj.js";import"./SkeletonInclude-3sHaEU0y.js";import"./Skeleton-cc-8BsSh.js";import"./D1Progress-C0TI2H2s.js";import"./D1Ripple-BDM2s-Z1.js";import"./ButtonDesign-BjUb3TEt.js";import"./RippleInclude-LwaydNFr.js";import"./LabelInclude-nKXwVxUo.js";import"./EventClickInclude-BTsveQTp.js";import"./IconInclude-1obTb6g4.js";import"./ProgressInclude-CpNMlIc0.js";import"./ModelInclude-CDUOu-Ne.js";import"./WindowClasses-DfIl8GS4.js";function s(n){const t={h2:"h2",...i(),...n.components};return o.jsxs(o.Fragment,{children:[o.jsx(a,{of:c}),`
+`,o.jsx(r,{name:m.getName(),description:m.getDescription(),story:x}),`
+`,o.jsx(e,{componentName:"Window",type:"window"}),`
+`,o.jsx(e,{componentName:"Window",type:"staticMode"}),`
+`,o.jsx(p,{of:d}),`
+`,o.jsx(e,{componentName:"Window",type:"axis"}),`
+`,o.jsx(p,{of:j}),`
+`,o.jsx(e,{componentName:"Window",type:"classes"}),`
+`,o.jsx(e,{componentName:"Window",type:"hooks"}),`
+`,o.jsx(e,{componentName:"Window",type:"v-model"}),`
+`,o.jsx(p,{of:l}),`
+`,o.jsx(t.h2,{id:"events",children:"Events"}),`
+`,o.jsx(e,{componentName:"Window",type:"event.window"}),`
+`,o.jsx(e,{componentName:"Event",type:"scrollbarTop"}),`
+`,o.jsx(e,{componentName:"Event",type:"scrollbarReachTop"}),`
+`,o.jsx(e,{componentName:"Event",type:"scrollbarLeaveTop"}),`
+`,o.jsx(e,{componentName:"Event",type:"scrollbarBottom"}),`
+`,o.jsx(e,{componentName:"Event",type:"scrollbarReachBottom"}),`
+`,o.jsx(e,{componentName:"Event",type:"scrollbarLeaveBottom"}),`
+`,o.jsx(e,{componentName:"Event",type:"scrollbarEdge"}),`
+`,o.jsx(e,{componentName:"Image",type:"event.load"}),`
+`,o.jsx(t.h2,{id:"expose",children:"Expose"}),`
+`,o.jsx(e,{componentName:"Window",type:"expose.control"}),`
+`,o.jsx(e,{componentName:"Window",type:"expose.id"}),`
+`,o.jsx(e,{componentName:"Window",type:"expose.open"}),`
+`,o.jsx(e,{componentName:"Window",type:"expose.setOpen"}),`
+`,o.jsx(e,{componentName:"Window",type:"expose.toOpen"}),`
+`,o.jsx(e,{componentName:"Window",type:"expose.toClose"}),`
+`,o.jsx(e,{componentName:"Window",type:"expose.toggle"}),`
+`,o.jsx(t.h2,{id:"slots",children:"Slots"}),`
+`,o.jsx(e,{componentName:"Slot",type:"control"}),`
+`,o.jsx(e,{componentName:"Slot",type:"title"}),`
+`,o.jsx(e,{componentName:"Slot",type:"footer"}),`
+`,o.jsx(e,{componentName:"Slot",type:"default"})]})}function V(n={}){const{wrapper:t}={...i(),...n.components};return t?o.jsx(t,{...n,children:o.jsx(s,{...n})}):s(n)}export{V as default};
