@@ -1,5 +1,6 @@
 /**
- * Class for working with localStorage.<br>
+ * Class for working with localStorage.
+ *
  * Класс для работы с localStorage.
  */
 export declare class DataStorage<T> {
@@ -16,41 +17,53 @@ export declare class DataStorage<T> {
     private age?;
     /**
      * Constructor
-     * @param name value name /<br>название значения
-     * @param isSession should we use a session? /<br>использовать ли сессию?
+     * @param name value name/ название значения
+     * @param isSession should we use a session/ использовать ли сессию
      */
     constructor(name: string, isSession?: boolean);
     /**
-     * Getting data from local storage.<br>
+     * Getting data from local storage.
+     *
      * Получение данных из локального хранилища.
-     * @param defaultValue default value /<br>значение по умолчанию
-     * @param cache cache time /<br>время кэширования
+     * @param defaultValue default value/ значение по умолчанию
+     * @param cache cache time/ время кэширования
      */
     get(defaultValue?: T | (() => T), cache?: number): T | undefined;
     /**
-     * Changing data in storage.<br>
+     * Changing data in storage.
+     *
      * Изменение данных в хранилище.
-     * @param value new values /<br>новые значения
+     * @param value new values/ новые значения
      */
     set(value?: T | (() => T)): T | undefined;
     /**
-     * Checks for storage time limit.<br>
+     * Removing data from storage.
+     *
+     * Удаление данных из хранилища.
+     */
+    remove(): this;
+    /**
+     * Checks for storage time limit.
+     *
      * Проверяет на лимит времени хранения.
-     * @param cache cache time /<br>время кэширования
+     * @param cache cache time/ время кэширования
      */
     private isCache;
     /**
-     * Returns an object for working with storage.<br>
+     * Returns an object for working with storage.
+     *
      * Возвращает объект для работы с хранилищем.
      */
     private getMethod;
     /**
-     * Getting the user name in the storage.<br>
-     * Получение имени пользователя в хранилище.
+     * Getting the storage key name.
+     *
+     * Получение имени ключа в хранилище.
      */
     private getIndex;
     /**
-     * Getting data from storage.<br>
+     * Getting data from storage.
+     *
      * Получение данных из хранилища.
      */
     private getValue;

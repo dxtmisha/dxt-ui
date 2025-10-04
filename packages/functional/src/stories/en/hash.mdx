@@ -1,0 +1,150 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Hash'/>
+
+# Hash Class
+
+A static class for working with URL hash data with automatic browser synchronization. Provides application state persistence in URL, change observation system, and automatic data type conversion.
+
+## Key Features
+
+- **URL Synchronization** — automatic browser hash URL part updates
+- **Watch System** — callbacks for specific variable changes
+- **Type Conversion** — automatic string to target type conversion
+- **Loop Protection** — prevents infinite URL updates
+- **Function Support** — default values through functions
+- **URL Parsing** — automatic parsing of existing hash parameters
+- **TypeScript Support** — type safety with generics
+- **Persistence** — data preservation between page reloads
+
+## Data Management Methods
+
+### `get`
+
+Gets variable value from hash.
+
+**Parameters:**
+- `name: string` — variable name
+- `defaultValue?: T | (() => T)` — default value or function
+
+**Returns:** `T` — variable value
+
+```javascript
+import { Hash } from '@dxtmisha/functional'
+
+// Simple retrieval
+const userId = Hash.get('userId', '12345')
+
+// With default function
+const timestamp = Hash.get('timestamp', () => Date.now())
+
+// Typed retrieval
+const settings = Hash.get<{theme: string}>('settings', {theme: 'dark'})
+```
+
+### `set`
+
+Sets variable value in hash.
+
+**Parameters:**
+- `name: string` — variable name
+- `callback: T | (() => T)` — new value or function
+
+```javascript
+// Simple setting
+Hash.set('userId', '12345')
+
+// Setting object
+Hash.set('settings', { theme: 'dark', lang: 'en' })
+
+// With function
+Hash.set('counter', () => Math.random())
+
+// Removal
+Hash.set('temp', undefined)
+```
+
+### `addWatch`
+
+Adds watcher for variable changes.
+
+**Parameters:**
+- `name: string` — variable name
+- `callback: (value: T) => void` — callback function
+
+```javascript
+// Watch theme
+Hash.addWatch('theme', (theme) => {
+  document.body.className = `theme-${theme}`
+})
+
+// Watch user
+Hash.addWatch('userId', (userId) => {
+  if (userId) loadUserData(userId)
+})
+```
+
+### `reload`
+
+Force updates data from current URL hash.
+
+```javascript
+// After programmatic location.hash change
+location.hash = '#param:value'
+Hash.reload()
+
+// On app initialization
+Hash.reload()
+const currentPage = Hash.get('page', 'home')
+```
+
+## Practical Examples
+
+### State Management
+
+```javascript
+// Initialization
+Hash.reload()
+
+// Setup watchers
+Hash.addWatch('page', (page) => navigateTo(page))
+Hash.addWatch('filters', (filters) => applyFilters(filters))
+
+// Programmatic changes
+Hash.set('page', 'products')
+Hash.set('filters', { category: 'electronics' })
+```
+
+### Form Persistence
+
+```javascript
+// Restore form state
+const formData = Hash.get('formData', {})
+restoreForm(formData)
+
+// Save on changes
+form.addEventListener('input', () => {
+  Hash.set('formData', getFormData(form))
+})
+```
+
+### Navigation
+
+```javascript
+class Router {
+  constructor() {
+    Hash.addWatch('route', (route) => this.navigate(route))
+    Hash.reload()
+  }
+
+  navigate(route) {
+    loadPage(route || 'home')
+  }
+
+  go(route) {
+    Hash.set('route', route)
+  }
+}
+```
+
+The Hash class provides simple and reliable synchronization of JavaScript application state with browser URL, supporting bookmarks and back/forward buttons.

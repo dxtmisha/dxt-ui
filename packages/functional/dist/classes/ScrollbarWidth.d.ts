@@ -1,4 +1,3 @@
-import { Ref, ComputedRef } from 'vue';
 /**
  * Class for getting the scroll width.
  *
@@ -7,12 +6,6 @@ import { Ref, ComputedRef } from 'vue';
 export declare class ScrollbarWidth {
     private static storage;
     private static calculate;
-    readonly item: Ref<boolean | undefined, boolean | undefined>;
-    /**
-     * Constructor
-     */
-    constructor();
-    readonly is: ComputedRef<boolean>;
     /**
      * Checks whether to enable scroll hiding.
      *

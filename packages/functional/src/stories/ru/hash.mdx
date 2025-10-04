@@ -1,0 +1,150 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Hash'/>
+
+# Класс Hash
+
+Статический класс для работы с данными в URL hash с автоматической синхронизацией браузера. Обеспечивает сохранение состояния приложения в URL, систему наблюдения за изменениями и автоматическое преобразование типов данных.
+
+## Основные возможности
+
+- **Синхронизация с URL** — автоматическое обновление hash части URL браузера
+- **Система наблюдения** — колбэки на изменения конкретных переменных
+- **Преобразование типов** — автоматическое преобразование строк в нужные типы
+- **Защита от циклов** — предотвращение бесконечных обновлений URL
+- **Поддержка функций** — значения по умолчанию через функции
+- **Парсинг URL** — автоматический разбор существующих hash параметров
+- **TypeScript поддержка** — типобезопасность с дженериками
+- **Персистентность** — сохранение данных между перезагрузками страницы
+
+## Методы управления данными
+
+### `get`
+
+Получает значение переменной из hash.
+
+**Параметры:**
+- `name: string` — название переменной
+- `defaultValue?: T | (() => T)` — значение по умолчанию или функция
+
+**Возвращает:** `T` — значение переменной
+
+```javascript
+import { Hash } from '@dxtmisha/functional'
+
+// Простое получение
+const userId = Hash.get('userId', '12345')
+
+// С функцией по умолчанию
+const timestamp = Hash.get('timestamp', () => Date.now())
+
+// Типизированное получение
+const settings = Hash.get<{theme: string}>('settings', {theme: 'dark'})
+```
+
+### `set`
+
+Устанавливает значение переменной в hash.
+
+**Параметры:**
+- `name: string` — название переменной
+- `callback: T | (() => T)` — новое значение или функция
+
+```javascript
+// Простая установка
+Hash.set('userId', '12345')
+
+// Установка объекта
+Hash.set('settings', { theme: 'dark', lang: 'ru' })
+
+// С функцией
+Hash.set('counter', () => Math.random())
+
+// Удаление
+Hash.set('temp', undefined)
+```
+
+### `addWatch`
+
+Добавляет наблюдатель за изменениями переменной.
+
+**Параметры:**
+- `name: string` — название переменной
+- `callback: (value: T) => void` — функция обратного вызова
+
+```javascript
+// Наблюдение за темой
+Hash.addWatch('theme', (theme) => {
+  document.body.className = `theme-${theme}`
+})
+
+// Наблюдение за пользователем
+Hash.addWatch('userId', (userId) => {
+  if (userId) loadUserData(userId)
+})
+```
+
+### `reload`
+
+Принудительно обновляет данные из текущего URL hash.
+
+```javascript
+// После программного изменения location.hash
+location.hash = '#param:value'
+Hash.reload()
+
+// При инициализации приложения
+Hash.reload()
+const currentPage = Hash.get('page', 'home')
+```
+
+## Практические примеры
+
+### Управление состоянием
+
+```javascript
+// Инициализация
+Hash.reload()
+
+// Установка наблюдателей
+Hash.addWatch('page', (page) => navigateTo(page))
+Hash.addWatch('filters', (filters) => applyFilters(filters))
+
+// Программное изменение
+Hash.set('page', 'products')
+Hash.set('filters', { category: 'electronics' })
+```
+
+### Сохранение формы
+
+```javascript
+// Восстановление состояния формы
+const formData = Hash.get('formData', {})
+restoreForm(formData)
+
+// Сохранение при изменении
+form.addEventListener('input', () => {
+  Hash.set('formData', getFormData(form))
+})
+```
+
+### Навигация
+
+```javascript
+class Router {
+  constructor() {
+    Hash.addWatch('route', (route) => this.navigate(route))
+    Hash.reload()
+  }
+
+  navigate(route) {
+    loadPage(route || 'home')
+  }
+
+  go(route) {
+    Hash.set('route', route)
+  }
+}
+```
+
+Класс Hash обеспечивает простую и надежную синхронизацию состояния JavaScript приложения с URL браузера, поддерживая закладки и кнопки назад/вперед.

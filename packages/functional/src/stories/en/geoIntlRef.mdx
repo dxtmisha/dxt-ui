@@ -1,0 +1,344 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Ref/GeoIntlRef'/>
+
+# GeoIntlRef Class
+
+Reactive Vue class for managing number, date formatting and localized names. Provides automatic data formatting according to international standards with full integration into Vue's reactive system.
+
+## Key Features
+
+- **Vue Reactivity** — uses computed properties for reactive formatting
+- **Internationalization** — supports all Intl API standards
+- **Number Formatting** — numbers, currencies, percentages, units
+- **Date Formatting** — dates, time, relative time
+- **Localized Names** — countries, languages, months, weekdays
+- **Automatic Locale** — uses current geolocation or specified locale
+- **Flexible Input** — accepts ref or normal values
+- **Configurable Options** — full support for Intl API options
+
+## Constructor
+
+### `constructor`
+
+Creates a GeoIntlRef instance with reactive parameters.
+
+**Parameters:**
+- `code?: RefOrNormal<string>` — country code, full form language-country or one of them
+
+```javascript
+import { GeoIntlRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// With automatic locale
+const intl = new GeoIntlRef()
+
+// With specific locale
+const intlUS = new GeoIntlRef('en-US')
+
+// With reactive locale
+const locale = ref('en-US')
+const intlReactive = new GeoIntlRef(locale)
+```
+
+## Display Name Methods
+
+### `display`
+
+The consistent translation of language, region and script display names.
+
+**Parameters:**
+- `value?: RefOrNormal<string>` — the code to provide depends on the type
+- `typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions` — display options
+
+**Returns:** `ComputedRef<string>` — reactive display name
+
+```javascript
+const intl = new GeoIntlRef('en-US')
+
+// Language name
+const langName = intl.display('ru', 'language') // "Russian"
+
+// Country name
+const countryName = intl.display('RU', 'region') // "Russia"
+```
+
+### `languageName`
+
+Get display names of language.
+
+**Parameters:**
+- `value?: RefOrNormal<string>` — language code
+- `style?: Intl.RelativeTimeFormatStyle` — formatting style
+
+**Returns:** `ComputedRef<string>` — reactive language name
+
+```javascript
+const langName = intl.languageName('ru') // "Russian"
+```
+
+### `countryName`
+
+Get display names of region.
+
+**Parameters:**
+- `value?: RefOrNormal<string>` — country code
+- `style?: Intl.RelativeTimeFormatStyle` — formatting style
+
+**Returns:** `ComputedRef<string>` — reactive country name
+
+```javascript
+const countryName = intl.countryName('RU') // "Russia"
+```
+
+## Number Formatting Methods
+
+### `number`
+
+Number formatting according to locale.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrString>` — number to format
+- `options?: Intl.NumberFormatOptions` — formatting options
+
+**Returns:** `ComputedRef<string>` — reactive formatted string
+
+```javascript
+const formatted = intl.number(1234.56) // "1,234.56"
+const withDecimals = intl.number(1234.56, { minimumFractionDigits: 2 })
+```
+
+### `decimal`
+
+Decimal point symbol.
+
+**Returns:** `ComputedRef<string>` — reactive decimal point symbol
+
+```javascript
+const decimalSymbol = intl.decimal() // "." for en-US, "," for ru-RU
+```
+
+### `currency`
+
+Currency formatting.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrString>` — number to format
+- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>` — currency or options
+- `numberOnly?: boolean` — do not display the currency symbol
+
+**Returns:** `ComputedRef<string>` — reactive formatted currency
+
+```javascript
+const price = intl.currency(1234.56, 'USD') // "$1,234.56"
+const priceOnly = intl.currency(1234.56, 'USD', true) // "1,234.56"
+```
+
+### `unit`
+
+Unit formatting.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrString>` — number to format
+- `unitOptions?: string | Intl.NumberFormatOptions` — unit or options
+
+**Returns:** `ComputedRef<string>` — reactive formatted unit
+
+```javascript
+const length = intl.unit(5, 'meter') // "5 m"
+const weight = intl.unit(2.5, 'kilogram') // "2.5 kg"
+```
+
+### `percent`
+
+Number as a percentage.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrString>` — number to format
+- `options?: Intl.NumberFormatOptions` — formatting options
+
+**Returns:** `ComputedRef<string>` — reactive percentage
+
+```javascript
+const percentage = intl.percent(0.75) // "75%"
+```
+
+### `percentBy100`
+
+Number as a percentage (unit).
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrString>` — number to format
+- `options?: Intl.NumberFormatOptions` — formatting options
+
+**Returns:** `ComputedRef<string>` — reactive percentage
+
+```javascript
+const percentage = intl.percentBy100(75) // "75%"
+```
+
+## Date Formatting Methods
+
+### `date`
+
+Language-sensitive date and time formatting.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — date to format
+- `type?: GeoDate` — type of date format
+- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — style options
+- `hour24?: boolean` — whether to use 24-hour time
+
+**Returns:** `ComputedRef<string>` — reactive formatted date
+
+```javascript
+const date = intl.date(new Date()) // "1/15/2024"
+const dateTime = intl.date(new Date(), 'datetime') // "1/15/2024, 2:30 PM"
+```
+
+### `relative`
+
+Relative time formatting.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — date to format
+- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — style options
+- `todayValue?: Date` — current day
+
+**Returns:** `ComputedRef<string>` — reactive relative time
+
+```javascript
+const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000)
+const relative = intl.relative(yesterday) // "yesterday"
+```
+
+### `relativeLimit`
+
+Relative time with limit.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — date to format
+- `limit: number` — limit in days
+- `todayValue?: Date` — current day
+- `relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — relative time options
+- `dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — date options
+- `type?: GeoDate` — type of date format
+- `hour24?: boolean` — 24-hour time
+
+**Returns:** `ComputedRef<string>` — reactive formatted time
+
+```javascript
+const limitedRelative = intl.relativeLimit(yesterday, 7) // "yesterday" or full date if > 7 days
+```
+
+### `month`
+
+Names of months.
+
+**Parameters:**
+- `value?: RefOrNormal<NumberOrStringOrDate>` — date to format
+- `style?: Intl.DateTimeFormatOptions['month']` — representation of the month
+
+**Returns:** `ComputedRef<string>` — reactive month name
+
+```javascript
+const monthName = intl.month(new Date(), 'long') // "January"
+```
+
+### `months`
+
+Array of month names.
+
+**Parameters:**
+- `style?: Intl.DateTimeFormatOptions['month']` — representation of the month
+
+**Returns:** `ComputedRef<ItemValue<number | undefined>[]>` — reactive list of months
+
+```javascript
+const monthsList = intl.months('long')
+// [{ label: "January", value: 0 }, { label: "February", value: 1 }, ...]
+```
+
+### `weekday`
+
+Names of weekdays.
+
+**Parameters:**
+- `value?: RefOrNormal<NumberOrStringOrDate>` — date to format
+- `style?: Intl.DateTimeFormatOptions['weekday']` — representation of the weekday
+
+**Returns:** `ComputedRef<string>` — reactive weekday name
+
+```javascript
+const dayName = intl.weekday(new Date(), 'long') // "Monday"
+```
+
+### `weekdays`
+
+Array of weekday names.
+
+**Parameters:**
+- `style?: Intl.DateTimeFormatOptions['weekday']` — representation of the weekday
+
+**Returns:** `ComputedRef<ItemValue<number | undefined>[]>` — reactive list of weekdays
+
+```javascript
+const daysList = intl.weekdays('long')
+// [{ label: "Sunday", value: 0 }, { label: "Monday", value: 1 }, ...]
+```
+
+## Practical Examples
+
+### Vue Component with Localization
+
+```vue
+<template>
+  <div class="localized-content">
+    <h2>{{ intl.countryName('US') }}</h2>
+    <p>Price: {{ intl.currency(1299, 'USD') }}</p>
+    <p>Date: {{ intl.date(new Date()) }}</p>
+    <p>Updated: {{ intl.relative(lastUpdate) }}</p>
+  </div>
+</template>
+
+<script setup>
+import { GeoIntlRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const locale = ref('en-US')
+const intl = new GeoIntlRef(locale)
+const lastUpdate = ref(new Date(Date.now() - 2 * 60 * 60 * 1000)) // 2 hours ago
+</script>
+```
+
+### Composable for Internationalization
+
+```javascript
+export function useIntl(locale = 'en-US') {
+  const intl = new GeoIntlRef(locale)
+
+  return {
+    formatNumber: intl.number,
+    formatCurrency: intl.currency,
+    formatDate: intl.date,
+    formatRelative: intl.relative,
+    getCountryName: intl.countryName,
+    getMonths: intl.months,
+    getWeekdays: intl.weekdays
+  }
+}
+```
+
+### Dynamic Locale Change
+
+```javascript
+const currentLocale = ref('en-US')
+const intl = new GeoIntlRef(currentLocale)
+
+// Changing locale will update all formatting
+function changeLocale(newLocale) {
+  currentLocale.value = newLocale
+}
+```
+
+The GeoIntlRef class provides a powerful reactive internationalization system for Vue applications with automatic data formatting according to international standards.

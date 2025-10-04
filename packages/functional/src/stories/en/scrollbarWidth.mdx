@@ -1,0 +1,132 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/ScrollbarWidth'/>
+
+# ScrollbarWidth Class
+
+A static class for determining browser scrollbar width with DataStorage integration for persistent caching. Provides methods for accurate scrollbar measurement and determining the need to hide it.
+
+## Key Features
+
+- **Accurate Measurement** — determines real scrollbar width through DOM testing
+- **Persistent Caching** — saves result through DataStorage
+- **Hide Necessity Detection** — automatic check for thin scrollbars
+- **Repeated Calculation Protection** — blocks parallel measurements
+- **DOM Safety** — creates temporary elements for measurement
+- **Automatic Cleanup** — removes test elements after measurement
+- **requestAnimationFrame** — non-blocking measurement in next frame
+- **Static API** — simple interface without need to create instances
+
+## Static Methods
+
+### `is`
+
+Checks whether to enable scroll hiding (for thin scrollbars).
+
+**Returns:** `Promise<boolean>` — true if scroll should be hidden (width ≤ 8px)
+
+```javascript
+import { ScrollbarWidth } from '@dxtmisha/functional'
+
+// Check if scrollbar should be hidden
+const shouldHide = await ScrollbarWidth.is()
+
+if (shouldHide) {
+  // Scrollbar is thin (≤ 8px), can be hidden
+  document.body.classList.add('hide-scrollbar')
+} else {
+  // Scrollbar is wide, better keep it visible
+  document.body.classList.remove('hide-scrollbar')
+}
+
+// Usage in CSS
+// .hide-scrollbar { scrollbar-width: none; }
+```
+
+### `get`
+
+Returns scrollbar width, measuring on first call.
+
+**Returns:** `Promise<number>` — scrollbar width in pixels (-1 if not measured)
+
+```javascript
+import { ScrollbarWidth } from '@dxtmisha/functional'
+
+// Get scrollbar width
+const width = await ScrollbarWidth.get()
+console.log(`Scrollbar width: ${width}px`)
+
+// First call will perform measurement and save to DataStorage
+// Subsequent calls return cached value
+
+// Use for width compensation
+async function compensateScrollbar() {
+  const scrollbarWidth = await ScrollbarWidth.get()
+
+  if (scrollbarWidth > 0) {
+    document.body.style.paddingRight = `${scrollbarWidth}px`
+  }
+}
+```
+
+## Practical Examples
+
+### Automatic Thin Scrollbar Hiding
+
+```javascript
+// Initialize on page load
+async function initScrollbarBehavior() {
+  const shouldHideScrollbar = await ScrollbarWidth.is()
+
+  if (shouldHideScrollbar) {
+    document.documentElement.style.setProperty('scrollbar-width', 'none')
+    console.log('Thin scrollbar hidden for better UX')
+  }
+}
+
+// Call on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', initScrollbarBehavior)
+```
+
+### Modal Windows with Compensation
+
+```javascript
+class ModalManager {
+  async openModal() {
+    const scrollbarWidth = await ScrollbarWidth.get()
+
+    // Hide scroll and compensate width
+    document.body.style.overflow = 'hidden'
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`
+    }
+  }
+
+  closeModal() {
+    document.body.style.overflow = ''
+    document.body.style.paddingRight = ''
+  }
+}
+```
+
+### Adaptive Layout
+
+```javascript
+// CSS variables based on scrollbar width
+async function setupScrollbarCSS() {
+  const width = await ScrollbarWidth.get()
+  const shouldHide = await ScrollbarWidth.is()
+
+  document.documentElement.style.setProperty(
+    '--scrollbar-width',
+    `${width}px`
+  )
+
+  document.documentElement.style.setProperty(
+    '--scrollbar-display',
+    shouldHide ? 'none' : 'auto'
+  )
+}
+```
+
+The ScrollbarWidth class provides a reliable solution for determining scrollbar characteristics and making decisions about its display to create optimal user experience.

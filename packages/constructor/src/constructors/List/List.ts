@@ -3,7 +3,7 @@ import {
   type ConstrBind,
   type ConstrEmit,
   DesignComp,
-  ListData,
+  ListDataRef,
   type ListDataItem,
   type ListList,
   toBinds
@@ -32,7 +32,7 @@ export class List {
   readonly search: ListSearch
   readonly focus: ListFocus
 
-  readonly data: ListData
+  readonly data: ListDataRef
   readonly event: EventClickInclude
 
   readonly go: ListGo
@@ -67,7 +67,7 @@ export class List {
     this.search = new ListSearch(this.props)
     this.focus = new ListFocus(this.props, this.element, this.id)
 
-    this.data = new ListData(
+    this.data = new ListDataRef(
       toRef(this.props, 'list'),
       this.focus.focus,
       this.search.highlight,

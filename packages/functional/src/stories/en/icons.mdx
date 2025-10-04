@@ -1,0 +1,211 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Icons'/>
+
+# Icons Class
+
+A static class for managing icons with asynchronous loading support, global caching, and automatic path generation. Provides centralized storage and optimized loading of SVG icons.
+
+## Key Features
+
+- **Global Caching** — automatic saving to window for reuse
+- **Asynchronous Loading** — Promise support and lazy icon loading
+- **Wait Mode** — automatic loading wait with timeout
+- **Automatic Paths** — SVG path generation by name with @ prefix
+- **Batch Addition** — bulk icon addition from objects
+- **Global URLs** — CDN and different environment support
+- **Existence Check** — quick icon availability verification
+- **Icon List** — get all registered icon names
+
+## Check and Retrieval Methods
+
+### `is`
+
+Checks if icon exists in collection.
+
+**Parameters:**
+- `index: string` — icon name
+
+**Returns:** `boolean` — true if icon exists
+
+```javascript
+if (Icons.is('user')) {
+  // icon available
+}
+```
+
+### `get`
+
+Returns icon content with asynchronous loading support.
+
+**Parameters:**
+- `index: string` — icon name
+- `url?: string` — alternative storage path
+- `wait?: number` — wait time in ms (default 180000)
+
+**Returns:** `Promise<string>` — icon content
+
+```javascript
+// Simple retrieval
+const icon = await Icons.get('user')
+
+// With alternative URL
+const customIcon = await Icons.get('custom', '/assets/')
+
+// Automatic path
+const arrowIcon = await Icons.get('@arrow-left') // → /icons/arrow-left.svg
+```
+
+### `getNameList`
+
+Returns list of all registered icons.
+
+**Returns:** `string[]` — array of icon names
+
+```javascript
+const iconNames = Icons.getNameList()
+console.log(iconNames) // ['user', 'home', 'settings']
+```
+
+### `getUrlGlobal`
+
+Returns global URL for icons.
+
+**Returns:** `string` — base URL
+
+```javascript
+const globalUrl = Icons.getUrlGlobal()
+console.log(globalUrl) // '/icons/' or full CDN URL
+```
+
+## Addition Methods
+
+### `add`
+
+Adds icon to collection.
+
+**Parameters:**
+- `index: string` — icon name
+- `file: IconsItem` — file path or Promise with content
+
+```javascript
+// Simple addition
+Icons.add('user', '/icons/user.svg')
+
+// SVG content
+Icons.add('custom', '<svg>...</svg>')
+
+// Async loading
+Icons.add('async', fetch('/api/icon.svg').then(r => r.text()))
+```
+
+### `addLoad`
+
+Adds icon in loading mode.
+
+**Parameters:**
+- `index: string` — icon name
+
+```javascript
+Icons.addLoad('processing')
+// Icon will wait for loading when get() is called
+```
+
+### `addGlobal`
+
+Adds global icon.
+
+**Parameters:**
+- `index: string` — icon name
+- `file: string` — relative file path
+
+```javascript
+Icons.addGlobal('logo', 'brand/logo.svg')
+// Uses getUrlGlobal() + file
+```
+
+### `addByList`
+
+Adds icons from object.
+
+**Parameters:**
+- `list: Record<string, IconsItem>` — object with icons
+
+```javascript
+const uiIcons = {
+  'arrow-up': '/icons/arrow-up.svg',
+  'arrow-down': '/icons/arrow-down.svg'
+}
+Icons.addByList(uiIcons)
+```
+
+## Configuration Methods
+
+### `setUrl`
+
+Changes base path to icon files.
+
+**Parameters:**
+- `url: string` — new base path
+
+```javascript
+// For development
+Icons.setUrl('/dev-icons/')
+
+// For production
+Icons.setUrl('https://cdn.example.com/icons/')
+```
+
+## Practical Examples
+
+### Icon Initialization
+
+```javascript
+// Setup base URL
+Icons.setUrl('/assets/icons/')
+
+// Add main icons
+Icons.addByList({
+  'user': 'user.svg',
+  'home': 'home.svg',
+  'settings': 'settings.svg'
+})
+
+// Add dark theme icons
+Icons.addByList({
+  'user-dark': 'dark/user.svg',
+  'home-dark': 'dark/home.svg'
+})
+```
+
+### Dynamic Loading
+
+```javascript
+async function loadIcon(name) {
+  if (!Icons.is(name)) {
+    Icons.addLoad(name)
+  }
+  return await Icons.get(name)
+}
+
+// Usage
+const userIcon = await loadIcon('user')
+document.getElementById('icon').innerHTML = userIcon
+```
+
+### Icon Component
+
+```javascript
+class IconComponent {
+  async render(iconName) {
+    try {
+      const iconContent = await Icons.get(iconName)
+      return `<span class="icon">${iconContent}</span>`
+    } catch (error) {
+      return `<span class="icon-error">❌</span>`
+    }
+  }
+}
+```
+
+The Icons class provides efficient icon management with automatic caching, asynchronous loading, and flexible path configuration for different environments.

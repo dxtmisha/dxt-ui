@@ -378,6 +378,95 @@ datetime.setDate(1672531200000) // timestamp
 console.log(datetime.locale()) // Новая установленная дата
 ```
 
+## Типы данных
+
+### `GeoDate`
+
+Тип определяет формат отображения даты и времени. Поддерживает различные уровни детализации от полного формата до отдельных компонентов.
+
+**Возможные значения:**
+- `'full'` — полная дата и время (дата + время)
+- `'datetime'` — дата и время
+- `'date'` — только дата
+- `'year-month'` — год и месяц
+- `'year'` — только год
+- `'month'` — только месяц
+- `'day'` — только день
+- `'day-month'` — день и месяц
+- `'time'` — только время
+- `'hour-minute'` — часы и минуты
+- `'hour'` — только часы
+- `'minute'` — только минуты
+- `'second'` — только секунды
+
+```javascript
+// Примеры использования разных типов
+const datetime = new Datetime('2023-12-25 15:30:45')
+
+datetime.setType('full')        // '25 декабря 2023 г., 15:30:45'
+datetime.setType('date')        // '25 декабря 2023 г.'
+datetime.setType('time')        // '15:30:45'
+datetime.setType('year')        // '2023'
+datetime.setType('month')       // 'декабрь'
+datetime.setType('day')         // '25'
+```
+
+### `GeoFirstDay`
+
+Тип определяет первый день недели в календаре согласно региональным настройкам.
+
+**Возможные значения:**
+- `0` — воскресенье (США, Канада, Япония и др.)
+- `1` — понедельник (большинство европейских стран, Россия)
+- `6` — суббота (некоторые страны Ближнего Востока)
+
+```javascript
+const datetime = new Datetime('2023-10-15', 'date', 'ru-RU')
+console.log(datetime.getFirstDayCode()) // 1 (понедельник для России)
+
+const datetimeUS = new Datetime('2023-10-15', 'date', 'en-US')
+console.log(datetimeUS.getFirstDayCode()) // 0 (воскресенье для США)
+```
+
+### `GeoHours`
+
+Тип определяет формат отображения времени — 12-часовой или 24-часовой.
+
+**Возможные значения:**
+- `'12'` — 12-часовой формат с AM/PM
+- `'24'` — 24-часовой формат
+
+```javascript
+const datetime = new Datetime('2023-12-25 15:30:00')
+
+datetime.setHour24(true)   // 24-часовой формат
+console.log(datetime.getHoursType()) // '24'
+console.log(datetime.locale('time')) // '15:30'
+
+datetime.setHour24(false)  // 12-часовой формат
+console.log(datetime.getHoursType()) // '12'
+console.log(datetime.locale('time')) // '3:30 PM'
+```
+
+### `GeoTimeZoneStyle`
+
+Тип определяет стиль отображения информации о часовом поясе.
+
+**Возможные значения:**
+- `'minute'` — смещение в минутах (число)
+- `'hour'` — смещение в часах с знаком
+- `'ISO8601'` — стандарт ISO 8601 (±HH:MM)
+- `'RFC'` — формат RFC (±HHMM)
+
+```javascript
+const datetime = new Datetime()
+
+console.log(datetime.getTimeZone())          // '+03:00' (ISO8601 по умолчанию)
+console.log(datetime.getTimeZone('hour'))    // '+3'
+console.log(datetime.getTimeZone('minute'))  // '180'
+console.log(datetime.getTimeZone('RFC'))     // '+0300'
+```
+
 ## Практические примеры
 
 ### Календарные операции

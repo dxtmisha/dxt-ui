@@ -378,6 +378,95 @@ datetime.setDate(1672531200000) // timestamp
 console.log(datetime.locale()) // New set date
 ```
 
+## Data Types
+
+### `GeoDate`
+
+Type that defines the date and time display format. Supports various levels of detail from full format to individual components.
+
+**Possible values:**
+- `'full'` — full date and time (date + time)
+- `'datetime'` — date and time
+- `'date'` — date only
+- `'year-month'` — year and month
+- `'year'` — year only
+- `'month'` — month only
+- `'day'` — day only
+- `'day-month'` — day and month
+- `'time'` — time only
+- `'hour-minute'` — hours and minutes
+- `'hour'` — hours only
+- `'minute'` — minutes only
+- `'second'` — seconds only
+
+```javascript
+// Examples of using different types
+const datetime = new Datetime('2023-12-25 15:30:45')
+
+datetime.setType('full')        // 'December 25, 2023 at 3:30:45 PM'
+datetime.setType('date')        // 'December 25, 2023'
+datetime.setType('time')        // '3:30:45 PM'
+datetime.setType('year')        // '2023'
+datetime.setType('month')       // 'December'
+datetime.setType('day')         // '25'
+```
+
+### `GeoFirstDay`
+
+Type that defines the first day of the week in the calendar according to regional settings.
+
+**Possible values:**
+- `0` — Sunday (USA, Canada, Japan, etc.)
+- `1` — Monday (most European countries, Russia)
+- `6` — Saturday (some Middle Eastern countries)
+
+```javascript
+const datetime = new Datetime('2023-10-15', 'date', 'en-US')
+console.log(datetime.getFirstDayCode()) // 0 (Sunday for USA)
+
+const datetimeRU = new Datetime('2023-10-15', 'date', 'ru-RU')
+console.log(datetimeRU.getFirstDayCode()) // 1 (Monday for Russia)
+```
+
+### `GeoHours`
+
+Type that defines the time display format — 12-hour or 24-hour.
+
+**Possible values:**
+- `'12'` — 12-hour format with AM/PM
+- `'24'` — 24-hour format
+
+```javascript
+const datetime = new Datetime('2023-12-25 15:30:00')
+
+datetime.setHour24(true)   // 24-hour format
+console.log(datetime.getHoursType()) // '24'
+console.log(datetime.locale('time')) // '15:30'
+
+datetime.setHour24(false)  // 12-hour format
+console.log(datetime.getHoursType()) // '12'
+console.log(datetime.locale('time')) // '3:30 PM'
+```
+
+### `GeoTimeZoneStyle`
+
+Type that defines the style for displaying timezone information.
+
+**Possible values:**
+- `'minute'` — offset in minutes (number)
+- `'hour'` — offset in hours with sign
+- `'ISO8601'` — ISO 8601 standard (±HH:MM)
+- `'RFC'` — RFC format (±HHMM)
+
+```javascript
+const datetime = new Datetime()
+
+console.log(datetime.getTimeZone())          // '+03:00' (ISO8601 by default)
+console.log(datetime.getTimeZone('hour'))    // '+3'
+console.log(datetime.getTimeZone('minute'))  // '180'
+console.log(datetime.getTimeZone('RFC'))     // '+0300'
+```
+
 ## Practical Examples
 
 ### Calendar Operations

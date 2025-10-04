@@ -1,7 +1,7 @@
 import {
   type ConstrEmit,
   isSelected,
-  ListData
+  ListDataRef
 } from '@dxtmisha/functional'
 
 import { ListFocus } from './ListFocus'
@@ -27,7 +27,7 @@ export class ListGo {
   constructor(
     protected readonly props: ListProps,
     protected readonly focus: ListFocus,
-    protected readonly data: ListData,
+    protected readonly data: ListDataRef,
     protected readonly emits?: ConstrEmit<ListEmits>
   ) {
   }

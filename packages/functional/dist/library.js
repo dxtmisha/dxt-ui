@@ -1,9 +1,9 @@
 var At = Object.defineProperty;
 var It = (i, t, e) => t in i ? At(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
-var D = (i, t, e) => It(i, typeof t != "symbol" ? t + "" : t, e);
-import { i as d, D as Y, e as I, a as O, b as Nt, G as y, f, t as b, c as nt, d as B, g as Tt, h as g, j as F, k as m, l as M, m as K, A as j, E as Bt, r as G, L as lt, n as x } from "./Icons-7MhOp84J.js";
-import { o as Cs, I as Ls, p as Ds, q as ks, s as Ms, u as As, v as Is, w as Ns } from "./Icons-7MhOp84J.js";
-import { isRef as at, watch as p, computed as c, ref as $, h as Ft, toRefs as xt, useAttrs as Et, useSlots as Rt, triggerRef as Ot, shallowRef as W, onUnmounted as st, inject as Wt, provide as Pt, watchEffect as jt } from "vue";
+var k = (i, t, e) => It(i, typeof t != "symbol" ? t + "" : t, e);
+import { i as d, D as Y, e as I, a as O, b as Nt, G as y, f, t as b, c as nt, d as B, g as Tt, h as K, j as m, k as C, A as j, l as g, E as Bt, m as F, r as G, L as ht, n as x } from "./Icons-C2lZhD4l.js";
+import { o as Ls, I as Ds, p as ks, q as Ms, s as As, u as Is, v as Ns, w as Ts } from "./Icons-C2lZhD4l.js";
+import { h as Ft, computed as c, toRefs as xt, useAttrs as Et, useSlots as Rt, ref as $, isRef as at, watch as p, triggerRef as Ot, shallowRef as W, onUnmounted as st, inject as Wt, provide as Pt, watchEffect as jt } from "vue";
 class Ht {
   /**
    * Constructor
@@ -24,6 +24,11 @@ class Ht {
   getCache(t) {
     return this.isUpdate(t) && (this.cacheOld = this.cache, this.setCache()), this.cache;
   }
+  /**
+   * Getting the previous value of the cache.
+   *
+   * Получение предыдущего значения кэша.
+   */
   getCacheOld() {
     return this.cacheOld;
   }
@@ -110,9 +115,9 @@ const Z = class Z {
     return this.cache.get(t, e, s);
   }
 };
-D(Z, "cache"), Z.cache = new Gt();
-let gt = Z;
-function vt(i, t = !1) {
+k(Z, "cache"), Z.cache = new Gt();
+let lt = Z;
+function $t(i, t = !1) {
   if (typeof i == "string") {
     const e = i.trim();
     switch (e) {
@@ -164,12 +169,12 @@ class Ut {
     this.storage.set(t);
   }
 }
-const ft = {};
+const gt = {};
 class Zt {
   constructor(t) {
     if (this.name = t, t in J)
       return J[t];
-    this.value = ft?.[t], J[t] = this;
+    this.value = gt?.[t], J[t] = this;
   }
   value;
   options = {};
@@ -230,7 +235,7 @@ class Zt {
   if (d())
     for (const t of document.cookie.split(";")) {
       const [e, s] = t.trim().split("=");
-      e && O(s) && (ft[e] = vt(s));
+      e && O(s) && (gt[e] = $t(s));
     }
 })();
 const J = {};
@@ -269,9 +274,9 @@ class N {
   constructor(t = y.getLocation()) {
     this.geo = y.find(t);
     const e = this.getLocation();
-    if (e in Q)
-      return Q[e];
-    Q[e] = this;
+    if (e in _)
+      return _[e];
+    _[e] = this;
   }
   /**
    * Returns country code and language.
@@ -587,8 +592,8 @@ class N {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   relativeLimit(t, e, s, n, a, o, u) {
-    const h = S(t), l = s || /* @__PURE__ */ new Date(), C = new Date(l), L = new Date(l);
-    return C.setDate(l.getDate() - e), L.setDate(l.getDate() + e), h >= C && h <= L ? this.relative(
+    const h = S(t), l = s || /* @__PURE__ */ new Date(), L = new Date(l), D = new Date(l);
+    return L.setDate(l.getDate() - e), D.setDate(l.getDate() + e), h >= L && h <= D ? this.relative(
       h,
       n,
       l
@@ -750,7 +755,7 @@ class N {
     return ["full", "datetime", "date", void 0, "year-month", "year"].indexOf(t) !== -1 && (s.year = "numeric"), ["full", "datetime", "date", void 0, "year-month", "month", "day-month"].indexOf(t) !== -1 && (s.month = e), ["full", "datetime", "date", void 0, "day", "day-month"].indexOf(t) !== -1 && (s.day = "2-digit"), t !== void 0 && (["full", "datetime", "time", "hour-minute", "hour"].indexOf(t) !== -1 && (s.hour = "2-digit"), ["full", "datetime", "time", "hour-minute", "minute"].indexOf(t) !== -1 && (s.minute = "2-digit"), ["full", "time", "second"].indexOf(t) !== -1 && (s.second = "2-digit")), s;
   }
 }
-const Q = {};
+const _ = {};
 class ot {
   /**
    * Constructor
@@ -1929,8 +1934,8 @@ const A = class A {
     return t.replace(/\*/, this.getWithinSymbol(e));
   }
 };
-D(A, "list", []), D(A, "map", {}), A.makeList(), A.makeMap();
-let dt = A, P;
+k(A, "list", []), k(A, "map", {}), A.makeList(), A.makeMap();
+let ft = A, P;
 class $e {
   /**
    * Returns the value by its name.
@@ -1951,7 +1956,7 @@ class $e {
     P === void 0 && (P = { ...t });
   }
 }
-const k = class k {
+const M = class M {
   /**
    * Get data from hash.
    *
@@ -1981,7 +1986,7 @@ const k = class k {
    * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
    */
   static addWatch(t, e) {
-    t in this.watch ? this.watch[t]?.push(e) : this.watch = { [t]: [e] };
+    t in this.watch ? this.watch[t]?.push(e) : this.watch[t] = [e];
   }
   /**
    * Update hash variable from URL string.
@@ -2003,7 +2008,7 @@ const k = class k {
     const t = {};
     return location.hash.replace(
       /([\w-]+)[:=]([^;]+)/ig,
-      (...e) => (t[String(e[1])] = vt(e[2]), "")
+      (...e) => (t[String(e[1])] = $t(e[2]), "")
     ), t;
   }
   /**
@@ -2028,382 +2033,8 @@ const k = class k {
     });
   }
 };
-D(k, "hash", {}), D(k, "watch", {}), D(k, "block", !1), d() && (k.reload(), addEventListener("hashchange", () => k.reload()));
-let R = k;
-function bt(i, t = "ig", e = ":value") {
-  const s = i.replace(/([[\]\\^$.?*+()])/g, "\\$1");
-  return new RegExp(e.replace(/:value/g, s), t);
-}
-class St {
-  /**
-   * Creates an instance of ListData for managing list data.
-   *
-   * Создает экземпляр ListData для управления данными списка.
-   * @param list List data / данные списка
-   * @param focus Focused item / элемент в фокусе
-   * @param highlight Search text for highlighting / текст поиска для выделения
-   * @param highlightLengthStart Minimum length to start highlighting / минимальная длина для начала выделения
-   * @param selected Selected items / выбранные элементы
-   * @param keyValue Key for getting item value / ключ для получения значения элемента
-   * @param keyLabel Key for getting item label / ключ для получения метки элемента
-   * @param lite Threshold for lite mode / порог для облегченного режима
-   * @param parent Parent identifier / идентификатор родителя
-   */
-  constructor(t, e, s, n, a, o, u, h, l) {
-    this.list = t, this.focus = e, this.highlight = s, this.highlightLengthStart = n, this.selected = a, this.keyValue = o, this.keyLabel = u, this.lite = h, this.parent = l, at(t) && p(t, () => {
-      this.subList = {};
-    });
-  }
-  subList = {};
-  /**
-   * Returns a list for forming a list.
-   *
-   * Возвращает список для формирования списка.
-   */
-  data = c(
-    () => f(
-      g(this.list) || [],
-      (t, e) => this.initItem(e, t)
-    )
-  );
-  /**
-   * Returns a simplified list for quick loading.
-   *
-   * Возвращает упрощенный список для быстрой загрузки.
-   */
-  liteData = c(() => {
-    if (this.isLite()) {
-      const t = [];
-      for (const e of this.data.value) {
-        const s = {
-          parent: this.parent,
-          index: e.index,
-          type: e.type,
-          label: e.label,
-          description: e.description,
-          value: e.value
-        };
-        "description" in e && (s.description = e.description), t.push(s);
-      }
-      return t;
-    }
-    return this.data.value;
-  });
-  /**
-   * Returns a list of records with all additional data.
-   *
-   * Возвращает список записей со всеми дополнительными данными.
-   */
-  fullData = c(() => {
-    const t = this.getFocus(), e = this.getHighlight(), s = this.getSelected();
-    return f(
-      this.data.value,
-      (n) => ({
-        ...n,
-        focus: t === n.index,
-        highlight: e,
-        selected: F(n.index, s)
-      })
-    );
-  });
-  /**
-   * Returns a map of all entries.
-   *
-   * Возвращает карту всех записей.
-   */
-  map = c(() => {
-    const t = [];
-    return this.data.value.forEach((e) => {
-      switch (e.type) {
-        case "item":
-          t.push(e);
-          break;
-        case "group":
-        case "menu":
-          t.push(
-            e,
-            ...this.getSubList(e).map.value
-          );
-          break;
-      }
-    }), t;
-  });
-  /**  Returns a list consisting only of items/ Возвращает список, состоящий только из элементов. */
-  mapItems = c(() => this.map.value.filter((t) => t.type === "item"));
-  /**
-   * Returns a list consisting only of values for selection.
-   *
-   * Возвращает список, состоящий только из значений для выбора.
-   */
-  items = c(() => this.map.value.filter(
-    (t) => t.type === "item" || t.type === "group" || t.type === "menu"
-  ));
-  /**
-   * Finds the first element that meets the search conditions.
-   *
-   * Находит первый элемент, соответствующий условиям поиска.
-   */
-  highlightFirstItem = c(() => {
-    const t = this.getHighlight(), e = t && t.length >= this.getHighlightLengthStart() && bt(t, "i");
-    return e ? this.map.value.findIndex(
-      (s) => s.label?.toString().match(e) || s.index?.toString().match(e) || s.search?.toString().match(e)
-    ) : -1;
-  });
-  /**
-   * Is there a selected item.
-   *
-   * Есть ли выбранный элемент.
-   */
-  isSelected = c(() => {
-    const t = this.getSelected();
-    return !!t && this.mapItems.value.findIndex((e) => F(e.index, t)) !== -1;
-  });
-  /**
-   * Returns a list of selected items on the map.
-   *
-   * Возвращает список выделенных элементов на карте.
-   */
-  selectedList = c(() => {
-    const t = this.getSelected();
-    return t && this.isSelected.value ? this.mapItems.value.filter((e) => F(e.index, t)) : [];
-  });
-  /**
-   * Returns a list of selected items on the map.
-   *
-   * Возвращает список выделенных элементов на карте.
-   */
-  selectedNames = c(() => it(this.selectedList.value, "label"));
-  /**
-   * Returns a list of selected item values on the map.
-   *
-   * Возвращает список значений выделенных элементов на карте.
-   */
-  selectedValues = c(() => it(this.selectedList.value, "value"));
-  /**
-   * Checks whether it is necessary to first display a simplified version.
-   *
-   * Проверяет, надо ли сначала вывести упрощенную версию.
-   */
-  isLite() {
-    return !!(this.lite?.value && this.data.value.length > this.lite.value);
-  }
-  /**
-   * Checks if an element is in focus.
-   *
-   * Проверяет, есть ли элемент в фокусе.
-   */
-  isFocus() {
-    const t = this.getFocus();
-    return !!(t && this.map.value.findIndex((e) => e.index === t) !== -1);
-  }
-  /**
-   * Checks if there is a selected item.
-   *
-   * Проверяет, есть ли выделенный элемент.
-   */
-  isHighlight() {
-    return this.highlightFirstItem.value !== -1;
-  }
-  /**
-   * Returns the number of records.
-   *
-   * Возвращает количество записей.
-   */
-  getLength() {
-    return this.data.value.length;
-  }
-  /**
-   * Returns the number of all available records.
-   *
-   * Возвращает количество всех доступных записей.
-   */
-  getLengthByMap() {
-    return this.map.value.length;
-  }
-  /**
-   * Returns the number of all available records.
-   *
-   * Возвращает количество всех доступных записей.
-   */
-  getLengthByItems() {
-    return this.items.value.length;
-  }
-  /**
-   * Returns the values in focus.
-   *
-   * Возвращает значения в фокусе.
-   */
-  getFocus() {
-    return this.focus?.value;
-  }
-  /**
-   * Returns the selected value.
-   *
-   * Возвращает выделенного значение.
-   */
-  getHighlight() {
-    return this.highlight?.value;
-  }
-  /**
-   * Returns the minimum length for highlight to start.
-   *
-   * Возвращает минимальную длину для начала выделения.
-   */
-  getHighlightLengthStart() {
-    return this.highlightLengthStart?.value ?? 2;
-  }
-  /**
-   * Returns the selected value.
-   *
-   * Возвращает выбранное значение.
-   */
-  getSelected() {
-    return this.selected?.value;
-  }
-  /**
-   * Returns an item by its index.
-   *
-   * Возвращает элемент по его индексу.
-   * @param index item index/ индекс элемента
-   */
-  getItemByIndex(t) {
-    const e = this.map.value.findIndex((s) => s.index === t);
-    if (e !== -1)
-      return {
-        key: e,
-        item: this.map.value[e]
-      };
-  }
-  /**
-   * Returns an item by its key.
-   *
-   * Возвращает элемент по его ключу.
-   * @param key item key/ ключ элемента
-   */
-  getItemByKey(t) {
-    return this.map.value?.[t];
-  }
-  /**
-   * Returns the first item with the specified parent.
-   *
-   * Возвращает первый элемент с указанным родителем.
-   * @param parent parent identifier to search for / идентификатор родителя для поиска
-   */
-  getFirstItemByParent(t) {
-    return this.map.value.find((e) => this.isInParent(t, e));
-  }
-  /**
-   * Returns the last item with the specified parent.
-   *
-   * Возвращает последний элемент с указанным родителем.
-   * @param parent parent identifier to search for / идентификатор родителя для поиска
-   */
-  getLastItemByParent(t) {
-    return this.map.value.filter((e) => this.isInParent(t, e)).pop();
-  }
-  /**
-   * Returns a sublist object for a group item.
-   *
-   * Возвращает объект подсписка для группового элемента.
-   * @param item List item data/ данные элемента списка
-   */
-  getSubList(t) {
-    return t.index in this.subList || (this.subList[t.index] = new St(
-      t.value,
-      this.focus,
-      this.highlight,
-      this.highlightLengthStart,
-      this.selected,
-      this.keyValue,
-      this.keyLabel,
-      this.lite,
-      t.index
-    )), this.subList[t.index];
-  }
-  /**
-   * Checks if the item is an item, group, or menu.
-   *
-   * Проверяет, является ли элемент элементом, группой или меню.
-   * @param item List item data/ данные элемента списка
-   */
-  isItem(t) {
-    return t.type === "item" || t.type === "group" || t.type === "menu";
-  }
-  /**
-   * Checks if the item is in the specified parent.
-   *
-   * Проверяет, находится ли элемент в указанном родителе.
-   * @param parent parent identifier to search for / идентификатор родителя для поиска
-   * @param item List item data/ данные элемента списка
-   */
-  isInParent(t, e) {
-    return e.parent === t && this.isItem(e);
-  }
-  /**
-   * Returns the index for the list item.
-   *
-   * Возвращает индекс для элемента списка.
-   * @param index current index / текущий индекс
-   * @param value item value / значение элемента
-   * @param key item key / ключ элемента
-   * @param label item label / метка элемента
-   */
-  getIndex(t, e, s, n) {
-    return t && !m(t) ? t : e && !m(e) ? e : s && n;
-  }
-  /**
-   * Creates an object of the record element.
-   *
-   * Создает объект элемента записи.
-   * @param key the value of the key in the element/ значения ключа у элемента
-   * @param item selected element/ выбранный элемент
-   */
-  initItem(t, e) {
-    if (M(e)) {
-      const s = e?.[this.keyValue?.value ?? "value"], n = e?.[this.keyLabel?.value ?? "label"] ?? s, a = this.getIndex(
-        e?.index,
-        s,
-        t,
-        n
-      );
-      return {
-        ...e,
-        parent: this.parent,
-        index: a,
-        type: e?.type ?? "item",
-        label: n,
-        value: s
-      };
-    }
-    return {
-      parent: this.parent,
-      index: t.toString(),
-      type: "item",
-      label: e,
-      value: t
-    };
-  }
-}
-class ve {
-  static router;
-  static get() {
-    return this.router;
-  }
-  /**
-   * Site path change.<br>
-   * Изменение пути сайта.
-   * @param to new path/ новый путь
-   */
-  static push(t) {
-    this.router && this.router.push(t).then();
-  }
-  static set(t) {
-    this.router = t;
-  }
-  static setOneTime(t) {
-    this.router || this.set(t);
-  }
-}
+k(M, "hash", {}), k(M, "watch", {}), k(M, "block", !1), d() && (M.reload(), addEventListener("hashchange", () => M.reload()));
+let R = M;
 function Yt(i, t, e) {
   return K(i)?.[t] ?? e;
 }
@@ -2422,27 +2053,17 @@ function Kt(i, t, e) {
   }
   return s;
 }
-function mt(i, t = "div", e, s) {
+function dt(i, t = "div", e, s) {
   if (!d())
     return;
   const n = document.createElement(t);
-  return typeof e == "function" ? e(n) : M(e) && f(e, (a, o) => {
+  return typeof e == "function" ? e(n) : C(e) && f(e, (a, o) => {
     Kt(n, o, a);
   }), i?.insertBefore(n, s ?? null), n;
 }
-class ct {
+class vt {
   static storage = new Y("scrollbar", !0);
   static calculate = !1;
-  item = $();
-  /**
-   * Constructor
-   */
-  constructor() {
-    ct.is().then((t) => {
-      this.item.value = t;
-    });
-  }
-  is = c(() => this.item.value !== void 0);
   /**
    * Checks whether to enable scroll hiding.
    *
@@ -2471,8 +2092,8 @@ class ct {
    * Создает элементы для проверки ширины скролла.
    */
   static createElement() {
-    return mt(document.body, "div", (t) => {
-      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", mt(t, "div", (e) => {
+    return dt(document.body, "div", (t) => {
+      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", dt(t, "div", (e) => {
         e.style.height = "100px";
       });
     });
@@ -2519,11 +2140,13 @@ const Vt = [
     f(t, (n) => {
       e = e.replace(new RegExp(`%${Vt[s++]}`, "g"), String(n));
     });
-  } else
-    f(t, (s, n) => {
-      e = e.replace(new RegExp(`\\[${n}\\]`, "g"), String(s));
-    });
-  return e;
+  }
+  return C(t) && f(t, (s, n) => {
+    e = e.replace(
+      new RegExp(`\\[${n}\\](.*?)\\[/${n}\\]`, "g"),
+      (a, o) => String(s).replace(/\[content]/g, o)
+    ).replace(new RegExp(`\\[${n}\\]`, "g"), String(s));
+  }), e;
 };
 class z {
   static url = "/api/translate";
@@ -2703,7 +2326,7 @@ class z {
     }), this.cache = [];
   }
 }
-function ut(i) {
+function ct(i) {
   return Array.isArray(i);
 }
 class Jt {
@@ -2723,7 +2346,7 @@ class Jt {
    * @param name property name/ название свойства
    */
   is(t) {
-    return ut(t) ? !!t.find((e) => this.isDifferent(e)) : this.isDifferent(t);
+    return ct(t) ? !!t.find((e) => this.isDifferent(e)) : this.isDifferent(t);
   }
   /**
    * Checks if there are changes in the data.
@@ -2755,7 +2378,7 @@ class Jt {
     return this.cache?.[t] !== this.props?.[t];
   }
 }
-class Qt {
+class _t {
   /**
    * Constructor
    * @param props base data/ базовые данные
@@ -2814,7 +2437,7 @@ class Qt {
     this.callback && this.callback(this.event);
   }
 }
-class be extends Qt {
+class ve extends _t {
   /**
    * Calls the callback function.
    *
@@ -2834,15 +2457,15 @@ class be extends Qt {
     (t || this.changed.isChanged()) && (await this.initEvent(), this.makeCallbackItem(), this.changed.update());
   }
 }
-function Xt(i) {
+function Qt(i) {
   return i && "class" in i && typeof i.class == "string" ? i.class : void 0;
 }
-function _t(i, t, e) {
-  const s = Xt(t);
+function Xt(i, t, e) {
+  const s = Qt(t);
   return e && s ? `${e}.${s}` : e || s || i;
 }
 function te(i, t, e, s) {
-  const n = _t(i, t, s);
+  const n = Xt(i, t, s);
   return Ft(i, { key: n, ...t }, e);
 }
 function rt(i, t) {
@@ -2858,7 +2481,7 @@ function ee(...i) {
     e && (t = rt(t, e));
   }), t;
 }
-class wt {
+class bt {
   /**
    * Constructor
    * @param components list of connected components/ список подключенных компонентов
@@ -2963,7 +2586,7 @@ class wt {
    */
   computeModification(t) {
     const e = g(this.modification?.[t]);
-    if (e && M(e)) {
+    if (e && C(e)) {
       const s = {};
       return f(e, (n, a) => {
         s[a] = g(n);
@@ -2972,12 +2595,12 @@ class wt {
     return {};
   }
 }
-class Se extends wt {
+class be extends bt {
 }
-function Ct(i) {
+function St(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(new RegExp("(?<=[A-Z])([A-Z])", "g"), (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-class we {
+class Se {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -2985,7 +2608,7 @@ class we {
    * @param options list of additional parameters/ список дополнительных параметров
    */
   constructor(t, e, s) {
-    this.props = e, this.options = s, this.name = this.initName(t), this.refs = this.props ? xt(this.props) : {}, this.components = new wt(s?.components, s?.compMod), this.emits = s?.emits, this.classes = c(() => this.updateClasses()), this.styles = c(() => this.updateStyles()), this.attrs = Et(), this.slots = Rt();
+    this.props = e, this.options = s, this.name = this.initName(t), this.refs = this.props ? xt(this.props) : {}, this.components = new bt(s?.components, s?.compMod), this.emits = s?.emits, this.classes = c(() => this.updateClasses()), this.styles = c(() => this.updateStyles()), this.attrs = Et(), this.slots = Rt();
   }
   name;
   element = $();
@@ -3092,7 +2715,7 @@ class we {
    * @param classes list of classes for transformation/ список классов для преобразования
    */
   toClass(t) {
-    return M(t) ? t : Array.isArray(t) ? { [t.filter((s) => typeof s == "string" && s.trim() !== "").join(" ")]: !0 } : typeof t == "string" ? { [t]: !0 } : {};
+    return C(t) ? t : Array.isArray(t) ? { [t.filter((s) => typeof s == "string" && s.trim() !== "").join(" ")]: !0 } : typeof t == "string" ? { [t]: !0 } : {};
   }
   /**
    * Converts the class name to standard for the current component.
@@ -3116,7 +2739,7 @@ class we {
    * @param name component name for transformation/ название компонента для преобразования
    */
   initName(t) {
-    return f(t.split(".", 2), (e) => Ct(e));
+    return f(t.split(".", 2), (e) => St(e));
   }
   /**
    * Updating data about the class.
@@ -3153,7 +2776,7 @@ class we {
 function w(i) {
   return at(i) ? i : $(i);
 }
-class Ce {
+class we {
   item;
   type;
   code;
@@ -3298,7 +2921,7 @@ class Ce {
     return c(() => this.date.value && this.datetime.standard(t));
   }
 }
-class Le extends Bt {
+class Ce extends Bt {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -3322,7 +2945,7 @@ class Le extends Bt {
     ), h.value && this.setElementControl(h.value), p(u, (l) => this.setElement(l)), p(h, (l) => this.setElementControl(l));
   }
 }
-class De {
+class Le {
   code;
   flag;
   /**
@@ -3377,7 +3000,7 @@ class De {
     return c(() => this.flag.getNational(t));
   }
 }
-class Lt {
+class wt {
   static item = W(y.get());
   static country = c(() => this.item.value.country);
   static language = c(() => this.item.value.language);
@@ -3443,7 +3066,7 @@ class se {
    * код страны, полный вид язык-страна или один из них
    */
   constructor(t) {
-    this.location = w(t), this.intl = c(() => new N(this.location.value ?? Lt.getLanguage().value));
+    this.location = w(t), this.intl = c(() => new N(this.location.value ?? wt.getLanguage().value));
   }
   /**
    * The consistent translation of language, region and script display names.
@@ -3648,23 +3271,437 @@ class se {
     return c(() => this.intl.value.time(g(t)));
   }
 }
+function Ct(i, t = "ig", e = ":value") {
+  const s = i.replace(/([[\]\\^$.?*+()/])/g, "\\$1");
+  return new RegExp(e.replace(/:value/g, s), t);
+}
+class Lt {
+  /**
+   * Creates an instance of ListData for managing list data.
+   *
+   * Создает экземпляр ListData для управления данными списка.
+   * @param list List data / данные списка
+   * @param focus Focused item / элемент в фокусе
+   * @param highlight Search text for highlighting / текст поиска для выделения
+   * @param highlightLengthStart Minimum length to start highlighting / минимальная длина для начала выделения
+   * @param selected Selected items / выбранные элементы
+   * @param keyValue Key for getting item value / ключ для получения значения элемента
+   * @param keyLabel Key for getting item label / ключ для получения метки элемента
+   * @param lite Threshold for lite mode / порог для облегченного режима
+   * @param parent Parent identifier / идентификатор родителя
+   */
+  constructor(t, e, s, n, a, o, u, h, l) {
+    this.list = t, this.focus = e, this.highlight = s, this.highlightLengthStart = n, this.selected = a, this.keyValue = o, this.keyLabel = u, this.lite = h, this.parent = l, at(t) && p(t, () => {
+      this.subList = {};
+    });
+  }
+  subList = {};
+  /**
+   * Returns a list for forming a list.
+   *
+   * Возвращает список для формирования списка.
+   */
+  data = c(
+    () => f(
+      g(this.list) || [],
+      (t, e) => this.initItem(e, t)
+    )
+  );
+  /**
+   * Returns a simplified list for quick loading.
+   *
+   * Возвращает упрощенный список для быстрой загрузки.
+   */
+  liteData = c(() => {
+    if (this.isLite()) {
+      const t = [];
+      for (const e of this.data.value) {
+        const s = {
+          parent: this.parent,
+          index: e.index,
+          type: e.type,
+          label: e.label,
+          description: e.description,
+          value: e.value
+        };
+        "description" in e && (s.description = e.description), t.push(s);
+      }
+      return t;
+    }
+    return this.data.value;
+  });
+  /**
+   * Returns a list of records with all additional data.
+   *
+   * Возвращает список записей со всеми дополнительными данными.
+   */
+  fullData = c(() => {
+    const t = this.getFocus(), e = this.getHighlight(), s = this.getSelected();
+    return f(
+      this.data.value,
+      (n) => ({
+        ...n,
+        focus: t === n.index,
+        highlight: e,
+        selected: F(n.index, s)
+      })
+    );
+  });
+  /**
+   * Returns a map of all entries.
+   *
+   * Возвращает карту всех записей.
+   */
+  map = c(() => {
+    const t = [];
+    return this.data.value.forEach((e) => {
+      switch (e.type) {
+        case "item":
+          t.push(e);
+          break;
+        case "group":
+        case "menu":
+          t.push(
+            e,
+            ...this.getSubList(e).map.value
+          );
+          break;
+      }
+    }), t;
+  });
+  /**  Returns a list consisting only of items/ Возвращает список, состоящий только из элементов. */
+  mapItems = c(() => this.map.value.filter((t) => t.type === "item"));
+  /**
+   * Returns a list consisting only of values for selection.
+   *
+   * Возвращает список, состоящий только из значений для выбора.
+   */
+  items = c(() => this.map.value.filter(
+    (t) => t.type === "item" || t.type === "group" || t.type === "menu"
+  ));
+  /**
+   * Finds the first element that meets the search conditions.
+   *
+   * Находит первый элемент, соответствующий условиям поиска.
+   */
+  highlightFirstItem = c(() => {
+    const t = this.getHighlight(), e = t && t.length >= this.getHighlightLengthStart() && Ct(t, "i");
+    return e ? this.map.value.findIndex(
+      (s) => s.label?.toString().match(e) || s.index?.toString().match(e) || s.search?.toString().match(e)
+    ) : -1;
+  });
+  /**
+   * Is there a selected item.
+   *
+   * Есть ли выбранный элемент.
+   */
+  isSelected = c(() => {
+    const t = this.getSelected();
+    return !!t && this.mapItems.value.findIndex((e) => F(e.index, t)) !== -1;
+  });
+  /**
+   * Returns a list of selected items on the map.
+   *
+   * Возвращает список выделенных элементов на карте.
+   */
+  selectedList = c(() => {
+    const t = this.getSelected();
+    return t && this.isSelected.value ? this.mapItems.value.filter((e) => F(e.index, t)) : [];
+  });
+  /**
+   * Returns a list of selected items on the map.
+   *
+   * Возвращает список выделенных элементов на карте.
+   */
+  selectedNames = c(() => it(this.selectedList.value, "label"));
+  /**
+   * Returns a list of selected item values on the map.
+   *
+   * Возвращает список значений выделенных элементов на карте.
+   */
+  selectedValues = c(() => it(this.selectedList.value, "value"));
+  /**
+   * Checks whether it is necessary to first display a simplified version.
+   *
+   * Проверяет, надо ли сначала вывести упрощенную версию.
+   */
+  isLite() {
+    return !!(this.lite?.value && this.data.value.length > this.lite.value);
+  }
+  /**
+   * Checks if an element is in focus.
+   *
+   * Проверяет, есть ли элемент в фокусе.
+   */
+  isFocus() {
+    const t = this.getFocus();
+    return !!(t && this.map.value.findIndex((e) => e.index === t) !== -1);
+  }
+  /**
+   * Checks if there is a selected item.
+   *
+   * Проверяет, есть ли выделенный элемент.
+   */
+  isHighlight() {
+    return this.highlightFirstItem.value !== -1;
+  }
+  /**
+   * Returns the number of records.
+   *
+   * Возвращает количество записей.
+   */
+  getLength() {
+    return this.data.value.length;
+  }
+  /**
+   * Returns the number of all available records.
+   *
+   * Возвращает количество всех доступных записей.
+   */
+  getLengthByMap() {
+    return this.map.value.length;
+  }
+  /**
+   * Returns the number of all available records.
+   *
+   * Возвращает количество всех доступных записей.
+   */
+  getLengthByItems() {
+    return this.items.value.length;
+  }
+  /**
+   * Returns the values in focus.
+   *
+   * Возвращает значения в фокусе.
+   */
+  getFocus() {
+    return this.focus?.value;
+  }
+  /**
+   * Returns the selected value.
+   *
+   * Возвращает выделенного значение.
+   */
+  getHighlight() {
+    return this.highlight?.value;
+  }
+  /**
+   * Returns the minimum length for highlight to start.
+   *
+   * Возвращает минимальную длину для начала выделения.
+   */
+  getHighlightLengthStart() {
+    return this.highlightLengthStart?.value ?? 2;
+  }
+  /**
+   * Returns the selected value.
+   *
+   * Возвращает выбранное значение.
+   */
+  getSelected() {
+    return this.selected?.value;
+  }
+  /**
+   * Returns an item by its index.
+   *
+   * Возвращает элемент по его индексу.
+   * @param index item index/ индекс элемента
+   */
+  getItemByIndex(t) {
+    const e = this.map.value.findIndex((s) => s.index === t);
+    if (e !== -1)
+      return {
+        key: e,
+        item: this.map.value[e]
+      };
+  }
+  /**
+   * Returns an item by its key.
+   *
+   * Возвращает элемент по его ключу.
+   * @param key item key/ ключ элемента
+   */
+  getItemByKey(t) {
+    return this.map.value?.[t];
+  }
+  /**
+   * Returns the first item with the specified parent.
+   *
+   * Возвращает первый элемент с указанным родителем.
+   * @param parent parent identifier to search for / идентификатор родителя для поиска
+   */
+  getFirstItemByParent(t) {
+    return this.map.value.find((e) => this.isInParent(t, e));
+  }
+  /**
+   * Returns the last item with the specified parent.
+   *
+   * Возвращает последний элемент с указанным родителем.
+   * @param parent parent identifier to search for / идентификатор родителя для поиска
+   */
+  getLastItemByParent(t) {
+    return this.map.value.filter((e) => this.isInParent(t, e)).pop();
+  }
+  /**
+   * Returns a sublist object for a group item.
+   *
+   * Возвращает объект подсписка для группового элемента.
+   * @param item List item data/ данные элемента списка
+   */
+  getSubList(t) {
+    return t.index in this.subList || (this.subList[t.index] = new Lt(
+      t.value,
+      this.focus,
+      this.highlight,
+      this.highlightLengthStart,
+      this.selected,
+      this.keyValue,
+      this.keyLabel,
+      this.lite,
+      t.index
+    )), this.subList[t.index];
+  }
+  /**
+   * Checks if the item is an item, group, or menu.
+   *
+   * Проверяет, является ли элемент элементом, группой или меню.
+   * @param item List item data/ данные элемента списка
+   */
+  isItem(t) {
+    return t.type === "item" || t.type === "group" || t.type === "menu";
+  }
+  /**
+   * Checks if the item is in the specified parent.
+   *
+   * Проверяет, находится ли элемент в указанном родителе.
+   * @param parent parent identifier to search for / идентификатор родителя для поиска
+   * @param item List item data/ данные элемента списка
+   */
+  isInParent(t, e) {
+    return e.parent === t && this.isItem(e);
+  }
+  /**
+   * Returns the index for the list item.
+   *
+   * Возвращает индекс для элемента списка.
+   * @param index current index / текущий индекс
+   * @param value item value / значение элемента
+   * @param key item key / ключ элемента
+   * @param label item label / метка элемента
+   */
+  getIndex(t, e, s, n) {
+    return t && !m(t) ? t : e && !m(e) ? e : s && n;
+  }
+  /**
+   * Creates an object of the record element.
+   *
+   * Создает объект элемента записи.
+   * @param key the value of the key in the element/ значения ключа у элемента
+   * @param item selected element/ выбранный элемент
+   */
+  initItem(t, e) {
+    if (C(e)) {
+      const s = e?.[this.keyValue?.value ?? "value"], n = e?.[this.keyLabel?.value ?? "label"] ?? s, a = this.getIndex(
+        e?.index,
+        s,
+        t,
+        n
+      );
+      return {
+        ...e,
+        parent: this.parent,
+        index: a,
+        type: e?.type ?? "item",
+        label: n,
+        value: s
+      };
+    }
+    return {
+      parent: this.parent,
+      index: t.toString(),
+      type: "item",
+      label: e,
+      value: t
+    };
+  }
+}
+class De {
+  static router;
+  /**
+   * Get router instance.
+   *
+   * Получить экземпляр роутера.
+   */
+  static get() {
+    return this.router;
+  }
+  /**
+   * Site path change.
+   *
+   * Изменение пути сайта.
+   * @param to new path/ новый путь
+   */
+  static push(t) {
+    this.router && this.router.push(t).then();
+  }
+  /**
+   * Set router instance.
+   *
+   * Установить экземпляр роутера.
+   * @param router router instance/ экземпляр роутера
+   */
+  static set(t) {
+    this.router = t;
+  }
+  /**
+   * Set router instance only once.
+   *
+   * Установить экземпляр роутера только один раз.
+   * @param router router instance/ экземпляр роутера
+   */
+  static setOneTime(t) {
+    this.router || this.set(t);
+  }
+}
+class ke {
+  /**
+   * Reactive item.
+   *
+   * Реактивный элемент.
+   */
+  item = $();
+  /**
+   * Constructor
+   */
+  constructor() {
+    vt.is().then((t) => {
+      this.item.value = t;
+    });
+  }
+  /**
+   * Checks whether the scroll width is defined.
+   *
+   * Проверяет, определена ли ширина скролла.
+   */
+  is = c(() => this.item.value !== void 0);
+}
 const ie = (i) => typeof i == "string" ? { method: i } : i || {};
 let U;
-function ke(i, t, e = !0, s, n, a) {
+function Me(i, t, e = !0, s, n, a) {
   const o = $(), u = w(ie(t)), h = $(!1), l = $(!1);
-  let C = !0, L = 0;
+  let L = !0, D = 0;
   const V = async () => {
-    if (C)
+    if (L)
       return;
     const v = g(i);
     if ((!s || s.value) && v) {
       h.value = !0, l.value = !0;
       let q = {};
-      const ht = await j.request({
+      const ut = await j.request({
         path: v,
         ...u.value
       });
-      ht && (q = ht), n ? o.value = n(q) : o.value = q, h.value = !1;
+      ut && (q = ut), n ? o.value = n(q) : o.value = q, h.value = !1;
     } else o.value !== void 0 && (o.value = void 0);
   }, Mt = () => {
     const v = [];
@@ -3674,8 +3711,8 @@ function ke(i, t, e = !0, s, n, a) {
   };
   return {
     get data() {
-      return C && (C = !1, V().then()), Mt(), a && (L++, st(() => {
-        L--, L < 1 && (console.warn("useApiRef: unmounted"), o.value = void 0, C = !0, L = 0);
+      return L && (L = !1, V().then()), Mt(), a && (D++, st(() => {
+        D--, D < 1 && (console.warn("useApiRef: unmounted"), o.value = void 0, L = !0, D = 0);
       })), o;
     },
     get isStarting() {
@@ -3688,36 +3725,36 @@ function ke(i, t, e = !0, s, n, a) {
     reset: V
   };
 }
-const Me = (i) => {
+const Ae = (i) => {
   U || (U = i);
 };
-function Ae(i, t, e) {
-  if (i in X)
-    return X[i];
+function Ie(i, t, e) {
+  if (i in Q)
+    return Q[i];
   const s = new Zt(i), n = $(s.get(t, e));
   return p(n, (a) => {
     s.set(a, e);
-  }), X[i] = n, n;
+  }), Q[i] = n, n;
 }
-const X = {};
-function Ie() {
+const Q = {};
+function Ne() {
   return new se();
 }
-function Ne(i, t) {
-  if (i in _)
-    return _[i];
+function Te(i, t) {
+  if (i in X)
+    return X[i];
   const e = W(R.get(i, t));
   return p(e, (s) => R.set(i, s)), R.addWatch(i, (s) => {
     e.value = s;
-  }), _[i] = e, e;
+  }), X[i] = e, e;
 }
-const _ = {};
-let yt = G(1e5, 9e5);
+const X = {};
+let mt = G(1e5, 9e5);
 function H(i, t) {
   const e = K(i);
-  return e ? (O(e.id) || e.setAttribute("id", `id-${yt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${yt++}`;
+  return e ? (O(e.id) || e.setAttribute("id", `id-${mt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${mt++}`;
 }
-const Te = () => {
+const Be = () => {
   const i = {}, t = "IntersectionObserver" in window ? new IntersectionObserver(
     (s) => {
       s.forEach((n) => {
@@ -3772,20 +3809,20 @@ const Te = () => {
     disconnectLazy: () => t?.disconnect()
   };
 };
-function Be() {
-  const i = W(lt.is());
-  return lt.registrationEvent(({ detail: t }) => {
+function Fe() {
+  const i = W(ht.is());
+  return ht.registrationEvent(({ detail: t }) => {
     i.value = t.loading;
   }), i;
 }
-function Fe(i, t) {
+function xe(i, t) {
   if (i in tt)
     return tt[i];
   const e = new Y(i, !0), s = $(e.get(t));
   return p(s, (n) => e.set(n)), tt[i] = s, s;
 }
 const tt = {};
-function xe(i, t, e) {
+function Ee(i, t, e) {
   if (i in et)
     return et[i];
   const s = new Y(i), n = $(s.get(t, e));
@@ -3796,7 +3833,7 @@ function re(i) {
   const t = W(z.getListSync(i, !0)), e = async () => {
     t.value = { ...await z.getList(i) };
   };
-  p(Lt.getLanguage(), e);
+  p(wt.getLanguage(), e);
   for (const s in t.value)
     if (t.value[s] === s || t.value[s] === " ") {
       e().then();
@@ -3804,26 +3841,26 @@ function re(i) {
     }
   return t;
 }
-const Ee = (i) => re(i);
-function Re(i) {
-  return nt(i) ? i.trim() : ut(i) && i.findIndex((t) => m(t)) === -1 ? i.join(",") : m(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : i?.toString() ?? "";
+const Re = (i) => re(i);
+function Oe(i) {
+  return nt(i) ? i.trim() : ct(i) && i.findIndex((t) => m(t)) === -1 ? i.join(",") : m(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : i?.toString() ?? "";
 }
 function ne(i, t) {
   return Array(t).fill(i);
 }
-function Oe(i) {
+function We(i) {
   if (d())
     return document.querySelector(i) ?? void 0;
 }
-function We(i) {
+function Pe(i) {
   if (d())
     return document.querySelectorAll(i);
 }
-function Pe(i) {
+function je(i) {
   i.preventDefault(), i.stopPropagation();
 }
 const Dt = [], ae = G(1e5, 999999);
-function je(i, t = !0, e = !1, s = !0) {
+function He(i, t = !0, e = !1, s = !0) {
   let n;
   const a = `__execute_use${ae}::${H()}`, o = (...u) => {
     if (!e && s) {
@@ -3843,7 +3880,7 @@ function je(i, t = !0, e = !1, s = !0) {
   };
   return e && Dt.push(o), o;
 }
-function He() {
+function Ge() {
   Dt.forEach((i) => i());
 }
 function oe(i, t, e) {
@@ -3852,30 +3889,30 @@ function oe(i, t, e) {
   };
   d() ? requestAnimationFrame(s) : s();
 }
-function Ge(i) {
+function ze(i) {
   const t = {}, e = K(i);
   if (e)
     for (const s of e.attributes)
       t[s.name] = (s?.value || s?.textContent) ?? void 0;
   return t;
 }
-async function ze(i) {
+async function Ue(i) {
   return i?.clipboardData?.getData("text") ?? (await navigator.clipboard.readText() || "");
 }
 function ce(i, t) {
   const e = t.split(".", 2), s = e[0];
-  return s && i?.[s] && M(i[s]) && e?.[1] ? ce(i[s], e[1]) : (s && i?.[s]) ?? "";
+  return s && i?.[s] && C(i[s]) && e?.[1] ? ce(i[s], e[1]) : (s && i?.[s]) ?? "";
 }
-function Ue(i) {
+function Ze(i) {
   return i?.key ?? i?.code ?? i?.keyCode?.toString();
 }
 function kt(i) {
   return f(i, (t) => t.length);
 }
-function Ze(i) {
+function Ye(i) {
   return Math.max(...kt(i));
 }
-function Ye(i) {
+function Ke(i) {
   return Math.min(...kt(i));
 }
 function ue(i) {
@@ -3884,26 +3921,26 @@ function ue(i) {
 function he(i) {
   return i?.clientY || i?.targetTouches?.[0]?.clientY || i?.touches?.[0]?.clientY || 0;
 }
-function Ke(i) {
+function Ve(i) {
   return {
     x: ue(i),
     y: he(i)
   };
 }
-function Ve(i, t) {
+function qe(i, t) {
   const e = {};
   return t.forEach((s) => {
     s in i && i[s] !== void 0 && (e[s] = i[s]);
   }), e;
 }
-function qe(i, t = void 0) {
+function Je(i, t = void 0) {
   const e = {};
   return f(i, (s, n) => {
     s !== t && (e[n] = s);
   }), e;
 }
-function Je(i) {
-  return M(i) ? i : {};
+function _e(i) {
+  return C(i) ? i : {};
 }
 function le(i, t) {
   return ne(i, t).join("");
@@ -3918,41 +3955,41 @@ function Xe(i, t) {
   const e = i ?? 0;
   return t > e ? 100 / (t - e) : 0;
 }
-function _e(i, t) {
+function ts(i, t) {
   const e = i ?? 0;
   return t > e ? (t - e) / 100 : 0;
 }
-const pt = 0;
-function ts(i, t, e) {
+const yt = 0;
+function es(i, t, e) {
   const s = t?.closest(i);
   if (t && s && s.scrollHeight !== s.offsetHeight)
     if (e) {
       const n = e.getBoundingClientRect(), a = s.getBoundingClientRect(), o = t.getBoundingClientRect();
       s.scrollTop = t.offsetTop - (n.top - a.top) - (n.height / 2 - o.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
-    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - pt : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + pt);
+    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - yt : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + yt);
 }
-function es(i, t) {
+function ss(i, t) {
   return i.indexOf(t) !== -1;
 }
-async function ss() {
+async function is() {
   if (d()) {
-    const i = await ct.get();
+    const i = await vt.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function is(i, t) {
+function rs(i, t) {
   const e = {};
   return m(i) && m(t) && f(i, (s, n) => {
     n in t && (e[n] = s);
   }), e;
 }
-function rs(i, t) {
+function ns(i, t) {
   let e = Object.keys(i).length !== Object.keys(t).length;
   return e || f(i, (s, n) => {
     s !== t?.[n] && (e = !0);
   }), e;
 }
-function ns(i) {
+function as(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -3962,21 +3999,21 @@ function ns(i) {
       return !1;
   }
 }
-function as(i, t) {
+function os(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function os(i, t) {
+function cs(i, t) {
   return Array.isArray(i) ? i.every((e) => F(e, t)) : F(i, t);
 }
 function ge(i, t = {}, e = "value", s = !1) {
   const n = typeof t == "string", a = n ? t : e, o = n ? {} : t;
-  return i ? i && M(i) && (a in i || s) ? rt(o, i) : rt(o, { [a]: i }) : n ? {} : { ...o };
+  return i ? i && C(i) && (a in i || s) ? rt(o, i) : rt(o, { [a]: i }) : n ? {} : { ...o };
 }
-function cs(i, t = {}, e = "value") {
+function us(i, t = {}, e = "value") {
   return c(() => ge(g(i), g(t), e));
 }
-const us = (i, t) => {
+const hs = (i, t) => {
   const e = $();
   let s = !0;
   const n = () => {
@@ -3987,10 +4024,10 @@ const us = (i, t) => {
   };
   return c(() => (n(), e.value));
 };
-function hs(i, t) {
+function ls(i, t) {
   i.value !== t && (i.value = t);
 }
-function ls(i) {
+function gs(i) {
   let t;
   return c(() => (t || (t = i()), t.value));
 }
@@ -4011,13 +4048,13 @@ function T(i, t, e = !0) {
     }
   ), s;
 }
-function gs(i, t) {
+function fs(i, t) {
   let e = i;
   return f(t, (s, n) => {
-    e = e.replace(bt(`[${n}]`), I(s));
+    e = e.replace(Ct(`[${n}]`), I(s));
   }), e;
 }
-function fs(i) {
+function ds(i) {
   const t = b(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -4025,14 +4062,14 @@ function fs(i) {
   }
   return "00:00";
 }
-function ds(i, t, {
+function ms(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
   notEmpty: a = !1
 }) {
   if (e) {
-    if (ut(i)) {
+    if (ct(i)) {
       const o = i.indexOf(t), u = [...i];
       return o !== -1 ? (!a || u.length > 1) && u.splice(o, 1) : (!s || i.length < s) && u.push(t), u;
     }
@@ -4040,7 +4077,7 @@ function ds(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function ms(i, t, e) {
+function ys(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
@@ -4053,24 +4090,24 @@ function ms(i, t, e) {
   }
   return x(i);
 }
-function ys(i) {
-  return Ct(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
-}
 function ps(i) {
+  return St(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+}
+function $s(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(new RegExp("(?<=[A-Z])([A-Z])", "g"), (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(new RegExp("(?<=[\\w ])[A-Z]", "g"), (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function $s(i, t, e, s) {
+function vs(i, t, e, s) {
   const n = b(i), a = b(t);
-  return t && a < n ? `${$t(a, e, s)}+` : $t(n, e, s);
+  return t && a < n ? `${pt(a, e, s)}+` : pt(n, e, s);
 }
-const $t = (i, t, e) => t ? new N(e).number(i) : i;
+const pt = (i, t, e) => t ? new N(e).number(i) : i;
 function de(i, t) {
   return 1 / i * t;
 }
-function vs(i, t) {
+function bs(i, t) {
   return de(i, t) * 100;
 }
-async function bs(i) {
+async function Ss(i) {
   if (d())
     try {
       await navigator.clipboard.writeText(i);
@@ -4080,137 +4117,138 @@ async function bs(i) {
 }
 export {
   j as Api,
-  Cs as ApiMethodItem,
+  Ls as ApiMethodItem,
   Gt as Cache,
   Ht as CacheItem,
-  gt as CacheStatic,
+  lt as CacheStatic,
   Zt as Cookie,
   Ut as CookieBlock,
   Y as DataStorage,
   ot as Datetime,
-  Ce as DatetimeRef,
-  Qt as DesignAbstract,
-  be as DesignAsyncAbstract,
+  we as DatetimeRef,
+  _t as DesignAbstract,
+  ve as DesignAsyncAbstract,
   Jt as DesignChanged,
-  Se as DesignComp,
-  wt as DesignComponents,
-  we as DesignConstructorAbstract,
+  be as DesignComp,
+  bt as DesignComponents,
+  Se as DesignConstructorAbstract,
   Bt as EventItem,
-  Le as EventRef,
+  Ce as EventRef,
   r as GEO_FLAG_ICON_NAME,
   y as Geo,
   E as GeoFlag,
-  De as GeoFlagRef,
+  Le as GeoFlagRef,
   N as GeoIntl,
   se as GeoIntlRef,
-  dt as GeoPhone,
-  Lt as GeoRef,
+  ft as GeoPhone,
+  wt as GeoRef,
   $e as Global,
   R as Hash,
-  Ls as Icons,
-  St as ListData,
-  lt as Loading,
-  ve as RouterItem,
-  ct as ScrollbarWidth,
+  Ds as Icons,
+  Lt as ListDataRef,
+  ht as Loading,
+  De as RouterItemRef,
+  vt as ScrollbarWidth,
+  ke as ScrollbarWidthRef,
   z as Translate,
-  Re as anyToString,
+  Oe as anyToString,
   qt as applyTemplate,
   ne as arrFill,
   x as copyObject,
-  mt as createElement,
-  Oe as domQuerySelector,
-  We as domQuerySelectorAll,
-  Pe as eventStopPropagation,
+  dt as createElement,
+  We as domQuerySelector,
+  Pe as domQuerySelectorAll,
+  je as eventStopPropagation,
   I as executeFunction,
-  Ds as executePromise,
-  je as executeUse,
-  He as executeUseGlobalInit,
+  ks as executePromise,
+  He as executeUse,
+  Ge as executeUseGlobalInit,
   f as forEach,
   oe as frame,
-  Ge as getAttributes,
+  ze as getAttributes,
   ge as getBind,
-  cs as getBindRef,
-  Xt as getClassName,
-  ze as getClipboardData,
+  us as getBindRef,
+  Qt as getClassName,
+  Ue as getClipboardData,
   it as getColumn,
-  us as getComputedAsync,
+  hs as getComputedAsync,
   K as getElement,
   H as getElementId,
   Yt as getElementItem,
-  ks as getElementOrWindow,
-  bt as getExp,
-  _t as getIndexForRender,
+  Ms as getElementOrWindow,
+  Ct as getExp,
+  Xt as getIndexForRender,
   ce as getItemByPath,
-  Ue as getKey,
+  Ze as getKey,
   kt as getLengthOfAllArray,
-  Ze as getMaxLengthAllArray,
-  Ye as getMinLengthAllArray,
-  Ke as getMouseClient,
+  Ye as getMaxLengthAllArray,
+  Ke as getMinLengthAllArray,
+  Ve as getMouseClient,
   ue as getMouseClientX,
   he as getMouseClientY,
-  Ve as getObjectByKeys,
-  qe as getObjectNoUndefined,
-  Je as getObjectOrNone,
+  qe as getObjectByKeys,
+  Je as getObjectNoUndefined,
+  _e as getObjectOrNone,
   Qe as getRandomText,
   g as getRef,
   Tt as getRequestString,
   Xe as getStepPercent,
-  _e as getStepValue,
-  ts as goScroll,
-  es as inArray,
-  ss as initScrollbarOffset,
-  is as intersectKey,
-  ut as isArray,
-  rs as isDifferent,
+  ts as getStepValue,
+  es as goScroll,
+  ss as inArray,
+  is as initScrollbarOffset,
+  rs as intersectKey,
+  ct as isArray,
+  ns as isDifferent,
   d as isDomRuntime,
   O as isFilled,
-  ns as isFloat,
-  Ms as isFunction,
-  As as isInDom,
-  as as isIntegerBetween,
+  as as isFloat,
+  As as isFunction,
+  Is as isInDom,
+  os as isIntegerBetween,
   Nt as isNull,
-  Is as isNumber,
+  Ns as isNumber,
   m as isObject,
-  M as isObjectNotArray,
+  C as isObjectNotArray,
   F as isSelected,
-  os as isSelectedByList,
+  cs as isSelectedByList,
   nt as isString,
-  Ns as isWindow,
+  Ts as isWindow,
   G as random,
   te as render,
   T as replaceRecursive,
-  gs as replaceTemplate,
-  fs as secondToTime,
-  Me as setApiRefGlobalConditions,
+  fs as replaceTemplate,
+  ds as secondToTime,
+  Ae as setApiRefGlobalConditions,
   Kt as setElementItem,
-  hs as setRef,
-  ds as setValues,
-  ms as splice,
+  ls as setRef,
+  ms as setValues,
+  ys as splice,
   le as strFill,
-  Ee as t,
+  Re as t,
   B as toArray,
   rt as toBind,
   ee as toBinds,
-  Ct as toCamelCase,
-  ys as toCamelCaseFirst,
-  ls as toComputed,
+  St as toCamelCase,
+  ps as toCamelCaseFirst,
+  gs as toComputed,
   S as toDate,
-  ps as toKebabCase,
+  $s as toKebabCase,
   b as toNumber,
-  $s as toNumberByMax,
+  vs as toNumberByMax,
   de as toPercent,
-  vs as toPercentBy100,
+  bs as toPercentBy100,
   w as toRefItem,
-  vt as transformation,
+  $t as transformation,
   fe as uniqueArray,
-  ke as useApiRef,
-  Ae as useCookieRef,
-  Ie as useGeoIntlRef,
-  Ne as useHashRef,
-  Te as useLazyRef,
-  Be as useLoadingRef,
-  Fe as useSessionRef,
-  xe as useStorageRef,
+  Me as useApiRef,
+  Ie as useCookieRef,
+  Ne as useGeoIntlRef,
+  Te as useHashRef,
+  Be as useLazyRef,
+  Fe as useLoadingRef,
+  xe as useSessionRef,
+  Ee as useStorageRef,
   re as useTranslateRef,
-  bs as writeClipboardData
+  Ss as writeClipboardData
 };

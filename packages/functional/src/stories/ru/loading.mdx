@@ -1,0 +1,235 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Loading'/>
+
+# Класс Loading
+
+Статический класс для управления глобальными индикаторами загрузки с системой событий. Обеспечивает централизованное управление состоянием загрузки с поддержкой счетчика активных операций и автоматической диспетчеризацией событий.
+
+## Основные возможности
+
+- **Глобальное состояние** — централизованное управление индикаторами загрузки
+- **Система счетчика** — автоматический подсчет активных операций загрузки
+- **Диспетчеризация событий** — автоматические события изменения состояния
+- **Безопасное скрытие** — защита от отрицательных значений счетчика
+- **Регистрация слушателей** — простая подписка на изменения состояния
+- **Контроль элементов** — привязка к конкретным DOM элементам
+- **TypeScript поддержка** — полная типизация событий и данных
+- **Автоматическая инициализация** — готов к работе в DOM окружении
+
+## Методы проверки состояния
+
+### `is`
+
+Проверяет, активен ли сейчас индикатор загрузки.
+
+**Возвращает:** `boolean` — true если есть активные операции загрузки
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+
+// Проверка состояния загрузки
+if (Loading.is()) {
+  console.log('Идет загрузка...')
+} else {
+  console.log('Загрузка завершена')
+}
+
+// Условное отображение
+const loadingSpinner = document.getElementById('spinner')
+loadingSpinner.style.display = Loading.is() ? 'block' : 'none'
+```
+
+## Методы управления состоянием
+
+### `show`
+
+Показывает индикатор загрузки (увеличивает счетчик).
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+
+// Начать операцию загрузки
+Loading.show()
+console.log('Состояние загрузки:', Loading.is()) // true
+
+// Несколько операций одновременно
+async function loadMultipleData() {
+  Loading.show() // операция 1
+  Loading.show() // операция 2
+  Loading.show() // операция 3
+
+  console.log('Активных операций:', Loading.is()) // true
+
+  // Выполнение операций...
+  await Promise.all([
+    loadUserData(),
+    loadSettings(),
+    loadPreferences()
+  ])
+
+  Loading.hide() // завершена операция 1
+  Loading.hide() // завершена операция 2
+  Loading.hide() // завершена операция 3
+
+  console.log('Все операции завершены:', Loading.is()) // false
+}
+```
+
+### `hide`
+
+Скрывает индикатор загрузки (уменьшает счетчик).
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+
+// Безопасное скрытие
+Loading.hide() // Ничего не произойдет, если счетчик уже 0
+
+// Пример с API вызовом
+async function fetchData() {
+  Loading.show()
+
+  try {
+    const data = await fetch('/api/data')
+    return await data.json()
+  } finally {
+    Loading.hide() // Гарантированно скроем загрузку
+  }
+}
+
+// Множественные операции
+function startOperations() {
+  // Показываем для каждой операции
+  Loading.show() // операция A
+  Loading.show() // операция B
+
+  // Скрываем по завершении каждой
+  setTimeout(() => Loading.hide(), 1000) // завершилась A
+  setTimeout(() => Loading.hide(), 2000) // завершилась B
+}
+```
+
+## Система событий
+
+### `registrationEvent`
+
+Регистрирует слушатель событий для отслеживания изменений состояния загрузки.
+
+**Параметры:**
+- `listener: EventListenerDetail<CustomEvent, LoadingDetail>` — функция-обработчик события
+- `element?: ElementOrString<HTMLElement>` — элемент для контроля (опционально)
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+
+// Простая регистрация
+Loading.registrationEvent((event, detail) => {
+  console.log('Состояние загрузки изменилось:', detail.loading)
+
+  if (detail.loading) {
+    showLoadingSpinner()
+  } else {
+    hideLoadingSpinner()
+  }
+})
+
+// Регистрация с контролем элемента
+Loading.registrationEvent(
+  (event, detail) => {
+    const spinner = document.getElementById('app-spinner')
+    spinner.style.display = detail.loading ? 'flex' : 'none'
+  },
+  '#main-app' // Событие будет активно только пока существует #main-app
+)
+
+// Множественные слушатели
+Loading.registrationEvent((event, detail) => {
+  // Обновление UI
+  updateLoadingIndicator(detail.loading)
+})
+
+Loading.registrationEvent((event, detail) => {
+  // Аналитика
+  if (detail.loading) {
+    analytics.track('loading_started')
+  } else {
+    analytics.track('loading_finished')
+  }
+})
+```
+
+### LoadingDetail
+
+Тип данных, передаваемый в событие загрузки.
+
+**Свойства:**
+- `loading: boolean` — состояние загрузки (true = идет загрузка, false = завершена)
+
+```javascript
+interface LoadingDetail {
+  loading: boolean
+}
+
+// Обработчик события с типизацией
+const handleLoadingChange: EventListenerDetail<CustomEvent, LoadingDetail> = (event, detail) => {
+  if (detail?.loading) {
+    document.body.classList.add('loading-active')
+    document.getElementById('loading-overlay')?.classList.add('visible')
+  } else {
+    document.body.classList.remove('loading-active')
+    document.getElementById('loading-overlay')?.classList.remove('visible')
+  }
+}
+
+Loading.registrationEvent(handleLoadingChange)
+```
+
+## Практические примеры
+
+### Глобальный индикатор
+
+```javascript
+// Настройка
+Loading.registrationEvent((event, detail) => {
+  document.getElementById('spinner').style.display =
+    detail.loading ? 'block' : 'none'
+})
+
+// Использование
+Loading.show()
+await fetchData()
+Loading.hide()
+```
+
+### API интеграция
+
+```javascript
+async function apiCall(url) {
+  Loading.show()
+  try {
+    return await fetch(url).then(r => r.json())
+  } finally {
+    Loading.hide()
+  }
+}
+```
+
+### Декоратор загрузки
+
+```javascript
+function withLoading(fn) {
+  return async (...args) => {
+    Loading.show()
+    try {
+      return await fn(...args)
+    } finally {
+      Loading.hide()
+    }
+  }
+}
+
+const loadUsers = withLoading(async () => fetch('/users').then(r => r.json()))
+```
+
+Класс Loading обеспечивает простое и надежное управление глобальными индикаторами загрузки с автоматической системой событий и безопасным подсчетом активных операций.

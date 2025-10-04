@@ -3,7 +3,7 @@ import {
   type ConstrClassObject,
   type ConstrEmit,
   type DesignComp,
-  ScrollbarWidth
+  ScrollbarWidthRef
 } from '@dxtmisha/functional'
 
 import { ScrollbarBorder } from './ScrollbarBorder'
@@ -19,7 +19,7 @@ import type { ScrollbarPropsBasic } from './props'
  * Он обрабатывает вычисления ширины скролла и отображение границ на основе позиции скролла.
  */
 export class Scrollbar {
-  readonly width: ScrollbarWidth
+  readonly width: ScrollbarWidthRef
   readonly border: ScrollbarBorder
 
   /**
@@ -45,7 +45,7 @@ export class Scrollbar {
     protected readonly slots?: ScrollbarSlots,
     protected readonly emits?: ConstrEmit<ScrollbarEmits>
   ) {
-    this.width = new ScrollbarWidth()
+    this.width = new ScrollbarWidthRef()
     this.border = new ScrollbarBorder(
       props,
       refs,

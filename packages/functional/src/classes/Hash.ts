@@ -68,7 +68,7 @@ export class Hash {
     if (name in this.watch) {
       this.watch[name]?.push(callback)
     } else {
-      this.watch = { [name]: [callback] }
+      this.watch[name] = [callback]
     }
   }
 

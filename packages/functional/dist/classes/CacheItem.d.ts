@@ -20,6 +20,11 @@ export declare class CacheItem<T> {
      * @param comparison additional data for comparison/ дополнительные данные для сравнения
      */
     getCache(comparison: any[]): T;
+    /**
+     * Getting the previous value of the cache.
+     *
+     * Получение предыдущего значения кэша.
+     */
     getCacheOld(): T | undefined;
     /**
      * Getting data for the cache, and if there is no cache, it performs a function to save the cache (Async).

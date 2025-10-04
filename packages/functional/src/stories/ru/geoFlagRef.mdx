@@ -1,0 +1,236 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Ref/GeoFlagRef'/>
+
+# Класс GeoFlagRef
+
+Vue-ориентированный класс для работы с флагами стран с реактивными computed свойствами. Обеспечивает автоматическое получение информации о странах, их флагах и локализованных названиях с полной интеграцией в реактивную систему Vue.
+
+## Основные возможности
+
+- **Vue Reactivity** — использует computed свойства и ref/watch для реактивности
+- **Автоматическая локализация** — получает названия стран и языков на текущей локали
+- **Флаги стран** — предоставляет иконки флагов для всех стран
+- **Национальные названия** — возможность получения названий на национальных языках
+- **Реактивное отслеживание** — автоматически обновляется при смене кода страны
+- **Списки стран** — получение списков стран по заданным кодам
+- **Гибкий ввод** — принимает коды стран как ref или обычные значения
+- **Интеграция с Geo** — использует географические данные для получения информации
+
+## Конструктор
+
+### `constructor`
+
+Создаёт экземпляр GeoFlagRef с реактивными параметрами.
+
+**Параметры:**
+- `code?: RefOrNormal<string>` — код страны и языка (по умолчанию: текущая локация)
+
+```javascript
+import { GeoFlagRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// С текущей локацией
+const geoFlag = new GeoFlagRef()
+
+// С конкретным кодом
+const geoFlagRU = new GeoFlagRef('ru-RU')
+
+// С реактивным кодом
+const countryCode = ref('en-US')
+const geoFlagReactive = new GeoFlagRef(countryCode)
+```
+
+## Методы получения данных
+
+### `getCode`
+
+Возвращает реактивный объект с кодом страны.
+
+**Возвращает:** `Ref<string>` — реактивный код страны
+
+```javascript
+const geoFlag = new GeoFlagRef('ru-RU')
+const code = geoFlag.getCode() // ref('ru-RU')
+```
+
+### `get`
+
+Возвращает информацию о стране и её флаге.
+
+**Параметры:**
+- `code?: string` — код страны (по умолчанию: текущий код)
+
+**Возвращает:** `ComputedRef<GeoFlagItem | undefined>` — реактивная информация о стране
+
+**Структура GeoFlagItem:**
+- `language: string` — название языка
+- `country: string` — название страны
+- `standard: string` — стандартный код страны
+- `icon?: string` — иконка флага
+- `label: string` — отображаемое название
+- `value: string` — значение (код страны)
+
+```javascript
+const geoFlag = new GeoFlagRef('ru-RU')
+const countryInfo = geoFlag.get()
+// { language: "русский", country: "Россия", standard: "ru-RU", icon: "@flag-ru", ... }
+
+// Для конкретной страны
+const usInfo = geoFlag.get('en-US')
+```
+
+### `getFlag`
+
+Получение ссылки на флаг.
+
+**Параметры:**
+- `code?: string` — код страны (по умолчанию: текущий код)
+
+**Возвращает:** `ComputedRef<string | undefined>` — реактивная ссылка на иконку флага
+
+```javascript
+const geoFlag = new GeoFlagRef('ru-RU')
+const flagIcon = geoFlag.getFlag() // '@flag-ru'
+
+// Для конкретной страны
+const usFlagIcon = geoFlag.getFlag('en-US') // '@flag-us'
+```
+
+### `getList`
+
+Получение списка стран по массиву с кодами.
+
+**Параметры:**
+- `codes?: string[]` — массив кодов стран (по умолчанию: все доступные страны)
+
+**Возвращает:** `ComputedRef<GeoFlagItem[]>` — реактивный список стран
+
+```javascript
+const geoFlag = new GeoFlagRef('ru-RU')
+
+// Все страны
+const allCountries = geoFlag.getList()
+
+// Конкретные страны
+const selectedCountries = geoFlag.getList(['ru-RU', 'en-US', 'de-DE'])
+```
+
+### `getNational`
+
+Получение списка стран по массиву с кодами на национальном языке.
+
+**Параметры:**
+- `codes?: string[]` — массив кодов стран (по умолчанию: все доступные страны)
+
+**Возвращает:** `ComputedRef<GeoFlagNational[]>` — реактивный список стран с национальными названиями
+
+**Структура GeoFlagNational:** включает все поля GeoFlagItem плюс:
+- `description?: string` — описание на национальном языке
+- `nationalLanguage?: string` — название языка на национальном языке
+- `nationalCountry?: string` — название страны на национальном языке
+
+```javascript
+const geoFlag = new GeoFlagRef('ru-RU')
+
+// Страны с национальными названиями
+const nationalCountries = geoFlag.getNational(['ru-RU', 'en-US'])
+// [
+//   { country: "Россия", nationalCountry: "Россия", nationalLanguage: "русский", ... },
+//   { country: "США", nationalCountry: "United States", nationalLanguage: "English", ... }
+// ]
+```
+
+## Реактивные возможности
+
+### Автоматическое отслеживание кода
+
+GeoFlagRef автоматически отслеживает изменения в коде страны:
+
+```javascript
+const countryCode = ref('ru-RU')
+const geoFlag = new GeoFlagRef(countryCode)
+
+const countryInfo = geoFlag.get()
+const flagIcon = geoFlag.getFlag()
+
+// Изменение кода автоматически обновит все computed свойства
+countryCode.value = 'en-US'
+```
+
+## Практические примеры
+
+### Vue компонент с флагами стран
+
+```vue
+<template>
+  <div class="country-selector">
+    <div class="current-country">
+      <img :src="currentFlag" :alt="currentCountry?.country">
+      <span>{{ currentCountry?.country }}</span>
+    </div>
+
+    <div class="countries-list">
+      <div
+        v-for="country in countries"
+        :key="country.value"
+        @click="selectCountry(country.standard)"
+      >
+        <img :src="country.icon" :alt="country.country">
+        <span>{{ country.country }}</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { GeoFlagRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const selectedCode = ref('ru-RU')
+const geoFlag = new GeoFlagRef(selectedCode)
+
+const currentCountry = geoFlag.get()
+const currentFlag = geoFlag.getFlag()
+const countries = geoFlag.getList(['ru-RU', 'en-US', 'de-DE', 'fr-FR'])
+
+function selectCountry(code) {
+  selectedCode.value = code
+}
+</script>
+```
+
+### Composable для работы с флагами
+
+```javascript
+export function useCountryFlags(initialCode = 'ru-RU') {
+  const code = ref(initialCode)
+  const geoFlag = new GeoFlagRef(code)
+
+  return {
+    code,
+    currentCountry: geoFlag.get(),
+    currentFlag: geoFlag.getFlag(),
+    allCountries: geoFlag.getList(),
+    nationalCountries: geoFlag.getNational()
+  }
+}
+```
+
+### Селектор стран с флагами
+
+```javascript
+const geoFlag = new GeoFlagRef('ru-RU')
+const europeanCountries = geoFlag.getList([
+  'ru-RU', 'de-DE', 'fr-FR', 'it-IT', 'es-ES'
+])
+
+// Использование в селекте
+const countryOptions = europeanCountries.value.map(country => ({
+  label: country.country,
+  value: country.standard,
+  icon: country.icon
+}))
+```
+
+Класс GeoFlagRef предоставляет мощную реактивную систему работы с флагами и информацией о странах для Vue приложений с автоматической локализацией и отслеживанием изменений.

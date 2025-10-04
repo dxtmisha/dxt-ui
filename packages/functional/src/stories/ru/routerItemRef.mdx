@@ -1,0 +1,193 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Ref/RouterItemRef'/>
+
+# Класс RouterItemRef
+
+Статический класс для управления Vue Router. Обеспечивает глобальный доступ к экземпляру роутера и программную навигацию через простой API с поддержкой одноразовой инициализации.
+
+## Основные возможности
+
+- **Глобальный доступ** — статический доступ к экземпляру Vue Router из любого места
+- **Простая навигация** — метод push для программных переходов
+- **Одноразовая установка** — защита от случайной перезаписи роутера
+- **TypeScript поддержка** — полная типизация с RouteLocationRaw
+- **Безопасная навигация** — проверка наличия роутера перед выполнением
+- **Vue Router интеграция** — прямая работа с официальным Vue Router
+- **Глобальная инициализация** — инициализация роутера на уровне приложения
+- **Простой API** — минималистичный интерфейс для основных операций
+
+## Методы конфигурации
+
+### `set`
+
+Устанавливает экземпляр Vue Router для глобального использования.
+
+**Параметры:**
+- `router: Router` — экземпляр Vue Router
+
+```javascript
+import { createRouter, createWebHistory } from 'vue-router'
+import { RouterItemRef } from '@dxtmisha/functional'
+
+// Создание и установка роутера
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: '/', component: Home },
+    { path: '/about', component: About },
+    { path: '/users/:id', component: User }
+  ]
+})
+
+RouterItemRef.set(router)
+```
+
+### `setOneTime`
+
+Устанавливает роутер только если он еще не установлен (защита от перезаписи).
+
+**Параметры:**
+- `router: Router` — экземпляр Vue Router
+
+```javascript
+import { RouterItemRef } from '@dxtmisha/functional'
+
+// Безопасная установка (только первый раз)
+RouterItemRef.setOneTime(router)
+RouterItemRef.setOneTime(anotherRouter) // Будет проигнорировано
+
+// Полезно в плагинах и библиотеках
+function initializeLibrary(router) {
+  RouterItemRef.setOneTime(router) // Не перезапишет существующий
+}
+```
+
+## Методы получения данных
+
+### `get`
+
+Возвращает текущий экземпляр Vue Router.
+
+**Возвращает:** `Router | undefined` — экземпляр роутера или undefined
+
+```javascript
+import { RouterItemRef } from '@dxtmisha/functional'
+
+// Получение роутера
+const router = RouterItemRef.get()
+
+if (router) {
+  console.log('Текущий маршрут:', router.currentRoute.value)
+  console.log('Доступные маршруты:', router.getRoutes())
+} else {
+  console.log('Роутер не инициализирован')
+}
+```
+
+## Методы навигации
+
+### `push`
+
+Программно переходит к новому маршруту.
+
+**Параметры:**
+- `to: string | RouteLocationRaw` — целевой маршрут (строка или объект)
+
+```javascript
+import { RouterItemRef } from '@dxtmisha/functional'
+
+// Простая навигация по строке
+RouterItemRef.push('/users')
+RouterItemRef.push('/products/123')
+
+// Навигация с параметрами
+RouterItemRef.push({
+  name: 'user-profile',
+  params: { id: '123' }
+})
+
+// Навигация с query параметрами
+RouterItemRef.push({
+  path: '/search',
+  query: { q: 'laptop', category: 'electronics' }
+})
+
+// Навигация с hash
+RouterItemRef.push({
+  path: '/docs',
+  hash: '#section-2'
+})
+```
+
+## Практические примеры
+
+### Инициализация в приложении
+
+```javascript
+// main.js
+import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import { RouterItemRef } from '@dxtmisha/functional'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: routes
+})
+
+const app = createApp(App)
+app.use(router)
+
+// Глобальная установка
+RouterItemRef.set(router)
+```
+
+### Навигация в компонентах
+
+```javascript
+// В любом месте приложения
+export function navigateToUser(userId) {
+  RouterItemRef.push({
+    name: 'user',
+    params: { id: userId }
+  })
+}
+
+// В service классе
+class AuthService {
+  static login(credentials) {
+    // ... логика авторизации
+    RouterItemRef.push('/dashboard')
+  }
+
+  static logout() {
+    // ... логика выхода
+    RouterItemRef.push('/login')
+  }
+}
+```
+
+### Условная навигация
+
+```javascript
+function handleUserAction(user) {
+  if (user.role === 'admin') {
+    RouterItemRef.push('/admin/dashboard')
+  } else if (user.role === 'moderator') {
+    RouterItemRef.push('/moderator/panel')
+  } else {
+    RouterItemRef.push('/user/profile')
+  }
+}
+
+// Навигация с проверкой
+function safeNavigate(path) {
+  if (RouterItemRef.get()) {
+    RouterItemRef.push(path)
+  } else {
+    console.warn('Router не инициализирован')
+  }
+}
+```
+
+Класс RouterItemRef предоставляет простой глобальный доступ к Vue Router для программной навигации из любой части приложения без необходимости передачи экземпляра роутера.

@@ -1,0 +1,317 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Ref/EventRef'/>
+
+# Класс EventRef
+
+Vue-ориентированный класс для работы с DOM событиями с реактивными возможностями. Расширяет базовый класс EventItem системой реактивности Vue, обеспечивая автоматическое отслеживание элементов и конфигураций событий.
+
+## Основные возможности
+
+- **Vue Reactivity** — использует ref/watch для реактивного отслеживания элементов
+- **Автоматическое отслеживание элементов** — автоматически обновляет обработчики при изменении ссылок на элементы
+- **Гибкий ввод элементов** — принимает DOM элементы, селекторы или реактивные refs
+- **Множественные типы событий** — поддержка одиночных и множественных событий
+- **Контрольный элемент** — отдельный элемент для проверки присутствия в DOM
+- **Автоматическая очистка** — удаляет обработчики при удалении элементов из DOM
+- **Специальная обработка событий** — встроенная поддержка resize, scroll-sync
+- **Диспетчеризация событий** — программный запуск пользовательских событий
+- **Управление жизненным циклом** — методы запуска, остановки и переключения
+
+## Конструктор
+
+### `constructor`
+
+Создаёт экземпляр EventRef с реактивными параметрами.
+
+**Параметры:**
+- `elementSelector?: RefOrNormal<ElementOrString<E> | undefined>` — целевой элемент (ref или обычное значение)
+- `elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>` — контрольный элемент для проверки DOM
+- `type?: string | string[]` — тип(ы) событий для прослушивания (по умолчанию: ['click'])
+- `listener?: EventListenerDetail<O, D>` — функция обработчика событий
+- `options?: EventOptions` — опции обработчика событий
+- `detail?: D` — пользовательские данные для передачи в обработчик
+
+**Дженерик типы:**
+- `E extends ElementOrWindow` — тип целевого элемента (HTMLElement или Window)
+- `O extends Event` — тип объекта события
+- `D extends Record<string, any>` — тип пользовательских данных detail
+
+```javascript
+import { EventRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// С ref элементом
+const buttonRef = ref(null)
+const containerRef = ref(null)
+
+const clickEvent = new EventRef(
+  buttonRef,
+  containerRef, // контрольный элемент
+  'click',
+  (event, detail) => console.log('Кнопка нажата!', detail),
+  undefined,
+  { component: 'MyButton' }
+)
+
+// С селектором строки
+const hoverEvent = new EventRef(
+  '#my-element',
+  undefined,
+  ['mouseenter', 'mouseleave'],
+  (event) => console.log('Hover:', event.type)
+)
+```
+
+## Наследуемые методы
+
+EventRef наследует все методы от базового класса EventItem:
+
+### `isActive`
+
+Проверяет, активны ли обработчики событий.
+
+**Возвращает:** `boolean` — true если обработчики активны
+
+```javascript
+const isListening = eventRef.isActive()
+```
+
+### `getElement`
+
+Возвращает текущий целевой элемент.
+
+**Возвращает:** `E | undefined` — текущий целевой элемент
+
+```javascript
+const currentElement = eventRef.getElement()
+```
+
+### `setElement`
+
+Изменяет целевой элемент (автоматически вызывается при изменении ref).
+
+**Параметры:**
+- `elementSelector?: ElementOrString<E>` — новый целевой элемент
+
+**Возвращает:** `this` — экземпляр для цепочки методов
+
+```javascript
+eventRef.setElement('#new-element')
+```
+
+### `setElementControl`
+
+Устанавливает контрольный элемент (автоматически вызывается при изменении ref).
+
+**Параметры:**
+- `elementSelector?: ElementOrString<HTMLElement>` — контрольный элемент
+
+**Возвращает:** `this` — экземпляр для цепочки методов
+
+```javascript
+eventRef.setElementControl('#parent-container')
+```
+
+### `setType`
+
+Изменяет тип(ы) событий.
+
+**Параметры:**
+- `type: string | string[]` — новый тип(ы) событий
+
+**Возвращает:** `this` — экземпляр для цепочки методов
+
+```javascript
+eventRef.setType(['focus', 'blur'])
+```
+
+### `setListener`
+
+Изменяет функцию обработчика событий.
+
+**Параметры:**
+- `listener: EventListenerDetail<O, D>` — новая функция обработчика
+
+**Возвращает:** `this` — экземпляр для цепочки методов
+
+```javascript
+eventRef.setListener((event, detail) => {
+  console.log('Новый обработчик!', event, detail)
+})
+```
+
+### `setOptions`
+
+Изменяет опции обработчика событий.
+
+**Параметры:**
+- `options?: EventOptions` — новые опции событий
+
+**Возвращает:** `this` — экземпляр для цепочки методов
+
+```javascript
+eventRef.setOptions({ capture: true, once: true })
+```
+
+### `setDetail`
+
+Изменяет пользовательские данные detail.
+
+**Параметры:**
+- `detail?: D` — новые данные detail
+
+**Возвращает:** `this` — экземпляр для цепочки методов
+
+```javascript
+eventRef.setDetail({ timestamp: Date.now() })
+```
+
+## Методы управления жизненным циклом
+
+### `start`
+
+Запускает прослушивание событий.
+
+**Возвращает:** `this` — экземпляр для цепочки методов
+
+```javascript
+eventRef.start()
+```
+
+### `stop`
+
+Останавливает прослушивание событий.
+
+**Возвращает:** `this` — экземпляр для цепочки методов
+
+```javascript
+eventRef.stop()
+```
+
+### `toggle`
+
+Переключает состояние обработчика событий.
+
+**Параметры:**
+- `activity: boolean` — true для запуска, false для остановки
+
+**Возвращает:** `this` — экземпляр для цепочки методов
+
+```javascript
+eventRef.toggle(true) // запуск
+eventRef.toggle(false) // остановка
+```
+
+### `reset`
+
+Перезагружает обработчики событий.
+
+**Возвращает:** `this` — экземпляр для цепочки методов
+
+```javascript
+eventRef.reset()
+```
+
+### `dispatch`
+
+Программно запускает событие.
+
+**Параметры:**
+- `detail?: D` — пользовательские данные для события
+
+**Возвращает:** `this` — экземпляр для цепочки методов
+
+```javascript
+eventRef.dispatch({ source: 'programmatic' })
+```
+
+## Реактивные возможности
+
+### Автоматическое отслеживание элементов
+
+EventRef автоматически отслеживает изменения в реактивных ссылках на элементы:
+
+```javascript
+const elementRef = ref('#button1')
+const eventRef = new EventRef(elementRef, undefined, 'click', () => {
+  console.log('Клик!')
+})
+
+eventRef.start()
+
+// Изменение элемента автоматически обновит обработчики
+elementRef.value = '#button2'
+```
+
+### Отслеживание контрольного элемента
+
+```javascript
+const buttonRef = ref(null)
+const containerRef = ref(null)
+
+const eventRef = new EventRef(buttonRef, containerRef, 'click')
+
+// События автоматически остановятся, если containerRef будет удален из DOM
+```
+
+## Практические примеры
+
+### Vue компонент с реактивными событиями
+
+```vue
+<template>
+  <button ref="buttonEl">Нажми меня</button>
+  <input ref="inputEl" placeholder="Введите...">
+</template>
+
+<script setup>
+import { EventRef } from '@dxtmisha/functional'
+import { ref, onMounted } from 'vue'
+
+const buttonEl = ref(null)
+const inputEl = ref(null)
+
+onMounted(() => {
+  new EventRef(buttonEl, undefined, 'click', () => {
+    console.log('Кнопка нажата!')
+  }).start()
+
+  new EventRef(inputEl, undefined, ['focus', 'blur'], (event) => {
+    console.log(`Ввод ${event.type}`)
+  }).start()
+})
+</script>
+```
+
+### Composable для управления событиями
+
+```javascript
+export function useElementEvents(elementRef) {
+  const events = new Map()
+
+  const addEvent = (name, type, listener) => {
+    const eventRef = new EventRef(elementRef, undefined, type, listener)
+    events.set(name, eventRef.start())
+    return eventRef
+  }
+
+  return { addEvent }
+}
+```
+
+### Специальные типы событий
+
+```javascript
+// Событие прокрутки
+new EventRef('#container', undefined, 'scroll-sync', (event) => {
+  console.log('Прокрутка:', event.target.scrollTop)
+}).start()
+
+// Событие изменения размера
+new EventRef('#element', undefined, 'resize', (entry) => {
+  console.log('Размер:', entry.contentRect)
+}).start()
+```
+
+Класс EventRef предоставляет мощную реактивную систему управления событиями для Vue приложений с автоматическим отслеживанием элементов и очисткой ресурсов.

@@ -1,5 +1,5 @@
 import { computed, onUnmounted, watch } from 'vue'
-import { EventItem, isDomRuntime, ListData } from '@dxtmisha/functional'
+import { EventItem, isDomRuntime, ListDataRef } from '@dxtmisha/functional'
 
 import { ListSearch } from './ListSearch'
 import { ListGo } from './ListGo'
@@ -28,7 +28,7 @@ export class ListControl {
   constructor(
     protected readonly props: ListProps,
     protected readonly search: ListSearch,
-    protected readonly data: ListData,
+    protected readonly data: ListDataRef,
     protected readonly go: ListGo
   ) {
     watch(

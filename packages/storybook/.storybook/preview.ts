@@ -19,6 +19,12 @@ const preview: Preview = {
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely
       test: 'todo'
+    },
+
+    options: {
+      storySort(a: any, b: any) {
+        a.title.localeCompare(b.title, { numeric: true })
+      }
     }
   }
 }

@@ -1,0 +1,476 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Ref/ListDataRef'/>
+
+# ListDataRef Class
+
+Vue-oriented class for managing list data with reactive computed properties. Provides focus, highlighting, element selection, sublist support, and lite mode for large lists.
+
+## Key Features
+
+- **Vue Reactivity** — uses computed properties and ref/watch for reactivity
+- **Lite Mode** — automatic switching to simplified list for large data
+- **Sublist Support** — hierarchical lists with groups and menus
+- **Search with Highlighting** — customizable highlighting of found text
+- **Focus and Selection** — focus state and selected elements management
+- **Flexible Keys** — customizable keys for value and label
+- **Element Map** — flat representation of hierarchical data
+- **Type Filtering** — separate lists for items, groups, menu
+
+## Constructor
+
+### `constructor`
+
+Creates ListData instance with reactive parameters.
+
+**Parameters:**
+- `list: RefOrNormal<ListListInput | undefined>` — list data (ref or normal value)
+- `focus?: RefType<ListSelectedItem | undefined>` — focused element
+- `highlight?: RefType<string | undefined>` — text for highlighting
+- `highlightLengthStart?: RefType<number | undefined>` — minimum length to start highlighting
+- `selected?: RefType<ListSelectedList | undefined>` — selected elements
+- `keyValue?: RefType<string | undefined>` — key for getting value
+- `keyLabel?: RefType<string | undefined>` — key for getting label
+- `lite?: RefType<number | undefined>` — threshold for lite mode
+- `parent?: string` — parent identifier
+
+```javascript
+import { ListDataRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// With ref data
+const listRef = ref(['Apple', 'Banana', 'Cherry'])
+const focusRef = ref('Apple')
+const selectedRef = ref(['Apple'])
+
+const listData = new ListDataRef(
+  listRef,
+  focusRef,
+  undefined, // highlight
+  undefined, // highlightLengthStart
+  selectedRef
+)
+
+// With static data
+const staticList = new ListDataRef([
+  { label: 'Home', value: 'home', type: 'item' },
+  { label: 'Products', value: 'products', type: 'group' }
+])
+```
+
+## Reactive Computed Properties
+
+### `data`
+
+Main list of elements with processed data.
+
+**Returns:** `ComputedRef<ListList>` — processed list
+
+```javascript
+const items = listData.data.value
+// Each element contains: parent, index, type, label, value
+```
+
+### `liteData`
+
+Simplified list for fast loading of large data.
+
+**Returns:** `ComputedRef<ListList>` — simplified or full list
+
+```javascript
+// Automatically switches to lite mode when threshold exceeded
+const displayItems = listData.liteData.value
+```
+
+### `fullData`
+
+List with full state data (focus, highlighting, selection).
+
+**Returns:** `ComputedRef<ListDataFull>` — list with state
+
+```javascript
+const fullItems = listData.fullData.value
+// Each element additionally contains: focus, highlight, selected
+```
+
+### `map`
+
+Flat representation of hierarchical list.
+
+**Returns:** `ComputedRef<ListList>` — flat list of all elements
+
+```javascript
+const flatList = listData.map.value
+// Includes elements from subgroups
+```
+
+### `mapItems`
+
+Only 'item' type elements from flat list.
+
+**Returns:** `ComputedRef<ListList>`
+
+```javascript
+const onlyItems = listData.mapItems.value
+```
+
+### `items`
+
+Elements for selection (item, group, menu).
+
+**Returns:** `ComputedRef<ListList>`
+
+```javascript
+const selectableItems = listData.items.value
+```
+
+### `highlightFirstItem`
+
+Index of the first element matching search conditions.
+
+**Returns:** `ComputedRef<number>` — index of found element or -1
+
+```javascript
+const searchIndex = listData.highlightFirstItem.value
+if (searchIndex !== -1) {
+  console.log('Found element at position:', searchIndex)
+}
+```
+
+### `isSelected`
+
+Checks if there are selected elements in the list.
+
+**Returns:** `ComputedRef<boolean>` — true if there are selected elements
+
+```javascript
+const hasSelected = listData.isSelected.value
+```
+
+### `selectedList`
+
+List of selected elements with full data.
+
+**Returns:** `ComputedRef<ListList>`
+
+```javascript
+const selected = listData.selectedList.value
+```
+
+### `selectedNames`
+
+Names (labels) of selected elements.
+
+**Returns:** `ComputedRef<ListNames>`
+
+```javascript
+const names = listData.selectedNames.value // ['Apple', 'Banana']
+```
+
+### `selectedValues`
+
+Values of selected elements.
+
+**Returns:** `ComputedRef<any[]>`
+
+```javascript
+const values = listData.selectedValues.value // ['apple', 'banana']
+```
+
+## State Check Methods
+
+### `isLite`
+
+Checks if lite mode is needed.
+
+**Returns:** `boolean`
+
+```javascript
+if (listData.isLite()) {
+  // simplified list is used
+}
+```
+
+### `isFocus`
+
+Checks if there's an element in focus.
+
+**Returns:** `boolean`
+
+```javascript
+const hasFocus = listData.isFocus()
+```
+
+### `isHighlight`
+
+Checks if there's a highlighted element during search.
+
+**Returns:** `boolean`
+
+```javascript
+const hasHighlight = listData.isHighlight()
+```
+
+## Data Retrieval Methods
+
+### `getLength`
+
+Returns count of main records.
+
+**Returns:** `number`
+
+```javascript
+const count = listData.getLength()
+```
+
+### `getLengthByMap`
+
+Returns count of all available records (including subgroups).
+
+**Returns:** `number`
+
+```javascript
+const totalCount = listData.getLengthByMap()
+```
+
+### `getFocus`
+
+Returns focused element value.
+
+**Returns:** `ListSelectedItem | undefined`
+
+```javascript
+const focusedValue = listData.getFocus()
+```
+
+### `getLengthByItems`
+
+Returns count of elements available for selection.
+
+**Returns:** `number`
+
+```javascript
+const selectableCount = listData.getLengthByItems()
+```
+
+### `getHighlight`
+
+Returns text for highlighting during search.
+
+**Returns:** `string | undefined`
+
+```javascript
+const searchText = listData.getHighlight()
+```
+
+### `getHighlightLengthStart`
+
+Returns minimum length to start highlighting.
+
+**Returns:** `number`
+
+```javascript
+const minLength = listData.getHighlightLengthStart() // default 2
+```
+
+### `getSelected`
+
+Returns selected values.
+
+**Returns:** `ListSelectedList | undefined`
+
+```javascript
+const selectedValues = listData.getSelected()
+```
+
+### `getItemByKey`
+
+Returns element by key.
+
+**Parameters:**
+- `key: number` — element key
+
+**Returns:** `ListDataItem | undefined`
+
+```javascript
+const item = listData.getItemByKey(0)
+console.log(item?.label)
+```
+
+### `getFirstItemByParent`
+
+Returns first element with specified parent.
+
+**Parameters:**
+- `parent: string` — parent identifier
+
+**Returns:** `ListDataItem | undefined`
+
+```javascript
+const firstChild = listData.getFirstItemByParent('group1')
+```
+
+### `getLastItemByParent`
+
+Returns last element with specified parent.
+
+**Parameters:**
+- `parent: string` — parent identifier
+
+**Returns:** `ListDataItem | undefined`
+
+```javascript
+const lastChild = listData.getLastItemByParent('group1')
+```
+
+### `getItemByIndex`
+
+Returns element by index.
+
+**Parameters:**
+- `index?: string` — element index
+
+**Returns:** `{ key: number, item: ListDataItem } | undefined`
+
+```javascript
+const result = listData.getItemByIndex('apple')
+if (result) {
+  console.log(result.key, result.item)
+}
+```
+
+### `getSubList`
+
+Returns sublist for group element.
+
+**Parameters:**
+- `item: ListDataItem` — group element
+
+**Returns:** `ListData` — sublist instance
+
+```javascript
+const groupItem = listData.data.value.find(item => item.type === 'group')
+if (groupItem) {
+  const subList = listData.getSubList(groupItem)
+  const subItems = subList.data.value
+}
+```
+
+## Practical Examples
+
+### Vue component with reactive data
+
+```javascript
+// Composable for list
+export function useListData(initialData) {
+  const list = ref(initialData)
+  const focus = ref(null)
+  const selected = ref([])
+  const highlight = ref('')
+
+  const listData = new ListDataRef(
+    list,
+    focus,
+    highlight,
+    ref(2), // minimum 2 characters for search
+    selected
+  )
+
+  return {
+    list,
+    focus,
+    selected,
+    highlight,
+    data: listData.fullData,
+    selectedItems: listData.selectedList
+  }
+}
+```
+
+### Dropdown component
+
+```html
+<template>
+  <div class="dropdown">
+    <div class="dropdown-items">
+      <div
+        v-for="item in displayData"
+        :key="item.index"
+        :class="{
+          'focused': item.focus,
+          'selected': item.selected,
+          'highlighted': item.highlight
+        }"
+        @click="toggleSelection(item)"
+      >
+        {{ item.label }}
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ListDataRef } from '@dxtmisha/functional'
+
+const props = defineProps(['items'])
+const focus = ref(null)
+const selected = ref([])
+
+const listData = new ListDataRef(
+  computed(() => props.items),
+  focus,
+  undefined,
+  undefined,
+  selected
+)
+
+const displayData = listData.fullData
+
+function toggleSelection(item) {
+  const currentSelected = selected.value || []
+  const index = currentSelected.indexOf(item.value)
+
+  if (index === -1) {
+    selected.value = [...currentSelected, item.value]
+  } else {
+    selected.value = currentSelected.filter(v => v !== item.value)
+  }
+}
+</script>
+```
+
+### Hierarchical list with groups
+
+```javascript
+// Data with groups
+const hierarchicalData = [
+  {
+    label: 'Fruits',
+    type: 'group',
+    value: [
+      { label: 'Apple', value: 'apple' },
+      { label: 'Banana', value: 'banana' }
+    ]
+  },
+  {
+    label: 'Vegetables',
+    type: 'group',
+    value: [
+      { label: 'Carrot', value: 'carrot' },
+      { label: 'Potato', value: 'potato' }
+    ]
+  }
+]
+
+const listData = new ListDataRef(hierarchicalData)
+
+// Get all elements (including from groups)
+const allItems = listData.map.value
+
+// Work with subgroups
+const fruitGroup = listData.data.value[0]
+const fruitSubList = listData.getSubList(fruitGroup)
+const fruits = fruitSubList.data.value
+```
+
+The ListDataRef class provides a powerful reactive system for managing lists in Vue applications with support for hierarchy, state, and performance optimization.

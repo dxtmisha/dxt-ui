@@ -1,4 +1,3 @@
-import { computed, ref } from 'vue'
 import { createElement } from '../functions/createElement'
 
 import { DataStorage } from './DataStorage'
@@ -11,19 +10,6 @@ import { DataStorage } from './DataStorage'
 export class ScrollbarWidth {
   private static storage = new DataStorage<number>('scrollbar', true)
   private static calculate = false
-
-  readonly item = ref<boolean>()
-
-  /**
-   * Constructor
-   */
-  constructor() {
-    ScrollbarWidth.is().then((is) => {
-      this.item.value = is
-    })
-  }
-
-  readonly is = computed<boolean>(() => this.item.value !== undefined)
 
   /**
    * Checks whether to enable scroll hiding.

@@ -1,5 +1,5 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, ListData } from '@dxtmisha/functional'
+import { type ConstrEmit, DesignComp, ListDataRef } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
@@ -30,7 +30,7 @@ export class Menu {
   readonly value: MenuValue
 
   /** Data manager for list selection and mapping/ Менеджер данных списка для выбора и сопоставления */
-  readonly data: ListData
+  readonly data: ListDataRef
 
   /** Include for working with the Bars component/ Подключение для работы с компонентом Bars */
   readonly bars: BarsInclude
@@ -71,7 +71,7 @@ export class Menu {
     this.search = new MenuSearch()
     this.value = new MenuValue(this.props, this.refs, this.emits)
 
-    this.data = new ListData(
+    this.data = new ListDataRef(
       this.request.item,
       undefined,
       undefined,

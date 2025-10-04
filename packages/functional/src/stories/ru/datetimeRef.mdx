@@ -1,0 +1,274 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Ref/DatetimeRef'/>
+
+# Класс DatetimeRef
+
+Vue-ориентированный класс для работы с датами с реактивными computed свойствами. Обеспечивает автоматическое отслеживание изменений даты, формата вывода и локали с полной интеграцией в реактивную систему Vue.
+
+## Основные возможности
+
+- **Vue Reactivity** — использует computed свойства и ref/watch для реактивности
+- **Автоматические обновления** — автоматически пересчитывает значения при изменении входных данных
+- **Гибкий ввод** — принимает Date объекты, строки, числа или реактивные refs
+- **Поддержка локали** — автоматическое форматирование на основе кодов страны и языка
+- **Множественные форматы** — поддерживает различные форматы вывода даты/времени
+- **Компоненты даты** — реактивные computed свойства для всех компонентов даты
+- **Часовые пояса** — правильная поддержка часовых поясов с учётом локали
+- **Интеграция Watch** — автоматически отслеживает изменения во всех входных параметрах
+
+## Конструктор
+
+### `constructor`
+
+Создаёт экземпляр DatetimeRef с реактивными параметрами.
+
+**Параметры:**
+- `date: RefOrNormal<NumberOrStringOrDate>` — дата для обработки (ref или обычное значение)
+- `type?: RefOrNormal<GeoDate>` — тип формата даты для вывода (по умолчанию: 'date')
+- `code?: RefOrNormal<string>` — код страны и языка (по умолчанию: текущая локация)
+
+**Типы GeoDate:**
+- `'full'` — полная дата и время
+- `'datetime'` — дата с временем
+- `'date'` — только дата
+- `'year-month'` — год и месяц
+- `'year'` — только год
+- `'month'` — только месяц
+- `'day'` — только день
+- `'day-month'` — день и месяц
+- `'time'` — только время
+- `'hour-minute'` — часы и минуты
+- `'hour'` — только часы
+- `'minute'` — только минуты
+- `'second'` — только секунды
+
+```javascript
+import { DatetimeRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// С ref данными
+const dateRef = ref(new Date())
+const formatRef = ref('datetime')
+const localeRef = ref('ru-RU')
+
+const datetime = new DatetimeRef(dateRef, formatRef, localeRef)
+
+// С обычными данными
+const staticDatetime = new DatetimeRef('2024-01-15', 'date', 'ru-RU')
+```
+
+## Реактивные computed свойства
+
+### `getYear`
+
+Возвращает год указанной даты.
+
+**Возвращает:** `ComputedRef<number>` — реактивное значение года
+
+```javascript
+const yearValue = datetime.getYear()
+// Автоматически обновляется при изменении д��ты
+```
+
+### `getMonth`
+
+Возвращает месяц как значение с нулевым основанием (0 = январь, 11 = декабрь).
+
+**Возвращает:** `ComputedRef<number>` — реактивное значение месяца (0-11)
+
+```javascript
+const monthValue = datetime.getMonth()
+```
+
+### `getDay`
+
+Возвращает день месяца.
+
+**Возвращает:** `ComputedRef<number>` — реактивное значение дня (1-31)
+
+```javascript
+const dayValue = datetime.getDay()
+```
+
+### `getHour`
+
+Возвращает час по местному времени.
+
+**Возвращает:** `ComputedRef<number>` — реактивное значение часа (0-23)
+
+```javascript
+const hourValue = datetime.getHour()
+```
+
+### `getMinute`
+
+Возвращает минуты по местному времени.
+
+**Возвращает:** `ComputedRef<number>` — реактивное значение минут (0-59)
+
+```javascript
+const minuteValue = datetime.getMinute()
+```
+
+### `getSecond`
+
+Возвращает секунды по местному времени.
+
+**Возвращает:** `ComputedRef<number>` — реактивное значение секунд (0-59)
+
+```javascript
+const secondValue = datetime.getSecond()
+```
+
+### `getMaxDay`
+
+Возвращает последний день месяца для текущей даты.
+
+**Возвращает:** `ComputedRef<number>` — реактивное максимальное количество дней в месяце (28-31)
+
+```javascript
+const maxDayValue = datetime.getMaxDay()
+```
+
+### `getHoursType`
+
+Возвращает формат часов (12-часовой или 24-часовой).
+
+**Возвращает:** `ComputedRef<GeoHours>` — реактивный формат часов ('12' | '24')
+
+```javascript
+const hoursFormat = datetime.getHoursType()
+```
+
+### `getFirstDayCode`
+
+Возвращает код первого дня недели для текущей локали.
+
+**Возвращает:** `ComputedRef<GeoFirstDay>` — реактивный код первого дня (0 = воскресенье, 1 = понедельник, 6 = суббота)
+
+```javascript
+const firstDayCode = datetime.getFirstDayCode()
+```
+
+## Методы получения данных
+
+### `getItem`
+
+Возвращает исходные входные данные для даты.
+
+**Возвращает:** `RefOrNormal<NumberOrStringOrDate>` — исходные входные данные
+
+```javascript
+const originalInput = datetime.getItem()
+```
+
+### `getDate`
+
+Возвращает реактивный объект Date.
+
+**Возвращает:** `Ref<Date>` — реактивный объект Date
+
+```javascript
+const reactiveDate = datetime.getDate()
+```
+
+### `getDatetime`
+
+Возвращает экземпляр базового класса Datetime.
+
+**Возвращает:** `Datetime` — объект базового класса Datetime
+
+```javascript
+const baseDateTime = datetime.getDatetime()
+```
+
+## Методы форматирования
+
+### `locale`
+
+Включает языково-зависимое форматирование даты и времени.
+
+**Параметры:**
+- `type?: GeoDate` — тип формата даты (по умолчанию: текущий тип)
+- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — опции форматирования
+
+**Возвращает:** `ComputedRef<string>` — реактивная отформатированная строка даты
+
+```javascript
+// Базовое форматирование
+const formatted = datetime.locale()
+
+// Пользовательское форматирование
+const monthName = datetime.locale('month', 'long')
+const fullFormat = datetime.locale('full', {
+  weekday: 'long',
+  month: 'long'
+})
+```
+
+### `standard`
+
+Возвращает дату в стандартном формате с опциональной информацией о часовом поясе.
+
+**Параметры:**
+- `timeZone?: boolean` — добавить информацию о часовом поясе (по умолчанию: true)
+
+**Возвращает:** `ComputedRef<string>` — реактивная дата в стандартном формате
+
+```javascript
+// С часовым поясом
+const withTz = datetime.standard()
+
+// Без часового пояса
+const withoutTz = datetime.standard(false)
+```
+
+## Практические примеры
+
+### Vue компонент с реактивной датой
+
+```vue
+<template>
+  <div>
+    <span>{{ datetime.getYear() }}/{{ datetime.getMonth() + 1 }}/{{ datetime.getDay() }}</span>
+    <span>{{ datetime.locale() }}</span>
+  </div>
+</template>
+
+<script setup>
+import { DatetimeRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const currentDate = ref(new Date())
+const datetime = new DatetimeRef(currentDate, 'datetime', 'ru-RU')
+</script>
+```
+
+### Composable для работы с датами
+
+```javascript
+export function useDatetime(initialDate) {
+  const date = ref(initialDate || new Date())
+  const datetime = new DatetimeRef(date, 'date', 'ru-RU')
+
+  return {
+    datetime,
+    year: datetime.getYear(),
+    formatted: datetime.locale()
+  }
+}
+```
+
+### Реактивные изменения формата
+
+```javascript
+const dateValue = ref(new Date())
+const formatType = ref('date')
+const datetime = new DatetimeRef(dateValue, formatType, 'ru-RU')
+
+// Все computed свойства автоматически обновятся
+formatType.value = 'datetime'
+```
+
+Класс DatetimeRef предоставляет мощную реактивную систему работы с датами для Vue приложений с автоматическим отслеживанием изменений и форматированием.

@@ -99,26 +99,273 @@ Api.setPreparation(async () => {
 Устанавливает функцию для выполнения после каждого запроса для анализа ответа.
 
 **Параметры:**
-- `callback: (query: Response) => Promise<ApiPreparationEnd>` — асинхронная функция для анализа ответа
+- `callback: (query: Response) => Promise<ApiPreparationEnd>` — функция анализа ответа
 
 **Возвращает:** `Api` — ссылка на класс для цепочки вызовов
 
 ```javascript
-// Установить обработчик после запроса
+// Установить функцию анализа ответа
 Api.setEnd(async (response) => {
   if (response.status === 401) {
-    return { reset: true } // Повторить запрос
+    return { reset: true } // перезапустить запрос
   }
-
-  if (response.status === 403) {
-    redirectToLogin()
-  }
-
   return {}
 })
 ```
 
-## Методы запросов
+## Работа с эмулятором
+
+Класс Api предоставляет мощную систему эмуляции запросов для разработки и тестирования без реального backend сервера.
+
+### `addResponse`
+
+Добавляет эмулированные ответы для перехвата запросов.
+
+**Параметры:**
+- `response: ApiResponse | ApiResponse[]` — конфигурация эмулированного ответа
+
+```javascript
+import { Api } from '@dxtmisha/functional'
+
+// Простая эмуляция GET запроса
+Api.addResponse({
+  path: '/users',
+  method: 'GET',
+  response: [
+    { id: 1, name: 'Иван', email: 'ivan@example.com' },
+    { id: 2, name: 'Мария', email: 'maria@example.com' }
+  ]
+})
+
+// Эмуляция POST запроса с валидацией
+Api.addResponse({
+  path: '/users',
+  method: 'POST',
+  request: { name: '*any', email: '*any' }, // любые name и email
+  response: (request) => ({
+    id: Math.random(),
+    ...request,
+    created: new Date().toISOString()
+  })
+})
+
+// Эмуляция с RegExp путем
+Api.addResponse({
+  path: /^\/users\/\d+$/,
+  method: 'GET',
+  response: { id: 1, name: 'Пользователь', status: 'active' }
+})
+```
+
+### Конфигурация эмулированного ответа (ApiResponse)
+
+**Свойства ApiResponse:**
+- `path: string | RegExp` — путь запроса (строка или регулярное выражение)
+- `method: ApiMethod` — HTTP метод ('GET', 'POST', 'PUT', 'DELETE')
+- `request?: ApiFetch['request'] | '*any'` — ожидаемые данные запроса
+- `response: any | ((request) => any)` — статический ответ или функция генерации
+- `disable?: RefOrNormal<boolean>` — отключение эмуляции (может быть ref)
+- `isForGlobal?: boolean` — только для глобального кеша
+- `lag?: RefOrNormal<boolean>` — имитация медленного соединения (0-2 сек)
+
+```javascript
+// Эмуляция с задержкой
+Api.addResponse({
+  path: '/slow-endpoint',
+  method: 'GET',
+  response: { data: 'Медленные данные' },
+  lag: true // случайная задержка 0-2000мс
+})
+
+// Условная эмуляция
+const isDevelopment = ref(process.env.NODE_ENV === 'development')
+Api.addResponse({
+  path: '/admin/users',
+  method: 'GET',
+  response: { users: [] },
+  disable: computed(() => !isDevelopment.value) // отключается в продакшене
+})
+
+// Динамическая функция ответа
+Api.addResponse({
+  path: '/auth/login',
+  method: 'POST',
+  request: '*any',
+  response: (request) => {
+    if (request?.username === 'admin' && request?.password === 'password') {
+      return {
+        success: true,
+        token: 'fake-jwt-token',
+        user: { id: 1, username: 'admin', role: 'administrator' }
+      }
+    }
+    throw new Error('Неверные учетные данные')
+  }
+})
+```
+
+### `getResponseList`
+
+Возвращает список всех зарегистрированных эмулированных ответов.
+
+**Возвращает:** `(ApiResponse & Record<string, any>)[]` — массив эмулированных ответов
+
+```javascript
+// Получение списка всех эмуляций
+const emulators = Api.getResponseList()
+console.log('Активные эмуляторы:', emulators.map(r => `${r.method} ${r.path}`))
+
+// Отладка эмуляций
+function debugEmulators() {
+  const responses = Api.getResponseList()
+  responses.forEach(resp => {
+    console.log(`Эмулятор: ${resp.method} ${resp.path}`)
+    console.log('Ожидаемый запрос:', resp.request)
+    console.log('Ответ:', typeof resp.response === 'function' ? '[Function]' : resp.response)
+  })
+}
+```
+
+### Режимы работы эмулятора
+
+#### Global режим (автоматический для GET)
+```javascript
+// GET запросы автоматически используют глобальный кеш
+const userData = await Api.get({ path: '/user/profile' })
+// Если есть эмуляция для этого пути, она будет использована
+```
+
+#### DevMode (принудительная эмуляция)
+```javascript
+// Принудительное использование эмулятора
+const testData = await Api.get({
+  path: '/test-endpoint',
+  devMode: true // всегда использует эмулятор если доступен
+})
+```
+
+### Сложные сценарии эмуляции
+
+#### Условные ответы на основе параметров
+```javascript
+Api.addResponse({
+  path: '/api/search',
+  method: 'GET',
+  request: '*any',
+  response: (request) => {
+    const query = request?.q || ''
+
+    if (query.includes('error')) {
+      throw new Error('Ошибка поиска')
+    }
+
+    if (query.length < 2) {
+      return { results: [], message: 'Запрос слишком короткий' }
+    }
+
+    // Имитация поиска
+    const mockResults = [
+      { id: 1, title: 'Результат 1', relevance: 0.9 },
+      { id: 2, title: 'Результат 2', relevance: 0.7 }
+    ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()))
+
+    return {
+      results: mockResults,
+      total: mockResults.length,
+      query: query
+    }
+  }
+})
+```
+
+#### Последовательная эмуляция (для тестирования состояний)
+```javascript
+let loginAttempts = 0
+
+Api.addResponse({
+  path: '/auth/login',
+  method: 'POST',
+  request: '*any',
+  response: (request) => {
+    loginAttempts++
+
+    if (loginAttempts === 1) {
+      throw new Error('Временная ошибка сервера')
+    }
+
+    if (loginAttempts === 2) {
+      return { success: false, message: 'Неверный пароль' }
+    }
+
+    return {
+      success: true,
+      token: 'success-token',
+      attempts: loginAttempts
+    }
+  }
+})
+```
+
+#### Эмуляция файловых операций
+```javascript
+// Эмуляция загрузки файла
+Api.addResponse({
+  path: '/upload',
+  method: 'POST',
+  request: '*any',
+  response: (request) => {
+    if (request instanceof FormData) {
+      const file = request.get('file')
+      return {
+        success: true,
+        filename: file?.name || 'unknown.txt',
+        size: file?.size || 0,
+        uploadId: Math.random().toString(36)
+      }
+    }
+    throw new Error('Файл не найден в запросе')
+  },
+  lag: true // имитация медленной загрузки
+})
+```
+
+### Управление эмулятором в runtime
+
+#### Динамическое включение/выключение
+```javascript
+import { ref } from 'vue'
+
+const isEmulationEnabled = ref(true)
+
+Api.addResponse({
+  path: '/dynamic-endpoint',
+  method: 'GET',
+  response: { message: 'Эмулированные данные' },
+  disable: computed(() => !isEmulationEnabled.value)
+})
+
+// Переключение эмуляции
+function toggleEmulation() {
+  isEmulationEnabled.value = !isEmulationEnabled.value
+}
+```
+
+#### Отладка эмулятора
+```javascript
+// Включение режима отладки для всех запросов
+async function makeDebugRequest() {
+  const result = await Api.get({
+    path: '/debug-test',
+    devMode: true // покажет предупреждения в консоли
+  })
+
+  console.log('Response data:', result)
+  console.log('Last response:', Api.getLastResponse())
+  console.log('Status:', Api.getStatus())
+}
+```
+
+## Методы HTTP запросов
 
 ### `request`
 

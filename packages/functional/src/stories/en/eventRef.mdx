@@ -1,0 +1,317 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Ref/EventRef'/>
+
+# EventRef Class
+
+Vue-oriented class for working with DOM events with reactive capabilities. Extends the base EventItem class with Vue's reactive system, providing automatic element tracking and event configuration management.
+
+## Key Features
+
+- **Vue Reactivity** — uses ref/watch for reactive element tracking
+- **Automatic Element Tracking** — automatically updates handlers when element references change
+- **Flexible Element Input** — accepts DOM elements, selectors, or reactive refs
+- **Multiple Event Types** — supports single and multiple events
+- **Control Element** — separate element for DOM presence checking
+- **Automatic Cleanup** — removes handlers when elements are removed from DOM
+- **Special Event Handling** — built-in support for resize, scroll-sync
+- **Event Dispatching** — programmatic triggering of custom events
+- **Lifecycle Management** — start, stop, toggle, and reset methods
+
+## Constructor
+
+### `constructor`
+
+Creates an EventRef instance with reactive parameters.
+
+**Parameters:**
+- `elementSelector?: RefOrNormal<ElementOrString<E> | undefined>` — target element (ref or normal value)
+- `elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>` — control element for DOM checking
+- `type?: string | string[]` — event type(s) to listen for (default: ['click'])
+- `listener?: EventListenerDetail<O, D>` — event handler function
+- `options?: EventOptions` — event handler options
+- `detail?: D` — custom data to pass to handler
+
+**Generic Types:**
+- `E extends ElementOrWindow` — type of target element (HTMLElement or Window)
+- `O extends Event` — type of event object
+- `D extends Record<string, any>` — type of custom detail data
+
+```javascript
+import { EventRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// With ref element
+const buttonRef = ref(null)
+const containerRef = ref(null)
+
+const clickEvent = new EventRef(
+  buttonRef,
+  containerRef, // control element
+  'click',
+  (event, detail) => console.log('Button clicked!', detail),
+  undefined,
+  { component: 'MyButton' }
+)
+
+// With string selector
+const hoverEvent = new EventRef(
+  '#my-element',
+  undefined,
+  ['mouseenter', 'mouseleave'],
+  (event) => console.log('Hover:', event.type)
+)
+```
+
+## Inherited Methods
+
+EventRef inherits all methods from the base EventItem class:
+
+### `isActive`
+
+Checks if event handlers are active.
+
+**Returns:** `boolean` — true if handlers are active
+
+```javascript
+const isListening = eventRef.isActive()
+```
+
+### `getElement`
+
+Returns the current target element.
+
+**Returns:** `E | undefined` — current target element
+
+```javascript
+const currentElement = eventRef.getElement()
+```
+
+### `setElement`
+
+Changes the target element (automatically called when ref changes).
+
+**Parameters:**
+- `elementSelector?: ElementOrString<E>` — new target element
+
+**Returns:** `this` — instance for method chaining
+
+```javascript
+eventRef.setElement('#new-element')
+```
+
+### `setElementControl`
+
+Sets the control element (automatically called when ref changes).
+
+**Parameters:**
+- `elementSelector?: ElementOrString<HTMLElement>` — control element
+
+**Returns:** `this` — instance for method chaining
+
+```javascript
+eventRef.setElementControl('#parent-container')
+```
+
+### `setType`
+
+Changes the event type(s).
+
+**Parameters:**
+- `type: string | string[]` — new event type(s)
+
+**Returns:** `this` — instance for method chaining
+
+```javascript
+eventRef.setType(['focus', 'blur'])
+```
+
+### `setListener`
+
+Changes the event handler function.
+
+**Parameters:**
+- `listener: EventListenerDetail<O, D>` — new handler function
+
+**Returns:** `this` — instance for method chaining
+
+```javascript
+eventRef.setListener((event, detail) => {
+  console.log('New handler!', event, detail)
+})
+```
+
+### `setOptions`
+
+Changes the event handler options.
+
+**Parameters:**
+- `options?: EventOptions` — new event options
+
+**Returns:** `this` — instance for method chaining
+
+```javascript
+eventRef.setOptions({ capture: true, once: true })
+```
+
+### `setDetail`
+
+Changes the custom detail data.
+
+**Parameters:**
+- `detail?: D` — new detail data
+
+**Returns:** `this` — instance for method chaining
+
+```javascript
+eventRef.setDetail({ timestamp: Date.now() })
+```
+
+## Lifecycle Management Methods
+
+### `start`
+
+Starts event listening.
+
+**Returns:** `this` — instance for method chaining
+
+```javascript
+eventRef.start()
+```
+
+### `stop`
+
+Stops event listening.
+
+**Returns:** `this` — instance for method chaining
+
+```javascript
+eventRef.stop()
+```
+
+### `toggle`
+
+Toggles event handler state.
+
+**Parameters:**
+- `activity: boolean` — true to start, false to stop
+
+**Returns:** `this` — instance for method chaining
+
+```javascript
+eventRef.toggle(true) // start
+eventRef.toggle(false) // stop
+```
+
+### `reset`
+
+Reloads event handlers.
+
+**Returns:** `this` — instance for method chaining
+
+```javascript
+eventRef.reset()
+```
+
+### `dispatch`
+
+Programmatically triggers the event.
+
+**Parameters:**
+- `detail?: D` — custom data for the event
+
+**Returns:** `this` — instance for method chaining
+
+```javascript
+eventRef.dispatch({ source: 'programmatic' })
+```
+
+## Reactive Capabilities
+
+### Automatic Element Tracking
+
+EventRef automatically tracks changes in reactive element references:
+
+```javascript
+const elementRef = ref('#button1')
+const eventRef = new EventRef(elementRef, undefined, 'click', () => {
+  console.log('Clicked!')
+})
+
+eventRef.start()
+
+// Changing the element will automatically update handlers
+elementRef.value = '#button2'
+```
+
+### Control Element Tracking
+
+```javascript
+const buttonRef = ref(null)
+const containerRef = ref(null)
+
+const eventRef = new EventRef(buttonRef, containerRef, 'click')
+
+// Events will automatically stop if containerRef is removed from DOM
+```
+
+## Practical Examples
+
+### Vue Component with Reactive Events
+
+```vue
+<template>
+  <button ref="buttonEl" @click="handleClick">Click me</button>
+  <input ref="inputEl" placeholder="Type...">
+</template>
+
+<script setup>
+import { EventRef } from '@dxtmisha/functional'
+import { ref, onMounted } from 'vue'
+
+const buttonEl = ref(null)
+const inputEl = ref(null)
+
+onMounted(() => {
+  new EventRef(buttonEl, undefined, 'click', () => {
+    console.log('Button clicked!')
+  }).start()
+
+  new EventRef(inputEl, undefined, ['focus', 'blur'], (event) => {
+    console.log(`Input ${event.type}`)
+  }).start()
+})
+</script>
+```
+
+### Composable for Event Management
+
+```javascript
+export function useElementEvents(elementRef) {
+  const events = new Map()
+
+  const addEvent = (name, type, listener) => {
+    const eventRef = new EventRef(elementRef, undefined, type, listener)
+    events.set(name, eventRef.start())
+    return eventRef
+  }
+
+  return { addEvent }
+}
+```
+
+### Special Event Types
+
+```javascript
+// Scroll event
+new EventRef('#container', undefined, 'scroll-sync', (event) => {
+  console.log('Scroll:', event.target.scrollTop)
+}).start()
+
+// Resize event
+new EventRef('#element', undefined, 'resize', (entry) => {
+  console.log('Size:', entry.contentRect)
+}).start()
+```
+
+The EventRef class provides a powerful reactive event management system for Vue applications with automatic element tracking and resource cleanup.

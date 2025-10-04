@@ -1,0 +1,235 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Loading'/>
+
+# Loading Class
+
+A static class for managing global loading indicators with event system. Provides centralized loading state management with support for active operation counter and automatic event dispatching.
+
+## Key Features
+
+- **Global State** — centralized loading indicator management
+- **Counter System** — automatic counting of active loading operations
+- **Event Dispatching** — automatic state change events
+- **Safe Hiding** — protection against negative counter values
+- **Listener Registration** — simple subscription to state changes
+- **Element Control** — binding to specific DOM elements
+- **TypeScript Support** — full typing for events and data
+- **Automatic Initialization** — ready to work in DOM environment
+
+## State Check Methods
+
+### `is`
+
+Checks if loading indicator is currently active.
+
+**Returns:** `boolean` — true if there are active loading operations
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+
+// Check loading state
+if (Loading.is()) {
+  console.log('Loading in progress...')
+} else {
+  console.log('Loading completed')
+}
+
+// Conditional display
+const loadingSpinner = document.getElementById('spinner')
+loadingSpinner.style.display = Loading.is() ? 'block' : 'none'
+```
+
+## State Management Methods
+
+### `show`
+
+Shows loading indicator (increases counter).
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+
+// Start loading operation
+Loading.show()
+console.log('Loading state:', Loading.is()) // true
+
+// Multiple operations simultaneously
+async function loadMultipleData() {
+  Loading.show() // operation 1
+  Loading.show() // operation 2
+  Loading.show() // operation 3
+
+  console.log('Active operations:', Loading.is()) // true
+
+  // Execute operations...
+  await Promise.all([
+    loadUserData(),
+    loadSettings(),
+    loadPreferences()
+  ])
+
+  Loading.hide() // completed operation 1
+  Loading.hide() // completed operation 2
+  Loading.hide() // completed operation 3
+
+  console.log('All operations completed:', Loading.is()) // false
+}
+```
+
+### `hide`
+
+Hides loading indicator (decreases counter).
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+
+// Safe hiding
+Loading.hide() // Nothing happens if counter is already 0
+
+// Example with API call
+async function fetchData() {
+  Loading.show()
+
+  try {
+    const data = await fetch('/api/data')
+    return await data.json()
+  } finally {
+    Loading.hide() // Guaranteed to hide loading
+  }
+}
+
+// Multiple operations
+function startOperations() {
+  // Show for each operation
+  Loading.show() // operation A
+  Loading.show() // operation B
+
+  // Hide when each completes
+  setTimeout(() => Loading.hide(), 1000) // A completed
+  setTimeout(() => Loading.hide(), 2000) // B completed
+}
+```
+
+## Event System
+
+### `registrationEvent`
+
+Registers event listener to track loading state changes.
+
+**Parameters:**
+- `listener: EventListenerDetail<CustomEvent, LoadingDetail>` — event handler function
+- `element?: ElementOrString<HTMLElement>` — element for control (optional)
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+
+// Simple registration
+Loading.registrationEvent((event, detail) => {
+  console.log('Loading state changed:', detail.loading)
+
+  if (detail.loading) {
+    showLoadingSpinner()
+  } else {
+    hideLoadingSpinner()
+  }
+})
+
+// Registration with element control
+Loading.registrationEvent(
+  (event, detail) => {
+    const spinner = document.getElementById('app-spinner')
+    spinner.style.display = detail.loading ? 'flex' : 'none'
+  },
+  '#main-app' // Event will be active only while #main-app exists
+)
+
+// Multiple listeners
+Loading.registrationEvent((event, detail) => {
+  // UI updates
+  updateLoadingIndicator(detail.loading)
+})
+
+Loading.registrationEvent((event, detail) => {
+  // Analytics
+  if (detail.loading) {
+    analytics.track('loading_started')
+  } else {
+    analytics.track('loading_finished')
+  }
+})
+```
+
+### LoadingDetail
+
+Data type passed to loading events.
+
+**Properties:**
+- `loading: boolean` — loading state (true = loading, false = completed)
+
+```javascript
+interface LoadingDetail {
+  loading: boolean
+}
+
+// Typed event handler
+const handleLoadingChange: EventListenerDetail<CustomEvent, LoadingDetail> = (event, detail) => {
+  if (detail?.loading) {
+    document.body.classList.add('loading-active')
+    document.getElementById('loading-overlay')?.classList.add('visible')
+  } else {
+    document.body.classList.remove('loading-active')
+    document.getElementById('loading-overlay')?.classList.remove('visible')
+  }
+}
+
+Loading.registrationEvent(handleLoadingChange)
+```
+
+## Practical Examples
+
+### Global Indicator
+
+```javascript
+// Setup
+Loading.registrationEvent((event, detail) => {
+  document.getElementById('spinner').style.display =
+    detail.loading ? 'block' : 'none'
+})
+
+// Usage
+Loading.show()
+await fetchData()
+Loading.hide()
+```
+
+### API Integration
+
+```javascript
+async function apiCall(url) {
+  Loading.show()
+  try {
+    return await fetch(url).then(r => r.json())
+  } finally {
+    Loading.hide()
+  }
+}
+```
+
+### Loading Decorator
+
+```javascript
+function withLoading(fn) {
+  return async (...args) => {
+    Loading.show()
+    try {
+      return await fn(...args)
+    } finally {
+      Loading.hide()
+    }
+  }
+}
+
+const loadUsers = withLoading(async () => fetch('/users').then(r => r.json()))
+```
+
+The Loading class provides simple and reliable management of global loading indicators with automatic event system and safe counting of active operations.

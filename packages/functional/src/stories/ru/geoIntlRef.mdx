@@ -1,0 +1,344 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Ref/GeoIntlRef'/>
+
+# Класс GeoIntlRef
+
+Реактивный Vue-класс для управления форматированием чисел, дат и локализованных названий. Обеспечивает автоматическое форматирование данных в соответствии с международными стандартами с полной интеграцией в реактивную систему Vue.
+
+## Основные возможности
+
+- **Vue Reactivity** — использует computed свойства для реактивного форматирования
+- **Интернационализация** — поддержка всех стандартов Intl API
+- **Форматирование чисел** — числа, валюты, проценты, единицы измерения
+- **Форматирование дат** — даты, время, относительное время
+- **Локализованные названия** — страны, языки, месяцы, дни недели
+- **Автоматическая локаль** — использует текущую геолокацию или заданную
+- **Гибкий ввод** — принимает ref или обычные значения
+- **Настраиваемые опции** — полная поддержка опций Intl API
+
+## Конструктор
+
+### `constructor`
+
+Создаёт экземпляр GeoIntlRef с реактивными параметрами.
+
+**Параметры:**
+- `code?: RefOrNormal<string>` — код страны, полный вид язык-страна или один из них
+
+```javascript
+import { GeoIntlRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// С автоматической локалью
+const intl = new GeoIntlRef()
+
+// С конкретной локалью
+const intlRU = new GeoIntlRef('ru-RU')
+
+// С реактивной локалью
+const locale = ref('en-US')
+const intlReactive = new GeoIntlRef(locale)
+```
+
+## Методы отображения названий
+
+### `display`
+
+Последовательный перевод отображаемых названий языка, региона и скрипта.
+
+**Параметры:**
+- `value?: RefOrNormal<string>` — предоставляемый код зависит от типа
+- `typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions` — опции отображения
+
+**Возвращает:** `ComputedRef<string>` — реактивное отображаемое название
+
+```javascript
+const intl = new GeoIntlRef('ru-RU')
+
+// Название языка
+const langName = intl.display('en', 'language') // "английский"
+
+// Название страны
+const countryName = intl.display('US', 'region') // "США"
+```
+
+### `languageName`
+
+Получить отображаемые имена языка.
+
+**Параметры:**
+- `value?: RefOrNormal<string>` — код языка
+- `style?: Intl.RelativeTimeFormatStyle` — стиль форматирования
+
+**Возвращает:** `ComputedRef<string>` — реактивное название языка
+
+```javascript
+const langName = intl.languageName('en') // "английский"
+```
+
+### `countryName`
+
+Получить отображаемые имена региона.
+
+**Параметры:**
+- `value?: RefOrNormal<string>` — код страны
+- `style?: Intl.RelativeTimeFormatStyle` — стиль форматирования
+
+**Возвращает:** `ComputedRef<string>` — реактивное название страны
+
+```javascript
+const countryName = intl.countryName('US') // "США"
+```
+
+## Методы форматирования чисел
+
+### `number`
+
+Форматирование чисел в соответствии с локалью.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число для форматирования
+- `options?: Intl.NumberFormatOptions` — опции форматирования
+
+**Возвращает:** `ComputedRef<string>` — реактивная отформатированная строка
+
+```javascript
+const formatted = intl.number(1234.56) // "1 234,56"
+const withDecimals = intl.number(1234.56, { minimumFractionDigits: 2 })
+```
+
+### `decimal`
+
+Символ десятичной точки.
+
+**Возвращает:** `ComputedRef<string>` — реактивный символ десятичной точки
+
+```javascript
+const decimalSymbol = intl.decimal() // "," для ru-RU, "." для en-US
+```
+
+### `currency`
+
+Форматирование валюты.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число для форматирования
+- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>` — валюта или опции
+- `numberOnly?: boolean` — не выводить значок валюты
+
+**Возвращает:** `ComputedRef<string>` — реактивная отформатированная валюта
+
+```javascript
+const price = intl.currency(1234.56, 'RUB') // "1 234,56 ₽"
+const priceOnly = intl.currency(1234.56, 'USD', true) // "1,234.56"
+```
+
+### `unit`
+
+Форматирование единиц измерения.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число для форматирования
+- `unitOptions?: string | Intl.NumberFormatOptions` — единица измерения или опции
+
+**Возвращает:** `ComputedRef<string>` — реактивная отформатированная единица
+
+```javascript
+const length = intl.unit(5, 'meter') // "5 м"
+const weight = intl.unit(2.5, 'kilogram') // "2,5 кг"
+```
+
+### `percent`
+
+Число в виде процента.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число для форматирования
+- `options?: Intl.NumberFormatOptions` — опции форматирования
+
+**Возвращает:** `ComputedRef<string>` — реактивный процент
+
+```javascript
+const percentage = intl.percent(0.75) // "75%"
+```
+
+### `percentBy100`
+
+Число в виде процента (единица).
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число для форматирования
+- `options?: Intl.NumberFormatOptions` — опции форматирования
+
+**Возвращает:** `ComputedRef<string>` — реактивный процент
+
+```javascript
+const percentage = intl.percentBy100(75) // "75%"
+```
+
+## Методы форматирования дат
+
+### `date`
+
+Форматирование даты и времени с учётом языка.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — дата для форматирования
+- `type?: GeoDate` — тип формата даты
+- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — опции стиля
+- `hour24?: boolean` — использовать ли 24-часовое время
+
+**Возвращает:** `ComputedRef<string>` — реактивная отформатированная дата
+
+```javascript
+const date = intl.date(new Date()) // "15.01.2024"
+const dateTime = intl.date(new Date(), 'datetime') // "15.01.2024, 14:30"
+```
+
+### `relative`
+
+Форматирование относительного времени.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — дата для форматирования
+- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — опции стиля
+- `todayValue?: Date` — текущий день
+
+**Возвращает:** `ComputedRef<string>` — реактивное относительное время
+
+```javascript
+const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000)
+const relative = intl.relative(yesterday) // "вчера"
+```
+
+### `relativeLimit`
+
+Относительное время с лимитом.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — дата для форматирования
+- `limit: number` — предел в днях
+- `todayValue?: Date` — текущий день
+- `relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — опции относительного времени
+- `dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — опции даты
+- `type?: GeoDate` — тип формата даты
+- `hour24?: boolean` — 24-часовое время
+
+**Возвращает:** `ComputedRef<string>` — реактивное форматированное время
+
+```javascript
+const limitedRelative = intl.relativeLimit(yesterday, 7) // "вчера" или полная дата если > 7 дней
+```
+
+### `month`
+
+Названия месяцев.
+
+**Параметры:**
+- `value?: RefOrNormal<NumberOrStringOrDate>` — дата для форматирования
+- `style?: Intl.DateTimeFormatOptions['month']` — представление месяца
+
+**Возвращает:** `ComputedRef<string>` — реактивное название месяца
+
+```javascript
+const monthName = intl.month(new Date(), 'long') // "январь"
+```
+
+### `months`
+
+Массив названий месяцев.
+
+**Параметры:**
+- `style?: Intl.DateTimeFormatOptions['month']` — представление месяца
+
+**Возвращает:** `ComputedRef<ItemValue<number | undefined>[]>` — реактивный список месяцев
+
+```javascript
+const monthsList = intl.months('long')
+// [{ label: "январь", value: 0 }, { label: "февраль", value: 1 }, ...]
+```
+
+### `weekday`
+
+Названия дней недели.
+
+**Параметры:**
+- `value?: RefOrNormal<NumberOrStringOrDate>` — дата для форматирования
+- `style?: Intl.DateTimeFormatOptions['weekday']` — представление дня недели
+
+**Возвращает:** `ComputedRef<string>` — реактивное название дня недели
+
+```javascript
+const dayName = intl.weekday(new Date(), 'long') // "понедельник"
+```
+
+### `weekdays`
+
+Массив названий дней недели.
+
+**Параметры:**
+- `style?: Intl.DateTimeFormatOptions['weekday']` — представление дня недели
+
+**Возвращает:** `ComputedRef<ItemValue<number | undefined>[]>` — реактивный список дней недели
+
+```javascript
+const daysList = intl.weekdays('long')
+// [{ label: "воскресенье", value: 0 }, { label: "понедельник", value: 1 }, ...]
+```
+
+## Практические примеры
+
+### Vue компонент с локализацией
+
+```vue
+<template>
+  <div class="localized-content">
+    <h2>{{ intl.countryName('RU') }}</h2>
+    <p>Цена: {{ intl.currency(1299, 'RUB') }}</p>
+    <p>Дата: {{ intl.date(new Date()) }}</p>
+    <p>Обновлено: {{ intl.relative(lastUpdate) }}</p>
+  </div>
+</template>
+
+<script setup>
+import { GeoIntlRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+const locale = ref('ru-RU')
+const intl = new GeoIntlRef(locale)
+const lastUpdate = ref(new Date(Date.now() - 2 * 60 * 60 * 1000)) // 2 часа назад
+</script>
+```
+
+### Composable для интернационализации
+
+```javascript
+export function useIntl(locale = 'ru-RU') {
+  const intl = new GeoIntlRef(locale)
+
+  return {
+    formatNumber: intl.number,
+    formatCurrency: intl.currency,
+    formatDate: intl.date,
+    formatRelative: intl.relative,
+    getCountryName: intl.countryName,
+    getMonths: intl.months,
+    getWeekdays: intl.weekdays
+  }
+}
+```
+
+### Динамическая смена локали
+
+```javascript
+const currentLocale = ref('ru-RU')
+const intl = new GeoIntlRef(currentLocale)
+
+// Изменение локали обновит все форматирование
+function changeLocale(newLocale) {
+  currentLocale.value = newLocale
+}
+```
+
+Класс GeoIntlRef предоставляет мощную реактивную систему интернационализации для Vue приложений с автоматическим форматированием данных в соответствии с международными стандартами.

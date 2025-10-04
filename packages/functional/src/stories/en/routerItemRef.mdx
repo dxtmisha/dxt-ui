@@ -1,0 +1,193 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Ref/RouterItemRef'/>
+
+# RouterItemRef Class
+
+A static class for managing Vue Router. Provides global access to router instance and programmatic navigation through simple API with one-time initialization support.
+
+## Key Features
+
+- **Global Access** — static access to Vue Router instance from anywhere
+- **Simple Navigation** — push method for programmatic transitions
+- **One-time Setup** — protection against accidental router overwriting
+- **TypeScript Support** — full typing with RouteLocationRaw
+- **Safe Navigation** — router existence check before execution
+- **Vue Router Integration** — direct work with official Vue Router
+- **Global Initialization** — router initialization at application level
+- **Simple API** — minimalist interface for basic operations
+
+## Configuration Methods
+
+### `set`
+
+Sets Vue Router instance for global usage.
+
+**Parameters:**
+- `router: Router` — Vue Router instance
+
+```javascript
+import { createRouter, createWebHistory } from 'vue-router'
+import { RouterItemRef } from '@dxtmisha/functional'
+
+// Create and set router
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: '/', component: Home },
+    { path: '/about', component: About },
+    { path: '/users/:id', component: User }
+  ]
+})
+
+RouterItemRef.set(router)
+```
+
+### `setOneTime`
+
+Sets router only if it's not already set (overwrite protection).
+
+**Parameters:**
+- `router: Router` — Vue Router instance
+
+```javascript
+import { RouterItemRef } from '@dxtmisha/functional'
+
+// Safe setup (only first time)
+RouterItemRef.setOneTime(router)
+RouterItemRef.setOneTime(anotherRouter) // Will be ignored
+
+// Useful in plugins and libraries
+function initializeLibrary(router) {
+  RouterItemRef.setOneTime(router) // Won't overwrite existing
+}
+```
+
+## Data Retrieval Methods
+
+### `get`
+
+Returns current Vue Router instance.
+
+**Returns:** `Router | undefined` — router instance or undefined
+
+```javascript
+import { RouterItemRef } from '@dxtmisha/functional'
+
+// Get router
+const router = RouterItemRef.get()
+
+if (router) {
+  console.log('Current route:', router.currentRoute.value)
+  console.log('Available routes:', router.getRoutes())
+} else {
+  console.log('Router not initialized')
+}
+```
+
+## Navigation Methods
+
+### `push`
+
+Programmatically navigates to new route.
+
+**Parameters:**
+- `to: string | RouteLocationRaw` — target route (string or object)
+
+```javascript
+import { RouterItemRef } from '@dxtmisha/functional'
+
+// Simple string navigation
+RouterItemRef.push('/users')
+RouterItemRef.push('/products/123')
+
+// Navigation with parameters
+RouterItemRef.push({
+  name: 'user-profile',
+  params: { id: '123' }
+})
+
+// Navigation with query parameters
+RouterItemRef.push({
+  path: '/search',
+  query: { q: 'laptop', category: 'electronics' }
+})
+
+// Navigation with hash
+RouterItemRef.push({
+  path: '/docs',
+  hash: '#section-2'
+})
+```
+
+## Practical Examples
+
+### Application Initialization
+
+```javascript
+// main.js
+import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import { RouterItemRef } from '@dxtmisha/functional'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: routes
+})
+
+const app = createApp(App)
+app.use(router)
+
+// Global setup
+RouterItemRef.set(router)
+```
+
+### Navigation in Components
+
+```javascript
+// Anywhere in application
+export function navigateToUser(userId) {
+  RouterItemRef.push({
+    name: 'user',
+    params: { id: userId }
+  })
+}
+
+// In service class
+class AuthService {
+  static login(credentials) {
+    // ... auth logic
+    RouterItemRef.push('/dashboard')
+  }
+
+  static logout() {
+    // ... logout logic
+    RouterItemRef.push('/login')
+  }
+}
+```
+
+### Conditional Navigation
+
+```javascript
+function handleUserAction(user) {
+  if (user.role === 'admin') {
+    RouterItemRef.push('/admin/dashboard')
+  } else if (user.role === 'moderator') {
+    RouterItemRef.push('/moderator/panel')
+  } else {
+    RouterItemRef.push('/user/profile')
+  }
+}
+
+// Navigation with check
+function safeNavigate(path) {
+  if (RouterItemRef.get()) {
+    RouterItemRef.push(path)
+  } else {
+    console.warn('Router not initialized')
+  }
+}
+```
+
+The RouterItemRef class provides simple global access to Vue Router for programmatic navigation from any part of the application without needing to pass router instance around.

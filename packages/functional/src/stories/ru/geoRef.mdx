@@ -1,0 +1,263 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/Ref/GeoRef'/>
+
+# Класс GeoRef
+
+Статический реактивный Vue-класс для работы с географическими данными. Предоставляет глобальный доступ к информации о текущей стране, языке и региональных настройках с автоматическим отслеживанием изменений через Vue реактивность.
+
+## Основные возможности
+
+- **Статические методы** — глобальный доступ к географическим данным
+- **Vue Reactivity** — использует shallowRef и computed для реактивности
+- **Автоматическое определение** — автоматически определяет текущую локацию
+- **Синхронизация данных** — автоматически синхронизируется с базовым классом Geo
+- **Реактивные computed** — отдельные computed свойства для каждого типа данных
+- **Глобальная настройка** — изменение локации влияет на всё приложение
+- **Типизированные данные** — полная типизация географических данных
+- **Интеграция с Geo** — работает поверх базового класса Geo
+
+## Статические методы получения данных
+
+### `get`
+
+Информация о текущей стране.
+
+**Возвращает:** `Ref<GeoItemFull>` — реактивная полная информация о стране
+
+**Структура GeoItemFull:**
+- `country: string` — код страны
+- `language: string` — код языка
+- `standard: string` — полный стандартный код
+- `firstDay: string` — первый день недели
+- `countryAlternative?: string[]` — альтернативные коды стран
+- `languageAlternative?: string[]` — альтернативные коды языков
+- `zone?: string | null` — часовой пояс
+- `phoneCode?: string` — телефонный код
+- `phoneWithin?: string` — код для внутренних звонков
+- `phoneMask?: string | string[]` — маска телефона
+- `nameFormat?: string` — формат имени
+
+```javascript
+import { GeoRef } from '@dxtmisha/functional'
+
+const geoData = GeoRef.get()
+// { country: "RU", language: "ru", standard: "ru-RU", firstDay: "1", ... }
+```
+
+### `getCountry`
+
+Текущая страна.
+
+**Возвращает:** `ComputedRef<string>` — реактивный код текущей страны
+
+```javascript
+const currentCountry = GeoRef.getCountry() // "RU"
+```
+
+### `getLanguage`
+
+Текущий язык.
+
+**Возвращает:** `ComputedRef<string>` — реактивный код текущего языка
+
+```javascript
+const currentLanguage = GeoRef.getLanguage() // "ru"
+```
+
+### `getStandard`
+
+Полный формат согласно стандарту.
+
+**Возвращает:** `ComputedRef<string>` — реактивный стандартный код
+
+```javascript
+const standardCode = GeoRef.getStandard() // "ru-RU"
+```
+
+### `getFirstDay`
+
+Возвращает первый день недели.
+
+**Возвращает:** `ComputedRef<string>` — реактивный код первого дня недели
+
+```javascript
+const firstDay = GeoRef.getFirstDay() // "1" (понедельник)
+```
+
+## Методы управления
+
+### `set`
+
+Изменяет данные по полному коду.
+
+**Параметры:**
+- `code: string` — код страны, полный вид язык-страна или один из них
+
+**Возвращает:** `void`
+
+```javascript
+// Установка полной локали
+GeoRef.set('en-US')
+
+// Установка только языка
+GeoRef.set('fr')
+
+// Установка только страны
+GeoRef.set('DE')
+```
+
+## Реактивные возможности
+
+### Глобальная реактивность
+
+GeoRef предоставляет глобальную реактивность для всего приложения:
+
+```javascript
+// Все компоненты автоматически обновятся при изменении
+const country = GeoRef.getCountry()
+const language = GeoRef.getLanguage()
+
+// Изменение повлияет на все использования
+GeoRef.set('en-US')
+```
+
+### Интеграция с другими классами
+
+GeoRef автоматически синхронизируется с другими Geo-классами:
+
+```javascript
+import { GeoRef, GeoIntlRef, GeoFlagRef } from '@dxtmisha/functional'
+
+// Изменение в GeoRef повлияет на все остальные классы
+GeoRef.set('de-DE')
+
+// Все эти классы автоматически обновятся
+const intl = new GeoIntlRef() // будет использовать de-DE
+const flag = new GeoFlagRef() // будет использовать de-DE
+```
+
+## Практические примеры
+
+### Vue компонент с глобальной геолокацией
+
+```vue
+<template>
+  <div class="geo-info">
+    <h2>Текущая локация</h2>
+    <p>Страна: {{ geoData.country }}</p>
+    <p>Язык: {{ geoData.language }}</p>
+    <p>Стандарт: {{ geoData.standard }}</p>
+    <p>Первый день недели: {{ geoData.firstDay }}</p>
+
+    <button @click="changeToUS">Сменить на США</button>
+    <button @click="changeToDE">Сменить на Германию</button>
+  </div>
+</template>
+
+<script setup>
+import { GeoRef } from '@dxtmisha/functional'
+
+const geoData = GeoRef.get()
+
+function changeToUS() {
+  GeoRef.set('en-US')
+}
+
+function changeToDE() {
+  GeoRef.set('de-DE')
+}
+</script>
+```
+
+### Composable для работы с геоданными
+
+```javascript
+export function useGeo() {
+  return {
+    geoData: GeoRef.get(),
+    country: GeoRef.getCountry(),
+    language: GeoRef.getLanguage(),
+    standard: GeoRef.getStandard(),
+    firstDay: GeoRef.getFirstDay(),
+    setLocation: GeoRef.set
+  }
+}
+```
+
+### Глобальная настройка локализации
+
+```javascript
+// В main.js или setup приложения
+import { GeoRef } from '@dxtmisha/functional'
+
+// Определение локали по пользовательским настройкам
+const userLocale = localStorage.getItem('locale') || 'ru-RU'
+GeoRef.set(userLocale)
+
+// Все компоненты приложения будут использовать эту локаль
+```
+
+## Интеграция с Vue приложением
+
+### Глобальный провайдер локали
+
+```vue
+<!-- App.vue -->
+<template>
+  <div class="app">
+    <LocaleSelector />
+    <router-view />
+  </div>
+</template>
+
+<script setup>
+import { GeoRef } from '@dxtmisha/functional'
+import { provide } from 'vue'
+
+// Предоставляем геоданные всему приложению
+provide('geo', {
+  data: GeoRef.get(),
+  setLocale: GeoRef.set
+})
+</script>
+```
+
+### Реактивная смена темы по региону
+
+```javascript
+import { GeoRef } from '@dxtmisha/functional'
+import { watch } from 'vue'
+
+const country = GeoRef.getCountry()
+
+// Автоматическая смена темы в зависимости от страны
+watch(country, (newCountry) => {
+  const theme = {
+    'RU': 'russian-theme',
+    'US': 'american-theme',
+    'DE': 'german-theme'
+  }[newCountry] || 'default-theme'
+
+  document.body.className = theme
+}, { immediate: true })
+```
+
+### Мониторинг изменений локации
+
+```javascript
+import { GeoRef } from '@dxtmisha/functional'
+import { watchEffect } from 'vue'
+
+// Логирование всех изменений геоданных
+watchEffect(() => {
+  const geo = GeoRef.get().value
+  console.log('Geo data changed:', {
+    country: geo.country,
+    language: geo.language,
+    standard: geo.standard
+  })
+})
+```
+
+Класс GeoRef предоставляет централизованную реактивную систему управления географическими данными для Vue приложений с глобальным доступом и автоматической синхронизацией.

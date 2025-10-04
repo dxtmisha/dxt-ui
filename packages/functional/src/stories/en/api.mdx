@@ -99,26 +99,273 @@ Api.setPreparation(async () => {
 Sets a function to run after each request for response analysis.
 
 **Parameters:**
-- `callback: (query: Response) => Promise<ApiPreparationEnd>` — async function to analyze response
+- `callback: (query: Response) => Promise<ApiPreparationEnd>` — response analysis function
 
 **Returns:** `Api` — class reference for chaining
 
 ```javascript
-// Set post-request handler
+// Set response analysis function
 Api.setEnd(async (response) => {
   if (response.status === 401) {
-    return { reset: true } // Retry request
+    return { reset: true } // restart request
   }
-
-  if (response.status === 403) {
-    redirectToLogin()
-  }
-
   return {}
 })
 ```
 
-## Request Methods
+## Working with Emulator
+
+The Api class provides a powerful request emulation system for development and testing without a real backend server.
+
+### `addResponse`
+
+Adds emulated responses to intercept requests.
+
+**Parameters:**
+- `response: ApiResponse | ApiResponse[]` — emulated response configuration
+
+```javascript
+import { Api } from '@dxtmisha/functional'
+
+// Simple GET request emulation
+Api.addResponse({
+  path: '/users',
+  method: 'GET',
+  response: [
+    { id: 1, name: 'John Doe', email: 'john@example.com' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
+  ]
+})
+
+// POST request emulation with validation
+Api.addResponse({
+  path: '/users',
+  method: 'POST',
+  request: { name: '*any', email: '*any' }, // any name and email
+  response: (request) => ({
+    id: Math.random(),
+    ...request,
+    created: new Date().toISOString()
+  })
+})
+
+// Emulation with RegExp path
+Api.addResponse({
+  path: /^\/users\/\d+$/,
+  method: 'GET',
+  response: { id: 1, name: 'User', status: 'active' }
+})
+```
+
+### Emulated Response Configuration (ApiResponse)
+
+**ApiResponse Properties:**
+- `path: string | RegExp` — request path (string or regular expression)
+- `method: ApiMethod` — HTTP method ('GET', 'POST', 'PUT', 'DELETE')
+- `request?: ApiFetch['request'] | '*any'` — expected request data
+- `response: any | ((request) => any)` — static response or generation function
+- `disable?: RefOrNormal<boolean>` — disable emulation (can be ref)
+- `isForGlobal?: boolean` — for global cache only
+- `lag?: RefOrNormal<boolean>` — simulate slow connection (0-2 sec)
+
+```javascript
+// Emulation with delay
+Api.addResponse({
+  path: '/slow-endpoint',
+  method: 'GET',
+  response: { data: 'Slow data' },
+  lag: true // random delay 0-2000ms
+})
+
+// Conditional emulation
+const isDevelopment = ref(process.env.NODE_ENV === 'development')
+Api.addResponse({
+  path: '/admin/users',
+  method: 'GET',
+  response: { users: [] },
+  disable: computed(() => !isDevelopment.value) // disabled in production
+})
+
+// Dynamic response function
+Api.addResponse({
+  path: '/auth/login',
+  method: 'POST',
+  request: '*any',
+  response: (request) => {
+    if (request?.username === 'admin' && request?.password === 'password') {
+      return {
+        success: true,
+        token: 'fake-jwt-token',
+        user: { id: 1, username: 'admin', role: 'administrator' }
+      }
+    }
+    throw new Error('Invalid credentials')
+  }
+})
+```
+
+### `getResponseList`
+
+Returns list of all registered emulated responses.
+
+**Returns:** `(ApiResponse & Record<string, any>)[]` — array of emulated responses
+
+```javascript
+// Get list of all emulations
+const emulators = Api.getResponseList()
+console.log('Active emulators:', emulators.map(r => `${r.method} ${r.path}`))
+
+// Debug emulations
+function debugEmulators() {
+  const responses = Api.getResponseList()
+  responses.forEach(resp => {
+    console.log(`Emulator: ${resp.method} ${resp.path}`)
+    console.log('Expected request:', resp.request)
+    console.log('Response:', typeof resp.response === 'function' ? '[Function]' : resp.response)
+  })
+}
+```
+
+### Emulator Operating Modes
+
+#### Global mode (automatic for GET)
+```javascript
+// GET requests automatically use global cache
+const userData = await Api.get({ path: '/user/profile' })
+// If emulation exists for this path, it will be used
+```
+
+#### DevMode (forced emulation)
+```javascript
+// Forced emulator usage
+const testData = await Api.get({
+  path: '/test-endpoint',
+  devMode: true // always uses emulator if available
+})
+```
+
+### Complex Emulation Scenarios
+
+#### Conditional responses based on parameters
+```javascript
+Api.addResponse({
+  path: '/api/search',
+  method: 'GET',
+  request: '*any',
+  response: (request) => {
+    const query = request?.q || ''
+
+    if (query.includes('error')) {
+      throw new Error('Search error')
+    }
+
+    if (query.length < 2) {
+      return { results: [], message: 'Query too short' }
+    }
+
+    // Search simulation
+    const mockResults = [
+      { id: 1, title: 'Result 1', relevance: 0.9 },
+      { id: 2, title: 'Result 2', relevance: 0.7 }
+    ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()))
+
+    return {
+      results: mockResults,
+      total: mockResults.length,
+      query: query
+    }
+  }
+})
+```
+
+#### Sequential emulation (for state testing)
+```javascript
+let loginAttempts = 0
+
+Api.addResponse({
+  path: '/auth/login',
+  method: 'POST',
+  request: '*any',
+  response: (request) => {
+    loginAttempts++
+
+    if (loginAttempts === 1) {
+      throw new Error('Temporary server error')
+    }
+
+    if (loginAttempts === 2) {
+      return { success: false, message: 'Invalid password' }
+    }
+
+    return {
+      success: true,
+      token: 'success-token',
+      attempts: loginAttempts
+    }
+  }
+})
+```
+
+#### File operation emulation
+```javascript
+// File upload emulation
+Api.addResponse({
+  path: '/upload',
+  method: 'POST',
+  request: '*any',
+  response: (request) => {
+    if (request instanceof FormData) {
+      const file = request.get('file')
+      return {
+        success: true,
+        filename: file?.name || 'unknown.txt',
+        size: file?.size || 0,
+        uploadId: Math.random().toString(36)
+      }
+    }
+    throw new Error('File not found in request')
+  },
+  lag: true // simulate slow upload
+})
+```
+
+### Runtime Emulator Management
+
+#### Dynamic enable/disable
+```javascript
+import { ref } from 'vue'
+
+const isEmulationEnabled = ref(true)
+
+Api.addResponse({
+  path: '/dynamic-endpoint',
+  method: 'GET',
+  response: { message: 'Emulated data' },
+  disable: computed(() => !isEmulationEnabled.value)
+})
+
+// Toggle emulation
+function toggleEmulation() {
+  isEmulationEnabled.value = !isEmulationEnabled.value
+}
+```
+
+#### Emulator debugging
+```javascript
+// Enable debug mode for all requests
+async function makeDebugRequest() {
+  const result = await Api.get({
+    path: '/debug-test',
+    devMode: true // shows warnings in console
+  })
+
+  console.log('Response data:', result)
+  console.log('Last response:', Api.getLastResponse())
+  console.log('Status:', Api.getStatus())
+}
+```
+
+## HTTP Request Methods
 
 ### `request`
 

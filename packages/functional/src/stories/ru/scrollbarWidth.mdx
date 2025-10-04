@@ -1,0 +1,132 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/ScrollbarWidth'/>
+
+# Класс ScrollbarWidth
+
+Статический класс для определения ширины полосы прокрутки браузера с интеграцией DataStorage для персистентного кеширования. Предоставляет методы для точного измерения скроллбара и определения необходимости его скрытия.
+
+## Основные возможности
+
+- **Точное измерение** — определение реальной ширины скроллбара через DOM тестирование
+- **Персистентное кеширование** — сохранение результата через DataStorage
+- **Определение необходимости скрытия** — автоматическая проверка для тонких скроллбаров
+- **Защита от повторных вычислений** — блокировка параллельных измерений
+- **DOM безопасность** — создание временных элементов для измерения
+- **Автоматическая очистка** — удаление тестовых элементов после измерения
+- **requestAnimationFrame** — неблокирующее измерение в следующем кадре
+- **Статический API** — простой интерфейс без необходимости создания экземпляров
+
+## Статические методы
+
+### `is`
+
+Проверяет, нужно ли включить скрытие скролла (для тонких скроллбаров).
+
+**Возвращает:** `Promise<boolean>` — true если скролл стоит скрывать (ширина ≤ 8px)
+
+```javascript
+import { ScrollbarWidth } from '@dxtmisha/functional'
+
+// Проверка необходимости скрытия скролла
+const shouldHide = await ScrollbarWidth.is()
+
+if (shouldHide) {
+  // Скроллбар тонкий (≤ 8px), можно скрывать
+  document.body.classList.add('hide-scrollbar')
+} else {
+  // Скроллбар широкий, лучше оставить видимым
+  document.body.classList.remove('hide-scrollbar')
+}
+
+// Использование в CSS
+// .hide-scrollbar { scrollbar-width: none; }
+```
+
+### `get`
+
+Возвращает ширину скроллбара, измеряя при первом вызове.
+
+**Возвращает:** `Promise<number>` — ширина скроллбара в пикселях (-1 если не измерена)
+
+```javascript
+import { ScrollbarWidth } from '@dxtmisha/functional'
+
+// Получение ширины скроллбара
+const width = await ScrollbarWidth.get()
+console.log(`Ширина скроллбара: ${width}px`)
+
+// Первый вызов выполнит измерение и сохранит в DataStorage
+// Последующие вызовы вернут кешированное значение
+
+// Использование для компенсации ширины
+async function compensateScrollbar() {
+  const scrollbarWidth = await ScrollbarWidth.get()
+
+  if (scrollbarWidth > 0) {
+    document.body.style.paddingRight = `${scrollbarWidth}px`
+  }
+}
+```
+
+## Практические примеры
+
+### Автоматическое скрытие тонких скроллбаров
+
+```javascript
+// Инициализация при загрузке страницы
+async function initScrollbarBehavior() {
+  const shouldHideScrollbar = await ScrollbarWidth.is()
+
+  if (shouldHideScrollbar) {
+    document.documentElement.style.setProperty('scrollbar-width', 'none')
+    console.log('Тонкий скроллбар скрыт для улучшения UX')
+  }
+}
+
+// Вызов при DOMContentLoaded
+document.addEventListener('DOMContentLoaded', initScrollbarBehavior)
+```
+
+### Модальные окна с компенсацией
+
+```javascript
+class ModalManager {
+  async openModal() {
+    const scrollbarWidth = await ScrollbarWidth.get()
+
+    // Скрываем скролл и компенсируем ширину
+    document.body.style.overflow = 'hidden'
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`
+    }
+  }
+
+  closeModal() {
+    document.body.style.overflow = ''
+    document.body.style.paddingRight = ''
+  }
+}
+```
+
+### Адаптивная верстка
+
+```javascript
+// CSS переменные на основе ширины скроллбара
+async function setupScrollbarCSS() {
+  const width = await ScrollbarWidth.get()
+  const shouldHide = await ScrollbarWidth.is()
+
+  document.documentElement.style.setProperty(
+    '--scrollbar-width',
+    `${width}px`
+  )
+
+  document.documentElement.style.setProperty(
+    '--scrollbar-display',
+    shouldHide ? 'none' : 'auto'
+  )
+}
+```
+
+Класс ScrollbarWidth предоставляет надежное решение для определения характеристик полосы прокрутки и принятия решений о ее отображении для создания оптимального пользовательского опыта.

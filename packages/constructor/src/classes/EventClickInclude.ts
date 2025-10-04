@@ -1,5 +1,5 @@
 import { toRefs, type ToRefs } from 'vue'
-import { type ConstrEmit, RouterItem } from '@dxtmisha/functional'
+import { type ConstrEmit, RouterItemRef } from '@dxtmisha/functional'
 
 import { EnabledInclude } from './EnabledInclude'
 
@@ -112,7 +112,7 @@ export class EventClickInclude {
    */
   protected toRouter(): boolean {
     if (this.props?.to) {
-      RouterItem.push(this.props?.to)
+      RouterItemRef.push(this.props?.to)
       return true
     }
 
