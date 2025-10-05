@@ -1,9 +1,16 @@
 ### `title`
 
-Header slot for rendering the component’s title area.
+Slot for placing component title in the header.
 
-This slot lets you:
-- Render a title, subtitle, or header actions
-- Receive scoped data from the component (if available)
-- Customize the header layout and style
+**Parameters:**
+- `props: ControlItem` — object with component data
 
+**Returns:** `VNode` — title element
+
+```html
+<Component>
+  <template #title>
+    <h2>Title</h2>
+  </template>
+</Component>
+```

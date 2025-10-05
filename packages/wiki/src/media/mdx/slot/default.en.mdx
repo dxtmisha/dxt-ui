@@ -1,10 +1,13 @@
 ### `default`
 
-Main slot for placing content inside the component.
+Main slot for placing the primary component content.
 
-This slot allows you to:
-- Place any custom content inside the component
-- Pass text, HTML elements, or other Vue components
-- Customize the internal content of the component
+**Returns:** `VNode` — main component content
 
-The `default` slot is the primary way to add content to the component and supports all standard Vue slot capabilities.
+```html
+<Component>
+  <template #default>
+    <div>Main content</div>
+  </template>
+</Component>
+```

@@ -24,7 +24,7 @@ const propsNames: StorybookProps = [
   { name: 'height', type: 'string', option: ['auto', 'max', 'sm', 'md', 'lg', 'custom'] },
   { name: 'hide', type: 'boolean' },
   { name: 'iconClose', type: 'string' },
-  { name: 'image', type: 'string | ConstrBind<ImagePropsBasic>' },
+  { name: 'image', type: 'string | ConstrBind<ImageProps>' },
   { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
   { name: 'imageSize', type: 'string', option: ['sm', 'md', 'lg', 'quarter', 'half'] },
   { name: 'indent', type: 'number' },
@@ -39,7 +39,7 @@ const propsNames: StorybookProps = [
   { name: 'overscroll', type: 'boolean' },
   { name: 'persistent', type: 'boolean' },
   { name: 'preparation', type: '() => NormalOrPromise<void>' },
-  { name: 'scrollbarAttrs', type: 'ConstrBind<ScrollbarPropsBasic>' },
+  { name: 'scrollbarAttrs', type: 'ConstrBind<ScrollbarProps>' },
   { name: 'staticMode', type: 'boolean' },
   { name: 'width', type: 'string', option: ['auto', 'max', 'sm', 'md', 'lg', 'custom'] },
   { name: 'widthMatch', type: 'boolean' }

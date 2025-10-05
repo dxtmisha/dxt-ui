@@ -1,11 +1,13 @@
 ### `label`
 
-Slot for passing label content to the component. It's an alternative to the `label` prop and allows passing elements instead of plain text.
+Slot for placing custom label content instead of text value.
 
-This slot allows you to:
-- Use an alternative to the `label` property
-- Pass elements instead of plain text
-- Use HTML or components in the label
+**Returns:** `VNode` — element with class `{className}__label`
 
-The `label` slot works as a replacement for the `label` prop and allows passing any elements for more flexible label content setup.
-
+```html
+<Component>
+  <template #label>
+    <strong>Important label</strong>
+  </template>
+</Component>
+```

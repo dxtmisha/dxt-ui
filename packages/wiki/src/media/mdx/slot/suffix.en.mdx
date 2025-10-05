@@ -2,7 +2,12 @@
 
 Slot for placing content at the end of the component, after the main content.
 
-- Displayed on the right side of the component (or left in RTL mode)
-- Suitable for action icons, status indicators, or additional information
-- Does not affect the main structure of the component
-- Provides concluding information or functionality
+**Returns:** `VNode` — element with class `{className}__suffix` and attribute `data-event-type="suffix"`
+
+```html
+<Component>
+  <template #suffix>
+    <Icon name="check" />
+  </template>
+</Component>
+```

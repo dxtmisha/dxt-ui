@@ -1,10 +1,13 @@
 ### `description`
 
-Slot for passing description content to the component. It's an alternative to the `description` prop and allows passing elements instead of plain text.
+Slot for placing component description or additional information.
 
-This slot allows you to:
-- Use an alternative to the `description` property
-- Pass elements instead of plain text
-- Use HTML or components in the description
+**Returns:** `VNode` — element with class `{className}__description`
 
-The `description` slot works as a replacement for the `description` prop and allows passing any elements for more flexible description content setup.
+```html
+<Component>
+  <template #description>
+    <p>Detailed functionality description</p>
+  </template>
+</Component>
+```

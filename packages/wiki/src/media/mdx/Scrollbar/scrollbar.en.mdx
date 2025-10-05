@@ -1,3 +1,39 @@
-## Description
+Component for customizing scrollbar appearance and managing visual dividers at scrollable area boundaries.
 
-Component for customizing scrollbar appearance and adding divider lines.
+Scrollbar hides the browser's standard scrollbar and provides visual feedback when reaching the top or bottom of content through divider lines. The component automatically detects scrollbar width and adapts display for systems without visible scrollbars (e.g., macOS with trackpad).
+
+**Key features:**
+
+- Hide browser's standard scrollbar
+- Display dividers when reaching content boundaries
+- Independent control of top and bottom dividers
+- Inversion of divider display logic
+- Events for tracking scroll position
+- Support for infinite scroll via `reachBottom` events
+
+**Common use cases:**
+
+- Lists with data loading on scroll
+- Modal windows and dropdown menus with scrollable content
+- Fixed-height areas with vertical scrolling
+- Visual content separation during scrolling
+
+```html
+<script setup>
+const handleReachBottom = () => {
+  // Load more data
+  loadMoreItems()
+}
+</script>
+
+<template>
+  <Scrollbar
+    divider
+    @reach-bottom="handleReachBottom"
+  >
+    <div class="content">
+      <!-- Scrollable content -->
+    </div>
+  </Scrollbar>
+</template>
+```

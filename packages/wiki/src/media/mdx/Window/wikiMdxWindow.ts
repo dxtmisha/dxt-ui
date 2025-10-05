@@ -6,22 +6,12 @@ import classesEn from './classes.en.mdx'
 import classesRu from './classes.ru.mdx'
 import eventWindowEn from './event.window.en.mdx'
 import eventWindowRu from './event.window.ru.mdx'
-import exposeControlEn from './expose.control.en.mdx'
-import exposeControlRu from './expose.control.ru.mdx'
-import exposeIdEn from './expose.id.en.mdx'
-import exposeIdRu from './expose.id.ru.mdx'
-import exposeOpenEn from './expose.open.en.mdx'
-import exposeOpenRu from './expose.open.ru.mdx'
-import exposeSetOpenEn from './expose.setOpen.en.mdx'
-import exposeSetOpenRu from './expose.setOpen.ru.mdx'
-import exposeToCloseEn from './expose.toClose.en.mdx'
-import exposeToCloseRu from './expose.toClose.ru.mdx'
-import exposeToOpenEn from './expose.toOpen.en.mdx'
-import exposeToOpenRu from './expose.toOpen.ru.mdx'
-import exposeToggleEn from './expose.toggle.en.mdx'
-import exposeToggleRu from './expose.toggle.ru.mdx'
+import exposeEn from './expose.en.mdx'
+import exposeRu from './expose.ru.mdx'
 import hooksEn from './hooks.en.mdx'
 import hooksRu from './hooks.ru.mdx'
+import slotsEn from './slots.en.mdx'
+import slotsRu from './slots.ru.mdx'
 import staticModeEn from './staticMode.en.mdx'
 import staticModeRu from './staticMode.ru.mdx'
 import vModelEn from './v-model.en.mdx'
@@ -49,37 +39,17 @@ export const wikiMdxWindow: StorybookComponentsMdxItem = {
       en: eventWindowEn,
       ru: eventWindowRu
     },
-    'expose.control': {
-      en: exposeControlEn,
-      ru: exposeControlRu
-    },
-    'expose.id': {
-      en: exposeIdEn,
-      ru: exposeIdRu
-    },
-    'expose.open': {
-      en: exposeOpenEn,
-      ru: exposeOpenRu
-    },
-    'expose.setOpen': {
-      en: exposeSetOpenEn,
-      ru: exposeSetOpenRu
-    },
-    'expose.toClose': {
-      en: exposeToCloseEn,
-      ru: exposeToCloseRu
-    },
-    'expose.toOpen': {
-      en: exposeToOpenEn,
-      ru: exposeToOpenRu
-    },
-    'expose.toggle': {
-      en: exposeToggleEn,
-      ru: exposeToggleRu
+    'expose': {
+      en: exposeEn,
+      ru: exposeRu
     },
     'hooks': {
       en: hooksEn,
       ru: hooksRu
+    },
+    'slots': {
+      en: slotsEn,
+      ru: slotsRu
     },
     'staticMode': {
       en: staticModeEn,

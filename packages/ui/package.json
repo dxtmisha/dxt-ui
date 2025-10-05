@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/ui",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "Complete DXT UI design system - meta-package with all core libraries, components, styles and utilities",
   "keywords": [
@@ -54,7 +54,7 @@
     "@dxtmisha/constructor": "^0.23.0",
     "@dxtmisha/styles": "^1.0.3",
     "@dxtmisha/media": "^0.3.3",
-    "@dxtmisha/wiki": "^0.24.1",
+    "@dxtmisha/wiki": "^0.24.2",
     "@dxtmisha/configuration": "^0.3.11",
     "@dxtmisha/scripts": "^0.4.1"
   },

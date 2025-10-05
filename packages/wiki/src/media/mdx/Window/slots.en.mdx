@@ -1,0 +1,186 @@
+### `control`
+
+Slot for placing window control elements (close buttons, minimize, etc.).
+
+**Parameters:**
+- `props: WindowControlItem` — object with window control data
+
+```html
+<Window>
+  <template #control="{ onclick, open }">
+    <button @click="onclick">
+      {{ open ? 'Close' : 'Open' }}
+    </button>
+  </template>
+</Window>
+```
+
+### `title`
+
+Slot for placing window title in the header.
+
+**Parameters:**
+- `props: WindowControlItem` — object with window control data
+
+```html
+<Window>
+  <template #title="{ open }">
+    <h2>{{ open ? 'Window is open' : 'Window is closed' }}</h2>
+  </template>
+</Window>
+```
+
+### `footer`
+
+Slot for placing content at the bottom of the window (action buttons, info, etc.).
+
+**Parameters:**
+- `props: WindowControlItem` — object with window control data
+
+```html
+<Window>
+  <template #footer>
+    <div class="actions">
+      <button>Cancel</button>
+      <button>Apply</button>
+    </div>
+  </template>
+</Window>
+```
+
+### `default`
+
+Main slot for placing the primary window content.
+
+**Parameters:**
+- `props: WindowControlItem` — object with window control data
+
+```html
+<Window>
+  <template #default>
+    <div class="content">
+      <p>Window content</p>
+    </div>
+  </template>
+</Window>
+```
+
+## WindowControlItem
+
+`WindowControlItem` — object passed to all Window component slots, containing data for window management.
+
+### Type Structure
+
+```typescript
+type WindowControlItem = {
+  /** Window CSS classes list */
+  classesWindow: WindowClassesList
+
+  /** CSS class string for control element */
+  class: string
+
+  /** Reactive window open state */
+  open: Ref<boolean>
+
+  /** Click event handler */
+  onclick: (event: MouseEvent & TouchEvent) => Promise<void>
+
+  /** Context menu event handler */
+  oncontextmenu: (event: MouseEvent & TouchEvent) => Promise<void>
+
+  /** Binding properties for elements */
+  binds: {
+    class: string
+    onclick: (event: MouseEvent & TouchEvent) => Promise<void>
+    oncontextmenu: (event: MouseEvent & TouchEvent) => Promise<void>
+  }
+}
+```
+
+### Properties
+
+#### `classesWindow`
+
+Object with CSS classes for different window states:
+
+- `block` — interaction blocking
+- `blockChildren` — block child elements
+- `blockOther` — block other windows
+- `close` — close window class
+- `static` — static positioning
+- `control` — control element class
+- `controlId` — control ID class
+- `controlStatic` — static control
+- `controlOpenOnly` — control only when open
+- `controlActive` — active control
+- `persistent` — persistent window
+
+#### `class`
+
+CSS class string to apply to the control element.
+
+#### `open`
+
+Reactive variable (`Ref<boolean>`) containing the current window visibility state.
+
+```html
+<template #control="{ open }">
+  <span>{{ open ? 'Open' : 'Closed' }}</span>
+</template>
+```
+
+#### `onclick`
+
+Click handler function for managing window open/close.
+
+```html
+<template #control="{ onclick }">
+  <button @click="onclick">Toggle</button>
+</template>
+```
+
+#### `oncontextmenu`
+
+Right-click (context menu) handler function for window management.
+
+```html
+<template #control="{ oncontextmenu }">
+  <button @contextmenu="oncontextmenu">Context Menu</button>
+</template>
+```
+
+#### `binds`
+
+Object with properties for binding to elements:
+
+```html
+<template #control="{ binds }">
+  <button v-bind="binds">Window Control</button>
+</template>
+```
+
+### Usage Example
+
+```html
+<Window>
+  <template #control="{ classesWindow, open, onclick }">
+    <div :class="classesWindow.control">
+      <button @click="onclick">
+        {{ open ? 'Close' : 'Open' }}
+      </button>
+    </div>
+  </template>
+
+  <template #title="{ open }">
+    <h2>Window Title ({{ open ? 'open' : 'closed' }})</h2>
+  </template>
+
+  <template #default>
+    <p>Main window content</p>
+  </template>
+
+  <template #footer="{ onclick }">
+    <button @click="onclick">Close Window</button>
+  </template>
+</Window>
+```

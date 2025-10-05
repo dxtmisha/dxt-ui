@@ -1,9 +1,16 @@
 ### `footer`
 
-Footer slot for rendering the component’s bottom area.
+Slot for placing content at the bottom of the component.
 
-This slot lets you:
-- Place action buttons, hints, or status
-- Receive scoped data from the component (if available)
-- Customize the bottom area layout and styles
+**Parameters:**
+- `props: ControlItem` — object with component data
 
+**Returns:** `VNode` — footer element
+
+```html
+<Component>
+  <template #footer>
+    <div>Additional information</div>
+  </template>
+</Component>
+```

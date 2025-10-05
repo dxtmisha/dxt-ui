@@ -1,0 +1,123 @@
+### `scrollbarTop`
+
+Event fires when the top scroll boundary state changes (for use in parent components).
+
+**Parameters:**
+- `isTop: boolean` — `true` if scroll is at the top position
+
+```html
+<script setup>
+const handleScrollbarTop = (isTop) => {
+  console.log('Scrollbar - top boundary:', isTop)
+}
+</script>
+
+<template>
+  <Component @scrollbar-top="handleScrollbarTop" />
+</template>
+```
+
+### `scrollbarReachTop`
+
+Event fires when the top scroll boundary is reached (for use in parent components).
+
+```html
+<script setup>
+const handleScrollbarReachTop = () => {
+  console.log('Scrollbar reached top boundary')
+}
+</script>
+
+<template>
+  <Component @scrollbar-reach-top="handleScrollbarReachTop" />
+</template>
+```
+
+### `scrollbarLeaveTop`
+
+Event fires when leaving the top scroll boundary (for use in parent components).
+
+```html
+<script setup>
+const handleScrollbarLeaveTop = () => {
+  console.log('Scrollbar left top boundary')
+}
+</script>
+
+<template>
+  <Component @scrollbar-leave-top="handleScrollbarLeaveTop" />
+</template>
+```
+
+### `scrollbarBottom`
+
+Event fires when the bottom scroll boundary state changes (for use in parent components).
+
+**Parameters:**
+- `isBottom: boolean` — `true` if scroll is at the bottom position
+
+```html
+<script setup>
+const handleScrollbarBottom = (isBottom) => {
+  console.log('Scrollbar - bottom boundary:', isBottom)
+}
+</script>
+
+<template>
+  <Component @scrollbar-bottom="handleScrollbarBottom" />
+</template>
+```
+
+### `scrollbarReachBottom`
+
+Event fires when the bottom scroll boundary is reached (for use in parent components).
+
+```html
+<script setup>
+const handleScrollbarReachBottom = () => {
+  console.log('Scrollbar reached bottom boundary')
+  // Load more data
+}
+</script>
+
+<template>
+  <Component @scrollbar-reach-bottom="handleScrollbarReachBottom" />
+</template>
+```
+
+### `scrollbarLeaveBottom`
+
+Event fires when leaving the bottom scroll boundary (for use in parent components).
+
+```html
+<script setup>
+const handleScrollbarLeaveBottom = () => {
+  console.log('Scrollbar left bottom boundary')
+}
+</script>
+
+<template>
+  <Component @scrollbar-leave-bottom="handleScrollbarLeaveBottom" />
+</template>
+```
+
+### `scrollbarEdge`
+
+Event fires when any scroll boundary state changes (for use in parent components).
+
+**Parameters:**
+- `isTop: boolean` — `true` if scroll is at the top position
+- `isBottom: boolean` — `true` if scroll is at the bottom position
+- `edge: 'top' | 'bottom'` — type of boundary that changed
+
+```html
+<script setup>
+const handleScrollbarEdge = (isTop, isBottom, edge) => {
+  console.log('Scrollbar - boundary state:', { isTop, isBottom, edge })
+}
+</script>
+
+<template>
+  <Component @scrollbar-edge="handleScrollbarEdge" />
+</template>
+```

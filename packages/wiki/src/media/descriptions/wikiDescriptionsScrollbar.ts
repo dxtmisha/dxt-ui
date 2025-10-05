@@ -64,13 +64,7 @@ export const wikiDescriptionsScrollbar: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Scrollbar'} type={'scrollbar'}/>
     `,
     events: `
-<StorybookDescriptions componentName={'Scrollbar'} type={'event.top'}/>
-<StorybookDescriptions componentName={'Scrollbar'} type={'event.reachTop'}/>
-<StorybookDescriptions componentName={'Scrollbar'} type={'event.leaveTop'}/>
-<StorybookDescriptions componentName={'Scrollbar'} type={'event.bottom'}/>
-<StorybookDescriptions componentName={'Scrollbar'} type={'event.reachBottom'}/>
-<StorybookDescriptions componentName={'Scrollbar'} type={'event.leaveBottom'}/>
-<StorybookDescriptions componentName={'Scrollbar'} type={'event.edge'}/>
+<StorybookDescriptions componentName={'Scrollbar'} type={'emits'}/>
     `
   }
 }

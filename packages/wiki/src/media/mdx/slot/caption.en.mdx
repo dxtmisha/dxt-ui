@@ -1,10 +1,13 @@
 ### `caption`
 
-Slot for passing caption content to the component. It's an alternative to the `caption` prop and allows passing elements instead of plain text.
+Slot for placing a caption or additional explanatory text for the component.
 
-This slot allows you to:
-- Use an alternative to the `caption` property
-- Pass elements instead of plain text
-- Use HTML or components in the caption
+**Returns:** `VNode` — element with class `{className}__caption` and attribute `data-event-type="caption"`
 
-The `caption` slot works as a replacement for the `caption` prop and allows passing any elements for more flexible caption content setup.
+```html
+<Component>
+  <template #caption>
+    <span>Additional information</span>
+  </template>
+</Component>
+```

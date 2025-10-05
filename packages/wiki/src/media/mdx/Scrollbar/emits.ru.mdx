@@ -1,0 +1,123 @@
+### `top`
+
+Событие срабатывает при изменении состояния достижения верхней границы скролла.
+
+**Параметры:**
+- `isTop: boolean` — `true`, если скролл находится в верхней позиции
+
+```html
+<script setup>
+const handleTop = (isTop) => {
+  console.log('Верхняя граница:', isTop)
+}
+</script>
+
+<template>
+  <Scrollbar @top="handleTop" />
+</template>
+```
+
+### `reachTop`
+
+Событие срабатывает при достижении верхней границы скролла.
+
+```html
+<script setup>
+const handleReachTop = () => {
+  console.log('Достигнута верхняя граница')
+}
+</script>
+
+<template>
+  <Scrollbar @reach-top="handleReachTop" />
+</template>
+```
+
+### `leaveTop`
+
+Событие срабатывает при покидании верхней границы скролла.
+
+```html
+<script setup>
+const handleLeaveTop = () => {
+  console.log('Покинута верхняя граница')
+}
+</script>
+
+<template>
+  <Scrollbar @leave-top="handleLeaveTop" />
+</template>
+```
+
+### `bottom`
+
+Событие срабатывает при изменении состояния достижения нижней границы скролла.
+
+**Параметры:**
+- `isBottom: boolean` — `true`, если скролл находится в нижней позиции
+
+```html
+<script setup>
+const handleBottom = (isBottom) => {
+  console.log('Нижняя граница:', isBottom)
+}
+</script>
+
+<template>
+  <Scrollbar @bottom="handleBottom" />
+</template>
+```
+
+### `reachBottom`
+
+Событие срабатывает при достижении нижней границы скролла.
+
+```html
+<script setup>
+const handleReachBottom = () => {
+  console.log('Достигнута нижняя граница')
+  // Загрузка дополнительных данных
+}
+</script>
+
+<template>
+  <Scrollbar @reach-bottom="handleReachBottom" />
+</template>
+```
+
+### `leaveBottom`
+
+Событие срабатывает при покидании нижней границы скролла.
+
+```html
+<script setup>
+const handleLeaveBottom = () => {
+  console.log('Покинута нижняя граница')
+}
+</script>
+
+<template>
+  <Scrollbar @leave-bottom="handleLeaveBottom" />
+</template>
+```
+
+### `edge`
+
+Событие срабатывает при изменении состояния любой из границ скролла.
+
+**Параметры:**
+- `isTop: boolean` — `true`, если скролл находится в верхней позиции
+- `isBottom: boolean` — `true`, если скролл находится в нижней позиции
+- `edge: 'top' | 'bottom'` — тип границы, которая изменилась
+
+```html
+<script setup>
+const handleEdge = (isTop, isBottom, edge) => {
+  console.log('Состояние границ:', { isTop, isBottom, edge })
+}
+</script>
+
+<template>
+  <Scrollbar @edge="handleEdge" />
+</template>
+```

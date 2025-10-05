@@ -210,19 +210,10 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Image'} type={'event.load'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Window'} type={'expose.control'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.id'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.open'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.setOpen'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.toOpen'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.toClose'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.toggle'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose'}/>
     `,
     slots: `
-<StorybookDescriptions componentName={'Slot'} type={'control'}/>
-<StorybookDescriptions componentName={'Slot'} type={'title'}/>
-<StorybookDescriptions componentName={'Slot'} type={'footer'}/>
-<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Window'} type={'slots'}/>
     `
   }
 }

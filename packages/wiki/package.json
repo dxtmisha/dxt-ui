@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/wiki",
   "private": false,
-  "version": "0.24.1",
+  "version": "0.24.2",
   "type": "module",
   "description": "Wiki documentation and storybook utilities for DXT UI design system",
   "keywords": [
@@ -39,7 +39,8 @@
     "./media": "./src/media.ts",
     "./functional/*": "./src/media/functional/*.mdx",
     "./storybook": "./src/storybook.tsx",
-    "./storybook/styles": "./src/styles/storybookStyle.scss"
+    "./storybook/styles": "./src/styles/storybookStyle.scss",
+    "./package.json": "./package.json"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -1,0 +1,155 @@
+### `id`
+
+Unique identifier of the window.
+
+**Type:** `string`
+
+```html
+<script setup>
+const windowRef = ref()
+
+onMounted(() => {
+  console.log(windowRef.value.id) // "window-123"
+})
+</script>
+
+<template>
+  <Window ref="windowRef" />
+</template>
+```
+
+### `open`
+
+Reactive state of window visibility.
+
+**Type:** `Ref<boolean>`
+
+```html
+<script setup>
+const windowRef = ref()
+
+watch(() => windowRef.value?.open, (isOpen) => {
+  console.log('Window is open:', isOpen)
+})
+</script>
+
+<template>
+  <Window ref="windowRef" />
+</template>
+```
+
+### `control`
+
+Control item data for window management.
+
+**Type:** `WindowControlItem`
+
+```html
+<script setup>
+const windowRef = ref()
+
+const handleClick = () => {
+  const control = windowRef.value.control
+  console.log('Classes:', control.classesWindow)
+  console.log('State:', control.open.value)
+}
+</script>
+
+<template>
+  <Window ref="windowRef" />
+</template>
+```
+
+### `setOpen`
+
+Sets window open state.
+
+**Parameters:**
+- `open: boolean` — new window visibility state
+
+**Returns:** `Promise<void>`
+
+```html
+<script setup>
+const windowRef = ref()
+
+const openWindow = async () => {
+  await windowRef.value.setOpen(true)
+}
+
+const closeWindow = async () => {
+  await windowRef.value.setOpen(false)
+}
+</script>
+
+<template>
+  <Window ref="windowRef" />
+  <button @click="openWindow">Open</button>
+  <button @click="closeWindow">Close</button>
+</template>
+```
+
+### `toOpen`
+
+Transition to opening state.
+
+**Returns:** `Promise<void>`
+
+```html
+<script setup>
+const windowRef = ref()
+
+const openWindow = async () => {
+  await windowRef.value.toOpen()
+  console.log('Window opened')
+}
+</script>
+
+<template>
+  <Window ref="windowRef" />
+  <button @click="openWindow">Open Window</button>
+</template>
+```
+
+### `toClose`
+
+Transition to closing state.
+
+**Returns:** `Promise<void>`
+
+```html
+<script setup>
+const windowRef = ref()
+
+const closeWindow = async () => {
+  await windowRef.value.toClose()
+  console.log('Window closed')
+}
+</script>
+
+<template>
+  <Window ref="windowRef" />
+  <button @click="closeWindow">Close Window</button>
+</template>
+```
+
+### `toggle`
+
+Toggles window visibility (opens if closed, closes if open).
+
+**Returns:** `Promise<void>`
+
+```html
+<script setup>
+const windowRef = ref()
+
+const toggleWindow = async () => {
+  await windowRef.value.toggle()
+}
+</script>
+
+<template>
+  <Window ref="windowRef" />
+  <button @click="toggleWindow">Toggle Window</button>
+</template>
+```

@@ -1,0 +1,186 @@
+### `control`
+
+Слот для размещения элементов управления окном (кнопки закрытия, минимизации и т.д.).
+
+**Параметры:**
+- `props: WindowControlItem` — объект с данными управления окном
+
+```html
+<Window>
+  <template #control="{ onclick, open }">
+    <button @click="onclick">
+      {{ open ? 'Закрыть' : 'Открыть' }}
+    </button>
+  </template>
+</Window>
+```
+
+### `title`
+
+Слот для размещения заголовка окна в шапке.
+
+**Параметры:**
+- `props: WindowControlItem` — объект с данными управления окном
+
+```html
+<Window>
+  <template #title="{ open }">
+    <h2>{{ open ? 'Окно открыто' : 'Окно закрыто' }}</h2>
+  </template>
+</Window>
+```
+
+### `footer`
+
+Слот для размещения содержимого в нижней части окна (кнопки действий, информация и т.д.).
+
+**Параметры:**
+- `props: WindowControlItem` — объект с данными управления окном
+
+```html
+<Window>
+  <template #footer>
+    <div class="actions">
+      <button>Отмена</button>
+      <button>Применить</button>
+    </div>
+  </template>
+</Window>
+```
+
+### `default`
+
+Основной слот для размещения главного содержимого окна.
+
+**Параметры:**
+- `props: WindowControlItem` — объект с данными управления окном
+
+```html
+<Window>
+  <template #default>
+    <div class="content">
+      <p>Содержимое окна</p>
+    </div>
+  </template>
+</Window>
+```
+
+## WindowControlItem
+
+`WindowControlItem` — объект, передаваемый во все слоты компонента Window, содержащий данные для управления окном.
+
+### Структура типа
+
+```typescript
+type WindowControlItem = {
+  /** Список CSS классов окна */
+  classesWindow: WindowClassesList
+
+  /** Строка CSS класса для элемента управления */
+  class: string
+
+  /** Реактивное состояние открытия окна */
+  open: Ref<boolean>
+
+  /** Обработчик события клика */
+  onclick: (event: MouseEvent & TouchEvent) => Promise<void>
+
+  /** Обработчик события контекстного меню */
+  oncontextmenu: (event: MouseEvent & TouchEvent) => Promise<void>
+
+  /** Свойства привязки для элементов */
+  binds: {
+    class: string
+    onclick: (event: MouseEvent & TouchEvent) => Promise<void>
+    oncontextmenu: (event: MouseEvent & TouchEvent) => Promise<void>
+  }
+}
+```
+
+### Свойства
+
+#### `classesWindow`
+
+Объект с CSS классами для различных состояний окна:
+
+- `block` — блокировка взаимодействия
+- `blockChildren` — блокировка дочерних элементов
+- `blockOther` — блокировка других окон
+- `close` — класс для закрытия окна
+- `static` — статическое позиционирование
+- `control` — класс элемента управления
+- `controlId` — класс ID управления
+- `controlStatic` — статическое управление
+- `controlOpenOnly` — управление только когда открыто
+- `controlActive` — активное управление
+- `persistent` — постоянное окно
+
+#### `class`
+
+Строка CSS класса для применения к элементу управления.
+
+#### `open`
+
+Реактивная переменная (`Ref<boolean>`), содержащая текущее состояние видимости окна.
+
+```html
+<template #control="{ open }">
+  <span>{{ open ? 'Открыто' : 'Закрыто' }}</span>
+</template>
+```
+
+#### `onclick`
+
+Функция-обработчик клика для управления открытием/закрытием окна.
+
+```html
+<template #control="{ onclick }">
+  <button @click="onclick">Переключить</button>
+</template>
+```
+
+#### `oncontextmenu`
+
+Функция-обработчик правого клика (контекстного меню) для управления окном.
+
+```html
+<template #control="{ oncontextmenu }">
+  <button @contextmenu="oncontextmenu">Контекстное меню</button>
+</template>
+```
+
+#### `binds`
+
+Объект со свойствами для привязки к элементам:
+
+```html
+<template #control="{ binds }">
+  <button v-bind="binds">Управление окном</button>
+</template>
+```
+
+### Пример использования
+
+```html
+<Window>
+  <template #control="{ classesWindow, open, onclick }">
+    <div :class="classesWindow.control">
+      <button @click="onclick">
+        {{ open ? 'Закрыть' : 'Открыть' }}
+      </button>
+    </div>
+  </template>
+
+  <template #title="{ open }">
+    <h2>Заголовок окна ({{ open ? 'открыто' : 'закрыто' }})</h2>
+  </template>
+
+  <template #default>
+    <p>Основное содержимое окна</p>
+  </template>
+
+  <template #footer="{ onclick }">
+    <button @click="onclick">Закрыть окно</button>
+  </template>
+</Window>
+```

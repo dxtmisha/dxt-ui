@@ -1,9 +1,16 @@
 ### `control`
 
-Slot for rendering the component’s control (trigger) element.
+Slot for placing component control elements (buttons, switches, etc.).
 
-This slot lets you:
-- Place a button, icon, or any interactive trigger
-- Receive control data via a scoped slot (if provided by the component)
-- Customize open/close logic and extra actions
+**Parameters:**
+- `props: ControlItem` — object with control element data
 
+**Returns:** `VNode` — component control elements
+
+```html
+<Component>
+  <template #control="{ close }">
+    <button @click="close">Close</button>
+  </template>
+</Component>
+```
