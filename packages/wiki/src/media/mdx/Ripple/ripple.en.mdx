@@ -1,48 +1,42 @@
-## Ripple Wave Effect on Interaction
+Component for creating animated wave effect on element click.
 
-The `Ripple` component creates an animated wave effect when clicking on an element, similar to Material Design ripple effect. This enhances user experience by providing visual feedback during interaction.
+Ripple provides visual feedback during user interaction with interactive elements, automatically tracking clicks and generating an animated wave expanding from the touch point. The effect enhances user experience by making the interface more responsive and modern.
 
-### How it Works
+**Key Features:**
 
-The component automatically tracks click events and creates an animated wave that expands from the touch point. The effect works by:
+- Automatic click event tracking
+- Wave animation from touch point
+- Control via `disabled` property
+- Automatic animation removal after completion
+- Support for any interactive elements
 
-- Detecting click coordinates relative to the element
-- Creating a temporary element with expansion animation
-- Automatically removing the element after animation completion
+**Common Use Cases:**
 
-### Integration
-
-The component should be placed inside an interactive element that needs the ripple effect. The parent element must have `position: relative` for correct effect positioning.
-
-### Properties
-
-- **disabled** — Disables the ripple effect when set to `true`
-
-### Recommendations
-
-- Use on buttons, cards, and other interactive elements
-- Ensure the parent element has `position: relative`
-- Avoid using on elements that frequently change size
-
-### Usage Example
+- Buttons and links
+- Cards and lists
+- Toggles and checkboxes
+- Menu and navigation elements
+- Interactive icons
 
 ```html
-<!-- Button with ripple effect -->
-<button style="position: relative;">
-  Click me
-  <Ripple />
-</button>
+<template>
+  <!-- Button with ripple effect -->
+  <button style="position: relative;">
+    Click me
+    <Ripple />
+  </button>
 
-<!-- Disabled effect -->
-<button style="position: relative;">
-  No effect
-  <Ripple :disabled="true" />
-</button>
+  <!-- Disabled effect -->
+  <button style="position: relative;">
+    No effect
+    <Ripple :disabled="true" />
+  </button>
 
-<!-- Card with effect -->
-<div class="card" style="position: relative; cursor: pointer;">
-  <h3>Interactive card</h3>
-  <p>Card content</p>
-  <Ripple />
-</div>
+  <!-- Card with effect -->
+  <div class="card" style="position: relative; cursor: pointer;">
+    <h3>Interactive card</h3>
+    <p>Card content</p>
+    <Ripple />
+  </div>
+</template>
 ```
