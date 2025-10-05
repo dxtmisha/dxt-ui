@@ -1,0 +1,302 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Composables/useHashRef'/>
+
+# Композабл useHashRef
+
+Композабл для создания реактивной переменной, синхронизированной с URL hash. Автоматически управляет чтением и записью значений в hash часть URL, обеспечивая двустороннюю синхронизацию между реактивным состоянием Vue и параметрами в адресной строке браузера.
+
+## Основные возможности
+
+- **Двусторонняя синхронизация** — автоматическая синхронизация между ref и URL hash
+- **Автоматическое сохранение** — изменения ref автоматически отражаются в URL
+- **Реактивность** — изменения URL hash автоматически обновляют ref
+- **Кеширование экземпляров** — переиспользование ref для одинаковых имён параметров
+- **Типобезопасность** — полная поддержка TypeScript с дженериками
+- **Значения по умолчанию** — поддержка начальных значений и функций-фабрик
+- **Автоматическая инициализация** — загрузка существующих значений из URL при создании
+
+## Функция
+
+### `useHashRef`
+
+Создаёт реактивную переменную, синхронизированную с параметром в URL hash.
+
+**Параметры:**
+- `name: string` — имя параметра в hash URL
+- `defaultValue?: T | (() => T)` — значение по умолчанию или функция для его генерации (опционально)
+
+**Возвращает:** `Ref<T>` — реактивная переменная Vue, связанная с hash параметром
+
+```javascript
+import { useHashRef } from '@dxtmisha/functional'
+
+// Простое использование без значения по умолчанию
+const currentTab = useHashRef('tab')
+console.log(currentTab.value) // undefined (если hash пустой)
+
+// С значением по умолчанию
+const activeView = useHashRef('view', 'grid')
+console.log(activeView.value) // 'grid' (если hash не содержит 'view')
+
+// С функцией-фабрикой для значения по умолчанию
+const userId = useHashRef('userId', () => Math.floor(Math.random() * 1000))
+```
+
+## Основное использование
+
+### Базовая синхронизация
+
+```javascript
+import { useHashRef } from '@dxtmisha/functional'
+
+// Создание ref, синхронизированного с hash
+const currentPage = useHashRef('page', 1)
+
+// При изменении ref - URL автоматически обновляется
+currentPage.value = 2
+// URL: #page=2
+
+currentPage.value = 5
+// URL: #page=5
+
+// При изменении URL вручную - ref автоматически обновляется
+// Пользователь меняет URL на: #page=10
+console.log(currentPage.value) // 10
+```
+
+### Работа с несколькими параметрами
+
+```javascript
+// Несколько независимых hash параметров
+const searchQuery = useHashRef('q', '')
+const sortOrder = useHashRef('sort', 'asc')
+const pageNumber = useHashRef('page', 1)
+
+searchQuery.value = 'vue композаблы'
+sortOrder.value = 'desc'
+pageNumber.value = 3
+
+// URL: #q=vue композаблы;sort=desc;page=3
+
+// Все параметры остаются синхронизированными
+console.log(searchQuery.value) // 'vue композаблы'
+console.log(sortOrder.value)   // 'desc'
+console.log(pageNumber.value)  // 3
+```
+
+### Кеширование экземпляров
+
+```javascript
+// При повторном вызове с тем же именем возвращается существующий ref
+const tab1 = useHashRef('activeTab', 'home')
+const tab2 = useHashRef('activeTab', 'profile')
+
+console.log(tab1 === tab2) // true - тот же ref
+
+tab1.value = 'settings'
+console.log(tab2.value) // 'settings' - оба указывают на один ref
+```
+
+## Использование в компонентах
+
+### Управление табами
+
+```javascript
+import { useHashRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const activeTab = useHashRef('tab', 'overview')
+
+    return {
+      activeTab,
+      tabs: ['overview', 'details', 'settings']
+    }
+  }
+}
+
+// Template:
+// <div>
+//   <button
+//     v-for="tab in tabs"
+//     :key="tab"
+//     @click="activeTab = tab"
+//     :class="{ active: activeTab === tab }"
+//   >
+//     {{ tab }}
+//   </button>
+// </div>
+```
+
+### Пагинация с сохранением состояния
+
+```javascript
+import { computed } from 'vue'
+import { useHashRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const currentPage = useHashRef('page', 1)
+    const itemsPerPage = 20
+    const totalItems = 100
+
+    const totalPages = computed(() =>
+      Math.ceil(totalItems / itemsPerPage)
+    )
+
+    const nextPage = () => {
+      if (currentPage.value < totalPages.value) {
+        currentPage.value++
+      }
+    }
+
+    const prevPage = () => {
+      if (currentPage.value > 1) {
+        currentPage.value--
+      }
+    }
+
+    return {
+      currentPage,
+      totalPages,
+      nextPage,
+      prevPage
+    }
+  }
+}
+```
+
+### Фильтры и поиск
+
+```javascript
+import { watch } from 'vue'
+import { useHashRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const searchQuery = useHashRef('q', '')
+    const category = useHashRef('category', 'all')
+    const sortBy = useHashRef('sort', 'date')
+
+    // Отслеживание изменений для загрузки данных
+    watch([searchQuery, category, sortBy], () => {
+      console.log('Загрузка данных с параметрами:')
+      console.log('Поиск:', searchQuery.value)
+      console.log('Категория:', category.value)
+      console.log('Сортировка:', sortBy.value)
+      // Здесь выполняется запрос к API
+    })
+
+    return {
+      searchQuery,
+      category,
+      sortBy
+    }
+  }
+}
+```
+
+## Работа с типами данных
+
+### Числовые значения
+
+```javascript
+// Hash автоматически преобразует типы
+const pageNumber = useHashRef<number>('page', 1)
+
+pageNumber.value = 5
+// URL: #page=5
+
+// При загрузке из URL строка автоматически преобразуется
+// URL: #page=10
+console.log(typeof pageNumber.value) // 'number'
+console.log(pageNumber.value)        // 10
+```
+
+### Булевы значения
+
+```javascript
+const isActive = useHashRef<boolean>('active', false)
+
+isActive.value = true
+// URL: #active=true
+
+// Автоматическое преобразование из строки
+// URL: #active=false
+console.log(typeof isActive.value) // 'boolean'
+console.log(isActive.value)        // false
+```
+
+### Объекты и массивы
+
+```javascript
+// Для сложных типов используется сериализация
+const filters = useHashRef('filters', { min: 0, max: 100 })
+
+filters.value = { min: 20, max: 80 }
+// URL будет содержать сериализованное представление
+
+// Значения восстанавливаются при загрузке
+console.log(filters.value) // { min: 20, max: 80 }
+```
+
+## Интеграция с классом Hash
+
+Композабл использует класс `Hash` для управления URL hash:
+
+```javascript
+import { Hash } from '@dxtmisha/functional'
+
+// Прямое использование класса
+Hash.set('tab', 'profile')
+console.log(Hash.get('tab')) // 'profile'
+
+// useHashRef автоматически синхронизируется с Hash
+const tab = useHashRef('tab')
+console.log(tab.value) // 'profile'
+
+// Изменения через Hash отражаются в ref
+Hash.set('tab', 'settings')
+console.log(tab.value) // 'settings'
+```
+
+## Примеры использования
+
+### Сохранение состояния формы
+
+```javascript
+const formData = {
+  name: useHashRef('name', ''),
+  email: useHashRef('email', ''),
+  role: useHashRef('role', 'user')
+}
+
+// При заполнении формы состояние сохраняется в URL
+formData.name.value = 'Иван'
+formData.email.value = 'ivan@example.com'
+formData.role.value = 'admin'
+
+// URL: #name=Иван;email=ivan@example.com;role=admin
+
+// При перезагрузке страницы состояние восстанавливается
+```
+
+### Управление модальными окнами
+
+```javascript
+const modalOpen = useHashRef('modal', null)
+
+const openModal = (modalName) => {
+  modalOpen.value = modalName
+  // URL: #modal=confirmation
+}
+
+const closeModal = () => {
+  modalOpen.value = null
+  // URL: #modal=null или hash очищается
+}
+
+// Кнопка "Назад" в браузере закрывает модальное окно
+```
+

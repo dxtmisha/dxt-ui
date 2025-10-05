@@ -7,6 +7,7 @@ type DataStorageValue<T> = {
   age: number
 }
 
+const items: Record<string, DataStorage<any>> = {}
 let prefix: string = 'ui-storage'
 
 /**
@@ -43,12 +44,7 @@ export class DataStorage<T> {
       return items[nameCache] as DataStorage<T>
     }
 
-    const value = this.getValue()
-
-    if (value) {
-      this.value = value.value
-      this.age = value.age
-    }
+    this.make()
 
     items[nameCache] = this
   }
@@ -112,6 +108,16 @@ export class DataStorage<T> {
   }
 
   /**
+   * Clearing all data from storage.
+   *
+   * Очистка всех данных из хранилища.
+   */
+  update(): this {
+    this.make()
+    return this
+  }
+
+  /**
    * Checks for storage time limit.
    *
    * Проверяет на лимит времени хранения.
@@ -144,8 +150,8 @@ export class DataStorage<T> {
    *
    * Получение имени ключа в хранилище.
    */
-  private getIndex() {
-    return `${prefix}${this.name}`
+  private getIndex(): string {
+    return `${prefix}__${this.name}`
   }
 
   /**
@@ -166,6 +172,23 @@ export class DataStorage<T> {
 
     return undefined
   }
-}
 
-const items: Record<string, DataStorage<any>> = {}
+  /**
+   * Filling in the data from storage.
+   *
+   * Заполнение данными из хранилища.
+   */
+  private make(): this {
+    const value = this.getValue()
+
+    if (value) {
+      this.value = value.value
+      this.age = value.age
+    } else {
+      this.value = undefined
+      this.age = undefined
+    }
+
+    return this
+  }
+}

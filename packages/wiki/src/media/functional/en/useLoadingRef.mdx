@@ -1,0 +1,159 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Composables/useLoadingRef'/>
+
+# Composable useLoadingRef
+
+Composable for tracking global application loading status. Provides a reactive variable that automatically updates when loading state changes through the Loading class. Perfect for displaying global loading indicators, blocking UI during async operations, and coordinating multiple loading processes.
+
+## Key Features
+
+- **Global loading status** — single place to manage loading state for entire application
+- **Reactivity** — automatic updates when loading status changes
+- **Loading counter** — supports multiple concurrent loading operations
+- **Automatic subscription** — composable automatically subscribes to Loading events
+- **Type safety** — full TypeScript support
+- **Easy integration** — easily integrates with any Vue components
+- **Centralized control** — all components use single source of truth
+
+## Function
+
+### `useLoadingRef`
+
+Creates a reactive variable tracking global loading status.
+
+**Parameters:** none
+
+**Returns:** `ShallowRef<boolean>` — reactive variable with loading status
+
+```javascript
+import { useLoadingRef } from '@dxtmisha/functional'
+
+// Create reactive variable
+const isLoading = useLoadingRef()
+
+// isLoading.value === true when there are active loads
+// isLoading.value === false when no loads
+```
+
+## Basic Usage
+
+### Basic Loading Tracking
+
+```javascript
+import { useLoadingRef } from '@dxtmisha/functional'
+import { Loading } from '@dxtmisha/functional'
+
+// In component
+const isLoading = useLoadingRef()
+
+// Show loader
+Loading.show()
+console.log(isLoading.value) // true
+
+// Hide loader
+Loading.hide()
+console.log(isLoading.value) // false
+```
+
+### Working with Multiple Loads
+
+```javascript
+import { useLoadingRef, Loading } from '@dxtmisha/functional'
+
+const isLoading = useLoadingRef()
+
+// First loading operation
+Loading.show()
+console.log(isLoading.value) // true (counter = 1)
+
+// Second loading operation
+Loading.show()
+console.log(isLoading.value) // true (counter = 2)
+
+// Complete first operation
+Loading.hide()
+console.log(isLoading.value) // true (counter = 1)
+
+// Complete second operation
+Loading.hide()
+console.log(isLoading.value) // false (counter = 0)
+```
+
+## Usage in Components
+
+### Global Loading Indicator
+
+```javascript
+import { useLoadingRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const isLoading = useLoadingRef()
+
+    return { isLoading }
+  }
+}
+
+// Template:
+// <div v-if="isLoading" class="global-loader">
+//   <div class="spinner"></div>
+//   <p>Loading...</p>
+// </div>
+```
+
+### Integration with API Requests
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+import { useLoadingRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const isLoading = useLoadingRef()
+
+    const fetchUserData = async () => {
+      Loading.show()
+
+      try {
+        const response = await fetch('/api/user')
+        const data = await response.json()
+      } catch (error) {
+        console.error('Error:', error)
+      } finally {
+        Loading.hide()
+      }
+    }
+
+    return { isLoading, fetchUserData }
+  }
+}
+
+// Template:
+// <button @click="fetchUserData" :disabled="isLoading">
+//   Load Data
+// </button>
+```
+
+## Integration with Loading Class
+
+Composable is tightly integrated with `Loading` class:
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+import { useLoadingRef } from '@dxtmisha/functional'
+
+// In component A
+const isLoading = useLoadingRef()
+
+// Anywhere in application
+Loading.show() // isLoading.value automatically becomes true
+
+// In another component B
+Loading.hide() // isLoading.value in component A automatically updates
+
+// Check status
+console.log(Loading.is()) // true/false
+
+// All components with useLoadingRef() will be synchronized
+```

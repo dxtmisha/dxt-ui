@@ -1,0 +1,288 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Composables/useGeoIntlRef'/>
+
+# Composable useGeoIntlRef
+
+Composable for creating a reactive internationalization object. Provides methods for formatting numbers, currencies, dates and names with automatic locale detection. All methods return computed values that automatically update when input data changes.
+
+## Key Features
+
+- **Number formatting** — localized number representation with separators
+- **Currency formatting** — displaying monetary amounts with currency symbols
+- **Date formatting** — various date and time formats by regional standards
+- **Country and language names** — localized region names
+- **Relative time** — "2 days ago", "in 5 minutes", etc.
+- **Percentages and units** — formatting percentages and measurement units
+- **Reactivity** — all methods return computed that update automatically
+- **Auto locale detection** — uses user geolocation by default
+
+## Function
+
+### `useGeoIntlRef()`
+
+Creates and returns instance of `GeoIntlRef` class for working with data formatting.
+
+**Parameters:** none
+
+**Returns:** `GeoIntlRef` — object with formatting methods
+
+```javascript
+import { useGeoIntlRef } from '@dxtmisha/functional'
+
+// Create instance
+const intl = useGeoIntlRef()
+
+// All methods return ComputedRef
+const formatted = intl.number(1234.56)
+```
+
+## Number Formatting Methods
+
+### `number`
+
+Format number according to locale.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrString>` — number to format
+- `options?: Intl.NumberFormatOptions` — formatting options
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+const intl = useGeoIntlRef()
+const count = ref(1234567.89)
+
+intl.number(count) // ComputedRef<'1,234,567.89'>
+intl.number(1000, { minimumFractionDigits: 2 }) // ComputedRef<'1,000.00'>
+```
+
+### `decimal`
+
+Returns decimal separator symbol for current locale.
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+const intl = useGeoIntlRef()
+intl.decimal() // ComputedRef<'.'>  (for en-US)
+               // ComputedRef<','>  (for ru-RU)
+```
+
+### `percent`
+
+Format number as percentage.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrString>` — number to format (0.15 = 15%)
+- `options?: Intl.NumberFormatOptions` — formatting options
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+intl.percent(0.15)  // ComputedRef<'15%'>
+intl.percent(1.25)  // ComputedRef<'125%'>
+```
+
+### `percentBy100`
+
+Format number as percentage (value already in percents).
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrString>` — number to format (15 = 15%)
+- `options?: Intl.NumberFormatOptions` — formatting options
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+intl.percentBy100(15)   // ComputedRef<'15%'>
+intl.percentBy100(125)  // ComputedRef<'125%'>
+```
+
+## Currency Formatting Methods
+
+### `currency`
+
+Format monetary amount.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrString>` — amount to format
+- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>` — currency code or options
+- `numberOnly?: boolean` — don't show currency symbol (default `false`)
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+const intl = useGeoIntlRef()
+const price = ref(99.99)
+
+intl.currency(price, 'USD')           // ComputedRef<'$99.99'>
+intl.currency(1234.56, 'RUB')         // ComputedRef<'RUB 1,234.56'>
+intl.currency(500, 'EUR', true)       // ComputedRef<'500.00'> (no symbol)
+```
+
+### `unit`
+
+Format with measurement units.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrString>` — value to format
+- `unitOptions?: string | Intl.NumberFormatOptions` — unit or options
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+intl.unit(100, 'kilometer')  // ComputedRef<'100 km'>
+intl.unit(50, 'kilogram')    // ComputedRef<'50 kg'>
+intl.unit(1.5, 'hour')       // ComputedRef<'1.5 hr'>
+```
+
+## Date Formatting Methods
+
+### `date`
+
+Format date and time.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — date to format
+- `type?: GeoDate` — format type ('date' | 'time' | 'datetime' | 'full' | 'long' | 'medium' | 'short')
+- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — style or options
+- `hour24?: boolean` — use 24-hour format
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+const date = ref(new Date('2024-10-15 14:30:00'))
+
+intl.date(date)               // ComputedRef<'10/15/2024'>
+intl.date(date, 'time')       // ComputedRef<'2:30 PM'>
+intl.date(date, 'datetime')   // ComputedRef<'10/15/2024, 2:30 PM'>
+intl.date(date, 'full')       // ComputedRef<'Tuesday, October 15, 2024'>
+```
+
+### `relative`
+
+Format relative time ("2 days ago", "in 1 hour").
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — date to compare
+- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — style ('long' | 'short' | 'narrow')
+- `todayValue?: Date` — current date (default `new Date()`)
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+const twoDaysAgo = new Date()
+twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+
+intl.relative(twoDaysAgo)             // ComputedRef<'2 days ago'>
+intl.relative(twoDaysAgo, 'short')    // ComputedRef<'2 days ago'>
+```
+
+### `relativeLimit`
+
+Format relative time with limit. If difference exceeds limit, outputs absolute date.
+
+**Parameters:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — date to format
+- `limit: number` — limit in days
+- `todayValue?: Date` — current date
+- `relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — relative format options
+- `dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — date format options
+- `type?: GeoDate` — date format type
+- `hour24?: boolean` — 24-hour format
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+const threeDaysAgo = new Date()
+threeDaysAgo.setDate(threeDaysAgo.getDate() - 3)
+
+intl.relativeLimit(threeDaysAgo, 7)   // ComputedRef<'3 days ago'>
+
+const tenDaysAgo = new Date()
+tenDaysAgo.setDate(tenDaysAgo.getDate() - 10)
+
+intl.relativeLimit(tenDaysAgo, 7)     // ComputedRef<'10/05/2024'> (absolute date)
+```
+
+## Name Methods
+
+### `display`
+
+Get localized name (language, region, script, etc.).
+
+**Parameters:**
+- `value?: RefOrNormal<string>` — code to get name for
+- `typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions` — type ('language' | 'region' | 'script' | 'currency')
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+intl.display('US', 'region')    // ComputedRef<'United States'>
+intl.display('en', 'language')  // ComputedRef<'English'>
+intl.display('USD', 'currency') // ComputedRef<'US Dollar'>
+```
+
+### `languageName`
+
+Get language name.
+
+**Parameters:**
+- `value?: RefOrNormal<string>` — language code
+- `style?: Intl.RelativeTimeFormatStyle` — display style
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+intl.languageName('en')  // ComputedRef<'English'>
+intl.languageName('de')  // ComputedRef<'German'>
+```
+
+### `countryName`
+
+Get country name.
+
+**Parameters:**
+- `value?: RefOrNormal<string>` — country code
+- `style?: Intl.RelativeTimeFormatStyle` — display style
+
+**Returns:** `ComputedRef<string>`
+
+```javascript
+intl.countryName('US')  // ComputedRef<'United States'>
+intl.countryName('GB')  // ComputedRef<'United Kingdom'>
+```
+
+## Usage Examples
+
+### Basic Usage
+
+```javascript
+import { ref } from 'vue'
+import { useGeoIntlRef } from '@dxtmisha/functional'
+
+const intl = useGeoIntlRef()
+const price = ref(1234.56)
+
+// All methods return ComputedRef
+const formatted = intl.currency(price, 'USD')
+console.log(formatted.value) // '$1,234.56'
+
+// Automatic update on change
+price.value = 2000
+console.log(formatted.value) // '$2,000.00'
+```
+
+### Reactive Parameters
+
+```javascript
+const price = ref(100)
+const currency = ref('USD')
+
+// Reactive currency and value
+const formatted = intl.currency(price, currency)
+
+currency.value = 'EUR'
+// formatted.value automatically updates
+```

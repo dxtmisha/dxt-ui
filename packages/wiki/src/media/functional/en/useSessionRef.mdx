@@ -1,0 +1,248 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Composables/useSessionRef'/>
+
+# Composable useSessionRef
+
+Composable for creating a reactive variable synchronized with sessionStorage. Automatically manages reading and writing values to browser session storage with singleton pattern. Data persists only within the current tab/window and is deleted when it closes.
+
+## Key Features
+
+- **Two-way synchronization** — automatic sync between ref and sessionStorage
+- **Automatic persistence** — ref changes automatically saved to sessionStorage
+- **Tab isolation** — data not synchronized between tabs (unlike localStorage)
+- **Temporary storage** — data deleted when tab/browser closes
+- **Singleton pattern** — reuses ref for same keys
+- **Type safety** — full TypeScript support with generics
+- **Default values** — supports initial values and factory functions
+- **DataStorage integration** — uses DataStorage class for storage management
+
+## Function
+
+### `useSessionRef`
+
+Creates a reactive variable synchronized with sessionStorage.
+
+**Parameters:**
+- `name: string` — key name in sessionStorage
+- `defaultValue?: T | (() => T)` — default value or function to generate it (optional)
+
+**Returns:** `Ref<T | undefined>` — Vue reactive variable linked to sessionStorage
+
+```javascript
+import { useSessionRef } from '@dxtmisha/functional'
+
+// Simple usage
+const wizardStep = useSessionRef('wizard-step')
+
+// With default value
+const currentStep = useSessionRef('current-step', 1)
+
+// With factory function
+const sessionId = useSessionRef('session-id', () => Math.random().toString(36))
+```
+
+## Basic Usage
+
+### Basic Synchronization
+
+```javascript
+import { useSessionRef } from '@dxtmisha/functional'
+
+// Create ref synchronized with sessionStorage
+const wizardProgress = useSessionRef('wizard-progress', { step: 1 })
+
+// When ref changes - sessionStorage automatically updates
+wizardProgress.value = { step: 2, data: { name: 'John' } }
+
+// On page reload (in same tab) value is restored
+console.log(wizardProgress.value) // { step: 2, data: { name: 'John' } }
+
+// When tab closes, data is deleted
+```
+
+### Singleton Pattern
+
+```javascript
+// Repeated calls with same name return existing ref
+const step1 = useSessionRef('wizard-step', 1)
+const step2 = useSessionRef('wizard-step', 2)
+
+console.log(step1 === step2) // true - same ref
+
+step1.value = 3
+console.log(step2.value) // 3 - both point to same ref
+```
+
+## Usage in Components
+
+### Multi-step Wizard
+
+```javascript
+import { useSessionRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const currentStep = useSessionRef('wizard-step', 1)
+    const formData = useSessionRef('wizard-data', {
+      name: '',
+      email: '',
+      phone: ''
+    })
+
+    const nextStep = () => {
+      currentStep.value++
+    }
+
+    const prevStep = () => {
+      if (currentStep.value > 1) {
+        currentStep.value--
+      }
+    }
+
+    return {
+      currentStep,
+      formData,
+      nextStep,
+      prevStep
+    }
+  }
+}
+
+// Template:
+// <div>
+//   <div v-if="currentStep === 1">
+//     <input v-model="formData.name" placeholder="Name" />
+//   </div>
+//   <div v-if="currentStep === 2">
+//     <input v-model="formData.email" placeholder="Email" />
+//   </div>
+//   <button @click="prevStep">Back</button>
+//   <button @click="nextStep">Next</button>
+// </div>
+```
+
+### Temporary Filter State
+
+```javascript
+import { useSessionRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const filters = useSessionRef('search-filters', {
+      category: 'all',
+      priceMin: 0,
+      priceMax: 10000,
+      sortBy: 'name'
+    })
+
+    const resetFilters = () => {
+      filters.value = {
+        category: 'all',
+        priceMin: 0,
+        priceMax: 10000,
+        sortBy: 'name'
+      }
+    }
+
+    return { filters, resetFilters }
+  }
+}
+```
+
+## Differences from useStorageRef
+
+```javascript
+// useStorageRef - data persists between browser sessions
+const persistentTheme = useStorageRef('theme', 'light')
+// Data remains even after browser closes
+
+// useSessionRef - data deleted when tab closes
+const temporaryFilters = useSessionRef('filters', {})
+// Data deleted when tab/browser closes
+
+// useStorageRef syncs between tabs
+// useSessionRef isolated per tab
+```
+
+## Working with Data Types
+
+```javascript
+// Numbers
+const step = useSessionRef<number>('step', 1)
+step.value = 2
+
+// Booleans
+const isCompleted = useSessionRef<boolean>('completed', false)
+isCompleted.value = true
+
+// Objects
+const wizardData = useSessionRef('wizard-data', {
+  step: 1,
+  userData: {},
+  timestamp: Date.now()
+})
+
+// Arrays
+const selectedItems = useSessionRef<number[]>('selected', [])
+selectedItems.value.push(42)
+```
+
+## Usage Examples
+
+### Form Progress Persistence
+
+```javascript
+const registrationForm = useSessionRef('registration', {
+  step: 1,
+  personal: { name: '', email: '' },
+  address: { street: '', city: '' },
+  completed: false
+})
+
+// Data saved as form is filled
+registrationForm.value.personal.name = 'John'
+registrationForm.value.step = 2
+
+// On page reload (F5) data is restored
+// On tab close - everything is deleted
+```
+
+### Temporary Modal State
+
+```javascript
+const modalState = useSessionRef('modal', {
+  isOpen: false,
+  activeTab: 'details',
+  scrollPosition: 0
+})
+
+const openModal = () => {
+  modalState.value.isOpen = true
+}
+
+const closeModal = () => {
+  modalState.value.isOpen = false
+}
+```
+
+### Shopping Cart (Temporary)
+
+```javascript
+const cart = useSessionRef<CartItem[]>('temp-cart', [])
+
+const addToCart = (item: CartItem) => {
+  cart.value = [...cart.value, item]
+}
+
+const removeFromCart = (itemId: number) => {
+  cart.value = cart.value.filter(item => item.id !== itemId)
+}
+
+const clearCart = () => {
+  cart.value = []
+}
+
+// Cart is automatically cleared when tab closes
+```
+

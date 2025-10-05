@@ -35,6 +35,7 @@ export * from './classes/ref/ScrollbarWidthRef'
 
 // Composables
 export * from './composables/ref/useApiRef'
+export * from './composables/ref/useBroadcastValueRef'
 export * from './composables/ref/useCookieRef'
 export * from './composables/ref/useGeoIntlRef'
 export * from './composables/ref/useHashRef'

@@ -1,0 +1,344 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Composables/useBroadcastValueRef'/>
+
+# Композабл useBroadcastValueRef
+
+Композабл для создания реактивной переменной, синхронизированной между вкладками браузера через Broadcast Channel API. Автоматически управляет передачей данных между открытыми вкладками одного домена в реальном времени без использования localStorage. Идеально подходит для синхронизации состояния приложения, уведомлений и обмена данными между вкладками.
+
+## Основные возможности
+
+- **Реальная синхронизация** — мгновенная передача данных между вкладками браузера
+- **Broadcast Channel API** — использует нативный браузерный API для эффективной коммуникации
+- **Автоматическая синхронизация** — изменения в одной вкладке автоматически отражаются во всех остальных
+- **Singleton паттерн** — переиспользование канала для одинаковых имён
+- **Уникальная идентификация** — каждая сессия браузера получает уникальный ID
+- **Типобезопасность** — полная поддержка TypeScript с дженериками
+- **Значения по умолчанию** — поддержка начальных значений и функций-фабрик
+- **Изоляция сессий** — данные не передаются между разными сессиями браузера
+
+## Функция
+
+### `useBroadcastValueRef`
+
+Создаёт реактивную переменную, синхронизированную между вкладками через Broadcast Channel.
+
+**Параметры:**
+- `name: string` — имя канала для связи между вкладками
+- `defaultValue?: T | string | (() => (T | string))` — значение по умолчанию или функция для его генерации (опционально)
+
+**Возвращает:** `Ref<T | string | undefined>` — реактивная переменная Vue, синхронизированная между вкладками
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+// Простое использование
+const sharedCounter = useBroadcastValueRef('counter')
+
+// С значением по умолчанию
+const activeTab = useBroadcastValueRef('active-tab', 'home')
+
+// С функцией по умолчанию
+const sessionId = useBroadcastValueRef('session', () => Math.random().toString(36))
+```
+
+## Основное использование
+
+### Базовая синхронизация
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+// Создание синхронизированной переменной
+const counter = useBroadcastValueRef('counter', 0)
+
+// В первой вкладке
+counter.value = 5
+
+// Во второй вкладке автоматически обновляется
+console.log(counter.value) // 5
+
+// Изменение в любой вкладке отражается во всех остальных
+counter.value = 10
+// Все вкладки получат counter.value === 10 мгновенно
+```
+
+### Singleton паттерн
+
+```javascript
+// При повторном вызове с тем же именем возвращается существующий канал
+const channel1 = useBroadcastValueRef('notifications', null)
+const channel2 = useBroadcastValueRef('notifications', null)
+
+console.log(channel1 === channel2) // true - тот же ref
+
+channel1.value = { type: 'info', message: 'Привет!' }
+console.log(channel2.value) // { type: 'info', message: 'Привет!' }
+```
+
+## Использование в компонентах
+
+### Синхронизация уведомлений
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const notification = useBroadcastValueRef('notification', null)
+
+    const showNotification = (message, type = 'info') => {
+      notification.value = {
+        id: Date.now(),
+        type,
+        message,
+        timestamp: new Date()
+      }
+    }
+
+    return {
+      notification,
+      showNotification
+    }
+  }
+}
+
+// Template:
+// <div v-if="notification" class="notification">
+//   <span>{{ notification.message }}</span>
+//   <button @click="notification = null">×</button>
+// </div>
+//
+// Уведомление показывается во всех открытых вкладках
+```
+
+### Общий счётчик
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const cartCount = useBroadcastValueRef('cart-count', 0)
+
+    const addToCart = () => {
+      cartCount.value = (cartCount.value || 0) + 1
+    }
+
+    const removeFromCart = () => {
+      if (cartCount.value > 0) {
+        cartCount.value--
+      }
+    }
+
+    return {
+      cartCount,
+      addToCart,
+      removeFromCart
+    }
+  }
+}
+
+// Template:
+// <div>
+//   <span class="badge">{{ cartCount }}</span>
+//   <button @click="addToCart">Добавить</button>
+//   <button @click="removeFromCart">Удалить</button>
+// </div>
+//
+// Счётчик синхронизируется между всеми вкладками
+```
+
+## Синхронизация состояния
+
+### Активная вкладка
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+import { watch } from 'vue'
+
+export default {
+  setup() {
+    const activeTab = useBroadcastValueRef('active-nav-tab', 'home')
+
+    const setActiveTab = (tab) => {
+      activeTab.value = tab
+    }
+
+    // Отслеживание изменений из других вкладок
+    watch(activeTab, (newTab) => {
+      console.log(`Активная вкладка изменена на: ${newTab}`)
+    })
+
+    return {
+      activeTab,
+      setActiveTab
+    }
+  }
+}
+
+// При переключении вкладки в одном окне,
+// все остальные окна синхронизируются
+```
+
+### Статус авторизации
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const isAuthenticated = useBroadcastValueRef('auth-status', false)
+    const currentUser = useBroadcastValueRef('current-user', null)
+
+    const login = (userData) => {
+      currentUser.value = userData
+      isAuthenticated.value = true
+    }
+
+    const logout = () => {
+      currentUser.value = null
+      isAuthenticated.value = false
+    }
+
+    return {
+      isAuthenticated,
+      currentUser,
+      login,
+      logout
+    }
+  }
+}
+
+// При входе/выходе в одной вкладке,
+// все остальные вкладки обновляются мгновенно
+```
+
+## Отличия от useStorageRef
+
+```javascript
+// useStorageRef - через localStorage (постоянное хранение)
+const persistentData = useStorageRef('theme', 'light')
+// - Данные сохраняются в localStorage
+// - Синхронизация через storage event
+// - Более медленная передача данных
+// - Данные остаются после закрытия браузера
+
+// useBroadcastValueRef - через Broadcast Channel (в памяти)
+const realtimeData = useBroadcastValueRef('active-users', [])
+// - Данные в памяти (не сохраняются)
+// - Мгновенная синхронизация
+// - Быстрая передача данных
+// - Данные теряются при закрытии всех вкладок
+// - Изоляция между сессиями браузера
+```
+
+## Работа с типами данных
+
+```javascript
+// Числа
+const counter = useBroadcastValueRef<number>('counter', 0)
+counter.value = 42
+
+// Строки
+const message = useBroadcastValueRef<string>('message', '')
+message.value = 'Привет из другой вкладки!'
+
+// Объекты
+const userState = useBroadcastValueRef('user-state', {
+  id: null,
+  name: '',
+  online: false
+})
+userState.value = { id: 1, name: 'Иван', online: true }
+
+// Массивы
+const activeUsers = useBroadcastValueRef<number[]>('active-users', [])
+activeUsers.value = [1, 2, 3, 4, 5]
+```
+
+## Примеры использования
+
+### Чат между вкладками
+
+```javascript
+const chatMessages = useBroadcastValueRef('chat-messages', [])
+
+const sendMessage = (text) => {
+  const message = {
+    id: Date.now(),
+    text,
+    timestamp: new Date()
+  }
+
+  chatMessages.value = [...(chatMessages.value || []), message]
+}
+
+// Сообщения появляются во всех открытых вкладках мгновенно
+```
+
+### Синхронизация воспроизведения
+
+```javascript
+const playerState = useBroadcastValueRef('player', {
+  isPlaying: false,
+  currentTime: 0,
+  track: null
+})
+
+const play = () => {
+  playerState.value = { ...playerState.value, isPlaying: true }
+}
+
+const pause = () => {
+  playerState.value = { ...playerState.value, isPlaying: false }
+}
+
+// Управление плеером в одной вкладке
+// влияет на плееры во всех остальных
+```
+
+### Общие фильтры
+
+```javascript
+const filters = useBroadcastValueRef('search-filters', {
+  category: 'all',
+  priceMin: 0,
+  priceMax: 10000
+})
+
+const updateFilter = (key, value) => {
+  filters.value = { ...filters.value, [key]: value }
+}
+
+// Изменение фильтров синхронизируется
+// между всеми открытыми страницами поиска
+```
+
+## Уникальная идентификация сессии
+
+Композабл автоматически создаёт уникальный ID для каждой сессии браузера и сохраняет его в localStorage:
+
+```javascript
+// При первом запуске генерируется случайный ID
+// broadcast__name_1234567__counter
+//            ^^^^^^^^^ - уникальный ID сессии
+
+// Этот ID переиспользуется для всех каналов в рамках одной сессии
+// Разные сессии браузера имеют разные ID и не пересекаются
+```
+
+## Особенности Broadcast Channel API
+
+```javascript
+// Broadcast Channel работает только:
+// - В рамках одного origin (протокол + домен + порт)
+// - Между вкладками одного браузера
+// - В той же сессии браузера
+
+// НЕ работает:
+// - Между разными браузерами
+// - Между разными доменами
+// - В режиме инкогнито между обычными вкладками
+```
+

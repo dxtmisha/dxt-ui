@@ -1,0 +1,242 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Composables/useStorageRef'/>
+
+# Composable useStorageRef
+
+Composable for creating a reactive variable synchronized with localStorage. Automatically manages reading and writing values to browser local storage with caching support, cross-tab synchronization, and singleton pattern for efficient reuse.
+
+## Key Features
+
+- **Two-way synchronization** — automatic sync between ref and localStorage
+- **Automatic persistence** — ref changes automatically saved to localStorage
+- **Caching with TTL** — optional cache lifetime in seconds
+- **Cross-tab synchronization** — automatic updates when changes occur in other tabs
+- **Singleton pattern** — reuses ref for same keys
+- **Type safety** — full TypeScript support with generics
+- **Default values** — supports initial values and factory functions
+- **DataStorage integration** — uses DataStorage class for storage management
+
+## Function
+
+### `useStorageRef`
+
+Creates a reactive variable synchronized with localStorage.
+
+**Parameters:**
+- `name: string` — key name in localStorage
+- `defaultValue?: T | (() => T)` — default value or function to generate it (optional)
+- `cache?: number` — cache time in seconds (optional)
+
+**Returns:** `Ref<T | undefined>` — Vue reactive variable linked to localStorage
+
+```javascript
+import { useStorageRef } from '@dxtmisha/functional'
+
+// Simple usage
+const theme = useStorageRef('app-theme')
+
+// With default value
+const language = useStorageRef('app-language', 'en')
+
+// With factory function
+const userId = useStorageRef('user-id', () => Math.random().toString(36))
+
+// With caching (600 seconds = 10 minutes)
+const cachedData = useStorageRef('cached-data', null, 600)
+```
+
+## Basic Usage
+
+### Basic Synchronization
+
+```javascript
+import { useStorageRef } from '@dxtmisha/functional'
+
+// Create ref synchronized with localStorage
+const userTheme = useStorageRef('theme', 'light')
+
+// When ref changes - localStorage automatically updates
+userTheme.value = 'dark'
+// localStorage: { 'ui-storage__theme': '{"value":"dark","age":1234567890}' }
+
+// On page reload, value is restored
+console.log(userTheme.value) // 'dark'
+```
+
+### Singleton Pattern
+
+```javascript
+// Repeated calls with same name return existing ref
+const theme1 = useStorageRef('app-theme', 'light')
+const theme2 = useStorageRef('app-theme', 'dark')
+
+console.log(theme1 === theme2) // true - same ref
+
+theme1.value = 'blue'
+console.log(theme2.value) // 'blue' - both point to same ref
+```
+
+## Usage in Components
+
+### User Settings
+
+```javascript
+import { useStorageRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const theme = useStorageRef('user-theme', 'light')
+    const fontSize = useStorageRef('font-size', 16)
+    const notifications = useStorageRef('notifications', true)
+
+    return {
+      theme,
+      fontSize,
+      notifications
+    }
+  }
+}
+
+// Template:
+// <div>
+//   <select v-model="theme">
+//     <option value="light">Light</option>
+//     <option value="dark">Dark</option>
+//   </select>
+//   <input v-model.number="fontSize" type="number" />
+//   <input v-model="notifications" type="checkbox" />
+// </div>
+```
+
+### API Data Caching
+
+```javascript
+import { useStorageRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    // Cache for 10 minutes (600 seconds)
+    const userData = useStorageRef('user-data', null, 600)
+
+    const loadUserData = async () => {
+      if (userData.value) {
+        console.log('Data from cache')
+        return userData.value
+      }
+
+      console.log('Loading from server')
+      const response = await fetch('/api/user')
+      userData.value = await response.json()
+      return userData.value
+    }
+
+    return { userData, loadUserData }
+  }
+}
+```
+
+## Cross-tab Synchronization
+
+```javascript
+import { useStorageRef } from '@dxtmisha/functional'
+
+// In first tab
+const counter = useStorageRef('counter', 0)
+counter.value = 5
+
+// In second tab automatically updates
+// counter.value === 5 (thanks to storage event)
+
+// In third tab
+const sameCounter = useStorageRef('counter', 0)
+console.log(sameCounter.value) // 5
+
+// Changes in any tab update all others
+sameCounter.value = 10
+// All open tabs will have counter.value === 10
+```
+
+## Working with Data Types
+
+```javascript
+// Numbers
+const count = useStorageRef<number>('count', 0)
+count.value = 42
+
+// Booleans
+const isActive = useStorageRef<boolean>('active', false)
+isActive.value = true
+
+// Objects
+const settings = useStorageRef('settings', {
+  theme: 'dark',
+  language: 'en',
+  notifications: true
+})
+settings.value.theme = 'light'
+
+// Arrays
+const items = useStorageRef<string[]>('items', [])
+items.value.push('new item')
+```
+
+## Usage Examples
+
+### Form State Persistence
+
+```javascript
+const formData = useStorageRef('contact-form', {
+  name: '',
+  email: '',
+  message: ''
+})
+
+// When filling form, data is automatically saved
+formData.value.name = 'John'
+formData.value.email = 'john@example.com'
+
+// On page reload, data is restored
+```
+
+### User Favorites
+
+```javascript
+const favorites = useStorageRef<number[]>('favorites', [])
+
+const addToFavorites = (id: number) => {
+  if (!favorites.value.includes(id)) {
+    favorites.value = [...favorites.value, id]
+  }
+}
+
+const removeFromFavorites = (id: number) => {
+  favorites.value = favorites.value.filter(fav => fav !== id)
+}
+```
+
+### Cache with Auto-refresh
+
+```javascript
+// Cache for 5 minutes
+const newsData = useStorageRef('news', null, 300)
+
+const fetchNews = async () => {
+  // If cache is valid - return saved data
+  if (newsData.value) return newsData.value
+
+  // Otherwise load fresh data
+  const response = await fetch('/api/news')
+  newsData.value = await response.json()
+  return newsData.value
+}
+
+// First call - loads from server
+await fetchNews()
+
+// Subsequent calls within 5 minutes - use cache
+await fetchNews() // From cache
+
+// After 5+ minutes - loads from server again
+```
+

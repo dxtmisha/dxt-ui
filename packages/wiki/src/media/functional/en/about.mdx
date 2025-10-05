@@ -1,0 +1,55 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/About'/>
+
+# @dxtmisha/functional
+
+Functional utilities library for DXT UI ecosystem. Contains ready-made solutions for common web development tasks: HTTP requests, geolocation, date handling, data caching, and more.
+
+## Package Contents
+
+### Classes (20+)
+
+- **Api** — HTTP requests with caching support, loading indicators, and response mocking
+- **Geo** — detecting user's country and language, working with geodata and timezones
+- **Datetime** — date handling: formatting, manipulation, comparison with localization support
+- **Cache** — data caching system with automatic invalidation
+- **GeoFlag** — access to country flags (200+) with localized names
+- **GeoPhone** — phone codes and formatting masks for all countries
+- **GeoIntl** — internationalization: formatting numbers, currencies, dates by regional standards
+- **Cookie** — convenient cookie handling
+- **Hash** — URL hash parameter management
+- **DataStorage** — typed localStorage and sessionStorage operations
+- **Loading** — global loading indicator management
+- **Translate** — translation system with placeholder support
+- **Icons** — icon and SVG sprite management
+
+### Vue 3 Composables (10+)
+
+Reactive wrappers over classes for use in Vue components:
+
+- **useApiRef** — reactive HTTP requests with automatic loading state management
+- **useGeoIntlRef** — reactive formatting based on user locale
+- **useStorageRef** — two-way ref synchronization with localStorage/sessionStorage
+- **useHashRef** — two-way ref synchronization with URL hash
+- **useCookieRef** — reactive cookie operations
+- **useLoadingRef** — reactive loading state tracking
+- **useTranslateRef** — reactive translation system
+
+### Helper Functions (100+)
+
+**Arrays:** convert to array, filter, iterate, fill, unique values
+
+**Objects:** deep copy, merge objects, get values by path, compare
+
+**Strings:** case conversion (camelCase, kebabCase), string filling, template application
+
+**Validation:** type checking, emptiness checking, value comparison
+
+**DOM utilities:** element search, element creation, attribute handling, scrolling
+
+**Math:** safe number conversion, percentages, random numbers, step values
+
+**Async:** safe promise and function execution, animation frame handling
+
+**Clipboard:** copy and read clipboard data

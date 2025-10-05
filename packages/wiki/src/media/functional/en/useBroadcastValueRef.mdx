@@ -1,0 +1,344 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Composables/useBroadcastValueRef'/>
+
+# Composable useBroadcastValueRef
+
+Composable for creating a reactive variable synchronized between browser tabs via Broadcast Channel API. Automatically manages data transmission between open tabs of the same domain in real-time without using localStorage. Perfect for synchronizing application state, notifications, and data exchange between tabs.
+
+## Key Features
+
+- **Real-time synchronization** — instant data transmission between browser tabs
+- **Broadcast Channel API** — uses native browser API for efficient communication
+- **Automatic synchronization** — changes in one tab automatically reflect in all others
+- **Singleton pattern** — channel reuse for same names
+- **Unique identification** — each browser session gets unique ID
+- **Type safety** — full TypeScript support with generics
+- **Default values** — supports initial values and factory functions
+- **Session isolation** — data not transmitted between different browser sessions
+
+## Function
+
+### `useBroadcastValueRef`
+
+Creates reactive variable synchronized between tabs via Broadcast Channel.
+
+**Parameters:**
+- `name: string` — channel name for communication between tabs
+- `defaultValue?: T | string | (() => (T | string))` — default value or function to generate it (optional)
+
+**Returns:** `Ref<T | string | undefined>` — Vue reactive variable synchronized between tabs
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+// Simple usage
+const sharedCounter = useBroadcastValueRef('counter')
+
+// With default value
+const activeTab = useBroadcastValueRef('active-tab', 'home')
+
+// With factory function
+const sessionId = useBroadcastValueRef('session', () => Math.random().toString(36))
+```
+
+## Basic Usage
+
+### Basic Synchronization
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+// Create synchronized variable
+const counter = useBroadcastValueRef('counter', 0)
+
+// In first tab
+counter.value = 5
+
+// In second tab automatically updates
+console.log(counter.value) // 5
+
+// Change in any tab reflects in all others
+counter.value = 10
+// All tabs get counter.value === 10 instantly
+```
+
+### Singleton Pattern
+
+```javascript
+// Repeated calls with same name return existing channel
+const channel1 = useBroadcastValueRef('notifications', null)
+const channel2 = useBroadcastValueRef('notifications', null)
+
+console.log(channel1 === channel2) // true - same ref
+
+channel1.value = { type: 'info', message: 'Hello!' }
+console.log(channel2.value) // { type: 'info', message: 'Hello!' }
+```
+
+## Usage in Components
+
+### Notification Synchronization
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const notification = useBroadcastValueRef('notification', null)
+
+    const showNotification = (message, type = 'info') => {
+      notification.value = {
+        id: Date.now(),
+        type,
+        message,
+        timestamp: new Date()
+      }
+    }
+
+    return {
+      notification,
+      showNotification
+    }
+  }
+}
+
+// Template:
+// <div v-if="notification" class="notification">
+//   <span>{{ notification.message }}</span>
+//   <button @click="notification = null">×</button>
+// </div>
+//
+// Notification shows in all open tabs
+```
+
+### Shared Counter
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const cartCount = useBroadcastValueRef('cart-count', 0)
+
+    const addToCart = () => {
+      cartCount.value = (cartCount.value || 0) + 1
+    }
+
+    const removeFromCart = () => {
+      if (cartCount.value > 0) {
+        cartCount.value--
+      }
+    }
+
+    return {
+      cartCount,
+      addToCart,
+      removeFromCart
+    }
+  }
+}
+
+// Template:
+// <div>
+//   <span class="badge">{{ cartCount }}</span>
+//   <button @click="addToCart">Add</button>
+//   <button @click="removeFromCart">Remove</button>
+// </div>
+//
+// Counter syncs between all tabs
+```
+
+## State Synchronization
+
+### Active Tab
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+import { watch } from 'vue'
+
+export default {
+  setup() {
+    const activeTab = useBroadcastValueRef('active-nav-tab', 'home')
+
+    const setActiveTab = (tab) => {
+      activeTab.value = tab
+    }
+
+    // Track changes from other tabs
+    watch(activeTab, (newTab) => {
+      console.log(`Active tab changed to: ${newTab}`)
+    })
+
+    return {
+      activeTab,
+      setActiveTab
+    }
+  }
+}
+
+// When switching tab in one window,
+// all other windows synchronize
+```
+
+### Authentication Status
+
+```javascript
+import { useBroadcastValueRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const isAuthenticated = useBroadcastValueRef('auth-status', false)
+    const currentUser = useBroadcastValueRef('current-user', null)
+
+    const login = (userData) => {
+      currentUser.value = userData
+      isAuthenticated.value = true
+    }
+
+    const logout = () => {
+      currentUser.value = null
+      isAuthenticated.value = false
+    }
+
+    return {
+      isAuthenticated,
+      currentUser,
+      login,
+      logout
+    }
+  }
+}
+
+// When logging in/out in one tab,
+// all other tabs update instantly
+```
+
+## Differences from useStorageRef
+
+```javascript
+// useStorageRef - via localStorage (persistent storage)
+const persistentData = useStorageRef('theme', 'light')
+// - Data saved in localStorage
+// - Synchronization via storage event
+// - Slower data transmission
+// - Data remains after browser closes
+
+// useBroadcastValueRef - via Broadcast Channel (in memory)
+const realtimeData = useBroadcastValueRef('active-users', [])
+// - Data in memory (not saved)
+// - Instant synchronization
+// - Fast data transmission
+// - Data lost when all tabs close
+// - Isolation between browser sessions
+```
+
+## Working with Data Types
+
+```javascript
+// Numbers
+const counter = useBroadcastValueRef<number>('counter', 0)
+counter.value = 42
+
+// Strings
+const message = useBroadcastValueRef<string>('message', '')
+message.value = 'Hello from another tab!'
+
+// Objects
+const userState = useBroadcastValueRef('user-state', {
+  id: null,
+  name: '',
+  online: false
+})
+userState.value = { id: 1, name: 'John', online: true }
+
+// Arrays
+const activeUsers = useBroadcastValueRef<number[]>('active-users', [])
+activeUsers.value = [1, 2, 3, 4, 5]
+```
+
+## Usage Examples
+
+### Cross-tab Chat
+
+```javascript
+const chatMessages = useBroadcastValueRef('chat-messages', [])
+
+const sendMessage = (text) => {
+  const message = {
+    id: Date.now(),
+    text,
+    timestamp: new Date()
+  }
+
+  chatMessages.value = [...(chatMessages.value || []), message]
+}
+
+// Messages appear in all open tabs instantly
+```
+
+### Playback Synchronization
+
+```javascript
+const playerState = useBroadcastValueRef('player', {
+  isPlaying: false,
+  currentTime: 0,
+  track: null
+})
+
+const play = () => {
+  playerState.value = { ...playerState.value, isPlaying: true }
+}
+
+const pause = () => {
+  playerState.value = { ...playerState.value, isPlaying: false }
+}
+
+// Controlling player in one tab
+// affects players in all others
+```
+
+### Shared Filters
+
+```javascript
+const filters = useBroadcastValueRef('search-filters', {
+  category: 'all',
+  priceMin: 0,
+  priceMax: 10000
+})
+
+const updateFilter = (key, value) => {
+  filters.value = { ...filters.value, [key]: value }
+}
+
+// Filter changes synchronize
+// between all open search pages
+```
+
+## Unique Session Identification
+
+Composable automatically creates unique ID for each browser session and saves it in localStorage:
+
+```javascript
+// On first run, random ID is generated
+// broadcast__name_1234567__counter
+//            ^^^^^^^^^ - unique session ID
+
+// This ID is reused for all channels within one session
+// Different browser sessions have different IDs and don't overlap
+```
+
+## Broadcast Channel API Features
+
+```javascript
+// Broadcast Channel works only:
+// - Within same origin (protocol + domain + port)
+// - Between tabs of same browser
+// - In same browser session
+
+// Does NOT work:
+// - Between different browsers
+// - Between different domains
+// - In incognito mode between regular tabs
+```
+

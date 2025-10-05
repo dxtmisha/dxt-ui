@@ -110,15 +110,24 @@ export class Cookie<T> {
     }
   }
 
+  /**
+   * Update data from cookies.
+   *
+   * Обновляет данные из cookies.
+   */
+  static updateData() {
+    for (const item of document.cookie.split(';')) {
+      const [key, value] = item.trim().split('=')
+
+      if (key && isFilled(value)) {
+        cookie[key] = transformation(value)
+      }
+    }
+  }
+
   static {
     if (isDomRuntime()) {
-      for (const item of document.cookie.split(';')) {
-        const [key, value] = item.trim().split('=')
-
-        if (key && isFilled(value)) {
-          cookie[key] = transformation(value)
-        }
-      }
+      this.updateData()
     }
   }
 }

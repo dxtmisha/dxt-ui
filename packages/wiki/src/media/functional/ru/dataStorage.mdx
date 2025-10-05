@@ -13,7 +13,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Автоматическая сериализация** — JSON сериализация/десериализация обрабатывается автоматически
 - **Валидация времени кеша** — опциональное истечение кеша с автоматической очисткой
 - **Singleton паттерн** — переиспользует экземпляры для одинаковых ключей хранения
-- **Управление префиксами** — настраиваемый префикс для всех ключей хранения
+- **Управление префиксами** — настраиваемый префикс для всех ключей хранения (по умолчанию 'ui-storage')
 - **Поддержка функций как значений** — принимает функции как значения для динамической генерации данных
 - **Совместимость с браузерами** — безопасное использование с серверным рендерингом
 
@@ -26,6 +26,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 **Параметры:**
 - `newPrefix: string` — новый префикс для ключей хранения
 
+**Возвращает:** `void`
+
 ```javascript
 import { DataStorage } from '@dxtmisha/functional'
 
@@ -33,7 +35,8 @@ import { DataStorage } from '@dxtmisha/functional'
 DataStorage.setPrefix('myapp-storage')
 
 // Все ключи хранения теперь будут использовать этот префикс:
-// 'user-settings' → 'myapp-storage-user-settings'
+// 'user-settings' → 'myapp-storage__user-settings'
+// По умолчанию префикс: 'ui-storage'
 ```
 
 ## Конструктор
@@ -45,6 +48,8 @@ DataStorage.setPrefix('myapp-storage')
 **Параметры:**
 - `name: string` — имя ключа хранения
 - `isSession?: boolean` — использовать sessionStorage вместо localStorage (по умолчанию: false)
+
+**Возвращает:** `DataStorage<T>` — экземпляр класса (или существующий из кеша)
 
 ```javascript
 // Экземпляр localStorage
@@ -66,7 +71,7 @@ console.log(userPrefs === sameInstance) // true
 
 **Параметры:**
 - `defaultValue?: T | (() => T)` — значение по умолчанию или функция, если данные не найдены (опционально)
-- `cache?: number` — время кеширования в секундах для валидации (опционально)
+- `cache?: number` — время кеширования в **секундах** для валидации (опционально)
 
 **Возвращает:** `T | undefined` — сохранённые данные, значение по умолчанию или undefined
 
@@ -88,8 +93,10 @@ const config = settings.get(() => ({
   created: Date.now()
 }))
 
-// Получить с валидацией кеша (10 минут)
-const cachedData = settings.get(null, 600) // Возвращает null если данные старше 10 минут
+// Получить с валидацией кеша (600 секунд = 10 минут)
+const cachedData = settings.get(null, 600)
+// Возвращает undefined если данные старше 10 минут
+// Если кеш валиден - возвращает сохранённые данные
 ```
 
 ### `set`
@@ -131,23 +138,38 @@ const userStorage = new DataStorage('user-data')
 userStorage.set({ name: 'Иван', preferences: { theme: 'dark' } })
 console.log(userStorage.get()) // { name: 'Иван', preferences: { theme: 'dark' } }
 
-// Простое удаление
+// Удаление
 userStorage.remove()
 console.log(userStorage.get()) // undefined
 
-// Цепочка вызовов с другими экземплярами DataStorage
-const tempStorage = new DataStorage('temp-data')
-const anotherStorage = new DataStorage('another-data')
+// Цепочка вызовов
+userStorage
+  .set({ temp: 'data' })
+  .remove() // Удаляет только что сохранённые данные
+```
 
-// Операции цепочки через разные экземпляры
-tempStorage.set({ temp: true })
-anotherStorage.set({ another: true })
+### `update`
 
-tempStorage.remove() // Удалить временные данные
-anotherStorage.remove() // Удалить другие данные
+Обновляет данные из хранилища, перечитывая их заново.
 
-console.log(tempStorage.get()) // undefined
-console.log(anotherStorage.get()) // undefined
+**Возвращает:** `this` — экземпляр DataStorage для цепочки вызовов
+
+```javascript
+const storage = new DataStorage('shared-data')
+
+// Установить данные
+storage.set({ value: 'initial' })
+console.log(storage.get()) // { value: 'initial' }
+
+// Данные изменились в другой вкладке/окне браузера
+// или напрямую через localStorage.setItem()
+
+// Обновить данные из хранилища
+storage.update()
+console.log(storage.get()) // Получит актуальные данные из хранилища
+
+// Цепочка вызовов
+storage.update().get() // Обновить и получить свежие данные
 ```
 
 ## Практические примеры
@@ -155,84 +177,40 @@ console.log(anotherStorage.get()) // undefined
 ### Настройки пользователя
 
 ```javascript
-class UserSettings {
-  constructor() {
-    this.storage = new DataStorage('user-settings')
-  }
+const settings = new DataStorage('user-settings')
 
-  getTheme() {
-    return this.storage.get('theme', 'light')
-  }
+// Получить с значением по умолчанию
+const theme = settings.get(() => 'light')
+console.log(theme) // 'light' или сохранённое значение
 
-  setTheme(theme) {
-    this.storage.set('theme', theme)
-  }
+// Сохранить новое значение
+settings.set('dark')
 
-  getLanguage() {
-    return this.storage.get('language', 'ru')
-  }
-
-  setLanguage(language) {
-    this.storage.set('language', language)
-  }
-
-  exportSettings() {
-    return {
-      theme: this.getTheme(),
-      language: this.getLanguage(),
-      notifications: this.storage.get('notifications', true)
-    }
-  }
-}
-
-// Использование
-const settings = new UserSettings()
-settings.setTheme('dark')
-console.log('Настройки:', settings.exportSettings())
+// Удалить настройки
+settings.remove()
 ```
 
-### Кеш данных приложения
+### Кеш данных с TTL
 
 ```javascript
-const appCache = new DataStorage('app-cache', 'sessionStorage')
+async function fetchWithCache(url, cacheDuration = 300) {
+  const storage = new DataStorage(`api_${url}`)
 
-function cacheApiData(endpoint, data) {
-  const key = `api_${endpoint.replace(/\//g, '_')}`
-  appCache.set(key, { data, timestamp: Date.now() }, 5 * 60 * 1000) // 5 минут
-}
+  // Попытка получить из кеша (cacheDuration в секундах)
+  const cached = storage.get(undefined, cacheDuration)
+  if (cached) return cached
 
-function getCachedData(endpoint) {
-  const key = `api_${endpoint.replace(/\//g, '_')}`
-  return appCache.get(key)
-}
+  // Загрузка свежих данных
+  const response = await fetch(url)
+  const data = await response.json()
 
-// Использование
-cacheApiData('/users', [{ id: 1, name: 'Иван' }])
-const cached = getCachedData('/users')
-console.log('Кешированные данные:', cached)
-```
-
-### Состояние формы
-
-```javascript
-const formStorage = new DataStorage('form-draft')
-
-function saveFormDraft(formData) {
-  formStorage.set('draft', formData)
-}
-
-function loadFormDraft() {
-  return formStorage.get('draft', {})
-}
-
-function clearFormDraft() {
-  formStorage.remove('draft')
+  // Сохранение в кеш
+  storage.set(data)
+  return data
 }
 
 // Использование
-saveFormDraft({ name: 'Иван', email: 'ivan@example.com' })
-const draft = loadFormDraft()
-console.log('Черновик формы:', draft)
+const users = await fetchWithCache('/api/users', 600) // Кеш на 10 минут
 ```
 
-Класс DataStorage предоставляет единый интерфейс для работы с браузерными хранилищами, обеспечивая типобезопасность, автоматическую сериализацию и гибкое управление TTL.
+Класс DataStorage предоставляет единый интерфейс для работы с браузерными хранилищами, обеспечивая типобезопасность, автоматическую сериализацию и гибкое управление временем жизни данных с поддержкой singleton паттерна для эффективного использования памяти.

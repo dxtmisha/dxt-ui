@@ -1,0 +1,159 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Composables/useLoadingRef'/>
+
+# Композабл useLoadingRef
+
+Композабл для отслеживания глобального статуса загрузки приложения. Предоставляет реактивную переменную, которая автоматически обновляется при изменении состояния загрузки через класс Loading. Идеально подходит для отображения глобальных индикаторов загрузки, блокировки интерфейса во время асинхронных операций и координации множественных загрузочных процессов.
+
+## Основные возможности
+
+- **Глобальный статус загрузки** — единое место для управления состоянием загрузки всего приложения
+- **Реактивность** — автоматическое обновление при изменении статуса загрузки
+- **Счётчик загрузок** — поддержка множественных одновременных операций загрузки
+- **Автоматическая подписка** — композабл автоматически подписывается на события Loading
+- **Типобезопасность** — полная поддержка TypeScript
+- **Простая интеграция** — легко интегрируется с любыми компонентами Vue
+- **Централизованное управление** — все компоненты используют один источник истины
+
+## Функция
+
+### `useLoadingRef`
+
+Создаёт реактивную переменную, отслеживающую глобальный статус загрузки.
+
+**Параметры:** нет
+
+**Возвращает:** `ShallowRef<boolean>` — реактивная переменная со статусом загрузки
+
+```javascript
+import { useLoadingRef } from '@dxtmisha/functional'
+
+// Создание реактивной переменной
+const isLoading = useLoadingRef()
+
+// isLoading.value === true когда есть активные загрузки
+// isLoading.value === false когда загрузок нет
+```
+
+## Основное использование
+
+### Базовое отслеживание загрузки
+
+```javascript
+import { useLoadingRef } from '@dxtmisha/functional'
+import { Loading } from '@dxtmisha/functional'
+
+// В компоненте
+const isLoading = useLoadingRef()
+
+// Показать загрузчик
+Loading.show()
+console.log(isLoading.value) // true
+
+// Скрыть загрузчик
+Loading.hide()
+console.log(isLoading.value) // false
+```
+
+### Работа с множественными загрузками
+
+```javascript
+import { useLoadingRef, Loading } from '@dxtmisha/functional'
+
+const isLoading = useLoadingRef()
+
+// Первая операция загрузки
+Loading.show()
+console.log(isLoading.value) // true (счётчик = 1)
+
+// Вторая операция загрузки
+Loading.show()
+console.log(isLoading.value) // true (счётчик = 2)
+
+// Завершение первой операции
+Loading.hide()
+console.log(isLoading.value) // true (счётчик = 1)
+
+// Завершение второй операции
+Loading.hide()
+console.log(isLoading.value) // false (счётчик = 0)
+```
+
+## Использование в компонентах
+
+### Глобальный индикатор загрузки
+
+```javascript
+import { useLoadingRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const isLoading = useLoadingRef()
+
+    return { isLoading }
+  }
+}
+
+// Template:
+// <div v-if="isLoading" class="global-loader">
+//   <div class="spinner"></div>
+//   <p>Загрузка...</p>
+// </div>
+```
+
+### Интеграция с API запросами
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+import { useLoadingRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const isLoading = useLoadingRef()
+
+    const fetchUserData = async () => {
+      Loading.show()
+
+      try {
+        const response = await fetch('/api/user')
+        const data = await response.json()
+      } catch (error) {
+        console.error('Ошибка:', error)
+      } finally {
+        Loading.hide()
+      }
+    }
+
+    return { isLoading, fetchUserData }
+  }
+}
+
+// Template:
+// <button @click="fetchUserData" :disabled="isLoading">
+//   Загрузить данные
+// </button>
+```
+
+## Интеграция с классом Loading
+
+Композабл тесно интегрирован с классом `Loading`:
+
+```javascript
+import { Loading } from '@dxtmisha/functional'
+import { useLoadingRef } from '@dxtmisha/functional'
+
+// В компоненте A
+const isLoading = useLoadingRef()
+
+// В любом месте приложения
+Loading.show() // isLoading.value автоматически станет true
+
+// В другом компоненте B
+Loading.hide() // isLoading.value в компоненте A автоматически обновится
+
+// Проверка статуса
+console.log(Loading.is()) // true/false
+
+// Все компоненты с useLoadingRef() будут синхронизированы
+```

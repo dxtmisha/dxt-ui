@@ -1,0 +1,517 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Composables/useApiRef'/>
+
+# Composable useApiRef
+
+Composable for working with HTTP requests in Vue 3 applications. Provides reactive interface for executing API requests with automatic loading state management, reactive parameters support, conditional execution, and data transformation.
+
+## Key Features
+
+- **Reactive requests** — automatic request execution when parameters change
+- **State management** — automatic tracking of loading state and data readiness
+- **Conditional execution** — ability to execute requests only when conditions are met
+- **Data transformation** — transform received data before storing
+- **Api integration** — uses Api class for request execution with caching support
+- **Global conditions** — ability to set global conditions for all useApiRef instances
+- **Auto cleanup** — optional data cleanup on component unmount
+- **TypeScript support** — full typing with generics
+
+## Basic Usage
+
+### Simple GET Request
+
+```javascript
+import { useApiRef } from '@dxtmisha/functional'
+
+// Executes GET request on component mount
+const { data, loading, isStarting, reading } = useApiRef('/api/users')
+
+// data - ref with response data
+// loading - ref with loading state
+// isStarting - computed, true before first data load
+// reading - computed, true while reading data
+```
+
+### Component Usage
+
+```vue
+<script setup>
+import { useApiRef } from '@dxtmisha/functional'
+
+const { data: users, loading } = useApiRef('/api/users')
+</script>
+
+<template>
+  <div v-if="loading">Loading...</div>
+  <div v-else-if="users">
+    <div v-for="user in users" :key="user.id">
+      {{ user.name }}
+    </div>
+  </div>
+</template>
+```
+
+## Parameters
+
+### `path`
+
+Path to API endpoint. Can be a string or ref for reactivity.
+
+**Type:** `RefOrNormal<string | undefined>`
+
+```javascript
+// Static path
+const { data } = useApiRef('/api/users')
+
+// Reactive path
+const userId = ref(1)
+const { data: user } = useApiRef(computed(() => `/api/users/${userId.value}`))
+
+// New request executes automatically when userId changes
+userId.value = 2
+```
+
+### `options`
+
+Request parameters. Can be HTTP method, settings object, or ref.
+
+**Type:** `ApiMethodItem | RefOrNormal<ApiFetch>`
+
+```javascript
+// Specify method only
+const { data } = useApiRef('/api/users', 'POST')
+
+// Full settings
+const { data } = useApiRef('/api/users', {
+  method: 'POST',
+  request: { name: 'John', email: 'john@example.com' },
+  headers: { 'Content-Type': 'application/json' }
+})
+
+// Reactive parameters
+const params = ref({ page: 1, limit: 10 })
+const { data } = useApiRef('/api/users', computed(() => ({
+  method: 'GET',
+  request: params.value
+})))
+
+// New request on params change
+params.value = { page: 2, limit: 10 }
+```
+
+### `reactivity`
+
+Enable or disable automatic execution on parameter changes.
+
+**Type:** `boolean`
+**Default:** `true`
+
+```javascript
+// With reactivity (default)
+const params = ref({ page: 1 })
+const { data, reset } = useApiRef('/api/users', { request: params }, true)
+
+params.value.page = 2 // Request executes automatically
+
+// Without reactivity
+const { data, reset } = useApiRef('/api/users', { request: params }, false)
+
+params.value.page = 2 // Request does NOT execute
+await reset() // Need to call reset manually
+```
+
+### `conditions`
+
+Condition for request execution. Request executes only if condition is true.
+
+**Type:** `RefType<boolean>`
+
+```javascript
+// Request executes only when isAuth === true
+const isAuth = ref(false)
+const { data } = useApiRef('/api/profile', undefined, true, isAuth)
+
+// data will be undefined while isAuth === false
+console.log(data.value) // undefined
+
+isAuth.value = true // Request executes automatically
+```
+
+### `transformation`
+
+Function to transform received data before storing in ref.
+
+**Type:** `(data: T) => R`
+
+```javascript
+// Transform API data to needed format
+const { data } = useApiRef(
+  '/api/users',
+  undefined,
+  true,
+  undefined,
+  (response) => {
+    // response - data from API
+    // Return transformed data
+    return response.data.map(user => ({
+      id: user.id,
+      fullName: `${user.firstName} ${user.lastName}`,
+      isActive: user.status === 'active'
+    }))
+  }
+)
+
+// data contains transformed data
+```
+
+### `unmounted`
+
+Whether to clear data on component unmount.
+
+**Type:** `boolean`
+**Default:** `undefined`
+
+```javascript
+// Data will be cleared on component unmount
+const { data } = useApiRef('/api/users', undefined, true, undefined, undefined, true)
+
+// On page navigation, data becomes undefined
+```
+
+## Return Values
+
+### `data`
+
+Ref with response data. `undefined` before first load.
+
+**Type:** `Ref<R | undefined>`
+
+```javascript
+const { data } = useApiRef('/api/users')
+
+console.log(data.value) // undefined before load
+// After load: array of users
+```
+
+### `loading`
+
+Ref with loading state. `true` during request execution.
+
+**Type:** `Ref<boolean>`
+
+```javascript
+const { loading } = useApiRef('/api/users')
+
+console.log(loading.value) // true during load, false after
+```
+
+### `isStarting`
+
+Computed showing if data has been loaded at least once. `true` before first load.
+
+**Type:** `ComputedRef<boolean>`
+
+```javascript
+const { data, isStarting } = useApiRef('/api/users')
+
+console.log(isStarting.value) // true before first load
+// After first load always false, even on subsequent requests
+```
+
+### `reading`
+
+Computed showing active data reading.
+
+**Type:** `ComputedRef<boolean>`
+
+```javascript
+const { reading } = useApiRef('/api/users')
+
+console.log(reading.value) // true while reading data
+```
+
+### `reset`
+
+Function to force request execution.
+
+**Type:** `() => Promise<void>`
+
+```javascript
+const { data, reset } = useApiRef('/api/users')
+
+// Force reload data
+await reset()
+```
+
+## Usage Examples
+
+### List with Filters
+
+```vue
+<script setup>
+import { ref, computed } from 'vue'
+import { useApiRef } from '@dxtmisha/functional'
+
+const searchQuery = ref('')
+const currentPage = ref(1)
+
+const { data: users, loading } = useApiRef(
+  '/api/users',
+  computed(() => ({
+    method: 'GET',
+    request: {
+      search: searchQuery.value,
+      page: currentPage.value,
+      limit: 20
+    }
+  }))
+)
+
+const handleSearch = (query) => {
+  searchQuery.value = query
+  currentPage.value = 1 // Reset to first page
+  // Request executes automatically
+}
+</script>
+
+<template>
+  <div>
+    <input v-model="searchQuery" placeholder="Search...">
+    <div v-if="loading">Loading...</div>
+    <div v-else>
+      <div v-for="user in users" :key="user.id">{{ user.name }}</div>
+      <button @click="currentPage++">Next page</button>
+    </div>
+  </div>
+</template>
+```
+
+### Conditional Loading
+
+```vue
+<script setup>
+import { ref } from 'vue'
+import { useApiRef } from '@dxtmisha/functional'
+
+const showDetails = ref(false)
+const userId = ref(1)
+
+// Data loads only when showDetails === true
+const { data: userDetails, loading } = useApiRef(
+  computed(() => `/api/users/${userId.value}/details`),
+  undefined,
+  true,
+  showDetails
+)
+
+const toggleDetails = () => {
+  showDetails.value = !showDetails.value
+  // If showDetails becomes true, request executes automatically
+}
+</script>
+
+<template>
+  <button @click="toggleDetails">
+    {{ showDetails ? 'Hide' : 'Show' }} details
+  </button>
+  <div v-if="showDetails">
+    <div v-if="loading">Loading details...</div>
+    <div v-else-if="userDetails">{{ userDetails }}</div>
+  </div>
+</template>
+```
+
+### POST Request with Transformation
+
+```vue
+<script setup>
+import { ref } from 'vue'
+import { useApiRef } from '@dxtmisha/functional'
+
+const formData = ref({
+  firstName: '',
+  lastName: '',
+  email: ''
+})
+
+const { data: createdUser, loading, reset } = useApiRef(
+  '/api/users',
+  {
+    method: 'POST',
+    request: formData
+  },
+  false, // Disable automatic execution
+  undefined,
+  (response) => {
+    // Transform API response
+    return {
+      id: response.id,
+      fullName: `${response.firstName} ${response.lastName}`,
+      email: response.email,
+      createdAt: new Date(response.created_at)
+    }
+  }
+)
+
+const handleSubmit = async () => {
+  await reset() // Execute request manually
+  if (createdUser.value) {
+    console.log('User created:', createdUser.value)
+  }
+}
+</script>
+
+<template>
+  <form @submit.prevent="handleSubmit">
+    <input v-model="formData.firstName" placeholder="First name">
+    <input v-model="formData.lastName" placeholder="Last name">
+    <input v-model="formData.email" placeholder="Email">
+    <button :disabled="loading">
+      {{ loading ? 'Submitting...' : 'Create' }}
+    </button>
+  </form>
+</template>
+```
+
+### Multiple Requests
+
+```vue
+<script setup>
+import { useApiRef } from '@dxtmisha/functional'
+
+const { data: users, loading: usersLoading } = useApiRef('/api/users')
+const { data: posts, loading: postsLoading } = useApiRef('/api/posts')
+const { data: comments, loading: commentsLoading } = useApiRef('/api/comments')
+
+const isLoading = computed(() =>
+  usersLoading.value || postsLoading.value || commentsLoading.value
+)
+</script>
+
+<template>
+  <div v-if="isLoading">Loading data...</div>
+  <div v-else>
+    <section>
+      <h2>Users</h2>
+      <div v-for="user in users" :key="user.id">{{ user.name }}</div>
+    </section>
+    <section>
+      <h2>Posts</h2>
+      <div v-for="post in posts" :key="post.id">{{ post.title }}</div>
+    </section>
+    <section>
+      <h2>Comments</h2>
+      <div v-for="comment in comments" :key="comment.id">{{ comment.text }}</div>
+    </section>
+  </div>
+</template>
+```
+
+## Global Conditions
+
+The `setApiRefGlobalConditions` function allows setting a global condition for all useApiRef instances.
+
+```javascript
+import { setApiRefGlobalConditions, useApiRef } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// Global condition - e.g., authentication status
+const isAuthenticated = ref(false)
+setApiRefGlobalConditions(isAuthenticated)
+
+// Now all useApiRef will consider this condition
+const { data: profile } = useApiRef('/api/profile')
+const { data: settings } = useApiRef('/api/settings')
+
+// Requests won't execute while isAuthenticated === false
+isAuthenticated.value = true // All requests execute automatically
+```
+
+## Integration with Api Class
+
+useApiRef uses the Api class, so all Api settings apply automatically:
+
+```javascript
+import { Api, useApiRef } from '@dxtmisha/functional'
+
+// Configure base URL and headers
+Api.setUrl('/api/v1/')
+Api.setHeaders({
+  'Authorization': 'Bearer token123',
+  'Accept': 'application/json'
+})
+
+// useApiRef automatically uses these settings
+const { data } = useApiRef('/users') // Request to /api/v1/users with headers
+```
+
+## TypeScript
+
+```typescript
+interface User {
+  id: number
+  name: string
+  email: string
+}
+
+interface ApiResponse<T> {
+  data: T[]
+  total: number
+}
+
+// Type response data
+const { data } = useApiRef<User[]>('/api/users')
+
+// Type with transformation
+const { data } = useApiRef<User[], ApiResponse<User>>(
+  '/api/users',
+  undefined,
+  true,
+  undefined,
+  (response) => response.data // response typed as ApiResponse<User>
+)
+```
+
+## Behavior Features
+
+### Lazy Initialization
+
+Request doesn't execute until first access to `data`:
+
+```javascript
+const api = useApiRef('/api/users')
+
+// Request not executed yet
+console.log('Composable created')
+
+// Request executes on first access to data
+console.log(api.data.value)
+```
+
+### Automatic Reactivity
+
+When using ref or computed in parameters, requests execute automatically:
+
+```javascript
+const userId = ref(1)
+const { data } = useApiRef(computed(() => `/api/users/${userId.value}`))
+
+// Each userId change triggers a new request
+userId.value = 2 // Request to /api/users/2
+userId.value = 3 // Request to /api/users/3
+```
+
+### Preventing Duplicates
+
+If a request is already running, a new request won't start:
+
+```javascript
+const { reset, loading } = useApiRef('/api/users')
+
+await reset() // First request
+// loading.value === true
+
+await reset() // This call will be ignored until the first completes
+```
+

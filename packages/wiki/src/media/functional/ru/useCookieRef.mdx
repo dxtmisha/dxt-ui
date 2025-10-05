@@ -1,0 +1,348 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Composables/useCookieRef'/>
+
+# Композабл useCookieRef
+
+Композабл для создания реактивной переменной, синхронизированной с cookies браузера. Автоматически управляет чтением и записью значений в cookies с поддержкой синхронизации между вкладками через Broadcast Channel API, настройками срока действия и singleton паттерна для эффективного переиспользования.
+
+## Основные возможности
+
+- **Двусторонняя синхронизация** — автоматическая синхронизация между ref и cookies
+- **Синхронизация между вкладками** — изменения в одной вкладке мгновенно отражаются во всех остальных через Broadcast Channel
+- **Автоматическое сохранение** — изменения ref автоматически сохраняются в cookies
+- **Настройка срока действия** — поддержка expires, max-age и других опций cookies
+- **Singleton паттерн** — переиспользование ref для одинаковых имён cookies
+- **Типобезопасность** — полная поддержка TypeScript с дженериками
+- **Значения по умолчанию** — поддержка начальных значений и функций-фабрик
+- **Интеграция с Cookie** — использует класс Cookie для управления cookies
+
+## Функция
+
+### `useCookieRef`
+
+Создаёт реактивную переменную, синхронизированную с cookies браузера.
+
+**Параметры:**
+- `name: string` — имя cookie
+- `defaultValue?: T | string | (() => (T | string))` — значение по умолчанию или функция для его генерации (опционально)
+- `options?: CookieOptions` — дополнительные параметры cookie (опционально)
+
+**Возвращает:** `Ref<T | string | undefined>` — реактивная переменная Vue, связанная с cookie
+
+**CookieOptions:**
+- `expires?: number | Date` — дата истечения срока действия
+- `path?: string` — путь для cookie (по умолчанию '/')
+- `domain?: string` — домен для cookie
+- `secure?: boolean` — использовать только HTTPS
+- `sameSite?: 'Strict' | 'Lax' | 'None'` — политика SameSite
+
+```javascript
+import { useCookieRef } from '@dxtmisha/functional'
+
+// Простое использование
+const userToken = useCookieRef('token')
+
+// С значением по умолчанию
+const theme = useCookieRef('theme', 'light')
+
+// С опциями (срок действия 7 дней)
+const rememberMe = useCookieRef('remember', true, {
+  expires: 7,
+  path: '/',
+  sameSite: 'Lax'
+})
+```
+
+## Основное использование
+
+### Базовая синхронизация
+
+```javascript
+import { useCookieRef } from '@dxtmisha/functional'
+
+// Создание ref, синхронизированного с cookie
+const userTheme = useCookieRef('theme', 'light')
+
+// При изменении ref - cookie автоматически обновляется
+userTheme.value = 'dark'
+// document.cookie содержит: 'theme=dark'
+
+// При перезагрузке страницы значение восстанавливается
+console.log(userTheme.value) // 'dark'
+```
+
+### Singleton паттерн
+
+```javascript
+// При повторном вызове с тем же именем возвращается существующий ref
+const token1 = useCookieRef('auth-token', '')
+const token2 = useCookieRef('auth-token', '')
+
+console.log(token1 === token2) // true - тот же ref
+
+token1.value = 'abc123'
+console.log(token2.value) // 'abc123' - оба указывают на один ref
+```
+
+### Синхронизация между вкладками
+
+```javascript
+import { useCookieRef } from '@dxtmisha/functional'
+
+// В первой вкладке
+const userState = useCookieRef('user-online', 'active')
+userState.value = 'away'
+
+// Во второй вкладке автоматически обновляется мгновенно
+// userState.value === 'away' (благодаря Broadcast Channel)
+
+// В третьей вкладке
+const sameState = useCookieRef('user-online', 'active')
+console.log(sameState.value) // 'away'
+
+// Изменение в любой вкладке синхронизируется со всеми остальными
+```
+
+## Использование в компонентах
+
+### Настройки пользователя
+
+```javascript
+import { useCookieRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const theme = useCookieRef('user-theme', 'light', {
+      expires: 365 // 1 год
+    })
+
+    const language = useCookieRef('user-language', 'ru', {
+      expires: 365
+    })
+
+    const fontSize = useCookieRef('font-size', 16, {
+      expires: 30 // 30 дней
+    })
+
+    return {
+      theme,
+      language,
+      fontSize
+    }
+  }
+}
+
+// Template:
+// <div>
+//   <select v-model="theme">
+//     <option value="light">Светлая</option>
+//     <option value="dark">Тёмная</option>
+//   </select>
+//   <select v-model="language">
+//     <option value="ru">Русский</option>
+//     <option value="en">English</option>
+//   </select>
+// </div>
+```
+
+### Авторизация с "Запомнить меня"
+
+```javascript
+import { useCookieRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const authToken = useCookieRef('auth-token', '', {
+      expires: 7, // 7 дней
+      secure: true,
+      sameSite: 'Strict'
+    })
+
+    const rememberMe = useCookieRef('remember-me', false)
+
+    const login = (token) => {
+      const expires = rememberMe.value ? 30 : 1 // 30 дней или 1 день
+      authToken.value = token
+
+      // Обновить опции cookie
+      useCookieRef('auth-token', token, {
+        expires,
+        secure: true,
+        sameSite: 'Strict'
+      })
+    }
+
+    const logout = () => {
+      authToken.value = ''
+      rememberMe.value = false
+    }
+
+    return {
+      authToken,
+      rememberMe,
+      login,
+      logout
+    }
+  }
+}
+```
+
+## Настройки cookie
+
+### Срок действия
+
+```javascript
+// Expires в днях
+const token = useCookieRef('token', '', {
+  expires: 7 // удалится через 7 дней
+})
+
+// Expires как Date
+const session = useCookieRef('session', '', {
+  expires: new Date('2025-12-31')
+})
+
+// Без expires (сессионная cookie, удаляется при закрытии браузера)
+const tempData = useCookieRef('temp', '')
+```
+
+### Безопасность
+
+```javascript
+// HTTPS only
+const secureToken = useCookieRef('secure-token', '', {
+  secure: true,
+  sameSite: 'Strict'
+})
+
+// Cross-site запросы
+const apiToken = useCookieRef('api-token', '', {
+  secure: true,
+  sameSite: 'None' // требуется secure: true
+})
+```
+
+### Путь и домен
+
+```javascript
+// Для конкретного пути
+const adminPrefs = useCookieRef('admin-prefs', {}, {
+  path: '/admin'
+})
+
+// Для поддомена
+const sharedData = useCookieRef('shared', '', {
+  domain: '.example.com' // доступно для всех поддоменов
+})
+```
+
+## Работа с типами данных
+
+```javascript
+// Строки
+const username = useCookieRef<string>('username', '')
+username.value = 'Иван'
+
+// Числа (автоматическая сериализация)
+const count = useCookieRef<number>('count', 0)
+count.value = 42
+
+// Булевы значения
+const accepted = useCookieRef<boolean>('accepted', false)
+accepted.value = true
+
+// Объекты (JSON сериализация)
+const userPrefs = useCookieRef('prefs', {
+  theme: 'dark',
+  notifications: true
+})
+userPrefs.value = { theme: 'light', notifications: false }
+```
+
+## Интеграция с классом Cookie
+
+Композабл использует класс `Cookie` для управления cookies:
+
+```javascript
+import { Cookie } from '@dxtmisha/functional'
+
+// Прямое использование класса
+const cookie = new Cookie('theme')
+cookie.set('dark', { expires: 30 })
+console.log(cookie.get()) // 'dark'
+
+// useCookieRef автоматически синхронизируется
+const themeRef = useCookieRef('theme')
+console.log(themeRef.value) // 'dark'
+
+// Изменения через Cookie отражаются в ref (через Broadcast Channel)
+cookie.set('light')
+// themeRef.value автоматически обновится во всех вкладках
+```
+
+## Примеры использования
+
+### Согласие на cookies (GDPR)
+
+```javascript
+const cookieConsent = useCookieRef('cookie-consent', false, {
+  expires: 365,
+  sameSite: 'Lax'
+})
+
+const acceptCookies = () => {
+  cookieConsent.value = true
+}
+
+// В шаблоне:
+// <div v-if="!cookieConsent" class="cookie-banner">
+//   <p>Мы используем cookies...</p>
+//   <button @click="acceptCookies">Принять</button>
+// </div>
+```
+
+### Корзина покупок
+
+```javascript
+const cart = useCookieRef<CartItem[]>('shopping-cart', [], {
+  expires: 7
+})
+
+const addToCart = (item) => {
+  cart.value = [...cart.value, item]
+}
+
+const removeFromCart = (itemId) => {
+  cart.value = cart.value.filter(item => item.id !== itemId)
+}
+
+// Корзина синхронизируется между вкладками автоматически
+```
+
+### Отслеживание последних просмотров
+
+```javascript
+const recentlyViewed = useCookieRef<number[]>('recently-viewed', [], {
+  expires: 30
+})
+
+const addToRecent = (productId) => {
+  const recent = [productId, ...recentlyViewed.value.filter(id => id !== productId)]
+  recentlyViewed.value = recent.slice(0, 10) // Храним последние 10
+}
+```
+
+## Преимущества синхронизации через Broadcast Channel
+
+**В отличие от обычного ref с cookie:**
+- ✅ Мгновенная синхронизация между вкладками (не требуется перезагрузка)
+- ✅ Реальное время обновления (без задержек)
+- ✅ Эффективная передача данных (не через localStorage)
+- ✅ Изоляция сессий браузера
+
+**Механизм работы:**
+1. Изменение в одной вкладке → сохраняется в cookie
+2. Через Broadcast Channel (`__cookie:${name}`) отправляется сообщение
+3. Все остальные вкладки получают обновление мгновенно
+4. ref во всех вкладках обновляется автоматически

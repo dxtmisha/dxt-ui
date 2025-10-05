@@ -1,0 +1,62 @@
+{
+  "name": "@dxtmisha/ui",
+  "private": false,
+  "version": "0.1.1",
+  "type": "module",
+  "description": "Complete DXT UI design system - meta-package with all core libraries, components, styles and utilities",
+  "keywords": [
+    "dxt",
+    "ui",
+    "design-system",
+    "vue",
+    "components",
+    "typescript",
+    "scss",
+    "functional",
+    "constructor",
+    "styles",
+    "wiki",
+    "meta-package"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/ui"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
+  "files": [
+    "README.md",
+    "package.json",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "vue": ">=3.0.0",
+    "sass": "^1.50.0"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": false
+    },
+    "sass": {
+      "optional": false
+    }
+  },
+  "dependencies": {
+    "@dxtmisha/functional": "^1.1.0",
+    "@dxtmisha/constructor": "^0.23.0",
+    "@dxtmisha/styles": "^1.0.3",
+    "@dxtmisha/media": "^0.3.3",
+    "@dxtmisha/wiki": "^0.24.1",
+    "@dxtmisha/configuration": "^0.3.11",
+    "@dxtmisha/scripts": "^0.4.1"
+  },
+  "devDependencies": {}
+}

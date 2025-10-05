@@ -1,0 +1,312 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Composables/useTranslateRef'/>
+
+# Composable useTranslateRef
+
+Composable for getting translated texts by array of keys or string with key. Provides reactive variable that automatically updates when application language changes. Supports dynamic loading of translations from server and text templating with value substitution.
+
+## Key Features
+
+- **Reactive translations** — automatic updates when language changes
+- **Batch loading** — fetch multiple translations at once
+- **Dynamic loading** — automatic loading of missing translations from server
+- **Templating** — value substitution in translation text
+- **Synchronous fallback** — instant return of key before translation loads
+- **Type safety** — full TypeScript support with automatic type inference
+- **Request optimization** — request batching to server (160ms timeout)
+- **Geo integration** — automatic language detection from geolocation
+
+## Function
+
+### `useTranslateRef`
+
+Creates reactive variable with translations by array of keys.
+
+**Parameters:**
+- `names: (string | string[])[]` — array of translation keys or arrays with key and template parameters
+
+**Returns:** `ShallowRef<TranslateList<T>>` — reactive object with translations
+
+```javascript
+import { useTranslateRef } from '@dxtmisha/functional'
+
+// Simple translation
+const texts = useTranslateRef(['hello', 'goodbye', 'welcome'])
+console.log(texts.value.hello) // 'Hello'
+console.log(texts.value.goodbye) // 'Goodbye'
+
+// With templating
+const messages = useTranslateRef([
+  ['greeting', 'John'],
+  ['count', '5']
+])
+console.log(messages.value.greeting) // 'Hello, John!'
+console.log(messages.value.count) // 'Found: 5 items'
+```
+
+### `t` (alias)
+
+Short alias for `useTranslateRef`.
+
+**Parameters:**
+- `names: string[]` — array of translation keys
+
+**Returns:** `ShallowRef<TranslateList<T>>` — reactive object with translations
+
+```javascript
+import { t } from '@dxtmisha/functional'
+
+// Short notation
+const texts = t(['save', 'cancel', 'delete'])
+console.log(texts.value.save) // 'Save'
+```
+
+## Basic Usage
+
+### Basic Translation
+
+```javascript
+import { useTranslateRef } from '@dxtmisha/functional'
+
+// Get multiple translations
+const translations = useTranslateRef([
+  'button.save',
+  'button.cancel',
+  'message.success'
+])
+
+// Access translations
+console.log(translations.value['button.save']) // 'Save'
+console.log(translations.value['button.cancel']) // 'Cancel'
+console.log(translations.value['message.success']) // 'Success!'
+
+// Automatic update on language change
+// Geo.setLocation('ru-RU')
+// translations.value['button.save'] === 'Сохранить'
+```
+
+### Using `t` alias
+
+```javascript
+import { t } from '@dxtmisha/functional'
+
+// Short notation for translations
+const texts = t(['home', 'about', 'contact'])
+
+console.log(texts.value.home) // 'Home'
+console.log(texts.value.about) // 'About'
+console.log(texts.value.contact) // 'Contact'
+```
+
+## Usage in Components
+
+### Basic Form
+
+```javascript
+import { useTranslateRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const t = useTranslateRef([
+      'form.name',
+      'form.email',
+      'form.submit',
+      'form.reset'
+    ])
+
+    return { t }
+  }
+}
+
+// Template:
+// <form>
+//   <input :placeholder="t['form.name']" />
+//   <input :placeholder="t['form.email']" />
+//   <button>{{ t['form.submit'] }}</button>
+//   <button type="reset">{{ t['form.reset'] }}</button>
+// </form>
+```
+
+### Navigation Menu
+
+```javascript
+import { t } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const menu = t([
+      'menu.home',
+      'menu.products',
+      'menu.services',
+      'menu.contact'
+    ])
+
+    return { menu }
+  }
+}
+
+// Template:
+// <nav>
+//   <a href="/">{{ menu['menu.home'] }}</a>
+//   <a href="/products">{{ menu['menu.products'] }}</a>
+//   <a href="/services">{{ menu['menu.services'] }}</a>
+//   <a href="/contact">{{ menu['menu.contact'] }}</a>
+// </nav>
+```
+
+## Text Templating
+
+### Value Substitution
+
+```javascript
+import { useTranslateRef } from '@dxtmisha/functional'
+
+// Translations with parameters
+// Translation file: { "greeting": "Hello, {0}!", "items": "Found {0} of {1}" }
+const messages = useTranslateRef([
+  ['greeting', 'John'],
+  ['items', '5', '10']
+])
+
+console.log(messages.value.greeting) // 'Hello, John!'
+console.log(messages.value.items) // 'Found 5 of 10'
+```
+
+### Dynamic Parameters
+
+```javascript
+import { ref, computed } from 'vue'
+import { useTranslateRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const userName = ref('John')
+    const count = ref(5)
+
+    // Base translations
+    const t = useTranslateRef(['welcome', 'total'])
+
+    // Dynamic substitution in template
+    const welcomeMessage = computed(() =>
+      t.value.welcome.replace('{0}', userName.value)
+    )
+
+    const totalMessage = computed(() =>
+      t.value.total.replace('{0}', count.value)
+    )
+
+    return { welcomeMessage, totalMessage }
+  }
+}
+```
+
+## Automatic Update on Language Change
+
+```javascript
+import { watch } from 'vue'
+import { useTranslateRef } from '@dxtmisha/functional'
+import { Geo } from '@dxtmisha/functional'
+
+// Translations automatically update on language change
+const texts = useTranslateRef(['title', 'description'])
+
+console.log(texts.value.title) // 'Title' (en-US)
+
+// Change language
+Geo.setLocation('ru-RU')
+
+// texts.value automatically updates
+// texts.value.title === 'Заголовок'
+
+// Can track changes
+watch(() => texts.value, (newTranslations) => {
+  console.log('Translations updated:', newTranslations)
+})
+```
+
+## Integration with Translate Class
+
+Composable uses `Translate` class for translation management:
+
+```javascript
+import { Translate } from '@dxtmisha/functional'
+
+// Set URL for loading translations
+Translate.setUrl('/api/translations')
+
+// Set request parameter name
+Translate.setPropsName('keys')
+
+// Add translations manually (for SSR or tests)
+Translate.addSync({
+  'button.save': 'Save',
+  'button.cancel': 'Cancel'
+})
+
+// Get single translation
+const text = await Translate.get('button.save')
+console.log(text) // 'Save'
+
+// Synchronous get
+const syncText = Translate.getSync('button.save')
+console.log(syncText) // 'Save'
+```
+
+## Usage Examples
+
+### Data Table
+
+```javascript
+const table = useTranslateRef([
+  'table.name',
+  'table.email',
+  'table.status',
+  'table.actions'
+])
+
+// In template:
+// <thead>
+//   <th>{{ table['table.name'] }}</th>
+//   <th>{{ table['table.email'] }}</th>
+//   <th>{{ table['table.status'] }}</th>
+//   <th>{{ table['table.actions'] }}</th>
+// </thead>
+```
+
+### Validation Messages
+
+```javascript
+const validation = useTranslateRef([
+  'validation.required',
+  'validation.email',
+  'validation.minLength',
+  'validation.maxLength'
+])
+
+const validateField = (value) => {
+  if (!value) return validation.value['validation.required']
+  if (value.length < 3) return validation.value['validation.minLength']
+  return null
+}
+```
+
+### Dynamic Content
+
+```javascript
+import { computed } from 'vue'
+
+const status = ref('pending')
+const messages = useTranslateRef([
+  'status.pending',
+  'status.approved',
+  'status.rejected'
+])
+
+const statusText = computed(() =>
+  messages.value[`status.${status.value}`]
+)
+
+console.log(statusText.value) // 'Pending' (when status = 'pending')
+```
+

@@ -1,0 +1,312 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Composables/useTranslateRef'/>
+
+# Композабл useTranslateRef
+
+Композабл для получения переведённых текстов по массиву ключей или строке с ключом. Предоставляет реактивную переменную, которая автоматически обновляется при изменении языка приложения. Поддерживает динамическую подгрузку переводов с сервера и шаблонизацию текстов с подстановкой значений.
+
+## Основные возможности
+
+- **Реактивные переводы** — автоматическое обновление при смене языка
+- **Массовая загрузка** — получение нескольких переводов за один раз
+- **Динамическая подгрузка** — автоматическая загрузка отсутствующих переводов с сервера
+- **Шаблонизация** — подстановка значений в текст перевода
+- **Синхронный fallback** — мгновенный возврат ключа до загрузки перевода
+- **Типобезопасность** — полная поддержка TypeScript с автоматическим выводом типов
+- **Оптимизация запросов** — батчинг запросов к серверу (160ms таймаут)
+- **Интеграция с Geo** — автоматическое определение языка из геолокации
+
+## Функция
+
+### `useTranslateRef`
+
+Создаёт реактивную переменную с переводами по массиву ключей.
+
+**Параметры:**
+- `names: (string | string[])[]` — массив ключей переводов или массивов с ключом и параметрами для шаблона
+
+**Возвращает:** `ShallowRef<TranslateList<T>>` — реактивный объект с переводами
+
+```javascript
+import { useTranslateRef } from '@dxtmisha/functional'
+
+// Простой перевод
+const texts = useTranslateRef(['hello', 'goodbye', 'welcome'])
+console.log(texts.value.hello) // 'Привет'
+console.log(texts.value.goodbye) // 'До свидания'
+
+// С шаблонизацией
+const messages = useTranslateRef([
+  ['greeting', 'Иван'],
+  ['count', '5']
+])
+console.log(messages.value.greeting) // 'Привет, Иван!'
+console.log(messages.value.count) // 'Найдено: 5 элементов'
+```
+
+### `t` (алиас)
+
+Короткий алиас для `useTranslateRef`.
+
+**Параметры:**
+- `names: string[]` — массив ключей переводов
+
+**Возвращает:** `ShallowRef<TranslateList<T>>` — реактивный объект с переводами
+
+```javascript
+import { t } from '@dxtmisha/functional'
+
+// Короткая запись
+const texts = t(['save', 'cancel', 'delete'])
+console.log(texts.value.save) // 'Сохранить'
+```
+
+## Основное использование
+
+### Базовый перевод
+
+```javascript
+import { useTranslateRef } from '@dxtmisha/functional'
+
+// Получение нескольких переводов
+const translations = useTranslateRef([
+  'button.save',
+  'button.cancel',
+  'message.success'
+])
+
+// Доступ к переводам
+console.log(translations.value['button.save']) // 'Сохранить'
+console.log(translations.value['button.cancel']) // 'Отмена'
+console.log(translations.value['message.success']) // 'Успешно!'
+
+// Автоматическое обновление при смене языка
+// Geo.setLocation('en-US')
+// translations.value['button.save'] === 'Save'
+```
+
+### Использование алиаса `t`
+
+```javascript
+import { t } from '@dxtmisha/functional'
+
+// Короткая запись для переводов
+const texts = t(['home', 'about', 'contact'])
+
+console.log(texts.value.home) // 'Главная'
+console.log(texts.value.about) // 'О нас'
+console.log(texts.value.contact) // 'Контакты'
+```
+
+## Использование в компонентах
+
+### Базовая форма
+
+```javascript
+import { useTranslateRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const t = useTranslateRef([
+      'form.name',
+      'form.email',
+      'form.submit',
+      'form.reset'
+    ])
+
+    return { t }
+  }
+}
+
+// Template:
+// <form>
+//   <input :placeholder="t['form.name']" />
+//   <input :placeholder="t['form.email']" />
+//   <button>{{ t['form.submit'] }}</button>
+//   <button type="reset">{{ t['form.reset'] }}</button>
+// </form>
+```
+
+### Навигационное меню
+
+```javascript
+import { t } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const menu = t([
+      'menu.home',
+      'menu.products',
+      'menu.services',
+      'menu.contact'
+    ])
+
+    return { menu }
+  }
+}
+
+// Template:
+// <nav>
+//   <a href="/">{{ menu['menu.home'] }}</a>
+//   <a href="/products">{{ menu['menu.products'] }}</a>
+//   <a href="/services">{{ menu['menu.services'] }}</a>
+//   <a href="/contact">{{ menu['menu.contact'] }}</a>
+// </nav>
+```
+
+## Шаблонизация текстов
+
+### Подстановка значений
+
+```javascript
+import { useTranslateRef } from '@dxtmisha/functional'
+
+// Переводы с параметрами
+// Файл переводов: { "greeting": "Привет, {0}!", "items": "Найдено {0} из {1}" }
+const messages = useTranslateRef([
+  ['greeting', 'Иван'],
+  ['items', '5', '10']
+])
+
+console.log(messages.value.greeting) // 'Привет, Иван!'
+console.log(messages.value.items) // 'Найдено 5 из 10'
+```
+
+### Динамические параметры
+
+```javascript
+import { ref, computed } from 'vue'
+import { useTranslateRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const userName = ref('Иван')
+    const count = ref(5)
+
+    // Базовые переводы
+    const t = useTranslateRef(['welcome', 'total'])
+
+    // Динамическая подстановка в шаблоне
+    const welcomeMessage = computed(() =>
+      t.value.welcome.replace('{0}', userName.value)
+    )
+
+    const totalMessage = computed(() =>
+      t.value.total.replace('{0}', count.value)
+    )
+
+    return { welcomeMessage, totalMessage }
+  }
+}
+```
+
+## Автоматическое обновление при смене языка
+
+```javascript
+import { watch } from 'vue'
+import { useTranslateRef } from '@dxtmisha/functional'
+import { Geo } from '@dxtmisha/functional'
+
+// Переводы автоматически обновляются при смене языка
+const texts = useTranslateRef(['title', 'description'])
+
+console.log(texts.value.title) // 'Заголовок' (ru-RU)
+
+// Смена языка
+Geo.setLocation('en-US')
+
+// texts.value автоматически обновится
+// texts.value.title === 'Title'
+
+// Можно отслеживать изменения
+watch(() => texts.value, (newTranslations) => {
+  console.log('Переводы обновлены:', newTranslations)
+})
+```
+
+## Интеграция с классом Translate
+
+Композабл использует класс `Translate` для управления переводами:
+
+```javascript
+import { Translate } from '@dxtmisha/functional'
+
+// Установка URL для загрузки переводов
+Translate.setUrl('/api/translations')
+
+// Установка имени параметра запроса
+Translate.setPropsName('keys')
+
+// Добавление переводов вручную (для SSR или тестов)
+Translate.addSync({
+  'button.save': 'Сохранить',
+  'button.cancel': 'Отмена'
+})
+
+// Получение одного перевода
+const text = await Translate.get('button.save')
+console.log(text) // 'Сохранить'
+
+// Синхронное получение
+const syncText = Translate.getSync('button.save')
+console.log(syncText) // 'Сохранить'
+```
+
+## Примеры использования
+
+### Таблица данных
+
+```javascript
+const table = useTranslateRef([
+  'table.name',
+  'table.email',
+  'table.status',
+  'table.actions'
+])
+
+// В шаблоне:
+// <thead>
+//   <th>{{ table['table.name'] }}</th>
+//   <th>{{ table['table.email'] }}</th>
+//   <th>{{ table['table.status'] }}</th>
+//   <th>{{ table['table.actions'] }}</th>
+// </thead>
+```
+
+### Сообщения валидации
+
+```javascript
+const validation = useTranslateRef([
+  'validation.required',
+  'validation.email',
+  'validation.minLength',
+  'validation.maxLength'
+])
+
+const validateField = (value) => {
+  if (!value) return validation.value['validation.required']
+  if (value.length < 3) return validation.value['validation.minLength']
+  return null
+}
+```
+
+### Динамический контент
+
+```javascript
+import { computed } from 'vue'
+
+const status = ref('pending')
+const messages = useTranslateRef([
+  'status.pending',
+  'status.approved',
+  'status.rejected'
+])
+
+const statusText = computed(() =>
+  messages.value[`status.${status.value}`]
+)
+
+console.log(statusText.value) // 'Ожидает' (когда status = 'pending')
+```
+

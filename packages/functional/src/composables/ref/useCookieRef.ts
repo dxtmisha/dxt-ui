@@ -1,8 +1,8 @@
 import {
   type Ref,
-  ref,
   watch
 } from 'vue'
+import { useBroadcastValueRef } from './useBroadcastValueRef'
 
 import {
   Cookie,
@@ -27,7 +27,10 @@ export function useCookieRef<T>(
   }
 
   const cookie = new Cookie<T>(name)
-  const item = ref(cookie.get(defaultValue, options))
+  const item = useBroadcastValueRef(
+    `__cookie:${name}`,
+    cookie.get(defaultValue, options)
+  )
 
   watch(item, (value) => {
     cookie.set(value as T, options)

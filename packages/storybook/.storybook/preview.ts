@@ -22,8 +22,8 @@ const preview: Preview = {
     },
 
     options: {
-      storySort(a: any, b: any) {
-        a.title.localeCompare(b.title, { numeric: true })
+      storySort: {
+        method: 'alphabetical'
       }
     }
   }

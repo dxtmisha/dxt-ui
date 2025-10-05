@@ -1,4 +1,5 @@
 import { ref, type Ref, watch } from 'vue'
+import { isDomRuntime } from '../../functions/isDomRuntime'
 import { DataStorage } from '../../classes/DataStorage'
 
 /**
@@ -22,6 +23,13 @@ export function useStorageRef<T>(
   const item = ref<T | undefined>(storage.get(defaultValue, cache))
 
   watch(item, value => storage.set(value as T))
+
+  if (isDomRuntime()) {
+    window.addEventListener('storage', () => {
+      storage.update()
+      item.value = storage.get()
+    })
+  }
 
   items[name] = item
   return item as Ref<T>

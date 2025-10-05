@@ -13,7 +13,7 @@ Class for working with browser localStorage and sessionStorage with automatic se
 - **Automatic serialization** — JSON serialization/deserialization handled automatically
 - **Cache time validation** — optional cache expiration with automatic cleanup
 - **Singleton pattern** — reuses instances for same storage keys
-- **Prefix management** — configurable prefix for all storage keys
+- **Prefix management** — configurable prefix for all storage keys (default 'ui-storage')
 - **Function value support** — accepts functions as values for dynamic data generation
 - **Browser compatibility** — safe usage with server-side rendering
 
@@ -26,6 +26,8 @@ Sets the global prefix for all storage keys. Should be called at application sta
 **Parameters:**
 - `newPrefix: string` — new prefix for storage keys
 
+**Returns:** `void`
+
 ```javascript
 import { DataStorage } from '@dxtmisha/functional'
 
@@ -33,7 +35,8 @@ import { DataStorage } from '@dxtmisha/functional'
 DataStorage.setPrefix('myapp-storage')
 
 // All storage keys will now use this prefix:
-// 'user-settings' → 'myapp-storage-user-settings'
+// 'user-settings' → 'myapp-storage__user-settings'
+// Default prefix: 'ui-storage'
 ```
 
 ## Constructor
@@ -45,6 +48,8 @@ Creates DataStorage instance for specified key. Uses singleton pattern.
 **Parameters:**
 - `name: string` — storage key name
 - `isSession?: boolean` — use sessionStorage instead of localStorage (default: false)
+
+**Returns:** `DataStorage<T>` — class instance (or existing from cache)
 
 ```javascript
 // localStorage instance
@@ -66,7 +71,7 @@ Retrieves data from storage with optional default value and cache validation.
 
 **Parameters:**
 - `defaultValue?: T | (() => T)` — default value or function if no data found (optional)
-- `cache?: number` — cache time in seconds for validation (optional)
+- `cache?: number` — cache time in **seconds** for validation (optional)
 
 **Returns:** `T | undefined` — stored data, default value, or undefined
 
@@ -88,8 +93,10 @@ const config = settings.get(() => ({
   created: Date.now()
 }))
 
-// Get with cache validation (10 minutes)
-const cachedData = settings.get(null, 600) // Returns null if data older than 10 minutes
+// Get with cache validation (600 seconds = 10 minutes)
+const cachedData = settings.get(null, 600)
+// Returns undefined if data older than 10 minutes
+// Returns stored data if cache is valid
 ```
 
 ### `set`
@@ -99,7 +106,7 @@ Stores data in storage with automatic serialization.
 **Parameters:**
 - `value?: T | (() => T)` — value to store or function that returns value (optional)
 
-**Returns:** `T | undefined` — the stored value
+**Returns:** `T | undefined` — stored value
 
 ```javascript
 const userStorage = new DataStorage('user-data')
@@ -127,27 +134,42 @@ Removes data from storage.
 ```javascript
 const userStorage = new DataStorage('user-data')
 
-// First set some data
+// First set data
 userStorage.set({ name: 'John', preferences: { theme: 'dark' } })
 console.log(userStorage.get()) // { name: 'John', preferences: { theme: 'dark' } }
 
-// Simple removal
+// Remove
 userStorage.remove()
 console.log(userStorage.get()) // undefined
 
-// Method chaining with other DataStorage instances
-const tempStorage = new DataStorage('temp-data')
-const anotherStorage = new DataStorage('another-data')
+// Method chaining
+userStorage
+  .set({ temp: 'data' })
+  .remove() // Removes just saved data
+```
 
-// Chain operations across different instances
-tempStorage.set({ temp: true })
-anotherStorage.set({ another: true })
+### `update`
 
-tempStorage.remove() // Remove temp data
-anotherStorage.remove() // Remove another data
+Updates data from storage by re-reading it.
 
-console.log(tempStorage.get()) // undefined
-console.log(anotherStorage.get()) // undefined
+**Returns:** `this` — DataStorage instance for method chaining
+
+```javascript
+const storage = new DataStorage('shared-data')
+
+// Set data
+storage.set({ value: 'initial' })
+console.log(storage.get()) // { value: 'initial' }
+
+// Data changed in another tab/browser window
+// or directly via localStorage.setItem()
+
+// Update data from storage
+storage.update()
+console.log(storage.get()) // Gets actual data from storage
+
+// Method chaining
+storage.update().get() // Update and get fresh data
 ```
 
 ## Practical Examples
@@ -155,84 +177,40 @@ console.log(anotherStorage.get()) // undefined
 ### User Settings
 
 ```javascript
-class UserSettings {
-  constructor() {
-    this.storage = new DataStorage('user-settings')
-  }
+const settings = new DataStorage('user-settings')
 
-  getTheme() {
-    return this.storage.get('theme', 'light')
-  }
+// Get with default value
+const theme = settings.get(() => 'light')
+console.log(theme) // 'light' or saved value
 
-  setTheme(theme) {
-    this.storage.set('theme', theme)
-  }
+// Save new value
+settings.set('dark')
 
-  getLanguage() {
-    return this.storage.get('language', 'en')
-  }
-
-  setLanguage(language) {
-    this.storage.set('language', language)
-  }
-
-  exportSettings() {
-    return {
-      theme: this.getTheme(),
-      language: this.getLanguage(),
-      notifications: this.storage.get('notifications', true)
-    }
-  }
-}
-
-// Usage
-const settings = new UserSettings()
-settings.setTheme('dark')
-console.log('Settings:', settings.exportSettings())
+// Remove settings
+settings.remove()
 ```
 
-### Application Cache
+### Data Cache with TTL
 
 ```javascript
-const appCache = new DataStorage('app-cache', 'sessionStorage')
+async function fetchWithCache(url, cacheDuration = 300) {
+  const storage = new DataStorage(`api_${url}`)
 
-function cacheApiData(endpoint, data) {
-  const key = `api_${endpoint.replace(/\//g, '_')}`
-  appCache.set(key, { data, timestamp: Date.now() }, 5 * 60 * 1000) // 5 minutes
-}
+  // Try to get from cache (cacheDuration in seconds)
+  const cached = storage.get(undefined, cacheDuration)
+  if (cached) return cached
 
-function getCachedData(endpoint) {
-  const key = `api_${endpoint.replace(/\//g, '_')}`
-  return appCache.get(key)
-}
+  // Load fresh data
+  const response = await fetch(url)
+  const data = await response.json()
 
-// Usage
-cacheApiData('/users', [{ id: 1, name: 'John' }])
-const cached = getCachedData('/users')
-console.log('Cached data:', cached)
-```
-
-### Form State
-
-```javascript
-const formStorage = new DataStorage('form-draft')
-
-function saveFormDraft(formData) {
-  formStorage.set('draft', formData)
-}
-
-function loadFormDraft() {
-  return formStorage.get('draft', {})
-}
-
-function clearFormDraft() {
-  formStorage.remove('draft')
+  // Save to cache
+  storage.set(data)
+  return data
 }
 
 // Usage
-saveFormDraft({ name: 'John', email: 'john@example.com' })
-const draft = loadFormDraft()
-console.log('Form draft:', draft)
+const users = await fetchWithCache('/api/users', 600) // Cache for 10 minutes
 ```
 
-The DataStorage class provides a unified interface for working with browser storage, ensuring type safety, automatic serialization, and flexible TTL management.
+DataStorage class provides a unified interface for working with browser storage, ensuring type safety, automatic serialization, and flexible data lifetime management with singleton pattern support for efficient memory usage.

@@ -1,0 +1,288 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Composables/useGeoIntlRef'/>
+
+# Композабл useGeoIntlRef
+
+Композабл для создания реактивного объекта интернационализации. Предоставляет методы форматирования чисел, валют, дат и названий с автоматическим учётом локали пользователя. Все методы возвращают computed значения, которые автоматически обновляются при изменении входных данных.
+
+## Основные возможности
+
+- **Форматирование чисел** — локализованное представление чисел с разделителями
+- **Форматирование валют** — отображение денежных сумм с символами валют
+- **Форматирование дат** — различные форматы дат и времени по региональным стандартам
+- **Названия стран и языков** — локализованные названия регионов
+- **Относительное время** — "2 дня назад", "через 5 минут" и т.д.
+- **Проценты и единицы** — форматирование процентов и единиц измерения
+- **Реактивность** — все методы возвращают computed, обновляющиеся автоматически
+- **Автоопределение локали** — использует геолокацию пользователя по умолчанию
+
+## Функция
+
+### `useGeoIntlRef()`
+
+Создаёт и возвращает экземпляр класса `GeoIntlRef` для работы с форматированием данных.
+
+**Параметры:** нет
+
+**Возвращает:** `GeoIntlRef` — объект с методами форматирования
+
+```javascript
+import { useGeoIntlRef } from '@dxtmisha/functional'
+
+// Создание экземпляра
+const intl = useGeoIntlRef()
+
+// Все методы возвращают ComputedRef
+const formatted = intl.number(1234.56)
+```
+
+## Методы форматирования чисел
+
+### `number`
+
+Форматирование числа согласно локали.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число для форматирования
+- `options?: Intl.NumberFormatOptions` — опции форматирования
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+const intl = useGeoIntlRef()
+const count = ref(1234567.89)
+
+intl.number(count) // ComputedRef<'1 234 567,89'>
+intl.number(1000, { minimumFractionDigits: 2 }) // ComputedRef<'1 000,00'>
+```
+
+### `decimal`
+
+Возвращает символ десятичного разделителя для текущей локали.
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+const intl = useGeoIntlRef()
+intl.decimal() // ComputedRef<','>  (для ru-RU)
+               // ComputedRef<'.'>  (для en-US)
+```
+
+### `percent`
+
+Форматирование числа как процента.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число для форматирования (0.15 = 15%)
+- `options?: Intl.NumberFormatOptions` — опции форматирования
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+intl.percent(0.15)  // ComputedRef<'15%'>
+intl.percent(1.25)  // ComputedRef<'125%'>
+```
+
+### `percentBy100`
+
+Форматирование числа как процента (значение уже в процентах).
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — число для форматирования (15 = 15%)
+- `options?: Intl.NumberFormatOptions` — опции форматирования
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+intl.percentBy100(15)   // ComputedRef<'15%'>
+intl.percentBy100(125)  // ComputedRef<'125%'>
+```
+
+## Методы форматирования валют
+
+### `currency`
+
+Форматирование денежной суммы.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — сумма для форматирования
+- `currencyOptions?: RefOrNormal<string | Intl.NumberFormatOptions>` — код валюты или опции
+- `numberOnly?: boolean` — не показывать символ валюты (по умолчанию `false`)
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+const intl = useGeoIntlRef()
+const price = ref(99.99)
+
+intl.currency(price, 'USD')           // ComputedRef<'$99,99'>
+intl.currency(1234.56, 'RUB')         // ComputedRef<'1 234,56 ₽'>
+intl.currency(500, 'EUR', true)       // ComputedRef<'500,00'> (без символа)
+```
+
+### `unit`
+
+Форматирование с единицами измерения.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrString>` — значение для форматирования
+- `unitOptions?: string | Intl.NumberFormatOptions` — единица измерения или опции
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+intl.unit(100, 'kilometer')  // ComputedRef<'100 км'>
+intl.unit(50, 'kilogram')    // ComputedRef<'50 кг'>
+intl.unit(1.5, 'hour')       // ComputedRef<'1,5 ч'>
+```
+
+## Методы форматирования дат
+
+### `date`
+
+Форматирование даты и времени.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — дата для форматирования
+- `type?: GeoDate` — тип формата ('date' | 'time' | 'datetime' | 'full' | 'long' | 'medium' | 'short')
+- `styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — стиль или опции
+- `hour24?: boolean` — использовать 24-часовой формат
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+const date = ref(new Date('2024-10-15 14:30:00'))
+
+intl.date(date)               // ComputedRef<'15.10.2024'>
+intl.date(date, 'time')       // ComputedRef<'14:30'>
+intl.date(date, 'datetime')   // ComputedRef<'15.10.2024, 14:30'>
+intl.date(date, 'full')       // ComputedRef<'вторник, 15 октября 2024 г.'>
+```
+
+### `relative`
+
+Форматирование относительного времени ("2 дня назад", "через час").
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — дата для сравнения
+- `styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — стиль ('long' | 'short' | 'narrow')
+- `todayValue?: Date` — текущая дата (по умолчанию `new Date()`)
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+const twoDaysAgo = new Date()
+twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+
+intl.relative(twoDaysAgo)             // ComputedRef<'2 дня назад'>
+intl.relative(twoDaysAgo, 'short')    // ComputedRef<'2 дн. назад'>
+```
+
+### `relativeLimit`
+
+Форматирование относительного времени с ограничением. Если разница превышает лимит, выводится абсолютная дата.
+
+**Параметры:**
+- `value: RefOrNormal<NumberOrStringOrDate>` — дата для форматирования
+- `limit: number` — лимит в днях
+- `todayValue?: Date` — текущая дата
+- `relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions` — опции относительного формата
+- `dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions` — опции формата даты
+- `type?: GeoDate` — тип формата даты
+- `hour24?: boolean` — 24-часовой формат
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+const threeDaysAgo = new Date()
+threeDaysAgo.setDate(threeDaysAgo.getDate() - 3)
+
+intl.relativeLimit(threeDaysAgo, 7)   // ComputedRef<'3 дня назад'>
+
+const tenDaysAgo = new Date()
+tenDaysAgo.setDate(tenDaysAgo.getDate() - 10)
+
+intl.relativeLimit(tenDaysAgo, 7)     // ComputedRef<'05.10.2024'> (абсолютная дата)
+```
+
+## Методы для названий
+
+### `display`
+
+Получение локализованного названия (языка, региона, скрипта и т.д.).
+
+**Параметры:**
+- `value?: RefOrNormal<string>` — код для получения названия
+- `typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions` — тип ('language' | 'region' | 'script' | 'currency')
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+intl.display('US', 'region')    // ComputedRef<'США'>
+intl.display('en', 'language')  // ComputedRef<'английский'>
+intl.display('USD', 'currency') // ComputedRef<'доллар США'>
+```
+
+### `languageName`
+
+Получение названия языка.
+
+**Параметры:**
+- `value?: RefOrNormal<string>` — код языка
+- `style?: Intl.RelativeTimeFormatStyle` — стиль отображения
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+intl.languageName('en')  // ComputedRef<'английский'>
+intl.languageName('de')  // ComputedRef<'немецкий'>
+```
+
+### `countryName`
+
+Получение названия страны.
+
+**Параметры:**
+- `value?: RefOrNormal<string>` — код страны
+- `style?: Intl.RelativeTimeFormatStyle` — стиль отображения
+
+**Возвращает:** `ComputedRef<string>`
+
+```javascript
+intl.countryName('US')  // ComputedRef<'США'>
+intl.countryName('GB')  // ComputedRef<'Великобритания'>
+```
+
+## Примеры использования
+
+### Базовое использование
+
+```javascript
+import { ref } from 'vue'
+import { useGeoIntlRef } from '@dxtmisha/functional'
+
+const intl = useGeoIntlRef()
+const price = ref(1234.56)
+
+// Все методы возвращают ComputedRef
+const formatted = intl.currency(price, 'USD')
+console.log(formatted.value) // '$1,234.56'
+
+// Автоматическое обновление при изменении
+price.value = 2000
+console.log(formatted.value) // '$2,000.00'
+```
+
+### Реактивные параметры
+
+```javascript
+const price = ref(100)
+const currency = ref('USD')
+
+// Реактивная валюта и значение
+const formatted = intl.currency(price, currency)
+
+currency.value = 'EUR'
+// formatted.value автоматически обновится
+```

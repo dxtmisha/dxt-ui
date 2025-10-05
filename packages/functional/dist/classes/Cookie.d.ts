@@ -48,5 +48,11 @@ export declare class Cookie<T> {
      * Обновление данных cookie.
      */
     private update;
+    /**
+     * Update data from cookies.
+     *
+     * Обновляет данные из cookies.
+     */
+    static updateData(): void;
 }
 export {};

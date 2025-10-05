@@ -43,6 +43,12 @@ export declare class DataStorage<T> {
      */
     remove(): this;
     /**
+     * Clearing all data from storage.
+     *
+     * Очистка всех данных из хранилища.
+     */
+    update(): this;
+    /**
      * Checks for storage time limit.
      *
      * Проверяет на лимит времени хранения.
@@ -67,4 +73,10 @@ export declare class DataStorage<T> {
      * Получение данных из хранилища.
      */
     private getValue;
+    /**
+     * Filling in the data from storage.
+     *
+     * Заполнение данными из хранилища.
+     */
+    private make;
 }

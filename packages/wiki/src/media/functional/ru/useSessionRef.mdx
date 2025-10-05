@@ -1,0 +1,248 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Composables/useSessionRef'/>
+
+# Композабл useSessionRef
+
+Композабл для создания реактивной переменной, синхронизированной с sessionStorage. Автоматически управляет чтением и записью значений в хранилище сессии браузера с singleton паттерном. Данные сохраняются только в рамках текущей вкладки/окна браузера и удаляются при его закрытии.
+
+## Основные возможности
+
+- **Двусторонняя синхронизация** — автоматическая синхронизация между ref и sessionStorage
+- **Автоматическое сохранение** — изменения ref автоматически сохраняются в sessionStorage
+- **Изоляция по вкладкам** — данные не синхронизируются между вкладками (в отличие от localStorage)
+- **Временное хранение** — данные удаляются при закрытии вкладки/браузера
+- **Singleton паттерн** — переиспользование ref для одинаковых ключей
+- **Типобезопасность** — полная поддержка TypeScript с дженериками
+- **Значения по умолчанию** — поддержка начальных значений и функций-фабрик
+- **Интеграция с DataStorage** — использует класс DataStorage для управления хранилищем
+
+## Функция
+
+### `useSessionRef`
+
+Создаёт реактивную переменную, синхронизированную с sessionStorage.
+
+**Параметры:**
+- `name: string` — имя ключа в sessionStorage
+- `defaultValue?: T | (() => T)` — значение по умолчанию или функция для его генерации (опционально)
+
+**Возвращает:** `Ref<T | undefined>` — реактивная переменная Vue, связанная с sessionStorage
+
+```javascript
+import { useSessionRef } from '@dxtmisha/functional'
+
+// Простое использование
+const wizardStep = useSessionRef('wizard-step')
+
+// С значением по умолчанию
+const currentStep = useSessionRef('current-step', 1)
+
+// С функцией по умолчанию
+const sessionId = useSessionRef('session-id', () => Math.random().toString(36))
+```
+
+## Основное использование
+
+### Базовая синхронизация
+
+```javascript
+import { useSessionRef } from '@dxtmisha/functional'
+
+// Создание ref, синхронизированного с sessionStorage
+const wizardProgress = useSessionRef('wizard-progress', { step: 1 })
+
+// При изменении ref - sessionStorage автоматически обновляется
+wizardProgress.value = { step: 2, data: { name: 'Иван' } }
+
+// При перезагрузке страницы (в той же вкладке) значение восстанавливается
+console.log(wizardProgress.value) // { step: 2, data: { name: 'Иван' } }
+
+// При закрытии вкладки данные удаляются
+```
+
+### Singleton паттерн
+
+```javascript
+// При повторном вызове с тем же именем возвращается существующий ref
+const step1 = useSessionRef('wizard-step', 1)
+const step2 = useSessionRef('wizard-step', 2)
+
+console.log(step1 === step2) // true - тот же ref
+
+step1.value = 3
+console.log(step2.value) // 3 - оба указывают на один ref
+```
+
+## Использование в компонентах
+
+### Многошаговый мастер
+
+```javascript
+import { useSessionRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const currentStep = useSessionRef('wizard-step', 1)
+    const formData = useSessionRef('wizard-data', {
+      name: '',
+      email: '',
+      phone: ''
+    })
+
+    const nextStep = () => {
+      currentStep.value++
+    }
+
+    const prevStep = () => {
+      if (currentStep.value > 1) {
+        currentStep.value--
+      }
+    }
+
+    return {
+      currentStep,
+      formData,
+      nextStep,
+      prevStep
+    }
+  }
+}
+
+// Template:
+// <div>
+//   <div v-if="currentStep === 1">
+//     <input v-model="formData.name" placeholder="Имя" />
+//   </div>
+//   <div v-if="currentStep === 2">
+//     <input v-model="formData.email" placeholder="Email" />
+//   </div>
+//   <button @click="prevStep">Назад</button>
+//   <button @click="nextStep">Далее</button>
+// </div>
+```
+
+### Временное состояние фильтров
+
+```javascript
+import { useSessionRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const filters = useSessionRef('search-filters', {
+      category: 'all',
+      priceMin: 0,
+      priceMax: 10000,
+      sortBy: 'name'
+    })
+
+    const resetFilters = () => {
+      filters.value = {
+        category: 'all',
+        priceMin: 0,
+        priceMax: 10000,
+        sortBy: 'name'
+      }
+    }
+
+    return { filters, resetFilters }
+  }
+}
+```
+
+## Отличия от useStorageRef
+
+```javascript
+// useStorageRef - данные сохраняются между сессиями браузера
+const persistentTheme = useStorageRef('theme', 'light')
+// Данные остаются даже после закрытия браузера
+
+// useSessionRef - данные удаляются при закрытии вкладки
+const temporaryFilters = useSessionRef('filters', {})
+// Данные удаляются при закрытии вкладки/браузера
+
+// useStorageRef синхронизируется между вкладками
+// useSessionRef изолирован для каждой вкладки
+```
+
+## Работа с типами данных
+
+```javascript
+// Числа
+const step = useSessionRef<number>('step', 1)
+step.value = 2
+
+// Булевы значения
+const isCompleted = useSessionRef<boolean>('completed', false)
+isCompleted.value = true
+
+// Объекты
+const wizardData = useSessionRef('wizard-data', {
+  step: 1,
+  userData: {},
+  timestamp: Date.now()
+})
+
+// Массивы
+const selectedItems = useSessionRef<number[]>('selected', [])
+selectedItems.value.push(42)
+```
+
+## Примеры использования
+
+### Сохранение прогресса формы
+
+```javascript
+const registrationForm = useSessionRef('registration', {
+  step: 1,
+  personal: { name: '', email: '' },
+  address: { street: '', city: '' },
+  completed: false
+})
+
+// При заполнении данные сохраняются
+registrationForm.value.personal.name = 'Иван'
+registrationForm.value.step = 2
+
+// При перезагрузке страницы (F5) данные восстанавливаются
+// При закрытии вкладки - всё удаляется
+```
+
+### Временное состояние модального окна
+
+```javascript
+const modalState = useSessionRef('modal', {
+  isOpen: false,
+  activeTab: 'details',
+  scrollPosition: 0
+})
+
+const openModal = () => {
+  modalState.value.isOpen = true
+}
+
+const closeModal = () => {
+  modalState.value.isOpen = false
+}
+```
+
+### Корзина покупок (временная)
+
+```javascript
+const cart = useSessionRef<CartItem[]>('temp-cart', [])
+
+const addToCart = (item: CartItem) => {
+  cart.value = [...cart.value, item]
+}
+
+const removeFromCart = (itemId: number) => {
+  cart.value = cart.value.filter(item => item.id !== itemId)
+}
+
+const clearCart = () => {
+  cart.value = []
+}
+
+// При закрытии вкладки корзина очищается автоматически
+```
+

@@ -1,0 +1,302 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Composables/useHashRef'/>
+
+# Composable useHashRef
+
+Composable for creating a reactive variable synchronized with URL hash. Automatically manages reading and writing values to the hash part of the URL, providing two-way synchronization between Vue reactive state and browser address bar parameters.
+
+## Key Features
+
+- **Two-way synchronization** — automatic sync between ref and URL hash
+- **Automatic persistence** — ref changes automatically reflect in URL
+- **Reactivity** — URL hash changes automatically update ref
+- **Instance caching** — reuses ref for same parameter names
+- **Type safety** — full TypeScript support with generics
+- **Default values** — supports initial values and factory functions
+- **Auto initialization** — loads existing values from URL on creation
+
+## Function
+
+### `useHashRef`
+
+Creates a reactive variable synchronized with a parameter in URL hash.
+
+**Parameters:**
+- `name: string` — parameter name in hash URL
+- `defaultValue?: T | (() => T)` — default value or function to generate it (optional)
+
+**Returns:** `Ref<T>` — Vue reactive variable linked to hash parameter
+
+```javascript
+import { useHashRef } from '@dxtmisha/functional'
+
+// Simple usage without default value
+const currentTab = useHashRef('tab')
+console.log(currentTab.value) // undefined (if hash is empty)
+
+// With default value
+const activeView = useHashRef('view', 'grid')
+console.log(activeView.value) // 'grid' (if hash doesn't contain 'view')
+
+// With factory function for default value
+const userId = useHashRef('userId', () => Math.floor(Math.random() * 1000))
+```
+
+## Basic Usage
+
+### Basic Synchronization
+
+```javascript
+import { useHashRef } from '@dxtmisha/functional'
+
+// Create ref synchronized with hash
+const currentPage = useHashRef('page', 1)
+
+// When ref changes - URL automatically updates
+currentPage.value = 2
+// URL: #page=2
+
+currentPage.value = 5
+// URL: #page=5
+
+// When URL changes manually - ref automatically updates
+// User changes URL to: #page=10
+console.log(currentPage.value) // 10
+```
+
+### Working with Multiple Parameters
+
+```javascript
+// Multiple independent hash parameters
+const searchQuery = useHashRef('q', '')
+const sortOrder = useHashRef('sort', 'asc')
+const pageNumber = useHashRef('page', 1)
+
+searchQuery.value = 'vue composables'
+sortOrder.value = 'desc'
+pageNumber.value = 3
+
+// URL: #q=vue composables;sort=desc;page=3
+
+// All parameters stay synchronized
+console.log(searchQuery.value) // 'vue composables'
+console.log(sortOrder.value)   // 'desc'
+console.log(pageNumber.value)  // 3
+```
+
+### Instance Caching
+
+```javascript
+// Repeated calls with same name return existing ref
+const tab1 = useHashRef('activeTab', 'home')
+const tab2 = useHashRef('activeTab', 'profile')
+
+console.log(tab1 === tab2) // true - same ref
+
+tab1.value = 'settings'
+console.log(tab2.value) // 'settings' - both point to same ref
+```
+
+## Usage in Components
+
+### Tab Management
+
+```javascript
+import { useHashRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const activeTab = useHashRef('tab', 'overview')
+
+    return {
+      activeTab,
+      tabs: ['overview', 'details', 'settings']
+    }
+  }
+}
+
+// Template:
+// <div>
+//   <button
+//     v-for="tab in tabs"
+//     :key="tab"
+//     @click="activeTab = tab"
+//     :class="{ active: activeTab === tab }"
+//   >
+//     {{ tab }}
+//   </button>
+// </div>
+```
+
+### Pagination with State Persistence
+
+```javascript
+import { computed } from 'vue'
+import { useHashRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const currentPage = useHashRef('page', 1)
+    const itemsPerPage = 20
+    const totalItems = 100
+
+    const totalPages = computed(() =>
+      Math.ceil(totalItems / itemsPerPage)
+    )
+
+    const nextPage = () => {
+      if (currentPage.value < totalPages.value) {
+        currentPage.value++
+      }
+    }
+
+    const prevPage = () => {
+      if (currentPage.value > 1) {
+        currentPage.value--
+      }
+    }
+
+    return {
+      currentPage,
+      totalPages,
+      nextPage,
+      prevPage
+    }
+  }
+}
+```
+
+### Filters and Search
+
+```javascript
+import { watch } from 'vue'
+import { useHashRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const searchQuery = useHashRef('q', '')
+    const category = useHashRef('category', 'all')
+    const sortBy = useHashRef('sort', 'date')
+
+    // Watch changes to load data
+    watch([searchQuery, category, sortBy], () => {
+      console.log('Loading data with params:')
+      console.log('Search:', searchQuery.value)
+      console.log('Category:', category.value)
+      console.log('Sort:', sortBy.value)
+      // API request here
+    })
+
+    return {
+      searchQuery,
+      category,
+      sortBy
+    }
+  }
+}
+```
+
+## Working with Data Types
+
+### Numeric Values
+
+```javascript
+// Hash automatically converts types
+const pageNumber = useHashRef<number>('page', 1)
+
+pageNumber.value = 5
+// URL: #page=5
+
+// When loading from URL, string is automatically converted
+// URL: #page=10
+console.log(typeof pageNumber.value) // 'number'
+console.log(pageNumber.value)        // 10
+```
+
+### Boolean Values
+
+```javascript
+const isActive = useHashRef<boolean>('active', false)
+
+isActive.value = true
+// URL: #active=true
+
+// Automatic conversion from string
+// URL: #active=false
+console.log(typeof isActive.value) // 'boolean'
+console.log(isActive.value)        // false
+```
+
+### Objects and Arrays
+
+```javascript
+// For complex types, serialization is used
+const filters = useHashRef('filters', { min: 0, max: 100 })
+
+filters.value = { min: 20, max: 80 }
+// URL will contain serialized representation
+
+// Values are restored on load
+console.log(filters.value) // { min: 20, max: 80 }
+```
+
+## Integration with Hash Class
+
+The composable uses `Hash` class to manage URL hash:
+
+```javascript
+import { Hash } from '@dxtmisha/functional'
+
+// Direct class usage
+Hash.set('tab', 'profile')
+console.log(Hash.get('tab')) // 'profile'
+
+// useHashRef automatically syncs with Hash
+const tab = useHashRef('tab')
+console.log(tab.value) // 'profile'
+
+// Changes via Hash reflect in ref
+Hash.set('tab', 'settings')
+console.log(tab.value) // 'settings'
+```
+
+## Usage Examples
+
+### Form State Persistence
+
+```javascript
+const formData = {
+  name: useHashRef('name', ''),
+  email: useHashRef('email', ''),
+  role: useHashRef('role', 'user')
+}
+
+// When filling form, state is saved to URL
+formData.name.value = 'John'
+formData.email.value = 'john@example.com'
+formData.role.value = 'admin'
+
+// URL: #name=John;email=john@example.com;role=admin
+
+// On page reload, state is restored
+```
+
+### Modal Window Management
+
+```javascript
+const modalOpen = useHashRef('modal', null)
+
+const openModal = (modalName) => {
+  modalOpen.value = modalName
+  // URL: #modal=confirmation
+}
+
+const closeModal = () => {
+  modalOpen.value = null
+  // URL: #modal=null or hash is cleared
+}
+
+// Browser "Back" button closes modal
+```
+

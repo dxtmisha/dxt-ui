@@ -1,0 +1,329 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Composables/useLazyRef'/>
+
+# Composable useLazyRef
+
+Composable for tracking element visibility on screen using Intersection Observer API. Provides efficient lazy loading and rendering of components only when they become visible in the viewport. Perfect for optimizing performance with long lists, images, and heavy components.
+
+## Key Features
+
+- **Visibility tracking** — automatic detection when element appears in viewport
+- **Intersection Observer API** — uses native browser API for efficient tracking
+- **Automatic cleanup** — removes observers when components unmount
+- **Reactive status** — returns reactive variable with visibility state
+- **Configurable margins** — supports rootMargin for content preloading
+- **Multiple elements** — manages tracking of multiple elements simultaneously
+- **Graceful degradation** — works without IntersectionObserver in older browsers
+
+## Function
+
+### `useLazyRef`
+
+Creates an instance for tracking element visibility on screen.
+
+**Parameters:** none
+
+**Returns:** object with methods:
+- `intersectionObserver: IntersectionObserver | undefined` — observer instance
+- `addLazyItem: (element: Ref<HTMLElement>) => ShallowRef<boolean>` — add element for tracking
+- `removeLazyItem: (element?: HTMLElement) => void` — remove element from tracking
+- `disconnectLazy: () => void` — disconnect all observers
+
+```javascript
+import { useLazyRef } from '@dxtmisha/functional'
+
+// Create instance
+const lazy = useLazyRef()
+
+// Access methods
+const isVisible = lazy.addLazyItem(elementRef)
+lazy.removeLazyItem(element)
+lazy.disconnectLazy()
+```
+
+## Basic Usage
+
+### `addLazyItem`
+
+Adds element to track its visibility on screen.
+
+**Parameters:**
+- `element: Ref<HTMLElement>` — reactive reference to HTML element
+
+**Returns:** `ShallowRef<boolean>` — reactive variable with visibility status
+
+```javascript
+import { ref } from 'vue'
+import { useLazyRef } from '@dxtmisha/functional'
+
+const lazy = useLazyRef()
+const imageRef = ref(null)
+
+// Add element for tracking
+const isVisible = lazy.addLazyItem(imageRef)
+
+// isVisible.value === true when element is visible
+// isVisible.value === false when element is not visible
+
+// In older browsers without IntersectionObserver
+// isVisible.value === true immediately (fallback)
+```
+
+### `removeLazyItem`
+
+Removes element from tracking and cleans up resources.
+
+**Parameters:**
+- `element?: HTMLElement` — HTML element to remove
+
+**Returns:** `void`
+
+```javascript
+const element = document.getElementById('my-element')
+
+// Remove element from tracking
+lazy.removeLazyItem(element)
+```
+
+### `disconnectLazy`
+
+Disconnects all observers and stops tracking all elements.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```javascript
+// Complete cleanup on unmount
+onBeforeUnmount(() => {
+  lazy.disconnectLazy()
+})
+```
+
+## Usage in Components
+
+### Lazy Image Loading
+
+```javascript
+import { ref, watch } from 'vue'
+import { useLazyRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const lazy = useLazyRef()
+    const imageRef = ref(null)
+    const imageLoaded = ref(false)
+
+    const isVisible = lazy.addLazyItem(imageRef)
+
+    watch(isVisible, (visible) => {
+      if (visible && !imageLoaded.value) {
+        imageLoaded.value = true
+      }
+    })
+
+    return { imageRef, imageLoaded }
+  }
+}
+
+// Template:
+// <div ref="imageRef">
+//   <img v-if="imageLoaded" src="/path/to/image.jpg" />
+//   <div v-else class="placeholder">Loading...</div>
+// </div>
+```
+
+### Infinite Scroll
+
+```javascript
+import { ref, watch } from 'vue'
+import { useLazyRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const lazy = useLazyRef()
+    const items = ref([1, 2, 3, 4, 5])
+    const sentinelRef = ref(null)
+    const loading = ref(false)
+
+    const isSentinelVisible = lazy.addLazyItem(sentinelRef)
+
+    watch(isSentinelVisible, async (visible) => {
+      if (visible && !loading.value) {
+        loading.value = true
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        items.value.push(items.value.length + 1)
+        loading.value = false
+      }
+    })
+
+    return { items, sentinelRef, loading }
+  }
+}
+
+// Template:
+// <div>
+//   <div v-for="item in items" :key="item">Item {{ item }}</div>
+//   <div ref="sentinelRef" class="sentinel">
+//     <div v-if="loading">Loading...</div>
+//   </div>
+// </div>
+```
+
+## Advanced Usage
+
+### Tracking Multiple Elements
+
+```javascript
+import { ref, onBeforeUnmount } from 'vue'
+import { useLazyRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const lazy = useLazyRef()
+    const items = ref([
+      { id: 1, ref: ref(null), visible: null },
+      { id: 2, ref: ref(null), visible: null },
+      { id: 3, ref: ref(null), visible: null }
+    ])
+
+    // Add each element for tracking
+    items.value.forEach(item => {
+      item.visible = lazy.addLazyItem(item.ref)
+    })
+
+    onBeforeUnmount(() => {
+      lazy.disconnectLazy()
+    })
+
+    return { items }
+  }
+}
+
+// Template:
+// <div v-for="item in items" :key="item.id">
+//   <div :ref="item.ref">
+//     <div v-if="item.visible.value">
+//       Content for item {{ item.id }}
+//     </div>
+//     <div v-else class="placeholder">...</div>
+//   </div>
+// </div>
+```
+
+### Conditional Element Removal
+
+```javascript
+import { ref, watch } from 'vue'
+import { useLazyRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const lazy = useLazyRef()
+    const elementRef = ref(null)
+    const showElement = ref(true)
+
+    const isVisible = lazy.addLazyItem(elementRef)
+
+    // Remove from tracking when hiding
+    watch(showElement, (show) => {
+      if (!show && elementRef.value) {
+        lazy.removeLazyItem(elementRef.value)
+      }
+    })
+
+    return {
+      elementRef,
+      showElement,
+      isVisible
+    }
+  }
+}
+```
+
+### Preloading with rootMargin
+
+```javascript
+// Default rootMargin: '128px 0px'
+// Elements start tracking 128px before entering viewport
+
+const lazy = useLazyRef()
+const imageRef = ref(null)
+
+// Image will start loading 128px before visibility
+const isVisible = lazy.addLazyItem(imageRef)
+
+console.log('rootMargin provides smooth preloading')
+```
+
+## Handling Missing IntersectionObserver
+
+```javascript
+import { useLazyRef } from '@dxtmisha/functional'
+
+const lazy = useLazyRef()
+
+// Check API availability
+if (lazy.intersectionObserver) {
+  console.log('IntersectionObserver available')
+  // Use lazy loading
+} else {
+  console.log('IntersectionObserver not supported')
+  // isVisible will always be true (fallback)
+}
+
+const elementRef = ref(null)
+const isVisible = lazy.addLazyItem(elementRef)
+
+// In older browsers isVisible.value === true immediately
+// Content loads immediately (graceful degradation)
+```
+
+## Performance Optimization
+
+### Lazy Loading in Lists
+
+```javascript
+import { ref } from 'vue'
+import { useLazyRef } from '@dxtmisha/functional'
+
+export default {
+  setup() {
+    const lazy = useLazyRef()
+    const products = ref([
+      { id: 1, name: 'Product 1', image: '/img1.jpg' },
+      { id: 2, name: 'Product 2', image: '/img2.jpg' },
+      // ... 100 more products
+    ])
+
+    // Create refs for each product
+    const productRefs = ref(products.value.map(() => ({
+      element: ref(null),
+      visible: null
+    })))
+
+    // Track visibility of each product
+    productRefs.value.forEach(item => {
+      item.visible = lazy.addLazyItem(item.element)
+    })
+
+    return {
+      products,
+      productRefs
+    }
+  }
+}
+
+// Template:
+// <div v-for="(product, index) in products" :key="product.id">
+//   <div :ref="productRefs[index].element">
+//     <template v-if="productRefs[index].visible.value">
+//       <img :src="product.image" :alt="product.name" />
+//       <h3>{{ product.name }}</h3>
+//     </template>
+//     <div v-else class="product-skeleton">Loading...</div>
+//   </div>
+// </div>
+```
+
