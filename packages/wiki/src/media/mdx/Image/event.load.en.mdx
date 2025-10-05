@@ -1,4 +1,39 @@
 ### `load`
 
-Triggered after the image is loaded.
-The handler receives an object `ImageEventData` with image data and source type.
+Event fires after the image is loaded.
+
+**Parameters:**
+- `image: ImageEventData` — object with image data
+
+**ImageEventData structure:**
+- `type: ImageTypeItem` — image type (`'image'`, `'icon'`, `'pdf'`, `'file'`, `'flag'`, `'color'`, etc.)
+- `image: ImageEventItem` — image data (`ImageItem` object, URL string, or `undefined`)
+
+**ImageItem structure (when image is an object):**
+- `width: number` — image width
+- `height: number` — image height
+- `image: HTMLImageElement` — image DOM element
+- `src: string` — image source (URL)
+
+```html
+<script setup>
+const handleLoad = (data) => {
+  console.log('Image type:', data.type)
+
+  if (typeof data.image === 'object' && data.image) {
+    console.log('Width:', data.image.width)
+    console.log('Height:', data.image.height)
+    console.log('URL:', data.image.src)
+  } else {
+    console.log('Image URL:', data.image)
+  }
+}
+</script>
+
+<template>
+  <Image
+    src="/path/to/image.jpg"
+    @load="handleLoad"
+  />
+</template>
+```

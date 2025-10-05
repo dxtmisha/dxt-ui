@@ -1,13 +1,31 @@
 ### `window`
 
-Event that triggers when the window state changes (open/close).
+Event fires when the window state changes (open/close).
 
-```ts
-function onWindow (options: WindowEmitOptions) {
-    // handle window state change
+**Parameters:**
+- `options: WindowEmitOptions` — object with window data
+
+**WindowEmitOptions structure:**
+- `id: string` — unique window identifier
+- `element: HTMLDivElement` — window DOM element
+- `control: HTMLElement` — control DOM element
+- `open: boolean` — window open state (`true` - open, `false` - closed)
+
+```html
+<script setup>
+const handleWindow = (options) => {
+  console.log('Window ID:', options.id)
+  console.log('Window is open:', options.open)
+  console.log('Window element:', options.element)
+  console.log('Control element:', options.control)
 }
+</script>
+
+<template>
+  <Window @window="handleWindow">
+    <template #default>
+      <p>Window content</p>
+    </template>
+  </Window>
+</template>
 ```
-
-Parameters:
-- `options` — `WindowEmitOptions` — window data: id, elements, and the `open` flag
-

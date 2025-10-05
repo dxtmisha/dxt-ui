@@ -1,52 +1,93 @@
 ## Lifecycle Hooks
 
-The Window component provides a lifecycle hooks system for managing various stages of the window lifecycle.
+### `preparation`
 
-### Opening Hooks
+Called before the opening/closing process begins. Used for preparing elements and data.
 
-**`preparation`** - Called during the window preparation phase before opening.
-Allows executing preliminary setup and data initialization.
+**Type:** `() => void | Promise<void>`
 
-**`beforeOpening`** - Called immediately before the window opening process begins.
-Returning `false` prevents the window from opening.
-
-**`opening`** - Called during the window opening process while animation is running.
-Returning `false` interrupts the window opening process.
-
-### Closing Hooks
-
-**`beforeClosing`** - Called immediately before the window closing process begins.
-Returning `false` prevents the window from closing.
-
-**`closing`** - Called during the window closing process while animation is running.
-Returning `false` interrupts the window closing process.
-
-### Usage
-
-All hooks are asynchronous functions and can return `Promise<boolean>` or `boolean`. Returning `false` stops the execution of the corresponding action.
-
-```typescript
-{
-  preparation: async () => {
-    // Data preparation
-    await loadData()
-  },
-  beforeOpening: () => {
-    // Condition checking
-    return userCanOpenWindow()
-  },
-  opening: () => {
-    // Logic during opening
-    return true
-  },
-  beforeClosing: () => {
-    // Check before closing
-    return confirmClose()
-  },
-  closing: () => {
-    // Cleanup on closing
-    cleanup()
-    return true
-  }
+```html
+<script setup>
+const handlePreparation = () => {
+  console.log('Preparing...')
 }
+</script>
+
+<template>
+  <Window :preparation="handlePreparation" />
+</template>
+```
+
+### `beforeOpening`
+
+Called before opening the window. Returning `false` cancels opening.
+
+**Type:** `() => boolean | Promise<boolean>`
+
+```html
+<script setup>
+const handleBeforeOpening = async () => {
+  const canOpen = await checkPermissions()
+  return canOpen // false will cancel opening
+}
+</script>
+
+<template>
+  <Window :before-opening="handleBeforeOpening" />
+</template>
+```
+
+### `beforeClosing`
+
+Called before closing the window. Returning `false` cancels closing.
+
+**Type:** `() => boolean | Promise<boolean>`
+
+```html
+<script setup>
+const handleBeforeClosing = async () => {
+  const canClose = await confirmClose()
+  return canClose // false will cancel closing
+}
+</script>
+
+<template>
+  <Window :before-closing="handleBeforeClosing" />
+</template>
+```
+
+### `opening`
+
+Called after the window finishes opening (after animation).
+
+**Type:** `() => boolean | Promise<boolean>`
+
+```html
+<script setup>
+const handleOpening = () => {
+  console.log('Window opened')
+}
+</script>
+
+<template>
+  <Window :opening="handleOpening" />
+</template>
+```
+
+### `closing`
+
+Called after the window finishes closing (after animation).
+
+**Type:** `() => boolean | Promise<boolean>`
+
+```html
+<script setup>
+const handleClosing = () => {
+  console.log('Window closed')
+}
+</script>
+
+<template>
+  <Window :closing="handleClosing" />
+</template>
 ```

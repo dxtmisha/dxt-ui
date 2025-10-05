@@ -1,25 +1,18 @@
-## Positioning direction
+## Positioning Direction (axis)
 
-The `axis` property defines the primary guide for placing the window relative to the anchor element (`overElement`) or the invocation area.
-Default value: `y`.
+Controls the axis of window placement relative to the anchor element. Default: `y`.
 
-> Works only in menu mode (`adaptive="menu"`).
+> Applies only in menu mode (`adaptive="menu"` or `adaptive="menuWindow"`).
 
 ### Values
 
-- `x` — Horizontal: places the window to the left or right of the anchor/cursor. The `indent` is applied horizontally.
-- `y` — Vertical: places the window above or below the anchor/cursor. The `indent` is applied vertically.
-- `on` — Over element: overlays the selected element/area and aligns to its center. When needed, internal scrolling adapts to keep the selected element visible.
+- **`x`** — horizontal axis (left or right of anchor)
+- **`y`** — vertical axis (top or bottom of anchor)
+- **`on`** — over anchor (window centers on element)
 
 ### Behavior
 
-- Automatic side selection (left/right for `x`, top/bottom for `y`) based on available space. If space is limited on both sides, the window is centered in the available area.
-- Along the perpendicular direction the window fits into the viewport to avoid overflow.
-- Context menu mode (`contextmenu = true`) uses cursor coordinates instead of the anchor’s bounding box.
-- Respects viewport constraints and container paddings.
-
-### Recommendations
-
-- `x` — side menus, tooltips, and panels next to an element.
-- `y` — dropdowns, menus, and hints opening above/below.
-- `on` — popovers that overlay and focus a specific element in the content.
+- Component automatically selects the placement side with the most available space
+- When using context menu (`contextmenu`), positioning occurs from cursor coordinates
+- Window always stays within visible screen area (viewport)
+- Indent from anchor is set via `indent` property (default 4px)

@@ -1,12 +1,39 @@
 ### `load`
 
-Событие, которое срабатывает после загрузки изображения.
+Событие срабатывает после загрузки изображения.
 
-```ts
-function onLoad (image: ImageEventData) {
-  // обработка загруженного изображения
+**Параметры:**
+- `image: ImageEventData` — объект с данными изображения
+
+**Структура ImageEventData:**
+- `type: ImageTypeItem` — тип изображения (`'image'`, `'icon'`, `'pdf'`, `'file'`, `'flag'`, `'color'` и др.)
+- `image: ImageEventItem` — данные изображения (объект `ImageItem`, строка URL или `undefined`)
+
+**Структура ImageItem (если image - объект):**
+- `width: number` — ширина изображения
+- `height: number` — высота изображения
+- `image: HTMLImageElement` — DOM элемент изображения
+- `src: string` — источник изображения (URL)
+
+```html
+<script setup>
+const handleLoad = (data) => {
+  console.log('Тип изображения:', data.type)
+
+  if (typeof data.image === 'object' && data.image) {
+    console.log('Ширина:', data.image.width)
+    console.log('Высота:', data.image.height)
+    console.log('URL:', data.image.src)
+  } else {
+    console.log('URL изображения:', data.image)
+  }
 }
-```
+</script>
 
-Параметры:
-- `image` — `ImageEventData` — данные изображения и тип источника
+<template>
+  <Image
+    src="/path/to/image.jpg"
+    @load="handleLoad"
+  />
+</template>
+```

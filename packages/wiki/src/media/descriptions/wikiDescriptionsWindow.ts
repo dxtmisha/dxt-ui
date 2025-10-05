@@ -187,26 +187,18 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Window'} type={'window'}/>
+<StorybookDescriptions componentName={'Window'} type={'classes'}/>
 <StorybookDescriptions componentName={'Window'} type={'staticMode'}/>
 <Canvas of={Component.WindowStaticMode}/>
 <StorybookDescriptions componentName={'Window'} type={'axis'}/>
 <Canvas of={Component.WindowAxis}/>
-<StorybookDescriptions componentName={'Window'} type={'classes'}/>
-<StorybookDescriptions componentName={'Window'} type={'hooks'}/>
 <StorybookDescriptions componentName={'Window'} type={'v-model'}/>
 <Canvas of={Component.WindowVModel}/>
+<StorybookDescriptions componentName={'Window'} type={'hooks'}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Window'} type={'event.window'}/>
-
-<StorybookDescriptions componentName={'Event'} type={'scrollbarTop'}/>
-<StorybookDescriptions componentName={'Event'} type={'scrollbarReachTop'}/>
-<StorybookDescriptions componentName={'Event'} type={'scrollbarLeaveTop'}/>
-<StorybookDescriptions componentName={'Event'} type={'scrollbarBottom'}/>
-<StorybookDescriptions componentName={'Event'} type={'scrollbarReachBottom'}/>
-<StorybookDescriptions componentName={'Event'} type={'scrollbarLeaveBottom'}/>
-<StorybookDescriptions componentName={'Event'} type={'scrollbarEdge'}/>
-
+<StorybookDescriptions componentName={'Scrollbar'} type={'emits-include'}/>
 <StorybookDescriptions componentName={'Image'} type={'event.load'}/>
     `,
     expose: `

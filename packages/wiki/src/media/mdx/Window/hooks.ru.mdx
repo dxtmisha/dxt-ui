@@ -1,52 +1,93 @@
-## Lifecycle хуки
+## Хуки жизненного цикла
 
-Компонент Window предоставляет систему lifecycle-хуков для управления различными этапами жизненного цикла окна.
+### `preparation`
 
-### Хуки открытия
+Вызывается перед началом процесса открытия/закрытия. Используется для подготовки элементов и данных.
 
-**`preparation`** - Вызывается на этапе подготовки окна перед открытием.
-Позволяет выполнить предварительные настройки и инициализацию данных.
+**Тип:** `() => void | Promise<void>`
 
-**`beforeOpening`** - Вызывается непосредственно перед началом процесса открытия окна.
-Возврат `false` предотвращает открытие окна.
-
-**`opening`** - Вызывается в процессе открытия окна во время анимации.
-Возврат `false` прерывает процесс открытия окна.
-
-### Хуки закрытия
-
-**`beforeClosing`** - Вызывается непосредственно перед началом процесса закрытия окна.
-Возврат `false` предотвращает закрытие окна.
-
-**`closing`** - Вызывается в процессе закрытия окна во время анимации.
-Возврат `false` прерывает процесс закрытия окна.
-
-### Использование
-
-Все хуки являются асинхронными функциями и могут возвращать `Promise<boolean>` или `boolean`. Возврат `false` останавливает выполнение соответствующего действия.
-
-```typescript
-{
-  preparation: async () => {
-    // Подготовка данных
-    await loadData()
-  },
-  beforeOpening: () => {
-    // Проверка условий
-    return userCanOpenWindow()
-  },
-  opening: () => {
-    // Логика во время открытия
-    return true
-  },
-  beforeClosing: () => {
-    // Проверка перед закрытием
-    return confirmClose()
-  },
-  closing: () => {
-    // Очистка при закрытии
-    cleanup()
-    return true
-  }
+```html
+<script setup>
+const handlePreparation = () => {
+  console.log('Подготовка...')
 }
+</script>
+
+<template>
+  <Window :preparation="handlePreparation" />
+</template>
+```
+
+### `beforeOpening`
+
+Вызывается перед открытием окна. Возврат `false` отменяет открытие.
+
+**Тип:** `() => boolean | Promise<boolean>`
+
+```html
+<script setup>
+const handleBeforeOpening = async () => {
+  const canOpen = await checkPermissions()
+  return canOpen // false отменит открытие
+}
+</script>
+
+<template>
+  <Window :before-opening="handleBeforeOpening" />
+</template>
+```
+
+### `beforeClosing`
+
+Вызывается перед закрытием окна. Возврат `false` отменяет закрытие.
+
+**Тип:** `() => boolean | Promise<boolean>`
+
+```html
+<script setup>
+const handleBeforeClosing = async () => {
+  const canClose = await confirmClose()
+  return canClose // false отменит закрытие
+}
+</script>
+
+<template>
+  <Window :before-closing="handleBeforeClosing" />
+</template>
+```
+
+### `opening`
+
+Вызывается после завершения открытия окна (после анимации).
+
+**Тип:** `() => boolean | Promise<boolean>`
+
+```html
+<script setup>
+const handleOpening = () => {
+  console.log('Окно открыто')
+}
+</script>
+
+<template>
+  <Window :opening="handleOpening" />
+</template>
+```
+
+### `closing`
+
+Вызывается после завершения закрытия окна (после анимации).
+
+**Тип:** `() => boolean | Promise<boolean>`
+
+```html
+<script setup>
+const handleClosing = () => {
+  console.log('Окно закрыто')
+}
+</script>
+
+<template>
+  <Window :closing="handleClosing" />
+</template>
 ```

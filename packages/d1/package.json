@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui scrollbar"
+    "dxt-ui": "dxt-ui window"
   },
   "exports": {
     "./styles/ui": "./src/styles/Ui/main.scss"

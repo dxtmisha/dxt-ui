@@ -1,16 +1,25 @@
-## Two-way binding (v-model)
+## State Management via v-model
 
-The Window component supports two-way binding of the open state via the `v-model` directive.
+Two-way binding of window open state via `v-model:open`.
 
-### Props and events
-
-- `open: boolean` — window visibility state
-- `update:open(boolean)` — update event emitted when the state changes
+**Parameters:**
+- `open: boolean` — window open state
 
 ```html
-<Window v-model:open="isOpen"/>
-```
+<script setup>
+import { ref } from 'vue'
 
-### Notes
-- Programmatic control remains available via expose methods (`open`/`toggle`/`setOpen`) and corresponding events.
-- If you need a static, always-mounted window (that ignores v-model), see the `staticMode` section.
+const isOpen = ref(false)
+</script>
+
+<template>
+  <button @click="isOpen = true">Open</button>
+
+  <Window v-model:open="isOpen">
+    <template #default>
+      <p>Window content</p>
+      <button @click="isOpen = false">Close</button>
+    </template>
+  </Window>
+</template>
+```

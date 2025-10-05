@@ -1,17 +1,25 @@
-## Двусторонняя привязка (v-model)
+## Управление состоянием через v-model
 
-Компонент Window поддерживает двустороннюю привязку состояния открытия через директиву `v-model`.
+Двусторонняя привязка состояния открытия окна через `v-model:open`.
 
-### Свойства и события
-
-- `open: boolean` — состояние видимости окна
-- `update:open(boolean)` — событие обновления при изменении состояния
+**Параметры:**
+- `open: boolean` — состояние открытия окна
 
 ```html
-<Window v-model:open="isOpen"/>
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <button @click="isOpen = true">Открыть</button>
+
+  <Window v-model:open="isOpen">
+    <template #default>
+      <p>Содержимое окна</p>
+      <button @click="isOpen = false">Закрыть</button>
+    </template>
+  </Window>
+</template>
 ```
-
-### Заметки
-
-- Можно программно управлять окном через expose‑методы (`open`/`toggle`/`setOpen`) и соответствующие события
-- Если нужно статически смонтированное окно (игнорирующее v-model), см. раздел `staticMode`

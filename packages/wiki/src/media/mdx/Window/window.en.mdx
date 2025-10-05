@@ -1,1 +1,55 @@
-The Window component is a universal modal window for displaying content over the main interface. It supports various positioning types, adaptive behavior, opening/closing animations, and integration with other design system components.
+Component for creating modal windows, dialogs, and popup elements with flexible positioning and adaptive behavior.
+
+Window manages content display on top of the main interface, supports various positioning types (modal windows, dropdown menus, action sheets), open/close animations, and event system integration. The component automatically handles outside clicks, focus management, and adaptation to different screen sizes.
+
+**Key features:**
+
+- Flexible positioning (center, edges, screen corners)
+- Adaptive modes (modal, menu, actionSheet, static)
+- Open/close animations with origin customization
+- State management via v-model or expose methods
+- Scrollbar integration for scrollable content
+- Background interaction blocking (persistent mode)
+- Window lifecycle events
+
+**Common use cases:**
+
+- Modal windows for forms and confirmations
+- Dropdown menus and context menus
+- Side panels and drawer components
+- Action sheets for mobile interfaces
+- Tooltips and dialogs
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+
+const handleWindow = (options) => {
+  console.log('Window state:', options.open ? 'open' : 'closed')
+}
+</script>
+
+<template>
+  <button @click="isOpen = true">Open Window</button>
+
+  <Window
+    v-model:open="isOpen"
+    adaptive="modal"
+    @window="handleWindow"
+  >
+    <template #title>
+      <h2>Window Title</h2>
+    </template>
+
+    <template #default>
+      <p>Modal window content</p>
+    </template>
+
+    <template #footer>
+      <button @click="isOpen = false">Close</button>
+    </template>
+  </Window>
+</template>
+```

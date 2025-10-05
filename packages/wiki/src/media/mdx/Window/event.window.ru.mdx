@@ -1,13 +1,31 @@
 ### `window`
 
-Событие, которое срабатывает при изменении состояния окна (открытие/закрытие).
+Событие срабатывает при изменении состояния окна (открытие/закрытие).
 
-```ts
-function onWindow (options: WindowEmitOptions) {
-    // обработка изменения состояния окна
+**Параметры:**
+- `options: WindowEmitOptions` — объект с данными окна
+
+**Структура WindowEmitOptions:**
+- `id: string` — уникальный идентификатор окна
+- `element: HTMLDivElement` — DOM элемент окна
+- `control: HTMLElement` — DOM элемент управления
+- `open: boolean` — состояние открытия окна (`true` - открыто, `false` - закрыто)
+
+```html
+<script setup>
+const handleWindow = (options) => {
+  console.log('ID окна:', options.id)
+  console.log('Окно открыто:', options.open)
+  console.log('Элемент окна:', options.element)
+  console.log('Элемент управления:', options.control)
 }
+</script>
+
+<template>
+  <Window @window="handleWindow">
+    <template #default>
+      <p>Содержимое окна</p>
+    </template>
+  </Window>
+</template>
 ```
-
-Параметры:
-- `options` — `WindowEmitOptions` — данные окна: id, элементы и флаг `open`
-
