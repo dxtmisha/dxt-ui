@@ -123,6 +123,7 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Skeleton'} type={'active'}/>
+<StorybookDescriptions componentName={'Skeleton'} type={'classes'}/>
 <Canvas of={Component.SkeletonBasic}/>
     `,
     expose: `

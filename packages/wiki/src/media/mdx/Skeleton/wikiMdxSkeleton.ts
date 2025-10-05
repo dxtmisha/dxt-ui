@@ -6,6 +6,9 @@ import skeletonRu from './skeleton.ru.mdx'
 import exposeIsActiveEn from './expose.isActive.en.mdx'
 import exposeIsActiveRu from './expose.isActive.ru.mdx'
 
+import classesEn from './classes.en.mdx'
+import classesRu from './classes.ru.mdx'
+
 export const wikiMdxSkeleton: StorybookComponentsMdxItem = {
   name: 'Skeleton',
   descriptions: {
@@ -16,6 +19,10 @@ export const wikiMdxSkeleton: StorybookComponentsMdxItem = {
     'expose.isActive': {
       en: exposeIsActiveEn,
       ru: exposeIsActiveRu
+    },
+    'classes': {
+      en: classesEn,
+      ru: classesRu
     }
   }
 }
