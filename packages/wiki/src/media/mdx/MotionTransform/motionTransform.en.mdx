@@ -1,22 +1,51 @@
-MotionTransform is a low-level utility that orchestrates element transforms, state transitions, and interaction flows for window-like UI. It centralizes open/show/teleport flags, measures size, updates CSS variables, and coordinates events for smooth, predictable motion.
+Low-level utility for managing element transforms, state transitions, and interaction flows in components with window-like behavior.
 
-### Purpose
+MotionTransform centralizes management of open/show/teleport states, measures element sizes, updates CSS variables, and coordinates events to create smooth and predictable animations. Provides unified API for component visibility control, click handling, and automatic closing with support for ignore zones.
 
-- **Centralized motion control** — Unified API for managing component visibility and animation states
-- **Event coordination** — Handles click interactions, auto-close behavior, and ignore zones
-- **Performance optimization** — Efficient DOM manipulation and CSS variable updates
-- **Developer experience** — Clean separation between UI logic and motion mechanics
+**Key Features:**
 
-### Core capabilities
+- Centralized state management (open, show, teleport)
+- Click event and auto-close coordination
+- Size measurement and CSS variable updates
+- DOM helpers for working with refs, portals, and classes
+- Programmatic control through imperative methods
+- Configurable event ignore zones
+- Optimized DOM manipulation
 
-- **State management** — Computed accessors for open, show, teleport with simple control API
-- **Element handling** — DOM helpers for refs, portals, and class bindings
-- **Size coordination** — Measurements and CSS variables to drive smooth transitions
-- **Event processing** — Click/auto-close handling with configurable ignore zones
-- **Programmatic control** — Imperative methods to open/close and synchronize component flows
+**Typical Use Cases:**
 
-### Integration
+- Base utility for Window, Menu, Dialog components
+- Managing open/close animations
+- State coordination in popup elements
+- Component library development with window-like behavior
 
-MotionTransform is designed as a foundational utility for component developers. Use it inside higher-level components when you need consistent behavior, predictable transitions, and clean separation between UI and motion logic.
+```html
+<script setup>
+import { ref } from 'vue'
+import { MotionTransform } from '@dxtmisha/constructor'
 
-> This is a low-level utility intended for component library development rather than direct application use.
+const element = ref()
+const elementContext = ref()
+
+const motion = new MotionTransform(
+  { open: false, autoClose: true },
+  // ...other params
+)
+
+// Programmatic control
+motion.go.toOpen()
+motion.go.toClose()
+
+// State access
+const isOpen = motion.state.isOpen
+const isShow = motion.state.isShow
+</script>
+
+<template>
+  <div ref="element">
+    <!-- Content with managed transform -->
+  </div>
+</template>
+```
+
+> This is a low-level utility for component library development, not intended for direct use in applications.

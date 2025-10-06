@@ -1,19 +1,28 @@
-## Two-way binding (v-model)
+## State Management via v-model
 
-The MotionTransform component supports two-way binding for the `open` state using the `v-model:open` directive.
+Two-way binding of component open state via `v-model:open`.
 
-### Usage
-
-This allows you to synchronize the component's visibility with a local data property in your parent component.
+**Parameters:**
+- `open: boolean` — component open state
 
 ```html
-<MotionTransform v-model:open="isOpen"/>
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <button @click="isOpen = true">Open</button>
+
+  <MotionTransform v-model:open="isOpen">
+    <template #head>
+      <div>Header</div>
+    </template>
+    <template #body>
+      <p>Component content</p>
+      <button @click="isOpen = false">Close</button>
+    </template>
+  </MotionTransform>
+</template>
 ```
-
-### How it works
-
-The `v-model:open` is a shorthand for binding the `open` prop and listening to the `update:open` event.
-
-- **`:open="isOpen"`**: The component's visibility is controlled by the `isOpen` ref.
-- **`@update:open="isOpen = $event"`**: When the component's internal state changes (e.g., by clicking the head), it emits an event to update the parent's `isOpen` ref.
-

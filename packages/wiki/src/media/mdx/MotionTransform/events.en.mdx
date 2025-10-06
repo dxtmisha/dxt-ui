@@ -1,51 +1,67 @@
 ### `transform`
 
-Event that triggers when MotionTransform state changes with full event context.
+Event fires when MotionTransform state changes with full event context.
 
-```
-@transform="onTransform"
-```
+**Parameters:**
+- `event: Event | undefined` — DOM event that triggered the change (if any)
+- `options: MotionTransformEmitOptions` — object with transform data
 
-Handler signature:
-```
-function onTransform (event: Event | undefined, options: MotionTransformEmitOptions)
-```
+**MotionTransformEmitOptions structure:**
+- `type: 'head' | 'body' | 'top' | 'script'` — area type that initiated the event
+- `open: boolean` — current open state (`true` - open, `false` - closed)
 
-Parameters:
-- `event` — the DOM event that triggered the change (if any)
-- `options` — transform data: type, open state
+```html
+<script setup>
+const handleTransform = (event, options) => {
+  console.log('Event:', event)
+  console.log('Type:', options.type)
+  console.log('Open state:', options.open)
+}
+</script>
+
+<template>
+  <MotionTransform @transform="handleTransform">
+    <template #head>
+      <div>Header</div>
+    </template>
+    <template #body>
+      <p>Content</p>
+    </template>
+  </MotionTransform>
+</template>
+```
 
 ### `transformLite`
 
-Lightweight event that triggers when MotionTransform state changes without event context.
+Event fires when MotionTransform state changes without DOM event context (lightweight version).
 
-```
-@transform-lite="onTransformLite"
-```
+**Parameters:**
+- `options: MotionTransformEmitOptions` — object with transform data
 
-Handler signature:
-```
-function onTransformLite (options: MotionTransformEmitOptions)
-```
+**MotionTransformEmitOptions structure:**
+- `type: 'head' | 'body' | 'top' | 'script'` — area type that initiated the event
+- `open: boolean` — current open state (`true` - open, `false` - closed)
 
-Parameters:
-- `options` — transform data: type ('head' | 'body' | 'top' | 'script') and open state
+```html
+<script setup>
+const handleTransformLite = (options) => {
+  console.log('Type:', options.type)
+  console.log('Open state:', options.open)
 
-#### MotionTransformEmitOptions
-
-Object with transform state data passed to event handlers.
-
-```
-MotionTransformEmitOptions: {
-  type: 'head' | 'body' | 'top' | 'script'
-  open: boolean
+  if (options.type === 'head' && options.open) {
+    console.log('Header opened the component')
+  }
 }
-```
+</script>
 
-Fields:
-- **`type`** — the area type that initiated the event:
-  - `'head'` — header area
-  - `'body'` — content area
-  - `'top'` — top area
-  - `'script'` — programmatic change
-- **`open`** — current open state (true = open, false = closed)
+<template>
+  <MotionTransform @transform-lite="handleTransformLite">
+    <template #head>
+      <div>Header</div>
+    </template>
+    <template #body>
+      <p>Content</p>
+    </template>
+  </MotionTransform>
+</template>
+```

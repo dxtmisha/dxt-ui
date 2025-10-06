@@ -1,0 +1,115 @@
+### `head`
+
+Слот для размещения области заголовка, которая служит триггером для открытия/закрытия компонента.
+
+**Параметры:**
+- `props: MotionTransformControlItem` — объект с данными управления компонентом
+
+```html
+<MotionTransform>
+  <template #head="{ isOpen, classes }">
+    <button :class="classes.click">
+      {{ isOpen ? 'Закрыть' : 'Открыть' }}
+    </button>
+  </template>
+</MotionTransform>
+```
+
+### `body`
+
+Слот для размещения основной области содержимого, которая появляется при открытии компонента.
+
+**Параметры:**
+- `props: MotionTransformControlItem` — объект с данными управления компонентом
+
+```html
+<MotionTransform>
+  <template #body="{ isShow }">
+    <div v-if="isShow">
+      <p>Содержимое компонента</p>
+    </div>
+  </template>
+</MotionTransform>
+```
+
+## MotionTransformControlItem
+
+`MotionTransformControlItem` — объект, передаваемый во все слоты компонента MotionTransform, содержащий данные для управления состоянием.
+
+### Структура типа
+
+```typescript
+type MotionTransformControlItem = {
+  /** Состояние открытия компонента */
+  isOpen: ComputedRef<boolean>
+
+  /** Видимость или подготовка к показу */
+  isShow: ComputedRef<boolean>
+
+  /** Набор вспомогательных CSS-классов для стилизации состояний */
+  classes: MotionTransformClassList
+}
+```
+
+### Свойства
+
+- **`isOpen`** — вычисляемое свойство, указывающее открыт ли компонент
+- **`isShow`** — вычисляемое свойство, `true` если компонент видим или находится в подготовке к показу (анимация)
+- **`classes`** — объект с CSS-классами для управления состояниями и поведением
+
+### MotionTransformClassList
+
+Список доступных CSS-классов для стилизации и управления поведением:
+
+```typescript
+type MotionTransformClassList = {
+  /** Класс видимости компонента */
+  show: string
+
+  /** Класс открытого состояния */
+  open: string
+
+  /** Класс режима окна */
+  window: string
+
+  /** Класс клика */
+  click: string
+
+  /** Класс отключения поведения */
+  none: string
+
+  /** Класс глобального отключения */
+  noneGlobal: string
+
+  /** Класс закрытия */
+  close: string
+}
+```
+
+### Пример использования
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <MotionTransform v-model:open="isOpen">
+    <template #head="{ isOpen, classes }">
+      <div :class="classes.click">
+        <h3>{{ isOpen ? '▲' : '▼' }} Заголовок</h3>
+      </div>
+    </template>
+
+    <template #body="{ isShow, classes }">
+      <div v-if="isShow" :class="classes.open">
+        <p>Основное содержимое</p>
+        <button :class="classes.close">Закрыть</button>
+      </div>
+    </template>
+  </MotionTransform>
+</template>
+```
+

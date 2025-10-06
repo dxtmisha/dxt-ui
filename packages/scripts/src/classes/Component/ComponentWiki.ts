@@ -20,7 +20,7 @@ import { isFilled } from '@dxtmisha/functional'
 // Sample Vite config template path / Путь к шаблону Vite-конфига
 const FILE_VITE_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'viteComponentTemplateConfig.ts']
 // Sample AI prompt template path / Путь к шаблону AI-промпта
-const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'componentPrompt.txt']
+const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'componentPrompt.en.txt']
 
 // Async exec wrapper / Обёртка для асинхронного exec
 const execAsync = promisify(exec)

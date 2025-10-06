@@ -210,9 +210,7 @@ export const wikiDescriptionsMotionTransform: StorybookComponentsDescriptionItem
 <StorybookDescriptions componentName={'Window'} type={'expose.toggle'}/>
     `,
     slots: `
-<StorybookDescriptions componentName={'MotionTransform'} type={'slot.head'}/>
-<StorybookDescriptions componentName={'MotionTransform'} type={'slot.body'}/>
-<StorybookDescriptions componentName={'MotionTransform'} type={'slot.params'}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'slots'}/>
     `
   }
 }

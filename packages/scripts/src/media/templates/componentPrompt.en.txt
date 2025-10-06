@@ -1,0 +1,370 @@
+You need to prepare documentation for a component in the [wikiLanguage] language. Follow the format and requirements strictly. Do not add anything beyond what is described.
+Stack: Storybook 9.x, TypeScript, MDX.
+
+Canvas component is imported from '@storybook/addon-docs/blocks'
+
+====================================
+1) Study the current component code
+====================================
+```
+[code]
+```
+Analyze the structure, props, events, slots, types, internal logic.
+
+====================================
+2) Add missing type comments
+====================================
+Add brief single-language (in [wikiLanguage]) JSDoc comments to missing types and their properties.
+Code to fix:
+```ts
+// types.ts
+[types]
+```
+Duplicate the result below without wrapper:
+[types]
+
+Comment requirements:
+- Single-line for simple fields.
+- Multi-line for logic blocks.
+- No duplication of the obvious.
+- Adapted for storybook.
+
+Example:
+```ts
+/**
+ * Basic properties for image components.
+ */
+export interface IconPropsBasic<
+  Image extends ImagePropsBasic = ImagePropsBasic
+> extends SkeletonPropsInclude {
+  // Status
+  /** Active state of the icon */
+  active?: boolean
+
+  // Icon
+  /** Main icon value */
+  icon?: ImageValue<Image>
+  /** Active icon value */
+  iconActive?: ImageValue<Image>
+}
+```
+
+====================================
+3) Stories for Storybook
+====================================
+Create only the minimum necessary examples. Each example is as simple as possible, without extra wrappers, only what demonstrates the essence.
+Code to fix:
+```ts
+// ComponentDoc.stories.ts
+[stories]
+```
+Rules:
+- Don't touch existing stories, only additions.
+- Don't touch const meta. DO NOT CHANGE ANYTHING IN META.
+- Don't touch existing constants.
+- Don't add stories just for filling.
+- If the component has different modes (e.g., states or display variants), show one example each.
+- Story names in PascalCase style without extra words.
+- Minimize imports: only what is required.
+- Don't add <Canvas of={Component.Component}/>
+
+====================================
+4) MDX documentation (component description)
+====================================
+Prepare a complete component description in MDX format. Strict style: no tables, no extra sections.
+Code to fix:
+```md
+// UiPlayerLite.mdx
+[md]
+```
+
+MDX structure rules:
+- At the beginning: [description] — Brief description of the purpose (1–3 sentences): conveys the essence of the component as briefly as possible.
+- Next: main text (documentation) — starts without a heading. This is [doc].
+- You can refine existing text by changing it, but don't delete. Delete only unnecessary or outdated content.
+- Be sure to list slots (if any) and events (if any) in the given format.
+- Don't describe props in a list if they are simple. Describe only complex relationships (e.g., dependent props) or composite types in detail.
+- Usage example — at the end of the corresponding semantic block or at the very bottom if there is one general example.
+- Slots and events — strictly in the format below. If there are no types, the type block is omitted.
+- Add Canvas if there is a usage example. If not, add stories.
+
+Slot format:
+```
+## Slots
+### `slotName`
+Brief description of the slot's purpose. You can highlight features with a bulleted list.
+If there are props, add props description. `props: any` means there are no props, no need to write it.
+If there are multiple slots — each with `###` subheading.
+If it just returns VNode, no need to describe.
+Don't write something like: `This slot accepts any VNode and doesn't pass any properties.`
+If there are no events, don't describe the events block.
+If there are no slots, don't describe the slots block.
+
+Event format:
+```
+## Events
+### `eventName`
+Description of when and why it is emitted.
+
+Slot description example (don't copy verbatim, adapt):
+### `suffix`
+
+Slot for placing content at the end of the component, after the main content.
+
+**Returns:** `VNode` — element with class `{className}__suffix` and attribute `data-event-type="suffix"`
+
+```html
+<Component>
+  <template #suffix>
+    <Icon name="check" />
+  </template>
+</Component>
+```
+
+### `control`
+
+Slot for placing window control elements (close buttons, minimize, etc.).
+
+**Parameters:**
+- `props: WindowControlItem` — object with window control data
+
+```html
+<Window>
+  <template #control="{ onclick, open }">
+    <button @click="onclick">
+      {{ open ? 'Close' : 'Open' }}
+    </button>
+  </template>
+</Window>
+```
+
+Event description example (adapt to context):
+### `window`
+
+Event fires when the window state changes (open/close).
+
+**Parameters:**
+- `options: WindowEmitOptions` — object with window data
+
+**WindowEmitOptions structure:**
+- `id: string` — unique window identifier
+- `element: HTMLDivElement` — window DOM element
+- `control: HTMLElement` — control DOM element
+- `open: boolean` — window open state (`true` - open, `false` - closed)
+
+```html
+<script setup>
+const handleWindow = (options) => {
+  console.log('Window ID:', options.id)
+  console.log('Window open:', options.open)
+  console.log('Window element:', options.element)
+  console.log('Control element:', options.control)
+}
+</script>
+
+<template>
+  <Window @window="handleWindow">
+    <template #default>
+      <p>Window content</p>
+    </template>
+  </Window>
+</template>
+```
+
+
+Canvas usage example:
+<Canvas of={Chip.ChipSkeleton}/>
+
+====================================
+5) Final return
+====================================
+Return the result strictly in the format (nothing extra before or after):
+[types.ts]
+#########
+[ComponentDoc.stories.ts]
+#########
+[UiPlayerLite.mdx]
+
+Where:
+- Don't add anything extra (like ```ts)
+- Don't wrap in blocks.
+- Don't wrap in ```ts or anything similar.
+- [types.ts] — final types block with comments (only content, without file name comments).
+- [ComponentDoc.stories.ts] — final stories file (only content, without file name comments).
+- [UiPlayerLite.mdx] — final MDX documentation (only content, without file name comments).
+
+====================================
+Constraints and style
+====================================
+- No tables.
+- No arbitrary additional sections.
+- Don't add "Props" section if there are no complex dependencies.
+- Don't duplicate descriptions of the same thing.
+- Respect the [wikiLanguage] language — if it's "en" use English, otherwise the corresponding language.
+- Don't use placeholders outside those specified.
+- Code blocks: for types and events — ```ts, for markup — ```html when necessary.
+- Stories: only necessary scenarios, without extra visual decorations.
+
+====================================
+Example (don't include in response, only as style guide)
+====================================
+Component for creating modal windows, dialogs, and popup elements with flexible positioning and adaptive behavior.
+
+Window manages content display over the main interface, supports various positioning types (modal windows, dropdown menus, action sheets), open/close animations, and event system integration. The component automatically handles clicks outside the area, focus management, and adaptation to different screen sizes.
+
+**Key Features:**
+
+- Flexible positioning (center, edges, screen corners)
+- Adaptive modes (modal, menu, actionSheet, static)
+- Open/close animations with origin configuration
+- State management via v-model or expose methods
+- Scrollbar integration for scrollable content
+- Background interaction blocking (persistent mode)
+- Window lifecycle events
+
+**Typical Use Cases:**
+
+- Modal windows for forms and confirmations
+- Dropdown menus and context menus
+- Side panels and drawer components
+- Action sheets for mobile interfaces
+- Tooltips and dialogs
+
+## CSS Classes for Behavior Control
+
+- `*--block` — prevents window from closing when clicking outside its boundaries
+- `*--blockChildren` — prevents current window from closing
+- `*--blockOther` — prevents other windows from closing until current one is closed
+- `*--close` — applies to elements for closing the window
+- `*--controlOpenOnly` — applies to control elements that only open the window
+- `*--controlStatic` — applies to control elements in static mode
+- `*--static` — applies to elements inside window, canceling all actions
+
+Where `*` is the component class name (e.g., `d1-window`, `m3-window`).
+
+## Static Mode (staticMode)
+
+The Window component supports static mode operation through the `staticMode` property. In this mode, the window works as an embedded component without modal behavior:
+
+- **Content displays immediately** — window doesn't hide and doesn't require activation
+- **Animations disabled** — no appearance/disappearance effects
+- **Positioning disabled** — window is embedded in document flow
+- **Works with adaptive** — when the `adaptive` property has one of the static modes (e.g., `static`), static mode is enabled
+
+Static mode is especially useful for embedding window content directly into the interface without modal behavior.
+
+## Positioning Direction (axis)
+
+Controls the axis of window placement relative to the anchor element. Default: `y`.
+
+> Applies only in menu mode (`adaptive="menu"` or `adaptive="menuWindow"`).
+
+**Possible values:**
+- `'x'` — horizontal axis (left or right of anchor)
+- `'y'` — vertical axis (top or bottom of anchor)
+- `'on'` — over anchor (window centers on element)
+
+### Behavior
+
+- Component automatically selects the placement side with the most available space
+- When using context menu (`contextmenu`), positioning occurs from cursor coordinates
+- Window always stays within visible screen area (viewport)
+- Indent from anchor is set via `indent` property (default 4px)
+
+## State Management via v-model
+
+Two-way binding of window open state via `v-model:open`.
+
+**Parameters:**
+- `open: boolean` — window open state
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <button @click="isOpen = true">Open</button>
+
+  <Window v-model:open="isOpen">
+    <template #default>
+      <p>Window content</p>
+      <button @click="isOpen = false">Close</button>
+    </template>
+  </Window>
+</template>
+```
+
+## Expose Methods
+### `id`
+
+Unique window identifier.
+
+**Type:** `string`
+
+```html
+<script setup>
+const windowRef = ref()
+
+onMounted(() => {
+  console.log(windowRef.value.id) // "window-123"
+})
+</script>
+
+<template>
+  <Window ref="windowRef" />
+</template>
+```
+
+## Slots
+### `control`
+
+Slot for placing window control elements (close buttons, minimize, etc.).
+
+**Parameters:**
+- `props: WindowControlItem` — object with window control data
+
+```html
+<Window>
+  <template #control="{ onclick, open }">
+    <button @click="onclick">
+      {{ open ? 'Close' : 'Open' }}
+    </button>
+  </template>
+</Window>
+```
+
+## Events
+### `window`
+
+Event fires when the window state changes (open/close).
+
+**Parameters:**
+- `options: WindowEmitOptions` — object with window data
+
+**WindowEmitOptions structure:**
+- `id: string` — unique window identifier
+- `element: HTMLDivElement` — window DOM element
+- `control: HTMLElement` — control DOM element
+- `open: boolean` — window open state (`true` - open, `false` - closed)
+
+```html
+<script setup>
+const handleWindow = (options) => {
+  console.log('Window ID:', options.id)
+  console.log('Window open:', options.open)
+  console.log('Window element:', options.element)
+  console.log('Control element:', options.control)
+}
+</script>
+
+<template>
+  <Window @window="handleWindow">
+    <template #default>
+      <p>Window content</p>
+    </template>
+  </Window>
+</template>
+```

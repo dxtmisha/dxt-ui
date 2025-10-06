@@ -1,35 +1,13 @@
 ## Progress Value Management
 
-The `value` and `max` properties work closely together to determine the state of process execution. They establish the current value and upper limit, forming a system for calculating the completion percentage of an operation.
+The `value` and `max` properties work together to determine the state of process execution. They establish the current value and upper limit for calculating the completion percentage of an operation.
 
-### Properties
+**Properties:**
 
-- **value** — Current progress value. Determines what portion of the process has been completed
-- **max** — Maximum progress value. Defaults to 100, serves as the reference point for percentage calculations
+- `value` — current progress value (what portion of the process has been completed)
+- `max` — maximum progress value, defaults to `100`
 
-### Property Relationship
-
-The `value` and `max` properties form a mathematical relationship to determine completion percentage: `(value / max) * 100`. This allows flexible adaptation of the component to various tasks and measurement scales.
-
-- Completion percentage is calculated automatically based on the value ratio
-- The `value` is automatically constrained to the range from 0 to `max`
-- When `max` changes, the percentage display is recalculated proportionally
-
-### Features
-
-- **Flexible scale** — Any numeric values can be used depending on the task
-- **Automatic normalization** — Values are automatically adjusted to the allowable range
-- **Dynamic updates** — Both properties can change in real-time
-- **Type compatibility** — Support numeric values and string representations of numbers
-
-### Recommendations
-
-- Use `max="100"` for percentage display (default value)
-- Set `max` equal to the actual number of steps in the process
-- Update `value` gradually to create smooth animation
-- Avoid zero and negative values for `max`
-
-### Usage Examples
+Completion percentage is calculated automatically: `(value / max) * 100`. The `value` is automatically constrained to the range from 0 to `max`. When `max` changes, the percentage display is recalculated proportionally. Use `max="100"` for percentage display or set it equal to the actual number of steps in the process.
 
 ```html
 <!-- Standard percentage scale -->
@@ -38,7 +16,7 @@ The `value` and `max` properties form a mathematical relationship to determine c
 <!-- File loading progress -->
 <Progress :value="loadedFiles" :max="totalFiles" />
 
-<!-- Dynamic updates of both values -->
+<!-- Dynamic updates -->
 <Progress :value="currentStep" :max="totalSteps" />
 
 <!-- Custom scale -->

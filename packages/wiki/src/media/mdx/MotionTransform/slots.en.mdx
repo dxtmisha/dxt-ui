@@ -1,0 +1,115 @@
+### `head`
+
+Slot for placing the header area that serves as a trigger for opening/closing the component.
+
+**Parameters:**
+- `props: MotionTransformControlItem` — object with component control data
+
+```html
+<MotionTransform>
+  <template #head="{ isOpen, classes }">
+    <button :class="classes.click">
+      {{ isOpen ? 'Close' : 'Open' }}
+    </button>
+  </template>
+</MotionTransform>
+```
+
+### `body`
+
+Slot for placing the main content area that appears when the component is opened.
+
+**Parameters:**
+- `props: MotionTransformControlItem` — object with component control data
+
+```html
+<MotionTransform>
+  <template #body="{ isShow }">
+    <div v-if="isShow">
+      <p>Component content</p>
+    </div>
+  </template>
+</MotionTransform>
+```
+
+## MotionTransformControlItem
+
+`MotionTransformControlItem` — object passed to all MotionTransform component slots, containing state control data.
+
+### Type structure
+
+```typescript
+type MotionTransformControlItem = {
+  /** Component open state */
+  isOpen: ComputedRef<boolean>
+
+  /** Visible or preparing to be shown */
+  isShow: ComputedRef<boolean>
+
+  /** Helper CSS classes for state styling */
+  classes: MotionTransformClassList
+}
+```
+
+### Properties
+
+- **`isOpen`** — computed property indicating whether the component is open
+- **`isShow`** — computed property, `true` when the component is visible or in the preparation/transition phase
+- **`classes`** — object with CSS classes to control states and behavior
+
+### MotionTransformClassList
+
+Available CSS classes for styling and controlling behavior:
+
+```typescript
+type MotionTransformClassList = {
+  /** Component visibility class */
+  show: string
+
+  /** Open state class */
+  open: string
+
+  /** Window mode class */
+  window: string
+
+  /** Click class */
+  click: string
+
+  /** Behavior disabling class */
+  none: string
+
+  /** Global disabling class */
+  noneGlobal: string
+
+  /** Close class */
+  close: string
+}
+```
+
+### Usage example
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <MotionTransform v-model:open="isOpen">
+    <template #head="{ isOpen, classes }">
+      <div :class="classes.click">
+        <h3>{{ isOpen ? '▲' : '▼' }} Header</h3>
+      </div>
+    </template>
+
+    <template #body="{ isShow, classes }">
+      <div v-if="isShow" :class="classes.open">
+        <p>Main content</p>
+        <button :class="classes.close">Close</button>
+      </div>
+    </template>
+  </MotionTransform>
+</template>
+```
+

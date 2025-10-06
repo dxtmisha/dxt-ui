@@ -1,39 +1,25 @@
 ## Linear Progress and Related Parameters
 
-The `linear` property enables linear progress indicator display mode. For complete control over the behavior and appearance of linear progress, it is recommended to use it together with additional positioning and styling properties.
+The `linear` property enables linear progress indicator display mode as a horizontal bar. For complete control over behavior and appearance, it is recommended to use it together with additional properties.
 
-### Properties
+**Properties:**
 
-- **linear** — Enables linear progress display mode as a horizontal bar.
-- **position** — Defines the position of the linear indicator (`top`, `bottom`, `static`). Defaults to `top`.
-- **point** — Adds a point at the end of the progress indicator to emphasize the current position.
+- `linear` — enables linear progress display mode
+- `position` — defines the indicator position (`'top'`, `'bottom'`, `'static'`), defaults to `'top'`
+- `point` — adds a point at the end of the indicator to emphasize the current position
 
-### Description
-
-- The `linear` property activates a horizontal progress bar that fills proportionally to the current value.
-- `position` controls the indicator placement: `top` places it at the top of the container, `bottom` at the bottom, `static` in the normal document flows.
-- `point` adds a visual marker at the end of the filled portion, making the current position more noticeable.
-- All properties work together to create a flexible and informative progress indicator.
-
-### Recommendations
-
-- Use `position="top"` or `position="bottom"` to overlay progress on top of content.
-- Apply `position="static"` when the indicator should take space in the document flow.
-- Add `point` for better visualization of current progress, especially with small values.
-- Combine properties depending on usage context and interface design.
-
-### Usage Example
+The `linear` property activates a horizontal progress bar that fills proportionally to the current value. `position` controls the placement: `'top'` places it at the top of the container, `'bottom'` at the bottom, `'static'` in the normal document flow. `point` adds a visual marker at the end of the filled portion.
 
 ```html
 <!-- Basic linear progress -->
 <Progress linear />
 
-<!-- Linear progress with bottom positioning -->
+<!-- With bottom positioning -->
 <Progress linear position="bottom" />
 
-<!-- Linear progress with point in static position -->
+<!-- With point in static position -->
 <Progress linear position="static" point />
 
-<!-- Full configuration with specific value -->
+<!-- With specific value -->
 <Progress linear position="top" point :value="65" />
 ```

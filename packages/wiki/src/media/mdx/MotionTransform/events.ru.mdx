@@ -1,51 +1,67 @@
 ### `transform`
 
-Событие, которое срабатывает при изменении состояния MotionTransform с полным контекстом события.
+Событие срабатывает при изменении состояния MotionTransform с полным контекстом события.
 
-```
-@transform="onTransform"
-```
+**Параметры:**
+- `event: Event | undefined` — DOM-событие, которое вызвало изменение (если есть)
+- `options: MotionTransformEmitOptions` — объект с данными трансформации
 
-Сигнатура обработчика:
-```
-function onTransform (event: Event | undefined, options: MotionTransformEmitOptions)
-```
+**Структура MotionTransformEmitOptions:**
+- `type: 'head' | 'body' | 'top' | 'script'` — тип области, которая инициировала событие
+- `open: boolean` — текущее состояние открытия (`true` - открыто, `false` - закрыто)
 
-Параметры:
-- `event` — DOM‑событие, которое вызвало изменение (если есть)
-- `options` — данные трансформации: тип, состояние открытия
+```html
+<script setup>
+const handleTransform = (event, options) => {
+  console.log('Событие:', event)
+  console.log('Тип:', options.type)
+  console.log('Состояние открытия:', options.open)
+}
+</script>
+
+<template>
+  <MotionTransform @transform="handleTransform">
+    <template #head>
+      <div>Заголовок</div>
+    </template>
+    <template #body>
+      <p>Содержимое</p>
+    </template>
+  </MotionTransform>
+</template>
+```
 
 ### `transformLite`
 
-Облегчённое событие, которое срабатывает при изменении состояния MotionTransform без контекста события.
+Событие срабатывает при изменении состояния MotionTransform без контекста DOM-события (облегчённая версия).
 
-```
-@transform-lite="onTransformLite"
-```
+**Параметры:**
+- `options: MotionTransformEmitOptions` — объект с данными трансформации
 
-Сигнатура обработчика:
-```
-function onTransformLite (options: MotionTransformEmitOptions)
-```
+**Структура MotionTransformEmitOptions:**
+- `type: 'head' | 'body' | 'top' | 'script'` — тип области, которая инициировала событие
+- `open: boolean` — текущее состояние открытия (`true` - открыто, `false` - закрыто)
 
-Параметры:
-- `options` — данные трансформации: тип ('head' | 'body' | 'top' | 'script') и состояние открытия
+```html
+<script setup>
+const handleTransformLite = (options) => {
+  console.log('Тип:', options.type)
+  console.log('Состояние открытия:', options.open)
 
-#### MotionTransformEmitOptions
-
-Объект с данными о состоянии трансформации, передаваемый в обработчики событий.
-
-```
-MotionTransformEmitOptions: {
-  type: 'head' | 'body' | 'top' | 'script'
-  open: boolean
+  if (options.type === 'head' && options.open) {
+    console.log('Заголовок открыл компонент')
+  }
 }
-```
+</script>
 
-Поля:
-- **`type`** — тип области, которая инициировала событие:
-  - `'head'` — область заголовка
-  - `'body'` — область содержимого
-  - `'top'` — верхняя область
-  - `'script'` — программное изменение
-- **`open`** — текущее состояние открытия (true = открыто, false = закрыто)
+<template>
+  <MotionTransform @transform-lite="handleTransformLite">
+    <template #head>
+      <div>Заголовок</div>
+    </template>
+    <template #body>
+      <p>Содержимое</p>
+    </template>
+  </MotionTransform>
+</template>
+```

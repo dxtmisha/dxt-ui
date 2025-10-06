@@ -12,12 +12,8 @@ import ignoreEn from './ignore.en.mdx'
 import ignoreRu from './ignore.ru.mdx'
 import motionTransformEn from './motionTransform.en.mdx'
 import motionTransformRu from './motionTransform.ru.mdx'
-import slotBodyEn from './slot.body.en.mdx'
-import slotBodyRu from './slot.body.ru.mdx'
-import slotHeadEn from './slot.head.en.mdx'
-import slotHeadRu from './slot.head.ru.mdx'
-import slotParamsEn from './slot.params.en.mdx'
-import slotParamsRu from './slot.params.ru.mdx'
+import slotsEn from './slots.en.mdx'
+import slotsRu from './slots.ru.mdx'
 import vModelEn from './v-model.en.mdx'
 import vModelRu from './v-model.ru.mdx'
 
@@ -53,17 +49,9 @@ export const wikiMdxMotionTransform: StorybookComponentsMdxItem = {
       en: motionTransformEn,
       ru: motionTransformRu
     },
-    'slot.body': {
-      en: slotBodyEn,
-      ru: slotBodyRu
-    },
-    'slot.head': {
-      en: slotHeadEn,
-      ru: slotHeadRu
-    },
-    'slot.params': {
-      en: slotParamsEn,
-      ru: slotParamsRu
+    'slots': {
+      en: slotsEn,
+      ru: slotsRu
     },
     'v-model': {
       en: vModelEn,

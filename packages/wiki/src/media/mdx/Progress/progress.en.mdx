@@ -1,9 +1,71 @@
-## Progress Indicator
+Component for visual representation of operation progress, data loading, and long-running processes.
 
-The `Progress` component is designed to display the progress of operations, data loading, or any other processes that require visual representation of completion status.
+Progress provides flexible options for indicating completion status: linear and circular progress bars, minimalist point indicators. The component automatically manages visibility with customizable appearance and hiding delays, supports both determinate progress values and indeterminate states for operations with unknown completion time.
 
-### Key Features
+**Key Features:**
 
-The component supports various types of progress-display - linear and circular indicators, as well as point variants for minimal display. It can work with both determinate progress values and indeterminate states for operations with unknown execution time.
+- Linear and circular progress indicators
+- Point variants for minimal display
+- Determinate mode with specific values (0-100%)
+- Indeterminate mode for unknown execution time
+- Flexible positioning (top, bottom, static)
+- Customizable appearance and hiding delays
+- Compact and inverted display modes
+- Automatic visibility management
 
-Provides flexible positioning and styling options, including compact and inverted display variants. Supports delay settings for smooth appearance and hiding of the indicator.
+**Typical Use Cases:**
+
+- Indicating data loading from server
+- Displaying file upload progress
+- Visualizing multi-step operation execution
+- Global page loading indicators
+- Progress bars in forms and wizards
+- Background process indication
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const progress = ref(0)
+const loading = ref(false)
+
+const startLoading = () => {
+  loading.value = true
+  progress.value = 0
+
+  const interval = setInterval(() => {
+    progress.value += 10
+    if (progress.value >= 100) {
+      clearInterval(interval)
+      loading.value = false
+    }
+  }, 500)
+}
+</script>
+
+<template>
+  <button @click="startLoading">Start Loading</button>
+
+  <!-- Linear indicator with determinate value -->
+  <Progress
+    :visible="loading"
+    :value="progress"
+    linear
+    position="top"
+  />
+
+  <!-- Circular indicator -->
+  <Progress
+    :visible="loading"
+    :value="progress"
+    circular
+  />
+
+  <!-- Indeterminate indicator -->
+  <Progress
+    :visible="loading"
+    linear
+    indeterminate="type1"
+  />
+</template>
+```
