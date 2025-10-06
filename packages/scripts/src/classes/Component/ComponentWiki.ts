@@ -15,6 +15,7 @@ import {
   UI_FILE_NAME_VITE,
   UI_FILE_NAME_VITE_WORKERS
 } from '../../config'
+import { isFilled } from '@dxtmisha/functional'
 
 // Sample Vite config template path / Путь к шаблону Vite-конфига
 const FILE_VITE_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'viteComponentTemplateConfig.ts']
@@ -296,7 +297,7 @@ ${content}
         .replace('[stories]', this.storiesFile.read())
         .replace('[md]', this.mdFile.read())
         .replace(/\[wikiLanguage]/g, PropertiesConfig.getWikiLanguage())
-        + ` ${this.prompt}`
+        + (isFilled(this.prompt) ? `Additional conditions (these conditions take priority): ${this.prompt}` : '')
     )
   }
 
