@@ -1,22 +1,64 @@
-The List component is a powerful interactive list with support for hierarchical data, keyboard navigation, and search functionality. It is designed to display structured data with navigation capabilities, item selection, and interaction through keyboard and mouse.
+A component for creating interactive lists with support for hierarchical data, keyboard navigation, and search functionality.
 
-## Core Features
+List manages the display of structured data with navigation capabilities, item selection, and interaction through keyboard and mouse. The component supports various item types (regular items, groups, menus, dividers, subtitles, HTML content), automatically handles complex hierarchical structures, and provides intuitive navigation. The built-in search system works in real-time with match highlighting across the entire data hierarchy.
 
-List supports various item types: regular items, groups, menus, separators, and subtitles. The component automatically handles complex hierarchical structures and provides intuitive navigation between elements.
+**Key features:**
 
-## Keyboard Navigation
+- Various item types (item, group, menu, line, subtitle, html)
+- Hierarchical structure with nested groups and menus
+- Full keyboard navigation (↑/↓, Enter, →, ←)
+- Built-in real-time search with match highlighting
+- Item selection control via v-model:selected
+- Focus control via v-model:focus
+- Lightweight mode for large lists (lite)
+- Display axis configuration (x/y) and dividers
+- Click and menu close events
 
-The component supports full keyboard navigation:
-- **↑/↓** - navigate between items
-- **Enter/→** - open groups/menus or select item
-- **←** - close groups/menus
-- **Type text** - search through items
-- **Backspace** - clear search
+**Typical use cases:**
 
-## Search and Highlighting
+- Navigation menus and option lists
+- Dropdown lists with hierarchical structure
+- Product and category catalogs
+- Settings lists with grouping
+- Context menus with submenus
+- File and folder lists
+- Filters with multiple selection
 
-Built-in search functionality allows finding items in real-time with automatic highlighting of matches. Search works across the entire data hierarchy, including nested groups and menus.
+```html
+<script setup>
+import { ref } from 'vue'
 
-## Performance
+const selected = ref(['item2'])
+const focus = ref(null)
 
-For working with large datasets, the component provides a lightweight rendering mode that automatically activates when the specified threshold of item count is exceeded, ensuring high performance without losing functionality.
+const listData = ref([
+  { label: 'First item', value: 'item1' },
+  { label: 'Second item', value: 'item2' },
+  { type: 'line' },
+  { type: 'subtitle', label: 'Item group' },
+  {
+    label: 'Group with submenu',
+    value: 'group1',
+    type: 'group',
+    list: [
+      { label: 'Nested item 1', value: 'nested1' },
+      { label: 'Nested item 2', value: 'nested2' }
+    ]
+  }
+])
+
+const handleClick = (event) => {
+  console.log('Item clicked:', event.detail.value)
+}
+</script>
+
+<template>
+  <List
+    v-model:selected="selected"
+    v-model:focus="focus"
+    :list="listData"
+    highlight="text"
+    @click="handleClick"
+  />
+</template>
+```

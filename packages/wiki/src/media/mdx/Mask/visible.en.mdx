@@ -1,48 +1,40 @@
-## Mask Visibility Control
+## Mask visibility control
 
-The `visible` and `visiblePartly` properties control the display of mask placeholder characters and overall component visibility.
+The `visible` and `visiblePartly` properties are designed for managing the display of mask placeholder characters and overall component visibility.
 
-### Properties
+**Properties:**
 
-- **visible** — Primary property for controlling complete visibility of the mask component
-- **visiblePartly** — Controls partial visibility of mask placeholder characters
+- `visible` — controls complete visibility of the mask component
+- `visiblePartly` — controls partial visibility of placeholder characters
 
-### How it works
-
-**visible** controls complete visibility of the mask component. When set to `false`, hides the entire mask component including all placeholder characters.
-
-**visiblePartly** controls partial visibility of mask placeholder characters. When set to `true`, shows only filled positions while hiding empty placeholder characters.
-
-### Usage Examples
+Properties work together: when `visible: false`, the mask component is completely hidden, including all placeholder characters. When `visiblePartly: true` is activated, only filled mask positions are displayed, hiding empty placeholder characters. If `visible` is set to `false`, the `visiblePartly` property is ignored. Visibility changes don't affect validation logic and data processing, allowing creation of adaptive interfaces with conditional or abbreviated mask display.
 
 ```html
-// Complete mask hiding
-<Mask
-  :mask="'+1 (***) ***-****'"
-  :visible="false"
-/>
+<script setup>
+import { ref } from 'vue'
 
-// Show only filled positions
-<Mask
-  :mask="'+1 (***) ***-****'"
-  :visiblePartly="true"
-/>
+const showMask = ref(true)
+const compactMode = ref(false)
+</script>
 
-// Conditional display with partial visibility
-<Mask
-  :mask="'+1 (***) ***-****'"
-  :visible="showMask"
-  :visiblePartly="compactMode"
-/>
+<template>
+  <!-- Complete mask hiding -->
+  <Mask
+    mask="+1 (***) ***-****"
+    :visible="false"
+  />
+
+  <!-- Show only filled positions -->
+  <Mask
+    mask="+1 (***) ***-****"
+    :visiblePartly="true"
+  />
+
+  <!-- Conditional display with partial visibility -->
+  <Mask
+    mask="+1 (***) ***-****"
+    :visible="showMask"
+    :visiblePartly="compactMode"
+  />
+</template>
 ```
-
-### Behavior Features
-
-- When **visible: false**, the mask component is completely hidden
-- When **visiblePartly: true**, only filled mask positions are displayed
-- If **visible: false**, the **visiblePartly** property is ignored
-- Visibility changes don't affect validation logic and data processing
-
-### Application
-
-Use these properties to create adaptive interfaces where the mask can be displayed conditionally or in abbreviated form depending on the usage context.

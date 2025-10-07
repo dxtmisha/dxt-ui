@@ -62,6 +62,7 @@ Rules:
 - Don't touch existing stories, only additions.
 - Don't touch const meta. DO NOT CHANGE ANYTHING IN META.
 - Don't touch existing constants.
+- Don't rename existing constants.
 - Don't add stories just for filling.
 - If the component has different modes (e.g., states or display variants), show one example each.
 - Story names in PascalCase style without extra words.

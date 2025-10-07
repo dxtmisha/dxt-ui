@@ -1,19 +1,24 @@
-## Lightweight list mode
+## Managing list performance
 
-The `lite` and `liteThreshold` properties control the simplified (lightweight) rendering mode of the list.
+The `lite` and `liteThreshold` properties work together to optimize rendering of large lists. They enable a lightweight display mode that reduces visual complexity and improves performance when the threshold number of items is exceeded.
 
-### Properties
+**Properties:**
 
-- **lite** — Enables the lightweight rendering mode
-- **liteThreshold** — Item count threshold that is applied when `lite` is enabled
+- `lite` — enables lightweight list display mode
+- `liteThreshold` — item count threshold for activating simplified mode, defaults to configuration value
 
-### Property relationship
+Display mode is determined automatically: when `lite=false`, the list always renders in full mode. When `lite=true`, the component compares the total item count with `liteThreshold`. If the item count does not exceed the threshold, full mode with extended visualization is used. When the threshold is exceeded, lightweight mode is activated to reduce rendering load. Use `lite` for working with dynamic data of variable size.
 
-The properties work together to decide when the simplified rendering should be applied:
+```html
+<!-- Automatic mode switching -->
+<List :list="items" :lite="true" :liteThreshold="50" />
 
-- If `lite = false` (or not set), the list always renders in full mode and `liteThreshold` is ignored
-- If `lite = true`, the component compares the total item count with `liteThreshold`
-  - When `count <= liteThreshold`, full mode is used (no simplification)
-  - When `count > liteThreshold`, lightweight mode turns on to reduce visual complexity and speed up rendering
+<!-- Always full mode -->
+<List :list="items" :lite="false" />
 
-This approach helps avoid unnecessary load with large datasets while keeping the familiar full rendering for short lists.
+<!-- Lightweight mode for large catalogs -->
+<List :list="products" :lite="true" :liteThreshold="100" />
+
+<!-- Custom threshold for mobile devices -->
+<List :list="data" :lite="true" :liteThreshold="30" />
+```

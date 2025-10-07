@@ -2,80 +2,92 @@
 
 Numeric types in Mask provide specialized formatting and validation for working with numbers, currencies, and financial data.
 
-### Available types
+**Available types:**
 
-- **number** — Simple numeric mask with rubber structure
-- **number-format** — Formatted numbers with thousand separators and localization
-- **currency** — Currency mask with automatic currency symbol
+- `number` — simple numeric mask with rubber structure
+- `number-format` — formatted numbers with thousand separators
+- `currency` — currency mask with automatic currency symbol
 
-### Features
+All numeric types automatically create rubber masks with variable length, ignoring the `mask` property. Numeric character validation occurs at input level, negative values and constraints via `min`/`max` are supported.
 
-**number:**
-- Rubber mask, numeric character validation
-- Support for negative values and `min`/`max` constraints
-- Decimal places configuration via `fraction`
-
-**number-format:**
-- Automatic thousand separators
-- Format localization (depends on `language`)
-- Rubber structure for large numbers
-
-**currency:**
-- Automatic currency symbol and localized separators
-- Option to hide currency symbol (`currencyHide`)
-- Support for various currencies (RUB, USD, EUR)
-
-### Decimal places configuration (fraction)
-
-The `fraction` property controls the number of digits after the decimal point:
-
-- **number** — exact number of digits (e.g., `:fraction="2"`)
-- **true** — automatic detection based on user input
-- **false/0** — no decimal places
-
-### Examples
+The `number-format` and `currency` types apply localized thousand separators according to `language` (space for Russian, comma for English). Decimal places are configured via `fraction` — number for exact digit count, `true` for auto-detection, `false` for integers.
 
 ```html
 <!-- Simple number -->
 <Mask type="number" />
 
-<!-- Number with constraints -->
-<Mask type="number" :min="0" :max="100" :fraction="1" />
-
-<!-- Formatted number (Russian format: 1 234,56) -->
-<Mask type="number-format" language="ru" :fraction="2" />
-
-<!-- Formatted number (US format: 1,234.56) -->
+<!-- Formatted number -->
 <Mask type="number-format" language="en-US" :fraction="2" />
 
-<!-- Currency with symbol ($1,234.56) -->
+<!-- Currency -->
 <Mask type="currency" currency="USD" language="en-US" />
+```
 
-<!-- Currency without symbol (1,234.56) -->
-<Mask type="currency" currency="USD" :currencyHide="true" />
+### Types
 
-<!-- No decimal places -->
-<Mask type="number-format" :fraction="0" />
+#### number
 
-<!-- High precision -->
-<Mask type="number" :fraction="4" />
+Simple numeric mask for entering integers and decimals without formatting. Creates a rubber group with variable length, supports negative values. Decimal separator is determined by locale (dot for English, comma for Russian).
+
+#### number-format
+
+Numeric mask with automatic thousand separators to improve readability of large numbers. Works similarly to `number`, but adds thousand and million separators according to regional settings. Suitable for quantitative indicators and statistics.
+
+#### currency
+
+Currency mask with currency symbol and formatting according to regional standards. Automatically adds currency symbol (₽, $, €) and thousand separators. Symbol can be displayed before or after the number depending on locale. The `currencyHide` property allows hiding the currency symbol while keeping the formatting.
+
+### Property fraction
+
+Defines the number of digits after the decimal separator.
+
+**Possible values:**
+
+- `number` — exact number of digits (e.g., `2` for two digits)
+- `true` — automatic detection based on user input
+- `false` or `0` — no decimal places (integers only)
+
+```html
+<!-- Two decimal places -->
+<Mask type="number" :fraction="2" />
+
+<!-- Auto-detection -->
+<Mask type="number-format" :fraction="true" />
+
+<!-- Integers only -->
+<Mask type="currency" currency="USD" :fraction="false" />
 ```
 
 ### Localization
 
-Formats automatically adapt to locale:
-- **ru**: space + comma (1 234,56)
-- **en-US**: comma + dot (1,234.56)
-- **de**: dot + comma (1.234.567,89)
+Formats automatically adapt to locale via the `language` property:
 
-### Validation
+**Russian (ru):**
+- Thousand separator: space
+- Decimal separator: comma
+- Example: `1 234 567,89`
 
-- Character filtering (only numbers and separators)
-- Value range via `min`/`max`
-- Compliance with local standards
+**English (en-US):**
+- Thousand separator: comma
+- Decimal separator: dot
+- Example: `1,234,567.89`
 
-### Usage
+**German (de):**
+- Thousand separator: dot
+- Decimal separator: comma
+- Example: `1.234.567,89`
 
-- **number** — simple numeric fields, percentages, coefficients
-- **number-format** — large numbers, quantitative indicators
-- **currency** — monetary amounts, product prices
+```html
+<Mask type="number-format" language="ru" :fraction="2" />
+<!-- Result: 1 234,56 -->
+
+<Mask type="number-format" language="en-US" :fraction="2" />
+<!-- Result: 1,234.56 -->
+
+<Mask type="currency" currency="EUR" language="de" />
+<!-- Result: 1.234,56 € -->
+
+<!-- Currency without symbol -->
+<Mask type="currency" currency="USD" :currencyHide="true" />
+<!-- Result: 1,234.56 -->
+```

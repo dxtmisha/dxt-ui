@@ -108,14 +108,10 @@ export const wikiDescriptionsList: StorybookComponentsDescriptionItem = {
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
-<StorybookDescriptions componentName={'Event'} type={'clickLite'}/>
 <StorybookDescriptions componentName={'List'} type={'event.close'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Expose'} type={'isSelected'}/>
-<StorybookDescriptions componentName={'Expose'} type={'selectedList'}/>
-<StorybookDescriptions componentName={'Expose'} type={'selectedNames'}/>
-<StorybookDescriptions componentName={'Expose'} type={'selectedValues'}/>
+<StorybookDescriptions componentName={'Expose'} type={'selected'}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'List'} type={'slot.html'}/>

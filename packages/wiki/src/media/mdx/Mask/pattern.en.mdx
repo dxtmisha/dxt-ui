@@ -1,78 +1,66 @@
 ## Validation and patterns
 
-The `check` and `pattern` properties are designed to control input validation and define allowed characters in the mask.
+The `pattern` and `check` properties are designed for managing input validation in the mask.
 
-### Properties
+**Properties:**
 
-- **pattern** — Defines validation patterns for individual mask groups, specifying allowed characters and rules per group
-- **check** — Global validation pattern applied after mask completion for additional input checking
+- `pattern` — defines validation patterns for individual mask groups, checking entered values
+- `check` — global validation pattern applied after the mask is fully completed
 
-### FieldPatternItemOrFunction type
+Properties work sequentially: `pattern` validates entered values at the mask group level, highlighting validation errors after input. Characters are entered into the field, but when they don't match the pattern, an error message is displayed. Each group (defined by special characters) receives its own pattern. After the mask is fully filled, `check` performs final validation of the entire value, providing an additional layer of verification for complex business logic. Both properties are optional and can be used independently or together for multi-level protection against incorrect data.
 
-Both `pattern` and `check` parameters have the `FieldPatternItemOrFunction` type and accept the following values:
+```html
+<script setup>
+import { ref } from 'vue'
 
-```ts
-type FieldPatternItemOrFunction =
-  | string                                    // RegExp string
-  | Partial<HTMLInputElement>                 // Object with input attributes
-  | ((item: FieldMasks) => FieldPatternItem)  // Pattern generator function
+const phone = ref('')
+const cardNumber = ref('')
+</script>
 
-interface FieldMasks {
-  group: string      // Mask group name
-  value: string      // Current group value
-  maxLength: number  // Maximum group length
-  full: boolean      // Group is fully filled
-  end: boolean       // End of input
-  // ...other mask properties
-}
+<template>
+  <!-- Pattern for groups: digits only -->
+  <Mask
+    v-model="phone"
+    mask="+7 (***) ***-**-**"
+    pattern="\\d"
+  />
+
+  <!-- Pattern with function for different groups -->
+  <Mask
+    v-model="phone"
+    mask="DD/MM/YYYY"
+    :special="{
+      'D': {
+        pattern: (masks) => {
+          const value = masks['D']?.value || ''
+          if (value === '0') return '[1-9]'
+          if (value === '3') return '[0-1]'
+          return '\\d'
+        }
+      },
+      'M': {
+        pattern: (masks) => {
+          const value = masks['M']?.value || ''
+          if (value === '0') return '[1-9]'
+          if (value === '1') return '[0-2]'
+          return '\\d'
+        }
+      },
+      'Y': { pattern: '\\d' }
+    }"
+  />
+
+  <!-- Check for final validation -->
+  <Mask
+    v-model="cardNumber"
+    mask="**** **** **** ****"
+    pattern="\\d"
+    :check="(maskData) => {
+      const number = maskData.value.replace(/\s/g, '')
+      return isValidLuhn(number) ? {} : {
+        validationMessage: 'Invalid card number'
+      }
+    }"
+  />
+</template>
 ```
-
-### Usage differences
-
-**Pattern** works at the mask group level:
-- Applied in real-time during character input
-- Each mask group (defined by special characters) gets its own pattern
-- Invalid characters are rejected before appearing in the field
-- Different groups can have different validation rules
-
-**Check** works with the complete value:
-- Runs only after the mask is fully completed
-- Applied to the entire entered value
-- Provides an additional validation layer for complex business logic
-- Used for final correctness verification
-
-### Usage examples
-
-```javascript
-// Pattern for groups: digits only in phone number
-pattern: "\\d"
-
-// Pattern with function for different groups
-pattern: (maskData) => {
-  if (maskData.group === 'month') return "[0-1]\\d"
-  if (maskData.group === 'day') return "[0-3]\\d"
-  return "\\d"
-}
-
-// Check for card number validation using Luhn algorithm
-check: (maskData) => {
-  const cardNumber = maskData.value.replace(/\s/g, '')
-  return isValidLuhn(cardNumber)
-    ? { valid: true }
-    : { valid: false, message: "Invalid card number" }
-}
-
-// Check with RegExp for format validation
-check: "^\\+1\\d{10}$"
-```
-
-### Property interaction
-
-The properties work sequentially to ensure quality validation:
-
-- `pattern` filters input at the character and group level, preventing incorrect input
-- `check` performs final validation of the complete value after mask completion
-- Both properties are optional and can be used independently or together
-- When used together, they provide multi-level protection against incorrect data
-
-This approach allows creating flexible and reliable input fields with detailed validation control at all stages of user interaction.

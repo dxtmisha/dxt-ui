@@ -14,17 +14,17 @@
     --d1-listGroup-borderWidth: var(--d1-sys-spacing-outline);
     --d1-listGroup-borderColor: var(--d1-sys-palette-outline);
     --d1-listGroup-borderOpacity: var(--d1-sys-opacity-outline);
-
+    
     &__head {
       & > .d1-listItem:not(.d1-listItem--divider) {
         @include ui.marginY(#{calc(var(--d1-sys-spacing-x) / 2)});
       }
     }
-
+    
     &__list {
       @include ui.marginLeft(#{var(--d1-sys-spacing-md)});
     }
-
+    
     &[data-open="open"] {
       @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-hover)});

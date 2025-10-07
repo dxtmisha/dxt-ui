@@ -1,0 +1,179 @@
+### `control`
+
+Слот для размещения элемента управления (триггера) меню.
+
+**Параметры:**
+- `props: MenuControlItem` — объект с данными управления меню
+
+```html
+<Menu>
+  <template #control="{ onclick, isSelected, selectedNames }">
+    <button @click="onclick">
+      {{ isSelected ? `Выбрано: ${selectedNames.join(', ')}` : 'Открыть меню' }}
+    </button>
+  </template>
+</Menu>
+```
+
+### `title`
+
+Слот для размещения заголовка окна меню.
+
+**Параметры:**
+- `props: MenuControlItem` — объект с данными управления меню
+
+```html
+<Menu>
+  <template #title="{ isSelected, selectedList }">
+    <h3>Выбор элементов</h3>
+    <span v-if="isSelected">{{ selectedList.length }} выбрано</span>
+  </template>
+</Menu>
+```
+
+### `footer`
+
+Слот для размещения содержимого в нижней части окна меню (кнопки действий, информация).
+
+**Параметры:**
+- `props: MenuControlItem` — объект с данными управления меню
+
+```html
+<Menu>
+  <template #footer="{ isSelected, selectedValues }">
+    <div class="actions">
+      <button @click="handleCancel">Отмена</button>
+      <button :disabled="!isSelected" @click="handleSubmit(selectedValues)">
+        Применить
+      </button>
+    </div>
+  </template>
+</Menu>
+```
+
+### `contextTop`
+
+Слот для размещения контекстной области над списком меню (поиск, фильтры, подсказки).
+
+**Параметры:**
+- `props: MenuControlItem` — объект с данными управления меню
+
+```html
+<Menu>
+  <template #contextTop>
+    <div class="search-bar">
+      <input type="search" placeholder="Поиск..." />
+    </div>
+  </template>
+</Menu>
+```
+
+### `contextBottom`
+
+Слот для размещения контекстной области под списком меню (подсказки, итоговые действия).
+
+**Параметры:**
+- `props: MenuControlItem` — объект с данными управления меню
+
+```html
+<Menu>
+  <template #contextBottom="{ isSelected, selectedList }">
+    <div class="summary">
+      <p v-if="isSelected">
+        Выбрано элементов: {{ selectedList.length }}
+      </p>
+      <a href="#" @click.prevent="clearSelection">Очистить выбор</a>
+    </div>
+  </template>
+</Menu>
+```
+
+## MenuControlItem
+
+`MenuControlItem` — объект, передаваемый во все слоты компонента Menu, содержащий данные для управления меню и информацию о выборе.
+
+### Структура типа
+
+```typescript
+type MenuControlItem = MenuControlBasic & WindowControlItem
+
+type MenuControlBasic = ListExpose & {
+  /** Состояние загрузки данных */
+  loading: Ref<boolean>
+}
+
+// Включает свойства из ListExpose:
+// - isSelected: ComputedRef<boolean>
+// - selectedList: Ref<any[]>
+// - selectedNames: Ref<string[]>
+// - selectedValues: Ref<any[]>
+
+// И свойства из WindowControlItem:
+// - classesWindow: WindowClassesList
+// - class: string
+// - open: Ref<boolean>
+// - onclick: (event: MouseEvent & TouchEvent) => Promise<void>
+// - oncontextmenu: (event: MouseEvent & TouchEvent) => Promise<void>
+// - binds: object
+```
+
+### Основные свойства
+
+- **`loading`** — реактивное состояние загрузки данных меню
+- **`isSelected`** — вычисляемое свойство, указывающее наличие выбранных элементов
+- **`selectedList`** — реактивный список выбранных элементов
+- **`selectedNames`** — реактивный список меток выбранных элементов
+- **`selectedValues`** — реактивный массив значений выбранных элементов
+- **`open`** — реактивное состояние открытия меню
+- **`onclick`** — обработчик клика для открытия/закрытия меню
+
+### Пример использования
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const menuItems = ref([
+  { label: 'Элемент 1', value: '1' },
+  { label: 'Элемент 2', value: '2' },
+  { label: 'Элемент 3', value: '3' }
+])
+
+const handleSubmit = (values) => {
+  console.log('Выбранные значения:', values)
+}
+</script>
+
+<template>
+  <Menu v-model:open="isOpen" :list="menuItems">
+    <template #control="{ onclick, isSelected, selectedNames }">
+      <button @click="onclick">
+        {{ isSelected ? selectedNames.join(', ') : 'Выбрать элементы' }}
+      </button>
+    </template>
+
+    <template #title="{ selectedList }">
+      <h3>Выбор элементов</h3>
+      <span v-if="selectedList.length">
+        ({{ selectedList.length }})
+      </span>
+    </template>
+
+    <template #contextTop>
+      <input type="search" placeholder="Поиск элементов..." />
+    </template>
+
+    <template #footer="{ isSelected, selectedValues }">
+      <button @click="isOpen = false">Отмена</button>
+      <button
+        :disabled="!isSelected"
+        @click="handleSubmit(selectedValues)"
+      >
+        Применить
+      </button>
+    </template>
+  </Menu>
+</template>
+```
+

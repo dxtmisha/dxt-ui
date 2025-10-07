@@ -1,18 +1,25 @@
-## Text Highlighting Properties
+## Managing search and highlighting
 
-The `highlight` and `highlightLengthStart` properties are designed to control text highlighting functionality in components.
+The `highlight` and `highlightLengthStart` properties work together to control match highlighting when searching through list items. They set the search string and minimum query length for activating visual highlighting of found fragments.
 
-### Properties
+**Properties:**
 
-- **highlight** — Text to highlight within the component content
-- **highlightLengthStart** — Minimum length of highlight value to start highlighting
+- `highlight` — search string for finding and highlighting in list items
+- `highlightLengthStart` — minimum search string length to start highlighting, defaults to `2`
 
-### Property Relationships
+Match highlighting is activated automatically: when the `highlight` length is less than `highlightLengthStart`, search works but visual highlighting is not applied. When the minimum length is reached, the component begins highlighting found fragments across the entire list hierarchy. Search works in real-time and considers nested items in groups and menus. Use `highlightLengthStart` to prevent excessive highlighting with short queries.
 
-The properties work together to provide intelligent text highlighting. `highlight` defines what to highlight, while `highlightLengthStart` controls when to start highlighting.
+```html
+<!-- Standard search with highlighting from 2 characters -->
+<List :list="items" highlight="text" />
 
-- `highlight` contains the text string that needs to be found and highlighted in the component
-- `highlightLengthStart` sets the minimum search string length to activate the highlighting function
-- Highlighting is activated only when the length of `highlight` reaches the `highlightLengthStart` value
-- This prevents unwanted highlighting when entering short search strings
-- Both properties ensure optimal user experience when working with search and filtering
+<!-- Search with highlighting from 3 characters -->
+<List :list="items" highlight="abc" :highlightLengthStart="3" />
+
+<!-- Dynamic search with v-model -->
+<List :list="items" :highlight="searchQuery" :highlightLengthStart="1" />
+
+<!-- Search without minimum threshold -->
+<List :list="products" :highlight="filter" :highlightLengthStart="0" />
+```
+

@@ -36,7 +36,7 @@ const propsNames: StorybookProps = [
   { name: 'tag', type: 'string', option: ['button', 'a', 'span'] },
   { name: 'textAlign', type: 'string', option: ['left', 'center', 'right'] },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },
-  { name: 'value', type: 'any' }
+  { name: 'value', type: 'EventClickValue[\'value\']' }
   // :propsList [!] System label / Системная метка
 ]
 

@@ -1,2 +1,64 @@
-The Menu component is a popup menu for navigation and actions. It combines Window (container and positioning), Bars (action toolbar), and List (items, groups, and nested submenus), providing keyboard navigation, nested structure support, a lightweight rendering mode (lite with liteThreshold), and controlled open/close behavior.
+Component for creating popup menus, dropdown lists, and context menus with navigation and action support.
 
+Menu combines the functionality of Window (positioning and visibility management), Bars (action and tool panel), and List (displaying items, groups, and nested submenus). The component provides keyboard navigation, nested structure support, asynchronous data loading, optimized rendering mode for large lists, and full control over open/close state.
+
+**Key Features:**
+
+- Integration of Window, Bars, and List components
+- Keyboard navigation through menu items
+- Nested submenus with unlimited depth
+- Asynchronous data loading via AJAX
+- Lite mode for optimizing large lists (liteThreshold)
+- Search and filtering of menu items
+- Management of selected items (selected)
+- Flexible positioning relative to anchor
+
+**Typical Use Cases:**
+
+- Navigation dropdown menus
+- Right-click context menus
+- Action and operation menus
+- Selectors with search and filtering
+- Multi-level navigation menus
+- Menus with dynamic data loading
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const menuItems = ref([
+  { label: 'Create', value: 'create', icon: 'add' },
+  { label: 'Edit', value: 'edit', icon: 'edit' },
+  { label: 'Delete', value: 'delete', icon: 'delete' },
+  {
+    label: 'Export',
+    value: 'export',
+    children: [
+      { label: 'PDF', value: 'pdf' },
+      { label: 'Excel', value: 'excel' },
+      { label: 'CSV', value: 'csv' }
+    ]
+  }
+])
+
+const handleClick = (value) => {
+  console.log('Selected item:', value)
+  isOpen.value = false
+}
+</script>
+
+<template>
+  <button @click="isOpen = true">Open menu</button>
+
+  <Menu
+    v-model:open="isOpen"
+    :list="menuItems"
+    @click="handleClick"
+  >
+    <template #control="{ onclick }">
+      <button @click="onclick">Actions</button>
+    </template>
+  </Menu>
+</template>
+```

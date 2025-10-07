@@ -1,127 +1,349 @@
-## Special characters (special)
+## Special characters
 
-The `special` property defines special characters for mask groups and their advanced settings.
+The `special` property defines special characters to denote user input positions in the mask and configure their extended behavior.
 
-### Purpose
+**Possible values:**
 
-Special characters in a mask denote places where users can input data. The `special` property allows configuring the behavior of these input groups with additional capabilities.
+- `string` — single special character (default `'*'`)
+- `string[]` — array of special characters for different group types
+- `MaskSpecialList` — object with extended configuration for each character
 
-### Value types
+Special characters in the mask template denote positions where users can enter data, unlike literal characters that are inserted automatically.
 
-```ts
-type MaskSpecialProp = string | string[] | MaskSpecialList
+When using a simple string (e.g., `special="*"`), all input positions in the mask are restricted by the same validation rules.
 
-// Extended group configuration
+An array of characters (e.g., `special="['*', 'A', '#']"`) allows creating different group types with individual constraints: one group for digits, another for letters, a third for special characters.
+
+Object notation `MaskSpecialList` (see [detailed description below](#maskspeciallist)) provides maximum flexibility. Each special character is configured separately with the ability to set default values, rubber groups with variable length, auto-transition characters, and custom validation.
+
+For built-in types (`currency`, `number`, `date`, `time`), the system automatically generates special characters considering regional settings, ignoring the user-defined `special` value.
+
+```html
+<!-- Simple special character -->
+<Mask mask="***-***" special="*" />
+
+<!-- Multiple group types -->
+<Mask mask="AA*-###" :special="['A', '*', '#']" />
+
+<!-- Extended configuration -->
+<Mask
+  mask="***-***"
+  :special="{
+    '*': {
+      pattern: '\\d',
+      view: '_',
+      rubber: true,
+      minLength: 2,
+      maxLength: 8,
+      transitionChar: ' '
+    }
+  }"
+/>
+
+<!-- Groups with default values -->
+<Mask
+  mask="DD/MM/YYYY"
+  :special="{
+    'D': { defaultValue: '01', pattern: '\\d' },
+    'M': { defaultValue: '01', pattern: '\\d' },
+    'Y': { defaultValue: '2024', pattern: '\\d' }
+  }"
+/>
+```
+
+## MaskSpecialList
+
+`MaskSpecialList` — object with extended configuration for mask special characters, where each key corresponds to a special character in the template.
+
+### Type structure
+
+```typescript
+type MaskSpecialList = Record<string, MaskSpecialItem>
+
 interface MaskSpecialItem {
-  defaultValue?: string           // Default value
-  rubber?: boolean               // Rubber group (variable length)
-  transitionChar?: string | string[]  // Transition characters
-  minLength?: number             // Minimum length
-  maxLength?: number             // Maximum length
-  match?: RegExp | string        // Validation pattern
-  pattern?: FieldPatternItemOrFunction  // Validation pattern
-  view?: string                  // Display character
+  /** Default value for the group */
+  defaultValue?: string
+
+  /** Enables variable-length mode (rubber group) */
+  rubber?: boolean
+
+  /** Characters for automatic transition to the next group */
+  transitionChar?: string | string[]
+
+  /** Minimum length for rubber group */
+  minLength?: number
+
+  /** Maximum length for rubber group */
+  maxLength?: number
+
+  /** Regular expression for character validation */
+  match?: RegExp | string
+
+  /** Pattern for group validation */
+  pattern?: FieldPatternItemOrFunction
+
+  /** Displayed placeholder character */
+  view?: string
 }
 ```
 
-### Usage methods
+### Properties
 
-**1. Simple string (single special character)**
-```javascript
-special: '*'           // Symbol * denotes input places
-// Mask: "***-***" → groups: *, *, *, *, *, *
+#### `defaultValue`
+
+String with the initial value for the group. Automatically inserted on initialization or when the user hasn't entered data.
+
+```html
+<Mask
+  mask="YYYY-MM-DD"
+  :special="{
+    'Y': { defaultValue: '2024' },
+    'M': { defaultValue: '01' },
+    'D': { defaultValue: '01' }
+  }"
+/>
+<!-- Result: 2024-01-01 -->
 ```
 
-**2. Character array (multiple group types)**
-```javascript
-special: ['*', '#', 'A']
-// * - any characters, # - digits, A - letters
-// Mask: "A**-###" → different group types
+#### `rubber`
+
+Boolean value enabling rubber group mode with variable length. Allows users to enter from `minLength` to `maxLength` characters in one group.
+
+```html
+<Mask
+  mask="***"
+  :special="{
+    '*': {
+      rubber: true,
+      minLength: 2,
+      maxLength: 8,
+      pattern: '\\d'
+    }
+  }"
+/>
+<!-- User can enter from 2 to 8 digits -->
 ```
 
-**3. Object with extended settings**
-```javascript
-special: {
-  '*': {
-    pattern: '\\d',        // Digits only
-    view: '_',             // Show _ as placeholder
-    rubber: false          // Fixed length
-  },
-  '#': {
-    pattern: '[A-Z]',      // Uppercase letters only
-    defaultValue: 'X',     // Default value
-    rubber: true,          // Variable length
-    minLength: 1,
-    maxLength: 5
-  }
-}
+#### `transitionChar`
+
+Character or array of characters that complete the rubber group and move the cursor to the next part of the mask. Only works with rubber groups (`rubber: true`).
+
+```html
+<Mask
+  mask="Code: ***"
+  :special="{
+    '*': {
+      rubber: true,
+      minLength: 2,
+      maxLength: 8,
+      pattern: '\\d',
+      transitionChar: ' '  // Space completes the group input
+    }
+  }"
+/>
+<!-- When entering "123 ", the group completes and cursor moves forward -->
 ```
 
-### Rubber groups
+#### `minLength`
 
-Rubber groups allow entering a variable number of characters:
+Minimum number of characters for rubber group. Only works with `rubber: true`.
 
-```javascript
-special: {
-  '*': {
-    rubber: true,
-    minLength: 2,
-    maxLength: 8,
-    pattern: '\\d'
-  }
-}
-// Mask: "***-***" can accept 2 to 8 digits in each group
+```html
+<Mask
+  mask="***"
+  :special="{
+    '*': {
+      rubber: true,
+      minLength: 3,
+      maxLength: 10
+    }
+  }"
+/>
 ```
 
-### Default values
+#### `maxLength`
 
-```javascript
-special: {
-  'Y': { defaultValue: '2024' },    // Default year
-  'M': { defaultValue: '01' },      // Default month
-  'D': { defaultValue: '01' }       // Default day
-}
-// Mask: "DD/MM/YYYY" → autofill: "01/01/2024"
+Maximum number of characters for rubber group. Only works with `rubber: true`.
+
+```html
+<Mask
+  mask="Code: ***"
+  :special="{
+    '*': {
+      rubber: true,
+      minLength: 4,
+      maxLength: 12
+    }
+  }"
+/>
 ```
 
-### Transition characters
+#### `match`
 
-Define characters that automatically move the cursor to the next group:
+Regular expression or string for validating entered characters in the group.
 
-```javascript
-special: {
-  '*': {
-    transitionChar: [' ', '-'],     // Space or dash moves forward
-    pattern: '\\d'
-  }
-}
-// When typing "123 " cursor automatically moves to next group
+```html
+<Mask
+  mask="AA-###"
+  :special="{
+    'A': { match: /[A-Z]/ },  // Only uppercase letters
+    '#': { match: /\d/ }      // Only digits
+  }"
+/>
 ```
 
-### Display (view)
+#### `pattern`
 
-Configure placeholder characters for unfilled positions:
+Regular expression or string for validating characters in the current group during input. Can also be a function that dynamically returns a pattern based on mask data.
 
-```javascript
-special: {
-  '*': { view: '_' },       // Show underscores
-  '#': { view: '0' }        // Show zeros
-}
-// Mask: "***-###" displays as "___-000"
+**Type:**
+
+```typescript
+type FieldPatternItemOrFunction = FieldPatternItem | ((item: FieldMasks) => FieldPatternItem)
+type FieldPatternItem = string | Partial<HTMLInputElement>
 ```
 
-### Integration with mask types
+Where `FieldMasks` is an object with information about all mask groups, each containing:
+- `group` — group key
+- `value` — accumulated group value
+- `maxLength` — maximum fragment length
+- `full` — fragment filled flag
+- `end` — end of input flag
+- `chars` — array of value characters
 
-For built-in types (`currency`, `number`, date/time) the system automatically generates corresponding special characters:
+**Examples:**
 
-- **currency/number**: special characters for digits and decimal parts
-- **date/time**: characters for day, month, year, hours, minutes, seconds
-- **text**: uses settings from the `special` property
+```html
+<!-- Simple pattern: digits only -->
+<Mask
+  mask="**/**"
+  :special="{
+    '*': {
+      pattern: '\\d'
+    }
+  }"
+/>
 
-### Interaction with other properties
+<!-- Dynamic pattern: day of month validation -->
+<Mask
+  mask="DD/MM/YYYY"
+  :special="{
+    'D': {
+      pattern: (masks) => {
+        // Day must be from 01 to 31
+        const value = masks['D']?.value || ''
+        if (value.length === 0) return '\\d'
+        if (value === '0') return '[1-9]'
+        if (value === '1' || value === '2') return '\\d'
+        if (value === '3') return '[0-1]'
+        return '\\d'
+      }
+    },
+    'M': {
+      pattern: (masks) => {
+        // Month must be from 01 to 12
+        const value = masks['M']?.value || ''
+        if (value.length === 0) return '\\d'
+        if (value === '0') return '[1-9]'
+        if (value === '1') return '[0-2]'
+        return '\\d'
+      }
+    },
+    'Y': { pattern: '\\d' }
+  }"
+/>
 
-- `pattern` — complements special characters with group patterns
-- `check` — applied after filling all special groups
-- `mask` — uses special characters to define input places
+<!-- Pattern using HTMLInputElement properties -->
+<Mask
+  mask="***"
+  :special="{
+    '*': {
+      pattern: {
+        pattern: '\\d{3}',
+        maxLength: 3
+      }
+    }
+  }"
+/>
+```
 
-Special characters are the foundation of the mask system, providing flexible definition of input groups with individual validation rules and behavior.
+#### `view`
+
+Character displayed as placeholder for unfilled group positions.
+
+```html
+<Mask
+  mask="*** - ###"
+  :special="{
+    '*': { view: '_' },  // Displayed as ___ - ###
+    '#': { view: '0' }   // Displayed as ___ - 000
+  }"
+/>
+```
+
+### Usage example
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const phoneCode = ref('')
+const productCode = ref('')
+const dateValue = ref('')
+</script>
+
+<template>
+  <!-- Phone code with variable length and auto-completion -->
+  <Mask
+    v-model="phoneCode"
+    mask="+* (***) *** ** **"
+    :special="{
+      '*': {
+        rubber: true,
+        minLength: 1,
+        maxLength: 3,
+        pattern: '\\d',
+        transitionChar: ' '
+      }
+    }"
+  />
+
+  <!-- Product code with variable length -->
+  <Mask
+    v-model="productCode"
+    mask="PRD-***"
+    :special="{
+      '*': {
+        rubber: true,
+        minLength: 4,
+        maxLength: 10,
+        match: /[A-Z0-9]/,
+        view: '_'
+      }
+    }"
+  />
+
+  <!-- Date with default values -->
+  <Mask
+    v-model="dateValue"
+    mask="DD/MM/YYYY"
+    :special="{
+      'D': {
+        defaultValue: '01',
+        pattern: '\\d',
+        view: '0'
+      },
+      'M': {
+        defaultValue: '01',
+        pattern: '\\d',
+        view: '0'
+      },
+      'Y': {
+        defaultValue: '2024',
+        pattern: '\\d',
+        view: '0'
+      }
+    }"
+  />
+</template>
+```

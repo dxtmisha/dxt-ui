@@ -1,0 +1,179 @@
+### `control`
+
+Slot for placing the menu control element (trigger).
+
+**Parameters:**
+- `props: MenuControlItem` — object with menu control data
+
+```html
+<Menu>
+  <template #control="{ onclick, isSelected, selectedNames }">
+    <button @click="onclick">
+      {{ isSelected ? `Selected: ${selectedNames.join(', ')}` : 'Open menu' }}
+    </button>
+  </template>
+</Menu>
+```
+
+### `title`
+
+Slot for placing the menu window title.
+
+**Parameters:**
+- `props: MenuControlItem` — object with menu control data
+
+```html
+<Menu>
+  <template #title="{ isSelected, selectedList }">
+    <h3>Select Items</h3>
+    <span v-if="isSelected">{{ selectedList.length }} selected</span>
+  </template>
+</Menu>
+```
+
+### `footer`
+
+Slot for placing content in the bottom part of the menu window (action buttons, information).
+
+**Parameters:**
+- `props: MenuControlItem` — object with menu control data
+
+```html
+<Menu>
+  <template #footer="{ isSelected, selectedValues }">
+    <div class="actions">
+      <button @click="handleCancel">Cancel</button>
+      <button :disabled="!isSelected" @click="handleSubmit(selectedValues)">
+        Apply
+      </button>
+    </div>
+  </template>
+</Menu>
+```
+
+### `contextTop`
+
+Slot for placing contextual area above the menu list (search, filters, hints).
+
+**Parameters:**
+- `props: MenuControlItem` — object with menu control data
+
+```html
+<Menu>
+  <template #contextTop>
+    <div class="search-bar">
+      <input type="search" placeholder="Search..." />
+    </div>
+  </template>
+</Menu>
+```
+
+### `contextBottom`
+
+Slot for placing contextual area below the menu list (hints, final actions).
+
+**Parameters:**
+- `props: MenuControlItem` — object with menu control data
+
+```html
+<Menu>
+  <template #contextBottom="{ isSelected, selectedList }">
+    <div class="summary">
+      <p v-if="isSelected">
+        Selected items: {{ selectedList.length }}
+      </p>
+      <a href="#" @click.prevent="clearSelection">Clear selection</a>
+    </div>
+  </template>
+</Menu>
+```
+
+## MenuControlItem
+
+`MenuControlItem` — object passed to all Menu component slots, containing menu control data and selection information.
+
+### Type structure
+
+```typescript
+type MenuControlItem = MenuControlBasic & WindowControlItem
+
+type MenuControlBasic = ListExpose & {
+  /** Data loading state */
+  loading: Ref<boolean>
+}
+
+// Includes properties from ListExpose:
+// - isSelected: ComputedRef<boolean>
+// - selectedList: Ref<any[]>
+// - selectedNames: Ref<string[]>
+// - selectedValues: Ref<any[]>
+
+// And properties from WindowControlItem:
+// - classesWindow: WindowClassesList
+// - class: string
+// - open: Ref<boolean>
+// - onclick: (event: MouseEvent & TouchEvent) => Promise<void>
+// - oncontextmenu: (event: MouseEvent & TouchEvent) => Promise<void>
+// - binds: object
+```
+
+### Main properties
+
+- **`loading`** — reactive state of menu data loading
+- **`isSelected`** — computed property indicating presence of selected items
+- **`selectedList`** — reactive list of selected items
+- **`selectedNames`** — reactive list of labels of selected items
+- **`selectedValues`** — reactive array of values of selected items
+- **`open`** — reactive state of menu open/close
+- **`onclick`** — click handler for opening/closing menu
+
+### Usage example
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const menuItems = ref([
+  { label: 'Item 1', value: '1' },
+  { label: 'Item 2', value: '2' },
+  { label: 'Item 3', value: '3' }
+])
+
+const handleSubmit = (values) => {
+  console.log('Selected values:', values)
+}
+</script>
+
+<template>
+  <Menu v-model:open="isOpen" :list="menuItems">
+    <template #control="{ onclick, isSelected, selectedNames }">
+      <button @click="onclick">
+        {{ isSelected ? selectedNames.join(', ') : 'Select items' }}
+      </button>
+    </template>
+
+    <template #title="{ selectedList }">
+      <h3>Select Items</h3>
+      <span v-if="selectedList.length">
+        ({{ selectedList.length }})
+      </span>
+    </template>
+
+    <template #contextTop>
+      <input type="search" placeholder="Search items..." />
+    </template>
+
+    <template #footer="{ isSelected, selectedValues }">
+      <button @click="isOpen = false">Cancel</button>
+      <button
+        :disabled="!isSelected"
+        @click="handleSubmit(selectedValues)"
+      >
+        Apply
+      </button>
+    </template>
+  </Menu>
+</template>
+```
+

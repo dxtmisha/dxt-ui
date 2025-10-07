@@ -1,11 +1,30 @@
 ### `close`
 
-Event fired when the list requests closing of the active context (menu/group/window).
+Event fires when attempting to close the list after navigation has reached the root level.
 
-```ts
-function onClose (): void {
-  // handle list close
+**When it fires:**
+- Pressing the **Escape** key at the root level of the list
+- Pressing the **←** (left arrow) key when there are no open submenus/groups
+- Attempting to navigate back when there are no nested items
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(true)
+
+const handleClose = () => {
+  console.log('List close requested')
+  isOpen.value = false
 }
-```
+</script>
 
-The event does not pass any parameters.
+<template>
+  <Window v-model:open="isOpen">
+    <List
+      :list="menuItems"
+      @close="handleClose"
+    />
+  </Window>
+</template>
+```

@@ -1,0 +1,104 @@
+### `isSelected`
+
+Computed property indicating whether there are selected items in the component.
+
+**Type:** `ComputedRef<boolean>`
+
+```html
+<script setup>
+const menuRef = ref()
+
+watch(() => menuRef.value?.isSelected, (hasSelection) => {
+  console.log('Has selected items:', hasSelection)
+})
+</script>
+
+<template>
+  <Menu ref="menuRef" :list="items">
+    <template #default>
+      <p v-if="menuRef?.isSelected">Items selected</p>
+    </template>
+  </Menu>
+</template>
+```
+
+### `selectedList`
+
+Reactive list of selected component items.
+
+**Type:** `Ref<any[]>`
+
+```html
+<script setup>
+const menuRef = ref()
+
+watch(() => menuRef.value?.selectedList, (list) => {
+  console.log('Selected items:', list)
+  console.log('Count:', list.length)
+})
+</script>
+
+<template>
+  <Menu ref="menuRef" :list="items">
+    <div v-if="menuRef?.selectedList.length">
+      Selected: {{ menuRef.selectedList.length }}
+    </div>
+  </Menu>
+</template>
+```
+
+### `selectedNames`
+
+Reactive list of labels (names) of selected items.
+
+**Type:** `Ref<string[]>`
+
+```html
+<script setup>
+const menuRef = ref()
+
+const displaySelectedNames = computed(() => {
+  return menuRef.value?.selectedNames.join(', ')
+})
+</script>
+
+<template>
+  <Menu ref="menuRef" :list="items">
+    <div v-if="displaySelectedNames">
+      Selected items: {{ displaySelectedNames }}
+    </div>
+  </Menu>
+</template>
+```
+
+### `selectedValues`
+
+Reactive array of values of selected items.
+
+**Type:** `Ref<any[]>`
+
+```html
+<script setup>
+const menuRef = ref()
+
+const handleSubmit = () => {
+  const values = menuRef.value?.selectedValues
+  console.log('Submitting values:', values)
+
+  // Send to server
+  api.post('/submit', { selected: values })
+}
+</script>
+
+<template>
+  <Menu ref="menuRef" :list="items" />
+
+  <button
+    @click="handleSubmit"
+    :disabled="!menuRef?.selectedValues.length"
+  >
+    Submit ({{ menuRef?.selectedValues.length || 0 }})
+  </button>
+</template>
+```
+

@@ -1,75 +1,21 @@
 ## Mask template
 
-The `mask` property defines a template for structured data input with real-time automatic formatting. It provides guided user input with format error prevention.
+The `mask` property defines a template for structured data input with automatic real-time formatting.
 
-### Key features
+**Possible values:**
 
-- **Automatic formatting**: Adds separators and literal characters during typing
-- **Multiple templates**: Support for mask arrays with automatic selection of the most suitable one
-- **Special characters**: Customizable input positions through the `special` property
-- **Error prevention**: Restricts input to only allowed characters in corresponding positions
-- **Validation integration**: Works together with the data validation system through `pattern` and `check`
+- `string` — single mask for fixed format
+- `string[]` — array of masks to support multiple formats with automatic selection
 
-### Value type
+The template uses two types of characters: special characters (default `*`) denote positions for user input, while literal characters are inserted automatically and cannot be changed. The component automatically adds separators during typing and restricts input to only allowed characters in corresponding positions. When using an array of masks, the system automatically selects the most suitable template based on entered data. Works together with the validation system through `pattern` and `check` properties. For built-in types (`currency`, `number`, `date`), masks are generated automatically based on regional settings.
 
-```typescript
-type MaskList = string | string[]
+```html
+<!-- Russian phone -->
+<Mask mask="+7 *** *** ** **" />
+
+<!-- Bank card -->
+<Mask mask="**** **** **** ****" />
+
+<!-- Multiple formats -->
+<Mask :mask="['+7 *** *** ** **', '8 *** *** ** **']" />
 ```
-
-- **string** — single mask for fixed format
-- **string[]** — array of masks to support multiple formats
-
-### Mask syntax
-
-The mask template uses two types of characters:
-
-- **Special characters** (default `*`) — denote positions for user input
-- **Literal characters** — inserted automatically and cannot be changed by the user
-
-### Usage examples
-
-```javascript
-// Phone number
-mask: "+1 *** *** ****"
-
-// Credit card
-mask: "**** **** **** ****"
-
-// Date format
-mask: "**/**/****"
-
-// Multiple phone formats
-mask: [
-  "+1 *** *** ****",      // +1 999 123 4567
-  "*** *** ****"          // 999 123 4567
-]
-
-// Postal code
-mask: "******"
-```
-
-### Automatic mask selection
-
-When using an array of masks, the system automatically selects the most suitable template based on the entered data:
-
-```javascript
-mask: [
-  "+1 *** *** ****",      // Selected when typing +1
-  "1 *** *** ****",       // Selected when typing 1
-  "*** *** ****"          // Fallback option
-]
-```
-
-### Interaction with other properties
-
-- **special** — defines which characters are considered special and their behavior
-- **pattern** — sets validation patterns for special character groups
-- **check** — applies additional validation to the complete value after mask completion
-- **type** — for built-in types (`currency`, `number`, `date`) automatically generates corresponding masks
-
-### Recommendations
-
-- Use clear separators to improve readability (spaces, dashes, parentheses)
-- When supporting multiple formats, place more specific masks first in the array
-- Combine with validation through `pattern` and `check` for complete input control
-- For complex cases, configure special characters through the `special` property

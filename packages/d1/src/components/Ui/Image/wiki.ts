@@ -9,7 +9,7 @@ const propsNames: StorybookProps = [
   { name: 'adaptive', type: 'boolean' },
   { name: 'adaptiveAlways', type: 'boolean' },
   { name: 'adaptiveGroup', type: 'string' },
-  { name: 'coordinator', type: 'any' },
+  { name: 'coordinator', type: 'number[] | any' },
   { name: 'disabled', type: 'boolean' },
   { name: 'hide', type: 'boolean' },
   { name: 'objectHeight', type: 'string | number' },
@@ -17,7 +17,7 @@ const propsNames: StorybookProps = [
   { name: 'size', type: 'string', option: ['auto', 'contain', 'cover'] },
   { name: 'turn', type: 'boolean' },
   { name: 'url', type: 'string' },
-  { name: 'value', type: 'any' },
+  { name: 'value', type: 'string | any' },
   { name: 'x', type: 'string | number' },
   { name: 'y', type: 'string | number' }
   // :propsList [!] System label / Системная метка

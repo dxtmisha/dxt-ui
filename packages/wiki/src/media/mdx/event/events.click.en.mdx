@@ -1,0 +1,61 @@
+### `click`
+
+Event fires when clicking on the component, passing the original DOM event and component data.
+
+**Parameters:**
+- `event: MouseEvent` — original DOM mouse event
+- `value: EventClickValue` — object with component data
+
+**EventClickValue structure:**
+- `type: string` — click location identifier, set through `data-event-type` attribute on the element
+- `value: any` — component value
+- `detail: Record<string, any> | undefined` — additional event data
+
+```html
+<script setup>
+const handleClick = (event, value) => {
+  console.log('DOM event:', event)
+  console.log('Click type:', value.type)
+  console.log('Value:', value.value)
+  console.log('Details:', value.detail)
+}
+</script>
+
+<template>
+  <Component @click="handleClick">
+    <button data-event-type="action">Click me</button>
+  </Component>
+</template>
+```
+
+### `clickLite`
+
+Event fires when clicking on the component, passing only data without the original DOM event (lightweight version).
+
+**Parameters:**
+- `value: EventClickValue` — object with component data
+
+**EventClickValue structure:**
+- `type: string` — click location identifier, set through `data-event-type` attribute on the element
+- `value: any` — component value
+- `detail: Record<string, any> | undefined` — additional event data
+
+```html
+<script setup>
+const handleClickLite = (value) => {
+  console.log('Click type:', value.type)
+  console.log('Value:', value.value)
+
+  if (value.type === 'action' && value.value) {
+    console.log('Action performed:', value.value)
+  }
+}
+</script>
+
+<template>
+  <Component @click-lite="handleClickLite">
+    <button data-event-type="action">Click me</button>
+  </Component>
+</template>
+```
+

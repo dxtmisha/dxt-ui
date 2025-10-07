@@ -1,24 +1,76 @@
-The Mask component provides structured data input with real-time automatic formatting. Allows creating convenient fields for phones, dates, bank cards and other formatted data.
+A component for creating input fields with automatic data formatting according to a specified pattern in real-time.
 
-### Key features
+Mask provides structured input with support for various formats (phones, bank cards, dates, currencies, numbers). The component automatically adds separators and literal characters during typing, restricts input to only allowed characters, supports multiple patterns with automatic selection of the most suitable one, works together with the validation system through `pattern` and `check`, and provides built-in mask types for common data formats.
 
-- **Automatic formatting**: Adds separators and symbols during typing
-- **Flexible templates**: Support for single and multiple masks with automatic selection
-- **Error prevention**: Restricts input to only allowed characters
-- **Validation integration**: Works together with the data validation system
-- **Data type support**: Built-in presets for numbers, currencies and dates
+**Key features:**
 
-### Usage
+- Automatic formatting with separator addition
+- Flexible templates with support for single and multiple masks
+- Built-in types: text, number, number-format, currency, date, time
+- Customizable special characters via `special` property
+- Input error prevention with character restriction
+- Integration with validation system through `pattern` and `check`
+- Alignment support (left/right) and direction (ltr/rtl)
+- Rubber groups with dynamic length
+- Visibility control for unfilled characters
 
-Use the component to create input fields with a defined structure: phone numbers, bank cards, dates, postal codes and any other data requiring a specific format.
+**Typical use cases:**
 
-### Recommendations
+- Phone number input fields
+- Bank card numbers and CVV codes
+- Dates and times in various formats
+- Postal codes and identifiers
+- Currency amounts with formatting
+- Numeric values with separators
 
-Keep templates short and clear for the user. When supporting multiple formats, use an array of masks — the component will automatically select the most suitable template as the user types.
+```html
+<script setup>
+import { ref } from 'vue'
 
-- Define a pattern with special characters for input groups
-- Literals are auto-inserted during typing
-- Multiple patterns can be provided; the best match is selected dynamically
-- Works with validation, number/currency formats, and date/time helpers
+const phone = ref('')
+const cardNumber = ref('')
+const date = ref('')
+const amount = ref('')
 
-Tip: keep patterns short and explicit to improve usability.
+const handleInput = (value) => {
+  console.log('Entered value:', value)
+}
+</script>
+
+<template>
+  <!-- Russian phone -->
+  <Mask
+    v-model="phone"
+    mask="+7 *** *** ** **"
+    placeholder="Enter phone number"
+    @input="handleInput"
+  />
+
+  <!-- Bank card -->
+  <Mask
+    v-model="cardNumber"
+    mask="**** **** **** ****"
+    placeholder="0000 0000 0000 0000"
+  />
+
+  <!-- Multiple phone formats -->
+  <Mask
+    v-model="phone"
+    :mask="['+7 *** *** ** **', '8 *** *** ** **']"
+  />
+
+  <!-- Date with built-in type -->
+  <Mask
+    v-model="date"
+    type="date"
+    pattern="DD.MM.YYYY"
+  />
+
+  <!-- Currency -->
+  <Mask
+    v-model="amount"
+    type="currency"
+    currency="RUB"
+  />
+</template>
+```

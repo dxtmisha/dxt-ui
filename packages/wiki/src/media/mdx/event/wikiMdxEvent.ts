@@ -1,16 +1,10 @@
 import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
-import clickEn from './click.en.mdx'
-import clickRu from './click.ru.mdx'
-import clickLiteEn from './clickLite.en.mdx'
-import clickLiteRu from './clickLite.ru.mdx'
+import eventsClickEn from './events.click.en.mdx'
+import eventsClickRu from './events.click.ru.mdx'
 
-import barsEn from './bars.en.mdx'
-import barsRu from './bars.ru.mdx'
-import barsLiteEn from './barsLite.en.mdx'
-import barsLiteRu from './barsLite.ru.mdx'
-import barsBackEn from './barsBack.en.mdx'
-import barsBackRu from './barsBack.ru.mdx'
+import eventsBarsEn from './events.bars.en.mdx'
+import eventsBarsRu from './events.bars.ru.mdx'
 
 import scrollbarBottomEn from './scrollbarBottom.en.mdx'
 import scrollbarBottomRu from './scrollbarBottom.ru.mdx'
@@ -34,25 +28,13 @@ export const wikiMdxEvent: StorybookComponentsMdxItem = {
   name: 'Event',
   descriptions: {
     click: {
-      en: clickEn,
-      ru: clickRu
-    },
-    clickLite: {
-      en: clickLiteEn,
-      ru: clickLiteRu
+      en: eventsClickEn,
+      ru: eventsClickRu
     },
 
     bars: {
-      en: barsEn,
-      ru: barsRu
-    },
-    barsLite: {
-      en: barsLiteEn,
-      ru: barsLiteRu
-    },
-    barsBack: {
-      en: barsBackEn,
-      ru: barsBackRu
+      en: eventsBarsEn,
+      ru: eventsBarsRu
     },
 
     scrollbarBottom: {

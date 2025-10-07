@@ -15,26 +15,26 @@ const propsNames: StorybookProps = [
   { name: 'dynamic', type: 'boolean' },
   { name: 'dynamicHover', type: 'boolean' },
   { name: 'focus', type: 'boolean' },
-  { name: 'icon', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
-  { name: 'iconAttrs', type: 'ConstrBind<IconPropsBasic<ImagePropsBasic>>' },
+  { name: 'icon', type: 'IconValue<IconProps>' },
+  { name: 'iconAttrs', type: 'ConstrBind<IconProps>' },
   { name: 'iconDir', type: 'boolean' },
   { name: 'iconHide', type: 'boolean' },
   { name: 'iconPalette', type: 'boolean' },
   { name: 'iconTop', type: 'boolean' },
-  { name: 'iconTrailing', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
+  { name: 'iconTrailing', type: 'IconValue<IconProps>' },
   { name: 'iconTrailingDirOnly', type: 'boolean' },
   { name: 'iconTrailingPalette', type: 'boolean' },
   { name: 'iconTrailingTurnOnly', type: 'boolean' },
   { name: 'iconTurn', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },
-  { name: 'loading', type: 'boolean | ConstrBind<ProgressPropsBasic>' },
+  { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },
   { name: 'padding', type: 'string', option: ['none', 'sm', 'md', 'lg', 'ySm', 'yMd', 'yLg'] },
   { name: 'readonly', type: 'boolean' },
   { name: 'selected', type: 'boolean' },
   { name: 'tag', type: 'string' },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },
-  { name: 'value', type: 'any' }
+  { name: 'value', type: 'EventClickValue[\'value\']' }
   // :propsList [!] System label / Системная метка
 ]
 

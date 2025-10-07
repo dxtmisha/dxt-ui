@@ -73,26 +73,15 @@ export const wikiDescriptionsMenu: StorybookComponentsDescriptionItem = {
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
-<StorybookDescriptions componentName={'Event'} type={'clickLite'}/>
-
 <StorybookDescriptions componentName={'Event'} type={'bars'}/>
-<StorybookDescriptions componentName={'Event'} type={'barsLite'}/>
-<StorybookDescriptions componentName={'Event'} type={'barsBack'}/>
-<StorybookDescriptions componentName={'Event'} type={'window'}/>
+<StorybookDescriptions componentName={'Window'} type={'event.window'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Expose'} type={'isSelected'}/>
-<StorybookDescriptions componentName={'Expose'} type={'selectedList'}/>
-<StorybookDescriptions componentName={'Expose'} type={'selectedNames'}/>
-<StorybookDescriptions componentName={'Expose'} type={'selectedValues'}/>
+<StorybookDescriptions componentName={'Expose'} type={'selected'}/>
     `,
     slots: `
-<StorybookDescriptions componentName={'Menu'} type={'slot.control'}/>
-<StorybookDescriptions componentName={'Menu'} type={'slot.title'}/>
-<StorybookDescriptions componentName={'Menu'} type={'slot.footer'}/>
-<StorybookDescriptions componentName={'Menu'} type={'slot.contextTop'}/>
-<StorybookDescriptions componentName={'Menu'} type={'slot.contextBottom'}/>
 <StorybookDescriptions componentName={'List'} type={'slot.html'}/>
+<StorybookDescriptions componentName={'Menu'} type={'slots'}/>
     `
   }
 }

@@ -1,0 +1,104 @@
+### `isSelected`
+
+Вычисляемое свойство, указывающее наличие выбранных элементов в компоненте.
+
+**Тип:** `ComputedRef<boolean>`
+
+```html
+<script setup>
+const menuRef = ref()
+
+watch(() => menuRef.value?.isSelected, (hasSelection) => {
+  console.log('Есть выбранные элементы:', hasSelection)
+})
+</script>
+
+<template>
+  <Menu ref="menuRef" :list="items">
+    <template #default>
+      <p v-if="menuRef?.isSelected">Выбраны элементы</p>
+    </template>
+  </Menu>
+</template>
+```
+
+### `selectedList`
+
+Реактивный список выбранных элементов компонента.
+
+**Тип:** `Ref<any[]>`
+
+```html
+<script setup>
+const menuRef = ref()
+
+watch(() => menuRef.value?.selectedList, (list) => {
+  console.log('Выбранные элементы:', list)
+  console.log('Количество:', list.length)
+})
+</script>
+
+<template>
+  <Menu ref="menuRef" :list="items">
+    <div v-if="menuRef?.selectedList.length">
+      Выбрано: {{ menuRef.selectedList.length }}
+    </div>
+  </Menu>
+</template>
+```
+
+### `selectedNames`
+
+Реактивный список меток (имён) выбранных элементов.
+
+**Тип:** `Ref<string[]>`
+
+```html
+<script setup>
+const menuRef = ref()
+
+const displaySelectedNames = computed(() => {
+  return menuRef.value?.selectedNames.join(', ')
+})
+</script>
+
+<template>
+  <Menu ref="menuRef" :list="items">
+    <div v-if="displaySelectedNames">
+      Выбранные пункты: {{ displaySelectedNames }}
+    </div>
+  </Menu>
+</template>
+```
+
+### `selectedValues`
+
+Реактивный массив значений выбранных элементов.
+
+**Тип:** `Ref<any[]>`
+
+```html
+<script setup>
+const menuRef = ref()
+
+const handleSubmit = () => {
+  const values = menuRef.value?.selectedValues
+  console.log('Отправка значений:', values)
+
+  // Отправка на сервер
+  api.post('/submit', { selected: values })
+}
+</script>
+
+<template>
+  <Menu ref="menuRef" :list="items" />
+
+  <button
+    @click="handleSubmit"
+    :disabled="!menuRef?.selectedValues.length"
+  >
+    Отправить ({{ menuRef?.selectedValues.length || 0 }})
+  </button>
+</template>
+```
+

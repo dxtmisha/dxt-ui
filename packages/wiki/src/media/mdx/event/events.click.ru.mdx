@@ -1,0 +1,61 @@
+### `click`
+
+Событие срабатывает при клике на компонент, передавая оригинальное DOM событие и данные компонента.
+
+**Параметры:**
+- `event: MouseEvent` — оригинальное DOM событие мыши
+- `value: EventClickValue` — объект с данными компонента
+
+**Структура EventClickValue:**
+- `type: string` — идентификатор места нажатия, задается через атрибут `data-event-type` у элемента
+- `value: any` — значение компонента
+- `detail: Record<string, any> | undefined` — дополнительные данные события
+
+```html
+<script setup>
+const handleClick = (event, value) => {
+  console.log('DOM событие:', event)
+  console.log('Тип клика:', value.type)
+  console.log('Значение:', value.value)
+  console.log('Детали:', value.detail)
+}
+</script>
+
+<template>
+  <Component @click="handleClick">
+    <button data-event-type="action">Нажми меня</button>
+  </Component>
+</template>
+```
+
+### `clickLite`
+
+Событие срабатывает при клике на компонент, передавая только данные без оригинального DOM события (облегченная версия).
+
+**Параметры:**
+- `value: EventClickValue` — объект с данными компонента
+
+**Структура EventClickValue:**
+- `type: string` — идентификатор места нажатия, задается через атрибут `data-event-type` у элемента
+- `value: any` — значение компонента
+- `detail: Record<string, any> | undefined` — дополнительные данные события
+
+```html
+<script setup>
+const handleClickLite = (value) => {
+  console.log('Тип клика:', value.type)
+  console.log('Значение:', value.value)
+
+  if (value.type === 'action' && value.value) {
+    console.log('Выполнено действие:', value.value)
+  }
+}
+</script>
+
+<template>
+  <Component @click-lite="handleClickLite">
+    <button data-event-type="action">Нажми меня</button>
+  </Component>
+</template>
+```
+

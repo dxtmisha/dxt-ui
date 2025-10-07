@@ -1,31 +1,82 @@
-### `slot: html`
+### `html`
 
-List supports named slots for items with `type: 'html'`. The slot name must match the item's `value`.
+Dynamic slot for displaying arbitrary HTML content or Vue components in list items with type `html`.
 
-Usage rules
+List provides a flexible mechanism for rendering custom content through named slots. When a list item has `type: 'html'`, the component searches for a slot with a name matching the `value` field of that item. If a slot is found, its content is used for rendering the item. Otherwise, the component displays HTML from the `label` field via `innerHTML`.
 
-- The list item must have `type: 'html'` and a string `value` used as the slot key
-- If a slot with the same name exists, its content replaces the item rendering
-- If no slot exists, the component renders raw HTML from the item's `label` via `innerHTML`
+**Key features:**
 
-Example
+- Dynamic slot binding by `value` field
+- Support for Vue components and interactive elements in slots
+- Fallback rendering via `innerHTML` when slot is absent
+- Integration into hierarchical list structure
+- Automatic class and style management
+
+**Typical use cases:**
+
+- Advertisement and promo blocks within lists
+- Custom cards with interactive content
+- Embedded forms and controls
+- Dynamically loaded components
+- Special dividers with additional logic
+
+**How it works:**
+
+1. List item must have `type: 'html'`
+2. The `value` field is used as the slot name (lookup key)
+3. If a slot with that name exists — its content is rendered
+4. If no slot exists — HTML from the `label` field is displayed
 
 ```html
-<List
-  :list="[
-    { type: 'html', value: 'promoBlock', label: '<strong>Fallback HTML</strong>' },
-    { label: 'Regular item', value: 'item1' }
-  ]"
->
-  <template #promoBlock>
-    <div class="custom-promo">Custom slot content</div>
-  </template>
-</List>
+<script setup>
+import { ref } from 'vue'
+
+const listData = ref([
+  { label: 'Regular item', value: 'item1' },
+  {
+    type: 'html',
+    value: 'promoBlock',
+    label: '<strong>Fallback HTML (if slot is not defined)</strong>'
+  },
+  { label: 'Another item', value: 'item2' },
+  {
+    type: 'html',
+    value: 'customCard',
+    label: '<div>Fallback content</div>'
+  }
+])
+
+const handlePromoClick = () => {
+  console.log('Promo block clicked')
+}
+</script>
+
+<template>
+  <List :list="listData">
+    <!-- Slot for promo block -->
+    <template #promoBlock>
+      <div class="custom-promo" @click="handlePromoClick">
+        <h3>Special Offer</h3>
+        <p>Custom Vue component with full capabilities</p>
+        <button>Learn More</button>
+      </div>
+    </template>
+
+    <!-- Slot for custom card -->
+    <template #customCard>
+      <div class="card">
+        <img src="/image.jpg" alt="Image">
+        <span>Interactive content</span>
+      </div>
+    </template>
+  </List>
+</template>
 ```
 
-Notes
+**Important notes:**
 
-- The slot receives no props; use static content or app state
-- Prefer slots for Vue-rendered content; use `label` with HTML only for simple, trusted markup
-
-
+- The slot does not receive props automatically; use external state or composables to pass data
+- For interactive content, prefer slots over `innerHTML`
+- Use `label` with HTML only for simple and trusted markup
+- Slot name must exactly match the `value` field
+- HTML from `label` is inserted via `innerHTML` — ensure the content is safe

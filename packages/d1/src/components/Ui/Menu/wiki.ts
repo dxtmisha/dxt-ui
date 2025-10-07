@@ -6,25 +6,25 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'ajax', type: 'string | (() => NormalOrPromise<ListRecord<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>>)' },
+  { name: 'ajax', type: 'string | (() => NormalOrPromise<ListRecord<ListItemProps>>)' },
   { name: 'autoClose', type: 'boolean' },
   { name: 'barsAdaptive', type: 'string', option: ['showAlways', 'showSm', 'showMd', 'showLg', 'showXl', 'show2xl'] },
-  { name: 'barsAttrs', type: 'ConstrBind<BarsPropsBasic<IconPropsBasic<ImagePropsBasic>, ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>>' },
+  { name: 'barsAttrs', type: 'ConstrBind<BarsProps>' },
   { name: 'barsBackHide', type: 'boolean' },
   { name: 'barsDescription', type: 'string' },
   { name: 'barsHide', type: 'boolean' },
   { name: 'barsLabel', type: 'string | number' },
-  { name: 'barsList', type: 'ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]' },
+  { name: 'barsList', type: 'Bars[\'bars\']' },
   { name: 'cache', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
   { name: 'hideList', type: 'boolean' },
   { name: 'highlightLengthStart', type: 'number' },
   { name: 'isSelectedByValue', type: 'boolean' },
-  { name: 'itemAttrs', type: 'ConstrBind<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
+  { name: 'itemAttrs', type: 'ConstrBind<ListItemProps>' },
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },
-  { name: 'list', type: 'ListRecord<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>' },
-  { name: 'listAttrs', type: 'ConstrBind<ListPropsBasic<IconPropsBasic<ImagePropsBasic>, ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>>' },
+  { name: 'list', type: 'ListRecord<ListItemProps>' },
+  { name: 'listAttrs', type: 'ConstrBind<ListProps>' },
   { name: 'liteThreshold', type: 'number' },
   { name: 'modelValue', type: 'string' },
   { name: 'onUpdate:modelValue', type: '(value: string) => void' },
@@ -32,7 +32,7 @@ const propsNames: StorybookProps = [
   { name: 'request', type: 'ApiFetch' },
   { name: 'selected', type: 'ListSelectedList' },
   { name: 'tag', type: 'string' },
-  { name: 'windowAttrs', type: 'ConstrBind<WindowPropsBasic<ScrollbarPropsBasic, ImagePropsBasic>>' }
+  { name: 'windowAttrs', type: 'ConstrBind<WindowProps>' }
   // :propsList [!] System label / Системная метка
 ]
 

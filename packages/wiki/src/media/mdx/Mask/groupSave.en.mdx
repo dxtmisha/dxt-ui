@@ -1,59 +1,26 @@
-## Cursor Behavior Control
+## Preserving groups on deletion
 
-The `groupSave` property controls cursor behavior when navigating between different special character groups in the mask. When set to `true` (default), it enables intelligent navigation that improves user experience when working with complex masks.
+The `groupSave` property controls behavior when deleting characters in a mask with multiple types of special characters.
 
-### Navigation Mechanism
+**Possible values:**
 
-During mask navigation, the system checks:
-- Current cursor position
-- Type of special character at current position
-- Type of the next special character
-- If characters belong to different groups, special movement logic is applied
+- `true` — preserves group separation on deletion (default)
+- `false` — allows characters from different groups to mix on deletion
 
-### Usage Examples
+With `groupSave: true` and different groups ahead, the character is not physically deleted but marked with a deletion marker, preserving the mask structure. With `false`, characters are deleted completely, which can lead to "collapsing" of groups and loss of structure. Only works for fixed (non-rubber) groups of special characters.
 
 ```html
-// Standard behavior (default)
+<!-- Preserve group structure (default) -->
 <Mask
-  :mask="'***-###-XXX'"
-  :special="['*', '#', 'X']"
-  :groupSave="true"
+  mask="***-###"
+  :special="['*', '#']"
+  groupSave
 />
 
-// Disable smart navigation
+<!-- Without structure preservation -->
 <Mask
-  :mask="'***-###-XXX'"
-  :special="['*', '#', 'X']"
+  mask="***-###"
+  :special="['*', '#']"
   :groupSave="false"
 />
-
-// Complex mask with multiple groups
-<Mask
-  :mask="'AAA-111-BBB-222'"
-  :special="['A', '1', 'B', '2']"
-  :groupSave="true"
-/>
 ```
-
-### When to Use
-
-#### groupSave: true (recommended)
-- For masks with multiple group types
-- When smooth navigation between groups is needed
-- In most user interface scenarios
-
-#### groupSave: false
-- For simple masks with single symbol type
-- When standard cursor behavior is required
-- In specific cases with custom navigation logic
-
-### Behavior Features
-
-- With **groupSave: true**, cursor "understands" boundaries between groups
-- Improves navigation in masks like phone numbers with area codes
-- Works only with rubber (non-fixed) groups
-- Doesn't affect data validation or formatting
-
-### Application
-
-Use this property to create more intuitive input interfaces, especially when the mask contains multiple logically separated data groups (country code, area code, number, etc.).

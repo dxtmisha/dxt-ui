@@ -1,46 +1,22 @@
-## Mask Types
+## Mask types
 
 The `type` property defines the mask operation mode and automatically generates the appropriate structure for different data types.
 
-### Type Categories
+**Possible values:**
 
-#### Text Type
-- **text** — Basic text mask (default)
+- `'text'` — basic text mask (default)
+- `'number'`, `'number-format'`, `'currency'` — numeric types with validation and localization
+- `'date'`, `'datetime'`, `'time'`, `'year'`, `'month'`, `'day'`, `'hour-minute'` — date and time types
 
-Used to create custom masks using the `mask` property. All characters are processed as-is, without additional formatting.
-
-#### Numeric Types
-- **number** — Simple numeric mask
-- **number-format** — Numbers with thousand separators
-- **currency** — Currency formatting
-
-Automatically create rubber masks with validation, localization, and specialized formatting.
-
-#### Date and Time Types
-- **date** — Full date
-- **datetime** — Date and time
-- **time** — Time
-- **year**, **month**, **day** — Date components
-- **hour-minute** — Time components
-
-Generate masks according to local formats with date correctness validation.
-
-### Automatic Generation
-
-When using specialized types, the `mask` property is ignored — the mask is created automatically:
+When using `text`, explicit structure specification via the `mask` property is required. Specialized numeric types automatically create rubber masks with thousand separators, validation, and formatting according to regional settings (`language`). Date types generate masks according to local formats with validation of entered values correctness. When a specialized type is activated, the `mask` property is ignored, and the mask structure is formed automatically based on `language`, `currency`, and `fraction`.
 
 ```html
-<!-- Text mask — requires explicit mask specification -->
-<Mask :mask="'+1 *** *** ****'" type="text" />
+<!-- Text mask -->
+<Mask mask="+1 (***) ***-****" type="text" />
 
-<!-- Specialized types — mask generated automatically -->
+<!-- Currency mask -->
+<Mask type="currency" currency="USD" language="en-US" />
+
+<!-- Date mask -->
 <Mask type="date" language="en-US" />
-<Mask type="currency" currency="USD" />
-<Mask type="number-format" :fraction="2" />
 ```
-
-### Type Selection
-
-- **text** — for phones, codes, custom formats
-- **Numeric types** — for quantities, amounts, percentages
-- **Date types** — for timestamps, periods, schedules

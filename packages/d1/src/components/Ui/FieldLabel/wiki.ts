@@ -9,9 +9,10 @@ const propsNames: StorybookProps = [
   { name: 'counter', type: 'string | number' },
   { name: 'counterShow', type: 'boolean' },
   { name: 'counterTemplate', type: 'string' },
-  { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounterPropsBasic>' },
+  { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounterProps>' },
+  { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },
-  { name: 'loading', type: 'boolean | ConstrBind<ProgressPropsBasic>' },
+  { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },
   { name: 'maxlength', type: 'string | number' },
   { name: 'required', type: 'boolean' }
   // :propsList [!] System label / Системная метка
