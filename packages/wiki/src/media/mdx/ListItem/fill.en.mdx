@@ -1,10 +1,24 @@
-### `fill`
+## Element fill color
 
-Property for setting a specific fill color of the list item element.
+The `fill` property defines the background color of the list item element, allowing precise control over the component's visual styling.
 
-- Accepts color values in any standard CSS format
-- Supports hex colors: `#FF0000`, `#ffffff`
-- Supports RGB: `rgb(255, 0, 0)`
-- Supports RGBA: `rgba(255, 0, 0, 0.5)`
-- Supports named colors: `red`, `blue`, `transparent`
-- Provides precise control over component background color
+**Possible values:**
+
+- Hex colors: `#FF0000`, `#ffffff`, `#3498db`
+- RGB: `rgb(255, 0, 0)`, `rgb(52, 152, 219)`
+- RGBA: `rgba(255, 0, 0, 0.5)`, `rgba(0, 0, 0, 0.1)`
+- Named colors: `red`, `blue`, `green`, `transparent`
+- HSL/HSLA: `hsl(0, 100%, 50%)`, `hsla(210, 70%, 53%, 0.8)`
+
+Accepts any standard CSS color format. The property provides a flexible way to customize the visual presentation of list items, allowing you to create color schemes and highlight important elements. The value is applied as background-color to the component's root element.
+
+```html
+<!-- Red background -->
+<ListItem fill="#FF0000" text="Item with red background" />
+
+<!-- Semi-transparent blue -->
+<ListItem fill="rgba(52, 152, 219, 0.3)" text="Semi-transparent item" />
+
+<!-- Named color -->
+<ListItem fill="lightblue" text="Light blue item" />
+```

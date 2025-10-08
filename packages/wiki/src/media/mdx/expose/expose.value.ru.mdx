@@ -1,0 +1,23 @@
+### `value`
+
+Текущее значение компонента.
+
+**Тип:** `any`
+
+```html
+<script setup>
+const componentRef = ref()
+
+watch(() => componentRef.value?.value, (newValue) => {
+  console.log('Значение компонента:', newValue)
+})
+</script>
+
+<template>
+  <Component ref="componentRef">
+    <template #default>
+      <p>Текущее значение: {{ componentRef?.value }}</p>
+    </template>
+  </Component>
+</template>
+```

@@ -131,7 +131,6 @@ export const wikiDescriptionsListItem: StorybookComponentsDescriptionItem = {
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
-<StorybookDescriptions componentName={'Event'} type={'clickLite'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'value'}/>
@@ -143,8 +142,7 @@ export const wikiDescriptionsListItem: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Slot'} type={'caption'}/>
 <StorybookDescriptions componentName={'Slot'} type={'suffix'}/>
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
-<StorybookDescriptions componentName={'ListItem'} type={'slot.trailing'}/>
-<StorybookDescriptions componentName={'ListItem'} type={'slot.body'}/>
+<StorybookDescriptions componentName={'ListItem'} type={'slots'}/>
     `
   }
 }

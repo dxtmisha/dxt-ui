@@ -1,2 +1,63 @@
-The ListMenu component is an auxiliary component for the List component, designed to create nested menus and organize navigation elements with expandable structure. It provides hierarchical menu organization with open/close submenu functionality, supports nested menu levels, and integrates seamlessly with the List component ecosystem.
+Component for creating nested menus and organizing navigation elements with expandable structure.
 
+ListMenu is an auxiliary component for List, managing hierarchical menu structure with open/close submenu functionality. The component integrates with Window for positioning dropdown submenus, supports multiple nesting levels, and provides smooth navigation through tree-like data structures.
+
+**Key Features:**
+
+- Hierarchical menu organization with unlimited nesting
+- Open/close submenu state management
+- Integration with Window for dropdown menu positioning
+- Support for horizontal and vertical positioning axes
+- Automatic click and navigation handling
+- Adaptive submenu behavior
+- Menu item open/close events
+
+**Typical Use Cases:**
+
+- Navigation menus with subsections
+- Multi-level catalogs and categories
+- Tree-like data structures
+- Context menus with submenus
+- Navigation panels with grouping
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const menuItems = ref([
+  {
+    text: 'Home',
+    value: 'home'
+  },
+  {
+    text: 'Products',
+    value: 'products',
+    sublist: [
+      { text: 'Category 1', value: 'cat1' },
+      { text: 'Category 2', value: 'cat2' }
+    ]
+  },
+  {
+    text: 'About',
+    value: 'about'
+  }
+])
+</script>
+
+<template>
+  <List :items="menuItems">
+    <template #item="{ item }">
+      <ListMenu
+        v-if="item.sublist"
+        :items="item.sublist"
+        :axis="'y'"
+      >
+        <template #default>
+          {{ item.text }}
+        </template>
+      </ListMenu>
+      <div v-else>{{ item.text }}</div>
+    </template>
+  </List>
+</template>
+```

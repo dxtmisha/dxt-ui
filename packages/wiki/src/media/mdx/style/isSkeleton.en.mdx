@@ -1,8 +1,22 @@
-## Skeleton Mode
+## Skeleton mode
 
-The `isSkeleton` property works in conjunction with the `Skeleton` component. When an element is a child of the `Skeleton` component and has the `isSkeleton` property, its display depends on the parent `Skeleton`'s state.
+The `isSkeleton` property defines element behavior when interacting with the parent Skeleton component.
 
-- When `active=false` on the `Skeleton` component, all child elements display normally, regardless of the `isSkeleton` value.
-- When `active=true` on the `Skeleton` component, all child elements enter skeleton mode, but behavior depends on `isSkeleton`:
-  - If the element has `isSkeleton=true` — the element displays as a skeleton
-  - If the element has `isSkeleton=false` — the element becomes invisible
+**Possible values:**
+
+- `true` — element displays as skeleton when Skeleton is in active state
+- `false` — element becomes invisible when Skeleton is in active state
+
+Works in conjunction with the Skeleton component to control visibility and display mode of child elements. When parent Skeleton has `active=false`, all child elements display normally regardless of `isSkeleton` value. When `active=true`, elements with `isSkeleton=true` are shown as skeleton placeholders, while elements with `isSkeleton=false` are completely hidden.
+
+```html
+<!-- Element will display as skeleton -->
+<Skeleton active>
+  <ListItem isSkeleton text="Loading..." />
+</Skeleton>
+
+<!-- Element will be hidden -->
+<Skeleton active>
+  <ListItem :isSkeleton="false" text="Hidden text" />
+</Skeleton>
+```

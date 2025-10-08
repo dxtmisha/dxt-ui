@@ -70,11 +70,10 @@ export const wikiDescriptionsListGroup: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'ListGroup'} type={'listGroup'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Window'} type={'expose.open'}/>
+<StorybookDescriptions componentName={'Expose'} type={'open'}/>
     `,
     slots: `
-<StorybookDescriptions componentName={'ListGroup'} type={'slot.head'}/>
-<StorybookDescriptions componentName={'ListGroup'} type={'slot.list'}/>
+<StorybookDescriptions componentName={'ListGroup'} type={'slots'}/>
     `
   }
 }

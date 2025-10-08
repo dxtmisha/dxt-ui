@@ -1,32 +1,38 @@
 import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
-import clearEn from './clear.en.mdx'
-import clearRu from './clear.ru.mdx'
-import detailEn from './detail.en.mdx'
-import detailRu from './detail.ru.mdx'
+import exposeClearEn from './expose.clear.en.mdx'
+import exposeClearRu from './expose.clear.ru.mdx'
+import exposeDetailEn from './expose.detail.en.mdx'
+import exposeDetailRu from './expose.detail.ru.mdx'
+import exposeOpenEn from './expose.open.en.mdx'
+import exposeOpenRu from './expose.open.ru.mdx'
 import exposeSelectedEn from './expose.selected.en.mdx'
 import exposeSelectedRu from './expose.selected.ru.mdx'
-import valueEn from './value.en.mdx'
-import valueRu from './value.ru.mdx'
+import exposeValueEn from './expose.value.en.mdx'
+import exposeValueRu from './expose.value.ru.mdx'
 
 export const wikiMdxExpose: StorybookComponentsMdxItem = {
   name: 'Expose',
   descriptions: {
     clear: {
-      en: clearEn,
-      ru: clearRu
+      en: exposeClearEn,
+      ru: exposeClearRu
     },
     detail: {
-      en: detailEn,
-      ru: detailRu
+      en: exposeDetailEn,
+      ru: exposeDetailRu
+    },
+    open: {
+      en: exposeOpenEn,
+      ru: exposeOpenRu
     },
     selected: {
       en: exposeSelectedEn,
       ru: exposeSelectedRu
     },
     value: {
-      en: valueEn,
-      ru: valueRu
+      en: exposeValueEn,
+      ru: exposeValueRu
     }
   }
 }

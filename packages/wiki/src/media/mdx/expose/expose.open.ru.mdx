@@ -1,0 +1,23 @@
+### `open`
+
+Реактивное состояние открытия/закрытия компонента.
+
+**Тип:** `ComputedRef<boolean>`
+
+```html
+<script setup>
+const componentRef = ref()
+
+watch(() => componentRef.value?.open, (isOpen) => {
+  console.log('Компонент открыт:', isOpen)
+})
+</script>
+
+<template>
+  <Component ref="componentRef">
+    <template #default>
+      <p v-if="componentRef?.open">Компонент открыт</p>
+    </template>
+  </Component>
+</template>
+```

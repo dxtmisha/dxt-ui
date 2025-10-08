@@ -1,0 +1,28 @@
+### `detail`
+
+Additional component data.
+
+**Type:** `Record<string, any> | undefined`
+
+```html
+<script setup>
+const componentRef = ref()
+
+watch(() => componentRef.value?.detail, (details) => {
+  console.log('Additional data:', details)
+  if (details) {
+    console.log('Keys:', Object.keys(details))
+  }
+})
+</script>
+
+<template>
+  <Component ref="componentRef">
+    <template #default>
+      <div v-if="componentRef?.detail">
+        <p>Data available</p>
+      </div>
+    </template>
+  </Component>
+</template>
+```

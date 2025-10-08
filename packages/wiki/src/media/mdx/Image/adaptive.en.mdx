@@ -1,32 +1,75 @@
-## Adaptive scaling and related properties
+## Adaptive scaling
 
-### Description
+The `adaptive`, `adaptiveGroup`, `adaptiveAlways`, `objectWidth`, and `objectHeight` properties control automatic image scaling to ensure visual consistency of physical object sizes across different images.
 
-The `adaptive` property enables automatic scaling and alignment of images. For correct operation, it is recommended to use it together with additional properties that allow you to precisely control the behavior and display of the image.
+**Properties:**
 
-### Properties
+- `adaptive` — enables adaptive scaling mode
+- `adaptiveGroup` — group name for scale synchronization (default `'basic'`)
+- `objectWidth` — physical width of the object in the image in millimeters
+- `objectHeight` — physical height of the object in the image in millimeters
+- `adaptiveAlways` — perform calculations even for invisible elements
 
-- **adaptive** — Enables adaptive scaling mode for the image relative to other elements with the same `adaptive-group`.
-- **object-width** — The physical width of the object in the image (in millimeters, pixels, or other units). Used for scale calculation.
-- **object-height** — The physical height of the object in the image. Can be used instead of or together with `object-width`.
-- **adaptive-group** — Adaptivity group. Elements with the same value of this property will be scaled proportionally to each other.
-- **adaptive-always** — If specified, scaling and calculations will always be performed, even if the element is hidden off-screen.
+Properties work together to ensure proportional display of images with objects of different physical sizes. When `adaptive` is activated, the component starts tracking element dimensions and comparing them with other images in the same group, automatically selecting the optimal scale for each element.
 
-### Recommendations
+The `objectWidth` or `objectHeight` properties specify the real physical dimensions of the object in the image in millimeters. These values are necessary for calculating the scaling coefficient — the component uses them to determine how much to enlarge or reduce the image so that objects in different images appear the same size. It is sufficient to specify only one property — either width or height.
 
-- Always specify at least one of the parameters: `object-width` or `object-height` for correct adaptivity.
-- Use `adaptive-group` if you need to synchronize the scale of several images.
-- Use `adaptive-always` only when necessary to avoid unnecessary calculations.
+The component automatically determines which axis (horizontal or vertical) to scale on, based on available dimensions and image proportions. If `objectWidth` is specified, scaling will occur horizontally, if `objectHeight` — vertically. This allows flexible work with images of different orientations.
 
-### Usage example
+Elements with the same `adaptiveGroup` value scale synchronously, ensuring consistent visual object sizes across all images in the group. This is especially useful when displaying product galleries or comparison tables where maintaining visual size correspondence is important.
+
+For performance optimization, scaling calculations are performed only for visible elements within the viewport plus a small margin. If an element is outside the visible area, calculations are paused until the element appears on screen. The `adaptiveAlways` property disables this optimization and forces the component to constantly recalculate the scale regardless of element visibility.
 
 ```html
-<!-- Adaptive image with specified object width -->
-<Image adaptive object-width="63.5" />
+<script setup>
+import { ref } from 'vue'
 
-<!-- Adaptive image with height and group -->
-<Image adaptive object-height="40" adaptive-group="products" />
+const phone1 = ref('/images/phone-model-a.png')
+const phone2 = ref('/images/phone-model-b.png')
+const phone3 = ref('/images/phone-model-c.png')
+</script>
 
-<!-- Constant scaling regardless of visibility -->
-<Image adaptive object-width="50" adaptive-always />
+<template>
+  <!-- Basic usage with object width -->
+  <Image
+    :value="phone1"
+    adaptive
+    object-width="76.2"
+  />
+
+  <!-- Multiple images in one group -->
+  <Image
+    :value="phone1"
+    adaptive
+    adaptive-group="phones"
+    object-width="76.2"
+  />
+  <Image
+    :value="phone2"
+    adaptive
+    adaptive-group="phones"
+    object-width="71.9"
+  />
+  <Image
+    :value="phone3"
+    adaptive
+    adaptive-group="phones"
+    object-width="129.9"
+  />
+
+  <!-- With height instead of width -->
+  <Image
+    adaptive
+    object-height="154.8"
+    :value="phone1"
+  />
+
+  <!-- Constant scaling -->
+  <Image
+    adaptive
+    adaptive-always
+    object-width="76.2"
+    :value="phone1"
+  />
+</template>
 ```

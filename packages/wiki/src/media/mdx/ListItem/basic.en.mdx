@@ -1,18 +1,55 @@
-## Description
+Component for creating interactive list items with flexible content structure and multiple display areas.
 
-Versatile list item component for displaying structured content with labels, descriptions, and additional elements. ListItem provides consistent representation of elements in lists, menus, and navigation structures.
+ListItem provides uniform presentation of items in lists, menus, and navigation structures. The component supports labels, descriptions, icons, status badges, interactive states (focus, selection, disabled), loading with progress and skeleton, and ripple effect for enhanced feedback.
 
-### Key Features
+**Key features:**
 
-- Multiple content areas: label, description, prefix, suffix, caption
+- Multiple content areas (label, description, prefix, suffix, caption)
 - Icon support with flexible positioning and alignment
 - Badge integration for status indicators
-- Interactive states: focus, selected, disabled, readonly
-- Progress and skeleton loading states
-- Ripple effect for enhanced user feedback
-- Flexible tag options: button, link, div, span
+- Interactive states (focus, selected, disabled, readonly)
+- Loading states with progress and skeleton
+- Ripple effect for visual feedback
+- Flexible tag variants (button, link, div, span)
 - Built-in accessibility support
 
-### Recommendations
+**Common use cases:**
 
-Use ListItem to create list elements, menu items, settings, and other interface elements that require structured information display. Particularly effective in mobile interfaces and lists with multiple selection.
+- List items and navigation menus
+- Settings and configuration options
+- Lists with multiple selection
+- Contact lists and catalogs
+- Mobile interfaces and action lists
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const items = ref([
+  { text: 'List item 1', value: '1', selected: false },
+  { text: 'List item 2', value: '2', selected: true },
+  { text: 'List item 3', value: '3', selected: false }
+])
+
+const handleClick = (item) => {
+  item.selected = !item.selected
+  console.log('Item selected:', item.text)
+}
+</script>
+
+<template>
+  <List>
+    <ListItem
+      v-for="item in items"
+      :key="item.value"
+      :text="item.text"
+      :selected="item.selected"
+      @click="handleClick(item)"
+    >
+      <template #prefix>
+        <Icon name="check" v-if="item.selected" />
+      </template>
+    </ListItem>
+  </List>
+</template>
+```

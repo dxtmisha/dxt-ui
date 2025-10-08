@@ -126,6 +126,7 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
   ],
   documentation: {
     body: `
+<StorybookDescriptions componentName={'Image'} type={'image'}/>
 <StorybookDescriptions componentName={'Image'} type={'value'}/>
 <Canvas of={Component.ImageType}/>
 
@@ -139,8 +140,7 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Image'} type={'event.load'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Image'} type={'expose.type'}/>
-<StorybookDescriptions componentName={'Image'} type={'expose.data'}/>
+<StorybookDescriptions componentName={'Image'} type={'expose'}/>
     `
   }
 }

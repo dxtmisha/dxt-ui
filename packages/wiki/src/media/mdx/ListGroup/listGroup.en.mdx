@@ -1,2 +1,56 @@
-The ListGroup component is an auxiliary component for the List component, designed to group and organize list items with a collapsible structure. It provides hierarchical content organization with expand/collapse functionality, supports nested groups, and integrates seamlessly with the List component ecosystem.
+Component for grouping and organizing list items with collapsible structure.
 
+ListGroup is an auxiliary component for List, managing hierarchical content organization with expand/collapse functionality. The component integrates with MotionTransform for smooth animations, supports unlimited nesting levels, and provides convenient navigation through structured data.
+
+**Key features:**
+
+- Hierarchical content organization with unlimited nesting
+- Expand/collapse animations via MotionTransform
+- State management via props or internal state
+- Automatic group content visibility control
+- Integration with List component ecosystem
+- Customization support via head and list slots
+- Group state change events
+
+**Common use cases:**
+
+- Grouping list items by categories
+- Creating tree-like navigation structures
+- Organizing settings and options by sections
+- Multi-level menus and catalogs
+- FAQ sections with expandable answers
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const items = [
+  { text: 'Item 1', value: '1' },
+  { text: 'Item 2', value: '2' },
+  { text: 'Item 3', value: '3' }
+]
+
+const isOpen = ref(true)
+</script>
+
+<template>
+  <List>
+    <ListGroup v-model:open="isOpen">
+      <template #head="{ open }">
+        <div class="group-header">
+          <span>{{ open ? '▼' : '▶' }}</span>
+          <span>Group Items</span>
+        </div>
+      </template>
+
+      <template #list>
+        <ListItem
+          v-for="item in items"
+          :key="item.value"
+          :text="item.text"
+        />
+      </template>
+    </ListGroup>
+  </List>
+</template>
+```

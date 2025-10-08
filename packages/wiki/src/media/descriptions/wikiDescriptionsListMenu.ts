@@ -68,17 +68,10 @@ export const wikiDescriptionsListMenu: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Image'} type={'event.load'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Window'} type={'expose.control'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.id'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.open'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.setOpen'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.toOpen'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.toClose'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.toggle'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose'}/>
     `,
     slots: `
-<StorybookDescriptions componentName={'ListGroup'} type={'slot.head'}/>
-<StorybookDescriptions componentName={'ListGroup'} type={'slot.list'}/>
+<StorybookDescriptions componentName={'ListGroup'} type={'slots'}/>
     `
   }
 }

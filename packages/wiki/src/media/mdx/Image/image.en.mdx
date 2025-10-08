@@ -1,0 +1,46 @@
+Universal component for displaying images, icons, and PDF documents with advanced size, positioning, and adaptivity control.
+
+Image provides flexible API for working with various types of visual content: from simple icons to complex images with cropping and adaptive scaling. The component automatically detects the source type, supports coordinate positioning, adaptive resizing, and various fill modes.
+
+**Key Features:**
+
+- Support for multiple source types (icons, URLs, Files, PDFs)
+- Adaptive scaling with aspect ratio preservation
+- Coordinate-based cropping and precise positioning
+- Fill modes: auto, contain, cover
+- Automatic content type detection
+- CSS variable integration for flexible styling
+- Load events with complete type and data information
+
+**Typical Use Cases:**
+
+- Displaying user avatars and uploaded images
+- Working with interface icons
+- PDF document previews
+- Adaptive image galleries
+- Background images with cropping
+
+```html
+<script setup>
+import { ref } from 'vue'
+import { Image } from '@dxtmisha/constructor'
+
+const imageUrl = ref('https://example.com/image.jpg')
+
+function handleLoad(data) {
+  console.log('Image loaded:', data.type, data.image)
+}
+</script>
+
+<template>
+  <Image
+    :value="imageUrl"
+    size="cover"
+    adaptive
+    :coordinator="[0, 0, 100, 100]"
+    @load="handleLoad"
+  />
+</template>
+```
+
+> The component automatically manages content type and optimizes display based on the source.

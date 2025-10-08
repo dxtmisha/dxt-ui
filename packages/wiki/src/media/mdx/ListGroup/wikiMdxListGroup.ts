@@ -2,10 +2,8 @@ import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
 import listGroupEn from './listGroup.en.mdx'
 import listGroupRu from './listGroup.ru.mdx'
-import slotHeadEn from './slot.head.en.mdx'
-import slotHeadRu from './slot.head.ru.mdx'
-import slotListEn from './slot.list.en.mdx'
-import slotListRu from './slot.list.ru.mdx'
+import slotsEn from './slots.en.mdx'
+import slotsRu from './slots.ru.mdx'
 
 /**
  * MDX files for ListGroup component
@@ -15,17 +13,13 @@ import slotListRu from './slot.list.ru.mdx'
 export const wikiMdxListGroup: StorybookComponentsMdxItem = {
   name: 'ListGroup',
   descriptions: {
-    'listGroup': {
+    listGroup: {
       en: listGroupEn,
       ru: listGroupRu
     },
-    'slot.head': {
-      en: slotHeadEn,
-      ru: slotHeadRu
-    },
-    'slot.list': {
-      en: slotListEn,
-      ru: slotListRu
+    slots: {
+      en: slotsEn,
+      ru: slotsRu
     }
   }
 }
