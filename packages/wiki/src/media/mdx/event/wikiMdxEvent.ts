@@ -1,73 +1,56 @@
 import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
-import eventsClickEn from './events.click.en.mdx'
-import eventsClickRu from './events.click.ru.mdx'
-
 import eventsBarsEn from './events.bars.en.mdx'
 import eventsBarsRu from './events.bars.ru.mdx'
-
-import scrollbarBottomEn from './scrollbarBottom.en.mdx'
-import scrollbarBottomRu from './scrollbarBottom.ru.mdx'
-import scrollbarEdgeEn from './scrollbarEdge.en.mdx'
-import scrollbarEdgeRu from './scrollbarEdge.ru.mdx'
-import scrollbarLeaveBottomEn from './scrollbarLeaveBottom.en.mdx'
-import scrollbarLeaveBottomRu from './scrollbarLeaveBottom.ru.mdx'
-import scrollbarLeaveTopEn from './scrollbarLeaveTop.en.mdx'
-import scrollbarLeaveTopRu from './scrollbarLeaveTop.ru.mdx'
-import scrollbarReachBottomEn from './scrollbarReachBottom.en.mdx'
-import scrollbarReachBottomRu from './scrollbarReachBottom.ru.mdx'
-import scrollbarReachTopEn from './scrollbarReachTop.en.mdx'
-import scrollbarReachTopRu from './scrollbarReachTop.ru.mdx'
-import scrollbarTopEn from './scrollbarTop.en.mdx'
-import scrollbarTopRu from './scrollbarTop.ru.mdx'
-
-import windowEn from './window.en.mdx'
-import windowRu from './window.ru.mdx'
+import eventsBeforeinputEn from './events.beforeinput.en.mdx'
+import eventsBeforeinputRu from './events.beforeinput.ru.mdx'
+import eventsClickEn from './events.click.en.mdx'
+import eventsClickRu from './events.click.ru.mdx'
+import eventsFocusEn from './events.focus.en.mdx'
+import eventsFocusRu from './events.focus.ru.mdx'
+import eventsInputEn from './events.input.en.mdx'
+import eventsInputRu from './events.input.ru.mdx'
+import eventsKeyboardEn from './events.keyboard.en.mdx'
+import eventsKeyboardRu from './events.keyboard.ru.mdx'
+import eventsPasteEn from './events.paste.en.mdx'
+import eventsPasteRu from './events.paste.ru.mdx'
+import eventsResetEn from './events.reset.en.mdx'
+import eventsResetRu from './events.reset.ru.mdx'
 
 export const wikiMdxEvent: StorybookComponentsMdxItem = {
   name: 'Event',
   descriptions: {
-    click: {
-      en: eventsClickEn,
-      ru: eventsClickRu
-    },
-
     bars: {
       en: eventsBarsEn,
       ru: eventsBarsRu
     },
-
-    scrollbarBottom: {
-      en: scrollbarBottomEn,
-      ru: scrollbarBottomRu
+    beforeinput: {
+      en: eventsBeforeinputEn,
+      ru: eventsBeforeinputRu
     },
-    scrollbarEdge: {
-      en: scrollbarEdgeEn,
-      ru: scrollbarEdgeRu
+    click: {
+      en: eventsClickEn,
+      ru: eventsClickRu
     },
-    scrollbarLeaveBottom: {
-      en: scrollbarLeaveBottomEn,
-      ru: scrollbarLeaveBottomRu
+    focus: {
+      en: eventsFocusEn,
+      ru: eventsFocusRu
     },
-    scrollbarLeaveTop: {
-      en: scrollbarLeaveTopEn,
-      ru: scrollbarLeaveTopRu
+    input: {
+      en: eventsInputEn,
+      ru: eventsInputRu
     },
-    scrollbarReachBottom: {
-      en: scrollbarReachBottomEn,
-      ru: scrollbarReachBottomRu
+    keyboard: {
+      en: eventsKeyboardEn,
+      ru: eventsKeyboardRu
     },
-    scrollbarReachTop: {
-      en: scrollbarReachTopEn,
-      ru: scrollbarReachTopRu
+    paste: {
+      en: eventsPasteEn,
+      ru: eventsPasteRu
     },
-    scrollbarTop: {
-      en: scrollbarTopEn,
-      ru: scrollbarTopRu
-    },
-    window: {
-      en: windowEn,
-      ru: windowRu
+    reset: {
+      en: eventsResetEn,
+      ru: eventsResetRu
     }
   }
 }

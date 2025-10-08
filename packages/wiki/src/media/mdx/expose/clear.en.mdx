@@ -1,0 +1,18 @@
+### `clear`
+
+Clears the component value to default and focuses the input field.
+
+```html
+<script setup>
+const componentRef = ref()
+
+const handleClear = () => {
+  componentRef.value.clear()
+}
+</script>
+
+<template>
+  <Component ref="componentRef" />
+  <button @click="handleClear">Clear</button>
+</template>
+```

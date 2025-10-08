@@ -1,0 +1,130 @@
+### `input`
+
+Событие срабатывает при изменении значения в поле ввода, передавая оригинальное DOM событие и данные валидации.
+
+**Параметры:**
+- `event: InputEvent` — оригинальное DOM событие ввода
+- `value: FieldValidationItem` — объект с данными валидации
+
+**Структура FieldValidationItem:**
+- `group: string | undefined` — ключ группы маски
+- `input: HTMLInputElement | HTMLTextAreaElement | undefined` — связанный элемент ввода
+- `pattern: FieldPatternItemOrFunction | undefined` — используемый паттерн валидации
+- `type: string | undefined` — произвольный тип
+- `status: boolean | undefined` — статус успешности валидации
+- `required: boolean | undefined` — флаг обязательности поля
+- `isFull: boolean | undefined` — флаг полноты заполнения значения
+- `validationMessage: string | undefined` — текст сообщения об ошибке
+- `validity: ValidityState | undefined` — нативное состояние валидности
+- `validityMessage: string | undefined` — кастомное сообщение валидности
+- `value: any` — исходное значение
+- `valueInput: any | undefined` — введённое значение
+- `detail: Record<string, any> | undefined` — дополнительные данные
+
+```html
+<script setup>
+const handleInput = (event, value) => {
+  console.log('DOM событие:', event)
+  console.log('Значение:', value.value)
+  console.log('Валидация:', value.status)
+  console.log('Заполнено:', value.isFull)
+
+  if (!value.status) {
+    console.log('Ошибка:', value.validationMessage)
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+7 (***) ***-**-**"
+    @input="handleInput"
+  />
+</template>
+```
+
+### `inputLite`
+
+Событие срабатывает при изменении значения в поле ввода, передавая только данные валидации без оригинального DOM события (облегченная версия).
+
+**Параметры:**
+- `value: FieldValidationItem` — объект с данными валидации
+
+```html
+<script setup>
+const handleInputLite = (value) => {
+  console.log('Значение:', value.value)
+  console.log('Статус валидации:', value.status)
+
+  if (value.isFull && value.status) {
+    console.log('Поле полностью заполнено и валидно')
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+7 (***) ***-**-**"
+    @inputLite="handleInputLite"
+  />
+</template>
+```
+
+### `change`
+
+Событие срабатывает при завершении ввода и потере фокуса, передавая оригинальное DOM событие и данные валидации.
+
+**Параметры:**
+- `event: InputEvent` — оригинальное DOM событие ввода
+- `value: FieldValidationItem` — объект с данными валидации
+
+**Структура FieldValidationItem:** такая же как у события `input`
+
+```html
+<script setup>
+const handleChange = (event, value) => {
+  console.log('DOM событие:', event)
+  console.log('Финальное значение:', value.value)
+
+  if (value.status && value.isFull) {
+    // Отправка данных на сервер
+    submitForm(value.value)
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+7 (***) ***-**-**"
+    @change="handleChange"
+  />
+</template>
+```
+
+### `changeLite`
+
+Событие срабатывает при завершении ввода и потере фокуса, передавая только данные валидации без оригинального DOM события (облегченная версия).
+
+**Параметры:**
+- `value: FieldValidationItem` — объект с данными валидации
+
+```html
+<script setup>
+const handleChangeLite = (value) => {
+  console.log('Финальное значение:', value.value)
+  console.log('Валидация:', value.status)
+
+  if (value.isFull) {
+    console.log('Ввод завершен')
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+7 (***) ***-**-**"
+    @changeLite="handleChangeLite"
+  />
+</template>
+```
+

@@ -1,0 +1,129 @@
+### `input`
+
+Event fires when the value in the input field changes, passing the original DOM event and validation data.
+
+**Parameters:**
+- `event: InputEvent` — original DOM input event
+- `value: FieldValidationItem` — object with validation data
+
+**FieldValidationItem structure:**
+- `group: string | undefined` — mask group key
+- `input: HTMLInputElement | HTMLTextAreaElement | undefined` — related input element
+- `pattern: FieldPatternItemOrFunction | undefined` — validation pattern used
+- `type: string | undefined` — custom type
+- `status: boolean | undefined` — validation success status
+- `required: boolean | undefined` — field required flag
+- `isFull: boolean | undefined` — value completion flag
+- `validationMessage: string | undefined` — error message text
+- `validity: ValidityState | undefined` — native validity state
+- `validityMessage: string | undefined` — custom validity message
+- `value: any` — original value
+- `valueInput: any | undefined` — entered value
+- `detail: Record<string, any> | undefined` — additional data
+
+```html
+<script setup>
+const handleInput = (event, value) => {
+  console.log('DOM event:', event)
+  console.log('Value:', value.value)
+  console.log('Validation:', value.status)
+  console.log('Complete:', value.isFull)
+
+  if (!value.status) {
+    console.log('Error:', value.validationMessage)
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+1 (***) ***-****"
+    @input="handleInput"
+  />
+</template>
+```
+
+### `inputLite`
+
+Event fires when the value in the input field changes, passing only validation data without the original DOM event (lightweight version).
+
+**Parameters:**
+- `value: FieldValidationItem` — object with validation data
+
+```html
+<script setup>
+const handleInputLite = (value) => {
+  console.log('Value:', value.value)
+  console.log('Validation status:', value.status)
+
+  if (value.isFull && value.status) {
+    console.log('Field is fully filled and valid')
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+1 (***) ***-****"
+    @inputLite="handleInputLite"
+  />
+</template>
+```
+
+### `change`
+
+Event fires when input is completed and focus is lost, passing the original DOM event and validation data.
+
+**Parameters:**
+- `event: InputEvent` — original DOM input event
+- `value: FieldValidationItem` — object with validation data
+
+**FieldValidationItem structure:** same as for `input` event
+
+```html
+<script setup>
+const handleChange = (event, value) => {
+  console.log('DOM event:', event)
+  console.log('Final value:', value.value)
+
+  if (value.status && value.isFull) {
+    // Submit data to server
+    submitForm(value.value)
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+1 (***) ***-****"
+    @change="handleChange"
+  />
+</template>
+```
+
+### `changeLite`
+
+Event fires when input is completed and focus is lost, passing only validation data without the original DOM event (lightweight version).
+
+**Parameters:**
+- `value: FieldValidationItem` — object with validation data
+
+```html
+<script setup>
+const handleChangeLite = (value) => {
+  console.log('Final value:', value.value)
+  console.log('Validation:', value.status)
+
+  if (value.isFull) {
+    console.log('Input completed')
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+1 (***) ***-****"
+    @changeLite="handleChangeLite"
+  />
+</template>
+```

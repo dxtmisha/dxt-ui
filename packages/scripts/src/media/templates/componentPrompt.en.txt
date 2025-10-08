@@ -88,6 +88,8 @@ MDX structure rules:
 - Usage example — at the end of the corresponding semantic block or at the very bottom if there is one general example.
 - Slots and events — strictly in the format below. If there are no types, the type block is omitted.
 - Add Canvas if there is a usage example. If not, add stories.
+- Don't add <Canvas of={Component.Component}/>
+- Don't touch Meta and StorybookMain. They must remain as they are and be at the top. Don't add, don't delete, don't modify them.
 
 Slot format:
 ```

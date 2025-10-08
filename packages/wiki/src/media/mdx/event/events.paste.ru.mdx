@@ -1,0 +1,28 @@
+### `paste`
+
+Событие срабатывает при вставке данных из буфера обмена в поле ввода, передавая оригинальное DOM событие.
+
+**Параметры:**
+- `event: ClipboardEvent` — оригинальное DOM событие буфера обмена
+
+```html
+<script setup>
+const handlePaste = (event) => {
+  const pastedText = event.clipboardData?.getData('text/plain')
+  console.log('Вставленный текст:', pastedText)
+
+  // Проверяем формат вставляемых данных
+  if (pastedText && !/^\+?\d+$/.test(pastedText)) {
+    event.preventDefault()
+    console.log('Вставка заблокирована: неверный формат')
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+7 (***) ***-**-**"
+    @paste="handlePaste"
+  />
+</template>
+```

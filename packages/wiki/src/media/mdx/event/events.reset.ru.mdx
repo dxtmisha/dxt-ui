@@ -1,0 +1,22 @@
+### `reset`
+
+Событие срабатывает при сбросе значения компонента, передавая оригинальное DOM событие.
+
+**Параметры:**
+- `event: Event` — оригинальное DOM событие
+
+```html
+<script setup>
+const handleReset = (event) => {
+  console.log('DOM событие:', event)
+  console.log('Значение сброшено')
+
+  // Дополнительная логика после сброса
+  notifyUser('Данные очищены')
+}
+</script>
+
+<template>
+  <Component @reset="handleReset" />
+</template>
+```

@@ -1,0 +1,63 @@
+### `beforeinput`
+
+Событие срабатывает перед изменением значения в поле ввода, позволяя предотвратить или модифицировать ввод данных.
+
+**Параметры:**
+- `event: InputEvent` — оригинальное DOM событие ввода
+```html
+<script setup>
+const handleBeforeInput = (event) => {
+  console.log('Тип ввода:', event.inputType)
+  console.log('Данные:', event.data)
+
+  // Предотвращаем ввод специальных символов
+  if (event.data && /[^0-9]/.test(event.data)) {
+    event.preventDefault()
+    console.log('Ввод заблокирован: только цифры')
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+7 (***) ***-**-**"
+    @beforeinput="handleBeforeInput"
+  />
+</template>
+```
+
+**Примеры типов ввода (inputType):**
+- `insertText` — ввод текста
+- `insertFromPaste` — вставка из буфера обмена
+- `deleteContentBackward` — удаление символа назад (Backspace)
+- `deleteContentForward` — удаление символа вперед (Delete)
+- `insertLineBreak` — вставка переноса строки
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const blockedAttempts = ref(0)
+
+const onBeforeInput = (event) => {
+  // Блокируем вставку из буфера обмена
+  if (event.inputType === 'insertFromPaste') {
+    event.preventDefault()
+    blockedAttempts.value++
+    console.log('Вставка заблокирована')
+  }
+}
+</script>
+
+<template>
+  <div>
+    <Mask
+      mask="+7 (***) ***-**-**"
+      @beforeinput="onBeforeInput"
+    />
+    <p v-if="blockedAttempts > 0">
+      Попыток вставки заблокировано: {{ blockedAttempts }}
+    </p>
+  </div>
+</template>
+```

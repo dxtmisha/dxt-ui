@@ -1,0 +1,49 @@
+### `keydown`
+
+Событие срабатывает при нажатии клавиши в поле ввода, передавая оригинальное DOM событие клавиатуры.
+
+**Параметры:**
+- `event: KeyboardEvent` — оригинальное DOM событие клавиатуры
+
+```html
+<script setup>
+const handleKeyDown = (event) => {
+  console.log('Нажата клавиша:', event.key)
+  console.log('Код клавиши:', event.code)
+
+  if (event.ctrlKey && event.key === 'Enter') {
+    console.log('Нажато Ctrl+Enter')
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+7 (***) ***-**-**"
+    @keydown="handleKeyDown"
+  />
+</template>
+```
+
+### `keyup`
+
+Событие срабатывает при отпускании клавиши в поле ввода, передавая оригинальное DOM событие клавиатуры.
+
+**Параметры:**
+- `event: KeyboardEvent` — оригинальное DOM событие клавиатуры
+
+```html
+<script setup>
+const handleKeyUp = (event) => {
+  console.log('Отпущена клавиша:', event.key)
+  console.log('Код клавиши:', event.code)
+}
+</script>
+
+<template>
+  <Mask
+    mask="+7 (***) ***-**-**"
+    @keyup="handleKeyUp"
+  />
+</template>
+```

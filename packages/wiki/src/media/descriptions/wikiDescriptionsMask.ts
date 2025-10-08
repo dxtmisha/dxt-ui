@@ -214,6 +214,18 @@ export const wikiDescriptionsMask: StorybookComponentsDescriptionItem = {
 <Canvas of={Component.MaskDateTypes}/>
 
 <StorybookDescriptions componentName={'Mask'} type={'visible'}/>
+    `,
+    events: `
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
+<StorybookDescriptions componentName={'Event'} type={'beforeinput'}/>
+<StorybookDescriptions componentName={'Event'} type={'reset'}/>
+<StorybookDescriptions componentName={'Event'} type={'focus'}/>
+<StorybookDescriptions componentName={'Event'} type={'keyboard'}/>
+<StorybookDescriptions componentName={'Event'} type={'paste'}/>
+    `,
+    expose: `
+<StorybookDescriptions componentName={'Mask'} type={'expose'}/>
+<StorybookDescriptions componentName={'Expose'} type={'clear'}/>
     `
   }
 }

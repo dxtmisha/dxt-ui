@@ -4,6 +4,8 @@ import basicEn from './basic.en.mdx'
 import basicRu from './basic.ru.mdx'
 import dateTypesEn from './dateTypes.en.mdx'
 import dateTypesRu from './dateTypes.ru.mdx'
+import exposeEn from './expose.en.mdx'
+import exposeRu from './expose.ru.mdx'
 import groupSaveEn from './groupSave.en.mdx'
 import groupSaveRu from './groupSave.ru.mdx'
 import maskEn from './mask.en.mdx'
@@ -36,6 +38,10 @@ export const wikiMdxMask: StorybookComponentsMdxItem = {
     dateTypes: {
       en: dateTypesEn,
       ru: dateTypesRu
+    },
+    expose: {
+      en: exposeEn,
+      ru: exposeRu
     },
     groupSave: {
       en: groupSaveEn,

@@ -1,0 +1,28 @@
+### `paste`
+
+Event fires when data is pasted from clipboard into the input field, passing the original DOM event.
+
+**Parameters:**
+- `event: ClipboardEvent` — original DOM clipboard event
+
+```html
+<script setup>
+const handlePaste = (event) => {
+  const pastedText = event.clipboardData?.getData('text/plain')
+  console.log('Pasted text:', pastedText)
+
+  // Check format of pasted data
+  if (pastedText && !/^\+?\d+$/.test(pastedText)) {
+    event.preventDefault()
+    console.log('Paste blocked: invalid format')
+  }
+}
+</script>
+
+<template>
+  <Mask
+    mask="+1 (***) ***-****"
+    @paste="handlePaste"
+  />
+</template>
+```

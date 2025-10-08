@@ -1,0 +1,45 @@
+### `focus`
+
+Event fires when the input element receives focus, passing the original DOM event.
+
+**Parameters:**
+- `event: FocusEvent` — original DOM focus event
+
+```html
+<script setup>
+const handleFocus = (event) => {
+  console.log('Element received focus:', event.target)
+  console.log('Previous element:', event.relatedTarget)
+}
+</script>
+
+<template>
+  <Mask
+    mask="+1 (***) ***-****"
+    @focus="handleFocus"
+  />
+</template>
+```
+
+### `blur`
+
+Event fires when the input element loses focus, passing the original DOM event.
+
+**Parameters:**
+- `event: FocusEvent` — original DOM blur event
+
+```html
+<script setup>
+const handleBlur = (event) => {
+  console.log('Element lost focus:', event.target)
+  console.log('Next element:', event.relatedTarget)
+}
+</script>
+
+<template>
+  <Mask
+    mask="+1 (***) ***-****"
+    @blur="handleBlur"
+  />
+</template>
+```

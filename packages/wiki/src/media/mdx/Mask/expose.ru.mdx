@@ -1,0 +1,66 @@
+### `value`
+
+Итоговое отформатированное значение маски.
+
+**Тип:** `Ref<string>`
+
+```html
+<script setup>
+const maskRef = ref()
+
+watch(() => maskRef.value?.value.item.value, (formatted) => {
+  console.log('Форматированное значение:', formatted)
+})
+</script>
+
+<template>
+  <Mask ref="maskRef" mask="+7 (***) ***-**-**" />
+</template>
+```
+
+### `valueBasic`
+
+Базовое значение маски без форматирования (только введённые символы).
+
+**Тип:** `Ref<string>`
+
+```html
+<script setup>
+const maskRef = ref()
+
+watch(() => maskRef.value?.valueBasic.item.value, (basic) => {
+  console.log('Базовое значение:', basic)
+})
+</script>
+
+<template>
+  <Mask ref="maskRef" mask="+7 (***) ***-**-**" />
+</template>
+```
+
+### `set`
+
+Устанавливает новое значение и переинициализирует маску.
+
+**Параметры:**
+- `value: string` — новое значение для установки
+
+**Возвращает:** `boolean` — `true`, если значение было изменено
+
+```html
+<script setup>
+const maskRef = ref()
+
+const setPhoneNumber = () => {
+  const changed = maskRef.value.set('+79001234567')
+  console.log('Значение изменено:', changed)
+}
+</script>
+
+<template>
+  <Mask ref="maskRef" mask="+7 (***) ***-**-**" />
+  <button @click="setPhoneNumber">Установить номер</button>
+</template>
+```
+
+
