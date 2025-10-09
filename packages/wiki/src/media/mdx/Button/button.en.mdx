@@ -1,3 +1,91 @@
 ## Description
 
-The Button component is an interactive element for user actions. It supports various visual styles, sizes, and states to create a consistent user interface.
+Interactive button component for triggering user actions with support for multiple visual variants, states, and accessibility features.
+
+Button provides a comprehensive solution for creating consistent, accessible action elements with built-in support for icons, loading states, ripple effects, and skeleton placeholders. The component integrates visual variants (primary, secondary, outline, text), state management (focus, hover, disabled, selected), and adaptive behavior for responsive interfaces.
+
+**Key features:**
+
+- Multiple visual variants (primary, secondary, outline, text)
+- Comprehensive state support (focus, hover, active, disabled, selected, readonly)
+- Built-in icon positioning (leading and trailing)
+- Progress indicator integration for loading states
+- Ripple effect for tactile feedback
+- Skeleton system for loading placeholders
+- Adaptive and responsive behavior options
+- Full accessibility support (ARIA, keyboard navigation)
+- Customizable through design tokens
+
+**Typical use cases:**
+
+- Primary actions in forms and dialogs
+- Navigation and menu items
+- Toolbars and action bars
+- Call-to-action elements
+- Icon-only action buttons
+- Loading state indicators
+- Confirmation and cancellation actions
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const loading = ref(false)
+const selected = ref(false)
+
+const handleClick = async () => {
+  loading.value = true
+  // Simulate async operation
+  await new Promise(resolve => setTimeout(resolve, 2000))
+  loading.value = false
+  selected.value = !selected.value
+}
+</script>
+
+<template>
+  <div class="actions">
+    <!-- Primary button with loading state -->
+    <Button
+      primary
+      :progress="loading"
+      @click="handleClick"
+    >
+      Submit
+    </Button>
+
+    <!-- Secondary button with icon -->
+    <Button
+      secondary
+      icon="settings"
+    >
+      Settings
+    </Button>
+
+    <!-- Outline button with trailing icon -->
+    <Button
+      outline
+      icon-trailing="arrow_forward"
+    >
+      Next
+    </Button>
+
+    <!-- Text button with selected state -->
+    <Button
+      text
+      :selected="selected"
+      @click="selected = !selected"
+    >
+      Toggle
+    </Button>
+
+    <!-- Icon-only button -->
+    <Button
+      primary
+      icon="favorite"
+      adaptive="iconAlways"
+    />
+  </div>
+</template>
+```
+
+> Button is designed as a universal interactive element with comprehensive state management, visual variants, and accessibility features for creating consistent action interfaces.

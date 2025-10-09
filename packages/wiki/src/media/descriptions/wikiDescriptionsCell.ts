@@ -107,8 +107,7 @@ export const wikiDescriptionsCell: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
 <StorybookDescriptions componentName={'Slot'} type={'caption'}/>
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
-<StorybookDescriptions componentName={'Cell'} type={'slot.trailing'}/>
-<StorybookDescriptions componentName={'Cell'} type={'slot.body'}/>
+<StorybookDescriptions componentName={'Cell'} type={'slots'}/>
 `
   }
 }

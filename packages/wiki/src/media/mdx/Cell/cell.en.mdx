@@ -1,16 +1,57 @@
 ## Description
 
-Versatile container component for displaying structured content with labels, descriptions, and actions. Cell provides consistent representation of information in lists, menus, and other interface elements.
+Universal container component for displaying structured content with labels, descriptions, and interactive actions in lists and interface elements.
 
-### Key Features
+Cell provides a consistent way to represent information blocks with support for text hierarchy (label, description, caption), interactive states, icons, and progress indicators. The component integrates ripple effects, skeleton states, and flexible content positioning for creating modern interface lists.
 
-- Flexible content structure with support for labels, descriptions, and captions
-- Interactive states (selected, disabled, read-only)
+**Key features:**
+
+- Structured content hierarchy (label, description, caption)
+- Interactive states (focus, selected, disabled, readonly)
 - Built-in icon and progress indicator support
-- Customizable dividers between elements
-- Dynamic behavior with hover effects
-- Skeleton system integration for loading states
+- Ripple effect integration for tactile feedback
+- Skeleton system for loading states
+- Customizable dividers and dynamic behavior
+- Flexible slot system for custom content
+- Optimized for list and menu interfaces
 
-### Recommendations
+**Typical use cases:**
 
-Use Cell to create structured lists, settings, navigation menus, and other interface elements that require consistent information display. Particularly effective in mobile interfaces and responsive designs.
+- List items in navigation menus and settings
+- Contact cards and profile entries
+- Action sheets and selection lists
+- Settings panels and configuration items
+- Data tables and structured information displays
+- Mobile-first interface components
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref(false)
+const loading = ref(false)
+
+const handleClick = () => {
+  console.log('Cell clicked')
+  selected.value = !selected.value
+}
+</script>
+
+<template>
+  <Cell
+    label="Notification Settings"
+    description="Manage how you receive notifications"
+    caption="Updated today"
+    icon="notifications"
+    :selected="selected"
+    :skeleton="loading"
+    @click="handleClick"
+  >
+    <template #trailing>
+      <Icon name="chevron_right" />
+    </template>
+  </Cell>
+</template>
+```
+
+> Cell is designed as a universal building block for creating consistent list-based interfaces with rich content and interactive states.

@@ -1,21 +1,16 @@
-## Secondary Button Style
+## Secondary buttons
 
-The `secondary` property activates the secondary visual style of the button, which is less intrusive than the primary style and is used for alternative or less important actions.
+Button component supports secondary mode through the `secondary` property. In this mode, buttons have a less prominent visual style for alternative or supporting actions:
 
-### Purpose
+- **Moderate emphasis** - less intrusive than primary buttons while remaining clear
+- **Action alternatives** - provides users with alternative choices without overwhelming them
+- **Balanced contrast** - uses colors with moderate contrast for better visual hierarchy
+- **Icon support** - maintains consistency with other button variants through visual elements
 
-- **Alternative actions** — Provides the user with a choice of several actions
-- **Reduced visual load** — Helps to avoid overloading the interface with accent elements
-- **Grouping actions** — Used to group related but not primary actions
+Secondary mode is especially useful for creating cancel buttons, reset actions, and alternative choices that support the main flow without competing for primary attention in the interface.
 
-### Usage
-
-The property is recommended for:
-- Secondary actions in forms (cancel, reset)
-- Additional options or settings
-- Less priority actions on the page
-
-### Features
-
-- **Moderate contrast** — Uses colors with less contrast than the primary style
-- **Consistency** — Harmoniously combines with the primary style and other elements
+```html
+<Button secondary icon="close">Cancel</Button>
+<Button secondary icon="refresh">Reset</Button>
+<Button secondary>Skip</Button>
+```

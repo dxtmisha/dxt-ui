@@ -1,15 +1,16 @@
-## Text Button Style
+## Text buttons
 
-The `text` property applies a text style to the button, making it look like a link. This style is used for the least intrusive actions.
+Button component supports text mode through the `text` property. In this mode, buttons have a minimalist text-only style resembling links for the most unobtrusive actions:
 
-### Purpose
-- **Tertiary actions** — For actions that should look like text but be interactive.
-- **Unobtrusive design** — Ideal for actions within text or where the button should not be distracting.
+- **Unobtrusive design** - looks like plain text while remaining interactive
+- **No background or border** - maintains clean appearance without visual weight
+- **Hover feedback** - subtle background appears on hover for better interaction clarity
+- **Icon support** - seamlessly integrates icons while maintaining minimal visual impact
 
-### Usage
-- "Learn more" links.
-- Actions in a footer or menu.
+Text mode is especially useful for creating tertiary actions, inline navigation links, and supplementary options within text content or footers that need to be accessible without drawing excessive attention.
 
-### Features
-- **No background or border** — The button looks like plain text.
-- **Hover background** — A background appears on hover for better feedback.
+```html
+<Button text icon="info">Learn more</Button>
+<Button text icon="help">Help</Button>
+<Button text>Read details</Button>
+```

@@ -1,23 +1,16 @@
-## Primary Button Style
+## Primary buttons
 
-The `primary` property activates the main visual style of the button, making it more prominent and drawing user attention to important actions.
+Button component supports primary mode through the `primary` property. In this mode, buttons have a distinctive visual style for the most important actions:
 
-### Purpose
+- **Visual emphasis** - stands out prominently among other interface elements
+- **Action hierarchy** - indicates the main or priority action on the page
+- **High contrast** - automatically applies high-contrast colors for better visibility
+- **Icon support** - enhances understanding of purpose through visual elements
 
-- **Visual accent** — Makes the button stand out among other interface elements
-- **Action hierarchy** — Indicates the main or priority action on the page
-- **Enhanced visibility** — Provides better distinction of important controls
+Primary mode is especially useful for creating main call-to-action buttons, form submissions, and confirmation actions that require user attention and should be immediately recognizable in the interface.
 
-### Usage
-
-The property is recommended for:
-- Main actions in forms (submit, save)
-- Call-to-Action buttons
-- Confirmation of important operations
-- Navigation to key sections
-
-### Features
-
-- **Contrast** — Automatically applies high-contrast colors for better visibility
-- **Accessibility** — Complies with accessibility standards for users with disabilities
-- **Responsiveness** — Maintains style across different screen sizes and devices
+```html
+<Button primary icon="send">Submit</Button>
+<Button primary icon="save">Save</Button>
+<Button primary>Confirm</Button>
+```

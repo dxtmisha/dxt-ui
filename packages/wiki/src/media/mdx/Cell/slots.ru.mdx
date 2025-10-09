@@ -1,0 +1,83 @@
+### `trailing`
+
+Слот для размещения элементов управления или индикаторов в конце ячейки (иконки, переключатели, кнопки).
+
+**Параметры:**
+- `props: CellClassesSub` — объект с CSS классами для под-элементов ячейки
+
+### `body`
+
+Слот для размещения дополнительного контента в нижней части ячейки (метаданные, вторичные действия, детали).
+
+**Параметры:**
+- `props: CellClassesSub` — объект с CSS классами для под-элементов ячейки
+
+## CellClassesSub
+
+`CellClassesSub` — объект, передаваемый во все слоты компонента Cell, содержащий CSS классы для стилизации под-элементов.
+
+### Структура типа
+
+```typescript
+type CellClassesSub = {
+  /** CSS класс для элемента метки */
+  label: string
+
+  /** CSS класс для элемента описания */
+  description: string
+
+  /** CSS класс для элемента подписи */
+  caption: string
+
+  /** CSS класс для элемента области trailing */
+  trailing: string
+}
+```
+
+### Свойства
+
+- **`label`** — CSS класс для элемента метки (`{className}__label`)
+- **`description`** — CSS класс для элемента описания (`{className}__description`)
+- **`caption`** — CSS класс для элемента подписи (`{className}__caption`)
+- **`trailing`** — CSS класс для элемента области trailing (`{className}__trailing`)
+
+### Пример использования
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref(false)
+const notifications = ref(5)
+</script>
+
+<template>
+  <Cell
+    label="Уведомления"
+    description="У вас есть непрочитанные сообщения"
+    icon="notifications"
+    :selected="selected"
+    @click="selected = !selected"
+  >
+    <template #trailing="{ trailing }">
+      <div :class="trailing">
+        <Icon name="chevron_right" />
+      </div>
+    </template>
+
+    <template #body>
+      <div class="quick-actions">
+        <button @click.stop="markAllRead">Отметить все как прочитанное</button>
+        <button @click.stop="clearAll">Очистить все</button>
+      </div>
+    </template>
+  </Cell>
+</template>
+```
+
+В этом примере:
+- Каждый слот получает `CellClassesSub` с CSS классами для правильной стилизации
+- Слот `trailing` размещает интерактивные элементы справа
+- Слот `body` добавляет дополнительные действия под основным контентом
+- Все элементы корректно интегрированы в структуру Cell
+
