@@ -1,5 +1,6 @@
 // Classes
 export * from './classes/Api'
+export * from './classes/BroadcastMessage'
 export * from './classes/Cache'
 export * from './classes/CacheItem'
 export * from './classes/CacheStatic'

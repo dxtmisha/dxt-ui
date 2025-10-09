@@ -1,7 +1,7 @@
 import { ref, type Ref, watch } from 'vue'
 import { executeFunction } from '../../functions/executeFunction'
-import { random } from '../../functions/random'
-import { useStorageRef } from './useStorageRef'
+
+import { BroadcastMessage } from '../../classes/BroadcastMessage'
 
 type BroadcastValueItem<T> = T | string | undefined
 
@@ -16,34 +16,26 @@ export function useBroadcastValueRef<T>(
   name: string,
   defaultValue?: T | string | (() => (T | string))
 ): Ref<BroadcastValueItem<T>> {
-  const fullName = `broadcast__${getRandomName()}__${name}`
+  const fullName = `broadcast--${name}`
 
   if (fullName in items) {
     return items[fullName] as Ref<BroadcastValueItem<T>>
   }
 
-  const broadcast = new BroadcastChannel(fullName)
   const item = ref<BroadcastValueItem<T>>(executeFunction(defaultValue))
-
-  watch(item, value => broadcast.postMessage({ message: value }))
-  broadcast.onmessage = (event) => {
-    if (item.value !== event.data.message) {
-      item.value = event.data.message
+  const broadcast = new BroadcastMessage(
+    fullName,
+    (event) => {
+      if (item.value !== event.data.message) {
+        item.value = event.data.message
+      }
     }
-  }
+  )
+
+  watch(item, value => broadcast.post({ message: value }))
 
   items[fullName] = item
   return item as Ref<BroadcastValueItem<T>>
 }
 
 const items: Record<string, Ref<any>> = {}
-
-/**
- * Generates a random name and saves it in local storage.
- *
- * Генерирует случайное имя и сохраняет его в локальном хранилище.
- */
-const getRandomName = () => useStorageRef(
-  '__broadcast-name',
-  () => `name_${random(1_000_000, 9_999_999)}`
-)

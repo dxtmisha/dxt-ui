@@ -1,10 +1,64 @@
 var Bt = Object.defineProperty;
 var Tt = (i, t, e) => t in i ? Bt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
 var k = (i, t, e) => Tt(i, typeof t != "symbol" ? t + "" : t, e);
-import { i as d, D as Y, e as A, a as O, b as Ft, G as p, f, t as b, c as ot, d as T, g as Et, h as K, j as m, k as L, A as H, l as g, E as Rt, m as F, r as W, L as ft, n as E } from "./Icons-Bp74_rUm.js";
-import { o as As, I as Ns, p as Is, q as Bs, s as Ts, u as Fs, v as Es, w as Rs } from "./Icons-Bp74_rUm.js";
-import { h as xt, computed as c, toRefs as Ot, useAttrs as Wt, useSlots as Pt, ref as $, isRef as ct, watch as y, triggerRef as jt, shallowRef as P, onUnmounted as it, inject as Ht, provide as Gt, watchEffect as zt } from "vue";
-class Ut {
+import { D as Y, i as d, r as O, e as A, a as W, b as Ft, G as p, f, t as b, c as ot, d as T, g as Et, h as K, j as m, k as L, A as H, l as g, E as xt, m as F, L as ft, n as E } from "./Icons-Bp74_rUm.js";
+import { o as Ns, I as Is, p as Bs, q as Ts, s as Fs, u as Es, v as xs, w as Rs } from "./Icons-Bp74_rUm.js";
+import { ref as $, watch as y, h as Rt, computed as c, toRefs as Ot, useAttrs as Wt, useSlots as Pt, isRef as ct, triggerRef as jt, shallowRef as P, onUnmounted as it, inject as Ht, provide as Gt, watchEffect as zt } from "vue";
+function Ut(i, t, e) {
+  if (i in _)
+    return _[i];
+  const s = new Y(i), n = $(s.get(t, e));
+  return y(n, (a) => s.set(a)), d() && window.addEventListener("storage", () => {
+    s.update(), n.value = s.get();
+  }), _[i] = n, n;
+}
+const _ = {};
+class Zt {
+  /**
+   * Constructor
+   * @param name channel name/ название канала
+   * @param callback callback on message received/ колбэк на получение сообщения
+   */
+  constructor(t, e) {
+    if (this.callback = e, d())
+      try {
+        this.channel = new BroadcastChannel(`${Yt()}__${t}`), this.channel.onmessage = this.update;
+      } catch (s) {
+        console.error(`BroadcastMessage ${t}:`, s);
+      }
+  }
+  channel;
+  /**
+   * Send a message to the channel.
+   *
+   * Отправить сообщение в канал.
+   * @param message message to send/ сообщение для отправки
+   */
+  post(t) {
+    return this.channel?.postMessage(t), this;
+  }
+  /**
+   * Set the callback function to be called when a message is received.
+   *
+   * Установить функцию колбэка, которая будет вызвана при получении сообщения.
+   * @param callback callback function/ функция колбэка
+   */
+  setCallback(t) {
+    return this.callback = t, this;
+  }
+  /**
+   * Update state on message received.
+   *
+   * Обновление состояния при получении сообщения.
+   * @param event message event/ событие сообщения
+   */
+  update = (t) => (this.callback?.(t), this);
+}
+const Yt = () => Ut(
+  "__broadcast-name",
+  () => `name_${O(1e6, 9999999)}`
+);
+class Kt {
   /**
    * Constructor
    * @param callback function for the cache/ функция для кэша
@@ -67,7 +121,7 @@ class Ut {
     return this.cache === void 0 || this.comparisons.length !== t.length || this.comparisons.findIndex((e, s) => e !== t[s]) >= 0 ? (this.comparisons = [...t], !0) : !1;
   }
 }
-class Zt {
+class Vt {
   cache = {};
   /**
    * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
@@ -99,7 +153,7 @@ class Zt {
    * @param callback function for the cache/ функция для кэша
    */
   getCacheItem(t, e) {
-    return t in this.cache || (this.cache[t] = new Ut(e)), this.cache[t];
+    return t in this.cache || (this.cache[t] = new Kt(e)), this.cache[t];
   }
 }
 const Z = class Z {
@@ -115,9 +169,9 @@ const Z = class Z {
     return this.cache.get(t, e, s);
   }
 };
-k(Z, "cache"), Z.cache = new Zt();
+k(Z, "cache"), Z.cache = new Vt();
 let dt = Z;
-function St(i, t = !1) {
+function wt(i, t = !1) {
   if (typeof i == "string") {
     const e = i.trim();
     switch (e) {
@@ -148,9 +202,9 @@ function St(i, t = !1) {
   }
   return i;
 }
-const Yt = "cookie-block";
-class Kt {
-  static storage = new Y(Yt);
+const qt = "cookie-block";
+class _t {
+  static storage = new Y(qt);
   /**
    * Obtaining status.
    *
@@ -171,9 +225,9 @@ class Kt {
 }
 const mt = {}, lt = class lt {
   constructor(t) {
-    if (this.name = t, t in _)
-      return _[t];
-    this.value = mt?.[t], _[t] = this;
+    if (this.name = t, t in J)
+      return J[t];
+    this.value = mt?.[t], J[t] = this;
   }
   value;
   options = {};
@@ -219,7 +273,7 @@ const mt = {}, lt = class lt {
    * Обновление данных cookie.
    */
   update() {
-    if (d() && !Kt.get()) {
+    if (d() && !_t.get()) {
       const t = String(this.value ?? "");
       document.cookie = [
         `${encodeURIComponent(this.name)}=${encodeURIComponent(t)}`,
@@ -237,14 +291,14 @@ const mt = {}, lt = class lt {
   static updateData() {
     for (const t of document.cookie.split(";")) {
       const [e, s] = t.trim().split("=");
-      e && O(s) && (mt[e] = St(s));
+      e && W(s) && (mt[e] = wt(s));
     }
   }
 };
 d() && lt.updateData();
 let rt = lt;
-const _ = {};
-function S(i) {
+const J = {};
+function w(i) {
   if (i instanceof Date)
     return i;
   if (Ft(i))
@@ -279,9 +333,9 @@ class I {
   constructor(t = p.getLocation()) {
     this.geo = p.find(t);
     const e = this.getLocation();
-    if (e in J)
-      return J[e];
-    J[e] = this;
+    if (e in Q)
+      return Q[e];
+    Q[e] = this;
   }
   /**
    * Returns country code and language.
@@ -558,7 +612,7 @@ class I {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   date(t, e, s, n) {
-    const a = S(t), o = typeof s == "string", u = this.dateOptions(e, o ? s : "short");
+    const a = w(t), o = typeof s == "string", u = this.dateOptions(e, o ? s : "short");
     return n && (u.hour12 = !1), o || Object.assign(u, s), a.toLocaleString(this.getLocation(), u);
   }
   /**
@@ -571,7 +625,7 @@ class I {
    * @param todayValue current day/ текущий день
    */
   relative(t, e, s) {
-    const n = S(t), a = s || /* @__PURE__ */ new Date(), o = {
+    const n = w(t), a = s || /* @__PURE__ */ new Date(), o = {
       numeric: "auto",
       ...typeof e == "string" ? { style: e } : e || {}
     };
@@ -597,8 +651,8 @@ class I {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   relativeLimit(t, e, s, n, a, o, u) {
-    const h = S(t), l = s || /* @__PURE__ */ new Date(), D = new Date(l), C = new Date(l);
-    return D.setDate(l.getDate() - e), C.setDate(l.getDate() + e), h >= D && h <= C ? this.relative(
+    const h = w(t), l = s || /* @__PURE__ */ new Date(), C = new Date(l), D = new Date(l);
+    return C.setDate(l.getDate() - e), D.setDate(l.getDate() + e), h >= C && h <= D ? this.relative(
       h,
       n,
       l
@@ -637,7 +691,7 @@ class I {
   month(t, e) {
     try {
       if (d())
-        return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(S(t));
+        return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(w(t));
     } catch (s) {
       console.error("month: ", s);
     }
@@ -678,7 +732,7 @@ class I {
   weekday(t, e) {
     try {
       if (d())
-        return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(S(t));
+        return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(w(t));
     } catch (s) {
       console.error("weekday: ", s);
     }
@@ -760,7 +814,7 @@ class I {
     return ["full", "datetime", "date", void 0, "year-month", "year"].indexOf(t) !== -1 && (s.year = "numeric"), ["full", "datetime", "date", void 0, "year-month", "month", "day-month"].indexOf(t) !== -1 && (s.month = e), ["full", "datetime", "date", void 0, "day", "day-month"].indexOf(t) !== -1 && (s.day = "2-digit"), t !== void 0 && (["full", "datetime", "time", "hour-minute", "hour"].indexOf(t) !== -1 && (s.hour = "2-digit"), ["full", "datetime", "time", "hour-minute", "minute"].indexOf(t) !== -1 && (s.minute = "2-digit"), ["full", "time", "second"].indexOf(t) !== -1 && (s.second = "2-digit")), s;
   }
 }
-const J = {};
+const Q = {};
 class ut {
   /**
    * Constructor
@@ -769,7 +823,7 @@ class ut {
    * @param code country and language code/ код страны и языка
    */
   constructor(t, e = "date", s = p.getLocation()) {
-    this.type = e, this.code = s, this.date = S(t);
+    this.type = e, this.code = s, this.date = w(t);
   }
   date;
   hour24 = !1;
@@ -1004,7 +1058,7 @@ class ut {
    * целочисленное значение, представляющее число
    */
   setDate(t) {
-    return this.date = S(t), this.update(), this;
+    return this.date = w(t), this.update(), this;
   }
   /**
    * Change the type of data output.
@@ -1412,7 +1466,7 @@ class ut {
   }
 }
 const r = "@flag";
-class R {
+class x {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
@@ -1677,7 +1731,7 @@ class R {
         language: this.getLanguage(e),
         country: s,
         standard: e.standard,
-        icon: R.flags?.[e.country],
+        icon: x.flags?.[e.country],
         label: s,
         value: e.country
       };
@@ -1709,7 +1763,7 @@ class R {
    */
   getNational(t) {
     return f(this.getList(t), (e) => {
-      const s = new R(e.standard).get(e.standard);
+      const s = new x(e.standard).get(e.standard);
       return {
         ...e,
         description: s?.country,
@@ -1742,7 +1796,7 @@ class R {
    * @param codes country code/ код страны
    */
   getCodes(t) {
-    return t ?? Object.keys(R.flags);
+    return t ?? Object.keys(x.flags);
   }
   /**
    * Getting the name of the language.
@@ -1823,7 +1877,7 @@ const N = class N {
    * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toMask(t, e) {
-    if (O(t) && Array.isArray(e) && e.length > 0) {
+    if (W(t) && Array.isArray(e) && e.length > 0) {
       const s = this.removeZero(t), n = s.length;
       for (const a of e)
         if (this.getUnnecessaryLength(a) === n)
@@ -1941,7 +1995,7 @@ const N = class N {
 };
 k(N, "list", []), k(N, "map", {}), N.makeList(), N.makeMap();
 let yt = N, j;
-class Le {
+class Ce {
   /**
    * Returns the value by its name.
    *
@@ -2013,7 +2067,7 @@ const M = class M {
     const t = {};
     return location.hash.replace(
       /([\w-]+)[:=]([^;]+)/ig,
-      (...e) => (t[String(e[1])] = St(e[2]), "")
+      (...e) => (t[String(e[1])] = wt(e[2]), "")
     ), t;
   }
   /**
@@ -2039,14 +2093,14 @@ const M = class M {
   }
 };
 k(M, "hash", {}), k(M, "watch", {}), k(M, "block", !1), d() && (M.reload(), addEventListener("hashchange", () => M.reload()));
-let x = M;
-function Vt(i, t, e) {
+let R = M;
+function Jt(i, t, e) {
   return K(i)?.[t] ?? e;
 }
-function qt(i, t, e) {
+function Qt(i, t, e) {
   const s = K(i);
   if (s) {
-    const n = Vt(s, t);
+    const n = Jt(s, t);
     if (m(n) && m(e))
       f(e, (a, o) => {
         n[o] = A(a);
@@ -2063,10 +2117,10 @@ function pt(i, t = "div", e, s) {
     return;
   const n = document.createElement(t);
   return typeof e == "function" ? e(n) : L(e) && f(e, (a, o) => {
-    qt(n, o, a);
+    Qt(n, o, a);
   }), i?.insertBefore(n, s ?? null), n;
 }
-class wt {
+class St {
   static storage = new Y("scrollbar", !0);
   static calculate = !1;
   /**
@@ -2118,7 +2172,7 @@ class wt {
     });
   }
 }
-const _t = [
+const Xt = [
   "d",
   "e",
   "f",
@@ -2138,12 +2192,12 @@ const _t = [
   "t",
   "u",
   "v"
-], Jt = (i, t = {}) => {
+], te = (i, t = {}) => {
   let e = String(i);
   if (i.match(/%[a-z]/)) {
     let s = 0;
     f(t, (n) => {
-      e = e.replace(new RegExp(`%${_t[s++]}`, "g"), String(n));
+      e = e.replace(new RegExp(`%${Xt[s++]}`, "g"), String(n));
     });
   }
   return L(t) && f(t, (s, n) => {
@@ -2242,7 +2296,7 @@ class z {
    */
   static addSync(t) {
     f(t, (e, s) => {
-      ot(e) && O(e) && (this.data[this.getName(s)] = e);
+      ot(e) && W(e) && (this.data[this.getName(s)] = e);
     });
   }
   /**
@@ -2252,7 +2306,7 @@ class z {
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static async addNormalOrSync(t) {
-    if (O(t))
+    if (W(t))
       if (H.isLocalhost())
         this.addSync(t);
       else {
@@ -2317,7 +2371,7 @@ class z {
    * @param replacement values for replacement/ значения для замены
    */
   static replacement(t, e) {
-    return e ? Jt(t, e) : t;
+    return e ? te(t, e) : t;
   }
   /**
    * Adding translation data from the server.
@@ -2334,7 +2388,7 @@ class z {
 function ht(i) {
   return Array.isArray(i);
 }
-class Qt {
+class ee {
   /**
    * Constructor
    * @param props base data/ базовые данные
@@ -2383,7 +2437,7 @@ class Qt {
     return this.cache?.[t] !== this.props?.[t];
   }
 }
-class Xt {
+class se {
   /**
    * Constructor
    * @param props base data/ базовые данные
@@ -2392,7 +2446,7 @@ class Xt {
    * @param changed base data/ данный для слежения
    */
   constructor(t, e, s) {
-    this.props = t, this.callback = e, this.changed = new Qt(t, s);
+    this.props = t, this.callback = e, this.changed = new ee(t, s);
   }
   event = {};
   changed;
@@ -2442,7 +2496,7 @@ class Xt {
     this.callback && this.callback(this.event);
   }
 }
-class De extends Xt {
+class De extends se {
   /**
    * Calls the callback function.
    *
@@ -2462,16 +2516,16 @@ class De extends Xt {
     (t || this.changed.isChanged()) && (await this.initEvent(), this.makeCallbackItem(), this.changed.update());
   }
 }
-function te(i) {
+function ie(i) {
   return i && "class" in i && typeof i.class == "string" ? i.class : void 0;
 }
-function ee(i, t, e) {
-  const s = te(t);
+function re(i, t, e) {
+  const s = ie(t);
   return e && s ? `${e}.${s}` : e || s || i;
 }
-function se(i, t, e, s) {
-  const n = ee(i, t, s);
-  return xt(i, { key: n, ...t }, e);
+function ne(i, t, e, s) {
+  const n = re(i, t, s);
+  return Rt(i, { key: n, ...t }, e);
 }
 function at(i, t) {
   const e = i?.class, s = t?.class, n = i?.style, a = t?.style, o = {
@@ -2480,7 +2534,7 @@ function at(i, t) {
   };
   return e && s && (o.class = [], e && o.class.push(e), s && o.class.push(s)), n && a && (o.style = [], n && o.style.push(n), a && o.style.push(a)), o;
 }
-function ie(...i) {
+function ae(...i) {
   let t = {};
   return i.forEach((e) => {
     e && (t = at(t, e));
@@ -2527,7 +2581,7 @@ class Lt {
       t in this.caching || (this.caching[t] = c(() => this.computeModification(t)));
       const s = this.caching[t];
       if (s)
-        return e ? ie(s.value, e) : s.value;
+        return e ? ae(s.value, e) : s.value;
     }
     return e;
   }
@@ -2561,7 +2615,7 @@ class Lt {
   renderOne(t, e, s, n) {
     if (this.is(t)) {
       const a = n ?? t;
-      return se(
+      return ne(
         this.get(t),
         this.getModification(a, e),
         s,
@@ -2600,12 +2654,12 @@ class Lt {
     return {};
   }
 }
-class Ce extends Lt {
+class ke extends Lt {
 }
-function Dt(i) {
+function Ct(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(new RegExp("(?<=[A-Z])([A-Z])", "g"), (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-class ke {
+class Me {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -2744,7 +2798,7 @@ class ke {
    * @param name component name for transformation/ название компонента для преобразования
    */
   initName(t) {
-    return f(t.split(".", 2), (e) => Dt(e));
+    return f(t.split(".", 2), (e) => Ct(e));
   }
   /**
    * Updating data about the class.
@@ -2778,10 +2832,10 @@ class ke {
     } : e ?? {};
   }
 }
-function w(i) {
+function S(i) {
   return ct(i) ? i : $(i);
 }
-class Me {
+class Ae {
   item;
   type;
   code;
@@ -2800,12 +2854,12 @@ class Me {
    * @param code country and language code. код страны и языка
    */
   constructor(t, e = "date", s = p.getLocation()) {
-    this.item = w(t), this.type = w(e), this.code = w(s), this.date = $(S(this.item.value)), this.datetime = new ut(
+    this.item = S(t), this.type = S(e), this.code = S(s), this.date = $(w(this.item.value)), this.datetime = new ut(
       this.date.value,
       this.type.value,
       this.code.value
     ), y(this.item, (n) => {
-      this.date.value = S(n);
+      this.date.value = w(n);
     }), y(this.type, (n) => this.datetime.setType(n)), y(this.code, (n) => this.datetime.setCode(n)), y(this.date, (n) => this.datetime.setDate(n)), this.datetime.setWatch(() => jt(this.date));
   }
   /**
@@ -2926,7 +2980,7 @@ class Me {
     return c(() => this.date.value && this.datetime.standard(t));
   }
 }
-class Ae extends Rt {
+class Ne extends xt {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -2940,7 +2994,7 @@ class Ae extends Rt {
    * значение, связанное с событием
    */
   constructor(t, e, s = ["click"], n, a, o) {
-    const u = w(t), h = w(e);
+    const u = S(t), h = S(e);
     super(
       u.value,
       s,
@@ -2950,7 +3004,7 @@ class Ae extends Rt {
     ), h.value && this.setElementControl(h.value), y(u, (l) => this.setElement(l)), y(h, (l) => this.setElementControl(l));
   }
 }
-class Ne {
+class Ie {
   code;
   flag;
   /**
@@ -2958,7 +3012,7 @@ class Ne {
    * @param code country and language code/ код страны и языка
    */
   constructor(t = p.getLocation()) {
-    this.code = w(t), this.flag = new R(this.code.value), y(this.code, (e) => this.flag.setCode(e));
+    this.code = S(t), this.flag = new x(this.code.value), y(this.code, (e) => this.flag.setCode(e));
   }
   /**
    * Obtaining a reactive object with the country code.
@@ -3005,7 +3059,7 @@ class Ne {
     return c(() => this.flag.getNational(t));
   }
 }
-class Ct {
+class Dt {
   static item = P(p.get());
   static country = c(() => this.item.value.country);
   static language = c(() => this.item.value.language);
@@ -3062,7 +3116,7 @@ class Ct {
     p.set(t, !0), this.item.value = p.getItem();
   }
 }
-class re {
+class oe {
   location;
   intl;
   /**
@@ -3071,7 +3125,7 @@ class re {
    * код страны, полный вид язык-страна или один из них
    */
   constructor(t) {
-    this.location = w(t), this.intl = c(() => new I(this.location.value ?? Ct.getLanguage().value));
+    this.location = S(t), this.intl = c(() => new I(this.location.value ?? Dt.getLanguage().value));
   }
   /**
    * The consistent translation of language, region and script display names.
@@ -3630,7 +3684,7 @@ class Mt {
     };
   }
 }
-class Ie {
+class Be {
   static router;
   /**
    * Get router instance.
@@ -3668,7 +3722,7 @@ class Ie {
     this.router || this.set(t);
   }
 }
-class Be {
+class Te {
   /**
    * Reactive item.
    *
@@ -3679,7 +3733,7 @@ class Be {
    * Constructor
    */
   constructor() {
-    wt.is().then((t) => {
+    St.is().then((t) => {
       this.item.value = t;
     });
   }
@@ -3690,13 +3744,13 @@ class Be {
    */
   is = c(() => this.item.value !== void 0);
 }
-const ne = (i) => typeof i == "string" ? { method: i } : i || {};
+const ce = (i) => typeof i == "string" ? { method: i } : i || {};
 let U;
-function Te(i, t, e = !0, s, n, a) {
-  const o = $(), u = w(ne(t)), h = $(!1), l = $(!1);
-  let D = !0, C = 0;
+function Fe(i, t, e = !0, s, n, a) {
+  const o = $(), u = S(ce(t)), h = $(!1), l = $(!1);
+  let C = !0, D = 0;
   const V = async () => {
-    if (D)
+    if (C)
       return;
     const v = g(i);
     if ((!s || s.value) && v) {
@@ -3716,8 +3770,8 @@ function Te(i, t, e = !0, s, n, a) {
   };
   return {
     get data() {
-      return D && (D = !1, V().then()), It(), a && (C++, it(() => {
-        C--, C < 1 && (console.warn("useApiRef: unmounted"), o.value = void 0, D = !0, C = 0);
+      return C && (C = !1, V().then()), It(), a && (D++, it(() => {
+        D--, D < 1 && (console.warn("useApiRef: unmounted"), o.value = void 0, C = !0, D = 0);
       })), o;
     },
     get isStarting() {
@@ -3730,35 +3784,26 @@ function Te(i, t, e = !0, s, n, a) {
     reset: V
   };
 }
-const Fe = (i) => {
+const Ee = (i) => {
   U || (U = i);
 };
-function ae(i, t, e) {
-  if (i in Q)
-    return Q[i];
-  const s = new Y(i), n = $(s.get(t, e));
-  return y(n, (a) => s.set(a)), d() && window.addEventListener("storage", () => {
-    s.update(), n.value = s.get();
-  }), Q[i] = n, n;
-}
-const Q = {};
-function oe(i, t) {
-  const e = `broadcast__${ce()}__${i}`;
+function ue(i, t) {
+  const e = `broadcast--${i}`;
   if (e in X)
     return X[e];
-  const s = new BroadcastChannel(e), n = $(A(t));
-  return y(n, (a) => s.postMessage({ message: a })), s.onmessage = (a) => {
-    n.value !== a.data.message && (n.value = a.data.message);
-  }, X[e] = n, n;
+  const s = $(A(t)), n = new Zt(
+    e,
+    (a) => {
+      s.value !== a.data.message && (s.value = a.data.message);
+    }
+  );
+  return y(s, (a) => n.post({ message: a })), X[e] = s, s;
 }
-const X = {}, ce = () => ae(
-  "__broadcast-name",
-  () => `name_${W(1e6, 9999999)}`
-);
-function Ee(i, t, e) {
+const X = {};
+function xe(i, t, e) {
   if (i in tt)
     return tt[i];
-  const s = new rt(i), n = oe(
+  const s = new rt(i), n = ue(
     `__cookie:${i}`,
     s.get(t, e)
   );
@@ -3768,23 +3813,23 @@ function Ee(i, t, e) {
 }
 const tt = {};
 function Re() {
-  return new re();
+  return new oe();
 }
-function xe(i, t) {
+function Oe(i, t) {
   if (i in et)
     return et[i];
-  const e = P(x.get(i, t));
-  return y(e, (s) => x.set(i, s)), x.addWatch(i, (s) => {
+  const e = P(R.get(i, t));
+  return y(e, (s) => R.set(i, s)), R.addWatch(i, (s) => {
     e.value = s;
   }), et[i] = e, e;
 }
 const et = {};
-let $t = W(1e5, 9e5);
+let $t = O(1e5, 9e5);
 function G(i, t) {
   const e = K(i);
-  return e ? (O(e.id) || e.setAttribute("id", `id-${$t++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${$t++}`;
+  return e ? (W(e.id) || e.setAttribute("id", `id-${$t++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${$t++}`;
 }
-const Oe = () => {
+const We = () => {
   const i = {}, t = "IntersectionObserver" in window ? new IntersectionObserver(
     (s) => {
       s.forEach((n) => {
@@ -3839,24 +3884,24 @@ const Oe = () => {
     disconnectLazy: () => t?.disconnect()
   };
 };
-function We() {
+function Pe() {
   const i = P(ft.is());
   return ft.registrationEvent(({ detail: t }) => {
     i.value = t.loading;
   }), i;
 }
-function Pe(i, t) {
+function je(i, t) {
   if (i in st)
     return st[i];
   const e = new Y(i, !0), s = $(e.get(t));
   return y(s, (n) => e.set(n)), st[i] = s, s;
 }
 const st = {};
-function ue(i) {
+function he(i) {
   const t = P(z.getListSync(i, !0)), e = async () => {
     t.value = { ...await z.getList(i) };
   };
-  y(Ct.getLanguage(), e);
+  y(Dt.getLanguage(), e);
   for (const s in t.value)
     if (t.value[s] === s || t.value[s] === " ") {
       e().then();
@@ -3864,28 +3909,28 @@ function ue(i) {
     }
   return t;
 }
-const je = (i) => ue(i);
-function He(i) {
+const He = (i) => he(i);
+function Ge(i) {
   return ot(i) ? i.trim() : ht(i) && i.findIndex((t) => m(t)) === -1 ? i.join(",") : m(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : i?.toString() ?? "";
 }
-function he(i, t) {
+function le(i, t) {
   return Array(t).fill(i);
-}
-function Ge(i) {
-  if (d())
-    return document.querySelector(i) ?? void 0;
 }
 function ze(i) {
   if (d())
-    return document.querySelectorAll(i);
+    return document.querySelector(i) ?? void 0;
 }
 function Ue(i) {
+  if (d())
+    return document.querySelectorAll(i);
+}
+function Ze(i) {
   i.preventDefault(), i.stopPropagation();
 }
-const At = [], le = W(1e5, 999999);
-function Ze(i, t = !0, e = !1, s = !0) {
+const At = [], ge = O(1e5, 999999);
+function Ye(i, t = !0, e = !1, s = !0) {
   let n;
-  const a = `__execute_use${le}::${G()}`, o = (...u) => {
+  const a = `__execute_use${ge}::${G()}`, o = (...u) => {
     if (!e && s) {
       const h = Ht(a, void 0);
       if (h)
@@ -3903,87 +3948,87 @@ function Ze(i, t = !0, e = !1, s = !0) {
   };
   return e && At.push(o), o;
 }
-function Ye() {
+function Ke() {
   At.forEach((i) => i());
 }
-function ge(i, t, e) {
+function fe(i, t, e) {
   const s = () => {
-    i(), t?.() ? ge(i, t, e) : e?.();
+    i(), t?.() ? fe(i, t, e) : e?.();
   };
   d() ? requestAnimationFrame(s) : s();
 }
-function Ke(i) {
+function Ve(i) {
   const t = {}, e = K(i);
   if (e)
     for (const s of e.attributes)
       t[s.name] = (s?.value || s?.textContent) ?? void 0;
   return t;
 }
-async function Ve(i) {
+async function qe(i) {
   return i?.clipboardData?.getData("text") ?? (await navigator.clipboard.readText() || "");
 }
-function fe(i, t) {
+function de(i, t) {
   const e = t.split(".", 2), s = e[0];
-  return s && i?.[s] && L(i[s]) && e?.[1] ? fe(i[s], e[1]) : (s && i?.[s]) ?? "";
+  return s && i?.[s] && L(i[s]) && e?.[1] ? de(i[s], e[1]) : (s && i?.[s]) ?? "";
 }
-function qe(i) {
+function _e(i) {
   return i?.key ?? i?.code ?? i?.keyCode?.toString();
 }
 function Nt(i) {
   return f(i, (t) => t.length);
 }
-function _e(i) {
+function Je(i) {
   return Math.max(...Nt(i));
 }
-function Je(i) {
+function Qe(i) {
   return Math.min(...Nt(i));
 }
-function de(i) {
+function me(i) {
   return i?.clientX || i?.targetTouches?.[0]?.clientX || i?.touches?.[0]?.clientX || 0;
 }
-function me(i) {
+function ye(i) {
   return i?.clientY || i?.targetTouches?.[0]?.clientY || i?.touches?.[0]?.clientY || 0;
 }
-function Qe(i) {
+function Xe(i) {
   return {
-    x: de(i),
-    y: me(i)
+    x: me(i),
+    y: ye(i)
   };
 }
-function Xe(i, t) {
+function ts(i, t) {
   const e = {};
   return t.forEach((s) => {
     s in i && i[s] !== void 0 && (e[s] = i[s]);
   }), e;
 }
-function ts(i, t = void 0) {
+function es(i, t = void 0) {
   const e = {};
   return f(i, (s, n) => {
     s !== t && (e[n] = s);
   }), e;
 }
-function es(i) {
+function ss(i) {
   return L(i) ? i : {};
 }
-function ye(i, t) {
-  return he(i, t).join("");
+function pe(i, t) {
+  return le(i, t).join("");
 }
-function ss(i, t, e = "#", s = 2, n = 12) {
-  const a = W(i, t), o = [];
+function is(i, t, e = "#", s = 2, n = 12) {
+  const a = O(i, t), o = [];
   for (let u = 0; u < a; u++)
-    o.push(ye(e, W(s, n)));
+    o.push(pe(e, O(s, n)));
   return o.join(" ");
 }
-function is(i, t) {
+function rs(i, t) {
   const e = i ?? 0;
   return t > e ? 100 / (t - e) : 0;
 }
-function rs(i, t) {
+function ns(i, t) {
   const e = i ?? 0;
   return t > e ? (t - e) / 100 : 0;
 }
 const vt = 0;
-function ns(i, t, e) {
+function as(i, t, e) {
   const s = t?.closest(i);
   if (t && s && s.scrollHeight !== s.offsetHeight)
     if (e) {
@@ -3991,28 +4036,28 @@ function ns(i, t, e) {
       s.scrollTop = t.offsetTop - (n.top - a.top) - (n.height / 2 - o.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
     } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - vt : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + vt);
 }
-function as(i, t) {
+function os(i, t) {
   return i.indexOf(t) !== -1;
 }
-async function os() {
+async function cs() {
   if (d()) {
-    const i = await wt.get();
+    const i = await St.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function cs(i, t) {
+function us(i, t) {
   const e = {};
   return m(i) && m(t) && f(i, (s, n) => {
     n in t && (e[n] = s);
   }), e;
 }
-function us(i, t) {
+function hs(i, t) {
   let e = Object.keys(i).length !== Object.keys(t).length;
   return e || f(i, (s, n) => {
     s !== t?.[n] && (e = !0);
   }), e;
 }
-function hs(i) {
+function ls(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -4022,21 +4067,21 @@ function hs(i) {
       return !1;
   }
 }
-function ls(i, t) {
+function gs(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function gs(i, t) {
+function fs(i, t) {
   return Array.isArray(i) ? i.every((e) => F(e, t)) : F(i, t);
 }
-function pe(i, t = {}, e = "value", s = !1) {
+function $e(i, t = {}, e = "value", s = !1) {
   const n = typeof t == "string", a = n ? t : e, o = n ? {} : t;
   return i ? i && L(i) && (a in i || s) ? at(o, i) : at(o, { [a]: i }) : n ? {} : { ...o };
 }
-function fs(i, t = {}, e = "value") {
-  return c(() => pe(g(i), g(t), e));
+function ds(i, t = {}, e = "value") {
+  return c(() => $e(g(i), g(t), e));
 }
-const ds = (i, t) => {
+const ms = (i, t) => {
   const e = $();
   let s = !0;
   const n = () => {
@@ -4047,14 +4092,14 @@ const ds = (i, t) => {
   };
   return c(() => (n(), e.value));
 };
-function ms(i, t) {
+function ys(i, t) {
   i.value !== t && (i.value = t);
 }
-function ys(i) {
+function ps(i) {
   let t;
   return c(() => (t || (t = i()), t.value));
 }
-function $e(i) {
+function ve(i) {
   return [...new Set(i)];
 }
 function B(i, t, e = !0) {
@@ -4063,7 +4108,7 @@ function B(i, t, e = !0) {
     t,
     (n, a) => {
       const o = i?.[a];
-      m(o) && m(n) ? e && Array.isArray(o) && Array.isArray(n) ? s[a] = E($e([...o, ...n])) : s[a] = B(
+      m(o) && m(n) ? e && Array.isArray(o) && Array.isArray(n) ? s[a] = E(ve([...o, ...n])) : s[a] = B(
         Array.isArray(o) ? { ...o } : o,
         n,
         e
@@ -4071,13 +4116,13 @@ function B(i, t, e = !0) {
     }
   ), s;
 }
-function ps(i, t) {
+function $s(i, t) {
   let e = i;
   return f(t, (s, n) => {
     e = e.replace(kt(`[${n}]`), A(s));
   }), e;
 }
-function $s(i) {
+function vs(i) {
   const t = b(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -4085,7 +4130,7 @@ function $s(i) {
   }
   return "00:00";
 }
-function vs(i, t, {
+function bs(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
@@ -4100,7 +4145,7 @@ function vs(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function bs(i, t, e) {
+function ws(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
@@ -4114,23 +4159,23 @@ function bs(i, t, e) {
   return E(i);
 }
 function Ss(i) {
-  return Dt(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+  return Ct(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function ws(i) {
+function Ls(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(new RegExp("(?<=[A-Z])([A-Z])", "g"), (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(new RegExp("(?<=[\\w ])[A-Z]", "g"), (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function Ls(i, t, e, s) {
+function Cs(i, t, e, s) {
   const n = b(i), a = b(t);
   return t && a < n ? `${bt(a, e, s)}+` : bt(n, e, s);
 }
 const bt = (i, t, e) => t ? new I(e).number(i) : i;
-function ve(i, t) {
+function be(i, t) {
   return 1 / i * t;
 }
 function Ds(i, t) {
-  return ve(i, t) * 100;
+  return be(i, t) * 100;
 }
-async function Cs(i) {
+async function ks(i) {
   if (d())
     try {
       await navigator.clipboard.writeText(i);
@@ -4140,139 +4185,140 @@ async function Cs(i) {
 }
 export {
   H as Api,
-  As as ApiMethodItem,
-  Zt as Cache,
-  Ut as CacheItem,
+  Ns as ApiMethodItem,
+  Zt as BroadcastMessage,
+  Vt as Cache,
+  Kt as CacheItem,
   dt as CacheStatic,
   rt as Cookie,
-  Kt as CookieBlock,
+  _t as CookieBlock,
   Y as DataStorage,
   ut as Datetime,
-  Me as DatetimeRef,
-  Xt as DesignAbstract,
+  Ae as DatetimeRef,
+  se as DesignAbstract,
   De as DesignAsyncAbstract,
-  Qt as DesignChanged,
-  Ce as DesignComp,
+  ee as DesignChanged,
+  ke as DesignComp,
   Lt as DesignComponents,
-  ke as DesignConstructorAbstract,
-  Rt as EventItem,
-  Ae as EventRef,
+  Me as DesignConstructorAbstract,
+  xt as EventItem,
+  Ne as EventRef,
   r as GEO_FLAG_ICON_NAME,
   p as Geo,
-  R as GeoFlag,
-  Ne as GeoFlagRef,
+  x as GeoFlag,
+  Ie as GeoFlagRef,
   I as GeoIntl,
-  re as GeoIntlRef,
+  oe as GeoIntlRef,
   yt as GeoPhone,
-  Ct as GeoRef,
-  Le as Global,
-  x as Hash,
-  Ns as Icons,
+  Dt as GeoRef,
+  Ce as Global,
+  R as Hash,
+  Is as Icons,
   Mt as ListDataRef,
   ft as Loading,
-  Ie as RouterItemRef,
-  wt as ScrollbarWidth,
-  Be as ScrollbarWidthRef,
+  Be as RouterItemRef,
+  St as ScrollbarWidth,
+  Te as ScrollbarWidthRef,
   z as Translate,
-  He as anyToString,
-  Jt as applyTemplate,
-  he as arrFill,
+  Ge as anyToString,
+  te as applyTemplate,
+  le as arrFill,
   E as copyObject,
   pt as createElement,
-  Ge as domQuerySelector,
-  ze as domQuerySelectorAll,
-  Ue as eventStopPropagation,
+  ze as domQuerySelector,
+  Ue as domQuerySelectorAll,
+  Ze as eventStopPropagation,
   A as executeFunction,
-  Is as executePromise,
-  Ze as executeUse,
-  Ye as executeUseGlobalInit,
+  Bs as executePromise,
+  Ye as executeUse,
+  Ke as executeUseGlobalInit,
   f as forEach,
-  ge as frame,
-  Ke as getAttributes,
-  pe as getBind,
-  fs as getBindRef,
-  te as getClassName,
-  Ve as getClipboardData,
+  fe as frame,
+  Ve as getAttributes,
+  $e as getBind,
+  ds as getBindRef,
+  ie as getClassName,
+  qe as getClipboardData,
   nt as getColumn,
-  ds as getComputedAsync,
+  ms as getComputedAsync,
   K as getElement,
   G as getElementId,
-  Vt as getElementItem,
-  Bs as getElementOrWindow,
+  Jt as getElementItem,
+  Ts as getElementOrWindow,
   kt as getExp,
-  ee as getIndexForRender,
-  fe as getItemByPath,
-  qe as getKey,
+  re as getIndexForRender,
+  de as getItemByPath,
+  _e as getKey,
   Nt as getLengthOfAllArray,
-  _e as getMaxLengthAllArray,
-  Je as getMinLengthAllArray,
-  Qe as getMouseClient,
-  de as getMouseClientX,
-  me as getMouseClientY,
-  Xe as getObjectByKeys,
-  ts as getObjectNoUndefined,
-  es as getObjectOrNone,
-  ss as getRandomText,
+  Je as getMaxLengthAllArray,
+  Qe as getMinLengthAllArray,
+  Xe as getMouseClient,
+  me as getMouseClientX,
+  ye as getMouseClientY,
+  ts as getObjectByKeys,
+  es as getObjectNoUndefined,
+  ss as getObjectOrNone,
+  is as getRandomText,
   g as getRef,
   Et as getRequestString,
-  is as getStepPercent,
-  rs as getStepValue,
-  ns as goScroll,
-  as as inArray,
-  os as initScrollbarOffset,
-  cs as intersectKey,
+  rs as getStepPercent,
+  ns as getStepValue,
+  as as goScroll,
+  os as inArray,
+  cs as initScrollbarOffset,
+  us as intersectKey,
   ht as isArray,
-  us as isDifferent,
+  hs as isDifferent,
   d as isDomRuntime,
-  O as isFilled,
-  hs as isFloat,
-  Ts as isFunction,
-  Fs as isInDom,
-  ls as isIntegerBetween,
+  W as isFilled,
+  ls as isFloat,
+  Fs as isFunction,
+  Es as isInDom,
+  gs as isIntegerBetween,
   Ft as isNull,
-  Es as isNumber,
+  xs as isNumber,
   m as isObject,
   L as isObjectNotArray,
   F as isSelected,
-  gs as isSelectedByList,
+  fs as isSelectedByList,
   ot as isString,
   Rs as isWindow,
-  W as random,
-  se as render,
+  O as random,
+  ne as render,
   B as replaceRecursive,
-  ps as replaceTemplate,
-  $s as secondToTime,
-  Fe as setApiRefGlobalConditions,
-  qt as setElementItem,
-  ms as setRef,
-  vs as setValues,
-  bs as splice,
-  ye as strFill,
-  je as t,
+  $s as replaceTemplate,
+  vs as secondToTime,
+  Ee as setApiRefGlobalConditions,
+  Qt as setElementItem,
+  ys as setRef,
+  bs as setValues,
+  ws as splice,
+  pe as strFill,
+  He as t,
   T as toArray,
   at as toBind,
-  ie as toBinds,
-  Dt as toCamelCase,
+  ae as toBinds,
+  Ct as toCamelCase,
   Ss as toCamelCaseFirst,
-  ys as toComputed,
-  S as toDate,
-  ws as toKebabCase,
+  ps as toComputed,
+  w as toDate,
+  Ls as toKebabCase,
   b as toNumber,
-  Ls as toNumberByMax,
-  ve as toPercent,
+  Cs as toNumberByMax,
+  be as toPercent,
   Ds as toPercentBy100,
-  w as toRefItem,
-  St as transformation,
-  $e as uniqueArray,
-  Te as useApiRef,
-  oe as useBroadcastValueRef,
-  Ee as useCookieRef,
+  S as toRefItem,
+  wt as transformation,
+  ve as uniqueArray,
+  Fe as useApiRef,
+  ue as useBroadcastValueRef,
+  xe as useCookieRef,
   Re as useGeoIntlRef,
-  xe as useHashRef,
-  Oe as useLazyRef,
-  We as useLoadingRef,
-  Pe as useSessionRef,
-  ae as useStorageRef,
-  ue as useTranslateRef,
-  Cs as writeClipboardData
+  Oe as useHashRef,
+  We as useLazyRef,
+  Pe as useLoadingRef,
+  je as useSessionRef,
+  Ut as useStorageRef,
+  he as useTranslateRef,
+  ks as writeClipboardData
 };
