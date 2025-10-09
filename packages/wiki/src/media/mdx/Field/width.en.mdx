@@ -1,26 +1,28 @@
 ````markdown
-## Width (width)
+## Field width
 
-Property to control the horizontal size of the Field.
+Property `width` defines the horizontal size of the Field container.
 
-### Property
-- **width** (`string`) — Accept ANY valid CSS value: "320px", "48rem", "50%", "min(100%,320px)", "clamp(240px,40vw,480px)" or a design token (e.g. "sm") if your design system resolves it. The value "custom" is an internal technical marker (normally not used directly).
+**Possible values:**
 
-### Behavior
-- Not set: fluid (depends on container).
-- With `block`: always 100% width.
-- Any explicit value: applied directly (no extra wrapper logic).
+- any valid CSS value (`'320px'`, `'48rem'`, `'50%'`, `'min(100%,320px)'`, `'clamp(240px,40vw,480px)'`)
+- design system tokens (e.g., `'sm'`, `'md'`, `'lg'` if supported)
+- `'custom'` — internal technical marker (not used directly)
 
-### Examples
-```vue
-<DesignField label="auto" />
-<DesignField width="320px" label="320px" />
-<DesignField width="50%" label="50%" />
-<DesignField width="min(100%,320px)" label="min(...)" />
+Controls the fixed or relative width of the field, applying the value directly without additional wrappers. When the property is not set, the width remains flexible and depends on the parent container. When the `block` property is active (set to `true`), the field takes 100% width regardless of the specified `width` value, with block mode taking priority.
+
+```html
+<!-- Automatic width -->
+<Field label="auto" />
+
+<!-- Fixed width -->
+<Field width="320px" label="320px" />
+
+<!-- Relative width -->
+<Field width="50%" label="50%" />
+
+<!-- CSS functions -->
+<Field width="min(100%, 320px)" label="min(...)" />
+<Field width="clamp(240px, 40vw, 480px)" label="clamp(...)" />
 ```
-
-### Notes
-- Prefer parent layout (flex / grid) for responsiveness; use `width` for quick explicit sizing.
-- Complex expressions (calc / min / clamp) are fine if valid CSS.
-- `block` can override or take precedence if style specificity is higher.
 ````

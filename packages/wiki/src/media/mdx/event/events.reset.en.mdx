@@ -4,19 +4,3 @@ Event fires when the component value is reset, passing the original DOM event.
 
 **Parameters:**
 - `event: Event` — original DOM event
-
-```html
-<script setup>
-const handleReset = (event) => {
-  console.log('DOM event:', event)
-  console.log('Value reset')
-
-  // Additional logic after reset
-  notifyUser('Data cleared')
-}
-</script>
-
-<template>
-  <Component @reset="handleReset" />
-</template>
-```

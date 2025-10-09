@@ -1,16 +1,10 @@
-## Value and Data Properties
+## Value and Data Passing
 
-The `value` and `detail` properties are designed to transfer information when interacting with components.
+The `value` and `detail` properties are designed to transfer information when interacting with components and handling events.
 
-### Properties
+**Properties:**
 
-- **value** — Main component value
-- **detail** — Additional data and contextual information
+- `value` — main component value (string, number, object)
+- `detail` — additional data and contextual information
 
-### Property Relationship
-
-The properties complement each other, providing complete information about the component's state and context. `value` contains the main value, while `detail` extends it with additional data.
-
-- `value` reflects the current state or value of the component
-- `detail` can contain metadata, identifiers, coordinates, or other auxiliary data
-- Both properties work together to transfer structured information
+Properties work together: `value` contains the main component value, which is passed during events and accessible via the expose API. `detail` extends `value` with additional data such as metadata, identifiers, or other auxiliary information. Both properties are available for programmatic reading and passed in component events, providing complete information about the state and context during interaction.

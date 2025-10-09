@@ -1,19 +1,29 @@
+```html
+<Window>
+  <template #control="{ binds }">
+    <button v-bind="binds">Toggle Window</button>
+  </template>
+
+  <template #title>
+    <h2>Window Title</h2>
+  </template>
+
+  <template #default>
+    <p>Main window content goes here</p>
+  </template>
+
+  <template #footer="{ onclick }">
+    <button @click="onclick">Close</button>
+  </template>
+</Window>
+```
+
 ### `control`
 
 Slot for placing window control elements (close buttons, minimize, etc.).
 
 **Parameters:**
 - `props: WindowControlItem` — object with window control data
-
-```html
-<Window>
-  <template #control="{ onclick, open }">
-    <button @click="onclick">
-      {{ open ? 'Close' : 'Open' }}
-    </button>
-  </template>
-</Window>
-```
 
 ### `title`
 
@@ -22,14 +32,6 @@ Slot for placing window title in the header.
 **Parameters:**
 - `props: WindowControlItem` — object with window control data
 
-```html
-<Window>
-  <template #title="{ open }">
-    <h2>{{ open ? 'Window is open' : 'Window is closed' }}</h2>
-  </template>
-</Window>
-```
-
 ### `footer`
 
 Slot for placing content at the bottom of the window (action buttons, info, etc.).
@@ -37,33 +39,12 @@ Slot for placing content at the bottom of the window (action buttons, info, etc.
 **Parameters:**
 - `props: WindowControlItem` — object with window control data
 
-```html
-<Window>
-  <template #footer>
-    <div class="actions">
-      <button>Cancel</button>
-      <button>Apply</button>
-    </div>
-  </template>
-</Window>
-```
-
 ### `default`
 
 Main slot for placing the primary window content.
 
 **Parameters:**
 - `props: WindowControlItem` — object with window control data
-
-```html
-<Window>
-  <template #default>
-    <div class="content">
-      <p>Window content</p>
-    </div>
-  </template>
-</Window>
-```
 
 ## WindowControlItem
 
@@ -184,3 +165,4 @@ Object with properties for binding to elements:
   </template>
 </Window>
 ```
+

@@ -3,28 +3,3 @@
 Вычисляемое состояние, указывающее отображается ли компонент или готовится к отображению (включая состояние анимации).
 
 **Тип:** `ComputedRef<boolean>`
-
-```html
-<script setup>
-const motionRef = ref()
-
-watch(() => motionRef.value?.isShow, (isShowing) => {
-  console.log('Компонент видим или анимируется:', isShowing)
-
-  if (isShowing) {
-    console.log('Компонент отображается на экране')
-  }
-})
-</script>
-
-<template>
-  <MotionTransform ref="motionRef">
-    <template #head>
-      <div>Заголовок</div>
-    </template>
-    <template #body>
-      <p>Содержимое</p>
-    </template>
-  </MotionTransform>
-</template>
-```

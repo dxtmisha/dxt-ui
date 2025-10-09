@@ -3,21 +3,3 @@
 Current component value.
 
 **Type:** `any`
-
-```html
-<script setup>
-const componentRef = ref()
-
-watch(() => componentRef.value?.value, (newValue) => {
-  console.log('Component value:', newValue)
-})
-</script>
-
-<template>
-  <Component ref="componentRef">
-    <template #default>
-      <p>Current value: {{ componentRef?.value }}</p>
-    </template>
-  </Component>
-</template>
-```

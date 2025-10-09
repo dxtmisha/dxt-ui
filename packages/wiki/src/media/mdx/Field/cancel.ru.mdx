@@ -1,17 +1,54 @@
-## Режим кнопки очистки (cancel)
+## Кнопка очистки
 
-Свойства `cancel` и `cancelShow` управляют отображением иконки очистки (cancel).
+Свойства `cancel` и `cancelShow` предназначены для управления отображением иконки очистки поля.
 
-### Свойства
+**Свойства:**
 
-- **cancel** — Режим отображения: `auto` или `always`.
-- **cancelShow** — Условный флаг, используется только в режиме `auto`.
+- `cancel` — режим отображения кнопки очистки (`auto` или `always`)
+- `cancelShow` — условный флаг видимости, используется только в режиме `auto`
 
-### Поведение
+Свойства работают совместно: если `cancel` установлен в `auto`, иконка очистки отображается только при выполнении условий `cancelShow = true`, поле активно (не `disabled`/`readonly`) и не включён режим стрелок (`arrowCarousel`/`arrowStepper`). При `cancel = always` иконка отображается принудительно (кроме случаев `disabled`/`readonly` или активных стрелок), значение `cancelShow` игнорируется. Режимы стрелок имеют приоритет над кнопкой очистки — при активной навигации cancel скрывается независимо от настроек.
 
-- `cancel = auto`: Показ только если `cancelShow = true`, поле активно (не disabled / readonly) и не включён режим стрелок (carousel / stepper).
-- `cancel = always`: Принудительный показ (кроме случаев disabled / readonly или активных стрелок).
-- В режиме `always` значение `cancelShow` игнорируется.
+```html
+<script setup>
+import { ref, computed } from 'vue'
 
-Типичный сценарий: привязать `cancelShow` к вычисляемому состоянию "есть значение".
+const value = ref('')
+const hasValue = computed(() => value.value.length > 0)
+</script>
 
+<template>
+  <!-- Автоматический режим с условием -->
+  <Field
+    label="Поиск"
+    cancel="auto"
+    :cancel-show="hasValue"
+  >
+    <template #default="{ id, className }">
+      <input :id="id" :class="className" v-model="value" />
+    </template>
+  </Field>
+
+  <!-- Принудительный показ -->
+  <Field
+    label="Фильтр"
+    cancel="always"
+  >
+    <template #default="{ id, className }">
+      <input :id="id" :class="className" v-model="value" />
+    </template>
+  </Field>
+
+  <!-- С обработчиком события -->
+  <Field
+    label="Ввод"
+    cancel="auto"
+    :cancel-show="hasValue"
+    @click="value = ''"
+  >
+    <template #default="{ id, className }">
+      <input :id="id" :class="className" v-model="value" />
+    </template>
+  </Field>
+</template>
+```

@@ -50,26 +50,6 @@ const handleInput = (event, value) => {
 **Параметры:**
 - `value: FieldValidationItem` — объект с данными валидации
 
-```html
-<script setup>
-const handleInputLite = (value) => {
-  console.log('Значение:', value.value)
-  console.log('Статус валидации:', value.status)
-
-  if (value.isFull && value.status) {
-    console.log('Поле полностью заполнено и валидно')
-  }
-}
-</script>
-
-<template>
-  <Mask
-    mask="+7 (***) ***-**-**"
-    @inputLite="handleInputLite"
-  />
-</template>
-```
-
 ### `change`
 
 Событие срабатывает при завершении ввода и потере фокуса, передавая оригинальное DOM событие и данные валидации.
@@ -107,24 +87,4 @@ const handleChange = (event, value) => {
 
 **Параметры:**
 - `value: FieldValidationItem` — объект с данными валидации
-
-```html
-<script setup>
-const handleChangeLite = (value) => {
-  console.log('Финальное значение:', value.value)
-  console.log('Валидация:', value.status)
-
-  if (value.isFull) {
-    console.log('Ввод завершен')
-  }
-}
-</script>
-
-<template>
-  <Mask
-    mask="+7 (***) ***-**-**"
-    @changeLite="handleChangeLite"
-  />
-</template>
-```
 

@@ -1,19 +1,29 @@
+```html
+<Window>
+  <template #control="{ binds }">
+    <button v-bind="binds">Переключить окно</button>
+  </template>
+
+  <template #title>
+    <h2>Заголовок окна</h2>
+  </template>
+
+  <template #default>
+    <p>Основное содержимое окна</p>
+  </template>
+
+  <template #footer="{ onclick }">
+    <button @click="onclick">Закрыть</button>
+  </template>
+</Window>
+```
+
 ### `control`
 
 Слот для размещения элементов управления окном (кнопки закрытия, минимизации и т.д.).
 
 **Параметры:**
 - `props: WindowControlItem` — объект с данными управления окном
-
-```html
-<Window>
-  <template #control="{ onclick, open }">
-    <button @click="onclick">
-      {{ open ? 'Закрыть' : 'Открыть' }}
-    </button>
-  </template>
-</Window>
-```
 
 ### `title`
 
@@ -22,14 +32,6 @@
 **Параметры:**
 - `props: WindowControlItem` — объект с данными управления окном
 
-```html
-<Window>
-  <template #title="{ open }">
-    <h2>{{ open ? 'Окно открыто' : 'Окно закрыто' }}</h2>
-  </template>
-</Window>
-```
-
 ### `footer`
 
 Слот для размещения содержимого в нижней части окна (кнопки действий, информация и т.д.).
@@ -37,33 +39,12 @@
 **Параметры:**
 - `props: WindowControlItem` — объект с данными управления окном
 
-```html
-<Window>
-  <template #footer>
-    <div class="actions">
-      <button>Отмена</button>
-      <button>Применить</button>
-    </div>
-  </template>
-</Window>
-```
-
 ### `default`
 
 Основной слот для размещения главного содержимого окна.
 
 **Параметры:**
 - `props: WindowControlItem` — объект с данными управления окном
-
-```html
-<Window>
-  <template #default>
-    <div class="content">
-      <p>Содержимое окна</p>
-    </div>
-  </template>
-</Window>
-```
 
 ## WindowControlItem
 
@@ -184,3 +165,4 @@ type WindowControlItem = {
   </template>
 </Window>
 ```
+

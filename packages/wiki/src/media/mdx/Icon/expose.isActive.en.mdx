@@ -3,25 +3,3 @@
 Computed state indicating whether the alternative representation is active (when both `active` and `iconActive` are set).
 
 **Type:** `ComputedRef<boolean>`
-
-```html
-<script setup>
-const componentRef = ref()
-
-watch(() => componentRef.value?.isActive, (isActive) => {
-  console.log('Alternative state is active:', isActive)
-
-  if (isActive) {
-    console.log('Alternative representation is displayed')
-  }
-})
-</script>
-
-<template>
-  <Component ref="componentRef" icon="home" iconActive="favorite" :active="true">
-    <template #default>
-      <p v-if="componentRef?.isActive">Active state</p>
-    </template>
-  </Component>
-</template>
-```

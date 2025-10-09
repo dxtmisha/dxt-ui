@@ -1,3 +1,28 @@
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <MotionTransform v-model:open="isOpen">
+    <template #head="{ isOpen, classes }">
+      <div :class="classes.click">
+        <h3>{{ isOpen ? '▲' : '▼' }} Заголовок</h3>
+      </div>
+    </template>
+
+    <template #body="{ isShow, classes }">
+      <div v-if="isShow" :class="classes.open">
+        <p>Основное содержимое</p>
+        <button :class="classes.close">Закрыть</button>
+      </div>
+    </template>
+  </MotionTransform>
+</template>
+````
+
 ### `head`
 
 Слот для размещения области заголовка, которая служит триггером для открытия/закрытия компонента.
@@ -5,32 +30,12 @@
 **Параметры:**
 - `props: MotionTransformControlItem` — объект с данными управления компонентом
 
-```html
-<MotionTransform>
-  <template #head="{ isOpen, classes }">
-    <button :class="classes.click">
-      {{ isOpen ? 'Закрыть' : 'Открыть' }}
-    </button>
-  </template>
-</MotionTransform>
-```
-
 ### `body`
 
 Слот для размещения основной области содержимого, которая появляется при открытии компонента.
 
 **Параметры:**
 - `props: MotionTransformControlItem` — объект с данными управления компонентом
-
-```html
-<MotionTransform>
-  <template #body="{ isShow }">
-    <div v-if="isShow">
-      <p>Содержимое компонента</p>
-    </div>
-  </template>
-</MotionTransform>
-```
 
 ## MotionTransformControlItem
 
@@ -85,31 +90,3 @@ type MotionTransformClassList = {
   close: string
 }
 ```
-
-### Пример использования
-
-```html
-<script setup>
-import { ref } from 'vue'
-
-const isOpen = ref(false)
-</script>
-
-<template>
-  <MotionTransform v-model:open="isOpen">
-    <template #head="{ isOpen, classes }">
-      <div :class="classes.click">
-        <h3>{{ isOpen ? '▲' : '▼' }} Заголовок</h3>
-      </div>
-    </template>
-
-    <template #body="{ isShow, classes }">
-      <div v-if="isShow" :class="classes.open">
-        <p>Основное содержимое</p>
-        <button :class="classes.close">Закрыть</button>
-      </div>
-    </template>
-  </MotionTransform>
-</template>
-```
-

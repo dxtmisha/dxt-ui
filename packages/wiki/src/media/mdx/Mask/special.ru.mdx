@@ -93,104 +93,25 @@ interface MaskSpecialItem {
 
 Строка с начальным значением для группы. Автоматически подставляется при инициализации или когда пользователь не ввёл данные.
 
-```html
-<Mask
-  mask="YYYY-MM-DD"
-  :special="{
-    'Y': { defaultValue: '2024' },
-    'M': { defaultValue: '01' },
-    'D': { defaultValue: '01' }
-  }"
-/>
-<!-- Результат: 2024-01-01 -->
-```
-
 #### `rubber`
 
 Логическое значение, включающее режим резиновой группы с переменной длиной. Позволяет пользователю вводить от `minLength` до `maxLength` символов в одной группе.
-
-```html
-<Mask
-  mask="***"
-  :special="{
-    '*': {
-      rubber: true,
-      minLength: 2,
-      maxLength: 8,
-      pattern: '\\d'
-    }
-  }"
-/>
-<!-- Пользователь может ввести от 2 до 8 цифр -->
-```
 
 #### `transitionChar`
 
 Символ или массив символов, при вводе которых резиновая группа завершается и курсор переходит к следующей части маски. Работает только для резиновых групп (`rubber: true`).
 
-```html
-<Mask
-  mask="Code: ***"
-  :special="{
-    '*': {
-      rubber: true,
-      minLength: 2,
-      maxLength: 8,
-      pattern: '\\d',
-      transitionChar: ' '  // Пробел завершает ввод группы
-    }
-  }"
-/>
-<!-- При вводе "123 " группа завершится, курсор перейдёт дальше -->
-```
-
 #### `minLength`
 
 Минимальное количество символов для резиновой группы. Работает только при `rubber: true`.
-
-```html
-<Mask
-  mask="***"
-  :special="{
-    '*': {
-      rubber: true,
-      minLength: 3,
-      maxLength: 10
-    }
-  }"
-/>
-```
 
 #### `maxLength`
 
 Максимальное количество символов для резиновой группы. Работает только при `rubber: true`.
 
-```html
-<Mask
-  mask="Code: ***"
-  :special="{
-    '*': {
-      rubber: true,
-      minLength: 4,
-      maxLength: 12
-    }
-  }"
-/>
-```
-
 #### `match`
 
 Регулярное выражение или строка для валидации вводимых символов в группе.
-
-```html
-<Mask
-  mask="AA-###"
-  :special="{
-    'A': { match: /[A-Z]/ },  // Только заглавные буквы
-    '#': { match: /\d/ }      // Только цифры
-  }"
-/>
-```
 
 #### `pattern`
 
@@ -211,75 +132,9 @@ type FieldPatternItem = string | Partial<HTMLInputElement>
 - `end` — флаг конца ввода
 - `chars` — массив символов значения
 
-**Примеры:**
-
-```html
-<!-- Простой паттерн: только цифры -->
-<Mask
-  mask="**/**"
-  :special="{
-    '*': {
-      pattern: '\\d'
-    }
-  }"
-/>
-
-<!-- Динамический паттерн: валидация дня месяца -->
-<Mask
-  mask="DD/MM/YYYY"
-  :special="{
-    'D': {
-      pattern: (masks) => {
-        // День должен быть от 01 до 31
-        const value = masks['D']?.value || ''
-        if (value.length === 0) return '\\d'
-        if (value === '0') return '[1-9]'
-        if (value === '1' || value === '2') return '\\d'
-        if (value === '3') return '[0-1]'
-        return '\\d'
-      }
-    },
-    'M': {
-      pattern: (masks) => {
-        // Месяц должен быть от 01 до 12
-        const value = masks['M']?.value || ''
-        if (value.length === 0) return '\\d'
-        if (value === '0') return '[1-9]'
-        if (value === '1') return '[0-2]'
-        return '\\d'
-      }
-    },
-    'Y': { pattern: '\\d' }
-  }"
-/>
-
-<!-- Паттерн с использованием HTMLInputElement свойств -->
-<Mask
-  mask="***"
-  :special="{
-    '*': {
-      pattern: {
-        pattern: '\\d{3}',
-        maxLength: 3
-      }
-    }
-  }"
-/>
-```
-
 #### `view`
 
 Символ, отображаемый в качестве placeholder для незаполненных позиций группы.
-
-```html
-<Mask
-  mask="*** - ###"
-  :special="{
-    '*': { view: '_' },  // Отображается как ___ - ###
-    '#': { view: '0' }   // Отображается как ___ - 000
-  }"
-/>
-```
 
 ### Пример использования
 

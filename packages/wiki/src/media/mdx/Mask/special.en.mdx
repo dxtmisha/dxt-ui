@@ -93,104 +93,25 @@ interface MaskSpecialItem {
 
 String with the initial value for the group. Automatically inserted on initialization or when the user hasn't entered data.
 
-```html
-<Mask
-  mask="YYYY-MM-DD"
-  :special="{
-    'Y': { defaultValue: '2024' },
-    'M': { defaultValue: '01' },
-    'D': { defaultValue: '01' }
-  }"
-/>
-<!-- Result: 2024-01-01 -->
-```
-
 #### `rubber`
 
 Boolean value enabling rubber group mode with variable length. Allows users to enter from `minLength` to `maxLength` characters in one group.
-
-```html
-<Mask
-  mask="***"
-  :special="{
-    '*': {
-      rubber: true,
-      minLength: 2,
-      maxLength: 8,
-      pattern: '\\d'
-    }
-  }"
-/>
-<!-- User can enter from 2 to 8 digits -->
-```
 
 #### `transitionChar`
 
 Character or array of characters that complete the rubber group and move the cursor to the next part of the mask. Only works with rubber groups (`rubber: true`).
 
-```html
-<Mask
-  mask="Code: ***"
-  :special="{
-    '*': {
-      rubber: true,
-      minLength: 2,
-      maxLength: 8,
-      pattern: '\\d',
-      transitionChar: ' '  // Space completes the group input
-    }
-  }"
-/>
-<!-- When entering "123 ", the group completes and cursor moves forward -->
-```
-
 #### `minLength`
 
 Minimum number of characters for rubber group. Only works with `rubber: true`.
-
-```html
-<Mask
-  mask="***"
-  :special="{
-    '*': {
-      rubber: true,
-      minLength: 3,
-      maxLength: 10
-    }
-  }"
-/>
-```
 
 #### `maxLength`
 
 Maximum number of characters for rubber group. Only works with `rubber: true`.
 
-```html
-<Mask
-  mask="Code: ***"
-  :special="{
-    '*': {
-      rubber: true,
-      minLength: 4,
-      maxLength: 12
-    }
-  }"
-/>
-```
-
 #### `match`
 
 Regular expression or string for validating entered characters in the group.
-
-```html
-<Mask
-  mask="AA-###"
-  :special="{
-    'A': { match: /[A-Z]/ },  // Only uppercase letters
-    '#': { match: /\d/ }      // Only digits
-  }"
-/>
-```
 
 #### `pattern`
 
@@ -211,75 +132,9 @@ Where `FieldMasks` is an object with information about all mask groups, each con
 - `end` — end of input flag
 - `chars` — array of value characters
 
-**Examples:**
-
-```html
-<!-- Simple pattern: digits only -->
-<Mask
-  mask="**/**"
-  :special="{
-    '*': {
-      pattern: '\\d'
-    }
-  }"
-/>
-
-<!-- Dynamic pattern: day of month validation -->
-<Mask
-  mask="DD/MM/YYYY"
-  :special="{
-    'D': {
-      pattern: (masks) => {
-        // Day must be from 01 to 31
-        const value = masks['D']?.value || ''
-        if (value.length === 0) return '\\d'
-        if (value === '0') return '[1-9]'
-        if (value === '1' || value === '2') return '\\d'
-        if (value === '3') return '[0-1]'
-        return '\\d'
-      }
-    },
-    'M': {
-      pattern: (masks) => {
-        // Month must be from 01 to 12
-        const value = masks['M']?.value || ''
-        if (value.length === 0) return '\\d'
-        if (value === '0') return '[1-9]'
-        if (value === '1') return '[0-2]'
-        return '\\d'
-      }
-    },
-    'Y': { pattern: '\\d' }
-  }"
-/>
-
-<!-- Pattern using HTMLInputElement properties -->
-<Mask
-  mask="***"
-  :special="{
-    '*': {
-      pattern: {
-        pattern: '\\d{3}',
-        maxLength: 3
-      }
-    }
-  }"
-/>
-```
-
 #### `view`
 
 Character displayed as placeholder for unfilled group positions.
-
-```html
-<Mask
-  mask="*** - ###"
-  :special="{
-    '*': { view: '_' },  // Displayed as ___ - ###
-    '#': { view: '0' }   // Displayed as ___ - 000
-  }"
-/>
-```
 
 ### Usage example
 

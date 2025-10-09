@@ -223,17 +223,14 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
-<StorybookDescriptions componentName={'Event'} type={'clickLite'}/>
     `,
     slots: `
 <Canvas of={Component.FieldSlots}/>
-<StorybookDescriptions componentName={'Slot'} type={'default'} />
-<StorybookDescriptions componentName={'Field'} type={'slot.leading'} />
-<StorybookDescriptions componentName={'Field'} type={'slot.trailing'} />
 <StorybookDescriptions componentName={'Slot'} type={'label'} />
 <StorybookDescriptions componentName={'Slot'} type={'prefix'} />
 <StorybookDescriptions componentName={'Slot'} type={'suffix'} />
 <StorybookDescriptions componentName={'Slot'} type={'caption'} />
+<StorybookDescriptions componentName={'Field'} type={'slots'} />
     `
   }
 }

@@ -5,32 +5,12 @@
 **Параметры:**
 - `props: FieldMessageSlot` — объект с данными сообщений
 
-```html
-<FieldMessage helper-message="Введите ваше имя">
-  <template #helper="{ helperMessage }">
-    <span class="custom-helper">
-      <i class="icon-info"></i> {{ helperMessage }}
-    </span>
-  </template>
-</FieldMessage>
-```
-
 ### `validation`
 
 Слот для размещения сообщения валидации. Имеет приоритет над вспомогательным сообщением.
 
 **Параметры:**
 - `props: FieldMessageSlot` — объект с данными сообщений
-
-```html
-<FieldMessage validation-message="Поле обязательно">
-  <template #validation="{ validationMessage }">
-    <span class="custom-error">
-      <i class="icon-warning"></i> {{ validationMessage }}
-    </span>
-  </template>
-</FieldMessage>
-```
 
 ## FieldMessageSlot
 
@@ -63,51 +43,3 @@ type FieldMessageSlot = {
 
 1. **Validation** — если передано `validationMessage` или определён слот `validation`
 2. **Helper** — если validation отсутствует, но передано `helperMessage` или определён слот `helper`
-
-### Пример использования
-
-```html
-<script setup>
-import { ref } from 'vue'
-
-const inputValue = ref('')
-const error = ref('')
-
-const validateField = (value) => {
-  if (value.length < 3) {
-    error.value = 'Минимум 3 символа'
-  } else {
-    error.value = ''
-  }
-}
-</script>
-
-<template>
-  <input
-    v-model="inputValue"
-    @input="validateField(inputValue)"
-  />
-
-  <FieldMessage
-    helper-message="Введите имя (минимум 3 символа)"
-    :validation-message="error"
-  >
-    <template #helper="{ helperMessage }">
-      <div class="hint">
-        💡 {{ helperMessage }}
-      </div>
-    </template>
-
-    <template #validation="{ validationMessage }">
-      <div class="error">
-        ⚠️ {{ validationMessage }}
-      </div>
-    </template>
-  </FieldMessage>
-</template>
-```
-
-В этом примере:
-- При пустом поле отображается слот `helper`
-- При вводе менее 3 символов отображается слот `validation`
-- При вводе 3+ символов снова отображается слот `helper`

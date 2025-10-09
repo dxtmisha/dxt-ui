@@ -4,39 +4,11 @@ Final formatted mask value.
 
 **Type:** `Ref<string>`
 
-```html
-<script setup>
-const maskRef = ref()
-
-watch(() => maskRef.value?.value.item.value, (formatted) => {
-  console.log('Formatted value:', formatted)
-})
-</script>
-
-<template>
-  <Mask ref="maskRef" mask="+1 (***) ***-****" />
-</template>
-```
-
 ### `valueBasic`
 
 Basic mask value without formatting (only entered characters).
 
 **Type:** `Ref<string>`
-
-```html
-<script setup>
-const maskRef = ref()
-
-watch(() => maskRef.value?.valueBasic.item.value, (basic) => {
-  console.log('Basic value:', basic)
-})
-</script>
-
-<template>
-  <Mask ref="maskRef" mask="+1 (***) ***-****" />
-</template>
-```
 
 ### `set`
 
@@ -46,20 +18,3 @@ Sets new value and reinitializes the mask.
 - `value: string` — new value to set
 
 **Returns:** `boolean` — `true` if the value was changed
-
-```html
-<script setup>
-const maskRef = ref()
-
-const setPhoneNumber = () => {
-  const changed = maskRef.value.set('+19001234567')
-  console.log('Value changed:', changed)
-}
-</script>
-
-<template>
-  <Mask ref="maskRef" mask="+1 (***) ***-****" />
-  <button @click="setPhoneNumber">Set Number</button>
-</template>
-```
-

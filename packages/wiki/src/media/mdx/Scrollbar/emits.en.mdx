@@ -5,49 +5,13 @@ Event fires when the top scroll boundary state changes.
 **Parameters:**
 - `isTop: boolean` — `true` if scroll is at the top position
 
-```html
-<script setup>
-const handleTop = (isTop) => {
-  console.log('Top boundary:', isTop)
-}
-</script>
-
-<template>
-  <Scrollbar @top="handleTop" />
-</template>
-```
-
 ### `reachTop`
 
 Event fires when the top scroll boundary is reached.
 
-```html
-<script setup>
-const handleReachTop = () => {
-  console.log('Reached top boundary')
-}
-</script>
-
-<template>
-  <Scrollbar @reach-top="handleReachTop" />
-</template>
-```
-
 ### `leaveTop`
 
 Event fires when leaving the top scroll boundary.
-
-```html
-<script setup>
-const handleLeaveTop = () => {
-  console.log('Left top boundary')
-}
-</script>
-
-<template>
-  <Scrollbar @leave-top="handleLeaveTop" />
-</template>
-```
 
 ### `bottom`
 
@@ -56,50 +20,13 @@ Event fires when the bottom scroll boundary state changes.
 **Parameters:**
 - `isBottom: boolean` — `true` if scroll is at the bottom position
 
-```html
-<script setup>
-const handleBottom = (isBottom) => {
-  console.log('Bottom boundary:', isBottom)
-}
-</script>
-
-<template>
-  <Scrollbar @bottom="handleBottom" />
-</template>
-```
-
 ### `reachBottom`
 
 Event fires when the bottom scroll boundary is reached.
 
-```html
-<script setup>
-const handleReachBottom = () => {
-  console.log('Reached bottom boundary')
-  // Load more data
-}
-</script>
-
-<template>
-  <Scrollbar @reach-bottom="handleReachBottom" />
-</template>
-```
-
 ### `leaveBottom`
 
 Event fires when leaving the bottom scroll boundary.
-
-```html
-<script setup>
-const handleLeaveBottom = () => {
-  console.log('Left bottom boundary')
-}
-</script>
-
-<template>
-  <Scrollbar @leave-bottom="handleLeaveBottom" />
-</template>
-```
 
 ### `edge`
 
@@ -109,15 +36,3 @@ Event fires when any scroll boundary state changes.
 - `isTop: boolean` — `true` if scroll is at the top position
 - `isBottom: boolean` — `true` if scroll is at the bottom position
 - `edge: 'top' | 'bottom'` — type of boundary that changed
-
-```html
-<script setup>
-const handleEdge = (isTop, isBottom, edge) => {
-  console.log('Boundary state:', { isTop, isBottom, edge })
-}
-</script>
-
-<template>
-  <Scrollbar @edge="handleEdge" />
-</template>
-```

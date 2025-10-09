@@ -1,0 +1,151 @@
+### `default`
+
+Слот для размещения основного элемента ввода (input, select, textarea и т.д.). Обязательный слот.
+
+**Параметры:**
+- `props: FieldControl` — объект с данными для связывания элемента ввода
+
+### `leading`
+
+Слот для размещения контента в начале интерактивной области поля, перед основным элементом ввода.
+
+**Параметры:**
+- `props: FieldControl` — объект с данными для связывания
+
+### `trailing`
+
+Слот для размещения контента в конце интерактивной области поля, после основного элемента ввода.
+
+**Параметры:**
+- `props: FieldControl` — объект с данными для связывания
+
+## FieldControl
+
+`FieldControl` — объект, передаваемый в слоты компонента Field, содержащий данные для корректной интеграции элементов ввода.
+
+### Структура типа
+
+```typescript
+type FieldControl = {
+  /** Уникальный идентификатор элемента для связывания label и input */
+  id: string
+
+  /** CSS-классы для видимой зоны ввода */
+  className: string
+
+  /** CSS-классы для скрытого нативного элемента ввода */
+  classHidden: string
+}
+```
+
+### Свойства
+
+- **`id`** — уникальный идентификатор, генерируемый компонентом для связывания `<label>` с элементом ввода через атрибут `for`
+- **`className`** — CSS-классы для стилизации видимого элемента ввода (применяются к input, textarea, select и т.д.)
+- **`classHidden`** — CSS-классы для скрытого нативного input (используется в кастомных компонентах типа Checkbox, Radio)
+
+### Назначение свойств
+
+#### `id`
+Обеспечивает доступность (accessibility) и корректную работу label:
+- Позволяет кликать на метку для фокуса на поле
+- Связывает описания с элементом ввода для скринридеров
+- Генерируется автоматически, использовать обязательно
+
+#### `className`
+Применяет стили компонента Field к элементу ввода:
+- Обеспечивает визуальное единообразие
+- Добавляет состояния (focus, disabled, validation)
+- Интегрирует скелетон-состояния
+
+#### `classHidden`
+Используется для нативных input в кастомных компонентах:
+- Скрывает оригинальный input визуально
+- Сохраняет функциональность и доступность
+- Применяется в Checkbox, Radio, Switch
+
+### Пример использования
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const email = ref('')
+const password = ref('')
+const showPassword = ref(false)
+const error = ref('')
+
+const validateEmail = (value) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(value)) {
+    error.value = 'Некорректный email'
+  } else {
+    error.value = ''
+  }
+}
+</script>
+
+<template>
+  <div class="form">
+    <!-- Простое поле с иконкой поиска -->
+    <Field label="Email" :validation-message="error">
+      <template #leading>
+        <Icon name="email" />
+      </template>
+      <template #default="{ id, className }">
+        <input
+          :id="id"
+          :class="className"
+          type="email"
+          v-model="email"
+          @blur="validateEmail(email)"
+        />
+      </template>
+    </Field>
+
+    <!-- Поле с переключением видимости пароля -->
+    <Field label="Пароль">
+      <template #default="{ id, className }">
+        <input
+          :id="id"
+          :class="className"
+          :type="showPassword ? 'text' : 'password'"
+          v-model="password"
+        />
+      </template>
+      <template #trailing>
+        <button
+          type="button"
+          @click="showPassword = !showPassword"
+          aria-label="Показать пароль"
+        >
+          <Icon :name="showPassword ? 'visibility_off' : 'visibility'" />
+        </button>
+      </template>
+    </Field>
+
+    <!-- Поле с кастомным элементом -->
+    <Field label="Выберите опцию">
+      <template #leading>
+        <Icon name="tune" />
+      </template>
+      <template #default="{ id, className }">
+        <select :id="id" :class="className" v-model="selectedOption">
+          <option value="1">Опция 1</option>
+          <option value="2">Опция 2</option>
+          <option value="3">Опция 3</option>
+        </select>
+      </template>
+      <template #trailing>
+        <Icon name="expand_more" />
+      </template>
+    </Field>
+  </div>
+</template>
+```
+
+В этом примере:
+- Каждое поле использует `id` и `className` из `FieldControl`
+- Слот `leading` добавляет иконки слева от ввода
+- Слот `trailing` добавляет интерактивные элементы справа
+- Все элементы корректно интегрированы в структуру Field

@@ -1,25 +1,75 @@
-## Navigation & alignment
+## Navigation and arrows
 
-The properties `arrowCarousel`, `arrowStepper`, `disabledPrevious`, `disabledNext`, and `align` control inline navigation controls and text alignment inside Field.
+Properties `arrowCarousel`, `arrowStepper`, `disabledPrevious`, `disabledNext`, and `align` are designed to control built-in navigation elements and content alignment.
 
-### Properties
+**Properties:**
 
-- **arrowCarousel** – Enables left/right navigation arrows (previous/next) using arrow icons.
-- **arrowStepper** – Enables numeric step control (minus / plus). Mutually exclusive with `arrowCarousel`.
-- **disabledPrevious** – Disables the left / minus control.
-- **disabledNext** – Disables the right / plus control.
-- **align** (`left | center | right`) – Horizontal alignment for the input/content zone.
+- `arrowCarousel` — enables navigation arrows (left/right) for switching elements
+- `arrowStepper` — enables numeric step buttons (minus/plus)
+- `disabledPrevious` — disables the left button (back/minus)
+- `disabledNext` — disables the right button (forward/plus)
+- `align` — horizontal content alignment (`left`, `center`, `right`)
 
-### Interaction rules
+Properties work together: only one arrow mode is active — if `arrowCarousel = true`, the `arrowStepper` mode is ignored and vice versa. When navigation mode is active, the clear button (`cancel`) is automatically hidden, as the control area takes priority. The `disabledPrevious` and `disabledNext` flags apply only to the currently active arrow mode. The `align` property affects text and content alignment inside the field, but does not change the position of the navigation buttons themselves.
 
-1. Only one mode is active: if `arrowCarousel` is true, stepper mode (`arrowStepper`) is ignored and vice‑versa.
-2. When an arrow mode is active, the cancel (clear) button is suppressed (takes priority space).
-3. `disabledPrevious` / `disabledNext` apply to the currently active arrow mode only.
-4. Alignment (`align`) affects the text/input area, not the arrow buttons (they stay at the edges defined by design).
+```html
+<script setup>
+import { ref } from 'vue'
 
-### Typical usage
+const currentIndex = ref(0)
+const items = ['Item 1', 'Item 2', 'Item 3']
+const count = ref(5)
+</script>
 
-- Carousel navigation between items: `arrowCarousel` + manage `disabledPrevious/disabledNext`.
-- Numeric increment/decrement: `arrowStepper` + internal value logic.
-- Centered value display with step controls: combine `arrowStepper` + `align="center"`.
+<template>
+  <!-- Carousel with navigation -->
+  <Field
+    label="Item"
+    arrow-carousel
+    :disabled-previous="currentIndex === 0"
+    :disabled-next="currentIndex === items.length - 1"
+  >
+    <template #default="{ id, className }">
+      <input
+        :id="id"
+        :class="className"
+        :value="items[currentIndex]"
+        readonly
+      />
+    </template>
+  </Field>
 
+  <!-- Numeric stepper with centering -->
+  <Field
+    label="Quantity"
+    arrow-stepper
+    align="center"
+    :disabled-previous="count <= 0"
+    :disabled-next="count >= 99"
+  >
+    <template #default="{ id, className }">
+      <input
+        :id="id"
+        :class="className"
+        :value="count"
+        readonly
+      />
+    </template>
+  </Field>
+
+  <!-- Stepper without limits -->
+  <Field
+    label="Value"
+    arrow-stepper
+  >
+    <template #default="{ id, className }">
+      <input
+        :id="id"
+        :class="className"
+        :value="count"
+        readonly
+      />
+    </template>
+  </Field>
+</template>
+```

@@ -190,11 +190,11 @@ export const wikiDescriptionsMotionTransform: StorybookComponentsDescriptionItem
   documentation: {
     body: `
 <StorybookDescriptions componentName={'MotionTransform'} type={'motionTransform'}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'classes'}/>
 <StorybookDescriptions componentName={'MotionTransform'} type={'animationHeadPosition'}/>
 <Canvas of={Component.MotionTransformAnimationHeadPosition}/>
 <StorybookDescriptions componentName={'MotionTransform'} type={'ignore'}/>
 <Canvas of={Component.MotionTransformIgnore}/>
-<StorybookDescriptions componentName={'MotionTransform'} type={'classes'}/>
 <StorybookDescriptions componentName={'MotionTransform'} type={'v-model'}/>
 <Canvas of={Component.MotionTransformVModel}/>
     `,

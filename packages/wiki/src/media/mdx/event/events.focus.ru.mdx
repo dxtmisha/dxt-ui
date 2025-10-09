@@ -5,41 +5,9 @@
 **Параметры:**
 - `event: FocusEvent` — оригинальное DOM событие фокуса
 
-```html
-<script setup>
-const handleFocus = (event) => {
-  console.log('Элемент получил фокус:', event.target)
-  console.log('Предыдущий элемент:', event.relatedTarget)
-}
-</script>
-
-<template>
-  <Mask
-    mask="+7 (***) ***-**-**"
-    @focus="handleFocus"
-  />
-</template>
-```
-
 ### `blur`
 
 Событие срабатывает при потере фокуса элементом ввода, передавая оригинальное DOM событие.
 
 **Параметры:**
 - `event: FocusEvent` — оригинальное DOM событие потери фокуса
-
-```html
-<script setup>
-const handleBlur = (event) => {
-  console.log('Элемент потерял фокус:', event.target)
-  console.log('Следующий элемент:', event.relatedTarget)
-}
-</script>
-
-<template>
-  <Mask
-    mask="+7 (***) ***-**-**"
-    @blur="handleBlur"
-  />
-</template>
-```

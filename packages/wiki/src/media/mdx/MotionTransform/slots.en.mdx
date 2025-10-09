@@ -1,3 +1,28 @@
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <MotionTransform v-model:open="isOpen">
+    <template #head="{ isOpen, classes }">
+      <div :class="classes.click">
+        <h3>{{ isOpen ? '▲' : '▼' }} Header</h3>
+      </div>
+    </template>
+
+    <template #body="{ isShow, classes }">
+      <div v-if="isShow" :class="classes.open">
+        <p>Main content</p>
+        <button :class="classes.close">Close</button>
+      </div>
+    </template>
+  </MotionTransform>
+</template>
+````
+
 ### `head`
 
 Slot for placing the header area that serves as a trigger for opening/closing the component.
@@ -5,32 +30,12 @@ Slot for placing the header area that serves as a trigger for opening/closing th
 **Parameters:**
 - `props: MotionTransformControlItem` — object with component control data
 
-```html
-<MotionTransform>
-  <template #head="{ isOpen, classes }">
-    <button :class="classes.click">
-      {{ isOpen ? 'Close' : 'Open' }}
-    </button>
-  </template>
-</MotionTransform>
-```
-
 ### `body`
 
 Slot for placing the main content area that appears when the component is opened.
 
 **Parameters:**
 - `props: MotionTransformControlItem` — object with component control data
-
-```html
-<MotionTransform>
-  <template #body="{ isShow }">
-    <div v-if="isShow">
-      <p>Component content</p>
-    </div>
-  </template>
-</MotionTransform>
-```
 
 ## MotionTransformControlItem
 
@@ -85,31 +90,3 @@ type MotionTransformClassList = {
   close: string
 }
 ```
-
-### Usage example
-
-```html
-<script setup>
-import { ref } from 'vue'
-
-const isOpen = ref(false)
-</script>
-
-<template>
-  <MotionTransform v-model:open="isOpen">
-    <template #head="{ isOpen, classes }">
-      <div :class="classes.click">
-        <h3>{{ isOpen ? '▲' : '▼' }} Header</h3>
-      </div>
-    </template>
-
-    <template #body="{ isShow, classes }">
-      <div v-if="isShow" :class="classes.open">
-        <p>Main content</p>
-        <button :class="classes.close">Close</button>
-      </div>
-    </template>
-  </MotionTransform>
-</template>
-```
-

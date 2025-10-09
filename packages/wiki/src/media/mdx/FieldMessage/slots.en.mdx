@@ -5,32 +5,12 @@ Slot for placing helper message. Displays only when validation message is absent
 **Parameters:**
 - `props: FieldMessageSlot` — object with message data
 
-```html
-<FieldMessage helper-message="Enter your name">
-  <template #helper="{ helperMessage }">
-    <span class="custom-helper">
-      <i class="icon-info"></i> {{ helperMessage }}
-    </span>
-  </template>
-</FieldMessage>
-```
-
 ### `validation`
 
 Slot for placing validation message. Has priority over helper message.
 
 **Parameters:**
 - `props: FieldMessageSlot` — object with message data
-
-```html
-<FieldMessage validation-message="This field is required">
-  <template #validation="{ validationMessage }">
-    <span class="custom-error">
-      <i class="icon-warning"></i> {{ validationMessage }}
-    </span>
-  </template>
-</FieldMessage>
-```
 
 ## FieldMessageSlot
 
@@ -63,51 +43,3 @@ Component shows only one slot at a time:
 
 1. **Validation** — if `validationMessage` is provided or `validation` slot is defined
 2. **Helper** — if validation is absent, but `helperMessage` is provided or `helper` slot is defined
-
-### Usage Example
-
-```html
-<script setup>
-import { ref } from 'vue'
-
-const inputValue = ref('')
-const error = ref('')
-
-const validateField = (value) => {
-  if (value.length < 3) {
-    error.value = 'Minimum 3 characters'
-  } else {
-    error.value = ''
-  }
-}
-</script>
-
-<template>
-  <input
-    v-model="inputValue"
-    @input="validateField(inputValue)"
-  />
-
-  <FieldMessage
-    helper-message="Enter name (minimum 3 characters)"
-    :validation-message="error"
-  >
-    <template #helper="{ helperMessage }">
-      <div class="hint">
-        💡 {{ helperMessage }}
-      </div>
-    </template>
-
-    <template #validation="{ validationMessage }">
-      <div class="error">
-        ⚠️ {{ validationMessage }}
-      </div>
-    </template>
-  </FieldMessage>
-</template>
-```
-
-In this example:
-- With empty field, `helper` slot is displayed
-- With input less than 3 characters, `validation` slot is displayed
-- With input 3+ characters, `helper` slot is displayed again

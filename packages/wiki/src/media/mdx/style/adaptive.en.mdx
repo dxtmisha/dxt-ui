@@ -1,20 +1,10 @@
-## Adaptive Layout and Container Constraints
+## Adaptive Behavior
 
-The `adaptive` and `container` properties control component behavior at different screen sizes and container constraints. These properties allow creating flexible adaptive interfaces that display correctly on all devices.
+The `adaptive` and `container` properties are designed to control component behavior at different screen sizes and container constraints.
 
-### Properties
+**Properties:**
 
-- **adaptive** — Controls adaptive display behavior for different screen sizes and media queries. Allows the component to automatically adjust to different display conditions.
-- **container** — Controls container-based layout behavior with adaptive width constraints and containment context. Enables a special container mode with width limitations.
+- `adaptive` — controls adaptive behavior for different screen sizes and media queries
+- `container` — controls container layout with adaptive width constraints
 
-### Description
-
-- The `adaptive` property provides automatic adaptation to various screen sizes with media query support for precise display control.
-- `container` creates a container layout with automatic width constraints, adaptive behavior, and content centering.
-- Properties can be used together to create complex adaptive layouts, where `container` provides the structural foundation and `adaptive` adds flexible behavior.
-
-### Recommendations
-
-- Use `adaptive` for components that should change their behavior depending on screen size.
-- Apply `container` for creating main blocks with limited width and centering.
-- Combine both properties to achieve maximum flexibility in adaptive layout.
+Properties work together: `adaptive` provides automatic component adaptation to different screen sizes with media query support for precise display control. `container` creates a container layout with automatic width constraints, adaptive behavior, and content centering. Both properties can be used together to create complex adaptive layouts, where `container` provides the structural foundation and `adaptive` adds flexible behavior for different devices.

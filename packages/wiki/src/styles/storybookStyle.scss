@@ -67,6 +67,7 @@
       &--static {
         position: static;
         @include ui.padding(0);
+        width: 100%;
         background: transparent;
       }
     }

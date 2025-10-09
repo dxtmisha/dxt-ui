@@ -3,21 +3,3 @@
 Reactive open/close state of the component.
 
 **Type:** `ComputedRef<boolean>`
-
-```html
-<script setup>
-const componentRef = ref()
-
-watch(() => componentRef.value?.open, (isOpen) => {
-  console.log('Component is open:', isOpen)
-})
-</script>
-
-<template>
-  <Component ref="componentRef">
-    <template #default>
-      <p v-if="componentRef?.open">Component is open</p>
-    </template>
-  </Component>
-</template>
-```

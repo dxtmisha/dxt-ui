@@ -4,61 +4,17 @@
 
 **Тип:** `string`
 
-```html
-<script setup>
-const windowRef = ref()
-
-onMounted(() => {
-  console.log(windowRef.value.id) // "window-123"
-})
-</script>
-
-<template>
-  <Window ref="windowRef" />
-</template>
-```
-
 ### `open`
 
 Реактивное состояние видимости окна.
 
 **Тип:** `Ref<boolean>`
 
-```html
-<script setup>
-const windowRef = ref()
-
-watch(() => windowRef.value?.open, (isOpen) => {
-  console.log('Окно открыто:', isOpen)
-})
-</script>
-
-<template>
-  <Window ref="windowRef" />
-</template>
-```
-
 ### `control`
 
 Данные элемента управления для управления окном.
 
 **Тип:** `WindowControlItem`
-
-```html
-<script setup>
-const windowRef = ref()
-
-const handleClick = () => {
-  const control = windowRef.value.control
-  console.log('Классы:', control.classesWindow)
-  console.log('Состояние:', control.open.value)
-}
-</script>
-
-<template>
-  <Window ref="windowRef" />
-</template>
-```
 
 ### `setOpen`
 
@@ -69,47 +25,11 @@ const handleClick = () => {
 
 **Возвращает:** `Promise<void>`
 
-```html
-<script setup>
-const windowRef = ref()
-
-const openWindow = async () => {
-  await windowRef.value.setOpen(true)
-}
-
-const closeWindow = async () => {
-  await windowRef.value.setOpen(false)
-}
-</script>
-
-<template>
-  <Window ref="windowRef" />
-  <button @click="openWindow">Открыть</button>
-  <button @click="closeWindow">Закрыть</button>
-</template>
-```
-
 ### `toOpen`
 
 Переход в состояние открытия окна.
 
 **Возвращает:** `Promise<void>`
-
-```html
-<script setup>
-const windowRef = ref()
-
-const openWindow = async () => {
-  await windowRef.value.toOpen()
-  console.log('Окно открыто')
-}
-</script>
-
-<template>
-  <Window ref="windowRef" />
-  <button @click="openWindow">Открыть окно</button>
-</template>
-```
 
 ### `toClose`
 
@@ -117,39 +37,8 @@ const openWindow = async () => {
 
 **Возвращает:** `Promise<void>`
 
-```html
-<script setup>
-const windowRef = ref()
-
-const closeWindow = async () => {
-  await windowRef.value.toClose()
-  console.log('Окно закрыто')
-}
-</script>
-
-<template>
-  <Window ref="windowRef" />
-  <button @click="closeWindow">Закрыть окно</button>
-</template>
-```
-
 ### `toggle`
 
 Переключает видимость окна (открывает, если закрыто, и закрывает, если открыто).
 
 **Возвращает:** `Promise<void>`
-
-```html
-<script setup>
-const windowRef = ref()
-
-const toggleWindow = async () => {
-  await windowRef.value.toggle()
-}
-</script>
-
-<template>
-  <Window ref="windowRef" />
-  <button @click="toggleWindow">Переключить окно</button>
-</template>
-```

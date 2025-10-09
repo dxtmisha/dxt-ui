@@ -3,28 +3,3 @@
 Computed state indicating whether the component is displayed or being prepared for display (including animation state).
 
 **Type:** `ComputedRef<boolean>`
-
-```html
-<script setup>
-const motionRef = ref()
-
-watch(() => motionRef.value?.isShow, (isShowing) => {
-  console.log('Component visible or animating:', isShowing)
-
-  if (isShowing) {
-    console.log('Component is displayed on screen')
-  }
-})
-</script>
-
-<template>
-  <MotionTransform ref="motionRef">
-    <template #head>
-      <div>Header</div>
-    </template>
-    <template #body>
-      <p>Content</p>
-    </template>
-  </MotionTransform>
-</template>
-```

@@ -1,13 +1,13 @@
-## Custom Templates
+## Custom Display Templates
 
-Use simple string templates with placeholders to format the counter.
+The `template` property allows you to customize the counter display format using placeholders.
 
-### Placeholders
+**Available placeholders:**
 
-- `[c]` - current character count
-- `[m]` - maximum character limit
+- `[c]` — current number of entered characters
+- `[m]` — maximum character limit
 
-### Examples
+Uses string interpolation to replace placeholders with actual counter values. Supports HTML markup inside the template for customizing styles of individual parts. When no template is provided, the component automatically determines the format: displays "50 / 100" when `maxlength` is present or just "50" when it's absent.
 
 ```html
 <!-- Descriptive format -->
@@ -15,5 +15,25 @@ Use simple string templates with placeholders to format the counter.
   :counter="75"
   :maxlength="150"
   template="Characters: [c] of [m]"
+/>
+
+<!-- Compact format -->
+<FieldCounter
+  :counter="42"
+  :maxlength="100"
+  template="[c]/[m]"
+/>
+
+<!-- With HTML for styling -->
+<FieldCounter
+  :counter="75"
+  :maxlength="150"
+  template="<b>[c]</b> of <i>[m]</i> characters"
+/>
+
+<!-- Current counter only with text -->
+<FieldCounter
+  :counter="42"
+  template="Characters entered: [c]"
 />
 ```

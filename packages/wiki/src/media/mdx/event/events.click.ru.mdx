@@ -34,28 +34,3 @@ const handleClick = (event, value) => {
 
 **Параметры:**
 - `value: EventClickValue` — объект с данными компонента
-
-**Структура EventClickValue:**
-- `type: string` — идентификатор места нажатия, задается через атрибут `data-event-type` у элемента
-- `value: any` — значение компонента
-- `detail: Record<string, any> | undefined` — дополнительные данные события
-
-```html
-<script setup>
-const handleClickLite = (value) => {
-  console.log('Тип клика:', value.type)
-  console.log('Значение:', value.value)
-
-  if (value.type === 'action' && value.value) {
-    console.log('Выполнено действие:', value.value)
-  }
-}
-</script>
-
-<template>
-  <Component @click-lite="handleClickLite">
-    <button data-event-type="action">Нажми меня</button>
-  </Component>
-</template>
-```
-

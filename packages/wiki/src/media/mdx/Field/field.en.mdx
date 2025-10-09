@@ -1,22 +1,52 @@
-Field is the base container for form controls that composes label, messages, counter, icons, and progress. It provides a unified skeleton and classes for consistent layout.
+Base container for form controls that composes label, messages, counter, icons, and progress into a unified structure.
 
-### Purpose
+Field centralizes the visual representation management of input fields, handles focus and validation states, coordinates auxiliary element positioning, and provides a consistent API for building any type of inputs. It serves as the fundamental foundation for creating consistent forms with slot support, control icons, and subcomponent integration.
 
-- **Composition of subcomponents** — FieldLabel, FieldMessage, FieldCounter, Progress, icons
-- **Unified scaffold** — Wrapper template for the input area and helper zones (caption/prefix/suffix)
-- **State styles** — Manages focus, disabled, readonly, selected, block
-- **Slot support** — Integrates caption, prefix, suffix at the container level
+**Core capabilities:**
 
-### Core capabilities
+- Subcomponent composition (FieldLabel, FieldMessage, FieldCounter, Progress)
+- State management (focus, disabled, readonly, selected, block)
+- Slot coordination (caption, prefix, suffix, leading, trailing)
+- Validation highlighting based on validationMessage and forceShowMessage
+- Control icons with customizable visibility (cancel, arrows)
+- Flexible counter positioning via counterTop
+- Built-in helpers for sizing and icons (FieldSize, FieldIcons)
+- Loading progress integration and skeleton state
 
-- **Validation highlighting** — Based on `validationMessage` and a force show flag
-- **Character counter** — Position toggle via `counterTop`
-- **Control icons** — Cancel and navigation (arrows) with visibility flags
-- **Sizing helpers** — Built-in FieldSize and FieldIcons
-- **Progress integration** — Compact static progress for loading/status
+**Typical use cases:**
 
-### Integration
+- Base container for Input, Select, Textarea, and other form controls
+- Building custom form components with unified styling
+- Creating fields with validation and character counters
+- Developing component libraries with consistent UI
 
-Use Field as a foundation for constructing any input fields. It easily integrates labels, icons, messages, and progress. The component handles markup, classes, and consistency; concrete inputs provide the input logic.
+```html
+<script setup>
+import { ref } from 'vue'
+import { Field } from '@dxtmisha/constructor'
 
-> Field is a constructor wrapper: it doesn’t input data by itself, it organizes structure and auxiliary visuals.
+const value = ref('')
+
+// Field provides structure and management
+</script>
+
+<template>
+  <Field
+    label="Username"
+    helper-message="Enter your name"
+    :counter="value.length"
+    counter-max="50"
+  >
+    <template #default="{ id, className }">
+      <input
+        :id="id"
+        :class="className"
+        v-model="value"
+        maxlength="50"
+      />
+    </template>
+  </Field>
+</template>
+```
+
+> Field is a constructor container: it does not handle data input directly, but organizes structure, classes, and auxiliary element display for any type of input fields.

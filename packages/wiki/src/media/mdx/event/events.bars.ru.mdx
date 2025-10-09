@@ -39,63 +39,12 @@ const handleBars = (event, value) => {
 **Параметры:**
 - `value: EventClickValue` — объект с данными о клике
 
-**Структура EventClickValue:**
-- `type: string` — тип клика/кнопки (например, `'back'` для кнопки назад)
-- `value: any` — произвольное значение кнопки
-- `detail: Record<string, any> | undefined` — дополнительные данные события
-
-```html
-<script setup>
-const handleBarsLite = (value) => {
-  console.log('Тип кнопки:', value.type)
-  console.log('Значение:', value.value)
-
-  if (value.type === 'back') {
-    // Обработка кнопки "Назад"
-    router.back()
-  }
-}
-</script>
-
-<template>
-  <Bars @bars-lite="handleBarsLite">
-    <button data-event-type="back">Назад</button>
-  </Bars>
-</template>
-```
-
 ### `barsBack`
 
 Событие срабатывает при клике по кнопке «Назад» в панели Bars, передавая только данные о клике.
 
 **Параметры:**
 - `value: EventClickValue` — объект с данными о клике
-
-**Структура EventClickValue:**
-- `type: string` — тип клика/кнопки (значение будет `'back'`)
-- `value: any` — произвольное значение кнопки
-- `detail: Record<string, any> | undefined` — дополнительные данные события
-
-```html
-<script setup>
-const handleBarsBack = (value) => {
-  console.log('Клик по кнопке "Назад"')
-  console.log('Тип:', value.type) // "back"
-  console.log('Значение:', value.value)
-
-  // Возврат к предыдущей странице
-  router.back()
-}
-</script>
-
-<template>
-  <Bars @bars-back="handleBarsBack">
-    <template #default>
-      <p>Содержимое панели</p>
-    </template>
-  </Bars>
-</template>
-```
 
 > Кнопку «Назад» можно скрыть свойством `barsBackHide`.
 

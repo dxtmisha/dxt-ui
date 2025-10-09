@@ -39,63 +39,12 @@ Event fires when clicking on a Bars panel element, passing only data without the
 **Parameters:**
 - `value: EventClickValue` — object with click data
 
-**EventClickValue structure:**
-- `type: string` — click/button type (e.g., `'back'` for back button)
-- `value: any` — arbitrary button value
-- `detail: Record<string, any> | undefined` — additional event data
-
-```html
-<script setup>
-const handleBarsLite = (value) => {
-  console.log('Button type:', value.type)
-  console.log('Value:', value.value)
-
-  if (value.type === 'back') {
-    // Handle back button
-    router.back()
-  }
-}
-</script>
-
-<template>
-  <Bars @bars-lite="handleBarsLite">
-    <button data-event-type="back">Back</button>
-  </Bars>
-</template>
-```
-
 ### `barsBack`
 
 Event fires when the "Back" button in Bars panel is clicked, passing only click data.
 
 **Parameters:**
 - `value: EventClickValue` — object with click data
-
-**EventClickValue structure:**
-- `type: string` — click/button type (will be `'back'`)
-- `value: any` — arbitrary button value
-- `detail: Record<string, any> | undefined` — additional event data
-
-```html
-<script setup>
-const handleBarsBack = (value) => {
-  console.log('Back button clicked')
-  console.log('Type:', value.type) // "back"
-  console.log('Value:', value.value)
-
-  // Navigate to previous page
-  router.back()
-}
-</script>
-
-<template>
-  <Bars @bars-back="handleBarsBack">
-    <template #default>
-      <p>Panel content</p>
-    </template>
-  </Bars>
-</template>
-```
 
 > Back button can be hidden with `barsBackHide` property.
 

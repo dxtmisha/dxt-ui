@@ -1,18 +1,16 @@
-## Assistive Chips
+## Assistive chips (assistive)
 
-Assistive chips are designed to help users complete tasks or provide additional information. They have a special appearance that emphasizes their supportive role in the interface.
+The Chip component supports assistive mode through the `assistive` property. In this mode, chips have a special visual style to help users complete tasks:
 
-### Features
+- **Distinctive style** - visually stand out among other elements
+- **Hints and recommendations** - suggest action options or auto-completion
+- **User guidance** - help navigate the interface
+- **Icon support** - improve understanding of purpose through visual elements
 
-- Visually distinct from standard chips
-- Used for hints and recommendations
-- Help guide users to appropriate actions
-- Can contain icons for better understanding
+Assistive mode is especially useful for creating hint systems, recommendations, and helper actions that guide users to the right solutions without excessive visual noise.
 
-### Usage
-
-Use assistive chips for:
-- Auto-completion suggestions
-- System recommendations
-- Navigation hints
-- Helper actions in forms
+```html
+<Chip assistive icon="lightbulb">Recommendation</Chip>
+<Chip assistive icon="check">Hint</Chip>
+<Chip assistive>Auto-complete</Chip>
+```

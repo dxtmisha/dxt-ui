@@ -1,23 +1,16 @@
-## Input Chips
+## Input chips (input)
 
-Input chips represent discrete pieces of information entered by users, such as tags, contacts, or keywords. They have an appearance similar to input fields and are often used in form contexts.
+The Chip component supports input mode through the `input` property. In this mode, chips have an input field style and represent discrete information entered by the user:
 
-### Features
+- **Form-like appearance** - visually resemble input elements
+- **User data** - display tags, contacts, keywords
+- **Interactivity** - can be removed or edited
+- **Grouping** - often used in sets for multiple selections
 
-- Style reminiscent of form elements
-- Usually contains user input
-- Can be removed or edited
-- Often grouped in sets
+Input mode is especially useful for displaying data that users have actively entered or selected, making them visually distinct from static interface elements.
 
-### Usage
-
-Use input chips for:
-- Displaying entered tags
-- Lists of selected items
-- Contacts or recipients
-- User-applied filters
-- Search keywords
-
-### Recommendations
-
-Input chips work best for displaying data that users have actively entered or selected, making them interactive and editable.
+```html
+<Chip input icon="person">Contact</Chip>
+<Chip input icon="tag">Tag</Chip>
+<Chip input selected>Selected</Chip>
+```

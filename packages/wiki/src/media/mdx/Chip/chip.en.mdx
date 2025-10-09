@@ -1,15 +1,75 @@
 ## Description
 
-A compact element that represents an input, attribute, or action. Chips allow users to enter information, make selections, filter content, or trigger actions.
+Compact interactive element for representing input, attributes, actions, and filters in the user interface.
 
-### Key Features
+Chip provides a unified component for displaying discrete information in a compact format with support for selection states, icons, adaptive behavior, and various visual variants (input, assistive). Inherits Button functionality while adding specialized styling and semantics for working with tags, filters, statuses, and user input. Ensures a consistent API for creating interactive chips with support for clicks, disabled/selected states, and icon integration.
 
-- Display information in a compact format
-- Support for various states (selected, disabled)
-- Icon support capability
-- Adaptive behavior
-- Customizable styling
+**Core capabilities:**
 
-### Recommendations
+- Button inheritance (icons, progress, click events)
+- Visual variants (input, assistive) for different contexts
+- State management (selected, disabled, focus, readonly)
+- Adaptive behavior (adaptive, container) for different screen sizes
+- Customizable text alignment (textAlign: left/center/right)
+- Icon support (icon, iconTrailing) and progress indicator
+- Skeleton state integration for loading
+- Value and detail passing for element identification
 
-Use chips to display tags, filters, statuses, or other compact interface elements. They are particularly useful in lists, search forms, and filtering systems.
+**Typical use cases:**
+
+- Tags and labels for content categorization
+- Filters in search interfaces and catalogs
+- Displaying user-entered data (emails, contacts)
+- Statuses and state indicators
+- Assistive elements (hints, recommendations)
+- Selectable options in forms and lists
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selectedFilters = ref(['active', 'verified'])
+const tags = ref(['Vue', 'TypeScript', 'UI'])
+
+const toggleFilter = (filter) => {
+  const index = selectedFilters.value.indexOf(filter)
+  if (index > -1) {
+    selectedFilters.value.splice(index, 1)
+  } else {
+    selectedFilters.value.push(filter)
+  }
+}
+</script>
+
+<template>
+  <!-- Basic chip -->
+  <Chip>Standard</Chip>
+
+  <!-- Input chip for user input -->
+  <Chip input icon="person">Contact</Chip>
+
+  <!-- Assistive chip for hints -->
+  <Chip assistive icon="lightbulb">Recommendation</Chip>
+
+  <!-- Filters with selection state -->
+  <Chip
+    v-for="filter in ['active', 'pending', 'verified']"
+    :key="filter"
+    :selected="selectedFilters.includes(filter)"
+    @click="toggleFilter(filter)"
+  >
+    {{ filter }}
+  </Chip>
+
+  <!-- With data passing -->
+  <Chip
+    value="filter-tag"
+    :detail="{ category: 'status', type: 'active' }"
+    @click="handleChipClick"
+  >
+    Active
+  </Chip>
+</template>
+```
+
+> Chip inherits all Button functionality, including events, icons, and progress indicators, while adding specialized styling for compact interface elements.

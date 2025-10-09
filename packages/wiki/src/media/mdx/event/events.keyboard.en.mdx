@@ -5,45 +5,9 @@ Event fires when a key is pressed in the input field, passing the original DOM k
 **Parameters:**
 - `event: KeyboardEvent` — original DOM keyboard event
 
-```html
-<script setup>
-const handleKeyDown = (event) => {
-  console.log('Key pressed:', event.key)
-  console.log('Key code:', event.code)
-
-  if (event.ctrlKey && event.key === 'Enter') {
-    console.log('Ctrl+Enter pressed')
-  }
-}
-</script>
-
-<template>
-  <Mask
-    mask="+1 (***) ***-****"
-    @keydown="handleKeyDown"
-  />
-</template>
-```
-
 ### `keyup`
 
 Event fires when a key is released in the input field, passing the original DOM keyboard event.
 
 **Parameters:**
 - `event: KeyboardEvent` — original DOM keyboard event
-
-```html
-<script setup>
-const handleKeyUp = (event) => {
-  console.log('Key released:', event.key)
-  console.log('Key code:', event.code)
-}
-</script>
-
-<template>
-  <Mask
-    mask="+1 (***) ***-****"
-    @keyup="handleKeyUp"
-  />
-</template>
-```

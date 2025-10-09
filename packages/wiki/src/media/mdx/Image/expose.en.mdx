@@ -4,20 +4,6 @@ Type of the loaded image.
 
 **Type:** `ComputedRef<ImageTypeItem>`
 
-```html
-<script setup>
-const imageRef = ref()
-
-watch(() => imageRef.value?.type, (type) => {
-  console.log('Image type:', type)
-})
-</script>
-
-<template>
-  <Image ref="imageRef" value="home" />
-</template>
-```
-
 **Possible values:**
 
 ```ts
@@ -43,20 +29,3 @@ enum ImageTypeValue {
 Information about the loaded image, including its dimensions and source.
 
 **Type:** `Ref<ImageEventItem>`
-
-```html
-<script setup>
-const imageRef = ref()
-
-watch(() => imageRef.value?.data, (data) => {
-  if (data && typeof data !== 'string') {
-    console.log('Dimensions:', data.width, 'x', data.height)
-    console.log('Source:', data.src)
-  }
-})
-</script>
-
-<template>
-  <Image ref="imageRef" :value="imageUrl" />
-</template>
-```

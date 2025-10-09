@@ -16,8 +16,6 @@ import slotPrefixEn from './prefix.en.mdx'
 import slotPrefixRu from './prefix.ru.mdx'
 import slotSuffixEn from './suffix.en.mdx'
 import slotSuffixRu from './suffix.ru.mdx'
-import slotTitleEn from './title.en.mdx'
-import slotTitleRu from './title.ru.mdx'
 
 export const wikiMdxSlot: StorybookComponentsMdxItem = {
   name: 'Slot',
@@ -53,10 +51,6 @@ export const wikiMdxSlot: StorybookComponentsMdxItem = {
     suffix: {
       en: slotSuffixEn,
       ru: slotSuffixRu
-    },
-    title: {
-      en: slotTitleEn,
-      ru: slotTitleRu
     }
   }
 }

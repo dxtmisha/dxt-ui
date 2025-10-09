@@ -6,36 +6,11 @@
 
 **Тип:** `() => void | Promise<void>`
 
-```html
-<script setup>
-const handlePreparation = () => {
-  console.log('Подготовка...')
-}
-</script>
-
-<template>
-  <Window :preparation="handlePreparation" />
-</template>
-```
-
 ### `beforeOpening`
 
 Вызывается перед открытием окна. Возврат `false` отменяет открытие.
 
 **Тип:** `() => boolean | Promise<boolean>`
-
-```html
-<script setup>
-const handleBeforeOpening = async () => {
-  const canOpen = await checkPermissions()
-  return canOpen // false отменит открытие
-}
-</script>
-
-<template>
-  <Window :before-opening="handleBeforeOpening" />
-</template>
-```
 
 ### `beforeClosing`
 
@@ -43,51 +18,14 @@ const handleBeforeOpening = async () => {
 
 **Тип:** `() => boolean | Promise<boolean>`
 
-```html
-<script setup>
-const handleBeforeClosing = async () => {
-  const canClose = await confirmClose()
-  return canClose // false отменит закрытие
-}
-</script>
-
-<template>
-  <Window :before-closing="handleBeforeClosing" />
-</template>
-```
-
 ### `opening`
 
 Вызывается после завершения открытия окна (после анимации).
 
 **Тип:** `() => boolean | Promise<boolean>`
 
-```html
-<script setup>
-const handleOpening = () => {
-  console.log('Окно открыто')
-}
-</script>
-
-<template>
-  <Window :opening="handleOpening" />
-</template>
-```
-
 ### `closing`
 
 Вызывается после завершения закрытия окна (после анимации).
 
 **Тип:** `() => boolean | Promise<boolean>`
-
-```html
-<script setup>
-const handleClosing = () => {
-  console.log('Окно закрыто')
-}
-</script>
-
-<template>
-  <Window :closing="handleClosing" />
-</template>
-```

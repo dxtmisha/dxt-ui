@@ -1,25 +1,75 @@
-## Навигация и выравнивание
+## Навигация и стрелки
 
-Свойства `arrowCarousel`, `arrowStepper`, `disabledPrevious`, `disabledNext` и `align` управляют встроенными элементами навигации и горизонтальным выравниванием содержимого внутри Field.
+Свойства `arrowCarousel`, `arrowStepper`, `disabledPrevious`, `disabledNext` и `align` предназначены для управления встроенными элементами навигации и выравнивания содержимого.
 
-### Свойства
+**Свойства:**
 
-- **arrowCarousel** — Включает стрелки навигации (влево/вправо) для переключения элементов.
-- **arrowStepper** — Включает числовые шаговые кнопки (минус / плюс). Взаимоисключимо с `arrowCarousel`.
-- **disabledPrevious** — Отключает левую / минус кнопку.
-- **disabledNext** — Отключает правую / плюс кнопку.
-- **align** (`left | center | right`) — Горизонтальное выравнивание области ввода/контента.
+- `arrowCarousel` — включает стрелки навигации (влево/вправо) для переключения элементов
+- `arrowStepper` — включает числовые шаговые кнопки (минус/плюс)
+- `disabledPrevious` — отключает левую кнопку (назад/минус)
+- `disabledNext` — отключает правую кнопку (вперёд/плюс)
+- `align` — горизонтальное выравнивание содержимого (`left`, `center`, `right`)
 
-### Правила взаимодействия
+Свойства работают совместно: активен только один режим стрелок — если `arrowCarousel = true`, режим `arrowStepper` игнорируется и наоборот. При активном режиме навигации кнопка очистки (`cancel`) автоматически скрывается, так как область управления имеет приоритет. Флаги `disabledPrevious` и `disabledNext` применяются только к текущему активному режиму стрелок. Свойство `align` влияет на выравнивание текста и содержимого внутри поля, но не изменяет позицию самих кнопок навигации.
 
-1. Активен только один режим: если `arrowCarousel = true`, режим `arrowStepper` игнорируется и наоборот.
-2. При активном режиме стрелок кнопка очистки (cancel) скрывается (приоритет области управления).
-3. Флаги `disabledPrevious` / `disabledNext` относятся только к текущему активному режиму.
-4. `align` влияет на текст/контент, но не смещает сами кнопки навигации.
+```html
+<script setup>
+import { ref } from 'vue'
 
-### Типовые сценарии
+const currentIndex = ref(0)
+const items = ['Item 1', 'Item 2', 'Item 3']
+const count = ref(5)
+</script>
 
-- Переключение записей/экранов: `arrowCarousel` + управление `disabledPrevious/disabledNext`.
-- Инкремент/декремент числа: `arrowStepper` + логика значения.
-- Центрированное значение со степперами: `arrowStepper` + `align="center"`.
+<template>
+  <!-- Карусель с навигацией -->
+  <Field
+    label="Элемент"
+    arrow-carousel
+    :disabled-previous="currentIndex === 0"
+    :disabled-next="currentIndex === items.length - 1"
+  >
+    <template #default="{ id, className }">
+      <input
+        :id="id"
+        :class="className"
+        :value="items[currentIndex]"
+        readonly
+      />
+    </template>
+  </Field>
 
+  <!-- Числовой степпер с центрированием -->
+  <Field
+    label="Количество"
+    arrow-stepper
+    align="center"
+    :disabled-previous="count <= 0"
+    :disabled-next="count >= 99"
+  >
+    <template #default="{ id, className }">
+      <input
+        :id="id"
+        :class="className"
+        :value="count"
+        readonly
+      />
+    </template>
+  </Field>
+
+  <!-- Степпер без ограничений -->
+  <Field
+    label="Значение"
+    arrow-stepper
+  >
+    <template #default="{ id, className }">
+      <input
+        :id="id"
+        :class="className"
+        :value="count"
+        readonly
+      />
+    </template>
+  </Field>
+</template>
+```

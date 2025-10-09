@@ -41,16 +41,16 @@ export const wikiDescriptionsFieldCounter: StorybookComponentsDescriptionItem = 
       },
       template: `
         <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--center wiki-storybook-item--squared--md wiki-storybook-item--compact">
-            <div class="wiki-storybook-item__label">Default template</div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Default template</div>
             <DesignComponent :counter="75" :maxlength="150"/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--center wiki-storybook-item--squared--md wiki-storybook-item--compact">
-            <div class="wiki-storybook-item__label">Custom template: "Characters: [c] of [m]"</div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Custom template: "Characters: [c] of [m]"</div>
             <DesignComponent :counter="75" :maxlength="150" template="Characters: [c] of [m]"/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--center wiki-storybook-item--squared--md wiki-storybook-item--compact">
-            <div class="wiki-storybook-item__label">Counter only with template: "[c] chars"</div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Counter only with template: "[c] chars"</div>
             <DesignComponent :counter="42" template="<b>[c]</b> chars"/>
           </div>
         </div>

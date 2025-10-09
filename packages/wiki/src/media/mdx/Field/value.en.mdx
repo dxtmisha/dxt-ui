@@ -1,28 +1,49 @@
-## Value state (value & isValue)
+## Value state
 
-`Field` separates actual input content from the *visual filled state*.
+Properties `value` and `isValue` are designed to control the visual filled state of the field independently of the actual content.
 
-### Properties
+**Properties:**
 
-- **value** – Actual content (string / number, etc.) you pass into the inner `<input>` via the default slot. `Field` does not manage (no `v-model`) or mutate / validate it, **but** it reads it reactively through a computed `focusValue` purely for visual purposes: displaying the current textual snapshot near the caption (scoreboardInput) and harmonizing layout with caption + extra controls. Priority when deriving `focusValue`: element with `[data-length]` → main `<input>` → `props.value` (string). This read does not drive business rules.
-- **isValue** (`boolean`) – Forces the visual “filled” state (floating / collapsed label + classes) even if the actual input is empty.
+- `value` — actual field content (string/number) passed to the inner element via slot
+- `isValue` — forcibly activates the visual "filled" state even when the value is empty
 
-### Interaction
+Properties work together: `Field` reads `value` reactively through `focusValue` for visual purposes (displaying text in scoreboard, caption handling), but does not manage it directly or validate it. If the real value is non-empty, the field automatically receives the visual "filled" state regardless of `isValue`. When the value is empty, the `isValue = true` flag forcibly activates the visual filled mode (floating label, corresponding classes), which is useful for preloads, masks, or delayed data insertion.
 
-1. Non‑empty real input ⇒ filled appearance regardless of `isValue`.
-2. Empty real input + `isValue = true` ⇒ visually filled (preload, mask, delayed prefill cases).
-3. Empty real input + no / false `isValue` ⇒ visually empty.
-4. `focusValue` is used only to render inline mirrored text when caption zone is active and optionally to read length from `[data-length]` element; do not rely on it for validation or domain logic.
-5. Validation, helper messages, counters (implemented externally) must use the real input value, not `isValue`.
+```html
+<script setup>
+import { ref } from 'vue'
 
-### When to use `isValue`
+const value = ref('')
+const isLoading = ref(true)
+</script>
 
-- Preload “as if filled” look while fetching data.
-- Masked / templated inputs needing a permanently floated label.
-- Visual demos / stories without binding a real value yet.
+<template>
+  <!-- Normal behavior -->
+  <Field label="Name">
+    <template #default="{ id, className }">
+      <input :id="id" :class="className" v-model="value" />
+    </template>
+  </Field>
 
-### Recommendations
+  <!-- Forced "filled" state -->
+  <Field
+    label="Email"
+    :value="value"
+    :is-value="true"
+  >
+    <template #default="{ id, className }">
+      <input :id="id" :class="className" v-model="value" />
+    </template>
+  </Field>
 
-- Don’t overload `isValue` for logic; it’s strictly visual.
-- Keep reactive value handling outside (wrapper with `v-model`), treat `Field` as structural shell.
-- For length-sensitive styling add an attribute `[data-length]` to an inner element; priority: `[data-length]` → `<input>` → `props.value`.
+  <!-- Preload with visual state -->
+  <Field
+    label="Data"
+    :is-value="isLoading"
+  >
+    <template #default="{ id, className }">
+      <input :id="id" :class="className" v-model="value" />
+    </template>
+  </Field>
+</template>
+```

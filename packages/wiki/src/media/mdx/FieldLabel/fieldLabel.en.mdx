@@ -1,22 +1,64 @@
-FieldLabel is a component for displaying a field label and a required indicator.
+Component for displaying input field labels with support for required indicator, character counter, and progress indicator.
 
-### Purpose
+FieldLabel provides uniform display of form field captions, automatically integrates with FieldCounter for character counting and Progress for loading indication. The component supports skeleton loading, customizable slots, and ensures consistent visual styling of form elements.
 
-- **Field label** — A caption for the input control
-- **Required marker** — Shows a required state when needed
-- **Compatibility** — Works together with FieldCounter and Progress
-- **Consistent style** — Unified classes and spacing within form controls
+**Key features:**
 
-### Key features
+- Text label display for input fields
+- Required field indicator (required marker)
+- FieldCounter integration for character counting
+- Built-in Progress indicator support
+- Skeleton loading support for pending states
+- Flexible customization via slots (leading, trailing)
+- Consistent spacing and styles within forms
 
-- **Simple usage** — Just pass the `label` prop
-- **Required marker** — Enable via the `required` prop
-- **Character counter** — Renders when counter props (counter/maxlength) are provided
-- **Progress indicator** — Can display progress (e.g., loading)
+**Common use cases:**
 
-### Integration
+- Labels for text fields and textareas
+- Forms with required fields
+- Fields with character count limits
+- Forms with file upload progress indication
+- Dynamic forms with skeleton loading
 
-Use FieldLabel as a part of composite input controls. When needed, add FieldCounter and Progress via corresponding props to make forms more informative.
+```html
+<script setup>
+import { ref } from 'vue'
 
-> The component is responsible for rendering the label and does not affect input logic.
+const text = ref('')
+const maxLength = 100
+</script>
 
+<template>
+  <!-- Simple label -->
+  <FieldLabel label="Username" />
+
+  <!-- Required field label -->
+  <FieldLabel
+    label="Email"
+    required
+  />
+
+  <!-- Label with character counter -->
+  <FieldLabel
+    label="Description"
+    :counter="text.length"
+    :maxlength="maxLength"
+  />
+
+  <!-- Label with progress indicator -->
+  <FieldLabel
+    label="File Upload"
+    :progress="45"
+  />
+
+  <!-- Label with slots -->
+  <FieldLabel label="Search">
+    <template #leading>
+      <Icon name="search" />
+    </template>
+    <template #trailing>
+      <Icon name="info" />
+    </template>
+  </FieldLabel>
+</template>
+```

@@ -5,49 +5,13 @@
 **Параметры:**
 - `isTop: boolean` — `true`, если скролл находится в верхней позиции
 
-```html
-<script setup>
-const handleScrollbarTop = (isTop) => {
-  console.log('Скроллбар - верхняя граница:', isTop)
-}
-</script>
-
-<template>
-  <Component @scrollbar-top="handleScrollbarTop" />
-</template>
-```
-
 ### `scrollbarReachTop`
 
 Событие срабатывает при достижении верхней границы скролла (для использования в родительских компонентах).
 
-```html
-<script setup>
-const handleScrollbarReachTop = () => {
-  console.log('Скроллбар достиг верхней границы')
-}
-</script>
-
-<template>
-  <Component @scrollbar-reach-top="handleScrollbarReachTop" />
-</template>
-```
-
 ### `scrollbarLeaveTop`
 
 Событие срабатывает при покидании верхней границы скролла (для использования в родительских компонентах).
-
-```html
-<script setup>
-const handleScrollbarLeaveTop = () => {
-  console.log('Скроллбар покинул верхнюю границу')
-}
-</script>
-
-<template>
-  <Component @scrollbar-leave-top="handleScrollbarLeaveTop" />
-</template>
-```
 
 ### `scrollbarBottom`
 
@@ -56,50 +20,13 @@ const handleScrollbarLeaveTop = () => {
 **Параметры:**
 - `isBottom: boolean` — `true`, если скролл находится в нижней позиции
 
-```html
-<script setup>
-const handleScrollbarBottom = (isBottom) => {
-  console.log('Скроллбар - нижняя граница:', isBottom)
-}
-</script>
-
-<template>
-  <Component @scrollbar-bottom="handleScrollbarBottom" />
-</template>
-```
-
 ### `scrollbarReachBottom`
 
 Событие срабатывает при достижении нижней границы скролла (для использования в родительских компонентах).
 
-```html
-<script setup>
-const handleScrollbarReachBottom = () => {
-  console.log('Скроллбар достиг нижней границы')
-  // Загрузка дополнительных данных
-}
-</script>
-
-<template>
-  <Component @scrollbar-reach-bottom="handleScrollbarReachBottom" />
-</template>
-```
-
 ### `scrollbarLeaveBottom`
 
 Событие срабатывает при покидании нижней границы скролла (для использования в родительских компонентах).
-
-```html
-<script setup>
-const handleScrollbarLeaveBottom = () => {
-  console.log('Скроллбар покинул нижнюю границу')
-}
-</script>
-
-<template>
-  <Component @scrollbar-leave-bottom="handleScrollbarLeaveBottom" />
-</template>
-```
 
 ### `scrollbarEdge`
 
@@ -109,15 +36,3 @@ const handleScrollbarLeaveBottom = () => {
 - `isTop: boolean` — `true`, если скролл находится в верхней позиции
 - `isBottom: boolean` — `true`, если скролл находится в нижней позиции
 - `edge: 'top' | 'bottom'` — тип границы, которая изменилась
-
-```html
-<script setup>
-const handleScrollbarEdge = (isTop, isBottom, edge) => {
-  console.log('Скроллбар - состояние границ:', { isTop, isBottom, edge })
-}
-</script>
-
-<template>
-  <Component @scrollbar-edge="handleScrollbarEdge" />
-</template>
-```

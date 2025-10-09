@@ -1,17 +1,54 @@
-## Cancel / clear mode
+## Clear button
 
-The `cancel` and `cancelShow` properties control when a clear (cancel) icon is displayed.
+Properties `cancel` and `cancelShow` are designed to control the display of the field clear icon.
 
-### Properties
+**Properties:**
 
-- **cancel** — Display mode: `auto` or `always`.
-- **cancelShow** — Condition flag used only in `auto` mode.
+- `cancel` — clear button display mode (`auto` or `always`)
+- `cancelShow` — conditional visibility flag, used only in `auto` mode
 
-### Behaviour
+Properties work together: if `cancel` is set to `auto`, the clear icon is displayed only when the conditions `cancelShow = true` are met, the field is active (not `disabled`/`readonly`), and arrow mode (`arrowCarousel`/`arrowStepper`) is not enabled. When `cancel = always`, the icon is displayed forcibly (except for `disabled`/`readonly` or active arrows), the `cancelShow` value is ignored. Arrow modes take priority over the clear button — when navigation is active, cancel is hidden regardless of settings.
 
-- `cancel = auto`: Shown only if `cancelShow` is true, field is active (not disabled / readonly) and no arrow mode (carousel / stepper) is enabled.
-- `cancel = always`: Forced display (still hidden if disabled / readonly or arrows active).
-- In `always` mode `cancelShow` is ignored.
+```html
+<script setup>
+import { ref, computed } from 'vue'
 
-Typical usage: bind `cancelShow` to a computed "has value" state.
+const value = ref('')
+const hasValue = computed(() => value.value.length > 0)
+</script>
 
+<template>
+  <!-- Automatic mode with condition -->
+  <Field
+    label="Search"
+    cancel="auto"
+    :cancel-show="hasValue"
+  >
+    <template #default="{ id, className }">
+      <input :id="id" :class="className" v-model="value" />
+    </template>
+  </Field>
+
+  <!-- Forced display -->
+  <Field
+    label="Filter"
+    cancel="always"
+  >
+    <template #default="{ id, className }">
+      <input :id="id" :class="className" v-model="value" />
+    </template>
+  </Field>
+
+  <!-- With event handler -->
+  <Field
+    label="Input"
+    cancel="auto"
+    :cancel-show="hasValue"
+    @click="value = ''"
+  >
+    <template #default="{ id, className }">
+      <input :id="id" :class="className" v-model="value" />
+    </template>
+  </Field>
+</template>
+```

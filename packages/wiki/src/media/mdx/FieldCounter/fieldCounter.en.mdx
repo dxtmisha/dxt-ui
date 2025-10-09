@@ -1,21 +1,59 @@
-FieldCounter is a component that displays character count for form fields. Shows current character count and input limits.
+Component for displaying character count and input limits in form fields with customizable formatting templates.
 
-### Purpose
+FieldCounter provides visual feedback about the number of entered characters, automatically formats display depending on the presence of a maximum limit, and supports flexible customization through templates with placeholders. The component integrates with text fields and text areas, providing users with information about restrictions and remaining input space.
 
-- **Character counting** — Display current input character count
-- **Input limits** — Show character restrictions
-- **Custom templates** — Flexible display formats
-- **Auto visibility** — Smart display management
+**Key features:**
 
-### Core capabilities
+- Display current number of entered characters
+- Automatic maximum limit display when present
+- Flexible formatting templates with [c] and [m] placeholders
+- Automatic format detection (50 / 100 or just 50)
+- Support for string and numeric counter and maxlength values
+- Smart visibility management via counterShow property
+- Compact display for space efficiency
 
-- **Real-time counting** — Instant counter updates
-- **Limit management** — Maximum character limit display
-- **Template rendering** — Customizable formats with [c] and [m] placeholders
-- **Flexible values** — Support for strings and numbers
+**Common use cases:**
 
-### Integration
+- Text fields with character count limits
+- Multi-line text areas (textarea) for descriptions
+- Comment input fields with limits
+- Forms with minimum/maximum length requirements
+- SMS editors with character counting
 
-Use FieldCounter with text inputs and textareas to display character count and limit information.
+```html
+<script setup>
+import { ref } from 'vue'
 
-> This component focuses on counter display and should be used alongside input fields.
+const message = ref('')
+const bio = ref('')
+</script>
+
+<template>
+  <!-- Counter only without limit -->
+  <FieldCounter :counter="message.length" />
+
+  <!-- Counter with maximum limit (format: 50 / 200) -->
+  <FieldCounter
+    :counter="message.length"
+    :maxlength="200"
+  />
+
+  <!-- Custom display template -->
+  <FieldCounter
+    :counter="bio.length"
+    :maxlength="500"
+    template="Characters: [c] of [m]"
+  />
+
+  <!-- HTML in template for styling -->
+  <FieldCounter
+    :counter="message.length"
+    :maxlength="160"
+    template="<b>[c]</b> / [m] characters"
+  />
+
+  <!-- Conditional display via counterShow -->
+  <FieldCounter
+    :counter="message.length"
+    :maxlength="100"
+    :counterShow="message.length > 0"
