@@ -1,6 +1,24 @@
 ## Icon State Management
 
-The `icon`, `iconActive`, and `active` properties control the display of the icon based on its state. This allows for the creation of dynamic and interactive elements.
+A component for displaying icons with support for active state, rotation, loading, and skeleton integration.
+
+Icon provides a unified interface for working with icons in the design system, supporting both the main icon and an alternative for the active state. The component automatically manages switching between icons, handles loading events, and integrates with the skeleton system to display loading states.
+
+**Key Features:**
+
+- Display of main and active icons with smooth transitions
+- Icon rotation at a specified angle
+- Disabled and hide states for visibility control
+- Image loading events for icons
+- Integration with Skeleton for loading states
+- Support within other components (Button, Cell, Chip, Field)
+
+**Typical Use Cases:**
+
+- Icons in buttons and navigation elements
+- Interactive icons with state changes
+- State indicators in forms and lists
+- Decorative interface elements with animation
 
 ### Properties
 
@@ -23,21 +41,37 @@ The `icon`, `iconActive`, and `active` properties control the display of the ico
 ### Usage Example
 
 ```html
-<!-- Normal icon -->
-<Icon icon="home" />
+<script setup>
+import { ref } from 'vue'
+import { D1Icon } from '@dxtmisha/d1'
 
-<!-- Active icon -->
-<!-- `favorite` will be displayed because active=true -->
-<Icon icon="favorite_border" iconActive="favorite" :active="true" />
+const isActive = ref(false)
+</script>
 
-<!-- Dynamic state toggle -->
 <template>
-  <Icon
+  <!-- Normal icon -->
+  <D1Icon icon="home" />
+
+  <!-- Active icon -->
+  <!-- `favorite` will be displayed because active=true -->
+  <D1Icon icon="favorite_border" icon-active="favorite" :active="true" />
+
+  <!-- Dynamic state toggle -->
+  <D1Icon
     icon="visibility"
-    iconActive="visibility_off"
+    icon-active="visibility_off"
     :active="isVisible"
     @click="isVisible = !isVisible"
+  />
+
+  <D1Icon
+    icon="home"
+    icon-active="favorite"
+    :active="isActive"
+    turn="90"
+    @load="onIconLoad"
   />
 </template>
 ```
 
+> The Icon component can be used both standalone and as part of other UI components through the `icon`, `icon-trailing`, and `icon-active` properties.

@@ -1,22 +1,66 @@
-FieldMessage is a component for displaying helper and validation messages below form fields.
+Component for displaying helper and validation messages below form fields.
 
-### Purpose
+FieldMessage centralizes management of text hints and error messages in forms. The component automatically determines display priority (validation errors take precedence over hints), supports forced display via forceShow, and integrates with input fields and character counters. It provides a flexible slot system for customization and works with both static and reactive values.
 
-- Helper message — a hint or guidance for the user under the field
-- Validation message — an error text shown on invalid input
-- Forced display — controlled via the forceShow property
-- Smart visibility — automatic logic based on provided values
+**Key Features:**
 
-### Key features
+- Two message types: helper and validation
+- Message priority — validation message overrides helper message
+- Smart visibility — automatic display logic based on provided values
+- Forced display via forceShow property
+- Flexible sources — support for static and reactive values
+- Integration with FieldCounter for complex forms
+- Customizable rendering through design system and slots
 
-- Message priority — validation message has priority over helper text
-- Flexible sources — supports both static and reactive values
-- Compatibility — works with input fields and character counter
-- Configurable rendering — via the design system and component attributes
+**Typical Use Cases:**
 
-### Integration
+- Helper hints below input fields
+- Displaying validation errors in forms
+- Dynamic messages with reactive content
+- Complex forms with counters and validation
 
-Use FieldMessage alongside input fields to show hints and errors, and together with FieldCounter for more informative forms.
+```html
+<script setup>
+import { ref } from 'vue'
+import { D1FieldMessage } from '@dxtmisha/d1'
 
-> The component focuses on text messages and should be used with input controls.
+const validationError = ref('')
 
+const validateInput = (value) => {
+  if (value.length < 3) {
+    validationError.value = 'Minimum 3 characters'
+  } else {
+    validationError.value = ''
+  }
+}
+</script>
+
+<template>
+  <!-- Helper message -->
+  <D1FieldMessage helper="Enter your name" />
+
+  <!-- Validation message -->
+  <D1FieldMessage
+    helper="Minimum 3 characters"
+    :validation="validationError"
+  />
+
+  <!-- Forced display -->
+  <D1FieldMessage
+    helper="Always visible message"
+    forceShow
+  />
+
+  <!-- With custom content via slots -->
+  <D1FieldMessage>
+    <template #helper>
+      <span class="custom-hint">💡 Hint</span>
+    </template>
+    <template #validation>
+      <span class="custom-error">⚠️ Error</span>
+    </template>
+  </D1FieldMessage>
+</template>
+```
+
+> The component focuses on text messages and should be used together with input control elements.

@@ -2,10 +2,8 @@ import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
 import fieldMessageEn from './fieldMessage.en.mdx'
 import fieldMessageRu from './fieldMessage.ru.mdx'
-import slotHelperEn from './slot.helper.en.mdx'
-import slotHelperRu from './slot.helper.ru.mdx'
-import slotValidationEn from './slot.validation.en.mdx'
-import slotValidationRu from './slot.validation.ru.mdx'
+import slotsEn from './slots.en.mdx'
+import slotsRu from './slots.ru.mdx'
 
 /**
  * MDX files for FieldMessage component
@@ -15,17 +13,13 @@ import slotValidationRu from './slot.validation.ru.mdx'
 export const wikiMdxFieldMessage: StorybookComponentsMdxItem = {
   name: 'FieldMessage',
   descriptions: {
-    'fieldMessage': {
+    fieldMessage: {
       en: fieldMessageEn,
       ru: fieldMessageRu
     },
-    'slot.helper': {
-      en: slotHelperEn,
-      ru: slotHelperRu
-    },
-    'slot.validation': {
-      en: slotValidationEn,
-      ru: slotValidationRu
+    slots: {
+      en: slotsEn,
+      ru: slotsRu
     }
   }
 }

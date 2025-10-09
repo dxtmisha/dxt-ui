@@ -1,5 +1,6 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { FieldCounterComponentInclude } from '../FieldCounter'
+import type { FieldMessageSlot } from './basicTypes.ts'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -30,10 +31,10 @@ export interface FieldMessageExpose {
  */
 export interface FieldMessageSlots {
   /** Slot for helper message/ Слот для вспомогательного сообщения */
-  helper?(props: any): any
+  helper?(props: FieldMessageSlot): any
 
   /** Slot for validation message/Слот для сообщения об ошибке */
-  validation?(props: any): any
+  validation?(props: FieldMessageSlot): any
 }
 
 /**

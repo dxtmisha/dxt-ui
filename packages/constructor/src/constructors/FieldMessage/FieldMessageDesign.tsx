@@ -141,8 +141,8 @@ export class FieldMessageDesign<
       ]
     }
 
-    this.initSlot('helper', children)
-    this.initSlot('validation', children)
+    this.initSlot('helper', children, this.item.slotHelperData.value)
+    this.initSlot('validation', children, this.item.slotValidationData.value)
 
     if (children.length < 1) {
       props.innerHTML = this.item.message.item.value

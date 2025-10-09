@@ -56,9 +56,8 @@ export const wikiDescriptionsFieldMessage: StorybookComponentsDescriptionItem = 
 <StorybookDescriptions componentName={'FieldMessage'} type={'fieldMessage'}/>
     `,
     slots: `
-<StorybookDescriptions componentName={'FieldMessage'} type={'slot.helper'}/>
-<StorybookDescriptions componentName={'FieldMessage'} type={'slot.validation'}/>
 <Canvas of={Component.FieldMessageSlots}/>
+<StorybookDescriptions componentName={'FieldMessage'} type={'slots'}/>
     `
   }
 }

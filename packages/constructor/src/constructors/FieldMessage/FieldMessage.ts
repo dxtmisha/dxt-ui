@@ -6,6 +6,7 @@ import { FieldMessageMessage } from './FieldMessageMessage'
 import { SkeletonInclude } from '../Skeleton'
 
 import type { FieldMessageComponents, FieldMessageEmits, FieldMessageSlots } from './types'
+import type { FieldMessageSlot } from './basicTypes'
 import type { FieldMessageProps } from './props'
 
 /**
@@ -75,5 +76,23 @@ export class FieldMessage {
    */
   readonly classes = computed<ConstrClassObject>(() => ({
     [`${this.className}--validation`]: this.message.isValidation.value
+  }))
+
+  /**
+   * Data for helper slot/ Данные для слота helper
+   */
+  readonly slotHelperData = computed<FieldMessageSlot>(() => ({
+    message: this.props.helperMessage,
+    helperMessage: this.props.helperMessage,
+    validationMessage: this.props.validationMessage
+  }))
+
+  /**
+   * Data for validation slot/ Данные для слота validation
+   */
+  readonly slotValidationData = computed<FieldMessageSlot>(() => ({
+    message: this.props.validationMessage,
+    helperMessage: this.props.helperMessage,
+    validationMessage: this.props.validationMessage
   }))
 }

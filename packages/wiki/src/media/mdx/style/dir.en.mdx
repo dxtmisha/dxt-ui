@@ -1,10 +1,17 @@
-## Managing Component Direction
+## Direction
 
-The `dir` property controls the mirroring of the component based on the site's text direction (LTR/RTL).
-It ensures the correct interface display for right-to-left languages.
+Property `dir` controls mirroring of the element based on text direction (LTR/RTL).
 
-### Recommendations
+**Usage:**
 
-- Use alongside your app's localization settings.
-- Particularly useful for arrow icons that also need to flip when a direction changes.
-- Verify third-party SVG icons as they might have preset directions.
+Automatically inverts the visual representation when switching between left-to-right and right-to-left languages. Especially important for elements containing directional graphic symbols (arrows, pointers).
+
+**Values:**
+
+- `false` (default) — standard display
+- `true` — enables text direction adaptation
+
+```html
+<!-- Text direction adaptation -->
+<Component dir />
+```

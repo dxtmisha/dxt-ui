@@ -1,9 +1,17 @@
-## Managing Component Palette
+## Color Palette
 
-The `asPalette` property applies the parent element's palette color to the component while preserving its base saturation.
+Property `asPalette` enables color scheme inheritance from the parent element while maintaining base saturation.
 
-### Recommendations
+**Usage:**
 
-- Use this property to automatically adapt components to the application's theme.
-- Ensure the parent element has a valid palette class.
+Allows automatic color adaptation to placement context. The element adopts the parent's color palette without losing its saturation characteristics.
 
+**Values:**
+
+- `false` (default) — uses its own color scheme
+- `true` — inherits palette from parent element
+
+```html
+<!-- Inherit palette from parent -->
+<Component asPalette />
+```

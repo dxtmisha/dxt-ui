@@ -1,13 +1,27 @@
 ### `isActive`
 
-Вычисляемое свойство, которое определяет, активна ли дополнительная иконка.
+Вычисляемое состояние, указывающее активно ли альтернативное представление (когда одновременно установлены `active` и `iconActive`).
 
-```ts
-readonly isActive: ComputedRef<boolean>
+**Тип:** `ComputedRef<boolean>`
+
+```html
+<script setup>
+const componentRef = ref()
+
+watch(() => componentRef.value?.isActive, (isActive) => {
+  console.log('Альтернативное состояние активно:', isActive)
+
+  if (isActive) {
+    console.log('Отображается альтернативное представление')
+  }
+})
+</script>
+
+<template>
+  <Component ref="componentRef" icon="home" iconActive="favorite" :active="true">
+    <template #default>
+      <p v-if="componentRef?.isActive">Активное состояние</p>
+    </template>
+  </Component>
+</template>
 ```
-
-Возвращает `true` только когда выполняются оба условия:
-- Свойство `active` установлено в `true`
-- Свойство `iconActive` задано (не пустое)
-
-Это свойство используется внутри компонента для управления отображением основной и дополнительной иконок.

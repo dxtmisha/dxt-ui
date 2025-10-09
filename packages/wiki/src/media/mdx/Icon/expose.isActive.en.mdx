@@ -1,13 +1,27 @@
 ### `isActive`
 
-Computed property that determines whether the additional icon is active.
+Computed state indicating whether the alternative representation is active (when both `active` and `iconActive` are set).
 
-```ts
-readonly isActive: ComputedRef<boolean>
+**Type:** `ComputedRef<boolean>`
+
+```html
+<script setup>
+const componentRef = ref()
+
+watch(() => componentRef.value?.isActive, (isActive) => {
+  console.log('Alternative state is active:', isActive)
+
+  if (isActive) {
+    console.log('Alternative representation is displayed')
+  }
+})
+</script>
+
+<template>
+  <Component ref="componentRef" icon="home" iconActive="favorite" :active="true">
+    <template #default>
+      <p v-if="componentRef?.isActive">Active state</p>
+    </template>
+  </Component>
+</template>
 ```
-
-Returns `true` only when both conditions are met:
-- The `active` property is set to `true`
-- The `iconActive` property is defined (not empty)
-
-This property is used internally by the component to control the display of primary and additional icons.

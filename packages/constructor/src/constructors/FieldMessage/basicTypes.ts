@@ -4,6 +4,15 @@ import type { FieldMessagePropsBasic } from './props'
 import type { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounter'
 
 /**
+ * Type describing available slots/ Тип, описывающий доступные слоты
+ */
+export type FieldMessageSlot = {
+  message?: string
+  helperMessage?: string
+  validationMessage?: string
+}
+
+/**
  * Interface for describing which components need to be connected for FieldMessage work/
  * Интерфейс для описания, какие компоненты надо подключить для работы FieldMessage
  */
