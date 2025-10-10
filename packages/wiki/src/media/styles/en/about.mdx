@@ -1,0 +1,79 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/About'/>
+
+# @dxtmisha/styles
+
+SCSS utilities library for DXT UI ecosystem. Contains ready-made mixins and functions for styling with CSS Custom Properties support, automatic RTL handling, and responsive design patterns.
+
+## Package Contents
+
+### Color Management
+
+- **Color Functions** — validation, conversion, palette management, opacity handling
+- **getColor** — color value extraction with opacity support
+- **getPalette** — palette color management
+- **toColorRbg** — color conversion to RGB format
+- **toGradient** — color to gradient conversion
+
+### Layout & Positioning
+
+- **Flexbox Mixins** — horizontal/vertical layouts, centering, spacing presets
+- **Position Mixins** — absolute/relative positioning with automatic RTL support via inset-inline
+- **Dimension Mixins** — width, height, aspect ratio, viewport units (dvw/dvh)
+- **Margin & Padding** — spacing utilities with RTL support via margin-inline/padding-inline
+
+### Typography
+
+- **Font Mixins** — font size, line height, paragraph spacing with CSS variables
+- **Text Alignment** — automatic RTL text alignment inversion
+- **Text Overflow** — truncate, clamp, ellipsis handling
+- **Text Transformation** — uppercase, lowercase, capitalize utilities
+
+### Direction & RTL Support
+
+- **Dir System** — automatic LTR/RTL direction management via CSS variables
+- **initDir** — initialization with --d-dir multiplier (1 for LTR, -1 for RTL)
+- **dirLeft/dirRight** — automatic value inversion for RTL
+- **dirFlexLeft/dirFlexRight** — flex alignment with RTL support
+
+### Responsive Design
+
+- **Media Queries** — min/max width breakpoints from design system
+- **Container Queries** — responsive components based on parent container size
+- **mediaMinWidth/mediaMaxWidth** — convenient media query wrappers
+- **containerMinWidth/containerMaxWidth** — container query utilities
+
+### Transform & Animation
+
+- **Transform Mixins** — translateX/Y, scale, rotate with CSS variables
+- **transformInit** — applies all transforms with automatic RTL for translateX
+- **translateInit** — translate-only transforms
+
+### Interactive States
+
+- **Selector Mixins** — hover, active, focus, disabled, readonly states
+- **enabled** — automatic exclusion of disabled/readonly/loading states
+- **focus** — includes :focus, :focus-within, and BEM modifier support
+
+### Utilities
+
+- **Content Visibility** — performance optimization for off-screen content
+- **Scrollbar** — hide scrollbar while keeping scroll functionality
+- **Rules** — map operations, string manipulation, selector utilities
+- **Custom Properties** — CSS variable management and validation
+
+## Key Features
+
+**RTL Support:** Automatic right-to-left layout support through CSS Logical Properties (margin-inline, padding-inline, inset-inline) and direction system integration
+
+**CSS Custom Properties:** All sizing, spacing, and transform values stored as CSS variables for dynamic theming
+
+**Design System Integration:** Breakpoints, colors, and spacing values from centralized design tokens
+
+**Performance:** Content visibility optimizations, efficient selector generation, minimal CSS output
+
+**Type Safety:** Validation functions for colors, custom properties, and data types
+
+**BEM Compatible:** All mixins work seamlessly with BEM methodology
+
