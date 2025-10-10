@@ -1,40 +1,84 @@
 ## Action mode
 
-Properties that switch Bars into a contextual action bar when selecting items or entering bulk-edit mode: `action` activates the mode, `actionLabel` and `actionDescription` replace the main content, `actionBars` provides a specialized button set for operations.
+Properties `action`, `actionLabel`, `actionDescription`, and `actionBars` are designed for switching Bars into contextual action mode when selecting items or performing bulk operations.
 
+**Properties:**
+
+- `action` — activates action mode with full content replacement
+- `actionLabel` — primary title for action mode (typically count of selected items)
+- `actionDescription` — additional description or instruction for current action
+- `actionBars` — array of action buttons for operations on selected elements
+
+Properties work together: when `action = true`, the component replaces standard content (label, description, bars) with action variants (actionLabel, actionDescription, actionBars). The back button automatically transforms into an exit button (iconClose) for leaving action mode. All shared button attributes from `buttonAttrs` apply to `actionBars`, maintaining consistent styling. Action mode is typically controlled by external selection state and is used for temporary focused operations with the ability to exit back to normal view.
+
+```html
+<script setup>
+import { ref, computed } from 'vue'
+
+const selectedItems = ref([])
+const actionMode = computed(() => selectedItems.value.length > 0)
+
+const handleSelect = (id) => {
+  const index = selectedItems.value.indexOf(id)
+  if (index > -1) {
+    selectedItems.value.splice(index, 1)
+  } else {
+    selectedItems.value.push(id)
+  }
+}
+
+const handleShare = () => {
+  console.log('Share selected:', selectedItems.value)
+}
+
+const handleDelete = () => {
+  console.log('Delete selected:', selectedItems.value)
+  selectedItems.value = []
+}
+</script>
+
+<template>
+  <!-- Standard mode with regular navigation -->
+  <Bars
+    :action="actionMode"
+    label="Contacts"
+    description="Manage your contacts"
+    icon-back="arrow_back"
+    icon-close="close"
+    :bars="[
+      { icon: 'add', label: 'Add' },
+      { icon: 'search', label: 'Search' }
+    ]"
+    :action-label="`${selectedItems.length} selected`"
+    action-description="Choose an action to apply"
+    :action-bars="[
+      { icon: 'share', onClick: handleShare },
+      { icon: 'delete', onClick: handleDelete }
+    ]"
+  />
+
+  <!-- Action mode always active -->
+  <Bars
+    action
+    action-label="5 items selected"
+    action-description="Select an action"
+    icon-close="close"
+    :action-bars="[
+      { icon: 'edit', label: 'Edit' },
+      { icon: 'archive', label: 'Archive' },
+      { icon: 'delete', label: 'Delete' }
+    ]"
+  />
+
+  <!-- With v-model for two-way binding -->
+  <Bars
+    v-model:action="actionMode"
+    label="Messages"
+    :action-label="`${selectedItems.length} messages`"
+    :action-bars="[
+      { icon: 'mark_email_read' },
+      { icon: 'delete' }
+    ]"
+  />
+</template>
 ```
-action?: boolean
-actionLabel?: string | number
-actionDescription?: string
-actionBars?: Button[]
-```
-
-### Properties
-
-- **`action`** — Switches the bar into action context with full content replacement
-- **`actionLabel`** — Primary action mode title (typically a count of selected items)
-- **`actionDescription`** — Additional description or instruction for the current action
-- **`actionBars`** — Array of action buttons for operations on selected elements
-
-### When to use
-
-- **Item selection** — User has selected one or more items in a list or table
-- **Bulk operations** — Actions are needed on a group of selected objects
-- **Contextual menus** — Replace the standard bar with specialized actions
-- **Temporary modes** — Focus the interface on a specific task with exit capability
-
-### Comparison
-
-- **`label` vs `actionLabel`** — Regular title is replaced with selection count or description
-- **`description` vs `actionDescription`** — Standard description becomes action instruction
-- **`bars` vs `actionBars`** — Regular buttons are replaced with context-specific ones
-- **Navigation** — Back button becomes an exit button for leaving action mode
-
-### Features
-
-- **Complete content replacement** — All text areas and buttons are replaced with action variants
-- **Configuration preservation** — Shared button attributes (buttonAttrs) apply to actionBars
-- **Unified styling** — Action mode inherits all styling and behavior from the main component
-- **Programmatic control** — Mode is controlled by external selection state
-
-> Use short, clear labels in actionLabel and limit actionBars to 3–4 key actions for better user experience.

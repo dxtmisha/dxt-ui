@@ -1,22 +1,97 @@
-Bars is a top-level bar component for headers, toolbars, and contextual action bars. It provides a structured layout for titles, descriptions, back buttons, and interactive button sets with support for action mode for bulk operations.
+## Description
 
-### Purpose
+Versatile bar component for application headers, toolbars, and contextual action bars with support for navigation, action buttons, and bulk operation modes.
 
-- **Application headers** — Unified top bar for screens, sections, and pages with consistent navigation
-- **Toolbars** — Placement of primary actions and functional interface elements
-- **Contextual actions** — Special mode for bulk operations on selected items
-- **Structured navigation** — Standardized back button behavior and screen transitions
+Bars provides a comprehensive solution for creating consistent top-level interface elements with structured layout for titles, descriptions, back navigation, and interactive button sets. The component integrates action mode switching for contextual operations, unified button configuration, and skeleton loading states for creating modern application headers and toolbars.
 
-### Core capabilities
+**Key features:**
 
-- **Text content** — Primary label and secondary description with dynamic update support
-- **Navigation button** — Configurable back button with hiding options and icon customization
-- **Action set** — Button array (bars) for right-side placement with flexible configuration
-- **Action mode** — Switching to action mode with separate labels, description, and button set
-- **Unified attributes** — Shared settings for all buttons via buttonAttrs with event support
+- Structured text hierarchy (label and description with dynamic updates)
+- Configurable back button with navigation and close icon switching
+- Flexible button arrays (bars) for primary actions on the right side
+- Action mode with separate content and button set for bulk operations
+- Two-way binding (v-model:action) for state synchronization
+- Unified button attributes (buttonAttrs) for consistent styling
+- Event handling for click interactions and navigation
+- Skeleton system integration for loading states
+- Icon customization for back and close buttons
 
-### Integration
+**Typical use cases:**
 
-Bars is designed for creating consistent headers and toolbars in applications. Use it as a foundation for screens when you need standardized navigation, action placement, and support for contextual operations with selected elements.
+- Application screen headers with navigation and actions
+- Toolbar panels for sections and pages
+- Contextual action bars for selected item operations
+- Search headers with filter and sort controls
+- Settings screens with back navigation
+- List headers with bulk action support
+- Multi-selection interfaces with action mode
 
-> This is a top-level UI component intended for direct use in application interfaces and design systems.
+```html
+<script setup>
+import { ref } from 'vue'
+
+const actionMode = ref(false)
+const selectedCount = ref(0)
+
+const handleSearch = () => {
+  console.log('Search clicked')
+}
+
+const handleFilter = () => {
+  console.log('Filter clicked')
+}
+
+const handleDelete = () => {
+  console.log('Delete selected items')
+  actionMode.value = false
+  selectedCount.value = 0
+}
+</script>
+
+<template>
+  <div class="app-layout">
+    <!-- Standard header with navigation and actions -->
+    <Bars
+      label="Messages"
+      description="Your conversations"
+      icon-back="arrow_back"
+      :bars="[
+        { icon: 'search', onClick: handleSearch },
+        { icon: 'filter_list', onClick: handleFilter },
+        { icon: 'more_vert' }
+      ]"
+    />
+
+    <!-- Header with action mode for bulk operations -->
+    <Bars
+      v-model:action="actionMode"
+      label="Contacts"
+      description="Manage your contacts"
+      :action-label="`${selectedCount} selected`"
+      action-description="Choose an action"
+      icon-back="arrow_back"
+      icon-close="close"
+      :bars="[
+        { icon: 'add' },
+        { icon: 'search' }
+      ]"
+      :action-bars="[
+        { icon: 'share' },
+        { icon: 'delete', onClick: handleDelete }
+      ]"
+    />
+
+    <!-- Toolbar with custom button attributes -->
+    <Bars
+      label="Settings"
+      :button-attrs="{ secondary: true }"
+      :bars="[
+        { icon: 'sync', label: 'Sync' },
+        { icon: 'info', label: 'Info' }
+      ]"
+    />
+  </div>
+</template>
+```
+
+> Bars is designed as a top-level UI component for creating consistent application headers, toolbars, and contextual action interfaces with comprehensive navigation, action management, and bulk operation support.
