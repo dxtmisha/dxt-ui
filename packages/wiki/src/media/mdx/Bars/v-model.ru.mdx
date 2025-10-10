@@ -1,19 +1,28 @@
-## Двусторонняя привязка (v-model)
+## Управление состоянием через v-model
 
-Компонент Bars поддерживает двустороннюю привязку для состояния `action` с использованием директивы `v-model:action`.
+Двусторонняя привязка состояния action-режима через `v-model:action`.
 
-### Использование
-
-Это позволяет синхронизировать режим действий панели с локальным свойством данных родительского компонента.
+**Параметры:**
+- `action: boolean` — состояние action-режима панели
 
 ```html
-<Bars v-model:action="isAction"/>
+<script setup>
+import { ref } from 'vue'
+
+const isAction = ref(false)
+</script>
+
+<template>
+  <button @click="isAction = true">Включить action-режим</button>
+
+  <Bars v-model:action="isAction">
+    <template #bars>
+      <Button>Обычная кнопка</Button>
+    </template>
+    <template #actionBars>
+      <Button>Action-кнопка</Button>
+      <Button @click="isAction = false">Закрыть</Button>
+    </template>
+  </Bars>
+</template>
 ```
-
-### Как это работает
-
-`v-model:action` — это сокращение для привязки свойства `action` и прослушивания события `update:action`.
-
-- **`:action="isAction"`** — Режим действий управляется ref `isAction`.
-- **`@update:action="isAction = $event"`** — Когда внутреннее состояние меняется, компонент генерирует событие для обновления `isAction` у родителя.
-

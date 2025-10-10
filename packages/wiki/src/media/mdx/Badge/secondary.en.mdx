@@ -1,17 +1,16 @@
-## Secondary Badge
+## Secondary badges (secondary)
 
-The secondary variant offers a balanced approach between primary and outline styles, providing moderate visual emphasis that supports the main content without competing for attention.
+The Badge component supports secondary mode via the `secondary` property. In this mode, badges have a balanced visual style between primary and outline variants:
 
-### When to use
+- **Moderate contrast** - balanced color treatment for noticeability without overwhelming
+- **Softer appearance** - less intense than primary while maintaining clear visibility
+- **Versatile styling** - works well in various interface contexts
+- **Content harmony** - complements primary elements without visual competition
 
-- **Supporting information**: When displaying important but non-critical data alongside primary content
-- **Status updates**: For showing progress, warnings, or informational states that need visibility
-- **Content categorization**: To organize and label content with moderate emphasis
-- **Hierarchical displays**: When creating visual hierarchy where secondary elements need distinction
+Secondary mode is especially useful for creating supporting information indicators, status updates, and categorical labels that are important but don't require critical attention in the visual hierarchy.
 
-### Visual characteristics
-
-- **Moderate contrast**: Balanced color treatment that's noticeable but not overwhelming
-- **Softer appearance**: Less intense than primary variants while maintaining clear visibility
-- **Versatile styling**: Works well in various contexts and color schemes
-- **Content harmony**: Complements primary elements without creating visual competition
+```html
+<Badge secondary overlap="static">12</Badge>
+<Badge secondary overlap="static" icon="info">Updated</Badge>
+<Badge secondary dot overlap="static"/>
+```

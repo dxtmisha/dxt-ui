@@ -1,17 +1,21 @@
-## Dot Badge
+## Dot indicator
 
-The dot variant displays the badge as a small circular indicator without any text content, perfect for simple status notifications and presence indicators.
+The `dot` property transforms Badge into a compact circular indicator without text content, used for simple visual status notifications.
 
-### When to use
+**Possible values:**
 
-- **Presence indicators**: To show online/offline status or activity states
-- **Notification markers**: For indicating new messages, updates, or alerts without specific counts
-- **Status dots**: To display simple on/off or active/inactive states
-- **Minimalist design**: When space is limited and only basic indication is needed
+- `true` — displays Badge as a dot indicator
+- `false` — displays Badge in standard mode with content (default)
 
-### Visual characteristics
+Creates a minimalist visual marker for indicating states, activity, or notifications without displaying specific values. Ideal for user presence indicators (online/offline), unread notification markers, and status dots on interface elements. When the `dot` property is activated, any text content or numeric values are ignored, displaying only the color indicator.
 
-- **Compact size**: Takes minimal space while maintaining visibility
-- **No text content**: Pure visual indicator without labels or numbers
-- **Clean appearance**: Simple circular shape that integrates seamlessly
-- **Focus on state**: Emphasizes status rather than specific information
+```html
+<!-- Standard Badge with content -->
+<Badge label="5" />
+
+<!-- Dot indicator -->
+<Badge dot />
+
+<!-- Dot indicator for online status -->
+<Badge dot :selected="isOnline" overlap="circular" />
+```

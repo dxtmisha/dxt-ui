@@ -1,17 +1,16 @@
-## Outline Badge
+## Outline badges (outline)
 
-The outline variant provides a subtle badge style with transparent background and visible border, perfect for secondary information that needs to be noticeable but not dominant.
+The Badge component supports outline mode via the `outline` property. In this mode, badges have a minimalist visual style with transparent background and colored border:
 
-### When to use
+- **Minimalist design** - suitable for interfaces requiring reduced visual load
+- **Transparent background** - maintains clean appearance when displaying secondary information
+- **Subtle presence** - less visually prominent than filled variants
+- **Flexible adaptation** - works well with various background colors and themes
 
-- **Secondary information**: When you need to display supplementary data without overwhelming the main content
-- **Status indicators**: For showing neutral or informational states that don't require immediate attention
-- **Grouping elements**: To categorize or tag content in a non-intrusive way
-- **Light theme compatibility**: When working with light backgrounds where solid badges might be too heavy
+Outline mode is especially useful for creating secondary indicators, informational labels, and status markers that should be noticeable but not dominant in the interface's visual hierarchy.
 
-### Visual characteristics
-
-- **Transparent background**: Maintains the underlying design while adding informational value
-- **Visible border**: Uses border styling to define the badge boundaries
-- **Subtle presence**: Less visually prominent than primary or secondary filled variants
-- **Flexible appearance**: Adapts well to different background colors and themes
+```html
+<Badge outline overlap="static">99+</Badge>
+<Badge outline overlap="static" icon="info">Info</Badge>
+<Badge outline dot overlap="static"/>
+```

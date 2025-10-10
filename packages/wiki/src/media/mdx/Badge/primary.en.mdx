@@ -1,16 +1,16 @@
-## Primary Badge
+## Primary badges (primary)
 
-The primary variant is the most prominent badge style, designed to draw attention and indicate high-priority information or status.
+The Badge component supports primary mode via the `primary` property. In this mode, badges have the most prominent visual style with bright brand colors:
 
-### When to use
+- **High contrast** - uses primary brand colors for maximum visibility
+- **Bold appearance** - draws attention to important information
+- **Enhanced visibility** - designed to stand out against various backgrounds
+- **Accessibility support** - strong contrast ratios for readability
 
-- **Critical notifications**: When you need to highlight urgent or important information
-- **Status indicators**: For showing active, enabled, or positive states
-- **Call-to-action elements**: When the badge serves as an interactive element requiring user attention
-- **Brand emphasis**: To maintain brand consistency with primary color schemes
+Primary mode is especially useful for creating critical notification indicators, active statuses, and high-priority markers that require immediate user attention in the interface.
 
-### Visual characteristics
-
-- **High contrast**: Uses primary brand colors with strong contrast ratios for accessibility
-- **Bold appearance**: More visually prominent than secondary or outline variants
-- **Enhanced visibility**: Designed to stand out against various background colors
+```html
+<Badge primary overlap="static">5</Badge>
+<Badge primary overlap="static" icon="warning">Important</Badge>
+<Badge primary dot overlap="static"/>
+```

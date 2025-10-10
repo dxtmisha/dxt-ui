@@ -130,13 +130,11 @@ export const wikiDescriptionsBars: StorybookComponentsDescriptionItem = {
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
-<StorybookDescriptions componentName={'Event'} type={'clickLite'}/>
     `,
     slots: `
+<StorybookDescriptions componentName={'Bars'} type={'slots'}/>
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
-<StorybookDescriptions componentName={'Bars'} type={'slot.bars'}/>
-<StorybookDescriptions componentName={'Bars'} type={'slot.actionBars'}/>
     `
   }
 }

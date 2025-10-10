@@ -4,10 +4,8 @@ import barsEn from './bars.en.mdx'
 import barsRu from './bars.ru.mdx'
 import actionEn from './action.en.mdx'
 import actionRu from './action.ru.mdx'
-import slotBarsEn from './slot.bars.en.mdx'
-import slotBarsRu from './slot.bars.ru.mdx'
-import slotActionBarsEn from './slot.actionBars.en.mdx'
-import slotActionBarsRu from './slot.actionBars.ru.mdx'
+import slotsEn from './slots.en.mdx'
+import slotsRu from './slots.ru.mdx'
 import vModelEn from './v-model.en.mdx'
 import vModelRu from './v-model.ru.mdx'
 
@@ -27,13 +25,9 @@ export const wikiMdxBars: StorybookComponentsMdxItem = {
       en: actionEn,
       ru: actionRu
     },
-    'slot.bars': {
-      en: slotBarsEn,
-      ru: slotBarsRu
-    },
-    'slot.actionBars': {
-      en: slotActionBarsEn,
-      ru: slotActionBarsRu
+    'slots': {
+      en: slotsEn,
+      ru: slotsRu
     },
     'v-model': {
       en: vModelEn,

@@ -1,19 +1,28 @@
-## Two-way binding (v-model)
+## State management via v-model
 
-The Bars component supports two-way binding for the `action` state using the `v-model:action` directive.
+Two-way binding of action mode state via `v-model:action`.
 
-### Usage
-
-This allows you to synchronize the action mode of the bar with a local data property in your parent component.
+**Parameters:**
+- `action: boolean` — action mode state of the bar
 
 ```html
-<Bars v-model:action="isAction"/>
+<script setup>
+import { ref } from 'vue'
+
+const isAction = ref(false)
+</script>
+
+<template>
+  <button @click="isAction = true">Enable action mode</button>
+
+  <Bars v-model:action="isAction">
+    <template #bars>
+      <Button>Regular button</Button>
+    </template>
+    <template #actionBars>
+      <Button>Action button</Button>
+      <Button @click="isAction = false">Close</Button>
+    </template>
+  </Bars>
+</template>
 ```
-
-### How it works
-
-The `v-model:action` is a shorthand for binding the `action` prop and listening to the `update:action` event.
-
-- **`:action=\"isAction\"`** — The action mode is controlled by the `isAction` ref.
-- **`@update:action=\"isAction = $event\"`** — When the internal state changes, the component emits an event to update the parent’s `isAction` ref.
-

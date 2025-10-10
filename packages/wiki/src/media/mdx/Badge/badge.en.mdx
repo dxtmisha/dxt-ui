@@ -1,11 +1,89 @@
 ## Description
 
-The Badge component is a small visual indicator used to display status, count, or notifications on interface elements. It provides a compact way to convey important information without taking up much space.
+Compact visual indicator for displaying status, notification counts, or markers on interface elements with support for various display modes and automatic overflow management.
 
-### Key Features
+Badge provides a universal solution for creating informative indicators with flexible content configuration, positioning, and appearance. The component supports displaying text, numbers with maximum value limits, icons, and dot indicators, automatically hides when content is absent, and integrates with the slot system for customization.
 
-- **Status indication**: Display different states with color variants
-- **Content flexibility**: Show text, numbers, or leave empty for dot indicator
-- **Smart overflow**: Automatically handle large numbers with max value display
-- **Positioning**: Flexible placement relative to parent elements
-- **Accessibility**: Built-in support for screen readers and keyboard navigation
+**Key features:**
+
+- Multiple display modes (text, numbers, icons, dot indicator)
+- Automatic overflow management with maximum value configuration
+- Flexible positioning relative to parent elements (overlap, vertical, horizontal)
+- Automatic hiding when content is absent (dot, icon, label)
+- Integration with LabelNumberInclude for numeric value processing
+- Icon support through IconInclude
+- Color variants for different status types
+- Visibility control via hide property
+- Customization through slots for complete content control
+
+**Common use cases:**
+
+- Unread notification count indicators
+- Status markers on user avatars (online/offline)
+- Item counters in shopping carts or lists
+- New message indicators in chats
+- Status markers on product cards
+- Visual hints about available updates
+- Numeric indicators on tabs and menu items
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const cartCount = ref(5)
+const unreadMessages = ref(127)
+const isOnline = ref(true)
+
+const addToCart = () => {
+  cartCount.value++
+}
+</script>
+
+<template>
+  <div class="badge-examples">
+    <!-- Basic badge with number -->
+    <div style="position: relative; display: inline-block;">
+      <IconButton icon="shopping_cart" @click="addToCart"/>
+      <Badge :label="cartCount"/>
+    </div>
+
+    <!-- Badge with maximum value limit -->
+    <div style="position: relative; display: inline-block;">
+      <IconButton icon="notifications"/>
+      <Badge :label="unreadMessages" :label-max="99"/>
+    </div>
+
+    <!-- Dot status indicator -->
+    <div style="position: relative; display: inline-block;">
+      <Avatar src="/user-avatar.jpg"/>
+      <Badge
+        dot
+        :selected="isOnline"
+        overlap="circular"
+      />
+    </div>
+
+    <!-- Badge with icon and text -->
+    <div style="position: relative; display: inline-block;">
+      <Button>Profile</Button>
+      <Badge
+        icon="verified"
+        label="Pro"
+        overlap="static"
+      />
+    </div>
+
+    <!-- Badge with custom positioning -->
+    <div style="position: relative; display: inline-block;">
+      <Card>Content</Card>
+      <Badge
+        label="New"
+        vertical="bottom"
+        horizontal="left"
+      />
+    </div>
+  </div>
+</template>
+```
+
+> Badge is designed as a universal UI component for creating compact visual indicators with comprehensive support for various content types, automatic display management, and flexible positioning settings.

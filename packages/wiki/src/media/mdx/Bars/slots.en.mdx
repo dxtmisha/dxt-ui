@@ -1,0 +1,33 @@
+```html
+<Bars>
+  <template #bars>
+    <Button icon="search" />
+    <Button icon="refresh" />
+    <Button icon="more_vert" />
+  </template>
+
+  <template #actionBars>
+    <Button icon="share" />
+    <Button icon="edit" />
+    <Button icon="delete" />
+  </template>
+</Bars>
+```
+
+### `bars`
+
+Slot for placing action buttons in regular mode.
+
+Allows you to fully override the composition, order, and appearance of buttons positioned to the right of the label and description. The `bars` area is right-aligned and inherits sizing/spacing from the base Bars component styles.
+
+**Parameters:**
+- Slot does not pass parameters (static slot)
+
+### `actionBars`
+
+Slot for placing buttons in action mode.
+
+Allows you to fully redefine specialized actions displayed when item selection mode is active. The `actionBars` area is shown instead of regular `bars` when action mode is enabled (via `v-model:action` or the `action` property).
+
+**Parameters:**
+- Slot does not pass parameters (static slot)

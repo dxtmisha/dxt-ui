@@ -1,28 +1,47 @@
-## Properties for text and number handling
+## Working with text labels and numbers
 
-The `label`, `labelMax`, and `formatting` properties are designed to control the display of textual and numerical content in components.
+The `label`, `labelMax`, and `formatting` properties are designed to manage the display of textual and numerical content in interface components.
 
-### Properties
+**Properties:**
 
-- **label** — Text label or numeric value of the component
-- **labelMax** — Maximum length of a label text before truncation
-- **formatting** — Determines whether values should be formatted before display
+- `label` — text label or numeric value to display
+- `labelMax` — maximum value for numeric labels (adds "+" indicator when exceeded)
+- `formatting` — enables formatting of numeric values according to user locale
 
-### Functionality
+Properties work together for flexible content management: `label` accepts both textual and numeric values. When a number is passed, automatic processing is applied with localization consideration. The `labelMax` property limits the display of large numbers — when the value is exceeded, a "+" symbol is added (e.g., "99+"). The `formatting` property controls number formatting according to user regional settings, ensuring correct display of separators and numeric formats.
 
-These properties provide flexible content display management:
+```html
+<script setup>
+import { ref } from 'vue'
 
-#### Label processing
-- `label` can contain both textual and numeric values
-- When a numeric value is passed to `label`, the `toNumberByMax` function is automatically applied
-- Conversion occurs with consideration of maximum values and localization
+const count = ref(5)
+const largeNumber = ref(1234)
+</script>
 
-#### Length limitation
-- `labelMax` sets the maximum length of displayed text
-- When the limit is exceeded, a text is truncated with an overflow indicator
-- Ensures consistent display across different contexts
+<template>
+  <!-- Basic usage with text -->
+  <Component label="Text" />
 
-#### Value formatting
-- `formatting` controls whether formatting should be applied to values
-- When formatting is enabled, numeric values are converted according to user locale
-- Supports automatic interface language detection
+  <!-- Numeric value -->
+  <Component :label="count" />
+
+  <!-- Maximum value limitation -->
+  <Component :label="150" :label-max="99" />
+  <!-- Displays: 99+ -->
+
+  <!-- With number formatting -->
+  <Component
+    :label="largeNumber"
+    :formatting="true"
+  />
+  <!-- Displays: 1,234 (depending on locale) -->
+
+  <!-- Combined usage -->
+  <Component
+    :label="999"
+    :label-max="99"
+    :formatting="true"
+  />
+  <!-- Displays: 99+ -->
+</template>
+```
