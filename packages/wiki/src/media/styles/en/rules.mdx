@@ -1,0 +1,117 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Rules'/>
+
+# Rules
+
+A set of SCSS functions for working with maps, selectors, and strings with CSS Custom Properties support.
+
+## Validation Functions
+
+### `isCustomVar`
+
+Checks if a value is a CSS custom property.
+
+**Parameters:**
+- `$value` — value to check
+
+**Returns:** `Boolean`
+
+```scss
+@if isCustomVar(var(--color)) { } // true
+@if isCustomVar(#ff0000) { } // false
+```
+
+## Map Functions
+
+### `getMapItem`
+
+Returns value from nested map by key path.
+
+**Parameters:**
+- `$map` — input map
+- `$index` — key or list of keys for traversal
+- `$default: null` — default value if not found
+
+**Returns:** `*`
+
+```scss
+$value: getMapItem($map, 'key');
+$nested: getMapItem($map, ('level1', 'level2'));
+```
+
+### `getMapByIndex`
+
+Returns value from map by single key.
+
+**Parameters:**
+- `$map` — input map
+- `$index` — key
+- `$default: null` — default value if not found
+
+**Returns:** `*`
+
+```scss
+$value: getMapByIndex($map, 'key', 'default');
+```
+
+### `setMapItem`
+
+Updates value in map by key.
+
+**Parameters:**
+- `$map` — input map
+- `$index` — key
+- `$value` — value to save
+
+**Returns:** `Map`
+
+```scss
+$updated: setMapItem($map, 'key', 'new-value');
+```
+
+## Selector Functions
+
+### `getFirstSelector`
+
+Returns name of first selector.
+
+**Parameters:**
+- `$selector: &` — selector (defaults to current selector)
+
+**Returns:** `String`
+
+```scss
+$name: getFirstSelector(); // returns first selector name
+```
+
+## String Functions
+
+### `strToList`
+
+Splits string by separator into list.
+
+**Parameters:**
+- `$value` — input string
+- `$separator: '.'` — boundary string
+
+**Returns:** `List`
+
+```scss
+$list: strToList('class.name', '.'); // ('class', 'name')
+```
+
+### `strReplace`
+
+Replaces all occurrences of search string with replacement.
+
+**Parameters:**
+- `$value` — string being searched
+- `$pattern` — value being searched
+- `$replacement` — replacement value
+
+**Returns:** `String`
+
+```scss
+$result: strReplace('hello-world', '-', '_'); // 'hello_world'
+```

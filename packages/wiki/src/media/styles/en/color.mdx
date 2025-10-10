@@ -1,0 +1,711 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Color'/>
+
+# Color
+
+A set of SCSS functions and mixins for color management with CSS Custom Properties support.
+
+## Validation Functions
+
+### `isColorRbgOrVar`
+
+Checks if a value is a color.
+
+**Parameters:**
+- `$color` — value to check
+
+**Returns:** `Boolean`
+
+```scss
+@if isColorRbgOrVar(#ff0000) { } // true
+@if isColorRbgOrVar('none') { } // false
+```
+
+### `isPalette`
+
+Checks if a color is suitable for the palette.
+
+**Parameters:**
+- `$color` — color to check
+
+**Returns:** `Boolean`
+
+```scss
+@if isPalette(var(--primary-500)) { } // true
+@if isPalette(#ff0000) { } // false
+```
+
+## Color Functions
+
+### `getColor`
+
+Returns color value by its code.
+
+**Parameters:**
+- `$color` — color
+- `$opacity: 1` — opacity [0..1]
+- `$gradient: false` — if true, returns as an image
+
+**Returns:** `String`
+
+```scss
+$value: getColor(#ff0000, 0.5); // rgba(255, 0, 0, 0.5)
+$gradient: getColor(#ff0000, 0.8, true); // linear-gradient(...)
+```
+
+### `getColorByPalette`
+
+Checks if a color is part of the list of used colors.
+
+**Parameters:**
+- `$color` — color to check
+
+**Returns:** `String|null`
+
+```scss
+$palette: getColorByPalette(var(--primary-color));
+```
+
+### `getColorByShade`
+
+Checks if a color is part of the list of saturation levels.
+
+**Parameters:**
+- `$color` — color to check
+
+**Returns:** `String|null`
+
+```scss
+$shade: getColorByShade(var(--color-500));
+```
+
+### `getColorValue`
+
+Gets color code for insertion into property.
+
+**Parameters:**
+- `$name: String` — variable name
+- `$defaultValue: null` — default value
+
+**Returns:** `String`
+
+```scss
+$color: getColorValue('--my-color', #333);
+```
+
+### `getColorValueSys`
+
+Gets system color code for insertion into property.
+
+**Parameters:**
+- `$name: String` — variable suffix
+
+**Returns:** `String`
+
+```scss
+$color: getColorValueSys('color');
+```
+
+## Palette Functions
+
+### `getPalette`
+
+Returns value for palette.
+
+**Parameters:**
+- `$color` — color
+
+**Returns:** `String`
+
+```scss
+$value: getPalette(var(--primary-500));
+```
+
+### `getPaletteOpacity`
+
+Returns value for palette opacity.
+
+**Parameters:**
+- `$color` — color
+
+**Returns:** `String`
+
+```scss
+$opacity: getPaletteOpacity(var(--primary-500));
+```
+
+### `getPaletteItem`
+
+Returns value for searching needed colors.
+
+**Parameters:**
+- `$palette: List` — palette list
+- `$color: Color|String` — color
+
+**Returns:** `String`
+
+```scss
+$item: getPaletteItem(('primary', 'secondary'), #ff0000);
+```
+
+### `getPaletteItemOpacity`
+
+Returns value for searching needed colors opacity.
+
+**Parameters:**
+- `$palette: List` — palette list
+- `$color: Color|String` — color
+
+**Returns:** `String`
+
+```scss
+$opacity: getPaletteItemOpacity(('primary', 'secondary'), rgba(255, 0, 0, 0.8));
+```
+
+## Conversion Functions
+
+### `toColorRbg`
+
+Color conversion to RGB type.
+
+**Parameters:**
+- `$color` — color to convert
+
+**Returns:** `String`
+
+```scss
+$rgb: toColorRbg(#ff5733); // "255, 87, 51"
+```
+
+### `toColorOpacity`
+
+Gets the transparency of the color.
+
+**Parameters:**
+- `$color` — color
+
+**Returns:** `String`
+
+```scss
+$opacity: toColorOpacity(rgba(255, 0, 0, 0.7)); // 0.7
+```
+
+### `toGradient`
+
+Conversion of color into images for working with background-image.
+
+**Parameters:**
+- `$color` — color
+
+**Returns:** `String`
+
+```scss
+$gradient: toGradient(rgba(255, 0, 0, 0.5));
+```
+
+### `toCustomVarRgb`
+
+Converts custom variable to RGB format.
+
+**Parameters:**
+- `$color` — CSS custom property
+
+**Returns:** `String`
+
+```scss
+$rgba: toCustomVarRgb(var(--my-color));
+```
+
+### `toCustomVarOpacity`
+
+Adds transparency property to custom variable.
+
+**Parameters:**
+- `$color` — CSS custom property
+- `$defaultValue: null` — default opacity value
+
+**Returns:** `String`
+
+```scss
+$opacity: toCustomVarOpacity(var(--my-color), 1);
+```
+
+## System Mixins
+
+### `initPalette`
+
+Initializes palette-related opacity variables.
+
+```scss
+.component {
+  @include initPalette;
+}
+```
+
+### `colorSys`
+
+Defines system color variables (RGB and opacity).
+
+**Parameters:**
+- `$name: String` — variable suffix
+- `$color: Color|String` — input color or CSS var
+- `$important: false` — add !important
+
+```scss
+.element {
+  @include colorSys('primary', #3498db);
+}
+```
+
+### `colorSysPalette`
+
+Defines system palette variables (RGB and opacity).
+
+**Parameters:**
+- `$name: String` — palette key suffix
+- `$color: Color|String` — input color or CSS var
+
+```scss
+.theme {
+  @include colorSysPalette('primary', #3498db);
+}
+```
+
+## Palette Mixins
+
+### `palette`
+
+Sets base palette RGB value.
+
+**Parameters:**
+- `$color: Color|String` — input color or CSS var
+
+```scss
+.theme-blue {
+  @include palette(#3498db);
+}
+```
+
+### `paletteVar`
+
+Maps a custom variable into palette chain.
+
+**Parameters:**
+- `$color: Color|String` — CSS custom property
+
+```scss
+.dynamic-theme {
+  @include paletteVar(var(--theme-primary));
+}
+```
+
+### `paletteColor`
+
+Applies palette color to text.
+
+**Parameters:**
+- `$color: Color|String` — palette reference or color
+
+```scss
+.text {
+  @include paletteColor(#2c3e50);
+}
+```
+
+### `paletteStroke`
+
+Applies palette color to stroke.
+
+**Parameters:**
+- `$color: Color|String` — palette reference or color
+
+```scss
+.icon {
+  @include paletteStroke(#e74c3c);
+}
+```
+
+### `paletteBackground`
+
+Applies palette color to background.
+
+**Parameters:**
+- `$color: Color|String` — palette reference or color
+
+```scss
+.card {
+  @include paletteBackground(#ecf0f1);
+}
+```
+
+### `paletteFill`
+
+Applies palette color to fill.
+
+**Parameters:**
+- `$color: Color|String` — palette reference or color
+
+```scss
+.icon {
+  @include paletteFill(#3498db);
+}
+```
+
+### `paletteGradient`
+
+Applies palette gradient to background-image.
+
+**Parameters:**
+- `$color: Color|String` — palette reference or color
+
+```scss
+.hero {
+  @include paletteGradient(#667eea);
+}
+```
+
+### `paletteBorder`
+
+Applies palette color to border.
+
+**Parameters:**
+- `$color: Color|String` — palette reference or color
+
+```scss
+.input {
+  @include paletteBorder(#bdc3c7);
+}
+```
+
+## Color Mixins
+
+### `color`
+
+Sets text color via system variables.
+
+**Parameters:**
+- `$color: Color|String` — color or CSS var
+- `$opacity: null` — optional opacity [0..1]
+- `$important: false` — add !important
+- `$propertyName: 'color'` — CSS property name
+
+```scss
+.text {
+  @include color(#333333);
+}
+
+.text-transparent {
+  @include color(#ff0000, 0.5);
+}
+```
+
+### `colorOpacity`
+
+Sets text color opacity variable.
+
+**Parameters:**
+- `$opacity: Number` — opacity [0..1]
+- `$important: false` — add !important
+- `$init: false` — immediately apply computed color
+- `$propertyName: 'color'` — CSS property name
+
+```scss
+.text {
+  @include color(#ff0000);
+
+  &:hover {
+    @include colorOpacity(0.7, false, true);
+  }
+}
+```
+
+### `colorInit`
+
+Applies computed system text color.
+
+**Parameters:**
+- `$important: false` — add !important
+- `$propertyName: 'color'` — CSS property name
+
+```scss
+.element {
+  @include colorInit();
+}
+```
+
+### `colorAsPalette`
+
+Renders text color using palette variables.
+
+```scss
+.text {
+  @include colorAsPalette();
+}
+```
+
+## Stroke Mixins
+
+### `stroke`
+
+Sets stroke color via system variables.
+
+**Parameters:**
+- `$color: Color|String` — color or CSS var
+- `$opacity: null` — optional opacity [0..1]
+- `$important: false` — add !important
+
+```scss
+.icon {
+  @include stroke(#000000);
+}
+```
+
+### `strokeOpacity`
+
+Sets stroke opacity variable.
+
+**Parameters:**
+- `$opacity: Number` — opacity [0..1]
+- `$important: false` — add !important
+- `$init: false` — immediately apply computed stroke
+
+```scss
+.icon {
+  @include strokeOpacity(0.5, false, true);
+}
+```
+
+### `strokeInit`
+
+Applies computed stroke color.
+
+**Parameters:**
+- `$important: false` — add !important
+
+```scss
+.icon {
+  @include strokeInit();
+}
+```
+
+## Background Mixins
+
+### `backgroundColor`
+
+Sets background color via system variables.
+
+**Parameters:**
+- `$color: Color|String` — color, 'as-color', transparent or CSS var
+- `$opacity: null` — optional opacity [0..1]
+- `$important: false` — add !important
+- `$propertyName: 'background-color'` — CSS property name
+
+```scss
+.card {
+  @include backgroundColor(#ffffff);
+}
+
+.overlay {
+  @include backgroundColor(transparent);
+}
+```
+
+### `backgroundOpacity`
+
+Sets background opacity variable.
+
+**Parameters:**
+- `$opacity: Number` — opacity [0..1]
+- `$important: false` — add !important
+- `$init: false` — immediately apply computed background
+- `$propertyName: 'background-color'` — CSS property name
+
+```scss
+.card {
+  @include backgroundOpacity(0.9, false, true);
+}
+```
+
+### `backgroundSize`
+
+Sets background-size and disables repeat.
+
+**Parameters:**
+- `$value` — background-size value
+
+```scss
+.hero {
+  @include backgroundSize(cover);
+}
+```
+
+### `backgroundInit`
+
+Applies computed background color.
+
+**Parameters:**
+- `$important: false` — add !important
+- `$propertyName: 'background-color'` — CSS property name
+
+```scss
+.element {
+  @include backgroundInit();
+}
+```
+
+### `backgroundAsColor`
+
+Sets background from --sys-color variables.
+
+```scss
+.element {
+  @include backgroundAsColor();
+}
+```
+
+## Fill Mixins
+
+### `fill`
+
+Sets fill color via background helpers.
+
+**Parameters:**
+- `$color: Color|String` — color or CSS var
+- `$opacity: null` — optional opacity [0..1]
+- `$important: false` — add !important
+
+```scss
+.icon {
+  @include fill(#3498db);
+}
+```
+
+### `fillOpacity`
+
+Sets fill opacity variable.
+
+**Parameters:**
+- `$opacity: Number` — opacity [0..1]
+- `$important: false` — add !important
+- `$init: false` — immediately apply computed fill
+
+```scss
+.icon {
+  @include fillOpacity(0.8, false, true);
+}
+```
+
+### `fillInit`
+
+Applies computed fill color.
+
+**Parameters:**
+- `$important: false` — add !important
+
+```scss
+.icon {
+  @include fillInit();
+}
+```
+
+## Gradient Mixins
+
+### `gradient`
+
+Sets gradient (background-image) via system variables.
+
+**Parameters:**
+- `$color: Color|String` — color or CSS var
+- `$opacity: null` — optional opacity [0..1]
+- `$important: false` — add !important
+
+```scss
+.hero {
+  @include gradient(#667eea);
+}
+```
+
+### `gradientOpacity`
+
+Sets gradient opacity variable.
+
+**Parameters:**
+- `$opacity: Number` — opacity [0..1]
+- `$important: false` — add !important
+- `$init: false` — immediately apply computed gradient
+
+```scss
+.hero {
+  @include gradientOpacity(0.9, false, true);
+}
+```
+
+### `gradientInit`
+
+Applies computed gradient background image.
+
+**Parameters:**
+- `$important: false` — add !important
+
+```scss
+.element {
+  @include gradientInit();
+}
+```
+
+## Border Mixins
+
+### `borderColor`
+
+Sets border color via system variables.
+
+**Parameters:**
+- `$color: Color|String` — color or CSS var
+- `$opacity: null` — optional opacity [0..1]
+- `$important: false` — add !important
+
+```scss
+.input {
+  @include borderColor(#d0d0d0);
+}
+```
+
+### `borderOpacity`
+
+Sets border opacity variable.
+
+**Parameters:**
+- `$opacity: Number` — opacity [0..1]
+- `$important: false` — add !important
+- `$init: false` — immediately apply computed border
+
+```scss
+.input {
+  @include borderOpacity(1, false, true);
+}
+```
+
+### `borderInit`
+
+Applies computed border color.
+
+**Parameters:**
+- `$important: false` — add !important
+
+```scss
+.element {
+  @include borderInit();
+}
+```
+
+### `borderAsColor`
+
+Sets border from --sys-color variables.
+
+```scss
+.element {
+  @include borderAsColor();
+}
+```
+

@@ -1,0 +1,249 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Flex'/>
+
+# Flex
+
+A set of SCSS mixins for working with flexbox layouts with CSS Custom Properties support.
+
+**How it works:** The system provides convenient mixins for common flexbox patterns. Each mixin combines multiple flexbox properties into a single declaration, reducing code repetition. The mixins support both standard flex containers and inline-flex variants, with automatic alignment presets for horizontal/vertical layouts.
+
+## Basic Mixins
+
+### `flex`
+
+Sets display: flex.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flex;
+}
+```
+
+### `flexInline`
+
+Sets display: inline-flex.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexInline;
+}
+```
+
+## Alignment Mixins
+
+### `flexX`
+
+Creates horizontal flex container with centered items.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexX;
+  // display: flex;
+  // align-items: center;
+}
+```
+
+### `flexY`
+
+Creates vertical flex container with centered items.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexY;
+  // display: flex;
+  // align-items: center;
+  // flex-flow: column;
+}
+```
+
+### `flexStretchX`
+
+Creates horizontal flex container with stretched items.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexStretchX;
+  // display: flex;
+  // align-items: stretch;
+}
+```
+
+### `flexStretchY`
+
+Creates vertical flex container with stretched items.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexStretchY;
+  // display: flex;
+  // align-items: stretch;
+  // flex-flow: column;
+}
+```
+
+### `flexCenter`
+
+Creates centered flex container (both axes).
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexCenter;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+}
+```
+
+### `flexBetween`
+
+Creates flex container with space-between alignment.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexBetween;
+  // display: flex;
+  // align-items: center;
+  // justify-content: space-between;
+}
+```
+
+## Inline Flex Mixins
+
+### `flexInlineX`
+
+Creates horizontal inline-flex container with centered items.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexInlineX;
+}
+```
+
+### `flexInlineY`
+
+Creates vertical inline-flex container with centered items.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexInlineY;
+}
+```
+
+### `flexInlineCenter`
+
+Creates centered inline-flex container (both axes).
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexInlineCenter;
+}
+```
+
+### `flexInlineBetween`
+
+Creates inline-flex container with space-between alignment.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexInlineBetween;
+}
+```
+
+## Utility Mixins
+
+### `justifyContent`
+
+Sets justify-content property.
+
+**Parameters:**
+- `$value` — justify-content value
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include justifyContent(center);
+}
+```
+
+### `flexPosition`
+
+Applies flex layout based on preset value.
+
+**Parameters:**
+- `$value` — preset name ('x', 'y', 'center', 'between', 'inline-x', 'inline-y', 'inline-center', 'inline-between')
+
+**Returns:** `void`
+
+```scss
+.container {
+  @include flexPosition('center');
+}
+```
+
+### `flexDynamic`
+
+Creates flexible item that grows and shrinks.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.item {
+  @include flexDynamic;
+  // flex-basis: 1px;
+  // flex-grow: 1;
+  // flex-shrink: 1;
+}
+```
+

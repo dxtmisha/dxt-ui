@@ -1,0 +1,114 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/ru/Transform'/>
+
+# Transform
+
+Набор SCSS миксинов для управления CSS-трансформациями с поддержкой CSS Custom Properties.
+
+## Миксины
+
+### `initTransform`
+
+Инициализирует систему трансформаций с CSS custom properties.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+@include initTransform;
+// --sys-transform-translateX: 0px;
+// --sys-transform-translateY: 0px;
+// --sys-transform-scale: 1;
+// --sys-transform-rotate: 0;
+```
+
+### `translateX`
+
+Устанавливает горизонтальное смещение с поддержкой RTL.
+
+**Параметры:**
+- `$value` — значение смещения
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include translateX(10px);
+}
+```
+
+### `translateY`
+
+Устанавливает вертикальное смещение.
+
+**Параметры:**
+- `$value` — значение смещения
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include translateY(10px);
+}
+```
+
+### `scale`
+
+Устанавливает масштабирование элемента.
+
+**Параметры:**
+- `$value` — значение масштаба
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include scale(1.5);
+}
+```
+
+### `rotate`
+
+Устанавливает поворот элемента.
+
+**Параметры:**
+- `$value` — значение поворота
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include rotate(45deg);
+}
+```
+
+### `transformInit`
+
+Применяет все свойства трансформации через CSS custom properties с поддержкой RTL для translateX.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include transformInit;
+}
+```
+
+### `translateInit`
+
+Применяет свойство translate через CSS custom properties.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include translateInit;
+}
+```
+

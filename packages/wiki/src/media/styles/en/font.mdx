@@ -1,0 +1,171 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Font'/>
+
+# Font
+
+A set of SCSS mixins for managing typography and text styles with CSS Custom Properties support.
+
+**How it works:** The system provides mixins for text styling with automatic RTL support through dir integration. Text alignment mixins automatically invert for RTL layouts. CSS custom properties are used for font-size, line-height, and paragraph spacing, allowing dynamic theming and responsive typography.
+
+## Initialization Mixins
+
+### `initParagraphSpacing`
+
+Initializes paragraph spacing system for consecutive paragraphs.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+@include initParagraphSpacing;
+// p + p { padding-top: var(--sys-paragraph-spacing, 0); }
+```
+
+## Typography Mixins
+
+### `fontSize`
+
+Sets font size with CSS custom property.
+
+**Parameters:**
+- `$value` — font size value
+
+**Returns:** `void`
+
+```scss
+.text {
+  @include fontSize(16px);
+}
+```
+
+### `lineHeight`
+
+Sets line height with CSS custom property.
+
+**Parameters:**
+- `$value` — line height value
+
+**Returns:** `void`
+
+```scss
+.text {
+  @include lineHeight(1.5);
+}
+```
+
+### `paragraphSpacing`
+
+Sets spacing between consecutive paragraphs.
+
+**Parameters:**
+- `$value` — spacing value
+
+**Returns:** `void`
+
+```scss
+.content {
+  @include paragraphSpacing(1em);
+}
+```
+
+## Text Alignment Mixins
+
+### `textAlign`
+
+Sets text alignment with automatic RTL support.
+
+**Parameters:**
+- `$value` — alignment value ('left', 'right', 'center', 'justify')
+
+**Returns:** `void`
+
+```scss
+.text {
+  @include textAlign('left'); // auto-inverts for RTL
+}
+```
+
+### `textCase`
+
+Sets text transformation.
+
+**Parameters:**
+- `$value` — text-transform value ('uppercase', 'lowercase', 'capitalize', 'none')
+
+**Returns:** `void`
+
+```scss
+.text {
+  @include textCase('uppercase');
+}
+```
+
+## Text Overflow Mixins
+
+### `textOverflow`
+
+Sets text overflow behavior.
+
+**Parameters:**
+- `$value` — overflow value ('truncate', 'ellipsis', 'clip')
+
+**Returns:** `void`
+
+```scss
+.text {
+  @include textOverflow('truncate');
+}
+```
+
+### `truncate`
+
+Truncates text with ellipsis on single line.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.text {
+  @include truncate;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // white-space: nowrap;
+}
+```
+
+### `clamp`
+
+Limits text to specified number of lines with ellipsis.
+
+**Parameters:**
+- `$clamp` — number of lines
+
+**Returns:** `void`
+
+```scss
+.text {
+  @include clamp(3);
+  // -webkit-line-clamp: 3;
+}
+```
+
+## Utility Mixins
+
+### `textSelectNone`
+
+Disables text selection.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.text {
+  @include textSelectNone;
+  // user-select: none;
+}
+```
+

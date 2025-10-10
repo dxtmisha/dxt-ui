@@ -1,0 +1,183 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/ru/Position'/>
+
+# Position
+
+Набор SCSS миксинов для управления позиционированием элементов с поддержкой CSS Custom Properties.
+
+**Как это работает:** Система предоставляет удобные миксины для позиционирования элементов с автоматической поддержкой RTL через CSS Logical Properties (inset-inline-start/end). Миксины позиционирования объединяют несколько свойств позиционирования в одно объявление, уменьшая дублирование кода. Миксины `absolute*` автоматически устанавливают position: absolute и применяют значения позиционирования в одном вызове.
+
+## Базовые миксины позиционирования
+
+### `inset`
+
+Устанавливает свойство inset со всех сторон.
+
+**Параметры:**
+- `$value: 0` — значение inset
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include inset(16px);
+}
+```
+
+### `horizon`
+
+Устанавливает горизонтальное позиционирование (left и right).
+
+**Параметры:**
+- `$value: 0` — значение позиции
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include horizon(16px);
+}
+```
+
+### `vertically`
+
+Устанавливает вертикальное позиционирование (top и bottom).
+
+**Параметры:**
+- `$value: 0` — значение позиции
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include vertically(16px);
+}
+```
+
+## Миксины краевого позиционирования
+
+### `top`
+
+Устанавливает верхнюю позицию и сбрасывает горизонтальные края в 0.
+
+**Параметры:**
+- `$value: 0` — значение top
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include top(16px);
+}
+```
+
+### `bottom`
+
+Устанавливает нижнюю позицию и сбрасывает горизонтальные края в 0.
+
+**Параметры:**
+- `$value: 0` — значение bottom
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include bottom(16px);
+}
+```
+
+### `left`
+
+Устанавливает левую позицию с поддержкой RTL через inset-inline-start.
+
+**Параметры:**
+- `$value: 0px` — значение left
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include left(16px);
+}
+```
+
+### `right`
+
+Устанавливает правую позицию с поддержкой RTL через inset-inline-end.
+
+**Параметры:**
+- `$value: 0px` — значение right
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include right(16px);
+}
+```
+
+## Миксины абсолютного позиционирования
+
+### `absolute`
+
+Устанавливает position: absolute со значением inset.
+
+**Параметры:**
+- `$value: 0` — значение inset
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include absolute(16px);
+}
+```
+
+### `absoluteTop`
+
+Устанавливает position: absolute с верхним и горизонтальным позиционированием.
+
+**Параметры:**
+- `$value: 0` — значение top
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include absoluteTop(16px);
+}
+```
+
+### `absoluteBottom`
+
+Устанавливает position: absolute с нижним и горизонтальным позиционированием.
+
+**Параметры:**
+- `$value: 0` — значение bottom
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include absoluteBottom(16px);
+}
+```
+
+### `absoluteAfter`
+
+Устанавливает position: relative и создает абсолютно позиционированный псевдоэлемент ::after.
+
+**Параметры:**
+- `$value: 0` — значение inset для ::after
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include absoluteAfter(0) {
+    background: red;
+  }
+}
+```
+

@@ -1,0 +1,115 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Margin'/>
+
+# Margin
+
+A set of SCSS mixins for managing margins with CSS Custom Properties support.
+
+## Mixins
+
+### `margin`
+
+Sets margin on all sides.
+
+**Parameters:**
+- `$value` — margin value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include margin(16px);
+}
+```
+
+### `marginX`
+
+Sets horizontal margins (left and right).
+
+**Parameters:**
+- `$value` — margin value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include marginX(16px);
+}
+```
+
+### `marginY`
+
+Sets vertical margins (top and bottom).
+
+**Parameters:**
+- `$value` — margin value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include marginY(16px);
+}
+```
+
+### `marginLeft`
+
+Sets left margin with RTL support via margin-inline-start.
+
+**Parameters:**
+- `$value` — margin value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include marginLeft(16px);
+}
+```
+
+### `marginRight`
+
+Sets right margin with RTL support via margin-inline-end.
+
+**Parameters:**
+- `$value` — margin value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include marginRight(16px);
+}
+```
+
+### `marginTop`
+
+Sets top margin.
+
+**Parameters:**
+- `$value` — margin value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include marginTop(16px);
+}
+```
+
+### `marginBottom`
+
+Sets bottom margin.
+
+**Parameters:**
+- `$value` — margin value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include marginBottom(16px);
+}
+```
+

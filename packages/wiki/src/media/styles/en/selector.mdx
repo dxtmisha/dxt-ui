@@ -1,0 +1,153 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Selector'/>
+
+# Selector
+
+A set of SCSS mixins for managing element state selectors with CSS Custom Properties support.
+
+**How it works:** The system provides intelligent state management for interactive elements. The `enabled` mixin automatically adds `:not()` selectors to exclude disabled, readonly, and loading states. State mixins like `hover`, `active`, and `focus` wrap `enabled` to ensure interactions only work on active elements. Special handling for `focus` includes `:focus`, `:focus-within`, and BEM modifier for programmatic focus states.
+
+## Basic Mixins
+
+### `selector`
+
+Creates pseudo-class selector with special handling for focus state.
+
+**Parameters:**
+- `$name` — selector name (e.g., 'hover', 'active', 'focus')
+- `$parent: &` — parent selector
+
+**Returns:** `void`
+
+```scss
+.button {
+  @include selector('hover') {
+    background: blue;
+  }
+}
+```
+
+### `enabled`
+
+Applies styles only to enabled (non-disabled, non-readonly, non-loading) elements.
+
+**Parameters:**
+- `$parent: &` — parent selector
+
+**Returns:** `void`
+
+```scss
+.button {
+  @include enabled {
+    cursor: pointer;
+  }
+}
+```
+
+### `enabledSelector`
+
+Combines enabled state with pseudo-class selector.
+
+**Parameters:**
+- `$name` — selector name
+- `$parent: &` — parent selector
+
+**Returns:** `void`
+
+```scss
+.button {
+  @include enabledSelector('hover') {
+    background: blue;
+  }
+}
+```
+
+## State Mixins
+
+### `hover`
+
+Applies styles on hover for enabled elements only.
+
+**Parameters:**
+- `$parent: &` — parent selector
+
+**Returns:** `void`
+
+```scss
+.button {
+  @include hover {
+    background: blue;
+  }
+}
+```
+
+### `active`
+
+Applies styles on active state for enabled elements only.
+
+**Parameters:**
+- `$parent: &` — parent selector
+
+**Returns:** `void`
+
+```scss
+.button {
+  @include active {
+    transform: scale(0.95);
+  }
+}
+```
+
+### `focus`
+
+Applies styles on focus state for enabled elements only. Includes :focus, :focus-within, and BEM modifier.
+
+**Parameters:**
+- `$parent: &` — parent selector
+
+**Returns:** `void`
+
+```scss
+.button {
+  @include focus {
+    outline: 2px solid blue;
+  }
+}
+```
+
+### `disabled`
+
+Applies styles to disabled elements.
+
+**Parameters:**
+- `$parent: &` — parent selector
+
+**Returns:** `void`
+
+```scss
+.button {
+  @include disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+```
+
+### `readonly`
+
+Applies styles to readonly elements.
+
+**Parameters:**
+- `$parent: &` — parent selector
+
+**Returns:** `void`
+
+```scss
+.input {
+  @include readonly {
+    background: #f5f5f5;
+  }
+}
+```
+

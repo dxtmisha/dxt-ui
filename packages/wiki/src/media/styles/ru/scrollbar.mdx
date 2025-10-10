@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/ru/Scrollbar'/>
+
+# Scrollbar
+
+Набор SCSS миксинов для управления внешним видом полос прокрутки с поддержкой CSS Custom Properties.
+
+## Миксины
+
+### `scrollbarHide`
+
+Скрывает полосу прокрутки, сохраняя функциональность прокрутки.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include scrollbarHide;
+  // scrollbar-width: none;
+  // scroll-behavior: auto;
+  // &::-webkit-scrollbar { width: 0; height: 0; }
+}
+```
+

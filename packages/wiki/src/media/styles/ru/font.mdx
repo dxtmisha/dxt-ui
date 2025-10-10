@@ -1,0 +1,171 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/ru/Font'/>
+
+# Font
+
+Набор SCSS миксинов для управления типографикой и стилями текста с поддержкой CSS Custom Properties.
+
+**Как это работает:** Система предоставляет миксины для стилизации текста с автоматической поддержкой RTL через интеграцию с dir. Миксины выравнивания текста автоматически инвертируются для RTL-раскладок. CSS custom properties используются для font-size, line-height и paragraph spacing, позволяя динамическое изменение темы и адаптивную типографику.
+
+## Миксины инициализации
+
+### `initParagraphSpacing`
+
+Инициализирует систему отступов между последовательными параграфами.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+@include initParagraphSpacing;
+// p + p { padding-top: var(--sys-paragraph-spacing, 0); }
+```
+
+## Миксины типографики
+
+### `fontSize`
+
+Устанавливает размер шрифта с CSS custom property.
+
+**Параметры:**
+- `$value` — значение размера шрифта
+
+**Возвращает:** `void`
+
+```scss
+.text {
+  @include fontSize(16px);
+}
+```
+
+### `lineHeight`
+
+Устанавливает межстрочный интервал с CSS custom property.
+
+**Параметры:**
+- `$value` — значение межстрочного интервала
+
+**Возвращает:** `void`
+
+```scss
+.text {
+  @include lineHeight(1.5);
+}
+```
+
+### `paragraphSpacing`
+
+Устанавливает отступ между последовательными параграфами.
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.content {
+  @include paragraphSpacing(1em);
+}
+```
+
+## Миксины выравнивания текста
+
+### `textAlign`
+
+Устанавливает выравнивание текста с автоматической поддержкой RTL.
+
+**Параметры:**
+- `$value` — значение выравнивания ('left', 'right', 'center', 'justify')
+
+**Возвращает:** `void`
+
+```scss
+.text {
+  @include textAlign('left'); // автоматически инвертируется для RTL
+}
+```
+
+### `textCase`
+
+Устанавливает преобразование текста.
+
+**Параметры:**
+- `$value` — значение text-transform ('uppercase', 'lowercase', 'capitalize', 'none')
+
+**Возвращает:** `void`
+
+```scss
+.text {
+  @include textCase('uppercase');
+}
+```
+
+## Миксины переполнения текста
+
+### `textOverflow`
+
+Устанавливает поведение при переполнении текста.
+
+**Параметры:**
+- `$value` — значение переполнения ('truncate', 'ellipsis', 'clip')
+
+**Возвращает:** `void`
+
+```scss
+.text {
+  @include textOverflow('truncate');
+}
+```
+
+### `truncate`
+
+Обрезает текст с многоточием на одной строке.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.text {
+  @include truncate;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // white-space: nowrap;
+}
+```
+
+### `clamp`
+
+Ограничивает текст указанным количеством строк с многоточием.
+
+**Параметры:**
+- `$clamp` — количество строк
+
+**Возвращает:** `void`
+
+```scss
+.text {
+  @include clamp(3);
+  // -webkit-line-clamp: 3;
+}
+```
+
+## Утилитарные миксины
+
+### `textSelectNone`
+
+Отключает выделение текста.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.text {
+  @include textSelectNone;
+  // user-select: none;
+}
+```
+

@@ -1,0 +1,711 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/ru/Color'/>
+
+# Color
+
+Набор SCSS функций и миксинов для управления цветом с поддержкой CSS Custom Properties.
+
+## Функции валидации
+
+### `isColorRbgOrVar`
+
+Проверяет, является ли значение цветом.
+
+**Параметры:**
+- `$color` — значение для проверки
+
+**Возвращает:** `Boolean`
+
+```scss
+@if isColorRbgOrVar(#ff0000) { } // true
+@if isColorRbgOrVar('none') { } // false
+```
+
+### `isPalette`
+
+Проверяет, является ли цвет подходящим для палитры.
+
+**Параметры:**
+- `$color` — цвет для проверки
+
+**Возвращает:** `Boolean`
+
+```scss
+@if isPalette(var(--primary-500)) { } // true
+@if isPalette(#ff0000) { } // false
+```
+
+## Функции для работы с цветом
+
+### `getColor`
+
+Возвращает значение цвета по его коду.
+
+**Параметры:**
+- `$color` — цвет
+- `$opacity: 1` — прозрачность [0..1]
+- `$gradient: false` — если true, возвращает в виде изображения
+
+**Возвращает:** `String`
+
+```scss
+$value: getColor(#ff0000, 0.5); // rgba(255, 0, 0, 0.5)
+$gradient: getColor(#ff0000, 0.8, true); // linear-gradient(...)
+```
+
+### `getColorByPalette`
+
+Проверяет, является ли цвет частью списка используемых цветов.
+
+**Параметры:**
+- `$color` — цвет для проверки
+
+**Возвращает:** `String|null`
+
+```scss
+$palette: getColorByPalette(var(--primary-color));
+```
+
+### `getColorByShade`
+
+Проверяет, является ли цвет частью списка насыщенности.
+
+**Параметры:**
+- `$color` — цвет для проверки
+
+**Возвращает:** `String|null`
+
+```scss
+$shade: getColorByShade(var(--color-500));
+```
+
+### `getColorValue`
+
+Получает код цвета для вставки в свойство.
+
+**Параметры:**
+- `$name: String` — имя переменной
+- `$defaultValue: null` — значение по умолчанию
+
+**Возвращает:** `String`
+
+```scss
+$color: getColorValue('--my-color', #333);
+```
+
+### `getColorValueSys`
+
+Получает код системного цвета для вставки в свойство.
+
+**Параметры:**
+- `$name: String` — суффикс переменной
+
+**Возвращает:** `String`
+
+```scss
+$color: getColorValueSys('color');
+```
+
+## Функции палитры
+
+### `getPalette`
+
+Возвращает значение для палитры.
+
+**Параметры:**
+- `$color` — цвет
+
+**Возвращает:** `String`
+
+```scss
+$value: getPalette(var(--primary-500));
+```
+
+### `getPaletteOpacity`
+
+Возвращает значение прозрачности для палитры.
+
+**Параметры:**
+- `$color` — цвет
+
+**Возвращает:** `String`
+
+```scss
+$opacity: getPaletteOpacity(var(--primary-500));
+```
+
+### `getPaletteItem`
+
+Возвращает значение для поиска нужных цветов.
+
+**Параметры:**
+- `$palette: List` — список палитры
+- `$color: Color|String` — цвет
+
+**Возвращает:** `String`
+
+```scss
+$item: getPaletteItem(('primary', 'secondary'), #ff0000);
+```
+
+### `getPaletteItemOpacity`
+
+Возвращает значение прозрачности для поиска нужных цветов.
+
+**Параметры:**
+- `$palette: List` — список палитры
+- `$color: Color|String` — цвет
+
+**Возвращает:** `String`
+
+```scss
+$opacity: getPaletteItemOpacity(('primary', 'secondary'), rgba(255, 0, 0, 0.8));
+```
+
+## Функции преобразования
+
+### `toColorRbg`
+
+Преобразование цвета в тип RGB.
+
+**Параметры:**
+- `$color` — цвет для преобразования
+
+**Возвращает:** `String`
+
+```scss
+$rgb: toColorRbg(#ff5733); // "255, 87, 51"
+```
+
+### `toColorOpacity`
+
+Получает прозрачность цвета.
+
+**Параметры:**
+- `$color` — цвет
+
+**Возвращает:** `String`
+
+```scss
+$opacity: toColorOpacity(rgba(255, 0, 0, 0.7)); // 0.7
+```
+
+### `toGradient`
+
+Преобразование цвета в изображения для работы с background-image.
+
+**Параметры:**
+- `$color` — цвет
+
+**Возвращает:** `String`
+
+```scss
+$gradient: toGradient(rgba(255, 0, 0, 0.5));
+```
+
+### `toCustomVarRgb`
+
+Преобразует пользовательскую переменную в RGB формат.
+
+**Параметры:**
+- `$color` — CSS пользовательское свойство
+
+**Возвращает:** `String`
+
+```scss
+$rgba: toCustomVarRgb(var(--my-color));
+```
+
+### `toCustomVarOpacity`
+
+Добавляет свойство прозрачности к пользовательской переменной.
+
+**Параметры:**
+- `$color` — CSS пользовательское свойство
+- `$defaultValue: null` — значение прозрачности по умолчанию
+
+**Возвращает:** `String`
+
+```scss
+$opacity: toCustomVarOpacity(var(--my-color), 1);
+```
+
+## Системные миксины
+
+### `initPalette`
+
+Инициализирует переменные прозрачности, связанные с палитрой.
+
+```scss
+.component {
+  @include initPalette;
+}
+```
+
+### `colorSys`
+
+Определяет системные цветовые переменные (RGB и непрозрачность).
+
+**Параметры:**
+- `$name: String` — суффикс переменной
+- `$color: Color|String` — входной цвет или CSS переменная
+- `$important: false` — добавить !important
+
+```scss
+.element {
+  @include colorSys('primary', #3498db);
+}
+```
+
+### `colorSysPalette`
+
+Определяет системные переменные палитры (RGB и непрозрачность).
+
+**Параметры:**
+- `$name: String` — суффикс ключа палитры
+- `$color: Color|String` — входной цвет или CSS переменная
+
+```scss
+.theme {
+  @include colorSysPalette('primary', #3498db);
+}
+```
+
+## Миксины палитры
+
+### `palette`
+
+Устанавливает базовое RGB значение палитры.
+
+**Параметры:**
+- `$color: Color|String` — входной цвет или CSS переменная
+
+```scss
+.theme-blue {
+  @include palette(#3498db);
+}
+```
+
+### `paletteVar`
+
+Привязывает пользовательскую переменную к палитре.
+
+**Параметры:**
+- `$color: Color|String` — CSS пользовательское свойство
+
+```scss
+.dynamic-theme {
+  @include paletteVar(var(--theme-primary));
+}
+```
+
+### `paletteColor`
+
+Применяет цвет палитры к тексту.
+
+**Параметры:**
+- `$color: Color|String` — ссылка на палитру или цвет
+
+```scss
+.text {
+  @include paletteColor(#2c3e50);
+}
+```
+
+### `paletteStroke`
+
+Применяет цвет палитры к обводке.
+
+**Параметры:**
+- `$color: Color|String` — ссылка на палитру или цвет
+
+```scss
+.icon {
+  @include paletteStroke(#e74c3c);
+}
+```
+
+### `paletteBackground`
+
+Применяет цвет палитры к фону.
+
+**Параметры:**
+- `$color: Color|String` — ссылка на палитру или цвет
+
+```scss
+.card {
+  @include paletteBackground(#ecf0f1);
+}
+```
+
+### `paletteFill`
+
+Применяет цвет палитры к заливке.
+
+**Параметры:**
+- `$color: Color|String` — ссылка на палитру или цвет
+
+```scss
+.icon {
+  @include paletteFill(#3498db);
+}
+```
+
+### `paletteGradient`
+
+Применяет градиент палитры к background-image.
+
+**Параметры:**
+- `$color: Color|String` — ссылка на палитру или цвет
+
+```scss
+.hero {
+  @include paletteGradient(#667eea);
+}
+```
+
+### `paletteBorder`
+
+Применяет цвет палитры к границе.
+
+**Параметры:**
+- `$color: Color|String` — ссылка на палитру или цвет
+
+```scss
+.input {
+  @include paletteBorder(#bdc3c7);
+}
+```
+
+## Миксины цвета
+
+### `color`
+
+Устанавливает цвет текста через системные переменные.
+
+**Параметры:**
+- `$color: Color|String` — цвет или CSS переменная
+- `$opacity: null` — опциональная прозрачность [0..1]
+- `$important: false` — добавить !important
+- `$propertyName: 'color'` — имя CSS свойства
+
+```scss
+.text {
+  @include color(#333333);
+}
+
+.text-transparent {
+  @include color(#ff0000, 0.5);
+}
+```
+
+### `colorOpacity`
+
+Устанавливает переменную непрозрачности текста.
+
+**Параметры:**
+- `$opacity: Number` — прозрачность [0..1]
+- `$important: false` — добавить !important
+- `$init: false` — немедленно применить вычисленный цвет
+- `$propertyName: 'color'` — имя CSS свойства
+
+```scss
+.text {
+  @include color(#ff0000);
+
+  &:hover {
+    @include colorOpacity(0.7, false, true);
+  }
+}
+```
+
+### `colorInit`
+
+Применяет вычисленный системный цвет текста.
+
+**Параметры:**
+- `$important: false` — добавить !important
+- `$propertyName: 'color'` — имя CSS свойства
+
+```scss
+.element {
+  @include colorInit();
+}
+```
+
+### `colorAsPalette`
+
+Рендерит цвет текста, используя переменные палитры.
+
+```scss
+.text {
+  @include colorAsPalette();
+}
+```
+
+## Миксины обводки
+
+### `stroke`
+
+Устанавливает цвет обводки через системные переменные.
+
+**Параметры:**
+- `$color: Color|String` — цвет или CSS переменная
+- `$opacity: null` — опциональная прозрачность [0..1]
+- `$important: false` — добавить !important
+
+```scss
+.icon {
+  @include stroke(#000000);
+}
+```
+
+### `strokeOpacity`
+
+Устанавливает переменную непрозрачности обводки.
+
+**Параметры:**
+- `$opacity: Number` — прозрачность [0..1]
+- `$important: false` — добавить !important
+- `$init: false` — немедленно применить вычисленную обводку
+
+```scss
+.icon {
+  @include strokeOpacity(0.5, false, true);
+}
+```
+
+### `strokeInit`
+
+Применяет вычисленный цвет обводки.
+
+**Параметры:**
+- `$important: false` — добавить !important
+
+```scss
+.icon {
+  @include strokeInit();
+}
+```
+
+## Миксины фона
+
+### `backgroundColor`
+
+Устанавливает цвет фона через системные переменные.
+
+**Параметры:**
+- `$color: Color|String` — цвет, 'as-color', transparent или CSS переменная
+- `$opacity: null` — опциональная прозрачность [0..1]
+- `$important: false` — добавить !important
+- `$propertyName: 'background-color'` — имя CSS свойства
+
+```scss
+.card {
+  @include backgroundColor(#ffffff);
+}
+
+.overlay {
+  @include backgroundColor(transparent);
+}
+```
+
+### `backgroundOpacity`
+
+Устанавливает переменную непрозрачности фона.
+
+**Параметры:**
+- `$opacity: Number` — прозрачность [0..1]
+- `$important: false` — добавить !important
+- `$init: false` — немедленно применить вычисленный фон
+- `$propertyName: 'background-color'` — имя CSS свойства
+
+```scss
+.card {
+  @include backgroundOpacity(0.9, false, true);
+}
+```
+
+### `backgroundSize`
+
+Устанавливает background-size и отключает повтор.
+
+**Параметры:**
+- `$value` — значение background-size
+
+```scss
+.hero {
+  @include backgroundSize(cover);
+}
+```
+
+### `backgroundInit`
+
+Применяет вычисленный цвет фона.
+
+**Параметры:**
+- `$important: false` — добавить !important
+- `$propertyName: 'background-color'` — имя CSS свойства
+
+```scss
+.element {
+  @include backgroundInit();
+}
+```
+
+### `backgroundAsColor`
+
+Устанавливает фон из переменных --sys-color.
+
+```scss
+.element {
+  @include backgroundAsColor();
+}
+```
+
+## Миксины заливки
+
+### `fill`
+
+Устанавливает цвет заливки через фоновые миксины.
+
+**Параметры:**
+- `$color: Color|String` — цвет или CSS переменная
+- `$opacity: null` — опциональная прозрачность [0..1]
+- `$important: false` — добавить !important
+
+```scss
+.icon {
+  @include fill(#3498db);
+}
+```
+
+### `fillOpacity`
+
+Устанавливает переменную непрозрачности заливки.
+
+**Параметры:**
+- `$opacity: Number` — прозрачность [0..1]
+- `$important: false` — добавить !important
+- `$init: false` — немедленно применить вычисленную заливку
+
+```scss
+.icon {
+  @include fillOpacity(0.8, false, true);
+}
+```
+
+### `fillInit`
+
+Применяет вычисленный цвет заливки.
+
+**Параметры:**
+- `$important: false` — добавить !important
+
+```scss
+.icon {
+  @include fillInit();
+}
+```
+
+## Миксины градиента
+
+### `gradient`
+
+Устанавливает градиент (background-image) через системные переменные.
+
+**Параметры:**
+- `$color: Color|String` — цвет или CSS переменная
+- `$opacity: null` — опциональная прозрачность [0..1]
+- `$important: false` — добавить !important
+
+```scss
+.hero {
+  @include gradient(#667eea);
+}
+```
+
+### `gradientOpacity`
+
+Устанавливает переменную непрозрачности градиента.
+
+**Параметры:**
+- `$opacity: Number` — прозрачность [0..1]
+- `$important: false` — добавить !important
+- `$init: false` — немедленно применить вычисленный градиент
+
+```scss
+.hero {
+  @include gradientOpacity(0.9, false, true);
+}
+```
+
+### `gradientInit`
+
+Применяет вычисленный градиент для background-image.
+
+**Параметры:**
+- `$important: false` — добавить !important
+
+```scss
+.element {
+  @include gradientInit();
+}
+```
+
+## Миксины границы
+
+### `borderColor`
+
+Устанавливает цвет границы через системные переменные.
+
+**Параметры:**
+- `$color: Color|String` — цвет или CSS переменная
+- `$opacity: null` — опциональная прозрачность [0..1]
+- `$important: false` — добавить !important
+
+```scss
+.input {
+  @include borderColor(#d0d0d0);
+}
+```
+
+### `borderOpacity`
+
+Устанавливает переменную непрозрачности границы.
+
+**Параметры:**
+- `$opacity: Number` — прозрачность [0..1]
+- `$important: false` — добавить !important
+- `$init: false` — немедленно применить вычисленную границу
+
+```scss
+.input {
+  @include borderOpacity(1, false, true);
+}
+```
+
+### `borderInit`
+
+Применяет вычисленный цвет границы.
+
+**Параметры:**
+- `$important: false` — добавить !important
+
+```scss
+.element {
+  @include borderInit();
+}
+```
+
+### `borderAsColor`
+
+Устанавливает границу из переменных --sys-color.
+
+```scss
+.element {
+  @include borderAsColor();
+}
+```
+

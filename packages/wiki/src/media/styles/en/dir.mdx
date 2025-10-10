@@ -1,0 +1,193 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Dir'/>
+
+# Dir
+
+A set of SCSS functions and mixins for managing text direction (LTR/RTL) with CSS Custom Properties support.
+
+**How it works:** The system uses CSS custom properties to manage bidirectional text. By default, LTR (left-to-right) is set. When `html[dir="rtl"]` or `.dir-rtl` class is applied, all direction-related variables are automatically inverted, allowing seamless RTL support without code duplication.
+
+## Initialization Mixins
+
+### `initDir`
+
+Initializes direction system with CSS custom properties for LTR and RTL support.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+@include initDir;
+```
+
+### `dirToRtl`
+
+Applies RTL (right-to-left) direction styles.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+html[dir="rtl"] {
+  @include dirToRtl;
+}
+```
+
+## Validation Functions
+
+### `isDir`
+
+Returns direction multiplier (1 for LTR, -1 for RTL).
+
+**Parameters:** none
+
+**Returns:** `String`
+
+```scss
+$dir: isDir(); // var(--d-dir, 1)
+```
+
+### `isDirLeft`
+
+Checks if current direction is left-aligned.
+
+**Parameters:** none
+
+**Returns:** `String`
+
+```scss
+$isLeft: isDirLeft(); // var(--d-dir-left, 1)
+```
+
+### `isDirRight`
+
+Checks if current direction is right-aligned.
+
+**Parameters:** none
+
+**Returns:** `String`
+
+```scss
+$isRight: isDirRight(); // var(--d-dir-right, 0)
+```
+
+## Direction Functions
+
+### `dirLeft`
+
+Returns text alignment value for left side.
+
+**Parameters:** none
+
+**Returns:** `String`
+
+```scss
+text-align: dirLeft(); // left (LTR) or right (RTL)
+```
+
+### `dirRight`
+
+Returns text alignment value for right side.
+
+**Parameters:** none
+
+**Returns:** `String`
+
+```scss
+text-align: dirRight(); // right (LTR) or left (RTL)
+```
+
+### `dirLeftAuto`
+
+Returns 'auto' value for left property.
+
+**Parameters:** none
+
+**Returns:** `String`
+
+```scss
+left: dirLeftAuto(); // auto (LTR) or unset (RTL)
+```
+
+### `dirRightAuto`
+
+Returns 'auto' value for right property.
+
+**Parameters:** none
+
+**Returns:** `String`
+
+```scss
+right: dirRightAuto(); // unset (LTR) or auto (RTL)
+```
+
+### `dirFlexLeft`
+
+Returns flex alignment value for left side.
+
+**Parameters:** none
+
+**Returns:** `String`
+
+```scss
+justify-content: dirFlexLeft(); // flex-start (LTR) or flex-end (RTL)
+```
+
+### `dirFlexRight`
+
+Returns flex alignment value for right side.
+
+**Parameters:** none
+
+**Returns:** `String`
+
+```scss
+justify-content: dirFlexRight(); // flex-end (LTR) or flex-start (RTL)
+```
+
+## Position Functions
+
+### `dirToLeft`
+
+Calculates position value for left property based on direction.
+
+**Parameters:**
+- `$left` — left position variable
+- `$right` — right position variable
+
+**Returns:** `String`
+
+```scss
+left: dirToLeft(--pos-left, --pos-right);
+```
+
+### `dirToRight`
+
+Calculates position value for right property based on direction.
+
+**Parameters:**
+- `$left` — left position variable
+- `$right` — right position variable
+
+**Returns:** `String`
+
+```scss
+right: dirToRight(--pos-left, --pos-right);
+```
+
+### `dirOrder`
+
+Calculates order value based on direction multiplier.
+
+**Parameters:**
+- `$value` — order value
+
+**Returns:** `String`
+
+```scss
+order: dirOrder(2); // 3 (LTR) or 999997 (RTL)
+```
+

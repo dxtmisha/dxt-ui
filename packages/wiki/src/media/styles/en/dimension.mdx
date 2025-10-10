@@ -1,0 +1,233 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Dimension'/>
+
+# Dimension
+
+A set of SCSS functions and mixins for managing dimensions with CSS Custom Properties support.
+
+## Functions
+
+### `getWidthByRatio`
+
+Returns width based on aspect ratio values.
+
+**Parameters:**
+- `$value` — aspect ratio string (e.g., '16/9')
+
+**Returns:** `String`
+
+```scss
+$width: getWidthByRatio('16/9'); // "16"
+```
+
+### `getHeightByRatio`
+
+Returns height based on aspect ratio values.
+
+**Parameters:**
+- `$value` — aspect ratio string (e.g., '16/9')
+
+**Returns:** `String`
+
+```scss
+$height: getHeightByRatio('16/9'); // "9"
+```
+
+## Mixins
+
+### `width`
+
+Sets width with CSS custom property.
+
+**Parameters:**
+- `$value` — width value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include width(200px);
+}
+```
+
+### `height`
+
+Sets height with CSS custom property.
+
+**Parameters:**
+- `$value` — height value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include height(100px);
+}
+```
+
+### `widthDevice`
+
+Sets width using device viewport width (dvw).
+
+**Parameters:**
+- `$value` — width value in dvw units
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include widthDevice(100);
+}
+```
+
+### `heightDevice`
+
+Sets height using device viewport height (dvh).
+
+**Parameters:**
+- `$value` — height value in dvh units
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include heightDevice(100);
+}
+```
+
+### `maxWidthDevice`
+
+Sets max-width using device viewport width (dvw).
+
+**Parameters:**
+- `$value` — max-width value in dvw units
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include maxWidthDevice(90);
+}
+```
+
+### `maxHeightDevice`
+
+Sets max-height using device viewport height (dvh).
+
+**Parameters:**
+- `$value` — max-height value in dvh units
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include maxHeightDevice(80);
+}
+```
+
+### `widthBasis`
+
+Sets width with flex-basis and max-width constraint.
+
+**Parameters:**
+- `$value` — width value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include widthBasis(300px);
+}
+```
+
+### `heightBasis`
+
+Sets height with flex-basis and max-height constraint.
+
+**Parameters:**
+- `$value` — height value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include heightBasis(200px);
+}
+```
+
+### `aspectRatio`
+
+Sets aspect ratio.
+
+**Parameters:**
+- `$value` — aspect ratio value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include aspectRatio(16/9);
+}
+```
+
+### `aspectRatioWidth`
+
+Sets aspect ratio (alias for aspectRatio).
+
+**Parameters:**
+- `$value` — aspect ratio value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include aspectRatioWidth(16/9);
+}
+```
+
+### `aspectRatioHeight`
+
+Sets aspect ratio (alias for aspectRatio).
+
+**Parameters:**
+- `$value` — aspect ratio value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include aspectRatioHeight(4/3);
+}
+```
+
+### `squared`
+
+Creates a square element with aspect ratio 1:1.
+
+**Parameters:**
+- `$value` — size value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include squared(100px);
+}
+```
+
+### `circle`
+
+Creates a circular element.
+
+**Parameters:**
+- `$value` — size value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include circle(50px);
+}
+```
+

@@ -1,0 +1,183 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Position'/>
+
+# Position
+
+A set of SCSS mixins for managing element positioning with CSS Custom Properties support.
+
+**How it works:** The system provides convenient mixins for positioning elements with automatic RTL support through CSS Logical Properties (inset-inline-start/end). Position mixins combine multiple positioning properties into single declarations, reducing code repetition. The `absolute*` mixins automatically set position: absolute and apply positioning values in one call.
+
+## Basic Position Mixins
+
+### `inset`
+
+Sets inset property on all sides.
+
+**Parameters:**
+- `$value: 0` — inset value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include inset(16px);
+}
+```
+
+### `horizon`
+
+Sets horizontal positioning (left and right).
+
+**Parameters:**
+- `$value: 0` — position value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include horizon(16px);
+}
+```
+
+### `vertically`
+
+Sets vertical positioning (top and bottom).
+
+**Parameters:**
+- `$value: 0` — position value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include vertically(16px);
+}
+```
+
+## Edge Position Mixins
+
+### `top`
+
+Sets top position and resets horizontal edges to 0.
+
+**Parameters:**
+- `$value: 0` — top value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include top(16px);
+}
+```
+
+### `bottom`
+
+Sets bottom position and resets horizontal edges to 0.
+
+**Parameters:**
+- `$value: 0` — bottom value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include bottom(16px);
+}
+```
+
+### `left`
+
+Sets left position with RTL support via inset-inline-start.
+
+**Parameters:**
+- `$value: 0px` — left value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include left(16px);
+}
+```
+
+### `right`
+
+Sets right position with RTL support via inset-inline-end.
+
+**Parameters:**
+- `$value: 0px` — right value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include right(16px);
+}
+```
+
+## Absolute Position Mixins
+
+### `absolute`
+
+Sets position: absolute with inset value.
+
+**Parameters:**
+- `$value: 0` — inset value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include absolute(16px);
+}
+```
+
+### `absoluteTop`
+
+Sets position: absolute with top and horizontal positioning.
+
+**Parameters:**
+- `$value: 0` — top value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include absoluteTop(16px);
+}
+```
+
+### `absoluteBottom`
+
+Sets position: absolute with bottom and horizontal positioning.
+
+**Parameters:**
+- `$value: 0` — bottom value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include absoluteBottom(16px);
+}
+```
+
+### `absoluteAfter`
+
+Sets position: relative and creates absolutely positioned ::after pseudo-element.
+
+**Parameters:**
+- `$value: 0` — inset value for ::after
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include absoluteAfter(0) {
+    background: red;
+  }
+}
+```
+

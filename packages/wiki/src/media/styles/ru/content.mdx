@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/ru/Content'/>
+
+# Content
+
+Набор SCSS миксинов для управления видимостью контента с поддержкой CSS Custom Properties.
+
+## Миксины
+
+### `contentVisibility`
+
+Устанавливает свойство `content-visibility` с опциональным fallback для браузеров без поддержки.
+
+**Параметры:**
+- `$value` — значение content-visibility ('auto', 'hidden', 'visible')
+- `$display: null` — fallback значение display
+
+**Возвращает:** `void`
+
+```scss
+.list-item {
+  @include contentVisibility('auto');
+}
+
+.hidden-section {
+  @include contentVisibility('hidden', none);
+}
+```
+

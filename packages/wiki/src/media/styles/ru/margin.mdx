@@ -1,0 +1,115 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/ru/Margin'/>
+
+# Margin
+
+Набор SCSS миксинов для управления внешними отступами с поддержкой CSS Custom Properties.
+
+## Миксины
+
+### `margin`
+
+Устанавливает отступы со всех сторон.
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include margin(16px);
+}
+```
+
+### `marginX`
+
+Устанавливает горизонтальные отступы (слева и справа).
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include marginX(16px);
+}
+```
+
+### `marginY`
+
+Устанавливает вертикальные отступы (сверху и снизу).
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include marginY(16px);
+}
+```
+
+### `marginLeft`
+
+Устанавливает левый отступ с поддержкой RTL через margin-inline-start.
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include marginLeft(16px);
+}
+```
+
+### `marginRight`
+
+Устанавливает правый отступ с поддержкой RTL через margin-inline-end.
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include marginRight(16px);
+}
+```
+
+### `marginTop`
+
+Устанавливает верхний отступ.
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include marginTop(16px);
+}
+```
+
+### `marginBottom`
+
+Устанавливает нижний отступ.
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include marginBottom(16px);
+}
+```
+

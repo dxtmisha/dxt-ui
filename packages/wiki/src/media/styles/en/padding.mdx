@@ -1,0 +1,115 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Padding'/>
+
+# Padding
+
+A set of SCSS mixins for managing paddings with CSS Custom Properties support.
+
+## Mixins
+
+### `padding`
+
+Sets padding on all sides.
+
+**Parameters:**
+- `$value` — padding value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include padding(16px);
+}
+```
+
+### `paddingX`
+
+Sets horizontal paddings (left and right).
+
+**Parameters:**
+- `$value` — padding value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include paddingX(16px);
+}
+```
+
+### `paddingY`
+
+Sets vertical paddings (top and bottom).
+
+**Parameters:**
+- `$value` — padding value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include paddingY(16px);
+}
+```
+
+### `paddingLeft`
+
+Sets left padding with RTL support via padding-inline-start.
+
+**Parameters:**
+- `$value` — padding value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include paddingLeft(16px);
+}
+```
+
+### `paddingRight`
+
+Sets right padding with RTL support via padding-inline-end.
+
+**Parameters:**
+- `$value` — padding value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include paddingRight(16px);
+}
+```
+
+### `paddingTop`
+
+Sets top padding.
+
+**Parameters:**
+- `$value` — padding value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include paddingTop(16px);
+}
+```
+
+### `paddingBottom`
+
+Sets bottom padding.
+
+**Parameters:**
+- `$value` — padding value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include paddingBottom(16px);
+}
+```
+

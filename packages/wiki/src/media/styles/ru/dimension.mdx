@@ -1,0 +1,233 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/ru/Dimension'/>
+
+# Dimension
+
+Набор SCSS функций и миксинов для управления размерами с поддержкой CSS Custom Properties.
+
+## Функции
+
+### `getWidthByRatio`
+
+Возвращает ширину на основе значений соотношения сторон.
+
+**Параметры:**
+- `$value` — строка соотношения сторон (например, '16/9')
+
+**Возвращает:** `String`
+
+```scss
+$width: getWidthByRatio('16/9'); // "16"
+```
+
+### `getHeightByRatio`
+
+Возвращает высоту на основе значений соотношения сторон.
+
+**Параметры:**
+- `$value` — строка соотношения сторон (например, '16/9')
+
+**Возвращает:** `String`
+
+```scss
+$height: getHeightByRatio('16/9'); // "9"
+```
+
+## Миксины
+
+### `width`
+
+Устанавливает ширину с CSS custom property.
+
+**Параметры:**
+- `$value` — значение ширины
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include width(200px);
+}
+```
+
+### `height`
+
+Устанавливает высоту с CSS custom property.
+
+**Параметры:**
+- `$value` — значение высоты
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include height(100px);
+}
+```
+
+### `widthDevice`
+
+Устанавливает ширину с использованием device viewport width (dvw).
+
+**Параметры:**
+- `$value` — значение ширины в единицах dvw
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include widthDevice(100);
+}
+```
+
+### `heightDevice`
+
+Устанавливает высоту с использованием device viewport height (dvh).
+
+**Параметры:**
+- `$value` — значение высоты в единицах dvh
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include heightDevice(100);
+}
+```
+
+### `maxWidthDevice`
+
+Устанавливает max-width с использованием device viewport width (dvw).
+
+**Параметры:**
+- `$value` — значение max-width в единицах dvw
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include maxWidthDevice(90);
+}
+```
+
+### `maxHeightDevice`
+
+Устанавливает max-height с использованием device viewport height (dvh).
+
+**Параметры:**
+- `$value` — значение max-height в единицах dvh
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include maxHeightDevice(80);
+}
+```
+
+### `widthBasis`
+
+Устанавливает ширину с flex-basis и ограничением max-width.
+
+**Параметры:**
+- `$value` — значение ширины
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include widthBasis(300px);
+}
+```
+
+### `heightBasis`
+
+Устанавливает высоту с flex-basis и ограничением max-height.
+
+**Параметры:**
+- `$value` — значение высоты
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include heightBasis(200px);
+}
+```
+
+### `aspectRatio`
+
+Устанавливает соотношение сторон.
+
+**Параметры:**
+- `$value` — значение соотношения сторон
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include aspectRatio(16/9);
+}
+```
+
+### `aspectRatioWidth`
+
+Устанавливает соотношение сторон (псевдоним для aspectRatio).
+
+**Параметры:**
+- `$value` — значение соотношения сторон
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include aspectRatioWidth(16/9);
+}
+```
+
+### `aspectRatioHeight`
+
+Устанавливает соотношение сторон (псевдоним для aspectRatio).
+
+**Параметры:**
+- `$value` — значение соотношения сторон
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include aspectRatioHeight(4/3);
+}
+```
+
+### `squared`
+
+Создает квадратный элемент с соотношением сторон 1:1.
+
+**Параметры:**
+- `$value` — значение размера
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include squared(100px);
+}
+```
+
+### `circle`
+
+Создает круглый элемент.
+
+**Параметры:**
+- `$value` — значение размера
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include circle(50px);
+}
+```
+

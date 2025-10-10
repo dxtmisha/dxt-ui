@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Content'/>
+
+# Content
+
+A set of SCSS mixins for managing content visibility with CSS Custom Properties support.
+
+## Mixins
+
+### `contentVisibility`
+
+Sets the `content-visibility` property with optional fallback for unsupported browsers.
+
+**Parameters:**
+- `$value` — content-visibility value ('auto', 'hidden', 'visible')
+- `$display: null` — fallback display value
+
+**Returns:** `void`
+
+```scss
+.list-item {
+  @include contentVisibility('auto');
+}
+
+.hidden-section {
+  @include contentVisibility('hidden', none);
+}
+```

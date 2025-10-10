@@ -1,0 +1,114 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Transform'/>
+
+# Transform
+
+A set of SCSS mixins for managing CSS transforms with CSS Custom Properties support.
+
+## Mixins
+
+### `initTransform`
+
+Initializes transform system with CSS custom properties.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+@include initTransform;
+// --sys-transform-translateX: 0px;
+// --sys-transform-translateY: 0px;
+// --sys-transform-scale: 1;
+// --sys-transform-rotate: 0;
+```
+
+### `translateX`
+
+Sets horizontal translation with RTL support.
+
+**Parameters:**
+- `$value` — translation value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include translateX(10px);
+}
+```
+
+### `translateY`
+
+Sets vertical translation.
+
+**Parameters:**
+- `$value` — translation value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include translateY(10px);
+}
+```
+
+### `scale`
+
+Sets element scale.
+
+**Parameters:**
+- `$value` — scale value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include scale(1.5);
+}
+```
+
+### `rotate`
+
+Sets element rotation.
+
+**Parameters:**
+- `$value` — rotation value
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include rotate(45deg);
+}
+```
+
+### `transformInit`
+
+Applies all transform properties using CSS custom properties with RTL support for translateX.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include transformInit;
+}
+```
+
+### `translateInit`
+
+Applies translate property using CSS custom properties.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include translateInit;
+}
+```
+

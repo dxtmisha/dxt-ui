@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Scrollbar'/>
+
+# Scrollbar
+
+A set of SCSS mixins for managing scrollbar appearance with CSS Custom Properties support.
+
+## Mixins
+
+### `scrollbarHide`
+
+Hides scrollbar while keeping scroll functionality.
+
+**Parameters:** none
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include scrollbarHide;
+  // scrollbar-width: none;
+  // scroll-behavior: auto;
+  // &::-webkit-scrollbar { width: 0; height: 0; }
+}
+```
+

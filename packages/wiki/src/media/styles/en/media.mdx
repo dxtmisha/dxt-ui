@@ -1,0 +1,133 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/en/Media'/>
+
+# Media
+
+A set of SCSS functions and mixins for managing media queries and container queries with CSS Custom Properties support.
+
+**How it works:** The system uses design-specific breakpoint values stored in `variables.$designsMedia` map. The `media()` function retrieves breakpoint values based on current design system. Mixins provide convenient wrappers for media queries and container queries, automatically handling min/max width calculations and range queries.
+
+## Functions
+
+### `media`
+
+Returns breakpoint value for media queries.
+
+**Parameters:**
+- `$width` — size name (e.g., 'sm', 'md', 'lg')
+
+**Returns:** `String`
+
+```scss
+$breakpoint: media('md'); // returns breakpoint value
+```
+
+## Media Query Mixins
+
+### `mediaMinWidth`
+
+Creates media query with minimum width breakpoint.
+
+**Parameters:**
+- `$width` — size name
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include mediaMinWidth('md') {
+    display: block;
+  }
+}
+```
+
+### `mediaMaxWidth`
+
+Creates media query with maximum width breakpoint.
+
+**Parameters:**
+- `$width` — size name
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include mediaMaxWidth('md') {
+    display: none;
+  }
+}
+```
+
+### `mediaMinMaxWidth`
+
+Creates media query with min and max width range.
+
+**Parameters:**
+- `$min` — minimum size name
+- `$max` — maximum size name
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include mediaMinMaxWidth('sm', 'lg') {
+    padding: 16px;
+  }
+}
+```
+
+## Container Query Mixins
+
+### `containerMinWidth`
+
+Creates container query with minimum width breakpoint.
+
+**Parameters:**
+- `$width` — size name
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include containerMinWidth('md') {
+    display: grid;
+  }
+}
+```
+
+### `containerMaxWidth`
+
+Creates container query with maximum width breakpoint.
+
+**Parameters:**
+- `$width` — size name
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include containerMaxWidth('md') {
+    display: flex;
+  }
+}
+```
+
+### `containerMinMaxWidth`
+
+Creates container query with min and max width range.
+
+**Parameters:**
+- `$min` — minimum size name
+- `$max` — maximum size name
+
+**Returns:** `void`
+
+```scss
+.element {
+  @include containerMinMaxWidth('sm', 'lg') {
+    gap: 16px;
+  }
+}
+```
+

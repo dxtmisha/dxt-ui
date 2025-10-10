@@ -1,0 +1,249 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/ru/Flex'/>
+
+# Flex
+
+Набор SCSS миксинов для работы с flexbox-раскладками с поддержкой CSS Custom Properties.
+
+**Как это работает:** Система предоставляет удобные миксины для распространенных паттернов flexbox. Каждый миксин объединяет несколько свойств flexbox в одно объявление, уменьшая дублирование кода. Миксины поддерживают как стандартные flex-контейнеры, так и inline-flex варианты, с автоматическими пресетами выравнивания для горизонтальных/вертикальных раскладок.
+
+## Базовые миксины
+
+### `flex`
+
+Устанавливает display: flex.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flex;
+}
+```
+
+### `flexInline`
+
+Устанавливает display: inline-flex.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexInline;
+}
+```
+
+## Миксины выравнивания
+
+### `flexX`
+
+Создает горизонтальный flex-контейнер с центрированными элементами.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexX;
+  // display: flex;
+  // align-items: center;
+}
+```
+
+### `flexY`
+
+Создает вертикальный flex-контейнер с центрированными элементами.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexY;
+  // display: flex;
+  // align-items: center;
+  // flex-flow: column;
+}
+```
+
+### `flexStretchX`
+
+Создает горизонтальный flex-контейнер с растянутыми элементами.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexStretchX;
+  // display: flex;
+  // align-items: stretch;
+}
+```
+
+### `flexStretchY`
+
+Создает вертикальный flex-контейнер с растянутыми элементами.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexStretchY;
+  // display: flex;
+  // align-items: stretch;
+  // flex-flow: column;
+}
+```
+
+### `flexCenter`
+
+Создает центрированный flex-контейнер (по обеим осям).
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexCenter;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+}
+```
+
+### `flexBetween`
+
+Создает flex-контейнер с выравниванием space-between.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexBetween;
+  // display: flex;
+  // align-items: center;
+  // justify-content: space-between;
+}
+```
+
+## Миксины inline-flex
+
+### `flexInlineX`
+
+Создает горизонтальный inline-flex контейнер с центрированными элементами.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexInlineX;
+}
+```
+
+### `flexInlineY`
+
+Создает вертикальный inline-flex контейнер с центрированными элементами.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexInlineY;
+}
+```
+
+### `flexInlineCenter`
+
+Создает центрированный inline-flex контейнер (по обеим осям).
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexInlineCenter;
+}
+```
+
+### `flexInlineBetween`
+
+Создает inline-flex контейнер с выравниванием space-between.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexInlineBetween;
+}
+```
+
+## Утилитарные миксины
+
+### `justifyContent`
+
+Устанавливает свойство justify-content.
+
+**Параметры:**
+- `$value` — значение justify-content
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include justifyContent(center);
+}
+```
+
+### `flexPosition`
+
+Применяет flex-раскладку на основе значения пресета.
+
+**Параметры:**
+- `$value` — имя пресета ('x', 'y', 'center', 'between', 'inline-x', 'inline-y', 'inline-center', 'inline-between')
+
+**Возвращает:** `void`
+
+```scss
+.container {
+  @include flexPosition('center');
+}
+```
+
+### `flexDynamic`
+
+Создает гибкий элемент, который растет и сжимается.
+
+**Параметры:** нет
+
+**Возвращает:** `void`
+
+```scss
+.item {
+  @include flexDynamic;
+  // flex-basis: 1px;
+  // flex-grow: 1;
+  // flex-shrink: 1;
+}
+```
+

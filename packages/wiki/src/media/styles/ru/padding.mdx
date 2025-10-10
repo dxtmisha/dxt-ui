@@ -1,0 +1,115 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/styles/ru/Padding'/>
+
+# Padding
+
+Набор SCSS миксинов для управления внутренними отступами с поддержкой CSS Custom Properties.
+
+## Миксины
+
+### `padding`
+
+Устанавливает отступы со всех сторон.
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include padding(16px);
+}
+```
+
+### `paddingX`
+
+Устанавливает горизонтальные отступы (слева и справа).
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include paddingX(16px);
+}
+```
+
+### `paddingY`
+
+Устанавливает вертикальные отступы (сверху и снизу).
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include paddingY(16px);
+}
+```
+
+### `paddingLeft`
+
+Устанавливает левый отступ с поддержкой RTL через padding-inline-start.
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include paddingLeft(16px);
+}
+```
+
+### `paddingRight`
+
+Устанавливает правый отступ с поддержкой RTL через padding-inline-end.
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include paddingRight(16px);
+}
+```
+
+### `paddingTop`
+
+Устанавливает верхний отступ.
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include paddingTop(16px);
+}
+```
+
+### `paddingBottom`
+
+Устанавливает нижний отступ.
+
+**Параметры:**
+- `$value` — значение отступа
+
+**Возвращает:** `void`
+
+```scss
+.element {
+  @include paddingBottom(16px);
+}
+```
+
