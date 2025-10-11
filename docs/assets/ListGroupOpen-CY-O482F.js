@@ -1,0 +1,1 @@
+import{r as s,c as e}from"./iframe-C6i5AnHO.js";class r{constructor(o){this.props=o}open=s(!1);is=e(()=>this.open.value||!!this.props.open);onOpen=({open:o})=>{this.open.value!==o&&(this.open.value=o)}}export{r as L};

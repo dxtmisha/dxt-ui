@@ -1,0 +1,5 @@
+import{j as o}from"./jsx-runtime-D_zvdyIk.js";import{useMDXComponents as m}from"./index-Dqnce8mp.js";import{M as s}from"./blocks-6V-3VoLN.js";import{S as a,a as r}from"./StorybookDescriptions-l3a0nPt6.js";import{F as p,a as l,b as i}from"./D1FieldLabel.stories-oKAZYcKY.js";import"./preload-helper-PPVm8Dsz.js";import"./_commonjsHelpers-CqkleIqs.js";import"./iframe-C6i5AnHO.js";import"./wiki-CHTdS6ju.js";import"./D1FieldLabel-Bpurh4MO.js";import"./index-DryYDXCx.js";import"./D1FieldCounter-FhyxkzU6.js";import"./D1Progress-7ypWRLzk.js";import"./LabelInclude-BNh3LEI8.js";import"./SkeletonInclude-J1KCPIVt.js";import"./Skeleton-DAK66WvM.js";import"./ProgressInclude-CJAPru9v.js";function n(t){const e={h2:"h2",...m(),...t.components};return o.jsxs(o.Fragment,{children:[o.jsx(s,{of:p}),`
+`,o.jsx(a,{name:i.getName(),description:i.getDescription(),story:l}),`
+`,o.jsx(r,{componentName:"FieldLabel",type:"fieldLabel"}),`
+`,o.jsx(e.h2,{id:"slots",children:"Slots"}),`
+`,o.jsx(r,{componentName:"Slot",type:"label"})]})}function N(t={}){const{wrapper:e}={...m(),...t.components};return e?o.jsx(e,{...t,children:o.jsx(n,{...t})}):n(t)}export{N as default};

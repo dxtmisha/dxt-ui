@@ -1,0 +1,3 @@
+import{j as o}from"./jsx-runtime-D_zvdyIk.js";import{useMDXComponents as p}from"./index-Dqnce8mp.js";import{M as n}from"./blocks-6V-3VoLN.js";import{S as s,a as m}from"./StorybookDescriptions-l3a0nPt6.js";import{R as a,a as c,b as e}from"./D1Ripple.stories-BNwglft9.js";import"./preload-helper-PPVm8Dsz.js";import"./_commonjsHelpers-CqkleIqs.js";import"./iframe-C6i5AnHO.js";import"./wiki-CHTdS6ju.js";import"./D1Ripple-DRlAFuhB.js";function i(t){return o.jsxs(o.Fragment,{children:[o.jsx(n,{of:a}),`
+`,o.jsx(s,{name:e.getName(),description:e.getDescription(),story:c}),`
+`,o.jsx(m,{componentName:"Ripple",type:"ripple"})]})}function b(t={}){const{wrapper:r}={...p(),...t.components};return r?o.jsx(r,{...t,children:o.jsx(i,{...t})}):i()}export{b as default};

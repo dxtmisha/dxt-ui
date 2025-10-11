@@ -87,131 +87,6 @@ MDX structure rules:
 - Don't add <Canvas of={Component.Component}/>
 - Don't touch Meta and StorybookMain. They must remain as they are and be at the top. Don't add, don't delete, don't modify them.
 
-Expose description example (don't copy verbatim, adapt):
-### `isSelected`
-
-Computed property indicating the presence of selected elements in the component.
-
-**Type:** `ComputedRef<boolean>`
-
-```html
-<script setup>
-const menuRef = ref()
-
-watch(() => menuRef.value?.isSelected, (hasSelection) => {
-  console.log('Has selected elements:', hasSelection)
-})
-</script>
-
-<template>
-  <Menu ref="menuRef" :list="items">
-    <template #default>
-      <p v-if="menuRef?.isSelected">Elements selected</p>
-    </template>
-  </Menu>
-</template>
-```
-
-Slot description example (don't copy verbatim, adapt):
-### `suffix`
-
-Slot for placing content at the end of the component, after the main content.
-
-**Returns:** `VNode` — element with class `{className}__suffix` and attribute `data-event-type="suffix"`
-
-```html
-<Component>
-  <template #suffix>
-    <Icon name="check" />
-  </template>
-</Component>
-```
-
-### `control`
-
-Slot for placing window control elements (close buttons, minimize, etc.).
-
-**Parameters:**
-- `props: WindowControlItem` — object with window control data
-
-```html
-<Window>
-  <template #control="{ onclick, open }">
-    <button @click="onclick">
-      {{ open ? 'Close' : 'Open' }}
-    </button>
-  </template>
-</Window>
-```
-
-Event description example (adapt to context):
-### `window`
-
-Event fires when the window state changes (open/close).
-
-**Parameters:**
-- `options: WindowEmitOptions` — object with window data
-
-**WindowEmitOptions structure:**
-- `id: string` — unique window identifier
-- `element: HTMLDivElement` — window DOM element
-- `control: HTMLElement` — control DOM element
-- `open: boolean` — window open state (`true` - open, `false` - closed)
-
-```html
-<script setup>
-const handleWindow = (options) => {
-  console.log('Window ID:', options.id)
-  console.log('Window open:', options.open)
-  console.log('Window element:', options.element)
-  console.log('Control element:', options.control)
-}
-</script>
-
-<template>
-  <Window @window="handleWindow">
-    <template #default>
-      <p>Window content</p>
-    </template>
-  </Window>
-</template>
-```
-
-Canvas usage example:
-<Canvas of={Chip.ChipSkeleton}/>
-
-====================================
-5) Final return
-====================================
-Return the result strictly in the format (nothing extra before or after):
-[types.ts]
-#########
-[ComponentDoc.stories.ts]
-#########
-[UiPlayerLite.mdx]
-
-Where:
-- Don't add anything extra (like ```ts)
-- Don't wrap in blocks.
-- Don't wrap in ```ts or anything similar.
-- [types.ts] — final types block with comments (only content, without file name comments).
-- [ComponentDoc.stories.ts] — final stories file (only content, without file name comments).
-- [UiPlayerLite.mdx] — final MDX documentation (only content, without file name comments).
-- Result strictly in this order, separated by line #########.
-
-====================================
-Constraints and style
-====================================
-- No tables.
-- No arbitrary additional sections.
-- Don't add "Props" section if there are no complex dependencies.
-- Don't duplicate descriptions of the same thing.
-- Respect the [wikiLanguage] language — if it's "en" use English, otherwise the corresponding language.
-- Don't use placeholders outside those specified.
-- Code blocks: for types and events — ```ts, for markup — ```html when necessary.
-- Stories: only necessary scenarios, without extra visual decorations.
-
-====================================
 Example MDX documentation (don't include in response, only as style guide)
 Make sure to follow the style and formatting as shown in the example
 ====================================
@@ -375,3 +250,37 @@ const handleWindow = (options) => {
   </Window>
 </template>
 ```
+
+Canvas usage example:
+<Canvas of={Chip.ChipSkeleton}/>
+
+====================================
+5) Final return
+====================================
+Return the result strictly in the format (nothing extra before or after):
+[types.ts]
+#########
+[ComponentDoc.stories.ts]
+#########
+[UiPlayerLite.mdx]
+
+Where:
+- Don't add anything extra (like ```ts)
+- Don't wrap in blocks.
+- Don't wrap in ```ts or anything similar.
+- [types.ts] — final types block with comments (only content, without file name comments).
+- [ComponentDoc.stories.ts] — final stories file (only content, without file name comments).
+- [UiPlayerLite.mdx] — final MDX documentation (only content, without file name comments).
+- Result strictly in this order, separated by line #########.
+
+====================================
+Constraints and style
+====================================
+- No tables.
+- No arbitrary additional sections.
+- Don't add "Props" section if there are no complex dependencies.
+- Don't duplicate descriptions of the same thing.
+- Respect the [wikiLanguage] language — if it's "en" use English, otherwise the corresponding language.
+- Don't use placeholders outside those specified.
+- Code blocks: for types and events — ```ts, for markup — ```html when necessary.
+- Stories: only necessary scenarios, without extra visual decorations.

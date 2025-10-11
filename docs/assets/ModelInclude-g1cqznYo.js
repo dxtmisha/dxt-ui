@@ -1,0 +1,1 @@
+import{w as m,H as h,C as d,S as a}from"./iframe-C6i5AnHO.js";class c{constructor(t,s,i){this.index=t,this.emits=s,this.syncValue=i,i&&m(i,e=>{this.emit(e)},{immediate:!0})}emit(t){h(this.emits)&&(this.emits(`update:${d(this.index)}`,t),this.emits(`update:model${a(this.index)}`,t))}}export{c as M};
