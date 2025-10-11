@@ -1,0 +1,16 @@
+{
+  "border-width": {
+    "_type": "var"
+  },
+  "border-color": {
+    "_type": "var"
+  },
+  "border-opacity": {
+    "_type": "var"
+  },
+  "#head": {},
+  "#body": {},
+  "~divider": {
+    "_default": true
+  }
+}

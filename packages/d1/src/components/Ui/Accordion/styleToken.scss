@@ -1,0 +1,69 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Accordion/style" as Accordion;
+
+@include ui.initDesignBasic('d1.accordion') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Accordion.mixinAccordion;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-accordion-borderWidth: var(--d1-sys-spacing-outline);
+    --d1-accordion-borderColor: var(--d1-sys-palette-outline);
+    --d1-accordion-borderOpacity: var(--d1-sys-opacity-outline);
+    
+    &--padding {
+      &--sm {
+        & .d1-accordion__body {
+          @include ui.paddingX(#{var(--d1-sys-spacing-x)});
+          @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
+        }
+      }
+      
+      &--md {
+        & .d1-accordion__body {
+          @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
+          @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
+        }
+      }
+      
+      &--lg {
+        & .d1-accordion__body {
+          @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
+          @include ui.paddingY(#{var(--d1-sys-spacing-md)});
+        }
+      }
+      
+      &--ySm {
+        & .d1-accordion__body {
+          @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
+        }
+      }
+      
+      &--yMd {
+        & .d1-accordion__body {
+          @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
+        }
+      }
+      
+      &--yLg {
+        & .d1-accordion__body {
+          @include ui.paddingY(#{var(--d1-sys-spacing-md)});
+        }
+      }
+    }
+    
+    &--paddingByIndent {
+      & .d1-accordion__body {
+        @include ui.paddingX(#{var(--d1-grid-paddingX)});
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

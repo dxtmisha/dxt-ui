@@ -49,6 +49,7 @@
   '--d1-sys-palette-inverseOnPrimary': ('--d1-palette-basic950', '--d1-palette-dark50'),
   '--d1-sys-palette-inverseOnSurface': ('--d1-palette-basic50', '--d1-palette-dark950'),
   '--d1-sys-palette-shadow': ('--d1-palette-basic950', '--d1-palette-dark700'),
+  '--d1-accordion-borderColor': ('--d1-palette-basic800'),
   '--d1-cell-borderColor': ('--d1-palette-basic800'),
   '--d1-field-borderColor': ('--d1-palette-basic800', '--d1-palette-basic800'),
   '--d1-field-focusWithin-color': ('--d1-palette-basic600'),
@@ -11794,6 +11795,11 @@
           ),
         ),
       ),
+      'accordion':(
+        index: 'accordion',
+        name: 'd1-accordion',
+        type: 'component',
+      ),
       'badge':(
         index: 'badge',
         name: 'd1-badge',
@@ -12171,6 +12177,11 @@
             ),
           ),
         ),
+      ),
+      'accordion':(
+        index: 'accordion',
+        name: 'd-accordion',
+        type: 'component',
       ),
       'badge':(
         index: 'badge',

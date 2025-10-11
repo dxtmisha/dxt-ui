@@ -8,6 +8,8 @@ import eventsEn from './events.en.mdx'
 import eventsRu from './events.ru.mdx'
 import exposeIsShowEn from './expose.isShow.en.mdx'
 import exposeIsShowRu from './expose.isShow.ru.mdx'
+import exposeMotionTransformElementEn from './expose.motionTransformElement.en.mdx'
+import exposeMotionTransformElementRu from './expose.motionTransformElement.ru.mdx'
 import ignoreEn from './ignore.en.mdx'
 import ignoreRu from './ignore.ru.mdx'
 import motionTransformEn from './motionTransform.en.mdx'
@@ -40,6 +42,10 @@ export const wikiMdxMotionTransform: StorybookComponentsMdxItem = {
     'expose.isShow': {
       en: exposeIsShowEn,
       ru: exposeIsShowRu
+    },
+    'expose.motionTransformElement': {
+      en: exposeMotionTransformElementEn,
+      ru: exposeMotionTransformElementRu
     },
     'ignore': {
       en: ignoreEn,

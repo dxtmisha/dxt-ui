@@ -30,6 +30,7 @@ const propsNames: StorybookProps = [
   { name: 'label', type: 'NumberOrString' },
   { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },
   { name: 'padding', type: 'string', option: ['none', 'sm', 'md', 'lg', 'ySm', 'yMd', 'yLg'] },
+  { name: 'paddingByIndent', type: 'boolean' },
   { name: 'readonly', type: 'boolean' },
   { name: 'selected', type: 'boolean' },
   { name: 'tag', type: 'string' },

@@ -109,7 +109,9 @@ export interface MotionTransformExposeInclude extends MotionTransformExpose {
  * Props used to include and configure MotionTransform/
  * Свойства для подключения и настройки MotionTransform
  */
-export interface MotionTransformPropsInclude {
+export interface MotionTransformPropsInclude<
+  MotionTransform extends MotionTransformProps = MotionTransformProps
+> {
   /** Open state/ Состояние открытия */
   open?: boolean
   /** Click on head opens component/ Клик по заголовку открывает компонент */
@@ -117,5 +119,5 @@ export interface MotionTransformPropsInclude {
   /** Auto close on outside click/ Авто‑закрытие при клике вне */
   autoClose?: boolean
   /** Additional attributes for MotionTransform/ Дополнительные атрибуты для MotionTransform */
-  motionTransformAttrs?: ConstrBind<MotionTransformProps>
+  motionTransformAttrs?: ConstrBind<MotionTransform>
 }

@@ -203,11 +203,7 @@ export const wikiDescriptionsMotionTransform: StorybookComponentsDescriptionItem
     `,
     expose: `
 <StorybookDescriptions componentName={'MotionTransform'} type={'expose.isShow'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.open'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.setOpen'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.toOpen'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.toClose'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose.toggle'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose'}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'MotionTransform'} type={'slots'}/>

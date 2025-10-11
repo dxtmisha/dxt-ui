@@ -37,6 +37,7 @@
   }
 
   &__body {
+    display: flow-root block;
     position: absolute;
     top: 0;
     opacity: 0;
@@ -86,6 +87,7 @@
     overflow-y: hidden;
 
     @include ui.subclass('head') {
+      overflow: hidden;
       transition: opacity 67ms linear 50ms, visibility 67ms linear 50ms;
 
       > * {

@@ -12,7 +12,8 @@ import type { MotionTransformProps } from './props'
 import type { MotionTransformEmits, MotionTransformExpose, MotionTransformSlots } from './types'
 import type {
   MotionTransformComponentInclude,
-  MotionTransformEmitOptions, MotionTransformExposeInclude,
+  MotionTransformEmitOptions,
+  MotionTransformExposeInclude,
   MotionTransformPropsInclude
 } from './basicTypes'
 

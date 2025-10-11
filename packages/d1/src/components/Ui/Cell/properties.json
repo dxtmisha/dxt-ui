@@ -72,5 +72,9 @@
     },
     "none": {},
     "_default": "yMd"
+  },
+  "~paddingByIndent": {
+    "paddingX": "{grid.paddingX}",
+    "_default": true
   }
 }

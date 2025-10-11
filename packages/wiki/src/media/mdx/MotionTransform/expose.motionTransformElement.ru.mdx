@@ -1,0 +1,14 @@
+### `motionTransformElement`
+
+Реактивная ссылка на expose API вложенного компонента MotionTransform, предоставляющая программный доступ к методам управления.
+
+**Тип:** `Ref<ConstrBind<MotionTransformExpose> | undefined>`
+
+**Методы через motionTransformElement.value:**
+- `open` — реактивное состояние открытия
+- `isShow` — вычисляемое состояние видимости
+- `setOpen(open: boolean)` — установить состояние открытия
+- `toOpen()` — открыть компонент
+- `toClose()` — закрыть компонент
+- `toggle()` — переключить состояние
+

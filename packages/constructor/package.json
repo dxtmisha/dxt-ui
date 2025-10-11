@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor mask"
+    "dxt-constructor": "dxt-constructor accordion"
   },
   "files": [
     "src/",
@@ -96,7 +96,9 @@
     "./Skeleton": "./src/constructors/Skeleton/index.ts",
     "./Skeleton/style": "./src/constructors/Skeleton/style.scss",
     "./Window": "./src/constructors/Window/index.ts",
-    "./Window/style": "./src/constructors/Window/style.scss"
+    "./Window/style": "./src/constructors/Window/style.scss",
+    "./Accordion": "./src/constructors/Accordion/index.ts",
+    "./Accordion/style": "./src/constructors/Accordion/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

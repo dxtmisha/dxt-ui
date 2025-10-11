@@ -232,6 +232,10 @@
         @include ui.paddingY(#{var(--d1-sys-spacing-md)});
       }
     }
+    
+    &--paddingByIndent {
+      @include ui.paddingX(#{var(--d1-grid-paddingX)});
+    }
   }
   // :style [!] System label / Системная метка
 

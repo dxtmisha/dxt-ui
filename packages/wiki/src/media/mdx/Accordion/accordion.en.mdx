@@ -1,0 +1,59 @@
+## Description
+
+Expandable container for organizing content with smooth opening and closing animations, simplifying information structuring in the interface.
+
+Accordion allows creating expandable sections with automatic animations, interactive header, and state management via v-model. The component supports padding configuration, visual dividers, and content customization through slots.
+
+**Key features:**
+
+- Smooth expand and collapse animations
+- Header with label, description, and icons
+- State management via v-model:open
+- Programmatic control (toggle, toOpen, toClose)
+- Internal padding configuration (padding)
+- Visual divider between sections
+- Customization via head and default slots
+
+**Common use cases:**
+
+- FAQ sections
+- Settings panels
+- Product filters
+- Information blocks
+- Menus with subsections
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <!-- Basic accordion -->
+  <Accordion label="Question 1">
+    <p>Answer to the question.</p>
+  </Accordion>
+
+  <!-- With state management -->
+  <Accordion
+    v-model:open="isOpen"
+    label="Settings"
+    icon="settings"
+  >
+    <p>Settings content.</p>
+  </Accordion>
+
+  <!-- With custom header -->
+  <Accordion>
+    <template #head>
+      <div>Custom header</div>
+    </template>
+    <template #default>
+      <p>Section content.</p>
+    </template>
+  </Accordion>
+</template>
+```
+
+> Accordion is a component for creating expandable sections with animation support, state management, and flexible customization.

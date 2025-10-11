@@ -43,6 +43,16 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
+  clickOpen: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Enable opening on click',
+        ru: 'Включение открытия по клику'
+      }
+    }
+  },
   disabled: {
     type: StorybookControl.boolean,
     options: {

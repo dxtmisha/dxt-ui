@@ -38,7 +38,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-cell--divider': props.divider,
     [`d1-cell--dividerLabel--${props.dividerLabel}`]: inArray(propsValues.dividerLabel, props.dividerLabel),
     'd1-cell--iconTop': props.iconTop,
-    [`d1-cell--padding--${props.padding}`]: inArray(propsValues.padding, props.padding)
+    [`d1-cell--padding--${props.padding}`]: inArray(propsValues.padding, props.padding),
+    'd1-cell--paddingByIndent': props.paddingByIndent
     // :classes-values [!] System label / Системная метка
   }
 }))

@@ -42,16 +42,6 @@ export const wikiMotionTransform: StorybookArgsToList = {
       }
     }
   },
-  'motionTransform.clickOpen': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Enable opening on click',
-        ru: 'Включение открытия по клику'
-      }
-    }
-  },
   'motionTransform.ignore': {
     type: StorybookControl.string,
     options: {

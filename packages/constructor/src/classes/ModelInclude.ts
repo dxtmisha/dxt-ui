@@ -1,4 +1,4 @@
-import { watch } from 'vue'
+import { isReadonly, isRef, type Ref, watch } from 'vue'
 import {
   isFunction,
   type RefType,
@@ -29,6 +29,55 @@ export class ModelInclude<Value = string> {
       watch(syncValue, (newValue: Value) => {
         this.emit(newValue)
       }, { immediate: true })
+    }
+  }
+
+  /**
+   * Type guard to check if syncValue is a mutable Ref.
+   * Returns true if syncValue is a reference and not readonly.
+   *
+   * Проверка типа, является ли syncValue изменяемым Ref.
+   * Возвращает true, если syncValue является ссылкой и не readonly.
+   * @returns Type predicate indicating syncValue is a mutable Ref/ Предикат типа, указывающий что syncValue - изменяемый Ref
+   */
+  isValue(): this is { syncValue: Ref<Value> } {
+    return isRef(this.syncValue)
+      && !isReadonly(this.syncValue)
+  }
+
+  /**
+   * Generates binding object for v-model integration.
+   * Creates properties for two-way data binding with model and update handlers.
+   *
+   * Генерирует объект привязок для интеграции v-model.
+   * Создает свойства для двусторонней привязки данных с обработчиками модели и обновления.
+   * @returns Object with model value and update handlers/ Объект со значением модели и обработчиками обновления
+   */
+  getBinds() {
+    if (this.isValue()) {
+      const name = toCamelCaseFirst(this.index)
+
+      return {
+        [`model${name}`]: this.syncValue.value,
+        [`onUpdate:${toCamelCase(this.index)}`]: this.update,
+        [`onUpdate:model${name}`]: this.update
+      }
+    }
+
+    return {}
+  }
+
+  /**
+   * Updates the synchronized value.
+   * Sets the value of the reactive reference if it's a mutable Ref.
+   *
+   * Обновляет синхронизированное значение.
+   * Устанавливает значение реактивной ссылки, если это изменяемый Ref.
+   * @param value The new value to set/ Новое значение для установки
+   */
+  readonly update = (value: Value): void => {
+    if (this.isValue()) {
+      this.syncValue.value = value
     }
   }
 

@@ -1,5 +1,6 @@
 import type { StorybookComponentsDescription } from '../../types/storybookTypes'
 
+import { wikiDescriptionsAccordion } from './wikiDescriptionsAccordion'
 import { wikiDescriptionsBadge } from './wikiDescriptionsBadge'
 import { wikiDescriptionsBars } from './wikiDescriptionsBars'
 import { wikiDescriptionsButton } from './wikiDescriptionsButton'
@@ -25,6 +26,7 @@ import { wikiDescriptionsSkeleton } from './wikiDescriptionsSkeleton'
 import { wikiDescriptionsWindow } from './wikiDescriptionsWindow'
 
 export const wikiDescriptions: StorybookComponentsDescription = [
+  wikiDescriptionsAccordion,
   wikiDescriptionsBadge,
   wikiDescriptionsBars,
   wikiDescriptionsButton,

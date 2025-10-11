@@ -1,25 +1,14 @@
-import { type CellPropsBasic, defaultsCell } from '@dxtmisha/constructor/Cell'
-import type { IconProps } from '../Icon'
-import type { ProgressProps } from '../Progress'
+import { type AccordionPropsBasic, defaultsAccordion } from '@dxtmisha/constructor/Accordion'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  dividerLabel: ['always', 'none', 'adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl', 'containerSm', 'containerMd', 'containerLg', 'containerXl', 'container2xl'],
   padding: ['sm', 'md', 'lg', 'ySm', 'yMd', 'yLg', 'none']
   // :values [!] System label / Системная метка
 }
 
 interface PropsToken {
   // :type [!] System label / Системная метка
-  focus?: boolean
-  selected?: boolean
-  readonly?: boolean
-  disabled?: boolean
-  dynamic?: boolean
-  dynamicHover?: boolean
   divider?: boolean
-  dividerLabel?: 'always' | 'none' | 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl'
-  iconTop?: boolean
   padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
   paddingByIndent?: boolean
   // :type [!] System label / Системная метка
@@ -28,14 +17,15 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface CellProps extends CellPropsBasic<IconProps, ProgressProps>, PropsToken {
+export interface AccordionProps extends AccordionPropsBasic, PropsToken {
 }
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export const defaults: object = {
-  ...defaultsCell,
+  ...defaultsAccordion,
+  iconArrowDown: 'keyboard_arrow_down',
   ...{
     // :default [!] System label / Системная метка
     divider: true,

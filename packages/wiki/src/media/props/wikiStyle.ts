@@ -56,6 +56,18 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  axis: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets the axis direction for component layout or scrolling',
+        ru: 'Задает направление оси для раскладки или прокрутки компонента'
+      }
+    }
+  },
   barsAdaptive: {
     type: StorybookControl.select,
     options: {
@@ -96,15 +108,13 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  axis: {
-    type: StorybookControl.select,
+  cellAttrs: {
+    type: StorybookControl.object,
     options: {
       category: StorybookCategory.style,
-      type: 'string',
-      options: [],
       description: {
-        en: 'Sets the axis direction for component layout or scrolling',
-        ru: 'Задает направление оси для раскладки или прокрутки компонента'
+        en: 'Additional attributes for the Cell component',
+        ru: 'Дополнительные атрибуты для компонента Cell'
       }
     }
   },
@@ -317,79 +327,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  iconAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Sets additional attributes for the icon element',
-        ru: 'Задает дополнительные атрибуты для элемента иконки'
-      }
-    }
-  },
-  iconDir: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-
-      description: {
-        en: 'Mirrors the icon depending on site direction (RTL/LTR)',
-        ru: 'Зеркально отражает иконку в зависимости от направления сайта (RTL/LTR)'
-      }
-    }
-  },
-  iconPalette: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-
-      description: {
-        en: 'Sets icon color based on palette class',
-        ru: 'Задает цвет иконки на основе класса палитры'
-      }
-    }
-  },
-  iconTop: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-
-      description: {
-        en: 'Aligns icon to the top of the container',
-        ru: 'Выравнивает иконку по верхнему краю контейнера'
-      }
-    }
-  },
-  iconClose: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Sets icon for close button',
-        ru: 'Задает иконку для кнопки закрытия'
-      }
-    }
-  },
-  iconCancel: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Sets icon for cancel/clear action',
-        ru: 'Задает иконку для действия отмены/очистки'
-      }
-    }
-  },
-  iconBack: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Sets icon for back button',
-        ru: 'Задает иконку для кнопки назад'
-      }
-    }
-  },
   iconArrowDown: {
     type: StorybookControl.string,
     options: {
@@ -420,6 +357,57 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  iconAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets additional attributes for the icon element',
+        ru: 'Задает дополнительные атрибуты для элемента иконки'
+      }
+    }
+  },
+  iconBack: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon for back button',
+        ru: 'Задает иконку для кнопки назад'
+      }
+    }
+  },
+  iconCancel: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon for cancel/clear action',
+        ru: 'Задает иконку для действия отмены/очистки'
+      }
+    }
+  },
+  iconClose: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon for close button',
+        ru: 'Задает иконку для кнопки закрытия'
+      }
+    }
+  },
+  iconDir: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+
+      description: {
+        en: 'Mirrors the icon depending on site direction (RTL/LTR)',
+        ru: 'Зеркально отражает иконку в зависимости от направления сайта (RTL/LTR)'
+      }
+    }
+  },
   iconMinus: {
     type: StorybookControl.string,
     options: {
@@ -427,6 +415,17 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Sets icon for decrement / minus action',
         ru: 'Задает иконку для действия уменьшения (минус)'
+      }
+    }
+  },
+  iconPalette: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+
+      description: {
+        en: 'Sets icon color based on palette class',
+        ru: 'Задает цвет иконки на основе класса палитры'
       }
     }
   },
@@ -440,13 +439,14 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  inputAttrs: {
-    type: StorybookControl.object,
+  iconTop: {
+    type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
+
       description: {
-        en: 'Additional attributes for the native input element',
-        ru: 'Дополнительные атрибуты для нативного элемента input'
+        en: 'Aligns icon to the top of the container',
+        ru: 'Выравнивает иконку по верхнему краю контейнера'
       }
     }
   },
@@ -483,6 +483,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  inputAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the native input element',
+        ru: 'Дополнительные атрибуты для нативного элемента input'
+      }
+    }
+  },
   inverse: {
     type: StorybookControl.boolean,
     options: {
@@ -505,13 +515,13 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  overlay: {
-    type: StorybookControl.boolean,
+  motionTransformAttrs: {
+    type: StorybookControl.object,
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Adds background overlay to the component',
-        ru: 'Добавляет фоновую подложку к компоненту'
+        en: 'Additional attributes for the MotionTransform component',
+        ru: 'Дополнительные атрибуты для компонента MotionTransform'
       }
     }
   },
@@ -527,6 +537,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  overlay: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Adds background overlay to the component',
+        ru: 'Добавляет фоновую подложку к компоненту'
+      }
+    }
+  },
   padding: {
     type: StorybookControl.select,
     options: {
@@ -536,6 +556,16 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Sets internal spacing around the content',
         ru: 'Задает внутренние отступы вокруг содержимого'
+      }
+    }
+  },
+  paddingByIndent: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Applies horizontal padding based on grid indent values',
+        ru: 'Применяет горизонтальные отступы на основе значений отступов сетки'
       }
     }
   },
@@ -608,6 +638,17 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  template: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      description: {
+        en: 'Custom display template used by the component',
+        ru: 'Пользовательский шаблон отображения, используемый компонентом'
+      }
+    }
+  },
   textAlign: {
     type: StorybookControl.select,
     options: {
@@ -620,17 +661,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  template: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.style,
-      type: 'string',
-      description: {
-        en: 'Custom display template used by the component',
-        ru: 'Пользовательский шаблон отображения, используемый компонентом'
-      }
-    }
-  },
   type: {
     type: StorybookControl.select,
     options: {
@@ -640,16 +670,6 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Selects the visual type/variant of the component',
         ru: 'Выбирает визуальный тип/вариант компонента'
-      }
-    }
-  },
-  windowAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the Window root container',
-        ru: 'Дополнительные атрибуты для корневого контейнера Window'
       }
     }
   },
@@ -674,6 +694,16 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Sets component width',
         ru: 'Задает ширину компонента'
+      }
+    }
+  },
+  windowAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the Window root container',
+        ru: 'Дополнительные атрибуты для корневого контейнера Window'
       }
     }
   }

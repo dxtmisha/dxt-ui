@@ -1,27 +1,43 @@
 import type { ConstrClass } from '@dxtmisha/functional'
-import type { FieldCounterComponentInclude } from '../FieldCounter'
-import type { FieldMessageSlot } from './basicTypes'
+
+import type { EventClickEmits } from '../../types/eventClickTypes'
+
+import type { CellComponentInclude, CellSlotsInclude } from '../Cell'
+import type {
+  MotionTransformComponentInclude,
+  MotionTransformControlItem,
+  MotionTransformEmitsInclude,
+  MotionTransformExposeInclude
+} from '../MotionTransform'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type FieldMessageComponents = FieldCounterComponentInclude
+export type AccordionComponents
+  = CellComponentInclude
+    & MotionTransformComponentInclude
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type FieldMessageEmits = {}
+export type AccordionEmits
+  = EventClickEmits
+    & MotionTransformEmitsInclude
+    & {
+      'update:open': [value: boolean]
+      'update:modelOpen': [value: boolean]
+    }
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface FieldMessageExpose {
+export interface AccordionExpose extends MotionTransformExposeInclude {
 }
 
 /**
@@ -29,12 +45,8 @@ export interface FieldMessageExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface FieldMessageSlots {
-  /** Slot for helper message/ Слот для вспомогательного сообщения */
-  helper?(props: FieldMessageSlot): any
-
-  /** Slot for validation message/Слот для сообщения об ошибке */
-  validation?(props: FieldMessageSlot): any
+export interface AccordionSlots extends CellSlotsInclude {
+  default?(props: MotionTransformControlItem): any
 }
 
 /**
@@ -42,9 +54,10 @@ export interface FieldMessageSlots {
  *
  * Тип, описывающий подклассы.
  */
-export type FieldMessageClasses = {
+export type AccordionClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  info: string
+  head: string
+  body: string
   // :classes [!] System label / Системная метка
 }

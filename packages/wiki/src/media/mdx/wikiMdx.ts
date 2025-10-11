@@ -6,6 +6,7 @@ import { wikiMdxSlot } from './slot/wikiMdxSlot'
 import { wikiMdxStyle } from './style/wikiMdxStyle'
 import { wikiMdxValue } from './value/wikiMdxValue'
 
+import { wikiMdxAccordion } from './Accordion/wikiMdxAccordion'
 import { wikiMdxBadge } from './Badge/wikiMdxBadge'
 import { wikiMdxBars } from './Bars/wikiMdxBars'
 import { wikiMdxButton } from './Button/wikiMdxButton'
@@ -37,6 +38,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxStyle,
   wikiMdxValue,
 
+  wikiMdxAccordion,
   wikiMdxBadge,
   wikiMdxBars,
   wikiMdxButton,

@@ -1,0 +1,12 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinAccordion {
+  @at-root {
+    &--divider + &--divider,
+    [data-divider="divider"] + &[data-divider="divider"] {
+      border-top-style: solid;
+      border-top-width: ui.v('??borderWidth');
+      @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
+    }
+  }
+}

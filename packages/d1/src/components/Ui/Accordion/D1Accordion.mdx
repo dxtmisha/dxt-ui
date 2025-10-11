@@ -4,50 +4,53 @@ import {
     StorybookMain
 } from '@dxtmisha/wiki/storybook'
 
-import * as Cell from './D1Cell.stories'
-import {CellWikiStorybook} from './wiki'
+import * as Accordion from './D1Accordion.stories'
+import {AccordionWikiStorybook} from './wiki'
 
 [//]: # (:documentation-import [!] System label / Системная метка)
 [//]: # (:documentation-import [!] System label / Системная метка)
 
-<Meta of={Cell}/>
+<Meta of={Accordion}/>
 <StorybookMain
-    name={CellWikiStorybook.getName()}
-    description={CellWikiStorybook.getDescription()}
-    story={Cell.Cell}
+    name={AccordionWikiStorybook.getName()}
+    description={AccordionWikiStorybook.getDescription()}
+    story={Accordion.Accordion}
 />
 
 [//]: # (:documentation-body [!] System label / Системная метка)
 
-<StorybookDescriptions componentName={'Cell'} type={'cell'}/>
+<StorybookDescriptions componentName={'Accordion'} type={'accordion'}/>
 
-<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
-<Canvas of={Cell.CellSkeleton}/>
-
+<StorybookDescriptions componentName={'MotionTransform'} type={'v-model'}/>
+<Canvas of={Accordion.AccordionVModel}/>
+    
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 [//]: # (:documentation-events [!] System label / Системная метка)
 ## Events
 
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'events'}/>
     
 [//]: # (:documentation-events [!] System label / Системная метка)
 
 [//]: # (:documentation-expose [!] System label / Системная метка)
 ## Expose
 
-<StorybookDescriptions componentName={'Expose'} type={'value'}/>
-<StorybookDescriptions componentName={'Expose'} type={'detail'}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'expose.isShow'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose'}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'expose.motionTransformElement'}/>
     
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
 [//]: # (:documentation-slots [!] System label / Системная метка)
 ## Slots
 
-<Canvas of={Cell.CellSlots}/>
-<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<Canvas of={Accordion.AccordionSlots}/>
+<StorybookDescriptions componentName={'Accordion'} type={'slots'}/>
+<StorybookDescriptions componentName={'Slot'} type={'label'}/>
 <StorybookDescriptions componentName={'Slot'} type={'caption'}/>
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
 <StorybookDescriptions componentName={'Cell'} type={'slots'}/>
-
+    
 [//]: # (:documentation-slots [!] System label / Системная метка)
