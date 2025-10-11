@@ -1,1 +1,0 @@
-import"./iframe-C6i5AnHO.js";const a=s=>`${s}-a--static`;class l{constructor(e,t,i){this.className=e,this.components=t,this.enabled=i}render=()=>this.components&&this.components.is("ripple")&&(!this.enabled||this.enabled.isEnabled.value)?this.components.render("ripple",{class:`${this.className}__ripple`}):[]}export{l as R,a as g};

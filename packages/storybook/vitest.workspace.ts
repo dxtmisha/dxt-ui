@@ -12,7 +12,6 @@ const dirname
 export default defineWorkspace([
   'vite.config.ts',
   {
-    base: '/dxt-ui/',
     extends: 'vite.config.ts',
     plugins: [
       // The plugin will run tests for the stories defined in your Storybook config

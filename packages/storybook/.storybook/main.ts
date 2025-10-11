@@ -1,3 +1,4 @@
+import { mergeConfig } from 'vite'
 import type { StorybookConfig } from '@storybook/vue3-vite'
 
 import { join, dirname } from 'path'
@@ -29,6 +30,14 @@ const config: StorybookConfig = {
   framework: {
     name: getAbsolutePath('@storybook/vue3-vite'),
     options: {}
+  },
+  async viteFinal(config) {
+    return mergeConfig(config, {
+      base: '/dxt-ui/',
+      build: {
+        sourcemap: false
+      }
+    })
   }
 }
 export default config

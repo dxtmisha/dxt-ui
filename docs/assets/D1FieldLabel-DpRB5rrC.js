@@ -1,0 +1,5 @@
+import{j as o}from"./jsx-runtime-D_zvdyIk.js";import{useMDXComponents as m}from"./index-C8vOrmRQ.js";import{M as s}from"./blocks-Cpz0g9q0.js";import{S as a,a as r}from"./StorybookDescriptions-CCHIZd31.js";import{F as p,a as l,b as i}from"./D1FieldLabel.stories-D--Sits7.js";import"./preload-helper-DV8odVq5.js";import"./_commonjsHelpers-CqkleIqs.js";import"./iframe-CFZkzvey.js";import"./wiki-NZJqstoo.js";import"./D1FieldLabel-Bto8j5rP.js";import"./index-D-50PzNg.js";import"./D1FieldCounter-CZb-J3WZ.js";import"./D1Progress-CM8zhxd3.js";import"./LabelInclude-0zuFH_u0.js";import"./SkeletonInclude-DL6XRm_a.js";import"./Skeleton-Bu_Q97_s.js";import"./ProgressInclude-Dy8-vV5_.js";function n(t){const e={h2:"h2",...m(),...t.components};return o.jsxs(o.Fragment,{children:[o.jsx(s,{of:p}),`
+`,o.jsx(a,{name:i.getName(),description:i.getDescription(),story:l}),`
+`,o.jsx(r,{componentName:"FieldLabel",type:"fieldLabel"}),`
+`,o.jsx(e.h2,{id:"slots",children:"Slots"}),`
+`,o.jsx(r,{componentName:"Slot",type:"label"})]})}function N(t={}){const{wrapper:e}={...m(),...t.components};return e?o.jsx(e,{...t,children:o.jsx(n,{...t})}):n(t)}export{N as default};
