@@ -117,13 +117,15 @@ export class ButtonDesign<
       this.props.tag || 'button',
       {
         ...this.getAttrs(),
-        ref: this.element,
+        'ref': this.element,
 
-        class: this.classes?.value.main,
-        style: this.styles?.value,
+        'class': this.classes?.value.main,
+        'style': this.styles?.value,
 
-        disabled: this.item.enabled.isDisabledOrUndefined.value,
-        onClick: this.item.event.onClick
+        'data-value': this.props.value,
+
+        'disabled': this.item.enabled.isDisabledOrUndefined.value,
+        'onClick': this.item.event.onClick
       },
       [
         ...this.item.progress.render(),

@@ -1,0 +1,50 @@
+## Managing action button groups
+
+The `list` and `listSecondary` properties work together to organize buttons in the Actions container. They manage the rendering of primary and secondary button groups with automatic attribute application and visual separation.
+
+**Properties:**
+
+- `list` — array of configurations for primary action buttons (Cancel, Save, Apply)
+- `listSecondary` — array of configurations for secondary buttons (Delete, Reset, Export)
+
+Each array element represents an object with button configuration, supporting all Button component properties (label, icon, disabled, primary, loading, and others). The component automatically applies base attributes from `buttonAttrs` to primary buttons and from `buttonSecondaryAttrs` to secondary ones. Secondary buttons are positioned separately with an automatic spacer and are hidden in `align="center"` and `align="block"` modes. Use `list` for primary actions and `listSecondary` for destructive or less important operations.
+
+```html
+<!-- Primary buttons -->
+<Actions
+  :list="[
+    { label: 'Cancel', onClick: () => close() },
+    { label: 'Save', primary: true, onClick: () => save() }
+  ]"
+/>
+
+<!-- Primary and secondary buttons -->
+<Actions
+  :list="[
+    { label: 'Cancel' },
+    { label: 'Save', primary: true }
+  ]"
+  :list-secondary="[
+    { label: 'Delete', text: true, icon: 'delete', palette: 'error' }
+  ]"
+/>
+
+<!-- Buttons with dynamic state -->
+<Actions
+  :list="[
+    { label: 'Cancel', disabled: isProcessing },
+    { label: 'Save', primary: true, loading: isLoading }
+  ]"
+  :button-attrs="{ size: 'medium' }"
+/>
+
+<!-- Secondary buttons with settings -->
+<Actions
+  :list="[{ label: 'Close' }]"
+  :list-secondary="[
+    { label: 'Export', icon: 'download' },
+    { label: 'Help', icon: 'help' }
+  ]"
+  :button-secondary-attrs="{ size: 'small', text: true }"
+/>
+```

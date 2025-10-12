@@ -1,0 +1,48 @@
+Container for organizing action buttons with support for primary and secondary grouping, various alignment modes, and adaptive behavior.
+
+Actions centralizes the management of interactive button placement in dialogs, forms, and panels, automatically distributes space between groups, supports flexible adaptation to available space, and provides a unified API for creating consistent action sets. It serves as a fundamental component for building user interfaces with clear button hierarchy.
+
+**Core capabilities:**
+
+- Button grouping (primary group via list, secondary via listSecondary)
+- Alignment control (left, right, center, block, none)
+- Adaptive behavior through flexible property (adaptive/container)
+- Automatic spacer between button groups
+- Separate attribute configuration (buttonAttrs, buttonSecondaryAttrs)
+- Slot support for custom content (default, secondary)
+- Integration with Button component with all its features
+- Flexible layout with automatic transition to block mode
+
+**Typical use cases:**
+
+- Action panels in dialogs and modal windows
+- Button sets in forms (cancel, save, apply)
+- Control panels with primary and auxiliary actions
+- Adaptive interfaces with automatic restructuring on mobile devices
+
+```html
+<script setup>
+import { ref } from 'vue'
+import { Actions } from '@dxtmisha/constructor'
+
+const isLoading = ref(false)
+
+const handleSave = async () => {
+  isLoading.value = true
+  await saveData()
+  isLoading.value = false
+}
+</script>
+
+<template>
+  <Actions
+    align="right"
+    :list="[
+      { label: 'Cancel' },
+      { label: 'Save', primary: true, loading: isLoading }
+    ]"
+  />
+</template>
+```
+
+> Actions is a smart container: it automatically manages button placement, adapts to screen size, and provides visual hierarchy between primary and secondary actions.

@@ -1,0 +1,219 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Actions/style" as Actions;
+
+@include ui.initDesignBasic('d1.actions') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Actions.mixinActions;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    gap: var(--d1-sys-spacing-xs);
+    
+    &--align {
+      &--center {
+        @include ui.justifyContent(#{center});
+        
+        & .d1-actions__secondary {
+          display: none;
+        }
+        
+        & .d1-actions__spacer {
+          display: none;
+        }
+      }
+      
+      &--left {
+        & .d1-actions__secondary {
+          order: 8;
+        }
+        
+        & .d1-actions__spacer {
+          order: 4;
+        }
+      }
+      
+      &--right {
+        & .d1-actions__list {
+          order: 8;
+        }
+        
+        & .d1-actions__spacer {
+          order: 4;
+        }
+      }
+      
+      &--block {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        
+        & .d1-actions__secondary {
+          display: none;
+        }
+        
+        & .d1-actions__spacer {
+          display: none;
+        }
+      }
+    }
+    
+    &--flexible {
+      &--adaptiveSm {
+        @media screen and (max-width: calc(640px - 1px)) {
+          flex-direction: column-reverse;
+          align-items: stretch;
+          
+          & .d1-actions__secondary {
+            display: none;
+          }
+          
+          & .d1-actions__spacer {
+            display: none;
+          }
+        }
+      }
+      
+      &--adaptiveMd {
+        @media screen and (max-width: calc(768px - 1px)) {
+          flex-direction: column-reverse;
+          align-items: stretch;
+          
+          & .d1-actions__secondary {
+            display: none;
+          }
+          
+          & .d1-actions__spacer {
+            display: none;
+          }
+        }
+      }
+      
+      &--adaptiveLg {
+        @media screen and (max-width: calc(1024px - 1px)) {
+          flex-direction: column-reverse;
+          align-items: stretch;
+          
+          & .d1-actions__secondary {
+            display: none;
+          }
+          
+          & .d1-actions__spacer {
+            display: none;
+          }
+        }
+      }
+      
+      &--adaptiveXl {
+        @media screen and (max-width: calc(1280px - 1px)) {
+          flex-direction: column-reverse;
+          align-items: stretch;
+          
+          & .d1-actions__secondary {
+            display: none;
+          }
+          
+          & .d1-actions__spacer {
+            display: none;
+          }
+        }
+      }
+      
+      &--adaptive2xl {
+        @media screen and (max-width: calc(1536px - 1px)) {
+          flex-direction: column-reverse;
+          align-items: stretch;
+          
+          & .d1-actions__secondary {
+            display: none;
+          }
+          
+          & .d1-actions__spacer {
+            display: none;
+          }
+        }
+      }
+      
+      &--containerSm {
+        @container (max-width: calc(640px - 1px)) {
+          flex-direction: column-reverse;
+          align-items: stretch;
+          
+          & .d1-actions__secondary {
+            display: none;
+          }
+          
+          & .d1-actions__spacer {
+            display: none;
+          }
+        }
+      }
+      
+      &--containerMd {
+        @container (max-width: calc(768px - 1px)) {
+          flex-direction: column-reverse;
+          align-items: stretch;
+          
+          & .d1-actions__secondary {
+            display: none;
+          }
+          
+          & .d1-actions__spacer {
+            display: none;
+          }
+        }
+      }
+      
+      &--containerLg {
+        @container (max-width: calc(1024px - 1px)) {
+          flex-direction: column-reverse;
+          align-items: stretch;
+          
+          & .d1-actions__secondary {
+            display: none;
+          }
+          
+          & .d1-actions__spacer {
+            display: none;
+          }
+        }
+      }
+      
+      &--containerXl {
+        @container (max-width: calc(1280px - 1px)) {
+          flex-direction: column-reverse;
+          align-items: stretch;
+          
+          & .d1-actions__secondary {
+            display: none;
+          }
+          
+          & .d1-actions__spacer {
+            display: none;
+          }
+        }
+      }
+      
+      &--container2xl {
+        @container (max-width: calc(1536px - 1px)) {
+          flex-direction: column-reverse;
+          align-items: stretch;
+          
+          & .d1-actions__secondary {
+            display: none;
+          }
+          
+          & .d1-actions__spacer {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

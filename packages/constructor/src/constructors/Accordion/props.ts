@@ -5,7 +5,7 @@ import type { DescriptionProps } from '../../types/descriptionTypes'
 
 import type { IconLitePropsInclude, IconPropsBasic, IconValue } from '../Icon'
 import type { CellPropsBasic } from '../Cell'
-import type { MotionTransformProps, MotionTransformPropsInclude } from '../MotionTransform'
+import type { MotionTransformPropsBasic, MotionTransformPropsInclude } from '../MotionTransform'
 
 interface AccordionPropsToken {
   // :type [!] System label / Системная метка
@@ -16,7 +16,7 @@ interface AccordionPropsToken {
 export interface AccordionPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Cell extends CellPropsBasic = CellPropsBasic,
-  MotionTransform extends MotionTransformProps = MotionTransformProps
+  MotionTransform extends MotionTransformPropsBasic = MotionTransformPropsBasic
 > extends LabelProps,
   DescriptionProps,
   IconLitePropsInclude<Icon>,

@@ -108,6 +108,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  buttonSecondaryAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for secondary button elements',
+        ru: 'Дополнительные атрибуты для элементов вторичных кнопок'
+      }
+    }
+  },
   cellAttrs: {
     type: StorybookControl.object,
     options: {
@@ -280,11 +290,20 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  flexible: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Enables flexible layout behavior that automatically adapts to available space',
+        ru: 'Включает гибкое поведение раскладки, автоматически адаптирующееся к доступному пространству'
+      }
+    }
+  },
   grid: {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-
       description: {
         en: 'Enables grid layout mode',
         ru: 'Включает режим сетки'

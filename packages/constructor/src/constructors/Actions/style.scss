@@ -1,0 +1,10 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinActions {
+  display: flex;
+  align-items: center;
+
+  &__spacer {
+    @include ui.flexDynamic;
+  }
+}

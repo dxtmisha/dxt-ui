@@ -14,6 +14,8 @@ import slotLabelEn from './label.en.mdx'
 import slotLabelRu from './label.ru.mdx'
 import slotPrefixEn from './prefix.en.mdx'
 import slotPrefixRu from './prefix.ru.mdx'
+import slotSecondaryEn from './secondary.en.mdx'
+import slotSecondaryRu from './secondary.ru.mdx'
 import slotSuffixEn from './suffix.en.mdx'
 import slotSuffixRu from './suffix.ru.mdx'
 
@@ -47,6 +49,10 @@ export const wikiMdxSlot: StorybookComponentsMdxItem = {
     prefix: {
       en: slotPrefixEn,
       ru: slotPrefixRu
+    },
+    secondary: {
+      en: slotSecondaryEn,
+      ru: slotSecondaryRu
     },
     suffix: {
       en: slotSuffixEn,

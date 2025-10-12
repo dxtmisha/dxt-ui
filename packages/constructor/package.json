@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor accordion"
+    "dxt-constructor": "dxt-constructor actions"
   },
   "files": [
     "src/",
@@ -49,6 +49,10 @@
   "types": "./src/library.ts",
   "exports": {
     ".": "./src/library.ts",
+    "./Accordion": "./src/constructors/Accordion/index.ts",
+    "./Accordion/style": "./src/constructors/Accordion/style.scss",
+    "./Actions": "./src/constructors/Actions/index.ts",
+    "./Actions/style": "./src/constructors/Actions/style.scss",
     "./Badge": "./src/constructors/Badge/index.ts",
     "./Badge/style": "./src/constructors/Badge/style.scss",
     "./Bars": "./src/constructors/Bars/index.ts",
@@ -96,9 +100,7 @@
     "./Skeleton": "./src/constructors/Skeleton/index.ts",
     "./Skeleton/style": "./src/constructors/Skeleton/style.scss",
     "./Window": "./src/constructors/Window/index.ts",
-    "./Window/style": "./src/constructors/Window/style.scss",
-    "./Accordion": "./src/constructors/Accordion/index.ts",
-    "./Accordion/style": "./src/constructors/Accordion/style.scss"
+    "./Window/style": "./src/constructors/Window/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",
