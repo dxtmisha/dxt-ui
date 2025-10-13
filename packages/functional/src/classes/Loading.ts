@@ -66,9 +66,11 @@ export class Loading {
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
     element?: ElementOrString<HTMLElement>
   ) {
-    new EventItem(window, LOADING_EVENT_NAME, listener)
-      .setElementControl(element)
-      .start()
+    if (isDomRuntime()) {
+      new EventItem(window, LOADING_EVENT_NAME, listener)
+        .setElementControl(element)
+        .start()
+    }
   }
 
   /**

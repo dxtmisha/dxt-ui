@@ -1,0 +1,29 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinActionSheet {
+  @include ui.initByCustomDesign('window.iconPaddingX', ui.v('??paddingX'));
+  @include ui.initByCustomDesign('window.iconPaddingY', ui.v('??paddingY'));
+
+  top: var(--sys-touch-move-y);
+
+  &__bars + * > &__body {
+    padding-top: 0 !important;
+  }
+
+  &__body {
+    @include ui.paddingX(ui.v('??paddingX'));
+  }
+
+  [data-window-body="1"]:last-child &__body {
+    padding-bottom: ui.v('??paddingY');
+  }
+
+  &__tab {
+    display: none;
+
+    @media (hover: none) and (pointer: coarse) {
+      display: block;
+      margin: auto;
+    }
+  }
+}

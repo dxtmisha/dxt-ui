@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor actions"
+    "dxt-constructor": "dxt-constructor actionSheet"
   },
   "files": [
     "src/",
@@ -100,7 +100,9 @@
     "./Skeleton": "./src/constructors/Skeleton/index.ts",
     "./Skeleton/style": "./src/constructors/Skeleton/style.scss",
     "./Window": "./src/constructors/Window/index.ts",
-    "./Window/style": "./src/constructors/Window/style.scss"
+    "./Window/style": "./src/constructors/Window/style.scss",
+    "./ActionSheet": "./src/constructors/ActionSheet/index.ts",
+    "./ActionSheet/style": "./src/constructors/ActionSheet/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

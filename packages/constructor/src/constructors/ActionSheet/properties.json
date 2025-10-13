@@ -1,0 +1,11 @@
+{
+  "paddingX": {
+    "_type": "var"
+  },
+  "paddingY": {
+    "_type": "var"
+  },
+  "#body": {},
+  "#touch": {},
+  "#tab": {}
+}

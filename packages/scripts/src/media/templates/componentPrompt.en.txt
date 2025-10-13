@@ -1,5 +1,5 @@
 You need to prepare documentation for a component in the [wikiLanguage] language. Follow the format and requirements strictly. Do not add anything beyond what is described.
-Stack: Storybook 9.x, TypeScript, MDX.
+Stack: Storybook 9.x, TypeScript, MDX, Vue 3 Composition API.
 
 Canvas component is imported from '@storybook/addon-docs/blocks'
 
@@ -9,12 +9,21 @@ Canvas component is imported from '@storybook/addon-docs/blocks'
 ```
 [code]
 ```
-Analyze the structure, props, events, slots, types, internal logic.
+
+Analyze:
+- Component structure (props, computed, methods)
+- Events (emit) and their parameters
+- Slots and their parameters
+- Data types (interfaces, types)
+- Expose methods and properties
+- Internal logic and behavior
+- Dependencies on other components
 
 ====================================
 2) Add missing type comments
 ====================================
 Add brief single-language (in [wikiLanguage]) JSDoc comments to missing types and their properties.
+
 Code to fix:
 ```ts
 // types.ts
@@ -22,12 +31,14 @@ Code to fix:
 ```
 
 Comment requirements:
-- Single-line for simple fields.
-- Multi-line for logic blocks.
-- No duplication of the obvious.
-- Adapted for storybook.
+- Single-line for simple fields (/** Description */)
+- Multi-line for complex types or logic blocks
+- No duplication of the obvious (don't comment "id" as "component id")
+- Adapted for display in Storybook
+- Use technical terms correctly
+- For union types, describe each value separately in code
 
-Example:
+Example (strictly follow the format):
 ```ts
 /**
  * Basic properties for image components.
@@ -44,52 +55,189 @@ export interface IconPropsBasic<
   icon?: ImageValue<Image>
   /** Active icon value */
   iconActive?: ImageValue<Image>
+
+  // Design
+  /**
+   * Icon size
+   * @default 'medium'
+   */
+  size?: 'small' | 'medium' | 'large'
 }
 ```
 
 ====================================
 3) Stories for Storybook
 ====================================
-Create only the minimum necessary examples. Each example is as simple as possible, without extra wrappers, only what demonstrates the essence.
+Create minimum necessary examples. Each story demonstrates a specific usage scenario.
+
 Code to fix:
 ```ts
 // ComponentDoc.stories.ts
 [stories]
 ```
+
 Rules:
-- Don't touch existing stories, only additions.
-- Don't touch const meta. DO NOT CHANGE ANYTHING IN META.
-- Don't touch existing constants.
-- Don't rename existing constants.
-- Don't add stories just for filling.
-- If the component has different modes (e.g., states or display variants), show one example each.
-- Story names in PascalCase style without extra words.
-- Minimize imports: only what is required.
+- STRICTLY FORBIDDEN to touch const meta. DO NOT CHANGE ANYTHING IN META.
+- Don't touch existing constants and stories
+- Don't rename existing constants
+- Don't add stories just for filling
+- Each story must have a purpose and demonstrate specific functionality
+- If component has different modes, show one clear example for each
+- Story names in PascalCase style without extra words (e.g.: `Basic`, `WithIcon`, `Disabled`)
+- Minimize imports: only necessary
+- Don't use extra wrappers (div, section) without necessity
+- Simple, readable code
+
+Example:
+```ts
+export const Basic: Story = {
+  args: {
+    label: 'Click me'
+  }
+}
+
+export const WithIcon: Story = {
+  args: {
+    label: 'Click me',
+    icon: 'check'
+  }
+}
+```
 
 ====================================
 4) MDX documentation (component description)
 ====================================
-Prepare a complete component description in MDX format. Strict style: no tables, no extra sections.
+Prepare complete component description in MDX format. Strict style: no tables, no extra sections, only necessary information.
+
 Code to fix:
 ```md
-// UiPlayerLite.mdx
+// ComponentName.mdx
 [md]
 ```
 
-MDX structure rules:
-- At the beginning: [description] — Brief description of the purpose (1–3 sentences): conveys the essence of the component as briefly as possible.
-- Next: main text (documentation) — starts without a heading. This is [doc].
-- You can refine existing text by changing it, but don't delete. Delete only unnecessary or outdated content.
-- Be sure to list Expose (if any), slots (if any) and events (if any) in the given format.
-- Don't describe props in a list if they are simple. Describe only complex relationships (e.g., dependent props) or composite types in detail.
-- Expose, Slots and events — strictly in the format below. If there are no types, the type block is omitted.
-- Add Canvas if there is a usage example. If not, add stories.
-- Don't add <Canvas of={Component.Component}/>
-- Don't touch Meta and StorybookMain. They must remain as they are and be at the top. Don't add, don't delete, don't modify them.
+Document structure (strict):
 
-Example MDX documentation (don't include in response, only as style guide)
-Make sure to follow the style and formatting as shown in the example
-====================================
+**1. Brief description:**
+- One sentence, conveying the essence of the component as briefly as possible
+- Don't use phrases like "This component", start immediately with the purpose
+
+**2. Main documentation text:**
+- Starts WITHOUT a heading
+- Detailed functionality description (2-4 paragraphs)
+- Block "**Key Features:**" (list of key features)
+- Block "**Typical Use Cases:**" (list of usage examples)
+- Can refine existing text, but DO NOT delete relevant information
+- Delete only outdated or redundant content
+
+**3. Special sections (if present):**
+
+**Props (only for complex cases):**
+- Describe Props only if they have complex interaction logic, dependencies, or composite types
+- DO NOT describe simple boolean/string props in a list - JSDoc comments in types are enough for them
+- Format: `## Props`, then `### PropName` for each complex prop
+
+Example of complex prop description:
+```md
+## Props
+### `adaptive`
+
+Window adaptive behavior mode.
+
+**Type:** `'modal' | 'menu' | 'actionSheet' | 'static'`
+
+**Default:** `'modal'`
+
+**Possible values:**
+- `'modal'` — modal window in screen center with overlay
+- `'menu'` — dropdown menu attached to control element
+- `'actionSheet'` — bottom panel for mobile interfaces
+- `'static'` — static mode without overlay and positioning
+```
+
+**4. Mandatory sections (if present in component):**
+
+**Expose methods/properties:**
+```md
+## Expose Methods
+### `methodName`
+
+Method description.
+
+**Type:** `(param: Type) => ReturnType`
+
+**Parameters:**
+- `param: Type` — parameter description
+
+**Returns:** return value description
+
+[code example]
+```
+
+**Slots:**
+```md
+## Slots
+### `slotName`
+
+Slot description.
+
+**Parameters:**
+- `param: Type` — slot parameter description
+
+[code example]
+```
+
+**Events:**
+```md
+## Events
+### `eventName`
+
+Event description.
+
+**Parameters:**
+- `param: Type` — event parameter description
+
+**Type structure:** (if parameter is complex)
+- `field: string` — field description
+- `field2: number` — field description
+
+[code example]
+```
+
+**5. Usage examples:**
+- Add Canvas to demonstrate specific scenarios
+- DO NOT add base `<Canvas of={Component.Component}/>` — it's already at the beginning
+- Format: `<Canvas of={Component.StoryName}/>`
+
+**Strict formatting rules:**
+
+- Heading levels:
+  - `##` — main sections (Props, Expose Methods, Slots, Events)
+  - `###` — specific elements (method, slot, event names)
+  - `####` — subsections within description (Behavior, Examples)
+
+- Code:
+  - Types and interfaces: ` ```ts `
+  - Component markup: ` ```html ` (NOT ` ```vue `)
+  - Inline code: wrap in backticks `` `code` ``
+
+- Meta and StorybookMain:
+  - STRICTLY FORBIDDEN to touch Meta and StorybookMain blocks
+  - They must remain as is at the beginning of the file
+  - Don't add, don't delete, don't modify them
+
+- Structural elements:
+  - Use `**Bold text:**` for subheadings within descriptions
+  - Use `>` for important notes and warnings
+  - Lists only where they improve readability
+
+**Example of full document structure:**
+
+```md
+import { Meta, Canvas } from '@storybook/addon-docs/blocks'
+import * as Component from './Component.stories'
+
+<Meta of={Component} />
+
 Component for creating modal windows, dialogs, and popup elements with flexible positioning and adaptive behavior.
 
 Window manages content display over the main interface, supports various positioning types (modal windows, dropdown menus, action sheets), open/close animations, and event system integration. The component automatically handles clicks outside the area, focus management, and adaptation to different screen sizes.
@@ -114,6 +262,8 @@ Window manages content display over the main interface, supports various positio
 
 ## CSS Classes for Behavior Control
 
+Component uses special CSS classes for behavior control:
+
 - `*--block` — prevents window from closing when clicking outside its boundaries
 - `*--blockChildren` — prevents current window from closing
 - `*--blockOther` — prevents other windows from closing until current one is closed
@@ -124,34 +274,20 @@ Window manages content display over the main interface, supports various positio
 
 Where `*` is the component class name (e.g., `d1-window`, `m3-window`).
 
-## Static Mode (staticMode)
+## Props
+### `adaptive`
 
-The Window component supports static mode operation through the `staticMode` property. In this mode, the window works as an embedded component without modal behavior:
+Window adaptive behavior mode.
 
-- **Content displays immediately** — window doesn't hide and doesn't require activation
-- **Animations disabled** — no appearance/disappearance effects
-- **Positioning disabled** — window is embedded in document flow
-- **Works with adaptive** — when the `adaptive` property has one of the static modes (e.g., `static`), static mode is enabled
+**Type:** `'modal' | 'menu' | 'actionSheet' | 'static'`
 
-Static mode is especially useful for embedding window content directly into the interface without modal behavior.
-
-## Positioning Direction (axis)
-
-Controls the axis of window placement relative to the anchor element. Default: `y`.
-
-> Applies only in menu mode (`adaptive="menu"` or `adaptive="menuWindow"`).
+**Default:** `'modal'`
 
 **Possible values:**
-- `'x'` — horizontal axis (left or right of anchor)
-- `'y'` — vertical axis (top or bottom of anchor)
-- `'on'` — over anchor (window centers on element)
-
-### Behavior
-
-- Component automatically selects the placement side with the most available space
-- When using context menu (`contextmenu`), positioning occurs from cursor coordinates
-- Window always stays within visible screen area (viewport)
-- Indent from anchor is set via `indent` property (default 4px)
+- `'modal'` — modal window in screen center
+- `'menu'` — dropdown menu attached to element
+- `'actionSheet'` — bottom panel for mobile devices
+- `'static'` — static mode without overlay
 
 ## State Management via v-model
 
@@ -251,36 +387,61 @@ const handleWindow = (options) => {
 </template>
 ```
 
-Canvas usage example:
-<Canvas of={Chip.ChipSkeleton}/>
+## Usage Examples
+### Basic Modal Window
+
+<Canvas of={Component.BasicModal}/>
+
+### Dropdown Menu
+
+<Canvas of={Component.DropdownMenu}/>
+```
 
 ====================================
 5) Final return
 ====================================
-Return the result strictly in the format (nothing extra before or after):
+Return the result STRICTLY in the format (nothing extra before or after):
+
 [types.ts]
 #########
 [ComponentDoc.stories.ts]
 #########
-[UiPlayerLite.mdx]
+[ComponentName.mdx]
 
-Where:
-- Don't add anything extra (like ```ts)
-- Don't wrap in blocks.
-- Don't wrap in ```ts or anything similar.
-- [types.ts] — final types block with comments (only content, without file name comments).
-- [ComponentDoc.stories.ts] — final stories file (only content, without file name comments).
-- [UiPlayerLite.mdx] — final MDX documentation (only content, without file name comments).
-- Result strictly in this order, separated by line #########.
+**Output format requirements:**
+- DO NOT add file labels like `// filepath: ...`
+- DO NOT wrap in code blocks (` ```ts `, ` ```md `)
+- DO NOT add comments with file names
+- DO NOT include in the result text `[types.ts]`, `[ComponentDoc.stories.ts]`, `[ComponentName.mdx]`
+- Only clean code, separated by a line of nine hash symbols: `#########`
+- Order strictly: types → stories → documentation
+- Each block starts with the first line of code, without spaces and line breaks before
+
+**Structure of each block:**
+- `[types.ts]` — final types file with JSDoc comments (only file content)
+- `[ComponentDoc.stories.ts]` — final stories file (only file content)
+- `[ComponentName.mdx]` — final MDX documentation (only file content)
 
 ====================================
 Constraints and style
 ====================================
-- No tables.
-- No arbitrary additional sections.
-- Don't add "Props" section if there are no complex dependencies.
-- Don't duplicate descriptions of the same thing.
-- Respect the [wikiLanguage] language — if it's "en" use English, otherwise the corresponding language.
-- Don't use placeholders outside those specified.
-- Code blocks: for types and events — ```ts, for markup — ```html when necessary.
-- Stories: only necessary scenarios, without extra visual decorations.
+
+**Forbidden:**
+- Tables in any form
+- Arbitrary additional sections outside specified ones
+- "Props" section for simple properties without complex logic
+- Duplication of descriptions of the same thing
+- Placeholders outside those specified in prompt (`[code]`, `[types]`, `[stories]`, `[md]`)
+- Using ` ```vue ` for code examples (only ` ```html `)
+- Changing Meta block in MDX
+- Adding base Canvas (`<Canvas of={Component.Component}/>`)
+
+**Required:**
+- Documentation language corresponds to [wikiLanguage]
+- If [wikiLanguage] = "en", use English for ALL documentation
+- If [wikiLanguage] = "ru", use Russian for ALL documentation
+- Code blocks: types and events — ` ```ts `, markup — ` ```html `
+- Stories: only necessary scenarios, without visual decorations
+- Brevity and informativeness without "fluff"
+- Technically correct terms
+- Code examples are functional and up-to-date
