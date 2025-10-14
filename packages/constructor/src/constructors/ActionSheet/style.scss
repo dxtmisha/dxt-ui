@@ -4,7 +4,7 @@
   @include ui.initByCustomDesign('window.iconPaddingX', ui.v('??paddingX'));
   @include ui.initByCustomDesign('window.iconPaddingY', ui.v('??paddingY'));
 
-  top: var(--sys-touch-move-y);
+  top: var(--sys-touch-move-y, 0);
 
   &__bars + * > &__body {
     padding-top: 0 !important;

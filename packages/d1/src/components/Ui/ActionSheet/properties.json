@@ -1,0 +1,15 @@
+{
+  "main": "{d.actionSheet}",
+  "#tab": {
+    "opacity": ".5",
+    "margin-y": "{st.global.distance.space.inset.sm}",
+    "width": "{ot.dimension.300}",
+    "height": "{ot.dimension.25}",
+    "background-color": "{st.content.background.color.neutral.explicit}",
+    "border-radius": "{st.selectable.borderRadius.size.xs}"
+  },
+  "padding": {
+    "link": "{modal.padding}",
+    "_default": "md"
+  }
+}

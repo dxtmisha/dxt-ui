@@ -1,20 +1,13 @@
 import type { ConstrClass } from '@dxtmisha/functional'
-
-import type {
-  WindowComponentInclude,
-  WindowControlItem,
-  WindowEmitsInclude,
-  WindowExposeInclude,
-  WindowSlots
-} from '../Window'
-import type { BarsComponentInclude, BarsEmitsInclude } from '../Bars'
+import type { WindowComponentInclude } from '../Window'
+import type { BarsComponentInclude } from '../Bars'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type ActionSheetComponents
+export type ModalComponents
   = WindowComponentInclude
     & BarsComponentInclude
 
@@ -23,16 +16,16 @@ export type ActionSheetComponents
  *
  * Тип, описывающий доступные события.
  */
-export type ActionSheetEmits
-  = WindowEmitsInclude
-    & BarsEmitsInclude
+export type ModalEmits = {
+  // load: [value: string]
+}
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface ActionSheetExpose extends WindowExposeInclude {
+export interface ModalExpose {
 }
 
 /**
@@ -40,8 +33,8 @@ export interface ActionSheetExpose extends WindowExposeInclude {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface ActionSheetSlots extends WindowSlots {
-  header(props: WindowControlItem): any
+export interface ModalSlots {
+  // default? (props: any): any
 }
 
 /**
@@ -49,11 +42,8 @@ export interface ActionSheetSlots extends WindowSlots {
  *
  * Тип, описывающий подклассы.
  */
-export type ActionSheetClasses = {
+export type ModalClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  body: string
-  touch: string
-  tab: string
   // :classes [!] System label / Системная метка
 }

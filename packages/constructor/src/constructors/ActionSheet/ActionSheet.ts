@@ -1,6 +1,11 @@
-import type { Ref, ToRefs } from 'vue'
+import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
+import { BarsInclude } from '../Bars'
+import { WindowInclude } from '../Window'
+import { TouchEventInclude } from '../../classes/TouchEventInclude'
+
+import type { TouchEventTypeY } from '../../types/touchEventTypes'
 import type { ActionSheetComponents, ActionSheetEmits, ActionSheetSlots } from './types'
 import type { ActionSheetProps } from './props'
 
@@ -8,6 +13,10 @@ import type { ActionSheetProps } from './props'
  * ActionSheet
  */
 export class ActionSheet {
+  readonly bars: BarsInclude
+  readonly window: WindowInclude
+  readonly touchEvent: TouchEventInclude
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -29,5 +38,43 @@ export class ActionSheet {
     protected readonly slots?: ActionSheetSlots,
     protected readonly emits?: ConstrEmit<ActionSheetEmits>
   ) {
+    this.bars = new BarsInclude(
+      props,
+      className,
+      components,
+      emits
+    )
+
+    this.window = new WindowInclude(
+      props,
+      className,
+      components,
+      emits,
+      computed(() => ({
+        open: props.open,
+
+        adaptive: 'actionSheet',
+        closeButton: props.barsBackHide,
+        closeMobileHide: props.touchClose
+      }))
+    )
+
+    this.touchEvent = new TouchEventInclude(
+      undefined,
+      (
+        _,
+        __,
+        ___,
+        clientY: number
+      ) => clientY >= 0,
+      (_, type: TouchEventTypeY) => {
+        if (type === 'bottom') {
+          this.window.expose.setOpen(false).then()
+          return false
+        }
+
+        return true
+      }
+    )
   }
 }

@@ -1,0 +1,37 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/ActionSheet/style" as ActionSheet;
+
+@include ui.initDesignBasic('d1.actionSheet') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include ActionSheet.mixinActionSheet;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &__tab {
+      @include ui.marginY(#{var(--d1-st-global-distance-space-inset-sm)});
+      
+      @include ui.width(#{var(--d1-ot-dimension-300)});
+      @include ui.height(#{var(--d1-ot-dimension-25)});
+      
+      opacity: .5;
+      
+      @include ui.backgroundColor(#{var(--d1-st-content-background-color-neutral-explicit)});
+      
+      border-radius: var(--d1-st-selectable-borderRadius-size-xs);
+    }
+    
+    &--padding {
+      &--link {
+        padding: var(--d1-modal-padding);
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

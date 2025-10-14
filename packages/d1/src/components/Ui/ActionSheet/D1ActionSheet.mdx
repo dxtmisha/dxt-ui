@@ -1,0 +1,54 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as ActionSheet from './D1ActionSheet.stories'
+import {ActionSheetWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={ActionSheet}/>
+<StorybookMain
+    name={ActionSheetWikiStorybook.getName()}
+    description={ActionSheetWikiStorybook.getDescription()}
+    story={ActionSheet.ActionSheet}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'ActionSheet'} type={'actionSheet'}/>
+<StorybookDescriptions componentName={'ActionSheet'} type={'classes'}/>
+<StorybookDescriptions componentName={'ActionSheet'} type={'basicUsage'}/>
+<Canvas of={ActionSheet.ActionSheetBasic}/>
+<StorybookDescriptions componentName={'ActionSheet'} type={'groupedActions'}/>
+<Canvas of={ActionSheet.ActionSheetGrouped}/>
+<StorybookDescriptions componentName={'ActionSheet'} type={'cancelButton'}/>
+<Canvas of={ActionSheet.ActionSheetWithCancel}/>
+<StorybookDescriptions componentName={'ActionSheet'} type={'hooks'}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'ActionSheet'} type={'event.actionSheet'}/>
+<StorybookDescriptions componentName={'Actions'} type={'emits-include'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'ActionSheet'} type={'expose'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'ActionSheet'} type={'slots'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor actionSheet"
+    "dxt-constructor": "dxt-constructor modal"
   },
   "files": [
     "src/",
@@ -102,7 +102,9 @@
     "./Window": "./src/constructors/Window/index.ts",
     "./Window/style": "./src/constructors/Window/style.scss",
     "./ActionSheet": "./src/constructors/ActionSheet/index.ts",
-    "./ActionSheet/style": "./src/constructors/ActionSheet/style.scss"
+    "./ActionSheet/style": "./src/constructors/ActionSheet/style.scss",
+    "./Modal": "./src/constructors/Modal/index.ts",
+    "./Modal/style": "./src/constructors/Modal/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",
