@@ -58,6 +58,7 @@ export const UI_DIRS_LIST_EXPORT = [
   'components',
   'composables',
   'functions',
+  'global',
   'types'
 ]
 

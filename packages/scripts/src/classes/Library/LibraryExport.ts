@@ -5,7 +5,8 @@ import type { LibraryFiles } from '../../types/libraryTypes'
 import {
   UI_DIRS_LIST_EXPORT,
   UI_DIRS_FILE_EXPORT,
-  UI_DIR_IN, UI_FLAG_NOT_EXPORT
+  UI_DIR_IN,
+  UI_FLAG_NOT_EXPORT
 } from '../../config'
 
 /**
