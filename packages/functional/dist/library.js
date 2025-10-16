@@ -1,8 +1,8 @@
 var Bt = Object.defineProperty;
 var Tt = (i, t, e) => t in i ? Bt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
 var k = (i, t, e) => Tt(i, typeof t != "symbol" ? t + "" : t, e);
-import { D as Y, i as d, r as O, e as A, a as W, b as Ft, G as p, f, t as b, c as ot, d as T, g as Et, h as K, j as m, k as L, A as H, l as g, E as xt, m as F, L as ft, n as E } from "./Icons-Bp74_rUm.js";
-import { o as Ns, I as Is, p as Bs, q as Ts, s as Fs, u as Es, v as xs, w as Rs } from "./Icons-Bp74_rUm.js";
+import { D as Y, i as d, r as O, e as A, a as W, b as Ft, G as p, f, t as b, c as ot, d as T, g as Et, h as K, j as m, k as L, A as H, l as g, E as xt, m as F, L as ft, n as E } from "./Icons-B0hjN6YJ.js";
+import { o as Ns, I as Is, p as Bs, q as Ts, s as Fs, u as Es, v as xs, w as Rs } from "./Icons-B0hjN6YJ.js";
 import { ref as $, watch as y, h as Rt, computed as c, toRefs as Ot, useAttrs as Wt, useSlots as Pt, isRef as ct, triggerRef as jt, shallowRef as P, onUnmounted as it, inject as Ht, provide as Gt, watchEffect as zt } from "vue";
 function Ut(i, t, e) {
   if (i in _)
@@ -2762,7 +2762,7 @@ class Me {
    * @param props property for the slot/ свойство для слота
    */
   initSlot(t, e, s = {}) {
-    if (this.slots && this.slots?.[t] && typeof this.slots[t] == "function") {
+    if (t === "footer" && console.log("ef"), this.slots && this.slots?.[t] && typeof this.slots[t] == "function") {
       const n = this.slots[t](s);
       return e && e.push(n), n;
     }
@@ -3777,7 +3777,9 @@ function Fe(i, t, e = !0, s, n, a) {
     get isStarting() {
       return c(() => o.value === void 0);
     },
-    loading: h,
+    get loading() {
+      return c(() => h.value);
+    },
     get reading() {
       return c(() => l.value);
     },

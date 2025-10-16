@@ -36,7 +36,7 @@ const getOptions = (options?: ApiOptions): RefOrNormal<ApiFetch> => {
 export interface UseApiRef<R> {
   data: Ref<R | undefined>
   isStarting: ComputedRef<boolean>
-  loading: Ref<boolean>
+  loading: ComputedRef<boolean>
   reading: ComputedRef<boolean>
 
   reset(): Promise<void>
@@ -160,7 +160,9 @@ export function useApiRef<R, T = any>(
     get isStarting() {
       return computed<boolean>(() => item.value === undefined)
     },
-    loading,
+    get loading() {
+      return computed<boolean>(() => loading.value)
+    },
     get reading() {
       return computed<boolean>(() => reading.value)
     },

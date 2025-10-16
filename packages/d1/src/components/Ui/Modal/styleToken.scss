@@ -1,0 +1,54 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Modal/style" as Modal;
+
+@include ui.initDesignBasic('d1.modal') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Modal.mixinModal;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &--padding {
+      &--sm {
+        --d1-modal-paddingX: var(--d1-sys-spacing-sm);
+        --d1-modal-paddingY: var(--d1-sys-spacing-xs);
+      }
+      
+      &--md {
+        --d1-modal-paddingX: var(--d1-sys-spacing-md);
+        --d1-modal-paddingY: var(--d1-sys-spacing-sm);
+      }
+      
+      &--lg {
+        --d1-modal-paddingX: var(--d1-sys-spacing-lg);
+        --d1-modal-paddingY: var(--d1-sys-spacing-md);
+      }
+    }
+    
+    &--paddingByIndent {
+      --d1-modal-paddingX: var(--d1-grid-paddingX);
+      --d1-modal-paddingY: var(--d1-grid-paddingY);
+    }
+    
+    &--width {
+      &--sm {
+        --d1-window-width: var(--d1-ref-spacing-128);
+      }
+      
+      &--md {
+        --d1-window-width: var(--d1-ref-spacing-256);
+      }
+      
+      &--lg {
+        --d1-window-width: var(--d1-ref-spacing-384);
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

@@ -39,7 +39,7 @@ export const defaults: object = {
   ...{
     // :default [!] System label / Системная метка
     divider: true,
-    padding: 'yMd',
+    padding: 'none',
     paddingByIndent: true
     // :default [!] System label / Системная метка
   }

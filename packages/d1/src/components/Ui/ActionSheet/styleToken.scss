@@ -25,8 +25,19 @@
     }
     
     &--padding {
-      &--link {
-        padding: var(--d1-modal-padding);
+      &--sm {
+        --d1-actionSheet-paddingX: var(--d1-sys-spacing-sm);
+        --d1-actionSheet-paddingY: var(--d1-sys-spacing-xs);
+      }
+      
+      &--md {
+        --d1-actionSheet-paddingX: var(--d1-sys-spacing-md);
+        --d1-actionSheet-paddingY: var(--d1-sys-spacing-sm);
+      }
+      
+      &--lg {
+        --d1-actionSheet-paddingX: var(--d1-sys-spacing-lg);
+        --d1-actionSheet-paddingY: var(--d1-sys-spacing-md);
       }
     }
   }

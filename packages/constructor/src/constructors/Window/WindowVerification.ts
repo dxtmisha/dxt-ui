@@ -1,4 +1,4 @@
-import { isDomRuntime, isFilled } from '@dxtmisha/functional'
+import { isDomRuntime } from '@dxtmisha/functional'
 
 import { WindowPersistent } from './WindowPersistent'
 import { WindowClasses } from './WindowClasses'
@@ -45,6 +45,7 @@ export class WindowVerification {
    */
   async update(target: HTMLElement): Promise<void> {
     if (this.open.isClicks()) {
+      console.log('end clicks')
       return
     }
 
@@ -55,8 +56,6 @@ export class WindowVerification {
       return
     }
 
-    this.open.pressed()
-
     if (!this.isTargetInBody()) {
       return
     }
@@ -64,6 +63,8 @@ export class WindowVerification {
     if (this.staticMode.item.value) {
       return
     }
+
+    this.open.pressed()
 
     if (this.open.item.value) {
       if (
@@ -75,7 +76,7 @@ export class WindowVerification {
         await this.open
           .reset()
           .watchPosition()
-      } else if (!isFilled(this.focus)) {
+      } else if (!this.focus) {
         await this.open.toggle()
       } else if (!this.isFocus()) {
         if (this.isNotBlock()) {

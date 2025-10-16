@@ -1,0 +1,130 @@
+## Differences between Modal, ActionSheet and Dialog
+
+All three components are built on top of **Window**, but have different purposes and behaviors:
+
+### Modal
+
+**Modal** — a modal window with centered positioning for content requiring immediate user attention.
+
+**Features:**
+- Uses `adaptive: 'modal'` Window mode
+- **Centered positioning** by default
+- Semi-transparent overlay blocks interaction with the main interface
+- Closes on ESC key and click outside (unless `persistent` is set)
+- Supports slots for title, content, and footer
+- Integrated with Bars and Actions components
+
+**Common use cases:**
+- Action confirmation dialogs
+- Create/edit record forms
+- Warnings and informational messages
+- Viewing detailed information
+
+---
+
+### ActionSheet
+
+**ActionSheet** — a modal panel with a set of actions appearing from the bottom of the screen (on mobile devices) or as a context menu.
+
+**Features:**
+- Uses `adaptive: 'actionSheet'` Window mode
+- **Bottom positioning** on mobile devices
+- **Swipe down gesture** support for closing (`touchClose`)
+- Automatically adds dividers between items (`divider: true`)
+- Adaptive behavior: can transform into modal on larger screens
+- Specialized for action lists
+
+**Common use cases:**
+- Action menus for objects (edit, delete, share)
+- Selecting an option from a list
+- Context menus on mobile devices
+- Actions requiring quick access
+
+---
+
+### Dialog
+
+**Dialog** — a component for dialog windows with simplified API.
+
+**Features:**
+- Usually an even more simplified wrapper over Modal
+- May have preset styles for system dialogs
+- Often used for simple confirmations (yes/no, OK/Cancel)
+
+**Common use cases:**
+- Simple confirmations (alert, confirm)
+- System notifications
+- Quick dialogs without complex content
+
+---
+
+### Choosing a component
+
+- **Use Modal** when you need to display a form, detailed information, or content requiring user attention
+- **Use ActionSheet** when you need to offer a list of actions, especially on mobile devices
+- **Use Dialog** when you need a simple confirmation or system notification
+## Разница между Modal, ActionSheet и Dialog
+
+Все три компонента построены на базе **Window**, но имеют различное назначение и поведение:
+
+### Modal
+
+**Modal** — модальное окно с центрированным позиционированием для контента, требующего немедленного внимания пользователя.
+
+**Особенности:**
+- Использует `adaptive: 'modal'` режим Window
+- **Центрированное позиционирование** по умолчанию
+- Полупрозрачный оверлей блокирует взаимодействие с основным интерфейсом
+- Закрывается по ESC и клику вне области (если не установлен `persistent`)
+- Поддерживает слоты для заголовка, контента и футера
+- Интегрирован с компонентами Bars и Actions
+
+**Типичные сценарии:**
+- Диалоги подтверждения действий
+- Формы создания/редактирования записей
+- Предупреждения и информационные сообщения
+- Просмотр детальной информации
+
+---
+
+### ActionSheet
+
+**ActionSheet** — модальная панель с набором действий, появляющаяся снизу экрана (на мобильных устройствах) или в виде контекстного меню.
+
+**Особенности:**
+- Использует `adaptive: 'actionSheet'` режим Window
+- **Позиционирование снизу** экрана на мобильных устройствах
+- Поддержка **жеста свайпа вниз** для закрытия (`touchClose`)
+- Автоматически добавляет разделители между элементами (`divider: true`)
+- Адаптивное поведение: может трансформироваться в modal на больших экранах
+- Специализирован для списков действий
+
+**Типичные сценарии:**
+- Меню действий с объектом (редактировать, удалить, поделиться)
+- Выбор опции из списка
+- Контекстные меню на мобильных устройствах
+- Действия, требующие быстрого доступа
+
+---
+
+### Dialog
+
+**Dialog** — компонент для диалоговых окон с упрощенным API (если реализован в вашей системе).
+
+**Особенности:**
+- Обычно является еще более упрощенной оберткой над Modal
+- Может иметь предустановленные стили для системных диалогов
+- Часто используется для простых подтверждений (да/нет, ОК/Отмена)
+
+**Типичные сценарии:**
+- Простые подтверждения (alert, confirm)
+- Системные уведомления
+- Быстрые диалоги без сложного контента
+
+---
+
+### Выбор компонента
+
+- **Используйте Modal**, когда нужно показать форму, детальную информацию или контент, требующий внимания пользователя
+- **Используйте ActionSheet**, когда нужно предложить список действий, особенно на мобильных устройствах
+- **Используйте Dialog**, когда нужно простое подтверждение или системное уведомление

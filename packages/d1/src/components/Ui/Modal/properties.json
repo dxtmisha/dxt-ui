@@ -1,0 +1,35 @@
+{
+  "main": "{d.modal}",
+  "~padding": {
+    "sm": {
+      "paddingX": "{sys.spacing.sm}",
+      "paddingY": "{sys.spacing.xs}"
+    },
+    "md": {
+      "paddingX": "{sys.spacing.md}",
+      "paddingY": "{sys.spacing.sm}"
+    },
+    "lg": {
+      "paddingX": "{sys.spacing.lg}",
+      "paddingY": "{sys.spacing.md}"
+    }
+  },
+  "~paddingByIndent": {
+    "paddingX": "{grid.paddingX}",
+    "paddingY": "{grid.paddingY}",
+    "_default": true
+  },
+  "width": {
+    "sm": {
+      "=?window-width": "{ref.spacing.128}"
+    },
+    "md": {
+      "=?window-width": "{ref.spacing.256}"
+    },
+    "lg": {
+      "=?window-width": "{ref.spacing.384}"
+    },
+    "auto": {},
+    "_default": "md"
+  }
+}

@@ -1,0 +1,50 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Modal from './D1Modal.stories'
+import {ModalWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Modal}/>
+<StorybookMain
+    name={ModalWikiStorybook.getName()}
+    description={ModalWikiStorybook.getDescription()}
+    story={Modal.Modal}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Modal'} type={'modal'}/>
+<StorybookDescriptions componentName={'Modal'} type={'differences'}/>
+<StorybookDescriptions componentName={'Window'} type={'v-model'}/>
+<Canvas of={Modal.ModalVModel}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Window'} type={'event.window'}/>
+<StorybookDescriptions componentName={'Event'} type={'bars'}/>
+<StorybookDescriptions componentName={'Event'} type={'actions'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Window'} type={'expose'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Window'} type={'slots'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

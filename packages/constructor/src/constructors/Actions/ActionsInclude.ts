@@ -50,9 +50,11 @@ export class ActionsInclude<
    * Проверяет, нужно ли отображать действия
    */
   readonly is = computed(() => Boolean(
-    this.props.actionsList
-    || this.props.actionsSecondary
-    || !this.props.actionsHide
+    !this.props.actionsHide
+    && (
+      this.props.actionsList
+      || this.props.actionsSecondary
+    )
   ))
 
   /** Computed bindings for the actions/ Вычисляемые привязки для действий */

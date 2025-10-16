@@ -1,2 +1,15 @@
 {
+  "paddingX": {
+    "_type": "var"
+  },
+  "paddingY": {
+    "_type": "var"
+  },
+  "#body": {},
+  "#footer": {},
+  "~imagePosition": {
+    "~top": {},
+    "~left": {},
+    "_default": "top"
+  }
 }

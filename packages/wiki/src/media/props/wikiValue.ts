@@ -31,6 +31,35 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  actionsList: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Array of primary action buttons displayed in the actions area',
+        ru: 'Массив основных кнопок действий, отображаемых в области действий'
+      },
+      value: [
+        { icon: 'edit', label: 'Edit' },
+        { icon: 'delete', label: 'Delete' },
+        { icon: 'share', label: 'Share' }
+      ]
+    }
+  },
+  actionsSecondary: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Array of secondary action buttons displayed in the actions area',
+        ru: 'Массив вторичных кнопок действий, отображаемых в области действий'
+      },
+      value: [
+        { icon: 'info', label: 'Info' },
+        { icon: 'help', label: 'Help' }
+      ]
+    }
+  },
   barsDescription: {
     type: StorybookControl.string,
     options: {

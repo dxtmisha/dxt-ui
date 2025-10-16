@@ -6,6 +6,10 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'actionsAttrs', type: 'ConstrBind<ActionsPropsBasic<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>>' },
+  { name: 'actionsHide', type: 'boolean' },
+  { name: 'actionsList', type: 'ConstrBind<ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]>' },
+  { name: 'actionsSecondary', type: 'ConstrBind<ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]>' },
   { name: 'autoClose', type: 'boolean' },
   { name: 'barsAttrs', type: 'ConstrBind<BarsPropsBasic<IconPropsBasic<ImagePropsBasic>, ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>>' },
   { name: 'barsBackHide', type: 'boolean' },
@@ -14,15 +18,18 @@ const propsNames: StorybookProps = [
   { name: 'barsLabel', type: 'string | number' },
   { name: 'barsList', type: 'ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]' },
   { name: 'disabled', type: 'boolean' },
+  { name: 'image', type: 'string | ConstrBind<ImagePropsBasic>' },
+  { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
   { name: 'open', type: 'boolean' },
   { name: 'padding', type: 'string', option: ['sm', 'md', 'lg'] },
-  { name: 'touchClose', type: 'boolean' },
+  { name: 'paddingByIndent', type: 'boolean' },
+  { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'auto'] },
   { name: 'windowAttrs', type: 'ConstrBind<WindowPropsBasic<ScrollbarPropsBasic, ImagePropsBasic>>' }
   // :propsList [!] System label / Системная метка
 ]
 
-export const ActionSheetWikiStorybook = new WikiStorybook(
-  'ActionSheet',
+export const ModalWikiStorybook = new WikiStorybook(
+  'Modal',
   propsNames,
   defaults,
   wikiD1,

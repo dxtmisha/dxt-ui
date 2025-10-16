@@ -1,6 +1,6 @@
 {
   "main": "{d.window}",
-  "padding": "{sys.spacing.md}",
+  "padding": "{grid.paddingX}",
   "width": {
     "sm": "{ref.spacing.px} * 512",
     "md": "{ref.spacing.px} * 768",

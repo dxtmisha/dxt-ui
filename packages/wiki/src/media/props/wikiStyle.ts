@@ -22,6 +22,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  actionsAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the Actions component container',
+        ru: 'Дополнительные атрибуты для контейнера компонента Actions'
+      }
+    }
+  },
   align: {
     type: StorybookControl.select,
     options: {
@@ -500,6 +510,17 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Applies rotation only to the trailing icon',
         ru: 'Применяет поворот только к завершающей иконке'
       }
+    }
+  },
+  imagePosition: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Defines image placement within the window layout',
+        ru: 'Определяет расположение изображения внутри макета окна'
+      },
+      options: ['left', 'top']
     }
   },
   inputAttrs: {

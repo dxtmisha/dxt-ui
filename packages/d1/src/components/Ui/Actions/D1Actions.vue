@@ -29,7 +29,9 @@ const classesToken = computed<ConstrClasses>(() => ({
     // :classes-values [!] System label / Системная метка
     'd1-actions': true,
     [`d1-actions--align--${props.align}`]: inArray(propsValues.align, props.align),
-    [`d1-actions--flexible--${props.flexible}`]: inArray(propsValues.flexible, props.flexible)
+    [`d1-actions--flexible--${props.flexible}`]: inArray(propsValues.flexible, props.flexible),
+    [`d1-actions--padding--${props.padding}`]: inArray(propsValues.padding, props.padding),
+    'd1-actions--paddingByIndent': props.paddingByIndent
     // :classes-values [!] System label / Системная метка
   }
 }))

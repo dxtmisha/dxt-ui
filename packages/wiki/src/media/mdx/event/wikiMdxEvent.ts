@@ -1,5 +1,7 @@
 import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
+import eventsActionsEn from './events.actions.en.mdx'
+import eventsActionsRu from './events.actions.ru.mdx'
 import eventsBarsEn from './events.bars.en.mdx'
 import eventsBarsRu from './events.bars.ru.mdx'
 import eventsBeforeinputEn from './events.beforeinput.en.mdx'
@@ -20,6 +22,10 @@ import eventsResetRu from './events.reset.ru.mdx'
 export const wikiMdxEvent: StorybookComponentsMdxItem = {
   name: 'Event',
   descriptions: {
+    actions: {
+      en: eventsActionsEn,
+      ru: eventsActionsRu
+    },
     bars: {
       en: eventsBarsEn,
       ru: eventsBarsRu

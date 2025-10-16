@@ -79,7 +79,6 @@ export class BarsInclude<
    * Рендер компонента панелей
    */
   readonly render = (): VNode[] => {
-    console.log('this.props.barsHide', this.props.barsHide)
     if (
       this.components
       && !this.props.barsHide

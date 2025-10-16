@@ -5,7 +5,7 @@ type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
 export interface UseApiRef<R> {
     data: Ref<R | undefined>;
     isStarting: ComputedRef<boolean>;
-    loading: Ref<boolean>;
+    loading: ComputedRef<boolean>;
     reading: ComputedRef<boolean>;
     reset(): Promise<void>;
 }

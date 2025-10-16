@@ -1,5 +1,20 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinModal {
+  @include ui.initByCustomDesign('window.iconPaddingX', ui.v('??paddingX'));
+  @include ui.initByCustomDesign('window.iconPaddingY', ui.v('??paddingY'));
 
+  &__body {
+    @include ui.paddingX(ui.v('??paddingX'));
+    @include ui.paddingY(ui.v('??paddingY'));
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    @include ui.paddingX(ui.v('??paddingX'));
+    @include ui.paddingY(ui.v('??paddingY'));
+  }
 }

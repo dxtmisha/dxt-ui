@@ -142,17 +142,6 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
-  'window.imagePosition': {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Defines image placement within the window layout',
-        ru: 'Определяет расположение изображения внутри макета окна'
-      },
-      options: ['left', 'top']
-    }
-  },
   'window.imageSize': {
     type: StorybookControl.select,
     options: {

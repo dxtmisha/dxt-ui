@@ -4,7 +4,8 @@ import type { ButtonProps } from '../Button'
 export const propsValues = {
   // :values [!] System label / Системная метка
   align: ['none', 'center', 'left', 'right', 'block'],
-  flexible: ['adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl', 'containerSm', 'containerMd', 'containerLg', 'containerXl', 'container2xl']
+  flexible: ['adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl', 'containerSm', 'containerMd', 'containerLg', 'containerXl', 'container2xl'],
+  padding: ['sm', 'md', 'lg', 'ySm', 'yMd', 'yLg', 'none']
   // :values [!] System label / Системная метка
 }
 
@@ -12,6 +13,8 @@ interface PropsToken {
   // :type [!] System label / Системная метка
   align?: 'none' | 'center' | 'left' | 'right' | 'block'
   flexible?: 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl'
+  padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
+  paddingByIndent?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -32,7 +35,8 @@ export const defaults: object = {
   },
   ...{
     // :default [!] System label / Системная метка
-    align: 'right'
+    align: 'right',
+    paddingByIndent: true
     // :default [!] System label / Системная метка
   }
 }

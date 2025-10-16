@@ -171,9 +171,9 @@ export class Bars {
   }
 
   /**
-   * Back button click handler: closes action mode and proxies click event.
+   * Click handler for the "back" button
    *
-   * Обработчик кл��ка по кнопке «назад»: закрывает action‑режим и проксирует событие.
+   * Обработчик клика по кнопке «назад»: закрывает action‑режим и проксирует событие.
    */
   protected readonly onClickBack = (
     event: MouseEvent,

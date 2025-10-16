@@ -206,17 +206,17 @@
     
     &--padding {
       &--sm {
-        @include ui.paddingX(#{var(--d1-sys-spacing-x)});
+        @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
         @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
       }
       
       &--md {
-        @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
+        @include ui.paddingX(#{var(--d1-sys-spacing-md)});
         @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
       }
       
       &--lg {
-        @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
+        @include ui.paddingX(#{var(--d1-sys-spacing-lg)});
         @include ui.paddingY(#{var(--d1-sys-spacing-md)});
       }
       
@@ -235,6 +235,7 @@
     
     &--paddingByIndent {
       @include ui.paddingX(#{var(--d1-grid-paddingX)});
+      @include ui.paddingY(#{var(--d1-grid-paddingY)});
     }
   }
   // :style [!] System label / Системная метка

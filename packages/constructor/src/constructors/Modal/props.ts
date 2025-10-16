@@ -1,10 +1,25 @@
+import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
+import type { BarsPropsBasic, BarsPropsInclude } from '../Bars'
+import type { ActionsPropsBasic, ActionsPropsInclude } from '../Actions'
+import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
+
 interface ModalPropsToken {
   // :type [!] System label / Системная метка
+  imagePosition?: 'top' | 'left'
   // :type [!] System label / Системная метка
 }
 
-export interface ModalPropsBasic {
-  // TODO: Location for a custom property / Место для пользовательского свойства
+export interface ModalPropsBasic<
+  Window extends WindowPropsBasic = WindowPropsBasic,
+  Bars extends BarsPropsBasic = BarsPropsBasic,
+  Actions extends ActionsPropsBasic = ActionsPropsBasic,
+  Image extends ImagePropsBasic = ImagePropsBasic
+> extends WindowPropsInclude<Window>,
+  BarsPropsInclude<Bars>,
+  ActionsPropsInclude<Actions>,
+  ImagePropsInclude<Image> {
+  // Status
+  open?: boolean
 }
 
 /**
@@ -21,9 +36,10 @@ export interface ModalProps extends ModalPropsBasic, ModalPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsModal = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
+  barsBackHide: true,
   ...{
     // :default [!] System label / Системная метка
+    imagePosition: 'top'
     // :default [!] System label / Системная метка
   }
 }

@@ -1,8 +1,6 @@
 {
   "main": "{d.bars}",
   "gap": "{sys.spacing.xs}",
-  "padding-x": "{grid.paddingX}",
-  "padding-Y": "{grid.paddingY}",
   "background-color": "{sys.palette.surface}",
   "background-opacity": "{sys.opacity.primary.high}",
   "backdrop-filter": "{sys.blur.md}",
@@ -24,5 +22,13 @@
     "#description": {
       "color-opacity": "{sys.opacity.primary.medium}"
     }
+  },
+  "~padding": {
+    "link|padding": "{?cell.padding}"
+  },
+  "~paddingByIndent": {
+    "paddingX": "{grid.paddingX}",
+    "paddingY": "{grid.paddingY}",
+    "_default": true
   }
 }

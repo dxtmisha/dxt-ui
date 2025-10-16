@@ -11895,6 +11895,11 @@
         name: 'd1-menu',
         type: 'component',
       ),
+      'modal':(
+        index: 'modal',
+        name: 'd1-modal',
+        type: 'component',
+      ),
       'motionTransform':(
         index: 'motionTransform',
         name: 'd1-motionTransform',
@@ -12286,6 +12291,11 @@
       'menu':(
         index: 'menu',
         name: 'd-menu',
+        type: 'component',
+      ),
+      'modal':(
+        index: 'modal',
+        name: 'd-modal',
         type: 'component',
       ),
       'motionTransform':(

@@ -18,21 +18,21 @@
     &--padding {
       &--sm {
         & .d1-accordion__body {
-          @include ui.paddingX(#{var(--d1-sys-spacing-x)});
+          @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
           @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
         }
       }
       
       &--md {
         & .d1-accordion__body {
-          @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
+          @include ui.paddingX(#{var(--d1-sys-spacing-md)});
           @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
         }
       }
       
       &--lg {
         & .d1-accordion__body {
-          @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
+          @include ui.paddingX(#{var(--d1-sys-spacing-lg)});
           @include ui.paddingY(#{var(--d1-sys-spacing-md)});
         }
       }
@@ -59,6 +59,7 @@
     &--paddingByIndent {
       & .d1-accordion__body {
         @include ui.paddingX(#{var(--d1-grid-paddingX)});
+        @include ui.paddingY(#{var(--d1-grid-paddingY)});
       }
     }
   }

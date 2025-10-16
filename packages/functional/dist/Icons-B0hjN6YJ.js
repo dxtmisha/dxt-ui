@@ -357,7 +357,7 @@ const F = "ui-loading", v = class v {
    * @param element element/ элемент
    */
   static registrationEvent(t, e) {
-    new B(window, F, t).setElementControl(e).start();
+    g() && new B(window, F, t).setElementControl(e).start();
   }
   /**
    * Calls the event listener.

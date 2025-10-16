@@ -7,12 +7,12 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'autoClose', type: 'boolean' },
-  { name: 'cellAttrs', type: 'ConstrBind<CellPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>' },
+  { name: 'cellAttrs', type: 'ConstrBind<CellProps>' },
   { name: 'clickOpen', type: 'boolean' },
   { name: 'description', type: 'string | number' },
   { name: 'divider', type: 'boolean' },
-  { name: 'icon', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
-  { name: 'iconArrowDown', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
+  { name: 'icon', type: 'IconValue<IconProps>' },
+  { name: 'iconArrowDown', type: 'IconValue<IconProps>' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'modelOpen', type: 'boolean' },
   { name: 'motionTransformAttrs', type: 'ConstrBind<MotionTransformProps>' },

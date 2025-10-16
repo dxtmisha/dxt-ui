@@ -50,15 +50,15 @@
   },
   "~padding": {
     "sm": {
-      "paddingX": "{sys.spacing.x}",
+      "paddingX": "{sys.spacing.sm}",
       "paddingY": "{sys.spacing.xs}"
     },
     "md": {
-      "paddingX": "{sys.spacing.xs}",
+      "paddingX": "{sys.spacing.md}",
       "paddingY": "{sys.spacing.sm}"
     },
     "lg": {
-      "paddingX": "{sys.spacing.sm}",
+      "paddingX": "{sys.spacing.lg}",
       "paddingY": "{sys.spacing.md}"
     },
     "ySm": {
@@ -71,10 +71,11 @@
       "paddingY": "{sys.spacing.md}"
     },
     "none": {},
-    "_default": "yMd"
+    "_default": "none"
   },
   "~paddingByIndent": {
     "paddingX": "{grid.paddingX}",
+    "paddingY": "{grid.paddingY}",
     "_default": true
   }
 }

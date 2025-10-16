@@ -11,7 +11,9 @@ const propsNames: StorybookProps = [
   { name: 'buttonSecondaryAttrs', type: 'ConstrBind<ButtonProps>' },
   { name: 'flexible', type: 'string', option: ['adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl', 'containerSm', 'containerMd', 'containerLg', 'containerXl', 'container2xl'] },
   { name: 'list', type: 'ConstrBind<ButtonProps>[]' },
-  { name: 'listSecondary', type: 'ConstrBind<ButtonProps>[]' }
+  { name: 'listSecondary', type: 'ConstrBind<ButtonProps>[]' },
+  { name: 'padding', type: 'string', option: ['none', 'sm', 'md', 'lg', 'ySm', 'yMd', 'yLg'] },
+  { name: 'paddingByIndent', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 

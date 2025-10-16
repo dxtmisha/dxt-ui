@@ -1,0 +1,63 @@
+A simplified wrapper over the Window component for creating modal dialogs with preconfigured centered positioning settings.
+
+Modal is a specialized component that uses Window with a fixed `adaptive: 'modal'` mode. It is designed to display content that requires immediate user attention, blocking interaction with the main interface. The component automatically centers content, adds a semi-transparent backdrop (overlay), and manages focus.
+
+**Key features:**
+
+- Centered positioning by default
+- Semi-transparent overlay with background blocking
+- Control via v-model:open
+- Close on ESC key and click outside
+- Integration with Scrollbar for long content
+- Slots for title, content, and footer
+- Lifecycle events (preparation, opening, closing)
+- Close button with customizable icon
+
+**Differences from Window:**
+
+Modal is a Window with preset `adaptive: 'modal'`, which simplifies usage for standard dialog windows without explicitly specifying the adaptive mode.
+
+**Common use cases:**
+
+- Action confirmation dialogs
+- Create/edit forms
+- Warnings and informational messages
+- Viewing detailed information
+- Multi-step wizards
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isModalOpen = ref(false)
+
+const handleBeforeClosing = async () => {
+  // Check before closing
+  return confirm('Close modal window?')
+}
+</script>
+
+<template>
+  <button @click="isModalOpen = true">Open Modal</button>
+
+  <Modal
+    v-model:open="isModalOpen"
+    :beforeClosing="handleBeforeClosing"
+    closeButton
+  >
+    <template #title>
+      <h2>Confirm Action</h2>
+    </template>
+
+    <template #default>
+      <p>Are you sure you want to perform this action?</p>
+      <p>This action cannot be undone.</p>
+    </template>
+
+    <template #footer="{ classesModal }">
+      <button :class="classesModal.close">Cancel</button>
+      <button @click="performAction">Confirm</button>
+    </template>
+  </Modal>
+</template>
+```

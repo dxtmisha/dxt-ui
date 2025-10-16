@@ -17,9 +17,9 @@ export type ConstrComponent = Record<string, any>;
 export type ConstrComponentMod<P extends ConstrItem> = ConstrItem | {
     [K in keyof P]?: RefOrNormal<P[K]>;
 };
-/** Utility type to convert union types to intersection types/ Утилитарный тип д��я преобразования объединенных типов в пересеченные */
+/** Utility type to convert union types to intersection types/ Утилитарный тип для преобразования объединенных типов в пересеченные */
 export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
-/** Extract emit item type from constructor item/ Извлечение типа элемен��а emit из элемента конструктора */
+/** Extract emit item type from constructor item/ Извлечение типа элемента emit из элемента конструктора */
 export type ConstrEmitItem<T extends ConstrItem> = T[keyof T];
 /**
  * Constructor emit type with proper event handler signatures/

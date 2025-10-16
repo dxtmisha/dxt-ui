@@ -211,6 +211,40 @@
         }
       }
     }
+    
+    &--padding {
+      &--sm {
+        @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
+      }
+      
+      &--md {
+        @include ui.paddingX(#{var(--d1-sys-spacing-md)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
+      }
+      
+      &--lg {
+        @include ui.paddingX(#{var(--d1-sys-spacing-lg)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-md)});
+      }
+      
+      &--ySm {
+        @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
+      }
+      
+      &--yMd {
+        @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
+      }
+      
+      &--yLg {
+        @include ui.paddingY(#{var(--d1-sys-spacing-md)});
+      }
+    }
+    
+    &--paddingByIndent {
+      @include ui.paddingX(#{var(--d1-grid-paddingX)});
+      @include ui.paddingY(#{var(--d1-grid-paddingY)});
+    }
   }
   // :style [!] System label / Системная метка
 

@@ -2,11 +2,13 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { Modal } from './Modal'
 
+import type { WindowControlItem } from '../Window'
 import {
   type ModalPropsBasic
 } from './props'
@@ -65,9 +67,6 @@ export class ModalDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -78,8 +77,7 @@ export class ModalDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      ...this.item.window.expose
     } as EXPOSE
   }
 
@@ -93,6 +91,8 @@ export class ModalDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        body: this.getSubClass('body'),
+        footer: this.getSubClass('footer')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -104,10 +104,7 @@ export class ModalDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -115,13 +112,110 @@ export class ModalDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
-    // const children: any[] = []
+  protected initRender(): VNode[] {
+    return this.item.window.render(
+      {
+        control: this.renderControl,
+        title: this.renderTitle,
+        default: this.renderDefault,
+        footer: this.renderFooter
+      },
+      toBinds(
+        {
+          class: this.classes?.value.main
+        },
+        this.getAttrs()
+      )
+    )
+  }
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+  /**
+   * Generates data for control.<br>
+   * Генерирует данные для контроля.
+   * @param props data for the transferable property/ данные для передаваемого свойства
+   */
+  protected readonly renderControl = (
+    props: WindowControlItem
+  ): VNode | undefined => {
+    return this.initSlot('control', undefined, props)
+  }
+
+  /**
+   * Generates data for the header.
+   *
+   * Генерирует данные для заголовка.
+   * @param props data for the transferable property/ данные для передаваемого свойства
+   */
+  protected readonly renderTitle = (
+    props: WindowControlItem
+  ): VNode[] => {
+    const children: any[] = []
+
+    if (this.item.bars.is.value) {
+      children.push(...this.item.bars.render())
+    }
+
+    if (
+      this.slots
+      && 'title' in this.slots
+    ) {
+      this.initSlot('title', children, props)
+    }
+
+    return children
+  }
+
+  /**
+   * Generates bodies.
+   *
+   * Генерирует тела.
+   * @param props data for the transferable property/ данные для передаваемого свойства
+   */
+  protected readonly renderDefault = (
+    props: WindowControlItem
+  ): VNode | undefined => {
+    if (
+      this.slots
+      && 'default' in this.slots
+    ) {
+      return h(
+        'div',
+        { class: this.classes?.value.body },
+        this.initSlot('default', undefined, props)
+      )
+    }
+
+    return undefined
+  }
+
+  /**
+   * Generates data for the required part.
+   *
+   * Генерирует данные для нужной части.
+   * @param props data for the transferable property/ данные для передаваемого свойства
+   */
+  protected readonly renderFooter = (
+    props: WindowControlItem
+  ): VNode[] => {
+    const children: any[] = []
+
+    if (this.item.actions.is.value) {
+      children.push(...this.item.actions.render())
+    }
+
+    if (
+      this.slots
+      && 'footer' in this.slots
+    ) {
+      children.push(
+        h(
+          'div',
+          { class: this.classes?.value.footer },
+          this.initSlot('footer', undefined, props)
+        )
+      )
+    }
+
+    return children
   }
 }

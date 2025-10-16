@@ -21,6 +21,17 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
+  actionsHide: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+
+      description: {
+        en: 'Hides the actions component',
+        ru: 'Скрывает компонент действий'
+      }
+    }
+  },
   barsBackHide: {
     type: StorybookControl.boolean,
     options: {

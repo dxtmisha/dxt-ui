@@ -196,6 +196,7 @@ export class WindowOpen {
    */
   pressed(): this {
     this.clicks++
+    setTimeout(() => this.resetClicks(), 128)
     return this
   }
 

@@ -1,39 +1,38 @@
-import { type AccordionPropsBasic, defaultsAccordion } from '@dxtmisha/constructor/Accordion'
-import type { IconProps } from '../Icon'
-import type { CellProps } from '../Cell'
-import type { MotionTransformProps } from '../MotionTransform'
+import { type ModalPropsBasic, defaultsModal } from '@dxtmisha/constructor/Modal'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  padding: ['sm', 'md', 'lg', 'ySm', 'yMd', 'yLg', 'none']
+  imagePosition: ['top', 'left'],
+  padding: ['sm', 'md', 'lg'],
+  width: ['sm', 'md', 'lg', 'auto']
   // :values [!] System label / Системная метка
 }
 
 interface PropsToken {
   // :type [!] System label / Системная метка
-  divider?: boolean
-  padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
+  imagePosition?: 'top' | 'left'
+  padding?: 'sm' | 'md' | 'lg'
   paddingByIndent?: boolean
+  width?: 'sm' | 'md' | 'lg' | 'auto'
   // :type [!] System label / Системная метка
 }
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface AccordionProps extends AccordionPropsBasic<IconProps, CellProps, MotionTransformProps>, PropsToken {
+export interface ModalProps extends ModalPropsBasic, PropsToken {
 }
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export const defaults: object = {
-  ...defaultsAccordion,
-  iconArrowDown: 'keyboard_arrow_down',
+  ...defaultsModal,
   ...{
     // :default [!] System label / Системная метка
-    divider: true,
-    padding: 'none',
-    paddingByIndent: true
+    imagePosition: 'top',
+    paddingByIndent: true,
+    width: 'md'
     // :default [!] System label / Системная метка
   }
 }

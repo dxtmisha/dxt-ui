@@ -1,0 +1,87 @@
+### `actions`
+
+Event fires when clicking on an action button in the Actions component, passing the original DOM event and click data.
+
+**Parameters:**
+- `event: MouseEvent` — original DOM mouse event
+- `value: EventClickValue` — object with click data
+
+**EventClickValue structure:**
+- `type: string` — action/button type (e.g., `'confirm'`, `'cancel'`)
+- `value: any` — arbitrary button value
+- `detail: Record<string, any> | undefined` — additional event data
+
+```html
+<script setup>
+const handleActions = (event, value) => {
+  console.log('DOM event:', event)
+  console.log('Action type:', value.type)
+  console.log('Value:', value.value)
+  console.log('Details:', value.detail)
+
+  if (value.type === 'confirm') {
+    console.log('Confirm button pressed')
+  }
+}
+</script>
+
+<template>
+  <Actions @actions="handleActions" :list="[
+    { text: 'Cancel', type: 'cancel' },
+    { text: 'Confirm', type: 'confirm' }
+  ]" />
+</template>
+```
+
+### `actionsLite`
+
+Event fires when clicking on an action button in the Actions component, passing only data without the original DOM event (lightweight version).
+
+**Parameters:**
+- `value: EventClickValue` — object with click data
+
+> Actions component can be hidden with `actionsHide` property.
+### `actions`
+
+Событие срабатывает при клике на кнопку действия в компоненте Actions, передавая оригинальное DOM событие и данные о клике.
+
+**Параметры:**
+- `event: MouseEvent` — оригинальное DOM событие мыши
+- `value: EventClickValue` — объект с данными о клике
+
+**Структура EventClickValue:**
+- `type: string` — тип действия/кнопки (например, `'confirm'`, `'cancel'`)
+- `value: any` — произвольное значение кнопки
+- `detail: Record<string, any> | undefined` — дополнительные данные события
+
+```html
+<script setup>
+const handleActions = (event, value) => {
+  console.log('DOM событие:', event)
+  console.log('Тип действия:', value.type)
+  console.log('Значение:', value.value)
+  console.log('Детали:', value.detail)
+
+  if (value.type === 'confirm') {
+    console.log('Нажата кнопка "Подтвердить"')
+  }
+}
+</script>
+
+<template>
+  <Actions @actions="handleActions" :list="[
+    { text: 'Отмена', type: 'cancel' },
+    { text: 'Подтвердить', type: 'confirm' }
+  ]" />
+</template>
+```
+
+### `actionsLite`
+
+Событие срабатывает при клике на кнопку действия в компоненте Actions, передавая только данные без оригинального DOM события (облегченная версия).
+
+**Параметры:**
+- `value: EventClickValue` — объект с данными о клике
+
+> Компонент Actions можно скрыть свойством `actionsHide`.
+

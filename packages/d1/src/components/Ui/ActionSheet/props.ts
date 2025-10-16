@@ -2,13 +2,13 @@ import { type ActionSheetPropsBasic, defaultsActionSheet } from '@dxtmisha/const
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  padding: ['link']
+  padding: ['sm', 'md', 'lg']
   // :values [!] System label / Системная метка
 }
 
 interface PropsToken {
   // :type [!] System label / Системная метка
-  padding?: 'link'
+  padding?: 'sm' | 'md' | 'lg'
   // :type [!] System label / Системная метка
 }
 

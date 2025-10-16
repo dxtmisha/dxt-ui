@@ -1,4 +1,12 @@
 {
   "main": "{d.actions}",
-  "gap": "{sys.spacing.xs}"
+  "gap": "{sys.spacing.xs}",
+  "~padding": {
+    "link|padding": "{?cell.padding}"
+  },
+  "~paddingByIndent": {
+    "paddingX": "{grid.paddingX}",
+    "paddingY": "{grid.paddingY}",
+    "_default": true
+  }
 }

@@ -3,12 +3,15 @@ import type { ButtonProps } from '../Button'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  padding: ['sm', 'md', 'lg', 'ySm', 'yMd', 'yLg', 'none']
   // :values [!] System label / Системная метка
 }
 
 interface PropsToken {
   // :type [!] System label / Системная метка
   action?: boolean
+  padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
+  paddingByIndent?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -27,6 +30,7 @@ export const defaults: object = {
   iconClose: 'close',
   ...{
     // :default [!] System label / Системная метка
+    paddingByIndent: true
     // :default [!] System label / Системная метка
   }
 }

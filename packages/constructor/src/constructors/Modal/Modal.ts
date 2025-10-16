@@ -1,5 +1,9 @@
-import type { Ref, ToRefs } from 'vue'
+import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
+
+import { WindowInclude } from '../Window'
+import { BarsInclude } from '../Bars'
+import { ActionsInclude } from '../Actions'
 
 import type { ModalComponents, ModalEmits, ModalSlots } from './types'
 import type { ModalProps } from './props'
@@ -8,6 +12,10 @@ import type { ModalProps } from './props'
  * Modal
  */
 export class Modal {
+  readonly window: WindowInclude
+  readonly bars: BarsInclude
+  readonly actions: ActionsInclude
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -29,5 +37,33 @@ export class Modal {
     protected readonly slots?: ModalSlots,
     protected readonly emits?: ConstrEmit<ModalEmits>
   ) {
+    this.window = new WindowInclude(
+      props,
+      className,
+      components,
+      emits,
+      computed(() => ({
+        open: props.open,
+        image: props.image,
+
+        adaptive: 'modal',
+        imagePosition: props.imagePosition,
+        closeButton: props.barsBackHide
+      }))
+    )
+
+    this.bars = new BarsInclude(
+      props,
+      className,
+      components,
+      emits
+    )
+
+    this.actions = new ActionsInclude(
+      props,
+      className,
+      components,
+      emits
+    )
   }
 }
