@@ -9,6 +9,7 @@ export const propsValues = {
 interface PropsToken {
   // :type [!] System label / Системная метка
   padding?: 'sm' | 'md' | 'lg'
+  paddingByIndent?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -25,7 +26,7 @@ export const defaults: object = {
   ...defaultsActionSheet,
   ...{
     // :default [!] System label / Системная метка
-    padding: 'md'
+    paddingByIndent: true
     // :default [!] System label / Системная метка
   }
 }

@@ -16,6 +16,7 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean' },
   { name: 'open', type: 'boolean' },
   { name: 'padding', type: 'string', option: ['sm', 'md', 'lg'] },
+  { name: 'paddingByIndent', type: 'boolean' },
   { name: 'touchClose', type: 'boolean' },
   { name: 'windowAttrs', type: 'ConstrBind<WindowPropsBasic<ScrollbarPropsBasic, ImagePropsBasic>>' }
   // :propsList [!] System label / Системная метка

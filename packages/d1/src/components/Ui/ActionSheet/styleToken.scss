@@ -12,16 +12,15 @@
   // :style [!] System label / Системная метка
   & {
     &__tab {
-      @include ui.marginY(#{var(--d1-st-global-distance-space-inset-sm)});
+      @include ui.marginY(#{var(--d1-sys-spacing-xs)});
       
-      @include ui.width(#{var(--d1-ot-dimension-300)});
-      @include ui.height(#{var(--d1-ot-dimension-25)});
+      @include ui.width(#{var(--d1-sys-spacing-block-xl)});
+      @include ui.height(#{var(--d1-sys-spacing-block-x)});
       
-      opacity: .5;
+      @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
       
-      @include ui.backgroundColor(#{var(--d1-st-content-background-color-neutral-explicit)});
-      
-      border-radius: var(--d1-st-selectable-borderRadius-size-xs);
+      border-radius: var(--d1-sys-rounded-full);
     }
     
     &--padding {
@@ -39,6 +38,11 @@
         --d1-actionSheet-paddingX: var(--d1-sys-spacing-lg);
         --d1-actionSheet-paddingY: var(--d1-sys-spacing-md);
       }
+    }
+    
+    &--paddingByIndent {
+      --d1-actionSheet-paddingX: var(--d1-grid-paddingX);
+      --d1-actionSheet-paddingY: var(--d1-grid-paddingY);
     }
   }
   // :style [!] System label / Системная метка

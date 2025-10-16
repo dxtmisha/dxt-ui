@@ -1,15 +1,19 @@
 {
   "main": "{d.actionSheet}",
   "#tab": {
-    "opacity": ".5",
-    "margin-y": "{st.global.distance.space.inset.sm}",
-    "width": "{ot.dimension.300}",
-    "height": "{ot.dimension.25}",
-    "background-color": "{st.content.background.color.neutral.explicit}",
-    "border-radius": "{st.selectable.borderRadius.size.xs}"
+    "margin-y": "{sys.spacing.xs}",
+    "width": "{sys.spacing.block.xl}",
+    "height": "{sys.spacing.block.x}",
+    "background-color": "{sys.palette.scrim}",
+    "background-opacity": "{sys.opacity.scrim}",
+    "border-radius": "{sys.rounded.full}"
   },
   "padding": {
-    "link": "{modal.padding}",
-    "_default": "md"
+    "link|padding": "{?modal.padding}"
+  },
+  "~paddingByIndent": {
+    "paddingX": "{grid.paddingX}",
+    "paddingY": "{grid.paddingY}",
+    "_default": true
   }
 }

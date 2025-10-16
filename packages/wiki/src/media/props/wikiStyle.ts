@@ -701,6 +701,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  touchClose: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Enables closing the component by swipe-down gesture on mobile devices',
+        ru: 'Включает закрытие компонента жестом свайпа вниз на мобильных устройствах'
+      }
+    }
+  },
   type: {
     type: StorybookControl.select,
     options: {
