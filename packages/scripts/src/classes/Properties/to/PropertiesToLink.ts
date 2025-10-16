@@ -114,8 +114,9 @@ export class PropertiesToLink extends PropertiesToAbstract {
             this.addIgnore(data.value)
           }
         } else {
-          expect = true
-          break
+          // TODO: зачем это надо?
+          // expect = true
+          // break
         }
       } else if (
         isObjectNotArray(item.value)
