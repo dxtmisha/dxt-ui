@@ -6,6 +6,10 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'actionsAttrs', type: 'ConstrBind<ActionsPropsBasic<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>>' },
+  { name: 'actionsHide', type: 'boolean' },
+  { name: 'actionsList', type: 'ConstrBind<ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]>' },
+  { name: 'actionsSecondary', type: 'ConstrBind<ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]>' },
   { name: 'autoClose', type: 'boolean' },
   { name: 'barsAttrs', type: 'ConstrBind<BarsPropsBasic<IconPropsBasic<ImagePropsBasic>, ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>>' },
   { name: 'barsBackHide', type: 'boolean' },
@@ -18,6 +22,7 @@ const propsNames: StorybookProps = [
   { name: 'padding', type: 'string', option: ['sm', 'md', 'lg'] },
   { name: 'paddingByIndent', type: 'boolean' },
   { name: 'touchClose', type: 'boolean' },
+  { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'auto'] },
   { name: 'windowAttrs', type: 'ConstrBind<WindowPropsBasic<ScrollbarPropsBasic, ImagePropsBasic>>' }
   // :propsList [!] System label / Системная метка
 ]

@@ -47,100 +47,138 @@ export const wikiDescriptionsActionSheet: StorybookComponentsDescriptionItem = {
         </template>
 
         <template #title>
-          <h3 class="wiki-storybook-item--padding">Action Sheet Menu</h3>
+          Action Sheet Menu
         </template>
 
         <template #default>
-          <div class="wiki-storybook-item--padding">
-            <h4>Mobile Action Sheet Component</h4>
-            <p>The Action Sheet component provides a mobile-optimized interface for presenting users with a set of actions or choices. It slides up from the bottom of the screen, following familiar patterns from iOS and Material Design guidelines.</p>
+          <h4>Mobile Action Sheet Component</h4>
+          <p>The Action Sheet component provides a mobile-optimized interface for presenting users with a set of actions or choices. It slides up from the bottom of the screen, following familiar patterns from iOS and Material Design guidelines.</p>
 
-            <p>This component is particularly effective for contextual actions related to specific content, such as sharing options, editing tools, or destructive operations. The bottom-anchored design makes it easily accessible on mobile devices while maintaining a clear visual hierarchy.</p>
+          <p>This component is particularly effective for contextual actions related to specific content, such as sharing options, editing tools, or destructive operations. The bottom-anchored design makes it easily accessible on mobile devices while maintaining a clear visual hierarchy.</p>
 
-            <h4>Key Features</h4>
-            <p>The Action Sheet includes support for primary and secondary action lists, allowing you to group related actions logically. It automatically handles touch interactions, backdrop dismissal, and keyboard accessibility, ensuring a consistent user experience across different input methods.</p>
+          <h4>Key Features</h4>
+          <p>The Action Sheet includes support for primary and secondary action lists, allowing you to group related actions logically. It automatically handles touch interactions, backdrop dismissal, and keyboard accessibility, ensuring a consistent user experience across different input methods.</p>
 
-            <p>Integration with List and Actions components provides flexibility in content presentation, while the customizable appearance adapts seamlessly to different design systems and brand requirements. The component automatically adjusts its height based on content, preventing overflow issues while maintaining optimal usability.</p>
-          </div>
-        </template>
-
-        <template #footer="{classesWindow}">
-          <div class="wiki-storybook-flex wiki-storybook-item--padding">
-            <button :class="classesWindow.close" class="wiki-storybook-button wiki-storybook-button--text">Cancel</button>
-          </div>
+          <p>Integration with List and Actions components provides flexibility in content presentation, while the customizable appearance adapts seamlessly to different design systems and brand requirements. The component automatically adjusts its height based on content, preventing overflow issues while maintaining optimal usability.</p>
         </template>
       </DesignComponent>
     `,
   stories: [
     {
-      id: 'ActionSheetBasic',
+      id: 'ActionSheetVModel',
       name: {
-        en: 'Basic Usage',
-        ru: 'Базовое использование'
+        en: 'Two-way binding (v-model)',
+        ru: 'Двусторонняя привязка (v-model)'
       },
       setup: `
-        return {
-          actionItems: [
-            { label: 'Share', value: 'share', icon: 'share' },
-            { label: 'Copy Link', value: 'copy', icon: 'content_copy' },
-            { label: 'Download', value: 'download', icon: 'download' },
-            { label: 'Delete', value: 'delete', icon: 'delete', destructive: true }
-          ]
-        }
+      return {
+        open: ref(false)
+      }
       `,
       template: `
-        <DesignComponent :list="actionItems">
-          <template #control="{binds}">
-            <button class="wiki-storybook-button" v-bind="binds">Show Actions</button>
+        <button class="wiki-storybook-button" @click="open = true">Open via v-model ({{ open }})</button>
+
+        <DesignComponent v-model:open="open">
+          <div class="wiki-storybook-item--padding">Your content here</div>
+        </DesignComponent>
+      `
+    },
+    {
+      id: 'ActionSheetTouchClose',
+      name: {
+        en: 'Touch gesture to close',
+        ru: 'Закрытие жестом'
+      },
+      setup: `
+      return {
+        openWithTouch: ref(false),
+        openWithoutTouch: ref(false)
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex">
+          <button class="wiki-storybook-button" @click="openWithTouch = true">
+            With Touch Close ({{ openWithTouch }})
+          </button>
+          <button class="wiki-storybook-button" @click="openWithoutTouch = true">
+            Without Touch Close ({{ openWithoutTouch }})
+          </button>
+        </div>
+
+        <DesignComponent v-model:open="openWithTouch" :touchClose="true">
+          <template #title>
+            Swipe Down to Close
+          </template>
+          <template #default>
+            <div class="wiki-storybook-item--padding">
+              <div class="wiki-storybook-info">
+                <strong>Touch Close: Enabled</strong>
+                <p>This action sheet can be closed by swiping down on the title area. Notice the tab indicator at the top that signals the drag interaction.</p>
+                <p>Try swiping down on the header to close this panel. This follows iOS and Material Design patterns for mobile interfaces.</p>
+              </div>
+            </div>
+          </template>
+        </DesignComponent>
+
+        <DesignComponent v-model:open="openWithoutTouch" :touchClose="false">
+          <template #title>
+            No Swipe Gesture
+          </template>
+          <template #default>
+            <div class="wiki-storybook-item--padding">
+              <div class="wiki-storybook-info">
+                <strong>Touch Close: Disabled</strong>
+                <p>This action sheet cannot be closed by swiping down. The tab indicator is not displayed, and touch gestures are disabled.</p>
+                <p>You must use the backdrop click or close button to dismiss this panel. This is useful when you want to prevent accidental dismissal.</p>
+              </div>
+            </div>
+          </template>
+          <template #footer="{classesWindow}">
+            <button :class="classesWindow.close" class="wiki-storybook-button wiki-storybook-button--text">Close</button>
           </template>
         </DesignComponent>
       `
     },
     {
-      id: 'ActionSheetGrouped',
+      id: 'ActionSheetAllSlots',
       name: {
-        en: 'Grouped Actions',
-        ru: 'Сгруппированные действия'
+        en: 'All slots demonstration',
+        ru: 'Демонстрация всех слотов'
       },
-      setup: `
-        return {
-          primaryActions: [
-            { label: 'Save to Gallery', value: 'save', icon: 'save' },
-            { label: 'Add to Favorites', value: 'favorite', icon: 'favorite' }
-          ],
-          secondaryActions: [
-            { label: 'Report', value: 'report', icon: 'flag' },
-            { label: 'Block User', value: 'block', icon: 'block' }
-          ]
-        }
-      `,
       template: `
-        <DesignComponent :list="primaryActions" :listSecondary="secondaryActions">
+        <DesignComponent>
           <template #control="{binds}">
-            <button class="wiki-storybook-button" v-bind="binds">Show Grouped Actions</button>
+            <button class="wiki-storybook-button" v-bind="binds">Open Action Sheet with All Slots</button>
           </template>
-        </DesignComponent>
-      `
-    },
-    {
-      id: 'ActionSheetWithCancel',
-      name: {
-        en: 'With Cancel Button',
-        ru: 'С кнопкой отмены'
-      },
-      setup: `
-        return {
-          actions: [
-            { label: 'Edit Profile', value: 'edit', icon: 'edit' },
-            { label: 'Settings', value: 'settings', icon: 'settings' },
-            { label: 'Sign Out', value: 'signout', icon: 'logout' }
-          ]
-        }
-      `,
-      template: `
-        <DesignComponent :list="actions" cancel>
-          <template #control="{binds}">
-            <button class="wiki-storybook-button" v-bind="binds">Open Menu</button>
+
+          <template #title>
+            Action Sheet Title Slot
+          </template>
+
+          <template #default>
+            <div class="wiki-storybook-item--padding">
+              <h4>Default Slot Content</h4>
+              <p>This is the main content area of the action sheet. You can place any content here including action lists, forms, or other components.</p>
+
+              <div class="wiki-storybook-info">
+                <strong>Available slots:</strong>
+                <ul>
+                  <li><code>#control</code> - trigger button or element</li>
+                  <li><code>#title</code> - action sheet header/title area</li>
+                  <li><code>#default</code> - main content area</li>
+                  <li><code>#footer</code> - footer with actions or cancel button</li>
+                </ul>
+              </div>
+
+              <p>Each slot receives control props that allow you to interact with the action sheet programmatically, such as closing it or accessing window classes. The component slides up from the bottom with touch gesture support.</p>
+            </div>
+          </template>
+
+          <template #footer="{classesWindow}">
+            <div class="wiki-storybook-flex wiki-storybook-item--padding">
+              <button :class="classesWindow.close" class="wiki-storybook-button wiki-storybook-button--text">Cancel</button>
+              <button class="wiki-storybook-button">Confirm</button>
+            </div>
           </template>
         </DesignComponent>
       `
@@ -149,24 +187,25 @@ export const wikiDescriptionsActionSheet: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'ActionSheet'} type={'actionSheet'}/>
-<StorybookDescriptions componentName={'ActionSheet'} type={'classes'}/>
-<StorybookDescriptions componentName={'ActionSheet'} type={'basicUsage'}/>
-<Canvas of={Component.ActionSheetBasic}/>
-<StorybookDescriptions componentName={'ActionSheet'} type={'groupedActions'}/>
-<Canvas of={Component.ActionSheetGrouped}/>
-<StorybookDescriptions componentName={'ActionSheet'} type={'cancelButton'}/>
-<Canvas of={Component.ActionSheetWithCancel}/>
-<StorybookDescriptions componentName={'ActionSheet'} type={'hooks'}/>
+
+<StorybookDescriptions componentName={'ActionSheet'} type={'touchClose'}/>
+<Canvas of={Component.ActionSheetTouchClose}/>
+
+<StorybookDescriptions componentName={'Window'} type={'v-model'}/>
+<Canvas of={Component.ActionSheetVModel}/>
+
+<StorybookDescriptions componentName={'Modal'} type={'differences'}/>
     `,
     events: `
-<StorybookDescriptions componentName={'ActionSheet'} type={'event.actionSheet'}/>
-<StorybookDescriptions componentName={'Actions'} type={'emits-include'}/>
+<StorybookDescriptions componentName={'Window'} type={'event.window'}/>
+<StorybookDescriptions componentName={'Event'} type={'bars'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'ActionSheet'} type={'expose'}/>
+<StorybookDescriptions componentName={'Window'} type={'expose'}/>
     `,
     slots: `
-<StorybookDescriptions componentName={'ActionSheet'} type={'slots'}/>
+<Canvas of={Component.ActionSheetAllSlots}/>
+<StorybookDescriptions componentName={'Window'} type={'slots'}/>
     `
   }
 }

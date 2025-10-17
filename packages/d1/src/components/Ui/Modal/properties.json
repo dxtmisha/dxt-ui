@@ -1,5 +1,8 @@
 {
   "main": "{d.modal}",
+  "#footer": {
+    "gap": "{sys.spacing.xs}"
+  },
   "~padding": {
     "sm": {
       "paddingX": "{sys.spacing.sm}",

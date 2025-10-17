@@ -3,7 +3,8 @@ import type { ButtonPropsBasic } from '../Button'
 
 interface ActionsPropsToken {
   // :type [!] System label / Системная метка
-  align?: 'none' | 'center' | 'left' | 'right' | 'block'
+  align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto'
+  flexible?: boolean
   // :type [!] System label / Системная метка
 }
 

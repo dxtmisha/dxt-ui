@@ -1,0 +1,21 @@
+## Touch Close Gesture
+
+The `touchClose` property enables closing the ActionSheet with a swipe-down gesture.
+
+**Possible values:**
+
+- `true` — enables closing by swiping down (default)
+- `false` — disables gesture closing
+
+When enabled, a special tab indicator (drag handle) is displayed in the header area, which users can pull down to close the panel. This follows iOS and Material Design mobile interface patterns, providing intuitive interaction on touch devices.
+
+```html
+<!-- With gesture closing enabled -->
+<ActionSheet :touchClose="true" />
+
+<!-- Without gesture closing -->
+<ActionSheet :touchClose="false" />
+```
+
+The closing gesture is triggered by swiping down in the header area. The component automatically manages touch events and closing animation, ensuring smooth follow-through with the user's finger movement.
+

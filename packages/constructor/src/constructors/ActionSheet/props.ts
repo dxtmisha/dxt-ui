@@ -1,5 +1,6 @@
 import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
 import type { BarsPropsBasic, BarsPropsInclude } from '../Bars'
+import type { ActionsPropsBasic, ActionsPropsInclude } from '../Actions'
 
 interface ActionSheetPropsToken {
   // :type [!] System label / Системная метка
@@ -8,9 +9,11 @@ interface ActionSheetPropsToken {
 
 export interface ActionSheetPropsBasic<
   Window extends WindowPropsBasic = WindowPropsBasic,
-  Bars extends BarsPropsBasic = BarsPropsBasic
+  Bars extends BarsPropsBasic = BarsPropsBasic,
+  Actions extends ActionsPropsBasic = ActionsPropsBasic
 > extends WindowPropsInclude<Window>,
-  BarsPropsInclude<Bars> {
+  BarsPropsInclude<Bars>,
+  ActionsPropsInclude<Actions> {
   // Status
   open?: boolean
 

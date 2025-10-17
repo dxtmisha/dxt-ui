@@ -1,8 +1,7 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
-import { BarsInclude } from '../Bars'
-import { WindowInclude } from '../Window'
+import { ModalAbstract } from '../Modal/ModalAbstract'
 import { TouchEventInclude } from '../../classes/TouchEventInclude'
 
 import type { TouchEventTypeY } from '../../types/touchEventTypes'
@@ -12,9 +11,7 @@ import type { ActionSheetProps } from './props'
 /**
  * ActionSheet
  */
-export class ActionSheet {
-  readonly bars: BarsInclude
-  readonly window: WindowInclude
+export class ActionSheet extends ModalAbstract {
   readonly touchEvent: TouchEventInclude
 
   /**
@@ -38,17 +35,14 @@ export class ActionSheet {
     protected readonly slots?: ActionSheetSlots,
     protected readonly emits?: ConstrEmit<ActionSheetEmits>
   ) {
-    this.bars = new BarsInclude(
+    super(
       props,
+      refs,
+      element,
+      classDesign,
       className,
       components,
-      emits
-    )
-
-    this.window = new WindowInclude(
-      props,
-      className,
-      components,
+      slots,
       emits,
       computed(() => ({
         open: props.open,
@@ -56,7 +50,11 @@ export class ActionSheet {
         adaptive: 'actionSheet',
         closeButton: props.barsBackHide,
         closeMobileHide: props.touchClose
-      }))
+      })),
+      undefined,
+      {
+        align: 'auto'
+      }
     )
 
     this.touchEvent = new TouchEventInclude(

@@ -3,7 +3,7 @@ import type { ButtonProps } from '../Button'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  align: ['none', 'center', 'left', 'right', 'block'],
+  align: ['none', 'center', 'left', 'right', 'block', 'auto'],
   flexible: ['adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl', 'containerSm', 'containerMd', 'containerLg', 'containerXl', 'container2xl'],
   padding: ['sm', 'md', 'lg', 'ySm', 'yMd', 'yLg', 'none']
   // :values [!] System label / Системная метка
@@ -11,7 +11,7 @@ export const propsValues = {
 
 interface PropsToken {
   // :type [!] System label / Системная метка
-  align?: 'none' | 'center' | 'left' | 'right' | 'block'
+  align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto'
   flexible?: 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl'
   padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
   paddingByIndent?: boolean

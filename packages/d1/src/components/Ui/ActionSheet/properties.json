@@ -1,5 +1,8 @@
 {
   "main": "{d.actionSheet}",
+  "#footer": {
+    "gap": "{sys.spacing.xs}"
+  },
   "#tab": {
     "margin-y": "{sys.spacing.xs}",
     "width": "{sys.spacing.block.xl}",
@@ -15,5 +18,18 @@
     "paddingX": "{grid.paddingX}",
     "paddingY": "{grid.paddingY}",
     "_default": true
+  },
+  "width": {
+    "sm": {
+      "=?window-width": "{ref.spacing.128}"
+    },
+    "md": {
+      "=?window-width": "{ref.spacing.160}"
+    },
+    "lg": {
+      "=?window-width": "{ref.spacing.192}"
+    },
+    "auto": {},
+    "_default": "md"
   }
 }

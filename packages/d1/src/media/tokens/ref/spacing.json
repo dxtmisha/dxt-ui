@@ -46,6 +46,8 @@
   "92": "{ref.spacing.1}*92",
   "96": "{ref.spacing.1}*96",
   "128": "{ref.spacing.1}*128",
+  "160": "{ref.spacing.1}*160",
+  "192": "{ref.spacing.1}*192",
   "256": "{ref.spacing.1}*256",
   "384": "{ref.spacing.1}*384",
   "512": "{ref.spacing.1}*512",

@@ -1,5 +1,11 @@
 import type { ConstrClass } from '@dxtmisha/functional'
-import type { WindowComponentInclude, WindowEmitsInclude, WindowExposeInclude, WindowSlots } from '../Window'
+import type {
+  WindowComponentInclude,
+  WindowControlItem,
+  WindowEmitsInclude,
+  WindowExposeInclude,
+  WindowSlots
+} from '../Window'
 import type { BarsComponentInclude, BarsEmitsInclude } from '../Bars'
 import type { ActionsComponentInclude, ActionsEmitsInclude } from '../Actions'
 
@@ -37,6 +43,7 @@ export interface ModalExpose extends WindowExposeInclude {
  * Тип, описывающий доступные слоты.
  */
 export interface ModalSlots extends WindowSlots {
+  header(props: WindowControlItem): any
 }
 
 /**
@@ -47,6 +54,8 @@ export interface ModalSlots extends WindowSlots {
 export type ModalClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  title: string
+  header: string
   body: string
   footer: string
   // :classes [!] System label / Системная метка

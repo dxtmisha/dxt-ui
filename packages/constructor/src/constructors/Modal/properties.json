@@ -5,6 +5,8 @@
   "paddingY": {
     "_type": "var"
   },
+  "#title": {},
+  "#header": {},
   "#body": {},
   "#footer": {},
   "~imagePosition": {

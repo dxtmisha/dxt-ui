@@ -4,7 +4,10 @@
   @include ui.initByCustomDesign('window.iconPaddingX', ui.v('??paddingX'));
   @include ui.initByCustomDesign('window.iconPaddingY', ui.v('??paddingY'));
 
-  &__body {
+  &__title,
+  &__header,
+  &__body,
+  &__footer {
     @include ui.paddingX(ui.v('??paddingX'));
     @include ui.paddingY(ui.v('??paddingY'));
   }
@@ -13,8 +16,5 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
-    @include ui.paddingX(ui.v('??paddingX'));
-    @include ui.paddingY(ui.v('??paddingY'));
   }
 }

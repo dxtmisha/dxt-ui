@@ -11,8 +11,9 @@ import {
   type ActionSheetSlots
 } from '@dxtmisha/constructor/ActionSheet'
 
-import { D1Bars } from '../Bars'
 import { D1Window } from '../Window'
+import { D1Bars } from '../Bars'
+import { D1Actions } from '../Actions'
 
 import { defaults, type ActionSheetProps, propsValues } from './props'
 import './styleToken.scss'
@@ -29,7 +30,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     // :classes-values [!] System label / Системная метка
     'd1-actionSheet': true,
     [`d1-actionSheet--padding--${props.padding}`]: inArray(propsValues.padding, props.padding),
-    'd1-actionSheet--paddingByIndent': props.paddingByIndent
+    'd1-actionSheet--paddingByIndent': props.paddingByIndent,
+    [`d1-actionSheet--width--${props.width}`]: inArray(propsValues.width, props.width)
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -46,8 +48,9 @@ const design = new ActionSheetDesign(
     classes: classesToken,
     styles: stylesToken,
     components: {
+      window: D1Window,
       bars: D1Bars,
-      window: D1Window
+      actions: D1Actions
     },
     compMod: {
       window: {

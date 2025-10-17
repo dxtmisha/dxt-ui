@@ -11,6 +11,10 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    &__footer {
+      gap: var(--d1-sys-spacing-xs);
+    }
+    
     &__tab {
       @include ui.marginY(#{var(--d1-sys-spacing-xs)});
       
@@ -43,6 +47,20 @@
     &--paddingByIndent {
       --d1-actionSheet-paddingX: var(--d1-grid-paddingX);
       --d1-actionSheet-paddingY: var(--d1-grid-paddingY);
+    }
+    
+    &--width {
+      &--sm {
+        --d1-window-width: var(--d1-ref-spacing-128);
+      }
+      
+      &--md {
+        --d1-window-width: var(--d1-ref-spacing-160);
+      }
+      
+      &--lg {
+        --d1-window-width: var(--d1-ref-spacing-192);
+      }
     }
   }
   // :style [!] System label / Системная метка

@@ -6,7 +6,7 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'align', type: 'string', option: ['none', 'center', 'left', 'right', 'block'] },
+  { name: 'align', type: 'string', option: ['none', 'center', 'left', 'right', 'block', 'auto'] },
   { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps>' },
   { name: 'buttonSecondaryAttrs', type: 'ConstrBind<ButtonProps>' },
   { name: 'flexible', type: 'string', option: ['adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl', 'containerSm', 'containerMd', 'containerLg', 'containerXl', 'container2xl'] },

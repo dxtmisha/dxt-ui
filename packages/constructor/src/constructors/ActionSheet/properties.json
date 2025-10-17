@@ -5,7 +5,10 @@
   "paddingY": {
     "_type": "var"
   },
+  "#title": {},
+  "#header": {},
   "#body": {},
+  "#footer": {},
   "#touch": {},
   "#tab": {}
 }

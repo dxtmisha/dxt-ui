@@ -8,6 +8,7 @@ import { wikiMdxValue } from './value/wikiMdxValue'
 
 import { wikiMdxAccordion } from './Accordion/wikiMdxAccordion'
 import { wikiMdxActions } from './Actions/wikiMdxActions'
+import { wikiMdxActionSheet } from './ActionSheet/wikiMdxActionSheet'
 import { wikiMdxBadge } from './Badge/wikiMdxBadge'
 import { wikiMdxBars } from './Bars/wikiMdxBars'
 import { wikiMdxButton } from './Button/wikiMdxButton'
@@ -42,6 +43,7 @@ export const wikiMdx: StorybookComponentsMdx = [
 
   wikiMdxAccordion,
   wikiMdxActions,
+  wikiMdxActionSheet,
   wikiMdxBadge,
   wikiMdxBars,
   wikiMdxButton,

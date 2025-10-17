@@ -74,4 +74,43 @@ export const ModalVModel: Story = {
     `
   })
 }
+export const ModalAllSlots: Story = {
+  name: 'Демонстрация всех слотов',
+  render: () => ({
+    components: { D1Modal },
+    template: `
+        <D1Modal>
+          <template #control="{binds}">
+            <button class="wiki-storybook-button" v-bind="binds">Open Modal with All Slots</button>
+          </template>
+
+          <template #title>
+            Modal Title Slot
+          </template>
+
+          <template #default>
+            <h4>Default Slot Content</h4>
+            <p>This is the main content area of the modal. You can place any content here including text, forms, images, or other components.</p>
+
+            <div class="wiki-storybook-info">
+              <strong>Available slots:</strong>
+              <ul>
+                <li><code>#control</code> - trigger button or element</li>
+                <li><code>#title</code> - modal header/title area</li>
+                <li><code>#default</code> - main content area</li>
+                <li><code>#footer</code> - footer with actions</li>
+              </ul>
+            </div>
+
+            <p>Each slot receives control props that allow you to interact with the modal programmatically, such as closing it or accessing window classes.</p>
+          </template>
+
+          <template #footer="{classesWindow}">
+              <button :class="classesWindow.close" class="wiki-storybook-button wiki-storybook-button--text">Cancel</button>
+              <button class="wiki-storybook-button">Confirm</button>
+          </template>
+        </D1Modal>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

@@ -1,13 +1,10 @@
 import { h, type VNode } from 'vue'
-import {
-  type ConstrOptions,
-  type ConstrStyles,
-  DesignConstructorAbstract,
-  toBinds
-} from '@dxtmisha/functional'
+import { toBinds } from '@dxtmisha/functional'
 
+import { ModalDesignAbstract } from '../Modal/ModalDesignAbstract'
 import { ActionSheet } from './ActionSheet'
 
+import type { ModalAbstract } from '../Modal/ModalAbstract'
 import { type WindowControlItem } from '../Window'
 import {
   type ActionSheetPropsBasic
@@ -15,9 +12,7 @@ import {
 import {
   type ActionSheetClasses,
   type ActionSheetComponents,
-  type ActionSheetEmits,
-  type ActionSheetExpose,
-  type ActionSheetSlots
+  type ActionSheetExpose
 } from './types'
 
 /**
@@ -28,35 +23,19 @@ export class ActionSheetDesign<
   EXPOSE extends ActionSheetExpose,
   CLASSES extends ActionSheetClasses,
   P extends ActionSheetPropsBasic
-> extends DesignConstructorAbstract<
-    HTMLDivElement,
+> extends ModalDesignAbstract<
     COMP,
-    ActionSheetEmits,
     EXPOSE,
-    ActionSheetSlots,
     CLASSES,
     P
   > {
-  protected readonly item: ActionSheet
-
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
+   * Creates an instance of the item class.
+   *
+   * Создает экземпляр класса элемента.
    */
-  constructor(
-    name: string,
-    props: Readonly<P>,
-    options?: ConstrOptions<COMP, ActionSheetEmits, P>
-  ) {
-    super(
-      name,
-      props,
-      options
-    )
-
-    this.item = new ActionSheet(
+  protected initItem(): ModalAbstract {
+    return new ActionSheet(
       this.props,
       this.refs,
       this.element,
@@ -66,19 +45,6 @@ export class ActionSheetDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
-  }
-
-  /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  protected initExpose(): EXPOSE {
-    return {
-      ...this.item.window.expose
-    } as EXPOSE
   }
 
   /**
@@ -91,21 +57,15 @@ export class ActionSheetDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        title: this.getSubClass('title'),
+        header: this.getSubClass('header'),
         body: this.getSubClass('body'),
+        footer: this.getSubClass('footer'),
         touch: this.getSubClass('touch'),
         tab: this.getSubClass('tab')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
-  }
-
-  /**
-   * Refinement of the received list of styles.
-   *
-   * Доработка полученного списка стилей.
-   */
-  protected initStyles(): ConstrStyles {
-    return {}
   }
 
   /**
@@ -117,7 +77,7 @@ export class ActionSheetDesign<
     return this.item.window.render(
       {
         control: this.renderControl,
-        title: this.renderTitle,
+        title: this.renderTitleTouch,
         default: this.renderDefault,
         footer: this.renderFooter
       },
@@ -132,40 +92,23 @@ export class ActionSheetDesign<
   }
 
   /**
-   * Generates data for control.
-   *
-   * Генерирует данные для контроля.
-   * @param props data for the transferable property/ данные для передаваемого свойства
-   */
-  protected readonly renderControl = (
-    props: WindowControlItem
-  ): VNode | undefined => {
-    return this.initSlot('control', undefined, props)
-  }
-
-  /**
    * Generates data for the header.
    *
    * Генерирует данные для заголовка.
    * @param props data for the transferable property/ данные для передаваемого свойства
    */
-  protected readonly renderTitle = (
+  protected readonly renderTitleTouch = (
     props: WindowControlItem
   ): VNode[] => {
-    const children: any[] = []
-
-    if (this.item.bars.is.value) {
-      children.push(...this.item.bars.render())
-    }
-
-    if (
-      this.slots
-      && 'title' in this.slots
-    ) {
-      this.initSlot('title', children, props)
-    }
+    const children: any[] = this.renderTitle(props)
 
     if (this.props.touchClose) {
+      console.log(
+        {
+          class: this.classes?.value.touch,
+          ...this.item.touchEvent.onTouch
+        }
+      )
       return [h(
         'div',
         {
@@ -180,51 +123,5 @@ export class ActionSheetDesign<
     }
 
     return children
-  }
-
-  /**
-   * Generates bodies.
-   *
-   * Генерирует тела.
-   * @param props data for the transferable property/ данные для передаваемого свойства
-   */
-  protected readonly renderDefault = (
-    props: WindowControlItem
-  ): VNode[] => {
-    const children: any[] = []
-
-    if (
-      this.slots
-      && 'header' in this.slots
-    ) {
-      this.initSlot('header', children, props)
-    }
-
-    if (
-      this.slots
-      && 'default' in this.slots
-    ) {
-      children.push(
-        h(
-          'div',
-          { class: this.classes?.value.body },
-          this.initSlot('default', undefined, props)
-        )
-      )
-    }
-
-    return children
-  }
-
-  /**
-   * Generates data for the required part.
-   *
-   * Генерирует данные для нужной части.
-   * @param props data for the transferable property/ данные для передаваемого свойства
-   */
-  protected readonly renderFooter = (
-    props: WindowControlItem
-  ): VNode | undefined => {
-    return this.initSlot('footer', undefined, props)
   }
 }

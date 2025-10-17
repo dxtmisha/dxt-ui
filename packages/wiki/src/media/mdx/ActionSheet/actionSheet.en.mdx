@@ -1,0 +1,61 @@
+Component for creating mobile-optimized action panels that slide up from the bottom of the screen with smooth animation.
+
+ActionSheet is a specialized wrapper over the Window component with a preset `actionSheet` adaptive mode. The component automatically positions itself at the bottom of the screen and slides up when opened, following iOS and Material Design mobile interface patterns. Supports swipe gestures for closing, integration with the Bars component for the header, and automatic focus management.
+
+**Key features:**
+
+- Positioning at the bottom of the screen with slide-up animation
+- Touch gesture support for closing by swiping down
+- Integration with Bars for header display
+- Automatic background blocking when opened
+- Closing by clicking on overlay or close button
+- Lifecycle events (opening, closing)
+- Slot support for content customization
+- Adaptive height based on content size
+
+**Common use cases:**
+
+- Action menus for mobile applications
+- Option and selection lists
+- Forms and filters on mobile devices
+- Context menus for touch interfaces
+- Confirmations and notifications
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+
+const handleAction = (action) => {
+  console.log('Selected action:', action)
+  isOpen.value = false
+}
+</script>
+
+<template>
+  <button @click="isOpen = true">Open Actions</button>
+
+  <ActionSheet
+    v-model:open="isOpen"
+    :touchClose="true"
+  >
+    <template #title>
+      <h3>Choose Action</h3>
+    </template>
+
+    <template #default>
+      <div class="action-list">
+        <button @click="handleAction('share')">Share</button>
+        <button @click="handleAction('copy')">Copy Link</button>
+        <button @click="handleAction('download')">Download</button>
+      </div>
+    </template>
+
+    <template #footer>
+      <button @click="isOpen = false">Cancel</button>
+    </template>
+  </ActionSheet>
+</template>
+```
+

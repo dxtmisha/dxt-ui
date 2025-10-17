@@ -40,6 +40,14 @@
         "display": "none"
       }
     },
+    "~auto": {
+      "link|center": "{??align.center}",
+      "#item": {
+        "flex-grow": "1",
+        "flex-shrink": "1",
+        "flex-basis": "auto"
+      }
+    },
     "_default": "right"
   },
   "~flexible": {

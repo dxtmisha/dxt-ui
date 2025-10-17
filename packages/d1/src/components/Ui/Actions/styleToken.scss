@@ -58,6 +58,24 @@
           display: none;
         }
       }
+      
+      &--auto {
+        @include ui.justifyContent(#{center});
+        
+        & .d1-actions__secondary {
+          display: none;
+        }
+        
+        & .d1-actions__spacer {
+          display: none;
+        }
+        
+        & .d1-actions__item {
+          flex-basis: auto;
+          flex-grow: 1;
+          flex-shrink: 1;
+        }
+      }
     }
     
     &--flexible {
