@@ -1,5 +1,11 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import { computed, type Ref, type ToRefs } from 'vue'
+import { type ConstrEmit, DesignComp, getBind, Translate } from '@dxtmisha/functional'
+
+import { ModalAbstract } from '../Modal/ModalAbstract'
+import { WindowClassesInclude } from '../Window'
+import { IconInclude } from '../Icon'
+import { LabelInclude } from '../../classes/LabelInclude'
+import { DescriptionInclude } from '../../classes/DescriptionInclude'
 
 import type { DialogComponents, DialogEmits, DialogSlots } from './types'
 import type { DialogProps } from './props'
@@ -7,7 +13,13 @@ import type { DialogProps } from './props'
 /**
  * Dialog
  */
-export class Dialog {
+export class Dialog extends ModalAbstract {
+  readonly icon: IconInclude
+  readonly label: LabelInclude
+  readonly description: DescriptionInclude
+
+  readonly windowClasses: WindowClassesInclude
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -29,5 +41,56 @@ export class Dialog {
     protected readonly slots?: DialogSlots,
     protected readonly emits?: ConstrEmit<DialogEmits>
   ) {
+    super(
+      props,
+      refs,
+      element,
+      classDesign,
+      className,
+      components,
+      slots,
+      emits,
+      computed(() => ({
+        open: props.open,
+        image: props.image,
+
+        adaptive: 'modal',
+        imagePosition: props.imagePosition,
+        closeButton: this.props.closeButton
+      })),
+      undefined,
+      computed(() => {
+        return {
+          list: [
+            getBind(
+              refs.buttonClose,
+              {
+                label: Translate.getSync('global-close'),
+                value: 'close',
+                class: this.windowClasses.get().close
+              }
+            ),
+            getBind(
+              refs.buttonOk,
+              {
+                label: Translate.getSync('global-ok'),
+                value: 'ok'
+              }
+            )
+          ],
+          align: 'auto'
+        }
+      })
+    )
+
+    this.icon = new IconInclude(
+      props,
+      className,
+      components
+    )
+    this.label = new LabelInclude(props, className, undefined, slots)
+    this.description = new DescriptionInclude(props, className, slots)
+
+    this.windowClasses = new WindowClassesInclude(classDesign)
   }
 }

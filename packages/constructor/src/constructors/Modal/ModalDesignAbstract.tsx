@@ -26,7 +26,8 @@ export abstract class ModalDesignAbstract<
   COMP extends ModalComponents,
   EXPOSE extends ModalExpose,
   CLASSES extends ModalClasses,
-  P extends ModalPropsBasic
+  P extends ModalPropsBasic,
+  ITEM extends ModalAbstract = ModalAbstract
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
@@ -36,7 +37,7 @@ export abstract class ModalDesignAbstract<
     CLASSES,
     P
   > {
-  protected readonly item: ModalAbstract
+  protected readonly item: ITEM
 
   /**
    * Constructor
@@ -64,7 +65,7 @@ export abstract class ModalDesignAbstract<
    *
    * Инициализация основного элемента
    */
-  protected abstract initItem(): ModalAbstract
+  protected abstract initItem(): ITEM
 
   /**
    * Initialization of all the necessary properties for work

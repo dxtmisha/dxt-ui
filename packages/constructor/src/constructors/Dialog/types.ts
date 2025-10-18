@@ -1,7 +1,14 @@
 import type { ConstrClass } from '@dxtmisha/functional'
-import type { ModalComponents, ModalEmits, ModalExpose } from '../Modal'
+import type {
+  ModalComponents,
+  ModalEmits,
+  ModalExpose,
+  ModalSlots
+} from '../Modal'
 import type { IconComponentInclude } from '../Icon'
-import type { EventClickEmits } from '../../types/eventClickTypes'
+
+import type { LabelAlternativeSlots } from '../../types/labelTypes'
+import type { DescriptionSlots } from '../../types/descriptionTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -15,7 +22,7 @@ export type DialogComponents = ModalComponents & IconComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type DialogEmits = ModalEmits & EventClickEmits
+export type DialogEmits = ModalEmits
 
 /**
  * Type describing available properties.
@@ -30,7 +37,9 @@ export interface DialogExpose extends ModalExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface DialogSlots extends ModalExpose {
+export interface DialogSlots extends ModalSlots,
+  LabelAlternativeSlots,
+  DescriptionSlots {
 }
 
 /**
@@ -41,5 +50,11 @@ export interface DialogSlots extends ModalExpose {
 export type DialogClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  title: string
+  header: string
+  body: string
+  label: string
+  description: string
+  footer: string
   // :classes [!] System label / Системная метка
 }

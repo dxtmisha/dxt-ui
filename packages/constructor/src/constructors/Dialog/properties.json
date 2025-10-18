@@ -1,6 +1,15 @@
 {
+  "#title": {},
+  "#header": {},
   "#body": {},
+  "#label": {},
+  "#description": {},
   "#footer": {},
   "~success": {},
-  "~error": {}
+  "~error": {},
+  "~imagePosition": {
+    "~top": {},
+    "~left": {},
+    "_default": "top"
+  }
 }

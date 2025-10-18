@@ -4,7 +4,6 @@ import { toBinds } from '@dxtmisha/functional'
 import { ModalDesignAbstract } from '../Modal/ModalDesignAbstract'
 import { ActionSheet } from './ActionSheet'
 
-import type { ModalAbstract } from '../Modal/ModalAbstract'
 import { type WindowControlItem } from '../Window'
 import {
   type ActionSheetPropsBasic
@@ -27,14 +26,15 @@ export class ActionSheetDesign<
     COMP,
     EXPOSE,
     CLASSES,
-    P
+    P,
+    ActionSheet
   > {
   /**
    * Creates an instance of the item class.
    *
    * Создает экземпляр класса элемента.
    */
-  protected initItem(): ModalAbstract {
+  protected initItem(): ActionSheet {
     return new ActionSheet(
       this.props,
       this.refs,
@@ -103,12 +103,6 @@ export class ActionSheetDesign<
     const children: any[] = this.renderTitle(props)
 
     if (this.props.touchClose) {
-      console.log(
-        {
-          class: this.classes?.value.touch,
-          ...this.item.touchEvent.onTouch
-        }
-      )
       return [h(
         'div',
         {

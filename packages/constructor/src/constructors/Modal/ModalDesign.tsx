@@ -1,7 +1,6 @@
 import { ModalDesignAbstract } from './ModalDesignAbstract'
 import { Modal } from './Modal'
 
-import type { ModalAbstract } from './ModalAbstract.ts'
 import {
   type ModalPropsBasic
 } from './props'
@@ -23,9 +22,10 @@ export class ModalDesign<
     COMP,
     EXPOSE,
     CLASSES,
-    P
+    P,
+    Modal
   > {
-  protected initItem(): ModalAbstract {
+  protected initItem(): Modal {
     return new Modal(
       this.props,
       this.refs,

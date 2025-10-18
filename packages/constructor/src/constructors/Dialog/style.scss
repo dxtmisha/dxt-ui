@@ -1,5 +1,15 @@
 @use "@dxtmisha/styles/properties" as ui;
+@use "../Modal/style" as modal;
 
 @mixin mixinDialog {
+  @include modal.mixinModal;
 
+  &__label,
+  &__description {
+    text-align: center;
+  }
+
+  &__footer {
+    justify-content: center;
+  }
 }
