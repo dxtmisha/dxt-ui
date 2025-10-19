@@ -131,28 +131,100 @@ Document structure (strict):
 
 **3. Special sections (if present):**
 
-**Props (only for complex cases):**
-- Describe Props only if they have complex interaction logic, dependencies, or composite types
-- DO NOT describe simple boolean/string props in a list - JSDoc comments in types are enough for them
-- Format: `## Props`, then `### PropName` for each complex prop
+Instead of simply listing Props, describe **specific component capabilities**.
 
-Example of complex prop description:
+Each section should:
+- Have a second-level heading (`##`) describing the capability, not just the prop name
+- Briefly explain the purpose and behavior of the functionality
+- List related properties (if there are several)
+- Describe property interaction with each other and their effect on the component
+- Include usage examples with code
+
+**Capability description format:**
+
 ```md
-## Props
-### `adaptive`
+## Capability Name
 
-Window adaptive behavior mode.
+Brief description of the capability and its purpose (1-2 paragraphs).
 
-**Type:** `'modal' | 'menu' | 'actionSheet' | 'static'`
+**Properties:** (if several related properties)
 
-**Default:** `'modal'`
+- `propName` — property description
+- `propName2` — property description
+
+**Possible values:** (for enum/union types)
+
+- `'value1'` — value description and its behavior
+- `'value2'` — value description and its behavior
+
+Additional description of behavior, property interaction, features, and limitations.
+
+[code examples]
+```
+
+**Examples of correct capability descriptions:**
+
+```md
+## Header Position Animation
+
+The `animationHeadPosition` property defines the behavior of the Head area during show/hide animations.
 
 **Possible values:**
-- `'modal'` — modal window in screen center with overlay
-- `'menu'` — dropdown menu attached to control element
-- `'actionSheet'` — bottom panel for mobile interfaces
-- `'static'` — static mode without overlay and positioning
+
+- `'top'` — keeps Head at the top during transition (default)
+- `'toBottom'` — animates Head down along with content
+
+Synchronizes header movement with content animation using CSS transforms for smooth transitions.
+
+[code example]
 ```
+
+```md
+## Navigation and Arrows
+
+Properties `arrowCarousel`, `arrowStepper`, `disabledPrevious`, `disabledNext`, and `align` are designed for managing built-in navigation elements and content alignment.
+
+**Properties:**
+
+- `arrowCarousel` — enables navigation arrows (left/right) for switching elements
+- `arrowStepper` — enables numeric step buttons (minus/plus)
+- `disabledPrevious` — disables left button (back/minus)
+- `disabledNext` — disables right button (forward/plus)
+- `align` — horizontal content alignment (`left`, `center`, `right`)
+
+Properties work together: only one arrow mode is active — if `arrowCarousel = true`, `arrowStepper` mode is ignored and vice versa.
+
+[code example]
+```
+
+```md
+## Outline Buttons
+
+Button component supports outline mode via the `outline` property. In this mode, buttons have a minimalist visual style with transparent background and colored border:
+
+- **Minimalist design** - suitable for interfaces requiring reduced visual load
+- **Transparent background** - maintains clean appearance while remaining interactive
+- **Hover feedback** - background appears on hover for better user interaction
+
+Outline mode is especially useful for creating tertiary actions and secondary options.
+
+[code example]
+```
+
+**When NOT to describe Props in separate sections:**
+
+- Simple boolean/string/number properties without complex logic — JSDoc comments in types are sufficient
+- Properties with obvious behavior (e.g., `disabled`, `label`, `placeholder`)
+- Single independent properties without interaction with others
+
+**When to describe capabilities in separate sections:**
+
+- Properties with complex interaction logic (e.g., `cancel` and `cancelShow`)
+- Groups of related properties working together (e.g., navigation arrows)
+- Properties with multiple operation modes (e.g., `adaptive` with different values)
+- Properties affecting other component parts or having priority over others
+- Component display modes (e.g., `primary`, `secondary`, `outline`)
+- CSS classes for behavior control
 
 **4. Mandatory sections (if present in component):**
 
@@ -274,44 +346,66 @@ Component uses special CSS classes for behavior control:
 
 Where `*` is the component class name (e.g., `d1-window`, `m3-window`).
 
-## Props
-### `adaptive`
+## Header Position Animation
 
-Window adaptive behavior mode.
-
-**Type:** `'modal' | 'menu' | 'actionSheet' | 'static'`
-
-**Default:** `'modal'`
+The `animationHeadPosition` property defines the behavior of the Head area during show/hide animations.
 
 **Possible values:**
-- `'modal'` — modal window in screen center
-- `'menu'` — dropdown menu attached to element
-- `'actionSheet'` — bottom panel for mobile devices
-- `'static'` — static mode without overlay
 
-## State Management via v-model
+- `'top'` — keeps Head at the top during transition (default)
+- `'toBottom'` — animates Head down along with content
 
-Two-way binding of window open state via `v-model:open`.
-
-**Parameters:**
-- `open: boolean` — window open state
+Synchronizes header movement with content animation using CSS transforms for smooth transitions.
 
 ```html
-<script setup>
-import { ref } from 'vue'
-
-const isOpen = ref(false)
-</script>
-
 <template>
-  <button @click="isOpen = true">Open</button>
-
-  <Window v-model:open="isOpen">
+  <Window v-model:open="isOpen" :animationHeadPosition="'toBottom'">
     <template #default>
       <p>Window content</p>
       <button @click="isOpen = false">Close</button>
     </template>
   </Window>
+</template>
+```
+
+## Navigation and Arrows
+
+Properties `arrowCarousel`, `arrowStepper`, `disabledPrevious`, `disabledNext`, and `align` are designed for managing built-in navigation elements and content alignment.
+
+**Properties:**
+
+- `arrowCarousel` — enables navigation arrows (left/right) for switching elements
+- `arrowStepper` — enables numeric step buttons (minus/plus)
+- `disabledPrevious` — disables left button (back/minus)
+- `disabledNext` — disables right button (forward/plus)
+- `align` — horizontal content alignment (`left`, `center`, `right`)
+
+Properties work together: only one arrow mode is active — if `arrowCarousel = true`, `arrowStepper` mode is ignored and vice versa.
+
+```html
+<template>
+  <Window v-model:open="isOpen" :arrowCarousel="true" :align="'center'">
+    <template #default>
+      <p>Window content</p>
+      <button @click="isOpen = false">Close</button>
+    </template>
+  </Window>
+</template>
+```
+
+## Outline Buttons
+
+Button component supports outline mode via the `outline` property. In this mode, buttons have a minimalist visual style with transparent background and colored border:
+
+- **Minimalist design** - suitable for interfaces requiring reduced visual load
+- **Transparent background** - maintains clean appearance while remaining interactive
+- **Hover feedback** - background appears on hover for better user interaction
+
+Outline mode is especially useful for creating tertiary actions and secondary options.
+
+```html
+<template>
+  <Button outline @click="handleClick">Click me</Button>
 </template>
 ```
 
