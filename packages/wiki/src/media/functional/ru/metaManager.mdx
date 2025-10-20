@@ -90,16 +90,16 @@ names.forEach(name => {
 const meta = new MetaManager(['description', 'keywords', 'author'])
 
 // Получить meta description
-const description = meta.getItem('description')
+const description = meta.get('description')
 
 // Получить keywords
-const keywords = meta.getItem('keywords')
+const keywords = meta.get('keywords')
 
 // Несуществующий тег возвращает пустую строку
-const missing = meta.getItem('non-existent') // ''
+const missing = meta.get('non-existent') // ''
 
 // Использование в условиях
-if (meta.getItem('description')) {
+if (meta.get('description')) {
   console.log('Description установлен')
 }
 ```
@@ -297,9 +297,9 @@ ogMeta.setByList({
 
 // Для шаринга в соцсетях
 const shareData = {
-  title: ogMeta.getItem('og:title'),
-  description: ogMeta.getItem('og:description'),
-  image: ogMeta.getItem('og:image')
+  title: ogMeta.get('og:title'),
+  description: ogMeta.get('og:description'),
+  image: ogMeta.get('og:image')
 }
 ```
 

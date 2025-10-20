@@ -1,0 +1,853 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/MetaTwitter'/>
+
+# MetaTwitter Class
+
+A class for working with Twitter Card meta-tags, ensuring beautiful content display when sharing links on Twitter (X). Inherits `MetaManager` functionality and provides type-safe methods for managing standard Twitter Card tags.
+
+## Key Features
+
+- **Type Safety** — strict typing for all Twitter Card tags and card types
+- **Automatic Synchronization** — updates meta-tags in the document `<head>`
+- **Support for All Card Types** — summary, summary_large_image, app, player
+- **Convenient API** — specialized methods for each tag
+- **SSR Compatibility** — HTML generation for server-side rendering
+- **Type Validation** — support for all official Twitter Card types
+- **Chainable Methods** — ability to set values sequentially
+
+## Constructor
+
+### `constructor`
+
+Creates a MetaTwitter instance with a preset list of all supported Twitter Card tags. Automatically reads existing tags from the DOM.
+
+```javascript
+import { MetaTwitter } from '@dxtmisha/functional'
+
+// Create an instance
+const twitter = new MetaTwitter()
+
+// The class automatically manages all standard Twitter Card tags:
+// twitter:card, twitter:site, twitter:creator, twitter:title,
+// twitter:description, twitter:image and others
+```
+
+## Data Retrieval Methods
+
+### `getCard`
+
+Gets the Twitter Card type.
+
+**Returns:** `MetaTwitterCard` — card type
+
+```javascript
+const twitter = new MetaTwitter()
+
+const cardType = twitter.getCard()
+// 'summary_large_image'
+
+// Check card type
+if (twitter.getCard() === 'summary_large_image') {
+  console.log('Large image card')
+}
+
+// Conditional logic
+switch (twitter.getCard()) {
+  case 'summary':
+    console.log('Standard card')
+    break
+  case 'summary_large_image':
+    console.log('Large image card')
+    break
+  case 'player':
+    console.log('Video player')
+    break
+}
+```
+
+### `getSite`
+
+Gets the Twitter account of the website or brand.
+
+**Returns:** `string` — site's @username
+
+```javascript
+const twitter = new MetaTwitter()
+
+const site = twitter.getSite()
+// '@mywebsite'
+
+// Use for attribution
+console.log('Site belongs to:', twitter.getSite())
+
+// Check if set
+if (twitter.getSite()) {
+  console.log('Twitter site account is set')
+}
+
+// Extract username without @
+const username = twitter.getSite().replace('@', '')
+```
+
+### `getCreator`
+
+Gets the Twitter account of the content creator.
+
+**Returns:** `string` — creator's @username
+
+```javascript
+const twitter = new MetaTwitter()
+
+const creator = twitter.getCreator()
+// '@john_doe'
+
+// Display author
+console.log('Author:', twitter.getCreator())
+
+// Use in UI
+const authorLink = `https://twitter.com/${twitter.getCreator().replace('@', '')}`
+
+// Check authorship
+if (twitter.getCreator()) {
+  console.log('Content has an author')
+}
+```
+
+### `getUrl`
+
+Gets the page URL for Twitter Card.
+
+**Returns:** `string` — page URL
+
+```javascript
+const twitter = new MetaTwitter()
+
+const url = twitter.getUrl()
+// 'https://example.com/article/my-post'
+
+// Get domain
+const domain = new URL(twitter.getUrl()).hostname
+
+// Check match with current URL
+if (twitter.getUrl() !== window.location.href) {
+  console.warn('Twitter URL does not match current URL')
+}
+
+// Create share link
+const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(twitter.getUrl())}`
+```
+
+### `getTitle`
+
+Gets the card title.
+
+**Returns:** `string` — card title
+
+```javascript
+const twitter = new MetaTwitter()
+
+const title = twitter.getTitle()
+// 'Amazing Article About Web Development'
+
+// Use for debugging
+console.log('Twitter Title:', twitter.getTitle())
+
+// Check length (recommended up to 70 characters)
+if (twitter.getTitle().length > 70) {
+  console.warn('Title is too long for Twitter')
+}
+
+// Use in preview
+const previewTitle = twitter.getTitle()
+```
+
+### `getDescription`
+
+Gets the card description.
+
+**Returns:** `string` — card description
+
+```javascript
+const twitter = new MetaTwitter()
+
+const description = twitter.getDescription()
+// 'Complete guide to building...'
+
+// Check length (recommended up to 200 characters)
+if (twitter.getDescription().length > 200) {
+  console.warn('Description is too long')
+}
+
+// Truncate for preview
+const shortDesc = twitter.getDescription().substring(0, 150) + '...'
+
+// Use in metadata
+console.log('Twitter Description:', twitter.getDescription())
+```
+
+### `getImage`
+
+Gets the card image URL.
+
+**Returns:** `string` — image URL
+
+```javascript
+const twitter = new MetaTwitter()
+
+const imageUrl = twitter.getImage()
+// 'https://example.com/images/twitter-card.jpg'
+
+// Preload image
+const img = new Image()
+img.src = twitter.getImage()
+
+// Check if set
+if (!twitter.getImage()) {
+  console.warn('Twitter image is not set')
+}
+
+// Use for preview
+const previewImage = twitter.getImage()
+```
+
+## Data Setting Methods
+
+### `setCard`
+
+Sets the Twitter Card type.
+
+**Parameters:**
+- `card: MetaTwitterCard` — card type
+
+**Returns:** `this` — for chaining calls
+
+**Available types:**
+- `summary` — summary card with small image
+- `summary_large_image` — card with large image (most popular)
+- `app` — app card (for iOS/Android)
+- `player` — card with video/audio player
+
+```javascript
+import { MetaTwitter, MetaTwitterCard } from '@dxtmisha/functional'
+
+const twitter = new MetaTwitter()
+
+// Set standard card
+twitter.setCard(MetaTwitterCard.summary)
+
+// Large image card (recommended)
+twitter.setCard(MetaTwitterCard.summaryLargeImage)
+
+// For apps
+twitter.setCard(MetaTwitterCard.app)
+
+// For video content
+twitter.setCard(MetaTwitterCard.player)
+
+// Conditional setting
+const cardType = hasLargeImage
+  ? MetaTwitterCard.summaryLargeImage
+  : MetaTwitterCard.summary
+
+twitter.setCard(cardType)
+```
+
+### `setSite`
+
+Sets the Twitter account of the website or brand.
+
+**Parameters:**
+- `site: string` — site's @username
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const twitter = new MetaTwitter()
+
+// Set site account
+twitter.setSite('@mywebsite')
+
+// Can be without @
+twitter.setSite('mywebsite')
+
+// From configuration
+twitter.setSite(config.twitterHandle)
+
+// Chain methods
+twitter
+  .setSite('@mywebsite')
+  .setCreator('@author')
+
+// Recommendations:
+// - Use official brand account
+// - Format: @username (with or without @)
+// - Twitter will show "via @username" in the card
+```
+
+### `setCreator`
+
+Sets the Twitter account of the content creator.
+
+**Parameters:**
+- `creator: string` — creator's @username
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const twitter = new MetaTwitter()
+
+// Set creator
+twitter.setCreator('@john_doe')
+
+// From user data
+twitter.setCreator(article.author.twitterHandle)
+
+// Dynamic update
+const updateAuthor = (author) => {
+  if (author.twitter) {
+    twitter.setCreator(author.twitter)
+  }
+}
+
+// Chain
+twitter
+  .setCreator('@author_name')
+  .setTitle('Article Title')
+
+// Recommendations:
+// - Use for author attribution
+// - Twitter will show "by @username"
+// - Different from site (site - for website, creator - for author)
+```
+
+### `setUrl`
+
+Sets the page URL for Twitter Card.
+
+**Parameters:**
+- `url: string` — page URL
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const twitter = new MetaTwitter()
+
+// Set URL
+twitter.setUrl('https://example.com/article/my-post')
+
+// Use current URL
+twitter.setUrl(window.location.href)
+
+// Clean query parameters
+const cleanUrl = window.location.origin + window.location.pathname
+twitter.setUrl(cleanUrl)
+
+// For SPA
+router.afterEach((to) => {
+  twitter.setUrl(`https://example.com${to.fullPath}`)
+})
+
+// Absolute URL from relative
+const absoluteUrl = new URL('/article', window.location.origin).href
+twitter.setUrl(absoluteUrl)
+
+// Recommendations:
+// - Always use absolute URLs
+// - URL must be accessible to Twitter bot
+// - Avoid redirects
+```
+
+### `setTitle`
+
+Sets the card title.
+
+**Parameters:**
+- `title: string` — card title
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const twitter = new MetaTwitter()
+
+// Set title
+twitter.setTitle('Amazing Article About Web Development')
+
+// Chain methods
+twitter
+  .setTitle('New Title')
+  .setDescription('New Description')
+
+// Dynamic update
+const updateTitle = (newTitle) => {
+  twitter.setTitle(newTitle)
+}
+
+// Automatic generation
+twitter.setTitle(`${article.title} - ${siteName}`)
+
+// Truncate long title
+const maxLength = 70
+const shortTitle = article.title.length > maxLength
+  ? article.title.substring(0, maxLength - 3) + '...'
+  : article.title
+
+twitter.setTitle(shortTitle)
+
+// Recommendations:
+// - Maximum 70 characters
+// - Will be displayed in bold
+// - Avoid duplication with description
+```
+
+### `setDescription`
+
+Sets the card description.
+
+**Parameters:**
+- `description: string` — card description
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const twitter = new MetaTwitter()
+
+// Set description
+twitter.setDescription('Complete guide to building web applications using modern technologies')
+
+// Truncate long text
+const shortDesc = article.content.substring(0, 200)
+twitter.setDescription(shortDesc)
+
+// Remove HTML tags
+const plainText = article.html.replace(/<[^>]*>/g, '')
+twitter.setDescription(plainText.substring(0, 200))
+
+// From excerpt
+twitter.setDescription(article.excerpt || article.content.substring(0, 200))
+
+// Chain
+twitter
+  .setDescription('Article description')
+  .setImage('https://example.com/image.jpg')
+
+// Recommendations:
+// - Maximum 200 characters
+// - Twitter may truncate text
+// - Add call-to-action
+// - Avoid special characters
+```
+
+### `setImage`
+
+Sets the card image URL.
+
+**Parameters:**
+- `image: string` — image URL
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const twitter = new MetaTwitter()
+
+// Set image
+twitter.setImage('https://example.com/images/twitter-card.jpg')
+
+// Absolute URL
+const imageUrl = new URL('/images/twitter-image.jpg', window.location.origin).href
+twitter.setImage(imageUrl)
+
+// From content data
+twitter.setImage(article.featuredImage)
+
+// Fallback image
+twitter.setImage(article.image || '/images/default-twitter.jpg')
+
+// For summary card (square image)
+twitter
+  .setCard(MetaTwitterCard.summary)
+  .setImage('https://example.com/square-image.jpg') // 1:1 ratio
+
+// For summary_large_image (wide image)
+twitter
+  .setCard(MetaTwitterCard.summaryLargeImage)
+  .setImage('https://example.com/wide-image.jpg') // 2:1 ratio
+
+// Recommended sizes:
+// summary: 120x120 - 1:1 (minimum)
+//          280x150 - optimal
+// summary_large_image: 300x157 - minimum
+//                      1200x628 - optimal (like OG)
+//                      Ratio 2:1 or 1.91:1
+// Formats: JPG, PNG, WebP, GIF
+// Maximum size: 5 MB
+```
+
+## Practical Examples
+
+### Complete Article Page Setup
+
+```javascript
+import { MetaTwitter, MetaTwitterCard } from '@dxtmisha/functional'
+
+const twitter = new MetaTwitter()
+
+// Set all main tags
+twitter
+  .setCard(MetaTwitterCard.summaryLargeImage)
+  .setTitle('Complete Guide to Twitter Cards')
+  .setDescription('Learn how to properly configure Twitter Card tags for your site and improve Twitter sharing')
+  .setUrl('https://example.com/articles/twitter-cards-guide')
+  .setImage('https://example.com/images/twitter-guide.jpg')
+  .setSite('@mywebsite')
+  .setCreator('@author_name')
+
+// Now when shared on Twitter:
+// - A beautiful card with large image will be displayed
+// - Title and description will be shown
+// - Attribution will appear as "via @mywebsite by @author_name"
+```
+
+### Dynamic Updates for SPA
+
+```javascript
+// Vue Router
+router.afterEach((to) => {
+  const twitter = new MetaTwitter()
+
+  twitter
+    .setCard(MetaTwitterCard.summaryLargeImage)
+    .setTitle(to.meta.twitterTitle || to.meta.title)
+    .setDescription(to.meta.twitterDescription || to.meta.description)
+    .setUrl(`https://example.com${to.path}`)
+    .setImage(to.meta.twitterImage || '/images/default-twitter.jpg')
+    .setSite('@mywebsite')
+})
+
+// React Router
+useEffect(() => {
+  const twitter = new MetaTwitter()
+
+  twitter
+    .setCard(MetaTwitterCard.summaryLargeImage)
+    .setTitle(page.title)
+    .setDescription(page.description)
+    .setUrl(window.location.href)
+    .setImage(page.image)
+    .setSite(config.twitterSite)
+    .setCreator(page.author?.twitter)
+
+  return () => {
+    // Cleanup if needed
+  }
+}, [page])
+```
+
+### Setup for Different Content Types
+
+```javascript
+import { MetaTwitter, MetaTwitterCard } from '@dxtmisha/functional'
+
+const twitter = new MetaTwitter()
+
+// For blog post
+const setupBlogPost = (post) => {
+  twitter
+    .setCard(MetaTwitterCard.summaryLargeImage)
+    .setTitle(post.title)
+    .setDescription(post.excerpt)
+    .setUrl(`https://example.com/blog/${post.slug}`)
+    .setImage(post.coverImage)
+    .setSite('@myblog')
+    .setCreator(post.author.twitter)
+}
+
+// For news (with small image)
+const setupNews = (news) => {
+  twitter
+    .setCard(MetaTwitterCard.summary)
+    .setTitle(news.headline)
+    .setDescription(news.summary)
+    .setUrl(`https://example.com/news/${news.id}`)
+    .setImage(news.thumbnail)
+    .setSite('@mynews')
+}
+
+// For video
+const setupVideo = (video) => {
+  twitter
+    .setCard(MetaTwitterCard.player)
+    .setTitle(video.title)
+    .setDescription(video.description)
+    .setUrl(`https://example.com/videos/${video.id}`)
+    .setImage(video.thumbnail)
+    .setSite('@myvideos')
+}
+
+// For homepage
+const setupHomePage = () => {
+  twitter
+    .setCard(MetaTwitterCard.summaryLargeImage)
+    .setTitle('Welcome to Our Website')
+    .setDescription('The best content about web development and technology')
+    .setUrl('https://example.com')
+    .setImage('https://example.com/images/home-twitter.jpg')
+    .setSite('@mywebsite')
+}
+```
+
+### HTML Generation for SSR
+
+```javascript
+import { MetaTwitter, MetaTwitterCard } from '@dxtmisha/functional'
+
+// Express.js server
+app.get('/article/:id', async (req, res) => {
+  const article = await getArticle(req.params.id)
+
+  const twitter = new MetaTwitter()
+  twitter
+    .setCard(MetaTwitterCard.summaryLargeImage)
+    .setTitle(article.title)
+    .setDescription(article.excerpt)
+    .setUrl(`https://example.com/article/${article.id}`)
+    .setImage(article.coverImage)
+    .setSite('@mywebsite')
+    .setCreator(article.author.twitter)
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>${article.title}</title>
+        ${twitter.html()}
+      </head>
+      <body>
+        ${article.content}
+      </body>
+    </html>
+  `
+
+  res.send(html)
+})
+
+// Result in HTML:
+// <meta property="twitter:card" content="summary_large_image">
+// <meta property="twitter:title" content="Article Title">
+// <meta property="twitter:description" content="Description...">
+// <meta property="twitter:url" content="https://example.com/article/123">
+// <meta property="twitter:image" content="https://example.com/images/cover.jpg">
+// <meta property="twitter:site" content="@mywebsite">
+// <meta property="twitter:creator" content="@author">
+```
+
+### Combining with Open Graph
+
+```javascript
+import { MetaTwitter, MetaOg, MetaTwitterCard, MetaOpenGraphType } from '@dxtmisha/functional'
+
+const twitter = new MetaTwitter()
+const og = new MetaOg()
+
+// Common update function
+const updateSocialMeta = (data) => {
+  // Twitter Cards
+  twitter
+    .setCard(MetaTwitterCard.summaryLargeImage)
+    .setTitle(data.title)
+    .setDescription(data.description)
+    .setUrl(data.url)
+    .setImage(data.image)
+    .setSite(data.twitterSite)
+    .setCreator(data.twitterCreator)
+
+  // Open Graph
+  og
+    .setType(MetaOpenGraphType.article)
+    .setTitle(data.title)
+    .setDescription(data.description)
+    .setUrl(data.url)
+    .setImage(data.image)
+    .setSiteName(data.siteName)
+    .setLocale('en_US')
+}
+
+// Usage
+updateSocialMeta({
+  title: 'Article Title',
+  description: 'Article description',
+  url: 'https://example.com/article/123',
+  image: 'https://example.com/images/cover.jpg',
+  twitterSite: '@mywebsite',
+  twitterCreator: '@author',
+  siteName: 'My Website'
+})
+
+// For SSR - combined HTML
+const allSocialMetaHTML = twitter.html() + og.html()
+```
+
+### CMS Integration
+
+```javascript
+import { MetaTwitter, MetaTwitterCard } from '@dxtmisha/functional'
+
+// Function to update Twitter Card from CMS data
+const updateTwitterFromCMS = (pageData) => {
+  const twitter = new MetaTwitter()
+
+  // Determine card type
+  const cardMap = {
+    'post': MetaTwitterCard.summaryLargeImage,
+    'news': MetaTwitterCard.summary,
+    'video': MetaTwitterCard.player
+  }
+
+  twitter
+    .setCard(cardMap[pageData.contentType] || MetaTwitterCard.summaryLargeImage)
+    .setTitle(pageData.seo?.twitterTitle || pageData.title)
+    .setDescription(pageData.seo?.twitterDescription || pageData.excerpt)
+    .setUrl(pageData.canonicalUrl)
+    .setImage(pageData.seo?.twitterImage || pageData.featuredImage)
+    .setSite(pageData.site.twitterHandle)
+
+  // Add author if available
+  if (pageData.author?.twitter) {
+    twitter.setCreator(pageData.author.twitter)
+  }
+
+  return twitter
+}
+
+// Usage
+const page = await cms.getPage(pageId)
+updateTwitterFromCMS(page)
+```
+
+### Validation and Debugging
+
+```javascript
+import { MetaTwitter } from '@dxtmisha/functional'
+
+const twitter = new MetaTwitter()
+
+// Check required fields
+const validateTwitterCard = () => {
+  const errors = []
+
+  if (!twitter.getCard()) errors.push('Missing twitter:card')
+  if (!twitter.getTitle()) errors.push('Missing twitter:title')
+  if (!twitter.getDescription()) errors.push('Missing twitter:description')
+  if (!twitter.getImage()) errors.push('Missing twitter:image')
+
+  // Check length
+  if (twitter.getTitle().length > 70) {
+    errors.push('twitter:title is too long (>70 characters)')
+  }
+
+  if (twitter.getDescription().length > 200) {
+    errors.push('twitter:description is too long (>200 characters)')
+  }
+
+  if (errors.length > 0) {
+    console.error('Twitter Card errors:', errors)
+  }
+
+  return errors.length === 0
+}
+
+// Output all Twitter Card tags for debugging
+const debugTwitterCard = () => {
+  console.group('Twitter Card Tags')
+  console.log('Card Type:', twitter.getCard())
+  console.log('Title:', twitter.getTitle())
+  console.log('Description:', twitter.getDescription())
+  console.log('Image:', twitter.getImage())
+  console.log('URL:', twitter.getUrl())
+  console.log('Site:', twitter.getSite())
+  console.log('Creator:', twitter.getCreator())
+  console.groupEnd()
+}
+
+// Export for testing
+const exportTwitterData = () => {
+  return twitter.getItems()
+}
+
+// Check before publishing
+const checkBeforePublish = () => {
+  const isValid = validateTwitterCard()
+
+  if (isValid) {
+    console.log('✓ Twitter Card configured correctly')
+  } else {
+    console.warn('⚠ Twitter Card needs attention')
+    debugTwitterCard()
+  }
+
+  return isValid
+}
+```
+
+## Usage Recommendations
+
+### Required Tags
+For correct Twitter Card display, set at minimum:
+- `twitter:card` — card type
+- `twitter:title` — title
+- `twitter:description` — description
+- `twitter:image` — image
+
+### Image Sizes
+
+**summary card:**
+- **Recommended size:** 120×120 px (minimum)
+- **Optimal size:** 280×150 px
+- **Aspect ratio:** 1:1 (square)
+
+**summary_large_image card:**
+- **Minimum size:** 300×157 px
+- **Optimal size:** 1200×628 px (like Open Graph)
+- **Aspect ratio:** 2:1 or 1.91:1
+- **Maximum file size:** 5 MB
+- **Formats:** JPG, PNG, WebP, GIF
+
+### Text Length
+- **twitter:title:** up to 70 characters
+- **twitter:description:** up to 200 characters
+- **twitter:site:** @username format
+- **twitter:creator:** @username format
+
+### @username Attributes
+- **twitter:site** — official Twitter account of the site/brand
+  - Shows as "via @username"
+  - Used for site attribution
+- **twitter:creator** — Twitter account of the content author
+  - Shows as "by @username"
+  - Used for author attribution
+
+### Testing
+Check Twitter Card tags using:
+- [Twitter Card Validator](https://cards-dev.twitter.com/validator) (legacy)
+- Test by posting a test link on Twitter
+- Use preview mode when creating a tweet
+
+### Differences from Open Graph
+Twitter Cards can use Open Graph tags as fallback:
+- If `twitter:title` is missing, uses `og:title`
+- If `twitter:description` is missing, uses `og:description`
+- If `twitter:image` is missing, uses `og:image`
+
+However, it's recommended to set Twitter Card tags explicitly for better control.
+
+## Notes
+
+- The class inherits all methods from `MetaManager`, including `html()`, `getItems()`, `setByList()`
+- Automatically uses the `property` attribute (like Open Graph)
+- All changes are immediately reflected in the DOM tree
+- When creating an instance, existing Twitter Card tags from the page are automatically read
+- For SSR, use the `html()` method to generate meta tags in the server template
+- Content is automatically escaped to prevent XSS
+- Twitter may cache cards, use Card Validator to clear cache
+- Supports all official Twitter Card types
+

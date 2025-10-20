@@ -1,0 +1,694 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/MetaOg'/>
+
+# MetaOg Class
+
+A class for working with Open Graph meta tags, ensuring optimal content display when shared on social networks (Facebook, LinkedIn, VK, and others). Inherits `MetaManager` functionality and provides type-safe methods for managing standard Open Graph tags.
+
+## Key Features
+
+- **Type Safety** — strict typing for all Open Graph tags and content types
+- **Automatic Synchronization** — updates meta tags in the document `<head>`
+- **Property Support** — uses the `property` attribute instead of `name` (Open Graph standard)
+- **Convenient API** — specialized methods for each tag
+- **SSR Compatibility** — HTML generation for server-side rendering
+- **Type Validation** — support for all official Open Graph types
+- **Chainable Methods** — ability to set values sequentially
+
+## Constructor
+
+### `constructor`
+
+Creates a MetaOg instance with a preset list of all supported Open Graph tags. Automatically reads existing tags from the DOM.
+
+```javascript
+import { MetaOg } from '@dxtmisha/functional'
+
+// Create an instance
+const og = new MetaOg()
+
+// The class automatically manages all standard OG tags:
+// og:title, og:type, og:url, og:image, og:description,
+// og:locale, og:site_name and others
+```
+
+## Data Retrieval Methods
+
+### `getTitle`
+
+Gets the Open Graph page title.
+
+**Returns:** `string` — page title
+
+```javascript
+const og = new MetaOg()
+
+const title = og.getTitle()
+// 'Article Title'
+
+// Use for debugging
+console.log('OG Title:', og.getTitle())
+
+// Check if set
+if (og.getTitle()) {
+  console.log('Title is set')
+}
+```
+
+### `getType`
+
+Gets the Open Graph content type.
+
+**Returns:** `MetaOpenGraphType` — content type (website, article, video, etc.)
+
+```javascript
+const og = new MetaOg()
+
+const type = og.getType()
+// 'article'
+
+// Check content type
+if (og.getType() === 'article') {
+  console.log('This is an article')
+}
+
+// Conditional logic by type
+switch (og.getType()) {
+  case 'article':
+    // Logic for articles
+    break
+  case 'product':
+    // Logic for products
+    break
+}
+```
+
+### `getUrl`
+
+Gets the canonical page URL.
+
+**Returns:** `string` — page URL
+
+```javascript
+const og = new MetaOg()
+
+const url = og.getUrl()
+// 'https://example.com/article/my-post'
+
+// Get domain
+const domain = new URL(og.getUrl()).hostname
+
+// Check match with current URL
+if (og.getUrl() !== window.location.href) {
+  console.warn('OG URL does not match current URL')
+}
+```
+
+### `getImage`
+
+Gets the preview image URL.
+
+**Returns:** `string` — image URL
+
+```javascript
+const og = new MetaOg()
+
+const imageUrl = og.getImage()
+// 'https://example.com/images/preview.jpg'
+
+// Preload image
+const img = new Image()
+img.src = og.getImage()
+
+// Check if image is set
+if (!og.getImage()) {
+  console.warn('OG image is not set')
+}
+```
+
+### `getDescription`
+
+Gets the Open Graph page description.
+
+**Returns:** `string` — page description
+
+```javascript
+const og = new MetaOg()
+
+const description = og.getDescription()
+// 'Detailed article description...'
+
+// Check length
+if (og.getDescription().length > 200) {
+  console.warn('Description is too long')
+}
+
+// Use in preview
+const previewText = og.getDescription().substring(0, 100) + '...'
+```
+
+### `getLocale`
+
+Gets the content locale (language).
+
+**Returns:** `string` — locale in language_TERRITORY format
+
+```javascript
+const og = new MetaOg()
+
+const locale = og.getLocale()
+// 'en_US'
+
+// Determine language
+const language = og.getLocale().split('_')[0] // 'en'
+
+// Use for localization
+if (og.getLocale().startsWith('en')) {
+  console.log('English content')
+}
+```
+
+### `getSiteName`
+
+Gets the site name.
+
+**Returns:** `string` — site name
+
+```javascript
+const og = new MetaOg()
+
+const siteName = og.getSiteName()
+// 'My Blog'
+
+// Use in title
+document.title = `${og.getTitle()} - ${og.getSiteName()}`
+
+// Check brand
+const isBrandSet = og.getSiteName() !== ''
+```
+
+## Data Setting Methods
+
+### `setTitle`
+
+Sets the Open Graph page title.
+
+**Parameters:**
+- `title: string` — page title
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const og = new MetaOg()
+
+// Set title
+og.setTitle('Amazing Article About Web Development')
+
+// Chain methods
+og
+  .setTitle('New Title')
+  .setDescription('New Description')
+
+// Dynamic update
+const updateTitle = (newTitle) => {
+  og.setTitle(newTitle)
+}
+
+// Automatic generation
+og.setTitle(`${article.title} - ${siteName}`)
+```
+
+### `setType`
+
+Sets the Open Graph content type.
+
+**Parameters:**
+- `type: MetaOpenGraphType` — content type
+
+**Returns:** `this` — for chaining calls
+
+**Available types:**
+- `website` — regular website/homepage
+- `article` — article/blog post
+- `video` — video content
+- `video.movie` — movie
+- `video.episode` — TV series episode
+- `video.tv_show` — TV series
+- `music.song` — song
+- `music.album` — music album
+- `music.playlist` — playlist
+- `music.radio_station` — radio station
+- `product` — product in store
+- `book` — book
+- `profile` — user profile
+- `business.business` — company/organization
+- `place` — place/location
+- `event` — event/meeting
+- `app` — application
+
+```javascript
+import { MetaOg, MetaOpenGraphType } from '@dxtmisha/functional'
+
+const og = new MetaOg()
+
+// Set article type
+og.setType(MetaOpenGraphType.article)
+
+// For homepage
+og.setType(MetaOpenGraphType.website)
+
+// For store products
+og.setType(MetaOpenGraphType.product)
+
+// For video
+og.setType(MetaOpenGraphType.videoMovie)
+
+// Conditional setting
+const contentType = isArticle
+  ? MetaOpenGraphType.article
+  : MetaOpenGraphType.website
+
+og.setType(contentType)
+```
+
+### `setUrl`
+
+Sets the canonical page URL.
+
+**Parameters:**
+- `url: string` — page URL
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const og = new MetaOg()
+
+// Set URL
+og.setUrl('https://example.com/article/my-post')
+
+// Use current URL
+og.setUrl(window.location.href)
+
+// Clean query parameters
+const cleanUrl = window.location.origin + window.location.pathname
+og.setUrl(cleanUrl)
+
+// For SPA
+router.afterEach((to) => {
+  og.setUrl(`https://example.com${to.fullPath}`)
+})
+
+// Absolute URL from relative
+const absoluteUrl = new URL('/article', window.location.origin).href
+og.setUrl(absoluteUrl)
+```
+
+### `setImage`
+
+Sets the preview image URL.
+
+**Parameters:**
+- `url: string` — image URL
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const og = new MetaOg()
+
+// Set image
+og.setImage('https://example.com/images/preview.jpg')
+
+// Absolute URL
+const imageUrl = new URL('/images/og-image.jpg', window.location.origin).href
+og.setImage(imageUrl)
+
+// From content data
+og.setImage(article.coverImage)
+
+// Fallback image
+og.setImage(article.image || '/images/default-og.jpg')
+
+// Recommended size: 1200x630 pixels
+// Minimum: 600x315 pixels
+// Format: JPG, PNG, WebP
+```
+
+### `setDescription`
+
+Sets the Open Graph page description.
+
+**Parameters:**
+- `description: string` — page description
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const og = new MetaOg()
+
+// Set description
+og.setDescription('Complete guide to building web applications using modern technologies')
+
+// Truncate long text
+const shortDesc = article.content.substring(0, 200)
+og.setDescription(shortDesc)
+
+// Remove HTML tags
+const plainText = article.html.replace(/<[^>]*>/g, '')
+og.setDescription(plainText.substring(0, 300))
+
+// Recommendations:
+// - Optimal length: 150-300 characters
+// - Facebook displays ~300 characters
+// - Avoid special HTML characters
+```
+
+### `setLocale`
+
+Sets the content locale (language).
+
+**Parameters:**
+- `locale: string` — locale in language_TERRITORY format
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const og = new MetaOg()
+
+// Set English locale
+og.setLocale('en_US')
+
+// Other popular locales
+og.setLocale('en_GB') // English (United Kingdom)
+og.setLocale('ru_RU') // Russian
+og.setLocale('uk_UA') // Ukrainian
+og.setLocale('de_DE') // German
+og.setLocale('fr_FR') // French
+og.setLocale('es_ES') // Spanish
+og.setLocale('pt_BR') // Portuguese (Brazil)
+og.setLocale('ja_JP') // Japanese
+og.setLocale('zh_CN') // Chinese (Simplified)
+
+// Automatic detection
+const userLocale = navigator.language.replace('-', '_')
+og.setLocale(userLocale)
+
+// From application settings
+og.setLocale(i18n.locale.replace('-', '_'))
+```
+
+### `setSiteName`
+
+Sets the site name.
+
+**Parameters:**
+- `siteName: string` — site name
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const og = new MetaOg()
+
+// Set site name
+og.setSiteName('My Awesome Blog')
+
+// Use constant
+const SITE_NAME = 'WebDev Journal'
+og.setSiteName(SITE_NAME)
+
+// From configuration
+og.setSiteName(config.siteName)
+
+// Examples of good names:
+// - Short and recognizable
+// - Match the brand
+// - No extra symbols
+```
+
+## Practical Examples
+
+### Complete Article Page Setup
+
+```javascript
+import { MetaOg, MetaOpenGraphType } from '@dxtmisha/functional'
+
+const og = new MetaOg()
+
+// Set all main tags
+og
+  .setType(MetaOpenGraphType.article)
+  .setTitle('Complete Guide to Open Graph Protocol')
+  .setDescription('Learn how to properly configure Open Graph tags for your site and improve social media sharing')
+  .setUrl('https://example.com/articles/open-graph-guide')
+  .setImage('https://example.com/images/og-guide-preview.jpg')
+  .setLocale('en_US')
+  .setSiteName('WebDev Blog')
+
+// Now when shared on social networks:
+// - Facebook will show a beautiful card
+// - LinkedIn will pick up the correct preview
+// - VK will display the image and description
+// - Telegram will create a rich preview
+```
+
+### Dynamic Updates for SPA
+
+```javascript
+// Vue Router
+router.afterEach((to) => {
+  const og = new MetaOg()
+
+  og
+    .setTitle(to.meta.ogTitle || to.meta.title)
+    .setDescription(to.meta.ogDescription || to.meta.description)
+    .setUrl(`https://example.com${to.path}`)
+    .setImage(to.meta.ogImage || '/images/default-og.jpg')
+})
+
+// React Router
+useEffect(() => {
+  const og = new MetaOg()
+
+  og
+    .setTitle(page.title)
+    .setDescription(page.description)
+    .setUrl(window.location.href)
+    .setImage(page.image)
+
+  return () => {
+    // Cleanup if needed
+  }
+}, [page])
+```
+
+### Setup for Different Content Types
+
+```javascript
+import { MetaOg, MetaOpenGraphType } from '@dxtmisha/functional'
+
+const og = new MetaOg()
+
+// For homepage
+const setupHomePage = () => {
+  og
+    .setType(MetaOpenGraphType.website)
+    .setTitle('Home - My Website')
+    .setDescription('Welcome to our website')
+    .setUrl('https://example.com')
+    .setImage('https://example.com/images/home-og.jpg')
+}
+
+// For product page
+const setupProductPage = (product) => {
+  og
+    .setType(MetaOpenGraphType.product)
+    .setTitle(product.name)
+    .setDescription(product.description)
+    .setUrl(`https://example.com/products/${product.id}`)
+    .setImage(product.images[0])
+}
+
+// For video
+const setupVideoPage = (video) => {
+  og
+    .setType(MetaOpenGraphType.videoMovie)
+    .setTitle(video.title)
+    .setDescription(video.synopsis)
+    .setUrl(`https://example.com/videos/${video.id}`)
+    .setImage(video.thumbnail)
+}
+
+// For user profile
+const setupProfilePage = (user) => {
+  og
+    .setType(MetaOpenGraphType.profile)
+    .setTitle(`${user.name} - Profile`)
+    .setDescription(user.bio)
+    .setUrl(`https://example.com/users/${user.username}`)
+    .setImage(user.avatar)
+}
+```
+
+### HTML Generation for SSR
+
+```javascript
+import { MetaOg, MetaOpenGraphType } from '@dxtmisha/functional'
+
+// Express.js server
+app.get('/article/:id', async (req, res) => {
+  const article = await getArticle(req.params.id)
+
+  const og = new MetaOg()
+  og
+    .setType(MetaOpenGraphType.article)
+    .setTitle(article.title)
+    .setDescription(article.excerpt)
+    .setUrl(`https://example.com/article/${article.id}`)
+    .setImage(article.coverImage)
+    .setLocale('en_US')
+    .setSiteName('My Blog')
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>${article.title}</title>
+        ${og.html()}
+      </head>
+      <body>
+        ${article.content}
+      </body>
+    </html>
+  `
+
+  res.send(html)
+})
+
+// Result in HTML:
+// <meta property="og:type" content="article">
+// <meta property="og:title" content="Article Title">
+// <meta property="og:description" content="Description...">
+// <meta property="og:url" content="https://example.com/article/123">
+// <meta property="og:image" content="https://example.com/images/cover.jpg">
+// <meta property="og:locale" content="en_US">
+// <meta property="og:site_name" content="My Blog">
+```
+
+### CMS Integration
+
+```javascript
+import { MetaOg, MetaOpenGraphType } from '@dxtmisha/functional'
+
+// Function to update OG tags from CMS data
+const updateOGFromCMS = (pageData) => {
+  const og = new MetaOg()
+
+  // Determine content type
+  const typeMap = {
+    'post': MetaOpenGraphType.article,
+    'page': MetaOpenGraphType.website,
+    'product': MetaOpenGraphType.product,
+    'video': MetaOpenGraphType.video
+  }
+
+  og
+    .setType(typeMap[pageData.contentType] || MetaOpenGraphType.website)
+    .setTitle(pageData.seo?.ogTitle || pageData.title)
+    .setDescription(pageData.seo?.ogDescription || pageData.excerpt)
+    .setUrl(pageData.canonicalUrl)
+    .setImage(pageData.seo?.ogImage || pageData.featuredImage)
+    .setLocale(pageData.locale)
+    .setSiteName(pageData.site.name)
+
+  return og
+}
+
+// Usage
+const page = await cms.getPage(pageId)
+updateOGFromCMS(page)
+```
+
+### Validation and Debugging
+
+```javascript
+import { MetaOg } from '@dxtmisha/functional'
+
+const og = new MetaOg()
+
+// Check required fields
+const validateOG = () => {
+  const errors = []
+
+  if (!og.getTitle()) errors.push('Missing og:title')
+  if (!og.getType()) errors.push('Missing og:type')
+  if (!og.getUrl()) errors.push('Missing og:url')
+  if (!og.getImage()) errors.push('Missing og:image')
+
+  if (errors.length > 0) {
+    console.error('Open Graph errors:', errors)
+  }
+
+  return errors.length === 0
+}
+
+// Output all OG tags for debugging
+const debugOG = () => {
+  console.group('Open Graph Tags')
+  console.log('Title:', og.getTitle())
+  console.log('Type:', og.getType())
+  console.log('URL:', og.getUrl())
+  console.log('Image:', og.getImage())
+  console.log('Description:', og.getDescription())
+  console.log('Locale:', og.getLocale())
+  console.log('Site Name:', og.getSiteName())
+  console.groupEnd()
+}
+
+// Export for testing
+const exportOGData = () => {
+  return og.getItems()
+}
+```
+
+## Usage Recommendations
+
+### Required Tags
+For correct display on social networks, set at minimum:
+- `og:title` — page title
+- `og:type` — content type
+- `og:url` — canonical URL
+- `og:image` — preview image
+
+### Image Sizes
+- **Recommended size:** 1200×630 px (1.91:1 ratio)
+- **Minimum size:** 600×315 px
+- **Maximum file size:** 8 MB
+- **Formats:** JPG, PNG, WebP, GIF
+
+### Text Length
+- **og:title:** up to 60 characters (optimal: 40)
+- **og:description:** up to 200 characters (Facebook), up to 300 (LinkedIn)
+- **og:site_name:** short brand name
+
+### Locales
+Use `language_TERRITORY` format:
+- English US: `en_US`
+- English GB: `en_GB`
+- Russian: `ru_RU`
+
+### Testing
+Check Open Graph tags using:
+- [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
+- [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/)
+- [Twitter Card Validator](https://cards-dev.twitter.com/validator)
+
+## Notes
+
+- The class inherits all methods from `MetaManager`, including `html()`, `getItems()`, `setByList()`
+- Automatically uses the `property` attribute instead of `name` (Open Graph standard)
+- All changes are immediately reflected in the DOM tree
+- When creating an instance, existing OG tags from the page are automatically read
+- For SSR, use the `html()` method to generate meta tags in the server template
+- Content is automatically escaped to prevent XSS
+- Supports all official Open Graph protocol types
+

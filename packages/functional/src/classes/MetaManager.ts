@@ -22,7 +22,7 @@ export class MetaManager<
    * Creates an instance of MetaManager.
    *
    * Создает экземпляр MetaManager.
-   * @param listMeta list of meta tag names to manage / список имен мета-тегов для управления
+   * @param listMeta list of meta-tag names to manage / список имен мета-тегов для управления
    * @param isProperty use 'property' attribute instead of 'name' / использовать атрибут 'property' вместо 'name'
    */
   constructor(
@@ -47,7 +47,7 @@ export class MetaManager<
    * Получает содержимое мета-тега по имени.
    * @param name meta tag name / имя мета-тега
    */
-  getItem(name: Key): string {
+  get(name: Key): string {
     return this.items[name] ?? ''
   }
 

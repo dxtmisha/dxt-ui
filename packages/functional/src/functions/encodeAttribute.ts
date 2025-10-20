@@ -11,4 +11,5 @@ export function encodeAttribute(text: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;')
+    .trim()
 }

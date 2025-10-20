@@ -1,4 +1,96 @@
 /**
+ * Standard HTML meta tags/
+ * Стандартные HTML мета-теги
+ * @enum {string}
+ */
+export enum MetaTag {
+  /** Page description/ Описание страницы */
+  description = 'description',
+  /** Keywords/ Ключевые слова */
+  keywords = 'keywords',
+  /** Canonical URL/ Канонический URL */
+  canonical = 'canonical',
+  /** Search engine instructions/ Инструкции для поисковиков */
+  robots = 'robots',
+  /** Content author/ Автор контента */
+  author = 'author'
+}
+
+export enum MetaRobots {
+  /**
+   * Allow indexing and following links (default)/
+   * Разрешает индексировать страницу и переходить по ссылкам (по умолчанию)
+   */
+  indexFollow = 'index, follow',
+
+  /**
+   * Do not index the page, but follow its links/
+   * Не индексировать страницу, но переходить по ссылкам
+   */
+  noIndexFollow = 'noindex, follow',
+
+  /**
+   * Index the page, but do not follow its links/
+   * Индексировать страницу, но не переходить по ссылкам
+   */
+  indexNoFollow = 'index, nofollow',
+
+  /**
+   * Do not index the page and do not follow its links/
+   * Не индексировать страницу и не переходить по ссылкам
+   */
+  noIndexNoFollow = 'noindex, nofollow',
+
+  /** Prevent caching of the page/ Запрещает кэширование страницы */
+  noArchive = 'noarchive',
+
+  /**
+   * Do not show a snippet or description in search results/
+   * Не показывать сниппет (описание) в результатах поиска
+   */
+  noSnippet = 'nosnippet',
+
+  /**
+   * Do not display image preview in search results/
+   * Не показывать превью изображений в результатах поиска
+   */
+  noImageIndex = 'noimageindex',
+
+  /** Allow indexing images only/ Разрешить индексировать только изображения */
+  images = 'images',
+
+  /**
+   * Do not show cached version or translation link/
+   * Не показывать кэш и ссылку "Перевести" в результатах
+   */
+  noTranslate = 'notranslate',
+
+  /**
+   * Prevent page being shown in "Preview" (Instant Preview)/
+   * Не показывать страницу в предпросмотре (Instant Preview)
+   */
+  noPreview = 'nopreview',
+
+  /**
+   * Allow only text content indexing (no media)/
+   * Разрешить индексировать только текст, без медиа
+   */
+  textOnly = 'textonly',
+
+  /**
+   * Do not index subpages or parameters/
+   * Не индексировать подстраницы или страницы с параметрами
+   */
+  noIndexSubpages = 'noindex, noarchive',
+
+  /**
+   * Use meta directives from HTTP headers (advanced)/
+   * Использовать директивы из HTTP-заголовков (расширенная настройка)
+   */
+  none = 'none'
+}
+
+/**
  * Enumeration of Open Graph tags for metadata/
  * Перечисление Open Graph тegов для мета-данных
  * @enum {string}
@@ -471,4 +563,202 @@ export enum MetaOpenGraphGender {
 
   /** Universal / suitable for everyone/ Универсальное / подходит всем */
   unisex = 'unisex'
+}
+
+/**
+ * Twitter Card meta-properties/
+ * Мета теги Twitter Card
+ */
+export enum MetaTwitterTag {
+  /**
+   * Type of card (summary, summary_large_image, app, player, product)/
+   * Тип карточки (summary, summary_large_image, app, player, product)
+   */
+  card = 'twitter:card',
+
+  /** Website or brand @username/ Аккаунт сайта или бренда (@username) */
+  site = 'twitter:site',
+
+  /** Content creator @username/ Автор контента (@username) */
+  creator = 'twitter:creator',
+
+  /** Page URL/ URL страницы */
+  url = 'twitter:url',
+
+  /** Title of the card/ Заголовок карточки */
+  title = 'twitter:title',
+
+  /** Short description of the card/ Краткое описание карточки */
+  description = 'twitter:description',
+
+  /** Main image for the card/ Основное изображение карточки */
+  image = 'twitter:image',
+
+  /**
+   * Alternative text for the image (for accessibility)/
+   * Альтернативный текст изображения (для доступности)
+   */
+  imageAlt = 'twitter:image:alt',
+
+  /**
+   * Alternative way to define image source/
+   * Альтернативный способ указания изображения
+   */
+  imageSrc = 'twitter:image:src',
+
+  /** Image width (optional)/ Ширина изображения (опционально) */
+  imageWidth = 'twitter:image:width',
+
+  /** Image height (optional)/ Высота изображения (опционально) */
+  imageHeight = 'twitter:image:height',
+
+  /**
+   * Custom label 1 (used in summary/product cards)/
+   * Пользовательская метка 1 (используется в summary/product карточках)
+   */
+  label1 = 'twitter:label1',
+
+  /**
+   * Custom value 1 (used with label1)/
+   * Пользовательское значение 1 (используется с label1)
+   */
+  data1 = 'twitter:data1',
+
+  /**
+   * Custom label 2 (used in summary/product cards)/
+   * Пользовательская метка 2 (используется в summary/product карточках)
+   */
+  label2 = 'twitter:label2',
+
+  /**
+   * Custom value 2 (used with label2)/
+   * Пользовательское значение 2 (используется с label2)
+   */
+  data2 = 'twitter:data2',
+
+  /** iPhone app name/ Название приложения для iPhone */
+  appNameIphone = 'twitter:app:name:iphone',
+
+  /**
+   * iPhone app ID (App Store ID)/
+   * Идентификатор приложения в App Store (iPhone)
+   */
+  appIdIphone = 'twitter:app:id:iphone',
+
+  /** iPhone app URL (deep link)/ Ссылка на приложение iPhone (deep link) */
+  appUrlIphone = 'twitter:app:url:iphone',
+
+  /** iPad app name/ Название приложения для iPad */
+  appNameIpad = 'twitter:app:name:ipad',
+
+  /**
+   * iPad app ID (App Store ID)/
+   * Идентификатор приложения в App Store (iPad)
+   */
+  appIdIpad = 'twitter:app:id:ipad',
+
+  /** iPad app URL (deep link)/ Ссылка на приложение iPad (deep link) */
+  appUrlIpad = 'twitter:app:url:ipad',
+
+  /** Google Play app name/ Название приложения в Google Play */
+  appNameGooglePlay = 'twitter:app:name:googleplay',
+
+  /**
+   * Google Play app ID (package name)/
+   * Идентификатор приложения в Google Play (package name)
+   */
+  appIdGooglePlay = 'twitter:app:id:googleplay',
+
+  /**
+   * Google Play app URL (deep link)/
+   * Ссылка на приложение в Google Play (deep link)
+   */
+  appUrlGooglePlay = 'twitter:app:url:googleplay',
+
+  /** Player iframe URL/ URL iframe плеера */
+  player = 'twitter:player',
+
+  /** Player width/ Ширина плеера */
+  playerWidth = 'twitter:player:width',
+
+  /** Player height/ Высота плеера */
+  playerHeight = 'twitter:player:height',
+
+  /**
+   * Direct media stream URL (video/audio)/
+   * Прямая ссылка на видео- или аудио поток
+   */
+  playerStream = 'twitter:player:stream',
+
+  /**
+   * MIME type of the media stream/
+   * MIME-тип потока (например, video/mp4)
+   */
+  playerStreamContentType = 'twitter:player:stream:content_type'
+}
+
+/**
+ * Twitter Card types/
+ * Возможные значения для `twitter:card`
+ */
+export enum MetaTwitterCard {
+  /**
+   * Summary card — small image, short title and description/
+   * Карточка-сводка — небольшое изображение, короткий заголовок и описание
+   */
+  summary = 'summary',
+
+  /**
+   * Summary card with large image — most popular card type/
+   * Карточка с большим изображением — самый распространённый тип
+   */
+  summaryLargeImage = 'summary_large_image',
+
+  /**
+   * App card — used for promoting mobile applications (iOS / Android)/
+   * Карточка приложения — используется для продвижения мобильных приложений (iOS / Android)
+   */
+  app = 'app',
+
+  /**
+   * Player card — for embedding video, audio, or other rich media/
+   * Карточка плеера — для встроенного видео, аудио или интерактивного контента
+   */
+  player = 'player',
+
+  /**
+   * Product card (deprecated) — used for e-commerce products/
+   * Карточка товара (устаревшая) — использовалась для отображения товаров в Twitter
+   */
+  product = 'product',
+
+  /**
+   * Gallery card (deprecated) — used for displaying multiple images/
+   * Галерея (устаревшая) — использовалась для показа нескольких изображений
+   */
+  gallery = 'gallery',
+
+  /**
+   * Photo card (deprecated) — single image card, replaced by summary_large_image/
+   * Фото-карточка (устаревшая) — карточка с одним изображением, заменена на summary_large_image
+   */
+  photo = 'photo',
+
+  /**
+   * Lead generation card (deprecated) — for collecting user data (via CTA)/
+   * Карточка для лидогенерации (устаревшая) — использовалась для сбора данных пользователей через кнопку
+   */
+  leadGeneration = 'lead_generation',
+
+  /**
+   * Audio card (experimental) — similar to player, but focused on audio players/
+   * Аудио-карточка (экспериментальная) — аналог player, ориентирована на аудио
+   */
+  audio = 'audio',
+
+  /**
+   * Poll card (internal/experimental) — used for Twitter polls/
+   * Карточка опроса (внутренняя/экспериментальная) — используется для твитов-опросов
+   */
+  poll = 'poll'
 }

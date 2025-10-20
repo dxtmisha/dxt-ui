@@ -90,16 +90,16 @@ Gets the content of a meta tag by name from internal storage.
 const meta = new MetaManager(['description', 'keywords', 'author'])
 
 // Get meta description
-const description = meta.getItem('description')
+const description = meta.get('description')
 
 // Get keywords
-const keywords = meta.getItem('keywords')
+const keywords = meta.get('keywords')
 
 // Non-existent tag returns empty string
-const missing = meta.getItem('non-existent') // ''
+const missing = meta.get('non-existent') // ''
 
 // Use in conditions
-if (meta.getItem('description')) {
+if (meta.get('description')) {
   console.log('Description is set')
 }
 ```
@@ -297,9 +297,9 @@ ogMeta.setByList({
 
 // For social media sharing
 const shareData = {
-  title: ogMeta.getItem('og:title'),
-  description: ogMeta.getItem('og:description'),
-  image: ogMeta.getItem('og:image')
+  title: ogMeta.get('og:title'),
+  description: ogMeta.get('og:description'),
+  image: ogMeta.get('og:image')
 }
 ```
 

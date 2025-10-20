@@ -1,0 +1,1206 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/Meta'/>
+
+# Meta Class
+
+A unified class for managing all types of meta tags: standard HTML, Open Graph, and Twitter Card. Provides a single interface for working with SEO optimization and social networks, automatically synchronizing changes across all platforms.
+
+## Key Features
+
+- **Unified API** — single entry point for all types of meta tags
+- **Automatic Synchronization** — changes in Meta are automatically applied to Open Graph and Twitter Card
+- **Title Management** — support for title suffix (e.g., "Title - Site Name")
+- **Full Integration** — combines MetaManager, MetaOg, and MetaTwitter
+- **Simplified Interface** — reduces code needed to set meta tags
+- **Keywords Support** — works with keywords as string or array
+- **Robots Directives** — manages indexing and crawling
+- **SSR Compatible** — generates HTML for server-side rendering
+
+## Constructor
+
+### `constructor`
+
+Creates a Meta instance with integrated Open Graph and Twitter Card support. Automatically initializes internal MetaOg and MetaTwitter instances.
+
+```javascript
+import { Meta } from '@dxtmisha/functional'
+
+// Create a unified meta tags manager
+const meta = new Meta()
+
+// The class automatically manages:
+// - Standard HTML meta tags (description, keywords, author, robots, canonical)
+// - Open Graph tags (og:title, og:description, og:image, og:url, og:site_name, og:locale)
+// - Twitter Card tags (twitter:card, twitter:title, twitter:description, twitter:image, twitter:site)
+```
+
+## Data Retrieval Methods
+
+### `getTitle`
+
+Gets the page title without suffix.
+
+**Returns:** `string` — page title
+
+```javascript
+const meta = new Meta()
+
+// Set title with suffix
+meta.setSuffix('My Site')
+meta.setTitle('Home Page')
+
+// document.title = "Home Page - My Site"
+
+// Get clean title (without suffix)
+const title = meta.getTitle()
+// "Home Page"
+
+// Use in navigation
+const breadcrumb = meta.getTitle()
+
+// Check if set
+if (meta.getTitle()) {
+  console.log('Title is set')
+}
+```
+
+### `getKeyword`
+
+Gets the keywords meta tag.
+
+**Returns:** `string` — comma-separated keywords
+
+```javascript
+const meta = new Meta()
+
+const keywords = meta.getKeyword()
+// "web development, javascript, vue, react"
+
+// Convert to array
+const keywordsArray = keywords.split(', ')
+
+// Check for keyword
+if (meta.getKeyword().includes('javascript')) {
+  console.log('Page about JavaScript')
+}
+
+// Use for filtering
+const tags = meta.getKeyword().split(', ')
+```
+
+### `getDescription`
+
+Gets the description meta tag.
+
+**Returns:** `string` — page description
+
+```javascript
+const meta = new Meta()
+
+const description = meta.getDescription()
+// "Complete guide to web development"
+
+// Check length
+if (meta.getDescription().length > 160) {
+  console.warn('Description too long for Google')
+}
+
+// Use in preview
+const preview = meta.getDescription().substring(0, 100)
+
+// For structured data
+const schema = {
+  description: meta.getDescription()
+}
+```
+
+### `getImage`
+
+Gets the Open Graph image URL.
+
+**Returns:** `string` — image URL
+
+```javascript
+const meta = new Meta()
+
+const imageUrl = meta.getImage()
+// "https://example.com/images/preview.jpg"
+
+// Preload
+const img = new Image()
+img.src = meta.getImage()
+
+// Use in sharing
+const shareData = {
+  title: meta.getTitle(),
+  text: meta.getDescription(),
+  image: meta.getImage()
+}
+
+// Check if set
+if (!meta.getImage()) {
+  console.warn('Social media image not set')
+}
+```
+
+### `getCanonical`
+
+Gets the canonical URL.
+
+**Returns:** `string` — canonical URL
+
+```javascript
+const meta = new Meta()
+
+const canonicalUrl = meta.getCanonical()
+// "https://example.com/page"
+
+// Check match with current URL
+if (meta.getCanonical() !== window.location.href) {
+  console.log('Canonical URL differs from current')
+}
+
+// Use for redirects
+const canonical = meta.getCanonical()
+
+// For sitemap
+const url = meta.getCanonical()
+```
+
+### `getRobots`
+
+Gets the robots meta tag value.
+
+**Returns:** `MetaRobots` — robots directive
+
+```javascript
+const meta = new Meta()
+
+const robots = meta.getRobots()
+// "index, follow"
+
+// Check indexing
+if (meta.getRobots().includes('noindex')) {
+  console.log('Page should not be indexed')
+}
+
+// Conditional logic
+const isIndexable = !meta.getRobots().includes('noindex')
+
+// For debugging
+console.log('Robots directive:', meta.getRobots())
+```
+
+### `getAuthor`
+
+Gets the author meta tag.
+
+**Returns:** `string` — author name
+
+```javascript
+const meta = new Meta()
+
+const author = meta.getAuthor()
+// "John Doe"
+
+// Display author info
+console.log(`Author: ${meta.getAuthor()}`)
+
+// For structured data
+const articleSchema = {
+  author: {
+    name: meta.getAuthor()
+  }
+}
+
+// Check authorship
+if (meta.getAuthor()) {
+  console.log('Content has an author')
+}
+```
+
+### `getSiteName`
+
+Gets the Open Graph site name.
+
+**Returns:** `string` — site name
+
+```javascript
+const meta = new Meta()
+
+const siteName = meta.getSiteName()
+// "My Blog"
+
+// Use in title
+document.title = `${meta.getTitle()} | ${meta.getSiteName()}`
+
+// For branding
+const brandName = meta.getSiteName()
+
+// In footer
+const footerText = `© 2024 ${meta.getSiteName()}`
+```
+
+### `getLocale`
+
+Gets the Open Graph locale.
+
+**Returns:** `string` — locale (e.g., 'en_US')
+
+```javascript
+const meta = new Meta()
+
+const locale = meta.getLocale()
+// "en_US"
+
+// Determine language
+const language = meta.getLocale().split('_')[0] // "en"
+
+// Use for i18n
+if (meta.getLocale().startsWith('en')) {
+  console.log('English content')
+}
+
+// For hreflang
+const lang = meta.getLocale().replace('_', '-').toLowerCase()
+```
+
+### `getOg`
+
+Gets the MetaOg instance for advanced Open Graph operations.
+
+**Returns:** `MetaOg` — MetaOg class instance
+
+```javascript
+const meta = new Meta()
+
+// Get access to MetaOg
+const og = meta.getOg()
+
+// Use specific Open Graph methods
+og.setType(MetaOpenGraphType.article)
+
+// Access all MetaOg methods
+og.getType() // 'article'
+
+// Set additional OG tags
+meta.getOg().setType(MetaOpenGraphType.video)
+
+// Chaining calls
+meta.getOg()
+  .setType(MetaOpenGraphType.article)
+  .setLocale('en_US')
+
+// Use for specific settings
+const setupArticle = () => {
+  meta.setTitle('Article')
+  meta.setDescription('Description')
+
+  // Specific Open Graph settings
+  meta.getOg().setType(MetaOpenGraphType.article)
+}
+```
+
+### `getTwitter`
+
+Gets the MetaTwitter instance for advanced Twitter Card operations.
+
+**Returns:** `MetaTwitter` — MetaTwitter class instance
+
+```javascript
+const meta = new Meta()
+
+// Get access to MetaTwitter
+const twitter = meta.getTwitter()
+
+// Use specific Twitter Card methods
+twitter.setCard(MetaTwitterCard.summaryLargeImage)
+
+// Access all MetaTwitter methods
+twitter.getCard() // 'summary_large_image'
+
+// Set additional Twitter tags
+meta.getTwitter().setCard(MetaTwitterCard.player)
+
+// Chaining calls
+meta.getTwitter()
+  .setCard(MetaTwitterCard.summaryLargeImage)
+  .setCreator('@author')
+
+// Use for specific settings
+const setupVideo = () => {
+  meta.setTitle('Video')
+  meta.setDescription('Video description')
+
+  // Specific Twitter Card settings
+  meta.getTwitter().setCard(MetaTwitterCard.player)
+}
+
+// Set creator (not available directly through Meta)
+meta.getTwitter().setCreator('@john_doe')
+```
+
+## Data Setting Methods
+
+### `setTitle`
+
+Sets the page title with automatic suffix addition and updates Open Graph and Twitter Card.
+
+**Parameters:**
+- `title: string` — page title (without suffix)
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const meta = new Meta()
+
+// Set suffix (usually site name)
+meta.setSuffix('My Site')
+
+// Set title
+meta.setTitle('Home Page')
+// document.title = "Home Page - My Site"
+// og:title = "Home Page - My Site"
+// twitter:title = "Home Page - My Site"
+
+// Without suffix
+const meta2 = new Meta()
+meta2.setTitle('Page without suffix')
+// document.title = "Page without suffix"
+
+// Dynamic update
+router.afterEach((to) => {
+  meta.setTitle(to.meta.title)
+})
+
+// For different pages
+meta.setTitle('About Us')
+meta.setTitle('Contact')
+meta.setTitle('Blog')
+
+// Chaining
+meta
+  .setTitle('New Page')
+  .setDescription('Page description')
+```
+
+### `setKeywords`
+
+Sets the keywords meta tag. Accepts string or array.
+
+**Parameters:**
+- `keywords: string | string[]` — keywords
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const meta = new Meta()
+
+// String
+meta.setKeywords('web development, javascript, vue, react')
+
+// Array
+meta.setKeywords(['web development', 'javascript', 'vue', 'react'])
+// Result: "web development, javascript, vue, react"
+
+// From page data
+const page = {
+  tags: ['javascript', 'tutorial', 'web']
+}
+meta.setKeywords(page.tags)
+
+// Dynamic addition
+const existingKeywords = meta.getKeyword().split(', ')
+const newKeywords = [...existingKeywords, 'new', 'keywords']
+meta.setKeywords(newKeywords)
+
+// Conditional addition
+const keywords = ['web']
+if (isJavaScriptArticle) {
+  keywords.push('javascript')
+}
+meta.setKeywords(keywords)
+
+// Note: while keywords are less important for modern SEO,
+// they can be used for internal search
+```
+
+### `setDescription`
+
+Sets the description meta tag.
+
+**Parameters:**
+- `description: string` — page description
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const meta = new Meta()
+
+// Set description
+meta.setDescription('Complete guide to web development with code examples and practical exercises')
+
+// From content data
+meta.setDescription(article.excerpt)
+
+// Truncate long text
+const longDescription = article.content
+const shortDescription = longDescription.substring(0, 160)
+meta.setDescription(shortDescription)
+
+// Remove HTML tags
+const plainText = article.html.replace(/<[^>]*>/g, '')
+meta.setDescription(plainText.substring(0, 160))
+
+// Chaining
+meta
+  .setDescription('Page description')
+  .setKeywords(['web', 'dev'])
+
+// Recommendations:
+// - Google displays ~155-160 characters
+// - Should contain keywords
+// - Should be unique for each page
+```
+
+### `setImage`
+
+Sets the image for Open Graph and Twitter Card simultaneously.
+
+**Parameters:**
+- `image: string` — image URL
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const meta = new Meta()
+
+// Set image
+meta.setImage('https://example.com/images/preview.jpg')
+// Updates og:image and twitter:image
+
+// Absolute URL
+const imageUrl = new URL('/images/social-preview.jpg', window.location.origin).href
+meta.setImage(imageUrl)
+
+// From content data
+meta.setImage(article.coverImage)
+
+// Fallback image
+meta.setImage(page.image || '/images/default-preview.jpg')
+
+// For different pages
+if (isHomePage) {
+  meta.setImage('/images/home-preview.jpg')
+} else if (isArticle) {
+  meta.setImage(article.image)
+}
+
+// Chaining
+meta
+  .setImage('https://example.com/image.jpg')
+  .setTitle('Title')
+
+// Recommended size: 1200x630 px
+// Minimum size: 600x315 px
+// Formats: JPG, PNG, WebP
+```
+
+### `setCanonical`
+
+Sets the canonical URL and automatically updates og:url and twitter:url.
+
+**Parameters:**
+- `canonical: string` — canonical URL
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const meta = new Meta()
+
+// Set canonical
+meta.setCanonical('https://example.com/page')
+// Updates:
+// - <link rel="canonical" href="https://example.com/page">
+// - og:url = "https://example.com/page"
+// - twitter:url = "https://example.com/page"
+
+// Current URL
+meta.setCanonical(window.location.href)
+
+// Clean parameters
+const cleanUrl = `${window.location.origin}${window.location.pathname}`
+meta.setCanonical(cleanUrl)
+
+// For pagination (all pages point to first)
+meta.setCanonical('https://example.com/articles')
+
+// For SPA
+router.afterEach((to) => {
+  const url = `https://example.com${to.path}`
+  meta.setCanonical(url)
+})
+
+// For duplicate content
+meta.setCanonical(originalArticleUrl)
+
+// Chaining
+meta
+  .setCanonical('https://example.com/page')
+  .setTitle('Title')
+```
+
+### `setRobots`
+
+Sets the robots meta tag to control indexing.
+
+**Parameters:**
+- `robots: MetaRobots` — robots directive
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+import { Meta, MetaRobots } from '@dxtmisha/functional'
+
+const meta = new Meta()
+
+// Allow indexing (default)
+meta.setRobots(MetaRobots.indexFollow)
+// <meta name="robots" content="index, follow">
+
+// Prevent indexing
+meta.setRobots(MetaRobots.noindexNofollow)
+// <meta name="robots" content="noindex, nofollow">
+
+// Index but don't follow links
+meta.setRobots(MetaRobots.indexNofollow)
+
+// Don't index but follow links
+meta.setRobots(MetaRobots.noindexFollow)
+
+// Prevent caching
+meta.setRobots(MetaRobots.noarchive)
+
+// Don't show snippet
+meta.setRobots(MetaRobots.nosnippet)
+
+// Conditional setting
+if (isDraftPage) {
+  meta.setRobots(MetaRobots.noindexNofollow)
+} else {
+  meta.setRobots(MetaRobots.indexFollow)
+}
+
+// For private pages
+meta.setRobots(MetaRobots.noindexNofollow)
+
+// For pages with duplicate content
+meta.setRobots(MetaRobots.noindex)
+```
+
+### `setAuthor`
+
+Sets the author meta tag.
+
+**Parameters:**
+- `author: string` — author name
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const meta = new Meta()
+
+// Set author
+meta.setAuthor('John Doe')
+
+// From user data
+meta.setAuthor(article.author.name)
+
+// Full name
+meta.setAuthor(`${user.firstName} ${user.lastName}`)
+
+// For blog
+meta.setAuthor(post.author)
+
+// Conditional setting
+if (article.author) {
+  meta.setAuthor(article.author.name)
+}
+
+// Chaining
+meta
+  .setAuthor('John Doe')
+  .setTitle('Article')
+  .setDescription('Description')
+
+// For structured data
+meta.setAuthor(author.name)
+```
+
+### `setSiteName`
+
+Sets the site name for Open Graph and Twitter Card simultaneously.
+
+**Parameters:**
+- `siteName: string` — site name
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const meta = new Meta()
+
+// Set site name
+meta.setSiteName('My Blog')
+// Updates og:site_name and twitter:site
+
+// From configuration
+meta.setSiteName(config.siteName)
+
+// Constant
+const SITE_NAME = 'WebDev Journal'
+meta.setSiteName(SITE_NAME)
+
+// For branding
+meta.setSiteName('TechBlog')
+
+// Once during initialization
+const meta = new Meta()
+meta.setSiteName('My Site')
+meta.setSuffix('My Site')
+
+// Chaining
+meta
+  .setSiteName('Site Name')
+  .setTitle('Home')
+
+// Recommendations:
+// - Short and recognizable
+// - Matches the brand
+// - Used in social networks
+```
+
+### `setLocale`
+
+Sets the locale for Open Graph.
+
+**Parameters:**
+- `locale: string` — locale in language_TERRITORY format
+
+**Returns:** `this` — for chaining calls
+
+```javascript
+const meta = new Meta()
+
+// Set English locale
+meta.setLocale('en_US')
+
+// Other locales
+meta.setLocale('en_GB') // English (United Kingdom)
+meta.setLocale('ru_RU') // Russian
+meta.setLocale('uk_UA') // Ukrainian
+meta.setLocale('de_DE') // German
+meta.setLocale('fr_FR') // French
+
+// Automatic detection
+const userLocale = navigator.language.replace('-', '_')
+meta.setLocale(userLocale)
+
+// From i18n settings
+meta.setLocale(i18n.locale.replace('-', '_'))
+
+// Conditional setting
+const locale = isEnglish ? 'en_US' : 'ru_RU'
+meta.setLocale(locale)
+
+// On language change
+const changeLanguage = (lang) => {
+  const localeMap = {
+    'en': 'en_US',
+    'ru': 'ru_RU',
+    'de': 'de_DE'
+  }
+  meta.setLocale(localeMap[lang])
+}
+
+// Chaining
+meta
+  .setLocale('en_US')
+  .setSiteName('My Site')
+```
+
+### `setSuffix`
+
+Sets the suffix to automatically append to page title.
+
+**Parameters:**
+- `suffix?: string` — title suffix (optional)
+
+```javascript
+const meta = new Meta()
+
+// Set suffix
+meta.setSuffix('My Site')
+meta.setTitle('Home')
+// document.title = "Home - My Site"
+
+// From configuration
+meta.setSuffix(config.siteName)
+
+// Remove suffix
+meta.setSuffix()
+meta.setTitle('Page')
+// document.title = "Page"
+
+// Conditional setting
+if (showBranding) {
+  meta.setSuffix('Site Name')
+}
+
+// Different suffixes for different sections
+if (isBlog) {
+  meta.setSuffix('Blog | My Site')
+} else {
+  meta.setSuffix('My Site')
+}
+
+// Usually set once during initialization
+const initMeta = () => {
+  const meta = new Meta()
+  meta.setSuffix('My Site')
+  meta.setSiteName('My Site')
+  return meta
+}
+
+// Note: suffix is automatically added
+// in format: "Title - Suffix"
+```
+
+### `html`
+
+Generates the complete HTML for all meta tags, including Open Graph and Twitter Card.
+
+**Returns:** `string` — HTML string with all meta tags
+
+```javascript
+const meta = new Meta()
+
+// Setup meta tags
+meta.setSuffix('My Site')
+meta.setSiteName('My Site')
+meta.setLocale('en_US')
+meta
+  .setTitle('Article')
+  .setDescription('Article description')
+  .setKeywords(['web', 'javascript'])
+  .setImage('https://example.com/image.jpg')
+  .setCanonical('https://example.com/article')
+  .setAuthor('John Doe')
+
+// Get HTML of all meta tags
+const metaHTML = meta.html()
+
+// Result includes:
+// - Standard HTML meta tags (description, keywords, author, canonical)
+// - Open Graph tags (og:title, og:description, og:image, og:url, og:site_name, og:locale)
+// - Twitter Card tags (twitter:title, twitter:description, twitter:image, twitter:site)
+
+// Use in SSR (Server-Side Rendering)
+// Express.js
+app.get('/page', (req, res) => {
+  const meta = new Meta()
+  meta
+    .setTitle('Page Title')
+    .setDescription('Description')
+    .setImage('https://example.com/og-image.jpg')
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        ${meta.html()}
+        <title>Title - Site</title>
+      </head>
+      <body>
+        <h1>Content</h1>
+      </body>
+    </html>
+  `
+
+  res.send(html)
+})
+
+// Next.js getServerSideProps
+export async function getServerSideProps() {
+  const meta = new Meta()
+  meta
+    .setTitle('Article')
+    .setDescription('Article description')
+
+  return {
+    props: {
+      metaTags: meta.html()
+    }
+  }
+}
+
+// Nuxt.js (in composable)
+const meta = new Meta()
+meta.setTitle('Page')
+
+const metaHTML = meta.html()
+// Insert into head via useHead() or template
+
+// Benefits of html() method:
+// - Automatic escaping of special characters
+// - Combines all three types of meta tags (standard, OG, Twitter)
+// - Ready for insertion into server template
+// - Safe from XSS attacks
+```
+
+## Practical Examples
+
+### Complete Page Setup
+
+```javascript
+import { Meta, MetaRobots } from '@dxtmisha/functional'
+
+const meta = new Meta()
+
+// Setup during app initialization
+meta.setSuffix('My Site')
+meta.setSiteName('My Site')
+meta.setLocale('en_US')
+
+// Setup specific page
+meta
+  .setTitle('Complete Guide to Web Development')
+  .setDescription('Learn web development from scratch: HTML, CSS, JavaScript, frameworks and tools')
+  .setKeywords(['web development', 'html', 'css', 'javascript', 'guide'])
+  .setImage('https://example.com/images/web-dev-guide.jpg')
+  .setCanonical('https://example.com/guides/web-development')
+  .setAuthor('John Doe')
+  .setRobots(MetaRobots.indexFollow)
+
+// Result:
+// <title>Complete Guide to Web Development - My Site</title>
+// <meta name="description" content="Learn web development...">
+// <meta name="keywords" content="web development, html, css, javascript, guide">
+// <meta name="author" content="John Doe">
+// <meta name="robots" content="index, follow">
+// <link rel="canonical" href="https://example.com/guides/web-development">
+// <meta property="og:title" content="Complete Guide... - My Site">
+// <meta property="og:description" content="Learn web development...">
+// <meta property="og:image" content="https://example.com/images/web-dev-guide.jpg">
+// <meta property="og:url" content="https://example.com/guides/web-development">
+// <meta property="og:site_name" content="My Site">
+// <meta property="og:locale" content="en_US">
+// <meta property="twitter:title" content="Complete Guide... - My Site">
+// <meta property="twitter:description" content="Learn web development...">
+// <meta property="twitter:image" content="https://example.com/images/web-dev-guide.jpg">
+// <meta property="twitter:site" content="My Site">
+```
+
+### Vue Router Integration
+
+```javascript
+import { Meta } from '@dxtmisha/functional'
+
+const meta = new Meta()
+
+// Initialization
+meta.setSuffix('My Site')
+meta.setSiteName('My Site')
+meta.setLocale('en_US')
+
+// Update on route change
+router.afterEach((to) => {
+  meta
+    .setTitle(to.meta.title || 'Page Not Found')
+    .setDescription(to.meta.description || '')
+    .setKeywords(to.meta.keywords || [])
+    .setCanonical(`https://example.com${to.path}`)
+
+  // Image if available
+  if (to.meta.image) {
+    meta.setImage(to.meta.image)
+  }
+
+  // Author if available
+  if (to.meta.author) {
+    meta.setAuthor(to.meta.author)
+  }
+})
+
+// Define meta in routes
+const routes = [
+  {
+    path: '/',
+    component: Home,
+    meta: {
+      title: 'Home',
+      description: 'Welcome to our website',
+      keywords: ['home', 'website'],
+      image: '/images/home.jpg'
+    }
+  },
+  {
+    path: '/about',
+    component: About,
+    meta: {
+      title: 'About Us',
+      description: 'Information about our company',
+      keywords: ['about', 'company'],
+      image: '/images/about.jpg'
+    }
+  }
+]
+```
+
+### React Integration
+
+```javascript
+import { Meta } from '@dxtmisha/functional'
+import { useEffect } from 'react'
+
+const meta = new Meta()
+
+// Initialization in App.js
+function App() {
+  useEffect(() => {
+    meta.setSuffix('My Site')
+    meta.setSiteName('My Site')
+    meta.setLocale('en_US')
+  }, [])
+
+  return <Router />
+}
+
+// Page component
+function ArticlePage({ article }) {
+  useEffect(() => {
+    meta
+      .setTitle(article.title)
+      .setDescription(article.excerpt)
+      .setKeywords(article.tags)
+      .setImage(article.coverImage)
+      .setCanonical(`https://example.com/articles/${article.slug}`)
+      .setAuthor(article.author.name)
+
+    return () => {
+      // Cleanup on unmount (optional)
+    }
+  }, [article])
+
+  return <div>{/* content */}</div>
+}
+
+// Custom hook for meta tags
+function useMeta(metaData) {
+  useEffect(() => {
+    if (metaData.title) meta.setTitle(metaData.title)
+    if (metaData.description) meta.setDescription(metaData.description)
+    if (metaData.keywords) meta.setKeywords(metaData.keywords)
+    if (metaData.image) meta.setImage(metaData.image)
+    if (metaData.canonical) meta.setCanonical(metaData.canonical)
+    if (metaData.author) meta.setAuthor(metaData.author)
+  }, [metaData])
+}
+
+// Using hook
+function BlogPost({ post }) {
+  useMeta({
+    title: post.title,
+    description: post.excerpt,
+    keywords: post.tags,
+    image: post.image,
+    author: post.author.name
+  })
+
+  return <article>{/* content */}</article>
+}
+```
+
+### SSR (Server-Side Rendering)
+
+```javascript
+import { Meta } from '@dxtmisha/functional'
+
+// Express.js server
+app.get('/article/:id', async (req, res) => {
+  const article = await getArticle(req.params.id)
+
+  const meta = new Meta()
+  meta.setSuffix('My Blog')
+  meta.setSiteName('My Blog')
+  meta.setLocale('en_US')
+
+  meta
+    .setTitle(article.title)
+    .setDescription(article.excerpt)
+    .setKeywords(article.tags)
+    .setImage(article.coverImage)
+    .setCanonical(`https://example.com/article/${article.id}`)
+    .setAuthor(article.author.name)
+
+  const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${article.title} - My Blog</title>
+        ${meta.html()}
+      </head>
+      <body>
+        <article>${article.content}</article>
+      </body>
+    </html>
+  `
+
+  res.send(html)
+})
+```
+
+### Using Advanced Open Graph and Twitter Card Features
+
+```javascript
+import { Meta, MetaOpenGraphType, MetaTwitterCard } from '@dxtmisha/functional'
+
+const meta = new Meta()
+
+// Basic setup through Meta
+meta
+  .setTitle('Video: Introduction to JavaScript')
+  .setDescription('Complete JavaScript video guide for beginners')
+  .setImage('https://example.com/images/js-video-thumb.jpg')
+  .setCanonical('https://example.com/videos/js-intro')
+
+// Advanced Open Graph setup through getOg()
+meta.getOg()
+  .setType(MetaOpenGraphType.videoMovie) // Type: video
+  .setLocale('en_US')
+
+// Advanced Twitter Card setup through getTwitter()
+meta.getTwitter()
+  .setCard(MetaTwitterCard.player) // Card with player
+  .setCreator('@javascript_guru') // Video author
+
+// Combined setup for different content types
+const setupContentMeta = (content) => {
+  // Common settings
+  meta
+    .setTitle(content.title)
+    .setDescription(content.description)
+    .setImage(content.image)
+    .setCanonical(content.url)
+
+  // Specific settings depending on type
+  switch (content.type) {
+    case 'article':
+      meta.getOg().setType(MetaOpenGraphType.article)
+      meta.getTwitter().setCard(MetaTwitterCard.summaryLargeImage)
+      if (content.author?.twitter) {
+        meta.getTwitter().setCreator(content.author.twitter)
+      }
+      break
+
+    case 'video':
+      meta.getOg().setType(MetaOpenGraphType.videoMovie)
+      meta.getTwitter().setCard(MetaTwitterCard.player)
+      break
+
+    case 'product':
+      meta.getOg().setType(MetaOpenGraphType.product)
+      meta.getTwitter().setCard(MetaTwitterCard.summaryLargeImage)
+      break
+
+    case 'music':
+      meta.getOg().setType(MetaOpenGraphType.musicSong)
+      meta.getTwitter().setCard(MetaTwitterCard.player)
+      break
+  }
+}
+
+// Usage
+setupContentMeta({
+  type: 'video',
+  title: 'JavaScript Tutorial',
+  description: 'Learn JavaScript from scratch',
+  image: 'https://example.com/thumb.jpg',
+  url: 'https://example.com/videos/js-tutorial',
+  author: {
+    twitter: '@instructor'
+  }
+})
+
+// Access specific methods
+const getFullMetaInfo = () => {
+  return {
+    // Through Meta
+    title: meta.getTitle(),
+    description: meta.getDescription(),
+    image: meta.getImage(),
+
+    // Through MetaOg
+    ogType: meta.getOg().getType(),
+    ogLocale: meta.getOg().getLocale(),
+
+    // Through MetaTwitter
+    twitterCard: meta.getTwitter().getCard(),
+    twitterCreator: meta.getTwitter().getCreator()
+  }
+}
+```
+
+## Usage Recommendations
+
+### Initialization
+Set common parameters once at app startup:
+```javascript
+const meta = new Meta()
+meta.setSuffix('Site Name')
+meta.setSiteName('Site Name')
+meta.setLocale('en_US')
+```
+
+### Update on Navigation
+Update meta tags on page change:
+```javascript
+router.afterEach((to) => {
+  meta
+    .setTitle(to.meta.title)
+    .setDescription(to.meta.description)
+    .setCanonical(`https://example.com${to.path}`)
+})
+```
+
+### Text Length
+- **Title:** up to 60 characters (without suffix)
+- **Description:** 150-160 characters
+- **Keywords:** 10-15 keywords
+
+### Required Tags
+Minimum necessary meta tags:
+- Title (via `setTitle`)
+- Description (via `setDescription`)
+- Canonical (via `setCanonical`)
+- Image for social media (via `setImage`)
+
+### Images
+- Size: 1200×630 px (optimal)
+- Format: JPG, PNG, WebP
+- Maximum: 8 MB
+
+## Notes
+
+- Class combines functionality of MetaManager, MetaOg, and MetaTwitter
+- Changes in Meta are automatically applied to all related meta tags
+- Suffix is added only to document.title and social tags
+- `html()` method is inherited from MetaManager and generates HTML for all managed tags
+- Class is SSR compatible — checks for DOM presence before accessing document
+- Keywords are less important for modern SEO but can be used for internal search
+- For advanced Open Graph work, use `meta.og` directly
+- For advanced Twitter Card work, use `meta.twitter` directly
+

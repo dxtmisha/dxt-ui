@@ -1,0 +1,694 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Classes/MetaOg'/>
+
+# Класс MetaOg
+
+Класс для работы с Open Graph мета-тегами, обеспечивающий оптимальное отображение контента при публикации в социальных сетях (Facebook, LinkedIn, VK и других). Наследует функциональность `MetaManager` и предоставляет типобезопасные методы для управления стандартными Open Graph тегами.
+
+## Основные возможности
+
+- **Типобезопасность** — строгая типизация для всех Open Graph тегов и типов контента
+- **Автоматическая синхронизация** — обновление мета-тегов в `<head>` документа
+- **Поддержка property** — использует атрибут `property` вместо `name` (стандарт Open Graph)
+- **Удобный API** — специализированные методы для каждого тега
+- **SSR совместимость** — генерация HTML для серверного рендеринга
+- **Валидация типов** — поддержка всех официальных типов Open Graph
+- **Цепочечные методы** — возможность последовательной установки значений
+
+## Конструктор
+
+### `constructor`
+
+Создает экземпляр MetaOg с предустановленным списком всех поддерживаемых Open Graph тегов. Автоматически считывает существующие теги из DOM.
+
+```javascript
+import { MetaOg } from '@dxtmisha/functional'
+
+// Создание экземпляра
+const og = new MetaOg()
+
+// Класс автоматически управляет всеми стандартными OG тегами:
+// og:title, og:type, og:url, og:image, og:description,
+// og:locale, og:site_name и другими
+```
+
+## Методы получения данных
+
+### `getTitle`
+
+Получает заголовок страницы для Open Graph.
+
+**Возвращает:** `string` — заголовок страницы
+
+```javascript
+const og = new MetaOg()
+
+const title = og.getTitle()
+// 'Заголовок статьи'
+
+// Использование для отладки
+console.log('OG Title:', og.getTitle())
+
+// Проверка наличия
+if (og.getTitle()) {
+  console.log('Заголовок установлен')
+}
+```
+
+### `getType`
+
+Получает тип контента Open Graph.
+
+**Возвращает:** `MetaOpenGraphType` — тип контента (website, article, video и т.д.)
+
+```javascript
+const og = new MetaOg()
+
+const type = og.getType()
+// 'article'
+
+// Проверка типа контента
+if (og.getType() === 'article') {
+  console.log('Это статья')
+}
+
+// Условная логика по типу
+switch (og.getType()) {
+  case 'article':
+    // Логика для статей
+    break
+  case 'product':
+    // Логика для товаров
+    break
+}
+```
+
+### `getUrl`
+
+Получает канонический URL страницы.
+
+**Возвращает:** `string` — URL страницы
+
+```javascript
+const og = new MetaOg()
+
+const url = og.getUrl()
+// 'https://example.com/article/my-post'
+
+// Получение домена
+const domain = new URL(og.getUrl()).hostname
+
+// Проверка совпадения с текущим URL
+if (og.getUrl() !== window.location.href) {
+  console.warn('OG URL не совпадает с текущим')
+}
+```
+
+### `getImage`
+
+Получает URL изображения для превью.
+
+**Возвращает:** `string` — URL изображения
+
+```javascript
+const og = new MetaOg()
+
+const imageUrl = og.getImage()
+// 'https://example.com/images/preview.jpg'
+
+// Предзагрузка изображения
+const img = new Image()
+img.src = og.getImage()
+
+// Проверка наличия изображения
+if (!og.getImage()) {
+  console.warn('OG изображение не установлено')
+}
+```
+
+### `getDescription`
+
+Получает описание страницы для Open Graph.
+
+**Возвращает:** `string` — описание страницы
+
+```javascript
+const og = new MetaOg()
+
+const description = og.getDescription()
+// 'Подробное описание статьи...'
+
+// Проверка длины
+if (og.getDescription().length > 200) {
+  console.warn('Описание слишком длинное')
+}
+
+// Использование в превью
+const previewText = og.getDescription().substring(0, 100) + '...'
+```
+
+### `getLocale`
+
+Получает локаль (язык) контента.
+
+**Возвращает:** `string` — локаль в формате language_TERRITORY
+
+```javascript
+const og = new MetaOg()
+
+const locale = og.getLocale()
+// 'ru_RU'
+
+// Определение языка
+const language = og.getLocale().split('_')[0] // 'ru'
+
+// Использование для локализации
+if (og.getLocale().startsWith('ru')) {
+  console.log('Русский контент')
+}
+```
+
+### `getSiteName`
+
+Получает название сайта.
+
+**Возвращает:** `string` — название сайта
+
+```javascript
+const og = new MetaOg()
+
+const siteName = og.getSiteName()
+// 'Мой Блог'
+
+// Использование в заголовке
+document.title = `${og.getTitle()} - ${og.getSiteName()}`
+
+// Проверка бренда
+const isBrandSet = og.getSiteName() !== ''
+```
+
+## Методы установки данных
+
+### `setTitle`
+
+Устанавливает заголовок страницы для Open Graph.
+
+**Параметры:**
+- `title: string` — заголовок страницы
+
+**Возвращает:** `this` — для цепочечных вызовов
+
+```javascript
+const og = new MetaOg()
+
+// Установка заголовка
+og.setTitle('Потрясающая статья о веб-разработке')
+
+// Цепочка методов
+og
+  .setTitle('Новый заголовок')
+  .setDescription('Новое описание')
+
+// Динамическое обновление
+const updateTitle = (newTitle) => {
+  og.setTitle(newTitle)
+}
+
+// Автоматическая генерация
+og.setTitle(`${article.title} - ${siteName}`)
+```
+
+### `setType`
+
+Устанавливает тип контента Open Graph.
+
+**Параметры:**
+- `type: MetaOpenGraphType` — тип контента
+
+**Возвращает:** `this` — для цепочечных вызовов
+
+**Доступные типы:**
+- `website` — обычный сайт/главная страница
+- `article` — статья/блог пост
+- `video` — видео контент
+- `video.movie` — фильм
+- `video.episode` — эпизод сериала
+- `video.tv_show` — сериал
+- `music.song` — песня
+- `music.album` — музыкальный альбом
+- `music.playlist` — плейлист
+- `music.radio_station` — радиостанция
+- `product` — товар в магазине
+- `book` — книга
+- `profile` — профиль пользователя
+- `business.business` — компания/организация
+- `place` — место/локация
+- `event` — событие/мероприятие
+- `app` — приложение
+
+```javascript
+import { MetaOg, MetaOpenGraphType } from '@dxtmisha/functional'
+
+const og = new MetaOg()
+
+// Установка типа статьи
+og.setType(MetaOpenGraphType.article)
+
+// Для главной страницы
+og.setType(MetaOpenGraphType.website)
+
+// Для товаров в магазине
+og.setType(MetaOpenGraphType.product)
+
+// Для видео
+og.setType(MetaOpenGraphType.videoMovie)
+
+// Условная установка
+const contentType = isArticle
+  ? MetaOpenGraphType.article
+  : MetaOpenGraphType.website
+
+og.setType(contentType)
+```
+
+### `setUrl`
+
+Устанавливает канонический URL страницы.
+
+**Параметры:**
+- `url: string` — URL страницы
+
+**Возвращает:** `this` — для цепочечных вызовов
+
+```javascript
+const og = new MetaOg()
+
+// Установка URL
+og.setUrl('https://example.com/article/my-post')
+
+// Использование текущего URL
+og.setUrl(window.location.href)
+
+// Очистка query параметров
+const cleanUrl = window.location.origin + window.location.pathname
+og.setUrl(cleanUrl)
+
+// Для SPA
+router.afterEach((to) => {
+  og.setUrl(`https://example.com${to.fullPath}`)
+})
+
+// Абсолютный URL из относительного
+const absoluteUrl = new URL('/article', window.location.origin).href
+og.setUrl(absoluteUrl)
+```
+
+### `setImage`
+
+Устанавливает URL изображения для превью.
+
+**Параметры:**
+- `url: string` — URL изображения
+
+**Возвращает:** `this` — для цепочечных вызовов
+
+```javascript
+const og = new MetaOg()
+
+// Установка изображения
+og.setImage('https://example.com/images/preview.jpg')
+
+// Абсолютный URL
+const imageUrl = new URL('/images/og-image.jpg', window.location.origin).href
+og.setImage(imageUrl)
+
+// Из данных контента
+og.setImage(article.coverImage)
+
+// Fallback изображение
+og.setImage(article.image || '/images/default-og.jpg')
+
+// Рекомендуемые размеры: 1200x630 пикселей
+// Минимум: 600x315 пикселей
+// Формат: JPG, PNG, WebP
+```
+
+### `setDescription`
+
+Устанавливает описание страницы для Open Graph.
+
+**Параметры:**
+- `description: string` — описание страницы
+
+**Возвращает:** `this` — для цепочечных вызовов
+
+```javascript
+const og = new MetaOg()
+
+// Установка описания
+og.setDescription('Подробное руководство по созданию веб-приложений с использованием современных технологий')
+
+// Обрезка длинного текста
+const shortDesc = article.content.substring(0, 200)
+og.setDescription(shortDesc)
+
+// Удаление HTML тегов
+const plainText = article.html.replace(/<[^>]*>/g, '')
+og.setDescription(plainText.substring(0, 300))
+
+// Рекомендации:
+// - Оптимальная длина: 150-300 символов
+// - Facebook отображает ~300 символов
+// - Избегайте специальных HTML символов
+```
+
+### `setLocale`
+
+Устанавливает локаль (язык) контента.
+
+**Параметры:**
+- `locale: string` — локаль в формате language_TERRITORY
+
+**Возвращает:** `this` — для цепочечных вызовов
+
+```javascript
+const og = new MetaOg()
+
+// Установка русской локали
+og.setLocale('ru_RU')
+
+// Другие популярные локали
+og.setLocale('en_US') // Английский (США)
+og.setLocale('en_GB') // Английский (Великобритания)
+og.setLocale('uk_UA') // Украинский
+og.setLocale('de_DE') // Немецкий
+og.setLocale('fr_FR') // Французский
+og.setLocale('es_ES') // Испанский
+og.setLocale('pt_BR') // Португальский (Бразилия)
+og.setLocale('ja_JP') // Японский
+og.setLocale('zh_CN') // Китайский (упрощенный)
+
+// Автоматическое определение
+const userLocale = navigator.language.replace('-', '_')
+og.setLocale(userLocale)
+
+// Из настроек приложения
+og.setLocale(i18n.locale.replace('-', '_'))
+```
+
+### `setSiteName`
+
+Устанавливает название сайта.
+
+**Параметры:**
+- `siteName: string` — название сайта
+
+**Возвращает:** `this` — для цепочечных вызовов
+
+```javascript
+const og = new MetaOg()
+
+// Установка имени сайта
+og.setSiteName('Мой Замечательный Блог')
+
+// Использование константы
+const SITE_NAME = 'WebDev Journal'
+og.setSiteName(SITE_NAME)
+
+// Из конфигурации
+og.setSiteName(config.siteName)
+
+// Примеры хороших названий:
+// - Краткие и узнаваемые
+// - Соответствуют бренду
+// - Без дополнительных символов
+```
+
+## Практические примеры
+
+### Полная настройка страницы статьи
+
+```javascript
+import { MetaOg, MetaOpenGraphType } from '@dxtmisha/functional'
+
+const og = new MetaOg()
+
+// Установка всех основных тегов
+og
+  .setType(MetaOpenGraphType.article)
+  .setTitle('Полное руководство по Open Graph протоколу')
+  .setDescription('Узнайте, как правильно настроить Open Graph теги для вашего сайта и улучшить отображение в социальных сетях')
+  .setUrl('https://example.com/articles/open-graph-guide')
+  .setImage('https://example.com/images/og-guide-preview.jpg')
+  .setLocale('ru_RU')
+  .setSiteName('WebDev Blog')
+
+// Теперь при публикации в соцсетях:
+// - Facebook покажет красивую карточку
+// - LinkedIn подхватит правильное превью
+// - VK отобразит изображение и описание
+// - Telegram создаст rich preview
+```
+
+### Динамическое обновление для SPA
+
+```javascript
+// Vue Router
+router.afterEach((to) => {
+  const og = new MetaOg()
+
+  og
+    .setTitle(to.meta.ogTitle || to.meta.title)
+    .setDescription(to.meta.ogDescription || to.meta.description)
+    .setUrl(`https://example.com${to.path}`)
+    .setImage(to.meta.ogImage || '/images/default-og.jpg')
+})
+
+// React Router
+useEffect(() => {
+  const og = new MetaOg()
+
+  og
+    .setTitle(page.title)
+    .setDescription(page.description)
+    .setUrl(window.location.href)
+    .setImage(page.image)
+
+  return () => {
+    // Cleanup если необходимо
+  }
+}, [page])
+```
+
+### Настройка для разных типов контента
+
+```javascript
+import { MetaOg, MetaOpenGraphType } from '@dxtmisha/functional'
+
+const og = new MetaOg()
+
+// Для главной страницы
+const setupHomePage = () => {
+  og
+    .setType(MetaOpenGraphType.website)
+    .setTitle('Главная - Мой Сайт')
+    .setDescription('Добро пожаловать на наш сайт')
+    .setUrl('https://example.com')
+    .setImage('https://example.com/images/home-og.jpg')
+}
+
+// Для страницы товара
+const setupProductPage = (product) => {
+  og
+    .setType(MetaOpenGraphType.product)
+    .setTitle(product.name)
+    .setDescription(product.description)
+    .setUrl(`https://example.com/products/${product.id}`)
+    .setImage(product.images[0])
+}
+
+// Для видео
+const setupVideoPage = (video) => {
+  og
+    .setType(MetaOpenGraphType.videoMovie)
+    .setTitle(video.title)
+    .setDescription(video.synopsis)
+    .setUrl(`https://example.com/videos/${video.id}`)
+    .setImage(video.thumbnail)
+}
+
+// Для профиля пользователя
+const setupProfilePage = (user) => {
+  og
+    .setType(MetaOpenGraphType.profile)
+    .setTitle(`${user.name} - Профиль`)
+    .setDescription(user.bio)
+    .setUrl(`https://example.com/users/${user.username}`)
+    .setImage(user.avatar)
+}
+```
+
+### Генерация HTML для SSR
+
+```javascript
+import { MetaOg, MetaOpenGraphType } from '@dxtmisha/functional'
+
+// Express.js сервер
+app.get('/article/:id', async (req, res) => {
+  const article = await getArticle(req.params.id)
+
+  const og = new MetaOg()
+  og
+    .setType(MetaOpenGraphType.article)
+    .setTitle(article.title)
+    .setDescription(article.excerpt)
+    .setUrl(`https://example.com/article/${article.id}`)
+    .setImage(article.coverImage)
+    .setLocale('ru_RU')
+    .setSiteName('Мой Блог')
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>${article.title}</title>
+        ${og.html()}
+      </head>
+      <body>
+        ${article.content}
+      </body>
+    </html>
+  `
+
+  res.send(html)
+})
+
+// Результат в HTML:
+// <meta property="og:type" content="article">
+// <meta property="og:title" content="Заголовок статьи">
+// <meta property="og:description" content="Описание...">
+// <meta property="og:url" content="https://example.com/article/123">
+// <meta property="og:image" content="https://example.com/images/cover.jpg">
+// <meta property="og:locale" content="ru_RU">
+// <meta property="og:site_name" content="Мой Блог">
+```
+
+### Интеграция с CMS
+
+```javascript
+import { MetaOg, MetaOpenGraphType } from '@dxtmisha/functional'
+
+// Функция обновления OG тегов из CMS данных
+const updateOGFromCMS = (pageData) => {
+  const og = new MetaOg()
+
+  // Определение типа контента
+  const typeMap = {
+    'post': MetaOpenGraphType.article,
+    'page': MetaOpenGraphType.website,
+    'product': MetaOpenGraphType.product,
+    'video': MetaOpenGraphType.video
+  }
+
+  og
+    .setType(typeMap[pageData.contentType] || MetaOpenGraphType.website)
+    .setTitle(pageData.seo?.ogTitle || pageData.title)
+    .setDescription(pageData.seo?.ogDescription || pageData.excerpt)
+    .setUrl(pageData.canonicalUrl)
+    .setImage(pageData.seo?.ogImage || pageData.featuredImage)
+    .setLocale(pageData.locale)
+    .setSiteName(pageData.site.name)
+
+  return og
+}
+
+// Использование
+const page = await cms.getPage(pageId)
+updateOGFromCMS(page)
+```
+
+### Валидация и отладка
+
+```javascript
+import { MetaOg } from '@dxtmisha/functional'
+
+const og = new MetaOg()
+
+// Проверка обязательных полей
+const validateOG = () => {
+  const errors = []
+
+  if (!og.getTitle()) errors.push('Отсутствует og:title')
+  if (!og.getType()) errors.push('Отсутствует og:type')
+  if (!og.getUrl()) errors.push('Отсутствует og:url')
+  if (!og.getImage()) errors.push('Отсутствует og:image')
+
+  if (errors.length > 0) {
+    console.error('Open Graph ошибки:', errors)
+  }
+
+  return errors.length === 0
+}
+
+// Вывод всех OG тегов для отладки
+const debugOG = () => {
+  console.group('Open Graph Tags')
+  console.log('Title:', og.getTitle())
+  console.log('Type:', og.getType())
+  console.log('URL:', og.getUrl())
+  console.log('Image:', og.getImage())
+  console.log('Description:', og.getDescription())
+  console.log('Locale:', og.getLocale())
+  console.log('Site Name:', og.getSiteName())
+  console.groupEnd()
+}
+
+// Экспорт для тестирования
+const exportOGData = () => {
+  return og.getItems()
+}
+```
+
+## Рекомендации по использованию
+
+### Обязательные теги
+Для корректного отображения в социальных сетях необходимо установить минимум:
+- `og:title` — заголовок страницы
+- `og:type` — тип контента
+- `og:url` — канонический URL
+- `og:image` — изображение для превью
+
+### Размеры изображений
+- **Рекомендуемый размер:** 1200×630 px (соотношение 1.91:1)
+- **Минимальный размер:** 600×315 px
+- **Максимальный размер файла:** 8 MB
+- **Форматы:** JPG, PNG, WebP, GIF
+
+### Длина текста
+- **og:title:** до 60 символов (оптимально: 40)
+- **og:description:** до 200 символов (Facebook), до 300 (LinkedIn)
+- **og:site_name:** краткое название бренда
+
+### Локали
+Используйте формат `language_TERRITORY`:
+- Русский: `ru_RU`
+- Английский США: `en_US`
+- Английский GB: `en_GB`
+
+### Тестирование
+Проверяйте Open Graph теги с помощью:
+- [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
+- [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/)
+- [Twitter Card Validator](https://cards-dev.twitter.com/validator)
+
+## Примечания
+
+- Класс наследует все методы от `MetaManager`, включая `html()`, `getItems()`, `setByList()`
+- Автоматически использует атрибут `property` вместо `name` (стандарт Open Graph)
+- Все изменения немедленно отражаются в DOM дереве
+- При создании экземпляра автоматически считываются существующие OG теги из страницы
+- Для SSR используйте метод `html()` для генерации мета-тегов в серверном шаблоне
+- Содержимое автоматически экранируется для предотвращения XSS
+- Поддерживает все официальные типы Open Graph протокола
+
