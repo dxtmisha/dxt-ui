@@ -56,16 +56,35 @@ describe('Meta', () => {
       expect(meta.getTitle()).toBe('Simple Title')
       expect(document.title).toBe('Simple Title')
     })
+
+    it('should correctly extract title when suffix changes', () => {
+      meta.setSuffix('Old Site')
+      meta.setTitle('Page')
+      expect(document.title).toBe('Page - Old Site')
+
+      meta.setSuffix('New Site')
+      meta.setTitle('Page')
+      expect(document.title).toBe('Page - New Site')
+      expect(meta.getTitle()).toBe('Page')
+    })
+
+    it('should handle empty suffix', () => {
+      meta.setSuffix('')
+      meta.setTitle('No Suffix Title')
+
+      expect(meta.getTitle()).toBe('No Suffix Title')
+      expect(document.title).toBe('No Suffix Title')
+    })
   })
 
-  describe('getKeyword', () => {
+  describe('getKeywords', () => {
     it('should return empty string when keywords not set', () => {
-      expect(meta.getKeyword()).toBe('')
+      expect(meta.getKeywords()).toBe('')
     })
 
     it('should return keywords after setting', () => {
       meta.setKeywords('web, javascript, vue')
-      expect(meta.getKeyword()).toBe('web, javascript, vue')
+      expect(meta.getKeywords()).toBe('web, javascript, vue')
     })
   })
 
@@ -159,14 +178,27 @@ describe('Meta', () => {
       expect(document.title).toBe('Page Title - Site Name')
     })
 
-    it('should update Open Graph title', () => {
+    it('should update Open Graph title with suffix', () => {
+      meta.setSuffix('My Site')
       meta.setTitle('OG Test')
-      expect(meta.getOg().getTitle()).toBe('OG Test')
+
+      expect(meta.getOg().getTitle()).toBe('OG Test - My Site')
+      expect(document.title).toBe('OG Test - My Site')
     })
 
-    it('should update Twitter Card title', () => {
+    it('should update Twitter Card title with suffix', () => {
+      meta.setSuffix('My Site')
       meta.setTitle('Twitter Test')
-      expect(meta.getTwitter().getTitle()).toBe('Twitter Test')
+
+      expect(meta.getTwitter().getTitle()).toBe('Twitter Test - My Site')
+    })
+
+    it('should update both OG and Twitter with same title', () => {
+      meta.setTitle('Shared Title')
+
+      expect(meta.getOg().getTitle()).toBe('Shared Title')
+      expect(meta.getTwitter().getTitle()).toBe('Shared Title')
+      expect(document.title).toBe('Shared Title')
     })
 
     it('should return this for chaining', () => {
@@ -178,12 +210,12 @@ describe('Meta', () => {
   describe('setKeywords', () => {
     it('should set keywords from string', () => {
       meta.setKeywords('web, dev, js')
-      expect(meta.getKeyword()).toBe('web, dev, js')
+      expect(meta.getKeywords()).toBe('web, dev, js')
     })
 
     it('should set keywords from array', () => {
       meta.setKeywords(['web', 'dev', 'js'])
-      expect(meta.getKeyword()).toBe('web, dev, js')
+      expect(meta.getKeywords()).toBe('web, dev, js')
     })
 
     it('should create meta tag in DOM', () => {
@@ -212,6 +244,15 @@ describe('Meta', () => {
       const metaTag = document.querySelector('meta[name="description"]')
       expect(metaTag).toBeTruthy()
       expect(metaTag?.getAttribute('content')).toBe('DOM test')
+    })
+
+    it('should not sync description to OG or Twitter automatically', () => {
+      meta.setDescription('Standard description')
+
+      // setDescription не синхронизирует с OG и Twitter
+      expect(meta.getDescription()).toBe('Standard description')
+      expect(meta.getOg().getDescription()).toBe('')
+      expect(meta.getTwitter().getDescription()).toBe('')
     })
 
     it('should return this for chaining', () => {
@@ -352,6 +393,24 @@ describe('Meta', () => {
 
       expect(document.title).toBe('Test')
     })
+
+    it('should apply suffix to OG and Twitter titles', () => {
+      meta.setSuffix('Site Name')
+      meta.setTitle('Page Title')
+
+      expect(meta.getOg().getTitle()).toBe('Page Title - Site Name')
+      expect(meta.getTwitter().getTitle()).toBe('Page Title - Site Name')
+    })
+
+    it('should update suffix dynamically', () => {
+      meta.setSuffix('First')
+      meta.setTitle('Title')
+      expect(document.title).toBe('Title - First')
+
+      meta.setSuffix('Second')
+      meta.setTitle('Title')
+      expect(document.title).toBe('Title - Second')
+    })
   })
 
   describe('html', () => {
@@ -476,7 +535,7 @@ describe('Meta', () => {
 
       expect(meta.getTitle()).toBe('')
       expect(meta.getDescription()).toBe('')
-      expect(meta.getKeyword()).toBe('')
+      expect(meta.getKeywords()).toBe('')
     })
 
     it('should handle special characters in content', () => {
@@ -503,7 +562,7 @@ describe('Meta', () => {
 
     it('should handle keywords as empty array', () => {
       meta.setKeywords([])
-      expect(meta.getKeyword()).toBe('')
+      expect(meta.getKeywords()).toBe('')
     })
   })
 
@@ -542,7 +601,7 @@ describe('Meta', () => {
 
       // Должен прочитать существующие теги
       expect(newMeta.getDescription()).toBe('Existing description')
-      expect(newMeta.getKeyword()).toBe('existing, keywords')
+      expect(newMeta.getKeywords()).toBe('existing, keywords')
     })
   })
 

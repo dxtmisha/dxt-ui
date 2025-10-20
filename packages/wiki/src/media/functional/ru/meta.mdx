@@ -65,7 +65,7 @@ if (meta.getTitle()) {
 }
 ```
 
-### `getKeyword`
+### `getKeywords`
 
 Получает мета-тег keywords.
 
@@ -74,19 +74,19 @@ if (meta.getTitle()) {
 ```javascript
 const meta = new Meta()
 
-const keywords = meta.getKeyword()
+const keywords = meta.getKeywords()
 // "веб-разработка, javascript, vue, react"
 
 // Преобразование в массив
 const keywordsArray = keywords.split(', ')
 
 // Проверка наличия ключевого слова
-if (meta.getKeyword().includes('javascript')) {
+if (meta.getKeywords().includes('javascript')) {
   console.log('Страница про JavaScript')
 }
 
 // Использование для фильтрации
-const tags = meta.getKeyword().split(', ')
+const tags = meta.getKeywords().split(', ')
 ```
 
 ### `getDescription`
@@ -411,7 +411,7 @@ const page = {
 meta.setKeywords(page.tags)
 
 // Динамическое добавление
-const existingKeywords = meta.getKeyword().split(', ')
+const existingKeywords = meta.getKeywords().split(', ')
 const newKeywords = [...existingKeywords, 'новое', 'ключевое', 'слово']
 meta.setKeywords(newKeywords)
 

@@ -69,7 +69,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Получает мета-тег keywords.
    */
-  getKeyword(): string {
+  getKeywords(): string {
     return this.get(MetaTag.keywords)
   }
 
@@ -144,7 +144,11 @@ export class Meta extends MetaManager<MetaTag[]> {
    */
   setTitle(title: string): this {
     if (isDomRuntime()) {
-      const fullTitle = `${title}${this.getSuffix()}`
+      const fullTitle = isFilled(title)
+        ? `${title}${this.getSuffix()}`
+        : this.suffix
+          ? this.suffix
+          : ''
 
       document.title = fullTitle
       this.og.setTitle(fullTitle)

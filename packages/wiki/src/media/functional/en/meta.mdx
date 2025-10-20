@@ -65,7 +65,7 @@ if (meta.getTitle()) {
 }
 ```
 
-### `getKeyword`
+### `getKeywords`
 
 Gets the keywords meta tag.
 
@@ -74,19 +74,19 @@ Gets the keywords meta tag.
 ```javascript
 const meta = new Meta()
 
-const keywords = meta.getKeyword()
+const keywords = meta.getKeywords()
 // "web development, javascript, vue, react"
 
 // Convert to array
 const keywordsArray = keywords.split(', ')
 
 // Check for keyword
-if (meta.getKeyword().includes('javascript')) {
+if (meta.getKeywords().includes('javascript')) {
   console.log('Page about JavaScript')
 }
 
 // Use for filtering
-const tags = meta.getKeyword().split(', ')
+const tags = meta.getKeywords().split(', ')
 ```
 
 ### `getDescription`
@@ -411,7 +411,7 @@ const page = {
 meta.setKeywords(page.tags)
 
 // Dynamic addition
-const existingKeywords = meta.getKeyword().split(', ')
+const existingKeywords = meta.getKeywords().split(', ')
 const newKeywords = [...existingKeywords, 'new', 'keywords']
 meta.setKeywords(newKeywords)
 

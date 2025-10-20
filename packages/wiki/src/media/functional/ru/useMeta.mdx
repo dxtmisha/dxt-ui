@@ -1,0 +1,431 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/ru/Composables/useMeta'/>
+
+# Композабл useMeta
+
+Композабл для управления мета-тегами страницы в Vue 3 приложениях. Предоставляет реактивный интерфейс для работы с SEO-тегами, Open Graph и Twitter Card с автоматической синхронизацией DOM. Использует паттерн singleton — все компоненты работают с единым состоянием мета-тегов.
+
+## Основные возможности
+
+- **Реактивное управление мета-тегами** — автоматическое обновление DOM при изменении значений
+- **Singleton паттерн** — единое состояние мета-тегов для всего приложения
+- **SEO поддержка** — управление title, description, keywords, canonical, robots, author
+- **Open Graph** — полная поддержка Open Graph протокола для социальных сетей
+- **Twitter Card** — интеграция Twitter Card для оптимального отображения в Twitter
+- **SSR поддержка** — генерация HTML строки для серверного рендеринга
+- **TypeScript поддержка** — полная типизация всех свойств и методов
+
+## Базовое использование
+
+### Простое управление мета-тегами
+
+```javascript
+import { useMeta } from '@dxtmisha/functional'
+
+// Получаем реактивные refs для управления мета-тегами
+const { title, description, keyword } = useMeta()
+
+// Устанавливаем значения
+title.value = 'Главная страница'
+description.value = 'Описание главной страницы сайта'
+keyword.value = 'ключевые, слова, сайта'
+```
+
+### Использование в компоненте
+
+```html
+<script setup>
+import { useMeta } from '@dxtmisha/functional'
+import { onMounted } from 'vue'
+
+const { title, description, image, canonical } = useMeta()
+
+onMounted(() => {
+  title.value = 'О компании'
+  description.value = 'Узнайте больше о нашей компании'
+  image.value = 'https://example.com/about-image.jpg'
+  canonical.value = 'https://example.com/about'
+})
+</script>
+
+<template>
+  <div>
+    <h1>О компании</h1>
+    <p>Контент страницы...</p>
+  </div>
+</template>
+```
+
+## Возвращаемые значения
+
+### `meta`
+
+Экземпляр класса Meta для расширенных операций.
+
+**Тип:** `Meta`
+
+```javascript
+const { meta } = useMeta()
+
+// Доступ к расширенным методам
+meta.setLocale('ru_RU')
+meta.setSuffix('Мой Сайт')
+
+// Получение дочерних классов для детальной настройки
+const og = meta.getOg()
+const twitter = meta.getTwitter()
+```
+
+### `title`
+
+Реактивный заголовок страницы (без суффикса).
+
+**Тип:** `Ref<string>`
+
+```javascript
+const { title } = useMeta()
+
+title.value = 'Новый заголовок'
+// Автоматически обновляет:
+// - document.title (с суффиксом, если установлен)
+// - Open Graph og:title
+// - Twitter Card twitter:title
+```
+
+### `keyword`
+
+Реактивный мета-тег keywords.
+
+**Тип:** `Ref<string>`
+
+```javascript
+const { keyword } = useMeta()
+
+keyword.value = 'vue, композабл, мета-теги, seo'
+// Обновляет <meta name="keywords" content="...">
+```
+
+### `description`
+
+Реактивный мета-тег description.
+
+**Тип:** `Ref<string>`
+
+```javascript
+const { description } = useMeta()
+
+description.value = 'Полное описание страницы для поисковых систем'
+// Обновляет <meta name="description" content="...">
+```
+
+### `image`
+
+Реактивный URL изображения для Open Graph и Twitter Card.
+
+**Тип:** `Ref<string>`
+
+```javascript
+const { image } = useMeta()
+
+image.value = 'https://example.com/preview.jpg'
+// Автоматически обновляет:
+// - Open Graph og:image
+// - Twitter Card twitter:image
+```
+
+### `canonical`
+
+Реактивный канонический URL.
+
+**Тип:** `Ref<string>`
+
+```javascript
+const { canonical } = useMeta()
+
+canonical.value = 'https://example.com/page'
+// Автоматически обновляет:
+// - <link rel="canonical" href="...">
+// - Open Graph og:url
+// - Twitter Card twitter:url
+```
+
+### `robots`
+
+Реактивная директива мета-тега robots.
+
+**Тип:** `Ref<MetaRobots>`
+
+```javascript
+const { robots } = useMeta()
+
+robots.value = 'index, follow'
+// Другие варианты: 'noindex', 'nofollow', 'noindex, nofollow'
+// Обновляет <meta name="robots" content="...">
+```
+
+### `author`
+
+Реактивный мета-тег author.
+
+**Тип:** `Ref<string>`
+
+```javascript
+const { author } = useMeta()
+
+author.value = 'Иван Иванов'
+// Обновляет <meta name="author" content="...">
+```
+
+### `siteName`
+
+Реактивное название сайта для Open Graph и Twitter Card.
+
+**Тип:** `Ref<string>`
+
+```javascript
+const { siteName } = useMeta()
+
+siteName.value = 'Мой Сайт'
+// Автоматически обновляет:
+// - Open Graph og:site_name
+// - Twitter Card twitter:site
+```
+
+### `getHtmlMeta`
+
+Функция для генерации HTML строки со всеми мета-тегами (для SSR).
+
+**Тип:** `() => string`
+
+```javascript
+const { getHtmlMeta } = useMeta()
+
+// Генерирует HTML строку со всеми мета-тегами
+const metaHtml = getHtmlMeta()
+// Возвращает: '<meta name="description" content="..."><meta property="og:title" content="...">...'
+```
+
+## Примеры использования
+
+### Динамические мета-теги на основе данных
+
+```html
+<script setup>
+import { ref, watch } from 'vue'
+import { useMeta } from '@dxtmisha/functional'
+import { useApiRef } from '@dxtmisha/functional'
+
+const articleId = ref(1)
+const { data: article } = useApiRef(
+  computed(() => `/api/articles/${articleId.value}`)
+)
+
+const { title, description, image, author, canonical } = useMeta()
+
+watch(article, (newArticle) => {
+  if (newArticle) {
+    title.value = newArticle.title
+    description.value = newArticle.excerpt
+    image.value = newArticle.coverImage
+    author.value = newArticle.authorName
+    canonical.value = `https://example.com/articles/${newArticle.slug}`
+  }
+})
+</script>
+
+<template>
+  <article v-if="article">
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.content }}</p>
+  </article>
+</template>
+```
+
+### Настройка мета-тегов для разных страниц
+
+```html
+<script setup>
+import { useMeta } from '@dxtmisha/functional'
+import { useRoute } from 'vue-router'
+import { watch } from 'vue'
+
+const route = useRoute()
+const { title, description, robots } = useMeta()
+
+const pageMetadata = {
+  home: {
+    title: 'Главная страница',
+    description: 'Добро пожаловать на наш сайт',
+    robots: 'index, follow'
+  },
+  about: {
+    title: 'О компании',
+    description: 'Узнайте больше о нашей компании',
+    robots: 'index, follow'
+  },
+  admin: {
+    title: 'Админ панель',
+    description: 'Панель администратора',
+    robots: 'noindex, nofollow'
+  }
+}
+
+watch(
+  () => route.name,
+  (routeName) => {
+    const meta = pageMetadata[routeName] || pageMetadata.home
+    title.value = meta.title
+    description.value = meta.description
+    robots.value = meta.robots
+  },
+  { immediate: true }
+)
+</script>
+```
+
+### Расширенная настройка с Open Graph и Twitter Card
+
+```html
+<script setup>
+import { useMeta } from '@dxtmisha/functional'
+import { onMounted } from 'vue'
+
+const { meta, title, description, image, siteName } = useMeta()
+
+onMounted(() => {
+  // Основные мета-теги
+  title.value = 'Название статьи'
+  description.value = 'Краткое описание статьи'
+  image.value = 'https://example.com/article-image.jpg'
+  siteName.value = 'Мой Блог'
+
+  // Расширенные настройки
+  meta.setSuffix('Мой Блог')
+  meta.setLocale('ru_RU')
+
+  // Детальная настройка Open Graph
+  const og = meta.getOg()
+  og.setType('article')
+
+  // Детальная настройка Twitter Card
+  const twitter = meta.getTwitter()
+  twitter.setCard('summary_large_image')
+})
+</script>
+```
+
+### SSR: Генерация мета-тегов на сервере
+
+```javascript
+// server.js
+import { useMeta } from '@dxtmisha/functional'
+
+export function renderMetaTags(pageData) {
+  const { title, description, image, canonical, getHtmlMeta } = useMeta()
+
+  // Устанавливаем значения
+  title.value = pageData.title
+  description.value = pageData.description
+  image.value = pageData.image
+  canonical.value = pageData.url
+
+  // Генерируем HTML строку
+  const metaHtml = getHtmlMeta()
+
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>${pageData.title}</title>
+        ${metaHtml}
+      </head>
+      <body>
+        <!-- контент -->
+      </body>
+    </html>
+  `
+}
+```
+
+### Управление индексацией для разных окружений
+
+```html
+<script setup>
+import { useMeta } from '@dxtmisha/functional'
+import { onMounted } from 'vue'
+
+const { robots } = useMeta()
+
+onMounted(() => {
+  // Запрещаем индексацию на dev/staging окружениях
+  const isProduction = import.meta.env.PROD
+  robots.value = isProduction ? 'index, follow' : 'noindex, nofollow'
+})
+</script>
+```
+
+### Интеграция с многоязычностью
+
+```html
+<script setup>
+import { useMeta } from '@dxtmisha/functional'
+import { useI18n } from 'vue-i18n'
+import { watch } from 'vue'
+
+const { locale } = useI18n()
+const { meta, title, description } = useMeta()
+
+watch(locale, (newLocale) => {
+  // Обновляем локаль для Open Graph
+  const localeMap = {
+    'ru': 'ru_RU',
+    'en': 'en_US',
+    'de': 'de_DE'
+  }
+  meta.setLocale(localeMap[newLocale] || 'en_US')
+
+  // Обновляем контент мета-тегов
+  title.value = t('meta.title')
+  description.value = t('meta.description')
+}, { immediate: true })
+</script>
+```
+
+## Важные замечания
+
+### Singleton паттерн
+
+Композабл `useMeta` использует singleton паттерн, что означает, что все компоненты работают с единым экземпляром мета-тегов. Это полезно для:
+
+- **Согласованности** — изменения в одном компоненте отражаются везде
+- **Производительности** — нет дублирования экземпляров
+- **Простоты** — не нужно передавать состояние между компонентами
+
+```javascript
+// В любом компоненте приложения
+const { title } = useMeta()
+title.value = 'Новый заголовок'
+
+// В другом компоненте получим то же значение
+const { title: sameTitle } = useMeta()
+console.log(sameTitle.value) // 'Новый заголовок'
+```
+
+### Автоматическая синхронизация
+
+Все изменения реактивных свойств автоматически синхронизируются с DOM. Не нужно вызывать дополнительные методы:
+
+```javascript
+const { title, description } = useMeta()
+
+// Эти изменения сразу применяются в DOM
+title.value = 'Новый заголовок'
+description.value = 'Новое описание'
+```
+
+### Open Graph и Twitter Card
+
+При изменении `title`, `image` и `canonical` автоматически обновляются соответствующие теги Open Graph и Twitter Card. Для детальной настройки используйте методы `meta.getOg()` и `meta.getTwitter()`.
+
+
