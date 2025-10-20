@@ -8,5 +8,5 @@
  * @returns `true`, если выполняется в браузере, иначе `false`/ `true` if running in a browser, otherwise `false`
  */
 export function isDomRuntime(): boolean {
-  return typeof window !== 'undefined'
+  return typeof window !== 'undefined' && Boolean(window.document)
 }

@@ -177,7 +177,12 @@ export class MetaManager<
    */
   protected toHtmlString(name: Key): string {
     const content = encodeAttribute(this.items[name] ?? '')
-    return `<meta ${this.getAttributeName()}="${name}" content="${content}">`
+
+    if (content) {
+      return `<meta ${this.getAttributeName()}="${name}" content="${content}">`
+    }
+
+    return ''
   }
 
   /**
