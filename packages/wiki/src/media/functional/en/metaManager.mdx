@@ -1,0 +1,376 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Classes/MetaManager'/>
+
+# MetaManager Class
+
+A class for working with HTML meta tags with automatic DOM synchronization and safe attribute encoding. Provides reading, updating, and generating meta tags for SEO optimization and social media integration (Open Graph, Twitter Cards).
+
+## Key Features
+
+- **DOM Synchronization** — automatic meta tag updates in document head
+- **Dual Format Support** — works with both `name` and `property` attributes
+- **HTML Generation** — converts meta tags to HTML strings for server-side rendering
+- **Safe Encoding** — automatic escaping of special characters in attributes
+- **Type Safety** — TypeScript support with generics for type definitions
+- **Flexible API** — chainable methods for convenient usage
+- **SSR Compatible** — works in both browser and server environments
+- **Auto-initialization** — reads existing meta tags from DOM on construction
+
+## Constructor
+
+### `constructor`
+
+Creates a MetaManager instance with specified parameters and automatically reads current meta tags from DOM.
+
+**Parameters:**
+- `listMeta: string[]` — list of meta tag names to manage
+- `isProperty?: boolean` — use `property` attribute instead of `name` (default: `false`)
+
+```javascript
+import { MetaManager } from '@dxtmisha/functional'
+
+// Standard meta tags (name attribute)
+const meta = new MetaManager([
+  'description',
+  'keywords',
+  'author'
+])
+
+// Open Graph meta tags (property attribute)
+const ogMeta = new MetaManager([
+  'og:title',
+  'og:description',
+  'og:image',
+  'og:url'
+], true)
+
+// Twitter Cards
+const twitterMeta = new MetaManager([
+  'twitter:card',
+  'twitter:title',
+  'twitter:description',
+  'twitter:image'
+])
+```
+
+## Data Query Methods
+
+### `getListMeta`
+
+Returns the list of meta tag names being managed.
+
+**Returns:** `string[]` — array of meta tag names
+
+```javascript
+const meta = new MetaManager(['description', 'keywords', 'author'])
+
+const names = meta.getListMeta()
+// ['description', 'keywords', 'author']
+
+// Check if tag is managed
+const isManaged = names.includes('description') // true
+
+// Iterate managed tags
+names.forEach(name => {
+  console.log(`Managing: ${name}`)
+})
+```
+
+### `getItem`
+
+Gets the content of a meta tag by name from internal storage.
+
+**Parameters:**
+- `name: string` — meta tag name
+
+**Returns:** `string` — meta tag content (empty string if not set)
+
+```javascript
+const meta = new MetaManager(['description', 'keywords', 'author'])
+
+// Get meta description
+const description = meta.getItem('description')
+
+// Get keywords
+const keywords = meta.getItem('keywords')
+
+// Non-existent tag returns empty string
+const missing = meta.getItem('non-existent') // ''
+
+// Use in conditions
+if (meta.getItem('description')) {
+  console.log('Description is set')
+}
+```
+
+### `getItems`
+
+Returns all meta tags as an object.
+
+**Returns:** `Record<string, string | undefined>` — object with all meta tags
+
+```javascript
+const meta = new MetaManager(['description', 'keywords', 'author'])
+
+const allMeta = meta.getItems()
+// { description: '...', keywords: '...', author: '...' }
+
+// Check all meta tags
+Object.keys(allMeta).forEach(key => {
+  console.log(`${key}: ${allMeta[key]}`)
+})
+
+// Use in validation
+const hasAllTags = Object.values(allMeta).every(value => value !== '')
+
+// Export for logging
+console.log('Current meta state:', allMeta)
+```
+
+## Data Management Methods
+
+### `set`
+
+Sets the content of a meta tag in internal storage and updates or creates the corresponding meta element in DOM.
+
+**Parameters:**
+- `name: string` — meta tag name
+- `content: string` — meta tag content
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const meta = new MetaManager(['description', 'keywords', 'author'])
+
+// Set single meta tag
+meta.set('description', 'Website description')
+
+// Chain multiple updates
+meta
+  .set('description', 'My awesome website')
+  .set('keywords', 'web, development, javascript')
+  .set('author', 'John Doe')
+
+// Dynamic update
+const updateSEO = (pageData) => {
+  meta
+    .set('description', pageData.description)
+    .set('keywords', pageData.keywords)
+}
+
+// Remove meta tag
+meta.set('temporary', '')
+```
+
+### `setByList`
+
+Sets multiple meta tags from an object.
+
+**Parameters:**
+- `metaList: Record<string, string | undefined>` — object with meta tag names and content
+
+**Returns:** `this` — for method chaining
+
+```javascript
+const meta = new MetaManager(['description', 'keywords', 'author'])
+
+// Set multiple tags at once
+meta.setByList({
+  description: 'My awesome website',
+  keywords: 'web, development, javascript',
+  author: 'John Doe'
+})
+
+// Dynamic page updates
+const updatePageMeta = (page) => {
+  meta.setByList(page.meta)
+}
+
+// From API response
+fetch('/api/page-meta')
+  .then(res => res.json())
+  .then(data => meta.setByList(data))
+
+// Partial updates
+meta.setByList({
+  description: 'Updated description'
+  // Other tags remain unchanged
+})
+```
+
+### `html`
+
+Returns all meta tags as an HTML string with safe attribute encoding. Useful for server-side rendering.
+
+**Returns:** `string` — HTML string with meta tags
+
+```javascript
+const meta = new MetaManager(['description', 'keywords', 'author'])
+
+meta.setByList({
+  description: 'My website with "quotes" & special chars',
+  keywords: 'web, javascript',
+  author: 'John Doe'
+})
+
+const htmlString = meta.html()
+// <meta name="description" content="My website with &quot;quotes&quot; &amp; special chars">
+// <meta name="keywords" content="web, javascript">
+// <meta name="author" content="John Doe">
+
+// Use in SSR templates
+const htmlTemplate = `
+<!DOCTYPE html>
+<html>
+<head>
+  ${meta.html()}
+  <title>Page Title</title>
+</head>
+<body>...</body>
+</html>
+`
+
+// Express.js example
+app.get('/page', (req, res) => {
+  const meta = new MetaManager(['description', 'keywords'])
+  meta.setByList(req.pageData.meta)
+
+  res.send(`
+    <html>
+      <head>${meta.html()}</head>
+      <body>...</body>
+    </html>
+  `)
+})
+```
+
+## Practical Examples
+
+### SEO Management
+
+```javascript
+const seoMeta = new MetaManager([
+  'description',
+  'keywords',
+  'author',
+  'robots',
+  'viewport'
+])
+
+// Set SEO tags
+seoMeta.setByList({
+  description: 'Complete guide to web development',
+  keywords: 'web, html, css, javascript, tutorial',
+  author: 'WebDev Team',
+  robots: 'index, follow',
+  viewport: 'width=device-width, initial-scale=1.0'
+})
+
+// Update on route change
+router.on('change', (route) => {
+  seoMeta.setByList(route.meta)
+})
+```
+
+### Open Graph Integration
+
+```javascript
+const ogMeta = new MetaManager([
+  'og:title',
+  'og:description',
+  'og:image',
+  'og:url',
+  'og:type',
+  'og:site_name'
+], true)
+
+// Set Open Graph data
+ogMeta.setByList({
+  'og:title': 'Amazing Article Title',
+  'og:description': 'This article will blow your mind',
+  'og:image': 'https://example.com/image.jpg',
+  'og:url': 'https://example.com/article',
+  'og:type': 'article',
+  'og:site_name': 'My Website'
+})
+
+// For social media sharing
+const shareData = {
+  title: ogMeta.getItem('og:title'),
+  description: ogMeta.getItem('og:description'),
+  image: ogMeta.getItem('og:image')
+}
+```
+
+### Multi-Platform Meta Management
+
+```javascript
+// Create managers for different platforms
+const standardMeta = new MetaManager(['description', 'keywords'])
+const ogMeta = new MetaManager(['og:title', 'og:description', 'og:image'], true)
+const twitterMeta = new MetaManager(['twitter:card', 'twitter:title', 'twitter:description'])
+
+// Update all platforms
+const updateAllMeta = (data) => {
+  standardMeta.setByList({
+    description: data.description,
+    keywords: data.keywords
+  })
+
+  ogMeta.setByList({
+    'og:title': data.title,
+    'og:description': data.description,
+    'og:image': data.image
+  })
+
+  twitterMeta.setByList({
+    'twitter:card': 'summary_large_image',
+    'twitter:title': data.title,
+    'twitter:description': data.description
+  })
+}
+
+// Generate combined HTML for SSR
+const allMetaHTML = [
+  standardMeta.html(),
+  ogMeta.html(),
+  twitterMeta.html()
+].join('')
+```
+
+### Dynamic Page Updates
+
+```javascript
+const meta = new MetaManager(['description', 'keywords'])
+
+// Single Page Application
+const loadPage = async (pageId) => {
+  const pageData = await fetch(`/api/pages/${pageId}`).then(r => r.json())
+
+  // Update meta tags
+  meta.setByList(pageData.meta)
+
+  // Update title
+  document.title = pageData.title
+}
+
+// React/Vue integration
+useEffect(() => {
+  meta.set('description', page.description)
+  return () => {
+    // Cleanup if needed
+    meta.set('description', '')
+  }
+}, [page])
+```
+
+## Notes
+
+- The constructor automatically reads existing meta tags from DOM using the `update()` method
+- Methods that modify DOM check runtime environment with `isDomRuntime()` before accessing `document`
+- The `html()` method uses `encodeAttribute()` function to prevent XSS issues when injecting into SSR templates
+- Special characters in content are automatically escaped: `"` → `&quot;`, `&` → `&amp;`, etc.
+- When a meta tag doesn't exist in DOM, `set()` creates it in `document.head`
+- Empty strings are valid values and will update the meta tag content to empty
+- The class works seamlessly in both browser and Node.js (SSR) environments

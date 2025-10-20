@@ -45,6 +45,21 @@ applyTemplate('This is [bold]bold text[/bold]', { bold: '<b>[content]</b>' }) //
 applyTemplate('Text with [red]colored[/red] word', { red: '<span style="color:red">[content]</span>' })
 ```
 
+## `encodeAttribute`
+
+Encodes special characters in a string for safe use in HTML attributes. Converts characters `&`, `<`, `>`, `"`, `'` into corresponding HTML entities to prevent XSS attacks and ensure correct display.
+
+**Parameters:**
+- `text: string` — text to encode
+
+```javascript
+import { encodeAttribute } from '@dxtmisha/functional'
+
+encodeAttribute('Hello & "World"') // 'Hello &amp; &quot;World&quot;'
+encodeAttribute('<script>alert("XSS")</script>') // '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
+encodeAttribute("It's a test") // 'It&#39;s a test'
+```
+
 ## `replaceRecursive`
 
 Recursively replaces values in an object or array.

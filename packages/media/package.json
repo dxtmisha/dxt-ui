@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/media",
   "private": false,
-  "version": "0.3.3",
+  "version": "0.4.0",
   "type": "module",
   "description": "Media resources library for DXT UI containing country flags and geographical data",
   "keywords": [

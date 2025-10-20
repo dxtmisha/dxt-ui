@@ -45,6 +45,21 @@ applyTemplate('Это [bold]жирный текст[/bold]', { bold: '<b>[conten
 applyTemplate('Text with [red]colored[/red] word', { red: '<span style="color:red">[content]</span>' })
 ```
 
+## `encodeAttribute`
+
+Кодирует специальные символы в строке для безопасного использования в HTML-атрибутах. Преобразует символы `&`, `<`, `>`, `"`, `'` в соответствующие HTML-сущности для предотвращения XSS-атак и корректного отображения.
+
+**Параметры:**
+- `text: string` — текст для кодирования
+
+```javascript
+import { encodeAttribute } from '@dxtmisha/functional'
+
+encodeAttribute('Hello & "World"') // 'Hello &amp; &quot;World&quot;'
+encodeAttribute('<script>alert("XSS")</script>') // '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
+encodeAttribute("It's a test") // 'It&#39;s a test'
+```
+
 ## `replaceRecursive`
 
 Рекурсивно заменяет значения в объекте или массиве.

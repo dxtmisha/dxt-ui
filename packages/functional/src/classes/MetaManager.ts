@@ -1,172 +1,195 @@
 import { createElement } from '../functions/createElement'
+import { encodeAttribute } from '../functions/encodeAttribute'
+import { forEach } from '../functions/forEach'
 import { isDomRuntime } from '../functions/isDomRuntime'
-import { isFilled } from '../functions/isFilled'
-import { toArray } from '../functions/toArray.ts'
 
-export enum MetaOgProps {
-  TITLE = 'og:title',
-  DESCRIPTION = 'og:description',
-  IMAGE = 'og:image',
-  URL = 'og:url',
-  TYPE = 'og:type',
-  SITE_NAME = 'og:site_name',
-  LOCALE = 'og:locale'
+type MetaList<T extends readonly string[]> = {
+  [K in T[number]]?: string
 }
-
-export enum MetaTwitterProps {
-  CARD = 'twitter:card',
-  TITLE = 'twitter:title',
-  DESCRIPTION = 'twitter:description',
-  IMAGE = 'twitter:image',
-  SITE = 'twitter:site',
-  CREATOR = 'twitter:creator'
-}
-
-export type MetaTwitterCardItem = 'summary' | 'summary_large_image' | 'app' | 'player'
-export type MetaOgType = 'website' | 'article' | 'product' | 'video.movie' | 'music.song' | 'book' | 'profile'
 
 /**
- * Class for managing meta tags and SEO.
+ * Class for working with meta tags.
  *
- * Класс для управления мета-тегами и SEO.
+ * Класс для управления мета-тегами.
  */
-export class MetaManager {
-  protected static suffix?: string
+export class MetaManager<
+  T extends readonly string[],
+  Key extends keyof MetaList<T> = keyof MetaList<T>
+> {
+  protected readonly items: MetaList<T> = {}
 
-  static getMeta(name: string): string {
-    return this.findMetaElement(name)?.content ?? ''
-  }
-
-  static getTitle(): string {
-    if (!isDomRuntime()) {
-      return ''
-    }
-
-    return document.title
-  }
-
-  static getDescription(): string {
-    return this.getMeta('description')
-  }
-
-  static getImage(): string {
-    return this.getMeta('og:image')
-  }
-
-  static getKeywords(): string {
-    return this.getMeta('keywords')
-  }
-
-  static setMeta(
-    name: string,
-    content: string,
-    isProperty: boolean = false
+  /**
+   * Creates an instance of MetaManager.
+   *
+   * Создает экземпляр MetaManager.
+   * @param listMeta list of meta tag names to manage / список имен мета-тегов для управления
+   * @param isProperty use 'property' attribute instead of 'name' / использовать атрибут 'property' вместо 'name'
+   */
+  constructor(
+    protected readonly listMeta: T,
+    protected readonly isProperty: boolean = false
   ) {
-    const element = this.findMetaElement(name)
-
-    if (element) {
-      element.content = content
-    } else if (isDomRuntime()) {
-      const options = { content }
-
-      if (isProperty) {
-        Object.assign(options, { property: name })
-      } else {
-        Object.assign(options, { name })
-      }
-
-      createElement<HTMLMetaElement>(
-        document.head,
-        'meta',
-        options
-      )
-    }
-  }
-
-  static setSuffix(suffix?: string) {
-    this.suffix = suffix
-  }
-
-  static setTitle(title: string) {
-    if (!isDomRuntime()) {
-      return
-    }
-
-    const fullTitle = `${title}${this.addSuffix()}`
-
-    document.title = fullTitle
-    this.setMeta('og:title', fullTitle, true)
-    this.setMeta('twitter:title', fullTitle)
-  }
-
-  static setDescription(description: string) {
-    this.setMeta('description', description)
-    this.setMeta('og:description', description, true)
-    this.setMeta('twitter:description', description)
-  }
-
-  static setImages(url: string) {
-    this.setMeta('og:image', url, true)
-    this.setMeta('twitter:image', url)
-  }
-
-  static setKeywords(keywords: string | string[]) {
-    this.setMeta(
-      'keywords',
-      toArray(keywords).join(', ')
-    )
-  }
-
-  static setOgUrl(url: string) {
-    this.setMeta('og:url', url, true)
+    this.update()
   }
 
   /**
-   * Set Open Graph content type (e.g., "website", "article", "product").
+   * Returns the list of meta tag names.
    *
-   * Устанавливает тип контента для Open Graph (например, "website", "article", "product").
-   * @param type content type / тип контента
+   * Возвращает список имен мета-тегов.
    */
-  static setOgType(type: MetaOgType) {
-    this.setMeta('og:type', type, true)
+  getListMeta(): T {
+    return this.listMeta
   }
 
-  static setOgSiteName(siteName: string) {
-    this.setMeta('og:site_name', siteName, true)
+  /**
+   * Get the content of a meta tag by name.
+   *
+   * Получает содержимое мета-тега по имени.
+   * @param name meta tag name / имя мета-тега
+   */
+  getItem(name: Key): string {
+    return this.items[name] ?? ''
   }
 
-  static setOgLocale(locale: string) {
-    this.setMeta('og:locale', locale, true)
+  /**
+   * Returns all meta tags.
+   *
+   * Возвращает все мета-теги.
+   */
+  getItems(): MetaList<T> {
+    return this.items
   }
 
-  // Twitter Cards
-  static setTwitterCard(card: MetaTwitterCardItem) {
-    this.setMeta('twitter:card', card)
+  /**
+   * Returns all meta tags as HTML string.
+   *
+   * Возвращает все мета-теги в виде HTML-строки.
+   */
+  html(): string {
+    const code = forEach(
+      this.listMeta as any,
+      name => this.toHtmlString(name as any as Key)
+    )
+
+    return code.join('')
   }
 
-  static setTwitterSite(site: string) {
-    this.setMeta('twitter:site', site)
+  /**
+   * Sets the content of a meta tag.
+   *
+   * Устанавливает содержимое мета-тега.
+   * @param name meta tag name / имя мета-тега
+   * @param content meta tag content / содержимое мета-тега
+   */
+  set(name: Key, content: string): this {
+    this
+      .setItem(name, content)
+      .setMeta(name)
+
+    return this
   }
 
-  static setTwitterCreator(creator: string) {
-    this.setMeta('twitter:creator', creator)
+  /**
+   * Sets multiple meta tags from an object.
+   *
+   * Устанавливает несколько мета-тегов из объекта.
+   * @param metaList object with meta tag names and content / объект с именами и содержимым мета-тегов
+   */
+  setByList(metaList: MetaList<T>): this {
+    forEach(
+      metaList,
+      (content, name) =>
+        this.set(name as any as Key, String(content))
+    )
+
+    return this
   }
 
-  protected static addSuffix(): string {
-    if (isFilled(this.suffix)) {
-      return ` - ${this.suffix}`
-    }
-
-    return ''
+  /**
+   * Returns the attribute name for meta tags.
+   *
+   * Возвращает имя атрибута для мета-тегов.
+   */
+  protected getAttributeName(): string {
+    return this.isProperty ? 'property' : 'name'
   }
 
-  protected static findMetaElement(name: string): HTMLMetaElement | undefined {
+  /**
+   * Finds a meta element in the DOM.
+   *
+   * Находит мета-элемент в DOM.
+   * @param name meta tag name / имя мета-тега
+   */
+  protected findMetaElement(name: string): HTMLMetaElement | undefined {
     if (!isDomRuntime()) {
       return undefined
     }
 
-    return document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`)
-      || document.querySelector<HTMLMetaElement>(`meta[property="${name}"]`)
-      || undefined
+    const selector = `meta[${this.getAttributeName()}="${name}"]`
+
+    return document.querySelector<HTMLMetaElement>(selector) || undefined
+  }
+
+  /**
+   * Sets the content of a meta tag in internal storage.
+   *
+   * Устанавливает содержимое мета-тега во внутреннем хранилище.
+   * @param name meta tag name / имя мета-тега
+   * @param content meta tag content / содержимое мета-тега
+   */
+  protected setItem(name: Key, content: string): this {
+    this.items[name] = content
+    return this
+  }
+
+  /**
+   * Sets or creates a meta tag in the DOM.
+   *
+   * Устанавливает или создает мета-тег в DOM.
+   * @param name meta tag name / имя мета-тега
+   */
+  protected setMeta(name: Key): this {
+    const element = this.findMetaElement(name)
+    const content = this.items[name] ?? ''
+
+    if (element) {
+      element.content = content
+    } else if (isDomRuntime()) {
+      const options: Record<string, string> = { content }
+
+      if (this.isProperty) {
+        options.property = name
+      } else {
+        options.name = name
+      }
+
+      createElement(document.head, 'meta', options)
+    }
+
+    return this
+  }
+
+  /**
+   * Converts meta tag to HTML string.
+   *
+   * Преобразует мета-тег в HTML-строку.
+   * @param name meta tag name / имя мета-тега
+   */
+  protected toHtmlString(name: Key): string {
+    const content = encodeAttribute(this.items[name] ?? '')
+    return `<meta ${this.getAttributeName()}="${name}" content="${content}">`
+  }
+
+  /**
+   * Updates meta tags data from the DOM.
+   *
+   * Обновляет данные мета-тегов из DOM.
+   */
+  protected update(): this {
+    this.listMeta.forEach((name) => {
+      this.items[name as any as Key] = this.findMetaElement(name)?.content ?? ''
+    })
+
+    return this
   }
 }
