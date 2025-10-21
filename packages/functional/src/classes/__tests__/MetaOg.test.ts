@@ -502,7 +502,7 @@ describe('MetaOg', () => {
 
       const elements = document.querySelectorAll('meta[property="og:title"]')
       expect(elements.length).toBe(1)
-      expect(elements[0].getAttribute('content')).toBe('Third')
+      expect(elements?.[0]?.getAttribute('content')).toBe('Third')
     })
 
     it('should not create duplicate tags', () => {
@@ -516,7 +516,7 @@ describe('MetaOg', () => {
 
       const elements = document.querySelectorAll('meta[property="og:title"]')
       expect(elements.length).toBe(1)
-      expect(elements[0].getAttribute('content')).toBe('Updated')
+      expect(elements?.[0]?.getAttribute('content')).toBe('Updated')
     })
   })
 

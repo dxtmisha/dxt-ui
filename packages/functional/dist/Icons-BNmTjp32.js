@@ -35,7 +35,7 @@ function X(s, t = "=", e = "&") {
   ).sort().join(e);
 }
 function g() {
-  return typeof window < "u";
+  return typeof window < "u" && !!window.document;
 }
 function C(s) {
   return s == null;

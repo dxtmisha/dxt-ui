@@ -48,7 +48,7 @@ export class LibraryExport {
    * @param path filename/ имя файла
    */
   protected isExport(path: string | string[]): boolean {
-    return !this.getFile(path).match(UI_FLAG_NOT_EXPORT)
+    return !PropertiesFile.joinPath(path).match('.test.') && !this.getFile(path).match(UI_FLAG_NOT_EXPORT)
   }
 
   /**
