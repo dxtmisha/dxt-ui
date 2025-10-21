@@ -1,9 +1,17 @@
 {
+  "paddingX": {
+    "_type": "var"
+  },
+  "paddingY": {
+    "_type": "var"
+  },
   "#title": {},
   "#header": {},
-  "#body": {},
+  "#information": {},
+  "#icon": {},
   "#label": {},
   "#description": {},
+  "#body": {},
   "#footer": {},
   "~success": {},
   "~error": {},

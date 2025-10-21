@@ -75,6 +75,17 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
+  error: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+
+      description: {
+        en: 'Sets the element to an error state',
+        ru: 'Переводит элемент в состояние ошибки'
+      }
+    }
+  },
   focus: {
     type: StorybookControl.boolean,
     options: {
@@ -188,6 +199,17 @@ export const wikiStatus: StorybookArgsToList = {
       description: {
         en: 'Selected state of the element',
         ru: 'Состояние выбора элемента'
+      }
+    }
+  },
+  success: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+
+      description: {
+        en: 'Sets the element to a success state',
+        ru: 'Переводит элемент в состояние успеха'
       }
     }
   },

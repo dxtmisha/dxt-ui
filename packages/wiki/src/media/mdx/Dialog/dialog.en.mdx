@@ -1,0 +1,66 @@
+Component for creating modal dialog windows with icon support, titles, and predefined action buttons.
+
+Dialog is a specialized wrapper over the Modal component with additional capabilities for displaying informational messages, confirmations, and notifications. The component automatically displays an information block with icon, title, and description, and provides predefined OK and Close buttons. Supports success and error states with automatic icon switching, image positioning, and full content customization.
+
+**Key features:**
+
+- Modal window with centering and background blocking
+- Icon support with automatic switching for success/error states
+- Information block with icon, title, and description
+- Predefined OK and Close buttons with customization options
+- Image positioning at top or left
+- Integration with Window, Bars, Actions, Icon components
+- Closing by ESC key and overlay click
+- ok and close events for handling user actions
+- Slot support for content customization
+- Responsive design for mobile devices
+
+**Common use cases:**
+
+- User action confirmations
+- Success or error notifications
+- Informational messages
+- Warnings and alerts
+- Simple forms with minimal fields
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const showSuccess = ref(false)
+
+const handleConfirm = () => {
+  console.log('Action confirmed')
+  isOpen.value = false
+  showSuccess.value = true
+}
+</script>
+
+<template>
+  <button @click="isOpen = true">Open Dialog</button>
+
+  <Dialog
+    v-model:open="isOpen"
+    label="Confirmation"
+    description="Are you sure you want to perform this action?"
+    @ok="handleConfirm"
+    @close="isOpen = false"
+  >
+    <template #default>
+      <div class="additional-info">
+        Additional information can be placed here.
+      </div>
+    </template>
+  </Dialog>
+
+  <Dialog
+    v-model:open="showSuccess"
+    :success="true"
+    label="Success"
+    description="Your action has been completed successfully."
+    :buttonClose="null"
+  />
+</template>
+```
+

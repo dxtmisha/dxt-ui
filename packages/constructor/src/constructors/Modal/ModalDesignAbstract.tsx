@@ -24,16 +24,18 @@ import {
  */
 export abstract class ModalDesignAbstract<
   COMP extends ModalComponents,
+  EMITS extends ModalEmits,
   EXPOSE extends ModalExpose,
+  SLOTS extends ModalSlots,
   CLASSES extends ModalClasses,
   P extends ModalPropsBasic,
   ITEM extends ModalAbstract = ModalAbstract
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
-    ModalEmits,
+    EMITS,
     EXPOSE,
-    ModalSlots,
+    SLOTS,
     CLASSES,
     P
   > {
@@ -48,7 +50,7 @@ export abstract class ModalDesignAbstract<
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ModalEmits, P>
+    options?: ConstrOptions<COMP, EMITS, P>
   ) {
     super(
       name,

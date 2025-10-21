@@ -138,6 +138,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  closeButton: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Shows close button in header',
+        ru: 'Показывает кнопку закрытия в заголовке'
+      }
+    }
+  },
   container: {
     type: StorybookControl.select,
     options: {
@@ -434,6 +444,26 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Mirrors the icon depending on site direction (RTL/LTR)',
         ru: 'Зеркально отражает иконку в зависимости от направления сайта (RTL/LTR)'
+      }
+    }
+  },
+  iconError: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon displayed in error state',
+        ru: 'Задает иконку, отображаемую в состоянии ошибки'
+      }
+    }
+  },
+  iconSuccess: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sets icon displayed in success state',
+        ru: 'Задает иконку, отображаемую в состоянии успеха'
       }
     }
   },

@@ -1,0 +1,40 @@
+{
+  "main": "{d.dialog}",
+  "#information": {
+    "gap": "{sys.spacing.sm}"
+  },
+  "#label": {
+    "link|font": "{font.titleLarge}"
+  },
+  "padding": {
+    "link|padding": "{?modal.padding}"
+  },
+  "~paddingByIndent": {
+    "paddingX": "{grid.paddingX}",
+    "paddingY": "{grid.paddingY}",
+    "_default": true
+  },
+  "width": {
+    "sm": {
+      "=?window-width": "{ref.spacing.96}"
+    },
+    "md": {
+      "=?window-width": "{ref.spacing.128}"
+    },
+    "lg": {
+      "=?window-width": "{ref.spacing.160}"
+    },
+    "auto": {},
+    "_default": "md"
+  },
+  "~success": {
+    "#icon": {
+      "color": "{sys.palette.success}"
+    }
+  },
+  "~error": {
+    "#icon": {
+      "color": "{sys.palette.error}"
+    }
+  }
+}

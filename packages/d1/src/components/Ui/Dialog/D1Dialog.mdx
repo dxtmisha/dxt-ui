@@ -1,0 +1,63 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Dialog from './D1Dialog.stories'
+import {DialogWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Dialog}/>
+<StorybookMain
+    name={DialogWikiStorybook.getName()}
+    description={DialogWikiStorybook.getDescription()}
+    story={Dialog.Dialog}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Dialog'} type={'dialog'}/>
+
+<StorybookDescriptions componentName={'Dialog'} type={'states'}/>
+<Canvas of={Dialog.DialogStates}/>
+
+<StorybookDescriptions componentName={'Dialog'} type={'imagePosition'}/>
+<Canvas of={Dialog.DialogImagePosition}/>
+
+<StorybookDescriptions componentName={'Dialog'} type={'customButtons'}/>
+<Canvas of={Dialog.DialogCustomButtons}/>
+
+<StorybookDescriptions componentName={'Window'} type={'v-model'}/>
+<Canvas of={Dialog.DialogVModel}/>
+
+<StorybookDescriptions componentName={'Modal'} type={'differences'}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Dialog'} type={'event.dialog'}/>
+<StorybookDescriptions componentName={'Window'} type={'event.window'}/>
+<StorybookDescriptions componentName={'Event'} type={'bars'}/>
+<StorybookDescriptions componentName={'Event'} type={'actions'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Window'} type={'expose'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={Dialog.DialogAllSlots}/>
+<StorybookDescriptions componentName={'Dialog'} type={'slots'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

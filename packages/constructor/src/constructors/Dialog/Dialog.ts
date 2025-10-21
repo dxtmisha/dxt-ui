@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { computed, readonly, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp, getBind, Translate } from '@dxtmisha/functional'
 
 import { ModalAbstract } from '../Modal/ModalAbstract'
@@ -63,34 +63,62 @@ export class Dialog extends ModalAbstract {
         return {
           list: [
             getBind(
-              refs.buttonClose,
+              props.buttonClose,
               {
                 label: Translate.getSync('global-close'),
                 value: 'close',
                 class: this.windowClasses.get().close
-              }
+              },
+              'label'
             ),
             getBind(
-              refs.buttonOk,
+              props.buttonOk,
               {
                 label: Translate.getSync('global-ok'),
                 value: 'ok'
-              }
+              },
+              'label'
             )
           ],
-          align: 'auto'
+          align: 'center'
         }
       })
     )
 
     this.icon = new IconInclude(
+      readonly<any>({ icon: this.iconValue }),
+      className,
+      components,
+      refs.iconAttrs
+    )
+    this.label = new LabelInclude(
       props,
       className,
-      components
+      undefined,
+      slots,
+      undefined,
+      undefined,
+      true
     )
-    this.label = new LabelInclude(props, className, undefined, slots)
     this.description = new DescriptionInclude(props, className, slots)
 
     this.windowClasses = new WindowClassesInclude(classDesign)
   }
+
+  /**
+   * Returns the icon for display.
+   *
+   * Возвращает иконку для отображения.
+   */
+  protected readonly iconValue = computed(() => {
+    if (this.props.success) {
+      return this.props.iconSuccess
+    }
+
+    if (this.props.error) {
+      return this.props.iconError
+    }
+
+    return this.props.icon
+  })
 }

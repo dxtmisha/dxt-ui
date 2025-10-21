@@ -11,7 +11,9 @@ import {
 import {
   type ActionSheetClasses,
   type ActionSheetComponents,
-  type ActionSheetExpose
+  type ActionSheetEmits,
+  type ActionSheetExpose,
+  type ActionSheetSlots
 } from './types'
 
 /**
@@ -24,7 +26,9 @@ export class ActionSheetDesign<
   P extends ActionSheetPropsBasic
 > extends ModalDesignAbstract<
     COMP,
+    ActionSheetEmits,
     EXPOSE,
+    ActionSheetSlots,
     CLASSES,
     P,
     ActionSheet

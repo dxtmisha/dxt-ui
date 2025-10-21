@@ -4,8 +4,11 @@
 @mixin mixinDialog {
   @include modal.mixinModal;
 
-  &__label,
-  &__description {
+  &__information {
+    @include ui.flexY;
+    @include ui.paddingX(ui.v('??paddingX'));
+    @include ui.paddingY(ui.v('??paddingY'));
+
     text-align: center;
   }
 

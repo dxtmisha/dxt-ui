@@ -62,16 +62,6 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
-  'window.closeButton': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Shows close button in header',
-        ru: 'Показывает кнопку закрытия в заголовке'
-      }
-    }
-  },
   'window.closeMobileHide': {
     type: StorybookControl.boolean,
     options: {

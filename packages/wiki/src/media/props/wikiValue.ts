@@ -97,6 +97,28 @@ export const wikiValue: StorybookArgsToList = {
       ]
     }
   },
+  buttonClose: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      type: ['string', 'ConstrBind<ButtonPropsBasic>', 'null'],
+      description: {
+        en: 'Close button configuration (string for label or full button props object, null to hide)',
+        ru: 'Конфигурация кнопки закрытия (строка для метки или объект свойств кнопки, null для скрытия)'
+      }
+    }
+  },
+  buttonOk: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      type: ['string', 'ConstrBind<ButtonPropsBasic>', 'null'],
+      description: {
+        en: 'OK button configuration (string for label or full button props object, null to hide)',
+        ru: 'Конфигурация кнопки OK (строка для метки или объект свойств кнопки, null для скрытия)'
+      }
+    }
+  },
   caption: {
     type: StorybookControl.string,
     options: {

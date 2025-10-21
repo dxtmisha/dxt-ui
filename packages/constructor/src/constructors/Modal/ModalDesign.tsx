@@ -7,7 +7,9 @@ import {
 import {
   type ModalClasses,
   type ModalComponents,
-  type ModalExpose
+  type ModalEmits,
+  type ModalExpose,
+  type ModalSlots
 } from './types'
 
 /**
@@ -20,7 +22,9 @@ export class ModalDesign<
   P extends ModalPropsBasic
 > extends ModalDesignAbstract<
     COMP,
+    ModalEmits,
     EXPOSE,
+    ModalSlots,
     CLASSES,
     P,
     Modal

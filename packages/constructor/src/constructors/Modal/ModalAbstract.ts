@@ -30,7 +30,7 @@ export abstract class ModalAbstract {
    * @param extraBars additional parameters for BarsInclude/ дополнительные параметры для BarsInclude
    * @param extraActions additional parameters for ActionsInclude/ дополнительные параметры для ActionsInclude
    */
-  constructor(
+  protected constructor(
     protected readonly props: ModalProps,
     protected readonly refs: ToRefs<ModalProps>,
     protected readonly element: Ref<HTMLElement | undefined>,

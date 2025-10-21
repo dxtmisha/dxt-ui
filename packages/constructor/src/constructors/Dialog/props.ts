@@ -6,8 +6,8 @@ import type { IconPropsBasic, IconValue } from '../Icon'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ButtonPropsBasic } from '../Button'
 import type { ActionsPropsBasic, ActionsPropsInclude } from '../Actions'
-import type { LabelProps } from '../../types/labelTypes.ts'
-import type { DescriptionProps } from '../../types/descriptionTypes.ts'
+import type { LabelProps } from '../../types/labelTypes'
+import type { DescriptionProps } from '../../types/descriptionTypes'
 
 interface DialogPropsToken {
   // :type [!] System label / Системная метка
@@ -43,6 +43,8 @@ export interface DialogPropsBasic<
 
   iconSuccess?: IconValue<Icon>
   iconError?: IconValue<Icon>
+
+  iconAttrs?: ConstrBind<Icon>
 }
 
 /**
@@ -59,6 +61,8 @@ export interface DialogProps extends DialogPropsBasic, DialogPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsDialog = {
+  barsBackHide: true,
+  barsHide: true,
   ...{
     // :default [!] System label / Системная метка
     imagePosition: 'top'

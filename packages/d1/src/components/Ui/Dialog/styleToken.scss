@@ -1,0 +1,78 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Dialog/style" as Dialog;
+
+@include ui.initDesignBasic('d1.dialog') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Dialog.mixinDialog;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &__information {
+      gap: var(--d1-sys-spacing-sm);
+    }
+    
+    &__label {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-lg)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-lg)});
+      letter-spacing: var(--d1-sys-letterSpacing-none);
+    }
+    
+    &--success {
+      & .d1-dialog__icon {
+        @include ui.color(#{var(--d1-sys-palette-success)});
+      }
+    }
+    
+    &--error {
+      & .d1-dialog__icon {
+        @include ui.color(#{var(--d1-sys-palette-error)});
+      }
+    }
+    
+    &--padding {
+      &--sm {
+        --d1-dialog-paddingX: var(--d1-sys-spacing-sm);
+        --d1-dialog-paddingY: var(--d1-sys-spacing-xs);
+      }
+      
+      &--md {
+        --d1-dialog-paddingX: var(--d1-sys-spacing-md);
+        --d1-dialog-paddingY: var(--d1-sys-spacing-sm);
+      }
+      
+      &--lg {
+        --d1-dialog-paddingX: var(--d1-sys-spacing-lg);
+        --d1-dialog-paddingY: var(--d1-sys-spacing-md);
+      }
+    }
+    
+    &--paddingByIndent {
+      --d1-dialog-paddingX: var(--d1-grid-paddingX);
+      --d1-dialog-paddingY: var(--d1-grid-paddingY);
+    }
+    
+    &--width {
+      &--sm {
+        --d1-window-width: var(--d1-ref-spacing-96);
+      }
+      
+      &--md {
+        --d1-window-width: var(--d1-ref-spacing-128);
+      }
+      
+      &--lg {
+        --d1-window-width: var(--d1-ref-spacing-160);
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

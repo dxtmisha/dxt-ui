@@ -68,8 +68,8 @@ export class ActionsInclude<
     return {
       ...props,
 
-      list: this.props.actionsList,
-      listSecondary: this.props.actionsSecondary,
+      list: this.props.actionsList ?? props.list,
+      listSecondary: this.props.actionsSecondary ?? props.listSecondary,
       onClick: this.onClick
     }
   })

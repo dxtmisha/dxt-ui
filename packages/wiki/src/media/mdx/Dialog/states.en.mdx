@@ -1,0 +1,58 @@
+## Success and error states
+
+Properties `success`, `error`, `iconSuccess` and `iconError` are designed to control the visual state of the dialog and automatically display corresponding icons.
+
+**Properties:**
+
+- `success` — sets the dialog to success state with automatic icon
+- `error` — sets the dialog to error state with automatic icon
+- `iconSuccess` — sets the icon for success state (default 'check_circle')
+- `iconError` — sets the icon for error state (default 'error')
+
+Properties work together: if `success` or `error` are not set or equal to `false`, the dialog is displayed in a neutral state. When `success="true"` is activated, the component automatically displays the success icon from `iconSuccess`. When `error="true"` is activated, the error icon from `iconError` is displayed. Properties `iconSuccess` and `iconError` allow overriding standard icons with custom ones, providing flexibility in visual design of dialog messages.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const showSuccess = ref(false)
+const showError = ref(false)
+</script>
+
+<template>
+  <!-- Success dialog -->
+  <Dialog
+    v-model:open="showSuccess"
+    :success="true"
+    label="Operation completed"
+    description="Your changes have been saved successfully."
+  />
+
+  <!-- Error dialog -->
+  <Dialog
+    v-model:open="showError"
+    :error="true"
+    label="Operation failed"
+    description="Unable to complete the operation. Please try again."
+  />
+
+  <!-- With custom icons -->
+  <Dialog
+    v-model:open="showSuccess"
+    :success="true"
+    iconSuccess="done_all"
+    label="All done"
+    description="Process completed successfully."
+  />
+
+  <!-- Error with custom icon -->
+  <Dialog
+    v-model:open="showError"
+    :error="true"
+    iconError="warning"
+    label="Warning"
+    description="Issues detected during data processing."
+  />
+</template>
+```
+

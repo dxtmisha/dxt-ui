@@ -22,7 +22,12 @@ export type DialogComponents = ModalComponents & IconComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type DialogEmits = ModalEmits
+export type DialogEmits
+  = ModalEmits
+    & {
+      ok: () => void
+      close: () => void
+    }
 
 /**
  * Type describing available properties.
@@ -52,9 +57,11 @@ export type DialogClasses = {
   // :classes [!] System label / Системная метка
   title: string
   header: string
-  body: string
+  information: string
+  icon: string
   label: string
   description: string
+  body: string
   footer: string
   // :classes [!] System label / Системная метка
 }

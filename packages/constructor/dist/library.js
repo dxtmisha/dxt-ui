@@ -1,6 +1,6 @@
-import { computed as r, toRefs as k, watch as v, ref as o } from "vue";
-import { isFilled as n, render as c, RouterItemRef as x, getExp as I, isNumber as E, toNumberByMax as N, GeoRef as B, isFunction as F, toCamelCase as M, toCamelCaseFirst as T, createElement as C, anyToString as p, executeFunction as S, isString as L, toNumber as g, isArray as R, isObject as f, toArray as $, setValues as A, getRef as m, Translate as D } from "@dxtmisha/functional";
-class G {
+import { computed as r, toRefs as I, watch as y, isRef as E, isReadonly as B, ref as o } from "vue";
+import { isFilled as n, render as c, RouterItemRef as N, getExp as F, isNumber as M, toNumberByMax as T, GeoRef as C, toCamelCaseFirst as g, toCamelCase as m, isFunction as S, createElement as R, anyToString as p, executeFunction as L, isString as $, toNumber as v, isArray as A, isObject as f, toArray as D, setValues as O, getRef as b, Translate as V } from "@dxtmisha/functional";
+class H {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -40,7 +40,7 @@ class G {
     ] : [];
   }
 }
-class H {
+class q {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -79,7 +79,7 @@ class H {
     ] : [];
   }
 }
-class q {
+class j {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -110,7 +110,7 @@ class q {
    */
   isDisabledOrUndefined = r(() => this.isDisabled.value || void 0);
 }
-class V {
+class P {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -118,7 +118,7 @@ class V {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(t, e, s) {
-    this.props = t, this.enabled = e, this.emits = s, this.refs = t ? k(t) : void 0;
+    this.props = t, this.enabled = e, this.emits = s, this.refs = t ? I(t) : void 0;
   }
   refs;
   /**
@@ -177,7 +177,7 @@ class V {
    * Изменение ссылки через router
    */
   toRouter() {
-    return this.props?.to ? (x.push(this.props?.to), !0) : !1;
+    return this.props?.to ? (N.push(this.props?.to), !0) : !1;
   }
   /**
    * Triggers the click event
@@ -190,7 +190,7 @@ class V {
     this.emits && (this.emits("click", t, e), this.emits("clickLite", e));
   }
 }
-class b {
+class k {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -202,8 +202,8 @@ class b {
    * @param alternativeSlots alternative slots/ альтернативные слоты
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    */
-  constructor(t, e, s, i, l, h, d, y) {
-    this.props = t, this.className = e, this.classesExtra = s, this.slots = i, this.elementsExtra = l, this.labelReplacing = h, this.alternativeSlots = d, this.skeleton = y;
+  constructor(t, e, s, i, l, h, d, x) {
+    this.props = t, this.className = e, this.classesExtra = s, this.slots = i, this.elementsExtra = l, this.labelReplacing = h, this.alternativeSlots = d, this.skeleton = x;
   }
   /** Label presence check/ Проверка наличия метки */
   is = r(() => this.props.label || this.labelReplacing?.value ? !0 : this.slots ? this.alternativeSlots ? "label" in this.slots : "default" in this.slots : !1);
@@ -280,7 +280,7 @@ class b {
     return [];
   }
 }
-class j extends b {
+class U extends k {
   /**
    * Constructor for the LabelHighlightInclude class.
    *
@@ -314,7 +314,7 @@ class j extends b {
   getLabel = () => {
     const t = this.props;
     if (t.highlight && t.highlight.length >= this.getLengthStart() && t.label) {
-      const e = `${this.className}__highlight`, s = t.label.toString(), i = I(t.highlight, "i");
+      const e = `${this.className}__highlight`, s = t.label.toString(), i = F(t.highlight, "i");
       if (s.match(i))
         return s.replace(i, (l) => `<span class="${e}">${l}</span>`);
       if (n(t.value) && t.value.toString().match(i))
@@ -330,7 +330,7 @@ class j extends b {
     return this.props.highlightLengthStart ?? 2;
   }
 }
-class P extends b {
+class z extends k {
   /**
    * Constructor for working with text that has maximum values.
    *
@@ -361,16 +361,16 @@ class P extends b {
    */
   getNumber() {
     const t = this.props;
-    if (t.label && E(t.label))
-      return N(
+    if (t.label && M(t.label))
+      return T(
         t.label,
         t.labelMax,
         t.formatting,
-        B.getLanguage().value
+        C.getLanguage().value
       ).toString();
   }
 }
-class z {
+class Y {
   /**
    * Constructor
    * @param index The index key for the model property/ Ключ индекса для свойства модели
@@ -378,10 +378,51 @@ class z {
    * @param syncValue Reactive value to synchronize/ Реактивное значение для синхронизации
    */
   constructor(t, e, s) {
-    this.index = t, this.emits = e, this.syncValue = s, s && v(s, (i) => {
+    this.index = t, this.emits = e, this.syncValue = s, s && y(s, (i) => {
       this.emit(i);
     }, { immediate: !0 });
   }
+  /**
+   * Type guard to check if syncValue is a mutable Ref.
+   * Returns true if syncValue is a reference and not readonly.
+   *
+   * Проверка типа, является ли syncValue изменяемым Ref.
+   * Возвращает true, если syncValue является ссылкой и не readonly.
+   * @returns Type predicate indicating syncValue is a mutable Ref/ Предикат типа, указывающий что syncValue - изменяемый Ref
+   */
+  isValue() {
+    return E(this.syncValue) && !B(this.syncValue);
+  }
+  /**
+   * Generates binding object for v-model integration.
+   * Creates properties for two-way data binding with model and update handlers.
+   *
+   * Генерирует объект привязок для интеграции v-model.
+   * Создает свойства для двусторонней привязки данных с обработчиками модели и обновления.
+   * @returns Object with model value and update handlers/ Объект со значением модели и обработчиками обновления
+   */
+  getBinds() {
+    if (this.isValue()) {
+      const t = g(this.index);
+      return {
+        [`model${t}`]: this.syncValue.value,
+        [`onUpdate:${m(this.index)}`]: this.update,
+        [`onUpdate:model${t}`]: this.update
+      };
+    }
+    return {};
+  }
+  /**
+   * Updates the synchronized value.
+   * Sets the value of the reactive reference if it's a mutable Ref.
+   *
+   * Обновляет синхронизированное значение.
+   * Устанавливает значение реактивной ссылки, если это изменяемый Ref.
+   * @param value The new value to set/ Новое значение для установки
+   */
+  update = (t) => {
+    this.isValue() && (this.syncValue.value = t);
+  };
   /**
    * Emits an event to update the model value.
    * Triggers the corresponding update event with the new value.
@@ -391,10 +432,10 @@ class z {
    * @param value The new value to set/ Новое значение для установки
    */
   emit(t) {
-    F(this.emits) && (this.emits(`update:${M(this.index)}`, t), this.emits(`update:model${T(this.index)}`, t));
+    S(this.emits) && (this.emits(`update:${m(this.index)}`, t), this.emits(`update:model${g(this.index)}`, t));
   }
 }
-class U {
+class Z {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -434,7 +475,7 @@ class U {
     ] : [];
   }
 }
-class Y {
+class J {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -474,7 +515,7 @@ class Y {
     ] : [];
   }
 }
-class Z {
+class K {
   item = o(!1);
   /**
    * Toggles the values.
@@ -485,7 +526,7 @@ class Z {
     return this.item.value = !this.item.value, this;
   }
 }
-class J {
+class Q {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -502,11 +543,11 @@ class J {
     return t === "password" && this.visibility?.item.value ? "text" : t ?? "text";
   });
 }
-const O = {
+const _ = {
   email: "[\\S]+@[\\S]{2,}\\.[\\w]{2,}",
   password: "[0-9a-zA-Z\\-!@#$%^&*]+"
 };
-class K {
+class W {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -520,10 +561,10 @@ class K {
     if (this.props.pattern)
       return this.props.pattern;
     if (this.type)
-      return O?.[this.type.item.value];
+      return _?.[this.type.item.value];
   });
 }
-class Q {
+class X {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -583,7 +624,7 @@ class Q {
     ];
   }
 }
-class W {
+class tt {
   /** Change state flag/ Флаг состояния изменения */
   item = o(!1);
   /**
@@ -619,7 +660,7 @@ class W {
     this.item.value || this.set(!0);
   }
 }
-class X {
+class et {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -658,7 +699,7 @@ class X {
         return s;
   }
 }
-class tt {
+class st {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -722,7 +763,7 @@ class u {
    * @param code object for error codes/ объект для работы с кодами ошибок
    */
   constructor(t, e = u.getGroupDefault(), s) {
-    this.pattern = t, this.group = e, this.code = s, this.input = C(
+    this.pattern = t, this.group = e, this.code = s, this.input = R(
       void 0,
       "input",
       this.getAttributes()
@@ -770,9 +811,9 @@ class u {
   getAttributes() {
     const t = this.pattern;
     if (n(t)) {
-      const e = S(t);
+      const e = L(t);
       if (n(e))
-        return L(e) ? { pattern: e } : e;
+        return $(e) ? { pattern: e } : e;
     }
     return {};
   }
@@ -785,7 +826,7 @@ class u {
     return "check";
   }
 }
-class et {
+class it {
   /**
    * Constructor
    * @param props input data /<br>входные данные
@@ -794,7 +835,7 @@ class et {
    * @param original original values /<br>оригинальные значения
    */
   constructor(t, e, s, i) {
-    this.props = t, this.refs = e, this.element = s, this.original = i, this.item.value = this.getOriginal(), v([
+    this.props = t, this.refs = e, this.element = s, this.original = i, this.item.value = this.getOriginal(), y([
       e.value,
       e.modelValue
     ], this.update);
@@ -815,7 +856,7 @@ class et {
    * Returns the current value, converted to a number/
    * Возвращает текущее значение, преобразованное в номер
    */
-  number = r(() => this.boolean.value ? g(this.string.value) : 0);
+  number = r(() => this.boolean.value ? v(this.string.value) : 0);
   /** Returns the current value of type string/ Возвращает текущее значение типа string */
   string = r(() => p(this.item.value));
   /** Returns the current value of type boolean/ Возвращает текущее значение типа boolean */
@@ -823,7 +864,7 @@ class et {
   /** Returns the length of the entered value/ Возвращает длину введенного значения */
   length = r(() => {
     const t = this.item.value;
-    return R(t) ? t.length : f(t) ? Object.keys(t).length : this.string.value.length ?? 0;
+    return A(t) ? t.length : f(t) ? Object.keys(t).length : this.string.value.length ?? 0;
   });
   /**
    * Returns the current value as an array.
@@ -831,7 +872,7 @@ class et {
    * Возвращает текущее значение в виде массива.
    */
   getToArray() {
-    return $(this.item.value);
+    return D(this.item.value);
   }
   /**
    * Changes the value.
@@ -841,12 +882,12 @@ class et {
    */
   set(t) {
     if (this.isDifference(t)) {
-      this.item.value = A(
+      this.item.value = O(
         this.item.value,
         t,
         {
           multiple: this.props.multiple,
-          maxlength: g(this.props.maxlength)
+          maxlength: v(this.props.maxlength)
         }
       );
       const e = this.element?.getElement();
@@ -928,7 +969,7 @@ class et {
    * Очисти все значения до оригинальных.
    */
   clear() {
-    return this.item.value = m(this.original), this.element?.clear(), this.hasEdit.value = !1, this.isFull.value = !0, this;
+    return this.item.value = b(this.original), this.element?.clear(), this.hasEdit.value = !1, this.isFull.value = !0, this;
   }
   /**
    * Is the selected type a checkbox.
@@ -954,7 +995,7 @@ class et {
    * Возвращает оригинальное значение.
    */
   getOriginal() {
-    return this.props.value || this.props.modelValue || m(this.original);
+    return this.props.value || this.props.modelValue || b(this.original);
   }
   /**
    * Changes the values to the original ones.
@@ -974,7 +1015,7 @@ class et {
     return t !== void 0 && p(t) !== this.string.value;
   }
 }
-class st {
+class rt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1007,7 +1048,7 @@ class st {
    * Возвращает текст ошибки валидации
    */
   getValidationMessage() {
-    return this.is() ? f(this.props.match) && this.props.match?.validationMessage ? this.props.match.validationMessage : D.getSync("Your entries must match.") : "";
+    return this.is() ? f(this.props.match) && this.props.match?.validationMessage ? this.props.match.validationMessage : V.getSync("Your entries must match.") : "";
   }
   /**
    * Checks value against external element
@@ -1029,7 +1070,7 @@ class st {
     }
   }
 }
-class it {
+class at {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1142,28 +1183,28 @@ class it {
     return this.input.value.check(t);
   }
 }
-const rt = (a) => `${a}-a--static`;
+const lt = (a) => `${a}-a--static`;
 export {
-  G as CaptionInclude,
-  H as DescriptionInclude,
-  q as EnabledInclude,
-  V as EventClickInclude,
-  Q as FieldAttributesInclude,
-  W as FieldChangeInclude,
-  X as FieldCodeInclude,
-  tt as FieldElementInclude,
+  H as CaptionInclude,
+  q as DescriptionInclude,
+  j as EnabledInclude,
+  P as EventClickInclude,
+  X as FieldAttributesInclude,
+  tt as FieldChangeInclude,
+  et as FieldCodeInclude,
+  st as FieldElementInclude,
   u as FieldInputCheckInclude,
-  st as FieldMatchInclude,
-  K as FieldPatternInclude,
-  J as FieldTypeInclude,
-  et as FieldValueInclude,
-  Z as FieldVisibilityInclude,
-  it as InputValidation,
-  j as LabelHighlightInclude,
-  b as LabelInclude,
-  P as LabelNumberInclude,
-  z as ModelInclude,
-  U as PrefixInclude,
-  Y as SuffixInclude,
-  rt as getClassTegAStatic
+  rt as FieldMatchInclude,
+  W as FieldPatternInclude,
+  Q as FieldTypeInclude,
+  it as FieldValueInclude,
+  K as FieldVisibilityInclude,
+  at as InputValidation,
+  U as LabelHighlightInclude,
+  k as LabelInclude,
+  z as LabelNumberInclude,
+  Y as ModelInclude,
+  Z as PrefixInclude,
+  J as SuffixInclude,
+  lt as getClassTegAStatic
 };
