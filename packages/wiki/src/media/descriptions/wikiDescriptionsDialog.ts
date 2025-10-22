@@ -57,6 +57,42 @@ export const wikiDescriptionsDialog: StorybookComponentsDescriptionItem = {
     `,
   stories: [
     {
+      id: 'DialogStates',
+      name: {
+        en: 'Success and error states',
+        ru: 'Состояния успеха и ошибки'
+      },
+      setup: `
+      return {
+        openSuccess: ref(false),
+        openError: ref(false)
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex">
+          <DesignComponent
+            :success="true"
+            label="Operation Successful"
+            description="Your changes have been saved successfully."
+          >
+            <template #control="{binds}">
+              <button class="wiki-storybook-button" v-bind="binds">Success Dialog</button>
+            </template>
+          </DesignComponent>
+
+          <DesignComponent
+            :error="true"
+            label="Operation Failed"
+            description="An error occurred while processing your request. Please try again."
+          >
+            <template #control="{binds}">
+              <button class="wiki-storybook-button" v-bind="binds">Error Dialog</button>
+            </template>
+          </DesignComponent>
+        </div>
+      `
+    },
+    {
       id: 'DialogVModel',
       name: {
         en: 'Two-way binding (v-model)',
@@ -76,59 +112,6 @@ export const wikiDescriptionsDialog: StorybookComponentsDescriptionItem = {
           description="Are you sure you want to proceed with this action?"
         >
           <div class="wiki-storybook-item--padding">Additional content can be placed here</div>
-        </DesignComponent>
-      `
-    },
-    {
-      id: 'DialogStates',
-      name: {
-        en: 'Success and error states',
-        ru: 'Состояния успеха и ошибки'
-      },
-      setup: `
-      return {
-        openSuccess: ref(false),
-        openError: ref(false)
-      }
-      `,
-      template: `
-        <div class="wiki-storybook-flex">
-          <button class="wiki-storybook-button" @click="openSuccess = true">
-            Success Dialog ({{ openSuccess }})
-          </button>
-          <button class="wiki-storybook-button" @click="openError = true">
-            Error Dialog ({{ openError }})
-          </button>
-        </div>
-
-        <DesignComponent
-          v-model:open="openSuccess"
-          :success="true"
-          label="Operation Successful"
-          description="Your changes have been saved successfully."
-        >
-          <div class="wiki-storybook-item--padding">
-            <div class="wiki-storybook-info">
-              <strong>Success State</strong>
-              <p>When the <code>success</code> prop is set to <code>true</code>, the dialog automatically displays a success icon (typically a check circle). This visual feedback helps users understand that their action completed successfully.</p>
-              <p>The success icon is controlled by the <code>iconSuccess</code> prop, which defaults to 'check_circle' but can be customized to any icon from your icon library.</p>
-            </div>
-          </div>
-        </DesignComponent>
-
-        <DesignComponent
-          v-model:open="openError"
-          :error="true"
-          label="Operation Failed"
-          description="An error occurred while processing your request. Please try again."
-        >
-          <div class="wiki-storybook-item--padding">
-            <div class="wiki-storybook-info">
-              <strong>Error State</strong>
-              <p>When the <code>error</code> prop is set to <code>true</code>, the dialog automatically displays an error icon. This provides immediate visual feedback that something went wrong.</p>
-              <p>The error icon is controlled by the <code>iconError</code> prop, which defaults to 'error' but can be customized. This helps maintain consistency in error communication across your application.</p>
-            </div>
-          </div>
         </DesignComponent>
       `
     },

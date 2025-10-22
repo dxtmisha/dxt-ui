@@ -148,9 +148,9 @@
         --d1-icon-width: var(--d1-ref-spacing-18);
         
         font-family: var(--d1-sys-font-family-basic), sans-serif;
-        @include ui.fontSize(#{var(--d1-sys-font-size-headlineSmall)});
+        @include ui.fontSize(#{var(--d1-sys-font-size-headlineMedium)});
         font-weight: var(--d1-sys-font-weight-regular);
-        @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineSmall)});
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineMedium)});
         letter-spacing: var(--d1-sys-letterSpacing-none);
       }
       

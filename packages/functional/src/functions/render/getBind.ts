@@ -16,7 +16,7 @@ import type { ConstrBind } from '../../types/constructorTypes'
  * исключить правило обязательности наличия главного ключа
  */
 export function getBind<T, R extends ItemList>(
-  value: T | R | undefined,
+  value: T | R | undefined | null,
   nameExtra: ItemList | string = {},
   name = 'value',
   except: boolean = false

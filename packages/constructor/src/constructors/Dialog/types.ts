@@ -25,8 +25,8 @@ export type DialogComponents = ModalComponents & IconComponentInclude
 export type DialogEmits
   = ModalEmits
     & {
-      ok: () => void
-      close: () => void
+      ok: []
+      close: []
     }
 
 /**

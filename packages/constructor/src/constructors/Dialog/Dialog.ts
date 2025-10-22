@@ -60,26 +60,37 @@ export class Dialog extends ModalAbstract {
       })),
       undefined,
       computed(() => {
-        return {
-          list: [
+        const list = []
+
+        if (props.buttonClose !== null) {
+          list.push(
             getBind(
               props.buttonClose,
               {
                 label: Translate.getSync('global-close'),
                 value: 'close',
-                class: this.windowClasses.get().close
-              },
-              'label'
-            ),
-            getBind(
-              props.buttonOk,
-              {
-                label: Translate.getSync('global-ok'),
-                value: 'ok'
+                class: this.windowClasses.get().close,
+                onClick: () => this.emits?.('close')
               },
               'label'
             )
-          ],
+          )
+        }
+
+        if (props.buttonOk !== null) {
+          list.push(getBind(
+            props.buttonOk,
+            {
+              label: Translate.getSync('global-ok'),
+              value: 'ok',
+              onClick: () => this.emits?.('ok')
+            },
+            'label'
+          ))
+        }
+
+        return {
+          list,
           align: 'center'
         }
       })

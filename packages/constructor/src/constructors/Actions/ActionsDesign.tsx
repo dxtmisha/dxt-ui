@@ -141,6 +141,9 @@ export class ActionsDesign<
             children,
             'button',
             toBinds(
+              {
+                onClick: this.item.event.onClick
+              },
               this.props.buttonAttrs,
               item,
               {

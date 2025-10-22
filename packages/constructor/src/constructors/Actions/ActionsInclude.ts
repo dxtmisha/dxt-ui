@@ -52,8 +52,8 @@ export class ActionsInclude<
   readonly is = computed(() => Boolean(
     !this.props.actionsHide
     && (
-      this.props.actionsList
-      || this.props.actionsSecondary
+      this.binds.value.list
+      || this.binds.value.listSecondary
     )
   ))
 
