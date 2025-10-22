@@ -11,4 +11,4 @@ import { ConstrBind } from '../../types/constructorTypes';
  * @param except exclude the rule requiring the presence of a primary key/
  * исключить правило обязательности наличия главного ключа
  */
-export declare function getBind<T, R extends ItemList>(value: T | R | undefined, nameExtra?: ItemList | string, name?: string, except?: boolean): ConstrBind<R>;
+export declare function getBind<T, R extends ItemList>(value: T | R | undefined | null, nameExtra?: ItemList | string, name?: string, except?: boolean): ConstrBind<R>;

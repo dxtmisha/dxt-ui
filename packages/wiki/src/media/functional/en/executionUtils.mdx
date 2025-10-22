@@ -6,6 +6,62 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 A set of functions for universal execution of synchronous and asynchronous operations.
 
+## `computedByLanguage`
+
+Creates a reactive computed property whose value depends on the current language and specified conditions.
+
+**Parameters:**
+- `getter: ComputedGetter<R>` — function that returns the main value depending on the language
+- `getterNone: R | (() => R)` — alternative value if conditions are not met or getter returns undefined (default undefined)
+- `conditions: () => boolean` — condition for calling the main getter (optional)
+- `debugOptions: DebuggerOptions` — Vue debug options (optional)
+
+```javascript
+import { computedByLanguage } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// Simple example with translations
+const title = computedByLanguage(
+  () => {
+    const lang = GeoRef.get().value
+    return lang === 'ru' ? 'Заголовок' : 'Title'
+  },
+  'Default Title'
+)
+
+// With condition
+const description = computedByLanguage(
+  () => {
+    const lang = GeoRef.get().value
+    const translations = {
+      ru: 'Описание на русском',
+      en: 'Description in English'
+    }
+    return translations[lang]
+  },
+  () => 'Default description',
+  () => showDescription.value // show condition
+)
+
+// Usage in component
+export default {
+  setup() {
+    const showText = ref(true)
+
+    const greeting = computedByLanguage(
+      () => {
+        const lang = GeoRef.get().value
+        return lang === 'ru' ? 'Привет, мир!' : 'Hello, world!'
+      },
+      'Greeting',
+      () => showText.value
+    )
+
+    return { greeting }
+  }
+}
+```
+
 ## `executeFunction`
 
 Executes a function and returns its result, or returns input data if it's not a function.
@@ -127,3 +183,5 @@ export default {
   }
 }
 ```
+
+

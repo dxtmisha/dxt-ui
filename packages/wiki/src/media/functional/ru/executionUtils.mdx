@@ -6,6 +6,62 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Набор функций для универсального выполнения синхронных и асинхронных операций.
 
+## `computedByLanguage`
+
+Создает реактивное вычисляемое свойство, значение которого зависит от текущего языка и заданных условий.
+
+**Параметры:**
+- `getter: ComputedGetter<R>` — функция, возвращающая основное значение в зависимости от языка
+- `getterNone: R | (() => R)` — альтернативное значение, если условия не выполнены или getter вернул undefined (по умолчанию undefined)
+- `conditions: () => boolean` — условие для вызова основного getter (опционально)
+- `debugOptions: DebuggerOptions` — опции отладки Vue (опционально)
+
+```javascript
+import { computedByLanguage } from '@dxtmisha/functional'
+import { ref } from 'vue'
+
+// Простой пример с переводами
+const title = computedByLanguage(
+  () => {
+    const lang = GeoRef.get().value
+    return lang === 'ru' ? 'Заголовок' : 'Title'
+  },
+  'Default Title'
+)
+
+// С условием
+const description = computedByLanguage(
+  () => {
+    const lang = GeoRef.get().value
+    const translations = {
+      ru: 'Описание на русском',
+      en: 'Description in English'
+    }
+    return translations[lang]
+  },
+  () => 'Описание по умолчанию',
+  () => showDescription.value // условие показа
+)
+
+// Использование в компоненте
+export default {
+  setup() {
+    const showText = ref(true)
+
+    const greeting = computedByLanguage(
+      () => {
+        const lang = GeoRef.get().value
+        return lang === 'ru' ? 'Привет, мир!' : 'Hello, world!'
+      },
+      'Greeting',
+      () => showText.value
+    )
+
+    return { greeting }
+  }
+}
+```
+
 ## `executeFunction`
 
 Выполняет функцию и возвращает её результат, или возвращает входные данные, если это не функция.
@@ -148,3 +204,5 @@ export default {
   }
 }
 ```
+
+
