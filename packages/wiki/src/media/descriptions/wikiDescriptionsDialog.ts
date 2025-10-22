@@ -177,12 +177,15 @@ export const wikiDescriptionsDialog: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Dialog'} type={'states'}/>
 <Canvas of={Component.DialogStates}/>
 
+<StorybookDescriptions componentName={'Dialog'} type={'buttons'}/>
+
 <StorybookDescriptions componentName={'Window'} type={'v-model'}/>
 <Canvas of={Component.DialogVModel}/>
 
 <StorybookDescriptions componentName={'Modal'} type={'differences'}/>
     `,
     events: `
+<StorybookDescriptions componentName={'Dialog'} type={'events'}/>
 <StorybookDescriptions componentName={'Dialog'} type={'event.dialog'}/>
 <StorybookDescriptions componentName={'Window'} type={'event.window'}/>
 <StorybookDescriptions componentName={'Event'} type={'bars'}/>
@@ -193,7 +196,9 @@ export const wikiDescriptionsDialog: StorybookComponentsDescriptionItem = {
     `,
     slots: `
 <Canvas of={Component.DialogAllSlots}/>
-<StorybookDescriptions componentName={'Dialog'} type={'slots'}/>
+<StorybookDescriptions componentName={'Slot'} type={'label'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+<StorybookDescriptions componentName={'Window'} type={'slots'}/>
     `
   }
 }

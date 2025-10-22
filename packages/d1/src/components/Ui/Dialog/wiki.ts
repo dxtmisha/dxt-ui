@@ -19,6 +19,7 @@ const propsNames: StorybookProps = [
   { name: 'barsList', type: 'Bars[\'bars\']' },
   { name: 'buttonClose', type: 'string | ConstrBind<ButtonProps>' },
   { name: 'buttonOk', type: 'string | ConstrBind<ButtonProps>' },
+  { name: 'clickOkAndClose', type: 'boolean' },
   { name: 'closeButton', type: 'boolean' },
   { name: 'description', type: 'string | number' },
   { name: 'disabled', type: 'boolean' },

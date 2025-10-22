@@ -1,0 +1,45 @@
+## Action buttons
+
+Properties `buttonOk`, `buttonClose`, and `actionsList` control action buttons in the dialog window through the built-in Actions component.
+
+**Properties:**
+
+- `buttonOk` — confirmation button
+- `buttonClose` — close button
+- `clickOkAndClose` — automatic dialog closing when OK button is clicked
+- `actionsList` — direct access to the Actions component button list
+
+With `clickOkAndClose="true"` OK button automatically closes the dialog after clicking.
+
+```html
+<script setup>
+import { ref } from 'vue'
+</script>
+
+<template>
+  <!-- Basic usage -->
+  <Dialog
+    buttonOk="Confirm"
+    buttonClose="Cancel"
+    label="Delete file"
+    @ok="handleDelete"
+  />
+
+  <!-- Hide close button -->
+  <Dialog
+    buttonOk="Got it"
+    :buttonClose="null"
+    label="Information"
+  />
+
+  <!-- Using actionsList -->
+  <Dialog
+    :actionsList="[
+      { label: 'Save', onClick: handleSave },
+      { label: 'Cancel', outline: true, onClick: handleCancel }
+    ]"
+    label="Save"
+  />
+</template>
+```
+

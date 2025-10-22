@@ -1,0 +1,63 @@
+
+### `ok`
+
+Событие срабатывает при клике на кнопку подтверждения (OK) в диалоговом окне.
+
+**Параметры:**
+Событие не передаёт параметров.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const showDialog = ref(false)
+
+const handleOk = () => {
+  console.log('Пользователь подтвердил действие')
+  showDialog.value = false
+  // Выполнение действия после подтверждения
+}
+</script>
+
+<template>
+  <Dialog
+    v-model:open="showDialog"
+    buttonOk="Подтвердить"
+    label="Удаление файла"
+    description="Вы действительно хотите удалить этот файл?"
+    @ok="handleOk"
+  />
+</template>
+```
+
+### `close`
+
+Событие срабатывает при клике на кнопку закрытия в диалоговом окне.
+
+**Параметры:**
+Событие не передаёт параметров.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const showDialog = ref(false)
+
+const handleClose = () => {
+  console.log('Пользователь отменил действие')
+  showDialog.value = false
+}
+</script>
+
+<template>
+  <Dialog
+    v-model:open="showDialog"
+    buttonClose="Отмена"
+    label="Подтверждение"
+    @close="handleClose"
+  />
+</template>
+```
+
+> Кнопки можно настроить через свойства `buttonOk` и `buttonClose`, либо скрыть, передав `null`.
+

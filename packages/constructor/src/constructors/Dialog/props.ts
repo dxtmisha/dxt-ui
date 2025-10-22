@@ -40,6 +40,7 @@ export interface DialogPropsBasic<
   buttonClose?: string | ConstrBind<Button> | null
 
   closeButton?: boolean
+  clickOkAndClose?: boolean
 
   iconSuccess?: IconValue<Icon>
   iconError?: IconValue<Icon>
@@ -63,6 +64,7 @@ export interface DialogProps extends DialogPropsBasic, DialogPropsToken {
 export const defaultsDialog = {
   barsBackHide: true,
   barsHide: true,
+  clickOkAndClose: true,
   ...{
     // :default [!] System label / Системная метка
     imagePosition: 'top'

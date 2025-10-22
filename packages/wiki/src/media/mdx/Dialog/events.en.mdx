@@ -1,0 +1,63 @@
+
+### `ok`
+
+Event fires when the confirmation (OK) button in the dialog is clicked.
+
+**Parameters:**
+Event does not pass parameters.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const showDialog = ref(false)
+
+const handleOk = () => {
+  console.log('User confirmed action')
+  showDialog.value = false
+  // Execute action after confirmation
+}
+</script>
+
+<template>
+  <Dialog
+    v-model:open="showDialog"
+    buttonOk="Confirm"
+    label="Delete file"
+    description="Are you sure you want to delete this file?"
+    @ok="handleOk"
+  />
+</template>
+```
+
+### `close`
+
+Event fires when the close button in the dialog is clicked.
+
+**Parameters:**
+Event does not pass parameters.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const showDialog = ref(false)
+
+const handleClose = () => {
+  console.log('User cancelled action')
+  showDialog.value = false
+}
+</script>
+
+<template>
+  <Dialog
+    v-model:open="showDialog"
+    buttonClose="Cancel"
+    label="Confirmation"
+    @close="handleClose"
+  />
+</template>
+```
+
+> Buttons can be configured via `buttonOk` and `buttonClose` properties, or hidden by passing `null`.
+

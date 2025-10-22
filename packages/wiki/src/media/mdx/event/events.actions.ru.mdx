@@ -1,0 +1,44 @@
+### `actions`
+
+Событие срабатывает при клике на кнопку действия в компоненте Actions, передавая оригинальное DOM событие и данные о клике.
+
+**Параметры:**
+- `event: MouseEvent` — оригинальное DOM событие мыши
+- `value: EventClickValue` — объект с данными о клике
+
+**Структура EventClickValue:**
+- `type: string` — тип действия/кнопки (например, `'confirm'`, `'cancel'`)
+- `value: any` — произвольное значение кнопки
+- `detail: Record<string, any> | undefined` — дополнительные данные события
+
+```html
+<script setup>
+const handleActions = (event, value) => {
+  console.log('DOM событие:', event)
+  console.log('Тип действия:', value.type)
+  console.log('Значение:', value.value)
+  console.log('Детали:', value.detail)
+
+  if (value.type === 'confirm') {
+    console.log('Нажата кнопка "Подтвердить"')
+  }
+}
+</script>
+
+<template>
+  <Actions @actions="handleActions" :list="[
+    { text: 'Отмена', type: 'cancel' },
+    { text: 'Подтвердить', type: 'confirm' }
+  ]" />
+</template>
+```
+
+### `actionsLite`
+
+Событие срабатывает при клике на кнопку действия в компоненте Actions, передавая только данные без оригинального DOM события (облегченная версия).
+
+**Параметры:**
+- `value: EventClickValue` — объект с данными о клике
+
+> Компонент Actions можно скрыть свойством `actionsHide`.
+

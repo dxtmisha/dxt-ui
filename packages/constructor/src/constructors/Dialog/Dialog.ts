@@ -83,6 +83,7 @@ export class Dialog extends ModalAbstract {
             {
               label: Translate.getSync('global-ok'),
               value: 'ok',
+              class: this.props.clickOkAndClose ? this.windowClasses.get().close : undefined,
               onClick: () => this.emits?.('ok')
             },
             'label'

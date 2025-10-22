@@ -1,0 +1,45 @@
+## Кнопки действий
+
+Свойства `buttonOk`, `buttonClose` и `actionsList` управляют кнопками действий в диалоговом окне через встроенный компонент Actions.
+
+**Свойства:**
+
+- `buttonOk` — кнопка подтверждения
+- `buttonClose` — кнопка закрытия
+- `clickOkAndClose` — автоматическое закрытие диалога при нажатии кнопки OK
+- `actionsList` — прямой доступ к списку кнопок компонента Actions
+
+При `clickOkAndClose="true"` кнопка OK автоматически закрывает диалог после нажатия.
+
+```html
+<script setup>
+import { ref } from 'vue'
+</script>
+
+<template>
+  <!-- Базовое использование -->
+  <Dialog
+    buttonOk="Подтвердить"
+    buttonClose="Отмена"
+    label="Удаление файла"
+    @ok="handleDelete"
+  />
+
+  <!-- Скрытие кнопки закрытия -->
+  <Dialog
+    buttonOk="Понятно"
+    :buttonClose="null"
+    label="Информация"
+  />
+
+  <!-- Использование actionsList -->
+  <Dialog
+    :actionsList="[
+      { label: 'Сохранить', onClick: handleSave },
+      { label: 'Отмена', outline: true, onClick: handleCancel }
+    ]"
+    label="Сохранение"
+  />
+</template>
+```
+
