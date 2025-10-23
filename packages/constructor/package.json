@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.24.0",
+  "version": "0.25.0",
   "type": "module",
   "description": "Vue component constructors for DXT UI design system - ready-to-use constructors with TypeScript support and SCSS styling",
   "keywords": [
@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor dialog"
+    "dxt-constructor": "dxt-constructor input"
   },
   "files": [
     "src/",
@@ -106,7 +106,9 @@
     "./Modal": "./src/constructors/Modal/index.ts",
     "./Modal/style": "./src/constructors/Modal/style.scss",
     "./Dialog": "./src/constructors/Dialog/index.ts",
-    "./Dialog/style": "./src/constructors/Dialog/style.scss"
+    "./Dialog/style": "./src/constructors/Dialog/style.scss",
+    "./Input": "./src/constructors/Input/index.ts",
+    "./Input/style": "./src/constructors/Input/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

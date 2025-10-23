@@ -58,26 +58,26 @@ export interface FieldPropsInclude<
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
 > extends Omit<
-  FieldPropsBasic<Icon, FieldLabel, FieldMessage, FieldCounter, Progress>,
-  // Status
-  'disabledPrevious'
-  | 'disabledNext'
+    FieldPropsBasic<Icon, FieldLabel, FieldMessage, FieldCounter, Progress>,
+    // Status
+    'disabledPrevious'
+    | 'disabledNext'
 
-  // Value
-  | 'to'
-  | 'value'
-  | 'maxlength'
+    // Value
+    | 'to'
+    | 'value'
+    | 'maxlength'
 
-  // Style
-  | 'counter'
-  | 'counterTemplate'
-  | 'counterTop'
-  | 'iconArrowLeft'
-  | 'iconArrowRight'
-  | 'iconPlus'
-  | 'iconMinus'
-  | 'iconClose'
-> {
+    // Style
+    | 'counter'
+    | 'counterTemplate'
+    | 'counterTop'
+    | 'iconArrowLeft'
+    | 'iconArrowRight'
+    | 'iconPlus'
+    | 'iconMinus'
+    | 'iconClose'
+  > {
   // Status
   focus?: boolean
   selected?: boolean

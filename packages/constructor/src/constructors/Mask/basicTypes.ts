@@ -1,5 +1,6 @@
-import type { GeoDate } from '@dxtmisha/functional'
+import type { ConstrBind, GeoDate } from '@dxtmisha/functional'
 import type { FieldPatternItemOrFunction, FieldValidationItem } from '../../types/fieldTypes'
+import type { MaskPropsBasic } from './props'
 
 export type MaskTypeItem = GeoDate
   | 'text'
@@ -43,6 +44,21 @@ export type MaskEventSelection = {
   start: number
   end: number
   length: number
+}
+
+export type MaskComponentInclude = {
+  mask?: object
+}
+
+export type MaskPropsInclude<
+  Mask extends MaskPropsBasic = MaskPropsBasic
+> = {
+  mask?: string | ConstrBind<Mask>
+  maskVisible?: boolean
+  maskNone?: boolean
+  currency?: string
+  currencyHide?: boolean
+  maskAttrs?: ConstrBind<Mask>
 }
 
 export const MASK_CHAR_DELETE = '~'
