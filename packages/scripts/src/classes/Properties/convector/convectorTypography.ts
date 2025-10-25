@@ -1,3 +1,5 @@
+// export:none
+
 import { isString } from '@dxtmisha/functional'
 
 import { type PropertyItemInput } from '../../../types/propertyTypes'

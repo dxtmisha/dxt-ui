@@ -1,3 +1,5 @@
+// export:none
+
 import * as sass from 'sass'
 
 import { PropertiesItems } from '../Properties/PropertiesItems'

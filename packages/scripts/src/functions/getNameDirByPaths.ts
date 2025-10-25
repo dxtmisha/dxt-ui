@@ -1,3 +1,5 @@
+// export:none
+
 import { PropertiesFile, type PropertiesFilePath } from '../classes/Properties/PropertiesFile'
 
 /**

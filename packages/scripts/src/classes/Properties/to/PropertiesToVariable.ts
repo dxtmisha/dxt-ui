@@ -1,3 +1,5 @@
+// export:none
+
 import { isFilled, isObjectNotArray, toKebabCase } from '@dxtmisha/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'

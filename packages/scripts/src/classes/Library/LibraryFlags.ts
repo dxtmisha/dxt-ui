@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, toCamelCaseFirst, toKebabCase } from '@dxtmisha/functional'
 import flags from '@dxtmisha/media/flags'
 

@@ -1,5 +1,5 @@
-import { AiAbstract } from './AiAbstract'
-import { GoogleGenAI } from '@google/genai'
+import { getConfigAi } from '../../functions/getConfigAi'
+import { AiGoogleLite } from './AiGoogleLite'
 
 /**
  * Google AI (Gemini) implementation of AiAbstract.
@@ -17,32 +17,10 @@ import { GoogleGenAI } from '@google/genai'
  * - Model must be set via setModel() before generate() / Модель нужно задать через setModel()
  * - Returns empty string if response is missing / Возвращает пустую строку при отсутствии результата
  */
-export class AiGoogle extends AiAbstract<GoogleGenAI> {
-  /**
-   * Initializes GoogleGenAI client instance.
-   *
-   * Инициализирует экземпляр клиента GoogleGenAI.
-   */
-  protected init(): void {
-    this.ai = new GoogleGenAI({ apiKey: this.key })
-  }
-
-  /**
-   * Performs content generation request and returns textual result.
-   *
-   * Выполняет запрос генерации контента и возвращает текстовый результат.
-   * @param model Model identifier / Идентификатор модели
-   * @param contents Composed contents for generation / Собранный контент для генерации
-   */
-  protected async response(
-    model: string,
-    contents: string
-  ): Promise<string> {
-    const response = await this.ai?.models.generateContent({
-      model,
-      contents
-    })
-
-    return response?.text ?? ''
+export class AiGoogle extends AiGoogleLite {
+  constructor() {
+    super(
+      ...getConfigAi()
+    )
   }
 }

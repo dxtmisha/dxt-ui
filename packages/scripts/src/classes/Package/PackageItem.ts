@@ -1,3 +1,5 @@
+// export:none
+
 import requirePath from 'path'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 

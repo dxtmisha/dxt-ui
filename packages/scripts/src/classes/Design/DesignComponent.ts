@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, isObjectNotArray, toArray, toKebabCase } from '@dxtmisha/functional'
 import { wikiDescriptions } from '@dxtmisha/wiki/media'
 import type { StorybookComponentsDescriptionItem } from '@dxtmisha/wiki'

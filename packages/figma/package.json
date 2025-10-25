@@ -6,7 +6,8 @@
   "description": "[description]",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vue-tsc -b && vite build --mode ui && vite build --mode code",
+    "build:watch": "vue-tsc -b && vite build --mode ui --watch && vite build --mode code --watch",
     "preview": "vite preview",
     "test": "vitest",
     "component": "dxt-component",

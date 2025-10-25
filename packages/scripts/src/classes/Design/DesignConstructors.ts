@@ -1,3 +1,5 @@
+// export:none
+
 import { isFilled } from '@dxtmisha/functional'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'

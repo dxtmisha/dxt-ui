@@ -1,3 +1,5 @@
+// export:none
+
 import { isFilled, replaceRecursive, toKebabCase } from '@dxtmisha/functional'
 import { getConstructorProperties } from '../../functions/getConstructorProperties'
 

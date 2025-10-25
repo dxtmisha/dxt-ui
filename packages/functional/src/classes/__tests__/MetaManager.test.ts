@@ -543,12 +543,12 @@ describe('MetaManager', () => {
   describe('SSR environment (without DOM)', () => {
     it('should work without DOM runtime', () => {
       // Сохраняем оригинальные глобальные объекты
-      const originalDocument = global.document
-      const originalWindow = global.window
+      const originalDocument = globalThis.document
+      const originalWindow = globalThis.window
 
       // Удаляем document и window для эмуляции SSR окружения
-      delete (global as any).document
-      delete (global as any).window
+      delete (globalThis as any).document
+      delete (globalThis as any).window
 
       try {
         // Создание менеджера без DOM
@@ -585,17 +585,17 @@ describe('MetaManager', () => {
       } finally {
         // Восстанавливаем глобальные объекты
         if (originalDocument) {
-          (global as any).document = originalDocument
+          (globalThis as any).document = originalDocument
         }
         if (originalWindow) {
-          (global as any).window = originalWindow
+          (globalThis as any).window = originalWindow
         }
       }
     })
 
     it('should generate valid HTML in SSR mode', () => {
-      const originalDocument = global.document
-      delete (global as any).document
+      const originalDocument = globalThis.document
+      delete (globalThis as any).document
 
       try {
         const ssrManager = new MetaManager(['description', 'keywords', 'robots'] as const)
@@ -621,14 +621,14 @@ describe('MetaManager', () => {
         expect(html).toContain('<meta name="robots" content="index, follow">')
       } finally {
         if (originalDocument) {
-          (global as any).document = originalDocument
+          (globalThis as any).document = originalDocument
         }
       }
     })
 
     it('should handle special characters in SSR mode', () => {
-      const originalDocument = global.document
-      delete (global as any).document
+      const originalDocument = globalThis.document
+      delete (globalThis as any).document
 
       try {
         const ssrManager = new MetaManager(['description'] as const)
@@ -648,14 +648,14 @@ describe('MetaManager', () => {
         expect(html).not.toContain('& <html>')
       } finally {
         if (originalDocument) {
-          (global as any).document = originalDocument
+          (globalThis as any).document = originalDocument
         }
       }
     })
 
     it('should support property attribute in SSR mode', () => {
-      const originalDocument = global.document
-      delete (global as any).document
+      const originalDocument = globalThis.document
+      delete (globalThis as any).document
 
       try {
         const ogManager = new MetaManager(['og:title', 'og:description'] as const, true)
@@ -675,14 +675,14 @@ describe('MetaManager', () => {
         expect(html).toContain('content="Open Graph Description"')
       } finally {
         if (originalDocument) {
-          (global as any).document = originalDocument
+          (globalThis as any).document = originalDocument
         }
       }
     })
 
     it('should not break when trying to update DOM in SSR', () => {
-      const originalDocument = global.document
-      delete (global as any).document
+      const originalDocument = globalThis.document
+      delete (globalThis as any).document
 
       try {
         const ssrManager = new MetaManager(['description'] as const)
@@ -700,14 +700,14 @@ describe('MetaManager', () => {
         expect(html).toContain('content="Test"')
       } finally {
         if (originalDocument) {
-          (global as any).document = originalDocument
+          (globalThis as any).document = originalDocument
         }
       }
     })
 
     it('should work with getItems in SSR mode', () => {
-      const originalDocument = global.document
-      delete (global as any).document
+      const originalDocument = globalThis.document
+      delete (globalThis as any).document
 
       try {
         const ssrManager = new MetaManager(['description', 'keywords'] as const)
@@ -725,14 +725,14 @@ describe('MetaManager', () => {
         })
       } finally {
         if (originalDocument) {
-          (global as any).document = originalDocument
+          (globalThis as any).document = originalDocument
         }
       }
     })
 
     it('should initialize with empty values in SSR mode', () => {
-      const originalDocument = global.document
-      delete (global as any).document
+      const originalDocument = globalThis.document
+      delete (globalThis as any).document
 
       try {
         const ssrManager = new MetaManager(['description', 'keywords', 'author'] as const)
@@ -748,14 +748,14 @@ describe('MetaManager', () => {
         expect(items.author).toBe('')
       } finally {
         if (originalDocument) {
-          (global as any).document = originalDocument
+          (globalThis as any).document = originalDocument
         }
       }
     })
 
     it('should support chaining in SSR mode', () => {
-      const originalDocument = global.document
-      delete (global as any).document
+      const originalDocument = globalThis.document
+      delete (globalThis as any).document
 
       try {
         const ssrManager = new MetaManager(['description', 'keywords', 'author'] as const)
@@ -771,14 +771,14 @@ describe('MetaManager', () => {
         expect(ssrManager.get('author')).toBe('Chain Author')
       } finally {
         if (originalDocument) {
-          (global as any).document = originalDocument
+          (globalThis as any).document = originalDocument
         }
       }
     })
 
     it('should handle complete SSR workflow', () => {
-      const originalDocument = global.document
-      delete (global as any).document
+      const originalDocument = globalThis.document
+      delete (globalThis as any).document
 
       try {
         // Создание менеджера на сервере
@@ -828,7 +828,7 @@ describe('MetaManager', () => {
         expect(htmlTemplate).toContain('Complete SSR page description')
       } finally {
         if (originalDocument) {
-          (global as any).document = originalDocument
+          (globalThis as any).document = originalDocument
         }
       }
     })

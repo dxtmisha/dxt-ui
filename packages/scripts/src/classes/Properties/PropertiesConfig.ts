@@ -1,3 +1,5 @@
+// export:none
+
 import { toPathStandardSep } from '../../functions/toPathStandardSep'
 
 import { PropertiesFile } from './PropertiesFile'

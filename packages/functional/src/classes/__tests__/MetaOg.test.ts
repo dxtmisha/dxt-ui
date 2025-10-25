@@ -522,8 +522,8 @@ describe('MetaOg', () => {
 
   describe('SSR compatibility', () => {
     it('should work without DOM runtime', () => {
-      const originalDocument = global.document
-      delete (global as any).document
+      const originalDocument = globalThis.document
+      delete (globalThis as any).document
 
       try {
         const ssrMetaOg = new MetaOg()
@@ -547,14 +547,14 @@ describe('MetaOg', () => {
         expect(html).toContain('property="og:url"')
       } finally {
         if (originalDocument) {
-          (global as any).document = originalDocument
+          (globalThis as any).document = originalDocument
         }
       }
     })
 
     it('should generate valid HTML for SSR', () => {
-      const originalDocument = global.document
-      delete (global as any).document
+      const originalDocument = globalThis.document
+      delete (globalThis as any).document
 
       try {
         const ssrMetaOg = new MetaOg()
@@ -571,7 +571,7 @@ describe('MetaOg', () => {
         expect(html).toContain('property="og:description" content="SSR Page Description"')
       } finally {
         if (originalDocument) {
-          (global as any).document = originalDocument
+          (globalThis as any).document = originalDocument
         }
       }
     })

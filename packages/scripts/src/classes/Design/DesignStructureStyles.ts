@@ -1,3 +1,5 @@
+// export:none
+
 import { StylesProperties } from '../Styles/StylesProperties'
 import { DesignStructureItemAbstract } from './DesignStructureItemAbstract'
 

@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, isFilled, isObjectNotArray, replaceRecursive } from '@dxtmisha/functional'
 
 import { PropertiesKeys } from './PropertiesKeys'

@@ -1,3 +1,5 @@
+// export:none
+
 import { isString, toCamelCase } from '@dxtmisha/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'

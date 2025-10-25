@@ -1,3 +1,5 @@
+// export:none
+
 import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
 import { getNameDirByPaths } from '../../functions/getNameDirByPaths'

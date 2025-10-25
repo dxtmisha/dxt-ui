@@ -1,3 +1,5 @@
+// export:none
+
 import { isObject, toArray } from '@dxtmisha/functional'
 
 import { type PropertyItemInput } from '../../../types/propertyTypes'

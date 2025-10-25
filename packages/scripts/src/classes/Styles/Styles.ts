@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, isFilled, isObjectNotArray } from '@dxtmisha/functional'
 
 import { Properties } from '../Properties/Properties'

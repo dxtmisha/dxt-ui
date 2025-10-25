@@ -1,3 +1,5 @@
+// export:none
+
 import { isObjectNotArray, toCamelCase } from '@dxtmisha/functional'
 
 import { PropertiesTool } from '../../Properties/PropertiesTool'

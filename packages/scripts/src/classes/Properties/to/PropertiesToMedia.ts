@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, isObjectNotArray, toCamelCase } from '@dxtmisha/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'

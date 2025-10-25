@@ -1,5 +1,3 @@
-import { PropertiesConfig } from '../Properties/PropertiesConfig'
-
 /**
  * Abstract AI base class providing common mechanics for AI integrations.
  * Handles prompt accumulation, model selection and unified response workflow.
@@ -21,14 +19,8 @@ import { PropertiesConfig } from '../Properties/PropertiesConfig'
  * - response(): конкретный вызов модели
  */
 export abstract class AiAbstract<AI = any> {
-  /** API key / API ключ */
-  protected key: string
-
   /** AI client instance / Экземпляр AI-клиента */
   protected ai?: AI
-
-  /** Active model id / Идентификатор активной модели */
-  protected model: string
 
   /** Prompt prefix / Префикс prompt */
   protected prompt: string = ''
@@ -37,10 +29,13 @@ export abstract class AiAbstract<AI = any> {
    * Constructor initializes implementation specific resources.
    *
    * Конструктор инициализирует ресурсы конкретной реализации.
+   * @param key - API key / API ключ
+   * @param model - initial model id / начальный идентификатор модели
    */
-  constructor() {
-    this.key = PropertiesConfig.getAiKey()
-    this.model = PropertiesConfig.getAiModel()
+  constructor(
+    protected key: string,
+    protected model: string
+  ) {
   }
 
   /**

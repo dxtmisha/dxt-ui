@@ -1,3 +1,5 @@
+// export:none
+
 import { getComponentPaths } from '../../functions/getComponentPaths'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'

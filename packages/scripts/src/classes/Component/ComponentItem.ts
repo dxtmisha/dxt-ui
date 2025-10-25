@@ -1,3 +1,5 @@
+// export:none
+
 import { toKebabCase } from '@dxtmisha/functional'
 import { getComponentPaths } from '../../functions/getComponentPaths'
 

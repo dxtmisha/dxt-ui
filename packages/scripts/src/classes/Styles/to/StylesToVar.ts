@@ -1,3 +1,5 @@
+// export:none
+
 import { isObjectNotArray } from '@dxtmisha/functional'
 
 import { PropertiesItems } from '../../Properties/PropertiesItems'

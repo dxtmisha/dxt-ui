@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach } from '@dxtmisha/functional'
 
 import {

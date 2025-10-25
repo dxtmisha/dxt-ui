@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, isObjectNotArray } from '@dxtmisha/functional'
 
 import {

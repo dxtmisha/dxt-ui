@@ -1,7 +1,8 @@
 {
   "extends": "@dxtmisha/configuration/tsconfig/tsconfig.app.json",
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo"
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "types": ["@figma/plugin-typings"]
   },
   "include": [
     "src/**/*.ts",

@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, isFilled, isObjectNotArray, toCamelCase } from '@dxtmisha/functional'
 
 import { DesignStructureItemAbstract } from './DesignStructureItemAbstract'

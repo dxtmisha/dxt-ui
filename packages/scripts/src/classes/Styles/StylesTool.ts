@@ -1,3 +1,5 @@
+// export:none
+
 import { strFill } from '@dxtmisha/functional'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'

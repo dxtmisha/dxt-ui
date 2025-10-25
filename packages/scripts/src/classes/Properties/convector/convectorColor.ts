@@ -1,3 +1,5 @@
+// export:none
+
 import {
   type PropertyItemInput,
   PropertyKey

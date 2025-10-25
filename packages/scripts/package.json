@@ -49,6 +49,7 @@
   },
   "exports": {
     ".": "./src/library.ts",
+    "./ai": "./src/library-ai.ts",
     "./config": "./src/config.ts",
     "./properties.json": "./src/media/properties.json"
   },

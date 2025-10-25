@@ -1,3 +1,5 @@
+// export:none
+
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 
 import { PropertyKey, PropertyType } from '../../../types/propertyTypes'

@@ -1,3 +1,5 @@
+// export:none
+
 import { isObjectNotArray, splice } from '@dxtmisha/functional'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'

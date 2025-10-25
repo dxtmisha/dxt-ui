@@ -1,3 +1,5 @@
+// export:none
+
 import { forEach, getColumn, isObjectNotArray, toCamelCase } from '@dxtmisha/functional'
 
 import { PropertiesConfig } from '../PropertiesConfig'

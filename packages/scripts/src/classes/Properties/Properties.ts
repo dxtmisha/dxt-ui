@@ -1,3 +1,5 @@
+// export:none
+
 import { replaceRecursive } from '@dxtmisha/functional'
 
 import { PropertiesCache } from './PropertiesCache'

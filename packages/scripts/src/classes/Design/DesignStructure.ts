@@ -1,3 +1,5 @@
+// export:none
+
 import { toCamelCase, toCamelCaseFirst } from '@dxtmisha/functional'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
