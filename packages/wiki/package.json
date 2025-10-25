@@ -46,12 +46,12 @@
     "node": ">=18.0.0"
   },
   "peerDependencies": {
-    "@dxtmisha/functional": ">=1.0.0",
-    "@dxtmisha/media": ">=0.3.0",
-    "@storybook/addon-docs": ">=9.0.0",
-    "@mdx-js/react": ">=2.0.0",
-    "react": ">=17.0.0",
-    "vue": ">=3.0.0"
+    "@dxtmisha/functional": "*",
+    "@dxtmisha/media": "*",
+    "@storybook/addon-docs": "*",
+    "@mdx-js/react": "*",
+    "react": "*",
+    "vue": "*"
   },
   "dependencies": {}
 }

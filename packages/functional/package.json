@@ -62,8 +62,8 @@
     "node": ">=18.0.0"
   },
   "peerDependencies": {
-    "@dxtmisha/media": ">=0.3.0",
-    "vue": ">=3.0.0"
+    "@dxtmisha/media": "*",
+    "vue": "*"
   },
   "peerDependenciesMeta": {
     "@dxtmisha/media": {

@@ -56,12 +56,12 @@
     "node": ">=18.0.0"
   },
   "peerDependencies": {
-    "@dxtmisha/configuration": ">=0.3.9",
-    "@dxtmisha/functional": ">=1.0.3",
-    "@dxtmisha/styles": ">=1.0.2",
-    "@dxtmisha/wiki": ">=0.23.5",
-    "typescript": ">=5.0.0",
-    "vue": ">=3.0.0"
+    "@dxtmisha/configuration": "*",
+    "@dxtmisha/functional": "*",
+    "@dxtmisha/styles": "*",
+    "@dxtmisha/wiki": "*",
+    "typescript": "*",
+    "vue": "*"
   },
   "dependencies": {}
 }

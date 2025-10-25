@@ -120,8 +120,8 @@
     "node": ">=18.0.0"
   },
   "peerDependencies": {
-    "@dxtmisha/functional": ">=1.0.3",
-    "vue": ">=3.0.0"
+    "@dxtmisha/functional": "*",
+    "vue": "*"
   },
   "peerDependenciesMeta": {
     "@dxtmisha/functional": {
