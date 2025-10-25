@@ -1,0 +1,37 @@
+{
+  "name": "@dxtmisha/figma",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "[description]",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "component": "dxt-component",
+    "library": "dxt-library"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
+  "main": "dist/library.js",
+  "module": "dist/library.js",
+  "types": "dist/library.d.ts",
+  "exports": {
+    ".": {
+      "import": [
+        "./src/library.ts",
+        "./dist/library.js"
+      ],
+      "types": "./dist/library.d.ts"
+    },
+    "./style": "./dist/style.css",
+    "./types/*": "./dist/*",
+    "./types/**/*.d.ts": "./dist/**/*.d.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

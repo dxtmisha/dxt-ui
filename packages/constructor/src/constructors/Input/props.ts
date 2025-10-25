@@ -9,8 +9,8 @@ import type { FieldCounterPropsBasic } from '../FieldCounter'
 import type { ProgressPropsBasic } from '../Progress'
 
 import type { ModelProps } from '../../types/modelTypes'
-import type { FieldBasicProps } from '../../types/fieldTypes'
-import type { InputMode, InputType } from './basicTypes'
+import type { FieldInputProps } from '../../types/fieldTypes'
+import type { InputType } from './basicTypes'
 
 interface InputPropsToken {
   // :type [!] System label / Системная метка
@@ -27,23 +27,10 @@ export interface InputPropsBasic<
   Progress extends ProgressPropsBasic = ProgressPropsBasic
 > extends MaskPropsInclude<Mask>,
   FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>,
-  FieldBasicProps<NumberOrString>,
+  FieldInputProps<NumberOrString>,
   ModelProps<NumberOrString> {
   // Style
   type?: InputType
-
-  inputMode?: InputMode
-  placeholder?: string
-  spellcheck?: boolean
-  pattern?: string
-
-  minlength?: string | number
-  maxlength?: string | number
-
-  step?: string | number
-  min?: string | number
-  max?: string | number
-  arrowStep?: string | number
 
   iconVisibility?: string
   iconVisibilityOff?: string

@@ -1,5 +1,6 @@
 import type { NumberOrString } from '@dxtmisha/functional'
-import type { ModelProps } from './modelTypes'
+import type { ModelEmits, ModelProps } from './modelTypes'
+import type { ComputedRef, ShallowRef } from 'vue'
 
 /** Base input or textarea element/ Базовый элемент input или textarea */
 export type FieldElementDom = HTMLInputElement | HTMLTextAreaElement
@@ -99,6 +100,42 @@ export type FieldValidationItem<Value = any>
     }
 
 /**
+ * Emitted events for field components/
+ * Эмитируемые события для компонентов поля
+ */
+export type FieldBasicEmits<T = string>
+  = ModelEmits
+    & {
+      /**
+   * Emitted on input events (every change while typing)/
+   * Эмит при вводе (каждое изменение): [event, value]
+   */
+      input: [event: InputEvent | Event, value: FieldValidationItem<T>]
+      /**
+   * Lightweight input emit without DOM event/
+   * Лёгкий эмит ввода без DOM-события: [value]
+   */
+      inputLite: [value: FieldValidationItem<T>]
+      /**
+   * Emitted when value is committed (blur/confirm)/
+   * Эмит при подтверждении значения (blur/confirm): [event, value]
+   */
+      change: [event: InputEvent | Event, value: FieldValidationItem<T>]
+      /**
+   * Lightweight change emit without DOM event/
+   * Лёгкий эмит подтверждения без события: [value]
+   */
+      changeLite: [value: FieldValidationItem<T>]
+    }
+
+export type FieldBasicExpose<T = string> = {
+  value: ShallowRef<T | undefined>
+
+  checkValidity: () => boolean
+  validationMessage: ComputedRef<string>
+}
+
+/**
  * Properties that describe the value and its handling/
  * Свойства, описывающие значение и работу с ним
  *
@@ -170,17 +207,28 @@ export interface FieldStepProps {
   min?: NumberOrString
   /** Maximum value/ Максимальное значение */
   max?: NumberOrString
+  /** Step size for input arrows (type="number" only)/ Шаг для стрелок ввода (только для type="number") */
+  arrowStep?: NumberOrString
 }
 
 /**
  * Text length constraints (characters, items)/
  * Ограничения длины текста (символы, элементы)
  */
-export interface FieldLength {
+export interface FieldLengthProps {
   /** Minimum length/ Минимальная длина */
   minlength?: NumberOrString
   /** Maximum length/ Максимальная длина */
   maxlength?: NumberOrString
+}
+
+/**
+ * Validation pattern attribute/
+ * Атрибут паттерна валидации
+ */
+export interface FieldPatternProps {
+  /** Validation pattern (regexp)/ Паттерн валидации (рег. выражение) */
+  pattern?: string
 }
 
 /**
@@ -193,9 +241,9 @@ export interface FieldUxProps {
   /** Auto capitalization mode/ Режим авто-капитализации */
   autocapitalize?: 'off' | 'none' | 'sentences' | 'words' | 'characters' | string
   /** Input mode hint (virtual keyboard)/ Подсказка режима ввода (виртуальная клавиатура) */
-  inputmode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url' | string
+  inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url' | string
   /** Enter key hint/ Подсказка для клавиши Enter */
-  enterkeyhint?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send' | string
+  enterKeyHint?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send' | string
   /** Spellcheck flag/ Проверка орфографии */
   spellcheck?: boolean | 'true' | 'false'
   /** Autocorrect mode (iOS/Safari)/ Режим автокоррекции (iOS/Safari) */
@@ -207,9 +255,7 @@ export interface FieldUxProps {
  * Составные свойства стандартных текстовых / числовых инпутов
  */
 export interface FieldInputProps<Value = any>
-  extends FieldBasicProps<Value>, FieldStepProps, FieldLength, FieldUxProps {
-  /** Validation pattern (regexp)/ Паттерн валидации (рег. выражение) */
-  pattern?: string
+  extends FieldBasicProps<Value>, FieldStepProps, FieldLengthProps, FieldPatternProps, FieldUxProps {
   /** Datalist id reference/ Ссылка на datalist */
   list?: string
 }
@@ -219,7 +265,7 @@ export interface FieldInputProps<Value = any>
  * Свойства для инпутов выбора файлов (type="file")
  */
 export interface FieldInputFileProps<Value = any>
-  extends Omit<FieldBasicProps<Value>, 'type'>, FieldLength, FieldUxProps {
+  extends Omit<FieldBasicProps<Value>, 'type'>, FieldLengthProps, FieldUxProps {
   /** Multiple files selection flag/ Флаг выбора нескольких файлов */
   multiple?: boolean
   /** Accept file types list (MIME, extensions)/ Список допустимых типов (MIME, расширения) */
@@ -248,7 +294,7 @@ export interface FieldInputCheckProps<Value = any>
  * Свойства для textarea с поддержкой размеров и переноса
  */
 export interface FieldTextareaProps<Value = any>
-  extends Omit<FieldBasicProps<Value>, 'type'>, FieldLength, FieldUxProps {
+  extends Omit<FieldBasicProps<Value>, 'type'>, FieldLengthProps, FieldUxProps {
   /** Number of visible text lines/ Количество видимых строк */
   rows?: NumberOrString
   /** Number of visible columns/ Количество видимых колонок */

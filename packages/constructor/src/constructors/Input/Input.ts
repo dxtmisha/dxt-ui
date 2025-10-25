@@ -2,6 +2,8 @@ import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { InputVisibility } from './InputVisibility'
+import { InputType } from './InputType'
+import { InputPattern } from './InputPattern'
 
 import type { InputComponents, InputEmits, InputSlots } from './types'
 import type { InputProps } from './props'
@@ -11,6 +13,9 @@ import type { InputProps } from './props'
  */
 export class Input {
   readonly visibility: InputVisibility
+  readonly type: InputType
+  readonly pattern: InputPattern
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -33,5 +38,7 @@ export class Input {
     protected readonly emits?: ConstrEmit<InputEmits>
   ) {
     this.visibility = new InputVisibility()
+    this.type = new InputType(this.props, this.visibility)
+    this.pattern = new InputPattern(this.props, this.type)
   }
 }

@@ -1,7 +1,8 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { MaskComponentInclude } from '../Mask'
 import type { FieldComponentInclude, FieldSlotsInclude } from '../Field'
-import type { InputEmitsInclude, InputExposeInclude } from './basicTypes'
+
+import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -17,14 +18,14 @@ export type InputComponents
  *
  * Тип, описывающий доступные события.
  */
-export type InputEmits = InputEmitsInclude
+export type InputEmits = FieldBasicEmits
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface InputExpose extends InputExposeInclude {
+export interface InputExpose extends FieldBasicExpose {
 }
 
 /**
