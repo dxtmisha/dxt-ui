@@ -2,9 +2,9 @@
 import { AiGoogleLite } from '@dxtmisha/scripts/ai'
 
 new AiGoogleLite(
-  'AIzaSyAEmmVR2i2FXHon5lohccDcuAf-ZQDflVY',
+  '',
   'gemini-2.5-flash'
-).generate('hi')
+).generate('я же удалил свой ключ API, почему он работает?')
 </script>
 
 <template>
