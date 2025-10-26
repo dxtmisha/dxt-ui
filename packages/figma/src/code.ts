@@ -1,7 +1,11 @@
 import { FigmaFrame } from './classes/FigmaFrame'
 
 const frame = new FigmaFrame(figma.currentPage)
-console.log('frame', figma.currentPage)
+
+frame.getMainFrames()
+  .forEach((item) => {
+    item.exportJpg().then(image => console.log('item', image))
+  })
 
 switch (figma.mode) {
   case 'inspect':

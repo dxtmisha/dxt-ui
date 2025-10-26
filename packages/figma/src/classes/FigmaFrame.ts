@@ -18,8 +18,24 @@ export class FigmaFrame {
     return this.filter<FrameNode>(item => item.isFrame())
   }
 
+  getItemsSection() {
+    return this.filter<SectionNode>(item => item.isSection())
+  }
+
   getItemsText() {
     return this.filter<TextNode>(item => item.isText())
+  }
+
+  getMainFrames() {
+    const main = this.toMain()
+
+    if (main) {
+      return main
+        .getChildrenItems()
+        .filter(item => item.isFrame() || item.isSection())
+    }
+
+    return []
   }
 
   getTexts(): UiFigmaItemText[] {
@@ -66,5 +82,20 @@ export class FigmaFrame {
     item: FigmaItem) => boolean
   ): FigmaItem<R>[] {
     return this.items.filter(callback) as FigmaItem<R>[]
+  }
+
+  protected toMain(
+    item: FigmaItem = new FigmaItem(this.page)
+  ) {
+    const parent = item.getParentItem()
+
+    if (
+      parent
+      && !parent.isDocument()
+    ) {
+      this.toMain(parent)
+    }
+
+    return item
   }
 }

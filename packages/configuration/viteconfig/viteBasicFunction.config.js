@@ -10,6 +10,7 @@ import dts from 'vite-plugin-dts'
  *
  * Создаёт базовую конфигурацию Vite для библиотек с функциями/композаблами/классами.
  * @param name global library name / глобальное имя библиотеки
+ * @param target build target / цель сборки
  * @param entry entry points / входные точки сборки
  * @param include glob patterns for d.ts / паттерны для генерации d.ts
  * @param includeExtended extra patterns / дополнительные паттерны
@@ -20,6 +21,7 @@ import dts from 'vite-plugin-dts'
  */
 export const viteBasicFunction = (
   name = 'dxt-ui',
+  target = 'es2018',
   entry = [
     'src/library.ts'
   ],
@@ -33,6 +35,7 @@ export const viteBasicFunction = (
     'src/types/**/*.ts',
     'src/flags.ts',
     'src/library.ts',
+    'src/library-lite.ts',
     'src/media.ts',
     'src/storybook.tsx'
   ],
@@ -63,6 +66,7 @@ export const viteBasicFunction = (
   fileCssName = 'style.css'
 ) => defineConfig({
   build: {
+    target,
     lib: {
       entry,
       name,
@@ -105,6 +109,7 @@ export const viteBasicFunction = (
       clearPureImport: false,
       copyDtsFiles: true,
       include: [
+        ...entry,
         ...include,
         ...includeExtended
       ],

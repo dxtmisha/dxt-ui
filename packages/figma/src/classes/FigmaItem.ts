@@ -1,4 +1,5 @@
-import type { UiFigmaNode } from '../types/figmaTypes'
+import { forEach } from '@dxtmisha/functional/lite'
+import type { UiFigmaExportFormat, UiFigmaNode } from '../types/figmaTypes'
 
 export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
   constructor(
@@ -6,12 +7,16 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
   ) {
   }
 
-  get(): T {
-    return this.item
+  isDocument(): this is { item: DocumentNode } {
+    return this.getType() === 'DOCUMENT'
   }
 
   isFrame(): this is { item: FrameNode } {
     return this.getType() === 'FRAME'
+  }
+
+  isSection(): this is { item: SectionNode } {
+    return this.getType() === 'SECTION'
   }
 
   isText(): this is { item: TextNode } {
@@ -31,6 +36,10 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     return false
   }
 
+  get(): T {
+    return this.item
+  }
+
   getType() {
     if ('type' in this.item) {
       return this.item.type
@@ -41,10 +50,32 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
 
   getParent() {
     if ('parent' in this.item) {
-      return this.item.parent
+      return this.item.parent ?? undefined
     }
 
     return undefined
+  }
+
+  getParentItem(): FigmaItem | undefined {
+    const parent = this.getParent()
+
+    if (parent) {
+      return new FigmaItem(parent)
+    }
+
+    return undefined
+  }
+
+  getChildren(): UiFigmaNode[] {
+    if ('children' in this.item) {
+      return this.item.children as UiFigmaNode[]
+    }
+
+    return []
+  }
+
+  getChildrenItems(): FigmaItem[] {
+    return forEach(this.getChildren(), child => new FigmaItem(child))
   }
 
   getId(): string {
@@ -55,9 +86,53 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     return ''
   }
 
+  getName(): string {
+    if ('name' in this.item) {
+      return this.item.name
+    }
+
+    return this.getId()
+  }
+
+  async exportJpg() {
+    return await this.exportItem('JPG')
+  }
+
+  async exportJson() {
+    return await this.exportItem('JSON_REST_V1')
+  }
+
   getText(): string {
     if (this.isText()) {
       return this.item.characters.trim()
+    }
+
+    return ''
+  }
+
+  protected getExportSettings(
+    formatSettings: UiFigmaExportFormat | ExportSettings
+  ): ExportSettings {
+    switch (formatSettings) {
+      case 'JPG':
+      case 'PNG':
+      case 'SVG':
+      case 'PDF':
+      case 'JSON_REST_V1':
+        return {
+          format: formatSettings
+        } as any as ExportSettings
+      default:
+        return formatSettings
+    }
+  }
+
+  protected async exportItem(
+    formatSettings: UiFigmaExportFormat | ExportSettings
+  ) {
+    if ('exportAsync' in this.item) {
+      return await (this.item as FrameNode)
+        .exportAsync(this.getExportSettings(formatSettings))
     }
 
     return ''

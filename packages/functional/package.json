@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional",
   "private": false,
-  "version": "1.4.0",
+  "version": "1.4.1",
   "type": "module",
   "description": "Comprehensive functional utilities library for DXT UI - classes, composables, functions and types for modern web development",
   "keywords": [
@@ -51,6 +51,10 @@
     ".": {
       "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
+    },
+    "./lite": {
+      "import": "./dist/library-lite.js",
+      "types": "./dist/library-lite.d.ts"
     },
     "./flags": {
       "import": "./dist/flags.js",
