@@ -12,12 +12,14 @@ export default defineConfig(({ mode }) => {
       return {
         plugins: [vue(), viteSingleFile()],
         build: {
+          target: 'es2018',
           emptyOutDir: !isWatch
         }
       }
     case 'code':
       return {
         build: {
+          target: 'es2018',
           emptyOutDir: false,
           rollupOptions: {
             input: {
