@@ -1,10 +1,12 @@
 import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
-import { InputVisibility } from './InputVisibility'
-import { InputType } from './InputType'
-import { InputPattern } from './InputPattern'
+import { FieldVisibilityInclude } from '../../classes/field/FieldVisibilityInclude'
+import { FieldTypeInclude } from '../../classes/field/FieldTypeInclude'
+import { FieldPatternInclude } from '../../classes/field/FieldPatternInclude'
+import { InputElement } from './InputElement'
 
+import type { FieldElementInput } from '../../types/fieldTypes'
 import type { InputComponents, InputEmits, InputSlots } from './types'
 import type { InputProps } from './props'
 
@@ -12,9 +14,11 @@ import type { InputProps } from './props'
  * Input
  */
 export class Input {
-  readonly visibility: InputVisibility
-  readonly type: InputType
-  readonly pattern: InputPattern
+  readonly visibility: FieldVisibilityInclude
+  readonly type: FieldTypeInclude
+  readonly pattern: FieldPatternInclude
+
+  readonly item: InputElement
 
   /**
    * Constructor
@@ -30,15 +34,22 @@ export class Input {
   constructor(
     protected readonly props: InputProps,
     protected readonly refs: ToRefs<InputProps>,
-    protected readonly element: Ref<HTMLElement | undefined>,
+    protected readonly element: Ref<FieldElementInput>,
     protected readonly classDesign: string,
     protected readonly className: string,
     protected readonly components?: DesignComp<InputComponents, InputProps>,
     protected readonly slots?: InputSlots,
     protected readonly emits?: ConstrEmit<InputEmits>
   ) {
-    this.visibility = new InputVisibility()
-    this.type = new InputType(this.props, this.visibility)
-    this.pattern = new InputPattern(this.props, this.type)
+    this.visibility = new FieldVisibilityInclude()
+    this.type = new FieldTypeInclude(this.props, this.visibility)
+    this.pattern = new FieldPatternInclude(this.props, this.type)
+
+    this.item = new InputElement(
+      this.props,
+      this.element,
+      this.type,
+      this.pattern
+    )
   }
 }

@@ -255,7 +255,11 @@ export interface FieldUxProps {
  * Составные свойства стандартных текстовых / числовых инпутов
  */
 export interface FieldInputProps<Value = any>
-  extends FieldBasicProps<Value>, FieldStepProps, FieldLengthProps, FieldPatternProps, FieldUxProps {
+  extends FieldBasicProps<Value>,
+  FieldStepProps,
+  FieldLengthProps,
+  FieldPatternProps,
+  FieldUxProps {
   /** Datalist id reference/ Ссылка на datalist */
   list?: string
 }
