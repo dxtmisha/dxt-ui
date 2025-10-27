@@ -1,10 +1,15 @@
 import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
+import { FieldChangeInclude } from '../../classes/field/FieldChangeInclude'
 import { FieldVisibilityInclude } from '../../classes/field/FieldVisibilityInclude'
 import { FieldTypeInclude } from '../../classes/field/FieldTypeInclude'
 import { FieldPatternInclude } from '../../classes/field/FieldPatternInclude'
-import { InputElement } from './InputElement'
+
+import { FieldElementInclude } from '../../classes/field/FieldElementInclude'
+
+import { FieldValueInclude } from '../../classes/field/FieldValueInclude'
+import { FieldArrowInclude } from '../../classes/field/FieldArrowInclude'
 
 import type { FieldElementInput } from '../../types/fieldTypes'
 import type { InputComponents, InputEmits, InputSlots } from './types'
@@ -18,7 +23,11 @@ export class Input {
   readonly type: FieldTypeInclude
   readonly pattern: FieldPatternInclude
 
-  readonly item: InputElement
+  readonly elementItem: FieldElementInclude
+  readonly change: FieldChangeInclude
+
+  readonly value: FieldValueInclude
+  readonly arrow: FieldArrowInclude
 
   /**
    * Constructor
@@ -41,15 +50,23 @@ export class Input {
     protected readonly slots?: InputSlots,
     protected readonly emits?: ConstrEmit<InputEmits>
   ) {
+    this.change = new FieldChangeInclude(this.props)
     this.visibility = new FieldVisibilityInclude()
     this.type = new FieldTypeInclude(this.props, this.visibility)
     this.pattern = new FieldPatternInclude(this.props, this.type)
 
-    this.item = new InputElement(
+    this.elementItem = new FieldElementInclude(
       this.props,
       this.element,
       this.type,
       this.pattern
     )
+
+    this.value = new FieldValueInclude(
+      this.props,
+      this.refs,
+      this.elementItem
+    )
+    this.arrow = new FieldArrowInclude(this.props, this.value)
   }
 }
