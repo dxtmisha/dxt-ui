@@ -10,16 +10,21 @@ import { toArray } from '../functions/toArray'
 import { ApiDefault } from './ApiDefault'
 import { Loading } from './Loading'
 
-import { type ApiFetch, type ApiMethod, ApiMethodItem, type ApiResponseItem } from '../types/apiTypes'
+import {
+  type ApiFetch,
+  type ApiMethod,
+  ApiMethodItem,
+  type ApiResponseItem
+} from '../types/apiTypes'
 
 const CLASS_RESPONSE_LOADING = 'd-response-loading'
 
-export class ApiResponse<V extends ApiResponseItem> {
+export class ApiResponse {
   /** List of first-time API requests/ Список первичных API запросов */
-  protected readonly first: V[] = []
+  protected readonly first: ApiResponseItem[] = []
 
   /** Cached responses/ Кешированные ответы */
-  protected readonly response: V[] = []
+  protected readonly response: ApiResponseItem[] = []
 
   /** Loading instance/ Экземпляр загрузки */
   protected loading?: any
@@ -76,7 +81,7 @@ export class ApiResponse<V extends ApiResponseItem> {
    *
    * Возвращает список данных об эмуляторе.
    */
-  getList(): (V & Record<string, any>)[] {
+  getList(): (ApiResponseItem & Record<string, any>)[] {
     return this.response.filter(item => item.isForGlobal !== true)
   }
 
@@ -87,9 +92,9 @@ export class ApiResponse<V extends ApiResponseItem> {
    * @param response data for caching/ данные для кеширования
    */
   add(
-    response: V | V[]
+    response: ApiResponseItem | ApiResponseItem[]
   ): this {
-    this.response.push(...toArray(response) as V[])
+    this.response.push(...toArray(response) as ApiResponseItem[])
     return this
   }
 
@@ -143,7 +148,7 @@ export class ApiResponse<V extends ApiResponseItem> {
    * Проверяет, отключен ли кешированный элемент.
    * @param item cached item/ кешированный элемент
    */
-  protected isDisable(item: V): boolean {
+  protected isDisable(item: ApiResponseItem): boolean {
     return Boolean(executeFunction(item?.disable))
   }
 
@@ -155,7 +160,7 @@ export class ApiResponse<V extends ApiResponseItem> {
    * @param path request path/ путь запроса
    */
   protected isPath(
-    item: V,
+    item: ApiResponseItem,
     path: string
   ): boolean {
     return path === item.path
@@ -183,7 +188,7 @@ export class ApiResponse<V extends ApiResponseItem> {
    * @param devMode is it developer mode/ является ли режим разработчика
    */
   protected isFirst(
-    item: V,
+    item: ApiResponseItem,
     devMode?: boolean
   ): boolean {
     return this.first.indexOf(item) === -1
@@ -198,7 +203,7 @@ export class ApiResponse<V extends ApiResponseItem> {
    * @param request request data/ данные запроса
    */
   protected isResponse(
-    item: V,
+    item: ApiResponseItem,
     request?: ApiFetch['request']
   ) {
     const requestItem = this.requestDefault.request(item?.request)

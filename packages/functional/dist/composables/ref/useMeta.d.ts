@@ -1,5 +1,4 @@
-import { Meta } from '../../classes/Meta';
-import { MetaRobots } from '../../types/metaTypes';
+import { Meta, MetaRobots } from '@dxtmisha/functional-basic';
 import { Ref } from 'vue';
 /**
  * Vue composable for reactive meta tags management with automatic DOM synchronization.

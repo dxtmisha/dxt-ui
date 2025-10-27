@@ -1,5 +1,5 @@
 import { Ref } from 'vue';
-import { CookieOptions } from '../../classes/Cookie';
+import { CookieOptions } from '@dxtmisha/functional-basic';
 /**
  * Creates a reactive variable to manage cookies.
  *

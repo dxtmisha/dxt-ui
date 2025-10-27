@@ -1,5 +1,5 @@
 import { ref, type Ref, watch } from 'vue'
-import { DataStorage } from '../../classes/DataStorage'
+import { DataStorage } from '@dxtmisha/functional-basic'
 
 /**
  * Creates a reactive variable to manage session storage.

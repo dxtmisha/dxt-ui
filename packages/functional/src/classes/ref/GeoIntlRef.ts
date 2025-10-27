@@ -3,20 +3,20 @@ import {
   type ComputedRef,
   type Ref
 } from 'vue'
+import {
+  type GeoDate,
+  GeoIntl,
+  type ItemValue,
+  type NumberOrString,
+  type NumberOrStringOrDate
+} from '@dxtmisha/functional-basic'
 
 import { getRef } from '../../functions/ref/getRef'
 import { toRefItem } from '../../functions/ref/toRefItem'
 
 import { GeoRef } from './GeoRef'
-import { GeoIntl } from '../GeoIntl'
 
-import type {
-  ItemValue,
-  NumberOrString,
-  NumberOrStringOrDate
-} from '../../types/basicTypes'
 import type { RefOrNormal } from '../../types/refTypes'
-import type { GeoDate } from '../../types/geoTypes'
 
 /**
  * Reactive class for managing the formatting of numbers and dates.

@@ -3,12 +3,9 @@ import {
   shallowRef,
   watch
 } from 'vue'
+import { Translate, type TranslateList } from '@dxtmisha/functional-basic'
 
 import { GeoRef } from '../../classes/ref/GeoRef'
-import {
-  Translate,
-  type TranslateList
-} from '../../classes/Translate'
 
 /**
  * Getting the translated text by an array of keys or a string with a key.

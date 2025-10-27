@@ -1,8 +1,6 @@
 import { ComputedRef, Ref } from 'vue';
-import { Datetime } from '../Datetime';
-import { NumberOrStringOrDate } from '../../types/basicTypes';
+import { Datetime, GeoDate, GeoFirstDay, GeoHours, NumberOrStringOrDate } from '@dxtmisha/functional-basic';
 import { RefOrNormal } from '../../types/refTypes';
-import { GeoDate, GeoFirstDay, GeoHours } from '../../types/geoTypes';
 /**
  * A class for working with dates.
  *

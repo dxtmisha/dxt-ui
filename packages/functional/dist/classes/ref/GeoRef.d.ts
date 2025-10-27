@@ -1,5 +1,5 @@
 import { ComputedRef, Ref } from 'vue';
-import { GeoItemFull } from '../../types/geoTypes';
+import { GeoItemFull } from '@dxtmisha/functional-basic';
 /**
  * Reactive class for working with geographic data.
  *

@@ -6,19 +6,19 @@ import {
   triggerRef,
   watch
 } from 'vue'
-import { toDate } from '../../functions/toDate'
+import {
+  Datetime,
+  Geo,
+  type GeoDate,
+  type GeoFirstDay,
+  type GeoHours,
+  type NumberOrStringOrDate,
+  toDate
+} from '@dxtmisha/functional-basic'
+
 import { toRefItem } from '../../functions/ref/toRefItem'
 
-import { Datetime } from '../Datetime'
-import { Geo } from '../Geo'
-
-import type { NumberOrStringOrDate } from '../../types/basicTypes'
 import type { RefOrNormal } from '../../types/refTypes'
-import type {
-  GeoDate,
-  GeoFirstDay,
-  GeoHours
-} from '../../types/geoTypes'
 
 /**
  * A class for working with dates.

@@ -1,5 +1,5 @@
 import { ComputedRef, Ref } from 'vue';
-import { ApiFetch, ApiMethodItem } from '../../classes/Api';
+import { ApiFetch, ApiMethodItem } from '@dxtmisha/functional-basic';
 import { RefOrNormal, RefType } from '../../types/refTypes';
 type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
 export interface UseApiRef<R> {

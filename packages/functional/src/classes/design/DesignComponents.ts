@@ -1,8 +1,7 @@
 import { computed, type ComputedRef, type VNode } from 'vue'
+import { forEach, isObjectNotArray } from '@dxtmisha/functional-basic'
 
-import { forEach } from '../../functions/forEach'
 import { getRef } from '../../functions/ref/getRef'
-import { isObjectNotArray } from '../../functions/isObjectNotArray'
 import { render } from '../../functions/ref/render'
 import { toBinds } from '../../functions/toBinds'
 

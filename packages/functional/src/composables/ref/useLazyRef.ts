@@ -4,8 +4,7 @@ import {
   type ShallowRef,
   watch
 } from 'vue'
-
-import { getElementId } from '../../functions/getElementId'
+import { getElementId } from '@dxtmisha/functional-basic'
 
 export type LazyItem = {
   status: ShallowRef<boolean>

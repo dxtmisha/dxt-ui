@@ -194,19 +194,6 @@ describe('ApiDefault', () => {
   })
 
   describe('integration tests', () => {
-    it('should work with typed generic', () => {
-      interface CustomData {
-        apiKey: string
-        version: number
-      }
-
-      const typedDefault = new ApiDefault<CustomData>()
-      typedDefault.set({ apiKey: 'secret', version: 1 })
-
-      expect(typedDefault.get()).toEqual({ apiKey: 'secret', version: 1 })
-      expect(typedDefault.is()).toBe(true)
-    })
-
     it('should handle complete workflow', () => {
       // Установка дефолтных данных
       apiDefault.set({ token: 'abc123', userId: '42' })

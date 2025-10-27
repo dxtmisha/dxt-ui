@@ -3,21 +3,21 @@ import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { isString } from '../functions/isString'
 
-import { Loading } from './Loading'
 import { Geo } from './Geo'
+import { Loading } from './Loading'
+
+import { ApiHeaders } from './ApiHeaders'
+import { ApiDefault } from './ApiDefault'
+import { ApiStatus } from './ApiStatus'
+import { ApiResponse } from './ApiResponse'
+import { ApiPreparation } from './ApiPreparation'
+
 import {
   type ApiData,
   type ApiFetch,
-  type ApiMethod,
   ApiMethodItem,
-  type ApiPreparationEnd,
-  type ApiResponseItem
-} from '../types/apiTypes.ts'
-import { ApiDefault } from './ApiDefault.ts'
-import { ApiStatus } from './ApiStatus.ts'
-import { ApiResponse } from './ApiResponse.ts'
-
-const apiFirst: ApiResponseItem[] = []
+  type ApiPreparationEnd
+} from '../types/apiTypes'
 
 /**
  * Class for working with requests.
@@ -26,15 +26,12 @@ const apiFirst: ApiResponseItem[] = []
  */
 export class Api {
   protected static url = '/api/'
-  protected static headers: Record<string, string> = {}
 
-  protected static preparation = false
-  protected static preparationItem?: () => Promise<void>
-  protected static preparationEndItem?: (query: Response) => Promise<ApiPreparationEnd>
-
+  protected static headers = new ApiHeaders()
   protected static requestDefault: ApiDefault = new ApiDefault()
   protected static status = new ApiStatus()
   protected static response = new ApiResponse(this.requestDefault)
+  protected static preparation = new ApiPreparation()
 
   /**
    * Is the server local.
@@ -54,35 +51,13 @@ export class Api {
     return this.status
   }
 
-  static getResponseItem() {
-    return this.response
-  }
-
   /**
-   * Getting the header for the request.
+   * Getting the response handler.
    *
-   * Получение заголовка для запроса.
-   * @param value list of headers/ список заголовков
-   * @param type type of request/ тип запроса
+   * Получение обработчика ответа.
    */
-  static getHeaders(
-    value?: Record<string, string> | null,
-    type = 'application/json;charset=UTF-8'
-  ): Record<string, string> | undefined {
-    if (value !== null) {
-      const headers = {
-        ...this.headers,
-        ...(value || {})
-      }
-
-      if (isFilled(type)) {
-        headers['Content-Type'] = type
-      }
-
-      return headers
-    }
-
-    return undefined
+  static getResponse() {
+    return this.response
   }
 
   /**
@@ -159,10 +134,7 @@ export class Api {
    * Изменяет данные заголовка по умолчанию.
    */
   static setHeaders(headers: Record<string, string>): Api {
-    if (isObjectNotArray(headers)) {
-      this.headers = headers
-    }
-
+    this.headers.set(headers)
     return Api
   }
 
@@ -171,8 +143,9 @@ export class Api {
    *
    * Изменяет данные запроса по умолчанию.
    */
-  static setRequestDefault(request: Record<string, any>) {
+  static setRequestDefault(request: Record<string, any>): Api {
     this.requestDefault.set(request)
+    return Api
   }
 
   /**
@@ -193,7 +166,7 @@ export class Api {
    * @param callback function for call/ функция для вызова
    */
   static setPreparation(callback: () => Promise<void>): Api {
-    this.preparationItem = callback
+    this.preparation.set(callback)
     return Api
   }
 
@@ -204,7 +177,7 @@ export class Api {
    * @param callback function for call/ функция для вызова
    */
   static setEnd(callback: (query: Response) => Promise<ApiPreparationEnd>): Api {
-    this.preparationEndItem = callback
+    this.preparation.setEnd(callback)
     return Api
   }
 
@@ -302,15 +275,10 @@ export class Api {
     Loading.show()
 
     try {
-      if (
-        this.preparationItem
-        && globalPreparation
-      ) {
-        await this.makePreparation()
-      }
+      await this.preparation.make(globalPreparation)
 
       const query = await this.makeQuery(apiFetch)
-      const end = globalEnd && this.preparationEndItem ? (await this.makePreparationEnd(query)) : {}
+      const end = await this.preparation.makeEnd(globalEnd, query)
 
       this.status.setStatus(
         query.status,
@@ -322,15 +290,11 @@ export class Api {
         return await this.fetch(apiFetch)
       }
 
-      if (queryReturn) {
-        data = await queryReturn(query)
-      } else if ('data' in end) {
-        data = end.data
-      } else if ((query.headers.get('Content-Type') ?? '').match('application/json')) {
-        data = await query.json()
-      } else {
-        data = { data: await query.text() } as any
-      }
+      data = await this.readData(
+        query,
+        queryReturn,
+        end
+      )
     } catch (e) {
       if (!hideError) {
         console.error('Api: ', e)
@@ -345,12 +309,40 @@ export class Api {
   }
 
   /**
+   * Reading data from the response.
+   *
+   * Чтение данных из ответа.
+   * @param query response from the server/ ответ от сервера
+   * @param queryReturn custom function for reading data/ кастомная функция для чтения данных
+   * @param end finalization data/ данные финализации
+   */
+  protected static async readData(
+    query: Response,
+    queryReturn: ApiFetch['queryReturn'],
+    end: ApiPreparationEnd
+  ) {
+    if (queryReturn) {
+      return await queryReturn(query)
+    }
+
+    if ('data' in end) {
+      return end.data
+    }
+
+    if ((query.headers.get('Content-Type') ?? '').match('application/json')) {
+      return await query.json()
+    }
+
+    return { data: await query.text() } as any
+  }
+
+  /**
    * Executing the request.
    *
    * Выполнение запроса.
    * @param apiFetch property of the request/ свойство запроса
    */
-  protected static async makeQuery(apiFetch: ApiFetch) {
+  protected static async makeQuery(apiFetch: ApiFetch): Promise<Response> {
     const request: ApiFetch['request'] = this.requestDefault.request(apiFetch.request)
     const {
       api = true,
@@ -364,7 +356,7 @@ export class Api {
 
     const pathFinal = pathFull ?? this.getUrl(path, api)
     const url = `${pathFinal}${this.getBodyForGet(request, pathFinal, method)}`
-    const fetchHeaders = this.getHeaders(headers, type)
+    const fetchHeaders = this.headers.get(headers, type)
     const fetchInit = {
       ...init,
       method,
@@ -376,43 +368,6 @@ export class Api {
     }
 
     return await fetch(url, fetchInit)
-  }
-
-  /**
-   * Preparation before executing the request.
-   *
-   * Подготовка перед выполнением запроса.
-   */
-  protected static async makePreparation() {
-    return new Promise<void>((resolve) => {
-      if (this.preparation) {
-        setTimeout(() => this.makePreparation().then(resolve), 160)
-      } else if (this.preparationItem) {
-        this.preparation = true
-        this.preparationItem().then(() => {
-          this.preparation = false
-          resolve()
-        })
-      } else {
-        resolve()
-      }
-    })
-  }
-
-  /**
-   * Analysis of the request after execution.
-   *
-   * Анализ запроса после выполнения.
-   * @param query data received in the request/ данные, полученные в запросе
-   */
-  protected static async makePreparationEnd(query: Response): Promise<ApiPreparationEnd> {
-    let data: ApiPreparationEnd = {}
-
-    if (this.preparationEndItem) {
-      data = await this.preparationEndItem(query)
-    }
-
-    return data
   }
 
   /**
@@ -430,24 +385,21 @@ export class Api {
 
     if (
       data
+      && toData
       && isObjectNotArray(data)
+      && 'data' in data
     ) {
-      if (
-        toData
-        && 'data' in data
-      ) {
-        if (isObjectNotArray(data.data)) {
-          const item: ApiData<T> = { ...data.data }
+      if (isObjectNotArray(data.data)) {
+        const item: ApiData<T> = { ...data.data }
 
-          if ('success' in data) {
-            item.success = data.success
-          }
-
-          return item
+        if ('success' in data) {
+          item.success = data.success
         }
 
-        return data.data as T
+        return item
       }
+
+      return data.data as T
     }
 
     return data

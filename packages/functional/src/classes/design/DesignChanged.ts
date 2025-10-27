@@ -1,4 +1,4 @@
-import { isArray } from '../../functions/isArray'
+import { isArray } from '@dxtmisha/functional-basic'
 
 /**
  * The class checks the values that have been edited.

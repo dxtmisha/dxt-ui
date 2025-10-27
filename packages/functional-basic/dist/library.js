@@ -1,418 +1,108 @@
-var nt = Object.defineProperty;
-var ot = (e, t, i) => t in e ? nt(e, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : e[t] = i;
-var l = (e, t, i) => ot(e, typeof t != "symbol" ? t + "" : t, i);
-import { geo as ct } from "@dxtmisha/media";
-function M(e) {
-  return e instanceof Function || typeof e == "function";
+var xt = Object.defineProperty;
+var Rt = (i, t, e) => t in i ? xt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
+var c = (i, t, e) => Rt(i, typeof t != "symbol" ? t + "" : t, e);
+import { geo as Pt } from "@dxtmisha/media";
+function m(i) {
+  return !!(i && typeof i == "object");
 }
-function I(e) {
-  return M(e) ? e() : e;
-}
-async function ut(e) {
-  const t = I(e);
-  return t instanceof Promise ? await t : t;
-}
-function h(e) {
-  return !!(e && typeof e == "object");
-}
-function y(e, t) {
-  if (h(e)) {
-    const i = [];
-    return e instanceof Map ? e.forEach((r, s) => i.push(t(r, s, e))) : Array.isArray(e) ? e.forEach((r, s) => i.push(t(r, s, e))) : Object.entries(e).forEach(
-      ([r, s]) => i.push(t(s, r, e))
-    ), i.filter((r) => r !== void 0);
+function g(i, t) {
+  if (m(i)) {
+    const e = [];
+    return i instanceof Map ? i.forEach((s, n) => e.push(t(s, n, i))) : Array.isArray(i) ? i.forEach((s, n) => e.push(t(s, n, i))) : Object.entries(i).forEach(
+      ([s, n]) => e.push(t(n, s, i))
+    ), e.filter((s) => s !== void 0);
   }
   return [];
 }
-function at(e, t = "=", i = "&") {
-  return y(
-    e,
-    (r, s) => `${s}${t}${encodeURIComponent(String(r).trim())}`
-  ).sort().join(i);
+function Lt(i, t = "=", e = "&") {
+  return g(
+    i,
+    (s, n) => `${n}${t}${encodeURIComponent(String(s).trim())}`
+  ).sort().join(e);
 }
-function f() {
-  return typeof window != "undefined" && !!window.document;
+function Y(i) {
+  return i == null;
 }
-function F(e) {
-  return e == null;
-}
-function E(e, t) {
-  if (e) {
-    if (t && e === "0")
+function D(i, t) {
+  if (i) {
+    if (t && i === "0")
       return !0;
-    switch (typeof e) {
+    switch (typeof i) {
       case "bigint":
       case "number":
-        return e !== 0;
+        return i !== 0;
       case "boolean":
-        return e;
+        return i;
       case "function":
       case "symbol":
         return !0;
       case "object":
-        return Array.isArray(e) ? e.length > 0 : Object.values(e).some((i) => !F(i));
+        return Array.isArray(i) ? i.length > 0 : Object.values(i).some((e) => !Y(e));
       case "string":
-        return !["", "undefined", "null", "0", "false", "[]"].includes(e);
+        return !["", "undefined", "null", "0", "false", "[]"].includes(i);
       case "undefined":
         return !1;
       default:
-        return !!e;
+        return !!i;
     }
   }
   return !1;
 }
-function $(e) {
-  return h(e) && !Array.isArray(e);
+function k(i) {
+  return m(i) && !Array.isArray(i);
 }
-function x(e) {
-  return typeof e == "string";
+function j(i) {
+  return typeof i == "string";
 }
-function B(e, t) {
-  return Math.floor(Math.random() * (t - e + 1) + e);
+function W(i) {
+  return JSON.parse(JSON.stringify(i));
 }
-function j(e) {
-  return Array.isArray(e) ? e : [e];
+function l() {
+  return typeof window != "undefined" && !!window.document;
 }
-function tt(e) {
-  return f() && e === window;
-}
-function S(e) {
-  var t;
-  if (f())
-    return tt(e) ? document.body : x(e) ? (t = document.querySelector(e)) != null ? t : void 0 : e;
-}
-function V(e) {
-  return tt(e) ? e : S(e);
-}
-function lt(e) {
-  var t;
-  return !!((t = S(e)) != null && t.closest("html"));
-}
-class q {
-  /**
-   * Classes Constructor
-   * @param elementSelector element/ элемент
-   * @param type type/ тип
-   * @param listener the object that receives a notification (an object that implements the
-   * Event interface) when an event of the specified type occurs/ объект, который принимает
-   * уведомление, когда событие указанного типа произошло
-   * @param options object that specifies characteristics/ объект options
-   * @param detail an event-dependent value associated with the event/ зависимое от события
-   * значение, связанное с событием
-   */
-  constructor(t, i = ["click"], r, s, o) {
-    /**
-     * Element.
-     *
-     * Элемент.
-     */
-    l(this, "element");
-    /**
-     * Element for checking. If the element is missing in the DOM, the event is turned off.
-     *
-     * Элемент для проверки. Если элемент отсутствует в DOM, событие выключается.
-     */
-    l(this, "elementControl");
-    l(this, "elementControlEdit");
-    /**
-     * A case-sensitive string representing the event type to listen for.
-     *
-     * Чувствительная к регистру строка, представляющая тип обрабатываемого события.
-     */
-    l(this, "type");
-    /**
-     * The object that receives a notification (an object that implements the Event interface)
-     * when an event of the specified type occurs. This must be null, an object with a
-     * handleEvent() method, or a JavaScript function.
-     *
-     * Объект, который принимает уведомление, когда событие указанного типа произошло.
-     * Это должен быть объект, реализующий интерфейс EventListener или просто функция JavaScript.
-     */
-    l(this, "listenerRecent", (t) => {
-      var i, r;
-      lt(this.elementControl) ? ((i = this.listener) == null || i.call(this.element, t, this.detail), h(this.options) && ((r = this.options) != null && r.once) && this.stop()) : this.stop();
-    });
-    /**
-     * Event states.
-     *
-     * Состояния события.
-     */
-    l(this, "activity", !1);
-    l(this, "activityItems", []);
-    this.listener = r, this.options = s, this.detail = o, this.element = V(t), this.elementControl = S(t), this.type = j(i);
-  }
-  /**
-   * Checks whether event listening is currently enabled.
-   *
-   * Проверяет, включено ли сейчас прослушивание события.
-   */
-  isActive() {
-    return this.activity;
-  }
-  getElement() {
-    return this.element;
-  }
-  /**
-   * Change of an element for tracking.
-   *
-   * Изменение элемента для прослеживания.
-   * @param elementSelector element/ элемент
-   */
-  setElement(t) {
-    const i = V(t);
-    return this.elementControlEdit || (this.elementControl = S(t)), this.element = i, this.reset(), this;
-  }
-  /**
-   * Modifies the object that receives the notification.
-   *
-   * Модифицирует объект, который получает уведомление.
-   * @param elementSelector element/ элемент
-   */
-  setElementControl(t) {
-    return this.elementControl = S(t), this.elementControlEdit = !F(this.elementControl), this.elementControlEdit || (this.elementControl = S(this.element)), this;
-  }
-  /**
-   * Changes the type of the handled event.
-   *
-   * Изменяет тип обрабатываемого события.
-   * @param type type/ тип
-   */
-  setType(t) {
-    return this.type = j(t), this.reset(), this;
-  }
-  /**
-   * Modifies the object that receives the notification.
-   *
-   * Модифицирует объект, который получает уведомление.
-   * @param listener
-   */
-  setListener(t) {
-    return this.listener = t, this;
-  }
-  /**
-   * Modifying the options object that defines the characteristics of an object.
-   *
-   * Изменение объекта options, который определяет характеристики объекта.
-   * @param options
-   */
-  setOptions(t) {
-    return this.options = t, this.reset(), this;
-  }
-  /**
-   * Modifying a dependent value for the dispatch method.
-   *
-   * Изменение зависимого значения для метода dispatch.
-   * @param detail
-   */
-  setDetail(t) {
-    return this.detail = t, this;
-  }
-  /**
-   * The method of the EventTarget sends an Event to the object, (synchronously) invoking
-   * the affected EventListeners in the appropriate order.
-   *
-   * Отправляет событие в общую систему событий. Это событие подчиняется тем же правилам
-   * поведения "Захвата" и "Всплывания" как и непосредственно инициированные события.
-   * @param detail an event-dependent value associated with the event/ зависимое от события
-   * значение, связанное с событием
-   */
-  dispatch(t = this.detail) {
-    return this.type.forEach(
-      (i) => {
-        var r;
-        return (r = this.element) == null ? void 0 : r.dispatchEvent(new CustomEvent(i, { detail: t }));
-      }
-    ), this;
-  }
-  /**
-   * Starting event listening.
-   *
-   * Запуск прослушивания события.
-   */
-  start() {
-    return this.activity || (this.activity = !0, this.activityItems = [], this.type.forEach((t) => {
-      this.element && !(t === "resize" && this.makeResize()) && !(t === "scroll-sync" && this.makeScroll()) && (this.element.addEventListener(t, this.listenerRecent, this.options), this.activityItems.push({
-        element: this.element,
-        type: t
-      }));
-    })), this;
-  }
-  /**
-   * Stopping event listening.
-   *
-   * Остановка прослушивания события.
-   */
-  stop() {
-    return this.activity && (this.activity = !1, this.activityItems.forEach(({
-      element: t,
-      type: i,
-      listener: r,
-      observer: s
-    }) => {
-      s ? s.disconnect() : r ? t == null || t.removeEventListener(i, r) : t == null || t.removeEventListener(i, this.listenerRecent);
-    })), this;
-  }
-  /**
-   * Toggling event handler state.
-   *
-   * Переключение состояния работы события.
-   * @param activity event activation/ активация события
-   */
-  toggle(t) {
-    return t ? this.start() : this.stop();
-  }
-  /**
-   * Overloads the listening events.
-   *
-   * Перегружает события прослушивания.
-   */
-  reset() {
-    return this.activity && (this.stop(), this.start()), this;
-  }
-  /**
-   * Checks if the ResizeObserver object exists.
-   *
-   * Проверяет, существует ли объект ResizeObserver.
-   */
-  isObserver() {
-    return "ResizeObserver" in window;
-  }
-  /**
-   * The implementation of the resize event for an element.
-   *
-   * Реализация события изменения размера для элемента.
-   */
-  makeResize() {
-    if (this.element && this.element instanceof HTMLElement && this.element !== document.body && this.isObserver()) {
-      const t = new ResizeObserver(
-        (i) => this.listenerRecent(i == null ? void 0 : i[0])
-      );
-      return t.observe(this.element), this.activityItems.push({
-        element: this.element,
-        type: "resize",
-        observer: t
-      }), !0;
-    }
-    return !1;
-  }
-  /**
-   * Implementation of the scroll event for an element.
-   *
-   * Реализация события изменения положения скролла для элемента.
-   */
-  makeScroll() {
-    if (this.element) {
-      let t = !1;
-      const i = (r) => {
-        t || (t = !0, requestAnimationFrame(() => {
-          this.listenerRecent(r), t = !1;
-        }));
-      };
-      return this.element.addEventListener("scroll", i, this.options), this.element.addEventListener("resize", i, this.options), this.activityItems.push(
-        {
-          element: this.element,
-          type: "scroll",
-          listener: i
-        },
-        {
-          element: this.element,
-          type: "resize",
-          listener: i
-        }
-      ), !0;
-    }
-    return !1;
-  }
-}
-const W = "ui-loading", A = class A {
-  /**
-   * Check if the loader is active now.
-   *
-   * Проверить, активен ли сейчас загрузчик.
-   */
-  static is() {
-    return this.value > 0;
-  }
-  /**
-   * Shows the loader.
-   *
-   * Показывает загрузчик.
-   */
-  static show() {
-    this.value++, this.dispatch();
-  }
-  /**
-   * Hides the loader.
-   *
-   * Скрывает загрузчик.
-   */
-  static hide() {
-    this.is() && (this.value--, this.dispatch());
-  }
-  /**
-   * Event registration to listen for data changes.
-   *
-   * Регистрация события для прослушивания изменений данных.
-   * @param listener the object that receives a notification (an object that implements the
-   * Event interface) when an event of the specified type occurs/ объект, который принимает
-   * уведомление, когда событие указанного типа произошло
-   * @param element element/ элемент
-   */
-  static registrationEvent(t, i) {
-    f() && new q(window, W, t).setElementControl(i).start();
-  }
-  /**
-   * Calls the event listener.
-   *
-   * Вызывает слушателя событий.
-   */
-  static dispatch() {
-    var t;
-    (t = this.event) == null || t.dispatch({ loading: this.is() });
-  }
-};
-l(A, "value", 0), l(A, "event"), f() && (A.event = new q(window, W));
-let L = A;
-function C(e) {
-  return JSON.parse(JSON.stringify(e));
-}
-function J(e) {
-  switch (typeof e) {
+function ot(i) {
+  switch (typeof i) {
     case "number":
       return !0;
     case "string":
-      return !!e.match(/^[0-9]+$/);
+      return !!i.match(/^[0-9]+$/);
     default:
       return !1;
   }
 }
-function w(e) {
-  if (typeof e == "number")
-    return e;
-  if (!e)
+function L(i) {
+  if (typeof i == "number")
+    return i;
+  if (!i)
     return 0;
-  let t = e.replace(/[^\d., ]+/ig, "");
+  let t = i.replace(/[^\d., ]+/ig, "");
   return t.match(/( [0-9]{3}[ ,.]|[0-9] [0-9])/ig) ? t = t.replace(/ /ig, "").replace(/,/ig, ".") : t.match(/,[0-9]{3}[,.]/ig) ? t = t.replace(/,/ig, "") : t.match(/[.][0-9]{3}[,.]/ig) ? t = t.replace(/[.]/ig, "").replace(/,/ig, ".") : t = t.replace(/,/ig, "."), parseFloat(t);
 }
-function U(e, t) {
-  return F(e) ? !1 : Array.isArray(t) ? t.includes(e) : J(e) && J(t) ? w(e) === w(t) : e === t;
+function et(i, t) {
+  return Y(i) ? !1 : Array.isArray(t) ? t.includes(i) : ot(i) && ot(t) ? L(i) === L(t) : i === t;
 }
-const P = {};
-let Y = "ui-storage";
-class et {
+function kt(i) {
+  return i instanceof Function || typeof i == "function";
+}
+function N(i) {
+  return kt(i) ? i() : i;
+}
+const O = {};
+let at = "ui-storage";
+class _ {
   /**
    * Constructor
    * @param name value name/ название значения
    * @param isSession should we use a session/ использовать ли сессию
    */
-  constructor(t, i = !1) {
-    l(this, "value");
-    l(this, "age");
-    this.name = t, this.isSession = i;
-    const r = `${i ? "session" : "storage"}#${t}`;
-    if (r in P)
-      return P[r];
-    this.make(), P[r] = this;
+  constructor(t, e = !1) {
+    c(this, "value");
+    c(this, "age");
+    this.name = t, this.isSession = e;
+    const s = `${e ? "session" : "storage"}#${t}`;
+    if (s in O)
+      return O[s];
+    this.make(), O[s] = this;
   }
   /**
    * Changing the prefix in key names. Should be called at the beginning of the code.
@@ -421,7 +111,7 @@ class et {
    * @param newPrefix new prefix/ новый префикс
    */
   static setPrefix(t) {
-    Y = t;
+    at = t;
   }
   /**
    * Getting data from local storage.
@@ -430,8 +120,8 @@ class et {
    * @param defaultValue default value/ значение по умолчанию
    * @param cache cache time/ время кэширования
    */
-  get(t, i) {
-    if (this.value !== null && this.value !== void 0 && this.isCache(i))
+  get(t, e) {
+    if (this.value !== null && this.value !== void 0 && this.isCache(e))
       return this.value;
     if (t !== void 0)
       return this.set(t);
@@ -443,8 +133,8 @@ class et {
    * @param value new values/ новые значения
    */
   set(t) {
-    var i;
-    return this.value = I(t), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? this.remove() : (i = this.getMethod()) == null || i.setItem(this.getIndex(), JSON.stringify({
+    var e;
+    return this.value = N(t), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? this.remove() : (e = this.getMethod()) == null || e.setItem(this.getIndex(), JSON.stringify({
       value: this.value,
       age: this.age
     })), this.value;
@@ -473,7 +163,7 @@ class et {
    * @param cache cache time/ время кэширования
    */
   isCache(t) {
-    return F(t) || this.age && this.age + t * 1e3 >= (/* @__PURE__ */ new Date()).getTime();
+    return Y(t) || this.age && this.age + t * 1e3 >= (/* @__PURE__ */ new Date()).getTime();
   }
   /**
    * Returns an object for working with storage.
@@ -481,7 +171,7 @@ class et {
    * Возвращает объект для работы с хранилищем.
    */
   getMethod() {
-    if (f())
+    if (l())
       return this.isSession ? window == null ? void 0 : window.sessionStorage : window == null ? void 0 : window.localStorage;
   }
   /**
@@ -490,7 +180,7 @@ class et {
    * Получение имени ключа в хранилище.
    */
   getIndex() {
-    return `${Y}__${this.name}`;
+    return `${at}__${this.name}`;
   }
   /**
    * Getting data from storage.
@@ -498,13 +188,13 @@ class et {
    * Получение данных из хранилища.
    */
   getValue() {
-    var i;
-    const t = (i = this.getMethod()) == null ? void 0 : i.getItem(this.getIndex());
+    var e;
+    const t = (e = this.getMethod()) == null ? void 0 : e.getItem(this.getIndex());
     if (t)
       try {
         return JSON.parse(t);
-      } catch (r) {
-        console.error("DataStorage", r);
+      } catch (s) {
+        console.error("DataStorage", s);
       }
   }
   /**
@@ -517,7 +207,7 @@ class et {
     return t ? (this.value = t.value, this.age = t.age) : (this.value = void 0, this.age = void 0), this;
   }
 }
-const ft = "geo-code", m = class m {
+const Wt = "geo-code", p = class p {
   /**
    * Information about the current country.
    *
@@ -583,7 +273,7 @@ const ft = "geo-code", m = class m {
    * Возвращает полный список стран.
    */
   static getList() {
-    return ct;
+    return Pt;
   }
   /**
    * Returns the data about the country by its full code.
@@ -593,8 +283,8 @@ const ft = "geo-code", m = class m {
    * код страны, полный вид язык-страна или один из них
    */
   static getByCode(t) {
-    let i;
-    return t && (t.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (i = this.getByCodeFull(t)), !i && t.match(/[A-Z]{2}/) && (i = this.getByCountry(this.toCountry(t))), !i && t.match(/[a-z]{2}/) && (i = this.getByLanguage(this.toLanguage(t)))), this.toFull(C(i != null ? i : this.getList()[0]));
+    let e;
+    return t && (t.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (e = this.getByCodeFull(t)), !e && t.match(/[A-Z]{2}/) && (e = this.getByCountry(this.toCountry(t))), !e && t.match(/[a-z]{2}/) && (e = this.getByLanguage(this.toLanguage(t)))), this.toFull(W(e != null ? e : this.getList()[0]));
   }
   /**
    * Returns the full data by language and country.
@@ -604,9 +294,9 @@ const ft = "geo-code", m = class m {
    */
   static getByCodeFull(t) {
     return this.getList().find(
-      (i) => U(t, [
-        `${i.language}-${i.country}`,
-        `${i.country}-${i.language}`
+      (e) => et(t, [
+        `${e.language}-${e.country}`,
+        `${e.country}-${e.language}`
       ])
     );
   }
@@ -617,9 +307,9 @@ const ft = "geo-code", m = class m {
    * @param country country/ страна
    */
   static getByCountry(t) {
-    return this.getList().find((i) => {
-      var r;
-      return i.country === t || ((r = i == null ? void 0 : i.countryAlternative) == null ? void 0 : r.find((s) => s === t));
+    return this.getList().find((e) => {
+      var s;
+      return e.country === t || ((s = e == null ? void 0 : e.countryAlternative) == null ? void 0 : s.find((n) => n === t));
     });
   }
   /**
@@ -629,9 +319,9 @@ const ft = "geo-code", m = class m {
    * @param language language/ язык
    */
   static getByLanguage(t) {
-    return this.getList().find((i) => {
-      var r;
-      return i.language === t || ((r = i == null ? void 0 : i.languageAlternative) == null ? void 0 : r.find((s) => s === t));
+    return this.getList().find((e) => {
+      var s;
+      return e.language === t || ((s = e == null ? void 0 : e.languageAlternative) == null ? void 0 : s.find((n) => n === t));
     });
   }
   /**
@@ -648,8 +338,8 @@ const ft = "geo-code", m = class m {
    * Получение временной зоны по умолчанию (отформатированный вид).
    */
   static getTimezoneFormat() {
-    const t = Math.abs(Math.trunc(this.timezone / 60)).toString().padStart(2, "0"), i = Math.abs(this.timezone % 60).toString().padStart(2, "0");
-    return this.timezone >= 0 ? `-${t}:${i}` : `+${t}:${i}`;
+    const t = Math.abs(Math.trunc(this.timezone / 60)).toString().padStart(2, "0"), e = Math.abs(this.timezone % 60).toString().padStart(2, "0");
+    return this.timezone >= 0 ? `-${t}:${e}` : `+${t}:${e}`;
   }
   /**
    * Determines the current country by its full name.
@@ -679,8 +369,8 @@ const ft = "geo-code", m = class m {
    * код страны, полный вид язык-страна или один из них
    * @param save save the result/ сохранить результат
    */
-  static set(t, i) {
-    this.location = t, this.item = this.getByCode(this.location), this.language = this.findLanguage(this.location), i && this.storage.set(this.location);
+  static set(t, e) {
+    this.location = t, this.item = this.getByCode(this.location), this.language = this.findLanguage(this.location), e && this.storage.set(this.location);
   }
   /**
    * Changing the default timezone for transmitted dates.
@@ -698,7 +388,7 @@ const ft = "geo-code", m = class m {
    */
   static findLocation() {
     var t;
-    return f() && (this.storage.get() || ((t = document.querySelector("html")) == null ? void 0 : t.lang) || navigator.language || navigator.languages[0] || "en-GB") || "en-GB";
+    return l() && (this.storage.get() || ((t = document.querySelector("html")) == null ? void 0 : t.lang) || navigator.language || navigator.languages[0] || "en-GB") || "en-GB";
   }
   /**
    * Determines the current language.
@@ -741,10 +431,761 @@ const ft = "geo-code", m = class m {
     };
   }
 };
-l(m, "storage", new et(ft)), l(m, "location"), l(m, "item"), l(m, "language"), l(m, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), m.location = m.findLocation(), m.language = m.findLanguage(m.location), m.item = m.getByCode(m.location);
-let D = m;
-var b = /* @__PURE__ */ ((e) => (e.get = "GET", e.post = "POST", e.put = "PUT", e.delete = "DELETE", e))(b || {});
-const K = "d-response-loading", Q = [], d = class d {
+c(p, "storage", new _(Wt)), c(p, "location"), c(p, "item"), c(p, "language"), c(p, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), p.location = p.findLocation(), p.language = p.findLanguage(p.location), p.item = p.getByCode(p.location);
+let b = p;
+function Ct(i) {
+  return l() && i === window;
+}
+function C(i) {
+  var t;
+  if (l())
+    return Ct(i) ? document.body : j(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
+}
+function ct(i) {
+  return Ct(i) ? i : C(i);
+}
+function Ut(i) {
+  var t;
+  return !!((t = C(i)) != null && t.closest("html"));
+}
+function z(i) {
+  return Array.isArray(i) ? i : [i];
+}
+class ut {
+  /**
+   * Classes Constructor
+   * @param elementSelector element/ элемент
+   * @param type type/ тип
+   * @param listener the object that receives a notification (an object that implements the
+   * Event interface) when an event of the specified type occurs/ объект, который принимает
+   * уведомление, когда событие указанного типа произошло
+   * @param options object that specifies characteristics/ объект options
+   * @param detail an event-dependent value associated with the event/ зависимое от события
+   * значение, связанное с событием
+   */
+  constructor(t, e = ["click"], s, n, o) {
+    /**
+     * Element.
+     *
+     * Элемент.
+     */
+    c(this, "element");
+    /**
+     * Element for checking. If the element is missing in the DOM, the event is turned off.
+     *
+     * Элемент для проверки. Если элемент отсутствует в DOM, событие выключается.
+     */
+    c(this, "elementControl");
+    c(this, "elementControlEdit");
+    /**
+     * A case-sensitive string representing the event type to listen for.
+     *
+     * Чувствительная к регистру строка, представляющая тип обрабатываемого события.
+     */
+    c(this, "type");
+    /**
+     * The object that receives a notification (an object that implements the Event interface)
+     * when an event of the specified type occurs. This must be null, an object with a
+     * handleEvent() method, or a JavaScript function.
+     *
+     * Объект, который принимает уведомление, когда событие указанного типа произошло.
+     * Это должен быть объект, реализующий интерфейс EventListener или просто функция JavaScript.
+     */
+    c(this, "listenerRecent", (t) => {
+      var e, s;
+      Ut(this.elementControl) ? ((e = this.listener) == null || e.call(this.element, t, this.detail), m(this.options) && ((s = this.options) != null && s.once) && this.stop()) : this.stop();
+    });
+    /**
+     * Event states.
+     *
+     * Состояния события.
+     */
+    c(this, "activity", !1);
+    c(this, "activityItems", []);
+    this.listener = s, this.options = n, this.detail = o, this.element = ct(t), this.elementControl = C(t), this.type = z(e);
+  }
+  /**
+   * Checks whether event listening is currently enabled.
+   *
+   * Проверяет, включено ли сейчас прослушивание события.
+   */
+  isActive() {
+    return this.activity;
+  }
+  getElement() {
+    return this.element;
+  }
+  /**
+   * Change of an element for tracking.
+   *
+   * Изменение элемента для прослеживания.
+   * @param elementSelector element/ элемент
+   */
+  setElement(t) {
+    const e = ct(t);
+    return this.elementControlEdit || (this.elementControl = C(t)), this.element = e, this.reset(), this;
+  }
+  /**
+   * Modifies the object that receives the notification.
+   *
+   * Модифицирует объект, который получает уведомление.
+   * @param elementSelector element/ элемент
+   */
+  setElementControl(t) {
+    return this.elementControl = C(t), this.elementControlEdit = !Y(this.elementControl), this.elementControlEdit || (this.elementControl = C(this.element)), this;
+  }
+  /**
+   * Changes the type of the handled event.
+   *
+   * Изменяет тип обрабатываемого события.
+   * @param type type/ тип
+   */
+  setType(t) {
+    return this.type = z(t), this.reset(), this;
+  }
+  /**
+   * Modifies the object that receives the notification.
+   *
+   * Модифицирует объект, который получает уведомление.
+   * @param listener
+   */
+  setListener(t) {
+    return this.listener = t, this;
+  }
+  /**
+   * Modifying the options object that defines the characteristics of an object.
+   *
+   * Изменение объекта options, который определяет характеристики объекта.
+   * @param options
+   */
+  setOptions(t) {
+    return this.options = t, this.reset(), this;
+  }
+  /**
+   * Modifying a dependent value for the dispatch method.
+   *
+   * Изменение зависимого значения для метода dispatch.
+   * @param detail
+   */
+  setDetail(t) {
+    return this.detail = t, this;
+  }
+  /**
+   * The method of the EventTarget sends an Event to the object, (synchronously) invoking
+   * the affected EventListeners in the appropriate order.
+   *
+   * Отправляет событие в общую систему событий. Это событие подчиняется тем же правилам
+   * поведения "Захвата" и "Всплывания" как и непосредственно инициированные события.
+   * @param detail an event-dependent value associated with the event/ зависимое от события
+   * значение, связанное с событием
+   */
+  dispatch(t = this.detail) {
+    return this.type.forEach(
+      (e) => {
+        var s;
+        return (s = this.element) == null ? void 0 : s.dispatchEvent(new CustomEvent(e, { detail: t }));
+      }
+    ), this;
+  }
+  /**
+   * Starting event listening.
+   *
+   * Запуск прослушивания события.
+   */
+  start() {
+    return this.activity || (this.activity = !0, this.activityItems = [], this.type.forEach((t) => {
+      this.element && !(t === "resize" && this.makeResize()) && !(t === "scroll-sync" && this.makeScroll()) && (this.element.addEventListener(t, this.listenerRecent, this.options), this.activityItems.push({
+        element: this.element,
+        type: t
+      }));
+    })), this;
+  }
+  /**
+   * Stopping event listening.
+   *
+   * Остановка прослушивания события.
+   */
+  stop() {
+    return this.activity && (this.activity = !1, this.activityItems.forEach(({
+      element: t,
+      type: e,
+      listener: s,
+      observer: n
+    }) => {
+      n ? n.disconnect() : s ? t == null || t.removeEventListener(e, s) : t == null || t.removeEventListener(e, this.listenerRecent);
+    })), this;
+  }
+  /**
+   * Toggling event handler state.
+   *
+   * Переключение состояния работы события.
+   * @param activity event activation/ активация события
+   */
+  toggle(t) {
+    return t ? this.start() : this.stop();
+  }
+  /**
+   * Overloads the listening events.
+   *
+   * Перегружает события прослушивания.
+   */
+  reset() {
+    return this.activity && (this.stop(), this.start()), this;
+  }
+  /**
+   * Checks if the ResizeObserver object exists.
+   *
+   * Проверяет, существует ли объект ResizeObserver.
+   */
+  isObserver() {
+    return "ResizeObserver" in window;
+  }
+  /**
+   * The implementation of the resize event for an element.
+   *
+   * Реализация события изменения размера для элемента.
+   */
+  makeResize() {
+    if (this.element && this.element instanceof HTMLElement && this.element !== document.body && this.isObserver()) {
+      const t = new ResizeObserver(
+        (e) => this.listenerRecent(e == null ? void 0 : e[0])
+      );
+      return t.observe(this.element), this.activityItems.push({
+        element: this.element,
+        type: "resize",
+        observer: t
+      }), !0;
+    }
+    return !1;
+  }
+  /**
+   * Implementation of the scroll event for an element.
+   *
+   * Реализация события изменения положения скролла для элемента.
+   */
+  makeScroll() {
+    if (this.element) {
+      let t = !1;
+      const e = (s) => {
+        t || (t = !0, requestAnimationFrame(() => {
+          this.listenerRecent(s), t = !1;
+        }));
+      };
+      return this.element.addEventListener("scroll", e, this.options), this.element.addEventListener("resize", e, this.options), this.activityItems.push(
+        {
+          element: this.element,
+          type: "scroll",
+          listener: e
+        },
+        {
+          element: this.element,
+          type: "resize",
+          listener: e
+        }
+      ), !0;
+    }
+    return !1;
+  }
+}
+const ht = "ui-loading", Z = class Z {
+  /**
+   * Check if the loader is active now.
+   *
+   * Проверить, активен ли сейчас загрузчик.
+   */
+  static is() {
+    return this.value > 0;
+  }
+  /**
+   * Shows the loader.
+   *
+   * Показывает загрузчик.
+   */
+  static show() {
+    this.value++, this.dispatch();
+  }
+  /**
+   * Hides the loader.
+   *
+   * Скрывает загрузчик.
+   */
+  static hide() {
+    this.is() && (this.value--, this.dispatch());
+  }
+  /**
+   * Event registration to listen for data changes.
+   *
+   * Регистрация события для прослушивания изменений данных.
+   * @param listener the object that receives a notification (an object that implements the
+   * Event interface) when an event of the specified type occurs/ объект, который принимает
+   * уведомление, когда событие указанного типа произошло
+   * @param element element/ элемент
+   */
+  static registrationEvent(t, e) {
+    l() && new ut(window, ht, t).setElementControl(e).start();
+  }
+  /**
+   * Calls the event listener.
+   *
+   * Вызывает слушателя событий.
+   */
+  static dispatch() {
+    var t;
+    (t = this.event) == null || t.dispatch({ loading: this.is() });
+  }
+};
+c(Z, "value", 0), c(Z, "event"), l() && (Z.event = new ut(window, ht));
+let F = Z;
+class jt {
+  constructor() {
+    /** Default headers/ Заголовки по умолчанию */
+    c(this, "headers", {});
+  }
+  /**
+   * Getting the header for the request.
+   *
+   * Получение заголовка для запроса.
+   * @param value list of headers/ список заголовков
+   * @param type type of request/ тип запроса
+   */
+  get(t, e = "application/json;charset=UTF-8") {
+    if (t !== null) {
+      const s = {
+        ...this.headers,
+        ...t || {}
+      };
+      return D(e) && (s["Content-Type"] = e), s;
+    }
+  }
+  /**
+   * Modifies the default header data.
+   *
+   * Изменяет данные заголовка по умолчанию.
+   */
+  set(t) {
+    return k(t) && (this.headers = t), this;
+  }
+}
+var S = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(S || {});
+class zt {
+  constructor() {
+    /** Default request data/ Данные запроса по умолчанию */
+    c(this, "value");
+  }
+  /**
+   * Checks if default request data exists.
+   *
+   * Проверяет, существуют ли данные запроса по умолчанию.
+   */
+  is() {
+    return !!this.value;
+  }
+  /**
+   * Gets the default request data.
+   *
+   * Получает данные запроса по умолчанию.
+   */
+  get() {
+    return this.value;
+  }
+  /**
+   * Adds default data to the request.
+   *
+   * Добавляет данные по умолчанию к запросу.
+   * @param request request data/ данные запроса
+   */
+  request(t) {
+    const e = this.get();
+    if (e) {
+      if (t instanceof FormData)
+        this.addByFormData(t, e);
+      else if (k(t))
+        return {
+          ...e,
+          ...t
+        };
+    }
+    return t;
+  }
+  /**
+   * Modifies the default request data.
+   *
+   * Изменяет данные запроса по умолчанию.
+   */
+  set(t) {
+    this.value = t;
+  }
+  /**
+   * Adds default data to FormData request.
+   *
+   * Добавляет данные по умолчанию к запросу FormData.
+   * @param request FormData request/ запрос FormData
+   * @param value default values/ значения по умолчанию
+   */
+  addByFormData(t, e) {
+    for (const s in e)
+      t.has(s) || t.set(s, e[s]);
+  }
+}
+class Ht {
+  constructor() {
+    c(this, "value");
+  }
+  /**
+   * Last response data
+   *
+   * Данные последнего ответа
+   */
+  get() {
+    return this.value;
+  }
+  /**
+   * Returns the execution status code.
+   *
+   * Возвращает код статуса выполнения.
+   */
+  getStatus() {
+    var t;
+    return (t = this.get()) == null ? void 0 : t.status;
+  }
+  /**
+   * Returns the execution status text.
+   *
+   * Возвращает текст статуса выполнения.
+   */
+  getStatusText() {
+    var t;
+    return (t = this.get()) == null ? void 0 : t.statusText;
+  }
+  /**
+   * Returns the script execution error.
+   *
+   * Возвращает ошибку выполнения скрипта.
+   */
+  getError() {
+    var t;
+    return (t = this.get()) == null ? void 0 : t.error;
+  }
+  /**
+   * Returns the data of the last request.
+   *
+   * Возвращает данные последнего запроса.
+   */
+  getResponse() {
+    var t;
+    return (t = this.get()) == null ? void 0 : t.lastResponse;
+  }
+  /**
+   * Returns messages from the last request.
+   *
+   * Возвращает сообщения от последнего запроса.
+   */
+  getMessage() {
+    var t;
+    return ((t = this.get()) == null ? void 0 : t.lastMessage) || "";
+  }
+  /**
+   * Sets the status item data.
+   *
+   * Устанавливает данные элемента статуса.
+   * @param data status item data/ данные элемента статуса
+   */
+  set(t) {
+    return "status" in t && this.setValue("status", t.status), "statusText" in t && this.setValue("statusText", t.statusText), "error" in t && this.setValue("error", t.error), "lastResponse" in t && this.setValue("lastResponse", t.lastResponse), "lastMessage" in t && this.setValue("lastMessage", t.lastMessage), this;
+  }
+  /**
+   * Sets the status code and optional status text.
+   *
+   * Устанавливает код статуса и необязательный текст статуса.
+   * @param status status code/ код статуса
+   * @param statusText optional status text/ необязательный текст статуса
+   */
+  setStatus(t, e) {
+    return this.set({
+      status: t,
+      statusText: e
+    }), this;
+  }
+  /**
+   * Sets the error message.
+   *
+   * Устанавливает сообщение об ошибке.
+   * @param error error message/ сообщение об ошибке
+   */
+  setError(t) {
+    return this.set({ error: t }), this;
+  }
+  /**
+   * Sets the data of the last response.
+   *
+   * Устанавливает данные последнего ответа.
+   * @param response response data/ данные ответа
+   */
+  setLastResponse(t) {
+    return t && k(t) && "message" in t && this.setLastMessage(String(t.message)), this.set({ lastResponse: t }), this;
+  }
+  /**
+   * Sets messages from the last request.
+   *
+   * Устанавливает сообщения от последнего запроса.
+   * @param message message text/ текст сообщения
+   */
+  setLastMessage(t) {
+    return this.set({ lastMessage: t }), this;
+  }
+  /**
+   * Sets a specific field in the status item.
+   *
+   * Устанавливает конкретное поле в элементе статуса.
+   * @param name field name/ название поля
+   * @param value field value/ значение поля
+   */
+  setValue(t, e) {
+    this.value || (this.value = {}), this.value[t] = e;
+  }
+}
+async function Zt(i) {
+  const t = N(i);
+  return t instanceof Promise ? await t : t;
+}
+function V(i, t) {
+  return Math.floor(Math.random() * (t - i + 1) + i);
+}
+const lt = "d-response-loading";
+class Kt {
+  /**
+   * Constructor
+   * @param requestDefault default request processor/ процессор запросов по умолчанию
+   */
+  constructor(t) {
+    /** List of first-time API requests/ Список первичных API запросов */
+    c(this, "first", []);
+    /** Cached responses/ Кешированные ответы */
+    c(this, "response", []);
+    /** Loading instance/ Экземпляр загрузки */
+    c(this, "loading");
+    /** Developer mode flag/ Флаг режима разработчика */
+    c(this, "devMode", !1);
+    this.requestDefault = t;
+  }
+  /**
+   * Checks if there is a global cached request, if there is, returns it.
+   *
+   * Проверяет, есть ли глобальный кешированный запрос, если есть, возвращает его.
+   * @param path link to the request/ ссылка на запрос
+   * @param method request method/ метод запроса
+   * @param request data for the request/ данные для запроса
+   * @param devMode is it developer mode/ является ли режим разработчика
+   */
+  get(t = "", e, s, n) {
+    return this.response.find((o) => !this.isDisable(o) && this.isPath(o, t) && e === o.method && this.isFirst(o, n) && this.isResponse(o, s) ? (this.isDevMode(n) && console.warn(`Response type: ${o.path}`), this.first.push(o), !0) : !1);
+  }
+  /**
+   * Returns a list of data about the emulator.
+   *
+   * Возвращает список данных об эмуляторе.
+   */
+  getList() {
+    return this.response.filter((t) => t.isForGlobal !== !0);
+  }
+  /**
+   * Adding cached requests.
+   *
+   * Добавление кешированных запросов.
+   * @param response data for caching/ данные для кеширования
+   */
+  add(t) {
+    return this.response.push(...z(t)), this;
+  }
+  /**
+   * Sets developer mode.
+   *
+   * Устанавливает режим разработчика.
+   * @param devMode is it developer mode/ является ли режим разработчика
+   */
+  setDevMode(t) {
+    return this.devMode = t, this;
+  }
+  /**
+   * Выполнение эмулятора, если доступно
+   * @param apiFetch property of the request/ свойство запроса
+   */
+  async emulator(t) {
+    const {
+      path: e = "",
+      method: s = S.get,
+      global: n = s === S.get,
+      devMode: o = !1
+    } = t;
+    if (n || this.isDevMode(o)) {
+      const a = this.requestDefault.request(t.request), u = this.get(e, s, a, o);
+      if (u) {
+        const h = await this.fetch(u, a);
+        return this.isDevMode(o) && console.warn("Response data:", e, a, h), h;
+      }
+    }
+  }
+  /**
+   * Checks if the cached item is disabled.
+   *
+   * Проверяет, отключен ли кешированный элемент.
+   * @param item cached item/ кешированный элемент
+   */
+  isDisable(t) {
+    return !!N(t == null ? void 0 : t.disable);
+  }
+  /**
+   * Checks if the path matches the cached one.
+   *
+   * Проверяет, совпадает ли путь с кешированным.
+   * @param item cached item/ кешированный элемент
+   * @param path request path/ путь запроса
+   */
+  isPath(t, e) {
+    return e === t.path || !!(t.path instanceof RegExp && e.match(t.path));
+  }
+  /**
+   * Checks if it is developer mode.
+   *
+   * Проверяет, является ли режимом разработчика.
+   * @param devMode is it developer mode/ является ли режим разработчика
+   */
+  isDevMode(t) {
+    return t || this.devMode;
+  }
+  /**
+   * Checks if this is the first request.
+   *
+   * Проверяет, является ли это первым запросом.
+   * @param item cached item/ кешированный элемент
+   * @param devMode is it developer mode/ является ли режим разработчика
+   */
+  isFirst(t, e) {
+    return this.first.indexOf(t) === -1 || this.isDevMode(e);
+  }
+  /**
+   * Checks if the request matches the cached one.
+   *
+   * Проверяет, совпадает ли запрос с кешированным.
+   * @param item cached item/ кешированный элемент
+   * @param request request data/ данные запроса
+   */
+  isResponse(t, e) {
+    const s = this.requestDefault.request(t == null ? void 0 : t.request);
+    return e === s || s === "*any" || D(e) && D(s) && k(e) && k(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
+      (n, [o, a]) => n && (a === (e == null ? void 0 : e[o]) || a === "*any"),
+      !0
+    );
+  }
+  /**
+   * Emulates an execution request.
+   *
+   * Эмулирует запрос выполнения.
+   * @param response Data for pre-request/ Данные для пред-запроса
+   * @param request data for the request/ данные для запроса
+   */
+  fetch(t, e) {
+    return this.startResponseLoading(), new Promise((s) => {
+      Zt(
+        kt(t.response) ? t.response(e) : t.response
+      ).then((n) => {
+        t != null && t.lag ? (F.show(), setTimeout(() => {
+          this.stopResponseLoading(), s(n), F.hide();
+        }, V(0, 2e3))) : (this.stopResponseLoading(), s(n));
+      });
+    });
+  }
+  /**
+   * Enable loading for request emulation.
+   *
+   * Включить загрузку для эмуляции запроса.
+   */
+  startResponseLoading() {
+    this.loading && clearTimeout(this.loading), l() && document.body.classList.add(lt);
+  }
+  /**
+   * Disable loading for request emulation.
+   *
+   * Отключить загрузку для эмуляции запроса.
+   */
+  stopResponseLoading() {
+    this.loading = setTimeout(() => {
+      this.loading = void 0, l() && document.body.classList.remove(lt);
+    }, 1200);
+  }
+}
+class Vt {
+  constructor() {
+    /** Function for call before the request/ Функция для вызова перед запросом */
+    c(this, "callback");
+    /** Function for call after the request/ Функция для вызова после запроса */
+    c(this, "callbackEnd");
+    /** Is the preparation in progress/ Идет ли подготовка */
+    c(this, "loading", !1);
+  }
+  /**
+   * Preparation before executing the request.
+   *
+   * Подготовка перед выполнением запроса.
+   * @param active is preparation active/ активна ли подготовка
+   */
+  async make(t) {
+    if (t && this.callback)
+      return this.go();
+  }
+  /**
+   * Analysis of the request after execution.
+   *
+   * Анализ запроса после выполнения.
+   * @param active is preparation active/ активна ли подготовка
+   * @param query data received in the request/ данные, полученные в запросе
+   */
+  async makeEnd(t, e) {
+    let s = {};
+    return t && this.callbackEnd && (s = await this.callbackEnd(e)), s;
+  }
+  /**
+   * The function is modified for a call before the request.
+   *
+   * Изменить функцию перед запросом.
+   * @param callback function for call/ функция для вызова
+   */
+  set(t) {
+    return this.callback = t, this;
+  }
+  /**
+   * Modify the function after the request.
+   *
+   * Изменить функцию после запроса.
+   * @param callback function for call/ функция для вызова
+   */
+  setEnd(t) {
+    return this.callbackEnd = t, this;
+  }
+  /**
+   * To execute preparation.
+   *
+   * Выполнить подготовку.
+   */
+  async go() {
+    return new Promise((t) => {
+      this.loading ? setTimeout(() => this.go().then(t), 160) : this.callback ? (this.loading = !0, this.callback().then(() => {
+        this.loading = !1, t();
+      })) : t();
+    });
+  }
+  /**
+   * Analysis of the request after execution.
+   *
+   * Анализ запроса после выполнения.
+   * @param query data received in the request/ данные, полученные в запросе
+   */
+  async end(t) {
+    let e = {};
+    return this.callbackEnd && (e = await this.callbackEnd(t)), e;
+  }
+}
+const w = class w {
   /**
    * Is the server local.
    *
@@ -754,36 +1195,20 @@ const K = "d-response-loading", Q = [], d = class d {
     return typeof location == "undefined" || location.hostname === "localhost";
   }
   /**
-   * Returns the data of the last request.
+   * Returns the status of the last request.
    *
-   * Возвращает данные последнего запроса.
+   * Возвращает статус последнего запроса.
    */
-  static getLastResponse() {
-    return this.lastResponse;
+  static getStatus() {
+    return this.status;
   }
   /**
-   * Returns messages from the last request.
+   * Getting the response handler.
    *
-   * Возвращает сообщения от последнего запроса.
+   * Получение обработчика ответа.
    */
-  static getLastMessage() {
-    return this.lastMessage || "";
-  }
-  /**
-   * Getting the header for the request.
-   *
-   * Получение заголовка для запроса.
-   * @param value list of headers/ список заголовков
-   * @param type type of request/ тип запроса
-   */
-  static getHeaders(t, i = "application/json;charset=UTF-8") {
-    if (t !== null) {
-      const r = {
-        ...this.headers,
-        ...t || {}
-      };
-      return E(i) && (r["Content-Type"] = i), r;
-    }
+  static getResponse() {
+    return this.response;
   }
   /**
    * Getting the full path to the request script.
@@ -792,8 +1217,8 @@ const K = "d-response-loading", Q = [], d = class d {
    * @param path path to the script/ путь к скрипту
    * @param api adding a path to the site’s API/ добавление пути к API сайта
    */
-  static getUrl(t, i = !0) {
-    return `${i ? this.url : ""}${t}`.replace("{locale}", D.getLocation()).replace("{country}", D.getCountry()).replace("{language}", D.getLanguage());
+  static getUrl(t, e = !0) {
+    return `${e ? this.url : ""}${t}`.replace("{locale}", b.getLocation()).replace("{country}", b.getCountry()).replace("{language}", b.getLanguage());
   }
   /**
    * Getting data for the body.
@@ -802,11 +1227,11 @@ const K = "d-response-loading", Q = [], d = class d {
    * @param request this request/ данный запрос
    * @param method method for request/ метод запрос
    */
-  static getBody(t = {}, i = b.get) {
+  static getBody(t = {}, e = S.get) {
     if (t instanceof FormData)
       return t;
-    if (i !== b.get && E(t))
-      return x(t) ? t : JSON.stringify(t);
+    if (e !== S.get && D(t))
+      return j(t) ? t : JSON.stringify(t);
   }
   /**
    * Getting data for the body of the get method.
@@ -816,64 +1241,13 @@ const K = "d-response-loading", Q = [], d = class d {
    * @param path path to request/ путь к запрос
    * @param method method for request/ метод запрос
    */
-  static getBodyForGet(t, i = "", r = b.get) {
-    if (r === b.get) {
-      const s = i.match(/\?/) ? "&" : "?", o = typeof t == "object" ? at(t) : t;
-      if (E(o))
-        return `${s}${o}`;
+  static getBodyForGet(t, e = "", s = S.get) {
+    if (s === S.get) {
+      const n = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? Lt(t) : t;
+      if (D(o))
+        return `${n}${o}`;
     }
     return "";
-  }
-  /**
-   * Returns a list of data about the emulator.
-   *
-   * Возвращает список данных об эмуляторе.
-   */
-  static getResponseList() {
-    return this.response.filter((t) => t.isForGlobal !== !0);
-  }
-  /**
-   * Returns the execution status code.
-   *
-   * Возвращает код статуса выполнения.
-   */
-  static getStatus() {
-    return this.status;
-  }
-  /**
-   * Returns the execution status text.
-   *
-   * Возвращает текст статуса выполнения.
-   */
-  static getStatusText() {
-    return this.statusText;
-  }
-  /**
-   * Returns the script execution error.
-   *
-   * Возвращает ошибку выполнения скрипта.
-   */
-  static getError() {
-    return this.error;
-  }
-  /**
-   * Adds default data to the request.
-   *
-   * Добавляет данные по умолчанию к запросу.
-   */
-  static addRequestDefault(t) {
-    if (this.requestDefault) {
-      if (t instanceof FormData)
-        y(this.requestDefault, (i, r) => {
-          t.has(r) || t.set(r, i);
-        });
-      else if ($(t))
-        return {
-          ...this.requestDefault,
-          ...t
-        };
-    }
-    return t;
   }
   /**
    * Modifies the default header data.
@@ -881,7 +1255,7 @@ const K = "d-response-loading", Q = [], d = class d {
    * Изменяет данные заголовка по умолчанию.
    */
   static setHeaders(t) {
-    return $(t) && (this.headers = t), d;
+    return this.headers.set(t), w;
   }
   /**
    * Modifies the default request data.
@@ -889,7 +1263,7 @@ const K = "d-response-loading", Q = [], d = class d {
    * Изменяет данные запроса по умолчанию.
    */
   static setRequestDefault(t) {
-    this.requestDefault = t;
+    return this.requestDefault.set(t), w;
   }
   /**
    * Change the base path to the script.
@@ -898,7 +1272,7 @@ const K = "d-response-loading", Q = [], d = class d {
    * @param url path to the script/ путь к скрипту
    */
   static setUrl(t) {
-    return this.url = t, d;
+    return this.url = t, w;
   }
   /**
    * The function is modified for a call before the request.
@@ -907,7 +1281,7 @@ const K = "d-response-loading", Q = [], d = class d {
    * @param callback function for call/ функция для вызова
    */
   static setPreparation(t) {
-    return this.preparationItem = t, d;
+    return this.preparation.set(t), w;
   }
   /**
    * Modify the function after the request.
@@ -916,7 +1290,7 @@ const K = "d-response-loading", Q = [], d = class d {
    * @param callback function for call/ функция для вызова
    */
   static setEnd(t) {
-    return this.preparationEndItem = t, d;
+    return this.preparation.setEnd(t), w;
   }
   /**
    * To execute a request.
@@ -925,7 +1299,7 @@ const K = "d-response-loading", Q = [], d = class d {
    * @param pathRequest query string or list of parameters/ строка запроса или список параметров
    */
   static async request(t) {
-    return x(t) ? await this.fetch({
+    return j(t) ? await this.fetch({
       path: t
     }) : await this.fetch(t);
   }
@@ -938,7 +1312,7 @@ const K = "d-response-loading", Q = [], d = class d {
   static get(t) {
     return this.request({
       ...t,
-      method: b.get
+      method: S.get
     });
   }
   /**
@@ -950,7 +1324,7 @@ const K = "d-response-loading", Q = [], d = class d {
   static post(t) {
     return this.request({
       ...t,
-      method: b.post
+      method: S.post
     });
   }
   /**
@@ -962,7 +1336,7 @@ const K = "d-response-loading", Q = [], d = class d {
   static put(t) {
     return this.request({
       ...t,
-      method: b.put
+      method: S.put
     });
   }
   /**
@@ -974,39 +1348,7 @@ const K = "d-response-loading", Q = [], d = class d {
   static delete(t) {
     return this.request({
       ...t,
-      method: b.delete
-    });
-  }
-  /**
-   * Adding cached requests.
-   *
-   * Добавление кешированных запросов.
-   * @param response data for caching/ данные для кеширования
-   */
-  static addResponse(t) {
-    return this.response.push(...j(t)), d;
-  }
-  /**
-   * Checks if there is a global cached request, if there is, returns it.
-   *
-   * Проверяет, есть ли глобальный кешированный запрос, если есть, возвращает его.
-   * @param path link to the request/ ссылка на запрос
-   * @param method request method/ метод запроса
-   * @param request data for the request/ данные для запроса
-   * @param devMode is it developer mode/ является ли режим разработчика
-   */
-  static getResponse(t = "", i, r, s) {
-    return this.response.find((o) => {
-      if (I(o == null ? void 0 : o.disable) !== !0 && (o.path instanceof RegExp && t.match(o.path) || t === o.path) && i === o.method && (Q.indexOf(o) === -1 || s)) {
-        const n = this.addRequestDefault(o == null ? void 0 : o.request);
-        let c = !1;
-        if (r === n || n === "*any" ? c = !0 : E(r) && E(n) && $(r) && $(n) && !(r instanceof FormData) && !(n instanceof FormData) && Object.values(r).length === Object.values(n).length && (c = Object.entries(n).reduce(
-          (u, [g, a]) => u && (a === (r == null ? void 0 : r[g]) || a === "*any"),
-          !0
-        )), c)
-          return s && console.warn(`Response type: ${o.path}`), Q.push(o), !0;
-      }
-      return !1;
+      method: S.delete
     });
   }
   /**
@@ -1016,65 +1358,46 @@ const K = "d-response-loading", Q = [], d = class d {
    * @param apiFetch property of the request/ свойство запроса
    */
   static async fetch(t) {
-    var g;
     const {
-      toData: i = !0,
-      hideError: r = !1,
-      queryReturn: s = void 0,
+      toData: e = !0,
+      hideError: s = !1,
+      queryReturn: n = void 0,
       globalPreparation: o = !0,
-      globalEnd: n = !0
-    } = t, c = await this.makeEmulator(t);
-    if (c)
-      return c;
-    let u = {};
-    L.show();
+      globalEnd: a = !0
+    } = t, u = await this.response.emulator(t);
+    if (u)
+      return u;
+    let h = {};
+    F.show();
     try {
-      this.preparationItem && o && await this.makePreparation();
-      const a = await this.makeQuery(t), p = n && this.preparationEndItem ? await this.makePreparationEnd(a) : {};
-      if (this.status = a.status, this.statusText = a.statusText, p != null && p.reset)
-        return L.hide(), await this.fetch(t);
-      s ? u = await s(a) : "data" in p ? u = p.data : ((g = a.headers.get("Content-Type")) != null ? g : "").match("application/json") ? u = await a.json() : u = { data: await a.text() };
-    } catch (a) {
-      r && console.error("Api: ", a), this.error = a;
+      await this.preparation.make(o);
+      const f = await this.makeQuery(t), d = await this.preparation.makeEnd(a, f);
+      if (this.status.setStatus(
+        f.status,
+        f.statusText
+      ), d != null && d.reset)
+        return F.hide(), await this.fetch(t);
+      h = await this.readData(
+        f,
+        n,
+        d
+      );
+    } catch (f) {
+      s || console.error("Api: ", f), this.status.setError(String(f));
     }
-    return L.hide(), this.makeData(u, i);
+    return F.hide(), this.makeData(h, e);
   }
   /**
-   * Emulates an execution request.
+   * Reading data from the response.
    *
-   * Эмулирует запрос выполнения.
-   * @param response Data for pre-request/ Данные для пред-запроса
-   * @param request data for the request/ данные для запроса
+   * Чтение данных из ответа.
+   * @param query response from the server/ ответ от сервера
+   * @param queryReturn custom function for reading data/ кастомная функция для чтения данных
+   * @param end finalization data/ данные финализации
    */
-  static fetchResponse(t, i) {
-    return this.startResponseLoading(), new Promise((r) => {
-      ut(
-        M(t.response) ? t.response(i) : t.response
-      ).then((s) => {
-        t != null && t.lag ? (L.show(), setTimeout(() => {
-          this.stopResponseLoading(), r(s), L.hide();
-        }, B(0, 2e3))) : (this.stopResponseLoading(), r(s));
-      });
-    });
-  }
-  /**
-   * Выполнение эмулятора, если доступно
-   * @param apiFetch property of the request/ свойство запроса
-   */
-  static async makeEmulator(t) {
-    const {
-      path: i = "",
-      method: r = b.get,
-      global: s = r === b.get,
-      devMode: o = !1
-    } = t;
-    if (s || o) {
-      const n = this.addRequestDefault(t.request), c = this.getResponse(i, r, n, o);
-      if (c) {
-        const u = await this.fetchResponse(c, n);
-        return o && console.warn("Response data:", i, n, u), u;
-      }
-    }
+  static async readData(t, e, s) {
+    var n;
+    return e ? await e(t) : "data" in s ? s.data : ((n = t.headers.get("Content-Type")) != null ? n : "").match("application/json") ? await t.json() : { data: await t.text() };
   }
   /**
    * Executing the request.
@@ -1083,42 +1406,20 @@ const K = "d-response-loading", Q = [], d = class d {
    * @param apiFetch property of the request/ свойство запроса
    */
   static async makeQuery(t) {
-    const i = this.addRequestDefault(t.request), {
-      api: r = !0,
-      path: s = "",
+    const e = this.requestDefault.request(t.request), {
+      api: s = !0,
+      path: n = "",
       pathFull: o = void 0,
-      method: n = b.get,
-      headers: c = {},
-      type: u = "application/json;charset=UTF-8",
-      init: g = {}
-    } = t, a = o != null ? o : this.getUrl(s, r), p = `${a}${this.getBodyForGet(i, a, n)}`, N = this.getHeaders(c, u), R = {
-      ...g,
-      method: n,
-      body: this.getBody(i, n)
+      method: a = S.get,
+      headers: u = {},
+      type: h = "application/json;charset=UTF-8",
+      init: f = {}
+    } = t, d = o != null ? o : this.getUrl(n, s), E = `${d}${this.getBodyForGet(e, d, a)}`, J = this.headers.get(u, h), Q = {
+      ...f,
+      method: a,
+      body: this.getBody(e, a)
     };
-    return N && (R.headers = N), await fetch(p, R);
-  }
-  /**
-   * Preparation before executing the request.
-   *
-   * Подготовка перед выполнением запроса.
-   */
-  static async makePreparation() {
-    return new Promise((t) => {
-      this.preparation ? setTimeout(() => this.makePreparation().then(t), 160) : this.preparationItem ? (this.preparation = !0, this.preparationItem().then(() => {
-        this.preparation = !1, t();
-      })) : t();
-    });
-  }
-  /**
-   * Analysis of the request after execution.
-   *
-   * Анализ запроса после выполнения.
-   * @param query data received in the request/ данные, полученные в запросе
-   */
-  static async makePreparationEnd(t) {
-    let i = {};
-    return this.preparationEndItem && (i = await this.preparationEndItem(t)), i;
+    return J && (Q.headers = J), await fetch(E, Q);
   }
   /**
    * Transforms data if needed.
@@ -1127,66 +1428,339 @@ const K = "d-response-loading", Q = [], d = class d {
    * @param data data for transformation/ данные для преобразования
    * @param toData is it necessary to process the data/ нужно ли обрабатывать данные
    */
-  static makeData(t, i) {
-    if (this.lastResponse = t, t && $(t) && ("message" in t && (this.lastMessage = String(t.message)), i && "data" in t)) {
-      if ($(t.data)) {
-        const r = { ...t.data };
-        return "success" in t && (r.success = t.success), r;
+  static makeData(t, e) {
+    if (this.status.setLastResponse(t), t && e && k(t) && "data" in t) {
+      if (k(t.data)) {
+        const s = { ...t.data };
+        return "success" in t && (s.success = t.success), s;
       }
       return t.data;
     }
     return t;
   }
+};
+c(w, "url", "/api/"), c(w, "headers", new jt()), c(w, "requestDefault", new zt()), c(w, "status", new Ht()), c(w, "response", new Kt(w.requestDefault)), c(w, "preparation", new Vt());
+let U = w;
+class ve {
   /**
-   * Enable loading for request emulation.
-   *
-   * Включить загрузку для эмуляции запроса.
+   * Constructor
+   * @param name channel name/ название канала
+   * @param callback callback on message received/ колбэк на получение сообщения
    */
-  static startResponseLoading() {
-    this.responseLoading && clearTimeout(this.responseLoading), f() && document.body.classList.add(K);
+  constructor(t, e) {
+    c(this, "channel");
+    /**
+     * Update state on message received.
+     *
+     * Обновление состояния при получении сообщения.
+     * @param event message event/ событие сообщения
+     */
+    c(this, "update", (t) => {
+      var e;
+      return (e = this.callback) == null || e.call(this, t), this;
+    });
+    if (this.callback = e, l())
+      try {
+        this.channel = new BroadcastChannel(`${Yt()}__${t}`), this.channel.onmessage = this.update;
+      } catch (s) {
+        console.error(`BroadcastMessage ${t}:`, s);
+      }
   }
   /**
-   * Disable loading for request emulation.
+   * Send a message to the channel.
    *
-   * Отключить загрузку для эмуляции запроса.
+   * Отправить сообщение в канал.
+   * @param message message to send/ сообщение для отправки
    */
-  static stopResponseLoading() {
-    this.responseLoading = setTimeout(() => {
-      this.responseLoading = void 0, f() && document.body.classList.remove(K);
-    }, 1200);
+  post(t) {
+    var e;
+    return (e = this.channel) == null || e.postMessage(t), this;
+  }
+  /**
+   * Set the callback function to be called when a message is received.
+   *
+   * Установить функцию колбэка, которая будет вызвана при получении сообщения.
+   * @param callback callback function/ функция колбэка
+   */
+  setCallback(t) {
+    return this.callback = t, this;
+  }
+}
+const Yt = () => new _("__broadcast-name").get(() => `name_${V(1e6, 9999999)}`);
+class qt {
+  /**
+   * Constructor
+   * @param callback function for the cache/ функция для кэша
+   */
+  constructor(t) {
+    c(this, "cache");
+    c(this, "cacheOld");
+    c(this, "comparisons", []);
+    this.callback = t;
+  }
+  /**
+   * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
+   *
+   * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша.
+   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   */
+  getCache(t) {
+    return this.isUpdate(t) && (this.cacheOld = this.cache, this.setCache()), this.cache;
+  }
+  /**
+   * Getting the previous value of the cache.
+   *
+   * Получение предыдущего значения кэша.
+   */
+  getCacheOld() {
+    return this.cacheOld;
+  }
+  /**
+   * Getting data for the cache, and if there is no cache, it performs a function to save the cache (Async).
+   *
+   * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша (Async).
+   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   */
+  async getCacheAsync(t) {
+    return this.isUpdate(t) && (this.cacheOld = this.cache, await this.setCacheAsync()), this.cache;
+  }
+  /**
+   * Overwrites or adds new values for the cache.
+   *
+   * Перезаписывает или добавляет новые значения для кэша.
+   */
+  setCache() {
+    this.cache = this.callback();
+  }
+  /**
+   * Overwrites or adds new values for the cache (Async).
+   *
+   * Перезаписывает или добавляет новые значения для кэша (Async).
+   */
+  async setCacheAsync() {
+    this.cache = await this.callback();
+  }
+  /**
+   * Checking additional data.
+   *
+   * Проверка дополнительных данных.
+   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   */
+  isUpdate(t) {
+    return this.cache === void 0 || this.comparisons.length !== t.length || this.comparisons.findIndex((e, s) => e !== t[s]) >= 0 ? (this.comparisons = [...t], !0) : !1;
+  }
+}
+class Jt {
+  constructor() {
+    c(this, "cache", {});
+  }
+  /**
+   * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
+   *
+   * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша.
+   * @param name cache name/ название кэша
+   * @param callback function for the cache/ функция для кэша
+   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   */
+  get(t, e, s) {
+    return this.getCacheItem(t, e).getCache(s != null ? s : []);
+  }
+  /**
+   * Getting data for the cache, and if there is no cache, it performs a function to save the cache (Async).
+   *
+   * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша (Async).
+   * @param name cache name/ название кэша
+   * @param callback function for the cache/ функция для кэша
+   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   */
+  async getAsync(t, e, s) {
+    return await this.getCacheItem(t, e).getCacheAsync(s != null ? s : []);
+  }
+  /**
+   * Returns an instance of the object for working with the cache element.
+   *
+   * Возвращает экземпляр объекта для работы с элементом кэша.
+   * @param name cache name/ название кэша
+   * @param callback function for the cache/ функция для кэша
+   */
+  getCacheItem(t, e) {
+    return t in this.cache || (this.cache[t] = new qt(e)), this.cache[t];
+  }
+}
+const M = class M {
+  /**
+   * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
+   *
+   * Получение данных для кэша, и если нет кэша, выполняет функцию для сохранения кэша.
+   * @param name cache name/ название кэша
+   * @param callback function for the cache/ функция для кэша
+   * @param comparison additional data for comparison/ дополнительные данные для сравнения
+   */
+  static get(t, e, s) {
+    return this.cache.get(t, e, s);
   }
 };
-l(d, "url", "/api/"), l(d, "response", []), l(d, "responseLoading"), l(d, "headers", {}), l(d, "requestDefault"), l(d, "preparation", !1), l(d, "preparationItem"), l(d, "preparationEndItem"), l(d, "status"), l(d, "statusText"), l(d, "error"), l(d, "lastResponse"), l(d, "lastMessage");
-let X = d;
-function dt(e, t) {
-  return y(e, (i) => i == null ? void 0 : i[t]);
+c(M, "cache"), M.cache = new Jt();
+let dt = M;
+function At(i, t = !1) {
+  if (typeof i == "string") {
+    const e = i.trim();
+    switch (e) {
+      case "undefined":
+        return;
+      case "null":
+        return null;
+      case "true":
+        return !0;
+      case "false":
+        return !1;
+      default:
+        if (/^[{[]/.exec(e))
+          try {
+            return JSON.parse(e);
+          } catch (s) {
+            console.error("transformation: JSON error", s);
+          }
+        else {
+          if (/^[0-9]+\.[0-9.]+$/.exec(e))
+            return parseFloat(e);
+          if (/^[0-9]+$/.exec(e))
+            return parseInt(e, 10);
+          if (t && l() && typeof (window == null ? void 0 : window[e]) == "function")
+            return window[e];
+        }
+    }
+  }
+  return i;
 }
-function v(e) {
-  var s, o, n, c, u, g, a, p;
-  if (e instanceof Date)
-    return e;
-  if (F(e))
+const Qt = "cookie-block";
+class Nt {
+  /**
+   * Obtaining status.
+   *
+   * Получение статуса.
+   */
+  static get() {
+    var t;
+    return (t = this.storage.get()) != null ? t : !1;
+  }
+  /**
+   * Changing status.
+   *
+   * Изменение статуса.
+   * @param value value to be changed/ значение, на которое будет изменен
+   */
+  static set(t) {
+    this.storage.set(t);
+  }
+}
+c(Nt, "storage", new _(Qt));
+const X = {}, nt = class nt {
+  constructor(t) {
+    c(this, "value");
+    c(this, "options", {});
+    if (this.name = t, t in T)
+      return T[t];
+    this.value = X == null ? void 0 : X[t], T[t] = this;
+  }
+  /**
+   * Get data or update if none.
+   *
+   * Получает данные или обновляет, если их нет.
+   * @param defaultValue value or function to change data/ значение или функция для изменения данных
+   * @param options additional parameters/ дополнительные параметры
+   */
+  get(t, e) {
+    return this.value === void 0 && t && this.set(t, e), this.value;
+  }
+  /**
+   * Updates cookie data.
+   *
+   * Обновляет данные cookie.
+   * @param value value or function to change data/ значение или функция для изменения данных
+   * @param options additional parameters/ дополнительные параметры
+   */
+  set(t, e) {
+    this.value = N(t), Object.assign(this.options, e), this.update();
+  }
+  /**
+   * Delete cookie data.
+   *
+   * Удаление данных из cookie.
+   */
+  remove() {
+    this.set("");
+  }
+  /**
+   * Returns cache time.
+   *
+   * Возвращает время кэширования.
+   */
+  getAge() {
+    var t, e;
+    return (e = (t = this.options) == null ? void 0 : t.age) != null ? e : 10080 * 60;
+  }
+  /**
+   * Update cookie data.
+   *
+   * Обновление данных cookie.
+   */
+  update() {
+    var t, e, s, n, o;
+    if (l() && !Nt.get()) {
+      const a = String((t = this.value) != null ? t : "");
+      document.cookie = [
+        `${encodeURIComponent(this.name)}=${encodeURIComponent(a)}`,
+        `max-age=${a === "" ? "-1" : this.getAge()}`,
+        `SameSite=${(s = (e = this.options) == null ? void 0 : e.sameSite) != null ? s : "strict"}`,
+        ...(o = (n = this.options) == null ? void 0 : n.arguments) != null ? o : []
+      ].join("; ");
+    }
+  }
+  /**
+   * Update data from cookies.
+   *
+   * Обновляет данные из cookies.
+   */
+  static updateData() {
+    for (const t of document.cookie.split(";")) {
+      const [e, s] = t.trim().split("=");
+      e && D(s) && (X[e] = At(s));
+    }
+  }
+};
+l() && nt.updateData();
+let gt = nt;
+const T = {};
+function I(i) {
+  var n, o, a, u, h, f, d, E;
+  if (i instanceof Date)
+    return i;
+  if (Y(i))
     return /* @__PURE__ */ new Date();
-  if (typeof e == "number")
-    return new Date(e);
-  let t = e, i = D.getTimezoneFormat();
-  e.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (N, R, st) => (t = R, i = st, N));
-  const r = (p = (a = (g = (u = (c = (n = (o = (s = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? s : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? n : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? c : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? u : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? g : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? a : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? p : t.replace(" ", "T");
-  return /* @__PURE__ */ new Date(`${r}${i}`);
+  if (typeof i == "number")
+    return new Date(i);
+  let t = i, e = b.getTimezoneFormat();
+  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (J, Q, Ft) => (t = Q, e = Ft, J));
+  const s = (E = (d = (f = (h = (u = (a = (o = (n = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? n : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? f : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? d : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? E : t.replace(" ", "T");
+  return /* @__PURE__ */ new Date(`${s}${e}`);
 }
-class Z {
+function Xt(i, t) {
+  return g(i, (e) => e == null ? void 0 : e[t]);
+}
+class q {
   /**
    * Constructor
    * @param code country code, full form language-country or one of them/
    * код страны, полный вид язык-страна или один из них
    */
-  constructor(t = D.getLocation()) {
-    l(this, "geo");
-    this.geo = D.find(t);
-    const i = this.getLocation();
-    if (i in z)
-      return z[i];
-    z[i] = this;
+  constructor(t = b.getLocation()) {
+    c(this, "geo");
+    this.geo = b.find(t);
+    const e = this.getLocation();
+    if (e in G)
+      return G[e];
+    G[e] = this;
   }
   /**
    * Returns an instance of the class according to the specified country code.
@@ -1195,8 +1769,8 @@ class Z {
    * @param code country code, full form language-country or one of them/
    * код страны, полный вид язык-страна или один из них
    */
-  static getInstance(t = D.getLocation()) {
-    return new Z(t);
+  static getInstance(t = b.getLocation()) {
+    return new q(t);
   }
   /**
    * Returns country code and language.
@@ -1222,19 +1796,19 @@ class Z {
    * @param typeOptions an object with some or all of the following properties/
    * объект с некоторыми или всеми из следующих свойств
    */
-  display(t, i) {
+  display(t, e) {
     var o;
-    let r = { type: "language" }, s;
-    i && (typeof i == "string" ? r.type = i : r = {
-      ...r,
-      ...i
+    let s = { type: "language" }, n;
+    e && (typeof e == "string" ? s.type = e : s = {
+      ...s,
+      ...e
     });
     try {
-      f() && (t ? s = new Intl.DisplayNames(this.getLocation(), r).of(t) : r.type === "language" ? s = new Intl.DisplayNames(this.getLocation(), r).of(this.geo.language) : r.type === "region" && (s = new Intl.DisplayNames(this.getLocation(), r).of(this.geo.country)));
-    } catch (n) {
-      console.error("display: ", n);
+      l() && (t ? n = new Intl.DisplayNames(this.getLocation(), s).of(t) : s.type === "language" ? n = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.language) : s.type === "region" && (n = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.country)));
+    } catch (a) {
+      console.error("display: ", a);
     }
-    return (o = s != null ? s : t) != null ? o : "";
+    return (o = n != null ? n : t) != null ? o : "";
   }
   /**
    * Get display names of language.
@@ -1243,12 +1817,12 @@ class Z {
    * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
    * @param style the formatting style to use/ используемый стиль форматирования
    */
-  languageName(t, i) {
-    const r = {
+  languageName(t, e) {
+    const s = {
       type: "language",
-      style: i
+      style: e
     };
-    return this.display(D.getByCode(t).language, r);
+    return this.display(b.getByCode(t).language, s);
   }
   /**
    * Get display names of region.
@@ -1257,12 +1831,12 @@ class Z {
    * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
    * @param style the formatting style to use/ используемый стиль форматирования
    */
-  countryName(t, i) {
-    const r = {
+  countryName(t, e) {
+    const s = {
       type: "region",
-      style: i
+      style: e
     };
-    return this.display(t, r);
+    return this.display(t, s);
   }
   /**
    * The method returns a string containing the full name in a specific format.
@@ -1273,25 +1847,25 @@ class Z {
    * @param surname surname middle name (optional)/ отчество
    * @param short shorten the names/ сократить названия
    */
-  fullName(t, i, r, s) {
-    var c, u;
-    const o = (u = (c = this.geo) == null ? void 0 : c.nameFormat) != null ? u : "fl";
-    let n;
+  fullName(t, e, s, n) {
+    var u, h;
+    const o = (h = (u = this.geo) == null ? void 0 : u.nameFormat) != null ? h : "fl";
+    let a;
     switch (o) {
       case "fsl":
-        n = `${i}${r ? ` ${r}` : ""} ${t}`;
+        a = `${e}${s ? ` ${s}` : ""} ${t}`;
         break;
       case "lf":
-        n = `${t} ${i}`;
+        a = `${t} ${e}`;
         break;
       case "lsf":
-        n = `${t}${r ? ` ${r}` : ""} ${i}`;
+        a = `${t}${s ? ` ${s}` : ""} ${e}`;
         break;
       default:
-        n = `${i} ${t}`;
+        a = `${e} ${t}`;
         break;
     }
-    return s ? n.replace(/ (.)[^ ]+/ig, " $1.") : n;
+    return n ? a.replace(/ (.)[^ ]+/ig, " $1.") : a;
   }
   /**
    * In basic use without specifying a locale, a formatted string.
@@ -1301,9 +1875,9 @@ class Z {
    * @param options an object with some or all properties/ объект с некоторыми
    * или всеми свойствами
    */
-  number(t, i) {
-    var r, s;
-    return ((s = (r = this.numberObject(i)) == null ? void 0 : r.format) == null ? void 0 : s.call(r, w(t))) || t.toString();
+  number(t, e) {
+    var s, n;
+    return ((n = (s = this.numberObject(e)) == null ? void 0 : s.format) == null ? void 0 : n.call(s, L(t))) || t.toString();
   }
   /**
    * Decimal point symbol.
@@ -1311,8 +1885,8 @@ class Z {
    * Символ десятичной точки.
    */
   decimal() {
-    var t, i, r, s, o;
-    return ((o = (s = (r = (i = (t = this.numberObject()) == null ? void 0 : t.formatToParts) == null ? void 0 : i.call(t, 1.2)) == null ? void 0 : r.find) == null ? void 0 : s.call(r, (n) => n.type === "decimal")) == null ? void 0 : o.value) || ".";
+    var t, e, s, n, o;
+    return ((o = (n = (s = (e = (t = this.numberObject()) == null ? void 0 : t.formatToParts) == null ? void 0 : e.call(t, 1.2)) == null ? void 0 : s.find) == null ? void 0 : n.call(s, (a) => a.type === "decimal")) == null ? void 0 : o.value) || ".";
   }
   /**
    * Currency formatting.
@@ -1323,25 +1897,25 @@ class Z {
    * валюта для использования в форматировании валюты
    * @param numberOnly do not display the currency symbol/ не выводить значок валюты
    */
-  currency(t, i, r = !1) {
-    const s = {
+  currency(t, e, s = !1) {
+    const n = {
       style: "currency",
       currencyDisplay: "symbol",
-      ...typeof i == "string" ? { currency: i } : i || {}
-    }, o = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...n) => (s.currency = String(n[2]).toUpperCase(), String(n[1])));
-    if (r) {
-      const n = this.numberObject(s);
-      return n ? dt(
-        n.formatToParts(w(t)).filter((c) => ["literal", "currency"].indexOf(c.type) === -1),
+      ...typeof e == "string" ? { currency: e } : e || {}
+    }, o = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...a) => (n.currency = String(a[2]).toUpperCase(), String(a[1])));
+    if (s) {
+      const a = this.numberObject(n);
+      return a ? Xt(
+        a.formatToParts(L(t)).filter((u) => ["literal", "currency"].indexOf(u.type) === -1),
         "value"
       ).join("") : t.toString();
-    } else return "currency" in s ? this.number(
+    } else return "currency" in n ? this.number(
       typeof t == "number" ? t : o,
-      s
+      n
     ) : this.number(
       typeof t == "number" ? t : o,
       {
-        ...s,
+        ...n,
         style: "decimal"
       }
     );
@@ -1355,13 +1929,13 @@ class Z {
    * @param currencyDisplay how to display the currency in currency formatting/
    * как отобразить валюту в формате валюты
    */
-  currencySymbol(t, i = "symbol") {
-    var r, s, o, n, c;
-    return ((c = (n = (o = (s = (r = this.numberObject({
+  currencySymbol(t, e = "symbol") {
+    var s, n, o, a, u;
+    return ((u = (a = (o = (n = (s = this.numberObject({
       style: "currency",
-      currencyDisplay: i,
+      currencyDisplay: e,
       currency: t
-    })) == null ? void 0 : r.formatToParts) == null ? void 0 : s.call(r, 100)) == null ? void 0 : o.find) == null ? void 0 : n.call(o, (u) => u.type === "currency")) == null ? void 0 : c.value) || t;
+    })) == null ? void 0 : s.formatToParts) == null ? void 0 : n.call(s, 100)) == null ? void 0 : o.find) == null ? void 0 : a.call(o, (h) => h.type === "currency")) == null ? void 0 : u.value) || t;
   }
   /**
    * Unit formatting.
@@ -1372,12 +1946,12 @@ class Z {
    * @param unitOptions the unit to use in unit formatting/ блок для использования
    * в форматировании блока
    */
-  unit(t, i) {
-    const r = {
+  unit(t, e) {
+    const s = {
       style: "unit",
-      ...typeof i == "string" ? { unit: i } : i || {}
-    }, s = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]+)$/i, (...o) => (r.unit = String(o[2]).toLowerCase(), String(o[1])));
-    return this.number(s, r);
+      ...typeof e == "string" ? { unit: e } : e || {}
+    }, n = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]+)$/i, (...o) => (s.unit = String(o[2]).toLowerCase(), String(o[1])));
+    return this.number(n, s);
   }
   /**
    * Возвращает отформатированный размер файла
@@ -1385,22 +1959,22 @@ class Z {
    * @param unitOptions the unit to use in unit formatting /<br>блок для использования
    * в форматировании блока
    */
-  sizeFile(t, i = "byte") {
-    const r = w(t);
-    if (r > 1024 && x(i))
-      switch (i) {
+  sizeFile(t, e = "byte") {
+    const s = L(t);
+    if (s > 1024 && j(e))
+      switch (e) {
         case "byte":
-          return this.sizeFile(r / 1024, "kilobyte");
+          return this.sizeFile(s / 1024, "kilobyte");
         case "kilobyte":
-          return this.sizeFile(r / 1024, "megabyte");
+          return this.sizeFile(s / 1024, "megabyte");
         case "megabyte":
-          return this.sizeFile(r / 1024, "gigabyte");
+          return this.sizeFile(s / 1024, "gigabyte");
         case "gigabyte":
-          return this.sizeFile(r / 1024, "terabyte");
+          return this.sizeFile(s / 1024, "terabyte");
         case "terabyte":
-          return this.sizeFile(r / 1024, "petabyte");
+          return this.sizeFile(s / 1024, "petabyte");
       }
-    return this.unit(t, i);
+    return this.unit(t, e);
   }
   /**
    * Number as a percentage.
@@ -1409,10 +1983,10 @@ class Z {
    * @param value a number, bigint, or string, to format/ число для форматирования
    * @param options an object with some or all properties/ объект с некоторыми или всеми свойствами
    */
-  percent(t, i) {
+  percent(t, e) {
     return this.number(t, {
       style: "percent",
-      ...i || {}
+      ...e || {}
     });
   }
   /**
@@ -1423,8 +1997,8 @@ class Z {
    * @param options an object with some or all properties/
    * объект с некоторыми или всеми свойствами
    */
-  percentBy100(t, i) {
-    return this.percent(w(t) / 100, i);
+  percentBy100(t, e) {
+    return this.percent(L(t) / 100, e);
   }
   /**
    * Применять форматирование, учитывающее множественное число, и языковые правила, связанные с множественным числом
@@ -1434,40 +2008,40 @@ class Z {
    * @param options Property for PluralRules/ свойство для PluralRules
    * @param optionsNumber an object with some or all properties/ объект с некоторыми или всеми свойствами
    */
-  plural(t, i, r, s) {
-    var c;
-    const o = w(t), n = i.split("|");
-    if (n.length > 1)
+  plural(t, e, s, n) {
+    var u;
+    const o = L(t), a = e.split("|");
+    if (a.length > 1)
       try {
-        if (f()) {
-          const g = new Intl.PluralRules(this.getLocation(), r).select(o);
-          let a;
-          switch (g) {
+        if (l()) {
+          const f = new Intl.PluralRules(this.getLocation(), s).select(o);
+          let d;
+          switch (f) {
             case "zero":
-              a = n[n.length - 1];
+              d = a[a.length - 1];
               break;
             case "one":
-              a = n == null ? void 0 : n[0];
+              d = a == null ? void 0 : a[0];
               break;
             case "two":
-              a = n == null ? void 0 : n[1];
+              d = a == null ? void 0 : a[1];
               break;
             case "few":
-              a = n != null && n[3] ? n == null ? void 0 : n[2] : n == null ? void 0 : n[1];
+              d = a != null && a[3] ? a == null ? void 0 : a[2] : a == null ? void 0 : a[1];
               break;
             case "many":
-              a = (n == null ? void 0 : n[3]) || (n == null ? void 0 : n[2]) || (n == null ? void 0 : n[1]);
+              d = (a == null ? void 0 : a[3]) || (a == null ? void 0 : a[2]) || (a == null ? void 0 : a[1]);
               break;
             case "other":
-              n.length === 6 ? a = n[n.length - 2] : a = n[n.length - 1];
+              a.length === 6 ? d = a[a.length - 2] : d = a[a.length - 1];
               break;
           }
-          return `${this.number(o, s)} ${a != null ? a : ""}`.trim();
+          return `${this.number(o, n)} ${d != null ? d : ""}`.trim();
         }
-      } catch (u) {
-        console.error("plural: ", u);
+      } catch (h) {
+        console.error("plural: ", h);
       }
-    return `${this.number(o, s)} ${(c = n == null ? void 0 : n[0]) != null ? c : ""}`.trim();
+    return `${this.number(o, n)} ${(u = a == null ? void 0 : a[0]) != null ? u : ""}`.trim();
   }
   /**
    * Enables language-sensitive date and time formatting.
@@ -1478,9 +2052,9 @@ class Z {
    * @param styleOptions the representation of the month/ представление месяца
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
-  date(t, i, r, s) {
-    const o = v(t), n = typeof r == "string", c = this.dateOptions(i, n ? r : "short");
-    return s && (c.hour12 = !1), n || Object.assign(c, r), o.toLocaleString(this.getLocation(), c);
+  date(t, e, s, n) {
+    const o = I(t), a = typeof s == "string", u = this.dateOptions(e, a ? s : "short");
+    return n && (u.hour12 = !1), a || Object.assign(u, s), o.toLocaleString(this.getLocation(), u);
   }
   /**
    * Enables language-sensitive relative time formatting.
@@ -1491,13 +2065,13 @@ class Z {
    * длина интернационализированного сообщения
    * @param todayValue current day/ текущий день
    */
-  relative(t, i, r) {
-    const s = v(t), o = r || /* @__PURE__ */ new Date(), n = {
+  relative(t, e, s) {
+    const n = I(t), o = s || /* @__PURE__ */ new Date(), a = {
       numeric: "auto",
-      ...typeof i == "string" ? { style: i } : i || {}
+      ...typeof e == "string" ? { style: e } : e || {}
     };
-    let c = "second", u = (s.getTime() - o.getTime()) / 1e3;
-    return Math.abs(u) >= 60 && (c = "minute", u /= 60, Math.abs(u) >= 60 && (c = "hour", u /= 60, Math.abs(u) >= 24 && (c = "day", u /= 24, Math.abs(u) >= 30 && (c = "month", u /= 30, Math.abs(u) >= 12 && (c = "year", u /= 12))))), this.relativeByValue(u, c, n);
+    let u = "second", h = (n.getTime() - o.getTime()) / 1e3;
+    return Math.abs(h) >= 60 && (u = "minute", h /= 60, Math.abs(h) >= 60 && (u = "hour", h /= 60, Math.abs(h) >= 24 && (u = "day", h /= 24, Math.abs(h) >= 30 && (u = "month", h /= 30, Math.abs(h) >= 12 && (u = "year", h /= 12))))), this.relativeByValue(h, u, a);
   }
   /**
    * Enables language-sensitive relative time formatting
@@ -1517,17 +2091,17 @@ class Z {
    * @param type type of data format/ тип формата data
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
-  relativeLimit(t, i, r, s, o, n, c) {
-    const u = v(t), g = r || /* @__PURE__ */ new Date(), a = new Date(g), p = new Date(g);
-    return a.setDate(g.getDate() - i), p.setDate(g.getDate() + i), u >= a && u <= p ? this.relative(
-      u,
-      s,
-      g
-    ) : this.date(
-      u,
+  relativeLimit(t, e, s, n, o, a, u) {
+    const h = I(t), f = s || /* @__PURE__ */ new Date(), d = new Date(f), E = new Date(f);
+    return d.setDate(f.getDate() - e), E.setDate(f.getDate() + e), h >= d && h <= E ? this.relative(
+      h,
       n,
+      f
+    ) : this.date(
+      h,
+      a,
       o,
-      c
+      u
     );
   }
   /**
@@ -1536,14 +2110,14 @@ class Z {
    * @param unit time unit/ единица времени
    * @param styleOptions additional option or formatting style/ дополнительная опция или стиль форматирования
    */
-  relativeByValue(t, i, r) {
-    const s = {
+  relativeByValue(t, e, s) {
+    const n = {
       numeric: "auto",
-      ...typeof r == "string" ? { style: r } : r || {}
+      ...typeof s == "string" ? { style: s } : s || {}
     };
     try {
-      if (f())
-        return new Intl.RelativeTimeFormat(this.getLocation(), s).format(Math.round(w(t)), i);
+      if (l())
+        return new Intl.RelativeTimeFormat(this.getLocation(), n).format(Math.round(L(t)), e);
     } catch (o) {
       console.error("relative: ", o);
     }
@@ -1555,12 +2129,12 @@ class Z {
    * @param value the date to format/ дата для форматирования
    * @param style the representation of the month/ представление месяца
    */
-  month(t, i) {
+  month(t, e) {
     try {
-      if (f())
-        return Intl.DateTimeFormat(this.getLocation(), { month: i || "long" }).format(v(t));
-    } catch (r) {
-      console.error("month: ", r);
+      if (l())
+        return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(I(t));
+    } catch (s) {
+      console.error("month: ", s);
     }
     return "";
   }
@@ -1571,23 +2145,23 @@ class Z {
    * @param style the representation of the month/ представление месяца
    */
   months(t) {
-    const i = [{
+    const e = [{
       label: "",
       value: void 0
     }];
     try {
-      if (f()) {
-        const r = /* @__PURE__ */ new Date(), s = Intl.DateTimeFormat(this.getLocation(), { month: t || "long" });
+      if (l()) {
+        const s = /* @__PURE__ */ new Date(), n = Intl.DateTimeFormat(this.getLocation(), { month: t || "long" });
         for (let o = 0; o < 12; o++)
-          r.setMonth(o), i.push({
-            label: s.format(r).replace(/^./, (n) => n.toUpperCase()),
+          s.setMonth(o), e.push({
+            label: n.format(s).replace(/^./, (a) => a.toUpperCase()),
             value: o + 1
           });
       }
-    } catch (r) {
-      console.error("months: ", r);
+    } catch (s) {
+      console.error("months: ", s);
     }
-    return i;
+    return e;
   }
   /**
    * Returns names of days of the week.
@@ -1596,12 +2170,12 @@ class Z {
    * @param value the date to format/ дата для форматирования
    * @param style the representation of the weekday/ представление о дне недели
    */
-  weekday(t, i) {
+  weekday(t, e) {
     try {
-      if (f())
-        return Intl.DateTimeFormat(this.getLocation(), { weekday: i || "long" }).format(v(t));
-    } catch (r) {
-      console.error("weekday: ", r);
+      if (l())
+        return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(I(t));
+    } catch (s) {
+      console.error("weekday: ", s);
     }
     return "";
   }
@@ -1612,24 +2186,24 @@ class Z {
    * @param style the representation of the weekday/ представление о дне недели
    */
   weekdays(t) {
-    const i = [{
+    const e = [{
       label: "",
       value: void 0
     }];
     try {
-      if (f()) {
-        const r = /* @__PURE__ */ new Date(), s = Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }), o = r.getDay() + (this.geo.firstDay === "Mo" ? -1 : 1);
-        r.setDate(r.getDate() - o);
-        for (let n = 0; n < 7; n++)
-          i.push({
-            label: s.format(r).replace(/^./, (c) => c.toUpperCase()),
-            value: r.getDay()
-          }), r.setDate(r.getDate() + 1);
+      if (l()) {
+        const s = /* @__PURE__ */ new Date(), n = Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }), o = s.getDay() + (this.geo.firstDay === "Mo" ? -1 : 1);
+        s.setDate(s.getDate() - o);
+        for (let a = 0; a < 7; a++)
+          e.push({
+            label: n.format(s).replace(/^./, (u) => u.toUpperCase()),
+            value: s.getDay()
+          }), s.setDate(s.getDate() + 1);
       }
-    } catch (r) {
-      console.error("weekdays: ", r);
+    } catch (s) {
+      console.error("weekdays: ", s);
     }
-    return i;
+    return e;
   }
   /**
    * Time.
@@ -1647,10 +2221,10 @@ class Z {
    * @param data an array with data/ массив с данными
    * @param compareFn a function for sorting/ функция для сортировки
    */
-  sort(t, i = (r, s) => [r, s]) {
-    if (f()) {
-      const r = new Intl.Collator(this.getLocation());
-      return t.sort((s, o) => r.compare(...i(s, o)));
+  sort(t, e = (s, n) => [s, n]) {
+    if (l()) {
+      const s = new Intl.Collator(this.getLocation());
+      return t.sort((n, o) => s.compare(...e(n, o)));
     }
     return t;
   }
@@ -1663,10 +2237,10 @@ class Z {
    */
   numberObject(t) {
     try {
-      if (f())
+      if (l())
         return new Intl.NumberFormat(this.getLocation(), t);
-    } catch (i) {
-      console.error("numberObject: ", i);
+    } catch (e) {
+      console.error("numberObject: ", e);
     }
   }
   /**
@@ -1676,40 +2250,2042 @@ class Z {
    * @param type type of data format/ тип формата data
    * @param display the representation of the month/ представление месяца
    */
-  dateOptions(t, i = "short") {
-    const r = {};
-    return ["full", "datetime", "date", void 0, "year-month", "year"].indexOf(t) !== -1 && (r.year = "numeric"), ["full", "datetime", "date", void 0, "year-month", "month", "day-month"].indexOf(t) !== -1 && (r.month = i), ["full", "datetime", "date", void 0, "day", "day-month"].indexOf(t) !== -1 && (r.day = "2-digit"), t !== void 0 && (["full", "datetime", "time", "hour-minute", "hour"].indexOf(t) !== -1 && (r.hour = "2-digit"), ["full", "datetime", "time", "hour-minute", "minute"].indexOf(t) !== -1 && (r.minute = "2-digit"), ["full", "time", "second"].indexOf(t) !== -1 && (r.second = "2-digit")), r;
+  dateOptions(t, e = "short") {
+    const s = {};
+    return ["full", "datetime", "date", void 0, "year-month", "year"].indexOf(t) !== -1 && (s.year = "numeric"), ["full", "datetime", "date", void 0, "year-month", "month", "day-month"].indexOf(t) !== -1 && (s.month = e), ["full", "datetime", "date", void 0, "day", "day-month"].indexOf(t) !== -1 && (s.day = "2-digit"), t !== void 0 && (["full", "datetime", "time", "hour-minute", "hour"].indexOf(t) !== -1 && (s.hour = "2-digit"), ["full", "datetime", "time", "hour-minute", "minute"].indexOf(t) !== -1 && (s.minute = "2-digit"), ["full", "time", "second"].indexOf(t) !== -1 && (s.second = "2-digit")), s;
   }
 }
-const z = {};
-function ht(e, t, i) {
-  var r, s;
-  return (s = (r = S(e)) == null ? void 0 : r[t]) != null ? s : i;
+const G = {};
+class Et {
+  /**
+   * Constructor
+   * @param date date for processing/ дата для обработки
+   * @param type type of date format for output/ тип формата даты вывода
+   * @param code country and language code/ код страны и языка
+   */
+  constructor(t, e = "date", s = b.getLocation()) {
+    c(this, "date");
+    c(this, "hour24", !1);
+    c(this, "watch");
+    this.type = e, this.code = s, this.date = I(t);
+  }
+  /**
+   * Returns an object for working with formatting.
+   *
+   * Возвращает объект для работы с форматированием.
+   */
+  getIntl() {
+    return new q(this.code);
+  }
+  /**
+   * Returns a Date object.
+   *
+   * Возвращает объект Date.
+   */
+  getDate() {
+    return this.date;
+  }
+  /**
+   * Returns the type of data output.
+   *
+   * Возвращает тип вывода данных.
+   */
+  getType() {
+    return this.type;
+  }
+  /**
+   * Returns the format of hours.
+   *
+   * Возвращает формат часов.
+   */
+  getHoursType() {
+    const t = this.clone();
+    return t.setHours(23), t.toLocaleTimeString(this.getIntl().getLocation(), { hour: "2-digit" }).match(/23/ig) ? "24" : "12";
+  }
+  /**
+   * Whether to use 12-hour time.
+   *
+   * Использовать ли 12-часовой формат времени.
+   */
+  getHour24() {
+    return this.hour24;
+  }
+  /**
+   * The method returns the difference, in minutes, between
+   * a date as evaluated in the UTC time zone, and the same date as evaluated
+   * in the local time zone.
+   *
+   * Метод возвращает смещение часового пояса относительно часового пояса UTC
+   * в минутах для текущей локали.
+   */
+  getTimeZoneOffset() {
+    return this.date.getTimezoneOffset();
+  }
+  /**
+   * Returns the time zone as a string.
+   *
+   * Возвращает временную зону в виде строки.
+   * @param style the style of the returned data/ стиль возвращаемых данных
+   */
+  getTimeZone(t) {
+    const e = this.getTimeZoneOffset();
+    if (t === "minute")
+      return e.toString();
+    const s = e / 60 * -1;
+    if (t === "hour")
+      return this.getIntl().number(Math.trunc(s), { signDisplay: "always" });
+    const n = this.getIntl().number(Math.trunc(s), {
+      signDisplay: "always",
+      minimumIntegerDigits: 2
+    }), o = s.toString().match(/.\d+/) ? "30" : "00";
+    return t === "RFC" ? `${n}${o}` : `${n}:${o}`;
+  }
+  /**
+   * Returns the code of the first day of the week.
+   *
+   * Возвращает код первого дня недели.
+   */
+  getFirstDayCode() {
+    const t = this.getIntl().getFirstDay();
+    return t === "Sa" ? 6 : t === "Su" ? 0 : 1;
+  }
+  /**
+   * The method returns the year of the specified date according to local time.
+   *
+   * Метод возвращает год указанной даты по местному времени.
+   */
+  getYear() {
+    return this.date.getFullYear();
+  }
+  /**
+   * The method returns the month in the specified date according to local time,
+   * as a zero-based value.
+   *
+   * Метод возвращает месяц указанной даты по местному времени, нумерация
+   * месяцев начинается с нуля для первого месяца в году.
+   */
+  getMonth() {
+    return this.date.getMonth() + 1;
+  }
+  /**
+   * The method returns the day of the month for the specified date according to local time.
+   *
+   * Метод возвращает день месяца указанной даты по местному времени
+   */
+  getDay() {
+    return this.date.getDate();
+  }
+  /**
+   * The method returns the hour for the specified date, according to local time.
+   *
+   * Метод возвращает часы указанной даты по местному времени.
+   */
+  getHour() {
+    return this.date.getHours();
+  }
+  /**
+   * The method returns the minutes in the specified date according to local time.
+   *
+   * Метод возвращает минуты указанной даты по местному времени.
+   */
+  getMinute() {
+    return this.date.getMinutes();
+  }
+  /**
+   * The method returns the seconds in the specified date according to local time.
+   *
+   * Метод возвращает секунды указанной даты по местному времени.
+   */
+  getSecond() {
+    return this.date.getSeconds();
+  }
+  /**
+   * Returns the last day of the week.
+   *
+   * Возвращает последний день недели.
+   */
+  getMaxDay() {
+    return this.getMonth() > 0 ? this.cloneDayLast().getDay() : 0;
+  }
+  /**
+   * Enables language-sensitive date and time formatting.
+   *
+   * Конструктором объектов, включающих языка-зависимое форматирование даты и времени.
+   * @param type type of date format for output/ тип формата даты вывода
+   * @param styleOptions the representation of the month/ представление месяца
+   */
+  locale(t = this.type, e) {
+    return this.getIntl().date(
+      this.date,
+      t,
+      e,
+      this.hour24
+    );
+  }
+  /**
+   * Returns the formatted year.
+   *
+   * Возвращает отформатированный год.
+   * @param style the representation of the month/ представление месяца
+   */
+  localeYear(t = "numeric") {
+    return this.locale("year", { year: t });
+  }
+  /**
+   * Returns the formatted month.
+   *
+   * Возвращает отформатированный месяц.
+   * @param style the representation of the month/ представление месяца
+   */
+  localeMonth(t = "long") {
+    return this.locale("month", { month: t });
+  }
+  /**
+   * Returns the formatted day.
+   *
+   * Возвращает отформатированный день.
+   * @param style the representation of the month/ представление месяца
+   */
+  localeDay(t = "numeric") {
+    return this.locale("day", { day: t });
+  }
+  /**
+   * Returns the formatted hour.
+   *
+   * Возвращает отформатированный час.
+   * @param style the representation of the month/ представление месяца
+   */
+  localeHour(t = "numeric") {
+    return this.locale("hour", { hour: t });
+  }
+  /**
+   * Returns the formatted minute.
+   *
+   * Возвращает отформатированную минуту.
+   * @param style the representation of the month/ представление месяца
+   */
+  localeMinute(t = "numeric") {
+    return this.locale("minute", { minute: t });
+  }
+  /**
+   * Returns the formatted second.
+   *
+   * Возвращает отформатированную секунду.
+   * @param style the representation of the month/ представление месяца
+   */
+  localeSecond(t = "numeric") {
+    return this.locale("second", { second: t });
+  }
+  /**
+   * Output of standard data.
+   *
+   * Вывод стандартных данных.
+   * @param timeZone add time zone/ добавить временную зону
+   */
+  standard(t = !0) {
+    const e = new Et(this.date, this.type, "en-GB"), s = [];
+    let n;
+    return e.setHour24(!0), this.type === "hour-minute" ? n = e.locale(this.type, {
+      year: "numeric",
+      month: "2-digit",
+      hour12: !1
+    }) : (["full", "datetime", "date", "year-month", "year", "month", "day"].indexOf(this.type) !== -1 && (s.push(e.localeYear()), s.push(e.localeMonth("2-digit"))), ["full", "datetime", "date", "year", "month", "day"].indexOf(this.type) !== -1 && s.push(e.localeDay("2-digit")), ["full", "datetime", "time", "hour", "minute", "second"].indexOf(this.type) !== -1 && (n = e.locale("time"))), `${s.join("-")}${n ? `T${n}${t ? e.getTimeZone() : ""}` : ""}`;
+  }
+  /**
+   * Change the date completely.
+   *
+   * Изменять полностью дату.
+   * @param value an integer value representing the number/
+   * целочисленное значение, представляющее число
+   */
+  setDate(t) {
+    return this.date = I(t), this.update(), this;
+  }
+  /**
+   * Change the type of data output.
+   *
+   * Изменить тип вывода данных.
+   * @param value type of output/ тип вывод
+   */
+  setType(t) {
+    return this.type = t, this.update(), this;
+  }
+  /**
+   * Whether to use 12-hour time.
+   *
+   * Использовать ли 12-часовой формат времени.
+   * @param value If true, output the 12-hour time format/
+   * если true, выводить 12-часовой формат времени
+   */
+  setHour24(t) {
+    return this.hour24 = t, this.update(), this;
+  }
+  /**
+   * To change the location.
+   *
+   * Изменить местоположение.
+   * @param code country and language code/ код страны и языка
+   */
+  setCode(t) {
+    return this.code = t, this;
+  }
+  /**
+   * The function is called when the data is updated.
+   *
+   * Функция вызывается при обновлении данных.
+   * @param watch the function calls/ функция вызывает
+   */
+  setWatch(t) {
+    return this.watch = t, this;
+  }
+  /**
+   * The method sets the full year for a specified date according to local time.
+   *
+   * Метод устанавливает полный год указанной даты по местному времени.
+   * @param value value/ значения
+   */
+  setYear(t) {
+    return this.date.setFullYear(t), this.update(), this;
+  }
+  /**
+   * The method sets the month for a specified date according to the currently set year.
+   *
+   * Метод устанавливает месяц указанной даты по местному времени.
+   * @param value value/ значения
+   */
+  setMonth(t) {
+    return this.date.setMonth(t - 1), this.update(), this;
+  }
+  /**
+   * The method changes the day of the month of a given Date instance, based on local time.
+   *
+   * Метод устанавливает день месяца указанной даты по местному времени.
+   * @param value value/ значения
+   */
+  setDay(t) {
+    return this.date.setDate(t), this.update(), this;
+  }
+  /**
+   * The method sets the hours for a specified date according to local time.
+   *
+   * Метод устанавливает часы указанной даты по местному времени.
+   * @param value value/ значения
+   */
+  setHour(t) {
+    return this.date.setHours(t), this.update(), this;
+  }
+  /**
+   * The method sets the minutes for a specified date according to local time
+   *
+   * Метод устанавливает минуты указанной даты по местному времени
+   * @param value value / значения
+   */
+  setMinute(t) {
+    return this.date.setMinutes(t), this.update(), this;
+  }
+  /**
+   * The method sets the seconds for a specified date according to local time.
+   *
+   * Метод устанавливает секунды указанной даты по местному времени.
+   * @param value value/ значения
+   */
+  setSecond(t) {
+    return this.date.setSeconds(t), this.update(), this;
+  }
+  /**
+   * Shift the date by a given value in years.
+   *
+   * Сдвинуть дату на заданное значение в годах.
+   * @param value values for moving/ значения для перемещения
+   */
+  moveByYear(t) {
+    return this.setYear(this.date.getFullYear() + t), this;
+  }
+  /**
+   * Shift the date by a given value in months.
+   *
+   * Сдвинуть дату на заданное значение в месяцах.
+   * @param value values for moving/ значения для перемещения
+   */
+  moveByMonth(t) {
+    return this.setMonth(this.date.getMonth() + 1 + t), this;
+  }
+  /**
+   * Shift the date by a given value in days.
+   *
+   * Сдвинуть дату на заданное значение в днях.
+   * @param value values for moving/ значения для перемещения
+   */
+  moveByDay(t) {
+    return this.setDay(this.date.getDate() + t), this;
+  }
+  /**
+   * Shift the date by a given value in hours.
+   *
+   * Сдвинуть дату на заданное значение в часах.
+   * @param value values for moving/ значения для перемещения
+   */
+  moveByHour(t) {
+    return this.setHour(this.date.getHours() + t), this;
+  }
+  /**
+   * Shift the date by a given value in minutes.
+   *
+   * Сдвинуть дату на заданное значение в минутах.
+   * @param value values for moving/ значения для перемещения
+   */
+  moveByMinute(t) {
+    return this.setMinute(this.date.getMinutes() + t), this;
+  }
+  /**
+   * Shift the date by a given value in seconds.
+   *
+   * Сдвинуть дату на заданное значение в секундах.
+   * @param value values for moving/ значения для перемещения
+   */
+  moveBySecond(t) {
+    return this.setSecond(this.date.getSeconds() + t), this;
+  }
+  /**
+   * Translate to the first month.
+   *
+   * Переводить на первый месяц.
+   */
+  moveMonthFirst() {
+    return this.setMonth(1), this;
+  }
+  /**
+   * Translate to the first month.
+   *
+   * Переводить на первый месяц.
+   */
+  moveMonthLast() {
+    return this.setMonth(12), this;
+  }
+  /**
+   * Translate to the first day of the next month.
+   *
+   * Переводить на первый день следующего месяца.
+   */
+  moveMonthNext() {
+    return this.setDay(1).moveByMonth(1), this;
+  }
+  /**
+   * Translate to the first day of the previous month.
+   *
+   * Переводить на первый день предыдущего месяца.
+   */
+  moveMonthPrevious() {
+    return this.setDay(1).moveByMonth(-1), this;
+  }
+  /**
+   * Translate to the first day of the week.
+   *
+   * Переводить на первый день недели.
+   */
+  moveWeekdayFirst() {
+    const t = this.date.getDay(), e = this.getFirstDayCode();
+    return this.moveByDay(
+      (e === 6 ? -1 : e) - t
+    ), this;
+  }
+  /**
+   * Translate to the last day of the week.
+   *
+   * Переводить на последний день недели.
+   */
+  moveWeekdayLast() {
+    return this.moveWeekdayFirst().moveByDay(6), this;
+  }
+  /**
+   * Translate to the first day of the first week of the month.
+   *
+   * Переводить на первый день первой недели месяца.
+   */
+  moveWeekdayFirstByMonth() {
+    return this.moveDayFirst().moveWeekdayFirst(), this;
+  }
+  /**
+   * Translate to the first day of the first full week of the following month.
+   *
+   * Переводить на первый день первой полной недели следующего месяца.
+   */
+  moveWeekdayLastByMonth() {
+    return this.moveDayLast().moveWeekdayLast(), this;
+  }
+  /**
+   * Translate to the next week.
+   *
+   * Переводить на следующую неделю.
+   */
+  moveWeekdayNext() {
+    return this.moveWeekdayFirst().moveByDay(7), this;
+  }
+  /**
+   * Translate to the previous week.
+   *
+   * Переводить на предыдущую неделю.
+   */
+  moveWeekdayPrevious() {
+    return this.moveWeekdayFirst().moveByDay(-7), this;
+  }
+  /**
+   * Translate to the first day of the month.
+   *
+   * Переводить на первый день месяца.
+   */
+  moveDayFirst() {
+    return this.setDay(1), this;
+  }
+  /**
+   * Translate to the last day of the month.
+   *
+   * Переводить на последний день месяца.
+   */
+  moveDayLast() {
+    return this.setDay(1).moveByMonth(1).moveByDay(-1), this;
+  }
+  /**
+   * Translate to the next day.
+   *
+   * Переводить на следующий день.
+   */
+  moveDayNext() {
+    return this.moveByDay(1), this;
+  }
+  /**
+   * Translate to the previous day.
+   *
+   * Переводить на предыдущий день.
+   */
+  moveDayPrevious() {
+    return this.moveByDay(-1), this;
+  }
+  /**
+   * Clone the Date object.
+   *
+   * Клонировать объект Date.
+   */
+  clone() {
+    return new Date(this.date);
+  }
+  /**
+   * Clone the GeoDate object.
+   *
+   * Клонировать объект GeoDate.
+   */
+  cloneClass() {
+    return new this.constructor(
+      this.clone(),
+      this.type,
+      this.code
+    );
+  }
+  /**
+   * Clone the GeoDate object and set the month to January.
+   *
+   * Клонировать объект GeoDate и установить месяц на январь.
+   */
+  cloneMonthFirst() {
+    return this.cloneClass().moveMonthFirst();
+  }
+  /**
+   * Clone the GeoDate object and move the month to the end of the year.
+   *
+   * Клонировать объект GeoDate и перевести месяц на конец года.
+   */
+  cloneMonthLast() {
+    return this.cloneClass().moveMonthLast();
+  }
+  /**
+   * Clone the GeoDate object and transfer it one month ahead.
+   *
+   * Клонировать объект GeoDate и перевести на 1 месяц вперед.
+   */
+  cloneMonthNext() {
+    return this.cloneClass().moveMonthNext();
+  }
+  /**
+   * Clone the GeoDate object and transfer it one month back.
+   *
+   * Клонировать объект GeoDate и перевести на 1 месяц назад.
+   */
+  cloneMonthPrevious() {
+    return this.cloneClass().moveMonthPrevious();
+  }
+  /**
+   * Returns the first day of the week according to the current date.
+   *
+   * Возвращает первый день недели по текущей дате.
+   */
+  cloneWeekdayFirst() {
+    return this.cloneClass().moveWeekdayFirst();
+  }
+  /**
+   * Returns the last day of the week according to the current date.
+   *
+   * Возвращает последний день недели по текущей дате.
+   */
+  cloneWeekdayLast() {
+    return this.cloneClass().moveWeekdayLast();
+  }
+  /**
+   * Returns the first day of the week according to the current month.
+   *
+   * Возвращает первый день недели по текущему месяцу.
+   */
+  cloneWeekdayFirstByMonth() {
+    return this.cloneClass().moveWeekdayFirstByMonth();
+  }
+  /**
+   * Returns the last day of the week according to the current month.
+   *
+   * Возвращает последний день недели по текущему месяцу.
+   */
+  cloneWeekdayLastByMonth() {
+    return this.cloneClass().moveWeekdayLastByMonth();
+  }
+  /**
+   * Returns the next week according to the current date.
+   *
+   * Возвращает следующую неделю по текущей дате.
+   */
+  cloneWeekdayNext() {
+    return this.cloneClass().moveWeekdayNext();
+  }
+  /**
+   * Returns the previous week according to the current date.
+   *
+   * Возвращает предыдущую неделю по текущей дате.
+   */
+  cloneWeekdayPrevious() {
+    return this.cloneClass().moveWeekdayPrevious();
+  }
+  /**
+   * Clone the GeoDate object and move the day to the beginning of the month.
+   *
+   * Клонировать объект GeoDate и перевести день на начало месяца.
+   */
+  cloneDayFirst() {
+    return this.cloneClass().moveDayFirst();
+  }
+  /**
+   * Clone the GeoDate object and move the day to the end of the month.
+   *
+   * Клонировать объект GeoDate и перевести день на конец месяца.
+   */
+  cloneDayLast() {
+    return this.cloneClass().moveDayLast();
+  }
+  /**
+   * Clone the GeoDate object and move by 1 day.
+   *
+   * Клонировать объект GeoDate и перевести на 1 день.
+   */
+  cloneDayNext() {
+    return this.cloneClass().moveDayNext();
+  }
+  /**
+   * Clone the GeoDate object and go back by 1 day.
+   *
+   * Клонировать объект GeoDate и вернуться на 1 день.
+   */
+  cloneDayPrevious() {
+    return this.cloneClass().moveDayPrevious();
+  }
+  /**
+   * Updating all values.
+   *
+   * Обновление всех значений.
+   */
+  update() {
+    var t;
+    return (t = this.watch) == null || t.call(
+      this,
+      this.date,
+      this.type,
+      this.hour24
+    ), this;
+  }
 }
-function gt(e, t, i) {
-  const r = S(e);
-  if (r) {
-    const s = ht(r, t);
-    if (h(s) && h(i))
-      y(i, (o, n) => {
-        s[n] = I(o);
-      });
-    else {
-      const o = I(i);
-      !(t in r) && typeof o == "string" ? r.setAttribute(t.toString(), o) : r[t] = I(i);
+const r = "@flag", R = class R {
+  /**
+   * Constructor
+   * @param code country and language code/ код страны и языка
+   */
+  constructor(t = b.getLocation()) {
+    this.code = t;
+  }
+  /**
+   * Returns information about the country and its flag.
+   *
+   * Возвращает информацию о стране и её флаге.
+   * @param code country code/ код страны
+   */
+  get(t = this.code) {
+    var s;
+    const e = b.find(t);
+    if (e) {
+      const n = this.getCountry(e);
+      return {
+        language: this.getLanguage(e),
+        country: n,
+        standard: e.standard,
+        icon: (s = R.flags) == null ? void 0 : s[e.country],
+        label: n,
+        value: e.country
+      };
     }
   }
-  return r;
+  /**
+   * Getting a link to the flag.
+   *
+   * Получение ссылки на флаг.
+   * @param code country code/ код страны
+   */
+  getFlag(t = this.code) {
+    var e;
+    return (e = this.get(t)) == null ? void 0 : e.icon;
+  }
+  /**
+   * Getting a list of countries by an array of codes.
+   *
+   * Получение списка стран по массиву с кодами.
+   * @param codes country code/ код страны
+   */
+  getList(t) {
+    return g(this.getCodes(t), (e) => this.get(e));
+  }
+  /**
+   * Getting a list of countries by an array of codes in national language.
+   *
+   * Получение списка стран по массиву с кодами на национальный язык.
+   * @param codes country code/ код страны.
+   */
+  getNational(t) {
+    return g(this.getList(t), (e) => {
+      const s = new R(e.standard).get(e.standard);
+      return {
+        ...e,
+        description: s == null ? void 0 : s.country,
+        nationalLanguage: s == null ? void 0 : s.language,
+        nationalCountry: s == null ? void 0 : s.country
+      };
+    });
+  }
+  /**
+   * To change the location.
+   *
+   * Изменить местоположение.
+   * @param code country and language code/ код страны и языка
+   */
+  setCode(t) {
+    return this.code = t, this;
+  }
+  /**
+   * Returns a special object for formatting.
+   *
+   * Возвращает специальный объект для работы с форматированием.
+   */
+  getLocation() {
+    return new q(this.code);
+  }
+  /**
+   * Returns a list of countries to retrieve data from.
+   *
+   * Возвращает список стран для получения данных.
+   * @param codes country code/ код страны
+   */
+  getCodes(t) {
+    return t != null ? t : Object.keys(R.flags);
+  }
+  /**
+   * Getting the name of the language.
+   *
+   * Получение названия языка.
+   * @param data object with information of data/ объект с информацией данных
+   */
+  getLanguage(t) {
+    return this.getLocation().languageName(t.language);
+  }
+  /**
+   * Getting the name of the country.
+   *
+   * Получение названия страны.
+   * @param data object with information of data/ объект с информацией данных
+   */
+  getCountry(t) {
+    return this.getLocation().countryName(t.country);
+  }
+};
+c(R, "flags", {
+  AD: `${r}-ad`,
+  AE: `${r}-ae`,
+  AF: `${r}-af`,
+  AG: `${r}-ag`,
+  AI: `${r}-ai`,
+  AL: `${r}-al`,
+  AM: `${r}-am`,
+  AN: `${r}-an`,
+  AO: `${r}-ao`,
+  AQ: `${r}-aq`,
+  AR: `${r}-ar`,
+  AS: `${r}-as`,
+  AT: `${r}-at`,
+  AU: `${r}-au`,
+  AW: `${r}-aw`,
+  AZ: `${r}-az`,
+  BA: `${r}-ba`,
+  BB: `${r}-bb`,
+  BD: `${r}-bd`,
+  BE: `${r}-be`,
+  BF: `${r}-bf`,
+  BG: `${r}-bg`,
+  BH: `${r}-bh`,
+  BI: `${r}-bi`,
+  BJ: `${r}-bj`,
+  BL: `${r}-bl`,
+  BM: `${r}-bm`,
+  BN: `${r}-bn`,
+  BO: `${r}-bo`,
+  BR: `${r}-br`,
+  BS: `${r}-bs`,
+  BT: `${r}-bt`,
+  BW: `${r}-bw`,
+  BY: `${r}-by`,
+  BZ: `${r}-bz`,
+  CA: `${r}-ca`,
+  CC: `${r}-cc`,
+  CD: `${r}-cd`,
+  CF: `${r}-cf`,
+  CG: `${r}-cg`,
+  CH: `${r}-ch`,
+  CI: `${r}-ci`,
+  CK: `${r}-ck`,
+  CL: `${r}-cl`,
+  CM: `${r}-cm`,
+  CN: `${r}-cn`,
+  CO: `${r}-co`,
+  CR: `${r}-cr`,
+  CU: `${r}-cu`,
+  CV: `${r}-cv`,
+  CW: `${r}-cw`,
+  CX: `${r}-cx`,
+  CY: `${r}-cy`,
+  CZ: `${r}-cz`,
+  DE: `${r}-de`,
+  DJ: `${r}-dj`,
+  DK: `${r}-dk`,
+  DM: `${r}-dm`,
+  DZ: `${r}-dz`,
+  EC: `${r}-ec`,
+  EE: `${r}-ee`,
+  EG: `${r}-eg`,
+  EH: `${r}-eh`,
+  ER: `${r}-er`,
+  ES: `${r}-es`,
+  ET: `${r}-et`,
+  FI: `${r}-fi`,
+  FJ: `${r}-fj`,
+  FK: `${r}-fk`,
+  FM: `${r}-fm`,
+  FO: `${r}-fo`,
+  FR: `${r}-fr`,
+  GA: `${r}-ga`,
+  GB: `${r}-gb`,
+  GD: `${r}-gd`,
+  GE: `${r}-ge`,
+  GF: `${r}-gf`,
+  GG: `${r}-gg`,
+  GH: `${r}-gh`,
+  GI: `${r}-gi`,
+  GL: `${r}-gl`,
+  GM: `${r}-gm`,
+  GN: `${r}-gn`,
+  GQ: `${r}-gq`,
+  GR: `${r}-gr`,
+  GT: `${r}-gt`,
+  GU: `${r}-gu`,
+  GW: `${r}-gw`,
+  GY: `${r}-gy`,
+  HK: `${r}-hk`,
+  HN: `${r}-hn`,
+  HR: `${r}-hr`,
+  HT: `${r}-ht`,
+  HU: `${r}-hu`,
+  ID: `${r}-id`,
+  IE: `${r}-ie`,
+  IL: `${r}-il`,
+  IM: `${r}-im`,
+  IN: `${r}-in`,
+  IO: `${r}-io`,
+  IQ: `${r}-iq`,
+  IR: `${r}-ir`,
+  IS: `${r}-is`,
+  IT: `${r}-it`,
+  JE: `${r}-je`,
+  JM: `${r}-jm`,
+  JO: `${r}-jo`,
+  JP: `${r}-jp`,
+  KE: `${r}-ke`,
+  KG: `${r}-kg`,
+  KH: `${r}-kh`,
+  KI: `${r}-ki`,
+  KM: `${r}-km`,
+  KN: `${r}-kn`,
+  KP: `${r}-kp`,
+  KR: `${r}-kr`,
+  KW: `${r}-kw`,
+  KY: `${r}-ky`,
+  KZ: `${r}-kz`,
+  LA: `${r}-la`,
+  LB: `${r}-lb`,
+  LC: `${r}-lc`,
+  LI: `${r}-li`,
+  LK: `${r}-lk`,
+  LR: `${r}-lr`,
+  LS: `${r}-ls`,
+  LT: `${r}-lt`,
+  LU: `${r}-lu`,
+  LV: `${r}-lv`,
+  LY: `${r}-ly`,
+  MA: `${r}-ma`,
+  MC: `${r}-mc`,
+  MD: `${r}-md`,
+  ME: `${r}-me`,
+  MF: `${r}-mf`,
+  MG: `${r}-mg`,
+  MH: `${r}-mh`,
+  MK: `${r}-mk`,
+  ML: `${r}-ml`,
+  MM: `${r}-mm`,
+  MN: `${r}-mn`,
+  MO: `${r}-mo`,
+  MP: `${r}-mp`,
+  MQ: `${r}-mq`,
+  MR: `${r}-mr`,
+  MS: `${r}-ms`,
+  MT: `${r}-mt`,
+  MU: `${r}-mu`,
+  MV: `${r}-mv`,
+  MW: `${r}-mw`,
+  MX: `${r}-mx`,
+  MY: `${r}-my`,
+  MZ: `${r}-mz`,
+  NA: `${r}-na`,
+  NC: `${r}-nc`,
+  NE: `${r}-ne`,
+  NF: `${r}-nf`,
+  NG: `${r}-ng`,
+  NI: `${r}-ni`,
+  NL: `${r}-nl`,
+  NO: `${r}-no`,
+  NP: `${r}-np`,
+  NR: `${r}-nr`,
+  NU: `${r}-nu`,
+  NZ: `${r}-nz`,
+  OM: `${r}-om`,
+  PA: `${r}-pa`,
+  PE: `${r}-pe`,
+  PF: `${r}-pf`,
+  PG: `${r}-pg`,
+  PH: `${r}-ph`,
+  PK: `${r}-pk`,
+  PL: `${r}-pl`,
+  PM: `${r}-pm`,
+  PN: `${r}-pn`,
+  PR: `${r}-pr`,
+  PS: `${r}-ps`,
+  PT: `${r}-pt`,
+  PW: `${r}-pw`,
+  PY: `${r}-py`,
+  QA: `${r}-qa`,
+  RE: `${r}-re`,
+  RO: `${r}-ro`,
+  RS: `${r}-rs`,
+  RU: `${r}-ru`,
+  RW: `${r}-rw`,
+  SA: `${r}-sa`,
+  SB: `${r}-sb`,
+  SC: `${r}-sc`,
+  SD: `${r}-sd`,
+  SE: `${r}-se`,
+  SG: `${r}-sg`,
+  SH: `${r}-sh`,
+  SI: `${r}-si`,
+  SJ: `${r}-sj`,
+  SK: `${r}-sk`,
+  SL: `${r}-sl`,
+  SM: `${r}-sm`,
+  SN: `${r}-sn`,
+  SO: `${r}-so`,
+  SR: `${r}-sr`,
+  SS: `${r}-ss`,
+  ST: `${r}-st`,
+  SV: `${r}-sv`,
+  SX: `${r}-sx`,
+  SY: `${r}-sy`,
+  SZ: `${r}-sz`,
+  TC: `${r}-tc`,
+  TD: `${r}-td`,
+  TG: `${r}-tg`,
+  TH: `${r}-th`,
+  TJ: `${r}-tj`,
+  TK: `${r}-tk`,
+  TL: `${r}-tl`,
+  TM: `${r}-tm`,
+  TN: `${r}-tn`,
+  TO: `${r}-to`,
+  TR: `${r}-tr`,
+  TT: `${r}-tt`,
+  TV: `${r}-tv`,
+  TW: `${r}-tw`,
+  TZ: `${r}-tz`,
+  UA: `${r}-ua`,
+  UG: `${r}-ug`,
+  US: `${r}-us`,
+  UY: `${r}-uy`,
+  UZ: `${r}-uz`,
+  VA: `${r}-va`,
+  VC: `${r}-vc`,
+  VE: `${r}-ve`,
+  VG: `${r}-vg`,
+  VI: `${r}-vi`,
+  VN: `${r}-vn`,
+  VU: `${r}-vu`,
+  WF: `${r}-wf`,
+  WS: `${r}-ws`,
+  YE: `${r}-ye`,
+  YT: `${r}-yt`,
+  ZA: `${r}-za`,
+  ZM: `${r}-zm`,
+  ZW: `${r}-zw`
+});
+let ft = R;
+const P = class P {
+  /**
+   * Getting an object with information about the phone code and country.
+   *
+   * Получение объекта с информацией о телефонном коде и стране.
+   * @param code country and language code/ код страны и языка
+   */
+  static get(t) {
+    return this.list.find((e) => t === e.value);
+  }
+  /**
+   * Getting information by phone.
+   *
+   * Получение информации по телефону.
+   * @param phone phone number/ номер телефон
+   */
+  static getByPhone(t) {
+    let e = this.map, s, n = "";
+    return this.toNumber(t).forEach((o) => {
+      var a;
+      n === "" && o in e ? (s = e[o], e = (a = s == null ? void 0 : s.next) != null ? a : {}) : n += o;
+    }), {
+      item: s,
+      phone: n
+    };
+  }
+  /**
+   * Retrieves complete mask data by country code.
+   *
+   * Получает полные данные о маске по коду страны.
+   * @param code country and language code/ код страны и языка
+   */
+  static getByCode(t) {
+    var s;
+    const e = this.get(t);
+    if (e)
+      return (s = this.getByPhone(e.phone.toString())) == null ? void 0 : s.item;
+  }
+  /**
+   * We get an array from a list of all phone numbers.
+   *
+   * Получаем массив из списка всех телефонных кодов.
+   */
+  static getList() {
+    return this.list;
+  }
+  /**
+   * We get a map of a tree, sorted by its code.
+   *
+   * Получаем карту дерева, отсортированную по его коду.
+   */
+  static getMap() {
+    return this.map;
+  }
+  /**
+   * Convert to phone mask.
+   *
+   * Преобразовать в маску телефона.
+   * @param phone phone number/ номер телефон
+   * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
+   */
+  static toMask(t, e) {
+    if (D(t) && Array.isArray(e) && e.length > 0) {
+      const s = this.removeZero(t), n = s.length;
+      for (const o of e)
+        if (this.getUnnecessaryLength(o) === n)
+          return this.toStandard(s, o);
+    }
+  }
+  /**
+   * Deletes the country code from the input number.
+   *
+   * Удаляет код страны по входному номеру.
+   * @param phone phone number/ номер телефон
+   */
+  static removeZero(t) {
+    return t.match(/^0/) ? t.replace(/^0/, "") : t.match(/^89/) ? t.replace(/^8/, "") : t;
+  }
+  /**
+   * Returns the symbol by the internal country code.
+   *
+   * Возвращает символ по коду внутри страны.
+   * @param within internal country code/ код внутри страны
+   */
+  static getWithinSymbol(t) {
+    switch (t) {
+      case 4:
+      case "4":
+        return "$";
+      case 8:
+      case "8":
+        return "~";
+    }
+    return "=";
+  }
+  /**
+   * Deletes all characters that do not belong to the mask.
+   *
+   * Удаляет все символы, не относящиеся к маске.
+   * @param mask A mask to transform a phone number/ маска для преобразования номер телефон
+   */
+  static getUnnecessaryLength(t) {
+    return t.replace(/[^*]+/ig, "").length;
+  }
+  /**
+   * Creating a list for the map.
+   *
+   * Формирование списка для карты.
+   */
+  static makeList() {
+    const t = g(b.getList(), (e) => {
+      if (e != null && e.phoneMask)
+        return {
+          phone: (e == null ? void 0 : e.phoneCode) && Number(e.phoneCode.replace(/[^0-9]+/, "")) || void 0,
+          within: (e == null ? void 0 : e.phoneWithin) || 0,
+          mask: z(e.phoneMask),
+          value: e.country
+        };
+    });
+    this.list = t.sort((e, s) => e.phone - s.phone);
+  }
+  /**
+   * Creating a map for search.
+   *
+   * Создание карты для поиска.
+   */
+  static makeMap() {
+    this.list.forEach((t) => {
+      t.mask.forEach((e) => {
+        let s = this.map, n;
+        if (this.toNumber(e).forEach((o) => {
+          var a;
+          o in s || (s[o] = {
+            items: [],
+            info: void 0,
+            value: void 0,
+            mask: [],
+            maskFull: [],
+            next: {}
+          }), n = s[o], s = (a = n == null ? void 0 : n.next) != null ? a : {};
+        }), n) {
+          n.value === void 0 && (n.info = t, n.value = t.value);
+          const o = this.toWithin(e, t.within);
+          n.mask.push(o), n.maskFull.push(o.replace(/\d/ig, "*")), n.items.push(t);
+        }
+      });
+    });
+  }
+  /**
+   * The method parses a string argument and returns a floating point number.
+   *
+   * Метод принимает строку в качестве аргумента и возвращает десятичное число.
+   * @param value the value to parse/ текстовая строка
+   */
+  static toNumber(t) {
+    return t.replace(/\D+/ig, "").split("");
+  }
+  /**
+   * Converts the phone to a standard.
+   *
+   * Преобразовывает телефон в стандарт.
+   * @param phone phone number/ номер телефон
+   * @param mask a mask to transform a phone number/ маска для преобразования номер телефон
+   */
+  static toStandard(t, e) {
+    let s = 0;
+    return e.replace(/\*/ig, () => String(t[s++]));
+  }
+  /**
+   * Replaces the first character with the internal country code
+   *
+   * Заменяет первый символ на код внутри страны.
+   * @param mask a mask to transform a phone number/ маска для преобразования номер телефон
+   * @param within internal country code/ код внутри страны
+   */
+  static toWithin(t, e) {
+    return t.replace(/\*/, this.getWithinSymbol(e));
+  }
+};
+c(P, "list", []), c(P, "map", {}), P.makeList(), P.makeMap();
+let mt = P, x;
+class Se {
+  /**
+   * Returns the value by its name.
+   *
+   * Возвращает значение по его имени.
+   * @param name property name/ название свойства
+   */
+  static get(t) {
+    return x && (x == null ? void 0 : x[t]);
+  }
+  /**
+   * Adds data, this method works only once.
+   *
+   * Добавляет данные, этот метод работает только 1 раз.
+   * @param data global data/ глобальные данные
+   */
+  static add(t) {
+    x === void 0 && (x = { ...t });
+  }
 }
-function _(e, t = "div", i, r) {
-  if (!f())
+const B = class B {
+  /**
+   * Get data from hash.
+   *
+   * Получение данных из хэша.
+   * @param name variable names/ названия переменных
+   * @param defaultValue value or function to change data/ значение или функция для изменения данных
+   */
+  static get(t, e) {
+    return !(t in this.hash) && e && this.set(t, e), this.hash[t];
+  }
+  /**
+   * Change data in hash.
+   *
+   * Изменение данных в хэше.
+   * @param name variable names/ названия переменных
+   * @param callback value or function to change data/ значение или функция для изменения данных
+   */
+  static set(t, e) {
+    var n;
+    const s = N(e);
+    s !== ((n = this.hash) == null ? void 0 : n[t]) && (this.hash[t] = s, this.update());
+  }
+  /**
+   * Adding an event when data is changed.
+   *
+   * Добавление события при изменении данных.
+   * @param name variable names/ названия переменных
+   * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
+   */
+  static addWatch(t, e) {
+    var s;
+    t in this.watch ? (s = this.watch[t]) == null || s.push(e) : this.watch[t] = [e];
+  }
+  /**
+   * Update hash variable from URL string.
+   *
+   * Обновление переменной хэша из строки URL.
+   */
+  static reload() {
+    if (!this.block) {
+      const t = this.getLocation();
+      this.makeWatch(t), this.hash = t;
+    }
+  }
+  /**
+   * Obtaining data from the URL string.
+   *
+   * Получение данных из строки URL.
+   */
+  static getLocation() {
+    const t = {};
+    return location.hash.replace(
+      /([\w-]+)[:=]([^;]+)/ig,
+      (...e) => (t[String(e[1])] = At(e[2]), "")
+    ), t;
+  }
+  /**
+   * Update hash string in URL.
+   *
+   * Обновление строки хэша в URL.
+   */
+  static update() {
+    this.block = !0, history.replaceState(null, "", `#${Lt(this.hash, "=", ";")}`), requestAnimationFrame(() => {
+      this.block = !1;
+    });
+  }
+  /**
+   * Calling all functions whose data has changed.
+   *
+   * Вызов всех функций, у которых были изменены данные.
+   * @param location fresh data/ свежий данные
+   */
+  static makeWatch(t) {
+    g(this.watch, (e, s) => {
+      var n;
+      ((n = this.hash) == null ? void 0 : n[s]) !== (t == null ? void 0 : t[s]) && e.forEach((o) => o(t[s]));
+    });
+  }
+};
+c(B, "hash", {}), c(B, "watch", {}), c(B, "block", !1), l() && (B.reload(), addEventListener("hashchange", () => B.reload()));
+let yt = B;
+const tt = "__UI_ICON", $t = 320, pt = "--LOAD--", K = class K {
+  /**
+   * Checks if the given icon is in the list of connected icons.
+   *
+   * Проверяет, есть ли данная иконка в списке подключенных иконок.
+   * @param index icon name/ название иконки
+   */
+  static is(t) {
+    return t in this.icons || this.getName(t) in this.icons;
+  }
+  /**
+   * Returns the icon by the name.
+   *
+   * Возвращает иконку по названию.
+   * @param index icon name/ название иконки
+   * @param url path to the storage location of the icon, if the icon does not exist/
+   * путь к месту хранения иконки, если иконка не существует
+   * @param wait waiting time for picture loading/
+   * время ожидания загрузки картинки
+   */
+  static async get(t, e = "", s = 1e3 * 60 * 3) {
+    var o, a, u, h;
+    const n = (h = (u = (o = this.icons) == null ? void 0 : o[this.getName(t)]) != null ? u : (a = this.icons) == null ? void 0 : a[t]) != null ? h : `${t.replace(/^@/, e != null ? e : this.url)}.svg`;
+    return typeof n == "string" ? n === pt && s > 0 ? (await this.wait(), this.get(t, e, s - $t)) : n : await n;
+  }
+  /**
+   * Returns a list of names of all registered icons.
+   *
+   * Возвращает список названий всех зарегистрированных иконок.
+   */
+  static getNameList() {
+    return g(this.icons, (t, e) => e.replace(/^@/, ""));
+  }
+  /**
+   * Returns a global link.
+   *
+   * Возвращает глобальную ссылку.
+   */
+  static getUrlGlobal() {
+    return `${U.isLocalhost(), ""}${this.url}`;
+  }
+  /**
+   * Adding custom icons.
+   *
+   * Добавление пользовательских иконок.
+   * @param index icon name/ название иконки
+   * @param file path to the file/ путь к файлу
+   */
+  static add(t, e) {
+    this.icons[this.getName(t)] = e;
+  }
+  /**
+   * Adding custom icons in loading mode.
+   *
+   * Добавление пользовательских иконок в режиме загрузки.
+   * @param index icon name/ название иконки
+   */
+  static addLoad(t) {
+    this.icons[this.getName(t)] = pt;
+  }
+  /**
+   * Adding custom global icons.
+   *
+   * Добавление пользовательских глобальных иконок.
+   * @param index icon name/ название иконки
+   * @param file path to the file/ путь к файлу
+   */
+  static addGlobal(t, e) {
+    this.icons[this.getName(t)] = `${this.getUrlGlobal()}${e}`;
+  }
+  /**
+   * Adding an icon by the list.
+   *
+   * Добавление иконки по списку.
+   * @param list list of icons/ список иконки
+   */
+  static addByList(t) {
+    g(t, (e, s) => this.add(s, e));
+  }
+  /**
+   * Changes the file path.
+   *
+   * Изменяет путь к файлу.
+   * @param url new file path/ новый путь к файлу
+   */
+  static setUrl(t) {
+    this.url = t;
+  }
+  /**
+   * Returns the icon name.
+   *
+   * Возвращает название иконки.
+   * @param index icon name/ название иконки
+   */
+  static getName(t) {
+    return `@${t}`;
+  }
+  /**
+   * Script execution delay.
+   *
+   * Задержка выполнения скрипта.
+   */
+  static wait() {
+    return new Promise((t) => setTimeout(() => t(), $t));
+  }
+};
+c(K, "icons", {}), c(K, "url", "/icons/"), l() && (tt in window || (window[tt] = {}), K.icons = window[tt]);
+let bt = K;
+function Mt(i, t, e) {
+  var s, n;
+  return (n = (s = C(i)) == null ? void 0 : s[t]) != null ? n : e;
+}
+function _t(i, t, e) {
+  const s = C(i);
+  if (s) {
+    const n = Mt(s, t);
+    if (m(n) && m(e))
+      g(e, (o, a) => {
+        n[a] = N(o);
+      });
+    else {
+      const o = N(e);
+      !(t in s) && typeof o == "string" ? s.setAttribute(t.toString(), o) : s[t] = N(e);
+    }
+  }
+  return s;
+}
+function it(i, t = "div", e, s) {
+  if (!l())
     return;
-  const s = document.createElement(t);
-  return typeof i == "function" ? i(s) : $(i) && y(i, (o, n) => {
-    gt(s, n, o);
-  }), e == null || e.insertBefore(s, r != null ? r : null), s;
+  const n = document.createElement(t);
+  return typeof e == "function" ? e(n) : k(e) && g(e, (o, a) => {
+    _t(n, a, o);
+  }), i == null || i.insertBefore(n, s != null ? s : null), n;
 }
-class H {
+function Ot(i) {
+  return i.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").trim();
+}
+class rt {
+  /**
+   * Creates an instance of MetaManager.
+   *
+   * Создает экземпляр MetaManager.
+   * @param listMeta list of meta-tag names to manage / список имен мета-тегов для управления
+   * @param isProperty use 'property' attribute instead of 'name' / использовать атрибут 'property' вместо 'name'
+   */
+  constructor(t, e = !1) {
+    c(this, "items", {});
+    this.listMeta = t, this.isProperty = e, this.update();
+  }
+  /**
+   * Returns the list of meta tag names.
+   *
+   * Возвращает список имен мета-тегов.
+   */
+  getListMeta() {
+    return this.listMeta;
+  }
+  /**
+   * Get the content of a meta tag by name.
+   *
+   * Получает содержимое мета-тега по имени.
+   * @param name meta tag name / имя мета-тега
+   */
+  get(t) {
+    var e;
+    return (e = this.items[t]) != null ? e : "";
+  }
+  /**
+   * Returns all meta tags.
+   *
+   * Возвращает все мета-теги.
+   */
+  getItems() {
+    return this.items;
+  }
+  /**
+   * Returns all meta tags as HTML string.
+   *
+   * Возвращает все мета-теги в виде HTML-строки.
+   */
+  html() {
+    return g(
+      this.listMeta,
+      (e) => this.toHtmlString(e)
+    ).join("");
+  }
+  /**
+   * Sets the content of a meta tag.
+   *
+   * Устанавливает содержимое мета-тега.
+   * @param name meta tag name / имя мета-тега
+   * @param content meta tag content / содержимое мета-тега
+   */
+  set(t, e) {
+    return this.setItem(t, e).setMeta(t), this;
+  }
+  /**
+   * Sets multiple meta tags from an object.
+   *
+   * Устанавливает несколько мета-тегов из объекта.
+   * @param metaList object with meta tag names and content / объект с именами и содержимым мета-тегов
+   */
+  setByList(t) {
+    return g(
+      t,
+      (e, s) => this.set(s, String(e))
+    ), this;
+  }
+  /**
+   * Returns the attribute name for meta tags.
+   *
+   * Возвращает имя атрибута для мета-тегов.
+   */
+  getAttributeName() {
+    return this.isProperty ? "property" : "name";
+  }
+  /**
+   * Finds a meta element in the DOM.
+   *
+   * Находит мета-элемент в DOM.
+   * @param name meta tag name / имя мета-тега
+   */
+  findMetaElement(t) {
+    if (!l())
+      return;
+    const e = `meta[${this.getAttributeName()}="${t}"]`;
+    return document.querySelector(e) || void 0;
+  }
+  /**
+   * Sets the content of a meta tag in internal storage.
+   *
+   * Устанавливает содержимое мета-тега во внутреннем хранилище.
+   * @param name meta tag name / имя мета-тега
+   * @param content meta tag content / содержимое мета-тега
+   */
+  setItem(t, e) {
+    return this.items[t] = e, this;
+  }
+  /**
+   * Sets or creates a meta tag in the DOM.
+   *
+   * Устанавливает или создает мета-тег в DOM.
+   * @param name meta tag name / имя мета-тега
+   */
+  setMeta(t) {
+    var n;
+    const e = this.findMetaElement(t), s = (n = this.items[t]) != null ? n : "";
+    if (e)
+      e.content = s;
+    else if (l()) {
+      const o = { content: s };
+      this.isProperty ? o.property = t : o.name = t, it(document.head, "meta", o);
+    }
+    return this;
+  }
+  /**
+   * Converts meta tag to HTML string.
+   *
+   * Преобразует мета-тег в HTML-строку.
+   * @param name meta tag name / имя мета-тега
+   */
+  toHtmlString(t) {
+    var s;
+    const e = Ot((s = this.items[t]) != null ? s : "");
+    return e ? `<meta ${this.getAttributeName()}="${t}" content="${e}">` : "";
+  }
+  /**
+   * Updates meta tags data from the DOM.
+   *
+   * Обновляет данные мета-тегов из DOM.
+   */
+  update() {
+    return this.listMeta.forEach((t) => {
+      var e, s;
+      this.items[t] = (s = (e = this.findMetaElement(t)) == null ? void 0 : e.content) != null ? s : "";
+    }), this;
+  }
+}
+var v = /* @__PURE__ */ ((i) => (i.description = "description", i.keywords = "keywords", i.canonical = "canonical", i.robots = "robots", i.author = "author", i))(v || {}), Tt = /* @__PURE__ */ ((i) => (i.indexFollow = "index, follow", i.noIndexFollow = "noindex, follow", i.indexNoFollow = "index, nofollow", i.noIndexNoFollow = "noindex, nofollow", i.noArchive = "noarchive", i.noSnippet = "nosnippet", i.noImageIndex = "noimageindex", i.images = "images", i.noTranslate = "notranslate", i.noPreview = "nopreview", i.textOnly = "textonly", i.noIndexSubpages = "noindex, noarchive", i.none = "none", i))(Tt || {}), y = /* @__PURE__ */ ((i) => (i.title = "og:title", i.type = "og:type", i.url = "og:url", i.image = "og:image", i.description = "og:description", i.locale = "og:locale", i.siteName = "og:site_name", i.localeAlternate = "og:locale:alternate", i.imageUrl = "og:image:url", i.imageSecureUrl = "og:image:secure_url", i.imageType = "og:image:type", i.imageWidth = "og:image:width", i.imageHeight = "og:image:height", i.imageAlt = "og:image:alt", i.video = "og:video", i.videoUrl = "og:video:url", i.videoSecureUrl = "og:video:secure_url", i.videoType = "og:video:type", i.videoWidth = "og:video:width", i.videoHeight = "og:video:height", i.audio = "og:audio", i.audioSecureUrl = "og:audio:secure_url", i.audioType = "og:audio:type", i.articlePublishedTime = "article:published_time", i.articleModifiedTime = "article:modified_time", i.articleExpirationTime = "article:expiration_time", i.articleAuthor = "article:author", i.articleSection = "article:section", i.articleTag = "article:tag", i.bookAuthor = "book:author", i.bookIsbn = "book:isbn", i.bookReleaseDate = "book:release_date", i.bookTag = "book:tag", i.musicDuration = "music:duration", i.musicAlbum = "music:album", i.musicAlbumDisc = "music:album:disc", i.musicAlbumTrack = "music:album:track", i.musicMusician = "music:musician", i.musicSong = "music:song", i.musicSongDisc = "music:song:disc", i.musicSongTrack = "music:song:track", i.musicReleaseDate = "music:release_date", i.musicCreator = "music:creator", i.videoActor = "video:actor", i.videoActorRole = "video:actor:role", i.videoDirector = "video:director", i.videoWriter = "video:writer", i.videoDuration = "video:duration", i.videoReleaseDate = "video:release_date", i.videoTag = "video:tag", i.videoSeries = "video:series", i.profileFirstName = "profile:first_name", i.profileLastName = "profile:last_name", i.profileUsername = "profile:username", i.profileGender = "profile:gender", i.productBrand = "product:brand", i.productAvailability = "product:availability", i.productCondition = "product:condition", i.productPriceAmount = "product:price:amount", i.productPriceCurrency = "product:price:currency", i.productRetailerItemId = "product:retailer_item_id", i.productCategory = "product:category", i.productEan = "product:ean", i.productIsbn = "product:isbn", i.productMfrPartNo = "product:mfr_part_no", i.productUpc = "product:upc", i.productWeightValue = "product:weight:value", i.productWeightUnits = "product:weight:units", i.productColor = "product:color", i.productMaterial = "product:material", i.productPattern = "product:pattern", i.productAgeGroup = "product:age_group", i.productGender = "product:gender", i))(y || {}), Gt = /* @__PURE__ */ ((i) => (i.website = "website", i.article = "article", i.video = "video.other", i.videoTvShow = "video.tv_show", i.videoEpisode = "video.episode", i.videoMovie = "video.movie", i.musicAlbum = "music.album", i.musicPlaylist = "music.playlist", i.musicSong = "music.song", i.musicRadioStation = "music.radio_station", i.app = "app", i.product = "product", i.business = "business.business", i.place = "place", i.event = "event", i.profile = "profile", i.book = "book", i))(Gt || {}), te = /* @__PURE__ */ ((i) => (i.inStock = "in stock", i.outOfStock = "out of stock", i.preorder = "preorder", i.backorder = "backorder", i.discontinued = "discontinued", i.pending = "pending", i))(te || {}), ee = /* @__PURE__ */ ((i) => (i.new = "new", i.used = "used", i.refurbished = "refurbished", i))(ee || {}), ie = /* @__PURE__ */ ((i) => (i.newborn = "newborn", i.infant = "infant", i.toddler = "toddler", i.kids = "kids", i.adult = "adult", i))(ie || {}), se = /* @__PURE__ */ ((i) => (i.female = "female", i.male = "male", i.unisex = "unisex", i))(se || {}), $ = /* @__PURE__ */ ((i) => (i.card = "twitter:card", i.site = "twitter:site", i.creator = "twitter:creator", i.url = "twitter:url", i.title = "twitter:title", i.description = "twitter:description", i.image = "twitter:image", i.imageAlt = "twitter:image:alt", i.imageSrc = "twitter:image:src", i.imageWidth = "twitter:image:width", i.imageHeight = "twitter:image:height", i.label1 = "twitter:label1", i.data1 = "twitter:data1", i.label2 = "twitter:label2", i.data2 = "twitter:data2", i.appNameIphone = "twitter:app:name:iphone", i.appIdIphone = "twitter:app:id:iphone", i.appUrlIphone = "twitter:app:url:iphone", i.appNameIpad = "twitter:app:name:ipad", i.appIdIpad = "twitter:app:id:ipad", i.appUrlIpad = "twitter:app:url:ipad", i.appNameGooglePlay = "twitter:app:name:googleplay", i.appIdGooglePlay = "twitter:app:id:googleplay", i.appUrlGooglePlay = "twitter:app:url:googleplay", i.player = "twitter:player", i.playerWidth = "twitter:player:width", i.playerHeight = "twitter:player:height", i.playerStream = "twitter:player:stream", i.playerStreamContentType = "twitter:player:stream:content_type", i))($ || {}), re = /* @__PURE__ */ ((i) => (i.summary = "summary", i.summaryLargeImage = "summary_large_image", i.app = "app", i.player = "player", i.product = "product", i.gallery = "gallery", i.photo = "photo", i.leadGeneration = "lead_generation", i.audio = "audio", i.poll = "poll", i))(re || {});
+class ne extends rt {
+  constructor() {
+    super(Object.values(y), !0);
+  }
+  /**
+   * Gets the Open Graph title.
+   *
+   * Получает заголовок Open Graph.
+   */
+  getTitle() {
+    return this.get(y.title);
+  }
+  /**
+   * Gets the Open Graph type.
+   *
+   * Получает тип Open Graph.
+   */
+  getType() {
+    return this.get(y.type);
+  }
+  /**
+   * Gets the Open Graph URL.
+   *
+   * Получает URL Open Graph.
+   */
+  getUrl() {
+    return this.get(y.url);
+  }
+  /**
+   * Gets the Open Graph image URL.
+   *
+   * Получает URL изображения Open Graph.
+   */
+  getImage() {
+    return this.get(y.image);
+  }
+  /**
+   * Gets the Open Graph description.
+   *
+   * Получает описание Open Graph.
+   */
+  getDescription() {
+    return this.get(y.description);
+  }
+  /**
+   * Gets the Open Graph locale.
+   *
+   * Получает локаль Open Graph.
+   */
+  getLocale() {
+    return this.get(y.locale);
+  }
+  /**
+   * Gets the Open Graph site name.
+   *
+   * Получает название сайта Open Graph.
+   */
+  getSiteName() {
+    return this.get(y.siteName);
+  }
+  /**
+   * Sets the Open Graph title.
+   *
+   * Устанавливает заголовок Open Graph.
+   * @param title title / заголовок
+   */
+  setTitle(t) {
+    return this.set(y.title, t);
+  }
+  /**
+   * Sets the Open Graph type.
+   *
+   * Устанавливает тип Open Graph.
+   * @param type type / тип
+   */
+  setType(t) {
+    return this.set(y.type, t);
+  }
+  /**
+   * Sets the Open Graph URL.
+   *
+   * Устанавливает URL Open Graph.
+   * @param url URL / URL
+   */
+  setUrl(t) {
+    return this.set(y.url, t);
+  }
+  /**
+   * Sets the Open Graph image URL.
+   *
+   * Устанавливает URL изображения Open Graph.
+   * @param url image URL / URL изображения
+   */
+  setImage(t) {
+    return this.set(y.image, t);
+  }
+  /**
+   * Sets the Open Graph description.
+   *
+   * Устанавливает описание Open Graph.
+   * @param description description / описание
+   */
+  setDescription(t) {
+    return this.set(y.description, t);
+  }
+  /**
+   * Sets the Open Graph locale.
+   *
+   * Устанавливает локаль Open Graph.
+   * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
+   */
+  setLocale(t) {
+    return this.set(y.locale, t);
+  }
+  /**
+   * Sets the Open Graph site name.
+   *
+   * Устанавливает название сайта Open Graph.
+   * @param siteName site name / название сайта
+   */
+  setSiteName(t) {
+    return this.set(y.siteName, t);
+  }
+}
+class oe extends rt {
+  constructor() {
+    super(Object.values($));
+  }
+  /**
+   * Gets the Twitter Card type.
+   *
+   * Получает тип Twitter Card.
+   */
+  getCard() {
+    return this.get($.card);
+  }
+  /**
+   * Gets the website or brand @username.
+   *
+   * Получает аккаунт сайта или бренда (@username).
+   */
+  getSite() {
+    return this.get($.site);
+  }
+  /**
+   * Gets the content creator @username.
+   *
+   * Получает автора контента (@username).
+   */
+  getCreator() {
+    return this.get($.creator);
+  }
+  /**
+   * Gets the page URL.
+   *
+   * Получает URL страницы.
+   */
+  getUrl() {
+    return this.get($.url);
+  }
+  /**
+   * Gets the card title.
+   *
+   * Получает заголовок карточки.
+   */
+  getTitle() {
+    return this.get($.title);
+  }
+  /**
+   * Gets the card description.
+   *
+   * Получает описание карточки.
+   */
+  getDescription() {
+    return this.get($.description);
+  }
+  /**
+   * Gets the card image URL.
+   *
+   * Получает URL изображения карточки.
+   */
+  getImage() {
+    return this.get($.image);
+  }
+  /**
+   * Sets the Twitter Card type.
+   *
+   * Устанавливает тип Twitter Card.
+   * @param card card type / тип карточки
+   */
+  setCard(t) {
+    return this.set($.card, t), this;
+  }
+  /**
+   * Sets the website or brand @username.
+   *
+   * Устанавливает аккаунт сайта или бренда (@username).
+   * @param site @username / аккаунт
+   */
+  setSite(t) {
+    return this.set($.site, t), this;
+  }
+  /**
+   * Sets the content creator @username.
+   *
+   * Устанавливает автора контента (@username).
+   * @param creator @username / аккаунт автора
+   */
+  setCreator(t) {
+    return this.set($.creator, t), this;
+  }
+  /**
+   * Sets the page URL.
+   *
+   * Устанавливает URL страницы.
+   * @param url URL / URL
+   */
+  setUrl(t) {
+    return this.set($.url, t), this;
+  }
+  /**
+   * Sets the card title.
+   *
+   * Устанавливает заголовок карточки.
+   * @param title title / заголовок
+   */
+  setTitle(t) {
+    return this.set($.title, t), this;
+  }
+  /**
+   * Sets the card description.
+   *
+   * Устанавливает описание карточки.
+   * @param description description / описание
+   */
+  setDescription(t) {
+    return this.set($.description, t), this;
+  }
+  /**
+   * Sets the card image URL.
+   *
+   * Устанавливает URL изображения карточки.
+   * @param image image URL / URL изображения
+   */
+  setImage(t) {
+    return this.set($.image, t), this;
+  }
+}
+class De extends rt {
+  /**
+   * Creates an instance of Meta with integrated Open Graph and Twitter Card support.
+   *
+   * Создает экземпляр Meta с интегрированной поддержкой Open Graph и Twitter Card.
+   */
+  constructor() {
+    super(Object.values(v));
+    c(this, "suffix");
+    c(this, "og");
+    c(this, "twitter");
+    this.og = new ne(), this.twitter = new oe();
+  }
+  /**
+   * Gets the MetaOg instance for advanced Open Graph operations.
+   *
+   * Получает экземпляр MetaOg для расширенных операций с Open Graph.
+   */
+  getOg() {
+    return this.og;
+  }
+  /**
+   * Gets the MetaTwitter instance for advanced Twitter Card operations.
+   *
+   * Получает экземпляр MetaTwitter для расширенных операций с Twitter Card.
+   */
+  getTwitter() {
+    return this.twitter;
+  }
+  /**
+   * Gets the page title without suffix.
+   *
+   * Получает заголовок страницы без суффикса.
+   */
+  getTitle() {
+    return l() ? document.title.replace(this.getSuffix(), "").trim() : "";
+  }
+  /**
+   * Gets the keywords meta tag.
+   *
+   * Получает мета-тег keywords.
+   */
+  getKeywords() {
+    return this.get(v.keywords);
+  }
+  /**
+   * Gets the description meta tag.
+   *
+   * Получает мета-тег description.
+   */
+  getDescription() {
+    return this.get(v.description);
+  }
+  /**
+   * Gets the Open Graph image URL.
+   *
+   * Получает URL изображения Open Graph.
+   */
+  getImage() {
+    return this.og.getImage();
+  }
+  /**
+   * Gets the canonical URL.
+   *
+   * Получает канонический URL.
+   */
+  getCanonical() {
+    return this.get(v.canonical);
+  }
+  /**
+   * Gets the robots meta tag value.
+   *
+   * Получает значение мета-тега robots.
+   */
+  getRobots() {
+    return this.get(v.robots);
+  }
+  /**
+   * Gets the author meta tag.
+   *
+   * Получает мета-тег author.
+   */
+  getAuthor() {
+    return this.get(v.author);
+  }
+  /**
+   * Gets the Open Graph site name.
+   *
+   * Получает название сайта Open Graph.
+   */
+  getSiteName() {
+    return this.og.getSiteName();
+  }
+  /**
+   * Gets the Open Graph locale.
+   *
+   * Получает локаль Open Graph.
+   */
+  getLocale() {
+    return this.og.getLocale();
+  }
+  /**
+   * Sets the page title (with suffix) and updates Open Graph and Twitter Card titles.
+   *
+   * Устанавливает заголовок страницы (с суффиксом) и обновляет заголовки Open Graph и Twitter Card.
+   * @param title page title / заголовок страницы
+   */
+  setTitle(e) {
+    if (l()) {
+      const s = D(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
+      document.title = s, this.og.setTitle(s), this.twitter.setTitle(s);
+    }
+    return this;
+  }
+  /**
+   * Sets the keywords meta tag.
+   *
+   * Устанавливает мета-тег keywords.
+   * @param keywords keywords as string or array / ключевые слова в виде строки или массива
+   */
+  setKeywords(e) {
+    return this.set(v.keywords, z(e).join(", ")), this;
+  }
+  /**
+   * Sets the description meta tag.
+   *
+   * Устанавливает мета-тег description.
+   * @param description page description / описание страницы
+   */
+  setDescription(e) {
+    return this.set(v.description, e), this;
+  }
+  /**
+   * Sets the image for Open Graph and Twitter Card.
+   *
+   * Устанавливает изображение для Open Graph и Twitter Card.
+   * @param image image URL / URL изображения
+   */
+  setImage(e) {
+    return this.og.setImage(e), this.twitter.setImage(e), this;
+  }
+  /**
+   * Sets the canonical URL and updates Open Graph and Twitter Card URLs.
+   *
+   * Устанавливает канонический URL и обновляет URL для Open Graph и Twitter Card.
+   * @param canonical canonical URL / канонический URL
+   */
+  setCanonical(e) {
+    return this.set(v.canonical, e), this.og.setUrl(e), this.twitter.setUrl(e), this;
+  }
+  /**
+   * Sets the robots meta tag.
+   *
+   * Устанавливает мета-тег robots.
+   * @param robots robots directive / директива robots
+   */
+  setRobots(e) {
+    return this.set(v.robots, e), this;
+  }
+  /**
+   * Sets the author meta tag.
+   *
+   * Устанавливает мета-тег author.
+   * @param author author name / имя автора
+   */
+  setAuthor(e) {
+    return this.set(v.author, e), this;
+  }
+  /**
+   * Sets the site name for Open Graph and Twitter Card.
+   *
+   * Устанавливает название сайта для Open Graph и Twitter Card.
+   * @param siteName site name / название сайта
+   */
+  setSiteName(e) {
+    return this.og.setSiteName(e), this.twitter.setSite(e), this;
+  }
+  /**
+   * Sets the locale for Open Graph.
+   *
+   * Устанавливает локаль для Open Graph.
+   * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
+   */
+  setLocale(e) {
+    return this.og.setLocale(e), this;
+  }
+  /**
+   * Sets the suffix to append to page title.
+   *
+   * Устанавливает суффикс для добавления к заголовку страницы.
+   * @param suffix title suffix (e.g. 'My Site') / суффикс заголовка (например, 'Мой Сайт')
+   */
+  setSuffix(e) {
+    this.suffix = e;
+  }
+  /**
+   * Generates the complete HTML for all meta-tags including Open Graph and Twitter Card.
+   *
+   * Генерирует полный HTML для всех мета-тегов, включая Open Graph и Twitter Card.
+   */
+  html() {
+    return `${super.html()}${this.og.html()}${this.twitter.html()}`;
+  }
+  /**
+   * Gets the formatted suffix with separator.
+   *
+   * Получает отформатированный суффикс с разделителем.
+   */
+  getSuffix() {
+    return D(this.suffix) ? ` - ${this.suffix}` : "";
+  }
+}
+class st {
   /**
    * Checks whether to enable scroll hiding.
    *
@@ -1725,11 +4301,11 @@ class H {
    * Возвращает ширину скролла.
    */
   static async get() {
-    var i;
-    const t = (i = this.storage.get()) != null ? i : -1;
+    var e;
+    const t = (e = this.storage.get()) != null ? e : -1;
     if (!this.calculate && t === -1) {
-      const r = await this.init();
-      return this.storage.set(r), r;
+      const s = await this.init();
+      return this.storage.set(s), s;
     }
     return t;
   }
@@ -1739,9 +4315,9 @@ class H {
    * Создает элементы для проверки ширины скролла.
    */
   static createElement() {
-    return _(document.body, "div", (t) => {
-      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", _(t, "div", (i) => {
-        i.style.height = "100px";
+    return it(document.body, "div", (t) => {
+      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", it(t, "div", (e) => {
+        e.style.height = "100px";
       });
     });
   }
@@ -1753,22 +4329,15 @@ class H {
   static init() {
     return new Promise((t) => {
       this.calculate = !0;
-      const i = this.createElement();
-      i ? requestAnimationFrame(() => {
-        t(i.offsetWidth - i.clientWidth), i.remove(), this.calculate = !1;
+      const e = this.createElement();
+      e ? requestAnimationFrame(() => {
+        t(e.offsetWidth - e.clientWidth), e.remove(), this.calculate = !1;
       }) : t(0);
     });
   }
 }
-l(H, "storage", new et("scrollbar", !0)), l(H, "calculate", !1);
-function it(e) {
-  return Array.isArray(e);
-}
-function Ut(e) {
-  var t;
-  return x(e) ? e.trim() : it(e) && e.findIndex((i) => h(i)) === -1 ? e.join(",") : h(e) ? JSON.stringify(e) : e === !0 ? "1" : e === !1 ? "0" : (t = e == null ? void 0 : e.toString()) != null ? t : "";
-}
-const mt = [
+c(st, "storage", new _("scrollbar", !0)), c(st, "calculate", !1);
+const ae = [
   "d",
   "e",
   "f",
@@ -1788,389 +4357,560 @@ const mt = [
   "t",
   "u",
   "v"
-], Ht = (e, t = {}) => {
-  let i = String(e);
-  if (e.match(/%[a-z]/)) {
-    let r = 0;
-    y(t, (s) => {
-      i = i.replace(new RegExp(`%${mt[r++]}`, "g"), String(s));
+], ce = (i, t = {}) => {
+  let e = String(i);
+  if (i.match(/%[a-z]/)) {
+    let s = 0;
+    g(t, (n) => {
+      e = e.replace(new RegExp(`%${ae[s++]}`, "g"), String(n));
     });
   }
-  return $(t) && y(t, (r, s) => {
-    i = i.replace(
-      new RegExp(`\\[${s}\\](.*?)\\[/${s}\\]`, "g"),
-      (o, n) => String(r).replace(/\[content]/g, n)
-    ).replace(new RegExp(`\\[${s}\\]`, "g"), String(r));
-  }), i;
+  return k(t) && g(t, (s, n) => {
+    e = e.replace(
+      new RegExp(`\\[${n}\\](.*?)\\[/${n}\\]`, "g"),
+      (o, a) => String(s).replace(/\[content]/g, a)
+    ).replace(new RegExp(`\\[${n}\\]`, "g"), String(s));
+  }), e;
+}, A = class A {
+  /**
+   * Getting the translation text by its code.
+   *
+   * Получение текста перевода по его коду.
+   * @param name code name/ название кода
+   * @param replacement If set, replaces the text with the specified values/ если установлено, заменяет текст на указанные значения
+   */
+  static async get(t, e) {
+    var n, o;
+    const s = this.getName(t);
+    return s in this.data ? this.replacement(this.data[s], e) : (U.isLocalhost() || await this.add(t), this.replacement((o = (n = this.data) == null ? void 0 : n[s]) != null ? o : t));
+  }
+  /**
+   * Getting the translation text by its code (Sync).
+   *
+   * Получение текста перевода по его коду (Sync).
+   * @param name code name/ название кода
+   * @param first If set to false, returns an empty string if there is no text/
+   * если установлено false, возвращает пустую строку, если нет текста
+   * @param replacement If set, replaces the text with the specified values/
+   * если установлено, заменяет текст на указанные значения
+   */
+  static getSync(t, e = !1, s) {
+    const n = this.getName(t);
+    return n in this.data ? this.replacement(String(this.data[n]), s) : e ? " " : t;
+  }
+  /**
+   * Getting a list of translations by an array of text codes.
+   *
+   * Получение списка переводов по массиву кодов текста.
+   * @param names list of codes to get translations/ список кодов для получения переводов
+   */
+  static getList(t) {
+    return new Promise((e) => {
+      const s = {};
+      let n = 0;
+      for (const o of t) {
+        const a = Array.isArray(o) ? o[0] : o, u = Array.isArray(o) ? o.slice(1) : void 0;
+        this.get(a, u).then((h) => {
+          s[a] = h, ++n >= t.length && e(s);
+        });
+      }
+    });
+  }
+  /**
+   * Getting a list of translations by an array of text codes.
+   *
+   * Получение списка переводов по массиву кодов текста.
+   * @param names list of codes to get translations/ список кодов для получения переводов
+   * @param first If set to false, returns an empty string if there is no text/
+   * если установлено false, возвращает пустую строку, если нет текста
+   */
+  static getListSync(t, e = !1) {
+    const s = {};
+    for (const n of t) {
+      const o = Array.isArray(n) ? n[0] : n, a = Array.isArray(n) ? n.slice(1) : void 0;
+      s[o] = this.getSync(o, e, a);
+    }
+    return s;
+  }
+  /**
+   * Added a list of translated texts.
+   *
+   * Добавлен список переведенных текстов.
+   * @param names list of codes to get translations/ список кодов для получения переводов
+   */
+  static add(t) {
+    return new Promise((e) => {
+      this.getNamesNone(t).length > 0 ? (this.cache.push(...this.getNamesNone(t)), this.resolveList.push(e), this.timeout && clearTimeout(this.timeout), this.timeout = setTimeout(() => {
+        this.timeout = void 0, this.make().then(() => {
+          this.resolveList.forEach((n) => n()), this.resolveList = [];
+        });
+      }, 160)) : e();
+    });
+  }
+  /**
+   * Adds texts in sync mode.
+   *
+   * Добавляет тексты в режиме синхронизации.
+   * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
+   */
+  static addSync(t) {
+    g(t, (e, s) => {
+      j(e) && D(e) && (this.data[this.getName(s)] = e);
+    });
+  }
+  /**
+   * Adding data in the form of a query or directly, depending on the execution environment.
+   *
+   * Добавление данных в виде запроса или напрямую, в зависимости от среды выполнения.
+   * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
+   */
+  static async addNormalOrSync(t) {
+    if (D(t))
+      if (U.isLocalhost())
+        this.addSync(t);
+      else {
+        const e = Object.keys(t);
+        e.length > 0 && await this.add(e);
+      }
+  }
+  /**
+   * Change the path to the script for obtaining the translation.
+   *
+   * Изменить путь к скрипту для получения перевода.
+   * @param url path to the script/ путь к скрипту
+   */
+  static setUrl(t) {
+    return this.url = t, A;
+  }
+  static setPropsName(t) {
+    return this.propsName = t, this;
+  }
+  /**
+   * Getting the full title for translation.
+   *
+   * Получение полного названия для перевода.
+   * @param name code name/ название кода
+   */
+  static getName(t) {
+    return `${b.getLocation()}-${t}`;
+  }
+  /**
+   * Returns a list of names that are not yet in the list.
+   *
+   * Возвращает список имен, которых еще нет в списке.
+   * @param names list of codes to get translations/ список кодов для получения переводов
+   */
+  static getNamesNone(t) {
+    const e = [];
+    return z(t).forEach((s) => {
+      s !== "__TRANSLATE_START__" && s !== "__TRANSLATE_END__" && !(this.getName(s) in this.data) && e.push(s);
+    }), e;
+  }
+  /**
+   * Getting the list of translations from the server.
+   *
+   * Получение списка переводов с сервера.
+   */
+  static async getResponse() {
+    const t = await U.get({
+      api: !1,
+      path: this.url,
+      request: {
+        [this.propsName]: this.cache
+      },
+      toData: !0,
+      global: !0
+    });
+    return t != null ? t : {};
+  }
+  /**
+   * Replaces the text with the specified values.
+   *
+   * Заменяет текст на указанные значения.
+   * @param text text to replace/ текст для замены
+   * @param replacement values for replacement/ значения для замены
+   */
+  static replacement(t, e) {
+    return e ? ce(t, e) : t;
+  }
+  /**
+   * Adding translation data from the server.
+   *
+   * Добавление данных по переводу с сервера.
+   */
+  static async make() {
+    const t = await this.getResponse();
+    this.cache.forEach((e) => {
+      var s;
+      this.data[this.getName(e)] = (s = t == null ? void 0 : t[e]) != null ? s : "";
+    }), this.cache = [];
+  }
 };
-function yt(e, t) {
-  return Array(t).fill(e);
+c(A, "url", "/api/translate"), c(A, "propsName", "list"), c(A, "data", {}), c(A, "cache", []), c(A, "resolveList", []), c(A, "timeout");
+let wt = A;
+function It(i) {
+  return Array.isArray(i);
 }
-function Zt(e) {
+function Le(i) {
   var t;
-  if (f())
-    return (t = document.querySelector(e)) != null ? t : void 0;
+  return j(i) ? i.trim() : It(i) && i.findIndex((e) => m(e)) === -1 ? i.join(",") : m(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
 }
-function Vt(e) {
-  if (f())
-    return document.querySelectorAll(e);
+function ue(i, t) {
+  return Array(t).fill(i);
 }
-function qt(e) {
-  return e.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").trim();
+function ke(i) {
+  var t;
+  if (l())
+    return (t = document.querySelector(i)) != null ? t : void 0;
 }
-function Wt(e) {
-  e.preventDefault(), e.stopPropagation();
+function Ce(i) {
+  if (l())
+    return document.querySelectorAll(i);
 }
-function pt(e, t, i) {
-  const r = () => {
-    e(), t != null && t() ? pt(e, t, i) : i == null || i();
+function Ae(i) {
+  i.preventDefault(), i.stopPropagation();
+}
+function he(i, t, e) {
+  const s = () => {
+    i(), t != null && t() ? he(i, t, e) : e == null || e();
   };
-  f() ? requestAnimationFrame(r) : r();
+  l() ? requestAnimationFrame(s) : s();
 }
-function Jt(e) {
-  var r;
-  const t = {}, i = S(e);
-  if (i)
-    for (const s of i.attributes)
-      t[s.name] = (r = (s == null ? void 0 : s.value) || (s == null ? void 0 : s.textContent)) != null ? r : void 0;
+function Ne(i) {
+  var s;
+  const t = {}, e = C(i);
+  if (e)
+    for (const n of e.attributes)
+      t[n.name] = (s = (n == null ? void 0 : n.value) || (n == null ? void 0 : n.textContent)) != null ? s : void 0;
   return t;
 }
-async function Yt(e) {
-  var t, i;
-  return (i = (t = e == null ? void 0 : e.clipboardData) == null ? void 0 : t.getData("text")) != null ? i : await navigator.clipboard.readText() || "";
+async function Ee(i) {
+  var t, e;
+  return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
-let O = B(1e5, 9e5);
-function Kt(e, t) {
-  const i = S(e);
-  return i ? (E(i.id) || i.setAttribute("id", `id-${O++}`), t ? `#${i.id}${t}`.trim() : i.id) : `id-${O++}`;
+let vt = V(1e5, 9e5);
+function Ie(i, t) {
+  const e = C(i);
+  return e ? (D(e.id) || e.setAttribute("id", `id-${vt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${vt++}`;
 }
-function bt(e, t = "ig", i = ":value") {
-  const r = e.replace(/([[\]\\^$.?*+()/])/g, "\\$1");
-  return new RegExp(i.replace(/:value/g, r), t);
+function le(i, t = "ig", e = ":value") {
+  const s = i.replace(/([[\]\\^$.?*+()/])/g, "\\$1");
+  return new RegExp(e.replace(/:value/g, s), t);
 }
-function wt(e, t) {
-  var s;
-  const i = t.split(".", 2), r = i[0];
-  return r && (e != null && e[r]) && $(e[r]) && (i != null && i[1]) ? wt(e[r], i[1]) : (s = r && (e == null ? void 0 : e[r])) != null ? s : "";
+function de(i, t) {
+  var n;
+  const e = t.split(".", 2), s = e[0];
+  return s && (i != null && i[s]) && k(i[s]) && (e != null && e[1]) ? de(i[s], e[1]) : (n = s && (i == null ? void 0 : i[s])) != null ? n : "";
 }
-function Qt(e) {
-  var t, i, r;
-  return (r = (t = e == null ? void 0 : e.key) != null ? t : e == null ? void 0 : e.code) != null ? r : (i = e == null ? void 0 : e.keyCode) == null ? void 0 : i.toString();
+function Be(i) {
+  var t, e, s;
+  return (s = (t = i == null ? void 0 : i.key) != null ? t : i == null ? void 0 : i.code) != null ? s : (e = i == null ? void 0 : i.keyCode) == null ? void 0 : e.toString();
 }
-function rt(e) {
-  return y(e, (t) => t.length);
+function Bt(i) {
+  return g(i, (t) => t.length);
 }
-function Xt(e) {
-  return Math.max(...rt(e));
+function Fe(i) {
+  return Math.max(...Bt(i));
 }
-function _t(e) {
-  return Math.min(...rt(e));
+function xe(i) {
+  return Math.min(...Bt(i));
 }
-function $t(e) {
-  var t, i, r, s;
-  return (e == null ? void 0 : e.clientX) || ((i = (t = e == null ? void 0 : e.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : i.clientX) || ((s = (r = e == null ? void 0 : e.touches) == null ? void 0 : r[0]) == null ? void 0 : s.clientX) || 0;
+function ge(i) {
+  var t, e, s, n;
+  return (i == null ? void 0 : i.clientX) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientX) || ((n = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : n.clientX) || 0;
 }
-function St(e) {
-  var t, i, r, s;
-  return (e == null ? void 0 : e.clientY) || ((i = (t = e == null ? void 0 : e.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : i.clientY) || ((s = (r = e == null ? void 0 : e.touches) == null ? void 0 : r[0]) == null ? void 0 : s.clientY) || 0;
+function fe(i) {
+  var t, e, s, n;
+  return (i == null ? void 0 : i.clientY) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((n = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : n.clientY) || 0;
 }
-function Ot(e) {
+function Re(i) {
   return {
-    x: $t(e),
-    y: St(e)
+    x: ge(i),
+    y: fe(i)
   };
 }
-function Tt(e, t) {
-  const i = {};
-  return t.forEach((r) => {
-    r in e && e[r] !== void 0 && (i[r] = e[r]);
-  }), i;
+function Pe(i, t) {
+  const e = {};
+  return t.forEach((s) => {
+    s in i && i[s] !== void 0 && (e[s] = i[s]);
+  }), e;
 }
-function Gt(e, t = void 0) {
-  const i = {};
-  return y(e, (r, s) => {
-    r !== t && (i[s] = r);
-  }), i;
+function We(i, t = void 0) {
+  const e = {};
+  return g(i, (s, n) => {
+    s !== t && (e[n] = s);
+  }), e;
 }
-function Mt(e) {
-  return $(e) ? e : {};
+function Ue(i) {
+  return k(i) ? i : {};
 }
-function Dt(e, t) {
-  return yt(e, t).join("");
+function me(i, t) {
+  return ue(i, t).join("");
 }
-function te(e, t, i = "#", r = 2, s = 12) {
-  const o = B(e, t), n = [];
-  for (let c = 0; c < o; c++)
-    n.push(Dt(i, B(r, s)));
-  return n.join(" ");
+function je(i, t, e = "#", s = 2, n = 12) {
+  const o = V(i, t), a = [];
+  for (let u = 0; u < o; u++)
+    a.push(me(e, V(s, n)));
+  return a.join(" ");
 }
-function ee(e, t) {
-  const i = e != null ? e : 0;
-  return t > i ? 100 / (t - i) : 0;
+function ze(i, t) {
+  const e = i != null ? i : 0;
+  return t > e ? 100 / (t - e) : 0;
 }
-function ie(e, t) {
-  const i = e != null ? e : 0;
-  return t > i ? (t - i) / 100 : 0;
+function He(i, t) {
+  const e = i != null ? i : 0;
+  return t > e ? (t - e) / 100 : 0;
 }
-const T = 0;
-function re(e, t, i) {
-  const r = t == null ? void 0 : t.closest(e);
-  if (t && r && r.scrollHeight !== r.offsetHeight)
-    if (i) {
-      const s = i.getBoundingClientRect(), o = r.getBoundingClientRect(), n = t.getBoundingClientRect();
-      r.scrollTop = t.offsetTop - (s.top - o.top) - (s.height / 2 - n.height / 2), r.scrollTop + r.offsetHeight < t.offsetTop + t.offsetHeight && (r.scrollTop = t.offsetTop + t.offsetHeight - r.offsetHeight);
-    } else r.scrollTop > t.offsetTop ? r.scrollTop = t.offsetTop - T : r.scrollTop + r.offsetHeight < t.offsetTop + t.offsetHeight && (r.scrollTop = t.offsetTop + t.offsetHeight - r.offsetHeight + T);
+const St = 0;
+function Ze(i, t, e) {
+  const s = t == null ? void 0 : t.closest(i);
+  if (t && s && s.scrollHeight !== s.offsetHeight)
+    if (e) {
+      const n = e.getBoundingClientRect(), o = s.getBoundingClientRect(), a = t.getBoundingClientRect();
+      s.scrollTop = t.offsetTop - (n.top - o.top) - (n.height / 2 - a.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
+    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - St : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + St);
 }
-function se(e, t) {
-  return e.indexOf(t) !== -1;
+function Ke(i, t) {
+  return i.indexOf(t) !== -1;
 }
-async function ne() {
-  if (f()) {
-    const e = await H.get();
-    document.body.style.setProperty("--sys-scrollbar-offset", `${e}px`);
+async function Ve() {
+  if (l()) {
+    const i = await st.get();
+    document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function oe(e, t) {
-  const i = {};
-  return h(e) && h(t) && y(e, (r, s) => {
-    s in t && (i[s] = r);
-  }), i;
+function Ye(i, t) {
+  const e = {};
+  return m(i) && m(t) && g(i, (s, n) => {
+    n in t && (e[n] = s);
+  }), e;
 }
-function ce(e, t) {
-  let i = Object.keys(e).length !== Object.keys(t).length;
-  return i || y(e, (r, s) => {
-    r !== (t == null ? void 0 : t[s]) && (i = !0);
-  }), i;
+function qe(i, t) {
+  let e = Object.keys(i).length !== Object.keys(t).length;
+  return e || g(i, (s, n) => {
+    s !== (t == null ? void 0 : t[n]) && (e = !0);
+  }), e;
 }
-function ue(e) {
-  switch (typeof e) {
+function Je(i) {
+  switch (typeof i) {
     case "number":
       return !0;
     case "string":
-      return !!e.match(/^([0-9]+|[0-9]+\.[0-9]+)$/);
+      return !!i.match(/^([0-9]+|[0-9]+\.[0-9]+)$/);
     default:
       return !1;
   }
 }
-function ae(e, t) {
-  const i = Math.floor(t);
-  return e >= i && e < i + 1;
+function Qe(i, t) {
+  const e = Math.floor(t);
+  return i >= e && i < e + 1;
 }
-function le(e, t) {
-  return Array.isArray(e) ? e.every((i) => U(i, t)) : U(e, t);
+function Xe(i, t) {
+  return Array.isArray(i) ? i.every((e) => et(e, t)) : et(i, t);
 }
-function Lt(e) {
-  return [...new Set(e)];
+function ye(i) {
+  return [...new Set(i)];
 }
-function k(e, t, i = !0) {
-  const r = C(e);
-  return h(e) && h(t) && y(
+function H(i, t, e = !0) {
+  const s = W(i);
+  return m(i) && m(t) && g(
     t,
-    (s, o) => {
-      const n = e == null ? void 0 : e[o];
-      h(n) && h(s) ? i && Array.isArray(n) && Array.isArray(s) ? r[o] = C(Lt([...n, ...s])) : r[o] = k(
-        Array.isArray(n) ? { ...n } : n,
-        s,
-        i
-      ) : r[o] = h(s) ? C(s) : s;
+    (n, o) => {
+      const a = i == null ? void 0 : i[o];
+      m(a) && m(n) ? e && Array.isArray(a) && Array.isArray(n) ? s[o] = W(ye([...a, ...n])) : s[o] = H(
+        Array.isArray(a) ? { ...a } : a,
+        n,
+        e
+      ) : s[o] = m(n) ? W(n) : n;
     }
-  ), r;
+  ), s;
 }
-function fe(e, t) {
-  let i = e;
-  return y(t, (r, s) => {
-    i = i.replace(bt(`[${s}]`), I(r));
-  }), i;
+function Me(i, t) {
+  let e = i;
+  return g(t, (s, n) => {
+    e = e.replace(le(`[${n}]`), N(s));
+  }), e;
 }
-function de(e) {
-  const t = w(e);
+function _e(i) {
+  const t = L(i);
   if (t > 0) {
-    const i = String(Math.floor(t / 60)).padStart(2, "0"), r = String(t % 60).padStart(2, "0");
-    return `${i}:${r}`;
+    const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
+    return `${e}:${s}`;
   }
   return "00:00";
 }
-function he(e, t, {
-  multiple: i = !1,
-  maxlength: r = 0,
-  alwaysChange: s = !0,
+function Oe(i, t, {
+  multiple: e = !1,
+  maxlength: s = 0,
+  alwaysChange: n = !0,
   notEmpty: o = !1
 }) {
-  if (i) {
-    if (it(e)) {
-      const n = e.indexOf(t), c = [...e];
-      return n !== -1 ? (!o || c.length > 1) && c.splice(n, 1) : (!r || e.length < r) && c.push(t), c;
+  if (e) {
+    if (It(i)) {
+      const a = i.indexOf(t), u = [...i];
+      return a !== -1 ? (!o || u.length > 1) && u.splice(a, 1) : (!s || i.length < s) && u.push(t), u;
     }
-    return e === t ? [] : e ? [e, t] : [t];
+    return i === t ? [] : i ? [i, t] : [t];
   }
-  return s || e !== t ? t : e;
+  return n || i !== t ? t : i;
 }
-function ge(e, t, i) {
-  if (h(e) && h(t)) {
-    if (i) {
-      let r = {}, s = !1;
-      return y(e, (o, n) => {
-        !s && (i === n || i === o) ? (s = !0, r = k(r, t)) : s ? r = k(r, { [n]: o }) : r[n] = h(o) ? C(o) : o;
-      }), s ? r : k(e, t);
+function Te(i, t, e) {
+  if (m(i) && m(t)) {
+    if (e) {
+      let s = {}, n = !1;
+      return g(i, (o, a) => {
+        !n && (e === a || e === o) ? (n = !0, s = H(s, t)) : n ? s = H(s, { [a]: o }) : s[a] = m(o) ? W(o) : o;
+      }), n ? s : H(i, t);
     }
-    if (h(t))
-      return k(e, t);
+    if (m(t))
+      return H(i, t);
   }
-  return C(e);
+  return W(i);
 }
-function It(e) {
-  return e.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
+function $e(i) {
+  return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function me(e) {
-  return It(e).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+function Ge(i) {
+  return $e(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function ye(e) {
-  return e.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
+function ti(i) {
+  return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function pe(e, t, i, r) {
-  const s = w(e), o = w(t);
-  return t && o < s ? `${G(o, i, r)}+` : G(s, i, r);
+function ei(i, t, e, s) {
+  const n = L(i), o = L(t);
+  return t && o < n ? `${Dt(o, e, s)}+` : Dt(n, e, s);
 }
-const G = (e, t, i) => t ? new Z(i).number(e) : e;
-function Et(e, t) {
-  return 1 / e * t;
+const Dt = (i, t, e) => t ? new q(e).number(i) : i;
+function pe(i, t) {
+  return 1 / i * t;
 }
-function be(e, t) {
-  return Et(e, t) * 100;
+function ii(i, t) {
+  return pe(i, t) * 100;
 }
-function we(e, t = !1) {
-  if (typeof e == "string") {
-    const i = e.trim();
-    switch (i) {
-      case "undefined":
-        return;
-      case "null":
-        return null;
-      case "true":
-        return !0;
-      case "false":
-        return !1;
-      default:
-        if (/^[{[]/.exec(i))
-          try {
-            return JSON.parse(i);
-          } catch (r) {
-            console.error("transformation: JSON error", r);
-          }
-        else {
-          if (/^[0-9]+\.[0-9.]+$/.exec(i))
-            return parseFloat(i);
-          if (/^[0-9]+$/.exec(i))
-            return parseInt(i, 10);
-          if (t && f() && typeof (window == null ? void 0 : window[i]) == "function")
-            return window[i];
-        }
-    }
-  }
-  return e;
-}
-async function $e(e) {
-  if (f())
+async function si(i) {
+  if (l())
     try {
-      await navigator.clipboard.writeText(e);
+      await navigator.clipboard.writeText(i);
     } catch (t) {
-      document == null || document.execCommand(e);
+      document == null || document.execCommand(i);
     }
 }
-var Ct = /* @__PURE__ */ ((e) => (e.description = "description", e.keywords = "keywords", e.canonical = "canonical", e.robots = "robots", e.author = "author", e))(Ct || {}), vt = /* @__PURE__ */ ((e) => (e.indexFollow = "index, follow", e.noIndexFollow = "noindex, follow", e.indexNoFollow = "index, nofollow", e.noIndexNoFollow = "noindex, nofollow", e.noArchive = "noarchive", e.noSnippet = "nosnippet", e.noImageIndex = "noimageindex", e.images = "images", e.noTranslate = "notranslate", e.noPreview = "nopreview", e.textOnly = "textonly", e.noIndexSubpages = "noindex, noarchive", e.none = "none", e))(vt || {}), kt = /* @__PURE__ */ ((e) => (e.title = "og:title", e.type = "og:type", e.url = "og:url", e.image = "og:image", e.description = "og:description", e.locale = "og:locale", e.siteName = "og:site_name", e.localeAlternate = "og:locale:alternate", e.imageUrl = "og:image:url", e.imageSecureUrl = "og:image:secure_url", e.imageType = "og:image:type", e.imageWidth = "og:image:width", e.imageHeight = "og:image:height", e.imageAlt = "og:image:alt", e.video = "og:video", e.videoUrl = "og:video:url", e.videoSecureUrl = "og:video:secure_url", e.videoType = "og:video:type", e.videoWidth = "og:video:width", e.videoHeight = "og:video:height", e.audio = "og:audio", e.audioSecureUrl = "og:audio:secure_url", e.audioType = "og:audio:type", e.articlePublishedTime = "article:published_time", e.articleModifiedTime = "article:modified_time", e.articleExpirationTime = "article:expiration_time", e.articleAuthor = "article:author", e.articleSection = "article:section", e.articleTag = "article:tag", e.bookAuthor = "book:author", e.bookIsbn = "book:isbn", e.bookReleaseDate = "book:release_date", e.bookTag = "book:tag", e.musicDuration = "music:duration", e.musicAlbum = "music:album", e.musicAlbumDisc = "music:album:disc", e.musicAlbumTrack = "music:album:track", e.musicMusician = "music:musician", e.musicSong = "music:song", e.musicSongDisc = "music:song:disc", e.musicSongTrack = "music:song:track", e.musicReleaseDate = "music:release_date", e.musicCreator = "music:creator", e.videoActor = "video:actor", e.videoActorRole = "video:actor:role", e.videoDirector = "video:director", e.videoWriter = "video:writer", e.videoDuration = "video:duration", e.videoReleaseDate = "video:release_date", e.videoTag = "video:tag", e.videoSeries = "video:series", e.profileFirstName = "profile:first_name", e.profileLastName = "profile:last_name", e.profileUsername = "profile:username", e.profileGender = "profile:gender", e.productBrand = "product:brand", e.productAvailability = "product:availability", e.productCondition = "product:condition", e.productPriceAmount = "product:price:amount", e.productPriceCurrency = "product:price:currency", e.productRetailerItemId = "product:retailer_item_id", e.productCategory = "product:category", e.productEan = "product:ean", e.productIsbn = "product:isbn", e.productMfrPartNo = "product:mfr_part_no", e.productUpc = "product:upc", e.productWeightValue = "product:weight:value", e.productWeightUnits = "product:weight:units", e.productColor = "product:color", e.productMaterial = "product:material", e.productPattern = "product:pattern", e.productAgeGroup = "product:age_group", e.productGender = "product:gender", e))(kt || {}), At = /* @__PURE__ */ ((e) => (e.website = "website", e.article = "article", e.video = "video.other", e.videoTvShow = "video.tv_show", e.videoEpisode = "video.episode", e.videoMovie = "video.movie", e.musicAlbum = "music.album", e.musicPlaylist = "music.playlist", e.musicSong = "music.song", e.musicRadioStation = "music.radio_station", e.app = "app", e.product = "product", e.business = "business.business", e.place = "place", e.event = "event", e.profile = "profile", e.book = "book", e))(At || {}), xt = /* @__PURE__ */ ((e) => (e.inStock = "in stock", e.outOfStock = "out of stock", e.preorder = "preorder", e.backorder = "backorder", e.discontinued = "discontinued", e.pending = "pending", e))(xt || {}), Ft = /* @__PURE__ */ ((e) => (e.new = "new", e.used = "used", e.refurbished = "refurbished", e))(Ft || {}), Nt = /* @__PURE__ */ ((e) => (e.newborn = "newborn", e.infant = "infant", e.toddler = "toddler", e.kids = "kids", e.adult = "adult", e))(Nt || {}), Rt = /* @__PURE__ */ ((e) => (e.female = "female", e.male = "male", e.unisex = "unisex", e))(Rt || {}), Bt = /* @__PURE__ */ ((e) => (e.card = "twitter:card", e.site = "twitter:site", e.creator = "twitter:creator", e.url = "twitter:url", e.title = "twitter:title", e.description = "twitter:description", e.image = "twitter:image", e.imageAlt = "twitter:image:alt", e.imageSrc = "twitter:image:src", e.imageWidth = "twitter:image:width", e.imageHeight = "twitter:image:height", e.label1 = "twitter:label1", e.data1 = "twitter:data1", e.label2 = "twitter:label2", e.data2 = "twitter:data2", e.appNameIphone = "twitter:app:name:iphone", e.appIdIphone = "twitter:app:id:iphone", e.appUrlIphone = "twitter:app:url:iphone", e.appNameIpad = "twitter:app:name:ipad", e.appIdIpad = "twitter:app:id:ipad", e.appUrlIpad = "twitter:app:url:ipad", e.appNameGooglePlay = "twitter:app:name:googleplay", e.appIdGooglePlay = "twitter:app:id:googleplay", e.appUrlGooglePlay = "twitter:app:url:googleplay", e.player = "twitter:player", e.playerWidth = "twitter:player:width", e.playerHeight = "twitter:player:height", e.playerStream = "twitter:player:stream", e.playerStreamContentType = "twitter:player:stream:content_type", e))(Bt || {}), Pt = /* @__PURE__ */ ((e) => (e.summary = "summary", e.summaryLargeImage = "summary_large_image", e.app = "app", e.player = "player", e.product = "product", e.gallery = "gallery", e.photo = "photo", e.leadGeneration = "lead_generation", e.audio = "audio", e.poll = "poll", e))(Pt || {});
 export {
-  X as Api,
-  b as ApiMethodItem,
-  et as DataStorage,
-  q as EventItem,
-  D as Geo,
-  Z as GeoIntl,
-  L as Loading,
-  Nt as MetaOpenGraphAge,
-  xt as MetaOpenGraphAvailability,
-  Ft as MetaOpenGraphCondition,
-  Rt as MetaOpenGraphGender,
-  kt as MetaOpenGraphTag,
-  At as MetaOpenGraphType,
-  vt as MetaRobots,
-  Ct as MetaTag,
-  Pt as MetaTwitterCard,
-  Bt as MetaTwitterTag,
-  H as ScrollbarWidth,
-  Ut as anyToString,
-  Ht as applyTemplate,
-  yt as arrFill,
-  C as copyObject,
-  _ as createElement,
-  Zt as domQuerySelector,
-  Vt as domQuerySelectorAll,
-  qt as encodeAttribute,
-  Wt as eventStopPropagation,
-  I as executeFunction,
-  ut as executePromise,
-  y as forEach,
-  pt as frame,
-  Jt as getAttributes,
-  Yt as getClipboardData,
-  dt as getColumn,
-  S as getElement,
-  Kt as getElementId,
-  ht as getElementItem,
-  V as getElementOrWindow,
-  bt as getExp,
-  wt as getItemByPath,
-  Qt as getKey,
-  rt as getLengthOfAllArray,
-  Xt as getMaxLengthAllArray,
-  _t as getMinLengthAllArray,
-  Ot as getMouseClient,
-  $t as getMouseClientX,
-  St as getMouseClientY,
-  Tt as getObjectByKeys,
-  Gt as getObjectNoUndefined,
-  Mt as getObjectOrNone,
-  te as getRandomText,
-  at as getRequestString,
-  ee as getStepPercent,
-  ie as getStepValue,
-  re as goScroll,
-  se as inArray,
-  ne as initScrollbarOffset,
-  oe as intersectKey,
-  it as isArray,
-  ce as isDifferent,
-  f as isDomRuntime,
-  E as isFilled,
-  ue as isFloat,
-  M as isFunction,
-  lt as isInDom,
-  ae as isIntegerBetween,
-  F as isNull,
-  J as isNumber,
-  h as isObject,
-  $ as isObjectNotArray,
-  U as isSelected,
-  le as isSelectedByList,
-  x as isString,
-  tt as isWindow,
-  B as random,
-  k as replaceRecursive,
-  fe as replaceTemplate,
-  de as secondToTime,
-  gt as setElementItem,
-  he as setValues,
-  ge as splice,
-  Dt as strFill,
-  j as toArray,
-  It as toCamelCase,
-  me as toCamelCaseFirst,
-  v as toDate,
-  ye as toKebabCase,
-  w as toNumber,
-  pe as toNumberByMax,
-  Et as toPercent,
-  be as toPercentBy100,
-  we as transformation,
-  Lt as uniqueArray,
-  $e as writeClipboardData
+  U as Api,
+  zt as ApiDefault,
+  jt as ApiHeaders,
+  S as ApiMethodItem,
+  Vt as ApiPreparation,
+  Kt as ApiResponse,
+  Ht as ApiStatus,
+  ve as BroadcastMessage,
+  Jt as Cache,
+  qt as CacheItem,
+  dt as CacheStatic,
+  gt as Cookie,
+  Nt as CookieBlock,
+  _ as DataStorage,
+  Et as Datetime,
+  ut as EventItem,
+  r as GEO_FLAG_ICON_NAME,
+  b as Geo,
+  ft as GeoFlag,
+  q as GeoIntl,
+  mt as GeoPhone,
+  Se as Global,
+  yt as Hash,
+  bt as Icons,
+  F as Loading,
+  De as Meta,
+  rt as MetaManager,
+  ne as MetaOg,
+  ie as MetaOpenGraphAge,
+  te as MetaOpenGraphAvailability,
+  ee as MetaOpenGraphCondition,
+  se as MetaOpenGraphGender,
+  y as MetaOpenGraphTag,
+  Gt as MetaOpenGraphType,
+  Tt as MetaRobots,
+  v as MetaTag,
+  oe as MetaTwitter,
+  re as MetaTwitterCard,
+  $ as MetaTwitterTag,
+  st as ScrollbarWidth,
+  wt as Translate,
+  Le as anyToString,
+  ce as applyTemplate,
+  ue as arrFill,
+  W as copyObject,
+  it as createElement,
+  ke as domQuerySelector,
+  Ce as domQuerySelectorAll,
+  Ot as encodeAttribute,
+  Ae as eventStopPropagation,
+  N as executeFunction,
+  Zt as executePromise,
+  g as forEach,
+  he as frame,
+  Ne as getAttributes,
+  Ee as getClipboardData,
+  Xt as getColumn,
+  C as getElement,
+  Ie as getElementId,
+  Mt as getElementItem,
+  ct as getElementOrWindow,
+  le as getExp,
+  de as getItemByPath,
+  Be as getKey,
+  Bt as getLengthOfAllArray,
+  Fe as getMaxLengthAllArray,
+  xe as getMinLengthAllArray,
+  Re as getMouseClient,
+  ge as getMouseClientX,
+  fe as getMouseClientY,
+  Pe as getObjectByKeys,
+  We as getObjectNoUndefined,
+  Ue as getObjectOrNone,
+  je as getRandomText,
+  Lt as getRequestString,
+  ze as getStepPercent,
+  He as getStepValue,
+  Ze as goScroll,
+  Ke as inArray,
+  Ve as initScrollbarOffset,
+  Ye as intersectKey,
+  It as isArray,
+  qe as isDifferent,
+  l as isDomRuntime,
+  D as isFilled,
+  Je as isFloat,
+  kt as isFunction,
+  Ut as isInDom,
+  Qe as isIntegerBetween,
+  Y as isNull,
+  ot as isNumber,
+  m as isObject,
+  k as isObjectNotArray,
+  et as isSelected,
+  Xe as isSelectedByList,
+  j as isString,
+  Ct as isWindow,
+  V as random,
+  H as replaceRecursive,
+  Me as replaceTemplate,
+  _e as secondToTime,
+  _t as setElementItem,
+  Oe as setValues,
+  Te as splice,
+  me as strFill,
+  z as toArray,
+  $e as toCamelCase,
+  Ge as toCamelCaseFirst,
+  I as toDate,
+  ti as toKebabCase,
+  L as toNumber,
+  ei as toNumberByMax,
+  pe as toPercent,
+  ii as toPercentBy100,
+  At as transformation,
+  ye as uniqueArray,
+  si as writeClipboardData
 };

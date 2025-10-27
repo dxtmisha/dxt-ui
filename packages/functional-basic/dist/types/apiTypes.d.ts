@@ -69,7 +69,7 @@ export type ApiFetch = {
 /**
  * Mock API response descriptor/ Описание мок-ответа API
  */
-export type ApiResponse = {
+export type ApiResponseItem = {
     /** Path string or RegExp to match request URL/ Путь или RegExp для сопоставления URL */
     path: string | RegExp;
     /** Expected HTTP method/ Ожидаемый HTTP метод */
@@ -79,11 +79,11 @@ export type ApiResponse = {
     /** Static response or factory function/ Статический ответ или функция, возвращающая ответ */
     response: any | ((request?: ApiFetch['request']) => any);
     /** Disable this mock/ Отключить этот мок */
-    disable?: boolean;
+    disable?: any;
     /** Mark as global mock/ Мок для глобального использования */
     isForGlobal?: boolean;
     /** Simulate network lag/ Имитировать задержку */
-    lag?: boolean;
+    lag?: any;
 };
 /**
  * Shape of API response data wrapper/ Структура обёртки данных ответа API
@@ -102,4 +102,15 @@ export type ApiPreparationEnd = {
     reset?: boolean;
     /** Arbitrary data returned by hook/ Произвольные данные, возвращаемые хуком */
     data?: any;
+};
+/**
+ * Default API request data type/ Тип данных запроса API по умолчанию
+ */
+export type ApiDefaultValue = Record<string, any>;
+export type ApiStatusItem = {
+    status?: number;
+    statusText?: string;
+    error?: string;
+    lastResponse?: any;
+    lastMessage?: string;
 };

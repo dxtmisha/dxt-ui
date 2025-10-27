@@ -1,7 +1,6 @@
 import { ComputedRef, Ref } from 'vue';
-import { GeoFlag } from '../GeoFlag';
+import { GeoFlag, GeoFlagItem, GeoFlagNational } from '@dxtmisha/functional-basic';
 import { RefOrNormal } from '../../types/refTypes';
-import { GeoFlagItem, GeoFlagNational } from '../../types/geoTypes';
 /**
  * Class for working with Flags.
  *

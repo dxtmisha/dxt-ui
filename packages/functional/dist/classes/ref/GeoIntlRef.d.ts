@@ -1,7 +1,6 @@
 import { ComputedRef } from 'vue';
-import { ItemValue, NumberOrString, NumberOrStringOrDate } from '../../types/basicTypes';
+import { GeoDate, ItemValue, NumberOrString, NumberOrStringOrDate } from '@dxtmisha/functional-basic';
 import { RefOrNormal } from '../../types/refTypes';
-import { GeoDate } from '../../types/geoTypes';
 /**
  * Reactive class for managing the formatting of numbers and dates.
  *

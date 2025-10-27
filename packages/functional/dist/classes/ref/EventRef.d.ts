@@ -1,6 +1,5 @@
-import { EventItem } from '../EventItem';
-import { ElementOrString, ElementOrWindow, EventListenerDetail, EventOptions } from '../../types/basicTypes';
 import { RefOrNormal } from '../../types/refTypes';
+import { ElementOrString, ElementOrWindow, EventItem, EventListenerDetail, EventOptions } from '@dxtmisha/functional-basic';
 /**
  * Class for working with events (Ref).
  *

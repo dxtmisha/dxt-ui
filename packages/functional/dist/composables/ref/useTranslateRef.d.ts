@@ -1,5 +1,5 @@
 import { ShallowRef } from 'vue';
-import { TranslateList } from '../../classes/Translate';
+import { TranslateList } from '@dxtmisha/functional-basic';
 /**
  * Getting the translated text by an array of keys or a string with a key.
  *

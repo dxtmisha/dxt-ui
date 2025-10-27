@@ -374,12 +374,7 @@ describe('ApiStatus', () => {
     })
 
     it('should work with typed generic', () => {
-      interface ApiStatusData {
-        code: number
-        description: string
-      }
-
-      const typedStatus = new ApiStatus<ApiStatusData>()
+      const typedStatus = new ApiStatus()
       typedStatus.set({
         status: 200,
         statusText: 'OK'

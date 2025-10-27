@@ -2,12 +2,9 @@ import {
   type Ref,
   watch
 } from 'vue'
-import { useBroadcastValueRef } from './useBroadcastValueRef'
+import { Cookie, type CookieOptions } from '@dxtmisha/functional-basic'
 
-import {
-  Cookie,
-  type CookieOptions
-} from '../../classes/Cookie'
+import { useBroadcastValueRef } from './useBroadcastValueRef'
 
 /**
  * Creates a reactive variable to manage cookies.

@@ -1,12 +1,14 @@
 import { computed, isRef, watch } from 'vue'
+import {
+  forEach,
+  getColumn,
+  getExp,
+  isObject,
+  isObjectNotArray,
+  isSelected
+} from '@dxtmisha/functional-basic'
 
-import { forEach } from '../../functions/forEach'
 import { getRef } from '../../functions/ref/getRef'
-import { isObjectNotArray } from '../../functions/isObjectNotArray'
-import { isObject } from '../../functions/isObject'
-import { isSelected } from '../../functions/isSelected'
-import { getExp } from '../../functions/getExp'
-import { getColumn } from '../../functions/getColumn'
 
 import type { RefOrNormal, RefType } from '../../types/refTypes'
 import type {

@@ -1,4 +1,4 @@
-import { ItemList } from '../types/basicTypes';
+import { ItemList } from '@dxtmisha/functional-basic';
 import { ConstrBind } from '../types/constructorTypes';
 /**
  * Merges two objects with properties, taking into account their classes and styles

@@ -3,8 +3,7 @@ import {
   shallowRef,
   watch
 } from 'vue'
-
-import { Hash } from '../../classes/Hash'
+import { Hash } from '@dxtmisha/functional-basic'
 
 /**
  * Creates a reactive variable to manage the hash.

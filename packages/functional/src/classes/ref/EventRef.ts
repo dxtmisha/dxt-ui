@@ -1,15 +1,14 @@
 import { watch } from 'vue'
 import { toRefItem } from '../../functions/ref/toRefItem'
 
-import { EventItem } from '../EventItem'
-
-import type {
-  ElementOrString,
-  ElementOrWindow,
-  EventListenerDetail,
-  EventOptions
-} from '../../types/basicTypes'
 import type { RefOrNormal } from '../../types/refTypes'
+import {
+  type ElementOrString,
+  type ElementOrWindow,
+  EventItem,
+  type EventListenerDetail,
+  type EventOptions
+} from '@dxtmisha/functional-basic'
 
 /**
  * Class for working with events (Ref).

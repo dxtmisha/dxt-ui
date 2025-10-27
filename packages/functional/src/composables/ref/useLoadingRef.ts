@@ -1,5 +1,5 @@
 import { shallowRef } from 'vue'
-import { Loading } from '../../classes/Loading'
+import { Loading } from '@dxtmisha/functional-basic'
 
 /**
  * Returns the loading status.

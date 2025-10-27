@@ -1,6 +1,5 @@
 import { ref, type Ref, watch } from 'vue'
-import { isDomRuntime } from '../../functions/isDomRuntime'
-import { DataStorage } from '../../classes/DataStorage'
+import { DataStorage, isDomRuntime } from '@dxtmisha/functional-basic'
 
 /**
  * Creates a reactive variable to manage a local storage.

@@ -4,16 +4,10 @@ import {
   type Ref,
   watch
 } from 'vue'
+import { Geo, GeoFlag, type GeoFlagItem, type GeoFlagNational } from '@dxtmisha/functional-basic'
 import { toRefItem } from '../../functions/ref/toRefItem'
 
-import { Geo } from '../Geo'
-import { GeoFlag } from '../GeoFlag'
-
 import type { RefOrNormal } from '../../types/refTypes'
-import type {
-  GeoFlagItem,
-  GeoFlagNational
-} from '../../types/geoTypes'
 
 /**
  * Class for working with Flags.

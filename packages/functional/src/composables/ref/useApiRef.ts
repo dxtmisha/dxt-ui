@@ -7,15 +7,10 @@ import {
   ref,
   watch
 } from 'vue'
+import { Api, type ApiFetch, ApiMethodItem } from '@dxtmisha/functional-basic'
 
 import { getRef } from '../../functions/ref/getRef'
 import { toRefItem } from '../../functions/ref/toRefItem'
-
-import {
-  Api,
-  type ApiFetch,
-  ApiMethodItem
-} from '../../classes/Api'
 
 import type { RefOrNormal, RefType } from '../../types/refTypes'
 

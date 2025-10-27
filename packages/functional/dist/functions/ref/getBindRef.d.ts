@@ -1,5 +1,5 @@
 import { ComputedRef } from 'vue';
-import { ItemList } from '../../types/basicTypes';
+import { ItemList } from '@dxtmisha/functional-basic';
 import { RefOrNormal } from '../../types/refTypes';
 /**
  * A method for generating properties for a subcomponent.

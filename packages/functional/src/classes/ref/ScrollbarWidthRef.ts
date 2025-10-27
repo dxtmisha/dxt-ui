@@ -1,6 +1,5 @@
 import { computed, ref } from 'vue'
-
-import { ScrollbarWidth } from '../ScrollbarWidth'
+import { ScrollbarWidth } from '@dxtmisha/functional-basic'
 
 /**
  * Class for getting the scroll width as a reactive item.

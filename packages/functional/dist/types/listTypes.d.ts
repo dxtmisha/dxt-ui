@@ -1,5 +1,5 @@
+import { NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional-basic';
 import { ConstrBind } from './constructorTypes';
-import { NumberOrString, NumberOrStringOrBoolean } from './basicTypes';
 /** Type of list item/ Тип элемента списка */
 export type ListType = 'item' | 'space' | 'line' | 'subtitle' | 'html' | 'menu' | 'menu-group' | 'group';
 /** Basic data structure for list item/ Базовая структура данных для элемента списка */

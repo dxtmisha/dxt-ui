@@ -1,21 +1,48 @@
 {
   "name": "@dxtmisha/functional-basic",
-  "private": true,
+  "private": false,
   "version": "0.1.0",
   "type": "module",
-  "description": "[description]",
+  "description": "Core functional utility library for modern web development without framework dependencies",
+  "keywords": [
+    "functional",
+    "utilities",
+    "helpers",
+    "typescript",
+    "vue",
+    "composables",
+    "classes",
+    "geo",
+    "datetime",
+    "cache",
+    "api",
+    "ui",
+    "dxt"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/functional",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/functional"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "component": "dxt-component",
-    "library": "dxt-library"
+    "library": "dxt-library",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist",
     "README.md",
-    "package.json"
+    "package.json",
+    "LICENSE"
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
@@ -32,6 +59,10 @@
     "./types/*": "./dist/*",
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {},
   "dependencies": {},
   "devDependencies": {}
 }

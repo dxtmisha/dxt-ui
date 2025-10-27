@@ -8,12 +8,13 @@ import {
   useSlots,
   type VNode
 } from 'vue'
-
-import { forEach } from '../../functions/forEach'
-import { isObject } from '../../functions/isObject'
-import { isObjectNotArray } from '../../functions/isObjectNotArray'
-import { toArray } from '../../functions/toArray'
-import { toCamelCase } from '../../functions/toCamelCase'
+import {
+  forEach,
+  isObject,
+  isObjectNotArray,
+  toArray,
+  toCamelCase
+} from '@dxtmisha/functional-basic'
 
 import { DesignComponents } from './DesignComponents'
 

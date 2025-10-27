@@ -5,7 +5,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { useMeta } from '../useMeta'
-import { MetaRobots } from '../../../types/metaTypes'
+import { MetaRobots } from '@dxtmisha/functional-basic'
 
 describe('useMeta', () => {
   beforeEach(() => {

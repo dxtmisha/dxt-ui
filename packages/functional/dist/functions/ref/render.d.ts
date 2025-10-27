@@ -1,5 +1,5 @@
 import { VNode } from 'vue';
-import { ItemList } from '../../types/basicTypes';
+import { ItemList } from '@dxtmisha/functional-basic';
 import { RawChildren, RawSlots } from '../../types/refTypes';
 /**
  * Getting cached, immutable data.

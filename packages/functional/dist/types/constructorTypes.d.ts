@@ -1,5 +1,5 @@
 import { Ref, PropType } from 'vue';
-import { Undefined } from './basicTypes';
+import { Undefined } from '@dxtmisha/functional-basic';
 import { RefOrNormal, RefType } from './refTypes';
 /** Generic record type for constructor items/ Дженерик тип записи для элементов конструктора */
 export type ConstrItem = Record<string, any>;

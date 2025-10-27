@@ -1,7 +1,5 @@
 import { ref, type Ref, watch } from 'vue'
-import { executeFunction } from '../../functions/executeFunction'
-
-import { BroadcastMessage } from '../../classes/BroadcastMessage'
+import { BroadcastMessage, executeFunction } from '@dxtmisha/functional-basic'
 
 type BroadcastValueItem<T> = T | string | undefined
 

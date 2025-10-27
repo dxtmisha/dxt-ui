@@ -1,4 +1,4 @@
-import { ItemList } from '../../types/basicTypes';
+import { ItemList } from '@dxtmisha/functional-basic';
 /**
  * Returns or generates a new element.
  *

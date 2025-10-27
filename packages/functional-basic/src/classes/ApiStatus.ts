@@ -6,8 +6,8 @@ import type { ApiStatusItem } from '../types/apiTypes'
  *
  * Класс статуса API
  */
-export class ApiStatus<V = ApiStatusItem> {
-  protected value?: V
+export class ApiStatus {
+  protected value?: ApiStatusItem
 
   /**
    * Last response data
@@ -165,7 +165,7 @@ export class ApiStatus<V = ApiStatusItem> {
     value?: ApiStatusItem[K]
   ) {
     if (!this.value) {
-      this.value = {} as V
+      this.value = {} as ApiStatusItem
     }
 
     (this.value as ApiStatusItem)[name] = value

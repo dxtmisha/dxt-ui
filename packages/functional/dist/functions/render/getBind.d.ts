@@ -1,4 +1,4 @@
-import { ItemList } from '../../types/basicTypes';
+import { ItemList } from '@dxtmisha/functional-basic';
 import { ConstrBind } from '../../types/constructorTypes';
 /**
  * A method for generating properties for a subcomponent.

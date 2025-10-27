@@ -7,9 +7,9 @@ import { type ApiDefaultValue, type ApiFetch } from '../types/apiTypes'
  *
  * Класс для работы с данными запроса API по умолчанию.
  */
-export class ApiDefault<V = ApiDefaultValue> {
+export class ApiDefault {
   /** Default request data/ Данные запроса по умолчанию */
-  protected value?: V
+  protected value?: ApiDefaultValue
 
   /**
    * Checks if default request data exists.
@@ -59,7 +59,7 @@ export class ApiDefault<V = ApiDefaultValue> {
    *
    * Изменяет данные запроса по умолчанию.
    */
-  set(request: V) {
+  set(request: ApiDefaultValue) {
     this.value = request
   }
 

@@ -4,10 +4,7 @@ import {
   type Ref,
   shallowRef
 } from 'vue'
-
-import { Geo } from '../Geo'
-
-import type { GeoItemFull } from '../../types/geoTypes'
+import { Geo, type GeoItemFull } from '@dxtmisha/functional-basic'
 
 /**
  * Reactive class for working with geographic data.

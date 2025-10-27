@@ -1,9 +1,7 @@
 import { ref, watch } from 'vue'
+import { Meta, MetaRobots } from '@dxtmisha/functional-basic'
+
 import { executeUse } from '../../functions/executeUse'
-
-import { Meta } from '../../classes/Meta'
-
-import type { MetaRobots } from '../../types/metaTypes'
 
 /**
  * Singleton instance for meta tags management.

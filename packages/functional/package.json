@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional",
   "private": false,
-  "version": "1.4.1",
+  "version": "1.4.2",
   "type": "module",
   "description": "Comprehensive functional utilities library for DXT UI - classes, composables, functions and types for modern web development",
   "keywords": [
@@ -21,11 +21,11 @@
   ],
   "author": "dxtmisha@gmail.com",
   "license": "MIT",
-  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/functional",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/functional-basic",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dxtmisha/dxt-ui.git",
-    "directory": "packages/functional"
+    "directory": "packages/functional-basic"
   },
   "bugs": {
     "url": "https://github.com/dxtmisha/dxt-ui/issues"
@@ -52,10 +52,6 @@
       "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
     },
-    "./lite": {
-      "import": "./dist/library-lite.js",
-      "types": "./dist/library-lite.d.ts"
-    },
     "./flags": {
       "import": "./dist/flags.js",
       "types": "./dist/flags.d.ts"
@@ -67,6 +63,7 @@
   },
   "peerDependencies": {
     "@dxtmisha/media": "*",
+    "@dxtmisha/functional-basic": "*",
     "vue": "*"
   },
   "peerDependenciesMeta": {

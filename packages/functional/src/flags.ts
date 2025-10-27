@@ -1,6 +1,5 @@
 import flags from '@dxtmisha/media/flags'
-
-import { Icons } from './classes/Icons'
+import { Icons } from '@dxtmisha/functional-basic'
 
 export const uiMakeFlags = (): void => {
   Icons.add('flag-ad', flags.AdSvg)

@@ -9,7 +9,7 @@ import { ApiMethodItem } from '../../types/apiTypes'
 import type { ApiResponseItem } from '../../types/apiTypes'
 
 describe('ApiResponse', () => {
-  let apiResponse: ApiResponse<ApiResponseItem>
+  let apiResponse: ApiResponse
   let apiDefault: ApiDefault
 
   beforeEach(() => {
@@ -311,6 +311,7 @@ describe('ApiResponse', () => {
       const responseItem: ApiResponseItem = {
         path: '/api/test',
         method: ApiMethodItem.get,
+        request: '*any',
         response: (request: any) => ({ echo: request })
       }
 
