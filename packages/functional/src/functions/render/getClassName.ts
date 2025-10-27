@@ -1,4 +1,4 @@
-import type { ItemList } from '../../types/basicTypes'
+import type { ItemList } from '@dxtmisha/functional-basic'
 
 /**
  * Returns the name of the class from the property.

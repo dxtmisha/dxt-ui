@@ -1,5 +1,5 @@
+import type { ItemList } from '@dxtmisha/functional-basic'
 import { getClassName } from './getClassName'
-import { type ItemList } from '../../types/basicTypes'
 
 /**
  * Returns or generates a new element.

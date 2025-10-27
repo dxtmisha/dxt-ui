@@ -1,6 +1,6 @@
 import type { Ref, PropType } from 'vue'
+import type { Undefined } from '@dxtmisha/functional-basic'
 
-import type { Undefined } from './basicTypes'
 import type {
   RefOrNormal,
   RefType

@@ -1,5 +1,5 @@
 import { computed, type ComputedGetter, type ComputedRef, type DebuggerOptions } from 'vue'
-import { executeFunction } from './executeFunction'
+import { executeFunction } from '@dxtmisha/functional-basic'
 import { GeoRef } from '../classes/ref/GeoRef'
 
 /**

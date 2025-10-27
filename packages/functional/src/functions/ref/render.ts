@@ -1,7 +1,7 @@
 import { h, type VNode } from 'vue'
 import { getIndexForRender } from '../render/getIndexForRender'
 
-import { type ItemList } from '../../types/basicTypes'
+import type { ItemList } from '@dxtmisha/functional-basic'
 import { type RawChildren, type RawSlots } from '../../types/refTypes'
 
 /**

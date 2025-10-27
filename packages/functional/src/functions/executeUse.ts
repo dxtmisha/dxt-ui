@@ -1,6 +1,5 @@
 import { inject, provide, onUnmounted } from 'vue'
-import { getElementId } from './getElementId'
-import { random } from './random'
+import { getElementId, random } from '@dxtmisha/functional-basic'
 
 const global: (() => any)[] = []
 const globalCode = random(100000, 999999)

@@ -3,7 +3,7 @@ import { computed, type ComputedRef } from 'vue'
 import { getBind } from '../render/getBind'
 import { getRef } from './getRef'
 
-import type { ItemList } from '../../types/basicTypes'
+import type { ItemList } from '@dxtmisha/functional-basic'
 import type { RefOrNormal } from '../../types/refTypes'
 
 /**

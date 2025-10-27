@@ -1,7 +1,6 @@
-import { isObjectNotArray } from '../isObjectNotArray'
+import { isObjectNotArray, type ItemList } from '@dxtmisha/functional-basic'
 import { toBind } from '../toBind'
 
-import { type ItemList } from '../../types/basicTypes'
 import type { ConstrBind } from '../../types/constructorTypes'
 
 /**

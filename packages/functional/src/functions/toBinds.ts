@@ -1,7 +1,7 @@
+import type { ItemList } from '@dxtmisha/functional-basic'
 import { toBind } from './toBind'
 
 import type { ConstrBind } from '../types/constructorTypes'
-import type { ItemList } from '../types/basicTypes'
 
 /**
  * Merges multiple objects with properties, taking into account their classes and styles

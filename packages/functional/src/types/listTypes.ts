@@ -1,5 +1,5 @@
+import type { NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional-basic'
 import type { ConstrBind } from './constructorTypes'
-import type { NumberOrString, NumberOrStringOrBoolean } from './basicTypes'
 
 /** Type of list item/ Тип элемента списка */
 export type ListType = 'item'

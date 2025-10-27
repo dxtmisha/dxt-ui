@@ -1,4 +1,4 @@
-import type { ItemList } from '../types/basicTypes'
+import type { ItemList } from '@dxtmisha/functional-basic'
 import type { ConstrBind, ConstrClass, ConstrStyles } from '../types/constructorTypes'
 
 /**

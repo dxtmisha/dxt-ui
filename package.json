@@ -19,6 +19,7 @@
     "@dxtmisha/constructor": "workspace:*",
     "@dxtmisha/d1": "workspace:*",
     "@dxtmisha/functional": "workspace:*",
+    "@dxtmisha/functional-basic": "workspace:*",
     "@dxtmisha/media": "workspace:*",
     "@dxtmisha/scripts": "workspace:*",
     "@dxtmisha/storybook": "workspace:*",
