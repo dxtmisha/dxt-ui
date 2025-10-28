@@ -8,9 +8,7 @@ import type { FieldMessagePropsBasic } from '../FieldMessage'
 import type { FieldCounterPropsBasic } from '../FieldCounter'
 import type { ProgressPropsBasic } from '../Progress'
 
-import type { ModelProps } from '../../types/modelTypes'
 import type { FieldInputProps } from '../../types/fieldTypes'
-import type { InputType } from './basicTypes'
 
 interface InputPropsToken {
   // :type [!] System label / Системная метка
@@ -27,11 +25,8 @@ export interface InputPropsBasic<
   Progress extends ProgressPropsBasic = ProgressPropsBasic
 > extends MaskPropsInclude<Mask>,
   FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>,
-  FieldInputProps<NumberOrString>,
-  ModelProps<NumberOrString> {
+  FieldInputProps<NumberOrString> {
   // Style
-  type?: InputType
-
   iconVisibility?: string
   iconVisibilityOff?: string
 }

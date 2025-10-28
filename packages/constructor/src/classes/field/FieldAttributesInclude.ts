@@ -27,31 +27,8 @@ export class FieldAttributesInclude {
 
   /** Returns data for verification/ Возвращает данные для проверки */
   readonly list = computed<Record<string, any>>(() => {
-    const data: Record<string, any> = {}
-
-    this.getAttributes().forEach((index) => {
-      if (index in this.props) {
-        switch (index) {
-          case 'type':
-            if (this.type) {
-              data[index] = this.type.item.value
-            } else {
-              data[index] = this.props.type
-            }
-            break
-          case 'pattern':
-            if (this.pattern) {
-              data.pattern = this.pattern.item.value
-            }
-            break
-          default:
-            data[index] = this.props[index]
-        }
-      }
-    })
-
     return {
-      ...data,
+      ...this.getData(this.getAttributes()),
       ...this.props.inputAttrs
     }
   })
@@ -96,5 +73,35 @@ export class FieldAttributesInclude {
       'accept',
       'pattern'
     ]
+  }
+
+  protected getData(attributes: (keyof typeof this.props)[]): Record<string, any> {
+    const data: Record<string, any> = {}
+
+    attributes.forEach((index) => {
+      if (index in this.props) {
+        switch (index) {
+          case 'type':
+            if (this.type) {
+              data[index] = this.type.item.value
+            } else {
+              data[index] = this.props.type
+            }
+            break
+          case 'pattern':
+            if (this.pattern) {
+              data.pattern = this.pattern.item.value
+            }
+            break
+          default:
+            data[index] = this.props[index]
+        }
+      }
+    })
+
+    return {
+      ...data,
+      ...this.props.inputAttrs
+    }
   }
 }

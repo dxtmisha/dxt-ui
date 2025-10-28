@@ -2,7 +2,7 @@ import { computed } from 'vue'
 
 import { FieldVisibilityInclude } from './FieldVisibilityInclude'
 
-import type { FieldAllProps } from '../../types/fieldTypes'
+import type { FieldAllProps, FieldType } from '../../types/fieldTypes'
 
 /**
  * Class for working with the input type.
@@ -23,7 +23,7 @@ export class FieldTypeInclude {
   }
 
   /** Returns the input type/ Возвращает тип ввода */
-  readonly item = computed<string>(() => {
+  readonly item = computed<FieldType>(() => {
     if (this.props.arrow) {
       return 'number'
     }

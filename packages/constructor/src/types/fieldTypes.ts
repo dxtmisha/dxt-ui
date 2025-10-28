@@ -1,6 +1,25 @@
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { NumberOrString } from '@dxtmisha/functional'
 import type { ModelEmits, ModelProps } from './modelTypes'
-import type { ComputedRef, ShallowRef } from 'vue'
+
+/** Supported field types/ Поддерживаемые типы полей */
+export type FieldType
+  = 'text'
+    | 'search'
+    | 'number'
+    | 'number-format'
+    | 'currency'
+    | 'email'
+    | 'password'
+    | 'datetime'
+    | 'date'
+    | 'year-month'
+    | 'time'
+    | 'hour-minute'
+    | 'tel'
+    | 'url'
+    | 'checkbox'
+    | 'radio'
 
 /** Base input or textarea element/ Базовый элемент input или textarea */
 export type FieldElementDom = HTMLInputElement | HTMLTextAreaElement
@@ -107,24 +126,24 @@ export type FieldBasicEmits<T = string>
   = ModelEmits
     & {
       /**
-   * Emitted on input events (every change while typing)/
-   * Эмит при вводе (каждое изменение): [event, value]
-   */
+       * Emitted on input events (every change while typing)/
+       * Эмит при вводе (каждое изменение): [event, value]
+       */
       input: [event: InputEvent | Event, value: FieldValidationItem<T>]
       /**
-   * Lightweight input emit without DOM event/
-   * Лёгкий эмит ввода без DOM-события: [value]
-   */
+       * Lightweight input emit without DOM event/
+       * Лёгкий эмит ввода без DOM-события: [value]
+       */
       inputLite: [value: FieldValidationItem<T>]
       /**
-   * Emitted when value is committed (blur/confirm)/
-   * Эмит при подтверждении значения (blur/confirm): [event, value]
-   */
+       * Emitted when value is committed (blur/confirm)/
+       * Эмит при подтверждении значения (blur/confirm): [event, value]
+       */
       change: [event: InputEvent | Event, value: FieldValidationItem<T>]
       /**
-   * Lightweight change emit without DOM event/
-   * Лёгкий эмит подтверждения без события: [value]
-   */
+       * Lightweight change emit without DOM event/
+       * Лёгкий эмит подтверждения без события: [value]
+       */
       changeLite: [value: FieldValidationItem<T>]
     }
 
@@ -151,6 +170,8 @@ export interface FieldValueProps<Value = any> extends ModelProps<Value> {
   maxlength?: NumberOrString
   /** Controlled value (without v-model)/ Контролируемое значение (без v-model) */
   value?: Value
+  /** Additional event details/ Дополнительные детали события */
+  detail?: Record<string, any> | undefined
 }
 
 /**
@@ -160,7 +181,23 @@ export interface FieldValueProps<Value = any> extends ModelProps<Value> {
 export interface FieldBasicProps<Value = any>
   extends Omit<FieldValueProps<Value>, 'multiple' | 'maxlength'> {
   /** Input type/ Тип инпута */
-  type?: string
+  type?: 'text'
+    | 'search'
+    | 'number'
+    | 'number-format'
+    | 'currency'
+    | 'email'
+    | 'password'
+    | 'datetime'
+    | 'date'
+    | 'year-month'
+    | 'time'
+    | 'hour-minute'
+    | 'tel'
+    | 'url'
+    | 'checkbox'
+    | 'radio'
+
   /** Input name attribute/ Атрибут name */
   name?: string
   /** Input id attribute/ Атрибут id */

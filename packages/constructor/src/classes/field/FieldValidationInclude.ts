@@ -2,7 +2,6 @@ import { computed, ref } from 'vue'
 
 import { FieldInputCheckInclude } from './FieldInputCheckInclude'
 
-import type { FieldElementInclude } from './FieldElementInclude'
 import type { FieldAttributesInclude } from './FieldAttributesInclude'
 import type { FieldChangeInclude } from './FieldChangeInclude'
 import type { FieldValueInclude } from './FieldValueInclude'
@@ -16,14 +15,13 @@ import type { FieldAllProps, FieldValidationItem } from '../../types/fieldTypes'
  *
  * Класс для работы с валидностью
  */
-export class InputValidation {
+export class FieldValidationInclude {
   /** Internal validation state/ Внутреннее состояние валидации */
   protected readonly validation = ref<FieldValidationItem>()
 
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param element object for working with input element/ объект для работы с элементом ввода
    * @param attributes object for working with input attributes/ объект для работы с атрибутами ввода
    * @param value object for value work/ объект для работы со значениями
    * @param change object for change state/ объект для состояния изменения
@@ -32,7 +30,6 @@ export class InputValidation {
    */
   constructor(
     protected readonly props: FieldAllProps,
-    protected readonly element: FieldElementInclude,
     protected readonly attributes: FieldAttributesInclude,
     protected readonly value: FieldValueInclude,
     protected readonly change?: FieldChangeInclude,

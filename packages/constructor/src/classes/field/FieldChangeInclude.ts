@@ -44,7 +44,7 @@ export class FieldChangeInclude {
    *
    * Принудительно помечает как изменённое
    */
-  toChange() {
+  to() {
     if (!this.item.value) {
       this.set(true)
     }
