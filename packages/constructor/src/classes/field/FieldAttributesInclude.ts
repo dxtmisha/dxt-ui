@@ -1,7 +1,9 @@
 import { computed } from 'vue'
+import { toBinds } from '@dxtmisha/functional'
 
 import { FieldTypeInclude } from './FieldTypeInclude'
 import { FieldPatternInclude } from './FieldPatternInclude'
+import { FieldInputModeInclude } from './FieldInputModeInclude'
 
 import type { FieldAllProps } from '../../types/fieldTypes'
 
@@ -17,20 +19,19 @@ export class FieldAttributesInclude {
    * @param type object for working with input type/ объект для работы с типом ввода
    * @param pattern object for working with checks by regular expressions/
    * объект для работы с проверкой по регулярным выражениям
+   * @param inputMode object for working with the keyboard/ объект для работы с клавиатурой
    */
   constructor(
     protected readonly props: FieldAllProps,
     protected readonly type?: FieldTypeInclude,
-    protected readonly pattern?: FieldPatternInclude
+    protected readonly pattern?: FieldPatternInclude,
+    protected readonly inputMode?: FieldInputModeInclude
   ) {
   }
 
   /** Returns data for verification/ Возвращает данные для проверки */
   readonly list = computed<Record<string, any>>(() => {
-    return {
-      ...this.getData(this.getAttributes()),
-      ...this.props.inputAttrs
-    }
+    return this.getData(this.getAttributes())
   })
 
   /** Returns data for verification/ Возвращает данные для проверки */
@@ -49,6 +50,11 @@ export class FieldAttributesInclude {
     }
 
     return data
+  })
+
+  /** Returns data for the input element/ Возвращает данные для элемента ввода */
+  readonly listForInput = computed<Record<string, any>>(() => {
+    return this.getData(this.getInputAttributes())
   })
 
   /**
@@ -75,6 +81,44 @@ export class FieldAttributesInclude {
     ]
   }
 
+  /**
+   * Returns the list of attributes to be set on the input element.
+   *
+   * Возвращает список атрибутов, которые нужно установить на элемент ввода.
+   */
+  protected getInputAttributes(): (keyof typeof this.props)[] {
+    return [
+      ...this.getAttributes(),
+
+      // Input
+      'list',
+
+      // Value
+      'placeholder',
+
+      // Basic
+      'readonly',
+      'disabled',
+      'autofocus',
+      'tabindex',
+      'form',
+
+      // UX
+      'autocomplete',
+      'autocapitalize',
+      'inputMode',
+      'enterKeyHint',
+      'spellcheck',
+      'autocorrect'
+    ]
+  }
+
+  /**
+   * Returns data for the specified attributes.
+   *
+   * Возвращает данные для указанных атрибутов.
+   * @param attributes list of attributes/ список атрибутов
+   */
   protected getData(attributes: (keyof typeof this.props)[]): Record<string, any> {
     const data: Record<string, any> = {}
 
@@ -93,15 +137,17 @@ export class FieldAttributesInclude {
               data.pattern = this.pattern.item.value
             }
             break
+          case 'inputMode':
+            if (this.inputMode) {
+              data.inputmode = this.inputMode.item.value
+            }
+            break
           default:
             data[index] = this.props[index]
         }
       }
     })
 
-    return {
-      ...data,
-      ...this.props.inputAttrs
-    }
+    return toBinds(data, this.props.inputAttrs)
   }
 }

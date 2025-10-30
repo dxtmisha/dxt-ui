@@ -53,6 +53,7 @@ export type MaskComponentInclude = {
 export type MaskPropsInclude<
   Mask extends MaskPropsBasic = MaskPropsBasic
 > = {
+  name?: string
   mask?: string | ConstrBind<Mask>
   maskVisible?: boolean
   maskNone?: boolean

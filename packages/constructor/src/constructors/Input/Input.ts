@@ -32,6 +32,7 @@ export class Input {
   readonly visibility: FieldVisibilityInclude
   readonly type: FieldTypeInclude
   readonly pattern: FieldPatternInclude
+  readonly inputMode: FieldInputModeInclude
   readonly attributes: FieldAttributesInclude
 
   readonly elementItem: FieldElementInclude
@@ -42,7 +43,6 @@ export class Input {
   readonly password: InputPassword
   readonly match: FieldMatchInclude
 
-  readonly inputMode: FieldInputModeInclude
   readonly code: FieldCodeInclude
   readonly validation: FieldValidationInclude
   readonly event: FieldEventInclude
@@ -74,6 +74,7 @@ export class Input {
     this.visibility = new FieldVisibilityInclude()
     this.type = new FieldTypeInclude(this.props, this.visibility)
     this.pattern = new FieldPatternInclude(this.props, this.type)
+    this.inputMode = new FieldInputModeInclude(this.props, this.type)
     this.attributes = new FieldAttributesInclude(
       this.props,
       this.type,
@@ -98,7 +99,6 @@ export class Input {
       this.value
     )
 
-    this.inputMode = new FieldInputModeInclude(this.props, this.type)
     this.code = new FieldCodeInclude(this.props)
     this.validation = new FieldValidationInclude(
       this.props,

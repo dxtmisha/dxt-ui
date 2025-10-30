@@ -39,4 +39,13 @@ export class FieldTypeInclude {
 
     return type ?? 'text'
   })
+
+  /**
+   * Returns the input type.
+   *
+   * Возвращает тип ввода.
+   */
+  get(): FieldType {
+    return this.item.value
+  }
 }
