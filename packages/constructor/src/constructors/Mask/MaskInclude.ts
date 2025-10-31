@@ -1,28 +1,46 @@
 import { computed } from 'vue'
+import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal, toBind } from '@dxtmisha/functional'
 
-import { FieldTypeInclude } from '../../classes/field/FieldTypeInclude.ts'
-import type { FieldValueInclude } from '../../classes/field/FieldValueInclude.ts'
-import type { FieldAllProps } from '../../types/fieldTypes.ts'
-import type { MaskPropsInclude } from './basicTypes.ts'
-import { getBind } from '@dxtmisha/functional/src/functions/render/getBind.ts'
+import { FieldValueInclude } from '../../classes/field/FieldValueInclude'
+import { FieldTypeInclude } from '../../classes/field/FieldTypeInclude'
+
+import type { FieldValueProps } from '../../types/fieldTypes'
+import type { MaskPropsInclude } from './basicTypes'
+import type { MaskProps } from './props'
+import type { WindowComponentInclude } from '../Window'
+
+type MaskPropsFullInclude = MaskPropsInclude & FieldValueProps
 
 /**
  * Mask management class.
  *
  * Класс управления маской.
  */
-export class MaskInclude {
+export class MaskInclude<
+  Props extends MaskPropsFullInclude = MaskPropsFullInclude,
+  PropsExtra extends ConstrBind<MaskProps> = ConstrBind<MaskProps>
+> {
   /**
    * Constructor
    * @param props input data/ входные данные
+   * @param className class name/ название класса
    * @param value object for working with values/ объект для работы со значениями
+   * @param valueDefault default value/ значение по умолчанию
+   * @param components object for working with components/ объект для работы с компонентами
    * @param type object for working with the input type/ объект для работы с типом ввода
+   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
+   * @param index index identifier/ идентификатор индекса
    */
 
   constructor(
-    protected readonly props: MaskPropsInclude,
+    protected readonly props: Props,
+    protected readonly className: string,
     protected readonly value: FieldValueInclude,
-    protected readonly type?: FieldTypeInclude
+    protected readonly valueDefault?: RefOrNormal<any>,
+    protected readonly components?: DesignComponents<WindowComponentInclude, Props>,
+    protected readonly type?: FieldTypeInclude,
+    protected readonly extra?: RefOrNormal<PropsExtra>,
+    protected readonly index?: string
   ) {
   }
 
@@ -54,37 +72,38 @@ export class MaskInclude {
   })
 
   /**
-   * Returns the basic properties for working with a mask.<br>
+   * Returns the basic properties for working with a mask.
+   *
    * Возвращает базовые свойства для работы с маской.
    */
-  readonly bindsBasic = computed<ConstrBind<MaskProps>>(() => {
+  readonly bindsStatic = computed<PropsExtra>(() => {
+    const props = toBind<PropsExtra>(
+      getRef(this.extra) ?? {},
+      this.props.maskAttrs ?? {}
+    )
+
     return {
-      type: this.type?.get(),
       name: this.props.name,
+      valueDefault: getRef(this.valueDefault),
       currency: this.props.currency,
       currencyHide: this.props.currencyHide,
-      ...getBind(
-        this.props.mask,
-        this.props.maskAttrs,
-        'mask'
-      ),
-
-      valueDefault: '',
+      type: this.type?.get(),
       visible: this.props.maskVisible,
+      // align: this.props.align,
 
-      right: this.props.align === 'right',
-      center: this.props.align === 'center'
+      ...getBind(this.props.mask, props, 'mask') as PropsExtra
     }
   })
 
   /**
-   * Returns all properties for working with the mask.<br>
+   * Returns all properties for working with the mask.
+   *
    * Возвращает все свойства для работы с маской.
    */
   readonly binds = computed<ConstrBind<MaskProps> | undefined>(() => {
     if (this.is.value) {
       return {
-        ...this.bindsBasic.value,
+        ...this.bindsStatic.value,
         value: (this.props.modelValue ?? this.props.value) as string
       }
     }
@@ -93,13 +112,11 @@ export class MaskInclude {
   })
 
   /**
-   * Returns data for the mask.<br>
-   * Возвращает данные для маски.
+   * Checks if the mask is active.
+   *
+   * Проверяет, активна ли маска.
    */
-  setup(): UseMaskSetup {
-    return {
-      isMask: this.is,
-      maskBind: this.binds
-    }
+  isActive() {
+    return this.is.value
   }
 }
