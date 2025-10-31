@@ -119,4 +119,51 @@ export class MaskInclude<
   isActive() {
     return this.is.value
   }
+
+  protected readonly render = ({
+    id,
+    className
+  }: FieldSetup['slotInput']): VNode | undefined => {
+    if (this.components) {
+      return this.components.render(
+        'mask',
+        {
+          ...toBind(
+            attrs ?? {},
+            this.binds.value
+          ),
+          ref: this.element,
+          onWindow: this.onWindow
+        },
+        slotsChildren as unknown as Record<string, any>,
+        this.index
+      )
+    }
+
+    const setup = this.setup()
+
+    if (setup.isMask.value) {
+      const mask = this.components.renderOne(
+        'mask',
+        {
+          ...setup.maskBind.value,
+          ref: this.element,
+          id,
+          class: [
+            className,
+            this.props.classInput
+          ],
+          inputAttrs: setup.inputBind.value,
+          onBlur: setup.onBlur,
+          onInput: setup.onInputRe
+        }
+      )
+
+      if (mask) {
+        return mask
+      }
+    }
+
+    return undefined
+  }
 }
