@@ -1,13 +1,12 @@
-import { computed } from 'vue'
+import { computed, type VNode, watch } from 'vue'
 import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal, toBind } from '@dxtmisha/functional'
 
 import { FieldValueInclude } from '../../classes/field/FieldValueInclude'
 import { FieldTypeInclude } from '../../classes/field/FieldTypeInclude'
 
 import type { FieldValueProps } from '../../types/fieldTypes'
-import type { MaskPropsInclude } from './basicTypes'
+import type { MaskComponentInclude, MaskPropsInclude } from './basicTypes'
 import type { MaskProps } from './props'
-import type { WindowComponentInclude } from '../Window'
 
 type MaskPropsFullInclude = MaskPropsInclude & FieldValueProps
 
@@ -31,17 +30,23 @@ export class MaskInclude<
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
-
   constructor(
     protected readonly props: Props,
     protected readonly className: string,
     protected readonly value: FieldValueInclude,
     protected readonly valueDefault?: RefOrNormal<any>,
-    protected readonly components?: DesignComponents<WindowComponentInclude, Props>,
+    protected readonly components?: DesignComponents<MaskComponentInclude, Props>,
     protected readonly type?: FieldTypeInclude,
     protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly index?: string
   ) {
+    if (this.value) {
+      watch(this.is, (is: boolean) => {
+        if (!is) {
+          this.value.setFull(true)
+        }
+      })
+    }
   }
 
   /**
@@ -100,16 +105,36 @@ export class MaskInclude<
    *
    * Возвращает все свойства для работы с маской.
    */
-  readonly binds = computed<ConstrBind<MaskProps> | undefined>(() => {
-    if (this.is.value) {
-      return {
-        ...this.bindsStatic.value,
-        value: (this.props.modelValue ?? this.props.value) as string
-      }
+  readonly binds = computed<ConstrBind<MaskProps>>(() => {
+    return {
+      ...this.bindsStatic.value,
+      value: (this.props.modelValue ?? this.props.value) as string
+    }
+  })
+
+  /**
+   * Returns the rendered mask component.
+   *
+   * Возвращает отрендеренный компонент маски.
+   * @param attrs additional attributes/ дополнительные атрибуты
+   */
+  readonly render = (attrs?: Record<string, any>): VNode[] => {
+    if (this.components) {
+      return this.components.render(
+        'mask',
+        {
+          ...toBind(
+            attrs ?? {},
+            this.binds.value
+          )
+        },
+        undefined,
+        this.index
+      )
     }
 
-    return undefined
-  })
+    return []
+  }
 
   /**
    * Checks if the mask is active.
@@ -118,52 +143,5 @@ export class MaskInclude<
    */
   isActive() {
     return this.is.value
-  }
-
-  protected readonly render = ({
-    id,
-    className
-  }: FieldSetup['slotInput']): VNode | undefined => {
-    if (this.components) {
-      return this.components.render(
-        'mask',
-        {
-          ...toBind(
-            attrs ?? {},
-            this.binds.value
-          ),
-          ref: this.element,
-          onWindow: this.onWindow
-        },
-        slotsChildren as unknown as Record<string, any>,
-        this.index
-      )
-    }
-
-    const setup = this.setup()
-
-    if (setup.isMask.value) {
-      const mask = this.components.renderOne(
-        'mask',
-        {
-          ...setup.maskBind.value,
-          ref: this.element,
-          id,
-          class: [
-            className,
-            this.props.classInput
-          ],
-          inputAttrs: setup.inputBind.value,
-          onBlur: setup.onBlur,
-          onInput: setup.onInputRe
-        }
-      )
-
-      if (mask) {
-        return mask
-      }
-    }
-
-    return undefined
   }
 }

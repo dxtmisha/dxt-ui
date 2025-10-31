@@ -1,14 +1,15 @@
-import { computed } from 'vue'
+import { computed, type VNode } from 'vue'
 import { eventStopPropagation } from '@dxtmisha/functional-basic'
-import { type ConstrBind, type RefOrNormal, toBinds, getRef } from '@dxtmisha/functional'
+import { type ConstrBind, type DesignComponents, type RefOrNormal, toBind, toBinds, getRef } from '@dxtmisha/functional'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
 import type { FieldValueInclude } from '../../classes/field/FieldValueInclude'
 import type { FieldEventInclude } from '../../classes/field/FieldEventInclude'
 import type { FieldArrowInclude } from '../../classes/field/FieldArrowInclude'
 
-import type { FieldPropsInclude } from './basicTypes'
+import type { FieldComponentInclude, FieldPropsInclude } from './basicTypes'
 import type { FieldPropsBasic } from './props'
+import type { FieldSlots } from './types'
 
 /**
  * The class returns data for working with the Field framework.
@@ -19,14 +20,28 @@ export class FieldInclude<
   Props extends FieldPropsInclude = FieldPropsInclude,
   PropsExtra extends ConstrBind<FieldPropsBasic> = ConstrBind<FieldPropsBasic>
 > {
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   * @param value object for working with values/ объект для работы со значениями
+   * @param components object for working with components/ объект для работы с компонентами
+   * @param event object for working with events/ объект для работы с событиями
+   * @param arrow object for working with arrows/ объект для работы со стрелками
+   * @param onIcon Collection icon click handler/ Обработчик клика по иконке коллекции
+   * @param onTrailing Trailing icon click handler/ Обработчик клика по иконке трейлинга
+   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
+   * @param index index identifier/ идентификатор индекса
+   */
   constructor(
     protected readonly props: Readonly<Props>,
     protected readonly value: FieldValueInclude,
-    protected readonly event: FieldEventInclude,
+    protected readonly components?: DesignComponents<FieldComponentInclude, Props>,
+    protected readonly event?: FieldEventInclude,
     protected readonly arrow?: FieldArrowInclude,
     protected readonly onIcon?: () => void,
     protected readonly onTrailing?: () => void,
-    protected readonly extra?: RefOrNormal<PropsExtra>
+    protected readonly extra?: RefOrNormal<PropsExtra>,
+    protected readonly index?: string
   ) {
   }
 
@@ -98,6 +113,34 @@ export class FieldInclude<
   }))
 
   /**
+   * Renders the Field framework.
+   *
+   * Отрисовывает каркас поля.
+   * @param slotsChildren
+   * @param attrs
+   */
+  readonly render = (
+    slotsChildren?: FieldSlots,
+    attrs?: Record<string, any>
+  ): VNode[] => {
+    if (this.components) {
+      return this.components.render(
+        'field',
+        {
+          ...toBind(
+            attrs ?? {},
+            this.valueBinds.value
+          )
+        },
+        slotsChildren as any as Record<string, any>,
+        this.index
+      )
+    }
+
+    return []
+  }
+
+  /**
    * Method for listening to events.
    *
    * Метод для прослушивания событий.
@@ -121,17 +164,17 @@ export class FieldInclude<
           eventStopPropagation(event)
           break
         case 'cancel':
-          this.event.onClear(event)
+          this.event?.onClear(event)
           eventStopPropagation(event)
           break
         case 'next':
           this.arrow?.next()
-          this.event.on(event)
+          this.event?.on(event)
           eventStopPropagation(event)
           break
         case 'previous':
           this.arrow?.previous()
-          this.event.on(event)
+          this.event?.on(event)
           eventStopPropagation(event)
           break
       }

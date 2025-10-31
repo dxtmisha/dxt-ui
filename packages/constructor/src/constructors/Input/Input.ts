@@ -20,6 +20,7 @@ import { FieldValidationInclude } from '../../classes/field/FieldValidationInclu
 import { FieldEventInclude } from '../../classes/field/FieldEventInclude'
 
 import { FieldInclude } from '../Field/FieldInclude'
+import { MaskInclude } from '../Mask/MaskInclude.ts'
 
 import type { FieldElementInput } from '../../types/fieldTypes'
 import type { InputComponents, InputEmits, InputSlots } from './types'
@@ -48,6 +49,7 @@ export class Input {
   readonly event: FieldEventInclude
 
   readonly field: FieldInclude
+  readonly mask: MaskInclude
 
   /**
    * Constructor
@@ -119,10 +121,19 @@ export class Input {
     this.field = new FieldInclude(
       this.props,
       this.value,
+      this.components,
       this.event,
       this.arrow,
       undefined,
       () => this.password.toggle()
+    )
+    this.mask = new MaskInclude(
+      this.props,
+      this.className,
+      this.value,
+      '',
+      this.components,
+      this.type
     )
   }
 }

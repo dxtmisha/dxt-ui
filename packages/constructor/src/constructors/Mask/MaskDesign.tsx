@@ -2,7 +2,8 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { Mask } from './Mask'
@@ -27,14 +28,14 @@ export class MaskDesign<
   CLASSES extends MaskClasses,
   P extends MaskPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLInputElement,
-  COMP,
-  MaskEmits,
-  EXPOSE,
-  MaskSlots,
-  CLASSES,
-  P
-> {
+    HTMLInputElement,
+    COMP,
+    MaskEmits,
+    EXPOSE,
+    MaskSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Mask
 
   /**
@@ -155,25 +156,26 @@ export class MaskDesign<
     return [
       h(
         'input',
-        {
-          ...this.props.inputAttrs,
+        toBinds(
+          this.props.inputAttrs,
+          {
+            ref: this.element,
+            class: this.classes?.value.input,
 
-          ref: this.element,
-          class: this.classes?.value.input,
+            type: 'text',
+            value: this.item.basic.value,
 
-          type: 'text',
-          value: this.item.basic.value,
-
-          onFocus: this.item.event.onFocus,
-          onBlur: this.item.event.onBlur,
-          onKeydown: this.item.event.onKeydown,
-          onKeyup: this.item.event.onKeyup,
-          onBeforeinput: this.item.event.onBeforeinput,
-          onInput: this.item.event.onInput,
-          onChange: this.item.event.onChange,
-          onPaste: this.item.event.onPaste,
-          onClick: this.item.event.onClick
-        }
+            onFocus: this.item.event.onFocus,
+            onBlur: this.item.event.onBlur,
+            onKeydown: this.item.event.onKeydown,
+            onKeyup: this.item.event.onKeyup,
+            onBeforeinput: this.item.event.onBeforeinput,
+            onInput: this.item.event.onInput,
+            onChange: this.item.event.onChange,
+            onPaste: this.item.event.onPaste,
+            onClick: this.item.event.onClick
+          }
+        )
       )
     ]
   }

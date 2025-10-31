@@ -2,11 +2,13 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { Input } from './Input'
 
+import type { FieldControl } from '../Field'
 import {
   type InputPropsBasic
 } from './props'
@@ -65,9 +67,6 @@ export class InputDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -78,8 +77,9 @@ export class InputDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      value: this.item.value.item,
+      checkValidity: this.item.validation.checkValidity,
+      validationMessage: this.item.validation.message
     } as EXPOSE
   }
 
@@ -104,10 +104,7 @@ export class InputDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -115,13 +112,63 @@ export class InputDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
-    // const children: any[] = []
+  protected initRender(): VNode[] {
+    return this.item.field.render(
+      {
+        default: this.renderInput
+      },
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main,
+        validationMessage: this.item.validation.message.value
+      }
+    )
+  }
 
-    return h('div', {
-      // ...this.getAttrs(),
+  /**
+   * Rendering the input element.
+   *
+   * Рендер элемент input.
+   * @param input data for the input element/ данные для элемента ввода
+   */
+  protected readonly renderInput = (input: FieldControl): VNode[] => {
+    if (this.item.mask.isActive()) {
+      return this.renderMask(input)
+    }
+
+    return [h(
+      'input',
+      toBinds(
+        this.item.attributes.listForInput.value,
+        {
+          ref: this.element,
+          id: input.id,
+          class: input.className,
+          value: this.item.value.item.value,
+          onBlur: this.item.event.onBlur,
+          onInput: this.item.event.onInput,
+          onChange: this.item.event.onChange
+        }
+      )
+    )]
+  }
+
+  /**
+   * Rendering mask element.
+   *
+   * Рендеринг элемента маски.
+   * @param input data for the input element/ данные для элемента ввода
+   */
+  protected readonly renderMask = (input: FieldControl): VNode[] => {
+    return this.item.mask.render({
       ref: this.element,
-      class: this.classes?.value.main
+      id: input.id,
+      class: input.className,
+      align: this.props.align,
+      inputAttrs: this.props.inputAttrs,
+
+      onBlur: this.item.event.onBlur,
+      onInput: this.item.event.onInput
     })
   }
 }
