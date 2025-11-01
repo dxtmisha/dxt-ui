@@ -15,6 +15,7 @@ import { wikiDescriptionsFieldLabel } from './wikiDescriptionsFieldLabel'
 import { wikiDescriptionsFieldMessage } from './wikiDescriptionsFieldMessage'
 import { wikiDescriptionsIcon } from './wikiDescriptionsIcon'
 import { wikiDescriptionsImage } from './wikiDescriptionsImage'
+import { wikiDescriptionsInput } from './wikiDescriptionsInput'
 import { wikiDescriptionsList } from './wikiDescriptionsList'
 import { wikiDescriptionsListGroup } from './wikiDescriptionsListGroup'
 import { wikiDescriptionsListItem } from './wikiDescriptionsListItem'
@@ -44,6 +45,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsFieldLabel,
   wikiDescriptionsFieldMessage,
   wikiDescriptionsIcon,
+  wikiDescriptionsInput,
   wikiDescriptionsImage,
   wikiDescriptionsList,
   wikiDescriptionsListGroup,

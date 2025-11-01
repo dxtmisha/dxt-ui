@@ -24,10 +24,6 @@ export class FieldTypeInclude {
 
   /** Returns the input type/ Возвращает тип ввода */
   readonly item = computed<FieldType>(() => {
-    if (this.props.arrow) {
-      return 'number'
-    }
-
     const type = this.props.type
 
     if (

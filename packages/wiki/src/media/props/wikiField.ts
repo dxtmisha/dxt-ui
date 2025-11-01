@@ -50,27 +50,6 @@ export const wikiField: StorybookArgsToList = {
       }
     }
   },
-  'field.cancel': {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.style,
-      options: ['auto', 'always'],
-      description: {
-        en: 'Cancel button mode: auto (show only if cancelShow + active, no arrows) or always (force unless disabled/readonly or arrows).',
-        ru: 'Режим кнопки очистки: auto (показывать если cancelShow и активен, без стрелок) или always (всегда, кроме disabled/readonly или стрелок).'
-      }
-    }
-  },
-  'field.cancelShow': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.status,
-      description: {
-        en: 'Used only when cancel=auto: allows showing cancel (обычно при наличии значения). Ignored for always.',
-        ru: 'Работает только при cancel=auto: разрешает показ (обычно при значении). Игнорируется для always.'
-      }
-    }
-  },
   'field.classic': {
     type: StorybookControl.boolean,
     options: {

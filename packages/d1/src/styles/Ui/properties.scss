@@ -54,6 +54,7 @@
   '--d1-field-borderColor': ('--d1-palette-basic800', '--d1-palette-basic800'),
   '--d1-field-focusWithin-color': ('--d1-palette-basic600'),
   '--d1-field-focusWithin-borderColor': ('--d1-palette-basic600'),
+  '--d1-field-focusWithin-outlineColor': ('--d1-palette-basic600'),
   '--d1-field-validation-color': ('--d1-palette-basic600'),
   '--d1-field-validation-borderColor': ('--d1-palette-basic600'),
   '--d1-image-color': ('--d1-palette-basic950'),
@@ -11882,6 +11883,11 @@
         name: 'd1-image',
         type: 'component',
       ),
+      'input':(
+        index: 'input',
+        name: 'd1-input',
+        type: 'component',
+      ),
       'list':(
         index: 'list',
         name: 'd1-list',
@@ -12283,6 +12289,11 @@
       'image':(
         index: 'image',
         name: 'd-image',
+        type: 'component',
+      ),
+      'input':(
+        index: 'input',
+        name: 'd-input',
         type: 'component',
       ),
       'list':(

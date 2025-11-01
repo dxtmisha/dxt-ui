@@ -28,14 +28,14 @@ export class FieldDesign<
   CLASSES extends FieldClasses,
   P extends FieldPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLLabelElement,
-  COMP,
-  FieldEmits,
-  EXPOSE,
-  FieldSlots,
-  CLASSES,
-  P
-> {
+    HTMLLabelElement,
+    COMP,
+    FieldEmits,
+    EXPOSE,
+    FieldSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Field
 
   /**
@@ -311,8 +311,11 @@ export class FieldDesign<
       children.push(
         h(
           'span',
-          { class: this.classes?.value.bodyScoreboardInput },
-          this.focusValue.value
+          {
+            class: this.classes?.value.bodyScoreboardInput,
+            style: `min-width: ${this.lengthValue()};`
+          },
+          this.focusValue()
         ),
         ...this.item.caption.render()
       )
@@ -341,14 +344,29 @@ export class FieldDesign<
    *
    * Значение для фокуса.
    */
-  protected readonly focusValue = computed(() => {
-    if (isString(this.props.value)) {
+  protected readonly focusValue = (): string => {
+    if (
+      !this.lengthElement.value
+      && isString(this.props.value)
+    ) {
       return this.props.value
     }
 
-    const item = this.lengthElement.value ?? this.inputElement.value
-    return item?.nodeName === 'INPUT' ? item.value.toString() : item?.innerText.replace(/[\r\n]+/ig, '').trim()
-  })
+    return ''
+  }
+
+  /**
+   * Length value.
+   *
+   * Значение длины.
+   */
+  protected readonly lengthValue = (): string | undefined => {
+    if (this.lengthElement.value) {
+      return `${this.lengthElement.value.offsetWidth}px`
+    }
+
+    return undefined
+  }
 
   /**
    * Element for counting characters.
@@ -357,7 +375,7 @@ export class FieldDesign<
    */
   protected readonly lengthElement = computed<HTMLInputElement | undefined>(() => {
     return this.element.value
-      ?.querySelector<HTMLInputElement>(`.${this.classes?.value.bodyInput} [data-length]`) ?? undefined
+      ?.querySelector<HTMLInputElement>(`*[data-length]`) ?? undefined
   })
 
   /**

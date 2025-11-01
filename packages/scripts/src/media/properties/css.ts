@@ -284,6 +284,8 @@ export const cssBackgrounds: string[] = [
   'gradient', // mixin
   'gradient-opacity', // mixin
   'palette-gradient', // mixin
+  'outline', // mixin
+  'outline-opacity', // mixin
   'background-repeat',
   'background-attachment',
   'background-position',

@@ -2,8 +2,9 @@ import { computed } from 'vue'
 import { toNumber } from '@dxtmisha/functional'
 
 import { FieldValueInclude } from './FieldValueInclude'
+import { FieldTypeInclude } from './FieldTypeInclude'
 
-import type { FieldAllProps } from '../../types/fieldTypes'
+import type { FieldAllProps, FieldArrowProps } from '../../types/fieldTypes'
 
 /**
  * Class for working with input arrows.
@@ -15,12 +16,23 @@ export class FieldArrowInclude {
    * Constructor
    * @param props input data/ входные данные
    * @param value object for working with values/ объект для работы со значениями
+   * @param type object for working with input type/ объект для работы с типом ввода
    */
   constructor(
     protected readonly props: FieldAllProps,
-    protected readonly value: FieldValueInclude
+    protected readonly value: FieldValueInclude,
+    protected readonly type?: FieldTypeInclude
   ) {
   }
+
+  /**
+   * Indicates if arrows are enabled/ Указывает, включены ли стрелки
+   *
+   * @return true if arrows are enabled/ true, если стрелки включены
+   */
+  readonly is = computed<string>(() => {
+    return this.props.arrow && this.props.arrow !== 'none'
+  })
 
   /** Indicates if the previous button is disabled/ Указывает, отключена ли кнопка предыдущего */
   readonly disabledPrevious = computed<boolean>(() => !this.isPrevious(this.value.number.value))
@@ -36,6 +48,24 @@ export class FieldArrowInclude {
 
   /** Returns the maximum value/ Возвращает максимальное значение */
   protected readonly max = computed<number | undefined>(() => toNumber(this.props.max) || undefined)
+
+  /**
+   * Checks if the arrow type is carousel.
+   *
+   * Проверяет, является ли тип стрелок carousel.
+   */
+  isCarousel(): boolean {
+    return this.get() === 'carousel'
+  }
+
+  /**
+   * Checks if the arrow type is stepper.
+   *
+   * Проверяет, является ли тип стрелок stepper.
+   */
+  isStepper(): boolean {
+    return this.get() === 'stepper'
+  }
 
   /**
    * Checks if it is possible to decrease the value.
@@ -57,6 +87,27 @@ export class FieldArrowInclude {
   isNext(value: number): boolean {
     const max = this.max.value
     return max === undefined || value < max
+  }
+
+  /**
+   * Returns arrow type.
+   *
+   * Возвращает тип стрелок.
+   */
+  get(): FieldArrowProps['arrow'] | undefined {
+    switch (this.props.arrow) {
+      case 'auto':
+        if (
+          this.type?.get() === 'number'
+          || this.type?.get() === 'number-format'
+        ) {
+          return 'stepper'
+        }
+
+        break
+    }
+
+    return this.props.arrow
   }
 
   /**

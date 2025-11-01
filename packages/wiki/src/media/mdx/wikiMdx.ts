@@ -21,6 +21,7 @@ import { wikiMdxFieldLabel } from './FieldLabel/wikiMdxFieldLabel'
 import { wikiMdxFieldMessage } from './FieldMessage/wikiMdxFieldMessage'
 import { wikiMdxIcon } from './Icon/wikiMdxIcon'
 import { wikiMdxImage } from './Image/wikiMdxImage'
+import { wikiMdxInput } from './Input/wikiMdxInput'
 import { wikiMdxList } from './List/wikiMdxList'
 import { wikiMdxListGroup } from './ListGroup/wikiMdxListGroup'
 import { wikiMdxListItem } from './ListItem/wikiMdxListItem'
@@ -57,6 +58,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxFieldMessage,
   wikiMdxIcon,
   wikiMdxImage,
+  wikiMdxInput,
   wikiMdxList,
   wikiMdxListGroup,
   wikiMdxListItem,

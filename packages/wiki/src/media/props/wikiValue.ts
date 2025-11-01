@@ -119,18 +119,6 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  caption: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Caption text for additional information',
-        ru: 'Текст подписи для дополнительной информации'
-      },
-      value: 'Caption'
-    }
-  },
   counter: {
     type: StorybookControl.number,
     options: {
@@ -151,6 +139,16 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Currency code for formatting monetary values',
         ru: 'Код валюты для форматирования денежных значений'
+      }
+    }
+  },
+  currencyHide: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Hide the currency symbol in the formatted value',
+        ru: 'Скрывать символ валюты в форматированном значении'
       }
     }
   },
@@ -209,18 +207,6 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  helperMessage: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Helper text providing guidance or additional information',
-        ru: 'Вспомогательный текст, предоставляющий руководство или дополнительную информацию'
-      },
-      value: 'This is a helpful message'
-    }
-  },
   highlight: {
     type: StorybookControl.string,
     options: {
@@ -265,29 +251,6 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  icon: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: ['string', 'File'],
-      description: {
-        en: 'Value of the main icon',
-        ru: 'Значение основной иконки'
-      },
-      value: 'home'
-    }
-  },
-  iconTrailing: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: ['string', 'File'],
-      description: {
-        en: 'Value of the trailing icon',
-        ru: 'Значение завершающей иконки'
-      }
-    }
-  },
   image: {
     type: StorybookControl.string,
     options: {
@@ -310,52 +273,6 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  label: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Text label for the component',
-        ru: 'Текстовая метка для компонента'
-      },
-      value: 'Label'
-    }
-  },
-  labelMax: {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.value,
-      type: 'number',
-      description: {
-        en: 'Maximum length of the label text before truncation',
-        ru: 'Максимальная длина текста метки перед обрезкой'
-      }
-    }
-  },
-  max: {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.value,
-      type: ['number', 'string'],
-      description: {
-        en: 'Maximum value',
-        ru: 'Максимальное значение'
-      }
-    }
-  },
-  maxlength: {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.value,
-      type: ['number', 'string'],
-      description: {
-        en: 'Maximum allowed characters',
-        ru: 'Максимально допустимое количество символов'
-      },
-      value: 100
-    }
-  },
   name: {
     type: StorybookControl.string,
     options: {
@@ -367,40 +284,6 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  prefix: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Prefix text displayed before the main content',
-        ru: 'Текст префикса, отображаемый перед основным содержимым'
-      },
-      value: 'Prefix'
-    }
-  },
-  required: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.value,
-      description: {
-        en: 'Marks the field as required and shows the required indicator',
-        ru: 'Помечает поле как обязательное и показывает индикатор обязательности'
-      }
-    }
-  },
-  suffix: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Suffix text displayed after the main content',
-        ru: 'Текст суффикса, отображаемый после основного содержимого'
-      },
-      value: 'Suffix'
-    }
-  },
   to: {
     type: StorybookControl.string,
     options: {
@@ -409,17 +292,6 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Navigation target or destination for the component',
         ru: 'Цель навигации или назначение для компонента'
-      }
-    }
-  },
-  validationMessage: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Error or validation message text',
-        ru: 'Текст сообщения об ошибке или валидации'
       }
     }
   },

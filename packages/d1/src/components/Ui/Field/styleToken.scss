@@ -22,6 +22,9 @@
     --d1-field-focusWithin-colorOpacity: var(--d1-sys-opacity-surface-high);
     --d1-field-focusWithin-borderColor: var(--d1-sys-palette-primary);
     --d1-field-focusWithin-borderWidth: var(--d1-ref-spacing-2px);
+    --d1-field-focusWithin-outlineColor: var(--d1-sys-palette-primary);
+    --d1-field-focusWithin-outlineOpacity: var(--d1-sys-opacity-outline);
+    --d1-field-focusWithin-outlineWidth: var(--d1-ref-spacing-1);
     --d1-field-focusWithin-caption-opacity: var(--d1-sys-opacity-surface-disabled);
     --d1-field-validation-color: var(--d1-sys-palette-error);
     --d1-field-validation-borderColor: var(--d1-sys-palette-error);

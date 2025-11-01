@@ -1,0 +1,80 @@
+## Currency Formatting
+
+Properties `type`, `currency`, `currencyHide`, `language`, and `fraction` are designed to manage currency value formatting and currency symbol display.
+
+**Properties:**
+
+- `type` — input type, set to `currency` for currency formatting
+- `currency` — currency code (e.g., `USD`, `EUR`, `RUB`) for symbol display
+- `currencyHide` — hides the currency symbol in the input field
+- `language` — locale code (e.g., `ru-RU`, `en-US`) for regional formatting standards
+- `fraction` — number of decimal places (default `2` for currency)
+
+Properties work together: setting `type="currency"` automatically activates currency formatting mode with two decimal places.
+
+The `currency` property defines the currency symbol that is appended to the formatted number (e.g., `$`, `€`, `₽`).
+
+If the `currencyHide = true` flag is set, the currency symbol is not displayed in the field, but number formatting is preserved.
+
+The `language` property affects regional formatting specifics: thousand separators, decimal separator, and currency symbol position.
+
+The number of decimal places can be changed via `fraction`, overriding the default value.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const price = ref('1234.56')
+const salary = ref('50000')
+const amount = ref('999.999')
+</script>
+
+<template>
+  <!-- Standard currency input with dollar -->
+  <Input
+    v-model="price"
+    label="Price"
+    type="currency"
+    currency="USD"
+    language="en-US"
+  />
+
+  <!-- Currency with ruble and Russian locale -->
+  <Input
+    v-model="salary"
+    label="Salary"
+    type="currency"
+    currency="RUB"
+    language="ru-RU"
+  />
+
+  <!-- Currency without symbol display -->
+  <Input
+    v-model="price"
+    label="Amount"
+    type="currency"
+    currency="EUR"
+    currency-hide
+    language="de-DE"
+  />
+
+  <!-- Currency with three decimal places -->
+  <Input
+    v-model="amount"
+    label="Precise Amount"
+    type="currency"
+    currency="USD"
+    language="en-US"
+    :fraction="3"
+  />
+
+  <!-- Number formatting only without currency -->
+  <Input
+    v-model="price"
+    label="Number"
+    type="number-format"
+    language="ru-RU"
+  />
+</template>
+```
+

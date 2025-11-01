@@ -619,6 +619,57 @@
   }
 }
 
+/* Outline */
+
+/// Sets outline color via system variables
+/// Устанавливает цвет границы (outline) через системные переменные
+/// @param {Color|String} $color color or CSS var
+/// @param {Number|null} $opacity optional opacity [0..1]
+/// @param {Boolean} $important add !important
+@mixin outlineColor($color, $opacity: null, $important: false) {
+  @if ($color == 'init') {
+    @include outlineInit($important);
+  } @else if ($color == 'as-color') {
+    @include outlineAsColor;
+  } @else if (isColorRbgOrVar($color)) {
+    @include colorSys('outline', $color, $important);
+    @include outlineOpacity($opacity, $important, false);
+    @include outlineInit($important);
+  } @else {
+    outline-color: $color;
+  }
+}
+
+/// Sets outline opacity variable; can init property
+/// Устанавливает переменную непрозрачности границы; может инициализировать свойство
+/// @param {Number} $opacity opacity [0..1]
+/// @param {Boolean} $important add !important
+/// @param {Boolean} $init immediately apply computed outline
+@mixin outlineOpacity($opacity, $important: false, $init: false) {
+  @if ($opacity != null) {
+    @if ($important) {
+      --sys-outline-opacity: #{$opacity} !important;
+    } @else {
+      --sys-outline-opacity: #{$opacity};
+    }
+
+    @if ($init) {
+      @include outlineInit($important);
+    }
+  }
+}
+
+/// Applies computed outline color
+/// Применяет вычисленный цвет границы
+/// @param {Boolean} $important add !important
+@mixin outlineInit($important: false) {
+  @if ($important) {
+    outline-color: getColorValueSys('outline') !important;
+  } @else {
+    outline-color: getColorValueSys('outline');
+  }
+}
+
 /* As */
 
 /// Renders text color using palette variables
@@ -642,4 +693,11 @@
 @mixin borderAsColor() {
   @include borderColor(var(--sys-color), var(--sys-color-opacity));
   --sys-border-opacity-custom: var(--sys-color-opacity-custom);
+}
+
+/// Sets outline from --sys-color variables
+/// Устанавливает границу из переменных --sys-color
+@mixin outlineAsColor() {
+  @include outlineColor(var(--sys-color), var(--sys-color-opacity));
+  --sys-outline-opacity-custom: var(--sys-color-opacity-custom);
 }

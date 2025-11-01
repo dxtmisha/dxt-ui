@@ -47,6 +47,8 @@ export interface InputProps extends InputPropsBasic, InputPropsToken {
 export const defaultsInput = {
   type: 'text',
   autocomplete: 'off',
+  arrow: 'auto',
+  maskVisible: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

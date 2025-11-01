@@ -94,7 +94,6 @@ export class MaskInclude<
       currencyHide: this.props.currencyHide,
       type: this.type?.get(),
       visible: this.props.maskVisible,
-      // align: this.props.align,
 
       ...getBind(this.props.mask, props, 'mask') as PropsExtra
     }

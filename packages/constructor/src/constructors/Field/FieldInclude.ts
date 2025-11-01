@@ -86,11 +86,16 @@ export class FieldInclude<
         iconTrailingPalette: this.props.iconTrailingPalette,
         iconAttrs: this.props.iconAttrs,
 
+        arrowCarousel: this.arrow?.isCarousel(),
+        arrowStepper: this.arrow?.isStepper(),
+
         isSkeleton: this.props.isSkeleton,
 
         fieldLabelAttrs: this.props.fieldLabelAttrs,
         fieldMessageAttrs: this.props.fieldMessageAttrs,
-        fieldCounterAttrs: this.props.fieldCounterAttrs
+        fieldCounterAttrs: this.props.fieldCounterAttrs,
+
+        onClick: this.on
       },
       this.props.fieldAttrs
     )

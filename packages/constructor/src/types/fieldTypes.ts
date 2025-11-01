@@ -126,24 +126,24 @@ export type FieldBasicEmits<T = string>
   = ModelEmits
     & {
       /**
-       * Emitted on input events (every change while typing)/
-       * Эмит при вводе (каждое изменение): [event, value]
-       */
+   * Emitted on input events (every change while typing)/
+   * Эмит при вводе (каждое изменение): [event, value]
+   */
       input: [event: InputEvent | Event, value: FieldValidationItem<T>]
       /**
-       * Lightweight input emit without DOM event/
-       * Лёгкий эмит ввода без DOM-события: [value]
-       */
+   * Lightweight input emit without DOM event/
+   * Лёгкий эмит ввода без DOM-события: [value]
+   */
       inputLite: [value: FieldValidationItem<T>]
       /**
-       * Emitted when value is committed (blur/confirm)/
-       * Эмит при подтверждении значения (blur/confirm): [event, value]
-       */
+   * Emitted when value is committed (blur/confirm)/
+   * Эмит при подтверждении значения (blur/confirm): [event, value]
+   */
       change: [event: InputEvent | Event, value: FieldValidationItem<T>]
       /**
-       * Lightweight change emit without DOM event/
-       * Лёгкий эмит подтверждения без события: [value]
-       */
+   * Lightweight change emit without DOM event/
+   * Лёгкий эмит подтверждения без события: [value]
+   */
       changeLite: [value: FieldValidationItem<T>]
     }
 
@@ -244,6 +244,15 @@ export interface FieldStepProps {
   min?: NumberOrString
   /** Maximum value/ Максимальное значение */
   max?: NumberOrString
+}
+
+/**
+ * Input arrow controls (for type="number")/
+ * Управление стрелками ввода (для type="number")
+ */
+export interface FieldArrowProps {
+  /** Arrow type/ Тип стрелок */
+  arrow?: 'auto' | 'carousel' | 'stepper' | 'none'
   /** Step size for input arrows (type="number" only)/ Шаг для стрелок ввода (только для type="number") */
   arrowStep?: NumberOrString
 }
@@ -294,6 +303,7 @@ export interface FieldUxProps {
 export interface FieldInputProps<Value = any>
   extends FieldBasicProps<Value>,
   FieldStepProps,
+  FieldArrowProps,
   FieldLengthProps,
   FieldPatternProps,
   FieldUxProps {
@@ -313,9 +323,6 @@ export interface FieldInputFileProps<Value = any>
   accept?: string
   /** Capture mode for media input (mobile)/ Режим захвата для медиа (мобильные устройства) */
   capture?: string | boolean
-
-  /** Show number input arrows (type="number" only)/ Показать стрелки числового ввода (только для type="number") */
-  arrow?: string
 }
 
 /**

@@ -93,7 +93,7 @@ export class Input {
       this.refs,
       this.elementItem
     )
-    this.arrow = new FieldArrowInclude(this.props, this.value)
+    this.arrow = new FieldArrowInclude(this.props, this.value, this.type)
     this.password = new InputPassword(this.props, this.visibility)
     this.match = new FieldMatchInclude(
       this.props,

@@ -32,16 +32,6 @@ export const wikiMask: StorybookArgsToList = {
       }
     }
   },
-  'mask.currencyHide': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.value,
-      description: {
-        en: 'Hide the currency symbol in the formatted value',
-        ru: 'Скрывать символ валюты в форматированном значении'
-      }
-    }
-  },
   'mask.fullOnly': {
     type: StorybookControl.boolean,
     options: {

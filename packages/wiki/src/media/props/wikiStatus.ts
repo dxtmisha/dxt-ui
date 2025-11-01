@@ -54,6 +54,16 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
+  cancelShow: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Used only when cancel=auto: allows showing cancel (обычно при наличии значения). Ignored for always.',
+        ru: 'Работает только при cancel=auto: разрешает показ (обычно при значении). Игнорируется для always.'
+      }
+    }
+  },
   clickOpen: {
     type: StorybookControl.boolean,
     options: {
@@ -107,16 +117,6 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
-  forceShowMessage: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.status,
-      description: {
-        en: 'Forces display of helper / validation message ignoring usual visibility rules',
-        ru: 'Принудительно показывает сообщение (helper / validation), игнорируя обычные условия видимости'
-      }
-    }
-  },
   hide: {
     type: StorybookControl.boolean,
     options: {
@@ -125,28 +125,6 @@ export const wikiStatus: StorybookArgsToList = {
       description: {
         en: 'Hides the element',
         ru: 'Скрывает элемент'
-      }
-    }
-  },
-  iconHide: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.status,
-
-      description: {
-        en: 'Hides the icon',
-        ru: 'Скрывает иконку'
-      }
-    }
-  },
-  iconTurn: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.status,
-
-      description: {
-        en: 'Turns the icon',
-        ru: 'Поворачивает иконку'
       }
     }
   },

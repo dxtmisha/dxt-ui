@@ -10,6 +10,9 @@
   // Styles from tokens
   // Стили из токенов
   // :style [!] System label / Системная метка
+  & {
+    --d1-input-main: var(--d-input);
+  }
   // :style [!] System label / Системная метка
 
   // Here are the user styles

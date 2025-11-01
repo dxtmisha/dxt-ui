@@ -22,14 +22,20 @@ export enum StorybookCategory {
   adaptive = 'Adaptive',
   /** Status category / Категория статуса */
   status = 'Status',
+  /** Information category / Категория информации */
+  information = 'Information',
+  /** Icon category / Категория иконок */
+  icon = 'Icon',
   /** Values category / Категория значений */
   value = 'Values',
+  /** Form category / Категория формы */
+  form = 'Form',
+  /** Hook category / Категория хуков */
+  hook = 'Hook',
   /** Styles category / Категория стилей */
   style = 'Styles',
   /** Technical category / Техническая категория */
-  technical = 'Technical',
-  /** Hook category / Категория хуков */
-  hook = 'Hook'
+  technical = 'Technical'
 }
 
 /** Type for Storybook controls / Типы для элементов управления Storybook */

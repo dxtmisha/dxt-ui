@@ -42,7 +42,7 @@
   }
 
   &__character {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: ui.v('??sys.align.flex');
     opacity: ui.v('??sys.opacity.all');
@@ -92,9 +92,7 @@
     }
 
     &--center {
-      @include ui.subclass('input') {
-        text-align: center;
-      }
+      @include ui.initByCustom('sys.align', center);
 
       @include ui.subclass('character') {
         justify-content: center;

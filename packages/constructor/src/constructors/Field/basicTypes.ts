@@ -69,6 +69,7 @@ export interface FieldPropsInclude<
     | 'maxlength'
 
     // Style
+    | 'cancelShow'
     | 'counter'
     | 'counterTemplate'
     | 'counterTop'

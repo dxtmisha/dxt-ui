@@ -165,7 +165,7 @@ export class InputDesign<
       id: input.id,
       class: input.className,
       align: this.props.align,
-      inputAttrs: this.props.inputAttrs,
+      inputAttrs: this.item.attributes.listForInput.value,
 
       onBlur: this.item.event.onBlur,
       onInput: this.item.event.onInput

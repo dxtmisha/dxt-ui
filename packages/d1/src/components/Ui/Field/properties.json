@@ -14,6 +14,9 @@
     "color-opacity": "{sys.opacity.surface.high}",
     "border-color": "{sys.palette.primary}",
     "border-width": "{ref.spacing.2px}",
+    "outline-color": "{sys.palette.primary}",
+    "outline-opacity": "{sys.opacity.outline}",
+    "outline-width": "{ref.spacing.1}",
     "caption": {
       "opacity": "{sys.opacity.surface.disabled}"
     }
