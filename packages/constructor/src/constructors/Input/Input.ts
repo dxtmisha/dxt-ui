@@ -20,7 +20,7 @@ import { FieldValidationInclude } from '../../classes/field/FieldValidationInclu
 import { FieldEventInclude } from '../../classes/field/FieldEventInclude'
 
 import { FieldInclude } from '../Field/FieldInclude'
-import { MaskInclude } from '../Mask/MaskInclude.ts'
+import { MaskInclude } from '../Mask/MaskInclude'
 
 import type { FieldElementInput } from '../../types/fieldTypes'
 import type { InputComponents, InputEmits, InputSlots } from './types'

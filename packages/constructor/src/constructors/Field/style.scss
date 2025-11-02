@@ -539,6 +539,16 @@
       @include ui.subclass('previous') {
         order: 94;
       }
+
+      @include ui.subclass('caption') {
+        @include ui.textAlign('right');
+      }
+
+      @include ui.subclass('body') {
+        &__scoreboard__space {
+          flex-direction: row-reverse;
+        }
+      }
     }
 
     &--left {

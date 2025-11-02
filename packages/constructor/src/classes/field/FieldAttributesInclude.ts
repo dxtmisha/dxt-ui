@@ -123,28 +123,34 @@ export class FieldAttributesInclude {
     const data: Record<string, any> = {}
 
     attributes.forEach((index) => {
+      let value: any = undefined
+
       if (index in this.props) {
         switch (index) {
           case 'type':
             if (this.type) {
-              data[index] = this.type.item.value
+              value = this.type.item.value
             } else {
-              data[index] = this.props.type
+              value = this.props.type
             }
             break
           case 'pattern':
             if (this.pattern) {
-              data.pattern = this.pattern.item.value
+              value = this.pattern.item.value
             }
             break
           case 'inputMode':
             if (this.inputMode) {
-              data.inputmode = this.inputMode.item.value
+              value = this.inputMode.item.value
             }
             break
           default:
-            data[index] = this.props[index]
+            value = this.props[index]
         }
+      }
+
+      if (value !== undefined) {
+        data[index] = value
       }
     })
 

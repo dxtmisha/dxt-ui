@@ -65,7 +65,6 @@ export class FieldInclude<
         suffix: this.props.suffix,
         caption: this.props.caption,
         helperMessage: this.props.helperMessage,
-        validationMessage: this.props.validationMessage,
 
         required: this.props.required,
 
@@ -86,6 +85,7 @@ export class FieldInclude<
         iconTrailingPalette: this.props.iconTrailingPalette,
         iconAttrs: this.props.iconAttrs,
 
+        align: this.props.align,
         arrowCarousel: this.arrow?.isCarousel(),
         arrowStepper: this.arrow?.isStepper(),
 
