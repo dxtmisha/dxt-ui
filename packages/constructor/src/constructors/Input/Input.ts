@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { FieldChangeInclude } from '../../classes/field/FieldChangeInclude'
@@ -125,7 +125,10 @@ export class Input {
       this.event,
       this.arrow,
       undefined,
-      () => this.password.toggle()
+      () => this.password.toggle(),
+      computed(() => ({
+        maxlength: this.props.maxlength ?? this.props.max
+      }))
     )
     this.mask = new MaskInclude(
       this.props,

@@ -12,11 +12,11 @@ Works in conjunction with the Skeleton component to control visibility and displ
 ```html
 <!-- Element will display as skeleton -->
 <Skeleton active>
-  <ListItem isSkeleton text="Loading..." />
+  <Component isSkeleton text="Loading..." />
 </Skeleton>
 
 <!-- Element will be hidden -->
 <Skeleton active>
-  <ListItem :isSkeleton="false" text="Hidden text" />
+  <Component :isSkeleton="false" text="Hidden text" />
 </Skeleton>
 ```

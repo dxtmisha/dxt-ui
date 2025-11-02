@@ -46,8 +46,8 @@ export class FieldInclude<
   }
 
   /** Returns properties for the field framework/ Возвращает свойства для каркаса поля */
-  readonly binds = computed<PropsExtra>(
-    () => toBinds<PropsExtra>(
+  readonly binds = computed<PropsExtra>(() => {
+    return toBinds<PropsExtra>(
       getRef(this.extra),
       {
         // Status
@@ -99,7 +99,7 @@ export class FieldInclude<
       },
       this.props.fieldAttrs
     )
-  )
+  })
 
   /**
    * Returns properties for working with the value of the Field framework/

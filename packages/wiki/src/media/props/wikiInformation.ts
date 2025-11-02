@@ -9,8 +9,7 @@ export const wikiInformation: StorybookArgsToList = {
       description: {
         en: 'Caption text for additional information',
         ru: 'Текст подписи для дополнительной информации'
-      },
-      value: 'Caption'
+      }
     }
   },
   forceShowMessage: {
@@ -66,8 +65,7 @@ export const wikiInformation: StorybookArgsToList = {
       description: {
         en: 'Prefix text displayed before the main content',
         ru: 'Текст префикса, отображаемый перед основным содержимым'
-      },
-      value: 'Prefix'
+      }
     }
   },
   suffix: {
@@ -78,8 +76,7 @@ export const wikiInformation: StorybookArgsToList = {
       description: {
         en: 'Suffix text displayed after the main content',
         ru: 'Текст суффикса, отображаемый после основного содержимого'
-      },
-      value: 'Suffix'
+      }
     }
   },
   validationMessage: {

@@ -7,13 +7,13 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'align', type: 'string', option: ['center', 'right', 'left'] },
-  { name: 'arrow', type: 'string', option: ['auto', 'carousel', 'stepper', 'none'] },
+  { name: 'arrow', type: 'string', option: ['auto', 'none', 'carousel', 'stepper'] },
   { name: 'arrowStep', type: 'NumberOrString' },
   { name: 'autocapitalize', type: 'string', option: ['off', 'none', 'sentences', 'words', 'characters'] },
   { name: 'autocomplete', type: 'string' },
   { name: 'autocorrect', type: 'string', option: ['on', 'off'] },
   { name: 'autofocus', type: 'boolean' },
-  { name: 'cancel', type: 'string', option: ['auto', 'always'] },
+  { name: 'cancel', type: 'string', option: ['auto', 'always', 'none'] },
   { name: 'caption', type: 'string | number' },
   { name: 'counterShow', type: 'boolean' },
   { name: 'currency', type: 'string' },

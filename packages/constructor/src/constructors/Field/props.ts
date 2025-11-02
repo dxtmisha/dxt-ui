@@ -27,7 +27,7 @@ interface FieldPropsToken {
   classic?: boolean
   arrowCarousel?: boolean
   arrowStepper?: boolean
-  cancel?: 'auto' | 'always'
+  cancel?: 'auto' | 'always' | 'none'
   align?: 'center' | 'right' | 'left'
   width?: string | 'custom'
   // :type [!] System label / Системная метка
