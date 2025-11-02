@@ -1,28 +1,61 @@
-import { forEach } from '@dxtmisha/functional/lite'
 import type { UiFigmaExportFormat, UiFigmaNode } from '../types/figmaTypes'
 
+/**
+ * Class for working with Figma nodes.
+ *
+ * Класс для работы с узлами Figma.
+ */
 export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
+  /**
+   * Constructor
+   * @param item Figma node/ узел Figma
+   */
   constructor(
     protected item: T
   ) {
   }
 
+  /**
+   * Checks if the node is a document.
+   *
+   * Проверяет, является ли узел документом.
+   */
   isDocument(): this is { item: DocumentNode } {
     return this.getType() === 'DOCUMENT'
   }
 
+  /**
+   * Checks if the node is a frame.
+   *
+   * Проверяет, является ли узел фреймом.
+   */
   isFrame(): this is { item: FrameNode } {
     return this.getType() === 'FRAME'
   }
 
+  /**
+   * Checks if the node is a section.
+   *
+   * Проверяет, является ли узел секцией.
+   */
   isSection(): this is { item: SectionNode } {
     return this.getType() === 'SECTION'
   }
 
+  /**
+   * Checks if the node is a text node.
+   *
+   * Проверяет, является ли узел текстовым узлом.
+   */
   isText(): this is { item: TextNode } {
     return this.getType() === 'TEXT'
   }
 
+  /**
+   * Checks if the node is a text node with a meaningful value.
+   *
+   * Проверяет, является ли узел текстовым узлом с осмысленным значением.
+   */
   isTextNoValue(): this is { item: TextNode } {
     if (this.isText()) {
       const text = this.getText()
@@ -36,10 +69,20 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     return false
   }
 
+  /**
+   * Returns the Figma node.
+   *
+   * Возвращает узел Figma.
+   */
   get(): T {
     return this.item
   }
 
+  /**
+   * Returns the type of the node.
+   *
+   * Возвращает тип узла.
+   */
   getType() {
     if ('type' in this.item) {
       return this.item.type
@@ -48,6 +91,11 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     return undefined
   }
 
+  /**
+   * Returns the parent node.
+   *
+   * Возвращает родительский узел.
+   */
   getParent() {
     if ('parent' in this.item) {
       return this.item.parent ?? undefined
@@ -56,6 +104,11 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     return undefined
   }
 
+  /**
+   * Returns the parent node wrapped in FigmaItem.
+   *
+   * Возвращает родительский узел, обернутый в FigmaItem.
+   */
   getParentItem(): FigmaItem | undefined {
     const parent = this.getParent()
 
@@ -66,6 +119,11 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     return undefined
   }
 
+  /**
+   * Returns the child nodes.
+   *
+   * Возвращает дочерние узлы.
+   */
   getChildren(): UiFigmaNode[] {
     if ('children' in this.item) {
       return this.item.children as UiFigmaNode[]
@@ -74,10 +132,26 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     return []
   }
 
+  /**
+   * Returns the child nodes wrapped in FigmaItem.
+   *
+   * Возвращает дочерние узлы, обернутые в FigmaItem.
+   */
   getChildrenItems(): FigmaItem[] {
-    return forEach(this.getChildren(), child => new FigmaItem(child))
+    const children: FigmaItem[] = []
+
+    for (const child of this.getChildren()) {
+      children.push(new FigmaItem(child))
+    }
+
+    return children
   }
 
+  /**
+   * Returns the node ID.
+   *
+   * Возвращает идентификатор узла.
+   */
   getId(): string {
     if ('id' in this.item) {
       return this.item.id
@@ -86,6 +160,11 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     return ''
   }
 
+  /**
+   * Returns the node name.
+   *
+   * Возвращает имя узла.
+   */
   getName(): string {
     if ('name' in this.item) {
       return this.item.name
@@ -94,14 +173,29 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     return this.getId()
   }
 
+  /**
+   * Exports the node as JPG.
+   *
+   * Экспортирует узел в формате JPG.
+   */
   async exportJpg() {
     return await this.exportItem('JPG')
   }
 
+  /**
+   * Exports the node as JSON.
+   *
+   * Экспортирует узел в формате JSON.
+   */
   async exportJson() {
     return await this.exportItem('JSON_REST_V1')
   }
 
+  /**
+   * Returns the text content of the node.
+   *
+   * Возвращает текстовое содержимое узла.
+   */
   getText(): string {
     if (this.isText()) {
       return this.item.characters.trim()
@@ -110,6 +204,12 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     return ''
   }
 
+  /**
+   * Converts format settings to ExportSettings.
+   *
+   * Преобразует настройки формата в ExportSettings.
+   * @param formatSettings format settings/ настройки формата
+   */
   protected getExportSettings(
     formatSettings: UiFigmaExportFormat | ExportSettings
   ): ExportSettings {
@@ -127,6 +227,12 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     }
   }
 
+  /**
+   * Exports the node in the specified format.
+   *
+   * Экспортирует узел в указанном формате.
+   * @param formatSettings format settings/ настройки формата
+   */
   protected async exportItem(
     formatSettings: UiFigmaExportFormat | ExportSettings
   ) {

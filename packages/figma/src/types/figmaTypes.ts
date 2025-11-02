@@ -3,6 +3,7 @@ export type UiFigmaNode
     | SceneNode
     | DefaultShapeMixin
     | DocumentNode
+    | PageNode
     | FrameNode
     | SectionNode
     | TextNode
