@@ -54,8 +54,8 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
           <DesignComponent type="email" label="Email" placeholder="email@example.com" />
           <DesignComponent type="password" label="Password" placeholder="Enter password" />
           <DesignComponent type="number" label="Number" placeholder="0" />
-          <DesignComponent type="tel" label="Phone" placeholder="+1 (555) 000-0000" />
-          <DesignComponent type="url" label="URL" placeholder="https://example.com" />
+          <DesignComponent type="text" label="Phone" mask="+1 (***) ***-****" placeholder="+1 (555) 000-0000" />
+          <DesignComponent type="date" label="Date" />
           <DesignComponent type="search" label="Search" placeholder="Search..." />
         </div>
       `
@@ -393,7 +393,7 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'Input'} type={'input'}/>
 
-<StorybookDescriptions componentName={'Input'} type={'types'}/>
+<StorybookDescriptions componentName={'Input'} type={'type'}/>
 <Canvas of={Component.InputTypes}/>
 
 <StorybookDescriptions componentName={'Input'} type={'currency'}/>

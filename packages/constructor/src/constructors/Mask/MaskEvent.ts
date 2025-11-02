@@ -42,7 +42,8 @@ export class MaskEvent {
     protected readonly valueBasic: MaskValueBasic,
     protected readonly emit: MaskEmit,
     protected readonly data: MaskData
-  ) {}
+  ) {
+  }
 
   /**
    * Capture of the event in focus.
@@ -260,6 +261,23 @@ export class MaskEvent {
    */
   protected isMetaKey(event: KeyboardEvent): boolean {
     return event.metaKey || event.altKey || event.ctrlKey
+  }
+
+  /**
+   * Was a cut operation performed.
+   *
+   * Была ли выполнена операция вырезания.
+   * @param event invoked event/ вызываемое событие
+   */
+  protected isCut(event: KeyboardEvent): boolean {
+    return event.type === 'cut'
+      || Boolean(
+        event.key.toLowerCase() === 'x'
+        && (
+          event.metaKey
+          || event.ctrlKey
+        )
+      )
   }
 
   /**

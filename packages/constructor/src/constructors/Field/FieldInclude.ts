@@ -48,7 +48,6 @@ export class FieldInclude<
   /** Returns properties for the field framework/ Возвращает свойства для каркаса поля */
   readonly binds = computed<PropsExtra>(() => {
     return toBinds<PropsExtra>(
-      getRef(this.extra),
       {
         // Status
         focus: this.props.focus,
@@ -97,6 +96,7 @@ export class FieldInclude<
 
         onClick: this.on
       },
+      getRef(this.extra),
       this.props.fieldAttrs
     )
   })

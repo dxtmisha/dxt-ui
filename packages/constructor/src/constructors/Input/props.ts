@@ -26,9 +26,6 @@ export interface InputPropsBasic<
 > extends MaskPropsInclude<Mask>,
   FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>,
   FieldInputProps<NumberOrString> {
-  // Style
-  iconVisibility?: string
-  iconVisibilityOff?: string
 }
 
 /**

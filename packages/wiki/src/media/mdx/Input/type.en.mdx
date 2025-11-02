@@ -1,0 +1,26 @@
+## Input Field Type
+
+The `type` property defines the type and behavior of the Input field.
+
+**Available values:**
+
+- `'text'` — standard text field (default value)
+- `'search'` — search field with quick clear functionality
+- `'number'` — numeric field with basic number validation
+- `'number-format'` — numeric field with formatting (thousands separators)
+- `'currency'` — field for currency input with currency formatting
+- `'email'` — field for email input with corresponding validation
+- `'password'` — field for password input (hides characters)
+- `'datetime'` — field for date and time input
+- `'date'` — field for date input
+- `'year-month'` — field for year and month input
+- `'time'` — field for time input
+- `'hour-minute'` — field for hours and minutes input
+- `'tel'` — field for telephone number input
+- `'url'` — field for web address input with URL validation
+- `'checkbox'` — checkbox (used for boolean values)
+- `'radio'` — radio button (used for selecting one option from a group)
+
+Each type activates corresponding validation, formatting, and input mechanisms. For the `password` type, a visibility toggle function is available through a special icon. Types `number`, `number-format`, and `currency` automatically enable formatting and restrict input to numeric values only. Types `email`, `tel`, and `url` apply built-in HTML5 validation and set the appropriate `inputMode` for mobile keyboards. Date and time related types (`datetime`, `date`, `year-month`, `time`, `hour-minute`) activate special input masks and value formatting.
+
+

@@ -21,6 +21,8 @@ export interface InputProps extends InputPropsBasic, PropsToken {
  */
 export const defaults: object = {
   ...defaultsInput,
+  iconVisibility: 'visibility',
+  iconVisibilityOff: 'visibility_off',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

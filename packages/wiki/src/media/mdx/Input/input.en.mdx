@@ -1,0 +1,143 @@
+Text input field component with validation, masking and formatting support.
+
+Input provides a flexible interface for entering various types of data: text, numbers, email, passwords, phones, URLs, dates and time. The component automatically applies appropriate validation, formatting and keyboard based on the specified type. Supports masking for structured input (phones, dates, custom patterns), currency and number formatting, password visibility control and integration with the Field component for consistent styling.
+
+**Key features:**
+
+- Multiple input types (text, number, email, password, tel, url, date, time and more)
+- Built-in validation with custom messages
+- Masking for formatted input
+- Currency and number formatting with localization
+- Password visibility toggle
+- Prefix and suffix for additional context
+- Character counter for length limits
+- Navigation arrows for numeric values
+- Autocomplete and spellcheck support
+- Clear button for value reset
+
+**Common use cases:**
+
+- Registration and login forms
+- Contact information fields (email, phone)
+- Numeric fields (quantity, price, age)
+- Password fields with visibility toggle
+- Search fields with quick clear
+- Formatted input (phones, dates, cards)
+- Currency fields with automatic formatting
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const email = ref('')
+const password = ref('')
+
+const handleInput = (event, validation) => {
+  console.log('Input value:', validation.value)
+  console.log('Valid:', validation.status)
+}
+</script>
+
+<template>
+  <div class="form">
+    <Input
+      v-model="email"
+      type="email"
+      label="Email"
+      placeholder="example@mail.com"
+      required
+      @input="handleInput"
+    />
+
+    <Input
+      v-model="password"
+      type="password"
+      label="Password"
+      placeholder="Enter password"
+      minlength="8"
+      required
+      iconVisibility="visibility"
+      iconVisibilityOff="visibility_off"
+    />
+
+    <Input
+      type="currency"
+      label="Price"
+      currency="USD"
+      language="en-US"
+    />
+  </div>
+</template>
+```
+Компонент текстового поля ввода с поддержкой валидации, маскирования и форматирования.
+
+Input предоставляет гибкий интерфейс для ввода данных различных типов: текст, числа, email, пароли, телефоны, URL, даты и время. Компонент автоматически применяет соответствующую валидацию, форматирование и клавиатуру в зависимости от указанного типа. Поддерживает маскирование для структурированного ввода (телефоны, даты, кастомные паттерны), форматирование валют и чисел, управление видимостью пароля и интеграцию с компонентом Field для единообразной стилизации.
+
+**Основные возможности:**
+
+- Множественные типы ввода (text, number, email, password, tel, url, date, time и другие)
+- Встроенная валидация с пользовательскими сообщениями
+- Маскирование для форматированного ввода
+- Форматирование валюты и чисел с локализацией
+- Переключатель видимости пароля
+- Префикс и суффикс для дополнительного контекста
+- Счётчик символов для ограничения длины
+- Стрелки навигации для числовых значений
+- Поддержка автозаполнения и проверки орфографии
+- Кнопка очистки значения
+
+**Типичные сценарии использования:**
+
+- Формы регистрации и авторизации
+- Поля ввода контактных данных (email, телефон)
+- Числовые поля (количество, цена, возраст)
+- Поля для ввода паролей с переключением видимости
+- Поля поиска с быстрой очисткой
+- Форматированный ввод (телефоны, даты, карты)
+- Валютные поля с автоматическим форматированием
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const email = ref('')
+const password = ref('')
+
+const handleInput = (event, validation) => {
+  console.log('Введённое значение:', validation.value)
+  console.log('Валидно:', validation.status)
+}
+</script>
+
+<template>
+  <div class="form">
+    <Input
+      v-model="email"
+      type="email"
+      label="Email"
+      placeholder="example@mail.com"
+      required
+      @input="handleInput"
+    />
+
+    <Input
+      v-model="password"
+      type="password"
+      label="Пароль"
+      placeholder="Введите пароль"
+      minlength="8"
+      required
+      iconVisibility="visibility"
+      iconVisibilityOff="visibility_off"
+    />
+
+    <Input
+      type="currency"
+      label="Цена"
+      currency="RUB"
+      language="ru-RU"
+    />
+  </div>
+</template>
+```
+

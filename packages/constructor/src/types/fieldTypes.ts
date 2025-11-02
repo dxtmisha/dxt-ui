@@ -309,6 +309,10 @@ export interface FieldInputProps<Value = any>
   FieldUxProps {
   /** Datalist id reference/ Ссылка на datalist */
   list?: string
+
+  // Style
+  iconVisibility?: string
+  iconVisibilityOff?: string
 }
 
 /**

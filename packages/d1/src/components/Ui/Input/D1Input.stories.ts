@@ -49,8 +49,8 @@ export const InputTypes: Story = {
           <D1Input type="email" label="Email" placeholder="email@example.com" />
           <D1Input type="password" label="Password" placeholder="Enter password" />
           <D1Input type="number" label="Number" placeholder="0" />
-          <D1Input type="tel" label="Phone" placeholder="+1 (555) 000-0000" />
-          <D1Input type="url" label="URL" placeholder="https://example.com" />
+          <D1Input type="text" label="Phone" mask="+1 (***) ***-****" placeholder="+1 (555) 000-0000" />
+          <D1Input type="date" label="Date" />
           <D1Input type="search" label="Search" placeholder="Search..." />
         </div>
     `
