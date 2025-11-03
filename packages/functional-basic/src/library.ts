@@ -29,13 +29,12 @@ export * from './classes/MetaTwitter'
 export * from './classes/ScrollbarWidth'
 export * from './classes/Translate'
 
-// Composables
-
 // Functions
 export * from './functions/anyToString'
 export * from './functions/applyTemplate'
 export * from './functions/arrFill'
 export * from './functions/copyObject'
+export * from './functions/copyObjectLite'
 export * from './functions/createElement'
 export * from './functions/domQuerySelector'
 export * from './functions/domQuerySelectorAll'

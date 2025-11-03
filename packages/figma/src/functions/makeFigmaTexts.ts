@@ -9,12 +9,13 @@ import { FIGMA_MESSAGE_TEXTS } from '../config'
  * Настраивает слушатель изменений выделения в Figma и отправляет текстовые элементы в UI.
  */
 export const makeFigmaTexts = () => {
-  figma.on('selectionchange', () => {
+  figma.on('selectionchange', async () => {
     const frame = new FigmaFrame(figma.currentPage, true)
 
     FigmaMessage.post(FIGMA_MESSAGE_TEXTS, {
       frame,
-      texts: frame.getTexts()
+      texts: frame.getTexts(),
+      screenshot: await frame.screenshot()
     })
   })
 }

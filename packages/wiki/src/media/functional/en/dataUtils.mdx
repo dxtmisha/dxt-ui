@@ -37,6 +37,31 @@ const copy = copyObject(original)
 copy.data.age = 25 // original.data.age remains 30
 ```
 
+## `copyObjectLite`
+
+Creates a shallow copy of a simple object. If the `source` parameter is passed, creates a new object and merges `value` and `source`.
+
+**Parameters:**
+- `value: T` — object to copy
+- `source?: any` — additional properties to copy (optional)
+
+```javascript
+import { copyObjectLite } from '@dxtmisha/functional'
+
+const original = { name: 'John', age: 30 }
+const copy = copyObjectLite(original) // { name: 'John', age: 30 }
+
+// With additional properties
+const extended = copyObjectLite(original, { city: 'Moscow' })
+// { name: 'John', age: 30, city: 'Moscow' }
+
+// Overriding properties
+const overridden = copyObjectLite(original, { age: 25 })
+// { name: 'John', age: 25 }
+```
+
+**Note:** This is a shallow copy — nested objects retain references to the originals. For deep cloning use `copyObject`, `structuredClone` or `_.cloneDeep`.
+
 ## `forEach`
 
 Universal iteration function for arrays, objects and Map.

@@ -1,4 +1,5 @@
 import { copyObject } from '../functions/copyObject'
+import { copyObjectLite } from '../functions/copyObjectLite'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isSelected } from '../functions/isSelected'
 
@@ -87,10 +88,9 @@ export class Geo {
    * Получение обработанных данных.
    */
   static getItem(): GeoItemFull {
-    return {
-      ...this.item,
+    return copyObjectLite(this.item, {
       language: this.language
-    }
+    })
   }
 
   /**
@@ -304,11 +304,10 @@ export class Geo {
    * объект с данными об текущей стране
    */
   private static toFull(item: GeoItem): GeoItemFull {
-    return {
-      ...item,
+    return copyObjectLite(item, {
       standard: this.toStandard(item),
       firstDay: item?.firstDay || 'Mo'
-    }
+    })
   }
 
   static {

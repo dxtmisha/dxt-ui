@@ -37,6 +37,31 @@ const copy = copyObject(original)
 copy.data.age = 25 // original.data.age остается 30
 ```
 
+## `copyObjectLite`
+
+Создает поверхностную копию простого объекта. Если передан параметр `source`, создаёт новый объект и объединяет `value` и `source`.
+
+**Параметры:**
+- `value: T` — объект для копирования
+- `source?: any` — дополнительные свойства для копирования (опционально)
+
+```javascript
+import { copyObjectLite } from '@dxtmisha/functional'
+
+const original = { name: 'John', age: 30 }
+const copy = copyObjectLite(original) // { name: 'John', age: 30 }
+
+// С дополнительными свойствами
+const extended = copyObjectLite(original, { city: 'Moscow' })
+// { name: 'John', age: 30, city: 'Moscow' }
+
+// Переопределение свойств
+const overridden = copyObjectLite(original, { age: 25 })
+// { name: 'John', age: 25 }
+```
+
+**Примечание:** Это поверхностная копия — вложенные объекты сохраняют ссылки на исходные. Для глубокого клонирования используйте `copyObject`, `structuredClone` или `_.cloneDeep`.
+
 ## `forEach`
 
 Универсальная функция итерации для массивов, объектов и Map.

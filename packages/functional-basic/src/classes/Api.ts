@@ -1,3 +1,4 @@
+import { copyObjectLite } from '../functions/copyObjectLite'
 import { getRequestString } from '../functions/getRequestString'
 import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
@@ -204,10 +205,9 @@ export class Api {
    * @param request list of parameters/ список параметров
    */
   static get<T>(request: ApiFetch): Promise<T> {
-    return this.request({
-      ...request,
+    return this.request(copyObjectLite(request, {
       method: ApiMethodItem.get
-    })
+    }))
   }
 
   /**
@@ -217,10 +217,9 @@ export class Api {
    * @param request list of parameters/ список параметров
    */
   static post<T>(request: ApiFetch): Promise<T> {
-    return this.request({
-      ...request,
+    return this.request(copyObjectLite(request, {
       method: ApiMethodItem.post
-    })
+    }))
   }
 
   /**
@@ -230,10 +229,9 @@ export class Api {
    * @param request list of parameters/ список параметров
    */
   static put<T>(request: ApiFetch): Promise<T> {
-    return this.request({
-      ...request,
+    return this.request(copyObjectLite(request, {
       method: ApiMethodItem.put
-    })
+    }))
   }
 
   /**
@@ -243,10 +241,9 @@ export class Api {
    * @param request list of parameters/ список параметров
    */
   static delete<T>(request: ApiFetch): Promise<T> {
-    return this.request({
-      ...request,
+    return this.request(copyObjectLite(request, {
       method: ApiMethodItem.delete
-    })
+    }))
   }
 
   /**
@@ -357,11 +354,10 @@ export class Api {
     const pathFinal = pathFull ?? this.getUrl(path, api)
     const url = `${pathFinal}${this.getBodyForGet(request, pathFinal, method)}`
     const fetchHeaders = this.headers.get(headers, type)
-    const fetchInit = {
-      ...init,
+    const fetchInit = copyObjectLite(init, {
       method,
       body: this.getBody(request, method)
-    }
+    })
 
     if (fetchHeaders) {
       fetchInit.headers = fetchHeaders
@@ -390,7 +386,7 @@ export class Api {
       && 'data' in data
     ) {
       if (isObjectNotArray(data.data)) {
-        const item: ApiData<T> = { ...data.data }
+        const item: ApiData<T> = copyObjectLite(data.data)
 
         if ('success' in data) {
           item.success = data.success

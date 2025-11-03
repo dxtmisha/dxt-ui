@@ -1,3 +1,4 @@
+import { copyObjectLite } from '../functions/copyObjectLite'
 import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 
@@ -22,10 +23,10 @@ export class ApiHeaders {
     type = 'application/json;charset=UTF-8'
   ): Record<string, string> | undefined {
     if (value !== null) {
-      const headers = {
-        ...this.headers,
-        ...(value || {})
-      }
+      const headers = copyObjectLite(
+        this.headers,
+        value
+      )
 
       if (isFilled(type)) {
         headers['Content-Type'] = type

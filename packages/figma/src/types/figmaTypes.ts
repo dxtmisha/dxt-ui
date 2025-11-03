@@ -1,3 +1,5 @@
+import { FigmaFrame } from '../classes/FigmaFrame.ts'
+
 export type UiFigmaNode
   = ChildrenMixin
     | SceneNode
@@ -30,3 +32,9 @@ export type UiFigmaMessageItem = {
   callbackList: UiFigmaMessageCallback[]
 }
 export type UiFigmaMessageList = UiFigmaMessageItem[]
+
+export type UiFigmaMessageTexts = {
+  frame: FigmaFrame
+  texts: UiFigmaItemText[]
+  screenshot: Uint8Array | null
+}

@@ -1,3 +1,5 @@
+import { copyObjectLite } from '../functions/copyObjectLite'
+
 let global: Record<string, any>
 
 /**
@@ -27,6 +29,6 @@ export class Global {
       return
     }
 
-    global = { ...data }
+    global = copyObjectLite(data)
   }
 }

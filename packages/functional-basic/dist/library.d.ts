@@ -31,6 +31,7 @@ export * from './functions/anyToString';
 export * from './functions/applyTemplate';
 export * from './functions/arrFill';
 export * from './functions/copyObject';
+export * from './functions/copyObjectLite';
 export * from './functions/createElement';
 export * from './functions/domQuerySelector';
 export * from './functions/domQuerySelectorAll';

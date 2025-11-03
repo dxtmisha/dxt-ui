@@ -7,6 +7,7 @@ import type { UiFigmaItemText, UiFigmaNode } from '../types/figmaTypes'
  * Класс для работы с фреймами Figma и их элементами.
  */
 export class FigmaFrame {
+  protected mainItem: FigmaItem
   /**
    * List of all Figma items.
    *
@@ -23,6 +24,7 @@ export class FigmaFrame {
     protected readonly page: UiFigmaNode,
     protected readonly selection: boolean = false
   ) {
+    this.mainItem = new FigmaItem(page)
     this.items = this.initBySelection()
   }
 
@@ -96,6 +98,10 @@ export class FigmaFrame {
     })
 
     return data
+  }
+
+  async screenshot() {
+    return await this.mainItem.exportJpg()
   }
 
   /**

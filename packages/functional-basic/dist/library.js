@@ -1,7 +1,10 @@
-var xt = Object.defineProperty;
-var Rt = (i, t, e) => t in i ? xt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
-var c = (i, t, e) => Rt(i, typeof t != "symbol" ? t + "" : t, e);
-import { geo as Pt } from "@dxtmisha/media";
+var Rt = Object.defineProperty;
+var Pt = (i, t, e) => t in i ? Rt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
+var c = (i, t, e) => Pt(i, typeof t != "symbol" ? t + "" : t, e);
+import { geo as Wt } from "@dxtmisha/media";
+function L(i, t) {
+  return t ? Object.assign({}, i, t) : Object.assign({}, i);
+}
 function m(i) {
   return !!(i && typeof i == "object");
 }
@@ -14,13 +17,13 @@ function g(i, t) {
   }
   return [];
 }
-function Lt(i, t = "=", e = "&") {
+function kt(i, t = "=", e = "&") {
   return g(
     i,
     (s, n) => `${n}${t}${encodeURIComponent(String(s).trim())}`
   ).sort().join(e);
 }
-function Y(i) {
+function q(i) {
   return i == null;
 }
 function D(i, t) {
@@ -37,7 +40,7 @@ function D(i, t) {
       case "symbol":
         return !0;
       case "object":
-        return Array.isArray(i) ? i.length > 0 : Object.values(i).some((e) => !Y(e));
+        return Array.isArray(i) ? i.length > 0 : Object.values(i).some((e) => !q(e));
       case "string":
         return !["", "undefined", "null", "0", "false", "[]"].includes(i);
       case "undefined":
@@ -48,19 +51,19 @@ function D(i, t) {
   }
   return !1;
 }
-function k(i) {
+function C(i) {
   return m(i) && !Array.isArray(i);
 }
-function j(i) {
+function z(i) {
   return typeof i == "string";
 }
-function W(i) {
+function j(i) {
   return JSON.parse(JSON.stringify(i));
 }
 function l() {
   return typeof window != "undefined" && !!window.document;
 }
-function ot(i) {
+function at(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -70,7 +73,7 @@ function ot(i) {
       return !1;
   }
 }
-function L(i) {
+function k(i) {
   if (typeof i == "number")
     return i;
   if (!i)
@@ -78,18 +81,18 @@ function L(i) {
   let t = i.replace(/[^\d., ]+/ig, "");
   return t.match(/( [0-9]{3}[ ,.]|[0-9] [0-9])/ig) ? t = t.replace(/ /ig, "").replace(/,/ig, ".") : t.match(/,[0-9]{3}[,.]/ig) ? t = t.replace(/,/ig, "") : t.match(/[.][0-9]{3}[,.]/ig) ? t = t.replace(/[.]/ig, "").replace(/,/ig, ".") : t = t.replace(/,/ig, "."), parseFloat(t);
 }
-function et(i, t) {
-  return Y(i) ? !1 : Array.isArray(t) ? t.includes(i) : ot(i) && ot(t) ? L(i) === L(t) : i === t;
+function it(i, t) {
+  return q(i) ? !1 : Array.isArray(t) ? t.includes(i) : at(i) && at(t) ? k(i) === k(t) : i === t;
 }
-function kt(i) {
+function Ct(i) {
   return i instanceof Function || typeof i == "function";
 }
-function N(i) {
-  return kt(i) ? i() : i;
+function E(i) {
+  return Ct(i) ? i() : i;
 }
-const O = {};
-let at = "ui-storage";
-class _ {
+const T = {};
+let ct = "ui-storage";
+class O {
   /**
    * Constructor
    * @param name value name/ название значения
@@ -100,9 +103,9 @@ class _ {
     c(this, "age");
     this.name = t, this.isSession = e;
     const s = `${e ? "session" : "storage"}#${t}`;
-    if (s in O)
-      return O[s];
-    this.make(), O[s] = this;
+    if (s in T)
+      return T[s];
+    this.make(), T[s] = this;
   }
   /**
    * Changing the prefix in key names. Should be called at the beginning of the code.
@@ -111,7 +114,7 @@ class _ {
    * @param newPrefix new prefix/ новый префикс
    */
   static setPrefix(t) {
-    at = t;
+    ct = t;
   }
   /**
    * Getting data from local storage.
@@ -134,7 +137,7 @@ class _ {
    */
   set(t) {
     var e;
-    return this.value = N(t), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? this.remove() : (e = this.getMethod()) == null || e.setItem(this.getIndex(), JSON.stringify({
+    return this.value = E(t), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? this.remove() : (e = this.getMethod()) == null || e.setItem(this.getIndex(), JSON.stringify({
       value: this.value,
       age: this.age
     })), this.value;
@@ -163,7 +166,7 @@ class _ {
    * @param cache cache time/ время кэширования
    */
   isCache(t) {
-    return Y(t) || this.age && this.age + t * 1e3 >= (/* @__PURE__ */ new Date()).getTime();
+    return q(t) || this.age && this.age + t * 1e3 >= (/* @__PURE__ */ new Date()).getTime();
   }
   /**
    * Returns an object for working with storage.
@@ -180,7 +183,7 @@ class _ {
    * Получение имени ключа в хранилище.
    */
   getIndex() {
-    return `${at}__${this.name}`;
+    return `${ct}__${this.name}`;
   }
   /**
    * Getting data from storage.
@@ -207,7 +210,7 @@ class _ {
     return t ? (this.value = t.value, this.age = t.age) : (this.value = void 0, this.age = void 0), this;
   }
 }
-const Wt = "geo-code", p = class p {
+const jt = "geo-code", p = class p {
   /**
    * Information about the current country.
    *
@@ -262,10 +265,9 @@ const Wt = "geo-code", p = class p {
    * Получение обработанных данных.
    */
   static getItem() {
-    return {
-      ...this.item,
+    return L(this.item, {
       language: this.language
-    };
+    });
   }
   /**
    * Returns the full list of countries.
@@ -273,7 +275,7 @@ const Wt = "geo-code", p = class p {
    * Возвращает полный список стран.
    */
   static getList() {
-    return Pt;
+    return Wt;
   }
   /**
    * Returns the data about the country by its full code.
@@ -284,7 +286,7 @@ const Wt = "geo-code", p = class p {
    */
   static getByCode(t) {
     let e;
-    return t && (t.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (e = this.getByCodeFull(t)), !e && t.match(/[A-Z]{2}/) && (e = this.getByCountry(this.toCountry(t))), !e && t.match(/[a-z]{2}/) && (e = this.getByLanguage(this.toLanguage(t)))), this.toFull(W(e != null ? e : this.getList()[0]));
+    return t && (t.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (e = this.getByCodeFull(t)), !e && t.match(/[A-Z]{2}/) && (e = this.getByCountry(this.toCountry(t))), !e && t.match(/[a-z]{2}/) && (e = this.getByLanguage(this.toLanguage(t)))), this.toFull(j(e != null ? e : this.getList()[0]));
   }
   /**
    * Returns the full data by language and country.
@@ -294,7 +296,7 @@ const Wt = "geo-code", p = class p {
    */
   static getByCodeFull(t) {
     return this.getList().find(
-      (e) => et(t, [
+      (e) => it(t, [
         `${e.language}-${e.country}`,
         `${e.country}-${e.language}`
       ])
@@ -424,34 +426,33 @@ const Wt = "geo-code", p = class p {
    * объект с данными об текущей стране
    */
   static toFull(t) {
-    return {
-      ...t,
+    return L(t, {
       standard: this.toStandard(t),
       firstDay: (t == null ? void 0 : t.firstDay) || "Mo"
-    };
+    });
   }
 };
-c(p, "storage", new _(Wt)), c(p, "location"), c(p, "item"), c(p, "language"), c(p, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), p.location = p.findLocation(), p.language = p.findLanguage(p.location), p.item = p.getByCode(p.location);
+c(p, "storage", new O(jt)), c(p, "location"), c(p, "item"), c(p, "language"), c(p, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), p.location = p.findLocation(), p.language = p.findLanguage(p.location), p.item = p.getByCode(p.location);
 let b = p;
-function Ct(i) {
+function At(i) {
   return l() && i === window;
 }
-function C(i) {
+function A(i) {
   var t;
   if (l())
-    return Ct(i) ? document.body : j(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
+    return At(i) ? document.body : z(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
 }
-function ct(i) {
-  return Ct(i) ? i : C(i);
+function ut(i) {
+  return At(i) ? i : A(i);
 }
 function Ut(i) {
   var t;
-  return !!((t = C(i)) != null && t.closest("html"));
+  return !!((t = A(i)) != null && t.closest("html"));
 }
-function z(i) {
+function H(i) {
   return Array.isArray(i) ? i : [i];
 }
-class ut {
+class ht {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -502,7 +503,7 @@ class ut {
      */
     c(this, "activity", !1);
     c(this, "activityItems", []);
-    this.listener = s, this.options = n, this.detail = o, this.element = ct(t), this.elementControl = C(t), this.type = z(e);
+    this.listener = s, this.options = n, this.detail = o, this.element = ut(t), this.elementControl = A(t), this.type = H(e);
   }
   /**
    * Checks whether event listening is currently enabled.
@@ -522,8 +523,8 @@ class ut {
    * @param elementSelector element/ элемент
    */
   setElement(t) {
-    const e = ct(t);
-    return this.elementControlEdit || (this.elementControl = C(t)), this.element = e, this.reset(), this;
+    const e = ut(t);
+    return this.elementControlEdit || (this.elementControl = A(t)), this.element = e, this.reset(), this;
   }
   /**
    * Modifies the object that receives the notification.
@@ -532,7 +533,7 @@ class ut {
    * @param elementSelector element/ элемент
    */
   setElementControl(t) {
-    return this.elementControl = C(t), this.elementControlEdit = !Y(this.elementControl), this.elementControlEdit || (this.elementControl = C(this.element)), this;
+    return this.elementControl = A(t), this.elementControlEdit = !q(this.elementControl), this.elementControlEdit || (this.elementControl = A(this.element)), this;
   }
   /**
    * Changes the type of the handled event.
@@ -541,7 +542,7 @@ class ut {
    * @param type type/ тип
    */
   setType(t) {
-    return this.type = z(t), this.reset(), this;
+    return this.type = H(t), this.reset(), this;
   }
   /**
    * Modifies the object that receives the notification.
@@ -687,7 +688,7 @@ class ut {
     return !1;
   }
 }
-const ht = "ui-loading", Z = class Z {
+const lt = "ui-loading", K = class K {
   /**
    * Check if the loader is active now.
    *
@@ -722,7 +723,7 @@ const ht = "ui-loading", Z = class Z {
    * @param element element/ элемент
    */
   static registrationEvent(t, e) {
-    l() && new ut(window, ht, t).setElementControl(e).start();
+    l() && new ht(window, lt, t).setElementControl(e).start();
   }
   /**
    * Calls the event listener.
@@ -734,9 +735,9 @@ const ht = "ui-loading", Z = class Z {
     (t = this.event) == null || t.dispatch({ loading: this.is() });
   }
 };
-c(Z, "value", 0), c(Z, "event"), l() && (Z.event = new ut(window, ht));
-let F = Z;
-class jt {
+c(K, "value", 0), c(K, "event"), l() && (K.event = new ht(window, lt));
+let x = K;
+class zt {
   constructor() {
     /** Default headers/ Заголовки по умолчанию */
     c(this, "headers", {});
@@ -750,10 +751,10 @@ class jt {
    */
   get(t, e = "application/json;charset=UTF-8") {
     if (t !== null) {
-      const s = {
-        ...this.headers,
-        ...t || {}
-      };
+      const s = L(
+        this.headers,
+        t
+      );
       return D(e) && (s["Content-Type"] = e), s;
     }
   }
@@ -763,11 +764,11 @@ class jt {
    * Изменяет данные заголовка по умолчанию.
    */
   set(t) {
-    return k(t) && (this.headers = t), this;
+    return C(t) && (this.headers = t), this;
   }
 }
 var S = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(S || {});
-class zt {
+class Ht {
   constructor() {
     /** Default request data/ Данные запроса по умолчанию */
     c(this, "value");
@@ -799,11 +800,8 @@ class zt {
     if (e) {
       if (t instanceof FormData)
         this.addByFormData(t, e);
-      else if (k(t))
-        return {
-          ...e,
-          ...t
-        };
+      else if (C(t))
+        return L(e, t);
     }
     return t;
   }
@@ -827,7 +825,7 @@ class zt {
       t.has(s) || t.set(s, e[s]);
   }
 }
-class Ht {
+class Zt {
   constructor() {
     c(this, "value");
   }
@@ -922,7 +920,7 @@ class Ht {
    * @param response response data/ данные ответа
    */
   setLastResponse(t) {
-    return t && k(t) && "message" in t && this.setLastMessage(String(t.message)), this.set({ lastResponse: t }), this;
+    return t && C(t) && "message" in t && this.setLastMessage(String(t.message)), this.set({ lastResponse: t }), this;
   }
   /**
    * Sets messages from the last request.
@@ -944,15 +942,15 @@ class Ht {
     this.value || (this.value = {}), this.value[t] = e;
   }
 }
-async function Zt(i) {
-  const t = N(i);
+async function Kt(i) {
+  const t = E(i);
   return t instanceof Promise ? await t : t;
 }
-function V(i, t) {
+function Y(i, t) {
   return Math.floor(Math.random() * (t - i + 1) + i);
 }
-const lt = "d-response-loading";
-class Kt {
+const dt = "d-response-loading";
+class Vt {
   /**
    * Constructor
    * @param requestDefault default request processor/ процессор запросов по умолчанию
@@ -995,7 +993,7 @@ class Kt {
    * @param response data for caching/ данные для кеширования
    */
   add(t) {
-    return this.response.push(...z(t)), this;
+    return this.response.push(...H(t)), this;
   }
   /**
    * Sets developer mode.
@@ -1032,7 +1030,7 @@ class Kt {
    * @param item cached item/ кешированный элемент
    */
   isDisable(t) {
-    return !!N(t == null ? void 0 : t.disable);
+    return !!E(t == null ? void 0 : t.disable);
   }
   /**
    * Checks if the path matches the cached one.
@@ -1072,7 +1070,7 @@ class Kt {
    */
   isResponse(t, e) {
     const s = this.requestDefault.request(t == null ? void 0 : t.request);
-    return e === s || s === "*any" || D(e) && D(s) && k(e) && k(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
+    return e === s || s === "*any" || D(e) && D(s) && C(e) && C(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
       (n, [o, a]) => n && (a === (e == null ? void 0 : e[o]) || a === "*any"),
       !0
     );
@@ -1086,12 +1084,12 @@ class Kt {
    */
   fetch(t, e) {
     return this.startResponseLoading(), new Promise((s) => {
-      Zt(
-        kt(t.response) ? t.response(e) : t.response
+      Kt(
+        Ct(t.response) ? t.response(e) : t.response
       ).then((n) => {
-        t != null && t.lag ? (F.show(), setTimeout(() => {
-          this.stopResponseLoading(), s(n), F.hide();
-        }, V(0, 2e3))) : (this.stopResponseLoading(), s(n));
+        t != null && t.lag ? (x.show(), setTimeout(() => {
+          this.stopResponseLoading(), s(n), x.hide();
+        }, Y(0, 2e3))) : (this.stopResponseLoading(), s(n));
       });
     });
   }
@@ -1101,7 +1099,7 @@ class Kt {
    * Включить загрузку для эмуляции запроса.
    */
   startResponseLoading() {
-    this.loading && clearTimeout(this.loading), l() && document.body.classList.add(lt);
+    this.loading && clearTimeout(this.loading), l() && document.body.classList.add(dt);
   }
   /**
    * Disable loading for request emulation.
@@ -1110,11 +1108,11 @@ class Kt {
    */
   stopResponseLoading() {
     this.loading = setTimeout(() => {
-      this.loading = void 0, l() && document.body.classList.remove(lt);
+      this.loading = void 0, l() && document.body.classList.remove(dt);
     }, 1200);
   }
 }
-class Vt {
+class Yt {
   constructor() {
     /** Function for call before the request/ Функция для вызова перед запросом */
     c(this, "callback");
@@ -1231,7 +1229,7 @@ const w = class w {
     if (t instanceof FormData)
       return t;
     if (e !== S.get && D(t))
-      return j(t) ? t : JSON.stringify(t);
+      return z(t) ? t : JSON.stringify(t);
   }
   /**
    * Getting data for the body of the get method.
@@ -1243,7 +1241,7 @@ const w = class w {
    */
   static getBodyForGet(t, e = "", s = S.get) {
     if (s === S.get) {
-      const n = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? Lt(t) : t;
+      const n = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? kt(t) : t;
       if (D(o))
         return `${n}${o}`;
     }
@@ -1299,7 +1297,7 @@ const w = class w {
    * @param pathRequest query string or list of parameters/ строка запроса или список параметров
    */
   static async request(t) {
-    return j(t) ? await this.fetch({
+    return z(t) ? await this.fetch({
       path: t
     }) : await this.fetch(t);
   }
@@ -1310,10 +1308,9 @@ const w = class w {
    * @param request list of parameters/ список параметров
    */
   static get(t) {
-    return this.request({
-      ...t,
+    return this.request(L(t, {
       method: S.get
-    });
+    }));
   }
   /**
    * Sends a post method request.
@@ -1322,10 +1319,9 @@ const w = class w {
    * @param request list of parameters/ список параметров
    */
   static post(t) {
-    return this.request({
-      ...t,
+    return this.request(L(t, {
       method: S.post
-    });
+    }));
   }
   /**
    * Sends a put method request.
@@ -1334,10 +1330,9 @@ const w = class w {
    * @param request list of parameters/ список параметров
    */
   static put(t) {
-    return this.request({
-      ...t,
+    return this.request(L(t, {
       method: S.put
-    });
+    }));
   }
   /**
    * Sends a delete method request.
@@ -1346,10 +1341,9 @@ const w = class w {
    * @param request list of parameters/ список параметров
    */
   static delete(t) {
-    return this.request({
-      ...t,
+    return this.request(L(t, {
       method: S.delete
-    });
+    }));
   }
   /**
    * To execute a request.
@@ -1368,7 +1362,7 @@ const w = class w {
     if (u)
       return u;
     let h = {};
-    F.show();
+    x.show();
     try {
       await this.preparation.make(o);
       const f = await this.makeQuery(t), d = await this.preparation.makeEnd(a, f);
@@ -1376,7 +1370,7 @@ const w = class w {
         f.status,
         f.statusText
       ), d != null && d.reset)
-        return F.hide(), await this.fetch(t);
+        return x.hide(), await this.fetch(t);
       h = await this.readData(
         f,
         n,
@@ -1385,7 +1379,7 @@ const w = class w {
     } catch (f) {
       s || console.error("Api: ", f), this.status.setError(String(f));
     }
-    return F.hide(), this.makeData(h, e);
+    return x.hide(), this.makeData(h, e);
   }
   /**
    * Reading data from the response.
@@ -1414,12 +1408,11 @@ const w = class w {
       headers: u = {},
       type: h = "application/json;charset=UTF-8",
       init: f = {}
-    } = t, d = o != null ? o : this.getUrl(n, s), E = `${d}${this.getBodyForGet(e, d, a)}`, J = this.headers.get(u, h), Q = {
-      ...f,
+    } = t, d = o != null ? o : this.getUrl(n, s), I = `${d}${this.getBodyForGet(e, d, a)}`, Q = this.headers.get(u, h), X = L(f, {
       method: a,
       body: this.getBody(e, a)
-    };
-    return J && (Q.headers = J), await fetch(E, Q);
+    });
+    return Q && (X.headers = Q), await fetch(I, X);
   }
   /**
    * Transforms data if needed.
@@ -1429,9 +1422,9 @@ const w = class w {
    * @param toData is it necessary to process the data/ нужно ли обрабатывать данные
    */
   static makeData(t, e) {
-    if (this.status.setLastResponse(t), t && e && k(t) && "data" in t) {
-      if (k(t.data)) {
-        const s = { ...t.data };
+    if (this.status.setLastResponse(t), t && e && C(t) && "data" in t) {
+      if (C(t.data)) {
+        const s = L(t.data);
         return "success" in t && (s.success = t.success), s;
       }
       return t.data;
@@ -1439,9 +1432,9 @@ const w = class w {
     return t;
   }
 };
-c(w, "url", "/api/"), c(w, "headers", new jt()), c(w, "requestDefault", new zt()), c(w, "status", new Ht()), c(w, "response", new Kt(w.requestDefault)), c(w, "preparation", new Vt());
+c(w, "url", "/api/"), c(w, "headers", new zt()), c(w, "requestDefault", new Ht()), c(w, "status", new Zt()), c(w, "response", new Vt(w.requestDefault)), c(w, "preparation", new Yt());
 let U = w;
-class ve {
+class Se {
   /**
    * Constructor
    * @param name channel name/ название канала
@@ -1461,7 +1454,7 @@ class ve {
     });
     if (this.callback = e, l())
       try {
-        this.channel = new BroadcastChannel(`${Yt()}__${t}`), this.channel.onmessage = this.update;
+        this.channel = new BroadcastChannel(`${qt()}__${t}`), this.channel.onmessage = this.update;
       } catch (s) {
         console.error(`BroadcastMessage ${t}:`, s);
       }
@@ -1486,8 +1479,8 @@ class ve {
     return this.callback = t, this;
   }
 }
-const Yt = () => new _("__broadcast-name").get(() => `name_${V(1e6, 9999999)}`);
-class qt {
+const qt = () => new O("__broadcast-name").get(() => `name_${Y(1e6, 9999999)}`);
+class Jt {
   /**
    * Constructor
    * @param callback function for the cache/ функция для кэша
@@ -1550,7 +1543,7 @@ class qt {
     return this.cache === void 0 || this.comparisons.length !== t.length || this.comparisons.findIndex((e, s) => e !== t[s]) >= 0 ? (this.comparisons = [...t], !0) : !1;
   }
 }
-class Jt {
+class Qt {
   constructor() {
     c(this, "cache", {});
   }
@@ -1584,10 +1577,10 @@ class Jt {
    * @param callback function for the cache/ функция для кэша
    */
   getCacheItem(t, e) {
-    return t in this.cache || (this.cache[t] = new qt(e)), this.cache[t];
+    return t in this.cache || (this.cache[t] = new Jt(e)), this.cache[t];
   }
 }
-const M = class M {
+const _ = class _ {
   /**
    * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
    *
@@ -1600,9 +1593,9 @@ const M = class M {
     return this.cache.get(t, e, s);
   }
 };
-c(M, "cache"), M.cache = new Jt();
-let dt = M;
-function At(i, t = !1) {
+c(_, "cache"), _.cache = new Qt();
+let gt = _;
+function Nt(i, t = !1) {
   if (typeof i == "string") {
     const e = i.trim();
     switch (e) {
@@ -1633,8 +1626,8 @@ function At(i, t = !1) {
   }
   return i;
 }
-const Qt = "cookie-block";
-class Nt {
+const Xt = "cookie-block";
+class Et {
   /**
    * Obtaining status.
    *
@@ -1654,14 +1647,14 @@ class Nt {
     this.storage.set(t);
   }
 }
-c(Nt, "storage", new _(Qt));
-const X = {}, nt = class nt {
+c(Et, "storage", new O(Xt));
+const M = {}, ot = class ot {
   constructor(t) {
     c(this, "value");
     c(this, "options", {});
-    if (this.name = t, t in T)
-      return T[t];
-    this.value = X == null ? void 0 : X[t], T[t] = this;
+    if (this.name = t, t in G)
+      return G[t];
+    this.value = M == null ? void 0 : M[t], G[t] = this;
   }
   /**
    * Get data or update if none.
@@ -1681,7 +1674,7 @@ const X = {}, nt = class nt {
    * @param options additional parameters/ дополнительные параметры
    */
   set(t, e) {
-    this.value = N(t), Object.assign(this.options, e), this.update();
+    this.value = E(t), Object.assign(this.options, e), this.update();
   }
   /**
    * Delete cookie data.
@@ -1707,7 +1700,7 @@ const X = {}, nt = class nt {
    */
   update() {
     var t, e, s, n, o;
-    if (l() && !Nt.get()) {
+    if (l() && !Et.get()) {
       const a = String((t = this.value) != null ? t : "");
       document.cookie = [
         `${encodeURIComponent(this.name)}=${encodeURIComponent(a)}`,
@@ -1725,30 +1718,30 @@ const X = {}, nt = class nt {
   static updateData() {
     for (const t of document.cookie.split(";")) {
       const [e, s] = t.trim().split("=");
-      e && D(s) && (X[e] = At(s));
+      e && D(s) && (M[e] = Nt(s));
     }
   }
 };
-l() && nt.updateData();
-let gt = nt;
-const T = {};
-function I(i) {
-  var n, o, a, u, h, f, d, E;
+l() && ot.updateData();
+let ft = ot;
+const G = {};
+function B(i) {
+  var n, o, a, u, h, f, d, I;
   if (i instanceof Date)
     return i;
-  if (Y(i))
+  if (q(i))
     return /* @__PURE__ */ new Date();
   if (typeof i == "number")
     return new Date(i);
   let t = i, e = b.getTimezoneFormat();
-  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (J, Q, Ft) => (t = Q, e = Ft, J));
-  const s = (E = (d = (f = (h = (u = (a = (o = (n = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? n : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? f : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? d : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? E : t.replace(" ", "T");
+  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (Q, X, xt) => (t = X, e = xt, Q));
+  const s = (I = (d = (f = (h = (u = (a = (o = (n = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? n : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? f : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? d : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? I : t.replace(" ", "T");
   return /* @__PURE__ */ new Date(`${s}${e}`);
 }
-function Xt(i, t) {
+function Mt(i, t) {
   return g(i, (e) => e == null ? void 0 : e[t]);
 }
-class q {
+class J {
   /**
    * Constructor
    * @param code country code, full form language-country or one of them/
@@ -1758,9 +1751,9 @@ class q {
     c(this, "geo");
     this.geo = b.find(t);
     const e = this.getLocation();
-    if (e in G)
-      return G[e];
-    G[e] = this;
+    if (e in tt)
+      return tt[e];
+    tt[e] = this;
   }
   /**
    * Returns an instance of the class according to the specified country code.
@@ -1770,7 +1763,7 @@ class q {
    * код страны, полный вид язык-страна или один из них
    */
   static getInstance(t = b.getLocation()) {
-    return new q(t);
+    return new J(t);
   }
   /**
    * Returns country code and language.
@@ -1877,7 +1870,7 @@ class q {
    */
   number(t, e) {
     var s, n;
-    return ((n = (s = this.numberObject(e)) == null ? void 0 : s.format) == null ? void 0 : n.call(s, L(t))) || t.toString();
+    return ((n = (s = this.numberObject(e)) == null ? void 0 : s.format) == null ? void 0 : n.call(s, k(t))) || t.toString();
   }
   /**
    * Decimal point symbol.
@@ -1905,8 +1898,8 @@ class q {
     }, o = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...a) => (n.currency = String(a[2]).toUpperCase(), String(a[1])));
     if (s) {
       const a = this.numberObject(n);
-      return a ? Xt(
-        a.formatToParts(L(t)).filter((u) => ["literal", "currency"].indexOf(u.type) === -1),
+      return a ? Mt(
+        a.formatToParts(k(t)).filter((u) => ["literal", "currency"].indexOf(u.type) === -1),
         "value"
       ).join("") : t.toString();
     } else return "currency" in n ? this.number(
@@ -1960,8 +1953,8 @@ class q {
    * в форматировании блока
    */
   sizeFile(t, e = "byte") {
-    const s = L(t);
-    if (s > 1024 && j(e))
+    const s = k(t);
+    if (s > 1024 && z(e))
       switch (e) {
         case "byte":
           return this.sizeFile(s / 1024, "kilobyte");
@@ -1998,7 +1991,7 @@ class q {
    * объект с некоторыми или всеми свойствами
    */
   percentBy100(t, e) {
-    return this.percent(L(t) / 100, e);
+    return this.percent(k(t) / 100, e);
   }
   /**
    * Применять форматирование, учитывающее множественное число, и языковые правила, связанные с множественным числом
@@ -2010,7 +2003,7 @@ class q {
    */
   plural(t, e, s, n) {
     var u;
-    const o = L(t), a = e.split("|");
+    const o = k(t), a = e.split("|");
     if (a.length > 1)
       try {
         if (l()) {
@@ -2053,7 +2046,7 @@ class q {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   date(t, e, s, n) {
-    const o = I(t), a = typeof s == "string", u = this.dateOptions(e, a ? s : "short");
+    const o = B(t), a = typeof s == "string", u = this.dateOptions(e, a ? s : "short");
     return n && (u.hour12 = !1), a || Object.assign(u, s), o.toLocaleString(this.getLocation(), u);
   }
   /**
@@ -2066,7 +2059,7 @@ class q {
    * @param todayValue current day/ текущий день
    */
   relative(t, e, s) {
-    const n = I(t), o = s || /* @__PURE__ */ new Date(), a = {
+    const n = B(t), o = s || /* @__PURE__ */ new Date(), a = {
       numeric: "auto",
       ...typeof e == "string" ? { style: e } : e || {}
     };
@@ -2092,8 +2085,8 @@ class q {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   relativeLimit(t, e, s, n, o, a, u) {
-    const h = I(t), f = s || /* @__PURE__ */ new Date(), d = new Date(f), E = new Date(f);
-    return d.setDate(f.getDate() - e), E.setDate(f.getDate() + e), h >= d && h <= E ? this.relative(
+    const h = B(t), f = s || /* @__PURE__ */ new Date(), d = new Date(f), I = new Date(f);
+    return d.setDate(f.getDate() - e), I.setDate(f.getDate() + e), h >= d && h <= I ? this.relative(
       h,
       n,
       f
@@ -2117,7 +2110,7 @@ class q {
     };
     try {
       if (l())
-        return new Intl.RelativeTimeFormat(this.getLocation(), n).format(Math.round(L(t)), e);
+        return new Intl.RelativeTimeFormat(this.getLocation(), n).format(Math.round(k(t)), e);
     } catch (o) {
       console.error("relative: ", o);
     }
@@ -2132,7 +2125,7 @@ class q {
   month(t, e) {
     try {
       if (l())
-        return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(I(t));
+        return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(B(t));
     } catch (s) {
       console.error("month: ", s);
     }
@@ -2173,7 +2166,7 @@ class q {
   weekday(t, e) {
     try {
       if (l())
-        return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(I(t));
+        return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(B(t));
     } catch (s) {
       console.error("weekday: ", s);
     }
@@ -2255,8 +2248,8 @@ class q {
     return ["full", "datetime", "date", void 0, "year-month", "year"].indexOf(t) !== -1 && (s.year = "numeric"), ["full", "datetime", "date", void 0, "year-month", "month", "day-month"].indexOf(t) !== -1 && (s.month = e), ["full", "datetime", "date", void 0, "day", "day-month"].indexOf(t) !== -1 && (s.day = "2-digit"), t !== void 0 && (["full", "datetime", "time", "hour-minute", "hour"].indexOf(t) !== -1 && (s.hour = "2-digit"), ["full", "datetime", "time", "hour-minute", "minute"].indexOf(t) !== -1 && (s.minute = "2-digit"), ["full", "time", "second"].indexOf(t) !== -1 && (s.second = "2-digit")), s;
   }
 }
-const G = {};
-class Et {
+const tt = {};
+class It {
   /**
    * Constructor
    * @param date date for processing/ дата для обработки
@@ -2267,7 +2260,7 @@ class Et {
     c(this, "date");
     c(this, "hour24", !1);
     c(this, "watch");
-    this.type = e, this.code = s, this.date = I(t);
+    this.type = e, this.code = s, this.date = B(t);
   }
   /**
    * Returns an object for working with formatting.
@@ -2275,7 +2268,7 @@ class Et {
    * Возвращает объект для работы с форматированием.
    */
   getIntl() {
-    return new q(this.code);
+    return new J(this.code);
   }
   /**
    * Returns a Date object.
@@ -2483,7 +2476,7 @@ class Et {
    * @param timeZone add time zone/ добавить временную зону
    */
   standard(t = !0) {
-    const e = new Et(this.date, this.type, "en-GB"), s = [];
+    const e = new It(this.date, this.type, "en-GB"), s = [];
     let n;
     return e.setHour24(!0), this.type === "hour-minute" ? n = e.locale(this.type, {
       year: "numeric",
@@ -2499,7 +2492,7 @@ class Et {
    * целочисленное значение, представляющее число
    */
   setDate(t) {
-    return this.date = I(t), this.update(), this;
+    return this.date = B(t), this.update(), this;
   }
   /**
    * Change the type of data output.
@@ -2908,7 +2901,7 @@ class Et {
     ), this;
   }
 }
-const r = "@flag", R = class R {
+const r = "@flag", P = class P {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
@@ -2931,7 +2924,7 @@ const r = "@flag", R = class R {
         language: this.getLanguage(e),
         country: n,
         standard: e.standard,
-        icon: (s = R.flags) == null ? void 0 : s[e.country],
+        icon: (s = P.flags) == null ? void 0 : s[e.country],
         label: n,
         value: e.country
       };
@@ -2964,7 +2957,7 @@ const r = "@flag", R = class R {
    */
   getNational(t) {
     return g(this.getList(t), (e) => {
-      const s = new R(e.standard).get(e.standard);
+      const s = new P(e.standard).get(e.standard);
       return {
         ...e,
         description: s == null ? void 0 : s.country,
@@ -2988,7 +2981,7 @@ const r = "@flag", R = class R {
    * Возвращает специальный объект для работы с форматированием.
    */
   getLocation() {
-    return new q(this.code);
+    return new J(this.code);
   }
   /**
    * Returns a list of countries to retrieve data from.
@@ -2997,7 +2990,7 @@ const r = "@flag", R = class R {
    * @param codes country code/ код страны
    */
   getCodes(t) {
-    return t != null ? t : Object.keys(R.flags);
+    return t != null ? t : Object.keys(P.flags);
   }
   /**
    * Getting the name of the language.
@@ -3018,7 +3011,7 @@ const r = "@flag", R = class R {
     return this.getLocation().countryName(t.country);
   }
 };
-c(R, "flags", {
+c(P, "flags", {
   AD: `${r}-ad`,
   AE: `${r}-ae`,
   AF: `${r}-af`,
@@ -3261,8 +3254,8 @@ c(R, "flags", {
   ZM: `${r}-zm`,
   ZW: `${r}-zw`
 });
-let ft = R;
-const P = class P {
+let mt = P;
+const W = class W {
   /**
    * Getting an object with information about the phone code and country.
    *
@@ -3377,7 +3370,7 @@ const P = class P {
         return {
           phone: (e == null ? void 0 : e.phoneCode) && Number(e.phoneCode.replace(/[^0-9]+/, "")) || void 0,
           within: (e == null ? void 0 : e.phoneWithin) || 0,
-          mask: z(e.phoneMask),
+          mask: H(e.phoneMask),
           value: e.country
         };
     });
@@ -3441,9 +3434,9 @@ const P = class P {
     return t.replace(/\*/, this.getWithinSymbol(e));
   }
 };
-c(P, "list", []), c(P, "map", {}), P.makeList(), P.makeMap();
-let mt = P, x;
-class Se {
+c(W, "list", []), c(W, "map", {}), W.makeList(), W.makeMap();
+let yt = W, R;
+class De {
   /**
    * Returns the value by its name.
    *
@@ -3451,7 +3444,7 @@ class Se {
    * @param name property name/ название свойства
    */
   static get(t) {
-    return x && (x == null ? void 0 : x[t]);
+    return R && (R == null ? void 0 : R[t]);
   }
   /**
    * Adds data, this method works only once.
@@ -3460,10 +3453,10 @@ class Se {
    * @param data global data/ глобальные данные
    */
   static add(t) {
-    x === void 0 && (x = { ...t });
+    R === void 0 && (R = L(t));
   }
 }
-const B = class B {
+const F = class F {
   /**
    * Get data from hash.
    *
@@ -3483,7 +3476,7 @@ const B = class B {
    */
   static set(t, e) {
     var n;
-    const s = N(e);
+    const s = E(e);
     s !== ((n = this.hash) == null ? void 0 : n[t]) && (this.hash[t] = s, this.update());
   }
   /**
@@ -3517,7 +3510,7 @@ const B = class B {
     const t = {};
     return location.hash.replace(
       /([\w-]+)[:=]([^;]+)/ig,
-      (...e) => (t[String(e[1])] = At(e[2]), "")
+      (...e) => (t[String(e[1])] = Nt(e[2]), "")
     ), t;
   }
   /**
@@ -3526,7 +3519,7 @@ const B = class B {
    * Обновление строки хэша в URL.
    */
   static update() {
-    this.block = !0, history.replaceState(null, "", `#${Lt(this.hash, "=", ";")}`), requestAnimationFrame(() => {
+    this.block = !0, history.replaceState(null, "", `#${kt(this.hash, "=", ";")}`), requestAnimationFrame(() => {
       this.block = !1;
     });
   }
@@ -3543,9 +3536,9 @@ const B = class B {
     });
   }
 };
-c(B, "hash", {}), c(B, "watch", {}), c(B, "block", !1), l() && (B.reload(), addEventListener("hashchange", () => B.reload()));
-let yt = B;
-const tt = "__UI_ICON", $t = 320, pt = "--LOAD--", K = class K {
+c(F, "hash", {}), c(F, "watch", {}), c(F, "block", !1), l() && (F.reload(), addEventListener("hashchange", () => F.reload()));
+let $t = F;
+const et = "__UI_ICON", pt = 320, bt = "--LOAD--", V = class V {
   /**
    * Checks if the given icon is in the list of connected icons.
    *
@@ -3568,7 +3561,7 @@ const tt = "__UI_ICON", $t = 320, pt = "--LOAD--", K = class K {
   static async get(t, e = "", s = 1e3 * 60 * 3) {
     var o, a, u, h;
     const n = (h = (u = (o = this.icons) == null ? void 0 : o[this.getName(t)]) != null ? u : (a = this.icons) == null ? void 0 : a[t]) != null ? h : `${t.replace(/^@/, e != null ? e : this.url)}.svg`;
-    return typeof n == "string" ? n === pt && s > 0 ? (await this.wait(), this.get(t, e, s - $t)) : n : await n;
+    return typeof n == "string" ? n === bt && s > 0 ? (await this.wait(), this.get(t, e, s - pt)) : n : await n;
   }
   /**
    * Returns a list of names of all registered icons.
@@ -3603,7 +3596,7 @@ const tt = "__UI_ICON", $t = 320, pt = "--LOAD--", K = class K {
    * @param index icon name/ название иконки
    */
   static addLoad(t) {
-    this.icons[this.getName(t)] = pt;
+    this.icons[this.getName(t)] = bt;
   }
   /**
    * Adding custom global icons.
@@ -3648,42 +3641,42 @@ const tt = "__UI_ICON", $t = 320, pt = "--LOAD--", K = class K {
    * Задержка выполнения скрипта.
    */
   static wait() {
-    return new Promise((t) => setTimeout(() => t(), $t));
+    return new Promise((t) => setTimeout(() => t(), pt));
   }
 };
-c(K, "icons", {}), c(K, "url", "/icons/"), l() && (tt in window || (window[tt] = {}), K.icons = window[tt]);
-let bt = K;
-function Mt(i, t, e) {
-  var s, n;
-  return (n = (s = C(i)) == null ? void 0 : s[t]) != null ? n : e;
-}
+c(V, "icons", {}), c(V, "url", "/icons/"), l() && (et in window || (window[et] = {}), V.icons = window[et]);
+let wt = V;
 function _t(i, t, e) {
-  const s = C(i);
+  var s, n;
+  return (n = (s = A(i)) == null ? void 0 : s[t]) != null ? n : e;
+}
+function Ot(i, t, e) {
+  const s = A(i);
   if (s) {
-    const n = Mt(s, t);
+    const n = _t(s, t);
     if (m(n) && m(e))
       g(e, (o, a) => {
-        n[a] = N(o);
+        n[a] = E(o);
       });
     else {
-      const o = N(e);
-      !(t in s) && typeof o == "string" ? s.setAttribute(t.toString(), o) : s[t] = N(e);
+      const o = E(e);
+      !(t in s) && typeof o == "string" ? s.setAttribute(t.toString(), o) : s[t] = E(e);
     }
   }
   return s;
 }
-function it(i, t = "div", e, s) {
+function st(i, t = "div", e, s) {
   if (!l())
     return;
   const n = document.createElement(t);
-  return typeof e == "function" ? e(n) : k(e) && g(e, (o, a) => {
-    _t(n, a, o);
+  return typeof e == "function" ? e(n) : C(e) && g(e, (o, a) => {
+    Ot(n, a, o);
   }), i == null || i.insertBefore(n, s != null ? s : null), n;
 }
-function Ot(i) {
+function Tt(i) {
   return i.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").trim();
 }
-class rt {
+class nt {
   /**
    * Creates an instance of MetaManager.
    *
@@ -3797,7 +3790,7 @@ class rt {
       e.content = s;
     else if (l()) {
       const o = { content: s };
-      this.isProperty ? o.property = t : o.name = t, it(document.head, "meta", o);
+      this.isProperty ? o.property = t : o.name = t, st(document.head, "meta", o);
     }
     return this;
   }
@@ -3809,7 +3802,7 @@ class rt {
    */
   toHtmlString(t) {
     var s;
-    const e = Ot((s = this.items[t]) != null ? s : "");
+    const e = Tt((s = this.items[t]) != null ? s : "");
     return e ? `<meta ${this.getAttributeName()}="${t}" content="${e}">` : "";
   }
   /**
@@ -3824,8 +3817,8 @@ class rt {
     }), this;
   }
 }
-var v = /* @__PURE__ */ ((i) => (i.description = "description", i.keywords = "keywords", i.canonical = "canonical", i.robots = "robots", i.author = "author", i))(v || {}), Tt = /* @__PURE__ */ ((i) => (i.indexFollow = "index, follow", i.noIndexFollow = "noindex, follow", i.indexNoFollow = "index, nofollow", i.noIndexNoFollow = "noindex, nofollow", i.noArchive = "noarchive", i.noSnippet = "nosnippet", i.noImageIndex = "noimageindex", i.images = "images", i.noTranslate = "notranslate", i.noPreview = "nopreview", i.textOnly = "textonly", i.noIndexSubpages = "noindex, noarchive", i.none = "none", i))(Tt || {}), y = /* @__PURE__ */ ((i) => (i.title = "og:title", i.type = "og:type", i.url = "og:url", i.image = "og:image", i.description = "og:description", i.locale = "og:locale", i.siteName = "og:site_name", i.localeAlternate = "og:locale:alternate", i.imageUrl = "og:image:url", i.imageSecureUrl = "og:image:secure_url", i.imageType = "og:image:type", i.imageWidth = "og:image:width", i.imageHeight = "og:image:height", i.imageAlt = "og:image:alt", i.video = "og:video", i.videoUrl = "og:video:url", i.videoSecureUrl = "og:video:secure_url", i.videoType = "og:video:type", i.videoWidth = "og:video:width", i.videoHeight = "og:video:height", i.audio = "og:audio", i.audioSecureUrl = "og:audio:secure_url", i.audioType = "og:audio:type", i.articlePublishedTime = "article:published_time", i.articleModifiedTime = "article:modified_time", i.articleExpirationTime = "article:expiration_time", i.articleAuthor = "article:author", i.articleSection = "article:section", i.articleTag = "article:tag", i.bookAuthor = "book:author", i.bookIsbn = "book:isbn", i.bookReleaseDate = "book:release_date", i.bookTag = "book:tag", i.musicDuration = "music:duration", i.musicAlbum = "music:album", i.musicAlbumDisc = "music:album:disc", i.musicAlbumTrack = "music:album:track", i.musicMusician = "music:musician", i.musicSong = "music:song", i.musicSongDisc = "music:song:disc", i.musicSongTrack = "music:song:track", i.musicReleaseDate = "music:release_date", i.musicCreator = "music:creator", i.videoActor = "video:actor", i.videoActorRole = "video:actor:role", i.videoDirector = "video:director", i.videoWriter = "video:writer", i.videoDuration = "video:duration", i.videoReleaseDate = "video:release_date", i.videoTag = "video:tag", i.videoSeries = "video:series", i.profileFirstName = "profile:first_name", i.profileLastName = "profile:last_name", i.profileUsername = "profile:username", i.profileGender = "profile:gender", i.productBrand = "product:brand", i.productAvailability = "product:availability", i.productCondition = "product:condition", i.productPriceAmount = "product:price:amount", i.productPriceCurrency = "product:price:currency", i.productRetailerItemId = "product:retailer_item_id", i.productCategory = "product:category", i.productEan = "product:ean", i.productIsbn = "product:isbn", i.productMfrPartNo = "product:mfr_part_no", i.productUpc = "product:upc", i.productWeightValue = "product:weight:value", i.productWeightUnits = "product:weight:units", i.productColor = "product:color", i.productMaterial = "product:material", i.productPattern = "product:pattern", i.productAgeGroup = "product:age_group", i.productGender = "product:gender", i))(y || {}), Gt = /* @__PURE__ */ ((i) => (i.website = "website", i.article = "article", i.video = "video.other", i.videoTvShow = "video.tv_show", i.videoEpisode = "video.episode", i.videoMovie = "video.movie", i.musicAlbum = "music.album", i.musicPlaylist = "music.playlist", i.musicSong = "music.song", i.musicRadioStation = "music.radio_station", i.app = "app", i.product = "product", i.business = "business.business", i.place = "place", i.event = "event", i.profile = "profile", i.book = "book", i))(Gt || {}), te = /* @__PURE__ */ ((i) => (i.inStock = "in stock", i.outOfStock = "out of stock", i.preorder = "preorder", i.backorder = "backorder", i.discontinued = "discontinued", i.pending = "pending", i))(te || {}), ee = /* @__PURE__ */ ((i) => (i.new = "new", i.used = "used", i.refurbished = "refurbished", i))(ee || {}), ie = /* @__PURE__ */ ((i) => (i.newborn = "newborn", i.infant = "infant", i.toddler = "toddler", i.kids = "kids", i.adult = "adult", i))(ie || {}), se = /* @__PURE__ */ ((i) => (i.female = "female", i.male = "male", i.unisex = "unisex", i))(se || {}), $ = /* @__PURE__ */ ((i) => (i.card = "twitter:card", i.site = "twitter:site", i.creator = "twitter:creator", i.url = "twitter:url", i.title = "twitter:title", i.description = "twitter:description", i.image = "twitter:image", i.imageAlt = "twitter:image:alt", i.imageSrc = "twitter:image:src", i.imageWidth = "twitter:image:width", i.imageHeight = "twitter:image:height", i.label1 = "twitter:label1", i.data1 = "twitter:data1", i.label2 = "twitter:label2", i.data2 = "twitter:data2", i.appNameIphone = "twitter:app:name:iphone", i.appIdIphone = "twitter:app:id:iphone", i.appUrlIphone = "twitter:app:url:iphone", i.appNameIpad = "twitter:app:name:ipad", i.appIdIpad = "twitter:app:id:ipad", i.appUrlIpad = "twitter:app:url:ipad", i.appNameGooglePlay = "twitter:app:name:googleplay", i.appIdGooglePlay = "twitter:app:id:googleplay", i.appUrlGooglePlay = "twitter:app:url:googleplay", i.player = "twitter:player", i.playerWidth = "twitter:player:width", i.playerHeight = "twitter:player:height", i.playerStream = "twitter:player:stream", i.playerStreamContentType = "twitter:player:stream:content_type", i))($ || {}), re = /* @__PURE__ */ ((i) => (i.summary = "summary", i.summaryLargeImage = "summary_large_image", i.app = "app", i.player = "player", i.product = "product", i.gallery = "gallery", i.photo = "photo", i.leadGeneration = "lead_generation", i.audio = "audio", i.poll = "poll", i))(re || {});
-class ne extends rt {
+var v = /* @__PURE__ */ ((i) => (i.description = "description", i.keywords = "keywords", i.canonical = "canonical", i.robots = "robots", i.author = "author", i))(v || {}), Gt = /* @__PURE__ */ ((i) => (i.indexFollow = "index, follow", i.noIndexFollow = "noindex, follow", i.indexNoFollow = "index, nofollow", i.noIndexNoFollow = "noindex, nofollow", i.noArchive = "noarchive", i.noSnippet = "nosnippet", i.noImageIndex = "noimageindex", i.images = "images", i.noTranslate = "notranslate", i.noPreview = "nopreview", i.textOnly = "textonly", i.noIndexSubpages = "noindex, noarchive", i.none = "none", i))(Gt || {}), y = /* @__PURE__ */ ((i) => (i.title = "og:title", i.type = "og:type", i.url = "og:url", i.image = "og:image", i.description = "og:description", i.locale = "og:locale", i.siteName = "og:site_name", i.localeAlternate = "og:locale:alternate", i.imageUrl = "og:image:url", i.imageSecureUrl = "og:image:secure_url", i.imageType = "og:image:type", i.imageWidth = "og:image:width", i.imageHeight = "og:image:height", i.imageAlt = "og:image:alt", i.video = "og:video", i.videoUrl = "og:video:url", i.videoSecureUrl = "og:video:secure_url", i.videoType = "og:video:type", i.videoWidth = "og:video:width", i.videoHeight = "og:video:height", i.audio = "og:audio", i.audioSecureUrl = "og:audio:secure_url", i.audioType = "og:audio:type", i.articlePublishedTime = "article:published_time", i.articleModifiedTime = "article:modified_time", i.articleExpirationTime = "article:expiration_time", i.articleAuthor = "article:author", i.articleSection = "article:section", i.articleTag = "article:tag", i.bookAuthor = "book:author", i.bookIsbn = "book:isbn", i.bookReleaseDate = "book:release_date", i.bookTag = "book:tag", i.musicDuration = "music:duration", i.musicAlbum = "music:album", i.musicAlbumDisc = "music:album:disc", i.musicAlbumTrack = "music:album:track", i.musicMusician = "music:musician", i.musicSong = "music:song", i.musicSongDisc = "music:song:disc", i.musicSongTrack = "music:song:track", i.musicReleaseDate = "music:release_date", i.musicCreator = "music:creator", i.videoActor = "video:actor", i.videoActorRole = "video:actor:role", i.videoDirector = "video:director", i.videoWriter = "video:writer", i.videoDuration = "video:duration", i.videoReleaseDate = "video:release_date", i.videoTag = "video:tag", i.videoSeries = "video:series", i.profileFirstName = "profile:first_name", i.profileLastName = "profile:last_name", i.profileUsername = "profile:username", i.profileGender = "profile:gender", i.productBrand = "product:brand", i.productAvailability = "product:availability", i.productCondition = "product:condition", i.productPriceAmount = "product:price:amount", i.productPriceCurrency = "product:price:currency", i.productRetailerItemId = "product:retailer_item_id", i.productCategory = "product:category", i.productEan = "product:ean", i.productIsbn = "product:isbn", i.productMfrPartNo = "product:mfr_part_no", i.productUpc = "product:upc", i.productWeightValue = "product:weight:value", i.productWeightUnits = "product:weight:units", i.productColor = "product:color", i.productMaterial = "product:material", i.productPattern = "product:pattern", i.productAgeGroup = "product:age_group", i.productGender = "product:gender", i))(y || {}), te = /* @__PURE__ */ ((i) => (i.website = "website", i.article = "article", i.video = "video.other", i.videoTvShow = "video.tv_show", i.videoEpisode = "video.episode", i.videoMovie = "video.movie", i.musicAlbum = "music.album", i.musicPlaylist = "music.playlist", i.musicSong = "music.song", i.musicRadioStation = "music.radio_station", i.app = "app", i.product = "product", i.business = "business.business", i.place = "place", i.event = "event", i.profile = "profile", i.book = "book", i))(te || {}), ee = /* @__PURE__ */ ((i) => (i.inStock = "in stock", i.outOfStock = "out of stock", i.preorder = "preorder", i.backorder = "backorder", i.discontinued = "discontinued", i.pending = "pending", i))(ee || {}), ie = /* @__PURE__ */ ((i) => (i.new = "new", i.used = "used", i.refurbished = "refurbished", i))(ie || {}), se = /* @__PURE__ */ ((i) => (i.newborn = "newborn", i.infant = "infant", i.toddler = "toddler", i.kids = "kids", i.adult = "adult", i))(se || {}), re = /* @__PURE__ */ ((i) => (i.female = "female", i.male = "male", i.unisex = "unisex", i))(re || {}), $ = /* @__PURE__ */ ((i) => (i.card = "twitter:card", i.site = "twitter:site", i.creator = "twitter:creator", i.url = "twitter:url", i.title = "twitter:title", i.description = "twitter:description", i.image = "twitter:image", i.imageAlt = "twitter:image:alt", i.imageSrc = "twitter:image:src", i.imageWidth = "twitter:image:width", i.imageHeight = "twitter:image:height", i.label1 = "twitter:label1", i.data1 = "twitter:data1", i.label2 = "twitter:label2", i.data2 = "twitter:data2", i.appNameIphone = "twitter:app:name:iphone", i.appIdIphone = "twitter:app:id:iphone", i.appUrlIphone = "twitter:app:url:iphone", i.appNameIpad = "twitter:app:name:ipad", i.appIdIpad = "twitter:app:id:ipad", i.appUrlIpad = "twitter:app:url:ipad", i.appNameGooglePlay = "twitter:app:name:googleplay", i.appIdGooglePlay = "twitter:app:id:googleplay", i.appUrlGooglePlay = "twitter:app:url:googleplay", i.player = "twitter:player", i.playerWidth = "twitter:player:width", i.playerHeight = "twitter:player:height", i.playerStream = "twitter:player:stream", i.playerStreamContentType = "twitter:player:stream:content_type", i))($ || {}), ne = /* @__PURE__ */ ((i) => (i.summary = "summary", i.summaryLargeImage = "summary_large_image", i.app = "app", i.player = "player", i.product = "product", i.gallery = "gallery", i.photo = "photo", i.leadGeneration = "lead_generation", i.audio = "audio", i.poll = "poll", i))(ne || {});
+class oe extends nt {
   constructor() {
     super(Object.values(y), !0);
   }
@@ -3949,7 +3942,7 @@ class ne extends rt {
     return this.set(y.siteName, t);
   }
 }
-class oe extends rt {
+class ae extends nt {
   constructor() {
     super(Object.values($));
   }
@@ -4073,7 +4066,7 @@ class oe extends rt {
     return this.set($.image, t), this;
   }
 }
-class De extends rt {
+class Le extends nt {
   /**
    * Creates an instance of Meta with integrated Open Graph and Twitter Card support.
    *
@@ -4084,7 +4077,7 @@ class De extends rt {
     c(this, "suffix");
     c(this, "og");
     c(this, "twitter");
-    this.og = new ne(), this.twitter = new oe();
+    this.og = new oe(), this.twitter = new ae();
   }
   /**
    * Gets the MetaOg instance for advanced Open Graph operations.
@@ -4194,7 +4187,7 @@ class De extends rt {
    * @param keywords keywords as string or array / ключевые слова в виде строки или массива
    */
   setKeywords(e) {
-    return this.set(v.keywords, z(e).join(", ")), this;
+    return this.set(v.keywords, H(e).join(", ")), this;
   }
   /**
    * Sets the description meta tag.
@@ -4285,7 +4278,7 @@ class De extends rt {
     return D(this.suffix) ? ` - ${this.suffix}` : "";
   }
 }
-class st {
+class rt {
   /**
    * Checks whether to enable scroll hiding.
    *
@@ -4315,8 +4308,8 @@ class st {
    * Создает элементы для проверки ширины скролла.
    */
   static createElement() {
-    return it(document.body, "div", (t) => {
-      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", it(t, "div", (e) => {
+    return st(document.body, "div", (t) => {
+      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", st(t, "div", (e) => {
         e.style.height = "100px";
       });
     });
@@ -4336,8 +4329,8 @@ class st {
     });
   }
 }
-c(st, "storage", new _("scrollbar", !0)), c(st, "calculate", !1);
-const ae = [
+c(rt, "storage", new O("scrollbar", !0)), c(rt, "calculate", !1);
+const ce = [
   "d",
   "e",
   "f",
@@ -4357,21 +4350,21 @@ const ae = [
   "t",
   "u",
   "v"
-], ce = (i, t = {}) => {
+], ue = (i, t = {}) => {
   let e = String(i);
   if (i.match(/%[a-z]/)) {
     let s = 0;
     g(t, (n) => {
-      e = e.replace(new RegExp(`%${ae[s++]}`, "g"), String(n));
+      e = e.replace(new RegExp(`%${ce[s++]}`, "g"), String(n));
     });
   }
-  return k(t) && g(t, (s, n) => {
+  return C(t) && g(t, (s, n) => {
     e = e.replace(
       new RegExp(`\\[${n}\\](.*?)\\[/${n}\\]`, "g"),
       (o, a) => String(s).replace(/\[content]/g, a)
     ).replace(new RegExp(`\\[${n}\\]`, "g"), String(s));
   }), e;
-}, A = class A {
+}, N = class N {
   /**
    * Getting the translation text by its code.
    *
@@ -4455,7 +4448,7 @@ const ae = [
    */
   static addSync(t) {
     g(t, (e, s) => {
-      j(e) && D(e) && (this.data[this.getName(s)] = e);
+      z(e) && D(e) && (this.data[this.getName(s)] = e);
     });
   }
   /**
@@ -4480,7 +4473,7 @@ const ae = [
    * @param url path to the script/ путь к скрипту
    */
   static setUrl(t) {
-    return this.url = t, A;
+    return this.url = t, N;
   }
   static setPropsName(t) {
     return this.propsName = t, this;
@@ -4502,7 +4495,7 @@ const ae = [
    */
   static getNamesNone(t) {
     const e = [];
-    return z(t).forEach((s) => {
+    return H(t).forEach((s) => {
       s !== "__TRANSLATE_START__" && s !== "__TRANSLATE_END__" && !(this.getName(s) in this.data) && e.push(s);
     }), e;
   }
@@ -4531,7 +4524,7 @@ const ae = [
    * @param replacement values for replacement/ значения для замены
    */
   static replacement(t, e) {
-    return e ? ce(t, e) : t;
+    return e ? ue(t, e) : t;
   }
   /**
    * Adding translation data from the server.
@@ -4546,152 +4539,152 @@ const ae = [
     }), this.cache = [];
   }
 };
-c(A, "url", "/api/translate"), c(A, "propsName", "list"), c(A, "data", {}), c(A, "cache", []), c(A, "resolveList", []), c(A, "timeout");
-let wt = A;
-function It(i) {
+c(N, "url", "/api/translate"), c(N, "propsName", "list"), c(N, "data", {}), c(N, "cache", []), c(N, "resolveList", []), c(N, "timeout");
+let vt = N;
+function Bt(i) {
   return Array.isArray(i);
 }
-function Le(i) {
+function ke(i) {
   var t;
-  return j(i) ? i.trim() : It(i) && i.findIndex((e) => m(e)) === -1 ? i.join(",") : m(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
+  return z(i) ? i.trim() : Bt(i) && i.findIndex((e) => m(e)) === -1 ? i.join(",") : m(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
 }
-function ue(i, t) {
+function he(i, t) {
   return Array(t).fill(i);
 }
-function ke(i) {
+function Ce(i) {
   var t;
   if (l())
     return (t = document.querySelector(i)) != null ? t : void 0;
 }
-function Ce(i) {
+function Ae(i) {
   if (l())
     return document.querySelectorAll(i);
 }
-function Ae(i) {
+function Ne(i) {
   i.preventDefault(), i.stopPropagation();
 }
-function he(i, t, e) {
+function le(i, t, e) {
   const s = () => {
-    i(), t != null && t() ? he(i, t, e) : e == null || e();
+    i(), t != null && t() ? le(i, t, e) : e == null || e();
   };
   l() ? requestAnimationFrame(s) : s();
 }
-function Ne(i) {
+function Ee(i) {
   var s;
-  const t = {}, e = C(i);
+  const t = {}, e = A(i);
   if (e)
     for (const n of e.attributes)
       t[n.name] = (s = (n == null ? void 0 : n.value) || (n == null ? void 0 : n.textContent)) != null ? s : void 0;
   return t;
 }
-async function Ee(i) {
+async function Ie(i) {
   var t, e;
   return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
-let vt = V(1e5, 9e5);
-function Ie(i, t) {
-  const e = C(i);
-  return e ? (D(e.id) || e.setAttribute("id", `id-${vt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${vt++}`;
+let St = Y(1e5, 9e5);
+function Be(i, t) {
+  const e = A(i);
+  return e ? (D(e.id) || e.setAttribute("id", `id-${St++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${St++}`;
 }
-function le(i, t = "ig", e = ":value") {
+function de(i, t = "ig", e = ":value") {
   const s = i.replace(/([[\]\\^$.?*+()/])/g, "\\$1");
   return new RegExp(e.replace(/:value/g, s), t);
 }
-function de(i, t) {
+function ge(i, t) {
   var n;
   const e = t.split(".", 2), s = e[0];
-  return s && (i != null && i[s]) && k(i[s]) && (e != null && e[1]) ? de(i[s], e[1]) : (n = s && (i == null ? void 0 : i[s])) != null ? n : "";
+  return s && (i != null && i[s]) && C(i[s]) && (e != null && e[1]) ? ge(i[s], e[1]) : (n = s && (i == null ? void 0 : i[s])) != null ? n : "";
 }
-function Be(i) {
+function Fe(i) {
   var t, e, s;
   return (s = (t = i == null ? void 0 : i.key) != null ? t : i == null ? void 0 : i.code) != null ? s : (e = i == null ? void 0 : i.keyCode) == null ? void 0 : e.toString();
 }
-function Bt(i) {
+function Ft(i) {
   return g(i, (t) => t.length);
 }
-function Fe(i) {
-  return Math.max(...Bt(i));
-}
 function xe(i) {
-  return Math.min(...Bt(i));
+  return Math.max(...Ft(i));
 }
-function ge(i) {
-  var t, e, s, n;
-  return (i == null ? void 0 : i.clientX) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientX) || ((n = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : n.clientX) || 0;
+function Re(i) {
+  return Math.min(...Ft(i));
 }
 function fe(i) {
   var t, e, s, n;
+  return (i == null ? void 0 : i.clientX) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientX) || ((n = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : n.clientX) || 0;
+}
+function me(i) {
+  var t, e, s, n;
   return (i == null ? void 0 : i.clientY) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((n = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : n.clientY) || 0;
 }
-function Re(i) {
+function Pe(i) {
   return {
-    x: ge(i),
-    y: fe(i)
+    x: fe(i),
+    y: me(i)
   };
 }
-function Pe(i, t) {
+function We(i, t) {
   const e = {};
   return t.forEach((s) => {
     s in i && i[s] !== void 0 && (e[s] = i[s]);
   }), e;
 }
-function We(i, t = void 0) {
+function je(i, t = void 0) {
   const e = {};
   return g(i, (s, n) => {
     s !== t && (e[n] = s);
   }), e;
 }
 function Ue(i) {
-  return k(i) ? i : {};
+  return C(i) ? i : {};
 }
-function me(i, t) {
-  return ue(i, t).join("");
+function ye(i, t) {
+  return he(i, t).join("");
 }
-function je(i, t, e = "#", s = 2, n = 12) {
-  const o = V(i, t), a = [];
+function ze(i, t, e = "#", s = 2, n = 12) {
+  const o = Y(i, t), a = [];
   for (let u = 0; u < o; u++)
-    a.push(me(e, V(s, n)));
+    a.push(ye(e, Y(s, n)));
   return a.join(" ");
-}
-function ze(i, t) {
-  const e = i != null ? i : 0;
-  return t > e ? 100 / (t - e) : 0;
 }
 function He(i, t) {
   const e = i != null ? i : 0;
+  return t > e ? 100 / (t - e) : 0;
+}
+function Ze(i, t) {
+  const e = i != null ? i : 0;
   return t > e ? (t - e) / 100 : 0;
 }
-const St = 0;
-function Ze(i, t, e) {
+const Dt = 0;
+function Ke(i, t, e) {
   const s = t == null ? void 0 : t.closest(i);
   if (t && s && s.scrollHeight !== s.offsetHeight)
     if (e) {
       const n = e.getBoundingClientRect(), o = s.getBoundingClientRect(), a = t.getBoundingClientRect();
       s.scrollTop = t.offsetTop - (n.top - o.top) - (n.height / 2 - a.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
-    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - St : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + St);
+    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - Dt : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + Dt);
 }
-function Ke(i, t) {
+function Ve(i, t) {
   return i.indexOf(t) !== -1;
 }
-async function Ve() {
+async function Ye() {
   if (l()) {
-    const i = await st.get();
+    const i = await rt.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function Ye(i, t) {
+function qe(i, t) {
   const e = {};
   return m(i) && m(t) && g(i, (s, n) => {
     n in t && (e[n] = s);
   }), e;
 }
-function qe(i, t) {
+function Je(i, t) {
   let e = Object.keys(i).length !== Object.keys(t).length;
   return e || g(i, (s, n) => {
     s !== (t == null ? void 0 : t[n]) && (e = !0);
   }), e;
 }
-function Je(i) {
+function Qe(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -4701,52 +4694,52 @@ function Je(i) {
       return !1;
   }
 }
-function Qe(i, t) {
+function Xe(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function Xe(i, t) {
-  return Array.isArray(i) ? i.every((e) => et(e, t)) : et(i, t);
+function Me(i, t) {
+  return Array.isArray(i) ? i.every((e) => it(e, t)) : it(i, t);
 }
-function ye(i) {
+function $e(i) {
   return [...new Set(i)];
 }
-function H(i, t, e = !0) {
-  const s = W(i);
+function Z(i, t, e = !0) {
+  const s = j(i);
   return m(i) && m(t) && g(
     t,
     (n, o) => {
       const a = i == null ? void 0 : i[o];
-      m(a) && m(n) ? e && Array.isArray(a) && Array.isArray(n) ? s[o] = W(ye([...a, ...n])) : s[o] = H(
+      m(a) && m(n) ? e && Array.isArray(a) && Array.isArray(n) ? s[o] = j($e([...a, ...n])) : s[o] = Z(
         Array.isArray(a) ? { ...a } : a,
         n,
         e
-      ) : s[o] = m(n) ? W(n) : n;
+      ) : s[o] = m(n) ? j(n) : n;
     }
   ), s;
 }
-function Me(i, t) {
+function _e(i, t) {
   let e = i;
   return g(t, (s, n) => {
-    e = e.replace(le(`[${n}]`), N(s));
+    e = e.replace(de(`[${n}]`), E(s));
   }), e;
 }
-function _e(i) {
-  const t = L(i);
+function Oe(i) {
+  const t = k(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
     return `${e}:${s}`;
   }
   return "00:00";
 }
-function Oe(i, t, {
+function Te(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
   notEmpty: o = !1
 }) {
   if (e) {
-    if (It(i)) {
+    if (Bt(i)) {
       const a = i.indexOf(t), u = [...i];
       return a !== -1 ? (!o || u.length > 1) && u.splice(a, 1) : (!s || i.length < s) && u.push(t), u;
     }
@@ -4754,40 +4747,40 @@ function Oe(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function Te(i, t, e) {
+function Ge(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
       return g(i, (o, a) => {
-        !n && (e === a || e === o) ? (n = !0, s = H(s, t)) : n ? s = H(s, { [a]: o }) : s[a] = m(o) ? W(o) : o;
-      }), n ? s : H(i, t);
+        !n && (e === a || e === o) ? (n = !0, s = Z(s, t)) : n ? s = Z(s, { [a]: o }) : s[a] = m(o) ? j(o) : o;
+      }), n ? s : Z(i, t);
     }
     if (m(t))
-      return H(i, t);
+      return Z(i, t);
   }
-  return W(i);
+  return j(i);
 }
-function $e(i) {
+function pe(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function Ge(i) {
-  return $e(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
-}
 function ti(i) {
+  return pe(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+}
+function ei(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function ei(i, t, e, s) {
-  const n = L(i), o = L(t);
-  return t && o < n ? `${Dt(o, e, s)}+` : Dt(n, e, s);
+function ii(i, t, e, s) {
+  const n = k(i), o = k(t);
+  return t && o < n ? `${Lt(o, e, s)}+` : Lt(n, e, s);
 }
-const Dt = (i, t, e) => t ? new q(e).number(i) : i;
-function pe(i, t) {
+const Lt = (i, t, e) => t ? new J(e).number(i) : i;
+function be(i, t) {
   return 1 / i * t;
 }
-function ii(i, t) {
-  return pe(i, t) * 100;
+function si(i, t) {
+  return be(i, t) * 100;
 }
-async function si(i) {
+async function ri(i) {
   if (l())
     try {
       await navigator.clipboard.writeText(i);
@@ -4797,120 +4790,121 @@ async function si(i) {
 }
 export {
   U as Api,
-  zt as ApiDefault,
-  jt as ApiHeaders,
+  Ht as ApiDefault,
+  zt as ApiHeaders,
   S as ApiMethodItem,
-  Vt as ApiPreparation,
-  Kt as ApiResponse,
-  Ht as ApiStatus,
-  ve as BroadcastMessage,
-  Jt as Cache,
-  qt as CacheItem,
-  dt as CacheStatic,
-  gt as Cookie,
-  Nt as CookieBlock,
-  _ as DataStorage,
-  Et as Datetime,
-  ut as EventItem,
+  Yt as ApiPreparation,
+  Vt as ApiResponse,
+  Zt as ApiStatus,
+  Se as BroadcastMessage,
+  Qt as Cache,
+  Jt as CacheItem,
+  gt as CacheStatic,
+  ft as Cookie,
+  Et as CookieBlock,
+  O as DataStorage,
+  It as Datetime,
+  ht as EventItem,
   r as GEO_FLAG_ICON_NAME,
   b as Geo,
-  ft as GeoFlag,
-  q as GeoIntl,
-  mt as GeoPhone,
-  Se as Global,
-  yt as Hash,
-  bt as Icons,
-  F as Loading,
-  De as Meta,
-  rt as MetaManager,
-  ne as MetaOg,
-  ie as MetaOpenGraphAge,
-  te as MetaOpenGraphAvailability,
-  ee as MetaOpenGraphCondition,
-  se as MetaOpenGraphGender,
+  mt as GeoFlag,
+  J as GeoIntl,
+  yt as GeoPhone,
+  De as Global,
+  $t as Hash,
+  wt as Icons,
+  x as Loading,
+  Le as Meta,
+  nt as MetaManager,
+  oe as MetaOg,
+  se as MetaOpenGraphAge,
+  ee as MetaOpenGraphAvailability,
+  ie as MetaOpenGraphCondition,
+  re as MetaOpenGraphGender,
   y as MetaOpenGraphTag,
-  Gt as MetaOpenGraphType,
-  Tt as MetaRobots,
+  te as MetaOpenGraphType,
+  Gt as MetaRobots,
   v as MetaTag,
-  oe as MetaTwitter,
-  re as MetaTwitterCard,
+  ae as MetaTwitter,
+  ne as MetaTwitterCard,
   $ as MetaTwitterTag,
-  st as ScrollbarWidth,
-  wt as Translate,
-  Le as anyToString,
-  ce as applyTemplate,
-  ue as arrFill,
-  W as copyObject,
-  it as createElement,
-  ke as domQuerySelector,
-  Ce as domQuerySelectorAll,
-  Ot as encodeAttribute,
-  Ae as eventStopPropagation,
-  N as executeFunction,
-  Zt as executePromise,
+  rt as ScrollbarWidth,
+  vt as Translate,
+  ke as anyToString,
+  ue as applyTemplate,
+  he as arrFill,
+  j as copyObject,
+  L as copyObjectLite,
+  st as createElement,
+  Ce as domQuerySelector,
+  Ae as domQuerySelectorAll,
+  Tt as encodeAttribute,
+  Ne as eventStopPropagation,
+  E as executeFunction,
+  Kt as executePromise,
   g as forEach,
-  he as frame,
-  Ne as getAttributes,
-  Ee as getClipboardData,
-  Xt as getColumn,
-  C as getElement,
-  Ie as getElementId,
-  Mt as getElementItem,
-  ct as getElementOrWindow,
-  le as getExp,
-  de as getItemByPath,
-  Be as getKey,
-  Bt as getLengthOfAllArray,
-  Fe as getMaxLengthAllArray,
-  xe as getMinLengthAllArray,
-  Re as getMouseClient,
-  ge as getMouseClientX,
-  fe as getMouseClientY,
-  Pe as getObjectByKeys,
-  We as getObjectNoUndefined,
+  le as frame,
+  Ee as getAttributes,
+  Ie as getClipboardData,
+  Mt as getColumn,
+  A as getElement,
+  Be as getElementId,
+  _t as getElementItem,
+  ut as getElementOrWindow,
+  de as getExp,
+  ge as getItemByPath,
+  Fe as getKey,
+  Ft as getLengthOfAllArray,
+  xe as getMaxLengthAllArray,
+  Re as getMinLengthAllArray,
+  Pe as getMouseClient,
+  fe as getMouseClientX,
+  me as getMouseClientY,
+  We as getObjectByKeys,
+  je as getObjectNoUndefined,
   Ue as getObjectOrNone,
-  je as getRandomText,
-  Lt as getRequestString,
-  ze as getStepPercent,
-  He as getStepValue,
-  Ze as goScroll,
-  Ke as inArray,
-  Ve as initScrollbarOffset,
-  Ye as intersectKey,
-  It as isArray,
-  qe as isDifferent,
+  ze as getRandomText,
+  kt as getRequestString,
+  He as getStepPercent,
+  Ze as getStepValue,
+  Ke as goScroll,
+  Ve as inArray,
+  Ye as initScrollbarOffset,
+  qe as intersectKey,
+  Bt as isArray,
+  Je as isDifferent,
   l as isDomRuntime,
   D as isFilled,
-  Je as isFloat,
-  kt as isFunction,
+  Qe as isFloat,
+  Ct as isFunction,
   Ut as isInDom,
-  Qe as isIntegerBetween,
-  Y as isNull,
-  ot as isNumber,
+  Xe as isIntegerBetween,
+  q as isNull,
+  at as isNumber,
   m as isObject,
-  k as isObjectNotArray,
-  et as isSelected,
-  Xe as isSelectedByList,
-  j as isString,
-  Ct as isWindow,
-  V as random,
-  H as replaceRecursive,
-  Me as replaceTemplate,
-  _e as secondToTime,
-  _t as setElementItem,
-  Oe as setValues,
-  Te as splice,
-  me as strFill,
-  z as toArray,
-  $e as toCamelCase,
-  Ge as toCamelCaseFirst,
-  I as toDate,
-  ti as toKebabCase,
-  L as toNumber,
-  ei as toNumberByMax,
-  pe as toPercent,
-  ii as toPercentBy100,
-  At as transformation,
-  ye as uniqueArray,
-  si as writeClipboardData
+  C as isObjectNotArray,
+  it as isSelected,
+  Me as isSelectedByList,
+  z as isString,
+  At as isWindow,
+  Y as random,
+  Z as replaceRecursive,
+  _e as replaceTemplate,
+  Oe as secondToTime,
+  Ot as setElementItem,
+  Te as setValues,
+  Ge as splice,
+  ye as strFill,
+  H as toArray,
+  pe as toCamelCase,
+  ti as toCamelCaseFirst,
+  B as toDate,
+  ei as toKebabCase,
+  k as toNumber,
+  ii as toNumberByMax,
+  be as toPercent,
+  si as toPercentBy100,
+  Nt as transformation,
+  $e as uniqueArray,
+  ri as writeClipboardData
 };
