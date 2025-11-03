@@ -1,12 +1,15 @@
-var ct = Object.defineProperty;
-var ut = (i, t, e) => t in i ? ct(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
-var n = (i, t, e) => ut(i, typeof t != "symbol" ? t + "" : t, e);
-import { geo as lt } from "@dxtmisha/media";
-function O(i) {
+var lt = Object.defineProperty;
+var gt = (i, t, e) => t in i ? lt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
+var n = (i, t, e) => gt(i, typeof t != "symbol" ? t + "" : t, e);
+import { geo as ft } from "@dxtmisha/media";
+function d(i, t) {
+  return t ? Object.assign({}, i, t) : Object.assign({}, i);
+}
+function $(i) {
   return !!(i && typeof i == "object");
 }
-function b(i, t) {
-  if (O(i)) {
+function L(i, t) {
+  if ($(i)) {
     const e = [];
     return i instanceof Map ? i.forEach((s, a) => e.push(t(s, a, i))) : Array.isArray(i) ? i.forEach((s, a) => e.push(t(s, a, i))) : Object.entries(i).forEach(
       ([s, a]) => e.push(t(a, s, i))
@@ -14,16 +17,16 @@ function b(i, t) {
   }
   return [];
 }
-function it(i, t = "=", e = "&") {
-  return b(
+function rt(i, t = "=", e = "&") {
+  return L(
     i,
     (s, a) => `${a}${t}${encodeURIComponent(String(s).trim())}`
   ).sort().join(e);
 }
-function M(i) {
+function N(i) {
   return i == null;
 }
-function L(i, t) {
+function C(i, t) {
   if (i) {
     if (t && i === "0")
       return !0;
@@ -37,7 +40,7 @@ function L(i, t) {
       case "symbol":
         return !0;
       case "object":
-        return Array.isArray(i) ? i.length > 0 : Object.values(i).some((e) => !M(e));
+        return Array.isArray(i) ? i.length > 0 : Object.values(i).some((e) => !N(e));
       case "string":
         return !["", "undefined", "null", "0", "false", "[]"].includes(i);
       case "undefined":
@@ -48,19 +51,19 @@ function L(i, t) {
   }
   return !1;
 }
-function m(i) {
-  return O(i) && !Array.isArray(i);
+function v(i) {
+  return $(i) && !Array.isArray(i);
 }
-function T(i) {
+function F(i) {
   return typeof i == "string";
 }
-function gt(i) {
+function dt(i) {
   return JSON.parse(JSON.stringify(i));
 }
 function u() {
   return typeof window != "undefined" && !!window.document;
 }
-function W(i) {
+function J(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -70,7 +73,7 @@ function W(i) {
       return !1;
   }
 }
-function P(i) {
+function V(i) {
   if (typeof i == "number")
     return i;
   if (!i)
@@ -78,18 +81,21 @@ function P(i) {
   let t = i.replace(/[^\d., ]+/ig, "");
   return t.match(/( [0-9]{3}[ ,.]|[0-9] [0-9])/ig) ? t = t.replace(/ /ig, "").replace(/,/ig, ".") : t.match(/,[0-9]{3}[,.]/ig) ? t = t.replace(/,/ig, "") : t.match(/[.][0-9]{3}[,.]/ig) ? t = t.replace(/[.]/ig, "").replace(/,/ig, ".") : t = t.replace(/,/ig, "."), parseFloat(t);
 }
-function ft(i, t) {
-  return M(i) ? !1 : Array.isArray(t) ? t.includes(i) : W(i) && W(t) ? P(i) === P(t) : i === t;
+function pt(i, t) {
+  return N(i) ? !1 : Array.isArray(t) ? t.includes(i) : J(i) && J(t) ? V(i) === V(t) : i === t;
 }
-function at(i) {
+function nt(i) {
   return i instanceof Function || typeof i == "function";
 }
-function y(i) {
-  return at(i) ? i() : i;
+function m(i) {
+  return nt(i) ? i() : i;
 }
-const N = {};
-let J = "ui-storage";
-class z {
+function z() {
+  return location.href.startsWith("data:");
+}
+const B = {};
+let Z = "ui-storage";
+class j {
   /**
    * Constructor
    * @param name value name/ название значения
@@ -100,9 +106,9 @@ class z {
     n(this, "age");
     this.name = t, this.isSession = e;
     const s = `${e ? "session" : "storage"}#${t}`;
-    if (s in N)
-      return N[s];
-    this.make(), N[s] = this;
+    if (s in B)
+      return B[s];
+    this.make(), B[s] = this;
   }
   /**
    * Changing the prefix in key names. Should be called at the beginning of the code.
@@ -111,7 +117,7 @@ class z {
    * @param newPrefix new prefix/ новый префикс
    */
   static setPrefix(t) {
-    J = t;
+    Z = t;
   }
   /**
    * Getting data from local storage.
@@ -134,7 +140,7 @@ class z {
    */
   set(t) {
     var e;
-    return this.value = y(t), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? this.remove() : (e = this.getMethod()) == null || e.setItem(this.getIndex(), JSON.stringify({
+    return this.value = m(t), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? this.remove() : (e = this.getMethod()) == null || e.setItem(this.getIndex(), JSON.stringify({
       value: this.value,
       age: this.age
     })), this.value;
@@ -163,7 +169,7 @@ class z {
    * @param cache cache time/ время кэширования
    */
   isCache(t) {
-    return M(t) || this.age && this.age + t * 1e3 >= (/* @__PURE__ */ new Date()).getTime();
+    return N(t) || this.age && this.age + t * 1e3 >= (/* @__PURE__ */ new Date()).getTime();
   }
   /**
    * Returns an object for working with storage.
@@ -171,8 +177,11 @@ class z {
    * Возвращает объект для работы с хранилищем.
    */
   getMethod() {
-    if (u())
-      return this.isSession ? window == null ? void 0 : window.sessionStorage : window == null ? void 0 : window.localStorage;
+    if (u() && !z()) {
+      const t = this.isSession ? window == null ? void 0 : window.sessionStorage : window == null ? void 0 : window.localStorage;
+      if (t)
+        return t;
+    }
   }
   /**
    * Getting the storage key name.
@@ -180,7 +189,7 @@ class z {
    * Получение имени ключа в хранилище.
    */
   getIndex() {
-    return `${J}__${this.name}`;
+    return `${Z}__${this.name}`;
   }
   /**
    * Getting data from storage.
@@ -207,7 +216,7 @@ class z {
     return t ? (this.value = t.value, this.age = t.age) : (this.value = void 0, this.age = void 0), this;
   }
 }
-const dt = "geo-code", o = class o {
+const yt = "geo-code", h = class h {
   /**
    * Information about the current country.
    *
@@ -262,10 +271,9 @@ const dt = "geo-code", o = class o {
    * Получение обработанных данных.
    */
   static getItem() {
-    return {
-      ...this.item,
+    return d(this.item, {
       language: this.language
-    };
+    });
   }
   /**
    * Returns the full list of countries.
@@ -273,7 +281,7 @@ const dt = "geo-code", o = class o {
    * Возвращает полный список стран.
    */
   static getList() {
-    return lt;
+    return ft;
   }
   /**
    * Returns the data about the country by its full code.
@@ -284,7 +292,7 @@ const dt = "geo-code", o = class o {
    */
   static getByCode(t) {
     let e;
-    return t && (t.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (e = this.getByCodeFull(t)), !e && t.match(/[A-Z]{2}/) && (e = this.getByCountry(this.toCountry(t))), !e && t.match(/[a-z]{2}/) && (e = this.getByLanguage(this.toLanguage(t)))), this.toFull(gt(e != null ? e : this.getList()[0]));
+    return t && (t.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (e = this.getByCodeFull(t)), !e && t.match(/[A-Z]{2}/) && (e = this.getByCountry(this.toCountry(t))), !e && t.match(/[a-z]{2}/) && (e = this.getByLanguage(this.toLanguage(t)))), this.toFull(dt(e != null ? e : this.getList()[0]));
   }
   /**
    * Returns the full data by language and country.
@@ -294,7 +302,7 @@ const dt = "geo-code", o = class o {
    */
   static getByCodeFull(t) {
     return this.getList().find(
-      (e) => ft(t, [
+      (e) => pt(t, [
         `${e.language}-${e.country}`,
         `${e.country}-${e.language}`
       ])
@@ -424,34 +432,33 @@ const dt = "geo-code", o = class o {
    * объект с данными об текущей стране
    */
   static toFull(t) {
-    return {
-      ...t,
+    return d(t, {
       standard: this.toStandard(t),
       firstDay: (t == null ? void 0 : t.firstDay) || "Mo"
-    };
+    });
   }
 };
-n(o, "storage", new z(dt)), n(o, "location"), n(o, "item"), n(o, "language"), n(o, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), o.location = o.findLocation(), o.language = o.findLanguage(o.location), o.item = o.getByCode(o.location);
-let S = o;
-function rt(i) {
+n(h, "storage", new j(yt)), n(h, "location"), n(h, "item"), n(h, "language"), n(h, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), h.location = h.findLocation(), h.language = h.findLanguage(h.location), h.item = h.getByCode(h.location);
+let S = h;
+function ot(i) {
   return u() && i === window;
 }
-function p(i) {
+function y(i) {
   var t;
   if (u())
-    return rt(i) ? document.body : T(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
+    return ot(i) ? document.body : F(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
 }
-function V(i) {
-  return rt(i) ? i : p(i);
+function q(i) {
+  return ot(i) ? i : y(i);
 }
-function pt(i) {
+function mt(i) {
   var t;
-  return !!((t = p(i)) != null && t.closest("html"));
+  return !!((t = y(i)) != null && t.closest("html"));
 }
-function A(i) {
+function R(i) {
   return Array.isArray(i) ? i : [i];
 }
-class Z {
+class K {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -493,7 +500,7 @@ class Z {
      */
     n(this, "listenerRecent", (t) => {
       var e, s;
-      pt(this.elementControl) ? ((e = this.listener) == null || e.call(this.element, t, this.detail), O(this.options) && ((s = this.options) != null && s.once) && this.stop()) : this.stop();
+      mt(this.elementControl) ? ((e = this.listener) == null || e.call(this.element, t, this.detail), $(this.options) && ((s = this.options) != null && s.once) && this.stop()) : this.stop();
     });
     /**
      * Event states.
@@ -502,7 +509,7 @@ class Z {
      */
     n(this, "activity", !1);
     n(this, "activityItems", []);
-    this.listener = s, this.options = a, this.detail = r, this.element = V(t), this.elementControl = p(t), this.type = A(e);
+    this.listener = s, this.options = a, this.detail = r, this.element = q(t), this.elementControl = y(t), this.type = R(e);
   }
   /**
    * Checks whether event listening is currently enabled.
@@ -522,8 +529,8 @@ class Z {
    * @param elementSelector element/ элемент
    */
   setElement(t) {
-    const e = V(t);
-    return this.elementControlEdit || (this.elementControl = p(t)), this.element = e, this.reset(), this;
+    const e = q(t);
+    return this.elementControlEdit || (this.elementControl = y(t)), this.element = e, this.reset(), this;
   }
   /**
    * Modifies the object that receives the notification.
@@ -532,7 +539,7 @@ class Z {
    * @param elementSelector element/ элемент
    */
   setElementControl(t) {
-    return this.elementControl = p(t), this.elementControlEdit = !M(this.elementControl), this.elementControlEdit || (this.elementControl = p(this.element)), this;
+    return this.elementControl = y(t), this.elementControlEdit = !N(this.elementControl), this.elementControlEdit || (this.elementControl = y(this.element)), this;
   }
   /**
    * Changes the type of the handled event.
@@ -541,7 +548,7 @@ class Z {
    * @param type type/ тип
    */
   setType(t) {
-    return this.type = A(t), this.reset(), this;
+    return this.type = R(t), this.reset(), this;
   }
   /**
    * Modifies the object that receives the notification.
@@ -687,7 +694,7 @@ class Z {
     return !1;
   }
 }
-const q = "ui-loading", D = class D {
+const Q = "ui-loading", O = class O {
   /**
    * Check if the loader is active now.
    *
@@ -722,7 +729,7 @@ const q = "ui-loading", D = class D {
    * @param element element/ элемент
    */
   static registrationEvent(t, e) {
-    u() && new Z(window, q, t).setElementControl(e).start();
+    u() && new K(window, Q, t).setElementControl(e).start();
   }
   /**
    * Calls the event listener.
@@ -734,9 +741,9 @@ const q = "ui-loading", D = class D {
     (t = this.event) == null || t.dispatch({ loading: this.is() });
   }
 };
-n(D, "value", 0), n(D, "event"), u() && (D.event = new Z(window, q));
-let E = D;
-class yt {
+n(O, "value", 0), n(O, "event"), u() && (O.event = new K(window, Q));
+let E = O;
+class vt {
   constructor() {
     /** Default headers/ Заголовки по умолчанию */
     n(this, "headers", {});
@@ -750,11 +757,11 @@ class yt {
    */
   get(t, e = "application/json;charset=UTF-8") {
     if (t !== null) {
-      const s = {
-        ...this.headers,
-        ...t || {}
-      };
-      return L(e) && (s["Content-Type"] = e), s;
+      const s = d(
+        this.headers,
+        t
+      );
+      return C(e) && (s["Content-Type"] = e), s;
     }
   }
   /**
@@ -763,11 +770,11 @@ class yt {
    * Изменяет данные заголовка по умолчанию.
    */
   set(t) {
-    return m(t) && (this.headers = t), this;
+    return v(t) && (this.headers = t), this;
   }
 }
 var l = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(l || {});
-class mt {
+class wt {
   constructor() {
     /** Default request data/ Данные запроса по умолчанию */
     n(this, "value");
@@ -799,11 +806,8 @@ class mt {
     if (e) {
       if (t instanceof FormData)
         this.addByFormData(t, e);
-      else if (m(t))
-        return {
-          ...e,
-          ...t
-        };
+      else if (v(t))
+        return d(e, t);
     }
     return t;
   }
@@ -827,7 +831,7 @@ class mt {
       t.has(s) || t.set(s, e[s]);
   }
 }
-class vt {
+class bt {
   constructor() {
     n(this, "value");
   }
@@ -922,7 +926,7 @@ class vt {
    * @param response response data/ данные ответа
    */
   setLastResponse(t) {
-    return t && m(t) && "message" in t && this.setLastMessage(String(t.message)), this.set({ lastResponse: t }), this;
+    return t && v(t) && "message" in t && this.setLastMessage(String(t.message)), this.set({ lastResponse: t }), this;
   }
   /**
    * Sets messages from the last request.
@@ -944,15 +948,15 @@ class vt {
     this.value || (this.value = {}), this.value[t] = e;
   }
 }
-async function wt(i) {
-  const t = y(i);
+async function Et(i) {
+  const t = m(i);
   return t instanceof Promise ? await t : t;
 }
-function Et(i, t) {
+function Lt(i, t) {
   return Math.floor(Math.random() * (t - i + 1) + i);
 }
-const K = "d-response-loading";
-class bt {
+const Y = "d-response-loading";
+class Ct {
   /**
    * Constructor
    * @param requestDefault default request processor/ процессор запросов по умолчанию
@@ -995,7 +999,7 @@ class bt {
    * @param response data for caching/ данные для кеширования
    */
   add(t) {
-    return this.response.push(...A(t)), this;
+    return this.response.push(...R(t)), this;
   }
   /**
    * Sets developer mode.
@@ -1018,10 +1022,10 @@ class bt {
       devMode: r = !1
     } = t;
     if (a || this.isDevMode(r)) {
-      const h = this.requestDefault.request(t.request), g = this.get(e, s, h, r);
+      const o = this.requestDefault.request(t.request), g = this.get(e, s, o, r);
       if (g) {
-        const f = await this.fetch(g, h);
-        return this.isDevMode(r) && console.warn("Response data:", e, h, f), f;
+        const f = await this.fetch(g, o);
+        return this.isDevMode(r) && console.warn("Response data:", e, o, f), f;
       }
     }
   }
@@ -1032,7 +1036,7 @@ class bt {
    * @param item cached item/ кешированный элемент
    */
   isDisable(t) {
-    return !!y(t == null ? void 0 : t.disable);
+    return !!m(t == null ? void 0 : t.disable);
   }
   /**
    * Checks if the path matches the cached one.
@@ -1072,8 +1076,8 @@ class bt {
    */
   isResponse(t, e) {
     const s = this.requestDefault.request(t == null ? void 0 : t.request);
-    return e === s || s === "*any" || L(e) && L(s) && m(e) && m(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
-      (a, [r, h]) => a && (h === (e == null ? void 0 : e[r]) || h === "*any"),
+    return e === s || s === "*any" || C(e) && C(s) && v(e) && v(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
+      (a, [r, o]) => a && (o === (e == null ? void 0 : e[r]) || o === "*any"),
       !0
     );
   }
@@ -1086,12 +1090,12 @@ class bt {
    */
   fetch(t, e) {
     return this.startResponseLoading(), new Promise((s) => {
-      wt(
-        at(t.response) ? t.response(e) : t.response
+      Et(
+        nt(t.response) ? t.response(e) : t.response
       ).then((a) => {
         t != null && t.lag ? (E.show(), setTimeout(() => {
           this.stopResponseLoading(), s(a), E.hide();
-        }, Et(0, 2e3))) : (this.stopResponseLoading(), s(a));
+        }, Lt(0, 2e3))) : (this.stopResponseLoading(), s(a));
       });
     });
   }
@@ -1101,7 +1105,7 @@ class bt {
    * Включить загрузку для эмуляции запроса.
    */
   startResponseLoading() {
-    this.loading && clearTimeout(this.loading), u() && document.body.classList.add(K);
+    this.loading && clearTimeout(this.loading), u() && document.body.classList.add(Y);
   }
   /**
    * Disable loading for request emulation.
@@ -1110,11 +1114,11 @@ class bt {
    */
   stopResponseLoading() {
     this.loading = setTimeout(() => {
-      this.loading = void 0, u() && document.body.classList.remove(K);
+      this.loading = void 0, u() && document.body.classList.remove(Y);
     }, 1200);
   }
 }
-class Lt {
+class Dt {
   constructor() {
     /** Function for call before the request/ Функция для вызова перед запросом */
     n(this, "callback");
@@ -1230,8 +1234,8 @@ const c = class c {
   static getBody(t = {}, e = l.get) {
     if (t instanceof FormData)
       return t;
-    if (e !== l.get && L(t))
-      return T(t) ? t : JSON.stringify(t);
+    if (e !== l.get && C(t))
+      return F(t) ? t : JSON.stringify(t);
   }
   /**
    * Getting data for the body of the get method.
@@ -1243,8 +1247,8 @@ const c = class c {
    */
   static getBodyForGet(t, e = "", s = l.get) {
     if (s === l.get) {
-      const a = e.match(/\?/) ? "&" : "?", r = typeof t == "object" ? it(t) : t;
-      if (L(r))
+      const a = e.match(/\?/) ? "&" : "?", r = typeof t == "object" ? rt(t) : t;
+      if (C(r))
         return `${a}${r}`;
     }
     return "";
@@ -1299,7 +1303,7 @@ const c = class c {
    * @param pathRequest query string or list of parameters/ строка запроса или список параметров
    */
   static async request(t) {
-    return T(t) ? await this.fetch({
+    return F(t) ? await this.fetch({
       path: t
     }) : await this.fetch(t);
   }
@@ -1310,10 +1314,9 @@ const c = class c {
    * @param request list of parameters/ список параметров
    */
   static get(t) {
-    return this.request({
-      ...t,
+    return this.request(d(t, {
       method: l.get
-    });
+    }));
   }
   /**
    * Sends a post method request.
@@ -1322,10 +1325,9 @@ const c = class c {
    * @param request list of parameters/ список параметров
    */
   static post(t) {
-    return this.request({
-      ...t,
+    return this.request(d(t, {
       method: l.post
-    });
+    }));
   }
   /**
    * Sends a put method request.
@@ -1334,10 +1336,9 @@ const c = class c {
    * @param request list of parameters/ список параметров
    */
   static put(t) {
-    return this.request({
-      ...t,
+    return this.request(d(t, {
       method: l.put
-    });
+    }));
   }
   /**
    * Sends a delete method request.
@@ -1346,10 +1347,9 @@ const c = class c {
    * @param request list of parameters/ список параметров
    */
   static delete(t) {
-    return this.request({
-      ...t,
+    return this.request(d(t, {
       method: l.delete
-    });
+    }));
   }
   /**
    * To execute a request.
@@ -1363,7 +1363,7 @@ const c = class c {
       hideError: s = !1,
       queryReturn: a = void 0,
       globalPreparation: r = !0,
-      globalEnd: h = !0
+      globalEnd: o = !0
     } = t, g = await this.response.emulator(t);
     if (g)
       return g;
@@ -1371,19 +1371,19 @@ const c = class c {
     E.show();
     try {
       await this.preparation.make(r);
-      const d = await this.makeQuery(t), v = await this.preparation.makeEnd(h, d);
+      const p = await this.makeQuery(t), w = await this.preparation.makeEnd(o, p);
       if (this.status.setStatus(
-        d.status,
-        d.statusText
-      ), v != null && v.reset)
+        p.status,
+        p.statusText
+      ), w != null && w.reset)
         return E.hide(), await this.fetch(t);
       f = await this.readData(
-        d,
+        p,
         a,
-        v
+        w
       );
-    } catch (d) {
-      s || console.error("Api: ", d), this.status.setError(String(d));
+    } catch (p) {
+      s || console.error("Api: ", p), this.status.setError(String(p));
     }
     return E.hide(), this.makeData(f, e);
   }
@@ -1410,16 +1410,15 @@ const c = class c {
       api: s = !0,
       path: a = "",
       pathFull: r = void 0,
-      method: h = l.get,
+      method: o = l.get,
       headers: g = {},
       type: f = "application/json;charset=UTF-8",
-      init: d = {}
-    } = t, v = r != null ? r : this.getUrl(a, s), ot = `${v}${this.getBodyForGet(e, v, h)}`, j = this.headers.get(g, f), U = {
-      ...d,
-      method: h,
-      body: this.getBody(e, h)
-    };
-    return j && (U.headers = j), await fetch(ot, U);
+      init: p = {}
+    } = t, w = r != null ? r : this.getUrl(a, s), ut = `${w}${this.getBodyForGet(e, w, o)}`, W = this.headers.get(g, f), P = d(p, {
+      method: o,
+      body: this.getBody(e, o)
+    });
+    return W && (P.headers = W), await fetch(ut, P);
   }
   /**
    * Transforms data if needed.
@@ -1429,9 +1428,9 @@ const c = class c {
    * @param toData is it necessary to process the data/ нужно ли обрабатывать данные
    */
   static makeData(t, e) {
-    if (this.status.setLastResponse(t), t && e && m(t) && "data" in t) {
-      if (m(t.data)) {
-        const s = { ...t.data };
+    if (this.status.setLastResponse(t), t && e && v(t) && "data" in t) {
+      if (v(t.data)) {
+        const s = d(t.data);
         return "success" in t && (s.success = t.success), s;
       }
       return t.data;
@@ -1439,9 +1438,9 @@ const c = class c {
     return t;
   }
 };
-n(c, "url", "/api/"), n(c, "headers", new yt()), n(c, "requestDefault", new mt()), n(c, "status", new vt()), n(c, "response", new bt(c.requestDefault)), n(c, "preparation", new Lt());
-let F = c;
-class Ct {
+n(c, "url", "/api/"), n(c, "headers", new vt()), n(c, "requestDefault", new wt()), n(c, "status", new bt()), n(c, "response", new Ct(c.requestDefault)), n(c, "preparation", new Dt());
+let x = c;
+class St {
   /**
    * Constructor
    * @param callback function for the cache/ функция для кэша
@@ -1504,7 +1503,7 @@ class Ct {
     return this.cache === void 0 || this.comparisons.length !== t.length || this.comparisons.findIndex((e, s) => e !== t[s]) >= 0 ? (this.comparisons = [...t], !0) : !1;
   }
 }
-class St {
+class Ot {
   constructor() {
     n(this, "cache", {});
   }
@@ -1538,10 +1537,10 @@ class St {
    * @param callback function for the cache/ функция для кэша
    */
   getCacheItem(t, e) {
-    return t in this.cache || (this.cache[t] = new Ct(e)), this.cache[t];
+    return t in this.cache || (this.cache[t] = new St(e)), this.cache[t];
   }
 }
-const R = class R {
+const M = class M {
   /**
    * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
    *
@@ -1554,9 +1553,9 @@ const R = class R {
     return this.cache.get(t, e, s);
   }
 };
-n(R, "cache"), R.cache = new St();
-let Q = R;
-function nt(i, t = !1) {
+n(M, "cache"), M.cache = new Ot();
+let X = M;
+function ht(i, t = !1) {
   if (typeof i == "string") {
     const e = i.trim();
     switch (e) {
@@ -1587,8 +1586,8 @@ function nt(i, t = !1) {
   }
   return i;
 }
-const Dt = "cookie-block";
-class ht {
+const kt = "cookie-block";
+class ct {
   /**
    * Obtaining status.
    *
@@ -1608,14 +1607,14 @@ class ht {
     this.storage.set(t);
   }
 }
-n(ht, "storage", new z(Dt));
-const $ = {}, x = class x {
+n(ct, "storage", new j(kt));
+const A = {}, U = class U {
   constructor(t) {
     n(this, "value");
     n(this, "options", {});
-    if (this.name = t, t in B)
-      return B[t];
-    this.value = $ == null ? void 0 : $[t], B[t] = this;
+    if (this.name = t, t in T)
+      return T[t];
+    this.value = A == null ? void 0 : A[t], T[t] = this;
   }
   /**
    * Get data or update if none.
@@ -1635,7 +1634,7 @@ const $ = {}, x = class x {
    * @param options additional parameters/ дополнительные параметры
    */
   set(t, e) {
-    this.value = y(t), Object.assign(this.options, e), this.update();
+    this.value = m(t), Object.assign(this.options, e), this.update();
   }
   /**
    * Delete cookie data.
@@ -1661,11 +1660,11 @@ const $ = {}, x = class x {
    */
   update() {
     var t, e, s, a, r;
-    if (u() && !ht.get()) {
-      const h = String((t = this.value) != null ? t : "");
+    if (u() && !z() && !ct.get()) {
+      const o = String((t = this.value) != null ? t : "");
       document.cookie = [
-        `${encodeURIComponent(this.name)}=${encodeURIComponent(h)}`,
-        `max-age=${h === "" ? "-1" : this.getAge()}`,
+        `${encodeURIComponent(this.name)}=${encodeURIComponent(o)}`,
+        `max-age=${o === "" ? "-1" : this.getAge()}`,
         `SameSite=${(s = (e = this.options) == null ? void 0 : e.sameSite) != null ? s : "strict"}`,
         ...(r = (a = this.options) == null ? void 0 : a.arguments) != null ? r : []
       ].join("; ");
@@ -1679,13 +1678,13 @@ const $ = {}, x = class x {
   static updateData() {
     for (const t of document.cookie.split(";")) {
       const [e, s] = t.trim().split("=");
-      e && L(s) && ($[e] = nt(s));
+      e && C(s) && (A[e] = ht(s));
     }
   }
 };
-u() && x.updateData();
-let Y = x;
-const B = {}, C = class C {
+u() && !z() && U.updateData();
+let H = U;
+const T = {}, D = class D {
   /**
    * Getting an object with information about the phone code and country.
    *
@@ -1704,8 +1703,8 @@ const B = {}, C = class C {
   static getByPhone(t) {
     let e = this.map, s, a = "";
     return this.toNumber(t).forEach((r) => {
-      var h;
-      a === "" && r in e ? (s = e[r], e = (h = s == null ? void 0 : s.next) != null ? h : {}) : a += r;
+      var o;
+      a === "" && r in e ? (s = e[r], e = (o = s == null ? void 0 : s.next) != null ? o : {}) : a += r;
     }), {
       item: s,
       phone: a
@@ -1747,7 +1746,7 @@ const B = {}, C = class C {
    * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toMask(t, e) {
-    if (L(t) && Array.isArray(e) && e.length > 0) {
+    if (C(t) && Array.isArray(e) && e.length > 0) {
       const s = this.removeZero(t), a = s.length;
       for (const r of e)
         if (this.getUnnecessaryLength(r) === a)
@@ -1795,12 +1794,12 @@ const B = {}, C = class C {
    * Формирование списка для карты.
    */
   static makeList() {
-    const t = b(S.getList(), (e) => {
+    const t = L(S.getList(), (e) => {
       if (e != null && e.phoneMask)
         return {
           phone: (e == null ? void 0 : e.phoneCode) && Number(e.phoneCode.replace(/[^0-9]+/, "")) || void 0,
           within: (e == null ? void 0 : e.phoneWithin) || 0,
-          mask: A(e.phoneMask),
+          mask: R(e.phoneMask),
           value: e.country
         };
     });
@@ -1816,7 +1815,7 @@ const B = {}, C = class C {
       t.mask.forEach((e) => {
         let s = this.map, a;
         if (this.toNumber(e).forEach((r) => {
-          var h;
+          var o;
           r in s || (s[r] = {
             items: [],
             info: void 0,
@@ -1824,7 +1823,7 @@ const B = {}, C = class C {
             mask: [],
             maskFull: [],
             next: {}
-          }), a = s[r], s = (h = a == null ? void 0 : a.next) != null ? h : {};
+          }), a = s[r], s = (o = a == null ? void 0 : a.next) != null ? o : {};
         }), a) {
           a.value === void 0 && (a.info = t, a.value = t.value);
           const r = this.toWithin(e, t.within);
@@ -1864,9 +1863,9 @@ const B = {}, C = class C {
     return t.replace(/\*/, this.getWithinSymbol(e));
   }
 };
-n(C, "list", []), n(C, "map", {}), C.makeList(), C.makeMap();
-let X = C;
-const w = class w {
+n(D, "list", []), n(D, "map", {}), D.makeList(), D.makeMap();
+let G = D;
+const b = class b {
   /**
    * Get data from hash.
    *
@@ -1886,7 +1885,7 @@ const w = class w {
    */
   static set(t, e) {
     var a;
-    const s = y(e);
+    const s = m(e);
     s !== ((a = this.hash) == null ? void 0 : a[t]) && (this.hash[t] = s, this.update());
   }
   /**
@@ -1920,7 +1919,7 @@ const w = class w {
     const t = {};
     return location.hash.replace(
       /([\w-]+)[:=]([^;]+)/ig,
-      (...e) => (t[String(e[1])] = nt(e[2]), "")
+      (...e) => (t[String(e[1])] = ht(e[2]), "")
     ), t;
   }
   /**
@@ -1929,7 +1928,7 @@ const w = class w {
    * Обновление строки хэша в URL.
    */
   static update() {
-    this.block = !0, history.replaceState(null, "", `#${it(this.hash, "=", ";")}`), requestAnimationFrame(() => {
+    this.block = !0, history.replaceState(null, "", `#${rt(this.hash, "=", ";")}`), requestAnimationFrame(() => {
       this.block = !1;
     });
   }
@@ -1940,15 +1939,15 @@ const w = class w {
    * @param location fresh data/ свежий данные
    */
   static makeWatch(t) {
-    b(this.watch, (e, s) => {
+    L(this.watch, (e, s) => {
       var a;
       ((a = this.hash) == null ? void 0 : a[s]) !== (t == null ? void 0 : t[s]) && e.forEach((r) => r(t[s]));
     });
   }
 };
-n(w, "hash", {}), n(w, "watch", {}), n(w, "block", !1), u() && (w.reload(), addEventListener("hashchange", () => w.reload()));
-let H = w;
-const I = "__UI_ICON", G = 320, _ = "--LOAD--", k = class k {
+n(b, "hash", {}), n(b, "watch", {}), n(b, "block", !1), u() && (b.reload(), addEventListener("hashchange", () => b.reload()));
+let _ = b;
+const I = "__UI_ICON", tt = 320, et = "--LOAD--", k = class k {
   /**
    * Checks if the given icon is in the list of connected icons.
    *
@@ -1969,9 +1968,9 @@ const I = "__UI_ICON", G = 320, _ = "--LOAD--", k = class k {
    * время ожидания загрузки картинки
    */
   static async get(t, e = "", s = 1e3 * 60 * 3) {
-    var r, h, g, f;
-    const a = (f = (g = (r = this.icons) == null ? void 0 : r[this.getName(t)]) != null ? g : (h = this.icons) == null ? void 0 : h[t]) != null ? f : `${t.replace(/^@/, e != null ? e : this.url)}.svg`;
-    return typeof a == "string" ? a === _ && s > 0 ? (await this.wait(), this.get(t, e, s - G)) : a : await a;
+    var r, o, g, f;
+    const a = (f = (g = (r = this.icons) == null ? void 0 : r[this.getName(t)]) != null ? g : (o = this.icons) == null ? void 0 : o[t]) != null ? f : `${t.replace(/^@/, e != null ? e : this.url)}.svg`;
+    return typeof a == "string" ? a === et && s > 0 ? (await this.wait(), this.get(t, e, s - tt)) : a : await a;
   }
   /**
    * Returns a list of names of all registered icons.
@@ -1979,7 +1978,7 @@ const I = "__UI_ICON", G = 320, _ = "--LOAD--", k = class k {
    * Возвращает список названий всех зарегистрированных иконок.
    */
   static getNameList() {
-    return b(this.icons, (t, e) => e.replace(/^@/, ""));
+    return L(this.icons, (t, e) => e.replace(/^@/, ""));
   }
   /**
    * Returns a global link.
@@ -1987,7 +1986,7 @@ const I = "__UI_ICON", G = 320, _ = "--LOAD--", k = class k {
    * Возвращает глобальную ссылку.
    */
   static getUrlGlobal() {
-    return `${F.isLocalhost(), ""}${this.url}`;
+    return `${x.isLocalhost(), ""}${this.url}`;
   }
   /**
    * Adding custom icons.
@@ -2006,7 +2005,7 @@ const I = "__UI_ICON", G = 320, _ = "--LOAD--", k = class k {
    * @param index icon name/ название иконки
    */
   static addLoad(t) {
-    this.icons[this.getName(t)] = _;
+    this.icons[this.getName(t)] = et;
   }
   /**
    * Adding custom global icons.
@@ -2025,7 +2024,7 @@ const I = "__UI_ICON", G = 320, _ = "--LOAD--", k = class k {
    * @param list list of icons/ список иконки
    */
   static addByList(t) {
-    b(t, (e, s) => this.add(s, e));
+    L(t, (e, s) => this.add(s, e));
   }
   /**
    * Changes the file path.
@@ -2051,39 +2050,39 @@ const I = "__UI_ICON", G = 320, _ = "--LOAD--", k = class k {
    * Задержка выполнения скрипта.
    */
   static wait() {
-    return new Promise((t) => setTimeout(() => t(), G));
+    return new Promise((t) => setTimeout(() => t(), tt));
   }
 };
 n(k, "icons", {}), n(k, "url", "/icons/"), u() && (I in window || (window[I] = {}), k.icons = window[I]);
-let tt = k;
-function kt(i, t, e) {
+let st = k;
+function $t(i, t, e) {
   var s, a;
-  return (a = (s = p(i)) == null ? void 0 : s[t]) != null ? a : e;
+  return (a = (s = y(i)) == null ? void 0 : s[t]) != null ? a : e;
 }
-function Ot(i, t, e) {
-  const s = p(i);
+function At(i, t, e) {
+  const s = y(i);
   if (s) {
-    const a = kt(s, t);
-    if (O(a) && O(e))
-      b(e, (r, h) => {
-        a[h] = y(r);
+    const a = $t(s, t);
+    if ($(a) && $(e))
+      L(e, (r, o) => {
+        a[o] = m(r);
       });
     else {
-      const r = y(e);
-      !(t in s) && typeof r == "string" ? s.setAttribute(t.toString(), r) : s[t] = y(e);
+      const r = m(e);
+      !(t in s) && typeof r == "string" ? s.setAttribute(t.toString(), r) : s[t] = m(e);
     }
   }
   return s;
 }
-function et(i, t = "div", e, s) {
+function it(i, t = "div", e, s) {
   if (!u())
     return;
   const a = document.createElement(t);
-  return typeof e == "function" ? e(a) : m(e) && b(e, (r, h) => {
-    Ot(a, h, r);
+  return typeof e == "function" ? e(a) : v(e) && L(e, (r, o) => {
+    At(a, o, r);
   }), i == null || i.insertBefore(a, s != null ? s : null), a;
 }
-class st {
+class at {
   /**
    * Checks whether to enable scroll hiding.
    *
@@ -2113,8 +2112,8 @@ class st {
    * Создает элементы для проверки ширины скролла.
    */
   static createElement() {
-    return et(document.body, "div", (t) => {
-      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", et(t, "div", (e) => {
+    return it(document.body, "div", (t) => {
+      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", it(t, "div", (e) => {
         e.style.height = "100px";
       });
     });
@@ -2134,51 +2133,53 @@ class st {
     });
   }
 }
-n(st, "storage", new z("scrollbar", !0)), n(st, "calculate", !1);
+n(at, "storage", new j("scrollbar", !0)), n(at, "calculate", !1);
 export {
-  F as A,
-  kt as B,
-  Y as C,
-  z as D,
-  Z as E,
-  V as F,
+  x as A,
+  Et as B,
+  H as C,
+  j as D,
+  K as E,
+  $t as F,
   S as G,
-  H,
-  tt as I,
-  it as J,
-  at as K,
+  _ as H,
+  st as I,
+  q as J,
+  rt as K,
   E as L,
-  pt as M,
-  W as N,
-  rt as O,
-  Ot as P,
-  nt as Q,
-  l as R,
-  st as S,
-  M as a,
-  T as b,
-  et as c,
-  L as d,
-  A as e,
-  b as f,
-  m as g,
-  O as h,
+  z as M,
+  nt as N,
+  mt as O,
+  J as P,
+  ot as Q,
+  At as R,
+  at as S,
+  ht as T,
+  l as U,
+  N as a,
+  F as b,
+  d as c,
+  it as d,
+  C as e,
+  L as f,
+  R as g,
+  v as h,
   u as i,
-  p as j,
-  ft as k,
-  gt as l,
-  y as m,
-  mt as n,
-  yt as o,
-  Lt as p,
-  bt as q,
-  Et as r,
-  vt as s,
-  P as t,
-  St as u,
-  Ct as v,
-  Q as w,
-  ht as x,
-  X as y,
-  wt as z
+  $ as j,
+  y as k,
+  pt as l,
+  dt as m,
+  m as n,
+  wt as o,
+  vt as p,
+  Dt as q,
+  Lt as r,
+  Ct as s,
+  V as t,
+  bt as u,
+  Ot as v,
+  St as w,
+  X as x,
+  ct as y,
+  G as z
 };

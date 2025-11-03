@@ -1,4 +1,5 @@
 import { executeFunction } from '../functions/executeFunction'
+import { isDomData } from '../functions/isDomData'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isNull } from '../functions/isNull'
 
@@ -136,7 +137,10 @@ export class DataStorage<T> {
    * Возвращает объект для работы с хранилищем.
    */
   private getMethod(): Storage | undefined {
-    if (isDomRuntime()) {
+    if (
+      isDomRuntime()
+      && !isDomData()
+    ) {
       const storage = this.isSession
         ? window?.sessionStorage
         : window?.localStorage

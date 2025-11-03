@@ -1,4 +1,5 @@
 import { executeFunction } from '../functions/executeFunction'
+import { isDomData } from '../functions/isDomData'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isFilled } from '../functions/isFilled'
 import { transformation } from '../functions/transformation'
@@ -97,6 +98,7 @@ export class Cookie<T> {
   private update(): void {
     if (
       isDomRuntime()
+      && !isDomData()
       && !CookieBlock.get()
     ) {
       const value = String(this.value ?? '')
@@ -126,7 +128,10 @@ export class Cookie<T> {
   }
 
   static {
-    if (isDomRuntime()) {
+    if (
+      isDomRuntime()
+      && !isDomData()
+    ) {
       this.updateData()
     }
   }

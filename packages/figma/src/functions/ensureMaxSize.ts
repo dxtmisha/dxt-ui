@@ -1,4 +1,4 @@
-import { createElement } from '@dxtmisha/functional-basic'
+import { resizeImageByMax } from '@dxtmisha/functional-basic'
 
 export function ensureMaxSize(
   file: Uint8Array,
@@ -6,13 +6,9 @@ export function ensureMaxSize(
 ): string {
   const blob = new Blob([file as any], { type: 'image/jpg' })
   const image = URL.createObjectURL(blob)
-  const element = createElement<HTMLImageElement>(
-    undefined,
-    'img',
-    { src: image }
-  )
+  const value = resizeImageByMax(image, maxSize)
 
-  console.log('image', maxSize, element)
+  console.log('image', maxSize, value)
 
   return image
 }

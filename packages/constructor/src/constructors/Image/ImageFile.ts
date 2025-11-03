@@ -1,5 +1,5 @@
 import type { ImageItem } from './basicTypes'
-import { isDomRuntime } from '@dxtmisha/functional'
+import { isDomRuntime, resizeImageByMax } from '@dxtmisha/functional'
 
 /**
  * Maximum size allowed without conversion.
@@ -118,18 +118,7 @@ export class ImageFile {
         || image.naturalWidth > maxSize
       )
     ) {
-      const is = image.naturalWidth >= image.naturalHeight
-      const canvas = document.createElement('canvas')?.getContext('2d')
-
-      if (canvas) {
-        canvas.canvas.width = is ? maxSize : (image.naturalWidth / image.naturalHeight * maxSize)
-        canvas.canvas.height = is ? (image.naturalHeight / image.naturalWidth * maxSize) : maxSize
-        canvas.drawImage(image, 0, 0, canvas.canvas.width, canvas.canvas.height)
-
-        return canvas.canvas.toDataURL()
-      } else {
-        return ''
-      }
+      return resizeImageByMax(image, maxSize) ?? ''
     } else {
       return image.src
     }
