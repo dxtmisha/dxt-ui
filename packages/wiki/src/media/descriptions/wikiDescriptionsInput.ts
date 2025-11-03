@@ -204,14 +204,14 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Input'} type={'number'}/>
 <Canvas of={Component.InputNumber}/>
 
-<StorybookDescriptions componentName={'Input'} type={'v-model'}/>
-<Canvas of={Component.InputVModel}/>
-
 <StorybookDescriptions componentName={'Input'} type={'currency'}/>
 <Canvas of={Component.InputCurrency}/>
 
 <StorybookDescriptions componentName={'Input'} type={'mask'}/>
 <Canvas of={Component.InputMask}/>
+
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Component.InputVModel}/>
 
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={Component.InputSkeleton}/>

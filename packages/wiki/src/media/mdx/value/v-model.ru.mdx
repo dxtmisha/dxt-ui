@@ -1,0 +1,26 @@
+## Управление значением через v-model
+
+Двусторонняя привязка значения через `v-model` (компонент использует стандартный `modelValue`).
+
+**Параметры:**
+- `modelValue: string | number` — текущее значение
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const value = ref('')
+</script>
+
+<template>
+  <div>
+    <button @click="value = 'Пример'">Установить значение</button>
+    <button @click="value = ''">Очистить</button>
+  </div>
+
+  <Value v-model="value" />
+
+  <div>Текущее значение: {{ value }}</div>
+</template>
+```
+

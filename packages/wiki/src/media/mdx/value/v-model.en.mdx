@@ -1,0 +1,26 @@
+## Managing value via v-model
+
+Two-way value binding using `v-model` (component uses standard `modelValue`).
+
+**Parameters:**
+- `modelValue: string | number` — current value
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const value = ref('')
+</script>
+
+<template>
+  <div>
+    <button @click="value = 'Example'">Set value</button>
+    <button @click="value = ''">Clear</button>
+  </div>
+
+  <Value v-model="value" />
+
+  <div>Current value: {{ value }}</div>
+</template>
+```
+
