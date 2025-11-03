@@ -12,7 +12,7 @@ const propsNames: StorybookProps = [
   { name: 'basic', type: 'boolean' },
   { name: 'block', type: 'boolean' },
   { name: 'boxed', type: 'boolean' },
-  { name: 'cancel', type: 'string', option: ['auto', 'always'] },
+  { name: 'cancel', type: 'string', option: ['auto', 'always', 'none'] },
   { name: 'cancelShow', type: 'boolean' },
   { name: 'caption', type: 'string | number' },
   { name: 'classic', type: 'boolean' },

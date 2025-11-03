@@ -28,6 +28,7 @@ const propsNames: StorybookProps = [
   { name: 'focus', type: 'boolean' },
   { name: 'forceShowMessage', type: 'boolean' },
   { name: 'form', type: 'string' },
+  { name: 'fraction', type: 'MaskFractionItem' },
   { name: 'helperMessage', type: 'string' },
   { name: 'icon', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
   { name: 'iconAttrs', type: 'ConstrBind<IconPropsBasic<ImagePropsBasic>>' },

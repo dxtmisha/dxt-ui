@@ -59,6 +59,7 @@ export type MaskPropsInclude<
   maskNone?: boolean
   currency?: string
   currencyHide?: boolean
+  fraction?: MaskFractionItem
   maskAttrs?: ConstrBind<Mask>
 }
 

@@ -79,7 +79,7 @@
     "~center": {},
     "~right": {},
     "~left": {},
-    "_default": "center"
+    "_default": "right"
   },
   "~width": {
     "_style": true

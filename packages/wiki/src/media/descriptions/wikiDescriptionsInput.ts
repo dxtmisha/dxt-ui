@@ -37,7 +37,9 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
       'интегрирован с компонентом Field для единообразной стилизации'
     ]
   },
-  import: [],
+  import: [
+    'import { ref } from \'vue\''
+  ],
   render: `
       <DesignComponent v-bind="args" />
     `,
@@ -61,111 +63,67 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
       `
     },
     {
-      id: 'InputStates',
+      id: 'InputNumber',
       name: {
-        en: 'States',
-        ru: 'Состояния'
+        en: 'Number formatting',
+        ru: 'Форматирование чисел'
       },
       template: `
         <div class="wiki-storybook-flex-column">
-          <DesignComponent label="Default" placeholder="Enter text" />
-          <DesignComponent label="With value" modelValue="Some text" />
-          <DesignComponent label="Focus" focus placeholder="Focused" />
-          <DesignComponent label="Disabled" disabled modelValue="Disabled input" />
-          <DesignComponent label="Readonly" readonly modelValue="Readonly input" />
-          <DesignComponent label="Loading" loading placeholder="Loading..." />
-          <DesignComponent label="Required" required placeholder="Required field" />
+          <DesignComponent type="number" value="1234567" label="Number" />
+          <DesignComponent type="number-format" value="1234567" language="en-US" label="Formatted" />
+          <DesignComponent type="number" value="50" :min="0" :max="100" label="From 0 to 100" />
+          <DesignComponent type="number" value="10" arrow="stepper" :step="5" :arrow-step="10" label="Step 5/10" />
+          <DesignComponent type="number-format" value="1234567.89" align="center" :fraction="2" label="Centered" />
         </div>
       `
     },
     {
-      id: 'InputValidation',
+      id: 'InputVModel',
       name: {
-        en: 'Validation',
-        ru: 'Валидация'
+        en: 'Two-way binding (v-model)',
+        ru: 'Двусторонняя привязка (v-model)'
       },
+      setup: `
+      return {
+        inputValue: ref('Initial value'),
+        emailValue: ref(''),
+        numberValue: ref(42)
+      }
+      `,
       template: `
         <div class="wiki-storybook-flex-column">
+          <div>
+            <button class="wiki-storybook-button" @click="inputValue = 'Changed value'">Set text</button>
+            <button class="wiki-storybook-button" @click="inputValue = ''">Clear</button>
+          </div>
           <DesignComponent
-            label="Valid input"
-            modelValue="valid@email.com"
-            type="email"
-            helperMessage="Email format is correct"
-          />
-          <DesignComponent
-            label="Invalid input"
-            modelValue="invalid-email"
-            type="email"
-            validationMessage="Please enter a valid email address"
-            forceShowMessage
-          />
-          <DesignComponent
-            label="Required field"
-            required
-            validationMessage="This field is required"
-            forceShowMessage
-          />
-          <DesignComponent
-            label="Min/Max length"
-            modelValue="Hi"
-            minlength="5"
-            maxlength="20"
-            validationMessage="Minimum 5 characters required"
-            forceShowMessage
-          />
-        </div>
-      `
-    },
-    {
-      id: 'InputPassword',
-      name: {
-        en: 'Password with visibility toggle',
-        ru: 'Пароль с переключением видимости'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            type="password"
-            label="Password"
-            modelValue="MyPassword123"
-            iconTrailing="visibility"
-          />
-          <DesignComponent
-            type="password"
-            label="Custom icons"
-            modelValue="MyPassword123"
-            iconVisibility="visibility"
-            iconVisibilityOff="visibility_off"
-          />
-        </div>
-      `
-    },
-    {
-      id: 'InputMask',
-      name: {
-        en: 'Masked input',
-        ru: 'Маскированный ввод'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            type="tel"
-            label="Phone number"
-            mask="+1 (###) ###-####"
-            placeholder="+1 (555) 000-0000"
-          />
-          <DesignComponent
-            type="date"
-            label="Date"
-            mask="##/##/####"
-            placeholder="MM/DD/YYYY"
-          />
-          <DesignComponent
+            v-model="inputValue"
             type="text"
-            label="Credit card"
-            mask="#### #### #### ####"
-            placeholder="0000 0000 0000 0000"
+            label="Text input"
+            placeholder="Enter text"
           />
+          <div>Value: {{ inputValue }}</div>
+
+          <DesignComponent
+            v-model="emailValue"
+            type="email"
+            label="Email input"
+            placeholder="email@example.com"
+          />
+          <div>Email: {{ emailValue }}</div>
+
+          <div>
+            <button class="wiki-storybook-button" @click="numberValue += 10">+10</button>
+            <button class="wiki-storybook-button" @click="numberValue -= 10">-10</button>
+          </div>
+          <DesignComponent
+            v-model="numberValue"
+            type="number"
+            label="Number input"
+            :step="1"
+          />
+          <div>Number: {{ numberValue }}</div>
         </div>
       `
     },
@@ -194,173 +152,20 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
             currency="EUR"
             value="1234.56"
           />
-          <DesignComponent
-            type="number-format"
-            label="Formatted number"
-            value="1234567.89"
-          />
         </div>
       `
     },
     {
-      id: 'InputPrefixSuffix',
+      id: 'InputMask',
       name: {
-        en: 'Prefix & Suffix',
-        ru: 'Префикс и суффикс'
+        en: 'Masked input',
+        ru: 'Маскированный ввод'
       },
       template: `
         <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            label="Weight"
-            modelValue="75"
-            suffix="kg"
-          />
-          <DesignComponent
-            label="Price"
-            modelValue="99.99"
-            prefix="$"
-          />
-          <DesignComponent
-            label="URL"
-            modelValue="example"
-            prefix="https://"
-            suffix=".com"
-          />
-        </div>
-      `
-    },
-    {
-      id: 'InputCounter',
-      name: {
-        en: 'Character counter',
-        ru: 'Счётчик символов'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            label="Tweet"
-            modelValue="Hello world!"
-            maxlength="280"
-            counterShow
-            helperMessage="Maximum 280 characters"
-          />
-          <DesignComponent
-            label="Short description"
-            modelValue="Brief text"
-            maxlength="50"
-            counterShow
-          />
-        </div>
-      `
-    },
-    {
-      id: 'InputArrows',
-      name: {
-        en: 'Navigation arrows',
-        ru: 'Стрелки навигации'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            type="number"
-            label="Quantity"
-            modelValue="5"
-            arrowStep="1"
-          />
-          <DesignComponent
-            type="number"
-            label="Price step (0.01)"
-            modelValue="19.99"
-            arrowStep="0.01"
-            step="0.01"
-          />
-          <DesignComponent
-            type="number"
-            label="Large step (10)"
-            modelValue="100"
-            arrowStep="10"
-          />
-        </div>
-      `
-    },
-    {
-      id: 'InputIcons',
-      name: {
-        en: 'With icons',
-        ru: 'С иконками'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            label="Search"
-            icon="search"
-            placeholder="Search..."
-          />
-          <DesignComponent
-            label="Email"
-            icon="email"
-            iconTrailing="info"
-            placeholder="email@example.com"
-          />
-          <DesignComponent
-            label="Location"
-            icon="location_on"
-            modelValue="New York"
-          />
-        </div>
-      `
-    },
-    {
-      id: 'InputCancel',
-      name: {
-        en: 'Clear button',
-        ru: 'Кнопка очистки'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            label="Auto clear (empty)"
-            cancel="auto"
-            placeholder="Type something..."
-          />
-          <DesignComponent
-            label="Auto clear (with value)"
-            cancel="auto"
-            modelValue="Clear me"
-          />
-          <DesignComponent
-            label="Always show clear"
-            cancel="always"
-            modelValue="Text with clear button"
-          />
-        </div>
-      `
-    },
-    {
-      id: 'InputAutocomplete',
-      name: {
-        en: 'Autocomplete & hints',
-        ru: 'Автозаполнение и подсказки'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            label="Username"
-            autocomplete="username"
-            placeholder="Enter username"
-          />
-          <DesignComponent
-            label="Email"
-            type="email"
-            autocomplete="email"
-            placeholder="Enter email"
-          />
-          <DesignComponent
-            label="Phone"
-            type="tel"
-            autocomplete="tel"
-            placeholder="Enter phone"
-          />
+          <DesignComponent type="tel" mask="+1 (###) ###-####" placeholder="+1 (555) 000-0000" label="Phone" />
+          <DesignComponent type="text" mask="#### #### #### ####" placeholder="0000 0000 0000 0000" label="Card" />
+          <DesignComponent type="tel" mask="+1 (###) ###-####" :mask-visible="false" label="No placeholder" />
         </div>
       `
     },
@@ -396,38 +201,17 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Input'} type={'type'}/>
 <Canvas of={Component.InputTypes}/>
 
+<StorybookDescriptions componentName={'Input'} type={'number'}/>
+<Canvas of={Component.InputNumber}/>
+
+<StorybookDescriptions componentName={'Input'} type={'v-model'}/>
+<Canvas of={Component.InputVModel}/>
+
 <StorybookDescriptions componentName={'Input'} type={'currency'}/>
 <Canvas of={Component.InputCurrency}/>
 
-<StorybookDescriptions componentName={'Input'} type={'states'}/>
-<Canvas of={Component.InputStates}/>
-
-<StorybookDescriptions componentName={'Input'} type={'validation'}/>
-<Canvas of={Component.InputValidation}/>
-
-<StorybookDescriptions componentName={'Input'} type={'password'}/>
-<Canvas of={Component.InputPassword}/>
-
 <StorybookDescriptions componentName={'Input'} type={'mask'}/>
 <Canvas of={Component.InputMask}/>
-
-<StorybookDescriptions componentName={'Input'} type={'prefix-suffix'}/>
-<Canvas of={Component.InputPrefixSuffix}/>
-
-<StorybookDescriptions componentName={'Input'} type={'counter'}/>
-<Canvas of={Component.InputCounter}/>
-
-<StorybookDescriptions componentName={'Input'} type={'arrows'}/>
-<Canvas of={Component.InputArrows}/>
-
-<StorybookDescriptions componentName={'Input'} type={'icons'}/>
-<Canvas of={Component.InputIcons}/>
-
-<StorybookDescriptions componentName={'Input'} type={'cancel'}/>
-<Canvas of={Component.InputCancel}/>
-
-<StorybookDescriptions componentName={'Input'} type={'autocomplete'}/>
-<Canvas of={Component.InputAutocomplete}/>
 
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={Component.InputSkeleton}/>

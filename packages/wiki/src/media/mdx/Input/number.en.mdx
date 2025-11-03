@@ -1,0 +1,41 @@
+## Working with Numbers
+
+Properties `type`, `fraction`, `language`, `min`, `max`, `step`, `arrow`, `arrowStep`, and `align` are designed to manage numeric value input and formatting with localization support and interactive control elements.
+
+**Properties:**
+
+- `type` — input type (`number` or `number-format`)
+- `fraction` — number of decimal places (number, `true` for dynamic fractional part)
+- `language` — locale code for formatting (e.g., `ru-RU`, `en-US`)
+- `min` — minimum allowed value
+- `max` — maximum allowed value
+- `step` — step size for keyboard input
+- `arrow` — control arrows type (`auto`, `stepper`, `carousel`, `none`)
+- `arrowStep` — step size for arrow clicks
+- `align` — arrows placement (`left`, `center`, `right`)
+
+Properties work together: `type` defines the base input mode, where `number` activates simple numeric input with basic validation without formatting, and `number-format` enables automatic formatting with thousands separators and decimal places depending on locale. `language` defines regional rules for thousands separators (space, comma, period) and decimal separator (period or comma). Properties `min` and `max` activate built-in range validation. `step` defines increment/decrement magnitude when using arrow keys up/down and Page Up/Down. Properties `arrow` and `arrowStep` add visual control elements (± buttons or < > arrows) with customizable step size, where if `arrowStep` is not specified, `step` value is used. `align` controls arrows placement in the input field.
+
+```html
+<script setup>
+import { ref } from 'vue'
+const value = ref('1234567.89')
+</script>
+
+<template>
+  <!-- Simple numeric input -->
+  <Input v-model="value" type="number" label="Number" />
+
+  <!-- Formatted number with locale -->
+  <Input v-model="value" type="number-format" language="en-US" label="Formatted" />
+
+  <!-- With range constraints -->
+  <Input v-model="value" type="number" :min="0" :max="100" label="From 0 to 100" />
+
+  <!-- With step and stepper arrows -->
+  <Input v-model="value" type="number" arrow="stepper" :step="5" :arrow-step="10" label="Step 5/10" />
+
+  <!-- With center alignment -->
+  <Input v-model="value" type="number-format" align="center" :fraction="2" label="Centered" />
+</template>
+```

@@ -92,6 +92,7 @@ export class MaskInclude<
       valueDefault: getRef(this.valueDefault),
       currency: this.props.currency,
       currencyHide: this.props.currencyHide,
+      fraction: this.props.fraction,
       type: this.type?.get(),
       visible: this.props.maskVisible,
 
