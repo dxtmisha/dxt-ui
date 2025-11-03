@@ -65,38 +65,6 @@ const imageBase64 = await blobToBase64(imageBlob)
 // 'data:image/png;base64,iVBORw0KGgo...'
 ```
 
-## `computedAsync`
-
-Создаёт вычисляемое свойство Vue, которое может обрабатывать асинхронные геттеры.
-
-**Параметры:**
-- `getter: (() => Promise<R>) | (() => R) | R` — асинхронная функция, синхронная функция или прямое значение для вычисления результата
-- `debugOptions?: DebuggerOptions` — опции отладки для реактивных вычислений (поддерживается библиотекой Vue.js)
-
-```javascript
-import { computedAsync } from '@dxtmisha/functional'
-
-// С асинхронной функцией
-const userData = computedAsync(async () => {
-  const response = await fetch('/api/user')
-  return response.json()
-})
-
-// С синхронной функцией
-const doubled = computedAsync(() => value.value * 2)
-
-// С прямым значением
-const staticValue = computedAsync('Hello World')
-
-// С опциями отладки
-const debugged = computedAsync(
-  async () => await fetchData(),
-  {
-    onTrack: (e) => console.log('tracked:', e),
-    onTrigger: (e) => console.log('triggered:', e)
-  }
-)
-```
 
 ## `encodeAttribute`
 

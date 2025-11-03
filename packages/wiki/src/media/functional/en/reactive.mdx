@@ -1,0 +1,40 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/functional/en/Reactive'/>
+
+# Reactive Utilities
+
+A set of functions for working with Vue.js reactivity.
+
+## `computedAsync`
+
+Creates a Vue computed property that can handle asynchronous getters.
+
+**Parameters:**
+- `getter: (() => Promise<R>) | (() => R) | R` — asynchronous function, synchronous function, or direct value to compute the result
+- `debugOptions?: DebuggerOptions` — debug options for reactive computations (supported by Vue.js library)
+
+```javascript
+import { computedAsync } from '@dxtmisha/functional'
+
+// With asynchronous function
+const userData = computedAsync(async () => {
+  const response = await fetch('/api/user')
+  return response.json()
+})
+
+// With synchronous function
+const doubled = computedAsync(() => value.value * 2)
+
+// With direct value
+const staticValue = computedAsync('Hello World')
+
+// With debug options
+const debugged = computedAsync(
+  async () => await fetchData(),
+  {
+    onTrack: (e) => console.log('tracked:', e),
+    onTrigger: (e) => console.log('triggered:', e)
+  }
+)
+```
