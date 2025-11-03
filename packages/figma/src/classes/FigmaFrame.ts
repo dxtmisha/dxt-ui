@@ -17,9 +17,11 @@ export class FigmaFrame {
   /**
    * Constructor
    * @param page Figma page or node/ страница или узел Figma
+   * @param selection whether to use the current selection or the entire page/ использовать текущее выделение или всю страницу
    */
   constructor(
-    protected readonly page: UiFigmaNode
+    protected readonly page: UiFigmaNode,
+    protected readonly selection: boolean = false
   ) {
     this.items = this.initBySelection()
   }
@@ -125,7 +127,10 @@ export class FigmaFrame {
    * Инициализирует элементы на основе текущего выделения или всей страницы.
    */
   protected initBySelection() {
-    if ('selection' in this.page) {
+    if (
+      this.selection
+      && 'selection' in this.page
+    ) {
       const items: FigmaItem[] = []
 
       for (const item of this.page.selection) {

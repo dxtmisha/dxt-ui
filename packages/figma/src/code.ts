@@ -1,12 +1,8 @@
-import { FigmaFrame } from './classes/FigmaFrame'
+import { makeFigmaTexts } from './functions/makeFigmaTexts'
 
 switch (figma.mode) {
   case 'inspect':
-    figma.on('selectionchange', () => {
-      const frame = new FigmaFrame(figma.currentPage)
-      console.log('selection changed', frame.getTexts())
-    })
-
+    makeFigmaTexts()
     figma.showUI(__html__)
     break
   case 'codegen':
