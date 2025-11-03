@@ -1,3 +1,4 @@
+import { forEach } from '@dxtmisha/functional-basic'
 import { FigmaItem } from './FigmaItem'
 import type { UiFigmaItemText, UiFigmaNode } from '../types/figmaTypes'
 
@@ -7,7 +8,7 @@ import type { UiFigmaItemText, UiFigmaNode } from '../types/figmaTypes'
  * Класс для работы с фреймами Figma и их элементами.
  */
 export class FigmaFrame {
-  protected mainItem: FigmaItem
+  protected mainItem: FigmaItem[] = []
   /**
    * List of all Figma items.
    *
@@ -24,8 +25,17 @@ export class FigmaFrame {
     protected readonly page: UiFigmaNode,
     protected readonly selection: boolean = false
   ) {
-    this.mainItem = new FigmaItem(page)
+    this.mainItem = this.initMain()
     this.items = this.initBySelection()
+  }
+
+  /**
+   * Checks if the current context is a selection.
+   *
+   * Проверяет, является ли текущий контекст выделением.
+   */
+  isSelection(): this is { page: PageNode } {
+    return this.selection && 'selection' in this.page
   }
 
   /**
@@ -100,8 +110,35 @@ export class FigmaFrame {
     return data
   }
 
+  /**
+   * Takes screenshots of the main items.
+   *
+   * Делает скриншоты основных элементов.
+   */
   async screenshot() {
-    return await this.mainItem.exportJpg()
+    const images: Uint8Array[] = []
+
+    for (const item of this.mainItem) {
+      images.push((await item.exportJpg()) as Uint8Array)
+    }
+
+    return images
+  }
+
+  /**
+   * Initializes main items based on selection or entire page.
+   *
+   * Инициализирует основные элементы на основе выделения или всей страницы.
+   */
+  protected initMain() {
+    if (this.isSelection()) {
+      return forEach(
+        [...this.page.selection],
+        item => new FigmaItem(item)
+      )
+    }
+
+    return [new FigmaItem(this.page)]
   }
 
   /**
@@ -133,10 +170,7 @@ export class FigmaFrame {
    * Инициализирует элементы на основе текущего выделения или всей страницы.
    */
   protected initBySelection() {
-    if (
-      this.selection
-      && 'selection' in this.page
-    ) {
+    if (this.isSelection()) {
       const items: FigmaItem[] = []
 
       for (const item of this.page.selection) {

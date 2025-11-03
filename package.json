@@ -19,7 +19,7 @@
     "@dxtmisha/constructor": "workspace:*",
     "@dxtmisha/d1": "workspace:*",
     "@dxtmisha/functional": "^1.4.2",
-    "@dxtmisha/functional-basic": "^0.1.4",
+    "@dxtmisha/functional-basic": "^0.2.0",
     "@dxtmisha/media": "^0.3.3",
     "@dxtmisha/scripts": "^0.4.7",
     "@dxtmisha/storybook": "workspace:*",

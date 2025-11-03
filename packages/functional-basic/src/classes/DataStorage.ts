@@ -137,9 +137,13 @@ export class DataStorage<T> {
    */
   private getMethod(): Storage | undefined {
     if (isDomRuntime()) {
-      return this.isSession
+      const storage = this.isSession
         ? window?.sessionStorage
         : window?.localStorage
+
+      if (storage) {
+        return storage
+      }
     }
 
     return undefined

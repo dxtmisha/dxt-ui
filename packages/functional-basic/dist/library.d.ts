@@ -70,6 +70,7 @@ export * from './functions/initScrollbarOffset';
 export * from './functions/intersectKey';
 export * from './functions/isArray';
 export * from './functions/isDifferent';
+export * from './functions/isDomData';
 export * from './functions/isDomRuntime';
 export * from './functions/isFilled';
 export * from './functions/isFloat';

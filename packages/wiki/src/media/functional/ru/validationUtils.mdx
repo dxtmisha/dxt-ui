@@ -69,6 +69,17 @@ isDifferent('hello', 'hello') // false
 isDifferent({a: 1}, {a: 1}) // true (разные ссылки)
 ```
 
+## `isDomData`
+
+Проверяет, является ли текущая среда URL-адресом данных (data URL).
+
+```javascript
+import { isDomData } from '@dxtmisha/functional'
+
+isDomData() // true если location.href начинается с 'data:', иначе false
+// Полезно для определения, работает ли код в iframe с data URL
+```
+
 ## `isDomRuntime`
 
 Проверяет, выполняется ли код в браузерной среде (есть ли DOM).

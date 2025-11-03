@@ -174,8 +174,11 @@ class O {
    * Возвращает объект для работы с хранилищем.
    */
   getMethod() {
-    if (l())
-      return this.isSession ? window == null ? void 0 : window.sessionStorage : window == null ? void 0 : window.localStorage;
+    if (l()) {
+      const t = this.isSession ? window == null ? void 0 : window.sessionStorage : window == null ? void 0 : window.localStorage;
+      if (t)
+        return t;
+    }
   }
   /**
    * Getting the storage key name.
@@ -4684,7 +4687,10 @@ function Je(i, t) {
     s !== (t == null ? void 0 : t[n]) && (e = !0);
   }), e;
 }
-function Qe(i) {
+function Qe() {
+  return location.href.startsWith("data:");
+}
+function Xe(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -4694,11 +4700,11 @@ function Qe(i) {
       return !1;
   }
 }
-function Xe(i, t) {
+function Me(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function Me(i, t) {
+function _e(i, t) {
   return Array.isArray(i) ? i.every((e) => it(e, t)) : it(i, t);
 }
 function $e(i) {
@@ -4718,13 +4724,13 @@ function Z(i, t, e = !0) {
     }
   ), s;
 }
-function _e(i, t) {
+function Oe(i, t) {
   let e = i;
   return g(t, (s, n) => {
     e = e.replace(de(`[${n}]`), E(s));
   }), e;
 }
-function Oe(i) {
+function Te(i) {
   const t = k(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -4732,7 +4738,7 @@ function Oe(i) {
   }
   return "00:00";
 }
-function Te(i, t, {
+function Ge(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
@@ -4747,7 +4753,7 @@ function Te(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function Ge(i, t, e) {
+function ti(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
@@ -4763,13 +4769,13 @@ function Ge(i, t, e) {
 function pe(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function ti(i) {
+function ei(i) {
   return pe(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function ei(i) {
+function ii(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function ii(i, t, e, s) {
+function si(i, t, e, s) {
   const n = k(i), o = k(t);
   return t && o < n ? `${Lt(o, e, s)}+` : Lt(n, e, s);
 }
@@ -4777,10 +4783,10 @@ const Lt = (i, t, e) => t ? new J(e).number(i) : i;
 function be(i, t) {
   return 1 / i * t;
 }
-function si(i, t) {
+function ri(i, t) {
   return be(i, t) * 100;
 }
-async function ri(i) {
+async function ni(i) {
   if (l())
     try {
       await navigator.clipboard.writeText(i);
@@ -4873,38 +4879,39 @@ export {
   qe as intersectKey,
   Bt as isArray,
   Je as isDifferent,
+  Qe as isDomData,
   l as isDomRuntime,
   D as isFilled,
-  Qe as isFloat,
+  Xe as isFloat,
   Ct as isFunction,
   Ut as isInDom,
-  Xe as isIntegerBetween,
+  Me as isIntegerBetween,
   q as isNull,
   at as isNumber,
   m as isObject,
   C as isObjectNotArray,
   it as isSelected,
-  Me as isSelectedByList,
+  _e as isSelectedByList,
   z as isString,
   At as isWindow,
   Y as random,
   Z as replaceRecursive,
-  _e as replaceTemplate,
-  Oe as secondToTime,
+  Oe as replaceTemplate,
+  Te as secondToTime,
   Ot as setElementItem,
-  Te as setValues,
-  Ge as splice,
+  Ge as setValues,
+  ti as splice,
   ye as strFill,
   H as toArray,
   pe as toCamelCase,
-  ti as toCamelCaseFirst,
+  ei as toCamelCaseFirst,
   B as toDate,
-  ei as toKebabCase,
+  ii as toKebabCase,
   k as toNumber,
-  ii as toNumberByMax,
+  si as toNumberByMax,
   be as toPercent,
-  si as toPercentBy100,
+  ri as toPercentBy100,
   Nt as transformation,
   $e as uniqueArray,
-  ri as writeClipboardData
+  ni as writeClipboardData
 };

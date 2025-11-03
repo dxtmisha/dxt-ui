@@ -9,18 +9,24 @@
 import { FigmaMessage } from './classes/FigmaMessage'
 import { computed, ref } from 'vue'
 import type { UiFigmaMessageTexts } from './types/figmaTypes.ts'
+import { ensureMaxSize } from './functions/ensureMaxSize.ts'
 
 const item = ref<UiFigmaMessageTexts>()
-const screenshot = computed<string | undefined>(() => {
+const screenshots = computed<string[]>(() => {
+  const blobs: string[] = []
+
   if (
     item.value
     && item.value.screenshot
   ) {
-    // const blob = new Blob([item.value.screenshot as any], { type: 'image/jpg' })
-    // return URL.createObjectURL(blob)
+    for (const screenshot of item.value.screenshot) {
+      blobs.push(
+        ensureMaxSize(screenshot)
+      )
+    }
   }
 
-  return undefined
+  return blobs
 })
 
 FigmaMessage.add(
@@ -36,7 +42,12 @@ FigmaMessage.add(
 <template>
   <div class="p-4">
     <h1>Figma Plugin UI !!!</h1>
-    <img alt="screenshot" :src="screenshot">
+    <img
+      v-for="screenshot in screenshots"
+      :key="screenshot"
+      :src="screenshot"
+      alt="screenshot"
+    >
   </div>
 </template>
 

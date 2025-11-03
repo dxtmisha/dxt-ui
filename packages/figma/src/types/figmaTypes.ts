@@ -36,5 +36,5 @@ export type UiFigmaMessageList = UiFigmaMessageItem[]
 export type UiFigmaMessageTexts = {
   frame: FigmaFrame
   texts: UiFigmaItemText[]
-  screenshot: Uint8Array | null
+  screenshot: Uint8Array[]
 }

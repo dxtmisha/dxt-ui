@@ -69,6 +69,17 @@ isDifferent('hello', 'hello') // false
 isDifferent({a: 1}, {a: 1}) // true (different references)
 ```
 
+## `isDomData`
+
+Checks if the current environment is a data URL.
+
+```javascript
+import { isDomData } from '@dxtmisha/functional'
+
+isDomData() // true if location.href starts with 'data:', otherwise false
+// Useful for detecting if code is running in iframe with data URL
+```
+
 ## `isDomRuntime`
 
 Checks if code is running in browser environment (DOM exists).
