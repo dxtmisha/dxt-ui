@@ -7,12 +7,13 @@
 ).generate('я же удалил свой ключ API, почему он работает?') */
 
 import { FigmaMessage } from './classes/FigmaMessage'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import type { UiFigmaMessageTexts } from './types/figmaTypes.ts'
 import { ensureMaxSize } from './functions/ensureMaxSize.ts'
+import { computedAsync } from '@dxtmisha/functional'
 
 const item = ref<UiFigmaMessageTexts>()
-const screenshots = computed<string[]>(() => {
+const screenshots = computedAsync<string[]>(async () => {
   const blobs: string[] = []
 
   if (
@@ -21,7 +22,7 @@ const screenshots = computed<string[]>(() => {
   ) {
     for (const screenshot of item.value.screenshot) {
       blobs.push(
-        ensureMaxSize(screenshot)
+        await ensureMaxSize(screenshot)
       )
     }
   }

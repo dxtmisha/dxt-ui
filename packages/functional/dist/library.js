@@ -1,30 +1,30 @@
-var Nt = Object.defineProperty;
-var At = (i, t, e) => t in i ? Nt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
-var u = (i, t, e) => At(i, typeof t != "symbol" ? t + "" : t, e);
-import { i as y, D as ct, r as _, a as Bt, G as w, f as $, t as N, b as Q, c as Ft, d as vt, e as z, g as W, h as F, A as V, j as S, k as bt, S as St, l as j, m as U, n as lt, E as xt, C as Et, H as T, L as mt } from "./ScrollbarWidth-DCvIln5p.js";
-import { o as ji, p as Ui, U as _i, q as zi, s as Ki, u as Zi, v as Vi, w as Yi, x as qi, y as Ji, z as Qi, I as Xi, B as Mi, F as Oi, J as Ti, K as Gi, M as ts, N as es, O as is, P as ss, Q as rs, R as ns, T as os } from "./ScrollbarWidth-DCvIln5p.js";
-import { isRef as X, h as Ht, computed as l, toRefs as Pt, useAttrs as Rt, useSlots as Wt, ref as p, watch as f, triggerRef as jt, shallowRef as Z, onUnmounted as nt, inject as Ut, provide as _t, watchEffect as zt } from "vue";
-class Kt {
+var At = Object.defineProperty;
+var Bt = (i, t, e) => t in i ? At(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
+var c = (i, t, e) => Bt(i, typeof t != "symbol" ? t + "" : t, e);
+import { i as y, D as ct, r as _, a as Ft, G as w, f as p, t as N, b as Q, c as xt, d as vt, e as z, g as W, h as F, A as V, j as S, k as bt, S as St, l as j, m as U, n as lt, E as Et, C as Ht, H as T, L as mt, o as Pt } from "./ScrollbarWidth-De97V2Mh.js";
+import { p as zi, q as Ki, U as Zi, s as Vi, u as Yi, v as qi, w as Ji, x as Qi, y as Xi, z as Mi, B as Oi, I as Ti, F as Gi, J as ts, K as es, M as is, N as ss, O as rs, P as ns, Q as os, R as as, T as us } from "./ScrollbarWidth-De97V2Mh.js";
+import { isRef as X, h as Rt, computed as l, toRefs as Wt, useAttrs as jt, useSlots as Ut, ref as $, watch as f, triggerRef as _t, shallowRef as Z, onUnmounted as nt, inject as zt, provide as Kt, watchEffect as wt } from "vue";
+class Zt {
   /**
    * Constructor
    * @param name channel name/ название канала
    * @param callback callback on message received/ колбэк на получение сообщения
    */
   constructor(t, e) {
-    u(this, "channel");
+    c(this, "channel");
     /**
      * Update state on message received.
      *
      * Обновление состояния при получении сообщения.
      * @param event message event/ событие сообщения
      */
-    u(this, "update", (t) => {
+    c(this, "update", (t) => {
       var e;
       return (e = this.callback) == null || e.call(this, t), this;
     });
     if (this.callback = e, y())
       try {
-        this.channel = new BroadcastChannel(`${Zt()}__${t}`), this.channel.onmessage = this.update;
+        this.channel = new BroadcastChannel(`${Vt()}__${t}`), this.channel.onmessage = this.update;
       } catch (s) {
         console.error(`BroadcastMessage ${t}:`, s);
       }
@@ -49,22 +49,22 @@ class Kt {
     return this.callback = t, this;
   }
 }
-const Zt = () => new ct("__broadcast-name").get(() => `name_${_(1e6, 9999999)}`);
+const Vt = () => new ct("__broadcast-name").get(() => `name_${_(1e6, 9999999)}`);
 function A(i) {
-  var n, o, a, c, h, d, g, D;
+  var r, o, a, u, h, d, g, D;
   if (i instanceof Date)
     return i;
-  if (Bt(i))
+  if (Ft(i))
     return /* @__PURE__ */ new Date();
   if (typeof i == "number")
     return new Date(i);
   let t = i, e = w.getTimezoneFormat();
   i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (P, M, k) => (t = M, e = k, P));
-  const s = (D = (g = (d = (h = (c = (a = (o = (n = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? n : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? c : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? d : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? g : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? D : t.replace(" ", "T");
+  const s = (D = (g = (d = (h = (u = (a = (o = (r = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? r : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? d : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? g : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? D : t.replace(" ", "T");
   return /* @__PURE__ */ new Date(`${s}${e}`);
 }
 function ot(i, t) {
-  return $(i, (e) => e == null ? void 0 : e[t]);
+  return p(i, (e) => e == null ? void 0 : e[t]);
 }
 class H {
   /**
@@ -73,7 +73,7 @@ class H {
    * код страны, полный вид язык-страна или один из них
    */
   constructor(t = w.getLocation()) {
-    u(this, "geo");
+    c(this, "geo");
     this.geo = w.find(t);
     const e = this.getLocation();
     if (e in G)
@@ -116,17 +116,17 @@ class H {
    */
   display(t, e) {
     var o;
-    let s = { type: "language" }, n;
+    let s = { type: "language" }, r;
     e && (typeof e == "string" ? s.type = e : s = {
       ...s,
       ...e
     });
     try {
-      y() && (t ? n = new Intl.DisplayNames(this.getLocation(), s).of(t) : s.type === "language" ? n = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.language) : s.type === "region" && (n = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.country)));
+      y() && (t ? r = new Intl.DisplayNames(this.getLocation(), s).of(t) : s.type === "language" ? r = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.language) : s.type === "region" && (r = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.country)));
     } catch (a) {
       console.error("display: ", a);
     }
-    return (o = n != null ? n : t) != null ? o : "";
+    return (o = r != null ? r : t) != null ? o : "";
   }
   /**
    * Get display names of language.
@@ -165,9 +165,9 @@ class H {
    * @param surname surname middle name (optional)/ отчество
    * @param short shorten the names/ сократить названия
    */
-  fullName(t, e, s, n) {
-    var c, h;
-    const o = (h = (c = this.geo) == null ? void 0 : c.nameFormat) != null ? h : "fl";
+  fullName(t, e, s, r) {
+    var u, h;
+    const o = (h = (u = this.geo) == null ? void 0 : u.nameFormat) != null ? h : "fl";
     let a;
     switch (o) {
       case "fsl":
@@ -183,7 +183,7 @@ class H {
         a = `${e} ${t}`;
         break;
     }
-    return n ? a.replace(/ (.)[^ ]+/ig, " $1.") : a;
+    return r ? a.replace(/ (.)[^ ]+/ig, " $1.") : a;
   }
   /**
    * In basic use without specifying a locale, a formatted string.
@@ -194,8 +194,8 @@ class H {
    * или всеми свойствами
    */
   number(t, e) {
-    var s, n;
-    return ((n = (s = this.numberObject(e)) == null ? void 0 : s.format) == null ? void 0 : n.call(s, N(t))) || t.toString();
+    var s, r;
+    return ((r = (s = this.numberObject(e)) == null ? void 0 : s.format) == null ? void 0 : r.call(s, N(t))) || t.toString();
   }
   /**
    * Decimal point symbol.
@@ -203,8 +203,8 @@ class H {
    * Символ десятичной точки.
    */
   decimal() {
-    var t, e, s, n, o;
-    return ((o = (n = (s = (e = (t = this.numberObject()) == null ? void 0 : t.formatToParts) == null ? void 0 : e.call(t, 1.2)) == null ? void 0 : s.find) == null ? void 0 : n.call(s, (a) => a.type === "decimal")) == null ? void 0 : o.value) || ".";
+    var t, e, s, r, o;
+    return ((o = (r = (s = (e = (t = this.numberObject()) == null ? void 0 : t.formatToParts) == null ? void 0 : e.call(t, 1.2)) == null ? void 0 : s.find) == null ? void 0 : r.call(s, (a) => a.type === "decimal")) == null ? void 0 : o.value) || ".";
   }
   /**
    * Currency formatting.
@@ -216,24 +216,24 @@ class H {
    * @param numberOnly do not display the currency symbol/ не выводить значок валюты
    */
   currency(t, e, s = !1) {
-    const n = {
+    const r = {
       style: "currency",
       currencyDisplay: "symbol",
       ...typeof e == "string" ? { currency: e } : e || {}
-    }, o = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...a) => (n.currency = String(a[2]).toUpperCase(), String(a[1])));
+    }, o = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...a) => (r.currency = String(a[2]).toUpperCase(), String(a[1])));
     if (s) {
-      const a = this.numberObject(n);
+      const a = this.numberObject(r);
       return a ? ot(
-        a.formatToParts(N(t)).filter((c) => ["literal", "currency"].indexOf(c.type) === -1),
+        a.formatToParts(N(t)).filter((u) => ["literal", "currency"].indexOf(u.type) === -1),
         "value"
       ).join("") : t.toString();
-    } else return "currency" in n ? this.number(
+    } else return "currency" in r ? this.number(
       typeof t == "number" ? t : o,
-      n
+      r
     ) : this.number(
       typeof t == "number" ? t : o,
       {
-        ...n,
+        ...r,
         style: "decimal"
       }
     );
@@ -248,12 +248,12 @@ class H {
    * как отобразить валюту в формате валюты
    */
   currencySymbol(t, e = "symbol") {
-    var s, n, o, a, c;
-    return ((c = (a = (o = (n = (s = this.numberObject({
+    var s, r, o, a, u;
+    return ((u = (a = (o = (r = (s = this.numberObject({
       style: "currency",
       currencyDisplay: e,
       currency: t
-    })) == null ? void 0 : s.formatToParts) == null ? void 0 : n.call(s, 100)) == null ? void 0 : o.find) == null ? void 0 : a.call(o, (h) => h.type === "currency")) == null ? void 0 : c.value) || t;
+    })) == null ? void 0 : s.formatToParts) == null ? void 0 : r.call(s, 100)) == null ? void 0 : o.find) == null ? void 0 : a.call(o, (h) => h.type === "currency")) == null ? void 0 : u.value) || t;
   }
   /**
    * Unit formatting.
@@ -268,8 +268,8 @@ class H {
     const s = {
       style: "unit",
       ...typeof e == "string" ? { unit: e } : e || {}
-    }, n = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]+)$/i, (...o) => (s.unit = String(o[2]).toLowerCase(), String(o[1])));
-    return this.number(n, s);
+    }, r = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]+)$/i, (...o) => (s.unit = String(o[2]).toLowerCase(), String(o[1])));
+    return this.number(r, s);
   }
   /**
    * Возвращает отформатированный размер файла
@@ -326,8 +326,8 @@ class H {
    * @param options Property for PluralRules/ свойство для PluralRules
    * @param optionsNumber an object with some or all properties/ объект с некоторыми или всеми свойствами
    */
-  plural(t, e, s, n) {
-    var c;
+  plural(t, e, s, r) {
+    var u;
     const o = N(t), a = e.split("|");
     if (a.length > 1)
       try {
@@ -354,12 +354,12 @@ class H {
               a.length === 6 ? g = a[a.length - 2] : g = a[a.length - 1];
               break;
           }
-          return `${this.number(o, n)} ${g != null ? g : ""}`.trim();
+          return `${this.number(o, r)} ${g != null ? g : ""}`.trim();
         }
       } catch (h) {
         console.error("plural: ", h);
       }
-    return `${this.number(o, n)} ${(c = a == null ? void 0 : a[0]) != null ? c : ""}`.trim();
+    return `${this.number(o, r)} ${(u = a == null ? void 0 : a[0]) != null ? u : ""}`.trim();
   }
   /**
    * Enables language-sensitive date and time formatting.
@@ -370,9 +370,9 @@ class H {
    * @param styleOptions the representation of the month/ представление месяца
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
-  date(t, e, s, n) {
-    const o = A(t), a = typeof s == "string", c = this.dateOptions(e, a ? s : "short");
-    return n && (c.hour12 = !1), a || Object.assign(c, s), o.toLocaleString(this.getLocation(), c);
+  date(t, e, s, r) {
+    const o = A(t), a = typeof s == "string", u = this.dateOptions(e, a ? s : "short");
+    return r && (u.hour12 = !1), a || Object.assign(u, s), o.toLocaleString(this.getLocation(), u);
   }
   /**
    * Enables language-sensitive relative time formatting.
@@ -384,12 +384,12 @@ class H {
    * @param todayValue current day/ текущий день
    */
   relative(t, e, s) {
-    const n = A(t), o = s || /* @__PURE__ */ new Date(), a = {
+    const r = A(t), o = s || /* @__PURE__ */ new Date(), a = {
       numeric: "auto",
       ...typeof e == "string" ? { style: e } : e || {}
     };
-    let c = "second", h = (n.getTime() - o.getTime()) / 1e3;
-    return Math.abs(h) >= 60 && (c = "minute", h /= 60, Math.abs(h) >= 60 && (c = "hour", h /= 60, Math.abs(h) >= 24 && (c = "day", h /= 24, Math.abs(h) >= 30 && (c = "month", h /= 30, Math.abs(h) >= 12 && (c = "year", h /= 12))))), this.relativeByValue(h, c, a);
+    let u = "second", h = (r.getTime() - o.getTime()) / 1e3;
+    return Math.abs(h) >= 60 && (u = "minute", h /= 60, Math.abs(h) >= 60 && (u = "hour", h /= 60, Math.abs(h) >= 24 && (u = "day", h /= 24, Math.abs(h) >= 30 && (u = "month", h /= 30, Math.abs(h) >= 12 && (u = "year", h /= 12))))), this.relativeByValue(h, u, a);
   }
   /**
    * Enables language-sensitive relative time formatting
@@ -409,17 +409,17 @@ class H {
    * @param type type of data format/ тип формата data
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
-  relativeLimit(t, e, s, n, o, a, c) {
+  relativeLimit(t, e, s, r, o, a, u) {
     const h = A(t), d = s || /* @__PURE__ */ new Date(), g = new Date(d), D = new Date(d);
     return g.setDate(d.getDate() - e), D.setDate(d.getDate() + e), h >= g && h <= D ? this.relative(
       h,
-      n,
+      r,
       d
     ) : this.date(
       h,
       a,
       o,
-      c
+      u
     );
   }
   /**
@@ -429,13 +429,13 @@ class H {
    * @param styleOptions additional option or formatting style/ дополнительная опция или стиль форматирования
    */
   relativeByValue(t, e, s) {
-    const n = {
+    const r = {
       numeric: "auto",
       ...typeof s == "string" ? { style: s } : s || {}
     };
     try {
       if (y())
-        return new Intl.RelativeTimeFormat(this.getLocation(), n).format(Math.round(N(t)), e);
+        return new Intl.RelativeTimeFormat(this.getLocation(), r).format(Math.round(N(t)), e);
     } catch (o) {
       console.error("relative: ", o);
     }
@@ -469,10 +469,10 @@ class H {
     }];
     try {
       if (y()) {
-        const s = /* @__PURE__ */ new Date(), n = Intl.DateTimeFormat(this.getLocation(), { month: t || "long" });
+        const s = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { month: t || "long" });
         for (let o = 0; o < 12; o++)
           s.setMonth(o), e.push({
-            label: n.format(s).replace(/^./, (a) => a.toUpperCase()),
+            label: r.format(s).replace(/^./, (a) => a.toUpperCase()),
             value: o + 1
           });
       }
@@ -510,11 +510,11 @@ class H {
     }];
     try {
       if (y()) {
-        const s = /* @__PURE__ */ new Date(), n = Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }), o = s.getDay() + (this.geo.firstDay === "Mo" ? -1 : 1);
+        const s = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }), o = s.getDay() + (this.geo.firstDay === "Mo" ? -1 : 1);
         s.setDate(s.getDate() - o);
         for (let a = 0; a < 7; a++)
           e.push({
-            label: n.format(s).replace(/^./, (c) => c.toUpperCase()),
+            label: r.format(s).replace(/^./, (u) => u.toUpperCase()),
             value: s.getDay()
           }), s.setDate(s.getDate() + 1);
       }
@@ -539,10 +539,10 @@ class H {
    * @param data an array with data/ массив с данными
    * @param compareFn a function for sorting/ функция для сортировки
    */
-  sort(t, e = (s, n) => [s, n]) {
+  sort(t, e = (s, r) => [s, r]) {
     if (y()) {
       const s = new Intl.Collator(this.getLocation());
-      return t.sort((n, o) => s.compare(...e(n, o)));
+      return t.sort((r, o) => s.compare(...e(r, o)));
     }
     return t;
   }
@@ -582,9 +582,9 @@ class ht {
    * @param code country and language code/ код страны и языка
    */
   constructor(t, e = "date", s = w.getLocation()) {
-    u(this, "date");
-    u(this, "hour24", !1);
-    u(this, "watch");
+    c(this, "date");
+    c(this, "hour24", !1);
+    c(this, "watch");
     this.type = e, this.code = s, this.date = A(t);
   }
   /**
@@ -652,11 +652,11 @@ class ht {
     const s = e / 60 * -1;
     if (t === "hour")
       return this.getIntl().number(Math.trunc(s), { signDisplay: "always" });
-    const n = this.getIntl().number(Math.trunc(s), {
+    const r = this.getIntl().number(Math.trunc(s), {
       signDisplay: "always",
       minimumIntegerDigits: 2
     }), o = s.toString().match(/.\d+/) ? "30" : "00";
-    return t === "RFC" ? `${n}${o}` : `${n}:${o}`;
+    return t === "RFC" ? `${r}${o}` : `${r}:${o}`;
   }
   /**
    * Returns the code of the first day of the week.
@@ -802,12 +802,12 @@ class ht {
    */
   standard(t = !0) {
     const e = new ht(this.date, this.type, "en-GB"), s = [];
-    let n;
-    return e.setHour24(!0), this.type === "hour-minute" ? n = e.locale(this.type, {
+    let r;
+    return e.setHour24(!0), this.type === "hour-minute" ? r = e.locale(this.type, {
       year: "numeric",
       month: "2-digit",
       hour12: !1
-    }) : (["full", "datetime", "date", "year-month", "year", "month", "day"].indexOf(this.type) !== -1 && (s.push(e.localeYear()), s.push(e.localeMonth("2-digit"))), ["full", "datetime", "date", "year", "month", "day"].indexOf(this.type) !== -1 && s.push(e.localeDay("2-digit")), ["full", "datetime", "time", "hour", "minute", "second"].indexOf(this.type) !== -1 && (n = e.locale("time"))), `${s.join("-")}${n ? `T${n}${t ? e.getTimeZone() : ""}` : ""}`;
+    }) : (["full", "datetime", "date", "year-month", "year", "month", "day"].indexOf(this.type) !== -1 && (s.push(e.localeYear()), s.push(e.localeMonth("2-digit"))), ["full", "datetime", "date", "year", "month", "day"].indexOf(this.type) !== -1 && s.push(e.localeDay("2-digit")), ["full", "datetime", "time", "hour", "minute", "second"].indexOf(this.type) !== -1 && (r = e.locale("time"))), `${s.join("-")}${r ? `T${r}${t ? e.getTimeZone() : ""}` : ""}`;
   }
   /**
    * Change the date completely.
@@ -1226,7 +1226,7 @@ class ht {
     ), this;
   }
 }
-const r = "@flag", E = class E {
+const n = "@flag", E = class E {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
@@ -1244,13 +1244,13 @@ const r = "@flag", E = class E {
     var s;
     const e = w.find(t);
     if (e) {
-      const n = this.getCountry(e);
+      const r = this.getCountry(e);
       return {
         language: this.getLanguage(e),
-        country: n,
+        country: r,
         standard: e.standard,
         icon: (s = E.flags) == null ? void 0 : s[e.country],
-        label: n,
+        label: r,
         value: e.country
       };
     }
@@ -1272,7 +1272,7 @@ const r = "@flag", E = class E {
    * @param codes country code/ код страны
    */
   getList(t) {
-    return $(this.getCodes(t), (e) => this.get(e));
+    return p(this.getCodes(t), (e) => this.get(e));
   }
   /**
    * Getting a list of countries by an array of codes in national language.
@@ -1281,7 +1281,7 @@ const r = "@flag", E = class E {
    * @param codes country code/ код страны.
    */
   getNational(t) {
-    return $(this.getList(t), (e) => {
+    return p(this.getList(t), (e) => {
       const s = new E(e.standard).get(e.standard);
       return {
         ...e,
@@ -1336,251 +1336,251 @@ const r = "@flag", E = class E {
     return this.getLocation().countryName(t.country);
   }
 };
-u(E, "flags", {
-  AD: `${r}-ad`,
-  AE: `${r}-ae`,
-  AF: `${r}-af`,
-  AG: `${r}-ag`,
-  AI: `${r}-ai`,
-  AL: `${r}-al`,
-  AM: `${r}-am`,
-  AN: `${r}-an`,
-  AO: `${r}-ao`,
-  AQ: `${r}-aq`,
-  AR: `${r}-ar`,
-  AS: `${r}-as`,
-  AT: `${r}-at`,
-  AU: `${r}-au`,
-  AW: `${r}-aw`,
-  AZ: `${r}-az`,
-  BA: `${r}-ba`,
-  BB: `${r}-bb`,
-  BD: `${r}-bd`,
-  BE: `${r}-be`,
-  BF: `${r}-bf`,
-  BG: `${r}-bg`,
-  BH: `${r}-bh`,
-  BI: `${r}-bi`,
-  BJ: `${r}-bj`,
-  BL: `${r}-bl`,
-  BM: `${r}-bm`,
-  BN: `${r}-bn`,
-  BO: `${r}-bo`,
-  BR: `${r}-br`,
-  BS: `${r}-bs`,
-  BT: `${r}-bt`,
-  BW: `${r}-bw`,
-  BY: `${r}-by`,
-  BZ: `${r}-bz`,
-  CA: `${r}-ca`,
-  CC: `${r}-cc`,
-  CD: `${r}-cd`,
-  CF: `${r}-cf`,
-  CG: `${r}-cg`,
-  CH: `${r}-ch`,
-  CI: `${r}-ci`,
-  CK: `${r}-ck`,
-  CL: `${r}-cl`,
-  CM: `${r}-cm`,
-  CN: `${r}-cn`,
-  CO: `${r}-co`,
-  CR: `${r}-cr`,
-  CU: `${r}-cu`,
-  CV: `${r}-cv`,
-  CW: `${r}-cw`,
-  CX: `${r}-cx`,
-  CY: `${r}-cy`,
-  CZ: `${r}-cz`,
-  DE: `${r}-de`,
-  DJ: `${r}-dj`,
-  DK: `${r}-dk`,
-  DM: `${r}-dm`,
-  DZ: `${r}-dz`,
-  EC: `${r}-ec`,
-  EE: `${r}-ee`,
-  EG: `${r}-eg`,
-  EH: `${r}-eh`,
-  ER: `${r}-er`,
-  ES: `${r}-es`,
-  ET: `${r}-et`,
-  FI: `${r}-fi`,
-  FJ: `${r}-fj`,
-  FK: `${r}-fk`,
-  FM: `${r}-fm`,
-  FO: `${r}-fo`,
-  FR: `${r}-fr`,
-  GA: `${r}-ga`,
-  GB: `${r}-gb`,
-  GD: `${r}-gd`,
-  GE: `${r}-ge`,
-  GF: `${r}-gf`,
-  GG: `${r}-gg`,
-  GH: `${r}-gh`,
-  GI: `${r}-gi`,
-  GL: `${r}-gl`,
-  GM: `${r}-gm`,
-  GN: `${r}-gn`,
-  GQ: `${r}-gq`,
-  GR: `${r}-gr`,
-  GT: `${r}-gt`,
-  GU: `${r}-gu`,
-  GW: `${r}-gw`,
-  GY: `${r}-gy`,
-  HK: `${r}-hk`,
-  HN: `${r}-hn`,
-  HR: `${r}-hr`,
-  HT: `${r}-ht`,
-  HU: `${r}-hu`,
-  ID: `${r}-id`,
-  IE: `${r}-ie`,
-  IL: `${r}-il`,
-  IM: `${r}-im`,
-  IN: `${r}-in`,
-  IO: `${r}-io`,
-  IQ: `${r}-iq`,
-  IR: `${r}-ir`,
-  IS: `${r}-is`,
-  IT: `${r}-it`,
-  JE: `${r}-je`,
-  JM: `${r}-jm`,
-  JO: `${r}-jo`,
-  JP: `${r}-jp`,
-  KE: `${r}-ke`,
-  KG: `${r}-kg`,
-  KH: `${r}-kh`,
-  KI: `${r}-ki`,
-  KM: `${r}-km`,
-  KN: `${r}-kn`,
-  KP: `${r}-kp`,
-  KR: `${r}-kr`,
-  KW: `${r}-kw`,
-  KY: `${r}-ky`,
-  KZ: `${r}-kz`,
-  LA: `${r}-la`,
-  LB: `${r}-lb`,
-  LC: `${r}-lc`,
-  LI: `${r}-li`,
-  LK: `${r}-lk`,
-  LR: `${r}-lr`,
-  LS: `${r}-ls`,
-  LT: `${r}-lt`,
-  LU: `${r}-lu`,
-  LV: `${r}-lv`,
-  LY: `${r}-ly`,
-  MA: `${r}-ma`,
-  MC: `${r}-mc`,
-  MD: `${r}-md`,
-  ME: `${r}-me`,
-  MF: `${r}-mf`,
-  MG: `${r}-mg`,
-  MH: `${r}-mh`,
-  MK: `${r}-mk`,
-  ML: `${r}-ml`,
-  MM: `${r}-mm`,
-  MN: `${r}-mn`,
-  MO: `${r}-mo`,
-  MP: `${r}-mp`,
-  MQ: `${r}-mq`,
-  MR: `${r}-mr`,
-  MS: `${r}-ms`,
-  MT: `${r}-mt`,
-  MU: `${r}-mu`,
-  MV: `${r}-mv`,
-  MW: `${r}-mw`,
-  MX: `${r}-mx`,
-  MY: `${r}-my`,
-  MZ: `${r}-mz`,
-  NA: `${r}-na`,
-  NC: `${r}-nc`,
-  NE: `${r}-ne`,
-  NF: `${r}-nf`,
-  NG: `${r}-ng`,
-  NI: `${r}-ni`,
-  NL: `${r}-nl`,
-  NO: `${r}-no`,
-  NP: `${r}-np`,
-  NR: `${r}-nr`,
-  NU: `${r}-nu`,
-  NZ: `${r}-nz`,
-  OM: `${r}-om`,
-  PA: `${r}-pa`,
-  PE: `${r}-pe`,
-  PF: `${r}-pf`,
-  PG: `${r}-pg`,
-  PH: `${r}-ph`,
-  PK: `${r}-pk`,
-  PL: `${r}-pl`,
-  PM: `${r}-pm`,
-  PN: `${r}-pn`,
-  PR: `${r}-pr`,
-  PS: `${r}-ps`,
-  PT: `${r}-pt`,
-  PW: `${r}-pw`,
-  PY: `${r}-py`,
-  QA: `${r}-qa`,
-  RE: `${r}-re`,
-  RO: `${r}-ro`,
-  RS: `${r}-rs`,
-  RU: `${r}-ru`,
-  RW: `${r}-rw`,
-  SA: `${r}-sa`,
-  SB: `${r}-sb`,
-  SC: `${r}-sc`,
-  SD: `${r}-sd`,
-  SE: `${r}-se`,
-  SG: `${r}-sg`,
-  SH: `${r}-sh`,
-  SI: `${r}-si`,
-  SJ: `${r}-sj`,
-  SK: `${r}-sk`,
-  SL: `${r}-sl`,
-  SM: `${r}-sm`,
-  SN: `${r}-sn`,
-  SO: `${r}-so`,
-  SR: `${r}-sr`,
-  SS: `${r}-ss`,
-  ST: `${r}-st`,
-  SV: `${r}-sv`,
-  SX: `${r}-sx`,
-  SY: `${r}-sy`,
-  SZ: `${r}-sz`,
-  TC: `${r}-tc`,
-  TD: `${r}-td`,
-  TG: `${r}-tg`,
-  TH: `${r}-th`,
-  TJ: `${r}-tj`,
-  TK: `${r}-tk`,
-  TL: `${r}-tl`,
-  TM: `${r}-tm`,
-  TN: `${r}-tn`,
-  TO: `${r}-to`,
-  TR: `${r}-tr`,
-  TT: `${r}-tt`,
-  TV: `${r}-tv`,
-  TW: `${r}-tw`,
-  TZ: `${r}-tz`,
-  UA: `${r}-ua`,
-  UG: `${r}-ug`,
-  US: `${r}-us`,
-  UY: `${r}-uy`,
-  UZ: `${r}-uz`,
-  VA: `${r}-va`,
-  VC: `${r}-vc`,
-  VE: `${r}-ve`,
-  VG: `${r}-vg`,
-  VI: `${r}-vi`,
-  VN: `${r}-vn`,
-  VU: `${r}-vu`,
-  WF: `${r}-wf`,
-  WS: `${r}-ws`,
-  YE: `${r}-ye`,
-  YT: `${r}-yt`,
-  ZA: `${r}-za`,
-  ZM: `${r}-zm`,
-  ZW: `${r}-zw`
+c(E, "flags", {
+  AD: `${n}-ad`,
+  AE: `${n}-ae`,
+  AF: `${n}-af`,
+  AG: `${n}-ag`,
+  AI: `${n}-ai`,
+  AL: `${n}-al`,
+  AM: `${n}-am`,
+  AN: `${n}-an`,
+  AO: `${n}-ao`,
+  AQ: `${n}-aq`,
+  AR: `${n}-ar`,
+  AS: `${n}-as`,
+  AT: `${n}-at`,
+  AU: `${n}-au`,
+  AW: `${n}-aw`,
+  AZ: `${n}-az`,
+  BA: `${n}-ba`,
+  BB: `${n}-bb`,
+  BD: `${n}-bd`,
+  BE: `${n}-be`,
+  BF: `${n}-bf`,
+  BG: `${n}-bg`,
+  BH: `${n}-bh`,
+  BI: `${n}-bi`,
+  BJ: `${n}-bj`,
+  BL: `${n}-bl`,
+  BM: `${n}-bm`,
+  BN: `${n}-bn`,
+  BO: `${n}-bo`,
+  BR: `${n}-br`,
+  BS: `${n}-bs`,
+  BT: `${n}-bt`,
+  BW: `${n}-bw`,
+  BY: `${n}-by`,
+  BZ: `${n}-bz`,
+  CA: `${n}-ca`,
+  CC: `${n}-cc`,
+  CD: `${n}-cd`,
+  CF: `${n}-cf`,
+  CG: `${n}-cg`,
+  CH: `${n}-ch`,
+  CI: `${n}-ci`,
+  CK: `${n}-ck`,
+  CL: `${n}-cl`,
+  CM: `${n}-cm`,
+  CN: `${n}-cn`,
+  CO: `${n}-co`,
+  CR: `${n}-cr`,
+  CU: `${n}-cu`,
+  CV: `${n}-cv`,
+  CW: `${n}-cw`,
+  CX: `${n}-cx`,
+  CY: `${n}-cy`,
+  CZ: `${n}-cz`,
+  DE: `${n}-de`,
+  DJ: `${n}-dj`,
+  DK: `${n}-dk`,
+  DM: `${n}-dm`,
+  DZ: `${n}-dz`,
+  EC: `${n}-ec`,
+  EE: `${n}-ee`,
+  EG: `${n}-eg`,
+  EH: `${n}-eh`,
+  ER: `${n}-er`,
+  ES: `${n}-es`,
+  ET: `${n}-et`,
+  FI: `${n}-fi`,
+  FJ: `${n}-fj`,
+  FK: `${n}-fk`,
+  FM: `${n}-fm`,
+  FO: `${n}-fo`,
+  FR: `${n}-fr`,
+  GA: `${n}-ga`,
+  GB: `${n}-gb`,
+  GD: `${n}-gd`,
+  GE: `${n}-ge`,
+  GF: `${n}-gf`,
+  GG: `${n}-gg`,
+  GH: `${n}-gh`,
+  GI: `${n}-gi`,
+  GL: `${n}-gl`,
+  GM: `${n}-gm`,
+  GN: `${n}-gn`,
+  GQ: `${n}-gq`,
+  GR: `${n}-gr`,
+  GT: `${n}-gt`,
+  GU: `${n}-gu`,
+  GW: `${n}-gw`,
+  GY: `${n}-gy`,
+  HK: `${n}-hk`,
+  HN: `${n}-hn`,
+  HR: `${n}-hr`,
+  HT: `${n}-ht`,
+  HU: `${n}-hu`,
+  ID: `${n}-id`,
+  IE: `${n}-ie`,
+  IL: `${n}-il`,
+  IM: `${n}-im`,
+  IN: `${n}-in`,
+  IO: `${n}-io`,
+  IQ: `${n}-iq`,
+  IR: `${n}-ir`,
+  IS: `${n}-is`,
+  IT: `${n}-it`,
+  JE: `${n}-je`,
+  JM: `${n}-jm`,
+  JO: `${n}-jo`,
+  JP: `${n}-jp`,
+  KE: `${n}-ke`,
+  KG: `${n}-kg`,
+  KH: `${n}-kh`,
+  KI: `${n}-ki`,
+  KM: `${n}-km`,
+  KN: `${n}-kn`,
+  KP: `${n}-kp`,
+  KR: `${n}-kr`,
+  KW: `${n}-kw`,
+  KY: `${n}-ky`,
+  KZ: `${n}-kz`,
+  LA: `${n}-la`,
+  LB: `${n}-lb`,
+  LC: `${n}-lc`,
+  LI: `${n}-li`,
+  LK: `${n}-lk`,
+  LR: `${n}-lr`,
+  LS: `${n}-ls`,
+  LT: `${n}-lt`,
+  LU: `${n}-lu`,
+  LV: `${n}-lv`,
+  LY: `${n}-ly`,
+  MA: `${n}-ma`,
+  MC: `${n}-mc`,
+  MD: `${n}-md`,
+  ME: `${n}-me`,
+  MF: `${n}-mf`,
+  MG: `${n}-mg`,
+  MH: `${n}-mh`,
+  MK: `${n}-mk`,
+  ML: `${n}-ml`,
+  MM: `${n}-mm`,
+  MN: `${n}-mn`,
+  MO: `${n}-mo`,
+  MP: `${n}-mp`,
+  MQ: `${n}-mq`,
+  MR: `${n}-mr`,
+  MS: `${n}-ms`,
+  MT: `${n}-mt`,
+  MU: `${n}-mu`,
+  MV: `${n}-mv`,
+  MW: `${n}-mw`,
+  MX: `${n}-mx`,
+  MY: `${n}-my`,
+  MZ: `${n}-mz`,
+  NA: `${n}-na`,
+  NC: `${n}-nc`,
+  NE: `${n}-ne`,
+  NF: `${n}-nf`,
+  NG: `${n}-ng`,
+  NI: `${n}-ni`,
+  NL: `${n}-nl`,
+  NO: `${n}-no`,
+  NP: `${n}-np`,
+  NR: `${n}-nr`,
+  NU: `${n}-nu`,
+  NZ: `${n}-nz`,
+  OM: `${n}-om`,
+  PA: `${n}-pa`,
+  PE: `${n}-pe`,
+  PF: `${n}-pf`,
+  PG: `${n}-pg`,
+  PH: `${n}-ph`,
+  PK: `${n}-pk`,
+  PL: `${n}-pl`,
+  PM: `${n}-pm`,
+  PN: `${n}-pn`,
+  PR: `${n}-pr`,
+  PS: `${n}-ps`,
+  PT: `${n}-pt`,
+  PW: `${n}-pw`,
+  PY: `${n}-py`,
+  QA: `${n}-qa`,
+  RE: `${n}-re`,
+  RO: `${n}-ro`,
+  RS: `${n}-rs`,
+  RU: `${n}-ru`,
+  RW: `${n}-rw`,
+  SA: `${n}-sa`,
+  SB: `${n}-sb`,
+  SC: `${n}-sc`,
+  SD: `${n}-sd`,
+  SE: `${n}-se`,
+  SG: `${n}-sg`,
+  SH: `${n}-sh`,
+  SI: `${n}-si`,
+  SJ: `${n}-sj`,
+  SK: `${n}-sk`,
+  SL: `${n}-sl`,
+  SM: `${n}-sm`,
+  SN: `${n}-sn`,
+  SO: `${n}-so`,
+  SR: `${n}-sr`,
+  SS: `${n}-ss`,
+  ST: `${n}-st`,
+  SV: `${n}-sv`,
+  SX: `${n}-sx`,
+  SY: `${n}-sy`,
+  SZ: `${n}-sz`,
+  TC: `${n}-tc`,
+  TD: `${n}-td`,
+  TG: `${n}-tg`,
+  TH: `${n}-th`,
+  TJ: `${n}-tj`,
+  TK: `${n}-tk`,
+  TL: `${n}-tl`,
+  TM: `${n}-tm`,
+  TN: `${n}-tn`,
+  TO: `${n}-to`,
+  TR: `${n}-tr`,
+  TT: `${n}-tt`,
+  TV: `${n}-tv`,
+  TW: `${n}-tw`,
+  TZ: `${n}-tz`,
+  UA: `${n}-ua`,
+  UG: `${n}-ug`,
+  US: `${n}-us`,
+  UY: `${n}-uy`,
+  UZ: `${n}-uz`,
+  VA: `${n}-va`,
+  VC: `${n}-vc`,
+  VE: `${n}-ve`,
+  VG: `${n}-vg`,
+  VI: `${n}-vi`,
+  VN: `${n}-vn`,
+  VU: `${n}-vu`,
+  WF: `${n}-wf`,
+  WS: `${n}-ws`,
+  YE: `${n}-ye`,
+  YT: `${n}-yt`,
+  ZA: `${n}-za`,
+  ZM: `${n}-zm`,
+  ZW: `${n}-zw`
 });
 let at = E, x;
-class Fe {
+class xe {
   /**
    * Returns the value by its name.
    *
@@ -1597,10 +1597,10 @@ class Fe {
    * @param data global data/ глобальные данные
    */
   static add(t) {
-    x === void 0 && (x = Ft(t));
+    x === void 0 && (x = xt(t));
   }
 }
-function Vt(i) {
+function Yt(i) {
   return i.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").trim();
 }
 class dt {
@@ -1612,7 +1612,7 @@ class dt {
    * @param isProperty use 'property' attribute instead of 'name' / использовать атрибут 'property' вместо 'name'
    */
   constructor(t, e = !1) {
-    u(this, "items", {});
+    c(this, "items", {});
     this.listMeta = t, this.isProperty = e, this.update();
   }
   /**
@@ -1647,7 +1647,7 @@ class dt {
    * Возвращает все мета-теги в виде HTML-строки.
    */
   html() {
-    return $(
+    return p(
       this.listMeta,
       (e) => this.toHtmlString(e)
     ).join("");
@@ -1669,7 +1669,7 @@ class dt {
    * @param metaList object with meta tag names and content / объект с именами и содержимым мета-тегов
    */
   setByList(t) {
-    return $(
+    return p(
       t,
       (e, s) => this.set(s, String(e))
     ), this;
@@ -1711,8 +1711,8 @@ class dt {
    * @param name meta tag name / имя мета-тега
    */
   setMeta(t) {
-    var n;
-    const e = this.findMetaElement(t), s = (n = this.items[t]) != null ? n : "";
+    var r;
+    const e = this.findMetaElement(t), s = (r = this.items[t]) != null ? r : "";
     if (e)
       e.content = s;
     else if (y()) {
@@ -1729,7 +1729,7 @@ class dt {
    */
   toHtmlString(t) {
     var s;
-    const e = Vt((s = this.items[t]) != null ? s : "");
+    const e = Yt((s = this.items[t]) != null ? s : "");
     return e ? `<meta ${this.getAttributeName()}="${t}" content="${e}">` : "";
   }
   /**
@@ -1744,8 +1744,8 @@ class dt {
     }), this;
   }
 }
-var L = /* @__PURE__ */ ((i) => (i.description = "description", i.keywords = "keywords", i.canonical = "canonical", i.robots = "robots", i.author = "author", i))(L || {}), Yt = /* @__PURE__ */ ((i) => (i.indexFollow = "index, follow", i.noIndexFollow = "noindex, follow", i.indexNoFollow = "index, nofollow", i.noIndexNoFollow = "noindex, nofollow", i.noArchive = "noarchive", i.noSnippet = "nosnippet", i.noImageIndex = "noimageindex", i.images = "images", i.noTranslate = "notranslate", i.noPreview = "nopreview", i.textOnly = "textonly", i.noIndexSubpages = "noindex, noarchive", i.none = "none", i))(Yt || {}), v = /* @__PURE__ */ ((i) => (i.title = "og:title", i.type = "og:type", i.url = "og:url", i.image = "og:image", i.description = "og:description", i.locale = "og:locale", i.siteName = "og:site_name", i.localeAlternate = "og:locale:alternate", i.imageUrl = "og:image:url", i.imageSecureUrl = "og:image:secure_url", i.imageType = "og:image:type", i.imageWidth = "og:image:width", i.imageHeight = "og:image:height", i.imageAlt = "og:image:alt", i.video = "og:video", i.videoUrl = "og:video:url", i.videoSecureUrl = "og:video:secure_url", i.videoType = "og:video:type", i.videoWidth = "og:video:width", i.videoHeight = "og:video:height", i.audio = "og:audio", i.audioSecureUrl = "og:audio:secure_url", i.audioType = "og:audio:type", i.articlePublishedTime = "article:published_time", i.articleModifiedTime = "article:modified_time", i.articleExpirationTime = "article:expiration_time", i.articleAuthor = "article:author", i.articleSection = "article:section", i.articleTag = "article:tag", i.bookAuthor = "book:author", i.bookIsbn = "book:isbn", i.bookReleaseDate = "book:release_date", i.bookTag = "book:tag", i.musicDuration = "music:duration", i.musicAlbum = "music:album", i.musicAlbumDisc = "music:album:disc", i.musicAlbumTrack = "music:album:track", i.musicMusician = "music:musician", i.musicSong = "music:song", i.musicSongDisc = "music:song:disc", i.musicSongTrack = "music:song:track", i.musicReleaseDate = "music:release_date", i.musicCreator = "music:creator", i.videoActor = "video:actor", i.videoActorRole = "video:actor:role", i.videoDirector = "video:director", i.videoWriter = "video:writer", i.videoDuration = "video:duration", i.videoReleaseDate = "video:release_date", i.videoTag = "video:tag", i.videoSeries = "video:series", i.profileFirstName = "profile:first_name", i.profileLastName = "profile:last_name", i.profileUsername = "profile:username", i.profileGender = "profile:gender", i.productBrand = "product:brand", i.productAvailability = "product:availability", i.productCondition = "product:condition", i.productPriceAmount = "product:price:amount", i.productPriceCurrency = "product:price:currency", i.productRetailerItemId = "product:retailer_item_id", i.productCategory = "product:category", i.productEan = "product:ean", i.productIsbn = "product:isbn", i.productMfrPartNo = "product:mfr_part_no", i.productUpc = "product:upc", i.productWeightValue = "product:weight:value", i.productWeightUnits = "product:weight:units", i.productColor = "product:color", i.productMaterial = "product:material", i.productPattern = "product:pattern", i.productAgeGroup = "product:age_group", i.productGender = "product:gender", i))(v || {}), qt = /* @__PURE__ */ ((i) => (i.website = "website", i.article = "article", i.video = "video.other", i.videoTvShow = "video.tv_show", i.videoEpisode = "video.episode", i.videoMovie = "video.movie", i.musicAlbum = "music.album", i.musicPlaylist = "music.playlist", i.musicSong = "music.song", i.musicRadioStation = "music.radio_station", i.app = "app", i.product = "product", i.business = "business.business", i.place = "place", i.event = "event", i.profile = "profile", i.book = "book", i))(qt || {}), Jt = /* @__PURE__ */ ((i) => (i.inStock = "in stock", i.outOfStock = "out of stock", i.preorder = "preorder", i.backorder = "backorder", i.discontinued = "discontinued", i.pending = "pending", i))(Jt || {}), Qt = /* @__PURE__ */ ((i) => (i.new = "new", i.used = "used", i.refurbished = "refurbished", i))(Qt || {}), Xt = /* @__PURE__ */ ((i) => (i.newborn = "newborn", i.infant = "infant", i.toddler = "toddler", i.kids = "kids", i.adult = "adult", i))(Xt || {}), Mt = /* @__PURE__ */ ((i) => (i.female = "female", i.male = "male", i.unisex = "unisex", i))(Mt || {}), b = /* @__PURE__ */ ((i) => (i.card = "twitter:card", i.site = "twitter:site", i.creator = "twitter:creator", i.url = "twitter:url", i.title = "twitter:title", i.description = "twitter:description", i.image = "twitter:image", i.imageAlt = "twitter:image:alt", i.imageSrc = "twitter:image:src", i.imageWidth = "twitter:image:width", i.imageHeight = "twitter:image:height", i.label1 = "twitter:label1", i.data1 = "twitter:data1", i.label2 = "twitter:label2", i.data2 = "twitter:data2", i.appNameIphone = "twitter:app:name:iphone", i.appIdIphone = "twitter:app:id:iphone", i.appUrlIphone = "twitter:app:url:iphone", i.appNameIpad = "twitter:app:name:ipad", i.appIdIpad = "twitter:app:id:ipad", i.appUrlIpad = "twitter:app:url:ipad", i.appNameGooglePlay = "twitter:app:name:googleplay", i.appIdGooglePlay = "twitter:app:id:googleplay", i.appUrlGooglePlay = "twitter:app:url:googleplay", i.player = "twitter:player", i.playerWidth = "twitter:player:width", i.playerHeight = "twitter:player:height", i.playerStream = "twitter:player:stream", i.playerStreamContentType = "twitter:player:stream:content_type", i))(b || {}), Ot = /* @__PURE__ */ ((i) => (i.summary = "summary", i.summaryLargeImage = "summary_large_image", i.app = "app", i.player = "player", i.product = "product", i.gallery = "gallery", i.photo = "photo", i.leadGeneration = "lead_generation", i.audio = "audio", i.poll = "poll", i))(Ot || {});
-class Tt extends dt {
+var L = /* @__PURE__ */ ((i) => (i.description = "description", i.keywords = "keywords", i.canonical = "canonical", i.robots = "robots", i.author = "author", i))(L || {}), qt = /* @__PURE__ */ ((i) => (i.indexFollow = "index, follow", i.noIndexFollow = "noindex, follow", i.indexNoFollow = "index, nofollow", i.noIndexNoFollow = "noindex, nofollow", i.noArchive = "noarchive", i.noSnippet = "nosnippet", i.noImageIndex = "noimageindex", i.images = "images", i.noTranslate = "notranslate", i.noPreview = "nopreview", i.textOnly = "textonly", i.noIndexSubpages = "noindex, noarchive", i.none = "none", i))(qt || {}), v = /* @__PURE__ */ ((i) => (i.title = "og:title", i.type = "og:type", i.url = "og:url", i.image = "og:image", i.description = "og:description", i.locale = "og:locale", i.siteName = "og:site_name", i.localeAlternate = "og:locale:alternate", i.imageUrl = "og:image:url", i.imageSecureUrl = "og:image:secure_url", i.imageType = "og:image:type", i.imageWidth = "og:image:width", i.imageHeight = "og:image:height", i.imageAlt = "og:image:alt", i.video = "og:video", i.videoUrl = "og:video:url", i.videoSecureUrl = "og:video:secure_url", i.videoType = "og:video:type", i.videoWidth = "og:video:width", i.videoHeight = "og:video:height", i.audio = "og:audio", i.audioSecureUrl = "og:audio:secure_url", i.audioType = "og:audio:type", i.articlePublishedTime = "article:published_time", i.articleModifiedTime = "article:modified_time", i.articleExpirationTime = "article:expiration_time", i.articleAuthor = "article:author", i.articleSection = "article:section", i.articleTag = "article:tag", i.bookAuthor = "book:author", i.bookIsbn = "book:isbn", i.bookReleaseDate = "book:release_date", i.bookTag = "book:tag", i.musicDuration = "music:duration", i.musicAlbum = "music:album", i.musicAlbumDisc = "music:album:disc", i.musicAlbumTrack = "music:album:track", i.musicMusician = "music:musician", i.musicSong = "music:song", i.musicSongDisc = "music:song:disc", i.musicSongTrack = "music:song:track", i.musicReleaseDate = "music:release_date", i.musicCreator = "music:creator", i.videoActor = "video:actor", i.videoActorRole = "video:actor:role", i.videoDirector = "video:director", i.videoWriter = "video:writer", i.videoDuration = "video:duration", i.videoReleaseDate = "video:release_date", i.videoTag = "video:tag", i.videoSeries = "video:series", i.profileFirstName = "profile:first_name", i.profileLastName = "profile:last_name", i.profileUsername = "profile:username", i.profileGender = "profile:gender", i.productBrand = "product:brand", i.productAvailability = "product:availability", i.productCondition = "product:condition", i.productPriceAmount = "product:price:amount", i.productPriceCurrency = "product:price:currency", i.productRetailerItemId = "product:retailer_item_id", i.productCategory = "product:category", i.productEan = "product:ean", i.productIsbn = "product:isbn", i.productMfrPartNo = "product:mfr_part_no", i.productUpc = "product:upc", i.productWeightValue = "product:weight:value", i.productWeightUnits = "product:weight:units", i.productColor = "product:color", i.productMaterial = "product:material", i.productPattern = "product:pattern", i.productAgeGroup = "product:age_group", i.productGender = "product:gender", i))(v || {}), Jt = /* @__PURE__ */ ((i) => (i.website = "website", i.article = "article", i.video = "video.other", i.videoTvShow = "video.tv_show", i.videoEpisode = "video.episode", i.videoMovie = "video.movie", i.musicAlbum = "music.album", i.musicPlaylist = "music.playlist", i.musicSong = "music.song", i.musicRadioStation = "music.radio_station", i.app = "app", i.product = "product", i.business = "business.business", i.place = "place", i.event = "event", i.profile = "profile", i.book = "book", i))(Jt || {}), Qt = /* @__PURE__ */ ((i) => (i.inStock = "in stock", i.outOfStock = "out of stock", i.preorder = "preorder", i.backorder = "backorder", i.discontinued = "discontinued", i.pending = "pending", i))(Qt || {}), Xt = /* @__PURE__ */ ((i) => (i.new = "new", i.used = "used", i.refurbished = "refurbished", i))(Xt || {}), Mt = /* @__PURE__ */ ((i) => (i.newborn = "newborn", i.infant = "infant", i.toddler = "toddler", i.kids = "kids", i.adult = "adult", i))(Mt || {}), Ot = /* @__PURE__ */ ((i) => (i.female = "female", i.male = "male", i.unisex = "unisex", i))(Ot || {}), b = /* @__PURE__ */ ((i) => (i.card = "twitter:card", i.site = "twitter:site", i.creator = "twitter:creator", i.url = "twitter:url", i.title = "twitter:title", i.description = "twitter:description", i.image = "twitter:image", i.imageAlt = "twitter:image:alt", i.imageSrc = "twitter:image:src", i.imageWidth = "twitter:image:width", i.imageHeight = "twitter:image:height", i.label1 = "twitter:label1", i.data1 = "twitter:data1", i.label2 = "twitter:label2", i.data2 = "twitter:data2", i.appNameIphone = "twitter:app:name:iphone", i.appIdIphone = "twitter:app:id:iphone", i.appUrlIphone = "twitter:app:url:iphone", i.appNameIpad = "twitter:app:name:ipad", i.appIdIpad = "twitter:app:id:ipad", i.appUrlIpad = "twitter:app:url:ipad", i.appNameGooglePlay = "twitter:app:name:googleplay", i.appIdGooglePlay = "twitter:app:id:googleplay", i.appUrlGooglePlay = "twitter:app:url:googleplay", i.player = "twitter:player", i.playerWidth = "twitter:player:width", i.playerHeight = "twitter:player:height", i.playerStream = "twitter:player:stream", i.playerStreamContentType = "twitter:player:stream:content_type", i))(b || {}), Tt = /* @__PURE__ */ ((i) => (i.summary = "summary", i.summaryLargeImage = "summary_large_image", i.app = "app", i.player = "player", i.product = "product", i.gallery = "gallery", i.photo = "photo", i.leadGeneration = "lead_generation", i.audio = "audio", i.poll = "poll", i))(Tt || {});
+class Gt extends dt {
   constructor() {
     super(Object.values(v), !0);
   }
@@ -1869,7 +1869,7 @@ class Tt extends dt {
     return this.set(v.siteName, t);
   }
 }
-class Gt extends dt {
+class te extends dt {
   constructor() {
     super(Object.values(b));
   }
@@ -1993,7 +1993,7 @@ class Gt extends dt {
     return this.set(b.image, t), this;
   }
 }
-class te extends dt {
+class ee extends dt {
   /**
    * Creates an instance of Meta with integrated Open Graph and Twitter Card support.
    *
@@ -2001,10 +2001,10 @@ class te extends dt {
    */
   constructor() {
     super(Object.values(L));
-    u(this, "suffix");
-    u(this, "og");
-    u(this, "twitter");
-    this.og = new Tt(), this.twitter = new Gt();
+    c(this, "suffix");
+    c(this, "og");
+    c(this, "twitter");
+    this.og = new Gt(), this.twitter = new te();
   }
   /**
    * Gets the MetaOg instance for advanced Open Graph operations.
@@ -2205,7 +2205,7 @@ class te extends dt {
     return z(this.suffix) ? ` - ${this.suffix}` : "";
   }
 }
-const ee = [
+const ie = [
   "d",
   "e",
   "f",
@@ -2225,19 +2225,19 @@ const ee = [
   "t",
   "u",
   "v"
-], ie = (i, t = {}) => {
+], se = (i, t = {}) => {
   let e = String(i);
   if (i.match(/%[a-z]/)) {
     let s = 0;
-    $(t, (n) => {
-      e = e.replace(new RegExp(`%${ee[s++]}`, "g"), String(n));
+    p(t, (r) => {
+      e = e.replace(new RegExp(`%${ie[s++]}`, "g"), String(r));
     });
   }
-  return F(t) && $(t, (s, n) => {
+  return F(t) && p(t, (s, r) => {
     e = e.replace(
-      new RegExp(`\\[${n}\\](.*?)\\[/${n}\\]`, "g"),
+      new RegExp(`\\[${r}\\](.*?)\\[/${r}\\]`, "g"),
       (o, a) => String(s).replace(/\[content]/g, a)
-    ).replace(new RegExp(`\\[${n}\\]`, "g"), String(s));
+    ).replace(new RegExp(`\\[${r}\\]`, "g"), String(s));
   }), e;
 }, I = class I {
   /**
@@ -2248,9 +2248,9 @@ const ee = [
    * @param replacement If set, replaces the text with the specified values/ если установлено, заменяет текст на указанные значения
    */
   static async get(t, e) {
-    var n, o;
+    var r, o;
     const s = this.getName(t);
-    return s in this.data ? this.replacement(this.data[s], e) : (V.isLocalhost() || await this.add(t), this.replacement((o = (n = this.data) == null ? void 0 : n[s]) != null ? o : t));
+    return s in this.data ? this.replacement(this.data[s], e) : (V.isLocalhost() || await this.add(t), this.replacement((o = (r = this.data) == null ? void 0 : r[s]) != null ? o : t));
   }
   /**
    * Getting the translation text by its code (Sync).
@@ -2263,8 +2263,8 @@ const ee = [
    * если установлено, заменяет текст на указанные значения
    */
   static getSync(t, e = !1, s) {
-    const n = this.getName(t);
-    return n in this.data ? this.replacement(String(this.data[n]), s) : e ? " " : t;
+    const r = this.getName(t);
+    return r in this.data ? this.replacement(String(this.data[r]), s) : e ? " " : t;
   }
   /**
    * Getting a list of translations by an array of text codes.
@@ -2275,11 +2275,11 @@ const ee = [
   static getList(t) {
     return new Promise((e) => {
       const s = {};
-      let n = 0;
+      let r = 0;
       for (const o of t) {
-        const a = Array.isArray(o) ? o[0] : o, c = Array.isArray(o) ? o.slice(1) : void 0;
-        this.get(a, c).then((h) => {
-          s[a] = h, ++n >= t.length && e(s);
+        const a = Array.isArray(o) ? o[0] : o, u = Array.isArray(o) ? o.slice(1) : void 0;
+        this.get(a, u).then((h) => {
+          s[a] = h, ++r >= t.length && e(s);
         });
       }
     });
@@ -2294,8 +2294,8 @@ const ee = [
    */
   static getListSync(t, e = !1) {
     const s = {};
-    for (const n of t) {
-      const o = Array.isArray(n) ? n[0] : n, a = Array.isArray(n) ? n.slice(1) : void 0;
+    for (const r of t) {
+      const o = Array.isArray(r) ? r[0] : r, a = Array.isArray(r) ? r.slice(1) : void 0;
       s[o] = this.getSync(o, e, a);
     }
     return s;
@@ -2310,7 +2310,7 @@ const ee = [
     return new Promise((e) => {
       this.getNamesNone(t).length > 0 ? (this.cache.push(...this.getNamesNone(t)), this.resolveList.push(e), this.timeout && clearTimeout(this.timeout), this.timeout = setTimeout(() => {
         this.timeout = void 0, this.make().then(() => {
-          this.resolveList.forEach((n) => n()), this.resolveList = [];
+          this.resolveList.forEach((r) => r()), this.resolveList = [];
         });
       }, 160)) : e();
     });
@@ -2322,7 +2322,7 @@ const ee = [
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static addSync(t) {
-    $(t, (e, s) => {
+    p(t, (e, s) => {
       Q(e) && z(e) && (this.data[this.getName(s)] = e);
     });
   }
@@ -2399,7 +2399,7 @@ const ee = [
    * @param replacement values for replacement/ значения для замены
    */
   static replacement(t, e) {
-    return e ? ie(t, e) : t;
+    return e ? se(t, e) : t;
   }
   /**
    * Adding translation data from the server.
@@ -2414,45 +2414,51 @@ const ee = [
     }), this.cache = [];
   }
 };
-u(I, "url", "/api/translate"), u(I, "propsName", "list"), u(I, "data", {}), u(I, "cache", []), u(I, "resolveList", []), u(I, "timeout");
+c(I, "url", "/api/translate"), c(I, "propsName", "list"), c(I, "data", {}), c(I, "cache", []), c(I, "resolveList", []), c(I, "timeout");
 let q = I;
 function gt(i) {
   return Array.isArray(i);
 }
-function xe(i) {
+function Ee(i) {
   var t;
   return Q(i) ? i.trim() : gt(i) && i.findIndex((e) => S(e)) === -1 ? i.join(",") : S(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
 }
-function se(i, t) {
+function re(i, t) {
   return Array(t).fill(i);
 }
-function Ee(i) {
+function He(i) {
+  return new Promise((t, e) => {
+    const s = new FileReader();
+    s.onloadend = () => t(s.result), s.onerror = e, s.readAsDataURL(i);
+  });
+}
+function Pe(i) {
   var t;
   if (y())
     return (t = document.querySelector(i)) != null ? t : void 0;
 }
-function He(i) {
+function Re(i) {
   if (y())
     return document.querySelectorAll(i);
 }
-function Pe(i) {
+function We(i) {
   i.preventDefault(), i.stopPropagation();
 }
-function re(i, t, e) {
+function ne(i, t, e) {
   const s = () => {
-    i(), t != null && t() ? re(i, t, e) : e == null || e();
+    i(), t != null && t() ? ne(i, t, e) : e == null || e();
   };
   y() ? requestAnimationFrame(s) : s();
 }
-function Re(i) {
+function je(i) {
   var s;
   const t = {}, e = bt(i);
   if (e)
-    for (const n of e.attributes)
-      t[n.name] = (s = (n == null ? void 0 : n.value) || (n == null ? void 0 : n.textContent)) != null ? s : void 0;
+    for (const r of e.attributes)
+      t[r.name] = (s = (r == null ? void 0 : r.value) || (r == null ? void 0 : r.textContent)) != null ? s : void 0;
   return t;
 }
-async function We(i) {
+async function Ue(i) {
   var t, e;
   return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
@@ -2461,112 +2467,112 @@ function Y(i, t) {
   const e = bt(i);
   return e ? (z(e.id) || e.setAttribute("id", `id-${yt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${yt++}`;
 }
-function ne(i) {
+function oe(i) {
   return Q(i) ? vt(
     void 0,
     "img",
     { src: i }
   ) : i;
 }
-function wt(i, t = "ig", e = ":value") {
+function Dt(i, t = "ig", e = ":value") {
   const s = i.replace(/([[\]\\^$.?*+()/])/g, "\\$1");
   return new RegExp(e.replace(/:value/g, s), t);
 }
-function oe(i, t) {
-  var n;
+function ae(i, t) {
+  var r;
   const e = t.split(".", 2), s = e[0];
-  return s && (i != null && i[s]) && F(i[s]) && (e != null && e[1]) ? oe(i[s], e[1]) : (n = s && (i == null ? void 0 : i[s])) != null ? n : "";
+  return s && (i != null && i[s]) && F(i[s]) && (e != null && e[1]) ? ae(i[s], e[1]) : (r = s && (i == null ? void 0 : i[s])) != null ? r : "";
 }
-function je(i) {
+function _e(i) {
   var t, e, s;
   return (s = (t = i == null ? void 0 : i.key) != null ? t : i == null ? void 0 : i.code) != null ? s : (e = i == null ? void 0 : i.keyCode) == null ? void 0 : e.toString();
 }
-function Dt(i) {
-  return $(i, (t) => t.length);
-}
-function Ue(i) {
-  return Math.max(...Dt(i));
-}
-function _e(i) {
-  return Math.min(...Dt(i));
-}
-function ae(i) {
-  var t, e, s, n;
-  return (i == null ? void 0 : i.clientX) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientX) || ((n = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : n.clientX) || 0;
-}
-function ue(i) {
-  var t, e, s, n;
-  return (i == null ? void 0 : i.clientY) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((n = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : n.clientY) || 0;
+function Lt(i) {
+  return p(i, (t) => t.length);
 }
 function ze(i) {
+  return Math.max(...Lt(i));
+}
+function Ke(i) {
+  return Math.min(...Lt(i));
+}
+function ue(i) {
+  var t, e, s, r;
+  return (i == null ? void 0 : i.clientX) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientX) || ((r = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : r.clientX) || 0;
+}
+function ce(i) {
+  var t, e, s, r;
+  return (i == null ? void 0 : i.clientY) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((r = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : r.clientY) || 0;
+}
+function Ze(i) {
   return {
-    x: ae(i),
-    y: ue(i)
+    x: ue(i),
+    y: ce(i)
   };
 }
-function Ke(i, t) {
+function Ve(i, t) {
   const e = {};
   return t.forEach((s) => {
     s in i && i[s] !== void 0 && (e[s] = i[s]);
   }), e;
 }
-function Ze(i, t = void 0) {
+function Ye(i, t = void 0) {
   const e = {};
-  return $(i, (s, n) => {
-    s !== t && (e[n] = s);
+  return p(i, (s, r) => {
+    s !== t && (e[r] = s);
   }), e;
 }
-function Ve(i) {
+function qe(i) {
   return F(i) ? i : {};
 }
-function ce(i, t) {
-  return se(i, t).join("");
+function le(i, t) {
+  return re(i, t).join("");
 }
-function Ye(i, t, e = "#", s = 2, n = 12) {
+function Je(i, t, e = "#", s = 2, r = 12) {
   const o = _(i, t), a = [];
-  for (let c = 0; c < o; c++)
-    a.push(ce(e, _(s, n)));
+  for (let u = 0; u < o; u++)
+    a.push(le(e, _(s, r)));
   return a.join(" ");
 }
-function qe(i, t) {
+function Qe(i, t) {
   const e = i != null ? i : 0;
   return t > e ? 100 / (t - e) : 0;
 }
-function Je(i, t) {
+function Xe(i, t) {
   const e = i != null ? i : 0;
   return t > e ? (t - e) / 100 : 0;
 }
 const $t = 0;
-function Qe(i, t, e) {
+function Me(i, t, e) {
   const s = t == null ? void 0 : t.closest(i);
   if (t && s && s.scrollHeight !== s.offsetHeight)
     if (e) {
-      const n = e.getBoundingClientRect(), o = s.getBoundingClientRect(), a = t.getBoundingClientRect();
-      s.scrollTop = t.offsetTop - (n.top - o.top) - (n.height / 2 - a.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
+      const r = e.getBoundingClientRect(), o = s.getBoundingClientRect(), a = t.getBoundingClientRect();
+      s.scrollTop = t.offsetTop - (r.top - o.top) - (r.height / 2 - a.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
     } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - $t : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + $t);
 }
-function Xe(i, t) {
+function Oe(i, t) {
   return i.indexOf(t) !== -1;
 }
-async function Me() {
+async function Te() {
   if (y()) {
     const i = await St.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function Oe(i, t) {
+function Ge(i, t) {
   const e = {};
-  return S(i) && S(t) && $(i, (s, n) => {
-    n in t && (e[n] = s);
+  return S(i) && S(t) && p(i, (s, r) => {
+    r in t && (e[r] = s);
   }), e;
 }
-function Te(i, t) {
+function ti(i, t) {
   let e = Object.keys(i).length !== Object.keys(t).length;
-  return e || $(i, (s, n) => {
-    s !== (t == null ? void 0 : t[n]) && (e = !0);
+  return e || p(i, (s, r) => {
+    s !== (t == null ? void 0 : t[r]) && (e = !0);
   }), e;
 }
-function Ge(i) {
+function ei(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -2576,37 +2582,37 @@ function Ge(i) {
       return !1;
   }
 }
-function ti(i, t) {
+function ii(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function ei(i, t) {
+function si(i, t) {
   return Array.isArray(i) ? i.every((e) => j(e, t)) : j(i, t);
 }
-function le(i) {
+function he(i) {
   return [...new Set(i)];
 }
 function R(i, t, e = !0) {
   const s = U(i);
-  return S(i) && S(t) && $(
+  return S(i) && S(t) && p(
     t,
-    (n, o) => {
+    (r, o) => {
       const a = i == null ? void 0 : i[o];
-      S(a) && S(n) ? e && Array.isArray(a) && Array.isArray(n) ? s[o] = U(le([...a, ...n])) : s[o] = R(
+      S(a) && S(r) ? e && Array.isArray(a) && Array.isArray(r) ? s[o] = U(he([...a, ...r])) : s[o] = R(
         Array.isArray(a) ? { ...a } : a,
-        n,
+        r,
         e
-      ) : s[o] = S(n) ? U(n) : n;
+      ) : s[o] = S(r) ? U(r) : r;
     }
   ), s;
 }
-function ii(i, t) {
+function ri(i, t) {
   let e = i;
-  return $(t, (s, n) => {
-    e = e.replace(wt(`[${n}]`), lt(s));
+  return p(t, (s, r) => {
+    e = e.replace(Dt(`[${r}]`), lt(s));
   }), e;
 }
-function he(i, t = "auto") {
+function de(i, t = "auto") {
   switch (t) {
     case "auto":
       return i.naturalWidth >= i.naturalHeight;
@@ -2616,16 +2622,16 @@ function he(i, t = "auto") {
       return !1;
   }
 }
-function si(i, t, e = "auto") {
-  var n;
-  const s = ne(i);
-  if (s && (s.naturalWidth > t && (e === "auto" || e === "width") || s.naturalHeight > t && (e === "auto" || e === "height"))) {
-    const o = he(s, e), a = (n = document.createElement("canvas")) == null ? void 0 : n.getContext("2d");
-    if (a)
-      return a.canvas.width = o ? t : s.naturalWidth / s.naturalHeight * t, a.canvas.height = o ? s.naturalHeight / s.naturalWidth * t : t, a.drawImage(s, 0, 0, a.canvas.width, a.canvas.height), a.canvas.toDataURL();
+function ni(i, t, e = "auto", s) {
+  var o;
+  const r = oe(i);
+  if (r && (r.naturalWidth > t && (e === "auto" || e === "width") || r.naturalHeight > t && (e === "auto" || e === "height"))) {
+    const a = de(r, e), u = (o = document.createElement("canvas")) == null ? void 0 : o.getContext("2d");
+    if (u)
+      return u.canvas.width = a ? t : r.naturalWidth / r.naturalHeight * t, u.canvas.height = a ? r.naturalHeight / r.naturalWidth * t : t, u.drawImage(r, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
   }
 }
-function ri(i) {
+function oi(i) {
   const t = N(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -2633,55 +2639,55 @@ function ri(i) {
   }
   return "00:00";
 }
-function ni(i, t, {
+function ai(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
-  alwaysChange: n = !0,
+  alwaysChange: r = !0,
   notEmpty: o = !1
 }) {
   if (e) {
     if (gt(i)) {
-      const a = i.indexOf(t), c = [...i];
-      return a !== -1 ? (!o || c.length > 1) && c.splice(a, 1) : (!s || i.length < s) && c.push(t), c;
+      const a = i.indexOf(t), u = [...i];
+      return a !== -1 ? (!o || u.length > 1) && u.splice(a, 1) : (!s || i.length < s) && u.push(t), u;
     }
     return i === t ? [] : i ? [i, t] : [t];
   }
-  return n || i !== t ? t : i;
+  return r || i !== t ? t : i;
 }
-function oi(i, t, e) {
+function ui(i, t, e) {
   if (S(i) && S(t)) {
     if (e) {
-      let s = {}, n = !1;
-      return $(i, (o, a) => {
-        !n && (e === a || e === o) ? (n = !0, s = R(s, t)) : n ? s = R(s, { [a]: o }) : s[a] = S(o) ? U(o) : o;
-      }), n ? s : R(i, t);
+      let s = {}, r = !1;
+      return p(i, (o, a) => {
+        !r && (e === a || e === o) ? (r = !0, s = R(s, t)) : r ? s = R(s, { [a]: o }) : s[a] = S(o) ? U(o) : o;
+      }), r ? s : R(i, t);
     }
     if (S(t))
       return R(i, t);
   }
   return U(i);
 }
-function Lt(i) {
+function kt(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function ai(i) {
-  return Lt(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+function ci(i) {
+  return kt(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function ui(i) {
+function li(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function ci(i, t, e, s) {
-  const n = N(i), o = N(t);
-  return t && o < n ? `${pt(o, e, s)}+` : pt(n, e, s);
+function hi(i, t, e, s) {
+  const r = N(i), o = N(t);
+  return t && o < r ? `${pt(o, e, s)}+` : pt(r, e, s);
 }
 const pt = (i, t, e) => t ? new H(e).number(i) : i;
-function de(i, t) {
+function ge(i, t) {
   return 1 / i * t;
 }
-function li(i, t) {
-  return de(i, t) * 100;
+function di(i, t) {
+  return ge(i, t) * 100;
 }
-async function hi(i) {
+async function gi(i) {
   if (y())
     try {
       await navigator.clipboard.writeText(i);
@@ -2689,14 +2695,14 @@ async function hi(i) {
       document == null || document.execCommand(i);
     }
 }
-class ge {
+class fe {
   /**
    * Constructor
    * @param props base data/ базовые данные
    * @param watch data for tracking/ данные для слежения
    */
   constructor(t, e = Object.keys(t)) {
-    u(this, "cache", {});
+    c(this, "cache", {});
     this.props = t, this.watch = e;
   }
   /**
@@ -2739,7 +2745,7 @@ class ge {
     return ((e = this.cache) == null ? void 0 : e[t]) !== ((s = this.props) == null ? void 0 : s[t]);
   }
 }
-class fe {
+class me {
   /**
    * Constructor
    * @param props base data/ базовые данные
@@ -2748,9 +2754,9 @@ class fe {
    * @param changed base data/ данный для слежения
    */
   constructor(t, e, s) {
-    u(this, "event", {});
-    u(this, "changed");
-    this.props = t, this.callback = e, this.changed = new ge(t, s);
+    c(this, "event", {});
+    c(this, "changed");
+    this.props = t, this.callback = e, this.changed = new fe(t, s);
   }
   /**
    * Calls the callback function.
@@ -2798,7 +2804,7 @@ class fe {
     this.callback && this.callback(this.event);
   }
 }
-class di extends fe {
+class fi extends me {
   /**
    * Calls the callback function.
    *
@@ -2821,31 +2827,31 @@ class di extends fe {
 function m(i) {
   return X(i) ? i.value : i;
 }
-function me(i) {
+function ye(i) {
   return i && "class" in i && typeof i.class == "string" ? i.class : void 0;
 }
-function ye(i, t, e) {
-  const s = me(t);
+function $e(i, t, e) {
+  const s = ye(t);
   return e && s ? `${e}.${s}` : e || s || i;
 }
-function $e(i, t, e, s) {
-  const n = ye(i, t, s);
-  return Ht(i, { key: n, ...t }, e);
+function pe(i, t, e, s) {
+  const r = $e(i, t, s);
+  return Rt(i, { key: r, ...t }, e);
 }
 function ut(i, t) {
-  const e = i == null ? void 0 : i.class, s = t == null ? void 0 : t.class, n = i == null ? void 0 : i.style, o = t == null ? void 0 : t.style, a = {
+  const e = i == null ? void 0 : i.class, s = t == null ? void 0 : t.class, r = i == null ? void 0 : i.style, o = t == null ? void 0 : t.style, a = {
     ...i,
     ...t
   };
-  return e && s && (a.class = [], e && a.class.push(e), s && a.class.push(s)), n && o && (a.style = [], n && a.style.push(n), o && a.style.push(o)), a;
+  return e && s && (a.class = [], e && a.class.push(e), s && a.class.push(s)), r && o && (a.style = [], r && a.style.push(r), o && a.style.push(o)), a;
 }
-function pe(...i) {
+function ve(...i) {
   let t = {};
   return i.forEach((e) => {
     e && (t = ut(t, e));
   }), t;
 }
-class kt {
+class Ct {
   /**
    * Constructor
    * @param components list of connected components/ список подключенных компонентов
@@ -2853,7 +2859,7 @@ class kt {
    */
   constructor(t = {}, e) {
     /** Cache for computed properties/ Кэш для вычисляемых свойств */
-    u(this, "caching", {});
+    c(this, "caching", {});
     this.components = t, this.modification = e;
   }
   /**
@@ -2887,7 +2893,7 @@ class kt {
       t in this.caching || (this.caching[t] = l(() => this.computeModification(t)));
       const s = this.caching[t];
       if (s)
-        return e ? pe(s.value, e) : s.value;
+        return e ? ve(s.value, e) : s.value;
     }
     return e;
   }
@@ -2900,12 +2906,12 @@ class kt {
    * @param children sub-elements of the component/ под элементы компонента
    * @param index the name of the key/ названия ключа
    */
-  render(t, e, s, n) {
+  render(t, e, s, r) {
     const o = this.renderOne(
       t,
       e,
       s,
-      n
+      r
     );
     return o ? [o] : [];
   }
@@ -2918,10 +2924,10 @@ class kt {
    * @param children sub-elements of the component/ под элементы компонента
    * @param index the name of the key/ названия ключа
    */
-  renderOne(t, e, s, n) {
+  renderOne(t, e, s, r) {
     if (this.is(t)) {
-      const o = n != null ? n : t;
-      return $e(
+      const o = r != null ? r : t;
+      return pe(
         this.get(t),
         this.getModification(o, e),
         s,
@@ -2940,8 +2946,8 @@ class kt {
    * @param children sub-elements of the component/ под элементы компонента
    * @param index the name of the key/ названия ключа
    */
-  renderAdd(t, e, s, n, o) {
-    return t.push(...this.render(e, s, n, o)), this;
+  renderAdd(t, e, s, r, o) {
+    return t.push(...this.render(e, s, r, o)), this;
   }
   /**
    * Calculates modified input data for connected components.
@@ -2953,17 +2959,17 @@ class kt {
     var s;
     const e = m((s = this.modification) == null ? void 0 : s[t]);
     if (e && F(e)) {
-      const n = {};
-      return $(e, (o, a) => {
-        n[a] = m(o);
-      }), n;
+      const r = {};
+      return p(e, (o, a) => {
+        r[a] = m(o);
+      }), r;
     }
     return {};
   }
 }
-class gi extends kt {
+class mi extends Ct {
 }
-class fi {
+class yi {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -2971,19 +2977,19 @@ class fi {
    * @param options list of additional parameters/ список дополнительных параметров
    */
   constructor(t, e, s) {
-    u(this, "name");
-    u(this, "element", p());
-    u(this, "refs");
-    u(this, "components");
-    u(this, "emits");
-    u(this, "classes");
-    u(this, "classesSub");
-    u(this, "styles");
-    u(this, "stylesSub");
-    u(this, "attrs");
-    u(this, "slots");
-    u(this, "dataExpose");
-    this.props = e, this.options = s, this.name = this.initName(t), this.refs = this.props ? Pt(this.props) : {}, this.components = new kt(s == null ? void 0 : s.components, s == null ? void 0 : s.compMod), this.emits = s == null ? void 0 : s.emits, this.classes = l(() => this.updateClasses()), this.styles = l(() => this.updateStyles()), this.attrs = Rt(), this.slots = Wt();
+    c(this, "name");
+    c(this, "element", $());
+    c(this, "refs");
+    c(this, "components");
+    c(this, "emits");
+    c(this, "classes");
+    c(this, "classesSub");
+    c(this, "styles");
+    c(this, "stylesSub");
+    c(this, "attrs");
+    c(this, "slots");
+    c(this, "dataExpose");
+    this.props = e, this.options = s, this.name = this.initName(t), this.refs = this.props ? Wt(this.props) : {}, this.components = new Ct(s == null ? void 0 : s.components, s == null ? void 0 : s.compMod), this.emits = s == null ? void 0 : s.emits, this.classes = l(() => this.updateClasses()), this.styles = l(() => this.updateStyles()), this.attrs = jt(), this.slots = Ut();
   }
   init() {
     return this.classesSub = l(() => this.initClasses()), this.stylesSub = l(() => this.initStyles()), this.dataExpose = this.initExpose(), this;
@@ -3068,8 +3074,8 @@ class fi {
    * @param props property for the slot/ свойство для слота
    */
   initSlot(t, e, s = {}) {
-    var n;
-    if (this.slots && ((n = this.slots) != null && n[t]) && typeof this.slots[t] == "function") {
+    var r;
+    if (this.slots && ((r = this.slots) != null && r[t]) && typeof this.slots[t] == "function") {
       const o = this.slots[t](s);
       return e && e.push(o), o;
     }
@@ -3092,8 +3098,8 @@ class fi {
   toClassName(t) {
     if (S(t)) {
       const e = {};
-      return $(t, (s, n) => {
-        n.match(/\?\?/) ? e[n.replace(/\?\?/, this.getName())] = s : n.match(/\?/) ? e[n.replace(/\?/, this.getDesign())] = s : e[n] = s;
+      return p(t, (s, r) => {
+        r.match(/\?\?/) ? e[r.replace(/\?\?/, this.getName())] = s : r.match(/\?/) ? e[r.replace(/\?/, this.getDesign())] = s : e[r] = s;
       }), e;
     }
     return {};
@@ -3105,7 +3111,7 @@ class fi {
    * @param name component name for transformation/ название компонента для преобразования
    */
   initName(t) {
-    return $(t.split(".", 2), (e) => Lt(e));
+    return p(t.split(".", 2), (e) => kt(e));
   }
   /**
    * Updating data about the class.
@@ -3113,8 +3119,8 @@ class fi {
    * Обновление данных об классе.
    */
   updateClasses() {
-    var s, n, o, a;
-    const t = (s = this.classesSub) == null ? void 0 : s.value, e = (o = (n = this.options) == null ? void 0 : n.classes) == null ? void 0 : o.value;
+    var s, r, o, a;
+    const t = (s = this.classesSub) == null ? void 0 : s.value, e = (o = (r = this.options) == null ? void 0 : r.classes) == null ? void 0 : o.value;
     return t && e ? {
       ...t,
       ...e,
@@ -3133,8 +3139,8 @@ class fi {
    * Доработка полученного списка стилей.
    */
   updateStyles() {
-    var s, n, o;
-    const t = (s = this.stylesSub) == null ? void 0 : s.value, e = (o = (n = this.options) == null ? void 0 : n.styles) == null ? void 0 : o.value;
+    var s, r, o;
+    const t = (s = this.stylesSub) == null ? void 0 : s.value, e = (o = (r = this.options) == null ? void 0 : r.styles) == null ? void 0 : o.value;
     return t && e ? {
       ...t,
       ...e
@@ -3142,9 +3148,9 @@ class fi {
   }
 }
 function B(i) {
-  return X(i) ? i : p(i);
+  return X(i) ? i : $(i);
 }
-class mi {
+class $i {
   /**
    * Constructor
    * @param date date for processing. дата для обработки
@@ -3152,24 +3158,24 @@ class mi {
    * @param code country and language code. код страны и языка
    */
   constructor(t, e = "date", s = w.getLocation()) {
-    u(this, "item");
-    u(this, "type");
-    u(this, "code");
-    u(this, "date");
-    u(this, "datetime");
-    u(this, "year", l(() => this.date.value && this.datetime.getYear()));
-    u(this, "month", l(() => this.date.value && this.datetime.getMonth()));
-    u(this, "day", l(() => this.date.value && this.datetime.getDay()));
-    u(this, "hour", l(() => this.date.value && this.datetime.getHour()));
-    u(this, "minute", l(() => this.date.value && this.datetime.getMinute()));
-    u(this, "second", l(() => this.date.value && this.datetime.getSecond()));
-    this.item = B(t), this.type = B(e), this.code = B(s), this.date = p(A(this.item.value)), this.datetime = new ht(
+    c(this, "item");
+    c(this, "type");
+    c(this, "code");
+    c(this, "date");
+    c(this, "datetime");
+    c(this, "year", l(() => this.date.value && this.datetime.getYear()));
+    c(this, "month", l(() => this.date.value && this.datetime.getMonth()));
+    c(this, "day", l(() => this.date.value && this.datetime.getDay()));
+    c(this, "hour", l(() => this.date.value && this.datetime.getHour()));
+    c(this, "minute", l(() => this.date.value && this.datetime.getMinute()));
+    c(this, "second", l(() => this.date.value && this.datetime.getSecond()));
+    this.item = B(t), this.type = B(e), this.code = B(s), this.date = $(A(this.item.value)), this.datetime = new ht(
       this.date.value,
       this.type.value,
       this.code.value
-    ), f(this.item, (n) => {
-      this.date.value = A(n);
-    }), f(this.type, (n) => this.datetime.setType(n)), f(this.code, (n) => this.datetime.setCode(n)), f(this.date, (n) => this.datetime.setDate(n)), this.datetime.setWatch(() => jt(this.date));
+    ), f(this.item, (r) => {
+      this.date.value = A(r);
+    }), f(this.type, (r) => this.datetime.setType(r)), f(this.code, (r) => this.datetime.setCode(r)), f(this.date, (r) => this.datetime.setDate(r)), this.datetime.setWatch(() => _t(this.date));
   }
   /**
    * Returns the basic data for the date.
@@ -3289,7 +3295,7 @@ class mi {
     return l(() => this.date.value && this.datetime.standard(t));
   }
 }
-class yi extends xt {
+class pi extends Et {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -3302,25 +3308,25 @@ class yi extends xt {
    * @param detail an event-dependent value associated with the event/ зависимое от события
    * значение, связанное с событием
    */
-  constructor(t, e, s = ["click"], n, o, a) {
-    const c = B(t), h = B(e);
+  constructor(t, e, s = ["click"], r, o, a) {
+    const u = B(t), h = B(e);
     super(
-      c.value,
+      u.value,
       s,
-      n,
+      r,
       o,
       a
-    ), h.value && this.setElementControl(h.value), f(c, (d) => this.setElement(d)), f(h, (d) => this.setElementControl(d));
+    ), h.value && this.setElementControl(h.value), f(u, (d) => this.setElement(d)), f(h, (d) => this.setElementControl(d));
   }
 }
-class $i {
+class vi {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
    */
   constructor(t = w.getLocation()) {
-    u(this, "code");
-    u(this, "flag");
+    c(this, "code");
+    c(this, "flag");
     this.code = B(t), this.flag = new at(this.code.value), f(this.code, (e) => this.flag.setCode(e));
   }
   /**
@@ -3423,17 +3429,17 @@ const C = class C {
     w.set(t, !0), this.item.value = w.getItem();
   }
 };
-u(C, "item", Z(w.get())), u(C, "country", l(() => C.item.value.country)), u(C, "language", l(() => C.item.value.language)), u(C, "standard", l(() => C.item.value.standard)), u(C, "firstDay", l(() => C.item.value.firstDay));
+c(C, "item", Z(w.get())), c(C, "country", l(() => C.item.value.country)), c(C, "language", l(() => C.item.value.language)), c(C, "standard", l(() => C.item.value.standard)), c(C, "firstDay", l(() => C.item.value.firstDay));
 let K = C;
-class ve {
+class be {
   /**
    * Constructor
    * @param code country code, full form language-country or one of them/
    * код страны, полный вид язык-страна или один из них
    */
   constructor(t) {
-    u(this, "location");
-    u(this, "intl");
+    c(this, "location");
+    c(this, "intl");
     this.location = B(t), this.intl = l(() => {
       var e;
       return new H((e = this.location.value) != null ? e : K.getLanguage().value);
@@ -3550,8 +3556,8 @@ class ve {
    * @param styleOptions the representation of the month/ представление месяца
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
-  date(t, e, s, n) {
-    return l(() => this.intl.value.date(m(t), e, s, n));
+  date(t, e, s, r) {
+    return l(() => this.intl.value.date(m(t), e, s, r));
   }
   /**
    * Enables language-sensitive relative time formatting.
@@ -3583,15 +3589,15 @@ class ve {
    * @param type type of data format/ тип формата data
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
-  relativeLimit(t, e, s, n, o, a, c) {
+  relativeLimit(t, e, s, r, o, a, u) {
     return l(() => this.intl.value.relativeLimit(
       m(t),
       e,
       s,
-      n,
+      r,
       o,
       a,
-      c
+      u
     ));
   }
   /**
@@ -3642,7 +3648,7 @@ class ve {
     return l(() => this.intl.value.time(m(t)));
   }
 }
-class Ct {
+class It {
   /**
    * Creates an instance of ListData for managing list data.
    *
@@ -3657,15 +3663,15 @@ class Ct {
    * @param lite Threshold for lite mode / порог для облегченного режима
    * @param parent Parent identifier / идентификатор родителя
    */
-  constructor(t, e, s, n, o, a, c, h, d) {
-    u(this, "subList", {});
+  constructor(t, e, s, r, o, a, u, h, d) {
+    c(this, "subList", {});
     /**
      * Returns a list for forming a list.
      *
      * Возвращает список для формирования списка.
      */
-    u(this, "data", l(
-      () => $(
+    c(this, "data", l(
+      () => p(
         m(this.list) || [],
         (t, e) => this.initItem(e, t)
       )
@@ -3675,7 +3681,7 @@ class Ct {
      *
      * Возвращает упрощенный список для быстрой загрузки.
      */
-    u(this, "liteData", l(() => {
+    c(this, "liteData", l(() => {
       if (this.isLite()) {
         const t = [];
         for (const e of this.data.value) {
@@ -3698,15 +3704,15 @@ class Ct {
      *
      * Возвращает список записей со всеми дополнительными данными.
      */
-    u(this, "fullData", l(() => {
+    c(this, "fullData", l(() => {
       const t = this.getFocus(), e = this.getHighlight(), s = this.getSelected();
-      return $(
+      return p(
         this.data.value,
-        (n) => ({
-          ...n,
-          focus: t === n.index,
+        (r) => ({
+          ...r,
+          focus: t === r.index,
           highlight: e,
-          selected: j(n.index, s)
+          selected: j(r.index, s)
         })
       );
     }));
@@ -3715,7 +3721,7 @@ class Ct {
      *
      * Возвращает карту всех записей.
      */
-    u(this, "map", l(() => {
+    c(this, "map", l(() => {
       const t = [];
       return this.data.value.forEach((e) => {
         switch (e.type) {
@@ -3733,13 +3739,13 @@ class Ct {
       }), t;
     }));
     /**  Returns a list consisting only of items/ Возвращает список, состоящий только из элементов. */
-    u(this, "mapItems", l(() => this.map.value.filter((t) => t.type === "item")));
+    c(this, "mapItems", l(() => this.map.value.filter((t) => t.type === "item")));
     /**
      * Returns a list consisting only of values for selection.
      *
      * Возвращает список, состоящий только из значений для выбора.
      */
-    u(this, "items", l(() => this.map.value.filter(
+    c(this, "items", l(() => this.map.value.filter(
       (t) => t.type === "item" || t.type === "group" || t.type === "menu"
     )));
     /**
@@ -3747,12 +3753,12 @@ class Ct {
      *
      * Находит первый элемент, соответствующий условиям поиска.
      */
-    u(this, "highlightFirstItem", l(() => {
-      const t = this.getHighlight(), e = t && t.length >= this.getHighlightLengthStart() && wt(t, "i");
+    c(this, "highlightFirstItem", l(() => {
+      const t = this.getHighlight(), e = t && t.length >= this.getHighlightLengthStart() && Dt(t, "i");
       return e ? this.map.value.findIndex(
         (s) => {
-          var n, o, a;
-          return ((n = s.label) == null ? void 0 : n.toString().match(e)) || ((o = s.index) == null ? void 0 : o.toString().match(e)) || ((a = s.search) == null ? void 0 : a.toString().match(e));
+          var r, o, a;
+          return ((r = s.label) == null ? void 0 : r.toString().match(e)) || ((o = s.index) == null ? void 0 : o.toString().match(e)) || ((a = s.search) == null ? void 0 : a.toString().match(e));
         }
       ) : -1;
     }));
@@ -3761,7 +3767,7 @@ class Ct {
      *
      * Есть ли выбранный элемент.
      */
-    u(this, "isSelected", l(() => {
+    c(this, "isSelected", l(() => {
       const t = this.getSelected();
       return !!t && this.mapItems.value.findIndex((e) => j(e.index, t)) !== -1;
     }));
@@ -3770,7 +3776,7 @@ class Ct {
      *
      * Возвращает список выделенных элементов на карте.
      */
-    u(this, "selectedList", l(() => {
+    c(this, "selectedList", l(() => {
       const t = this.getSelected();
       return t && this.isSelected.value ? this.mapItems.value.filter((e) => j(e.index, t)) : [];
     }));
@@ -3779,14 +3785,14 @@ class Ct {
      *
      * Возвращает список выделенных элементов на карте.
      */
-    u(this, "selectedNames", l(() => ot(this.selectedList.value, "label")));
+    c(this, "selectedNames", l(() => ot(this.selectedList.value, "label")));
     /**
      * Returns a list of selected item values on the map.
      *
      * Возвращает список значений выделенных элементов на карте.
      */
-    u(this, "selectedValues", l(() => ot(this.selectedList.value, "value")));
-    this.list = t, this.focus = e, this.highlight = s, this.highlightLengthStart = n, this.selected = o, this.keyValue = a, this.keyLabel = c, this.lite = h, this.parent = d, X(t) && f(t, () => {
+    c(this, "selectedValues", l(() => ot(this.selectedList.value, "value")));
+    this.list = t, this.focus = e, this.highlight = s, this.highlightLengthStart = r, this.selected = o, this.keyValue = a, this.keyLabel = u, this.lite = h, this.parent = d, X(t) && f(t, () => {
       this.subList = {};
     });
   }
@@ -3925,7 +3931,7 @@ class Ct {
    * @param item List item data/ данные элемента списка
    */
   getSubList(t) {
-    return t.index in this.subList || (this.subList[t.index] = new Ct(
+    return t.index in this.subList || (this.subList[t.index] = new It(
       t.value,
       this.focus,
       this.highlight,
@@ -3965,8 +3971,8 @@ class Ct {
    * @param key item key / ключ элемента
    * @param label item label / метка элемента
    */
-  getIndex(t, e, s, n) {
-    return t && !S(t) ? t : e && !S(e) ? e : s && n;
+  getIndex(t, e, s, r) {
+    return t && !S(t) ? t : e && !S(e) ? e : s && r;
   }
   /**
    * Creates an object of the record element.
@@ -3976,9 +3982,9 @@ class Ct {
    * @param item selected element/ выбранный элемент
    */
   initItem(t, e) {
-    var s, n, o, a, c, h;
+    var s, r, o, a, u, h;
     if (F(e)) {
-      const d = e == null ? void 0 : e[(n = (s = this.keyValue) == null ? void 0 : s.value) != null ? n : "value"], g = (c = e == null ? void 0 : e[(a = (o = this.keyLabel) == null ? void 0 : o.value) != null ? a : "label"]) != null ? c : d, D = this.getIndex(
+      const d = e == null ? void 0 : e[(r = (s = this.keyValue) == null ? void 0 : s.value) != null ? r : "value"], g = (u = e == null ? void 0 : e[(a = (o = this.keyLabel) == null ? void 0 : o.value) != null ? a : "label"]) != null ? u : d, D = this.getIndex(
         e == null ? void 0 : e.index,
         d,
         t,
@@ -4002,7 +4008,7 @@ class Ct {
     };
   }
 }
-class be {
+class Se {
   /**
    * Get router instance.
    *
@@ -4039,8 +4045,8 @@ class be {
     this.router || this.set(t);
   }
 }
-u(be, "router");
-class pi {
+c(Se, "router");
+class bi {
   /**
    * Constructor
    */
@@ -4050,22 +4056,22 @@ class pi {
      *
      * Реактивный элемент.
      */
-    u(this, "item", p());
+    c(this, "item", $());
     /**
      * Checks whether the scroll width is defined.
      *
      * Проверяет, определена ли ширина скролла.
      */
-    u(this, "is", l(() => this.item.value !== void 0));
+    c(this, "is", l(() => this.item.value !== void 0));
     St.is().then((t) => {
       this.item.value = t;
     });
   }
 }
-const Se = (i) => typeof i == "string" ? { method: i } : i || {};
+const we = (i) => typeof i == "string" ? { method: i } : i || {};
 let J;
-function vi(i, t, e = !0, s, n, o) {
-  const a = p(), c = B(Se(t)), h = p(!1), d = p(!1);
+function Si(i, t, e = !0, s, r, o) {
+  const a = $(), u = B(we(t)), h = $(!1), d = $(!1);
   let g = !0, D = 0;
   const P = async () => {
     if (g)
@@ -4076,13 +4082,13 @@ function vi(i, t, e = !0, s, n, o) {
       let O = {};
       const ft = await V.request({
         path: k,
-        ...c.value
+        ...u.value
       });
-      ft && (O = ft), n ? a.value = n(O) : a.value = O, h.value = !1;
+      ft && (O = ft), r ? a.value = r(O) : a.value = O, h.value = !1;
     } else a.value !== void 0 && (a.value = void 0);
   }, M = () => {
     const k = [];
-    e && k.push(c), X(i) && k.push(i), s && k.push(s), J && k.push(J), k.length > 0 && f(k, async () => {
+    e && k.push(u), X(i) && k.push(i), s && k.push(s), J && k.push(J), k.length > 0 && f(k, async () => {
       h.value || await P();
     });
   };
@@ -4104,38 +4110,38 @@ function vi(i, t, e = !0, s, n, o) {
     reset: P
   };
 }
-const bi = (i) => {
+const wi = (i) => {
   J || (J = i);
 };
-function we(i, t) {
+function De(i, t) {
   const e = `broadcast--${i}`;
   if (e in tt)
     return tt[e];
-  const s = p(lt(t)), n = new Kt(
+  const s = $(lt(t)), r = new Zt(
     e,
     (o) => {
       s.value !== o.data.message && (s.value = o.data.message);
     }
   );
-  return f(s, (o) => n.post({ message: o })), tt[e] = s, s;
+  return f(s, (o) => r.post({ message: o })), tt[e] = s, s;
 }
 const tt = {};
-function Si(i, t, e) {
+function Di(i, t, e) {
   if (i in et)
     return et[i];
-  const s = new Et(i), n = we(
+  const s = new Ht(i), r = De(
     `__cookie:${i}`,
     s.get(t, e)
   );
-  return f(n, (o) => {
+  return f(r, (o) => {
     s.set(o, e);
-  }), et[i] = n, n;
+  }), et[i] = r, r;
 }
 const et = {};
-function wi() {
-  return new ve();
+function Li() {
+  return new be();
 }
-function Di(i, t) {
+function ki(i, t) {
   if (i in it)
     return it[i];
   const e = Z(T.get(i, t));
@@ -4143,22 +4149,22 @@ function Di(i, t) {
     e.value = s;
   }), it[i] = e, e;
 }
-const it = {}, Li = () => {
+const it = {}, Ci = () => {
   const i = {}, t = "IntersectionObserver" in window ? new IntersectionObserver(
     (s) => {
-      s.forEach((n) => {
-        const o = Y(n.target);
-        o in i && (i[o].status.value = n.isIntersecting);
+      s.forEach((r) => {
+        const o = Y(r.target);
+        o in i && (i[o].status.value = r.isIntersecting);
       });
     },
     {
       rootMargin: "128px 0px"
     }
   ) : void 0, e = (s) => {
-    var n;
+    var r;
     if (s) {
       const o = Y(s);
-      o in i && (t == null || t.unobserve(s), (n = i[o]) == null || n.stopWatch(), delete i[o]);
+      o in i && (t == null || t.unobserve(s), (r = i[o]) == null || r.stopWatch(), delete i[o]);
     }
   };
   return {
@@ -4170,20 +4176,20 @@ const it = {}, Li = () => {
      * @param element element for tracking/ элемента для отслеживания
      */
     addLazyItem(s) {
-      const n = Z(!t);
+      const r = Z(!t);
       if (t) {
-        const o = f(s, (a, c) => {
-          if (c && t.unobserve(c), s.value) {
+        const o = f(s, (a, u) => {
+          if (u && t.unobserve(u), s.value) {
             const h = Y(s.value);
             i[h] = {
-              status: n,
+              status: r,
               stopWatch: o
             }, t.observe(s.value);
           } else
             e(s.value);
         }, { immediate: !0 });
       }
-      return n;
+      return r;
     },
     /**
      * Removing an element from tracking.
@@ -4199,52 +4205,52 @@ const it = {}, Li = () => {
     disconnectLazy: () => t == null ? void 0 : t.disconnect()
   };
 };
-function ki() {
+function Ii() {
   const i = Z(mt.is());
   return mt.registrationEvent(({ detail: t }) => {
     i.value = t.loading;
   }), i;
 }
-const It = [], De = _(1e5, 999999);
-function Le(i, t = !0, e = !1, s = !0) {
-  let n;
-  const o = `__execute_use${De}::${Y()}`, a = (...c) => {
+const Nt = [], Le = _(1e5, 999999);
+function ke(i, t = !0, e = !1, s = !0) {
+  let r;
+  const o = `__execute_use${Le}::${Y()}`, a = (...u) => {
     if (!e && s) {
-      const h = Ut(o, void 0);
+      const h = zt(o, void 0);
       if (h)
         return h;
       {
-        let d = Object.freeze(i(...c));
-        return _t(o, d), t && nt(() => {
+        let d = Object.freeze(i(...u));
+        return Kt(o, d), t && nt(() => {
           d = void 0;
         }), d;
       }
-    } else n || (n = Object.freeze(i(...c)), t && nt(() => {
-      n = void 0;
+    } else r || (r = Object.freeze(i(...u)), t && nt(() => {
+      r = void 0;
     }));
-    return n;
+    return r;
   };
-  return e && It.push(a), a;
+  return e && Nt.push(a), a;
 }
-function Ci() {
-  It.forEach((i) => i());
+function Ni() {
+  Nt.forEach((i) => i());
 }
-const ke = Le(() => {
-  const i = new te(), t = p(i.getTitle()), e = p(i.getKeywords()), s = p(i.getDescription()), n = p(i.getImage()), o = p(i.getCanonical()), a = p(i.getRobots()), c = p(i.getAuthor()), h = p(i.getSiteName()), d = () => i.html();
+const Ce = ke(() => {
+  const i = new ee(), t = $(i.getTitle()), e = $(i.getKeywords()), s = $(i.getDescription()), r = $(i.getImage()), o = $(i.getCanonical()), a = $(i.getRobots()), u = $(i.getAuthor()), h = $(i.getSiteName()), d = () => i.html();
   return f(t, () => {
     i.setTitle(t.value);
   }), f(e, () => {
     i.setKeywords(e.value);
   }), f(s, () => {
     i.setDescription(s.value);
-  }), f(n, () => {
-    i.setImage(n.value);
+  }), f(r, () => {
+    i.setImage(r.value);
   }), f(o, () => {
     i.setCanonical(o.value);
   }), f(a, () => {
     i.setRobots(a.value);
-  }), f(c, () => {
-    i.setAuthor(c.value);
+  }), f(u, () => {
+    i.setAuthor(u.value);
   }), f(h, () => {
     i.setSiteName(h.value);
   }), {
@@ -4252,31 +4258,31 @@ const ke = Le(() => {
     title: t,
     keyword: e,
     description: s,
-    author: c,
-    image: n,
+    author: u,
+    image: r,
     canonical: o,
     robots: a,
     siteName: h,
     getHtmlMeta: d
   };
-}, !1, !0), Ii = () => ke();
-function Ni(i, t) {
+}, !1, !0), Ai = () => Ce();
+function Bi(i, t) {
   if (i in st)
     return st[i];
-  const e = new ct(i, !0), s = p(e.get(t));
-  return f(s, (n) => e.set(n)), st[i] = s, s;
+  const e = new ct(i, !0), s = $(e.get(t));
+  return f(s, (r) => e.set(r)), st[i] = s, s;
 }
 const st = {};
-function Ai(i, t, e) {
+function Fi(i, t, e) {
   if (i in rt)
     return rt[i];
-  const s = new ct(i), n = p(s.get(t, e));
-  return f(n, (o) => s.set(o)), y() && window.addEventListener("storage", () => {
-    s.update(), n.value = s.get();
-  }), rt[i] = n, n;
+  const s = new ct(i), r = $(s.get(t, e));
+  return f(r, (o) => s.set(o)), y() && window.addEventListener("storage", () => {
+    s.update(), r.value = s.get();
+  }), rt[i] = r, r;
 }
 const rt = {};
-function Ce(i) {
+function Ie(i) {
   const t = Z(q.getListSync(i, !0)), e = async () => {
     t.value = { ...await q.getList(i) };
   };
@@ -4288,208 +4294,216 @@ function Ce(i) {
     }
   return t;
 }
-const Bi = (i) => Ce(i);
-function Fi(i, t = () => {
+const xi = (i) => Ie(i);
+function Ei(i, t) {
+  const e = $();
+  return wt(async () => {
+    e.value = await Pt(i);
+  }), l(() => e.value, t);
+}
+function Hi(i, t = () => {
 }, e, s) {
   return l(
     () => {
       if (K.get().value && (e === void 0 || e())) {
-        const n = i();
-        if (n !== void 0)
-          return n;
+        const r = i();
+        if (r !== void 0)
+          return r;
       }
       return lt(t);
     },
     s
   );
 }
-function Ie(i, t = {}, e = "value", s = !1) {
-  const n = typeof t == "string", o = n ? t : e, a = n ? {} : t;
-  return i ? i && F(i) && (o in i || s) ? ut(a, i) : ut(a, { [o]: i }) : n ? {} : { ...a };
+function Ne(i, t = {}, e = "value", s = !1) {
+  const r = typeof t == "string", o = r ? t : e, a = r ? {} : t;
+  return i ? i && F(i) && (o in i || s) ? ut(a, i) : ut(a, { [o]: i }) : r ? {} : { ...a };
 }
-function xi(i, t = {}, e = "value") {
-  return l(() => Ie(m(i), m(t), e));
+function Pi(i, t = {}, e = "value") {
+  return l(() => Ne(m(i), m(t), e));
 }
-const Ei = (i, t) => {
-  const e = p();
+const Ri = (i, t) => {
+  const e = $();
   let s = !0;
-  const n = () => {
-    s && (zt(async () => {
+  const r = () => {
+    s && (wt(async () => {
       const o = m(await i());
       o !== t && (e.value = o);
     }), s = !1);
   };
-  return l(() => (n(), e.value));
+  return l(() => (r(), e.value));
 };
-function Hi(i, t) {
+function Wi(i, t) {
   i.value !== t && (i.value = t);
 }
-function Pi(i) {
+function ji(i) {
   let t;
   return l(() => (t || (t = i()), t.value));
 }
 export {
   V as Api,
-  ji as ApiDefault,
-  Ui as ApiHeaders,
-  _i as ApiMethodItem,
-  zi as ApiPreparation,
-  Ki as ApiResponse,
-  Zi as ApiStatus,
-  Kt as BroadcastMessage,
-  Vi as Cache,
-  Yi as CacheItem,
-  qi as CacheStatic,
-  Et as Cookie,
-  Ji as CookieBlock,
+  zi as ApiDefault,
+  Ki as ApiHeaders,
+  Zi as ApiMethodItem,
+  Vi as ApiPreparation,
+  Yi as ApiResponse,
+  qi as ApiStatus,
+  Zt as BroadcastMessage,
+  Ji as Cache,
+  Qi as CacheItem,
+  Xi as CacheStatic,
+  Ht as Cookie,
+  Mi as CookieBlock,
   ct as DataStorage,
   ht as Datetime,
-  mi as DatetimeRef,
-  fe as DesignAbstract,
-  di as DesignAsyncAbstract,
-  ge as DesignChanged,
-  gi as DesignComp,
-  kt as DesignComponents,
-  fi as DesignConstructorAbstract,
-  xt as EventItem,
-  yi as EventRef,
-  r as GEO_FLAG_ICON_NAME,
+  $i as DatetimeRef,
+  me as DesignAbstract,
+  fi as DesignAsyncAbstract,
+  fe as DesignChanged,
+  mi as DesignComp,
+  Ct as DesignComponents,
+  yi as DesignConstructorAbstract,
+  Et as EventItem,
+  pi as EventRef,
+  n as GEO_FLAG_ICON_NAME,
   w as Geo,
   at as GeoFlag,
-  $i as GeoFlagRef,
+  vi as GeoFlagRef,
   H as GeoIntl,
-  ve as GeoIntlRef,
-  Qi as GeoPhone,
+  be as GeoIntlRef,
+  Oi as GeoPhone,
   K as GeoRef,
-  Fe as Global,
+  xe as Global,
   T as Hash,
-  Xi as Icons,
-  Ct as ListDataRef,
+  Ti as Icons,
+  It as ListDataRef,
   mt as Loading,
-  te as Meta,
+  ee as Meta,
   dt as MetaManager,
-  Tt as MetaOg,
-  Xt as MetaOpenGraphAge,
-  Jt as MetaOpenGraphAvailability,
-  Qt as MetaOpenGraphCondition,
-  Mt as MetaOpenGraphGender,
+  Gt as MetaOg,
+  Mt as MetaOpenGraphAge,
+  Qt as MetaOpenGraphAvailability,
+  Xt as MetaOpenGraphCondition,
+  Ot as MetaOpenGraphGender,
   v as MetaOpenGraphTag,
-  qt as MetaOpenGraphType,
-  Yt as MetaRobots,
+  Jt as MetaOpenGraphType,
+  qt as MetaRobots,
   L as MetaTag,
-  Gt as MetaTwitter,
-  Ot as MetaTwitterCard,
+  te as MetaTwitter,
+  Tt as MetaTwitterCard,
   b as MetaTwitterTag,
-  be as RouterItemRef,
+  Se as RouterItemRef,
   St as ScrollbarWidth,
-  pi as ScrollbarWidthRef,
+  bi as ScrollbarWidthRef,
   q as Translate,
-  xe as anyToString,
-  ie as applyTemplate,
-  se as arrFill,
-  Fi as computedByLanguage,
+  Ee as anyToString,
+  se as applyTemplate,
+  re as arrFill,
+  He as blobToBase64,
+  Ei as computedAsync,
+  Hi as computedByLanguage,
   U as copyObject,
-  Ft as copyObjectLite,
+  xt as copyObjectLite,
   vt as createElement,
-  Ee as domQuerySelector,
-  He as domQuerySelectorAll,
-  Vt as encodeAttribute,
-  Pe as eventStopPropagation,
+  Pe as domQuerySelector,
+  Re as domQuerySelectorAll,
+  Yt as encodeAttribute,
+  We as eventStopPropagation,
   lt as executeFunction,
-  Mi as executePromise,
-  Le as executeUse,
-  Ci as executeUseGlobalInit,
-  $ as forEach,
-  re as frame,
-  Re as getAttributes,
-  Ie as getBind,
-  xi as getBindRef,
-  me as getClassName,
-  We as getClipboardData,
+  Pt as executePromise,
+  ke as executeUse,
+  Ni as executeUseGlobalInit,
+  p as forEach,
+  ne as frame,
+  je as getAttributes,
+  Ne as getBind,
+  Pi as getBindRef,
+  ye as getClassName,
+  Ue as getClipboardData,
   ot as getColumn,
-  Ei as getComputedAsync,
+  Ri as getComputedAsync,
   bt as getElement,
   Y as getElementId,
-  ne as getElementImage,
-  Oi as getElementItem,
-  Ti as getElementOrWindow,
-  wt as getExp,
-  ye as getIndexForRender,
-  oe as getItemByPath,
-  je as getKey,
-  Dt as getLengthOfAllArray,
-  Ue as getMaxLengthAllArray,
-  _e as getMinLengthAllArray,
-  ze as getMouseClient,
-  ae as getMouseClientX,
-  ue as getMouseClientY,
-  Ke as getObjectByKeys,
-  Ze as getObjectNoUndefined,
-  Ve as getObjectOrNone,
-  Ye as getRandomText,
+  oe as getElementImage,
+  Gi as getElementItem,
+  ts as getElementOrWindow,
+  Dt as getExp,
+  $e as getIndexForRender,
+  ae as getItemByPath,
+  _e as getKey,
+  Lt as getLengthOfAllArray,
+  ze as getMaxLengthAllArray,
+  Ke as getMinLengthAllArray,
+  Ze as getMouseClient,
+  ue as getMouseClientX,
+  ce as getMouseClientY,
+  Ve as getObjectByKeys,
+  Ye as getObjectNoUndefined,
+  qe as getObjectOrNone,
+  Je as getRandomText,
   m as getRef,
-  Gi as getRequestString,
-  qe as getStepPercent,
-  Je as getStepValue,
-  Qe as goScroll,
-  Xe as inArray,
-  Me as initScrollbarOffset,
-  Oe as intersectKey,
+  es as getRequestString,
+  Qe as getStepPercent,
+  Xe as getStepValue,
+  Me as goScroll,
+  Oe as inArray,
+  Te as initScrollbarOffset,
+  Ge as intersectKey,
   gt as isArray,
-  Te as isDifferent,
-  ts as isDomData,
+  ti as isDifferent,
+  is as isDomData,
   y as isDomRuntime,
   z as isFilled,
-  Ge as isFloat,
-  es as isFunction,
-  is as isInDom,
-  ti as isIntegerBetween,
-  Bt as isNull,
-  ss as isNumber,
+  ei as isFloat,
+  ss as isFunction,
+  rs as isInDom,
+  ii as isIntegerBetween,
+  Ft as isNull,
+  ns as isNumber,
   S as isObject,
   F as isObjectNotArray,
   j as isSelected,
-  ei as isSelectedByList,
+  si as isSelectedByList,
   Q as isString,
-  rs as isWindow,
+  os as isWindow,
   _ as random,
-  $e as render,
+  pe as render,
   R as replaceRecursive,
-  ii as replaceTemplate,
-  si as resizeImageByMax,
-  ri as secondToTime,
-  bi as setApiRefGlobalConditions,
-  ns as setElementItem,
-  Hi as setRef,
-  ni as setValues,
-  oi as splice,
-  ce as strFill,
-  Bi as t,
+  ri as replaceTemplate,
+  ni as resizeImageByMax,
+  oi as secondToTime,
+  wi as setApiRefGlobalConditions,
+  as as setElementItem,
+  Wi as setRef,
+  ai as setValues,
+  ui as splice,
+  le as strFill,
+  xi as t,
   W as toArray,
   ut as toBind,
-  pe as toBinds,
-  Lt as toCamelCase,
-  ai as toCamelCaseFirst,
-  Pi as toComputed,
+  ve as toBinds,
+  kt as toCamelCase,
+  ci as toCamelCaseFirst,
+  ji as toComputed,
   A as toDate,
-  ui as toKebabCase,
+  li as toKebabCase,
   N as toNumber,
-  ci as toNumberByMax,
-  de as toPercent,
-  li as toPercentBy100,
+  hi as toNumberByMax,
+  ge as toPercent,
+  di as toPercentBy100,
   B as toRefItem,
-  os as transformation,
-  le as uniqueArray,
-  vi as useApiRef,
-  we as useBroadcastValueRef,
-  Si as useCookieRef,
-  wi as useGeoIntlRef,
-  Di as useHashRef,
-  Li as useLazyRef,
-  ki as useLoadingRef,
-  Ii as useMeta,
-  Ni as useSessionRef,
-  Ai as useStorageRef,
-  Ce as useTranslateRef,
-  hi as writeClipboardData
+  us as transformation,
+  he as uniqueArray,
+  Si as useApiRef,
+  De as useBroadcastValueRef,
+  Di as useCookieRef,
+  Li as useGeoIntlRef,
+  ki as useHashRef,
+  Ci as useLazyRef,
+  Ii as useLoadingRef,
+  Ai as useMeta,
+  Bi as useSessionRef,
+  Fi as useStorageRef,
+  Ie as useTranslateRef,
+  gi as writeClipboardData
 };

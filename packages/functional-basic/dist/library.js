@@ -26,7 +26,7 @@ function Ct(i, t = "=", e = "&") {
 function q(i) {
   return i == null;
 }
-function D(i, t) {
+function S(i, t) {
   if (i) {
     if (t && i === "0")
       return !0;
@@ -761,7 +761,7 @@ class Ht {
         this.headers,
         t
       );
-      return D(e) && (s["Content-Type"] = e), s;
+      return S(e) && (s["Content-Type"] = e), s;
     }
   }
   /**
@@ -773,7 +773,7 @@ class Ht {
     return C(t) && (this.headers = t), this;
   }
 }
-var S = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(S || {});
+var D = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(D || {});
 class Zt {
   constructor() {
     /** Default request data/ Данные запроса по умолчанию */
@@ -1017,8 +1017,8 @@ class Yt {
   async emulator(t) {
     const {
       path: e = "",
-      method: s = S.get,
-      global: n = s === S.get,
+      method: s = D.get,
+      global: n = s === D.get,
       devMode: o = !1
     } = t;
     if (n || this.isDevMode(o)) {
@@ -1076,7 +1076,7 @@ class Yt {
    */
   isResponse(t, e) {
     const s = this.requestDefault.request(t == null ? void 0 : t.request);
-    return e === s || s === "*any" || D(e) && D(s) && C(e) && C(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
+    return e === s || s === "*any" || S(e) && S(s) && C(e) && C(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
       (n, [o, a]) => n && (a === (e == null ? void 0 : e[o]) || a === "*any"),
       !0
     );
@@ -1231,10 +1231,10 @@ const w = class w {
    * @param request this request/ данный запрос
    * @param method method for request/ метод запрос
    */
-  static getBody(t = {}, e = S.get) {
+  static getBody(t = {}, e = D.get) {
     if (t instanceof FormData)
       return t;
-    if (e !== S.get && D(t))
+    if (e !== D.get && S(t))
       return R(t) ? t : JSON.stringify(t);
   }
   /**
@@ -1245,10 +1245,10 @@ const w = class w {
    * @param path path to request/ путь к запрос
    * @param method method for request/ метод запрос
    */
-  static getBodyForGet(t, e = "", s = S.get) {
-    if (s === S.get) {
+  static getBodyForGet(t, e = "", s = D.get) {
+    if (s === D.get) {
       const n = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? Ct(t) : t;
-      if (D(o))
+      if (S(o))
         return `${n}${o}`;
     }
     return "";
@@ -1315,7 +1315,7 @@ const w = class w {
    */
   static get(t) {
     return this.request(L(t, {
-      method: S.get
+      method: D.get
     }));
   }
   /**
@@ -1326,7 +1326,7 @@ const w = class w {
    */
   static post(t) {
     return this.request(L(t, {
-      method: S.post
+      method: D.post
     }));
   }
   /**
@@ -1337,7 +1337,7 @@ const w = class w {
    */
   static put(t) {
     return this.request(L(t, {
-      method: S.put
+      method: D.put
     }));
   }
   /**
@@ -1348,7 +1348,7 @@ const w = class w {
    */
   static delete(t) {
     return this.request(L(t, {
-      method: S.delete
+      method: D.delete
     }));
   }
   /**
@@ -1410,7 +1410,7 @@ const w = class w {
       api: s = !0,
       path: n = "",
       pathFull: o = void 0,
-      method: a = S.get,
+      method: a = D.get,
       headers: u = {},
       type: h = "application/json;charset=UTF-8",
       init: f = {}
@@ -1724,7 +1724,7 @@ const X = {}, at = class at {
   static updateData() {
     for (const t of document.cookie.split(";")) {
       const [e, s] = t.trim().split("=");
-      e && D(s) && (X[e] = Et(s));
+      e && S(s) && (X[e] = Et(s));
     }
   }
 };
@@ -3323,7 +3323,7 @@ const U = class U {
    * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toMask(t, e) {
-    if (D(t) && Array.isArray(e) && e.length > 0) {
+    if (S(t) && Array.isArray(e) && e.length > 0) {
       const s = this.removeZero(t), n = s.length;
       for (const o of e)
         if (this.getUnnecessaryLength(o) === n)
@@ -4181,7 +4181,7 @@ class Ae extends ot {
    */
   setTitle(e) {
     if (l()) {
-      const s = D(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
+      const s = S(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
       document.title = s, this.og.setTitle(s), this.twitter.setTitle(s);
     }
     return this;
@@ -4281,7 +4281,7 @@ class Ae extends ot {
    * Получает отформатированный суффикс с разделителем.
    */
   getSuffix() {
-    return D(this.suffix) ? ` - ${this.suffix}` : "";
+    return S(this.suffix) ? ` - ${this.suffix}` : "";
   }
 }
 class nt {
@@ -4454,7 +4454,7 @@ const ue = [
    */
   static addSync(t) {
     g(t, (e, s) => {
-      R(e) && D(e) && (this.data[this.getName(s)] = e);
+      R(e) && S(e) && (this.data[this.getName(s)] = e);
     });
   }
   /**
@@ -4464,7 +4464,7 @@ const ue = [
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static async addNormalOrSync(t) {
-    if (D(t))
+    if (S(t))
       if (z.isLocalhost())
         this.addSync(t);
       else {
@@ -4546,7 +4546,7 @@ const ue = [
   }
 };
 c(N, "url", "/api/translate"), c(N, "propsName", "list"), c(N, "data", {}), c(N, "cache", []), c(N, "resolveList", []), c(N, "timeout");
-let St = N;
+let Dt = N;
 function Ft(i) {
   return Array.isArray(i);
 }
@@ -4558,15 +4558,21 @@ function le(i, t) {
   return Array(t).fill(i);
 }
 function Ee(i) {
+  return new Promise((t, e) => {
+    const s = new FileReader();
+    s.onloadend = () => t(s.result), s.onerror = e, s.readAsDataURL(i);
+  });
+}
+function Ie(i) {
   var t;
   if (l())
     return (t = document.querySelector(i)) != null ? t : void 0;
 }
-function Ie(i) {
+function Be(i) {
   if (l())
     return document.querySelectorAll(i);
 }
-function Be(i) {
+function Fe(i) {
   i.preventDefault(), i.stopPropagation();
 }
 function de(i, t, e) {
@@ -4575,7 +4581,7 @@ function de(i, t, e) {
   };
   l() ? requestAnimationFrame(s) : s();
 }
-function Fe(i) {
+function xe(i) {
   var s;
   const t = {}, e = A(i);
   if (e)
@@ -4583,14 +4589,14 @@ function Fe(i) {
       t[n.name] = (s = (n == null ? void 0 : n.value) || (n == null ? void 0 : n.textContent)) != null ? s : void 0;
   return t;
 }
-async function xe(i) {
+async function Re(i) {
   var t, e;
   return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
-let Dt = Y(1e5, 9e5);
-function Re(i, t) {
+let St = Y(1e5, 9e5);
+function Pe(i, t) {
   const e = A(i);
-  return e ? (D(e.id) || e.setAttribute("id", `id-${Dt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${Dt++}`;
+  return e ? (S(e.id) || e.setAttribute("id", `id-${St++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${St++}`;
 }
 function ge(i) {
   return R(i) ? _(
@@ -4608,17 +4614,17 @@ function me(i, t) {
   const e = t.split(".", 2), s = e[0];
   return s && (i != null && i[s]) && C(i[s]) && (e != null && e[1]) ? me(i[s], e[1]) : (n = s && (i == null ? void 0 : i[s])) != null ? n : "";
 }
-function Pe(i) {
+function We(i) {
   var t, e, s;
   return (s = (t = i == null ? void 0 : i.key) != null ? t : i == null ? void 0 : i.code) != null ? s : (e = i == null ? void 0 : i.keyCode) == null ? void 0 : e.toString();
 }
 function xt(i) {
   return g(i, (t) => t.length);
 }
-function We(i) {
+function Ue(i) {
   return Math.max(...xt(i));
 }
-function Ue(i) {
+function je(i) {
   return Math.min(...xt(i));
 }
 function ye(i) {
@@ -4629,46 +4635,46 @@ function $e(i) {
   var t, e, s, n;
   return (i == null ? void 0 : i.clientY) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((n = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : n.clientY) || 0;
 }
-function je(i) {
+function ze(i) {
   return {
     x: ye(i),
     y: $e(i)
   };
 }
-function ze(i, t) {
+function He(i, t) {
   const e = {};
   return t.forEach((s) => {
     s in i && i[s] !== void 0 && (e[s] = i[s]);
   }), e;
 }
-function He(i, t = void 0) {
+function Ze(i, t = void 0) {
   const e = {};
   return g(i, (s, n) => {
     s !== t && (e[n] = s);
   }), e;
 }
-function Ze(i) {
+function Ke(i) {
   return C(i) ? i : {};
 }
 function pe(i, t) {
   return le(i, t).join("");
 }
-function Ke(i, t, e = "#", s = 2, n = 12) {
+function Ve(i, t, e = "#", s = 2, n = 12) {
   const o = Y(i, t), a = [];
   for (let u = 0; u < o; u++)
     a.push(pe(e, Y(s, n)));
   return a.join(" ");
 }
-function Ve(i, t) {
+function Ye(i, t) {
   const e = i != null ? i : 0;
   return t > e ? 100 / (t - e) : 0;
 }
-function Ye(i, t) {
+function qe(i, t) {
   const e = i != null ? i : 0;
   return t > e ? (t - e) / 100 : 0;
 }
 const Lt = 0;
-function qe(i, t, e) {
+function Je(i, t, e) {
   const s = t == null ? void 0 : t.closest(i);
   if (t && s && s.scrollHeight !== s.offsetHeight)
     if (e) {
@@ -4676,28 +4682,28 @@ function qe(i, t, e) {
       s.scrollTop = t.offsetTop - (n.top - o.top) - (n.height / 2 - a.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
     } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - Lt : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + Lt);
 }
-function Je(i, t) {
+function Qe(i, t) {
   return i.indexOf(t) !== -1;
 }
-async function Qe() {
+async function Me() {
   if (l()) {
     const i = await nt.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function Me(i, t) {
+function Xe(i, t) {
   const e = {};
   return m(i) && m(t) && g(i, (s, n) => {
     n in t && (e[n] = s);
   }), e;
 }
-function Xe(i, t) {
+function _e(i, t) {
   let e = Object.keys(i).length !== Object.keys(t).length;
   return e || g(i, (s, n) => {
     s !== (t == null ? void 0 : t[n]) && (e = !0);
   }), e;
 }
-function _e(i) {
+function Oe(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -4707,11 +4713,11 @@ function _e(i) {
       return !1;
   }
 }
-function Oe(i, t) {
+function Te(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function Te(i, t) {
+function Ge(i, t) {
   return Array.isArray(i) ? i.every((e) => st(e, t)) : st(i, t);
 }
 function be(i) {
@@ -4731,7 +4737,7 @@ function Z(i, t, e = !0) {
     }
   ), s;
 }
-function Ge(i, t) {
+function ti(i, t) {
   let e = i;
   return g(t, (s, n) => {
     e = e.replace(fe(`[${n}]`), E(s));
@@ -4747,16 +4753,17 @@ function we(i, t = "auto") {
       return !1;
   }
 }
-function ti(i, t, e = "auto") {
-  var n;
-  const s = ge(i);
-  if (s && (s.naturalWidth > t && (e === "auto" || e === "width") || s.naturalHeight > t && (e === "auto" || e === "height"))) {
-    const o = we(s, e), a = (n = document.createElement("canvas")) == null ? void 0 : n.getContext("2d");
-    if (a)
-      return a.canvas.width = o ? t : s.naturalWidth / s.naturalHeight * t, a.canvas.height = o ? s.naturalHeight / s.naturalWidth * t : t, a.drawImage(s, 0, 0, a.canvas.width, a.canvas.height), a.canvas.toDataURL();
+function ei(i, t, e = "auto", s) {
+  var o;
+  const n = ge(i);
+  if (n && (n.naturalWidth > t && (e === "auto" || e === "width") || n.naturalHeight > t && (e === "auto" || e === "height"))) {
+    const a = we(n, e), u = (o = document.createElement("canvas")) == null ? void 0 : o.getContext("2d");
+    if (u)
+      return u.canvas.width = a ? t : n.naturalWidth / n.naturalHeight * t, u.canvas.height = a ? n.naturalHeight / n.naturalWidth * t : t, u.drawImage(n, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
   }
+  return n == null ? void 0 : n.src;
 }
-function ei(i) {
+function ii(i) {
   const t = k(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -4764,7 +4771,7 @@ function ei(i) {
   }
   return "00:00";
 }
-function ii(i, t, {
+function si(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
@@ -4779,7 +4786,7 @@ function ii(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function si(i, t, e) {
+function ri(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
@@ -4795,24 +4802,24 @@ function si(i, t, e) {
 function ve(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function ri(i) {
+function ni(i) {
   return ve(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function ni(i) {
+function oi(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function oi(i, t, e, s) {
+function ai(i, t, e, s) {
   const n = k(i), o = k(t);
   return t && o < n ? `${kt(o, e, s)}+` : kt(n, e, s);
 }
 const kt = (i, t, e) => t ? new J(e).number(i) : i;
-function Se(i, t) {
+function De(i, t) {
   return 1 / i * t;
 }
-function ai(i, t) {
-  return Se(i, t) * 100;
+function ci(i, t) {
+  return De(i, t) * 100;
 }
-async function ci(i) {
+async function ui(i) {
   if (l())
     try {
       await navigator.clipboard.writeText(i);
@@ -4824,7 +4831,7 @@ export {
   z as Api,
   Zt as ApiDefault,
   Ht as ApiHeaders,
-  S as ApiMethodItem,
+  D as ApiMethodItem,
   qt as ApiPreparation,
   Yt as ApiResponse,
   Kt as ApiStatus,
@@ -4861,85 +4868,86 @@ export {
   oe as MetaTwitterCard,
   $ as MetaTwitterTag,
   nt as ScrollbarWidth,
-  St as Translate,
+  Dt as Translate,
   Ne as anyToString,
   he as applyTemplate,
   le as arrFill,
+  Ee as blobToBase64,
   j as copyObject,
   L as copyObjectLite,
   _ as createElement,
-  Ee as domQuerySelector,
-  Ie as domQuerySelectorAll,
+  Ie as domQuerySelector,
+  Be as domQuerySelectorAll,
   Gt as encodeAttribute,
-  Be as eventStopPropagation,
+  Fe as eventStopPropagation,
   E as executeFunction,
   Vt as executePromise,
   g as forEach,
   de as frame,
-  Fe as getAttributes,
-  xe as getClipboardData,
+  xe as getAttributes,
+  Re as getClipboardData,
   _t as getColumn,
   A as getElement,
-  Re as getElementId,
+  Pe as getElementId,
   ge as getElementImage,
   Ot as getElementItem,
   ht as getElementOrWindow,
   fe as getExp,
   me as getItemByPath,
-  Pe as getKey,
+  We as getKey,
   xt as getLengthOfAllArray,
-  We as getMaxLengthAllArray,
-  Ue as getMinLengthAllArray,
-  je as getMouseClient,
+  Ue as getMaxLengthAllArray,
+  je as getMinLengthAllArray,
+  ze as getMouseClient,
   ye as getMouseClientX,
   $e as getMouseClientY,
-  ze as getObjectByKeys,
-  He as getObjectNoUndefined,
-  Ze as getObjectOrNone,
-  Ke as getRandomText,
+  He as getObjectByKeys,
+  Ze as getObjectNoUndefined,
+  Ke as getObjectOrNone,
+  Ve as getRandomText,
   Ct as getRequestString,
-  Ve as getStepPercent,
-  Ye as getStepValue,
-  qe as goScroll,
-  Je as inArray,
-  Qe as initScrollbarOffset,
-  Me as intersectKey,
+  Ye as getStepPercent,
+  qe as getStepValue,
+  Je as goScroll,
+  Qe as inArray,
+  Me as initScrollbarOffset,
+  Xe as intersectKey,
   Ft as isArray,
-  Xe as isDifferent,
+  _e as isDifferent,
   rt as isDomData,
   l as isDomRuntime,
-  D as isFilled,
-  _e as isFloat,
+  S as isFilled,
+  Oe as isFloat,
   At as isFunction,
   zt as isInDom,
-  Oe as isIntegerBetween,
+  Te as isIntegerBetween,
   q as isNull,
   ct as isNumber,
   m as isObject,
   C as isObjectNotArray,
   st as isSelected,
-  Te as isSelectedByList,
+  Ge as isSelectedByList,
   R as isString,
   Nt as isWindow,
   Y as random,
   Z as replaceRecursive,
-  Ge as replaceTemplate,
-  ti as resizeImageByMax,
-  ei as secondToTime,
+  ti as replaceTemplate,
+  ei as resizeImageByMax,
+  ii as secondToTime,
   Tt as setElementItem,
-  ii as setValues,
-  si as splice,
+  si as setValues,
+  ri as splice,
   pe as strFill,
   H as toArray,
   ve as toCamelCase,
-  ri as toCamelCaseFirst,
+  ni as toCamelCaseFirst,
   B as toDate,
-  ni as toKebabCase,
+  oi as toKebabCase,
   k as toNumber,
-  oi as toNumberByMax,
-  Se as toPercent,
-  ai as toPercentBy100,
+  ai as toNumberByMax,
+  De as toPercent,
+  ci as toPercentBy100,
   Et as transformation,
   be as uniqueArray,
-  ci as writeClipboardData
+  ui as writeClipboardData
 };

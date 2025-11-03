@@ -45,6 +45,59 @@ applyTemplate('This is [bold]bold text[/bold]', { bold: '<b>[content]</b>' }) //
 applyTemplate('Text with [red]colored[/red] word', { red: '<span style="color:red">[content]</span>' })
 ```
 
+## `blobToBase64`
+
+Converts a Blob to a Base64 string (data URL).
+
+**Parameters:**
+- `blob: Blob` — Blob object to convert
+
+```javascript
+import { blobToBase64 } from '@dxtmisha/functional'
+
+const blob = new Blob(['Hello World'], { type: 'text/plain' })
+const base64 = await blobToBase64(blob)
+// 'data:text/plain;base64,SGVsbG8gV29ybGQ='
+
+// Using with images
+const imageBlob = new Blob([imageData], { type: 'image/png' })
+const imageBase64 = await blobToBase64(imageBlob)
+// 'data:image/png;base64,iVBORw0KGgo...'
+```
+
+## `computedAsync`
+
+Creates a Vue computed property that can handle asynchronous getters.
+
+**Parameters:**
+- `getter: (() => Promise<R>) | (() => R) | R` — asynchronous function, synchronous function, or direct value to compute the result
+- `debugOptions?: DebuggerOptions` — debug options for reactive computations (supported by Vue.js library)
+
+```javascript
+import { computedAsync } from '@dxtmisha/functional'
+
+// With asynchronous function
+const userData = computedAsync(async () => {
+  const response = await fetch('/api/user')
+  return response.json()
+})
+
+// With synchronous function
+const doubled = computedAsync(() => value.value * 2)
+
+// With direct value
+const staticValue = computedAsync('Hello World')
+
+// With debug options
+const debugged = computedAsync(
+  async () => await fetchData(),
+  {
+    onTrack: (e) => console.log('tracked:', e),
+    onTrigger: (e) => console.log('triggered:', e)
+  }
+)
+```
+
 ## `encodeAttribute`
 
 Encodes special characters in a string for safe use in HTML attributes. Converts characters `&`, `<`, `>`, `"`, `'` into corresponding HTML entities to prevent XSS attacks and ensure correct display.
@@ -91,6 +144,37 @@ replaceTemplate('Hello [name]!', {name: 'World'}) // 'Hello World!'
 replaceTemplate('[x] + [y] = [sum]', {x: '2', y: '3', sum: '5'}) // '2 + 3 = 5'
 replaceTemplate('User [id]: [name]', {id: '123', name: 'John'}) // 'User 123: John'
 replaceTemplate('Time: [time]', {time: () => new Date().toLocaleString()}) // with function
+```
+
+## `resizeImageByMax`
+
+Resizes an image to fit within a maximum size constraint.
+
+**Parameters:**
+- `image: HTMLImageElement | string` — image element or URL
+- `maxSize: number` — maximum size for width or height
+- `type: 'auto' | 'width' | 'height'` — resize type (default 'auto')
+- `typeData?: string` — data type for the resulting image (e.g., 'image/png', 'image/jpeg')
+
+```javascript
+import { resizeImageByMax } from '@dxtmisha/functional'
+
+// Automatic scaling (by larger dimension)
+const image = document.querySelector('img')
+const resized = resizeImageByMax(image, 800) // data URL
+// Image 1200x800 becomes 800x533
+
+// Scale by width
+resizeImageByMax(image, 600, 'width')
+// Width will be 600px, height proportional
+
+// Scale by height
+resizeImageByMax(image, 400, 'height')
+// Height will be 400px, width proportional
+
+// With specified data type
+resizeImageByMax(image, 1024, 'auto', 'image/jpeg')
+// Returns JPEG data URL
 ```
 
 ## `secondToTime`

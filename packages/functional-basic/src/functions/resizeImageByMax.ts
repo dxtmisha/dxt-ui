@@ -35,11 +35,14 @@ function isByWidth(
  * @param image image element or URL / элемент изображения или URL
  * @param maxSize maximum size for width or height / максимальный размер ширины или высоты
  * @param type resize type (auto, width, height) / тип изменения размера (auto, width, height)
+ * @param typeData optional data type for the resulting image /
+ * необязательный тип данных для результирующего изображения
  */
 export function resizeImageByMax(
   image: HTMLImageElement | string,
   maxSize: number,
-  type: ResizeImageByMaxType = 'auto'
+  type: ResizeImageByMaxType = 'auto',
+  typeData?: string
 ): string | undefined {
   const element = getElementImage(image)
 
@@ -58,7 +61,7 @@ export function resizeImageByMax(
       canvas.canvas.height = is ? (element.naturalHeight / element.naturalWidth * maxSize) : maxSize
       canvas.drawImage(element, 0, 0, canvas.canvas.width, canvas.canvas.height)
 
-      return canvas.canvas.toDataURL()
+      return canvas.canvas.toDataURL(typeData)
     }
   }
 

@@ -29,6 +29,7 @@ export * from './composables/ref/useTranslateRef'
 
 // Functions
 export * from './functions/basic'
+export * from './functions/computedAsync'
 export * from './functions/computedByLanguage'
 export * from './functions/executeUse'
 export * from './functions/ref/getBindRef'

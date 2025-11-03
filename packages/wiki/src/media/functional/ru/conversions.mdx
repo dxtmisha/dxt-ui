@@ -45,6 +45,59 @@ applyTemplate('Это [bold]жирный текст[/bold]', { bold: '<b>[conten
 applyTemplate('Text with [red]colored[/red] word', { red: '<span style="color:red">[content]</span>' })
 ```
 
+## `blobToBase64`
+
+Преобразует Blob в строку Base64 (data URL).
+
+**Параметры:**
+- `blob: Blob` — Blob объект для преобразования
+
+```javascript
+import { blobToBase64 } from '@dxtmisha/functional'
+
+const blob = new Blob(['Hello World'], { type: 'text/plain' })
+const base64 = await blobToBase64(blob)
+// 'data:text/plain;base64,SGVsbG8gV29ybGQ='
+
+// Использование с изображением
+const imageBlob = new Blob([imageData], { type: 'image/png' })
+const imageBase64 = await blobToBase64(imageBlob)
+// 'data:image/png;base64,iVBORw0KGgo...'
+```
+
+## `computedAsync`
+
+Создаёт вычисляемое свойство Vue, которое может обрабатывать асинхронные геттеры.
+
+**Параметры:**
+- `getter: (() => Promise<R>) | (() => R) | R` — асинхронная функция, синхронная функция или прямое значение для вычисления результата
+- `debugOptions?: DebuggerOptions` — опции отладки для реактивных вычислений (поддерживается библиотекой Vue.js)
+
+```javascript
+import { computedAsync } from '@dxtmisha/functional'
+
+// С асинхронной функцией
+const userData = computedAsync(async () => {
+  const response = await fetch('/api/user')
+  return response.json()
+})
+
+// С синхронной функцией
+const doubled = computedAsync(() => value.value * 2)
+
+// С прямым значением
+const staticValue = computedAsync('Hello World')
+
+// С опциями отладки
+const debugged = computedAsync(
+  async () => await fetchData(),
+  {
+    onTrack: (e) => console.log('tracked:', e),
+    onTrigger: (e) => console.log('triggered:', e)
+  }
+)
+```
+
 ## `encodeAttribute`
 
 Кодирует специальные символы в строке для безопасного использования в HTML-атрибутах. Преобразует символы `&`, `<`, `>`, `"`, `'` в соответствующие HTML-сущности для предотвращения XSS-атак и корректного отображения.
@@ -91,6 +144,37 @@ replaceTemplate('Hello [name]!', {name: 'World'}) // 'Hello World!'
 replaceTemplate('[x] + [y] = [sum]', {x: '2', y: '3', sum: '5'}) // '2 + 3 = 5'
 replaceTemplate('User [id]: [name]', {id: '123', name: 'John'}) // 'User 123: John'
 replaceTemplate('Time: [time]', {time: () => new Date().toLocaleString()}) // с функцией
+```
+
+## `resizeImageByMax`
+
+Изменяет размер изображения, чтобы оно соответствовало ограничению максимального размера.
+
+**Параметры:**
+- `image: HTMLImageElement | string` — элемент изображения или URL
+- `maxSize: number` — максимальный размер ширины или высоты
+- `type: 'auto' | 'width' | 'height'` — тип изменения размера (по умолчанию 'auto')
+- `typeData?: string` — тип данных результирующего изображения (например, 'image/png', 'image/jpeg')
+
+```javascript
+import { resizeImageByMax } from '@dxtmisha/functional'
+
+// Автоматическое масштабирование (по большей стороне)
+const image = document.querySelector('img')
+const resized = resizeImageByMax(image, 800) // data URL
+// Изображение 1200x800 станет 800x533
+
+// Масштабирование по ширине
+resizeImageByMax(image, 600, 'width')
+// Ширина будет 600px, высота пропорциональна
+
+// Масштабирование по высоте
+resizeImageByMax(image, 400, 'height')
+// Высота будет 400px, ширина пропорциональна
+
+// С указанием типа данных
+resizeImageByMax(image, 1024, 'auto', 'image/jpeg')
+// Возвращает JPEG data URL
 ```
 
 ## `secondToTime`
