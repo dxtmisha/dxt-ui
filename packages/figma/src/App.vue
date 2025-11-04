@@ -11,6 +11,9 @@ import { ref } from 'vue'
 import type { UiFigmaMessageTexts } from './types/figmaTypes.ts'
 import { ensureMaxSize } from './functions/ensureMaxSize.ts'
 import { computedAsync } from '@dxtmisha/functional'
+import { FigmaAiText } from './classes/FigmaAiText.ts'
+import { AiGoogleLite } from '@dxtmisha/scripts/ai'
+import { FIGMA_AI_KEY, FIGMA_AI_MODEL } from '../ai.config.ts'
 
 const item = ref<UiFigmaMessageTexts>()
 const screenshots = computedAsync<string[]>(async () => {
@@ -33,6 +36,10 @@ const screenshots = computedAsync<string[]>(async () => {
 FigmaMessage.add(
   'texts',
   (message: UiFigmaMessageTexts) => {
+    new FigmaAiText(
+      new AiGoogleLite(FIGMA_AI_KEY, FIGMA_AI_MODEL),
+      message
+    ).make()
     console.log('message', message)
     item.value = message
     return 'Hello from Figma Plugin UI!'

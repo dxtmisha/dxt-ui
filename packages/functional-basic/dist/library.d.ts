@@ -106,6 +106,7 @@ export * from './functions/toNumberByMax';
 export * from './functions/toPercent';
 export * from './functions/toPercentBy100';
 export * from './functions/transformation';
+export * from './functions/uint8ArrayToBase64';
 export * from './functions/uniqueArray';
 export * from './functions/writeClipboardData';
 export * from './types/apiTypes';

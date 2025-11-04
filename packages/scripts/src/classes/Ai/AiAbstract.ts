@@ -1,3 +1,5 @@
+import type { AiImageItem, AiImageList } from '../../types/aiTypes'
+
 /**
  * Abstract AI base class providing common mechanics for AI integrations.
  * Handles prompt accumulation, model selection and unified response workflow.
@@ -25,6 +27,8 @@ export abstract class AiAbstract<AI = any> {
   /** Prompt prefix / Префикс prompt */
   protected prompt: string = ''
 
+  protected images: AiImageList = []
+
   /**
    * Constructor initializes implementation specific resources.
    *
@@ -39,12 +43,42 @@ export abstract class AiAbstract<AI = any> {
   }
 
   /**
+   * Returns accumulated image list.
+   *
+   * Возвращает накопленный список изображений.
+   */
+  getImages(): AiImageList {
+    return this.images
+  }
+
+  /**
+   * Appends an image to the accumulated image list.
+   *
+   * Добавляет изображение к накопленному списку изображений.
+   * @param image - image item / элемент изображения
+   */
+  addImage(image: AiImageItem): this {
+    this.images.push(image)
+    return this
+  }
+
+  /**
    * Appends a new line to the accumulated prompt block.
    *
    * Добавляет новую строку к накопленному блоку prompt.
    */
   addPrompt(prompt: string): void {
     this.prompt += `\n${prompt}`
+  }
+
+  /**
+   * Clears entire accumulated image list.
+   *
+   * Очищает весь накопленный список изображений.
+   */
+  resetImages(): this {
+    this.images = []
+    return this
   }
 
   /**
@@ -123,6 +157,13 @@ export abstract class AiAbstract<AI = any> {
    * Хук реализации: инициализация клиента / транспорта / авторизации.
    */
   protected abstract init(): void
+
+  /**
+   * Implementation hook: convert accumulated images to model-specific format.
+   *
+   * Хук реализации: преобразовать накопленные изображения в формат, специфичный для модели.
+   */
+  protected abstract toImages(): void
 
   /**
    * Implementation hook: perform model call and return textual result.

@@ -1,3 +1,4 @@
+import { forEach } from '@dxtmisha/functional-basic'
 import { AiAbstract } from './AiAbstract'
 import { GoogleGenAI } from '@google/genai'
 
@@ -28,6 +29,20 @@ export class AiGoogleLite extends AiAbstract<GoogleGenAI> {
   }
 
   /**
+   * Implementation hook: convert accumulated images to model-specific format.
+   *
+   * Хук реализации: преобразовать накопленные изображения в формат, специфичный для модели.
+   */
+  protected toImages(): any {
+    return forEach(this.images, image => ({
+      inlineData: {
+        mimeType: image.mime,
+        data: image.base64
+      }
+    }))
+  }
+
+  /**
    * Performs content generation request and returns textual result.
    *
    * Выполняет запрос генерации контента и возвращает текстовый результат.
@@ -40,7 +55,10 @@ export class AiGoogleLite extends AiAbstract<GoogleGenAI> {
   ): Promise<string> {
     const response = await this.ai?.models.generateContent({
       model,
-      contents
+      contents: [
+        ...this.toImages(),
+        { text: contents }
+      ]
     })
 
     return response?.text ?? ''
