@@ -72,54 +72,6 @@ export const InputNumber: Story = {
     `
   })
 }
-export const InputVModel: Story = {
-  name: 'Двусторонняя привязка (v-model)',
-  render: () => ({
-    components: { D1Input },
-    setup() {
-      return {
-        inputValue: ref('Initial value'),
-        emailValue: ref(''),
-        numberValue: ref(42)
-      }
-    },
-    template: `
-        <div class="wiki-storybook-flex-column">
-          <div>
-            <button class="wiki-storybook-button" @click="inputValue = 'Changed value'">Set text</button>
-            <button class="wiki-storybook-button" @click="inputValue = ''">Clear</button>
-          </div>
-          <D1Input
-            v-model="inputValue"
-            type="text"
-            label="Text input"
-            placeholder="Enter text"
-          />
-          <div>Value: {{ inputValue }}</div>
-
-          <D1Input
-            v-model="emailValue"
-            type="email"
-            label="Email input"
-            placeholder="email@example.com"
-          />
-          <div>Email: {{ emailValue }}</div>
-
-          <div>
-            <button class="wiki-storybook-button" @click="numberValue += 10">+10</button>
-            <button class="wiki-storybook-button" @click="numberValue -= 10">-10</button>
-          </div>
-          <D1Input
-            v-model="numberValue"
-            type="number"
-            label="Number input"
-            :step="1"
-          />
-          <div>Number: {{ numberValue }}</div>
-        </div>
-    `
-  })
-}
 export const InputCurrency: Story = {
   name: 'Валюта и форматирование чисел',
   render: () => ({
@@ -156,6 +108,58 @@ export const InputMask: Story = {
           <D1Input type="tel" mask="+1 (###) ###-####" placeholder="+1 (555) 000-0000" label="Phone" />
           <D1Input type="text" mask="#### #### #### ####" placeholder="0000 0000 0000 0000" label="Card" />
           <D1Input type="tel" mask="+1 (###) ###-####" :mask-visible="false" label="No placeholder" />
+        </div>
+    `
+  })
+}
+export const InputVModel: Story = {
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: { D1Input },
+    setup() {
+      return {
+        inputValue: ref('Initial value'),
+        maskValue: ref(''),
+        numberValue: ref(42)
+      }
+    },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="inputValue = 'Changed value'">Set text</button>
+            <button class="wiki-storybook-button" @click="inputValue = ''">Clear</button>
+          </div>
+          <D1Input
+            v-model="inputValue"
+            type="text"
+            label="Text input"
+            placeholder="Enter text"
+          />
+          <div>Value: {{ inputValue }}</div>
+
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="maskValue = '2022-05-13'">Set date</button>
+            <button class="wiki-storybook-button" @click="maskValue = ''">Clear</button>
+          </div>
+          <D1Input
+            v-model="maskValue"
+            type="date"
+            label="Date input"
+            value="2024-03-01"
+          />
+          <div>Mask: {{ maskValue }}</div>
+
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="numberValue += 10">+10</button>
+            <button class="wiki-storybook-button" @click="numberValue -= 10">-10</button>
+          </div>
+          <D1Input
+            v-model="numberValue"
+            type="number"
+            label="Number input"
+            :step="1"
+          />
+          <div>Number: {{ numberValue }}</div>
         </div>
     `
   })

@@ -79,55 +79,6 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
       `
     },
     {
-      id: 'InputVModel',
-      name: {
-        en: 'Two-way binding (v-model)',
-        ru: 'Двусторонняя привязка (v-model)'
-      },
-      setup: `
-      return {
-        inputValue: ref('Initial value'),
-        emailValue: ref(''),
-        numberValue: ref(42)
-      }
-      `,
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <div>
-            <button class="wiki-storybook-button" @click="inputValue = 'Changed value'">Set text</button>
-            <button class="wiki-storybook-button" @click="inputValue = ''">Clear</button>
-          </div>
-          <DesignComponent
-            v-model="inputValue"
-            type="text"
-            label="Text input"
-            placeholder="Enter text"
-          />
-          <div>Value: {{ inputValue }}</div>
-
-          <DesignComponent
-            v-model="emailValue"
-            type="email"
-            label="Email input"
-            placeholder="email@example.com"
-          />
-          <div>Email: {{ emailValue }}</div>
-
-          <div>
-            <button class="wiki-storybook-button" @click="numberValue += 10">+10</button>
-            <button class="wiki-storybook-button" @click="numberValue -= 10">-10</button>
-          </div>
-          <DesignComponent
-            v-model="numberValue"
-            type="number"
-            label="Number input"
-            :step="1"
-          />
-          <div>Number: {{ numberValue }}</div>
-        </div>
-      `
-    },
-    {
       id: 'InputCurrency',
       name: {
         en: 'Currency & number formatting',
@@ -166,6 +117,59 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
           <DesignComponent type="tel" mask="+1 (###) ###-####" placeholder="+1 (555) 000-0000" label="Phone" />
           <DesignComponent type="text" mask="#### #### #### ####" placeholder="0000 0000 0000 0000" label="Card" />
           <DesignComponent type="tel" mask="+1 (###) ###-####" :mask-visible="false" label="No placeholder" />
+        </div>
+      `
+    },
+    {
+      id: 'InputVModel',
+      name: {
+        en: 'Two-way binding (v-model)',
+        ru: 'Двусторонняя привязка (v-model)'
+      },
+      setup: `
+      return {
+        inputValue: ref('Initial value'),
+        maskValue: ref(''),
+        numberValue: ref(42)
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="inputValue = 'Changed value'">Set text</button>
+            <button class="wiki-storybook-button" @click="inputValue = ''">Clear</button>
+          </div>
+          <DesignComponent
+            v-model="inputValue"
+            type="text"
+            label="Text input"
+            placeholder="Enter text"
+          />
+          <div>Value: {{ inputValue }}</div>
+
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="maskValue = '2022-05-13'">Set date</button>
+            <button class="wiki-storybook-button" @click="maskValue = ''">Clear</button>
+          </div>
+          <DesignComponent
+            v-model="maskValue"
+            type="date"
+            label="Date input"
+            value="2024-03-01"
+          />
+          <div>Mask: {{ maskValue }}</div>
+
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="numberValue += 10">+10</button>
+            <button class="wiki-storybook-button" @click="numberValue -= 10">-10</button>
+          </div>
+          <DesignComponent
+            v-model="numberValue"
+            type="number"
+            label="Number input"
+            :step="1"
+          />
+          <div>Number: {{ numberValue }}</div>
         </div>
       `
     },
