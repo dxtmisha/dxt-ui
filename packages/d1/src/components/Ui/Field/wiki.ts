@@ -7,6 +7,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'align', type: 'string', option: ['center', 'right', 'left'] },
+  { name: 'arrowAlign', type: 'string', option: ['center', 'right', 'left'] },
   { name: 'arrowCarousel', type: 'boolean' },
   { name: 'arrowStepper', type: 'boolean' },
   { name: 'basic', type: 'boolean' },

@@ -1,0 +1,53 @@
+## Date and Time Formatting
+
+Properties `type`, `language`, and `mask` are designed to manage date and time input and formatting with automatic localization and masking.
+
+**Properties:**
+
+- `type` — input type (set to one of: `date`, `datetime`, `year-month`, `time`, `hour-minute`)
+- `language` — locale code for formatting (e.g., `ru-RU`, `en-US`)
+- `mask` — custom input mask (optional)
+- `min` — minimum allowed date/time value
+- `max` — maximum allowed date/time value
+
+Properties work together: `type="date"` automatically activates date input mode with localized formatting. `language` determines the order of date components (day/month/year or month/day/year) and separators. `type="datetime"` adds time input to the date. Types `year-month`, `time`, and `hour-minute` allow input of specific components only. Properties `min` and `max` restrict the range of allowed values. You can override the automatic mask via the `mask` property for custom formatting.
+
+```html
+<script setup>
+import { ref } from 'vue'
+const dateValue = ref('2024-03-15')
+const datetimeValue = ref('2024-03-15T14:30:00')
+const timeValue = ref('14:30')
+const yearMonthValue = ref('2024-03')
+</script>
+
+<template>
+  <!-- Standard date input -->
+  <Input v-model="dateValue" type="date" language="en-US" label="Date" />
+
+  <!-- Date with Russian locale -->
+  <Input v-model="dateValue" type="date" language="ru-RU" label="Дата" />
+
+  <!-- Date and time -->
+  <Input v-model="datetimeValue" type="datetime" language="en-US" label="Date and Time" />
+
+  <!-- Time only -->
+  <Input v-model="timeValue" type="time" language="en-US" label="Time" />
+
+  <!-- Hours and minutes -->
+  <Input v-model="timeValue" type="hour-minute" language="en-US" label="Hours:Minutes" />
+
+  <!-- Year and month -->
+  <Input v-model="yearMonthValue" type="year-month" language="en-US" label="Period" />
+
+  <!-- Date with constraints -->
+  <Input
+    v-model="dateValue"
+    type="date"
+    language="en-US"
+    min="2024-01-01"
+    max="2024-12-31"
+    label="Date in 2024"
+  />
+</template>
+```

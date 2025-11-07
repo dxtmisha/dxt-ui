@@ -112,6 +112,22 @@ export const InputMask: Story = {
     `
   })
 }
+export const InputDate: Story = {
+  name: 'Дата и время',
+  render: () => ({
+    components: { D1Input },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <D1Input type="date" label="Date" language="ru-RU" />
+          <D1Input type="datetime" label="Date and Time" language="en-US" />
+          <D1Input type="year-month" label="Period" language="ru-RU" />
+          <D1Input type="time" label="Time" />
+          <D1Input type="hour-minute" label="Hours:Minutes" />
+          <D1Input type="date" label="Limited Date" language="ru-RU" min="2024-01-01" max="2024-12-31" />
+        </div>
+    `
+  })
+}
 export const InputVModel: Story = {
   name: 'Двусторонняя привязка (v-model)',
   render: () => ({

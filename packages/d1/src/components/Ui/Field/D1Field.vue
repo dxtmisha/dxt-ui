@@ -45,6 +45,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-field--classic': props.classic && !props.basic && !props.boxed && !props.tonal && !props.filled && !props.outlined,
     'd1-field--arrowCarousel': props.arrowCarousel,
     'd1-field--arrowStepper': props.arrowStepper,
+    [`d1-field--arrowAlign--${props.arrowAlign}`]: inArray(propsValues.arrowAlign, props.arrowAlign),
     [`d1-field--cancel--${props.cancel}`]: inArray(propsValues.cancel, props.cancel),
     [`d1-field--align--${props.align}`]: inArray(propsValues.align, props.align),
     'd1-field--width--custom': isFilled(props.width) && !inArray(propsValues.width, props.width)

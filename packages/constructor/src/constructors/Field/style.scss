@@ -125,6 +125,8 @@
       min-height: ui.v('??height');
 
       font: inherit;
+      letter-spacing: inherit;
+      text-align: left;
       line-height: calc((#{ui.v('??sys.half') - ui.v('??sys.title.half')}) * 2);
 
       background-color: transparent;
@@ -518,52 +520,46 @@
     width: 100%;
   }
 
-  &--right {
-    @include ui.subclass('body') {
-      &__scoreboard {
-        &__space {
-          @include ui.marginRight(0);
-        }
-      }
-    }
-
-    @include ui.subclass('body') {
-      &__input {
-        text-align: right;
-      }
-    }
-  }
-
   &--align {
     &--right {
-      @include ui.subclass('previous') {
-        order: 94;
+      @include ui.subclass('body') {
+        &__input {
+          text-align: right;
+        }
+
+        &__scoreboard__space {
+          flex-direction: row-reverse;
+        }
       }
 
       @include ui.subclass('caption') {
         @include ui.textAlign('right');
       }
+    }
+
+    &--center {
+      @include ui.subclass('caption') {
+        display: none;
+      }
 
       @include ui.subclass('body') {
-        &__scoreboard__space {
-          flex-direction: row-reverse;
+        &__input {
+          text-align: center;
         }
+      }
+    }
+  }
+
+  &--arrowAlign {
+    &--right {
+      @include ui.subclass('previous') {
+        order: 94;
       }
     }
 
     &--left {
       @include ui.subclass('next') {
         order: 6;
-      }
-    }
-
-    &--center {
-      @include ui.state('arrow') {
-        @include ui.subclass('body') {
-          &__input {
-            text-align: center;
-          }
-        }
       }
     }
   }

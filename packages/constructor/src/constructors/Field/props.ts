@@ -27,6 +27,7 @@ interface FieldPropsToken {
   classic?: boolean
   arrowCarousel?: boolean
   arrowStepper?: boolean
+  arrowAlign?: 'center' | 'right' | 'left'
   cancel?: 'auto' | 'always' | 'none'
   align?: 'center' | 'right' | 'left'
   width?: string | 'custom'
@@ -81,8 +82,8 @@ export interface FieldProps extends FieldPropsBasic, FieldPropsToken {
 export const defaultsField = {
   ...{
     // :default [!] System label / Системная метка
-    cancel: 'auto',
-    align: 'center'
+    arrowAlign: 'right',
+    cancel: 'auto'
     // :default [!] System label / Системная метка
   }
 }

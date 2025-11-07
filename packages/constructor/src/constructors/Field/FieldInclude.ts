@@ -85,8 +85,10 @@ export class FieldInclude<
         iconAttrs: this.props.iconAttrs,
 
         align: this.props.align,
+
         arrowCarousel: this.arrow?.isCarousel(),
         arrowStepper: this.arrow?.isStepper(),
+        arrowAlign: this.props.arrowAlign,
 
         isSkeleton: this.props.isSkeleton,
 

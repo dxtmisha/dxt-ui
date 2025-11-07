@@ -8,6 +8,7 @@ import type { ProgressProps } from '../Progress'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  arrowAlign: ['center', 'right', 'left'],
   cancel: ['auto', 'always', 'none'],
   align: ['center', 'right', 'left'],
   width: []
@@ -30,6 +31,7 @@ interface PropsToken {
   classic?: boolean
   arrowCarousel?: boolean
   arrowStepper?: boolean
+  arrowAlign?: 'center' | 'right' | 'left'
   cancel?: 'auto' | 'always' | 'none'
   align?: 'center' | 'right' | 'left'
   width?: string | 'custom'
@@ -56,8 +58,9 @@ export const defaults: object = {
   ...{
     // :default [!] System label / Системная метка
     classic: true,
+    arrowAlign: 'right',
     cancel: 'auto',
-    align: 'right'
+    align: 'left'
     // :default [!] System label / Системная метка
   }
 }

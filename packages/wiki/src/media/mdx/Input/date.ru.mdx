@@ -1,0 +1,53 @@
+## Работа с датой и временем
+
+Свойства `type`, `language` и `mask` предназначены для управления вводом и форматированием значений даты и времени с автоматической локализацией и маскированием.
+
+**Свойства:**
+
+- `type` — тип инпута (устанавливается одно из значений: `date`, `datetime`, `year-month`, `time`, `hour-minute`)
+- `language` — код локали для форматирования (например, `ru-RU`, `en-US`)
+- `mask` — пользовательская маска для ввода (опционально)
+- `min` — минимальное допустимое значение даты/времени
+- `max` — максимальное допустимое значение даты/времени
+
+Свойства работают совместно: `type="date"` автоматически активирует режим ввода даты с локализованным форматированием. `language` определяет порядок компонентов даты (день/месяц/год или месяц/день/год) и разделители. `type="datetime"` добавляет к дате ввод времени. Типы `year-month`, `time` и `hour-minute` позволяют вводить только определённые компоненты. Свойства `min` и `max` ограничивают диапазон допустимых значений. Можно переопределить автоматическую маску через свойство `mask` для кастомного форматирования.
+
+```html
+<script setup>
+import { ref } from 'vue'
+const dateValue = ref('2024-03-15')
+const datetimeValue = ref('2024-03-15T14:30:00')
+const timeValue = ref('14:30')
+const yearMonthValue = ref('2024-03')
+</script>
+
+<template>
+  <!-- Стандартный ввод даты -->
+  <Input v-model="dateValue" type="date" language="ru-RU" label="Дата" />
+
+  <!-- Дата с английской локалью -->
+  <Input v-model="dateValue" type="date" language="en-US" label="Date" />
+
+  <!-- Дата и время -->
+  <Input v-model="datetimeValue" type="datetime" language="ru-RU" label="Дата и время" />
+
+  <!-- Только время -->
+  <Input v-model="timeValue" type="time" language="ru-RU" label="Время" />
+
+  <!-- Часы и минуты -->
+  <Input v-model="timeValue" type="hour-minute" language="ru-RU" label="Часы:Минуты" />
+
+  <!-- Год и месяц -->
+  <Input v-model="yearMonthValue" type="year-month" language="ru-RU" label="Период" />
+
+  <!-- Дата с ограничениями -->
+  <Input
+    v-model="dateValue"
+    type="date"
+    language="ru-RU"
+    min="2024-01-01"
+    max="2024-12-31"
+    label="Дата в 2024 году"
+  />
+</template>
+```

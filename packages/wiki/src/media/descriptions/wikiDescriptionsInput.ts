@@ -121,6 +121,23 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
       `
     },
     {
+      id: 'InputDate',
+      name: {
+        en: 'Date and time',
+        ru: 'Дата и время'
+      },
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent type="date" label="Date" language="ru-RU" />
+          <DesignComponent type="datetime" label="Date and Time" language="en-US" />
+          <DesignComponent type="year-month" label="Period" language="ru-RU" />
+          <DesignComponent type="time" label="Time" />
+          <DesignComponent type="hour-minute" label="Hours:Minutes" />
+          <DesignComponent type="date" label="Limited Date" language="ru-RU" min="2024-01-01" max="2024-12-31" />
+        </div>
+      `
+    },
+    {
       id: 'InputVModel',
       name: {
         en: 'Two-way binding (v-model)',
@@ -213,6 +230,9 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
 
 <StorybookDescriptions componentName={'Input'} type={'mask'}/>
 <Canvas of={Component.InputMask}/>
+
+<StorybookDescriptions componentName={'Input'} type={'date'}/>
+<Canvas of={Component.InputDate}/>
 
 <StorybookDescriptions componentName={'Value'} type={'v-model'}/>
 <Canvas of={Component.InputVModel}/>

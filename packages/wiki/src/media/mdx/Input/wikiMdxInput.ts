@@ -2,6 +2,8 @@ import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
 import currencyEn from './currency.en.mdx'
 import currencyRu from './currency.ru.mdx'
+import dateEn from './date.en.mdx'
+import dateRu from './date.ru.mdx'
 import inputEn from './input.en.mdx'
 import inputRu from './input.ru.mdx'
 import maskEn from './mask.en.mdx'
@@ -22,6 +24,10 @@ export const wikiMdxInput: StorybookComponentsMdxItem = {
     currency: {
       en: currencyEn,
       ru: currencyRu
+    },
+    date: {
+      en: dateEn,
+      ru: dateRu
     },
     input: {
       en: inputEn,

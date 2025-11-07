@@ -69,6 +69,12 @@
   },
   "~arrowCarousel": {},
   "~arrowStepper": {},
+  "~arrowAlign": {
+    "~center": {},
+    "~right": {},
+    "~left": {},
+    "_default": "right"
+  },
   "~cancel": {
     "~auto": {},
     "~always": {},
@@ -78,8 +84,7 @@
   "~align": {
     "~center": {},
     "~right": {},
-    "~left": {},
-    "_default": "right"
+    "~left": {}
   },
   "~width": {
     "_style": true

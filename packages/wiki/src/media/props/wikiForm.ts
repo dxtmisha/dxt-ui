@@ -24,6 +24,18 @@ export const wikiForm: StorybookArgsToList = {
       }
     }
   },
+  arrowAlign: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.form,
+      type: 'string',
+      options: ['center', 'right', 'left'],
+      description: {
+        en: 'Sets alignment position of arrow buttons within the field',
+        ru: 'Задает позицию выравнивания кнопок-стрелок внутри поля'
+      }
+    }
+  },
   autocapitalize: {
     type: StorybookControl.string,
     options: {
