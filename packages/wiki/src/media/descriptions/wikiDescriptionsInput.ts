@@ -107,20 +107,6 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
       `
     },
     {
-      id: 'InputMask',
-      name: {
-        en: 'Masked input',
-        ru: 'Маскированный ввод'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent type="tel" mask="+1 (###) ###-####" placeholder="+1 (555) 000-0000" label="Phone" />
-          <DesignComponent type="text" mask="#### #### #### ####" placeholder="0000 0000 0000 0000" label="Card" />
-          <DesignComponent type="tel" mask="+1 (###) ###-####" :mask-visible="false" label="No placeholder" />
-        </div>
-      `
-    },
-    {
       id: 'InputDate',
       name: {
         en: 'Date and time',
@@ -134,6 +120,20 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
           <DesignComponent type="time" label="Time" />
           <DesignComponent type="hour-minute" label="Hours:Minutes" />
           <DesignComponent type="date" label="Limited Date" language="ru-RU" min="2024-01-01" max="2024-12-31" />
+        </div>
+      `
+    },
+    {
+      id: 'InputMask',
+      name: {
+        en: 'Masked input',
+        ru: 'Маскированный ввод'
+      },
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent type="tel" mask="+1 (###) ###-####" placeholder="+1 (555) 000-0000" label="Phone" />
+          <DesignComponent type="text" mask="#### #### #### ####" placeholder="0000 0000 0000 0000" label="Card" />
+          <DesignComponent type="tel" mask="+1 (###) ###-####" :mask-visible="false" label="No placeholder" />
         </div>
       `
     },
@@ -228,11 +228,11 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Input'} type={'currency'}/>
 <Canvas of={Component.InputCurrency}/>
 
-<StorybookDescriptions componentName={'Input'} type={'mask'}/>
-<Canvas of={Component.InputMask}/>
-
 <StorybookDescriptions componentName={'Input'} type={'date'}/>
 <Canvas of={Component.InputDate}/>
+
+<StorybookDescriptions componentName={'Input'} type={'mask'}/>
+<Canvas of={Component.InputMask}/>
 
 <StorybookDescriptions componentName={'Value'} type={'v-model'}/>
 <Canvas of={Component.InputVModel}/>
