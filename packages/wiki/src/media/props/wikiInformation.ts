@@ -68,6 +68,17 @@ export const wikiInformation: StorybookArgsToList = {
       }
     }
   },
+  placeholder: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: 'string',
+      description: {
+        en: 'Placeholder text shown when the input is empty',
+        ru: 'Текст подсказки, отображаемый при пустом вводе'
+      }
+    }
+  },
   suffix: {
     type: StorybookControl.string,
     options: {

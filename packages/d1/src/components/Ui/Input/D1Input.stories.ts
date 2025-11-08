@@ -91,23 +91,11 @@ export const InputCurrency: Story = {
           />
           <D1Input
             type="currency"
-            label="Price (EUR)"
+            label="Price (currency-hide)"
             currency="EUR"
+            currency-hide
             value="1234.56"
           />
-        </div>
-    `
-  })
-}
-export const InputMask: Story = {
-  name: 'Маскированный ввод',
-  render: () => ({
-    components: { D1Input },
-    template: `
-        <div class="wiki-storybook-flex-column">
-          <D1Input type="tel" mask="+1 (###) ###-####" placeholder="+1 (555) 000-0000" label="Phone" />
-          <D1Input type="text" mask="#### #### #### ####" placeholder="0000 0000 0000 0000" label="Card" />
-          <D1Input type="tel" mask="+1 (###) ###-####" :mask-visible="false" label="No placeholder" />
         </div>
     `
   })
@@ -124,6 +112,19 @@ export const InputDate: Story = {
           <D1Input type="time" label="Time" />
           <D1Input type="hour-minute" label="Hours:Minutes" />
           <D1Input type="date" label="Limited Date" language="ru-RU" min="2024-01-01" max="2024-12-31" />
+        </div>
+    `
+  })
+}
+export const InputMask: Story = {
+  name: 'Маскированный ввод',
+  render: () => ({
+    components: { D1Input },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <D1Input type="tel" mask="+1 (###) ###-####" placeholder="+1 (555) 000-0000" label="Phone" />
+          <D1Input type="text" mask="#### #### #### ####" placeholder="0000 0000 0000 0000" label="Card" />
+          <D1Input type="tel" mask="+1 (###) ###-####" :mask-visible="false" label="No placeholder" />
         </div>
     `
   })
@@ -161,7 +162,6 @@ export const InputVModel: Story = {
             v-model="maskValue"
             type="date"
             label="Date input"
-            value="2024-03-01"
           />
           <div>Mask: {{ maskValue }}</div>
 

@@ -243,15 +243,14 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
     events: `
 <StorybookDescriptions componentName={'Event'} type={'input'}/>
 <StorybookDescriptions componentName={'Event'} type={'change'}/>
-<StorybookDescriptions componentName={'Event'} type={'blur'}/>
-<StorybookDescriptions componentName={'Event'} type={'focus'}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'label'} />
 <StorybookDescriptions componentName={'Slot'} type={'prefix'} />
 <StorybookDescriptions componentName={'Slot'} type={'suffix'} />
 <StorybookDescriptions componentName={'Slot'} type={'caption'} />
-<StorybookDescriptions componentName={'Input'} type={'slots'} />
+<StorybookDescriptions componentName={'Slot'} type={'leading'} />
+<StorybookDescriptions componentName={'Slot'} type={'trailing'} />
     `
   }
 }

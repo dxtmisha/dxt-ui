@@ -62,14 +62,14 @@ export class WikiStorybookItem {
     switch (category) {
       case StorybookCategory.status:
         return 3000
-      case StorybookCategory.information:
-        return 4000
-      case StorybookCategory.icon:
-        return 4100
       case StorybookCategory.value:
         return 5000
-      case StorybookCategory.mask:
+      case StorybookCategory.information:
         return 5100
+      case StorybookCategory.icon:
+        return 5200
+      case StorybookCategory.mask:
+        return 5300
       case StorybookCategory.form:
         return 6000
       case StorybookCategory.hook:

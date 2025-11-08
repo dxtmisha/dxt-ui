@@ -233,5 +233,25 @@ export const wikiIconInclude: StorybookArgsToList = {
         ru: 'Поворачивает иконку'
       }
     }
+  },
+  iconVisibility: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for visibility on state (show password)',
+        ru: 'Задает иконку для состояния видимости (показать пароль)'
+      }
+    }
+  },
+  iconVisibilityOff: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for visibility off state (hide password)',
+        ru: 'Задает иконку для состояния скрытия (скрыть пароль)'
+      }
+    }
   }
 }

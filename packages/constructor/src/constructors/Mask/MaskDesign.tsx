@@ -164,6 +164,7 @@ export class MaskDesign<
 
             type: 'text',
             value: this.item.basic.value,
+            placeholder: '',
 
             onFocus: this.item.event.onFocus,
             onBlur: this.item.event.onBlur,

@@ -43,7 +43,7 @@ const propsNames: StorybookProps = [
   { name: 'iconTurn', type: 'boolean' },
   { name: 'iconVisibility', type: 'string' },
   { name: 'iconVisibilityOff', type: 'string' },
-  { name: 'id', type: 'string' },
+  { name: 'id', type: 'string | number' },
   { name: 'inputAttrs', type: 'Record<string, any>' },
   { name: 'inputMode', type: 'string', option: ['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'] },
   { name: 'isSkeleton', type: 'boolean' },

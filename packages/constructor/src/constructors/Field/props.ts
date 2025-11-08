@@ -55,7 +55,7 @@ export interface FieldPropsBasic<
   disabledNext?: boolean
 
   // Style
-  id: string | number
+  id?: string | number
 
   counterTop?: boolean
 

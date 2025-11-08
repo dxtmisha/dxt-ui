@@ -126,24 +126,24 @@ export type FieldBasicEmits<T = string>
   = ModelEmits
     & {
       /**
-   * Emitted on input events (every change while typing)/
-   * Эмит при вводе (каждое изменение): [event, value]
-   */
+       * Emitted on input events (every change while typing)/
+       * Эмит при вводе (каждое изменение): [event, value]
+       */
       input: [event: InputEvent | Event, value: FieldValidationItem<T>]
       /**
-   * Lightweight input emit without DOM event/
-   * Лёгкий эмит ввода без DOM-события: [value]
-   */
+       * Lightweight input emit without DOM event/
+       * Лёгкий эмит ввода без DOM-события: [value]
+       */
       inputLite: [value: FieldValidationItem<T>]
       /**
-   * Emitted when value is committed (blur/confirm)/
-   * Эмит при подтверждении значения (blur/confirm): [event, value]
-   */
+       * Emitted when value is committed (blur/confirm)/
+       * Эмит при подтверждении значения (blur/confirm): [event, value]
+       */
       change: [event: InputEvent | Event, value: FieldValidationItem<T>]
       /**
-   * Lightweight change emit without DOM event/
-   * Лёгкий эмит подтверждения без события: [value]
-   */
+       * Lightweight change emit without DOM event/
+       * Лёгкий эмит подтверждения без события: [value]
+       */
       changeLite: [value: FieldValidationItem<T>]
     }
 
@@ -201,7 +201,7 @@ export interface FieldBasicProps<Value = any>
   /** Input name attribute/ Атрибут name */
   name?: string
   /** Input id attribute/ Атрибут id */
-  id?: string
+  id?: string | number
 
   /** Required flag/ Обязательное поле */
   required?: boolean

@@ -230,6 +230,8 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Slot'} type={'prefix'} />
 <StorybookDescriptions componentName={'Slot'} type={'suffix'} />
 <StorybookDescriptions componentName={'Slot'} type={'caption'} />
+<StorybookDescriptions componentName={'Slot'} type={'leading'} />
+<StorybookDescriptions componentName={'Slot'} type={'trailing'} />
 <StorybookDescriptions componentName={'Field'} type={'slots'} />
     `
   }

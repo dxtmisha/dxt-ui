@@ -59,8 +59,7 @@ export const defaults: object = {
     // :default [!] System label / Системная метка
     classic: true,
     arrowAlign: 'right',
-    cancel: 'auto',
-    align: 'left'
+    cancel: 'auto'
     // :default [!] System label / Системная метка
   }
 }
