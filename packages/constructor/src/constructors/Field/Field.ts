@@ -135,7 +135,7 @@ export class Field {
    */
   getControl(): FieldControl {
     return {
-      id: this.id,
+      id: String(this.props.id || this.id),
       className: `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`,
       classHidden: `${this.className}__body__hidden`
     }

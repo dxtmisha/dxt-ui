@@ -141,7 +141,6 @@ export class FieldAttributesInclude {
             break
           case 'inputMode':
             if (this.inputMode) {
-              console.log('this.inputMode.item.value', this.inputMode.item.value)
               value = this.inputMode.item.value
             }
             break

@@ -290,6 +290,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  fieldAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the Field component',
+        ru: 'Дополнительные атрибуты для компонента Field'
+      }
+    }
+  },
   fieldLabelAttrs: {
     type: StorybookControl.object,
     options: {
