@@ -1,4 +1,4 @@
-import { eventStopPropagation, getClipboardData } from '@dxtmisha/functional'
+import { eventStopPropagation, getClipboardData, writeClipboardData } from '@dxtmisha/functional'
 
 import { MaskBuffer } from './MaskBuffer'
 import { MaskFocus } from './MaskFocus'
@@ -92,6 +92,16 @@ export class MaskEvent {
     this.emit
       .set('keydown', event)
       .go()
+
+    if (
+      this.isCut(event)
+      && this.isSelection(info)
+    ) {
+      this.data.pop(start, end)
+      writeClipboardData(
+        (event.target as HTMLInputElement).value.slice(start, end)
+      ).then()
+    }
 
     if (this.isMetaKey(event)) {
       return undefined
@@ -288,6 +298,17 @@ export class MaskEvent {
    */
   protected isKey(event: KeyboardEvent): boolean {
     return 'key' in event && event.key !== 'Unidentified'
+  }
+
+  /**
+   * Was there a selection.
+   *
+   * Было ли выделение.
+   * @param info selection data/ данные выделения
+   */
+  protected isSelection(info: MaskEventSelection): boolean {
+    const { start, end } = info
+    return start > 0 || start !== end
   }
 
   /**
