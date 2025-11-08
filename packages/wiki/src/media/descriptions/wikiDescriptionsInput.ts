@@ -99,8 +99,9 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
           />
           <DesignComponent
             type="currency"
-            label="Price (EUR)"
+            label="Price (currency-hide)"
             currency="EUR"
+            currency-hide
             value="1234.56"
           />
         </div>
@@ -172,7 +173,6 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
             v-model="maskValue"
             type="date"
             label="Date input"
-            value="2024-03-01"
           />
           <div>Mask: {{ maskValue }}</div>
 

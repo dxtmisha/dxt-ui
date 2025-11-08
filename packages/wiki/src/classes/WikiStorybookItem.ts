@@ -68,6 +68,8 @@ export class WikiStorybookItem {
         return 4100
       case StorybookCategory.value:
         return 5000
+      case StorybookCategory.mask:
+        return 5100
       case StorybookCategory.form:
         return 6000
       case StorybookCategory.hook:

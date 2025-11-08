@@ -80,7 +80,8 @@ export class Input {
     this.attributes = new FieldAttributesInclude(
       this.props,
       this.type,
-      this.pattern
+      this.pattern,
+      this.inputMode
     )
 
     this.elementItem = new FieldElementInclude(

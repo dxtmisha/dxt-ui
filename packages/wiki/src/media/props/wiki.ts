@@ -9,12 +9,14 @@ import { wikiTechnical } from './wikiTechnical'
 import { wikiHook } from './wikiHook'
 
 import { wikiIconInclude } from './wikiIconInclude'
+import { wikiMaskInclude } from './wikiMaskInclude'
 
 import { wikiActions } from './wikiActions'
 import { wikiBadge } from './wikiBadge'
 import { wikiBars } from './wikiBars'
 import { wikiButton } from './wikiButton'
 import { wikiChip } from './wikiChip'
+import { wikiDialog } from './wikiDialog'
 import { wikiField } from './wikiField'
 import { wikiIcon } from './wikiIcon'
 import { wikiImage } from './wikiImage'
@@ -38,12 +40,14 @@ export const wiki: StorybookArgsToList = {
   ...wikiHook,
 
   ...wikiIconInclude,
+  ...wikiMaskInclude,
 
   ...wikiActions,
   ...wikiBadge,
   ...wikiBars,
   ...wikiButton,
   ...wikiChip,
+  ...wikiDialog,
   ...wikiField,
   ...wikiIcon,
   ...wikiImage,

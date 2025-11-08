@@ -1,16 +1,16 @@
 ## Navigation and arrows
 
-Properties `arrowCarousel`, `arrowStepper`, `disabledPrevious`, `disabledNext`, and `align` are designed to control built-in navigation elements and content alignment.
+Properties `arrowCarousel`, `arrowStepper`, `arrowAlign`, `disabledPrevious`, and `disabledNext` are designed to control built-in navigation elements.
 
 **Properties:**
 
 - `arrowCarousel` — enables navigation arrows (left/right) for switching elements
 - `arrowStepper` — enables numeric step buttons (minus/plus)
+- `arrowAlign` — controls horizontal position of navigation arrows (`left`, `center`, `right`)
 - `disabledPrevious` — disables the left button (back/minus)
 - `disabledNext` — disables the right button (forward/plus)
-- `align` — horizontal content alignment (`left`, `center`, `right`)
 
-Properties work together: only one arrow mode is active — if `arrowCarousel = true`, the `arrowStepper` mode is ignored and vice versa. When navigation mode is active, the clear button (`cancel`) is automatically hidden, as the control area takes priority. The `disabledPrevious` and `disabledNext` flags apply only to the currently active arrow mode. The `align` property affects text and content alignment inside the field, but does not change the position of the navigation buttons themselves.
+Properties work together: only one arrow mode is active — if `arrowCarousel = true`, the `arrowStepper` mode is ignored and vice versa. When navigation mode is active, the clear button (`cancel`) is automatically hidden, as the control area takes priority. The `disabledPrevious` and `disabledNext` flags apply only to the currently active arrow mode.
 
 ```html
 <script setup>
@@ -39,11 +39,10 @@ const count = ref(5)
     </template>
   </Field>
 
-  <!-- Numeric stepper with centering -->
+  <!-- Numeric stepper -->
   <Field
     label="Quantity"
     arrow-stepper
-    align="center"
     :disabled-previous="count <= 0"
     :disabled-next="count >= 99"
   >
@@ -57,10 +56,27 @@ const count = ref(5)
     </template>
   </Field>
 
-  <!-- Stepper without limits -->
+  <!-- Stepper with left-aligned arrows -->
   <Field
     label="Value"
     arrow-stepper
+    arrow-align="left"
+  >
+    <template #default="{ id, className }">
+      <input
+        :id="id"
+        :class="className"
+        :value="count"
+        readonly
+      />
+    </template>
+  </Field>
+
+  <!-- Stepper with centered arrows -->
+  <Field
+    label="Value"
+    arrow-stepper
+    arrow-align="center"
   >
     <template #default="{ id, className }">
       <input

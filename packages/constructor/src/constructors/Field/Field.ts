@@ -24,6 +24,7 @@ import type { FieldControl } from './basicTypes'
  * Field
  */
 export class Field {
+  readonly id: string = getElementId()
   readonly icon: IconTrailingInclude
 
   readonly caption: CaptionInclude
@@ -134,7 +135,7 @@ export class Field {
    */
   getControl(): FieldControl {
     return {
-      id: getElementId(),
+      id: this.id,
       className: `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`,
       classHidden: `${this.className}__body__hidden`
     }

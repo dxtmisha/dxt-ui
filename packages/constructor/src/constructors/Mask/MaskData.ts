@@ -166,7 +166,7 @@ export class MaskData {
   reset(value = ''): this {
     this.character.reset()
     this.rubber.reset()
-    console.warn('value', value)
+
     if (isFilled(value)) {
       const chars = this.type.isDate() ? this.date.getValue(value) : value
       this.add(0, this.extra(chars.split('')))

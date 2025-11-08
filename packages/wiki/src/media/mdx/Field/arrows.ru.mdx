@@ -1,16 +1,16 @@
 ## Навигация и стрелки
 
-Свойства `arrowCarousel`, `arrowStepper`, `disabledPrevious`, `disabledNext` и `align` предназначены для управления встроенными элементами навигации и выравнивания содержимого.
+Свойства `arrowCarousel`, `arrowStepper`, `arrowAlign`, `disabledPrevious` и `disabledNext` предназначены для управления встроенными элементами навигации.
 
 **Свойства:**
 
 - `arrowCarousel` — включает стрелки навигации (влево/вправо) для переключения элементов
 - `arrowStepper` — включает числовые шаговые кнопки (минус/плюс)
+- `arrowAlign` — управляет горизонтальным расположением стрелок навигации (`left`, `center`, `right`)
 - `disabledPrevious` — отключает левую кнопку (назад/минус)
 - `disabledNext` — отключает правую кнопку (вперёд/плюс)
-- `align` — горизонтальное выравнивание содержимого (`left`, `center`, `right`)
 
-Свойства работают совместно: активен только один режим стрелок — если `arrowCarousel = true`, режим `arrowStepper` игнорируется и наоборот. При активном режиме навигации кнопка очистки (`cancel`) автоматически скрывается, так как область управления имеет приоритет. Флаги `disabledPrevious` и `disabledNext` применяются только к текущему активному режиму стрелок. Свойство `align` влияет на выравнивание текста и содержимого внутри поля, но не изменяет позицию самих кнопок навигации.
+Свойства работают совместно: активен только один режим стрелок — если `arrowCarousel = true`, режим `arrowStepper` игнорируется и наоборот. При активном режиме навигации кнопка очистки (`cancel`) автоматически скрывается, так как область управления имеет приоритет. Флаги `disabledPrevious` и `disabledNext` применяются только к текущему активному режиму стрелок.
 
 ```html
 <script setup>
@@ -39,11 +39,10 @@ const count = ref(5)
     </template>
   </Field>
 
-  <!-- Числовой степпер с центрированием -->
+  <!-- Числовой степпер -->
   <Field
     label="Количество"
     arrow-stepper
-    align="center"
     :disabled-previous="count <= 0"
     :disabled-next="count >= 99"
   >
@@ -57,10 +56,27 @@ const count = ref(5)
     </template>
   </Field>
 
-  <!-- Степпер без ограничений -->
+  <!-- Степпер со стрелками слева -->
   <Field
     label="Значение"
     arrow-stepper
+    arrow-align="left"
+  >
+    <template #default="{ id, className }">
+      <input
+        :id="id"
+        :class="className"
+        :value="count"
+        readonly
+      />
+    </template>
+  </Field>
+
+  <!-- Степпер с центрированными стрелками -->
+  <Field
+    label="Значение"
+    arrow-stepper
+    arrow-align="center"
   >
     <template #default="{ id, className }">
       <input

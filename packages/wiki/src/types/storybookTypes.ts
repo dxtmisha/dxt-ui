@@ -32,6 +32,8 @@ export enum StorybookCategory {
   form = 'Form',
   /** Hook category / Категория хуков */
   hook = 'Hook',
+  /** Mask category / Категория маски */
+  mask = 'Mask',
   /** Styles category / Категория стилей */
   style = 'Styles',
   /** Technical category / Техническая категория */
