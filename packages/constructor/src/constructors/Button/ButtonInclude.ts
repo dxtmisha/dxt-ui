@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal } from '@dxtmisha/functional'
+import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal, toBinds } from '@dxtmisha/functional'
 
 import type { ButtonComponentInclude, ButtonPropsInclude } from './basicTypes'
 import type { ButtonPropsBasic } from './props'
@@ -37,10 +37,13 @@ export class ButtonInclude<Props extends ButtonPropsInclude = ButtonPropsInclude
    * Computed bindings for the button/ Вычисляемые привязки для кнопки
    */
   readonly binds = computed(
-    () => getBind(
-      getRef(this.props),
-      getRef(this.extra),
-      'label'
+    () => toBinds(
+      this.props.buttonAttrs,
+      getBind(
+        getRef(this.props),
+        getRef(this.extra),
+        'label'
+      )
     )
   )
 
