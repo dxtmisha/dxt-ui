@@ -1,5 +1,14 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinSelectValue {
+  @include ui.truncate;
 
+  &--multiple {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &--placeholder {
+    @include ui.textSelectNone;
+  }
 }

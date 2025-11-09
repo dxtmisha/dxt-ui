@@ -1,6 +1,5 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { ChipComponentInclude } from '../Chip'
-
 import type { EventClickEmits } from '../../types/eventClickTypes'
 
 /**
@@ -8,21 +7,21 @@ import type { EventClickEmits } from '../../types/eventClickTypes'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type SelectValueComponents = ChipComponentInclude
+export type ChipGroupComponents = ChipComponentInclude
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type SelectValueEmits = EventClickEmits
+export type ChipGroupEmits = EventClickEmits
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface SelectValueExpose {
+export interface ChipGroupExpose {
 }
 
 /**
@@ -30,7 +29,8 @@ export interface SelectValueExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface SelectValueSlots {
+export interface ChipGroupSlots {
+  default?(props: any): any
 }
 
 /**
@@ -38,10 +38,8 @@ export interface SelectValueSlots {
  *
  * Тип, описывающий подклассы.
  */
-export type SelectValueClasses = {
+export type ChipGroupClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  item: string
-  trailing: string
   // :classes [!] System label / Системная метка
 }

@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.26.0",
+  "version": "0.27.0",
   "type": "module",
   "description": "Vue component constructors for DXT UI design system - ready-to-use constructors with TypeScript support and SCSS styling",
   "keywords": [
@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor selectValue"
+    "dxt-constructor": "dxt-constructor chipGroup"
   },
   "files": [
     "src/",
@@ -112,7 +112,9 @@
     "./Select": "./src/constructors/Select/index.ts",
     "./Select/style": "./src/constructors/Select/style.scss",
     "./SelectValue": "./src/constructors/SelectValue/index.ts",
-    "./SelectValue/style": "./src/constructors/SelectValue/style.scss"
+    "./SelectValue/style": "./src/constructors/SelectValue/style.scss",
+    "./ChipGroup": "./src/constructors/ChipGroup/index.ts",
+    "./ChipGroup/style": "./src/constructors/ChipGroup/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

@@ -5,37 +5,37 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { SelectValue } from './SelectValue'
+import { ChipGroup } from './ChipGroup'
 
 import {
-  type SelectValuePropsBasic
+  type ChipGroupPropsBasic
 } from './props'
 import {
-  type SelectValueClasses,
-  type SelectValueComponents,
-  type SelectValueEmits,
-  type SelectValueExpose,
-  type SelectValueSlots
+  type ChipGroupClasses,
+  type ChipGroupComponents,
+  type ChipGroupEmits,
+  type ChipGroupExpose,
+  type ChipGroupSlots
 } from './types'
 
 /**
- * SelectValueDesign
+ * ChipGroupDesign
  */
-export class SelectValueDesign<
-  COMP extends SelectValueComponents,
-  EXPOSE extends SelectValueExpose,
-  CLASSES extends SelectValueClasses,
-  P extends SelectValuePropsBasic
+export class ChipGroupDesign<
+  COMP extends ChipGroupComponents,
+  EXPOSE extends ChipGroupExpose,
+  CLASSES extends ChipGroupClasses,
+  P extends ChipGroupPropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
-    SelectValueEmits,
+    ChipGroupEmits,
     EXPOSE,
-    SelectValueSlots,
+    ChipGroupSlots,
     CLASSES,
     P
   > {
-  protected readonly item: SelectValue
+  protected readonly item: ChipGroup
 
   /**
    * Constructor
@@ -46,7 +46,7 @@ export class SelectValueDesign<
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, SelectValueEmits, P>
+    options?: ConstrOptions<COMP, ChipGroupEmits, P>
   ) {
     super(
       name,
@@ -54,7 +54,7 @@ export class SelectValueDesign<
       options
     )
 
-    this.item = new SelectValue(
+    this.item = new ChipGroup(
       this.props,
       this.refs,
       this.element,
@@ -84,11 +84,9 @@ export class SelectValueDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item'),
-        trailing: this.getSubClass('trailing')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -126,13 +124,10 @@ export class SelectValueDesign<
     const setup = this.setup()
     const children: any[] = []
 
-    this.props.value?.forEach((item) => {
+    setup.data.value.forEach((item) => {
       const chip = setup.renderItem(item)
-
       if (chip) {
         children.push(chip)
-      } else {
-        children.push(item.label)
       }
     })
 
@@ -151,19 +146,12 @@ export class SelectValueDesign<
       'chip',
       {
         ...this.props.chipAttrs,
-        'class': setup.classes.value.item,
-        'icon': this.props.iconShow && item.icon ? item.icon : undefined,
-        'iconTrailing': setup.iconTrailing.value,
-        'label': item.label,
-        'data-value': item.index,
-        'readonly': true,
-        'disabled': this.props.disabled,
-        'value': item.value,
-        'detail': item.detail,
-        'onClick': setup.onClick
+        class: setup.classes.value.item,
+        iconHide: this.props.iconWhenSelected && !item.selected,
+        ...item,
+        onClick: setup.onClick
       },
       undefined,
-      item.index
-    )
+      item.index)
   }
 }

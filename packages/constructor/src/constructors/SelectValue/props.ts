@@ -1,10 +1,30 @@
+import type { ConstrBind, ListList } from '@dxtmisha/functional'
+
+import type { IconPropsBasic, IconValue } from '../Icon'
+import type { ChipPropsBasic, ChipPropsInclude } from '../Chip'
+
+import type { EnabledProps } from '../../types/enabledTypes'
+
 interface SelectValuePropsToken {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface SelectValuePropsBasic {
-  // TODO: Location for a custom property / Место для пользовательского свойства
+export interface SelectValuePropsBasic<
+  Icon extends IconPropsBasic = IconPropsBasic,
+  Chip extends ChipPropsBasic = ChipPropsBasic
+> extends EnabledProps, ChipPropsInclude<Chip> {
+  // Value
+  placeholder?: string
+  value?: ListList
+
+  // Style
+  multiple?: boolean
+
+  iconShow?: boolean
+  iconAttrs?: ConstrBind<Icon>
+
+  iconCancel?: IconValue<Icon>
 }
 
 /**
@@ -21,7 +41,6 @@ export interface SelectValueProps extends SelectValuePropsBasic, SelectValueProp
  * Значение по умолчанию для свойства.
  */
 export const defaultsSelectValue = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

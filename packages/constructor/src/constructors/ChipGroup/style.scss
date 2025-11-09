@@ -1,0 +1,6 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinChipGroup {
+  display: flex;
+  flex-wrap: wrap;
+}

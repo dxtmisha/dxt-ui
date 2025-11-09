@@ -1,5 +1,10 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import { computed, type Ref, type ToRefs } from 'vue'
+import { type ConstrBind, type ConstrClassObject, type ConstrEmit, DesignComp, isFilled } from '@dxtmisha/functional'
+
+import { EnabledInclude } from '../../classes/EnabledInclude'
+import { EventClickInclude } from '../../classes/EventClickInclude'
+import { type IconProps } from '../Icon'
+import { WindowClassesInclude } from '../Window'
 
 import type { SelectValueComponents, SelectValueEmits, SelectValueSlots } from './types'
 import type { SelectValueProps } from './props'
@@ -8,6 +13,11 @@ import type { SelectValueProps } from './props'
  * SelectValue
  */
 export class SelectValue {
+  readonly enabled: EnabledInclude
+  readonly event: EventClickInclude
+
+  readonly window: WindowClassesInclude
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -29,5 +39,40 @@ export class SelectValue {
     protected readonly slots?: SelectValueSlots,
     protected readonly emits?: ConstrEmit<SelectValueEmits>
   ) {
+    this.enabled = new EnabledInclude(this.props)
+    this.event = new EventClickInclude(
+      this.props,
+      this.enabled,
+      this.emits
+    )
+
+    this.window = new WindowClassesInclude(classDesign)
   }
+
+  /** Is placeholder/ Является ли плейсхолдером */
+  readonly isPlaceholder = computed<boolean>(
+    () => !isFilled(this.props.value) && Boolean(this.props.placeholder)
+  )
+
+  /** Icon for canceling selection/ Иконка для отмены выбора */
+  readonly iconTrailing = computed<ConstrBind<IconProps> | undefined>(() => {
+    if (this.enabled.isEnabled.value) {
+      return {
+        icon: this.props.iconCancel,
+        dynamic: true,
+        class: [
+          `${this.className}__trailing`,
+          this.window.get().controlStatic
+        ]
+      }
+    }
+
+    return undefined
+  })
+
+  /** Returns data for the main style class/ Возвращает данные для главного класса стиля */
+  readonly classes = computed<ConstrClassObject>(() => ({
+    [`${this.className}--placeholder`]: this.isPlaceholder.value,
+    [`${this.className}--multiple`]: Boolean(this.props.multiple)
+  }))
 }
