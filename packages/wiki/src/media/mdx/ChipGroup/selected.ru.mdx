@@ -1,0 +1,50 @@
+## Управление выбором
+
+Свойства `selected` и `iconWhenSelected` предназначены для управления состоянием выбора чипов.
+
+**Свойства:**
+
+- `selected` — идентификатор(ы) выбранного элемента (строка, число, массив строк/чисел или `undefined`)
+- `iconWhenSelected` — показывает иконки чипов только при выборе элемента (по умолчанию: иконки всегда видимы)
+
+Свойство `selected` определяет, какие чипы будут выделены. Принимает одно значение для единичного выбора или массив значений для множественного выбора. Значения сопоставляются с элементами списка по их индексу или значению, если список содержит простые типы данных.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref(['option1'])
+</script>
+
+<template>
+  <!-- Выбор из простого массива -->
+  <ChipGroup
+    v-model:selected="selected"
+    :list="['Опция 1', 'Опция 2']"
+  />
+
+  <!-- Массив объектов с ключами -->
+  <ChipGroup
+    v-model:selected="selected"
+    :list="[
+      { id: 'option1', name: 'Первая опция' },
+      { id: 'option2', name: 'Вторая опция' }
+    ]"
+    key-value="id"
+    key-label="name"
+  />
+
+  <!-- Иконки только при выборе -->
+  <ChipGroup
+    v-model:selected="selected"
+    :list="[
+      { id: 'option1', name: 'Опция 1', icon: 'check' },
+      { id: 'option2', name: 'Опция 2', icon: 'check' }
+    ]"
+    key-value="id"
+    key-label="name"
+    :icon-when-selected="true"
+  />
+</template>
+```
+

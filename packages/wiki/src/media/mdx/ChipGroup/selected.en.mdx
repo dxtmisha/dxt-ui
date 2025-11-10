@@ -1,0 +1,50 @@
+## Selection Management
+
+Properties `selected` and `iconWhenSelected` are designed for managing chip selection state.
+
+**Properties:**
+
+- `selected` — identifier(s) of selected item (string, number, array of strings/numbers, or `undefined`)
+- `iconWhenSelected` — shows chip icons only when item is selected (default: icons always visible)
+
+The `selected` property determines which chips will be highlighted. Accepts a single value for single selection or an array of values for multiple selection. Values are matched with list items by their index or value if the list contains simple data types.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref(['option1'])
+</script>
+
+<template>
+  <!-- Simple array selection -->
+  <ChipGroup
+    v-model:selected="selected"
+    :list="['Option 1', 'Option 2']"
+  />
+
+  <!-- Object array with keys -->
+  <ChipGroup
+    v-model:selected="selected"
+    :list="[
+      { id: 'option1', name: 'First Option' },
+      { id: 'option2', name: 'Second Option' }
+    ]"
+    key-value="id"
+    key-label="name"
+  />
+
+  <!-- Icons only when selected -->
+  <ChipGroup
+    v-model:selected="selected"
+    :list="[
+      { id: 'option1', name: 'Option 1', icon: 'check' },
+      { id: 'option2', name: 'Option 2', icon: 'check' }
+    ]"
+    key-value="id"
+    key-label="name"
+    :icon-when-selected="true"
+  />
+</template>
+```
+

@@ -1,0 +1,28 @@
+## Managing selection via v-model:selected
+
+Two-way binding for selected value using `v-model:selected` (component uses `modelSelected`).
+
+**Parameters:**
+- `modelSelected: string | number | string[] | number[] | undefined` — current selected value
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref('')
+</script>
+
+<template>
+  <div>
+    <button @click="selected = 'option1'">Select Option 1</button>
+    <button @click="selected = 'option2'">Select Option 2</button>
+    <button @click="selected = undefined">Clear</button>
+  </div>
+
+  <Component v-model:selected="selected" :list="['Option 1', 'Option 2', 'Option 3']" />
+
+  <div>Current selected value: {{ selected }}</div>
+</template>
+```
+
+

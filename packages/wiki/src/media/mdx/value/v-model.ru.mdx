@@ -18,7 +18,7 @@ const value = ref('')
     <button @click="value = ''">Очистить</button>
   </div>
 
-  <Value v-model="value" />
+  <Component v-model="value" />
 
   <div>Текущее значение: {{ value }}</div>
 </template>

@@ -1,0 +1,51 @@
+Component for managing a collection of chips with selection functionality and flexible data binding.
+
+ChipGroup renders multiple Chip components from a data array, handles single or multiple selection states, and provides customization options for each chip. The component supports dynamic list rendering, conditional icon display based on selection, and flexible data structure mapping through key properties.
+
+**Key features:**
+
+- Single or multiple item selection
+- Dynamic list rendering from data array
+- Customizable chip appearance through chipAttrs
+- Conditional icon display based on selection state
+- Flexible data binding with keyLabel and keyValue
+- Event handling for user interactions
+- Support for complex data structures
+
+**Common use cases:**
+
+- Filter chips for search and filtering
+- Tag selection in forms
+- Category selection interfaces
+- Multiple choice options
+- Status or type selectors
+- Dynamic lists with selection
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref(['option1'])
+
+const options = [
+  { value: 'option1', label: 'Option 1', icon: 'star' },
+  { value: 'option2', label: 'Option 2', icon: 'favorite' },
+  { value: 'option3', label: 'Option 3', icon: 'bookmark' }
+]
+
+const handleClick = (event) => {
+  console.log('Chip clicked:', event)
+}
+</script>
+
+<template>
+  <ChipGroup
+    v-model:selected="selected"
+    :list="options"
+    key-value="value"
+    key-label="label"
+    :icon-when-selected="true"
+    @click="handleClick"
+  />
+</template>
+```

@@ -2,11 +2,14 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  forEach,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { ChipGroup } from './ChipGroup'
 
+import type { ChipGroupItem } from './basicTypes'
 import {
   type ChipGroupPropsBasic
 } from './props'
@@ -87,6 +90,7 @@ export class ChipGroupDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        item: this.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -107,51 +111,52 @@ export class ChipGroupDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    const children: any[] = this.renderList()
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+    this.initSlot('default', children)
+
+    return h(
+      'div',
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main
+      },
+      children
+    )
   }
 
   /**
-   * List rendering.<br>
+   * List rendering.
+   *
    * Рендеринг списка.
    */
   protected readonly renderList = (): VNode[] => {
-    const setup = this.setup()
-    const children: any[] = []
-
-    setup.data.value.forEach((item) => {
-      const chip = setup.renderItem(item)
-      if (chip) {
-        children.push(chip)
-      }
-    })
-
-    return children
+    return forEach(
+      this.item.getList(),
+      item => this.renderItem(item)
+    ) as VNode[]
   }
 
   /**
-   * Element rendering.<br>
+   * Element rendering.
+   *
    * Рендеринг элемента.
-   * @param item selected element /<br>выбранный элемент
+   * @param item selected element/ выбранный элемент
    */
   protected readonly renderItem = (item: ChipGroupItem): VNode | undefined => {
-    const setup = this.setup()
-
     return this.components.renderOne(
       'chip',
-      {
-        ...this.props.chipAttrs,
-        class: setup.classes.value.item,
-        iconHide: this.props.iconWhenSelected && !item.selected,
-        ...item,
-        onClick: setup.onClick
-      },
+      toBinds(
+        {
+          class: this.classes?.value.item,
+          iconHide: this.props.iconWhenSelected && !item.selected,
+          onClick: this.item.onClick
+        },
+        this.props.chipAttrs,
+        item
+      ),
       undefined,
-      item.index)
+      item.index
+    )
   }
 }

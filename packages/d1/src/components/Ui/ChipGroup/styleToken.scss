@@ -1,0 +1,20 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/ChipGroup/style" as ChipGroup;
+
+@include ui.initDesignBasic('d1.chipGroup') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include ChipGroup.mixinChipGroup;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    gap: var(--d1-sys-spacing-sm);
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

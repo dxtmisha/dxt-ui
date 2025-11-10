@@ -20,6 +20,16 @@ export const wikiTechnical: StorybookArgsToList = {
       }
     }
   },
+  modelSelected: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Two-way binding for selected state (v-model:selected)',
+        ru: 'Двусторонняя привязка состояния выбора (v-model:selected)'
+      }
+    }
+  },
   modelValue: {
     type: StorybookControl.object,
     options: {

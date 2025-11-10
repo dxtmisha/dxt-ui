@@ -1,7 +1,8 @@
 import type { ConstrBind, ListSelectedList } from '@dxtmisha/functional'
 
 import type { ChipPropsBasic } from '../Chip'
-import type { ChipGroupList } from './basicTypes'
+import type { ChipGroupData } from './basicTypes'
+import type { ModelPropsSelected } from '../../types/modelTypes'
 
 interface ChipGroupPropsToken {
   // :type [!] System label / Системная метка
@@ -10,12 +11,13 @@ interface ChipGroupPropsToken {
 
 export interface ChipGroupPropsBasic<
   Chip extends ChipPropsBasic = ChipPropsBasic
-> {
+> extends ModelPropsSelected<ListSelectedList> {
   // Status
+  readonly?: boolean
   selected?: ListSelectedList
 
   // Values
-  list?: ChipGroupList
+  list?: ChipGroupData
 
   // Styles
   iconWhenSelected?: boolean
@@ -40,6 +42,7 @@ export interface ChipGroupProps extends ChipGroupPropsBasic, ChipGroupPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsChipGroup = {
+  readonly: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -1,0 +1,48 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as ChipGroup from './D1ChipGroup.stories'
+import {ChipGroupWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={ChipGroup}/>
+<StorybookMain
+    name={ChipGroupWikiStorybook.getName()}
+    description={ChipGroupWikiStorybook.getDescription()}
+    story={ChipGroup.ChipGroup}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+    <StorybookDescriptions componentName={'ChipGroup'} type={'chipGroup'}/>
+    <Canvas of={ChipGroup.ChipGroupBasic}/>
+
+    <StorybookDescriptions componentName={'ChipGroup'} type={'selected'}/>
+    <Canvas of={ChipGroup.ChipGroupSelection}/>
+
+    <StorybookDescriptions componentName={'Value'} type={'v-model:selected'}/>
+    <Canvas of={ChipGroup.ChipGroupVModel}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+    <StorybookDescriptions componentName={'Event'} type={'click'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+    <StorybookDescriptions componentName={'Slot'} type={'default'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

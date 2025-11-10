@@ -253,5 +253,15 @@ export const wikiIconInclude: StorybookArgsToList = {
         ru: 'Задает иконку для состояния скрытия (скрыть пароль)'
       }
     }
+  },
+  iconWhenSelected: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Shows the icon only when the element is selected',
+        ru: 'Показывает иконку только при выборе элемента'
+      }
+    }
   }
 }

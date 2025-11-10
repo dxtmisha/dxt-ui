@@ -1,0 +1,28 @@
+## Управление выбором через v-model:selected
+
+Двусторонняя привязка выбранного значения через `v-model:selected` (компонент использует `modelSelected`).
+
+**Параметры:**
+- `modelSelected: string | number | string[] | number[] | undefined` — текущее выбранное значение
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref('')
+</script>
+
+<template>
+  <div>
+    <button @click="selected = 'option1'">Выбрать Option 1</button>
+    <button @click="selected = 'option2'">Выбрать Option 2</button>
+    <button @click="selected = undefined">Очистить</button>
+  </div>
+
+  <Component v-model:selected="selected" :list="['Option 1', 'Option 2', 'Option 3']" />
+
+  <div>Текущее выбранное значение: {{ selected }}</div>
+</template>
+```
+
+

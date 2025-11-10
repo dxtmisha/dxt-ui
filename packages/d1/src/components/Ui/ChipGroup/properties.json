@@ -1,0 +1,4 @@
+{
+  "main": "{d.chipGroup}",
+  "gap": "{sys.spacing.sm}"
+}

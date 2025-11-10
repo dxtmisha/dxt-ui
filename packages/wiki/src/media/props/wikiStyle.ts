@@ -138,6 +138,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  chipAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the Chip component',
+        ru: 'Дополнительные атрибуты для компонента Chip'
+      }
+    }
+  },
   cancel: {
     type: StorybookControl.select,
     options: {

@@ -1,6 +1,7 @@
-import type { ConstrClass } from '@dxtmisha/functional'
+import type { ConstrClass, ListSelectedList } from '@dxtmisha/functional'
 import type { ChipComponentInclude } from '../Chip'
 import type { EventClickEmits } from '../../types/eventClickTypes'
+import type { ModelEmitsSelected } from '../../types/modelTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -14,7 +15,7 @@ export type ChipGroupComponents = ChipComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type ChipGroupEmits = EventClickEmits
+export type ChipGroupEmits = EventClickEmits & ModelEmitsSelected<ListSelectedList>
 
 /**
  * Type describing available properties.
@@ -41,5 +42,6 @@ export interface ChipGroupSlots {
 export type ChipGroupClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  item: string
   // :classes [!] System label / Системная метка
 }

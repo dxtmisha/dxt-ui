@@ -8,6 +8,8 @@ import valueEn from './value.en.mdx'
 import valueRu from './value.ru.mdx'
 import vModelEn from './v-model.en.mdx'
 import vModelRu from './v-model.ru.mdx'
+import vModelSelectedEn from './v-model-selected.en.mdx'
+import vModelSelectedRu from './v-model-selected.ru.mdx'
 
 export const wikiMdxValue: StorybookComponentsMdxItem = {
   name: 'Value',
@@ -23,6 +25,10 @@ export const wikiMdxValue: StorybookComponentsMdxItem = {
     'v-model': {
       en: vModelEn,
       ru: vModelRu
+    },
+    'v-model:selected': {
+      en: vModelSelectedEn,
+      ru: vModelSelectedRu
     },
     'value': {
       en: valueEn,
