@@ -15,6 +15,9 @@
     "gradient": "var(--sys-color)",
     "gradient-opacity": "{sys.opacity.pressed}"
   },
+  "#trailing": {
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
   "~input": {
     "after": {
       "position": "absolute",

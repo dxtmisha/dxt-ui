@@ -1,0 +1,38 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as SelectValue from './D1SelectValue.stories'
+import {SelectValueWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={SelectValue}/>
+<StorybookMain
+    name={SelectValueWikiStorybook.getName()}
+    description={SelectValueWikiStorybook.getDescription()}
+    story={SelectValue.SelectValue}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'SelectValue'} type={'selectValue'}/>
+<Canvas of={SelectValue.SelectValueBasic}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+[//]: # (:documentation-slots [!] System label / Системная метка)

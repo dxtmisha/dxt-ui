@@ -181,7 +181,6 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
-<StorybookDescriptions componentName={'Event'} type={'clickLite'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'value'}/>

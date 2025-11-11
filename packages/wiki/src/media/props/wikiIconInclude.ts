@@ -158,6 +158,16 @@ export const wikiIconInclude: StorybookArgsToList = {
       }
     }
   },
+  iconShow: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Controls visibility of icons in displayed items',
+        ru: 'Управляет видимостью иконок в отображаемых элементах'
+      }
+    }
+  },
   iconSuccess: {
     type: StorybookControl.string,
     options: {

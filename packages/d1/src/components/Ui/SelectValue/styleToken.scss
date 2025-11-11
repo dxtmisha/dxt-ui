@@ -1,0 +1,24 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/SelectValue/style" as SelectValue;
+
+@include ui.initDesignBasic('d1.selectValue') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include SelectValue.mixinSelectValue;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    gap: var(--d1-sys-spacing-xs);
+    
+    &--placeholder {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

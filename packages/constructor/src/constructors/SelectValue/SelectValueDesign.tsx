@@ -2,11 +2,12 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract, toBinds
 } from '@dxtmisha/functional'
 
 import { SelectValue } from './SelectValue'
 
+import type { ChipGroupItem } from '../ChipGroup'
 import {
   type SelectValuePropsBasic
 } from './props'
@@ -109,25 +110,52 @@ export class SelectValueDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
-
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+    return h(
+      'div',
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main
+      },
+      this.renderData()
+    )
   }
 
   /**
-   * List rendering.<br>
+   * Rendering data.
+   *
+   * Рендеринг данных.
+   */
+  protected readonly renderData = (): (VNode | string)[] => {
+    if (this.item.isPlaceholder.value) {
+      return [String(this.props.placeholder)]
+    }
+
+    if (this.props.value) {
+      if (this.props.multiple) {
+        return this.renderList()
+      }
+
+      const label = this.props.value[0]?.label
+        ?? this.props.value[0]?.value
+
+      if (label) {
+        return [String(label)]
+      }
+    }
+
+    return []
+  }
+
+  /**
+   * List rendering.
+   *
    * Рендеринг списка.
    */
   protected readonly renderList = (): VNode[] => {
-    const setup = this.setup()
     const children: any[] = []
 
     this.props.value?.forEach((item) => {
-      const chip = setup.renderItem(item)
+      const chip = this.renderItem(item)
 
       if (chip) {
         children.push(chip)
@@ -140,28 +168,29 @@ export class SelectValueDesign<
   }
 
   /**
-   * Element rendering.<br>
+   * Element rendering.
+   *
    * Рендеринг элемента.
-   * @param item selected element /<br>выбранный элемент
+   * @param item selected element/ выбранный элемент
    */
   protected readonly renderItem = (item: ChipGroupItem): VNode | undefined => {
-    const setup = this.setup()
-
     return this.components.renderOne(
       'chip',
-      {
-        ...this.props.chipAttrs,
-        'class': setup.classes.value.item,
-        'icon': this.props.iconShow && item.icon ? item.icon : undefined,
-        'iconTrailing': setup.iconTrailing.value,
-        'label': item.label,
-        'data-value': item.index,
-        'readonly': true,
-        'disabled': this.props.disabled,
-        'value': item.value,
-        'detail': item.detail,
-        'onClick': setup.onClick
-      },
+      toBinds(
+        this.props.chipAttrs,
+        {
+          'class': this.classes?.value.item,
+          'icon': this.props.iconShow && item.icon ? item.icon : undefined,
+          'iconTrailing': this.item.iconTrailing.value,
+          'label': item.label,
+          'data-value': item.index,
+          'readonly': true,
+          'disabled': this.props.disabled,
+          'value': item.value,
+          'detail': item.detail,
+          'onClick': this.item.event.onClick
+        }
+      ),
       undefined,
       item.index
     )

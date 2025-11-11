@@ -1,3 +1,7 @@
+import type { WindowProps } from '../Window'
+import type { BarsProps } from '../Bars'
+import type { ActionsProps } from '../Actions'
+
 import { type ActionSheetPropsBasic, defaultsActionSheet } from '@dxtmisha/constructor/ActionSheet'
 
 export const propsValues = {
@@ -18,7 +22,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ActionSheetProps extends ActionSheetPropsBasic, PropsToken {
+export interface ActionSheetProps extends ActionSheetPropsBasic<WindowProps, BarsProps, ActionsProps>, PropsToken {
 }
 
 /**

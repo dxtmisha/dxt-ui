@@ -25,6 +25,10 @@
     transition-duration: var(--d-sys-transitionDuration-fade-enter);
     transition-property: grid-template-columns, background-color, background-image, border, box-shadow;
     
+    &__trailing {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+    
     @include ui.focus {
       @include ui.gradient(#{var(--sys-color)});
       @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)});

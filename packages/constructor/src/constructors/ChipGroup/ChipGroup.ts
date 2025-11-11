@@ -1,4 +1,4 @@
-import { ref, type Ref, type ToRefs, watch } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   DesignComp,
@@ -8,9 +8,8 @@ import {
 } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
-import { ModelInclude } from '../../classes/ModelInclude'
+import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
-import type { EventClickValue } from '../../types/eventClickTypes'
 import type { ChipGroupComponents, ChipGroupEmits, ChipGroupSlots } from './types'
 import type { ChipGroupProps } from './props'
 
@@ -20,8 +19,7 @@ import type { ChipGroupProps } from './props'
 export class ChipGroup {
   readonly data: ListDataRef
   readonly event: EventClickInclude
-
-  readonly value = ref<ListSelectedList>()
+  readonly model: ModelValueInclude<ListSelectedList>
 
   /**
    * Constructor
@@ -44,26 +42,23 @@ export class ChipGroup {
     protected readonly slots?: ChipGroupSlots,
     protected readonly emits?: ConstrEmit<ChipGroupEmits>
   ) {
+    this.event = new EventClickInclude(undefined, undefined, this.emits)
+    this.model = new ModelValueInclude<ListSelectedList>(
+      'selected',
+      this.emits,
+      this.event,
+      this.refs.selected,
+      this.refs.readonly
+    )
+
     this.data = new ListDataRef(
       this.refs.list,
       undefined,
       undefined,
       undefined,
-      this.value,
+      this.model.value,
       this.refs.keyValue,
       this.refs.keyLabel
-    )
-
-    this.event = new EventClickInclude(undefined, undefined, this.emits)
-
-    new ModelInclude('selected', this.emits, this.value)
-
-    watch(
-      [this.refs.selected],
-      () => {
-        this.value.value = this.props.selected
-      },
-      { immediate: true }
     )
   }
 
@@ -74,27 +69,5 @@ export class ChipGroup {
    */
   getList(): ListList {
     return this.data.fullData.value
-  }
-
-  /**
-   * Click handler.
-   *
-   * Обработчик клика.
-   * @param event event object/ объект события
-   * @param options data object/ объект с данными
-   */
-  readonly onClick = (
-    event: MouseEvent,
-    options?: EventClickValue
-  ): void => {
-    if (
-      options
-      && 'value' in options
-      && !this.props.readonly
-    ) {
-      this.value.value = options.value
-    }
-
-    this.event.onClick(event, options)
   }
 }

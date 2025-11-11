@@ -1,0 +1,64 @@
+Component for displaying selected values in selection controls with support for single and multiple modes.
+
+SelectValue manages the visualization of selected items, automatically switching between text display for single selection and chips for multiple selection. The component integrates with the event system to handle user actions, supports icon display, placeholders, and cancel buttons for selections.
+
+**Key features:**
+
+- Automatic switching between single and multiple selection modes
+- Chip rendering with customizable appearance for multiple selections
+- Placeholder support for empty state
+- Icon display in selected items
+- Cancel buttons for removing individual selections
+- Integration with Chip component for element styling
+- Handling disabled and readonly states
+
+**Typical use cases:**
+
+- Displaying selected options in selects and comboboxes
+- Visualizing multiple selections in lists
+- Showing active filters with removal capability
+- Displaying tags and categories
+- Representing selected elements in forms
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selectedSingle = ref([
+  { label: 'JavaScript', value: 'js', icon: 'code', index: '1' }
+])
+
+const selectedMultiple = ref([
+  { label: 'React', value: 'react', icon: 'favorite', index: '1' },
+  { label: 'Vue.js', value: 'vue', icon: 'star', index: '2' }
+])
+
+const handleClick = (event) => {
+  console.log('Element clicked:', event)
+}
+</script>
+
+<template>
+  <!-- Single selection -->
+  <SelectValue
+    :value="selectedSingle"
+    :icon-show="true"
+    @click="handleClick"
+  />
+
+  <!-- Multiple selection with chips -->
+  <SelectValue
+    :value="selectedMultiple"
+    :multiple="true"
+    :icon-show="true"
+    icon-cancel="close"
+    @click="handleClick"
+  />
+
+  <!-- With placeholder -->
+  <SelectValue
+    placeholder="Select a value"
+  />
+</template>
+```
+

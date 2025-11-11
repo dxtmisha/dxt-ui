@@ -11948,6 +11948,11 @@
         name: 'd1-scrollbar',
         type: 'component',
       ),
+      'selectValue':(
+        index: 'selectValue',
+        name: 'd1-selectValue',
+        type: 'component',
+      ),
       'skeleton':(
         index: 'skeleton',
         name: 'd1-skeleton',
@@ -12359,6 +12364,11 @@
       'scrollbar':(
         index: 'scrollbar',
         name: 'd-scrollbar',
+        type: 'component',
+      ),
+      'selectValue':(
+        index: 'selectValue',
+        name: 'd-selectValue',
         type: 'component',
       ),
       'skeleton':(

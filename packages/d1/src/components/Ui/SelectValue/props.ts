@@ -1,5 +1,7 @@
+import type { IconProps } from '../Icon'
 import type { ChipProps } from '../Chip'
-import { type ChipGroupPropsBasic, defaultsChipGroup } from '@dxtmisha/constructor/ChipGroup'
+
+import { type SelectValuePropsBasic, defaultsSelectValue } from '@dxtmisha/constructor/SelectValue'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -8,20 +10,25 @@ export const propsValues = {
 
 interface PropsToken {
   // :type [!] System label / Системная метка
+  placeholder?: boolean
   // :type [!] System label / Системная метка
 }
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ChipGroupProps extends ChipGroupPropsBasic<ChipProps>, PropsToken {
+export interface SelectValueProps extends SelectValuePropsBasic<IconProps, ChipProps>, PropsToken {
 }
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export const defaults: object = {
-  ...defaultsChipGroup,
+  ...defaultsSelectValue,
+  chipAttrs: {
+    size: 'sm'
+  },
+  iconCancel: 'close_small',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -6,24 +6,24 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'actionsAttrs', type: 'ConstrBind<ActionsPropsBasic<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>>' },
+  { name: 'actionsAttrs', type: 'ConstrBind<ActionsProps>' },
   { name: 'actionsHide', type: 'boolean' },
-  { name: 'actionsList', type: 'ConstrBind<ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]>' },
-  { name: 'actionsSecondary', type: 'ConstrBind<ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]>' },
+  { name: 'actionsList', type: 'ConstrBind<unknown>' },
+  { name: 'actionsSecondary', type: 'ConstrBind<unknown>' },
   { name: 'autoClose', type: 'boolean' },
-  { name: 'barsAttrs', type: 'ConstrBind<BarsPropsBasic<IconPropsBasic<ImagePropsBasic>, ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>>' },
+  { name: 'barsAttrs', type: 'ConstrBind<BarsProps>' },
   { name: 'barsBackHide', type: 'boolean' },
   { name: 'barsDescription', type: 'string' },
   { name: 'barsHide', type: 'boolean' },
   { name: 'barsLabel', type: 'string | number' },
-  { name: 'barsList', type: 'ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[]' },
+  { name: 'barsList', type: 'Bars[\'bars\']' },
   { name: 'disabled', type: 'boolean' },
   { name: 'open', type: 'boolean' },
   { name: 'padding', type: 'string', option: ['sm', 'md', 'lg'] },
   { name: 'paddingByIndent', type: 'boolean' },
   { name: 'touchClose', type: 'boolean' },
   { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'auto'] },
-  { name: 'windowAttrs', type: 'ConstrBind<WindowPropsBasic<ScrollbarPropsBasic, ImagePropsBasic>>' }
+  { name: 'windowAttrs', type: 'ConstrBind<WindowProps>' }
   // :propsList [!] System label / Системная метка
 ]
 

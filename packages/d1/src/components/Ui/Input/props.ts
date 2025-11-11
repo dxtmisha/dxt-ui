@@ -1,3 +1,11 @@
+import type { MaskProps } from '../Mask'
+import type { IconProps } from '../Icon'
+import type { FieldProps } from '../Field'
+import type { FieldLabelProps } from '../FieldLabel'
+import type { FieldMessageProps } from '../FieldMessage'
+import type { FieldCounterProps } from '../FieldCounter'
+import type { ProgressProps } from '../Progress'
+
 import { type InputPropsBasic, defaultsInput } from '@dxtmisha/constructor/Input'
 
 export const propsValues = {
@@ -13,7 +21,15 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface InputProps extends InputPropsBasic, PropsToken {
+export interface InputProps extends InputPropsBasic<
+  MaskProps,
+  IconProps,
+  FieldProps,
+  FieldLabelProps,
+  FieldMessageProps,
+  FieldCounterProps,
+  ProgressProps
+>, PropsToken {
 }
 
 /**

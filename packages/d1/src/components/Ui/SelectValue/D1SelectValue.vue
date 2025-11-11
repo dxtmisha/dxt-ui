@@ -1,31 +1,34 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
+  inArray,
+  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
 import {
-  ChipGroupDesign,
-  type ChipGroupEmits,
-  type ChipGroupSlots
-} from '@dxtmisha/constructor/ChipGroup'
+  SelectValueDesign,
+  type SelectValueEmits,
+  type SelectValueSlots
+} from '@dxtmisha/constructor/SelectValue'
 
 import { D1Chip } from '../Chip'
 
-import { defaults, type ChipGroupProps } from './props'
+import { defaults, type SelectValueProps, propsValues } from './props'
 import './styleToken.scss'
 
 defineOptions({
-  name: 'D1ChipGroup'
+  name: 'D1SelectValue'
 })
 
-const emits = defineEmits<ChipGroupEmits>()
-const props = withDefaults(defineProps<ChipGroupProps>(), defaults)
+const emits = defineEmits<SelectValueEmits>()
+const props = withDefaults(defineProps<SelectValueProps>(), defaults)
 
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-chipGroup': true
+    'd1-selectValue': true,
+    'd1-selectValue--placeholder': props.placeholder
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -34,8 +37,8 @@ const stylesToken = computed<ConstrStyles>(() => ({
   // :styles-values [!] System label / Системная метка
 }))
 
-const design = new ChipGroupDesign(
-  'd1.chipGroup',
+const design = new SelectValueDesign(
+  'd1.selectValue',
   props,
   {
     emits,
@@ -49,7 +52,7 @@ const design = new ChipGroupDesign(
 
 const render = design.render()
 
-defineSlots<ChipGroupSlots>()
+defineSlots<SelectValueSlots>()
 defineExpose(design.expose())
 </script>
 

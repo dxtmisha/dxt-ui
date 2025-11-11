@@ -1,0 +1,7 @@
+{
+  "main": "{d.selectValue}",
+  "gap": "{sys.spacing.xs}",
+  "~placeholder": {
+    "color-opacity": "{sys.opacity.surface.medium}"
+  }
+}

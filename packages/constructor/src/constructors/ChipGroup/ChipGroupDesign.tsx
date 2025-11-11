@@ -150,7 +150,7 @@ export class ChipGroupDesign<
         {
           class: this.classes?.value.item,
           iconHide: this.props.iconWhenSelected && !item.selected,
-          onClick: this.item.onClick
+          onClick: this.item.model.onClick
         },
         this.props.chipAttrs,
         item

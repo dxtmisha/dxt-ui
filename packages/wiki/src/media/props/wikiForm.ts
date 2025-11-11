@@ -171,6 +171,16 @@ export const wikiForm: StorybookArgsToList = {
       }
     }
   },
+  multiple: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.form,
+      description: {
+        en: 'Enables multiple selection mode',
+        ru: 'Включает режим множественного выбора'
+      }
+    }
+  },
   pattern: {
     type: StorybookControl.string,
     options: {

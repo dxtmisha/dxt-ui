@@ -7,20 +7,19 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'chipAttrs', type: 'ConstrBind<ChipProps>' },
-  { name: 'iconWhenSelected', type: 'boolean' },
-  { name: 'keyLabel', type: 'string' },
-  { name: 'keyValue', type: 'string' },
-  { name: 'list', type: 'ChipGroupData' },
-  { name: 'modelSelected', type: 'ListSelectedList' },
-  { name: 'onUpdate:modelSelected', type: '(value: ListSelectedList) => void' },
-  { name: 'onUpdate:selected', type: '(value: ListSelectedList) => void' },
+  { name: 'disabled', type: 'boolean' },
+  { name: 'iconAttrs', type: 'ConstrBind<IconProps>' },
+  { name: 'iconCancel', type: 'IconValue<IconProps>' },
+  { name: 'iconShow', type: 'boolean' },
+  { name: 'multiple', type: 'boolean' },
+  { name: 'placeholder', type: 'string' },
   { name: 'readonly', type: 'boolean' },
-  { name: 'selected', type: 'ListSelectedList' }
+  { name: 'value', type: 'ListList' }
   // :propsList [!] System label / Системная метка
 ]
 
-export const ChipGroupWikiStorybook = new WikiStorybook(
-  'ChipGroup',
+export const SelectValueWikiStorybook = new WikiStorybook(
+  'SelectValue',
   propsNames,
   defaults,
   wikiD1,
