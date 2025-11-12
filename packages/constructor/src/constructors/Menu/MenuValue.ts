@@ -26,7 +26,7 @@ export class MenuValue {
     protected readonly emits?: ConstrEmit<MenuEmits>
   ) {
     if (this.props.isSelectedByValue) {
-      new ModelInclude('value', this.emits, this.value)
+      new ModelInclude('selected', this.emits, this.value)
 
       if (refs.selected) {
         watch(

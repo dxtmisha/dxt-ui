@@ -29,6 +29,9 @@ export const wikiDescriptionsMenu: StorybookComponentsDescriptionItem = {
       'настройка атрибутов пунктов и списка (itemAttrs, listAttrs)'
     ]
   },
+  import: [
+    'import { ref } from \'vue\''
+  ],
   render: `
     <DesignComponent v-bind="args">
       <template #control="{binds}">
@@ -62,6 +65,48 @@ export const wikiDescriptionsMenu: StorybookComponentsDescriptionItem = {
           </template>
         </DesignComponent>
       `
+    },
+    {
+      id: 'MenuVModel',
+      name: {
+        en: 'Two-way binding (v-model)',
+        ru: 'Двусторонняя привязка (v-model)'
+      },
+      setup: `
+      return {
+        selectedValue: ref('settings'),
+        menuItems: ref([
+          {label: 'Dashboard', value: 'dashboard', icon: 'dashboard'},
+          {label: 'Users', value: 'users', icon: 'people'},
+          {label: 'Settings', value: 'settings', icon: 'settings'},
+          {label: 'Reports', value: 'reports', icon: 'assessment'},
+          {label: 'Help', value: 'help', icon: 'help'}
+        ])
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="selectedValue = 'dashboard'">Select Dashboard</button>
+            <button class="wiki-storybook-button" @click="selectedValue = 'reports'">Select Reports</button>
+            <button class="wiki-storybook-button" @click="selectedValue = ''">Clear</button>
+          </div>
+          <div class="wiki-storybook-flex">
+            <DesignComponent
+              v-model:selected="selectedValue"
+              :list="menuItems"
+              is-selected-by-value
+            >
+              <template #control="{binds}">
+                <button class="wiki-storybook-button" v-bind="binds">
+                  Open Menu
+                </button>
+              </template>
+            </DesignComponent>
+          </div>
+          <div>Selected value: {{ selectedValue }}</div>
+        </div>
+      `
     }
   ],
   documentation: {
@@ -70,6 +115,9 @@ export const wikiDescriptionsMenu: StorybookComponentsDescriptionItem = {
 
 <StorybookDescriptions componentName={'Menu'} type={'ajax'}/>
 <Canvas of={Component.MenuAjax}/>
+
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Component.MenuVModel}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>

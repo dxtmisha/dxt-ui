@@ -4,6 +4,7 @@ import D1Menu from './D1Menu.vue'
 import { MenuWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import { ref } from 'vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -64,6 +65,47 @@ export const MenuAjax: Story = {
             </button>
           </template>
         </D1Menu>
+    `
+  })
+}
+export const MenuVModel: Story = {
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: { D1Menu },
+    setup() {
+      return {
+        selectedValue: ref('settings'),
+        menuItems: ref([
+          {label: 'Dashboard', value: 'dashboard', icon: 'dashboard'},
+          {label: 'Users', value: 'users', icon: 'people'},
+          {label: 'Settings', value: 'settings', icon: 'settings'},
+          {label: 'Reports', value: 'reports', icon: 'assessment'},
+          {label: 'Help', value: 'help', icon: 'help'}
+        ])
+      }
+    },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="selectedValue = 'dashboard'">Select Dashboard</button>
+            <button class="wiki-storybook-button" @click="selectedValue = 'reports'">Select Reports</button>
+            <button class="wiki-storybook-button" @click="selectedValue = ''">Clear</button>
+          </div>
+          <div class="wiki-storybook-flex">
+            <D1Menu
+              v-model:selected="selectedValue"
+              :list="menuItems"
+              is-selected-by-value
+            >
+              <template #control="{binds}">
+                <button class="wiki-storybook-button" v-bind="binds">
+                  Open Menu
+                </button>
+              </template>
+            </D1Menu>
+          </div>
+          <div>Selected value: {{ selectedValue }}</div>
+        </div>
     `
   })
 }

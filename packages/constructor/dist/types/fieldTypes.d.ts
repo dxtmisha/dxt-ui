@@ -146,7 +146,7 @@ export interface FieldBasicProps<Value = any> extends Omit<FieldValueProps<Value
     /** Input name attribute/ Атрибут name */
     name?: string;
     /** Input id attribute/ Атрибут id */
-    id?: string;
+    id?: string | number;
     /** Required flag/ Обязательное поле */
     required?: boolean;
     /** Readonly state/ Режим только для чтения */
@@ -182,6 +182,14 @@ export interface FieldStepProps {
     min?: NumberOrString;
     /** Maximum value/ Максимальное значение */
     max?: NumberOrString;
+}
+/**
+ * Input arrow controls (for type="number")/
+ * Управление стрелками ввода (для type="number")
+ */
+export interface FieldArrowProps {
+    /** Arrow type/ Тип стрелок */
+    arrow?: 'auto' | 'carousel' | 'stepper' | 'none';
     /** Step size for input arrows (type="number" only)/ Шаг для стрелок ввода (только для type="number") */
     arrowStep?: NumberOrString;
 }
@@ -225,9 +233,11 @@ export interface FieldUxProps {
  * Composite props for standard textual / numeric inputs/
  * Составные свойства стандартных текстовых / числовых инпутов
  */
-export interface FieldInputProps<Value = any> extends FieldBasicProps<Value>, FieldStepProps, FieldLengthProps, FieldPatternProps, FieldUxProps {
+export interface FieldInputProps<Value = any> extends FieldBasicProps<Value>, FieldStepProps, FieldArrowProps, FieldLengthProps, FieldPatternProps, FieldUxProps {
     /** Datalist id reference/ Ссылка на datalist */
     list?: string;
+    iconVisibility?: string;
+    iconVisibilityOff?: string;
 }
 /**
  * Props for file input elements (type="file")/
@@ -240,8 +250,6 @@ export interface FieldInputFileProps<Value = any> extends Omit<FieldBasicProps<V
     accept?: string;
     /** Capture mode for media input (mobile)/ Режим захвата для медиа (мобильные устройства) */
     capture?: string | boolean;
-    /** Show number input arrows (type="number" only)/ Показать стрелки числового ввода (только для type="number") */
-    arrow?: string;
 }
 /**
  * Props for checkbox & radio inputs (excluding type field)/

@@ -5,7 +5,7 @@ import type { EventClickEmits } from '../../types/eventClickTypes'
 import type { ListComponentInclude, ListSlots } from '../List'
 import type { BarsComponentInclude, BarsEmitsInclude } from '../Bars'
 import type { WindowComponentInclude, WindowEmitsInclude, WindowExposeInclude } from '../Window'
-import type { ModelEmits } from '../../types/modelTypes'
+import type { ModelEmitsSelected } from '../../types/modelTypes'
 
 import type { MenuControlBasic, MenuControlItem } from './basicTypes'
 
@@ -28,7 +28,7 @@ export type MenuEmits
   = BarsEmitsInclude
     & EventClickEmits
     & WindowEmitsInclude
-    & ModelEmits
+    & ModelEmitsSelected
     & {
       clickSlot: [value?: string]
     }

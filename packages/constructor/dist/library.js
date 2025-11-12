@@ -2,7 +2,7 @@ var M = Object.defineProperty;
 var B = (l, t, e) => t in l ? M(l, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : l[t] = e;
 var r = (l, t, e) => B(l, typeof t != "symbol" ? t + "" : t, e);
 import { computed as n, toRefs as F, watch as x, isRef as N, isReadonly as C, ref as u } from "vue";
-import { isFilled as o, render as p, RouterItemRef as L, getExp as S, isNumber as $, toNumberByMax as R, GeoRef as T, toCamelCaseFirst as v, toCamelCase as b, isFunction as D, toBinds as A, createElement as O, anyToString as d, executeFunction as V, isString as _, toNumber as y, isArray as w, isObject as m, toArray as G, setValues as H, getRef as k, Translate as q } from "@dxtmisha/functional";
+import { isFilled as o, render as p, RouterItemRef as L, getExp as S, isNumber as $, toNumberByMax as R, GeoRef as T, toCamelCaseFirst as v, toCamelCase as b, isFunction as D, toBinds as A, createElement as O, anyToString as d, executeFunction as V, isString as _, toNumber as y, isArray as G, isObject as m, toArray as w, setValues as H, getRef as k, Translate as q } from "@dxtmisha/functional";
 class K {
   /**
    * Constructor
@@ -570,8 +570,6 @@ class st {
     /** Returns the input type/ Возвращает тип ввода */
     r(this, "item", n(() => {
       var e;
-      if (this.props.arrow)
-        return "number";
       const t = this.props.type;
       return t === "password" && ((e = this.visibility) != null && e.item.value) ? "text" : t != null ? t : "text";
     }));
@@ -687,20 +685,22 @@ class rt {
   getData(t) {
     const e = {};
     return t.forEach((s) => {
+      let i;
       if (s in this.props)
         switch (s) {
           case "type":
-            this.type ? e[s] = this.type.item.value : e[s] = this.props.type;
+            this.type ? i = this.type.item.value : i = this.props.type;
             break;
           case "pattern":
-            this.pattern && (e.pattern = this.pattern.item.value);
+            this.pattern && (i = this.pattern.item.value);
             break;
           case "inputMode":
-            this.inputMode && (e.inputmode = this.inputMode.item.value);
+            this.inputMode && (i = this.inputMode.item.value);
             break;
           default:
-            e[s] = this.props[s];
+            i = this.props[s];
         }
+      i !== void 0 && (e[s] = i);
     }), A(e, this.props.inputAttrs);
   }
 }
@@ -943,7 +943,7 @@ class ht {
     r(this, "length", n(() => {
       var e;
       const t = this.item.value;
-      return w(t) ? t.length : m(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
+      return G(t) ? t.length : m(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
     }));
     /**
      * Changes the values to the original ones.
@@ -964,7 +964,7 @@ class ht {
    * Возвращает текущее значение в виде массива.
    */
   getToArray() {
-    return G(this.item.value);
+    return w(this.item.value);
   }
   /**
    * Changes the value.

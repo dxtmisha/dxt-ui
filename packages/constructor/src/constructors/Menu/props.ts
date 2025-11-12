@@ -10,7 +10,7 @@ import type { ListPropsBasic } from '../List'
 import type { ListItemProps, ListItemPropsBasic } from '../ListItem'
 import type { BarsPropsBasic, BarsPropsInclude } from '../Bars'
 import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
-import type { ModelProps } from '../../types/modelTypes'
+import type { ModelPropsSelected } from '../../types/modelTypes'
 
 interface MenuPropsToken {
   // :type [!] System label / Системная метка
@@ -26,7 +26,7 @@ export interface MenuPropsBasic<
   Window extends WindowPropsBasic = WindowPropsBasic
 > extends BarsPropsInclude<Bars>,
   WindowPropsInclude<Window>,
-  ModelProps {
+  ModelPropsSelected {
   // Status
   selected?: ListSelectedList
   highlightLengthStart?: number

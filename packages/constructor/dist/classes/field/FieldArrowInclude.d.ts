@@ -1,5 +1,6 @@
 import { FieldValueInclude } from './FieldValueInclude';
-import { FieldAllProps } from '../../types/fieldTypes';
+import { FieldTypeInclude } from './FieldTypeInclude';
+import { FieldAllProps, FieldArrowProps } from '../../types/fieldTypes';
 import { ComputedRef } from 'vue';
 /**
  * Class for working with input arrows.
@@ -9,12 +10,20 @@ import { ComputedRef } from 'vue';
 export declare class FieldArrowInclude {
     protected readonly props: FieldAllProps;
     protected readonly value: FieldValueInclude;
+    protected readonly type?: FieldTypeInclude | undefined;
     /**
      * Constructor
      * @param props input data/ входные данные
      * @param value object for working with values/ объект для работы со значениями
+     * @param type object for working with input type/ объект для работы с типом ввода
      */
-    constructor(props: FieldAllProps, value: FieldValueInclude);
+    constructor(props: FieldAllProps, value: FieldValueInclude, type?: FieldTypeInclude | undefined);
+    /**
+     * Indicates if arrows are enabled/ Указывает, включены ли стрелки
+     *
+     * @return true if arrows are enabled/ true, если стрелки включены
+     */
+    readonly is: ComputedRef<boolean>;
     /** Indicates if the previous button is disabled/ Указывает, отключена ли кнопка предыдущего */
     readonly disabledPrevious: ComputedRef<boolean>;
     /** Indicates if the next button is disabled/ Указывает, отключена ли кнопка следующего */
@@ -25,6 +34,18 @@ export declare class FieldArrowInclude {
     protected readonly min: ComputedRef<number | undefined>;
     /** Returns the maximum value/ Возвращает максимальное значение */
     protected readonly max: ComputedRef<number | undefined>;
+    /**
+     * Checks if the arrow type is carousel.
+     *
+     * Проверяет, является ли тип стрелок carousel.
+     */
+    isCarousel(): boolean;
+    /**
+     * Checks if the arrow type is stepper.
+     *
+     * Проверяет, является ли тип стрелок stepper.
+     */
+    isStepper(): boolean;
     /**
      * Checks if it is possible to decrease the value.
      *
@@ -39,6 +60,12 @@ export declare class FieldArrowInclude {
      * @param value values for checking/ значения для проверки
      */
     isNext(value: number): boolean;
+    /**
+     * Returns arrow type.
+     *
+     * Возвращает тип стрелок.
+     */
+    get(): FieldArrowProps['arrow'] | undefined;
     /**
      * Decreases the value.
      *

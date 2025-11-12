@@ -30,8 +30,8 @@ export class FieldArrowInclude {
    *
    * @return true if arrows are enabled/ true, если стрелки включены
    */
-  readonly is = computed<string>(() => {
-    return this.props.arrow && this.props.arrow !== 'none'
+  readonly is = computed<boolean>(() => {
+    return Boolean(this.props.arrow && this.props.arrow !== 'none')
   })
 
   /** Indicates if the previous button is disabled/ Указывает, отключена ли кнопка предыдущего */
