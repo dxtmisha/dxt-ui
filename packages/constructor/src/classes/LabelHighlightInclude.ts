@@ -46,6 +46,41 @@ export class LabelHighlightInclude extends LabelInclude {
   }
 
   /**
+   * Determines if highlighting is required.
+   *
+   * Определяет, требуется ли выделение.
+   */
+  isHighlight(): boolean {
+    const props = this.props
+
+    if (
+      !props.highlight
+      || props.highlight.length < this.getLengthStart()
+    ) {
+      return true
+    }
+
+    if (!(
+      props.highlight
+      && props.highlight.length >= this.getLengthStart()
+      && props.label
+    )) {
+      return false
+    }
+
+    const label = props.label.toString()
+    const exp = getExp(props.highlight, 'i')
+
+    return Boolean(
+      label.match(exp)
+      || (
+        isFilled(props.value)
+        && props.value.toString().match(exp)
+      )
+    )
+  }
+
+  /**
    * Returns a string with highlighted parts.
    * If highlighting is not required, returns the original string.
    *

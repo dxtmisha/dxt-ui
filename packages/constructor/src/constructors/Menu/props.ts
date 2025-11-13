@@ -29,12 +29,13 @@ export interface MenuPropsBasic<
   ModelPropsSelected {
   // Status
   selected?: ListSelectedList
-  highlightLengthStart?: number
   hideList?: boolean
 
   // Value
   list?: ListRecord<ListItem>
   liteThreshold?: number
+  highlightLengthStart?: number
+  filterMode?: boolean
 
   ajax?: string | (() => NormalOrPromise<ListRecord<ListItem>>)
   request?: ApiFetch

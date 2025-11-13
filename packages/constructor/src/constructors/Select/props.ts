@@ -1,10 +1,34 @@
+import type { IconPropsBasic, IconValue } from '../Icon'
+import type { FieldPropsBasic, FieldPropsInclude } from '../Field'
+import type { FieldLabelPropsBasic } from '../FieldLabel'
+import type { FieldMessagePropsBasic } from '../FieldMessage'
+import type { FieldCounterPropsBasic } from '../FieldCounter'
+import type { ProgressPropsBasic } from '../Progress'
+import type { FieldSelectProps } from '../../types/fieldTypes.ts'
+
 interface SelectPropsToken {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface SelectPropsBasic {
-  // TODO: Location for a custom property / Место для пользовательского свойства
+export interface SelectPropsBasic<
+  Icon extends IconPropsBasic = IconPropsBasic,
+  Field extends FieldPropsBasic = FieldPropsBasic,
+  FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
+  FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
+  FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
+  Progress extends ProgressPropsBasic = ProgressPropsBasic
+> extends FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>,
+  FieldSelectProps {
+  // Value
+  editValue?: boolean
+
+  // Style
+  hideList?: boolean
+  showSearch?: boolean
+
+  iconArrowDown?: IconValue<Icon>
+  iconSearch?: IconValue<Icon>
 }
 
 /**

@@ -7,7 +7,7 @@ import type { BarsComponentInclude, BarsEmitsInclude } from '../Bars'
 import type { WindowComponentInclude, WindowEmitsInclude, WindowExposeInclude } from '../Window'
 import type { ModelEmitsSelected } from '../../types/modelTypes'
 
-import type { MenuControlBasic, MenuControlItem } from './basicTypes'
+import type { MenuControlBasic, MenuControlItem, MenuSlotInclude } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -48,21 +48,10 @@ export interface MenuExpose extends WindowExposeInclude, MenuControlBasic {
  */
 export type MenuSlots
   = ListSlots
+    & MenuSlotInclude
     & {
       /** Control slot for window management / Слот управления для управления окном */
       control?(props: MenuControlItem): any
-
-      /** Footer slot for window bottom / Слот подвала для низа окна */
-      title?(props: MenuControlItem): any
-
-      /** Footer slot for window bottom/ Слот подвала для низа окна */
-      footer?(props: MenuControlItem): any
-
-      /** Context slot for top area / Слот контекстной области сверху */
-      contextTop?(props: MenuControlItem): any
-
-      /** Context slot for bottom area / Слот контекстной области снизу */
-      contextBottom?(props: MenuControlItem): any
     }
 
 /**

@@ -65,9 +65,6 @@ export class SelectDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -78,8 +75,10 @@ export class SelectDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      ...this.item.menu.expose,
+      value: this.item.value.item,
+      checkValidity: this.item.validation.checkValidity,
+      validationMessage: this.item.validation.message
     } as EXPOSE
   }
 
@@ -93,6 +92,7 @@ export class SelectDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        input: this.getSubClass('input')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -104,10 +104,7 @@ export class SelectDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -123,5 +120,106 @@ export class SelectDesign<
       ref: this.element,
       class: this.classes?.value.main
     })
+  }
+
+  /**
+   * Rendering the menu element.<br>
+   * Рендер элемента меню.
+   * @param input data for the input element /<br>данные для элемента ввода
+   */
+  protected readonly renderData = (input: FieldSetup['slotInput']): VNode[] => {
+    const setup = this.setup()
+
+    return [
+      setup.renderInput(input),
+      ...setup.renderMenu(
+        {
+          control: (binds: UseMenuControl) => {
+            if (this.props.editValue) {
+              return h(
+                'input',
+                {
+                  ...binds.binds,
+                  'placeholder': this.props.placeholder,
+                  'class': [
+                    binds.binds.class,
+                    binds.classesWindow.controlOpenOnly,
+                    input.className
+                  ],
+                  'value': setup.value.value,
+                  'data-menu-control': '1',
+                  'onInput': setup.onSelect
+                }
+              )
+            }
+
+            return this.components.renderOne('selectValue', {
+              ...binds.binds,
+              class: [
+                binds.binds.class,
+                input.className
+              ],
+              value: binds.selectedList.value,
+              multiple: this.props.multiple,
+              placeholder: this.props.placeholder,
+              onClick: setup.onSelect
+            })
+          },
+          top: props => this.renderTop(props),
+          bottom: props => this.initSlot('bottom', undefined, props)
+        },
+        {
+          selected: setup.value.value,
+          filter: this.item.filter.value
+        }
+      )
+    ]
+  }
+
+  protected readonly renderInput = (input: FieldSetup['slotInput']): VNode => {
+    const setup = this.setup()
+
+    return h('input', {
+      ...setup.inputBind.value,
+      ref: this.element,
+      id: input.id,
+      class: input.classHidden,
+      onInput: setup.onInput
+    })
+  }
+
+  protected readonly renderTop = (props: UseMenuControl) => {
+    const setup = this.setup()
+    const children: any[] = []
+
+    if (this.props.showSearch) {
+      children.push(
+        h(
+          'div',
+          {
+            class: [
+              setup.classes.value.input,
+              props.classesWindow.static
+            ]
+          },
+          this.components.renderOne(
+            'input',
+            {
+              icon: this.props.iconSearch,
+              onInput: (_: Event, { value }: { value: string }) => {
+                this.item.filter.value = value
+              },
+              inputAttrs: {
+                'data-menu-control': '1'
+              }
+            }
+          )
+        )
+      )
+    }
+
+    this.initSlot('top', children, props)
+
+    return children
   }
 }

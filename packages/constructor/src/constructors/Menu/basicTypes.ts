@@ -34,6 +34,20 @@ export interface MenuExposeInclude {
   menuElement: Ref<ConstrBind<MenuExpose> | undefined>
 }
 
+export type MenuSlotInclude = {
+  /** Title slot for window title/ Слот заголовка для заголовка окна */
+  title?(props: MenuControlItem): any
+
+  /** Footer slot for window bottom/ Слот подвала для низа окна */
+  footer?(props: MenuControlItem): any
+
+  /** Context slot for top area / Слот контекстной области сверху */
+  contextTop?(props: MenuControlItem): any
+
+  /** Context slot for bottom area / Слот контекстной области снизу */
+  contextBottom?(props: MenuControlItem): any
+}
+
 /** Interface for menu include props/ Интерфейс для свойств включения меню */
 export interface MenuPropsInclude {
   disabled?: boolean

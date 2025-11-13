@@ -56,6 +56,7 @@ export class ChipGroup {
       undefined,
       undefined,
       undefined,
+      undefined,
       this.model.value,
       this.refs.keyValue,
       this.refs.keyLabel

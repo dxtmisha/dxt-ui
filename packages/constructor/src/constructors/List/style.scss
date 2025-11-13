@@ -33,4 +33,18 @@
       }
     }
   }
+
+  &--highlightActive {
+    @include ui.subclass('space') {
+      display: none;
+    }
+
+    @include ui.subclass('line') {
+      display: none;
+    }
+
+    @include ui.subclass('subtitle') {
+      display: none;
+    }
+  }
 }

@@ -38,6 +38,7 @@ export class ListDataRef {
    * @param focus Focused item / элемент в фокусе
    * @param highlight Search text for highlighting / текст поиска для выделения
    * @param highlightLengthStart Minimum length to start highlighting / минимальная длина для начала выделения
+   * @param filterMode Filter mode / режим фильтрации
    * @param selected Selected items / выбранные элементы
    * @param keyValue Key for getting item value / ключ для получения значения элемента
    * @param keyLabel Key for getting item label / ключ для получения метки элемента
@@ -49,6 +50,7 @@ export class ListDataRef {
     protected readonly focus?: RefType<ListSelectedItem | undefined>,
     protected readonly highlight?: RefType<string | undefined>,
     protected readonly highlightLengthStart?: RefType<number | undefined>,
+    protected readonly filterMode?: RefType<boolean | undefined>,
     protected readonly selected?: RefType<ListSelectedList | undefined>,
     protected readonly keyValue?: RefType<string | undefined>,
     protected readonly keyLabel?: RefType<string | undefined>,
@@ -122,6 +124,7 @@ export class ListDataRef {
         ...item,
         focus: focus === item.index,
         highlight,
+        filterMode: this.filterMode?.value,
         selected: isSelected(item.index, selected)
       })
     )
@@ -178,16 +181,20 @@ export class ListDataRef {
    */
   readonly highlightFirstItem = computed<number>(() => {
     const highlight = this.getHighlight()
-    const exp = highlight
-      && highlight.length >= this.getHighlightLengthStart()
-      && getExp(highlight, 'i')
 
-    if (exp) {
-      return this.map.value.findIndex(
-        item => item.label?.toString().match(exp)
-          || item.index?.toString().match(exp)
-          || item.search?.toString().match(exp)
-      )
+    if (
+      highlight
+      && highlight.length >= this.getHighlightLengthStart()
+    ) {
+      const exp = getExp(highlight, 'i')
+
+      if (exp) {
+        return this.map.value.findIndex(
+          item => item.label?.toString().match(exp)
+            || item.index?.toString().match(exp)
+            || item.search?.toString().match(exp)
+        )
+      }
     }
 
     return -1
@@ -267,6 +274,16 @@ export class ListDataRef {
    */
   isHighlight(): boolean {
     return this.highlightFirstItem.value !== -1
+  }
+
+  /**
+   * Checks if highlighting is active.
+   *
+   * Проверяет, активно ли выделение.
+   */
+  isHighlightActive(): boolean {
+    return (this.getHighlight()?.length ?? 0) < this.getHighlightLengthStart()
+      || this.isHighlight()
   }
 
   /**
@@ -397,6 +414,7 @@ export class ListDataRef {
         this.focus,
         this.highlight,
         this.highlightLengthStart,
+        this.filterMode,
         this.selected,
         this.keyValue,
         this.keyLabel,

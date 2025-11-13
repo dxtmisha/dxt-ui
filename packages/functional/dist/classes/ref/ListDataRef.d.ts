@@ -11,6 +11,7 @@ export declare class ListDataRef {
     protected readonly focus?: RefType<ListSelectedItem | undefined> | undefined;
     protected readonly highlight?: RefType<string | undefined> | undefined;
     protected readonly highlightLengthStart?: RefType<number | undefined> | undefined;
+    protected readonly filterMode?: RefType<boolean | undefined> | undefined;
     protected readonly selected?: RefType<ListSelectedList | undefined> | undefined;
     protected readonly keyValue?: RefType<string | undefined> | undefined;
     protected readonly keyLabel?: RefType<string | undefined> | undefined;
@@ -25,13 +26,14 @@ export declare class ListDataRef {
      * @param focus Focused item / элемент в фокусе
      * @param highlight Search text for highlighting / текст поиска для выделения
      * @param highlightLengthStart Minimum length to start highlighting / минимальная длина для начала выделения
+     * @param filterMode Filter mode / режим фильтрации
      * @param selected Selected items / выбранные элементы
      * @param keyValue Key for getting item value / ключ для получения значения элемента
      * @param keyLabel Key for getting item label / ключ для получения метки элемента
      * @param lite Threshold for lite mode / порог для облегченного режима
      * @param parent Parent identifier / идентификатор родителя
      */
-    constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, parent?: string | undefined);
+    constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, filterMode?: RefType<boolean | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, parent?: string | undefined);
     /**
      * Returns a list for forming a list.
      *
@@ -112,6 +114,12 @@ export declare class ListDataRef {
      * Проверяет, есть ли выделенный элемент.
      */
     isHighlight(): boolean;
+    /**
+     * Checks if highlighting is active.
+     *
+     * Проверяет, активно ли выделение.
+     */
+    isHighlightActive(): boolean;
     /**
      * Returns the number of records.
      *

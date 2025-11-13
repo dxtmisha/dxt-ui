@@ -6,7 +6,8 @@ import {
   ListDataRef,
   type ListDataItem,
   type ListList,
-  toBinds
+  toBinds,
+  type ConstrClass
 } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -72,6 +73,7 @@ export class List {
       this.focus.focus,
       this.search.highlight,
       this.refs.highlightLengthStart,
+      this.refs.filterMode,
       this.refs.selected,
       this.refs.keyValue,
       this.refs.keyLabel,
@@ -97,6 +99,15 @@ export class List {
 
     return this.data.fullData.value
   })
+
+  /**
+   * Computed CSS classes for the cell component.
+   *
+   * Вычисляемые CSS классы для компонента ячейки.
+   */
+  readonly classes = computed<ConstrClass>(() => ({
+    [`${this.className}--highlightActive`]: Boolean(this.props.filterMode) && this.data.isHighlight()
+  }))
 
   /**
    * Computed binding properties for list items/
@@ -196,7 +207,10 @@ export class List {
     open: boolean
   ): ConstrBind<ListDataItem> {
     return this.getItemManagement(
-      item,
+      {
+        ...item,
+        filterMode: false
+      },
       open,
       this.props.iconArrowDown
     )
@@ -214,7 +228,10 @@ export class List {
     open: boolean
   ): ConstrBind<ListDataItem> {
     return this.getItemManagement(
-      item,
+      {
+        ...item,
+        filterMode: false
+      },
       open,
       this.props.iconArrowRight
     )

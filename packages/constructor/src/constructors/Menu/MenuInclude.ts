@@ -5,7 +5,8 @@ import {
   getRef,
   type RawSlots,
   type RefOrNormal,
-  toBind
+  toBind,
+  toBinds
 } from '@dxtmisha/functional'
 
 import type { MenuComponentInclude, MenuExposeInclude, MenuPropsInclude } from './basicTypes'
@@ -53,12 +54,12 @@ export class MenuInclude<
 
   /** Computed bindings for the menu/ Вычисляемые привязки для меню */
   readonly binds = computed<PropsExtra>(() => {
-    const props = toBind<PropsExtra>(
-      toBind(
-        getRef(this.extra) ?? {},
-        this.props.menuAttrs ?? {}
-      ),
-      { class: `${this.className}__menu` }
+    const props = toBinds<PropsExtra>(
+      getRef(this.extra),
+      this.props.menuAttrs,
+      {
+        class: `${this.className}__menu`
+      }
     )
 
     return {
@@ -76,6 +77,15 @@ export class MenuInclude<
     toggle: async () => this.element.value?.toggle(),
 
     menuElement: this.element
+  }
+
+  /**
+   * Get the menu element
+   *
+   * Получить элемент меню
+   */
+  getElement() {
+    return this.element.value
   }
 
   /**

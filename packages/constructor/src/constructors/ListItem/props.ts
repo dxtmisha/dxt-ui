@@ -46,6 +46,7 @@ export interface ListItemPropsBasic<
 
   // Style
   tag?: 'button' | 'a' | 'span' | 'div' | string
+  filterMode?: boolean
   divider?: boolean
 
   // Technical

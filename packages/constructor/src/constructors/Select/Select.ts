@@ -1,13 +1,38 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import { computed, type Ref, type ToRefs } from 'vue'
+import { type ConstrEmit, DesignComp, executeFunction, isFilled } from '@dxtmisha/functional'
 
 import type { SelectComponents, SelectEmits, SelectSlots } from './types'
 import type { SelectProps } from './props'
+import { FieldElementInclude } from '../../classes/field/FieldElementInclude.ts'
+import { FieldChangeInclude } from '../../classes/field/FieldChangeInclude.ts'
+import { FieldValueInclude } from '../../classes/field/FieldValueInclude.ts'
+import { FieldCodeInclude } from '../../classes/field/FieldCodeInclude.ts'
+import { FieldValidationInclude } from '../../classes/field/FieldValidationInclude.ts'
+import { FieldAttributesInclude } from '../../classes/field/FieldAttributesInclude.ts'
+import { FieldEventInclude } from '../../classes/field/FieldEventInclude.ts'
+import { MenuInclude } from '../Menu'
+import { FieldInclude } from '../Field/FieldInclude.ts'
+import { SelectInput } from './SelectInput.ts'
 
 /**
  * Select
  */
 export class Select {
+  readonly attributes: FieldAttributesInclude
+
+  readonly elementItem: FieldElementInclude
+  readonly change: FieldChangeInclude
+
+  readonly value: FieldValueInclude
+
+  readonly code: FieldCodeInclude
+  readonly validation: FieldValidationInclude
+  readonly event: FieldEventInclude
+
+  readonly field: FieldInclude
+  readonly menu: MenuInclude
+  readonly input: SelectInput
+
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -29,5 +54,83 @@ export class Select {
     protected readonly slots?: SelectSlots,
     protected readonly emits?: ConstrEmit<SelectEmits>
   ) {
+    this.attributes = new FieldAttributesInclude(this.props)
+
+    this.change = new FieldChangeInclude(this.props)
+    this.elementItem = new FieldElementInclude(
+      this.props,
+      this.element
+    )
+
+    this.value = new FieldValueInclude(
+      this.props,
+      this.refs,
+      this.elementItem
+    )
+
+    this.code = new FieldCodeInclude(this.props)
+    this.validation = new FieldValidationInclude(
+      this.props,
+      this.attributes,
+      this.value,
+      this.change,
+      this.code
+    )
+    this.event = new FieldEventInclude(
+      this.props,
+      this.change,
+      this.value,
+      this.validation,
+      this.emits
+    )
+
+    this.field = new FieldInclude(
+      this.props,
+      this.value,
+      this.components,
+      this.event,
+      undefined,
+      undefined,
+      () => this.menu.getElement()?.toggle,
+      computed(() => ({
+        iconTrailing: this.props.iconTrailing ?? this.props.iconArrowDown,
+        maxlength: this.props.max
+      }))
+    )
+    this.menu = new MenuInclude(
+      this.props,
+      this.className,
+      this.components,
+      computed(() => ({
+        windowAttrs: {
+          hide: !isFilled(props.option) && !this.isSlot.value,
+          widthMatch: true
+        },
+        barsLabel: props.label,
+        barsDescription: props.helperMessage,
+        disabled: props.disabled || props.readonly,
+        autoClose: !props.multiple,
+        list: executeFunction(props.option),
+        hideList: props.hideList,
+        onClick: this.event.onSelect,
+        onClickSlot: this.onClick
+      }))
+    )
+    this.input = new SelectInput(this.props, this.value)
+  }
+
+  /** Checks whether there are slots for context areas/ Проверяет, есть ли слоты для контекстных областей */
+  protected readonly isSlot = computed<boolean>(() => {
+    return Boolean(
+      this.slots?.contextTop
+      || this.slots?.contextBottom
+    )
+  })
+
+  /** Handles click on option in slot/ Обрабатывает клик по опции в слоте */
+  protected readonly onClick = (value?: string) => {
+    if (value) {
+      this.value.set(value)
+    }
   }
 }

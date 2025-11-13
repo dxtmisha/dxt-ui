@@ -76,6 +76,7 @@ export class Menu {
       undefined,
       undefined,
       undefined,
+      undefined,
       this.value.selected,
       this.refs.keyValue,
       this.refs.keyLabel

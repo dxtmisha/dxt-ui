@@ -10,6 +10,7 @@ const propsNames: StorybookProps = [
   { name: 'control', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
   { name: 'divider', type: 'boolean' },
+  { name: 'filterMode', type: 'boolean' },
   { name: 'focus', type: 'NumberOrStringOrBoolean' },
   { name: 'highlight', type: 'string' },
   { name: 'highlightLengthStart', type: 'number' },

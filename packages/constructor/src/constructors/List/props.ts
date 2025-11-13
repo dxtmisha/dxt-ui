@@ -29,6 +29,7 @@ export interface ListPropsBasic<
   liteThreshold?: number
   highlight?: string
   highlightLengthStart?: number
+  filterMode?: boolean
 
   keyLabel?: string
   keyValue?: string

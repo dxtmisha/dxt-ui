@@ -14,6 +14,7 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean' },
   { name: 'divider', type: 'boolean' },
   { name: 'fill', type: 'string', option: ['custom'] },
+  { name: 'filterMode', type: 'string' },
   { name: 'focus', type: 'boolean' },
   { name: 'highlight', type: 'string' },
   { name: 'highlightLengthStart', type: 'number' },

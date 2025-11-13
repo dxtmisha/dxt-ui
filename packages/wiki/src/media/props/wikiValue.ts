@@ -186,6 +186,16 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  filterMode: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Enables filter mode for search (hides non-matching items)',
+        ru: 'Включает режим фильтрации для поиска (скрывает несовпадающие элементы)'
+      }
+    }
+  },
   formatting: {
     type: StorybookControl.boolean,
     options: {

@@ -119,7 +119,14 @@ export class ListItemDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
+  protected initRender(): VNode | undefined {
+    if (
+      this.props.filterMode
+      && !this.item.label.isHighlight()
+    ) {
+      return undefined
+    }
+
     const children: any[] = []
 
     this.initSlot('leading', children)

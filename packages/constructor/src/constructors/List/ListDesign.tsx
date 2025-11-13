@@ -33,14 +33,14 @@ export class ListDesign<
   CLASSES extends ListClasses,
   P extends ListPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ListEmits,
-  EXPOSE,
-  ListSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ListEmits,
+    EXPOSE,
+    ListSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: List
 
   /**
@@ -95,7 +95,7 @@ export class ListDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes.value,
       ...{
         // :classes [!] System label / Системная метка
         space: this.getSubClass('space'),
@@ -287,7 +287,7 @@ export class ListDesign<
         divider: this.props.divider
       },
       {
-        head: ({ open }: { open: boolean }) => this.renderItemGroup(item, open),
+        head: ({ open}: { open: boolean }) => this.renderItemGroup(item, open),
         list: () => this.renderDataByItem('group', this.item.getList(item))
       }
     ) as VNode
@@ -312,27 +312,6 @@ export class ListDesign<
         list: () => this.renderDataByItem('menu', this.item.getList(item))
       }
     ) as VNode
-  }
-
-  /**
-   * Returns binding properties for the item.
-   *
-   * Возвращает привязочные свойства для элемента.
-   * @param type type of list/ тип списка
-   * @param item selected element/ выбранный элемент
-   */
-  protected getItemAttrs(
-    type: ListType,
-    item: ListDataItem
-  ) {
-    switch (type) {
-      case 'group':
-        return this.item.getItemGroup(item)
-      case 'menu':
-        return this.item.getItemMenu(item)
-      default:
-        return this.item.getItem(item)
-    }
   }
 
   /**
@@ -365,10 +344,14 @@ export class ListDesign<
           children.push(this.renderHtml(item))
           break
         case 'group':
-          children.push(this.renderGroup(item))
+          if (this.isHighlight(item)) {
+            children.push(this.renderGroup(item))
+          }
           break
         case 'menu':
-          children.push(this.renderMenu(item, first))
+          if (this.isHighlight(item)) {
+            children.push(this.renderMenu(item, first))
+          }
           break
         default:
           children.push(this.renderItem(type, item))
@@ -378,5 +361,40 @@ export class ListDesign<
 
     children.push(h('div'))
     return children
+  }
+
+  /**
+   * Determines if highlighting is required.
+   *
+   * Определяет, требуется ли выделение.
+   * @param item selected element/ выбранный элемент
+   */
+  protected isHighlight(item: ListDataItem): boolean {
+    if (!this.props.filterMode) {
+      return true
+    }
+
+    return this.item.data.getSubList(item).isHighlightActive()
+  }
+
+  /**
+   * Returns binding properties for the item.
+   *
+   * Возвращает привязочные свойства для элемента.
+   * @param type type of list/ тип списка
+   * @param item selected element/ выбранный элемент
+   */
+  protected getItemAttrs(
+    type: ListType,
+    item: ListDataItem
+  ) {
+    switch (type) {
+      case 'group':
+        return this.item.getItemGroup(item)
+      case 'menu':
+        return this.item.getItemMenu(item)
+      default:
+        return this.item.getItem(item)
+    }
   }
 }

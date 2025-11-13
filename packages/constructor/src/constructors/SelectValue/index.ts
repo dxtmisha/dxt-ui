@@ -1,5 +1,6 @@
 export * from './SelectValue'
 export * from './SelectValueDesign'
+export * from './SelectValueInclude'
 export * from './props'
 export * from './types'
 export * from './basicTypes'
