@@ -1,5 +1,6 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { isFilled } from '@dxtmisha/functional'
+import type { MenuProps } from './props'
 
 /**
  * Class for working with search.
@@ -8,6 +9,24 @@ import { isFilled } from '@dxtmisha/functional'
  */
 export class MenuSearch {
   readonly item = ref<string>()
+
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   */
+  constructor(
+    protected readonly props: MenuProps
+  ) {
+  }
+
+  /** Returns the search string/ Возвращает строку поиска */
+  readonly value = computed<string | undefined>(() => {
+    if (this.props.highlight) {
+      return this.props.highlight
+    }
+
+    return this.item.value
+  })
 
   /**
    * Sets the search string.

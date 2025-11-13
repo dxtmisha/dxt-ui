@@ -68,7 +68,7 @@ export class Menu {
     protected readonly emits?: ConstrEmit<MenuEmits>
   ) {
     this.request = new MenuRequest(this.props)
-    this.search = new MenuSearch()
+    this.search = new MenuSearch(this.props)
     this.value = new MenuValue(this.props, this.refs, this.emits)
 
     this.data = new ListDataRef(

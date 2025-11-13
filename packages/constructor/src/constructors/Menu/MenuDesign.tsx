@@ -153,7 +153,6 @@ export class MenuDesign<
     const children: any[] = []
     if (this.item.bars.is.value) {
       children.push(...this.item.bars.render())
-      console.log('this.item.bars.is.value', children)
     }
 
     this.initSlot('title', children, this.getBinds(props))
@@ -187,7 +186,8 @@ export class MenuDesign<
                 class: this.classes?.value.list,
 
                 selected: this.item.value.selected.value,
-                highlight: this.item.search.item.value,
+                highlight: this.item.search.value.value,
+                filterMode: this.props.filterMode,
 
                 list,
                 lite: this.item.menuWindow.lite.value

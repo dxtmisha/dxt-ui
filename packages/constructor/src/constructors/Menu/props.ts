@@ -34,6 +34,7 @@ export interface MenuPropsBasic<
   // Value
   list?: ListRecord<ListItem>
   liteThreshold?: number
+  highlight?: string
   highlightLengthStart?: number
   filterMode?: boolean
 
