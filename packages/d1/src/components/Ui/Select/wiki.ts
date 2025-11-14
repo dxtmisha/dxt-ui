@@ -1,0 +1,82 @@
+import { type StorybookProps, WikiStorybook } from '@dxtmisha/wiki'
+import { wiki, wikiDescriptions } from '@dxtmisha/wiki/media'
+
+import { wikiD1 } from '../../../wiki/wiki'
+import { defaults } from './props'
+
+const propsNames: StorybookProps = [
+  // :propsList [!] System label / Системная метка
+  { name: 'align', type: 'string', option: ['center', 'right', 'left'] },
+  { name: 'arrowAlign', type: 'string', option: ['center', 'right', 'left'] },
+  { name: 'autocapitalize', type: 'string', option: ['off', 'none', 'sentences', 'words', 'characters'] },
+  { name: 'autocomplete', type: 'string' },
+  { name: 'autocorrect', type: 'string', option: ['on', 'off'] },
+  { name: 'autofocus', type: 'boolean' },
+  { name: 'cancel', type: 'string', option: ['auto', 'always', 'none'] },
+  { name: 'caption', type: 'string | number' },
+  { name: 'counterShow', type: 'boolean' },
+  { name: 'detail', type: 'Record<string, any>' },
+  { name: 'disabled', type: 'boolean' },
+  { name: 'editValue', type: 'boolean' },
+  { name: 'enterKeyHint', type: 'string', option: ['enter', 'done', 'go', 'next', 'previous', 'search', 'send'] },
+  { name: 'fieldAttrs', type: 'ConstrBind<FieldPropsBasic<IconPropsBasic<ImagePropsBasic>, FieldLabelPropsBasic<FieldCounterPropsBasic, ProgressPropsBasic>, FieldMessagePropsBasic<...>, FieldCounterPropsBasic, ProgressPropsBasic>>' },
+  { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounterPropsBasic>' },
+  { name: 'fieldLabelAttrs', type: 'ConstrBind<FieldLabelPropsBasic<FieldCounterPropsBasic, ProgressPropsBasic>>' },
+  { name: 'fieldMessageAttrs', type: 'ConstrBind<FieldMessagePropsBasic<FieldCounterPropsBasic>>' },
+  { name: 'filterMode', type: 'boolean' },
+  { name: 'focus', type: 'boolean' },
+  { name: 'forceShowMessage', type: 'boolean' },
+  { name: 'form', type: 'string' },
+  { name: 'helperMessage', type: 'string' },
+  { name: 'hideList', type: 'boolean' },
+  { name: 'icon', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
+  { name: 'iconArrowDown', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
+  { name: 'iconAttrs', type: 'ConstrBind<IconPropsBasic<ImagePropsBasic>>' },
+  { name: 'iconDir', type: 'boolean' },
+  { name: 'iconHide', type: 'boolean' },
+  { name: 'iconPalette', type: 'boolean' },
+  { name: 'iconSearch', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
+  { name: 'iconTrailing', type: 'IconValue<IconPropsBasic<ImagePropsBasic>>' },
+  { name: 'iconTrailingDirOnly', type: 'boolean' },
+  { name: 'iconTrailingPalette', type: 'boolean' },
+  { name: 'iconTrailingTurnOnly', type: 'boolean' },
+  { name: 'iconTurn', type: 'boolean' },
+  { name: 'id', type: 'string | number' },
+  { name: 'inputAttrs', type: 'Record<string, any>' },
+  { name: 'inputMode', type: 'string', option: ['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'] },
+  { name: 'inputSearchAttrs', type: 'ConstrBind<InputPropsBasic<MaskPropsBasic, IconPropsBasic<ImagePropsBasic>, FieldPropsBasic<IconPropsBasic<ImagePropsBasic>, FieldLabelPropsBasic<...>, FieldMessagePropsBasic<...>, FieldCounterPropsBasic, ProgressPropsBasic>, FieldLabelPropsBasic<...>, FieldMessagePropsBasic<...>, FieldCounterPropsBasic, ProgressPro...' },
+  { name: 'isSkeleton', type: 'boolean' },
+  { name: 'label', type: 'NumberOrString' },
+  { name: 'loading', type: 'boolean | ConstrBind<ProgressPropsBasic>' },
+  { name: 'match', type: 'FieldMatch' },
+  { name: 'max', type: 'NumberOrString' },
+  { name: 'min', type: 'NumberOrString' },
+  { name: 'modelValue', type: 'Value' },
+  { name: 'multiple', type: 'boolean' },
+  { name: 'name', type: 'string' },
+  { name: 'onUpdate:modelValue', type: '(value: any) => void' },
+  { name: 'onUpdate:value', type: '(value: any) => void' },
+  { name: 'option', type: 'ListRecord' },
+  { name: 'placeholder', type: 'string' },
+  { name: 'prefix', type: 'string | number' },
+  { name: 'readonly', type: 'boolean' },
+  { name: 'required', type: 'boolean' },
+  { name: 'selected', type: 'boolean' },
+  { name: 'showSearch', type: 'boolean' },
+  { name: 'spellcheck', type: 'string', option: ['true', 'false'] },
+  { name: 'suffix', type: 'string | number' },
+  { name: 'tabindex', type: 'number' },
+  { name: 'validationCode', type: 'FieldValidityCode' },
+  { name: 'validationMessage', type: 'string' },
+  { name: 'value', type: 'Value' }
+  // :propsList [!] System label / Системная метка
+]
+
+export const SelectWikiStorybook = new WikiStorybook(
+  'Select',
+  propsNames,
+  defaults,
+  wikiD1,
+  wiki,
+  wikiDescriptions
+)

@@ -1,3 +1,5 @@
+import type { WindowElement } from './WindowElement.ts'
+
 /**
  * Sentinel value for an "unset" client coordinate.
  * Used to distinguish the absence of data from a valid point (including 0,0).
@@ -20,6 +22,11 @@ export class WindowClient {
   protected x: number = WINDOW_NULL_VALUE
   protected y: number = WINDOW_NULL_VALUE
 
+  constructor(
+    protected readonly element: WindowElement
+  ) {
+  }
+
   /**
    * Checks if the button was pressed.
    *
@@ -27,6 +34,15 @@ export class WindowClient {
    */
   is(): boolean {
     return this.x !== WINDOW_NULL_VALUE && this.y !== WINDOW_NULL_VALUE
+  }
+
+  /**
+   * Checks if the coordinates are at the origin (0,0).
+   *
+   * Проверяет, находятся ли координаты в начале координат (0,0).
+   */
+  isZero(): boolean {
+    return this.x === 0 && this.y === 0
   }
 
   /**
@@ -87,6 +103,29 @@ export class WindowClient {
   reset(): this {
     this.x = WINDOW_NULL_VALUE
     this.y = WINDOW_NULL_VALUE
+
+    return this
+  }
+
+  /**
+   * The method updates the current position.
+   *
+   * Метод обновляет текущее положение.
+   */
+  update(): this {
+    if (
+      this.is()
+      && this.isZero()
+    ) {
+      const rect = this.element.getControlRect()
+
+      if (rect) {
+        this.set(
+          rect.left + (rect.width / 2),
+          rect.top + (rect.height / 2)
+        )
+      }
+    }
 
     return this
   }

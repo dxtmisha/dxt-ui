@@ -29,6 +29,7 @@ import { wikiMenu } from './wikiMenu'
 import { wikiMotionTransform } from './wikiMotionTransform'
 import { wikiProgress } from './wikiProgress'
 import { wikiScrollbar } from './wikiScrollbar'
+import { wikiSelect } from './wikiSelect'
 import { wikiSelectValue } from './wikiSelectValue'
 import { wikiWindow } from './wikiWindow'
 
@@ -62,6 +63,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiMotionTransform,
   ...wikiProgress,
   ...wikiScrollbar,
+  ...wikiSelect,
   ...wikiSelectValue,
   ...wikiWindow
 }

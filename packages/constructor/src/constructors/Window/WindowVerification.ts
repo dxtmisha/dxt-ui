@@ -45,7 +45,6 @@ export class WindowVerification {
    */
   async update(target: HTMLElement): Promise<void> {
     if (this.open.isClicks()) {
-      console.log('end clicks')
       return
     }
 

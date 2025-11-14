@@ -1,0 +1,17 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Select/style" as Select;
+
+@include ui.initDesignBasic('d1.select') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Select.mixinSelect;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

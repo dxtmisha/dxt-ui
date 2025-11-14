@@ -50,6 +50,8 @@ export class WindowOrigin {
   update(): this {
     const element = this.element.getMain()
 
+    this.client.update()
+
     if (!this.client.is()) {
       this.x = 0
       this.y = 0

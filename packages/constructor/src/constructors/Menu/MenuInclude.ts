@@ -100,7 +100,7 @@ export class MenuInclude<
     slotsChildren?: MenuSlots,
     attrs?: Record<string, any>
   ): VNode[] => {
-    if (this.components && this.is.value) {
+    if (this.components) {
       return this.components.render(
         'menu',
         {

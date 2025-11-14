@@ -118,7 +118,7 @@ export class SelectDesign<
   protected initRender(): VNode[] {
     return this.item.field.render(
       {
-        default: this.renderData
+        default: this.renderMenu
       },
       {
         ...this.getAttrs(),
@@ -127,42 +127,6 @@ export class SelectDesign<
         validationMessage: this.item.validation.message.value
       }
     )
-  }
-
-  /**
-   * Rendering the menu element.
-   *
-   * Рендер элемента меню.
-   * @param input data for the input element/ данные для элемента ввода
-   */
-  protected readonly renderData = (input: FieldControl): VNode[] => {
-    return [
-      ...this.renderInput(input),
-      ...this.renderMenu(input)
-    ]
-  }
-
-  /**
-   * Render input element.
-   *
-   * Рендер элемента ввода.
-   * @param input data for the input element/ данные для элемента ввода
-   */
-  protected readonly renderInput = (input: FieldControl): VNode[] => {
-    return [
-      h(
-        'input',
-        toBinds(
-          this.item.input.binds.value,
-          {
-            ref: this.element,
-            id: input.id,
-            class: input.classHidden,
-            onInput: this.item.event.onInput
-          }
-        )
-      )
-    ]
   }
 
   /**
@@ -197,39 +161,75 @@ export class SelectDesign<
   protected readonly renderMenuControl = (
     input: FieldControl,
     props: MenuControlItem
-  ): VNode | undefined => {
-    if (this.props.editValue) {
-      return h(
-        'input',
-        toBinds(
-          props.binds,
-          {
-            'placeholder': this.props.placeholder,
-            'class': [
-              props.classesWindow.controlOpenOnly,
-              input.className
-            ],
-            'value': this.item.value.get(),
-            'data-menu-control': '1',
-            'onInput': this.item.event.onSelect
-          }
-        )
-      )
+  ): VNode | VNode[] => {
+    const children: any[] = [
+      this.renderMenuControlInput(input, props)
+    ]
+
+    if (!this.item.input.isEdit.value) {
+      children.push(this.renderMenuControlValue(input, props))
     }
 
+    return children
+  }
+
+  /**
+   * Render input element.
+   *
+   * Рендер элемента ввода.
+   * @param input data for the input element/ данные для элемента ввода
+   * @param props data for the transferable property/ данные для передаваемого свойства
+   */
+  protected readonly renderMenuControlInput = (
+    input: FieldControl,
+    props: MenuControlItem
+  ): VNode => {
+    const isEdit = this.item.input.isEdit.value
+    const className = isEdit ? input.className : input.classForFocus
+
+    return h(
+      'input',
+      toBinds(
+        this.item.input.binds.value,
+        props.binds,
+        {
+          ref: this.element,
+          id: input.id,
+          value: this.item.value.get(),
+          class: [
+            props.classesWindow.controlOpenOnly,
+            className
+          ]
+        }
+      )
+    )
+  }
+
+  /**
+   * Render menu control in static mode.
+   *
+   * Рендер элемента управления меню в статическом режиме.
+   * @param input data for the input element/ данные для элемента ввода
+   * @param props data for the transferable property/ данные для передаваемого свойства
+   */
+  protected readonly renderMenuControlValue = (
+    input: FieldControl,
+    props: MenuControlItem
+  ): VNode => {
     return this.components.renderOne(
       'selectValue',
       toBinds(
         props.binds,
         {
           class: input.className,
+          disabled: this.props.disabled,
           value: props.selectedList.value,
           multiple: this.props.multiple,
           placeholder: this.props.placeholder,
           onClick: this.item.event.onSelect
         }
       )
-    )
+    ) as VNode
   }
 
   /**

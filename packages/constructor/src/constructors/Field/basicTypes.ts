@@ -29,6 +29,11 @@ export type FieldControl = {
    * CSS-классы для скрытого нативного элемента ввода
    */
   classHidden: string
+  /**
+   * CSS classes applied when the field is focused/
+   * CSS-классы, применяемые при фокусировке на поле
+   */
+  classForFocus: string
 }
 
 /**

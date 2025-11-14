@@ -124,7 +124,7 @@ export class Select {
         onClickSlot: this.onClick
       }))
     )
-    this.input = new SelectInput(this.props, this.value)
+    this.input = new SelectInput(this.props, this.value, this.event)
 
     this.filter = new SelectFilter()
   }

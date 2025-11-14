@@ -137,7 +137,8 @@ export class Field {
     return {
       id: String(this.props.id || this.id),
       className: `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`,
-      classHidden: `${this.className}__body__hidden`
+      classHidden: `${this.className}__body__hidden`,
+      classForFocus: `${this.className}__body__focus`
     }
   }
 

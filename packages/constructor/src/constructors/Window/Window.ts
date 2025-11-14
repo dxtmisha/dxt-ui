@@ -104,11 +104,11 @@ export class Window {
     protected readonly slots?: WindowSlots,
     protected readonly emits?: ConstrEmit<WindowEmits>
   ) {
-    this.client = new WindowClient()
     this.hook = new WindowHook(props)
 
     this.classes = new WindowClasses(className)
     this.element = new WindowElement(this.classes, element)
+    this.client = new WindowClient(this.element)
 
     this.status = new WindowStatus(this.element)
     this.persistent = new WindowPersistent(props, this.classes, this.element)
