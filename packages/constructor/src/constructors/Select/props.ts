@@ -1,10 +1,14 @@
+import type { ConstrBind } from '@dxtmisha/functional'
+
 import type { IconPropsBasic, IconValue } from '../Icon'
 import type { FieldPropsBasic, FieldPropsInclude } from '../Field'
 import type { FieldLabelPropsBasic } from '../FieldLabel'
 import type { FieldMessagePropsBasic } from '../FieldMessage'
 import type { FieldCounterPropsBasic } from '../FieldCounter'
+import type { InputPropsBasic } from '../Input'
 import type { ProgressPropsBasic } from '../Progress'
-import type { FieldSelectProps } from '../../types/fieldTypes.ts'
+
+import type { FieldSelectProps } from '../../types/fieldTypes'
 
 interface SelectPropsToken {
   // :type [!] System label / Системная метка
@@ -17,6 +21,7 @@ export interface SelectPropsBasic<
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
+  Input extends InputPropsBasic = InputPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
 > extends FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>,
   FieldSelectProps {
@@ -26,9 +31,12 @@ export interface SelectPropsBasic<
   // Style
   hideList?: boolean
   showSearch?: boolean
+  filterMode?: boolean
 
   iconArrowDown?: IconValue<Icon>
   iconSearch?: IconValue<Icon>
+
+  inputSearchAttrs?: ConstrBind<Input>
 }
 
 /**
@@ -45,7 +53,6 @@ export interface SelectProps extends SelectPropsBasic, SelectPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsSelect = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

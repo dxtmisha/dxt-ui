@@ -1,18 +1,22 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp, executeFunction, isFilled } from '@dxtmisha/functional'
 
+import { FieldElementInclude } from '../../classes/field/FieldElementInclude'
+import { FieldChangeInclude } from '../../classes/field/FieldChangeInclude'
+import { FieldValueInclude } from '../../classes/field/FieldValueInclude'
+import { FieldCodeInclude } from '../../classes/field/FieldCodeInclude'
+import { FieldValidationInclude } from '../../classes/field/FieldValidationInclude'
+import { FieldAttributesInclude } from '../../classes/field/FieldAttributesInclude'
+import { FieldEventInclude } from '../../classes/field/FieldEventInclude'
+
+import { MenuInclude } from '../Menu'
+import { FieldInclude } from '../Field/FieldInclude'
+
+import { SelectInput } from './SelectInput'
+import { SelectFilter } from './SelectFilter'
+
 import type { SelectComponents, SelectEmits, SelectSlots } from './types'
 import type { SelectProps } from './props'
-import { FieldElementInclude } from '../../classes/field/FieldElementInclude.ts'
-import { FieldChangeInclude } from '../../classes/field/FieldChangeInclude.ts'
-import { FieldValueInclude } from '../../classes/field/FieldValueInclude.ts'
-import { FieldCodeInclude } from '../../classes/field/FieldCodeInclude.ts'
-import { FieldValidationInclude } from '../../classes/field/FieldValidationInclude.ts'
-import { FieldAttributesInclude } from '../../classes/field/FieldAttributesInclude.ts'
-import { FieldEventInclude } from '../../classes/field/FieldEventInclude.ts'
-import { MenuInclude } from '../Menu'
-import { FieldInclude } from '../Field/FieldInclude.ts'
-import { SelectInput } from './SelectInput.ts'
 
 /**
  * Select
@@ -32,6 +36,8 @@ export class Select {
   readonly field: FieldInclude
   readonly menu: MenuInclude
   readonly input: SelectInput
+
+  readonly filter: SelectFilter
 
   /**
    * Constructor
@@ -93,8 +99,9 @@ export class Select {
       undefined,
       () => this.menu.getElement()?.toggle,
       computed(() => ({
-        iconTrailing: this.props.iconTrailing ?? this.props.iconArrowDown,
-        maxlength: this.props.max
+        iconTrailing: !this.props.disabled ? (this.props.iconTrailing ?? this.props.iconArrowDown) : undefined,
+        maxlength: this.props.max,
+        cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
       }))
     )
     this.menu = new MenuInclude(
@@ -111,12 +118,15 @@ export class Select {
         disabled: props.disabled || props.readonly,
         autoClose: !props.multiple,
         list: executeFunction(props.option),
+        filterMode: this.props.filterMode,
         hideList: props.hideList,
         onClick: this.event.onSelect,
         onClickSlot: this.onClick
       }))
     )
     this.input = new SelectInput(this.props, this.value)
+
+    this.filter = new SelectFilter()
   }
 
   /** Checks whether there are slots for context areas/ Проверяет, есть ли слоты для контекстных областей */

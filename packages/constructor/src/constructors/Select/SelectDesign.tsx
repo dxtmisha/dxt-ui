@@ -2,11 +2,14 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { Select } from './Select'
 
+import type { MenuControlItem } from '../Menu'
+import type { FieldControl } from '../Field'
 import {
   type SelectPropsBasic
 } from './props'
@@ -112,114 +115,169 @@ export class SelectDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
-    // const children: any[] = []
-
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+  protected initRender(): VNode[] {
+    return this.item.field.render(
+      {
+        default: this.renderData
+      },
+      {
+        ...this.getAttrs(),
+        iconTurn: this.item.menu.expose.open.value,
+        class: this.classes?.value.main,
+        validationMessage: this.item.validation.message.value
+      }
+    )
   }
 
   /**
-   * Rendering the menu element.<br>
+   * Rendering the menu element.
+   *
    * Рендер элемента меню.
-   * @param input data for the input element /<br>данные для элемента ввода
+   * @param input data for the input element/ данные для элемента ввода
    */
-  protected readonly renderData = (input: FieldSetup['slotInput']): VNode[] => {
-    const setup = this.setup()
-
+  protected readonly renderData = (input: FieldControl): VNode[] => {
     return [
-      setup.renderInput(input),
-      ...setup.renderMenu(
-        {
-          control: (binds: UseMenuControl) => {
-            if (this.props.editValue) {
-              return h(
-                'input',
-                {
-                  ...binds.binds,
-                  'placeholder': this.props.placeholder,
-                  'class': [
-                    binds.binds.class,
-                    binds.classesWindow.controlOpenOnly,
-                    input.className
-                  ],
-                  'value': setup.value.value,
-                  'data-menu-control': '1',
-                  'onInput': setup.onSelect
-                }
-              )
-            }
+      ...this.renderInput(input),
+      ...this.renderMenu(input)
+    ]
+  }
 
-            return this.components.renderOne('selectValue', {
-              ...binds.binds,
-              class: [
-                binds.binds.class,
-                input.className
-              ],
-              value: binds.selectedList.value,
-              multiple: this.props.multiple,
-              placeholder: this.props.placeholder,
-              onClick: setup.onSelect
-            })
-          },
-          top: props => this.renderTop(props),
-          bottom: props => this.initSlot('bottom', undefined, props)
-        },
-        {
-          selected: setup.value.value,
-          filter: this.item.filter.value
-        }
+  /**
+   * Render input element.
+   *
+   * Рендер элемента ввода.
+   * @param input data for the input element/ данные для элемента ввода
+   */
+  protected readonly renderInput = (input: FieldControl): VNode[] => {
+    return [
+      h(
+        'input',
+        toBinds(
+          this.item.input.binds.value,
+          {
+            ref: this.element,
+            id: input.id,
+            class: input.classHidden,
+            onInput: this.item.event.onInput
+          }
+        )
       )
     ]
   }
 
-  protected readonly renderInput = (input: FieldSetup['slotInput']): VNode => {
-    const setup = this.setup()
-
-    return h('input', {
-      ...setup.inputBind.value,
-      ref: this.element,
-      id: input.id,
-      class: input.classHidden,
-      onInput: setup.onInput
-    })
+  /**
+   * Rendering the menu element.
+   *
+   * Рендер элемента меню.
+   * @param input data for the input element/ данные для элемента ввода
+   */
+  protected readonly renderMenu = (input: FieldControl): VNode[] => {
+    return this.item.menu.render(
+      {
+        control: (props: MenuControlItem) => this.renderMenuControl(input, props),
+        title: props => this.renderTitle(props),
+        footer: props => this.initSlot('footer', undefined, props),
+        contextTop: props => this.initSlot('contextTop', undefined, props),
+        contextBottom: props => this.initSlot('contextBottom', undefined, props)
+      },
+      {
+        selected: this.item.value.item.value,
+        highlight: this.item.filter.get()
+      }
+    )
   }
 
-  protected readonly renderTop = (props: UseMenuControl) => {
-    const setup = this.setup()
-    const children: any[] = []
-
-    if (this.props.showSearch) {
-      children.push(
-        h(
-          'div',
+  /**
+   * Render menu control.
+   *
+   * Рендер элемента управления меню.
+   * @param input data for the input element/ данные для элемента ввода
+   * @param props data for the transferable property/ данные для передаваемого свойства
+   */
+  protected readonly renderMenuControl = (
+    input: FieldControl,
+    props: MenuControlItem
+  ): VNode | undefined => {
+    if (this.props.editValue) {
+      return h(
+        'input',
+        toBinds(
+          props.binds,
           {
-            class: [
-              setup.classes.value.input,
-              props.classesWindow.static
-            ]
-          },
-          this.components.renderOne(
-            'input',
-            {
-              icon: this.props.iconSearch,
-              onInput: (_: Event, { value }: { value: string }) => {
-                this.item.filter.value = value
-              },
-              inputAttrs: {
-                'data-menu-control': '1'
-              }
-            }
-          )
+            'placeholder': this.props.placeholder,
+            'class': [
+              props.classesWindow.controlOpenOnly,
+              input.className
+            ],
+            'value': this.item.value.get(),
+            'data-menu-control': '1',
+            'onInput': this.item.event.onSelect
+          }
         )
       )
     }
 
-    this.initSlot('top', children, props)
+    return this.components.renderOne(
+      'selectValue',
+      toBinds(
+        props.binds,
+        {
+          class: input.className,
+          value: props.selectedList.value,
+          multiple: this.props.multiple,
+          placeholder: this.props.placeholder,
+          onClick: this.item.event.onSelect
+        }
+      )
+    )
+  }
+
+  /**
+   * Render title element.
+   *
+   * Рендер элемента заголовка.
+   * @param props data for the transferable property/ данные для передаваемого свойства
+   */
+  protected readonly renderTitle = (props: MenuControlItem) => {
+    const children: any[] = []
+
+    if (this.props.showSearch) {
+      children.push(this.renderFilterInput(props))
+    }
+
+    this.initSlot('title', children, props)
 
     return children
+  }
+
+  /**
+   * Render filter input.
+   *
+   * Рендер фильтра ввода.
+   * @param props data for the transferable property/ данные для передаваемого свойства
+   */
+  protected readonly renderFilterInput = (props: MenuControlItem): VNode => {
+    return h(
+      'div',
+      {
+        class: [
+          this.classes?.value.input,
+          props.classesWindow.static
+        ]
+      },
+      this.components.renderOne(
+        'input',
+        toBinds(
+          {
+            icon: this.props.iconSearch,
+            onInputLite: this.item.filter.onInput,
+            inputAttrs: {
+              'data-menu-control': '1'
+            }
+          },
+          this.props.inputSearchAttrs
+        )
+      )
+    )
   }
 }

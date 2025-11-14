@@ -98,6 +98,15 @@ export class FieldValueInclude<Value = any> {
   })
 
   /**
+   * Returns the current value.
+   *
+   * Возвращает текущее значение.
+   */
+  get(): Value | undefined {
+    return this.item.value
+  }
+
+  /**
    * Returns the current value as an array.
    *
    * Возвращает текущее значение в виде массива.
