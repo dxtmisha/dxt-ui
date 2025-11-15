@@ -135,7 +135,9 @@ export class ListGo {
    * Открывает окно, если элемент в нем.
    */
   open(): void {
-    if (
+    if (this.focus.isItem()) {
+      this.focus.click()
+    } else if (
       this.focus.isGroup()
       || this.focus.isMenu()
     ) {
