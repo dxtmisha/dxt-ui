@@ -10,7 +10,6 @@ export const propsValues = {
 
 interface PropsToken {
   // :type [!] System label / Системная метка
-  placeholder?: boolean
   // :type [!] System label / Системная метка
 }
 

@@ -1,8 +1,8 @@
 var M = Object.defineProperty;
-var B = (l, t, e) => t in l ? M(l, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : l[t] = e;
-var r = (l, t, e) => B(l, typeof t != "symbol" ? t + "" : t, e);
-import { computed as n, toRefs as F, watch as x, isRef as N, isReadonly as C, ref as u } from "vue";
-import { isFilled as o, render as p, RouterItemRef as L, getExp as S, isNumber as $, toNumberByMax as R, GeoRef as T, toCamelCaseFirst as v, toCamelCase as b, isFunction as D, toBinds as A, createElement as O, anyToString as d, executeFunction as V, isString as _, toNumber as y, isArray as G, isObject as m, toArray as w, setValues as H, getRef as k, Translate as q } from "@dxtmisha/functional";
+var F = (l, t, e) => t in l ? M(l, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : l[t] = e;
+var r = (l, t, e) => F(l, typeof t != "symbol" ? t + "" : t, e);
+import { computed as n, toRefs as N, watch as I, isRef as S, isReadonly as L, ref as u } from "vue";
+import { isFilled as o, render as p, RouterItemRef as C, getExp as v, isNumber as $, toNumberByMax as R, GeoRef as T, toCamelCaseFirst as b, toCamelCase as y, isFunction as D, toBinds as A, createElement as O, anyToString as d, executeFunction as V, isString as _, toNumber as x, isArray as G, isObject as m, toArray as H, setValues as w, getRef as k, Translate as q } from "@dxtmisha/functional";
 class K {
   /**
    * Constructor
@@ -149,7 +149,7 @@ class Z {
         } else
           this.emit(t, this.getOptions(t));
     });
-    this.props = t, this.enabled = e, this.emits = s, this.refs = t ? F(t) : void 0;
+    this.props = t, this.enabled = e, this.emits = s, this.refs = t ? N(t) : void 0;
   }
   /**
    * Exported values
@@ -193,7 +193,7 @@ class Z {
    */
   toRouter() {
     var t, e;
-    return (t = this.props) != null && t.to ? (L.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
+    return (t = this.props) != null && t.to ? (C.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
   }
   /**
    * Triggers the click event
@@ -206,7 +206,7 @@ class Z {
     this.emits && (this.emits("click", t, e), this.emits("clickLite", e));
   }
 }
-class I {
+class E {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -218,13 +218,13 @@ class I {
    * @param alternativeSlots alternative slots/ альтернативные слоты
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    */
-  constructor(t, e, s, i, a, h, f, E) {
+  constructor(t, e, s, i, a, h, g, B) {
     /** Label presence check/ Проверка наличия метки */
     r(this, "is", n(() => {
       var t;
       return this.props.label || (t = this.labelReplacing) != null && t.value ? !0 : this.slots ? this.alternativeSlots ? "label" in this.slots : "default" in this.slots : !1;
     }));
-    this.props = t, this.className = e, this.classesExtra = s, this.slots = i, this.elementsExtra = a, this.labelReplacing = h, this.alternativeSlots = f, this.skeleton = E;
+    this.props = t, this.className = e, this.classesExtra = s, this.slots = i, this.elementsExtra = a, this.labelReplacing = h, this.alternativeSlots = g, this.skeleton = B;
   }
   /**
    * Render the label
@@ -302,7 +302,7 @@ class I {
     return [];
   }
 }
-class J extends I {
+class J extends E {
   /**
    * Constructor for the LabelHighlightInclude class.
    *
@@ -314,7 +314,7 @@ class J extends I {
    * @param elementsExtra additional elements/ дополнительные элементы
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    */
-  constructor(e, s, i, a, h, f) {
+  constructor(e, s, i, a, h, g) {
     super(
       e,
       s,
@@ -323,7 +323,7 @@ class J extends I {
       h,
       n(() => this.getLabel()),
       void 0,
-      f
+      g
     );
     /**
      * Returns a string with highlighted parts.
@@ -335,14 +335,28 @@ class J extends I {
     r(this, "getLabel", () => {
       const e = this.props;
       if (e.highlight && e.highlight.length >= this.getLengthStart() && e.label) {
-        const s = `${this.className}__highlight`, i = e.label.toString(), a = S(e.highlight, "i");
+        const s = `${this.className}__highlight`, i = e.label.toString(), a = v(e.highlight, "i");
         if (i.match(a))
           return i.replace(a, (h) => `<span class="${s}">${h}</span>`);
         if (o(e.value) && e.value.toString().match(a))
           return `<span class="${s}">${i}</span>`;
       }
     });
-    this.props = e, this.className = s, this.classesExtra = i, this.slots = a, this.elementsExtra = h, this.skeleton = f;
+    this.props = e, this.className = s, this.classesExtra = i, this.slots = a, this.elementsExtra = h, this.skeleton = g;
+  }
+  /**
+   * Determines if highlighting is required.
+   *
+   * Определяет, требуется ли выделение.
+   */
+  isHighlight() {
+    const e = this.props;
+    if (!e.highlight || e.highlight.length < this.getLengthStart())
+      return !0;
+    if (!(e.highlight && e.highlight.length >= this.getLengthStart() && e.label))
+      return !1;
+    const s = e.label.toString(), i = v(e.highlight, "i");
+    return !!(s.match(i) || o(e.value) && e.value.toString().match(i));
   }
   /**
    * Returns the minimum length of the string to start highlighting.
@@ -354,7 +368,7 @@ class J extends I {
     return (e = this.props.highlightLengthStart) != null ? e : 2;
   }
 }
-class Q extends I {
+class Q extends E {
   /**
    * Constructor for working with text that has maximum values.
    *
@@ -413,7 +427,7 @@ class W {
     r(this, "update", (t) => {
       this.isValue() && (this.syncValue.value = t);
     });
-    this.index = t, this.emits = e, this.syncValue = s, s && x(s, (i) => {
+    this.index = t, this.emits = e, this.syncValue = s, s && I(s, (i) => {
       this.emit(i);
     }, { immediate: !0 });
   }
@@ -426,7 +440,7 @@ class W {
    * @returns Type predicate indicating syncValue is a mutable Ref/ Предикат типа, указывающий что syncValue - изменяемый Ref
    */
   isValue() {
-    return N(this.syncValue) && !C(this.syncValue);
+    return S(this.syncValue) && !L(this.syncValue);
   }
   /**
    * Generates binding object for v-model integration.
@@ -438,10 +452,10 @@ class W {
    */
   getBinds() {
     if (this.isValue()) {
-      const t = v(this.index);
+      const t = b(this.index);
       return {
         [`model${t}`]: this.syncValue.value,
-        [`onUpdate:${b(this.index)}`]: this.update,
+        [`onUpdate:${y(this.index)}`]: this.update,
         [`onUpdate:model${t}`]: this.update
       };
     }
@@ -456,7 +470,7 @@ class W {
    * @param value The new value to set/ Новое значение для установки
    */
   emit(t) {
-    D(this.emits) && (this.emits(`update:${b(this.index)}`, t), this.emits(`update:model${v(this.index)}`, t));
+    D(this.emits) && (this.emits(`update:${y(this.index)}`, t), this.emits(`update:model${b(this.index)}`, t));
   }
 }
 class X {
@@ -584,7 +598,7 @@ class st {
     return this.item.value;
   }
 }
-const g = {
+const f = {
   email: "[\\S]+@[\\S]{2,}\\.[\\w]{2,}",
   password: "[0-9a-zA-Z\\-!@#$%^&*]+"
 };
@@ -600,7 +614,7 @@ class it {
       if (this.props.pattern)
         return this.props.pattern;
       if (this.type)
-        return g == null ? void 0 : g[this.type.item.value];
+        return f == null ? void 0 : f[this.type.item.value];
     }));
     this.props = t, this.type = e;
   }
@@ -934,7 +948,7 @@ class ht {
      * Returns the current value, converted to a number/
      * Возвращает текущее значение, преобразованное в номер
      */
-    r(this, "number", n(() => this.boolean.value ? y(this.string.value) : 0));
+    r(this, "number", n(() => this.boolean.value ? x(this.string.value) : 0));
     /** Returns the current value of type string/ Возвращает текущее значение типа string */
     r(this, "string", n(() => d(this.item.value)));
     /** Returns the current value of type boolean/ Возвращает текущее значение типа boolean */
@@ -953,10 +967,18 @@ class ht {
     r(this, "update", () => {
       (this.isEdit(this.props.value) || this.isEdit(this.props.modelValue)) && this.setToOriginal();
     });
-    this.props = t, this.refs = e, this.element = s, this.original = i, this.item.value = this.getOriginal(), x([
+    this.props = t, this.refs = e, this.element = s, this.original = i, this.item.value = this.getOriginal(), I([
       e.value,
       e.modelValue
     ], this.update);
+  }
+  /**
+   * Returns the current value.
+   *
+   * Возвращает текущее значение.
+   */
+  get() {
+    return this.item.value;
   }
   /**
    * Returns the current value as an array.
@@ -964,7 +986,7 @@ class ht {
    * Возвращает текущее значение в виде массива.
    */
   getToArray() {
-    return w(this.item.value);
+    return H(this.item.value);
   }
   /**
    * Changes the value.
@@ -975,12 +997,12 @@ class ht {
   set(t) {
     var e, s;
     if (this.isDifference(t)) {
-      this.item.value = H(
+      this.item.value = w(
         this.item.value,
         t,
         {
           multiple: this.props.multiple,
-          maxlength: y(this.props.maxlength)
+          maxlength: x(this.props.maxlength)
         }
       );
       const i = (e = this.element) == null ? void 0 : e.getElement();
@@ -1291,7 +1313,7 @@ export {
   ht as FieldValueInclude,
   et as FieldVisibilityInclude,
   J as LabelHighlightInclude,
-  I as LabelInclude,
+  E as LabelInclude,
   Q as LabelNumberInclude,
   W as ModelInclude,
   X as PrefixInclude,

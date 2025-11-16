@@ -190,7 +190,8 @@ export class MenuDesign<
                 filterMode: this.props.filterMode,
 
                 list,
-                lite: this.item.menuWindow.lite.value
+                lite: this.item.menuWindow.lite.value,
+                max: this.props.max
               },
               this.props.listAttrs
             ),

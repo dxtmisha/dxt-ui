@@ -77,7 +77,9 @@ export class List {
       this.refs.selected,
       this.refs.keyValue,
       this.refs.keyLabel,
-      this.refs.liteThreshold
+      this.refs.liteThreshold,
+      undefined,
+      this.refs.max
     )
 
     this.go = new ListGo(this.props, this.focus, this.data, this.emits)

@@ -16,6 +16,8 @@ export declare class ListDataRef {
     protected readonly keyValue?: RefType<string | undefined> | undefined;
     protected readonly keyLabel?: RefType<string | undefined> | undefined;
     protected readonly lite?: RefType<number | undefined> | undefined;
+    protected readonly min: RefOrNormal<number | string | undefined>;
+    protected readonly max: RefOrNormal<number | string | undefined>;
     protected readonly parent?: string | undefined;
     protected subList: Record<any, ListDataRef>;
     /**
@@ -31,9 +33,11 @@ export declare class ListDataRef {
      * @param keyValue Key for getting item value / ключ для получения значения элемента
      * @param keyLabel Key for getting item label / ключ для получения метки элемента
      * @param lite Threshold for lite mode / порог для облегченного режима
+     * @param min Minimum number of selections / минимальное количество выделений
+     * @param max Maximum number of selections / максимальное количество выделений
      * @param parent Parent identifier / идентификатор родителя
      */
-    constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, filterMode?: RefType<boolean | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, parent?: string | undefined);
+    constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, filterMode?: RefType<boolean | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, min?: RefOrNormal<number | string | undefined>, max?: RefOrNormal<number | string | undefined>, parent?: string | undefined);
     /**
      * Returns a list for forming a list.
      *
@@ -78,12 +82,20 @@ export declare class ListDataRef {
      * Есть ли выбранный элемент.
      */
     readonly isSelected: ComputedRef<boolean>;
+    /** Is the minimum selection reached/ Достигнуто ли минимальное выделение */
+    readonly isSelectedMin: ComputedRef<boolean>;
+    /** Is the maximum selection reached/ Достигнуто ли максимальное выделение */
+    readonly isSelectedMax: ComputedRef<boolean>;
     /**
-     * Returns a list of selected items on the map.
-     *
-     * Возвращает список выделенных элементов на карте.
+     * Returns a list of selected items on the map/
+     * Возвращает список выделенных элементов на карте
      */
     readonly selectedList: ComputedRef<ListList>;
+    /**
+     * Returns a list of selected items in the current group/
+     * Возвращает список выделенных элементов в текущей группе
+     */
+    readonly selectedListInGroup: ComputedRef<ListList>;
     /**
      * Returns a list of selected items on the map.
      *

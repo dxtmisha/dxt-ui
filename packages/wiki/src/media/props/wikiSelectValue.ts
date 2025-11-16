@@ -10,7 +10,7 @@ import {
  * Объект wikiSelectValue содержит свойства для компонента SelectValue
  */
 export const wikiSelectValue: StorybookArgsToList = {
-  value: {
+  'selectValue.value': {
     type: StorybookControl.object,
     options: {
       category: StorybookCategory.value,

@@ -27,8 +27,7 @@ const props = withDefaults(defineProps<SelectValueProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-selectValue': true,
-    'd1-selectValue--placeholder': props.placeholder
+    'd1-selectValue': true
     // :classes-values [!] System label / Системная метка
   }
 }))

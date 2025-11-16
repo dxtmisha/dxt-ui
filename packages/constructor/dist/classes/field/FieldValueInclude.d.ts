@@ -44,6 +44,12 @@ export declare class FieldValueInclude<Value = any> {
     /** Returns the length of the entered value/ Возвращает длину введенного значения */
     readonly length: ComputedRef<number>;
     /**
+     * Returns the current value.
+     *
+     * Возвращает текущее значение.
+     */
+    get(): Value | undefined;
+    /**
      * Returns the current value as an array.
      *
      * Возвращает текущее значение в виде массива.

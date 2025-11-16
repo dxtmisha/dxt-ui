@@ -1,4 +1,7 @@
 {
   "#item": {},
-  "#trailing": {}
+  "#trailing": {},
+  "~placeholder": {
+    "_prop": false
+  }
 }

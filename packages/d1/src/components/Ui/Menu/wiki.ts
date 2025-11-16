@@ -28,6 +28,7 @@ const propsNames: StorybookProps = [
   { name: 'list', type: 'ListRecord<ListItemProps>' },
   { name: 'listAttrs', type: 'ConstrBind<ListProps>' },
   { name: 'liteThreshold', type: 'number' },
+  { name: 'max', type: 'string | number' },
   { name: 'modelSelected', type: 'string' },
   { name: 'onUpdate:modelSelected', type: '(value: string) => void' },
   { name: 'onUpdate:selected', type: '(value: string) => void' },

@@ -1,5 +1,5 @@
 import { ComputedRef, ShallowRef } from 'vue';
-import { NumberOrString } from '@dxtmisha/functional';
+import { ListRecord, NumberOrString } from '@dxtmisha/functional';
 import { ModelEmits, ModelProps } from './modelTypes';
 /** Supported field types/ Поддерживаемые типы полей */
 export type FieldType = 'text' | 'search' | 'number' | 'number-format' | 'currency' | 'email' | 'password' | 'datetime' | 'date' | 'year-month' | 'time' | 'hour-minute' | 'tel' | 'url' | 'checkbox' | 'radio';
@@ -279,7 +279,8 @@ export interface FieldTextareaProps<Value = any> extends Omit<FieldBasicProps<Va
  * Props for select elements (single & multiple)/
  * Свойства для select элементов (одиночный и множественный выбор)
  */
-export interface FieldSelectProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'> {
+export interface FieldSelectProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'>, Omit<FieldStepProps, 'min' | 'step'>, FieldUxProps {
+    option?: ListRecord;
     /** Multiple selection mode/ Режим множественного выбора */
     multiple?: boolean;
 }

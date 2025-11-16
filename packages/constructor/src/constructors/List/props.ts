@@ -34,6 +34,8 @@ export interface ListPropsBasic<
   keyLabel?: string
   keyValue?: string
 
+  max?: string | number
+
   // Style
   tag?: 'div' | 'button' | 'a' | 'span' | string
 

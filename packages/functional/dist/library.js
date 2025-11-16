@@ -1,9 +1,9 @@
 var At = Object.defineProperty;
 var Bt = (i, t, e) => t in i ? At(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
 var c = (i, t, e) => Bt(i, typeof t != "symbol" ? t + "" : t, e);
-import { i as y, D as ct, r as _, a as Ft, G as w, f as p, t as N, b as Q, c as xt, d as vt, e as z, g as W, h as F, A as V, j as S, k as bt, S as St, l as j, m as U, n as lt, E as Et, C as Ht, H as T, L as mt, o as Pt } from "./ScrollbarWidth-De97V2Mh.js";
+import { i as y, D as ct, r as _, a as Ft, G as D, f as p, t as N, b as Q, c as xt, d as vt, e as z, g as j, h as x, A as V, j as S, k as bt, S as St, l as H, m as U, n as lt, E as Et, C as Ht, H as T, L as mt, o as Pt } from "./ScrollbarWidth-De97V2Mh.js";
 import { p as Ki, q as Zi, U as Vi, s as Yi, u as qi, v as Ji, w as Qi, x as Xi, y as Mi, z as Oi, B as Ti, I as Gi, F as ts, J as es, K as is, M as ss, N as rs, O as ns, P as os, Q as as, R as us, T as cs } from "./ScrollbarWidth-De97V2Mh.js";
-import { isRef as X, h as Rt, computed as l, toRefs as Wt, useAttrs as jt, useSlots as Ut, ref as $, watch as f, triggerRef as _t, shallowRef as Z, onUnmounted as nt, inject as zt, provide as Kt, watchEffect as wt } from "vue";
+import { isRef as X, h as Rt, computed as l, toRefs as Wt, useAttrs as jt, useSlots as Ut, ref as $, watch as m, triggerRef as _t, shallowRef as Z, onUnmounted as nt, inject as zt, provide as Kt, watchEffect as wt } from "vue";
 class Zt {
   /**
    * Constructor
@@ -51,30 +51,30 @@ class Zt {
 }
 const Vt = () => new ct("__broadcast-name").get(() => `name_${_(1e6, 9999999)}`);
 function A(i) {
-  var r, o, a, u, h, d, g, D;
+  var r, o, a, u, h, d, g, w;
   if (i instanceof Date)
     return i;
   if (Ft(i))
     return /* @__PURE__ */ new Date();
   if (typeof i == "number")
     return new Date(i);
-  let t = i, e = w.getTimezoneFormat();
-  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (P, M, C) => (t = M, e = C, P));
-  const s = (D = (g = (d = (h = (u = (a = (o = (r = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? r : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? d : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? g : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? D : t.replace(" ", "T");
+  let t = i, e = D.getTimezoneFormat();
+  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (F, M, C) => (t = M, e = C, F));
+  const s = (w = (g = (d = (h = (u = (a = (o = (r = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? r : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? d : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? g : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? w : t.replace(" ", "T");
   return /* @__PURE__ */ new Date(`${s}${e}`);
 }
 function ot(i, t) {
   return p(i, (e) => e == null ? void 0 : e[t]);
 }
-class H {
+class R {
   /**
    * Constructor
    * @param code country code, full form language-country or one of them/
    * код страны, полный вид язык-страна или один из них
    */
-  constructor(t = w.getLocation()) {
+  constructor(t = D.getLocation()) {
     c(this, "geo");
-    this.geo = w.find(t);
+    this.geo = D.find(t);
     const e = this.getLocation();
     if (e in G)
       return G[e];
@@ -87,8 +87,8 @@ class H {
    * @param code country code, full form language-country or one of them/
    * код страны, полный вид язык-страна или один из них
    */
-  static getInstance(t = w.getLocation()) {
-    return new H(t);
+  static getInstance(t = D.getLocation()) {
+    return new R(t);
   }
   /**
    * Returns country code and language.
@@ -140,7 +140,7 @@ class H {
       type: "language",
       style: e
     };
-    return this.display(w.getByCode(t).language, s);
+    return this.display(D.getByCode(t).language, s);
   }
   /**
    * Get display names of region.
@@ -410,8 +410,8 @@ class H {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   relativeLimit(t, e, s, r, o, a, u) {
-    const h = A(t), d = s || /* @__PURE__ */ new Date(), g = new Date(d), D = new Date(d);
-    return g.setDate(d.getDate() - e), D.setDate(d.getDate() + e), h >= g && h <= D ? this.relative(
+    const h = A(t), d = s || /* @__PURE__ */ new Date(), g = new Date(d), w = new Date(d);
+    return g.setDate(d.getDate() - e), w.setDate(d.getDate() + e), h >= g && h <= w ? this.relative(
       h,
       r,
       d
@@ -581,7 +581,7 @@ class ht {
    * @param type type of date format for output/ тип формата даты вывода
    * @param code country and language code/ код страны и языка
    */
-  constructor(t, e = "date", s = w.getLocation()) {
+  constructor(t, e = "date", s = D.getLocation()) {
     c(this, "date");
     c(this, "hour24", !1);
     c(this, "watch");
@@ -593,7 +593,7 @@ class ht {
    * Возвращает объект для работы с форматированием.
    */
   getIntl() {
-    return new H(this.code);
+    return new R(this.code);
   }
   /**
    * Returns a Date object.
@@ -1226,12 +1226,12 @@ class ht {
     ), this;
   }
 }
-const n = "@flag", E = class E {
+const n = "@flag", P = class P {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
    */
-  constructor(t = w.getLocation()) {
+  constructor(t = D.getLocation()) {
     this.code = t;
   }
   /**
@@ -1242,14 +1242,14 @@ const n = "@flag", E = class E {
    */
   get(t = this.code) {
     var s;
-    const e = w.find(t);
+    const e = D.find(t);
     if (e) {
       const r = this.getCountry(e);
       return {
         language: this.getLanguage(e),
         country: r,
         standard: e.standard,
-        icon: (s = E.flags) == null ? void 0 : s[e.country],
+        icon: (s = P.flags) == null ? void 0 : s[e.country],
         label: r,
         value: e.country
       };
@@ -1282,7 +1282,7 @@ const n = "@flag", E = class E {
    */
   getNational(t) {
     return p(this.getList(t), (e) => {
-      const s = new E(e.standard).get(e.standard);
+      const s = new P(e.standard).get(e.standard);
       return {
         ...e,
         description: s == null ? void 0 : s.country,
@@ -1306,7 +1306,7 @@ const n = "@flag", E = class E {
    * Возвращает специальный объект для работы с форматированием.
    */
   getLocation() {
-    return new H(this.code);
+    return new R(this.code);
   }
   /**
    * Returns a list of countries to retrieve data from.
@@ -1315,7 +1315,7 @@ const n = "@flag", E = class E {
    * @param codes country code/ код страны
    */
   getCodes(t) {
-    return t != null ? t : Object.keys(E.flags);
+    return t != null ? t : Object.keys(P.flags);
   }
   /**
    * Getting the name of the language.
@@ -1336,7 +1336,7 @@ const n = "@flag", E = class E {
     return this.getLocation().countryName(t.country);
   }
 };
-c(E, "flags", {
+c(P, "flags", {
   AD: `${n}-ad`,
   AE: `${n}-ae`,
   AF: `${n}-af`,
@@ -1579,7 +1579,7 @@ c(E, "flags", {
   ZM: `${n}-zm`,
   ZW: `${n}-zw`
 });
-let at = E, x;
+let at = P, E;
 class xe {
   /**
    * Returns the value by its name.
@@ -1588,7 +1588,7 @@ class xe {
    * @param name property name/ название свойства
    */
   static get(t) {
-    return x && (x == null ? void 0 : x[t]);
+    return E && (E == null ? void 0 : E[t]);
   }
   /**
    * Adds data, this method works only once.
@@ -1597,7 +1597,7 @@ class xe {
    * @param data global data/ глобальные данные
    */
   static add(t) {
-    x === void 0 && (x = xt(t));
+    E === void 0 && (E = xt(t));
   }
 }
 function Yt(i) {
@@ -2114,7 +2114,7 @@ class ee extends dt {
    * @param keywords keywords as string or array / ключевые слова в виде строки или массива
    */
   setKeywords(e) {
-    return this.set(L.keywords, W(e).join(", ")), this;
+    return this.set(L.keywords, j(e).join(", ")), this;
   }
   /**
    * Sets the description meta tag.
@@ -2233,7 +2233,7 @@ const ie = [
       e = e.replace(new RegExp(`%${ie[s++]}`, "g"), String(r));
     });
   }
-  return F(t) && p(t, (s, r) => {
+  return x(t) && p(t, (s, r) => {
     e = e.replace(
       new RegExp(`\\[${r}\\](.*?)\\[/${r}\\]`, "g"),
       (o, a) => String(s).replace(/\[content]/g, a)
@@ -2360,7 +2360,7 @@ const ie = [
    * @param name code name/ название кода
    */
   static getName(t) {
-    return `${w.getLocation()}-${t}`;
+    return `${D.getLocation()}-${t}`;
   }
   /**
    * Returns a list of names that are not yet in the list.
@@ -2370,7 +2370,7 @@ const ie = [
    */
   static getNamesNone(t) {
     const e = [];
-    return W(t).forEach((s) => {
+    return j(t).forEach((s) => {
       s !== "__TRANSLATE_START__" && s !== "__TRANSLATE_END__" && !(this.getName(s) in this.data) && e.push(s);
     }), e;
   }
@@ -2481,7 +2481,7 @@ function Dt(i, t = "ig", e = ":value") {
 function ae(i, t) {
   var r;
   const e = t.split(".", 2), s = e[0];
-  return s && (i != null && i[s]) && F(i[s]) && (e != null && e[1]) ? ae(i[s], e[1]) : (r = s && (i == null ? void 0 : i[s])) != null ? r : "";
+  return s && (i != null && i[s]) && x(i[s]) && (e != null && e[1]) ? ae(i[s], e[1]) : (r = s && (i == null ? void 0 : i[s])) != null ? r : "";
 }
 function _e(i) {
   var t, e, s;
@@ -2523,7 +2523,7 @@ function Ye(i, t = void 0) {
   }), e;
 }
 function qe(i) {
-  return F(i) ? i : {};
+  return x(i) ? i : {};
 }
 function le(i, t) {
   return re(i, t).join("");
@@ -2587,18 +2587,18 @@ function ii(i, t) {
   return i >= e && i < e + 1;
 }
 function si(i, t) {
-  return Array.isArray(i) ? i.every((e) => j(e, t)) : j(i, t);
+  return Array.isArray(i) ? i.every((e) => H(e, t)) : H(i, t);
 }
 function he(i) {
   return [...new Set(i)];
 }
-function R(i, t, e = !0) {
+function W(i, t, e = !0) {
   const s = U(i);
   return S(i) && S(t) && p(
     t,
     (r, o) => {
       const a = i == null ? void 0 : i[o];
-      S(a) && S(r) ? e && Array.isArray(a) && Array.isArray(r) ? s[o] = U(he([...a, ...r])) : s[o] = R(
+      S(a) && S(r) ? e && Array.isArray(a) && Array.isArray(r) ? s[o] = U(he([...a, ...r])) : s[o] = W(
         Array.isArray(a) ? { ...a } : a,
         r,
         e
@@ -2659,11 +2659,11 @@ function ui(i, t, e) {
     if (e) {
       let s = {}, r = !1;
       return p(i, (o, a) => {
-        !r && (e === a || e === o) ? (r = !0, s = R(s, t)) : r ? s = R(s, { [a]: o }) : s[a] = S(o) ? U(o) : o;
-      }), r ? s : R(i, t);
+        !r && (e === a || e === o) ? (r = !0, s = W(s, t)) : r ? s = W(s, { [a]: o }) : s[a] = S(o) ? U(o) : o;
+      }), r ? s : W(i, t);
     }
     if (S(t))
-      return R(i, t);
+      return W(i, t);
   }
   return U(i);
 }
@@ -2680,7 +2680,7 @@ function hi(i, t, e, s) {
   const r = N(i), o = N(t);
   return t && o < r ? `${pt(o, e, s)}+` : pt(r, e, s);
 }
-const pt = (i, t, e) => t ? new H(e).number(i) : i;
+const pt = (i, t, e) => t ? new R(e).number(i) : i;
 function ge(i, t) {
   return 1 / i * t;
 }
@@ -2830,7 +2830,7 @@ class mi extends me {
     (t || this.changed.isChanged()) && (await this.initEvent(), this.makeCallbackItem(), this.changed.update());
   }
 }
-function m(i) {
+function f(i) {
   return X(i) ? i.value : i;
 }
 function ye(i) {
@@ -2963,11 +2963,11 @@ class kt {
    */
   computeModification(t) {
     var s;
-    const e = m((s = this.modification) == null ? void 0 : s[t]);
-    if (e && F(e)) {
+    const e = f((s = this.modification) == null ? void 0 : s[t]);
+    if (e && x(e)) {
       const r = {};
       return p(e, (o, a) => {
-        r[a] = m(o);
+        r[a] = f(o);
       }), r;
     }
     return {};
@@ -3023,7 +3023,7 @@ class $i {
    * @param name list of class names by levels/ список названий классов по уровням
    */
   getSubClass(t) {
-    return `${this.getName()}__${W(t).join("__")}`;
+    return `${this.getName()}__${j(t).join("__")}`;
   }
   /**
    * Getting the class name for the status.
@@ -3032,7 +3032,7 @@ class $i {
    * @param name list of class names by levels/ список названий классов по уровням
    */
   getStatusClass(t) {
-    return `${this.getName()}--${W(t).join("--")}`;
+    return `${this.getName()}--${j(t).join("--")}`;
   }
   /**
    * Getting the property name for the style.
@@ -3041,7 +3041,7 @@ class $i {
    * @param name list of class names by levels/ список названий классов по уровням
    */
   getStyle(t) {
-    return `--${this.getName()}-sys-${W(t).join("-")}`;
+    return `--${this.getName()}-sys-${j(t).join("-")}`;
   }
   /**
    * Getting additional parameters.
@@ -3093,7 +3093,7 @@ class $i {
    * @param classes list of classes for transformation/ список классов для преобразования
    */
   toClass(t) {
-    return F(t) ? t : Array.isArray(t) ? { [t.filter((s) => typeof s == "string" && s.trim() !== "").join(" ")]: !0 } : typeof t == "string" ? { [t]: !0 } : {};
+    return x(t) ? t : Array.isArray(t) ? { [t.filter((s) => typeof s == "string" && s.trim() !== "").join(" ")]: !0 } : typeof t == "string" ? { [t]: !0 } : {};
   }
   /**
    * Converts the class name to standard for the current component.
@@ -3163,7 +3163,7 @@ class pi {
    * @param type type of date format for output. тип формата даты вывода
    * @param code country and language code. код страны и языка
    */
-  constructor(t, e = "date", s = w.getLocation()) {
+  constructor(t, e = "date", s = D.getLocation()) {
     c(this, "item");
     c(this, "type");
     c(this, "code");
@@ -3179,9 +3179,9 @@ class pi {
       this.date.value,
       this.type.value,
       this.code.value
-    ), f(this.item, (r) => {
+    ), m(this.item, (r) => {
       this.date.value = A(r);
-    }), f(this.type, (r) => this.datetime.setType(r)), f(this.code, (r) => this.datetime.setCode(r)), f(this.date, (r) => this.datetime.setDate(r)), this.datetime.setWatch(() => _t(this.date));
+    }), m(this.type, (r) => this.datetime.setType(r)), m(this.code, (r) => this.datetime.setCode(r)), m(this.date, (r) => this.datetime.setDate(r)), this.datetime.setWatch(() => _t(this.date));
   }
   /**
    * Returns the basic data for the date.
@@ -3322,7 +3322,7 @@ class vi extends Et {
       r,
       o,
       a
-    ), h.value && this.setElementControl(h.value), f(u, (d) => this.setElement(d)), f(h, (d) => this.setElementControl(d));
+    ), h.value && this.setElementControl(h.value), m(u, (d) => this.setElement(d)), m(h, (d) => this.setElementControl(d));
   }
 }
 class bi {
@@ -3330,10 +3330,10 @@ class bi {
    * Constructor
    * @param code country and language code/ код страны и языка
    */
-  constructor(t = w.getLocation()) {
+  constructor(t = D.getLocation()) {
     c(this, "code");
     c(this, "flag");
-    this.code = B(t), this.flag = new at(this.code.value), f(this.code, (e) => this.flag.setCode(e));
+    this.code = B(t), this.flag = new at(this.code.value), m(this.code, (e) => this.flag.setCode(e));
   }
   /**
    * Obtaining a reactive object with the country code.
@@ -3432,10 +3432,10 @@ const k = class k {
     * код страны, полный вид язык-страна или один из них
     */
   static set(t) {
-    w.set(t, !0), this.item.value = w.getItem();
+    D.set(t, !0), this.item.value = D.getItem();
   }
 };
-c(k, "item", Z(w.get())), c(k, "country", l(() => k.item.value.country)), c(k, "language", l(() => k.item.value.language)), c(k, "standard", l(() => k.item.value.standard)), c(k, "firstDay", l(() => k.item.value.firstDay));
+c(k, "item", Z(D.get())), c(k, "country", l(() => k.item.value.country)), c(k, "language", l(() => k.item.value.language)), c(k, "standard", l(() => k.item.value.standard)), c(k, "firstDay", l(() => k.item.value.firstDay));
 let K = k;
 class be {
   /**
@@ -3448,7 +3448,7 @@ class be {
     c(this, "intl");
     this.location = B(t), this.intl = l(() => {
       var e;
-      return new H((e = this.location.value) != null ? e : K.getLanguage().value);
+      return new R((e = this.location.value) != null ? e : K.getLanguage().value);
     });
   }
   /**
@@ -3460,7 +3460,7 @@ class be {
    * объект с некоторыми или всеми из следующих свойств
    */
   display(t, e) {
-    return l(() => this.intl.value.display(m(t), e));
+    return l(() => this.intl.value.display(f(t), e));
   }
   /**
    * Get display names of language.
@@ -3470,7 +3470,7 @@ class be {
    * @param style the formatting style to use/ используемый стиль форматирования
    */
   languageName(t, e) {
-    return l(() => this.intl.value.languageName(m(t), e));
+    return l(() => this.intl.value.languageName(f(t), e));
   }
   /**
    * Get display names of region.
@@ -3480,7 +3480,7 @@ class be {
    * @param style the formatting style to use/ используемый стиль форматирования
    */
   countryName(t, e) {
-    return l(() => this.intl.value.countryName(m(t), e));
+    return l(() => this.intl.value.countryName(f(t), e));
   }
   /**
    * In basic use without specifying a locale, a formatted string.
@@ -3492,7 +3492,7 @@ class be {
    * или всеми свойствами
    */
   number(t, e) {
-    return l(() => this.intl.value.number(m(t), e));
+    return l(() => this.intl.value.number(f(t), e));
   }
   /**
    * Decimal point symbol.
@@ -3514,8 +3514,8 @@ class be {
   currency(t, e, s = !1) {
     return l(
       () => this.intl.value.currency(
-        m(t),
-        m(e),
+        f(t),
+        f(e),
         s
       )
     );
@@ -3530,7 +3530,7 @@ class be {
    * в форматировании блока
    */
   unit(t, e) {
-    return l(() => this.intl.value.unit(m(t), e));
+    return l(() => this.intl.value.unit(f(t), e));
   }
   /**
    * Number as a percentage.
@@ -3540,7 +3540,7 @@ class be {
    * @param options an object with some or all properties/ объект с некоторыми или всеми свойствами
    */
   percent(t, e) {
-    return l(() => this.intl.value.percent(m(t), e));
+    return l(() => this.intl.value.percent(f(t), e));
   }
   /**
    * Number as a percentage (unit).
@@ -3551,7 +3551,7 @@ class be {
    * объект с некоторыми или всеми свойствами
    */
   percentBy100(t, e) {
-    return l(() => this.intl.value.percentBy100(m(t), e));
+    return l(() => this.intl.value.percentBy100(f(t), e));
   }
   /**
    * Enables language-sensitive date and time formatting.
@@ -3563,7 +3563,7 @@ class be {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   date(t, e, s, r) {
-    return l(() => this.intl.value.date(m(t), e, s, r));
+    return l(() => this.intl.value.date(f(t), e, s, r));
   }
   /**
    * Enables language-sensitive relative time formatting.
@@ -3575,7 +3575,7 @@ class be {
    * @param todayValue current day/ текущий день
    */
   relative(t, e, s) {
-    return l(() => this.intl.value.relative(m(t), e, s));
+    return l(() => this.intl.value.relative(f(t), e, s));
   }
   /**
    * Enables language-sensitive relative time formatting
@@ -3597,7 +3597,7 @@ class be {
    */
   relativeLimit(t, e, s, r, o, a, u) {
     return l(() => this.intl.value.relativeLimit(
-      m(t),
+      f(t),
       e,
       s,
       r,
@@ -3614,7 +3614,7 @@ class be {
    * @param style the representation of the month/ представление месяца
    */
   month(t, e) {
-    return l(() => this.intl.value.month(m(t), e));
+    return l(() => this.intl.value.month(f(t), e));
   }
   /**
    * Array to list of months.
@@ -3633,7 +3633,7 @@ class be {
    * @param style the representation of the weekday/ представление о дне недели
    */
   weekday(t, e) {
-    return l(() => this.intl.value.weekday(m(t), e));
+    return l(() => this.intl.value.weekday(f(t), e));
   }
   /**
    * An array of the list of names of the days of the week.
@@ -3651,7 +3651,7 @@ class be {
    * @param value the date to format/ дата для форматирования
    */
   time(t) {
-    return l(() => this.intl.value.time(m(t)));
+    return l(() => this.intl.value.time(f(t)));
   }
 }
 class It {
@@ -3668,9 +3668,11 @@ class It {
    * @param keyValue Key for getting item value / ключ для получения значения элемента
    * @param keyLabel Key for getting item label / ключ для получения метки элемента
    * @param lite Threshold for lite mode / порог для облегченного режима
+   * @param min Minimum number of selections / минимальное количество выделений
+   * @param max Maximum number of selections / максимальное количество выделений
    * @param parent Parent identifier / идентификатор родителя
    */
-  constructor(t, e, s, r, o, a, u, h, d, g) {
+  constructor(t, e, s, r, o, a, u, h, d, g = 0, w = 9999999, F) {
     c(this, "subList", {});
     /**
      * Returns a list for forming a list.
@@ -3679,7 +3681,7 @@ class It {
      */
     c(this, "data", l(
       () => p(
-        m(this.list) || [],
+        f(this.list) || [],
         (t, e) => this.initItem(e, t)
       )
     ));
@@ -3716,13 +3718,15 @@ class It {
       return p(
         this.data.value,
         (r) => {
-          var o;
+          var a, u;
+          const o = H(r.index, s);
           return {
             ...r,
             focus: t === r.index,
             highlight: e,
-            filterMode: (o = this.filterMode) == null ? void 0 : o.value,
-            selected: j(r.index, s)
+            filterMode: (a = this.filterMode) == null ? void 0 : a.value,
+            selected: o,
+            disabled: (u = r.disabled) != null ? u : !o && r.type === "item" && this.isSelectedMax.value
           };
         }
       );
@@ -3785,16 +3789,33 @@ class It {
      */
     c(this, "isSelected", l(() => {
       const t = this.getSelected();
-      return !!t && this.mapItems.value.findIndex((e) => j(e.index, t)) !== -1;
+      return !!t && this.mapItems.value.findIndex((e) => H(e.index, t)) !== -1;
+    }));
+    /** Is the minimum selection reached/ Достигнуто ли минимальное выделение */
+    c(this, "isSelectedMin", l(() => {
+      const t = Number(f(this.min) || 0);
+      return t > 0 ? t >= this.selectedListInGroup.value.length : !1;
+    }));
+    /** Is the maximum selection reached/ Достигнуто ли максимальное выделение */
+    c(this, "isSelectedMax", l(() => {
+      const t = Number(f(this.max) || 9999999);
+      return t > 0 ? t <= this.selectedListInGroup.value.length : !1;
     }));
     /**
-     * Returns a list of selected items on the map.
-     *
-     * Возвращает список выделенных элементов на карте.
+     * Returns a list of selected items on the map/
+     * Возвращает список выделенных элементов на карте
      */
     c(this, "selectedList", l(() => {
       const t = this.getSelected();
-      return t && this.isSelected.value ? this.mapItems.value.filter((e) => j(e.index, t)) : [];
+      return t && this.isSelected.value ? this.mapItems.value.filter((e) => H(e.index, t)) : [];
+    }));
+    /**
+     * Returns a list of selected items in the current group/
+     * Возвращает список выделенных элементов в текущей группе
+     */
+    c(this, "selectedListInGroup", l(() => {
+      const t = this.getSelected();
+      return t && this.isSelected.value ? this.data.value.filter((e) => H(e.index, t)) : [];
     }));
     /**
      * Returns a list of selected items on the map.
@@ -3808,7 +3829,7 @@ class It {
      * Возвращает список значений выделенных элементов на карте.
      */
     c(this, "selectedValues", l(() => ot(this.selectedList.value, "value")));
-    this.list = t, this.focus = e, this.highlight = s, this.highlightLengthStart = r, this.filterMode = o, this.selected = a, this.keyValue = u, this.keyLabel = h, this.lite = d, this.parent = g, X(t) && f(t, () => {
+    this.list = t, this.focus = e, this.highlight = s, this.highlightLengthStart = r, this.filterMode = o, this.selected = a, this.keyValue = u, this.keyLabel = h, this.lite = d, this.min = g, this.max = w, this.parent = F, X(t) && m(t, () => {
       this.subList = {};
     });
   }
@@ -3966,6 +3987,8 @@ class It {
       this.keyValue,
       this.keyLabel,
       this.lite,
+      this.min,
+      this.max,
       t.index
     )), this.subList[t.index];
   }
@@ -4009,8 +4032,8 @@ class It {
    */
   initItem(t, e) {
     var s, r, o, a, u, h;
-    if (F(e)) {
-      const d = e == null ? void 0 : e[(r = (s = this.keyValue) == null ? void 0 : s.value) != null ? r : "value"], g = (u = e == null ? void 0 : e[(a = (o = this.keyLabel) == null ? void 0 : o.value) != null ? a : "label"]) != null ? u : d, D = this.getIndex(
+    if (x(e)) {
+      const d = e == null ? void 0 : e[(r = (s = this.keyValue) == null ? void 0 : s.value) != null ? r : "value"], g = (u = e == null ? void 0 : e[(a = (o = this.keyLabel) == null ? void 0 : o.value) != null ? a : "label"]) != null ? u : d, w = this.getIndex(
         e == null ? void 0 : e.index,
         d,
         t,
@@ -4019,7 +4042,7 @@ class It {
       return {
         ...e,
         parent: this.parent,
-        index: D,
+        index: w,
         type: (h = e == null ? void 0 : e.type) != null ? h : "item",
         label: g,
         value: d
@@ -4098,11 +4121,11 @@ const we = (i) => typeof i == "string" ? { method: i } : i || {};
 let J;
 function wi(i, t, e = !0, s, r, o) {
   const a = $(), u = B(we(t)), h = $(!1), d = $(!1);
-  let g = !0, D = 0;
-  const P = async () => {
+  let g = !0, w = 0;
+  const F = async () => {
     if (g)
       return;
-    const C = m(i);
+    const C = f(i);
     if ((!s || s.value) && C) {
       h.value = !0, d.value = !0;
       let O = {};
@@ -4114,14 +4137,14 @@ function wi(i, t, e = !0, s, r, o) {
     } else a.value !== void 0 && (a.value = void 0);
   }, M = () => {
     const C = [];
-    e && C.push(u), X(i) && C.push(i), s && C.push(s), J && C.push(J), C.length > 0 && f(C, async () => {
-      h.value || await P();
+    e && C.push(u), X(i) && C.push(i), s && C.push(s), J && C.push(J), C.length > 0 && m(C, async () => {
+      h.value || await F();
     });
   };
   return {
     get data() {
-      return g && (g = !1, P().then()), M(), o && (D++, nt(() => {
-        D--, D < 1 && (console.warn("useApiRef: unmounted"), a.value = void 0, g = !0, D = 0);
+      return g && (g = !1, F().then()), M(), o && (w++, nt(() => {
+        w--, w < 1 && (console.warn("useApiRef: unmounted"), a.value = void 0, g = !0, w = 0);
       })), a;
     },
     get isStarting() {
@@ -4133,7 +4156,7 @@ function wi(i, t, e = !0, s, r, o) {
     get reading() {
       return l(() => d.value);
     },
-    reset: P
+    reset: F
   };
 }
 const Di = (i) => {
@@ -4149,7 +4172,7 @@ function De(i, t) {
       s.value !== o.data.message && (s.value = o.data.message);
     }
   );
-  return f(s, (o) => r.post({ message: o })), tt[e] = s, s;
+  return m(s, (o) => r.post({ message: o })), tt[e] = s, s;
 }
 const tt = {};
 function Li(i, t, e) {
@@ -4159,7 +4182,7 @@ function Li(i, t, e) {
     `__cookie:${i}`,
     s.get(t, e)
   );
-  return f(r, (o) => {
+  return m(r, (o) => {
     s.set(o, e);
   }), et[i] = r, r;
 }
@@ -4171,7 +4194,7 @@ function ki(i, t) {
   if (i in it)
     return it[i];
   const e = Z(T.get(i, t));
-  return f(e, (s) => T.set(i, s)), T.addWatch(i, (s) => {
+  return m(e, (s) => T.set(i, s)), T.addWatch(i, (s) => {
     e.value = s;
   }), it[i] = e, e;
 }
@@ -4204,7 +4227,7 @@ const it = {}, Ii = () => {
     addLazyItem(s) {
       const r = Z(!t);
       if (t) {
-        const o = f(s, (a, u) => {
+        const o = m(s, (a, u) => {
           if (u && t.unobserve(u), s.value) {
             const h = Y(s.value);
             i[h] = {
@@ -4263,21 +4286,21 @@ function Ai() {
 }
 const ke = Ce(() => {
   const i = new ee(), t = $(i.getTitle()), e = $(i.getKeywords()), s = $(i.getDescription()), r = $(i.getImage()), o = $(i.getCanonical()), a = $(i.getRobots()), u = $(i.getAuthor()), h = $(i.getSiteName()), d = () => i.html();
-  return f(t, () => {
+  return m(t, () => {
     i.setTitle(t.value);
-  }), f(e, () => {
+  }), m(e, () => {
     i.setKeywords(e.value);
-  }), f(s, () => {
+  }), m(s, () => {
     i.setDescription(s.value);
-  }), f(r, () => {
+  }), m(r, () => {
     i.setImage(r.value);
-  }), f(o, () => {
+  }), m(o, () => {
     i.setCanonical(o.value);
-  }), f(a, () => {
+  }), m(a, () => {
     i.setRobots(a.value);
-  }), f(u, () => {
+  }), m(u, () => {
     i.setAuthor(u.value);
-  }), f(h, () => {
+  }), m(h, () => {
     i.setSiteName(h.value);
   }), {
     meta: i,
@@ -4296,14 +4319,14 @@ function Fi(i, t) {
   if (i in st)
     return st[i];
   const e = new ct(i, !0), s = $(e.get(t));
-  return f(s, (r) => e.set(r)), st[i] = s, s;
+  return m(s, (r) => e.set(r)), st[i] = s, s;
 }
 const st = {};
 function xi(i, t, e) {
   if (i in rt)
     return rt[i];
   const s = new ct(i), r = $(s.get(t, e));
-  return f(r, (o) => s.set(o)), y() && window.addEventListener("storage", () => {
+  return m(r, (o) => s.set(o)), y() && window.addEventListener("storage", () => {
     s.update(), r.value = s.get();
   }), rt[i] = r, r;
 }
@@ -4312,7 +4335,7 @@ function Ie(i) {
   const t = Z(q.getListSync(i, !0)), e = async () => {
     t.value = { ...await q.getList(i) };
   };
-  f(K.getLanguage(), e);
+  m(K.getLanguage(), e);
   for (const s in t.value)
     if (t.value[s] === s || t.value[s] === " ") {
       e().then();
@@ -4343,17 +4366,17 @@ function Pi(i, t = () => {
 }
 function Ne(i, t = {}, e = "value", s = !1) {
   const r = typeof t == "string", o = r ? t : e, a = r ? {} : t;
-  return i ? i && F(i) && (o in i || s) ? ut(a, i) : ut(a, { [o]: i }) : r ? {} : { ...a };
+  return i ? i && x(i) && (o in i || s) ? ut(a, i) : ut(a, { [o]: i }) : r ? {} : { ...a };
 }
 function Ri(i, t = {}, e = "value") {
-  return l(() => Ne(m(i), m(t), e));
+  return l(() => Ne(f(i), f(t), e));
 }
 const Wi = (i, t) => {
   const e = $();
   let s = !0;
   const r = () => {
     s && (wt(async () => {
-      const o = m(await i());
+      const o = f(await i());
       o !== t && (e.value = o);
     }), s = !1);
   };
@@ -4392,10 +4415,10 @@ export {
   Et as EventItem,
   vi as EventRef,
   n as GEO_FLAG_ICON_NAME,
-  w as Geo,
+  D as Geo,
   at as GeoFlag,
   bi as GeoFlagRef,
-  H as GeoIntl,
+  R as GeoIntl,
   be as GeoIntlRef,
   Ti as GeoPhone,
   K as GeoRef,
@@ -4467,7 +4490,7 @@ export {
   Ye as getObjectNoUndefined,
   qe as getObjectOrNone,
   Je as getRandomText,
-  m as getRef,
+  f as getRef,
   is as getRequestString,
   Qe as getStepPercent,
   Xe as getStepValue,
@@ -4487,14 +4510,14 @@ export {
   Ft as isNull,
   os as isNumber,
   S as isObject,
-  F as isObjectNotArray,
-  j as isSelected,
+  x as isObjectNotArray,
+  H as isSelected,
   si as isSelectedByList,
   Q as isString,
   as as isWindow,
   _ as random,
   pe as render,
-  R as replaceRecursive,
+  W as replaceRecursive,
   ri as replaceTemplate,
   ni as resizeImageByMax,
   oi as secondToTime,
@@ -4505,7 +4528,7 @@ export {
   ui as splice,
   le as strFill,
   Ei as t,
-  W as toArray,
+  j as toArray,
   ut as toBind,
   ve as toBinds,
   Ct as toCamelCase,

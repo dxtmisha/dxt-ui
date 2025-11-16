@@ -188,7 +188,7 @@ export class SelectValueDesign<
           'disabled': this.props.disabled,
           'value': item.value,
           'detail': item.detail,
-          'onClick': this.item.event.onClick
+          'onClick': this.item.onClick
         }
       ),
       undefined,

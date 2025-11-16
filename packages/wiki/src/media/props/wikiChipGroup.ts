@@ -10,7 +10,7 @@ import {
  * Объект wikiChipGroup содержит свойства для компонента ChipGroup
  */
 export const wikiChipGroup: StorybookArgsToList = {
-  selected: {
+  'chipGroup.selected': {
     type: StorybookControl.string,
     options: {
       category: StorybookCategory.status,

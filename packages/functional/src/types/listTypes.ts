@@ -63,6 +63,8 @@ export type ListDataFullItem<
     highlight?: string
     /** Whether the item is selected/ Выбран ли элемент */
     selected: boolean
+    /** Whether the item is disabled/ Отключен ли элемент */
+    disabled?: boolean
   }
 
 /**

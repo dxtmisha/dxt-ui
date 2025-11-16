@@ -50,7 +50,6 @@ const propsNames: StorybookProps = [
   { name: 'loading', type: 'boolean | ConstrBind<ProgressPropsBasic>' },
   { name: 'match', type: 'FieldMatch' },
   { name: 'max', type: 'NumberOrString' },
-  { name: 'min', type: 'NumberOrString' },
   { name: 'modelValue', type: 'Value' },
   { name: 'multiple', type: 'boolean' },
   { name: 'name', type: 'string' },

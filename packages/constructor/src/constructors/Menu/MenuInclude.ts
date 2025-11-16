@@ -63,8 +63,8 @@ export class MenuInclude<
     )
 
     return {
-      ...props,
-      disabled: this.props.disabled
+      disabled: this.props.disabled,
+      ...props
     }
   })
 

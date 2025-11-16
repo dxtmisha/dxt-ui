@@ -38,6 +38,8 @@ export type ListDataFullItem<Item extends ListDataBasic = ListDataBasic> = ListD
     highlight?: string;
     /** Whether the item is selected/ Выбран ли элемент */
     selected: boolean;
+    /** Whether the item is disabled/ Отключен ли элемент */
+    disabled?: boolean;
 };
 /**
  * Array of extended list items with state/

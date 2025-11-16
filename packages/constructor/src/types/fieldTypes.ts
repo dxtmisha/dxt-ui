@@ -362,7 +362,7 @@ export interface FieldTextareaProps<Value = any>
  * Свойства для select элементов (одиночный и множественный выбор)
  */
 export interface FieldSelectProps<Value = any>
-  extends Omit<FieldBasicProps<Value>, 'type'>, Omit<FieldStepProps, 'step'>, FieldUxProps {
+  extends Omit<FieldBasicProps<Value>, 'type'>, Omit<FieldStepProps, 'min' | 'step'>, FieldUxProps {
   // Value
   option?: ListRecord
 

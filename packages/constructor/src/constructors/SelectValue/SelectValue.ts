@@ -75,4 +75,20 @@ export class SelectValue {
     [`${this.className}--placeholder`]: this.isPlaceholder.value,
     [`${this.className}--multiple`]: Boolean(this.props.multiple)
   }))
+
+  /**
+   * Click event handler.
+   *
+   * Обработчик события клика.
+   * @param event event object/ объект события
+   * @param options additional event options/ дополнительные опции события
+   */
+  readonly onClick = (
+    event: MouseEvent,
+    options?: EventClickValue
+  ) => {
+    event.preventDefault()
+    event.stopPropagation()
+    this.event.onClick(event, options)
+  }
 }

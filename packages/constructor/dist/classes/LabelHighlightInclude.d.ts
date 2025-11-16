@@ -30,6 +30,12 @@ export declare class LabelHighlightInclude extends LabelInclude {
      */
     constructor(props: Readonly<LabelHighlightProps>, className: string, classesExtra?: ConstrClass | undefined, slots?: LabelHighlightSlots | undefined, elementsExtra?: (() => VNode[]) | undefined, skeleton?: SkeletonInclude | undefined);
     /**
+     * Determines if highlighting is required.
+     *
+     * Определяет, требуется ли выделение.
+     */
+    isHighlight(): boolean;
+    /**
      * Returns a string with highlighted parts.
      * If highlighting is not required, returns the original string.
      *

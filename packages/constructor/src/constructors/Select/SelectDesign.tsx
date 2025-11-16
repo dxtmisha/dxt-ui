@@ -162,13 +162,15 @@ export class SelectDesign<
     input: FieldControl,
     props: MenuControlItem
   ): VNode | VNode[] => {
-    const children: any[] = [
-      this.renderMenuControlInput(input, props)
-    ]
+    const children: any[] = []
 
     if (!this.item.input.isEdit.value) {
       children.push(this.renderMenuControlValue(input, props))
     }
+
+    children.push(
+      this.renderMenuControlInput(input, props)
+    )
 
     return children
   }

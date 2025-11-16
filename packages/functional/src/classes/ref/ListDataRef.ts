@@ -43,6 +43,8 @@ export class ListDataRef {
    * @param keyValue Key for getting item value / ключ для получения значения элемента
    * @param keyLabel Key for getting item label / ключ для получения метки элемента
    * @param lite Threshold for lite mode / порог для облегченного режима
+   * @param min Minimum number of selections / минимальное количество выделений
+   * @param max Maximum number of selections / максимальное количество выделений
    * @param parent Parent identifier / идентификатор родителя
    */
   constructor(
@@ -55,6 +57,8 @@ export class ListDataRef {
     protected readonly keyValue?: RefType<string | undefined>,
     protected readonly keyLabel?: RefType<string | undefined>,
     protected readonly lite?: RefType<number | undefined>,
+    protected readonly min: RefOrNormal<number | string | undefined> = 0,
+    protected readonly max: RefOrNormal<number | string | undefined> = 9_999_999,
     protected readonly parent?: string
   ) {
     if (isRef(list)) {
@@ -120,13 +124,23 @@ export class ListDataRef {
 
     return forEach(
       this.data.value,
-      item => ({
-        ...item,
-        focus: focus === item.index,
-        highlight,
-        filterMode: this.filterMode?.value,
-        selected: isSelected(item.index, selected)
-      })
+      (item) => {
+        const isSelectedItem = isSelected(item.index, selected)
+
+        return {
+          ...item,
+          focus: focus === item.index,
+          highlight,
+          filterMode: this.filterMode?.value,
+          selected: isSelectedItem,
+          disabled: item.disabled
+            ?? (
+              !isSelectedItem
+              && item.type === 'item'
+              && this.isSelectedMax.value
+            )
+        }
+      }
     )
   })
 
@@ -212,10 +226,31 @@ export class ListDataRef {
       && this.mapItems.value.findIndex(item => isSelected(item.index, selected)) !== -1
   })
 
+  /** Is the minimum selection reached/ Достигнуто ли минимальное выделение */
+  readonly isSelectedMin = computed<boolean>(() => {
+    const min = Number(getRef(this.min) || 0)
+
+    if (min > 0) {
+      return min >= this.selectedListInGroup.value.length
+    }
+
+    return false
+  })
+
+  /** Is the maximum selection reached/ Достигнуто ли максимальное выделение */
+  readonly isSelectedMax = computed<boolean>(() => {
+    const max = Number(getRef(this.max) || 9_999_999)
+
+    if (max > 0) {
+      return max <= this.selectedListInGroup.value.length
+    }
+
+    return false
+  })
+
   /**
-   * Returns a list of selected items on the map.
-   *
-   * Возвращает список выделенных элементов на карте.
+   * Returns a list of selected items on the map/
+   * Возвращает список выделенных элементов на карте
    */
   readonly selectedList = computed<ListList>(() => {
     const selected = this.getSelected()
@@ -225,6 +260,23 @@ export class ListDataRef {
       && this.isSelected.value
     ) {
       return this.mapItems.value.filter(item => isSelected(item.index, selected))
+    }
+
+    return []
+  })
+
+  /**
+   * Returns a list of selected items in the current group/
+   * Возвращает список выделенных элементов в текущей группе
+   */
+  readonly selectedListInGroup = computed<ListList>(() => {
+    const selected = this.getSelected()
+
+    if (
+      selected
+      && this.isSelected.value
+    ) {
+      return this.data.value.filter(item => isSelected(item.index, selected))
     }
 
     return []
@@ -419,6 +471,8 @@ export class ListDataRef {
         this.keyValue,
         this.keyLabel,
         this.lite,
+        this.min,
+        this.max,
         item.index
       )
     }

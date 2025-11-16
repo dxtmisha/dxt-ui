@@ -118,13 +118,14 @@ export class Select {
         disabled: props.disabled || props.readonly,
         autoClose: !props.multiple,
         list: executeFunction(props.option),
+        max: this.props.max,
         filterMode: this.props.filterMode,
         hideList: props.hideList,
         onClick: this.event.onSelect,
         onClickSlot: this.onClick
       }))
     )
-    this.input = new SelectInput(this.props, this.value, this.event)
+    this.input = new SelectInput(this.props, this.attributes, this.value, this.event)
 
     this.filter = new SelectFilter()
   }

@@ -284,7 +284,8 @@ export class ListDesign<
       'listGroup',
       {
         open: this.item.isOpenGroup(item),
-        divider: this.props.divider
+        divider: this.props.divider,
+        disabled: item.disabled
       },
       {
         head: ({ open}: { open: boolean }) => this.renderItemGroup(item, open),
@@ -305,7 +306,8 @@ export class ListDesign<
       'listMenu',
       {
         divider: this.props.divider,
-        axis: first ? (this.props.axis === 'x' ? 'y' : 'x') : 'x'
+        axis: first ? (this.props.axis === 'x' ? 'y' : 'x') : 'x',
+        disabled: item.disabled
       },
       {
         head: (props: WindowControlItem) => this.renderItemMenu(item, props),

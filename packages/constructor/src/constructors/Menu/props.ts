@@ -45,6 +45,8 @@ export interface MenuPropsBasic<
   keyLabel?: string
   keyValue?: string
 
+  max?: string | number
+
   // Style
   tag?: ListItemProps['tag']
 
