@@ -48,7 +48,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     [`d1-field--arrowAlign--${props.arrowAlign}`]: inArray(propsValues.arrowAlign, props.arrowAlign),
     [`d1-field--cancel--${props.cancel}`]: inArray(propsValues.cancel, props.cancel),
     [`d1-field--align--${props.align}`]: inArray(propsValues.align, props.align),
-    'd1-field--width--custom': isFilled(props.width) && !inArray(propsValues.width, props.width)
+    'd1-field--width--custom': isFilled(props.width) && !inArray(propsValues.width, props.width),
+    [`d1-field--size--${props.size}`]: inArray(propsValues.size, props.size)
     // :classes-values [!] System label / Системная метка
   }
 }))

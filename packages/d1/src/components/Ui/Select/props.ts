@@ -21,6 +21,11 @@ export interface SelectProps extends SelectPropsBasic, PropsToken {
  */
 export const defaults: object = {
   ...defaultsSelect,
+  menuAttrs: {
+    itemAttrs: {
+      dense: true
+    }
+  },
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

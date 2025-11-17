@@ -91,6 +91,9 @@
     "paddingX": "{sys.spacing.sm}",
     "border-radius": "0"
   },
+  "~dense": {
+    "link|divider": "{??divider}"
+  },
   "iconAlign": {
     "_default": "edge"
   },

@@ -117,13 +117,18 @@ export class Menu {
    */
   readonly binds = computed<ListPropsBasic>(() => {
     return {
+      filterMode: this.props.filterMode,
+
       liteThreshold: this.props.liteThreshold,
       keyLabel: this.props.keyLabel,
       keyValue: this.props.keyValue,
+      max: this.props.max,
 
       tag: this.props.tag,
       onClick: this.onClick,
       onClose: this.window.expose.toClose,
+
+      itemAttrs: this.props.itemAttrs,
 
       control: true
     }

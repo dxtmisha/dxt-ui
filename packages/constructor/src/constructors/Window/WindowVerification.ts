@@ -179,15 +179,6 @@ export class WindowVerification {
    * Проверяет, включено ли окно или подходят ли условия для открытия окна.
    */
   protected isEnabled(): boolean {
-    console.log(
-      'this.getTarget()',
-      this.getTarget(),
-      this.getTarget().parentElement,
-      this.getTarget().parentElement?.parentElement,
-      this.getTarget().closest(`.${this.classes.list.controlStatic}`),
-      this.classes.list.controlStatic
-    )
-
     return !this.props.disabled
       && !this.getTarget().closest(`.${this.classes.list.controlStatic}`)
   }

@@ -11,7 +11,8 @@ export const propsValues = {
   arrowAlign: ['center', 'right', 'left'],
   cancel: ['auto', 'always', 'none'],
   align: ['center', 'right', 'left'],
-  width: []
+  width: [],
+  size: ['sm', 'md', 'lg', 'display']
   // :values [!] System label / Системная метка
 }
 
@@ -35,6 +36,7 @@ interface PropsToken {
   cancel?: 'auto' | 'always' | 'none'
   align?: 'center' | 'right' | 'left'
   width?: string | 'custom'
+  size?: 'sm' | 'md' | 'lg' | 'display'
   // :type [!] System label / Системная метка
 }
 
@@ -59,7 +61,8 @@ export const defaults: object = {
     // :default [!] System label / Системная метка
     classic: true,
     arrowAlign: 'right',
-    cancel: 'auto'
+    cancel: 'auto',
+    size: 'md'
     // :default [!] System label / Системная метка
   }
 }

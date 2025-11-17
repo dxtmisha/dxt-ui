@@ -4,7 +4,7 @@ import type { WindowControlItem } from '../Window'
 
 import type { ListExpose } from '../List'
 import type { MenuExpose } from './types'
-import type { MenuProps } from './props'
+import type { MenuPropsBasic } from './props'
 
 export type MenuControlBasic
   = ListExpose
@@ -49,7 +49,7 @@ export type MenuSlotInclude = {
 }
 
 /** Interface for menu include props/ Интерфейс для свойств включения меню */
-export interface MenuPropsInclude {
+export interface MenuPropsInclude<Menu extends MenuPropsBasic = MenuPropsBasic> {
   disabled?: boolean
-  menuAttrs?: ConstrBind<MenuProps>
+  menuAttrs?: ConstrBind<Menu>
 }

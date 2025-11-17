@@ -160,6 +160,14 @@
       }
     }
     
+    &--dense {
+      --d1-listItem-paddingX: var(--d1-sys-spacing-sm);
+      
+      margin: 0;
+      
+      border-radius: 0;
+    }
+    
     @media screen and (min-width: 768px) {
       --d1-listItem-paddingY: var(--d1-sys-spacing-x);
     }

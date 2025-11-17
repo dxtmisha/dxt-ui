@@ -58,6 +58,7 @@ const propsNames: StorybookProps = [
   { name: 'readonly', type: 'boolean' },
   { name: 'required', type: 'boolean' },
   { name: 'selected', type: 'boolean' },
+  { name: 'size', type: 'string', option: ['sm', 'md', 'lg', 'display'] },
   { name: 'suffix', type: 'string | number' },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },
   { name: 'tonal', type: 'boolean' },

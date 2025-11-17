@@ -13,7 +13,6 @@
   & {
     --d1-field-padding: calc(var(--d1-field-height) * var(--d1-sys-spacing-adaptive-md));
     --d1-field-space: var(--d1-sys-spacing-x);
-    --d1-field-height: var(--d1-ref-spacing-12);
     --d1-field-borderWidth: var(--d1-sys-spacing-outline);
     --d1-field-borderColor: var(--d1-sys-palette-outline);
     --d1-field-borderOpacity: var(--d1-sys-opacity-outline);
@@ -213,6 +212,34 @@
     &--width {
       &--custom {
         @include ui.width(#{var(--d1-field-sys-width)});
+      }
+    }
+    
+    &--size {
+      &--sm {
+        --d1-field-height: var(--d1-ref-spacing-8);
+      }
+      
+      &--md {
+        --d1-field-height: var(--d1-ref-spacing-12);
+      }
+      
+      &--lg {
+        --d1-field-height: var(--d1-ref-spacing-16);
+      }
+      
+      &--display {
+        --d1-field-height: var(--d1-ref-spacing-18);
+        
+        & .d1-field__body {
+          &__input {
+            font-family: var(--d1-sys-font-family-basic), sans-serif;
+            @include ui.fontSize(#{var(--d1-sys-font-size-headlineSmall)});
+            font-weight: var(--d1-sys-font-weight-regular);
+            @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineSmall)});
+            letter-spacing: var(--d1-sys-letterSpacing-none);
+          }
+        }
       }
     }
   }

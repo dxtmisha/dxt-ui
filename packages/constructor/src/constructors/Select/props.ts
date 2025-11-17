@@ -7,6 +7,7 @@ import type { FieldMessagePropsBasic } from '../FieldMessage'
 import type { FieldCounterPropsBasic } from '../FieldCounter'
 import type { InputPropsBasic } from '../Input'
 import type { ProgressPropsBasic } from '../Progress'
+import type { MenuPropsBasic, MenuPropsInclude } from '../Menu'
 
 import type { FieldSelectProps } from '../../types/fieldTypes'
 
@@ -22,9 +23,11 @@ export interface SelectPropsBasic<
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
   Input extends InputPropsBasic = InputPropsBasic,
-  Progress extends ProgressPropsBasic = ProgressPropsBasic
+  Progress extends ProgressPropsBasic = ProgressPropsBasic,
+  Menu extends MenuPropsBasic = MenuPropsBasic
 > extends FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>,
-  FieldSelectProps {
+  FieldSelectProps,
+  MenuPropsInclude<Menu> {
   // Value
   editValue?: boolean
 

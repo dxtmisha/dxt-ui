@@ -2,7 +2,6 @@
   "main": "{d.field}",
   "padding": "{??height} * {?sys.spacing.adaptive.md}",
   "space": "{sys.spacing.x}",
-  "height": "{ref.spacing.12}",
   "link|font": "{font.bodyLarge}",
   "color": "{sys.palette.onSurface}",
   "border-width": "{sys.spacing.outline}",
@@ -151,5 +150,25 @@
   },
   "~classic": {
     "_default": true
+  },
+  "~size": {
+    "~sm": {
+      "height": "{ref.spacing.8}"
+    },
+    "~md": {
+      "height": "{ref.spacing.12}"
+    },
+    "~lg": {
+      "height": "{ref.spacing.16}"
+    },
+    "~display": {
+      "height": "{ref.spacing.18}",
+      "#body": {
+        "#input": {
+          "link|font": "{font.headlineSmall}"
+        }
+      }
+    },
+    "_default": "md"
   }
 }

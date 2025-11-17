@@ -25,6 +25,7 @@ interface PropsToken {
   fill?: string | 'custom'
   divider?: boolean
   size?: 'sm' | 'md' | 'lg'
+  dense?: boolean
   palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }

@@ -127,7 +127,7 @@
       font: inherit;
       letter-spacing: inherit;
       text-align: left;
-      line-height: calc((#{ui.v('??sys.half') - ui.v('??sys.title.half')}) * 2);
+      line-height: calc(#{ui.v('??sys.title.half')} * 2);
 
       background-color: transparent;
       border: none;

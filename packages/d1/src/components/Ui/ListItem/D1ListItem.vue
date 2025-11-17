@@ -42,6 +42,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-listItem--fill--custom': isFilled(props.fill) && !inArray(propsValues.fill, props.fill),
     'd1-listItem--divider': props.divider,
     [`d1-listItem--size--${props.size}`]: inArray(propsValues.size, props.size),
+    'd1-listItem--dense': props.dense,
     [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }

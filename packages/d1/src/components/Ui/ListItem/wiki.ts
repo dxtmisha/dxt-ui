@@ -9,6 +9,7 @@ const propsNames: StorybookProps = [
   { name: 'badge', type: 'string | number | ConstrBind<BadgeProps>' },
   { name: 'badgeDot', type: 'boolean' },
   { name: 'caption', type: 'string | number' },
+  { name: 'dense', type: 'boolean' },
   { name: 'description', type: 'string | number' },
   { name: 'detail', type: 'Record<string, any>' },
   { name: 'disabled', type: 'boolean' },

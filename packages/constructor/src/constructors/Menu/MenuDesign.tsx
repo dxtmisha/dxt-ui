@@ -187,11 +187,9 @@ export class MenuDesign<
 
                 selected: this.item.value.selected.value,
                 highlight: this.item.search.value.value,
-                filterMode: this.props.filterMode,
 
                 list,
-                lite: this.item.menuWindow.lite.value,
-                max: this.props.max
+                lite: this.item.menuWindow.lite.value
               },
               this.props.listAttrs
             ),
