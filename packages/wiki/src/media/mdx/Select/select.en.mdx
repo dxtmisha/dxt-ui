@@ -1,0 +1,69 @@
+Component for creating dropdown selection lists with search, filtering, multiple selection, and validation support.
+
+Select is a complete selection element that combines Field, Menu, SelectValue, and Input components to create an advanced selection interface. The component automatically displays selected values as text or chips (for multiple selection), provides built-in search and option filtering, supports AJAX data loading with caching. It integrates with all Field component features including validation, labels, counters, and messages.
+
+**Key features:**
+
+- Single or multiple value selection
+- Built-in search and real-time option filtering
+- AJAX data loading with caching support
+- Editable selected value mode (editValue)
+- Validation with standard Field features
+- Keyboard navigation and accessibility support
+- Automatic display of selected values (text or chips)
+- Maximum number of selected items limitation
+- Icon support for dropdown arrow and search
+- Auto-close control for multiple selection
+- Integration with Field, Menu, SelectValue, Input components
+- Customization via slots and attributes
+- Responsive design for mobile devices
+
+**Typical use cases:**
+
+- Selecting values from a predefined list of options
+- Filtering and searching in large data lists
+- Multiple item selection with quantity limitation
+- Selection with AJAX data loading from server
+- Forms with validation of selected values
+- Combo boxes with editing capability
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selectedCountry = ref('us')
+const selectedLanguages = ref(['js', 'ts'])
+
+const countries = [
+  { label: 'Russia', value: 'ru' },
+  { label: 'USA', value: 'us' },
+  { label: 'Germany', value: 'de' }
+]
+
+const languages = [
+  { label: 'JavaScript', value: 'js' },
+  { label: 'TypeScript', value: 'ts' },
+  { label: 'Python', value: 'py' }
+]
+</script>
+
+<template>
+  <!-- Simple selection -->
+  <Select
+    v-model="selectedCountry"
+    label="Country"
+    placeholder="Choose a country"
+    :option="countries"
+  />
+
+  <!-- Multiple selection -->
+  <Select
+    v-model="selectedLanguages"
+    label="Programming languages"
+    :multiple="true"
+    :max="3"
+    helper-message="Select up to 3 languages"
+    :option="languages"
+  />
+</template>
+```

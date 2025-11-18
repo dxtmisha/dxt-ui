@@ -33,5 +33,36 @@ export const wikiSelect: StorybookArgsToList = {
         { label: 'Documents', value: 'documents', icon: 'description' }
       ]
     }
+  },
+  editValue: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.form,
+      description: {
+        en: 'Allows editing the selected value directly inside the input when not in multiple mode',
+        ru: 'Позволяет редактировать выбранное значение прямо в input при одиночном выборе'
+      }
+    }
+  },
+  showSearch: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Shows a search/filter field inside the dropdown menu',
+        ru: 'Отображает поле поиска/фильтра внутри выпадающего меню'
+      }
+    }
+  },
+  inputSearchAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      type: ['object', 'function'],
+      description: {
+        en: 'Additional bindings or attributes for the search input inside the dropdown',
+        ru: 'Дополнительные привязки или атрибуты для поля поиска внутри выпадающего меню'
+      }
+    }
   }
 }

@@ -92,7 +92,6 @@ export interface FieldPropsInclude<
 
   // Style
   align?: 'center' | 'right' | 'left'
-  arrowAlign?: 'center' | 'right' | 'left'
 
   cancel?: 'auto' | 'always' | 'none'
   fieldAttrs?: ConstrBind<Field>

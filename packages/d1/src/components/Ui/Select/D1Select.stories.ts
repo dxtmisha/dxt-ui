@@ -4,6 +4,7 @@ import D1Select from './D1Select.vue'
 import { SelectWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import { ref } from 'vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -27,6 +28,13 @@ type Story = StoryObj<typeof meta>
 
 export const Select: Story = {
   // :story-main [!] System label / Системная метка
+  render: (args: any) => ({
+    components: { D1Select },
+    setup: () => ({ args }),
+    template: `
+      <D1Select v-bind="args" />
+    `
+  })
   // :story-main [!] System label / Системная метка
 }
 

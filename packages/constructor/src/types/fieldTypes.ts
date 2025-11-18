@@ -255,6 +255,8 @@ export interface FieldArrowProps {
   arrow?: 'auto' | 'carousel' | 'stepper' | 'none'
   /** Step size for input arrows (type="number" only)/ Шаг для стрелок ввода (только для type="number") */
   arrowStep?: NumberOrString
+  /** Arrow alignment/ Выравнивание стрелок */
+  arrowAlign?: 'center' | 'right' | 'left'
 }
 
 /**

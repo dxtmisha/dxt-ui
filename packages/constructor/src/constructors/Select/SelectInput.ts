@@ -1,11 +1,11 @@
 import { computed } from 'vue'
 import { type ConstrBind, toBinds } from '@dxtmisha/functional'
 
+import { FieldAttributesInclude } from '../../classes/field/FieldAttributesInclude'
 import { FieldValueInclude } from '../../classes/field/FieldValueInclude'
 import { FieldEventInclude } from '../../classes/field/FieldEventInclude'
 
 import type { SelectProps } from './props'
-import type { FieldAttributesInclude } from '../../classes/field/FieldAttributesInclude.ts'
 
 /**
  * Class for working with the select input.
@@ -44,14 +44,13 @@ export class SelectInput {
       this.attributes.listForInput.value,
       {
         'name': this.props.name,
-        'value': this.value.string.value,
         'type': 'text',
         'required': this.props.required,
         'readonly': !this.isEdit.value,
         'placeholder': this.props.placeholder,
         'data-menu-control': '1',
-        'onInput': this.isEdit.value ? this.event.onInput : this.event.onSelect,
-        'onKeydown': this.onKeydown
+        'onInput': this.isEdit.value ? this.event.onInput : this.event.onSelect
+        // 'onKeydown': this.onKeydown
       }
     ) as ConstrBind<Partial<HTMLInputElement>>
   })

@@ -34,6 +34,7 @@ import { wikiMdxMotionTransform } from './MotionTransform/wikiMdxMotionTransform
 import { wikiMdxProgress } from './Progress/wikiMdxProgress'
 import { wikiMdxRipple } from './Ripple/wikiMdxRipple'
 import { wikiMdxScrollbar } from './Scrollbar/wikiMdxScrollbar'
+import { wikiMdxSelect } from './Select/wikiMdxSelect'
 import { wikiMdxSelectValue } from './SelectValue/wikiMdxSelectValue'
 import { wikiMdxSkeleton } from './Skeleton/wikiMdxSkeleton'
 import { wikiMdxWindow } from './Window/wikiMdxWindow'
@@ -73,6 +74,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxProgress,
   wikiMdxRipple,
   wikiMdxScrollbar,
+  wikiMdxSelect,
   wikiMdxSelectValue,
   wikiMdxSkeleton,
   wikiMdxWindow

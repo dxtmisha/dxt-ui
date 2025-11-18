@@ -188,6 +188,8 @@ export class SelectDesign<
   ): VNode => {
     const isEdit = this.item.input.isEdit.value
     const className = isEdit ? input.className : input.classForFocus
+    const menuControl = {
+    }
 
     return h(
       'input',
@@ -202,7 +204,8 @@ export class SelectDesign<
             props.classesWindow.controlOpenOnly,
             className
           ]
-        }
+        },
+        isEdit ? undefined : menuControl
       )
     )
   }

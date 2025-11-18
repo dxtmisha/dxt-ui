@@ -341,6 +341,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  filterMode: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Enables filter mode for search (hides non-matching items)',
+        ru: 'Включает режим фильтрации для поиска (скрывает несовпадающие элементы)'
+      }
+    }
+  },
   flexible: {
     type: StorybookControl.select,
     options: {
