@@ -34,6 +34,7 @@ const propsNames: StorybookProps = [
   { name: 'onUpdate:selected', type: '(value: string) => void' },
   { name: 'request', type: 'ApiFetch' },
   { name: 'selected', type: 'ListSelectedList' },
+  { name: 'step', type: 'string | number' },
   { name: 'tag', type: 'string' },
   { name: 'windowAttrs', type: 'ConstrBind<WindowProps>' }
   // :propsList [!] System label / Системная метка

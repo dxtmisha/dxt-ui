@@ -1,0 +1,56 @@
+## Навигация по элементам меню
+
+Методы `previous()` и `next()` предназначены для программного перемещения по элементам меню на основе текущего выбора и свойства `step`.
+
+**Методы:**
+
+- `previous()` — перемещает выбор на предыдущий элемент (назад на `step` позиций)
+- `next()` — перемещает выбор на следующий элемент (вперед на `step` позиций)
+- `step` — количество элементов для пропуска при навигации (по умолчанию: 1)
+
+Методы работают совместно с реактивным состоянием `selected`: при вызове `previous()` или `next()` происходит автоматический расчёт новой позиции относительно текущего выделенного элемента. Если элемент не выбран, методы выбирают первый доступный элемент. При достижении границ списка (первый или последний элемент) навигация останавливается на граничном элементе, предотвращая выход за пределы списка.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const menuRef = ref()
+const selected = ref('item2')
+</script>
+
+<template>
+  <!-- Вызов через ref -->
+  <button @click="menuRef?.previous()">Назад</button>
+  <button @click="menuRef?.next()">Вперед</button>
+
+  <Menu
+    ref="menuRef"
+    v-model:selected="selected"
+    :list="[
+      { label: 'Элемент 1', value: 'item1' },
+      { label: 'Элемент 2', value: 'item2' },
+      { label: 'Элемент 3', value: 'item3' }
+    ]"
+    :step="1"
+  />
+
+  <!-- Навигация в слоте control -->
+  <Menu v-model:selected="selected" :list="items">
+    <template #control="{ previous, next, selectedNames }">
+      <button @click="previous">◀</button>
+      <span>{{ selectedNames[0] }}</span>
+      <button @click="next">▶</button>
+    </template>
+  </Menu>
+
+  <!-- С пользовательским шагом -->
+  <Menu
+    ref="menuRef"
+    v-model:selected="selected"
+    :list="items"
+    :step="2"
+  />
+</template>
+```
+
+

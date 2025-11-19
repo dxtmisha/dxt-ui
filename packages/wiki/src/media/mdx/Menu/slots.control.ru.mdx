@@ -4,6 +4,14 @@
 
 **Параметры:**
 - `props: MenuControlItem` — объект с данными управления меню
+  - `onclick` — функция для переключения открытия/закрытия меню
+  - `isSelected` — computed boolean, указывающий, выбран ли какой-либо элемент
+  - `selectedNames` — computed массив меток выбранных элементов
+  - `selectedValues` — computed массив значений выбранных элементов
+  - `selectedList` — computed массив выбранных элементов списка
+  - `loading` — ref, указывающий на состояние загрузки AJAX
+  - `previous()` — метод для перехода к предыдущему элементу(ам)
+  - `next()` — метод для перехода к следующему элементу(ам)
 
 ```html
 <script setup>
@@ -27,3 +35,31 @@ const menuItems = ref([
   </Menu>
 </template>
 ```
+
+**Пример навигации:**
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref('item1')
+const menuItems = ref([
+  { label: 'Элемент 1', value: 'item1' },
+  { label: 'Элемент 2', value: 'item2' },
+  { label: 'Элемент 3', value: 'item3' }
+])
+</script>
+
+<template>
+  <Menu v-model:selected="selected" :list="menuItems">
+    <template #control="{ previous, next, selectedNames }">
+      <div class="navigation-control">
+        <button @click="previous">◀</button>
+        <span>{{ selectedNames[0] }}</span>
+        <button @click="next">▶</button>
+      </div>
+    </template>
+  </Menu>
+</template>
+```
+

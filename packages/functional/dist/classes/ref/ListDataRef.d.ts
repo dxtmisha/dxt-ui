@@ -175,6 +175,13 @@ export declare class ListDataRef {
      */
     getSelected(): ListSelectedList | undefined;
     /**
+     * Returns an item by moving a certain number of steps from the selected item.
+     *
+     * Возвращает элемент, перемещаясь на определенное количество шагов от выбранного элемента.
+     * @param step number of steps/ количество шагов
+     */
+    getSelectedByStep(step: number): ListSelectedItem | undefined;
+    /**
      * Returns an item by its index.
      *
      * Возвращает элемент по его индексу.

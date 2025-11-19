@@ -402,6 +402,38 @@ export class ListDataRef {
   }
 
   /**
+   * Returns an item by moving a certain number of steps from the selected item.
+   *
+   * Возвращает элемент, перемещаясь на определенное количество шагов от выбранного элемента.
+   * @param step number of steps/ количество шагов
+   */
+  getSelectedByStep(step: number): ListSelectedItem | undefined {
+    const selected = this.selectedList.value?.[0]
+    const mapItems = this.mapItems.value
+
+    if (!selected) {
+      return mapItems[0]?.index
+    }
+
+    const key = mapItems.findIndex(item => item.index === selected.index)
+    const keyByStep = key + step
+
+    if (keyByStep in mapItems) {
+      return mapItems[keyByStep]?.index
+    }
+
+    if (step > 0) {
+      return mapItems[mapItems.length - 1]?.index
+    }
+
+    if (step < 0) {
+      return mapItems[0]?.index
+    }
+
+    return undefined
+  }
+
+  /**
    * Returns an item by its index.
    *
    * Возвращает элемент по его индексу.

@@ -49,6 +49,7 @@ export interface MenuPropsBasic<
 
   // Style
   tag?: ListItemProps['tag']
+  step?: string | number
 
   listAttrs?: ConstrBind<List>
   itemAttrs?: ConstrBind<ListItem>
@@ -75,6 +76,7 @@ export const defaultsMenu = {
   barsHide: true,
   barsBackHide: true,
   tag: 'a',
+  step: 1,
   autoClose: true,
   ...{
     // :default [!] System label / Системная метка

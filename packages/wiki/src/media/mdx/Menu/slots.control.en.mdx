@@ -4,6 +4,14 @@ Slot for placing the menu control element (trigger).
 
 **Parameters:**
 - `props: MenuControlItem` — object with menu control data
+  - `onclick` — function to toggle menu open/close
+  - `isSelected` — computed boolean indicating if any item is selected
+  - `selectedNames` — computed array of selected item labels
+  - `selectedValues` — computed array of selected item values
+  - `selectedList` — computed array of selected list items
+  - `loading` — ref indicating AJAX loading state
+  - `previous()` — method to navigate to previous item(s)
+  - `next()` — method to navigate to next item(s)
 
 ```html
 <script setup>
@@ -27,3 +35,31 @@ const menuItems = ref([
   </Menu>
 </template>
 ```
+
+**Navigation Example:**
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref('item1')
+const menuItems = ref([
+  { label: 'Item 1', value: 'item1' },
+  { label: 'Item 2', value: 'item2' },
+  { label: 'Item 3', value: 'item3' }
+])
+</script>
+
+<template>
+  <Menu v-model:selected="selected" :list="menuItems">
+    <template #control="{ previous, next, selectedNames }">
+      <div class="navigation-control">
+        <button @click="previous">◀</button>
+        <span>{{ selectedNames[0] }}</span>
+        <button @click="next">▶</button>
+      </div>
+    </template>
+  </Menu>
+</template>
+```
+

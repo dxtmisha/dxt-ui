@@ -1,0 +1,56 @@
+## Menu item navigation
+
+Methods `previous()` and `next()` are designed for programmatic movement through menu items based on current selection and the `step` property.
+
+**Methods:**
+
+- `previous()` — moves selection to the previous item (backwards by `step` positions)
+- `next()` — moves selection to the next item (forwards by `step` positions)
+- `step` — number of items to skip during navigation (default: 1)
+
+The methods work together with reactive `selected` state: calling `previous()` or `next()` automatically calculates the new position relative to the currently selected item. If no item is selected, the methods select the first available item. When reaching list boundaries (first or last item), navigation stops at the boundary item, preventing overflow beyond the list.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const menuRef = ref()
+const selected = ref('item2')
+</script>
+
+<template>
+  <!-- Call via ref -->
+  <button @click="menuRef?.previous()">Previous</button>
+  <button @click="menuRef?.next()">Next</button>
+
+  <Menu
+    ref="menuRef"
+    v-model:selected="selected"
+    :list="[
+      { label: 'Item 1', value: 'item1' },
+      { label: 'Item 2', value: 'item2' },
+      { label: 'Item 3', value: 'item3' }
+    ]"
+    :step="1"
+  />
+
+  <!-- Navigation in control slot -->
+  <Menu v-model:selected="selected" :list="items">
+    <template #control="{ previous, next, selectedNames }">
+      <button @click="previous">◀</button>
+      <span>{{ selectedNames[0] }}</span>
+      <button @click="next">▶</button>
+    </template>
+  </Menu>
+
+  <!-- With custom step -->
+  <Menu
+    ref="menuRef"
+    v-model:selected="selected"
+    :list="items"
+    :step="2"
+  />
+</template>
+```
+
+

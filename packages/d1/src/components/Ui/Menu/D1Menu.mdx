@@ -21,6 +21,9 @@ import {MenuWikiStorybook} from './wiki'
 
 <StorybookDescriptions componentName={'Menu'} type={'menu'}/>
 
+<StorybookDescriptions componentName={'Menu'} type={'navigation'}/>
+<Canvas of={Menu.MenuNavigation}/>
+
 <StorybookDescriptions componentName={'Menu'} type={'ajax'}/>
 <Canvas of={Menu.MenuAjax}/>
 
@@ -42,6 +45,7 @@ import {MenuWikiStorybook} from './wiki'
 ## Expose
 
 <StorybookDescriptions componentName={'Expose'} type={'selected'}/>
+<StorybookDescriptions componentName={'Menu'} type={'expose.navigation'}/>
     
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
@@ -49,6 +53,7 @@ import {MenuWikiStorybook} from './wiki'
 ## Slots
 
 <StorybookDescriptions componentName={'List'} type={'slot.html'}/>
+<StorybookDescriptions componentName={'Menu'} type={'slotsControl'}/>
 <StorybookDescriptions componentName={'Menu'} type={'slots'}/>
     
 [//]: # (:documentation-slots [!] System label / Системная метка)

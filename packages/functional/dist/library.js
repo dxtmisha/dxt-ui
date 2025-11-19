@@ -1,7 +1,7 @@
 var At = Object.defineProperty;
 var Bt = (i, t, e) => t in i ? At(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
 var c = (i, t, e) => Bt(i, typeof t != "symbol" ? t + "" : t, e);
-import { i as y, D as ct, r as _, a as Ft, G as D, f as p, t as N, b as Q, c as xt, d as vt, e as z, g as j, h as x, A as V, j as S, k as bt, S as St, l as H, m as U, n as lt, E as Et, C as Ht, H as T, L as mt, o as Pt } from "./ScrollbarWidth-De97V2Mh.js";
+import { i as y, D as ct, r as _, a as xt, G as D, f as p, t as N, b as Q, c as Ft, d as vt, e as z, g as j, h as F, A as V, j as w, k as bt, S as St, l as H, m as U, n as lt, E as Et, C as Ht, H as T, L as mt, o as Pt } from "./ScrollbarWidth-De97V2Mh.js";
 import { p as Ki, q as Zi, U as Vi, s as Yi, u as qi, v as Ji, w as Qi, x as Xi, y as Mi, z as Oi, B as Ti, I as Gi, F as ts, J as es, K as is, M as ss, N as rs, O as ns, P as os, Q as as, R as us, T as cs } from "./ScrollbarWidth-De97V2Mh.js";
 import { isRef as X, h as Rt, computed as l, toRefs as Wt, useAttrs as jt, useSlots as Ut, ref as $, watch as m, triggerRef as _t, shallowRef as Z, onUnmounted as nt, inject as zt, provide as Kt, watchEffect as wt } from "vue";
 class Zt {
@@ -51,16 +51,16 @@ class Zt {
 }
 const Vt = () => new ct("__broadcast-name").get(() => `name_${_(1e6, 9999999)}`);
 function A(i) {
-  var r, o, a, u, h, d, g, w;
+  var r, o, a, u, h, d, g, v;
   if (i instanceof Date)
     return i;
-  if (Ft(i))
+  if (xt(i))
     return /* @__PURE__ */ new Date();
   if (typeof i == "number")
     return new Date(i);
   let t = i, e = D.getTimezoneFormat();
-  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (F, M, C) => (t = M, e = C, F));
-  const s = (w = (g = (d = (h = (u = (a = (o = (r = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? r : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? d : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? g : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? w : t.replace(" ", "T");
+  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (x, M, k) => (t = M, e = k, x));
+  const s = (v = (g = (d = (h = (u = (a = (o = (r = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? r : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? d : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? g : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? v : t.replace(" ", "T");
   return /* @__PURE__ */ new Date(`${s}${e}`);
 }
 function ot(i, t) {
@@ -410,8 +410,8 @@ class R {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   relativeLimit(t, e, s, r, o, a, u) {
-    const h = A(t), d = s || /* @__PURE__ */ new Date(), g = new Date(d), w = new Date(d);
-    return g.setDate(d.getDate() - e), w.setDate(d.getDate() + e), h >= g && h <= w ? this.relative(
+    const h = A(t), d = s || /* @__PURE__ */ new Date(), g = new Date(d), v = new Date(d);
+    return g.setDate(d.getDate() - e), v.setDate(d.getDate() + e), h >= g && h <= v ? this.relative(
       h,
       r,
       d
@@ -1580,7 +1580,7 @@ c(P, "flags", {
   ZW: `${n}-zw`
 });
 let at = P, E;
-class xe {
+class Fe {
   /**
    * Returns the value by its name.
    *
@@ -1597,7 +1597,7 @@ class xe {
    * @param data global data/ глобальные данные
    */
   static add(t) {
-    E === void 0 && (E = xt(t));
+    E === void 0 && (E = Ft(t));
   }
 }
 function Yt(i) {
@@ -1744,10 +1744,10 @@ class dt {
     }), this;
   }
 }
-var L = /* @__PURE__ */ ((i) => (i.description = "description", i.keywords = "keywords", i.canonical = "canonical", i.robots = "robots", i.author = "author", i))(L || {}), qt = /* @__PURE__ */ ((i) => (i.indexFollow = "index, follow", i.noIndexFollow = "noindex, follow", i.indexNoFollow = "index, nofollow", i.noIndexNoFollow = "noindex, nofollow", i.noArchive = "noarchive", i.noSnippet = "nosnippet", i.noImageIndex = "noimageindex", i.images = "images", i.noTranslate = "notranslate", i.noPreview = "nopreview", i.textOnly = "textonly", i.noIndexSubpages = "noindex, noarchive", i.none = "none", i))(qt || {}), v = /* @__PURE__ */ ((i) => (i.title = "og:title", i.type = "og:type", i.url = "og:url", i.image = "og:image", i.description = "og:description", i.locale = "og:locale", i.siteName = "og:site_name", i.localeAlternate = "og:locale:alternate", i.imageUrl = "og:image:url", i.imageSecureUrl = "og:image:secure_url", i.imageType = "og:image:type", i.imageWidth = "og:image:width", i.imageHeight = "og:image:height", i.imageAlt = "og:image:alt", i.video = "og:video", i.videoUrl = "og:video:url", i.videoSecureUrl = "og:video:secure_url", i.videoType = "og:video:type", i.videoWidth = "og:video:width", i.videoHeight = "og:video:height", i.audio = "og:audio", i.audioSecureUrl = "og:audio:secure_url", i.audioType = "og:audio:type", i.articlePublishedTime = "article:published_time", i.articleModifiedTime = "article:modified_time", i.articleExpirationTime = "article:expiration_time", i.articleAuthor = "article:author", i.articleSection = "article:section", i.articleTag = "article:tag", i.bookAuthor = "book:author", i.bookIsbn = "book:isbn", i.bookReleaseDate = "book:release_date", i.bookTag = "book:tag", i.musicDuration = "music:duration", i.musicAlbum = "music:album", i.musicAlbumDisc = "music:album:disc", i.musicAlbumTrack = "music:album:track", i.musicMusician = "music:musician", i.musicSong = "music:song", i.musicSongDisc = "music:song:disc", i.musicSongTrack = "music:song:track", i.musicReleaseDate = "music:release_date", i.musicCreator = "music:creator", i.videoActor = "video:actor", i.videoActorRole = "video:actor:role", i.videoDirector = "video:director", i.videoWriter = "video:writer", i.videoDuration = "video:duration", i.videoReleaseDate = "video:release_date", i.videoTag = "video:tag", i.videoSeries = "video:series", i.profileFirstName = "profile:first_name", i.profileLastName = "profile:last_name", i.profileUsername = "profile:username", i.profileGender = "profile:gender", i.productBrand = "product:brand", i.productAvailability = "product:availability", i.productCondition = "product:condition", i.productPriceAmount = "product:price:amount", i.productPriceCurrency = "product:price:currency", i.productRetailerItemId = "product:retailer_item_id", i.productCategory = "product:category", i.productEan = "product:ean", i.productIsbn = "product:isbn", i.productMfrPartNo = "product:mfr_part_no", i.productUpc = "product:upc", i.productWeightValue = "product:weight:value", i.productWeightUnits = "product:weight:units", i.productColor = "product:color", i.productMaterial = "product:material", i.productPattern = "product:pattern", i.productAgeGroup = "product:age_group", i.productGender = "product:gender", i))(v || {}), Jt = /* @__PURE__ */ ((i) => (i.website = "website", i.article = "article", i.video = "video.other", i.videoTvShow = "video.tv_show", i.videoEpisode = "video.episode", i.videoMovie = "video.movie", i.musicAlbum = "music.album", i.musicPlaylist = "music.playlist", i.musicSong = "music.song", i.musicRadioStation = "music.radio_station", i.app = "app", i.product = "product", i.business = "business.business", i.place = "place", i.event = "event", i.profile = "profile", i.book = "book", i))(Jt || {}), Qt = /* @__PURE__ */ ((i) => (i.inStock = "in stock", i.outOfStock = "out of stock", i.preorder = "preorder", i.backorder = "backorder", i.discontinued = "discontinued", i.pending = "pending", i))(Qt || {}), Xt = /* @__PURE__ */ ((i) => (i.new = "new", i.used = "used", i.refurbished = "refurbished", i))(Xt || {}), Mt = /* @__PURE__ */ ((i) => (i.newborn = "newborn", i.infant = "infant", i.toddler = "toddler", i.kids = "kids", i.adult = "adult", i))(Mt || {}), Ot = /* @__PURE__ */ ((i) => (i.female = "female", i.male = "male", i.unisex = "unisex", i))(Ot || {}), b = /* @__PURE__ */ ((i) => (i.card = "twitter:card", i.site = "twitter:site", i.creator = "twitter:creator", i.url = "twitter:url", i.title = "twitter:title", i.description = "twitter:description", i.image = "twitter:image", i.imageAlt = "twitter:image:alt", i.imageSrc = "twitter:image:src", i.imageWidth = "twitter:image:width", i.imageHeight = "twitter:image:height", i.label1 = "twitter:label1", i.data1 = "twitter:data1", i.label2 = "twitter:label2", i.data2 = "twitter:data2", i.appNameIphone = "twitter:app:name:iphone", i.appIdIphone = "twitter:app:id:iphone", i.appUrlIphone = "twitter:app:url:iphone", i.appNameIpad = "twitter:app:name:ipad", i.appIdIpad = "twitter:app:id:ipad", i.appUrlIpad = "twitter:app:url:ipad", i.appNameGooglePlay = "twitter:app:name:googleplay", i.appIdGooglePlay = "twitter:app:id:googleplay", i.appUrlGooglePlay = "twitter:app:url:googleplay", i.player = "twitter:player", i.playerWidth = "twitter:player:width", i.playerHeight = "twitter:player:height", i.playerStream = "twitter:player:stream", i.playerStreamContentType = "twitter:player:stream:content_type", i))(b || {}), Tt = /* @__PURE__ */ ((i) => (i.summary = "summary", i.summaryLargeImage = "summary_large_image", i.app = "app", i.player = "player", i.product = "product", i.gallery = "gallery", i.photo = "photo", i.leadGeneration = "lead_generation", i.audio = "audio", i.poll = "poll", i))(Tt || {});
+var L = /* @__PURE__ */ ((i) => (i.description = "description", i.keywords = "keywords", i.canonical = "canonical", i.robots = "robots", i.author = "author", i))(L || {}), qt = /* @__PURE__ */ ((i) => (i.indexFollow = "index, follow", i.noIndexFollow = "noindex, follow", i.indexNoFollow = "index, nofollow", i.noIndexNoFollow = "noindex, nofollow", i.noArchive = "noarchive", i.noSnippet = "nosnippet", i.noImageIndex = "noimageindex", i.images = "images", i.noTranslate = "notranslate", i.noPreview = "nopreview", i.textOnly = "textonly", i.noIndexSubpages = "noindex, noarchive", i.none = "none", i))(qt || {}), b = /* @__PURE__ */ ((i) => (i.title = "og:title", i.type = "og:type", i.url = "og:url", i.image = "og:image", i.description = "og:description", i.locale = "og:locale", i.siteName = "og:site_name", i.localeAlternate = "og:locale:alternate", i.imageUrl = "og:image:url", i.imageSecureUrl = "og:image:secure_url", i.imageType = "og:image:type", i.imageWidth = "og:image:width", i.imageHeight = "og:image:height", i.imageAlt = "og:image:alt", i.video = "og:video", i.videoUrl = "og:video:url", i.videoSecureUrl = "og:video:secure_url", i.videoType = "og:video:type", i.videoWidth = "og:video:width", i.videoHeight = "og:video:height", i.audio = "og:audio", i.audioSecureUrl = "og:audio:secure_url", i.audioType = "og:audio:type", i.articlePublishedTime = "article:published_time", i.articleModifiedTime = "article:modified_time", i.articleExpirationTime = "article:expiration_time", i.articleAuthor = "article:author", i.articleSection = "article:section", i.articleTag = "article:tag", i.bookAuthor = "book:author", i.bookIsbn = "book:isbn", i.bookReleaseDate = "book:release_date", i.bookTag = "book:tag", i.musicDuration = "music:duration", i.musicAlbum = "music:album", i.musicAlbumDisc = "music:album:disc", i.musicAlbumTrack = "music:album:track", i.musicMusician = "music:musician", i.musicSong = "music:song", i.musicSongDisc = "music:song:disc", i.musicSongTrack = "music:song:track", i.musicReleaseDate = "music:release_date", i.musicCreator = "music:creator", i.videoActor = "video:actor", i.videoActorRole = "video:actor:role", i.videoDirector = "video:director", i.videoWriter = "video:writer", i.videoDuration = "video:duration", i.videoReleaseDate = "video:release_date", i.videoTag = "video:tag", i.videoSeries = "video:series", i.profileFirstName = "profile:first_name", i.profileLastName = "profile:last_name", i.profileUsername = "profile:username", i.profileGender = "profile:gender", i.productBrand = "product:brand", i.productAvailability = "product:availability", i.productCondition = "product:condition", i.productPriceAmount = "product:price:amount", i.productPriceCurrency = "product:price:currency", i.productRetailerItemId = "product:retailer_item_id", i.productCategory = "product:category", i.productEan = "product:ean", i.productIsbn = "product:isbn", i.productMfrPartNo = "product:mfr_part_no", i.productUpc = "product:upc", i.productWeightValue = "product:weight:value", i.productWeightUnits = "product:weight:units", i.productColor = "product:color", i.productMaterial = "product:material", i.productPattern = "product:pattern", i.productAgeGroup = "product:age_group", i.productGender = "product:gender", i))(b || {}), Jt = /* @__PURE__ */ ((i) => (i.website = "website", i.article = "article", i.video = "video.other", i.videoTvShow = "video.tv_show", i.videoEpisode = "video.episode", i.videoMovie = "video.movie", i.musicAlbum = "music.album", i.musicPlaylist = "music.playlist", i.musicSong = "music.song", i.musicRadioStation = "music.radio_station", i.app = "app", i.product = "product", i.business = "business.business", i.place = "place", i.event = "event", i.profile = "profile", i.book = "book", i))(Jt || {}), Qt = /* @__PURE__ */ ((i) => (i.inStock = "in stock", i.outOfStock = "out of stock", i.preorder = "preorder", i.backorder = "backorder", i.discontinued = "discontinued", i.pending = "pending", i))(Qt || {}), Xt = /* @__PURE__ */ ((i) => (i.new = "new", i.used = "used", i.refurbished = "refurbished", i))(Xt || {}), Mt = /* @__PURE__ */ ((i) => (i.newborn = "newborn", i.infant = "infant", i.toddler = "toddler", i.kids = "kids", i.adult = "adult", i))(Mt || {}), Ot = /* @__PURE__ */ ((i) => (i.female = "female", i.male = "male", i.unisex = "unisex", i))(Ot || {}), S = /* @__PURE__ */ ((i) => (i.card = "twitter:card", i.site = "twitter:site", i.creator = "twitter:creator", i.url = "twitter:url", i.title = "twitter:title", i.description = "twitter:description", i.image = "twitter:image", i.imageAlt = "twitter:image:alt", i.imageSrc = "twitter:image:src", i.imageWidth = "twitter:image:width", i.imageHeight = "twitter:image:height", i.label1 = "twitter:label1", i.data1 = "twitter:data1", i.label2 = "twitter:label2", i.data2 = "twitter:data2", i.appNameIphone = "twitter:app:name:iphone", i.appIdIphone = "twitter:app:id:iphone", i.appUrlIphone = "twitter:app:url:iphone", i.appNameIpad = "twitter:app:name:ipad", i.appIdIpad = "twitter:app:id:ipad", i.appUrlIpad = "twitter:app:url:ipad", i.appNameGooglePlay = "twitter:app:name:googleplay", i.appIdGooglePlay = "twitter:app:id:googleplay", i.appUrlGooglePlay = "twitter:app:url:googleplay", i.player = "twitter:player", i.playerWidth = "twitter:player:width", i.playerHeight = "twitter:player:height", i.playerStream = "twitter:player:stream", i.playerStreamContentType = "twitter:player:stream:content_type", i))(S || {}), Tt = /* @__PURE__ */ ((i) => (i.summary = "summary", i.summaryLargeImage = "summary_large_image", i.app = "app", i.player = "player", i.product = "product", i.gallery = "gallery", i.photo = "photo", i.leadGeneration = "lead_generation", i.audio = "audio", i.poll = "poll", i))(Tt || {});
 class Gt extends dt {
   constructor() {
-    super(Object.values(v), !0);
+    super(Object.values(b), !0);
   }
   /**
    * Gets the Open Graph title.
@@ -1755,7 +1755,7 @@ class Gt extends dt {
    * Получает заголовок Open Graph.
    */
   getTitle() {
-    return this.get(v.title);
+    return this.get(b.title);
   }
   /**
    * Gets the Open Graph type.
@@ -1763,7 +1763,7 @@ class Gt extends dt {
    * Получает тип Open Graph.
    */
   getType() {
-    return this.get(v.type);
+    return this.get(b.type);
   }
   /**
    * Gets the Open Graph URL.
@@ -1771,7 +1771,7 @@ class Gt extends dt {
    * Получает URL Open Graph.
    */
   getUrl() {
-    return this.get(v.url);
+    return this.get(b.url);
   }
   /**
    * Gets the Open Graph image URL.
@@ -1779,7 +1779,7 @@ class Gt extends dt {
    * Получает URL изображения Open Graph.
    */
   getImage() {
-    return this.get(v.image);
+    return this.get(b.image);
   }
   /**
    * Gets the Open Graph description.
@@ -1787,7 +1787,7 @@ class Gt extends dt {
    * Получает описание Open Graph.
    */
   getDescription() {
-    return this.get(v.description);
+    return this.get(b.description);
   }
   /**
    * Gets the Open Graph locale.
@@ -1795,7 +1795,7 @@ class Gt extends dt {
    * Получает локаль Open Graph.
    */
   getLocale() {
-    return this.get(v.locale);
+    return this.get(b.locale);
   }
   /**
    * Gets the Open Graph site name.
@@ -1803,7 +1803,7 @@ class Gt extends dt {
    * Получает название сайта Open Graph.
    */
   getSiteName() {
-    return this.get(v.siteName);
+    return this.get(b.siteName);
   }
   /**
    * Sets the Open Graph title.
@@ -1812,7 +1812,7 @@ class Gt extends dt {
    * @param title title / заголовок
    */
   setTitle(t) {
-    return this.set(v.title, t);
+    return this.set(b.title, t);
   }
   /**
    * Sets the Open Graph type.
@@ -1821,7 +1821,7 @@ class Gt extends dt {
    * @param type type / тип
    */
   setType(t) {
-    return this.set(v.type, t);
+    return this.set(b.type, t);
   }
   /**
    * Sets the Open Graph URL.
@@ -1830,7 +1830,7 @@ class Gt extends dt {
    * @param url URL / URL
    */
   setUrl(t) {
-    return this.set(v.url, t);
+    return this.set(b.url, t);
   }
   /**
    * Sets the Open Graph image URL.
@@ -1839,7 +1839,7 @@ class Gt extends dt {
    * @param url image URL / URL изображения
    */
   setImage(t) {
-    return this.set(v.image, t);
+    return this.set(b.image, t);
   }
   /**
    * Sets the Open Graph description.
@@ -1848,7 +1848,7 @@ class Gt extends dt {
    * @param description description / описание
    */
   setDescription(t) {
-    return this.set(v.description, t);
+    return this.set(b.description, t);
   }
   /**
    * Sets the Open Graph locale.
@@ -1857,7 +1857,7 @@ class Gt extends dt {
    * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
    */
   setLocale(t) {
-    return this.set(v.locale, t);
+    return this.set(b.locale, t);
   }
   /**
    * Sets the Open Graph site name.
@@ -1866,12 +1866,12 @@ class Gt extends dt {
    * @param siteName site name / название сайта
    */
   setSiteName(t) {
-    return this.set(v.siteName, t);
+    return this.set(b.siteName, t);
   }
 }
 class te extends dt {
   constructor() {
-    super(Object.values(b));
+    super(Object.values(S));
   }
   /**
    * Gets the Twitter Card type.
@@ -1879,7 +1879,7 @@ class te extends dt {
    * Получает тип Twitter Card.
    */
   getCard() {
-    return this.get(b.card);
+    return this.get(S.card);
   }
   /**
    * Gets the website or brand @username.
@@ -1887,7 +1887,7 @@ class te extends dt {
    * Получает аккаунт сайта или бренда (@username).
    */
   getSite() {
-    return this.get(b.site);
+    return this.get(S.site);
   }
   /**
    * Gets the content creator @username.
@@ -1895,7 +1895,7 @@ class te extends dt {
    * Получает автора контента (@username).
    */
   getCreator() {
-    return this.get(b.creator);
+    return this.get(S.creator);
   }
   /**
    * Gets the page URL.
@@ -1903,7 +1903,7 @@ class te extends dt {
    * Получает URL страницы.
    */
   getUrl() {
-    return this.get(b.url);
+    return this.get(S.url);
   }
   /**
    * Gets the card title.
@@ -1911,7 +1911,7 @@ class te extends dt {
    * Получает заголовок карточки.
    */
   getTitle() {
-    return this.get(b.title);
+    return this.get(S.title);
   }
   /**
    * Gets the card description.
@@ -1919,7 +1919,7 @@ class te extends dt {
    * Получает описание карточки.
    */
   getDescription() {
-    return this.get(b.description);
+    return this.get(S.description);
   }
   /**
    * Gets the card image URL.
@@ -1927,7 +1927,7 @@ class te extends dt {
    * Получает URL изображения карточки.
    */
   getImage() {
-    return this.get(b.image);
+    return this.get(S.image);
   }
   /**
    * Sets the Twitter Card type.
@@ -1936,7 +1936,7 @@ class te extends dt {
    * @param card card type / тип карточки
    */
   setCard(t) {
-    return this.set(b.card, t), this;
+    return this.set(S.card, t), this;
   }
   /**
    * Sets the website or brand @username.
@@ -1945,7 +1945,7 @@ class te extends dt {
    * @param site @username / аккаунт
    */
   setSite(t) {
-    return this.set(b.site, t), this;
+    return this.set(S.site, t), this;
   }
   /**
    * Sets the content creator @username.
@@ -1954,7 +1954,7 @@ class te extends dt {
    * @param creator @username / аккаунт автора
    */
   setCreator(t) {
-    return this.set(b.creator, t), this;
+    return this.set(S.creator, t), this;
   }
   /**
    * Sets the page URL.
@@ -1963,7 +1963,7 @@ class te extends dt {
    * @param url URL / URL
    */
   setUrl(t) {
-    return this.set(b.url, t), this;
+    return this.set(S.url, t), this;
   }
   /**
    * Sets the card title.
@@ -1972,7 +1972,7 @@ class te extends dt {
    * @param title title / заголовок
    */
   setTitle(t) {
-    return this.set(b.title, t), this;
+    return this.set(S.title, t), this;
   }
   /**
    * Sets the card description.
@@ -1981,7 +1981,7 @@ class te extends dt {
    * @param description description / описание
    */
   setDescription(t) {
-    return this.set(b.description, t), this;
+    return this.set(S.description, t), this;
   }
   /**
    * Sets the card image URL.
@@ -1990,7 +1990,7 @@ class te extends dt {
    * @param image image URL / URL изображения
    */
   setImage(t) {
-    return this.set(b.image, t), this;
+    return this.set(S.image, t), this;
   }
 }
 class ee extends dt {
@@ -2233,7 +2233,7 @@ const ie = [
       e = e.replace(new RegExp(`%${ie[s++]}`, "g"), String(r));
     });
   }
-  return x(t) && p(t, (s, r) => {
+  return F(t) && p(t, (s, r) => {
     e = e.replace(
       new RegExp(`\\[${r}\\](.*?)\\[/${r}\\]`, "g"),
       (o, a) => String(s).replace(/\[content]/g, a)
@@ -2421,7 +2421,7 @@ function gt(i) {
 }
 function Ee(i) {
   var t;
-  return Q(i) ? i.trim() : gt(i) && i.findIndex((e) => S(e)) === -1 ? i.join(",") : S(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
+  return Q(i) ? i.trim() : gt(i) && i.findIndex((e) => w(e)) === -1 ? i.join(",") : w(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
 }
 function re(i, t) {
   return Array(t).fill(i);
@@ -2481,7 +2481,7 @@ function Dt(i, t = "ig", e = ":value") {
 function ae(i, t) {
   var r;
   const e = t.split(".", 2), s = e[0];
-  return s && (i != null && i[s]) && x(i[s]) && (e != null && e[1]) ? ae(i[s], e[1]) : (r = s && (i == null ? void 0 : i[s])) != null ? r : "";
+  return s && (i != null && i[s]) && F(i[s]) && (e != null && e[1]) ? ae(i[s], e[1]) : (r = s && (i == null ? void 0 : i[s])) != null ? r : "";
 }
 function _e(i) {
   var t, e, s;
@@ -2523,7 +2523,7 @@ function Ye(i, t = void 0) {
   }), e;
 }
 function qe(i) {
-  return x(i) ? i : {};
+  return F(i) ? i : {};
 }
 function le(i, t) {
   return re(i, t).join("");
@@ -2562,7 +2562,7 @@ async function Te() {
 }
 function Ge(i, t) {
   const e = {};
-  return S(i) && S(t) && p(i, (s, r) => {
+  return w(i) && w(t) && p(i, (s, r) => {
     r in t && (e[r] = s);
   }), e;
 }
@@ -2594,15 +2594,15 @@ function he(i) {
 }
 function W(i, t, e = !0) {
   const s = U(i);
-  return S(i) && S(t) && p(
+  return w(i) && w(t) && p(
     t,
     (r, o) => {
       const a = i == null ? void 0 : i[o];
-      S(a) && S(r) ? e && Array.isArray(a) && Array.isArray(r) ? s[o] = U(he([...a, ...r])) : s[o] = W(
+      w(a) && w(r) ? e && Array.isArray(a) && Array.isArray(r) ? s[o] = U(he([...a, ...r])) : s[o] = W(
         Array.isArray(a) ? { ...a } : a,
         r,
         e
-      ) : s[o] = S(r) ? U(r) : r;
+      ) : s[o] = w(r) ? U(r) : r;
     }
   ), s;
 }
@@ -2655,23 +2655,23 @@ function ai(i, t, {
   return r || i !== t ? t : i;
 }
 function ui(i, t, e) {
-  if (S(i) && S(t)) {
+  if (w(i) && w(t)) {
     if (e) {
       let s = {}, r = !1;
       return p(i, (o, a) => {
-        !r && (e === a || e === o) ? (r = !0, s = W(s, t)) : r ? s = W(s, { [a]: o }) : s[a] = S(o) ? U(o) : o;
+        !r && (e === a || e === o) ? (r = !0, s = W(s, t)) : r ? s = W(s, { [a]: o }) : s[a] = w(o) ? U(o) : o;
       }), r ? s : W(i, t);
     }
-    if (S(t))
+    if (w(t))
       return W(i, t);
   }
   return U(i);
 }
-function Ct(i) {
+function kt(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
 function ci(i) {
-  return Ct(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+  return kt(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
 function li(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
@@ -2857,7 +2857,7 @@ function ve(...i) {
     e && (t = ut(t, e));
   }), t;
 }
-class kt {
+class Ct {
   /**
    * Constructor
    * @param components list of connected components/ список подключенных компонентов
@@ -2964,7 +2964,7 @@ class kt {
   computeModification(t) {
     var s;
     const e = f((s = this.modification) == null ? void 0 : s[t]);
-    if (e && x(e)) {
+    if (e && F(e)) {
       const r = {};
       return p(e, (o, a) => {
         r[a] = f(o);
@@ -2973,7 +2973,7 @@ class kt {
     return {};
   }
 }
-class yi extends kt {
+class yi extends Ct {
 }
 class $i {
   /**
@@ -2995,7 +2995,7 @@ class $i {
     c(this, "attrs");
     c(this, "slots");
     c(this, "dataExpose");
-    this.props = e, this.options = s, this.name = this.initName(t), this.refs = this.props ? Wt(this.props) : {}, this.components = new kt(s == null ? void 0 : s.components, s == null ? void 0 : s.compMod), this.emits = s == null ? void 0 : s.emits, this.classes = l(() => this.updateClasses()), this.styles = l(() => this.updateStyles()), this.attrs = jt(), this.slots = Ut();
+    this.props = e, this.options = s, this.name = this.initName(t), this.refs = this.props ? Wt(this.props) : {}, this.components = new Ct(s == null ? void 0 : s.components, s == null ? void 0 : s.compMod), this.emits = s == null ? void 0 : s.emits, this.classes = l(() => this.updateClasses()), this.styles = l(() => this.updateStyles()), this.attrs = jt(), this.slots = Ut();
   }
   init() {
     return this.classesSub = l(() => this.initClasses()), this.stylesSub = l(() => this.initStyles()), this.dataExpose = this.initExpose(), this;
@@ -3093,7 +3093,7 @@ class $i {
    * @param classes list of classes for transformation/ список классов для преобразования
    */
   toClass(t) {
-    return x(t) ? t : Array.isArray(t) ? { [t.filter((s) => typeof s == "string" && s.trim() !== "").join(" ")]: !0 } : typeof t == "string" ? { [t]: !0 } : {};
+    return F(t) ? t : Array.isArray(t) ? { [t.filter((s) => typeof s == "string" && s.trim() !== "").join(" ")]: !0 } : typeof t == "string" ? { [t]: !0 } : {};
   }
   /**
    * Converts the class name to standard for the current component.
@@ -3102,7 +3102,7 @@ class $i {
    * @param classes list of classes/ список классов
    */
   toClassName(t) {
-    if (S(t)) {
+    if (w(t)) {
       const e = {};
       return p(t, (s, r) => {
         r.match(/\?\?/) ? e[r.replace(/\?\?/, this.getName())] = s : r.match(/\?/) ? e[r.replace(/\?/, this.getDesign())] = s : e[r] = s;
@@ -3117,7 +3117,7 @@ class $i {
    * @param name component name for transformation/ название компонента для преобразования
    */
   initName(t) {
-    return p(t.split(".", 2), (e) => Ct(e));
+    return p(t.split(".", 2), (e) => kt(e));
   }
   /**
    * Updating data about the class.
@@ -3383,7 +3383,7 @@ class bi {
     return l(() => this.flag.getNational(t));
   }
 }
-const k = class k {
+const C = class C {
   /**
     * Information about the current country.
   *
@@ -3435,8 +3435,8 @@ const k = class k {
     D.set(t, !0), this.item.value = D.getItem();
   }
 };
-c(k, "item", Z(D.get())), c(k, "country", l(() => k.item.value.country)), c(k, "language", l(() => k.item.value.language)), c(k, "standard", l(() => k.item.value.standard)), c(k, "firstDay", l(() => k.item.value.firstDay));
-let K = k;
+c(C, "item", Z(D.get())), c(C, "country", l(() => C.item.value.country)), c(C, "language", l(() => C.item.value.language)), c(C, "standard", l(() => C.item.value.standard)), c(C, "firstDay", l(() => C.item.value.firstDay));
+let K = C;
 class be {
   /**
    * Constructor
@@ -3672,7 +3672,7 @@ class It {
    * @param max Maximum number of selections / максимальное количество выделений
    * @param parent Parent identifier / идентификатор родителя
    */
-  constructor(t, e, s, r, o, a, u, h, d, g = 0, w = 9999999, F) {
+  constructor(t, e, s, r, o, a, u, h, d, g = 0, v = 9999999, x) {
     c(this, "subList", {});
     /**
      * Returns a list for forming a list.
@@ -3829,7 +3829,7 @@ class It {
      * Возвращает список значений выделенных элементов на карте.
      */
     c(this, "selectedValues", l(() => ot(this.selectedList.value, "value")));
-    this.list = t, this.focus = e, this.highlight = s, this.highlightLengthStart = r, this.filterMode = o, this.selected = a, this.keyValue = u, this.keyLabel = h, this.lite = d, this.min = g, this.max = w, this.parent = F, X(t) && m(t, () => {
+    this.list = t, this.focus = e, this.highlight = s, this.highlightLengthStart = r, this.filterMode = o, this.selected = a, this.keyValue = u, this.keyLabel = h, this.lite = d, this.min = g, this.max = v, this.parent = x, X(t) && m(t, () => {
       this.subList = {};
     });
   }
@@ -3929,6 +3929,25 @@ class It {
     return (t = this.selected) == null ? void 0 : t.value;
   }
   /**
+   * Returns an item by moving a certain number of steps from the selected item.
+   *
+   * Возвращает элемент, перемещаясь на определенное количество шагов от выбранного элемента.
+   * @param step number of steps/ количество шагов
+   */
+  getSelectedByStep(t) {
+    var a, u, h, d, g;
+    const e = (a = this.selectedList.value) == null ? void 0 : a[0], s = this.mapItems.value;
+    if (!e)
+      return (u = s[0]) == null ? void 0 : u.index;
+    const o = s.findIndex((v) => v.index === e.index) + t;
+    if (o in s)
+      return (h = s[o]) == null ? void 0 : h.index;
+    if (t > 0)
+      return (d = s[s.length - 1]) == null ? void 0 : d.index;
+    if (t < 0)
+      return (g = s[0]) == null ? void 0 : g.index;
+  }
+  /**
    * Returns an item by its index.
    *
    * Возвращает элемент по его индексу.
@@ -4021,7 +4040,7 @@ class It {
    * @param label item label / метка элемента
    */
   getIndex(t, e, s, r) {
-    return t && !S(t) ? t : e && !S(e) ? e : s && r;
+    return t && !w(t) ? t : e && !w(e) ? e : s && r;
   }
   /**
    * Creates an object of the record element.
@@ -4032,8 +4051,8 @@ class It {
    */
   initItem(t, e) {
     var s, r, o, a, u, h;
-    if (x(e)) {
-      const d = e == null ? void 0 : e[(r = (s = this.keyValue) == null ? void 0 : s.value) != null ? r : "value"], g = (u = e == null ? void 0 : e[(a = (o = this.keyLabel) == null ? void 0 : o.value) != null ? a : "label"]) != null ? u : d, w = this.getIndex(
+    if (F(e)) {
+      const d = e == null ? void 0 : e[(r = (s = this.keyValue) == null ? void 0 : s.value) != null ? r : "value"], g = (u = e == null ? void 0 : e[(a = (o = this.keyLabel) == null ? void 0 : o.value) != null ? a : "label"]) != null ? u : d, v = this.getIndex(
         e == null ? void 0 : e.index,
         d,
         t,
@@ -4042,7 +4061,7 @@ class It {
       return {
         ...e,
         parent: this.parent,
-        index: w,
+        index: v,
         type: (h = e == null ? void 0 : e.type) != null ? h : "item",
         label: g,
         value: d
@@ -4121,30 +4140,30 @@ const we = (i) => typeof i == "string" ? { method: i } : i || {};
 let J;
 function wi(i, t, e = !0, s, r, o) {
   const a = $(), u = B(we(t)), h = $(!1), d = $(!1);
-  let g = !0, w = 0;
-  const F = async () => {
+  let g = !0, v = 0;
+  const x = async () => {
     if (g)
       return;
-    const C = f(i);
-    if ((!s || s.value) && C) {
+    const k = f(i);
+    if ((!s || s.value) && k) {
       h.value = !0, d.value = !0;
       let O = {};
       const ft = await V.request({
-        path: C,
+        path: k,
         ...u.value
       });
       ft && (O = ft), r ? a.value = r(O) : a.value = O, h.value = !1;
     } else a.value !== void 0 && (a.value = void 0);
   }, M = () => {
-    const C = [];
-    e && C.push(u), X(i) && C.push(i), s && C.push(s), J && C.push(J), C.length > 0 && m(C, async () => {
-      h.value || await F();
+    const k = [];
+    e && k.push(u), X(i) && k.push(i), s && k.push(s), J && k.push(J), k.length > 0 && m(k, async () => {
+      h.value || await x();
     });
   };
   return {
     get data() {
-      return g && (g = !1, F().then()), M(), o && (w++, nt(() => {
-        w--, w < 1 && (console.warn("useApiRef: unmounted"), a.value = void 0, g = !0, w = 0);
+      return g && (g = !1, x().then()), M(), o && (v++, nt(() => {
+        v--, v < 1 && (console.warn("useApiRef: unmounted"), a.value = void 0, g = !0, v = 0);
       })), a;
     },
     get isStarting() {
@@ -4156,7 +4175,7 @@ function wi(i, t, e = !0, s, r, o) {
     get reading() {
       return l(() => d.value);
     },
-    reset: F
+    reset: x
   };
 }
 const Di = (i) => {
@@ -4187,10 +4206,10 @@ function Li(i, t, e) {
   }), et[i] = r, r;
 }
 const et = {};
-function Ci() {
+function ki() {
   return new be();
 }
-function ki(i, t) {
+function Ci(i, t) {
   if (i in it)
     return it[i];
   const e = Z(T.get(i, t));
@@ -4261,7 +4280,7 @@ function Ni() {
   }), i;
 }
 const Nt = [], Le = _(1e5, 999999);
-function Ce(i, t = !0, e = !1, s = !0) {
+function ke(i, t = !0, e = !1, s = !0) {
   let r;
   const o = `__execute_use${Le}::${Y()}`, a = (...u) => {
     if (!e && s) {
@@ -4284,7 +4303,7 @@ function Ce(i, t = !0, e = !1, s = !0) {
 function Ai() {
   Nt.forEach((i) => i());
 }
-const ke = Ce(() => {
+const Ce = ke(() => {
   const i = new ee(), t = $(i.getTitle()), e = $(i.getKeywords()), s = $(i.getDescription()), r = $(i.getImage()), o = $(i.getCanonical()), a = $(i.getRobots()), u = $(i.getAuthor()), h = $(i.getSiteName()), d = () => i.html();
   return m(t, () => {
     i.setTitle(t.value);
@@ -4314,15 +4333,15 @@ const ke = Ce(() => {
     siteName: h,
     getHtmlMeta: d
   };
-}, !1, !0), Bi = () => ke();
-function Fi(i, t) {
+}, !1, !0), Bi = () => Ce();
+function xi(i, t) {
   if (i in st)
     return st[i];
   const e = new ct(i, !0), s = $(e.get(t));
   return m(s, (r) => e.set(r)), st[i] = s, s;
 }
 const st = {};
-function xi(i, t, e) {
+function Fi(i, t, e) {
   if (i in rt)
     return rt[i];
   const s = new ct(i), r = $(s.get(t, e));
@@ -4366,7 +4385,7 @@ function Pi(i, t = () => {
 }
 function Ne(i, t = {}, e = "value", s = !1) {
   const r = typeof t == "string", o = r ? t : e, a = r ? {} : t;
-  return i ? i && x(i) && (o in i || s) ? ut(a, i) : ut(a, { [o]: i }) : r ? {} : { ...a };
+  return i ? i && F(i) && (o in i || s) ? ut(a, i) : ut(a, { [o]: i }) : r ? {} : { ...a };
 }
 function Ri(i, t = {}, e = "value") {
   return l(() => Ne(f(i), f(t), e));
@@ -4410,7 +4429,7 @@ export {
   mi as DesignAsyncAbstract,
   fe as DesignChanged,
   yi as DesignComp,
-  kt as DesignComponents,
+  Ct as DesignComponents,
   $i as DesignConstructorAbstract,
   Et as EventItem,
   vi as EventRef,
@@ -4422,7 +4441,7 @@ export {
   be as GeoIntlRef,
   Ti as GeoPhone,
   K as GeoRef,
-  xe as Global,
+  Fe as Global,
   T as Hash,
   Gi as Icons,
   It as ListDataRef,
@@ -4434,13 +4453,13 @@ export {
   Qt as MetaOpenGraphAvailability,
   Xt as MetaOpenGraphCondition,
   Ot as MetaOpenGraphGender,
-  v as MetaOpenGraphTag,
+  b as MetaOpenGraphTag,
   Jt as MetaOpenGraphType,
   qt as MetaRobots,
   L as MetaTag,
   te as MetaTwitter,
   Tt as MetaTwitterCard,
-  b as MetaTwitterTag,
+  S as MetaTwitterTag,
   Se as RouterItemRef,
   St as ScrollbarWidth,
   Si as ScrollbarWidthRef,
@@ -4452,7 +4471,7 @@ export {
   Hi as computedAsync,
   Pi as computedByLanguage,
   U as copyObject,
-  xt as copyObjectLite,
+  Ft as copyObjectLite,
   vt as createElement,
   Pe as domQuerySelector,
   Re as domQuerySelectorAll,
@@ -4460,7 +4479,7 @@ export {
   We as eventStopPropagation,
   lt as executeFunction,
   Pt as executePromise,
-  Ce as executeUse,
+  ke as executeUse,
   Ai as executeUseGlobalInit,
   p as forEach,
   ne as frame,
@@ -4507,10 +4526,10 @@ export {
   rs as isFunction,
   ns as isInDom,
   ii as isIntegerBetween,
-  Ft as isNull,
+  xt as isNull,
   os as isNumber,
-  S as isObject,
-  x as isObjectNotArray,
+  w as isObject,
+  F as isObjectNotArray,
   H as isSelected,
   si as isSelectedByList,
   Q as isString,
@@ -4531,7 +4550,7 @@ export {
   j as toArray,
   ut as toBind,
   ve as toBinds,
-  Ct as toCamelCase,
+  kt as toCamelCase,
   ci as toCamelCaseFirst,
   Ui as toComputed,
   A as toDate,
@@ -4547,13 +4566,13 @@ export {
   wi as useApiRef,
   De as useBroadcastValueRef,
   Li as useCookieRef,
-  Ci as useGeoIntlRef,
-  ki as useHashRef,
+  ki as useGeoIntlRef,
+  Ci as useHashRef,
   Ii as useLazyRef,
   Ni as useLoadingRef,
   Bi as useMeta,
-  Fi as useSessionRef,
-  xi as useStorageRef,
+  xi as useSessionRef,
+  Fi as useStorageRef,
   Ie as useTranslateRef,
   fi as writeClipboardData
 };

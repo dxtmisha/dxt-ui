@@ -11,6 +11,7 @@ import { MenuSearch } from './MenuSearch'
 
 import { MenuWindow } from './MenuWindow'
 import { MenuValue } from './MenuValue'
+import { MenuGo } from './MenuGo'
 
 import type { MenuComponents, MenuEmits, MenuSlots } from './types'
 import type { MenuProps } from './props'
@@ -31,6 +32,7 @@ export class Menu {
 
   /** Data manager for list selection and mapping/ Менеджер данных списка для выбора и сопоставления */
   readonly data: ListDataRef
+  readonly go: MenuGo
 
   /** Include for working with the Bars component/ Подключение для работы с компонентом Bars */
   readonly bars: BarsInclude
@@ -81,6 +83,7 @@ export class Menu {
       this.refs.keyValue,
       this.refs.keyLabel
     )
+    this.go = new MenuGo(this.props, this.value, this.data)
 
     this.bars = new BarsInclude(
       this.props,
@@ -106,7 +109,10 @@ export class Menu {
       isSelected: this.data.isSelected,
       selectedList: this.data.selectedList,
       selectedNames: this.data.selectedNames,
-      selectedValues: this.data.selectedValues
+      selectedValues: this.data.selectedValues,
+
+      previous: this.go.previous,
+      next: this.go.next
     }
   }
 

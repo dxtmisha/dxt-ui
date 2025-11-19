@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref } from 'vue'
-import type { ConstrBind } from '@dxtmisha/functional'
+import type { ConstrBind, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 import type { WindowControlItem } from '../Window'
 
 import type { ListExpose } from '../List'
@@ -10,6 +10,9 @@ export type MenuControlBasic
   = ListExpose
     & {
       loading: Ref<boolean>
+
+      previous(): NumberOrStringOrBoolean | undefined
+      next(): NumberOrStringOrBoolean | undefined
     }
 
 export type MenuControlItem
