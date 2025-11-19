@@ -20,14 +20,21 @@ import {SelectWikiStorybook} from './wiki'
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 <StorybookDescriptions componentName={'Select'} type={'select'}/>
+
+<StorybookDescriptions componentName={'Value'} type={'value'}/>
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Select.SelectVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Select.SelectSkeleton}/>
     
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 [//]: # (:documentation-events [!] System label / Системная метка)
 ## Events
 
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
 <StorybookDescriptions componentName={'Event'} type={'change'}/>
-<StorybookDescriptions componentName={'Event'} type={'click'}/>
     
 [//]: # (:documentation-events [!] System label / Системная метка)
 
@@ -42,7 +49,13 @@ import {SelectWikiStorybook} from './wiki'
 [//]: # (:documentation-slots [!] System label / Системная метка)
 ## Slots
 
-<StorybookDescriptions componentName={'Field'} type={'slot.field'}/>
+<StorybookDescriptions componentName={'Slot'} type={'label'} />
+<StorybookDescriptions componentName={'Slot'} type={'prefix'} />
+<StorybookDescriptions componentName={'Slot'} type={'suffix'} />
+<StorybookDescriptions componentName={'Slot'} type={'caption'} />
+<StorybookDescriptions componentName={'Slot'} type={'leading'} />
+<StorybookDescriptions componentName={'Slot'} type={'trailing'} />
+<StorybookDescriptions componentName={'List'} type={'slot.html'}/>
 <StorybookDescriptions componentName={'Menu'} type={'slots'}/>
     
 [//]: # (:documentation-slots [!] System label / Системная метка)

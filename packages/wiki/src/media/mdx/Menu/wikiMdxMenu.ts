@@ -6,6 +6,8 @@ import menuEn from './menu.en.mdx'
 import menuRu from './menu.ru.mdx'
 import slotsEn from './slots.en.mdx'
 import slotsRu from './slots.ru.mdx'
+import slotsControlEn from './slots.control.en.mdx'
+import slotsControlRu from './slots.control.ru.mdx'
 
 /** MDX документация для компонента Menu */
 export const wikiMdxMenu: StorybookComponentsMdxItem = {
@@ -22,6 +24,10 @@ export const wikiMdxMenu: StorybookComponentsMdxItem = {
     slots: {
       en: slotsEn,
       ru: slotsRu
+    },
+    slotsControl: {
+      en: slotsControlEn,
+      ru: slotsControlRu
     }
   }
 }

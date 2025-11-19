@@ -383,6 +383,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  hideList: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Hides the internal List part of Menu; shows only header/toolbar and other slots.',
+        ru: 'Скрывает внутреннюю часть List в Menu; отображает только заголовок/панель и другие слоты.'
+      }
+    }
+  },
   horizontal: {
     type: StorybookControl.select,
     options: {
@@ -435,6 +445,16 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Displays the component in skeleton mode',
         ru: 'Отображает компонент в режиме скелетона'
+      }
+    }
+  },
+  menuAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the Menu root container',
+        ru: 'Дополнительные атрибуты для корневого контейнера Menu'
       }
     }
   },

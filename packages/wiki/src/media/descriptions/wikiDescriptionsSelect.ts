@@ -46,21 +46,132 @@ export const wikiDescriptionsSelect: StorybookComponentsDescriptionItem = {
       <DesignComponent v-bind="args" />
     `,
   stories: [
+    {
+      id: 'SelectVModel',
+      name: {
+        en: 'Two-way binding (v-model)',
+        ru: 'Двусторонняя привязка (v-model)'
+      },
+      setup: `
+      return {
+        singleValue: ref('option2'),
+        multipleValue: ref(['option1', 'option3']),
+        countryValue: ref(''),
+        countries: ref([
+          {label: 'United States', value: 'us', icon: 'flag'},
+          {label: 'United Kingdom', value: 'uk', icon: 'flag'},
+          {label: 'Germany', value: 'de', icon: 'flag'},
+          {label: 'France', value: 'fr', icon: 'flag'},
+          {label: 'Japan', value: 'jp', icon: 'flag'}
+        ])
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="singleValue = 'option1'">Select Option 1</button>
+            <button class="wiki-storybook-button" @click="singleValue = 'option3'">Select Option 3</button>
+            <button class="wiki-storybook-button" @click="singleValue = ''">Clear</button>
+          </div>
+          <DesignComponent
+            v-model="singleValue"
+            type="select"
+            label="Single select"
+            :option="[
+              {label: 'First option', value: 'option1'},
+              {label: 'Second option', value: 'option2'},
+              {label: 'Third option', value: 'option3'}
+            ]"
+          />
+          <div>Selected value: {{ singleValue }}</div>
+
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="multipleValue = ['option1', 'option2']">Select 1,2</button>
+            <button class="wiki-storybook-button" @click="multipleValue.push('option3')">Add Option 3</button>
+            <button class="wiki-storybook-button" @click="multipleValue = []">Clear all</button>
+          </div>
+          <DesignComponent
+            v-model="multipleValue"
+            type="select"
+            label="Multiple select"
+            multiple
+            :option="[
+              {label: 'First option', value: 'option1', icon: 'check'},
+              {label: 'Second option', value: 'option2', icon: 'check'},
+              {label: 'Third option', value: 'option3', icon: 'check'}
+            ]"
+          />
+          <div>Selected values: {{ multipleValue }}</div>
+
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="countryValue = 'us'">USA</button>
+            <button class="wiki-storybook-button" @click="countryValue = 'uk'">UK</button>
+            <button class="wiki-storybook-button" @click="countryValue = ''">Clear</button>
+          </div>
+          <DesignComponent
+            v-model="countryValue"
+            type="select"
+            label="Country"
+            placeholder="Select country"
+            :option="countries"
+          />
+          <div>Selected country: {{ countryValue }}</div>
+        </div>
+      `
+    },
+    {
+      id: 'SelectSkeleton',
+      name: {
+        en: 'Skeleton',
+        ru: 'Скелетон'
+      },
+      components: ['Skeleton'],
+      template: `
+        <DesignSkeleton :active="true" style="max-width:320px">
+          <div class="wiki-storybook-flex-column">
+            <DesignComponent
+              isSkeleton
+              type="select"
+              label="Loading select"
+              helperMessage="Options are loading..."
+              :option="[
+                {label: 'First option', value: 'option1'},
+                {label: 'Second option', value: 'option2'},
+                {label: 'Third option', value: 'option3'}
+              ]"
+            />
+          </div>
+        </DesignSkeleton>
+      `
+    }
   ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Select'} type={'select'}/>
+
+<StorybookDescriptions componentName={'Value'} type={'value'}/>
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Component.SelectVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Component.SelectSkeleton}/>
     `,
     events: `
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
 <StorybookDescriptions componentName={'Event'} type={'change'}/>
-<StorybookDescriptions componentName={'Event'} type={'click'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'selected'}/>
 <StorybookDescriptions componentName={'Expose'} type={'validation'}/>
     `,
     slots: `
-<StorybookDescriptions componentName={'Field'} type={'slot.field'}/>
+<StorybookDescriptions componentName={'Slot'} type={'label'} />
+<StorybookDescriptions componentName={'Slot'} type={'prefix'} />
+<StorybookDescriptions componentName={'Slot'} type={'suffix'} />
+<StorybookDescriptions componentName={'Slot'} type={'caption'} />
+<StorybookDescriptions componentName={'Slot'} type={'leading'} />
+<StorybookDescriptions componentName={'Slot'} type={'trailing'} />
+<StorybookDescriptions componentName={'List'} type={'slot.html'}/>
 <StorybookDescriptions componentName={'Menu'} type={'slots'}/>
     `
   }

@@ -33,16 +33,6 @@ export const wikiMenu: StorybookArgsToList = {
       }
     }
   },
-  'menu.hideList': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Hides the internal List part of Menu; shows only header/toolbar and other slots.',
-        ru: 'Скрывает внутреннюю часть List в Menu; отображает только заголовок/панель и другие слоты.'
-      }
-    }
-  },
   'menu.isSelectedByValue': {
     type: StorybookControl.boolean,
     options: {

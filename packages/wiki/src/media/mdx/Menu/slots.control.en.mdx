@@ -1,0 +1,29 @@
+### `control`
+
+Slot for placing the menu control element (trigger).
+
+**Parameters:**
+- `props: MenuControlItem` — object with menu control data
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const menuItems = ref([
+  { label: 'Item 1', value: '1' },
+  { label: 'Item 2', value: '2' },
+  { label: 'Item 3', value: '3' }
+])
+</script>
+
+<template>
+  <Menu v-model:open="isOpen" :list="menuItems">
+    <template #control="{ onclick, isSelected, selectedNames }">
+      <button @click="onclick">
+        {{ isSelected ? selectedNames.join(', ') : 'Select items' }}
+      </button>
+    </template>
+  </Menu>
+</template>
+```

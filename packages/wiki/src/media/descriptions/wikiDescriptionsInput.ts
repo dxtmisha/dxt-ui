@@ -234,6 +234,7 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Input'} type={'mask'}/>
 <Canvas of={Component.InputMask}/>
 
+<StorybookDescriptions componentName={'Value'} type={'value'}/>
 <StorybookDescriptions componentName={'Value'} type={'v-model'}/>
 <Canvas of={Component.InputVModel}/>
 

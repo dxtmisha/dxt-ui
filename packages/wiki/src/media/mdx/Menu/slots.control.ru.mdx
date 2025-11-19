@@ -1,0 +1,29 @@
+### `control`
+
+Слот для размещения элемента управления (триггера) меню.
+
+**Параметры:**
+- `props: MenuControlItem` — объект с данными управления меню
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const menuItems = ref([
+  { label: 'Элемент 1', value: '1' },
+  { label: 'Элемент 2', value: '2' },
+  { label: 'Элемент 3', value: '3' }
+])
+</script>
+
+<template>
+  <Menu v-model:open="isOpen" :list="menuItems">
+    <template #control="{ onclick, isSelected, selectedNames }">
+      <button @click="onclick">
+        {{ isSelected ? selectedNames.join(', ') : 'Выбрать элементы' }}
+      </button>
+    </template>
+  </Menu>
+</template>
+```

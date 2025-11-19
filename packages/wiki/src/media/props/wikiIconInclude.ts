@@ -158,6 +158,18 @@ export const wikiIconInclude: StorybookArgsToList = {
       }
     }
   },
+  iconSearch: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      type: ['string', 'File'],
+      description: {
+        en: 'Sets icon for search action',
+        ru: 'Задает иконку для действия поиска'
+      },
+      value: 'search'
+    }
+  },
   iconShow: {
     type: StorybookControl.boolean,
     options: {

@@ -129,6 +129,7 @@ export const wikiDescriptionsMenu: StorybookComponentsDescriptionItem = {
     `,
     slots: `
 <StorybookDescriptions componentName={'List'} type={'slot.html'}/>
+<StorybookDescriptions componentName={'Menu'} type={'slotsControl'}/>
 <StorybookDescriptions componentName={'Menu'} type={'slots'}/>
     `
   }
