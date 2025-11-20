@@ -127,6 +127,8 @@ export class Input {
       this.arrow,
       undefined,
       () => this.password.toggle(),
+      undefined,
+      undefined,
       computed(() => ({
         iconTrailing: this.password.icon.value ?? this.props.iconTrailing,
         maxlength: this.props.maxlength ?? this.props.max

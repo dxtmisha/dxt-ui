@@ -1,6 +1,13 @@
 import { computed, type VNode } from 'vue'
-import { eventStopPropagation } from '@dxtmisha/functional-basic'
-import { type ConstrBind, type DesignComponents, type RefOrNormal, toBind, toBinds, getRef } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type DesignComponents,
+  eventStopPropagation,
+  type RefOrNormal,
+  toBind,
+  toBinds,
+  getRef
+} from '@dxtmisha/functional'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
 import type { FieldValueInclude } from '../../classes/field/FieldValueInclude'
@@ -8,6 +15,7 @@ import type { FieldEventInclude } from '../../classes/field/FieldEventInclude'
 import type { FieldArrowInclude } from '../../classes/field/FieldArrowInclude'
 
 import type { FieldComponentInclude, FieldPropsInclude } from './basicTypes'
+import type { FieldArrowProps } from '../../types/fieldTypes'
 import type { FieldPropsBasic } from './props'
 import type { FieldSlots } from './types'
 
@@ -17,7 +25,7 @@ import type { FieldSlots } from './types'
  * Класс возвращает данные для работы с каркасом поля.
  */
 export class FieldInclude<
-  Props extends FieldPropsInclude = FieldPropsInclude,
+  Props extends FieldPropsInclude & FieldArrowProps = FieldPropsInclude,
   PropsExtra extends ConstrBind<FieldPropsBasic> = ConstrBind<FieldPropsBasic>
 > {
   /**
@@ -29,6 +37,8 @@ export class FieldInclude<
    * @param arrow object for working with arrows/ объект для работы со стрелками
    * @param onIcon Collection icon click handler/ Обработчик клика по иконке коллекции
    * @param onTrailing Trailing icon click handler/ Обработчик клика по иконке трейлинга
+   * @param onNext Next arrow click handler/ Обработчик клика по следующей стрелке
+   * @param onPrevious Previous arrow click handler/ Обработчик клика по предыдущей стрелке
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
@@ -40,6 +50,8 @@ export class FieldInclude<
     protected readonly arrow?: FieldArrowInclude,
     protected readonly onIcon?: () => void,
     protected readonly onTrailing?: () => void,
+    protected readonly onNext?: () => void,
+    protected readonly onPrevious?: () => void,
     protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly index?: string
   ) {
@@ -86,9 +98,9 @@ export class FieldInclude<
 
         align: this.props.align,
 
-        arrowCarousel: this.arrow?.isCarousel(),
-        arrowStepper: this.arrow?.isStepper(),
-        arrowAlign: this.props.arrowAlign,
+        arrowCarousel: this.arrow?.isCarousel() ?? this.props.arrow === 'carousel',
+        arrowStepper: this.arrow?.isStepper() ?? this.props.arrow === 'stepper',
+        arrowAlign: this.arrow?.align() ?? this.props.arrowAlign,
 
         isSkeleton: this.props.isSkeleton,
 
@@ -133,12 +145,10 @@ export class FieldInclude<
     if (this.components) {
       return this.components.render(
         'field',
-        {
-          ...toBind(
-            attrs ?? {},
-            this.valueBinds.value
-          )
-        },
+        toBind(
+          this.valueBinds.value,
+          attrs ?? {}
+        ),
         slotsChildren as any as Record<string, any>,
         this.index
       )
@@ -175,11 +185,13 @@ export class FieldInclude<
           eventStopPropagation(event)
           break
         case 'next':
+          this.onNext?.()
           this.arrow?.next()
           this.event?.on(event)
           eventStopPropagation(event)
           break
         case 'previous':
+          this.onPrevious?.()
           this.arrow?.previous()
           this.event?.on(event)
           eventStopPropagation(event)

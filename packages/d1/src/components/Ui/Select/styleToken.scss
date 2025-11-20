@@ -11,6 +11,10 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    &__input {
+      @include ui.marginX(#{var(--d1-grid-paddingX)});
+      @include ui.marginY(#{var(--d1-grid-paddingY)});
+    }
   }
   // :style [!] System label / Системная метка
 

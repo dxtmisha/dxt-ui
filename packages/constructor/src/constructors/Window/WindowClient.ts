@@ -1,4 +1,4 @@
-import type { WindowElement } from './WindowElement.ts'
+import type { WindowElement } from './WindowElement'
 
 /**
  * Sentinel value for an "unset" client coordinate.

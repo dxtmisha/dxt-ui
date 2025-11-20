@@ -58,15 +58,19 @@ export class MenuValue {
    *
    * Устанавливает новое выбранное значение, если оно изменилось, и возвращает экземпляр для чейнинга.
    * @param value selected list value/ выбранное значение списка
-   * @returns this
+   * @param isEmit whether to emit the update event/ нужно ли вызвать событие обновления
    */
-  setValue(value: ListSelectedList): this {
+  setValue(value: ListSelectedList, isEmit: boolean = false): this {
     if (
       this.props.isSelectedByValue
       && !isObject(value)
       && this.value.value !== value
     ) {
       this.value.value = value
+
+      if (isEmit) {
+        this.emits?.('updateValue', value)
+      }
     }
     return this
   }

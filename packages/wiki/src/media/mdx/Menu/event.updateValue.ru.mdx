@@ -1,0 +1,30 @@
+### `updateValue`
+
+Событие срабатывает при изменении выбранного значения в меню.
+
+**Параметры:**
+- `value?: NumberOrStringOrBoolean` — новое выбранное значение
+
+```html
+<script setup>
+const handleUpdateValue = (value) => {
+  console.log('Новое значение:', value)
+  console.log('Тип значения:', typeof value)
+}
+</script>
+
+<template>
+  <Menu
+    :isSelectedByValue="true"
+    @updateValue="handleUpdateValue"
+  >
+    <template #default>
+      <MenuItem value="item1">Пункт меню 1</MenuItem>
+      <MenuItem value="item2">Пункт меню 2</MenuItem>
+      <MenuItem value="item3">Пункт меню 3</MenuItem>
+    </template>
+  </Menu>
+</template>
+```
+
+

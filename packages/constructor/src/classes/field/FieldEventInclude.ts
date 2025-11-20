@@ -146,6 +146,19 @@ export class FieldEventInclude {
   }
 
   /**
+   * Triggering the event to set a specific value.
+   *
+   * Вызов события для установки конкретного значения.
+   * @param value new value/ новое значение
+   */
+  readonly onValue = (value: any): void => {
+    if (this.isEnabled()) {
+      this.value.set(value)
+      this.onAndChange()
+    }
+  }
+
+  /**
    * Triggering the event.
    *
    * Вызов события.

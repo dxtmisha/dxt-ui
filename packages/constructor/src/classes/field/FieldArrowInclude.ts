@@ -111,6 +111,15 @@ export class FieldArrowInclude {
   }
 
   /**
+   * Returns arrow alignment.
+   *
+   * Возвращает выравнивание стрелок.
+   */
+  align(): string | undefined {
+    return this.props.arrowAlign
+  }
+
+  /**
    * Decreases the value.
    *
    * Уменьшает значение.

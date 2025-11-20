@@ -423,11 +423,11 @@ export class ListDataRef {
     }
 
     if (step > 0) {
-      return mapItems[mapItems.length - 1]?.index
+      return mapItems[0]?.index
     }
 
     if (step < 0) {
-      return mapItems[0]?.index
+      return mapItems[mapItems.length - 1]?.index
     }
 
     return undefined

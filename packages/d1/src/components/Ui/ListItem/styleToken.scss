@@ -11,7 +11,7 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-listItem-paddingX: var(--d1-sys-spacing-xs);
+    --d1-listItem-paddingX: var(--d1-grid-paddingX);
     --d1-listItem-paddingY: var(--d1-sys-spacing-xs);
     --d1-listItem-shift: calc(var(--d1-sys-spacing-x) * -1);
     --d1-listItem-borderWidth: var(--d1-sys-spacing-outline);

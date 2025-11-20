@@ -1,7 +1,7 @@
 {
   "main": "{d.listItem}",
   "margin": "{sys.spacing.x}",
-  "paddingX": "{sys.spacing.xs}",
+  "paddingX": "{grid.paddingX}",
   "paddingY": "{sys.spacing.xs}",
   "shift": "{sys.spacing.x} * -1",
   "palette-gradient": "{sys.palette.primary}",

@@ -1,3 +1,7 @@
 {
-  "main": "{d.select}"
+  "main": "{d.select}",
+  "#input": {
+    "marginX": "{grid.paddingX}",
+    "marginY": "{grid.paddingY}"
+  }
 }

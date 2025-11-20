@@ -1,4 +1,4 @@
-import type { ConstrClass } from '@dxtmisha/functional'
+import type { ConstrClass, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 
 import type { EventClickEmits } from '../../types/eventClickTypes'
 
@@ -30,6 +30,7 @@ export type MenuEmits
     & WindowEmitsInclude
     & ModelEmitsSelected
     & {
+      updateValue: [value?: NumberOrStringOrBoolean]
       clickSlot: [value?: string]
     }
 

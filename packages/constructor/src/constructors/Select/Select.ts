@@ -17,6 +17,7 @@ import { SelectFilter } from './SelectFilter'
 
 import type { SelectComponents, SelectEmits, SelectSlots } from './types'
 import type { SelectProps } from './props'
+import type { IconValue } from '../Icon'
 
 /**
  * Select
@@ -98,8 +99,10 @@ export class Select {
       undefined,
       undefined,
       () => this.menu.getElement()?.toggle,
+      () => this.menu.getElement()?.next(),
+      () => this.menu.getElement()?.previous(),
       computed(() => ({
-        iconTrailing: !this.props.disabled ? (this.props.iconTrailing ?? this.props.iconArrowDown) : undefined,
+        iconTrailing: this.iconTrailing.value,
         maxlength: this.props.max,
         cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
       }))
@@ -122,7 +125,9 @@ export class Select {
         filterMode: this.props.filterMode,
         hideList: props.hideList,
         onClick: this.event.onSelect,
-        onClickSlot: this.onClick
+        onClickSlot: this.onClick,
+        onUpdateValue: this.isArrow() ? this.event.onValue : undefined,
+        isSelectedByValue: true
       }))
     )
     this.input = new SelectInput(this.props, this.attributes, this.value, this.event)
@@ -138,10 +143,28 @@ export class Select {
     )
   })
 
+  /** Computes the trailing icon value/ Вычисляет значение иконки трейлинга */
+  protected readonly iconTrailing = computed<IconValue | undefined>(() => {
+    if (!this.props.disabled && !this.isArrow()) {
+      return this.props.iconTrailing ?? this.props.iconArrowDown
+    }
+
+    return undefined
+  })
+
   /** Handles click on option in slot/ Обрабатывает клик по опции в слоте */
   protected readonly onClick = (value?: string) => {
     if (value) {
       this.value.set(value)
     }
+  }
+
+  /**
+   * Checks whether arrow is set.
+   *
+   * Проверяет, установлена ли стрелка.
+   */
+  protected isArrow(): boolean {
+    return Boolean(this.props.arrow) && this.props.arrow !== 'none'
   }
 }

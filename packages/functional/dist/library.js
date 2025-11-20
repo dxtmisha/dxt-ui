@@ -3943,9 +3943,9 @@ class It {
     if (o in s)
       return (h = s[o]) == null ? void 0 : h.index;
     if (t > 0)
-      return (d = s[s.length - 1]) == null ? void 0 : d.index;
+      return (d = s[0]) == null ? void 0 : d.index;
     if (t < 0)
-      return (g = s[0]) == null ? void 0 : g.index;
+      return (g = s[s.length - 1]) == null ? void 0 : g.index;
   }
   /**
    * Returns an item by its index.

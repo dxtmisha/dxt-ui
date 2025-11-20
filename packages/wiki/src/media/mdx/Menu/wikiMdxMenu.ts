@@ -2,6 +2,8 @@ import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
 import ajaxEn from './ajax.en.mdx'
 import ajaxRu from './ajax.ru.mdx'
+import eventUpdateValueEn from './event.updateValue.en.mdx'
+import eventUpdateValueRu from './event.updateValue.ru.mdx'
 import exposeNavigationEn from './expose.navigation.en.mdx'
 import exposeNavigationRu from './expose.navigation.ru.mdx'
 import menuEn from './menu.en.mdx'
@@ -20,6 +22,10 @@ export const wikiMdxMenu: StorybookComponentsMdxItem = {
     'ajax': {
       en: ajaxEn,
       ru: ajaxRu
+    },
+    'event.updateValue': {
+      en: eventUpdateValueEn,
+      ru: eventUpdateValueRu
     },
     'expose.navigation': {
       en: exposeNavigationEn,

@@ -194,6 +194,7 @@ export const wikiDescriptionsMenu: StorybookComponentsDescriptionItem = {
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
 <StorybookDescriptions componentName={'Event'} type={'bars'}/>
+<StorybookDescriptions componentName={'Menu'} type={'event.updateValue'}/>
 <StorybookDescriptions componentName={'Window'} type={'event.window'}/>
     `,
     expose: `

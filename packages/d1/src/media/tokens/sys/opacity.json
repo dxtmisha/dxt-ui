@@ -7,6 +7,7 @@
   "selected": "{ref.opacity.8}",
   "disabled": "{ref.opacity.12}",
   "outline": "{ref.opacity.12}",
+  "outlineMedium": "{ref.opacity.4}",
   "scrim": "{ref.opacity.32}",
   "primary": {
     "high": "{ref.opacity.92}",

@@ -47,6 +47,67 @@ export const wikiDescriptionsSelect: StorybookComponentsDescriptionItem = {
     `,
   stories: [
     {
+      id: 'SelectBasic',
+      name: {
+        en: 'Basic',
+        ru: 'Базовые'
+      },
+      setup: `
+      const options = ref([
+        {label: 'JavaScript', value: 'js'},
+        {label: 'TypeScript', value: 'ts'},
+        {label: 'Python', value: 'py'},
+        {label: 'Java', value: 'java'},
+        {label: 'C++', value: 'cpp'},
+        {label: 'Ruby', value: 'rb'},
+        {label: 'Go', value: 'go'},
+        {label: 'PHP', value: 'php'}
+      ])
+
+      return { options }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent
+            type="select"
+            label="Standard select"
+            placeholder="Select option"
+            :option="options"
+          />
+          <DesignComponent
+            type="select"
+            label="With search"
+            placeholder="Search..."
+            showSearch
+            :option="options"
+          />
+          <DesignComponent
+            type="select"
+            label="With filter"
+            placeholder="Type to filter"
+            showSearch
+            filterMode
+            :option="options"
+          />
+          <DesignComponent
+            type="select"
+            label="Edit value"
+            placeholder="Select or type"
+            editValue
+            filterMode
+            :option="options"
+          />
+          <DesignComponent
+            type="select"
+            label="With arrows"
+            placeholder="Select option"
+            arrow="carousel"
+            :option="options"
+          />
+        </div>
+      `
+    },
+    {
       id: 'SelectVModel',
       name: {
         en: 'Two-way binding (v-model)',
@@ -55,67 +116,36 @@ export const wikiDescriptionsSelect: StorybookComponentsDescriptionItem = {
       setup: `
       return {
         singleValue: ref('option2'),
-        multipleValue: ref(['option1', 'option3']),
-        countryValue: ref(''),
-        countries: ref([
-          {label: 'United States', value: 'us', icon: 'flag'},
-          {label: 'United Kingdom', value: 'uk', icon: 'flag'},
-          {label: 'Germany', value: 'de', icon: 'flag'},
-          {label: 'France', value: 'fr', icon: 'flag'},
-          {label: 'Japan', value: 'jp', icon: 'flag'}
-        ])
+        multipleValue: ref(['option1', 'option3'])
       }
       `,
       template: `
         <div class="wiki-storybook-flex-column">
-          <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="singleValue = 'option1'">Select Option 1</button>
-            <button class="wiki-storybook-button" @click="singleValue = 'option3'">Select Option 3</button>
-            <button class="wiki-storybook-button" @click="singleValue = ''">Clear</button>
-          </div>
           <DesignComponent
             v-model="singleValue"
             type="select"
             label="Single select"
+            arrow="carousel"
             :option="[
               {label: 'First option', value: 'option1'},
               {label: 'Second option', value: 'option2'},
               {label: 'Third option', value: 'option3'}
             ]"
           />
-          <div>Selected value: {{ singleValue }}</div>
+          <div>Selected: {{ singleValue }}</div>
 
-          <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="multipleValue = ['option1', 'option2']">Select 1,2</button>
-            <button class="wiki-storybook-button" @click="multipleValue.push('option3')">Add Option 3</button>
-            <button class="wiki-storybook-button" @click="multipleValue = []">Clear all</button>
-          </div>
           <DesignComponent
             v-model="multipleValue"
             type="select"
             label="Multiple select"
             multiple
             :option="[
-              {label: 'First option', value: 'option1', icon: 'check'},
-              {label: 'Second option', value: 'option2', icon: 'check'},
-              {label: 'Third option', value: 'option3', icon: 'check'}
+              {label: 'First option', value: 'option1'},
+              {label: 'Second option', value: 'option2'},
+              {label: 'Third option', value: 'option3'}
             ]"
           />
-          <div>Selected values: {{ multipleValue }}</div>
-
-          <div class="wiki-storybook-flex">
-            <button class="wiki-storybook-button" @click="countryValue = 'us'">USA</button>
-            <button class="wiki-storybook-button" @click="countryValue = 'uk'">UK</button>
-            <button class="wiki-storybook-button" @click="countryValue = ''">Clear</button>
-          </div>
-          <DesignComponent
-            v-model="countryValue"
-            type="select"
-            label="Country"
-            placeholder="Select country"
-            :option="countries"
-          />
-          <div>Selected country: {{ countryValue }}</div>
+          <div>Selected: {{ multipleValue }}</div>
         </div>
       `
     },
@@ -148,6 +178,7 @@ export const wikiDescriptionsSelect: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Select'} type={'select'}/>
+<Canvas of={Component.SelectBasic}/>
 
 <StorybookDescriptions componentName={'Value'} type={'value'}/>
 <StorybookDescriptions componentName={'Value'} type={'v-model'}/>
