@@ -42,6 +42,10 @@ export interface ImagePropsBasic {
   x?: string | number
   /** Y position/ Позиция по оси Y */
   y?: string | number
+
+  tagImg?: boolean
+  alt?: string
+  lazy?: boolean
 }
 
 /**

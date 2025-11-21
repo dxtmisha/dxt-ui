@@ -34,13 +34,26 @@ export class ImageBackground {
    * Возвращает значения для свойства background-image.
    */
   readonly image = computed<string | null>(() => {
+    const image = this.imageSrc.value
+
+    if (image) {
+      return `url("${image}")`
+    }
+
+    return null
+  })
+
+  /**
+   * Returns the image source/ Возвращает источник изображения
+   */
+  readonly imageSrc = computed<string | null>(() => {
     const image = this.data.image.value
 
     switch (typeof image) {
       case 'string':
-        return `url("${image}")`
+        return image
       case 'object':
-        return `url("${image.src}")`
+        return image.src
       default:
         return null
     }

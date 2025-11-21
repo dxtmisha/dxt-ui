@@ -14,7 +14,7 @@ import { ImagePosition } from './ImagePosition'
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageBackground } from './ImageBackground'
 
-import { ImageTypeValue } from './basicTypes'
+import { type ImageAttrs, ImageTypeValue } from './basicTypes'
 import type { ImageEmits } from './types'
 import type { ImageProps } from './props'
 
@@ -144,9 +144,44 @@ export class Image {
   })
 
   /**
-   * Calculates all properties for the style of the element.
-   *
-   * Вычисляет все свойства для стиля элемента.
+   * Determines whether to use the img tag/ Определяет, использовать ли тег img
+   */
+  readonly isImgTag = computed<boolean>(() => {
+    switch (this.type.item.value) {
+      case ImageTypeValue.file:
+      case ImageTypeValue.image:
+        return Boolean(this.props.tagImg)
+      default:
+        return false
+    }
+  })
+
+  /**
+   * Determines the tag to use/ Определяет используемый тег
+   */
+  readonly tag = computed<string>(() => this.isImgTag.value ? 'img' : 'span')
+
+  /**
+   * Calculates all properties for binding to the element/
+   * Вычисляет все свойства для привязки к элементу
+   */
+  readonly binds = computed<ImageAttrs>(
+    () => {
+      const attrs = {} as ImageAttrs
+
+      if (this.isImgTag.value) {
+        attrs.src = this.background.imageSrc.value
+        attrs.alt = this.props.alt
+        attrs.loading = this.props.lazy ? 'lazy' : 'eager'
+      }
+
+      return attrs
+    }
+  )
+
+  /**
+   * Calculates all properties for the style of the element/
+   * Вычисляет все свойства для стиля элемента
    */
   readonly styles = computed<ConstrStyles>(() => {
     const value = this.props.value
@@ -155,11 +190,30 @@ export class Image {
       switch (this.type.item.value) {
         case ImageTypeValue.file:
         case ImageTypeValue.image:
-          return {
-            'background-image': this.background.image.value,
-            'background-size': this.background.size.value,
-            'background-position-x': this.position.x.value,
-            'background-position-y': this.position.y.value
+          if (this.isImgTag.value) {
+            console.log({
+              'object-fit': this.getStyleSize(),
+              'object-position': `${this.position.x.value} ${this.position.y.value}`,
+              'width': '100%',
+              'height': '100%',
+              'background-size': this.background.size.value,
+              '--scale': this.background.size.value
+            })
+            return {
+              'background-size': this.background.size.value,
+              'object-fit': this.getStyleSize(),
+              'object-position': `${this.position.x.value} ${this.position.y.value}`,
+              'width': '100%',
+              'height': '100%',
+              'scale': this.getStyleScale()
+            }
+          } else {
+            return {
+              'background-image': this.background.image.value,
+              'background-size': this.background.size.value,
+              'background-position-x': this.position.x.value,
+              'background-position-y': this.position.y.value
+            }
           }
         case ImageTypeValue.icon:
           return {
@@ -181,4 +235,40 @@ export class Image {
 
     return {} as ConstrStyles
   })
+
+  /**
+   * Returns the value for the background-size property.
+   *
+   * Возвращает значение для свойства background-size.
+   */
+  protected getStyleSize(): string | null {
+    const size = this.background.size.value
+
+    if (
+      this.isImgTag.value
+      && size !== 'contain'
+      && size !== 'cover'
+
+    ) {
+      return 'none'
+    }
+
+    return size
+  }
+
+  /**
+   * Returns the scaling sizes/ Возвращает размеры масштабирования
+   */
+  protected getStyleScale(): string | null {
+    const size = this.background.size.value
+
+    if (
+      this.isImgTag.value
+      && size?.match('%')
+    ) {
+      return size?.replace(/[^0-9%]+/, '')
+    }
+
+    return null
+  }
 }

@@ -108,9 +108,10 @@ export class ImageDesign<
    */
   protected initRender(): VNode {
     return h(
-      'span',
+      this.item.tag.value,
       {
         ...this.getAttrs(),
+        ...this.item.binds.value,
         ref: this.element,
         class: this.classes?.value.main,
         style: this.styles?.value,
