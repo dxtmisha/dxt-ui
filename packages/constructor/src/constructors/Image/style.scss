@@ -1,6 +1,10 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinImage {
+  @include ui.initByCustom('img.width', 100%);
+  @include ui.initByCustom('img.height', auto);
+  @include ui.initByCustom('img.object.fit', none);
+
   direction: ltr;
   @include ui.flexCenter;
   @include ui.absolute;
@@ -14,6 +18,27 @@
   transition-property: background-size, filter, opacity, transform, rotate, scale, clip-path;
   transition-duration: ui.v('d.sys.transitionDuration.standard');
   transform: none;
+
+  > img {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin: auto;
+
+    width: ui.v('??img.width');
+    height: ui.v('??img.height');
+    min-width: 100%;
+    min-height: 100%;
+
+    object-fit: ui.v('??img.object.fit');
+
+    --sys-transform-translateX: -50%;
+    --sys-transform-translateY: -50%;
+    @include ui.transformInit();
+    transform-origin: calc(var(--sys-transform-translateX) * -1) calc(var(--sys-transform-translateY) * -1);
+
+    pointer-events: none;
+  }
 
   &--type {
     &--public {
@@ -46,6 +71,17 @@
         width: 100%;
         height: 100%;
       }
+    }
+  }
+
+  &--size {
+    &--contain {
+      @include ui.initByCustom('img.height', 100%);
+      @include ui.initByCustom('img.object.fit', contain);
+    }
+
+    &--cover {
+      @include ui.initByCustom('img.object.fit', cover);
     }
   }
 

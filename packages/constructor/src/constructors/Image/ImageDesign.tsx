@@ -107,17 +107,41 @@ export class ImageDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
+    if (this.item.img.is.value) {
+      return h(
+        'span',
+        {
+          ...this.getAttrs(),
+          ref: this.element,
+          class: this.classes?.value.main
+        },
+        this.renderImg()
+      )
+    }
+
     return h(
-      this.item.tag.value,
+      'span',
       {
         ...this.getAttrs(),
-        ...this.item.binds.value,
+        ...this.item.img.binds.value,
         ref: this.element,
         class: this.classes?.value.main,
         style: this.styles?.value,
         translate: 'no'
       },
       this.renderValue()
+    )
+  }
+
+  /**
+   * Rendering the img tag.
+   *
+   * Рендеринг тега img.
+   */
+  readonly renderImg = (): VNode => {
+    return h(
+      'img',
+      this.item.img.binds.value
     )
   }
 
