@@ -46,23 +46,13 @@ export const wikiImage: StorybookArgsToList = {
       }
     }
   },
-  'image.objectWidth': {
-    type: StorybookControl.number,
+  'image.adaptiveAlways': {
+    type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.adaptive,
       description: {
-        en: 'Defines the physical width of an element on the image for adaptive alignment',
-        ru: 'Указывает физическую ширину элемента на изображении для адаптивного выравнивания'
-      }
-    }
-  },
-  'image.objectHeight': {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.adaptive,
-      description: {
-        en: 'Defines the physical height of an element on the image for adaptive alignment',
-        ru: 'Указывает физическую высоту элемента на изображении для адаптивного выравнивания'
+        en: 'Continuously calculates the image size, even when the element is off-screen',
+        ru: 'Постоянно вычисляет размер изображения, даже если элемент находится вне экрана'
       }
     }
   },
@@ -76,13 +66,13 @@ export const wikiImage: StorybookArgsToList = {
       }
     }
   },
-  'image.adaptiveAlways': {
-    type: StorybookControl.boolean,
+  'image.alt': {
+    type: StorybookControl.string,
     options: {
-      category: StorybookCategory.adaptive,
+      category: StorybookCategory.information,
       description: {
-        en: 'Continuously calculates the image size, even when the element is off-screen',
-        ru: 'Постоянно вычисляет размер изображения, даже если элемент находится вне экрана'
+        en: 'Alternative text for the image when using the img tag',
+        ru: 'Альтернативный текст для изображения при использовании тега img'
       }
     }
   },
@@ -96,6 +86,68 @@ export const wikiImage: StorybookArgsToList = {
       description: {
         en: 'Defines the crop area of the image, accepting an array of values for top, right, bottom, and left',
         ru: 'Определяет область обрезки изображения, принимает массив значений для top, right, bottom, left'
+      }
+    }
+  },
+  'image.lazy': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Enables lazy loading of the image using the native loading="lazy" attribute',
+        ru: 'Включает ленивую загрузку изображения с использованием нативного атрибута loading="lazy"'
+      }
+    }
+  },
+  'image.objectHeight': {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.adaptive,
+      description: {
+        en: 'Defines the physical height of an element on the image for adaptive alignment',
+        ru: 'Указывает физическую высоту элемента на изображении для адаптивного выравнивания'
+      }
+    }
+  },
+  'image.objectWidth': {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.adaptive,
+      description: {
+        en: 'Defines the physical width of an element on the image for adaptive alignment',
+        ru: 'Указывает физическую ширину элемента на изображении для адаптивного выравнивания'
+      }
+    }
+  },
+  'image.picture': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      type: ['Record<string, string>', 'ImagePictureList'],
+      description: {
+        en: 'Sources for different display conditions using the picture tag with media queries',
+        ru: 'Источники для разных условий отображения с использованием тега picture и медиа-запросов'
+      }
+    }
+  },
+  'image.srcset': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      type: ['string', 'Record<string, string>'],
+      description: {
+        en: 'Set of image sources for different screen resolutions and pixel densities',
+        ru: 'Набор источников изображения для разных разрешений экрана и плотности пикселей'
+      }
+    }
+  },
+  'image.tagImg': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Use the img tag instead of background image for better accessibility and SEO',
+        ru: 'Использовать тег img вместо фонового изображения для лучшей доступности и SEO'
       }
     }
   },

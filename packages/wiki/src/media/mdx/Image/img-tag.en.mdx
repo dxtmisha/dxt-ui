@@ -1,0 +1,67 @@
+## Using the img tag
+
+The `tagImg`, `srcset`, `picture`, `alt`, and `lazy` properties are designed to control the image display mode using the HTML `<img>` tag instead of a background image.
+
+**Properties:**
+
+- `tagImg` — use the `<img>` tag instead of a background image
+- `srcset` — set of image sources for different screen resolutions
+- `picture` — sources for different display conditions using the `<picture>` tag
+- `alt` — alternative text for the image
+- `lazy` — enables lazy loading of the image
+
+The properties work together: if `tagImg` is not set or equals `false`, the image is displayed as a CSS background via `background-image`. When `tagImg` is activated (value `true`), the component uses the semantic HTML `<img>` tag, providing better accessibility and SEO optimization. The `alt` property defines alternative text that is displayed when the image is unavailable and is used by screen readers for people with disabilities.
+
+The `srcset` property allows you to provide multiple versions of an image for different pixel densities and screen sizes. It accepts a string in the standard `srcset` attribute format or an object where keys are width descriptors (numbers or strings like `'2x'`) and values are image URLs. When using numeric keys, the `w` suffix (width descriptor) is automatically added. The browser automatically selects the optimal image based on screen size and pixel density.
+
+The `picture` property enables the use of the HTML `<picture>` tag for art direction — when you need to load different images depending on screen size or other media query conditions. It accepts an object where keys are media conditions (such as screen width in pixels) and values are image URLs, or an array of objects with `<source>` attributes. When using an object, media queries like `(width >= 768px)` are automatically generated. The `<picture>` tag provides more flexible control over image selection compared to `srcset`, allowing you to load images with different aspect ratios or content for various viewing conditions.
+
+The `lazy` property activates native browser lazy loading via the `loading="lazy"` attribute. Images with this attribute are loaded only when approaching the visible screen area, which significantly speeds up initial page load and reduces traffic consumption. It is especially effective for pages with a large number of images or long lists.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const productImage = ref('/images/product.jpg')
+</script>
+
+<template>
+  <!-- Basic usage -->
+  <Image
+    :value="productImage"
+    tag-img
+    alt="Product description"
+  />
+
+  <!-- With lazy loading -->
+  <Image
+    :value="productImage"
+    tag-img
+    alt="Product"
+    lazy
+  />
+
+  <!-- With srcset object -->
+  <Image
+    :value="productImage"
+    tag-img
+    alt="Responsive image"
+    :srcset="{
+      '1x': '/images/product.jpg',
+      '2x': '/images/product@2x.jpg'
+    }"
+  />
+
+  <!-- With picture for different screen sizes -->
+  <Image
+    :value="productImage"
+    tag-img
+    alt="Responsive image for different devices"
+    :picture="{
+      768: '/images/product-tablet.jpg',
+      1024: '/images/product-desktop.jpg'
+    }"
+  />
+</template>
+```
+

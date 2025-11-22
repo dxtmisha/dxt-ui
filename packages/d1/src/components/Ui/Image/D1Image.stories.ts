@@ -104,6 +104,37 @@ export const ImageSize: Story = {
     `
   })
 }
+export const ImageTagImg: Story = {
+  name: 'Использование тега img',
+  render: () => ({
+    components: { D1Image },
+    setup() {
+      return {
+        image1
+      }
+    },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">Background (default)</div>
+            <D1Image :value="image1"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">tag-img + alt</div>
+            <D1Image :value="image1" tag-img alt="Example image"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">tag-img + lazy + srcset</div>
+            <D1Image :value="image1" tag-img lazy alt="Responsive image" :srcset="{ '1x': image1, '2x': image1 }"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">tag-img + picture</div>
+            <D1Image :value="image1" tag-img alt="Adaptive image" :picture="{ 768: image1, 1024: image1 }"/>
+          </div>
+        </div>
+    `
+  })
+}
 export const ImageAdaptive: Story = {
   name: 'Адаптированные изображения',
   render: () => ({

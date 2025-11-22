@@ -97,6 +97,38 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
       `
     },
     {
+      id: 'ImageTagImg',
+      name: {
+        en: 'Using img tag',
+        ru: 'Использование тега img'
+      },
+      setup: `
+      return {
+        image1
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">Background (default)</div>
+            <DesignComponent :value="image1"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">tag-img + alt</div>
+            <DesignComponent :value="image1" tag-img alt="Example image"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">tag-img + lazy + srcset</div>
+            <DesignComponent :value="image1" tag-img lazy alt="Responsive image" :srcset="{ '1x': image1, '2x': image1 }"/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
+            <div class="wiki-storybook-item__label">tag-img + picture</div>
+            <DesignComponent :value="image1" tag-img alt="Adaptive image" :picture="{ 768: image1, 1024: image1 }"/>
+          </div>
+        </div>
+      `
+    },
+    {
       id: 'ImageAdaptive',
       name: {
         en: 'Adapted images',
@@ -129,6 +161,9 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Image'} type={'image'}/>
 <StorybookDescriptions componentName={'Image'} type={'value'}/>
 <Canvas of={Component.ImageType}/>
+
+<StorybookDescriptions componentName={'Image'} type={'img-tag'}/>
+<Canvas of={Component.ImageTagImg}/>
 
 <StorybookDescriptions componentName={'Image'} type={'size'}/>
 <Canvas of={Component.ImageSize}/>
