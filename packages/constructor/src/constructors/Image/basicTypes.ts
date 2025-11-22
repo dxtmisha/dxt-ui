@@ -20,6 +20,7 @@ export enum ImageTypeValue {
 
 export type ImageElement = HTMLElement | undefined
 export type ImageAttrs = Record<keyof HTMLImageElement, any>
+export type ImagePicture = Record<string, string> | Record<keyof HTMLSourceElement, any>[]
 
 export type ImageCoordinatorItem
   = [number]

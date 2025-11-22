@@ -57,20 +57,12 @@ export class ImageImg {
    */
   readonly styles = computed<Record<string, any>>(() => {
     const styles: any = {
-      // 'object-position': `${this.position.x.value} ${this.position.y.value}`
-    }
-
-    if (this.position.x.value.match('%')) {
-      styles['--sys-transform-translateX'] = `calc(${this.position.x.value} * -1)`
-    }
-
-    if (this.position.y.value.match('%')) {
-      styles['--sys-transform-translateY'] = `calc(${this.position.y.value} * -1)`
+      'object-position': `${this.position.x.value} ${this.position.y.value}`,
+      '--sys-transform-originX': this.position.x.value,
+      '--sys-transform-originY': this.position.y.value
     }
 
     if (this.isSize()) {
-      styles['object-fit'] = 'cover'
-      styles['height'] = '100%'
       styles['--sys-transform-scale'] = this.getSize()
     }
 

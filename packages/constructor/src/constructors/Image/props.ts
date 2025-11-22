@@ -1,3 +1,5 @@
+import type { ImagePicture } from './basicTypes.ts'
+
 interface ImagePropsToken {
   // :type [!] System label / Системная метка
   turn?: boolean
@@ -43,8 +45,20 @@ export interface ImagePropsBasic {
   /** Y position/ Позиция по оси Y */
   y?: string | number
 
+  /**
+   * Use <img> tag instead of background image/
+   * Использовать тег <img> вместо фонового изображения
+   */
   tagImg?: boolean
+  /**
+   * Image source set for different resolutions/
+   * Набор источников изображения для разных разрешений
+   */
+  srcset?: string | Record<string, string>
+  picture?: ImagePicture
+  /** Alt text/ Текст alt */
   alt?: string
+  /** Lazy loading/ Ленивя загрузка */
   lazy?: boolean
 }
 

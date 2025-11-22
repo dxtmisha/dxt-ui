@@ -2,8 +2,8 @@
 
 @mixin mixinImage {
   @include ui.initByCustom('img.width', 100%);
-  @include ui.initByCustom('img.height', auto);
-  @include ui.initByCustom('img.object.fit', none);
+  @include ui.initByCustom('img.height', 100%);
+  @include ui.initByCustom('img.object.fit', cover);
 
   direction: ltr;
   @include ui.flexCenter;
@@ -35,7 +35,7 @@
     --sys-transform-translateX: -50%;
     --sys-transform-translateY: -50%;
     @include ui.transformInit();
-    transform-origin: calc(var(--sys-transform-translateX) * -1) calc(var(--sys-transform-translateY) * -1);
+    transform-origin: var(--sys-transform-originX) var(--sys-transform-originY);
 
     pointer-events: none;
   }
@@ -75,8 +75,11 @@
   }
 
   &--size {
+    &--auto {
+      @include ui.initByCustom('img.object.fit', none);
+    }
+
     &--contain {
-      @include ui.initByCustom('img.height', 100%);
       @include ui.initByCustom('img.object.fit', contain);
     }
 
@@ -86,6 +89,7 @@
   }
 
   &--adaptive {
+    @include ui.initByCustom('img.height', auto);
     background-size: 100%;
   }
 

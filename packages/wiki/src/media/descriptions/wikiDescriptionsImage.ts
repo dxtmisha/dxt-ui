@@ -75,29 +75,6 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label">size: auto (default)</div>
-            <DesignComponent :value="image1" size="auto"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">size: contain</div>
-            <DesignComponent :value="image1" size="contain"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">size: cover</div>
-            <DesignComponent :value="image1" size="cover"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">coordinator</div>
-            <DesignComponent :value="image1" :coordinator="[60, 10, 10, 40]"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">x, y</div>
-            <DesignComponent :value="image1" x="20" y="-10"/>
-          </div>
-        </div>
-        <div class="wiki-storybook-item--padding">Tag img:</div>
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">size: auto (default)</div>
             <DesignComponent :value="image1" size="auto" tag-img/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
@@ -114,7 +91,7 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label">x, y</div>
-            <DesignComponent :value="image1" x="20" y="-10" tag-img/>
+            <DesignComponent :value="image1" x="20%" y="-10%" tag-img/>
           </div>
         </div>
       `
@@ -141,7 +118,7 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
             <DesignComponent :value="phone2" adaptive object-width="71.9"/>
           </div>
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
-            <DesignComponent :value="phone3" adaptive object-width="129.9"/>
+            <DesignComponent :value="phone3" adaptive object-width="129.9" tag-img/>
           </div>
         </div>
       `
