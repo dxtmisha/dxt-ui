@@ -20,7 +20,6 @@ export enum ImageTypeValue {
 
 export type ImageElement = HTMLElement | undefined
 export type ImageAttrs = Record<keyof HTMLImageElement, any>
-export type ImagePicture = Record<string, string> | Record<keyof HTMLSourceElement, any>[]
 
 export type ImageCoordinatorItem
   = [number]
@@ -33,6 +32,10 @@ export type ImageSize<T = number> = {
   width: T
   height: T
 }
+
+export type ImagePictureItem = Record<keyof HTMLSourceElement, any>
+export type ImagePictureList = ImagePictureItem[]
+export type ImagePicture = Record<string, string> | ImagePictureList
 
 /**
  * Parameters for the uploaded image or the one available by a direct link.

@@ -1,13 +1,18 @@
 import { computed } from 'vue'
-import type { ConstrBind } from '@dxtmisha/functional'
+import { type ConstrBind, forEach, isArray, isNumber } from '@dxtmisha/functional'
 
 import { ImageType } from './ImageType'
 import { ImagePosition } from './ImagePosition'
 import { ImageBackground } from './ImageBackground'
 
-import { type ImageAttrs, ImageTypeValue } from './basicTypes'
+import { type ImageAttrs, type ImagePictureItem, type ImagePictureList, ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
 
+/**
+ * A class for working with the img tag.
+ *
+ * Класс для работы с тегом img.
+ */
 export class ImageImg {
   constructor(
     protected readonly props: ImageProps,
@@ -23,7 +28,6 @@ export class ImageImg {
   readonly is = computed<boolean>(() => {
     return Boolean(this.props.tagImg)
       && this.isType()
-      // && this.isSize()
   })
 
   /**
@@ -42,8 +46,10 @@ export class ImageImg {
         if (this.props.lazy) {
           attrs.loading = 'lazy'
         }
-      } else if (this.props.alt) {
-        // asd
+
+        if (this.props.srcset) {
+          attrs.srcset = this.getSrcset()
+        }
       }
 
       return attrs
@@ -90,9 +96,73 @@ export class ImageImg {
     return Boolean(size && size.match('[% ]'))
   }
 
+  /**
+   * Returns the value for the transform scale.
+   *
+   * Возвращает значение для свойства transform scale.
+   */
   protected getSize() {
     return this.background.size.value
       ?.replace('auto', '')
       ?.trim()
+  }
+
+  /**
+   * Returns the srcset attribute value.
+   *
+   * Возвращает значение атрибута srcset.
+   */
+  protected getSrcset(): string | undefined {
+    if (!this.props.srcset) {
+      return undefined
+    }
+
+    if (typeof this.props.srcset === 'string') {
+      return this.props.srcset
+    }
+
+    return Object.entries(this.props.srcset)
+      .map(([key, value]) => `${value} ${this.toSrcsetKey(key)}`)
+      .join(', ')
+  }
+
+  protected getPicture(): ImagePictureList | undefined {
+    if (!this.props.picture) {
+      return undefined
+    }
+
+    if (isArray(this.props.picture)) {
+      return this.props.picture
+    }
+
+    return forEach(
+      this.props.picture,
+      (value, key) => {
+        const item: ImagePictureItem = {
+          srcset: value
+        }
+
+        if (key === 'media' || key.startsWith('media-')) {
+          item.media = key.replace('media-', '')
+        } else if (key === 'type' || key.startsWith('type-')) {
+          item.type = key.replace('type-', '')
+        }
+
+        return {
+          srcset: value,
+          media: `()`
+        }
+      }
+    )
+  }
+
+  /**
+   * Converts the srcset key to a string.
+   *
+   * Преобразует ключ srcset в строку.
+   * @param key key/ ключ
+   */
+  protected toSrcsetKey(key: string | number): string {
+    return isNumber(key) ? `${key}w` : String(key)
   }
 }
