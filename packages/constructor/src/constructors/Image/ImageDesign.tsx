@@ -125,12 +125,13 @@ export class ImageDesign<
       'span',
       {
         ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        translate: 'no',
-        role: 'img',
-        ariaLabel: this.props.alt
+        'ref': this.element,
+        'class': this.classes?.value.main,
+        'style': this.styles?.value,
+        'translate': 'no',
+        'role': this.item.role.value,
+        'aria-label': this.props.alt,
+        'aria-hidden': this.item.ariaHidden.value
       },
       this.renderValue()
     )

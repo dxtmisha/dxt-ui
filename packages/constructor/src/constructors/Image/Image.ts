@@ -2,7 +2,7 @@ import { computed, onUnmounted, type Ref, watch } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrEmit,
-  type ConstrStyles,
+  type ConstrStyles, isFilled,
   isString
 } from '@dxtmisha/functional'
 
@@ -85,6 +85,28 @@ export class Image {
 
     onUnmounted(() => this.adaptiveItem.remove())
   }
+
+  readonly role = computed<string>(() => {
+    if (this.props.dynamic) {
+      return 'button'
+    }
+
+    return 'img'
+  })
+
+  /**
+   * ARIA hidden attribute/ Атрибут ARIA hidden
+   */
+  readonly ariaHidden = computed<string | undefined>(() => {
+    if (
+      !this.img.is.value
+      && !isFilled(this.props.alt)
+    ) {
+      return 'true'
+    }
+
+    return undefined
+  })
 
   /**
    * Determines the tag to use/ Определяет используемый тег

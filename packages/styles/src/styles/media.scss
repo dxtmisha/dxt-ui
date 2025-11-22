@@ -29,6 +29,12 @@
   }
 }
 
+@mixin mediaPrefersReducedMotion() {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
 @mixin containerMinWidth($width) {
   @container (min-width: media($width)) {
     @content;

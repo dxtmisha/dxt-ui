@@ -19,6 +19,10 @@
   transition-duration: ui.v('d.sys.transitionDuration.standard');
   transform: none;
 
+  @include ui.mediaPrefersReducedMotion {
+    transition-duration: 0ms;
+  }
+
   img {
     position: relative;
     top: 50%;
@@ -36,8 +40,6 @@
     --sys-transform-translateY: -50%;
     @include ui.transformInit();
     transform-origin: var(--sys-transform-originX) var(--sys-transform-originY);
-
-    pointer-events: none;
   }
 
   &--type {

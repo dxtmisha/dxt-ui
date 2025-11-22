@@ -1,4 +1,4 @@
-import { isString } from '@dxtmisha/functional'
+import { isDomRuntime, isString } from '@dxtmisha/functional'
 
 import { ImageFile } from './ImageFile'
 
@@ -21,7 +21,7 @@ export class ImagePdf {
       return Boolean(file.match(/\.pdf$/i))
     }
 
-    return Boolean(file.type.match(/\/pdf$/i))
+    return isDomRuntime() && Boolean(file.type.match(/\/pdf$/i))
   }
 
   /**
