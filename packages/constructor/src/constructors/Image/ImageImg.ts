@@ -45,7 +45,7 @@ export class ImageImg {
 
       if (this.is.value) {
         attrs.src = this.background.imageSrc.value
-        attrs.alt = this.props.alt
+        attrs.alt = this.props.alt ?? ''
         attrs.style = this.styles.value
 
         if (this.props.lazy) {

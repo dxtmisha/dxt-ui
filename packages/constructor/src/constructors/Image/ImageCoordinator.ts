@@ -95,10 +95,12 @@ export class ImageCoordinator {
    */
   getSize(): ImageSize<string> {
     const item = this.size.value
+    const width = item.width === 0 ? 100 : item.width
+    const height = item.height === 0 ? 100 : item.height
 
     return {
-      width: `${100 / item.width * 100}%`,
-      height: `${100 / item.height * 100}%`
+      width: `${100 / width * 100}%`,
+      height: `${100 / height * 100}%`
     }
   }
 }
