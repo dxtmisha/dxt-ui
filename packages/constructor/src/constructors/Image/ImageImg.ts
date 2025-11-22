@@ -5,7 +5,7 @@ import { ImageType } from './ImageType'
 import { ImagePosition } from './ImagePosition'
 import { ImageBackground } from './ImageBackground'
 
-import { type ImageAttrs, type ImagePictureItem, type ImagePictureList, ImageTypeValue } from './basicTypes'
+import { type ImageAttrs, type ImagePictureList, ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
 
 /**
@@ -29,6 +29,11 @@ export class ImageImg {
     return Boolean(this.props.tagImg)
       && this.isType()
   })
+
+  /**
+   * Determines whether to use the picture tag/ Определяет, использовать ли тег picture
+   */
+  readonly isPicture = computed(() => this.is.value && Boolean(this.props.picture))
 
   /**
    * Calculates all properties for binding to the element/
@@ -55,6 +60,30 @@ export class ImageImg {
       return attrs
     }
   )
+
+  /**
+   * Calculates the picture sources for different resolutions/
+   * Вычисляет источники picture для разных разрешений
+   */
+  readonly picture = computed<ImagePictureList | undefined>(() => {
+    if (!this.props.picture) {
+      return undefined
+    }
+
+    if (isArray(this.props.picture)) {
+      return this.props.picture
+    }
+
+    return forEach(
+      this.props.picture,
+      (value, media) => {
+        return {
+          srcset: value,
+          media: `(width >= ${media})`
+        }
+      }
+    )
+  })
 
   /**
    * Calculates styles for binding to the element.
@@ -124,36 +153,6 @@ export class ImageImg {
     return Object.entries(this.props.srcset)
       .map(([key, value]) => `${value} ${this.toSrcsetKey(key)}`)
       .join(', ')
-  }
-
-  protected getPicture(): ImagePictureList | undefined {
-    if (!this.props.picture) {
-      return undefined
-    }
-
-    if (isArray(this.props.picture)) {
-      return this.props.picture
-    }
-
-    return forEach(
-      this.props.picture,
-      (value, key) => {
-        const item: ImagePictureItem = {
-          srcset: value
-        }
-
-        if (key === 'media' || key.startsWith('media-')) {
-          item.media = key.replace('media-', '')
-        } else if (key === 'type' || key.startsWith('type-')) {
-          item.type = key.replace('type-', '')
-        }
-
-        return {
-          srcset: value,
-          media: `()`
-        }
-      }
-    )
   }
 
   /**

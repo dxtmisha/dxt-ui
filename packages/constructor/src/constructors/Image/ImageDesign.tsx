@@ -115,7 +115,9 @@ export class ImageDesign<
           ref: this.element,
           class: this.classes?.value.main
         },
-        this.renderImg()
+        this.item.img.isPicture.value
+          ? this.renderPicture()
+          : this.renderImg()
       )
     }
 
@@ -139,10 +141,30 @@ export class ImageDesign<
    * Рендеринг тега img.
    */
   readonly renderImg = (): VNode => {
-    return h(
-      'img',
-      this.item.img.binds.value
-    )
+    return h('img', this.item.img.binds.value)
+  }
+
+  /**
+   * Rendering the picture tag.
+   *
+   * Рендеринг тега picture.
+   */
+  readonly renderPicture = (): VNode => {
+    const list = this.item.img.picture.value
+
+    if (!list) {
+      return this.renderImg()
+    }
+
+    const children: any[] = []
+
+    list.forEach((item) => {
+      children.push(h('source', item))
+    })
+
+    children.push(this.renderImg())
+
+    return h('picture', {}, children)
   }
 
   /**

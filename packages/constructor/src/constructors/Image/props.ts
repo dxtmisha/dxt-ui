@@ -55,6 +55,10 @@ export interface ImagePropsBasic {
    * Набор источников изображения для разных разрешений
    */
   srcset?: string | Record<string, string>
+  /**
+   * Picture sources for different resolutions using <picture> tag/
+   * Источники для разных разрешений с использованием тега <picture>
+   */
   picture?: ImagePicture
   /** Alt text/ Текст alt */
   alt?: string
