@@ -83,6 +83,12 @@
     }
   }
 
+  &[data-open="none"] {
+    @include ui.subclass('body') {
+      display: none;
+    }
+  }
+
   &[data-show="show"] {
     overflow-y: hidden;
 

@@ -7,5 +7,7 @@
  * @param isGlobal is the object global?/ является ли объект глобальным?
  * @param isProvide execution as a component inheritance/ выполнение как наследие компонента
  */
-export declare function executeUse<R, O extends any[]>(callback: (...args: O) => R, unmounted?: boolean, isGlobal?: boolean, isProvide?: boolean): ((...args: O) => R) | (() => R);
+export declare function executeUse<R, O extends any[], RI extends Readonly<Readonly<R> & {
+    init(): Readonly<R>;
+}>>(callback: (...args: O) => R, unmounted?: boolean, isGlobal?: boolean, isProvide?: boolean): ((...args: O) => RI) | (() => RI);
 export declare function executeUseGlobalInit(): void;

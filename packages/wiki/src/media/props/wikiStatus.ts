@@ -138,6 +138,16 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
+  inDom: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Indicates whether the window is in the DOM',
+        ru: 'Указывает, присутствует ли окно в DOM'
+      }
+    }
+  },
   loading: {
     type: StorybookControl.boolean,
     options: {

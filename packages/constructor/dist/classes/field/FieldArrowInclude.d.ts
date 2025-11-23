@@ -67,6 +67,12 @@ export declare class FieldArrowInclude {
      */
     get(): FieldArrowProps['arrow'] | undefined;
     /**
+     * Returns arrow alignment.
+     *
+     * Возвращает выравнивание стрелок.
+     */
+    align(): string | undefined;
+    /**
      * Decreases the value.
      *
      * Уменьшает значение.

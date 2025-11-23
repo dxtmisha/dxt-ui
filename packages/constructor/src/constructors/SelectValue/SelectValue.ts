@@ -6,6 +6,7 @@ import { EventClickInclude } from '../../classes/EventClickInclude'
 import { type IconProps } from '../Icon'
 import { WindowClassesInclude } from '../Window'
 
+import type { EventClickValue } from '../../types/eventClickTypes'
 import type { SelectValueComponents, SelectValueEmits, SelectValueSlots } from './types'
 import type { SelectValueProps } from './props'
 

@@ -95,6 +95,30 @@ export class Icon {
     ...this.skeleton.classes.value
   }))
 
+  /** ARIA role attribute/ Атрибут ARIA role */
+  readonly role = computed<string | undefined>(() => {
+    if (this.props.role) {
+      return this.props.role
+    }
+
+    if (this.props.dynamic) {
+      return 'button'
+    }
+
+    return undefined
+  })
+
+  /**
+   * ARIA hidden attribute/ Атрибут ARIA hidden
+   */
+  readonly ariaHidden = computed<string | undefined>(() => {
+    if (!this.props.dynamic) {
+      return 'true'
+    }
+
+    return undefined
+  })
+
   /**
    * Triggers an event when the image loading is complete.
    *

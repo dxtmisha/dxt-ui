@@ -199,13 +199,17 @@ export class MotionTransformDesign<
    * Рендеринг содержимого.
    */
   readonly renderBody = (): VNode[] => {
-    if (this.item.state.isShow.value) {
+    if (
+      this.props.inDom
+      || this.item.state.isShow.value
+    ) {
       return [
         h(
           'div',
           {
             key: 'body',
-            class: this.classes?.value.body
+            class: this.classes?.value.body,
+            id: this.item.element.idBody
           },
           this.initSlot(
             'body',

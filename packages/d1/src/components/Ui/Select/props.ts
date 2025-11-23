@@ -1,5 +1,14 @@
 import { type SelectPropsBasic, defaultsSelect } from '@dxtmisha/constructor/Select'
 
+import type { IconProps } from '../Icon'
+import type { FieldProps } from '../Field'
+import type { FieldLabelProps } from '../FieldLabel'
+import type { FieldMessageProps } from '../FieldMessage'
+import type { FieldCounterProps } from '../FieldCounter'
+import type { InputProps } from '../Input'
+import type { ProgressProps } from '../Progress'
+import type { MenuProps } from '../Menu'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   // :values [!] System label / Системная метка
@@ -13,7 +22,16 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface SelectProps extends SelectPropsBasic, PropsToken {
+export interface SelectProps extends SelectPropsBasic<
+  IconProps,
+  FieldProps,
+  FieldLabelProps,
+  FieldMessageProps,
+  FieldCounterProps,
+  InputProps,
+  ProgressProps,
+  MenuProps
+>, PropsToken {
 }
 
 /**

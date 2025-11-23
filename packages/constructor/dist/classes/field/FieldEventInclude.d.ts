@@ -75,6 +75,13 @@ export declare class FieldEventInclude {
      */
     readonly onClear: (event: MouseEvent) => void;
     /**
+     * Triggering the event to set a specific value.
+     *
+     * Вызов события для установки конкретного значения.
+     * @param value new value/ новое значение
+     */
+    readonly onValue: (value: any) => void;
+    /**
      * Triggering the event.
      *
      * Вызов события.

@@ -7,7 +7,7 @@ import { Ref } from 'vue';
  * Vue композабл для реактивного управления мета-тегами с автоматической синхронизацией DOM.
  * Использует паттерн singleton - все компоненты используют одно состояние мета-тегов.
  */
-export declare const useMeta: () => {
+export declare const useMeta: () => Readonly<Readonly<{
     meta: Meta;
     title: Ref<string, string>;
     keyword: Ref<string, string>;
@@ -18,4 +18,17 @@ export declare const useMeta: () => {
     robots: Ref<MetaRobots, MetaRobots>;
     siteName: Ref<string, string>;
     getHtmlMeta: () => string;
-};
+}> & {
+    init(): Readonly<{
+        meta: Meta;
+        title: Ref<string, string>;
+        keyword: Ref<string, string>;
+        description: Ref<string, string>;
+        author: Ref<string, string>;
+        image: Ref<string, string>;
+        canonical: Ref<string, string>;
+        robots: Ref<MetaRobots, MetaRobots>;
+        siteName: Ref<string, string>;
+        getHtmlMeta: () => string;
+    }>;
+}>;

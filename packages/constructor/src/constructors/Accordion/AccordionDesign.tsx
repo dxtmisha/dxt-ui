@@ -134,7 +134,7 @@ export class AccordionDesign<
    * @param open open status/ статус открытия
    */
   protected readonly renderHead = (
-    { isOpen }: MotionTransformControlItem
+    { isOpen, idBody }: MotionTransformControlItem
   ): VNode | undefined => {
     const slots: Record<string, any> = {}
 
@@ -160,14 +160,17 @@ export class AccordionDesign<
       'cell',
       toBinds(
         {
-          icon: this.props.icon,
-          iconTrailing: this.props.iconArrowDown,
-          iconTurn: isOpen.value,
-          label: this.props.label,
-          description: this.props.description,
-          class: this.classes?.value.head,
-          dynamic: true,
-          onClick: this.item.event.onClick
+          'icon': this.props.icon,
+          'iconTrailing': this.props.iconArrowDown,
+          'iconTurn': isOpen.value,
+          'label': this.props.label,
+          'description': this.props.description,
+          'class': this.classes?.value.head,
+          'dynamic': true,
+          'onClick': this.item.event.onClick,
+          'role': 'button',
+          'aria-expanded': isOpen.value ? 'true' : 'false',
+          'aria-controls': idBody
         },
         this.props.cellAttrs
       ),

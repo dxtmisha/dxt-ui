@@ -13,26 +13,41 @@ const globalCode = random(100000, 999999)
  * @param isGlobal is the object global?/ является ли объект глобальным?
  * @param isProvide execution as a component inheritance/ выполнение как наследие компонента
  */
-export function executeUse<R, O extends any[]>(
+export function executeUse<
+  R,
+  O extends any[],
+  RI extends Readonly<Readonly<R> & { init(): Readonly<R> }>
+>(
   callback: (...args: O) => R,
   unmounted: boolean = true,
   isGlobal: boolean = false,
   isProvide: boolean = true
-): ((...args: O) => R) | (() => R) {
-  let item: R | undefined
+): ((...args: O) => RI) | (() => RI) {
+  let item: RI | undefined
   const id: string = `__execute_use${globalCode}::${getElementId()}`
+
+  const initCallback = (args: O): RI => {
+    const item = Object.freeze(callback(...args))
+
+    return Object.freeze({
+      ...item,
+      init(): Readonly<R> {
+        return item
+      }
+    }) as RI
+  }
 
   const method = (...args: O) => {
     if (
       !isGlobal
       && isProvide
     ) {
-      const itemInject = inject<R | undefined>(id, undefined)
+      const itemInject = inject<RI | undefined>(id, undefined)
 
       if (itemInject) {
         return itemInject
       } else {
-        let itemProvide: R | undefined = Object.freeze(callback(...args))
+        let itemProvide: RI | undefined = initCallback(args)
 
         provide(id, itemProvide)
 
@@ -45,7 +60,7 @@ export function executeUse<R, O extends any[]>(
         return itemProvide
       }
     } else if (!item) {
-      item = Object.freeze(callback(...args))
+      item = initCallback(args)
 
       if (unmounted) {
         onUnmounted(() => {

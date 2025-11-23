@@ -9,6 +9,7 @@ interface MotionTransformPropsToken {
 export interface MotionTransformPropsBasic {
   // Status
   'open'?: boolean
+  'inDom'?: boolean
 
   // Value
   'ignore'?: HTMLElement | string

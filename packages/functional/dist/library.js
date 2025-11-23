@@ -4282,23 +4282,31 @@ function Ni() {
 const Nt = [], Le = _(1e5, 999999);
 function ke(i, t = !0, e = !1, s = !0) {
   let r;
-  const o = `__execute_use${Le}::${Y()}`, a = (...u) => {
-    if (!e && s) {
-      const h = zt(o, void 0);
-      if (h)
-        return h;
-      {
-        let d = Object.freeze(i(...u));
-        return Kt(o, d), t && nt(() => {
-          d = void 0;
-        }), d;
+  const o = `__execute_use${Le}::${Y()}`, a = (h) => {
+    const d = Object.freeze(i(...h));
+    return Object.freeze({
+      ...d,
+      init() {
+        return d;
       }
-    } else r || (r = Object.freeze(i(...u)), t && nt(() => {
+    });
+  }, u = (...h) => {
+    if (!e && s) {
+      const d = zt(o, void 0);
+      if (d)
+        return d;
+      {
+        let g = a(h);
+        return Kt(o, g), t && nt(() => {
+          g = void 0;
+        }), g;
+      }
+    } else r || (r = a(h), t && nt(() => {
       r = void 0;
     }));
     return r;
   };
-  return e && Nt.push(a), a;
+  return e && Nt.push(u), u;
 }
 function Ai() {
   Nt.forEach((i) => i());

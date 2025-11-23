@@ -234,10 +234,6 @@
           background: var(--d1-sys-background-3);
           
           border-radius: var(--d1-sys-rounded-lg);
-          border-width: var(--d1-sys-spacing-outline);
-          border-style: solid;
-          @include ui.borderColor(#{var(--d1-sys-palette-outline)});
-          @include ui.borderOpacity(#{var(--d1-sys-opacity-outlineMedium)});
           
           box-shadow: var(--d1-sys-shadow-lg);
         }

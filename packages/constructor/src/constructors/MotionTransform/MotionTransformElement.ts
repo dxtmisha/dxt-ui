@@ -10,6 +10,8 @@ import type { MotionTransformProps } from './props'
  * Класс для работы с элементами и классами.
  */
 export class MotionTransformElement {
+  readonly idBody = getElementId()
+
   readonly classes: MotionTransformClassList
   readonly style: MotionTransformStyle
 

@@ -8,6 +8,9 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'adaptive', type: 'string', option: ['menu', 'menuWindow', 'modal', 'modalDynamic', 'actionSheetRight', 'actionSheetBottom', 'static', 'actionSheet', 'actionSheetToModal', 'autoStaticSm', 'autoStaticMd', 'autoStaticLg', 'autoStaticXl', 'autoStatic2xl'] },
   { name: 'alignment', type: 'string', option: ['top', 'left', 'center', 'topRight', 'topLeft', 'topFull', 'right', 'rightFull', 'bottom', 'bottomRight', 'bottomLeft', 'bottomFull', 'leftFull'] },
+  { name: 'ariaDescribedby', type: 'string' },
+  { name: 'ariaHaspopup', type: 'string', option: ['menu', 'dialog', 'listbox', 'tree', 'grid'] },
+  { name: 'ariaLabelledby', type: 'string' },
   { name: 'autoClose', type: 'boolean' },
   { name: 'axis', type: 'string', option: ['x', 'y', 'on'] },
   { name: 'beforeClosing', type: '() => NormalOrPromise<boolean>' },

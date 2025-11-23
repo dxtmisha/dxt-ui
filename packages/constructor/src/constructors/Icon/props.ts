@@ -1,3 +1,4 @@
+import type { roleType } from '../../types/roleTypes'
 import type { ImagePropsBasic, ImageValue } from '../Image'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
@@ -30,6 +31,9 @@ export interface IconPropsBasic<
   icon?: ImageValue<Image>
   /** Value of the active icon/ Значение активной иконки */
   iconActive?: ImageValue<Image>
+
+  // ARIA
+  role?: roleType
 }
 
 /**

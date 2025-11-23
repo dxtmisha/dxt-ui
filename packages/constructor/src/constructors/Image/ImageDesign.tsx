@@ -121,7 +121,7 @@ export class ImageDesign<
         ...this.propsImage.value,
         'style': this.styles?.value,
         'translate': 'no',
-        'role': this.item.role.value,
+        'role': 'img',
         'aria-label': this.props.alt,
         'aria-hidden': this.item.ariaHidden.value
       },

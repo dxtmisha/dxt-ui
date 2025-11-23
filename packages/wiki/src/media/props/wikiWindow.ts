@@ -153,16 +153,6 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
-  'window.inDom': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.status,
-      description: {
-        en: 'Indicates whether the window is in the DOM',
-        ru: 'Указывает, присутствует ли окно в DOM'
-      }
-    }
-  },
   'window.opening': {
     type: StorybookControl.object,
     options: {

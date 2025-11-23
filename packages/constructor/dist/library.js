@@ -1011,7 +1011,7 @@ class ht {
     return this;
   }
   setByEvent(t) {
-    switch (typeof t) {
+    switch (console.log("setByEvent"), typeof t) {
       case "object":
         t && ("value" in t && t.value !== void 0 ? this.set(t.value) : "target" in t && this.setByTarget(t.target), "hasEdit" in t && this.setHasEdit(t.hasEdit), "isFull" in t && this.setFull(t.isFull));
         break;

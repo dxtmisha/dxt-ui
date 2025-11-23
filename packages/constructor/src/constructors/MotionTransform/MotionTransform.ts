@@ -1,6 +1,7 @@
 import { onUnmounted, type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
+import { ModelInclude } from '../../classes/ModelInclude'
 import { MotionTransformElement } from './MotionTransformElement'
 import { MotionTransformSize } from './MotionTransformSize'
 import { MotionTransformState } from './MotionTransformState'
@@ -10,7 +11,6 @@ import { MotionTransformGo } from './MotionTransformGo'
 import type { MotionTransformComponents, MotionTransformEmits, MotionTransformSlots } from './types'
 import type { MotionTransformProps } from './props'
 import type { MotionTransformControlItem } from './basicTypes'
-import { ModelInclude } from '../../classes/ModelInclude'
 
 /**
  * MotionTransform
@@ -81,7 +81,8 @@ export class MotionTransform {
     return {
       isOpen: this.state.isOpen,
       isShow: this.state.isShow,
-      classes: MotionTransformElement.getClassesList(this.className)
+      classes: MotionTransformElement.getClassesList(this.className),
+      idBody: this.element.idBody
     }
   }
 }

@@ -129,7 +129,8 @@ export class IconDesign<
   }
 
   /**
-   * A method for rendering.<br>
+   * A method for rendering.
+   *
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
@@ -149,7 +150,9 @@ export class IconDesign<
       'span',
       {
         ...this.getAttrs(),
-        class: this.classes?.value.main
+        'class': this.classes?.value.main,
+        'role': this.item.role.value,
+        'aria-hidden': this.item.ariaHidden.value
       },
       children
     )

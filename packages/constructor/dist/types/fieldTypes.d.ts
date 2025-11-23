@@ -192,6 +192,8 @@ export interface FieldArrowProps {
     arrow?: 'auto' | 'carousel' | 'stepper' | 'none';
     /** Step size for input arrows (type="number" only)/ Шаг для стрелок ввода (только для type="number") */
     arrowStep?: NumberOrString;
+    /** Arrow alignment/ Выравнивание стрелок */
+    arrowAlign?: 'center' | 'right' | 'left';
 }
 /**
  * Text length constraints (characters, items)/
@@ -279,7 +281,7 @@ export interface FieldTextareaProps<Value = any> extends Omit<FieldBasicProps<Va
  * Props for select elements (single & multiple)/
  * Свойства для select элементов (одиночный и множественный выбор)
  */
-export interface FieldSelectProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'>, Omit<FieldStepProps, 'min' | 'step'>, FieldUxProps {
+export interface FieldSelectProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'>, Omit<FieldStepProps, 'min' | 'step'>, FieldArrowProps, FieldUxProps {
     option?: ListRecord;
     /** Multiple selection mode/ Режим множественного выбора */
     multiple?: boolean;
