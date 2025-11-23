@@ -1,4 +1,4 @@
-import { computed, ref, type Ref, type ToRefs, watch } from 'vue'
+import { computed, onUnmounted, ref, type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, type ConstrStyles, DesignComp, toNumber } from '@dxtmisha/functional'
 
 import type { ProgressComponents, ProgressEmits, ProgressSlots } from './types'
@@ -41,6 +41,10 @@ export class Progress {
       this.switch,
       { immediate: true }
     )
+
+    onUnmounted(() => {
+      clearTimeout(this.timeout)
+    })
   }
 
   /**
@@ -75,6 +79,27 @@ export class Progress {
     }
 
     return null
+  })
+
+  /** Returns ARIA status values/ Возвращает значения статуса ARIA */
+  readonly aria = computed<Record<string, any>>(() => {
+    const data: Record<string, any> = {}
+
+    if (this.props.value) {
+      data['aria-valuenow'] = this.props.value
+      data['aria-valuemin'] = 0
+      data['aria-valuemax'] = this.props.max
+
+      if (this.props.polite) {
+        data['aria-live'] = 'polite'
+      }
+    }
+
+    if (this.props.ariaLabel) {
+      data['aria-label'] = this.props.ariaLabel
+    }
+
+    return data
   })
 
   /**

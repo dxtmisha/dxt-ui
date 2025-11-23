@@ -25,6 +25,9 @@ export interface ProgressPropsBasic {
 
   delay?: number | string
   delayHide?: number | string
+
+  ariaLabel?: string
+  polite?: boolean
 }
 
 /**

@@ -64,7 +64,7 @@
 
     @include ui.subclass('circle') {
       animation-name: none !important;
-      stroke-dasharray: calc(#{ui.v('??sys.value')} * #{ui.v('??circular.dasharray')}) #{ui.v('??circular.length')} !important;
+      stroke-dasharray: calc(#{ui.v('??sys.value', '0%')} * #{ui.v('??circular.dasharray')}) #{ui.v('??circular.length')} !important;
       stroke-linecap: butt;
     }
   }
@@ -107,7 +107,7 @@
       }
 
       &::before {
-        right: ui.v('??sys.value');
+        right: ui.v('??sys.value', '0%');
         transition-property: right;
       }
     }
