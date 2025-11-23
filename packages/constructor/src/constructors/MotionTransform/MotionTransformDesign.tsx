@@ -205,11 +205,15 @@ export class MotionTransformDesign<
     ) {
       return [
         h(
-          'div',
+          this.props.tagBody ?? 'div',
           {
-            key: 'body',
-            class: this.classes?.value.body,
-            id: this.item.element.idBody
+            'key': 'body',
+            'class': this.classes?.value.body,
+            'id': this.item.element.idBody,
+            'role': this.item.role.value,
+            'aria-modal': this.item.element.isWindow(),
+            'aria-labelledby': this.props.ariaLabelledby,
+            'aria-describedby': this.props.ariaDescribedby
           },
           this.initSlot(
             'body',

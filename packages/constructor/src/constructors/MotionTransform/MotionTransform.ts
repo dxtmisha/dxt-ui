@@ -2,16 +2,19 @@ import { computed, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
+import { TabIndexInclude } from '../../classes/TabIndexInclude'
+
 import { MotionTransformElement } from './MotionTransformElement'
 import { MotionTransformSize } from './MotionTransformSize'
 import { MotionTransformState } from './MotionTransformState'
 import { MotionTransformEvent } from './MotionTransformEvent'
 import { MotionTransformGo } from './MotionTransformGo'
 
+import { WindowEsc } from '../Window/WindowEsc'
+
 import type { MotionTransformComponents, MotionTransformEmits, MotionTransformSlots } from './types'
 import type { MotionTransformProps } from './props'
 import type { MotionTransformControlItem } from './basicTypes'
-import { TabIndexInclude } from '../../classes/TabIndexInclude.ts'
 
 /**
  * MotionTransform
@@ -30,6 +33,8 @@ export class MotionTransform {
   readonly event: MotionTransformEvent
   /** Control actions manager/ Менеджер действий управления */
   readonly go: MotionTransformGo
+
+  readonly esc: WindowEsc
 
   /**
    * Constructor
@@ -75,6 +80,12 @@ export class MotionTransform {
     this.event = new MotionTransformEvent(props, this.element, this.state, emits)
     this.go = new MotionTransformGo(this.state)
 
+    this.esc = new WindowEsc(
+      this.state.open,
+      () => this.go.close(),
+      () => this.element.isWindow()
+    )
+
     new ModelInclude('open', this.emits, this.state.open)
 
     watch([refs.open], () => this.state.set(Boolean(props.open)))
@@ -88,18 +99,38 @@ export class MotionTransform {
    */
   readonly slotData = computed<MotionTransformControlItem>(() => {
     const classes = MotionTransformElement.getClassesList(this.className)
+    const idControl = this.element.idControl
     const idBody = this.element.idBody
 
     return {
       isOpen: this.state.isOpen,
       isShow: this.state.isShow,
       classes,
+      idControl,
       idBody,
       binds: {
-        classes,
-        idBody
+        'id': idControl,
+        'aria-expanded': this.state.isOpen.value ? 'true' : 'false',
+        'aria-controls': idBody
       }
     }
+  })
+
+  /**
+   * Returns the ARIA role for the element.
+   *
+   * Возвращает ARIA роль для элемента.
+   */
+  readonly role = computed(() => {
+    if (this.props.role) {
+      return this.props.role
+    }
+
+    if (this.element.isWindow()) {
+      return 'dialog'
+    }
+
+    return 'region'
   })
 
   /**

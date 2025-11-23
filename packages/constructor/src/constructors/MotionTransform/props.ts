@@ -1,3 +1,5 @@
+import type { roleType } from '../../types/roleTypes'
+
 interface MotionTransformPropsToken {
   // :type [!] System label / Системная метка
   section?: boolean
@@ -20,10 +22,17 @@ export interface MotionTransformPropsBasic {
   'autoClose'?: boolean
   'animationShow'?: boolean
 
+  'tagBody'?: string
+
   // Event
   'modelOpen'?: boolean
   'onUpdate:open'?: (value: boolean) => void
   'onUpdate:modelOpen'?: (value: boolean) => void
+
+  // ARIA
+  'role'?: roleType
+  'ariaLabelledby'?: string
+  'ariaDescribedby'?: string
 }
 
 /**
@@ -43,6 +52,7 @@ export const defaultsMotionTransform = {
   clickOpen: true,
   autoClose: true,
   animationShow: true,
+  tagBody: 'section',
   ...{
     // :default [!] System label / Системная метка
     animationHeadPosition: 'top'

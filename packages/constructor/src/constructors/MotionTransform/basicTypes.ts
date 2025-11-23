@@ -76,14 +76,16 @@ export type MotionTransformControlItem = {
   /** Helper CSS classes/ Вспомогательные CSS‑классы */
   classes: MotionTransformClassList
   /** Helper style variables/ Вспомогательные стилевые переменные */
+  idControl: string
+  /** Helper style variables/ Вспомогательные стилевые переменные */
   idBody: string
 
   /** Binding attributes for element/ Атрибуты привязки для элемента */
   binds: {
-    /** Helper CSS classes/ Вспомогательные CSS‑классы */
-    classes: MotionTransformClassList
-    /** Helper style variables/ Вспомогательные стилевые переменные */
-    idBody: string
+    /** ARIA expanded state attribute/ Атрибут ARIA состояния развёрнутости */
+    'aria-expanded': string
+    /** ARIA controls attribute/ Атрибут ARIA controls */
+    'aria-controls': string
   }
 }
 
