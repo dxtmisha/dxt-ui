@@ -9,6 +9,8 @@ const propsNames: StorybookProps = [
   { name: 'adaptive', type: 'string', option: ['planeAlways', 'planeSm', 'planeMd', 'planeLg', 'planeXl', 'plane2xl'] },
   { name: 'animationHeadPosition', type: 'string', option: ['top', 'toBottom'] },
   { name: 'animationShow', type: 'boolean' },
+  { name: 'ariaDescribedby', type: 'string' },
+  { name: 'ariaLabelledby', type: 'string' },
   { name: 'autoClose', type: 'boolean' },
   { name: 'clickOpen', type: 'boolean' },
   { name: 'ignore', type: 'string | HTMLElement' },
@@ -18,7 +20,9 @@ const propsNames: StorybookProps = [
   { name: 'onUpdate:modelOpen', type: '(value: boolean) => void' },
   { name: 'onUpdate:open', type: '(value: boolean) => void' },
   { name: 'open', type: 'boolean' },
-  { name: 'section', type: 'boolean' }
+  { name: 'role', type: 'string' },
+  { name: 'section', type: 'boolean' },
+  { name: 'tagBody', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

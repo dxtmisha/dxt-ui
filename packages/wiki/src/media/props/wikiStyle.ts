@@ -581,6 +581,18 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  tagBody: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets HTML tag for the body/content container element',
+        ru: 'Задает HTML‑тег для элемента контейнера тела/содержимого'
+      }
+    }
+  },
   template: {
     type: StorybookControl.string,
     options: {
