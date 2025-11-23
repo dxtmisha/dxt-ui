@@ -47,7 +47,8 @@ export class Accordion {
       this.emits,
       {
         section: true,
-        adaptive: 'planeAlways'
+        adaptive: 'planeAlways',
+        inDom: true
       }
     )
 

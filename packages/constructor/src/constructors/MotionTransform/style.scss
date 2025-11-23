@@ -83,7 +83,7 @@
     }
   }
 
-  &[data-open="none"] {
+  &[data-open="none"][data-show="none"] {
     @include ui.subclass('body') {
       display: none;
     }

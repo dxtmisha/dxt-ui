@@ -1,4 +1,4 @@
-import { onUnmounted, type Ref, type ToRefs, watch } from 'vue'
+import { computed, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -73,16 +73,31 @@ export class MotionTransform {
   }
 
   /**
+   * Computed slot data for managing slots/
+   * Вычисляемые данные слотов для управления слотами
+   */
+  readonly slotData = computed<MotionTransformControlItem>(() => {
+    const classes = MotionTransformElement.getClassesList(this.className)
+    const idBody = this.element.idBody
+
+    return {
+      isOpen: this.state.isOpen,
+      isShow: this.state.isShow,
+      classes,
+      idBody,
+      binds: {
+        classes,
+        idBody
+      }
+    }
+  })
+
+  /**
    * Returns data for managing slot data.
    *
    * Возвращает данные для управления данными слотами.
    */
   getSlotData(): MotionTransformControlItem {
-    return {
-      isOpen: this.state.isOpen,
-      isShow: this.state.isShow,
-      classes: MotionTransformElement.getClassesList(this.className),
-      idBody: this.element.idBody
-    }
+    return this.slotData.value
   }
 }

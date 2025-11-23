@@ -31,6 +31,7 @@ export class MotionTransformState {
     protected element: MotionTransformElement,
     protected size: MotionTransformSize
   ) {
+    watch([this.element.element, this.show], this.makeShow)
     watch([this.element.element, this.open], this.makeOpen)
     watch([this.element.element, this.teleport], this.makeTeleport)
 
