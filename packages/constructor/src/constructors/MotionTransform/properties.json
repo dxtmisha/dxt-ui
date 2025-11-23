@@ -25,7 +25,7 @@
   },
   "~adaptive": {
     "~planeAlways": {
-      "content": "none"
+      "=sys-type-body": "unset"
     },
     "group|plane": {
       "link|plane": "{??adaptive.planeAlways}",

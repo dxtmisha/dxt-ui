@@ -11,6 +11,7 @@ import { MotionTransformGo } from './MotionTransformGo'
 import type { MotionTransformComponents, MotionTransformEmits, MotionTransformSlots } from './types'
 import type { MotionTransformProps } from './props'
 import type { MotionTransformControlItem } from './basicTypes'
+import { TabIndexInclude } from '../../classes/TabIndexInclude.ts'
 
 /**
  * MotionTransform
@@ -18,6 +19,7 @@ import type { MotionTransformControlItem } from './basicTypes'
 export class MotionTransform {
   /** Reference helper for element interactions/ Вспомогательный класс для работы с элементами */
   readonly element: MotionTransformElement
+  readonly tabIndex: TabIndexInclude<HTMLDivElement>
 
   /** Size calculation manager/ Менеджер расчёта размеров */
   readonly size: MotionTransformSize
@@ -58,9 +60,17 @@ export class MotionTransform {
       elementContext,
       className
     )
+    this.tabIndex = new TabIndexInclude(
+      () => this.element.getElementBody()
+    )
 
     this.size = new MotionTransformSize(this.element)
-    this.state = new MotionTransformState(props, this.element, this.size)
+    this.state = new MotionTransformState(
+      props,
+      this.element,
+      this.tabIndex,
+      this.size
+    )
 
     this.event = new MotionTransformEvent(props, this.element, this.state, emits)
     this.go = new MotionTransformGo(this.state)

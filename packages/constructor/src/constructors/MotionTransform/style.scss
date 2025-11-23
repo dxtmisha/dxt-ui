@@ -19,8 +19,9 @@
   background-color: transparent;
   box-shadow: none;
 
-  content: "--WINDOW--";
+  --sys-type-body: "--WINDOW--";
 
+  will-change: background-color, box-shadow, height, transform, scale;
   transition-property: background-color, box-shadow, height, transform, scale;
   transition-timing-function: ui.v('d.ref.transitionFunction.e40i80');
   transition-duration: ui.v('d.sys.transitionDuration.container.close');
@@ -29,11 +30,12 @@
     width: ui.v('??sys.context.width', auto);
     height: ui.v('??sys.context.height', auto);
 
-    content: "--ANIMATION--";
+    --sys-type-body: "--ANIMATION--";
   }
 
   &__head {
     opacity: 1;
+    will-change: inherit;
   }
 
   &__body {
@@ -41,7 +43,9 @@
     position: absolute;
     top: 0;
     opacity: 0;
+    outline: none;
 
+    will-change: inherit;
     transition: opacity 67ms linear 50ms;
   }
 

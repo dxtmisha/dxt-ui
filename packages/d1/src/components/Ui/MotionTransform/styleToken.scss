@@ -22,36 +22,36 @@
     
     &--adaptive {
       &--planeAlways {
-        content: none;
+        --sys-type-body: unset;
       }
       
       &--planeSm {
         @media screen and (min-width: 640px) {
-          content: none;
+          --sys-type-body: unset;
         }
       }
       
       &--planeMd {
         @media screen and (min-width: 768px) {
-          content: none;
+          --sys-type-body: unset;
         }
       }
       
       &--planeLg {
         @media screen and (min-width: 1024px) {
-          content: none;
+          --sys-type-body: unset;
         }
       }
       
       &--planeXl {
         @media screen and (min-width: 1280px) {
-          content: none;
+          --sys-type-body: unset;
         }
       }
       
       &--plane2xl {
         @media screen and (min-width: 1536px) {
-          content: none;
+          --sys-type-body: unset;
         }
       }
     }

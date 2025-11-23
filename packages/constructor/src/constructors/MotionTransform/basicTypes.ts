@@ -131,3 +131,9 @@ export interface MotionTransformPropsInclude<
   /** Additional attributes for MotionTransform/ Дополнительные атрибуты для MotionTransform */
   motionTransformAttrs?: ConstrBind<MotionTransform>
 }
+
+/**
+ * CSS variable name for MotionTransform body type/
+ * Имя CSS‑переменной для типа тела MotionTransform
+ */
+export const __MOTION_TRANSFORM_TYPE_BODY_NAME = '--sys-type-body'

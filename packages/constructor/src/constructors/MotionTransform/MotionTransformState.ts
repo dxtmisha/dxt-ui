@@ -4,6 +4,7 @@ import { MotionTransformElement } from './MotionTransformElement'
 import { MotionTransformSize } from './MotionTransformSize'
 
 import type { MotionTransformProps } from './props'
+import { TabIndexInclude } from '../../classes/TabIndexInclude.ts'
 
 /**
  * State management class.
@@ -24,11 +25,13 @@ export class MotionTransformState {
    * Конструктор.
    * @param props input data/ входные данные
    * @param element class object for managing an element/ объект класса для управления элементом
+   * @param tabIndex class object for managing tab indices/ объект класса для управления табуляцией
    * @param size class object for managing sizes/ объект класса для управления размерами
    */
   constructor(
     props: MotionTransformProps,
     protected element: MotionTransformElement,
+    protected tabIndex: TabIndexInclude<HTMLDivElement>,
     protected size: MotionTransformSize
   ) {
     watch([this.element.element, this.show], this.makeShow)
@@ -116,6 +119,7 @@ export class MotionTransformState {
       }
 
       this.make()
+      this.tabIndex.toggle(this.open.value)
     }
 
     return this

@@ -1,7 +1,7 @@
 import { computed, type Ref } from 'vue'
 import { getElementId } from '@dxtmisha/functional'
 
-import type { MotionTransformClassList, MotionTransformStyle } from './basicTypes'
+import { __MOTION_TRANSFORM_TYPE_BODY_NAME, type MotionTransformClassList, type MotionTransformStyle } from './basicTypes'
 import type { MotionTransformProps } from './props'
 
 /**
@@ -124,7 +124,8 @@ export class MotionTransformElement {
   isWindow(): boolean {
     return Boolean(
       this.element.value
-      && getComputedStyle(this.element.value).content === '"--WINDOW--"'
+      && getComputedStyle(this.element.value)
+        .getPropertyValue(__MOTION_TRANSFORM_TYPE_BODY_NAME) === '"--WINDOW--"'
     )
   }
 
