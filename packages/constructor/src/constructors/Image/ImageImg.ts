@@ -84,7 +84,7 @@ export class ImageImg {
           media: `(width >= ${media})`
         }
       }
-    )
+    ) as ImagePictureList
   })
 
   /**

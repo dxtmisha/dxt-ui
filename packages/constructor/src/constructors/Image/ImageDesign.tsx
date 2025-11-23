@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { computed, h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -107,26 +107,18 @@ export class ImageDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
+    if (this.item.img.isPicture.value) {
+      return this.renderPicture()
+    }
+
     if (this.item.img.is.value) {
-      return h(
-        'span',
-        {
-          ...this.getAttrs(),
-          ref: this.element,
-          class: this.classes?.value.main
-        },
-        this.item.img.isPicture.value
-          ? this.renderPicture()
-          : this.renderImg()
-      )
+      return this.renderImg()
     }
 
     return h(
       'span',
       {
-        ...this.getAttrs(),
-        'ref': this.element,
-        'class': this.classes?.value.main,
+        ...this.propsImage.value,
         'style': this.styles?.value,
         'translate': 'no',
         'role': this.item.role.value,
@@ -138,13 +130,15 @@ export class ImageDesign<
   }
 
   /**
-   * Rendering the img tag.
+   * Properties for the image tag.
    *
-   * Рендеринг тега img.
+   * Свойства для тега image.
    */
-  readonly renderImg = (): VNode => {
-    return h('img', this.item.img.binds.value)
-  }
+  readonly propsImage = computed<any>(() => ({
+    ...this.getAttrs(),
+    ref: this.element,
+    class: this.classes?.value.main
+  }))
 
   /**
    * Rendering the picture tag.
@@ -153,20 +147,35 @@ export class ImageDesign<
    */
   readonly renderPicture = (): VNode => {
     const list = this.item.img.picture.value
-
-    if (!list) {
-      return this.renderImg()
-    }
-
     const children: any[] = []
 
-    list.forEach((item) => {
-      children.push(h('source', item))
-    })
+    if (list) {
+      list.forEach((item) => {
+        children.push(h('source', item))
+      })
+    }
 
-    children.push(this.renderImg())
+    children.push(this.renderImgItem())
 
-    return h('picture', {}, children)
+    return h('picture', this.propsImage.value, children)
+  }
+
+  /**
+   * Rendering the img tag.
+   *
+   * Рендеринг тега img.
+   */
+  readonly renderImg = (): VNode => {
+    return h('span', this.propsImage.value, this.renderImgItem())
+  }
+
+  /**
+   * Rendering the img item.
+   *
+   * Рендеринг элемента img.
+   */
+  readonly renderImgItem = (): VNode => {
+    return h('img', this.item.img.binds.value)
   }
 
   /**
