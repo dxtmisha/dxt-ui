@@ -61,6 +61,11 @@ export interface WindowPropsBasic<
   'modelOpen'?: boolean
   'onUpdate:open'?: (value: boolean) => void
   'onUpdate:modelOpen'?: (value: boolean) => void
+
+  // ARIA
+  'ariaHaspopup'?: 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid'
+  'ariaLabelledby'?: string
+  'ariaDescribedby'?: string
 }
 
 /**
@@ -78,6 +83,7 @@ export interface WindowProps extends WindowPropsBasic, WindowPropsToken {
  */
 export const defaultsWindow = {
   indent: 4,
+  ariaHaspopup: 'dialog',
   ...{
     // :default [!] System label / Системная метка
     axis: 'y',

@@ -65,7 +65,7 @@ export class FieldMatchInclude {
         return this.props.match.validationMessage
       }
 
-      return Translate.getSync('Your entries must match.')
+      return Translate.getSync('global-entries_match')
     }
 
     return ''

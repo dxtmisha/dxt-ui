@@ -176,9 +176,11 @@ export class Window {
       onclick: this.event.onClick,
       oncontextmenu: this.event.onContextmenu,
       binds: {
-        class: this.classes.list.controlId,
-        onclick: this.event.onClick,
-        oncontextmenu: this.event.onContextmenu
+        'class': this.classes.list.controlId,
+        'onclick': this.event.onClick,
+        'oncontextmenu': this.event.onContextmenu,
+        'aria-haspopup': this.props.ariaHaspopup,
+        'aria-controls': this.classes.getId()
       }
     }
 

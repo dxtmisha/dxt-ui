@@ -2,7 +2,8 @@ import { h, Teleport, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  Translate
 } from '@dxtmisha/functional'
 
 import { Window } from './Window'
@@ -166,8 +167,14 @@ export class WindowDesign<
         'ref': this.element,
         'class': this.classes?.value.main,
         'style': this.styles?.value,
+        'tabindex': '-1',
         'data-window': this.item.classes.getId(),
-        'onTransitionend': this.item.event.onTransition
+        'onTransitionend': this.item.event.onTransition,
+        'role': 'dialog',
+        'aria-modal': 'true',
+        'aria-hidden': !this.item.open.item.value,
+        'aria-labelledby': this.props.ariaLabelledby,
+        'aria-describedby': this.props.ariaDescribedby
       },
       this.renderBody()
     )
@@ -264,11 +271,12 @@ export class WindowDesign<
       return this.components.render(
         'button',
         {
-          class: [
+          'class': [
             this.classes?.value.close,
             this.item.classes.list.close
           ],
-          icon: this.props.iconClose
+          'icon': this.props.iconClose,
+          'aria-label': Translate.getSync('global-close')
         }
       )
     }

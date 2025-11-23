@@ -129,11 +129,15 @@ export type WindowControlItem = WindowControlBasic
     /** Binding properties/ Свойства привязки */
     binds: {
       /** Binding class/ Класс привязки */
-      class: string
+      'class': string
       /** Click event handler for binding/ Обработчик события клика для привязки */
-      onclick: WindowEventClick
+      'onclick': WindowEventClick
       /** Context menu event handler for binding/ Обработчик события контекстного меню для привязки */
-      oncontextmenu: WindowEventClick
+      'oncontextmenu': WindowEventClick
+      /** ARIA haspopup attribute/ Атрибут ARIA haspopup */
+      'aria-haspopup'?: string
+      /** ARIA controls attribute/ Атрибут ARIA controls */
+      'aria-controls'?: string
     }
   }
 
