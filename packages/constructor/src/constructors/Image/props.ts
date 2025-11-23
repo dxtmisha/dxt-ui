@@ -1,4 +1,4 @@
-import type { ImagePicture } from './basicTypes.ts'
+import type { ImagePicture } from './basicTypes'
 
 interface ImagePropsToken {
   // :type [!] System label / Системная метка

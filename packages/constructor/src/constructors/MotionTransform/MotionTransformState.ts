@@ -1,10 +1,10 @@
 import { computed, ref, watch } from 'vue'
 
+import { TabIndexInclude } from '../../classes/TabIndexInclude'
 import { MotionTransformElement } from './MotionTransformElement'
 import { MotionTransformSize } from './MotionTransformSize'
 
 import type { MotionTransformProps } from './props'
-import { TabIndexInclude } from '../../classes/TabIndexInclude.ts'
 
 /**
  * State management class.
