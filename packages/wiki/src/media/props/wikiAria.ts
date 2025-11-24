@@ -54,6 +54,18 @@ export const wikiAria: StorybookArgsToList = {
       }
     }
   },
+  ariaLive: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.aria,
+      type: 'string',
+      options: ['off', 'polite', 'assertive'],
+      description: {
+        en: 'Indicates that an element will be updated, and describes the types of updates',
+        ru: 'Указывает, что элемент будет обновляться, и описывает типы обновлений'
+      }
+    }
+  },
   polite: {
     type: StorybookControl.boolean,
     options: {

@@ -50,6 +50,20 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA live attribute.
+   *
+   * Получить атрибут ARIA live.
+   * @param live ARIA live attribute/ Атрибут ARIA live
+   */
+  static live(
+    live?: AriaList['aria-live']
+  ): AriaList {
+    return {
+      'aria-live': live
+    }
+  }
+
+  /**
    * Get modal role.
    *
    * Получить модальную роль.
@@ -66,6 +80,26 @@ export class AriaStaticInclude {
       'aria-modal': this.isTrueOrFalse(isModal),
       'aria-labelledby': ariaLabelledby,
       'aria-describedby': ariaDescribedby
+    }
+  }
+
+  /**
+   * Returns ARIA value now, min and max.
+   *
+   * Возвращает ARIA value now, min и max.
+   * @param value Current value/ Текущее значение
+   * @param min Minimum value/ Минимальное значение
+   * @param max Maximum value/ Максимальное значение
+   */
+  static valueMinMax(
+    value?: number,
+    min?: number,
+    max?: number
+  ): AriaList {
+    return {
+      'aria-valuenow': value,
+      'aria-valuemin': min,
+      'aria-valuemax': max
     }
   }
 

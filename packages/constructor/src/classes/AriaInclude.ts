@@ -48,6 +48,28 @@ export class AriaInclude {
   }
 
   /**
+   * Get ARIA label.
+   *
+   * Получить ARIA label.
+   */
+  label(): AriaList {
+    return AriaStaticInclude.label(
+      this.props.ariaLabel ?? this.getValue('aria-label')
+    )
+  }
+
+  /**
+   * Get ARIA live attribute.
+   *
+   * Получить атрибут ARIA live.
+   */
+  live(): AriaList {
+    return AriaStaticInclude.live(
+      this.props.ariaLive ?? this.getValue('aria-live')
+    )
+  }
+
+  /**
    * Get modal role.
    *
    * Получить модальную роль.
@@ -61,6 +83,19 @@ export class AriaInclude {
         this.props.ariaDescribedby
       ),
       isModal
+    )
+  }
+
+  /**
+   * Get value by min and max.
+   *
+   * Получить значение по мин и макс.
+   */
+  valueMinMax(): AriaList {
+    return AriaStaticInclude.valueMinMax(
+      this.getValue('aria-valuenow'),
+      this.getValue('aria-valuemin'),
+      this.getValue('aria-valuemax')
     )
   }
 

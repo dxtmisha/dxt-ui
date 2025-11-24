@@ -1,3 +1,5 @@
+import type { AriaLabelPropsInclude, AriaLivePropsInclude } from '../../types/ariaTypes'
+
 interface ProgressPropsToken {
   // :type [!] System label / Системная метка
   point?: boolean
@@ -10,7 +12,8 @@ interface ProgressPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface ProgressPropsBasic {
+export interface ProgressPropsBasic extends AriaLabelPropsInclude,
+  AriaLivePropsInclude {
   // Status
   visible?: boolean
 
@@ -25,9 +28,6 @@ export interface ProgressPropsBasic {
 
   delay?: number | string
   delayHide?: number | string
-
-  ariaLabel?: string
-  polite?: boolean
 }
 
 /**
@@ -47,6 +47,7 @@ export const defaultsProgress = {
   max: 100,
   delay: 360,
   delayHide: 200,
+  ariaLive: 'polite',
   ...{
     // :default [!] System label / Системная метка
     linear: true,

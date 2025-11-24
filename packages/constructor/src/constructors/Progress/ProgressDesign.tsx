@@ -168,8 +168,7 @@ export class ProgressDesign<
         style: this.styles?.value,
         viewBox: '0 0 48 48',
         onAnimationend: this.item.onAnimation,
-        role: 'progressbar',
-        ...this.item.aria.value
+        ...this.item.ariaAttrs.value
       },
       children
     )
