@@ -1,4 +1,4 @@
-import type { AriaRoleByPropsInclude } from '../../types/ariaTypes.ts'
+import type { AriaRoleByPropsInclude } from '../../types/ariaTypes'
 
 interface MotionTransformPropsToken {
   // :type [!] System label / Системная метка

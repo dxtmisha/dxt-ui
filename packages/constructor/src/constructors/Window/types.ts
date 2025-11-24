@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { ScrollbarComponentsInclude, ScrollbarEmitsInclude } from '../Scrollbar'
@@ -54,7 +54,7 @@ export interface WindowExpose {
    * Control item data for window management/
    * Данные элемента управления для управления окном
    */
-  control: WindowControlItem
+  control: ComputedRef<WindowControlItem>
 
   /**
    * Sets window open state/

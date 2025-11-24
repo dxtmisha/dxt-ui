@@ -1,6 +1,8 @@
 import { computed, ref } from 'vue'
 import { frame } from '@dxtmisha/functional'
 
+import { TabIndexInclude } from '../../classes/TabIndexInclude'
+
 import { WindowStatus } from './WindowStatus'
 import { WindowClient } from './WindowClient'
 import { WindowHook } from './WindowHook'
@@ -15,7 +17,6 @@ import { WindowEmit } from './WindowEmit'
 import { WindowStyles } from './WindowStyles'
 
 import type { WindowProps } from './props'
-import { TabIndexInclude } from '../../classes/TabIndexInclude.ts'
 
 /**
  * Class for managing the status of an open window.

@@ -1,5 +1,6 @@
 import type { ElementOrString, NormalOrPromise } from '@dxtmisha/functional'
 
+import type { AriaByPropsInclude, AriaHaspopupPropsInclude } from '../../types/ariaTypes'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar'
 
@@ -24,7 +25,10 @@ interface WindowPropsToken {
 export interface WindowPropsBasic<
   Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic,
   Image extends ImagePropsBasic = ImagePropsBasic
-> extends ScrollbarPropsInclude<Scrollbar>, ImagePropsInclude<Image> {
+> extends ScrollbarPropsInclude<Scrollbar>,
+  ImagePropsInclude<Image>,
+  AriaByPropsInclude,
+  AriaHaspopupPropsInclude {
   // Status
   'open'?: boolean
   'disabled'?: boolean
@@ -41,8 +45,6 @@ export interface WindowPropsBasic<
   'closing'?(): NormalOrPromise<boolean>
 
   // Style
-  'tagBody'?: string
-
   'contextmenu'?: boolean
   'staticMode'?: boolean
   'overElement'?: ElementOrString<HTMLElement>
@@ -63,11 +65,6 @@ export interface WindowPropsBasic<
   'modelOpen'?: boolean
   'onUpdate:open'?: (value: boolean) => void
   'onUpdate:modelOpen'?: (value: boolean) => void
-
-  // ARIA
-  'ariaHaspopup'?: 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid'
-  'ariaLabelledby'?: string
-  'ariaDescribedby'?: string
 }
 
 /**

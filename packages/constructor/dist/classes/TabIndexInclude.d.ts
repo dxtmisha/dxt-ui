@@ -4,7 +4,7 @@ import { Ref } from 'vue';
  *
  * Класс для управления фокусом и табиндексом элементов
  */
-export declare class TabIndexInclude<E extends HTMLElement> {
+export declare class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     protected readonly element: Ref<E | undefined> | (() => E | undefined);
     /** Previously focused element/ Ранее сфокусированный элемент */
     protected oldElement?: HTMLElement | Element | null;

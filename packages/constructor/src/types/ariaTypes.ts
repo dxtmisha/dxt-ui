@@ -30,6 +30,18 @@ export type AriaList = {
   'aria-expanded'?: string
 
   /**
+   * ARIA haspopup attribute - indicates the availability of a popup element/
+   * Атрибут ARIA haspopup - указывает на наличие всплывающего элемента
+   */
+  'aria-haspopup'?: 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid'
+
+  /**
+   * ARIA label attribute - defines a string value that labels the current element/
+   * Атрибут ARIA label - определяет строковое значение, которое обозначает текущий элемент
+   */
+  'aria-label'?: string
+
+  /**
    * ARIA labelledby attribute - identifies labeling element/
    * Атрибут ARIA labelledby - идентифицирует обозначающий элемент
    */
@@ -48,16 +60,53 @@ export interface AriaRolePropsInclude {
 }
 
 /**
- * ARIA role props with labelledby and describedby/
- * ARIA пропсы роли с labelledby и describedby
+ * ARIA label prop/
+ * ARIA проп label
  */
-export interface AriaRoleByPropsInclude extends AriaRolePropsInclude {
+export interface AriaLabelPropsInclude {
+  ariaLabel?: string
+}
+
+/**
+ * ARIA description prop/
+ * ARIA проп description
+ */
+export interface AriaDescriptionPropsInclude {
+  ariaDescription?: string
+}
+
+/**
+ * ARIA props with labelledby and describedby/
+ * ARIA пропсы с labelledby и describedby
+ */
+export interface AriaByPropsInclude {
   ariaLabelledby?: string
   ariaDescribedby?: string
 }
-export interface AriaRoleControlPropsInclude extends AriaRolePropsInclude {
+
+/**
+ * ARIA haspopup prop/
+ * ARIA проп haspopup
+ */
+export interface AriaHaspopupPropsInclude {
+  ariaHaspopup?: AriaList['aria-haspopup']
+}
+
+/**
+ * ARIA role props with labelledby and describedby/
+ * ARIA пропсы роли с labelledby и describedby
+ */
+export interface AriaRoleByPropsInclude extends AriaRolePropsInclude, AriaByPropsInclude {
+}
+
+/**
+ * ARIA control role props with controls and expanded/
+ * ARIA пропсы роли управления с controls и expanded
+ */
+export interface AriaRoleControlPropsInclude extends AriaRolePropsInclude, AriaHaspopupPropsInclude {
   id?: string
   ariaControls?: string
+  ariaHaspopup?: AriaList['aria-haspopup']
   ariaExpanded?: string
 }
 

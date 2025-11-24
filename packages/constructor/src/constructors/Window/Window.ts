@@ -1,6 +1,8 @@
 import { computed, onMounted, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
+import { AriaInclude } from '../../classes/AriaInclude'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ScrollbarInclude } from '../Scrollbar/ScrollbarInclude'
 import { ImageInclude } from '../Image/ImageInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -27,6 +29,7 @@ import { WindowVerification } from './WindowVerification'
 import { WindowEvent } from './WindowEvent'
 import { WindowEsc } from './WindowEsc'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { WindowControlItem } from './basicTypes'
 import type { WindowComponents, WindowEmits, WindowSlots } from './types'
 import type { WindowPropsBasic } from './props'
@@ -83,10 +86,10 @@ export class Window {
   /** Image manager for window content/ Менеджер изображений для содержимого окна */
   readonly image: ImageInclude
 
+  /** Escape key manager for window closing/ Менеджер клавиши Escape для закрытия окна */
   readonly esc: WindowEsc
-
-  /** Returns data for managing slot data/ Возвращает данные для управления данными слотами */
-  readonly slotData: WindowControlItem
+  /** ARIA manager for accessibility roles/ Менеджер ARIA для ролей доступности */
+  readonly aria: AriaInclude
 
   /**
    * Constructor
@@ -182,21 +185,15 @@ export class Window {
       () => this.open.close(),
       () => !this.props.persistent
     )
-
-    this.slotData = {
-      classesWindow: this.classes.list,
-      class: this.classes.list.controlId,
-      open: this.open.item,
-      onclick: this.event.onClick,
-      oncontextmenu: this.event.onContextmenu,
-      binds: {
-        'class': this.classes.list.controlId,
-        'onclick': this.event.onClick,
-        'oncontextmenu': this.event.onContextmenu,
-        'aria-haspopup': this.props.ariaHaspopup,
-        'aria-controls': this.classes.getId()
-      }
-    }
+    this.aria = new AriaInclude(
+      props,
+      computed<AriaList>(() => ({
+        'id': this.classes.getControlId(),
+        'role': 'dialog',
+        'aria-controls': this.classes.getId(),
+        'aria-expanded': AriaStaticInclude.isTrueOrFalse(this.open.item.value)
+      }))
+    )
 
     new ModelInclude<boolean>('open', this.emits, this.open.item)
 
@@ -205,6 +202,21 @@ export class Window {
     })
     onUnmounted(this.stop)
   }
+
+  /** Returns data for managing slot data/ Возвращает данные для управления данными слотами */
+  readonly slotData = computed<WindowControlItem>(() => ({
+    classesWindow: this.classes.list,
+    class: this.classes.list.controlId,
+    open: this.open.item,
+    onclick: this.event.onClick,
+    oncontextmenu: this.event.onContextmenu,
+    binds: {
+      ...this.aria.control(),
+      class: this.classes.list.controlId,
+      onclick: this.event.onClick,
+      oncontextmenu: this.event.onContextmenu
+    }
+  }))
 
   /**
    * Returns the list of available classes.

@@ -6,6 +6,7 @@ import {
   Translate
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Window } from './Window'
 
 import {
@@ -125,7 +126,7 @@ export class WindowDesign<
   protected initRender(): VNode[] {
     const main: any[] = []
 
-    this.initSlot('control', main, this.item.slotData)
+    this.initSlot('control', main, this.item.slotData.value)
 
     if (this.item.open.inDom.value) {
       if (this.item.staticMode.item.value) {
@@ -169,10 +170,7 @@ export class WindowDesign<
         'style': this.styles?.value,
         'data-window': this.item.classes.getId(),
         'onTransitionend': this.item.event.onTransition,
-        'role': 'dialog',
-        'aria-modal': 'true',
-        'aria-labelledby': this.props.ariaLabelledby,
-        'aria-describedby': this.props.ariaDescribedby
+        ...this.item.aria.modal()
       },
       this.renderBody()
     )
@@ -210,9 +208,9 @@ export class WindowDesign<
   readonly renderBodyGroup = (): VNode[] => {
     const children: any[] = []
 
-    this.initSlot('title', children, this.item.slotData)
+    this.initSlot('title', children, this.item.slotData.value)
     children.push(this.renderBodyContext())
-    this.initSlot('footer', children, this.item.slotData)
+    this.initSlot('footer', children, this.item.slotData.value)
 
     return [
       h('div', {
@@ -236,7 +234,7 @@ export class WindowDesign<
         'divider': this.props.divider,
         'data-window-body': '1'
       },
-      () => this.initSlot('default', undefined, this.item.slotData)
+      () => this.initSlot('default', undefined, this.item.slotData.value)
     )
   }
 
@@ -250,6 +248,7 @@ export class WindowDesign<
       return [h(
         'div',
         {
+          key: 'image',
           class: this.classes?.value.image
         },
         this.item.image.render()
@@ -269,12 +268,13 @@ export class WindowDesign<
       return this.components.render(
         'button',
         {
-          'class': [
+          key: 'button-close',
+          class: [
             this.classes?.value.close,
             this.item.classes.list.close
           ],
-          'icon': this.props.iconClose,
-          'aria-label': Translate.getSync('global-close')
+          icon: this.props.iconClose,
+          ...AriaStaticInclude.label(Translate.getSync('global-close'))
         }
       )
     }

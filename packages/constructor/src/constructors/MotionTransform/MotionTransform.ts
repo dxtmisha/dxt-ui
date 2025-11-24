@@ -92,7 +92,7 @@ export class MotionTransform {
       () => this.go.close(),
       () => this.element.isWindow()
     )
-    this.aria = new AriaInclude(this.props, this.getAriaList())
+    this.aria = new AriaInclude(this.props, this.ariaList)
 
     new ModelInclude('open', this.emits, this.state.open)
 
@@ -143,7 +143,7 @@ export class MotionTransform {
    *
    * Получить ARIA список.
    */
-  protected getAriaList(): AriaList {
+  protected readonly ariaList = computed<AriaList>(() => {
     let role: RoleType = 'region'
 
     if (this.element.isWindow()) {
@@ -156,5 +156,5 @@ export class MotionTransform {
       'aria-expanded': AriaStaticInclude.isTrueOrFalse(this.state.isOpen.value),
       'aria-controls': this.element.idBody
     }
-  }
+  })
 }

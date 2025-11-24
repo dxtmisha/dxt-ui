@@ -1,6 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import type { ConstrBind } from '@dxtmisha/functional'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { WindowExpose } from './types'
 import type { WindowPropsBasic } from './props'
 
@@ -116,30 +117,29 @@ export type WindowControlBasic = {
  * Control item data for window management/
  * Данные элемента управления для управления окном
  */
-export type WindowControlItem = WindowControlBasic
-  & {
-    /** CSS class string/ Строка CSS класса */
-    class: string
-    /** Reactive open state/ Реактивное состояние открытия */
-    open: Ref<boolean>
-    /** Click event handler/ Обработчик события клика */
-    onclick: WindowEventClick
-    /** Context menu event handler/ Обработчик события контекстного меню */
-    oncontextmenu: WindowEventClick
-    /** Binding properties/ Свойства привязки */
-    binds: {
-      /** Binding class/ Класс привязки */
-      'class': string
-      /** Click event handler for binding/ Обработчик события клика для привязки */
-      'onclick': WindowEventClick
-      /** Context menu event handler for binding/ Обработчик события контекстного меню для привязки */
-      'oncontextmenu': WindowEventClick
-      /** ARIA haspopup attribute/ Атрибут ARIA haspopup */
-      'aria-haspopup'?: string
-      /** ARIA controls attribute/ Атрибут ARIA controls */
-      'aria-controls'?: string
+export type WindowControlItem
+  = WindowControlBasic
+    & {
+      /** CSS class string/ Строка CSS класса */
+      class: string
+      /** Reactive open state/ Реактивное состояние открытия */
+      open: Ref<boolean>
+      /** Click event handler/ Обработчик события клика */
+      onclick: WindowEventClick
+      /** Context menu event handler/ Обработчик события контекстного меню */
+      oncontextmenu: WindowEventClick
+      /** Binding properties/ Свойства привязки */
+      binds:
+        AriaList
+        & {
+        /** Binding class/ Класс привязки */
+          class: string
+          /** Click event handler for binding/ Обработчик события клика для привязки */
+          onclick: WindowEventClick
+          /** Context menu event handler for binding/ Обработчик события контекстного меню для привязки */
+          oncontextmenu: WindowEventClick
+        }
     }
-  }
 
 /**
  * Component map for including the Window component/

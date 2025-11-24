@@ -15,21 +15,36 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA label.
+   *
+   * Получить ARIA label.
+   * @param label ARIA label/ ARIA метка
+   */
+  static label(label?: string): AriaList {
+    return {
+      'aria-label': label
+    }
+  }
+
+  /**
    * Get control role.
    *
    * Получить роль управления.
    * @param id Element ID/ Идентификатор элемента
    * @param controls ARIA controls attribute/ Атрибут ARIA controls
+   * @param haspopup ARIA haspopup attribute/ Атрибут ARIA haspopup
    * @param expanded ARIA expanded state/ Состояние ARIA expanded
    */
   static control(
     id?: string,
     controls?: string,
+    haspopup?: AriaList['aria-haspopup'],
     expanded?: string
   ): AriaList {
     return {
       id,
       'aria-controls': controls,
+      'aria-haspopup': haspopup,
       'aria-expanded': expanded
     }
   }
