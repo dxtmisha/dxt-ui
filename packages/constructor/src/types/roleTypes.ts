@@ -1,4 +1,4 @@
-export type roleType
+export type RoleType
   = | string
     | 'alert'
     | 'alertdialog'

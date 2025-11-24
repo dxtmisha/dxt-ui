@@ -1,6 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import type { ConstrBind } from '@dxtmisha/functional'
 
+import type { AriaRoleControlPropsInclude } from '../../types/ariaTypes'
 import type { MotionTransformEmits, MotionTransformExpose } from './types'
 import type { MotionTransformProps } from './props'
 
@@ -81,12 +82,7 @@ export type MotionTransformControlItem = {
   idBody: string
 
   /** Binding attributes for element/ Атрибуты привязки для элемента */
-  binds: {
-    /** ARIA expanded state attribute/ Атрибут ARIA состояния развёрнутости */
-    'aria-expanded': string
-    /** ARIA controls attribute/ Атрибут ARIA controls */
-    'aria-controls': string
-  }
+  binds: AriaRoleControlPropsInclude
 }
 
 /**

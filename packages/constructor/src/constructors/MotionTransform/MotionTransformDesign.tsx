@@ -207,13 +207,10 @@ export class MotionTransformDesign<
         h(
           this.props.tagBody ?? 'div',
           {
-            'key': 'body',
-            'class': this.classes?.value.body,
-            'id': this.item.element.idBody,
-            'role': this.item.role.value,
-            'aria-modal': this.item.element.isWindow(),
-            'aria-labelledby': this.props.ariaLabelledby,
-            'aria-describedby': this.props.ariaDescribedby
+            key: 'body',
+            class: this.classes?.value.body,
+            id: this.item.element.idBody,
+            ...this.item.aria.modal(this.item.element.isWindow())
           },
           this.initSlot(
             'body',

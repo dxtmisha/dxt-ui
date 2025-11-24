@@ -171,7 +171,6 @@ export class WindowDesign<
         'onTransitionend': this.item.event.onTransition,
         'role': 'dialog',
         'aria-modal': 'true',
-        'aria-hidden': !this.item.open.item.value,
         'aria-labelledby': this.props.ariaLabelledby,
         'aria-describedby': this.props.ariaDescribedby
       },

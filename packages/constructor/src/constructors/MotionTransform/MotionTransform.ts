@@ -1,6 +1,8 @@
 import { computed, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
+import { AriaInclude } from '../../classes/AriaInclude'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
 
@@ -12,6 +14,8 @@ import { MotionTransformGo } from './MotionTransformGo'
 
 import { WindowEsc } from '../Window/WindowEsc'
 
+import type { AriaList } from '../../types/ariaTypes'
+import type { RoleType } from '../../types/roleTypes'
 import type { MotionTransformComponents, MotionTransformEmits, MotionTransformSlots } from './types'
 import type { MotionTransformProps } from './props'
 import type { MotionTransformControlItem } from './basicTypes'
@@ -34,7 +38,10 @@ export class MotionTransform {
   /** Control actions manager/ Менеджер действий управления */
   readonly go: MotionTransformGo
 
+  /** Window esc manager/ Менеджер esc окна */
   readonly esc: WindowEsc
+  /** ARIA role manager/ Менеджер ARIA ролей */
+  readonly aria: AriaInclude
 
   /**
    * Constructor
@@ -85,6 +92,7 @@ export class MotionTransform {
       () => this.go.close(),
       () => this.element.isWindow()
     )
+    this.aria = new AriaInclude(this.props, this.getAriaList())
 
     new ModelInclude('open', this.emits, this.state.open)
 
@@ -98,21 +106,13 @@ export class MotionTransform {
    * Вычисляемые данные слотов для управления слотами
    */
   readonly slotData = computed<MotionTransformControlItem>(() => {
-    const classes = MotionTransformElement.getClassesList(this.className)
-    const idControl = this.element.idControl
-    const idBody = this.element.idBody
-
     return {
       isOpen: this.state.isOpen,
       isShow: this.state.isShow,
-      classes,
-      idControl,
-      idBody,
-      binds: {
-        'id': idControl,
-        'aria-expanded': this.state.isOpen.value ? 'true' : 'false',
-        'aria-controls': idBody
-      }
+      classes: MotionTransformElement.getClassesList(this.className),
+      idControl: this.element.idControl,
+      idBody: this.element.idBody,
+      binds: this.aria.control()
     }
   })
 
@@ -122,10 +122,6 @@ export class MotionTransform {
    * Возвращает ARIA роль для элемента.
    */
   readonly role = computed(() => {
-    if (this.props.role) {
-      return this.props.role
-    }
-
     if (this.element.isWindow()) {
       return 'dialog'
     }
@@ -140,5 +136,25 @@ export class MotionTransform {
    */
   getSlotData(): MotionTransformControlItem {
     return this.slotData.value
+  }
+
+  /**
+   * Get ARIA list.
+   *
+   * Получить ARIA список.
+   */
+  protected getAriaList(): AriaList {
+    let role: RoleType = 'region'
+
+    if (this.element.isWindow()) {
+      role = 'dialog'
+    }
+
+    return {
+      'id': this.element.idControl,
+      role,
+      'aria-expanded': AriaStaticInclude.isTrueOrFalse(this.state.isOpen.value),
+      'aria-controls': this.element.idBody
+    }
   }
 }

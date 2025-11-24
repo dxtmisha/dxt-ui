@@ -1,4 +1,4 @@
-import type { roleType } from '../../types/roleTypes'
+import type { AriaRoleByPropsInclude } from '../../types/ariaTypes.ts'
 
 interface MotionTransformPropsToken {
   // :type [!] System label / Системная метка
@@ -8,7 +8,7 @@ interface MotionTransformPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface MotionTransformPropsBasic {
+export interface MotionTransformPropsBasic extends AriaRoleByPropsInclude {
   // Status
   'open'?: boolean
   'inDom'?: boolean
@@ -28,11 +28,6 @@ export interface MotionTransformPropsBasic {
   'modelOpen'?: boolean
   'onUpdate:open'?: (value: boolean) => void
   'onUpdate:modelOpen'?: (value: boolean) => void
-
-  // ARIA
-  'role'?: roleType
-  'ariaLabelledby'?: string
-  'ariaDescribedby'?: string
 }
 
 /**

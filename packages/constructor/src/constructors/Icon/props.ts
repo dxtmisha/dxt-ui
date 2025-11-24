@@ -1,4 +1,4 @@
-import type { roleType } from '../../types/roleTypes'
+import type { RoleType } from '../../types/roleTypes'
 import type { ImagePropsBasic, ImageValue } from '../Image'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
@@ -33,7 +33,7 @@ export interface IconPropsBasic<
   iconActive?: ImageValue<Image>
 
   // ARIA
-  role?: roleType
+  role?: RoleType
 }
 
 /**
