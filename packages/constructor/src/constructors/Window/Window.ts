@@ -4,6 +4,7 @@ import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxtmisha/f
 import { ScrollbarInclude } from '../Scrollbar/ScrollbarInclude'
 import { ImageInclude } from '../Image/ImageInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
+import { TabIndexInclude } from '../../classes/TabIndexInclude'
 
 import { WindowClient } from './WindowClient'
 import { WindowHook } from './WindowHook'
@@ -24,6 +25,7 @@ import { WindowStyles } from './WindowStyles'
 import { WindowOpen } from './WindowOpen'
 import { WindowVerification } from './WindowVerification'
 import { WindowEvent } from './WindowEvent'
+import { WindowEsc } from './WindowEsc'
 
 import type { WindowControlItem } from './basicTypes'
 import type { WindowComponents, WindowEmits, WindowSlots } from './types'
@@ -48,6 +50,7 @@ export class Window {
   readonly classes: WindowClasses
   /** Element manager for window DOM element/ Менеджер элементов для DOM элемента окна */
   readonly element: WindowElement
+  readonly tabIndex: TabIndexInclude
 
   /** Status manager for window state/ Менеджер статуса для состояния окна */
   readonly status: WindowStatus
@@ -80,6 +83,8 @@ export class Window {
   /** Image manager for window content/ Менеджер изображений для содержимого окна */
   readonly image: ImageInclude
 
+  readonly esc: WindowEsc
+
   /** Returns data for managing slot data/ Возвращает данные для управления данными слотами */
   readonly slotData: WindowControlItem
 
@@ -109,6 +114,9 @@ export class Window {
     this.classes = new WindowClasses(className)
     this.element = new WindowElement(this.classes, element)
     this.client = new WindowClient(this.element)
+    this.tabIndex = new TabIndexInclude(
+      () => this.element.getBody()
+    )
 
     this.status = new WindowStatus(this.element)
     this.persistent = new WindowPersistent(props, this.classes, this.element)
@@ -131,6 +139,7 @@ export class Window {
       this.client,
       this.hook,
       this.element,
+      this.tabIndex,
       this.status,
       this.flash,
       this.coordinates,
@@ -167,6 +176,11 @@ export class Window {
       props,
       components,
       emits
+    )
+    this.esc = new WindowEsc(
+      this.open.item,
+      () => this.open.close(),
+      () => !this.props.persistent
     )
 
     this.slotData = {

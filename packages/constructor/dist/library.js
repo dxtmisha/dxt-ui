@@ -90,7 +90,7 @@ class P {
     ] : [];
   }
 }
-class Y {
+class Z {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -121,7 +121,7 @@ class Y {
     this.props = t, this.progress = e;
   }
 }
-class Z {
+class J {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -302,7 +302,7 @@ class E {
     return [];
   }
 }
-class J extends E {
+class Q extends E {
   /**
    * Constructor for the LabelHighlightInclude class.
    *
@@ -368,7 +368,7 @@ class J extends E {
     return (e = this.props.highlightLengthStart) != null ? e : 2;
   }
 }
-class Q extends E {
+class W extends E {
   /**
    * Constructor for working with text that has maximum values.
    *
@@ -408,7 +408,7 @@ class Q extends E {
       ).toString();
   }
 }
-class W {
+class X {
   /**
    * Constructor
    * @param index The index key for the model property/ Ключ индекса для свойства модели
@@ -473,7 +473,7 @@ class W {
     D(this.emits) && (this.emits(`update:${y(this.index)}`, t), this.emits(`update:model${b(this.index)}`, t));
   }
 }
-class X {
+class Y {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -1157,7 +1157,7 @@ class ot {
    */
   getValidationMessage() {
     var t;
-    return this.is() ? m(this.props.match) && ((t = this.props.match) != null && t.validationMessage) ? this.props.match.validationMessage : q.getSync("Your entries must match.") : "";
+    return this.is() ? m(this.props.match) && ((t = this.props.match) != null && t.validationMessage) ? this.props.match.validationMessage : q.getSync("global-entries_match") : "";
   }
   /**
    * Checks value against external element
@@ -1299,8 +1299,8 @@ const ct = (l) => `${l}-a--static`;
 export {
   K as CaptionInclude,
   P as DescriptionInclude,
-  Y as EnabledInclude,
-  Z as EventClickInclude,
+  Z as EnabledInclude,
+  J as EventClickInclude,
   rt as FieldAttributesInclude,
   at as FieldChangeInclude,
   lt as FieldCodeInclude,
@@ -1312,11 +1312,11 @@ export {
   ut as FieldValidationInclude,
   ht as FieldValueInclude,
   et as FieldVisibilityInclude,
-  J as LabelHighlightInclude,
+  Q as LabelHighlightInclude,
   E as LabelInclude,
-  Q as LabelNumberInclude,
-  W as ModelInclude,
-  X as PrefixInclude,
+  W as LabelNumberInclude,
+  X as ModelInclude,
+  Y as PrefixInclude,
   tt as SuffixInclude,
   ct as getClassTegAStatic
 };

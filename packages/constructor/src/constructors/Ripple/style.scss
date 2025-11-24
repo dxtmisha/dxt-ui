@@ -7,6 +7,10 @@
 
   border-radius: inherit;
 
+  @include ui.mediaPrefersReducedMotion {
+    display: none;
+  }
+
   &__item {
     @include ui.absolute;
 

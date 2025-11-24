@@ -15,6 +15,7 @@ import { WindowEmit } from './WindowEmit'
 import { WindowStyles } from './WindowStyles'
 
 import type { WindowProps } from './props'
+import { TabIndexInclude } from '../../classes/TabIndexInclude.ts'
 
 /**
  * Class for managing the status of an open window.
@@ -33,6 +34,7 @@ export class WindowOpen {
    * @param client object for working with mouse pointer coordinates/ объект для работы с координатами указателя мыши
    * @param hook object for working with hooks/ объект для работы с хуками
    * @param element an object of the class for working with elements/ объект класса для работы с элементами
+   * @param tabIndex class object for working with tab indices/ объект класса для работы с табуляцией
    * @param status object for working with statuses/ объект для работы со статусами
    * @param flash class object for working with fast window opening/ объект класса для работы с быстрым открытием окна
    * @param coordinates object for working with coordinates/ объект для работы с координатами
@@ -46,6 +48,7 @@ export class WindowOpen {
     protected readonly client: WindowClient,
     protected readonly hook: WindowHook,
     protected readonly element: WindowElement,
+    protected readonly tabIndex: TabIndexInclude,
     protected readonly status: WindowStatus,
     protected readonly flash: WindowFlash,
     protected readonly coordinates: WindowCoordinates,
@@ -144,6 +147,7 @@ export class WindowOpen {
               requestAnimationFrame(() => {
                 this.hook.opening()
                 this.resetClicks()
+                this.tabIndex.goTo()
               })
               this.emit.on(this.item.value)
             })

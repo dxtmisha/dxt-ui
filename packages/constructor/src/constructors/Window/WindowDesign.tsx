@@ -167,7 +167,6 @@ export class WindowDesign<
         'ref': this.element,
         'class': this.classes?.value.main,
         'style': this.styles?.value,
-        'tabindex': '-1',
         'data-window': this.item.classes.getId(),
         'onTransitionend': this.item.event.onTransition,
         'role': 'dialog',

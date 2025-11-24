@@ -21,6 +21,17 @@ export const wikiAria: StorybookArgsToList = {
       }
     }
   },
+  ariaHaspopup: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.aria,
+      type: 'string',
+      description: {
+        en: 'Indicates the availability and type of interactive popup element',
+        ru: 'Указывает на наличие и тип интерактивного всплывающего элемента'
+      }
+    }
+  },
   ariaLabel: {
     type: StorybookControl.text,
     options: {

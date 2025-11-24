@@ -41,6 +41,8 @@ export interface WindowPropsBasic<
   'closing'?(): NormalOrPromise<boolean>
 
   // Style
+  'tagBody'?: string
+
   'contextmenu'?: boolean
   'staticMode'?: boolean
   'overElement'?: ElementOrString<HTMLElement>

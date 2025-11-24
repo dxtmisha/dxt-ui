@@ -104,9 +104,10 @@ export class RippleDesign<
    */
   protected initRender(): VNode {
     return h('div', {
-      ref: this.element,
-      class: this.classes?.value.main,
-      onMousedown: this.item.onClick
+      'ref': this.element,
+      'class': this.classes?.value.main,
+      'onPointerdown': this.item.onClick,
+      'aria-hidden': 'true'
     })
   }
 }

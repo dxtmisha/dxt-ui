@@ -6,7 +6,7 @@ import { getRef, isDomRuntime, isFunction } from '@dxtmisha/functional'
  *
  * Класс для управления фокусом и табиндексом элементов
  */
-export class TabIndexInclude<E extends HTMLElement> {
+export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   /** Previously focused element/ Ранее сфокусированный элемент */
   protected oldElement?: HTMLElement | Element | null
 
