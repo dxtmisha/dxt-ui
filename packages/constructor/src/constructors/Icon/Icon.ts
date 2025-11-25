@@ -12,6 +12,7 @@ import { SkeletonInclude } from '../Skeleton'
 import type { IconComponents, IconEmits, IconSlots } from './types'
 import type { IconProps } from './props'
 import type { IconEventLoad } from './basicTypes'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * Base class for working with icons.
@@ -58,6 +59,7 @@ export class Icon {
     this.iconBind = getBindRef(
       refs.icon,
       computed(() => ({
+        key: 'mainIcon',
         class: `${className}__icon`,
         turn: this.props.turn,
         disabled: this.props.disabled,
@@ -69,6 +71,7 @@ export class Icon {
     this.iconActiveBind = getBindRef(
       refs.iconActive,
       computed(() => ({
+        key: 'activeIcon',
         class: `${className}__iconActive`,
         turn: this.props.turn,
         disabled: this.props.disabled,
@@ -95,8 +98,23 @@ export class Icon {
     ...this.skeleton.classes.value
   }))
 
-  /** ARIA role attribute/ Атрибут ARIA role */
-  readonly role = computed<string | undefined>(() => {
+  /**
+   * Computed bindings for the icon element.
+   *
+   * Вычисляемые привязки для элемента иконки.
+   */
+  readonly binds = computed<any>(() => ({
+    key: 'icon',
+    ...AriaStaticInclude.role(this.getRole()),
+    ...AriaStaticInclude.hidden(!this.props.dynamic)
+  }))
+
+  /**
+   * Get the ARIA role for the icon element.
+   *
+   * Получить ARIA роль для элемента иконки.
+   */
+  protected getRole(): string | undefined {
     if (this.props.role) {
       return this.props.role
     }
@@ -106,18 +124,7 @@ export class Icon {
     }
 
     return undefined
-  })
-
-  /**
-   * ARIA hidden attribute/ Атрибут ARIA hidden
-   */
-  readonly ariaHidden = computed<string | undefined>(() => {
-    if (!this.props.dynamic) {
-      return 'true'
-    }
-
-    return undefined
-  })
+  }
 
   /**
    * Triggers an event when the image loading is complete.

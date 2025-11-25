@@ -2841,8 +2841,11 @@ function $e(i, t, e) {
   return e && s ? `${e}.${s}` : e || s || i;
 }
 function pe(i, t, e, s) {
-  const r = $e(i, t, s);
-  return Rt(i, { key: r, ...t }, e);
+  let r = t;
+  return (!t || "key" in t) && (r = {
+    key: $e(i, t, s),
+    ...t
+  }), Rt(i, r, e);
 }
 function ut(i, t) {
   const e = i == null ? void 0 : i.class, s = t == null ? void 0 : t.class, r = i == null ? void 0 : i.style, o = t == null ? void 0 : t.style, a = {

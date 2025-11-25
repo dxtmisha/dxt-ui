@@ -1,6 +1,11 @@
 import type { AriaList, AriaTrueOrFalse } from '../types/ariaTypes'
 import type { RoleType } from '../types/roleTypes'
 
+/**
+ * The class returns static ARIA attributes.
+ *
+ * Класс возвращает статические ARIA атрибуты.
+ */
 export class AriaStaticInclude {
   /**
    * Get role by props.

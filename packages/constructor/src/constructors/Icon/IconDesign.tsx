@@ -69,34 +69,6 @@ export class IconDesign<
   }
 
   /**
-   * Render the main icon.
-   *
-   * Рендер основной иконки.
-   */
-  readonly renderIcon = (): VNode | undefined => {
-    return this.components.renderOne(
-      'image',
-      this.item.iconBind.value,
-      undefined,
-      'icon'
-    )
-  }
-
-  /**
-   * Render the secondary icon.
-   *
-   * Рендер вторичной иконки.
-   */
-  readonly renderIconActive = (): VNode | undefined => {
-    return this.components.renderOne(
-      'image',
-      this.item.iconActiveBind.value,
-      undefined,
-      'iconActive'
-    )
-  }
-
-  /**
    * Initialization of all the necessary properties for work<br>
    * Инициализация всех необходимых свойств для работы.
    */
@@ -146,15 +118,45 @@ export class IconDesign<
       children.push(this.renderIconActive())
     }
 
-    return h(
-      'span',
-      {
-        ...this.getAttrs(),
-        'class': this.classes?.value.main,
-        'role': this.item.role.value,
-        'aria-hidden': this.item.ariaHidden.value
-      },
-      children
+    return h('span', this.propsMain.value, children)
+  }
+
+  /**
+   * Computed properties for the main element.
+   *
+   * Вычисляемые свойства для главного элемента.
+   */
+  readonly propsMain = computed<any>(() => ({
+    ...this.getAttrs(),
+    ...this.item.binds.value,
+    class: this.classes?.value.main
+  }))
+
+  /**
+   * Render the main icon.
+   *
+   * Рендер основной иконки.
+   */
+  readonly renderIcon = (): VNode | undefined => {
+    return this.components.renderOne(
+      'image',
+      this.item.iconBind.value,
+      undefined,
+      'icon'
+    )
+  }
+
+  /**
+   * Render the secondary icon.
+   *
+   * Рендер вторичной иконки.
+   */
+  readonly renderIconActive = (): VNode | undefined => {
+    return this.components.renderOne(
+      'image',
+      this.item.iconActiveBind.value,
+      undefined,
+      'iconActive'
     )
   }
 }

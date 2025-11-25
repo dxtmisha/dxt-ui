@@ -19,7 +19,17 @@ export function render<T extends ItemList>(
   children?: RawChildren | RawSlots,
   index?: string
 ): VNode {
-  const code = getIndexForRender(name, props, index)
+  let data: any = props
 
-  return h(name, { key: code, ...props }, children)
+  if (
+    !props
+    || ('key' in props)
+  ) {
+    data = {
+      key: getIndexForRender(name, props, index),
+      ...props
+    }
+  }
+
+  return h(name, data, children)
 }

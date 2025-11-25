@@ -5,6 +5,7 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Ripple } from './Ripple'
 
 import {
@@ -17,7 +18,6 @@ import {
   type RippleExpose,
   type RippleSlots
 } from './types'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * RippleDesign

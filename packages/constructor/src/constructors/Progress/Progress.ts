@@ -3,9 +3,9 @@ import { type ConstrClassObject, type ConstrEmit, type ConstrStyles, DesignComp,
 
 import { AriaInclude } from '../../classes/AriaInclude'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { ProgressComponents, ProgressEmits, ProgressSlots } from './types'
 import type { ProgressProps } from './props'
-import type { AriaList } from '../../types/ariaTypes.ts'
 
 /**
  * Base class for working with the loader.
