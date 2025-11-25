@@ -90,6 +90,8 @@ export type ConstrRegistration = {
  * Тип привязки конструктора для привязки компонента с поддержкой классов и стилей
  */
 export type ConstrBind<T> = T & Record<string, any> & {
+    /** Optional key/ Опциональный ключ */
+    key?: string;
     /** Optional CSS classes/ Опциональные CSS классы */
     class?: ConstrClass;
     /** Optional styles/ Опциональные стили */

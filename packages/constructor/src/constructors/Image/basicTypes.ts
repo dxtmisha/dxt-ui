@@ -33,7 +33,7 @@ export type ImageSize<T = number> = {
   height: T
 }
 
-export type ImagePictureItem = Record<keyof HTMLSourceElement, any>
+export type ImagePictureItem = Record<keyof HTMLSourceElement & 'key', any>
 export type ImagePictureList = ImagePictureItem[]
 export type ImagePicture = Record<string, string> | ImagePictureList
 

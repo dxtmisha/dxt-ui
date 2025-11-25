@@ -36,6 +36,12 @@ export type AriaList = {
   'aria-haspopup'?: 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid'
 
   /**
+   * ARIA hidden attribute - indicates whether the element is exposed to an accessibility API/
+   * Атрибут ARIA hidden - указывает, открыт ли элемент для API доступности
+   */
+  'aria-hidden'?: AriaTrueOrFalse
+
+  /**
    * ARIA label attribute - defines a string value that labels the current element/
    * Атрибут ARIA label - определяет строковое значение, которое обозначает текущий элемент
    */

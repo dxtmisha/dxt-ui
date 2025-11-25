@@ -1,11 +1,13 @@
 import { computed, onUnmounted, type Ref, watch } from 'vue'
 import {
+  type ConstrBind,
   type ConstrClassObject,
   type ConstrEmit,
   type ConstrStyles,
-  isFilled,
   isString
 } from '@dxtmisha/functional'
+
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 import { ImageType } from './ImageType'
 import { ImageData } from './ImageData'
@@ -86,20 +88,6 @@ export class Image {
 
     onUnmounted(() => this.adaptiveItem.remove())
   }
-
-  /**
-   * ARIA hidden attribute/ Атрибут ARIA hidden
-   */
-  readonly ariaHidden = computed<string | undefined>(() => {
-    if (
-      !this.img.is.value
-      && !isFilled(this.props.alt)
-    ) {
-      return 'true'
-    }
-
-    return undefined
-  })
 
   /**
    * Determines the tag to use/ Определяет используемый тег
@@ -214,4 +202,26 @@ export class Image {
 
     return {} as ConstrStyles
   })
+
+  /**
+   * Computed bindings for the image element.
+   *
+   * Вычисляемые привязки для элемента изображения.
+   */
+  readonly binds = computed(() => ({
+    translate: 'no',
+    ...AriaStaticInclude.role('img'),
+    ...AriaStaticInclude.label(this.props.alt),
+    ...AriaStaticInclude.hidden()
+  }))
+
+  /**
+   * Bindings for the image value.
+   *
+   * Привязки для значения изображения.
+   */
+  readonly valueBinds = computed<ConstrBind<any>>(() => ({
+    key: 'value',
+    data: this.data.image.value
+  }))
 }

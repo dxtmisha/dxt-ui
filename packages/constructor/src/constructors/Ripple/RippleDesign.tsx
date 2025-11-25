@@ -17,6 +17,7 @@ import {
   type RippleExpose,
   type RippleSlots
 } from './types'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * RippleDesign
@@ -104,10 +105,11 @@ export class RippleDesign<
    */
   protected initRender(): VNode {
     return h('div', {
-      'ref': this.element,
-      'class': this.classes?.value.main,
-      'onPointerdown': this.item.onClick,
-      'aria-hidden': 'true'
+      ref: this.element,
+      key: 'ripple',
+      class: this.classes?.value.main,
+      onPointerdown: this.item.onClick,
+      ...AriaStaticInclude.hidden()
     })
   }
 }

@@ -117,14 +117,7 @@ export class ImageDesign<
 
     return h(
       'span',
-      {
-        ...this.propsImage.value,
-        'style': this.styles?.value,
-        'translate': 'no',
-        'role': 'img',
-        'aria-label': this.props.alt,
-        'aria-hidden': this.item.ariaHidden.value
-      },
+      this.propsMain.value,
       this.renderValue()
     )
   }
@@ -137,7 +130,19 @@ export class ImageDesign<
   readonly propsImage = computed<any>(() => ({
     ...this.getAttrs(),
     ref: this.element,
+    key: 'image',
     class: this.classes?.value.main
+  }))
+
+  /**
+   * Main properties.
+   *
+   * Основные свойства.
+   */
+  readonly propsMain = computed<any>(() => ({
+    ...this.propsImage.value,
+    ...this.item.binds.value,
+    style: this.styles?.value
   }))
 
   /**
@@ -183,11 +188,12 @@ export class ImageDesign<
    *
    * Рендеринг значения для компонента.
    */
-  readonly renderValue = (): string | VNode[] | undefined => {
-    if (
-      this.item.type.item.value === ImageTypeValue.pdf
-    ) {
-      return [h('object', { data: this.item.data.image.value })]
+  readonly renderValue = (): string | VNode | undefined => {
+    if (this.item.type.item.value === ImageTypeValue.pdf) {
+      return h(
+        'object',
+        this.item.valueBinds.value
+      )
     }
 
     return this.item.text.value

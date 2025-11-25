@@ -120,6 +120,8 @@ export type ConstrBind<T>
   = T
     & Record<string, any>
     & {
+      /** Optional key/ Опциональный ключ */
+      key?: string
       /** Optional CSS classes/ Опциональные CSS классы */
       class?: ConstrClass
       /** Optional styles/ Опциональные стили */

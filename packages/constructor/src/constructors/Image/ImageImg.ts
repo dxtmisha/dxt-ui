@@ -41,7 +41,9 @@ export class ImageImg {
    */
   readonly binds = computed<ConstrBind<ImageAttrs>>(
     () => {
-      const attrs = {} as ConstrBind<ImageAttrs>
+      const attrs: ConstrBind<any> = {
+        key: 'img'
+      }
 
       if (this.is.value) {
         attrs.src = this.background.imageSrc.value
@@ -80,6 +82,7 @@ export class ImageImg {
       this.props.picture,
       (value, media) => {
         return {
+          key: media,
           srcset: value,
           media: `(width >= ${media})`
         }

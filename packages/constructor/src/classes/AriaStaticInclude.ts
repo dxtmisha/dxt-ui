@@ -50,6 +50,20 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA hidden attribute.
+   *
+   * Получить атрибут ARIA hidden.
+   * @param isHidden is hidden/ является скрытым
+   */
+  static hidden(
+    isHidden: boolean = true
+  ): AriaList {
+    return {
+      'aria-hidden': this.isTrueOrFalse(isHidden)
+    }
+  }
+
+  /**
    * Get ARIA live attribute.
    *
    * Получить атрибут ARIA live.
