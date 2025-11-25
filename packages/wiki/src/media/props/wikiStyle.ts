@@ -224,17 +224,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  dir: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-
-      description: {
-        en: 'Mirrors the component depending on site direction (RTL/LTR)',
-        ru: 'Зеркально отражает компонент в зависимости от направления сайта (RTL/LTR)'
-      }
-    }
-  },
   divider: {
     type: StorybookControl.boolean,
     options: {
@@ -265,28 +254,6 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Displays the component as a dot indicator',
         ru: 'Отображает компонент как точечный индикатор'
-      }
-    }
-  },
-  dynamic: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-
-      description: {
-        en: 'Enables dynamic reactions to hover and focus',
-        ru: 'Включает динамическую реакцию на hover и focus'
-      }
-    }
-  },
-  dynamicHover: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-
-      description: {
-        en: 'Enables dynamic hover effect for the component',
-        ru: 'Включает динамический эффект наведения для компонента'
       }
     }
   },

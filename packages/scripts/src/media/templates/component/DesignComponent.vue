@@ -50,5 +50,5 @@
 </script>
 
 <!-- :component.once <template> -->
-<!-- :component.once   <component :is="render"/> -->
+<!-- :component.once   <render/> -->
 <!-- :component.once </template> -->

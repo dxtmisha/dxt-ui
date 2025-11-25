@@ -47,7 +47,7 @@ export const wikiIcon: StorybookArgsToList = {
   'icon.start': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Sorts the element to the beginning',
         ru: 'Сортирует элемент в начало'
@@ -57,7 +57,7 @@ export const wikiIcon: StorybookArgsToList = {
   'icon.end': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Sorts the element to the end',
         ru: 'Сортирует элемент в конец'
@@ -67,7 +67,7 @@ export const wikiIcon: StorybookArgsToList = {
   'icon.high': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Raises the element above others',
         ru: 'Поднимает элемент над другими'

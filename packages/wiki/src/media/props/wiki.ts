@@ -6,6 +6,7 @@ import { wikiStatus } from './wikiStatus'
 import { wikiInformation } from './wikiInformation'
 import { wikiValue } from './wikiValue'
 import { wikiStyle } from './wikiStyle'
+import { wikiOption } from './wikiOption'
 import { wikiTechnical } from './wikiTechnical'
 import { wikiHook } from './wikiHook'
 
@@ -41,6 +42,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiInformation,
   ...wikiValue,
   ...wikiStyle,
+  ...wikiOption,
   ...wikiTechnical,
   ...wikiHook,
 

@@ -75,5 +75,5 @@ defineExpose(design.expose())
 </script>
 
 <template>
-  <component :is="render"/>
+  <render/>
 </template>

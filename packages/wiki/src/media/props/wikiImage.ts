@@ -92,7 +92,7 @@ export const wikiImage: StorybookArgsToList = {
   'image.lazy': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Enables lazy loading of the image using the native loading="lazy" attribute',
         ru: 'Включает ленивую загрузку изображения с использованием нативного атрибута loading="lazy"'
@@ -144,7 +144,7 @@ export const wikiImage: StorybookArgsToList = {
   'image.tagImg': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Use the img tag instead of background image for better accessibility and SEO',
         ru: 'Использовать тег img вместо фонового изображения для лучшей доступности и SEO'

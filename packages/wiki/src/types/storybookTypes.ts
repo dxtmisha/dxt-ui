@@ -36,6 +36,8 @@ export enum StorybookCategory {
   mask = 'Mask',
   /** Styles category / Категория стилей */
   style = 'Styles',
+  /** Styles category / Категория стилей */
+  option = 'Options',
   /** ARIA category / Категория ARIA */
   aria = 'ARIA',
   /** Technical category / Техническая категория */
