@@ -1,9 +1,9 @@
 import { computed, type VNode } from 'vue'
-import { isFilled, render } from '@dxtmisha/functional'
+import { getElementId, isFilled, render } from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
-import type { DescriptionProps, DescriptionSlots } from '../types/descriptionTypes'
+import type { DescriptionExpose, DescriptionProps, DescriptionSlots } from '../types/descriptionTypes'
 
 /**
  * Use for adding description text
@@ -11,6 +11,9 @@ import type { DescriptionProps, DescriptionSlots } from '../types/descriptionTyp
  * Использование для добавления описания текста
  */
 export class DescriptionInclude {
+  /** Unique identifier/ Уникальный идентификатор */
+  protected id = getElementId()
+
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -32,6 +35,20 @@ export class DescriptionInclude {
    * Проверка наличия описания
    */
   readonly is = computed(() => Boolean(this.props.description || this.slots?.description))
+
+  /** Description expose reference/ Ссылка на expose описания */
+  readonly expose: DescriptionExpose = {
+    descriptionId: this.id
+  }
+
+  /**
+   * Get description ID
+   *
+   * Получить ID описания
+   */
+  getId(): string {
+    return this.id
+  }
 
   /**
    * Render the description

@@ -1,9 +1,9 @@
 import { computed, type Ref, type VNode } from 'vue'
-import { type ConstrClass, isFilled, render } from '@dxtmisha/functional'
+import { type ConstrClass, getElementId, isFilled, render } from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
-import type { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/labelTypes'
+import type { LabelAlternativeSlots, LabelExpose, LabelProps, LabelSlots } from '../types/labelTypes'
 
 /**
  * Use for adding text
@@ -11,6 +11,9 @@ import type { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/lab
  * Использование для добавления текста
  */
 export class LabelInclude {
+  /** Unique identifier/ Уникальный идентификатор */
+  protected id = getElementId()
+
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -55,6 +58,24 @@ export class LabelInclude {
   })
 
   /**
+   * Expose helpers for Label state and actions.
+   *
+   * Вспомогательные методы expose для состояния и действий Label.
+   */
+  readonly expose: LabelExpose = {
+    labelId: this.getId()
+  }
+
+  /**
+   * Get the unique identifier.
+   *
+   * Получение уникального идентификатора.
+   */
+  getId(): string {
+    return this.id
+  }
+
+  /**
    * Render the label
    *
    * Рендер метки
@@ -84,7 +105,10 @@ export class LabelInclude {
         elements.push(
           render(
             'span',
-            { class: this.getClassName() },
+            {
+              id: this.getId(),
+              class: this.getClassName()
+            },
             children,
             'label'
           )

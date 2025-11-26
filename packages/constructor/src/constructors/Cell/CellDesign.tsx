@@ -17,6 +17,7 @@ import {
   type CellExpose,
   type CellSlots
 } from './types'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * CellDesign
@@ -27,14 +28,14 @@ export class CellDesign<
   CLASSES extends CellClasses,
   P extends CellPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  CellEmits,
-  EXPOSE,
-  CellSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    CellEmits,
+    EXPOSE,
+    CellSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Cell
 
   /**
@@ -75,7 +76,9 @@ export class CellDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose
+      ...this.item.event.expose,
+      ...this.item.label.expose,
+      ...this.item.description.expose
     } as EXPOSE
   }
 
@@ -125,7 +128,8 @@ export class CellDesign<
         'class': this.classes?.value.main,
         'data-value': this.props.value,
         'data-divider': this.props.divider ? 'active' : undefined,
-        'onClick': this.item.event.onClick
+        'onClick': this.item.event.onClick,
+        ...AriaStaticInclude.role(this.props.role)
       },
       [
         ...this.item.icon.render(),
@@ -147,7 +151,10 @@ export class CellDesign<
     return [
       h(
         'div',
-        { class: this.classes?.value.context },
+        {
+          key: 'context',
+          class: this.classes?.value.context
+        },
         [
           ...this.item.label.render(),
           ...this.item.caption.render(),
@@ -170,7 +177,10 @@ export class CellDesign<
       return [
         h(
           'div',
-          { class: this.classes?.value.contextTrailing },
+          {
+            key: 'trailing',
+            class: this.classes?.value.contextTrailing
+          },
           this.initSlot('trailing', undefined, this.item.getClassesSub())
         )
       ]
@@ -192,7 +202,10 @@ export class CellDesign<
       return [
         h(
           'div',
-          { class: this.classes?.value.body },
+          {
+            key: 'body',
+            class: this.classes?.value.body
+          },
           this.initSlot('body', undefined, this.item.getClassesSub())
         )
       ]

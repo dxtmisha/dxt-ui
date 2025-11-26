@@ -2,8 +2,12 @@ import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
 import exposeClearEn from './expose.clear.en.mdx'
 import exposeClearRu from './expose.clear.ru.mdx'
+import exposeDescriptionIdEn from './expose.descriptionId.en.mdx'
+import exposeDescriptionIdRu from './expose.descriptionId.ru.mdx'
 import exposeDetailEn from './expose.detail.en.mdx'
 import exposeDetailRu from './expose.detail.ru.mdx'
+import exposeLabelIdEn from './expose.labelId.en.mdx'
+import exposeLabelIdRu from './expose.labelId.ru.mdx'
 import exposeOpenEn from './expose.open.en.mdx'
 import exposeOpenRu from './expose.open.ru.mdx'
 import exposeSelectedEn from './expose.selected.en.mdx'
@@ -18,9 +22,17 @@ export const wikiMdxExpose: StorybookComponentsMdxItem = {
       en: exposeClearEn,
       ru: exposeClearRu
     },
+    descriptionId: {
+      en: exposeDescriptionIdEn,
+      ru: exposeDescriptionIdRu
+    },
     detail: {
       en: exposeDetailEn,
       ru: exposeDetailRu
+    },
+    labelId: {
+      en: exposeLabelIdEn,
+      ru: exposeLabelIdRu
     },
     open: {
       en: exposeOpenEn,

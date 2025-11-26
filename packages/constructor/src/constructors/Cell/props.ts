@@ -8,6 +8,8 @@ import type { EventClickProps } from '../../types/eventClickTypes'
 import type { IconPropsBasic, IconTrailingPropsInclude } from '../Icon'
 import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 
+import type { AriaRolePropsInclude } from '../../types/ariaTypes'
+
 interface CellPropsToken {
   // :type [!] System label / Системная метка
   focus?: boolean
@@ -32,7 +34,8 @@ export interface CellPropsBasic<
   IconTrailingPropsInclude<Icon>,
   ProgressPropsInclude<Progress>,
   SkeletonPropsInclude,
-  EventClickProps {
+  EventClickProps,
+  AriaRolePropsInclude {
   // Style
   tag?: string
   divider?: boolean
