@@ -1,10 +1,11 @@
-import { h, type VNode } from 'vue'
+import { computed, h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Progress } from './Progress'
 
 import {
@@ -69,51 +70,6 @@ export class ProgressDesign<
   }
 
   /**
-   * Render elements for the circular loader.
-   *
-   * Рендер элементов для кругового загрузчика.
-   */
-  readonly renderCircle = (): VNode[] => {
-    if (this.props.circular) {
-      return [
-        h('circle', {
-          class: this.classes?.value.circleSub,
-          cx: '24',
-          cy: '24',
-          r: '20'
-        }),
-        h('circle', {
-          class: this.classes?.value.circle,
-          cx: '24',
-          cy: '24',
-          r: '20'
-        })
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Render dot at the end.
-   *
-   * Рендер точки в конце.
-   */
-  readonly renderPoint = (): VNode[] => {
-    if (
-      this.props.linear
-      && this.props.point && (
-        this.props.value
-        || ((this.props as any).indeterminate) === 'type1'
-      )
-    ) {
-      return [h('span', { class: this.classes?.value.point })]
-    }
-
-    return []
-  }
-
-  /**
    * Initialization of all the necessary properties for work
    *
    * Инициализация всех необходимых свойств для работы.
@@ -162,15 +118,80 @@ export class ProgressDesign<
 
     return h(
       this.item.tag.value,
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        viewBox: '0 0 48 48',
-        onAnimationend: this.item.onAnimation,
-        ...this.item.ariaAttrs.value
-      },
+      this.propsMain.value,
       children
     )
   }
+
+  /**
+   * Render elements for the circular loader.
+   *
+   * Рендер элементов для кругового загрузчика.
+   */
+  readonly renderCircle = (): VNode[] => {
+    if (this.props.circular) {
+      return [
+        h('circle', {
+          class: this.classes?.value.circleSub,
+          cx: '24',
+          cy: '24',
+          r: '20'
+        }),
+        h('circle', {
+          class: this.classes?.value.circle,
+          cx: '24',
+          cy: '24',
+          r: '20'
+        })
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Render dot at the end.
+   *
+   * Рендер точки в конце.
+   */
+  readonly renderPoint = (): VNode[] => {
+    if (
+      this.props.linear
+      && this.props.point && (
+        this.props.value
+        || ((this.props as any).indeterminate) === 'type1'
+      )
+    ) {
+      return [h('span', { class: this.classes?.value.point })]
+    }
+
+    return []
+  }
+
+  /**
+   * Props for the main element/ Свойства для главного элемента
+   */
+  protected readonly propsMain = computed(() => {
+    const props = {
+      ...this.getAttrs(),
+      class: this.classes?.value.main,
+      style: this.styles?.value,
+      viewBox: '0 0 48 48',
+      onAnimationend: this.item.onAnimation,
+      ...AriaStaticInclude.role('progressbar')
+    }
+
+    if (this.props.value) {
+      return {
+        ...props,
+        ...AriaStaticInclude.valueMinMax(
+          this.props.value,
+          0,
+          this.props.max
+        )
+      }
+    }
+
+    return props
+  })
 }

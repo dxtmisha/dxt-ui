@@ -1,4 +1,4 @@
-import { h, Teleport, type VNode } from 'vue'
+import { computed, h, Teleport, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -163,15 +163,7 @@ export class WindowDesign<
   readonly renderMain = (): VNode => {
     return h(
       'div',
-      {
-        'key': 'main',
-        'ref': this.element,
-        'class': this.classes?.value.main,
-        'style': this.styles?.value,
-        'data-window': this.item.classes.getId(),
-        'onTransitionend': this.item.event.onTransition,
-        ...this.item.aria.modal()
-      },
+      this.propsMain.value,
       this.renderBody()
     )
   }
@@ -281,4 +273,24 @@ export class WindowDesign<
 
     return []
   }
+
+  /**
+   * Props for the main element.
+   *
+   * Свойства для главного элемента.
+   */
+  protected readonly propsMain = computed(() => ({
+    'key': 'main',
+    'ref': this.element,
+    'class': this.classes?.value.main,
+    'style': this.styles?.value,
+    'data-window': this.item.classes.getId(),
+    'onTransitionend': this.item.event.onTransition,
+    ...AriaStaticInclude.role('dialog'),
+    ...AriaStaticInclude.modal(
+      true,
+      this.props.ariaLabelledby,
+      this.props.ariaDescribedby
+    )
+  }))
 }

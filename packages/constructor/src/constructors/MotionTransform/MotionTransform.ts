@@ -1,7 +1,6 @@
 import { computed, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
-import { AriaInclude } from '../../classes/AriaInclude'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
@@ -14,9 +13,12 @@ import { MotionTransformGo } from './MotionTransformGo'
 
 import { WindowEsc } from '../Window/WindowEsc'
 
-import type { AriaList } from '../../types/ariaTypes'
 import type { RoleType } from '../../types/roleTypes'
-import type { MotionTransformComponents, MotionTransformEmits, MotionTransformSlots } from './types'
+import type {
+  MotionTransformComponents,
+  MotionTransformEmits,
+  MotionTransformSlots
+} from './types'
 import type { MotionTransformProps } from './props'
 import type { MotionTransformControlItem } from './basicTypes'
 
@@ -40,8 +42,6 @@ export class MotionTransform {
 
   /** Window esc manager/ Менеджер esc окна */
   readonly esc: WindowEsc
-  /** ARIA role manager/ Менеджер ARIA ролей */
-  readonly aria: AriaInclude
 
   /**
    * Constructor
@@ -92,7 +92,6 @@ export class MotionTransform {
       () => this.go.close(),
       () => this.element.isWindow()
     )
-    this.aria = new AriaInclude(this.props, this.ariaList)
 
     new ModelInclude('open', this.emits, this.state.open)
 
@@ -112,21 +111,13 @@ export class MotionTransform {
       classes: MotionTransformElement.getClassesList(this.className),
       idControl: this.element.idControl,
       idBody: this.element.idBody,
-      binds: this.aria.control()
+      binds: AriaStaticInclude.control(
+        this.element.idControl,
+        this.element.idBody,
+        undefined,
+        this.state.isOpen.value
+      )
     }
-  })
-
-  /**
-   * Returns the ARIA role for the element.
-   *
-   * Возвращает ARIA роль для элемента.
-   */
-  readonly role = computed(() => {
-    if (this.element.isWindow()) {
-      return 'dialog'
-    }
-
-    return 'region'
   })
 
   /**
@@ -139,22 +130,15 @@ export class MotionTransform {
   }
 
   /**
-   * Get ARIA list.
+   * Get the ARIA role.
    *
-   * Получить ARIA список.
+   * Получить ARIA роль.
    */
-  protected readonly ariaList = computed<AriaList>(() => {
-    let role: RoleType = 'region'
-
+  getRole(): RoleType {
     if (this.element.isWindow()) {
-      role = 'dialog'
+      return 'dialog'
     }
 
-    return {
-      'id': this.element.idControl,
-      role,
-      'aria-expanded': AriaStaticInclude.isTrueOrFalse(this.state.isOpen.value),
-      'aria-controls': this.element.idBody
-    }
-  })
+    return 'region'
+  }
 }

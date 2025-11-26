@@ -1,7 +1,6 @@
 import { computed, onMounted, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
-import { AriaInclude } from '../../classes/AriaInclude'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ScrollbarInclude } from '../Scrollbar/ScrollbarInclude'
 import { ImageInclude } from '../Image/ImageInclude'
@@ -29,7 +28,6 @@ import { WindowVerification } from './WindowVerification'
 import { WindowEvent } from './WindowEvent'
 import { WindowEsc } from './WindowEsc'
 
-import type { AriaList } from '../../types/ariaTypes'
 import type { WindowControlItem } from './basicTypes'
 import type { WindowComponents, WindowEmits, WindowSlots } from './types'
 import type { WindowPropsBasic } from './props'
@@ -88,8 +86,6 @@ export class Window {
 
   /** Escape key manager for window closing/ Менеджер клавиши Escape для закрытия окна */
   readonly esc: WindowEsc
-  /** ARIA manager for accessibility roles/ Менеджер ARIA для ролей доступности */
-  readonly aria: AriaInclude
 
   /**
    * Constructor
@@ -185,15 +181,6 @@ export class Window {
       () => this.open.close(),
       () => !this.props.persistent
     )
-    this.aria = new AriaInclude(
-      props,
-      computed<AriaList>(() => ({
-        'id': this.classes.getControlId(),
-        'role': 'dialog',
-        'aria-controls': this.classes.getId(),
-        'aria-expanded': AriaStaticInclude.isTrueOrFalse(this.open.item.value)
-      }))
-    )
 
     new ModelInclude<boolean>('open', this.emits, this.open.item)
 
@@ -211,10 +198,15 @@ export class Window {
     onclick: this.event.onClick,
     oncontextmenu: this.event.onContextmenu,
     binds: {
-      ...this.aria.control(),
       class: this.classes.list.controlId,
       onclick: this.event.onClick,
-      oncontextmenu: this.event.onContextmenu
+      oncontextmenu: this.event.onContextmenu,
+      ...AriaStaticInclude.control(
+        this.classes.getControlId(),
+        this.classes.getId(),
+        this.props.ariaHaspopup,
+        this.open.item.value
+      )
     }
   }))
 

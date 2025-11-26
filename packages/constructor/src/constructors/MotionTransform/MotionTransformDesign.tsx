@@ -1,10 +1,11 @@
-import { h, ref, Teleport, type VNode } from 'vue'
+import { computed, h, ref, Teleport, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { MotionTransform } from './MotionTransform'
 
 import {
@@ -155,13 +156,7 @@ export class MotionTransformDesign<
     return [
       h(
         'div',
-        {
-          ...this.getAttrs(),
-          ref: this.element,
-          key: 'main',
-          class: this.classes?.value.main,
-          onTransitionend: this.item.event.onTransitionend
-        },
+        this.propsMain.value,
         [
           ...this.renderHead(),
           ...this.renderBody()
@@ -175,15 +170,11 @@ export class MotionTransformDesign<
    *
    * Рендеринг заголовка.
    */
-  readonly renderHead = (): VNode[] => {
+  readonly renderHead = () => {
     return [
       h(
         'div',
-        {
-          key: 'head',
-          class: this.classes?.value.head,
-          onClick: this.item.event.onClick
-        },
+        this.propsHead.value,
         this.initSlot(
           'head',
           undefined,
@@ -198,7 +189,7 @@ export class MotionTransformDesign<
    *
    * Рендеринг содержимого.
    */
-  readonly renderBody = (): VNode[] => {
+  readonly renderBody = () => {
     if (
       this.props.inDom
       || this.item.state.isShow.value
@@ -206,12 +197,7 @@ export class MotionTransformDesign<
       return [
         h(
           this.props.tagBody ?? 'div',
-          {
-            key: 'body',
-            class: this.classes?.value.body,
-            id: this.item.element.idBody,
-            ...this.item.aria.modal(this.item.element.isWindow())
-          },
+          this.propsBody.value,
           this.initSlot(
             'body',
             undefined,
@@ -244,4 +230,47 @@ export class MotionTransformDesign<
 
     return []
   }
+
+  /**
+   * Props for the main element.
+   *
+   * Свойства для главного элемента.
+   */
+  protected readonly propsMain = computed(() => ({
+    ...this.getAttrs(),
+    ref: this.element,
+    key: 'main',
+    class: this.classes?.value.main,
+    onTransitionend: this.item.event.onTransitionend
+  }))
+
+  /**
+   * Props for the head element.
+   *
+   * Свойства для элемента заголовка.
+   */
+  protected readonly propsHead = computed(() => ({
+    key: 'head',
+    class: this.classes?.value.head,
+    onClick: this.item.event.onClick
+  }))
+
+  /**
+   * Props for the body element.
+   *
+   * Свойства для элемента тела.
+   */
+  protected readonly propsBody = computed(() => {
+    return {
+      key: 'body',
+      id: this.item.element.idBody,
+      class: this.classes?.value.body,
+      ...AriaStaticInclude.role(this.item.getRole()),
+      ...AriaStaticInclude.modal(
+        this.item.element.isWindow(),
+        this.props.ariaLabelledby,
+        this.props.ariaDescribedby
+      )
+    }
+  })
 }

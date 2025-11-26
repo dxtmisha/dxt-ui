@@ -44,13 +44,13 @@ export class AriaStaticInclude {
     id?: string,
     controls?: string,
     haspopup?: AriaList['aria-haspopup'],
-    expanded?: string
+    expanded?: boolean
   ): AriaList {
     return {
       id,
       'aria-controls': controls,
       'aria-haspopup': haspopup,
-      'aria-expanded': expanded
+      'aria-expanded': this.isTrueOrFalse(expanded)
     }
   }
 
@@ -111,9 +111,9 @@ export class AriaStaticInclude {
    * @param max Maximum value/ Максимальное значение
    */
   static valueMinMax(
-    value?: number,
-    min?: number,
-    max?: number
+    value?: string | number,
+    min?: string | number,
+    max?: string | number
   ): AriaList {
     return {
       'aria-valuenow': value,

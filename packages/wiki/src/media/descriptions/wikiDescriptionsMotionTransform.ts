@@ -30,7 +30,7 @@ export const wikiDescriptionsMotionTransform: StorybookComponentsDescriptionItem
     ]
   },
   render: `
-      <DesignComponent class="wiki-storybook-decreased" v-bind="args">
+      <DesignComponent v-bind="args">
         <template #head>
           <div class="wiki-storybook-item--padding">
             <h3>MotionTransform Demo</h3>

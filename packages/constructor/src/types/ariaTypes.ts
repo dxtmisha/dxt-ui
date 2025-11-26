@@ -1,7 +1,7 @@
 import type { RoleType } from './roleTypes'
 
 /** ARIA true or false type/ ARIA тип true или false */
-export type AriaTrueOrFalse = 'true' | 'false'
+export type AriaTrueOrFalse = 'true' | 'false' | boolean
 
 /** ARIA list type/ ARIA тип списка */
 export type AriaList = {
@@ -27,7 +27,7 @@ export type AriaList = {
    * ARIA expanded state attribute/
    * Атрибут ARIA состояния развёрнутости
    */
-  'aria-expanded'?: string
+  'aria-expanded'?: AriaTrueOrFalse
 
   /**
    * ARIA haspopup attribute - indicates the availability of a popup element/
@@ -146,17 +146,4 @@ export interface AriaRoleControlPropsInclude extends AriaRolePropsInclude, AriaH
   ariaControls?: string
   ariaHaspopup?: AriaList['aria-haspopup']
   ariaExpanded?: string
-}
-
-/**
- * Complete ARIA props interface/
- * Полный интерфейс ARIA пропсов
- */
-export interface AriaAll extends AriaLabelPropsInclude,
-  AriaDescriptionPropsInclude,
-  AriaHaspopupPropsInclude,
-  AriaLivePropsInclude,
-  AriaByPropsInclude,
-  AriaRoleByPropsInclude,
-  AriaRoleControlPropsInclude {
 }

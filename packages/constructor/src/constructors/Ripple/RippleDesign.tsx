@@ -100,7 +100,7 @@ export class RippleDesign<
   }
 
   /**
-   * A method for rendering.<br>
+   * A method for rendering.
    * Метод для рендеринга.
    */
   protected initRender(): VNode {

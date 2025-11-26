@@ -1,5 +1,4 @@
 // Classes
-export * from './classes/AriaInclude'
 export * from './classes/AriaStaticInclude'
 export * from './classes/CaptionInclude'
 export * from './classes/DescriptionInclude'

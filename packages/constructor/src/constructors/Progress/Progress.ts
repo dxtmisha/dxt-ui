@@ -1,9 +1,12 @@
 import { computed, onUnmounted, ref, type Ref, type ToRefs, watch } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type ConstrStyles, DesignComp, toNumber } from '@dxtmisha/functional'
+import {
+  type ConstrClassObject,
+  type ConstrEmit,
+  type ConstrStyles,
+  DesignComp,
+  toNumber
+} from '@dxtmisha/functional'
 
-import { AriaInclude } from '../../classes/AriaInclude'
-
-import type { AriaList } from '../../types/ariaTypes'
 import type { ProgressComponents, ProgressEmits, ProgressSlots } from './types'
 import type { ProgressProps } from './props'
 
@@ -14,8 +17,6 @@ import type { ProgressProps } from './props'
  */
 export class Progress {
   protected timeout?: any
-
-  protected aria: AriaInclude
 
   readonly hide = ref<boolean>(false)
   readonly visible = ref<boolean>(false)
@@ -41,16 +42,6 @@ export class Progress {
     protected readonly slots?: ProgressSlots,
     protected readonly emits?: ConstrEmit<ProgressEmits>
   ) {
-    this.aria = new AriaInclude(
-      this.props,
-      computed<AriaList>(() => ({
-        'role': 'progressbar',
-        'aria-valuenow': this.props.value,
-        'aria-valuemin': 0,
-        'aria-valuemax': this.props.max
-      }))
-    )
-
     watch(
       [refs.visible],
       this.switch,
@@ -94,21 +85,6 @@ export class Progress {
     }
 
     return null
-  })
-
-  /** Returns ARIA status values/ Возвращает значения статуса ARIA */
-  readonly ariaAttrs = computed<AriaList>(() => {
-    const data: AriaList = {
-      ...this.aria.role(),
-      ...this.aria.label(),
-      ...this.aria.live()
-    }
-
-    if (this.props.value) {
-      Object.assign(data, this.aria.valueMinMax())
-    }
-
-    return data
   })
 
   /**
