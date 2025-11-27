@@ -1,6 +1,6 @@
 import { VNode, ComputedRef } from 'vue';
 import { SkeletonInclude } from '../constructors/Skeleton';
-import { DescriptionProps, DescriptionSlots } from '../types/descriptionTypes';
+import { DescriptionExpose, DescriptionProps, DescriptionSlots } from '../types/descriptionTypes';
 /**
  * Use for adding description text
  *
@@ -11,6 +11,8 @@ export declare class DescriptionInclude {
     protected readonly className: string;
     protected readonly slots?: DescriptionSlots | undefined;
     protected readonly skeleton?: SkeletonInclude | undefined;
+    /** Unique identifier/ Уникальный идентификатор */
+    protected id: string;
     /**
      * Constructor
      * @param props input property/ входное свойство
@@ -25,6 +27,14 @@ export declare class DescriptionInclude {
      * Проверка наличия описания
      */
     readonly is: ComputedRef<boolean>;
+    /** Description expose reference/ Ссылка на expose описания */
+    readonly expose: DescriptionExpose;
+    /**
+     * Get description ID
+     *
+     * Получить ID описания
+     */
+    getId(): string;
     /**
      * Render the description
      *

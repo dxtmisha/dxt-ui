@@ -1,9 +1,111 @@
-var M = Object.defineProperty;
-var F = (l, t, e) => t in l ? M(l, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : l[t] = e;
-var r = (l, t, e) => F(l, typeof t != "symbol" ? t + "" : t, e);
-import { computed as n, toRefs as N, watch as I, isRef as S, isReadonly as L, ref as u } from "vue";
-import { isFilled as o, render as p, RouterItemRef as C, getExp as v, isNumber as $, toNumberByMax as R, GeoRef as T, toCamelCaseFirst as b, toCamelCase as y, isFunction as D, toBinds as A, createElement as O, anyToString as d, executeFunction as V, isString as _, toNumber as x, isArray as G, isObject as m, toArray as H, setValues as w, getRef as k, Translate as q } from "@dxtmisha/functional";
-class K {
+var N = Object.defineProperty;
+var A = (l, t, e) => t in l ? N(l, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : l[t] = e;
+var r = (l, t, e) => A(l, typeof t != "symbol" ? t + "" : t, e);
+import { computed as n, toRefs as V, watch as x, isRef as D, isReadonly as w, ref as u } from "vue";
+import { isFilled as o, render as p, getElementId as B, RouterItemRef as $, getExp as E, isNumber as O, toNumberByMax as L, GeoRef as R, toCamelCaseFirst as k, toCamelCase as M, isFunction as F, getRef as b, isDomRuntime as P, executePromise as I, toNumber as d, anyToString as v, isArray as _, isObject as y, toArray as G, setValues as H, toBinds as q, createElement as X, executeFunction as Y, isString as j, Translate as U } from "@dxtmisha/functional";
+class J {
+  /**
+   * Get role by props.
+   *
+   * Получить роль по пропсам.
+   * @param role ARIA role type/ Тип ARIA роли
+   */
+  static role(t) {
+    return {
+      role: t
+    };
+  }
+  /**
+   * Get ARIA label.
+   *
+   * Получить ARIA label.
+   * @param label ARIA label/ ARIA метка
+   */
+  static label(t) {
+    return {
+      "aria-label": t
+    };
+  }
+  /**
+   * Get control role.
+   *
+   * Получить роль управления.
+   * @param id Element ID/ Идентификатор элемента
+   * @param controls ARIA controls attribute/ Атрибут ARIA controls
+   * @param haspopup ARIA haspopup attribute/ Атрибут ARIA haspopup
+   * @param expanded ARIA expanded state/ Состояние ARIA expanded
+   */
+  static control(t, e, s, i) {
+    return {
+      id: t,
+      "aria-controls": e,
+      "aria-haspopup": s,
+      "aria-expanded": this.isTrueOrFalse(i)
+    };
+  }
+  /**
+   * Get ARIA hidden attribute.
+   *
+   * Получить атрибут ARIA hidden.
+   * @param isHidden is hidden/ является скрытым
+   */
+  static hidden(t = !0) {
+    return {
+      "aria-hidden": this.isTrueOrFalse(t)
+    };
+  }
+  /**
+   * Get ARIA live attribute.
+   *
+   * Получить атрибут ARIA live.
+   * @param live ARIA live attribute/ Атрибут ARIA live
+   */
+  static live(t) {
+    return {
+      "aria-live": t
+    };
+  }
+  /**
+   * Get modal role.
+   *
+   * Получить модальную роль.
+   * @param isModal is modal/ является модальным
+   * @param ariaLabelledby ARIA labelledby attribute/ Атрибут ARIA labelledby
+   * @param ariaDescribedby ARIA describedby attribute/ Атрибут ARIA describedby
+   */
+  static modal(t = !0, e, s) {
+    return {
+      "aria-modal": this.isTrueOrFalse(t),
+      "aria-labelledby": e,
+      "aria-describedby": s
+    };
+  }
+  /**
+   * Returns ARIA value now, min and max.
+   *
+   * Возвращает ARIA value now, min и max.
+   * @param value Current value/ Текущее значение
+   * @param min Minimum value/ Минимальное значение
+   * @param max Maximum value/ Максимальное значение
+   */
+  static valueMinMax(t, e, s) {
+    return {
+      "aria-valuenow": t,
+      "aria-valuemin": e,
+      "aria-valuemax": s
+    };
+  }
+  /**
+   * Returns 'true' or 'false' based on the boolean value.
+   *
+   * Возвращает 'true' или 'false' в зависимости от булевого значения.
+   * @param value boolean value/ булевое значение
+   */
+  static isTrueOrFalse(t) {
+    return t ? "true" : "false";
+  }
+}
+class Q {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -47,7 +149,7 @@ class K {
     ] : [];
   }
 }
-class P {
+class W {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -56,6 +158,8 @@ class P {
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    */
   constructor(t, e, s, i) {
+    /** Unique identifier/ Уникальный идентификатор */
+    r(this, "id", B());
     /**
      * Check for the presence of a description
      *
@@ -65,7 +169,19 @@ class P {
       var t;
       return !!(this.props.description || (t = this.slots) != null && t.description);
     }));
+    /** Description expose reference/ Ссылка на expose описания */
+    r(this, "expose", {
+      descriptionId: this.id
+    });
     this.props = t, this.className = e, this.slots = s, this.skeleton = i;
+  }
+  /**
+   * Get description ID
+   *
+   * Получить ID описания
+   */
+  getId() {
+    return this.id;
   }
   /**
    * Render the description
@@ -90,7 +206,7 @@ class P {
     ] : [];
   }
 }
-class Z {
+class tt {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -121,7 +237,7 @@ class Z {
     this.props = t, this.progress = e;
   }
 }
-class J {
+class et {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -149,7 +265,7 @@ class J {
         } else
           this.emit(t, this.getOptions(t));
     });
-    this.props = t, this.enabled = e, this.emits = s, this.refs = t ? N(t) : void 0;
+    this.props = t, this.enabled = e, this.emits = s, this.refs = t ? V(t) : void 0;
   }
   /**
    * Exported values
@@ -193,7 +309,7 @@ class J {
    */
   toRouter() {
     var t, e;
-    return (t = this.props) != null && t.to ? (C.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
+    return (t = this.props) != null && t.to ? ($.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
   }
   /**
    * Triggers the click event
@@ -206,7 +322,7 @@ class J {
     this.emits && (this.emits("click", t, e), this.emits("clickLite", e));
   }
 }
-class E {
+class T {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -218,13 +334,31 @@ class E {
    * @param alternativeSlots alternative slots/ альтернативные слоты
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    */
-  constructor(t, e, s, i, a, h, g, B) {
+  constructor(t, e, s, i, a, h, m, S) {
+    /** Unique identifier/ Уникальный идентификатор */
+    r(this, "id", B());
     /** Label presence check/ Проверка наличия метки */
     r(this, "is", n(() => {
       var t;
       return this.props.label || (t = this.labelReplacing) != null && t.value ? !0 : this.slots ? this.alternativeSlots ? "label" in this.slots : "default" in this.slots : !1;
     }));
-    this.props = t, this.className = e, this.classesExtra = s, this.slots = i, this.elementsExtra = a, this.labelReplacing = h, this.alternativeSlots = g, this.skeleton = B;
+    /**
+     * Expose helpers for Label state and actions.
+     *
+     * Вспомогательные методы expose для состояния и действий Label.
+     */
+    r(this, "expose", {
+      labelId: this.getId()
+    });
+    this.props = t, this.className = e, this.classesExtra = s, this.slots = i, this.elementsExtra = a, this.labelReplacing = h, this.alternativeSlots = m, this.skeleton = S;
+  }
+  /**
+   * Get the unique identifier.
+   *
+   * Получение уникального идентификатора.
+   */
+  getId() {
+    return this.id;
   }
   /**
    * Render the label
@@ -243,7 +377,10 @@ class E {
       this.elementsExtra && s.push(...this.elementsExtra()), t && s.push(...t), s.length > 0 && e.push(
         p(
           "span",
-          { class: this.getClassName() },
+          {
+            id: this.getId(),
+            class: this.getClassName()
+          },
           s,
           "label"
         )
@@ -302,7 +439,7 @@ class E {
     return [];
   }
 }
-class Q extends E {
+class st extends T {
   /**
    * Constructor for the LabelHighlightInclude class.
    *
@@ -314,7 +451,7 @@ class Q extends E {
    * @param elementsExtra additional elements/ дополнительные элементы
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    */
-  constructor(e, s, i, a, h, g) {
+  constructor(e, s, i, a, h, m) {
     super(
       e,
       s,
@@ -323,7 +460,7 @@ class Q extends E {
       h,
       n(() => this.getLabel()),
       void 0,
-      g
+      m
     );
     /**
      * Returns a string with highlighted parts.
@@ -335,14 +472,14 @@ class Q extends E {
     r(this, "getLabel", () => {
       const e = this.props;
       if (e.highlight && e.highlight.length >= this.getLengthStart() && e.label) {
-        const s = `${this.className}__highlight`, i = e.label.toString(), a = v(e.highlight, "i");
+        const s = `${this.className}__highlight`, i = e.label.toString(), a = E(e.highlight, "i");
         if (i.match(a))
           return i.replace(a, (h) => `<span class="${s}">${h}</span>`);
         if (o(e.value) && e.value.toString().match(a))
           return `<span class="${s}">${i}</span>`;
       }
     });
-    this.props = e, this.className = s, this.classesExtra = i, this.slots = a, this.elementsExtra = h, this.skeleton = g;
+    this.props = e, this.className = s, this.classesExtra = i, this.slots = a, this.elementsExtra = h, this.skeleton = m;
   }
   /**
    * Determines if highlighting is required.
@@ -355,7 +492,7 @@ class Q extends E {
       return !0;
     if (!(e.highlight && e.highlight.length >= this.getLengthStart() && e.label))
       return !1;
-    const s = e.label.toString(), i = v(e.highlight, "i");
+    const s = e.label.toString(), i = E(e.highlight, "i");
     return !!(s.match(i) || o(e.value) && e.value.toString().match(i));
   }
   /**
@@ -368,7 +505,7 @@ class Q extends E {
     return (e = this.props.highlightLengthStart) != null ? e : 2;
   }
 }
-class W extends E {
+class it extends T {
   /**
    * Constructor for working with text that has maximum values.
    *
@@ -399,16 +536,16 @@ class W extends E {
    */
   getNumber() {
     const t = this.props;
-    if (t.label && $(t.label))
-      return R(
+    if (t.label && O(t.label))
+      return L(
         t.label,
         t.labelMax,
         t.formatting,
-        T.getLanguage().value
+        R.getLanguage().value
       ).toString();
   }
 }
-class X {
+class C {
   /**
    * Constructor
    * @param index The index key for the model property/ Ключ индекса для свойства модели
@@ -427,7 +564,7 @@ class X {
     r(this, "update", (t) => {
       this.isValue() && (this.syncValue.value = t);
     });
-    this.index = t, this.emits = e, this.syncValue = s, s && I(s, (i) => {
+    this.index = t, this.emits = e, this.syncValue = s, s && x(s, (i) => {
       this.emit(i);
     }, { immediate: !0 });
   }
@@ -440,7 +577,7 @@ class X {
    * @returns Type predicate indicating syncValue is a mutable Ref/ Предикат типа, указывающий что syncValue - изменяемый Ref
    */
   isValue() {
-    return S(this.syncValue) && !L(this.syncValue);
+    return D(this.syncValue) && !w(this.syncValue);
   }
   /**
    * Generates binding object for v-model integration.
@@ -452,10 +589,10 @@ class X {
    */
   getBinds() {
     if (this.isValue()) {
-      const t = b(this.index);
+      const t = k(this.index);
       return {
         [`model${t}`]: this.syncValue.value,
-        [`onUpdate:${y(this.index)}`]: this.update,
+        [`onUpdate:${M(this.index)}`]: this.update,
         [`onUpdate:model${t}`]: this.update
       };
     }
@@ -470,10 +607,50 @@ class X {
    * @param value The new value to set/ Новое значение для установки
    */
   emit(t) {
-    D(this.emits) && (this.emits(`update:${y(this.index)}`, t), this.emits(`update:model${b(this.index)}`, t));
+    F(this.emits) && (this.emits(`update:${M(this.index)}`, t), this.emits(`update:model${k(this.index)}`, t));
   }
 }
-class Y {
+class rt {
+  /**
+   * Constructor
+   * @param index identifier/ идентификатор
+   * @param emits emits function/ функция эмитов
+   * @param event event click handler/ обработчик клика
+   * @param inputValue input value reference/ ссылка на входное значение
+   * @param readonly readonly flag/ флаг только для чтения
+   */
+  constructor(t, e, s, i, a) {
+    r(this, "value", u());
+    /**
+     * Click handler.
+     *
+     * Обработчик клика.
+     * @param event event object/ объект события
+     * @param options data object/ объект с данными
+     */
+    r(this, "onClick", (t, e) => {
+      var s, i;
+      e && "value" in e && !((s = this.readonly) != null && s.value) && (this.value.value = e.value), (i = this.event) == null || i.onClick(t, e);
+    });
+    this.index = t, this.emits = e, this.event = s, this.inputValue = i, this.readonly = a, new C(this.index, this.emits, this.value), x(
+      [this.inputValue],
+      () => {
+        var h;
+        this.value.value = (h = this.inputValue) == null ? void 0 : h.value;
+      },
+      { immediate: !0 }
+    );
+  }
+  /**
+   * Returns the current value.
+   *
+   * Возвращает текущее значение.
+   */
+  getValue() {
+    return this.value.value;
+  }
+}
+class at {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -517,7 +694,7 @@ class Y {
     ] : [];
   }
 }
-class tt {
+class lt {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -561,7 +738,506 @@ class tt {
     ] : [];
   }
 }
-class et {
+class nt {
+  /**
+   * Сonstructor
+   * @param element - Reference to the element/ Ссылка на элемент
+   */
+  constructor(t) {
+    /** Previously focused element/ Ранее сфокусированный элемент */
+    r(this, "oldElement");
+    this.element = t;
+  }
+  /**
+   * Set focus to the element.
+   *
+   * Устанавливает фокус на элемент.
+   */
+  goTo() {
+    return this.updateOldElement(), this.toFocus(), this;
+  }
+  /**
+   * Reset focus to the previously focused element.
+   *
+   * Сбрасывает фокус на ранее сфокусированный элемент.
+   */
+  reset() {
+    return this.oldElement && "focus" in this.oldElement && this.oldElement.focus(), this;
+  }
+  /**
+   * Toggle focus based on status.
+   *
+   * Переключает фокус в зависимости от статуса.
+   * @param status Focus status/ Статус фокуса
+   */
+  toggle(t) {
+    return t ? this.goTo() : this.reset(), this;
+  }
+  /**
+   * Get the element.
+   *
+   * Получает элемент.
+   */
+  getElement() {
+    return F(this.element) ? this.element() : b(this.element);
+  }
+  /**
+   * Set focus with temporary tab index modification.
+   *
+   * Устанавливает фокус с временным изменением табиндекса.
+   */
+  toFocus() {
+    const t = this.getElement();
+    return t && (t.setAttribute("tabindex", "-1"), t.focus(), requestAnimationFrame(() => {
+      t.removeAttribute("tabindex");
+    })), this;
+  }
+  /**
+   * Save the currently focused element.
+   *
+   * Сохраняет текущий сфокусированный элемент.
+   */
+  updateOldElement() {
+    P() && (this.oldElement = document.activeElement);
+  }
+}
+const g = 80;
+class ht {
+  /**
+   * Constructor
+   * @param start callback on touch/mouse start/ колбэк при начале касания/клика
+   * @param move callback on touch/mouse move/ колбэк при движении
+   * @param end callback on touch/mouse end/ колбэк при завершении
+   * @param element optional element reference/ необязательная ссылка на элемент
+   */
+  constructor(t, e, s, i) {
+    /**
+     * Current touch point
+     *
+     * Текущая точка касания
+     */
+    r(this, "touche", u());
+    /**
+     * Touchpoint during move
+     *
+     * Точка касания во время движения
+     */
+    r(this, "toucheMove", u());
+    /**
+     * Current mouse position
+     *
+     * Текущая позиция мыши
+     */
+    r(this, "mouse", u());
+    /**
+     * Mouse position during move
+     *
+     * Позиция мыши во время движения
+     */
+    r(this, "mouseMove", u());
+    /**
+     * Touch event handlers
+     *
+     * Обработчики событий касания
+     */
+    r(this, "onTouch", {
+      onTouchstart: (t) => {
+        var e, s, i, a, h;
+        this.touche.value = (e = t.targetTouches) == null ? void 0 : e[0], this.mouse.value = {
+          x: (i = (s = this.touche.value) == null ? void 0 : s.clientX) != null ? i : 0,
+          y: (h = (a = this.touche.value) == null ? void 0 : a.clientY) != null ? h : 0
+        }, this.update(t.target);
+      },
+      onTouchend: (t) => this.reset(t.target),
+      onTouchcancel: (t) => this.reset(t.target),
+      onTouchmove: (t) => {
+        var e, s, i, a, h;
+        this.toucheMove.value = (e = t.targetTouches) == null ? void 0 : e[0], this.mouseMove.value = {
+          x: (i = (s = this.toucheMove.value) == null ? void 0 : s.clientX) != null ? i : 0,
+          y: (h = (a = this.toucheMove.value) == null ? void 0 : a.clientY) != null ? h : 0
+        }, this.updateMove(t.target);
+      }
+    });
+    /**
+     * Mouse event handlers
+     *
+     * Обработчики событий мыши
+     */
+    r(this, "onMouse", {
+      onMousedown: (t) => {
+        this.mouse.value = {
+          x: t.clientX,
+          y: t.clientY
+        }, this.update(t.target);
+      },
+      onMouseup: (t) => this.reset(t.target),
+      onMousemove: (t) => {
+        this.mouseMove.value = {
+          x: t.clientX,
+          y: t.clientY
+        }, this.updateMove(t.target);
+      }
+    });
+    this.start = t, this.move = e, this.end = s, this.element = i;
+  }
+  /**
+   * Gets the target element for touch events.
+   *
+   * Получает целевой элемент для событий касания.
+   * @param target event target element/ целевой элемент события
+   */
+  getElement(t) {
+    var e, s;
+    return (s = (e = this.element) == null ? void 0 : e.value) != null ? s : t.closest("[data-touch]");
+  }
+  /**
+   * Determines horizontal direction type from client X coordinate.
+   *
+   * Определяет тип горизонтального направления из координаты X.
+   * @param clientX horizontal coordinate/ горизонтальная координата
+   */
+  getTypeX(t) {
+    return t >= g ? "right" : t < -g ? "left" : "none";
+  }
+  /**
+   * Determines vertical direction type from client Y coordinate.
+   *
+   * Определяет тип вертикального направления из координаты Y.
+   * @param clientY vertical coordinate/ вертикальная координата
+   */
+  getTypeY(t) {
+    return t >= g ? "bottom" : t < -g ? "top" : "none";
+  }
+  /**
+   * Executes callback with calculated movement data.
+   *
+   * Выполняет колбэк с рассчитанными данными движения.
+   * @param callback callback function/ функция обратного вызова
+   */
+  async callback(t) {
+    const e = this.mouse.value, s = this.mouseMove.value;
+    if (e && s) {
+      const i = s.x - e.x, a = s.y - e.y;
+      if (!t || await I(t(
+        this.getTypeX(i),
+        this.getTypeY(a),
+        i,
+        a,
+        e,
+        s,
+        this.touche.value,
+        this.toucheMove.value
+      )))
+        return {
+          x: i,
+          y: a
+        };
+    }
+  }
+  /**
+   * Resets touch/mouse state and CSS properties after interaction ends.
+   *
+   * Сбрасывает состояние касания/мыши и CSS свойства после завершения взаимодействия.
+   * @param target selected item/ выбранный элемент
+   */
+  reset(t) {
+    const e = this.getElement(t);
+    this.callback(this.end).then((s) => {
+      e && (s ? this.resetData(e) : setTimeout(() => this.resetData(e), 400));
+    });
+  }
+  /**
+   * Resets all touch/mouse state and removes CSS custom properties.
+   *
+   * Сбрасывает все состояния касания/мыши и удаляет CSS кастомные свойства.
+   * @param elementValue target element/ целевой элемент
+   */
+  resetData(t) {
+    this.touche.value = void 0, this.toucheMove.value = void 0, this.mouse.value = void 0, this.mouseMove.value = void 0, t.style.removeProperty("--sys-touch-start-x"), t.style.removeProperty("--sys-touch-start-y"), t.style.removeProperty("--sys-touch-move-x"), t.style.removeProperty("--sys-touch-move-y");
+  }
+  /**
+   * Updates initial touch/mouse position and sets CSS custom properties.
+   *
+   * Обновляет начальную позицию касания/мыши и устанавливает CSS кастомные свойства.
+   * @param target selected item/ выбранный элемент
+   */
+  update(t) {
+    var i;
+    const e = this.getElement(t), s = this.mouse.value;
+    e && s && (e.style.setProperty("--sys-touch-start-x", `${s.x}px`), e.style.setProperty("--sys-touch-start-y", `${s.y}px`), I((i = this.start) == null ? void 0 : i.call(this, s, this.touche.value)).then());
+  }
+  /**
+   * Updates touch/mouse position during movement and sets CSS custom properties.
+   *
+   * Обновляет позицию касания/мыши во время движения и устанавливает CSS кастомные свойства.
+   * @param target selected item/ выбранный элемент
+   */
+  updateMove(t) {
+    const e = this.getElement(t);
+    this.callback(this.move).then((s) => {
+      e && s && (e.style.setProperty("--sys-touch-move-x", `${s.x}px`), e.style.setProperty("--sys-touch-move-y", `${s.y}px`));
+    });
+  }
+}
+class ut {
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   * @param element input element/ элемент ввода
+   */
+  constructor(t, e) {
+    this.props = t, this.element = e;
+  }
+  /**
+   * Returns the input element.
+   *
+   * Возвращает элемент ввода.
+   */
+  get() {
+    const t = this.element.value;
+    if (t)
+      return "input" in t ? t.input : t;
+  }
+  /**
+   * Returns a reference to the input element.
+   *
+   * Возвращает ссылку на элемент ввода.
+   */
+  getElement() {
+    return this.element;
+  }
+  /**
+   * Search for an element by its name inside a group or by selector.
+   *
+   * Поиск элемента по его названию внутри группы или по селектору.
+   * @param nameSelectors element name or selector /<br>название элемента или селектор
+   */
+  findByName(t) {
+    var i;
+    if (t instanceof Element)
+      return t;
+    const e = (i = this.get()) == null ? void 0 : i.form;
+    if (e) {
+      const a = e.querySelector(`[name="${t}"]`);
+      if (a)
+        return a;
+    }
+    const s = document.querySelector(t);
+    if (s)
+      return s;
+  }
+  /**
+   * Clear all values to the original ones.
+   *
+   * Очисти все значения до оригинальных.
+   */
+  clear() {
+    var e;
+    const t = this.element.value;
+    return t && "clear" in t && ((e = t.clear) == null || e.call(t)), this;
+  }
+}
+class ot {
+  /**
+   * Constructor
+   * @param props input data /<br>входные данные
+   * @param refs input data in the form of reactive elements /<br>входные данные в виде реактивных элементов
+   * @param element object for working with the input element /<br>объект для работы с элементом ввода
+   * @param original original values /<br>оригинальные значения
+   */
+  constructor(t, e, s, i) {
+    /** Current value/ Текущее значение */
+    r(this, "item", u());
+    /** Indicates if the value is complete/ Указывает, полное ли значение */
+    r(this, "isFull", u(!0));
+    /** Indicates if there are temporary values/ Указывает, есть ли временные значения */
+    r(this, "hasEdit", u(!1));
+    /** Checks if there are values or temporary values/ Проверяет, есть ли значения или временные значения */
+    r(this, "is", n(() => this.hasEdit.value || this.boolean.value || !!this.props.placeholder));
+    /** Checks if there are any values/ Проверяет, есть ли значения */
+    r(this, "isValue", n(() => this.hasEdit.value || this.boolean.value));
+    /** Returns the current value if isFull is true/ Возвращает текущее значение, если isFull истинно */
+    r(this, "itemByFull", n(() => this.isFull.value ? this.item.value : void 0));
+    /**
+     * Returns the current value, converted to a number/
+     * Возвращает текущее значение, преобразованное в номер
+     */
+    r(this, "number", n(() => this.boolean.value ? d(this.string.value) : 0));
+    /** Returns the current value of type string/ Возвращает текущее значение типа string */
+    r(this, "string", n(() => v(this.item.value)));
+    /** Returns the current value of type boolean/ Возвращает текущее значение типа boolean */
+    r(this, "boolean", n(() => o(this.item.value)));
+    /** Returns the length of the entered value/ Возвращает длину введенного значения */
+    r(this, "length", n(() => {
+      var e;
+      const t = this.item.value;
+      return _(t) ? t.length : y(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
+    }));
+    /**
+     * Changes the values to the original ones.
+     *
+     * Изменяет значения на оригинальные.
+     */
+    r(this, "update", () => {
+      (this.isEdit(this.props.value) || this.isEdit(this.props.modelValue)) && this.setToOriginal();
+    });
+    this.props = t, this.refs = e, this.element = s, this.original = i, this.item.value = this.getOriginal(), x([
+      e.value,
+      e.modelValue
+    ], this.update);
+  }
+  /**
+   * Returns the current value.
+   *
+   * Возвращает текущее значение.
+   */
+  get() {
+    return this.item.value;
+  }
+  /**
+   * Returns the current value as an array.
+   *
+   * Возвращает текущее значение в виде массива.
+   */
+  getToArray() {
+    return G(this.item.value);
+  }
+  /**
+   * Changes the value.
+   *
+   * Изменяет значение.
+   * @param value changeable value/ изменяемое значение
+   */
+  set(t) {
+    var e, s;
+    if (this.isDifference(t)) {
+      this.item.value = H(
+        this.item.value,
+        t,
+        {
+          multiple: this.props.multiple,
+          maxlength: d(this.props.maxlength)
+        }
+      );
+      const i = (e = this.element) == null ? void 0 : e.getElement();
+      i && i.value && "setValue" in i.value && ((s = i.value) == null || s.setValue(this.item.value));
+    }
+    return this;
+  }
+  setByEvent(t) {
+    switch (console.log("setByEvent"), typeof t) {
+      case "object":
+        t && ("value" in t && t.value !== void 0 ? this.set(t.value) : "target" in t && this.setByTarget(t.target), "hasEdit" in t && this.setHasEdit(t.hasEdit), "isFull" in t && this.setFull(t.isFull));
+        break;
+      default:
+        this.set(t);
+        break;
+    }
+    return this;
+  }
+  /**
+   * Changes the values by the selected element.
+   *
+   * Изменяет значения по выбранному элементу.
+   * @param target selected elements/ выбранные элементы
+   */
+  setByTarget(t) {
+    return this.set(
+      this.isCheckbox(t) ? t.checked : t.value
+    );
+  }
+  /**
+   * Changes the value by the checked property.
+   *
+   * Изменяет значение по свойству checked.
+   * @param event event value/ значение события
+   */
+  setByChecked(t) {
+    const e = t.target;
+    return this.set(e.checked);
+  }
+  /**
+   * Changes the value for radio type.
+   *
+   * Изменяет значение для типа radio.
+   * @param event event object/ объект события
+   */
+  setByRadio(t) {
+    const e = t.target, s = e.checked ? e.value : "";
+    return this.set(s);
+  }
+  /**
+   * Sets the isFull value.
+   *
+   * Устанавливает значение isFull.
+   * @param isFull isFull value/ значение isFull
+   */
+  setFull(t) {
+    this.isFull.value = t;
+  }
+  /**
+   * Sets the hasEdit value.
+   *
+   * Устанавливает значение hasEdit.
+   * @param hasEdit hasEdit value/ значение hasEdit
+   */
+  setHasEdit(t) {
+    this.hasEdit.value = t;
+  }
+  /**
+   * Sets the value to the original one.
+   *
+   * Устанавливает значение на оригинальное.
+   */
+  setToOriginal() {
+    return this.item.value = this.getOriginal(), this;
+  }
+  /**
+   * Clear all values to the original ones.
+   *
+   * Очисти все значения до оригинальных.
+   */
+  clear() {
+    var t;
+    return this.item.value = b(this.original), (t = this.element) == null || t.clear(), this.hasEdit.value = !1, this.isFull.value = !0, this;
+  }
+  /**
+   * Is the selected type a checkbox.
+   *
+   * Является ли выбранный тип чекбокс.
+   * @param target selected elements/ выбранные элементы
+   */
+  isCheckbox(t) {
+    return t.type === "checkbox";
+  }
+  /**
+   * Checks if the value has actually been changed.
+   *
+   * Проверяет, было ли значение действительно изменено.
+   * @param value value to check/ значение для проверки
+   */
+  isDifference(t = this.getOriginal()) {
+    return this.string.value !== v(t);
+  }
+  /**
+   * Returns the original value.
+   *
+   * Возвращает оригинальное значение.
+   */
+  getOriginal() {
+    return this.props.value || this.props.modelValue || b(this.original);
+  }
+  /**
+   * Checks if the value is being edited.
+   *
+   * Проверяет, редактируется ли значение.
+   * @param value value to check/ значение для проверки
+   */
+  isEdit(t) {
+    return t !== void 0 && v(t) !== this.string.value;
+  }
+}
+class ct {
   constructor() {
     r(this, "item", u(!1));
   }
@@ -574,7 +1250,7 @@ class et {
     return this.item.value = !this.item.value, this;
   }
 }
-class st {
+class pt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -598,11 +1274,145 @@ class st {
     return this.item.value;
   }
 }
+class dt {
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   * @param value object for working with values/ объект для работы со значениями
+   * @param type object for working with input type/ объект для работы с типом ввода
+   */
+  constructor(t, e, s) {
+    /**
+     * Indicates if arrows are enabled/ Указывает, включены ли стрелки
+     *
+     * @return true if arrows are enabled/ true, если стрелки включены
+     */
+    r(this, "is", n(() => !!(this.props.arrow && this.props.arrow !== "none")));
+    /** Indicates if the previous button is disabled/ Указывает, отключена ли кнопка предыдущего */
+    r(this, "disabledPrevious", n(() => !this.isPrevious(this.value.number.value)));
+    /** Indicates if the next button is disabled/ Указывает, отключена ли кнопка следующего */
+    r(this, "disabledNext", n(() => !this.isNext(this.value.number.value)));
+    /** Returns the change step/ Возвращает шаг изменения */
+    r(this, "step", n(() => {
+      var t, e;
+      return d((e = (t = this.props.arrowStep) != null ? t : this.props.step) != null ? e : 1);
+    }));
+    /** Returns the minimum value/ Возвращает минимальное значение */
+    r(this, "min", n(() => {
+      var t;
+      return (t = d(this.props.min)) != null ? t : void 0;
+    }));
+    /** Returns the maximum value/ Возвращает максимальное значение */
+    r(this, "max", n(() => d(this.props.max) || void 0));
+    this.props = t, this.value = e, this.type = s;
+  }
+  /**
+   * Checks if the arrow type is carousel.
+   *
+   * Проверяет, является ли тип стрелок carousel.
+   */
+  isCarousel() {
+    return this.get() === "carousel";
+  }
+  /**
+   * Checks if the arrow type is stepper.
+   *
+   * Проверяет, является ли тип стрелок stepper.
+   */
+  isStepper() {
+    return this.get() === "stepper";
+  }
+  /**
+   * Checks if it is possible to decrease the value.
+   *
+   * Проверяет, можно ли уменьшить значение.
+   * @param value values for checking/ значения для проверки
+   */
+  isPrevious(t) {
+    const e = this.min.value;
+    return e === void 0 || t > e;
+  }
+  /**
+   * Checks if it is possible to increase the value.
+   *
+   * Проверяет, можно ли увеличить значение.
+   * @param value values for checking/ значения для проверки
+   */
+  isNext(t) {
+    const e = this.max.value;
+    return e === void 0 || t < e;
+  }
+  /**
+   * Returns arrow type.
+   *
+   * Возвращает тип стрелок.
+   */
+  get() {
+    var t, e;
+    switch (this.props.arrow) {
+      case "auto":
+        if (((t = this.type) == null ? void 0 : t.get()) === "number" || ((e = this.type) == null ? void 0 : e.get()) === "number-format")
+          return "stepper";
+        break;
+    }
+    return this.props.arrow;
+  }
+  /**
+   * Returns arrow alignment.
+   *
+   * Возвращает выравнивание стрелок.
+   */
+  align() {
+    return this.props.arrowAlign;
+  }
+  /**
+   * Decreases the value.
+   *
+   * Уменьшает значение.
+   */
+  previous() {
+    const t = this.value.number.value - this.step.value;
+    return this.isPrevious(t) ? this.value.set(t.toString()) : this.toMin(), this;
+  }
+  /**
+   * Increases the value.
+   *
+   * Увеличивает значение.
+   */
+  next() {
+    const t = this.value.number.value + this.step.value;
+    return this.isNext(t) ? this.value.set(t.toString()) : this.toMax(), this;
+  }
+  /**
+   * Decreases to the minimum value.
+   *
+   * Уменьшает до минимального значения.
+   */
+  toMin() {
+    if (!this.disabledPrevious.value) {
+      const t = this.min.value;
+      t !== void 0 && this.value.set(t.toString());
+    }
+    return this;
+  }
+  /**
+   * Increases to the maximum value.
+   * s
+   * Увеличивает до максимального значения.
+   */
+  toMax() {
+    if (!this.disabledNext.value) {
+      const t = this.max.value;
+      t !== void 0 && this.value.set(t.toString());
+    }
+    return this;
+  }
+}
 const f = {
   email: "[\\S]+@[\\S]{2,}\\.[\\w]{2,}",
   password: "[0-9a-zA-Z\\-!@#$%^&*]+"
 };
-class it {
+class vt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -619,7 +1429,40 @@ class it {
     this.props = t, this.type = e;
   }
 }
-class rt {
+class mt {
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   * @param type object for working with input type/ объект для работы с типом ввода
+   */
+  constructor(t, e) {
+    /** Returns the keyboard name/ Возвращает название клавиатуры */
+    r(this, "item", n(() => {
+      if (this.props.inputMode)
+        return this.props.inputMode;
+      switch (this.type.item.value) {
+        case "number":
+        case "datetime":
+        case "date":
+        case "year-month":
+        case "time":
+        case "hour-minute":
+          return "numeric";
+        case "number-format":
+        case "currency":
+          return "decimal";
+        case "tel":
+          return "tel";
+        case "email":
+          return "email";
+        default:
+          return;
+      }
+    }));
+    this.props = t, this.type = e;
+  }
+}
+class gt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -715,10 +1558,10 @@ class rt {
             i = this.props[s];
         }
       i !== void 0 && (e[s] = i);
-    }), A(e, this.props.inputAttrs);
+    }), q(e, this.props.inputAttrs);
   }
 }
-class at {
+class ft {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -754,7 +1597,7 @@ class at {
     this.item.value || this.set(!0);
   }
 }
-class lt {
+class bt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -793,64 +1636,6 @@ class lt {
         return s;
   }
 }
-class nt {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
-   */
-  constructor(t, e) {
-    this.props = t, this.element = e;
-  }
-  /**
-   * Returns the input element.
-   *
-   * Возвращает элемент ввода.
-   */
-  get() {
-    const t = this.element.value;
-    if (t)
-      return "input" in t ? t.input : t;
-  }
-  /**
-   * Returns a reference to the input element.
-   *
-   * Возвращает ссылку на элемент ввода.
-   */
-  getElement() {
-    return this.element;
-  }
-  /**
-   * Search for an element by its name inside a group or by selector.
-   *
-   * Поиск элемента по его названию внутри группы или по селектору.
-   * @param nameSelectors element name or selector /<br>название элемента или селектор
-   */
-  findByName(t) {
-    var i;
-    if (t instanceof Element)
-      return t;
-    const e = (i = this.get()) == null ? void 0 : i.form;
-    if (e) {
-      const a = e.querySelector(`[name="${t}"]`);
-      if (a)
-        return a;
-    }
-    const s = document.querySelector(t);
-    if (s)
-      return s;
-  }
-  /**
-   * Clear all values to the original ones.
-   *
-   * Очисти все значения до оригинальных.
-   */
-  clear() {
-    var e;
-    const t = this.element.value;
-    return t && "clear" in t && ((e = t.clear) == null || e.call(t)), this;
-  }
-}
 class c {
   /**
    * Constructor
@@ -861,7 +1646,7 @@ class c {
   constructor(t, e = c.getGroupDefault(), s) {
     /** Hidden input element for native validation/ Скрытый input для нативной валидации */
     r(this, "input");
-    this.pattern = t, this.group = e, this.code = s, this.input = O(
+    this.pattern = t, this.group = e, this.code = s, this.input = X(
       void 0,
       "input",
       this.getAttributes()
@@ -874,7 +1659,7 @@ class c {
    */
   check(t) {
     const e = this.input;
-    return e ? (e.type === "checkbox" || e.type === "radio" ? e.checked = !!t : e.value = d(t), this.checkByInput(e)) : {
+    return e ? (e.type === "checkbox" || e.type === "radio" ? e.checked = !!t : e.value = v(t), this.checkByInput(e)) : {
       group: this.group,
       status: !0,
       value: t
@@ -908,9 +1693,9 @@ class c {
   getAttributes() {
     const t = this.pattern;
     if (o(t)) {
-      const e = V(t);
+      const e = Y(t);
       if (o(e))
-        return _(e) ? { pattern: e } : e;
+        return j(e) ? { pattern: e } : e;
     }
     return {};
   }
@@ -923,263 +1708,7 @@ class c {
     return "check";
   }
 }
-class ht {
-  /**
-   * Constructor
-   * @param props input data /<br>входные данные
-   * @param refs input data in the form of reactive elements /<br>входные данные в виде реактивных элементов
-   * @param element object for working with the input element /<br>объект для работы с элементом ввода
-   * @param original original values /<br>оригинальные значения
-   */
-  constructor(t, e, s, i) {
-    /** Current value/ Текущее значение */
-    r(this, "item", u());
-    /** Indicates if the value is complete/ Указывает, полное ли значение */
-    r(this, "isFull", u(!0));
-    /** Indicates if there are temporary values/ Указывает, есть ли временные значения */
-    r(this, "hasEdit", u(!1));
-    /** Checks if there are values or temporary values/ Проверяет, есть ли значения или временные значения */
-    r(this, "is", n(() => this.hasEdit.value || this.boolean.value || !!this.props.placeholder));
-    /** Checks if there are any values/ Проверяет, есть ли значения */
-    r(this, "isValue", n(() => this.hasEdit.value || this.boolean.value));
-    /** Returns the current value if isFull is true/ Возвращает текущее значение, если isFull истинно */
-    r(this, "itemByFull", n(() => this.isFull.value ? this.item.value : void 0));
-    /**
-     * Returns the current value, converted to a number/
-     * Возвращает текущее значение, преобразованное в номер
-     */
-    r(this, "number", n(() => this.boolean.value ? x(this.string.value) : 0));
-    /** Returns the current value of type string/ Возвращает текущее значение типа string */
-    r(this, "string", n(() => d(this.item.value)));
-    /** Returns the current value of type boolean/ Возвращает текущее значение типа boolean */
-    r(this, "boolean", n(() => o(this.item.value)));
-    /** Returns the length of the entered value/ Возвращает длину введенного значения */
-    r(this, "length", n(() => {
-      var e;
-      const t = this.item.value;
-      return G(t) ? t.length : m(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
-    }));
-    /**
-     * Changes the values to the original ones.
-     *
-     * Изменяет значения на оригинальные.
-     */
-    r(this, "update", () => {
-      (this.isEdit(this.props.value) || this.isEdit(this.props.modelValue)) && this.setToOriginal();
-    });
-    this.props = t, this.refs = e, this.element = s, this.original = i, this.item.value = this.getOriginal(), I([
-      e.value,
-      e.modelValue
-    ], this.update);
-  }
-  /**
-   * Returns the current value.
-   *
-   * Возвращает текущее значение.
-   */
-  get() {
-    return this.item.value;
-  }
-  /**
-   * Returns the current value as an array.
-   *
-   * Возвращает текущее значение в виде массива.
-   */
-  getToArray() {
-    return H(this.item.value);
-  }
-  /**
-   * Changes the value.
-   *
-   * Изменяет значение.
-   * @param value changeable value/ изменяемое значение
-   */
-  set(t) {
-    var e, s;
-    if (this.isDifference(t)) {
-      this.item.value = w(
-        this.item.value,
-        t,
-        {
-          multiple: this.props.multiple,
-          maxlength: x(this.props.maxlength)
-        }
-      );
-      const i = (e = this.element) == null ? void 0 : e.getElement();
-      i && i.value && "setValue" in i.value && ((s = i.value) == null || s.setValue(this.item.value));
-    }
-    return this;
-  }
-  setByEvent(t) {
-    switch (console.log("setByEvent"), typeof t) {
-      case "object":
-        t && ("value" in t && t.value !== void 0 ? this.set(t.value) : "target" in t && this.setByTarget(t.target), "hasEdit" in t && this.setHasEdit(t.hasEdit), "isFull" in t && this.setFull(t.isFull));
-        break;
-      default:
-        this.set(t);
-        break;
-    }
-    return this;
-  }
-  /**
-   * Changes the values by the selected element.
-   *
-   * Изменяет значения по выбранному элементу.
-   * @param target selected elements/ выбранные элементы
-   */
-  setByTarget(t) {
-    return this.set(
-      this.isCheckbox(t) ? t.checked : t.value
-    );
-  }
-  /**
-   * Changes the value by the checked property.
-   *
-   * Изменяет значение по свойству checked.
-   * @param event event value/ значение события
-   */
-  setByChecked(t) {
-    const e = t.target;
-    return this.set(e.checked);
-  }
-  /**
-   * Changes the value for radio type.
-   *
-   * Изменяет значение для типа radio.
-   * @param event event object/ объект события
-   */
-  setByRadio(t) {
-    const e = t.target, s = e.checked ? e.value : "";
-    return this.set(s);
-  }
-  /**
-   * Sets the isFull value.
-   *
-   * Устанавливает значение isFull.
-   * @param isFull isFull value/ значение isFull
-   */
-  setFull(t) {
-    this.isFull.value = t;
-  }
-  /**
-   * Sets the hasEdit value.
-   *
-   * Устанавливает значение hasEdit.
-   * @param hasEdit hasEdit value/ значение hasEdit
-   */
-  setHasEdit(t) {
-    this.hasEdit.value = t;
-  }
-  /**
-   * Sets the value to the original one.
-   *
-   * Устанавливает значение на оригинальное.
-   */
-  setToOriginal() {
-    return this.item.value = this.getOriginal(), this;
-  }
-  /**
-   * Clear all values to the original ones.
-   *
-   * Очисти все значения до оригинальных.
-   */
-  clear() {
-    var t;
-    return this.item.value = k(this.original), (t = this.element) == null || t.clear(), this.hasEdit.value = !1, this.isFull.value = !0, this;
-  }
-  /**
-   * Is the selected type a checkbox.
-   *
-   * Является ли выбранный тип чекбокс.
-   * @param target selected elements/ выбранные элементы
-   */
-  isCheckbox(t) {
-    return t.type === "checkbox";
-  }
-  /**
-   * Checks if the value has actually been changed.
-   *
-   * Проверяет, было ли значение действительно изменено.
-   * @param value value to check/ значение для проверки
-   */
-  isDifference(t = this.getOriginal()) {
-    return this.string.value !== d(t);
-  }
-  /**
-   * Returns the original value.
-   *
-   * Возвращает оригинальное значение.
-   */
-  getOriginal() {
-    return this.props.value || this.props.modelValue || k(this.original);
-  }
-  /**
-   * Checks if the value is being edited.
-   *
-   * Проверяет, редактируется ли значение.
-   * @param value value to check/ значение для проверки
-   */
-  isEdit(t) {
-    return t !== void 0 && d(t) !== this.string.value;
-  }
-}
-class ot {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param element object for working with input element/ объект для работы с элементом ввода
-   * @param value object for working with value/ объект для работы со значениями
-   */
-  constructor(t, e, s) {
-    this.props = t, this.element = e, this.value = s;
-  }
-  /**
-   * Checks whether matching verification is enabled
-   *
-   * Проверяет, включена ли проверка совпадения
-   */
-  is() {
-    return !!this.props.match;
-  }
-  /**
-   * Returns selector used to find external element
-   *
-   * Возвращает селектор для поиска внешнего элемента
-   */
-  getSelectors() {
-    if (this.is())
-      return m(this.props.match) ? this.props.match.name : this.props.match;
-  }
-  /**
-   * Returns validation error text
-   *
-   * Возвращает текст ошибки валидации
-   */
-  getValidationMessage() {
-    var t;
-    return this.is() ? m(this.props.match) && ((t = this.props.match) != null && t.validationMessage) ? this.props.match.validationMessage : q.getSync("global-entries_match") : "";
-  }
-  /**
-   * Checks value against external element
-   *
-   * Проверяет совпадение значения с внешним элементом
-   */
-  check() {
-    const t = this.getSelectors();
-    if (t) {
-      const e = this.element.findByName(t);
-      if (e && d(e.value) !== this.value.string.value)
-        return {
-          group: c.getGroupDefault(),
-          status: !1,
-          input: this.element.get(),
-          validationMessage: this.getValidationMessage(),
-          value: this.value.item.value
-        };
-    }
-  }
-}
-class ut {
+class yt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1295,28 +1824,250 @@ class ut {
     return this.input.value.check(t);
   }
 }
-const ct = (l) => `${l}-a--static`;
+class xt {
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   * @param change object for working with data change label/ объект для работы с меткой об изменении данных
+   * @param value object for working with values/ объект для работы со значениями
+   * @param validation object for working with validity/ объект для работы с валидностью
+   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   */
+  constructor(t, e, s, i, a) {
+    r(this, "model");
+    /**
+     * Events for losing focus.
+     *
+     * События для потери фокуса.
+     */
+    r(this, "onBlur", () => {
+      this.change.to();
+    });
+    /**
+     * Call of data change event.
+     *
+     * Вызов события изменения данных.
+     * @param event event object/ объект события
+     * @param data object with data/ объект с данными
+     */
+    r(this, "onInput", (t, e) => {
+      var s;
+      if (this.isEnabled()) {
+        const i = e != null ? e : t;
+        (this.change.is() || e) && ((s = this.validation) == null || s.set(i)), this.value.setByEvent(i), this.on(t);
+      }
+    });
+    /**
+     * Triggering the change event after losing focus.
+     *
+     * Вызов события изменения после потери фокуса.
+     * @param event event object/ объект события
+     */
+    r(this, "onChange", (t) => {
+      var e;
+      this.isEnabled() && (t && ((e = this.validation) == null || e.set(t)), this.change.to(), this.on(t, "change"));
+    });
+    /**
+     * Triggering the event for select change.
+     *
+     * Вызов события для изменения селект.
+     * @param event event object/ объект события
+     * @param data object with data/ объект с данными
+     */
+    r(this, "onSelect", (t, e) => {
+      this.isEnabled() && (this.value.setByEvent(e != null ? e : t), this.onAndChange(t));
+    });
+    /**
+     * Triggering the event for changes in the checkbox.
+     *
+     * Вызов события для изменения в checkbox.
+     * @param event event object/ объект события
+     */
+    r(this, "onChecked", (t) => {
+      this.isEnabled() && (this.value.setByChecked(t), this.onAndChange(t));
+    });
+    /**
+     * Triggering the event for changes in the radio.
+     *
+     * Вызов события для изменения в radio.
+     * @param event event object/ объект события
+     */
+    r(this, "onRadio", (t) => {
+      this.isEnabled() && (this.value.setByRadio(t), this.onAndChange(t));
+    });
+    /**
+     * Triggering the event to delete all values.<br>
+     * Вызов события для удаления всех значений.
+     * @param event event object/ объект события
+     */
+    r(this, "onClear", (t) => {
+      this.isEnabled() && (this.value.clear(), this.onAndChange(t));
+    });
+    /**
+     * Triggering the event to set a specific value.
+     *
+     * Вызов события для установки конкретного значения.
+     * @param value new value/ новое значение
+     */
+    r(this, "onValue", (t) => {
+      this.isEnabled() && (this.value.set(t), this.onAndChange());
+    });
+    /**
+     * Triggering the event.
+     *
+     * Вызов события.
+     * @param event event object/ объект события
+     * @param type event type/ тип события
+     */
+    r(this, "on", (t, e = "input") => {
+      var s;
+      return e === "input" && this.model.emit(this.value.itemByFull.value), (s = this.emits) == null || s.call(this, e, t, {
+        ...this.getValidation(e),
+        ...this.getData()
+      }), this;
+    });
+    this.props = t, this.change = e, this.value = s, this.validation = i, this.emits = a, this.model = new C(
+      "value",
+      this.emits,
+      this.value.itemByFull
+    );
+  }
+  /**
+   * Checks whether additional data needs to be generated for the current event.
+   *
+   * Проверяет, надо ли генерировать дополнительные данные для текущего события.
+   * @param type event type/ тип события
+   */
+  isValue(t) {
+    return !!(t && ["input", "change"].indexOf(t) >= 0);
+  }
+  /**
+   * Checks if it is possible to change the value.
+   *
+   * Проверяет, возможно ли изменение значения.
+   */
+  isEnabled() {
+    return this.props.disabled !== !0;
+  }
+  /**
+   * Returns input data.
+   *
+   * Возвращает данные об вводе.
+   */
+  getData() {
+    return {
+      value: this.value.itemByFull.value,
+      valueInput: this.value.item.value,
+      detail: this.props.detail
+    };
+  }
+  /**
+   * Returns validity data.
+   *
+   * Возвращает данные валидности.
+   * @param type event type/ тип события
+   */
+  getValidation(t) {
+    return this.isValue(t) ? this.validation ? this.validation.item.value : {
+      group: "check",
+      value: this.value.item.value
+    } : {};
+  }
+  /**
+   * Triggering the event and change event.
+   *
+   * Вызов события и события изменения.
+   * @param event event object/ объект события
+   */
+  onAndChange(t) {
+    return this.on(t).onChange(t), this;
+  }
+}
+class Et {
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   * @param element object for working with input element/ объект для работы с элементом ввода
+   * @param value object for working with value/ объект для работы со значениями
+   */
+  constructor(t, e, s) {
+    this.props = t, this.element = e, this.value = s;
+  }
+  /**
+   * Checks whether matching verification is enabled
+   *
+   * Проверяет, включена ли проверка совпадения
+   */
+  is() {
+    return !!this.props.match;
+  }
+  /**
+   * Returns selector used to find external element
+   *
+   * Возвращает селектор для поиска внешнего элемента
+   */
+  getSelectors() {
+    if (this.is())
+      return y(this.props.match) ? this.props.match.name : this.props.match;
+  }
+  /**
+   * Returns validation error text
+   *
+   * Возвращает текст ошибки валидации
+   */
+  getValidationMessage() {
+    var t;
+    return this.is() ? y(this.props.match) && ((t = this.props.match) != null && t.validationMessage) ? this.props.match.validationMessage : U.getSync("global-entries_match") : "";
+  }
+  /**
+   * Checks value against external element
+   *
+   * Проверяет совпадение значения с внешним элементом
+   */
+  check() {
+    const t = this.getSelectors();
+    if (t) {
+      const e = this.element.findByName(t);
+      if (e && v(e.value) !== this.value.string.value)
+        return {
+          group: c.getGroupDefault(),
+          status: !1,
+          input: this.element.get(),
+          validationMessage: this.getValidationMessage(),
+          value: this.value.item.value
+        };
+    }
+  }
+}
+const kt = (l) => `${l}-a--static`;
 export {
-  K as CaptionInclude,
-  P as DescriptionInclude,
-  Z as EnabledInclude,
-  J as EventClickInclude,
-  rt as FieldAttributesInclude,
-  at as FieldChangeInclude,
-  lt as FieldCodeInclude,
-  nt as FieldElementInclude,
+  J as AriaStaticInclude,
+  Q as CaptionInclude,
+  W as DescriptionInclude,
+  tt as EnabledInclude,
+  et as EventClickInclude,
+  dt as FieldArrowInclude,
+  gt as FieldAttributesInclude,
+  ft as FieldChangeInclude,
+  bt as FieldCodeInclude,
+  ut as FieldElementInclude,
+  xt as FieldEventInclude,
   c as FieldInputCheckInclude,
-  ot as FieldMatchInclude,
-  it as FieldPatternInclude,
-  st as FieldTypeInclude,
-  ut as FieldValidationInclude,
-  ht as FieldValueInclude,
-  et as FieldVisibilityInclude,
-  Q as LabelHighlightInclude,
-  E as LabelInclude,
-  W as LabelNumberInclude,
-  X as ModelInclude,
-  Y as PrefixInclude,
-  tt as SuffixInclude,
-  ct as getClassTegAStatic
+  mt as FieldInputModeInclude,
+  Et as FieldMatchInclude,
+  vt as FieldPatternInclude,
+  pt as FieldTypeInclude,
+  yt as FieldValidationInclude,
+  ot as FieldValueInclude,
+  ct as FieldVisibilityInclude,
+  st as LabelHighlightInclude,
+  T as LabelInclude,
+  it as LabelNumberInclude,
+  C as ModelInclude,
+  rt as ModelValueInclude,
+  at as PrefixInclude,
+  lt as SuffixInclude,
+  nt as TabIndexInclude,
+  ht as TouchEventInclude,
+  kt as getClassTegAStatic
 };

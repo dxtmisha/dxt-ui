@@ -1,7 +1,7 @@
 import { Ref, VNode, ComputedRef } from 'vue';
 import { ConstrClass } from '@dxtmisha/functional';
 import { SkeletonInclude } from '../constructors/Skeleton';
-import { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/labelTypes';
+import { LabelAlternativeSlots, LabelExpose, LabelProps, LabelSlots } from '../types/labelTypes';
 /**
  * Use for adding text
  *
@@ -16,6 +16,8 @@ export declare class LabelInclude {
     protected readonly labelReplacing?: Ref<string | number | undefined> | undefined;
     protected readonly alternativeSlots?: boolean | undefined;
     protected readonly skeleton?: SkeletonInclude | undefined;
+    /** Unique identifier/ Уникальный идентификатор */
+    protected id: string;
     /**
      * Constructor
      * @param props input property/ входное свойство
@@ -30,6 +32,18 @@ export declare class LabelInclude {
     constructor(props: Readonly<LabelProps>, className: string, classesExtra?: ConstrClass | undefined, slots?: (LabelSlots | LabelAlternativeSlots) | undefined, elementsExtra?: (() => VNode[]) | undefined, labelReplacing?: Ref<string | number | undefined> | undefined, alternativeSlots?: boolean | undefined, skeleton?: SkeletonInclude | undefined);
     /** Label presence check/ Проверка наличия метки */
     readonly is: ComputedRef<boolean>;
+    /**
+     * Expose helpers for Label state and actions.
+     *
+     * Вспомогательные методы expose для состояния и действий Label.
+     */
+    readonly expose: LabelExpose;
+    /**
+     * Get the unique identifier.
+     *
+     * Получение уникального идентификатора.
+     */
+    getId(): string;
     /**
      * Render the label
      *

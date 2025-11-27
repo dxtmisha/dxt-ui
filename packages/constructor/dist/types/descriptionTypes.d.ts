@@ -1,4 +1,11 @@
 /**
+ * Expose for description functionality/ Экспоз для функциональности описания
+ */
+export interface DescriptionExpose {
+    /** Description identifier/ Идентификатор описания */
+    descriptionId: string;
+}
+/**
  * Slots for description functionality/ Слоты для функциональности описания
  */
 export interface DescriptionSlots {

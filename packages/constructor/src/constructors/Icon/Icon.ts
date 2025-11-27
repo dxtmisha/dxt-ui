@@ -6,13 +6,13 @@ import {
   getBindRef
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { type ImageEventData } from '../Image'
 import { SkeletonInclude } from '../Skeleton'
 
 import type { IconComponents, IconEmits, IconSlots } from './types'
 import type { IconProps } from './props'
 import type { IconEventLoad } from './basicTypes'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * Base class for working with icons.
