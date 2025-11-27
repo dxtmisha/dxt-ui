@@ -19,7 +19,7 @@ import { SkeletonInclude } from '../Skeleton'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
 import type { CellComponents, CellEmits, CellSlots } from './types'
-import type { CellPropsBasic } from './props'
+import type { CellProps } from './props'
 import type { CellClassesSub } from './basicTypes'
 
 /**
@@ -51,12 +51,12 @@ export class Cell {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: CellPropsBasic,
-    protected readonly refs: ToRefs<CellPropsBasic>,
+    protected readonly props: CellProps,
+    protected readonly refs: ToRefs<CellProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
-    protected readonly components?: DesignComp<CellComponents, CellPropsBasic>,
+    protected readonly components?: DesignComp<CellComponents, CellProps>,
     protected readonly slots?: CellSlots,
     protected readonly emits?: ConstrEmit<CellEmits>
   ) {
@@ -110,6 +110,23 @@ export class Cell {
     [`${this.className}--description`]: this.description.is.value,
     [getClassTegAStatic(this.classDesign)]: true
   }))
+
+  /**
+   * Computed role for the cell component.
+   *
+   * Вычисляемая роль для компонента ячейки.
+   */
+  readonly role = computed<string | undefined>(() => {
+    if (this.props.role) {
+      return this.props.role
+    }
+
+    if (this.props.dynamic) {
+      return 'button'
+    }
+
+    return undefined
+  })
 
   /**
    * Returns a list of sub-element CSS classes for the cell component.

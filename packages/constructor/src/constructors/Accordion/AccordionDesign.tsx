@@ -169,7 +169,6 @@ export class AccordionDesign<
           class: this.classes?.value.head,
           dynamic: true,
           onClick: this.item.event.onClick,
-          role: 'button',
           ...binds
         },
         this.props.cellAttrs

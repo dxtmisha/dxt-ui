@@ -235,6 +235,15 @@
     @include ui.contentVisibility(visible);
   }
 
+  @include ui.mediaPrefersReducedMotion {
+    &,
+    &__body,
+    &__background {
+      transition-delay: 0.1ms !important;
+      transition-duration: 0.1ms !important;
+    }
+  }
+
   @at-root {
     body[data-scroll="scroll"] {
       &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="display"]),

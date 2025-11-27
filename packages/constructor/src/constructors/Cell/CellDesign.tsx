@@ -219,7 +219,7 @@ export class CellDesign<
       'data-value': this.props.value,
       'data-divider': this.props.divider ? 'active' : undefined,
       'onClick': this.item.event.onClick,
-      ...AriaStaticInclude.role(this.props.role)
+      ...AriaStaticInclude.role(this.item.role.value)
     }
 
     if (this.props.dynamic) {

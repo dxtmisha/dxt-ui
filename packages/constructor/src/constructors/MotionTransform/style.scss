@@ -189,4 +189,14 @@
       bottom: 0;
     }
   }
+
+  @include ui.mediaPrefersReducedMotion {
+    &,
+    &__head,
+    &__body,
+    &__background {
+      transition-delay: 0.1ms !important;
+      transition-duration: 0.1ms !important;
+    }
+  }
 }
