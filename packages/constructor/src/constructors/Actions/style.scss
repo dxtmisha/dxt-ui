@@ -3,6 +3,7 @@
 @mixin mixinActions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
   &__spacer {
     @include ui.flexDynamic;
