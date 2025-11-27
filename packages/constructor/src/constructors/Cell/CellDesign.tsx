@@ -1,14 +1,15 @@
-import { h, type VNode } from 'vue'
+import { computed, h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Cell } from './Cell'
 
 import {
-  type CellPropsBasic
+  type CellProps
 } from './props'
 import {
   type CellClasses,
@@ -17,7 +18,6 @@ import {
   type CellExpose,
   type CellSlots
 } from './types'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * CellDesign
@@ -26,7 +26,7 @@ export class CellDesign<
   COMP extends CellComponents,
   EXPOSE extends CellExpose,
   CLASSES extends CellClasses,
-  P extends CellPropsBasic
+  P extends CellProps
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
@@ -123,14 +123,7 @@ export class CellDesign<
   protected initRender(): VNode {
     return h(
       this.props.tag ?? 'div',
-      {
-        ...this.getAttrs(),
-        'class': this.classes?.value.main,
-        'data-value': this.props.value,
-        'data-divider': this.props.divider ? 'active' : undefined,
-        'onClick': this.item.event.onClick,
-        ...AriaStaticInclude.role(this.props.role)
-      },
+      this.propsMain.value,
       [
         ...this.item.icon.render(),
         ...this.renderContext(),
@@ -213,4 +206,29 @@ export class CellDesign<
 
     return []
   }
+
+  /**
+   * Props for the main element.
+   *
+   * Свойства для главного элемента.
+   */
+  protected readonly propsMain = computed(() => {
+    const props = {
+      ...this.getAttrs(),
+      'class': this.classes?.value.main,
+      'data-value': this.props.value,
+      'data-divider': this.props.divider ? 'active' : undefined,
+      'onClick': this.item.event.onClick,
+      ...AriaStaticInclude.role(this.props.role)
+    }
+
+    if (this.props.dynamic) {
+      return {
+        ...props,
+        tabindex: '0'
+      }
+    }
+
+    return props
+  })
 }

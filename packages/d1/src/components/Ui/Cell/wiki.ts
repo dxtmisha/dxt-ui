@@ -32,6 +32,7 @@ const propsNames: StorybookProps = [
   { name: 'padding', type: 'string', option: ['none', 'sm', 'md', 'lg', 'ySm', 'yMd', 'yLg'] },
   { name: 'paddingByIndent', type: 'boolean' },
   { name: 'readonly', type: 'boolean' },
+  { name: 'role', type: 'string' },
   { name: 'selected', type: 'boolean' },
   { name: 'tag', type: 'string' },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },

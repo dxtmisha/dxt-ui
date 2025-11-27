@@ -85,11 +85,11 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     const element = this.getElement()
 
     if (element) {
-      element.tabIndex = -1
+      element.setAttribute('tabindex', '-1')
       element.focus()
 
       requestAnimationFrame(() => {
-        element.tabIndex = 0
+        element.removeAttribute('tabindex')
       })
     }
 

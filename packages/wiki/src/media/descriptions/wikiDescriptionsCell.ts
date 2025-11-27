@@ -100,6 +100,8 @@ export const wikiDescriptionsCell: StorybookComponentsDescriptionItem = {
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'value'}/>
 <StorybookDescriptions componentName={'Expose'} type={'detail'}/>
+<StorybookDescriptions componentName={'Expose'} type={'labelId'}/>
+<StorybookDescriptions componentName={'Expose'} type={'descriptionId'}/>
     `,
     slots: `
 <Canvas of={Component.CellSlots}/>
