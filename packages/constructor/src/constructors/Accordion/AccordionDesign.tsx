@@ -160,6 +160,7 @@ export class AccordionDesign<
       'cell',
       toBinds(
         {
+          ref: this.item.elementHead,
           icon: this.props.icon,
           iconTrailing: this.props.iconArrowDown,
           iconTurn: isOpen.value,

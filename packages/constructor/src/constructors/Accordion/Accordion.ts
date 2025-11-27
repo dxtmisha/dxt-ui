@@ -1,10 +1,11 @@
-import { ref, type Ref, type ToRefs } from 'vue'
+import { computed, ref, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { MotionTransformInclude } from '../MotionTransform'
 import { ModelInclude } from '../../classes/ModelInclude'
 
+import type { CellExpose } from '../Cell'
 import type { AccordionComponents, AccordionEmits, AccordionSlots } from './types'
 import type { AccordionProps } from './props'
 
@@ -18,6 +19,8 @@ export class Accordion {
 
   readonly open = ref<boolean>(false)
   readonly model: ModelInclude<boolean>
+
+  readonly elementHead = ref<CellExpose>()
 
   /**
    * Constructor
@@ -45,11 +48,13 @@ export class Accordion {
       this.className,
       this.components,
       this.emits,
-      {
+      computed(() => ({
         section: true,
         adaptive: 'planeAlways',
-        inDom: true
-      }
+        inDom: true,
+        ariaLabelledby: this.elementHead.value?.labelId,
+        ariaDescribedby: this.elementHead.value?.descriptionId
+      }))
     )
 
     this.event = new EventClickInclude(
