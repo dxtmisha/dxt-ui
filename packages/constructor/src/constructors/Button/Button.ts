@@ -14,6 +14,8 @@ import { EventClickInclude } from '../../classes/EventClickInclude'
 
 import type { ButtonComponents, ButtonEmits, ButtonSlots } from './types'
 import type { ButtonPropsBasic } from './props'
+import type { AriaList } from '../../types/ariaTypes.ts'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * Button
@@ -85,4 +87,26 @@ export class Button {
     [getClassTegAStatic(this.classDesign)]: true,
     ...this.skeleton.classes.value
   }))
+
+  /**
+   * list of aria properties for the button component/
+   * список aria свойств для компонента Button
+   */
+  readonly aria = computed<AriaList>(() => {
+    const aria: AriaList = {
+      ...this.progress.aria.value,
+      ...AriaStaticInclude.label(this.props.ariaLabel)
+    }
+
+    if (this.props.tag !== 'button') {
+      return {
+        tabindex: '0',
+        ...aria,
+        ...AriaStaticInclude.role('button'),
+        ...this.enabled.aria.value
+      }
+    }
+
+    return aria
+  })
 }

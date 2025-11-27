@@ -1,6 +1,9 @@
 import { computed, type VNode } from 'vue'
 import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+
+import type { AriaList } from '../../types/ariaTypes'
 import type { ProgressComponentInclude, ProgressPropsInclude } from './basicTypes'
 import type { ProgressProps } from './props'
 
@@ -26,9 +29,18 @@ export class ProgressInclude {
   }
 
   /**
-   * Checks if data is available for the Progress component/ Проверяет, есть ли данные для компонента Progress
+   * Checks if data is available for the Progress component/
+   * Проверяет, есть ли данные для компонента Progress
    */
   readonly is = computed<boolean>(() => Boolean(this.props.loading))
+
+  /**
+   * list of aria properties for the progress component/
+   * список aria свойств для компонента Progress
+   */
+  readonly aria = computed<AriaList>(
+    () => AriaStaticInclude.busy(this.is.value)
+  )
 
   /**
    * list of properties for the progress component/ список свойств для компонента Progress

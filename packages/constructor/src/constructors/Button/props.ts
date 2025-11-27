@@ -5,6 +5,7 @@ import type { SkeletonPropsInclude } from '../Skeleton'
 import type { LabelProps } from '../../types/labelTypes'
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
+import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
 
 interface ButtonPropsToken {
   // :type [!] System label / Системная метка
@@ -28,9 +29,11 @@ export interface ButtonPropsBasic<
   IconTrailingPropsInclude<Icon>,
   ProgressPropsInclude<Progress>,
   SkeletonPropsInclude,
-  EventClickProps {
+  EventClickProps,
+  AriaLabelPropsInclude {
   // Style
   tag?: 'button' | 'a' | 'span' | string
+  type?: 'button' | 'submit' | 'reset' | string
 }
 
 /**
@@ -48,6 +51,7 @@ export interface ButtonProps extends ButtonPropsBasic, ButtonPropsToken {
  */
 export const defaultsButton = {
   tag: 'button',
+  type: 'button',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

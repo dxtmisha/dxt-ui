@@ -1,6 +1,9 @@
 import { computed } from 'vue'
+
+import { AriaStaticInclude } from './AriaStaticInclude'
 import { ProgressInclude } from '../constructors/Progress'
 
+import type { AriaList } from '../types/ariaTypes'
 import type { EnabledProps } from '../types/enabledTypes'
 
 /**
@@ -53,4 +56,12 @@ export class EnabledInclude {
    * проверяет, отключён ли элемент или пустое ли значение
    */
   readonly isDisabledOrUndefined = computed<boolean | undefined>(() => this.isDisabled.value || undefined)
+
+  /**
+   * list of aria properties for the enabled state/
+   * список aria свойств для состояния активности
+   */
+  readonly aria = computed<AriaList>(
+    () => AriaStaticInclude.disabled(!this.isEnabled.value)
+  )
 }

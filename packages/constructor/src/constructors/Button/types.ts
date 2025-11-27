@@ -5,7 +5,7 @@ import type { ProgressComponentInclude } from '../Progress'
 import type { RippleComponentsInclude } from '../Ripple'
 
 import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
-import type { LabelSlots } from '../../types/labelTypes'
+import type { LabelExpose, LabelSlots } from '../../types/labelTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -29,7 +29,7 @@ export type ButtonEmits = EventClickEmits
  *
  * Тип, описывающий доступные свойства.
  */
-export interface ButtonExpose extends EventClickExpose {
+export interface ButtonExpose extends LabelExpose, EventClickExpose {
 }
 
 /**

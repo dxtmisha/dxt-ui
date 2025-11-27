@@ -24,7 +24,7 @@ export class RippleItem {
 
   constructor(
     protected readonly props: RippleProps,
-    protected readonly element: Ref<HTMLDivElement | undefined>,
+    protected readonly element: Ref<HTMLSpanElement | undefined>,
     protected readonly className: string
   ) {
     this.classItem = `${this.className}__item`

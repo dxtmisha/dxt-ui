@@ -20,15 +20,43 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA busy attribute.
+   *
+   * Получить атрибут ARIA busy.
+   * @param isBusy is busy/ является занятым
+   */
+  static busy(isBusy?: boolean): AriaList {
+    return {
+      'aria-busy': this.isTrueOrFalse(isBusy)
+    }
+  }
+
+  /**
+   * Get ARIA disabled attribute.
+   *
+   * Получить атрибут ARIA disabled.
+   * @param isDisabled is disabled/ является отключенным
+   */
+  static disabled(isDisabled: boolean = true): AriaList {
+    return {
+      'aria-disabled': this.isTrueOrFalse(isDisabled)
+    }
+  }
+
+  /**
    * Get ARIA label.
    *
    * Получить ARIA label.
    * @param label ARIA label/ ARIA метка
    */
   static label(label?: string): AriaList {
-    return {
-      'aria-label': label
+    if (label) {
+      return {
+        'aria-label': label
+      }
     }
+
+    return {}
   }
 
   /**

@@ -392,7 +392,8 @@ export const cssBorder: string[] = [
   'outline',
   'outline-width',
   'outline-style',
-  'outline-color',
+  'outline-color', // mixin
+  'outline-opacity', // mixin
   'outline-offset'
 ]
 

@@ -7,6 +7,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'adaptive', type: 'string', option: ['iconAlways', 'block', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
+  { name: 'ariaLabel', type: 'string' },
   { name: 'container', type: 'string', option: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
   { name: 'detail', type: 'Record<string, any>' },
   { name: 'disabled', type: 'boolean' },
@@ -38,6 +39,7 @@ const propsNames: StorybookProps = [
   { name: 'text', type: 'boolean' },
   { name: 'textAlign', type: 'string', option: ['left', 'center', 'right'] },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },
+  { name: 'type', type: 'string', option: ['button', 'submit', 'reset'] },
   { name: 'value', type: 'EventClickValue[\'value\']' }
   // :propsList [!] System label / Системная метка
 ]

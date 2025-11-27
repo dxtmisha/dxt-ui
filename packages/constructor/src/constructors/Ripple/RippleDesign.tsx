@@ -28,7 +28,7 @@ export class RippleDesign<
   CLASSES extends RippleClasses,
   P extends RipplePropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
+    HTMLSpanElement,
     COMP,
     RippleEmits,
     EXPOSE,
@@ -104,7 +104,7 @@ export class RippleDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    return h('div', {
+    return h('span', {
       ref: this.element,
       key: 'ripple',
       class: this.classes?.value.main,

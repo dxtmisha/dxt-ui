@@ -70,6 +70,8 @@ export const styleTypes: string[] = [
   'gradient-opacity',
   'border-color',
   'border-opacity',
+  'outline-color',
+  'outline-opacity',
 
   /* Transform */
   'translate-x',

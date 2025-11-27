@@ -75,7 +75,8 @@ export class ButtonDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose
+      ...this.item.event.expose,
+      ...this.item.label.expose
     } as EXPOSE
   }
 
@@ -118,6 +119,7 @@ export class ButtonDesign<
       {
         ...this.getAttrs(),
         'ref': this.element,
+        'type': this.props.type,
 
         'class': this.classes?.value.main,
         'style': this.styles?.value,
@@ -125,7 +127,8 @@ export class ButtonDesign<
         'data-value': this.props.value,
 
         'disabled': this.item.enabled.isDisabledOrUndefined.value,
-        'onClick': this.item.event.onClick
+        'onClick': this.item.event.onClick,
+        ...this.item.aria.value
       },
       [
         ...this.item.progress.render(),

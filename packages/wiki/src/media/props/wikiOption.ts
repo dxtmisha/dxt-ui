@@ -43,6 +43,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  grid: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables grid layout mode',
+        ru: 'Включает режим сетки'
+      }
+    }
+  },
   isSkeleton: {
     type: StorybookControl.boolean,
     options: {
@@ -51,6 +61,30 @@ export const wikiOption: StorybookArgsToList = {
       description: {
         en: 'Displays the component in skeleton mode',
         ru: 'Отображает компонент в режиме скелетона'
+      }
+    }
+  },
+  tag: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets HTML tag for the component element',
+        ru: 'Задает HTML‑тег для элемента компонента'
+      }
+    }
+  },
+  tagBody: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets HTML tag for the body/content container element',
+        ru: 'Задает HTML‑тег для элемента контейнера тела/содержимого'
       }
     }
   }

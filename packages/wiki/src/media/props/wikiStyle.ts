@@ -328,16 +328,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  grid: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Enables grid layout mode',
-        ru: 'Включает режим сетки'
-      }
-    }
-  },
   height: {
     type: StorybookControl.select,
     options: {
@@ -533,30 +523,6 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Sets component size',
         ru: 'Задает размер компонента'
-      }
-    }
-  },
-  tag: {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.style,
-      type: 'string',
-      options: [],
-      description: {
-        en: 'Sets HTML tag for the component element',
-        ru: 'Задает HTML‑тег для элемента компонента'
-      }
-    }
-  },
-  tagBody: {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.style,
-      type: 'string',
-      options: [],
-      description: {
-        en: 'Sets HTML tag for the body/content container element',
-        ru: 'Задает HTML‑тег для элемента контейнера тела/содержимого'
       }
     }
   },

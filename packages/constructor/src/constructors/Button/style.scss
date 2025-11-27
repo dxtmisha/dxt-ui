@@ -24,7 +24,7 @@
   }
 
   @include ui.focus {
-    outline: none;
+    outline-style: solid;
   }
 
   @include ui.disabled {

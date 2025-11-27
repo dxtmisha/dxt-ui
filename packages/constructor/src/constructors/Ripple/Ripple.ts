@@ -27,7 +27,7 @@ export class Ripple {
   constructor(
     protected readonly props: RippleProps,
     protected readonly refs: ToRefs<RippleProps>,
-    protected readonly element: Ref<HTMLDivElement | undefined>,
+    protected readonly element: Ref<HTMLSpanElement | undefined>,
     protected readonly className: string,
     protected readonly components?: DesignComp<RippleComponents, RippleProps>,
     protected readonly slots?: RippleSlots,

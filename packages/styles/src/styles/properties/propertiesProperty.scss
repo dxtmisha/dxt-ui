@@ -178,6 +178,10 @@
     @include color.borderColor(#{$value});
   } @else if ($name == 'border-opacity') {
     @include color.borderOpacity(#{$value});
+  } @else if ($name == 'outline-color') {
+    @include color.outlineColor(#{$value});
+  } @else if ($name == 'outline-opacity') {
+    @include color.outlineOpacity(#{$value});
   } @else if (
     /* Transform */
           $name == 'translate-x'
