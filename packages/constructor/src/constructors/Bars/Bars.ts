@@ -1,6 +1,7 @@
 import { computed, reactive, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, forEach, getBind, toBind } from '@dxtmisha/functional'
+import { type ConstrEmit, DesignComp, forEach, getBind, toBind, Translate } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -94,7 +95,8 @@ export class Bars {
             this.windowClasses.get().close,
             this.motionTransformClasses.get().close
           ],
-          onClick: this.onClickBack
+          onClick: this.onClickBack,
+          ...AriaStaticInclude.label(Translate.getSync('global-close'))
         },
         this.props.backButton ?? {}
       ),

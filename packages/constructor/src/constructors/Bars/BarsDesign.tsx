@@ -5,9 +5,11 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Bars } from './Bars'
 
 import {
+  type BarsProps,
   type BarsPropsBasic
 } from './props'
 import {
@@ -25,16 +27,16 @@ export class BarsDesign<
   COMP extends BarsComponents,
   EXPOSE extends BarsExpose,
   CLASSES extends BarsClasses,
-  P extends BarsPropsBasic
+  P extends BarsProps
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  BarsEmits,
-  EXPOSE,
-  BarsSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    BarsEmits,
+    EXPOSE,
+    BarsSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Bars
 
   /**
@@ -74,7 +76,10 @@ export class BarsDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {} as EXPOSE
+    return {
+      ...this.item.label.expose,
+      ...this.item.description.expose
+    } as EXPOSE
   }
 
   /**
@@ -114,7 +119,8 @@ export class BarsDesign<
       'div',
       {
         ...this.getAttrs(),
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        ...AriaStaticInclude.live(this.props.action ? 'polite' : 'off')
       },
       [
         ...this.renderBackButton(),
