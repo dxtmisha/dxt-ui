@@ -165,6 +165,8 @@ export class WindowOpen {
             this.resetClicks()
           })
         }
+
+        this.tabIndex.reset()
       }
     }
   }

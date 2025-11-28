@@ -1,5 +1,5 @@
-import type { Ref } from 'vue'
-import { getRef, isDomRuntime, isFunction } from '@dxtmisha/functional'
+import { onUnmounted, type Ref } from 'vue'
+import { EventItem, getRef, isDomRuntime, isFunction } from '@dxtmisha/functional'
 
 /**
  * Class for managing focus and tab index of elements
@@ -10,6 +10,9 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   /** Previously focused element/ Ранее сфокусированный элемент */
   protected oldElement?: HTMLElement | Element | null
 
+  /** Event item for focus events/ Элемент события для событий фокуса */
+  protected event?: EventItem<HTMLElement, any>
+
   /**
    * Сonstructor
    * @param element - Reference to the element/ Ссылка на элемент
@@ -17,6 +20,10 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   constructor(
     protected readonly element: Ref<E | undefined> | (() => E | undefined)
   ) {
+    onUnmounted(() => {
+      this.stopEvent()
+      this.event = undefined
+    })
   }
 
   /**
@@ -25,8 +32,14 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * Устанавливает фокус на элемент.
    */
   goTo(): this {
-    this.updateOldElement()
-    this.toFocus()
+    if (
+      this.isElement()
+      && isDomRuntime()
+    ) {
+      this.updateOldElement()
+      this.toFocus()
+      this.startEvent()
+    }
 
     return this
   }
@@ -43,6 +56,8 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     ) {
       this.oldElement.focus()
     }
+
+    this.stopEvent()
 
     return this
   }
@@ -64,6 +79,37 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   }
 
   /**
+   * Check if the element is defined.
+   *
+   * Проверяет, определен ли элемент.
+   */
+  protected isElement(): this is { element: Ref<E> } {
+    return this.getElement() !== undefined
+  }
+
+  /**
+   * Check if the event is a Tab key event.
+   *
+   * Проверяет, является ли событие событием клавиши Tab.
+   * @param event Keyboard event/ Событие клавиатуры
+   */
+  protected isTab(event: KeyboardEvent): boolean {
+    return event.key === 'Tab'
+      || event.code === 'Tab'
+      || event.keyCode === 9
+  }
+
+  /**
+   * Check if the Shift key is pressed.
+   *
+   * Проверяет, нажата ли клавиша Shift.
+   * @param event Keyboard event/ Событие клавиатуры
+   */
+  protected isShift(event: KeyboardEvent): boolean {
+    return event.shiftKey
+  }
+
+  /**
    * Get the element.
    *
    * Получает элемент.
@@ -74,6 +120,55 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     }
 
     return getRef(this.element)
+  }
+
+  /**
+   * Find the first focusable element.
+   *
+   * Находит первый фокусируемый элемент.
+   */
+  findFirstElement(): HTMLElement | undefined {
+    const elements = this.getElement()
+      ?.querySelectorAll<HTMLButtonElement>('*')
+
+    if (elements) {
+      for (const element of elements) {
+        if (
+          'tabIndex' in element
+          && element.tabIndex >= 0
+        ) {
+          return element
+        }
+      }
+    }
+
+    return undefined
+  }
+
+  /**
+   * Find the last focusable element.
+   *
+   * Находит последний фокусируемый элемент.
+   */
+  findLastElement(): HTMLElement | undefined {
+    const elements = this.getElement()
+      ?.querySelectorAll<HTMLButtonElement>('*')
+
+    if (elements) {
+      for (let i = elements.length - 1; i >= 0; i--) {
+        const element = elements[i]
+
+        if (
+          element
+          && 'tabIndex' in element
+          && element.tabIndex >= 0
+        ) {
+          return element
+        }
+      }
+    }
+
+    return undefined
   }
 
   /**
@@ -104,6 +199,64 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   protected updateOldElement(): void {
     if (isDomRuntime()) {
       this.oldElement = document.activeElement
+    }
+  }
+
+  /**
+   * Event listener for keyboard events.
+   *
+   * Слушатель событий для событий клавиатуры.
+   * @param event Keyboard event/ Событие клавиатуры
+   */
+  protected listenEvent = (event: KeyboardEvent): void => {
+    if (!this.isTab(event)) {
+      return
+    }
+
+    const focusActive = document.activeElement as HTMLElement
+
+    if (focusActive) {
+      if (this.isShift(event)) {
+        if (focusActive === this.findFirstElement()) {
+          console.log('focus last')
+          this.findLastElement()?.focus()
+          event.preventDefault()
+        }
+      } else if (focusActive === this.findLastElement()) {
+        console.log('focus first')
+        this.findFirstElement()?.focus()
+        event.preventDefault()
+      }
+    }
+  }
+
+  /**
+   * Start the event listener.
+   *
+   * Запускает слушатель событий.
+   */
+  protected startEvent(): void {
+    if (this.event) {
+      this.event.start()
+      return
+    }
+
+    this.event = new EventItem<HTMLElement, any>(
+      document.body,
+      'keydown',
+      this.listenEvent
+    )
+      .start()
+  }
+
+  /**
+   * Stop the event listener.
+   *
+   * Останавливает слушатель событий.
+   */
+  protected stopEvent(): void {
+    if (this.event) {
+      this.event.stop()
     }
   }
 }
