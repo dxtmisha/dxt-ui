@@ -1,4 +1,4 @@
-import { computed, type VNode } from 'vue'
+import { computed, ref, type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
@@ -12,6 +12,7 @@ import type { EventClickValue } from '../../types/eventClickTypes'
 
 import type { BarsComponentInclude, BarsEmitsInclude, BarsPropsInclude } from './basicTypes'
 import type { BarsProps } from './props'
+import type { BarsExpose } from './types.ts'
 
 /**
  * BarsInclude class provides functionality for conditionally rendering bars components
@@ -26,6 +27,8 @@ export class BarsInclude<
   Props extends BarsPropsInclude = BarsPropsInclude,
   PropsExtra extends ConstrBind<BarsProps> = ConstrBind<BarsProps>
 > {
+  readonly element = ref<BarsExpose>()
+
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -86,6 +89,7 @@ export class BarsInclude<
       return this.components.render(
         'bars',
         {
+          ref: this.element,
           ...this.binds.value,
           onClick: this.onClick
         },

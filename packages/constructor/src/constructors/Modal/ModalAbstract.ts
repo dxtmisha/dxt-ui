@@ -1,5 +1,5 @@
-import { type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, type RefOrNormal } from '@dxtmisha/functional'
+import { computed, type Ref, type ToRefs } from 'vue'
+import { type ConstrEmit, DesignComp, getRef, type RefOrNormal } from '@dxtmisha/functional'
 
 import { WindowInclude } from '../Window'
 import { BarsInclude } from '../Bars'
@@ -12,9 +12,9 @@ import type { ModalProps } from './props'
  * ModalAbstract
  */
 export abstract class ModalAbstract {
-  readonly window: WindowInclude
   readonly bars: BarsInclude
   readonly actions: ActionsInclude
+  readonly window: WindowInclude
 
   /**
    * Constructor
@@ -43,14 +43,6 @@ export abstract class ModalAbstract {
     protected readonly extraBars?: RefOrNormal<any>,
     protected readonly extraActions?: RefOrNormal<any>
   ) {
-    this.window = new WindowInclude(
-      props,
-      className,
-      components,
-      emits,
-      extraWindow
-    )
-
     this.bars = new BarsInclude(
       props,
       className,
@@ -65,6 +57,18 @@ export abstract class ModalAbstract {
       components,
       emits,
       extraActions
+    )
+
+    this.window = new WindowInclude(
+      props,
+      className,
+      components,
+      emits,
+      computed(() => ({
+        ...getRef(extraWindow),
+        ariaLabelledby: this.bars.element.value?.labelId,
+        ariaDescribedby: this.bars.element.value?.descriptionId
+      }))
     )
   }
 }

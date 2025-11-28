@@ -18,4 +18,8 @@
       margin: auto;
     }
   }
+
+  &__touch {
+    touch-action: none;
+  }
 }
