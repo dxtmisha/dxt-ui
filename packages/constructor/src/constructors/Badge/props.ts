@@ -1,5 +1,6 @@
 import type { IconPropsBasic, IconPropsInclude } from '../Icon'
 import type { LabelNumberProps } from '../../types/labelTypes'
+import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
 
 interface BadgePropsToken {
   // :type [!] System label / Системная метка
@@ -15,7 +16,8 @@ interface BadgePropsToken {
 export interface BadgePropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic
 > extends IconPropsInclude<Icon>,
-  LabelNumberProps {
+  LabelNumberProps,
+  AriaLabelPropsInclude {
   dot?: boolean
 }
 

@@ -5,6 +5,7 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Badge } from './Badge'
 
 import {
@@ -121,7 +122,9 @@ export class BadgeDesign<
     return h('span', {
       ...this.getAttrs(),
       ref: this.element,
-      class: this.classes?.value.main
+      class: this.classes?.value.main,
+      ...AriaStaticInclude.role('status'),
+      ...AriaStaticInclude.label(this.props.ariaLabel)
     }, children)
   }
 }
