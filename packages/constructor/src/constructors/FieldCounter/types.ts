@@ -20,6 +20,7 @@ export type FieldCounterEmits = {}
  * Тип, описывающий доступные свойства.
  */
 export interface FieldCounterExpose {
+  id: string
 }
 
 /**

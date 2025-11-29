@@ -4,6 +4,7 @@ import {
   DesignComponents,
   getRef,
   isFilled,
+  isNull,
   type RefOrNormal,
   toBinds
 } from '@dxtmisha/functional'
@@ -44,7 +45,7 @@ export class FieldCounterInclude<
   readonly isCounter = computed<boolean>(() =>
     Boolean(
       this.props.counterShow && (
-        isFilled(this.props.counter)
+        !isNull(this.props.counter)
         || isFilled(this.props.maxlength)
       )
     )

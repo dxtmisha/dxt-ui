@@ -62,6 +62,9 @@ export const wikiDescriptionsFieldCounter: StorybookComponentsDescriptionItem = 
 <StorybookDescriptions componentName={'FieldCounter'} type={'fieldCounter'}/>
 <StorybookDescriptions componentName={'FieldCounter'} type={'templates'}/>
 <Canvas of={Component.FieldCounterTemplate}/>
-    `
+    `,
+    expose: `
+<StorybookDescriptions componentName={'Expose'} type={'id'}/>
+`
   }
 }
