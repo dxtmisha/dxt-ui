@@ -18,9 +18,9 @@ export class ChipDesign<
   CLASSES extends ChipClasses,
   P extends ChipPropsBasic
 > extends ButtonDesign<
-  COMP,
-  EXPOSE,
-  CLASSES,
-  P
-> {
+    COMP,
+    EXPOSE,
+    CLASSES,
+    P
+  > {
 }
