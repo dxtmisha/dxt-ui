@@ -18,8 +18,12 @@ export enum StorybookControl {
 
 /** Categories for Storybook controls / Категории для элементов управления Storybook */
 export enum StorybookCategory {
+  /** Actions category / Категория действий */
+  actions = 'Actions',
   /** Adaptive design category / Категория адаптивного дизайна */
   adaptive = 'Adaptive',
+  /** Bars category / Категория баров */
+  bars = 'Bars',
   /** Status category / Категория статуса */
   status = 'Status',
   /** Information category / Категория информации */
@@ -41,7 +45,9 @@ export enum StorybookCategory {
   /** ARIA category / Категория ARIA */
   aria = 'ARIA',
   /** Technical category / Техническая категория */
-  technical = 'Technical'
+  technical = 'Technical',
+  /** Text category / Текстовая категория */
+  text = 'Text'
 }
 
 /** Type for Storybook controls / Типы для элементов управления Storybook */

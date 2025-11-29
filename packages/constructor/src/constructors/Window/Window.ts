@@ -6,6 +6,7 @@ import { ScrollbarInclude } from '../Scrollbar/ScrollbarInclude'
 import { ImageInclude } from '../Image/ImageInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
+import { TextInclude } from '../../classes/TextInclude'
 
 import { WindowClient } from './WindowClient'
 import { WindowHook } from './WindowHook'
@@ -86,6 +87,8 @@ export class Window {
 
   /** Escape key manager for window closing/ Менеджер клавиши Escape для закрытия окна */
   readonly esc: WindowEsc
+
+  readonly text: TextInclude
 
   /**
    * Constructor
@@ -181,6 +184,7 @@ export class Window {
       () => this.open.close(),
       () => !this.props.persistent
     )
+    this.text = new TextInclude(this.props)
 
     new ModelInclude<boolean>('open', this.emits, this.open.item)
 

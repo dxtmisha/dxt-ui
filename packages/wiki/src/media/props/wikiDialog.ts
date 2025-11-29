@@ -1,8 +1,11 @@
 import {
+  type StorybookArgsToItem,
   type StorybookArgsToList,
   StorybookCategory,
   StorybookControl
 } from '../../types/storybookTypes'
+
+import { wikiActionsInclude } from './wikiActionsInclude'
 
 /**
  * The wikiDialog object contains properties specific to Dialog component
@@ -10,7 +13,14 @@ import {
  * Объект wikiDialog содержит свойства, специфичные для компонента Dialog
  */
 export const wikiDialog: StorybookArgsToList = {
-  clickOkAndClose: {
+  'dialog.actionsList': {
+    ...(wikiActionsInclude.actionsList as StorybookArgsToItem),
+    options: {
+      ...(wikiActionsInclude.actionsList as StorybookArgsToItem).options,
+      value: undefined
+    }
+  },
+  'dialog.clickOkAndClose': {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,

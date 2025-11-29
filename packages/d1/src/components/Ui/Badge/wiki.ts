@@ -6,6 +6,7 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'ariaLabel', type: 'string' },
   { name: 'dot', type: 'boolean' },
   { name: 'formatting', type: 'boolean' },
   { name: 'hide', type: 'boolean' },

@@ -94,9 +94,7 @@ export const DialogVModel: Story = {
           v-model:open="open"
           label="Confirmation"
           description="Are you sure you want to proceed with this action?"
-        >
-          <div class="wiki-storybook-item--padding">Additional content can be placed here</div>
-        </D1Dialog>
+        />
     `
   })
 }
@@ -111,43 +109,23 @@ export const DialogAllSlots: Story = {
           </template>
 
           <template #title>
-            Dialog Title Slot
+            Title Slot
           </template>
 
           <template #label>
-            <strong>Custom Label Slot</strong>
+            <strong>Label Slot</strong>
           </template>
 
           <template #description>
-            <em>Custom description slot with formatted text</em>
+            <em>Description Slot</em>
           </template>
 
           <template #default>
-            <div class="wiki-storybook-item--padding">
-              <h4>Default Slot Content</h4>
-              <p>This is the main content area of the dialog. It appears after the information block (icon, label, description).</p>
-
-              <div class="wiki-storybook-info">
-                <strong>Available slots:</strong>
-                <ul>
-                  <li><code>#control</code> - trigger button or element with binds</li>
-                  <li><code>#title</code> - dialog header/title area (Bars component)</li>
-                  <li><code>#label</code> - label within information block</li>
-                  <li><code>#description</code> - description within information block</li>
-                  <li><code>#default</code> - main content area after information block</li>
-                  <li><code>#footer</code> - footer with action buttons (Actions component)</li>
-                </ul>
-              </div>
-
-              <p>Each slot receives control props that allow you to interact with the dialog programmatically, such as closing it or accessing component classes and methods.</p>
-            </div>
+            Default Slot
           </template>
 
           <template #footer="{classesWindow}">
-            <div class="wiki-storybook-flex wiki-storybook-item--padding">
-              <button :class="classesWindow.close" class="wiki-storybook-button wiki-storybook-button--text">Custom Cancel</button>
-              <button class="wiki-storybook-button">Custom Confirm</button>
-            </div>
+            Footer Slot
           </template>
         </D1Dialog>
     `

@@ -44,6 +44,7 @@ const propsNames: StorybookProps = [
   { name: 'preparation', type: '() => NormalOrPromise<void>' },
   { name: 'scrollbarAttrs', type: 'ConstrBind<ScrollbarProps>' },
   { name: 'staticMode', type: 'boolean' },
+  { name: 'textClose', type: 'TextValue' },
   { name: 'width', type: 'string', option: ['auto', 'max', 'sm', 'md', 'lg', 'custom'] },
   { name: 'widthMatch', type: 'boolean' }
   // :propsList [!] System label / Системная метка

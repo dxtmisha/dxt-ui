@@ -8,8 +8,11 @@ import { wikiValue } from './wikiValue'
 import { wikiStyle } from './wikiStyle'
 import { wikiOption } from './wikiOption'
 import { wikiTechnical } from './wikiTechnical'
+import { wikiText } from './wikiText'
 import { wikiHook } from './wikiHook'
 
+import { wikiActionsInclude } from './wikiActionsInclude'
+import { wikiBarsInclude } from './wikiBarsInclude'
 import { wikiIconInclude } from './wikiIconInclude'
 import { wikiMaskInclude } from './wikiMaskInclude'
 
@@ -44,8 +47,11 @@ export const wiki: StorybookArgsToList = {
   ...wikiStyle,
   ...wikiOption,
   ...wikiTechnical,
+  ...wikiText,
   ...wikiHook,
 
+  ...wikiActionsInclude,
+  ...wikiBarsInclude,
   ...wikiIconInclude,
   ...wikiMaskInclude,
 

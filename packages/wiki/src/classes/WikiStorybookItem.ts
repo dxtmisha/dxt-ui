@@ -68,8 +68,12 @@ export class WikiStorybookItem {
         return 5100
       case StorybookCategory.icon:
         return 5200
+      case StorybookCategory.bars:
+        return 5200
+      case StorybookCategory.actions:
+        return 5200
       case StorybookCategory.mask:
-        return 5300
+        return 5200
       case StorybookCategory.form:
         return 6000
       case StorybookCategory.hook:
@@ -78,6 +82,8 @@ export class WikiStorybookItem {
         return 9000
       case StorybookCategory.option:
         return 9100
+      case StorybookCategory.text:
+        return 9800
       case StorybookCategory.aria:
         return 9900
       default:

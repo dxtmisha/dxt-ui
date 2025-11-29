@@ -21,39 +21,6 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
-  actionsHide: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.status,
-
-      description: {
-        en: 'Hides the actions component',
-        ru: 'Скрывает компонент действий'
-      }
-    }
-  },
-  barsBackHide: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.status,
-
-      description: {
-        en: 'Hides the back button in the bars header',
-        ru: 'Скрывает кнопку «назад» в заголовке бара'
-      }
-    }
-  },
-  barsHide: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.status,
-
-      description: {
-        en: 'Hides the bars (header toolbar)',
-        ru: 'Скрывает бар (верхнюю панель)'
-      }
-    }
-  },
   cancelShow: {
     type: StorybookControl.boolean,
     options: {

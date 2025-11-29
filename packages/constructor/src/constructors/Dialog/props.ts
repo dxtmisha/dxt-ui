@@ -8,6 +8,7 @@ import type { ButtonPropsBasic } from '../Button'
 import type { ActionsPropsBasic, ActionsPropsInclude } from '../Actions'
 import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
+import type { TextClosePropsInclude, TextOkPropsInclude } from '../../types/textTypes'
 
 interface DialogPropsToken {
   // :type [!] System label / Системная метка
@@ -29,7 +30,9 @@ export interface DialogPropsBasic<
   ActionsPropsInclude<Actions>,
   ImagePropsInclude<Image>,
   LabelProps,
-  DescriptionProps {
+  DescriptionProps,
+  TextClosePropsInclude,
+  TextOkPropsInclude {
   // Status
   open?: boolean
 

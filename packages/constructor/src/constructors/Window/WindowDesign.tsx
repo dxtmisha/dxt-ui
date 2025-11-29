@@ -2,8 +2,7 @@ import { computed, h, Teleport, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  Translate
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -266,7 +265,7 @@ export class WindowDesign<
             this.item.classes.list.close
           ],
           icon: this.props.iconClose,
-          ...AriaStaticInclude.label(Translate.getSync('global-close'))
+          ...AriaStaticInclude.label(this.item.text.close.value)
         }
       )
     }

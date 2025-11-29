@@ -10,7 +10,7 @@ import {
  * Объект wikiActions содержит описание всех свойств для компонента Actions
  */
 export const wikiActions: StorybookArgsToList = {
-  list: {
+  'actions.list': {
     type: StorybookControl.object,
     options: {
       category: StorybookCategory.value,
@@ -24,7 +24,7 @@ export const wikiActions: StorybookArgsToList = {
       ]
     }
   },
-  listSecondary: {
+  'actions.listSecondary': {
     type: StorybookControl.object,
     options: {
       category: StorybookCategory.value,

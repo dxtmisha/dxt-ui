@@ -6,6 +6,7 @@ import type { SkeletonPropsInclude } from '../Skeleton'
 
 import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
+import type { TextClosePropsInclude } from '../../types/textTypes'
 
 interface BarsPropsToken {
   // :type [!] System label / Системная метка
@@ -18,7 +19,8 @@ export interface BarsPropsBasic<
   Button extends ButtonPropsBasic = ButtonPropsBasic
 > extends LabelProps,
   DescriptionProps,
-  SkeletonPropsInclude
+  SkeletonPropsInclude,
+  TextClosePropsInclude
 {
   // Value
   'backButton'?: ConstrBind<Button>

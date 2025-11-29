@@ -1,4 +1,6 @@
-import { anyToString, isObject, Translate } from '@dxtmisha/functional'
+import { anyToString, isObject } from '@dxtmisha/functional'
+
+import { TextInclude } from '../TextInclude'
 
 import { FieldElementInclude } from './FieldElementInclude'
 import { FieldValueInclude } from './FieldValueInclude'
@@ -17,11 +19,13 @@ export class FieldMatchInclude {
    * @param props input data/ входные данные
    * @param element object for working with input element/ объект для работы с элементом ввода
    * @param value object for working with value/ объект для работы со значениями
+   * @param text object for working with texts/ объект для работы с текстами
    */
   constructor(
     protected readonly props: FieldAllProps,
     protected readonly element: FieldElementInclude,
-    protected readonly value: FieldValueInclude
+    protected readonly value: FieldValueInclude,
+    protected readonly text?: TextInclude
   ) {
   }
 
@@ -65,7 +69,9 @@ export class FieldMatchInclude {
         return this.props.match.validationMessage
       }
 
-      return Translate.getSync('global-entries_match')
+      if (this.text) {
+        return this.text.entriesMatch.value ?? ''
+      }
     }
 
     return ''

@@ -31,94 +31,6 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  actionsList: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.value,
-      description: {
-        en: 'Array of primary action buttons displayed in the actions area',
-        ru: 'Массив основных кнопок действий, отображаемых в области действий'
-      },
-      value: [
-        { icon: 'edit', label: 'Edit' },
-        { icon: 'delete', label: 'Delete' },
-        { icon: 'share', label: 'Share' }
-      ]
-    }
-  },
-  actionsSecondary: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.value,
-      description: {
-        en: 'Array of secondary action buttons displayed in the actions area',
-        ru: 'Массив вторичных кнопок действий, отображаемых в области действий'
-      },
-      value: [
-        { icon: 'info', label: 'Info' },
-        { icon: 'help', label: 'Help' }
-      ]
-    }
-  },
-  barsDescription: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Description text displayed in the bars area (subtitle/help)',
-        ru: 'Текст описания, отображаемый в области бара (подзаголовок/подсказка)'
-      }
-    }
-  },
-  barsLabel: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: ['string', 'number'],
-      description: {
-        en: 'Label or numeric indicator shown in the bars header',
-        ru: 'Метка или числовой индикатор, отображаемый в заголовке бара'
-      }
-    }
-  },
-  barsList: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.value,
-      description: {
-        en: 'Array of buttons displayed in the bars area (actions)',
-        ru: 'Массив кнопок, отображаемых в области бара (действия)'
-      },
-      value: [
-        { icon: 'home', label: 'Home' },
-        { icon: 'search', label: 'Search' },
-        { icon: 'settings', label: 'Settings' }
-      ]
-    }
-  },
-  buttonClose: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.value,
-      type: ['string', 'ConstrBind<ButtonPropsBasic>', 'null'],
-      description: {
-        en: 'Close button configuration (string for label or full button props object, null to hide)',
-        ru: 'Конфигурация кнопки закрытия (строка для метки или объект свойств кнопки, null для скрытия)'
-      }
-    }
-  },
-  buttonOk: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.value,
-      type: ['string', 'ConstrBind<ButtonPropsBasic>', 'null'],
-      description: {
-        en: 'OK button configuration (string for label or full button props object, null to hide)',
-        ru: 'Конфигурация кнопки OK (строка для метки или объект свойств кнопки, null для скрытия)'
-      }
-    }
-  },
   counter: {
     type: StorybookControl.number,
     options: {
@@ -161,18 +73,6 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Language/locale code (BCP 47) used for formatting values (e.g., en-US, ru-RU)',
         ru: 'Код языка/локали (BCP 47) для форматирования значений (например, ru-RU, en-US)'
       }
-    }
-  },
-  description: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Description text providing additional context',
-        ru: 'Текст описания, предоставляющий дополнительный контекст'
-      },
-      value: 'Here is a detailed description of the component'
     }
   },
   detail: {
@@ -259,17 +159,6 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Object key to use as value text',
         ru: 'Ключ объекта для использования в качестве текста значения'
-      }
-    }
-  },
-  image: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string | File | ImageProps',
-      description: {
-        en: 'Specifies the image value for the component',
-        ru: 'Указывает значение изображения для компонента'
       }
     }
   },

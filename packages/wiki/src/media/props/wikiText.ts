@@ -1,0 +1,46 @@
+import {
+  type StorybookArgsToList,
+  StorybookCategory,
+  StorybookControl
+} from '../../types/storybookTypes'
+
+/**
+ * The wikiText object contains descriptions of all text properties
+ *
+ * Объект wikiText содержит описание всех текстовых свойств
+ */
+export const wikiText: StorybookArgsToList = {
+  textClose: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Close text',
+        ru: 'Текст закрытия'
+      }
+    }
+  },
+  textEntriesMatch: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Text for entries mismatch validation message',
+        ru: 'Текст сообщения валидации о несовпадении записей'
+      }
+    }
+  },
+  textOk: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'OK text',
+        ru: 'Текст подтверждения'
+      }
+    }
+  }
+}

@@ -10,7 +10,7 @@ import {
  * Объект wikiSelect содержит свойства для компонента Select
  */
 export const wikiSelect: StorybookArgsToList = {
-  option: {
+  'select.option': {
     type: StorybookControl.object,
     options: {
       category: StorybookCategory.value,
@@ -34,7 +34,7 @@ export const wikiSelect: StorybookArgsToList = {
       ]
     }
   },
-  editValue: {
+  'select.editValue': {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.form,
@@ -44,7 +44,7 @@ export const wikiSelect: StorybookArgsToList = {
       }
     }
   },
-  showSearch: {
+  'select.showSearch': {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
@@ -54,7 +54,7 @@ export const wikiSelect: StorybookArgsToList = {
       }
     }
   },
-  inputSearchAttrs: {
+  'select.inputSearchAttrs': {
     type: StorybookControl.object,
     options: {
       category: StorybookCategory.style,

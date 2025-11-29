@@ -22,16 +22,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  actionsAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the Actions component container',
-        ru: 'Дополнительные атрибуты для контейнера компонента Actions'
-      }
-    }
-  },
   align: {
     type: StorybookControl.select,
     options: {
@@ -85,16 +75,6 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Indicates whether the bars (header toolbar) should be shown',
         ru: 'Показывает, нужно ли отображать бар (верхнюю панель)'
-      }
-    }
-  },
-  barsAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the bars (header toolbar) container',
-        ru: 'Дополнительные атрибуты для контейнера бара (верхней панели)'
       }
     }
   },

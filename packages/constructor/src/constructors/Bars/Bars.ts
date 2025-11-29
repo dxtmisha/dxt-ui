@@ -1,5 +1,5 @@
 import { computed, reactive, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, forEach, getBind, toBind, Translate } from '@dxtmisha/functional'
+import { type ConstrEmit, DesignComp, forEach, getBind, toBind } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
@@ -7,10 +7,11 @@ import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 
+import { BarsAction } from './BarsAction'
 import { WindowClassesInclude } from '../Window'
 import { MotionTransformClassesInclude } from '../MotionTransform'
 import { SkeletonInclude } from '../Skeleton'
-import { BarsAction } from './BarsAction'
+import { TextInclude } from '../../classes/TextInclude'
 
 import type { BarsComponents, BarsEmits, BarsSlots } from './types'
 import type { BarsProps } from './props'
@@ -34,6 +35,8 @@ export class Bars {
   readonly motionTransformClasses: MotionTransformClassesInclude
   /** Подключение скелетона для текста/описания */
   readonly skeleton: SkeletonInclude
+
+  readonly text: TextInclude
 
   /**
    * Constructor
@@ -76,6 +79,7 @@ export class Bars {
     this.windowClasses = new WindowClassesInclude(classDesign)
     this.motionTransformClasses = new MotionTransformClassesInclude(classDesign)
     this.skeleton = skeleton
+    this.text = new TextInclude(this.props)
 
     new ModelInclude('action', this.emits, this.action.action)
   }
@@ -96,7 +100,7 @@ export class Bars {
             this.motionTransformClasses.get().close
           ],
           onClick: this.onClickBack,
-          ...AriaStaticInclude.label(Translate.getSync('global-close'))
+          ...AriaStaticInclude.label(this.text.close.value)
         },
         this.props.backButton ?? {}
       ),

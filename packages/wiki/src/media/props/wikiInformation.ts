@@ -1,6 +1,28 @@
 import { type StorybookArgsToList, StorybookCategory, StorybookControl } from '../../types/storybookTypes'
 
 export const wikiInformation: StorybookArgsToList = {
+  buttonClose: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.information,
+      type: ['string', 'ConstrBind<ButtonPropsBasic>', 'null'],
+      description: {
+        en: 'Close button configuration (string for label or full button props object, null to hide)',
+        ru: 'Конфигурация кнопки закрытия (строка для метки или объект свойств кнопки, null для скрытия)'
+      }
+    }
+  },
+  buttonOk: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.information,
+      type: ['string', 'ConstrBind<ButtonPropsBasic>', 'null'],
+      description: {
+        en: 'OK button configuration (string for label or full button props object, null to hide)',
+        ru: 'Конфигурация кнопки OK (строка для метки или объект свойств кнопки, null для скрытия)'
+      }
+    }
+  },
   caption: {
     type: StorybookControl.string,
     options: {
@@ -10,6 +32,18 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Caption text for additional information',
         ru: 'Текст подписи для дополнительной информации'
       }
+    }
+  },
+  description: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: 'string',
+      description: {
+        en: 'Description text providing additional context',
+        ru: 'Текст описания, предоставляющий дополнительный контекст'
+      },
+      value: 'Here is a detailed description of the component'
     }
   },
   forceShowMessage: {
@@ -32,6 +66,17 @@ export const wikiInformation: StorybookArgsToList = {
         ru: 'Вспомогательный текст, предоставляющий руководство или дополнительную информацию'
       },
       value: 'This is a helpful message'
+    }
+  },
+  image: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: 'string | File | ImageProps',
+      description: {
+        en: 'Specifies the image value for the component',
+        ru: 'Указывает значение изображения для компонента'
+      }
     }
   },
   label: {
@@ -57,17 +102,6 @@ export const wikiInformation: StorybookArgsToList = {
       }
     }
   },
-  prefix: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.information,
-      type: 'string',
-      description: {
-        en: 'Prefix text displayed before the main content',
-        ru: 'Текст префикса, отображаемый перед основным содержимым'
-      }
-    }
-  },
   placeholder: {
     type: StorybookControl.string,
     options: {
@@ -76,6 +110,17 @@ export const wikiInformation: StorybookArgsToList = {
       description: {
         en: 'Placeholder text shown when the input is empty',
         ru: 'Текст подсказки, отображаемый при пустом вводе'
+      }
+    }
+  },
+  prefix: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: 'string',
+      description: {
+        en: 'Prefix text displayed before the main content',
+        ru: 'Текст префикса, отображаемый перед основным содержимым'
       }
     }
   },

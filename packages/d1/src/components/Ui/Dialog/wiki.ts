@@ -35,6 +35,8 @@ const propsNames: StorybookProps = [
   { name: 'padding', type: 'string', option: ['sm', 'md', 'lg'] },
   { name: 'paddingByIndent', type: 'boolean' },
   { name: 'success', type: 'boolean' },
+  { name: 'textClose', type: 'TextValue' },
+  { name: 'textOk', type: 'TextValue' },
   { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'auto'] },
   { name: 'windowAttrs', type: 'ConstrBind<WindowProps>' }
   // :propsList [!] System label / Системная метка

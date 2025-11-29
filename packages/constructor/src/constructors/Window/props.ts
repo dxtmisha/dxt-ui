@@ -3,6 +3,7 @@ import type { ElementOrString, NormalOrPromise } from '@dxtmisha/functional'
 import type { AriaByPropsInclude, AriaHaspopupPropsInclude } from '../../types/ariaTypes'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar'
+import type { TextClosePropsInclude } from '../../types/textTypes'
 
 interface WindowPropsToken {
   // :type [!] System label / Системная метка
@@ -28,7 +29,8 @@ export interface WindowPropsBasic<
 > extends ScrollbarPropsInclude<Scrollbar>,
   ImagePropsInclude<Image>,
   AriaByPropsInclude,
-  AriaHaspopupPropsInclude {
+  AriaHaspopupPropsInclude,
+  TextClosePropsInclude {
   // Status
   'open'?: boolean
   'disabled'?: boolean

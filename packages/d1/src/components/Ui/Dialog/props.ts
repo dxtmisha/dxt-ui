@@ -6,7 +6,6 @@ import type { IconProps } from '../Icon'
 import type { ImageProps } from '../Image'
 import type { ButtonProps } from '../Button'
 import type { ActionsProps } from '../Actions'
-import { Translate } from '@dxtmisha/functional'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -39,13 +38,12 @@ export interface DialogProps extends DialogPropsBasic<WindowProps, BarsProps, Ic
 export const defaults: object = {
   ...defaultsDialog,
   buttonClose: {
-    label: Translate.getSync('global-close'),
     outline: true
   },
   iconSuccess: 'check_circle',
   iconError: 'error',
   iconAttrs: {
-    size: '4xl'
+    size: '3xl'
   },
   ...{
     // :default [!] System label / Системная метка
