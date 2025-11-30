@@ -30,6 +30,7 @@
   'd1.margin',
   'd1.marginX',
   'd1.marginY',
+  'd1.outline',
   'd1.palette',));
 @include variables.setDesignsPalette((
   '--d1-sys-palette-primary': ('--d1-palette-basic600', '--d1-palette-dark200'),
@@ -9912,6 +9913,88 @@
                     value: 'var(--d1-ref-spacing-10)',
                   ),
                 ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      'outline':(
+        index: 'outline',
+        name: 'd1-outline',
+        type: 'component',
+        value: (
+          'sm':(
+            index: 'sm',
+            name: '&--sm',
+            type: 'state',
+            value: (
+              'outlineOpacity':(
+                index: 'outlineOpacity',
+                name: 'outline-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-outline)',
+              ),
+              'outlineWidth':(
+                index: 'outlineWidth',
+                name: 'outline-width',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2px)',
+              ),
+              'outlineColor':(
+                index: 'outlineColor',
+                name: 'outline-color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primary)',
+              ),
+            ),
+          ),
+          'md':(
+            index: 'md',
+            name: '&--md',
+            type: 'state',
+            value: (
+              'outlineOpacity':(
+                index: 'outlineOpacity',
+                name: 'outline-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-outline)',
+              ),
+              'outlineWidth':(
+                index: 'outlineWidth',
+                name: 'outline-width',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-1)',
+              ),
+              'outlineColor':(
+                index: 'outlineColor',
+                name: 'outline-color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primary)',
+              ),
+            ),
+          ),
+          'lg':(
+            index: 'lg',
+            name: '&--lg',
+            type: 'state',
+            value: (
+              'outlineOpacity':(
+                index: 'outlineOpacity',
+                name: 'outline-opacity',
+                type: 'property',
+                value: 'var(--d1-sys-opacity-outline)',
+              ),
+              'outlineWidth':(
+                index: 'outlineWidth',
+                name: 'outline-width',
+                type: 'property',
+                value: 'var(--d1-ref-spacing-2)',
+              ),
+              'outlineColor':(
+                index: 'outlineColor',
+                name: 'outline-color',
+                type: 'property',
+                value: 'var(--d1-sys-palette-primary)',
               ),
             ),
           ),

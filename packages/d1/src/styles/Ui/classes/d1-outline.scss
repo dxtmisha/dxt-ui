@@ -1,0 +1,24 @@
+@use "@dxtmisha/styles" as ui;
+
+.d1-outline {
+  &--sm {
+    @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+    
+    outline-width: var(--d1-ref-spacing-2px);
+    @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+  }
+  
+  &--md {
+    @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+    
+    outline-width: var(--d1-ref-spacing-1);
+    @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+  }
+  
+  &--lg {
+    @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+    
+    outline-width: var(--d1-ref-spacing-2);
+    @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+  }
+}

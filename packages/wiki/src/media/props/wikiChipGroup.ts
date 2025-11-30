@@ -10,6 +10,21 @@ import {
  * Объект wikiChipGroup содержит свойства для компонента ChipGroup
  */
 export const wikiChipGroup: StorybookArgsToList = {
+  'chipGroup.list': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Array of chip items data. Contains the data for all chips to be rendered in the group.',
+        ru: 'Массив данных элементов чипов. Содержит данные для всех чипов, которые должны быть отображены в группе.'
+      },
+      value: [
+        { label: 'Apple', value: 'apple' },
+        { label: 'Banana', value: 'banana' },
+        { label: 'Orange', value: 'orange' }
+      ]
+    }
+  },
   'chipGroup.selected': {
     type: StorybookControl.string,
     options: {

@@ -32,6 +32,10 @@
     @include ui.focus {
       @include ui.gradient(#{var(--sys-color)});
       @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)});
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
     }
     
     @include ui.hover {

@@ -113,6 +113,12 @@
     },
     "_category": "class"
   },
+  "outline": {
+    "value": {
+      "file|marginX": "tokens/outline.json"
+    },
+    "_category": "class"
+  },
   "dark": {
     "value": {
       "file|dark": "tokens/dark.json"

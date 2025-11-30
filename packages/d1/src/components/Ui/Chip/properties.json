@@ -5,7 +5,8 @@
   "border-radius": "var(--sys-height) * {sys.rounded.adaptive.sm}",
   "focus": {
     "gradient": "var(--sys-color)",
-    "gradient-opacity": "{sys.opacity.focus}"
+    "gradient-opacity": "{sys.opacity.focus}",
+    "outline": "{outline.md}"
   },
   "hover": {
     "gradient": "var(--sys-color)",
