@@ -48,7 +48,7 @@ export class FieldLabelInclude<
   }
 
   /** Checks if label should be displayed/ Проверяет, надо ли отображать метку */
-  readonly is = computed<boolean>(() => isFilled(this.props.label))
+  readonly is = computed<boolean>(() => isFilled(this.props.label) || Boolean(this.isCounter?.value))
 
   /** Computed bindings for FieldLabel/ Вычисляемые привязки для FieldLabel */
   readonly binds = computed<PropsExtra>(() =>

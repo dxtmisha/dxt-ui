@@ -2,6 +2,7 @@ import { computed, type VNode } from 'vue'
 import {
   type ConstrBind,
   DesignComponents,
+  getElementId,
   getRef,
   isFilled,
   isNull,
@@ -11,6 +12,7 @@ import {
 
 import type {
   FieldCounterComponentInclude,
+  FieldCounterExposeInclude,
   FieldCounterPropsInclude
 } from './basicTypes'
 import type { FieldCounterProps } from './props'
@@ -24,6 +26,9 @@ export class FieldCounterInclude<
   Props extends FieldCounterPropsInclude = FieldCounterPropsInclude,
   PropsExtra extends ConstrBind<FieldCounterProps> = ConstrBind<FieldCounterProps>
 > {
+  /** Unique identifier/ Уникальный идентификатор */
+  readonly id: string = getElementId()
+
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -50,6 +55,11 @@ export class FieldCounterInclude<
       )
     )
   )
+
+  /** Exposed properties for FieldCounter/ Экспортируемые свойства для FieldCounter */
+  readonly expose: FieldCounterExposeInclude = {
+    fieldCounterId: this.id
+  }
 
   /** Computed bindings for FieldCounter/ Вычисляемые привязки для FieldCounter */
   readonly binds = computed<PropsExtra>(() => {

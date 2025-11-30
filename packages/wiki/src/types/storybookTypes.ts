@@ -22,32 +22,34 @@ export enum StorybookCategory {
   actions = 'Actions',
   /** Adaptive design category / Категория адаптивного дизайна */
   adaptive = 'Adaptive',
+  /** ARIA category / Категория ARIA */
+  aria = 'ARIA',
   /** Bars category / Категория баров */
   bars = 'Bars',
-  /** Status category / Категория статуса */
-  status = 'Status',
-  /** Information category / Категория информации */
-  information = 'Information',
-  /** Icon category / Категория иконок */
-  icon = 'Icon',
-  /** Values category / Категория значений */
-  value = 'Values',
+  /** Counter category / Категория счетчика */
+  counter = 'Counter',
   /** Form category / Категория формы */
   form = 'Form',
   /** Hook category / Категория хуков */
   hook = 'Hook',
+  /** Icon category / Категория иконок */
+  icon = 'Icon',
+  /** Information category / Категория информации */
+  information = 'Information',
   /** Mask category / Категория маски */
   mask = 'Mask',
+  /** Options category / Категория опций */
+  option = 'Options',
+  /** Status category / Категория статуса */
+  status = 'Status',
   /** Styles category / Категория стилей */
   style = 'Styles',
-  /** Styles category / Категория стилей */
-  option = 'Options',
-  /** ARIA category / Категория ARIA */
-  aria = 'ARIA',
   /** Technical category / Техническая категория */
   technical = 'Technical',
   /** Text category / Текстовая категория */
-  text = 'Text'
+  text = 'Text',
+  /** Values category / Категория значений */
+  value = 'Values'
 }
 
 /** Type for Storybook controls / Типы для элементов управления Storybook */

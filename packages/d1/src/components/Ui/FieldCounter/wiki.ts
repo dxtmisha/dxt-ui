@@ -7,6 +7,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'counter', type: 'string | number' },
+  { name: 'id', type: 'string' },
   { name: 'maxlength', type: 'string | number' },
   { name: 'template', type: 'string' }
   // :propsList [!] System label / Системная метка

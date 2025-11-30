@@ -75,7 +75,7 @@ export class FieldCounterDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      id: this.item.id
+      id: this.item.idElement
     } as EXPOSE
   }
 
@@ -113,7 +113,7 @@ export class FieldCounterDesign<
       return h(
         'div', {
           ...this.getAttrs(),
-          id: this.item.id,
+          id: this.item.id.value,
           class: this.classes?.value.main,
           innerHTML: this.item.item.value
         }

@@ -5,6 +5,7 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { FieldLabel } from './FieldLabel'
 
 import {
@@ -74,7 +75,10 @@ export class FieldLabelDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {} as EXPOSE
+    return {
+      ...this.item.label.expose,
+      ...this.item.fieldCounter.expose
+    } as EXPOSE
   }
 
   /**
@@ -144,7 +148,8 @@ export class FieldLabelDesign<
         h(
           'span',
           {
-            class: this.classes?.value.required
+            class: this.classes?.value.required,
+            ...AriaStaticInclude.hidden()
           },
           '*'
         )

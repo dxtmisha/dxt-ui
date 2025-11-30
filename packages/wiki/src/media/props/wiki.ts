@@ -13,6 +13,7 @@ import { wikiHook } from './wikiHook'
 
 import { wikiActionsInclude } from './wikiActionsInclude'
 import { wikiBarsInclude } from './wikiBarsInclude'
+import { wikiFieldCounterInclude } from './wikiFieldCounterInclude'
 import { wikiIconInclude } from './wikiIconInclude'
 import { wikiMaskInclude } from './wikiMaskInclude'
 
@@ -52,6 +53,7 @@ export const wiki: StorybookArgsToList = {
 
   ...wikiActionsInclude,
   ...wikiBarsInclude,
+  ...wikiFieldCounterInclude,
   ...wikiIconInclude,
   ...wikiMaskInclude,
 

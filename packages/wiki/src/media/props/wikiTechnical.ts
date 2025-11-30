@@ -10,6 +10,17 @@ import {
  * Объект wikiTechnical содержит общие технические свойства для всех компонентов
  */
 export const wikiTechnical: StorybookArgsToList = {
+  id: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Unique identifier attribute for the element',
+        ru: 'Уникальный идентификатор атрибута для элемента'
+      }
+    }
+  },
   modelOpen: {
     type: StorybookControl.boolean,
     options: {

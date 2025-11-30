@@ -9,6 +9,9 @@ export interface FieldCounterPropsBasic {
   maxlength?: string | number
 
   template?: string
+
+  // Technical
+  id?: string
 }
 
 /**

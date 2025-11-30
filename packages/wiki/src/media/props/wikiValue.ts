@@ -129,17 +129,6 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  id: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Unique identifier attribute for the element',
-        ru: 'Уникальный идентификатор атрибута для элемента'
-      }
-    }
-  },
   keyLabel: {
     type: StorybookControl.string,
     options: {

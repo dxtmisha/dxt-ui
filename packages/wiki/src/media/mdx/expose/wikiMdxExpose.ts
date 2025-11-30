@@ -6,6 +6,8 @@ import exposeDescriptionIdEn from './expose.descriptionId.en.mdx'
 import exposeDescriptionIdRu from './expose.descriptionId.ru.mdx'
 import exposeDetailEn from './expose.detail.en.mdx'
 import exposeDetailRu from './expose.detail.ru.mdx'
+import exposeFieldCounterIdEn from './expose.fieldCounterId.en.mdx'
+import exposeFieldCounterIdRu from './expose.fieldCounterId.ru.mdx'
 import exposeIdEn from './expose.id.en.mdx'
 import exposeIdRu from './expose.id.ru.mdx'
 import exposeLabelIdEn from './expose.labelId.en.mdx'
@@ -31,6 +33,10 @@ export const wikiMdxExpose: StorybookComponentsMdxItem = {
     detail: {
       en: exposeDetailEn,
       ru: exposeDetailRu
+    },
+    fieldCounterId: {
+      en: exposeFieldCounterIdEn,
+      ru: exposeFieldCounterIdRu
     },
     id: {
       en: exposeIdEn,

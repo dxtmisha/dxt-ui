@@ -66,11 +66,13 @@ export class WikiStorybookItem {
         return 5000
       case StorybookCategory.information:
         return 5100
+      case StorybookCategory.actions:
+        return 5200
       case StorybookCategory.icon:
         return 5200
       case StorybookCategory.bars:
         return 5200
-      case StorybookCategory.actions:
+      case StorybookCategory.counter:
         return 5200
       case StorybookCategory.mask:
         return 5200

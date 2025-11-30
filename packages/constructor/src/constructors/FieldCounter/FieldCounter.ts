@@ -9,7 +9,7 @@ import type { FieldCounterProps } from './props'
  */
 export class FieldCounter {
   /** Element id/ Идентификатор элемента */
-  readonly id = getElementId()
+  readonly idElement = getElementId()
 
   /**
    * Constructor
@@ -57,6 +57,11 @@ export class FieldCounter {
 
     return counter
   })
+
+  /** Returns the identifier of the element/ Возвращает идентификатор элемента */
+  readonly id = computed<string>(
+    () => this.props.id ?? this.idElement
+  )
 
   /**
    * Returns the number of input characters.

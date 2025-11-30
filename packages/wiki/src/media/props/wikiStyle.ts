@@ -161,38 +161,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  counterShow: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-
-      description: {
-        en: 'Shows the counter element',
-        ru: 'Показывает элемент счетчика'
-      }
-    }
-  },
-  counterTemplate: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.style,
-      type: 'string',
-      description: {
-        en: 'Custom display template for the counter component',
-        ru: 'Пользовательский шаблон отображения для компонента счетчика'
-      }
-    }
-  },
-  counterTop: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Displays the counter above the field',
-        ru: 'Отображает счетчик над полем'
-      }
-    }
-  },
   dense: {
     type: StorybookControl.boolean,
     options: {
@@ -234,16 +202,6 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Displays the component as a dot indicator',
         ru: 'Отображает компонент как точечный индикатор'
-      }
-    }
-  },
-  fieldCounterAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the field counter component',
-        ru: 'Дополнительные атрибуты для компонента счетчика поля'
       }
     }
   },
