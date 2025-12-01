@@ -1,7 +1,10 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { FieldMessagePropsBasic } from './props'
-import type { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounter'
+import type {
+  FieldCounterPropsBasic,
+  FieldCounterPropsInclude
+} from '../FieldCounter'
 
 /**
  * Type describing available slots/ Тип, описывающий доступные слоты
@@ -33,4 +36,5 @@ export interface FieldMessagePropsInclude<
   helperMessage?: string
   validationMessage?: string
   fieldMessageAttrs?: ConstrBind<FieldMessage>
+  messageId?: string
 }

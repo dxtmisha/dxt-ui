@@ -11,8 +11,8 @@ import {
 import type { EventClickValue } from '../../types/eventClickTypes'
 
 import type { BarsComponentInclude, BarsEmitsInclude, BarsPropsInclude } from './basicTypes'
+import type { BarsExpose } from './types'
 import type { BarsProps } from './props'
-import type { BarsExpose } from './types.ts'
 
 /**
  * BarsInclude class provides functionality for conditionally rendering bars components

@@ -10,12 +10,12 @@ import { ProgressInclude } from '../Progress'
 import { RippleInclude } from '../Ripple'
 import { SkeletonInclude } from '../Skeleton'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { ButtonComponents, ButtonEmits, ButtonSlots } from './types'
 import type { ButtonPropsBasic } from './props'
-import type { AriaList } from '../../types/ariaTypes.ts'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * Button

@@ -1,5 +1,5 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, getElementId, isFilled, toNumber } from '@dxtmisha/functional'
+import { type ConstrEmit, DesignComp, isFilled, toNumber } from '@dxtmisha/functional'
 
 import type { FieldCounterComponents, FieldCounterEmits, FieldCounterSlots } from './types'
 import type { FieldCounterProps } from './props'
@@ -8,9 +8,6 @@ import type { FieldCounterProps } from './props'
  * FieldCounter
  */
 export class FieldCounter {
-  /** Element id/ Идентификатор элемента */
-  readonly idElement = getElementId()
-
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -57,11 +54,6 @@ export class FieldCounter {
 
     return counter
   })
-
-  /** Returns the identifier of the element/ Возвращает идентификатор элемента */
-  readonly id = computed<string>(
-    () => this.props.id ?? this.idElement
-  )
 
   /**
    * Returns the number of input characters.

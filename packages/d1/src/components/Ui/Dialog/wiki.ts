@@ -31,6 +31,7 @@ const propsNames: StorybookProps = [
   { name: 'image', type: 'string | ConstrBind<ImageProps>' },
   { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
   { name: 'label', type: 'NumberOrString' },
+  { name: 'labelId', type: 'string' },
   { name: 'open', type: 'boolean' },
   { name: 'padding', type: 'string', option: ['sm', 'md', 'lg'] },
   { name: 'paddingByIndent', type: 'boolean' },

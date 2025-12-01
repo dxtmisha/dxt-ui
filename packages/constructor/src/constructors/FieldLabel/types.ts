@@ -1,6 +1,6 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { LabelAlternativeSlots, LabelExpose } from '../../types/labelTypes'
-import { type FieldCounterComponentInclude, type FieldCounterExposeInclude } from '../FieldCounter'
+import { type FieldCounterComponentInclude } from '../FieldCounter'
 import { type ProgressComponentInclude } from '../Progress'
 
 /**
@@ -24,7 +24,7 @@ export type FieldLabelEmits = {}
  *
  * Тип, описывающий доступные свойства.
  */
-export interface FieldLabelExpose extends LabelExpose, FieldCounterExposeInclude {
+export interface FieldLabelExpose extends LabelExpose {
 }
 
 /**

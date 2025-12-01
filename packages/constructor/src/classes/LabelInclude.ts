@@ -106,7 +106,7 @@ export class LabelInclude {
           render(
             'span',
             {
-              id: this.getId(),
+              id: this.props.labelId ?? this.getId(),
               class: this.getClassName()
             },
             children,

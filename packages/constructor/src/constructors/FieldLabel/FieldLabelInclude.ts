@@ -3,8 +3,10 @@ import {
   type ConstrBind,
   DesignComponents,
   getRef,
-  isFilled, type RawSlots,
-  type RefOrNormal, type RefType,
+  isFilled,
+  type RawSlots,
+  type RefOrNormal,
+  type RefType,
   toBinds
 } from '@dxtmisha/functional'
 
@@ -59,7 +61,10 @@ export class FieldLabelInclude<
         : {},
       {
         label: this.props.label,
-        required: this.props.required
+        required: this.props.required,
+
+        labelId: this.props.labelId,
+        counterId: this.props.counterId
       },
       this.props.fieldLabelAttrs
     )

@@ -18,6 +18,7 @@ const propsNames: StorybookProps = [
   { name: 'iconPalette', type: 'boolean' },
   { name: 'iconTurn', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },
+  { name: 'labelId', type: 'string' },
   { name: 'labelMax', type: 'NumberOrString' },
   { name: 'outline', type: 'boolean' },
   { name: 'overlap', type: 'string', option: ['rectangular', 'circular', 'static'] },

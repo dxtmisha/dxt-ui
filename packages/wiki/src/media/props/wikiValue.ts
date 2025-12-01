@@ -31,18 +31,6 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  counter: {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.value,
-      type: ['number', 'string'],
-      description: {
-        en: 'Current character count',
-        ru: 'Текущее количество символов'
-      },
-      value: 25
-    }
-  },
   currency: {
     type: StorybookControl.string,
     options: {

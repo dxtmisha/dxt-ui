@@ -74,7 +74,10 @@ export class FieldMessageInclude<
         disabled: this.props.disabled,
         forceShow: this.props.forceShowMessage,
         helperMessage: this.props.helperMessage,
-        validationMessage: this.validation.value
+        validationMessage: this.validation.value,
+
+        messageId: this.props.messageId,
+        counterId: this.props.counterId
       },
       this.props.fieldMessageAttrs
     )

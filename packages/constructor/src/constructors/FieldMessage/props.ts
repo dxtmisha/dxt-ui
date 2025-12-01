@@ -17,6 +17,9 @@ export interface FieldMessagePropsBasic<
   // Value
   helperMessage?: string
   validationMessage?: string
+
+  // Technical
+  messageId?: string
 }
 
 /**

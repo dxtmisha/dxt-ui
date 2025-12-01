@@ -7,6 +7,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'counter', type: 'string | number' },
+  { name: 'counterId', type: 'string' },
   { name: 'counterShow', type: 'boolean' },
   { name: 'counterTemplate', type: 'string' },
   { name: 'disabled', type: 'boolean' },
@@ -15,6 +16,7 @@ const propsNames: StorybookProps = [
   { name: 'helperMessage', type: 'string' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'maxlength', type: 'string | number' },
+  { name: 'messageId', type: 'string' },
   { name: 'validationMessage', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]

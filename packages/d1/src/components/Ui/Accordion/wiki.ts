@@ -14,6 +14,7 @@ const propsNames: StorybookProps = [
   { name: 'icon', type: 'IconValue<IconProps>' },
   { name: 'iconArrowDown', type: 'IconValue<IconProps>' },
   { name: 'label', type: 'NumberOrString' },
+  { name: 'labelId', type: 'string' },
   { name: 'modelOpen', type: 'boolean' },
   { name: 'motionTransformAttrs', type: 'ConstrBind<MotionTransformProps>' },
   { name: 'onUpdate:modelOpen', type: '(value: boolean) => void' },

@@ -10,6 +10,18 @@ import {
  * Объект wikiFieldCounterInclude содержит описание всех свойств для включения FieldCounter
  */
 export const wikiFieldCounterInclude: StorybookArgsToList = {
+  counter: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.counter,
+      type: ['number', 'string'],
+      description: {
+        en: 'Current character count',
+        ru: 'Текущее количество символов'
+      },
+      value: 25
+    }
+  },
   counterShow: {
     type: StorybookControl.boolean,
     options: {
@@ -18,6 +30,17 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
       description: {
         en: 'Shows the counter element',
         ru: 'Показывает элемент счетчика'
+      }
+    }
+  },
+  counterId: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.counter,
+      type: 'string',
+      description: {
+        en: 'Unique identifier for the counter element',
+        ru: 'Уникальный идентификатор для элемента счетчика'
       }
     }
   },

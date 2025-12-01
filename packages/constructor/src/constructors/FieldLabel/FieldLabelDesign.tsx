@@ -76,8 +76,7 @@ export class FieldLabelDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.label.expose,
-      ...this.item.fieldCounter.expose
+      ...this.item.label.expose
     } as EXPOSE
   }
 

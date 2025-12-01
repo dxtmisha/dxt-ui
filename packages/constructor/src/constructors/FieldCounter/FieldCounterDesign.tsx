@@ -74,9 +74,7 @@ export class FieldCounterDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {
-      id: this.item.idElement
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
@@ -113,7 +111,7 @@ export class FieldCounterDesign<
       return h(
         'div', {
           ...this.getAttrs(),
-          id: this.item.id.value,
+          id: this.props.id,
           class: this.classes?.value.main,
           innerHTML: this.item.item.value
         }

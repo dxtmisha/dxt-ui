@@ -11,14 +11,6 @@ export type FieldCounterComponentInclude = {
 }
 
 /**
- * Interface for describing which properties are exposed for FieldCounter/
- * Интерфейс для описания, какие свойства экспортируются для FieldCounter
- */
-export type FieldCounterExposeInclude = {
-  fieldCounterId: string
-}
-
-/**
  * Properties that can be passed to FieldCounterInclude/
  * Свойства, которые можно передать в FieldCounterInclude
  */
@@ -28,6 +20,7 @@ export interface FieldCounterPropsInclude<
   counter?: FieldCounterPropsBasic['counter']
   counterShow?: boolean
   counterTemplate?: FieldCounterPropsBasic['template']
+  counterId?: string
   maxlength?: FieldCounterPropsBasic['maxlength']
   fieldCounterAttrs?: ConstrBind<FieldCounter>
 }

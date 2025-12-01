@@ -135,6 +135,7 @@ export class FieldMessageDesign<
     const children: VNode[] = []
     const props: Record<string, any> = {
       key: 'message',
+      id: this.props.messageId,
       class: [
         this.classes?.value.info,
         this.item.skeleton.classes.value

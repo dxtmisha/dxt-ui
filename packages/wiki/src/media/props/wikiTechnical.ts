@@ -21,6 +21,28 @@ export const wikiTechnical: StorybookArgsToList = {
       }
     }
   },
+  labelId: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Unique identifier for the label element',
+        ru: 'Уникальный идентификатор для элемента метки'
+      }
+    }
+  },
+  messageId: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Unique identifier for the message element',
+        ru: 'Уникальный идентификатор для элемента сообщения'
+      }
+    }
+  },
   modelOpen: {
     type: StorybookControl.boolean,
     options: {
