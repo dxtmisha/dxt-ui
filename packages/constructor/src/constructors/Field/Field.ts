@@ -155,7 +155,8 @@ export class Field {
         id,
         className,
         ...AriaStaticInclude.labelledby(this.labelId),
-        ...AriaStaticInclude.describedby(this.getDescribedby())
+        ...AriaStaticInclude.describedby(this.getDescribedby()),
+        ...AriaStaticInclude.invalid(this.isValidation.value)
       }
     }
   })
@@ -168,12 +169,14 @@ export class Field {
   protected getDescribedby(): string {
     const describedby = []
 
-    if (this.props.helperMessage) {
-      describedby.push(this.helperId)
-    }
-
-    if (this.isValidation.value) {
-      describedby.push(this.validationId)
+    if (
+      this.props.helperMessage
+      && this.isValidation.value
+    ) {
+      describedby.push(
+        this.helperId,
+        this.validationId
+      )
     }
 
     if (this.props.counterShow) {

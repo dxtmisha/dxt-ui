@@ -171,8 +171,7 @@ export class FieldMessageDesign<
       key: 'message',
       id: this.props.validationId,
       class: this.classes?.value.error,
-      ...AriaStaticInclude.role('alert'),
-      ...AriaStaticInclude.live('assertive')
+      ...AriaStaticInclude.role('alert')
     }
 
     this.initSlot('validation', children, this.item.slotValidationData.value)

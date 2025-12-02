@@ -74,6 +74,18 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA invalid attribute.
+   *
+   * Получить атрибут ARIA invalid.
+   * @param isInvalid is invalid/ является недействительным
+   */
+  static invalid(isInvalid: boolean = true): AriaList {
+    return {
+      'aria-invalid': this.isTrueOrFalse(isInvalid)
+    }
+  }
+
+  /**
    * Get control role.
    *
    * Получить роль управления.
