@@ -32,6 +32,16 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA describedby attribute.
+   *
+   * Получить атрибут ARIA describedby.
+   * @param id Element ID/ Идентификатор элемента
+   */
+  static describedby(id?: string): AriaList {
+    return this.isDataToData('aria-describedby', id)
+  }
+
+  /**
    * Get ARIA disabled attribute.
    *
    * Получить атрибут ARIA disabled.
@@ -50,13 +60,17 @@ export class AriaStaticInclude {
    * @param label ARIA label/ ARIA метка
    */
   static label(label?: string): AriaList {
-    if (label) {
-      return {
-        'aria-label': label
-      }
-    }
+    return this.isDataToData('aria-label', label)
+  }
 
-    return {}
+  /**
+   * Get ARIA labelledby attribute.
+   *
+   * Получить атрибут ARIA labelledby.
+   * @param id Element ID/ Идентификатор элемента
+   */
+  static labelledby(id?: string): AriaList {
+    return this.isDataToData('aria-labelledby', id)
   }
 
   /**
@@ -125,8 +139,8 @@ export class AriaStaticInclude {
   ): AriaList {
     return {
       'aria-modal': this.isTrueOrFalse(isModal),
-      'aria-labelledby': ariaLabelledby,
-      'aria-describedby': ariaDescribedby
+      ...this.labelledby(ariaLabelledby),
+      ...this.describedby(ariaDescribedby)
     }
   }
 
@@ -158,5 +172,25 @@ export class AriaStaticInclude {
    */
   static isTrueOrFalse(value?: boolean): AriaTrueOrFalse | undefined {
     return value ? 'true' : 'false'
+  }
+
+  /**
+   * Returns data as ARIA attribute.
+   *
+   * Возвращает данные в виде ARIA атрибута.
+   * @param name attribute name/ имя атрибута
+   * @param value attribute value/ значение атрибута
+   */
+  protected static isDataToData<V>(
+    name: string,
+    value?: V
+  ): AriaList {
+    if (value) {
+      return {
+        [name]: value
+      }
+    }
+
+    return {}
   }
 }

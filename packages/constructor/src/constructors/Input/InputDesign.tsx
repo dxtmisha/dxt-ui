@@ -140,10 +140,9 @@ export class InputDesign<
       'input',
       toBinds(
         this.item.attributes.listForInput.value,
+        input.binds,
         {
           ref: this.element,
-          id: input.id,
-          class: input.className,
           value: this.item.value.item.value,
           onBlur: this.item.event.onBlur,
           onInput: this.item.event.onInput,

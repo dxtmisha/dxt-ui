@@ -31,6 +31,7 @@ const propsNames: StorybookProps = [
   { name: 'forceShowMessage', type: 'boolean' },
   { name: 'form', type: 'string' },
   { name: 'fraction', type: 'MaskFractionItem' },
+  { name: 'helperId', type: 'string' },
   { name: 'helperMessage', type: 'string' },
   { name: 'icon', type: 'IconValue<IconProps>' },
   { name: 'iconAttrs', type: 'ConstrBind<IconProps>' },
@@ -59,7 +60,6 @@ const propsNames: StorybookProps = [
   { name: 'match', type: 'FieldMatch' },
   { name: 'max', type: 'NumberOrString' },
   { name: 'maxlength', type: 'NumberOrString' },
-  { name: 'messageId', type: 'string' },
   { name: 'min', type: 'NumberOrString' },
   { name: 'minlength', type: 'NumberOrString' },
   { name: 'modelValue', type: 'NumberOrString' },
@@ -78,6 +78,7 @@ const propsNames: StorybookProps = [
   { name: 'tabindex', type: 'number' },
   { name: 'type', type: 'string', option: ['number', 'text', 'search', 'number-format', 'currency', 'email', 'password', 'datetime', 'date', 'year-month', 'time', 'hour-minute', 'tel', 'url', 'checkbox', 'radio'] },
   { name: 'validationCode', type: 'FieldValidityCode' },
+  { name: 'validationId', type: 'string' },
   { name: 'validationMessage', type: 'string' },
   { name: 'value', type: 'NumberOrString' }
   // :propsList [!] System label / Системная метка

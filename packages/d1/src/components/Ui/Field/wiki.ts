@@ -32,6 +32,7 @@ const propsNames: StorybookProps = [
   { name: 'filled', type: 'boolean' },
   { name: 'focus', type: 'boolean' },
   { name: 'forceShowMessage', type: 'boolean' },
+  { name: 'helperId', type: 'string' },
   { name: 'helperMessage', type: 'string' },
   { name: 'icon', type: 'IconValue<IconProps>' },
   { name: 'iconArrowLeft', type: 'IconValue<IconProps>' },
@@ -55,7 +56,6 @@ const propsNames: StorybookProps = [
   { name: 'labelId', type: 'string' },
   { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },
   { name: 'maxlength', type: 'string | number' },
-  { name: 'messageId', type: 'string' },
   { name: 'outlined', type: 'boolean' },
   { name: 'prefix', type: 'string | number' },
   { name: 'readonly', type: 'boolean' },
@@ -65,6 +65,7 @@ const propsNames: StorybookProps = [
   { name: 'suffix', type: 'string | number' },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },
   { name: 'tonal', type: 'boolean' },
+  { name: 'validationId', type: 'string' },
   { name: 'validationMessage', type: 'string' },
   { name: 'value', type: 'EventClickValue[\'value\']' },
   { name: 'width', type: 'string', option: ['custom'] }

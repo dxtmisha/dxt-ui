@@ -157,7 +157,7 @@ export class FieldDesign<
    */
   readonly renderBody = (): VNode[] => {
     const children: any[] = [
-      this.initSlot('default', undefined, this.item.getControl()),
+      this.initSlot('default', undefined, this.item.control.value),
       this.renderBodyLabel(),
       this.renderBodyScoreboard(),
       this.renderBodyBorder()

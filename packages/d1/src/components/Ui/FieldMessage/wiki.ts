@@ -13,10 +13,11 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean' },
   { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounterProps>' },
   { name: 'forceShow', type: 'boolean' },
+  { name: 'helperId', type: 'string' },
   { name: 'helperMessage', type: 'string' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'maxlength', type: 'string | number' },
-  { name: 'messageId', type: 'string' },
+  { name: 'validationId', type: 'string' },
   { name: 'validationMessage', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]

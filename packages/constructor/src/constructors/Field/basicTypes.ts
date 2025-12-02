@@ -8,6 +8,7 @@ import type { ProgressPropsBasic } from '../Progress'
 
 import type { FieldPropsBasic } from './props'
 import type { FieldSlots } from './types'
+import type { AriaList } from '../../types/ariaTypes.ts'
 
 /**
  * Control data passed to slots and subcomponents/
@@ -34,6 +35,13 @@ export type FieldControl = {
    * CSS-классы, применяемые при фокусировке на поле
    */
   classForFocus: string
+
+  binds:
+    AriaList
+    & {
+      id: string
+      className: string
+    }
 }
 
 /**

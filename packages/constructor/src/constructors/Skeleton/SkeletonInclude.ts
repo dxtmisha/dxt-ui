@@ -58,4 +58,9 @@ export class SkeletonInclude {
 
     return classes
   })
+
+  /** Values for the skeleton/ Значения для скелетона */
+  readonly binds = computed(() => ({
+    isSkeleton: this.props.isSkeleton
+  }))
 }

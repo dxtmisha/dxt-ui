@@ -30,6 +30,7 @@ const propsNames: StorybookProps = [
   { name: 'focus', type: 'boolean' },
   { name: 'forceShowMessage', type: 'boolean' },
   { name: 'form', type: 'string' },
+  { name: 'helperId', type: 'string' },
   { name: 'helperMessage', type: 'string' },
   { name: 'hideList', type: 'boolean' },
   { name: 'icon', type: 'IconValue<IconProps>' },
@@ -55,7 +56,6 @@ const propsNames: StorybookProps = [
   { name: 'match', type: 'FieldMatch' },
   { name: 'max', type: 'NumberOrString' },
   { name: 'menuAttrs', type: 'ConstrBind<MenuProps>' },
-  { name: 'messageId', type: 'string' },
   { name: 'modelValue', type: 'Value' },
   { name: 'multiple', type: 'boolean' },
   { name: 'name', type: 'string' },
@@ -72,6 +72,7 @@ const propsNames: StorybookProps = [
   { name: 'suffix', type: 'string | number' },
   { name: 'tabindex', type: 'number' },
   { name: 'validationCode', type: 'FieldValidityCode' },
+  { name: 'validationId', type: 'string' },
   { name: 'validationMessage', type: 'string' },
   { name: 'value', type: 'Value' }
   // :propsList [!] System label / Системная метка

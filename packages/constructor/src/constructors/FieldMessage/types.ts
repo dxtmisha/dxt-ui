@@ -46,5 +46,6 @@ export type FieldMessageClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   info: string
+  error: string
   // :classes [!] System label / Системная метка
 }

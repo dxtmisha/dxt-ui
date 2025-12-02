@@ -34,6 +34,8 @@ export class FieldLabelInclude<
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param isCounter whether to display the counter/ отображать ли счетчик
+   * @param labelId label identifier/ идентификатор метки
+   * @param counterId counter identifier/ идентификатор счетчика
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
@@ -43,6 +45,8 @@ export class FieldLabelInclude<
     protected readonly components?: DesignComponents<FieldLabelComponentInclude, Props>,
     protected readonly slots?: FieldLabelSlotsInclude,
     protected readonly isCounter?: RefType<boolean | undefined>,
+    protected readonly labelId?: string,
+    protected readonly counterId?: string,
     protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly index?: string
   ) {
@@ -63,8 +67,8 @@ export class FieldLabelInclude<
         label: this.props.label,
         required: this.props.required,
 
-        labelId: this.props.labelId,
-        counterId: this.props.counterId
+        labelId: this.props.labelId ?? this.labelId,
+        counterId: this.props.counterId ?? this.counterId
       },
       this.props.fieldLabelAttrs
     )

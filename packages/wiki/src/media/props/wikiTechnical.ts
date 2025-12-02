@@ -10,6 +10,17 @@ import {
  * Объект wikiTechnical содержит общие технические свойства для всех компонентов
  */
 export const wikiTechnical: StorybookArgsToList = {
+  helperId: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Unique identifier for the helper message element',
+        ru: 'Уникальный идентификатор для элемента вспомогательного сообщения'
+      }
+    }
+  },
   id: {
     type: StorybookControl.string,
     options: {
@@ -70,6 +81,17 @@ export const wikiTechnical: StorybookArgsToList = {
       description: {
         en: 'Two-way binding for component value (v-model)',
         ru: 'Двусторонняя привязка значения компонента (v-model)'
+      }
+    }
+  },
+  validationId: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Unique identifier for the validation message element',
+        ru: 'Уникальный идентификатор для элемента сообщения валидации'
       }
     }
   }

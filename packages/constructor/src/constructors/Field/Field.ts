@@ -19,12 +19,18 @@ import { FieldSize } from './FieldSize'
 import type { FieldComponents, FieldEmits, FieldSlots } from './types'
 import type { FieldProps } from './props'
 import type { FieldControl } from './basicTypes'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * Field
  */
 export class Field {
   readonly id: string = getElementId()
+  readonly labelId: string = `${this.id}-label`
+  readonly helperId: string = `${this.id}-helper`
+  readonly validationId: string = `${this.id}-validation`
+  readonly counterId: string = `${this.id}-counter`
+
   readonly icon: IconTrailingInclude
 
   readonly caption: CaptionInclude
@@ -63,6 +69,11 @@ export class Field {
     protected readonly slots?: FieldSlots,
     protected readonly emits?: ConstrEmit<FieldEmits>
   ) {
+    this.skeleton = new SkeletonInclude(
+      this.props,
+      this.classDesign,
+      ['classBackground']
+    )
     this.icon = new IconTrailingInclude(this.props, this.className, this.components)
 
     this.caption = new CaptionInclude(this.props, this.className, this.slots)
@@ -75,7 +86,9 @@ export class Field {
       this.components,
       this.slots,
       this.refs.counterTop,
-      this.propsSkeleton
+      this.labelId,
+      this.counterId,
+      this.skeleton.binds
     )
     this.fieldMessage = new FieldMessageInclude(
       this.props,
@@ -83,7 +96,10 @@ export class Field {
       this.components,
       undefined,
       computed(() => !this.props.counterTop),
-      this.propsSkeleton
+      this.helperId,
+      this.validationId,
+      this.counterId,
+      this.skeleton.binds
     )
 
     this.progress = new ProgressInclude(
@@ -99,11 +115,6 @@ export class Field {
 
     this.enabled = new EnabledInclude(this.props, this.progress)
     this.event = new EventClickInclude(this.props, this.enabled, this.emits)
-    this.skeleton = new SkeletonInclude(
-      this.props,
-      this.classDesign,
-      ['classBackground']
-    )
 
     this.icons = new FieldIcons(this.props, this.className)
     this.size = new FieldSize(this.element, this.className)
@@ -129,21 +140,46 @@ export class Field {
   }))
 
   /**
-   * Returns data for the slot.
-   *
-   * Возвращает данные для слота
+   * Returns data for the slot/ Возвращает данные для слота
    */
-  getControl(): FieldControl {
-    return {
-      id: String(this.props.id || this.id),
-      className: `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`,
-      classHidden: `${this.className}__body__hidden`,
-      classForFocus: `${this.className}__body__focus`
-    }
-  }
+  readonly control = computed<FieldControl>(() => {
+    const id = String(this.props.id || this.id)
+    const className = `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`
 
-  /** Values for the skeleton/ Значения для скелетона */
-  protected readonly propsSkeleton = computed(() => ({
-    isSkeleton: this.props.isSkeleton
-  }))
+    return {
+      id,
+      className,
+      classHidden: `${this.className}__body__hidden`,
+      classForFocus: `${this.className}__body__focus`,
+      binds: {
+        id,
+        className,
+        ...AriaStaticInclude.labelledby(this.labelId),
+        ...AriaStaticInclude.describedby(this.getDescribedby())
+      }
+    }
+  })
+
+  /**
+   * Get ARIA describedby attribute.
+   *
+   * Получить атрибут ARIA describedby.
+   */
+  protected getDescribedby(): string {
+    const describedby = []
+
+    if (this.props.helperMessage) {
+      describedby.push(this.helperId)
+    }
+
+    if (this.isValidation.value) {
+      describedby.push(this.validationId)
+    }
+
+    if (this.props.counterShow) {
+      describedby.push(this.counterId)
+    }
+
+    return describedby.join(' ')
+  }
 }

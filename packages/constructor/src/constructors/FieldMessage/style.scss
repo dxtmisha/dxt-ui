@@ -6,8 +6,23 @@
 
   @include ui.paddingX(ui.v('??-padding', 0));
 
-  &__info {
+  &__info,
+  &__error {
     flex-grow: 1;
     flex-shrink: 1;
+  }
+
+  &__error {
+    display: none;
+  }
+
+  &--validation {
+    @include ui.subclass('info') {
+      display: none;
+    }
+
+    @include ui.subclass('error') {
+      display: unset;
+    }
   }
 }

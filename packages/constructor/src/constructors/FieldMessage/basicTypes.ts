@@ -36,5 +36,6 @@ export interface FieldMessagePropsInclude<
   helperMessage?: string
   validationMessage?: string
   fieldMessageAttrs?: ConstrBind<FieldMessage>
-  messageId?: string
+  helperId?: string
+  validationId?: string
 }

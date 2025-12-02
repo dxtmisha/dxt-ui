@@ -17,6 +17,7 @@ import {
   type FieldMessageExpose,
   type FieldMessageSlots
 } from './types'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * FieldMessageDesign
@@ -87,7 +88,8 @@ export class FieldMessageDesign<
       main: this.item.classes.value,
       ...{
         // :classes [!] System label / Системная метка
-        info: this.getSubClass('info')
+        info: this.getSubClass('info'),
+        error: this.getSubClass('error')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -118,6 +120,7 @@ export class FieldMessageDesign<
         },
         [
           ...this.renderInfo(),
+          ...this.renderError(),
           ...this.item.fieldCounter.render()
         ]
       )
@@ -135,7 +138,7 @@ export class FieldMessageDesign<
     const children: VNode[] = []
     const props: Record<string, any> = {
       key: 'message',
-      id: this.props.messageId,
+      id: this.props.helperId,
       class: [
         this.classes?.value.info,
         this.item.skeleton.classes.value
@@ -143,10 +146,39 @@ export class FieldMessageDesign<
     }
 
     this.initSlot('helper', children, this.item.slotHelperData.value)
+
+    if (children.length < 1) {
+      props.innerHTML = this.props.helperMessage
+    }
+
+    return [
+      h(
+        'div',
+        props,
+        children
+      )
+    ]
+  }
+
+  /**
+   * Rendering error.
+   *
+   * Рендеринг ошибки.
+   */
+  protected renderError = (): VNode[] => {
+    const children: VNode[] = []
+    const props: Record<string, any> = {
+      key: 'message',
+      id: this.props.validationId,
+      class: this.classes?.value.error,
+      ...AriaStaticInclude.role('alert'),
+      ...AriaStaticInclude.live('assertive')
+    }
+
     this.initSlot('validation', children, this.item.slotValidationData.value)
 
     if (children.length < 1) {
-      props.innerHTML = this.item.message.item.value
+      props.innerHTML = this.props.validationMessage
     }
 
     return [
