@@ -169,14 +169,12 @@ export class Field {
   protected getDescribedby(): string {
     const describedby = []
 
-    if (
-      this.props.helperMessage
-      && this.isValidation.value
-    ) {
-      describedby.push(
-        this.helperId,
-        this.validationId
-      )
+    if (this.props.helperMessage) {
+      describedby.push(this.helperId)
+    }
+
+    if (this.isValidation.value) {
+      describedby.push(this.validationId)
     }
 
     if (this.props.counterShow) {
