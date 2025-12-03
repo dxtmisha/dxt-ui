@@ -143,14 +143,10 @@ export class ListItemDesign<
       this.props.tag ?? 'div',
       {
         ...this.getAttrs(),
-        'ref': this.element,
-        'class': this.classes?.value.main,
-        'style': this.styles?.value,
-        'data-value': this.props.index ?? this.props.value,
-        'data-divider': this.props.divider ? 'active' : undefined,
-        'data-parent': this.props.parent,
-        'data-list-id': this.props.listId,
-        'onClick': this.item.event.onClick
+        ref: this.element,
+        class: this.classes?.value.main,
+        style: this.styles?.value,
+        ...this.item.bindsAndOpen.value
       },
       children
     )

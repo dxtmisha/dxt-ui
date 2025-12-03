@@ -7,6 +7,8 @@ import { IconTrailingInclude } from '../Icon'
 import { ProgressInclude } from '../Progress'
 import { RippleInclude } from '../Ripple'
 import { SkeletonInclude } from '../Skeleton'
+import { EventClickInclude } from '../../classes/EventClickInclude'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 import { LabelHighlightInclude } from '../../classes/LabelHighlightInclude'
 import { PrefixInclude } from '../../classes/PrefixInclude'
@@ -18,8 +20,7 @@ import { BadgeInclude } from '../Badge/BadgeInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
 
 import type { ListItemComponents, ListItemEmits, ListItemSlots } from './types'
-import type { ListItemPropsBasic } from './props'
-import { EventClickInclude } from '../../classes/EventClickInclude'
+import type { ListItemProps } from './props'
 
 /**
  * ListItem
@@ -52,12 +53,12 @@ export class ListItem {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: ListItemPropsBasic,
-    protected readonly refs: ToRefs<ListItemPropsBasic>,
+    protected readonly props: ListItemProps,
+    protected readonly refs: ToRefs<ListItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
-    protected readonly components?: DesignComp<ListItemComponents, ListItemPropsBasic>,
+    protected readonly components?: DesignComp<ListItemComponents, ListItemProps>,
     protected readonly slots?: ListItemSlots,
     protected readonly emits?: ConstrEmit<ListItemEmits>
   ) {
@@ -112,4 +113,50 @@ export class ListItem {
     [`${this.className}--description`]: this.description.is.value,
     [getClassTegAStatic(this.classDesign)]: true
   }))
+
+  /** values for attributes/ значения для атрибутов */
+  readonly binds = computed(() => {
+    const data = {
+      'data-value': this.props.index ?? this.props.value,
+      'data-divider': this.props.divider ? 'active' : undefined,
+      'data-parent': this.props.parent,
+      'data-list-id': this.props.listId,
+      'tabindex': '-1',
+      'role': this.props.role,
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
+      'onClick': this.event.onClick
+    }
+
+    if (this.props.isMenu) {
+      Object.assign(
+        data,
+        AriaStaticInclude.haspopup('menu')
+      )
+    }
+
+    return data
+  })
+
+  /** values for attributes with open state/ значения для атрибутов с состоянием open */
+  readonly bindsAndOpen = computed(() => {
+    const data = {
+      ...this.binds.value
+    }
+
+    if (this.props.isMenu) {
+      Object.assign(
+        data,
+        AriaStaticInclude.expanded(Boolean(this.props.open))
+      )
+    }
+
+    if (this.props.isItemMenu) {
+      Object.assign(
+        data,
+        AriaStaticInclude.checked(Boolean(this.props.selected))
+      )
+    }
+
+    return data
+  })
 }

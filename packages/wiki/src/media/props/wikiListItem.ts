@@ -10,6 +10,26 @@ import {
  * Объект wikiListItem содержит описание всех свойств для компонента ListItem
  */
 export const wikiListItem: StorybookArgsToList = {
+  'listItem.isItemMenu': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Indicates if the item is a menu item. Adds aria-checked attribute for accessibility.',
+        ru: 'Указывает, является ли элемент пунктом меню. Добавляет атрибут aria-checked для доступности.'
+      }
+    }
+  },
+  'listItem.isMenu': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Indicates if the item is a menu. Adds aria-haspopup="menu" and aria-expanded attributes for accessibility.',
+        ru: 'Указывает, является ли элемент меню. Добавляет атрибуты aria-haspopup="menu" и aria-expanded для доступности.'
+      }
+    }
+  },
   'listItem.listId': {
     type: StorybookControl.string,
     options: {

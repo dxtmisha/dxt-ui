@@ -19,6 +19,12 @@ export class AriaStaticInclude {
     }
   }
 
+  static checked(isChecked?: boolean): AriaList {
+    return {
+      'aria-checked': this.isTrueOrFalse(isChecked)
+    }
+  }
+
   /**
    * Get ARIA busy attribute.
    *
@@ -51,6 +57,28 @@ export class AriaStaticInclude {
     return {
       'aria-disabled': this.isTrueOrFalse(isDisabled)
     }
+  }
+
+  /**
+   * Get ARIA expanded attribute.
+   *
+   * Получить атрибут ARIA expanded.
+   * @param isExpanded is expanded/ является расширенным
+   */
+  static expanded(isExpanded?: boolean): AriaList {
+    return {
+      'aria-expanded': this.isTrueOrFalse(isExpanded)
+    }
+  }
+
+  /**
+   * Get ARIA haspopup attribute.
+   *
+   * Получить атрибут ARIA haspopup.
+   * @param haspopup ARIA haspopup attribute/ Атрибут ARIA haspopup
+   */
+  static haspopup(haspopup?: AriaList['aria-haspopup']): AriaList {
+    return this.isDataToData('aria-haspopup', haspopup)
   }
 
   /**
@@ -103,8 +131,8 @@ export class AriaStaticInclude {
     return {
       id,
       'aria-controls': controls,
-      'aria-haspopup': haspopup,
-      'aria-expanded': this.isTrueOrFalse(expanded)
+      ...this.haspopup(haspopup),
+      ...this.expanded(expanded)
     }
   }
 

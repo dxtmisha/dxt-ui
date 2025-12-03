@@ -2,6 +2,7 @@ import type { IconPropsBasic, IconTrailingPropsInclude } from '../Icon'
 import type { BadgePropsBasic, BadgePropsInclude } from '../Badge'
 import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { SkeletonPropsInclude } from '../Skeleton'
+import type { AriaRolePropsInclude } from '../../types/ariaTypes'
 
 import type { LabelHighlightProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
@@ -40,7 +41,8 @@ export interface ListItemPropsBasic<
   ProgressPropsInclude<Progress>,
   SkeletonPropsInclude,
   EnabledProps,
-  EventClickProps {
+  EventClickProps,
+  AriaRolePropsInclude {
   // Value
   index?: any
 
@@ -54,6 +56,9 @@ export interface ListItemPropsBasic<
   parent?: string
   listId?: number
   search?: string
+
+  isMenu?: boolean
+  isItemMenu?: boolean
 }
 
 /**
