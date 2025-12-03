@@ -5,4 +5,4 @@
  * @param design design system prefix/ префикс дизайн-системы
  * @returns CSS class string/ строка CSS класса
  */
-export const getClassTegAStatic = (design: string) => `${design}-a--static`
+export const getClassTagAStatic = (design: string) => `${design}-a--static`

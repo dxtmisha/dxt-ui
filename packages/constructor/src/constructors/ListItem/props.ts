@@ -45,11 +45,14 @@ export interface ListItemPropsBasic<
   AriaRolePropsInclude {
   // Value
   index?: any
+  href?: string
 
   // Style
   tag?: 'button' | 'a' | 'span' | 'div' | string
   filterMode?: boolean
   divider?: boolean
+
+  tabindex?: number | string
 
   // Technical
   type?: string
@@ -75,7 +78,7 @@ export interface ListItemProps extends ListItemPropsBasic, ListItemPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsListItem = {
-  tag: 'div',
+  tabindex: '-1',
   ...{
     // :default [!] System label / Системная метка
     iconAlign: 'center'

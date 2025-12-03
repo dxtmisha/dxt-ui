@@ -17,7 +17,7 @@ import {
   type FieldMessageExpose,
   type FieldMessageSlots
 } from './types'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 /**
  * FieldMessageDesign

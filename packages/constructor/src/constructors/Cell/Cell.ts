@@ -4,7 +4,7 @@ import {
   type ConstrEmit,
   DesignComp
 } from '@dxtmisha/functional'
-import { getClassTegAStatic } from '../../functions/getClassTegAStatic'
+import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
 import { LabelInclude } from '../../classes/LabelInclude'
 import { CaptionInclude } from '../../classes/CaptionInclude'
@@ -108,7 +108,7 @@ export class Cell {
    */
   readonly classes = computed<ConstrClass>(() => ({
     [`${this.className}--description`]: this.description.is.value,
-    [getClassTegAStatic(this.classDesign)]: true
+    [getClassTagAStatic(this.classDesign)]: true
   }))
 
   /**

@@ -140,7 +140,7 @@ export class ListItemDesign<
     )
 
     return h(
-      this.props.tag ?? 'div',
+      this.item.tag.value,
       {
         ...this.getAttrs(),
         ref: this.element,

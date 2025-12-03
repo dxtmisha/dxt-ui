@@ -1,7 +1,7 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
-import { getClassTegAStatic } from '../../functions/getClassTegAStatic'
+import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
 import { IconTrailingInclude } from '../Icon'
 import { ProgressInclude } from '../Progress'
@@ -108,10 +108,23 @@ export class ListItem {
     this.event = new EventClickInclude(props, enabled, emits)
   }
 
+  /** tag type/ тип тега */
+  readonly tag = computed<string>(() => {
+    if (this.props.tag) {
+      return this.props.tag
+    }
+
+    if (this.props.href) {
+      return 'a'
+    }
+
+    return 'div'
+  })
+
   /** values for the class/ значения для класса */
   readonly classes = computed<ConstrClassObject>(() => ({
     [`${this.className}--description`]: this.description.is.value,
-    [getClassTegAStatic(this.classDesign)]: true
+    [getClassTagAStatic(this.classDesign)]: true
   }))
 
   /** values for attributes/ значения для атрибутов */
@@ -121,7 +134,7 @@ export class ListItem {
       'data-divider': this.props.divider ? 'active' : undefined,
       'data-parent': this.props.parent,
       'data-list-id': this.props.listId,
-      'tabindex': '-1',
+      'tabindex': this.props.tabindex,
       'role': this.props.role,
       ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
       'onClick': this.event.onClick

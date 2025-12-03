@@ -29,7 +29,7 @@ export * from './classes/field/FieldValueInclude'
 export * from './classes/field/FieldVisibilityInclude'
 
 // Functions
-export * from './functions/getClassTegAStatic'
+export * from './functions/getClassTagAStatic'
 
 // Types
 export * from './types/ariaTypes'

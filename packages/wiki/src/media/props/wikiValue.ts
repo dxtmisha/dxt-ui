@@ -106,6 +106,17 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  href: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'URL or link destination',
+        ru: 'URL или адрес ссылки'
+      }
+    }
+  },
   highlightLengthStart: {
     type: StorybookControl.number,
     options: {

@@ -19,7 +19,7 @@ import { FieldSize } from './FieldSize'
 import type { FieldComponents, FieldEmits, FieldSlots } from './types'
 import type { FieldProps } from './props'
 import type { FieldControl } from './basicTypes'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 /**
  * Field

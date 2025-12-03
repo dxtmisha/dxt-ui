@@ -1,6 +1,6 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrClass, type ConstrEmit, DesignComp } from '@dxtmisha/functional'
-import { getClassTegAStatic } from '../../functions/getClassTegAStatic'
+import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
 import { LabelInclude } from '../../classes/LabelInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
@@ -84,7 +84,7 @@ export class Button {
   /** values for the class/ значения для класса */
   readonly classes = computed<ConstrClass>(() => ({
     [`${this.className}--icon`]: this.icon.isIcon.value,
-    [getClassTegAStatic(this.classDesign)]: true,
+    [getClassTagAStatic(this.classDesign)]: true,
     ...this.skeleton.classes.value
   }))
 
