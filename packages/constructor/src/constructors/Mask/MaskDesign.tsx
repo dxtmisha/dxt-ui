@@ -6,6 +6,7 @@ import {
   toBinds
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Mask } from './Mask'
 
 import {
@@ -211,6 +212,7 @@ export class MaskDesign<
         {
           'class': this.classes?.value.character,
           'data-length': '1',
+          ...AriaStaticInclude.hidden(),
           innerHTML
         },
         children

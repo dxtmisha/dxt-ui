@@ -161,11 +161,12 @@ export class InputDesign<
   protected readonly renderMask = (input: FieldControl): VNode[] => {
     return this.item.mask.render({
       ref: this.element,
-      id: input.id,
       class: input.className,
       align: this.props.align,
-      inputAttrs: this.item.attributes.listForInput.value,
-
+      inputAttrs: toBinds(
+        this.item.attributes.listForInput.value,
+        input.binds
+      ),
       onBlur: this.item.event.onBlur,
       onInput: this.item.event.onInput
     })
