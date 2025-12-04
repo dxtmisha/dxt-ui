@@ -154,7 +154,10 @@ export class List {
     return toBinds(
       this.itemBinds.value,
       item,
-      { key: item.value }
+      {
+        key: item.value,
+        role: this.props.roleItem
+      }
     )
   }
 
@@ -282,8 +285,7 @@ export class List {
         'iconTurn': open,
         'iconTrailing': icon,
         'iconTrailingTurnOnly': true,
-        'data-status': open ? 'open' : 'close',
-        'role': this.props.roleItem
+        'data-status': open ? 'open' : 'close'
       }
     )
   }

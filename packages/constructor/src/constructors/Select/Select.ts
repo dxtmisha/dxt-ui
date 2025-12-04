@@ -116,6 +116,7 @@ export class Select {
           hide: !isFilled(props.option) && !this.isSlot.value,
           widthMatch: true
         },
+        tag: 'span',
         barsLabel: props.label,
         barsDescription: props.helperMessage,
         disabled: props.disabled || props.readonly,
@@ -127,7 +128,8 @@ export class Select {
         onClick: this.event.onSelect,
         onClickSlot: this.onClick,
         onUpdateValue: this.isArrow() ? this.event.onValue : undefined,
-        isSelectedByValue: true
+        isSelectedByValue: true,
+        roleItem: this.props.multiple ? 'menuitemcheckbox' : 'menuitemradio'
       }))
     )
     this.input = new SelectInput(this.props, this.attributes, this.value, this.event)
