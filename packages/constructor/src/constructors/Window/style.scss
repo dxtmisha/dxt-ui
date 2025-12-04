@@ -1,6 +1,8 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinWindow {
+  --sys-type-body: "--NONE--";
+
   @include ui.initByCustom('opacity', 0);
   @include ui.initByCustom('transform', none);
   @include ui.initByCustom('transformPreparation', scale(.8));

@@ -188,3 +188,9 @@ export interface WindowPropsInclude<
   /** Additional attributes for Window component/ Дополнительные атрибуты для компонента Window */
   windowAttrs?: ConstrBind<Window>
 }
+
+/**
+ * CSS variable name for MotionTransform body type/
+ * Имя CSS‑переменной для типа тела MotionTransform
+ */
+export const __WINDOW_TYPE_BODY_NAME = '--sys-type-body'

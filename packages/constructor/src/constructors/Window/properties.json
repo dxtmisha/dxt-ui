@@ -161,6 +161,7 @@
     "~menu": {
       "menuSizeMultiplier": "0.5",
       "content": "'--MENU--'",
+      "=sys-type-body": "'--MENU--'",
       "position": "fixed",
       "top": "{??sys.inset.y}",
       "right": "auto",
@@ -195,7 +196,8 @@
       }
     },
     "~menuWindow": {
-      "content": "'--MENU-WINDOW--'"
+      "content": "'--MENU-WINDOW--'",
+      "=sys-type-body": "'--MENU-WINDOW--'"
     },
     "~modal": {},
     "~modalDynamic": {
@@ -216,7 +218,8 @@
       "link|origin": "{??origin.bottomToTop}"
     },
     "~static": {
-      "content": "'--STATIC--'"
+      "content": "'--STATIC--'",
+      "=sys-type-body": "'--STATIC--'"
     }
   },
   "~fullscreen": {

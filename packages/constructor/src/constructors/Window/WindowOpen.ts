@@ -16,6 +16,7 @@ import { WindowOrigin } from './WindowOrigin'
 import { WindowEmit } from './WindowEmit'
 import { WindowStyles } from './WindowStyles'
 
+import { __WINDOW_TYPE_BODY_NAME } from './basicTypes'
 import type { WindowProps } from './props'
 
 /**
@@ -265,7 +266,7 @@ export class WindowOpen {
         const element = this.element.getMain()
 
         if (element) {
-          const isMenu = getComputedStyle(element).content === '"--MENU--"'
+          const isMenu = getComputedStyle(element).getPropertyValue(__WINDOW_TYPE_BODY_NAME) === '"--MENU--"'
 
           if (isMenu && this.position.update()) {
             this.styles.update()

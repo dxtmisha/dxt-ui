@@ -1,6 +1,6 @@
 import type { ElementOrString, NormalOrPromise } from '@dxtmisha/functional'
 
-import type { AriaByPropsInclude, AriaHaspopupPropsInclude } from '../../types/ariaTypes'
+import type { AriaByPropsInclude, AriaHaspopupPropsInclude, AriaRoleByPropsInclude } from '../../types/ariaTypes'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar'
 import type { TextClosePropsInclude } from '../../types/textTypes'
@@ -28,6 +28,7 @@ export interface WindowPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic
 > extends ScrollbarPropsInclude<Scrollbar>,
   ImagePropsInclude<Image>,
+  AriaRoleByPropsInclude,
   AriaByPropsInclude,
   AriaHaspopupPropsInclude,
   TextClosePropsInclude {
@@ -85,6 +86,7 @@ export interface WindowProps extends WindowPropsBasic, WindowPropsToken {
 export const defaultsWindow = {
   indent: 4,
   ariaHaspopup: 'dialog',
+  role: 'dialog',
   ...{
     // :default [!] System label / Системная метка
     axis: 'y',

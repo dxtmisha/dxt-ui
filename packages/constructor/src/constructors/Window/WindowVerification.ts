@@ -6,6 +6,7 @@ import { WindowElement } from './WindowElement'
 import { WindowStatic } from './WindowStatic'
 import { WindowOpen } from './WindowOpen'
 
+import { __WINDOW_TYPE_BODY_NAME } from './basicTypes'
 import type { WindowProps } from './props'
 
 /**
@@ -267,7 +268,9 @@ export class WindowVerification {
   protected isMenu(element: HTMLElement | undefined = this.element.getMain()): boolean {
     if (element) {
       const style = getComputedStyle(element)
-      return style.content === '"--MENU--"' || style.content === '"--MENU-WINDOW--"'
+      const value = style.getPropertyValue(__WINDOW_TYPE_BODY_NAME)
+
+      return value === '"--MENU--"' || value === '"--MENU-WINDOW--"'
     }
 
     return false

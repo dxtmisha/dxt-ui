@@ -285,7 +285,7 @@ export class WindowDesign<
     'style': this.styles?.value,
     'data-window': this.item.classes.getId(),
     'onTransitionend': this.item.event.onTransition,
-    ...AriaStaticInclude.role('dialog'),
+    ...AriaStaticInclude.role(this.props.role),
     ...AriaStaticInclude.modal(
       true,
       this.props.ariaLabelledby,

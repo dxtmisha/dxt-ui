@@ -2,6 +2,8 @@ import { WindowClient } from './WindowClient'
 import { WindowElement } from './WindowElement'
 import { WindowPosition } from './WindowPosition'
 
+import { __WINDOW_TYPE_BODY_NAME } from './basicTypes'
+
 /**
  * Class for defining the initial position for the animation.
  *
@@ -57,7 +59,7 @@ export class WindowOrigin {
       this.y = 0
     } else if (
       element
-      && getComputedStyle(element).content !== '"--MENU--"'
+      && getComputedStyle(element).getPropertyValue(__WINDOW_TYPE_BODY_NAME) !== '"--MENU--"'
     ) {
       const rect = this.element.getBodyRect()
 

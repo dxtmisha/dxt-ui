@@ -3,6 +3,7 @@ import { EventItem, setRef } from '@dxtmisha/functional'
 
 import { WindowElement } from './WindowElement'
 
+import { __WINDOW_TYPE_BODY_NAME } from './basicTypes'
 import type { WindowProps } from './props'
 
 /**
@@ -73,7 +74,8 @@ export class WindowStatic {
 
     return Boolean(
       element
-      && getComputedStyle(element).content === '"--STATIC--"'
+      && getComputedStyle(element)
+        .getPropertyValue(__WINDOW_TYPE_BODY_NAME) === '"--STATIC--"'
     )
   }
 
