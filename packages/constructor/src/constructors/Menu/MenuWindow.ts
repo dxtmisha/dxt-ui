@@ -36,7 +36,8 @@ export class MenuWindow {
       adaptive: 'menu',
       preparation: this.preparation,
       opening: this.opening,
-      closing: this.closing
+      closing: this.closing,
+      role: 'menu'
     }
   }
 

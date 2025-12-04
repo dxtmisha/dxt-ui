@@ -87,5 +87,16 @@ export const wikiAria: StorybookArgsToList = {
         ru: 'Определяет роль элемента для доступности'
       }
     }
+  },
+  roleItem: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.aria,
+      type: 'string',
+      description: {
+        en: 'Defines the role of the item element for accessibility',
+        ru: 'Определяет роль элемента item для доступности'
+      }
+    }
   }
 }

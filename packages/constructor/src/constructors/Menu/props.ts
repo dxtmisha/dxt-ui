@@ -10,7 +10,9 @@ import type { ListPropsBasic } from '../List'
 import type { ListItemProps, ListItemPropsBasic } from '../ListItem'
 import type { BarsPropsBasic, BarsPropsInclude } from '../Bars'
 import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
+
 import type { ModelPropsSelected } from '../../types/modelTypes'
+import type { RoleType } from '../../types/roleTypes'
 
 interface MenuPropsToken {
   // :type [!] System label / Системная метка
@@ -54,6 +56,9 @@ export interface MenuPropsBasic<
   listAttrs?: ConstrBind<List>
   itemAttrs?: ConstrBind<ListItem>
 
+  // ARIA
+  roleItem?: RoleType
+
   // Technical
   isSelectedByValue?: boolean
 }
@@ -78,6 +83,7 @@ export const defaultsMenu = {
   tag: 'a',
   step: 1,
   autoClose: true,
+  roleItem: 'menuitem',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -189,7 +189,8 @@ export class MenuDesign<
                 highlight: this.item.search.value.value,
 
                 list,
-                lite: this.item.menuWindow.lite.value
+                lite: this.item.menuWindow.lite.value,
+                roleItem: this.props.roleItem
               },
               this.props.listAttrs
             ),
