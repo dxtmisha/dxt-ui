@@ -5,6 +5,7 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ListGroup } from './ListGroup'
 
 import {
@@ -17,6 +18,7 @@ import {
   type ListGroupExpose,
   type ListGroupSlots
 } from './types'
+import type { MotionTransformControlItem } from '../MotionTransform'
 
 /**
  * ListGroupDesign
@@ -117,7 +119,8 @@ export class ListGroupDesign<
         ...this.getAttrs(),
         'class': this.classes?.value.main,
         'data-open': this.item.open.is.value ? 'open' : 'close',
-        'data-divider': this.props.divider ? 'divider' : undefined
+        'data-divider': this.props.divider ? 'divider' : undefined,
+        ...AriaStaticInclude.role('group')
       },
       this.renderTransform()
     )
@@ -146,8 +149,9 @@ export class ListGroupDesign<
    * Render title element.
    *
    * Рендер элемента заголовка.
+   * @param item motion transform item/ элемент движения трансформации
    */
-  readonly renderHead = (): VNode => {
+  readonly renderHead = (item: MotionTransformControlItem): VNode => {
     return h(
       'div',
       {
@@ -157,7 +161,8 @@ export class ListGroupDesign<
         'head',
         undefined,
         {
-          open: this.item.open.is.value
+          open: this.item.open.is.value,
+          ...item.binds
         }
       )
     )

@@ -22,6 +22,7 @@ import { ListControl } from './ListControl'
 import type { ListComponents, ListEmits, ListSlots } from './types'
 import type { ListProps } from './props'
 import type { IconValue } from '../Icon'
+import type { ListGroupSlotsPropsInclude } from '../ListGroup'
 
 /** Maximum number of lists/ Максимальное количество списков */
 let listIdMax = 1
@@ -202,18 +203,19 @@ export class List {
    *
    * Получает привязочные свойства для элемента управления группой со стрелкой вниз
    * @param item List item data/ данные элемента списка
-   * @param open Whether the group is open/ открыта ли группа
+   * @param props additional properties/ дополнительные свойства
    */
   getItemManagementFormGroup(
     item: ConstrBind<ListDataItem>,
-    open: boolean
+    props: ListGroupSlotsPropsInclude
   ): ConstrBind<ListDataItem> {
     return this.getItemManagement(
       {
         ...item,
+        ...props,
         filterMode: false
       },
-      open,
+      props.open,
       this.props.iconArrowDown
     )
   }
@@ -232,7 +234,8 @@ export class List {
     return this.getItemManagement(
       {
         ...item,
-        filterMode: false
+        filterMode: false,
+        isMenu: true
       },
       open,
       this.props.iconArrowRight
@@ -279,7 +282,8 @@ export class List {
         'iconTurn': open,
         'iconTrailing': icon,
         'iconTrailingTurnOnly': true,
-        'data-status': open ? 'open' : 'close'
+        'data-status': open ? 'open' : 'close',
+        'role': this.props.roleItem
       }
     )
   }

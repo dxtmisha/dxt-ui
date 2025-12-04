@@ -2,6 +2,7 @@ import type { ComputedRef } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { MotionTransformComponentInclude } from '../MotionTransform'
+import type { ListGroupSlotsPropsInclude } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -33,7 +34,7 @@ export interface ListGroupExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ListGroupSlots {
-  head?(props: { open: boolean }): any
+  head?(props: ListGroupSlotsPropsInclude): any
   list?(props: any): any
 }
 

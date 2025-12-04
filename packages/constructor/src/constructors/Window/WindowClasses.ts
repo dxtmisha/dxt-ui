@@ -13,7 +13,7 @@ export class WindowClasses {
    * Идентификация текущего окна. Используется для поиска текущего компонента и его контроля.
    */
   protected readonly id = `window--${getElementId()}`
-  protected readonly controlId = `${this.id}-control}`
+  protected readonly controlId = `${this.id}-control`
 
   readonly list: WindowClassesList
 

@@ -5,6 +5,7 @@ import type {
   ListSelectedList
 } from '@dxtmisha/functional'
 import type { IconPropsBasic, IconValue } from '../Icon'
+import type { RoleType } from '../../types/roleTypes'
 import type { ListItemPropsBasic } from '../ListItem'
 
 interface ListPropsToken {
@@ -49,6 +50,9 @@ export interface ListPropsBasic<
 
   iconArrowDown?: IconValue<Icon>
   iconArrowRight?: IconValue<Icon>
+
+  // ARIA
+  roleItem?: RoleType
 
   // Technical
   control?: boolean

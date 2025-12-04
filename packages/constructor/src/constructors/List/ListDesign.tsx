@@ -23,6 +23,7 @@ import {
   type ListSlots
 } from './types'
 import type { WindowControlItem } from '../Window'
+import type { ListGroupSlotsPropsInclude } from '../ListGroup'
 
 /**
  * ListDesign
@@ -168,12 +169,12 @@ export class ListDesign<
    *
    * Генерирует групповой элемент.
    * @param item selected element/ выбранный элемент
-   * @param open is the group open/ открыта ли группа
+   * @param props data for working with the group/ данные для работы с группой
    */
-  readonly renderItemGroup = (item: ListDataItem, open: boolean): VNode => {
+  readonly renderItemGroup = (item: ListDataItem, props: ListGroupSlotsPropsInclude): VNode => {
     return this.components.renderOne(
       'listItem',
-      this.item.getItemManagementFormGroup(item, open)
+      this.item.getItemManagementFormGroup(item, props)
     ) as VNode
   }
 
@@ -288,7 +289,7 @@ export class ListDesign<
         disabled: item.disabled
       },
       {
-        head: ({ open}: { open: boolean }) => this.renderItemGroup(item, open),
+        head: (props: ListGroupSlotsPropsInclude) => this.renderItemGroup(item, props),
         list: () => this.renderDataByItem('group', this.item.getList(item))
       }
     ) as VNode

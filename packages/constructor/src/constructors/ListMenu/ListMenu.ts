@@ -45,7 +45,8 @@ export class ListMenu {
       computed(() => ({
         adaptive: 'menu',
         axis: this.props.axis,
-        onWindow: this.open.onOpen
+        onWindow: this.open.onOpen,
+        role: 'menu'
       }))
     )
   }
