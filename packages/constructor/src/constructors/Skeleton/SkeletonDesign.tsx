@@ -5,6 +5,7 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Skeleton } from './Skeleton'
 
 import {
@@ -111,7 +112,12 @@ export class SkeletonDesign<
     return h('div', {
       ...this.getAttrs(),
       ref: this.element,
-      class: this.classes?.value.main
+      class: this.classes?.value.main,
+      ...AriaStaticInclude.busy(this.item.isActive.value),
+      ...AriaStaticInclude.hidden(this.item.isActive.value),
+      ...AriaStaticInclude.live(
+        this.item.isActive.value ? 'polite' : 'off'
+      )
     }, children)
   }
 }

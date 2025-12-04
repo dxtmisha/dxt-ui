@@ -42,9 +42,7 @@ export class Skeleton {
     this.status = inject<ComputedRef<boolean> | undefined>(SKELETON_NAME_STATUS, undefined)
     this.classes = Skeleton.getClassesList(this.className)
 
-    if (!this.status) {
-      provide(SKELETON_NAME_STATUS, this.isActive)
-    }
+    provide(SKELETON_NAME_STATUS, this.isActive)
   }
 
   /**
