@@ -12,6 +12,8 @@ import eventsFocusEn from './events.focus.en.mdx'
 import eventsFocusRu from './events.focus.ru.mdx'
 import eventsInputEn from './events.input.en.mdx'
 import eventsInputRu from './events.input.ru.mdx'
+import eventsInputStandardEn from './events.inputStandard.en.mdx'
+import eventsInputStandardRu from './events.inputStandard.ru.mdx'
 import eventsKeyboardEn from './events.keyboard.en.mdx'
 import eventsKeyboardRu from './events.keyboard.ru.mdx'
 import eventsPasteEn from './events.paste.en.mdx'
@@ -22,39 +24,43 @@ import eventsResetRu from './events.reset.ru.mdx'
 export const wikiMdxEvent: StorybookComponentsMdxItem = {
   name: 'Event',
   descriptions: {
-    actions: {
+    'actions': {
       en: eventsActionsEn,
       ru: eventsActionsRu
     },
-    bars: {
+    'bars': {
       en: eventsBarsEn,
       ru: eventsBarsRu
     },
-    beforeinput: {
+    'beforeinput': {
       en: eventsBeforeinputEn,
       ru: eventsBeforeinputRu
     },
-    click: {
+    'click': {
       en: eventsClickEn,
       ru: eventsClickRu
     },
-    focus: {
+    'focus': {
       en: eventsFocusEn,
       ru: eventsFocusRu
     },
-    input: {
+    'input': {
       en: eventsInputEn,
       ru: eventsInputRu
     },
-    keyboard: {
+    'input-standard': {
+      en: eventsInputStandardEn,
+      ru: eventsInputStandardRu
+    },
+    'keyboard': {
       en: eventsKeyboardEn,
       ru: eventsKeyboardRu
     },
-    paste: {
+    'paste': {
       en: eventsPasteEn,
       ru: eventsPasteRu
     },
-    reset: {
+    'reset': {
       en: eventsResetEn,
       ru: eventsResetRu
     }

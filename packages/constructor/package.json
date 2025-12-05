@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-library": "dxt-library",
-    "dxt-constructor": "dxt-constructor"
+    "dxt-constructor": "dxt-constructor textareaAutosize"
   },
   "files": [
     "src/",
@@ -114,7 +114,9 @@
     "./SelectValue": "./src/constructors/SelectValue/index.ts",
     "./SelectValue/style": "./src/constructors/SelectValue/style.scss",
     "./ChipGroup": "./src/constructors/ChipGroup/index.ts",
-    "./ChipGroup/style": "./src/constructors/ChipGroup/style.scss"
+    "./ChipGroup/style": "./src/constructors/ChipGroup/style.scss",
+    "./TextareaAutosize": "./src/constructors/TextareaAutosize/index.ts",
+    "./TextareaAutosize/style": "./src/constructors/TextareaAutosize/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

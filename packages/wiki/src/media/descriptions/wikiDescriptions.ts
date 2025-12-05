@@ -31,6 +31,7 @@ import { wikiDescriptionsScrollbar } from './wikiDescriptionsScrollbar'
 import { wikiDescriptionsSelect } from './wikiDescriptionsSelect'
 import { wikiDescriptionsSelectValue } from './wikiDescriptionsSelectValue'
 import { wikiDescriptionsSkeleton } from './wikiDescriptionsSkeleton'
+import { wikiDescriptionsTextareaAutosize } from './wikiDescriptionsTextareaAutosize'
 import { wikiDescriptionsWindow } from './wikiDescriptionsWindow'
 
 export const wikiDescriptions: StorybookComponentsDescription = [
@@ -65,5 +66,6 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsSelect,
   wikiDescriptionsSelectValue,
   wikiDescriptionsSkeleton,
+  wikiDescriptionsTextareaAutosize,
   wikiDescriptionsWindow
 ]

@@ -1,9 +1,9 @@
-var N = Object.defineProperty;
-var A = (l, t, e) => t in l ? N(l, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : l[t] = e;
-var r = (l, t, e) => A(l, typeof t != "symbol" ? t + "" : t, e);
-import { computed as n, toRefs as V, watch as x, isRef as D, isReadonly as w, ref as u } from "vue";
-import { isFilled as o, render as p, getElementId as B, RouterItemRef as $, getExp as E, isNumber as O, toNumberByMax as L, GeoRef as R, toCamelCaseFirst as k, toCamelCase as M, isFunction as F, getRef as b, isDomRuntime as P, executePromise as I, toNumber as d, anyToString as v, isArray as _, isObject as y, toArray as G, setValues as H, toBinds as q, createElement as X, executeFunction as Y, isString as j, Translate as U } from "@dxtmisha/functional";
-class J {
+var A = Object.defineProperty;
+var N = (l, t, e) => t in l ? A(l, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : l[t] = e;
+var r = (l, t, e) => N(l, typeof t != "symbol" ? t + "" : t, e);
+import { computed as n, toRefs as V, watch as x, isRef as O, isReadonly as w, ref as u, onUnmounted as L } from "vue";
+import { isFilled as o, render as p, getElementId as F, RouterItemRef as $, getExp as E, isNumber as R, toNumberByMax as P, GeoRef as _, toCamelCaseFirst as k, toCamelCase as I, isFunction as B, isDomRuntime as M, getRef as b, EventItem as q, executePromise as T, toNumber as d, anyToString as v, isArray as G, isObject as y, toArray as H, setValues as X, toBinds as Y, createElement as j, executeFunction as U, isString as z } from "@dxtmisha/functional";
+class K {
   /**
    * Get role by props.
    *
@@ -15,6 +15,62 @@ class J {
       role: t
     };
   }
+  static checked(t) {
+    return {
+      "aria-checked": this.isTrueOrFalse(t)
+    };
+  }
+  /**
+   * Get ARIA busy attribute.
+   *
+   * Получить атрибут ARIA busy.
+   * @param isBusy is busy/ является занятым
+   */
+  static busy(t) {
+    return {
+      "aria-busy": this.isTrueOrFalse(t)
+    };
+  }
+  /**
+   * Get ARIA describedby attribute.
+   *
+   * Получить атрибут ARIA describedby.
+   * @param id Element ID/ Идентификатор элемента
+   */
+  static describedby(t) {
+    return this.isDataToData("aria-describedby", t);
+  }
+  /**
+   * Get ARIA disabled attribute.
+   *
+   * Получить атрибут ARIA disabled.
+   * @param isDisabled is disabled/ является отключенным
+   */
+  static disabled(t = !0) {
+    return {
+      "aria-disabled": this.isTrueOrFalse(t)
+    };
+  }
+  /**
+   * Get ARIA expanded attribute.
+   *
+   * Получить атрибут ARIA expanded.
+   * @param isExpanded is expanded/ является расширенным
+   */
+  static expanded(t) {
+    return {
+      "aria-expanded": this.isTrueOrFalse(t)
+    };
+  }
+  /**
+   * Get ARIA haspopup attribute.
+   *
+   * Получить атрибут ARIA haspopup.
+   * @param haspopup ARIA haspopup attribute/ Атрибут ARIA haspopup
+   */
+  static haspopup(t) {
+    return this.isDataToData("aria-haspopup", t);
+  }
   /**
    * Get ARIA label.
    *
@@ -22,8 +78,26 @@ class J {
    * @param label ARIA label/ ARIA метка
    */
   static label(t) {
+    return this.isDataToData("aria-label", t);
+  }
+  /**
+   * Get ARIA labelledby attribute.
+   *
+   * Получить атрибут ARIA labelledby.
+   * @param id Element ID/ Идентификатор элемента
+   */
+  static labelledby(t) {
+    return this.isDataToData("aria-labelledby", t);
+  }
+  /**
+   * Get ARIA invalid attribute.
+   *
+   * Получить атрибут ARIA invalid.
+   * @param isInvalid is invalid/ является недействительным
+   */
+  static invalid(t = !0) {
     return {
-      "aria-label": t
+      "aria-invalid": this.isTrueOrFalse(t)
     };
   }
   /**
@@ -39,8 +113,8 @@ class J {
     return {
       id: t,
       "aria-controls": e,
-      "aria-haspopup": s,
-      "aria-expanded": this.isTrueOrFalse(i)
+      ...this.haspopup(s),
+      ...this.expanded(i)
     };
   }
   /**
@@ -76,8 +150,8 @@ class J {
   static modal(t = !0, e, s) {
     return {
       "aria-modal": this.isTrueOrFalse(t),
-      "aria-labelledby": e,
-      "aria-describedby": s
+      ...this.labelledby(e),
+      ...this.describedby(s)
     };
   }
   /**
@@ -104,8 +178,20 @@ class J {
   static isTrueOrFalse(t) {
     return t ? "true" : "false";
   }
+  /**
+   * Returns data as ARIA attribute.
+   *
+   * Возвращает данные в виде ARIA атрибута.
+   * @param name attribute name/ имя атрибута
+   * @param value attribute value/ значение атрибута
+   */
+  static isDataToData(t, e) {
+    return e ? {
+      [t]: e
+    } : {};
+  }
 }
-class Q {
+class W {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -149,7 +235,7 @@ class Q {
     ] : [];
   }
 }
-class W {
+class tt {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -159,7 +245,7 @@ class W {
    */
   constructor(t, e, s, i) {
     /** Unique identifier/ Уникальный идентификатор */
-    r(this, "id", B());
+    r(this, "id", F());
     /**
      * Check for the presence of a description
      *
@@ -206,7 +292,7 @@ class W {
     ] : [];
   }
 }
-class tt {
+class et {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -234,10 +320,17 @@ class tt {
      * проверяет, отключён ли элемент или пустое ли значение
      */
     r(this, "isDisabledOrUndefined", n(() => this.isDisabled.value || void 0));
+    /**
+     * list of aria properties for the enabled state/
+     * список aria свойств для состояния активности
+     */
+    r(this, "aria", n(
+      () => K.disabled(!this.isEnabled.value)
+    ));
     this.props = t, this.progress = e;
   }
 }
-class et {
+class st {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -322,7 +415,7 @@ class et {
     this.emits && (this.emits("click", t, e), this.emits("clickLite", e));
   }
 }
-class T {
+class D {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -336,7 +429,7 @@ class T {
    */
   constructor(t, e, s, i, a, h, m, S) {
     /** Unique identifier/ Уникальный идентификатор */
-    r(this, "id", B());
+    r(this, "id", F());
     /** Label presence check/ Проверка наличия метки */
     r(this, "is", n(() => {
       var t;
@@ -367,21 +460,22 @@ class T {
    * @param childrenExtra additional children/ дополнительные дочерние элементы
    */
   render(t) {
+    var s;
     const e = [];
     if (this.is.value) {
-      const s = [
+      const i = [
         ...this.initLabel(),
         ...this.initLabelReplacing(),
         ...this.initSlot()
       ];
-      this.elementsExtra && s.push(...this.elementsExtra()), t && s.push(...t), s.length > 0 && e.push(
+      this.elementsExtra && i.push(...this.elementsExtra()), t && i.push(...t), i.length > 0 && e.push(
         p(
           "span",
           {
-            id: this.getId(),
+            id: (s = this.props.labelId) != null ? s : this.getId(),
             class: this.getClassName()
           },
-          s,
+          i,
           "label"
         )
       );
@@ -439,7 +533,7 @@ class T {
     return [];
   }
 }
-class st extends T {
+class it extends D {
   /**
    * Constructor for the LabelHighlightInclude class.
    *
@@ -505,7 +599,7 @@ class st extends T {
     return (e = this.props.highlightLengthStart) != null ? e : 2;
   }
 }
-class it extends T {
+class rt extends D {
   /**
    * Constructor for working with text that has maximum values.
    *
@@ -536,12 +630,12 @@ class it extends T {
    */
   getNumber() {
     const t = this.props;
-    if (t.label && O(t.label))
-      return L(
+    if (t.label && R(t.label))
+      return P(
         t.label,
         t.labelMax,
         t.formatting,
-        R.getLanguage().value
+        _.getLanguage().value
       ).toString();
   }
 }
@@ -577,7 +671,7 @@ class C {
    * @returns Type predicate indicating syncValue is a mutable Ref/ Предикат типа, указывающий что syncValue - изменяемый Ref
    */
   isValue() {
-    return D(this.syncValue) && !w(this.syncValue);
+    return O(this.syncValue) && !w(this.syncValue);
   }
   /**
    * Generates binding object for v-model integration.
@@ -592,7 +686,7 @@ class C {
       const t = k(this.index);
       return {
         [`model${t}`]: this.syncValue.value,
-        [`onUpdate:${M(this.index)}`]: this.update,
+        [`onUpdate:${I(this.index)}`]: this.update,
         [`onUpdate:model${t}`]: this.update
       };
     }
@@ -607,10 +701,10 @@ class C {
    * @param value The new value to set/ Новое значение для установки
    */
   emit(t) {
-    F(this.emits) && (this.emits(`update:${M(this.index)}`, t), this.emits(`update:model${k(this.index)}`, t));
+    B(this.emits) && (this.emits(`update:${I(this.index)}`, t), this.emits(`update:model${k(this.index)}`, t));
   }
 }
-class rt {
+class at {
   /**
    * Constructor
    * @param index identifier/ идентификатор
@@ -650,7 +744,7 @@ class rt {
     return this.value.value;
   }
 }
-class at {
+class lt {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -694,7 +788,7 @@ class at {
     ] : [];
   }
 }
-class lt {
+class nt {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -738,7 +832,7 @@ class lt {
     ] : [];
   }
 }
-class nt {
+class ht {
   /**
    * Сonstructor
    * @param element - Reference to the element/ Ссылка на элемент
@@ -746,7 +840,24 @@ class nt {
   constructor(t) {
     /** Previously focused element/ Ранее сфокусированный элемент */
     r(this, "oldElement");
-    this.element = t;
+    /** Event item for focus events/ Элемент события для событий фокуса */
+    r(this, "event");
+    /**
+     * Event listener for keyboard events.
+     *
+     * Слушатель событий для событий клавиатуры.
+     * @param event Keyboard event/ Событие клавиатуры
+     */
+    r(this, "listenEvent", (t) => {
+      var s, i;
+      if (!this.isTab(t))
+        return;
+      const e = document.activeElement;
+      e && (this.isShift(t) ? e === this.findFirstElement() && (console.log("focus last"), (s = this.findLastElement()) == null || s.focus(), t.preventDefault()) : e === this.findLastElement() && (console.log("focus first"), (i = this.findFirstElement()) == null || i.focus(), t.preventDefault()));
+    });
+    this.element = t, L(() => {
+      this.stopEvent(), this.event = void 0;
+    });
   }
   /**
    * Set focus to the element.
@@ -754,7 +865,7 @@ class nt {
    * Устанавливает фокус на элемент.
    */
   goTo() {
-    return this.updateOldElement(), this.toFocus(), this;
+    return this.isElement() && M() && (this.updateOldElement(), this.toFocus(), this.startEvent()), this;
   }
   /**
    * Reset focus to the previously focused element.
@@ -762,7 +873,7 @@ class nt {
    * Сбрасывает фокус на ранее сфокусированный элемент.
    */
   reset() {
-    return this.oldElement && "focus" in this.oldElement && this.oldElement.focus(), this;
+    return this.oldElement && "focus" in this.oldElement && this.oldElement.focus(), this.stopEvent(), this;
   }
   /**
    * Toggle focus based on status.
@@ -774,12 +885,67 @@ class nt {
     return t ? this.goTo() : this.reset(), this;
   }
   /**
+   * Check if the element is defined.
+   *
+   * Проверяет, определен ли элемент.
+   */
+  isElement() {
+    return this.getElement() !== void 0;
+  }
+  /**
+   * Check if the event is a Tab key event.
+   *
+   * Проверяет, является ли событие событием клавиши Tab.
+   * @param event Keyboard event/ Событие клавиатуры
+   */
+  isTab(t) {
+    return t.key === "Tab" || t.code === "Tab" || t.keyCode === 9;
+  }
+  /**
+   * Check if the Shift key is pressed.
+   *
+   * Проверяет, нажата ли клавиша Shift.
+   * @param event Keyboard event/ Событие клавиатуры
+   */
+  isShift(t) {
+    return t.shiftKey;
+  }
+  /**
    * Get the element.
    *
    * Получает элемент.
    */
   getElement() {
-    return F(this.element) ? this.element() : b(this.element);
+    return B(this.element) ? this.element() : b(this.element);
+  }
+  /**
+   * Find the first focusable element.
+   *
+   * Находит первый фокусируемый элемент.
+   */
+  findFirstElement() {
+    var e;
+    const t = (e = this.getElement()) == null ? void 0 : e.querySelectorAll("*");
+    if (t) {
+      for (const s of t)
+        if ("tabIndex" in s && s.tabIndex >= 0)
+          return s;
+    }
+  }
+  /**
+   * Find the last focusable element.
+   *
+   * Находит последний фокусируемый элемент.
+   */
+  findLastElement() {
+    var e;
+    const t = (e = this.getElement()) == null ? void 0 : e.querySelectorAll("*");
+    if (t)
+      for (let s = t.length - 1; s >= 0; s--) {
+        const i = t[s];
+        if (i && "tabIndex" in i && i.tabIndex >= 0)
+          return i;
+      }
   }
   /**
    * Set focus with temporary tab index modification.
@@ -798,11 +964,35 @@ class nt {
    * Сохраняет текущий сфокусированный элемент.
    */
   updateOldElement() {
-    P() && (this.oldElement = document.activeElement);
+    M() && (this.oldElement = document.activeElement);
+  }
+  /**
+   * Start the event listener.
+   *
+   * Запускает слушатель событий.
+   */
+  startEvent() {
+    if (this.event) {
+      this.event.start();
+      return;
+    }
+    this.event = new q(
+      document.body,
+      "keydown",
+      this.listenEvent
+    ).start();
+  }
+  /**
+   * Stop the event listener.
+   *
+   * Останавливает слушатель событий.
+   */
+  stopEvent() {
+    this.event && this.event.stop();
   }
 }
-const g = 80;
-class ht {
+const f = 80;
+class ut {
   /**
    * Constructor
    * @param start callback on touch/mouse start/ колбэк при начале касания/клика
@@ -897,7 +1087,7 @@ class ht {
    * @param clientX horizontal coordinate/ горизонтальная координата
    */
   getTypeX(t) {
-    return t >= g ? "right" : t < -g ? "left" : "none";
+    return t >= f ? "right" : t < -f ? "left" : "none";
   }
   /**
    * Determines vertical direction type from client Y coordinate.
@@ -906,7 +1096,7 @@ class ht {
    * @param clientY vertical coordinate/ вертикальная координата
    */
   getTypeY(t) {
-    return t >= g ? "bottom" : t < -g ? "top" : "none";
+    return t >= f ? "bottom" : t < -f ? "top" : "none";
   }
   /**
    * Executes callback with calculated movement data.
@@ -918,7 +1108,7 @@ class ht {
     const e = this.mouse.value, s = this.mouseMove.value;
     if (e && s) {
       const i = s.x - e.x, a = s.y - e.y;
-      if (!t || await I(t(
+      if (!t || await T(t(
         this.getTypeX(i),
         this.getTypeY(a),
         i,
@@ -964,7 +1154,7 @@ class ht {
   update(t) {
     var i;
     const e = this.getElement(t), s = this.mouse.value;
-    e && s && (e.style.setProperty("--sys-touch-start-x", `${s.x}px`), e.style.setProperty("--sys-touch-start-y", `${s.y}px`), I((i = this.start) == null ? void 0 : i.call(this, s, this.touche.value)).then());
+    e && s && (e.style.setProperty("--sys-touch-start-x", `${s.x}px`), e.style.setProperty("--sys-touch-start-y", `${s.y}px`), T((i = this.start) == null ? void 0 : i.call(this, s, this.touche.value)).then());
   }
   /**
    * Updates touch/mouse position during movement and sets CSS custom properties.
@@ -979,7 +1169,7 @@ class ht {
     });
   }
 }
-class ut {
+class ot {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1037,7 +1227,7 @@ class ut {
     return t && "clear" in t && ((e = t.clear) == null || e.call(t)), this;
   }
 }
-class ot {
+class ct {
   /**
    * Constructor
    * @param props input data /<br>входные данные
@@ -1071,7 +1261,7 @@ class ot {
     r(this, "length", n(() => {
       var e;
       const t = this.item.value;
-      return _(t) ? t.length : y(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
+      return G(t) ? t.length : y(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
     }));
     /**
      * Changes the values to the original ones.
@@ -1100,7 +1290,7 @@ class ot {
    * Возвращает текущее значение в виде массива.
    */
   getToArray() {
-    return G(this.item.value);
+    return H(this.item.value);
   }
   /**
    * Changes the value.
@@ -1111,7 +1301,7 @@ class ot {
   set(t) {
     var e, s;
     if (this.isDifference(t)) {
-      this.item.value = H(
+      this.item.value = X(
         this.item.value,
         t,
         {
@@ -1237,7 +1427,7 @@ class ot {
     return t !== void 0 && v(t) !== this.string.value;
   }
 }
-class ct {
+class pt {
   constructor() {
     r(this, "item", u(!1));
   }
@@ -1250,7 +1440,7 @@ class ct {
     return this.item.value = !this.item.value, this;
   }
 }
-class pt {
+class dt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1274,7 +1464,7 @@ class pt {
     return this.item.value;
   }
 }
-class dt {
+class vt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1408,11 +1598,11 @@ class dt {
     return this;
   }
 }
-const f = {
+const g = {
   email: "[\\S]+@[\\S]{2,}\\.[\\w]{2,}",
   password: "[0-9a-zA-Z\\-!@#$%^&*]+"
 };
-class vt {
+class mt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1424,12 +1614,12 @@ class vt {
       if (this.props.pattern)
         return this.props.pattern;
       if (this.type)
-        return f == null ? void 0 : f[this.type.item.value];
+        return g == null ? void 0 : g[this.type.item.value];
     }));
     this.props = t, this.type = e;
   }
 }
-class mt {
+class ft {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1558,10 +1748,10 @@ class gt {
             i = this.props[s];
         }
       i !== void 0 && (e[s] = i);
-    }), q(e, this.props.inputAttrs);
+    }), Y(e, this.props.inputAttrs);
   }
 }
-class ft {
+class bt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1597,7 +1787,7 @@ class ft {
     this.item.value || this.set(!0);
   }
 }
-class bt {
+class yt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1646,7 +1836,7 @@ class c {
   constructor(t, e = c.getGroupDefault(), s) {
     /** Hidden input element for native validation/ Скрытый input для нативной валидации */
     r(this, "input");
-    this.pattern = t, this.group = e, this.code = s, this.input = X(
+    this.pattern = t, this.group = e, this.code = s, this.input = j(
       void 0,
       "input",
       this.getAttributes()
@@ -1693,9 +1883,9 @@ class c {
   getAttributes() {
     const t = this.pattern;
     if (o(t)) {
-      const e = Y(t);
+      const e = U(t);
       if (o(e))
-        return j(e) ? { pattern: e } : e;
+        return z(e) ? { pattern: e } : e;
     }
     return {};
   }
@@ -1708,7 +1898,7 @@ class c {
     return "check";
   }
 }
-class yt {
+class xt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1824,7 +2014,7 @@ class yt {
     return this.input.value.check(t);
   }
 }
-class xt {
+class Et {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1983,15 +2173,16 @@ class xt {
     return this.on(t).onChange(t), this;
   }
 }
-class Et {
+class kt {
   /**
    * Constructor
    * @param props input data/ входные данные
    * @param element object for working with input element/ объект для работы с элементом ввода
    * @param value object for working with value/ объект для работы со значениями
+   * @param text object for working with texts/ объект для работы с текстами
    */
-  constructor(t, e, s) {
-    this.props = t, this.element = e, this.value = s;
+  constructor(t, e, s, i) {
+    this.props = t, this.element = e, this.value = s, this.text = i;
   }
   /**
    * Checks whether matching verification is enabled
@@ -2016,8 +2207,14 @@ class Et {
    * Возвращает текст ошибки валидации
    */
   getValidationMessage() {
-    var t;
-    return this.is() ? y(this.props.match) && ((t = this.props.match) != null && t.validationMessage) ? this.props.match.validationMessage : U.getSync("global-entries_match") : "";
+    var t, e;
+    if (this.is()) {
+      if (y(this.props.match) && ((t = this.props.match) != null && t.validationMessage))
+        return this.props.match.validationMessage;
+      if (this.text)
+        return (e = this.text.entriesMatch.value) != null ? e : "";
+    }
+    return "";
   }
   /**
    * Checks value against external element
@@ -2039,35 +2236,35 @@ class Et {
     }
   }
 }
-const kt = (l) => `${l}-a--static`;
+const It = (l) => `${l}-a--static`;
 export {
-  J as AriaStaticInclude,
-  Q as CaptionInclude,
-  W as DescriptionInclude,
-  tt as EnabledInclude,
-  et as EventClickInclude,
-  dt as FieldArrowInclude,
+  K as AriaStaticInclude,
+  W as CaptionInclude,
+  tt as DescriptionInclude,
+  et as EnabledInclude,
+  st as EventClickInclude,
+  vt as FieldArrowInclude,
   gt as FieldAttributesInclude,
-  ft as FieldChangeInclude,
-  bt as FieldCodeInclude,
-  ut as FieldElementInclude,
-  xt as FieldEventInclude,
+  bt as FieldChangeInclude,
+  yt as FieldCodeInclude,
+  ot as FieldElementInclude,
+  Et as FieldEventInclude,
   c as FieldInputCheckInclude,
-  mt as FieldInputModeInclude,
-  Et as FieldMatchInclude,
-  vt as FieldPatternInclude,
-  pt as FieldTypeInclude,
-  yt as FieldValidationInclude,
-  ot as FieldValueInclude,
-  ct as FieldVisibilityInclude,
-  st as LabelHighlightInclude,
-  T as LabelInclude,
-  it as LabelNumberInclude,
+  ft as FieldInputModeInclude,
+  kt as FieldMatchInclude,
+  mt as FieldPatternInclude,
+  dt as FieldTypeInclude,
+  xt as FieldValidationInclude,
+  ct as FieldValueInclude,
+  pt as FieldVisibilityInclude,
+  it as LabelHighlightInclude,
+  D as LabelInclude,
+  rt as LabelNumberInclude,
   C as ModelInclude,
-  rt as ModelValueInclude,
-  at as PrefixInclude,
-  lt as SuffixInclude,
-  nt as TabIndexInclude,
-  ht as TouchEventInclude,
-  kt as getClassTegAStatic
+  at as ModelValueInclude,
+  lt as PrefixInclude,
+  nt as SuffixInclude,
+  ht as TabIndexInclude,
+  ut as TouchEventInclude,
+  It as getClassTagAStatic
 };

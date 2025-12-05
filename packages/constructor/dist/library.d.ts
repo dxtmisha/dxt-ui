@@ -26,7 +26,7 @@ export * from './classes/field/FieldTypeInclude';
 export * from './classes/field/FieldValidationInclude';
 export * from './classes/field/FieldValueInclude';
 export * from './classes/field/FieldVisibilityInclude';
-export * from './functions/getClassTegAStatic';
+export * from './functions/getClassTagAStatic';
 export * from './types/ariaTypes';
 export * from './types/captionTypes';
 export * from './types/descriptionTypes';

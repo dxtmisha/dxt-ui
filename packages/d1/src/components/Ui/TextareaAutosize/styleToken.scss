@@ -1,0 +1,40 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/TextareaAutosize/style" as TextareaAutosize;
+
+@include ui.initDesignBasic('d1.textareaAutosize') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include TextareaAutosize.mixinTextareaAutosize;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &--height {
+      &--xs {
+        --d1-textareaAutosize-minHeight: var(--d1-ot-spacing-16);
+      }
+      
+      &--sm {
+        --d1-textareaAutosize-minHeight: var(--d1-ot-spacing-24);
+      }
+      
+      &--md {
+        --d1-textareaAutosize-minHeight: var(--d1-ref-spacing-32);
+      }
+      
+      &--lg {
+        --d1-textareaAutosize-minHeight: var(--d1-ref-spacing-40);
+      }
+      
+      &--xl {
+        --d1-textareaAutosize-minHeight: var(--d1-ref-spacing-48);
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

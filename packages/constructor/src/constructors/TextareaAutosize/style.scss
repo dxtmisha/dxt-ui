@@ -1,0 +1,31 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinTextareaAutosize {
+  display: block;
+  overflow: hidden;
+
+  max-width: 100%;
+
+  font: inherit;
+  line-height: inherit !important;
+  resize: none;
+
+  min-height: ui.v('?textarea.sys.height', ui.v('??minHeight')) !important;
+  field-sizing: content;
+
+  @supports not (field-sizing: content) {
+    --sys-field-sizing-none: '--YES--';
+    height: ui.v('?textarea.sys.height', ui.v('??minHeight'));
+  }
+
+  &__clone {
+    position: absolute;
+    visibility: hidden;
+
+    width: inherit;
+
+    font: inherit;
+    line-height: inherit;
+    white-space: pre-wrap;
+  }
+}

@@ -1,0 +1,65 @@
+Text field component that automatically adjusts its height based on content.
+
+TextareaAutosize provides a multi-line text field that dynamically changes its height depending on the amount of entered text. The component uses a hidden clone element for precise height calculation, taking into account all padding and styles of the original textarea. This ensures smooth and natural behavior when entering text without manual height adjustment.
+
+**Key features:**
+
+- Automatic height adjustment based on content
+- Precise size calculation considering padding and styles
+- Smooth height transitions on content change
+- Optional autosize toggle for fixed height
+- Support for all standard textarea attributes
+- Reactive value binding with input events
+- Optimized performance through requestAnimationFrame
+
+**Common use cases:**
+
+- Comment and review fields
+- Feedback forms with long texts
+- Description and notes editors
+- Chats and messengers
+- Forms with dynamic content
+- Multi-line fields in adaptive interfaces
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const message = ref('')
+
+const handleInput = (event) => {
+  console.log('Current value:', event.target.value)
+}
+</script>
+
+<template>
+  <div class="form">
+    <TextareaAutosize
+      v-model="message"
+      :inputAttrs="{
+        placeholder: 'Enter your message...',
+        maxlength: 500
+      }"
+      @input="handleInput"
+    />
+
+    <TextareaAutosize
+      value="Text field with fixed height"
+      :autosize="false"
+      :inputAttrs="{
+        placeholder: 'Height does not change',
+        rows: 3
+      }"
+    />
+
+    <TextareaAutosize
+      :inputAttrs="{
+        placeholder: 'Comment',
+        'aria-label': 'Comment field',
+        required: true
+      }"
+    />
+  </div>
+</template>
+```
+

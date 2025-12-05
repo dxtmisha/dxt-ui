@@ -36,6 +36,8 @@ export interface LabelHighlightSlots extends LabelSlots {
 export interface LabelProps {
     /** Label text or number/ Текст или число метки */
     label?: NumberOrString;
+    /** Label element ID/ Идентификатор элемента метки */
+    labelId?: string;
 }
 /**
  * Properties for numeric label components/ Свойства для числовых компонентов меток

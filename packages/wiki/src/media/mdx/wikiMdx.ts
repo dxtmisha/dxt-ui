@@ -37,6 +37,7 @@ import { wikiMdxScrollbar } from './Scrollbar/wikiMdxScrollbar'
 import { wikiMdxSelect } from './Select/wikiMdxSelect'
 import { wikiMdxSelectValue } from './SelectValue/wikiMdxSelectValue'
 import { wikiMdxSkeleton } from './Skeleton/wikiMdxSkeleton'
+import { wikiMdxTextareaAutosize } from './TextareaAutosize/wikiMdxTextareaAutosize'
 import { wikiMdxWindow } from './Window/wikiMdxWindow'
 
 export const wikiMdx: StorybookComponentsMdx = [
@@ -77,5 +78,6 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxSelect,
   wikiMdxSelectValue,
   wikiMdxSkeleton,
+  wikiMdxTextareaAutosize,
   wikiMdxWindow
 ]

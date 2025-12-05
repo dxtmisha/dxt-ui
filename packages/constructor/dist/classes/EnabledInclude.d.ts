@@ -1,4 +1,5 @@
 import { ProgressInclude } from '../constructors/Progress';
+import { AriaList } from '../types/ariaTypes';
 import { EnabledProps } from '../types/enabledTypes';
 import { ComputedRef } from 'vue';
 /**
@@ -34,4 +35,9 @@ export declare class EnabledInclude {
      * проверяет, отключён ли элемент или пустое ли значение
      */
     readonly isDisabledOrUndefined: ComputedRef<boolean | undefined>;
+    /**
+     * list of aria properties for the enabled state/
+     * список aria свойств для состояния активности
+     */
+    readonly aria: ComputedRef<AriaList>;
 }

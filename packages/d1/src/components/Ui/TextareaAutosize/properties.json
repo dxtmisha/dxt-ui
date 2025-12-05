@@ -1,0 +1,21 @@
+{
+  "main": "{d.textareaAutosize}",
+  "~height": {
+    "xs": {
+      "min-height": "{ot.spacing.16}"
+    },
+    "sm": {
+      "min-height": "{ot.spacing.24}"
+    },
+    "md": {
+      "min-height": "{ref.spacing.32}"
+    },
+    "lg": {
+      "min-height": "{ref.spacing.40}"
+    },
+    "xl": {
+      "min-height": "{ref.spacing.48}"
+    },
+    "_default": "md"
+  }
+}
