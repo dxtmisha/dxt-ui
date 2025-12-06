@@ -41,6 +41,29 @@ export class WindowClasses {
   }
 
   /**
+   * Checks if the selected element is a window teleport.
+   *
+   * Проверяет, является ли выбранный элемент телепортом окна.
+   * @param target selected item/ выбранный элемент
+   */
+  isWindowTeleport(target?: HTMLElement): boolean {
+    return Boolean(
+      target
+      && target.classList.contains(`${this.className}__teleport`)
+    )
+  }
+
+  /**
+   * Checks if the selected element is a window or a window teleport.
+   *
+   * Проверяет, является ли выбранный элемент окном или телепортом окна.
+   * @param target selected item/ выбранный элемент
+   */
+  isWindowOrTeleport(target?: HTMLElement): boolean {
+    return this.isWindow(target) || this.isWindowTeleport(target)
+  }
+
+  /**
    * Returns the identifier of the current window.
    *
    * Возвращает идентификатор текущего окна.

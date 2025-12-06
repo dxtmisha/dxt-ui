@@ -19,6 +19,24 @@ export class AriaStaticInclude {
     }
   }
 
+  /**
+   * Get ARIA atomic attribute.
+   *
+   * Получить атрибут ARIA atomic.
+   * @param isAtomic is atomic/ является атомарным
+   */
+  static atomic(isAtomic?: boolean): AriaList {
+    return {
+      'aria-atomic': this.isTrueOrFalse(isAtomic)
+    }
+  }
+
+  /**
+   * Get ARIA checked attribute.
+   *
+   * Получить атрибут ARIA checked.
+   * @param isChecked is checked/ является отмеченным
+   */
   static checked(isChecked?: boolean): AriaList {
     return {
       'aria-checked': this.isTrueOrFalse(isChecked)
@@ -178,7 +196,7 @@ export class AriaStaticInclude {
     ariaDescribedby?: string
   ): AriaList {
     return {
-      'aria-modal': this.isTrueOrFalse(isModal),
+      ...this.isDataToData('aria-modal', isModal),
       ...this.labelledby(ariaLabelledby),
       ...this.describedby(ariaDescribedby)
     }

@@ -218,12 +218,10 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     if (focusActive) {
       if (this.isShift(event)) {
         if (focusActive === this.findFirstElement()) {
-          console.log('focus last')
           this.findLastElement()?.focus()
           event.preventDefault()
         }
       } else if (focusActive === this.findLastElement()) {
-        console.log('focus first')
         this.findFirstElement()?.focus()
         event.preventDefault()
       }

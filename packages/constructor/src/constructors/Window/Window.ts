@@ -28,6 +28,7 @@ import { WindowOpen } from './WindowOpen'
 import { WindowVerification } from './WindowVerification'
 import { WindowEvent } from './WindowEvent'
 import { WindowEsc } from './WindowEsc'
+import { WindowHidden } from './WindowHidden'
 
 import type { WindowControlItem } from './basicTypes'
 import type { WindowComponents, WindowEmits, WindowSlots } from './types'
@@ -89,6 +90,9 @@ export class Window {
   readonly esc: WindowEsc
 
   readonly text: TextInclude
+
+  /** Hidden manager for hiding elements outside the window when open/ Менеджер скрытия элементов вне окна при открытии */
+  readonly hidden: WindowHidden
 
   /**
    * Constructor
@@ -185,6 +189,7 @@ export class Window {
       () => !this.props.persistent
     )
     this.text = new TextInclude(this.props)
+    this.hidden = new WindowHidden(this.classes, this.open)
 
     new ModelInclude<boolean>('open', this.emits, this.open.item)
 
@@ -192,6 +197,13 @@ export class Window {
       watch([refs.open], () => this.open.set(props.open), { immediate: true })
     })
     onUnmounted(this.stop)
+  }
+
+  /** Checks if the role is a menu/ Проверяет, является ли роль меню */
+  isMenu(): boolean {
+    return this.props.role === 'menu'
+      || this.props.role === 'menuitemcheckbox'
+      || this.props.role === 'menuitemradio'
   }
 
   /** Returns data for managing slot data/ Возвращает данные для управления данными слотами */
