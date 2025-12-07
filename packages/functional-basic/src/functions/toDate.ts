@@ -30,6 +30,8 @@ export function toDate<T extends Date | number | string>(value?: T): (T & Date) 
     return all
   })
 
+  console.log('value', value, timeZone)
+
   const stringDate = ((/^\d{4}\d{2}\d{2}$/.exec(date)) && `${date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3')}T00:00:00`)
     ?? ((/^\d{4}\d{2}$/.exec(date)) && `${date.replace(/^(\d{4})(\d{2})$/, '$1-$2')}-01T00:00:00`)
     ?? ((/^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(date)) && date.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, '$1-$2-$3T$4:$5:$6'))

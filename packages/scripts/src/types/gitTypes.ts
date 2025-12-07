@@ -1,5 +1,5 @@
 /**
- * Git file status codes
+ * Git file status codes/
  * Коды статусов файлов Git
  */
 export enum GitStatus {
@@ -47,3 +47,11 @@ export enum GitStatus {
   /** File copied in index / Файл скопирован в индексе */
   COPIED_IN_INDEX = 'CM'
 }
+
+export type GitFileItem = {
+  path: string
+  date: string
+  status?: GitStatus
+}
+
+export type GitFileList = GitFileItem[]

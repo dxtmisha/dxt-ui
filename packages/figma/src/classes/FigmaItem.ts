@@ -214,11 +214,11 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     formatSettings: UiFigmaExportFormat | ExportSettings
   ): ExportSettings {
     switch (formatSettings) {
+      case 'JSON_REST_V1':
       case 'JPG':
       case 'PNG':
       case 'SVG':
       case 'PDF':
-      case 'JSON_REST_V1':
         return {
           format: formatSettings
         } as any as ExportSettings
