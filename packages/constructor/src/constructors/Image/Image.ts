@@ -72,6 +72,7 @@ export class Image {
 
     this.img = new ImageImg(
       this.props,
+      element,
       this.type,
       this.position,
       this.background

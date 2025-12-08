@@ -1,5 +1,5 @@
-import { computed } from 'vue'
-import { type ConstrBind, forEach, isArray, isNumber } from '@dxtmisha/functional'
+import { computed, type Ref, ref, toRefs, type WatchHandle, watch } from 'vue'
+import { type ConstrBind, forEach, isArray, isNumber, useLazyItemByMarginRef } from '@dxtmisha/functional'
 
 import { ImageType } from './ImageType'
 import { ImagePosition } from './ImagePosition'
@@ -14,12 +14,37 @@ import type { ImageProps } from './props'
  * Класс для работы с тегом img.
  */
 export class ImageImg {
+  protected lazyInit = ref<boolean>(false)
+  protected lazyStatus?: WatchHandle
+
   constructor(
     protected readonly props: ImageProps,
+    protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly type: ImageType,
     protected readonly position: ImagePosition,
     protected readonly background: ImageBackground
   ) {
+    const {
+      lazy,
+      preloadOffset
+    } = toRefs(props)
+
+    watch(
+      [lazy, preloadOffset, element],
+      () => {
+        if (
+          this.props.lazy
+          && this.element.value
+        ) {
+          this.makeLazy()
+        } else {
+          this.lazyInit.value = false
+          this.lazyStatus?.stop()
+          this.lazyStatus = undefined
+        }
+      },
+      { immediate: true }
+    )
   }
 
   /**
@@ -28,6 +53,13 @@ export class ImageImg {
   readonly is = computed<boolean>(() => {
     return Boolean(this.props.tagImg)
       && this.isType()
+  })
+
+  /**
+   * Determines whether lazy loading is enabled/ Определяет, включена ли ленивя загрузка
+   */
+  readonly isLazy = computed<boolean>(() => {
+    return Boolean(this.props.lazy) && !this.lazyInit.value
   })
 
   /**
@@ -53,7 +85,7 @@ export class ImageImg {
         attrs.style = this.styles.value
 
         if (this.props.lazy) {
-          attrs.loading = 'lazy'
+          attrs.loading = this.isLazy.value ? 'lazy' : 'auto'
         }
 
         if (this.props.srcset) {
@@ -168,5 +200,19 @@ export class ImageImg {
    */
   protected toSrcsetKey(key: string | number): string {
     return isNumber(key) ? `${key}w` : String(key)
+  }
+
+  /**
+   * Initializes lazy loading.
+   *
+   * Инициализирует ленивую загрузку.
+   */
+  protected makeLazy(): void {
+    const lazyStatus = useLazyItemByMarginRef(this.element, `${this.props.preloadOffset} 0px`)
+      .lazyItemStatus
+
+    this.lazyStatus = watch(lazyStatus, () => {
+      this.lazyInit.value = lazyStatus.value
+    }, { immediate: true })
   }
 }

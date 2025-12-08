@@ -64,6 +64,10 @@ export interface ImagePropsBasic {
   alt?: string
   /** Lazy loading/ Ленивя загрузка */
   lazy?: boolean
+  /** Preload offset/ Смещение для предзагрузки */
+  preloadOffset?: string
+  /** Image fetch priority (low, high, auto)/ Приоритет загрузки изображения (low, high, auto) */
+  fetchPriority?: HTMLImageElement['fetchPriority']
 }
 
 /**
@@ -81,6 +85,7 @@ export interface ImageProps extends ImagePropsBasic, ImagePropsToken {
  */
 export const defaultsImage = {
   adaptiveGroup: 'basic',
+  preloadOffset: '1024px',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -78,6 +78,10 @@ export class ImageData {
         case ImageTypeValue.image:
         case ImageTypeValue.file:
           try {
+            if (this.props.lazy) {
+              return this.props.value
+            }
+
             return await ImageFile.createImage(image)
           } catch {
             console.error('ImageData.initImage: ', image)

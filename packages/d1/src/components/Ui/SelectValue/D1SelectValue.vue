@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -14,7 +12,7 @@ import {
 
 import { D1Chip } from '../Chip'
 
-import { defaults, type SelectValueProps, propsValues } from './props'
+import { defaults, type SelectValueProps } from './props'
 import './styleToken.scss'
 
 defineOptions({

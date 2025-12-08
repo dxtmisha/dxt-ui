@@ -17,6 +17,7 @@ export * from './composables/ref/useBroadcastValueRef';
 export * from './composables/ref/useCookieRef';
 export * from './composables/ref/useGeoIntlRef';
 export * from './composables/ref/useHashRef';
+export * from './composables/ref/useLazyItemByMarginRef';
 export * from './composables/ref/useLazyRef';
 export * from './composables/ref/useLoadingRef';
 export * from './composables/ref/useMeta';

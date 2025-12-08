@@ -4,10 +4,12 @@ import {
   type ShallowRef,
   watch
 } from 'vue'
-import { getElementId } from '@dxtmisha/functional-basic'
+import { getElementId, isDomRuntime } from '@dxtmisha/functional-basic'
 
 export type LazyItem = {
   status: ShallowRef<boolean>
+  ratio: ShallowRef<number>
+  entry: ShallowRef<IntersectionObserverEntry | undefined>
   stopWatch: () => void
 }
 export type LazyList = Record<string, LazyItem>
@@ -17,9 +19,13 @@ export type LazyList = Record<string, LazyItem>
  *
  * Хук для инициализации отслеживания появления элемента на экране.
  */
-export const useLazyRef = () => {
+export const useLazyRef = (
+  options: IntersectionObserverInit = {
+    rootMargin: '128px 0px'
+  }
+) => {
   const list: LazyList = {}
-  const intersectionObserver = 'IntersectionObserver' in window
+  const intersectionObserver = isDomRuntime() && 'IntersectionObserver' in window
     ? (
         new IntersectionObserver(
           (entries) => {
@@ -27,13 +33,15 @@ export const useLazyRef = () => {
               const id = getElementId(entry.target as HTMLElement)
 
               if (id in list) {
-                (list[id] as LazyItem).status.value = entry.isIntersecting
+                const item: LazyItem = list[id] as LazyItem
+
+                item.status.value = entry.isIntersecting
+                item.ratio.value = entry.intersectionRatio
+                item.entry.value = entry
               }
             })
           },
-          {
-            rootMargin: '128px 0px'
-          }
+          options
         )
       )
     : undefined
@@ -55,18 +63,31 @@ export const useLazyRef = () => {
     intersectionObserver,
 
     /**
+     * Getting a tracked element.
+     *
+     * Получение отслеживаемого элемента.
+     * @param element tracked element/ отслеживаемый элемент
+     */
+    getItem(element: HTMLElement) {
+      const id = getElementId(element)
+
+      return list[id]
+    },
+
+    /**
      * Adding an element for tracking.
      *
      * Добавление элемента для отслеживания.
      * @param element element for tracking/ элемента для отслеживания
      */
-    addLazyItem(element: Ref<HTMLElement>) {
+    addLazyItem(element: Ref<HTMLElement | undefined>) {
       const status = shallowRef<boolean>(!intersectionObserver)
 
       if (intersectionObserver) {
-        const stopWatch = watch(element, (_, oldElement) => {
+        let stopWatch: (() => void) | undefined = undefined
+        stopWatch = watch(element, (_, oldElement) => {
           if (oldElement) {
-            intersectionObserver.unobserve(oldElement)
+            remove(oldElement)
           }
 
           if (element.value) {
@@ -74,7 +95,9 @@ export const useLazyRef = () => {
 
             list[id] = {
               status,
-              stopWatch
+              ratio: shallowRef<number>(0),
+              entry: shallowRef(undefined),
+              stopWatch: () => stopWatch?.()
             }
             intersectionObserver.observe(element.value)
           } else {
