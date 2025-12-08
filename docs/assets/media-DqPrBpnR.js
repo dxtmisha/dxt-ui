@@ -1,1 +1,0 @@
-import"./wiki-NZJqstoo.js";const s="/dxt-ui/assets/image-1-BouHnSTx.jpeg",o="/dxt-ui/assets/phone-1-DHEuDs2-.png",n="/dxt-ui/assets/phone-2-Chntpe4G.png",e="/dxt-ui/assets/phone-3-CM27KV1l.png",t="/dxt-ui/assets/demo-pdf-CEYSVp7E.pdf",a=s,d=o,c=n,h=e,i=t;export{c as a,d as b,i as d,a as i,h as p};
