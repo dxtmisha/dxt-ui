@@ -1,6 +1,6 @@
 // export:none
 
-import { isFilled, replaceRecursive, toKebabCase } from '@dxtmisha/functional'
+import { isFilled, replaceRecursive, toKebabCase } from '@dxtmisha/functional-basic'
 import { getConstructorProperties } from '../../functions/getConstructorProperties'
 
 import { PropertiesConfig } from './PropertiesConfig'

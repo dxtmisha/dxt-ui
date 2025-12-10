@@ -1,6 +1,6 @@
 // export:none
 
-import { toArray } from '@dxtmisha/functional'
+import { toArray } from '@dxtmisha/functional-basic'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'

@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process'
-import { Datetime, forEach } from '@dxtmisha/functional'
+import { Datetime, forEach, removeCommonPrefix } from '@dxtmisha/functional-basic'
 
 import { type GitFileList, GitStatus } from '../../types/gitTypes'
 
@@ -18,6 +18,8 @@ export class GitRead {
   static getList(
     filter?: (file: string) => boolean
   ): GitFileList {
+    const dir = this.getDirPrefix()
+
     return forEach(
       this.getFilesPath(),
       (file) => {
@@ -27,13 +29,12 @@ export class GitRead {
         ) {
           return
         }
-        console.log('this.getFileDate(file)', this.getFileDate(file))
-        const date = new Datetime(this.getFileDate(file))
-          .setType('full')
-          .standard()
+
+        const date = this.getDate(this.getFileDate(file))
 
         return {
-          path: file,
+          path: `${file}`,
+          pathFull: `${dir}${file}`,
           date,
           status: undefined
         }
@@ -50,14 +51,14 @@ export class GitRead {
   static getListPorcelain(
     filter?: (file: string) => boolean
   ): GitFileList {
-    const date = new Datetime()
-      .setType('full')
-      .standard()
+    const date = this.getDate()
+    const prefix = this.getDirPrefix()
 
     return forEach(
-      this.getFilesPath(),
+      this.getFilesPorcelain(),
       (file) => {
         const data = file.split(' ', 2)
+
         const status = data[0] as GitStatus
         const path: string = data[1] ?? ''
 
@@ -69,7 +70,8 @@ export class GitRead {
         }
 
         return {
-          path,
+          path: removeCommonPrefix(path, prefix),
+          pathFull: path,
           date,
           status
         }
@@ -83,11 +85,15 @@ export class GitRead {
    * Получает список файлов классов (*.ts в директории /classes/).
    */
   static getClassesList(): GitFileList {
-    return this.getList(
-      file => Boolean(
-        file.match('/classes/')
-        && file.endsWith('.ts')
-      )
+    const filter = (file: string) => Boolean(
+      file.match('/classes/')
+      && file.endsWith('.ts')
+      && !file.endsWith('.test.ts')
+    )
+
+    return this.mergeUnique(
+      this.getListPorcelain(filter),
+      this.getList(filter)
     )
   }
 
@@ -123,6 +129,80 @@ export class GitRead {
    */
   static getFileDate(filePath: string): string {
     return this.exec(`git log -1 --format="%ci" -- "${filePath}"`)
+  }
+
+  /**
+   * Gets the directory prefix of the current Git repository.
+   *
+   * Получает префикс директории текущего Git репозитория.
+   */
+  static getDirPrefix(): string {
+    return this.exec('git rev-parse --show-prefix')
+  }
+
+  /**
+   * Formats a date string to standard full format.
+   *
+   * Форматирует строку даты в стандартный полный формат.
+   * @param date - date string / строка даты
+   */
+  static getDate(date?: string): string {
+    return new Datetime(date)
+      .setType('full')
+      .standard()
+  }
+
+  /**
+   * Filters a list of Git files by the current directory prefix.
+   *
+   * Фильтрует список файлов Git по префиксу текущей директории.
+   * @param list - list of Git files / список файлов Git
+   */
+  static filterByDirectory(
+    list: GitFileList
+  ): GitFileList {
+    const dir = this.getDirPrefix()
+
+    return list.filter(item => item.pathFull.startsWith(dir))
+  }
+
+  /**
+   * Merges two lists of Git files, ensuring uniqueness by file path.
+   *
+   * Объединяет два списка файлов Git, обеспечивая уникальность по пути файла.
+   * @param listA - first list to merge / первый список для объединения
+   * @param listB - lists to merge / списки для объединения
+   */
+  static mergeUnique(
+    listA: GitFileList,
+    listB: GitFileList
+  ): GitFileList {
+    const list: GitFileList = [...listA]
+
+    forEach(
+      listB,
+      (itemB) => {
+        const exists = list.find(
+          itemA => itemA.pathFull === itemB.pathFull
+        )
+
+        if (!exists) {
+          list.push(itemB)
+        }
+      }
+    )
+
+    return list
+  }
+
+  /**
+   * Splits a file path into its components.
+   *
+   * Разбивает путь файла на его компоненты.
+   * @param path - file path / путь к файлу
+   */
+  static splitPath(path: string): string[] {
+    return path.split('/').filter(part => part.length > 0)
   }
 
   /**

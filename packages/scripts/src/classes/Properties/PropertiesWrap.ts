@@ -1,6 +1,6 @@
 // export:none
 
-import { forEach, isObjectNotArray } from '@dxtmisha/functional'
+import { forEach, isObjectNotArray } from '@dxtmisha/functional-basic'
 
 import {
   PropertyKey,

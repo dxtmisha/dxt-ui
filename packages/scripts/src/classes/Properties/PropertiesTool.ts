@@ -1,6 +1,6 @@
 // export:none
 
-import { copyObject, toCamelCase } from '@dxtmisha/functional'
+import { copyObject, toCamelCase } from '@dxtmisha/functional-basic'
 
 import { PropertiesConfig } from './PropertiesConfig'
 import { PropertiesCache } from './PropertiesCache'

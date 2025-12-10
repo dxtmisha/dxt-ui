@@ -1,6 +1,6 @@
 // export:none
 
-import { forEach } from '@dxtmisha/functional'
+import { forEach } from '@dxtmisha/functional-basic'
 
 import {
   type PropertyItem,

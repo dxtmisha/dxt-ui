@@ -1,6 +1,6 @@
 // export:none
 
-import { forEach, isFilled, isObjectNotArray, replaceRecursive } from '@dxtmisha/functional'
+import { forEach, isFilled, isObjectNotArray, replaceRecursive } from '@dxtmisha/functional-basic'
 
 import {
   PropertiesFile,

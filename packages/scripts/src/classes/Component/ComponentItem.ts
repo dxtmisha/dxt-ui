@@ -1,6 +1,6 @@
 // export:none
 
-import { toKebabCase } from '@dxtmisha/functional'
+import { toKebabCase } from '@dxtmisha/functional-basic'
 import { getComponentPaths } from '../../functions/getComponentPaths'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'

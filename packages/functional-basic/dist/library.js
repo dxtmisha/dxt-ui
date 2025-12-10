@@ -26,7 +26,7 @@ function kt(i, t = "=", e = "&") {
 function q(i) {
   return i == null;
 }
-function D(i, t) {
+function S(i, t) {
   if (i) {
     if (t && i === "0")
       return !0;
@@ -451,11 +451,11 @@ function A(i) {
 function ht(i) {
   return Nt(i) ? i : A(i);
 }
-function zt(i) {
+function Ht(i) {
   var t;
   return !!((t = A(i)) != null && t.closest("html"));
 }
-function H(i) {
+function z(i) {
   return Array.isArray(i) ? i : [i];
 }
 class lt {
@@ -500,7 +500,7 @@ class lt {
      */
     c(this, "listenerRecent", (t) => {
       var e, s;
-      zt(this.elementControl) ? ((e = this.listener) == null || e.call(this.element, t, this.detail), m(this.options) && ((s = this.options) != null && s.once) && this.stop()) : this.stop();
+      Ht(this.elementControl) ? ((e = this.listener) == null || e.call(this.element, t, this.detail), m(this.options) && ((s = this.options) != null && s.once) && this.stop()) : this.stop();
     });
     /**
      * Event states.
@@ -509,7 +509,7 @@ class lt {
      */
     c(this, "activity", !1);
     c(this, "activityItems", []);
-    this.listener = s, this.options = n, this.detail = o, this.element = ht(t), this.elementControl = A(t), this.type = H(e);
+    this.listener = s, this.options = n, this.detail = o, this.element = ht(t), this.elementControl = A(t), this.type = z(e);
   }
   /**
    * Checks whether event listening is currently enabled.
@@ -548,7 +548,7 @@ class lt {
    * @param type type/ тип
    */
   setType(t) {
-    return this.type = H(t), this.reset(), this;
+    return this.type = z(t), this.reset(), this;
   }
   /**
    * Modifies the object that receives the notification.
@@ -743,7 +743,7 @@ const dt = "ui-loading", K = class K {
 };
 c(K, "value", 0), c(K, "event"), l() && (K.event = new lt(window, dt));
 let x = K;
-class Ht {
+class zt {
   constructor() {
     /** Default headers/ Заголовки по умолчанию */
     c(this, "headers", {});
@@ -761,7 +761,7 @@ class Ht {
         this.headers,
         t
       );
-      return D(e) && (s["Content-Type"] = e), s;
+      return S(e) && (s["Content-Type"] = e), s;
     }
   }
   /**
@@ -773,7 +773,7 @@ class Ht {
     return k(t) && (this.headers = t), this;
   }
 }
-var S = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(S || {});
+var D = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(D || {});
 class Zt {
   constructor() {
     /** Default request data/ Данные запроса по умолчанию */
@@ -999,7 +999,7 @@ class Yt {
    * @param response data for caching/ данные для кеширования
    */
   add(t) {
-    return this.response.push(...H(t)), this;
+    return this.response.push(...z(t)), this;
   }
   /**
    * Sets developer mode.
@@ -1017,8 +1017,8 @@ class Yt {
   async emulator(t) {
     const {
       path: e = "",
-      method: s = S.get,
-      global: n = s === S.get,
+      method: s = D.get,
+      global: n = s === D.get,
       devMode: o = !1
     } = t;
     if (n || this.isDevMode(o)) {
@@ -1076,7 +1076,7 @@ class Yt {
    */
   isResponse(t, e) {
     const s = this.requestDefault.request(t == null ? void 0 : t.request);
-    return e === s || s === "*any" || D(e) && D(s) && k(e) && k(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
+    return e === s || s === "*any" || S(e) && S(s) && k(e) && k(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
       (n, [o, a]) => n && (a === (e == null ? void 0 : e[o]) || a === "*any"),
       !0
     );
@@ -1231,10 +1231,10 @@ const w = class w {
    * @param request this request/ данный запрос
    * @param method method for request/ метод запрос
    */
-  static getBody(t = {}, e = S.get) {
+  static getBody(t = {}, e = D.get) {
     if (t instanceof FormData)
       return t;
-    if (e !== S.get && D(t))
+    if (e !== D.get && S(t))
       return R(t) ? t : JSON.stringify(t);
   }
   /**
@@ -1245,10 +1245,10 @@ const w = class w {
    * @param path path to request/ путь к запрос
    * @param method method for request/ метод запрос
    */
-  static getBodyForGet(t, e = "", s = S.get) {
-    if (s === S.get) {
+  static getBodyForGet(t, e = "", s = D.get) {
+    if (s === D.get) {
       const n = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? kt(t) : t;
-      if (D(o))
+      if (S(o))
         return `${n}${o}`;
     }
     return "";
@@ -1315,7 +1315,7 @@ const w = class w {
    */
   static get(t) {
     return this.request(L(t, {
-      method: S.get
+      method: D.get
     }));
   }
   /**
@@ -1326,7 +1326,7 @@ const w = class w {
    */
   static post(t) {
     return this.request(L(t, {
-      method: S.post
+      method: D.post
     }));
   }
   /**
@@ -1337,7 +1337,7 @@ const w = class w {
    */
   static put(t) {
     return this.request(L(t, {
-      method: S.put
+      method: D.put
     }));
   }
   /**
@@ -1348,7 +1348,7 @@ const w = class w {
    */
   static delete(t) {
     return this.request(L(t, {
-      method: S.delete
+      method: D.delete
     }));
   }
   /**
@@ -1410,7 +1410,7 @@ const w = class w {
       api: s = !0,
       path: n = "",
       pathFull: o = void 0,
-      method: a = S.get,
+      method: a = D.get,
       headers: u = {},
       type: h = "application/json;charset=UTF-8",
       init: f = {}
@@ -1438,8 +1438,8 @@ const w = class w {
     return t;
   }
 };
-c(w, "url", "/api/"), c(w, "headers", new Ht()), c(w, "requestDefault", new Zt()), c(w, "status", new Kt()), c(w, "response", new Yt(w.requestDefault)), c(w, "preparation", new qt());
-let z = w;
+c(w, "url", "/api/"), c(w, "headers", new zt()), c(w, "requestDefault", new Zt()), c(w, "status", new Kt()), c(w, "response", new Yt(w.requestDefault)), c(w, "preparation", new qt());
+let H = w;
 class Ce {
   /**
    * Constructor
@@ -1724,7 +1724,7 @@ const X = {}, at = class at {
   static updateData() {
     for (const t of document.cookie.split(";")) {
       const [e, s] = t.trim().split("=");
-      e && D(s) && (X[e] = Et(s));
+      e && S(s) && (X[e] = Et(s));
     }
   }
 };
@@ -1739,10 +1739,10 @@ function B(i) {
     return /* @__PURE__ */ new Date();
   if (typeof i == "number")
     return new Date(i);
-  let t = i, e = b.getTimezoneFormat();
-  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (Q, M, Rt) => (t = M, e = Rt, Q)), console.log("value", i, e);
+  let t = i, e = b.getTimezoneFormat().trim();
+  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (Q, M, Rt) => (t = M, e = Rt.trim(), Q));
   const s = (I = (d = (f = (h = (u = (a = (o = (n = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? n : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? f : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? d : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? I : t.replace(" ", "T");
-  return /* @__PURE__ */ new Date(`${s}${e}`);
+  return /* @__PURE__ */ new Date(`${s.trim()}${e}`);
 }
 function _t(i, t) {
   return g(i, (e) => e == null ? void 0 : e[t]);
@@ -2333,10 +2333,7 @@ class Bt {
     const s = e / 60 * -1;
     if (t === "hour")
       return this.getIntl().number(Math.trunc(s), { signDisplay: "always" });
-    const n = this.getIntl().number(Math.trunc(s), {
-      signDisplay: "always",
-      minimumIntegerDigits: 2
-    }), o = s.toString().match(/.\d+/) ? "30" : "00";
+    const n = this.toTimeZoneHourFormat(s), o = s.toString().match(/.\d+/) ? "30" : "00";
     return t === "RFC" ? `${n}${o}` : `${n}:${o}`;
   }
   /**
@@ -2893,6 +2890,20 @@ class Bt {
     return this.cloneClass().moveDayPrevious();
   }
   /**
+   * Returns the time zone hour format.
+   *
+   * Возвращает часовой формат временной зоны.
+   * @param hour hour/ час
+   */
+  toTimeZoneHourFormat(t) {
+    l() && this.getIntl().number(Math.trunc(t), {
+      signDisplay: "always",
+      minimumIntegerDigits: 2
+    });
+    let e = Math.trunc(t).toString();
+    return e.length < 2 && (e = `0${e}`), `${t >= 0 ? "+" : "-"}${e}`;
+  }
+  /**
    * Updating all values.
    *
    * Обновление всех значений.
@@ -3323,7 +3334,7 @@ const U = class U {
    * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toMask(t, e) {
-    if (D(t) && Array.isArray(e) && e.length > 0) {
+    if (S(t) && Array.isArray(e) && e.length > 0) {
       const s = this.removeZero(t), n = s.length;
       for (const o of e)
         if (this.getUnnecessaryLength(o) === n)
@@ -3376,7 +3387,7 @@ const U = class U {
         return {
           phone: (e == null ? void 0 : e.phoneCode) && Number(e.phoneCode.replace(/[^0-9]+/, "")) || void 0,
           within: (e == null ? void 0 : e.phoneWithin) || 0,
-          mask: H(e.phoneMask),
+          mask: z(e.phoneMask),
           value: e.country
         };
     });
@@ -3583,7 +3594,7 @@ const it = "__UI_ICON", bt = 320, wt = "--LOAD--", V = class V {
    * Возвращает глобальную ссылку.
    */
   static getUrlGlobal() {
-    return `${z.isLocalhost(), ""}${this.url}`;
+    return `${H.isLocalhost(), ""}${this.url}`;
   }
   /**
    * Adding custom icons.
@@ -4181,7 +4192,7 @@ class Ae extends ot {
    */
   setTitle(e) {
     if (l()) {
-      const s = D(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
+      const s = S(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
       document.title = s, this.og.setTitle(s), this.twitter.setTitle(s);
     }
     return this;
@@ -4193,7 +4204,7 @@ class Ae extends ot {
    * @param keywords keywords as string or array / ключевые слова в виде строки или массива
    */
   setKeywords(e) {
-    return this.set(v.keywords, H(e).join(", ")), this;
+    return this.set(v.keywords, z(e).join(", ")), this;
   }
   /**
    * Sets the description meta tag.
@@ -4281,7 +4292,7 @@ class Ae extends ot {
    * Получает отформатированный суффикс с разделителем.
    */
   getSuffix() {
-    return D(this.suffix) ? ` - ${this.suffix}` : "";
+    return S(this.suffix) ? ` - ${this.suffix}` : "";
   }
 }
 class nt {
@@ -4381,7 +4392,7 @@ const ue = [
   static async get(t, e) {
     var n, o;
     const s = this.getName(t);
-    return s in this.data ? this.replacement(this.data[s], e) : (z.isLocalhost() || await this.add(t), this.replacement((o = (n = this.data) == null ? void 0 : n[s]) != null ? o : t));
+    return s in this.data ? this.replacement(this.data[s], e) : (H.isLocalhost() || await this.add(t), this.replacement((o = (n = this.data) == null ? void 0 : n[s]) != null ? o : t));
   }
   /**
    * Getting the translation text by its code (Sync).
@@ -4454,7 +4465,7 @@ const ue = [
    */
   static addSync(t) {
     g(t, (e, s) => {
-      R(e) && D(e) && (this.data[this.getName(s)] = e);
+      R(e) && S(e) && (this.data[this.getName(s)] = e);
     });
   }
   /**
@@ -4464,8 +4475,8 @@ const ue = [
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static async addNormalOrSync(t) {
-    if (D(t))
-      if (z.isLocalhost())
+    if (S(t))
+      if (H.isLocalhost())
         this.addSync(t);
       else {
         const e = Object.keys(t);
@@ -4501,7 +4512,7 @@ const ue = [
    */
   static getNamesNone(t) {
     const e = [];
-    return H(t).forEach((s) => {
+    return z(t).forEach((s) => {
       s !== "__TRANSLATE_START__" && s !== "__TRANSLATE_END__" && !(this.getName(s) in this.data) && e.push(s);
     }), e;
   }
@@ -4511,7 +4522,7 @@ const ue = [
    * Получение списка переводов с сервера.
    */
   static async getResponse() {
-    const t = await z.get({
+    const t = await H.get({
       api: !1,
       path: this.url,
       request: {
@@ -4546,7 +4557,7 @@ const ue = [
   }
 };
 c(N, "url", "/api/translate"), c(N, "propsName", "list"), c(N, "data", {}), c(N, "cache", []), c(N, "resolveList", []), c(N, "timeout");
-let St = N;
+let Dt = N;
 function Ft(i) {
   return Array.isArray(i);
 }
@@ -4593,10 +4604,10 @@ async function Re(i) {
   var t, e;
   return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
-let Dt = Y(1e5, 9e5);
+let St = Y(1e5, 9e5);
 function Pe(i, t) {
   const e = A(i);
-  return e ? (D(e.id) || e.setAttribute("id", `id-${Dt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${Dt++}`;
+  return e ? (S(e.id) || e.setAttribute("id", `id-${St++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${St++}`;
 }
 function ge(i) {
   return R(i) ? _(
@@ -4635,13 +4646,13 @@ function $e(i) {
   var t, e, s, n;
   return (i == null ? void 0 : i.clientY) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((n = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : n.clientY) || 0;
 }
-function ze(i) {
+function He(i) {
   return {
     x: ye(i),
     y: $e(i)
   };
 }
-function He(i, t) {
+function ze(i, t) {
   const e = {};
   return t.forEach((s) => {
     s in i && i[s] !== void 0 && (e[s] = i[s]);
@@ -4720,6 +4731,14 @@ function Te(i, t) {
 function Ge(i, t) {
   return Array.isArray(i) ? i.every((e) => st(e, t)) : st(i, t);
 }
+function ti(i, t) {
+  if (i.startsWith(t))
+    return i.slice(t.length).trim();
+  let e = 0;
+  for (; i[e] === t[e] && e < i.length && e < t.length; )
+    e++;
+  return i.slice(e).trim();
+}
 function be(i) {
   return [...new Set(i)];
 }
@@ -4737,7 +4756,7 @@ function Z(i, t, e = !0) {
     }
   ), s;
 }
-function ti(i, t) {
+function ei(i, t) {
   let e = i;
   return g(t, (s, n) => {
     e = e.replace(fe(`[${n}]`), E(s));
@@ -4753,7 +4772,7 @@ function we(i, t = "auto") {
       return !1;
   }
 }
-function ei(i, t, e = "auto", s) {
+function ii(i, t, e = "auto", s) {
   var o;
   const n = ge(i);
   if (n && (n.naturalWidth > t && (e === "auto" || e === "width") || n.naturalHeight > t && (e === "auto" || e === "height"))) {
@@ -4762,7 +4781,7 @@ function ei(i, t, e = "auto", s) {
       return u.canvas.width = a ? t : n.naturalWidth / n.naturalHeight * t, u.canvas.height = a ? n.naturalHeight / n.naturalWidth * t : t, u.drawImage(n, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
   }
 }
-function ii(i) {
+function si(i) {
   const t = C(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -4770,7 +4789,7 @@ function ii(i) {
   }
   return "00:00";
 }
-function si(i, t, {
+function ri(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
@@ -4785,7 +4804,7 @@ function si(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function ri(i, t, e) {
+function ni(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
@@ -4801,30 +4820,30 @@ function ri(i, t, e) {
 function ve(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function ni(i) {
+function oi(i) {
   return ve(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function oi(i) {
+function ai(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function ai(i, t, e, s) {
+function ci(i, t, e, s) {
   const n = C(i), o = C(t);
   return t && o < n ? `${Ct(o, e, s)}+` : Ct(n, e, s);
 }
 const Ct = (i, t, e) => t ? new J(e).number(i) : i;
-function Se(i, t) {
+function De(i, t) {
   return 1 / i * t;
 }
-function ci(i, t) {
-  return Se(i, t) * 100;
+function ui(i, t) {
+  return De(i, t) * 100;
 }
-function ui(i) {
+function hi(i) {
   let t = "";
   for (const e of i)
     t += String.fromCharCode(e);
   return l() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
 }
-async function hi(i) {
+async function li(i) {
   if (l())
     try {
       await navigator.clipboard.writeText(i);
@@ -4833,10 +4852,10 @@ async function hi(i) {
     }
 }
 export {
-  z as Api,
+  H as Api,
   Zt as ApiDefault,
-  Ht as ApiHeaders,
-  S as ApiMethodItem,
+  zt as ApiHeaders,
+  D as ApiMethodItem,
   qt as ApiPreparation,
   Yt as ApiResponse,
   Kt as ApiStatus,
@@ -4873,7 +4892,7 @@ export {
   oe as MetaTwitterCard,
   $ as MetaTwitterTag,
   nt as ScrollbarWidth,
-  St as Translate,
+  Dt as Translate,
   Ne as anyToString,
   he as applyTemplate,
   le as arrFill,
@@ -4903,10 +4922,10 @@ export {
   xt as getLengthOfAllArray,
   Ue as getMaxLengthAllArray,
   je as getMinLengthAllArray,
-  ze as getMouseClient,
+  He as getMouseClient,
   ye as getMouseClientX,
   $e as getMouseClientY,
-  He as getObjectByKeys,
+  ze as getObjectByKeys,
   Ze as getObjectNoUndefined,
   Ke as getObjectOrNone,
   Ve as getRandomText,
@@ -4921,10 +4940,10 @@ export {
   _e as isDifferent,
   rt as isDomData,
   l as isDomRuntime,
-  D as isFilled,
+  S as isFilled,
   Oe as isFloat,
   At as isFunction,
-  zt as isInDom,
+  Ht as isInDom,
   Te as isIntegerBetween,
   q as isNull,
   ct as isNumber,
@@ -4935,25 +4954,26 @@ export {
   R as isString,
   Nt as isWindow,
   Y as random,
+  ti as removeCommonPrefix,
   Z as replaceRecursive,
-  ti as replaceTemplate,
-  ei as resizeImageByMax,
-  ii as secondToTime,
+  ei as replaceTemplate,
+  ii as resizeImageByMax,
+  si as secondToTime,
   Tt as setElementItem,
-  si as setValues,
-  ri as splice,
+  ri as setValues,
+  ni as splice,
   pe as strFill,
-  H as toArray,
+  z as toArray,
   ve as toCamelCase,
-  ni as toCamelCaseFirst,
+  oi as toCamelCaseFirst,
   B as toDate,
-  oi as toKebabCase,
+  ai as toKebabCase,
   C as toNumber,
-  ai as toNumberByMax,
-  Se as toPercent,
-  ci as toPercentBy100,
+  ci as toNumberByMax,
+  De as toPercent,
+  ui as toPercentBy100,
   Et as transformation,
-  ui as uint8ArrayToBase64,
+  hi as uint8ArrayToBase64,
   be as uniqueArray,
-  hi as writeClipboardData
+  li as writeClipboardData
 };

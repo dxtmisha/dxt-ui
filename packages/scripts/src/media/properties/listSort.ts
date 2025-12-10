@@ -1,4 +1,4 @@
-import type { Item } from '@dxtmisha/functional'
+import type { Item } from '@dxtmisha/functional-basic'
 
 import {
   PropertyCategory,

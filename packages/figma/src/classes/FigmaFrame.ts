@@ -8,6 +8,7 @@ import type { UiFigmaItemText, UiFigmaNode } from '../types/figmaTypes'
  * Класс для работы с фреймами Figma и их элементами.
  */
 export class FigmaFrame {
+  /** List of main Figma items/ Список основных элементов Figma */
   protected mainItem: FigmaItem[] = []
   /**
    * List of all Figma items.

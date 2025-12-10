@@ -1,6 +1,6 @@
 // export:none
 
-import { forEach, getColumn, toCamelCase, toCamelCaseFirst } from '@dxtmisha/functional'
+import { forEach, getColumn, toCamelCase, toCamelCaseFirst } from '@dxtmisha/functional-basic'
 
 import { DesignStructure } from './DesignStructure'
 

@@ -1,6 +1,6 @@
 // export:none
 
-import { isString, toCamelCase } from '@dxtmisha/functional'
+import { isString, toCamelCase } from '@dxtmisha/functional-basic'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 import { PropertiesValues } from '../PropertiesValues'

@@ -21,16 +21,14 @@ export function toDate<T extends Date | number | string>(value?: T): (T & Date) 
   }
 
   let date: string = value
-  let timeZone: string = Geo.getTimezoneFormat()
+  let timeZone: string = Geo.getTimezoneFormat().trim()
 
   value.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (all, d: string, z: string) => {
     date = d
-    timeZone = z
+    timeZone = z.trim()
 
     return all
   })
-
-  console.log('value', value, timeZone)
 
   const stringDate = ((/^\d{4}\d{2}\d{2}$/.exec(date)) && `${date.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3')}T00:00:00`)
     ?? ((/^\d{4}\d{2}$/.exec(date)) && `${date.replace(/^(\d{4})(\d{2})$/, '$1-$2')}-01T00:00:00`)
@@ -42,5 +40,5 @@ export function toDate<T extends Date | number | string>(value?: T): (T & Date) 
     ?? ((/^\d{2}:\d{2}:\d{2}$/.exec(date)) && `2000-01-01T${date}`)
     ?? (date.replace(' ', 'T'))
 
-  return new Date(`${stringDate}${timeZone}`)
+  return new Date(`${stringDate.trim()}${timeZone}`)
 }

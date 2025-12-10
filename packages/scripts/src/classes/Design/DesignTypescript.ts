@@ -1,4 +1,4 @@
-import { forEach } from '@dxtmisha/functional'
+import { forEach } from '@dxtmisha/functional-basic'
 import ts from 'typescript'
 
 import type {

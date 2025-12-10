@@ -1,6 +1,6 @@
 // export:none
 
-import { forEach, isFilled, isObjectNotArray } from '@dxtmisha/functional'
+import { forEach, isFilled, isObjectNotArray } from '@dxtmisha/functional-basic'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 

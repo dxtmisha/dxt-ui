@@ -7,7 +7,7 @@ import {
   isObjectNotArray,
   isSelected,
   toCamelCase
-} from '@dxtmisha/functional'
+} from '@dxtmisha/functional-basic'
 
 import { PropertiesCache } from './PropertiesCache'
 

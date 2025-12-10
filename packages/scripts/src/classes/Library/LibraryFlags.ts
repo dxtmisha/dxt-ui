@@ -1,6 +1,6 @@
 // export:none
 
-import { forEach, toCamelCaseFirst, toKebabCase } from '@dxtmisha/functional'
+import { forEach, toCamelCaseFirst, toKebabCase } from '@dxtmisha/functional-basic'
 import flags from '@dxtmisha/media/flags'
 
 import { LibraryItems } from './LibraryItems'

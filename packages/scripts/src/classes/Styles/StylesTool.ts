@@ -1,6 +1,6 @@
 // export:none
 
-import { strFill } from '@dxtmisha/functional'
+import { strFill } from '@dxtmisha/functional-basic'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 

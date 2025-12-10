@@ -1,6 +1,6 @@
 // export:none
 
-import { replaceRecursive, toKebabCase } from '@dxtmisha/functional'
+import { replaceRecursive, toKebabCase } from '@dxtmisha/functional-basic'
 
 import { PropertiesConfig } from './PropertiesConfig'
 import { PropertiesTool } from './PropertiesTool'

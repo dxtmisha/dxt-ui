@@ -474,6 +474,13 @@ export declare class Datetime {
      */
     cloneDayPrevious(): Datetime;
     /**
+     * Returns the time zone hour format.
+     *
+     * Возвращает часовой формат временной зоны.
+     * @param hour hour/ час
+     */
+    protected toTimeZoneHourFormat(hour: number): string;
+    /**
      * Updating all values.
      *
      * Обновление всех значений.

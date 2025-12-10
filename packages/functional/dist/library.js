@@ -2,7 +2,7 @@ var Bt = Object.defineProperty;
 var xt = (i, t, e) => t in i ? Bt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
 var c = (i, t, e) => xt(i, typeof t != "symbol" ? t + "" : t, e);
 import { i as y, D as ct, r as K, a as Ft, G as D, f as p, t as N, b as Q, c as Et, d as bt, e as Z, g as z, h as E, A as Y, j as w, k as St, S as wt, l as P, m as _, n as lt, E as Ht, C as Pt, H as T, L as mt, o as Rt } from "./ScrollbarWidth-De97V2Mh.js";
-import { p as Yi, q as qi, U as Ji, s as Qi, u as Xi, v as Mi, w as Oi, x as Ti, y as Gi, z as ts, B as es, I as is, F as ss, J as rs, K as ns, M as os, N as as, O as us, P as cs, Q as ls, R as hs, T as ds } from "./ScrollbarWidth-De97V2Mh.js";
+import { p as qi, q as Ji, U as Qi, s as Xi, u as Mi, v as Oi, w as Ti, x as Gi, y as ts, z as es, B as is, I as ss, F as rs, J as ns, K as os, M as as, N as us, O as cs, P as ls, Q as hs, R as ds, T as gs } from "./ScrollbarWidth-De97V2Mh.js";
 import { isRef as X, h as Wt, computed as l, toRefs as jt, useAttrs as Ut, useSlots as zt, ref as $, watch as m, triggerRef as _t, shallowRef as F, onUnmounted as nt, inject as Kt, provide as Zt, watchEffect as Dt } from "vue";
 class Vt {
   /**
@@ -58,10 +58,10 @@ function A(i) {
     return /* @__PURE__ */ new Date();
   if (typeof i == "number")
     return new Date(i);
-  let t = i, e = D.getTimezoneFormat();
-  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (x, M, I) => (t = M, e = I, x)), console.log("value", i, e);
+  let t = i, e = D.getTimezoneFormat().trim();
+  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (x, M, I) => (t = M, e = I.trim(), x));
   const s = (v = (g = (d = (h = (u = (a = (o = (r = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? r : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? d : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? g : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? v : t.replace(" ", "T");
-  return /* @__PURE__ */ new Date(`${s}${e}`);
+  return /* @__PURE__ */ new Date(`${s.trim()}${e}`);
 }
 function ot(i, t) {
   return p(i, (e) => e == null ? void 0 : e[t]);
@@ -2589,6 +2589,14 @@ function ni(i, t) {
 function oi(i, t) {
   return Array.isArray(i) ? i.every((e) => P(e, t)) : P(i, t);
 }
+function ai(i, t) {
+  if (i.startsWith(t))
+    return i.slice(t.length).trim();
+  let e = 0;
+  for (; i[e] === t[e] && e < i.length && e < t.length; )
+    e++;
+  return i.slice(e).trim();
+}
 function de(i) {
   return [...new Set(i)];
 }
@@ -2606,7 +2614,7 @@ function U(i, t, e = !0) {
     }
   ), s;
 }
-function ai(i, t) {
+function ui(i, t) {
   let e = i;
   return p(t, (s, r) => {
     e = e.replace(Lt(`[${r}]`), lt(s));
@@ -2622,7 +2630,7 @@ function ge(i, t = "auto") {
       return !1;
   }
 }
-function ui(i, t, e = "auto", s) {
+function ci(i, t, e = "auto", s) {
   var o;
   const r = ae(i);
   if (r && (r.naturalWidth > t && (e === "auto" || e === "width") || r.naturalHeight > t && (e === "auto" || e === "height"))) {
@@ -2631,7 +2639,7 @@ function ui(i, t, e = "auto", s) {
       return u.canvas.width = a ? t : r.naturalWidth / r.naturalHeight * t, u.canvas.height = a ? r.naturalHeight / r.naturalWidth * t : t, u.drawImage(r, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
   }
 }
-function ci(i) {
+function li(i) {
   const t = N(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -2639,7 +2647,7 @@ function ci(i) {
   }
   return "00:00";
 }
-function li(i, t, {
+function hi(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: r = !0,
@@ -2654,7 +2662,7 @@ function li(i, t, {
   }
   return r || i !== t ? t : i;
 }
-function hi(i, t, e) {
+function di(i, t, e) {
   if (w(i) && w(t)) {
     if (e) {
       let s = {}, r = !1;
@@ -2670,13 +2678,13 @@ function hi(i, t, e) {
 function kt(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function di(i) {
+function gi(i) {
   return kt(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function gi(i) {
+function fi(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function fi(i, t, e, s) {
+function mi(i, t, e, s) {
   const r = N(i), o = N(t);
   return t && o < r ? `${pt(o, e, s)}+` : pt(r, e, s);
 }
@@ -2684,16 +2692,16 @@ const pt = (i, t, e) => t ? new W(e).number(i) : i;
 function fe(i, t) {
   return 1 / i * t;
 }
-function mi(i, t) {
+function yi(i, t) {
   return fe(i, t) * 100;
 }
-function yi(i) {
+function $i(i) {
   let t = "";
   for (const e of i)
     t += String.fromCharCode(e);
   return y() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
 }
-async function $i(i) {
+async function pi(i) {
   if (y())
     try {
       await navigator.clipboard.writeText(i);
@@ -2810,7 +2818,7 @@ class ye {
     this.callback && this.callback(this.event);
   }
 }
-class pi extends ye {
+class vi extends ye {
   /**
    * Calls the callback function.
    *
@@ -2976,9 +2984,9 @@ class Ct {
     return {};
   }
 }
-class vi extends Ct {
+class bi extends Ct {
 }
-class bi {
+class Si {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -3159,7 +3167,7 @@ class bi {
 function B(i) {
   return X(i) ? i : $(i);
 }
-class Si {
+class wi {
   /**
    * Constructor
    * @param date date for processing. дата для обработки
@@ -3304,7 +3312,7 @@ class Si {
     return l(() => this.date.value && this.datetime.standard(t));
   }
 }
-class wi extends Ht {
+class Di extends Ht {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -3328,7 +3336,7 @@ class wi extends Ht {
     ), h.value && this.setElementControl(h.value), m(u, (d) => this.setElement(d)), m(h, (d) => this.setElementControl(d));
   }
 }
-class Di {
+class Li {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
@@ -4117,7 +4125,7 @@ class we {
   }
 }
 c(we, "router");
-class Li {
+class Ii {
   /**
    * Constructor
    */
@@ -4141,7 +4149,7 @@ class Li {
 }
 const De = (i) => typeof i == "string" ? { method: i } : i || {};
 let J;
-function Ii(i, t, e = !0, s, r, o) {
+function ki(i, t, e = !0, s, r, o) {
   const a = $(), u = B(De(t)), h = $(!1), d = $(!1);
   let g = !0, v = 0;
   const x = async () => {
@@ -4181,7 +4189,7 @@ function Ii(i, t, e = !0, s, r, o) {
     reset: x
   };
 }
-const ki = (i) => {
+const Ci = (i) => {
   J || (J = i);
 };
 function Le(i, t) {
@@ -4197,7 +4205,7 @@ function Le(i, t) {
   return m(s, (o) => r.post({ message: o })), tt[e] = s, s;
 }
 const tt = {};
-function Ci(i, t, e) {
+function Ni(i, t, e) {
   if (i in et)
     return et[i];
   const s = new Pt(i), r = Le(
@@ -4209,10 +4217,10 @@ function Ci(i, t, e) {
   }), et[i] = r, r;
 }
 const et = {};
-function Ni() {
+function Ai() {
   return new Se();
 }
-function Ai(i, t) {
+function Bi(i, t) {
   if (i in it)
     return it[i];
   const e = F(T.get(i, t));
@@ -4297,7 +4305,7 @@ const it = {}, Ie = (i = {
     return t.item;
   const e = Ie({ rootMargin: i });
   return vt.push({ rootMargin: i, item: e }), e;
-}, Bi = (i, t) => {
+}, xi = (i, t) => {
   const e = ke(t);
   return {
     /** Lazy item status/ Статус ленивого элемента */
@@ -4312,7 +4320,7 @@ const it = {}, Ie = (i = {
     }
   };
 };
-function xi() {
+function Fi() {
   const i = F(mt.is());
   return mt.registrationEvent(({ detail: t }) => {
     i.value = t.loading;
@@ -4347,7 +4355,7 @@ function Ne(i, t = !0, e = !1, s = !0) {
   };
   return e && At.push(u), u;
 }
-function Fi() {
+function Ei() {
   At.forEach((i) => i());
 }
 const Ae = Ne(() => {
@@ -4380,15 +4388,15 @@ const Ae = Ne(() => {
     siteName: h,
     getHtmlMeta: d
   };
-}, !1, !0), Ei = () => Ae();
-function Hi(i, t) {
+}, !1, !0), Hi = () => Ae();
+function Pi(i, t) {
   if (i in st)
     return st[i];
   const e = new ct(i, !0), s = $(e.get(t));
   return m(s, (r) => e.set(r)), st[i] = s, s;
 }
 const st = {};
-function Pi(i, t, e) {
+function Ri(i, t, e) {
   if (i in rt)
     return rt[i];
   const s = new ct(i), r = $(s.get(t, e));
@@ -4409,14 +4417,14 @@ function Be(i) {
     }
   return t;
 }
-const Ri = (i) => Be(i);
-function Wi(i, t) {
+const Wi = (i) => Be(i);
+function ji(i, t) {
   const e = $();
   return Dt(async () => {
     e.value = await Rt(i);
   }), l(() => e.value, t);
 }
-function ji(i, t = () => {
+function Ui(i, t = () => {
 }, e, s) {
   return l(
     () => {
@@ -4434,10 +4442,10 @@ function xe(i, t = {}, e = "value", s = !1) {
   const r = typeof t == "string", o = r ? t : e, a = r ? {} : t;
   return i ? i && E(i) && (o in i || s) ? ut(a, i) : ut(a, { [o]: i }) : r ? {} : { ...a };
 }
-function Ui(i, t = {}, e = "value") {
+function zi(i, t = {}, e = "value") {
   return l(() => xe(f(i), f(t), e));
 }
-const zi = (i, t) => {
+const _i = (i, t) => {
   const e = $();
   let s = !0;
   const r = () => {
@@ -4448,49 +4456,49 @@ const zi = (i, t) => {
   };
   return l(() => (r(), e.value));
 };
-function _i(i, t) {
+function Ki(i, t) {
   i.value !== t && (i.value = t);
 }
-function Ki(i) {
+function Zi(i) {
   let t;
   return l(() => (t || (t = i()), t.value));
 }
 export {
   Y as Api,
-  Yi as ApiDefault,
-  qi as ApiHeaders,
-  Ji as ApiMethodItem,
-  Qi as ApiPreparation,
-  Xi as ApiResponse,
-  Mi as ApiStatus,
+  qi as ApiDefault,
+  Ji as ApiHeaders,
+  Qi as ApiMethodItem,
+  Xi as ApiPreparation,
+  Mi as ApiResponse,
+  Oi as ApiStatus,
   Vt as BroadcastMessage,
-  Oi as Cache,
-  Ti as CacheItem,
-  Gi as CacheStatic,
+  Ti as Cache,
+  Gi as CacheItem,
+  ts as CacheStatic,
   Pt as Cookie,
-  ts as CookieBlock,
+  es as CookieBlock,
   ct as DataStorage,
   ht as Datetime,
-  Si as DatetimeRef,
+  wi as DatetimeRef,
   ye as DesignAbstract,
-  pi as DesignAsyncAbstract,
+  vi as DesignAsyncAbstract,
   me as DesignChanged,
-  vi as DesignComp,
+  bi as DesignComp,
   Ct as DesignComponents,
-  bi as DesignConstructorAbstract,
+  Si as DesignConstructorAbstract,
   Ht as EventItem,
-  wi as EventRef,
+  Di as EventRef,
   n as GEO_FLAG_ICON_NAME,
   D as Geo,
   at as GeoFlag,
-  Di as GeoFlagRef,
+  Li as GeoFlagRef,
   W as GeoIntl,
   Se as GeoIntlRef,
-  es as GeoPhone,
+  is as GeoPhone,
   V as GeoRef,
   Pe as Global,
   T as Hash,
-  is as Icons,
+  ss as Icons,
   Nt as ListDataRef,
   mt as Loading,
   ie as Meta,
@@ -4509,14 +4517,14 @@ export {
   S as MetaTwitterTag,
   we as RouterItemRef,
   wt as ScrollbarWidth,
-  Li as ScrollbarWidthRef,
+  Ii as ScrollbarWidthRef,
   q as Translate,
   Re as anyToString,
   re as applyTemplate,
   ne as arrFill,
   We as blobToBase64,
-  Wi as computedAsync,
-  ji as computedByLanguage,
+  ji as computedAsync,
+  Ui as computedByLanguage,
   _ as copyObject,
   Et as copyObjectLite,
   bt as createElement,
@@ -4527,21 +4535,21 @@ export {
   lt as executeFunction,
   Rt as executePromise,
   Ne as executeUse,
-  Fi as executeUseGlobalInit,
+  Ei as executeUseGlobalInit,
   p as forEach,
   oe as frame,
   _e as getAttributes,
   xe as getBind,
-  Ui as getBindRef,
+  zi as getBindRef,
   $e as getClassName,
   Ke as getClipboardData,
   ot as getColumn,
-  zi as getComputedAsync,
+  _i as getComputedAsync,
   St as getElement,
   j as getElementId,
   ae as getElementImage,
-  ss as getElementItem,
-  rs as getElementOrWindow,
+  rs as getElementItem,
+  ns as getElementOrWindow,
   Lt as getExp,
   pe as getIndexForRender,
   ue as getItemByPath,
@@ -4557,7 +4565,7 @@ export {
   Xe as getObjectOrNone,
   Me as getRandomText,
   f as getRef,
-  ns as getRequestString,
+  os as getRequestString,
   Oe as getStepPercent,
   Te as getStepValue,
   Ge as goScroll,
@@ -4566,61 +4574,62 @@ export {
   ii as intersectKey,
   gt as isArray,
   si as isDifferent,
-  os as isDomData,
+  as as isDomData,
   y as isDomRuntime,
   Z as isFilled,
   ri as isFloat,
-  as as isFunction,
-  us as isInDom,
+  us as isFunction,
+  cs as isInDom,
   ni as isIntegerBetween,
   Ft as isNull,
-  cs as isNumber,
+  ls as isNumber,
   w as isObject,
   E as isObjectNotArray,
   P as isSelected,
   oi as isSelectedByList,
   Q as isString,
-  ls as isWindow,
+  hs as isWindow,
   K as random,
+  ai as removeCommonPrefix,
   ve as render,
   U as replaceRecursive,
-  ai as replaceTemplate,
-  ui as resizeImageByMax,
-  ci as secondToTime,
-  ki as setApiRefGlobalConditions,
-  hs as setElementItem,
-  _i as setRef,
-  li as setValues,
-  hi as splice,
+  ui as replaceTemplate,
+  ci as resizeImageByMax,
+  li as secondToTime,
+  Ci as setApiRefGlobalConditions,
+  ds as setElementItem,
+  Ki as setRef,
+  hi as setValues,
+  di as splice,
   he as strFill,
-  Ri as t,
+  Wi as t,
   z as toArray,
   ut as toBind,
   be as toBinds,
   kt as toCamelCase,
-  di as toCamelCaseFirst,
-  Ki as toComputed,
+  gi as toCamelCaseFirst,
+  Zi as toComputed,
   A as toDate,
-  gi as toKebabCase,
+  fi as toKebabCase,
   N as toNumber,
-  fi as toNumberByMax,
+  mi as toNumberByMax,
   fe as toPercent,
-  mi as toPercentBy100,
+  yi as toPercentBy100,
   B as toRefItem,
-  ds as transformation,
-  yi as uint8ArrayToBase64,
+  gs as transformation,
+  $i as uint8ArrayToBase64,
   de as uniqueArray,
-  Ii as useApiRef,
+  ki as useApiRef,
   Le as useBroadcastValueRef,
-  Ci as useCookieRef,
-  Ni as useGeoIntlRef,
-  Ai as useHashRef,
-  Bi as useLazyItemByMarginRef,
+  Ni as useCookieRef,
+  Ai as useGeoIntlRef,
+  Bi as useHashRef,
+  xi as useLazyItemByMarginRef,
   Ie as useLazyRef,
-  xi as useLoadingRef,
-  Ei as useMeta,
-  Hi as useSessionRef,
-  Pi as useStorageRef,
+  Fi as useLoadingRef,
+  Hi as useMeta,
+  Pi as useSessionRef,
+  Ri as useStorageRef,
   Be as useTranslateRef,
-  $i as writeClipboardData
+  pi as writeClipboardData
 };

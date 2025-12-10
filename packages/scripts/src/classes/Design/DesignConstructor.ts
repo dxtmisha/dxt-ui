@@ -1,6 +1,6 @@
 // export:none
 
-import { toCamelCaseFirst } from '@dxtmisha/functional'
+import { toCamelCaseFirst } from '@dxtmisha/functional-basic'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 

@@ -1,6 +1,6 @@
 // export:none
 
-import { replaceRecursive } from '@dxtmisha/functional'
+import { replaceRecursive } from '@dxtmisha/functional-basic'
 
 import { PropertiesCache } from './PropertiesCache'
 import { PropertiesPath } from './PropertiesPath'

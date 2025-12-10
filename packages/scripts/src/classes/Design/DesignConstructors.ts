@@ -1,6 +1,6 @@
 // export:none
 
-import { isFilled } from '@dxtmisha/functional'
+import { isFilled } from '@dxtmisha/functional-basic'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { PropertiesCache } from '../Properties/PropertiesCache'

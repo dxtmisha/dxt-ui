@@ -1,6 +1,6 @@
 // export:none
 
-import { isObjectNotArray, toCamelCase } from '@dxtmisha/functional'
+import { isObjectNotArray, toCamelCase } from '@dxtmisha/functional-basic'
 
 import { PropertiesTool } from '../../Properties/PropertiesTool'
 

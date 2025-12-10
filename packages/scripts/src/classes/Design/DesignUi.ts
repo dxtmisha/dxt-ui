@@ -1,6 +1,6 @@
 // export:none
 
-import { toKebabCase } from '@dxtmisha/functional'
+import { toKebabCase } from '@dxtmisha/functional-basic'
 
 import { DesignComponent } from './DesignComponent'
 import { LibraryItems } from '../Library/LibraryItems'

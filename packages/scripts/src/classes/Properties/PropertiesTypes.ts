@@ -1,6 +1,6 @@
 // export:none
 
-import { isFilled, isSelected, toKebabCase } from '@dxtmisha/functional'
+import { isFilled, isSelected, toKebabCase } from '@dxtmisha/functional-basic'
 
 import {
   type PropertyItem,

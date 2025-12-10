@@ -1,6 +1,6 @@
 // export:none
 
-import { isFilled, isObjectNotArray, toKebabCase } from '@dxtmisha/functional'
+import { isFilled, isObjectNotArray, toKebabCase } from '@dxtmisha/functional-basic'
 
 import { PropertiesItems } from '../Properties/PropertiesItems'
 

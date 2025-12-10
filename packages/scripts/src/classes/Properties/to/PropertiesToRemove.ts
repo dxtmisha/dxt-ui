@@ -1,6 +1,6 @@
 // export:none
 
-import { getColumn, isObjectNotArray } from '@dxtmisha/functional'
+import { getColumn, isObjectNotArray } from '@dxtmisha/functional-basic'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 

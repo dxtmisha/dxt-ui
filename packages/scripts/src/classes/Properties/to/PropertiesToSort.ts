@@ -1,6 +1,6 @@
 // export:none
 
-import { forEach, isObjectNotArray, type Item } from '@dxtmisha/functional'
+import { forEach, isObjectNotArray, type Item } from '@dxtmisha/functional-basic'
 
 import { PropertiesToAbstract } from './PropertiesToAbstract'
 

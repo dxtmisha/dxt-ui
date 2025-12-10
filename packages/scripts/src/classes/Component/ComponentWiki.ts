@@ -1,31 +1,23 @@
 // export:none
 
-import { exec } from 'node:child_process'
-import { promisify } from 'node:util'
+import { isFilled } from '@dxtmisha/functional-basic'
 import { getNameDirByPaths } from '../../functions/getNameDirByPaths'
 import { useAi } from '../../composables/useAi'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { ComponentWikiFile } from './ComponentWikiFile'
+import { ComponentBuild } from './ComponentBuild'
 
 import {
   UI_DIR_DIST,
   UI_DIR_TEMPORARY,
   UI_DIR_WIKI,
-  UI_DIRS_COMPONENTS,
-  UI_FILE_NAME_VITE,
-  UI_FILE_NAME_VITE_WORKERS
+  UI_DIRS_COMPONENTS
 } from '../../config'
-import { isFilled } from '@dxtmisha/functional'
 
-// Sample Vite config template path / Путь к шаблону Vite-конфига
-const FILE_VITE_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'viteComponentTemplateConfig.ts']
 // Sample AI prompt template path / Путь к шаблону AI-промпта
 const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'componentPrompt.en.txt']
-
-// Async exec wrapper / Обёртка для асинхронного exec
-const execAsync = promisify(exec)
 
 /**
  * Generates wiki artifacts (code snapshot, stories, mdx) for a component.
@@ -35,8 +27,8 @@ const execAsync = promisify(exec)
  * Использует временный билд + AI промпт для (пере)создания документации.
  */
 export class ComponentWiki {
-  // Template vite config file / Файл шаблона vite-конфига
-  protected readonly viteSample: ComponentWikiFile
+  protected readonly build: ComponentBuild
+
   // Template prompt file / Файл шаблона промпта
   protected readonly promptSample: ComponentWikiFile
 
@@ -63,7 +55,7 @@ export class ComponentWiki {
     protected readonly path: string,
     protected readonly prompt: string = ''
   ) {
-    this.viteSample = new ComponentWikiFile(FILE_VITE_SAMPLE)
+    this.build = new ComponentBuild(this.getRootComponent().join('/'))
     this.promptSample = new ComponentWikiFile(FILE_PROMPT_SAMPLE)
 
     this.codeFile = new ComponentWikiFile([
@@ -105,7 +97,8 @@ export class ComponentWiki {
   make(): void {
     console.log('Component wiki:', this.path)
 
-    this.build()
+    this.build
+      .make()
       .then((status) => {
         if (status) {
           this.readAndWriteALlFiles()
@@ -173,84 +166,6 @@ export class ComponentWiki {
    */
   protected getName(): string {
     return String(getNameDirByPaths(this.getRootComponent()))
-  }
-
-  /**
-   * Saves existing vite config aside (rename) before custom build.
-   *
-   * Сохраняет существующий vite-конфиг (переименовывает) перед кастомным билдом.
-   */
-  protected saveViteConfig() {
-    if (
-      !PropertiesFile.is(UI_FILE_NAME_VITE_WORKERS)
-    ) {
-      PropertiesFile.rename(
-        UI_FILE_NAME_VITE,
-        UI_FILE_NAME_VITE_WORKERS
-      )
-    }
-  }
-
-  /**
-   * Restores original vite config after build.
-   *
-   * Восстанавливает оригинальный vite-конфиг после билда.
-   */
-  protected resetViteConfig() {
-    if (
-      PropertiesFile.is(UI_FILE_NAME_VITE_WORKERS)
-    ) {
-      PropertiesFile.removeFile(UI_FILE_NAME_VITE)
-      PropertiesFile.rename(
-        UI_FILE_NAME_VITE_WORKERS,
-        UI_FILE_NAME_VITE
-      )
-    }
-  }
-
-  /**
-   * Runs build command (npm run build) capturing stdout/stderr.
-   *
-   * Запускает команду билда (npm run build), перехватывая stdout/stderr.
-   */
-  protected async run(): Promise<boolean> {
-    try {
-      const { stdout, stderr } = await execAsync('npm run build')
-
-      console.info(stdout)
-
-      if (stderr) {
-        console.error('STD error', stderr)
-      }
-
-      return true
-    } catch (error) {
-      console.error('Error', error)
-    }
-
-    return false
-  }
-
-  /**
-   * Prepares temporary vite config, triggers build, then restores original.
-   *
-   * Готовит временный vite-конфиг, запускает билд, затем восстанавливает оригинал.
-   */
-  protected async build(): Promise<boolean> {
-    this.saveViteConfig()
-
-    const path = this.getRootComponent().join('/')
-    const vite = this.viteSample
-      .read()
-      .replace('[path]', path)
-
-    PropertiesFile.writeByPath(UI_FILE_NAME_VITE, vite)
-
-    const status = await this.run()
-
-    this.resetViteConfig()
-
-    return status
   }
 
   /**

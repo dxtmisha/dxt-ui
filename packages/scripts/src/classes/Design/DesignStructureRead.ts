@@ -1,6 +1,6 @@
 // export:none
 
-import { forEach, isFilled, isObjectNotArray, toCamelCase, uniqueArray } from '@dxtmisha/functional'
+import { forEach, isFilled, isObjectNotArray, toCamelCase, uniqueArray } from '@dxtmisha/functional-basic'
 
 import { DesignStructureItemAbstract } from './DesignStructureItemAbstract'
 

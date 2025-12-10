@@ -10,6 +10,7 @@ import {
   type GeoHours,
   type GeoTimeZoneStyle
 } from '../types/geoTypes'
+import { isDomRuntime } from '../functions/isDomRuntime.ts'
 
 /**
  * A class for working with dates.
@@ -118,11 +119,7 @@ export class Datetime {
         .number(Math.trunc(hour), { signDisplay: 'always' })
     }
 
-    const numberHour = this.getIntl()
-      .number(Math.trunc(hour), {
-        signDisplay: 'always',
-        minimumIntegerDigits: 2
-      })
+    const numberHour = this.toTimeZoneHourFormat(hour)
     const numberMinute = hour.toString().match(/.\d+/) ? '30' : '00'
 
     if (style === 'RFC') {
@@ -872,6 +869,30 @@ export class Datetime {
   cloneDayPrevious(): Datetime {
     return this.cloneClass()
       .moveDayPrevious()
+  }
+
+  /**
+   * Returns the time zone hour format.
+   *
+   * Возвращает часовой формат временной зоны.
+   * @param hour hour/ час
+   */
+  protected toTimeZoneHourFormat(hour: number): string {
+    if (isDomRuntime()) {
+      this.getIntl()
+        .number(Math.trunc(hour), {
+          signDisplay: 'always',
+          minimumIntegerDigits: 2
+        })
+    }
+
+    let numberHour = Math.trunc(hour).toString()
+
+    if (numberHour.length < 2) {
+      numberHour = `0${numberHour}`
+    }
+
+    return `${hour >= 0 ? '+' : '-'}${numberHour}`
   }
 
   /**
