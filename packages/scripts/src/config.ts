@@ -30,6 +30,7 @@ export const UI_DIR_STRUCTURE = 'structure'
 export const UI_DIR_WIKI = 'wiki'
 export const UI_DIR_TEMPORARY = 'temporary'
 export const UI_DIR_DIST = 'dist'
+export const UI_DIR_DIST_TEMPORARY = 'dist-temporary'
 export const UI_DIR_PROMPT = 'prompt'
 export const UI_DIR_PACKAGES = 'packages'
 

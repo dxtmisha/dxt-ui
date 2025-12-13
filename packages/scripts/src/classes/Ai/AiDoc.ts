@@ -5,6 +5,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { AiDocFile } from '../../types/aiTypes'
 import type { GitFileItem } from '../../types/gitTypes'
+import { ComponentBuild } from '../Component/ComponentBuild.ts'
 
 const DATE_UPDATED_MATCH = /\*\*Date: (.*?)\./i
 
@@ -105,6 +106,8 @@ export class AiDoc {
       && date.getDate() > data.date.getDate()
     ) {
       console.log('File:', item.path)
+      new ComponentBuild(item.path)
+        .make()
     }
   }
 }

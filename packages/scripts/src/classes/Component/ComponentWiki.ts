@@ -5,12 +5,10 @@ import { getNameDirByPaths } from '../../functions/getNameDirByPaths'
 import { useAi } from '../../composables/useAi'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
-import { PropertiesFile } from '../Properties/PropertiesFile'
 import { ComponentWikiFile } from './ComponentWikiFile'
 import { ComponentBuild } from './ComponentBuild'
 
 import {
-  UI_DIR_DIST,
   UI_DIR_TEMPORARY,
   UI_DIR_WIKI,
   UI_DIRS_COMPONENTS
@@ -32,8 +30,6 @@ export class ComponentWiki {
   // Template prompt file / Файл шаблона промпта
   protected readonly promptSample: ComponentWikiFile
 
-  // Aggregated built code file / Файл агрегированного собранного кода
-  protected readonly codeFile: ComponentWikiFile
   // Types file (original or AI regenerated) / Файл типов (оригинал или пересозданный ИИ)
   protected readonly typesFile: ComponentWikiFile
   // Stories file (Storybook) / Файл сторис (Storybook)
@@ -57,11 +53,6 @@ export class ComponentWiki {
   ) {
     this.build = new ComponentBuild(this.getRootComponent().join('/'))
     this.promptSample = new ComponentWikiFile(FILE_PROMPT_SAMPLE)
-
-    this.codeFile = new ComponentWikiFile([
-      ...this.getPathTemporary(),
-      'code.txt'
-    ])
 
     this.typesFile = new ComponentWikiFile([
       ...this.getRootComponent(),
@@ -101,7 +92,6 @@ export class ComponentWiki {
       .make()
       .then((status) => {
         if (status) {
-          this.readAndWriteALlFiles()
           this.readAndWritePrompt()
 
           this.aiGenerate().then(() => console.log('End'))
@@ -148,56 +138,12 @@ export class ComponentWiki {
   }
 
   /**
-   * Returns distribution temp directory path segments.
-   *
-   * Возвращает сегменты пути дистрибутива (temp).
-   */
-  protected getPathTemporaryDist(): string[] {
-    return [
-      ...this.getPathTemporary(),
-      UI_DIR_DIST
-    ]
-  }
-
-  /**
    * Derives component folder name.
    *
    * Получает имя директории компонента.
    */
   protected getName(): string {
     return String(getNameDirByPaths(this.getRootComponent()))
-  }
-
-  /**
-   * Reads built file content and wraps with header comment (file name).
-   *
-   * Читает содержимое собранного файла и оборачивает заголовком с именем файла.
-   * @param path relative built file path / относительный путь собранного файла
-   */
-  protected readFile(path: string): string {
-    const pathFull = PropertiesFile.joinPath([...this.getPathTemporaryDist(), path])
-    const content = PropertiesFile.readFileOnly(pathFull)
-
-    return `
-// File: ${path}
-${content}
-    `.trim()
-  }
-
-  /**
-   * Aggregates all built files into a single code snapshot file.
-   *
-   * Агрегирует все собранные файлы в единый снимок кода.
-   */
-  protected readAndWriteALlFiles(): void {
-    const list = PropertiesFile.readDirRecursive(this.getPathTemporaryDist())
-    const content: string[] = []
-
-    list.forEach((file) => {
-      content.push(this.readFile(file))
-    })
-
-    this.codeFile.write(content.join('\r\n'))
   }
 
   /**
@@ -209,7 +155,7 @@ ${content}
     this.promptFile.write(
       this.promptSample
         .read()
-        .replace('[code]', this.codeFile.read())
+        .replace('[code]', this.build.getCode())
         .replace('[types]', this.typesFile.read())
         .replace('[stories]', this.storiesFile.read())
         .replace('[md]', this.mdFile.read())
@@ -235,8 +181,7 @@ ${content}
       this.mdFile.write(files[2] ?? '')
 
       this.aiFile.write(generate)
-
-      PropertiesFile.removeDir(this.getPathTemporary())
+      this.build.removeDir()
     }
   }
 }

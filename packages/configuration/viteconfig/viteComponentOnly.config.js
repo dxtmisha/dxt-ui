@@ -1,4 +1,4 @@
-import nodePath from 'node:path'
+// import nodePath from 'node:path'
 import { defineConfig } from 'vite'
 
 import vue from '@vitejs/plugin-vue'
@@ -19,7 +19,7 @@ export const viteComponentOnly = (
     plugins: [vue()],
 
     build: {
-      outDir: nodePath.join(nodePath.dirname(path), 'wiki', 'temporary', 'dist'),
+      outDir: 'dist-temporary',
 
       lib: {
         entry: path,

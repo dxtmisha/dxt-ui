@@ -1,0 +1,15 @@
+export type F1TestEmits = {
+  // click: [value: string]
+}
+
+export interface F1TestSlots {
+  // default? (props: any): any
+}
+
+export interface F1TestProps {
+  value?: string
+}
+
+export const F1TestDefaults: F1TestProps = {
+  // value: 'value'
+}

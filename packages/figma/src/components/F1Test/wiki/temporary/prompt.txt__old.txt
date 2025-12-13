@@ -1,0 +1,642 @@
+You need to prepare documentation for a component in the en language. Follow the format and requirements strictly. Do not add anything beyond what is described.
+Stack: Storybook 9.x, TypeScript, MDX, Vue 3 Composition API.
+
+Canvas component is imported from '@storybook/addon-docs/blocks'
+
+====================================
+1) Study the current component code
+====================================
+```
+// File: component-template.js
+import { defineComponent, mergeDefaults, createElementBlock, openBlock, toDisplayString } from "/Users/tung/Documents/GitHub/dxt-ui/node_modules/vue/dist/vue.runtime.esm-bundler.js";
+const F1TestDefaults = {
+  // value: 'value'
+};
+const _sfc_main = /* @__PURE__ */ defineComponent({
+  ...{
+    name: "F1Test"
+  },
+  __name: "F1Test",
+  props: /* @__PURE__ */ mergeDefaults({
+    value: { type: String, required: false }
+  }, F1TestDefaults),
+  setup(__props, { expose: __expose }) {
+    __expose();
+    const __returned__ = {};
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+const _export_sfc = (sfc, props) => {
+  const target = sfc.__vccOpts || sfc;
+  for (const [key, val] of props) {
+    target[key] = val;
+  }
+  return target;
+};
+const _hoisted_1 = { class: "f1-test" };
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock(
+    "div",
+    _hoisted_1,
+    toDisplayString($props.value),
+    1
+    /* TEXT */
+  );
+}
+const item = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "/Users/tung/Documents/GitHub/dxt-ui/packages/figma/src/components/F1Test/F1Test.vue"]]);
+const F1Test = item;
+export {
+  F1Test
+};
+//# sourceMappingURL=component-template.js.map
+// File: component-template.js.map
+{"version":3,"file":"component-template.js","sources":["../src/components/F1Test/types.ts","../src/components/F1Test/F1Test.vue","../src/components/F1Test/index.ts"],"sourcesContent":["export type F1TestEmits = {\n  // click: [value: string]\n}\n\nexport interface F1TestSlots {\n  // default? (props: any): any\n}\n\nexport interface F1TestProps {\n  value?: string\n}\n\nexport const F1TestDefaults: F1TestProps = {\n  // value: 'value'\n}\n","<script setup lang=\"ts\">\nimport {\n  F1TestDefaults,\n  type F1TestEmits,\n  type F1TestProps,\n  type F1TestSlots\n} from './types'\n\ndefineOptions({\n  name: 'F1Test'\n})\n\nwithDefaults(defineProps<F1TestProps>(), F1TestDefaults)\ndefineEmits<F1TestEmits>()\ndefineSlots<F1TestSlots>()\n</script>\n\n<template>\n  <div class=\"f1-test\">{{ value }}</div>\n</template>\n\n<style lang=\"scss\">\n.f1-test {\n  color: red;\n}\n</style>\n","import type { DefineSetupFnComponent, ShortEmitsToObject, SlotsType } from 'vue'\nimport type { F1TestEmits, F1TestProps, F1TestSlots } from './types'\n\nimport item from './F1Test.vue'\n\nexport type * from './types'\n\nexport const F1Test: DefineSetupFnComponent<\n  F1TestProps,\n  ShortEmitsToObject<F1TestEmits>,\n  SlotsType<F1TestSlots>\n> = item\n"],"names":["_openBlock","_createElementBlock","_toDisplayString"],"mappings":";AAYO,MAAM,iBAA8B;AAAA;AAE3C;;;;;;;;;;;;;;;;;;;;;;;ACIO,MAAA,aAAA,EAAA,OAAM,UAAA;;AAAX,SAAAA,UAAA,GAAAC;AAAAA,IAAsC;AAAA,IAAtC;AAAA,IAAsCC,gBAAd,OAAA,KAAK;AAAA,IAAA;AAAA;AAAA,EAAA;;;ACXxB,MAAM,SAIT;"}
+// File: figma.css
+.f1-test {
+  color: red;
+}
+
+```
+
+Analyze:
+- Component structure (props, computed, methods)
+- Events (emit) and their parameters
+- Slots and their parameters
+- Data types (interfaces, types)
+- Expose methods and properties
+- Internal logic and behavior
+- Dependencies on other components
+
+====================================
+2) Add missing type comments
+====================================
+Add brief single-language (in en) JSDoc comments to missing types and their properties.
+
+Code to fix:
+```ts
+// types.ts
+export type F1TestEmits = {
+  // click: [value: string]
+}
+
+export interface F1TestSlots {
+  // default? (props: any): any
+}
+
+export interface F1TestProps {
+  value?: string
+}
+
+export const F1TestDefaults: F1TestProps = {
+  // value: 'value'
+}
+
+```
+
+Comment requirements:
+- Single-line for simple fields (/** Description */)
+- Multi-line for complex types or logic blocks
+- No duplication of the obvious (don't comment "id" as "component id")
+- Adapted for display in Storybook
+- Use technical terms correctly
+- For union types, describe each value separately in code
+
+Example (strictly follow the format):
+```ts
+/**
+ * Basic properties for image components.
+ */
+export interface IconPropsBasic<
+  Image extends ImagePropsBasic = ImagePropsBasic
+> extends SkeletonPropsInclude {
+  // Status
+  /** Active state of the icon */
+  active?: boolean
+
+  // Icon
+  /** Main icon value */
+  icon?: ImageValue<Image>
+  /** Active icon value */
+  iconActive?: ImageValue<Image>
+
+  // Design
+  /**
+   * Icon size
+   * @default 'medium'
+   */
+  size?: 'small' | 'medium' | 'large'
+}
+```
+
+====================================
+3) Stories for Storybook
+====================================
+Create minimum necessary examples. Each story demonstrates a specific usage scenario.
+
+Code to fix:
+```ts
+// ComponentDoc.stories.ts
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
+
+import F1Test from './../F1Test.vue'
+
+const meta = {
+  title: '@dxtmisha/figma/F1Test',
+  component: F1Test
+} satisfies Meta<typeof F1Test>
+
+export default meta
+
+type Story = StoryObj<typeof meta>
+
+export const Component: Story = {
+  render: args => ({
+    components: { F1Test },
+    setup() {
+      return { args }
+    },
+    template: `<div>
+      <F1Test v-bind="args" />
+    </div>`
+  })
+}
+
+```
+
+Rules:
+- STRICTLY FORBIDDEN to touch const meta. DO NOT CHANGE ANYTHING IN META.
+- Don't touch existing constants and stories
+- Don't rename existing constants
+- Don't add stories just for filling
+- Each story must have a purpose and demonstrate specific functionality
+- If component has different modes, show one clear example for each
+- Story names in PascalCase style without extra words (e.g.: `Basic`, `WithIcon`, `Disabled`)
+- Minimize imports: only necessary
+- Don't use extra wrappers (div, section) without necessity
+- Simple, readable code
+
+Example:
+```ts
+export const Basic: Story = {
+  args: {
+    label: 'Click me'
+  }
+}
+
+export const WithIcon: Story = {
+  args: {
+    label: 'Click me',
+    icon: 'check'
+  }
+}
+```
+
+====================================
+4) MDX documentation (component description)
+====================================
+Prepare complete component description in MDX format. Strict style: no tables, no extra sections, only necessary information.
+
+Code to fix:
+```md
+// ComponentName.mdx
+import {Meta} from '@storybook/addon-docs/blocks'
+import {StorybookMain} from '@dxtmisha/wiki/storybook'
+
+import * as Component from './F1Test.stories'
+
+<Meta of={Component}/>
+<StorybookMain
+    name={'F1Test'}
+    description={'[description]'}
+    story={Component.Component}
+/>
+
+[doc]
+
+```
+
+Document structure (strict):
+
+**1. Brief description:**
+- One sentence, conveying the essence of the component as briefly as possible
+- Don't use phrases like "This component", start immediately with the purpose
+
+**2. Main documentation text:**
+- Starts WITHOUT a heading
+- Detailed functionality description (2-4 paragraphs)
+- Block "**Key Features:**" (list of key features)
+- Block "**Typical Use Cases:**" (list of usage examples)
+- Can refine existing text, but DO NOT delete relevant information
+- Delete only outdated or redundant content
+
+**3. Special sections (if present):**
+
+Instead of simply listing Props, describe **specific component capabilities**.
+
+Each section should:
+- Have a second-level heading (`##`) describing the capability, not just the prop name
+- Briefly explain the purpose and behavior of the functionality
+- List related properties (if there are several)
+- Describe property interaction with each other and their effect on the component
+- Include usage examples with code
+
+**Capability description format:**
+
+```md
+## Capability Name
+
+Brief description of the capability and its purpose (1-2 paragraphs).
+
+**Properties:** (if several related properties)
+
+- `propName` — property description
+- `propName2` — property description
+
+**Possible values:** (for enum/union types)
+
+- `'value1'` — value description and its behavior
+- `'value2'` — value description and its behavior
+
+Additional description of behavior, property interaction, features, and limitations.
+
+[code examples]
+```
+
+**Examples of correct capability descriptions:**
+
+```md
+## Header Position Animation
+
+The `animationHeadPosition` property defines the behavior of the Head area during show/hide animations.
+
+**Possible values:**
+
+- `'top'` — keeps Head at the top during transition (default)
+- `'toBottom'` — animates Head down along with content
+
+Synchronizes header movement with content animation using CSS transforms for smooth transitions.
+
+[code example]
+```
+
+```md
+## Navigation and Arrows
+
+Properties `arrowCarousel`, `arrowStepper`, `disabledPrevious`, `disabledNext`, and `align` are designed for managing built-in navigation elements and content alignment.
+
+**Properties:**
+
+- `arrowCarousel` — enables navigation arrows (left/right) for switching elements
+- `arrowStepper` — enables numeric step buttons (minus/plus)
+- `disabledPrevious` — disables left button (back/minus)
+- `disabledNext` — disables right button (forward/plus)
+- `align` — horizontal content alignment (`left`, `center`, `right`)
+
+Properties work together: only one arrow mode is active — if `arrowCarousel = true`, `arrowStepper` mode is ignored and vice versa.
+
+[code example]
+```
+
+```md
+## Outline Buttons
+
+Button component supports outline mode via the `outline` property. In this mode, buttons have a minimalist visual style with transparent background and colored border:
+
+- **Minimalist design** - suitable for interfaces requiring reduced visual load
+- **Transparent background** - maintains clean appearance while remaining interactive
+- **Hover feedback** - background appears on hover for better user interaction
+
+Outline mode is especially useful for creating tertiary actions and secondary options.
+
+[code example]
+```
+
+**When NOT to describe Props in separate sections:**
+
+- Simple boolean/string/number properties without complex logic — JSDoc comments in types are sufficient
+- Properties with obvious behavior (e.g., `disabled`, `label`, `placeholder`)
+- Single independent properties without interaction with others
+
+**When to describe capabilities in separate sections:**
+
+- Properties with complex interaction logic (e.g., `cancel` and `cancelShow`)
+- Groups of related properties working together (e.g., navigation arrows)
+- Properties with multiple operation modes (e.g., `adaptive` with different values)
+- Properties affecting other component parts or having priority over others
+- Component display modes (e.g., `primary`, `secondary`, `outline`)
+- CSS classes for behavior control
+
+**4. Mandatory sections (if present in component):**
+
+**Expose methods/properties:**
+```md
+## Expose Methods
+### `methodName`
+
+Method description.
+
+**Type:** `(param: Type) => ReturnType`
+
+**Parameters:**
+- `param: Type` — parameter description
+
+**Returns:** return value description
+
+[code example]
+```
+
+**Slots:**
+```md
+## Slots
+### `slotName`
+
+Slot description.
+
+**Parameters:**
+- `param: Type` — slot parameter description
+
+[code example]
+```
+
+**Events:**
+```md
+## Events
+### `eventName`
+
+Event description.
+
+**Parameters:**
+- `param: Type` — event parameter description
+
+**Type structure:** (if parameter is complex)
+- `field: string` — field description
+- `field2: number` — field description
+
+[code example]
+```
+
+**5. Usage examples:**
+- Add Canvas to demonstrate specific scenarios
+- DO NOT add base `<Canvas of={Component.Component}/>` — it's already at the beginning
+- Format: `<Canvas of={Component.StoryName}/>`
+
+**Strict formatting rules:**
+
+- Heading levels:
+  - `##` — main sections (Props, Expose Methods, Slots, Events)
+  - `###` — specific elements (method, slot, event names)
+  - `####` — subsections within description (Behavior, Examples)
+
+- Code:
+  - Types and interfaces: ` ```ts `
+  - Component markup: ` ```html ` (NOT ` ```vue `)
+  - Inline code: wrap in backticks `` `code` ``
+
+- Meta and StorybookMain:
+  - STRICTLY FORBIDDEN to touch Meta and StorybookMain blocks
+  - They must remain as is at the beginning of the file
+  - Don't add, don't delete, don't modify them
+
+- Structural elements:
+  - Use `**Bold text:**` for subheadings within descriptions
+  - Use `>` for important notes and warnings
+  - Lists only where they improve readability
+
+**Example of full document structure:**
+
+```md
+import { Meta, Canvas } from '@storybook/addon-docs/blocks'
+import * as Component from './Component.stories'
+
+<Meta of={Component} />
+
+Component for creating modal windows, dialogs, and popup elements with flexible positioning and adaptive behavior.
+
+Window manages content display over the main interface, supports various positioning types (modal windows, dropdown menus, action sheets), open/close animations, and event system integration. The component automatically handles clicks outside the area, focus management, and adaptation to different screen sizes.
+
+**Key Features:**
+
+- Flexible positioning (center, edges, screen corners)
+- Adaptive modes (modal, menu, actionSheet, static)
+- Open/close animations with origin configuration
+- State management via v-model or expose methods
+- Scrollbar integration for scrollable content
+- Background interaction blocking (persistent mode)
+- Window lifecycle events
+
+**Typical Use Cases:**
+
+- Modal windows for forms and confirmations
+- Dropdown menus and context menus
+- Side panels and drawer components
+- Action sheets for mobile interfaces
+- Tooltips and dialogs
+
+## CSS Classes for Behavior Control
+
+Component uses special CSS classes for behavior control:
+
+- `*--block` — prevents window from closing when clicking outside its boundaries
+- `*--blockChildren` — prevents current window from closing
+- `*--blockOther` — prevents other windows from closing until current one is closed
+- `*--close` — applies to elements for closing the window
+- `*--controlOpenOnly` — applies to control elements that only open the window
+- `*--controlStatic` — applies to control elements in static mode
+- `*--static` — applies to elements inside window, canceling all actions
+
+Where `*` is the component class name (e.g., `d1-window`, `m3-window`).
+
+## Header Position Animation
+
+The `animationHeadPosition` property defines the behavior of the Head area during show/hide animations.
+
+**Possible values:**
+
+- `'top'` — keeps Head at the top during transition (default)
+- `'toBottom'` — animates Head down along with content
+
+Synchronizes header movement with content animation using CSS transforms for smooth transitions.
+
+```html
+<template>
+  <Window v-model:open="isOpen" :animationHeadPosition="'toBottom'">
+    <template #default>
+      <p>Window content</p>
+      <button @click="isOpen = false">Close</button>
+    </template>
+  </Window>
+</template>
+```
+
+## Navigation and Arrows
+
+Properties `arrowCarousel`, `arrowStepper`, `disabledPrevious`, `disabledNext`, and `align` are designed for managing built-in navigation elements and content alignment.
+
+**Properties:**
+
+- `arrowCarousel` — enables navigation arrows (left/right) for switching elements
+- `arrowStepper` — enables numeric step buttons (minus/plus)
+- `disabledPrevious` — disables left button (back/minus)
+- `disabledNext` — disables right button (forward/plus)
+- `align` — horizontal content alignment (`left`, `center`, `right`)
+
+Properties work together: only one arrow mode is active — if `arrowCarousel = true`, `arrowStepper` mode is ignored and vice versa.
+
+```html
+<template>
+  <Window v-model:open="isOpen" :arrowCarousel="true" :align="'center'">
+    <template #default>
+      <p>Window content</p>
+      <button @click="isOpen = false">Close</button>
+    </template>
+  </Window>
+</template>
+```
+
+## Outline Buttons
+
+Button component supports outline mode via the `outline` property. In this mode, buttons have a minimalist visual style with transparent background and colored border:
+
+- **Minimalist design** - suitable for interfaces requiring reduced visual load
+- **Transparent background** - maintains clean appearance while remaining interactive
+- **Hover feedback** - background appears on hover for better user interaction
+
+Outline mode is especially useful for creating tertiary actions and secondary options.
+
+```html
+<template>
+  <Button outline @click="handleClick">Click me</Button>
+</template>
+```
+
+## Expose Methods
+### `id`
+
+Unique window identifier.
+
+**Type:** `string`
+
+```html
+<script setup>
+const windowRef = ref()
+
+onMounted(() => {
+  console.log(windowRef.value.id) // "window-123"
+})
+</script>
+
+<template>
+  <Window ref="windowRef" />
+</template>
+```
+
+## Slots
+### `control`
+
+Slot for placing window control elements (close buttons, minimize, etc.).
+
+**Parameters:**
+- `props: WindowControlItem` — object with window control data
+
+```html
+<Window>
+  <template #control="{ onclick, open }">
+    <button @click="onclick">
+      {{ open ? 'Close' : 'Open' }}
+    </button>
+  </template>
+</Window>
+```
+
+## Events
+### `window`
+
+Event fires when the window state changes (open/close).
+
+**Parameters:**
+- `options: WindowEmitOptions` — object with window data
+
+**WindowEmitOptions structure:**
+- `id: string` — unique window identifier
+- `element: HTMLDivElement` — window DOM element
+- `control: HTMLElement` — control DOM element
+- `open: boolean` — window open state (`true` - open, `false` - closed)
+
+```html
+<script setup>
+const handleWindow = (options) => {
+  console.log('Window ID:', options.id)
+  console.log('Window open:', options.open)
+  console.log('Window element:', options.element)
+  console.log('Control element:', options.control)
+}
+</script>
+
+<template>
+  <Window @window="handleWindow">
+    <template #default>
+      <p>Window content</p>
+    </template>
+  </Window>
+</template>
+```
+
+## Usage Examples
+### Basic Modal Window
+
+<Canvas of={Component.BasicModal}/>
+
+### Dropdown Menu
+
+<Canvas of={Component.DropdownMenu}/>
+```
+
+====================================
+5) Final return
+====================================
+Return the result STRICTLY in the format (nothing extra before or after):
+
+[types.ts]
+#########
+[ComponentDoc.stories.ts]
+#########
+[ComponentName.mdx]
+
+**Output format requirements:**
+- DO NOT add file labels like `// filepath: ...`
+- DO NOT wrap in code blocks (` ```ts `, ` ```md `)
+- DO NOT add comments with file names
+- DO NOT include in the result text `[types.ts]`, `[ComponentDoc.stories.ts]`, `[ComponentName.mdx]`
+- Only clean code, separated by a line of nine hash symbols: `#########`
+- Order strictly: types → stories → documentation
+- Each block starts with the first line of code, without spaces and line breaks before
+
+**Structure of each block:**
+- `[types.ts]` — final types file with JSDoc comments (only file content)
+- `[ComponentDoc.stories.ts]` — final stories file (only file content)
+- `[ComponentName.mdx]` — final MDX documentation (only file content)
+
+====================================
+Constraints and style
+====================================
+
+**Forbidden:**
+- Tables in any form
+- Arbitrary additional sections outside specified ones
+- "Props" section for simple properties without complex logic
+- Duplication of descriptions of the same thing
+- Placeholders outside those specified in prompt (`[code]`, `[types]`, `[stories]`, `[md]`)
+- Using ` ```vue ` for code examples (only ` ```html `)
+- Changing Meta block in MDX
+- Adding base Canvas (`<Canvas of={Component.Component}/>`)
+
+**Required:**
+- Documentation language corresponds to en
+- If en = "en", use English for ALL documentation
+- If en = "ru", use Russian for ALL documentation
+- Code blocks: types and events — ` ```ts `, markup — ` ```html `
+- Stories: only necessary scenarios, without visual decorations
+- Brevity and informativeness without "fluff"
+- Technically correct terms
+- Code examples are functional and up-to-date

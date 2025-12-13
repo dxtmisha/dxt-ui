@@ -4,7 +4,7 @@ import { exec } from 'node:child_process'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { ComponentWikiFile } from './ComponentWikiFile'
 
-import { UI_FILE_NAME_VITE, UI_FILE_NAME_VITE_WORKERS } from '../../config'
+import { UI_DIR_DIST_TEMPORARY, UI_FILE_NAME_VITE, UI_FILE_NAME_VITE_WORKERS } from '../../config'
 
 // Sample Vite config template path / Путь к шаблону Vite-конфига
 const FILE_VITE_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'viteComponentTemplateConfig.ts']
@@ -21,10 +21,40 @@ export class ComponentBuild {
   // Template vite config file / Файл шаблона vite-конфига
   protected readonly viteSample: ComponentWikiFile
 
+  // Aggregated built code file / Файл агрегированного собранного кода
+  protected readonly codeFile: ComponentWikiFile
+
+  /**
+   * Constructor
+   * @param path component path / путь к компоненту
+   */
   constructor(
     protected readonly path: string
   ) {
     this.viteSample = new ComponentWikiFile(FILE_VITE_SAMPLE)
+
+    this.codeFile = new ComponentWikiFile([
+      ...this.getPathTemporaryDist(),
+      'code.txt'
+    ])
+  }
+
+  /**
+   * Returns aggregated built code content.
+   *
+   * Возвращает содержимое агрегированного собранного кода.
+   */
+  getCode(): string {
+    return this.codeFile.read()
+  }
+
+  /**
+   * Removes temporary distribution directory.
+   *
+   * Удаляет временную директорию дистрибутива.
+   */
+  removeDir(): void {
+    PropertiesFile.removeDir(this.getPathTemporaryDist())
   }
 
   /**
@@ -44,8 +74,20 @@ export class ComponentBuild {
     const status = await this.run()
 
     this.resetViteConfig()
+    this.readAndWriteALlFiles()
 
     return status
+  }
+
+  /**
+   * Returns distribution temp directory path segments.
+   *
+   * Возвращает сегменты пути дистрибутива (temp).
+   */
+  protected getPathTemporaryDist(): string[] {
+    return [
+      UI_DIR_DIST_TEMPORARY
+    ]
   }
 
   /**
@@ -79,6 +121,38 @@ export class ComponentBuild {
         UI_FILE_NAME_VITE
       )
     }
+  }
+
+  /**
+   * Reads built file content and wraps with header comment (file name).
+   *
+   * Читает содержимое собранного файла и оборачивает заголовком с именем файла.
+   * @param path relative built file path / относительный путь собранного файла
+   */
+  protected readFile(path: string): string {
+    const pathFull = PropertiesFile.joinPath([...this.getPathTemporaryDist(), path])
+    const content = PropertiesFile.readFileOnly(pathFull)
+
+    return `
+// File: ${path}
+${content}
+    `.trim()
+  }
+
+  /**
+   * Aggregates all built files into a single code snapshot file.
+   *
+   * Агрегирует все собранные файлы в единый снимок кода.
+   */
+  protected readAndWriteALlFiles(): void {
+    const list = PropertiesFile.readDirRecursive(this.getPathTemporaryDist())
+    const content: string[] = []
+
+    list.forEach((file) => {
+      content.push(this.readFile(file))
+    })
+
+    this.codeFile.write(content.join('\r\n'))
   }
 
   /**
