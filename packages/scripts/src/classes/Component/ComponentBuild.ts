@@ -73,7 +73,7 @@ export class ComponentBuild {
 
     const status = await this.run()
 
-    // this.resetViteConfig()
+    this.resetViteConfig()
     this.readAndWriteALlFiles()
 
     return status

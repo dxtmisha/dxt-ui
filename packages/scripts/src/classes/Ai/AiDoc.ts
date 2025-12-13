@@ -1,4 +1,4 @@
-import { Datetime, forEach, removeCommonPrefix } from '@dxtmisha/functional-basic'
+import { Datetime, removeCommonPrefix } from '@dxtmisha/functional-basic'
 
 import { GitRead } from '../Git/GitRead'
 import { PropertiesFile } from '../Properties/PropertiesFile'
@@ -18,17 +18,16 @@ export class AiDoc {
   make() {
     console.log(`AI documentation: ${this.path}`)
 
-    this.makeClass()
+    this.makeClass().then()
   }
 
-  makeClass() {
+  async makeClass() {
     console.log('')
     console.log('Classes...')
 
-    forEach(
-      this.getListClasses(),
-      item => this.makeItem(item)
-    )
+    for (const item of this.getListClasses()) {
+      await this.makeItem(item)
+    }
   }
 
   protected getListClasses() {
@@ -92,7 +91,7 @@ export class AiDoc {
     ]
   }
 
-  protected makeItem(item: GitFileItem) {
+  protected async makeItem(item: GitFileItem) {
     const wikiPath = this.toPathWiki(item.path)
     const wikiPathFull = this.toPathFull(wikiPath)
     const date = new Datetime(item.date)
@@ -105,12 +104,10 @@ export class AiDoc {
       data
       && date.getDate() > data.date.getDate()
     ) {
+      const build = new ComponentBuild(item.path)
+
       console.log('File:', item.path)
-      new ComponentBuild(item.path)
-        .make()
-        .then(() => {
-          console.log('Updated:', PropertiesFile.joinPath(wikiPath))
-        })
+      await build.make()
     }
   }
 }
