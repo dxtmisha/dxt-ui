@@ -108,6 +108,9 @@ export class AiDoc {
       console.log('File:', item.path)
       new ComponentBuild(item.path)
         .make()
+        .then(() => {
+          console.log('Updated:', PropertiesFile.joinPath(wikiPath))
+        })
     }
   }
 }

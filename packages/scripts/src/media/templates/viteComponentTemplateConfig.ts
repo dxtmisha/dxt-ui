@@ -8,7 +8,7 @@ import { viteComponentOnly } from '@dxtmisha/configuration/viteComponentOnly'
 export default mergeConfig(
   {}, // viteWorkers,
   viteComponentOnly(
-    resolve(__dirname, './[path]/index.ts'),
+    resolve(__dirname, './[path]'),
     resolve(__dirname, './src')
   )
 )

@@ -1,0 +1,113 @@
+/**
+ * Emits available for F1Test component.
+ */
+export type F1TestEmits = {
+  // No emits defined yet.
+  // click: [value: string]
+}
+
+/**
+ * Slots available for F1Test component.
+ */
+export interface F1TestSlots {
+  // No slots defined yet.
+  // default? (props: any): any
+}
+
+/**
+ * Props for the F1Test component.
+ */
+export interface F1TestProps {
+  /**
+   * The string value to display within the component.
+   */
+  value?: string
+}
+
+/**
+ * Default prop values for the F1Test component.
+ */
+export const F1TestDefaults: F1TestProps = {
+  // No default value specified in component code.
+  // value: 'value'
+}
+
+```
+#########
+```ts
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
+
+import F1Test from './../F1Test.vue'
+
+const meta = {
+  title: '@dxtmisha/figma/F1Test',
+  component: F1Test
+} satisfies Meta<typeof F1Test>
+
+export default meta
+
+type Story = StoryObj<typeof meta>
+
+export const Component: Story = {
+  render: args => ({
+    components: { F1Test },
+    setup() {
+      return { args }
+    },
+    template: `<div>
+      <F1Test v-bind="args" />
+    </div>`
+  })
+}
+
+export const Basic: Story = {
+  args: {
+    value: 'Hello from F1Test!'
+  }
+}
+
+export const NoValue: Story = {
+  args: {
+    // No value provided, demonstrating the component's default empty state.
+  }
+}
+
+```
+#########
+```md
+import { Meta, Canvas } from '@storybook/addon-docs/blocks'
+import { StorybookMain } from '@dxtmisha/wiki/storybook'
+
+import * as Component from './F1Test.stories'
+
+<Meta of={Component}/>
+<StorybookMain
+    name={'F1Test'}
+    description={'A basic component for displaying a string value.'}
+    story={Component.Component}
+/>
+
+The `F1Test` component is a minimalist UI element designed for the straightforward display of a single string of text. It serves as a foundational building block for applications requiring simple, static text rendering within a defined area of the user interface.
+
+Its primary function is to render the provided `value` prop directly into its template. This makes it exceptionally easy to integrate for presenting short, static text content, such as labels, messages, or placeholders. The `value` prop is optional; if provided, its content will be displayed. If no `value` is provided, the component will display an empty string.
+
+**Key Features:**
+
+- Displays a single string value.
+- Simple integration with minimal properties.
+- Supports an optional `value` prop.
+
+**Typical Use Cases:**
+
+- Displaying short messages or labels.
+- Serving as a placeholder for content under development.
+- Basic text output in debugging or testing scenarios.
+
+## Usage Examples
+### Basic Display
+
+<Canvas of={Component.Basic}/>
+
+### No Value
+
+<Canvas of={Component.NoValue}/>

@@ -1,13 +1,31 @@
-import {Meta} from '@storybook/addon-docs/blocks'
-import {StorybookMain} from '@dxtmisha/wiki/storybook'
+import { Meta, Canvas } from '@storybook/addon-docs/blocks'
+import { StorybookMain } from '@dxtmisha/wiki/storybook'
 
 import * as Component from './F1Test.stories'
 
 <Meta of={Component}/>
 <StorybookMain
     name={'F1Test'}
-    description={'[description]'}
+    description={'A basic component for displaying a string value.'}
     story={Component.Component}
 />
 
-[doc]
+The `F1Test` component is a minimalist UI element designed for the straightforward display of a single string of text. It serves as a foundational building block for applications requiring simple, static text rendering within a defined area of the user interface.
+
+Its primary function is to render the provided `value` prop directly into its template. This makes it exceptionally easy to integrate for presenting short, static text content, such as labels, messages, or placeholders. The `value` prop is optional; if provided, its content will be displayed.
+
+**Key Features:**
+
+- Displays a single string value.
+- Simple integration with minimal properties.
+
+**Typical Use Cases:**
+
+- Displaying short messages or labels.
+- Serving as a placeholder for content under development.
+- Basic text output in debugging or testing scenarios.
+
+## Usage Examples
+### Basic Display
+
+<Canvas of={Component.Basic}/>

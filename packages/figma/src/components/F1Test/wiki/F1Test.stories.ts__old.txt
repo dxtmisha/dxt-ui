@@ -22,3 +22,9 @@ export const Component: Story = {
     </div>`
   })
 }
+
+export const Basic: Story = {
+  args: {
+    value: 'Hello from F1Test!'
+  }
+}

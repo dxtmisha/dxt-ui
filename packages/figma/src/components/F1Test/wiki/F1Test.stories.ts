@@ -28,3 +28,9 @@ export const Basic: Story = {
     value: 'Hello from F1Test!'
   }
 }
+
+export const NoValue: Story = {
+  args: {
+    // No value provided, demonstrating the component's default empty state.
+  }
+}

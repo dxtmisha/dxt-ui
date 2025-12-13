@@ -51,7 +51,9 @@ export class ComponentWiki {
     protected readonly path: string,
     protected readonly prompt: string = ''
   ) {
-    this.build = new ComponentBuild(this.getRootComponent().join('/'))
+    this.build = new ComponentBuild(
+      `${this.getRootComponent().join('/')}/index.ts`
+    )
     this.promptSample = new ComponentWikiFile(FILE_PROMPT_SAMPLE)
 
     this.typesFile = new ComponentWikiFile([
