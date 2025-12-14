@@ -5,8 +5,8 @@ import { getNameDirByPaths } from '../../functions/getNameDirByPaths'
 import { useAi } from '../../composables/useAi'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
+import { BuildItem } from '../BuildItem'
 import { ComponentWikiFile } from './ComponentWikiFile'
-import { ComponentBuild } from './ComponentBuild'
 
 import {
   UI_DIR_TEMPORARY,
@@ -15,7 +15,7 @@ import {
 } from '../../config'
 
 // Sample AI prompt template path / Путь к шаблону AI-промпта
-const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'componentPrompt.en.txt']
+const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts', 'componentPrompt.en.txt']
 
 /**
  * Generates wiki artifacts (code snapshot, stories, mdx) for a component.
@@ -25,7 +25,7 @@ const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'compon
  * Использует временный билд + AI промпт для (пере)создания документации.
  */
 export class ComponentWiki {
-  protected readonly build: ComponentBuild
+  protected readonly build: BuildItem
 
   // Template prompt file / Файл шаблона промпта
   protected readonly promptSample: ComponentWikiFile
@@ -51,7 +51,7 @@ export class ComponentWiki {
     protected readonly path: string,
     protected readonly prompt: string = ''
   ) {
-    this.build = new ComponentBuild(
+    this.build = new BuildItem(
       `${this.getRootComponent().join('/')}/index.ts`
     )
     this.promptSample = new ComponentWikiFile(FILE_PROMPT_SAMPLE)

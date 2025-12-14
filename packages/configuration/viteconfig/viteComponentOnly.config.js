@@ -2,6 +2,7 @@
 import { defineConfig } from 'vite'
 
 import vue from '@vitejs/plugin-vue'
+import dts from 'vite-plugin-dts'
 
 /**
  * Creates a base Vite config for libraries with only Vue components.
@@ -15,11 +16,24 @@ export const viteComponentOnly = (
   path,
   packages
 ) => {
+  const outDir = 'dist-temporary'
+
   return defineConfig({
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      dts({
+        clearPureImport: false,
+        copyDtsFiles: true,
+        insertTypesEntry: true,
+        outDir,
+        staticImport: true,
+        tsconfigPath: './tsconfig.app.json',
+        rollupTypes: true
+      })
+    ],
 
     build: {
-      outDir: 'dist-temporary',
+      outDir,
 
       lib: {
         entry: path,

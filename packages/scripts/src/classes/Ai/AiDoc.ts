@@ -1,17 +1,23 @@
 import { Datetime, removeCommonPrefix } from '@dxtmisha/functional-basic'
 
-import { GitRead } from '../Git/GitRead'
 import { PropertiesFile } from '../Properties/PropertiesFile'
+import { GitRead } from '../Git/GitRead'
+import { BuildItem } from '../BuildItem'
 
 import type { AiDocFile } from '../../types/aiTypes'
 import type { GitFileItem } from '../../types/gitTypes'
-import { ComponentBuild } from '../Component/ComponentBuild.ts'
 
 const DATE_UPDATED_MATCH = /\*\*Date: (.*?)\./i
 
+// Sample AI prompt template path / Путь к шаблону AI-промпта
+const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts']
+const FILE_PROMPT_SAMPLE_CLASS = [...FILE_PROMPT_SAMPLE, 'aiDocClassPrompt.en.txt']
+
 export class AiDoc {
   constructor(
-    protected readonly path: string
+    protected readonly type: string = 'storybook',
+    protected readonly path: string = 'src/storybook',
+    protected readonly dirs?: string[]
   ) {
   }
 
@@ -104,7 +110,7 @@ export class AiDoc {
       data
       && date.getDate() > data.date.getDate()
     ) {
-      const build = new ComponentBuild(item.path)
+      const build = new BuildItem(item.path)
 
       console.log('File:', item.path)
       await build.make()

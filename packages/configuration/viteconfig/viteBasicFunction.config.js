@@ -116,7 +116,8 @@ export const viteBasicFunction = (
       insertTypesEntry: true,
       outDir: 'dist',
       staticImport: true,
-      tsconfigPath: './tsconfig.app.json'
+      tsconfigPath: './tsconfig.app.json',
+      rollupTypes: true
     })
   ]
 })

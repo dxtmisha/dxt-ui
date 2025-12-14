@@ -1,10 +1,10 @@
 import { promisify } from 'node:util'
 import { exec } from 'node:child_process'
 
-import { PropertiesFile } from '../Properties/PropertiesFile'
-import { ComponentWikiFile } from './ComponentWikiFile'
+import { PropertiesFile } from './Properties/PropertiesFile'
+import { ComponentWikiFile } from './Component/ComponentWikiFile'
 
-import { UI_DIR_DIST_TEMPORARY, UI_FILE_NAME_VITE, UI_FILE_NAME_VITE_WORKERS } from '../../config'
+import { UI_DIR_DIST_TEMPORARY, UI_FILE_NAME_VITE, UI_FILE_NAME_VITE_WORKERS } from '../config'
 
 // Sample Vite config template path / Путь к шаблону Vite-конфига
 const FILE_VITE_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'viteComponentTemplateConfig.ts']
@@ -17,7 +17,7 @@ const execAsync = promisify(exec)
  *
  * Билдит компонент с использованием временного Vite-конфига.
  */
-export class ComponentBuild {
+export class BuildItem {
   // Template vite config file / Файл шаблона vite-конфига
   protected readonly viteSample: ComponentWikiFile
 
@@ -37,6 +37,17 @@ export class ComponentBuild {
       ...this.getPathTemporaryDist(),
       'code.txt'
     ])
+  }
+
+  /**
+   * Returns distribution temp directory path segments.
+   *
+   * Возвращает сегменты пути дистрибутива (temp).
+   */
+  getPathTemporaryDist(): string[] {
+    return [
+      UI_DIR_DIST_TEMPORARY
+    ]
   }
 
   /**
@@ -77,17 +88,6 @@ export class ComponentBuild {
     this.readAndWriteALlFiles()
 
     return status
-  }
-
-  /**
-   * Returns distribution temp directory path segments.
-   *
-   * Возвращает сегменты пути дистрибутива (temp).
-   */
-  protected getPathTemporaryDist(): string[] {
-    return [
-      UI_DIR_DIST_TEMPORARY
-    ]
   }
 
   /**
