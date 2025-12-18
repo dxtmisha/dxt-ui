@@ -1,0 +1,42 @@
+## Description
+
+A versatile structural component that serves as a container with support for labels, descriptions, captions, icons, and headlines.
+
+Block provides a flexible foundation for building complex interface components, allowing you to combine various information elements into a single unit. The component supports HTML tag customization and provides slots for content customization.
+
+**Key Features:**
+
+- Display of headline, label, description, and caption
+- Icon support
+- Customizable HTML tag
+- Flexible layout for content organization
+- Slot support for functionality extension
+
+**Typical Use Cases:**
+
+- Content cards
+- List items
+- Information blocks
+- Sections with headers and descriptions
+- Basic building block for other components
+
+```html
+<script setup>
+import { ref } from 'vue'
+</script>
+
+<template>
+  <Block
+    headline="Block Headline"
+    label="Label"
+    description="Block description with detailed information"
+    caption="Caption"
+    icon="info"
+  >
+    Main block content
+  </Block>
+</template>
+```
+
+> Block is a fundamental component for creating structured interfaces.
+

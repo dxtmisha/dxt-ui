@@ -11,6 +11,7 @@ import { wikiMdxActions } from './Actions/wikiMdxActions'
 import { wikiMdxActionSheet } from './ActionSheet/wikiMdxActionSheet'
 import { wikiMdxBadge } from './Badge/wikiMdxBadge'
 import { wikiMdxBars } from './Bars/wikiMdxBars'
+import { wikiMdxBlock } from './Block/wikiMdxBlock'
 import { wikiMdxButton } from './Button/wikiMdxButton'
 import { wikiMdxCell } from './Cell/wikiMdxCell'
 import { wikiMdxChip } from './Chip/wikiMdxChip'
@@ -52,6 +53,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxActionSheet,
   wikiMdxBadge,
   wikiMdxBars,
+  wikiMdxBlock,
   wikiMdxButton,
   wikiMdxCell,
   wikiMdxChip,

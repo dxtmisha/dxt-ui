@@ -19,7 +19,10 @@ const config: StorybookConfig = {
     '../../wiki/src/media/styles/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 
     '../../d1/src/**/*.mdx',
-    '../../d1/src/**/*.stories.@(js|jsx|mjs|ts|tsx)'
+    '../../d1/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+
+    '../../test/src/**/*.mdx',
+    '../../test/src/**/*.stories.@(js|jsx|mjs|ts|tsx)'
   ],
   addons: [
     getAbsolutePath('@chromatic-com/storybook'),

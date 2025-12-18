@@ -42,6 +42,12 @@ export class AiGoogleLite extends AiAbstract<GoogleGenAI> {
     }))
   }
 
+  protected toContents(): any {
+    return forEach(this.contents, content => ({
+      text: content
+    }))
+  }
+
   /**
    * Performs content generation request and returns textual result.
    *
@@ -57,7 +63,12 @@ export class AiGoogleLite extends AiAbstract<GoogleGenAI> {
       model,
       contents: [
         ...this.toImages(),
-        { text: contents }
+        {
+          parts: [
+            ...this.toContents(),
+            { text: contents }
+          ]
+        }
       ]
     })
 

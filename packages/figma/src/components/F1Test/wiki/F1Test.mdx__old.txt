@@ -10,14 +10,15 @@ import * as Component from './F1Test.stories'
     story={Component.Component}
 />
 
-The `F1Test` component is a minimalist UI element designed for the straightforward display of a single string of text. It serves as a foundational building block for applications requiring simple, static text rendering within a defined area of the user interface.
+The `F1Test` component is a minimalist UI element designed for the straightforward display of a single string of text. It functions as a foundational building block, enabling simple, static text rendering within a defined user interface area.
 
-Its primary function is to render the provided `value` prop directly into its template. This makes it exceptionally easy to integrate for presenting short, static text content, such as labels, messages, or placeholders. The `value` prop is optional; if provided, its content will be displayed.
+Its primary role is to render the provided `value` prop directly. This facilitates easy integration for presenting short, static content such as labels, messages, or placeholders. The `value` prop is optional; if provided, its content is displayed. If omitted, the component renders an empty string.
 
 **Key Features:**
 
 - Displays a single string value.
 - Simple integration with minimal properties.
+- Supports an optional `value` prop.
 
 **Typical Use Cases:**
 
@@ -29,3 +30,7 @@ Its primary function is to render the provided `value` prop directly into its te
 ### Basic Display
 
 <Canvas of={Component.Basic}/>
+
+### No Value
+
+<Canvas of={Component.NoValue}/>

@@ -1,0 +1,48 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Block from './D1Block.stories'
+import {BlockWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Block}/>
+<StorybookMain
+    name={BlockWikiStorybook.getName()}
+    description={BlockWikiStorybook.getDescription()}
+    story={Block.Block}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Block'} type={'block'}/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'labelId'}/>
+<StorybookDescriptions componentName={'Expose'} type={'descriptionId'}/>
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={Block.BlockSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Slot'} type={'headline'}/>
+<StorybookDescriptions componentName={'Slot'} type={'label'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+<StorybookDescriptions componentName={'Slot'} type={'caption'}/>
+<StorybookDescriptions componentName={'Slot'} type={'trailing'}/>
+
+[//]: # (:documentation-slots [!] System label / Системная метка)

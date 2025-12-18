@@ -7,7 +7,7 @@ import { ComponentWikiFile } from './Component/ComponentWikiFile'
 import { UI_DIR_DIST_TEMPORARY, UI_FILE_NAME_VITE, UI_FILE_NAME_VITE_WORKERS } from '../config'
 
 // Sample Vite config template path / Путь к шаблону Vite-конфига
-const FILE_VITE_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'viteComponentTemplateConfig.ts']
+const FILE_VITE_SAMPLE = [__dirname, '..', 'media', 'templates', 'viteComponentTemplateConfig.ts']
 
 // Async exec wrapper / Обёртка для асинхронного exec
 const execAsync = promisify(exec)

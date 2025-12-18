@@ -20,7 +20,7 @@ const classes = computed(() => ({
 </template>
 
 <style lang="scss">
-@use '@dxt-ui/styles' as ui;
+@use '@dxtmisha/styles' as ui;
 
 .ui-test-item-squared {
   --ui-test-item-squared-size: 256px;

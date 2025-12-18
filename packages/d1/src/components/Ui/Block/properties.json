@@ -1,0 +1,20 @@
+{
+  "main": "{d.block}",
+  "#headline": {
+    "padding-bottom": "{sys.spacing.x}",
+    "palette-color": "{sys.palette.primary}",
+    "color-opacity": "{sys.opacity.primary.high}"
+  },
+  "#header": {
+    "gap": "{sys.spacing.x}"
+  },
+  "#label": {
+    "link|font": "{font.headlineSmall}"
+  },
+  "#caption": {
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "#description": {
+    "color-opacity": "{sys.opacity.surface.medium}"
+  }
+}

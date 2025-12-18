@@ -27,7 +27,11 @@ export abstract class AiAbstract<AI = any> {
   /** Prompt prefix / Префикс prompt */
   protected prompt: string = ''
 
+  /** Accumulated image list / Накопленный список изображений */
   protected images: AiImageList = []
+
+  /** Accumulated contents / Накопленные содержимое */
+  protected contents: string[] = []
 
   /**
    * Constructor initializes implementation specific resources.
@@ -52,6 +56,15 @@ export abstract class AiAbstract<AI = any> {
   }
 
   /**
+   * Returns accumulated contents.
+   *
+   * Возвращает накопленное содержимое.
+   */
+  getContents(): string[] {
+    return this.contents
+  }
+
+  /**
    * Appends an image to the accumulated image list.
    *
    * Добавляет изображение к накопленному списку изображений.
@@ -59,6 +72,17 @@ export abstract class AiAbstract<AI = any> {
    */
   addImage(image: AiImageItem): this {
     this.images.push(image)
+    return this
+  }
+
+  /**
+   * Appends content to the accumulated contents.
+   *
+   * Добавляет содержимое к накопленному содержимому.
+   * @param content - content string / строка содержимого
+   */
+  addContent(content: string): this {
+    this.contents.push(content)
     return this
   }
 
@@ -78,6 +102,16 @@ export abstract class AiAbstract<AI = any> {
    */
   resetImages(): this {
     this.images = []
+    return this
+  }
+
+  /**
+   * Clears entire accumulated contents.
+   *
+   * Очищает все накопленное содержимое.
+   */
+  resetContents(): this {
+    this.contents = []
     return this
   }
 
@@ -135,7 +169,7 @@ export abstract class AiAbstract<AI = any> {
 
       return await this.response(
         this.model,
-        this.getContents(contents)
+        this.getMainContents(contents)
       )
     }
 
@@ -147,7 +181,7 @@ export abstract class AiAbstract<AI = any> {
    *
    * Объединяет постоянный префикс prompt с переданным содержимым.
    */
-  protected getContents(contents: string): string {
+  protected getMainContents(contents: string): string {
     return `${this.prompt}\n${contents}`
   }
 
@@ -164,6 +198,13 @@ export abstract class AiAbstract<AI = any> {
    * Хук реализации: преобразовать накопленные изображения в формат, специфичный для модели.
    */
   protected abstract toImages(): void
+
+  /**
+   * Implementation hook: convert accumulated contents to model-specific format.
+   *
+   * Хук реализации: преобразовать накопленное содержимое в формат, специфичный для модели.
+   */
+  protected abstract toContents(): void
 
   /**
    * Implementation hook: perform model call and return textual result.

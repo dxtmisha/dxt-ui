@@ -87,5 +87,17 @@ export const wikiOption: StorybookArgsToList = {
         ru: 'Задает HTML‑тег для элемента контейнера тела/содержимого'
       }
     }
+  },
+  tagHeader: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets HTML tag for the header container element',
+        ru: 'Задает HTML‑тег для элемента контейнера шапки'
+      }
+    }
   }
 }

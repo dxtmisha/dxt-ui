@@ -5,6 +5,7 @@ import { wikiDescriptionsActions } from './wikiDescriptionsActions'
 import { wikiDescriptionsActionSheet } from './wikiDescriptionsActionSheet'
 import { wikiDescriptionsBadge } from './wikiDescriptionsBadge'
 import { wikiDescriptionsBars } from './wikiDescriptionsBars'
+import { wikiDescriptionsBlock } from './wikiDescriptionsBlock'
 import { wikiDescriptionsButton } from './wikiDescriptionsButton'
 import { wikiDescriptionsCell } from './wikiDescriptionsCell'
 import { wikiDescriptionsChip } from './wikiDescriptionsChip'
@@ -40,6 +41,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsActionSheet,
   wikiDescriptionsBadge,
   wikiDescriptionsBars,
+  wikiDescriptionsBlock,
   wikiDescriptionsButton,
   wikiDescriptionsCell,
   wikiDescriptionsChip,

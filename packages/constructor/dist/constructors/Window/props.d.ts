@@ -1,0 +1,64 @@
+import { ElementOrString, NormalOrPromise } from '@dxtmisha/functional';
+import { AriaByPropsInclude, AriaHaspopupPropsInclude, AriaRoleByPropsInclude } from '../../types/ariaTypes';
+import { ImagePropsBasic, ImagePropsInclude } from '../Image';
+import { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar';
+import { TextClosePropsInclude } from '../../types/textTypes';
+interface WindowPropsToken {
+    width?: string | 'auto' | 'max' | 'custom';
+    height?: string | 'auto' | 'max' | 'custom';
+    hide?: boolean;
+    axis?: 'x' | 'y' | 'on';
+    imagePosition?: 'top' | 'left';
+    dense?: boolean;
+    alignment?: 'center' | 'top' | 'topRight' | 'topLeft' | 'topFull' | 'right' | 'rightFull' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'bottomFull' | 'left' | 'leftFull';
+    origin?: 'center' | 'top' | 'right' | 'bottom' | 'left' | 'topToBottom' | 'rightToLeft' | 'bottomToTop' | 'leftToRight';
+    adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static';
+    fullscreen?: boolean;
+    overscroll?: boolean;
+    closeMobileHide?: boolean;
+    widthMatch?: boolean;
+}
+export interface WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> extends ScrollbarPropsInclude<Scrollbar>, ImagePropsInclude<Image>, AriaRoleByPropsInclude, AriaByPropsInclude, AriaHaspopupPropsInclude, TextClosePropsInclude {
+    'open'?: boolean;
+    'disabled'?: boolean;
+    'preparation'?(): NormalOrPromise<void>;
+    'beforeOpening'?(): NormalOrPromise<boolean>;
+    'opening'?(): NormalOrPromise<boolean>;
+    'beforeClosing'?(): NormalOrPromise<boolean>;
+    'closing'?(): NormalOrPromise<boolean>;
+    'contextmenu'?: boolean;
+    'staticMode'?: boolean;
+    'overElement'?: ElementOrString<HTMLElement>;
+    'autoClose'?: boolean;
+    'persistent'?: boolean;
+    'flash'?: boolean;
+    'inDom'?: boolean;
+    'indent'?: number;
+    'divider'?: boolean;
+    'closeButton'?: boolean;
+    'iconClose'?: string;
+    'modelOpen'?: boolean;
+    'onUpdate:open'?: (value: boolean) => void;
+    'onUpdate:modelOpen'?: (value: boolean) => void;
+}
+/**
+ * Type describing incoming properties.
+ *
+ * Тип, описывающий входящие свойства.
+ */
+export interface WindowProps extends WindowPropsBasic, WindowPropsToken {
+}
+/**
+ * Default value for property.
+ *
+ * Значение по умолчанию для свойства.
+ */
+export declare const defaultsWindow: {
+    axis: string;
+    imagePosition: string;
+    overscroll: boolean;
+    indent: number;
+    ariaHaspopup: string;
+    role: string;
+};
+export {};

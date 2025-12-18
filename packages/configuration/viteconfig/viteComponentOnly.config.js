@@ -19,19 +19,6 @@ export const viteComponentOnly = (
   const outDir = 'dist-temporary'
 
   return defineConfig({
-    plugins: [
-      vue(),
-      dts({
-        clearPureImport: false,
-        copyDtsFiles: true,
-        insertTypesEntry: true,
-        outDir,
-        staticImport: true,
-        tsconfigPath: './tsconfig.app.json',
-        rollupTypes: true
-      })
-    ],
-
     build: {
       outDir,
 
@@ -60,6 +47,37 @@ export const viteComponentOnly = (
       alias: {
         '@': packages
       }
-    }
+    },
+
+    plugins: [
+      vue()/* ,
+      dts({
+        clearPureImport: false,
+        copyDtsFiles: true,
+        insertTypesEntry: true,
+        outDir,
+        include: [
+          'src/!**!/!*.ts',
+          'src/!**!/!*.tsx',
+          'src/!**!/!*.vue'
+        ],
+        exclude: [
+          '**!/__tests__/!**',
+          '**!/!*.test.ts',
+          '**!/!*.spec.ts',
+          '**!/!*.stories.ts',
+          '**!/!*.stories.tsx',
+          '**!/!*.json',
+          '**!/node_modules/!**',
+          '**!/dist/!**',
+          '**!/dist-temporary/!**',
+          '**!/!*.config.ts',
+          '**!/!*.config.js',
+          '**!/vite-env.d.ts'
+        ],
+        staticImport: true,
+        tsconfigPath: './tsconfig.app.json'
+      }) */
+    ]
   })
 }

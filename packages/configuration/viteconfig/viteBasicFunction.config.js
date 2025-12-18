@@ -17,6 +17,7 @@ import dts from 'vite-plugin-dts'
  * @param external external dependencies / внешние зависимости
  * @param externalExtended extra dependencies / дополнительные зависимости
  * @param fileCssName name of the output CSS file / имя выходного CSS файла
+ * @param rollupTypes whether to use rollupTypes in dts plugin / использовать ли rollupTypes в плагине dts
  * @returns Vite config / конфигурация Vite
  */
 export const viteBasicFunction = (
@@ -26,18 +27,9 @@ export const viteBasicFunction = (
     'src/library.ts'
   ],
   include = [
-    'src/classes/**/*.ts',
-    'src/composables/**/*.ts',
-    'src/documentation/**/*.ts',
-    'src/documentation/**/*.tsx',
-    'src/functions/**/*.ts',
-    'src/media/**/*.ts',
-    'src/types/**/*.ts',
-    'src/flags.ts',
-    'src/library.ts',
-    'src/library-lite.ts',
-    'src/media.ts',
-    'src/storybook.tsx'
+    'src/**/*.ts',
+    'src/**/*.tsx',
+    'src/**/*.vue'
   ],
   includeExtended = [],
   external = [
@@ -63,7 +55,8 @@ export const viteBasicFunction = (
     '@emotion/styled'
   ],
   externalExtended = [],
-  fileCssName = 'style.css'
+  fileCssName = 'style.css',
+  rollupTypes = false
 ) => defineConfig({
   build: {
     target,
@@ -107,7 +100,21 @@ export const viteBasicFunction = (
     vue(),
     dts({
       clearPureImport: false,
-      copyDtsFiles: true,
+      copyDtsFiles: false,
+      exclude: [
+        '**/__tests__/**',
+        '**/*.test.ts',
+        '**/*.spec.ts',
+        '**/*.stories.ts',
+        '**/*.stories.tsx',
+        '**/*.json',
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/dist-temporary/**',
+        '**/*.config.ts',
+        '**/*.config.js',
+        '**/vite-env.d.ts'
+      ],
       include: [
         ...entry,
         ...include,
@@ -115,9 +122,9 @@ export const viteBasicFunction = (
       ],
       insertTypesEntry: true,
       outDir: 'dist',
+      rollupTypes,
       staticImport: true,
-      tsconfigPath: './tsconfig.app.json',
-      rollupTypes: true
+      tsconfigPath: './tsconfig.app.json'
     })
   ]
 })

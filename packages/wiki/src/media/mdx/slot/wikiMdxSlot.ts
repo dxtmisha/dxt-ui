@@ -10,6 +10,8 @@ import slotDescriptionEn from './description.en.mdx'
 import slotDescriptionRu from './description.ru.mdx'
 import slotFooterEn from './footer.en.mdx'
 import slotFooterRu from './footer.ru.mdx'
+import slotHeadlineEn from './headline.en.mdx'
+import slotHeadlineRu from './headline.ru.mdx'
 import slotLabelEn from './label.en.mdx'
 import slotLabelRu from './label.ru.mdx'
 import slotLeadingEn from './leading.en.mdx'
@@ -45,6 +47,10 @@ export const wikiMdxSlot: StorybookComponentsMdxItem = {
     footer: {
       en: slotFooterEn,
       ru: slotFooterRu
+    },
+    headline: {
+      en: slotHeadlineEn,
+      ru: slotHeadlineRu
     },
     label: {
       en: slotLabelEn,

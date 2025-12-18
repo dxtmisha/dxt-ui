@@ -13,6 +13,19 @@ export declare class AriaStaticInclude {
      * @param role ARIA role type/ Тип ARIA роли
      */
     static role(role?: RoleType): AriaList;
+    /**
+     * Get ARIA atomic attribute.
+     *
+     * Получить атрибут ARIA atomic.
+     * @param isAtomic is atomic/ является атомарным
+     */
+    static atomic(isAtomic?: boolean): AriaList;
+    /**
+     * Get ARIA checked attribute.
+     *
+     * Получить атрибут ARIA checked.
+     * @param isChecked is checked/ является отмеченным
+     */
     static checked(isChecked?: boolean): AriaList;
     /**
      * Get ARIA busy attribute.

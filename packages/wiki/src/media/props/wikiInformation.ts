@@ -56,6 +56,17 @@ export const wikiInformation: StorybookArgsToList = {
       }
     }
   },
+  headline: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: 'string',
+      description: {
+        en: 'Headline text',
+        ru: 'Текст заголовка'
+      }
+    }
+  },
   helperMessage: {
     type: StorybookControl.string,
     options: {

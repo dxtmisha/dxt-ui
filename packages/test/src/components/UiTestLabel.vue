@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { writeClipboardData } from '@dxt-ui/functional'
+import { writeClipboardData } from '@dxtmisha/functional'
 
 const props = defineProps<{
   label?: string | number
@@ -13,7 +13,7 @@ const onClick = () => writeClipboardData(String(props.label)).then()
 </template>
 
 <style lang="scss">
-@use '@dxt-ui/styles' as ui;
+@use '@dxtmisha/styles' as ui;
 
 .ui-test-label {
   position: absolute;

@@ -1,9 +1,9 @@
 var Bt = Object.defineProperty;
 var xt = (i, t, e) => t in i ? Bt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
 var c = (i, t, e) => xt(i, typeof t != "symbol" ? t + "" : t, e);
-import { i as y, D as ct, r as K, a as Ft, G as D, f as p, t as N, b as Q, c as Et, d as bt, e as Z, g as z, h as E, A as Y, j as w, k as St, S as wt, l as P, m as _, n as lt, E as Ht, C as Pt, H as T, L as mt, o as Rt } from "./ScrollbarWidth-De97V2Mh.js";
+import { i as y, D as ct, r as _, a as Ft, G as D, f as p, t as N, b as Q, c as Et, d as bt, e as K, g as z, h as E, A as Y, j as w, k as St, S as wt, l as P, m as Z, n as lt, E as Ht, C as Pt, H as T, L as mt, o as Rt } from "./ScrollbarWidth-De97V2Mh.js";
 import { p as qi, q as Ji, U as Qi, s as Xi, u as Mi, v as Oi, w as Ti, x as Gi, y as ts, z as es, B as is, I as ss, F as rs, J as ns, K as os, M as as, N as us, O as cs, P as ls, Q as hs, R as ds, T as gs } from "./ScrollbarWidth-De97V2Mh.js";
-import { isRef as X, h as Wt, computed as l, toRefs as jt, useAttrs as Ut, useSlots as zt, ref as $, watch as m, triggerRef as _t, shallowRef as F, onUnmounted as nt, inject as Kt, provide as Zt, watchEffect as Dt } from "vue";
+import { isRef as X, h as Wt, computed as l, toRefs as jt, useAttrs as Ut, useSlots as zt, ref as $, watch as m, triggerRef as Zt, shallowRef as F, onUnmounted as nt, inject as _t, provide as Kt, watchEffect as Dt } from "vue";
 class Vt {
   /**
    * Constructor
@@ -49,7 +49,7 @@ class Vt {
     return this.callback = t, this;
   }
 }
-const Yt = () => new ct("__broadcast-name").get(() => `name_${K(1e6, 9999999)}`);
+const Yt = () => new ct("__broadcast-name").get(() => `name_${_(1e6, 9999999)}`);
 function A(i) {
   var r, o, a, u, h, d, g, v;
   if (i instanceof Date)
@@ -652,10 +652,7 @@ class ht {
     const s = e / 60 * -1;
     if (t === "hour")
       return this.getIntl().number(Math.trunc(s), { signDisplay: "always" });
-    const r = this.getIntl().number(Math.trunc(s), {
-      signDisplay: "always",
-      minimumIntegerDigits: 2
-    }), o = s.toString().match(/.\d+/) ? "30" : "00";
+    const r = this.toTimeZoneHourFormat(s), o = s.toString().match(/.\d+/) ? "30" : "00";
     return t === "RFC" ? `${r}${o}` : `${r}:${o}`;
   }
   /**
@@ -1210,6 +1207,20 @@ class ht {
    */
   cloneDayPrevious() {
     return this.cloneClass().moveDayPrevious();
+  }
+  /**
+   * Returns the time zone hour format.
+   *
+   * Возвращает часовой формат временной зоны.
+   * @param hour hour/ час
+   */
+  toTimeZoneHourFormat(t) {
+    y() && this.getIntl().number(Math.trunc(t), {
+      signDisplay: "always",
+      minimumIntegerDigits: 2
+    });
+    let e = Math.trunc(t).toString();
+    return e.length < 2 && (e = `0${e}`), `${t >= 0 ? "+" : "-"}${e}`;
   }
   /**
    * Updating all values.
@@ -2102,7 +2113,7 @@ class ie extends dt {
    */
   setTitle(e) {
     if (y()) {
-      const s = Z(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
+      const s = K(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
       document.title = s, this.og.setTitle(s), this.twitter.setTitle(s);
     }
     return this;
@@ -2202,7 +2213,7 @@ class ie extends dt {
    * Получает отформатированный суффикс с разделителем.
    */
   getSuffix() {
-    return Z(this.suffix) ? ` - ${this.suffix}` : "";
+    return K(this.suffix) ? ` - ${this.suffix}` : "";
   }
 }
 const se = [
@@ -2323,7 +2334,7 @@ const se = [
    */
   static addSync(t) {
     p(t, (e, s) => {
-      Q(e) && Z(e) && (this.data[this.getName(s)] = e);
+      Q(e) && K(e) && (this.data[this.getName(s)] = e);
     });
   }
   /**
@@ -2333,7 +2344,7 @@ const se = [
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static async addNormalOrSync(t) {
-    if (Z(t))
+    if (K(t))
       if (Y.isLocalhost())
         this.addSync(t);
       else {
@@ -2450,7 +2461,7 @@ function oe(i, t, e) {
   };
   y() ? requestAnimationFrame(s) : s();
 }
-function _e(i) {
+function Ze(i) {
   var s;
   const t = {}, e = St(i);
   if (e)
@@ -2458,14 +2469,14 @@ function _e(i) {
       t[r.name] = (s = (r == null ? void 0 : r.value) || (r == null ? void 0 : r.textContent)) != null ? s : void 0;
   return t;
 }
-async function Ke(i) {
+async function _e(i) {
   var t, e;
   return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
-let yt = K(1e5, 9e5);
+let yt = _(1e5, 9e5);
 function j(i, t) {
   const e = St(i);
-  return e ? (Z(e.id) || e.setAttribute("id", `id-${yt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${yt++}`;
+  return e ? (K(e.id) || e.setAttribute("id", `id-${yt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${yt++}`;
 }
 function ae(i) {
   return Q(i) ? bt(
@@ -2483,7 +2494,7 @@ function ue(i, t) {
   const e = t.split(".", 2), s = e[0];
   return s && (i != null && i[s]) && E(i[s]) && (e != null && e[1]) ? ue(i[s], e[1]) : (r = s && (i == null ? void 0 : i[s])) != null ? r : "";
 }
-function Ze(i) {
+function Ke(i) {
   var t, e, s;
   return (s = (t = i == null ? void 0 : i.key) != null ? t : i == null ? void 0 : i.code) != null ? s : (e = i == null ? void 0 : i.keyCode) == null ? void 0 : e.toString();
 }
@@ -2529,9 +2540,9 @@ function he(i, t) {
   return ne(i, t).join("");
 }
 function Me(i, t, e = "#", s = 2, r = 12) {
-  const o = K(i, t), a = [];
+  const o = _(i, t), a = [];
   for (let u = 0; u < o; u++)
-    a.push(he(e, K(s, r)));
+    a.push(he(e, _(s, r)));
   return a.join(" ");
 }
 function Oe(i, t) {
@@ -2601,16 +2612,16 @@ function de(i) {
   return [...new Set(i)];
 }
 function U(i, t, e = !0) {
-  const s = _(i);
+  const s = Z(i);
   return w(i) && w(t) && p(
     t,
     (r, o) => {
       const a = i == null ? void 0 : i[o];
-      w(a) && w(r) ? e && Array.isArray(a) && Array.isArray(r) ? s[o] = _(de([...a, ...r])) : s[o] = U(
+      w(a) && w(r) ? e && Array.isArray(a) && Array.isArray(r) ? s[o] = Z(de([...a, ...r])) : s[o] = U(
         Array.isArray(a) ? { ...a } : a,
         r,
         e
-      ) : s[o] = w(r) ? _(r) : r;
+      ) : s[o] = w(r) ? Z(r) : r;
     }
   ), s;
 }
@@ -2667,13 +2678,13 @@ function di(i, t, e) {
     if (e) {
       let s = {}, r = !1;
       return p(i, (o, a) => {
-        !r && (e === a || e === o) ? (r = !0, s = U(s, t)) : r ? s = U(s, { [a]: o }) : s[a] = w(o) ? _(o) : o;
+        !r && (e === a || e === o) ? (r = !0, s = U(s, t)) : r ? s = U(s, { [a]: o }) : s[a] = w(o) ? Z(o) : o;
       }), r ? s : U(i, t);
     }
     if (w(t))
       return U(i, t);
   }
-  return _(i);
+  return Z(i);
 }
 function kt(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
@@ -3192,7 +3203,7 @@ class wi {
       this.code.value
     ), m(this.item, (r) => {
       this.date.value = A(r);
-    }), m(this.type, (r) => this.datetime.setType(r)), m(this.code, (r) => this.datetime.setCode(r)), m(this.date, (r) => this.datetime.setDate(r)), this.datetime.setWatch(() => _t(this.date));
+    }), m(this.type, (r) => this.datetime.setType(r)), m(this.code, (r) => this.datetime.setCode(r)), m(this.date, (r) => this.datetime.setDate(r)), this.datetime.setWatch(() => Zt(this.date));
   }
   /**
    * Returns the basic data for the date.
@@ -4326,7 +4337,7 @@ function Fi() {
     i.value = t.loading;
   }), i;
 }
-const At = [], Ce = K(1e5, 999999);
+const At = [], Ce = _(1e5, 999999);
 function Ne(i, t = !0, e = !1, s = !0) {
   let r;
   const o = `__execute_use${Ce}::${j()}`, a = (h) => {
@@ -4339,12 +4350,12 @@ function Ne(i, t = !0, e = !1, s = !0) {
     });
   }, u = (...h) => {
     if (!e && s) {
-      const d = Kt(o, void 0);
+      const d = _t(o, void 0);
       if (d)
         return d;
       {
         let g = a(h);
-        return Zt(o, g), t && nt(() => {
+        return Kt(o, g), t && nt(() => {
           g = void 0;
         }), g;
       }
@@ -4445,7 +4456,7 @@ function xe(i, t = {}, e = "value", s = !1) {
 function zi(i, t = {}, e = "value") {
   return l(() => xe(f(i), f(t), e));
 }
-const _i = (i, t) => {
+const Zi = (i, t) => {
   const e = $();
   let s = !0;
   const r = () => {
@@ -4456,10 +4467,10 @@ const _i = (i, t) => {
   };
   return l(() => (r(), e.value));
 };
-function Ki(i, t) {
+function _i(i, t) {
   i.value !== t && (i.value = t);
 }
-function Zi(i) {
+function Ki(i) {
   let t;
   return l(() => (t || (t = i()), t.value));
 }
@@ -4525,7 +4536,7 @@ export {
   We as blobToBase64,
   ji as computedAsync,
   Ui as computedByLanguage,
-  _ as copyObject,
+  Z as copyObject,
   Et as copyObjectLite,
   bt as createElement,
   je as domQuerySelector,
@@ -4538,13 +4549,13 @@ export {
   Ei as executeUseGlobalInit,
   p as forEach,
   oe as frame,
-  _e as getAttributes,
+  Ze as getAttributes,
   xe as getBind,
   zi as getBindRef,
   $e as getClassName,
-  Ke as getClipboardData,
+  _e as getClipboardData,
   ot as getColumn,
-  _i as getComputedAsync,
+  Zi as getComputedAsync,
   St as getElement,
   j as getElementId,
   ae as getElementImage,
@@ -4553,7 +4564,7 @@ export {
   Lt as getExp,
   pe as getIndexForRender,
   ue as getItemByPath,
-  Ze as getKey,
+  Ke as getKey,
   It as getLengthOfAllArray,
   Ve as getMaxLengthAllArray,
   Ye as getMinLengthAllArray,
@@ -4576,7 +4587,7 @@ export {
   si as isDifferent,
   as as isDomData,
   y as isDomRuntime,
-  Z as isFilled,
+  K as isFilled,
   ri as isFloat,
   us as isFunction,
   cs as isInDom,
@@ -4589,7 +4600,7 @@ export {
   oi as isSelectedByList,
   Q as isString,
   hs as isWindow,
-  K as random,
+  _ as random,
   ai as removeCommonPrefix,
   ve as render,
   U as replaceRecursive,
@@ -4598,7 +4609,7 @@ export {
   li as secondToTime,
   Ci as setApiRefGlobalConditions,
   ds as setElementItem,
-  Ki as setRef,
+  _i as setRef,
   hi as setValues,
   di as splice,
   he as strFill,
@@ -4608,7 +4619,7 @@ export {
   be as toBinds,
   kt as toCamelCase,
   gi as toCamelCaseFirst,
-  Zi as toComputed,
+  Ki as toComputed,
   A as toDate,
   fi as toKebabCase,
   N as toNumber,

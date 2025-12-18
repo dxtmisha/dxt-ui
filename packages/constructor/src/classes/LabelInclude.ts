@@ -1,5 +1,5 @@
 import { computed, type Ref, type VNode } from 'vue'
-import { type ConstrClass, getElementId, isFilled, render } from '@dxtmisha/functional'
+import { type ConstrClass, getElementId, getRef, isFilled, type RefOrNormal, render } from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
@@ -24,6 +24,7 @@ export class LabelInclude {
    * @param labelReplacing additional elements/ дополнительные элементы
    * @param alternativeSlots alternative slots/ альтернативные слоты
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
+   * @param tag tag name/ имя тега
    */
   constructor(
     protected readonly props: Readonly<LabelProps>,
@@ -33,7 +34,8 @@ export class LabelInclude {
     protected readonly elementsExtra?: () => VNode[],
     protected readonly labelReplacing?: Ref<string | number | undefined>,
     protected readonly alternativeSlots?: boolean,
-    protected readonly skeleton?: SkeletonInclude
+    protected readonly skeleton?: SkeletonInclude,
+    protected readonly tag: RefOrNormal<string> = 'span'
   ) {
   }
 
@@ -57,6 +59,15 @@ export class LabelInclude {
     return false
   })
 
+  /** Identifier for the element/ Идентификатор для элемента */
+  readonly idElement = computed<string | undefined>(() => {
+    if (this.is.value) {
+      return this.getId()
+    }
+
+    return undefined
+  })
+
   /**
    * Expose helpers for Label state and actions.
    *
@@ -72,7 +83,7 @@ export class LabelInclude {
    * Получение уникального идентификатора.
    */
   getId(): string {
-    return this.id
+    return this.props?.labelId || this.id
   }
 
   /**
@@ -104,9 +115,9 @@ export class LabelInclude {
       if (children.length > 0) {
         elements.push(
           render(
-            'span',
+            getRef(this.tag),
             {
-              id: this.props.labelId ?? this.getId(),
+              id: this.getId(),
               class: this.getClassName()
             },
             children,

@@ -1,0 +1,11 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinBlock {
+  &__header {
+    @include ui.flexX;
+  }
+
+  &__space {
+    @include ui.flexDynamic
+  }
+}
