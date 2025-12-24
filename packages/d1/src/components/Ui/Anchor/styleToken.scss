@@ -1,0 +1,17 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Anchor/style" as Anchor;
+
+@include ui.initDesignBasic('d1.anchor') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Anchor.mixinAnchor;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

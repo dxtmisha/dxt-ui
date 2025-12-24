@@ -1,0 +1,15 @@
+{
+  "main": "{d.arrow}",
+  "size": {
+    "sm": {
+      "sizeArrow": "{ref.spacing.3}"
+    },
+    "md": {
+      "sizeArrow": "{ref.spacing.4}"
+    },
+    "lg": {
+      "sizeArrow": "{ref.spacing.6}"
+    },
+    "_default": "md"
+  }
+}

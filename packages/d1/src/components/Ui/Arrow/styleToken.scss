@@ -1,0 +1,32 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Arrow/style" as Arrow;
+
+@include ui.initDesignBasic('d1.arrow') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Arrow.mixinArrow;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &--size {
+      &--sm {
+        --d1-arrow-sizeArrow: var(--d1-ref-spacing-3);
+      }
+      
+      &--md {
+        --d1-arrow-sizeArrow: var(--d1-ref-spacing-4);
+      }
+      
+      &--lg {
+        --d1-arrow-sizeArrow: var(--d1-ref-spacing-6);
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

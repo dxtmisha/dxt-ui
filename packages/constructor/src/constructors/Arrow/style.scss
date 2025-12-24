@@ -1,0 +1,34 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinArrow {
+  @include ui.initByCustom('arrowWidth', 8px);
+  @include ui.initByCustom('arrowHeight', 8px);
+
+  @include ui.initByCustom('sys.url.mark', unset);
+  @include ui.initByCustom('sys.background', transparent);
+
+  @include ui.initByCustom('sys.press', calc((#{ui.v('??arrowHeight')} * 2)));
+  @include ui.initByCustom('sys.main.increase', calc(100% + #{ui.v('??sys.press')}));
+
+  @include ui.absolute(calc(ui.v('??arrowHeight') * -1));
+
+  width: ui.v('??sys.main.increase');
+  height: ui.v('??sys.main.increase');
+
+  -webkit-mask-image: ui.v('??sys.url.mark');
+  mask-repeat: no-repeat;
+
+  &__hidden {
+    @include ui.initByCustom('sys.hidden.press', calc(100% - #{ui.v('??sys.press')}));
+
+    x: ui.v('??arrowHeight');
+    y: ui.v('??arrowHeight');
+
+    width: ui.v('??sys.hidden.press');
+    height: ui.v('??sys.hidden.press');
+  }
+
+  &__arrow {
+    fill: ui.v('??sys.background');
+  }
+}
