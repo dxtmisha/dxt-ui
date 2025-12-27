@@ -6,29 +6,109 @@
 
   @include ui.initByCustom('sys.url.mark', unset);
   @include ui.initByCustom('sys.background', transparent);
+  @include ui.initByCustom('sys.borderWidth', 0px);
+  @include ui.initByCustom('sys.borderColor', transparent);
+  @include ui.initByCustom('sys.boxShadow', none);
 
-  @include ui.initByCustom('sys.press', calc((#{ui.v('??arrowHeight')} * 2)));
-  @include ui.initByCustom('sys.main.increase', calc(100% + #{ui.v('??sys.press')}));
+  @include ui.initByCustom('sys.press', calc((#{ui.v('??arrowHeight')} * 2) + (#{ui.v('??sys.borderWidth')} * 2)));
+  @include ui.initByCustom('sys.main.increase', calc(100% + (#{ui.v('??sys.borderWidth')} * 2)));
+  @include ui.initByCustom('sys.area.increase', calc(100% + (#{ui.v('??arrowHeight')} * 2)));
+  @include ui.initByCustom('sys.arrow.translateX', 0px);
+  @include ui.initByCustom('sys.arrow.translateY', 0px);
 
-  @include ui.absolute(calc(ui.v('??arrowHeight') * -1));
+  @include ui.absolute(calc(#{ui.v('??sys.borderWidth')} * -1));
+  z-index: 8;
 
   width: ui.v('??sys.main.increase');
   height: ui.v('??sys.main.increase');
 
-  -webkit-mask-image: ui.v('??sys.url.mark');
-  mask-repeat: no-repeat;
+  border-style: inherit;
+  border-radius: inherit;
 
-  &__hidden {
-    @include ui.initByCustom('sys.hidden.press', calc(100% - #{ui.v('??sys.press')}));
+  pointer-events: none;
 
-    x: ui.v('??arrowHeight');
-    y: ui.v('??arrowHeight');
+  &__parent {
+    &[data-arrow="border"] {
+      border-color: transparent !important;
+    }
 
-    width: ui.v('??sys.hidden.press');
-    height: ui.v('??sys.hidden.press');
+    &[data-arrow-shadow="box-shadow"] {
+      box-shadow: none !important;
+      filter: drop-shadow(#{ui.v('??sys.boxShadow')});
+    }
+  }
+
+  &__arrow,
+  &__arrowLine {
+    @include ui.translateX(ui.v('??sys.arrow.translateX'));
+    @include ui.translateY(ui.v('??sys.arrow.translateY'));
   }
 
   &__arrow {
     fill: ui.v('??sys.background');
+    stroke: none;
+  }
+
+  &__arrowLine {
+    fill: none;
+    stroke: ui.v('??sys.borderColor');
+    stroke-width: ui.v('??sys.borderWidth');
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  &__arrowArea {
+    @include ui.absolute(calc(#{ui.v('??arrowHeight')} * -1));
+
+    width: ui.v('??sys.area.increase');
+    height: ui.v('??sys.area.increase');
+  }
+
+  &__mask {
+    @include ui.absolute;
+
+    width: 100%;
+    height: 100%;
+  }
+
+  &__border {
+    @include ui.absolute;
+
+    border-width: ui.v('??sys.borderWidth');
+    border-color: ui.v('??sys.borderColor');
+    border-radius: inherit;
+
+    -webkit-mask-image: ui.v('??sys.url.markBorder');
+    mask-repeat: no-repeat;
+  }
+
+  &__borderHidden {
+    width: ui.v('??arrowWidth');
+    height: ui.v('??arrowHeight');
+
+    @include ui.translateX(calc(#{ui.v('??sys.arrow.translateX')}));
+    @include ui.translateY(calc(#{ui.v('??sys.arrow.translateY')}));
+  }
+
+  &--position {
+    &--top {
+      @include ui.initByCustom('sys.arrow.translateX', calc(50% - #{ui.v('??arrowWidth')} / 2));
+      @include ui.initByCustom('sys.arrow.translateY', 0px);
+    }
+
+    &--bottom {
+      @include ui.initByCustom('sys.arrow.translateX', calc(50% - #{ui.v('??arrowWidth')} / 2));
+      @include ui.initByCustom('sys.arrow.translateY', calc(100% - #{ui.v('??arrowHeight')}));
+    }
+
+    &--left {
+      @include ui.initByCustom('sys.arrow.translateX', 0px);
+      @include ui.initByCustom('sys.arrow.translateY', calc(50% - #{ui.v('??arrowHeight')} / 2));
+    }
+
+    &--right {
+      @include ui.initByCustom('sys.arrow.translateX', calc(100% - #{ui.v('??arrowWidth')}));
+      @include ui.initByCustom('sys.arrow.translateY', calc(50% - #{ui.v('??arrowHeight')} / 2));
+    }
   }
 }

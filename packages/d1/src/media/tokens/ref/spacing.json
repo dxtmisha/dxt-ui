@@ -62,10 +62,14 @@
   "3072": "{ref.spacing.1}*3072",
   "3584": "{ref.spacing.1}*3584",
   "4096": "{ref.spacing.1}*4096",
-  "px": "{ref.spacing.1}/4",
+  "px": "1px",
   "2px": "{ref.spacing.px}*2",
   "4px": "{ref.spacing.px}*4",
   "6px": "{ref.spacing.px}*6",
   "8px": "{ref.spacing.px}*8",
-  "10px": "{ref.spacing.px}*10"
+  "10px": "{ref.spacing.px}*10",
+  "12px": "{ref.spacing.px}*12",
+  "16px": "{ref.spacing.px}*16",
+  "20px": "{ref.spacing.px}*20",
+  "24px": "{ref.spacing.px}*24"
 }

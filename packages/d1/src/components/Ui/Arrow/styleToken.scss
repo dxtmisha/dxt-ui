@@ -13,15 +13,18 @@
   & {
     &--size {
       &--sm {
-        --d1-arrow-sizeArrow: var(--d1-ref-spacing-3);
+        --d1-arrow-arrowWidth: var(--d1-ref-spacing-8px);
+        --d1-arrow-arrowHeight: var(--d1-ref-spacing-8px);
       }
       
       &--md {
-        --d1-arrow-sizeArrow: var(--d1-ref-spacing-4);
+        --d1-arrow-arrowWidth: var(--d1-ref-spacing-12px);
+        --d1-arrow-arrowHeight: var(--d1-ref-spacing-12px);
       }
       
       &--lg {
-        --d1-arrow-sizeArrow: var(--d1-ref-spacing-6);
+        --d1-arrow-arrowWidth: var(--d1-ref-spacing-16px);
+        --d1-arrow-arrowHeight: var(--d1-ref-spacing-16px);
       }
     }
   }

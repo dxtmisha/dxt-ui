@@ -4,6 +4,7 @@ import { type ConstrEmit, type ConstrStyles, DesignComp, getElementId } from '@d
 import { ArrowElement } from './ArrowElement'
 import { ArrowParent } from './ArrowParent'
 
+import { ArrowDirection } from './basicTypes'
 import type { ArrowComponents, ArrowEmits, ArrowSlots } from './types'
 import type { ArrowProps } from './props'
 
@@ -13,11 +14,13 @@ import type { ArrowProps } from './props'
 export class Arrow {
   readonly id: string = getElementId()
   readonly idMask: string = `${this.id}-mark`
+  readonly idMaskBorder: string = `${this.id}-mark-border`
 
   readonly elementItem: ArrowElement
   readonly parent: ArrowParent
 
   readonly markUrl = `url("#${this.idMask}")`
+  readonly markUrlBorder = `url("#${this.idMaskBorder}")`
 
   /**
    * Constructor
@@ -44,14 +47,35 @@ export class Arrow {
       this.element,
       this.className
     )
-    this.parent = new ArrowParent(this.element)
+    this.parent = new ArrowParent(
+      this.element,
+      this.className,
+      this.elementItem
+    )
   }
+
+  /** Direction of the arrow/ Направление стрелки */
+  readonly direction = computed<ArrowDirection>(() => {
+    if (
+      this.props.position
+      && this.props.position !== 'auto'
+    ) {
+      return this.props.position as ArrowDirection
+    }
+
+    return ArrowDirection.TOP
+  })
 
   /** Styles for the component/ Стили для компонента */
   readonly styles = computed<ConstrStyles>(() => {
     return {
       [`--${this.className}-sys-background`]: this.parent.background.value,
-      [`--${this.className}-sys-url-mark`]: this.markUrl
+      [`--${this.className}-sys-borderWidth`]: this.parent.borderWidth.value,
+      [`--${this.className}-sys-borderColor`]: this.parent.borderColor.value,
+      [`--${this.className}-sys-borderRadius`]: this.parent.borderRadius.value,
+      [`--${this.className}-sys-boxShadow`]: this.parent.boxShadow.value,
+      [`--${this.className}-sys-url-mark`]: this.markUrl,
+      [`--${this.className}-sys-url-markBorder`]: this.markUrlBorder
     }
   })
 }

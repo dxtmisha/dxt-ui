@@ -430,6 +430,18 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  position: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets the positioning method for the element',
+        ru: 'Задает метод позиционирования элемента'
+      }
+    }
+  },
   rounded: {
     type: StorybookControl.select,
     options: {

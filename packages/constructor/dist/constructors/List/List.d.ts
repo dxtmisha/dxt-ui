@@ -1,5 +1,5 @@
 import { Ref, ToRefs, ComputedRef } from 'vue';
-import { ConstrBind, ConstrEmit, DesignComp, ListDataRef, ListDataItem, ListList, ConstrClass, ConstrStyles, ListDataFull, ListDataBasic } from '@dxtmisha/functional';
+import { ConstrBind, ConstrEmit, DesignComp, ListDataRef, ListDataItem, ListList, ConstrClass, ConstrStyles, ListDataFull } from '@dxtmisha/functional';
 import { EventClickInclude } from '../../classes/EventClickInclude';
 import { WindowClassesInclude } from '../Window';
 import { ListSearch } from './ListSearch';
@@ -162,7 +162,7 @@ export declare class List {
      * Возвращает подсписок для группового элемента.
      * @param item List item data/ данные элемента списка
      */
-    getList(item: ConstrBind<ListDataItem>): ListDataFull<ListDataBasic>;
+    getList(item: ConstrBind<ListDataItem>): ListDataFull;
     /**
      * Internal method to create management item binding properties
      *

@@ -1,5 +1,7 @@
 interface ArrowPropsToken {
   // :type [!] System label / Системная метка
+  position?: 'auto' | 'top' | 'bottom' | 'left' | 'right'
+  inverse?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -20,9 +22,9 @@ export interface ArrowProps extends ArrowPropsBasic, ArrowPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsArrow = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
+    position: 'top'
     // :default [!] System label / Системная метка
   }
 }

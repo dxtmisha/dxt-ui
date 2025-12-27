@@ -2,13 +2,16 @@
   "main": "{d.arrow}",
   "size": {
     "sm": {
-      "sizeArrow": "{ref.spacing.3}"
+      "arrowWidth": "{ref.spacing.8px}",
+      "arrowHeight": "{ref.spacing.8px}"
     },
     "md": {
-      "sizeArrow": "{ref.spacing.4}"
+      "arrowWidth": "{ref.spacing.12px}",
+      "arrowHeight": "{ref.spacing.12px}"
     },
     "lg": {
-      "sizeArrow": "{ref.spacing.6}"
+      "arrowWidth": "{ref.spacing.16px}",
+      "arrowHeight": "{ref.spacing.16px}"
     },
     "_default": "md"
   }

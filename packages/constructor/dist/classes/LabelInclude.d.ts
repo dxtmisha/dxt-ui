@@ -1,5 +1,5 @@
 import { Ref, VNode, ComputedRef } from 'vue';
-import { ConstrClass } from '@dxtmisha/functional';
+import { ConstrClass, RefOrNormal } from '@dxtmisha/functional';
 import { SkeletonInclude } from '../constructors/Skeleton';
 import { LabelAlternativeSlots, LabelExpose, LabelProps, LabelSlots } from '../types/labelTypes';
 /**
@@ -16,6 +16,7 @@ export declare class LabelInclude {
     protected readonly labelReplacing?: Ref<string | number | undefined> | undefined;
     protected readonly alternativeSlots?: boolean | undefined;
     protected readonly skeleton?: SkeletonInclude | undefined;
+    protected readonly tag: RefOrNormal<string>;
     /** Unique identifier/ Уникальный идентификатор */
     protected id: string;
     /**
@@ -28,10 +29,13 @@ export declare class LabelInclude {
      * @param labelReplacing additional elements/ дополнительные элементы
      * @param alternativeSlots alternative slots/ альтернативные слоты
      * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
+     * @param tag tag name/ имя тега
      */
-    constructor(props: Readonly<LabelProps>, className: string, classesExtra?: ConstrClass | undefined, slots?: (LabelSlots | LabelAlternativeSlots) | undefined, elementsExtra?: (() => VNode[]) | undefined, labelReplacing?: Ref<string | number | undefined> | undefined, alternativeSlots?: boolean | undefined, skeleton?: SkeletonInclude | undefined);
+    constructor(props: Readonly<LabelProps>, className: string, classesExtra?: ConstrClass | undefined, slots?: (LabelSlots | LabelAlternativeSlots) | undefined, elementsExtra?: (() => VNode[]) | undefined, labelReplacing?: Ref<string | number | undefined> | undefined, alternativeSlots?: boolean | undefined, skeleton?: SkeletonInclude | undefined, tag?: RefOrNormal<string>);
     /** Label presence check/ Проверка наличия метки */
     readonly is: ComputedRef<boolean>;
+    /** Identifier for the element/ Идентификатор для элемента */
+    readonly idElement: ComputedRef<string | undefined>;
     /**
      * Expose helpers for Label state and actions.
      *

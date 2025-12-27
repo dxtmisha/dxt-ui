@@ -1,54 +1,35 @@
-import type { ConstrClass } from '@dxtmisha/functional'
-
+import { ConstrClass } from '@dxtmisha/functional';
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type ArrowComponents = {
-  // componentName: object
-}
-
+export type AnchorComponents = {};
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type ArrowEmits = {
-  // load: [value: string]
-}
-
+export type AnchorEmits = {};
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface ArrowExpose {
+export interface AnchorExpose {
 }
-
 /**
  * Type describing available slots.
  *
  * Тип, описывающий доступные слоты.
  */
-export interface ArrowSlots {
-  // default? (props: any): any
+export interface AnchorSlots {
 }
-
 /**
  * Type describing subclasses.
  *
  * Тип, описывающий подклассы.
  */
-export type ArrowClasses = {
-  main: ConstrClass
-  // :classes [!] System label / Системная метка
-  mask: string
-  hidden: string
-  arrow: string
-  arrowLine: string
-  arrowArea: string
-  border: string
-  borderHidden: string
-  // :classes [!] System label / Системная метка
-}
+export type AnchorClasses = {
+    main: ConstrClass;
+};

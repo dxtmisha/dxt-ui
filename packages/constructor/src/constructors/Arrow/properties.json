@@ -5,6 +5,19 @@
   "arrowHeight": {
     "_type": "var"
   },
-  "#hidden": {},
-  "#arrow": {}
+  "#mask": {},
+  "#arrow": {},
+  "#arrowLine": {},
+  "#arrowArea": {},
+  "#border": {},
+  "#borderHidden": {},
+  "~position": {
+    "~auto": {},
+    "~top": {},
+    "~bottom": {},
+    "~left": {},
+    "~right": {},
+    "_default": "top"
+  },
+  "~inverse": {}
 }

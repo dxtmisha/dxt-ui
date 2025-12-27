@@ -1,4 +1,4 @@
-import { computed, type Ref } from 'vue'
+import { type Ref } from 'vue'
 
 /**
  * Class for working with the arrow element.
@@ -17,8 +17,21 @@ export class ArrowElement {
   ) {
   }
 
-  /** Gets the width of the arrow/ Получает ширину стрелки */
-  readonly width = computed<number>(() => {
+  /**
+   * Checks that the element exists.
+   *
+   * Проверяет, что элемент существует.
+   */
+  is(): this is { element: Ref<HTMLElement> } {
+    return Boolean(this.element.value)
+  }
+
+  /**
+   * Gets the width of the arrow.
+   *
+   * Получает ширину стрелки.
+   */
+  getWidth() {
     const size = this.getStyleArrowWidth()
 
     if (size) {
@@ -28,10 +41,14 @@ export class ArrowElement {
     }
 
     return 0
-  })
+  }
 
-  /** Gets the height of the arrow/ Получает высоту стрелки */
-  readonly height = computed<number>(() => {
+  /**
+   * Gets the height of the arrow.
+   *
+   * Получает высоту стрелки.
+   */
+  getHeight() {
     const size = this.getStyleArrowHeight()
 
     if (size) {
@@ -41,15 +58,6 @@ export class ArrowElement {
     }
 
     return 0
-  })
-
-  /**
-   * Checks that the element exists.
-   *
-   * Проверяет, что элемент существует.
-   */
-  is(): this is { element: Ref<HTMLElement> } {
-    return Boolean(this.element.value)
   }
 
   /**

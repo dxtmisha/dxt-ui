@@ -619,6 +619,15 @@
   }
 }
 
+/// Applies border color via filter drop-shadow
+/// Применяет цвет границы через фильтр drop-shadow
+@mixin borderByFilter($color, $width: 1px) {
+  filter: drop-shadow(1px 0 0 #{toCustomVarRgb($color)}),
+          drop-shadow(-1px 0 0 #{toCustomVarRgb($color)}),
+          drop-shadow(0 1px 0 #{toCustomVarRgb($color)}),
+          drop-shadow(0 -1px 0 #{toCustomVarRgb($color)});
+}
+
 /* Outline */
 
 /// Sets outline color via system variables

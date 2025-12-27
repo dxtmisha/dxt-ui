@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue'
+import { h, nextTick, ref, type VNode, watch } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -18,6 +18,7 @@ import {
   type ArrowExpose,
   type ArrowSlots
 } from './types'
+import { ArrowDirection } from './basicTypes.ts'
 
 /**
  * ArrowDesign
@@ -37,6 +38,7 @@ export class ArrowDesign<
     P
   > {
   protected readonly item: Arrow
+  protected readonly points = ref<string>('')
 
   /**
    * Constructor
@@ -66,10 +68,15 @@ export class ArrowDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
+
+    watch([this.classes], () => {
+      nextTick().then(
+        () => requestAnimationFrame(() => {
+          this.points.value = this.getRePoints()
+        })
+      )
+    }, { immediate: true })
   }
 
   /**
@@ -78,10 +85,7 @@ export class ArrowDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
@@ -94,8 +98,13 @@ export class ArrowDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        mask: this.getSubClass('mask'),
         hidden: this.getSubClass('hidden'),
-        arrow: this.getSubClass('arrow')
+        arrow: this.getSubClass('arrow'),
+        arrowLine: this.getSubClass('arrowLine'),
+        arrowArea: this.getSubClass('arrowArea'),
+        border: this.getSubClass('border'),
+        borderHidden: this.getSubClass('borderHidden')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -107,7 +116,6 @@ export class ArrowDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    console.log('this.item.styles.value', this.item.styles.value)
     return {
       ...this.item.styles.value
     }
@@ -118,20 +126,19 @@ export class ArrowDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode[] {
+  protected initRender(): VNode {
     const children: any[] = [
+      ...this.renderArrow(),
       ...this.renderMask(),
-      ...this.renderArrow()
+      ...this.renderBorder()
     ]
 
-    return [
-      h('svg', {
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        ...AriaStaticInclude.hidden()
-      }, children)
-    ]
+    return h('div', {
+      ref: this.element,
+      class: this.classes?.value.main,
+      style: this.styles?.value,
+      ...AriaStaticInclude.hidden()
+    }, children)
   }
 
   /**
@@ -142,31 +149,37 @@ export class ArrowDesign<
   protected renderMask(): VNode[] {
     return [
       h(
-        'mask',
+        'svg',
         {
-          key: 'mask',
-          id: this.item.idMask
+          key: 'svg-mask',
+          class: this.classes?.value.mask
         },
-        [
-          h(
-            'rect',
-            {
-              key: 'rect-bg',
-              width: '100%',
-              height: '100%',
-              fill: 'white'
-            }
-          ),
-          h(
-            'rect',
-            {
-              key: 'rect-hidden',
-              class: this.classes?.value.hidden,
-              rx: this.item.parent.borderRadius.value,
-              fill: 'black'
-            }
-          )
-        ]
+        h(
+          'mask',
+          {
+            key: 'mask-border',
+            id: this.item.idMaskBorder
+          },
+          [
+            h(
+              'rect',
+              {
+                key: 'rect-border',
+                width: '100%',
+                height: '100%',
+                fill: 'white'
+              }
+            ),
+            h(
+              'rect',
+              {
+                key: 'rect-border-hidden',
+                class: this.classes?.value.borderHidden,
+                fill: 'black'
+              }
+            )
+          ]
+        )
       )
     ]
   }
@@ -177,18 +190,72 @@ export class ArrowDesign<
    * Метод для рендеринга стрелки.
    */
   protected renderArrow(): VNode[] {
-    const width = this.item.elementItem.width.value
-    const height = this.item.elementItem.height.value
-
     return [
       h(
-        'polygon',
+        'svg',
         {
-          key: 'arrow',
-          class: this.classes?.value.arrow,
-          points: `0, ${height} ${width / 2}, 0 ${width}, ${height}`
-        }
+          key: 'svg-arrow',
+          class: this.classes?.value.arrowArea
+        },
+        [
+          h(
+            'polygon',
+            {
+              key: 'arrow',
+              class: this.classes?.value.arrow,
+              points: this.points.value
+            }
+          ),
+          h(
+            'polyline',
+            {
+              key: 'arrow-line',
+              class: this.classes?.value.arrowLine,
+              points: this.points.value
+            }
+          )
+        ]
       )
     ]
+  }
+
+  /**
+   * Method for rendering a border.
+   *
+   * Метод для рендеринга границы.
+   */
+  protected renderBorder(): VNode[] {
+    if (this.item.parent.isBorder.value) {
+      return [
+        h('div', {
+          key: 'border',
+          class: this.classes?.value.border,
+          ...AriaStaticInclude.hidden()
+        })
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Gets the points for the arrow.
+   *
+   * Получает точки для стрелки.
+   */
+  protected readonly getRePoints = (): string => {
+    const width = this.item.elementItem.getWidth()
+    const height = this.item.elementItem.getHeight()
+
+    switch (this.item.direction.value) {
+      case ArrowDirection.BOTTOM:
+        return `0, 0 ${width / 2}, ${height} ${width}, 0`
+      case ArrowDirection.LEFT:
+        return `${width}, 0 0, ${height / 2} ${width}, ${height}`
+      case ArrowDirection.RIGHT:
+        return `0, 0 ${width}, ${height / 2} 0, ${height}`
+      default:
+        return `0, ${height} ${width / 2}, 0 ${width}, ${height}`
+    }
   }
 }
