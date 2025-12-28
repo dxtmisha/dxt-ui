@@ -6,6 +6,7 @@ interface ArrowPropsToken {
 }
 
 export interface ArrowPropsBasic {
+  elementTarget?: HTMLElement | string
 }
 
 /**
@@ -24,7 +25,7 @@ export interface ArrowProps extends ArrowPropsBasic, ArrowPropsToken {
 export const defaultsArrow = {
   ...{
     // :default [!] System label / Системная метка
-    position: 'top'
+    position: 'auto'
     // :default [!] System label / Системная метка
   }
 }

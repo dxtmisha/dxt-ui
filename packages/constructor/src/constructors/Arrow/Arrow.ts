@@ -1,8 +1,18 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type ConstrStyles, DesignComp, getElementId } from '@dxtmisha/functional'
+import {
+  type ConstrClassObject,
+  type ConstrEmit,
+  type ConstrStyles,
+  DesignComp,
+  getElementId,
+  isFilled
+} from '@dxtmisha/functional'
 
 import { ArrowElement } from './ArrowElement'
+import { ArrowElementTarget } from './ArrowElementTarget'
 import { ArrowParent } from './ArrowParent'
+import { ArrowPosition } from './ArrowPosition'
+import { ArrowEvent } from './ArrowEvent'
 
 import { ArrowDirection } from './basicTypes'
 import type { ArrowComponents, ArrowEmits, ArrowSlots } from './types'
@@ -12,14 +22,18 @@ import type { ArrowProps } from './props'
  * Arrow
  */
 export class Arrow {
+  /** Unique ID/ Уникальный ID */
   readonly id: string = getElementId()
-  readonly idMask: string = `${this.id}-mark`
+  /** ID for the border mark/ ID для маркировки границы */
   readonly idMaskBorder: string = `${this.id}-mark-border`
 
   readonly elementItem: ArrowElement
+  readonly elementTarget: ArrowElementTarget
   readonly parent: ArrowParent
+  readonly position: ArrowPosition
+  readonly event: ArrowEvent
 
-  readonly markUrl = `url("#${this.idMask}")`
+  /** URL for the border mark/ URL для маркировки границы */
   readonly markUrlBorder = `url("#${this.idMaskBorder}")`
 
   /**
@@ -47,35 +61,68 @@ export class Arrow {
       this.element,
       this.className
     )
+    this.elementTarget = new ArrowElementTarget(this.props)
     this.parent = new ArrowParent(
       this.element,
       this.className,
       this.elementItem
     )
+
+    this.position = new ArrowPosition(
+      this.elementItem,
+      this.elementTarget
+    )
+
+    this.event = new ArrowEvent(
+      this.props,
+      this.refs,
+      this.element,
+      this.elementTarget,
+      this.position
+    )
   }
 
   /** Direction of the arrow/ Направление стрелки */
   readonly direction = computed<ArrowDirection>(() => {
-    if (
-      this.props.position
-      && this.props.position !== 'auto'
-    ) {
+    if (isFilled(this.props.position)) {
+      if (this.props.position === 'auto') {
+        const directionPosition = this.position.direction.value
+
+        if (directionPosition) {
+          return directionPosition
+        }
+      }
+
       return this.props.position as ArrowDirection
     }
 
-    return ArrowDirection.TOP
+    return ArrowDirection.HIDE
+  })
+
+  /** Classes for the component/ Классы для компонента */
+  readonly classes = computed<ConstrClassObject>(() => {
+    return {
+      [`${this.className}--direction--${this.direction.value}`]: Boolean(this.direction.value)
+    }
   })
 
   /** Styles for the component/ Стили для компонента */
   readonly styles = computed<ConstrStyles>(() => {
-    return {
+    const styles = {
       [`--${this.className}-sys-background`]: this.parent.background.value,
       [`--${this.className}-sys-borderWidth`]: this.parent.borderWidth.value,
       [`--${this.className}-sys-borderColor`]: this.parent.borderColor.value,
       [`--${this.className}-sys-borderRadius`]: this.parent.borderRadius.value,
-      [`--${this.className}-sys-boxShadow`]: this.parent.boxShadow.value,
-      [`--${this.className}-sys-url-mark`]: this.markUrl,
       [`--${this.className}-sys-url-markBorder`]: this.markUrlBorder
     }
+
+    if (
+      this.elementTarget.is()
+      && this.position.shift.value
+    ) {
+      styles[`--${this.className}-sys-shift`] = this.position.shift.value
+    }
+
+    return styles
   })
 }

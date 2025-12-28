@@ -95,11 +95,10 @@ export class ArrowDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes.value,
       ...{
         // :classes [!] System label / Системная метка
         mask: this.getSubClass('mask'),
-        hidden: this.getSubClass('hidden'),
         arrow: this.getSubClass('arrow'),
         arrowLine: this.getSubClass('arrowLine'),
         arrowArea: this.getSubClass('arrowArea'),
@@ -128,10 +127,15 @@ export class ArrowDesign<
    */
   protected initRender(): VNode {
     const children: any[] = [
-      ...this.renderArrow(),
-      ...this.renderMask(),
-      ...this.renderBorder()
+      ...this.renderArrow()
     ]
+
+    if (this.item.parent.isBorder.value) {
+      children.push(
+        ...this.renderMask(),
+        ...this.renderBorder()
+      )
+    }
 
     return h('div', {
       ref: this.element,
@@ -139,6 +143,41 @@ export class ArrowDesign<
       style: this.styles?.value,
       ...AriaStaticInclude.hidden()
     }, children)
+  }
+
+  /**
+   * Method for rendering an arrow.
+   *
+   * Метод для рендеринга стрелки.
+   */
+  protected renderArrow(): VNode[] {
+    return [
+      h(
+        'svg',
+        {
+          key: 'svg-arrow',
+          class: this.classes?.value.arrowArea
+        },
+        [
+          h(
+            'polygon',
+            {
+              key: 'arrow',
+              class: this.classes?.value.arrow,
+              points: this.points.value
+            }
+          ),
+          h(
+            'polyline',
+            {
+              key: 'arrow-line',
+              class: this.classes?.value.arrowLine,
+              points: this.points.value
+            }
+          )
+        ]
+      )
+    ]
   }
 
   /**
@@ -185,57 +224,18 @@ export class ArrowDesign<
   }
 
   /**
-   * Method for rendering an arrow.
-   *
-   * Метод для рендеринга стрелки.
-   */
-  protected renderArrow(): VNode[] {
-    return [
-      h(
-        'svg',
-        {
-          key: 'svg-arrow',
-          class: this.classes?.value.arrowArea
-        },
-        [
-          h(
-            'polygon',
-            {
-              key: 'arrow',
-              class: this.classes?.value.arrow,
-              points: this.points.value
-            }
-          ),
-          h(
-            'polyline',
-            {
-              key: 'arrow-line',
-              class: this.classes?.value.arrowLine,
-              points: this.points.value
-            }
-          )
-        ]
-      )
-    ]
-  }
-
-  /**
    * Method for rendering a border.
    *
    * Метод для рендеринга границы.
    */
   protected renderBorder(): VNode[] {
-    if (this.item.parent.isBorder.value) {
-      return [
-        h('div', {
-          key: 'border',
-          class: this.classes?.value.border,
-          ...AriaStaticInclude.hidden()
-        })
-      ]
-    }
-
-    return []
+    return [
+      h('div', {
+        key: 'border',
+        class: this.classes?.value.border,
+        ...AriaStaticInclude.hidden()
+      })
+    ]
   }
 
   /**

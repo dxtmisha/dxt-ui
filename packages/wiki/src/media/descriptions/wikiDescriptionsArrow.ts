@@ -25,21 +25,40 @@ export const wikiDescriptionsArrow: StorybookComponentsDescriptionItem = {
   },
   import: [],
   render: `
-      <div
-        class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--center"
-      >
-        <div
-          style="
-            position: relative;
-            width: 256px;
-            height: 128px;
-            border-radius: 16px;
-            background-color: oklch(93.2% 0.032 255.585);
-            border: 2px solid oklch(80.9% 0.105 251.813);
-            box-shadow: 0 0 8px oklch(0.281 0.092 268.132 / 0.32);
-          "
-        >
-          <DesignComponent v-bind="args"/>
+      <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--center">
+        <div>
+          <div
+            style="
+              width: 256px;
+              margin-bottom: 32px;
+              margin-left: 32px;
+            "
+          >
+            <div
+              id="id-arrow-target"
+              style="
+                padding: 8px;
+                width: min-content;
+                border-radius: 8px;
+                background-color: oklch(90.2% 0.063 306.703);
+              "
+            >
+              Target
+            </div>
+          </div>
+          <div
+            style="
+              position: relative;
+              width: 256px;
+              height: 128px;
+              border-radius: 16px;
+              background-color: oklch(93.2% 0.032 255.585);
+              border: 2px solid oklch(80.9% 0.105 251.813);
+              box-shadow: 0 0 8px oklch(0.281 0.092 268.132 / 0.32);
+            "
+          >
+            <DesignComponent v-bind="args"/>
+          </div>
         </div>
       </div>
     `,

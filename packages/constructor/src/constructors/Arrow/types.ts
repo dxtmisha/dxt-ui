@@ -44,7 +44,6 @@ export type ArrowClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   mask: string
-  hidden: string
   arrow: string
   arrowLine: string
   arrowArea: string

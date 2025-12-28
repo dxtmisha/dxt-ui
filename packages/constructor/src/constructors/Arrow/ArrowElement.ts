@@ -1,5 +1,7 @@
 import { type Ref } from 'vue'
 
+import type { ArrowCenter } from './basicTypes'
+
 /**
  * Class for working with the arrow element.
  *
@@ -61,6 +63,33 @@ export class ArrowElement {
   }
 
   /**
+   * Gets the element's bounding rectangle.
+   *
+   * Получает ограничивающий прямоугольник элемента.
+   */
+  getRect(): DOMRect | undefined {
+    return this.element.value?.getBoundingClientRect()
+  }
+
+  /**
+   * Gets the center coordinates of the element.
+   *
+   * Получает координаты центра элемента.
+   */
+  getCenter(): ArrowCenter | undefined {
+    const rect = this.getRect()
+
+    if (rect) {
+      return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+      }
+    }
+
+    return undefined
+  }
+
+  /**
    * Gets the name of the arrow width variable.
    *
    * Получает имя переменной ширины стрелки.
@@ -73,7 +102,6 @@ export class ArrowElement {
    * Gets the name of the arrow height variable.
    *
    * Получает имя переменной высоты стрелки.
-   * @protected
    */
   protected getNameArrowHeight(): string {
     return `--${this.className}-arrowHeight`

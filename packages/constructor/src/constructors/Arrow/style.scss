@@ -4,17 +4,18 @@
   @include ui.initByCustom('arrowWidth', 8px);
   @include ui.initByCustom('arrowHeight', 8px);
 
-  @include ui.initByCustom('sys.url.mark', unset);
+  @include ui.initByCustom('sys.url.markBorder', unset);
   @include ui.initByCustom('sys.background', transparent);
   @include ui.initByCustom('sys.borderWidth', 0px);
   @include ui.initByCustom('sys.borderColor', transparent);
-  @include ui.initByCustom('sys.boxShadow', none);
+  @include ui.initByCustom('sys.borderRadius', 0px);
 
   @include ui.initByCustom('sys.press', calc((#{ui.v('??arrowHeight')} * 2) + (#{ui.v('??sys.borderWidth')} * 2)));
   @include ui.initByCustom('sys.main.increase', calc(100% + (#{ui.v('??sys.borderWidth')} * 2)));
   @include ui.initByCustom('sys.area.increase', calc(100% + (#{ui.v('??arrowHeight')} * 2)));
   @include ui.initByCustom('sys.arrow.translateX', 0px);
   @include ui.initByCustom('sys.arrow.translateY', 0px);
+  @include ui.initByCustom('sys.arrow.translateShift', 50%);
 
   @include ui.absolute(calc(#{ui.v('??sys.borderWidth')} * -1));
   z-index: 8;
@@ -30,11 +31,6 @@
   &__parent {
     &[data-arrow="border"] {
       border-color: transparent !important;
-    }
-
-    &[data-arrow-shadow="box-shadow"] {
-      box-shadow: none !important;
-      filter: drop-shadow(#{ui.v('??sys.boxShadow')});
     }
   }
 
@@ -86,29 +82,53 @@
     width: ui.v('??arrowWidth');
     height: ui.v('??arrowHeight');
 
-    @include ui.translateX(calc(#{ui.v('??sys.arrow.translateX')}));
-    @include ui.translateY(calc(#{ui.v('??sys.arrow.translateY')}));
+    @include ui.translateX(ui.v('??sys.arrow.translateX'));
+    @include ui.translateY(ui.v('??sys.arrow.translateY'));
   }
 
-  &--position {
+  &--direction {
     &--top {
-      @include ui.initByCustom('sys.arrow.translateX', calc(50% - #{ui.v('??arrowWidth')} / 2));
+      @include ui.initByCustom('sys.arrow.translateX', calc(ui.v('??sys.arrow.translateShift') - #{ui.v('??arrowWidth')} / 2));
       @include ui.initByCustom('sys.arrow.translateY', 0px);
     }
 
     &--bottom {
-      @include ui.initByCustom('sys.arrow.translateX', calc(50% - #{ui.v('??arrowWidth')} / 2));
+      @include ui.initByCustom('sys.arrow.translateX', calc(ui.v('??sys.arrow.translateShift') - #{ui.v('??arrowWidth')} / 2));
       @include ui.initByCustom('sys.arrow.translateY', calc(100% - #{ui.v('??arrowHeight')}));
     }
 
     &--left {
       @include ui.initByCustom('sys.arrow.translateX', 0px);
-      @include ui.initByCustom('sys.arrow.translateY', calc(50% - #{ui.v('??arrowHeight')} / 2));
+      @include ui.initByCustom('sys.arrow.translateY', calc(ui.v('??sys.arrow.translateShift') - #{ui.v('??arrowHeight')} / 2));
     }
 
     &--right {
       @include ui.initByCustom('sys.arrow.translateX', calc(100% - #{ui.v('??arrowWidth')}));
-      @include ui.initByCustom('sys.arrow.translateY', calc(50% - #{ui.v('??arrowHeight')} / 2));
+      @include ui.initByCustom('sys.arrow.translateY', calc(ui.v('??sys.arrow.translateShift') - #{ui.v('??arrowHeight')} / 2));
+    }
+  }
+
+  &--position {
+    &--auto {
+      @include ui.initByCustom('sys.arrow.translateShift.basic', #{calc(#{ui.v('??sys.shift')} + #{ui.v('??arrowWidth')})});
+      @include ui.initByCustom('sys.arrow.translateShift.max', max(#{ui.v('??sys.arrow.translateShift.basic')}, #{ui.v('??sys.borderRadius')}));
+      @include ui.initByCustom('sys.arrow.translateShift', ui.v('??sys.arrow.translateShift.max'));
+
+      @include ui.state('direction') {
+        &--top,
+        &--bottom {
+          @include ui.subclass('borderHidden') {
+            @include ui.translateX(calc(#{ui.v('??sys.arrow.translateX')} - #{ui.v('??arrowHeight')}));
+          }
+        }
+
+        &--left,
+        &--right {
+          @include ui.subclass('borderHidden') {
+            @include ui.translateY(calc(#{ui.v('??sys.arrow.translateY')} - #{ui.v('??arrowHeight')}));
+          }
+        }
+      }
     }
   }
 }

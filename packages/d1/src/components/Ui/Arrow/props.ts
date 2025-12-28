@@ -28,7 +28,7 @@ export const defaults: object = {
   ...defaultsArrow,
   ...{
     // :default [!] System label / Системная метка
-    position: 'top',
+    position: 'auto',
     size: 'md'
     // :default [!] System label / Системная метка
   }
