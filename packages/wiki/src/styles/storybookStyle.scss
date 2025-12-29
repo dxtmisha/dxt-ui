@@ -44,8 +44,10 @@
     position: relative;
     overflow: hidden;
 
-    border: 1px solid oklch(87.2% 0.01 258.338);
+    max-width: 1080px;
     border-radius: 12px;
+
+    border: 1px solid oklch(87.2% 0.01 258.338);
 
     @include ui.aspectRatio('1/1');
 

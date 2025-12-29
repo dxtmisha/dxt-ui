@@ -36,7 +36,7 @@ export class ArrowPosition {
    *
    * Обновляет позицию стрелки.
    */
-  update() {
+  readonly update = (): void => {
     if (this.elementTarget.is()) {
       this.border.value = this.initBorder()
       this.direction.value = this.initDirection()

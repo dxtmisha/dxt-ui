@@ -85,7 +85,9 @@ export class ArrowDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {} as EXPOSE
+    return {
+      update: this.item.position.update
+    } as EXPOSE
   }
 
   /**
