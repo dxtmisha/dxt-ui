@@ -3,6 +3,7 @@ import { EventItem, EventRef, isDomRuntime } from '@dxtmisha/functional'
 
 import { ArrowElementTarget } from './ArrowElementTarget'
 import { ArrowPosition } from './ArrowPosition'
+import { ArrowParent } from './ArrowParent'
 
 import type { ArrowProps } from './props'
 
@@ -22,6 +23,7 @@ export class ArrowEvent {
    * @param refs input properties as refs / входные свойства как ссылки
    * @param element arrow element / элемент стрелки
    * @param elementTarget target element / целевой элемент
+   * @param parent parent object / объект родителя
    * @param position position object / объект позиции
    */
   constructor(
@@ -29,21 +31,15 @@ export class ArrowEvent {
     protected readonly refs: ToRefs<ArrowProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly elementTarget: ArrowElementTarget,
+    protected readonly parent: ArrowParent,
     protected readonly position: ArrowPosition
   ) {
     if (isDomRuntime()) {
       onMounted(async () => {
         await nextTick()
-        watch(
-          [
-            this.refs.position,
-            this.refs.elementTarget,
-            this.elementTarget.element
-          ],
-          this.makeEvents
-        )
 
-        requestAnimationFrame(this.update)
+        watch(this.elementTarget.element, this.makeEvents)
+        watch([...Object.values(this.refs)], this.update, { immediate: true })
       })
 
       onUnmounted(() => {
@@ -58,10 +54,13 @@ export class ArrowEvent {
    * Обновить все реактивные элементы.
    */
   readonly update = (): void => {
-    if (this.props.position === 'auto') {
-      this.elementTarget.update()
+    requestAnimationFrame(() => {
+      if (this.props.position === 'auto') {
+        this.elementTarget.update()
+      }
+
       this.position.update()
-    }
+    })
   }
 
   /**

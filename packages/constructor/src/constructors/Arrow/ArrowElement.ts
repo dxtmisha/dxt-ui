@@ -1,7 +1,5 @@
 import { type Ref } from 'vue'
 
-import type { ArrowCenter } from './basicTypes'
-
 /**
  * Class for working with the arrow element.
  *
@@ -72,21 +70,21 @@ export class ArrowElement {
   }
 
   /**
-   * Gets the center coordinates of the element.
+   * Gets the bounding rectangle of the border element.
    *
-   * Получает координаты центра элемента.
+   * Получает ограничивающий прямоугольник элемента границы.
    */
-  getCenter(): ArrowCenter | undefined {
-    const rect = this.getRect()
+  getRectBorder(): DOMRect | undefined {
+    return this.element.value?.querySelector(`.${this.className}__border`)?.getBoundingClientRect() ?? undefined
+  }
 
-    if (rect) {
-      return {
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2
-      }
-    }
-
-    return undefined
+  /**
+   * Gets the bounding rectangle of the border element.
+   *
+   * Получает ограничивающий прямоугольник элемента границы.
+   */
+  getRectArrowLine(): DOMRect | undefined {
+    return this.element.value?.querySelector(`.${this.className}__arrowLine`)?.getBoundingClientRect() ?? undefined
   }
 
   /**

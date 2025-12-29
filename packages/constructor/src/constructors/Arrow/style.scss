@@ -9,6 +9,7 @@
   @include ui.initByCustom('sys.borderWidth', 0px);
   @include ui.initByCustom('sys.borderColor', transparent);
   @include ui.initByCustom('sys.borderRadius', 0px);
+  @include ui.initByCustom('sys.clipPath', unset);
 
   @include ui.initByCustom('sys.press', calc((#{ui.v('??arrowHeight')} * 2) + (#{ui.v('??sys.borderWidth')} * 2)));
   @include ui.initByCustom('sys.main.increase', calc(100% + (#{ui.v('??sys.borderWidth')} * 2)));
@@ -74,8 +75,7 @@
     border-color: ui.v('??sys.borderColor');
     border-radius: inherit;
 
-    -webkit-mask-image: ui.v('??sys.url.markBorder');
-    mask-repeat: no-repeat;
+    clip-path: ui.v('??sys.clipPath');
   }
 
   &__borderHidden {

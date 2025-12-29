@@ -81,8 +81,11 @@ export const ArrowBasic: Story = {
     setup() {
       const elementBasic = ref()
       const elementTarget = ref()
+      const elementArray = ref()
+
       const x = ref('0px')
       const y = ref('0px')
+
       const onClick = (event: PointerEvent) => {
         if (elementBasic.value) {
           const rect = elementBasic.value.getBoundingClientRect()
@@ -97,12 +100,15 @@ export const ArrowBasic: Story = {
 
           x.value = (event.clientX - rect.left - offsetX) + 'px'
           y.value = (event.clientY - rect.top - offsetY) + 'px'
+
+          requestAnimationFrame(() => elementArray.value?.update())
         }
       }
 
       return {
         elementBasic,
         elementTarget,
+        elementArray,
         x,
         y,
         onClick
@@ -114,30 +120,30 @@ export const ArrowBasic: Story = {
           style="cursor: crosshair;"
           @click="onClick"
         >
-        <div>
-          <div
-            style="
+          <div>
+            <div
+              style="
               opacity: 0.5;
               font-size: 14px;
               margin-bottom: 8px;
               text-align: center;
             "
-          >
-            Click to move target
-          </div>
-          <div
-            ref="elementBasic"
-            style="
+            >
+              Click to move target
+            </div>
+            <div
+              ref="elementBasic"
+              style="
               position: relative;
               margin-bottom: 96px;
               margin-left: 32px;
               z-index: 32;
             "
-          >
-            <div
-              ref="elementTarget"
-              id="id-arrow-target"
-              style="
+            >
+              <div
+                ref="elementTarget"
+                id="id-arrow-target"
+                style="
                 position: absolute;
                 padding: 8px;
                 width: min-content;
@@ -145,13 +151,13 @@ export const ArrowBasic: Story = {
                 background-color: oklch(90.2% 0.063 306.703);
                 text-wrap: nowrap;
               "
-              :style="{left: x, top: y}"
-            >
-              Target Element Example
+                :style="{left: x, top: y}"
+              >
+                Target Element Example
+              </div>
             </div>
-          </div>
-          <div
-            style="
+            <div
+              style="
               position: relative;
               width: 256px;
               height: 128px;
@@ -160,11 +166,15 @@ export const ArrowBasic: Story = {
               border: 2px solid oklch(80.9% 0.105 251.813);
               box-shadow: 0 0 8px oklch(0.281 0.092 268.132 / 0.32);
             "
-          >
-            <D1Arrow position="auto" element-target="#id-arrow-target"/>
+            >
+              <D1Arrow
+                ref="elementArray"
+                position="auto"
+                element-target="#id-arrow-target"
+              />
+            </div>
           </div>
         </div>
-      </div>
     `
   })
 }

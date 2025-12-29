@@ -4,7 +4,6 @@ import {
   type ConstrEmit,
   type ConstrStyles,
   DesignComp,
-  getElementId,
   isFilled
 } from '@dxtmisha/functional'
 
@@ -22,19 +21,11 @@ import type { ArrowProps } from './props'
  * Arrow
  */
 export class Arrow {
-  /** Unique ID/ Уникальный ID */
-  readonly id: string = getElementId()
-  /** ID for the border mark/ ID для маркировки границы */
-  readonly idMaskBorder: string = `${this.id}-mark-border`
-
   readonly elementItem: ArrowElement
   readonly elementTarget: ArrowElementTarget
   readonly parent: ArrowParent
   readonly position: ArrowPosition
   readonly event: ArrowEvent
-
-  /** URL for the border mark/ URL для маркировки границы */
-  readonly markUrlBorder = `url("#${this.idMaskBorder}")`
 
   /**
    * Constructor
@@ -69,6 +60,7 @@ export class Arrow {
     )
 
     this.position = new ArrowPosition(
+      this.props,
       this.elementItem,
       this.elementTarget
     )
@@ -78,6 +70,7 @@ export class Arrow {
       this.refs,
       this.element,
       this.elementTarget,
+      this.parent,
       this.position
     )
   }
@@ -85,15 +78,11 @@ export class Arrow {
   /** Direction of the arrow/ Направление стрелки */
   readonly direction = computed<ArrowDirection>(() => {
     if (isFilled(this.props.position)) {
-      if (this.props.position === 'auto') {
-        const directionPosition = this.position.direction.value
+      const directionPosition = this.position.direction.value
 
-        if (directionPosition) {
-          return directionPosition
-        }
+      if (directionPosition) {
+        return directionPosition
       }
-
-      return this.props.position as ArrowDirection
     }
 
     return ArrowDirection.HIDE
@@ -112,8 +101,14 @@ export class Arrow {
       [`--${this.className}-sys-background`]: this.parent.background.value,
       [`--${this.className}-sys-borderWidth`]: this.parent.borderWidth.value,
       [`--${this.className}-sys-borderColor`]: this.parent.borderColor.value,
-      [`--${this.className}-sys-borderRadius`]: this.parent.borderRadius.value,
-      [`--${this.className}-sys-url-markBorder`]: this.markUrlBorder
+      [`--${this.className}-sys-borderRadius`]: this.parent.borderRadius.value
+    }
+
+    if (
+      this.parent.isBorder.value
+      && this.position.clipPath.value
+    ) {
+      styles[`--${this.className}-sys-clipPath`] = this.position.clipPath.value
     }
 
     if (

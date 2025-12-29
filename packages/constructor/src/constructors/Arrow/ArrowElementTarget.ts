@@ -1,7 +1,6 @@
 import { ref } from 'vue'
 import { isDomRuntime, isFilled, isString } from '@dxtmisha/functional'
 
-import type { ArrowCenter } from './basicTypes'
 import type { ArrowProps } from './props'
 
 /**
@@ -37,24 +36,6 @@ export class ArrowElementTarget {
    */
   getRect(): DOMRect | undefined {
     return this.element.value?.getBoundingClientRect()
-  }
-
-  /**
-   * Gets the center coordinates of the element.
-   *
-   * Получает координаты центра элемента.
-   */
-  getCenter(): ArrowCenter | undefined {
-    const rect = this.getRect()
-
-    if (rect) {
-      return {
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2
-      }
-    }
-
-    return undefined
   }
 
   /**

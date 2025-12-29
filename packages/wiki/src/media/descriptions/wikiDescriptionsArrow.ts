@@ -94,7 +94,7 @@ export const wikiDescriptionsArrow: StorybookComponentsDescriptionItem = {
           x.value = (event.clientX - rect.left - offsetX) + 'px'
           y.value = (event.clientY - rect.top - offsetY) + 'px'
 
-          elementArray.value?.update()
+          requestAnimationFrame(() => elementArray.value?.update())
         }
       }
 
