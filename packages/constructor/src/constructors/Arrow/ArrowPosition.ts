@@ -5,6 +5,7 @@ import { ArrowElementTarget } from './ArrowElementTarget'
 
 import { type ArrowBorder, ArrowDirection } from './basicTypes'
 import type { ArrowProps } from './props.ts'
+import { ArrowParent } from './ArrowParent.ts'
 
 /**
  * Class for calculating the position of the arrow element relative to the target element.
@@ -29,11 +30,13 @@ export class ArrowPosition {
    * @param props input properties / входные свойства
    * @param elementItem arrow element / элемент стрелки
    * @param elementTarget target element / целевой элемент
+   * @param parent parent element / родительский элемент
    */
   constructor(
     protected readonly props: ArrowProps,
     protected readonly elementItem: ArrowElement,
-    protected readonly elementTarget: ArrowElementTarget
+    protected readonly elementTarget: ArrowElementTarget,
+    protected readonly parent: ArrowParent
   ) {
   }
 
@@ -59,6 +62,15 @@ export class ArrowPosition {
    */
   isX() {
     return this.direction.value === ArrowDirection.TOP || this.direction.value === ArrowDirection.BOTTOM
+  }
+
+  /**
+   * Gets the minimum value for the arrow position.
+   *
+   * Получает минимальное значение для позиции стрелки.
+   */
+  protected getMinValue(): number {
+    return this.parent.getBorderRadius() + (this.elementItem.getWidth() / 2)
   }
 
   /**
@@ -149,11 +161,16 @@ export class ArrowPosition {
     const elementItemRect = this.elementItem.getRect()
 
     if (border && elementItemRect) {
+      const min = this.getMinValue()
+      let size: number
+
       if (this.isX()) {
-        return `${(border.left - elementItemRect.left) + ((border.right - border.left) / 2)}px`
+        size = Math.min(elementItemRect.width - min, (border.left - elementItemRect.left) + ((border.right - border.left) / 2))
+      } else {
+        size = Math.min(elementItemRect.height - min, (border.top - elementItemRect.top) + ((border.bottom - border.top) / 2))
       }
 
-      return `${(border.top - elementItemRect.top) + ((border.bottom - border.top) / 2)}px`
+      return `${Math.max(min, size)}px`
     }
 
     return undefined

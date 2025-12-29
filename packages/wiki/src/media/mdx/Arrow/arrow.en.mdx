@@ -1,22 +1,33 @@
-## Description
+Component for displaying a graphical indicator (arrow) used to visually link floating elements to their target.
 
-Component for displaying an arrow or directional indicator.
-
-The Arrow component is used to indicate direction, navigation, or to point to specific elements in the interface. It is often used in tooltips, popovers, and dropdown menus.
+Arrow provides automatic or manual positioning of the indicator. It is often used within Tooltip, Popover, and Dropdown components to indicate the direction towards the trigger or target element. The component supports adaptation to various sizes and styles, and can dynamically update its position.
 
 **Key Features:**
 
-- Directional indication
-- Customizable styling
-- Integration with other components
+- Automatic and manual positioning (top, bottom, left, right)
+- Support for inverted style
+- Binding to a target element (elementTarget)
+- Dynamic position updates
+- Customizable SVG arrow graphics
+- Integration with positioning components
+
+**Typical Use Cases:**
+
+- Indicators in tooltips
+- Arrows in dropdown menus and popovers
+- Visual links in tour guides
+- Directional indicators in the interface
 
 ```html
 <script setup>
-import { ref } from 'vue'
+import { Arrow } from 'dxt-ui'
 </script>
 
 <template>
-  <Arrow />
+  <div class="relative p-4 border rounded">
+    Content with arrow
+    <Arrow position="top" />
+  </div>
 </template>
 ```
 

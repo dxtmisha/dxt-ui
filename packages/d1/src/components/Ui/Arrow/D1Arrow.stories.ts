@@ -150,6 +150,7 @@ export const ArrowBasic: Story = {
                 border-radius: 8px;
                 background-color: oklch(90.2% 0.063 306.703);
                 text-wrap: nowrap;
+                pointer-events: none;
               "
                 :style="{left: x, top: y}"
               >

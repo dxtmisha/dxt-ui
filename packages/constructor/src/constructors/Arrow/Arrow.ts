@@ -62,7 +62,8 @@ export class Arrow {
     this.position = new ArrowPosition(
       this.props,
       this.elementItem,
-      this.elementTarget
+      this.elementTarget,
+      this.parent
     )
 
     this.event = new ArrowEvent(

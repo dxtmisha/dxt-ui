@@ -134,7 +134,6 @@ export class ArrowDesign<
 
     if (this.item.parent.isBorder.value) {
       children.push(
-        ...this.renderMask(),
         ...this.renderBorder()
       )
     }
@@ -178,49 +177,6 @@ export class ArrowDesign<
             }
           )
         ]
-      )
-    ]
-  }
-
-  /**
-   * Method for rendering a mask.
-   *
-   * Метод для рендеринга маски.
-   */
-  protected renderMask(): VNode[] {
-    return [
-      h(
-        'svg',
-        {
-          key: 'svg-mask',
-          class: this.classes?.value.mask
-        },
-        h(
-          'mask',
-          {
-            key: 'mask-border',
-            id: this.item.idMaskBorder
-          },
-          [
-            h(
-              'rect',
-              {
-                key: 'rect-border',
-                width: '100%',
-                height: '100%',
-                fill: 'white'
-              }
-            ),
-            h(
-              'rect',
-              {
-                key: 'rect-border-hidden',
-                class: this.classes?.value.borderHidden,
-                fill: 'black'
-              }
-            )
-          ]
-        )
       )
     ]
   }

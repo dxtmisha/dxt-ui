@@ -1,5 +1,5 @@
 import { computed, type Ref, watch } from 'vue'
-import { isDomRuntime } from '@dxtmisha/functional'
+import { isDomRuntime, toNumber } from '@dxtmisha/functional'
 import { ArrowElement } from './ArrowElement'
 
 /**
@@ -53,6 +53,15 @@ export class ArrowParent {
   readonly borderRadius = computed<string>(
     () => this.getStyles()?.borderRadius ?? '0px'
   )
+
+  /**
+   * Get border width as number.
+   *
+   * Получить ширину границы в виде числа.
+   */
+  getBorderRadius(): number {
+    return toNumber(this.borderRadius.value)
+  }
 
   /**
    * Get computed styles of the parent element.
