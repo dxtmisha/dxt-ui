@@ -142,7 +142,7 @@ export const ArrowBasic: Story = {
             >
               <div
                 ref="elementTarget"
-                id="id-arrow-target"
+                id="id-arrow-target-2"
                 style="
                 position: absolute;
                 padding: 8px;
@@ -171,7 +171,7 @@ export const ArrowBasic: Story = {
               <D1Arrow
                 ref="elementArray"
                 position="auto"
-                element-target="#id-arrow-target"
+                element-target="#id-arrow-target-2"
               />
             </div>
           </div>

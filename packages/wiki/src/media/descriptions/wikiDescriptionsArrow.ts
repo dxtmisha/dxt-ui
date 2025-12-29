@@ -135,7 +135,7 @@ export const wikiDescriptionsArrow: StorybookComponentsDescriptionItem = {
             >
               <div
                 ref="elementTarget"
-                id="id-arrow-target"
+                id="id-arrow-target-2"
                 style="
                 position: absolute;
                 padding: 8px;
@@ -164,7 +164,7 @@ export const wikiDescriptionsArrow: StorybookComponentsDescriptionItem = {
               <DesignComponent
                 ref="elementArray"
                 position="auto"
-                element-target="#id-arrow-target"
+                element-target="#id-arrow-target-2"
               />
             </div>
           </div>
