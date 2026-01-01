@@ -5,6 +5,7 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Tooltip } from './Tooltip'
 
 import {
@@ -42,11 +43,13 @@ export class TooltipDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor tooltip item class/ класс элемента тултипа
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, TooltipEmits, P>
+    options?: ConstrOptions<COMP, TooltipEmits, P>,
+    ItemConstructor: typeof Tooltip = Tooltip
   ) {
     super(
       name,
@@ -54,7 +57,7 @@ export class TooltipDesign<
       options
     )
 
-    this.item = new Tooltip(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -159,7 +162,11 @@ export class TooltipDesign<
             'div',
             {
               ref: this.element,
-              class: this.classes?.value.main
+              id: this.item.classes.getIdItem(),
+              class: this.classes?.value.main,
+              onMouseover: this.item.event.onMouseoverTooltip,
+              onMouseout: this.item.event.onMouseout,
+              ...AriaStaticInclude.role('tooltip')
             },
             children
           )

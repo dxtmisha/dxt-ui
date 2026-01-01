@@ -46,7 +46,9 @@ export class TooltipStatus {
   )
 
   /** Checks if the element needs to be displayed/ Проверяет, нужно ли отображать элемент */
-  readonly isShow = computed<boolean>(() => (this.show.value || this.open.value) && this.isText.value)
+  readonly isShow = computed<boolean>(
+    () => Boolean(this.show.value || this.open.value || this.props.inDom) && this.isText.value
+  )
 
   /** Checks if the content is an array/ Проверяет, является ли содержимое массивом */
   readonly isArray = computed<boolean>(

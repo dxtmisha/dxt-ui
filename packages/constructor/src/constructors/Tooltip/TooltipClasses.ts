@@ -11,6 +11,7 @@ export class TooltipClasses {
    * Идентификация текущего окна. Используется для поиска текущего компонента и его контроля
    */
   protected readonly id = `tooltip--${getElementId()}`
+  protected readonly idItem = `tooltip--${getElementId()}-item`
 
   /**
    * Constructor
@@ -28,6 +29,15 @@ export class TooltipClasses {
    */
   getId(): string {
     return this.id
+  }
+
+  /**
+   * Returns the identifier of the current item.
+   *
+   * Возвращает идентификатор текущего элемента.
+   */
+  getIdItem(): string {
+    return this.idItem
   }
 
   /**

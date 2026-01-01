@@ -2,8 +2,9 @@ import { watch } from 'vue'
 import { isDomRuntime } from '@dxtmisha/functional'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
+import { WindowClasses } from './WindowClasses'
+
 import type { WindowOpen } from './WindowOpen'
-import { WindowClasses } from './WindowClasses.ts'
 
 /**
  * A class for managing the hiding of elements outside the window when it is open.

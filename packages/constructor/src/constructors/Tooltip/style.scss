@@ -31,6 +31,8 @@
 
   &--show {
     opacity: 1;
+    pointer-events: unset;
+
     transform: none;
     transition: opacity ui.v('d.sys.transitionDuration.xs') linear,
     transform ui.v('d.sys.transitionDuration.sm') ui.v('d.sys.transitionFunction.deceleration');

@@ -15,6 +15,7 @@ import type { TooltipProps } from './props'
 export class TooltipOpen {
   protected timeout?: any
   protected timeoutHide?: any
+  protected timeoutTo?: any
 
   protected readonly event: EventItem<Window, Event, any>
 
@@ -58,9 +59,8 @@ export class TooltipOpen {
       clearTimeout(this.timeout)
       clearTimeout(this.timeoutHide)
 
-      this.status.setOpen(open)
-
       if (open) {
+        this.status.setOpen(open)
         this.status.setShow(true)
 
         await nextTick()
@@ -82,15 +82,36 @@ export class TooltipOpen {
           }, flesh ? 48 : this.props.delay)
         })
       } else {
-        this.style.resetShow()
-        this.event.stop()
+        this.timeoutTo = setTimeout(() => {
+          this.status.setOpen(open)
+          this.style.resetShow()
+          this.event.stop()
 
-        this.timeout = setTimeout(() => {
-          this.status.setShow(false)
-          this.status.setPreparation(false)
-        }, 256)
+          this.timeout = setTimeout(() => {
+            this.status.setShow(false)
+            this.status.setPreparation(false)
+          }, 256)
+        }, flesh ? 48 : 256)
       }
     }
+  }
+
+  /**
+   * Cancel hiding the element.
+   *
+   * Отмена скрытия элемента.
+   */
+  noHide() {
+    clearTimeout(this.timeoutTo)
+  }
+
+  /**
+   * Start listening to scroll events.
+   *
+   * Запуск прослушивания событий скролла.
+   */
+  eventStop() {
+    this.event.stop()
   }
 
   /**
@@ -98,5 +119,5 @@ export class TooltipOpen {
    *
    * Управление событиями скролла.
    */
-  protected readonly onScroll = () => this.toggle(false)
+  protected readonly onScroll = () => this.toggle(false, true)
 }

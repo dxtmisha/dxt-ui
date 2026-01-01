@@ -18,6 +18,7 @@ export interface TooltipPropsBasic<
   disabled?: boolean
 
   // Style
+  inDom?: boolean
   top?: boolean
   indent?: number
   delay?: number
@@ -38,7 +39,6 @@ export interface TooltipProps extends TooltipPropsBasic, TooltipPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsTooltip = {
-  arrowShow: true,
   indent: 4,
   delay: 64,
   delayHide: 0,

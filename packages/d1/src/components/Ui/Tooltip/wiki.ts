@@ -14,6 +14,7 @@ const propsNames: StorybookProps = [
   { name: 'description', type: 'string | number' },
   { name: 'disabled', type: 'boolean' },
   { name: 'indent', type: 'number' },
+  { name: 'inDom', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
   { name: 'maxWidth', type: 'string', option: ['sm', 'md', 'lg'] },

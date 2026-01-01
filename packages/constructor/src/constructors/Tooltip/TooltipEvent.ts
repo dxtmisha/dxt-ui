@@ -61,6 +61,15 @@ export class TooltipEvent {
   }
 
   /**
+   * Element management events on receiving focus on the tooltip itself.
+   *
+   * События управления элементом при получении фокуса на самом тултипе.
+   */
+  readonly onMouseoverTooltip = (): void => {
+    this.open.noHide()
+  }
+
+  /**
    * Element management events on losing focus.
    *
    * События управления элементом при потере фокуса.

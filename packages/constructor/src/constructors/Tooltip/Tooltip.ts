@@ -1,6 +1,7 @@
-import { type Ref, type ToRefs } from 'vue'
+import { onUnmounted, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 
@@ -45,6 +46,12 @@ export class Tooltip {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param TooltipClassesConstructor class for working with classes/ класс для работы с классами
+   * @param TooltipStyleConstructor class for working with styles/ класс для работы со стилями
+   * @param TooltipStatusConstructor class for working with status/ класс для работы со статусом
+   * @param TooltipPositionConstructor class for working with position/ класс для работы с позицией
+   * @param TooltipOpenConstructor class for working with open state/ класс для работы с состоянием открытия
+   * @param TooltipEventConstructor class for working with events/ класс для работы с событиями
    */
   constructor(
     protected readonly props: TooltipProps,
@@ -54,25 +61,31 @@ export class Tooltip {
     protected readonly className: string,
     protected readonly components?: DesignComp<TooltipComponents, TooltipProps>,
     protected readonly slots?: TooltipSlots,
-    protected readonly emits?: ConstrEmit<TooltipEmits>
+    protected readonly emits?: ConstrEmit<TooltipEmits>,
+    protected readonly TooltipClassesConstructor: typeof TooltipClasses = TooltipClasses,
+    protected readonly TooltipStyleConstructor: typeof TooltipStyle = TooltipStyle,
+    protected readonly TooltipStatusConstructor: typeof TooltipStatus = TooltipStatus,
+    protected readonly TooltipPositionConstructor: typeof TooltipPosition = TooltipPosition,
+    protected readonly TooltipOpenConstructor: typeof TooltipOpen = TooltipOpen,
+    protected readonly TooltipEventConstructor: typeof TooltipEvent = TooltipEvent
   ) {
-    this.classes = new TooltipClasses(this.className)
-    this.style = new TooltipStyle(this.element, this.className)
-    this.status = new TooltipStatus(this.props, this.slots)
-    this.position = new TooltipPosition(
+    this.classes = new TooltipClassesConstructor(this.className)
+    this.style = new TooltipStyleConstructor(this.element, this.className)
+    this.status = new TooltipStatusConstructor(this.props, this.slots)
+    this.position = new TooltipPositionConstructor(
       this.props,
       this.element,
       this.classes,
       this.style
     )
-    this.open = new TooltipOpen(
+    this.open = new TooltipOpenConstructor(
       this.props,
       this.refs,
       this.style,
       this.status,
       this.position
     )
-    this.event = new TooltipEvent(
+    this.event = new TooltipEventConstructor(
       this.classes,
       this.status,
       this.open
@@ -101,7 +114,8 @@ export class Tooltip {
       class: this.classes.getControl(),
       onclick: this.event.onClick,
       onmouseover: this.event.onMouseover,
-      onmouseout: this.event.onMouseout
+      onmouseout: this.event.onMouseout,
+      ...AriaStaticInclude.describedby(this.classes.getIdItem())
     }
 
     this.slotData = {
@@ -109,5 +123,9 @@ export class Tooltip {
       open: this.status.open,
       binds
     }
+
+    onUnmounted(() => {
+      this.open.eventStop()
+    })
   }
 }
