@@ -12102,6 +12102,11 @@
         name: 'd1-textareaAutosize',
         type: 'component',
       ),
+      'tooltip':(
+        index: 'tooltip',
+        name: 'd1-tooltip',
+        type: 'component',
+      ),
       'window':(
         index: 'window',
         name: 'd1-window',
@@ -12543,6 +12548,11 @@
       'textareaAutosize':(
         index: 'textareaAutosize',
         name: 'd-textareaAutosize',
+        type: 'component',
+      ),
+      'tooltip':(
+        index: 'tooltip',
+        name: 'd-tooltip',
         type: 'component',
       ),
       'window':(

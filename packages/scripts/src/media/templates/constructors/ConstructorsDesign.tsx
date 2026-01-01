@@ -42,11 +42,13 @@ export class ConstructorsDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ConstructorsEmits, P>
+    options?: ConstrOptions<COMP, ConstructorsEmits, P>,
+    ItemConstructor: typeof Constructors = Constructors
   ) {
     super(
       name,
@@ -54,7 +56,7 @@ export class ConstructorsDesign<
       options
     )
 
-    this.item = new Constructors(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

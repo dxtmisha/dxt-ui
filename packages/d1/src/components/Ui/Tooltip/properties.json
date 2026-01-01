@@ -1,0 +1,27 @@
+{
+  "main": "{d.tooltip}",
+  "arrowSize": "{ref.spacing.3}",
+  "paddingX": "{sys.spacing.md}",
+  "paddingY": "{sys.spacing.sm}",
+  "gap": "{sys.spacing.grid.paddingY}",
+  "color": "{sys.palette.surface}",
+  "color-opacity": "{sys.opacity.primary.high}",
+  "background-color": "{sys.palette.scrim}",
+  "background-opacity": "{sys.opacity.primary.medium}",
+  "border-radius": "{sys.rounded.md}",
+  "box-shadow": "{sys.shadow.md}",
+  "backdrop-filter": "{sys.blur.md}",
+  "#label": {
+    "link|font": "{font.titleMedium}"
+  },
+  "#description": {
+    "link|font": "{font.bodyMedium}",
+    "color-opacity": "{sys.opacity.primary.medium}"
+  },
+  "max-width": {
+    "sm": "{ref.spacing.64}",
+    "md": "{ref.spacing.80}",
+    "lg": "{ref.spacing.96}",
+    "_default": "md"
+  }
+}

@@ -1,21 +1,20 @@
-import { VNode, Ref } from 'vue';
+import { VNode } from 'vue';
 import { ConstrOptions, ConstrStyles, DesignConstructorAbstract } from '@dxtmisha/functional';
-import { Arrow } from './Arrow';
-import { ArrowPropsBasic } from './props';
-import { ArrowClasses, ArrowComponents, ArrowEmits, ArrowExpose, ArrowSlots } from './types';
+import { Tooltip } from './Tooltip';
+import { TooltipPropsBasic } from './props';
+import { TooltipClasses, TooltipComponents, TooltipEmits, TooltipExpose, TooltipSlots } from './types';
 /**
- * ArrowDesign
+ * TooltipDesign
  */
-export declare class ArrowDesign<COMP extends ArrowComponents, EXPOSE extends ArrowExpose, CLASSES extends ArrowClasses, P extends ArrowPropsBasic> extends DesignConstructorAbstract<HTMLDivElement, COMP, ArrowEmits, EXPOSE, ArrowSlots, CLASSES, P> {
-    protected readonly item: Arrow;
-    protected readonly points: Ref<string, string>;
+export declare class TooltipDesign<COMP extends TooltipComponents, EXPOSE extends TooltipExpose, CLASSES extends TooltipClasses, P extends TooltipPropsBasic> extends DesignConstructorAbstract<HTMLDivElement, COMP, TooltipEmits, EXPOSE, TooltipSlots, CLASSES, P> {
+    protected readonly item: Tooltip;
     /**
      * Constructor
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ArrowEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, TooltipEmits, P>);
     /**
      * Initialization of all the necessary properties for work
      *
@@ -39,23 +38,23 @@ export declare class ArrowDesign<COMP extends ArrowComponents, EXPOSE extends Ar
      *
      * Метод для рендеринга.
      */
-    protected initRender(): VNode | undefined;
+    protected initRender(): VNode[];
     /**
-     * Method for rendering an arrow.
+     * Rendering of the control slot.
      *
-     * Метод для рендеринга стрелки.
+     * Рендеринг слота управления.
      */
-    protected renderArrow(): VNode[];
+    protected readonly renderControl: () => VNode[];
     /**
-     * Method for rendering a border.
+     * Rendering of the tooltip.
      *
-     * Метод для рендеринга границы.
+     * Рендеринг тултипа.
      */
-    protected renderBorder(): VNode[];
+    protected readonly renderTooltip: () => VNode[];
     /**
-     * Gets the points for the arrow.
+     * Rendering of the body slot.
      *
-     * Получает точки для стрелки.
+     * Рендеринг слота тела.
      */
-    protected readonly getRePoints: () => string;
+    protected readonly renderBody: () => VNode[];
 }

@@ -38,6 +38,7 @@ import { wikiProgress } from './wikiProgress'
 import { wikiScrollbar } from './wikiScrollbar'
 import { wikiSelect } from './wikiSelect'
 import { wikiSelectValue } from './wikiSelectValue'
+import { wikiTooltip } from './wikiTooltip'
 import { wikiWindow } from './wikiWindow'
 
 export const wiki: StorybookArgsToList = {
@@ -79,5 +80,6 @@ export const wiki: StorybookArgsToList = {
   ...wikiScrollbar,
   ...wikiSelect,
   ...wikiSelectValue,
+  ...wikiTooltip,
   ...wikiWindow
 }

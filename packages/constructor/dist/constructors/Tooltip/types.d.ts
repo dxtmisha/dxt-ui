@@ -1,42 +1,47 @@
 import { ConstrClass } from '@dxtmisha/functional';
+import { LabelSlots } from '../../types/labelTypes';
+import { DescriptionSlots } from '../../types/descriptionTypes';
+import { TooltipControl } from './basicTypes';
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type ArrowComponents = {};
+export type TooltipComponents = {};
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type ArrowEmits = {};
+export type TooltipEmits = {
+    tooltip: [open: boolean];
+};
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface ArrowExpose {
-    update: () => void;
+export interface TooltipExpose {
+    toggle(open: boolean, flash?: boolean): Promise<void>;
 }
 /**
  * Type describing available slots.
  *
  * Тип, описывающий доступные слоты.
  */
-export interface ArrowSlots {
+export interface TooltipSlots extends LabelSlots, DescriptionSlots {
+    control?(props: TooltipControl): any;
+    body?(): any;
 }
 /**
  * Type describing subclasses.
  *
  * Тип, описывающий подклассы.
  */
-export type ArrowClasses = {
+export type TooltipClasses = {
     main: ConstrClass;
-    mask: string;
-    arrow: string;
-    arrowLine: string;
-    arrowArea: string;
-    border: string;
-    borderHidden: string;
+    context: string;
+    label: string;
+    description: string;
+    body: string;
 };

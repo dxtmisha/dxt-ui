@@ -1,7 +1,11 @@
 import { Ref, ToRefs, ComputedRef } from 'vue';
-import { ConstrEmit, ConstrStyles, DesignComp } from '@dxtmisha/functional';
+import { ConstrClassObject, ConstrEmit, ConstrStyles, DesignComp } from '@dxtmisha/functional';
 import { ArrowElement } from './ArrowElement';
+import { ArrowElementTarget } from './ArrowElementTarget';
 import { ArrowParent } from './ArrowParent';
+import { ArrowPosition } from './ArrowPosition';
+import { ArrowEvent } from './ArrowEvent';
+import { ArrowDirection } from './basicTypes';
 import { ArrowComponents, ArrowEmits, ArrowSlots } from './types';
 import { ArrowProps } from './props';
 /**
@@ -16,11 +20,11 @@ export declare class Arrow {
     protected readonly components?: DesignComp<ArrowComponents, ArrowProps> | undefined;
     protected readonly slots?: ArrowSlots | undefined;
     protected readonly emits?: ConstrEmit<ArrowEmits> | undefined;
-    readonly id: string;
-    readonly idMask: string;
     readonly elementItem: ArrowElement;
+    readonly elementTarget: ArrowElementTarget;
     readonly parent: ArrowParent;
-    readonly markUrl: string;
+    readonly position: ArrowPosition;
+    readonly event: ArrowEvent;
     /**
      * Constructor
      * @param props input data/ входные данные
@@ -33,6 +37,10 @@ export declare class Arrow {
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      */
     constructor(props: ArrowProps, refs: ToRefs<ArrowProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ArrowComponents, ArrowProps> | undefined, slots?: ArrowSlots | undefined, emits?: ConstrEmit<ArrowEmits> | undefined);
+    /** Direction of the arrow/ Направление стрелки */
+    readonly direction: ComputedRef<ArrowDirection>;
+    /** Classes for the component/ Классы для компонента */
+    readonly classes: ComputedRef<ConstrClassObject>;
     /** Styles for the component/ Стили для компонента */
     readonly styles: ComputedRef<ConstrStyles>;
 }

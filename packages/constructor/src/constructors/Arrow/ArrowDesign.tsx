@@ -2,12 +2,14 @@ import { h, nextTick, ref, type VNode, watch } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  isDomRuntime
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Arrow } from './Arrow'
 
+import { ArrowDirection } from './basicTypes'
 import {
   type ArrowPropsBasic
 } from './props'
@@ -18,7 +20,6 @@ import {
   type ArrowExpose,
   type ArrowSlots
 } from './types'
-import { ArrowDirection } from './basicTypes.ts'
 
 /**
  * ArrowDesign
@@ -45,11 +46,13 @@ export class ArrowDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor arrow item class/ класс элемента стрелки
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ArrowEmits, P>
+    options?: ConstrOptions<COMP, ArrowEmits, P>,
+    ItemConstructor: typeof Arrow = Arrow
   ) {
     super(
       name,
@@ -57,7 +60,7 @@ export class ArrowDesign<
       options
     )
 
-    this.item = new Arrow(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -127,7 +130,11 @@ export class ArrowDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
+  protected initRender(): VNode | undefined {
+    if (!isDomRuntime()) {
+      return undefined
+    }
+
     const children: any[] = [
       ...this.renderArrow()
     ]

@@ -37,6 +37,11 @@ export class Arrow {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param ArrowElementConstructor class for working with the arrow element/ класс для работы с элементом стрелки
+   * @param ArrowElementTargetConstructor class for working with the target element of the arrow/ класс для работы с целевым элементом стрелки
+   * @param ArrowParentConstructor class for working with the parent element of the arrow/ класс для работы с родительским элементом стрелки
+   * @param ArrowPositionConstructor class for working with the position of the arrow/ класс для работы с позицией стрелки
+   * @param ArrowEventConstructor class for working with arrow events/ класс для работы с событиями стрелки
    */
   constructor(
     protected readonly props: ArrowProps,
@@ -46,27 +51,32 @@ export class Arrow {
     protected readonly className: string,
     protected readonly components?: DesignComp<ArrowComponents, ArrowProps>,
     protected readonly slots?: ArrowSlots,
-    protected readonly emits?: ConstrEmit<ArrowEmits>
+    protected readonly emits?: ConstrEmit<ArrowEmits>,
+    protected readonly ArrowElementConstructor: typeof ArrowElement = ArrowElement,
+    protected readonly ArrowElementTargetConstructor: typeof ArrowElementTarget = ArrowElementTarget,
+    protected readonly ArrowParentConstructor: typeof ArrowParent = ArrowParent,
+    protected readonly ArrowPositionConstructor: typeof ArrowPosition = ArrowPosition,
+    protected readonly ArrowEventConstructor: typeof ArrowEvent = ArrowEvent
   ) {
-    this.elementItem = new ArrowElement(
+    this.elementItem = new ArrowElementConstructor(
       this.element,
       this.className
     )
-    this.elementTarget = new ArrowElementTarget(this.props)
-    this.parent = new ArrowParent(
+    this.elementTarget = new ArrowElementTargetConstructor(this.props)
+    this.parent = new ArrowParentConstructor(
       this.element,
       this.className,
       this.elementItem
     )
 
-    this.position = new ArrowPosition(
+    this.position = new ArrowPositionConstructor(
       this.props,
       this.elementItem,
       this.elementTarget,
       this.parent
     )
 
-    this.event = new ArrowEvent(
+    this.event = new ArrowEventConstructor(
       this.props,
       this.refs,
       this.element,

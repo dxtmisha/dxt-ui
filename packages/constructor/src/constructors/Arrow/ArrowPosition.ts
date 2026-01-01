@@ -49,7 +49,7 @@ export class ArrowPosition {
     this.border.value = this.initBorder()
     this.direction.value = this.initDirection()
     this.shift.value = this.initShift()
-
+    console.log('this.direction.value', this.direction.value)
     requestAnimationFrame(() => {
       this.clipPath.value = this.initClipPath()
     })
@@ -109,7 +109,7 @@ export class ArrowPosition {
 
     const elementItemRect = this.elementItem.getRect()
     const elementTargetRect = this.elementTarget.getRect()
-
+    console.log(this.border.value)
     if (
       this.border.value
       && elementItemRect

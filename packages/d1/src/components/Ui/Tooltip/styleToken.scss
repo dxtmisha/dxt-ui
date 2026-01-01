@@ -1,0 +1,67 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Tooltip/style" as Tooltip;
+
+@include ui.initDesignBasic('d1.tooltip') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Tooltip.mixinTooltip;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-tooltip-arrowSize: var(--d1-ref-spacing-3);
+    --d1-tooltip-paddingX: var(--d1-sys-spacing-md);
+    --d1-tooltip-paddingY: var(--d1-sys-spacing-sm);
+    
+    gap: var(--d1-sys-spacing-grid-paddingY);
+    
+    @include ui.color(#{var(--d1-sys-palette-surface)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+    
+    @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-medium)});
+    
+    border-radius: var(--d1-sys-rounded-md);
+    
+    box-shadow: var(--d1-sys-shadow-md);
+    backdrop-filter: var(--d1-sys-blur-md);
+    
+    &__label {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+      font-weight: var(--d1-sys-font-weight-medium);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+      letter-spacing: var(--d1-sys-letterSpacing-sm);
+    }
+    
+    &__description {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-md);
+      
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-medium)}); @include ui.color('init');
+    }
+    
+    &--maxWidth {
+      &--sm {
+        max-width: var(--d1-ref-spacing-64);
+      }
+      
+      &--md {
+        max-width: var(--d1-ref-spacing-80);
+      }
+      
+      &--lg {
+        max-width: var(--d1-ref-spacing-96);
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}
