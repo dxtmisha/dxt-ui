@@ -87,6 +87,7 @@ export class Tooltip {
     )
     this.event = new TooltipEventConstructor(
       this.classes,
+      this.style,
       this.status,
       this.open
     )

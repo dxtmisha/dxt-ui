@@ -53,6 +53,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  inDom: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Indicates whether the window is in the DOM',
+        ru: 'Указывает, присутствует ли окно в DOM'
+      }
+    }
+  },
   isSkeleton: {
     type: StorybookControl.boolean,
     options: {

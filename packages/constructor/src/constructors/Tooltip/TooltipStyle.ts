@@ -67,6 +67,24 @@ export class TooltipStyle {
 
     if (element) {
       element.classList.toggle(`${this.className}--show`, status)
+
+      if (!status) {
+        this.setMove(status)
+      }
+    }
+  }
+
+  /**
+   * Changes the move status.
+   *
+   * Изменяет статус перемещения.
+   * @param status the value of the current state/ значение текущего состояния
+   */
+  setMove(status: boolean) {
+    const element = this.element.value
+
+    if (element) {
+      element.classList.toggle(`${this.className}--move`, status)
     }
   }
 

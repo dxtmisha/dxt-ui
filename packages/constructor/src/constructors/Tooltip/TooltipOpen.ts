@@ -76,7 +76,7 @@ export class TooltipOpen {
               this.event.start()
 
               if (this.props.delayHide) {
-                this.timeoutHide = setTimeout(() => this.toggle(false), this.props.delayHide)
+                this.timeoutHide = setTimeout(() => this.toggle(false), Number(this.props.delayHide))
               }
             })
           }, flesh ? 48 : this.props.delay)

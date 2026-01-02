@@ -40,6 +40,7 @@ import { wikiMdxSelect } from './Select/wikiMdxSelect'
 import { wikiMdxSelectValue } from './SelectValue/wikiMdxSelectValue'
 import { wikiMdxSkeleton } from './Skeleton/wikiMdxSkeleton'
 import { wikiMdxTextareaAutosize } from './TextareaAutosize/wikiMdxTextareaAutosize'
+import { wikiMdxTooltip } from './Tooltip/wikiMdxTooltip'
 import { wikiMdxWindow } from './Window/wikiMdxWindow'
 
 export const wikiMdx: StorybookComponentsMdx = [
@@ -83,5 +84,6 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxSelectValue,
   wikiMdxSkeleton,
   wikiMdxTextareaAutosize,
+  wikiMdxTooltip,
   wikiMdxWindow
 ]

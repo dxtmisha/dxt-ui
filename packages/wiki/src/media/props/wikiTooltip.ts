@@ -10,15 +10,44 @@ import {
  * Объект wikiTooltip содержит описание всех свойств для компонента Tooltip
  */
 export const wikiTooltip: StorybookArgsToList = {
-  arrow: {
+  'tooltip.delay': {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Delay before showing the tooltip',
+        ru: 'Задержка перед появлением подсказки'
+      }
+    }
+  },
+  'tooltip.delayHide': {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Delay before hiding the tooltip',
+        ru: 'Задержка перед скрытием подсказки'
+      }
+    }
+  },
+  'tooltip.indent': {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Indent from the element',
+        ru: 'Отступ от элемента'
+      }
+    }
+  },
+  'tooltip.top': {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Adding an arrow pointing to the element',
-        ru: 'Добавление стрелки, указывающей на элемент'
-      },
-      value: false
+        en: 'Displaying the tooltip on top of the element',
+        ru: 'Отображение подсказки поверх элемента'
+      }
     }
   }
 }

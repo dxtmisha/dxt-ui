@@ -1,0 +1,34 @@
+Component for displaying pop-up tooltips that provide additional information about an element on hover or focus.
+
+Tooltip is automatically positioned relative to the target element and can contain a text description or custom content. The component supports configuring show and hide delays, and can be equipped with an indicator (arrow) for visual connection.
+
+**Key Features:**
+
+- Automatic positioning
+- Support for an indicator (arrow)
+- Configuration of delays (delay, delayHide)
+- Visibility control via properties or events
+- Slot support for content customization
+- Adaptability and accessibility
+
+**Typical Use Cases:**
+
+- Explanations for icons and buttons
+- Displaying full text for truncated elements
+- Contextual hints for input fields
+- Additional information in the interface
+
+```html
+<script setup>
+import { Tooltip } from 'dxt-ui'
+</script>
+
+<template>
+  <div class="p-4">
+    <Tooltip label="Tooltip text">
+      <button>Hover me</button>
+    </Tooltip>
+  </div>
+</template>
+```
+

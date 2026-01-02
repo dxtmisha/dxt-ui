@@ -354,6 +354,18 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  maxWidth: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets the maximum width of the component',
+        ru: 'Задает максимальную ширину компонента'
+      }
+    }
+  },
   menuAttrs: {
     type: StorybookControl.object,
     options: {

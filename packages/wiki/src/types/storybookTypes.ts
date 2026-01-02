@@ -24,6 +24,8 @@ export enum StorybookCategory {
   adaptive = 'Adaptive',
   /** ARIA category / Категория ARIA */
   aria = 'ARIA',
+  /** Arrow category / Категория стрелок */
+  arrow = 'Arrow',
   /** Bars category / Категория баров */
   bars = 'Bars',
   /** Counter category / Категория счетчика */

@@ -78,6 +78,8 @@ export class WikiStorybookItem {
         return 5200
       case StorybookCategory.form:
         return 6000
+      case StorybookCategory.arrow:
+        return 6900
       case StorybookCategory.hook:
         return 7000
       case StorybookCategory.style:

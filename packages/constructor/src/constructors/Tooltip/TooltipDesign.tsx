@@ -166,6 +166,7 @@ export class TooltipDesign<
               class: this.classes?.value.main,
               onMouseover: this.item.event.onMouseoverTooltip,
               onMouseout: this.item.event.onMouseout,
+              onTransitionend: this.item.event.onTransitionend,
               ...AriaStaticInclude.role('tooltip')
             },
             children

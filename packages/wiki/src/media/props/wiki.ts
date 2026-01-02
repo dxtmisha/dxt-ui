@@ -12,6 +12,7 @@ import { wikiText } from './wikiText'
 import { wikiHook } from './wikiHook'
 
 import { wikiActionsInclude } from './wikiActionsInclude'
+import { wikiArrowInclude } from './wikiArrowInclude'
 import { wikiBarsInclude } from './wikiBarsInclude'
 import { wikiFieldCounterInclude } from './wikiFieldCounterInclude'
 import { wikiIconInclude } from './wikiIconInclude'
@@ -54,6 +55,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiHook,
 
   ...wikiActionsInclude,
+  ...wikiArrowInclude,
   ...wikiBarsInclude,
   ...wikiFieldCounterInclude,
   ...wikiIconInclude,

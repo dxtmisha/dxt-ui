@@ -1,6 +1,7 @@
 import { TooltipOpen } from './TooltipOpen'
 import { TooltipStatus } from './TooltipStatus'
 import { TooltipClasses } from './TooltipClasses'
+import { TooltipStyle } from './TooltipStyle.ts'
 
 /**
  * Class for working with events.
@@ -14,11 +15,13 @@ export class TooltipEvent {
   /**
    * Constructor
    * @param classes object for working with the class/ объект для работы с классом
+   * @param style object for working with styles/ объект для работы со стилями
    * @param status object for working with statuses/ объект для работы со статусами
    * @param open data opening management/ управление открытием данных
    */
   constructor(
     protected readonly classes: TooltipClasses,
+    protected readonly style: TooltipStyle,
     protected readonly status: TooltipStatus,
     protected readonly open: TooltipOpen
   ) {
@@ -80,6 +83,21 @@ export class TooltipEvent {
       this.open.toggle(
         Boolean(this.classes.findControlByTarget(relatedTarget as HTMLDivElement))
       ).then()
+    }
+  }
+
+  /**
+   * Event of the end of the transition.
+   *
+   * Событие окончания трансформации.
+   * @param event event data/ данные события
+   */
+  readonly onTransitionend = (event: TransitionEvent): void => {
+    if (
+      event.propertyName === 'transform'
+      && this.status.open.value
+    ) {
+      this.style.setMove(true)
     }
   }
 }

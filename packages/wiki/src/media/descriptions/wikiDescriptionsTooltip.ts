@@ -39,18 +39,10 @@ export const wikiDescriptionsTooltip: StorybookComponentsDescriptionItem = {
         </template>
       </DesignComponent>
     `,
-  stories: [
-    {
-      id: 'TooltipBasic',
-      name: {
-        en: 'Basic',
-        ru: 'Базовые'
-      },
-      template: `
-        <div class="wiki-storybook-flex">
-
-        </div>
-      `
-    }
-  ]
+  stories: [],
+  documentation: {
+    body: `
+<StorybookDescriptions componentName={'Tooltip'} type={'tooltip'}/>
+    `
+  }
 }

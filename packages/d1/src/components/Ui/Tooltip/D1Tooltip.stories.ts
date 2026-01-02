@@ -44,15 +44,4 @@ export const Tooltip: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const TooltipBasic: Story = {
-  name: 'Базовые',
-  render: () => ({
-    components: { D1Tooltip },
-    template: `
-        <div class="wiki-storybook-flex">
-
-        </div>
-    `
-  })
-}
 // :story-items [!] System label / Системная метка
