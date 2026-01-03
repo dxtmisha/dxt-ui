@@ -1,11 +1,12 @@
 import { nextTick, type ToRefs, watch } from 'vue'
-import { EventItem } from '@dxtmisha/functional'
+import { type ConstrEmit, EventItem } from '@dxtmisha/functional'
 
 import { TooltipStyle } from './TooltipStyle'
 import { TooltipStatus } from './TooltipStatus'
 import { TooltipPosition } from './TooltipPosition'
 
 import type { TooltipProps } from './props'
+import type { TooltipEmits } from './types.ts'
 
 /**
  * Class for managing the status of an open window.
@@ -26,13 +27,15 @@ export class TooltipOpen {
    * @param style object for working with styles/ объект для работы со стилями
    * @param status object for working with statuses/ объект для работы со статусами
    * @param position object for working with the position of the element/ объект для работы с положением элемента
+   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
     protected readonly props: Readonly<TooltipProps>,
     refs: ToRefs<TooltipProps>,
     protected readonly style: TooltipStyle,
     protected readonly status: TooltipStatus,
-    protected readonly position: TooltipPosition
+    protected readonly position: TooltipPosition,
+    protected readonly emits?: ConstrEmit<TooltipEmits>
   ) {
     this.event = new EventItem(window, ['scroll-sync'], this.onScroll)
 
@@ -74,6 +77,7 @@ export class TooltipOpen {
             requestAnimationFrame(() => {
               this.style.setShow(true)
               this.event.start()
+              this.emits?.('tooltip', true)
 
               if (this.props.delayHide) {
                 this.timeoutHide = setTimeout(() => this.toggle(false), Number(this.props.delayHide))
@@ -90,7 +94,8 @@ export class TooltipOpen {
           this.timeout = setTimeout(() => {
             this.status.setShow(false)
             this.status.setPreparation(false)
-          }, 256)
+            this.emits?.('tooltip', false)
+          }, 128)
         }, flesh ? 48 : 256)
       }
     }

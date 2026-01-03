@@ -44,4 +44,33 @@ export const Tooltip: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const TooltipAllSlots: Story = {
+  name: 'Демонстрация всех слотов',
+  render: () => ({
+    components: { D1Tooltip },
+    template: `
+        <D1Tooltip>
+          <template #control="{ binds }">
+            <button class="wiki-storybook-button" v-bind="binds">
+              Hover me (All Slots)
+            </button>
+          </template>
+
+          <template #default>
+            Default Slot
+          </template>
+
+          <template #description>
+            Description Slot
+          </template>
+
+          <template #body>
+            <div class="wiki-storybook-item--padding">
+              Body Slot Content
+            </div>
+          </template>
+        </D1Tooltip>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

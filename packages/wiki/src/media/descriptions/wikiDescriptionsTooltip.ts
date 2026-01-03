@@ -39,10 +39,51 @@ export const wikiDescriptionsTooltip: StorybookComponentsDescriptionItem = {
         </template>
       </DesignComponent>
     `,
-  stories: [],
+  stories: [
+    {
+      id: 'TooltipAllSlots',
+      name: {
+        en: 'All slots demonstration',
+        ru: 'Демонстрация всех слотов'
+      },
+      template: `
+        <DesignComponent>
+          <template #control="{ binds }">
+            <button class="wiki-storybook-button" v-bind="binds">
+              Hover me (All Slots)
+            </button>
+          </template>
+
+          <template #default>
+            Default Slot
+          </template>
+
+          <template #description>
+            Description Slot
+          </template>
+
+          <template #body>
+            <div class="wiki-storybook-item--padding">
+              Body Slot Content
+            </div>
+          </template>
+        </DesignComponent>
+      `
+    }
+  ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Tooltip'} type={'tooltip'}/>
+    `,
+    events: `
+<StorybookDescriptions componentName={'Tooltip'} type={'event.tooltip'}/>
+    `,
+    slots: `
+<Canvas of={Component.TooltipAllSlots}/>
+<StorybookDescriptions componentName={'Tooltip'} type={'slot.control'}/>
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+<StorybookDescriptions componentName={'Slot'} type={'body'}/>
     `
   }
 }

@@ -1,5 +1,7 @@
 import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
+import slotBodyEn from './body.en.mdx'
+import slotBodyRu from './body.ru.mdx'
 import slotCaptionEn from './caption.en.mdx'
 import slotCaptionRu from './caption.ru.mdx'
 import slotControlEn from './control.en.mdx'
@@ -28,6 +30,10 @@ import slotTrailingRu from './trailing.ru.mdx'
 export const wikiMdxSlot: StorybookComponentsMdxItem = {
   name: 'Slot',
   descriptions: {
+    body: {
+      en: slotBodyEn,
+      ru: slotBodyRu
+    },
     caption: {
       en: slotCaptionEn,
       ru: slotCaptionRu
