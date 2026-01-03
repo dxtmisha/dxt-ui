@@ -11,6 +11,11 @@ export interface TextClosePropsInclude {
   textClose?: TextValue
 }
 
+export interface TextCopiedClipboardPropsInclude {
+  /** Copied to the clipboard text/ Текст о копировании в буфер обмена */
+  textCopiedClipboard?: TextValue
+}
+
 export interface TextEntriesMatchPropsInclude {
   /** Text entries match/ Текст о несовпадении записей */
   textEntriesMatch?: TextValue
@@ -22,6 +27,7 @@ export interface TextOkPropsInclude {
 }
 
 export interface TextAllPropsInclude extends TextClosePropsInclude,
+  TextCopiedClipboardPropsInclude,
   TextEntriesMatchPropsInclude,
   TextOkPropsInclude {
 }

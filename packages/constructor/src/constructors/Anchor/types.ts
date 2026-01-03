@@ -1,11 +1,12 @@
 import type { ConstrClass } from '@dxtmisha/functional'
+import type { TooltipComponentInclude } from '../Tooltip'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type AnchorComponents = {}
+export type AnchorComponents = TooltipComponentInclude
 
 /**
  * Type describing available events.
@@ -28,6 +29,7 @@ export interface AnchorExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface AnchorSlots {
+  default?(): any
 }
 
 /**

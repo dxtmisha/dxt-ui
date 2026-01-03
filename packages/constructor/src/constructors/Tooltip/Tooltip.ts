@@ -52,6 +52,9 @@ export class Tooltip {
    * @param TooltipPositionConstructor class for working with position/ класс для работы с позицией
    * @param TooltipOpenConstructor class for working with open state/ класс для работы с состоянием открытия
    * @param TooltipEventConstructor class for working with events/ класс для работы с событиями
+   * @param ArrowIncludeConstructor class for working with arrow/ класс для работы со стрелкой
+   * @param LabelIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
    */
   constructor(
     protected readonly props: TooltipProps,
@@ -67,7 +70,10 @@ export class Tooltip {
     protected readonly TooltipStatusConstructor: typeof TooltipStatus = TooltipStatus,
     protected readonly TooltipPositionConstructor: typeof TooltipPosition = TooltipPosition,
     protected readonly TooltipOpenConstructor: typeof TooltipOpen = TooltipOpen,
-    protected readonly TooltipEventConstructor: typeof TooltipEvent = TooltipEvent
+    protected readonly TooltipEventConstructor: typeof TooltipEvent = TooltipEvent,
+    protected readonly ArrowIncludeConstructor: typeof ArrowInclude = ArrowInclude,
+    protected readonly LabelIncludeConstructor: typeof LabelInclude = LabelInclude,
+    protected readonly DescriptionIncludeConstructor: typeof DescriptionInclude = DescriptionInclude
   ) {
     this.classes = new TooltipClassesConstructor(this.className)
     this.style = new TooltipStyleConstructor(this.element, this.className)
@@ -92,20 +98,20 @@ export class Tooltip {
       this.open
     )
 
-    this.arrow = new ArrowInclude(
+    this.arrow = new ArrowIncludeConstructor(
       this.props,
       this.className,
       this.components,
       this.classes.getSelectorControl()
     )
 
-    this.label = new LabelInclude(
+    this.label = new LabelIncludeConstructor(
       this.props,
       this.className,
       undefined,
       this.slots
     )
-    this.description = new DescriptionInclude(
+    this.description = new DescriptionIncludeConstructor(
       this.props,
       this.className,
       this.slots

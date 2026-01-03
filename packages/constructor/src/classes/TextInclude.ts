@@ -19,6 +19,7 @@ export class TextInclude {
    */
   static readonly list = shallowRef<TextList>({
     close: 'Close',
+    copiedClipboard: 'Copied to the clipboard',
     entriesMatch: 'Entries do not match',
     ok: 'OK'
   })
@@ -48,6 +49,11 @@ export class TextInclude {
   /** Close text/ Текст закрытия */
   readonly close = computed<string | undefined>(
     () => this.getText('close', this.props.textClose)
+  )
+
+  /** Copied to the clipboard text/ Текст о копировании в буфер обмена */
+  readonly copiedClipboard = computed<string | undefined>(
+    () => this.getText('copiedClipboard', this.props.textCopiedClipboard)
   )
 
   /** Entries match text/ Текст о несовпадении записей */

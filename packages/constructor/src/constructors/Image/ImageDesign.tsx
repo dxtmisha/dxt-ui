@@ -43,11 +43,13 @@ export class ImageDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor image item class/ класс элемента изображения
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ImageEmits, P>
+    options?: ConstrOptions<COMP, ImageEmits, P>,
+    ItemConstructor: typeof Image = Image
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class ImageDesign<
       options
     )
 
-    this.item = new Image(
+    this.item = new ItemConstructor(
       this.props,
       this.element,
       this.getName(),
@@ -155,9 +157,9 @@ export class ImageDesign<
     const children: any[] = []
 
     if (list) {
-      list.forEach((item) => {
-        children.push(h('source', item))
-      })
+      list.forEach(
+        item => children.push(h('source', item))
+      )
     }
 
     children.push(this.renderImgItem())

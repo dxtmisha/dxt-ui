@@ -67,6 +67,7 @@ export * from './functions/getRequestString';
 export * from './functions/getStepPercent';
 export * from './functions/getStepValue';
 export * from './functions/goScroll';
+export * from './functions/goScrollSmooth';
 export * from './functions/inArray';
 export * from './functions/initScrollbarOffset';
 export * from './functions/intersectKey';

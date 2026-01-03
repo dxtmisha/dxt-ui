@@ -26,7 +26,7 @@ function kt(i, t = "=", e = "&") {
 function q(i) {
   return i == null;
 }
-function S(i, t) {
+function D(i, t) {
   if (i) {
     if (t && i === "0")
       return !0;
@@ -87,7 +87,7 @@ function st(i, t) {
 function At(i) {
   return i instanceof Function || typeof i == "function";
 }
-function E(i) {
+function I(i) {
   return At(i) ? i() : i;
 }
 function rt() {
@@ -140,7 +140,7 @@ class T {
    */
   set(t) {
     var e;
-    return this.value = E(t), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? this.remove() : (e = this.getMethod()) == null || e.setItem(this.getIndex(), JSON.stringify({
+    return this.value = I(t), this.age = (/* @__PURE__ */ new Date()).getTime(), this.value === void 0 ? this.remove() : (e = this.getMethod()) == null || e.setItem(this.getIndex(), JSON.stringify({
       value: this.value,
       age: this.age
     })), this.value;
@@ -439,7 +439,7 @@ const jt = "geo-code", p = class p {
   }
 };
 c(p, "storage", new T(jt)), c(p, "location"), c(p, "item"), c(p, "language"), c(p, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), p.location = p.findLocation(), p.language = p.findLanguage(p.location), p.item = p.getByCode(p.location);
-let b = p;
+let w = p;
 function Nt(i) {
   return l() && i === window;
 }
@@ -694,7 +694,7 @@ class lt {
     return !1;
   }
 }
-const dt = "ui-loading", K = class K {
+const dt = "ui-loading", V = class V {
   /**
    * Check if the loader is active now.
    *
@@ -741,8 +741,8 @@ const dt = "ui-loading", K = class K {
     (t = this.event) == null || t.dispatch({ loading: this.is() });
   }
 };
-c(K, "value", 0), c(K, "event"), l() && (K.event = new lt(window, dt));
-let x = K;
+c(V, "value", 0), c(V, "event"), l() && (V.event = new lt(window, dt));
+let x = V;
 class zt {
   constructor() {
     /** Default headers/ Заголовки по умолчанию */
@@ -761,7 +761,7 @@ class zt {
         this.headers,
         t
       );
-      return S(e) && (s["Content-Type"] = e), s;
+      return D(e) && (s["Content-Type"] = e), s;
     }
   }
   /**
@@ -773,7 +773,7 @@ class zt {
     return k(t) && (this.headers = t), this;
   }
 }
-var D = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(D || {});
+var S = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(S || {});
 class Zt {
   constructor() {
     /** Default request data/ Данные запроса по умолчанию */
@@ -831,7 +831,7 @@ class Zt {
       t.has(s) || t.set(s, e[s]);
   }
 }
-class Kt {
+class Vt {
   constructor() {
     c(this, "value");
   }
@@ -948,8 +948,8 @@ class Kt {
     this.value || (this.value = {}), this.value[t] = e;
   }
 }
-async function Vt(i) {
-  const t = E(i);
+async function Kt(i) {
+  const t = I(i);
   return t instanceof Promise ? await t : t;
 }
 function Y(i, t) {
@@ -1017,8 +1017,8 @@ class Yt {
   async emulator(t) {
     const {
       path: e = "",
-      method: s = D.get,
-      global: n = s === D.get,
+      method: s = S.get,
+      global: n = s === S.get,
       devMode: o = !1
     } = t;
     if (n || this.isDevMode(o)) {
@@ -1036,7 +1036,7 @@ class Yt {
    * @param item cached item/ кешированный элемент
    */
   isDisable(t) {
-    return !!E(t == null ? void 0 : t.disable);
+    return !!I(t == null ? void 0 : t.disable);
   }
   /**
    * Checks if the path matches the cached one.
@@ -1076,7 +1076,7 @@ class Yt {
    */
   isResponse(t, e) {
     const s = this.requestDefault.request(t == null ? void 0 : t.request);
-    return e === s || s === "*any" || S(e) && S(s) && k(e) && k(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
+    return e === s || s === "*any" || D(e) && D(s) && k(e) && k(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
       (n, [o, a]) => n && (a === (e == null ? void 0 : e[o]) || a === "*any"),
       !0
     );
@@ -1090,7 +1090,7 @@ class Yt {
    */
   fetch(t, e) {
     return this.startResponseLoading(), new Promise((s) => {
-      Vt(
+      Kt(
         At(t.response) ? t.response(e) : t.response
       ).then((n) => {
         t != null && t.lag ? (x.show(), setTimeout(() => {
@@ -1189,7 +1189,7 @@ class qt {
     return this.callbackEnd && (e = await this.callbackEnd(t)), e;
   }
 }
-const w = class w {
+const b = class b {
   /**
    * Is the server local.
    *
@@ -1222,7 +1222,7 @@ const w = class w {
    * @param api adding a path to the site’s API/ добавление пути к API сайта
    */
   static getUrl(t, e = !0) {
-    return `${e ? this.url : ""}${t}`.replace("{locale}", b.getLocation()).replace("{country}", b.getCountry()).replace("{language}", b.getLanguage());
+    return `${e ? this.url : ""}${t}`.replace("{locale}", w.getLocation()).replace("{country}", w.getCountry()).replace("{language}", w.getLanguage());
   }
   /**
    * Getting data for the body.
@@ -1231,10 +1231,10 @@ const w = class w {
    * @param request this request/ данный запрос
    * @param method method for request/ метод запрос
    */
-  static getBody(t = {}, e = D.get) {
+  static getBody(t = {}, e = S.get) {
     if (t instanceof FormData)
       return t;
-    if (e !== D.get && S(t))
+    if (e !== S.get && D(t))
       return R(t) ? t : JSON.stringify(t);
   }
   /**
@@ -1245,10 +1245,10 @@ const w = class w {
    * @param path path to request/ путь к запрос
    * @param method method for request/ метод запрос
    */
-  static getBodyForGet(t, e = "", s = D.get) {
-    if (s === D.get) {
+  static getBodyForGet(t, e = "", s = S.get) {
+    if (s === S.get) {
       const n = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? kt(t) : t;
-      if (S(o))
+      if (D(o))
         return `${n}${o}`;
     }
     return "";
@@ -1259,7 +1259,7 @@ const w = class w {
    * Изменяет данные заголовка по умолчанию.
    */
   static setHeaders(t) {
-    return this.headers.set(t), w;
+    return this.headers.set(t), b;
   }
   /**
    * Modifies the default request data.
@@ -1267,7 +1267,7 @@ const w = class w {
    * Изменяет данные запроса по умолчанию.
    */
   static setRequestDefault(t) {
-    return this.requestDefault.set(t), w;
+    return this.requestDefault.set(t), b;
   }
   /**
    * Change the base path to the script.
@@ -1276,7 +1276,7 @@ const w = class w {
    * @param url path to the script/ путь к скрипту
    */
   static setUrl(t) {
-    return this.url = t, w;
+    return this.url = t, b;
   }
   /**
    * The function is modified for a call before the request.
@@ -1285,7 +1285,7 @@ const w = class w {
    * @param callback function for call/ функция для вызова
    */
   static setPreparation(t) {
-    return this.preparation.set(t), w;
+    return this.preparation.set(t), b;
   }
   /**
    * Modify the function after the request.
@@ -1294,7 +1294,7 @@ const w = class w {
    * @param callback function for call/ функция для вызова
    */
   static setEnd(t) {
-    return this.preparation.setEnd(t), w;
+    return this.preparation.setEnd(t), b;
   }
   /**
    * To execute a request.
@@ -1315,7 +1315,7 @@ const w = class w {
    */
   static get(t) {
     return this.request(L(t, {
-      method: D.get
+      method: S.get
     }));
   }
   /**
@@ -1326,7 +1326,7 @@ const w = class w {
    */
   static post(t) {
     return this.request(L(t, {
-      method: D.post
+      method: S.post
     }));
   }
   /**
@@ -1337,7 +1337,7 @@ const w = class w {
    */
   static put(t) {
     return this.request(L(t, {
-      method: D.put
+      method: S.put
     }));
   }
   /**
@@ -1348,7 +1348,7 @@ const w = class w {
    */
   static delete(t) {
     return this.request(L(t, {
-      method: D.delete
+      method: S.delete
     }));
   }
   /**
@@ -1410,15 +1410,15 @@ const w = class w {
       api: s = !0,
       path: n = "",
       pathFull: o = void 0,
-      method: a = D.get,
+      method: a = S.get,
       headers: u = {},
       type: h = "application/json;charset=UTF-8",
       init: f = {}
-    } = t, d = o != null ? o : this.getUrl(n, s), I = `${d}${this.getBodyForGet(e, d, a)}`, Q = this.headers.get(u, h), M = L(f, {
+    } = t, d = o != null ? o : this.getUrl(n, s), E = `${d}${this.getBodyForGet(e, d, a)}`, Q = this.headers.get(u, h), M = L(f, {
       method: a,
       body: this.getBody(e, a)
     });
-    return Q && (M.headers = Q), await fetch(I, M);
+    return Q && (M.headers = Q), await fetch(E, M);
   }
   /**
    * Transforms data if needed.
@@ -1438,8 +1438,8 @@ const w = class w {
     return t;
   }
 };
-c(w, "url", "/api/"), c(w, "headers", new zt()), c(w, "requestDefault", new Zt()), c(w, "status", new Kt()), c(w, "response", new Yt(w.requestDefault)), c(w, "preparation", new qt());
-let H = w;
+c(b, "url", "/api/"), c(b, "headers", new zt()), c(b, "requestDefault", new Zt()), c(b, "status", new Vt()), c(b, "response", new Yt(b.requestDefault)), c(b, "preparation", new qt());
+let H = b;
 class Ce {
   /**
    * Constructor
@@ -1601,7 +1601,7 @@ const O = class O {
 };
 c(O, "cache"), O.cache = new Mt();
 let ft = O;
-function Et(i, t = !1) {
+function It(i, t = !1) {
   if (typeof i == "string") {
     const e = i.trim();
     switch (e) {
@@ -1633,7 +1633,7 @@ function Et(i, t = !1) {
   return i;
 }
 const Xt = "cookie-block";
-class It {
+class Et {
   /**
    * Obtaining status.
    *
@@ -1653,7 +1653,7 @@ class It {
     this.storage.set(t);
   }
 }
-c(It, "storage", new T(Xt));
+c(Et, "storage", new T(Xt));
 const X = {}, at = class at {
   constructor(t) {
     c(this, "value");
@@ -1680,7 +1680,7 @@ const X = {}, at = class at {
    * @param options additional parameters/ дополнительные параметры
    */
   set(t, e) {
-    this.value = E(t), Object.assign(this.options, e), this.update();
+    this.value = I(t), Object.assign(this.options, e), this.update();
   }
   /**
    * Delete cookie data.
@@ -1706,7 +1706,7 @@ const X = {}, at = class at {
    */
   update() {
     var t, e, s, n, o;
-    if (l() && !rt() && !It.get()) {
+    if (l() && !rt() && !Et.get()) {
       const a = String((t = this.value) != null ? t : "");
       document.cookie = [
         `${encodeURIComponent(this.name)}=${encodeURIComponent(a)}`,
@@ -1724,7 +1724,7 @@ const X = {}, at = class at {
   static updateData() {
     for (const t of document.cookie.split(";")) {
       const [e, s] = t.trim().split("=");
-      e && S(s) && (X[e] = Et(s));
+      e && D(s) && (X[e] = It(s));
     }
   }
 };
@@ -1732,16 +1732,16 @@ l() && !rt() && at.updateData();
 let mt = at;
 const tt = {};
 function B(i) {
-  var n, o, a, u, h, f, d, I;
+  var n, o, a, u, h, f, d, E;
   if (i instanceof Date)
     return i;
   if (q(i))
     return /* @__PURE__ */ new Date();
   if (typeof i == "number")
     return new Date(i);
-  let t = i, e = b.getTimezoneFormat().trim();
+  let t = i, e = w.getTimezoneFormat().trim();
   i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (Q, M, Rt) => (t = M, e = Rt.trim(), Q));
-  const s = (I = (d = (f = (h = (u = (a = (o = (n = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? n : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? f : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? d : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? I : t.replace(" ", "T");
+  const s = (E = (d = (f = (h = (u = (a = (o = (n = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? n : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? f : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? d : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? E : t.replace(" ", "T");
   return /* @__PURE__ */ new Date(`${s.trim()}${e}`);
 }
 function _t(i, t) {
@@ -1753,9 +1753,9 @@ class J {
    * @param code country code, full form language-country or one of them/
    * код страны, полный вид язык-страна или один из них
    */
-  constructor(t = b.getLocation()) {
+  constructor(t = w.getLocation()) {
     c(this, "geo");
-    this.geo = b.find(t);
+    this.geo = w.find(t);
     const e = this.getLocation();
     if (e in et)
       return et[e];
@@ -1768,7 +1768,7 @@ class J {
    * @param code country code, full form language-country or one of them/
    * код страны, полный вид язык-страна или один из них
    */
-  static getInstance(t = b.getLocation()) {
+  static getInstance(t = w.getLocation()) {
     return new J(t);
   }
   /**
@@ -1821,7 +1821,7 @@ class J {
       type: "language",
       style: e
     };
-    return this.display(b.getByCode(t).language, s);
+    return this.display(w.getByCode(t).language, s);
   }
   /**
    * Get display names of region.
@@ -2091,8 +2091,8 @@ class J {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   relativeLimit(t, e, s, n, o, a, u) {
-    const h = B(t), f = s || /* @__PURE__ */ new Date(), d = new Date(f), I = new Date(f);
-    return d.setDate(f.getDate() - e), I.setDate(f.getDate() + e), h >= d && h <= I ? this.relative(
+    const h = B(t), f = s || /* @__PURE__ */ new Date(), d = new Date(f), E = new Date(f);
+    return d.setDate(f.getDate() - e), E.setDate(f.getDate() + e), h >= d && h <= E ? this.relative(
       h,
       n,
       f
@@ -2262,7 +2262,7 @@ class Bt {
    * @param type type of date format for output/ тип формата даты вывода
    * @param code country and language code/ код страны и языка
    */
-  constructor(t, e = "date", s = b.getLocation()) {
+  constructor(t, e = "date", s = w.getLocation()) {
     c(this, "date");
     c(this, "hour24", !1);
     c(this, "watch");
@@ -2923,7 +2923,7 @@ const r = "@flag", W = class W {
    * Constructor
    * @param code country and language code/ код страны и языка
    */
-  constructor(t = b.getLocation()) {
+  constructor(t = w.getLocation()) {
     this.code = t;
   }
   /**
@@ -2934,7 +2934,7 @@ const r = "@flag", W = class W {
    */
   get(t = this.code) {
     var s;
-    const e = b.find(t);
+    const e = w.find(t);
     if (e) {
       const n = this.getCountry(e);
       return {
@@ -3334,7 +3334,7 @@ const U = class U {
    * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toMask(t, e) {
-    if (S(t) && Array.isArray(e) && e.length > 0) {
+    if (D(t) && Array.isArray(e) && e.length > 0) {
       const s = this.removeZero(t), n = s.length;
       for (const o of e)
         if (this.getUnnecessaryLength(o) === n)
@@ -3382,7 +3382,7 @@ const U = class U {
    * Формирование списка для карты.
    */
   static makeList() {
-    const t = g(b.getList(), (e) => {
+    const t = g(w.getList(), (e) => {
       if (e != null && e.phoneMask)
         return {
           phone: (e == null ? void 0 : e.phoneCode) && Number(e.phoneCode.replace(/[^0-9]+/, "")) || void 0,
@@ -3493,7 +3493,7 @@ const F = class F {
    */
   static set(t, e) {
     var n;
-    const s = E(e);
+    const s = I(e);
     s !== ((n = this.hash) == null ? void 0 : n[t]) && (this.hash[t] = s, this.update());
   }
   /**
@@ -3527,7 +3527,7 @@ const F = class F {
     const t = {};
     return location.hash.replace(
       /([\w-]+)[:=]([^;]+)/ig,
-      (...e) => (t[String(e[1])] = Et(e[2]), "")
+      (...e) => (t[String(e[1])] = It(e[2]), "")
     ), t;
   }
   /**
@@ -3555,7 +3555,7 @@ const F = class F {
 };
 c(F, "hash", {}), c(F, "watch", {}), c(F, "block", !1), l() && (F.reload(), addEventListener("hashchange", () => F.reload()));
 let pt = F;
-const it = "__UI_ICON", bt = 320, wt = "--LOAD--", V = class V {
+const it = "__UI_ICON", wt = 320, bt = "--LOAD--", K = class K {
   /**
    * Checks if the given icon is in the list of connected icons.
    *
@@ -3578,7 +3578,7 @@ const it = "__UI_ICON", bt = 320, wt = "--LOAD--", V = class V {
   static async get(t, e = "", s = 1e3 * 60 * 3) {
     var o, a, u, h;
     const n = (h = (u = (o = this.icons) == null ? void 0 : o[this.getName(t)]) != null ? u : (a = this.icons) == null ? void 0 : a[t]) != null ? h : `${t.replace(/^@/, e != null ? e : this.url)}.svg`;
-    return typeof n == "string" ? n === wt && s > 0 ? (await this.wait(), this.get(t, e, s - bt)) : n : await n;
+    return typeof n == "string" ? n === bt && s > 0 ? (await this.wait(), this.get(t, e, s - wt)) : n : await n;
   }
   /**
    * Returns a list of names of all registered icons.
@@ -3613,7 +3613,7 @@ const it = "__UI_ICON", bt = 320, wt = "--LOAD--", V = class V {
    * @param index icon name/ название иконки
    */
   static addLoad(t) {
-    this.icons[this.getName(t)] = wt;
+    this.icons[this.getName(t)] = bt;
   }
   /**
    * Adding custom global icons.
@@ -3658,11 +3658,11 @@ const it = "__UI_ICON", bt = 320, wt = "--LOAD--", V = class V {
    * Задержка выполнения скрипта.
    */
   static wait() {
-    return new Promise((t) => setTimeout(() => t(), bt));
+    return new Promise((t) => setTimeout(() => t(), wt));
   }
 };
-c(V, "icons", {}), c(V, "url", "/icons/"), l() && (it in window || (window[it] = {}), V.icons = window[it]);
-let vt = V;
+c(K, "icons", {}), c(K, "url", "/icons/"), l() && (it in window || (window[it] = {}), K.icons = window[it]);
+let vt = K;
 function Ot(i, t, e) {
   var s, n;
   return (n = (s = A(i)) == null ? void 0 : s[t]) != null ? n : e;
@@ -3673,11 +3673,11 @@ function Tt(i, t, e) {
     const n = Ot(s, t);
     if (m(n) && m(e))
       g(e, (o, a) => {
-        n[a] = E(o);
+        n[a] = I(o);
       });
     else {
-      const o = E(e);
-      !(t in s) && typeof o == "string" ? s.setAttribute(t.toString(), o) : s[t] = E(e);
+      const o = I(e);
+      !(t in s) && typeof o == "string" ? s.setAttribute(t.toString(), o) : s[t] = I(e);
     }
   }
   return s;
@@ -4192,7 +4192,7 @@ class Ae extends ot {
    */
   setTitle(e) {
     if (l()) {
-      const s = S(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
+      const s = D(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
       document.title = s, this.og.setTitle(s), this.twitter.setTitle(s);
     }
     return this;
@@ -4292,7 +4292,7 @@ class Ae extends ot {
    * Получает отформатированный суффикс с разделителем.
    */
   getSuffix() {
-    return S(this.suffix) ? ` - ${this.suffix}` : "";
+    return D(this.suffix) ? ` - ${this.suffix}` : "";
   }
 }
 class nt {
@@ -4465,7 +4465,7 @@ const ue = [
    */
   static addSync(t) {
     g(t, (e, s) => {
-      R(e) && S(e) && (this.data[this.getName(s)] = e);
+      R(e) && D(e) && (this.data[this.getName(s)] = e);
     });
   }
   /**
@@ -4475,7 +4475,7 @@ const ue = [
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static async addNormalOrSync(t) {
-    if (S(t))
+    if (D(t))
       if (H.isLocalhost())
         this.addSync(t);
       else {
@@ -4502,7 +4502,7 @@ const ue = [
    * @param name code name/ название кода
    */
   static getName(t) {
-    return `${b.getLocation()}-${t}`;
+    return `${w.getLocation()}-${t}`;
   }
   /**
    * Returns a list of names that are not yet in the list.
@@ -4557,7 +4557,7 @@ const ue = [
   }
 };
 c(N, "url", "/api/translate"), c(N, "propsName", "list"), c(N, "data", {}), c(N, "cache", []), c(N, "resolveList", []), c(N, "timeout");
-let Dt = N;
+let St = N;
 function Ft(i) {
   return Array.isArray(i);
 }
@@ -4568,13 +4568,13 @@ function Ne(i) {
 function le(i, t) {
   return Array(t).fill(i);
 }
-function Ee(i) {
+function Ie(i) {
   return new Promise((t, e) => {
     const s = new FileReader();
     s.onloadend = () => t(s.result), s.onerror = e, s.readAsDataURL(i);
   });
 }
-function Ie(i) {
+function Ee(i) {
   var t;
   if (l())
     return (t = document.querySelector(i)) != null ? t : void 0;
@@ -4604,10 +4604,10 @@ async function Re(i) {
   var t, e;
   return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
-let St = Y(1e5, 9e5);
+let Dt = Y(1e5, 9e5);
 function Pe(i, t) {
   const e = A(i);
-  return e ? (S(e.id) || e.setAttribute("id", `id-${St++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${St++}`;
+  return e ? (D(e.id) || e.setAttribute("id", `id-${Dt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${Dt++}`;
 }
 function ge(i) {
   return R(i) ? _(
@@ -4664,13 +4664,13 @@ function Ze(i, t = void 0) {
     s !== t && (e[n] = s);
   }), e;
 }
-function Ke(i) {
+function Ve(i) {
   return k(i) ? i : {};
 }
 function pe(i, t) {
   return le(i, t).join("");
 }
-function Ve(i, t, e = "#", s = 2, n = 12) {
+function Ke(i, t, e = "#", s = 2, n = 12) {
   const o = Y(i, t), a = [];
   for (let u = 0; u < o; u++)
     a.push(pe(e, Y(s, n)));
@@ -4693,28 +4693,48 @@ function Je(i, t, e) {
       s.scrollTop = t.offsetTop - (n.top - o.top) - (n.height / 2 - a.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
     } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - Lt : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + Lt);
 }
-function Qe(i, t) {
+function Qe(i, t, e = 0) {
+  if (!l())
+    return;
+  const s = (t == null ? void 0 : t.behavior) || "smooth";
+  if ("scrollIntoView" in i && !e) {
+    i.scrollIntoView({
+      behavior: s,
+      block: (t == null ? void 0 : t.block) || "start",
+      inline: (t == null ? void 0 : t.inline) || "start"
+    });
+    return;
+  }
+  if ("getBoundingClientRect" in i && "scrollTo" in window) {
+    const n = ((window == null ? void 0 : window.scrollY) || window.pageYOffset) + i.getBoundingClientRect().top - e;
+    window.scrollTo({
+      top: n,
+      behavior: s
+    });
+  }
+}
+function Me(i, t) {
   return i.indexOf(t) !== -1;
 }
-async function Me() {
+async function Xe() {
   if (l()) {
     const i = await nt.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function Xe(i, t) {
+function _e(i, t) {
   const e = {};
   return m(i) && m(t) && g(i, (s, n) => {
     n in t && (e[n] = s);
   }), e;
 }
-function _e(i, t) {
+function Oe(i, t) {
   let e = Object.keys(i).length !== Object.keys(t).length;
   return e || g(i, (s, n) => {
     s !== (t == null ? void 0 : t[n]) && (e = !0);
   }), e;
 }
-function Oe(i) {
+function Te(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -4724,14 +4744,14 @@ function Oe(i) {
       return !1;
   }
 }
-function Te(i, t) {
+function Ge(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function Ge(i, t) {
+function ti(i, t) {
   return Array.isArray(i) ? i.every((e) => st(e, t)) : st(i, t);
 }
-function ti(i, t) {
+function ei(i, t) {
   if (i.startsWith(t))
     return i.slice(t.length).trim();
   let e = 0;
@@ -4739,7 +4759,7 @@ function ti(i, t) {
     e++;
   return i.slice(e).trim();
 }
-function be(i) {
+function we(i) {
   return [...new Set(i)];
 }
 function Z(i, t, e = !0) {
@@ -4748,7 +4768,7 @@ function Z(i, t, e = !0) {
     t,
     (n, o) => {
       const a = i == null ? void 0 : i[o];
-      m(a) && m(n) ? e && Array.isArray(a) && Array.isArray(n) ? s[o] = j(be([...a, ...n])) : s[o] = Z(
+      m(a) && m(n) ? e && Array.isArray(a) && Array.isArray(n) ? s[o] = j(we([...a, ...n])) : s[o] = Z(
         Array.isArray(a) ? { ...a } : a,
         n,
         e
@@ -4756,13 +4776,13 @@ function Z(i, t, e = !0) {
     }
   ), s;
 }
-function ei(i, t) {
+function ii(i, t) {
   let e = i;
   return g(t, (s, n) => {
-    e = e.replace(fe(`[${n}]`), E(s));
+    e = e.replace(fe(`[${n}]`), I(s));
   }), e;
 }
-function we(i, t = "auto") {
+function be(i, t = "auto") {
   switch (t) {
     case "auto":
       return i.naturalWidth >= i.naturalHeight;
@@ -4772,16 +4792,16 @@ function we(i, t = "auto") {
       return !1;
   }
 }
-function ii(i, t, e = "auto", s) {
+function si(i, t, e = "auto", s) {
   var o;
   const n = ge(i);
   if (n && (n.naturalWidth > t && (e === "auto" || e === "width") || n.naturalHeight > t && (e === "auto" || e === "height"))) {
-    const a = we(n, e), u = (o = document.createElement("canvas")) == null ? void 0 : o.getContext("2d");
+    const a = be(n, e), u = (o = document.createElement("canvas")) == null ? void 0 : o.getContext("2d");
     if (u)
       return u.canvas.width = a ? t : n.naturalWidth / n.naturalHeight * t, u.canvas.height = a ? n.naturalHeight / n.naturalWidth * t : t, u.drawImage(n, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
   }
 }
-function si(i) {
+function ri(i) {
   const t = C(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -4789,7 +4809,7 @@ function si(i) {
   }
   return "00:00";
 }
-function ri(i, t, {
+function ni(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
@@ -4804,7 +4824,7 @@ function ri(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function ni(i, t, e) {
+function oi(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
@@ -4820,30 +4840,30 @@ function ni(i, t, e) {
 function ve(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function oi(i) {
+function ai(i) {
   return ve(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function ai(i) {
+function ci(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function ci(i, t, e, s) {
+function ui(i, t, e, s) {
   const n = C(i), o = C(t);
   return t && o < n ? `${Ct(o, e, s)}+` : Ct(n, e, s);
 }
 const Ct = (i, t, e) => t ? new J(e).number(i) : i;
-function De(i, t) {
+function Se(i, t) {
   return 1 / i * t;
 }
-function ui(i, t) {
-  return De(i, t) * 100;
+function hi(i, t) {
+  return Se(i, t) * 100;
 }
-function hi(i) {
+function li(i) {
   let t = "";
   for (const e of i)
     t += String.fromCharCode(e);
   return l() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
 }
-async function li(i) {
+async function di(i) {
   if (l())
     try {
       await navigator.clipboard.writeText(i);
@@ -4855,21 +4875,21 @@ export {
   H as Api,
   Zt as ApiDefault,
   zt as ApiHeaders,
-  D as ApiMethodItem,
+  S as ApiMethodItem,
   qt as ApiPreparation,
   Yt as ApiResponse,
-  Kt as ApiStatus,
+  Vt as ApiStatus,
   Ce as BroadcastMessage,
   Mt as Cache,
   Qt as CacheItem,
   ft as CacheStatic,
   mt as Cookie,
-  It as CookieBlock,
+  Et as CookieBlock,
   T as DataStorage,
   Bt as Datetime,
   lt as EventItem,
   r as GEO_FLAG_ICON_NAME,
-  b as Geo,
+  w as Geo,
   yt as GeoFlag,
   J as GeoIntl,
   $t as GeoPhone,
@@ -4892,20 +4912,20 @@ export {
   oe as MetaTwitterCard,
   $ as MetaTwitterTag,
   nt as ScrollbarWidth,
-  Dt as Translate,
+  St as Translate,
   Ne as anyToString,
   he as applyTemplate,
   le as arrFill,
-  Ee as blobToBase64,
+  Ie as blobToBase64,
   j as copyObject,
   L as copyObjectLite,
   _ as createElement,
-  Ie as domQuerySelector,
+  Ee as domQuerySelector,
   Be as domQuerySelectorAll,
   Gt as encodeAttribute,
   Fe as eventStopPropagation,
-  E as executeFunction,
-  Vt as executePromise,
+  I as executeFunction,
+  Kt as executePromise,
   g as forEach,
   de as frame,
   xe as getAttributes,
@@ -4927,53 +4947,54 @@ export {
   $e as getMouseClientY,
   ze as getObjectByKeys,
   Ze as getObjectNoUndefined,
-  Ke as getObjectOrNone,
-  Ve as getRandomText,
+  Ve as getObjectOrNone,
+  Ke as getRandomText,
   kt as getRequestString,
   Ye as getStepPercent,
   qe as getStepValue,
   Je as goScroll,
-  Qe as inArray,
-  Me as initScrollbarOffset,
-  Xe as intersectKey,
+  Qe as goScrollSmooth,
+  Me as inArray,
+  Xe as initScrollbarOffset,
+  _e as intersectKey,
   Ft as isArray,
-  _e as isDifferent,
+  Oe as isDifferent,
   rt as isDomData,
   l as isDomRuntime,
-  S as isFilled,
-  Oe as isFloat,
+  D as isFilled,
+  Te as isFloat,
   At as isFunction,
   Ht as isInDom,
-  Te as isIntegerBetween,
+  Ge as isIntegerBetween,
   q as isNull,
   ct as isNumber,
   m as isObject,
   k as isObjectNotArray,
   st as isSelected,
-  Ge as isSelectedByList,
+  ti as isSelectedByList,
   R as isString,
   Nt as isWindow,
   Y as random,
-  ti as removeCommonPrefix,
+  ei as removeCommonPrefix,
   Z as replaceRecursive,
-  ei as replaceTemplate,
-  ii as resizeImageByMax,
-  si as secondToTime,
+  ii as replaceTemplate,
+  si as resizeImageByMax,
+  ri as secondToTime,
   Tt as setElementItem,
-  ri as setValues,
-  ni as splice,
+  ni as setValues,
+  oi as splice,
   pe as strFill,
   z as toArray,
   ve as toCamelCase,
-  oi as toCamelCaseFirst,
+  ai as toCamelCaseFirst,
   B as toDate,
-  ai as toKebabCase,
+  ci as toKebabCase,
   C as toNumber,
-  ci as toNumberByMax,
-  De as toPercent,
-  ui as toPercentBy100,
-  Et as transformation,
-  hi as uint8ArrayToBase64,
-  be as uniqueArray,
-  li as writeClipboardData
+  ui as toNumberByMax,
+  Se as toPercent,
+  hi as toPercentBy100,
+  It as transformation,
+  li as uint8ArrayToBase64,
+  we as uniqueArray,
+  di as writeClipboardData
 };

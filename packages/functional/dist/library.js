@@ -1,9 +1,9 @@
 var Bt = Object.defineProperty;
 var xt = (i, t, e) => t in i ? Bt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
 var c = (i, t, e) => xt(i, typeof t != "symbol" ? t + "" : t, e);
-import { i as y, D as ct, r as _, a as Ft, G as D, f as p, t as N, b as Q, c as Et, d as bt, e as K, g as z, h as E, A as Y, j as w, k as St, S as wt, l as P, m as Z, n as lt, E as Ht, C as Pt, H as T, L as mt, o as Rt } from "./ScrollbarWidth-De97V2Mh.js";
-import { p as qi, q as Ji, U as Qi, s as Xi, u as Mi, v as Oi, w as Ti, x as Gi, y as ts, z as es, B as is, I as ss, F as rs, J as ns, K as os, M as as, N as us, O as cs, P as ls, Q as hs, R as ds, T as gs } from "./ScrollbarWidth-De97V2Mh.js";
-import { isRef as X, h as Wt, computed as l, toRefs as jt, useAttrs as Ut, useSlots as zt, ref as $, watch as m, triggerRef as Zt, shallowRef as F, onUnmounted as nt, inject as _t, provide as Kt, watchEffect as Dt } from "vue";
+import { i as m, D as ct, r as _, a as Ft, G as D, f as p, t as N, b as Q, c as Et, d as bt, e as K, g as z, h as E, A as Y, j as w, k as St, S as wt, l as R, m as Z, n as lt, E as Ht, C as Rt, H as T, L as mt, o as Pt } from "./ScrollbarWidth-De97V2Mh.js";
+import { p as Ji, q as Qi, U as Xi, s as Mi, u as Oi, v as Ti, w as Gi, x as ts, y as es, z as is, B as ss, I as rs, F as ns, J as os, K as as, M as us, N as cs, O as ls, P as hs, Q as ds, R as gs, T as fs } from "./ScrollbarWidth-De97V2Mh.js";
+import { isRef as X, h as Wt, computed as l, toRefs as jt, useAttrs as Ut, useSlots as zt, ref as $, watch as y, triggerRef as Zt, shallowRef as F, onUnmounted as nt, inject as _t, provide as Kt, watchEffect as Dt } from "vue";
 class Vt {
   /**
    * Constructor
@@ -22,7 +22,7 @@ class Vt {
       var e;
       return (e = this.callback) == null || e.call(this, t), this;
     });
-    if (this.callback = e, y())
+    if (this.callback = e, m())
       try {
         this.channel = new BroadcastChannel(`${Yt()}__${t}`), this.channel.onmessage = this.update;
       } catch (s) {
@@ -122,7 +122,7 @@ class W {
       ...e
     });
     try {
-      y() && (t ? r = new Intl.DisplayNames(this.getLocation(), s).of(t) : s.type === "language" ? r = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.language) : s.type === "region" && (r = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.country)));
+      m() && (t ? r = new Intl.DisplayNames(this.getLocation(), s).of(t) : s.type === "language" ? r = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.language) : s.type === "region" && (r = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.country)));
     } catch (a) {
       console.error("display: ", a);
     }
@@ -331,7 +331,7 @@ class W {
     const o = N(t), a = e.split("|");
     if (a.length > 1)
       try {
-        if (y()) {
+        if (m()) {
           const d = new Intl.PluralRules(this.getLocation(), s).select(o);
           let g;
           switch (d) {
@@ -434,7 +434,7 @@ class W {
       ...typeof s == "string" ? { style: s } : s || {}
     };
     try {
-      if (y())
+      if (m())
         return new Intl.RelativeTimeFormat(this.getLocation(), r).format(Math.round(N(t)), e);
     } catch (o) {
       console.error("relative: ", o);
@@ -449,7 +449,7 @@ class W {
    */
   month(t, e) {
     try {
-      if (y())
+      if (m())
         return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(A(t));
     } catch (s) {
       console.error("month: ", s);
@@ -468,7 +468,7 @@ class W {
       value: void 0
     }];
     try {
-      if (y()) {
+      if (m()) {
         const s = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { month: t || "long" });
         for (let o = 0; o < 12; o++)
           s.setMonth(o), e.push({
@@ -490,7 +490,7 @@ class W {
    */
   weekday(t, e) {
     try {
-      if (y())
+      if (m())
         return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(A(t));
     } catch (s) {
       console.error("weekday: ", s);
@@ -509,7 +509,7 @@ class W {
       value: void 0
     }];
     try {
-      if (y()) {
+      if (m()) {
         const s = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }), o = s.getDay() + (this.geo.firstDay === "Mo" ? -1 : 1);
         s.setDate(s.getDate() - o);
         for (let a = 0; a < 7; a++)
@@ -540,7 +540,7 @@ class W {
    * @param compareFn a function for sorting/ функция для сортировки
    */
   sort(t, e = (s, r) => [s, r]) {
-    if (y()) {
+    if (m()) {
       const s = new Intl.Collator(this.getLocation());
       return t.sort((r, o) => s.compare(...e(r, o)));
     }
@@ -555,7 +555,7 @@ class W {
    */
   numberObject(t) {
     try {
-      if (y())
+      if (m())
         return new Intl.NumberFormat(this.getLocation(), t);
     } catch (e) {
       console.error("numberObject: ", e);
@@ -1215,7 +1215,7 @@ class ht {
    * @param hour hour/ час
    */
   toTimeZoneHourFormat(t) {
-    y() && this.getIntl().number(Math.trunc(t), {
+    m() && this.getIntl().number(Math.trunc(t), {
       signDisplay: "always",
       minimumIntegerDigits: 2
     });
@@ -1237,7 +1237,7 @@ class ht {
     ), this;
   }
 }
-const n = "@flag", R = class R {
+const n = "@flag", P = class P {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
@@ -1260,7 +1260,7 @@ const n = "@flag", R = class R {
         language: this.getLanguage(e),
         country: r,
         standard: e.standard,
-        icon: (s = R.flags) == null ? void 0 : s[e.country],
+        icon: (s = P.flags) == null ? void 0 : s[e.country],
         label: r,
         value: e.country
       };
@@ -1293,7 +1293,7 @@ const n = "@flag", R = class R {
    */
   getNational(t) {
     return p(this.getList(t), (e) => {
-      const s = new R(e.standard).get(e.standard);
+      const s = new P(e.standard).get(e.standard);
       return {
         ...e,
         description: s == null ? void 0 : s.country,
@@ -1326,7 +1326,7 @@ const n = "@flag", R = class R {
    * @param codes country code/ код страны
    */
   getCodes(t) {
-    return t != null ? t : Object.keys(R.flags);
+    return t != null ? t : Object.keys(P.flags);
   }
   /**
    * Getting the name of the language.
@@ -1347,7 +1347,7 @@ const n = "@flag", R = class R {
     return this.getLocation().countryName(t.country);
   }
 };
-c(R, "flags", {
+c(P, "flags", {
   AD: `${n}-ad`,
   AE: `${n}-ae`,
   AF: `${n}-af`,
@@ -1590,8 +1590,8 @@ c(R, "flags", {
   ZM: `${n}-zm`,
   ZW: `${n}-zw`
 });
-let at = R, H;
-class Pe {
+let at = P, H;
+class Re {
   /**
    * Returns the value by its name.
    *
@@ -1700,7 +1700,7 @@ class dt {
    * @param name meta tag name / имя мета-тега
    */
   findMetaElement(t) {
-    if (!y())
+    if (!m())
       return;
     const e = `meta[${this.getAttributeName()}="${t}"]`;
     return document.querySelector(e) || void 0;
@@ -1726,7 +1726,7 @@ class dt {
     const e = this.findMetaElement(t), s = (r = this.items[t]) != null ? r : "";
     if (e)
       e.content = s;
-    else if (y()) {
+    else if (m()) {
       const o = { content: s };
       this.isProperty ? o.property = t : o.name = t, bt(document.head, "meta", o);
     }
@@ -2039,7 +2039,7 @@ class ie extends dt {
    * Получает заголовок страницы без суффикса.
    */
   getTitle() {
-    return y() ? document.title.replace(this.getSuffix(), "").trim() : "";
+    return m() ? document.title.replace(this.getSuffix(), "").trim() : "";
   }
   /**
    * Gets the keywords meta tag.
@@ -2112,7 +2112,7 @@ class ie extends dt {
    * @param title page title / заголовок страницы
    */
   setTitle(e) {
-    if (y()) {
+    if (m()) {
       const s = K(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
       document.title = s, this.og.setTitle(s), this.twitter.setTitle(s);
     }
@@ -2430,7 +2430,7 @@ let q = C;
 function gt(i) {
   return Array.isArray(i);
 }
-function Re(i) {
+function Pe(i) {
   var t;
   return Q(i) ? i.trim() : gt(i) && i.findIndex((e) => w(e)) === -1 ? i.join(",") : w(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
 }
@@ -2445,11 +2445,11 @@ function We(i) {
 }
 function je(i) {
   var t;
-  if (y())
+  if (m())
     return (t = document.querySelector(i)) != null ? t : void 0;
 }
 function Ue(i) {
-  if (y())
+  if (m())
     return document.querySelectorAll(i);
 }
 function ze(i) {
@@ -2459,7 +2459,7 @@ function oe(i, t, e) {
   const s = () => {
     i(), t != null && t() ? oe(i, t, e) : e == null || e();
   };
-  y() ? requestAnimationFrame(s) : s();
+  m() ? requestAnimationFrame(s) : s();
 }
 function Ze(i) {
   var s;
@@ -2562,28 +2562,48 @@ function Ge(i, t, e) {
       s.scrollTop = t.offsetTop - (r.top - o.top) - (r.height / 2 - a.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
     } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - $t : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + $t);
 }
-function ti(i, t) {
+function ti(i, t, e = 0) {
+  if (!m())
+    return;
+  const s = (t == null ? void 0 : t.behavior) || "smooth";
+  if ("scrollIntoView" in i && !e) {
+    i.scrollIntoView({
+      behavior: s,
+      block: (t == null ? void 0 : t.block) || "start",
+      inline: (t == null ? void 0 : t.inline) || "start"
+    });
+    return;
+  }
+  if ("getBoundingClientRect" in i && "scrollTo" in window) {
+    const r = ((window == null ? void 0 : window.scrollY) || window.pageYOffset) + i.getBoundingClientRect().top - e;
+    window.scrollTo({
+      top: r,
+      behavior: s
+    });
+  }
+}
+function ei(i, t) {
   return i.indexOf(t) !== -1;
 }
-async function ei() {
-  if (y()) {
+async function ii() {
+  if (m()) {
     const i = await wt.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function ii(i, t) {
+function si(i, t) {
   const e = {};
   return w(i) && w(t) && p(i, (s, r) => {
     r in t && (e[r] = s);
   }), e;
 }
-function si(i, t) {
+function ri(i, t) {
   let e = Object.keys(i).length !== Object.keys(t).length;
   return e || p(i, (s, r) => {
     s !== (t == null ? void 0 : t[r]) && (e = !0);
   }), e;
 }
-function ri(i) {
+function ni(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -2593,14 +2613,14 @@ function ri(i) {
       return !1;
   }
 }
-function ni(i, t) {
+function oi(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function oi(i, t) {
-  return Array.isArray(i) ? i.every((e) => P(e, t)) : P(i, t);
-}
 function ai(i, t) {
+  return Array.isArray(i) ? i.every((e) => R(e, t)) : R(i, t);
+}
+function ui(i, t) {
   if (i.startsWith(t))
     return i.slice(t.length).trim();
   let e = 0;
@@ -2625,7 +2645,7 @@ function U(i, t, e = !0) {
     }
   ), s;
 }
-function ui(i, t) {
+function ci(i, t) {
   let e = i;
   return p(t, (s, r) => {
     e = e.replace(Lt(`[${r}]`), lt(s));
@@ -2641,7 +2661,7 @@ function ge(i, t = "auto") {
       return !1;
   }
 }
-function ci(i, t, e = "auto", s) {
+function li(i, t, e = "auto", s) {
   var o;
   const r = ae(i);
   if (r && (r.naturalWidth > t && (e === "auto" || e === "width") || r.naturalHeight > t && (e === "auto" || e === "height"))) {
@@ -2650,7 +2670,7 @@ function ci(i, t, e = "auto", s) {
       return u.canvas.width = a ? t : r.naturalWidth / r.naturalHeight * t, u.canvas.height = a ? r.naturalHeight / r.naturalWidth * t : t, u.drawImage(r, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
   }
 }
-function li(i) {
+function hi(i) {
   const t = N(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -2658,7 +2678,7 @@ function li(i) {
   }
   return "00:00";
 }
-function hi(i, t, {
+function di(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: r = !0,
@@ -2673,7 +2693,7 @@ function hi(i, t, {
   }
   return r || i !== t ? t : i;
 }
-function di(i, t, e) {
+function gi(i, t, e) {
   if (w(i) && w(t)) {
     if (e) {
       let s = {}, r = !1;
@@ -2689,13 +2709,13 @@ function di(i, t, e) {
 function kt(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function gi(i) {
+function fi(i) {
   return kt(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function fi(i) {
+function mi(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function mi(i, t, e, s) {
+function yi(i, t, e, s) {
   const r = N(i), o = N(t);
   return t && o < r ? `${pt(o, e, s)}+` : pt(r, e, s);
 }
@@ -2703,17 +2723,17 @@ const pt = (i, t, e) => t ? new W(e).number(i) : i;
 function fe(i, t) {
   return 1 / i * t;
 }
-function yi(i, t) {
+function $i(i, t) {
   return fe(i, t) * 100;
 }
-function $i(i) {
+function pi(i) {
   let t = "";
   for (const e of i)
     t += String.fromCharCode(e);
-  return y() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
+  return m() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
 }
-async function pi(i) {
-  if (y())
+async function vi(i) {
+  if (m())
     try {
       await navigator.clipboard.writeText(i);
     } catch (t) {
@@ -2829,7 +2849,7 @@ class ye {
     this.callback && this.callback(this.event);
   }
 }
-class vi extends ye {
+class bi extends ye {
   /**
    * Calls the callback function.
    *
@@ -2995,9 +3015,9 @@ class Ct {
     return {};
   }
 }
-class bi extends Ct {
+class Si extends Ct {
 }
-class Si {
+class wi {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -3178,7 +3198,7 @@ class Si {
 function B(i) {
   return X(i) ? i : $(i);
 }
-class wi {
+class Di {
   /**
    * Constructor
    * @param date date for processing. дата для обработки
@@ -3201,9 +3221,9 @@ class wi {
       this.date.value,
       this.type.value,
       this.code.value
-    ), m(this.item, (r) => {
+    ), y(this.item, (r) => {
       this.date.value = A(r);
-    }), m(this.type, (r) => this.datetime.setType(r)), m(this.code, (r) => this.datetime.setCode(r)), m(this.date, (r) => this.datetime.setDate(r)), this.datetime.setWatch(() => Zt(this.date));
+    }), y(this.type, (r) => this.datetime.setType(r)), y(this.code, (r) => this.datetime.setCode(r)), y(this.date, (r) => this.datetime.setDate(r)), this.datetime.setWatch(() => Zt(this.date));
   }
   /**
    * Returns the basic data for the date.
@@ -3323,7 +3343,7 @@ class wi {
     return l(() => this.date.value && this.datetime.standard(t));
   }
 }
-class Di extends Ht {
+class Li extends Ht {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -3344,10 +3364,10 @@ class Di extends Ht {
       r,
       o,
       a
-    ), h.value && this.setElementControl(h.value), m(u, (d) => this.setElement(d)), m(h, (d) => this.setElementControl(d));
+    ), h.value && this.setElementControl(h.value), y(u, (d) => this.setElement(d)), y(h, (d) => this.setElementControl(d));
   }
 }
-class Li {
+class Ii {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
@@ -3355,7 +3375,7 @@ class Li {
   constructor(t = D.getLocation()) {
     c(this, "code");
     c(this, "flag");
-    this.code = B(t), this.flag = new at(this.code.value), m(this.code, (e) => this.flag.setCode(e));
+    this.code = B(t), this.flag = new at(this.code.value), y(this.code, (e) => this.flag.setCode(e));
   }
   /**
    * Obtaining a reactive object with the country code.
@@ -3741,7 +3761,7 @@ class Nt {
         this.data.value,
         (r) => {
           var a, u;
-          const o = P(r.index, s);
+          const o = R(r.index, s);
           return {
             ...r,
             focus: t === r.index,
@@ -3811,7 +3831,7 @@ class Nt {
      */
     c(this, "isSelected", l(() => {
       const t = this.getSelected();
-      return !!t && this.mapItems.value.findIndex((e) => P(e.index, t)) !== -1;
+      return !!t && this.mapItems.value.findIndex((e) => R(e.index, t)) !== -1;
     }));
     /** Is the minimum selection reached/ Достигнуто ли минимальное выделение */
     c(this, "isSelectedMin", l(() => {
@@ -3829,7 +3849,7 @@ class Nt {
      */
     c(this, "selectedList", l(() => {
       const t = this.getSelected();
-      return t && this.isSelected.value ? this.mapItems.value.filter((e) => P(e.index, t)) : [];
+      return t && this.isSelected.value ? this.mapItems.value.filter((e) => R(e.index, t)) : [];
     }));
     /**
      * Returns a list of selected items in the current group/
@@ -3837,7 +3857,7 @@ class Nt {
      */
     c(this, "selectedListInGroup", l(() => {
       const t = this.getSelected();
-      return t && this.isSelected.value ? this.data.value.filter((e) => P(e.index, t)) : [];
+      return t && this.isSelected.value ? this.data.value.filter((e) => R(e.index, t)) : [];
     }));
     /**
      * Returns a list of selected items on the map.
@@ -3851,7 +3871,7 @@ class Nt {
      * Возвращает список значений выделенных элементов на карте.
      */
     c(this, "selectedValues", l(() => ot(this.selectedList.value, "value")));
-    this.list = t, this.focus = e, this.highlight = s, this.highlightLengthStart = r, this.filterMode = o, this.selected = a, this.keyValue = u, this.keyLabel = h, this.lite = d, this.min = g, this.max = v, this.parent = x, X(t) && m(t, () => {
+    this.list = t, this.focus = e, this.highlight = s, this.highlightLengthStart = r, this.filterMode = o, this.selected = a, this.keyValue = u, this.keyLabel = h, this.lite = d, this.min = g, this.max = v, this.parent = x, X(t) && y(t, () => {
       this.subList = {};
     });
   }
@@ -4136,7 +4156,7 @@ class we {
   }
 }
 c(we, "router");
-class Ii {
+class ki {
   /**
    * Constructor
    */
@@ -4160,7 +4180,7 @@ class Ii {
 }
 const De = (i) => typeof i == "string" ? { method: i } : i || {};
 let J;
-function ki(i, t, e = !0, s, r, o) {
+function Ci(i, t, e = !0, s, r, o) {
   const a = $(), u = B(De(t)), h = $(!1), d = $(!1);
   let g = !0, v = 0;
   const x = async () => {
@@ -4178,7 +4198,7 @@ function ki(i, t, e = !0, s, r, o) {
     } else a.value !== void 0 && (a.value = void 0);
   }, M = () => {
     const I = [];
-    e && I.push(u), X(i) && I.push(i), s && I.push(s), J && I.push(J), I.length > 0 && m(I, async () => {
+    e && I.push(u), X(i) && I.push(i), s && I.push(s), J && I.push(J), I.length > 0 && y(I, async () => {
       h.value || await x();
     });
   };
@@ -4200,7 +4220,7 @@ function ki(i, t, e = !0, s, r, o) {
     reset: x
   };
 }
-const Ci = (i) => {
+const Ni = (i) => {
   J || (J = i);
 };
 function Le(i, t) {
@@ -4213,36 +4233,36 @@ function Le(i, t) {
       s.value !== o.data.message && (s.value = o.data.message);
     }
   );
-  return m(s, (o) => r.post({ message: o })), tt[e] = s, s;
+  return y(s, (o) => r.post({ message: o })), tt[e] = s, s;
 }
 const tt = {};
-function Ni(i, t, e) {
+function Ai(i, t, e) {
   if (i in et)
     return et[i];
-  const s = new Pt(i), r = Le(
+  const s = new Rt(i), r = Le(
     `__cookie:${i}`,
     s.get(t, e)
   );
-  return m(r, (o) => {
+  return y(r, (o) => {
     s.set(o, e);
   }), et[i] = r, r;
 }
 const et = {};
-function Ai() {
+function Bi() {
   return new Se();
 }
-function Bi(i, t) {
+function xi(i, t) {
   if (i in it)
     return it[i];
   const e = F(T.get(i, t));
-  return m(e, (s) => T.set(i, s)), T.addWatch(i, (s) => {
+  return y(e, (s) => T.set(i, s)), T.addWatch(i, (s) => {
     e.value = s;
   }), it[i] = e, e;
 }
 const it = {}, Ie = (i = {
   rootMargin: "128px 0px"
 }) => {
-  const t = {}, e = y() && "IntersectionObserver" in window ? new IntersectionObserver(
+  const t = {}, e = m() && "IntersectionObserver" in window ? new IntersectionObserver(
     (r) => {
       r.forEach((o) => {
         const a = j(o.target);
@@ -4282,7 +4302,7 @@ const it = {}, Ie = (i = {
       const o = F(!e);
       if (e) {
         let a;
-        a = m(r, (u, h) => {
+        a = y(r, (u, h) => {
           if (h && s(h), r.value) {
             const d = j(r.value);
             t[d] = {
@@ -4316,7 +4336,7 @@ const it = {}, Ie = (i = {
     return t.item;
   const e = Ie({ rootMargin: i });
   return vt.push({ rootMargin: i, item: e }), e;
-}, xi = (i, t) => {
+}, Fi = (i, t) => {
   const e = ke(t);
   return {
     /** Lazy item status/ Статус ленивого элемента */
@@ -4331,7 +4351,7 @@ const it = {}, Ie = (i = {
     }
   };
 };
-function Fi() {
+function Ei() {
   const i = F(mt.is());
   return mt.registrationEvent(({ detail: t }) => {
     i.value = t.loading;
@@ -4366,26 +4386,26 @@ function Ne(i, t = !0, e = !1, s = !0) {
   };
   return e && At.push(u), u;
 }
-function Ei() {
+function Hi() {
   At.forEach((i) => i());
 }
 const Ae = Ne(() => {
   const i = new ie(), t = $(i.getTitle()), e = $(i.getKeywords()), s = $(i.getDescription()), r = $(i.getImage()), o = $(i.getCanonical()), a = $(i.getRobots()), u = $(i.getAuthor()), h = $(i.getSiteName()), d = () => i.html();
-  return m(t, () => {
+  return y(t, () => {
     i.setTitle(t.value);
-  }), m(e, () => {
+  }), y(e, () => {
     i.setKeywords(e.value);
-  }), m(s, () => {
+  }), y(s, () => {
     i.setDescription(s.value);
-  }), m(r, () => {
+  }), y(r, () => {
     i.setImage(r.value);
-  }), m(o, () => {
+  }), y(o, () => {
     i.setCanonical(o.value);
-  }), m(a, () => {
+  }), y(a, () => {
     i.setRobots(a.value);
-  }), m(u, () => {
+  }), y(u, () => {
     i.setAuthor(u.value);
-  }), m(h, () => {
+  }), y(h, () => {
     i.setSiteName(h.value);
   }), {
     meta: i,
@@ -4399,19 +4419,19 @@ const Ae = Ne(() => {
     siteName: h,
     getHtmlMeta: d
   };
-}, !1, !0), Hi = () => Ae();
+}, !1, !0), Ri = () => Ae();
 function Pi(i, t) {
   if (i in st)
     return st[i];
   const e = new ct(i, !0), s = $(e.get(t));
-  return m(s, (r) => e.set(r)), st[i] = s, s;
+  return y(s, (r) => e.set(r)), st[i] = s, s;
 }
 const st = {};
-function Ri(i, t, e) {
+function Wi(i, t, e) {
   if (i in rt)
     return rt[i];
   const s = new ct(i), r = $(s.get(t, e));
-  return m(r, (o) => s.set(o)), y() && window.addEventListener("storage", () => {
+  return y(r, (o) => s.set(o)), m() && window.addEventListener("storage", () => {
     s.update(), r.value = s.get();
   }), rt[i] = r, r;
 }
@@ -4420,7 +4440,7 @@ function Be(i) {
   const t = F(q.getListSync(i, !0)), e = async () => {
     t.value = { ...await q.getList(i) };
   };
-  m(V.getLanguage(), e);
+  y(V.getLanguage(), e);
   for (const s in t.value)
     if (t.value[s] === s || t.value[s] === " ") {
       e().then();
@@ -4428,14 +4448,14 @@ function Be(i) {
     }
   return t;
 }
-const Wi = (i) => Be(i);
-function ji(i, t) {
+const ji = (i) => Be(i);
+function Ui(i, t) {
   const e = $();
   return Dt(async () => {
-    e.value = await Rt(i);
+    e.value = await Pt(i);
   }), l(() => e.value, t);
 }
-function Ui(i, t = () => {
+function zi(i, t = () => {
 }, e, s) {
   return l(
     () => {
@@ -4453,10 +4473,10 @@ function xe(i, t = {}, e = "value", s = !1) {
   const r = typeof t == "string", o = r ? t : e, a = r ? {} : t;
   return i ? i && E(i) && (o in i || s) ? ut(a, i) : ut(a, { [o]: i }) : r ? {} : { ...a };
 }
-function zi(i, t = {}, e = "value") {
+function Zi(i, t = {}, e = "value") {
   return l(() => xe(f(i), f(t), e));
 }
-const Zi = (i, t) => {
+const _i = (i, t) => {
   const e = $();
   let s = !0;
   const r = () => {
@@ -4467,49 +4487,49 @@ const Zi = (i, t) => {
   };
   return l(() => (r(), e.value));
 };
-function _i(i, t) {
+function Ki(i, t) {
   i.value !== t && (i.value = t);
 }
-function Ki(i) {
+function Vi(i) {
   let t;
   return l(() => (t || (t = i()), t.value));
 }
 export {
   Y as Api,
-  qi as ApiDefault,
-  Ji as ApiHeaders,
-  Qi as ApiMethodItem,
-  Xi as ApiPreparation,
-  Mi as ApiResponse,
-  Oi as ApiStatus,
+  Ji as ApiDefault,
+  Qi as ApiHeaders,
+  Xi as ApiMethodItem,
+  Mi as ApiPreparation,
+  Oi as ApiResponse,
+  Ti as ApiStatus,
   Vt as BroadcastMessage,
-  Ti as Cache,
-  Gi as CacheItem,
-  ts as CacheStatic,
-  Pt as Cookie,
-  es as CookieBlock,
+  Gi as Cache,
+  ts as CacheItem,
+  es as CacheStatic,
+  Rt as Cookie,
+  is as CookieBlock,
   ct as DataStorage,
   ht as Datetime,
-  wi as DatetimeRef,
+  Di as DatetimeRef,
   ye as DesignAbstract,
-  vi as DesignAsyncAbstract,
+  bi as DesignAsyncAbstract,
   me as DesignChanged,
-  bi as DesignComp,
+  Si as DesignComp,
   Ct as DesignComponents,
-  Si as DesignConstructorAbstract,
+  wi as DesignConstructorAbstract,
   Ht as EventItem,
-  Di as EventRef,
+  Li as EventRef,
   n as GEO_FLAG_ICON_NAME,
   D as Geo,
   at as GeoFlag,
-  Li as GeoFlagRef,
+  Ii as GeoFlagRef,
   W as GeoIntl,
   Se as GeoIntlRef,
-  is as GeoPhone,
+  ss as GeoPhone,
   V as GeoRef,
-  Pe as Global,
+  Re as Global,
   T as Hash,
-  ss as Icons,
+  rs as Icons,
   Nt as ListDataRef,
   mt as Loading,
   ie as Meta,
@@ -4528,14 +4548,14 @@ export {
   S as MetaTwitterTag,
   we as RouterItemRef,
   wt as ScrollbarWidth,
-  Ii as ScrollbarWidthRef,
+  ki as ScrollbarWidthRef,
   q as Translate,
-  Re as anyToString,
+  Pe as anyToString,
   re as applyTemplate,
   ne as arrFill,
   We as blobToBase64,
-  ji as computedAsync,
-  Ui as computedByLanguage,
+  Ui as computedAsync,
+  zi as computedByLanguage,
   Z as copyObject,
   Et as copyObjectLite,
   bt as createElement,
@@ -4544,23 +4564,23 @@ export {
   qt as encodeAttribute,
   ze as eventStopPropagation,
   lt as executeFunction,
-  Rt as executePromise,
+  Pt as executePromise,
   Ne as executeUse,
-  Ei as executeUseGlobalInit,
+  Hi as executeUseGlobalInit,
   p as forEach,
   oe as frame,
   Ze as getAttributes,
   xe as getBind,
-  zi as getBindRef,
+  Zi as getBindRef,
   $e as getClassName,
   _e as getClipboardData,
   ot as getColumn,
-  Zi as getComputedAsync,
+  _i as getComputedAsync,
   St as getElement,
   j as getElementId,
   ae as getElementImage,
-  rs as getElementItem,
-  ns as getElementOrWindow,
+  ns as getElementItem,
+  os as getElementOrWindow,
   Lt as getExp,
   pe as getIndexForRender,
   ue as getItemByPath,
@@ -4576,71 +4596,72 @@ export {
   Xe as getObjectOrNone,
   Me as getRandomText,
   f as getRef,
-  os as getRequestString,
+  as as getRequestString,
   Oe as getStepPercent,
   Te as getStepValue,
   Ge as goScroll,
-  ti as inArray,
-  ei as initScrollbarOffset,
-  ii as intersectKey,
+  ti as goScrollSmooth,
+  ei as inArray,
+  ii as initScrollbarOffset,
+  si as intersectKey,
   gt as isArray,
-  si as isDifferent,
-  as as isDomData,
-  y as isDomRuntime,
+  ri as isDifferent,
+  us as isDomData,
+  m as isDomRuntime,
   K as isFilled,
-  ri as isFloat,
-  us as isFunction,
-  cs as isInDom,
-  ni as isIntegerBetween,
+  ni as isFloat,
+  cs as isFunction,
+  ls as isInDom,
+  oi as isIntegerBetween,
   Ft as isNull,
-  ls as isNumber,
+  hs as isNumber,
   w as isObject,
   E as isObjectNotArray,
-  P as isSelected,
-  oi as isSelectedByList,
+  R as isSelected,
+  ai as isSelectedByList,
   Q as isString,
-  hs as isWindow,
+  ds as isWindow,
   _ as random,
-  ai as removeCommonPrefix,
+  ui as removeCommonPrefix,
   ve as render,
   U as replaceRecursive,
-  ui as replaceTemplate,
-  ci as resizeImageByMax,
-  li as secondToTime,
-  Ci as setApiRefGlobalConditions,
-  ds as setElementItem,
-  _i as setRef,
-  hi as setValues,
-  di as splice,
+  ci as replaceTemplate,
+  li as resizeImageByMax,
+  hi as secondToTime,
+  Ni as setApiRefGlobalConditions,
+  gs as setElementItem,
+  Ki as setRef,
+  di as setValues,
+  gi as splice,
   he as strFill,
-  Wi as t,
+  ji as t,
   z as toArray,
   ut as toBind,
   be as toBinds,
   kt as toCamelCase,
-  gi as toCamelCaseFirst,
-  Ki as toComputed,
+  fi as toCamelCaseFirst,
+  Vi as toComputed,
   A as toDate,
-  fi as toKebabCase,
+  mi as toKebabCase,
   N as toNumber,
-  mi as toNumberByMax,
+  yi as toNumberByMax,
   fe as toPercent,
-  yi as toPercentBy100,
+  $i as toPercentBy100,
   B as toRefItem,
-  gs as transformation,
-  $i as uint8ArrayToBase64,
+  fs as transformation,
+  pi as uint8ArrayToBase64,
   de as uniqueArray,
-  ki as useApiRef,
+  Ci as useApiRef,
   Le as useBroadcastValueRef,
-  Ni as useCookieRef,
-  Ai as useGeoIntlRef,
-  Bi as useHashRef,
-  xi as useLazyItemByMarginRef,
+  Ai as useCookieRef,
+  Bi as useGeoIntlRef,
+  xi as useHashRef,
+  Fi as useLazyItemByMarginRef,
   Ie as useLazyRef,
-  Fi as useLoadingRef,
-  Hi as useMeta,
+  Ei as useLoadingRef,
+  Ri as useMeta,
   Pi as useSessionRef,
-  Ri as useStorageRef,
+  Wi as useStorageRef,
   Be as useTranslateRef,
-  pi as writeClipboardData
+  vi as writeClipboardData
 };

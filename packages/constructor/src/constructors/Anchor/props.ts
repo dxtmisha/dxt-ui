@@ -1,10 +1,24 @@
+import type { TooltipProps, TooltipPropsInclude } from '../Tooltip'
+import type { TextCopiedClipboardPropsInclude } from '../../types/textTypes'
+
 interface AnchorPropsToken {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface AnchorPropsBasic {
+export interface AnchorPropsBasic<
+  Tooltip extends TooltipProps = TooltipProps
+> extends TooltipPropsInclude<Tooltip>,
+  TextCopiedClipboardPropsInclude {
+  // Status
+  hide?: boolean
+
+  // Value
   name?: string
+  text?: string
+
+  iconTag?: string
+  iconContentCopy?: string
 }
 
 /**

@@ -42,11 +42,13 @@ export class IconDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor icon item class/ класс элемента иконки
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, IconEmits, P>
+    options?: ConstrOptions<COMP, IconEmits, P>,
+    ItemConstructor: typeof Icon = Icon
   ) {
     super(
       name,
@@ -54,7 +56,7 @@ export class IconDesign<
       options
     )
 
-    this.item = new Icon(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

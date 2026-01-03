@@ -45,6 +45,7 @@ export class Icon {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
    */
   constructor(
     protected readonly props: IconProps,
@@ -54,7 +55,8 @@ export class Icon {
     protected readonly className: string,
     protected readonly components?: DesignComp<IconComponents, IconProps>,
     protected readonly slots?: IconSlots,
-    protected readonly emits?: ConstrEmit<IconEmits>
+    protected readonly emits?: ConstrEmit<IconEmits>,
+    protected readonly SkeletonIncludeConstructor: typeof SkeletonInclude = SkeletonInclude
   ) {
     this.iconBind = getBindRef(
       refs.icon,
@@ -79,7 +81,7 @@ export class Icon {
       }))
     )
 
-    this.skeleton = new SkeletonInclude(
+    this.skeleton = new SkeletonIncludeConstructor(
       props,
       classDesign,
       ['classBackgroundVariant']
@@ -105,6 +107,7 @@ export class Icon {
    */
   readonly binds = computed<any>(() => ({
     key: 'icon',
+    tabindex: this.props.dynamic ? 0 : undefined,
     ...AriaStaticInclude.role(this.getRole()),
     ...AriaStaticInclude.hidden(!this.props.dynamic)
   }))

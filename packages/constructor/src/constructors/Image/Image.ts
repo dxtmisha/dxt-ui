@@ -44,33 +44,47 @@ export class Image {
    * @param element input element/ элемент ввода
    * @param className class name/ название класса
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param ImageTypeConstructor class for working with image type/ класс для работы с типом изображения
+   * @param ImageDataConstructor class for working with image data/ класс для работы с данными изображения
+   * @param ImageCoordinatorConstructor class for working with image coordinates/ класс для работы с координатами изображения
+   * @param ImagePositionConstructor class for working with image position/ класс для работы с позицией изображения
+   * @param ImageAdaptiveItemConstructor class for working with adaptive image item/ класс для работы с адаптивным элементом изображения
+   * @param ImageBackgroundConstructor class for working with image background/ класс для работы с фоном изображения
+   * @param ImageImgConstructor class for working with image tag/ класс для работы с тегом изображения
    */
   constructor(
     protected readonly props: ImageProps,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly className: string,
-    protected readonly emits?: ConstrEmit<ImageEmits>
+    protected readonly emits?: ConstrEmit<ImageEmits>,
+    protected readonly ImageTypeConstructor: typeof ImageType = ImageType,
+    protected readonly ImageDataConstructor: typeof ImageData = ImageData,
+    protected readonly ImageCoordinatorConstructor: typeof ImageCoordinator = ImageCoordinator,
+    protected readonly ImagePositionConstructor: typeof ImagePosition = ImagePosition,
+    protected readonly ImageAdaptiveItemConstructor: typeof ImageAdaptiveItem = ImageAdaptiveItem,
+    protected readonly ImageBackgroundConstructor: typeof ImageBackground = ImageBackground,
+    protected readonly ImageImgConstructor: typeof ImageImg = ImageImg
   ) {
-    this.type = new ImageType(props)
-    this.data = new ImageData(props, this.type)
+    this.type = new ImageTypeConstructor(props)
+    this.data = new ImageDataConstructor(props, this.type)
 
-    this.coordinator = new ImageCoordinator(props)
-    this.position = new ImagePosition(props, this.coordinator)
+    this.coordinator = new ImageCoordinatorConstructor(props)
+    this.position = new ImagePositionConstructor(props, this.coordinator)
 
-    this.adaptiveItem = new ImageAdaptiveItem(
+    this.adaptiveItem = new ImageAdaptiveItemConstructor(
       props,
       this.data,
       element
     )
 
-    this.background = new ImageBackground(
+    this.background = new ImageBackgroundConstructor(
       props,
       this.data,
       this.coordinator,
       this.adaptiveItem
     )
 
-    this.img = new ImageImg(
+    this.img = new ImageImgConstructor(
       this.props,
       element,
       this.type,
