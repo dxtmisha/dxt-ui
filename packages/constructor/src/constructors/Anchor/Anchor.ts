@@ -1,8 +1,13 @@
-import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, writeClipboardData } from '@dxtmisha/functional'
+import { onMounted, type Ref, type ToRefs } from 'vue'
+import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { TooltipInclude } from '../Tooltip'
 import { TextInclude } from '../../classes/TextInclude'
+
+import { AnchorHref } from './AnchorHref'
+import { AnchorTo } from './AnchorTo'
+import { AnchorEvent } from './AnchorEvent'
+import { AnchorIcon } from './AnchorIcon'
 
 import type { AnchorComponents, AnchorEmits, AnchorSlots } from './types'
 import type { AnchorProps } from './props'
@@ -13,6 +18,11 @@ import type { AnchorProps } from './props'
 export class Anchor {
   readonly tooltip: TooltipInclude
   readonly text: TextInclude
+
+  readonly href: AnchorHref
+  readonly to: AnchorTo
+  readonly event: AnchorEvent
+  readonly icon: AnchorIcon
 
   /**
    * Constructor
@@ -41,24 +51,34 @@ export class Anchor {
       this.components
     )
     this.text = new TextInclude(this.props)
+
+    this.href = new AnchorHref(this.props)
+    this.to = new AnchorTo(
+      this.props,
+      this.element,
+      this.href
+    )
+    this.event = new AnchorEvent(
+      this.props,
+      this.tooltip,
+      this.href,
+      this.to
+    )
+    this.icon = new AnchorIcon(this.props)
+
+    onMounted(() => {
+      requestAnimationFrame(this.goIsFocus)
+    })
   }
 
-  /** Computed href attribute/ Вычисляемый атрибут href */
-  readonly href = computed<string | undefined>(() => {
-    if (this.props.name) {
-      return `#${this.props.name}`
-    }
-
-    return undefined
-  })
-
   /**
-   * On click handler
+   * Go if focus on anchor
    *
-   * Обработчик нажатия
+   * Перейти, если фокус на якоре
    */
-  readonly onClick = (): void => {
-    writeClipboardData(`${location.origin}${location.pathname}${this.href.value}`)
-      .then(() => this.tooltip.open())
+  protected readonly goIsFocus = (): void => {
+    if (location.hash === this.href.get()) {
+      this.to.go()
+    }
   }
 }

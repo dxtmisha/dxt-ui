@@ -115,4 +115,13 @@ export class AnchorDesign<
       name: this.props.name
     })
   }
+
+  readonly renderIcon(): VNode[] {
+    if (this.item.icon.is()) {
+      return this.components.render(
+        'icon',
+        this.item.icon.binds.value
+      )
+    }
+  }
 }

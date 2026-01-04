@@ -1,5 +1,8 @@
 import type { TooltipProps, TooltipPropsInclude } from '../Tooltip'
+
+import type { LabelProps } from '../../types/labelTypes'
 import type { TextCopiedClipboardPropsInclude } from '../../types/textTypes'
+import type { AnchorScrollProps } from './basicTypes'
 
 interface AnchorPropsToken {
   // :type [!] System label / Системная метка
@@ -8,8 +11,10 @@ interface AnchorPropsToken {
 
 export interface AnchorPropsBasic<
   Tooltip extends TooltipProps = TooltipProps
-> extends TooltipPropsInclude<Tooltip>,
-  TextCopiedClipboardPropsInclude {
+> extends LabelProps,
+  TooltipPropsInclude<Tooltip>,
+  TextCopiedClipboardPropsInclude,
+  AnchorScrollProps {
   // Status
   hide?: boolean
 
@@ -17,8 +22,14 @@ export interface AnchorPropsBasic<
   name?: string
   text?: string
 
+  // Style
+  isCopy?: boolean
+
+  iconLink?: string
   iconTag?: string
   iconContentCopy?: string
+
+  delayHide?: number
 }
 
 /**
@@ -35,6 +46,7 @@ export interface AnchorProps extends AnchorPropsBasic, AnchorPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsAnchor = {
+  delayHide: 3_072,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

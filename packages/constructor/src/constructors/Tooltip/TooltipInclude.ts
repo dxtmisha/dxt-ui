@@ -88,6 +88,25 @@ export class TooltipInclude<
    * Открыть подсказку.
    */
   open() {
-    this.getElement()?.toggle(true)
+    this.toggle(true)
+  }
+
+  /**
+   * Close the tooltip.
+   *
+   * Закрыть подсказку.
+   */
+  close() {
+    this.toggle(false)
+  }
+
+  /**
+   * Toggle the tooltip.
+   *
+   * Переключить подсказку.
+   * @param open open status/ статус открытия
+   */
+  toggle(open: boolean): void {
+    this.getElement()?.toggle(open)
   }
 }
