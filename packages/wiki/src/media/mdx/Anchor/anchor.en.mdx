@@ -1,0 +1,33 @@
+Component for creating hyperlinks or anchor points, providing navigation within a page or transition to external resources.
+
+Anchor allows creating interactive links with support for icons, text, and various states. The component can be used as a classic link, a button to copy text to the clipboard, or as an anchor point for scrolling to a specific section of the page. Supports integration with Tooltip for displaying hints.
+
+**Key features:**
+
+- Creating external and internal links
+- Anchor point mode (without href)
+- Copying content to the clipboard
+- Smooth scrolling to the target element
+- Support for icons and text
+- Integration with the Tooltip component
+
+**Typical use cases:**
+
+- Navigation through page sections
+- Links to external resources
+- "Copy link" or "Copy text" buttons
+- Anchors for headings in documentation
+
+```html
+<script setup>
+import { Anchor } from 'dxt-ui'
+</script>
+
+<template>
+  <div class="flex flex-col gap-4">
+    <Anchor href="https://example.com" text="External link" />
+    <Anchor name="section-1" text="Section anchor" />
+  </div>
+</template>
+```
+

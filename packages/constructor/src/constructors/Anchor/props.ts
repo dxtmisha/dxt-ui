@@ -46,6 +46,7 @@ export interface AnchorProps extends AnchorPropsBasic, AnchorPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsAnchor = {
+  shift: 64,
   delayHide: 3_072,
   ...{
     // :default [!] System label / Системная метка

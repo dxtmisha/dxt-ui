@@ -1,5 +1,6 @@
 import type { AriaList, AriaTrueOrFalse } from '../types/ariaTypes'
 import type { RoleType } from '../types/roleTypes'
+import { isString } from '@dxtmisha/functional'
 
 /**
  * The class returns static ARIA attributes.
@@ -41,6 +42,20 @@ export class AriaStaticInclude {
     return {
       'aria-checked': this.isTrueOrFalse(isChecked)
     }
+  }
+
+  /**
+   * Get ARIA current attribute.
+   *
+   * Получить атрибут ARIA current.
+   * @param value ARIA current attribute/ Атрибут ARIA current
+   */
+  static current(value?: AriaList['aria-current']): AriaList {
+    const current = isString(value)
+      ? value
+      : this.isTrueOrFalse(value)
+
+    return this.isDataToData('aria-current', current)
   }
 
   /**

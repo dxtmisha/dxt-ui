@@ -1,3 +1,4 @@
 {
-  "main": "{d.anchor}"
+  "main": "{d.anchor}",
+  "gap": "{sys.spacing.md}"
 }

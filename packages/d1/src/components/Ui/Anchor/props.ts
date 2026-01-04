@@ -21,6 +21,9 @@ export interface AnchorProps extends AnchorPropsBasic, PropsToken {
  */
 export const defaults: object = {
   ...defaultsAnchor,
+  iconLink: 'link',
+  iconTag: 'tag',
+  iconContentCopy: 'content_copy',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

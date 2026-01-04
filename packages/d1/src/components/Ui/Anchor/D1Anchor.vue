@@ -12,6 +12,9 @@ import {
   type AnchorSlots
 } from '@dxtmisha/constructor/Anchor'
 
+import { D1Icon } from '../Icon'
+import { D1Tooltip } from '../Tooltip'
+
 import { defaults, type AnchorProps, propsValues } from './props'
 import './styleToken.scss'
 
@@ -40,7 +43,11 @@ const design = new AnchorDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      icon: D1Icon,
+      tooltip: D1Tooltip
+    }
   }
 )
 

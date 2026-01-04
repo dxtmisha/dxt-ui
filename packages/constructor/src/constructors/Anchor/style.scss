@@ -1,5 +1,8 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinAnchor {
+  @include ui.flexX;
 
+  color: inherit;
+  text-decoration: none;
 }

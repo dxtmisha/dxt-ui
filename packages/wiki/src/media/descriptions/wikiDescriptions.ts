@@ -3,6 +3,7 @@ import type { StorybookComponentsDescription } from '../../types/storybookTypes'
 import { wikiDescriptionsAccordion } from './wikiDescriptionsAccordion'
 import { wikiDescriptionsActions } from './wikiDescriptionsActions'
 import { wikiDescriptionsActionSheet } from './wikiDescriptionsActionSheet'
+import { wikiDescriptionsAnchor } from './wikiDescriptionsAnchor'
 import { wikiDescriptionsArrow } from './wikiDescriptionsArrow'
 import { wikiDescriptionsBadge } from './wikiDescriptionsBadge'
 import { wikiDescriptionsBars } from './wikiDescriptionsBars'
@@ -41,6 +42,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsAccordion,
   wikiDescriptionsActions,
   wikiDescriptionsActionSheet,
+  wikiDescriptionsAnchor,
   wikiDescriptionsArrow,
   wikiDescriptionsBadge,
   wikiDescriptionsBars,

@@ -4,7 +4,9 @@ import {
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
+import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Anchor } from './Anchor'
 
 import type { TooltipControl } from '../Tooltip'
@@ -146,7 +148,8 @@ export class AnchorDesign<
     props?: TooltipControl
   ): VNode[] => {
     const classes = [
-      this.classes?.value.main
+      this.classes?.value.main,
+      getClassTagAStatic(this.getDesign())
     ]
 
     if (props) {
@@ -155,12 +158,8 @@ export class AnchorDesign<
 
     return [
       h('a', {
-        ...this.getAttrs(),
-        key: 'main',
-        class: classes,
-        name: this.props.name,
-        href: this.props.isCopy ? undefined : this.item.href.get(),
-        onClick: this.item.event.onClick
+        ...this.getMainProps(),
+        class: classes
       }, this.renderChildren())
     ]
   }
@@ -212,5 +211,30 @@ export class AnchorDesign<
     }
 
     return children
+  }
+
+  /**
+   * Get main element properties.
+   *
+   * Получить свойства основного элемента.
+   */
+  protected getMainProps(): Record<string, any> {
+    const props: Record<string, any> = {
+      ...this.getAttrs(),
+      ref: this.element,
+      key: 'main',
+      name: this.props.name,
+      onClick: this.item.event.onClick,
+      tabindex: 0
+    }
+
+    if (!this.props.isCopy) {
+      Object.assign(props, {
+        href: this.item.href.get(),
+        ...AriaStaticInclude.current('page')
+      })
+    }
+
+    return props
   }
 }

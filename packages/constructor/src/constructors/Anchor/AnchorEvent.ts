@@ -71,6 +71,6 @@ export class AnchorEvent {
     this.timeout = setTimeout(() => {
       this.copy.value = false
       this.tooltip.close()
-    })
+    }, this.props.delayHide ?? 1024)
   }
 }
