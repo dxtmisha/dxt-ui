@@ -32,6 +32,11 @@ export class AnchorEvent {
   ) {
   }
 
+  /**
+   * Is copy state
+   *
+   * Является ли состоянием копирования
+   */
   isCopy(): boolean {
     return Boolean(this.copy.value)
   }
@@ -41,7 +46,9 @@ export class AnchorEvent {
    *
    * Обработчик нажатия
    */
-  readonly onClick = (): void => {
+  readonly onClick = (event: MouseEvent): void => {
+    event.preventDefault()
+
     if (this.props.isCopy) {
       writeClipboardData(this.href.getLink())
         .then(() => this.toCopy())

@@ -7,6 +7,7 @@ import {
 
 import { Anchor } from './Anchor'
 
+import type { TooltipControl } from '../Tooltip'
 import {
   type AnchorPropsBasic
 } from './props'
@@ -106,22 +107,110 @@ export class AnchorDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
-    // const children: any[] = []
+  protected initRender(): VNode[] | undefined {
+    if (this.item.href.is()) {
+      if (this.item.isHide.value) {
+        return this.renderItemHide()
+      }
 
-    return h('a', {
-      ...this.getAttrs(),
-      class: this.classes?.value.main,
-      name: this.props.name
-    })
+      if (this.props.isCopy) {
+        return this.renderTooltip()
+      }
+
+      return this.renderItem()
+    }
+
+    return undefined
   }
 
-  readonly renderIcon(): VNode[] {
+  /**
+   * Rendering the tooltip.
+   *
+   * Рендеринг подсказки.
+   */
+  readonly renderTooltip = (): VNode[] => {
+    return this.item.tooltip.render(
+      {
+        control: (props: TooltipControl): VNode[] => this.renderItem(props)
+      }
+    )
+  }
+
+  /**
+   * Rendering the main item.
+   *
+   * Рендеринг основного элемента.
+   * @param props additional properties/ дополнительные свойства
+   */
+  readonly renderItem = (
+    props?: TooltipControl
+  ): VNode[] => {
+    const classes = [
+      this.classes?.value.main
+    ]
+
+    if (props) {
+      classes.push(props.class)
+    }
+
+    return [
+      h('a', {
+        ...this.getAttrs(),
+        key: 'main',
+        class: classes,
+        name: this.props.name,
+        href: this.props.isCopy ? undefined : this.item.href.get(),
+        onClick: this.item.event.onClick
+      }, this.renderChildren())
+    ]
+  }
+
+  /**
+   * Rendering the hidden item.
+   *
+   * Рендеринг скрытого элемента.
+   */
+  readonly renderItemHide = (): VNode[] => {
+    return [
+      h('a', {
+        ...this.getAttrs(),
+        key: 'main-hide',
+        name: this.props.name
+      })
+    ]
+  }
+
+  /**
+   * Rendering an icon if it is set.
+   *
+   * Рендеринг иконки, если она задана.
+   */
+  readonly renderIcon = (): VNode[] => {
     if (this.item.icon.is()) {
       return this.components.render(
         'icon',
         this.item.icon.binds.value
       )
     }
+
+    return []
+  }
+
+  /**
+   * Rendering children elements.
+   *
+   * Рендеринг дочерних элементов.
+   */
+  readonly renderChildren = (): VNode[] => {
+    const children: VNode[] = []
+
+    if (!this.props.hide) {
+      children.push(
+        ...this.renderIcon(),
+        ...this.item.label.render()
+      )
+    }
+
+    return children
   }
 }

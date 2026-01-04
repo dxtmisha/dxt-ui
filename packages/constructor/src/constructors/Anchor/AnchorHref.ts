@@ -1,5 +1,5 @@
-import type { AnchorProps } from './props.ts'
 import { computed } from 'vue'
+import type { AnchorProps } from './props'
 
 /**
  * Anchor href attribute handler
@@ -24,6 +24,15 @@ export class AnchorHref {
 
     return undefined
   })
+
+  /**
+   * Check if href exists
+   *
+   * Проверить, существует ли href
+   */
+  is() {
+    return Boolean(this.href.value)
+  }
 
   /**
    * Get href value

@@ -8,7 +8,7 @@ import {
 } from '@dxtmisha/functional'
 
 import type { TooltipComponentInclude, TooltipPropsInclude } from './basicTypes'
-import type { TooltipExpose } from './types'
+import type { TooltipExpose, TooltipSlots } from './types'
 import type { TooltipProps } from './props'
 
 /**
@@ -60,12 +60,14 @@ export class TooltipInclude<
    *
    * Рендер компонента подсказки
    */
-  readonly render = (): VNode[] => {
+  readonly render = (
+    slotsChildren: TooltipSlots
+  ): VNode[] => {
     if (this.components) {
       return this.components.render(
         'tooltip',
         this.binds.value,
-        undefined,
+        slotsChildren as unknown as Record<string, any>,
         this.index
       )
     }

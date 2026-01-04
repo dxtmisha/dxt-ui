@@ -1,8 +1,9 @@
-import { onMounted, type Ref, type ToRefs } from 'vue'
+import { computed, onMounted, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
-import { TooltipInclude } from '../Tooltip'
+import { LabelInclude } from '../../classes/LabelInclude'
 import { TextInclude } from '../../classes/TextInclude'
+import { TooltipInclude } from '../Tooltip'
 
 import { AnchorHref } from './AnchorHref'
 import { AnchorTo } from './AnchorTo'
@@ -16,8 +17,9 @@ import type { AnchorProps } from './props'
  * Anchor
  */
 export class Anchor {
-  readonly tooltip: TooltipInclude
+  readonly label: LabelInclude
   readonly text: TextInclude
+  readonly tooltip: TooltipInclude
 
   readonly href: AnchorHref
   readonly to: AnchorTo
@@ -45,12 +47,16 @@ export class Anchor {
     protected readonly slots?: AnchorSlots,
     protected readonly emits?: ConstrEmit<AnchorEmits>
   ) {
+    this.label = new LabelInclude(props, className, undefined, slots)
+    this.text = new TextInclude(this.props)
     this.tooltip = new TooltipInclude(
       this.props,
       this.className,
-      this.components
+      this.components,
+      computed(() => ({
+        description: this.text.copiedClipboard.value
+      }))
     )
-    this.text = new TextInclude(this.props)
 
     this.href = new AnchorHref(this.props)
     this.to = new AnchorTo(
@@ -64,12 +70,21 @@ export class Anchor {
       this.href,
       this.to
     )
-    this.icon = new AnchorIcon(this.props)
+    this.icon = new AnchorIcon(this.props, this.event)
 
     onMounted(() => {
       requestAnimationFrame(this.goIsFocus)
     })
   }
+
+  /** Is hide anchor/ Скрыть якорь */
+  readonly isHide = computed<boolean>(() => {
+    return this.props.hide
+      || (
+        !this.label.is.value
+        && !this.props.isCopy
+      )
+  })
 
   /**
    * Go if focus on anchor

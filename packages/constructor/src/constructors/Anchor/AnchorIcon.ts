@@ -2,6 +2,7 @@ import { computed } from 'vue'
 import type { AnchorProps } from './props'
 import type { ConstrBind } from '@dxtmisha/functional'
 import type { IconProps } from '../Icon'
+import { AnchorEvent } from './AnchorEvent.ts'
 
 /**
  * Class for working with the anchor icon
@@ -12,9 +13,11 @@ export class AnchorIcon {
   /**
    * Constructor
    * @param props input data / входные данные
+   * @param event event handler / обработчик событий
    */
   constructor(
-    protected readonly props: AnchorProps
+    protected readonly props: AnchorProps,
+    protected readonly event: AnchorEvent
   ) {
   }
 
@@ -36,6 +39,7 @@ export class AnchorIcon {
     return {
       icon: this.icon.value,
       iconActive: this.props.iconContentCopy,
+      active: this.event.isCopy(),
       dynamic: true
     }
   })
