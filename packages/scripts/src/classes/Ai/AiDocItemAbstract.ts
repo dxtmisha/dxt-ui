@@ -30,7 +30,9 @@ export class AiDocItemAbstract {
     const date = this.mdFile.getDate()
 
     if (this.getItemDate() > date.getDate()) {
+      console.log('File:', this.item.path)
 
+      await this.build.make()
     }
   }
 

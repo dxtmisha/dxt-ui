@@ -75,6 +75,7 @@ export class BuildItem {
    */
   async make(): Promise<boolean> {
     this.saveViteConfig()
+    return false
 
     const vite = this.viteSample
       .read()

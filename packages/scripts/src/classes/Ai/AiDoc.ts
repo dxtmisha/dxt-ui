@@ -1,8 +1,9 @@
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { GitRead } from '../Git/GitRead'
-import { AiDocItem } from './AiDocItem'
 
 import type { GitFileItem } from '../../types/gitTypes'
+
+import { aiDocTypes } from '../../media/ai/ai-doc-types'
 
 /**
  * Class for generating AI documentation.
@@ -67,9 +68,11 @@ export class AiDoc {
   protected async makeItem(item: GitFileItem) {
     const path = PropertiesConfig.getAiDocStorybookPath()
 
-    console.warn('item.path:', item.path)
-
-    // const docItem = new AiDocItem(path, item)
-    // await docItem.make()
+    aiDocTypes.forEach((docType) => {
+      if (docType.check(item)) {
+        const docItem = new docType.item(path, item)
+        docItem.make()
+      }
+    })
   }
 }
