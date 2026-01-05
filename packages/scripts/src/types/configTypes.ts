@@ -39,6 +39,12 @@ export type DesignUiConfig = {
   /** AI model for generating content / Модель ИИ для генерации контента */
   aiModel?: string
 
-  /** Google API key for accessing Google services / Ключ Google API для доступа к сервисам Google */
+  /** Google AI key for accessing Google services / Ключ Google AI для доступа к сервисам Google */
   aiKey?: string
+
+  /** Directories for AI documentation generation / Каталоги для генерации AI документации */
+  aiDocDirectory?: string[]
+
+  /** Paths to Storybook for AI documentation generation / Пути к Storybook для генерации AI документации */
+  aiDocStorybookPath?: string
 }

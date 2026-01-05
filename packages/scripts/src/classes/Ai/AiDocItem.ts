@@ -6,9 +6,9 @@ import { GitRead } from '../Git/GitRead'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { GitFileItem } from '../../types/gitTypes'
-import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
-import { useAi } from '../../composables/useAi.ts'
-import type { AiAbstract } from './AiAbstract.ts'
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
+import { useAi } from '../../composables/useAi'
+import type { AiAbstract } from './AiAbstract'
 
 /** Sample prompt template path / Путь к шаблону промпта */
 const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts']

@@ -6,10 +6,10 @@ import { ComponentWikiFile } from './Component/ComponentWikiFile'
 
 import { UI_DIR_DIST_TEMPORARY, UI_FILE_NAME_VITE, UI_FILE_NAME_VITE_WORKERS } from '../config'
 
-// Sample Vite config template path / Путь к шаблону Vite-конфига
+/** Template vite config file path / Путь к файлу шаблона vite-конфига */
 const FILE_VITE_SAMPLE = [__dirname, '..', 'media', 'templates', 'viteComponentTemplateConfig.ts']
 
-// Async exec wrapper / Обёртка для асинхронного exec
+/** Async exec wrapper / Обёртка для асинхронного exec */
 const execAsync = promisify(exec)
 
 /**
@@ -18,10 +18,10 @@ const execAsync = promisify(exec)
  * Билдит компонент с использованием временного Vite-конфига.
  */
 export class BuildItem {
-  // Template vite config file / Файл шаблона vite-конфига
+  /** Template vite config file / Файл шаблона vite-конфига */
   protected readonly viteSample: ComponentWikiFile
 
-  // Aggregated built code file / Файл агрегированного собранного кода
+  /** Aggregated built code file / Файл агрегированного собранного кода */
   protected readonly codeFile: ComponentWikiFile
 
   /**

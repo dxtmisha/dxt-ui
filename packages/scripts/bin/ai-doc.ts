@@ -4,4 +4,6 @@ import { AiDoc } from '../src/classes/Ai/AiDoc'
 
 const name: string = process.argv?.[2] ?? 'src/storybook'
 
-new AiDoc(name).make()
+new AiDoc(name)
+  .make()
+  .then()

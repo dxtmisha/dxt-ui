@@ -80,21 +80,54 @@ export class GitRead {
   }
 
   /**
+   * Gets unique list of files from both standard and porcelain lists.
+   *
+   * Получает уникальный список файлов из обоих стандартных и porcelain списков.
+   * @param filter - file filter function / функция фильтрации файлов
+   */
+  static getListUnique(
+    filter: (file: string) => boolean
+  ): GitFileList {
+    return this.mergeUnique(
+      this.getListPorcelain(filter),
+      this.getList(filter)
+    )
+  }
+
+  /**
+   * Gets list of files by directory with .ts extension, excluding test files.
+   *
+   * Получает список файлов по директории с расширением .ts, исключая тестовые файлы.
+   * @param directory - directory path or regex / путь к директории или регулярное выражение
+   */
+  static getListByDirectory(
+    directory: string | RegExp
+  ) {
+    return this.getListUnique(
+      (file: string) => Boolean(
+        file.match(directory)
+        && file.endsWith('.ts')
+        && !file.endsWith('.test.ts')
+      )
+    )
+  }
+
+  /**
    * Gets list of class files (*.ts in /classes/ directory).
    *
    * Получает список файлов классов (*.ts в директории /classes/).
    */
   static getClassesList(): GitFileList {
-    const filter = (file: string) => Boolean(
-      file.match('/classes/')
-      && file.endsWith('.ts')
-      && !file.endsWith('.test.ts')
-    )
+    return this.getListByDirectory('/classes/')
+  }
 
-    return this.mergeUnique(
-      this.getListPorcelain(filter),
-      this.getList(filter)
-    )
+  /**
+   * Gets list of class files (*.ts in /classes/ directory).
+   *
+   * Получает список файлов классов (*.ts в директории /classes/).
+   */
+  static getFunctionsList(): GitFileList {
+    return this.getListByDirectory('/functions/')
   }
 
   /**

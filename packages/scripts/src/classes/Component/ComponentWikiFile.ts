@@ -4,6 +4,7 @@ import { Datetime, isFilled } from '@dxtmisha/functional-basic'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
+/** Regex to match date in content / Регекс для поиска даты в содержимом */
 const DATE_UPDATED_MATCH = /\*\*Date: (.*?)\./i
 
 /**
