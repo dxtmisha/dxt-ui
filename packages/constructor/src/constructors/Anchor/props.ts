@@ -20,7 +20,6 @@ export interface AnchorPropsBasic<
 
   // Value
   name?: string
-  text?: string
 
   // Style
   isCopy?: boolean

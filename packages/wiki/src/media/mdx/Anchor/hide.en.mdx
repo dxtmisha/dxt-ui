@@ -1,0 +1,28 @@
+## Hidden anchors
+
+The `hide` property creates an invisible anchor point for programmatic navigation without visual representation.
+
+**Properties:**
+
+- `hide` — hides the visual representation of the component (default `false`)
+- `name` — anchor name for navigation (required property)
+
+When `hide` is enabled, the component renders as a hidden `<a name="...">` element without text, icons, or styling. This is useful for creating invisible navigation points that can be programmatically scrolled to or used as target elements for other anchors. The hidden anchor remains in the DOM and is accessible for navigation via URL hash or scroll methods.
+
+```html
+<template>
+  <!-- Hidden anchor in section -->
+  <section>
+    <Anchor name="section-start" hide />
+    <h2>Section heading</h2>
+  </section>
+
+  <!-- Combination of hidden and visible -->
+  <h3>
+    <Anchor name="heading" hide />
+    Heading
+    <Anchor name="heading" isCopy iconTag="link" />
+  </h3>
+</template>
+```
+

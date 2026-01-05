@@ -532,6 +532,16 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  tooltipAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the Tooltip component',
+        ru: 'Дополнительные атрибуты для компонента Tooltip'
+      }
+    }
+  },
   type: {
     type: StorybookControl.select,
     options: {

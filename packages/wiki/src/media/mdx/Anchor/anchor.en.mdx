@@ -1,33 +1,34 @@
-Component for creating hyperlinks or anchor points, providing navigation within a page or transition to external resources.
+Component for creating anchor links with smooth scrolling and URL copying capabilities.
 
-Anchor allows creating interactive links with support for icons, text, and various states. The component can be used as a classic link, a button to copy text to the clipboard, or as an anchor point for scrolling to a specific section of the page. Supports integration with Tooltip for displaying hints.
+Anchor provides interactive anchor links for navigating through page sections. The component automatically handles clicks, updates the URL address, supports smooth scrolling with customizable offset, and integrates with Tooltip for displaying copy notifications. It can work both in regular navigation mode and in link copying mode to clipboard.
 
 **Key features:**
 
-- Creating external and internal links
-- Anchor point mode (without href)
-- Copying content to the clipboard
-- Smooth scrolling to the target element
-- Support for icons and text
-- Integration with the Tooltip component
+- Smooth scrolling to target element with configurable parameters
+- Automatic navigation on page load based on URL hash
+- Copy mode for copying full link to clipboard
+- Tooltip integration for copy notifications
+- Icon support for visual styling
+- Hidden anchors for creating invisible navigation points
+- URL updates via history API without page reload
 
 **Typical use cases:**
 
-- Navigation through page sections
-- Links to external resources
-- "Copy link" or "Copy text" buttons
-- Anchors for headings in documentation
+- Navigation through documentation sections and long pages
+- Anchors for headings with copy link button
+- Table of contents and page navigation menu
+- "Share link to section" buttons
+- Creating invisible anchor points for programmatic navigation
 
 ```html
-<script setup>
-import { Anchor } from 'dxt-ui'
-</script>
-
 <template>
-  <div class="flex flex-col gap-4">
-    <Anchor href="https://example.com" text="External link" />
-    <Anchor name="section-1" text="Section anchor" />
-  </div>
+  <!-- Regular anchor -->
+  <Anchor name="section-1" text="Go to section" />
+
+  <!-- With copy mode -->
+  <Anchor name="section-2" text="Copy link" isCopy />
+
+  <!-- Hidden anchor -->
+  <Anchor name="section-3" hide />
 </template>
 ```
-

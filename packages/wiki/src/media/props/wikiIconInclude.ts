@@ -95,6 +95,16 @@ export const wikiIconInclude: StorybookArgsToList = {
       }
     }
   },
+  iconContentCopy: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for copy content action',
+        ru: 'Задает иконку для действия копирования содержимого'
+      }
+    }
+  },
   iconDir: {
     type: StorybookControl.boolean,
     options: {
@@ -124,6 +134,16 @@ export const wikiIconInclude: StorybookArgsToList = {
       description: {
         en: 'Hides the icon',
         ru: 'Скрывает иконку'
+      }
+    }
+  },
+  iconLink: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for link',
+        ru: 'Задает иконку для ссылки'
       }
     }
   },
@@ -187,6 +207,16 @@ export const wikiIconInclude: StorybookArgsToList = {
       description: {
         en: 'Sets icon displayed in success state',
         ru: 'Задает иконку, отображаемую в состоянии успеха'
+      }
+    }
+  },
+  iconTag: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for tag',
+        ru: 'Задает иконку для тега'
       }
     }
   },

@@ -21,6 +21,17 @@ export const wikiText: StorybookArgsToList = {
       }
     }
   },
+  textCopiedClipboard: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Text displayed when content is copied to clipboard',
+        ru: 'Текст, отображаемый при копировании содержимого в буфер обмена'
+      }
+    }
+  },
   textEntriesMatch: {
     type: StorybookControl.text,
     options: {

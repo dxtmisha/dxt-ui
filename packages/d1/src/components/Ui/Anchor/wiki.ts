@@ -19,7 +19,6 @@ const propsNames: StorybookProps = [
   { name: 'labelId', type: 'string' },
   { name: 'name', type: 'string' },
   { name: 'shift', type: 'NumberOrString' },
-  { name: 'text', type: 'string' },
   { name: 'textCopiedClipboard', type: 'TextValue' },
   { name: 'tooltipAttrs', type: 'ConstrBind<TooltipProps>' }
   // :propsList [!] System label / Системная метка

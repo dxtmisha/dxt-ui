@@ -1,0 +1,34 @@
+## Scroll Settings
+
+The `behavior`, `block`, `inline`, and `shift` properties control the scrolling behavior to the element when navigating via an anchor.
+
+**Properties:**
+
+- `behavior` — defines the scroll transition animation (`auto`, `smooth`, `instant`)
+- `block` — vertical alignment of the element (`start`, `center`, `end`, `nearest`)
+- `inline` — horizontal alignment of the element (`start`, `center`, `end`, `nearest`)
+- `shift` — scroll offset from the top edge (in pixels)
+
+> **Note:** If the `shift` property is set, the component uses `window.scrollTo` instead of `element.scrollIntoView`. In this case, the `block` and `inline` properties are ignored, and scrolling is always aligned to the top edge of the element with the specified offset.
+
+These properties allow you to customize exactly how the page scrolls to the target element. For example, you can enable smooth scrolling or change the positioning of the element on the screen after scrolling.
+
+```html
+<template>
+  <Anchor
+    href="#target"
+    behavior="smooth"
+    block="center"
+    inline="nearest"
+  >
+    Go to element
+  </Anchor>
+
+  <Anchor
+    href="#target"
+    :shift="100"
+  >
+    Go with offset
+  </Anchor>
+</template>
+```

@@ -1,0 +1,23 @@
+## Copy link
+
+The `isCopy` property switches the component to anchor link copying mode to clipboard.
+
+**Properties:**
+
+- `isCopy` — enables link copying mode (default `false`)
+- `iconTag` — icon displayed in copy mode
+- `iconContentCopy` — icon shown after successful copy
+- `delayHide` — delay before hiding notification in milliseconds (default `3072`)
+
+When `isCopy` is enabled, clicking the component doesn't scroll to the anchor but copies the full link (including origin and pathname) to clipboard. After copying, a Tooltip with notification automatically opens and closes after the time specified in `delayHide`. The icon changes from `iconTag` to `iconContentCopy` for visual confirmation of the action.
+
+```html
+<template>
+  <!-- Basic mode -->
+  <Anchor name="section" text="Copy link" isCopy />
+
+  <!-- With custom icons -->
+  <Anchor name="heading" isCopy iconTag="share" iconContentCopy="check" />
+</template>
+```
+

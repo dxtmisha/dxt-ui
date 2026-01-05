@@ -28,10 +28,15 @@ export const wikiDescriptionsAnchor: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Anchor'} type={'anchor'}/>
-`,
-    slots: `
+<StorybookDescriptions componentName={'Anchor'} type={'isCopy'}/>
+<StorybookDescriptions componentName={'Anchor'} type={'hide'}/>
+<StorybookDescriptions componentName={'Anchor'} type={'scroll'}/>
 `,
     expose: `
+<StorybookDescriptions componentName={'Anchor'} type={'expose.go'}/>
+`,
+    slots: `
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
 `
   }
 }

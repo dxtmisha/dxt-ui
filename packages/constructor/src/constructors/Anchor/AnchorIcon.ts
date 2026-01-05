@@ -39,8 +39,7 @@ export class AnchorIcon {
     return {
       icon: this.icon.value,
       iconActive: this.props.iconContentCopy,
-      active: this.event.isCopy(),
-      dynamic: true
+      active: this.event.isCopy()
     }
   })
 

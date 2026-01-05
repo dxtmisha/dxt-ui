@@ -1,8 +1,10 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinAnchor {
-  @include ui.flexX;
+  display: inline-flex;
 
   color: inherit;
   text-decoration: none;
+
+  cursor: pointer;
 }
