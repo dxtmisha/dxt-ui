@@ -45,11 +45,13 @@ export class AnchorDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the anchor/ класс для работы с якорем
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, AnchorEmits, P>
+    options?: ConstrOptions<COMP, AnchorEmits, P>,
+    ItemConstructor: typeof Anchor = Anchor
   ) {
     super(
       name,
@@ -57,7 +59,7 @@ export class AnchorDesign<
       options
     )
 
-    this.item = new Anchor(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

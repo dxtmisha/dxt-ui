@@ -109,6 +109,7 @@ export class Icon {
     key: 'icon',
     tabindex: this.props.dynamic ? 0 : undefined,
     ...AriaStaticInclude.role(this.getRole()),
+    ...AriaStaticInclude.label(this.props.ariaLabel),
     ...AriaStaticInclude.hidden(!this.props.dynamic)
   }))
 

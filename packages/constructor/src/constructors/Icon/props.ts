@@ -1,6 +1,7 @@
 import type { RoleType } from '../../types/roleTypes'
 import type { ImagePropsBasic, ImageValue } from '../Image'
 import type { SkeletonPropsInclude } from '../Skeleton'
+import type { AriaLabelPropsInclude } from '../../types/ariaTypes.ts'
 
 interface IconPropsToken {
   // :type [!] System label / Системная метка
@@ -21,7 +22,8 @@ interface IconPropsToken {
 
 export interface IconPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic
-> extends SkeletonPropsInclude {
+> extends SkeletonPropsInclude,
+  AriaLabelPropsInclude {
   // Status
   /** Активное состояние иконки/ Active state of the icon */
   active?: boolean

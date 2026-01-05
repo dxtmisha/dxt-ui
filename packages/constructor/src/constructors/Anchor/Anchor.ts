@@ -36,6 +36,13 @@ export class Anchor {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param AnchorHrefConstructor class for working with href/ класс для работы с ссылкой
+   * @param AnchorToConstructor class for working with scroll/ класс для работы с прокруткой
+   * @param AnchorEventConstructor class for working with events/ класс для работы с событиями
+   * @param AnchorIconConstructor class for working with icons/ класс для работы с иконками
+   * @param LabelIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
+   * @param TooltipIncludeConstructor class for working with tooltip/ класс для работы с подсказкой
    */
   constructor(
     protected readonly props: AnchorProps,
@@ -45,11 +52,18 @@ export class Anchor {
     protected readonly className: string,
     protected readonly components?: DesignComp<AnchorComponents, AnchorProps>,
     protected readonly slots?: AnchorSlots,
-    protected readonly emits?: ConstrEmit<AnchorEmits>
+    protected readonly emits?: ConstrEmit<AnchorEmits>,
+    protected readonly AnchorHrefConstructor: typeof AnchorHref = AnchorHref,
+    protected readonly AnchorToConstructor: typeof AnchorTo = AnchorTo,
+    protected readonly AnchorEventConstructor: typeof AnchorEvent = AnchorEvent,
+    protected readonly AnchorIconConstructor: typeof AnchorIcon = AnchorIcon,
+    protected readonly LabelIncludeConstructor: typeof LabelInclude = LabelInclude,
+    protected readonly TextIncludeConstructor: typeof TextInclude = TextInclude,
+    protected readonly TooltipIncludeConstructor: typeof TooltipInclude = TooltipInclude
   ) {
-    this.label = new LabelInclude(props, className, undefined, slots)
-    this.text = new TextInclude(this.props)
-    this.tooltip = new TooltipInclude(
+    this.label = new LabelIncludeConstructor(props, className, undefined, slots)
+    this.text = new TextIncludeConstructor(this.props)
+    this.tooltip = new TooltipIncludeConstructor(
       this.props,
       this.className,
       this.components,
@@ -58,19 +72,19 @@ export class Anchor {
       }))
     )
 
-    this.href = new AnchorHref(this.props)
-    this.to = new AnchorTo(
+    this.href = new AnchorHrefConstructor(this.props)
+    this.to = new AnchorToConstructor(
       this.props,
       this.element,
       this.href
     )
-    this.event = new AnchorEvent(
+    this.event = new AnchorEventConstructor(
       this.props,
       this.tooltip,
       this.href,
       this.to
     )
-    this.icon = new AnchorIcon(this.props, this.event)
+    this.icon = new AnchorIconConstructor(this.props, this.event)
 
     onMounted(() => {
       requestAnimationFrame(this.goIsFocus)
