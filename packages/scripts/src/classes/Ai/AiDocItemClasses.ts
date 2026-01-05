@@ -1,5 +1,12 @@
 import { AiDocItemAbstract } from './AiDocItemAbstract'
 
-export class AiDocItemClasses extends AiDocItemAbstract {
+/** Sample prompt template path / Путь к шаблону промпта */
+const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts']
+/** Sample prompt template for classes / Шаблон промпта для классов */
+const FILE_PROMPT_SAMPLE_CLASS = [...FILE_PROMPT_SAMPLE, 'aiDocClassPrompt.ru.txt']
+const FILE_DEMO_SAMPLE_CLASS = [...FILE_PROMPT_SAMPLE, 'demoClassRu.mdx']
 
+export class AiDocItemClasses extends AiDocItemAbstract {
+  protected pathDemo: string[] = FILE_DEMO_SAMPLE_CLASS
+  protected pathPrompt: string[] = FILE_PROMPT_SAMPLE_CLASS
 }

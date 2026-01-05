@@ -1,5 +1,4 @@
 import type { Datetime } from '@dxtmisha/functional-basic'
-import type { AiDocItemAbstract } from '../classes/Ai/AiDocItemAbstract'
 import type { GitFileItem } from './gitTypes'
 
 export type AiImageItem = {
@@ -15,6 +14,6 @@ export type AiDocFile = {
 
 export type AiDocTypeItem = {
   check: (item: GitFileItem) => boolean
-  item: typeof AiDocItemAbstract
+  item: any
 }
 export type AiDocTypes = AiDocTypeItem[]

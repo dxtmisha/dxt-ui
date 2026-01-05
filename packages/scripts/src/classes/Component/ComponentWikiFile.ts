@@ -68,10 +68,13 @@ export class ComponentWikiFile {
         .trim()
 
       if (contentEdit !== contentOld.trim()) {
-        PropertiesFile.writeByPath(
-          `${PropertiesFile.joinPath(this.paths)}__old.txt`,
-          contentOld
-        )
+        if (isFilled(contentOld.trim())) {
+          PropertiesFile.writeByPath(
+            `${PropertiesFile.joinPath(this.paths)}__old.txt`,
+            contentOld
+          )
+        }
+
         PropertiesFile.writeByPath(this.paths, contentEdit + '\r\n')
       }
     }

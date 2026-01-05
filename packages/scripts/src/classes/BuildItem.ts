@@ -75,7 +75,6 @@ export class BuildItem {
    */
   async make(): Promise<boolean> {
     this.saveViteConfig()
-    return false
 
     const vite = this.viteSample
       .read()
@@ -97,9 +96,7 @@ export class BuildItem {
    * Сохраняет существующий vite-конфиг (переименовывает) перед кастомным билдом.
    */
   protected saveViteConfig() {
-    if (
-      !PropertiesFile.is(UI_FILE_NAME_VITE_WORKERS)
-    ) {
+    if (!PropertiesFile.is(UI_FILE_NAME_VITE_WORKERS)) {
       PropertiesFile.rename(
         UI_FILE_NAME_VITE,
         UI_FILE_NAME_VITE_WORKERS
@@ -113,9 +110,7 @@ export class BuildItem {
    * Восстанавливает оригинальный vite-конфиг после билда.
    */
   protected resetViteConfig() {
-    if (
-      PropertiesFile.is(UI_FILE_NAME_VITE_WORKERS)
-    ) {
+    if (PropertiesFile.is(UI_FILE_NAME_VITE_WORKERS)) {
       PropertiesFile.removeFile(UI_FILE_NAME_VITE)
       PropertiesFile.rename(
         UI_FILE_NAME_VITE_WORKERS,
