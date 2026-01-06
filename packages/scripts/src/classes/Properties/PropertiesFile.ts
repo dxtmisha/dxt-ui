@@ -1,4 +1,4 @@
-import { toArray, toKebabCase, transformation } from '@dxtmisha/functional-basic'
+import { Datetime, toArray, toKebabCase, transformation } from '@dxtmisha/functional-basic'
 
 import requireFs from 'fs'
 import requirePath from 'path'
@@ -214,6 +214,16 @@ export class PropertiesFile {
     }
 
     return undefined
+  }
+
+  /**
+   * Returns the time the file was last modified.
+   *
+   * Возвращает время последнего изменения файла.
+   * @param path path to the file/ путь к файлу
+   */
+  static getTime(path: PropertiesFilePath): string | undefined {
+    return new Datetime(this.stat(path)?.mtimeMs, 'full').standard()
   }
 
   /**

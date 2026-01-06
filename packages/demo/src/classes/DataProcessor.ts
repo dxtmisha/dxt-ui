@@ -67,44 +67,6 @@ export class DataProcessor<T = any> {
   }
 
   /**
-   * Возвращает срез данных (пагинация).
-   * @param page Номер страницы (начиная с 1).
-   * @param size Размер страницы.
-   * @returns Массив элементов указанной страницы.
-   */
-  getPage(page: number, size: number): T[] {
-    const start = (page - 1) * size
-    return this.data.slice(start, start + size)
-  }
-
-  /**
-   * Проверяет, существует ли хотя бы один элемент, удовлетворяющий условию.
-   * @param predicate Функция-предикат для проверки.
-   * @returns true, если элемент найден.
-   */
-  exists(predicate: (item: T) => boolean): boolean {
-    return this.data.some(predicate)
-  }
-
-  /**
-   * Обновляет элементы, соответствующие заданному условию.
-   * @param predicate Функция для выбора элементов для обновления.
-   * @param updater Функция, возвращающая обновленный элемент.
-   * @returns Количество обновленных элементов.
-   */
-  update(predicate: (item: T) => boolean, updater: (item: T) => T): number {
-    let count = 0
-    this.data = this.data.map((item) => {
-      if (predicate(item)) {
-        count++
-        return updater(item)
-      }
-      return item
-    })
-    return count
-  }
-
-  /**
    * Удаляет дубликаты из массива данных.
    * @param keySelector Опциональная функция для определения уникальности.
    */
@@ -122,6 +84,22 @@ export class DataProcessor<T = any> {
         return true
       })
     }
+  }
+
+  /**
+   * Группирует элементы массива по ключу, возвращаемому селектором.
+   * @param keySelector Функция для определения ключа группировки.
+   * @returns Объект сгруппированных данных.
+   */
+  groupBy(keySelector: (item: T) => string | number): Record<string | number, T[]> {
+    return this.data.reduce((groups, item) => {
+      const key = keySelector(item)
+      if (!groups[key]) {
+        groups[key] = []
+      }
+      groups[key].push(item)
+      return groups
+    }, {} as Record<string | number, T[]>)
   }
 
   /**

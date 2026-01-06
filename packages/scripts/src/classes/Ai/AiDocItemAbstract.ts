@@ -33,12 +33,13 @@ export abstract class AiDocItemAbstract {
   /** AI instance / Экземпляр ИИ */
   protected readonly ai?: AiAbstract
 
+  /** Description from AI / Описание от ИИ */
   protected description?: string
 
   /**
    * Constructor
-   * @param path
-   * @param item
+   * @param path source file path / путь к исходному файлу
+   * @param item git file item / элемент файла git
    */
   constructor(
     protected readonly path: string,
@@ -51,6 +52,11 @@ export abstract class AiDocItemAbstract {
     this.ai = useAi()
   }
 
+  /**
+   * Generates documentation using AI.
+   *
+   * Генерирует документацию с использованием ИИ.
+   */
   async make() {
     const date = this.mdFile.getDate()
 
@@ -73,7 +79,6 @@ export abstract class AiDocItemAbstract {
 
       if (generate) {
         const read = generate.split('#########')
-        console.log('read', read)
 
         if (read?.[0]) {
           this.description = read[0].trim()
@@ -97,6 +102,11 @@ export abstract class AiDocItemAbstract {
     }
   }
 
+  /**
+   * Returns the path to the Wiki file.
+   *
+   * Возвращает путь к Wiki файлу.
+   */
   protected getPathWiki(): string[] {
     const fileName = removeCommonPrefix(this.item.path, this.path)
       .replace(/\.ts$/, '')
@@ -107,10 +117,20 @@ export abstract class AiDocItemAbstract {
     ]
   }
 
+  /**
+   * Returns the file modification date.
+   *
+   * Возвращает дату изменения файла.
+   */
   protected getItemDate(): Date {
     return new Datetime(this.item.date).getDate()
   }
 
+  /**
+   * Returns the title for the documentation.
+   *
+   * Возвращает заголовок для документации.
+   */
   protected getTitle() {
     let title = this.projectName
       + '/'
@@ -125,16 +145,31 @@ export abstract class AiDocItemAbstract {
     return title
   }
 
+  /**
+   * Reads the demo file content.
+   *
+   * Читает содержимое демо-файла.
+   */
   protected readDemo(): string {
     return new ComponentWikiFile(this.pathDemo).read()
   }
 
+  /**
+   * Reads the prompt template.
+   *
+   * Читает шаблон промпта.
+   */
   protected readPrompt(): string {
     return new ComponentWikiFile(this.pathPrompt)
       .read()
       .replace(/\[wikiLanguage]/g, PropertiesConfig.getWikiLanguage())
   }
 
+  /**
+   * Prepares context for AI.
+   *
+   * Подготавливает контекст для ИИ.
+   */
   protected makeAi(): void {
     if (this.ai) {
       this.ai.addContent(`Code: ${this.build.getCode()}`)
@@ -144,6 +179,12 @@ export abstract class AiDocItemAbstract {
     }
   }
 
+  /**
+   * Initializes the title in the content.
+   *
+   * Инициализирует заголовок в контенте.
+   * @param content content / контент
+   */
   protected initName(content: string): string {
     if (content.match('[title]')) {
       return content.replace('[title]', this.getTitle())

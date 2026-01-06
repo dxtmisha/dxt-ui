@@ -1,6 +1,8 @@
 import { execSync } from 'node:child_process'
 import { Datetime, forEach, removeCommonPrefix } from '@dxtmisha/functional-basic'
 
+import { PropertiesFile } from '../Properties/PropertiesFile'
+
 import { type GitFileList, GitStatus } from '../../types/gitTypes'
 
 /**
@@ -71,12 +73,14 @@ export class GitRead {
         }
 
         const pathCommonPrefix = removeCommonPrefix(path, prefix)
+        const pathByOS = this.splitPath(pathCommonPrefix)
+        const fileDate = PropertiesFile.getTime(pathByOS)
 
         return {
           path: pathCommonPrefix,
-          pathByOS: this.splitPath(pathCommonPrefix),
+          pathByOS,
           pathFull: path,
-          date,
+          date: fileDate ?? date,
           status
         }
       }
