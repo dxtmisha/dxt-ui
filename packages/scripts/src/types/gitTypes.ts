@@ -50,6 +50,7 @@ export enum GitStatus {
 
 export type GitFileItem = {
   path: string
+  pathByOS: string[]
   pathFull: string
   date: string
   status?: GitStatus

@@ -20,6 +20,8 @@ export abstract class AiDocItemAbstract {
   /** Markdown file / Файл в формате Markdown */
   protected readonly mdFile: ComponentWikiFile
 
+  protected readonly code: ComponentWikiFile
+
   /** AI instance / Экземпляр ИИ */
   protected readonly ai?: AiAbstract
 
@@ -34,6 +36,7 @@ export abstract class AiDocItemAbstract {
   ) {
     this.build = new BuildItem(this.item.path)
     this.mdFile = new ComponentWikiFile(this.getPathWiki())
+    this.code = new ComponentWikiFile(this.item.pathByOS)
     this.ai = useAi()
   }
 
@@ -84,8 +87,9 @@ export abstract class AiDocItemAbstract {
   protected makeAi(): void {
     if (this.ai) {
       this.ai.addContent(`Code: ${this.build.getCode()}`)
+      this.ai.addContent(`Original code: ${this.code.read()}`)
       this.ai.addContent(`Demo: ${this.readDemo()}`)
-      this.ai.addContent(`Original: ${this.mdFile.read()}`)
+      this.ai.addContent(`Original MDX: ${this.mdFile.read()}`)
     }
   }
 }

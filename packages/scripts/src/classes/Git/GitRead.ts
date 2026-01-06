@@ -33,7 +33,8 @@ export class GitRead {
         const date = this.getDate(this.getFileDate(file))
 
         return {
-          path: `${file}`,
+          path: file,
+          pathByOS: this.splitPath(file),
           pathFull: `${dir}${file}`,
           date,
           status: undefined
@@ -69,8 +70,11 @@ export class GitRead {
           return
         }
 
+        const pathCommonPrefix = removeCommonPrefix(path, prefix)
+
         return {
-          path: removeCommonPrefix(path, prefix),
+          path: pathCommonPrefix,
+          pathByOS: this.splitPath(pathCommonPrefix),
           pathFull: path,
           date,
           status

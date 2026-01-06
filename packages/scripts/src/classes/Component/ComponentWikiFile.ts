@@ -18,9 +18,11 @@ export class ComponentWikiFile {
    *
    * Конструктор.
    * @param paths target file path segments / сегменты пути целевого файла
+   * @param isDate whether to extract date from content / извлекать ли дату из содержимого
    */
   constructor(
-    protected readonly paths: string[]
+    protected readonly paths: string[],
+    protected readonly isDate: boolean = true
   ) {
   }
 
@@ -61,11 +63,14 @@ export class ComponentWikiFile {
   write(content: string): void {
     if (isFilled(content)) {
       const contentOld = this.read()
-      const contentEdit = content
-        .trim()
-        .replace(/^```(ts|md)/, '')
-        .replace(/```$/, '')
-        .trim()
+      let contentEdit = content.trim()
+
+      if (contentEdit.startsWith('```')) {
+        contentEdit = contentEdit
+          .replace(/^```(ts|md)/, '')
+          .replace(/```$/, '')
+          .trim()
+      }
 
       if (contentEdit !== contentOld.trim()) {
         if (isFilled(contentOld.trim())) {
@@ -75,7 +80,10 @@ export class ComponentWikiFile {
           )
         }
 
-        PropertiesFile.writeByPath(this.paths, contentEdit + '\r\n')
+        PropertiesFile.writeByPath(
+          this.paths,
+          this.addDate(contentEdit + '\r\n')
+        )
       }
     }
   }
@@ -98,5 +106,20 @@ export class ComponentWikiFile {
     }
 
     return new Datetime(date, 'full')
+  }
+
+  /**
+   * Adds current date to content if isDate is true.
+   *
+   * Добавляет текущую дату в содержимое, если isDate равно true.
+   * @param content content string / строка содержимого
+   */
+  protected addDate(content: string): string {
+    if (this.isDate) {
+      const date = new Datetime().setType('full').toString()
+      return `${content}\n\r\n\r**Date: ${date}.**\r\n`
+    }
+
+    return content
   }
 }
