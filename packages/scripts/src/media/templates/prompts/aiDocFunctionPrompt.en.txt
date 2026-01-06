@@ -19,38 +19,28 @@ Use the following template and style. Your response must contain ONLY MDX code.
     ```
 
 2.  **Title and Description**:
-    - `# FunctionName`
+    - `# FunctionName` (function name wrapped in backticks, e.g., `# `funcName``)
     - A paragraph with a description: purpose, capabilities, and benefits.
 
-3.  **Key Features**:
-    - Header `## Key Features`
-    - Bulleted list.
-    - Format: `- **Feature Name** — description.`
+3.  **Parameters**:
+    - Header `**Parameters:**`
+    - List: `- `name: type` — description`.
 
-4.  **Function**:
-    - Header `## Function`
-    - `### name`
-    - Description of action.
-    - **Parameters:** (if any)
-        - List: `- `name: type` — description`.
-    - **Returns:**
-        - `Type` — description.
-    - **Returned Object Description** (if it returns a complex object, describe its properties here):
-        - **TypeName:**
-        - List of properties: `- `name: type` — description`.
-    - **Code Example**:
+4.  **Returns**:
+    - Header `**Returns:**`
+    - Description of the return value or type.
+
+5.  **Example**:
+    - Usage code example.
         ```javascript
         import { name } from '@package'
         // Call example
         ```
 
-5.  **Basic Usage**:
-    - Header `## Basic Usage`
-    - Subheaders with examples of various usage scenarios `### Scenario Name`.
-    - Code and brief description if needed.
-
-6.  **Data Types** (Optional, if there are additional important types not described in the Function section):
+6.  **Data Types** (Optional, if there are complex types not described above):
     - Header `## Data Types`
+    - Subheaders `### TypeName`
+    - Property descriptions.
 
 ### Instructions:
 1. Study the provided code.

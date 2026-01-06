@@ -1,6 +1,6 @@
 export const debounce = <T extends (...args: any[]) => any>(
-  func: T,
-  wait: number
+  func: T, // Функция, выполнение которой нужно ограничить
+  wait: number // Время задержки в миллисекундах
 ): ((...args: Parameters<T>) => void) => {
   let timeout: ReturnType<typeof setTimeout> | null = null
 

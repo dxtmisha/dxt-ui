@@ -1,23 +1,30 @@
-файдimport {Meta} from '@storybook/addon-docs/blocks'
+import {Meta} from '@storybook/addon-docs/blocks'
 
 <Meta title="[title]" />
 
-# `getRandomText`
+## `toBinds`
 
-Generates random text with the specified number of words.
+Merges multiple property objects by sequentially applying `toBind` to each. Smartly handles classes and styles, creating composite property objects.
 
 **Parameters:**
-- `min: number` — minimum number of words
-- `max: number` — maximum number of words
-- `symbol: string` — symbol for replacing letters (default 'x')
-- `lengthMin: number` — minimum word length (default 3)
-- `lengthMax: number` — maximum word length (default 8)
+- `...values: (ItemList | undefined)[]` — list of property objects to merge
+
+**Returns:**
+Final merged object with all properties, classes and styles.
 
 ```javascript
-import { getRandomText } from '@dxtmisha/functional'
+import { toBinds } from '@dxtmisha/functional'
 
-getRandomText(1, 3) // 'xxx xxxx xx'
-getRandomText(2, 2, 'o', 4, 6) // 'oooo oooooo'
-getRandomText(1, 1, '*', 5, 5) // '*****'
+// Merging multiple objects
+toBinds(
+  {class: 'btn', disabled: false},
+  {class: 'primary', type: 'button'},
+  {class: 'large', id: 'submit-btn'}
+)
+// Result: {
+//   class: ['btn', 'primary', 'large'],
+//   disabled: false,
+//   type: 'button',
+//   id: 'submit-btn'
+// }
 ```
-

@@ -2,21 +2,29 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 <Meta title="[title]" />
 
-# `getRandomText`
+## `toBinds`
 
-Генерирует случайный текст из указанного количества слов.
+Объединяет несколько объектов со свойствами, последовательно применяя `toBind` к каждому. Умно обрабатывает классы и стили, создавая составные объекты свойств.
 
 **Параметры:**
-- `min: number` — минимальное количество слов
-- `max: number` — максимальное количество слов
-- `symbol: string` — символ для замены букв (по умолчанию 'x')
-- `lengthMin: number` — минимальная длина слова (по умолчанию 3)
-- `lengthMax: number` — максимальная длина слова (по умолчанию 8)
+- `...values: (ItemList | undefined)[]` — список объектов свойств для объединения
+
+**Возвращает:**
+Итоговый объединённый объект со всеми свойствами, классами и стилями.
 
 ```javascript
-import { getRandomText } from '@dxtmisha/functional'
+import { toBinds } from '@dxtmisha/functional'
 
-getRandomText(1, 3) // 'xxx xxxx xx'
-getRandomText(2, 2, 'o', 4, 6) // 'oooo oooooo'
-getRandomText(1, 1, '*', 5, 5) // '*****'
+// Объединение нескольких объектов
+toBinds(
+  {class: 'btn', disabled: false},
+  {class: 'primary', type: 'button'},
+  {class: 'large', id: 'submit-btn'}
+)
+// Результат: {
+//   class: ['btn', 'primary', 'large'],
+//   disabled: false,
+//   type: 'button',
+//   id: 'submit-btn'
+// }
 ```

@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/demo/functions/generateId - Генерация случайного идентификатора строки'/>
+
+# `generateId`
+
+Генерирует случайную строку символов (ID) заданной длины. Функция использует набор символов, включающий заглавные и строчные латинские буквы, а также цифры.
+
+**Parameters:**
+- `length: number` — Длина генерируемой строки (по умолчанию 8).
+
+**Returns:**
+Сгенерированный идентификатор.
+
+```javascript
+import { generateId } from '@dxtmisha/functional'
+
+// Генерация идентификатора стандартной длины (8 символов)
+const id = generateId() 
+// Пример результата: "kL9zP2mN"
+
+// Генерация идентификатора заданной длины
+const customId = generateId(12)
+// Пример результата: "aB3dE5gH1jKl"
+```
+
+**Date: 2026-01-06T23:50:15+07:00.**
