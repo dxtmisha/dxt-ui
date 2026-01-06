@@ -1,9 +1,6 @@
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { GitRead } from '../Git/GitRead'
-
-import type { GitFileItem } from '../../types/gitTypes'
-
-import { aiDocTypes } from '../../media/ai/ai-doc-types'
+import { AiDocType } from './AiDocType'
 
 /**
  * Class for generating AI documentation.
@@ -43,7 +40,7 @@ export class AiDoc {
     console.log(`Dir: ${dir}...`)
 
     for (const item of this.getListByDirectory(dir)) {
-      await this.makeItem(item)
+      await AiDocType.make(item)
     }
   }
 
@@ -57,22 +54,5 @@ export class AiDoc {
     return GitRead.filterByDirectory(
       GitRead.getListByDirectory(dir)
     )
-  }
-
-  /**
-   * Process a specific item.
-   *
-   * Обрабатывает конкретный элемент.
-   * @param item - file item / элемент файла
-   */
-  protected async makeItem(item: GitFileItem) {
-    const path = PropertiesConfig.getAiDocStorybookPath()
-
-    for (const docType of aiDocTypes) {
-      if (docType.check(item)) {
-        const docItem = new docType.item(path, item)
-        await docItem.make()
-      }
-    }
   }
 }

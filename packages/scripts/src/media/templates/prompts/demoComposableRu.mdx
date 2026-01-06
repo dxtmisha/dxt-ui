@@ -1,0 +1,103 @@
+import { Meta } from '@storybook/addon-docs'
+
+<Meta title="[title]" />
+
+# Композабл useToggle
+
+Композабл для управления булевым состоянием с расширенными методами переключения. Предоставляет удобный интерфейс для работы с флагами видимости, модальными окнами и другими переключаемыми состояниями.
+
+## Основные возможности
+
+- **Простое переключение** — интуитивное API для смены состояния
+- **Явные методы** — отдельные функции для установки true/false
+- **Поддержка аргументов** — возможность установки конкретного значения через toggle
+- **Полная реактивность** — базируется на Vue Reactivity API
+- **Типобезопасность** — строгая типизация параметров и возвращаемых значений
+
+## Функция
+
+### `useToggle`
+
+Создаёт объект управления булевым состоянием.
+
+**Параметры:**
+- `initialValue: boolean` — начальное значение состояния (по умолчанию `false`)
+
+**Возвращает:** `UseToggleReturn` — объект с состоянием и методами управления
+
+**UseToggleReturn:**
+- `value: Ref<boolean>` — реактивное значение
+- `toggle: (nextValue?: boolean) => void` — переключает значение или устанавливает переданное
+- `setTrue: () => void` — устанавливает значение в true
+- `setFalse: () => void` — устанавливает значение в false
+
+```javascript
+import { useToggle } from '@dxtmisha/demo'
+
+// Инициализация
+const { value, toggle } = useToggle(false)
+
+// Использование
+toggle() // value становится true
+```
+
+## Основное использование
+
+### Базовое управление
+
+```javascript
+import { useToggle } from '@dxtmisha/demo'
+
+const { value: isMenuOpen, toggle, setFalse: closeMenu } = useToggle()
+
+// Открыть меню
+toggle()
+
+// Закрыть меню (явное действие)
+closeMenu()
+```
+
+### Использование с v-if
+
+```javascript
+import { useToggle } from '@dxtmisha/demo'
+
+export default {
+  setup() {
+    const { value: showDetails, toggle } = useToggle(false)
+
+    return { showDetails, toggle }
+  }
+}
+
+// Template:
+// <button @click="toggle()">
+//   {{ showDetails ? 'Скрыть' : 'Показать' }} детали
+// </button>
+// <div v-if="showDetails">
+//   Подробная информация...
+// </div>
+```
+
+## Работа с типами данных
+
+### Переопределение имен
+
+```javascript
+// Деструктуризация позволяет давать понятные имена
+const {
+  value: isLoading,
+  setTrue: startLoading,
+  setFalse: stopLoading
+} = useToggle(false)
+
+const loadData = async () => {
+  startLoading()
+  try {
+    await api.getData()
+  } finally {
+    stopLoading()
+  }
+}
+```
+

@@ -1,0 +1,103 @@
+import { Meta } from '@storybook/addon-docs'
+
+<Meta title="[title]" />
+
+# Composable useToggle
+
+Composable for managing boolean state with extended toggle methods. Provides a convenient interface for working with visibility flags, modals, and other toggleable states.
+
+## Key Features
+
+- **Simple toggling** — intuitive API for state changes
+- **Explicit methods** — separate functions for setting true/false
+- **Argument support** — ability to set specific value via toggle
+- **Full reactivity** — based on Vue Reactivity API
+- **Type safety** — strict typing of parameters and return values
+
+## Function
+
+### `useToggle`
+
+Creates a boolean state management object.
+
+**Parameters:**
+- `initialValue: boolean` — initial state value (default `false`)
+
+**Returns:** `UseToggleReturn` — object with state and management methods
+
+**UseToggleReturn:**
+- `value: Ref<boolean>` — reactive value
+- `toggle: (nextValue?: boolean) => void` — toggles value or sets the passed one
+- `setTrue: () => void` — sets value to true
+- `setFalse: () => void` — sets value to false
+
+```javascript
+import { useToggle } from '@dxtmisha/demo'
+
+// Initialization
+const { value, toggle } = useToggle(false)
+
+// Usage
+toggle() // value becomes true
+```
+
+## Basic Usage
+
+### Basic Management
+
+```javascript
+import { useToggle } from '@dxtmisha/demo'
+
+const { value: isMenuOpen, toggle, setFalse: closeMenu } = useToggle()
+
+// Open menu
+toggle()
+
+// Close menu (explicit action)
+closeMenu()
+```
+
+### Usage with v-if
+
+```javascript
+import { useToggle } from '@dxtmisha/demo'
+
+export default {
+  setup() {
+    const { value: showDetails, toggle } = useToggle(false)
+
+    return { showDetails, toggle }
+  }
+}
+
+// Template:
+// <button @click="toggle()">
+//   {{ showDetails ? 'Hide' : 'Show' }} details
+// </button>
+// <div v-if="showDetails">
+//   Detailed information...
+// </div>
+```
+
+## Working with Data Types
+
+### Renaming
+
+```javascript
+// Destructuring allows giving meaningful names
+const {
+  value: isLoading,
+  setTrue: startLoading,
+  setFalse: stopLoading
+} = useToggle(false)
+
+const loadData = async () => {
+  startLoading()
+  try {
+    await api.getData()
+  } finally {
+    stopLoading()
+  }
+}
+```
+
