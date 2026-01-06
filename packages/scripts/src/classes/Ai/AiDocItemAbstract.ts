@@ -81,6 +81,8 @@ export abstract class AiDocItemAbstract {
           this.mdFile.write(this.initName(read[2]))
         }
       }
+
+      this.build.removeDir()
     }
   }
 

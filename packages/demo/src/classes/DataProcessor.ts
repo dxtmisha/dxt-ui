@@ -1,7 +1,7 @@
 /**
  * Класс для управления, фильтрации и преобразования массивов данных.
  * Поддерживает асинхронную загрузку и отслеживание состояния выполнения операций.
- *
+ * 
  * @template T Тип элементов данных.
  */
 export class DataProcessor<T = any> {
@@ -55,6 +55,26 @@ export class DataProcessor<T = any> {
    */
   sortData(comparator: (a: T, b: T) => number): void {
     this.data.sort(comparator)
+  }
+
+  /**
+   * Находит первый элемент, соответствующий условию.
+   * @param predicate Функция-предикат для поиска.
+   * @returns Найденный элемент или undefined.
+   */
+  findItem(predicate: (item: T) => boolean): T | undefined {
+    return this.data.find(predicate)
+  }
+
+  /**
+   * Возвращает срез данных (пагинация).
+   * @param page Номер страницы (начиная с 1).
+   * @param size Размер страницы.
+   * @returns Массив элементов указанной страницы.
+   */
+  getPage(page: number, size: number): T[] {
+    const start = (page - 1) * size
+    return this.data.slice(start, start + size)
   }
 
   /**
