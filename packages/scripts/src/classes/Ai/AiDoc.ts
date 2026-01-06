@@ -68,11 +68,11 @@ export class AiDoc {
   protected async makeItem(item: GitFileItem) {
     const path = PropertiesConfig.getAiDocStorybookPath()
 
-    aiDocTypes.forEach((docType) => {
+    for (const docType of aiDocTypes) {
       if (docType.check(item)) {
         const docItem = new docType.item(path, item)
-        docItem.make()
+        await docItem.make()
       }
-    })
+    }
   }
 }

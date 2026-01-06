@@ -1,15 +1,16 @@
 import { Datetime, removeCommonPrefix } from '@dxtmisha/functional-basic'
 import { useAi } from '../../composables/useAi'
 
+import { PropertiesFile } from '../Properties/PropertiesFile'
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { GitRead } from '../Git/GitRead'
 import { BuildItem } from '../BuildItem'
 import { ComponentWikiFile } from '../Component/ComponentWikiFile'
 
 import type { AiAbstract } from './AiAbstract'
 import type { GitFileItem } from '../../types/gitTypes'
-import { PropertiesFile } from '../Properties/PropertiesFile.ts'
-import { UI_DIR_IN, UI_FILE_PACKAGE } from '../../config.ts'
-import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
+
+import { UI_DIR_IN, UI_FILE_PACKAGE } from '../../config'
 
 export abstract class AiDocItemAbstract {
   /** Demo file path / Путь к файлу демо */
@@ -57,7 +58,11 @@ export abstract class AiDocItemAbstract {
       this.ai
       && this.getItemDate() > date.getDate()
     ) {
-      console.log(`${this.projectName}/File:`, this.item.path)
+      console.log(
+        `${this.projectName}/File:`,
+        this.item.path,
+        PropertiesConfig.getWikiLanguage()
+      )
 
       await this.build.make()
       this.makeAi()
@@ -68,12 +73,16 @@ export abstract class AiDocItemAbstract {
 
       if (generate) {
         const read = generate.split('#########')
+        console.log('read', read)
 
         if (read?.[0]) {
           this.description = read[0].trim()
         }
 
-        if (read?.[1]) {
+        if (
+          read?.[1]
+          && !read[1].match('--FULL--')
+        ) {
           this.code.write(read[1])
         }
 
@@ -83,6 +92,8 @@ export abstract class AiDocItemAbstract {
       }
 
       this.build.removeDir()
+    } else if (!this.ai) {
+      console.log('AI is not configured.')
     }
   }
 

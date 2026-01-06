@@ -1,7 +1,7 @@
 /**
  * Класс для управления, фильтрации и преобразования массивов данных.
  * Поддерживает асинхронную загрузку и отслеживание состояния выполнения операций.
- * 
+ *
  * @template T Тип элементов данных.
  */
 export class DataProcessor<T = any> {
@@ -75,6 +75,53 @@ export class DataProcessor<T = any> {
   getPage(page: number, size: number): T[] {
     const start = (page - 1) * size
     return this.data.slice(start, start + size)
+  }
+
+  /**
+   * Проверяет, существует ли хотя бы один элемент, удовлетворяющий условию.
+   * @param predicate Функция-предикат для проверки.
+   * @returns true, если элемент найден.
+   */
+  exists(predicate: (item: T) => boolean): boolean {
+    return this.data.some(predicate)
+  }
+
+  /**
+   * Обновляет элементы, соответствующие заданному условию.
+   * @param predicate Функция для выбора элементов для обновления.
+   * @param updater Функция, возвращающая обновленный элемент.
+   * @returns Количество обновленных элементов.
+   */
+  update(predicate: (item: T) => boolean, updater: (item: T) => T): number {
+    let count = 0
+    this.data = this.data.map((item) => {
+      if (predicate(item)) {
+        count++
+        return updater(item)
+      }
+      return item
+    })
+    return count
+  }
+
+  /**
+   * Удаляет дубликаты из массива данных.
+   * @param keySelector Опциональная функция для определения уникальности.
+   */
+  distinct(keySelector?: (item: T) => any): void {
+    if (!keySelector) {
+      this.data = Array.from(new Set(this.data))
+    } else {
+      const seen = new Set()
+      this.data = this.data.filter((item) => {
+        const key = keySelector(item)
+        if (seen.has(key)) {
+          return false
+        }
+        seen.add(key)
+        return true
+      })
+    }
   }
 
   /**

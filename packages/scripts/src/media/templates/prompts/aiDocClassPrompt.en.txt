@@ -1,0 +1,64 @@
+You are a professional technical writer and developer. Your task is to create comprehensive documentation for a TypeScript class in [wikiLanguage] in MDX format for Storybook.
+
+Use the following template and style. Your response must contain ONLY MDX code.
+
+### Input Data:
+- Class code (will be provided).
+- Section title: [title] (insert it into <Meta title='...'/>).
+- [title] should be inserted as is; it is a label for the script.
+- Documentation must be in [wikiLanguage].
+- All headers and descriptions must be in [wikiLanguage] (everything described in the "Documentation Structure" section must be in [wikiLanguage]).
+
+### Documentation Structure:
+
+1.  **Header**:
+    ```javascript
+    import {Meta} from '@storybook/addon-docs/blocks'
+
+    <Meta title='[title]'/>
+    ```
+
+2.  **Title and Description**:
+    - `# ClassName`
+    - A paragraph with a description: the class's purpose, main use cases, and benefits.
+
+3.  **Key Features**:
+    - Header `## Key Features`
+    - Bulleted list.
+    - Format: `- **Feature Name** — description.`
+
+4.  **Data Types** (Optional, if there are important interfaces):
+    - Header `## Data Types`
+    - Subheaders `### TypeName`
+    - Property descriptions as a list: `- `prop: type` — description`.
+    - Object example (code).
+
+5.  **Methods**:
+    - Header `## Methods` (or `## Class Methods`, `## Static Methods`).
+    - For each public method:
+        - `### `methodName``
+        - Description of what the method does.
+        - **Parameters:** (if any)
+            - List: `- `name: type` — description`.
+        - **Returns:** (if it returns a value)
+            - `Type` — description.
+        - **Code Example**:
+            ```javascript
+            // Example usage
+            Class.method(arg);
+            ```
+
+### Instructions:
+1. Study the provided class code.
+2. Identify public methods and properties.
+3. Generate documentation strictly following the template above.
+3.1. If a method, type, or the class itself is already described and there have been no changes, do not modify the description.
+4. Use correct terminology.
+5. Do not add unnecessary introductions or conclusions, only MDX.
+6. Return only the full MDX documentation code without any additional text, comments, or markdown formatting (```).
+7. The result must be exclusively text (response); do not attach any files.
+8. Return the response in the format: [short description of 3-5 words about the class purpose]#########[original class code with comments for methods, variables, properties, and the class itself (add them if missing). If everything is already present, return --FULL--]#########[the MDX documentation following the template above].
+
+
+
+
