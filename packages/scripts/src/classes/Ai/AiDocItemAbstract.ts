@@ -7,6 +7,9 @@ import { ComponentWikiFile } from '../Component/ComponentWikiFile'
 
 import type { AiAbstract } from './AiAbstract'
 import type { GitFileItem } from '../../types/gitTypes'
+import { PropertiesFile } from '../Properties/PropertiesFile.ts'
+import { UI_DIR_IN, UI_FILE_PACKAGE } from '../../config.ts'
+import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
 
 export abstract class AiDocItemAbstract {
   /** Demo file path / Путь к файлу демо */
@@ -20,10 +23,16 @@ export abstract class AiDocItemAbstract {
   /** Markdown file / Файл в формате Markdown */
   protected readonly mdFile: ComponentWikiFile
 
+  /** Code file / Файл с кодом */
   protected readonly code: ComponentWikiFile
+
+  /** Property file data / Данные из файла свойств */
+  protected readonly projectName: string
 
   /** AI instance / Экземпляр ИИ */
   protected readonly ai?: AiAbstract
+
+  protected description?: string
 
   /**
    * Constructor
@@ -35,8 +44,9 @@ export abstract class AiDocItemAbstract {
     protected readonly item: GitFileItem
   ) {
     this.build = new BuildItem(this.item.path)
-    this.mdFile = new ComponentWikiFile(this.getPathWiki())
-    this.code = new ComponentWikiFile(this.item.pathByOS)
+    this.mdFile = new ComponentWikiFile(this.getPathWiki(), true, false)
+    this.code = new ComponentWikiFile(this.item.pathByOS, false, false)
+    this.projectName = PropertiesFile.readFile<Record<string, any>>(UI_FILE_PACKAGE)?.name ?? 'Library'
     this.ai = useAi()
   }
 
@@ -47,7 +57,7 @@ export abstract class AiDocItemAbstract {
       this.ai
       && this.getItemDate() > date.getDate()
     ) {
-      console.log('File:', this.item.path)
+      console.log(`${this.projectName}/File:`, this.item.path)
 
       await this.build.make()
       this.makeAi()
@@ -57,7 +67,19 @@ export abstract class AiDocItemAbstract {
       )
 
       if (generate) {
-        this.mdFile.write(generate)
+        const read = generate.split('#########')
+
+        if (read?.[0]) {
+          this.description = read[0].trim()
+        }
+
+        if (read?.[1]) {
+          this.code.write(read[1])
+        }
+
+        if (read?.[2]) {
+          this.mdFile.write(this.initName(read[2]))
+        }
       }
     }
   }
@@ -76,12 +98,28 @@ export abstract class AiDocItemAbstract {
     return new Datetime(this.item.date).getDate()
   }
 
+  protected getTitle() {
+    let title = this.projectName
+      + '/'
+      + this.item.path
+        .replace(UI_DIR_IN + '/', '')
+        .replace(/\.ts$/, '')
+
+    if (this.description) {
+      title += ` - ${this.description}`
+    }
+
+    return title
+  }
+
   protected readDemo(): string {
     return new ComponentWikiFile(this.pathDemo).read()
   }
 
   protected readPrompt(): string {
-    return new ComponentWikiFile(this.pathPrompt).read()
+    return new ComponentWikiFile(this.pathPrompt)
+      .read()
+      .replace(/\[wikiLanguage]/g, PropertiesConfig.getWikiLanguage())
   }
 
   protected makeAi(): void {
@@ -91,5 +129,13 @@ export abstract class AiDocItemAbstract {
       this.ai.addContent(`Demo: ${this.readDemo()}`)
       this.ai.addContent(`Original MDX: ${this.mdFile.read()}`)
     }
+  }
+
+  protected initName(content: string): string {
+    if (content.match('[title]')) {
+      return content.replace('[title]', this.getTitle())
+    }
+
+    return content
   }
 }

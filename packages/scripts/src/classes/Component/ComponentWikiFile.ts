@@ -5,7 +5,7 @@ import { Datetime, isFilled } from '@dxtmisha/functional-basic'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 /** Regex to match date in content / Регекс для поиска даты в содержимом */
-const DATE_UPDATED_MATCH = /\*\*Date: (.*?)\./i
+const DATE_UPDATED_MATCH = /\*\*Date: (.*?)\.\*\*/i
 
 /**
  * Utility class for reading and writing a single wiki component file.
@@ -19,10 +19,12 @@ export class ComponentWikiFile {
    * Конструктор.
    * @param paths target file path segments / сегменты пути целевого файла
    * @param isDate whether to extract date from content / извлекать ли дату из содержимого
+   * @param isOld whether to keep old version of file / сохранять ли старую версию файла
    */
   constructor(
     protected readonly paths: string[],
-    protected readonly isDate: boolean = true
+    protected readonly isDate: boolean = false,
+    protected readonly isOld: boolean = true
   ) {
   }
 
@@ -73,7 +75,10 @@ export class ComponentWikiFile {
       }
 
       if (contentEdit !== contentOld.trim()) {
-        if (isFilled(contentOld.trim())) {
+        if (
+          this.isOld
+          && isFilled(contentOld.trim())
+        ) {
           PropertiesFile.writeByPath(
             `${PropertiesFile.joinPath(this.paths)}__old.txt`,
             contentOld
@@ -116,8 +121,14 @@ export class ComponentWikiFile {
    */
   protected addDate(content: string): string {
     if (this.isDate) {
-      const date = new Datetime().setType('full').toString()
-      return `${content}\n\r\n\r**Date: ${date}.**\r\n`
+      const date = new Datetime(new Date(), 'full').standard()
+      const dateString = `\n\r**Date: ${date}.**\r\n`
+
+      if (DATE_UPDATED_MATCH.test(content)) {
+        return `${content.replace(DATE_UPDATED_MATCH, '').trim()}\r\n${dateString}`
+      }
+
+      return `${content}${dateString}`
     }
 
     return content
