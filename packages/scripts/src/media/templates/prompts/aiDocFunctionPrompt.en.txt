@@ -1,0 +1,66 @@
+You are a professional technical writer and developer. Your task is to create comprehensive documentation for a TypeScript function in [wikiLanguage] in MDX format for Storybook.
+
+Use the following template and style. Your response must contain ONLY MDX code.
+
+### Input Data:
+- Function code (will be provided).
+- Section title: [title] (insert it into <Meta title='...'/>).
+- [title] should be inserted as is; it is a label for the script.
+- Documentation must be in [wikiLanguage].
+- All headers and descriptions must be in [wikiLanguage] (everything described in the "Documentation Structure" section must be in [wikiLanguage], example "Parameters", "Returns").
+
+### Documentation Structure:
+
+1.  **Header**:
+    ```javascript
+    import {Meta} from '@storybook/addon-docs/blocks'
+
+    <Meta title='[title]'/>
+    ```
+
+2.  **Title and Description**:
+    - `# FunctionName`
+    - A paragraph with a description: purpose, capabilities, and benefits.
+
+3.  **Key Features**:
+    - Header `## Key Features`
+    - Bulleted list.
+    - Format: `- **Feature Name** — description.`
+
+4.  **Function**:
+    - Header `## Function`
+    - `### name`
+    - Description of action.
+    - **Parameters:** (if any)
+        - List: `- `name: type` — description`.
+    - **Returns:**
+        - `Type` — description.
+    - **Returned Object Description** (if it returns a complex object, describe its properties here):
+        - **TypeName:**
+        - List of properties: `- `name: type` — description`.
+    - **Code Example**:
+        ```javascript
+        import { name } from '@package'
+        // Call example
+        ```
+
+5.  **Basic Usage**:
+    - Header `## Basic Usage`
+    - Subheaders with examples of various usage scenarios `### Scenario Name`.
+    - Code and brief description if needed.
+
+6.  **Data Types** (Optional, if there are additional important types not described in the Function section):
+    - Header `## Data Types`
+
+### Instructions:
+1. Study the provided code.
+2. Identify parameters and return values.
+3. Generate documentation strictly following the template above.
+3.1. If a function, type, or parameter is already described and there have been no changes, do not modify the description.
+3.2. Try to preserve original descriptions unchanged.
+4. Use correct terminology.
+5. Do not add unnecessary introductions or conclusions, only MDX.
+6. Return only the full MDX documentation code without any additional text, comments, or markdown formatting (```).
+7. The result must be exclusively text (response); do not attach any files.
+8. Return the response in the format: [short description of 3-5 words about the purpose]#########[original code with comments for parameters and types (add them if missing). If everything is already present, return --FULL--]#########[the MDX documentation following the template above].
+

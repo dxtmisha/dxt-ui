@@ -1,3 +1,4 @@
+import { AiDocItem } from '../../classes/Ai/AiDocItem'
 import { AiDocItemClasses } from '../../classes/Ai/AiDocItemClasses'
 import { AiDocItemComposables } from '../../classes/Ai/AiDocItemComposables'
 
@@ -12,5 +13,9 @@ export const aiDocTypes: AiDocTypes = [
   {
     check: item => Boolean(item.path.match('/composables/')),
     item: AiDocItemComposables
+  },
+  {
+    check: () => true,
+    item: AiDocItem
   }
 ]

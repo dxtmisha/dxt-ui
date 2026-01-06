@@ -98,7 +98,11 @@ export const UI_PROPERTY_FOR_PROPS: string[] = [
 ]
 
 /** Directories for AI documentation generation/ Каталоги для генерации AI документации */
-export const UI_AI_DOC_DIRECTORY = ['/classes/', '/functions/']
+export const UI_AI_DOC_DIRECTORY = [
+  '/classes/',
+  '/composables/',
+  '/functions/'
+]
 
 /** Path to Storybook for AI documentation generation/ Путь к Storybook для генерации AI документации */
 export const UI_AI_DOC_STORYBOOK = 'src/storybook'

@@ -1,0 +1,105 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/demo/composables/useToggle - Управление реактивным булевым состоянием'/>
+
+# Композабл useToggle
+
+Композабл для управления булевым состоянием с расширенными методами переключения. Предоставляет удобный интерфейс для работы с флагами видимости, модальными окнами и другими переключаемыми состояниями.
+
+## Ключевые особенности
+
+- **Простое переключение** — интуитивно понятный API для изменения состояния.
+- **Явные методы** — отдельные функции для установки true и false.
+- **Поддержка аргументов** — возможность установки конкретного значения через метод toggle.
+- **Полная реактивность** — реализовано на базе Vue Reactivity API.
+- **Типизация** — строгая типизация параметров и возвращаемых значений.
+
+## Функция
+
+### useToggle
+
+Создает объект для управления булевым состоянием.
+
+**Параметры:**
+- `initialValue: boolean` — начальное значение состояния (по умолчанию `false`).
+
+**Возвращает:**
+`UseToggleReturn` — объект с состоянием и методами управления.
+
+**UseToggleReturn:**
+- `value: Ref<boolean>` — реактивное значение.
+- `toggle: (nextValue?: boolean) => void` — переключает значение на противоположное или устанавливает переданное.
+- `setTrue: () => void` — устанавливает значение в true.
+- `setFalse: () => void` — устанавливает значение в false.
+
+```javascript
+import { useToggle } from '@dxtmisha/demo'
+
+// Инициализация
+const { value, toggle } = useToggle(false)
+
+// Использование
+toggle() // значение становится true
+```
+
+## Базовое использование
+
+### Базовое управление
+
+```javascript
+import { useToggle } from '@dxtmisha/demo'
+
+const { value: isMenuOpen, toggle, setFalse: closeMenu } = useToggle()
+
+// Открыть меню
+toggle()
+
+// Закрыть меню (явное действие)
+closeMenu()
+```
+
+### Использование с v-if
+
+```javascript
+import { useToggle } from '@dxtmisha/demo'
+
+export default {
+  setup() {
+    const { value: showDetails, toggle } = useToggle(false)
+
+    return { showDetails, toggle }
+  }
+}
+
+// Шаблон:
+// <button @click="toggle()">
+//   {{ showDetails ? 'Скрыть' : 'Показать' }} детали
+// </button>
+// <div v-if="showDetails">
+//   Подробная информация...
+// </div>
+```
+
+### Переименование при деструктуризации
+
+```javascript
+import { useToggle } from '@dxtmisha/demo'
+
+// Деструктуризация позволяет давать осмысленные имена
+const {
+  value: isLoading,
+  setTrue: startLoading,
+  setFalse: stopLoading
+} = useToggle(false)
+
+const loadData = async () => {
+  startLoading()
+  try {
+    await api.getData()
+  } finally {
+    stopLoading()
+  }
+}
+```
+
+**Date: 2026-01-06T22:01:33+07:00.**
