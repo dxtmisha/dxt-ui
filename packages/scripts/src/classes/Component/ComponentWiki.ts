@@ -18,9 +18,9 @@ import {
 /** Sample templates directory / Директория с шаблонами */
 const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts']
 /** Sample AI prompt template path / Путь к шаблону AI-промпта */
-const FILE_PROMPT_SAMPLE = [...DIR_SAMPLE, 'componentPrompt.ru.txt']
+const FILE_PROMPT_SAMPLE = [...DIR_SAMPLE, 'componentPrompt.en.txt']
 /** Sample demo component MDX path / Путь к MDX демо-компоненту */
-const FILE_DEMO_SAMPLE = [...DIR_SAMPLE, 'demoComponentRu.mdx']
+const FILE_DEMO_SAMPLE = [...DIR_SAMPLE, 'demoComponentEn.mdx']
 /** Marker indicating no changes needed / Метка, указывающая на отсутствие изменений */
 const MARK_FULL = '--FULL--'
 
@@ -42,9 +42,6 @@ export class ComponentWiki {
   protected readonly storiesFile: ComponentWikiFile
   /** MDX documentation file / Файл MDX документации */
   protected readonly mdFile: ComponentWikiFile
-
-  /** Raw AI output file / Файл «сырого» вывода ИИ */
-  protected readonly aiFile: ComponentWikiFile
 
   /** AI instance / Экземпляр ИИ */
   protected readonly ai?: AiAbstract
@@ -68,27 +65,22 @@ export class ComponentWiki {
     this.codeFile = new ComponentWikiFile([
       ...this.getRootComponent(),
       `${this.getName()}.vue`
-    ])
+    ], false, false)
 
     this.typesFile = new ComponentWikiFile([
       ...this.getRootComponent(),
       'types.ts'
-    ])
+    ], false, false)
 
     this.storiesFile = new ComponentWikiFile([
       ...this.getPathWiki(),
       `${this.getName()}.stories.ts`
-    ])
+    ], false, false)
 
     this.mdFile = new ComponentWikiFile([
       ...this.getPathWiki(),
       `${this.getName()}.mdx`
-    ])
-
-    this.aiFile = new ComponentWikiFile([
-      ...this.getPathTemporary(),
-      'ai.txt'
-    ])
+    ], true, false)
 
     this.ai = useAi()
   }
@@ -196,7 +188,7 @@ export class ComponentWiki {
       this.ai.addContent(`Code: ${this.build.getCode()}`)
       this.ai.addContent(`Original code: ${this.codeFile.read()}`)
       this.ai.addContent(`Original types.ts: ${this.typesFile.read()}`)
-      this.ai.addContent(`Demo: ${this.readDemo()}`)
+      this.ai.addContent(`Demo (only for template analysis, all data is fake): ${this.readDemo()}`)
       this.ai.addContent(`Original *.stories.ts: ${this.storiesFile.read()}`)
       this.ai.addContent(`Original MDX: ${this.mdFile.read()}`)
     }
@@ -244,8 +236,6 @@ export class ComponentWiki {
         if (read?.[4]) {
           this.mdFile.write(read[4])
         }
-
-        this.aiFile.write(generate)
       }
     }
   }

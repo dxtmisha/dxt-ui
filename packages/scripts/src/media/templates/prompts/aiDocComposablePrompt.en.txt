@@ -58,7 +58,8 @@ Use the following template and style. Your response must contain ONLY MDX code.
 3. Generate documentation strictly following the template above.
 3.1. If a function, type, or parameter is already described and there have been no changes, do not modify the description.
 3.2. Try to preserve original descriptions unchanged.
-4. Use correct terminology (Composable, Ref, Reactive).
+4. Use the correct terminology (Composable, Ref, Reactive).
+4.1. All headings must be in [wikiLanguage].
 5. Do not add unnecessary introductions or conclusions, only MDX.
 6. Return only the full MDX documentation code without any additional text, comments, or markdown formatting (```).
 7. The result must be exclusively text (response); do not attach any files.

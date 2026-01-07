@@ -177,7 +177,7 @@ export abstract class AiDocItemAbstract {
     if (this.ai) {
       this.ai.addContent(`Code: ${this.build.getCode()}`)
       this.ai.addContent(`Original code: ${this.code.read()}`)
-      this.ai.addContent(`Demo: ${this.readDemo()}`)
+      this.ai.addContent(`Demo (only for template analysis, all data is fake): ${this.readDemo()}`)
       this.ai.addContent(`Original MDX: ${this.mdFile.read()}`)
     }
   }

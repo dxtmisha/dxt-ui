@@ -15,8 +15,14 @@ const props = withDefaults(defineProps<DemoAiDocProps>(), DemoAiDocDefaults)
 const emit = defineEmits<DemoAiDocEmits>()
 defineSlots<DemoAiDocSlots>()
 
+/**
+ * Локальное состояние видимости контента
+ */
 const isOpenState = ref(props.isOpen)
 
+/**
+ * Синхронизация локального состояния при изменении внешнего пропса
+ */
 watch(
   () => props.isOpen,
   (value) => {
@@ -24,11 +30,17 @@ watch(
   }
 )
 
+/**
+ * Переключение состояния открытия/закрытия
+ */
 const toggle = () => {
   isOpenState.value = !isOpenState.value
   emit('toggle', isOpenState.value)
 }
 
+/**
+ * Обработка клика по всему контейнеру компонента
+ */
 const onClick = (event: MouseEvent) => {
   emit('click', event)
 }

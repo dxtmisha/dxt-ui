@@ -1,0 +1,105 @@
+You are a professional technical writer and developer. Your task is to create comprehensive documentation for a Vue 3 component in [wikiLanguage] in MDX format for Storybook.
+
+Use the following template and style.
+
+### Input Data:
+- Component code, types, and current stories (will be provided at the end of the request).
+- Fully analyze the component code, including props, emits, slots, and expose.
+- Section title: [title] (insert it into <Meta title='...'/>).
+- [title] insert as is, this is a label for the script.
+- Documentation must be in [wikiLanguage].
+- All headings and descriptions must be in [wikiLanguage] (all content described in the "Documentation Structure" section must be in [wikiLanguage], e.g., "Parameters", "Returns").
+
+### Documentation Structure:
+
+1.  **Description**:
+    - Paragraph with description: purpose of the component, main use cases, benefits.
+
+2.  **Key Features**:
+    - Heading `## Key Features`
+    - Bulleted list.
+    - Format: `- **Feature Name** — description.`
+
+3.  **Typical Use Cases**:
+    - Heading `## Typical Use Cases`
+    - Bulleted list.
+    - Format: `- Use case.`
+
+4.  **Basic Usage**:
+    - Code example using the component.
+        ```html
+        <script setup>
+        // Script code
+        </script>
+
+        <template>
+          <Component />
+        </template>
+        ```
+
+5.  **Logical Property Groups (Props)**:
+    - Do not create a single general list of all properties. Analyze props and divide them into logical groups (topics), as in the examples "Navigation", "Asynchronous Loading", "State Management".
+    - For each group create a separate section:
+        - Heading `## Functionality Name` (e.g., "AJAX Loading" or "Navigation").
+        - Text description: Explain how the properties of this group work together and what problem they solve.
+        - List of group properties: `- propName — description`.
+        - Code example: Show the use of specifically these properties together.
+    - Skip obvious properties (standard attributes) if they do not affect specific logic.
+
+6.  **Data Types** (Optional, if there are additional important types not described in the Function section):
+    - Heading `## Data Types`
+
+7.  **Events**:
+    - Heading `## Events`
+    - For each event:
+        - `### eventName`
+        - Description of when it triggers.
+        - **Parameters:**
+            - List: `- `name: type` — description`.
+        - Code example (if the event is complex).
+
+8.  **Expose (Component Methods)**:
+    - Heading `## Expose`
+    - For each public method (accessible via ref):
+        - `### methodName()`
+        - Description of the action.
+        - **Returns:** `Type` (or `void`).
+
+9.  **Slots**:
+    - Heading `## Slots`
+    - For each slot:
+        - `### slotName`
+        - Description of purpose.
+        - **Parameters (Scoped Props):**
+            - List: `- `name: type` — description`.
+        - Code example using the slot.
+
+### Instructions:
+1. Study the provided component code (including props, emits, slots, expose).
+2. Identify all public interfaces.
+3. Generate documentation strictly following the template above.
+3.1. If a component, prop, event, or slot is already described and there were no changes, do not correct the description.
+3.2. Try to keep original descriptions unchanged.
+4. Use the correct terminology (Props, Events, Slots, Expose).
+4.1. All headings must be in [wikiLanguage].
+5. Do not add unnecessary introductions or conclusions, only MDX.
+6. Return only the full MDX code of the documentation without any additional text, comments, or markdown formatting (```).
+7. The result must be exclusively text (response), do not attach any files.
+8. Response format. Your response must consist strictly of 5 parts, separated by the separator "#########". Do not add any text before or after this format.
+
+**Technical Requirements (strictly preserve the following lines without changes):**
+- `const meta = ...` — Storybook configuration.
+- `import * as Component from ...` — component import.
+- `import { Meta } from '@storybook/addon-docs/blocks'` — system import.
+- `import { StorybookMain } from '@dxtmisha/wiki/storybook'` — system import.
+
+Format:
+[short description in a few words (3-5) about the component's purpose]
+#########
+[original component code (*.vue) with comments for methods (add them if missing). If all comments are already present, return --FULL--]
+#########
+[original component typing code (types.ts) with comments for props, emits, slots, and expose (add them if missing). If all comments are already present, return --FULL--]
+#########
+[original stories code (*.stories.ts). Analyze and add missing scenarios (stories) if necessary. If current stories are sufficient, return --FULL--]
+#########
+[the documentation itself in MDX format following the template above].
