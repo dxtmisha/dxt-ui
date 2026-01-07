@@ -1,6 +1,5 @@
 // export:none
 
-import { isFilled } from '@dxtmisha/functional-basic'
 import { getNameDirByPaths } from '../../functions/getNameDirByPaths'
 import { useAi } from '../../composables/useAi'
 
@@ -8,15 +7,22 @@ import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { BuildItem } from '../BuildItem'
 import { ComponentWikiFile } from './ComponentWikiFile'
 
+import type { AiAbstract } from '../Ai/AiAbstract'
+
 import {
   UI_DIR_TEMPORARY,
   UI_DIR_WIKI,
   UI_DIRS_COMPONENTS
 } from '../../config'
-import type { AiAbstract } from '../Ai/AiAbstract.ts'
 
+/** Sample templates directory / Директория с шаблонами */
+const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts']
 /** Sample AI prompt template path / Путь к шаблону AI-промпта */
-const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts', 'componentPrompt.en.txt']
+const FILE_PROMPT_SAMPLE = [...DIR_SAMPLE, 'componentPrompt.ru.txt']
+/** Sample demo component MDX path / Путь к MDX демо-компоненту */
+const FILE_DEMO_SAMPLE = [...DIR_SAMPLE, 'demoComponentRu.mdx']
+/** Marker indicating no changes needed / Метка, указывающая на отсутствие изменений */
+const MARK_FULL = '--FULL--'
 
 /**
  * Generates wiki artifacts (code snapshot, stories, mdx) for a component.
@@ -28,9 +34,8 @@ const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompt
 export class ComponentWiki {
   protected readonly build: BuildItem
 
-  /** Template prompt file / Файл шаблона промпта */
-  protected readonly promptSample: ComponentWikiFile
-
+  /** Code file (original or AI regenerated) / Файл кода (оригинал или пересозданный ИИ) */
+  protected readonly codeFile: ComponentWikiFile
   /** Types file (original or AI regenerated) / Файл типов (оригинал или пересозданный ИИ) */
   protected readonly typesFile: ComponentWikiFile
   /** Stories file (Storybook) / Файл сторис (Storybook) */
@@ -38,13 +43,14 @@ export class ComponentWiki {
   /** MDX documentation file / Файл MDX документации */
   protected readonly mdFile: ComponentWikiFile
 
-  /** Prepared AI prompt file / Файл подготовленного AI промпта */
-  protected readonly promptFile: ComponentWikiFile
   /** Raw AI output file / Файл «сырого» вывода ИИ */
   protected readonly aiFile: ComponentWikiFile
 
   /** AI instance / Экземпляр ИИ */
   protected readonly ai?: AiAbstract
+
+  /** Description from AI / Описание от ИИ */
+  protected description?: string
 
   /**
    * Constructor
@@ -58,7 +64,11 @@ export class ComponentWiki {
     this.build = new BuildItem(
       `${this.getRootComponent().join('/')}/index.ts`
     )
-    this.promptSample = new ComponentWikiFile(FILE_PROMPT_SAMPLE)
+
+    this.codeFile = new ComponentWikiFile([
+      ...this.getRootComponent(),
+      `${this.getName()}.vue`
+    ])
 
     this.typesFile = new ComponentWikiFile([
       ...this.getRootComponent(),
@@ -75,11 +85,6 @@ export class ComponentWiki {
       `${this.getName()}.mdx`
     ])
 
-    this.promptFile = new ComponentWikiFile([
-      ...this.getPathTemporary(),
-      'prompt.txt'
-    ])
-
     this.aiFile = new ComponentWikiFile([
       ...this.getPathTemporary(),
       'ai.txt'
@@ -94,19 +99,26 @@ export class ComponentWiki {
    * Оркестрирует билд + извлечение файлов + генерацию через ИИ.
    */
   make(): void {
-    console.log('Component wiki:', this.path)
+    console.log('Component wiki:', this.path, '...')
 
-    this.build
-      .make()
-      .then((status) => {
-        if (status) {
-          this.readAndWritePrompt()
-
-          this.aiGenerate().then(() => console.log('End'))
-        } else {
-          console.log('Error!', this.path)
-        }
-      })
+    if (this.ai) {
+      this.build
+        .make()
+        .then((status) => {
+          if (status) {
+            this.makeAi()
+            this.aiGenerate()
+              .then(() => {
+                console.log('...', 'End')
+                this.build.removeDir()
+              })
+          } else {
+            console.log('Error!', this.path)
+          }
+        })
+    } else {
+      console.error('AI is not configured.')
+    }
   }
 
   /**
@@ -155,21 +167,39 @@ export class ComponentWiki {
   }
 
   /**
-   * Builds AI prompt by injecting dynamic code/types/stories/mdx content.
+   * Reads the demo file content.
    *
-   * Формирует AI промпт, подставляя динамический код/типы/stories/mdx.
+   * Читает содержимое демо-файла.
    */
-  protected readAndWritePrompt(): void {
-    this.promptFile.write(
-      this.promptSample
-        .read()
-        // .replace('[code]', this.build.getCode())
-        // .replace('[types]', this.typesFile.read())
-        // .replace('[stories]', this.storiesFile.read())
-        // .replace('[md]', this.mdFile.read())
-        .replace(/\[wikiLanguage]/g, PropertiesConfig.getWikiLanguage())
-        + (isFilled(this.prompt) ? `Additional conditions (these conditions take priority): ${this.prompt}` : '')
-    )
+  protected readDemo(): string {
+    return new ComponentWikiFile(FILE_DEMO_SAMPLE).read()
+  }
+
+  /**
+   * Reads the prompt template.
+   *
+   * Читает шаблон промпта.
+   */
+  protected readPrompt(): string {
+    return new ComponentWikiFile(FILE_PROMPT_SAMPLE)
+      .read()
+      .replace(/\[wikiLanguage]/g, PropertiesConfig.getWikiLanguage())
+  }
+
+  /**
+   * Prepares context for AI.
+   *
+   * Подготавливает контекст для ИИ.
+   */
+  protected makeAi(): void {
+    if (this.ai) {
+      this.ai.addContent(`Code: ${this.build.getCode()}`)
+      this.ai.addContent(`Original code: ${this.codeFile.read()}`)
+      this.ai.addContent(`Original types.ts: ${this.typesFile.read()}`)
+      this.ai.addContent(`Demo: ${this.readDemo()}`)
+      this.ai.addContent(`Original *.stories.ts: ${this.storiesFile.read()}`)
+      this.ai.addContent(`Original MDX: ${this.mdFile.read()}`)
+    }
   }
 
   /**
@@ -178,27 +208,45 @@ export class ComponentWiki {
    * Вызывает генерацию через ИИ и делит результат на types / stories / mdx.
    */
   protected async aiGenerate(): Promise<void> {
-    const prompt = this.promptFile.read()
-    const generate = await useAi()?.generate(prompt)
-
-    if (generate) {
-      const files = generate.split('#########')
-
-      this.typesFile.write(files[0] ?? '')
-      this.storiesFile.write(files[1] ?? '')
-      this.mdFile.write(files[2] ?? '')
-
-      this.aiFile.write(generate)
-      this.build.removeDir()
-    }
-  }
-
-  protected makeAi(): void {
     if (this.ai) {
-      this.ai.addContent(`Code: ${this.build.getCode()}`)
-      this.ai.addContent(`Original types.ts: ${this.typesFile.read()}`)
-      this.ai.addContent(`Original *.stories.ts: ${this.storiesFile.read()}`)
-      this.ai.addContent(`Original MDX: ${this.mdFile.read()}`)
+      const generate = await this.ai.generate(
+        this.readPrompt()
+      )
+
+      if (generate) {
+        const read = generate.split('#########')
+
+        if (read?.[0]) {
+          this.description = read[0].trim()
+        }
+
+        if (
+          read?.[1]
+          && !read[1].match(MARK_FULL)
+        ) {
+          this.codeFile.write(read[1])
+        }
+
+        if (
+          read?.[2]
+          && !read[2].match(MARK_FULL)
+        ) {
+          this.typesFile.write(read[2])
+        }
+
+        if (
+          read?.[3]
+          && !read[3].match(MARK_FULL)
+        ) {
+          this.storiesFile.write(read[3])
+        }
+
+        if (read?.[4]) {
+          this.mdFile.write(read[4])
+        }
+
+        this.aiFile.write(generate)
+      }
     }
   }
 }

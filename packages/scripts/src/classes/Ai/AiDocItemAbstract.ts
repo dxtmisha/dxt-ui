@@ -101,7 +101,7 @@ export abstract class AiDocItemAbstract {
 
       this.build.removeDir()
     } else if (!this.ai) {
-      console.log('AI is not configured.')
+      console.error('AI is not configured.')
     }
   }
 
