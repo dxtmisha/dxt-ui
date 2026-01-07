@@ -1,0 +1,282 @@
+Компонент для создания всплывающих меню, выпадающих списков и контекстных меню с поддержкой навигации и действий.
+
+Menu объединяет функциональность Window (позиционирование и управление видимостью), Bars (панель действий и инструментов) и List (отображение пунктов, групп и вложенных подменю). Компонент обеспечивает клавиатурную навигацию, поддержку вложенной структуры, асинхронную загрузку данных, режим оптимизированного рендеринга для больших списков и полный контроль над состоянием открытия/закрытия.
+
+**Основные возможности:**
+
+- Интеграция Window, Bars и List компонентов
+- Клавиатурная навигация по пунктам меню
+- Вложенные подменю с неограниченной глубиной
+- Асинхронная загрузка данных через AJAX
+- Режим lite для оптимизации больших списков (liteThreshold)
+- Поиск и фильтрация пунктов меню
+- Управление выбранными элементами (selected)
+- Гибкое позиционирование относительно якоря
+
+**Типичные сценарии использования:**
+
+- Выпадающие меню навигации
+- Контекстные меню по правому клику
+- Меню действий и операций
+- Селекторы с поиском и фильтрацией
+- Многоуровневые навигационные меню
+- Меню с динамической загрузкой данных
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const menuItems = ref([
+  { label: 'Создать', value: 'create', icon: 'add' },
+  { label: 'Редактировать', value: 'edit', icon: 'edit' },
+  { label: 'Удалить', value: 'delete', icon: 'delete' },
+  {
+    label: 'Экспорт',
+    value: 'export',
+    children: [
+      { label: 'PDF', value: 'pdf' },
+      { label: 'Excel', value: 'excel' },
+      { label: 'CSV', value: 'csv' }
+    ]
+  }
+])
+
+const handleClick = (value) => {
+  console.log('Выбран пункт:', value)
+  isOpen.value = false
+}
+</script>
+
+<template>
+  <button @click="isOpen = true">Открыть меню</button>
+
+  <Menu
+    v-model:open="isOpen"
+    :list="menuItems"
+    @click="handleClick"
+  >
+    <template #control="{ onclick }">
+      <button @click="onclick">Действия</button>
+    </template>
+  </Menu>
+</template>
+```
+
+## Навигация по элементам меню
+
+Методы `previous()` и `next()` предназначены для программного перемещения по элементам меню на основе текущего выбора и свойства `step`.
+
+**Методы:**
+
+- `previous()` — перемещает выбор на предыдущий элемент (назад на `step` позиций)
+- `next()` — перемещает выбор на следующий элемент (вперед на `step` позиций)
+- `step` — количество элементов для пропуска при навигации (по умолчанию: 1)
+
+Методы работают совместно с реактивным состоянием `selected`: при вызове `previous()` или `next()` происходит автоматический расчёт новой позиции относительно текущего выделенного элемента. Если элемент не выбран, методы выбирают первый доступный элемент. При достижении границ списка (первый или последний элемент) навигация останавливается на граничном элементе, предотвращая выход за пределы списка.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const menuRef = ref()
+const selected = ref('item2')
+</script>
+
+<template>
+  <!-- Вызов через ref -->
+  <button @click="menuRef?.previous()">Назад</button>
+  <button @click="menuRef?.next()">Вперед</button>
+
+  <Menu
+    ref="menuRef"
+    v-model:selected="selected"
+    :list="[
+      { label: 'Элемент 1', value: 'item1' },
+      { label: 'Элемент 2', value: 'item2' },
+      { label: 'Элемент 3', value: 'item3' }
+    ]"
+    :step="1"
+  />
+
+  <!-- Навигация в слоте control -->
+  <Menu v-model:selected="selected" :list="items">
+    <template #control="{ previous, next, selectedNames }">
+      <button @click="previous">◀</button>
+      <span>{{ selectedNames[0] }}</span>
+      <button @click="next">▶</button>
+    </template>
+  </Menu>
+
+  <!-- С пользовательским шагом -->
+  <Menu
+    ref="menuRef"
+    v-model:selected="selected"
+    :list="items"
+    :step="2"
+  />
+</template>
+```
+
+## AJAX загрузка меню
+
+Свойства `ajax`, `request` и `cache` предназначены для управления асинхронной загрузкой и кэшированием данных меню.
+
+**Свойства:**
+
+- `ajax` — включает режим удалённой загрузки данных (строка URL или функция)
+- `request` — объект типа `ApiFetch` с настройками HTTP-запроса
+- `cache` — включает кэширование загруженных элементов меню
+
+Свойства работают совместно: если `ajax` не задан или равен `false`, меню использует локальные данные. При активации `ajax` (строка URL или `true`), `request` определяет параметры HTTP-запроса (метод, заголовки, тело), а `cache` управляет сохранением данных. При включённом `cache` повторные открытия меню используют сохранённые данные вместо новых запросов, снижая нагрузку на сервер.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <!-- Загрузка с URL -->
+  <Menu
+    v-model:open="isOpen"
+    ajax="/api/menu-items"
+    :cache="true"
+  />
+
+  <!-- С настройками запроса -->
+  <Menu
+    v-model:open="isOpen"
+    ajax="/api/menu"
+    :request="{
+      method: 'POST',
+      headers: { 'X-Custom': 'value' },
+      auth: true
+    }"
+    :cache="true"
+  />
+
+  <!-- Функция загрузки -->
+  <Menu
+    v-model:open="isOpen"
+    :ajax="async () => {
+      const response = await fetch('/api/menu')
+      return response.json()
+    }"
+  />
+</template>
+```
+
+## Events
+
+### `click`
+
+Событие срабатывает при клике на компонент, передавая оригинальное DOM событие и данные компонента.
+
+**Параметры:**
+- `event: MouseEvent` — оригинальное DOM событие мыши
+- `value: EventClickValue` — объект с данными компонента
+
+**Структура EventClickValue:**
+- `type: string` — идентификатор места нажатия, задается через атрибут `data-event-type` у элемента
+- `value: any` — значение компонента
+- `detail: Record<string, any> | undefined` — дополнительные данные события
+
+```html
+<script setup>
+const handleClick = (event, value) => {
+  console.log('DOM событие:', event)
+  console.log('Тип клика:', value.type)
+  console.log('Значение:', value.value)
+  console.log('Детали:', value.detail)
+}
+</script>
+
+<template>
+  <Component @click="handleClick">
+    <button data-event-type="action">Нажми меня</button>
+  </Component>
+</template>
+```
+
+### `clickLite`
+
+Событие срабатывает при клике на компонент, передавая только данные без оригинального DOM события (облегченная версия).
+
+**Параметры:**
+- `value: EventClickValue` — объект с данными компонента
+
+## Expose
+
+### `previous()`
+
+Перемещает выбор на предыдущий элемент меню на основе значения свойства `step`.
+
+**Возвращает:** `void`
+
+### `next()`
+
+Перемещает выбор на следующий элемент меню на основе значения свойства `step`.
+
+**Возвращает:** `void`
+
+## Slots
+
+### `control`
+
+Слот для размещения элемента управления (триггера) меню.
+
+**Параметры:**
+- `props: MenuControlItem` — объект с данными управления меню
+- `onclick` — функция для переключения открытия/закрытия меню
+- `isSelected` — computed boolean, указывающий, выбран ли какой-либо элемент
+- `selectedNames` — computed массив меток выбранных элементов
+- `selectedValues` — computed массив значений выбранных элементов
+- `selectedList` — computed массив выбранных элементов списка
+- `loading` — ref, указывающий на состояние загрузки AJAX
+- `previous()` — метод для перехода к предыдущему элементу(ам)
+- `next()` — метод для перехода к следующему элементу(ам)
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const menuItems = ref([
+  { label: 'Элемент 1', value: '1' },
+  { label: 'Элемент 2', value: '2' },
+  { label: 'Элемент 3', value: '3' }
+])
+</script>
+
+<template>
+  <Menu v-model:open="isOpen" :list="menuItems">
+    <template #control="{ onclick, isSelected, selectedNames }">
+      <button @click="onclick">
+        {{ isSelected ? selectedNames.join(', ') : 'Выбрать элементы' }}
+      </button>
+    </template>
+  </Menu>
+</template>
+```
+
+### `title`
+
+Слот для размещения заголовка окна меню.
+
+**Параметры:**
+- `props: MenuControlItem` — объект с данными управления меню
+
+### `footer`
+
+Слот для размещения содержимого в нижней части окна меню (кнопки действий, информация).
+
+**Параметры:**
+- `props: MenuControlItem` — объект с данными управления меню
+
+### `default`
+
+Основной слот для размещения главного содержимого компонента.
+
+**Возвращает:** `VNode` — основное содержимое компонента

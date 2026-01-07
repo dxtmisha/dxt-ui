@@ -1,0 +1,282 @@
+Component for creating popup menus, dropdown lists, and context menus with support for navigation and actions.
+
+Menu combines the functionality of Window (positioning and visibility management), Bars (action and tool panel), and List (displaying items, groups, and nested submenus). The component provides keyboard navigation, support for nested structures, asynchronous data loading, an optimized rendering mode for large lists, and full control over the open/close state.
+
+**Key Features:**
+
+- Integration of Window, Bars, and List components
+- Keyboard navigation through menu items
+- Nested submenus with unlimited depth
+- Asynchronous data loading via AJAX
+- Lite mode for optimizing large lists (liteThreshold)
+- Search and filtering of menu items
+- Management of selected items (selected)
+- Flexible positioning relative to the anchor
+
+**Typical Use Cases:**
+
+- Dropdown navigation menus
+- Right-click context menus
+- Action and operation menus
+- Selectors with search and filtering
+- Multi-level navigation menus
+- Menus with dynamic data loading
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const menuItems = ref([
+  { label: 'Create', value: 'create', icon: 'add' },
+  { label: 'Edit', value: 'edit', icon: 'edit' },
+  { label: 'Delete', value: 'delete', icon: 'delete' },
+  {
+    label: 'Export',
+    value: 'export',
+    children: [
+      { label: 'PDF', value: 'pdf' },
+      { label: 'Excel', value: 'excel' },
+      { label: 'CSV', value: 'csv' }
+    ]
+  }
+])
+
+const handleClick = (value) => {
+  console.log('Item selected:', value)
+  isOpen.value = false
+}
+</script>
+
+<template>
+  <button @click="isOpen = true">Open Menu</button>
+
+  <Menu
+    v-model:open="isOpen"
+    :list="menuItems"
+    @click="handleClick"
+  >
+    <template #control="{ onclick }">
+      <button @click="onclick">Actions</button>
+    </template>
+  </Menu>
+</template>
+```
+
+## Navigation through Menu Items
+
+The `previous()` and `next()` methods are designed for programmatic navigation through menu items based on the current selection and the `step` property.
+
+**Methods:**
+
+- `previous()` — moves the selection to the previous item (back by `step` positions)
+- `next()` — moves the selection to the next item (forward by `step` positions)
+- `step` — number of items to skip during navigation (default: 1)
+
+The methods work in conjunction with the reactive `selected` state: when `previous()` or `next()` is called, the new position is automatically calculated relative to the currently selected item. If no item is selected, the methods select the first available item. When the list boundaries (first or last item) are reached, navigation stops at the boundary item, preventing exit from the list.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const menuRef = ref()
+const selected = ref('item2')
+</script>
+
+<template>
+  <!-- Call via ref -->
+  <button @click="menuRef?.previous()">Back</button>
+  <button @click="menuRef?.next()">Forward</button>
+
+  <Menu
+    ref="menuRef"
+    v-model:selected="selected"
+    :list="[
+      { label: 'Item 1', value: 'item1' },
+      { label: 'Item 2', value: 'item2' },
+      { label: 'Item 3', value: 'item3' }
+    ]"
+    :step="1"
+  />
+
+  <!-- Navigation in control slot -->
+  <Menu v-model:selected="selected" :list="items">
+    <template #control="{ previous, next, selectedNames }">
+      <button @click="previous">◀</button>
+      <span>{{ selectedNames[0] }}</span>
+      <button @click="next">▶</button>
+    </template>
+  </Menu>
+
+  <!-- With custom step -->
+  <Menu
+    ref="menuRef"
+    v-model:selected="selected"
+    :list="items"
+    :step="2"
+  />
+</template>
+```
+
+## AJAX Menu Loading
+
+The `ajax`, `request`, and `cache` properties are designed to manage asynchronous loading and caching of menu data.
+
+**Properties:**
+
+- `ajax` — enables remote data loading mode (URL string or function)
+- `request` — object of type `ApiFetch` with HTTP request settings
+- `cache` — enables caching of loaded menu items
+
+The properties work together: if `ajax` is not set or is `false`, the menu uses local data. When `ajax` is activated (URL string or `true`), `request` defines the HTTP request parameters (method, headers, body), and `cache` manages data storage. With `cache` enabled, reopening the menu uses stored data instead of new requests, reducing server load.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <!-- Load from URL -->
+  <Menu
+    v-model:open="isOpen"
+    ajax="/api/menu-items"
+    :cache="true"
+  />
+
+  <!-- With request settings -->
+  <Menu
+    v-model:open="isOpen"
+    ajax="/api/menu"
+    :request="{
+      method: 'POST',
+      headers: { 'X-Custom': 'value' },
+      auth: true
+    }"
+    :cache="true"
+  />
+
+  <!-- Loading function -->
+  <Menu
+    v-model:open="isOpen"
+    :ajax="async () => {
+      const response = await fetch('/api/menu')
+      return response.json()
+    }"
+  />
+</template>
+```
+
+## Events
+
+### `click`
+
+The event is triggered when the component is clicked, passing the original DOM event and component data.
+
+**Parameters:**
+- `event: MouseEvent` — original DOM mouse event
+- `value: EventClickValue` — object with component data
+
+**EventClickValue Structure:**
+- `type: string` — identifier of the click location, set via the `data-event-type` attribute on the element
+- `value: any` — component value
+- `detail: Record<string, any> | undefined` — additional event data
+
+```html
+<script setup>
+const handleClick = (event, value) => {
+  console.log('DOM event:', event)
+  console.log('Click type:', value.type)
+  console.log('Value:', value.value)
+  console.log('Details:', value.detail)
+}
+</script>
+
+<template>
+  <Component @click="handleClick">
+    <button data-event-type="action">Click me</button>
+  </Component>
+</template>
+```
+
+### `clickLite`
+
+The event is triggered when the component is clicked, passing only data without the original DOM event (lightweight version).
+
+**Parameters:**
+- `value: EventClickValue` — object with component data
+
+## Expose
+
+### `previous()`
+
+Moves the selection to the previous menu item based on the `step` property value.
+
+**Returns:** `void`
+
+### `next()`
+
+Moves the selection to the next menu item based on the `step` property value.
+
+**Returns:** `void`
+
+## Slots
+
+### `control`
+
+Slot for placing the menu control element (trigger).
+
+**Parameters:**
+- `props: MenuControlItem` — object with menu control data
+- `onclick` — function to toggle menu open/close
+- `isSelected` — computed boolean indicating if any item is selected
+- `selectedNames` — computed array of labels of selected items
+- `selectedValues` — computed array of values of selected items
+- `selectedList` — computed array of selected list items
+- `loading` — ref indicating AJAX loading state
+- `previous()` — method to navigate to previous item(s)
+- `next()` — method to navigate to next item(s)
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isOpen = ref(false)
+const menuItems = ref([
+  { label: 'Item 1', value: '1' },
+  { label: 'Item 2', value: '2' },
+  { label: 'Item 3', value: '3' }
+])
+</script>
+
+<template>
+  <Menu v-model:open="isOpen" :list="menuItems">
+    <template #control="{ onclick, isSelected, selectedNames }">
+      <button @click="onclick">
+        {{ isSelected ? selectedNames.join(', ') : 'Select Items' }}
+      </button>
+    </template>
+  </Menu>
+</template>
+```
+
+### `title`
+
+Slot for placing the menu window title.
+
+**Parameters:**
+- `props: MenuControlItem` — object with menu control data
+
+### `footer`
+
+Slot for placing content at the bottom of the menu window (action buttons, information).
+
+**Parameters:**
+- `props: MenuControlItem` — object with menu control data
+
+### `default`
+
+Main slot for placing the main content of the component.
+
+**Returns:** `VNode` — main content of the component

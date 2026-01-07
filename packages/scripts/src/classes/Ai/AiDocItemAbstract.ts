@@ -70,29 +70,32 @@ export abstract class AiDocItemAbstract {
         PropertiesConfig.getWikiLanguage()
       )
 
-      await this.build.make()
-      this.makeAi()
+      const status = await this.build.make()
 
-      const generate = await this.ai.generate(
-        this.readPrompt()
-      )
+      if (status) {
+        this.makeAi()
 
-      if (generate) {
-        const read = generate.split('#########')
+        const generate = await this.ai.generate(
+          this.readPrompt()
+        )
 
-        if (read?.[0]) {
-          this.description = read[0].trim()
-        }
+        if (generate) {
+          const read = generate.split('#########')
 
-        if (
-          read?.[1]
-          && !read[1].match('--FULL--')
-        ) {
-          this.code.write(read[1])
-        }
+          if (read?.[0]) {
+            this.description = read[0].trim()
+          }
 
-        if (read?.[2]) {
-          this.mdFile.write(this.initName(read[2]))
+          if (
+            read?.[1]
+            && !read[1].match('--FULL--')
+          ) {
+            this.code.write(read[1])
+          }
+
+          if (read?.[2]) {
+            this.mdFile.write(this.initName(read[2]))
+          }
         }
       }
 

@@ -13,8 +13,9 @@ import {
   UI_DIR_WIKI,
   UI_DIRS_COMPONENTS
 } from '../../config'
+import type { AiAbstract } from '../Ai/AiAbstract.ts'
 
-// Sample AI prompt template path / Путь к шаблону AI-промпта
+/** Sample AI prompt template path / Путь к шаблону AI-промпта */
 const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts', 'componentPrompt.en.txt']
 
 /**
@@ -27,20 +28,23 @@ const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompt
 export class ComponentWiki {
   protected readonly build: BuildItem
 
-  // Template prompt file / Файл шаблона промпта
+  /** Template prompt file / Файл шаблона промпта */
   protected readonly promptSample: ComponentWikiFile
 
-  // Types file (original or AI regenerated) / Файл типов (оригинал или пересозданный ИИ)
+  /** Types file (original or AI regenerated) / Файл типов (оригинал или пересозданный ИИ) */
   protected readonly typesFile: ComponentWikiFile
-  // Stories file (Storybook) / Файл сторис (Storybook)
+  /** Stories file (Storybook) / Файл сторис (Storybook) */
   protected readonly storiesFile: ComponentWikiFile
-  // MDX documentation file / Файл MDX документации
+  /** MDX documentation file / Файл MDX документации */
   protected readonly mdFile: ComponentWikiFile
 
-  // Prepared AI prompt file / Файл подготовленного AI промпта
+  /** Prepared AI prompt file / Файл подготовленного AI промпта */
   protected readonly promptFile: ComponentWikiFile
-  // Raw AI output file / Файл «сырого» вывода ИИ
+  /** Raw AI output file / Файл «сырого» вывода ИИ */
   protected readonly aiFile: ComponentWikiFile
+
+  /** AI instance / Экземпляр ИИ */
+  protected readonly ai?: AiAbstract
 
   /**
    * Constructor
@@ -80,6 +84,8 @@ export class ComponentWiki {
       ...this.getPathTemporary(),
       'ai.txt'
     ])
+
+    this.ai = useAi()
   }
 
   /**
@@ -157,10 +163,10 @@ export class ComponentWiki {
     this.promptFile.write(
       this.promptSample
         .read()
-        .replace('[code]', this.build.getCode())
-        .replace('[types]', this.typesFile.read())
-        .replace('[stories]', this.storiesFile.read())
-        .replace('[md]', this.mdFile.read())
+        // .replace('[code]', this.build.getCode())
+        // .replace('[types]', this.typesFile.read())
+        // .replace('[stories]', this.storiesFile.read())
+        // .replace('[md]', this.mdFile.read())
         .replace(/\[wikiLanguage]/g, PropertiesConfig.getWikiLanguage())
         + (isFilled(this.prompt) ? `Additional conditions (these conditions take priority): ${this.prompt}` : '')
     )
@@ -184,6 +190,15 @@ export class ComponentWiki {
 
       this.aiFile.write(generate)
       this.build.removeDir()
+    }
+  }
+
+  protected makeAi(): void {
+    if (this.ai) {
+      this.ai.addContent(`Code: ${this.build.getCode()}`)
+      this.ai.addContent(`Original types.ts: ${this.typesFile.read()}`)
+      this.ai.addContent(`Original *.stories.ts: ${this.storiesFile.read()}`)
+      this.ai.addContent(`Original MDX: ${this.mdFile.read()}`)
     }
   }
 }
