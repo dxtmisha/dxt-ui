@@ -1,5 +1,9 @@
 import { exec } from 'node:child_process'
 import { AiAbstract } from './AiAbstract'
+import { PropertiesFile } from '../Properties/PropertiesFile.ts'
+import { forEach } from '@dxtmisha/functional-basic'
+
+const TEMPORARY_DIR = './ai-tmp'
 
 /**
  * Google AI (Gemini) implementation via CLI.
@@ -18,6 +22,21 @@ import { AiAbstract } from './AiAbstract'
  * - API key is passed via environment variable or config / API ключ передается через переменную окружения или конфиг
  */
 export class AiGoogleCliLite extends AiAbstract<{}> {
+  /**
+   * Counter for generating unique temporary file names/
+   * Счетчик для генерации уникальных имен временных файлов
+   */
+  protected idFile = 1
+
+  /**
+   * Generates a unique file path for the temporary prompt.
+   *
+   * Генерирует уникальный путь к файлу для временного промпта.
+   */
+  protected getFileName(): string {
+    return `${TEMPORARY_DIR}/Prompt-${this.idFile++}.txt`
+  }
+
   /**
    * Initializes the "client".
    * For CLI, we just mark it as initialized.
@@ -48,7 +67,10 @@ export class AiGoogleCliLite extends AiAbstract<{}> {
    * Возвращает массив строк.
    */
   protected toContents(): any {
-    return this.contents
+    return forEach(
+      this.contents,
+      content => this.createFile(content)
+    )
   }
 
   /**
@@ -65,7 +87,7 @@ export class AiGoogleCliLite extends AiAbstract<{}> {
     return new Promise((resolve) => {
       const fullPrompt = [
         ...this.toContents(),
-        contents
+        this.createFile(contents)
       ].join('\n\n##################\n\n')
 
       const escapedPrompt = fullPrompt.replace(/"/g, '\\"')
@@ -91,5 +113,20 @@ export class AiGoogleCliLite extends AiAbstract<{}> {
         }
       )
     })
+  }
+
+  /**
+   * Creates a temporary file with the prompt content and returns the path formatted for the CLI.
+   *
+   * Создает временный файл с содержимым промпта и возвращает путь, отформатированный для CLI.
+   * @param content Prompt content / Содержимое промпта
+   * @returns Formatted file path (e.g., @./ai-tmp/Prompt-1.txt) / Отформатированный путь к файлу
+   */
+  protected createFile(content: string): string {
+    const name = this.getFileName()
+
+    PropertiesFile.writeByPath(name, content)
+
+    return `Please read the following file as it contains the prompt instructions: @${name}`
   }
 }
