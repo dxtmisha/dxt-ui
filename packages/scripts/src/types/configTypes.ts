@@ -1,5 +1,5 @@
 /** AI type for content generation / Тип ИИ для генерации контента */
-export type AiType = 'gemini'
+export type AiType = 'gemini' | 'gemini-cli'
 
 /** Configuration structure for the design system UI project / Структура конфигурации для проекта дизайн-системы UI */
 export type DesignUiConfig = {

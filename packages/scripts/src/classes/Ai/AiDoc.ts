@@ -40,7 +40,11 @@ export class AiDoc {
     console.log(`Dir: ${dir}...`)
 
     for (const item of this.getListByDirectory(dir)) {
-      await AiDocType.make(item)
+      try {
+        await AiDocType.make(item)
+      } catch (e) {
+        console.error(`Error processing file ${item}:`, e)
+      }
     }
   }
 
