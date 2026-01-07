@@ -92,7 +92,7 @@ export class AiGoogleCliLite extends AiAbstract<{}> {
 
       const escapedPrompt = fullPrompt.replace(/"/g, '\\"')
       const modelFlag = model ? ` --model "${model}"` : ''
-      const command = `gemini "${escapedPrompt}"${modelFlag}`
+      const command = `gemini "${escapedPrompt}" Output strictly the code/answer. No preamble, no chatter, no reasoning ${modelFlag} --yolo`
 
       exec(
         command,
@@ -112,6 +112,8 @@ export class AiGoogleCliLite extends AiAbstract<{}> {
           }
         }
       )
+
+      this.removeFile()
     })
   }
 
@@ -128,5 +130,15 @@ export class AiGoogleCliLite extends AiAbstract<{}> {
     PropertiesFile.writeByPath(name, content)
 
     return `Please read the following file as it contains the prompt instructions: @${name}`
+  }
+
+  /**
+   * Cleans up temporary files and directories.
+   *
+   * Очищает временные файлы и директории.
+   * @protected
+   */
+  protected removeFile(): void {
+    PropertiesFile.removeDir(TEMPORARY_DIR)
   }
 }
