@@ -1,0 +1,38 @@
+## Description
+
+A semantic container component designed for grouping related content. It uses the `<section>` tag by default.
+
+Section provides capabilities for displaying headlines, labels, descriptions, captions, and icons. The main purpose of the component is to designate thematic sections of a document, which improves the semantics and accessibility of the page. The headline is rendered as `<h2>` by default.
+
+**Key Features:**
+
+- Semantic content grouping (`<section>` tag)
+- Support for headlines (default `<h2>`), labels, descriptions, and captions
+- Support for icons
+- Customizable layout and spacing
+- Full support for slots for content customization
+
+**Typical Use Cases:**
+
+- Thematic page sections
+- Content grouping in articles
+- Information blocks with second-level headings
+- Landing page sections
+
+```html
+<script setup>
+import { ref } from 'vue'
+</script>
+
+<template>
+  <Section
+    headline="Section Headline"
+    label="Label"
+    description="Description of this section's content"
+  >
+    <p>Main section content...</p>
+  </Section>
+</template>
+```
+
+> Section is the semantically correct choice for dividing a page into large logical blocks.

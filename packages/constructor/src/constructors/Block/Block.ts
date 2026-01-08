@@ -46,6 +46,10 @@ export class Block {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param LabelIncludeConstructor class for working with the label/ класс для работы с меткой
+   * @param DescriptionIncludeConstructor class for working with the description/ класс для работы с описанием
+   * @param CaptionIncludeConstructor class for working with the caption/ класс для работы с подписью
+   * @param IconIncludeConstructor class for working with the icon/ класс для работы с иконкой
    */
   constructor(
     protected readonly props: BlockProps,
@@ -55,9 +59,13 @@ export class Block {
     protected readonly className: string,
     protected readonly components?: DesignComp<BlockComponents, BlockProps>,
     protected readonly slots?: BlockSlots,
-    protected readonly emits?: ConstrEmit<BlockEmits>
+    protected readonly emits?: ConstrEmit<BlockEmits>,
+    protected readonly LabelIncludeConstructor: typeof LabelInclude = LabelInclude,
+    protected readonly DescriptionIncludeConstructor: typeof DescriptionInclude = DescriptionInclude,
+    protected readonly CaptionIncludeConstructor: typeof CaptionInclude = CaptionInclude,
+    protected readonly IconIncludeConstructor: typeof IconInclude = IconInclude
   ) {
-    this.label = new LabelInclude(
+    this.label = new LabelIncludeConstructor(
       props,
       className,
       undefined,
@@ -68,10 +76,10 @@ export class Block {
       undefined,
       computed(() => this.props.tagHeader || 'h3')
     )
-    this.caption = new CaptionInclude(props, className, slots)
-    this.description = new DescriptionInclude(props, className, slots)
+    this.caption = new CaptionIncludeConstructor(props, className, slots)
+    this.description = new DescriptionIncludeConstructor(props, className, slots)
 
-    this.icon = new IconInclude(props, className, components)
+    this.icon = new IconIncludeConstructor(props, className, components)
   }
 
   /**

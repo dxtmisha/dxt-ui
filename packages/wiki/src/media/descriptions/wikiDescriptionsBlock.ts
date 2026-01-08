@@ -44,21 +44,6 @@ export const wikiDescriptionsBlock: StorybookComponentsDescriptionItem = {
     `,
   stories: [
     {
-      id: 'BlockBasic',
-      name: {
-        en: 'Basic',
-        ru: 'Базовые'
-      },
-      template: `
-        <div class="wiki-storybook-flex">
-          <DesignComponent>Content</DesignComponent>
-          <DesignComponent label="Label" description="Description">Content</DesignComponent>
-          <DesignComponent headline="Headline" label="Label">Content</DesignComponent>
-          <DesignComponent icon="home" label="Label">Content</DesignComponent>
-        </div>
-      `
-    },
-    {
       id: 'BlockSlots',
       name: {
         en: 'Slots usage',

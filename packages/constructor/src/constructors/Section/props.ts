@@ -1,10 +1,14 @@
+import type { IconPropsBasic } from '../Icon'
+import type { BlockPropsBasic } from '../Block'
+
 interface SectionPropsToken {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface SectionPropsBasic {
-  // TODO: Location for a custom property / Место для пользовательского свойства
+export interface SectionPropsBasic<
+  Icon extends IconPropsBasic = IconPropsBasic
+> extends BlockPropsBasic<Icon> {
 }
 
 /**
@@ -21,7 +25,8 @@ export interface SectionProps extends SectionPropsBasic, SectionPropsToken {
  * Значение по умолчанию для свойства.
  */
 export const defaultsSection = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
+  tag: 'section',
+  tagHeader: 'h2',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

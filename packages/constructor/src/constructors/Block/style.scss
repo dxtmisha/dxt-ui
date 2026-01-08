@@ -1,6 +1,8 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinBlock {
+  @include ui.flexStretchY;
+
   &__header {
     @include ui.flexX;
   }

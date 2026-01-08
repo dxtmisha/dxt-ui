@@ -1,17 +1,17 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/Block/style" as Block;
+@use "@dxtmisha/constructor/Section/style" as Section;
 
-@include ui.initDesignBasic('d1.block') {
+@include ui.initDesignBasic('d1.section') {
   // Basic styles for a component
   // Базовый стили для компонента
-  @include Block.mixinBlock;
+  @include Section.mixinSection;
 
   // Styles from tokens
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    gap: var(--d1-sys-spacing-md);
+    gap: var(--d1-sys-spacing-lg);
     
     &__headline {
       padding-bottom: var(--d1-sys-spacing-x);
@@ -26,14 +26,20 @@
     
     &__label {
       font-family: var(--d1-sys-font-family-basic), sans-serif;
-      @include ui.fontSize(#{var(--d1-sys-font-size-headlineSmall)});
+      @include ui.fontSize(#{var(--d1-sys-font-size-headlineMedium)});
       font-weight: var(--d1-sys-font-weight-regular);
-      @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineSmall)});
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineMedium)});
       letter-spacing: var(--d1-sys-letterSpacing-none);
     }
     
     &__description {
       padding-top: var(--d1-sys-spacing-x);
+      
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+      letter-spacing: var(--d1-sys-letterSpacing-xl);
       
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }

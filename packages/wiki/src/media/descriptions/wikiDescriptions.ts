@@ -31,6 +31,7 @@ import { wikiDescriptionsMotionTransform } from './wikiDescriptionsMotionTransfo
 import { wikiDescriptionsProgress } from './wikiDescriptionsProgress'
 import { wikiDescriptionsRipple } from './wikiDescriptionsRipple'
 import { wikiDescriptionsScrollbar } from './wikiDescriptionsScrollbar'
+import { wikiDescriptionsSection } from './wikiDescriptionsSection'
 import { wikiDescriptionsSelect } from './wikiDescriptionsSelect'
 import { wikiDescriptionsSelectValue } from './wikiDescriptionsSelectValue'
 import { wikiDescriptionsSkeleton } from './wikiDescriptionsSkeleton'
@@ -70,6 +71,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsProgress,
   wikiDescriptionsRipple,
   wikiDescriptionsScrollbar,
+  wikiDescriptionsSection,
   wikiDescriptionsSelect,
   wikiDescriptionsSelectValue,
   wikiDescriptionsSkeleton,

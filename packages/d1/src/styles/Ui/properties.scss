@@ -12082,6 +12082,11 @@
         name: 'd1-scrollbar',
         type: 'component',
       ),
+      'section':(
+        index: 'section',
+        name: 'd1-section',
+        type: 'component',
+      ),
       'select':(
         index: 'select',
         name: 'd1-select',
@@ -12528,6 +12533,11 @@
       'scrollbar':(
         index: 'scrollbar',
         name: 'd-scrollbar',
+        type: 'component',
+      ),
+      'section':(
+        index: 'section',
+        name: 'd-section',
         type: 'component',
       ),
       'select':(

@@ -43,11 +43,13 @@ export class BlockDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor block item class/ класс элемента блока
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, BlockEmits, P>
+    options?: ConstrOptions<COMP, BlockEmits, P>,
+    ItemConstructor: typeof Block = Block
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class BlockDesign<
       options
     )
 
-    this.item = new Block(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -75,7 +77,10 @@ export class BlockDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {} as EXPOSE
+    return {
+      ...this.item.label.expose,
+      ...this.item.description.expose
+    } as EXPOSE
   }
 
   /**
@@ -117,11 +122,10 @@ export class BlockDesign<
    */
   protected initRender(): VNode {
     const children: any[] = [
-      ...this.renderHeadline(),
-      ...this.renderHeader(),
-      ...this.item.description.render(),
       ...this.renderBody()
     ]
+
+    this.initSlot('default', children)
 
     return h(this.item.tag.value, {
       ...this.getAttrs(),
@@ -207,13 +211,17 @@ export class BlockDesign<
    * Рендеринг тела.
    */
   protected readonly renderBody = (): VNode[] => {
-    this.initSlot('default')
+    const children: any[] = [
+      ...this.renderHeadline(),
+      ...this.renderHeader(),
+      ...this.item.description.render()
+    ]
 
     return [
       h('div', {
         key: 'body',
         class: this.classes?.value.body
-      }, this.initSlot('default'))
+      }, children)
     ]
   }
 }

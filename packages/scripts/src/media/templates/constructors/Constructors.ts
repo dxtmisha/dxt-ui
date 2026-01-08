@@ -1,5 +1,5 @@
 import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import type { ConstructorsComponents, ConstructorsEmits, ConstructorsSlots } from './types'
 import type { ConstructorsProps } from './props'
