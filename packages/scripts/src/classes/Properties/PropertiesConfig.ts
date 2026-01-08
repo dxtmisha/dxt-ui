@@ -74,6 +74,15 @@ export class PropertiesConfig {
   }
 
   /**
+   * Returns the package prefix.
+   *
+   * Возвращает префикс пакета.
+   */
+  static getPackagePrefix(): string | undefined {
+    return this.config.packagePrefix ?? undefined
+  }
+
+  /**
    * Returns the AI type.
    *
    * Возвращает тип ИИ.

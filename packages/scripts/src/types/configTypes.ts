@@ -33,6 +33,9 @@ export type DesignUiConfig = {
   /** Wiki language / Язык wiki */
   wikiLanguage?: string
 
+  /** Package prefix for generating package names / Префикс пакета для генерации названий пакетов */
+  packagePrefix?: string
+
   /** AI type for generating content / Тип ИИ для генерации контента */
   aiType?: 'gemini'
 

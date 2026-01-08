@@ -3,9 +3,16 @@
 import requirePath from 'path'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
-import { UI_FILE_PACKAGE } from '../../config'
+import { UI_DIR_PACKAGES, UI_DIRS_LIBRARY, UI_FILE_PACKAGE } from '../../config'
+import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
 
 const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'packages']
+const DIR_STORYBOOK = [
+  UI_DIR_PACKAGES,
+  'storybook',
+  '.storybook',
+  'main.ts'
+]
 
 type PackageInitItemFile = {
   file: string
@@ -41,6 +48,12 @@ export class PackageInitItem {
     ]
       .forEach((item) => {
         this.writeFile(item.file, item.content)
+
+        if (item.path.endsWith('library.ts')) {
+          this.makeLibrary()
+            .makePackage()
+            .makeStorybook()
+        }
       })
   }
 
@@ -102,14 +115,38 @@ export class PackageInitItem {
   }
 
   /**
+   * Gets normalized package name by replacing path separators.
+   *
+   * Получает нормализованное имя пакета, заменяя разделители путей.
+   */
+  protected getName(): string {
+    return this.name.replace(requirePath.sep, '/')
+  }
+
+  /**
+   * Gets package code by replacing path separators with hyphens.
+   *
+   * Получает код пакета, заменяя разделители путей на дефисы.
+   */
+  protected getCode(): string {
+    return this.getName().replace('/', '-')
+  }
+
+  /**
    * Reads project name from package.json.
    *
    * Читает имя проекта из package.json.
    */
   protected getProjectName(): string {
+    const name = this.getName()
+    const packagePrefix = PropertiesConfig.getPackagePrefix()
+
+    if (packagePrefix) {
+      return `${packagePrefix}/${name}`
+    }
+
     const mainName = String(this.readPackage()?.name)
     const code = mainName.split('/')?.[0] ?? mainName
-    const name = this.name.replace(requirePath.sep, '/')
 
     return `${code}/${name}`
   }
@@ -136,5 +173,110 @@ export class PackageInitItem {
 
     PropertiesFile.writeByPath(path, contentEdit)
     PropertiesFile.chmod(path)
+  }
+
+  /**
+   * Generates a library file for the package.
+   *
+   * Генерирует файл библиотеки для пакета.
+   */
+  protected makeLibrary(): this {
+    const name = this.getCode() + '.ts'
+    const path: string[] = [...UI_DIRS_LIBRARY, name]
+
+    if (
+      PropertiesFile.is(UI_DIRS_LIBRARY)
+      && !PropertiesFile.is(path)
+    ) {
+      console.log('Generate library...')
+
+      PropertiesFile.writeByPath(path, `export * from '${this.getProjectName()}'
+`
+      )
+    }
+
+    return this
+  }
+
+  /**
+   * Updates package.json to include the new package.
+   *
+   * Обновляет package.json для включения нового пакета.
+   */
+  protected makePackage(): this {
+    let packageFile = PropertiesFile.readFileOnly(UI_FILE_PACKAGE)
+    const name = this.getCode()
+
+    if (
+      packageFile
+      && !packageFile.match(new RegExp(`["']${this.getProjectName()}["']`))
+    ) {
+      let edit = false
+
+      if (
+        packageFile.match(/["']devDependencies["']/)
+      ) {
+        console.log('Update package.json: devDependencies...')
+
+        edit = true
+        packageFile = packageFile.replace(
+          /(["']devDependencies["']:[^{]+{)/,
+          `$1
+    "${this.getProjectName()}": "workspace:*",`
+        )
+      }
+
+      if (
+        packageFile.match(/["']exports["']/)
+      ) {
+        console.log('Update package.json: exports...')
+
+        edit = true
+        packageFile = packageFile.replace(
+          /(["']exports["']:[^{]+{)/,
+          `$1
+    "./${name}": {
+      "import": "./dist/${name}.js",
+      "types": "./dist/${name}.d.ts"
+    },`
+        )
+      }
+
+      if (edit) {
+        PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageFile)
+      }
+    }
+
+    return this
+  }
+
+  /**
+   * Updates Storybook configuration to include the new package stories.
+   *
+   * Обновляет конфигурацию Storybook для включения историй нового пакета.
+   */
+  makeStorybook(): this {
+    if (PropertiesFile.is(DIR_STORYBOOK)) {
+      let storybook = PropertiesFile.readFileOnly(DIR_STORYBOOK)
+      const name = this.getCode()
+
+      if (
+        storybook
+        && !storybook.match(`/${name}/src/`)
+      ) {
+        console.log('Update storybook...')
+
+        storybook = storybook.replace(
+          /(stories: \[)/,
+          `$1
+    '../../${name}/src/**/*.mdx',
+    '../../${name}/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',`
+        )
+
+        PropertiesFile.writeByPath(DIR_STORYBOOK, storybook)
+      }
+    }
+
+    return this
   }
 }
