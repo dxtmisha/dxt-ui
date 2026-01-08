@@ -25,6 +25,8 @@ export declare class TextInclude {
     constructor(props: TextAllPropsInclude);
     /** Close text/ Текст закрытия */
     readonly close: ComputedRef<string | undefined>;
+    /** Copied to the clipboard text/ Текст о копировании в буфер обмена */
+    readonly copiedClipboard: ComputedRef<string | undefined>;
     /** Entries match text/ Текст о несовпадении записей */
     readonly entriesMatch: ComputedRef<string | undefined>;
     /** OK text/ Текст подтверждения */

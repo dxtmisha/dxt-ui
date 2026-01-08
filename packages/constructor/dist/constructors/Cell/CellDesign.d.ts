@@ -1,14 +1,14 @@
 import { VNode, ComputedRef } from 'vue';
 import { ConstrOptions, ConstrStyles, DesignConstructorAbstract, ConstrClass } from '@dxtmisha/functional';
 import { Cell } from './Cell';
-import { CellProps } from './props';
+import { CellPropsBasic } from './props';
 import { CellClasses, CellComponents, CellEmits, CellExpose, CellSlots } from './types';
 import { RoleType, AriaTrueOrFalse, EventClickValue } from '../../library';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * CellDesign
  */
-export declare class CellDesign<COMP extends CellComponents, EXPOSE extends CellExpose, CLASSES extends CellClasses, P extends CellProps> extends DesignConstructorAbstract<HTMLDivElement, COMP, CellEmits, EXPOSE, CellSlots, CLASSES, P> {
+export declare class CellDesign<COMP extends CellComponents, EXPOSE extends CellExpose, CLASSES extends CellClasses, P extends CellPropsBasic> extends DesignConstructorAbstract<HTMLDivElement, COMP, CellEmits, EXPOSE, CellSlots, CLASSES, P> {
     protected readonly item: Cell;
     /**
      * Constructor

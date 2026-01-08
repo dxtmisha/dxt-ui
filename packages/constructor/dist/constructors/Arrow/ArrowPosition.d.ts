@@ -1,8 +1,8 @@
 import { ArrowElement } from './ArrowElement';
 import { ArrowElementTarget } from './ArrowElementTarget';
+import { ArrowParent } from './ArrowParent';
 import { ArrowBorder, ArrowDirection } from './basicTypes';
-import { ArrowProps } from './props.ts';
-import { ArrowParent } from './ArrowParent.ts';
+import { ArrowProps } from './props';
 import { Ref } from 'vue';
 /**
  * Class for calculating the position of the arrow element relative to the target element.

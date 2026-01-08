@@ -1,5 +1,5 @@
+import { WindowClasses } from './WindowClasses';
 import { WindowOpen } from './WindowOpen';
-import { WindowClasses } from './WindowClasses.ts';
 /**
  * A class for managing the hiding of elements outside the window when it is open.
  *

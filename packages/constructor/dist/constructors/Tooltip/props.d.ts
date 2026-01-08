@@ -1,11 +1,12 @@
 import { LabelProps } from '../../types/labelTypes';
 import { DescriptionProps } from '../../types/descriptionTypes';
+import { ArrowProps, ArrowPropsInclude } from '../Arrow';
 interface TooltipPropsToken {
-    arrow?: boolean;
 }
-export interface TooltipPropsBasic extends LabelProps, DescriptionProps {
+export interface TooltipPropsBasic<Arrow extends ArrowProps = ArrowProps> extends LabelProps, DescriptionProps, ArrowPropsInclude<Arrow> {
     open?: boolean;
     disabled?: boolean;
+    inDom?: boolean;
     top?: boolean;
     indent?: number;
     delay?: number;

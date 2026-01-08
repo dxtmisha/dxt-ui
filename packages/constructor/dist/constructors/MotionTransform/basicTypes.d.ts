@@ -91,9 +91,9 @@ export type MotionTransformComponentInclude = {
  */
 export type MotionTransformEmitsInclude = {
     /** Transform event with native event and options/ Событие трансформации с нативным событием и опциями */
-    transform?: MotionTransformEmits['transform'];
+    transform: MotionTransformEmits['transform'];
     /** Lightweight transform event with options only/ Облегчённое событие трансформации только с опциями */
-    transformLite?: MotionTransformEmits['transformLite'];
+    transformLite: MotionTransformEmits['transformLite'];
 };
 /**
  * Interface for MotionTransform expose inclusion/

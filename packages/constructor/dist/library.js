@@ -1,9 +1,9 @@
-var N = Object.defineProperty;
-var V = (n, t, e) => t in n ? N(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var r = (n, t, e) => V(n, typeof t != "symbol" ? t + "" : t, e);
-import { computed as l, toRefs as O, watch as x, isRef as w, isReadonly as L, ref as u, onUnmounted as $ } from "vue";
-import { isFilled as o, render as p, getElementId as F, RouterItemRef as R, getRef as f, getExp as E, isNumber as P, toNumberByMax as _, GeoRef as q, toCamelCaseFirst as k, toCamelCase as I, isFunction as B, isDomRuntime as M, EventItem as G, executePromise as T, toNumber as d, anyToString as v, isArray as H, isObject as y, toArray as X, setValues as Y, toBinds as j, createElement as U, executeFunction as z, isString as K } from "@dxtmisha/functional";
-class Z {
+var L = Object.defineProperty;
+var $ = (n, t, e) => t in n ? L(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
+var r = (n, t, e) => $(n, typeof t != "symbol" ? t + "" : t, e);
+import { isString as D, isFilled as u, render as p, getElementId as S, RouterItemRef as R, getRef as b, getExp as M, isNumber as P, toNumberByMax as G, GeoRef as _, toCamelCaseFirst as I, toCamelCase as T, isFunction as A, isDomRuntime as F, EventItem as q, executeFunction as x, executePromise as C, toNumber as d, anyToString as v, isArray as H, isObject as E, toArray as X, setValues as Y, toBinds as j, createElement as U } from "@dxtmisha/functional";
+import { computed as l, toRefs as K, watch as k, isRef as z, isReadonly as Z, ref as o, onUnmounted as J, shallowRef as Q } from "vue";
+class W {
   /**
    * Get role by props.
    *
@@ -36,6 +36,16 @@ class Z {
     return {
       "aria-checked": this.isTrueOrFalse(t)
     };
+  }
+  /**
+   * Get ARIA current attribute.
+   *
+   * Получить атрибут ARIA current.
+   * @param value ARIA current attribute/ Атрибут ARIA current
+   */
+  static current(t) {
+    const e = D(t) ? t : this.isTrueOrFalse(t);
+    return this.isDataToData("aria-current", e);
   }
   /**
    * Get ARIA busy attribute.
@@ -208,7 +218,7 @@ class Z {
     } : {};
   }
 }
-class tt {
+class it {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -236,7 +246,7 @@ class tt {
   render() {
     var e, s, i, a;
     const t = [];
-    return o(this.props.caption) && t.push(this.props.caption), (e = this.slots) != null && e.caption && t.push((i = (s = this.slots).caption) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
+    return u(this.props.caption) && t.push(this.props.caption), (e = this.slots) != null && e.caption && t.push((i = (s = this.slots).caption) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
       p(
         "div",
         {
@@ -252,7 +262,7 @@ class tt {
     ] : [];
   }
 }
-class et {
+class rt {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -262,7 +272,7 @@ class et {
    */
   constructor(t, e, s, i) {
     /** Unique identifier/ Уникальный идентификатор */
-    r(this, "id", F());
+    r(this, "id", S());
     /**
      * Check for the presence of a description
      *
@@ -294,7 +304,7 @@ class et {
   render() {
     var e, s, i, a;
     const t = [];
-    return o(this.props.description) && t.push(this.props.description), (e = this.slots) != null && e.description && t.push((i = (s = this.slots).description) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
+    return u(this.props.description) && t.push(this.props.description), (e = this.slots) != null && e.description && t.push((i = (s = this.slots).description) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
       p(
         "div",
         {
@@ -309,7 +319,7 @@ class et {
     ] : [];
   }
 }
-class st {
+class at {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -342,12 +352,12 @@ class st {
      * список aria свойств для состояния активности
      */
     r(this, "aria", l(
-      () => Z.disabled(!this.isEnabled.value)
+      () => W.disabled(!this.isEnabled.value)
     ));
     this.props = t, this.progress = e;
   }
 }
-class it {
+class lt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -375,7 +385,7 @@ class it {
         } else
           this.emit(t, this.getOptions(t));
     });
-    this.props = t, this.enabled = e, this.emits = s, this.refs = t ? O(t) : void 0;
+    this.props = t, this.enabled = e, this.emits = s, this.refs = t ? K(t) : void 0;
   }
   /**
    * Exported values
@@ -432,7 +442,7 @@ class it {
     this.emits && (this.emits("click", t, e), this.emits("clickLite", e));
   }
 }
-class D {
+class N {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -445,9 +455,9 @@ class D {
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    * @param tag tag name/ имя тега
    */
-  constructor(t, e, s, i, a, h, m, S, A = "span") {
+  constructor(t, e, s, i, a, h, g, V, w = "span") {
     /** Unique identifier/ Уникальный идентификатор */
-    r(this, "id", F());
+    r(this, "id", S());
     /** Label presence check/ Проверка наличия метки */
     r(this, "is", l(() => {
       var t;
@@ -466,7 +476,7 @@ class D {
     r(this, "expose", {
       labelId: this.getId()
     });
-    this.props = t, this.className = e, this.classesExtra = s, this.slots = i, this.elementsExtra = a, this.labelReplacing = h, this.alternativeSlots = m, this.skeleton = S, this.tag = A;
+    this.props = t, this.className = e, this.classesExtra = s, this.slots = i, this.elementsExtra = a, this.labelReplacing = h, this.alternativeSlots = g, this.skeleton = V, this.tag = w;
   }
   /**
    * Get the unique identifier.
@@ -493,7 +503,7 @@ class D {
       ];
       this.elementsExtra && s.push(...this.elementsExtra()), t && s.push(...t), s.length > 0 && e.push(
         p(
-          f(this.tag),
+          b(this.tag),
           {
             id: this.getId(),
             class: this.getClassName()
@@ -521,7 +531,7 @@ class D {
    */
   initLabel() {
     var t;
-    return !((t = this.labelReplacing) != null && t.value) && o(this.props.label) ? [this.props.label] : [];
+    return !((t = this.labelReplacing) != null && t.value) && u(this.props.label) ? [this.props.label] : [];
   }
   /**
    * Adds alternative label text if it exists
@@ -530,7 +540,7 @@ class D {
    */
   initLabelReplacing() {
     var t;
-    return o((t = this.labelReplacing) == null ? void 0 : t.value) ? [
+    return u((t = this.labelReplacing) == null ? void 0 : t.value) ? [
       p(
         "span",
         { innerHTML: this.labelReplacing.value },
@@ -556,7 +566,7 @@ class D {
     return [];
   }
 }
-class rt extends D {
+class nt extends N {
   /**
    * Constructor for the LabelHighlightInclude class.
    *
@@ -568,7 +578,7 @@ class rt extends D {
    * @param elementsExtra additional elements/ дополнительные элементы
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    */
-  constructor(e, s, i, a, h, m) {
+  constructor(e, s, i, a, h, g) {
     super(
       e,
       s,
@@ -577,7 +587,7 @@ class rt extends D {
       h,
       l(() => this.getLabel()),
       void 0,
-      m
+      g
     );
     /**
      * Returns a string with highlighted parts.
@@ -589,14 +599,14 @@ class rt extends D {
     r(this, "getLabel", () => {
       const e = this.props;
       if (e.highlight && e.highlight.length >= this.getLengthStart() && e.label) {
-        const s = `${this.className}__highlight`, i = e.label.toString(), a = E(e.highlight, "i");
+        const s = `${this.className}__highlight`, i = e.label.toString(), a = M(e.highlight, "i");
         if (i.match(a))
           return i.replace(a, (h) => `<span class="${s}">${h}</span>`);
-        if (o(e.value) && e.value.toString().match(a))
+        if (u(e.value) && e.value.toString().match(a))
           return `<span class="${s}">${i}</span>`;
       }
     });
-    this.props = e, this.className = s, this.classesExtra = i, this.slots = a, this.elementsExtra = h, this.skeleton = m;
+    this.props = e, this.className = s, this.classesExtra = i, this.slots = a, this.elementsExtra = h, this.skeleton = g;
   }
   /**
    * Determines if highlighting is required.
@@ -609,8 +619,8 @@ class rt extends D {
       return !0;
     if (!(e.highlight && e.highlight.length >= this.getLengthStart() && e.label))
       return !1;
-    const s = e.label.toString(), i = E(e.highlight, "i");
-    return !!(s.match(i) || o(e.value) && e.value.toString().match(i));
+    const s = e.label.toString(), i = M(e.highlight, "i");
+    return !!(s.match(i) || u(e.value) && e.value.toString().match(i));
   }
   /**
    * Returns the minimum length of the string to start highlighting.
@@ -622,7 +632,7 @@ class rt extends D {
     return (e = this.props.highlightLengthStart) != null ? e : 2;
   }
 }
-class at extends D {
+class ht extends N {
   /**
    * Constructor for working with text that has maximum values.
    *
@@ -654,15 +664,15 @@ class at extends D {
   getNumber() {
     const t = this.props;
     if (t.label && P(t.label))
-      return _(
+      return G(
         t.label,
         t.labelMax,
         t.formatting,
-        q.getLanguage().value
+        _.getLanguage().value
       ).toString();
   }
 }
-class C {
+class O {
   /**
    * Constructor
    * @param index The index key for the model property/ Ключ индекса для свойства модели
@@ -681,7 +691,7 @@ class C {
     r(this, "update", (t) => {
       this.isValue() && (this.syncValue.value = t);
     });
-    this.index = t, this.emits = e, this.syncValue = s, s && x(s, (i) => {
+    this.index = t, this.emits = e, this.syncValue = s, s && k(s, (i) => {
       this.emit(i);
     }, { immediate: !0 });
   }
@@ -694,7 +704,7 @@ class C {
    * @returns Type predicate indicating syncValue is a mutable Ref/ Предикат типа, указывающий что syncValue - изменяемый Ref
    */
   isValue() {
-    return w(this.syncValue) && !L(this.syncValue);
+    return z(this.syncValue) && !Z(this.syncValue);
   }
   /**
    * Generates binding object for v-model integration.
@@ -706,10 +716,10 @@ class C {
    */
   getBinds() {
     if (this.isValue()) {
-      const t = k(this.index);
+      const t = I(this.index);
       return {
         [`model${t}`]: this.syncValue.value,
-        [`onUpdate:${I(this.index)}`]: this.update,
+        [`onUpdate:${T(this.index)}`]: this.update,
         [`onUpdate:model${t}`]: this.update
       };
     }
@@ -724,10 +734,10 @@ class C {
    * @param value The new value to set/ Новое значение для установки
    */
   emit(t) {
-    B(this.emits) && (this.emits(`update:${I(this.index)}`, t), this.emits(`update:model${k(this.index)}`, t));
+    A(this.emits) && (this.emits(`update:${T(this.index)}`, t), this.emits(`update:model${I(this.index)}`, t));
   }
 }
-class lt {
+class ot {
   /**
    * Constructor
    * @param index identifier/ идентификатор
@@ -737,7 +747,7 @@ class lt {
    * @param readonly readonly flag/ флаг только для чтения
    */
   constructor(t, e, s, i, a) {
-    r(this, "value", u());
+    r(this, "value", o());
     /**
      * Click handler.
      *
@@ -749,7 +759,7 @@ class lt {
       var s, i;
       e && "value" in e && !((s = this.readonly) != null && s.value) && (this.value.value = e.value), (i = this.event) == null || i.onClick(t, e);
     });
-    this.index = t, this.emits = e, this.event = s, this.inputValue = i, this.readonly = a, new C(this.index, this.emits, this.value), x(
+    this.index = t, this.emits = e, this.event = s, this.inputValue = i, this.readonly = a, new O(this.index, this.emits, this.value), k(
       [this.inputValue],
       () => {
         var h;
@@ -767,7 +777,7 @@ class lt {
     return this.value.value;
   }
 }
-class nt {
+class ut {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -795,7 +805,7 @@ class nt {
   render() {
     var e, s, i, a;
     const t = [];
-    return o(this.props.prefix) && t.push(this.props.prefix), (e = this.slots) != null && e.prefix && t.push((i = (s = this.slots).prefix) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
+    return u(this.props.prefix) && t.push(this.props.prefix), (e = this.slots) != null && e.prefix && t.push((i = (s = this.slots).prefix) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
       p(
         "div",
         {
@@ -811,7 +821,7 @@ class nt {
     ] : [];
   }
 }
-class ht {
+class ct {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -839,7 +849,7 @@ class ht {
   render() {
     var e, s, i, a;
     const t = [];
-    return o(this.props.suffix) && t.push(this.props.suffix), (e = this.slots) != null && e.suffix && t.push((i = (s = this.slots).suffix) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
+    return u(this.props.suffix) && t.push(this.props.suffix), (e = this.slots) != null && e.suffix && t.push((i = (s = this.slots).suffix) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
       p(
         "div",
         {
@@ -855,7 +865,7 @@ class ht {
     ] : [];
   }
 }
-class ut {
+class pt {
   /**
    * Сonstructor
    * @param element - Reference to the element/ Ссылка на элемент
@@ -878,7 +888,7 @@ class ut {
       const e = document.activeElement;
       e && (this.isShift(t) ? e === this.findFirstElement() && ((s = this.findLastElement()) == null || s.focus(), t.preventDefault()) : e === this.findLastElement() && ((i = this.findFirstElement()) == null || i.focus(), t.preventDefault()));
     });
-    this.element = t, $(() => {
+    this.element = t, J(() => {
       this.stopEvent(), this.event = void 0;
     });
   }
@@ -888,7 +898,7 @@ class ut {
    * Устанавливает фокус на элемент.
    */
   goTo() {
-    return this.isElement() && M() && (this.updateOldElement(), this.toFocus(), this.startEvent()), this;
+    return this.isElement() && F() && (this.updateOldElement(), this.toFocus(), this.startEvent()), this;
   }
   /**
    * Reset focus to the previously focused element.
@@ -939,7 +949,7 @@ class ut {
    * Получает элемент.
    */
   getElement() {
-    return B(this.element) ? this.element() : f(this.element);
+    return A(this.element) ? this.element() : b(this.element);
   }
   /**
    * Find the first focusable element.
@@ -987,7 +997,7 @@ class ut {
    * Сохраняет текущий сфокусированный элемент.
    */
   updateOldElement() {
-    M() && (this.oldElement = document.activeElement);
+    F() && (this.oldElement = document.activeElement);
   }
   /**
    * Start the event listener.
@@ -999,7 +1009,7 @@ class ut {
       this.event.start();
       return;
     }
-    this.event = new G(
+    this.event = new q(
       document.body,
       "keydown",
       this.listenEvent
@@ -1014,8 +1024,76 @@ class ut {
     this.event && this.event.stop();
   }
 }
-const g = 80;
-class ot {
+const m = class m {
+  /**
+   * Constructor
+   * @param props Component properties/ Свойства компонента
+   */
+  constructor(t) {
+    /** Close text/ Текст закрытия */
+    r(this, "close", l(
+      () => this.getText("close", this.props.textClose)
+    ));
+    /** Copied to the clipboard text/ Текст о копировании в буфер обмена */
+    r(this, "copiedClipboard", l(
+      () => this.getText("copiedClipboard", this.props.textCopiedClipboard)
+    ));
+    /** Entries match text/ Текст о несовпадении записей */
+    r(this, "entriesMatch", l(
+      () => this.getText("entriesMatch", this.props.textEntriesMatch)
+    ));
+    /** OK text/ Текст подтверждения */
+    r(this, "ok", l(
+      () => this.getText("ok", this.props.textOk)
+    ));
+    this.props = t;
+  }
+  /**
+   * Initialize global texts.
+   *
+   * Инициализация глобальных текстов.
+   * @param texts List of texts/ Список текстов
+   */
+  static initText(t) {
+    this.list.value = {
+      ...this.list.value,
+      ...t
+    };
+  }
+  /**
+   * Get text by index, with priority to local value.
+   *
+   * Получение текста по индексу с приоритетом локального значения.
+   * @param index Text index/ Индекс текста
+   * @param value Local text value/ Локальное значение текста
+   */
+  getText(t, e) {
+    return e ? x(e) : this.getGlobalText(t);
+  }
+  /**
+   * Get text from global list.
+   *
+   * Получение текста из глобального списка.
+   * @param index Text index/ Индекс текста
+   */
+  getGlobalText(t) {
+    var e;
+    if ((e = m.list.value) != null && e[t])
+      return x(m.list.value[t]);
+  }
+};
+/**
+ * Global list of texts for all components/ Глобальный список текстов для всех компонентов
+ */
+r(m, "list", Q({
+  close: "Close",
+  copiedClipboard: "Copied to the clipboard",
+  entriesMatch: "Entries do not match",
+  ok: "OK"
+}));
+let B = m;
+const f = 80;
+class dt {
   /**
    * Constructor
    * @param start callback on touch/mouse start/ колбэк при начале касания/клика
@@ -1029,25 +1107,25 @@ class ot {
      *
      * Текущая точка касания
      */
-    r(this, "touche", u());
+    r(this, "touche", o());
     /**
      * Touchpoint during move
      *
      * Точка касания во время движения
      */
-    r(this, "toucheMove", u());
+    r(this, "toucheMove", o());
     /**
      * Current mouse position
      *
      * Текущая позиция мыши
      */
-    r(this, "mouse", u());
+    r(this, "mouse", o());
     /**
      * Mouse position during move
      *
      * Позиция мыши во время движения
      */
-    r(this, "mouseMove", u());
+    r(this, "mouseMove", o());
     /**
      * Touch event handlers
      *
@@ -1110,7 +1188,7 @@ class ot {
    * @param clientX horizontal coordinate/ горизонтальная координата
    */
   getTypeX(t) {
-    return t >= g ? "right" : t < -g ? "left" : "none";
+    return t >= f ? "right" : t < -f ? "left" : "none";
   }
   /**
    * Determines vertical direction type from client Y coordinate.
@@ -1119,7 +1197,7 @@ class ot {
    * @param clientY vertical coordinate/ вертикальная координата
    */
   getTypeY(t) {
-    return t >= g ? "bottom" : t < -g ? "top" : "none";
+    return t >= f ? "bottom" : t < -f ? "top" : "none";
   }
   /**
    * Executes callback with calculated movement data.
@@ -1131,7 +1209,7 @@ class ot {
     const e = this.mouse.value, s = this.mouseMove.value;
     if (e && s) {
       const i = s.x - e.x, a = s.y - e.y;
-      if (!t || await T(t(
+      if (!t || await C(t(
         this.getTypeX(i),
         this.getTypeY(a),
         i,
@@ -1177,7 +1255,7 @@ class ot {
   update(t) {
     var i;
     const e = this.getElement(t), s = this.mouse.value;
-    e && s && (e.style.setProperty("--sys-touch-start-x", `${s.x}px`), e.style.setProperty("--sys-touch-start-y", `${s.y}px`), T((i = this.start) == null ? void 0 : i.call(this, s, this.touche.value)).then());
+    e && s && (e.style.setProperty("--sys-touch-start-x", `${s.x}px`), e.style.setProperty("--sys-touch-start-y", `${s.y}px`), C((i = this.start) == null ? void 0 : i.call(this, s, this.touche.value)).then());
   }
   /**
    * Updates touch/mouse position during movement and sets CSS custom properties.
@@ -1192,7 +1270,7 @@ class ot {
     });
   }
 }
-class ct {
+class vt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1250,7 +1328,7 @@ class ct {
     return t && "clear" in t && ((e = t.clear) == null || e.call(t)), this;
   }
 }
-class pt {
+class mt {
   /**
    * Constructor
    * @param props input data /<br>входные данные
@@ -1260,11 +1338,11 @@ class pt {
    */
   constructor(t, e, s, i) {
     /** Current value/ Текущее значение */
-    r(this, "item", u());
+    r(this, "item", o());
     /** Indicates if the value is complete/ Указывает, полное ли значение */
-    r(this, "isFull", u(!0));
+    r(this, "isFull", o(!0));
     /** Indicates if there are temporary values/ Указывает, есть ли временные значения */
-    r(this, "hasEdit", u(!1));
+    r(this, "hasEdit", o(!1));
     /** Checks if there are values or temporary values/ Проверяет, есть ли значения или временные значения */
     r(this, "is", l(() => this.hasEdit.value || this.boolean.value || !!this.props.placeholder));
     /** Checks if there are any values/ Проверяет, есть ли значения */
@@ -1279,12 +1357,12 @@ class pt {
     /** Returns the current value of type string/ Возвращает текущее значение типа string */
     r(this, "string", l(() => v(this.item.value)));
     /** Returns the current value of type boolean/ Возвращает текущее значение типа boolean */
-    r(this, "boolean", l(() => o(this.item.value)));
+    r(this, "boolean", l(() => u(this.item.value)));
     /** Returns the length of the entered value/ Возвращает длину введенного значения */
     r(this, "length", l(() => {
       var e;
       const t = this.item.value;
-      return H(t) ? t.length : y(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
+      return H(t) ? t.length : E(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
     }));
     /**
      * Changes the values to the original ones.
@@ -1294,7 +1372,7 @@ class pt {
     r(this, "update", () => {
       (this.isEdit(this.props.value) || this.isEdit(this.props.modelValue)) && this.setToOriginal();
     });
-    this.props = t, this.refs = e, this.element = s, this.original = i, this.item.value = this.getOriginal(), x([
+    this.props = t, this.refs = e, this.element = s, this.original = i, this.item.value = this.getOriginal(), k([
       e.value,
       e.modelValue
     ], this.update);
@@ -1338,15 +1416,7 @@ class pt {
     return this;
   }
   setByEvent(t) {
-    switch (console.log("setByEvent"), typeof t) {
-      case "object":
-        t && ("value" in t && t.value !== void 0 ? this.set(t.value) : "target" in t && this.setByTarget(t.target), "hasEdit" in t && this.setHasEdit(t.hasEdit), "isFull" in t && this.setFull(t.isFull));
-        break;
-      default:
-        this.set(t);
-        break;
-    }
-    return this;
+    return console.log("setByEvent"), typeof t === "object" ? t && ("value" in t && t.value !== void 0 ? this.set(t.value) : "target" in t && this.setByTarget(t.target), "hasEdit" in t && this.setHasEdit(t.hasEdit), "isFull" in t && this.setFull(t.isFull)) : this.set(t), this;
   }
   /**
    * Changes the values by the selected element.
@@ -1412,7 +1482,7 @@ class pt {
    */
   clear() {
     var t;
-    return this.item.value = f(this.original), (t = this.element) == null || t.clear(), this.hasEdit.value = !1, this.isFull.value = !0, this;
+    return this.item.value = b(this.original), (t = this.element) == null || t.clear(), this.hasEdit.value = !1, this.isFull.value = !0, this;
   }
   /**
    * Is the selected type a checkbox.
@@ -1438,7 +1508,7 @@ class pt {
    * Возвращает оригинальное значение.
    */
   getOriginal() {
-    return this.props.value || this.props.modelValue || f(this.original);
+    return this.props.value || this.props.modelValue || b(this.original);
   }
   /**
    * Checks if the value is being edited.
@@ -1450,9 +1520,9 @@ class pt {
     return t !== void 0 && v(t) !== this.string.value;
   }
 }
-class dt {
+class gt {
   constructor() {
-    r(this, "item", u(!1));
+    r(this, "item", o(!1));
   }
   /**
    * Toggles the values.
@@ -1463,7 +1533,7 @@ class dt {
     return this.item.value = !this.item.value, this;
   }
 }
-class vt {
+class ft {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1487,7 +1557,7 @@ class vt {
     return this.item.value;
   }
 }
-class mt {
+class bt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1621,11 +1691,11 @@ class mt {
     return this;
   }
 }
-const b = {
+const y = {
   email: "[\\S]+@[\\S]{2,}\\.[\\w]{2,}",
   password: "[0-9a-zA-Z\\-!@#$%^&*]+"
 };
-class gt {
+class yt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1637,12 +1707,12 @@ class gt {
       if (this.props.pattern)
         return this.props.pattern;
       if (this.type)
-        return b == null ? void 0 : b[this.type.item.value];
+        return y == null ? void 0 : y[this.type.item.value];
     }));
     this.props = t, this.type = e;
   }
 }
-class ft {
+class xt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1675,7 +1745,7 @@ class ft {
     this.props = t, this.type = e;
   }
 }
-class bt {
+class Et {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1774,14 +1844,14 @@ class bt {
     }), j(e, this.props.inputAttrs);
   }
 }
-class yt {
+class kt {
   /**
    * Constructor
    * @param props input data/ входные данные
    */
   constructor(t) {
     /** Change state flag/ Флаг состояния изменения */
-    r(this, "item", u(!1));
+    r(this, "item", o(!1));
     (t.value || t.modelValue) && (this.item.value = !0);
   }
   /**
@@ -1810,7 +1880,7 @@ class yt {
     this.item.value || this.set(!0);
   }
 }
-class xt {
+class Mt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1905,10 +1975,10 @@ class c {
    */
   getAttributes() {
     const t = this.pattern;
-    if (o(t)) {
-      const e = z(t);
-      if (o(e))
-        return K(e) ? { pattern: e } : e;
+    if (u(t)) {
+      const e = x(t);
+      if (u(e))
+        return D(e) ? { pattern: e } : e;
     }
     return {};
   }
@@ -1921,7 +1991,7 @@ class c {
     return "check";
   }
 }
-class Et {
+class It {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1933,7 +2003,7 @@ class Et {
    */
   constructor(t, e, s, i, a, h) {
     /** Internal validation state/ Внутреннее состояние валидации */
-    r(this, "validation", u());
+    r(this, "validation", o());
     /** Hidden input element for native validation/ Скрытый input для нативной валидации */
     r(this, "input", l(
       () => new c(
@@ -2037,7 +2107,7 @@ class Et {
     return this.input.value.check(t);
   }
 }
-class kt {
+class Tt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -2139,7 +2209,7 @@ class kt {
         ...this.getData()
       }), this;
     });
-    this.props = t, this.change = e, this.value = s, this.validation = i, this.emits = a, this.model = new C(
+    this.props = t, this.change = e, this.value = s, this.validation = i, this.emits = a, this.model = new O(
       "value",
       this.emits,
       this.value.itemByFull
@@ -2196,7 +2266,7 @@ class kt {
     return this.on(t).onChange(t), this;
   }
 }
-class It {
+class Ft {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -2222,7 +2292,7 @@ class It {
    */
   getSelectors() {
     if (this.is())
-      return y(this.props.match) ? this.props.match.name : this.props.match;
+      return E(this.props.match) ? this.props.match.name : this.props.match;
   }
   /**
    * Returns validation error text
@@ -2232,7 +2302,7 @@ class It {
   getValidationMessage() {
     var t, e;
     if (this.is()) {
-      if (y(this.props.match) && ((t = this.props.match) != null && t.validationMessage))
+      if (E(this.props.match) && ((t = this.props.match) != null && t.validationMessage))
         return this.props.match.validationMessage;
       if (this.text)
         return (e = this.text.entriesMatch.value) != null ? e : "";
@@ -2259,35 +2329,36 @@ class It {
     }
   }
 }
-const Mt = (n) => `${n}-a--static`;
+const Ct = (n) => `${n}-a--static`;
 export {
-  Z as AriaStaticInclude,
-  tt as CaptionInclude,
-  et as DescriptionInclude,
-  st as EnabledInclude,
-  it as EventClickInclude,
-  mt as FieldArrowInclude,
-  bt as FieldAttributesInclude,
-  yt as FieldChangeInclude,
-  xt as FieldCodeInclude,
-  ct as FieldElementInclude,
-  kt as FieldEventInclude,
+  W as AriaStaticInclude,
+  it as CaptionInclude,
+  rt as DescriptionInclude,
+  at as EnabledInclude,
+  lt as EventClickInclude,
+  bt as FieldArrowInclude,
+  Et as FieldAttributesInclude,
+  kt as FieldChangeInclude,
+  Mt as FieldCodeInclude,
+  vt as FieldElementInclude,
+  Tt as FieldEventInclude,
   c as FieldInputCheckInclude,
-  ft as FieldInputModeInclude,
-  It as FieldMatchInclude,
-  gt as FieldPatternInclude,
-  vt as FieldTypeInclude,
-  Et as FieldValidationInclude,
-  pt as FieldValueInclude,
-  dt as FieldVisibilityInclude,
-  rt as LabelHighlightInclude,
-  D as LabelInclude,
-  at as LabelNumberInclude,
-  C as ModelInclude,
-  lt as ModelValueInclude,
-  nt as PrefixInclude,
-  ht as SuffixInclude,
-  ut as TabIndexInclude,
-  ot as TouchEventInclude,
-  Mt as getClassTagAStatic
+  xt as FieldInputModeInclude,
+  Ft as FieldMatchInclude,
+  yt as FieldPatternInclude,
+  ft as FieldTypeInclude,
+  It as FieldValidationInclude,
+  mt as FieldValueInclude,
+  gt as FieldVisibilityInclude,
+  nt as LabelHighlightInclude,
+  N as LabelInclude,
+  ht as LabelNumberInclude,
+  O as ModelInclude,
+  ot as ModelValueInclude,
+  ut as PrefixInclude,
+  ct as SuffixInclude,
+  pt as TabIndexInclude,
+  B as TextInclude,
+  dt as TouchEventInclude,
+  Ct as getClassTagAStatic
 };

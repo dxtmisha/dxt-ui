@@ -1,5 +1,5 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, isFilled } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, isFilled } from '@dxtmisha/functional'
 
 import { LabelNumberInclude } from '../../classes/LabelNumberInclude'
 import { IconInclude } from '../Icon'

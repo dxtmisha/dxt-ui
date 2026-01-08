@@ -1,5 +1,5 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, executeFunction, isFilled } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, executeFunction, isFilled } from '@dxtmisha/functional'
 
 import { FieldElementInclude } from '../../classes/field/FieldElementInclude'
 import { FieldChangeInclude } from '../../classes/field/FieldChangeInclude'

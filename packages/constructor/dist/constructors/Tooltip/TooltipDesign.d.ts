@@ -13,8 +13,9 @@ export declare class TooltipDesign<COMP extends TooltipComponents, EXPOSE extend
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor tooltip item class/ класс элемента тултипа
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, TooltipEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, TooltipEmits, P>, ItemConstructor?: typeof Tooltip);
     /**
      * Initialization of all the necessary properties for work
      *

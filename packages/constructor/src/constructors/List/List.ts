@@ -2,7 +2,7 @@ import { toRef, type Ref, type ToRefs, computed } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
-  DesignComp,
+  type DesignComp,
   ListDataRef,
   type ListDataItem,
   type ListList,

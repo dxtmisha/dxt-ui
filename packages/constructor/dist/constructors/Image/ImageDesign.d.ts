@@ -13,8 +13,9 @@ export declare class ImageDesign<COMP extends ImageComponents, EXPOSE extends Im
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor image item class/ класс элемента изображения
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ImageEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ImageEmits, P>, ItemConstructor?: typeof Image);
     /**
      * Initialization of all the necessary properties for work
      *

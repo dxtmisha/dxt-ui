@@ -1,6 +1,7 @@
 import { RoleType } from '../../types/roleTypes';
 import { ImagePropsBasic, ImageValue } from '../Image';
 import { SkeletonPropsInclude } from '../Skeleton';
+import { AriaLabelPropsInclude } from '../../types/ariaTypes.ts';
 interface IconPropsToken {
     turn?: boolean;
     disabled?: boolean;
@@ -15,7 +16,7 @@ interface IconPropsToken {
     animationType?: 'type1' | 'type2';
     animationShow?: boolean;
 }
-export interface IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> extends SkeletonPropsInclude {
+export interface IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> extends SkeletonPropsInclude, AriaLabelPropsInclude {
     /** Активное состояние иконки/ Active state of the icon */
     active?: boolean;
     /** Value of the main icon/ Значение основной иконки */

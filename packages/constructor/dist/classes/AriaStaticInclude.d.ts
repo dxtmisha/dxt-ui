@@ -28,6 +28,13 @@ export declare class AriaStaticInclude {
      */
     static checked(isChecked?: boolean): AriaList;
     /**
+     * Get ARIA current attribute.
+     *
+     * Получить атрибут ARIA current.
+     * @param value ARIA current attribute/ Атрибут ARIA current
+     */
+    static current(value?: AriaList['aria-current']): AriaList;
+    /**
      * Get ARIA busy attribute.
      *
      * Получить атрибут ARIA busy.

@@ -14,8 +14,9 @@ export declare class ArrowDesign<COMP extends ArrowComponents, EXPOSE extends Ar
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor arrow item class/ класс элемента стрелки
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ArrowEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ArrowEmits, P>, ItemConstructor?: typeof Arrow);
     /**
      * Initialization of all the necessary properties for work
      *

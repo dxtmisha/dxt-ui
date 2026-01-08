@@ -1,5 +1,5 @@
 import { computed, readonly, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, getBind } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, getBind } from '@dxtmisha/functional'
 
 import { IconInclude } from '../Icon'
 import { LabelInclude } from '../../classes/LabelInclude'

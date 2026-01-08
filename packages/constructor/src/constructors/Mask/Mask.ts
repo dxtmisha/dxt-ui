@@ -3,7 +3,7 @@ import {
   anyToString,
   type ConstrClassObject,
   type ConstrEmit,
-  DesignComp,
+  type DesignComp,
   GeoRef,
   isFloat
 } from '@dxtmisha/functional'

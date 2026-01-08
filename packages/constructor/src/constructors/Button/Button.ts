@@ -1,5 +1,5 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrClass, type ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import { type ConstrClass, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
 import { LabelInclude } from '../../classes/LabelInclude'

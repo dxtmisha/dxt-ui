@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrBind, DesignComponents, getBind, isFilled, type RefOrNormal, toBinds } from '@dxtmisha/functional'
+import { type ConstrBind, type DesignComponents, getBind, isFilled, type RefOrNormal, toBinds } from '@dxtmisha/functional'
 
 import { IconInclude } from './IconInclude'
 

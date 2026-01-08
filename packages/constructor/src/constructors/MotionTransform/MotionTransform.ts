@@ -1,5 +1,5 @@
 import { computed, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'

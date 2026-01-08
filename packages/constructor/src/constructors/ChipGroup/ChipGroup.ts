@@ -1,7 +1,7 @@
 import { type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
-  DesignComp,
+  type DesignComp,
   ListDataRef,
   type ListList,
   type ListSelectedList

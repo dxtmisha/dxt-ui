@@ -1,5 +1,5 @@
 import { computed, onMounted, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ScrollbarInclude } from '../Scrollbar/ScrollbarInclude'

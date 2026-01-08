@@ -2,7 +2,7 @@ import { computed, type ComputedRef, type Ref, type ToRefs } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrEmit,
-  DesignComp,
+  type DesignComp,
   getBindRef
 } from '@dxtmisha/functional'
 

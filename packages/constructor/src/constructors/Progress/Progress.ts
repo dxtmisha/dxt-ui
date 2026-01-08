@@ -3,7 +3,7 @@ import {
   type ConstrClassObject,
   type ConstrEmit,
   type ConstrStyles,
-  DesignComp,
+  type DesignComp,
   toNumber
 } from '@dxtmisha/functional'
 

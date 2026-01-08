@@ -1,5 +1,5 @@
 import { computed, type VNode, watch } from 'vue'
-import { type ConstrBind, DesignComponents, getBind, getRef, type RefOrNormal, toBind } from '@dxtmisha/functional'
+import { type ConstrBind, type DesignComponents, getBind, getRef, type RefOrNormal, toBind } from '@dxtmisha/functional'
 
 import { FieldValueInclude } from '../../classes/field/FieldValueInclude'
 import { FieldTypeInclude } from '../../classes/field/FieldTypeInclude'

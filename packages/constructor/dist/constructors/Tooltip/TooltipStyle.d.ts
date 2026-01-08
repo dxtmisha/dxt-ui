@@ -38,6 +38,13 @@ export declare class TooltipStyle {
      */
     setShow(status: boolean): void;
     /**
+     * Changes the move status.
+     *
+     * Изменяет статус перемещения.
+     * @param status the value of the current state/ значение текущего состояния
+     */
+    setMove(status: boolean): void;
+    /**
      * Reset all records to the initial state.
      *
      * Сброс всех записей до начального состояния.

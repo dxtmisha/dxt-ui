@@ -13,8 +13,9 @@ export declare class IconDesign<COMP extends IconComponents, EXPOSE extends Icon
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor icon item class/ класс элемента иконки
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, IconEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, IconEmits, P>, ItemConstructor?: typeof Icon);
     /**
      * Initialization of all the necessary properties for work<br>
      * Инициализация всех необходимых свойств для работы.

@@ -21,6 +21,13 @@ export declare class Image {
     protected readonly element: Ref<HTMLElement | undefined>;
     protected readonly className: string;
     protected readonly emits?: ConstrEmit<ImageEmits> | undefined;
+    protected readonly ImageTypeConstructor: typeof ImageType;
+    protected readonly ImageDataConstructor: typeof ImageData;
+    protected readonly ImageCoordinatorConstructor: typeof ImageCoordinator;
+    protected readonly ImagePositionConstructor: typeof ImagePosition;
+    protected readonly ImageAdaptiveItemConstructor: typeof ImageAdaptiveItem;
+    protected readonly ImageBackgroundConstructor: typeof ImageBackground;
+    protected readonly ImageImgConstructor: typeof ImageImg;
     readonly type: ImageType;
     readonly data: ImageData;
     readonly coordinator: ImageCoordinator;
@@ -34,8 +41,15 @@ export declare class Image {
      * @param element input element/ элемент ввода
      * @param className class name/ название класса
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param ImageTypeConstructor class for working with image type/ класс для работы с типом изображения
+     * @param ImageDataConstructor class for working with image data/ класс для работы с данными изображения
+     * @param ImageCoordinatorConstructor class for working with image coordinates/ класс для работы с координатами изображения
+     * @param ImagePositionConstructor class for working with image position/ класс для работы с позицией изображения
+     * @param ImageAdaptiveItemConstructor class for working with adaptive image item/ класс для работы с адаптивным элементом изображения
+     * @param ImageBackgroundConstructor class for working with image background/ класс для работы с фоном изображения
+     * @param ImageImgConstructor class for working with image tag/ класс для работы с тегом изображения
      */
-    constructor(props: ImageProps, element: Ref<HTMLElement | undefined>, className: string, emits?: ConstrEmit<ImageEmits> | undefined);
+    constructor(props: ImageProps, element: Ref<HTMLElement | undefined>, className: string, emits?: ConstrEmit<ImageEmits> | undefined, ImageTypeConstructor?: typeof ImageType, ImageDataConstructor?: typeof ImageData, ImageCoordinatorConstructor?: typeof ImageCoordinator, ImagePositionConstructor?: typeof ImagePosition, ImageAdaptiveItemConstructor?: typeof ImageAdaptiveItem, ImageBackgroundConstructor?: typeof ImageBackground, ImageImgConstructor?: typeof ImageImg);
     /**
      * Determines the tag to use/ Определяет используемый тег
      */

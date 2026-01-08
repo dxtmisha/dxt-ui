@@ -1,5 +1,5 @@
 import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import type { SectionComponents, SectionEmits, SectionSlots } from './types'
 import type { SectionProps } from './props'

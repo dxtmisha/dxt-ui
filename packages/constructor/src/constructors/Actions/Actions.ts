@@ -1,5 +1,5 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 

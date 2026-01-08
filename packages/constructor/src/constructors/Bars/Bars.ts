@@ -1,5 +1,5 @@
 import { computed, reactive, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, DesignComp, forEach, getBind, toBind } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, forEach, getBind, toBind } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { LabelInclude } from '../../classes/LabelInclude'

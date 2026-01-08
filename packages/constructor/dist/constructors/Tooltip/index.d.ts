@@ -1,5 +1,6 @@
 export * from './Tooltip';
 export * from './TooltipDesign';
+export * from './TooltipInclude';
 export * from './props';
 export * from './types';
 export * from './basicTypes';

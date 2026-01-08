@@ -11,6 +11,7 @@ export declare class TooltipStatus {
     protected readonly slots?: TooltipSlots | undefined;
     readonly open: Ref<boolean, boolean>;
     readonly show: Ref<boolean, boolean>;
+    readonly preparation: Ref<boolean, boolean>;
     /**
      * Constructor
      * @param props input data/ входные данные
@@ -23,12 +24,10 @@ export declare class TooltipStatus {
      * Проверяет, есть ли текст для отображения.
      */
     readonly isText: ComputedRef<boolean>;
-    /**
-     * Checks if the element needs to be displayed.
-     *
-     * Проверяет, нужно ли отображать элемент.
-     */
+    /** Checks if the element needs to be displayed/ Проверяет, нужно ли отображать элемент */
     readonly isShow: ComputedRef<boolean>;
+    /** Checks if the content is an array/ Проверяет, является ли содержимое массивом */
+    readonly isArray: ComputedRef<boolean>;
     /**
      * Checks if the current status matches the selected one.
      *
@@ -50,4 +49,11 @@ export declare class TooltipStatus {
      * @param show the value of the current state/ значение текущего состояния
      */
     setShow(show: boolean): void;
+    /**
+     * Changes the preparation status.
+     *
+     * Изменяет статус подготовки.
+     * @param preparation the value of the current state/ значение текущего состояния
+     */
+    setPreparation(preparation: boolean): void;
 }

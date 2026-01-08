@@ -21,6 +21,7 @@ interface CellPropsToken {
 export interface CellPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> extends LabelProps, DescriptionProps, CaptionProps, EnabledProps, IconTrailingPropsInclude<Icon>, ProgressPropsInclude<Progress>, SkeletonPropsInclude, EventClickProps, AriaRolePropsInclude {
     tag?: string;
     divider?: boolean;
+    dynamic?: boolean;
 }
 /**
  * Type describing incoming properties.

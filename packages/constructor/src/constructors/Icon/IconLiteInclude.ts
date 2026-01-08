@@ -2,7 +2,7 @@ import { computed, type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrClass,
-  DesignComponents,
+  type DesignComponents,
   getBind,
   getRef,
   isFilled,

@@ -1,5 +1,5 @@
 import { h, type VNode } from 'vue'
-import { type ConstrEmit, DesignComponents, toBind } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComponents, toBind } from '@dxtmisha/functional'
 
 import type { ScrollbarComponentsInclude, ScrollbarEmitsInclude, ScrollbarPropsInclude, ScrollbarEdgeType } from './basicTypes'
 

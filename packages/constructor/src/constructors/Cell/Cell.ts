@@ -2,7 +2,7 @@ import { computed, type Ref, type ToRefs } from 'vue'
 import {
   type ConstrClass,
   type ConstrEmit,
-  DesignComp
+  type DesignComp
 } from '@dxtmisha/functional'
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 

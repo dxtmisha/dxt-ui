@@ -10,6 +10,7 @@ export declare class TooltipClasses {
      * Идентификация текущего окна. Используется для поиска текущего компонента и его контроля
      */
     protected readonly id: string;
+    protected readonly idItem: string;
     /**
      * Constructor
      * @param className class name/ название класса
@@ -21,6 +22,12 @@ export declare class TooltipClasses {
      * Возвращает идентификатор текущего окна.
      */
     getId(): string;
+    /**
+     * Returns the identifier of the current item.
+     *
+     * Возвращает идентификатор текущего элемента.
+     */
+    getIdItem(): string;
     /**
      * Returns a class for control.
      *

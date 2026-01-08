@@ -20,6 +20,11 @@ export declare class Arrow {
     protected readonly components?: DesignComp<ArrowComponents, ArrowProps> | undefined;
     protected readonly slots?: ArrowSlots | undefined;
     protected readonly emits?: ConstrEmit<ArrowEmits> | undefined;
+    protected readonly ArrowElementConstructor: typeof ArrowElement;
+    protected readonly ArrowElementTargetConstructor: typeof ArrowElementTarget;
+    protected readonly ArrowParentConstructor: typeof ArrowParent;
+    protected readonly ArrowPositionConstructor: typeof ArrowPosition;
+    protected readonly ArrowEventConstructor: typeof ArrowEvent;
     readonly elementItem: ArrowElement;
     readonly elementTarget: ArrowElementTarget;
     readonly parent: ArrowParent;
@@ -35,8 +40,13 @@ export declare class Arrow {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param ArrowElementConstructor class for working with the arrow element/ класс для работы с элементом стрелки
+     * @param ArrowElementTargetConstructor class for working with the target element of the arrow/ класс для работы с целевым элементом стрелки
+     * @param ArrowParentConstructor class for working with the parent element of the arrow/ класс для работы с родительским элементом стрелки
+     * @param ArrowPositionConstructor class for working with the position of the arrow/ класс для работы с позицией стрелки
+     * @param ArrowEventConstructor class for working with arrow events/ класс для работы с событиями стрелки
      */
-    constructor(props: ArrowProps, refs: ToRefs<ArrowProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ArrowComponents, ArrowProps> | undefined, slots?: ArrowSlots | undefined, emits?: ConstrEmit<ArrowEmits> | undefined);
+    constructor(props: ArrowProps, refs: ToRefs<ArrowProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ArrowComponents, ArrowProps> | undefined, slots?: ArrowSlots | undefined, emits?: ConstrEmit<ArrowEmits> | undefined, ArrowElementConstructor?: typeof ArrowElement, ArrowElementTargetConstructor?: typeof ArrowElementTarget, ArrowParentConstructor?: typeof ArrowParent, ArrowPositionConstructor?: typeof ArrowPosition, ArrowEventConstructor?: typeof ArrowEvent);
     /** Direction of the arrow/ Направление стрелки */
     readonly direction: ComputedRef<ArrowDirection>;
     /** Classes for the component/ Классы для компонента */
