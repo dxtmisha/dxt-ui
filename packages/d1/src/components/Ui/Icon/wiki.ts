@@ -9,6 +9,7 @@ const propsNames: StorybookProps = [
   { name: 'active', type: 'boolean' },
   { name: 'animationShow', type: 'boolean' },
   { name: 'animationType', type: 'string', option: ['type1', 'type2'] },
+  { name: 'ariaLabel', type: 'string' },
   { name: 'asPalette', type: 'boolean' },
   { name: 'circle', type: 'boolean' },
   { name: 'dir', type: 'boolean' },

@@ -1,9 +1,0 @@
-{
-  "main": "{d.skeleton}",
-  "color": "{st.content.foreground.color.neutral.disable}",
-  "color-opacity": "{st.content.foreground.color.neutral.disable.opacity}",
-  "background-color": "{st.content.background.color.neutral.disable}",
-  "background-opacity": "{st.content.background.color.neutral.disable.opacity}",
-  "border-color": "{st.content.background.color.neutral.disable}",
-  "border-opacity": "{st.content.background.color.neutral.disable.opacity}"
-}

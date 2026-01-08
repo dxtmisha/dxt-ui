@@ -39,6 +39,7 @@ export interface CellPropsBasic<
   // Style
   tag?: string
   divider?: boolean
+  dynamic?: boolean
 }
 
 /**

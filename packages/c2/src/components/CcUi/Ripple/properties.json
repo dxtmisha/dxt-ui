@@ -1,5 +1,0 @@
-{
-  "main": "{d.ripple}",
-  "background-color": "{st.content.foreground.color.neutral.primary}",
-  "background-opacity": "{ot.opacity.25}"
-}

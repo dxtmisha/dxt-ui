@@ -9,7 +9,7 @@ import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Cell } from './Cell'
 
 import {
-  type CellProps
+  type CellPropsBasic
 } from './props'
 import {
   type CellClasses,
@@ -26,7 +26,7 @@ export class CellDesign<
   COMP extends CellComponents,
   EXPOSE extends CellExpose,
   CLASSES extends CellClasses,
-  P extends CellProps
+  P extends CellPropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,

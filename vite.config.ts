@@ -1,4 +1,4 @@
-import { viteFlags } from '@dxtmisha/configuration/viteFlags'
+import { viteLibraries } from '@dxtmisha/configuration/viteLibraries'
 
 // https://vite.dev/config/
-export default viteFlags
+export default viteLibraries

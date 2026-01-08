@@ -3,6 +3,9 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
 
+import autoprefixer from 'autoprefixer'
+import cssnanoPlugin from 'cssnano'
+
 // https://vite.dev/config/
 
 /**
@@ -45,7 +48,9 @@ export const viteBasicFunction = (
     '@dxtmisha/configuration',
     '@dxtmisha/constructor',
     '@dxtmisha/d1',
+    '@dxtmisha/figma',
     '@dxtmisha/functional',
+    '@dxtmisha/functional-basic',
     '@dxtmisha/media',
     '@dxtmisha/player',
     '@dxtmisha/scripts',
@@ -94,6 +99,14 @@ export const viteBasicFunction = (
           return '[name]-[hash][extname]'
         }
       }
+    }
+  },
+  css: {
+    postcss: {
+      plugins: [
+        autoprefixer(),
+        cssnanoPlugin({ preset: 'default' })
+      ]
     }
   },
   plugins: [

@@ -1,28 +1,73 @@
 {
   "name": "dxt-ui",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "description": "A modular Vue 3 UI library and design system constructor featuring AI-automated documentation, TypeScript support, and a flexible component architecture.",
+  "keywords": [
+    "vue",
+    "vue3",
+    "ui",
+    "ui-library",
+    "component-library",
+    "design-system",
+    "typescript",
+    "vite",
+    "storybook",
+    "frontend",
+    "scss"
+  ],
   "type": "module",
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "package-library": "dxt-package library"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json",
+    "LICENSE"
+  ],
+  "exports": {
+    "./functional": {
+      "import": "./dist/functional.js",
+      "types": "./dist/functional.d.ts"
+    },
+    "./functional-basic": {
+      "import": "./dist/functional-basic.js",
+      "types": "./dist/functional-basic.d.ts"
+    },
+    "./media": {
+      "import": "./dist/media.js",
+      "types": "./dist/media.d.ts"
+    },
+    "./scripts": {
+      "import": "./dist/scripts.js",
+      "types": "./dist/scripts.d.ts"
+    },
+    "./types/*": "./dist/*"
+  },
   "workspaces": [
     "packages/*"
   ],
   "dependencies": {
-    "@dxt-ui/c2": "workspace:*",
-    "@dxt-ui/test": "workspace:*",
-    "@dxtmisha/configuration": "^0.3.18",
+    "@dxtmisha/configuration": "^0.4.2",
     "@dxtmisha/constructor": "0.30.1",
-    "@dxtmisha/d1": "workspace:*",
     "@dxtmisha/functional": "^1.6.4",
     "@dxtmisha/functional-basic": "^0.5.1",
     "@dxtmisha/media": "^0.4.2",
     "@dxtmisha/scripts": "^0.5.1",
-    "@dxtmisha/storybook": "workspace:*",
     "@dxtmisha/styles": "^1.0.6",
     "@dxtmisha/wiki": "^0.25.1",
     "sass": "^1.97.2",
@@ -33,6 +78,10 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.3",
+    "@dxt-ui/c2": "workspace:*",
+    "@dxt-ui/test": "workspace:*",
+    "@dxtmisha/d1": "workspace:*",
+    "@dxtmisha/storybook": "workspace:*",
     "@eslint/js": "^9.39.2",
     "@figma/plugin-typings": "^1.121.0",
     "@google/genai": "^1.34.0",

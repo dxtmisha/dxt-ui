@@ -26,6 +26,7 @@ const propsNames: StorybookProps = [
   { name: 'lite', type: 'boolean' },
   { name: 'liteThreshold', type: 'number' },
   { name: 'max', type: 'string | number' },
+  { name: 'roleItem', type: 'string' },
   { name: 'selected', type: 'ListSelectedList' },
   { name: 'tag', type: 'string', option: ['div', 'button', 'a', 'span'] }
   // :propsList [!] System label / Системная метка
