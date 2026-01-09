@@ -1,0 +1,55 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/Page/style" as Page;
+
+@include ui.initDesignBasic('d1.page') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Page.mixinPage;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    gap: var(--d1-sys-spacing-xl);
+    
+    &__headline {
+      padding-bottom: var(--d1-sys-spacing-x);
+      
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.color('init');
+      @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &__header {
+      gap: var(--d1-sys-spacing-x);
+    }
+    
+    &__label {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-headlineLarge)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineLarge)});
+      letter-spacing: var(--d1-sys-letterSpacing-none);
+    }
+    
+    &__description {
+      padding-top: var(--d1-sys-spacing-x);
+      
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-lg)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-lg)});
+      letter-spacing: var(--d1-sys-letterSpacing-none);
+      
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+    
+    &__caption {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

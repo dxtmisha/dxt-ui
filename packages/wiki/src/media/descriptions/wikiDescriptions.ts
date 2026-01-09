@@ -28,6 +28,7 @@ import { wikiDescriptionsMask } from './wikiDescriptionsMask'
 import { wikiDescriptionsMenu } from './wikiDescriptionsMenu'
 import { wikiDescriptionsModal } from './wikiDescriptionsModal'
 import { wikiDescriptionsMotionTransform } from './wikiDescriptionsMotionTransform'
+import { wikiDescriptionsPage } from './wikiDescriptionsPage'
 import { wikiDescriptionsProgress } from './wikiDescriptionsProgress'
 import { wikiDescriptionsRipple } from './wikiDescriptionsRipple'
 import { wikiDescriptionsScrollbar } from './wikiDescriptionsScrollbar'
@@ -68,6 +69,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsMenu,
   wikiDescriptionsModal,
   wikiDescriptionsMotionTransform,
+  wikiDescriptionsPage,
   wikiDescriptionsProgress,
   wikiDescriptionsRipple,
   wikiDescriptionsScrollbar,

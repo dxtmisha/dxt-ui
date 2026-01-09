@@ -12067,6 +12067,11 @@
         name: 'd1-motionTransform',
         type: 'component',
       ),
+      'page':(
+        index: 'page',
+        name: 'd1-page',
+        type: 'component',
+      ),
       'progress':(
         index: 'progress',
         name: 'd1-progress',
@@ -12518,6 +12523,11 @@
       'motionTransform':(
         index: 'motionTransform',
         name: 'd-motionTransform',
+        type: 'component',
+      ),
+      'page':(
+        index: 'page',
+        name: 'd-page',
         type: 'component',
       ),
       'progress':(

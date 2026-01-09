@@ -5,33 +5,33 @@ import { BlockComponents, BlockEmits, BlockExpose, BlockSlots } from '../Block';
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type SectionComponents = BlockComponents;
+export type PageComponents = BlockComponents;
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type SectionEmits = BlockEmits;
+export type PageEmits = BlockEmits;
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface SectionExpose extends BlockExpose {
+export interface PageExpose extends BlockExpose {
 }
 /**
  * Type describing available slots.
  *
  * Тип, описывающий доступные слоты.
  */
-export interface SectionSlots extends BlockSlots {
+export interface PageSlots extends BlockSlots {
 }
 /**
  * Type describing subclasses.
  *
  * Тип, описывающий подклассы.
  */
-export type SectionClasses = {
+export type PageClasses = {
     main: ConstrClass;
     headline: string;
     header: string;

@@ -13,8 +13,9 @@ export declare class BlockDesign<COMP extends BlockComponents, EXPOSE extends Bl
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor block item class/ класс элемента блока
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, BlockEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, BlockEmits, P>, ItemConstructor?: typeof Block);
     /**
      * Initialization of all the necessary properties for work
      *

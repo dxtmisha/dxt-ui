@@ -56,11 +56,19 @@ export const BlockBasic: Story = {
   render: () => ({
     components: { D1Block },
     template: `
-        <div class="wiki-storybook-flex">
-          <D1Block>Content</D1Block>
-          <D1Block label="Label" description="Description">Content</D1Block>
-          <D1Block headline="Headline" label="Label">Content</D1Block>
-          <D1Block icon="home" label="Label">Content</D1Block>
+        <div class="wiki-storybook-flex-column">
+          <D1Block>
+            Simple content wrapper
+          </D1Block>
+          <D1Block label="User Profile" description="Manage your personal information">
+            <button class="wiki-storybook-button">Edit Profile</button>
+          </D1Block>
+          <D1Block headline="Notifications" label="Settings">
+            <label><input type="checkbox" checked> Email Notifications</label>
+          </D1Block>
+          <D1Block icon="home" label="Dashboard">
+            <p>Welcome to your dashboard overview.</p>
+          </D1Block>
         </div>
     `
   })

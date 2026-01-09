@@ -44,6 +44,29 @@ export const wikiDescriptionsBlock: StorybookComponentsDescriptionItem = {
     `,
   stories: [
     {
+      id: 'BlockBasic',
+      name: {
+        en: 'Basic',
+        ru: 'Базовые'
+      },
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent>
+            Simple content wrapper
+          </DesignComponent>
+          <DesignComponent label="User Profile" description="Manage your personal information">
+            <button class="wiki-storybook-button">Edit Profile</button>
+          </DesignComponent>
+          <DesignComponent headline="Notifications" label="Settings">
+            <label><input type="checkbox" checked> Email Notifications</label>
+          </DesignComponent>
+          <DesignComponent icon="home" label="Dashboard">
+            <p>Welcome to your dashboard overview.</p>
+          </DesignComponent>
+        </div>
+      `
+    },
+    {
       id: 'BlockSlots',
       name: {
         en: 'Slots usage',
@@ -64,6 +87,7 @@ export const wikiDescriptionsBlock: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Block'} type={'block'}/>
+<Canvas of={Component.BlockBasic}/>
 `,
     slots: `
 <Canvas of={Component.BlockSlots}/>

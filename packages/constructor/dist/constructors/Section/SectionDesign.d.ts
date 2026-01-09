@@ -1,42 +1,18 @@
-import { VNode } from 'vue';
-import { ConstrOptions, ConstrStyles, DesignConstructorAbstract } from '@dxtmisha/functional';
+import { ConstrOptions } from '@dxtmisha/functional';
+import { BlockDesign } from '../Block';
 import { Section } from './Section';
 import { SectionPropsBasic } from './props';
-import { SectionClasses, SectionComponents, SectionEmits, SectionExpose, SectionSlots } from './types';
+import { SectionClasses, SectionComponents, SectionEmits, SectionExpose } from './types';
 /**
  * SectionDesign
  */
-export declare class SectionDesign<COMP extends SectionComponents, EXPOSE extends SectionExpose, CLASSES extends SectionClasses, P extends SectionPropsBasic> extends DesignConstructorAbstract<HTMLDivElement, COMP, SectionEmits, EXPOSE, SectionSlots, CLASSES, P> {
-    protected readonly item: Section;
+export declare class SectionDesign<COMP extends SectionComponents, EXPOSE extends SectionExpose, CLASSES extends SectionClasses, P extends SectionPropsBasic> extends BlockDesign<COMP, EXPOSE, CLASSES, P> {
     /**
      * Constructor
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor block item class/ класс элемента блока
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, SectionEmits, P>);
-    /**
-     * Initialization of all the necessary properties for work
-     *
-     * Инициализация всех необходимых свойств для работы.
-     */
-    protected initExpose(): EXPOSE;
-    /**
-     * Improvement of the obtained list of classes.
-     *
-     * Доработка полученного списка классов.
-     */
-    protected initClasses(): Partial<CLASSES>;
-    /**
-     * Refinement of the received list of styles.
-     *
-     * Доработка полученного списка стилей.
-     */
-    protected initStyles(): ConstrStyles;
-    /**
-     * A method for rendering.
-     *
-     * Метод для рендеринга.
-     */
-    protected initRender(): VNode;
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, SectionEmits, P>, ItemConstructor?: typeof Section);
 }

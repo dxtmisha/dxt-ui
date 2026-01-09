@@ -1,0 +1,6 @@
+@use "@dxtmisha/styles/properties" as ui;
+@use "../Block/style" as block;
+
+@mixin mixinPage {
+  @include block.mixinBlock;
+}

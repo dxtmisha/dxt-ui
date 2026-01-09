@@ -1,0 +1,38 @@
+## Description
+
+A top-level semantic container component designed to wrap the main content of a page. It uses the `<main>` tag by default.
+
+Page provides capabilities for displaying main headlines, labels, descriptions, captions, and icons. The main purpose of the component is to designate the unique part of the document's content, which is critical for accessibility and SEO. The headline is rendered as `<h1>` by default.
+
+**Key Features:**
+
+- Semantic wrapper for main content (`<main>` tag)
+- Support for main headlines (default `<h1>`), labels, descriptions, and captions
+- Support for icons
+- Customizable layout and spacing
+- Full support for slots for content customization
+
+**Typical Use Cases:**
+
+- Wrapper for unique page content
+- Main application screen
+- Article or documentation page
+- Root element for routed components (views)
+
+```html
+<script setup>
+import { ref } from 'vue'
+</script>
+
+<template>
+  <Page
+    headline="Main Page Title"
+    label="Category"
+    description="Brief description of the page content"
+  >
+    <p>Unique page content...</p>
+  </Page>
+</template>
+```
+
+> Page should be used once per page (or per active view) and should not include repeated navigation elements.

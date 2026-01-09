@@ -4,23 +4,23 @@ import {
     StorybookMain
 } from '@dxtmisha/wiki/storybook'
 
-import * as Section from './D1Section.stories'
-import {SectionWikiStorybook} from './wiki'
+import * as Page from './D1Page.stories'
+import {PageWikiStorybook} from './wiki'
 
 [//]: # (:documentation-import [!] System label / Системная метка)
 [//]: # (:documentation-import [!] System label / Системная метка)
 
-<Meta of={Section}/>
+<Meta of={Page}/>
 <StorybookMain
-    name={SectionWikiStorybook.getName()}
-    description={SectionWikiStorybook.getDescription()}
-    story={Section.Section}
+    name={PageWikiStorybook.getName()}
+    description={PageWikiStorybook.getDescription()}
+    story={Page.Page}
 />
 
 [//]: # (:documentation-body [!] System label / Системная метка)
 
-<StorybookDescriptions componentName={'Section'} type={'block'}/>
-<Canvas of={Section.SectionBasic}/>
+<StorybookDescriptions componentName={'Page'} type={'block'}/>
+<Canvas of={Page.PageBasic}/>
 
 [//]: # (:documentation-body [!] System label / Системная метка)
 
@@ -38,7 +38,7 @@ import {SectionWikiStorybook} from './wiki'
 [//]: # (:documentation-slots [!] System label / Системная метка)
 ## Slots
 
-<Canvas of={Section.SectionSlots}/>
+<Canvas of={Page.PageSlots}/>
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
 <StorybookDescriptions componentName={'Slot'} type={'headline'}/>
 <StorybookDescriptions componentName={'Slot'} type={'label'}/>

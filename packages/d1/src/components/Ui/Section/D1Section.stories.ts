@@ -33,16 +33,15 @@ export const Section: Story = {
     template: `
       <D1Section v-bind="args">
         <p>
-          The Section component is essential for organizing content into meaningful groups.
-          It helps in structuring the page layout by providing clear boundaries and hierarchy for related information.
+          The Section component is a fundamental building block for structuring web pages.
+          It defaults to using the <code>&lt;section&gt;</code> HTML tag, making it semantically appropriate for grouping thematic content.
         </p>
         <p>
-          With built-in support for headers and descriptions, Section makes it easy to create labeled content areas.
-          This improves readability and user experience by clearly defining the context of the enclosed content.
+          It provides a rich set of features for content presentation, including headlines, labels, descriptions, and icons.
+          The default tag for the headline is set to <code>&lt;h2&gt;</code>, which fits the typical document outline structure.
         </p>
         <p>
-          Whether used for a simple paragraph of text or a complex grid of interactive elements, Section offers the flexibility needed for modern web design.
-          Its customizable nature allows it to adapt to various stylistic requirements while maintaining semantic correctness.
+          Use Section to divide your page into distinct thematic areas, improving both the visual structure and the accessibility of your application.
         </p>
       </D1Section>
     `
@@ -51,6 +50,30 @@ export const Section: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const SectionBasic: Story = {
+  name: 'Базовые',
+  render: () => ({
+    components: { D1Section },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <D1Section>
+            <p>Generic section content without header.</p>
+          </D1Section>
+          <D1Section label="Contact Information" description="Get in touch with us">
+            <p>Email: support@example.com</p>
+            <p>Phone: +1 234 567 890</p>
+          </D1Section>
+          <D1Section headline="Our Services" label="What we do">
+            <ul>
+              <li>Web Development</li>
+              <li>Mobile Apps</li>
+              <li>UI/UX Design</li>
+            </ul>
+          </D1Section>
+        </div>
+    `
+  })
+}
 export const SectionSlots: Story = {
   name: 'Использование слотов',
   render: () => ({

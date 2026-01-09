@@ -51,19 +51,49 @@ export const wikiDescriptionsSection: StorybookComponentsDescriptionItem = {
         ru: 'Базовые'
       },
       template: `
-        <div class="wiki-storybook-flex">
-          <DesignComponent>Content</DesignComponent>
-          <DesignComponent label="Section Label" description="Section Description">Content</DesignComponent>
-          <DesignComponent headline="Section Headline" label="Label">Content</DesignComponent>
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent>
+            <p>Generic section content without header.</p>
+          </DesignComponent>
+          <DesignComponent label="Contact Information" description="Get in touch with us">
+            <p>Email: support@example.com</p>
+            <p>Phone: +1 234 567 890</p>
+          </DesignComponent>
+          <DesignComponent headline="Our Services" label="What we do">
+            <ul>
+              <li>Web Development</li>
+              <li>Mobile Apps</li>
+              <li>UI/UX Design</li>
+            </ul>
+          </DesignComponent>
         </div>
+      `
+    },
+    {
+      id: 'SectionSlots',
+      name: {
+        en: 'Slots usage',
+        ru: 'Использование слотов'
+      },
+      template: `
+        <DesignComponent>
+          <template #default>Default slot</template>
+          <template #headline>Headline slot</template>
+          <template #label>Label slot</template>
+          <template #description>Description slot</template>
+          <template #caption>Caption slot</template>
+          <template #trailing>Trailing slot</template>
+        </DesignComponent>
       `
     }
   ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Section'} type={'block'}/>
+<Canvas of={Component.SectionBasic}/>
 `,
     slots: `
+<Canvas of={Component.SectionSlots}/>
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
 <StorybookDescriptions componentName={'Slot'} type={'headline'}/>
 <StorybookDescriptions componentName={'Slot'} type={'label'}/>
