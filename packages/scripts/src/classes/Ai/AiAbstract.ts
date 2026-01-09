@@ -167,14 +167,19 @@ export abstract class AiAbstract<AI = any> {
     if (this.ai) {
       console.log('[Ai] Generating')
 
-      const generate = await this.response(
-        this.model,
-        this.getMainContents(contents)
-      )
+      try {
+        const generate = await this.response(
+          this.model,
+          this.getMainContents(contents)
+        )
 
-      console.log(`[Ai] End (length: ${generate.length})`)
+        console.log(`[Ai] End (length: ${generate.length})`)
 
-      return generate
+        return generate
+      } catch (error) {
+        console.error('[Ai] Generation error:', error)
+        process.exit(603)
+      }
     }
 
     return ''

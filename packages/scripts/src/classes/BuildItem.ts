@@ -169,6 +169,7 @@ ${content}
       return true
     } catch (error) {
       console.error('Error', error)
+      process.exit(601)
     }
 
     return false

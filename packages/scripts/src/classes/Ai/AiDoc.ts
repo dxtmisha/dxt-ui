@@ -44,6 +44,7 @@ export class AiDoc {
         await AiDocType.make(item)
       } catch (e) {
         console.error(`Error processing file ${item}:`, e)
+        process.exit(602)
       }
     }
   }
