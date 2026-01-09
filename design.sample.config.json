@@ -2,6 +2,6 @@
   "wikiLanguage": "en",
   "packagePrefix": "@ui",
   "aiType": "gemini",
-  "aiModel": "gemini-2.5-flash",
+  "aiModel": "gemini-3-flash-preview",
   "aiKey": "key"
 }
