@@ -40,10 +40,7 @@ export class PackageInitItem {
    * Инициализирует элемент пакета, создавая файлы из образцов и шаблонов.
    */
   make() {
-    console.log('Package init in:', this.dir, [
-      ...this.getSample(),
-      ...this.getTemplates()
-    ])
+    console.log('Package init in:', this.dir)
 
     ;[
       ...this.getSample(),
