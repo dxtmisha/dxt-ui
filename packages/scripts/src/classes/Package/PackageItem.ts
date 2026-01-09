@@ -40,14 +40,20 @@ export class PackageInitItem {
    * Инициализирует элемент пакета, создавая файлы из образцов и шаблонов.
    */
   make() {
-    console.log('Package init in:', this.dir)
+    console.log('Package init in:', this.dir, [
+      ...this.getSample(),
+      ...this.getTemplates()
+    ])
 
     ;[
       ...this.getSample(),
       ...this.getTemplates()
     ]
       .forEach((item) => {
-        this.writeFile(item.file, item.content)
+        this.writeFile(
+          this.getFileName(item.file),
+          item.content
+        )
 
         if (item.path.endsWith('library.ts')) {
           this.makeLibrary()
@@ -55,6 +61,16 @@ export class PackageInitItem {
             .makeStorybook()
         }
       })
+  }
+
+  /**
+   * Gets the original file name by replacing placeholders.
+   *
+   * Получает оригинальное имя файла, заменяя заполнители.
+   * @param filePath file path with placeholders / путь к файлу с заполнителями
+   */
+  protected getFileName(filePath: string): string {
+    return filePath.replace('_.gitignore.txt', '.gitignore')
   }
 
   /**
