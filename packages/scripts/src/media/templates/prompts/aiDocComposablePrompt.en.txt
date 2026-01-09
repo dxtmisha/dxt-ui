@@ -12,7 +12,7 @@ Use the following template and style. Your response must contain ONLY MDX code.
 ### Documentation Structure:
 
 1.  **Header**:
-    ```javascript
+    ```javascript (or typescript if typing is present)
     import {Meta} from '@storybook/addon-docs/blocks'
 
     <Meta title='[title]'/>
@@ -39,7 +39,7 @@ Use the following template and style. Your response must contain ONLY MDX code.
         - **TypeName:**
         - List of properties: `- `name: type` — description`.
     - **Code Example**:
-        ```javascript
+        ```javascript (or typescript if typing is present)
         import { useName } from '@package'
         // Initialization example
         ```
@@ -64,4 +64,3 @@ Use the following template and style. Your response must contain ONLY MDX code.
 6. Return only the full MDX documentation code without any additional text, comments, or markdown formatting (```).
 7. The result must be exclusively text (response); do not attach any files.
 8. Return the response in the format: [short description of 3-5 words about the purpose]#########[original code with comments for parameters and types (add them if missing). If everything is already present, return --FULL--]#########[the MDX documentation following the template above].
-
