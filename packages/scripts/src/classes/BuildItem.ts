@@ -87,6 +87,10 @@ export class BuildItem {
     this.resetViteConfig()
     this.readAndWriteALlFiles()
 
+    if (!status) {
+      process.exit(601)
+    }
+
     return status
   }
 
@@ -169,7 +173,6 @@ ${content}
       return true
     } catch (error) {
       console.error('Error', error)
-      process.exit(601)
     }
 
     return false
