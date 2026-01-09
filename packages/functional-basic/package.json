@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional-basic",
   "private": false,
-  "version": "0.5.1",
+  "version": "0.5.2",
   "type": "module",
   "description": "Core functional utility library for modern web development without framework dependencies",
   "keywords": [
@@ -49,10 +49,7 @@
   "types": "dist/library.d.ts",
   "exports": {
     ".": {
-      "import": [
-        "./src/library.ts",
-        "./dist/library.js"
-      ],
+      "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
     },
     "./style": "./dist/style.css",

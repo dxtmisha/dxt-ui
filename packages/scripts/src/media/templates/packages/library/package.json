@@ -23,10 +23,7 @@
   "types": "dist/library.d.ts",
   "exports": {
     ".": {
-      "import": [
-        "./src/library.ts",
-        "./dist/library.js"
-      ],
+      "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
     },
     "./style": "./dist/style.css",

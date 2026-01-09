@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -12,7 +10,7 @@ import {
   type SectionSlots
 } from '@dxtmisha/constructor/Section'
 
-import { defaults, type SectionProps, propsValues } from './props'
+import { defaults, type SectionProps } from './props'
 import './styleToken.scss'
 
 defineOptions({
