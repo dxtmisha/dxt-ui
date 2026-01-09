@@ -94,3 +94,10 @@ export type DesignTypescriptItem = {
 
 /** List of TypeScript items / Список TypeScript элементов */
 export type DesignTypescriptList = DesignTypescriptItem[]
+
+export type DesignTypesItem = {
+  path: string
+  content: string
+}
+
+export type DesignTypesList = DesignTypesItem[]

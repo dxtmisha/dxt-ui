@@ -1,0 +1,106 @@
+type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
+interface UseApiRef<R> {
+    data: Ref<R | undefined>;
+    isStarting: ComputedRef<boolean>;
+    loading: ComputedRef<boolean>;
+    reading: ComputedRef<boolean>;
+    reset(): Promise<void>;
+}
+type LazyItemByMargin = {
+    rootMargin: string;
+    item: any;
+};
+type LazyItem = {
+    status: ShallowRef<boolean>;
+    ratio: ShallowRef<number>;
+    entry: ShallowRef<IntersectionObserverEntry | undefined>;
+    stopWatch: () => void;
+};
+type LazyList = Record<string, LazyItem>;
+type ConstrItem = Record<string, any>;
+type ConstrValue<T = any> = {
+    value?: T;
+};
+type ConstrComponent = Record<string, any>;
+type ConstrComponentMod<P extends ConstrItem> = ConstrItem | {
+    [K in keyof P]?: RefOrNormal<P[K]>;
+};
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
+type ConstrEmitItem<T extends ConstrItem> = T[keyof T];
+type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToIntersection<ConstrEmitItem<{
+    [K in keyof T]: (evt: K, ...args: T[K]) => void;
+}>>;
+type ConstrClassObject = Record<string, boolean>;
+type ConstrClass = string | (string | ConstrClass | Undefined)[] | ConstrClassObject;
+type ConstrClassList = Record<string, ConstrClass>;
+type ConstrClasses = {
+    main: ConstrClass;
+} & ConstrClassList;
+type ConstrStylesItem = string | null;
+type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[];
+type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = {
+    components?: COMP;
+    compMod?: ConstrComponentMod<P>;
+    emits?: ConstrEmit<EMITS>;
+    classes?: RefType<ConstrClasses>;
+    styles?: RefType<ConstrStyles>;
+};
+type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = {
+    name: string;
+    element: Ref<E | undefined>;
+    classes: RefType<CLASSES>;
+    styles: RefType<ConstrStyles>;
+} & SETUP;
+type ConstrRegistration = {
+    flag?: boolean;
+    translate?: Record<string, string>;
+};
+type ConstrBind<T> = T & Record<string, any> & {
+    key?: string;
+    class?: ConstrClass;
+    style?: ConstrStyles;
+};
+type ConstrPropItemOptions<T = any> = {
+    type?: PropType<T>;
+    required?: boolean;
+    default?: any;
+    validator?(value: any, props: any): boolean;
+};
+type ConstrPropItem<T = any> = ConstrPropItemOptions<T> | PropType<T>;
+type ConstrProps<P = Record<string, any>> = {
+    [K in keyof P]: ConstrPropItem<P[K]>;
+};
+type ListType = 'item' | 'space' | 'line' | 'subtitle' | 'html' | 'menu' | 'menu-group' | 'group';
+type ListDataBasic = {
+    label?: NumberOrString;
+    value?: any;
+    search?: string;
+};
+type ListDataItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item & {
+    parent?: string;
+    type: ListType;
+    index: string;
+}>;
+type ListList<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item>[];
+type ListRecord<Item extends ListDataBasic = ListDataBasic> = ListList<Item> | Record<string, any>;
+type ListDataFullItem<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item> & {
+    focus: boolean;
+    highlight?: string;
+    selected: boolean;
+    disabled?: boolean;
+};
+type ListDataFull<Item extends ListDataBasic = ListDataBasic> = ListDataFullItem<Item>[];
+type ListListInputItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item>;
+type ListListInput<Item extends ListDataBasic = ListDataBasic> = ListListInputItem<Item>[] | string[] | Record<string, ListListInputItem<Item>> | Record<string, string>;
+type ListSelectedItem = NumberOrStringOrBoolean;
+type ListSelectedList = ListSelectedItem | ListSelectedItem[];
+type ListName = string | number | undefined;
+type ListNames = ListName[];
+type RefType<T> = ComputedRef<T> | Ref<T>;
+type RefUndefined<T> = RefType<T | undefined>;
+type RefOrNormal<T> = RefType<T> | T;
+type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
+type RawSlots = {
+    [name: string]: unknown;
+    $stable?: boolean;
+};

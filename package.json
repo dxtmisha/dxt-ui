@@ -68,7 +68,7 @@
     "@dxtmisha/functional": "^1.6.4",
     "@dxtmisha/functional-basic": "^0.5.2",
     "@dxtmisha/media": "^0.4.2",
-    "@dxtmisha/scripts": "^0.5.7",
+    "@dxtmisha/scripts": "^0.5.11",
     "@dxtmisha/styles": "^1.0.6",
     "@dxtmisha/wiki": "^0.25.1",
     "sass": "^1.97.2",

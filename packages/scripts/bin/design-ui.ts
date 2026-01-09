@@ -2,6 +2,6 @@
 
 import { DesignUi } from '../src/classes/Design/DesignUi'
 
-const name: string = process.argv?.[2] ?? ''
+const name: string | undefined = process.argv?.[2] ?? undefined
 
 new DesignUi(name).make()

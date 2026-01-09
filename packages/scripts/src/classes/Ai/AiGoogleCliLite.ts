@@ -1,7 +1,8 @@
-import { exec } from 'node:child_process'
-import { AiAbstract } from './AiAbstract'
-import { PropertiesFile } from '../Properties/PropertiesFile.ts'
 import { forEach } from '@dxtmisha/functional-basic'
+import { exec } from 'node:child_process'
+
+import { PropertiesFile } from '../Properties/PropertiesFile'
+import { AiAbstract } from './AiAbstract'
 
 const TEMPORARY_DIR = './ai-tmp'
 

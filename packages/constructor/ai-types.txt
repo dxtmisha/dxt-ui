@@ -1,0 +1,838 @@
+type FieldInputCheckListInclude = Record<string, any>;
+type ActionsComponentInclude = {
+    actions?: object;
+};
+type ActionsEmitsInclude = {
+    actions: EventClickEmits['click'];
+    actionsLite: EventClickEmits['clickLite'];
+};
+interface ActionsPropsInclude<Actions extends ActionsPropsBasic = ActionsPropsBasic> {
+    actionsHide?: boolean;
+    actionsList?: ConstrBind<Actions['list']>;
+    actionsSecondary?: ConstrBind<Actions['listSecondary']>;
+    actionsAttrs?: ConstrBind<Actions>;
+}
+interface AnchorScrollProps {
+    shift?: NumberOrString;
+    behavior?: ScrollIntoViewOptions['behavior'];
+    block?: ScrollIntoViewOptions['block'];
+    inline?: ScrollIntoViewOptions['inline'];
+}
+enum ArrowDirection {
+    TOP = "top",
+    BOTTOM = "bottom",
+    LEFT = "left",
+    RIGHT = "right",
+    HIDE = "hide"
+}
+type ArrowBorder = {
+    top: number;
+    bottom: number;
+    left: number;
+    right: number;
+};
+type ArrowCenter = {
+    x: number;
+    y: number;
+};
+type ArrowComponentInclude = {
+    arrow?: object;
+};
+interface ArrowPropsInclude<Arrow extends ArrowProps = ArrowProps> {
+    arrowShow?: boolean;
+    arrowPosition?: ArrowProps['position'];
+    arrowAttrs?: ConstrBind<Arrow>;
+}
+type BadgeComponentInclude = {
+    badge?: object;
+};
+interface BadgePropsInclude<Badge extends BadgePropsBasic = BadgePropsBasic> {
+    badge?: string | number | ConstrBind<Badge>;
+    badgeDot?: boolean;
+}
+type BarsComponentInclude = {
+    bars?: object;
+};
+type BarsEmitsInclude = {
+    bars: EventClickEmits['click'];
+    barsLite: EventClickEmits['clickLite'];
+    barsBack: EventClickEmits['clickLite'];
+};
+interface BarsPropsInclude<Bars extends BarsPropsBasic = BarsPropsBasic> {
+    barsLabel?: string | number;
+    barsDescription?: string;
+    barsBackHide?: boolean;
+    barsHide?: boolean;
+    barsList?: Bars['bars'];
+    barsAttrs?: ConstrBind<Bars>;
+}
+type ButtonComponentInclude = {
+    button?: object;
+};
+interface ButtonPropsInclude<Button extends ButtonPropsBasic = ButtonPropsBasic> {
+    buttonAttrs?: ConstrBind<Button>;
+}
+type CellClassesSub = {
+    label: string;
+    description: string;
+    caption: string;
+    trailing: string;
+};
+type CellComponentInclude = {
+    cell: object;
+};
+interface CellSlotsInclude extends LabelAlternativeSlots, DescriptionSlots, CaptionSlots {
+    trailing?(props: CellClassesSub): any;
+    body?(props: CellClassesSub): any;
+}
+type ChipComponentInclude = {
+    chip?: object;
+};
+interface ChipPropsInclude<Chip extends ChipPropsBasic = ChipPropsBasic> {
+    chipAttrs?: ConstrBind<Chip>;
+}
+type ChipGroupData<Chip extends ChipPropsBasic = ChipPropsBasic> = ListListInput<Chip>;
+type ChipGroupItem<Chip extends ChipPropsBasic = ChipPropsBasic> = ConstrBind<Chip>;
+type ChipGroupList<Chip extends ChipPropsBasic = ChipPropsBasic> = ChipGroupItem<Chip>[];
+type FieldControl = {
+    id: string;
+    className: string;
+    classHidden: string;
+    classForFocus: string;
+    binds: AriaList & {
+        id: string;
+        className: string;
+    };
+};
+type FieldComponentInclude = {
+    field: object;
+};
+interface FieldSlotsInclude extends Omit<FieldSlots, 'default'> {
+}
+interface FieldPropsInclude<Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> extends Omit<FieldPropsBasic<Icon, FieldLabel, FieldMessage, FieldCounter, Progress>, 'disabledPrevious' | 'disabledNext' | 'to' | 'value' | 'maxlength' | 'cancelShow' | 'counter' | 'counterTemplate' | 'counterTop' | 'iconArrowLeft' | 'iconArrowRight' | 'iconPlus' | 'iconMinus' | 'iconClose'> {
+    focus?: boolean;
+    selected?: boolean;
+    readonly?: boolean;
+    disabled?: boolean;
+    align?: 'center' | 'right' | 'left';
+    cancel?: 'auto' | 'always' | 'none';
+    fieldAttrs?: ConstrBind<Field>;
+}
+type FieldCounterComponentInclude = {
+    fieldCounter: object;
+};
+interface FieldCounterPropsInclude<FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> {
+    counter?: FieldCounterPropsBasic['counter'];
+    counterShow?: boolean;
+    counterTemplate?: FieldCounterPropsBasic['template'];
+    counterId?: string;
+    maxlength?: FieldCounterPropsBasic['maxlength'];
+    fieldCounterAttrs?: ConstrBind<FieldCounter>;
+}
+type FieldLabelComponentInclude = {
+    fieldLabel: object;
+};
+interface FieldLabelSlotsInclude extends LabelAlternativeSlots {
+}
+interface FieldLabelPropsInclude<FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> extends LabelProps, FieldCounterPropsInclude<FieldCounter> {
+    required?: boolean;
+    fieldLabelAttrs?: ConstrBind<FieldLabel>;
+}
+type FieldMessageSlot = {
+    message?: string;
+    helperMessage?: string;
+    validationMessage?: string;
+};
+type FieldMessageComponentInclude = {
+    fieldMessage: object;
+};
+interface FieldMessagePropsInclude<FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> extends FieldCounterPropsInclude<FieldCounter> {
+    forceShowMessage?: boolean;
+    disabled?: boolean;
+    helperMessage?: string;
+    validationMessage?: string;
+    fieldMessageAttrs?: ConstrBind<FieldMessage>;
+    helperId?: string;
+    validationId?: string;
+}
+type IconEventLoad = {
+    isActive: boolean;
+    iconBind: ConstrItem | undefined;
+    iconActiveBind: ConstrItem | undefined;
+};
+type IconValue<Icon extends IconPropsBasic = IconPropsBasic> = string | ConstrBind<Icon> | null;
+type IconComponentInclude = {
+    icon?: object;
+};
+interface IconLitePropsInclude<Icon extends IconPropsBasic = IconPropsBasic> {
+    icon?: IconValue<Icon>;
+}
+interface IconPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> extends IconLitePropsInclude<Icon> {
+    selected?: boolean;
+    iconTurn?: boolean;
+    iconHide?: boolean;
+    iconDir?: boolean;
+    iconPalette?: boolean;
+    iconAttrs?: ConstrBind<Icon>;
+}
+interface IconTrailingPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> extends IconPropsInclude<Icon> {
+    iconTrailing?: IconValue<Icon>;
+    iconTrailingTurnOnly?: boolean;
+    iconTrailingDirOnly?: boolean;
+    iconTrailingPalette?: boolean;
+}
+enum ImageTypeValue {
+    pdf = "pdf",
+    file = "file",
+    image = "image",
+    flag = "flag",
+    color = "color",
+    public = "public",
+    filled = "filled",
+    outlined = "outlined",
+    round = "round",
+    sharp = "sharp",
+    twoTone = "two-tone",
+    material = "material",
+    icon = "icon"
+}
+type ImageElement = HTMLElement | undefined;
+type ImageAttrs = Record<keyof HTMLImageElement, any>;
+type ImageCoordinatorItem = [number] | [number, number] | [number, number, number] | [number, number, number, number] | Undefined;
+type ImageSize<T = number> = {
+    width: T;
+    height: T;
+};
+type ImagePictureItem = Record<keyof HTMLSourceElement & 'key', any>;
+type ImagePictureList = ImagePictureItem[];
+type ImagePicture = Record<string, string> | ImagePictureList;
+type ImageItem = ImageSize & {
+    image: HTMLImageElement;
+    src: string;
+};
+type ImageTypeItem = ImageTypeValue | Undefined;
+type ImageEventItem = ImageItem | string | undefined;
+type ImageEventType = {
+    type: ImageTypeItem;
+};
+type ImageEventData = ImageEventType & {
+    image: ImageEventItem;
+};
+type ImageValue<Image extends ImagePropsBasic = ImagePropsBasic> = string | ConstrBind<Image> | null;
+type ImageComponentsInclude = {
+    image: object;
+};
+type ImageEmitsInclude = ImageEmits;
+interface ImagePropsInclude<Image extends ImagePropsBasic = ImagePropsBasic> {
+    image?: string | ConstrBind<Image>;
+}
+type InputComponentInclude = {
+    input?: object;
+};
+type ListComponentInclude = {
+    list?: object;
+};
+type ListGroupComponentInclude = {
+    listGroup?: object;
+};
+interface ListGroupSlotsPropsInclude extends MotionTransformControlItem {
+    open: boolean;
+}
+type ListItemComponentInclude = {
+    listItem?: object;
+};
+type ListMenuComponentInclude = {
+    listMenu?: object;
+};
+type MaskTypeItem = GeoDate | 'text' | 'number' | 'number-format' | 'currency';
+type MaskElementInput = HTMLInputElement | undefined;
+type MaskMatchItem = RegExp | string;
+type MaskFractionItem = string | boolean | number;
+type MaskSpecialItem = {
+    defaultValue?: string;
+    rubber?: boolean;
+    transitionChar?: string | string[];
+    minLength?: number;
+    maxLength?: number;
+    match?: MaskMatchItem;
+    pattern?: FieldPatternItemOrFunction;
+    view?: string;
+};
+type MaskSpecialInfo = {
+    index: number;
+    key: number;
+    char: string;
+};
+type MaskSpecialList = Record<string, MaskSpecialItem>;
+type MaskSpecialProp = string | string[] | MaskSpecialList;
+type MaskViewItem = {
+    className: string;
+    value: string;
+};
+type MaskViewList = MaskViewItem[];
+type MaskList = string | string[];
+type MaskEventData = FieldValidationItem;
+type MaskEventSelection = {
+    target: HTMLInputElement;
+    start: number;
+    end: number;
+    length: number;
+};
+type MaskComponentInclude = {
+    mask?: object;
+};
+type MaskPropsInclude<Mask extends MaskPropsBasic = MaskPropsBasic> = {
+    name?: string;
+    mask?: string | ConstrBind<Mask>;
+    maskVisible?: boolean;
+    maskNone?: boolean;
+    currency?: string;
+    currencyHide?: boolean;
+    fraction?: MaskFractionItem;
+    maskAttrs?: ConstrBind<Mask>;
+};
+type MenuControlBasic = ListExpose & {
+    loading: Ref<boolean>;
+    previous(): NumberOrStringOrBoolean | undefined;
+    next(): NumberOrStringOrBoolean | undefined;
+};
+type MenuControlItem = MenuControlBasic & WindowControlItem;
+type MenuComponentInclude = {
+    menu?: object;
+};
+interface MenuExposeInclude {
+    open: ComputedRef<boolean>;
+    setOpen(open: boolean): Promise<void>;
+    toOpen: MenuExpose['toOpen'];
+    toClose: MenuExpose['toClose'];
+    toggle(): Promise<void>;
+    menuElement: Ref<ConstrBind<MenuExpose> | undefined>;
+}
+type MenuSlotInclude = {
+    title?(props: MenuControlItem): any;
+    footer?(props: MenuControlItem): any;
+    contextTop?(props: MenuControlItem): any;
+    contextBottom?(props: MenuControlItem): any;
+};
+interface MenuPropsInclude<Menu extends MenuPropsBasic = MenuPropsBasic> {
+    disabled?: boolean;
+    menuAttrs?: ConstrBind<Menu>;
+}
+type MotionTransformEmitOptions = {
+    type: 'head' | 'body' | 'top' | 'script';
+    open: boolean;
+};
+type MotionTransformClassList = {
+    show: string;
+    open: string;
+    window: string;
+    click: string;
+    none: string;
+    noneGlobal: string;
+    close: string;
+};
+type MotionTransformStyle = {
+    contextWidth: string;
+    contextHeight: string;
+    headScale: string;
+    top: string;
+    left: string;
+    headWidth: string;
+    height: string;
+    scale: string;
+    headHeight: string;
+    bodyHeight: string;
+};
+type MotionTransformControlItem = {
+    isOpen: ComputedRef<boolean>;
+    isShow: ComputedRef<boolean>;
+    classes: MotionTransformClassList;
+    idControl: string;
+    idBody: string;
+    binds: AriaRoleControlPropsInclude;
+};
+type MotionTransformComponentInclude = {
+    motionTransform?: object;
+};
+type MotionTransformEmitsInclude = {
+    transform: MotionTransformEmits['transform'];
+    transformLite: MotionTransformEmits['transformLite'];
+};
+interface MotionTransformExposeInclude extends MotionTransformExpose {
+    motionTransformElement: Ref<ConstrBind<MotionTransformExpose> | undefined>;
+}
+interface MotionTransformPropsInclude<MotionTransform extends MotionTransformProps = MotionTransformProps> {
+    open?: boolean;
+    clickOpen?: boolean;
+    autoClose?: boolean;
+    motionTransformAttrs?: ConstrBind<MotionTransform>;
+}
+type ProgressComponentInclude = {
+    progress?: object;
+};
+interface ProgressPropsInclude<Progress extends ProgressPropsBasic = ProgressPropsBasic> {
+    loading?: boolean | ConstrBind<Progress>;
+}
+type RippleComponentsInclude = {
+    ripple?: object;
+};
+type ScrollbarEdgeType = 'top' | 'bottom';
+type ScrollbarComponentsInclude = {
+    scrollbar?: object;
+};
+type ScrollbarEmitsInclude = {
+    scrollbarTop: ScrollbarEmits['top'];
+    scrollbarReachTop: ScrollbarEmits['reachTop'];
+    scrollbarLeaveTop: ScrollbarEmits['leaveTop'];
+    scrollbarBottom: ScrollbarEmits['bottom'];
+    scrollbarReachBottom: ScrollbarEmits['reachBottom'];
+    scrollbarLeaveBottom: ScrollbarEmits['leaveBottom'];
+    scrollbarEdge: ScrollbarEmits['edge'];
+};
+interface ScrollbarPropsInclude<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic> {
+    scrollbarAttrs?: ConstrBind<Scrollbar>;
+}
+type SelectValueComponentInclude = {
+    selectValue?: object;
+};
+interface SelectValuePropsInclude {
+    disabled?: boolean;
+    selectValueAttrs?: ConstrBind<SelectValueProps>;
+}
+type SkeletonClassesList = {
+    classText: string;
+    classTextVariant: string;
+    classBackground: string;
+    classBackgroundAfter: string;
+    classBackgroundBefore: string;
+    classBackgroundVariant: string;
+    classBorder: string;
+    classBorderVariant: string;
+    classNone: string;
+};
+interface SkeletonPropsInclude {
+    isSkeleton?: boolean;
+}
+type TooltipControlBinds = AriaList & {
+    class: string;
+    onclick: () => void;
+    onmouseover: (event: MouseEvent) => void;
+    onmouseout: (event: MouseEvent) => void;
+};
+type TooltipControl = TooltipControlBinds & {
+    open: Ref<boolean>;
+    binds: TooltipControlBinds;
+};
+type TooltipComponentInclude = {
+    tooltip?: object;
+};
+interface TooltipPropsInclude<Tooltip extends TooltipProps = TooltipProps> {
+    tooltipAttrs?: ConstrBind<Tooltip>;
+}
+enum WindowStatusItem {
+    display = "display",
+    preparation = "preparation",
+    flash = "flash",
+    open = "open",
+    hide = "hide",
+    close = "close"
+}
+enum WindowStatusControlItem {
+    block = "block",
+    blockChildren = "blockChildren",
+    blockOther = "blockOther",
+    close = "close",
+    static = "static",
+    controlStatic = "controlStatic",
+    controlOpenOnly = "controlOpenOnly",
+    controlActive = "controlActive",
+    persistent = "persistent"
+}
+type WindowEmitOptions = {
+    id: string;
+    element: HTMLDivElement;
+    control: HTMLElement;
+    open: boolean;
+};
+type WindowClassesList = {
+    block: string;
+    blockChildren: string;
+    blockOther: string;
+    close: string;
+    static: string;
+    control: string;
+    controlId: string;
+    controlStatic: string;
+    controlOpenOnly: string;
+    controlActive: string;
+    persistent: string;
+};
+type WindowEventClick = (event: MouseEvent & TouchEvent) => Promise<void>;
+type WindowControlBasic = {
+    classesWindow: WindowClassesList;
+};
+type WindowControlItem = WindowControlBasic & {
+    class: string;
+    open: Ref<boolean>;
+    onclick: WindowEventClick;
+    oncontextmenu: WindowEventClick;
+    binds: AriaList & {
+        class: string;
+        onclick: WindowEventClick;
+        oncontextmenu: WindowEventClick;
+    };
+};
+type WindowComponentInclude = {
+    window?: object;
+};
+type WindowEmitsInclude = {
+    window: [options: WindowEmitOptions];
+};
+interface WindowExposeInclude {
+    id: ComputedRef<string | undefined>;
+    open: ComputedRef<boolean>;
+    control: ComputedRef<WindowControlItem | undefined>;
+    setOpen: WindowExpose['setOpen'];
+    toOpen: WindowExpose['toOpen'];
+    toClose: WindowExpose['toClose'];
+    toggle: WindowExpose['toggle'];
+    windowElement: Ref<ConstrBind<WindowExpose> | undefined>;
+}
+interface WindowPropsInclude<Window extends WindowPropsBasic = WindowPropsBasic> {
+    disabled?: boolean;
+    autoClose?: boolean;
+    windowAttrs?: ConstrBind<Window>;
+}
+type AriaTrueOrFalse = 'true' | 'false' | boolean;
+type AriaList = {
+    'id'?: string;
+    'role'?: RoleType;
+    'tabindex'?: NumberOrString;
+    'aria-activedescendant'?: string;
+    'aria-atomic'?: AriaTrueOrFalse;
+    'aria-autocomplete'?: 'none' | 'inline' | 'list' | 'both';
+    'aria-busy'?: AriaTrueOrFalse;
+    'aria-checked'?: AriaTrueOrFalse | 'mixed';
+    'aria-colcount'?: number;
+    'aria-colindex'?: number;
+    'aria-colspan'?: number;
+    'aria-controls'?: string;
+    'aria-current'?: AriaTrueOrFalse | 'page' | 'step' | 'location' | 'date' | 'time';
+    'aria-describedby'?: string;
+    'aria-details'?: string;
+    'aria-disabled'?: AriaTrueOrFalse;
+    'aria-errormessage'?: string;
+    'aria-expanded'?: AriaTrueOrFalse;
+    'aria-flowto'?: string;
+    'aria-grabbed'?: AriaTrueOrFalse;
+    'aria-haspopup'?: AriaTrueOrFalse | 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid';
+    'aria-hidden'?: AriaTrueOrFalse;
+    'aria-invalid'?: AriaTrueOrFalse | 'grammar' | 'spelling';
+    'aria-keyshortcuts'?: string;
+    'aria-label'?: string;
+    'aria-labelledby'?: string;
+    'aria-level'?: number;
+    'aria-live'?: 'off' | 'polite' | 'assertive';
+    'aria-modal'?: AriaTrueOrFalse;
+    'aria-multiline'?: AriaTrueOrFalse;
+    'aria-multiselectable'?: AriaTrueOrFalse;
+    'aria-orientation'?: 'horizontal' | 'vertical' | 'undefined';
+    'aria-owns'?: string;
+    'aria-placeholder'?: string;
+    'aria-posinset'?: number;
+    'aria-pressed'?: AriaTrueOrFalse | 'mixed';
+    'aria-readonly'?: AriaTrueOrFalse;
+    'aria-relevant'?: 'additions' | 'removals' | 'text' | 'all' | string;
+    'aria-required'?: AriaTrueOrFalse;
+    'aria-roledescription'?: string;
+    'aria-rowcount'?: number;
+    'aria-rowindex'?: number;
+    'aria-rowspan'?: number;
+    'aria-selected'?: AriaTrueOrFalse;
+    'aria-setsize'?: number;
+    'aria-sort'?: 'none' | 'ascending' | 'descending' | 'other';
+    'aria-valuemax'?: string | number;
+    'aria-valuemin'?: string | number;
+    'aria-valuenow'?: string | number;
+    'aria-valuetext'?: string;
+};
+interface AriaRolePropsInclude {
+    role?: RoleType;
+}
+interface AriaLabelPropsInclude {
+    ariaLabel?: string;
+}
+interface AriaDescriptionPropsInclude {
+    ariaDescription?: string;
+}
+interface AriaHaspopupPropsInclude {
+    ariaHaspopup?: AriaList['aria-haspopup'];
+}
+interface AriaLivePropsInclude {
+    ariaLive?: AriaList['aria-live'];
+}
+interface AriaByPropsInclude {
+    ariaLabelledby?: string;
+    ariaDescribedby?: string;
+}
+interface AriaRoleByPropsInclude extends AriaRolePropsInclude, AriaByPropsInclude {
+}
+interface AriaRoleControlPropsInclude extends AriaRolePropsInclude, AriaHaspopupPropsInclude {
+    id?: string;
+    ariaControls?: string;
+    ariaHaspopup?: AriaList['aria-haspopup'];
+    ariaExpanded?: string;
+}
+interface CaptionSlots {
+    caption?(props: any): any;
+}
+interface CaptionProps {
+    caption?: string | number;
+}
+interface DescriptionExpose {
+    descriptionId: string;
+}
+interface DescriptionSlots {
+    description?(props: any): any;
+}
+interface DescriptionProps {
+    description?: string | number;
+}
+interface EnabledProps {
+    readonly?: boolean;
+    disabled?: boolean;
+}
+type EventClickValue = {
+    type: string;
+    value: any;
+    detail: Record<string, any> | undefined;
+};
+type EventClickEmits = {
+    click: [
+        event: MouseEvent,
+        value: EventClickValue
+    ];
+    clickLite: [
+        value: EventClickValue
+    ];
+};
+interface EventClickExpose {
+    value?: Ref<EventClickValue['value']>;
+    detail?: Ref<EventClickValue['detail']>;
+}
+interface EventClickProps {
+    to?: string | RouteLocationRaw;
+    value?: EventClickValue['value'];
+    detail?: EventClickValue['detail'];
+}
+type FieldType = 'text' | 'search' | 'number' | 'number-format' | 'currency' | 'email' | 'password' | 'datetime' | 'date' | 'year-month' | 'time' | 'hour-minute' | 'tel' | 'url' | 'checkbox' | 'radio';
+type FieldElementDom = HTMLInputElement | HTMLTextAreaElement;
+type FieldElementInput = FieldElementDom | HTMLElement | Record<string, any> | undefined;
+type FieldValidityCodeItem = {
+    [K in keyof ValidityState]?: string;
+};
+type FieldValidityCode = string | FieldValidityCodeItem;
+type FieldMaskItem = {
+    group: string;
+    value: string;
+    maxLength: number;
+    full: boolean;
+    end: boolean;
+    chars: string[];
+};
+type FieldMasks = Record<string, FieldMaskItem>;
+type FieldPatternElement = Partial<HTMLInputElement>;
+type FieldPatternItem = string | FieldPatternElement;
+type FieldPatternItemOrFunction = FieldPatternItem | ((item: FieldMasks) => FieldPatternItem);
+type FieldPatternList = Record<string, FieldPatternItemOrFunction>;
+type FieldMatchItem = {
+    name?: string | HTMLInputElement;
+    validationMessage?: string;
+};
+type FieldMatch = string | HTMLInputElement | FieldMatchItem;
+type FieldCheckMain = {
+    group?: string;
+    input?: FieldElementDom;
+    pattern?: FieldPatternItemOrFunction;
+};
+type FieldCheckItem<Value = any> = FieldCheckMain & {
+    check(value: Value): FieldValidationItem<Value>;
+};
+type FieldCheckList = Record<string, FieldCheckItem>;
+type FieldValidationItem<Value = any> = FieldCheckMain & {
+    type?: string;
+    status?: boolean;
+    required?: boolean;
+    isFull?: boolean;
+    validationMessage?: string;
+    validity?: ValidityState;
+    validityMessage?: string;
+    value: Value;
+    valueInput?: Value;
+    detail?: Record<string, any>;
+};
+type FieldBasicEmits<T = string> = ModelEmits & {
+    input: [event: InputEvent | Event, value: FieldValidationItem<T>];
+    inputLite: [value: FieldValidationItem<T>];
+    change: [event: InputEvent | Event, value: FieldValidationItem<T>];
+    changeLite: [value: FieldValidationItem<T>];
+};
+type FieldBasicExpose<T = string> = {
+    value: ShallowRef<T | undefined>;
+    checkValidity: () => boolean;
+    validationMessage: ComputedRef<string>;
+};
+interface FieldValueProps<Value = any> extends ModelProps<Value> {
+    placeholder?: string;
+    multiple?: boolean;
+    maxlength?: NumberOrString;
+    value?: Value;
+    detail?: Record<string, any> | undefined;
+}
+interface FieldBasicProps<Value = any> extends Omit<FieldValueProps<Value>, 'multiple' | 'maxlength'> {
+    type?: 'text' | 'search' | 'number' | 'number-format' | 'currency' | 'email' | 'password' | 'datetime' | 'date' | 'year-month' | 'time' | 'hour-minute' | 'tel' | 'url' | 'checkbox' | 'radio';
+    name?: string;
+    id?: string | number;
+    required?: boolean;
+    readonly?: boolean;
+    disabled?: boolean;
+    autofocus?: boolean;
+    tabindex?: number;
+    form?: string;
+    validationCode?: FieldValidityCode;
+    validationMessage?: string;
+    match?: FieldMatch;
+    inputAttrs?: Record<string, any>;
+}
+interface FieldStepProps {
+    step?: NumberOrString;
+    min?: NumberOrString;
+    max?: NumberOrString;
+}
+interface FieldArrowProps {
+    arrow?: 'auto' | 'carousel' | 'stepper' | 'none';
+    arrowStep?: NumberOrString;
+    arrowAlign?: 'center' | 'right' | 'left';
+}
+interface FieldLengthProps {
+    minlength?: NumberOrString;
+    maxlength?: NumberOrString;
+}
+interface FieldPatternProps {
+    pattern?: string;
+}
+interface FieldUxProps {
+    autocomplete?: string;
+    autocapitalize?: 'off' | 'none' | 'sentences' | 'words' | 'characters' | string;
+    inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url' | string;
+    enterKeyHint?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send' | string;
+    spellcheck?: boolean | 'true' | 'false';
+    autocorrect?: 'on' | 'off' | string;
+}
+interface FieldInputProps<Value = any> extends FieldBasicProps<Value>, FieldStepProps, FieldArrowProps, FieldLengthProps, FieldPatternProps, FieldUxProps {
+    list?: string;
+    iconVisibility?: string;
+    iconVisibilityOff?: string;
+}
+interface FieldInputFileProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'>, FieldLengthProps, FieldUxProps {
+    multiple?: boolean;
+    accept?: string;
+    capture?: string | boolean;
+}
+interface FieldInputCheckProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'>, FieldUxProps {
+    checked?: boolean;
+    indeterminate?: boolean;
+}
+interface FieldTextareaProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'>, FieldLengthProps, FieldUxProps {
+    rows?: NumberOrString;
+    cols?: NumberOrString;
+    wrap?: 'soft' | 'hard' | 'off' | string;
+    fieldSizing?: 'content' | 'fixed' | string;
+}
+interface FieldSelectProps<Value = any> extends Omit<FieldBasicProps<Value>, 'type'>, Omit<FieldStepProps, 'min' | 'step'>, FieldArrowProps, FieldUxProps {
+    option?: ListRecord;
+    multiple?: boolean;
+}
+interface FieldAllProps<Value = any> extends FieldInputProps<Value>, FieldInputFileProps<Value>, FieldInputCheckProps<Value>, FieldTextareaProps<Value>, FieldSelectProps<Value> {
+}
+interface LabelExpose {
+    labelId: string;
+}
+interface LabelSlots {
+    default?(props: any): any;
+}
+interface LabelAlternativeSlots {
+    label?(props: any): any;
+}
+interface LabelNumberSlots extends LabelSlots {
+}
+interface LabelHighlightSlots extends LabelSlots {
+}
+interface LabelProps {
+    label?: NumberOrString;
+    labelId?: string;
+}
+interface LabelNumberProps extends LabelProps {
+    labelMax?: NumberOrString;
+    formatting?: boolean;
+}
+interface LabelHighlightProps extends LabelProps {
+    highlight?: string;
+    highlightLengthStart?: number;
+    value?: any;
+}
+type ModelEmits<Value = string> = {
+    'update:value': [value: Value];
+    'update:modelValue': [value: Value];
+};
+type ModelEmitsSelected<Value = string> = {
+    'update:selected': [value: Value];
+    'update:modelSelected': [value: Value];
+};
+interface ModelProps<Value = string> {
+    'modelValue'?: Value;
+    'onUpdate:value'?: (value: Value) => void;
+    'onUpdate:modelValue'?: (value: Value) => void;
+}
+interface ModelPropsSelected<Value = string> {
+    'modelSelected'?: Value;
+    'onUpdate:selected'?: (value: Value) => void;
+    'onUpdate:modelSelected'?: (value: Value) => void;
+}
+interface PrefixSlots {
+    prefix?(props: any): any;
+}
+interface PrefixProps {
+    prefix?: string | number;
+}
+type RoleType = string | 'alert' | 'alertdialog' | 'application' | 'article' | 'banner' | 'button' | 'cell' | 'checkbox' | 'columnheader' | 'combobox' | 'command' | 'comment' | 'complementary' | 'composite' | 'contentinfo' | 'definition' | 'dialog' | 'directory' | 'document' | 'feed' | 'figure' | 'form' | 'generic' | 'grid' | 'gridcell' | 'group' | 'heading' | 'img' | 'input' | 'landmark' | 'link' | 'list' | 'listbox' | 'listitem' | 'log' | 'main' | 'mark' | 'marquee' | 'math' | 'menu' | 'menubar' | 'menuitem' | 'menuitemcheckbox' | 'menuitemradio' | 'meter' | 'navigation' | 'none' | 'note' | 'option' | 'presentation' | 'progressbar' | 'radio' | 'radiogroup' | 'range' | 'region' | 'roletype' | 'row' | 'rowgroup' | 'rowheader' | 'scrollbar' | 'search' | 'searchbox' | 'section' | 'sectionhead' | 'select' | 'separator' | 'slider' | 'spinbutton' | 'status' | 'structure' | 'suggestion' | 'switch' | 'tab' | 'table' | 'tablist' | 'tabpanel' | 'term' | 'textbox' | 'timer' | 'toolbar' | 'tooltip' | 'tree' | 'treegrid' | 'treeitem' | 'widget' | 'window';
+interface SuffixSlots {
+    suffix?(props: any): any;
+}
+interface SuffixProps {
+    suffix?: string | number;
+}
+type TextValue = string | (() => string) | undefined;
+type TextIndex = 'close' | 'entriesMatch' | 'ok' | string;
+type TextList = Record<TextIndex, TextValue>;
+interface TextClosePropsInclude {
+    textClose?: TextValue;
+}
+interface TextCopiedClipboardPropsInclude {
+    textCopiedClipboard?: TextValue;
+}
+interface TextEntriesMatchPropsInclude {
+    textEntriesMatch?: TextValue;
+}
+interface TextOkPropsInclude {
+    textOk?: TextValue;
+}
+interface TextAllPropsInclude extends TextClosePropsInclude, TextCopiedClipboardPropsInclude, TextEntriesMatchPropsInclude, TextOkPropsInclude {
+}
+type TouchEventTypeX = 'left' | 'right' | 'none';
+type TouchEventTypeY = 'top' | 'bottom' | 'none';
+type TouchEventClient = {
+    x: number;
+    y: number;
+};
+type TouchEventCallback = (typeX: TouchEventTypeX, typeY: TouchEventTypeY, clientX: number, clientY: number, mouse?: TouchEventClient, mouseMove?: TouchEventClient, touche?: Touch, toucheMove?: Touch) => Promise<boolean> | boolean;

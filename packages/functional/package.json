@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional",
   "private": false,
-  "version": "1.6.4",
+  "version": "1.6.5",
   "type": "module",
   "description": "Comprehensive functional utilities library for DXT UI - classes, composables, functions and types for modern web development",
   "keywords": [
@@ -36,6 +36,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "library": "dxt-library",
+    "dxt-types": "dxt-types",
     "prepublishOnly": "npm run build"
   },
   "files": [

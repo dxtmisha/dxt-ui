@@ -1,10 +1,10 @@
 // export:none
 
 import requirePath from 'path'
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { UI_DIR_PACKAGES, UI_DIRS_LIBRARY, UI_FILE_PACKAGE } from '../../config'
-import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
 
 const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'packages']
 const DIR_STORYBOOK = [
