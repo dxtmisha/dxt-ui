@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import { builtinModules } from 'node:module'
 
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
@@ -36,6 +37,8 @@ export const viteBasicFunction = (
   ],
   includeExtended = [],
   external = [
+    ...builtinModules,
+    ...builtinModules.map(m => `node:${m}`),
     'vue',
     'vue-router',
     '@vue/runtime-core',

@@ -1,4 +1,5 @@
 #!/usr/bin/env vite-node
+/// <reference types="node" />
 
 import { spawn } from 'node:child_process'
 

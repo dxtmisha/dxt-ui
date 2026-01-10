@@ -11,6 +11,7 @@ export * from './classes/Ai/AiGoogleCli'
 export * from './classes/Ai/AiGoogleCliLite'
 export * from './classes/Ai/AiGoogleLite'
 export * from './classes/BuildItem'
+export * from './classes/Design/DesignTypes'
 export * from './classes/Design/DesignTypescript'
 export * from './classes/Git/GitRead'
 export * from './classes/Properties/PropertiesFile'
@@ -20,6 +21,7 @@ export * from './composables/useAi'
 
 // Functions
 export * from './functions/getConfigAi'
+export * from './functions/getPackageJson'
 
 // Types
 export * from './types/aiTypes'

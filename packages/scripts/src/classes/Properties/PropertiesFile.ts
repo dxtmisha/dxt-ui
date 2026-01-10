@@ -64,7 +64,11 @@ export class PropertiesFile {
    * @param path a sequence of path segments/ последовательность сегментов пути
    */
   static joinPath(path: PropertiesFilePath): string {
-    return requirePath.join(...toArray(path))
+    const arrayPath = toArray(path)
+      .join('/')
+      .split('/')
+
+    return requirePath.join(...arrayPath)
   }
 
   /**
