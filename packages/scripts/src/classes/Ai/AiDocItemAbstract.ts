@@ -70,7 +70,7 @@ export abstract class AiDocItemAbstract {
         PropertiesConfig.getWikiLanguage()
       )
 
-      const status = await this.build.make()
+      const status = this.isBuildDisabled() || await this.build.make()
 
       if (status) {
         this.makeAi()
@@ -103,6 +103,17 @@ export abstract class AiDocItemAbstract {
     } else if (!this.ai) {
       console.error('AI is not configured.')
     }
+  }
+
+  /**
+   * Checks if the item is marked as not to be built.
+   *
+   * Проверяет, помечен ли элемент как не подлежащий сборке.
+   */
+  isBuildDisabled(): boolean {
+    return Boolean(
+      this.code.read().match('// wiki:build-none')
+    )
   }
 
   /**

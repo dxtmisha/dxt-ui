@@ -63,12 +63,12 @@
     "packages/*"
   ],
   "dependencies": {
-    "@dxtmisha/configuration": "^0.4.2",
-    "@dxtmisha/constructor": "0.39.0",
-    "@dxtmisha/functional": "^1.6.4",
-    "@dxtmisha/functional-basic": "^0.5.2",
+    "@dxtmisha/configuration": "^0.4.4",
+    "@dxtmisha/constructor": "0.39.1",
+    "@dxtmisha/functional": "^1.6.5",
+    "@dxtmisha/functional-basic": "^0.5.3",
     "@dxtmisha/media": "^0.4.2",
-    "@dxtmisha/scripts": "^0.5.11",
+    "@dxtmisha/scripts": "^0.5.14",
     "@dxtmisha/styles": "^1.0.6",
     "@dxtmisha/wiki": "^0.25.1",
     "sass": "^1.97.2",

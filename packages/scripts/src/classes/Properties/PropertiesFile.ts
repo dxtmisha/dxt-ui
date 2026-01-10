@@ -1,4 +1,4 @@
-import { Datetime, toArray, toKebabCase, transformation } from '@dxtmisha/functional-basic'
+import { Datetime, forEach, toArray, toKebabCase, transformation } from '@dxtmisha/functional-basic'
 
 import requireFs from 'fs'
 import requirePath from 'path'
@@ -64,11 +64,12 @@ export class PropertiesFile {
    * @param path a sequence of path segments/ последовательность сегментов пути
    */
   static joinPath(path: PropertiesFilePath): string {
-    const arrayPath = toArray(path)
-      .join('/')
-      .split('/')
+    const pathArray = forEach(
+      toArray(path),
+      item => this.toSep(item)
+    ) as string[]
 
-    return requirePath.join(...arrayPath)
+    return requirePath.join(...pathArray)
   }
 
   /**
@@ -228,6 +229,23 @@ export class PropertiesFile {
    */
   static getTime(path: PropertiesFilePath): string | undefined {
     return new Datetime(this.stat(path)?.mtimeMs, 'full').standard()
+  }
+
+  /**
+   * Converts the path to use the current OS separator.
+   *
+   * Преобразует путь для использования текущего разделителя ОС.
+   * @param path path to the directory/ путь к директории
+   */
+  static toSep(path: PropertiesFilePath): PropertiesFilePath {
+    const sep = this.sep()
+
+    if (sep === '/') {
+      return path
+    }
+
+    return this.joinPath(path)
+      .replace('/', this.sep())
   }
 
   /**
