@@ -1,8 +1,19 @@
 {
-  "name": "@dxt-ui/test",
+  "name": "@dxtmisha/test",
   "private": false,
   "version": "0.1.0",
   "type": "module",
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/functional",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/functional"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
@@ -12,27 +23,27 @@
     "wiki": "dxt-ai-doc src/storybook"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "package.json",
+    "LICENSE"
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/types/library.d.ts",
+  "types": "dist/library.d.ts",
   "exports": {
     ".": {
-      "import": [
-        "./src/library.ts",
-        "./dist/library.js"
-      ]
+      "import": "./dist/library.js",
+      "types": "./dist/library.d.ts"
     },
+    "./style": "./dist/style.css",
     "./dist/types/*": "./dist/types/*",
     "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
   },
-  "buildOptions": {
-    "name": "@dxt-ui/test",
-    "formats": [
-      "esm-bundler"
-    ]
+  "engines": {
+    "node": ">=18.0.0"
   },
+  "peerDependenciesMeta": {},
   "dependencies": {},
   "devDependencies": {}
 }

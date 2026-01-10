@@ -1,6 +1,7 @@
-import { Geo, isObjectNotArray, toCamelCase } from '@dxtmisha/functional'
+import { forEach, Geo, isObjectNotArray, toCamelCase } from '@dxtmisha/functional'
 
 import { WikiStorybookItem } from './WikiStorybookItem'
+import { WikiStorybookProp } from './WikiStorybookProp'
 
 import {
   type StorybookArgs,
@@ -61,6 +62,23 @@ export class WikiStorybook {
    */
   getWiki(): StorybookArgs {
     return this.initPropsWiki()
+  }
+
+  /**
+   * Returns the wiki object for the component
+   *
+   * Возвращает объект wiki для компонента
+   * @return The wiki object for the component/ объект wiki для компонента
+   */
+  getWikiObject(): WikiStorybookProp[] {
+    return forEach(
+      this.getWiki(),
+      (item, name) => {
+        if (item) {
+          return new WikiStorybookProp(name, item)
+        }
+      }
+    ) as WikiStorybookProp[]
   }
 
   /**
