@@ -124,7 +124,9 @@ export class LibraryExport {
             if (item.match(/\.ts$/)) {
               html.push(`export * from './${name}/${item.replace(/\.ts$/, '')}'`)
             } else if (item.match(/\.vue$/)) {
-              const componentName = item.replace(/\.vue$/, '')
+              const componentName = item
+                .replace(/\.vue$/, '')
+                .replace(/^(.*?)([^/]+)$/, '$2')
 
               imports.push(`import _${componentName} from './${name}/${item}'`)
               html.push(`export const ${componentName} = _${componentName}`)

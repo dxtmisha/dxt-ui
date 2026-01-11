@@ -23,7 +23,6 @@ defineProps<{
 .dxt-test-block {
   @include dxt.flexStretchY;
   gap: 8px;
-  padding: 8px 0;
 
   &__title {
     margin: 0;

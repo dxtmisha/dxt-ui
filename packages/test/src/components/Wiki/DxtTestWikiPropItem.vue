@@ -32,8 +32,8 @@ const type = computed(() => props.item.getType())
   @include dxt.flexStretchY;
   gap: 4px;
 
-  padding: 4px 0;
-  border-bottom: 1px solid oklch(92.8% 0.006 264.531);
+  padding: 8px 0 0;
+  border-top: 1px solid oklch(92.8% 0.006 264.531);
 
   &__tilte {
     @include dxt.flexX;

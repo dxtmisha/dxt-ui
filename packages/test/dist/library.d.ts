@@ -52,23 +52,6 @@ export declare const DxtTestPage: {
         default?(_: {}): any;
     };
 });
-export declare const DxtTestWiki: DefineComponent<{
-    design: string;
-    wiki: WikiStorybook;
-}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
-    design: string;
-    wiki: WikiStorybook;
-}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>;
-export declare const DxtTestWikiPropItem: DefineComponent<{
-    item: WikiStorybookProp;
-}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
-    item: WikiStorybookProp;
-}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>;
-export declare const DxtTestWikiProps: DefineComponent<{
-    list: WikiStorybookProp[];
-}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
-    list: WikiStorybookProp[];
-}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
 export declare const UiTestButton: DefineComponent<{
     label: string;
 }, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
@@ -206,3 +189,25 @@ export declare const UiTestTitle: DefineComponent<{
 }, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
     title: string;
 }> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>;
+export declare const DxtTestWiki: DefineComponent<{
+    design: string;
+    wiki: WikiStorybook;
+}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
+    design: string;
+    wiki: WikiStorybook;
+}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>;
+export declare const DxtTestWikiPropItem: DefineComponent<{
+    item: WikiStorybookProp;
+}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
+    item: WikiStorybookProp;
+}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>;
+export declare const DxtTestWikiProps: DefineComponent<{
+    list: WikiStorybookProp[];
+}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
+    list: WikiStorybookProp[];
+}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
+export declare const DxtTestWikiTitle: DefineComponent<{
+    label: string;
+}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
+    label: string;
+}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLHeadingElement>;

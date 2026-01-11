@@ -2,8 +2,9 @@
 import { computed } from 'vue'
 import { type WikiStorybook } from '@dxtmisha/wiki'
 
-import DxtTestBlock from './DxtTestBlock.vue'
+import DxtTestBlock from '../DxtTestBlock.vue'
 import DxtTestWikiProps from './DxtTestWikiProps.vue'
+import DxtTestWikiTitle from './DxtTestWikiTitle.vue'
 
 defineOptions({
   name: 'DxtTestWiki'
@@ -25,12 +26,14 @@ const list = computed(() => props.wiki.getWikiObject())
     :description="description"
     class="dxt-test-wiki"
   >
+    <DxtTestWikiTitle label="Props"/>
     <DxtTestWikiProps :list="list"/>
   </DxtTestBlock>
 </template>
 
 <style lang="scss">
 .dxt-test-wiki {
-
+  padding-top: 16px;
+  border-top: 4px solid oklch(92.8% 0.006 264.531);
 }
 </style>
