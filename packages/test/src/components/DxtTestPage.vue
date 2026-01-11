@@ -23,7 +23,7 @@ defineProps<{
 .dxt-test-page {
   @include dxt.flexStretchY;
   gap: 16px;
-  padding: 16px 8px;
+  margin: 16px 8px;
 
   max-width: 1980px;
 

@@ -108,6 +108,28 @@ export class WikiStorybook {
   }
 
   /**
+   * Returns the filtered values of the wiki items
+   *
+   * Возвращает отфильтрованные значения элементов wiki
+   * @return A list of objects containing the filtered values of the wiki items/
+   * список объектов, содержащих отфильтрованные значения элементов wiki
+   */
+  getFilteredValues(): Record<string, any> {
+    const values: Record<string, any> = {}
+
+    forEach(
+      this.getValues(),
+      (value, key) => {
+        if (value !== undefined) {
+          values[key] = value
+        }
+      }
+    )
+
+    return values
+  }
+
+  /**
    * Returns a Storybook item by its ID
    *
    * Возвращает элемент Storybook по его ID
