@@ -3,7 +3,7 @@ import type { StorybookComponentsDescriptionItem } from '../../types/storybookTy
 export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
   name: 'Image',
   description: {
-    en: 'Image component for displaying images',
+    en: 'Component for displaying images and icons. Based on `ImageDesign` and supports working with files, links, and icon names.',
     ru: 'Компонент для отображения изображений и иконок. Основан на `ImageDesign` и поддерживает работу с файлами, ссылками и именами икон'
   },
   possibilities: {

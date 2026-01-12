@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
 import DxtTestWikiCode from './DxtTestWikiCode.vue'
+import DxtTestWikiDemo from './DxtTestWikiDemo.vue'
+
 import type { WikiStorybookProp } from '@dxtmisha/wiki'
+import type { TestWikiSlotRender } from '../../types/wikiTypes'
 
 defineOptions({
   name: 'DxtTestWikiPropItem'
@@ -11,9 +15,14 @@ const props = defineProps<{
   item: WikiStorybookProp
 }>()
 
+defineSlots<TestWikiSlotRender>()
+
 const name = computed(() => props.item.getName())
 const description = computed(() => props.item.getDescription())
 const type = computed(() => props.item.getType())
+const options = computed(() => props.item.getOptions())
+
+console.log(props.item.get())
 </script>
 
 <template>
@@ -23,6 +32,19 @@ const type = computed(() => props.item.getType())
       <DxtTestWikiCode :code="type"/>
     </div>
     <div class="dxt-test-wiki-prop-item__description">{{ description }}</div>
+    <div class="dxt-test-wiki-prop-item__demo">
+      <template v-if="options">
+        <DxtTestWikiDemo
+          v-for="option in options"
+          :key="option"
+          :args="{[name]: option}"
+        >
+          <template v-if="('render' in $slots)" #render="{ args, classDemo }">
+            <slot name="render" :args="args" :classDemo="classDemo"/>
+          </template>
+        </DxtTestWikiDemo>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -51,6 +73,12 @@ const type = computed(() => props.item.getType())
     font-size: 12px;
     line-height: 16px;
     color: oklch(27.8% 0.033 256.848);
+  }
+
+  &__demo {
+    @include dxt.flexX;
+    flex-wrap: wrap;
+    gap: 4px;
   }
 }
 </style>

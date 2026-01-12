@@ -1,15 +1,11 @@
-import { TestWikiDemoClasses } from '../../types/wikiTypes';
+import { TestWikiSlotRender } from '../../types/wikiTypes';
 import { DefineComponent, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
 type __VLS_Props = {
     args?: Record<string, any>;
 };
 declare function __VLS_template(): {
     attrs: Partial<{}>;
-    slots: Readonly<{
-        render(args: Record<string, any>, classDemo: TestWikiDemoClasses): any;
-    }> & {
-        render(args: Record<string, any>, classDemo: TestWikiDemoClasses): any;
-    };
+    slots: Readonly<TestWikiSlotRender> & TestWikiSlotRender;
     refs: {};
     rootEl: any;
 };

@@ -1,6 +1,6 @@
 import { CreateComponentPublicInstanceWithMixins, ComponentOptionsMixin, PublicProps, GlobalComponents, GlobalDirectives, ComponentProvideOptions, ComponentOptionsBase, VNodeProps, AllowedComponentProps, ComponentCustomProps, DefineComponent } from 'vue';
 import { WikiStorybook, WikiStorybookProp } from '@dxtmisha/wiki';
-import { TestWikiDemoClasses } from './types/wikiTypes';
+import { TestWikiDemoClasses, TestWikiSlotRender } from './library';
 export declare const DxtTestBlock: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
         title?: string;
@@ -216,9 +216,9 @@ export declare const DxtTestWiki: {
     component: any;
 }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: Readonly<{
-        render(args: Record<string, any>, classDemo: TestWikiDemoClasses): any;
+        [x: string]: ((args: Record<string, any>, classDemo: TestWikiDemoClasses) => any) | undefined;
     }> & {
-        render(args: Record<string, any>, classDemo: TestWikiDemoClasses): any;
+        [x: string]: ((args: Record<string, any>, classDemo: TestWikiDemoClasses) => any) | undefined;
     };
 });
 export declare const DxtTestWikiCode: {
@@ -263,22 +263,29 @@ export declare const DxtTestWikiDemo: {
 } & ComponentOptionsBase<Readonly<{
     args?: Record<string, any>;
 }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
-    $slots: Readonly<{
-        render(args: Record<string, any>, classDemo: TestWikiDemoClasses): any;
-    }> & {
-        render(args: Record<string, any>, classDemo: TestWikiDemoClasses): any;
-    };
+    $slots: Readonly< TestWikiSlotRender> & TestWikiSlotRender;
 });
-export declare const DxtTestWikiPropItem: DefineComponent<{
+export declare const DxtTestWikiPropItem: {
+    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
+        item: WikiStorybookProp;
+    }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, HTMLDivElement, ComponentProvideOptions, {
+        P: {};
+        B: {};
+        D: {};
+        C: {};
+        M: {};
+        Defaults: {};
+    }, Readonly<{
+        item: WikiStorybookProp;
+    }> & Readonly<{}>, {}, {}, {}, {}, {}>;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
+} & ComponentOptionsBase<Readonly<{
     item: WikiStorybookProp;
-}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
-    item: WikiStorybookProp;
-}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>;
-export declare const DxtTestWikiProps: DefineComponent<{
-    list: WikiStorybookProp[];
-}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
-    list: WikiStorybookProp[];
-}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
+}> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
+    $slots: Readonly< TestWikiSlotRender> & TestWikiSlotRender;
+});
 export declare const DxtTestWikiTitle: DefineComponent<{
     label: string;
     type?: string;
@@ -286,3 +293,4 @@ export declare const DxtTestWikiTitle: DefineComponent<{
     label: string;
     type?: string;
 }> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLHeadingElement>;
+export * from './types/wikiTypes';

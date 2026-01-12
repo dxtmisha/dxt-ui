@@ -8,6 +8,7 @@ import {
   type StorybookArgsToDescription,
   type StorybookArgsToItem,
   type StorybookArgsToList,
+  type StorybookArgsToPossibilities,
   type StorybookComponentsDescription,
   type StorybookComponentsDescriptionItem,
   type StorybookComponentsDescriptionStory,
@@ -89,6 +90,16 @@ export class WikiStorybook {
    */
   getDescription(): string {
     return this.toDescriptionText(this.getDescriptionItem()?.description)
+  }
+
+  /**
+   * Returns the possibilities of the component from the wiki
+   *
+   * Возвращает возможности компонента из wiki
+   * @return A list of possibilities for the component/ список возможностей для компонента
+   */
+  getPossibilities(): string[] {
+    return this.toPossibilitiesText(this.getDescriptionItem()?.possibilities)
   }
 
   /**
@@ -234,6 +245,28 @@ export class WikiStorybook {
     }
 
     return ''
+  }
+
+  /**
+   * Converts the possibilities to text format
+   *
+   * Преобразует возможности в текстовый формат
+   * @param possibilities - The possibilities to convert/ возможности для преобразования
+   */
+  private toPossibilitiesText(possibilities?: StorybookArgsToPossibilities): string[] {
+    if (possibilities) {
+      const language = Geo.getLanguage()
+
+      if (isObjectNotArray(possibilities)) {
+        return possibilities?.[language]
+          ?? Object.values(possibilities)?.[0]
+          ?? []
+      }
+
+      return possibilities
+    }
+
+    return []
   }
 
   /**

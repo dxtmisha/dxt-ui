@@ -11,7 +11,6 @@ import _DxtTestWiki from './components/Wiki/DxtTestWiki.vue'
 import _DxtTestWikiCode from './components/Wiki/DxtTestWikiCode.vue'
 import _DxtTestWikiDemo from './components/Wiki/DxtTestWikiDemo.vue'
 import _DxtTestWikiPropItem from './components/Wiki/DxtTestWikiPropItem.vue'
-import _DxtTestWikiProps from './components/Wiki/DxtTestWikiProps.vue'
 import _DxtTestWikiTitle from './components/Wiki/DxtTestWikiTitle.vue'
 
 // Components
@@ -28,5 +27,7 @@ export const DxtTestWiki = _DxtTestWiki
 export const DxtTestWikiCode = _DxtTestWikiCode
 export const DxtTestWikiDemo = _DxtTestWikiDemo
 export const DxtTestWikiPropItem = _DxtTestWikiPropItem
-export const DxtTestWikiProps = _DxtTestWikiProps
 export const DxtTestWikiTitle = _DxtTestWikiTitle
+
+// Types
+export * from './types/wikiTypes'

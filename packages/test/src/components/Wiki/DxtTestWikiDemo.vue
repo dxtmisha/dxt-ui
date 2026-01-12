@@ -4,7 +4,7 @@ import { encodeAttribute, forEach } from '@dxtmisha/functional-basic'
 
 import DxtTestWikiCode from './DxtTestWikiCode.vue'
 
-import type { TestWikiDemoClasses } from '../../types/wikiTypes'
+import type { TestWikiSlotRender } from '../../types/wikiTypes'
 
 defineOptions({
   name: 'DxtTestWikiDemo'
@@ -14,12 +14,7 @@ const props = defineProps<{
   args?: Record<string, any>
 }>()
 
-defineSlots<{
-  render(
-    args: Record<string, any>,
-    classDemo: TestWikiDemoClasses
-  ): any
-}>()
+defineSlots<TestWikiSlotRender>()
 
 const nameInject = inject<any>('name')
 const componentInject = inject<any>('component')
@@ -33,10 +28,13 @@ const argsFull = computed(() => ({
   ...props.args
 }))
 const code = computed(() => {
-  const props: string[] = []
+  const props: string[] = forEach(argsFull.value, (value, prop) => {
+    if (value === true) {
+      props.push()
+      return `&nbsp;&nbsp;${prop}<br/>`
+    }
 
-  forEach(argsFull.value, (value, prop) => {
-    props.push(`&nbsp;&nbsp;${prop}="${encodeAttribute(value)}"<br/>`)
+    return `&nbsp;&nbsp;${prop}="${encodeAttribute(value)}"<br/>`
   })
 
   return `

@@ -1,5 +1,5 @@
 import { WikiStorybook } from '@dxtmisha/wiki';
-import { TestWikiDemoClasses } from '../../types/wikiTypes.ts';
+import { TestWikiDemoClasses } from '../../library';
 import { DefineComponent, ComponentOptionsMixin, PublicProps, ComponentProvideOptions } from 'vue';
 type __VLS_Props = {
     design: string;
@@ -9,9 +9,9 @@ type __VLS_Props = {
 declare function __VLS_template(): {
     attrs: Partial<{}>;
     slots: Readonly<{
-        render(args: Record<string, any>, classDemo: TestWikiDemoClasses): any;
+        [x: string]: ((args: Record<string, any>, classDemo: TestWikiDemoClasses) => any) | undefined;
     }> & {
-        render(args: Record<string, any>, classDemo: TestWikiDemoClasses): any;
+        [x: string]: ((args: Record<string, any>, classDemo: TestWikiDemoClasses) => any) | undefined;
     };
     refs: {};
     rootEl: HTMLDivElement;

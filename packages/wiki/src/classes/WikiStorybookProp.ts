@@ -13,9 +13,18 @@ export class WikiStorybookProp {
    * @param item property configuration / конфигурация свойства
    */
   constructor(
-    protected readonly name: string,
+    public readonly name: string,
     protected readonly item: StorybookArgsItem
   ) {
+  }
+
+  /**
+   * Returns the property configuration.
+   *
+   * Возвращает конфигурацию свойства.
+   */
+  get(): StorybookArgsItem {
+    return this.item
   }
 
   /**
@@ -51,5 +60,14 @@ export class WikiStorybookProp {
    */
   getDescription(): string {
     return this.item.description ?? ''
+  }
+
+  /**
+   * Returns the property options.
+   *
+   * Возвращает опции свойства.
+   */
+  getOptions(): StorybookArgsItem['options'] {
+    return this.item.options
   }
 }
