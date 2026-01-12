@@ -1,6 +1,7 @@
 // export:none
 
 import { toArray } from '@dxtmisha/functional-basic'
+import { getDirname } from '../../functions/getDirname'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
@@ -9,7 +10,7 @@ import { DesignReplace } from './DesignReplace'
 
 import { UI_KEY_CONSTRUCTOR } from '../../config'
 
-const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates']
+const DIR_SAMPLE = [getDirname(), '..', '..', 'media', 'templates']
 
 /**
  * Base abstract class for generating script files.

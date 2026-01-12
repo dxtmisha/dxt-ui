@@ -1,12 +1,13 @@
 // export:none
 
-import requirePath from 'path'
+import requirePath from 'node:path'
+import { getDirname } from '../../functions/getDirname'
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { UI_DIR_PACKAGES, UI_DIRS_LIBRARY, UI_FILE_PACKAGE } from '../../config'
 
-const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'packages']
+const DIR_SAMPLE = [getDirname(), '..', '..', 'media', 'templates', 'packages']
 const DIR_STORYBOOK = [
   UI_DIR_PACKAGES,
   'storybook',

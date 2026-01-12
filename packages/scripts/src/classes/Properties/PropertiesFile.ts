@@ -1,4 +1,5 @@
 import { Datetime, forEach, toArray, toKebabCase, transformation } from '@dxtmisha/functional-basic'
+import { getDirname } from '../../functions/getDirname'
 
 import requireFs from 'fs'
 import requirePath from 'path'
@@ -126,7 +127,7 @@ export class PropertiesFile {
   }
 
   static getDirname(): string {
-    return __dirname
+    return getDirname()
   }
 
   /**
@@ -517,7 +518,7 @@ export class PropertiesFile {
   }
 
   static {
-    this.module = Boolean(__dirname.match('node_modules'))
+    this.module = Boolean(getDirname().match('node_modules'))
     this.root = process.cwd()
   }
 }

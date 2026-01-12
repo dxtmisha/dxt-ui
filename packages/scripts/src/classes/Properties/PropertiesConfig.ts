@@ -7,7 +7,8 @@ import { PropertiesFile } from './PropertiesFile'
 import type { AiType, DesignUiConfig } from '../../types/configTypes'
 
 import {
-  UI_AI_DOC_DIRECTORY, UI_AI_DOC_STORYBOOK,
+  UI_AI_DOC_DIRECTORY,
+  UI_AI_DOC_STORYBOOK,
   UI_CONFIG_FILE
 } from '../../config'
 
@@ -155,21 +156,29 @@ export class PropertiesConfig {
   }
 
   static {
-    let file = PropertiesFile.readFile<DesignUiConfig>(UI_CONFIG_FILE)
+    const paths: string[] = [UI_CONFIG_FILE]
+    this.config = {} as DesignUiConfig
 
-    if (
-      file?.extends
-    ) {
-      file = {
-        ...this.getExtends(file.extends),
-        ...file
+    for (let i = 0; i < 32; i++) {
+      if (PropertiesFile.is(paths)) {
+        let file = PropertiesFile.readFile<DesignUiConfig>(paths)
+
+        if (file) {
+          if (
+            file?.extends
+          ) {
+            file = {
+              ...this.getExtends(file.extends, [PropertiesFile.getPathDir(paths)]),
+              ...file
+            }
+          }
+
+          this.config = file
+          break
+        }
       }
-    }
 
-    if (file) {
-      this.config = file
-    } else {
-      this.config = {} as DesignUiConfig
+      paths.unshift('..')
     }
   }
 }

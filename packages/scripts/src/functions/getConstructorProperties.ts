@@ -1,6 +1,7 @@
 // export:none
 
 import { forEach } from '@dxtmisha/functional-basic'
+import { getDirname } from './getDirname'
 
 import { PropertiesFile } from '../classes/Properties/PropertiesFile'
 import type { PropertyItem, PropertyList } from '../types/propertyTypes'
@@ -17,7 +18,7 @@ export const getConstructorProperties = (names: string[]): PropertyList => {
   const data: PropertyList = {}
 
   try {
-    const dir = __dirname
+    const dir = getDirname()
 
     forEach(
       names,

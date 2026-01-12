@@ -21,7 +21,9 @@ export * from './composables/useAi'
 
 // Functions
 export * from './functions/getConfigAi'
+export * from './functions/getDirname'
 export * from './functions/getPackageJson'
+export * from './functions/hasNativeDirname'
 
 // Types
 export * from './types/aiTypes'
