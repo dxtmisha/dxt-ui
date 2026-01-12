@@ -37,7 +37,7 @@ export class PackageInit {
    * Возвращает массив имен директорий для инициализации пакета.
    */
   protected getDirs(): string[] {
-    return PropertiesFile.readDirOnlyRecursive(UI_DIR_PACKAGES)
+    return PropertiesFile.readDir(UI_DIR_PACKAGES)
       .filter(
         path => PropertiesFile.readDir([UI_DIR_PACKAGES, path]).length === 0
       )

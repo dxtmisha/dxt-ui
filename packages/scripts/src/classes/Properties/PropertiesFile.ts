@@ -127,7 +127,7 @@ export class PropertiesFile {
   }
 
   static getDirname(): string {
-    return getDirname()
+    return __dirname
   }
 
   /**
@@ -238,15 +238,14 @@ export class PropertiesFile {
    * Преобразует путь для использования текущего разделителя ОС.
    * @param path path to the directory/ путь к директории
    */
-  static toSep(path: PropertiesFilePath): PropertiesFilePath {
+  static toSep(path: string): PropertiesFilePath {
     const sep = this.sep()
 
     if (sep === '/') {
       return path
     }
 
-    return this.joinPath(path)
-      .replace('/', this.sep())
+    return path.replace('/', this.sep())
   }
 
   /**
@@ -318,7 +317,7 @@ export class PropertiesFile {
     const data: string[] = []
 
     dirs.forEach((dir) => {
-      const paths = [...path, dir]
+      const paths = [...toArray(path), dir]
       const fullPaths = [...fullPath, dir]
 
       data.push(this.joinPath(fullPaths))

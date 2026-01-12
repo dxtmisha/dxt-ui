@@ -2,13 +2,12 @@
 
 import { toKebabCase } from '@dxtmisha/functional-basic'
 import { getComponentPaths } from '../../functions/getComponentPaths'
-import { getDirname } from '../../functions/getDirname'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { UI_FILE_PACKAGE } from '../../config'
 
-const DIR_SAMPLE = [getDirname(), '..', '..', 'media', 'templates', 'componentDoc']
+const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'componentDoc']
 
 /**
  * Class for creating component files from templates.

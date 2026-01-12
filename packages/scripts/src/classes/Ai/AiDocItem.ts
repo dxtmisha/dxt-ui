@@ -1,8 +1,7 @@
 import { AiDocItemAbstract } from './AiDocItemAbstract'
-import { getDirname } from '../../functions/getDirname'
 
 /** Sample prompt template path / Путь к шаблону промпта */
-const FILE_PROMPT_SAMPLE = [getDirname(), '..', '..', 'media', 'templates', 'prompts']
+const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts']
 
 /** Sample prompt template path for functions / Путь к шаблону промпта для функций */
 const FILE_PROMPT_SAMPLE_ITEM = [...FILE_PROMPT_SAMPLE, 'aiDocFunctionPrompt.en.txt']

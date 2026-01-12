@@ -1,6 +1,5 @@
 // export:none
 
-import { getDirname } from '../../functions/getDirname'
 import { getNameDirByPaths } from '../../functions/getNameDirByPaths'
 import { useAi } from '../../composables/useAi'
 
@@ -17,7 +16,7 @@ import {
 } from '../../config'
 
 /** Sample templates directory / Директория с шаблонами */
-const DIR_SAMPLE = [getDirname(), '..', '..', 'media', 'templates', 'prompts']
+const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts']
 /** Sample AI prompt template path / Путь к шаблону AI-промпта */
 const FILE_PROMPT_SAMPLE = [...DIR_SAMPLE, 'componentPrompt.en.txt']
 /** Sample demo component MDX path / Путь к MDX демо-компоненту */
