@@ -19,6 +19,15 @@ export class WikiStorybookProp {
   }
 
   /**
+   * Checks if the item is a demo item.
+   *
+   * Проверяет, является ли элемент демонстрационным.
+   */
+  isDemo(): boolean {
+    return this.item.isDemo === true
+  }
+
+  /**
    * Returns the property configuration.
    *
    * Возвращает конфигурацию свойства.
@@ -69,5 +78,14 @@ export class WikiStorybookProp {
    */
   getOptions(): StorybookArgsItem['options'] {
     return this.item.options
+  }
+
+  /**
+   * Returns the demo data.
+   *
+   * Возвращает демонстрационные данные.
+   */
+  getDemo(): any {
+    return this.item.demo
   }
 }

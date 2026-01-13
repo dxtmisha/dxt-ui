@@ -82,6 +82,11 @@ export type StorybookArgsItem = {
 
   /** Description for Storybook / Описание для Storybook */
   description?: string
+
+  /** Whether the item is a demo item / Является ли элемент демонстрационным */
+  isDemo?: boolean
+  /** Demo data for the item / Демонстрационные данные для элемента */
+  demo?: any
 }
 
 /** Record of Storybook arguments / Запись аргументов Storybook */
@@ -136,6 +141,10 @@ export type StorybookArgsToItem = {
   type: StorybookControl
   /** Options for the control / Настройки для элемента управления */
   options: StorybookArgsToOptionsByType
+  /** Whether the item is a demo item / Является ли элемент демонстрационным */
+  isDemo?: boolean
+  /** Demo data for the item / Демонстрационные данные для элемента */
+  demo?: any
 }
 
 /** A list of Storybook controls / Список элементов управления Storybook */

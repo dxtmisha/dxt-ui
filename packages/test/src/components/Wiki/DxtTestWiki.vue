@@ -4,11 +4,11 @@ import { type WikiStorybook } from '@dxtmisha/wiki'
 
 import DxtTestBlock from '../DxtTestBlock.vue'
 import DxtTestWikiDemo from './DxtTestWikiDemo.vue'
+import DxtTestWikiPossibilities from './DxtTestWikiPossibilities.vue'
 import DxtTestWikiTitle from './DxtTestWikiTitle.vue'
 import DxtTestWikiPropItem from './DxtTestWikiPropItem.vue'
 
 import type { TestWikiSlotRender } from '../../types/wikiTypes'
-import DxtTestWikiPossibilities from './DxtTestWikiPossibilities.vue'
 
 defineOptions({
   name: 'DxtTestWiki'

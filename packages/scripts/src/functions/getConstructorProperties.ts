@@ -1,6 +1,10 @@
 // export:none
 
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { forEach } from '@dxtmisha/functional-basic'
+import { hasNativeDirname } from './hasNativeDirname'
+
 import { PropertiesFile } from '../classes/Properties/PropertiesFile'
 import type { PropertyItem, PropertyList } from '../types/propertyTypes'
 
@@ -16,7 +20,9 @@ export const getConstructorProperties = (names: string[]): PropertyList => {
   const data: PropertyList = {}
 
   try {
-    const dir = __dirname
+    const dir = hasNativeDirname()
+      ? __dirname
+      : dirname(fileURLToPath(import.meta.url))
 
     forEach(
       names,

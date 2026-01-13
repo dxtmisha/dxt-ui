@@ -3,6 +3,10 @@
 import { getNameDirByPaths } from '../../functions/getNameDirByPaths'
 import { useAi } from '../../composables/useAi'
 
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { hasNativeDirname } from '../../functions/hasNativeDirname'
+
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { BuildItem } from '../BuildItem'
 import { ComponentWikiFile } from './ComponentWikiFile'
@@ -15,8 +19,12 @@ import {
   UI_DIRS_COMPONENTS
 } from '../../config'
 
+const dirnamePath = hasNativeDirname()
+  ? __dirname
+  : dirname(fileURLToPath(import.meta.url))
+
 /** Sample templates directory / Директория с шаблонами */
-const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts']
+const DIR_SAMPLE = [dirnamePath, '..', '..', 'media', 'templates', 'prompts']
 /** Sample AI prompt template path / Путь к шаблону AI-промпта */
 const FILE_PROMPT_SAMPLE = [...DIR_SAMPLE, 'componentPrompt.en.txt']
 /** Sample demo component MDX path / Путь к MDX демо-компоненту */

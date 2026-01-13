@@ -30,7 +30,6 @@ const argsFull = computed(() => ({
 const code = computed(() => {
   const props: string[] = forEach(argsFull.value, (value, prop) => {
     if (value === true) {
-      props.push()
       return `&nbsp;&nbsp;${prop}<br/>`
     }
 

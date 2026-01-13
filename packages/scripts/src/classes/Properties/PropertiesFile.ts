@@ -1,12 +1,15 @@
+import requireFs from 'node:fs'
+import requirePath from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { Datetime, forEach, toArray, toKebabCase, transformation } from '@dxtmisha/functional-basic'
-import { getDirname } from '../../functions/getDirname'
+import { hasNativeDirname } from '../../functions/hasNativeDirname'
 
-import requireFs from 'fs'
-import requirePath from 'path'
 import { UI_FILE_INDEX, UI_MODULES, UI_PROJECT_NAME } from '../../config'
 
 export type PropertiesFilePath = string | string[]
 export type PropertiesFileValue<T = any> = string | Record<string, T>
+
+const dirnamePath = hasNativeDirname() ? __dirname : requirePath.dirname(fileURLToPath(import.meta.url))
 
 /**
  * A class for working with files.
@@ -127,7 +130,7 @@ export class PropertiesFile {
   }
 
   static getDirname(): string {
-    return __dirname
+    return dirnamePath
   }
 
   /**
@@ -517,7 +520,7 @@ export class PropertiesFile {
   }
 
   static {
-    this.module = Boolean(getDirname().match('node_modules'))
+    this.module = Boolean(dirnamePath.match('node_modules'))
     this.root = process.cwd()
   }
 }

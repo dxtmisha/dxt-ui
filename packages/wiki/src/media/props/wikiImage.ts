@@ -21,7 +21,9 @@ export const wikiImage: StorybookArgsToList = {
         ru: 'Принимает название иконки, ссылку на изображение, объект File или ссылку на PDF файл'
       },
       value: 'rocket_launch'
-    }
+    },
+    isDemo: true,
+    demo: 'https://drscdn.500px.org/photo/294267357/q%3D90_m%3D2048/v2?sig=adb52b9add18ad21ab4a86b99695377f2a18821c609d42149b3426dfb99cf924'
   },
   'image.url': {
     type: StorybookControl.string,

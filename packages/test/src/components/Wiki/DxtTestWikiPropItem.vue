@@ -22,7 +22,8 @@ const description = computed(() => props.item.getDescription())
 const type = computed(() => props.item.getType())
 const options = computed(() => props.item.getOptions())
 
-console.log(props.item.get())
+const isDemo = computed(() => props.item.isDemo())
+const demo = computed(() => props.item.getDemo())
 </script>
 
 <template>
@@ -33,14 +34,24 @@ console.log(props.item.get())
     </div>
     <div class="dxt-test-wiki-prop-item__description">{{ description }}</div>
     <div class="dxt-test-wiki-prop-item__demo">
-      <template v-if="options">
+      <template v-if="isDemo">
+        <template v-if="options">
+          <DxtTestWikiDemo
+            v-for="option in options"
+            :key="option"
+            :args="{[name]: option}"
+          >
+            <template v-if="('render' in $slots)" #render="binds">
+              <slot name="render" v-bind="binds"/>
+            </template>
+          </DxtTestWikiDemo>
+        </template>
         <DxtTestWikiDemo
-          v-for="option in options"
-          :key="option"
-          :args="{[name]: option}"
+          v-else-if="demo"
+          :args="{[name]: demo}"
         >
-          <template v-if="('render' in $slots)" #render="{ args, classDemo }">
-            <slot name="render" :args="args" :classDemo="classDemo"/>
+          <template v-if="('render' in $slots)" #render="binds">
+            <slot name="render" v-bind="binds"/>
           </template>
         </DxtTestWikiDemo>
       </template>

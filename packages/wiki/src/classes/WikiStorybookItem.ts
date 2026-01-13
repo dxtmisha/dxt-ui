@@ -27,6 +27,15 @@ export class WikiStorybookItem {
   }
 
   /**
+   * Checks if the item is a demo item.
+   *
+   * Проверяет, является ли элемент демонстрационным.
+   */
+  isDemo(): boolean {
+    return this.item.isDemo === true
+  }
+
+  /**
    * Returns the name of the item in the wiki
    *
    * Возвращает название элемента в wiki
@@ -115,6 +124,39 @@ export class WikiStorybookItem {
       case StorybookControl.array:
         return this.toObject()
     }
+  }
+
+  /**
+   * Returns the demo property if the item is a demo item.
+   *
+   * Возвращает свойство demo, если элемент является демонстрационным.
+   */
+  private getDemo(): { isDemo?: boolean, demo?: any } {
+    if (this.isDemo()) {
+      return {
+        isDemo: true,
+        demo: this.getDemoValue()
+      }
+    }
+
+    return {}
+  }
+
+  /**
+   * Returns the demo value.
+   *
+   * Возвращает демонстрационное значение.
+   */
+  private getDemoValue(): any {
+    if (this.item.demo) {
+      return this.item.demo
+    }
+
+    if (this.item.type === StorybookControl.boolean) {
+      return true
+    }
+
+    return undefined
   }
 
   /**
@@ -247,7 +289,8 @@ export class WikiStorybookItem {
         ...this.getDefaultValue(),
         ...this.getType()
       },
-      ...this.getDescription()
+      ...this.getDescription(),
+      ...this.getDemo()
     }
   }
 
@@ -276,7 +319,8 @@ export class WikiStorybookItem {
     return {
       control,
       table,
-      ...this.getDescription()
+      ...this.getDescription(),
+      ...this.getDemo()
     }
   }
 
@@ -292,7 +336,8 @@ export class WikiStorybookItem {
         ...this.getCategory(),
         ...this.getType()
       },
-      ...this.getDescription()
+      ...this.getDescription(),
+      ...this.getDemo()
     }
   }
 
@@ -310,7 +355,8 @@ export class WikiStorybookItem {
         ...this.getDefaultValue(),
         ...this.getType()
       },
-      ...this.getDescription()
+      ...this.getDescription(),
+      ...this.getDemo()
     }
   }
 
@@ -327,7 +373,8 @@ export class WikiStorybookItem {
         ...this.getDefaultValue(),
         ...this.getType()
       },
-      ...this.getDescription()
+      ...this.getDescription(),
+      ...this.getDemo()
     }
   }
 }

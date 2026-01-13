@@ -14,7 +14,6 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-
       description: {
         en: 'Sets the element to an active state',
         ru: 'Переводит элемент в активное состояние'
@@ -45,18 +44,17 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-
       description: {
         en: 'Sets the element to an inactive state',
         ru: 'Переводит элемент в неактивное состояние'
       }
-    }
+    },
+    isDemo: true
   },
   error: {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-
       description: {
         en: 'Sets the element to an error state',
         ru: 'Переводит элемент в состояние ошибки'
@@ -77,7 +75,6 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-
       description: {
         en: 'Forces the display of the element regardless of other conditions',
         ru: 'Принудительно отображает элемент независимо от других условий'
@@ -88,7 +85,6 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-
       description: {
         en: 'Hides the element',
         ru: 'Скрывает элемент'
@@ -109,7 +105,6 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-
       description: {
         en: 'Sets the element to a loading state',
         ru: 'Переводит элемент в состояние загрузки'
@@ -120,7 +115,6 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-
       description: {
         en: 'Sets the element to an open state',
         ru: 'Переводит элемент в открытое состояние'
@@ -151,7 +145,6 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-
       description: {
         en: 'Sets the element to a success state',
         ru: 'Переводит элемент в состояние успеха'
@@ -162,12 +155,12 @@ export const wikiStatus: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.status,
-
       description: {
         en: 'Rotates the element by 180 degrees',
         ru: 'Поворачивает элемент на 180 градусов'
       }
-    }
+    },
+    isDemo: true
   },
   visible: {
     type: StorybookControl.boolean,
