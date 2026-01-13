@@ -1,56 +1,56 @@
-import { defineComponent as r, createElementBlock as n, openBlock as s, createElementVNode as d, createCommentVNode as _, renderSlot as u, toDisplayString as a, computed as o, normalizeClass as P, createBlock as v, createTextVNode as V, inject as N, unref as L, createVNode as $, withCtx as x, resolveDynamicComponent as G, normalizeProps as S, guardReactiveProps as E, Fragment as D, renderList as F, createSlots as w, mergeProps as I, provide as U } from "vue";
-import { writeClipboardData as H } from "@dxtmisha/functional";
+import { defineComponent as r, createElementBlock as n, openBlock as s, createElementVNode as u, createCommentVNode as _, renderSlot as d, toDisplayString as a, computed as o, normalizeClass as C, createBlock as v, createTextVNode as R, inject as I, unref as q, createVNode as k, withCtx as T, resolveDynamicComponent as H, normalizeProps as F, guardReactiveProps as z, Fragment as w, renderList as L, createSlots as N, mergeProps as E, provide as S } from "vue";
+import { writeClipboardData as M } from "@dxtmisha/functional";
 import "@dxtmisha/wiki";
-import { forEach as M, encodeAttribute as A } from "@dxtmisha/functional-basic";
-const R = { class: "dxt-test-block" }, J = { class: "dxt-test-block__title" }, K = {
+import { forEach as J, encodeAttribute as K } from "@dxtmisha/functional-basic";
+const Q = { class: "dxt-test-block" }, X = { class: "dxt-test-block__title" }, Y = {
   key: 0,
   class: "dxt-test-block__description"
-}, j = /* @__PURE__ */ r({
+}, A = /* @__PURE__ */ r({
   name: "DxtTestBlock",
   __name: "DxtTestBlock",
   props: {
     title: {},
     description: {}
   },
-  setup(e) {
-    return (t, i) => (s(), n("div", R, [
-      d("h3", J, a(e.title), 1),
-      e.description ? (s(), n("div", K, a(e.description), 1)) : _("", !0),
-      u(t.$slots, "default")
+  setup(t) {
+    return (e, i) => (s(), n("div", Q, [
+      u("h3", X, a(t.title), 1),
+      t.description ? (s(), n("div", Y, a(t.description), 1)) : _("", !0),
+      d(e.$slots, "default")
     ]));
   }
-}), Q = { class: "dxt-test-page" }, X = { class: "dxt-test-page__title" }, Y = {
+}), Z = { class: "dxt-test-page" }, ee = { class: "dxt-test-page__title" }, te = {
   key: 0,
   class: "dxt-test-page__description"
-}, Z = /* @__PURE__ */ r({
+}, se = /* @__PURE__ */ r({
   name: "DxtTestPage",
   __name: "DxtTestPage",
   props: {
     title: {},
     description: {}
   },
-  setup(e) {
-    return (t, i) => (s(), n("main", Q, [
-      d("h1", X, a(e.title), 1),
-      e.description ? (s(), n("div", Y, a(e.description), 1)) : _("", !0),
-      u(t.$slots, "default")
+  setup(t) {
+    return (e, i) => (s(), n("main", Z, [
+      u("h1", ee, a(t.title), 1),
+      t.description ? (s(), n("div", te, a(t.description), 1)) : _("", !0),
+      d(e.$slots, "default")
     ]));
   }
-}), ee = { class: "ui-test-button" }, te = /* @__PURE__ */ r({
+}), ie = { class: "ui-test-button" }, ne = /* @__PURE__ */ r({
   __name: "UiTestButton",
   props: {
     label: {}
   },
-  setup(e) {
-    return (t, i) => (s(), n("button", ee, a(e.label), 1));
+  setup(t) {
+    return (e, i) => (s(), n("button", ie, a(t.label), 1));
   }
-}), se = {
+}), oe = {
   key: 0,
   class: "ui-test-container__label"
-}, ie = {
+}, le = {
   key: 1,
   class: "ui-test-container__description"
-}, ne = { class: "ui-test-container__context" }, oe = /* @__PURE__ */ r({
+}, ae = { class: "ui-test-container__context" }, re = /* @__PURE__ */ r({
   name: "C2TestContainer",
   __name: "UiTestContainer",
   props: {
@@ -58,44 +58,44 @@ const R = { class: "dxt-test-block" }, J = { class: "dxt-test-block__title" }, K
     description: {},
     isDark: { type: Boolean }
   },
-  setup(e) {
-    const t = e, i = o(() => ({
-      "ui-test-container--dark": t.isDark
+  setup(t) {
+    const e = t, i = o(() => ({
+      "ui-test-container--dark": e.isDark
     }));
     return (l, c) => (s(), n("div", {
-      class: P([i.value, "ui-test-container"])
+      class: C([i.value, "ui-test-container"])
     }, [
-      e.label ? (s(), n("div", se, a(e.label), 1)) : _("", !0),
-      e.description ? (s(), n("div", ie, a(e.description), 1)) : _("", !0),
-      d("div", ne, [
-        u(l.$slots, "default")
+      t.label ? (s(), n("div", oe, a(t.label), 1)) : _("", !0),
+      t.description ? (s(), n("div", le, a(t.description), 1)) : _("", !0),
+      u("div", ae, [
+        d(l.$slots, "default")
       ])
     ], 2));
   }
-}), le = (e, t) => {
-  const i = e.__vccOpts || e;
-  for (const [l, c] of t)
+}), ce = (t, e) => {
+  const i = t.__vccOpts || t;
+  for (const [l, c] of e)
     i[l] = c;
   return i;
-}, ae = {}, re = { class: "ui-test-group" };
-function ce(e, t) {
-  return s(), n("div", re, [
-    u(e.$slots, "default")
+}, ue = {}, de = { class: "ui-test-group" };
+function me(t, e) {
+  return s(), n("div", de, [
+    d(t.$slots, "default")
   ]);
 }
-const ue = /* @__PURE__ */ le(ae, [["render", ce]]), z = /* @__PURE__ */ r({
+const _e = /* @__PURE__ */ ce(ue, [["render", me]]), V = /* @__PURE__ */ r({
   __name: "UiTestLabel",
   props: {
     label: {}
   },
-  setup(e) {
-    const t = e, i = () => H(String(t.label)).then();
+  setup(t) {
+    const e = t, i = () => M(String(e.label)).then();
     return (l, c) => (s(), n("div", {
       class: "ui-test-label",
       onClick: i
-    }, a(e.label), 1));
+    }, a(t.label), 1));
   }
-}), de = /* @__PURE__ */ r({
+}), pe = /* @__PURE__ */ r({
   __name: "UiTestItemFull",
   props: {
     label: {},
@@ -105,171 +105,171 @@ const ue = /* @__PURE__ */ le(ae, [["render", ce]]), z = /* @__PURE__ */ r({
     rounded: { type: Boolean, default: !0 },
     inverse: { type: Boolean }
   },
-  setup(e) {
-    const t = e, i = o(() => ({
-      "ui-test-item-full--flex": t.isFlex,
-      "ui-test-item-full--padding": t.isPadding,
-      "ui-test-item-full--background": t.background,
-      "ui-test-item-full--rounded": t.rounded,
-      "ui-test-item-full--inverse": t.inverse
+  setup(t) {
+    const e = t, i = o(() => ({
+      "ui-test-item-full--flex": e.isFlex,
+      "ui-test-item-full--padding": e.isPadding,
+      "ui-test-item-full--background": e.background,
+      "ui-test-item-full--rounded": e.rounded,
+      "ui-test-item-full--inverse": e.inverse
     }));
     return (l, c) => (s(), n("div", {
-      class: P([i.value, "ui-test-item-full"])
+      class: C([i.value, "ui-test-item-full"])
     }, [
-      e.label ? (s(), v(z, {
+      t.label ? (s(), v(V, {
         key: 0,
-        label: e.label
+        label: t.label
       }, null, 8, ["label"])) : _("", !0),
-      u(l.$slots, "default")
+      d(l.$slots, "default")
     ], 2));
   }
-}), me = /* @__PURE__ */ r({
+}), ke = /* @__PURE__ */ r({
   __name: "UiTestItemSquared",
   props: {
     label: {},
     size: {}
   },
-  setup(e) {
-    const t = e, i = o(() => ({
-      [`ui-test-item-squared--size--${t.size}`]: t.size
+  setup(t) {
+    const e = t, i = o(() => ({
+      [`ui-test-item-squared--size--${e.size}`]: e.size
     }));
     return (l, c) => (s(), n("div", {
-      class: P([i.value, "ui-test-item-squared"])
+      class: C([i.value, "ui-test-item-squared"])
     }, [
-      e.label ? (s(), v(z, {
+      t.label ? (s(), v(V, {
         key: 0,
-        label: e.label
+        label: t.label
       }, null, 8, ["label"])) : _("", !0),
-      u(l.$slots, "default")
+      d(l.$slots, "default")
     ], 2));
   }
-}), _e = { class: "ui-test-title" }, pe = /* @__PURE__ */ r({
+}), $e = { class: "ui-test-title" }, ve = /* @__PURE__ */ r({
   name: "C2TestTitle",
   __name: "UiTestTitle",
   props: {
     title: {}
   },
-  setup(e) {
-    return (t, i) => (s(), n("div", _e, a(e.title), 1));
+  setup(t) {
+    return (e, i) => (s(), n("div", $e, a(t.title), 1));
   }
-}), ke = { class: "dxt-test-wiki-code" }, C = /* @__PURE__ */ r({
+}), fe = { class: "dxt-test-wiki-code" }, B = /* @__PURE__ */ r({
   name: "DxtTestWikiCode",
   __name: "DxtTestWikiCode",
   props: {
     code: {}
   },
-  setup(e) {
-    return (t, i) => (s(), n("code", ke, [
-      V(a(e.code) + " ", 1),
-      u(t.$slots, "default")
+  setup(t) {
+    return (e, i) => (s(), n("code", fe, [
+      R(a(t.code) + " ", 1),
+      d(e.$slots, "default")
     ]));
   }
-}), $e = {
+}), be = {
   key: 0,
   class: "dxt-test-wiki-demo"
-}, ve = ["innerHTML"], fe = { class: "dxt-test-wiki-demo__content" }, W = /* @__PURE__ */ r({
+}, xe = ["innerHTML"], Te = { class: "dxt-test-wiki-demo__content" }, P = /* @__PURE__ */ r({
   name: "DxtTestWikiDemo",
   __name: "DxtTestWikiDemo",
   props: {
     args: {}
   },
-  setup(e) {
-    const t = e, i = N("name"), l = N("component"), c = N("values"), f = {
+  setup(t) {
+    const e = t, i = I("name"), l = I("component"), c = I("values"), f = {
       item: "dxt-test-wiki-demo__item"
     }, b = o(() => ({
       ...c == null ? void 0 : c.value,
-      ...t.args
-    })), T = o(() => {
-      const m = M(b.value, (g, p) => g === !0 ? `&nbsp;&nbsp;${p}<br/>` : `&nbsp;&nbsp;${p}="${A(g)}"<br/>`);
+      ...e.args
+    })), g = o(() => {
+      const p = J(b.value, (h, $) => h === !0 ? `&nbsp;&nbsp;${$}<br/>` : `&nbsp;&nbsp;${$}="${K(h)}"<br/>`);
       return `
 &lt;${i.value}<br/>
-${m.join("")}
+${p.join("")}
 /&gt;
   `.trim();
     });
-    return (m, g) => L(l) ? (s(), n("div", $e, [
-      $(C, null, {
-        default: x(() => [
-          d("div", { innerHTML: T.value }, null, 8, ve)
+    return (p, h) => q(l) ? (s(), n("div", be, [
+      k(B, null, {
+        default: T(() => [
+          u("div", { innerHTML: g.value }, null, 8, xe)
         ]),
         _: 1
       }),
-      d("div", fe, [
-        u(m.$slots, "render", {
+      u("div", Te, [
+        d(p.$slots, "render", {
           args: b.value,
           classDemo: f
         }, () => [
-          d("div", {
-            class: P(f.item)
+          u("div", {
+            class: C(f.item)
           }, [
-            (s(), v(G(L(l)), S(E(b.value)), null, 16))
+            (s(), v(H(q(l)), F(z(b.value)), null, 16))
           ], 2)
         ])
       ])
     ])) : _("", !0);
   }
-}), be = { class: "dxt-test-wiki-possibilities" }, xe = /* @__PURE__ */ r({
+}), ge = { class: "dxt-test-wiki-possibilities" }, he = /* @__PURE__ */ r({
   name: "DxtTestWikiPossibilities",
   __name: "DxtTestWikiPossibilities",
   props: {
     possibilities: {}
   },
-  setup(e) {
-    return (t, i) => (s(), n("ul", be, [
-      (s(!0), n(D, null, F(e.possibilities, (l) => (s(), n("li", { key: l }, a(l), 1))), 128))
+  setup(t) {
+    return (e, i) => (s(), n("ul", ge, [
+      (s(!0), n(w, null, L(t.possibilities, (l) => (s(), n("li", { key: l }, a(l), 1))), 128))
     ]));
   }
-}), Te = { class: "dxt-test-wiki-title" }, y = /* @__PURE__ */ r({
+}), ye = { class: "dxt-test-wiki-title" }, x = /* @__PURE__ */ r({
   name: "DxtTestWikiTitle",
   __name: "DxtTestWikiTitle",
   props: {
     label: {},
     type: {}
   },
-  setup(e) {
-    return (t, i) => (s(), n("h4", Te, [
-      V(a(e.label) + " ", 1),
-      e.type ? (s(), v(C, {
+  setup(t) {
+    return (e, i) => (s(), n("h4", ye, [
+      R(a(t.label) + " ", 1),
+      t.type ? (s(), v(B, {
         key: 0,
-        code: e.type
+        code: t.type
       }, null, 8, ["code"])) : _("", !0)
     ]));
   }
-}), ge = { class: "dxt-test-wiki-prop-item" }, he = { class: "dxt-test-wiki-prop-item__tilte" }, ye = { class: "dxt-test-wiki-prop-item__name" }, De = { class: "dxt-test-wiki-prop-item__description" }, we = { class: "dxt-test-wiki-prop-item__demo" }, q = /* @__PURE__ */ r({
+}), De = { class: "dxt-test-wiki-prop-item" }, we = { class: "dxt-test-wiki-prop-item__tilte" }, We = { class: "dxt-test-wiki-prop-item__name" }, Ne = { class: "dxt-test-wiki-prop-item__description" }, Pe = { class: "dxt-test-wiki-prop-item__demo" }, O = /* @__PURE__ */ r({
   name: "DxtTestWikiPropItem",
   __name: "DxtTestWikiPropItem",
   props: {
     item: {}
   },
-  setup(e) {
-    const t = e, i = o(() => t.item.getName()), l = o(() => t.item.getDescription()), c = o(() => t.item.getType()), f = o(() => t.item.getOptions()), b = o(() => t.item.isDemo()), T = o(() => t.item.getDemo());
-    return (m, g) => (s(), n("div", ge, [
-      d("div", he, [
-        d("span", ye, a(i.value) + ":", 1),
-        $(C, { code: c.value }, null, 8, ["code"])
+  setup(t) {
+    const e = t, i = o(() => e.item.getName()), l = o(() => e.item.getDescription()), c = o(() => e.item.getType()), f = o(() => e.item.getOptions()), b = o(() => e.item.isDemo()), g = o(() => e.item.getDemo());
+    return (p, h) => (s(), n("div", De, [
+      u("div", we, [
+        u("span", We, a(i.value) + ":", 1),
+        k(B, { code: c.value }, null, 8, ["code"])
       ]),
-      d("div", De, a(l.value), 1),
-      d("div", we, [
-        b.value ? (s(), n(D, { key: 0 }, [
-          f.value ? (s(!0), n(D, { key: 0 }, F(f.value, (p) => (s(), v(W, {
-            key: p,
-            args: { [i.value]: p }
-          }, w({ _: 2 }, [
-            "render" in m.$slots ? {
+      u("div", Ne, a(l.value), 1),
+      u("div", Pe, [
+        b.value ? (s(), n(w, { key: 0 }, [
+          f.value ? (s(!0), n(w, { key: 0 }, L(f.value, ($) => (s(), v(P, {
+            key: $,
+            args: { [i.value]: $ }
+          }, N({ _: 2 }, [
+            "render" in p.$slots ? {
               name: "render",
-              fn: x((k) => [
-                u(m.$slots, "render", I({ ref_for: !0 }, k))
+              fn: T((W) => [
+                d(p.$slots, "render", E({ ref_for: !0 }, W))
               ]),
               key: "0"
             } : void 0
-          ]), 1032, ["args"]))), 128)) : T.value ? (s(), v(W, {
+          ]), 1032, ["args"]))), 128)) : g.value ? (s(), v(P, {
             key: 1,
-            args: { [i.value]: T.value }
-          }, w({ _: 2 }, [
-            "render" in m.$slots ? {
+            args: { [i.value]: g.value }
+          }, N({ _: 2 }, [
+            "render" in p.$slots ? {
               name: "render",
-              fn: x((p) => [
-                u(m.$slots, "render", S(E(p)))
+              fn: T(($) => [
+                d(p.$slots, "render", F(z($)))
               ]),
               key: "0"
             } : void 0
@@ -278,7 +278,7 @@ ${m.join("")}
       ])
     ]));
   }
-}), We = /* @__PURE__ */ r({
+}), Ce = { class: "dxt-test-wiki__pre" }, Be = { class: "dxt-test-wiki__pre" }, Ue = /* @__PURE__ */ r({
   name: "DxtTestWiki",
   __name: "DxtTestWiki",
   props: {
@@ -286,78 +286,96 @@ ${m.join("")}
     wiki: {},
     component: {}
   },
-  setup(e) {
-    const t = e, i = o(() => `${t.design}${t.wiki.getName()}`), l = o(() => `interface ${t.wiki.getName()}Props`), c = o(() => `type ${t.wiki.getName()}Emits`), f = o(() => `interface ${t.wiki.getName()}Expose`), b = o(() => `interface ${t.wiki.getName()}Slots`), T = o(() => t.wiki.getDescription()), m = o(() => t.wiki.getPossibilities()), g = o(() => t.wiki.getWikiObject()), p = o(() => t.wiki.getFilteredValues());
-    return U("name", i), U("component", t.component), U("values", p), (k, Pe) => (s(), v(j, {
+  setup(t) {
+    const e = t, i = o(() => `${e.design}${e.wiki.getName()}`), l = o(() => `interface ${e.wiki.getName()}Props`), c = o(() => `type ${e.wiki.getName()}Emits`), f = o(() => `interface ${e.wiki.getName()}Expose`), b = o(() => `interface ${e.wiki.getName()}Slots`), g = o(() => e.wiki.getDescription()), p = o(() => e.wiki.getPossibilities()), h = o(() => e.wiki.getWikiObject()), $ = o(() => e.wiki.getFilteredValues()), W = o(
+      () => {
+        var m, y;
+        return (y = (m = e.wiki.getAiRender()) == null ? void 0 : m.replace(`<${e.wiki.getName()}`, `<${i.value}`)) == null ? void 0 : y.trim();
+      }
+    ), j = o(
+      () => {
+        var m, y;
+        return (y = (m = e.wiki.getAiDescription()) == null ? void 0 : m.replace(`<${e.wiki.getName()}`, `<${i.value}`)) == null ? void 0 : y.trim();
+      }
+    );
+    return S("name", i), S("component", e.component), S("values", $), (m, y) => (s(), v(A, {
       title: i.value,
-      description: T.value,
+      description: g.value,
       class: "dxt-test-wiki"
     }, {
-      default: x(() => [
-        $(xe, { possibilities: m.value }, null, 8, ["possibilities"]),
-        d("div", null, [
-          $(W, null, w({ _: 2 }, [
-            "render" in k.$slots ? {
+      default: T(() => [
+        k(he, { possibilities: p.value }, null, 8, ["possibilities"]),
+        u("div", null, [
+          k(P, null, N({ _: 2 }, [
+            "render" in m.$slots ? {
               name: "render",
-              fn: x((h) => [
-                u(k.$slots, "render", S(E(h)))
+              fn: T((D) => [
+                d(m.$slots, "render", F(z(D)))
               ]),
               key: "0"
             } : void 0
           ]), 1024)
         ]),
-        $(y, {
+        k(x, {
           type: c.value,
           label: "Emits"
         }, null, 8, ["type"]),
-        $(y, {
+        k(x, {
           type: f.value,
           label: "Expose"
         }, null, 8, ["type"]),
-        $(y, {
+        k(x, {
           type: b.value,
           label: "Slots"
         }, null, 8, ["type"]),
-        $(y, {
+        k(x, {
           type: l.value,
           label: "Props"
         }, null, 8, ["type"]),
-        (s(!0), n(D, null, F(g.value, (h, O) => (s(), v(q, {
-          key: O,
-          item: h
-        }, w({ _: 2 }, [
-          h.name in k.$slots ? {
-            name: h.name,
-            fn: x((B) => [
-              u(k.$slots, h.name, I({ ref_for: !0 }, B))
+        (s(!0), n(w, null, L(h.value, (D, G) => (s(), v(O, {
+          key: G,
+          item: D
+        }, N({ _: 2 }, [
+          D.name in m.$slots ? {
+            name: D.name,
+            fn: T((U) => [
+              d(m.$slots, D.name, E({ ref_for: !0 }, U))
             ]),
             key: "0"
-          } : "render" in k.$slots ? {
+          } : "render" in m.$slots ? {
             name: "render",
-            fn: x((B) => [
-              u(k.$slots, "render", I({ ref_for: !0 }, B))
+            fn: T((U) => [
+              d(m.$slots, "render", E({ ref_for: !0 }, U))
             ]),
             key: "1"
           } : void 0
-        ]), 1032, ["item"]))), 128))
+        ]), 1032, ["item"]))), 128)),
+        W.value ? (s(), n(w, { key: 0 }, [
+          k(x, { label: "Render" }),
+          u("pre", Ce, a(W.value), 1)
+        ], 64)) : _("", !0),
+        j.value ? (s(), n(w, { key: 1 }, [
+          k(x, { label: "Description" }),
+          u("pre", Be, a(j.value), 1)
+        ], 64)) : _("", !0)
       ]),
       _: 3
     }, 8, ["title", "description"]));
   }
-}), Ie = j, Se = Z, Ee = te, Fe = oe, ze = ue, Le = de, Ve = me, je = z, qe = pe, Oe = We, Ge = C, He = W, Me = q, Ae = y;
+}), ze = A, Le = se, Ve = ne, je = re, qe = _e, Re = pe, Ae = ke, Oe = V, Ge = ve, He = Ue, Me = B, Je = P, Ke = O, Qe = x;
 export {
-  Ie as DxtTestBlock,
-  Se as DxtTestPage,
-  Oe as DxtTestWiki,
-  Ge as DxtTestWikiCode,
-  He as DxtTestWikiDemo,
-  Me as DxtTestWikiPropItem,
-  Ae as DxtTestWikiTitle,
-  Ee as UiTestButton,
-  Fe as UiTestContainer,
-  ze as UiTestGroup,
-  Le as UiTestItemFull,
-  Ve as UiTestItemSquared,
-  je as UiTestLabel,
-  qe as UiTestTitle
+  ze as DxtTestBlock,
+  Le as DxtTestPage,
+  He as DxtTestWiki,
+  Me as DxtTestWikiCode,
+  Je as DxtTestWikiDemo,
+  Ke as DxtTestWikiPropItem,
+  Qe as DxtTestWikiTitle,
+  Ve as UiTestButton,
+  je as UiTestContainer,
+  qe as UiTestGroup,
+  Re as UiTestItemFull,
+  Ae as UiTestItemSquared,
+  Oe as UiTestLabel,
+  Ge as UiTestTitle
 };

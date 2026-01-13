@@ -177,5 +177,53 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
     expose: `
 <StorybookDescriptions componentName={'Image'} type={'expose'}/>
     `
+  },
+  ai: {
+    render: `
+<div
+  :class="classDemo.item"
+  style="position: relative; width: 48px; height: 48px;"
+>
+  <Image v-bind="args"/>
+</div>
+    `,
+    description: `
+Image is a universal component for displaying graphic content.
+It automatically determines the type of content (image, icon, file, PDF)
+based on the \`value\` property.
+
+**Key Features:**
+1. **Automatic Type Detection:**
+   - **Image:** If \`value\` is a URL to an image or a File object.
+   - **Icon:** If \`value\` is a string matching an icon name
+     (e.g., "home", "filled-home"). Supports Material Symbols/Icons.
+   - **PDF:** If \`value\` is a URL to a PDF file.
+   - **Color:** If \`value\` is a color string (e.g., "#ff0000").
+
+2. **Display Modes (\`size\`):**
+   - \`auto\` (default): Standard behavior.
+   - \`contain\`: Scales the image to fit within the container while maintaining aspect ratio.
+   - \`cover\`: Scales the image to cover the container, cropping if necessary.
+
+3. **Rendering Method (\`tagImg\`):**
+   - \`false\` (default): Renders as a background image (\`background-image\`) on a \`<span>\`.
+     Useful for precise positioning and sizing.
+   - \`true\`: Renders as a standard \`<img>\` tag. Required for SEO (alt text), lazy loading,
+     and accessibility.
+
+4. **Adaptivity (\`adaptive\`):**
+   - Allows scaling the image relative to its original size using \`objectWidth\` and \`objectHeight\`.
+
+5. **Advanced Positioning:**
+   - \`coordinator\`: Array \`[top, right, bottom, left]\` for cropping or positioning the background.
+   - \`x\`, \`y\`: Direct control over background position.
+
+**Usage Examples:**
+
+- **Icon:** \`<Image value="home" />\`
+- **Image (Background):** \`<Image value="https://example.com/img.jpg" size="cover" />\`
+- **Image (Tag):** \`<Image value="https://example.com/img.jpg" tag-img alt="Description" />\`
+- **PDF:** \`<Image value="https://example.com/doc.pdf" />\`
+    `
   }
 }

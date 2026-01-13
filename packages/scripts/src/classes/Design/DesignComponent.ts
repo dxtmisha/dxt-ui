@@ -25,6 +25,7 @@ const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
 const FILE_STYLE = 'styleToken.scss'
 const FILE_CLASS = 'DesignComponent.vue'
+const FILE_CLASS_AI = 'DesignComponentWikiAi.vue'
 const FILE_INDEX = 'index.ts'
 const FILE_WIKI = 'wiki.ts'
 const FILE_STORIES = 'DesignComponent.stories.ts'
@@ -72,6 +73,7 @@ export class DesignComponent extends DesignCommand {
       .makeProps()
       .makeStyle()
       .makeMain()
+      .makeMainAi()
       .makeIndex()
       .makeWiki()
       .makeStories()
@@ -142,6 +144,52 @@ export class DesignComponent extends DesignCommand {
     sample.replaceStylesValues()
 
     this.write(sample.getNameFile(file), sample.get())
+    return this
+  }
+
+  /**
+   * This code generates the DesignComponentWikiAi.vue.
+   *
+   * Генерация файла DesignComponentWikiAi.vue.
+   */
+  protected makeMainAi(): this {
+    const file = FILE_CLASS_AI
+    const sample = this.readDefinable(file)
+    const design = this.getStructure().getDesignFirst()
+    const componentName = this.getStructure().getComponentNameFirst()
+    const fullComponentName = this.getStructure().getFullComponentName()
+    const item = this.getWikiDescription()
+
+    if (
+      item?.ai
+    ) {
+      if (item.ai.render) {
+        const render = item.ai.render
+          .replace(`<${componentName}`, `<${fullComponentName}`)
+          .trim()
+
+        sample.replaceMark('component-render', [
+          '<template #render="{ args, classDemo }">',
+          render,
+          '</template>'
+        ])
+      }
+
+      if (item.ai.import) {
+        sample.replaceMark('component-import', [
+          '<template #render="{ args, classDemo }">',
+          ...item.ai.import,
+          '</template>'
+        ])
+      }
+    }
+
+    this.write(
+      sample.getNameFile(file),
+      sample.get()
+        .replace('design="Design"', `design="${design}"`)
+    )
+
     return this
   }
 

@@ -211,6 +211,13 @@ export type StorybookComponentsDescriptionItem = {
     /** Slots documentation / Документация слотов */
     slots?: string
   }
+
+  /** Prompts for AI documentation / Промпты для документации ИИ */
+  ai?: {
+    render?: string
+    import?: string[]
+    description?: string
+  }
 }
 
 /** A list of component descriptions for Storybook / Список описаний компонентов для Storybook */

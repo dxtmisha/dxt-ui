@@ -112,8 +112,16 @@ export class DesignReplace {
     data: string[],
     end = ''
   ): this {
-    const regName = `\\[?\\/\\/[\\]: #\\(]+:${name} `
-    const space = this.sample.match(new RegExp(`^( *)(${regName})`, 'm'))?.[1]
+    let regName = `\\[?\\/\\/[\\]: #\\(]+:${name} `
+    let space = this.sample.match(new RegExp(`^( *)(${regName})`, 'm'))?.[1]
+
+    if (
+      !space
+      && this.sample.match(name)
+    ) {
+      regName = `<!-- :${name} `
+      space = this.sample.match(new RegExp(`^( *)(${regName})`, 'm'))?.[1]
+    }
 
     if (typeof space === 'string') {
       const inString = `\r\n${space}`

@@ -172,6 +172,24 @@ export class WikiStorybook {
   }
 
   /**
+   * Returns the AI render of the component
+   *
+   * Возвращает AI рендер компонента
+   */
+  getAiRender(): string | undefined {
+    return this.getDescriptionItem()?.ai?.render
+  }
+
+  /**
+   * Returns the AI description of the component
+   *
+   * Возвращает AI описание компонента
+   */
+  getAiDescription(): string | undefined {
+    return this.getDescriptionItem()?.ai?.description
+  }
+
+  /**
    * Returns a wiki item by its name
    *
    * Возвращает элемент wiki по его имени

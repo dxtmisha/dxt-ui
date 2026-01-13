@@ -3,6 +3,9 @@ import { DxtTestWiki } from '@dxtmisha/test'
 import { D1Image } from './index'
 import { ImageWikiStorybook } from './wiki'
 
+// :component-import [!] System label / Системная метка
+// :component-import [!] System label / Системная метка
+
 defineOptions({
   name: 'D1ImageWikiAi'
 })
@@ -16,17 +19,15 @@ defineOptions({
   >
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
-      <div
-        :class="classDemo.item"
-        style="position: relative; width: 48px; height: 48px;"
-      >
-        <D1Image v-bind="args"/>
-      </div>
+    <div
+  :class="classDemo.item"
+  style="position: relative; width: 48px; height: 48px;"
+>
+  <D1Image v-bind="args"/>
+</div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

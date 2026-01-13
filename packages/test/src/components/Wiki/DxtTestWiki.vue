@@ -35,6 +35,17 @@ const possibilities = computed(() => props.wiki.getPossibilities())
 const list = computed(() => props.wiki.getWikiObject())
 const values = computed(() => props.wiki.getFilteredValues())
 
+const aiRender = computed(
+  () => props.wiki.getAiRender()
+    ?.replace(`<${props.wiki.getName()}`, `<${name.value}`)
+    ?.trim()
+)
+const aiDescription = computed(
+  () => props.wiki.getAiDescription()
+    ?.replace(`<${props.wiki.getName()}`, `<${name.value}`)
+    ?.trim()
+)
+
 provide('name', name)
 provide('component', props.component)
 provide('values', values)
@@ -73,6 +84,16 @@ provide('values', values)
         <slot name="render" v-bind="binds"/>
       </template>
     </DxtTestWikiPropItem>
+
+    <template v-if="aiRender">
+      <DxtTestWikiTitle label="Render"/>
+      <pre class="dxt-test-wiki__pre">{{ aiRender }}</pre>
+    </template>
+
+    <template v-if="aiDescription">
+      <DxtTestWikiTitle label="Description"/>
+      <pre class="dxt-test-wiki__pre">{{ aiDescription }}</pre>
+    </template>
   </DxtTestBlock>
 </template>
 
@@ -82,5 +103,13 @@ provide('values', values)
 
   border: 4px solid oklch(92.8% 0.006 264.531);
   border-radius: 8px;
+
+  &__pre {
+    margin: 0;
+    padding: 0;
+
+    font-size: 12px;
+    line-height: 16px;
+  }
 }
 </style>
