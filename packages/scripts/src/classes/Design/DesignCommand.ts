@@ -1,6 +1,9 @@
 // export:none
 
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { toArray } from '@dxtmisha/functional-basic'
+import { hasNativeDirname } from '../../functions/hasNativeDirname'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
@@ -9,7 +12,11 @@ import { DesignReplace } from './DesignReplace'
 
 import { UI_KEY_CONSTRUCTOR } from '../../config'
 
-const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates']
+const dirnamePath = hasNativeDirname()
+  ? __dirname
+  : dirname(fileURLToPath(import.meta.url))
+
+const DIR_SAMPLE = [dirnamePath, '..', '..', 'media', 'templates']
 
 /**
  * Base abstract class for generating script files.

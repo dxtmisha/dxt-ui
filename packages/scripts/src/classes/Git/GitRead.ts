@@ -60,7 +60,9 @@ export class GitRead {
     return forEach(
       this.getFilesPorcelain(),
       (file) => {
-        const data = file.split(' ', 2)
+        const data = file
+          .replace(/ {2,}/, ' ')
+          .split(' ', 2)
 
         const status = data[0] as GitStatus
         const path: string = data[1] ?? ''

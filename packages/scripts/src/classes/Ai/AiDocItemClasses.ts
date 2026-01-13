@@ -1,7 +1,14 @@
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { hasNativeDirname } from '../../functions/hasNativeDirname'
 import { AiDocItemAbstract } from './AiDocItemAbstract'
 
+const dirnamePath = hasNativeDirname()
+  ? __dirname
+  : dirname(fileURLToPath(import.meta.url))
+
 /** Sample prompt template path / Путь к шаблону промпта */
-const FILE_PROMPT_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'prompts']
+const FILE_PROMPT_SAMPLE = [dirnamePath, '..', '..', 'media', 'templates', 'prompts']
 
 /** Sample prompt template for classes / Шаблон промпта для классов */
 const FILE_PROMPT_SAMPLE_CLASS = [...FILE_PROMPT_SAMPLE, 'aiDocClassPrompt.en.txt']

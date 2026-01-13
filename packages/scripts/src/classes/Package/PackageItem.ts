@@ -1,12 +1,19 @@
 // export:none
 
 import requirePath from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { hasNativeDirname } from '../../functions/hasNativeDirname'
+
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { UI_DIR_PACKAGES, UI_DIRS_LIBRARY, UI_FILE_PACKAGE } from '../../config'
 
-const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'packages']
+const dirnamePath = hasNativeDirname()
+  ? __dirname
+  : requirePath.dirname(fileURLToPath(import.meta.url))
+
+const DIR_SAMPLE = [dirnamePath, '..', '..', 'media', 'templates', 'packages']
 const DIR_STORYBOOK = [
   UI_DIR_PACKAGES,
   'storybook',

@@ -1,13 +1,20 @@
 // export:none
 
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { toKebabCase } from '@dxtmisha/functional-basic'
 import { getComponentPaths } from '../../functions/getComponentPaths'
+import { hasNativeDirname } from '../../functions/hasNativeDirname'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { UI_FILE_PACKAGE } from '../../config'
 
-const DIR_SAMPLE = [__dirname, '..', '..', 'media', 'templates', 'componentDoc']
+const dirnamePath = hasNativeDirname()
+  ? __dirname
+  : dirname(fileURLToPath(import.meta.url))
+
+const DIR_SAMPLE = [dirnamePath, '..', '..', 'media', 'templates', 'componentDoc']
 
 /**
  * Class for creating component files from templates.
