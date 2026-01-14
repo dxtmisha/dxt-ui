@@ -27,9 +27,7 @@ import cssnanoPlugin from 'cssnano'
 export const viteBasicFunction = (
   name = 'dxt-ui',
   target = 'es2018',
-  entry = [
-    'src/library.ts'
-  ],
+  entry = 'src/library.ts',
   include = [
     'src/**/*.ts',
     'src/**/*.tsx',
@@ -115,8 +113,8 @@ export const viteBasicFunction = (
   plugins: [
     vue(),
     dts({
-      clearPureImport: false,
-      copyDtsFiles: false,
+      clearPureImport: true,
+      copyDtsFiles: true,
       exclude: [
         '**/__tests__/**',
         '**/*.test.ts',
@@ -129,6 +127,7 @@ export const viteBasicFunction = (
         '**/dist-temporary/**',
         '**/*.config.ts',
         '**/*.config.js',
+        '**/.gitignore',
         '**/vite-env.d.ts'
       ],
       include: [
@@ -136,7 +135,6 @@ export const viteBasicFunction = (
         ...include,
         ...includeExtended
       ],
-      insertTypesEntry: true,
       outDir: 'dist',
       rollupTypes,
       staticImport: true,

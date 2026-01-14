@@ -63,10 +63,10 @@
     "packages/*"
   ],
   "dependencies": {
-    "@dxtmisha/configuration": "^0.4.4",
+    "@dxtmisha/configuration": "^0.4.6",
     "@dxtmisha/constructor": "0.39.1",
     "@dxtmisha/functional": "^1.6.5",
-    "@dxtmisha/functional-basic": "^0.5.3",
+    "@dxtmisha/functional-basic": "^0.6.0",
     "@dxtmisha/media": "^0.4.2",
     "@dxtmisha/scripts": "^0.5.14",
     "@dxtmisha/styles": "^1.0.6",
@@ -78,7 +78,6 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@dxt-ui/c2": "workspace:*",
     "@dxtmisha/d1": "workspace:*",
     "@dxtmisha/storybook": "workspace:*",
     "@dxtmisha/test": "workspace:*",

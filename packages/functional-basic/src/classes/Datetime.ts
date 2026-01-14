@@ -1,3 +1,4 @@
+import { isDomRuntime } from '../functions/isDomRuntime'
 import { toDate } from '../functions/toDate'
 
 import { Geo } from './Geo'
@@ -10,7 +11,6 @@ import {
   type GeoHours,
   type GeoTimeZoneStyle
 } from '../types/geoTypes'
-import { isDomRuntime } from '../functions/isDomRuntime.ts'
 
 /**
  * A class for working with dates.

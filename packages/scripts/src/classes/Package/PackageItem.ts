@@ -235,13 +235,13 @@ export class PackageInitItem {
       let edit = false
 
       if (
-        packageFile.match(/["']devDependencies["']/)
+        packageFile.match(/["']dependencies["']/)
       ) {
-        console.log('Update package.json: devDependencies...')
+        console.log('Update package.json: dependencies...')
 
         edit = true
         packageFile = packageFile.replace(
-          /(["']devDependencies["']:[^{]+{)/,
+          /(["']dependencies["']:[^{]+{)/,
           `$1
     "${this.getProjectName()}": "workspace:*",`
         )

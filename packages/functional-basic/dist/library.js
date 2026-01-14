@@ -17,7 +17,7 @@ function g(i, t) {
   }
   return [];
 }
-function kt(i, t = "=", e = "&") {
+function At(i, t = "=", e = "&") {
   return g(
     i,
     (s, n) => `${n}${t}${encodeURIComponent(String(s).trim())}`
@@ -26,7 +26,7 @@ function kt(i, t = "=", e = "&") {
 function q(i) {
   return i == null;
 }
-function D(i, t) {
+function S(i, t) {
   if (i) {
     if (t && i === "0")
       return !0;
@@ -63,7 +63,7 @@ function j(i) {
 function l() {
   return typeof window != "undefined" && !!window.document;
 }
-function ct(i) {
+function ut(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -82,19 +82,19 @@ function C(i) {
   return t.match(/( [0-9]{3}[ ,.]|[0-9] [0-9])/ig) ? t = t.replace(/ /ig, "").replace(/,/ig, ".") : t.match(/,[0-9]{3}[,.]/ig) ? t = t.replace(/,/ig, "") : t.match(/[.][0-9]{3}[,.]/ig) ? t = t.replace(/[.]/ig, "").replace(/,/ig, ".") : t = t.replace(/,/ig, "."), parseFloat(t);
 }
 function st(i, t) {
-  return q(i) ? !1 : Array.isArray(t) ? t.includes(i) : ct(i) && ct(t) ? C(i) === C(t) : i === t;
+  return q(i) ? !1 : Array.isArray(t) ? t.includes(i) : ut(i) && ut(t) ? C(i) === C(t) : i === t;
 }
-function At(i) {
+function Nt(i) {
   return i instanceof Function || typeof i == "function";
 }
 function I(i) {
-  return At(i) ? i() : i;
+  return Nt(i) ? i() : i;
 }
 function rt() {
   return location.href.startsWith("data:");
 }
 const G = {};
-let ut = "ui-storage";
+let ht = "ui-storage";
 class T {
   /**
    * Constructor
@@ -117,7 +117,7 @@ class T {
    * @param newPrefix new prefix/ новый префикс
    */
   static setPrefix(t) {
-    ut = t;
+    ht = t;
   }
   /**
    * Getting data from local storage.
@@ -189,7 +189,7 @@ class T {
    * Получение имени ключа в хранилище.
    */
   getIndex() {
-    return `${ut}__${this.name}`;
+    return `${ht}__${this.name}`;
   }
   /**
    * Getting data from storage.
@@ -440,16 +440,16 @@ const jt = "geo-code", p = class p {
 };
 c(p, "storage", new T(jt)), c(p, "location"), c(p, "item"), c(p, "language"), c(p, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), p.location = p.findLocation(), p.language = p.findLanguage(p.location), p.item = p.getByCode(p.location);
 let w = p;
-function Nt(i) {
+function It(i) {
   return l() && i === window;
 }
 function A(i) {
   var t;
   if (l())
-    return Nt(i) ? document.body : R(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
+    return It(i) ? document.body : R(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
 }
-function ht(i) {
-  return Nt(i) ? i : A(i);
+function lt(i) {
+  return It(i) ? i : A(i);
 }
 function Ht(i) {
   var t;
@@ -458,7 +458,7 @@ function Ht(i) {
 function z(i) {
   return Array.isArray(i) ? i : [i];
 }
-class lt {
+class dt {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -509,7 +509,7 @@ class lt {
      */
     c(this, "activity", !1);
     c(this, "activityItems", []);
-    this.listener = s, this.options = n, this.detail = o, this.element = ht(t), this.elementControl = A(t), this.type = z(e);
+    this.listener = s, this.options = n, this.detail = o, this.element = lt(t), this.elementControl = A(t), this.type = z(e);
   }
   /**
    * Checks whether event listening is currently enabled.
@@ -529,7 +529,7 @@ class lt {
    * @param elementSelector element/ элемент
    */
   setElement(t) {
-    const e = ht(t);
+    const e = lt(t);
     return this.elementControlEdit || (this.elementControl = A(t)), this.element = e, this.reset(), this;
   }
   /**
@@ -694,7 +694,7 @@ class lt {
     return !1;
   }
 }
-const dt = "ui-loading", V = class V {
+const gt = "ui-loading", V = class V {
   /**
    * Check if the loader is active now.
    *
@@ -729,7 +729,7 @@ const dt = "ui-loading", V = class V {
    * @param element element/ элемент
    */
   static registrationEvent(t, e) {
-    l() && new lt(window, dt, t).setElementControl(e).start();
+    l() && new dt(window, gt, t).setElementControl(e).start();
   }
   /**
    * Calls the event listener.
@@ -741,7 +741,7 @@ const dt = "ui-loading", V = class V {
     (t = this.event) == null || t.dispatch({ loading: this.is() });
   }
 };
-c(V, "value", 0), c(V, "event"), l() && (V.event = new lt(window, dt));
+c(V, "value", 0), c(V, "event"), l() && (V.event = new dt(window, gt));
 let x = V;
 class zt {
   constructor() {
@@ -761,7 +761,7 @@ class zt {
         this.headers,
         t
       );
-      return D(e) && (s["Content-Type"] = e), s;
+      return S(e) && (s["Content-Type"] = e), s;
     }
   }
   /**
@@ -773,7 +773,7 @@ class zt {
     return k(t) && (this.headers = t), this;
   }
 }
-var S = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(S || {});
+var D = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(D || {});
 class Zt {
   constructor() {
     /** Default request data/ Данные запроса по умолчанию */
@@ -955,7 +955,7 @@ async function Kt(i) {
 function Y(i, t) {
   return Math.floor(Math.random() * (t - i + 1) + i);
 }
-const gt = "d-response-loading";
+const ft = "d-response-loading";
 class Yt {
   /**
    * Constructor
@@ -1017,8 +1017,8 @@ class Yt {
   async emulator(t) {
     const {
       path: e = "",
-      method: s = S.get,
-      global: n = s === S.get,
+      method: s = D.get,
+      global: n = s === D.get,
       devMode: o = !1
     } = t;
     if (n || this.isDevMode(o)) {
@@ -1076,7 +1076,7 @@ class Yt {
    */
   isResponse(t, e) {
     const s = this.requestDefault.request(t == null ? void 0 : t.request);
-    return e === s || s === "*any" || D(e) && D(s) && k(e) && k(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
+    return e === s || s === "*any" || S(e) && S(s) && k(e) && k(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
       (n, [o, a]) => n && (a === (e == null ? void 0 : e[o]) || a === "*any"),
       !0
     );
@@ -1091,7 +1091,7 @@ class Yt {
   fetch(t, e) {
     return this.startResponseLoading(), new Promise((s) => {
       Kt(
-        At(t.response) ? t.response(e) : t.response
+        Nt(t.response) ? t.response(e) : t.response
       ).then((n) => {
         t != null && t.lag ? (x.show(), setTimeout(() => {
           this.stopResponseLoading(), s(n), x.hide();
@@ -1105,7 +1105,7 @@ class Yt {
    * Включить загрузку для эмуляции запроса.
    */
   startResponseLoading() {
-    this.loading && clearTimeout(this.loading), l() && document.body.classList.add(gt);
+    this.loading && clearTimeout(this.loading), l() && document.body.classList.add(ft);
   }
   /**
    * Disable loading for request emulation.
@@ -1114,7 +1114,7 @@ class Yt {
    */
   stopResponseLoading() {
     this.loading = setTimeout(() => {
-      this.loading = void 0, l() && document.body.classList.remove(gt);
+      this.loading = void 0, l() && document.body.classList.remove(ft);
     }, 1200);
   }
 }
@@ -1231,10 +1231,10 @@ const b = class b {
    * @param request this request/ данный запрос
    * @param method method for request/ метод запрос
    */
-  static getBody(t = {}, e = S.get) {
+  static getBody(t = {}, e = D.get) {
     if (t instanceof FormData)
       return t;
-    if (e !== S.get && D(t))
+    if (e !== D.get && S(t))
       return R(t) ? t : JSON.stringify(t);
   }
   /**
@@ -1245,10 +1245,10 @@ const b = class b {
    * @param path path to request/ путь к запрос
    * @param method method for request/ метод запрос
    */
-  static getBodyForGet(t, e = "", s = S.get) {
-    if (s === S.get) {
-      const n = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? kt(t) : t;
-      if (D(o))
+  static getBodyForGet(t, e = "", s = D.get) {
+    if (s === D.get) {
+      const n = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? At(t) : t;
+      if (S(o))
         return `${n}${o}`;
     }
     return "";
@@ -1315,7 +1315,7 @@ const b = class b {
    */
   static get(t) {
     return this.request(L(t, {
-      method: S.get
+      method: D.get
     }));
   }
   /**
@@ -1326,7 +1326,7 @@ const b = class b {
    */
   static post(t) {
     return this.request(L(t, {
-      method: S.post
+      method: D.post
     }));
   }
   /**
@@ -1337,7 +1337,7 @@ const b = class b {
    */
   static put(t) {
     return this.request(L(t, {
-      method: S.put
+      method: D.put
     }));
   }
   /**
@@ -1348,7 +1348,7 @@ const b = class b {
    */
   static delete(t) {
     return this.request(L(t, {
-      method: S.delete
+      method: D.delete
     }));
   }
   /**
@@ -1410,7 +1410,7 @@ const b = class b {
       api: s = !0,
       path: n = "",
       pathFull: o = void 0,
-      method: a = S.get,
+      method: a = D.get,
       headers: u = {},
       type: h = "application/json;charset=UTF-8",
       init: f = {}
@@ -1600,8 +1600,8 @@ const O = class O {
   }
 };
 c(O, "cache"), O.cache = new Mt();
-let ft = O;
-function It(i, t = !1) {
+let mt = O;
+function Et(i, t = !1) {
   if (typeof i == "string") {
     const e = i.trim();
     switch (e) {
@@ -1633,7 +1633,7 @@ function It(i, t = !1) {
   return i;
 }
 const Xt = "cookie-block";
-class Et {
+class Bt {
   /**
    * Obtaining status.
    *
@@ -1653,8 +1653,8 @@ class Et {
     this.storage.set(t);
   }
 }
-c(Et, "storage", new T(Xt));
-const X = {}, at = class at {
+c(Bt, "storage", new T(Xt));
+const X = {}, ct = class ct {
   constructor(t) {
     c(this, "value");
     c(this, "options", {});
@@ -1706,7 +1706,7 @@ const X = {}, at = class at {
    */
   update() {
     var t, e, s, n, o;
-    if (l() && !rt() && !Et.get()) {
+    if (l() && !rt() && !Bt.get()) {
       const a = String((t = this.value) != null ? t : "");
       document.cookie = [
         `${encodeURIComponent(this.name)}=${encodeURIComponent(a)}`,
@@ -1724,12 +1724,12 @@ const X = {}, at = class at {
   static updateData() {
     for (const t of document.cookie.split(";")) {
       const [e, s] = t.trim().split("=");
-      e && D(s) && (X[e] = It(s));
+      e && S(s) && (X[e] = Et(s));
     }
   }
 };
-l() && !rt() && at.updateData();
-let mt = at;
+l() && !rt() && ct.updateData();
+let yt = ct;
 const tt = {};
 function B(i) {
   var n, o, a, u, h, f, d, E;
@@ -2255,7 +2255,7 @@ class J {
   }
 }
 const et = {};
-class Bt {
+class ot {
   /**
    * Constructor
    * @param date date for processing/ дата для обработки
@@ -2479,7 +2479,7 @@ class Bt {
    * @param timeZone add time zone/ добавить временную зону
    */
   standard(t = !0) {
-    const e = new Bt(this.date, this.type, "en-GB"), s = [];
+    const e = new ot(this.date, this.type, "en-GB"), s = [];
     let n;
     return e.setHour24(!0), this.type === "hour-minute" ? n = e.locale(this.type, {
       year: "numeric",
@@ -3271,7 +3271,7 @@ c(W, "flags", {
   ZM: `${r}-zm`,
   ZW: `${r}-zw`
 });
-let yt = W;
+let $t = W;
 const U = class U {
   /**
    * Getting an object with information about the phone code and country.
@@ -3334,7 +3334,7 @@ const U = class U {
    * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toMask(t, e) {
-    if (D(t) && Array.isArray(e) && e.length > 0) {
+    if (S(t) && Array.isArray(e) && e.length > 0) {
       const s = this.removeZero(t), n = s.length;
       for (const o of e)
         if (this.getUnnecessaryLength(o) === n)
@@ -3452,7 +3452,7 @@ const U = class U {
   }
 };
 c(U, "list", []), c(U, "map", {}), U.makeList(), U.makeMap();
-let $t = U, P;
+let pt = U, P;
 class ke {
   /**
    * Returns the value by its name.
@@ -3527,7 +3527,7 @@ const F = class F {
     const t = {};
     return location.hash.replace(
       /([\w-]+)[:=]([^;]+)/ig,
-      (...e) => (t[String(e[1])] = It(e[2]), "")
+      (...e) => (t[String(e[1])] = Et(e[2]), "")
     ), t;
   }
   /**
@@ -3536,7 +3536,7 @@ const F = class F {
    * Обновление строки хэша в URL.
    */
   static update() {
-    this.block = !0, history.replaceState(null, "", `#${kt(this.hash, "=", ";")}`), requestAnimationFrame(() => {
+    this.block = !0, history.replaceState(null, "", `#${At(this.hash, "=", ";")}`), requestAnimationFrame(() => {
       this.block = !1;
     });
   }
@@ -3554,8 +3554,8 @@ const F = class F {
   }
 };
 c(F, "hash", {}), c(F, "watch", {}), c(F, "block", !1), l() && (F.reload(), addEventListener("hashchange", () => F.reload()));
-let pt = F;
-const it = "__UI_ICON", wt = 320, bt = "--LOAD--", K = class K {
+let wt = F;
+const it = "__UI_ICON", bt = 320, vt = "--LOAD--", K = class K {
   /**
    * Checks if the given icon is in the list of connected icons.
    *
@@ -3578,7 +3578,7 @@ const it = "__UI_ICON", wt = 320, bt = "--LOAD--", K = class K {
   static async get(t, e = "", s = 1e3 * 60 * 3) {
     var o, a, u, h;
     const n = (h = (u = (o = this.icons) == null ? void 0 : o[this.getName(t)]) != null ? u : (a = this.icons) == null ? void 0 : a[t]) != null ? h : `${t.replace(/^@/, e != null ? e : this.url)}.svg`;
-    return typeof n == "string" ? n === bt && s > 0 ? (await this.wait(), this.get(t, e, s - wt)) : n : await n;
+    return typeof n == "string" ? n === vt && s > 0 ? (await this.wait(), this.get(t, e, s - bt)) : n : await n;
   }
   /**
    * Returns a list of names of all registered icons.
@@ -3613,7 +3613,7 @@ const it = "__UI_ICON", wt = 320, bt = "--LOAD--", K = class K {
    * @param index icon name/ название иконки
    */
   static addLoad(t) {
-    this.icons[this.getName(t)] = bt;
+    this.icons[this.getName(t)] = vt;
   }
   /**
    * Adding custom global icons.
@@ -3658,11 +3658,11 @@ const it = "__UI_ICON", wt = 320, bt = "--LOAD--", K = class K {
    * Задержка выполнения скрипта.
    */
   static wait() {
-    return new Promise((t) => setTimeout(() => t(), wt));
+    return new Promise((t) => setTimeout(() => t(), bt));
   }
 };
 c(K, "icons", {}), c(K, "url", "/icons/"), l() && (it in window || (window[it] = {}), K.icons = window[it]);
-let vt = K;
+let Dt = K;
 function Ot(i, t, e) {
   var s, n;
   return (n = (s = A(i)) == null ? void 0 : s[t]) != null ? n : e;
@@ -3693,7 +3693,7 @@ function _(i, t = "div", e, s) {
 function Gt(i) {
   return i.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").trim();
 }
-class ot {
+class at {
   /**
    * Creates an instance of MetaManager.
    *
@@ -3835,7 +3835,7 @@ class ot {
   }
 }
 var v = /* @__PURE__ */ ((i) => (i.description = "description", i.keywords = "keywords", i.canonical = "canonical", i.robots = "robots", i.author = "author", i))(v || {}), te = /* @__PURE__ */ ((i) => (i.indexFollow = "index, follow", i.noIndexFollow = "noindex, follow", i.indexNoFollow = "index, nofollow", i.noIndexNoFollow = "noindex, nofollow", i.noArchive = "noarchive", i.noSnippet = "nosnippet", i.noImageIndex = "noimageindex", i.images = "images", i.noTranslate = "notranslate", i.noPreview = "nopreview", i.textOnly = "textonly", i.noIndexSubpages = "noindex, noarchive", i.none = "none", i))(te || {}), y = /* @__PURE__ */ ((i) => (i.title = "og:title", i.type = "og:type", i.url = "og:url", i.image = "og:image", i.description = "og:description", i.locale = "og:locale", i.siteName = "og:site_name", i.localeAlternate = "og:locale:alternate", i.imageUrl = "og:image:url", i.imageSecureUrl = "og:image:secure_url", i.imageType = "og:image:type", i.imageWidth = "og:image:width", i.imageHeight = "og:image:height", i.imageAlt = "og:image:alt", i.video = "og:video", i.videoUrl = "og:video:url", i.videoSecureUrl = "og:video:secure_url", i.videoType = "og:video:type", i.videoWidth = "og:video:width", i.videoHeight = "og:video:height", i.audio = "og:audio", i.audioSecureUrl = "og:audio:secure_url", i.audioType = "og:audio:type", i.articlePublishedTime = "article:published_time", i.articleModifiedTime = "article:modified_time", i.articleExpirationTime = "article:expiration_time", i.articleAuthor = "article:author", i.articleSection = "article:section", i.articleTag = "article:tag", i.bookAuthor = "book:author", i.bookIsbn = "book:isbn", i.bookReleaseDate = "book:release_date", i.bookTag = "book:tag", i.musicDuration = "music:duration", i.musicAlbum = "music:album", i.musicAlbumDisc = "music:album:disc", i.musicAlbumTrack = "music:album:track", i.musicMusician = "music:musician", i.musicSong = "music:song", i.musicSongDisc = "music:song:disc", i.musicSongTrack = "music:song:track", i.musicReleaseDate = "music:release_date", i.musicCreator = "music:creator", i.videoActor = "video:actor", i.videoActorRole = "video:actor:role", i.videoDirector = "video:director", i.videoWriter = "video:writer", i.videoDuration = "video:duration", i.videoReleaseDate = "video:release_date", i.videoTag = "video:tag", i.videoSeries = "video:series", i.profileFirstName = "profile:first_name", i.profileLastName = "profile:last_name", i.profileUsername = "profile:username", i.profileGender = "profile:gender", i.productBrand = "product:brand", i.productAvailability = "product:availability", i.productCondition = "product:condition", i.productPriceAmount = "product:price:amount", i.productPriceCurrency = "product:price:currency", i.productRetailerItemId = "product:retailer_item_id", i.productCategory = "product:category", i.productEan = "product:ean", i.productIsbn = "product:isbn", i.productMfrPartNo = "product:mfr_part_no", i.productUpc = "product:upc", i.productWeightValue = "product:weight:value", i.productWeightUnits = "product:weight:units", i.productColor = "product:color", i.productMaterial = "product:material", i.productPattern = "product:pattern", i.productAgeGroup = "product:age_group", i.productGender = "product:gender", i))(y || {}), ee = /* @__PURE__ */ ((i) => (i.website = "website", i.article = "article", i.video = "video.other", i.videoTvShow = "video.tv_show", i.videoEpisode = "video.episode", i.videoMovie = "video.movie", i.musicAlbum = "music.album", i.musicPlaylist = "music.playlist", i.musicSong = "music.song", i.musicRadioStation = "music.radio_station", i.app = "app", i.product = "product", i.business = "business.business", i.place = "place", i.event = "event", i.profile = "profile", i.book = "book", i))(ee || {}), ie = /* @__PURE__ */ ((i) => (i.inStock = "in stock", i.outOfStock = "out of stock", i.preorder = "preorder", i.backorder = "backorder", i.discontinued = "discontinued", i.pending = "pending", i))(ie || {}), se = /* @__PURE__ */ ((i) => (i.new = "new", i.used = "used", i.refurbished = "refurbished", i))(se || {}), re = /* @__PURE__ */ ((i) => (i.newborn = "newborn", i.infant = "infant", i.toddler = "toddler", i.kids = "kids", i.adult = "adult", i))(re || {}), ne = /* @__PURE__ */ ((i) => (i.female = "female", i.male = "male", i.unisex = "unisex", i))(ne || {}), $ = /* @__PURE__ */ ((i) => (i.card = "twitter:card", i.site = "twitter:site", i.creator = "twitter:creator", i.url = "twitter:url", i.title = "twitter:title", i.description = "twitter:description", i.image = "twitter:image", i.imageAlt = "twitter:image:alt", i.imageSrc = "twitter:image:src", i.imageWidth = "twitter:image:width", i.imageHeight = "twitter:image:height", i.label1 = "twitter:label1", i.data1 = "twitter:data1", i.label2 = "twitter:label2", i.data2 = "twitter:data2", i.appNameIphone = "twitter:app:name:iphone", i.appIdIphone = "twitter:app:id:iphone", i.appUrlIphone = "twitter:app:url:iphone", i.appNameIpad = "twitter:app:name:ipad", i.appIdIpad = "twitter:app:id:ipad", i.appUrlIpad = "twitter:app:url:ipad", i.appNameGooglePlay = "twitter:app:name:googleplay", i.appIdGooglePlay = "twitter:app:id:googleplay", i.appUrlGooglePlay = "twitter:app:url:googleplay", i.player = "twitter:player", i.playerWidth = "twitter:player:width", i.playerHeight = "twitter:player:height", i.playerStream = "twitter:player:stream", i.playerStreamContentType = "twitter:player:stream:content_type", i))($ || {}), oe = /* @__PURE__ */ ((i) => (i.summary = "summary", i.summaryLargeImage = "summary_large_image", i.app = "app", i.player = "player", i.product = "product", i.gallery = "gallery", i.photo = "photo", i.leadGeneration = "lead_generation", i.audio = "audio", i.poll = "poll", i))(oe || {});
-class ae extends ot {
+class ae extends at {
   constructor() {
     super(Object.values(y), !0);
   }
@@ -3959,7 +3959,7 @@ class ae extends ot {
     return this.set(y.siteName, t);
   }
 }
-class ce extends ot {
+class ce extends at {
   constructor() {
     super(Object.values($));
   }
@@ -4083,7 +4083,7 @@ class ce extends ot {
     return this.set($.image, t), this;
   }
 }
-class Ae extends ot {
+class Ae extends at {
   /**
    * Creates an instance of Meta with integrated Open Graph and Twitter Card support.
    *
@@ -4192,7 +4192,7 @@ class Ae extends ot {
    */
   setTitle(e) {
     if (l()) {
-      const s = D(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
+      const s = S(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
       document.title = s, this.og.setTitle(s), this.twitter.setTitle(s);
     }
     return this;
@@ -4292,7 +4292,7 @@ class Ae extends ot {
    * Получает отформатированный суффикс с разделителем.
    */
   getSuffix() {
-    return D(this.suffix) ? ` - ${this.suffix}` : "";
+    return S(this.suffix) ? ` - ${this.suffix}` : "";
   }
 }
 class nt {
@@ -4465,7 +4465,7 @@ const ue = [
    */
   static addSync(t) {
     g(t, (e, s) => {
-      R(e) && D(e) && (this.data[this.getName(s)] = e);
+      R(e) && S(e) && (this.data[this.getName(s)] = e);
     });
   }
   /**
@@ -4475,7 +4475,7 @@ const ue = [
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static async addNormalOrSync(t) {
-    if (D(t))
+    if (S(t))
       if (H.isLocalhost())
         this.addSync(t);
       else {
@@ -4604,10 +4604,13 @@ async function Re(i) {
   var t, e;
   return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
-let Dt = Y(1e5, 9e5);
-function Pe(i, t) {
+function Pe(i = "datetime") {
+  return new ot(void 0, i).standard();
+}
+let Lt = Y(1e5, 9e5);
+function We(i, t) {
   const e = A(i);
-  return e ? (D(e.id) || e.setAttribute("id", `id-${Dt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${Dt++}`;
+  return e ? (S(e.id) || e.setAttribute("id", `id-${Lt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${Lt++}`;
 }
 function ge(i) {
   return R(i) ? _(
@@ -4625,17 +4628,17 @@ function me(i, t) {
   const e = t.split(".", 2), s = e[0];
   return s && (i != null && i[s]) && k(i[s]) && (e != null && e[1]) ? me(i[s], e[1]) : (n = s && (i == null ? void 0 : i[s])) != null ? n : "";
 }
-function We(i) {
+function Ue(i) {
   var t, e, s;
   return (s = (t = i == null ? void 0 : i.key) != null ? t : i == null ? void 0 : i.code) != null ? s : (e = i == null ? void 0 : i.keyCode) == null ? void 0 : e.toString();
 }
 function xt(i) {
   return g(i, (t) => t.length);
 }
-function Ue(i) {
+function je(i) {
   return Math.max(...xt(i));
 }
-function je(i) {
+function He(i) {
   return Math.min(...xt(i));
 }
 function ye(i) {
@@ -4646,54 +4649,54 @@ function $e(i) {
   var t, e, s, n;
   return (i == null ? void 0 : i.clientY) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((n = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : n.clientY) || 0;
 }
-function He(i) {
+function ze(i) {
   return {
     x: ye(i),
     y: $e(i)
   };
 }
-function ze(i, t) {
+function Ze(i, t) {
   const e = {};
   return t.forEach((s) => {
     s in i && i[s] !== void 0 && (e[s] = i[s]);
   }), e;
 }
-function Ze(i, t = void 0) {
+function Ve(i, t = void 0) {
   const e = {};
   return g(i, (s, n) => {
     s !== t && (e[n] = s);
   }), e;
 }
-function Ve(i) {
+function Ke(i) {
   return k(i) ? i : {};
 }
 function pe(i, t) {
   return le(i, t).join("");
 }
-function Ke(i, t, e = "#", s = 2, n = 12) {
+function Ye(i, t, e = "#", s = 2, n = 12) {
   const o = Y(i, t), a = [];
   for (let u = 0; u < o; u++)
     a.push(pe(e, Y(s, n)));
   return a.join(" ");
 }
-function Ye(i, t) {
+function qe(i, t) {
   const e = i != null ? i : 0;
   return t > e ? 100 / (t - e) : 0;
 }
-function qe(i, t) {
+function Je(i, t) {
   const e = i != null ? i : 0;
   return t > e ? (t - e) / 100 : 0;
 }
-const Lt = 0;
-function Je(i, t, e) {
+const Ct = 0;
+function Qe(i, t, e) {
   const s = t == null ? void 0 : t.closest(i);
   if (t && s && s.scrollHeight !== s.offsetHeight)
     if (e) {
       const n = e.getBoundingClientRect(), o = s.getBoundingClientRect(), a = t.getBoundingClientRect();
       s.scrollTop = t.offsetTop - (n.top - o.top) - (n.height / 2 - a.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
-    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - Lt : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + Lt);
+    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - Ct : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + Ct);
 }
-function Qe(i, t, e = 0) {
+function Me(i, t, e = 0) {
   if (!l())
     return;
   const s = (t == null ? void 0 : t.behavior) || "smooth";
@@ -4713,28 +4716,28 @@ function Qe(i, t, e = 0) {
     });
   }
 }
-function Me(i, t) {
+function Xe(i, t) {
   return i.indexOf(t) !== -1;
 }
-async function Xe() {
+async function _e() {
   if (l()) {
     const i = await nt.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function _e(i, t) {
+function Oe(i, t) {
   const e = {};
   return m(i) && m(t) && g(i, (s, n) => {
     n in t && (e[n] = s);
   }), e;
 }
-function Oe(i, t) {
+function Te(i, t) {
   let e = Object.keys(i).length !== Object.keys(t).length;
   return e || g(i, (s, n) => {
     s !== (t == null ? void 0 : t[n]) && (e = !0);
   }), e;
 }
-function Te(i) {
+function Ge(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -4744,14 +4747,14 @@ function Te(i) {
       return !1;
   }
 }
-function Ge(i, t) {
+function ti(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function ti(i, t) {
+function ei(i, t) {
   return Array.isArray(i) ? i.every((e) => st(e, t)) : st(i, t);
 }
-function ei(i, t) {
+function ii(i, t) {
   if (i.startsWith(t))
     return i.slice(t.length).trim();
   let e = 0;
@@ -4776,7 +4779,7 @@ function Z(i, t, e = !0) {
     }
   ), s;
 }
-function ii(i, t) {
+function si(i, t) {
   let e = i;
   return g(t, (s, n) => {
     e = e.replace(fe(`[${n}]`), I(s));
@@ -4792,7 +4795,7 @@ function be(i, t = "auto") {
       return !1;
   }
 }
-function si(i, t, e = "auto", s) {
+function ri(i, t, e = "auto", s) {
   var o;
   const n = ge(i);
   if (n && (n.naturalWidth > t && (e === "auto" || e === "width") || n.naturalHeight > t && (e === "auto" || e === "height"))) {
@@ -4801,7 +4804,7 @@ function si(i, t, e = "auto", s) {
       return u.canvas.width = a ? t : n.naturalWidth / n.naturalHeight * t, u.canvas.height = a ? n.naturalHeight / n.naturalWidth * t : t, u.drawImage(n, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
   }
 }
-function ri(i) {
+function ni(i) {
   const t = C(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -4809,7 +4812,7 @@ function ri(i) {
   }
   return "00:00";
 }
-function ni(i, t, {
+function oi(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
@@ -4824,7 +4827,7 @@ function ni(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function oi(i, t, e) {
+function ai(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
@@ -4840,30 +4843,30 @@ function oi(i, t, e) {
 function ve(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function ai(i) {
+function ci(i) {
   return ve(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function ci(i) {
+function ui(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function ui(i, t, e, s) {
+function hi(i, t, e, s) {
   const n = C(i), o = C(t);
-  return t && o < n ? `${Ct(o, e, s)}+` : Ct(n, e, s);
+  return t && o < n ? `${kt(o, e, s)}+` : kt(n, e, s);
 }
-const Ct = (i, t, e) => t ? new J(e).number(i) : i;
-function Se(i, t) {
+const kt = (i, t, e) => t ? new J(e).number(i) : i;
+function De(i, t) {
   return 1 / i * t;
 }
-function hi(i, t) {
-  return Se(i, t) * 100;
+function li(i, t) {
+  return De(i, t) * 100;
 }
-function li(i) {
+function di(i) {
   let t = "";
   for (const e of i)
     t += String.fromCharCode(e);
   return l() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
 }
-async function di(i) {
+async function gi(i) {
   if (l())
     try {
       await navigator.clipboard.writeText(i);
@@ -4875,30 +4878,30 @@ export {
   H as Api,
   Zt as ApiDefault,
   zt as ApiHeaders,
-  S as ApiMethodItem,
+  D as ApiMethodItem,
   qt as ApiPreparation,
   Yt as ApiResponse,
   Vt as ApiStatus,
   Ce as BroadcastMessage,
   Mt as Cache,
   Qt as CacheItem,
-  ft as CacheStatic,
-  mt as Cookie,
-  Et as CookieBlock,
+  mt as CacheStatic,
+  yt as Cookie,
+  Bt as CookieBlock,
   T as DataStorage,
-  Bt as Datetime,
-  lt as EventItem,
+  ot as Datetime,
+  dt as EventItem,
   r as GEO_FLAG_ICON_NAME,
   w as Geo,
-  yt as GeoFlag,
+  $t as GeoFlag,
   J as GeoIntl,
-  $t as GeoPhone,
+  pt as GeoPhone,
   ke as Global,
-  pt as Hash,
-  vt as Icons,
+  wt as Hash,
+  Dt as Icons,
   x as Loading,
   Ae as Meta,
-  ot as MetaManager,
+  at as MetaManager,
   ae as MetaOg,
   re as MetaOpenGraphAge,
   ie as MetaOpenGraphAvailability,
@@ -4931,70 +4934,71 @@ export {
   xe as getAttributes,
   Re as getClipboardData,
   _t as getColumn,
+  Pe as getCurrentDate,
   A as getElement,
-  Pe as getElementId,
+  We as getElementId,
   ge as getElementImage,
   Ot as getElementItem,
-  ht as getElementOrWindow,
+  lt as getElementOrWindow,
   fe as getExp,
   me as getItemByPath,
-  We as getKey,
+  Ue as getKey,
   xt as getLengthOfAllArray,
-  Ue as getMaxLengthAllArray,
-  je as getMinLengthAllArray,
-  He as getMouseClient,
+  je as getMaxLengthAllArray,
+  He as getMinLengthAllArray,
+  ze as getMouseClient,
   ye as getMouseClientX,
   $e as getMouseClientY,
-  ze as getObjectByKeys,
-  Ze as getObjectNoUndefined,
-  Ve as getObjectOrNone,
-  Ke as getRandomText,
-  kt as getRequestString,
-  Ye as getStepPercent,
-  qe as getStepValue,
-  Je as goScroll,
-  Qe as goScrollSmooth,
-  Me as inArray,
-  Xe as initScrollbarOffset,
-  _e as intersectKey,
+  Ze as getObjectByKeys,
+  Ve as getObjectNoUndefined,
+  Ke as getObjectOrNone,
+  Ye as getRandomText,
+  At as getRequestString,
+  qe as getStepPercent,
+  Je as getStepValue,
+  Qe as goScroll,
+  Me as goScrollSmooth,
+  Xe as inArray,
+  _e as initScrollbarOffset,
+  Oe as intersectKey,
   Ft as isArray,
-  Oe as isDifferent,
+  Te as isDifferent,
   rt as isDomData,
   l as isDomRuntime,
-  D as isFilled,
-  Te as isFloat,
-  At as isFunction,
+  S as isFilled,
+  Ge as isFloat,
+  Nt as isFunction,
   Ht as isInDom,
-  Ge as isIntegerBetween,
+  ti as isIntegerBetween,
   q as isNull,
-  ct as isNumber,
+  ut as isNumber,
   m as isObject,
   k as isObjectNotArray,
   st as isSelected,
-  ti as isSelectedByList,
+  ei as isSelectedByList,
   R as isString,
-  Nt as isWindow,
+  It as isWindow,
   Y as random,
-  ei as removeCommonPrefix,
+  ii as removeCommonPrefix,
   Z as replaceRecursive,
-  ii as replaceTemplate,
-  si as resizeImageByMax,
-  ri as secondToTime,
+  si as replaceTemplate,
+  ri as resizeImageByMax,
+  ni as secondToTime,
   Tt as setElementItem,
-  ni as setValues,
-  oi as splice,
+  oi as setValues,
+  ai as splice,
   pe as strFill,
   z as toArray,
   ve as toCamelCase,
-  ai as toCamelCaseFirst,
+  ci as toCamelCaseFirst,
   B as toDate,
-  ci as toKebabCase,
+  ui as toKebabCase,
   C as toNumber,
-  ui as toNumberByMax,
-  Se as toPercent,
-  hi as toPercentBy100,
-  It as transformation,
-  li as uint8ArrayToBase64,
+  hi as toNumberByMax,
+  De as toPercent,
+  li as toPercentBy100,
+  Et as transformation,
+  di as uint8ArrayToBase64,
   we as uniqueArray,
-  di as writeClipboardData
+  gi as writeClipboardData
 };

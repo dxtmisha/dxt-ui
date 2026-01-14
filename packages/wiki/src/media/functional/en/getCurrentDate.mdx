@@ -1,0 +1,25 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='functional-basic/Functions/getCurrentDate - Get current date'/>
+
+# `getCurrentDate`
+
+Returns the current date in the specified format. The function is a wrapper around the `Datetime` class and allows you to quickly get a formatted string of the current time.
+
+**Parameters:**
+- `format: GeoDate` — type of date format for output (default `'datetime'`). Supports values: `'date'`, `'time'`, `'datetime'`, `'full'`, and others.
+
+**Returns:**
+Current date as a string.
+
+```typescript
+import { getCurrentDate } from '@dxtmisha/functional-basic'
+
+// Standard format (datetime)
+const now = getCurrentDate()
+// Result: "2024-03-15 14:30"
+
+// Date only
+const date = getCurrentDate('date')
+// Result: "2024-03-15"
+```

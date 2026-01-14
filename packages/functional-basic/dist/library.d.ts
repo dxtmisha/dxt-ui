@@ -45,6 +45,7 @@ export * from './functions/frame';
 export * from './functions/getAttributes';
 export * from './functions/getClipboardData';
 export * from './functions/getColumn';
+export * from './functions/getCurrentDate';
 export * from './functions/getElement';
 export * from './functions/getElementId';
 export * from './functions/getElementImage';
