@@ -13,7 +13,8 @@ import { UI_DIR_PACKAGES } from '../../config'
 export class PackageInit {
   constructor(
     protected readonly type: string,
-    protected readonly templates?: string
+    protected readonly templates?: string,
+    protected readonly dir: string = UI_DIR_PACKAGES
   ) {
   }
 
@@ -27,7 +28,7 @@ export class PackageInit {
 
     this.getDirs()
       .forEach((dir) => {
-        new PackageInitItem(dir, [UI_DIR_PACKAGES, dir], this.type, this.templates).make()
+        new PackageInitItem(dir, [this.dir, dir], this.type, this.templates).make()
       })
   }
 
@@ -37,9 +38,9 @@ export class PackageInit {
    * Возвращает массив имен директорий для инициализации пакета.
    */
   protected getDirs(): string[] {
-    return PropertiesFile.readDir(UI_DIR_PACKAGES)
+    return PropertiesFile.readDir(this.dir)
       .filter(
-        path => PropertiesFile.readDir([UI_DIR_PACKAGES, path]).length === 0
+        path => PropertiesFile.readDir([this.dir, path]).length === 0
       )
   }
 }

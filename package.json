@@ -1,7 +1,7 @@
 {
   "name": "dxt-ui",
   "private": false,
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A modular Vue 3 UI library and design system constructor featuring AI-automated documentation, TypeScript support, and a flexible component architecture.",
   "keywords": [
     "vue",
@@ -63,14 +63,14 @@
     "packages/*"
   ],
   "dependencies": {
-    "@dxtmisha/configuration": "^0.4.6",
-    "@dxtmisha/constructor": "0.39.1",
-    "@dxtmisha/functional": "^1.6.5",
-    "@dxtmisha/functional-basic": "^0.6.0",
-    "@dxtmisha/media": "^0.4.2",
-    "@dxtmisha/scripts": "^0.5.14",
-    "@dxtmisha/styles": "^1.0.6",
-    "@dxtmisha/wiki": "^0.25.1",
+    "@dxtmisha/configuration": "workspace:*",
+    "@dxtmisha/constructor": "workspace:*",
+    "@dxtmisha/functional": "workspace:*",
+    "@dxtmisha/functional-basic": "workspace:*",
+    "@dxtmisha/media": "workspace:*",
+    "@dxtmisha/scripts": "workspace:*",
+    "@dxtmisha/styles": "workspace:*",
+    "@dxtmisha/wiki": "workspace:*",
     "sass": "^1.97.2",
     "typescript": "^5.9.3",
     "vite-plugin-singlefile": "^2.3.0",

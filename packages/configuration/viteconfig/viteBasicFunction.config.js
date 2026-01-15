@@ -139,6 +139,7 @@ export const viteBasicFunction = (
       rollupTypes,
       staticImport: true,
       tsconfigPath: './tsconfig.app.json'
+
     })
   ]
 })

@@ -1,3 +1,5 @@
+import './style.scss'
+
 // Classes
 export * from './classes/design/DesignAbstract'
 export * from './classes/design/DesignAsyncAbstract'

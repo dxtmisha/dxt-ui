@@ -1,4 +1,14 @@
-import { viteBasic } from '@dxtmisha/configuration/viteBasic'
+import { viteBasicFunction } from '@dxtmisha/configuration/viteBasicFunction'
 
 // https://vite.dev/config/
-export default viteBasic
+export default viteBasicFunction(
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  true
+)

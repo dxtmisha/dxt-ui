@@ -105,7 +105,9 @@ export class LibraryExport {
    */
   protected initFile(): string {
     const files: LibraryFiles = this.getDirectory()
-    const imports: string[] = []
+    const imports: string[] = [
+      this.initStyles()
+    ]
     const html: string[] = []
 
     files.forEach((file) => {
@@ -140,5 +142,28 @@ export class LibraryExport {
       + '\r\n'
       + '\r\n'
       + html.join('\r\n').trim()
+  }
+
+  /**
+   * Generates imports for global styles
+   *
+   * Генерация импортов для глобальных стилей
+   */
+  protected initStyles(): string {
+    const imports: string[] = []
+    const paths: string[] = [
+      'style.scss',
+      'style.css'
+    ]
+
+    paths.forEach((path) => {
+      const fullPath = [UI_DIR_IN, path]
+
+      if (PropertiesFile.is(fullPath)) {
+        imports.push(`import './${path}'`)
+      }
+    })
+
+    return imports.join('\r\n') + '\r\n'
   }
 }

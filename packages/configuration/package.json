@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/configuration",
   "private": false,
-  "version": "0.4.6",
+  "version": "0.4.7",
   "type": "module",
   "description": "Shared configuration files for DXT UI - Vite configs and TypeScript configs for building UI components",
   "keywords": [
@@ -30,6 +30,7 @@
     "viteconfig/",
     "README.md",
     "package.json",
+    "tsconfig.app.json",
     "LICENSE"
   ],
   "exports": {
@@ -52,6 +53,10 @@
     "./viteLibraries": {
       "types": "./viteconfig/viteLibraries.config.d.ts",
       "default": "./viteconfig/viteLibraries.config.js"
+    },
+    "./viteLibrariesRollup": {
+      "types": "./viteconfig/viteLibrariesRollup.config.d.ts",
+      "default": "./viteconfig/viteLibrariesRollup.config.js"
     },
     "./viteMdx": {
       "types": "./viteconfig/viteMdx.config.d.ts",
