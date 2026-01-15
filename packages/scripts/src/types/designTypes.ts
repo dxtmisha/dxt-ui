@@ -1,5 +1,17 @@
 import type { PropertyItem } from './propertyTypes'
 
+/** Item for design flags / Элемент флагов дизайна */
+export type DesignFlagsItem = {
+  /** Flag name / Название флага */
+  name: string
+  /** X coordinate / Координата X */
+  x: number
+  /** Y coordinate / Координата Y */
+  y: number
+}
+/** List of design flags items / Список элементов флагов дизайна */
+export type DesignFlagsList = DesignFlagsItem[]
+
 /** Design structure state with hierarchy and property information / Состояние структуры дизайна с иерархией и информацией о свойствах */
 export type DesignStructureState = {
   /** Element index identifier / Идентификатор индекса элемента */

@@ -1,0 +1,751 @@
+.ui-sys-flags {
+  --sys-flags-width: 96px;
+  --sys-flags-height: 72px;
+  --sys-flags-top: 60px;
+  --sys-flags-left: 48px;
+  --sys-flags-lines: 21;
+
+  background-image: url("./../assets/flags.webp");
+  background-size: calc(100% * 24) calc(100% * 56);
+}
+.ui-sys-flags--AD {
+  background-position: 2.1739130434782608% 1.5151515151515151%;
+}
+.ui-sys-flags--AE {
+  background-position: 10.869565217391305% 1.5151515151515151%;
+}
+.ui-sys-flags--AF {
+  background-position: 19.565217391304348% 1.5151515151515151%;
+}
+.ui-sys-flags--AG {
+  background-position: 28.26086956521739% 1.5151515151515151%;
+}
+.ui-sys-flags--AI {
+  background-position: 36.95652173913044% 1.5151515151515151%;
+}
+.ui-sys-flags--AL {
+  background-position: 45.65217391304348% 1.5151515151515151%;
+}
+.ui-sys-flags--AM {
+  background-position: 54.34782608695652% 1.5151515151515151%;
+}
+.ui-sys-flags--AN {
+  background-position: 63.04347826086956% 1.5151515151515151%;
+}
+.ui-sys-flags--AO {
+  background-position: 71.73913043478261% 1.5151515151515151%;
+}
+.ui-sys-flags--AQ {
+  background-position: 80.43478260869566% 1.5151515151515151%;
+}
+.ui-sys-flags--AR {
+  background-position: 89.1304347826087% 1.5151515151515151%;
+}
+.ui-sys-flags--AS {
+  background-position: 97.82608695652173% 1.5151515151515151%;
+}
+.ui-sys-flags--AT {
+  background-position: 2.1739130434782608% 6.363636363636363%;
+}
+.ui-sys-flags--AU {
+  background-position: 10.869565217391305% 6.363636363636363%;
+}
+.ui-sys-flags--AW {
+  background-position: 19.565217391304348% 6.363636363636363%;
+}
+.ui-sys-flags--AX {
+  background-position: 28.26086956521739% 6.363636363636363%;
+}
+.ui-sys-flags--AZ {
+  background-position: 36.95652173913044% 6.363636363636363%;
+}
+.ui-sys-flags--BA {
+  background-position: 45.65217391304348% 6.363636363636363%;
+}
+.ui-sys-flags--BB {
+  background-position: 54.34782608695652% 6.363636363636363%;
+}
+.ui-sys-flags--BD {
+  background-position: 63.04347826086956% 6.363636363636363%;
+}
+.ui-sys-flags--BE {
+  background-position: 71.73913043478261% 6.363636363636363%;
+}
+.ui-sys-flags--BF {
+  background-position: 80.43478260869566% 6.363636363636363%;
+}
+.ui-sys-flags--BG {
+  background-position: 89.1304347826087% 6.363636363636363%;
+}
+.ui-sys-flags--BH {
+  background-position: 97.82608695652173% 6.363636363636363%;
+}
+.ui-sys-flags--BI {
+  background-position: 2.1739130434782608% 11.212121212121211%;
+}
+.ui-sys-flags--BJ {
+  background-position: 10.869565217391305% 11.212121212121211%;
+}
+.ui-sys-flags--BL {
+  background-position: 19.565217391304348% 11.212121212121211%;
+}
+.ui-sys-flags--BM {
+  background-position: 28.26086956521739% 11.212121212121211%;
+}
+.ui-sys-flags--BN {
+  background-position: 36.95652173913044% 11.212121212121211%;
+}
+.ui-sys-flags--BO {
+  background-position: 45.65217391304348% 11.212121212121211%;
+}
+.ui-sys-flags--BQ {
+  background-position: 54.34782608695652% 11.212121212121211%;
+}
+.ui-sys-flags--BR {
+  background-position: 63.04347826086956% 11.212121212121211%;
+}
+.ui-sys-flags--BS {
+  background-position: 71.73913043478261% 11.212121212121211%;
+}
+.ui-sys-flags--BT {
+  background-position: 80.43478260869566% 11.212121212121211%;
+}
+.ui-sys-flags--BV {
+  background-position: 89.1304347826087% 11.212121212121211%;
+}
+.ui-sys-flags--BW {
+  background-position: 97.82608695652173% 11.212121212121211%;
+}
+.ui-sys-flags--BY {
+  background-position: 2.1739130434782608% 16.06060606060606%;
+}
+.ui-sys-flags--BZ {
+  background-position: 10.869565217391305% 16.06060606060606%;
+}
+.ui-sys-flags--CA {
+  background-position: 19.565217391304348% 16.06060606060606%;
+}
+.ui-sys-flags--CC {
+  background-position: 28.26086956521739% 16.06060606060606%;
+}
+.ui-sys-flags--CD {
+  background-position: 36.95652173913044% 16.06060606060606%;
+}
+.ui-sys-flags--CF {
+  background-position: 45.65217391304348% 16.06060606060606%;
+}
+.ui-sys-flags--CG {
+  background-position: 54.34782608695652% 16.06060606060606%;
+}
+.ui-sys-flags--CH {
+  background-position: 63.04347826086956% 16.06060606060606%;
+}
+.ui-sys-flags--CI {
+  background-position: 71.73913043478261% 16.06060606060606%;
+}
+.ui-sys-flags--CK {
+  background-position: 80.43478260869566% 16.06060606060606%;
+}
+.ui-sys-flags--CL {
+  background-position: 89.1304347826087% 16.06060606060606%;
+}
+.ui-sys-flags--CM {
+  background-position: 97.82608695652173% 16.06060606060606%;
+}
+.ui-sys-flags--CN {
+  background-position: 2.1739130434782608% 20.90909090909091%;
+}
+.ui-sys-flags--CO {
+  background-position: 10.869565217391305% 20.90909090909091%;
+}
+.ui-sys-flags--CR {
+  background-position: 19.565217391304348% 20.90909090909091%;
+}
+.ui-sys-flags--CU {
+  background-position: 28.26086956521739% 20.90909090909091%;
+}
+.ui-sys-flags--CV {
+  background-position: 36.95652173913044% 20.90909090909091%;
+}
+.ui-sys-flags--CW {
+  background-position: 45.65217391304348% 20.90909090909091%;
+}
+.ui-sys-flags--CX {
+  background-position: 54.34782608695652% 20.90909090909091%;
+}
+.ui-sys-flags--CY {
+  background-position: 63.04347826086956% 20.90909090909091%;
+}
+.ui-sys-flags--CZ {
+  background-position: 71.73913043478261% 20.90909090909091%;
+}
+.ui-sys-flags--DE {
+  background-position: 80.43478260869566% 20.90909090909091%;
+}
+.ui-sys-flags--DJ {
+  background-position: 89.1304347826087% 20.90909090909091%;
+}
+.ui-sys-flags--DK {
+  background-position: 97.82608695652173% 20.90909090909091%;
+}
+.ui-sys-flags--DM {
+  background-position: 2.1739130434782608% 25.757575757575758%;
+}
+.ui-sys-flags--DO {
+  background-position: 10.869565217391305% 25.757575757575758%;
+}
+.ui-sys-flags--DZ {
+  background-position: 19.565217391304348% 25.757575757575758%;
+}
+.ui-sys-flags--EC {
+  background-position: 28.26086956521739% 25.757575757575758%;
+}
+.ui-sys-flags--EE {
+  background-position: 36.95652173913044% 25.757575757575758%;
+}
+.ui-sys-flags--EG {
+  background-position: 45.65217391304348% 25.757575757575758%;
+}
+.ui-sys-flags--EH {
+  background-position: 54.34782608695652% 25.757575757575758%;
+}
+.ui-sys-flags--ER {
+  background-position: 63.04347826086956% 25.757575757575758%;
+}
+.ui-sys-flags--ES {
+  background-position: 71.73913043478261% 25.757575757575758%;
+}
+.ui-sys-flags--ET {
+  background-position: 80.43478260869566% 25.757575757575758%;
+}
+.ui-sys-flags--FI {
+  background-position: 89.1304347826087% 25.757575757575758%;
+}
+.ui-sys-flags--FJ {
+  background-position: 97.82608695652173% 25.757575757575758%;
+}
+.ui-sys-flags--FK {
+  background-position: 2.1739130434782608% 30.606060606060606%;
+}
+.ui-sys-flags--FM {
+  background-position: 10.869565217391305% 30.606060606060606%;
+}
+.ui-sys-flags--FO {
+  background-position: 19.565217391304348% 30.606060606060606%;
+}
+.ui-sys-flags--FR {
+  background-position: 28.26086956521739% 30.606060606060606%;
+}
+.ui-sys-flags--GA {
+  background-position: 36.95652173913044% 30.606060606060606%;
+}
+.ui-sys-flags--GB {
+  background-position: 45.65217391304348% 30.606060606060606%;
+}
+.ui-sys-flags--GD {
+  background-position: 54.34782608695652% 30.606060606060606%;
+}
+.ui-sys-flags--GE {
+  background-position: 63.04347826086956% 30.606060606060606%;
+}
+.ui-sys-flags--GF {
+  background-position: 71.73913043478261% 30.606060606060606%;
+}
+.ui-sys-flags--GG {
+  background-position: 80.43478260869566% 30.606060606060606%;
+}
+.ui-sys-flags--GH {
+  background-position: 89.1304347826087% 30.606060606060606%;
+}
+.ui-sys-flags--GI {
+  background-position: 97.82608695652173% 30.606060606060606%;
+}
+.ui-sys-flags--GL {
+  background-position: 2.1739130434782608% 35.45454545454545%;
+}
+.ui-sys-flags--GM {
+  background-position: 10.869565217391305% 35.45454545454545%;
+}
+.ui-sys-flags--GN {
+  background-position: 19.565217391304348% 35.45454545454545%;
+}
+.ui-sys-flags--GP {
+  background-position: 28.26086956521739% 35.45454545454545%;
+}
+.ui-sys-flags--GQ {
+  background-position: 36.95652173913044% 35.45454545454545%;
+}
+.ui-sys-flags--GR {
+  background-position: 45.65217391304348% 35.45454545454545%;
+}
+.ui-sys-flags--GT {
+  background-position: 54.34782608695652% 35.45454545454545%;
+}
+.ui-sys-flags--GU {
+  background-position: 63.04347826086956% 35.45454545454545%;
+}
+.ui-sys-flags--GW {
+  background-position: 71.73913043478261% 35.45454545454545%;
+}
+.ui-sys-flags--GY {
+  background-position: 80.43478260869566% 35.45454545454545%;
+}
+.ui-sys-flags--HK {
+  background-position: 89.1304347826087% 35.45454545454545%;
+}
+.ui-sys-flags--HM {
+  background-position: 97.82608695652173% 35.45454545454545%;
+}
+.ui-sys-flags--HN {
+  background-position: 2.1739130434782608% 40.303030303030305%;
+}
+.ui-sys-flags--HR {
+  background-position: 10.869565217391305% 40.303030303030305%;
+}
+.ui-sys-flags--HT {
+  background-position: 19.565217391304348% 40.303030303030305%;
+}
+.ui-sys-flags--HU {
+  background-position: 28.26086956521739% 40.303030303030305%;
+}
+.ui-sys-flags--ID {
+  background-position: 36.95652173913044% 40.303030303030305%;
+}
+.ui-sys-flags--IE {
+  background-position: 45.65217391304348% 40.303030303030305%;
+}
+.ui-sys-flags--IL {
+  background-position: 54.34782608695652% 40.303030303030305%;
+}
+.ui-sys-flags--IM {
+  background-position: 63.04347826086956% 40.303030303030305%;
+}
+.ui-sys-flags--IN {
+  background-position: 71.73913043478261% 40.303030303030305%;
+}
+.ui-sys-flags--IO {
+  background-position: 80.43478260869566% 40.303030303030305%;
+}
+.ui-sys-flags--IQ {
+  background-position: 89.1304347826087% 40.303030303030305%;
+}
+.ui-sys-flags--IR {
+  background-position: 97.82608695652173% 40.303030303030305%;
+}
+.ui-sys-flags--IS {
+  background-position: 2.1739130434782608% 45.15151515151515%;
+}
+.ui-sys-flags--IT {
+  background-position: 10.869565217391305% 45.15151515151515%;
+}
+.ui-sys-flags--JE {
+  background-position: 19.565217391304348% 45.15151515151515%;
+}
+.ui-sys-flags--JM {
+  background-position: 28.26086956521739% 45.15151515151515%;
+}
+.ui-sys-flags--JO {
+  background-position: 36.95652173913044% 45.15151515151515%;
+}
+.ui-sys-flags--JP {
+  background-position: 45.65217391304348% 45.15151515151515%;
+}
+.ui-sys-flags--KE {
+  background-position: 54.34782608695652% 45.15151515151515%;
+}
+.ui-sys-flags--KG {
+  background-position: 63.04347826086956% 45.15151515151515%;
+}
+.ui-sys-flags--KH {
+  background-position: 71.73913043478261% 45.15151515151515%;
+}
+.ui-sys-flags--KI {
+  background-position: 80.43478260869566% 45.15151515151515%;
+}
+.ui-sys-flags--KM {
+  background-position: 89.1304347826087% 45.15151515151515%;
+}
+.ui-sys-flags--KN {
+  background-position: 97.82608695652173% 45.15151515151515%;
+}
+.ui-sys-flags--KP {
+  background-position: 2.1739130434782608% 50%;
+}
+.ui-sys-flags--KR {
+  background-position: 10.869565217391305% 50%;
+}
+.ui-sys-flags--KW {
+  background-position: 19.565217391304348% 50%;
+}
+.ui-sys-flags--KY {
+  background-position: 28.26086956521739% 50%;
+}
+.ui-sys-flags--KZ {
+  background-position: 36.95652173913044% 50%;
+}
+.ui-sys-flags--LA {
+  background-position: 45.65217391304348% 50%;
+}
+.ui-sys-flags--LB {
+  background-position: 54.34782608695652% 50%;
+}
+.ui-sys-flags--LC {
+  background-position: 63.04347826086956% 50%;
+}
+.ui-sys-flags--LI {
+  background-position: 71.73913043478261% 50%;
+}
+.ui-sys-flags--LK {
+  background-position: 80.43478260869566% 50%;
+}
+.ui-sys-flags--LR {
+  background-position: 89.1304347826087% 50%;
+}
+.ui-sys-flags--LS {
+  background-position: 97.82608695652173% 50%;
+}
+.ui-sys-flags--LT {
+  background-position: 2.1739130434782608% 54.848484848484844%;
+}
+.ui-sys-flags--LU {
+  background-position: 10.869565217391305% 54.848484848484844%;
+}
+.ui-sys-flags--LV {
+  background-position: 19.565217391304348% 54.848484848484844%;
+}
+.ui-sys-flags--LY {
+  background-position: 28.26086956521739% 54.848484848484844%;
+}
+.ui-sys-flags--MA {
+  background-position: 36.95652173913044% 54.848484848484844%;
+}
+.ui-sys-flags--MC {
+  background-position: 45.65217391304348% 54.848484848484844%;
+}
+.ui-sys-flags--MD {
+  background-position: 54.34782608695652% 54.848484848484844%;
+}
+.ui-sys-flags--ME {
+  background-position: 63.04347826086956% 54.848484848484844%;
+}
+.ui-sys-flags--MF {
+  background-position: 71.73913043478261% 54.848484848484844%;
+}
+.ui-sys-flags--MG {
+  background-position: 80.43478260869566% 54.848484848484844%;
+}
+.ui-sys-flags--MH {
+  background-position: 89.1304347826087% 54.848484848484844%;
+}
+.ui-sys-flags--MK {
+  background-position: 97.82608695652173% 54.848484848484844%;
+}
+.ui-sys-flags--ML {
+  background-position: 2.1739130434782608% 59.696969696969695%;
+}
+.ui-sys-flags--MM {
+  background-position: 10.869565217391305% 59.696969696969695%;
+}
+.ui-sys-flags--MN {
+  background-position: 19.565217391304348% 59.696969696969695%;
+}
+.ui-sys-flags--MO {
+  background-position: 28.26086956521739% 59.696969696969695%;
+}
+.ui-sys-flags--MP {
+  background-position: 36.95652173913044% 59.696969696969695%;
+}
+.ui-sys-flags--MQ {
+  background-position: 45.65217391304348% 59.696969696969695%;
+}
+.ui-sys-flags--MR {
+  background-position: 54.34782608695652% 59.696969696969695%;
+}
+.ui-sys-flags--MS {
+  background-position: 63.04347826086956% 59.696969696969695%;
+}
+.ui-sys-flags--MT {
+  background-position: 71.73913043478261% 59.696969696969695%;
+}
+.ui-sys-flags--MU {
+  background-position: 80.43478260869566% 59.696969696969695%;
+}
+.ui-sys-flags--MV {
+  background-position: 89.1304347826087% 59.696969696969695%;
+}
+.ui-sys-flags--MW {
+  background-position: 97.82608695652173% 59.696969696969695%;
+}
+.ui-sys-flags--MX {
+  background-position: 2.1739130434782608% 64.54545454545455%;
+}
+.ui-sys-flags--MY {
+  background-position: 10.869565217391305% 64.54545454545455%;
+}
+.ui-sys-flags--MZ {
+  background-position: 19.565217391304348% 64.54545454545455%;
+}
+.ui-sys-flags--NA {
+  background-position: 28.26086956521739% 64.54545454545455%;
+}
+.ui-sys-flags--NC {
+  background-position: 36.95652173913044% 64.54545454545455%;
+}
+.ui-sys-flags--NE {
+  background-position: 45.65217391304348% 64.54545454545455%;
+}
+.ui-sys-flags--NF {
+  background-position: 54.34782608695652% 64.54545454545455%;
+}
+.ui-sys-flags--NG {
+  background-position: 63.04347826086956% 64.54545454545455%;
+}
+.ui-sys-flags--NI {
+  background-position: 71.73913043478261% 64.54545454545455%;
+}
+.ui-sys-flags--NL {
+  background-position: 80.43478260869566% 64.54545454545455%;
+}
+.ui-sys-flags--NO {
+  background-position: 89.1304347826087% 64.54545454545455%;
+}
+.ui-sys-flags--NP {
+  background-position: 97.82608695652173% 64.54545454545455%;
+}
+.ui-sys-flags--NR {
+  background-position: 2.1739130434782608% 69.39393939393939%;
+}
+.ui-sys-flags--NU {
+  background-position: 10.869565217391305% 69.39393939393939%;
+}
+.ui-sys-flags--NZ {
+  background-position: 19.565217391304348% 69.39393939393939%;
+}
+.ui-sys-flags--OM {
+  background-position: 28.26086956521739% 69.39393939393939%;
+}
+.ui-sys-flags--PA {
+  background-position: 36.95652173913044% 69.39393939393939%;
+}
+.ui-sys-flags--PE {
+  background-position: 45.65217391304348% 69.39393939393939%;
+}
+.ui-sys-flags--PF {
+  background-position: 54.34782608695652% 69.39393939393939%;
+}
+.ui-sys-flags--PG {
+  background-position: 63.04347826086956% 69.39393939393939%;
+}
+.ui-sys-flags--PH {
+  background-position: 71.73913043478261% 69.39393939393939%;
+}
+.ui-sys-flags--PK {
+  background-position: 80.43478260869566% 69.39393939393939%;
+}
+.ui-sys-flags--PL {
+  background-position: 89.1304347826087% 69.39393939393939%;
+}
+.ui-sys-flags--PM {
+  background-position: 97.82608695652173% 69.39393939393939%;
+}
+.ui-sys-flags--PN {
+  background-position: 2.1739130434782608% 74.24242424242424%;
+}
+.ui-sys-flags--PR {
+  background-position: 10.869565217391305% 74.24242424242424%;
+}
+.ui-sys-flags--PS {
+  background-position: 19.565217391304348% 74.24242424242424%;
+}
+.ui-sys-flags--PT {
+  background-position: 28.26086956521739% 74.24242424242424%;
+}
+.ui-sys-flags--PW {
+  background-position: 36.95652173913044% 74.24242424242424%;
+}
+.ui-sys-flags--PY {
+  background-position: 45.65217391304348% 74.24242424242424%;
+}
+.ui-sys-flags--QA {
+  background-position: 54.34782608695652% 74.24242424242424%;
+}
+.ui-sys-flags--RE {
+  background-position: 63.04347826086956% 74.24242424242424%;
+}
+.ui-sys-flags--RO {
+  background-position: 71.73913043478261% 74.24242424242424%;
+}
+.ui-sys-flags--RS {
+  background-position: 80.43478260869566% 74.24242424242424%;
+}
+.ui-sys-flags--RU {
+  background-position: 89.1304347826087% 74.24242424242424%;
+}
+.ui-sys-flags--RW {
+  background-position: 97.82608695652173% 74.24242424242424%;
+}
+.ui-sys-flags--SA {
+  background-position: 2.1739130434782608% 79.0909090909091%;
+}
+.ui-sys-flags--SB {
+  background-position: 10.869565217391305% 79.0909090909091%;
+}
+.ui-sys-flags--SC {
+  background-position: 19.565217391304348% 79.0909090909091%;
+}
+.ui-sys-flags--SD {
+  background-position: 28.26086956521739% 79.0909090909091%;
+}
+.ui-sys-flags--SE {
+  background-position: 36.95652173913044% 79.0909090909091%;
+}
+.ui-sys-flags--SG {
+  background-position: 45.65217391304348% 79.0909090909091%;
+}
+.ui-sys-flags--SH {
+  background-position: 54.34782608695652% 79.0909090909091%;
+}
+.ui-sys-flags--SI {
+  background-position: 63.04347826086956% 79.0909090909091%;
+}
+.ui-sys-flags--SJ {
+  background-position: 71.73913043478261% 79.0909090909091%;
+}
+.ui-sys-flags--SK {
+  background-position: 80.43478260869566% 79.0909090909091%;
+}
+.ui-sys-flags--SL {
+  background-position: 89.1304347826087% 79.0909090909091%;
+}
+.ui-sys-flags--SM {
+  background-position: 97.82608695652173% 79.0909090909091%;
+}
+.ui-sys-flags--SN {
+  background-position: 2.1739130434782608% 83.93939393939394%;
+}
+.ui-sys-flags--SO {
+  background-position: 10.869565217391305% 83.93939393939394%;
+}
+.ui-sys-flags--SR {
+  background-position: 19.565217391304348% 83.93939393939394%;
+}
+.ui-sys-flags--SS {
+  background-position: 28.26086956521739% 83.93939393939394%;
+}
+.ui-sys-flags--ST {
+  background-position: 36.95652173913044% 83.93939393939394%;
+}
+.ui-sys-flags--SV {
+  background-position: 45.65217391304348% 83.93939393939394%;
+}
+.ui-sys-flags--SX {
+  background-position: 54.34782608695652% 83.93939393939394%;
+}
+.ui-sys-flags--SY {
+  background-position: 63.04347826086956% 83.93939393939394%;
+}
+.ui-sys-flags--SZ {
+  background-position: 71.73913043478261% 83.93939393939394%;
+}
+.ui-sys-flags--TC {
+  background-position: 80.43478260869566% 83.93939393939394%;
+}
+.ui-sys-flags--TD {
+  background-position: 89.1304347826087% 83.93939393939394%;
+}
+.ui-sys-flags--TG {
+  background-position: 97.82608695652173% 83.93939393939394%;
+}
+.ui-sys-flags--TH {
+  background-position: 2.1739130434782608% 88.78787878787878%;
+}
+.ui-sys-flags--TJ {
+  background-position: 10.869565217391305% 88.78787878787878%;
+}
+.ui-sys-flags--TK {
+  background-position: 19.565217391304348% 88.78787878787878%;
+}
+.ui-sys-flags--TL {
+  background-position: 28.26086956521739% 88.78787878787878%;
+}
+.ui-sys-flags--TM {
+  background-position: 36.95652173913044% 88.78787878787878%;
+}
+.ui-sys-flags--TN {
+  background-position: 45.65217391304348% 88.78787878787878%;
+}
+.ui-sys-flags--TO {
+  background-position: 54.34782608695652% 88.78787878787878%;
+}
+.ui-sys-flags--TR {
+  background-position: 63.04347826086956% 88.78787878787878%;
+}
+.ui-sys-flags--TT {
+  background-position: 71.73913043478261% 88.78787878787878%;
+}
+.ui-sys-flags--TV {
+  background-position: 80.43478260869566% 88.78787878787878%;
+}
+.ui-sys-flags--TW {
+  background-position: 89.1304347826087% 88.78787878787878%;
+}
+.ui-sys-flags--TZ {
+  background-position: 97.82608695652173% 88.78787878787878%;
+}
+.ui-sys-flags--UA {
+  background-position: 2.1739130434782608% 93.63636363636364%;
+}
+.ui-sys-flags--UG {
+  background-position: 10.869565217391305% 93.63636363636364%;
+}
+.ui-sys-flags--US {
+  background-position: 19.565217391304348% 93.63636363636364%;
+}
+.ui-sys-flags--UY {
+  background-position: 28.26086956521739% 93.63636363636364%;
+}
+.ui-sys-flags--UZ {
+  background-position: 36.95652173913044% 93.63636363636364%;
+}
+.ui-sys-flags--VA {
+  background-position: 45.65217391304348% 93.63636363636364%;
+}
+.ui-sys-flags--VC {
+  background-position: 54.34782608695652% 93.63636363636364%;
+}
+.ui-sys-flags--VE {
+  background-position: 63.04347826086956% 93.63636363636364%;
+}
+.ui-sys-flags--VG {
+  background-position: 71.73913043478261% 93.63636363636364%;
+}
+.ui-sys-flags--VI {
+  background-position: 80.43478260869566% 93.63636363636364%;
+}
+.ui-sys-flags--VN {
+  background-position: 89.1304347826087% 93.63636363636364%;
+}
+.ui-sys-flags--VU {
+  background-position: 97.82608695652173% 93.63636363636364%;
+}
+.ui-sys-flags--WF {
+  background-position: 2.1739130434782608% 98.48484848484848%;
+}
+.ui-sys-flags--WS {
+  background-position: 10.869565217391305% 98.48484848484848%;
+}
+.ui-sys-flags--YE {
+  background-position: 19.565217391304348% 98.48484848484848%;
+}
+.ui-sys-flags--YT {
+  background-position: 28.26086956521739% 98.48484848484848%;
+}
+.ui-sys-flags--ZA {
+  background-position: 36.95652173913044% 98.48484848484848%;
+}
+.ui-sys-flags--ZM {
+  background-position: 45.65217391304348% 98.48484848484848%;
+}
+.ui-sys-flags--ZW {
+  background-position: 54.34782608695652% 98.48484848484848%;
+}

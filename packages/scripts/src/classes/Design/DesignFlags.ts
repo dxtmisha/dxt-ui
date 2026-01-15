@@ -3,11 +3,21 @@
 import { Canvas, createCanvas, loadImage, type SKRSContext2D } from '@napi-rs/canvas'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
-const DESIGN_FLAGS_FACTOR = 1.5
-const DESIGN_FLAGS_FILE_NAME = 'flags.webp'
+import type { DesignFlagsItem, DesignFlagsList } from '../../types/designTypes'
+
+import { UI_DIR_IN } from '../../config'
+
+const DESIGN_FLAGS_FACTOR = 2
+const DESIGN_FLAGS_MIME = 'image/webp'
+const DESIGN_FLAGS_FILE_NAME_ITEM = 'flags.webp'
+const DESIGN_FLAGS_FILE_NAME = [UI_DIR_IN, 'assets', DESIGN_FLAGS_FILE_NAME_ITEM]
+const DESIGN_FLAGS_FILE_PATH = ['.', '..', 'assets', DESIGN_FLAGS_FILE_NAME_ITEM]
+const DESIGN_FLAGS_FILE_STYLE_NAME = [UI_DIR_IN, 'styles', 'flags.css']
+const DESIGN_FLAGS_CLASS_NAME = '.ui-sys-flags'
 
 export class DesignFlags {
   protected list: string[]
+  protected data: DesignFlagsList = []
 
   protected x: number = 0
   protected y: number = 0
@@ -21,8 +31,8 @@ export class DesignFlags {
 
   constructor(
     protected readonly dir: string = 'src/assets/flags',
-    protected readonly width: number = 64,
-    protected readonly height: number = 48,
+    protected readonly width: number = 96,
+    protected readonly height: number = 72,
     protected readonly columns: number = 12
   ) {
     this.list = this.initList()
@@ -35,12 +45,19 @@ export class DesignFlags {
   }
 
   async make() {
-    const list = this.initList()
-
-    for (const file of list) {
+    for (const file of this.list) {
       await this.addImage(file)
+
+      this.data.push(this.addData(file))
       this.next()
     }
+
+    this.save()
+    this.saveStyle()
+  }
+
+  getLines(): number {
+    return Math.ceil(this.list.length / this.columns)
   }
 
   /**
@@ -58,7 +75,7 @@ export class DesignFlags {
    * Возвращает максимальную высоту холста.
    */
   protected getCanvasHeight(): number {
-    return Math.ceil(this.initList().length / this.columns) * this.square
+    return this.getLines() * this.square
   }
 
   protected getDx() {
@@ -67,6 +84,36 @@ export class DesignFlags {
 
   protected getDy() {
     return (this.y * this.square) + this.top
+  }
+
+  protected getStyle(): string {
+    const backgroundSizeColumns = this.columns * (this.square / this.width)
+    const backgroundSizeLines = this.getLines() * (this.square / this.height)
+
+    let style: string = `
+${DESIGN_FLAGS_CLASS_NAME} {
+  --sys-flags-width: ${this.width}px;
+  --sys-flags-height: ${this.height}px;
+  --sys-flags-top: ${this.top}px;
+  --sys-flags-left: ${this.left}px;
+  --sys-flags-lines: ${this.getLines()};
+
+  background-image: url("${DESIGN_FLAGS_FILE_PATH.join('/')}");
+  background-size: calc(100% * ${backgroundSizeColumns}) calc(100% * ${backgroundSizeLines});
+}
+`.trim()
+
+    const x = 100 / (this.getCanvasWidth() - this.width)
+    const y = 100 / (this.getCanvasHeight() - this.height)
+
+    this.data.forEach((item) => {
+      style += `
+${DESIGN_FLAGS_CLASS_NAME}--${item.name} {
+  background-position: ${item.x * x}% ${item.y * y}%;
+}`
+    })
+
+    return style
   }
 
   protected async addImage(file: string): Promise<void> {
@@ -82,6 +129,14 @@ export class DesignFlags {
     )
   }
 
+  protected addData(file: string): DesignFlagsItem {
+    return {
+      name: file.replace(/\.[^.]+$/, ''),
+      x: this.getDx(),
+      y: this.getDy()
+    }
+  }
+
   protected next(): void {
     this.x++
 
@@ -92,14 +147,22 @@ export class DesignFlags {
   }
 
   protected save(): void {
-    const buffer = this.canvas.toBuffer('image/webp', 0.9)
+    const buffer = this.canvas.toBuffer(DESIGN_FLAGS_MIME, 64)
 
     if (buffer) {
       PropertiesFile.writeByPath(
-        [this.dir, DESIGN_FLAGS_FILE_NAME],
-        buffer
+        DESIGN_FLAGS_FILE_NAME,
+        buffer,
+        false
       )
     }
+  }
+
+  protected saveStyle(): void {
+    PropertiesFile.writeByPath(
+      DESIGN_FLAGS_FILE_STYLE_NAME,
+      this.getStyle()
+    )
   }
 
   protected initCanvas(): Canvas {

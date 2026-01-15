@@ -58,7 +58,8 @@ export const viteBasicFunction = (
     '@dxtmisha/styles',
     '@dxtmisha/wiki',
     '@emotion/react',
-    '@emotion/styled'
+    '@emotion/styled',
+    '@napi-rs/canvas'
   ],
   externalExtended = [],
   fileCssName = 'style.css',
@@ -101,6 +102,9 @@ export const viteBasicFunction = (
         }
       }
     }
+  },
+  optimizeDeps: {
+    exclude: ['@napi-rs/canvas']
   },
   css: {
     postcss: {

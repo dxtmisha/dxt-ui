@@ -7,7 +7,7 @@ import { hasNativeDirname } from '../../functions/hasNativeDirname'
 import { UI_FILE_INDEX, UI_MODULES, UI_PROJECT_NAME } from '../../config'
 
 export type PropertiesFilePath = string | string[]
-export type PropertiesFileValue<T = any> = string | Record<string, T>
+export type PropertiesFileValue<T = any> = string | Record<string, T> | Buffer
 
 const dirnamePath = hasNativeDirname() ? __dirname : requirePath.dirname(fileURLToPath(import.meta.url))
 
@@ -417,16 +417,18 @@ export class PropertiesFile {
    * Записывает по выбранному пути.
    * @param path path to the file/ путь к файлу
    * @param value values for storage/ значения для хранения
+   * @param transform whether to transform the value/ преобразовывать ли значение
    */
   static writeByPath<T extends PropertiesFileValue>(
     path: PropertiesFilePath,
-    value: T
+    value: T,
+    transform: boolean = true
   ): void {
     this.createDir(path)
 
     requireFs.writeFileSync(
       this.joinPath(path),
-      typeof value === 'object' ? JSON.stringify(value) : value
+      transform && typeof value === 'object' ? JSON.stringify(value) : value as any
     )
   }
 
