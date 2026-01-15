@@ -211,7 +211,7 @@ export class PackageInitItem {
     ) {
       console.log('Generate library...')
 
-      PropertiesFile.writeByPath(path, `import '${this.getProjectName()}/style'
+      PropertiesFile.writeByPath(path, `import '${this.getProjectName()}/style.css'
 export * from '${this.getProjectName()}'
 `
       )
