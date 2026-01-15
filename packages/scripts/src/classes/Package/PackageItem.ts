@@ -264,6 +264,20 @@ export * from '${this.getProjectName()}'
         )
       }
 
+      if (
+        packageFile.match(/["']files["']/)
+      ) {
+        console.log('Update package.json: files...')
+
+        edit = true
+        packageFile = packageFile.replace(
+          /(["']files["']:[^[]+\[)/,
+          `$1
+    "packages/${name}/dist",
+    "packages/${name}/package.json",`
+        )
+      }
+
       if (edit) {
         PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageFile)
       }
