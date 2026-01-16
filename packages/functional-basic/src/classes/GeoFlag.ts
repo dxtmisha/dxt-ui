@@ -9,7 +9,7 @@ import {
   type GeoItemFull
 } from '../types/geoTypes'
 
-export const GEO_FLAG_ICON_NAME = '@flag'
+export const GEO_FLAG_ICON_NAME = 'f'
 
 /**
  * Class for working with Flags.
