@@ -188,6 +188,7 @@ export class Styles {
         [
           `@use "./${FILE_BASIC}";`,
           `@use "@dxtmisha/styles/${FILE_PROPERTIES}" as ui;`,
+          `@use "@dxtmisha/media/style.css";`,
           '',
           '@include ui.initGlobal;',
           `@include ui.initDesignBody('${design}.main');`

@@ -65,6 +65,10 @@ export class ImageType {
         return ImageTypeValue.flag
       }
 
+      if (image.match(/^f-[a-z]{2}$/)) {
+        return ImageTypeValue.flagCompressed
+      }
+
       const sub = image.match(/^(outlined|round|sharp|material)-/)
 
       if (sub) {

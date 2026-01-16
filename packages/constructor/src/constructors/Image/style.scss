@@ -74,6 +74,12 @@
         height: 100%;
       }
     }
+
+    &--flag-compressed {
+      > * {
+        @include ui.absolute;
+      }
+    }
   }
 
   &--size {

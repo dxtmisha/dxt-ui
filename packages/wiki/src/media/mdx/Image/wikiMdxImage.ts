@@ -10,6 +10,8 @@ import adaptiveEn from './adaptive.en.mdx'
 import adaptiveRu from './adaptive.ru.mdx'
 import imgTagEn from './img-tag.en.mdx'
 import imgTagRu from './img-tag.ru.mdx'
+import flagEn from './flag.en.mdx'
+import flagRu from './flag.ru.mdx'
 
 import eventLoadEn from './event.load.en.mdx'
 import eventLoadRu from './event.load.ru.mdx'
@@ -39,6 +41,10 @@ export const wikiMdxImage: StorybookComponentsMdxItem = {
     'img-tag': {
       en: imgTagEn,
       ru: imgTagRu
+    },
+    'flag': {
+      en: flagEn,
+      ru: flagRu
     },
     'event.load': {
       en: eventLoadEn,

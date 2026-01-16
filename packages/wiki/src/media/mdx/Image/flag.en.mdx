@@ -1,0 +1,23 @@
+## Flags
+
+The `Image` component supports displaying country flags. A special format for the `value` property is used for this purpose.
+
+**Formats:**
+
+- `flag-xx` — standard flag (where `xx` is the ISO 3166-1 alpha-2 country code)
+- `f-xx` — compressed flag (where `xx` is the ISO 3166-1 alpha-2 country code)
+
+**Features:**
+
+- Automatic flag type detection by prefix
+- Support for all countries according to ISO 3166-1 alpha-2 standard
+
+```html
+<template>
+  <!-- Standard US flag -->
+  <Image value="flag-us" />
+
+  <!-- Compressed Germany flag -->
+  <Image value="f-de" />
+</template>
+```

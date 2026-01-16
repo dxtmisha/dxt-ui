@@ -128,6 +128,15 @@ export class Image {
     const value = this.props.value
 
     if (
+      type === ImageTypeValue.flagCompressed
+      && value
+    ) {
+      return String(value)
+        .replace('f-', '')
+        .toUpperCase()
+    }
+
+    if (
       type
       && isString(value)
       && [

@@ -1,24 +1,24 @@
-Universal component for displaying images, icons, and PDF documents with advanced size, positioning, and adaptivity control.
+Universal component for displaying images, icons, flags, and PDF documents with advanced size, positioning, and adaptability controls.
 
-Image provides flexible API for working with various types of visual content: from simple icons to complex images with cropping and adaptive scaling. The component automatically detects the source type, supports coordinate positioning, adaptive resizing, and various fill modes.
+Image provides a flexible API for working with various types of visual content. The component automatically detects the source type (image, icon, color, file), selects the optimal rendering method (`<img>`, `background-image`, `<picture>`, `<object>`, or icon font), and supports advanced cropping and adaptation features.
 
 **Key Features:**
 
-- Support for multiple source types (icons, URLs, Files, PDFs)
-- Adaptive scaling with aspect ratio preservation
-- Coordinate-based cropping and precise positioning
-- Fill modes: auto, contain, cover
-- Automatic content type detection
-- CSS variable integration for flexible styling
-- Load events with complete type and data information
+- Support for multiple source types (URL, File, PDF, Material Icons, flags, colors)
+- Flexible rendering with automatic choice between background and img tag
+- Adaptive scaling with aspect ratio preservation and srcset support
+- Display control via fill modes and coordinate cropping
+- Styling support with masks and color filling
+- Integration with Material Symbols and system flags
 
 **Typical Use Cases:**
 
-- Displaying user avatars and uploaded images
-- Working with interface icons
-- PDF document previews
-- Adaptive image galleries
-- Background images with cropping
+- Responsive images with picture and srcset
+- Interface icons (Material Design or SVG masks)
+- User avatars with automatic cropping
+- Previews of uploaded files and PDF documents
+- Background images with complex positioning
+- Displaying country flags via CSS sprites
 
 ```html
 <script setup>
@@ -26,20 +26,25 @@ import { ref } from 'vue'
 import { Image } from '@dxtmisha/constructor'
 
 const imageUrl = ref('https://example.com/image.jpg')
-
-function handleLoad(data) {
-  console.log('Image loaded:', data.type, data.image)
-}
 </script>
 
 <template>
+  <!-- Background image with cropping -->
   <Image
     :value="imageUrl"
     size="cover"
-    adaptive
-    :coordinator="[0, 0, 100, 100]"
-    @load="handleLoad"
+    :coordinator="[10, 10, 10, 10]"
   />
+
+  <!-- SEO-friendly image -->
+  <Image
+    :value="imageUrl"
+    tag-img
+    alt="Description"
+  />
+
+  <!-- Material Design Icon -->
+  <Image value="filled-home" />
 </template>
 ```
 

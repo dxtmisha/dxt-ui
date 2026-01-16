@@ -116,7 +116,7 @@ export class DesignReplace {
     let space = this.sample.match(new RegExp(`^( *)(${regName})`, 'm'))?.[1]
 
     if (
-      !space
+      typeof space !== 'string'
       && this.sample.match(name)
     ) {
       regName = `<!-- :${name} `

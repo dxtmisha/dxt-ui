@@ -160,6 +160,7 @@ export const wikiDescriptionsImage: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'Image'} type={'image'}/>
 <StorybookDescriptions componentName={'Image'} type={'value'}/>
+<StorybookDescriptions componentName={'Image'} type={'flag'}/>
 <Canvas of={Component.ImageType}/>
 
 <StorybookDescriptions componentName={'Image'} type={'img-tag'}/>
