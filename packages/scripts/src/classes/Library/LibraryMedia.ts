@@ -117,7 +117,7 @@ export class LibraryMedia {
     const data: string[] = []
 
     this.getIconImport().forEach((item) => {
-      data.push(`import ${item.name} from '${item.path}'`)
+      data.push(`const ${item.name} = async () => (await import('${item.path}'))?.default`)
     })
 
     return data

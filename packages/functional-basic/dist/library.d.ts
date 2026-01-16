@@ -2900,7 +2900,7 @@ export declare class Icons {
     protected static wait(): Promise<void>;
 }
 
-export declare type IconsItem = string | Promise<string | any>;
+export declare type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
 
 /** Type for 2D coordinates/ Тип для 2D координат */
 export declare type ImageCoordinator = {

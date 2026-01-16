@@ -17,7 +17,7 @@ function g(i, t) {
   }
   return [];
 }
-function At(i, t = "=", e = "&") {
+function Nt(i, t = "=", e = "&") {
   return g(
     i,
     (s, n) => `${n}${t}${encodeURIComponent(String(s).trim())}`
@@ -63,7 +63,7 @@ function j(i) {
 function l() {
   return typeof window != "undefined" && !!window.document;
 }
-function ut(i) {
+function ht(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -82,19 +82,19 @@ function C(i) {
   return t.match(/( [0-9]{3}[ ,.]|[0-9] [0-9])/ig) ? t = t.replace(/ /ig, "").replace(/,/ig, ".") : t.match(/,[0-9]{3}[,.]/ig) ? t = t.replace(/,/ig, "") : t.match(/[.][0-9]{3}[,.]/ig) ? t = t.replace(/[.]/ig, "").replace(/,/ig, ".") : t = t.replace(/,/ig, "."), parseFloat(t);
 }
 function st(i, t) {
-  return q(i) ? !1 : Array.isArray(t) ? t.includes(i) : ut(i) && ut(t) ? C(i) === C(t) : i === t;
+  return q(i) ? !1 : Array.isArray(t) ? t.includes(i) : ht(i) && ht(t) ? C(i) === C(t) : i === t;
 }
-function Nt(i) {
+function ot(i) {
   return i instanceof Function || typeof i == "function";
 }
 function I(i) {
-  return Nt(i) ? i() : i;
+  return ot(i) ? i() : i;
 }
 function rt() {
   return location.href.startsWith("data:");
 }
 const G = {};
-let ht = "ui-storage";
+let lt = "ui-storage";
 class T {
   /**
    * Constructor
@@ -117,7 +117,7 @@ class T {
    * @param newPrefix new prefix/ новый префикс
    */
   static setPrefix(t) {
-    ht = t;
+    lt = t;
   }
   /**
    * Getting data from local storage.
@@ -189,7 +189,7 @@ class T {
    * Получение имени ключа в хранилище.
    */
   getIndex() {
-    return `${ht}__${this.name}`;
+    return `${lt}__${this.name}`;
   }
   /**
    * Getting data from storage.
@@ -448,7 +448,7 @@ function A(i) {
   if (l())
     return It(i) ? document.body : R(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
 }
-function lt(i) {
+function dt(i) {
   return It(i) ? i : A(i);
 }
 function Ht(i) {
@@ -458,7 +458,7 @@ function Ht(i) {
 function z(i) {
   return Array.isArray(i) ? i : [i];
 }
-class dt {
+class gt {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -509,7 +509,7 @@ class dt {
      */
     c(this, "activity", !1);
     c(this, "activityItems", []);
-    this.listener = s, this.options = n, this.detail = o, this.element = lt(t), this.elementControl = A(t), this.type = z(e);
+    this.listener = s, this.options = n, this.detail = o, this.element = dt(t), this.elementControl = A(t), this.type = z(e);
   }
   /**
    * Checks whether event listening is currently enabled.
@@ -529,7 +529,7 @@ class dt {
    * @param elementSelector element/ элемент
    */
   setElement(t) {
-    const e = lt(t);
+    const e = dt(t);
     return this.elementControlEdit || (this.elementControl = A(t)), this.element = e, this.reset(), this;
   }
   /**
@@ -694,7 +694,7 @@ class dt {
     return !1;
   }
 }
-const gt = "ui-loading", V = class V {
+const ft = "ui-loading", V = class V {
   /**
    * Check if the loader is active now.
    *
@@ -729,7 +729,7 @@ const gt = "ui-loading", V = class V {
    * @param element element/ элемент
    */
   static registrationEvent(t, e) {
-    l() && new dt(window, gt, t).setElementControl(e).start();
+    l() && new gt(window, ft, t).setElementControl(e).start();
   }
   /**
    * Calls the event listener.
@@ -741,7 +741,7 @@ const gt = "ui-loading", V = class V {
     (t = this.event) == null || t.dispatch({ loading: this.is() });
   }
 };
-c(V, "value", 0), c(V, "event"), l() && (V.event = new dt(window, gt));
+c(V, "value", 0), c(V, "event"), l() && (V.event = new gt(window, ft));
 let x = V;
 class zt {
   constructor() {
@@ -955,7 +955,7 @@ async function Kt(i) {
 function Y(i, t) {
   return Math.floor(Math.random() * (t - i + 1) + i);
 }
-const ft = "d-response-loading";
+const mt = "d-response-loading";
 class Yt {
   /**
    * Constructor
@@ -1091,7 +1091,7 @@ class Yt {
   fetch(t, e) {
     return this.startResponseLoading(), new Promise((s) => {
       Kt(
-        Nt(t.response) ? t.response(e) : t.response
+        ot(t.response) ? t.response(e) : t.response
       ).then((n) => {
         t != null && t.lag ? (x.show(), setTimeout(() => {
           this.stopResponseLoading(), s(n), x.hide();
@@ -1105,7 +1105,7 @@ class Yt {
    * Включить загрузку для эмуляции запроса.
    */
   startResponseLoading() {
-    this.loading && clearTimeout(this.loading), l() && document.body.classList.add(ft);
+    this.loading && clearTimeout(this.loading), l() && document.body.classList.add(mt);
   }
   /**
    * Disable loading for request emulation.
@@ -1114,7 +1114,7 @@ class Yt {
    */
   stopResponseLoading() {
     this.loading = setTimeout(() => {
-      this.loading = void 0, l() && document.body.classList.remove(ft);
+      this.loading = void 0, l() && document.body.classList.remove(mt);
     }, 1200);
   }
 }
@@ -1247,7 +1247,7 @@ const b = class b {
    */
   static getBodyForGet(t, e = "", s = D.get) {
     if (s === D.get) {
-      const n = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? At(t) : t;
+      const n = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? Nt(t) : t;
       if (S(o))
         return `${n}${o}`;
     }
@@ -1600,7 +1600,7 @@ const O = class O {
   }
 };
 c(O, "cache"), O.cache = new Mt();
-let mt = O;
+let yt = O;
 function Et(i, t = !1) {
   if (typeof i == "string") {
     const e = i.trim();
@@ -1654,7 +1654,7 @@ class Bt {
   }
 }
 c(Bt, "storage", new T(Xt));
-const X = {}, ct = class ct {
+const X = {}, ut = class ut {
   constructor(t) {
     c(this, "value");
     c(this, "options", {});
@@ -1728,8 +1728,8 @@ const X = {}, ct = class ct {
     }
   }
 };
-l() && !rt() && ct.updateData();
-let yt = ct;
+l() && !rt() && ut.updateData();
+let $t = ut;
 const tt = {};
 function B(i) {
   var n, o, a, u, h, f, d, E;
@@ -2255,7 +2255,7 @@ class J {
   }
 }
 const et = {};
-class ot {
+class at {
   /**
    * Constructor
    * @param date date for processing/ дата для обработки
@@ -2479,7 +2479,7 @@ class ot {
    * @param timeZone add time zone/ добавить временную зону
    */
   standard(t = !0) {
-    const e = new ot(this.date, this.type, "en-GB"), s = [];
+    const e = new at(this.date, this.type, "en-GB"), s = [];
     let n;
     return e.setHour24(!0), this.type === "hour-minute" ? n = e.locale(this.type, {
       year: "numeric",
@@ -3271,7 +3271,7 @@ c(W, "flags", {
   ZM: `${r}-zm`,
   ZW: `${r}-zw`
 });
-let $t = W;
+let pt = W;
 const U = class U {
   /**
    * Getting an object with information about the phone code and country.
@@ -3452,7 +3452,7 @@ const U = class U {
   }
 };
 c(U, "list", []), c(U, "map", {}), U.makeList(), U.makeMap();
-let pt = U, P;
+let wt = U, P;
 class ke {
   /**
    * Returns the value by its name.
@@ -3536,7 +3536,7 @@ const F = class F {
    * Обновление строки хэша в URL.
    */
   static update() {
-    this.block = !0, history.replaceState(null, "", `#${At(this.hash, "=", ";")}`), requestAnimationFrame(() => {
+    this.block = !0, history.replaceState(null, "", `#${Nt(this.hash, "=", ";")}`), requestAnimationFrame(() => {
       this.block = !1;
     });
   }
@@ -3554,8 +3554,8 @@ const F = class F {
   }
 };
 c(F, "hash", {}), c(F, "watch", {}), c(F, "block", !1), l() && (F.reload(), addEventListener("hashchange", () => F.reload()));
-let wt = F;
-const it = "__UI_ICON", bt = 320, vt = "--LOAD--", K = class K {
+let bt = F;
+const it = "__UI_ICON", vt = 320, Dt = "--LOAD--", K = class K {
   /**
    * Checks if the given icon is in the list of connected icons.
    *
@@ -3578,7 +3578,7 @@ const it = "__UI_ICON", bt = 320, vt = "--LOAD--", K = class K {
   static async get(t, e = "", s = 1e3 * 60 * 3) {
     var o, a, u, h;
     const n = (h = (u = (o = this.icons) == null ? void 0 : o[this.getName(t)]) != null ? u : (a = this.icons) == null ? void 0 : a[t]) != null ? h : `${t.replace(/^@/, e != null ? e : this.url)}.svg`;
-    return typeof n == "string" ? n === vt && s > 0 ? (await this.wait(), this.get(t, e, s - bt)) : n : await n;
+    return typeof n == "string" ? n === Dt && s > 0 ? (await this.wait(), this.get(t, e, s - vt)) : n : ot(n) ? await n() : await n;
   }
   /**
    * Returns a list of names of all registered icons.
@@ -3613,7 +3613,7 @@ const it = "__UI_ICON", bt = 320, vt = "--LOAD--", K = class K {
    * @param index icon name/ название иконки
    */
   static addLoad(t) {
-    this.icons[this.getName(t)] = vt;
+    this.icons[this.getName(t)] = Dt;
   }
   /**
    * Adding custom global icons.
@@ -3658,11 +3658,11 @@ const it = "__UI_ICON", bt = 320, vt = "--LOAD--", K = class K {
    * Задержка выполнения скрипта.
    */
   static wait() {
-    return new Promise((t) => setTimeout(() => t(), bt));
+    return new Promise((t) => setTimeout(() => t(), vt));
   }
 };
 c(K, "icons", {}), c(K, "url", "/icons/"), l() && (it in window || (window[it] = {}), K.icons = window[it]);
-let Dt = K;
+let St = K;
 function Ot(i, t, e) {
   var s, n;
   return (n = (s = A(i)) == null ? void 0 : s[t]) != null ? n : e;
@@ -3693,7 +3693,7 @@ function _(i, t = "div", e, s) {
 function Gt(i) {
   return i.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").trim();
 }
-class at {
+class ct {
   /**
    * Creates an instance of MetaManager.
    *
@@ -3835,7 +3835,7 @@ class at {
   }
 }
 var v = /* @__PURE__ */ ((i) => (i.description = "description", i.keywords = "keywords", i.canonical = "canonical", i.robots = "robots", i.author = "author", i))(v || {}), te = /* @__PURE__ */ ((i) => (i.indexFollow = "index, follow", i.noIndexFollow = "noindex, follow", i.indexNoFollow = "index, nofollow", i.noIndexNoFollow = "noindex, nofollow", i.noArchive = "noarchive", i.noSnippet = "nosnippet", i.noImageIndex = "noimageindex", i.images = "images", i.noTranslate = "notranslate", i.noPreview = "nopreview", i.textOnly = "textonly", i.noIndexSubpages = "noindex, noarchive", i.none = "none", i))(te || {}), y = /* @__PURE__ */ ((i) => (i.title = "og:title", i.type = "og:type", i.url = "og:url", i.image = "og:image", i.description = "og:description", i.locale = "og:locale", i.siteName = "og:site_name", i.localeAlternate = "og:locale:alternate", i.imageUrl = "og:image:url", i.imageSecureUrl = "og:image:secure_url", i.imageType = "og:image:type", i.imageWidth = "og:image:width", i.imageHeight = "og:image:height", i.imageAlt = "og:image:alt", i.video = "og:video", i.videoUrl = "og:video:url", i.videoSecureUrl = "og:video:secure_url", i.videoType = "og:video:type", i.videoWidth = "og:video:width", i.videoHeight = "og:video:height", i.audio = "og:audio", i.audioSecureUrl = "og:audio:secure_url", i.audioType = "og:audio:type", i.articlePublishedTime = "article:published_time", i.articleModifiedTime = "article:modified_time", i.articleExpirationTime = "article:expiration_time", i.articleAuthor = "article:author", i.articleSection = "article:section", i.articleTag = "article:tag", i.bookAuthor = "book:author", i.bookIsbn = "book:isbn", i.bookReleaseDate = "book:release_date", i.bookTag = "book:tag", i.musicDuration = "music:duration", i.musicAlbum = "music:album", i.musicAlbumDisc = "music:album:disc", i.musicAlbumTrack = "music:album:track", i.musicMusician = "music:musician", i.musicSong = "music:song", i.musicSongDisc = "music:song:disc", i.musicSongTrack = "music:song:track", i.musicReleaseDate = "music:release_date", i.musicCreator = "music:creator", i.videoActor = "video:actor", i.videoActorRole = "video:actor:role", i.videoDirector = "video:director", i.videoWriter = "video:writer", i.videoDuration = "video:duration", i.videoReleaseDate = "video:release_date", i.videoTag = "video:tag", i.videoSeries = "video:series", i.profileFirstName = "profile:first_name", i.profileLastName = "profile:last_name", i.profileUsername = "profile:username", i.profileGender = "profile:gender", i.productBrand = "product:brand", i.productAvailability = "product:availability", i.productCondition = "product:condition", i.productPriceAmount = "product:price:amount", i.productPriceCurrency = "product:price:currency", i.productRetailerItemId = "product:retailer_item_id", i.productCategory = "product:category", i.productEan = "product:ean", i.productIsbn = "product:isbn", i.productMfrPartNo = "product:mfr_part_no", i.productUpc = "product:upc", i.productWeightValue = "product:weight:value", i.productWeightUnits = "product:weight:units", i.productColor = "product:color", i.productMaterial = "product:material", i.productPattern = "product:pattern", i.productAgeGroup = "product:age_group", i.productGender = "product:gender", i))(y || {}), ee = /* @__PURE__ */ ((i) => (i.website = "website", i.article = "article", i.video = "video.other", i.videoTvShow = "video.tv_show", i.videoEpisode = "video.episode", i.videoMovie = "video.movie", i.musicAlbum = "music.album", i.musicPlaylist = "music.playlist", i.musicSong = "music.song", i.musicRadioStation = "music.radio_station", i.app = "app", i.product = "product", i.business = "business.business", i.place = "place", i.event = "event", i.profile = "profile", i.book = "book", i))(ee || {}), ie = /* @__PURE__ */ ((i) => (i.inStock = "in stock", i.outOfStock = "out of stock", i.preorder = "preorder", i.backorder = "backorder", i.discontinued = "discontinued", i.pending = "pending", i))(ie || {}), se = /* @__PURE__ */ ((i) => (i.new = "new", i.used = "used", i.refurbished = "refurbished", i))(se || {}), re = /* @__PURE__ */ ((i) => (i.newborn = "newborn", i.infant = "infant", i.toddler = "toddler", i.kids = "kids", i.adult = "adult", i))(re || {}), ne = /* @__PURE__ */ ((i) => (i.female = "female", i.male = "male", i.unisex = "unisex", i))(ne || {}), $ = /* @__PURE__ */ ((i) => (i.card = "twitter:card", i.site = "twitter:site", i.creator = "twitter:creator", i.url = "twitter:url", i.title = "twitter:title", i.description = "twitter:description", i.image = "twitter:image", i.imageAlt = "twitter:image:alt", i.imageSrc = "twitter:image:src", i.imageWidth = "twitter:image:width", i.imageHeight = "twitter:image:height", i.label1 = "twitter:label1", i.data1 = "twitter:data1", i.label2 = "twitter:label2", i.data2 = "twitter:data2", i.appNameIphone = "twitter:app:name:iphone", i.appIdIphone = "twitter:app:id:iphone", i.appUrlIphone = "twitter:app:url:iphone", i.appNameIpad = "twitter:app:name:ipad", i.appIdIpad = "twitter:app:id:ipad", i.appUrlIpad = "twitter:app:url:ipad", i.appNameGooglePlay = "twitter:app:name:googleplay", i.appIdGooglePlay = "twitter:app:id:googleplay", i.appUrlGooglePlay = "twitter:app:url:googleplay", i.player = "twitter:player", i.playerWidth = "twitter:player:width", i.playerHeight = "twitter:player:height", i.playerStream = "twitter:player:stream", i.playerStreamContentType = "twitter:player:stream:content_type", i))($ || {}), oe = /* @__PURE__ */ ((i) => (i.summary = "summary", i.summaryLargeImage = "summary_large_image", i.app = "app", i.player = "player", i.product = "product", i.gallery = "gallery", i.photo = "photo", i.leadGeneration = "lead_generation", i.audio = "audio", i.poll = "poll", i))(oe || {});
-class ae extends at {
+class ae extends ct {
   constructor() {
     super(Object.values(y), !0);
   }
@@ -3959,7 +3959,7 @@ class ae extends at {
     return this.set(y.siteName, t);
   }
 }
-class ce extends at {
+class ce extends ct {
   constructor() {
     super(Object.values($));
   }
@@ -4083,7 +4083,7 @@ class ce extends at {
     return this.set($.image, t), this;
   }
 }
-class Ae extends at {
+class Ae extends ct {
   /**
    * Creates an instance of Meta with integrated Open Graph and Twitter Card support.
    *
@@ -4557,7 +4557,7 @@ const ue = [
   }
 };
 c(N, "url", "/api/translate"), c(N, "propsName", "list"), c(N, "data", {}), c(N, "cache", []), c(N, "resolveList", []), c(N, "timeout");
-let St = N;
+let Lt = N;
 function Ft(i) {
   return Array.isArray(i);
 }
@@ -4605,12 +4605,12 @@ async function Re(i) {
   return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
 function Pe(i = "datetime") {
-  return new ot(void 0, i).standard();
+  return new at(void 0, i).standard();
 }
-let Lt = Y(1e5, 9e5);
+let Ct = Y(1e5, 9e5);
 function We(i, t) {
   const e = A(i);
-  return e ? (S(e.id) || e.setAttribute("id", `id-${Lt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${Lt++}`;
+  return e ? (S(e.id) || e.setAttribute("id", `id-${Ct++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${Ct++}`;
 }
 function ge(i) {
   return R(i) ? _(
@@ -4687,14 +4687,14 @@ function Je(i, t) {
   const e = i != null ? i : 0;
   return t > e ? (t - e) / 100 : 0;
 }
-const Ct = 0;
+const kt = 0;
 function Qe(i, t, e) {
   const s = t == null ? void 0 : t.closest(i);
   if (t && s && s.scrollHeight !== s.offsetHeight)
     if (e) {
       const n = e.getBoundingClientRect(), o = s.getBoundingClientRect(), a = t.getBoundingClientRect();
       s.scrollTop = t.offsetTop - (n.top - o.top) - (n.height / 2 - a.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
-    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - Ct : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + Ct);
+    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - kt : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + kt);
 }
 function Me(i, t, e = 0) {
   if (!l())
@@ -4851,9 +4851,9 @@ function ui(i) {
 }
 function hi(i, t, e, s) {
   const n = C(i), o = C(t);
-  return t && o < n ? `${kt(o, e, s)}+` : kt(n, e, s);
+  return t && o < n ? `${At(o, e, s)}+` : At(n, e, s);
 }
-const kt = (i, t, e) => t ? new J(e).number(i) : i;
+const At = (i, t, e) => t ? new J(e).number(i) : i;
 function De(i, t) {
   return 1 / i * t;
 }
@@ -4885,23 +4885,23 @@ export {
   Ce as BroadcastMessage,
   Mt as Cache,
   Qt as CacheItem,
-  mt as CacheStatic,
-  yt as Cookie,
+  yt as CacheStatic,
+  $t as Cookie,
   Bt as CookieBlock,
   T as DataStorage,
-  ot as Datetime,
-  dt as EventItem,
+  at as Datetime,
+  gt as EventItem,
   r as GEO_FLAG_ICON_NAME,
   w as Geo,
-  $t as GeoFlag,
+  pt as GeoFlag,
   J as GeoIntl,
-  pt as GeoPhone,
+  wt as GeoPhone,
   ke as Global,
-  wt as Hash,
-  Dt as Icons,
+  bt as Hash,
+  St as Icons,
   x as Loading,
   Ae as Meta,
-  at as MetaManager,
+  ct as MetaManager,
   ae as MetaOg,
   re as MetaOpenGraphAge,
   ie as MetaOpenGraphAvailability,
@@ -4915,7 +4915,7 @@ export {
   oe as MetaTwitterCard,
   $ as MetaTwitterTag,
   nt as ScrollbarWidth,
-  St as Translate,
+  Lt as Translate,
   Ne as anyToString,
   he as applyTemplate,
   le as arrFill,
@@ -4939,7 +4939,7 @@ export {
   We as getElementId,
   ge as getElementImage,
   Ot as getElementItem,
-  lt as getElementOrWindow,
+  dt as getElementOrWindow,
   fe as getExp,
   me as getItemByPath,
   Ue as getKey,
@@ -4953,7 +4953,7 @@ export {
   Ve as getObjectNoUndefined,
   Ke as getObjectOrNone,
   Ye as getRandomText,
-  At as getRequestString,
+  Nt as getRequestString,
   qe as getStepPercent,
   Je as getStepValue,
   Qe as goScroll,
@@ -4967,11 +4967,11 @@ export {
   l as isDomRuntime,
   S as isFilled,
   Ge as isFloat,
-  Nt as isFunction,
+  ot as isFunction,
   Ht as isInDom,
   ti as isIntegerBetween,
   q as isNull,
-  ut as isNumber,
+  ht as isNumber,
   m as isObject,
   k as isObjectNotArray,
   st as isSelected,

@@ -2,8 +2,9 @@ import { forEach } from '../functions/forEach'
 import { isDomRuntime } from '../functions/isDomRuntime'
 
 import { Api } from './Api'
+import { isFunction } from '../functions/isFunction.ts'
 
-export type IconsItem = string | Promise<string | any>
+export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>)
 
 const ICONS_KEY = '__UI_ICON'
 const ICONS_WAIT = 320
@@ -67,6 +68,10 @@ export class Icons {
       }
 
       return icon
+    }
+
+    if (isFunction(icon)) {
+      return await icon()
     }
 
     return await icon
