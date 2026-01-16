@@ -2918,7 +2918,7 @@ class ot {
     ), this;
   }
 }
-const r = "@flag", W = class W {
+const r = "f", W = class W {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка

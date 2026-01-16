@@ -7,9 +7,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "types": [
-      "vite/client",
-      "@types/mdx"
-    ]
+    "types": ["vite/client"]
   }
 }

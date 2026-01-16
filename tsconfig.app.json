@@ -2,7 +2,11 @@
   "extends": "@dxtmisha/configuration/tsconfig/tsconfig.app.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "types": ["@figma/plugin-typings"]
+    "types": [
+      "vite/client",
+      "@figma/plugin-typings",
+      "@types/mdx"
+    ]
   },
   "include": [
     "packages/*/src/**/*.ts",

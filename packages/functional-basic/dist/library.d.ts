@@ -1936,7 +1936,7 @@ export declare class Geo {
     private static toFull;
 }
 
-export declare const GEO_FLAG_ICON_NAME = "@flag";
+export declare const GEO_FLAG_ICON_NAME = "f";
 
 /**
  * Union type for date format options in geographic context/

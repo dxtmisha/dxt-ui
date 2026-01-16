@@ -6,6 +6,7 @@ export declare enum ImageTypeValue {
     file = "file",
     image = "image",
     flag = "flag",
+    flagCompressed = "flag-compressed",
     color = "color",
     public = "public",
     filled = "filled",
