@@ -74,6 +74,9 @@ export const UI_FILE_NAME_FLAGS = 'flags'
 /** File name for storing media data and icons/ Название файла для хранения медиа-данных и иконок */
 export const UI_FILE_NAME_MEDIA = 'media'
 
+/** File name for the list of component descriptions/ Название файла для список описаний компонентов */
+export const UI_FILE_NAME_LIST = 'list'
+
 /** File name for the list of component descriptions for the wiki/ Название файла для список описаний компонентов для wiki */
 export const UI_FILE_NAME_WIKI = 'wiki'
 

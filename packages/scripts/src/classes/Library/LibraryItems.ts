@@ -47,6 +47,15 @@ export class LibraryItems {
   }
 
   /**
+   * Returns the number of components.
+   *
+   * Возвращает количество компонентов.
+   */
+  getCount(): number {
+    return this.getComponentList().length
+  }
+
+  /**
    * Writes data in the file.
    *
    * Записывает данные в файле.

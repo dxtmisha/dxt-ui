@@ -1,5 +1,8 @@
 {
   "project": "Ui",
   "name": "d1",
+  "alternativeName": [
+    "dd"
+  ],
   "wikiLanguage": "ru"
 }

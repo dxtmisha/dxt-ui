@@ -10,6 +10,7 @@ import { Styles } from '../Styles/Styles'
 import { DesignWiki } from './DesignWiki'
 
 import { LibraryMedia } from '../Library/LibraryMedia'
+import { LibraryList } from '../Library/LibraryList'
 
 export class DesignUi {
   protected readonly components: LibraryItems
@@ -47,6 +48,7 @@ export class DesignUi {
     this.makeConstructorComponent()
 
     new LibraryMedia(this.components).make()
+    new LibraryList(this.components).make()
   }
 
   /**

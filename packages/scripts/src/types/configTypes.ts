@@ -12,6 +12,9 @@ export type DesignUiConfig = {
   /** Design system name / Название дизайн-системы */
   name: string
 
+  /** Alternative names / Альтернативные названия */
+  alternativeName?: string[]
+
   /**
    * Abbreviation symbol, this key will be used to separate into sub-branches /
    * Символ сокращения, такой ключ будет разделять на под-ветки

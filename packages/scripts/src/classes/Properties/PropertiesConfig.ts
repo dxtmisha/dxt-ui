@@ -39,6 +39,15 @@ export class PropertiesConfig {
   }
 
   /**
+   * Returns alternative design names.
+   *
+   * Возвращает альтернативные названия дизайна.
+   */
+  static getDesignAlternativeName(): string[] | undefined {
+    return this.config?.alternativeName
+  }
+
+  /**
    * Returns the separator symbol.
    *
    * Возвращает символ разделителя.
