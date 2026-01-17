@@ -1,8 +1,8 @@
 import * as rollup from 'rollup'
 import * as vite from 'vite'
 
-import { UiPluginImport } from '../classes/Plugin/UiPluginImport.ts'
-import { UiPluginTool } from '../classes/Plugin/UiPluginTool.ts'
+import { PluginImport } from '../classes/Plugin/PluginImport.ts'
+import { PluginTool } from '../classes/Plugin/PluginTool.ts'
 
 type UiPluginsOptions = {
   importComponents?: boolean
@@ -24,7 +24,7 @@ export default function uiVitePlugin(
   packageName: string,
   options: UiPluginsOptions = {}
 ): vite.Plugin {
-  const imports = new UiPluginImport(packageName)
+  const imports = new PluginImport(packageName)
   let first: boolean = true
   // let mode: string = 'production'
 
@@ -38,7 +38,7 @@ export default function uiVitePlugin(
     transform(code: string, id: string): rollup.TransformResult {
       if (
         first
-        && UiPluginTool.isJs(id)
+        && PluginTool.isJs(id)
       ) {
         imports.importStyle()
         first = false

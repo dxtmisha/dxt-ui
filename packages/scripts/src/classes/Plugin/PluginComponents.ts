@@ -1,4 +1,4 @@
-import { UiPluginTool } from './UiPluginTool.ts'
+import { PluginTool } from './PluginTool.ts'
 
 type PluginComponentItem = {
   name: string
@@ -16,7 +16,7 @@ const regMatchAll = new RegExp(regDesigns, 'ig')
  *
  * Класс для подключения компонентов.
  */
-export class UiPluginComponents {
+export class PluginComponents {
   /**
    * Constructor
    * @param styles object for working with style connection / объект для работы с подключением стилей
@@ -26,6 +26,7 @@ export class UiPluginComponents {
 
   constructor(
     protected readonly packageName: string,
+    protected readonly componentsReg: RegExp,
     protected readonly styles: PluginImportStyles,
     protected readonly id: string,
     protected readonly code: string
@@ -73,7 +74,8 @@ export class UiPluginComponents {
    * Проверяет, подходит ли файл для преобразования.
    */
   protected is(): boolean {
-    return UiPluginTool.isVue(this.id) && Boolean(this.code.match(regMatch))
+    return PluginTool.isVue(this.id)
+      && Boolean(this.code.match(this.componentsReg))
   }
 
   /**

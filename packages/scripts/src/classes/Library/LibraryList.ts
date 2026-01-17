@@ -5,8 +5,9 @@ import { getPackageJson } from '../../functions/getPackageJson'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 
+import type { LibraryData } from '../../types/libraryTypes'
+
 import { UI_FILE_NAME_DESIGN } from '../../config'
-import type { LibraryData } from '../../types/libraryTypes.ts'
 
 /**
  * Class for creating a file with a list of components.
@@ -67,7 +68,12 @@ export class LibraryList {
         (item) => {
           const name = toCamelCaseFirst(item.codeFull)
           const names = this.getNames(item)
-          const codeImport = `'import { ${name} } from \\'${this.packageName}/${name}\\''`
+          const path = `${this.packageName}/${name}`
+          const codeImport = `{
+    name: '${name}',
+    path: '${path}',
+    importPath: 'import { ${name} } from \\'${path}\\''
+}`
 
           names.forEach(
             (name) => {

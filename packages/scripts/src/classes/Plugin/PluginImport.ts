@@ -3,7 +3,7 @@
  *
  * Класс для импорта плагинов.
  */
-export class UiPluginImport {
+export class PluginImport {
   /**
    * Constructor
    * @param packageName package name / название пакета

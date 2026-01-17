@@ -3,7 +3,7 @@
  *
  * Класс для получения данных для работы с плагинами.
  */
-export class UiPluginTool {
+export class PluginTool {
   /**
    * Checks if the id is a user’s file.
    *

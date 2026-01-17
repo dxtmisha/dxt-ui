@@ -47,3 +47,10 @@ export type LibraryIconItem = {
   /** Icon value or content / Значение или содержимое иконки */
   value: string
 }
+
+export type LibraryComponentItem = {
+  name: string
+  path: string
+  importPath: string
+}
+export type LibraryComponentList = Record<string, LibraryComponentItem>
