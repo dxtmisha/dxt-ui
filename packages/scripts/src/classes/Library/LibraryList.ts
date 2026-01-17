@@ -6,6 +6,7 @@ import { getPackageJson } from '../../functions/getPackageJson'
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 
 import { UI_FILE_NAME_LIST } from '../../config'
+import type { LibraryData } from '../../types/libraryTypes.ts'
 
 /**
  * Class for creating a file with a list of components.
@@ -30,11 +31,16 @@ export class LibraryList {
    */
   make(): this {
     const list = this.getComponents()
+    const listReg = this.getComponentsReg()
+    const listRegCode = this.getComponentsRegCode()
 
     this.items.write(
       UI_FILE_NAME_LIST,
       [
         `// count: ${this.items.getCount()}`,
+        `export const componentsReg: RegExp = /(${listReg.join('|')})(?![\\w\\W-])/g`,
+        `export const componentsRegCode: RegExp = /(${listRegCode.join('|')})(?![\\w\\W-])/g`,
+        '',
         'export const componentsList: Record<string, string> = {',
         list.join(',\r\n'),
         '}'
@@ -54,31 +60,61 @@ export class LibraryList {
     const list: string[] = []
 
     if (packageName) {
-      const alternativeNameList = PropertiesConfig.getDesignAlternativeName()
-
       forEach(
         this.items.getComponentList(),
         (item) => {
           const name = toCamelCaseFirst(item.codeFull)
+          const names = this.getNames(item)
           const codeImport = `'import { ${name} } from \\'${packageName}/${name}\\''`
 
-          list.push(
-            `  '${name}': ${codeImport}`,
-            `  '${toKebabCase(item.codeFull)}': ${codeImport}`
+          names.forEach(
+            (name) => {
+              list.push(`  '${toCamelCaseFirst(name)}': ${codeImport}`)
+              list.push(`  '${toKebabCase(name)}': ${codeImport}`)
+            }
           )
-
-          if (alternativeNameList) {
-            alternativeNameList.forEach((design) => {
-              const alternativeName = `${design}-${item.name}`
-              list.push(
-                `  '${toCamelCaseFirst(alternativeName)}': ${codeImport}`,
-                `  '${toKebabCase(alternativeName)}': ${codeImport}`
-              )
-            })
-          }
         })
     }
 
     return list
+  }
+
+  protected getComponentsRegCode(): string[] {
+    return forEach(
+      this.items.getComponentList(),
+      (item) => {
+        return forEach(
+          this.getNames(item),
+          name => toCamelCaseFirst(name)
+        ).join('|')
+      }
+    )
+  }
+
+  protected getComponentsReg(): string[] {
+    return forEach(
+      this.items.getComponentList(),
+      (item) => {
+        return forEach(
+          this.getNames(item),
+          name => `${toCamelCaseFirst(name)}|${toKebabCase(name)}`
+        ).join('|')
+      }
+    )
+  }
+
+  protected getNames(item: LibraryData) {
+    const alternativeNameList = PropertiesConfig.getDesignAlternativeName()
+    const names: string[] = [
+      item.codeFull
+    ]
+
+    if (alternativeNameList) {
+      alternativeNameList.forEach(
+        design => names.push(`${design}-${item.name}`)
+      )
+    }
+
+    return names
   }
 }
