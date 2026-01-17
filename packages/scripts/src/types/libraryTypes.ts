@@ -50,7 +50,9 @@ export type LibraryIconItem = {
 
 export type LibraryComponentItem = {
   name: string
+  code: string
   path: string
   importPath: string
 }
 export type LibraryComponentList = Record<string, LibraryComponentItem>
+export type LibraryComponentImports = LibraryComponentItem[]

@@ -40,12 +40,15 @@ export class LibraryList {
     this.items.write(
       UI_FILE_NAME_DESIGN,
       [
+        'import type { LibraryComponentList } from \'@dxtmisha/scripts\'',
+        '',
         `// count: ${this.items.getCount()}`,
+        `export const designName: string = '${PropertiesConfig.getDesignName()}'`,
         `export const packageName: string = '${this.packageName}'`,
         `export const componentsReg: RegExp = /(${listReg.join('|')})(?![\\w\\W-])/g`,
         `export const componentsRegCode: RegExp = /(${listRegCode.join('|')})(?![\\w\\W-])/g`,
         '',
-        'export const componentsList: Record<string, string> = {',
+        'export const componentsList: LibraryComponentList = {',
         list.join(',\r\n'),
         '}'
       ]
@@ -69,16 +72,19 @@ export class LibraryList {
           const name = toCamelCaseFirst(item.codeFull)
           const names = this.getNames(item)
           const path = `${this.packageName}/${name}`
-          const codeImport = `{
+          const codeImport = (code: string) => `{
     name: '${name}',
+    code: '${code}',
     path: '${path}',
     importPath: 'import { ${name} } from \\'${path}\\''
-}`
+  }`
 
           names.forEach(
             (name) => {
-              list.push(`  '${toCamelCaseFirst(name)}': ${codeImport}`)
-              list.push(`  '${toKebabCase(name)}': ${codeImport}`)
+              const code = toCamelCaseFirst(name)
+
+              list.push(`  '${toCamelCaseFirst(name)}': ${codeImport(code)}`)
+              list.push(`  '${toKebabCase(name)}': ${codeImport(code)}`)
             }
           )
         })
