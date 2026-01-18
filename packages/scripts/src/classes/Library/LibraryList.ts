@@ -1,13 +1,14 @@
 import { LibraryItems } from './LibraryItems'
 
-import { forEach, toCamelCaseFirst, toKebabCase } from '@dxtmisha/functional-basic'
+import { forEach, toCamelCase, toCamelCaseFirst, toKebabCase, uniqueArray } from '@dxtmisha/functional-basic'
 import { getPackageJson } from '../../functions/getPackageJson'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
+import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { LibraryData } from '../../types/libraryTypes'
 
-import { UI_FILE_NAME_DESIGN } from '../../config'
+import { UI_DIRS_STYLES, UI_FILE_NAME_DESIGN } from '../../config'
 
 /**
  * Class for creating a file with a list of components.
@@ -50,7 +51,11 @@ export class LibraryList {
         '',
         'export const componentsList: LibraryComponentList = {',
         list.join(',\r\n'),
-        '}'
+        '}',
+        '',
+        'export const styleVars: string[] = [',
+        this.getVars().join(',\r\n'),
+        ']'
       ]
     )
 
@@ -74,6 +79,7 @@ export class LibraryList {
           const path = `${this.packageName}/${name}`
           const codeImport = (code: string) => `{
     name: '${name}',
+    alternativeName: //i,
     code: '${code}',
     path: '${path}',
     importPath: 'import { ${name} } from \\'${path}\\''
@@ -120,15 +126,55 @@ export class LibraryList {
   protected getNames(item: LibraryData) {
     const alternativeNameList = PropertiesConfig.getDesignAlternativeName()
     const names: string[] = [
-      item.codeFull
+      item.codeFull,
+      toKebabCase(item.codeFull)
     ]
 
     if (alternativeNameList) {
       alternativeNameList.forEach(
-        design => names.push(`${design}-${item.name}`)
+        (design) => {
+          const name = `${design}-${item.name}`
+          names.push(
+            toCamelCaseFirst(name),
+            toKebabCase(name)
+          )
+        }
       )
     }
 
     return names
+  }
+
+  protected getVars(): string[] {
+    const design: string = toCamelCase(PropertiesConfig.getDesignName())
+    const path = [...UI_DIRS_STYLES, PropertiesConfig.getProjectName(), 'vars.scss']
+    const context = PropertiesFile.readFileOnly(path)
+    const data: string[] = []
+
+    if (context) {
+      const vars = context.match(/(?<=--)[^: ]+(?=:)/g)
+
+      if (vars) {
+        vars.forEach((varName) => {
+          const value = varName.match(/^([^-]+)-(.*?)$/)
+
+          if (
+            value
+            && value?.[1] === design
+            && value?.[2]
+          ) {
+            const varName = value[2].split('-')
+
+            if (varName.length > 2) {
+              varName.pop()
+            }
+
+            data.push(`  '${varName.join('-')}'`)
+          }
+        })
+      }
+    }
+
+    return uniqueArray(data)
   }
 }

@@ -104,7 +104,7 @@ export const viteBasicFunction = (
     }
   },
   optimizeDeps: {
-    exclude: ['@napi-rs/canvas']
+    exclude: ['@napi-rs/canvas', 'fsevents']
   },
   css: {
     postcss: {

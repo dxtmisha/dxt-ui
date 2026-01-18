@@ -54,11 +54,11 @@ export class PluginStyle {
    * Проверяет, нужно ли преобразовывать этот файл.
    */
   protected is(): boolean {
-    return PluginTool.isCss(this.id) && !this.code.match(PLUGIN_STYLES_NONE)
+    return PluginTool.isCss(this.id) && !this.code.match(this.getNoneCode())
   }
 
   protected getPropertiesNone() {
-    return `(?![^\r\n]*${this.getNoneCode()})`
+    return `(?![^\r\n]*${this.getModeNoneCode()})`
   }
 
   /**

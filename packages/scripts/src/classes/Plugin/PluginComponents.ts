@@ -77,6 +77,10 @@ export class PluginComponents {
     return `<script setup></script>${this.code}`
   }
 
+  protected getPath(item: LibraryComponentItem): string {
+    return `${this.pluginData.getDesign()}/${item.name}`
+  }
+
   /**
    * Component connection.
    *
@@ -90,7 +94,7 @@ export class PluginComponents {
   ): string {
     return code.replace(
       /(<script[^\r\n]+)/,
-      `$1\r\nimport {${item.code}} from'${item.importPath}';`
+      `$1\r\nimport { ${item.name} } from'${this.getPath(item)}';`
     )
   }
 }
