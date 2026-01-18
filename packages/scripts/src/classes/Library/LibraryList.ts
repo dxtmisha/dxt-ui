@@ -44,13 +44,10 @@ export class LibraryList {
         `export const designName: string = '${PropertiesConfig.getDesignName()}'`,
         `export const packageName: string = '${this.packageName}'`,
         `export const componentsReg: RegExp = ${listReg}`,
+        `export const styleVarsReg: RegExp = ${this.getVarsReg()}`,
         '',
         'export const componentsList: LibraryComponentImports = [',
         list.join(',\r\n'),
-        ']',
-        '',
-        'export const styleVars: string[] = [',
-        this.getVars().join(',\r\n'),
         ']'
       ]
     )
@@ -172,12 +169,16 @@ export class LibraryList {
               varName.pop()
             }
 
-            data.push(`  '${varName.join('-')}'`)
+            data.push(varName.join('-'))
           }
         })
       }
     }
 
     return uniqueArray(data)
+  }
+
+  protected getVarsReg(): string {
+    return `/(?<=var\\(--)(${this.getVars().join('|')})/ig`
   }
 }

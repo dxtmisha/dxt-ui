@@ -1,4 +1,8 @@
-import type { LibraryComponentImports, LibraryComponentList } from '../../types/libraryTypes'
+import { toCamelCase, toKebabCase } from '@dxtmisha/functional-basic'
+
+import type { LibraryComponentImports, LibraryComponentItem } from '../../types/libraryTypes'
+
+import { STYLE_MODIFICATION } from '../../media/properties/styleModification'
 
 /**
  * Class for storing plugin data.
@@ -6,19 +10,24 @@ import type { LibraryComponentImports, LibraryComponentList } from '../../types/
  * Класс для хранения данных плагина.
  */
 export class PluginData {
+  protected readonly styleModification: Record<string, string>
+
   /**
    * Constructor
    * @param design design name / название дизайна
    * @param packageName package name / название пакета
    * @param componentsReg regular expression for finding components / регулярное выражение для поиска компонентов
+   * @param styleVarsReg regular expression for finding variables / регулярное выражение для поиска переменных
    * @param componentsList list of components / список компонентов
    */
   constructor(
     protected readonly design: string,
     protected readonly packageName: string,
     protected readonly componentsReg: RegExp,
-    protected readonly componentsList: LibraryComponentList
+    protected readonly styleVarsReg: RegExp,
+    protected readonly componentsList: LibraryComponentImports
   ) {
+    this.styleModification = this.initStyleModification()
   }
 
   /**
@@ -46,7 +55,19 @@ export class PluginData {
    * @param code code to check / код для проверки
    */
   hasComponent(code: string): boolean {
-    return Boolean(code.match(this.componentsReg))
+    return Boolean(code.match(new RegExp(this.componentsReg, 'i')))
+  }
+
+  /**
+   * Checks if the code contains variables.
+   *
+   * Проверяет, содержит ли код переменные.
+   * @param code code to check / код для проверки
+   */
+  hasVars(code: string): boolean {
+    return Boolean(
+      code.match(new RegExp(this.styleVarsReg, 'i'))
+    )
   }
 
   /**
@@ -61,11 +82,12 @@ export class PluginData {
 
     if (components) {
       components.forEach((component) => {
-        const info = this.componentsList?.[component]
+        const info = this.findComponent(component)
 
         if (
           info
           && !list.find(item => item.name === info.name)
+          && !code.match(`${this.getPackageName()}/${info.name}`)
         ) {
           list.push(info)
         }
@@ -73,5 +95,50 @@ export class PluginData {
     }
 
     return list
+  }
+
+  /**
+   * Returns the regular expression for finding variables.
+   *
+   * Возвращает регулярное выражение для поиска переменных.
+   */
+  getStyleVarsReg(): RegExp {
+    return this.styleVarsReg
+  }
+
+  /**
+   * Returns the style modification map.
+   *
+   * Возвращает карту модификации стилей.
+   */
+  getStyleModification(): Record<string, string> {
+    return this.styleModification
+  }
+
+  /**
+   * Finds a component by name.
+   *
+   * Находит компонент по имени.
+   * @param component component name / название компонента
+   */
+  protected findComponent(component: string): LibraryComponentItem | undefined {
+    return this.componentsList.find(
+      item => item.reg.test(component)
+    )
+  }
+
+  /**
+   * Initializes the style modification map.
+   *
+   * Инициализирует карту модификации стилей.
+   */
+  protected initStyleModification(): Record<string, string> {
+    const data: Record<string, string> = {}
+
+    STYLE_MODIFICATION.forEach((name) => {
+      data[toKebabCase(name)] = toCamelCase(name)
+    })
+
+    return data
   }
 }

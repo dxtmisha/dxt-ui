@@ -1,5 +1,5 @@
-import type { LibraryComponentItem } from '../../types/libraryTypes'
 import { PluginData } from './PluginData'
+import type { LibraryComponentItem } from '../../types/libraryTypes'
 
 /**
  * Class for connecting components.
@@ -30,29 +30,14 @@ export class PluginComponents {
       const list = this.pluginData.getComponents(this.code)
 
       if (list) {
-        let code = this.getCode()
+        const code = this.getCode()
+        const imports = list.map(item => this.importComponent(item)).join('\r\n')
 
-        list.forEach((component) => {
-          if (this.isImport(component)) {
-            code = this.importComponent(code, component)
-          }
-        })
-
-        return code
+        return this.addImportCode(code, imports)
       }
     }
 
     return this.code
-  }
-
-  /**
-   * Checks if the component was connected.
-   *
-   * Проверяет, был ли подключен компонент.
-   * @param item data on the component / данные по компоненту
-   */
-  protected isImport(item: LibraryComponentItem): boolean {
-    return this.code.includes(item.path)
   }
 
   /**
@@ -77,24 +62,39 @@ export class PluginComponents {
     return `<script setup></script>${this.code}`
   }
 
+  /**
+   * Returns the path to the component.
+   *
+   * Возвращает путь к компоненту.
+   * @param item component data / данные компонента
+   */
   protected getPath(item: LibraryComponentItem): string {
     return `${this.pluginData.getDesign()}/${item.name}`
   }
 
   /**
-   * Component connection.
+   * Adds import code to the script.
    *
-   * Подключение компонента.
+   * Добавляет код импорта в скрипт.
    * @param code file content / содержимое файла
-   * @param item data on the component / данные по компоненту
+   * @param imports import code / код импорта
+   */
+  protected addImportCode(
+    code: string,
+    imports: string
+  ): string {
+    return code.replace(/(<script[^\r\n]+)/, `$1\r\n${imports}`)
+  }
+
+  /**
+   * Generates the import string for a component.
+   *
+   * Генерирует строку импорта для компонента.
+   * @param item component data / данные компонента
    */
   protected importComponent(
-    code: string,
     item: LibraryComponentItem
   ): string {
-    return code.replace(
-      /(<script[^\r\n]+)/,
-      `$1\r\nimport { ${item.name} } from'${this.getPath(item)}';`
-    )
+    return `import { ${item.name} } from'${this.getPath(item)}';`
   }
 }

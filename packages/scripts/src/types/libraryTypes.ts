@@ -48,9 +48,16 @@ export type LibraryIconItem = {
   value: string
 }
 
+/** Library component item with name and regex / Элемент компонента библиотеки с именем и регулярным выражением */
 export type LibraryComponentItem = {
+  /** Component name / Название компонента */
   name: string
+  /** Regular expression for component search / Регулярное выражение для поиска компонента */
   reg: RegExp
 }
+
+/** List of library components by key / Список компонентов библиотеки по ключу */
 export type LibraryComponentList = Record<string, LibraryComponentItem>
+
+/** List of library component imports / Список импортов компонентов библиотеки */
 export type LibraryComponentImports = LibraryComponentItem[]

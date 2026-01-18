@@ -40,25 +40,30 @@ export class PluginStyle {
     return this.code
   }
 
-  getNoneCode(): string {
-    return `// ${this.data.getDesign()}-none`
-  }
-
-  getModeNoneCode(): string {
-    return `// ${this.data.getDesign()}-mode-none`
-  }
-
   /**
    * Checks whether this file needs to be transformed.
    *
    * Проверяет, нужно ли преобразовывать этот файл.
    */
   protected is(): boolean {
-    return PluginTool.isCss(this.id) && !this.code.match(this.getNoneCode())
+    return PluginTool.isCss(this.id) && !this.code.match(this.getCodeNone())
+  }
+
+  protected getCodeNone(): string {
+    return `// ${this.data.getDesign()}-none`
   }
 
   protected getPropertiesNone() {
-    return `(?![^\r\n]*${this.getModeNoneCode()})`
+    return `(?![^\r\n]*// ${this.data.getDesign()}-mode-none)`
+  }
+
+  protected getModificationRef(): RegExp {
+    const properties: Record<string, string> = this.data.getStyleModification()
+
+    return new RegExp(
+      `(?<=^\\s*)(${Object.keys(properties).join('|')}):([^;\r\n]+)(;*)${this.getPropertiesNone()}`,
+      'igm'
+    )
   }
 
   /**
@@ -86,7 +91,9 @@ export class PluginStyle {
     if (code.match(
       new RegExp(`#[0-9abcdf]{4,6}|rgb|rgba${this.getPropertiesNone()}`, 'i')
     )) {
-      const reg = new RegExp(`(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgb|rgba?\\([^)]+\\))${this.getPropertiesNone()}`, 'ig')
+      const pattern: string = `(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgba?\\([^)]+\\))${this.getPropertiesNone()}`
+      const reg = new RegExp(pattern, 'ig')
+
       return code.replace(reg, () => '')
     }
 
@@ -100,19 +107,13 @@ export class PluginStyle {
    * @param code file content / содержимое файла
    */
   protected initVars(code: string): string {
-    const list: string[] | undefined = (data.vars as any)?.[this.design]
+    if (this.data.hasVars(code)) {
+      const design = this.data.getDesign()
 
-    if (
-      list
-      && code.match(/var\([^)]+\)/)
-    ) {
-      return code.replace(/(?<=var\(--)([^,) ]+)(?=[,) ])/ig, (value) => {
-        if (list.indexOf(value) !== -1) {
-          return `${this.design}-${value}`
-        }
-
-        return value
-      })
+      return code.replace(
+        this.data.getStyleVarsReg(),
+        `${design}-$1`
+      )
     }
 
     return code
@@ -125,20 +126,23 @@ export class PluginStyle {
    * @param code file content / содержимое файла
    */
   protected initProperties(code: string): string {
-    const properties: Record<string, string> = data.modificationProperties
-    const reg = new RegExp(`(?<=^\\s*)(${Object.keys(properties).join('|')}):([^;\r\n]+)(;*)${this.getPropertiesNone()}`, 'igm')
+    const properties: Record<string, string> = this.data.getStyleModification()
+    const reg = this.getModificationRef()
 
-    if (code.match(reg)) {
-      return code.replace(reg, (
-        _,
-        name: string,
-        value: string,
-        end: string
-      ) => {
-        const data = value.trim()
+    if (code.match(new RegExp(reg, 'i'))) {
+      return code.replace(
+        reg,
+        (
+          _,
+          name: string,
+          value: string,
+          end: string
+        ) => {
+          const data = value.trim()
 
-        return `@include ${properties?.[name.trim()]}(${data.match(/[()]/) ? `#{${data}}` : data})${end}`
-      })
+          return `@include ${properties?.[name.trim()]}(${data.match(/[()]/) ? `#{${data}}` : data})${end}`
+        }
+      )
     }
 
     return code
