@@ -1,12 +1,10 @@
 import { LibraryItems } from './LibraryItems'
 
-import { forEach, toCamelCase, toCamelCaseFirst, toKebabCase, uniqueArray } from '@dxtmisha/functional-basic'
+import { forEach, toCamelCase, toKebabCase, uniqueArray } from '@dxtmisha/functional-basic'
 import { getPackageJson } from '../../functions/getPackageJson'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
-
-import type { LibraryData } from '../../types/libraryTypes'
 
 import { UI_DIRS_STYLES, UI_FILE_NAME_DESIGN } from '../../config'
 
@@ -36,22 +34,20 @@ export class LibraryList {
   make(): this {
     const list = this.getComponents()
     const listReg = this.getComponentsReg()
-    const listRegCode = this.getComponentsRegCode()
 
     this.items.write(
       UI_FILE_NAME_DESIGN,
       [
-        'import type { LibraryComponentList } from \'@dxtmisha/scripts\'',
+        'import type { LibraryComponentImports } from \'@dxtmisha/scripts\'',
         '',
         `// count: ${this.items.getCount()}`,
         `export const designName: string = '${PropertiesConfig.getDesignName()}'`,
         `export const packageName: string = '${this.packageName}'`,
-        `export const componentsReg: RegExp = /(${listReg.join('|')})(?![\\w\\W-])/g`,
-        `export const componentsRegCode: RegExp = /(${listRegCode.join('|')})(?![\\w\\W-])/g`,
+        `export const componentsReg: RegExp = ${listReg}`,
         '',
-        'export const componentsList: LibraryComponentList = {',
+        'export const componentsList: LibraryComponentImports = [',
         list.join(',\r\n'),
-        '}',
+        ']',
         '',
         'export const styleVars: string[] = [',
         this.getVars().join(',\r\n'),
@@ -74,24 +70,10 @@ export class LibraryList {
       forEach(
         this.items.getComponentList(),
         (item) => {
-          const name = toCamelCaseFirst(item.codeFull)
-          const names = this.getNames(item)
-          const path = `${this.packageName}/${name}`
-          const codeImport = (code: string) => `{
-    name: '${name}',
-    alternativeName: //i,
-    code: '${code}',
-    path: '${path}',
-    importPath: 'import { ${name} } from \\'${path}\\''
+          list.push(`  {
+    name: '${item.codeFull}',
+    reg: ${this.getReg([item.name], true)}
   }`
-
-          names.forEach(
-            (name) => {
-              const code = toCamelCaseFirst(name)
-
-              list.push(`  '${toCamelCaseFirst(name)}': ${codeImport(code)}`)
-              list.push(`  '${toKebabCase(name)}': ${codeImport(code)}`)
-            }
           )
         })
     }
@@ -99,52 +81,73 @@ export class LibraryList {
     return list
   }
 
-  protected getComponentsRegCode(): string[] {
-    return forEach(
+  /**
+   * Returns a regular expression for all components.
+   *
+   * Возвращает регулярное выражение для всех компонентов.
+   */
+  protected getComponentsReg(): string {
+    const names: string[] = forEach(
       this.items.getComponentList(),
-      (item) => {
-        return forEach(
-          this.getNames(item),
-          name => toCamelCaseFirst(name)
-        ).join('|')
-      }
+      item => item.name
     )
+
+    return this.getReg(names)
   }
 
-  protected getComponentsReg(): string[] {
-    return forEach(
-      this.items.getComponentList(),
-      (item) => {
-        return forEach(
-          this.getNames(item),
-          name => `${toCamelCaseFirst(name)}|${toKebabCase(name)}`
-        ).join('|')
-      }
-    )
-  }
-
-  protected getNames(item: LibraryData) {
-    const alternativeNameList = PropertiesConfig.getDesignAlternativeName()
-    const names: string[] = [
-      item.codeFull,
-      toKebabCase(item.codeFull)
+  /**
+   * Returns a list of design names.
+   *
+   * Возвращает список названий дизайнов.
+   */
+  protected getDesigns(): string[] {
+    return [
+      PropertiesConfig.getDesignName(),
+      ...(PropertiesConfig.getDesignAlternativeName() ?? [])
     ]
+  }
 
-    if (alternativeNameList) {
-      alternativeNameList.forEach(
-        (design) => {
-          const name = `${design}-${item.name}`
-          names.push(
-            toCamelCaseFirst(name),
-            toKebabCase(name)
-          )
-        }
-      )
+  /**
+   * Generates a regular expression for the list of names.
+   *
+   * Генерирует регулярное выражение для списка имен.
+   * @param names list of names / список имен
+   * @param only exact match / точное совпадение
+   */
+  protected getReg(
+    names: string[],
+    only: boolean = false
+  ): string {
+    const designs = this.getDesigns().join('|')
+    const namesReg = this.getRegName(names)
+    let code = `((${designs})-?(${namesReg}))`
+
+    if (only) {
+      code = `^${code}$`
     }
 
-    return names
+    return `/${code}/ig`
   }
 
+  /**
+   * Formats names for regular expression.
+   *
+   * Форматирует имена для регулярного выражения.
+   * @param names list of names / список имен
+   */
+  protected getRegName(names: string[]): string {
+    return forEach(
+      names,
+      name => toKebabCase(name)
+        .replace('-', '-?')
+    ).join('|')
+  }
+
+  /**
+   * Returns a list of CSS variables.
+   *
+   * Возвращает список CSS переменных.
+   */
   protected getVars(): string[] {
     const design: string = toCamelCase(PropertiesConfig.getDesignName())
     const path = [...UI_DIRS_STYLES, PropertiesConfig.getProjectName(), 'vars.scss']

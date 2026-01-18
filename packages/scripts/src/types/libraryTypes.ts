@@ -50,10 +50,7 @@ export type LibraryIconItem = {
 
 export type LibraryComponentItem = {
   name: string
-  alternativeName: RegExp
-  code: string
-  path: string
-  importPath: string
+  reg: RegExp
 }
 export type LibraryComponentList = Record<string, LibraryComponentItem>
 export type LibraryComponentImports = LibraryComponentItem[]
