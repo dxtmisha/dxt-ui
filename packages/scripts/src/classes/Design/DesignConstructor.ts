@@ -176,6 +176,7 @@ export class DesignConstructor extends DesignCommand {
   protected makeFilePackage(): this {
     const packageFile = PropertiesFile.readFile<Record<string, any>>(UI_FILE_PACKAGE)
     const command = toCamelCaseFirst(this.getCommand())
+    const commandCode = toCamelCase(this.getCommand())
     const name = `./${command}`
 
     if (
@@ -183,8 +184,10 @@ export class DesignConstructor extends DesignCommand {
       && packageFile.exports
       && !(name in packageFile.exports)
     ) {
-      packageFile.exports[name] = `./dist/${toCamelCase(this.getCommand())}.js`
-      packageFile.exports[`${name}/style`] = `./src/constructors/${command}/style.scss`
+      packageFile.exports[name] = {
+        import: `./dist/${commandCode}.js`,
+        types: `./dist/${commandCode}.d.ts`
+      }
 
       PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageFile)
     }

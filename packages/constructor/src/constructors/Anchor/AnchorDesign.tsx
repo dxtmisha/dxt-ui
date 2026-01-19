@@ -92,6 +92,7 @@ export class AnchorDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        label: this.getSubClass('label')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -43,5 +43,6 @@ export interface AnchorSlots extends LabelSlots {
 export type AnchorClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  label: string
   // :classes [!] System label / Системная метка
 }

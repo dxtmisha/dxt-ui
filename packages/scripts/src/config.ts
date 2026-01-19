@@ -88,6 +88,7 @@ export const UI_FILE_NAME_VITE_WORKERS = 'vite-workers.config.ts'
 export const UI_FILE_INDEX = 'index.ts'
 
 export const UI_FILE_AI_TYPES = 'ai-types.txt'
+export const UI_FILE_STYLE_SCSS = 'style.scss'
 
 /** SCSS file extension/ Расширение файлов SCSS */
 export const UI_EXTENSION_STYLE = 'scss'
