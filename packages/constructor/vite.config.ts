@@ -1,4 +1,4 @@
-import { viteBasic } from '@dxtmisha/configuration/viteBasic'
+import { viteLibrariesRollup } from '@dxtmisha/configuration/viteLibrariesRollup'
 
 // https://vite.dev/config/
-export default viteBasic
+export default viteLibrariesRollup

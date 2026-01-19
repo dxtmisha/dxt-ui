@@ -31,8 +31,8 @@
     "library": "dxt-library"
   },
   "files": [
-    "src/",
     "bin/",
+    "src/",
     "README.md",
     "package.json",
     "LICENSE"
@@ -54,6 +54,7 @@
   "exports": {
     ".": "./src/library.ts",
     "./ai": "./src/library-ai.ts",
+    "./plugin": "./src/library-plugin.ts",
     "./config": "./src/config.ts",
     "./properties.json": "./src/media/properties.json"
   },

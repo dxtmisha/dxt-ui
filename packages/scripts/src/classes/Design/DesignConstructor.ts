@@ -1,12 +1,12 @@
 // export:none
 
-import { toCamelCaseFirst } from '@dxtmisha/functional-basic'
+import { toCamelCase, toCamelCaseFirst } from '@dxtmisha/functional-basic'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { DesignCommand } from './DesignCommand'
 
-import { UI_FILE_PACKAGE, UI_DIR_IN, UI_DIR_CONSTRUCTOR } from '../../config'
+import { UI_FILE_PACKAGE, UI_DIR_IN, UI_DIR_CONSTRUCTOR, UI_DIRS_LIBRARY } from '../../config'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -61,6 +61,7 @@ export class DesignConstructor extends DesignCommand {
       .makeMain()
       .makeIndex()
       .makeFilePackage()
+      .makeLibrary()
   }
 
   /**
@@ -182,11 +183,23 @@ export class DesignConstructor extends DesignCommand {
       && packageFile.exports
       && !(name in packageFile.exports)
     ) {
-      packageFile.exports[name] = `./src/constructors/${command}/index.ts`
+      packageFile.exports[name] = `./dist/${toCamelCase(this.getCommand())}.js`
       packageFile.exports[`${name}/style`] = `./src/constructors/${command}/style.scss`
 
       PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageFile)
     }
+
+    return this
+  }
+
+  protected makeLibrary(): this {
+    const name = toCamelCase(this.getCommand())
+
+    PropertiesFile.writeByPath(
+      [...UI_DIRS_LIBRARY, `${name}.ts`],
+      `export * from '../${UI_DIR_CONSTRUCTOR}/${toCamelCaseFirst(this.getCommand())}/index'
+`
+    )
 
     return this
   }

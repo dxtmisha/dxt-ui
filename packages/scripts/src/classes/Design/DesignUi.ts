@@ -11,6 +11,7 @@ import { DesignWiki } from './DesignWiki'
 
 import { LibraryMedia } from '../Library/LibraryMedia'
 import { LibraryList } from '../Library/LibraryList'
+import { LibraryPlugin } from '../Library/LibraryPlugin'
 
 export class DesignUi {
   protected readonly components: LibraryItems
@@ -49,6 +50,7 @@ export class DesignUi {
 
     new LibraryMedia(this.components).make()
     new LibraryList(this.components).make()
+    new LibraryPlugin(this.components).make()
   }
 
   /**

@@ -1,5 +1,0 @@
-export * from './ChipGroup';
-export * from './ChipGroupDesign';
-export * from './props';
-export * from './types';
-export * from './basicTypes';

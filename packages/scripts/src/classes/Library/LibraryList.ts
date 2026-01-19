@@ -38,7 +38,7 @@ export class LibraryList {
     this.items.write(
       UI_FILE_NAME_DESIGN,
       [
-        'import type { LibraryComponentImports } from \'@dxtmisha/scripts\'',
+        'import type { PluginComponentImports } from \'@dxtmisha/scripts/plugin\'',
         '',
         `// count: ${this.items.getCount()}`,
         `export const designName: string = '${PropertiesConfig.getDesignName()}'`,
@@ -46,7 +46,7 @@ export class LibraryList {
         `export const componentsReg: RegExp = ${listReg}`,
         `export const styleVarsReg: RegExp = ${this.getVarsReg()}`,
         '',
-        'export const componentsList: LibraryComponentImports = [',
+        'export const componentsList: PluginComponentImports = [',
         list.join(',\r\n'),
         ']'
       ]

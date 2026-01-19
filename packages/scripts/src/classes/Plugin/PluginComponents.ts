@@ -1,5 +1,5 @@
 import { PluginData } from './PluginData'
-import type { LibraryComponentItem } from '../../types/libraryTypes'
+import type { PluginComponentItem } from '../../types/pluginTypes'
 
 /**
  * Class for connecting components.
@@ -68,7 +68,7 @@ export class PluginComponents {
    * Возвращает путь к компоненту.
    * @param item component data / данные компонента
    */
-  protected getPath(item: LibraryComponentItem): string {
+  protected getPath(item: PluginComponentItem): string {
     return `${this.pluginData.getDesign()}/${item.name}`
   }
 
@@ -93,7 +93,7 @@ export class PluginComponents {
    * @param item component data / данные компонента
    */
   protected importComponent(
-    item: LibraryComponentItem
+    item: PluginComponentItem
   ): string {
     return `import { ${item.name} } from'${this.getPath(item)}';`
   }

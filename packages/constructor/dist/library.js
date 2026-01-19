@@ -1,325 +1,11 @@
-var L = Object.defineProperty;
-var $ = (n, t, e) => t in n ? L(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var r = (n, t, e) => $(n, typeof t != "symbol" ? t + "" : t, e);
-import { isString as D, isFilled as u, render as p, getElementId as S, RouterItemRef as R, getRef as b, getExp as M, isNumber as P, toNumberByMax as G, GeoRef as _, toCamelCaseFirst as I, toCamelCase as T, isFunction as A, isDomRuntime as F, EventItem as q, executeFunction as x, executePromise as C, toNumber as d, anyToString as v, isArray as H, isObject as E, toArray as X, setValues as Y, toBinds as j, createElement as U } from "@dxtmisha/functional";
-import { computed as l, toRefs as K, watch as k, isRef as z, isReadonly as Z, ref as o, onUnmounted as J, shallowRef as Q } from "vue";
-class W {
-  /**
-   * Get role by props.
-   *
-   * Получить роль по пропсам.
-   * @param role ARIA role type/ Тип ARIA роли
-   */
-  static role(t) {
-    return {
-      role: t
-    };
-  }
-  /**
-   * Get ARIA atomic attribute.
-   *
-   * Получить атрибут ARIA atomic.
-   * @param isAtomic is atomic/ является атомарным
-   */
-  static atomic(t) {
-    return {
-      "aria-atomic": this.isTrueOrFalse(t)
-    };
-  }
-  /**
-   * Get ARIA checked attribute.
-   *
-   * Получить атрибут ARIA checked.
-   * @param isChecked is checked/ является отмеченным
-   */
-  static checked(t) {
-    return {
-      "aria-checked": this.isTrueOrFalse(t)
-    };
-  }
-  /**
-   * Get ARIA current attribute.
-   *
-   * Получить атрибут ARIA current.
-   * @param value ARIA current attribute/ Атрибут ARIA current
-   */
-  static current(t) {
-    const e = D(t) ? t : this.isTrueOrFalse(t);
-    return this.isDataToData("aria-current", e);
-  }
-  /**
-   * Get ARIA busy attribute.
-   *
-   * Получить атрибут ARIA busy.
-   * @param isBusy is busy/ является занятым
-   */
-  static busy(t) {
-    return {
-      "aria-busy": this.isTrueOrFalse(t)
-    };
-  }
-  /**
-   * Get ARIA describedby attribute.
-   *
-   * Получить атрибут ARIA describedby.
-   * @param id Element ID/ Идентификатор элемента
-   */
-  static describedby(t) {
-    return this.isDataToData("aria-describedby", t);
-  }
-  /**
-   * Get ARIA disabled attribute.
-   *
-   * Получить атрибут ARIA disabled.
-   * @param isDisabled is disabled/ является отключенным
-   */
-  static disabled(t = !0) {
-    return {
-      "aria-disabled": this.isTrueOrFalse(t)
-    };
-  }
-  /**
-   * Get ARIA expanded attribute.
-   *
-   * Получить атрибут ARIA expanded.
-   * @param isExpanded is expanded/ является расширенным
-   */
-  static expanded(t) {
-    return {
-      "aria-expanded": this.isTrueOrFalse(t)
-    };
-  }
-  /**
-   * Get ARIA haspopup attribute.
-   *
-   * Получить атрибут ARIA haspopup.
-   * @param haspopup ARIA haspopup attribute/ Атрибут ARIA haspopup
-   */
-  static haspopup(t) {
-    return this.isDataToData("aria-haspopup", t);
-  }
-  /**
-   * Get ARIA label.
-   *
-   * Получить ARIA label.
-   * @param label ARIA label/ ARIA метка
-   */
-  static label(t) {
-    return this.isDataToData("aria-label", t);
-  }
-  /**
-   * Get ARIA labelledby attribute.
-   *
-   * Получить атрибут ARIA labelledby.
-   * @param id Element ID/ Идентификатор элемента
-   */
-  static labelledby(t) {
-    return this.isDataToData("aria-labelledby", t);
-  }
-  /**
-   * Get ARIA invalid attribute.
-   *
-   * Получить атрибут ARIA invalid.
-   * @param isInvalid is invalid/ является недействительным
-   */
-  static invalid(t = !0) {
-    return {
-      "aria-invalid": this.isTrueOrFalse(t)
-    };
-  }
-  /**
-   * Get control role.
-   *
-   * Получить роль управления.
-   * @param id Element ID/ Идентификатор элемента
-   * @param controls ARIA controls attribute/ Атрибут ARIA controls
-   * @param haspopup ARIA haspopup attribute/ Атрибут ARIA haspopup
-   * @param expanded ARIA expanded state/ Состояние ARIA expanded
-   */
-  static control(t, e, s, i) {
-    return {
-      id: t,
-      "aria-controls": e,
-      ...this.haspopup(s),
-      ...this.expanded(i)
-    };
-  }
-  /**
-   * Get ARIA hidden attribute.
-   *
-   * Получить атрибут ARIA hidden.
-   * @param isHidden is hidden/ является скрытым
-   */
-  static hidden(t = !0) {
-    return {
-      "aria-hidden": this.isTrueOrFalse(t)
-    };
-  }
-  /**
-   * Get ARIA live attribute.
-   *
-   * Получить атрибут ARIA live.
-   * @param live ARIA live attribute/ Атрибут ARIA live
-   */
-  static live(t) {
-    return {
-      "aria-live": t
-    };
-  }
-  /**
-   * Get modal role.
-   *
-   * Получить модальную роль.
-   * @param isModal is modal/ является модальным
-   * @param ariaLabelledby ARIA labelledby attribute/ Атрибут ARIA labelledby
-   * @param ariaDescribedby ARIA describedby attribute/ Атрибут ARIA describedby
-   */
-  static modal(t = !0, e, s) {
-    return {
-      ...this.isDataToData("aria-modal", t),
-      ...this.labelledby(e),
-      ...this.describedby(s)
-    };
-  }
-  /**
-   * Returns ARIA value now, min and max.
-   *
-   * Возвращает ARIA value now, min и max.
-   * @param value Current value/ Текущее значение
-   * @param min Minimum value/ Минимальное значение
-   * @param max Maximum value/ Максимальное значение
-   */
-  static valueMinMax(t, e, s) {
-    return {
-      "aria-valuenow": t,
-      "aria-valuemin": e,
-      "aria-valuemax": s
-    };
-  }
-  /**
-   * Returns 'true' or 'false' based on the boolean value.
-   *
-   * Возвращает 'true' или 'false' в зависимости от булевого значения.
-   * @param value boolean value/ булевое значение
-   */
-  static isTrueOrFalse(t) {
-    return t ? "true" : "false";
-  }
-  /**
-   * Returns data as ARIA attribute.
-   *
-   * Возвращает данные в виде ARIA атрибута.
-   * @param name attribute name/ имя атрибута
-   * @param value attribute value/ значение атрибута
-   */
-  static isDataToData(t, e) {
-    return e ? {
-      [t]: e
-    } : {};
-  }
-}
-class it {
-  /**
-   * Constructor
-   * @param props input property/ входное свойство
-   * @param className class name/ название класса
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
-   */
-  constructor(t, e, s, i) {
-    /**
-     * Returns true if caption is filled
-     *
-     * Возвращает true, если caption заполнен
-     */
-    r(this, "is", l(() => {
-      var t;
-      return !!(this.props.caption || (t = this.slots) != null && t.caption);
-    }));
-    this.props = t, this.className = e, this.slots = s, this.skeleton = i;
-  }
-  /**
-   * Renders caption element with content from props or slots.
-   *
-   * Отображает элемент caption с содержимым из props или slots.
-   */
-  render() {
-    var e, s, i, a;
-    const t = [];
-    return u(this.props.caption) && t.push(this.props.caption), (e = this.slots) != null && e.caption && t.push((i = (s = this.slots).caption) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
-      p(
-        "div",
-        {
-          class: {
-            [`${this.className}__caption`]: !0,
-            ...(a = this.skeleton) == null ? void 0 : a.classes.value
-          },
-          "data-event-type": "caption"
-        },
-        t,
-        "caption"
-      )
-    ] : [];
-  }
-}
-class rt {
-  /**
-   * Constructor
-   * @param props input property/ входное свойство
-   * @param className class name/ название класса
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
-   */
-  constructor(t, e, s, i) {
-    /** Unique identifier/ Уникальный идентификатор */
-    r(this, "id", S());
-    /**
-     * Check for the presence of a description
-     *
-     * Проверка наличия описания
-     */
-    r(this, "is", l(() => {
-      var t;
-      return !!(this.props.description || (t = this.slots) != null && t.description);
-    }));
-    /** Description expose reference/ Ссылка на expose описания */
-    r(this, "expose", {
-      descriptionId: this.id
-    });
-    this.props = t, this.className = e, this.slots = s, this.skeleton = i;
-  }
-  /**
-   * Get description ID
-   *
-   * Получить ID описания
-   */
-  getId() {
-    return this.id;
-  }
-  /**
-   * Render the description
-   *
-   * Рендер описания
-   */
-  render() {
-    var e, s, i, a;
-    const t = [];
-    return u(this.props.description) && t.push(this.props.description), (e = this.slots) != null && e.description && t.push((i = (s = this.slots).description) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
-      p(
-        "div",
-        {
-          class: {
-            [`${this.className}__description`]: !0,
-            ...(a = this.skeleton) == null ? void 0 : a.classes.value
-          }
-        },
-        t,
-        "description"
-      )
-    ] : [];
-  }
-}
-class at {
+var V = Object.defineProperty;
+var w = (l, t, e) => t in l ? V(l, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : l[t] = e;
+var r = (l, t, e) => w(l, typeof t != "symbol" ? t + "" : t, e);
+import { A as N, L as B } from "./LabelInclude-BYoIaRWl.js";
+import { C as Tt, D as Ft } from "./LabelInclude-BYoIaRWl.js";
+import { computed as n, toRefs as L, watch as x, isRef as O, isReadonly as $, ref as o, onUnmounted as P, shallowRef as R } from "vue";
+import { RouterItemRef as G, getExp as M, isFilled as u, isNumber as q, toNumberByMax as H, GeoRef as X, toCamelCaseFirst as k, toCamelCase as I, isFunction as A, render as S, isDomRuntime as C, getRef as f, EventItem as Y, executeFunction as y, executePromise as T, toNumber as p, anyToString as d, isArray as j, isObject as b, toArray as U, setValues as K, toBinds as _, createElement as z, isString as Z } from "@dxtmisha/functional";
+class et {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -331,33 +17,33 @@ class at {
      *
      * Проверяет, активен ли элемент
      */
-    r(this, "isEnabled", l(
+    r(this, "isEnabled", n(
       () => !this.props.disabled && !this.props.readonly && (!this.progress || !this.progress.is.value) && !!(!("dynamic" in this.props) || this.props.dynamic)
     ));
     /**
      * checks if the read-only status is enabled/ проверяет, включён ли статус "только для чтения"
      */
-    r(this, "isReadonly", l(() => !!this.props.readonly));
+    r(this, "isReadonly", n(() => !!this.props.readonly));
     /**
      * checks if the element is disabled/ проверяет, отключён ли элемент
      */
-    r(this, "isDisabled", l(() => !!this.props.disabled));
+    r(this, "isDisabled", n(() => !!this.props.disabled));
     /**
      * checks if the element is disabled or the value is empty/
      * проверяет, отключён ли элемент или пустое ли значение
      */
-    r(this, "isDisabledOrUndefined", l(() => this.isDisabled.value || void 0));
+    r(this, "isDisabledOrUndefined", n(() => this.isDisabled.value || void 0));
     /**
      * list of aria properties for the enabled state/
      * список aria свойств для состояния активности
      */
-    r(this, "aria", l(
-      () => W.disabled(!this.isEnabled.value)
+    r(this, "aria", n(
+      () => N.disabled(!this.isEnabled.value)
     ));
     this.props = t, this.progress = e;
   }
 }
-class lt {
+class st {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -385,7 +71,7 @@ class lt {
         } else
           this.emit(t, this.getOptions(t));
     });
-    this.props = t, this.enabled = e, this.emits = s, this.refs = t ? K(t) : void 0;
+    this.props = t, this.enabled = e, this.emits = s, this.refs = t ? L(t) : void 0;
   }
   /**
    * Exported values
@@ -429,7 +115,7 @@ class lt {
    */
   toRouter() {
     var t, e;
-    return (t = this.props) != null && t.to ? (R.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
+    return (t = this.props) != null && t.to ? (G.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
   }
   /**
    * Triggers the click event
@@ -442,131 +128,7 @@ class lt {
     this.emits && (this.emits("click", t, e), this.emits("clickLite", e));
   }
 }
-class N {
-  /**
-   * Constructor
-   * @param props input property/ входное свойство
-   * @param className class name/ название класса
-   * @param classesExtra additional classes/ дополнительные классы
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param elementsExtra additional elements/ дополнительные элементы
-   * @param labelReplacing additional elements/ дополнительные элементы
-   * @param alternativeSlots alternative slots/ альтернативные слоты
-   * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
-   * @param tag tag name/ имя тега
-   */
-  constructor(t, e, s, i, a, h, g, V, w = "span") {
-    /** Unique identifier/ Уникальный идентификатор */
-    r(this, "id", S());
-    /** Label presence check/ Проверка наличия метки */
-    r(this, "is", l(() => {
-      var t;
-      return this.props.label || (t = this.labelReplacing) != null && t.value ? !0 : this.slots ? this.alternativeSlots ? "label" in this.slots : "default" in this.slots : !1;
-    }));
-    /** Identifier for the element/ Идентификатор для элемента */
-    r(this, "idElement", l(() => {
-      if (this.is.value)
-        return this.getId();
-    }));
-    /**
-     * Expose helpers for Label state and actions.
-     *
-     * Вспомогательные методы expose для состояния и действий Label.
-     */
-    r(this, "expose", {
-      labelId: this.getId()
-    });
-    this.props = t, this.className = e, this.classesExtra = s, this.slots = i, this.elementsExtra = a, this.labelReplacing = h, this.alternativeSlots = g, this.skeleton = V, this.tag = w;
-  }
-  /**
-   * Get the unique identifier.
-   *
-   * Получение уникального идентификатора.
-   */
-  getId() {
-    var t;
-    return ((t = this.props) == null ? void 0 : t.labelId) || this.id;
-  }
-  /**
-   * Render the label
-   *
-   * Рендер метки
-   * @param childrenExtra additional children/ дополнительные дочерние элементы
-   */
-  render(t) {
-    const e = [];
-    if (this.is.value) {
-      const s = [
-        ...this.initLabel(),
-        ...this.initLabelReplacing(),
-        ...this.initSlot()
-      ];
-      this.elementsExtra && s.push(...this.elementsExtra()), t && s.push(...t), s.length > 0 && e.push(
-        p(
-          b(this.tag),
-          {
-            id: this.getId(),
-            class: this.getClassName()
-          },
-          s,
-          "label"
-        )
-      );
-    }
-    return e;
-  }
-  /**
-   * Get the class name for the label
-   *
-   * Получение имени класса для метки
-   */
-  getClassName() {
-    const t = [`${this.className}__label`];
-    return this.classesExtra && t.push(this.classesExtra), this.skeleton && t.push(this.skeleton.classes.value), t;
-  }
-  /**
-   * Adds the label text if it exists
-   *
-   * Добавляет текст метки, если он есть
-   */
-  initLabel() {
-    var t;
-    return !((t = this.labelReplacing) != null && t.value) && u(this.props.label) ? [this.props.label] : [];
-  }
-  /**
-   * Adds alternative label text if it exists
-   *
-   * Добавляет альтернативный текст метки, если он есть
-   */
-  initLabelReplacing() {
-    var t;
-    return u((t = this.labelReplacing) == null ? void 0 : t.value) ? [
-      p(
-        "span",
-        { innerHTML: this.labelReplacing.value },
-        void 0,
-        "highlight"
-      )
-    ] : [];
-  }
-  /**
-   * Adds a slot for the label if it exists
-   *
-   * Добавляет слот для метки, если он есть
-   */
-  initSlot() {
-    var t, e, s, i;
-    if (this.slots) {
-      if (this.alternativeSlots) {
-        if ("label" in this.slots)
-          return [(e = (t = this.slots).label) == null ? void 0 : e.call(t, {})];
-      } else if ("default" in this.slots)
-        return [(i = (s = this.slots).default) == null ? void 0 : i.call(s, {})];
-    }
-    return [];
-  }
-}
-class nt extends N {
+class it extends B {
   /**
    * Constructor for the LabelHighlightInclude class.
    *
@@ -578,16 +140,16 @@ class nt extends N {
    * @param elementsExtra additional elements/ дополнительные элементы
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    */
-  constructor(e, s, i, a, h, g) {
+  constructor(e, s, i, a, h, E) {
     super(
       e,
       s,
       i,
       a,
       h,
-      l(() => this.getLabel()),
+      n(() => this.getLabel()),
       void 0,
-      g
+      E
     );
     /**
      * Returns a string with highlighted parts.
@@ -606,7 +168,7 @@ class nt extends N {
           return `<span class="${s}">${i}</span>`;
       }
     });
-    this.props = e, this.className = s, this.classesExtra = i, this.slots = a, this.elementsExtra = h, this.skeleton = g;
+    this.props = e, this.className = s, this.classesExtra = i, this.slots = a, this.elementsExtra = h, this.skeleton = E;
   }
   /**
    * Determines if highlighting is required.
@@ -632,7 +194,7 @@ class nt extends N {
     return (e = this.props.highlightLengthStart) != null ? e : 2;
   }
 }
-class ht extends N {
+class rt extends B {
   /**
    * Constructor for working with text that has maximum values.
    *
@@ -651,7 +213,7 @@ class ht extends N {
       s,
       i,
       a,
-      l(() => this.getNumber()),
+      n(() => this.getNumber()),
       void 0,
       h
     ), this.props = t, this.className = e, this.classesExtra = s, this.slots = i, this.elementsExtra = a, this.skeleton = h;
@@ -663,16 +225,16 @@ class ht extends N {
    */
   getNumber() {
     const t = this.props;
-    if (t.label && P(t.label))
-      return G(
+    if (t.label && q(t.label))
+      return H(
         t.label,
         t.labelMax,
         t.formatting,
-        _.getLanguage().value
+        X.getLanguage().value
       ).toString();
   }
 }
-class O {
+class D {
   /**
    * Constructor
    * @param index The index key for the model property/ Ключ индекса для свойства модели
@@ -691,7 +253,7 @@ class O {
     r(this, "update", (t) => {
       this.isValue() && (this.syncValue.value = t);
     });
-    this.index = t, this.emits = e, this.syncValue = s, s && k(s, (i) => {
+    this.index = t, this.emits = e, this.syncValue = s, s && x(s, (i) => {
       this.emit(i);
     }, { immediate: !0 });
   }
@@ -704,7 +266,7 @@ class O {
    * @returns Type predicate indicating syncValue is a mutable Ref/ Предикат типа, указывающий что syncValue - изменяемый Ref
    */
   isValue() {
-    return z(this.syncValue) && !Z(this.syncValue);
+    return O(this.syncValue) && !$(this.syncValue);
   }
   /**
    * Generates binding object for v-model integration.
@@ -716,10 +278,10 @@ class O {
    */
   getBinds() {
     if (this.isValue()) {
-      const t = I(this.index);
+      const t = k(this.index);
       return {
         [`model${t}`]: this.syncValue.value,
-        [`onUpdate:${T(this.index)}`]: this.update,
+        [`onUpdate:${I(this.index)}`]: this.update,
         [`onUpdate:model${t}`]: this.update
       };
     }
@@ -734,10 +296,10 @@ class O {
    * @param value The new value to set/ Новое значение для установки
    */
   emit(t) {
-    A(this.emits) && (this.emits(`update:${T(this.index)}`, t), this.emits(`update:model${I(this.index)}`, t));
+    A(this.emits) && (this.emits(`update:${I(this.index)}`, t), this.emits(`update:model${k(this.index)}`, t));
   }
 }
-class ot {
+class at {
   /**
    * Constructor
    * @param index identifier/ идентификатор
@@ -759,7 +321,7 @@ class ot {
       var s, i;
       e && "value" in e && !((s = this.readonly) != null && s.value) && (this.value.value = e.value), (i = this.event) == null || i.onClick(t, e);
     });
-    this.index = t, this.emits = e, this.event = s, this.inputValue = i, this.readonly = a, new O(this.index, this.emits, this.value), k(
+    this.index = t, this.emits = e, this.event = s, this.inputValue = i, this.readonly = a, new D(this.index, this.emits, this.value), x(
       [this.inputValue],
       () => {
         var h;
@@ -777,7 +339,7 @@ class ot {
     return this.value.value;
   }
 }
-class ut {
+class nt {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -791,7 +353,7 @@ class ut {
      *
      * Возвращает true, если prefix заполнен
      */
-    r(this, "is", l(() => {
+    r(this, "is", n(() => {
       var t;
       return !!(this.props.prefix || (t = this.slots) != null && t.prefix);
     }));
@@ -806,7 +368,7 @@ class ut {
     var e, s, i, a;
     const t = [];
     return u(this.props.prefix) && t.push(this.props.prefix), (e = this.slots) != null && e.prefix && t.push((i = (s = this.slots).prefix) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
-      p(
+      S(
         "div",
         {
           class: {
@@ -821,7 +383,7 @@ class ut {
     ] : [];
   }
 }
-class ct {
+class lt {
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -835,7 +397,7 @@ class ct {
      *
      * Возвращает true, если suffix заполнен
      */
-    r(this, "is", l(() => {
+    r(this, "is", n(() => {
       var t;
       return !!(this.props.suffix || (t = this.slots) != null && t.suffix);
     }));
@@ -850,7 +412,7 @@ class ct {
     var e, s, i, a;
     const t = [];
     return u(this.props.suffix) && t.push(this.props.suffix), (e = this.slots) != null && e.suffix && t.push((i = (s = this.slots).suffix) == null ? void 0 : i.call(s, {})), t.length > 0 ? [
-      p(
+      S(
         "div",
         {
           class: {
@@ -865,7 +427,7 @@ class ct {
     ] : [];
   }
 }
-class pt {
+class ht {
   /**
    * Сonstructor
    * @param element - Reference to the element/ Ссылка на элемент
@@ -888,7 +450,7 @@ class pt {
       const e = document.activeElement;
       e && (this.isShift(t) ? e === this.findFirstElement() && ((s = this.findLastElement()) == null || s.focus(), t.preventDefault()) : e === this.findLastElement() && ((i = this.findFirstElement()) == null || i.focus(), t.preventDefault()));
     });
-    this.element = t, J(() => {
+    this.element = t, P(() => {
       this.stopEvent(), this.event = void 0;
     });
   }
@@ -898,7 +460,7 @@ class pt {
    * Устанавливает фокус на элемент.
    */
   goTo() {
-    return this.isElement() && F() && (this.updateOldElement(), this.toFocus(), this.startEvent()), this;
+    return this.isElement() && C() && (this.updateOldElement(), this.toFocus(), this.startEvent()), this;
   }
   /**
    * Reset focus to the previously focused element.
@@ -949,7 +511,7 @@ class pt {
    * Получает элемент.
    */
   getElement() {
-    return A(this.element) ? this.element() : b(this.element);
+    return A(this.element) ? this.element() : f(this.element);
   }
   /**
    * Find the first focusable element.
@@ -997,7 +559,7 @@ class pt {
    * Сохраняет текущий сфокусированный элемент.
    */
   updateOldElement() {
-    F() && (this.oldElement = document.activeElement);
+    C() && (this.oldElement = document.activeElement);
   }
   /**
    * Start the event listener.
@@ -1009,7 +571,7 @@ class pt {
       this.event.start();
       return;
     }
-    this.event = new q(
+    this.event = new Y(
       document.body,
       "keydown",
       this.listenEvent
@@ -1024,26 +586,26 @@ class pt {
     this.event && this.event.stop();
   }
 }
-const m = class m {
+const v = class v {
   /**
    * Constructor
    * @param props Component properties/ Свойства компонента
    */
   constructor(t) {
     /** Close text/ Текст закрытия */
-    r(this, "close", l(
+    r(this, "close", n(
       () => this.getText("close", this.props.textClose)
     ));
     /** Copied to the clipboard text/ Текст о копировании в буфер обмена */
-    r(this, "copiedClipboard", l(
+    r(this, "copiedClipboard", n(
       () => this.getText("copiedClipboard", this.props.textCopiedClipboard)
     ));
     /** Entries match text/ Текст о несовпадении записей */
-    r(this, "entriesMatch", l(
+    r(this, "entriesMatch", n(
       () => this.getText("entriesMatch", this.props.textEntriesMatch)
     ));
     /** OK text/ Текст подтверждения */
-    r(this, "ok", l(
+    r(this, "ok", n(
       () => this.getText("ok", this.props.textOk)
     ));
     this.props = t;
@@ -1068,7 +630,7 @@ const m = class m {
    * @param value Local text value/ Локальное значение текста
    */
   getText(t, e) {
-    return e ? x(e) : this.getGlobalText(t);
+    return e ? y(e) : this.getGlobalText(t);
   }
   /**
    * Get text from global list.
@@ -1078,22 +640,22 @@ const m = class m {
    */
   getGlobalText(t) {
     var e;
-    if ((e = m.list.value) != null && e[t])
-      return x(m.list.value[t]);
+    if ((e = v.list.value) != null && e[t])
+      return y(v.list.value[t]);
   }
 };
 /**
  * Global list of texts for all components/ Глобальный список текстов для всех компонентов
  */
-r(m, "list", Q({
+r(v, "list", R({
   close: "Close",
   copiedClipboard: "Copied to the clipboard",
   entriesMatch: "Entries do not match",
   ok: "OK"
 }));
-let B = m;
-const f = 80;
-class dt {
+let F = v;
+const m = 80;
+class ot {
   /**
    * Constructor
    * @param start callback on touch/mouse start/ колбэк при начале касания/клика
@@ -1188,7 +750,7 @@ class dt {
    * @param clientX horizontal coordinate/ горизонтальная координата
    */
   getTypeX(t) {
-    return t >= f ? "right" : t < -f ? "left" : "none";
+    return t >= m ? "right" : t < -m ? "left" : "none";
   }
   /**
    * Determines vertical direction type from client Y coordinate.
@@ -1197,7 +759,7 @@ class dt {
    * @param clientY vertical coordinate/ вертикальная координата
    */
   getTypeY(t) {
-    return t >= f ? "bottom" : t < -f ? "top" : "none";
+    return t >= m ? "bottom" : t < -m ? "top" : "none";
   }
   /**
    * Executes callback with calculated movement data.
@@ -1209,7 +771,7 @@ class dt {
     const e = this.mouse.value, s = this.mouseMove.value;
     if (e && s) {
       const i = s.x - e.x, a = s.y - e.y;
-      if (!t || await C(t(
+      if (!t || await T(t(
         this.getTypeX(i),
         this.getTypeY(a),
         i,
@@ -1255,7 +817,7 @@ class dt {
   update(t) {
     var i;
     const e = this.getElement(t), s = this.mouse.value;
-    e && s && (e.style.setProperty("--sys-touch-start-x", `${s.x}px`), e.style.setProperty("--sys-touch-start-y", `${s.y}px`), C((i = this.start) == null ? void 0 : i.call(this, s, this.touche.value)).then());
+    e && s && (e.style.setProperty("--sys-touch-start-x", `${s.x}px`), e.style.setProperty("--sys-touch-start-y", `${s.y}px`), T((i = this.start) == null ? void 0 : i.call(this, s, this.touche.value)).then());
   }
   /**
    * Updates touch/mouse position during movement and sets CSS custom properties.
@@ -1270,7 +832,7 @@ class dt {
     });
   }
 }
-class vt {
+class ut {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1328,7 +890,7 @@ class vt {
     return t && "clear" in t && ((e = t.clear) == null || e.call(t)), this;
   }
 }
-class mt {
+class ct {
   /**
    * Constructor
    * @param props input data /<br>входные данные
@@ -1344,25 +906,25 @@ class mt {
     /** Indicates if there are temporary values/ Указывает, есть ли временные значения */
     r(this, "hasEdit", o(!1));
     /** Checks if there are values or temporary values/ Проверяет, есть ли значения или временные значения */
-    r(this, "is", l(() => this.hasEdit.value || this.boolean.value || !!this.props.placeholder));
+    r(this, "is", n(() => this.hasEdit.value || this.boolean.value || !!this.props.placeholder));
     /** Checks if there are any values/ Проверяет, есть ли значения */
-    r(this, "isValue", l(() => this.hasEdit.value || this.boolean.value));
+    r(this, "isValue", n(() => this.hasEdit.value || this.boolean.value));
     /** Returns the current value if isFull is true/ Возвращает текущее значение, если isFull истинно */
-    r(this, "itemByFull", l(() => this.isFull.value ? this.item.value : void 0));
+    r(this, "itemByFull", n(() => this.isFull.value ? this.item.value : void 0));
     /**
      * Returns the current value, converted to a number/
      * Возвращает текущее значение, преобразованное в номер
      */
-    r(this, "number", l(() => this.boolean.value ? d(this.string.value) : 0));
+    r(this, "number", n(() => this.boolean.value ? p(this.string.value) : 0));
     /** Returns the current value of type string/ Возвращает текущее значение типа string */
-    r(this, "string", l(() => v(this.item.value)));
+    r(this, "string", n(() => d(this.item.value)));
     /** Returns the current value of type boolean/ Возвращает текущее значение типа boolean */
-    r(this, "boolean", l(() => u(this.item.value)));
+    r(this, "boolean", n(() => u(this.item.value)));
     /** Returns the length of the entered value/ Возвращает длину введенного значения */
-    r(this, "length", l(() => {
+    r(this, "length", n(() => {
       var e;
       const t = this.item.value;
-      return H(t) ? t.length : E(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
+      return j(t) ? t.length : b(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
     }));
     /**
      * Changes the values to the original ones.
@@ -1372,7 +934,7 @@ class mt {
     r(this, "update", () => {
       (this.isEdit(this.props.value) || this.isEdit(this.props.modelValue)) && this.setToOriginal();
     });
-    this.props = t, this.refs = e, this.element = s, this.original = i, this.item.value = this.getOriginal(), k([
+    this.props = t, this.refs = e, this.element = s, this.original = i, this.item.value = this.getOriginal(), x([
       e.value,
       e.modelValue
     ], this.update);
@@ -1391,7 +953,7 @@ class mt {
    * Возвращает текущее значение в виде массива.
    */
   getToArray() {
-    return X(this.item.value);
+    return U(this.item.value);
   }
   /**
    * Changes the value.
@@ -1402,12 +964,12 @@ class mt {
   set(t) {
     var e, s;
     if (this.isDifference(t)) {
-      this.item.value = Y(
+      this.item.value = K(
         this.item.value,
         t,
         {
           multiple: this.props.multiple,
-          maxlength: d(this.props.maxlength)
+          maxlength: p(this.props.maxlength)
         }
       );
       const i = (e = this.element) == null ? void 0 : e.getElement();
@@ -1482,7 +1044,7 @@ class mt {
    */
   clear() {
     var t;
-    return this.item.value = b(this.original), (t = this.element) == null || t.clear(), this.hasEdit.value = !1, this.isFull.value = !0, this;
+    return this.item.value = f(this.original), (t = this.element) == null || t.clear(), this.hasEdit.value = !1, this.isFull.value = !0, this;
   }
   /**
    * Is the selected type a checkbox.
@@ -1500,7 +1062,7 @@ class mt {
    * @param value value to check/ значение для проверки
    */
   isDifference(t = this.getOriginal()) {
-    return this.string.value !== v(t);
+    return this.string.value !== d(t);
   }
   /**
    * Returns the original value.
@@ -1508,7 +1070,7 @@ class mt {
    * Возвращает оригинальное значение.
    */
   getOriginal() {
-    return this.props.value || this.props.modelValue || b(this.original);
+    return this.props.value || this.props.modelValue || f(this.original);
   }
   /**
    * Checks if the value is being edited.
@@ -1517,10 +1079,10 @@ class mt {
    * @param value value to check/ значение для проверки
    */
   isEdit(t) {
-    return t !== void 0 && v(t) !== this.string.value;
+    return t !== void 0 && d(t) !== this.string.value;
   }
 }
-class gt {
+class pt {
   constructor() {
     r(this, "item", o(!1));
   }
@@ -1533,7 +1095,7 @@ class gt {
     return this.item.value = !this.item.value, this;
   }
 }
-class ft {
+class dt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1541,7 +1103,7 @@ class ft {
    */
   constructor(t, e) {
     /** Returns the input type/ Возвращает тип ввода */
-    r(this, "item", l(() => {
+    r(this, "item", n(() => {
       var e;
       const t = this.props.type;
       return t === "password" && ((e = this.visibility) != null && e.item.value) ? "text" : t != null ? t : "text";
@@ -1557,7 +1119,7 @@ class ft {
     return this.item.value;
   }
 }
-class bt {
+class vt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1570,23 +1132,23 @@ class bt {
      *
      * @return true if arrows are enabled/ true, если стрелки включены
      */
-    r(this, "is", l(() => !!(this.props.arrow && this.props.arrow !== "none")));
+    r(this, "is", n(() => !!(this.props.arrow && this.props.arrow !== "none")));
     /** Indicates if the previous button is disabled/ Указывает, отключена ли кнопка предыдущего */
-    r(this, "disabledPrevious", l(() => !this.isPrevious(this.value.number.value)));
+    r(this, "disabledPrevious", n(() => !this.isPrevious(this.value.number.value)));
     /** Indicates if the next button is disabled/ Указывает, отключена ли кнопка следующего */
-    r(this, "disabledNext", l(() => !this.isNext(this.value.number.value)));
+    r(this, "disabledNext", n(() => !this.isNext(this.value.number.value)));
     /** Returns the change step/ Возвращает шаг изменения */
-    r(this, "step", l(() => {
+    r(this, "step", n(() => {
       var t, e;
-      return d((e = (t = this.props.arrowStep) != null ? t : this.props.step) != null ? e : 1);
+      return p((e = (t = this.props.arrowStep) != null ? t : this.props.step) != null ? e : 1);
     }));
     /** Returns the minimum value/ Возвращает минимальное значение */
-    r(this, "min", l(() => {
+    r(this, "min", n(() => {
       var t;
-      return (t = d(this.props.min)) != null ? t : void 0;
+      return (t = p(this.props.min)) != null ? t : void 0;
     }));
     /** Returns the maximum value/ Возвращает максимальное значение */
-    r(this, "max", l(() => d(this.props.max) || void 0));
+    r(this, "max", n(() => p(this.props.max) || void 0));
     this.props = t, this.value = e, this.type = s;
   }
   /**
@@ -1691,11 +1253,11 @@ class bt {
     return this;
   }
 }
-const y = {
+const g = {
   email: "[\\S]+@[\\S]{2,}\\.[\\w]{2,}",
   password: "[0-9a-zA-Z\\-!@#$%^&*]+"
 };
-class yt {
+class mt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1703,16 +1265,16 @@ class yt {
    */
   constructor(t, e) {
     /** Returns regular expressions/ Возвращает регулярные выражения */
-    r(this, "item", l(() => {
+    r(this, "item", n(() => {
       if (this.props.pattern)
         return this.props.pattern;
       if (this.type)
-        return y == null ? void 0 : y[this.type.item.value];
+        return g == null ? void 0 : g[this.type.item.value];
     }));
     this.props = t, this.type = e;
   }
 }
-class xt {
+class gt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1720,7 +1282,7 @@ class xt {
    */
   constructor(t, e) {
     /** Returns the keyboard name/ Возвращает название клавиатуры */
-    r(this, "item", l(() => {
+    r(this, "item", n(() => {
       if (this.props.inputMode)
         return this.props.inputMode;
       switch (this.type.item.value) {
@@ -1745,7 +1307,7 @@ class xt {
     this.props = t, this.type = e;
   }
 }
-class Et {
+class ft {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1756,9 +1318,9 @@ class Et {
    */
   constructor(t, e, s, i) {
     /** Returns data for verification/ Возвращает данные для проверки */
-    r(this, "list", l(() => this.getData(this.getAttributes())));
+    r(this, "list", n(() => this.getData(this.getAttributes())));
     /** Returns data for verification/ Возвращает данные для проверки */
-    r(this, "listForCheck", l(() => {
+    r(this, "listForCheck", n(() => {
       const t = this.list.value;
       return this.props.min || this.props.max || this.props.step ? {
         ...t,
@@ -1766,7 +1328,7 @@ class Et {
       } : t;
     }));
     /** Returns data for the input element/ Возвращает данные для элемента ввода */
-    r(this, "listForInput", l(() => this.getData(this.getInputAttributes())));
+    r(this, "listForInput", n(() => this.getData(this.getInputAttributes())));
     this.props = t, this.type = e, this.pattern = s, this.inputMode = i;
   }
   /**
@@ -1841,10 +1403,10 @@ class Et {
             i = this.props[s];
         }
       i !== void 0 && (e[s] = i);
-    }), j(e, this.props.inputAttrs);
+    }), _(e, this.props.inputAttrs);
   }
 }
-class kt {
+class yt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1880,7 +1442,7 @@ class kt {
     this.item.value || this.set(!0);
   }
 }
-class Mt {
+class bt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1929,7 +1491,7 @@ class c {
   constructor(t, e = c.getGroupDefault(), s) {
     /** Hidden input element for native validation/ Скрытый input для нативной валидации */
     r(this, "input");
-    this.pattern = t, this.group = e, this.code = s, this.input = U(
+    this.pattern = t, this.group = e, this.code = s, this.input = z(
       void 0,
       "input",
       this.getAttributes()
@@ -1942,7 +1504,7 @@ class c {
    */
   check(t) {
     const e = this.input;
-    return e ? (e.type === "checkbox" || e.type === "radio" ? e.checked = !!t : e.value = v(t), this.checkByInput(e)) : {
+    return e ? (e.type === "checkbox" || e.type === "radio" ? e.checked = !!t : e.value = d(t), this.checkByInput(e)) : {
       group: this.group,
       status: !0,
       value: t
@@ -1976,9 +1538,9 @@ class c {
   getAttributes() {
     const t = this.pattern;
     if (u(t)) {
-      const e = x(t);
+      const e = y(t);
       if (u(e))
-        return D(e) ? { pattern: e } : e;
+        return Z(e) ? { pattern: e } : e;
     }
     return {};
   }
@@ -1991,7 +1553,7 @@ class c {
     return "check";
   }
 }
-class It {
+class xt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -2005,7 +1567,7 @@ class It {
     /** Internal validation state/ Внутреннее состояние валидации */
     r(this, "validation", o());
     /** Hidden input element for native validation/ Скрытый input для нативной валидации */
-    r(this, "input", l(
+    r(this, "input", n(
       () => new c(
         this.attributes.listForCheck.value,
         void 0,
@@ -2013,7 +1575,7 @@ class It {
       )
     ));
     /** Returns error data/ Возвращает данные об ошибке */
-    r(this, "item", l(() => {
+    r(this, "item", n(() => {
       var s, i;
       const t = this.checkGlobal();
       if (t)
@@ -2022,7 +1584,7 @@ class It {
       return e || this.getValidationItemNone();
     }));
     /** Returns error string/ Возвращает строку об ошибке */
-    r(this, "message", l(() => {
+    r(this, "message", n(() => {
       var t, e;
       if (this.props.validationMessage)
         return this.props.validationMessage;
@@ -2107,7 +1669,7 @@ class It {
     return this.input.value.check(t);
   }
 }
-class Tt {
+class Et {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -2209,7 +1771,7 @@ class Tt {
         ...this.getData()
       }), this;
     });
-    this.props = t, this.change = e, this.value = s, this.validation = i, this.emits = a, this.model = new O(
+    this.props = t, this.change = e, this.value = s, this.validation = i, this.emits = a, this.model = new D(
       "value",
       this.emits,
       this.value.itemByFull
@@ -2266,7 +1828,7 @@ class Tt {
     return this.on(t).onChange(t), this;
   }
 }
-class Ft {
+class Mt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -2292,7 +1854,7 @@ class Ft {
    */
   getSelectors() {
     if (this.is())
-      return E(this.props.match) ? this.props.match.name : this.props.match;
+      return b(this.props.match) ? this.props.match.name : this.props.match;
   }
   /**
    * Returns validation error text
@@ -2302,7 +1864,7 @@ class Ft {
   getValidationMessage() {
     var t, e;
     if (this.is()) {
-      if (E(this.props.match) && ((t = this.props.match) != null && t.validationMessage))
+      if (b(this.props.match) && ((t = this.props.match) != null && t.validationMessage))
         return this.props.match.validationMessage;
       if (this.text)
         return (e = this.text.entriesMatch.value) != null ? e : "";
@@ -2318,7 +1880,7 @@ class Ft {
     const t = this.getSelectors();
     if (t) {
       const e = this.element.findByName(t);
-      if (e && v(e.value) !== this.value.string.value)
+      if (e && d(e.value) !== this.value.string.value)
         return {
           group: c.getGroupDefault(),
           status: !1,
@@ -2329,36 +1891,36 @@ class Ft {
     }
   }
 }
-const Ct = (n) => `${n}-a--static`;
+const kt = (l) => `${l}-a--static`;
 export {
-  W as AriaStaticInclude,
-  it as CaptionInclude,
-  rt as DescriptionInclude,
-  at as EnabledInclude,
-  lt as EventClickInclude,
-  bt as FieldArrowInclude,
-  Et as FieldAttributesInclude,
-  kt as FieldChangeInclude,
-  Mt as FieldCodeInclude,
-  vt as FieldElementInclude,
-  Tt as FieldEventInclude,
+  N as AriaStaticInclude,
+  Tt as CaptionInclude,
+  Ft as DescriptionInclude,
+  et as EnabledInclude,
+  st as EventClickInclude,
+  vt as FieldArrowInclude,
+  ft as FieldAttributesInclude,
+  yt as FieldChangeInclude,
+  bt as FieldCodeInclude,
+  ut as FieldElementInclude,
+  Et as FieldEventInclude,
   c as FieldInputCheckInclude,
-  xt as FieldInputModeInclude,
-  Ft as FieldMatchInclude,
-  yt as FieldPatternInclude,
-  ft as FieldTypeInclude,
-  It as FieldValidationInclude,
-  mt as FieldValueInclude,
-  gt as FieldVisibilityInclude,
-  nt as LabelHighlightInclude,
-  N as LabelInclude,
-  ht as LabelNumberInclude,
-  O as ModelInclude,
-  ot as ModelValueInclude,
-  ut as PrefixInclude,
-  ct as SuffixInclude,
-  pt as TabIndexInclude,
-  B as TextInclude,
-  dt as TouchEventInclude,
-  Ct as getClassTagAStatic
+  gt as FieldInputModeInclude,
+  Mt as FieldMatchInclude,
+  mt as FieldPatternInclude,
+  dt as FieldTypeInclude,
+  xt as FieldValidationInclude,
+  ct as FieldValueInclude,
+  pt as FieldVisibilityInclude,
+  it as LabelHighlightInclude,
+  B as LabelInclude,
+  rt as LabelNumberInclude,
+  D as ModelInclude,
+  at as ModelValueInclude,
+  nt as PrefixInclude,
+  lt as SuffixInclude,
+  ht as TabIndexInclude,
+  F as TextInclude,
+  ot as TouchEventInclude,
+  kt as getClassTagAStatic
 };

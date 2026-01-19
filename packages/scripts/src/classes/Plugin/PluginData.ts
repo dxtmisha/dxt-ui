@@ -1,6 +1,6 @@
 import { toCamelCase, toKebabCase } from '@dxtmisha/functional-basic'
 
-import type { LibraryComponentImports, LibraryComponentItem } from '../../types/libraryTypes'
+import type { PluginComponentImports, PluginComponentItem } from '../../types/pluginTypes'
 
 import { STYLE_MODIFICATION } from '../../media/properties/styleModification'
 
@@ -25,7 +25,7 @@ export class PluginData {
     protected readonly packageName: string,
     protected readonly componentsReg: RegExp,
     protected readonly styleVarsReg: RegExp,
-    protected readonly componentsList: LibraryComponentImports
+    protected readonly componentsList: PluginComponentImports
   ) {
     this.styleModification = this.initStyleModification()
   }
@@ -76,9 +76,9 @@ export class PluginData {
    * Возвращает список всех компонентов в коде.
    * @param code code to check / код для проверки
    */
-  getComponents(code: string): LibraryComponentImports {
+  getComponents(code: string): PluginComponentImports {
     const components = code.match(this.componentsReg)
-    const list: LibraryComponentImports = []
+    const list: PluginComponentImports = []
 
     if (components) {
       components.forEach((component) => {
@@ -121,7 +121,7 @@ export class PluginData {
    * Находит компонент по имени.
    * @param component component name / название компонента
    */
-  protected findComponent(component: string): LibraryComponentItem | undefined {
+  protected findComponent(component: string): PluginComponentItem | undefined {
     return this.componentsList.find(
       item => item.reg.test(component)
     )

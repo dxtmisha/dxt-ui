@@ -1,8 +1,12 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { mergeConfig } from 'vite'
+import { viteLibrariesRollup } from '@dxtmisha/configuration/viteLibrariesRollup'
+
 import mdx from '@mdx-js/rollup'
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [vue(), mdx()]
-})
+export default mergeConfig(
+  viteLibrariesRollup,
+  {
+    plugins: [mdx()]
+  }
+)

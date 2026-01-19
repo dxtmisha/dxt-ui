@@ -37,7 +37,8 @@
     "preview": "vite preview",
     "dxt-library": "dxt-library",
     "dxt-types": "dxt-types",
-    "dxt-constructor": "dxt-constructor page"
+    "dxt-constructor": "dxt-constructor page",
+    "prepublishOnly": "npm run dxt-library && npm run build"
   },
   "files": [
     "src/",
@@ -45,11 +46,11 @@
     "package.json",
     "LICENSE"
   ],
-  "main": "./src/library.ts",
-  "module": "./src/library.ts",
-  "types": "./src/library.ts",
+  "main": "./dist/library.js",
+  "module": "./dist/library.js",
+  "types": "./dist/library.d.ts",
   "exports": {
-    ".": "./src/library.ts",
+    ".": "./dist/library.js",
     "./ai-types": "./ai-types.txt",
     "./Accordion": "./src/constructors/Accordion/index.ts",
     "./Accordion/style": "./src/constructors/Accordion/style.scss",
@@ -129,7 +130,7 @@
     "./Arrow/style": "./src/constructors/Arrow/style.scss",
     "./Tooltip": "./src/constructors/Tooltip/index.ts",
     "./Tooltip/style": "./src/constructors/Tooltip/style.scss",
-    "./Page": "./src/constructors/Page/index.ts",
+    "./Page": "./dist/page.js",
     "./Page/style": "./src/constructors/Page/style.scss"
   },
   "buildOptions": {

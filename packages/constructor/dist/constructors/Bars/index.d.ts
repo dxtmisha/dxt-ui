@@ -1,6 +1,0 @@
-export * from './Bars';
-export * from './BarsDesign';
-export * from './BarsInclude';
-export * from './props';
-export * from './types';
-export * from './basicTypes';

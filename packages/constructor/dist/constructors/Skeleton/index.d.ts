@@ -1,6 +1,0 @@
-export * from './Skeleton';
-export * from './SkeletonDesign';
-export * from './SkeletonInclude';
-export * from './basicTypes';
-export * from './props';
-export * from './types';
