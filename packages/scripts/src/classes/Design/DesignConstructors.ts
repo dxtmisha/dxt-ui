@@ -1,6 +1,6 @@
 // export:none
 
-import { isFilled } from '@dxtmisha/functional-basic'
+import { isFilled, toCamelCaseFirst } from '@dxtmisha/functional-basic'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { PropertiesCache } from '../Properties/PropertiesCache'
@@ -63,17 +63,8 @@ export class DesignConstructors {
 
     this.getComponents()
       .forEach((component) => {
-        const pathComponent = [...this.getDir(), component, UI_FILE_STYLE_SCSS]
-        const style = PropertiesFile.readFileOnly(pathComponent)
-
-        if (style) {
-          list.push(
-            style
-              .replace(/@use[^;]+;/ig, '')
-              .replace(/(@include )([^. ;]+)\.(mixin[^. ;]+;)/, '$1$3')
-              .trim()
-          )
-        }
+        const name = toCamelCaseFirst(component)
+        list.push(`@forward "../constructors/${name}/style";`)
       })
 
     return list
@@ -101,9 +92,6 @@ export class DesignConstructors {
     const path: string[] = [...UI_DIRS_LIBRARY, UI_FILE_STYLE_SCSS]
     const styles = this.getComponentsStyle()
 
-    PropertiesFile.writeByPath(path, [
-      '@use "@dxtmisha/styles/properties" as ui;',
-      ...styles
-    ].join('\r\n\r\n'))
+    PropertiesFile.writeByPath(path, styles.join('\r\n'))
   }
 }
