@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/SelectValue/style" as SelectValue;
+@use "@dxtmisha/constructor/style.scss" as SelectValue;
 
 @include ui.initDesignBasic('d1.selectValue') {
   // Basic styles for a component

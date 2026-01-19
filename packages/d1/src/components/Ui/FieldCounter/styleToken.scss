@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/FieldCounter/style" as FieldCounter;
+@use "@dxtmisha/constructor/style.scss" as FieldCounter;
 
 @include ui.initDesignBasic('d1.fieldCounter') {
   // Basic styles for a component

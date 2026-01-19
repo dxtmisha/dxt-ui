@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/ListItem/style" as ListItem;
+@use "@dxtmisha/constructor/style.scss" as ListItem;
 
 @include ui.initDesignBasic('d1.listItem') {
   // Basic styles for a component

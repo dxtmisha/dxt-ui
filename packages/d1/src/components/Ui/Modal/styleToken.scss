@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/Modal/style" as Modal;
+@use "@dxtmisha/constructor/style.scss" as Modal;
 
 @include ui.initDesignBasic('d1.modal') {
   // Basic styles for a component

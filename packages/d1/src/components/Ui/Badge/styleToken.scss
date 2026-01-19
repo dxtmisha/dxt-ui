@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/Badge/style" as Badge;
+@use "@dxtmisha/constructor/style.scss" as Badge;
 
 @include ui.initDesignBasic('d1.badge') {
   // Basic styles for a component

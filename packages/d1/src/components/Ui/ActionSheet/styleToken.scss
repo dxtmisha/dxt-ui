@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/ActionSheet/style" as ActionSheet;
+@use "@dxtmisha/constructor/style.scss" as ActionSheet;
 
 @include ui.initDesignBasic('d1.actionSheet') {
   // Basic styles for a component

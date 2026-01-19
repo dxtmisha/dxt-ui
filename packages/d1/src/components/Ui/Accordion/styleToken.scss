@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/Accordion/style" as Accordion;
+@use "@dxtmisha/constructor/style.scss" as Accordion;
 
 @include ui.initDesignBasic('d1.accordion') {
   // Basic styles for a component

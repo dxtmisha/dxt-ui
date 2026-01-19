@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/ChipGroup/style" as ChipGroup;
+@use "@dxtmisha/constructor/style.scss" as ChipGroup;
 
 @include ui.initDesignBasic('d1.chipGroup') {
   // Basic styles for a component

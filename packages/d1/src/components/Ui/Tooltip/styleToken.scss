@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/Tooltip/style" as Tooltip;
+@use "@dxtmisha/constructor/style.scss" as Tooltip;
 
 @include ui.initDesignBasic('d1.tooltip') {
   // Basic styles for a component

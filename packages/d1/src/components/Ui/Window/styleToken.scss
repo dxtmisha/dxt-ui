@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/Window/style" as Window;
+@use "@dxtmisha/constructor/style.scss" as Window;
 
 @include ui.initDesignBasic('d1.window') {
   // Basic styles for a component

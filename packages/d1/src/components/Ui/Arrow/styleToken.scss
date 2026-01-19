@@ -1,6 +1,6 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/Arrow/style" as Arrow;
+@use "@dxtmisha/constructor/style.scss" as Arrow;
 
 @include ui.initDesignBasic('d1.arrow') {
   // Basic styles for a component
