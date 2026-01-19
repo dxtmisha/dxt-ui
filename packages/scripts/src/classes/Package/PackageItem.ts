@@ -192,6 +192,7 @@ export class PackageInitItem {
   protected writeFile(path: string, content: string): void {
     const contentEdit = content
       .replace(/@packages\/library/g, this.getProjectName())
+      .replace(/\[name]/g, this.getName())
 
     PropertiesFile.writeByPath(path, contentEdit)
     PropertiesFile.chmod(path)
