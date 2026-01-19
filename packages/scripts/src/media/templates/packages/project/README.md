@@ -1,1 +1,1 @@
-# @packages/library
+# @packages/project

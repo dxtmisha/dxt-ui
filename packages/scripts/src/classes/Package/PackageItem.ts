@@ -2,6 +2,7 @@
 
 import requirePath from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { isFilled } from '@dxtmisha/functional-basic'
 import { hasNativeDirname } from '../../functions/hasNativeDirname'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
@@ -92,7 +93,7 @@ export class PackageInitItem {
    * Получает файлы шаблонов, если указан путь к шаблонам.
    */
   protected getTemplates(): PackageInitItemFile[] {
-    if (this.templates) {
+    if (isFilled(this.templates)) {
       return this.getFileByList([this.templates])
     }
 
