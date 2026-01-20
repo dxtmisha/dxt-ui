@@ -36,8 +36,7 @@ export interface AccordionPropsBasic<
  *
  * Тип, описывающий входящие свойства.
  */
-export interface AccordionProps extends AccordionPropsBasic, AccordionPropsToken {
-}
+export type AccordionProps = AccordionPropsBasic & AccordionPropsToken
 
 /**
  * Default value for property.

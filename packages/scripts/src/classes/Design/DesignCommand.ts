@@ -101,6 +101,10 @@ export abstract class DesignCommand {
     return toCamelCaseFirst(`${PropertiesConfig.getDesignName()}-${this.getCommand()}`)
   }
 
+  protected getProjectName(): string {
+    return toCamelCaseFirst(PropertiesConfig.getProjectName())
+  }
+
   /**
    * Returns a structure object.
    *

@@ -10,7 +10,11 @@
     "dxt-ui": "dxt-ui image"
   },
   "exports": {
-    "./styles/ui": "./src/styles/Ui/main.scss"
+    "./styles/ui": "./src/styles/Ui/main.scss",
+    "./D1Image": {
+      "import": "./dist/D1Image.js",
+      "types": "./dist/components/Ui/D1Image/index.d.ts"
+    }
   },
   "devDependencies": {}
 }

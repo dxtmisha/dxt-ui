@@ -1,6 +1,7 @@
+import { isString } from '@dxtmisha/functional'
+
 import type { AriaList, AriaTrueOrFalse } from '../types/ariaTypes'
 import type { RoleType } from '../types/roleTypes'
-import { isString } from '@dxtmisha/functional'
 
 /**
  * The class returns static ARIA attributes.

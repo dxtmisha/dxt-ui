@@ -9,7 +9,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   divider?: boolean
   padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
@@ -20,8 +20,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface AccordionProps extends AccordionPropsBasic<IconProps, CellProps, MotionTransformProps>, PropsToken {
-}
+export type AccordionProps = AccordionPropsBasic<IconProps, CellProps, MotionTransformProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

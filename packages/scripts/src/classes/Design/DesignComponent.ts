@@ -4,8 +4,6 @@ import {
   forEach,
   isObjectNotArray,
   toArray,
-  toCamelCase,
-  toCamelCaseFirst,
   toKebabCase
 } from '@dxtmisha/functional-basic'
 import { wikiDescriptions } from '@dxtmisha/wiki/media'
@@ -22,7 +20,8 @@ import {
   UI_DIR_COMPONENTS,
   UI_DIR_CONSTRUCTOR,
   UI_DIR_IN,
-  UI_DIRS_COMPONENTS, UI_FILE_PACKAGE,
+  UI_DIRS_COMPONENTS,
+  UI_DIRS_LIBRARY,
   UI_PROJECT_CONSTRUCTOR_FULL_NAME,
   UI_PROJECT_CONSTRUCTOR_NAME
 } from '../../config'
@@ -86,6 +85,7 @@ export class DesignComponent extends DesignCommand {
       .makeStories()
       .makeStoriesDocumentation()
       .makeFilePackage()
+      .makeLibrary()
   }
 
   /**
@@ -572,23 +572,33 @@ export class DesignComponent extends DesignCommand {
    * Обновляет файл package.json.
    */
   protected makeFilePackage(): this {
-    const packageFile = PropertiesFile.readFile<Record<string, any>>(UI_FILE_PACKAGE)
-    const command = toCamelCaseFirst(this.getCommand())
-    const commandCode = toCamelCase(this.getCommand())
-    const name = `./${command}`
+    const name = `./${this.getFullName()}`
+    const command = this.getFullName()
 
-    if (
-      packageFile
-      && packageFile.exports
-      && !(name in packageFile.exports)
-    ) {
-      packageFile.exports[name] = {
-        import: `./dist/${commandCode}.js`,
-        types: `./dist/constructors/${command}/index.d.ts`
+    this.updatePackage(
+      `exports|${name}`,
+      {
+        import: `./dist/${command}.js`,
+        types: `./dist/components/${this.getProjectName()}/${command}/index.d.ts`
       }
+    )
 
-      PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageFile)
-    }
+    return this
+  }
+
+  /**
+   * Generates a library file.
+   *
+   * Генерирует файл библиотеки.
+   */
+  protected makeLibrary(): this {
+    const name = this.getFullName()
+
+    PropertiesFile.writeByPath(
+      [...UI_DIRS_LIBRARY, `${name}.ts`],
+      `export * from '../${UI_DIR_COMPONENTS}/${this.getProjectName()}/${this.getName()}/index'
+`
+    )
 
     return this
   }
