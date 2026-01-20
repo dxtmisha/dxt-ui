@@ -1,12 +1,4 @@
-import { mergeConfig } from 'vite'
-import { viteLibrariesRollup } from '@dxtmisha/configuration/viteLibrariesRollup'
-
-import mdx from '@mdx-js/rollup'
+import { viteConstructors } from '@dxtmisha/configuration/viteConstructors'
 
 // https://vite.dev/config/
-export default mergeConfig(
-  viteLibrariesRollup,
-  {
-    plugins: [mdx()]
-  }
-)
+export default viteConstructors

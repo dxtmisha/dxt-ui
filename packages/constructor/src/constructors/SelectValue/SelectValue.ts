@@ -1,5 +1,11 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrBind, type ConstrClassObject, type ConstrEmit, DesignComp, isFilled } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type ConstrClassObject,
+  type ConstrEmit,
+  type DesignComp,
+  isFilled
+} from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'

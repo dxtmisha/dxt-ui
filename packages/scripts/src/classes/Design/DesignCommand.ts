@@ -2,15 +2,16 @@
 
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { toArray } from '@dxtmisha/functional-basic'
+import { toArray, toCamelCase, toCamelCaseFirst, toKebabCase } from '@dxtmisha/functional-basic'
 import { hasNativeDirname } from '../../functions/hasNativeDirname'
+import { getPackageJson } from '../../functions/getPackageJson'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignStructure } from './DesignStructure'
 import { DesignReplace } from './DesignReplace'
 
-import { UI_KEY_CONSTRUCTOR } from '../../config'
+import { UI_FILE_PACKAGE, UI_KEY_CONSTRUCTOR } from '../../config'
 
 const dirnamePath = hasNativeDirname()
   ? __dirname
@@ -82,6 +83,22 @@ export abstract class DesignCommand {
    */
   protected getCommand(): string {
     return this.command
+  }
+
+  protected getName(): string {
+    return toCamelCaseFirst(this.getCommand())
+  }
+
+  protected getNameMin(): string {
+    return toCamelCase(this.getCommand())
+  }
+
+  protected getCode(): string {
+    return toKebabCase(this.getCommand())
+  }
+
+  protected getFullName(): string {
+    return toCamelCaseFirst(`${PropertiesConfig.getDesignName()}-${this.getCommand()}`)
   }
 
   /**
@@ -178,6 +195,35 @@ export abstract class DesignCommand {
       value,
       ''
     )
+  }
+
+  protected updatePackage(
+    namePath: string,
+    value: any
+  ): this {
+    const packageFile = getPackageJson()
+    let focus: Record<string, any> | any | undefined = packageFile
+
+    if (packageFile && focus) {
+      const names = namePath.split('|')
+      const key = names.pop()
+
+      for (const name of names) {
+        if (!(name in focus)) {
+          focus[name] = {}
+        }
+
+        focus = focus[name]
+      }
+
+      if (key) {
+        focus[key] = value
+      }
+
+      PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageFile)
+    }
+
+    return this
   }
 
   /**

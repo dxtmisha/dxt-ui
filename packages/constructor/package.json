@@ -54,164 +54,164 @@
   "types": "./dist/library.d.ts",
   "exports": {
     ".": "./dist/library.js",
-    "./ai-types": "./ai-types.txt",
-    "./style.scss": "./src/library/style.scss",
     "./Accordion": {
       "import": "./dist/accordion.js",
-      "types": "./dist/accordion.d.ts"
+      "types": "./dist/constructors/Accordion/index.d.ts"
     },
     "./ActionSheet": {
       "import": "./dist/actionSheet.js",
-      "types": "./dist/actionSheet.d.ts"
+      "types": "./dist/constructors/ActionSheet/index.d.ts"
     },
     "./Actions": {
       "import": "./dist/actions.js",
-      "types": "./dist/actions.d.ts"
+      "types": "./dist/constructors/Actions/index.d.ts"
     },
     "./Anchor": {
       "import": "./dist/anchor.js",
-      "types": "./dist/anchor.d.ts"
+      "types": "./dist/constructors/Anchor/index.d.ts"
     },
     "./Arrow": {
       "import": "./dist/arrow.js",
-      "types": "./dist/arrow.d.ts"
+      "types": "./dist/constructors/Arrow/index.d.ts"
     },
     "./Badge": {
       "import": "./dist/badge.js",
-      "types": "./dist/badge.d.ts"
+      "types": "./dist/constructors/Badge/index.d.ts"
     },
     "./Bars": {
       "import": "./dist/bars.js",
-      "types": "./dist/bars.d.ts"
+      "types": "./dist/constructors/Bars/index.d.ts"
     },
     "./Block": {
       "import": "./dist/block.js",
-      "types": "./dist/block.d.ts"
+      "types": "./dist/constructors/Block/index.d.ts"
     },
     "./Button": {
       "import": "./dist/button.js",
-      "types": "./dist/button.d.ts"
+      "types": "./dist/constructors/Button/index.d.ts"
     },
     "./Cell": {
       "import": "./dist/cell.js",
-      "types": "./dist/cell.d.ts"
+      "types": "./dist/constructors/Cell/index.d.ts"
     },
     "./Chip": {
       "import": "./dist/chip.js",
-      "types": "./dist/chip.d.ts"
+      "types": "./dist/constructors/Chip/index.d.ts"
     },
     "./ChipGroup": {
       "import": "./dist/chipGroup.js",
-      "types": "./dist/chipGroup.d.ts"
+      "types": "./dist/constructors/ChipGroup/index.d.ts"
     },
     "./Dialog": {
       "import": "./dist/dialog.js",
-      "types": "./dist/dialog.d.ts"
+      "types": "./dist/constructors/Dialog/index.d.ts"
     },
     "./Field": {
       "import": "./dist/field.js",
-      "types": "./dist/field.d.ts"
+      "types": "./dist/constructors/Field/index.d.ts"
     },
     "./FieldCounter": {
       "import": "./dist/fieldCounter.js",
-      "types": "./dist/fieldCounter.d.ts"
+      "types": "./dist/constructors/FieldCounter/index.d.ts"
     },
     "./FieldLabel": {
       "import": "./dist/fieldLabel.js",
-      "types": "./dist/fieldLabel.d.ts"
+      "types": "./dist/constructors/FieldLabel/index.d.ts"
     },
     "./FieldMessage": {
       "import": "./dist/fieldMessage.js",
-      "types": "./dist/fieldMessage.d.ts"
+      "types": "./dist/constructors/FieldMessage/index.d.ts"
     },
     "./Icon": {
       "import": "./dist/icon.js",
-      "types": "./dist/icon.d.ts"
+      "types": "./dist/constructors/Icon/index.d.ts"
     },
     "./Image": {
       "import": "./dist/image.js",
-      "types": "./dist/image.d.ts"
+      "types": "./dist/constructors/Image/index.d.ts"
     },
     "./Input": {
       "import": "./dist/input.js",
-      "types": "./dist/input.d.ts"
+      "types": "./dist/constructors/Input/index.d.ts"
     },
     "./List": {
       "import": "./dist/list.js",
-      "types": "./dist/list.d.ts"
+      "types": "./dist/constructors/List/index.d.ts"
     },
     "./ListGroup": {
       "import": "./dist/listGroup.js",
-      "types": "./dist/listGroup.d.ts"
+      "types": "./dist/constructors/ListGroup/index.d.ts"
     },
     "./ListItem": {
       "import": "./dist/listItem.js",
-      "types": "./dist/listItem.d.ts"
+      "types": "./dist/constructors/ListItem/index.d.ts"
     },
     "./ListMenu": {
       "import": "./dist/listMenu.js",
-      "types": "./dist/listMenu.d.ts"
+      "types": "./dist/constructors/ListMenu/index.d.ts"
     },
     "./Mask": {
       "import": "./dist/mask.js",
-      "types": "./dist/mask.d.ts"
+      "types": "./dist/constructors/Mask/index.d.ts"
     },
     "./Menu": {
       "import": "./dist/menu.js",
-      "types": "./dist/menu.d.ts"
+      "types": "./dist/constructors/Menu/index.d.ts"
     },
     "./Modal": {
       "import": "./dist/modal.js",
-      "types": "./dist/modal.d.ts"
+      "types": "./dist/constructors/Modal/index.d.ts"
     },
     "./MotionTransform": {
       "import": "./dist/motionTransform.js",
-      "types": "./dist/motionTransform.d.ts"
+      "types": "./dist/constructors/MotionTransform/index.d.ts"
     },
     "./Page": {
       "import": "./dist/page.js",
-      "types": "./dist/page.d.ts"
+      "types": "./dist/constructors/Page/index.d.ts"
     },
     "./Progress": {
       "import": "./dist/progress.js",
-      "types": "./dist/progress.d.ts"
+      "types": "./dist/constructors/Progress/index.d.ts"
     },
     "./Ripple": {
       "import": "./dist/ripple.js",
-      "types": "./dist/ripple.d.ts"
+      "types": "./dist/constructors/Ripple/index.d.ts"
     },
     "./Scrollbar": {
       "import": "./dist/scrollbar.js",
-      "types": "./dist/scrollbar.d.ts"
+      "types": "./dist/constructors/Scrollbar/index.d.ts"
     },
     "./Section": {
       "import": "./dist/section.js",
-      "types": "./dist/section.d.ts"
+      "types": "./dist/constructors/Section/index.d.ts"
     },
     "./Select": {
       "import": "./dist/select.js",
-      "types": "./dist/select.d.ts"
+      "types": "./dist/constructors/Select/index.d.ts"
     },
     "./SelectValue": {
       "import": "./dist/selectValue.js",
-      "types": "./dist/selectValue.d.ts"
+      "types": "./dist/constructors/SelectValue/index.d.ts"
     },
     "./Skeleton": {
       "import": "./dist/skeleton.js",
-      "types": "./dist/skeleton.d.ts"
+      "types": "./dist/constructors/Skeleton/index.d.ts"
     },
     "./TextareaAutosize": {
       "import": "./dist/textareaAutosize.js",
-      "types": "./dist/textareaAutosize.d.ts"
+      "types": "./dist/constructors/TextareaAutosize/index.d.ts"
     },
     "./Tooltip": {
       "import": "./dist/tooltip.js",
-      "types": "./dist/tooltip.d.ts"
+      "types": "./dist/constructors/Tooltip/index.d.ts"
     },
     "./Window": {
       "import": "./dist/window.js",
-      "types": "./dist/window.d.ts"
-    }
+      "types": "./dist/constructors/Window/index.d.ts"
+    },
+    "./ai-types": "./ai-types.txt",
+    "./style.scss": "./src/library/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

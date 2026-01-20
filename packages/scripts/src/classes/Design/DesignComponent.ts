@@ -1,6 +1,13 @@
 // export:none
 
-import { forEach, isObjectNotArray, toArray, toKebabCase } from '@dxtmisha/functional-basic'
+import {
+  forEach,
+  isObjectNotArray,
+  toArray,
+  toCamelCase,
+  toCamelCaseFirst,
+  toKebabCase
+} from '@dxtmisha/functional-basic'
 import { wikiDescriptions } from '@dxtmisha/wiki/media'
 import type { StorybookComponentsDescriptionItem } from '@dxtmisha/wiki'
 
@@ -15,7 +22,7 @@ import {
   UI_DIR_COMPONENTS,
   UI_DIR_CONSTRUCTOR,
   UI_DIR_IN,
-  UI_DIRS_COMPONENTS,
+  UI_DIRS_COMPONENTS, UI_FILE_PACKAGE,
   UI_PROJECT_CONSTRUCTOR_FULL_NAME,
   UI_PROJECT_CONSTRUCTOR_NAME
 } from '../../config'
@@ -78,6 +85,7 @@ export class DesignComponent extends DesignCommand {
       .makeWiki()
       .makeStories()
       .makeStoriesDocumentation()
+      .makeFilePackage()
   }
 
   /**
@@ -553,6 +561,33 @@ export class DesignComponent extends DesignCommand {
           .replace(new RegExp('Component', 'g'), component)
       )
       sample.replaceMark(`documentation-${type}`, data)
+    }
+
+    return this
+  }
+
+  /**
+   * Updates the package.json file.
+   *
+   * Обновляет файл package.json.
+   */
+  protected makeFilePackage(): this {
+    const packageFile = PropertiesFile.readFile<Record<string, any>>(UI_FILE_PACKAGE)
+    const command = toCamelCaseFirst(this.getCommand())
+    const commandCode = toCamelCase(this.getCommand())
+    const name = `./${command}`
+
+    if (
+      packageFile
+      && packageFile.exports
+      && !(name in packageFile.exports)
+    ) {
+      packageFile.exports[name] = {
+        import: `./dist/${commandCode}.js`,
+        types: `./dist/constructors/${command}/index.d.ts`
+      }
+
+      PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageFile)
     }
 
     return this

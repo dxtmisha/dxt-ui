@@ -1,7 +1,7 @@
 import { computed, type VNode } from 'vue'
 import {
   type ConstrBind,
-  DesignComponents,
+  type DesignComponents,
   getRef,
   isFilled,
   isNull,

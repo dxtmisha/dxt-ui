@@ -6,7 +6,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { DesignCommand } from './DesignCommand'
 
-import { UI_FILE_PACKAGE, UI_DIR_IN, UI_DIR_CONSTRUCTOR, UI_DIRS_LIBRARY } from '../../config'
+import { UI_DIR_IN, UI_DIR_CONSTRUCTOR, UI_DIRS_LIBRARY } from '../../config'
 
 const FILE_PROPERTIES = 'properties.json'
 const FILE_PROPS = 'props.ts'
@@ -113,9 +113,9 @@ export class DesignConstructor extends DesignCommand {
   }
 
   /**
-   * This code generates the properties.json.
+   * This code generates the basicTypes.ts.
    *
-   * Генерация файла properties.json.
+   * Генерация файла basicTypes.ts.
    */
   protected makeTypesBasic(): this {
     return this.makeFileStandard(FILE_TYPES_BASIC)
@@ -164,6 +164,12 @@ export class DesignConstructor extends DesignCommand {
     return this.makeFileStandard(FILE_INDEX)
   }
 
+  /**
+   * Generates a standard file based on a template.
+   *
+   * Генерирует стандартный файл на основе шаблона.
+   * @param file file name/ имя файла
+   */
   protected makeFileStandard(file: string): this {
     const sample = this.readDefinable(file)
 
@@ -173,28 +179,31 @@ export class DesignConstructor extends DesignCommand {
     return this
   }
 
+  /**
+   * Updates the package.json file.
+   *
+   * Обновляет файл package.json.
+   */
   protected makeFilePackage(): this {
-    const packageFile = PropertiesFile.readFile<Record<string, any>>(UI_FILE_PACKAGE)
-    const command = toCamelCaseFirst(this.getCommand())
-    const commandCode = toCamelCase(this.getCommand())
+    const command = this.getName()
     const name = `./${command}`
 
-    if (
-      packageFile
-      && packageFile.exports
-      && !(name in packageFile.exports)
-    ) {
-      packageFile.exports[name] = {
-        import: `./dist/${commandCode}.js`,
-        types: `./dist/${commandCode}.d.ts`
+    this.updatePackage(
+      `exports|${name}`,
+      {
+        import: `./dist/${this.getNameMin()}.js`,
+        types: `./dist/constructors/${command}/index.d.ts`
       }
-
-      PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageFile)
-    }
+    )
 
     return this
   }
 
+  /**
+   * Generates a library file.
+   *
+   * Генерирует файл библиотеки.
+   */
   protected makeLibrary(): this {
     const name = toCamelCase(this.getCommand())
 

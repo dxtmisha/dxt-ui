@@ -1,4 +1,4 @@
-import { viteLibrariesRollup } from '@dxtmisha/configuration/viteLibrariesRollup'
+import { viteConstructors } from '@dxtmisha/configuration/viteConstructors'
 
 // https://vite.dev/config/
-export default viteLibrariesRollup
+export default viteConstructors
