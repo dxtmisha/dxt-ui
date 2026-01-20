@@ -3,7 +3,7 @@ import { AriaByPropsInclude, AriaHaspopupPropsInclude, AriaRoleByPropsInclude } 
 import { ImagePropsBasic, ImagePropsInclude } from '../Image';
 import { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar';
 import { TextClosePropsInclude } from '../../types/textTypes';
-interface WindowPropsToken {
+export type WindowPropsToken = {
     width?: string | 'auto' | 'max' | 'custom';
     height?: string | 'auto' | 'max' | 'custom';
     hide?: boolean;
@@ -17,8 +17,8 @@ interface WindowPropsToken {
     overscroll?: boolean;
     closeMobileHide?: boolean;
     widthMatch?: boolean;
-}
-export interface WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> extends ScrollbarPropsInclude<Scrollbar>, ImagePropsInclude<Image>, AriaRoleByPropsInclude, AriaByPropsInclude, AriaHaspopupPropsInclude, TextClosePropsInclude {
+};
+export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = ScrollbarPropsInclude<Scrollbar> & ImagePropsInclude<Image> & AriaRoleByPropsInclude & AriaByPropsInclude & AriaHaspopupPropsInclude & TextClosePropsInclude & {
     'open'?: boolean;
     'disabled'?: boolean;
     'preparation'?(): NormalOrPromise<void>;
@@ -40,14 +40,13 @@ export interface WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = Scroll
     'modelOpen'?: boolean;
     'onUpdate:open'?: (value: boolean) => void;
     'onUpdate:modelOpen'?: (value: boolean) => void;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface WindowProps extends WindowPropsBasic, WindowPropsToken {
-}
+export type WindowProps = WindowPropsBasic & WindowPropsToken;
 /**
  * Default value for property.
  *
@@ -61,4 +60,3 @@ export declare const defaultsWindow: {
     ariaHaspopup: string;
     role: string;
 };
-export {};

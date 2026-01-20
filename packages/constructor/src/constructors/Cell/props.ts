@@ -10,7 +10,7 @@ import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 
 import type { AriaRolePropsInclude } from '../../types/ariaTypes'
 
-interface CellPropsToken {
+export type CellPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
   selected?: boolean
@@ -24,31 +24,30 @@ interface CellPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface CellPropsBasic<
+export type CellPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> extends LabelProps,
-  DescriptionProps,
-  CaptionProps,
-  EnabledProps,
-  IconTrailingPropsInclude<Icon>,
-  ProgressPropsInclude<Progress>,
-  SkeletonPropsInclude,
-  EventClickProps,
-  AriaRolePropsInclude {
+> = LabelProps
+  & DescriptionProps
+  & CaptionProps
+  & EnabledProps
+  & IconTrailingPropsInclude<Icon>
+  & ProgressPropsInclude<Progress>
+  & SkeletonPropsInclude
+  & EventClickProps
+  & AriaRolePropsInclude & {
   // Style
-  tag?: string
-  divider?: boolean
-  dynamic?: boolean
-}
+    tag?: string
+    divider?: boolean
+    dynamic?: boolean
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface CellProps extends CellPropsBasic, CellPropsToken {
-}
+export type CellProps = CellPropsBasic & CellPropsToken
 
 /**
  * Default value for property.

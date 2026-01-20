@@ -1,12 +1,12 @@
 import { ImagePicture } from './basicTypes';
-interface ImagePropsToken {
+export type ImagePropsToken = {
     turn?: boolean;
     disabled?: boolean;
     hide?: boolean;
     adaptive?: boolean;
     size?: 'auto' | 'contain' | 'cover';
-}
-export interface ImagePropsBasic {
+};
+export type ImagePropsBasic = {
     /**
      * Accepts icon name, image URL, File object or PDF link/
      * Принимает название иконки, ссылку на изображение, объект File или ссылку на PDF файл
@@ -57,14 +57,13 @@ export interface ImagePropsBasic {
     preloadOffset?: string;
     /** Image fetch priority (low, high, auto)/ Приоритет загрузки изображения (low, high, auto) */
     fetchPriority?: HTMLImageElement['fetchPriority'];
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ImageProps extends ImagePropsBasic, ImagePropsToken {
-}
+export type ImageProps = ImagePropsBasic & ImagePropsToken;
 /**
  * Default value for property.
  *
@@ -74,4 +73,3 @@ export declare const defaultsImage: {
     adaptiveGroup: string;
     preloadOffset: string;
 };
-export {};

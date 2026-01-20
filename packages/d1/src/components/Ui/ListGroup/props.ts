@@ -5,7 +5,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   open?: boolean
   divider?: boolean
@@ -15,8 +15,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ListGroupProps extends ListGroupPropsBasic, PropsToken {
-}
+export type ListGroupProps = ListGroupPropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

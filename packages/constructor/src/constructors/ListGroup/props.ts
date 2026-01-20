@@ -1,11 +1,11 @@
-interface ListGroupPropsToken {
+export type ListGroupPropsToken = {
   // :type [!] System label / Системная метка
   open?: boolean
   divider?: boolean
   // :type [!] System label / Системная метка
 }
 
-export interface ListGroupPropsBasic {
+export type ListGroupPropsBasic = {
   divider?: boolean
 }
 
@@ -14,8 +14,7 @@ export interface ListGroupPropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ListGroupProps extends ListGroupPropsBasic, ListGroupPropsToken {
-}
+export type ListGroupProps = ListGroupPropsBasic & ListGroupPropsToken
 
 /**
  * Default value for property.

@@ -1,6 +1,6 @@
 import type { AriaLabelPropsInclude, AriaLivePropsInclude } from '../../types/ariaTypes'
 
-interface ProgressPropsToken {
+export type ProgressPropsToken = {
   // :type [!] System label / Системная метка
   point?: boolean
   linear?: boolean
@@ -12,31 +12,30 @@ interface ProgressPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface ProgressPropsBasic extends AriaLabelPropsInclude,
-  AriaLivePropsInclude {
+export type ProgressPropsBasic = AriaLabelPropsInclude
+  & AriaLivePropsInclude & {
   // Status
-  visible?: boolean
+    visible?: boolean
 
-  // Value
-  value?: number | string
-  max?: number | string
+    // Value
+    value?: number | string
+    max?: number | string
 
-  // Style
-  linear?: boolean
-  circular?: boolean
-  point?: boolean
+    // Style
+    linear?: boolean
+    circular?: boolean
+    point?: boolean
 
-  delay?: number | string
-  delayHide?: number | string
-}
+    delay?: number | string
+    delayHide?: number | string
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ProgressProps extends ProgressPropsBasic, ProgressPropsToken {
-}
+export type ProgressProps = ProgressPropsBasic & ProgressPropsToken
 
 /**
  * Default value for property.

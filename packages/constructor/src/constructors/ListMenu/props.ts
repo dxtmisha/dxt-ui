@@ -1,6 +1,6 @@
 import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
 
-interface ListMenuPropsToken {
+export type ListMenuPropsToken = {
   // :type [!] System label / Системная метка
   open?: boolean
   axis?: 'x' | 'y'
@@ -8,18 +8,16 @@ interface ListMenuPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface ListMenuPropsBasic<
+export type ListMenuPropsBasic<
   Window extends WindowPropsBasic = WindowPropsBasic
->extends WindowPropsInclude<Window> {
-}
+> = WindowPropsInclude<Window>
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ListMenuProps extends ListMenuPropsBasic, ListMenuPropsToken {
-}
+export type ListMenuProps = ListMenuPropsBasic & ListMenuPropsToken
 
 /**
  * Default value for property.

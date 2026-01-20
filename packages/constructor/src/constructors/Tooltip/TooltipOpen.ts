@@ -6,7 +6,7 @@ import { TooltipStatus } from './TooltipStatus'
 import { TooltipPosition } from './TooltipPosition'
 
 import type { TooltipProps } from './props'
-import type { TooltipEmits } from './types.ts'
+import type { TooltipEmits } from './types'
 
 /**
  * Class for managing the status of an open window.

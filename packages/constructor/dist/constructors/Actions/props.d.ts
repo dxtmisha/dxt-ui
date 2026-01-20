@@ -1,22 +1,21 @@
 import { ConstrBind } from '@dxtmisha/functional';
 import { ButtonPropsBasic } from '../Button';
-interface ActionsPropsToken {
+export type ActionsPropsToken = {
     align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto';
     flexible?: boolean;
-}
-export interface ActionsPropsBasic<Button extends ButtonPropsBasic = ButtonPropsBasic> {
+};
+export type ActionsPropsBasic<Button extends ButtonPropsBasic = ButtonPropsBasic> = {
     list?: ConstrBind<Button>[];
     listSecondary?: ConstrBind<Button>[];
     buttonAttrs?: ConstrBind<Button>;
     buttonSecondaryAttrs?: ConstrBind<Button>;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ActionsProps extends ActionsPropsBasic, ActionsPropsToken {
-}
+export type ActionsProps = ActionsPropsBasic & ActionsPropsToken;
 /**
  * Default value for property.
  *
@@ -25,4 +24,3 @@ export interface ActionsProps extends ActionsPropsBasic, ActionsPropsToken {
 export declare const defaultsActions: {
     align: string;
 };
-export {};

@@ -6,7 +6,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   turn?: boolean
   disabled?: boolean
@@ -19,8 +19,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ImageProps extends ImagePropsBasic, PropsToken {
-}
+export type ImageProps = ImagePropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

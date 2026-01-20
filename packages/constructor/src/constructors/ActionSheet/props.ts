@@ -2,32 +2,31 @@ import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
 import type { BarsPropsBasic, BarsPropsInclude } from '../Bars'
 import type { ActionsPropsBasic, ActionsPropsInclude } from '../Actions'
 
-interface ActionSheetPropsToken {
+export type ActionSheetPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface ActionSheetPropsBasic<
+export type ActionSheetPropsBasic<
   Window extends WindowPropsBasic = WindowPropsBasic,
   Bars extends BarsPropsBasic = BarsPropsBasic,
   Actions extends ActionsPropsBasic = ActionsPropsBasic
-> extends WindowPropsInclude<Window>,
-  BarsPropsInclude<Bars>,
-  ActionsPropsInclude<Actions> {
+> = WindowPropsInclude<Window>
+  & BarsPropsInclude<Bars>
+  & ActionsPropsInclude<Actions> & {
   // Status
-  open?: boolean
+    open?: boolean
 
-  // Style
-  touchClose?: boolean
-}
+    // Style
+    touchClose?: boolean
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ActionSheetProps extends ActionSheetPropsBasic, ActionSheetPropsToken {
-}
+export type ActionSheetProps = ActionSheetPropsBasic & ActionSheetPropsToken
 
 /**
  * Default value for property.

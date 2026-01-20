@@ -7,7 +7,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   open?: boolean
   axis?: 'x' | 'y'
@@ -18,8 +18,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ListMenuProps extends ListMenuPropsBasic<WindowProps>, PropsToken {
-}
+export type ListMenuProps = ListMenuPropsBasic<WindowProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

@@ -1,7 +1,7 @@
 import { IconPropsBasic } from '../Icon';
 import { ProgressPropsBasic } from '../Progress';
 import { ButtonPropsBasic } from '../Button';
-interface ChipPropsToken {
+export type ChipPropsToken = {
     focus?: boolean;
     disabled?: boolean;
     selected?: boolean;
@@ -11,16 +11,14 @@ interface ChipPropsToken {
     inverse?: boolean;
     grid?: boolean;
     textAlign?: 'left' | 'center' | 'right';
-}
-export interface ChipPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> extends ButtonPropsBasic<Icon, Progress> {
-}
+};
+export type ChipPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = ButtonPropsBasic<Icon, Progress>;
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ChipProps extends ChipPropsBasic, ChipPropsToken {
-}
+export type ChipProps = ChipPropsBasic & ChipPropsToken;
 /**
  * Default value for property.
  *
@@ -29,4 +27,3 @@ export interface ChipProps extends ChipPropsBasic, ChipPropsToken {
 export declare const defaultsChip: {
     tag: string;
 };
-export {};

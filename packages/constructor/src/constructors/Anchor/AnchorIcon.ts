@@ -1,8 +1,9 @@
 import { computed } from 'vue'
+import { AnchorEvent } from './AnchorEvent'
+
 import type { AnchorProps } from './props'
 import type { ConstrBind } from '@dxtmisha/functional'
 import type { IconProps } from '../Icon'
-import { AnchorEvent } from './AnchorEvent.ts'
 
 /**
  * Class for working with the anchor icon

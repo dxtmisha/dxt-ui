@@ -3,29 +3,28 @@ import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounter'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
-interface FieldLabelPropsToken {
+export type FieldLabelPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface FieldLabelPropsBasic<
+export type FieldLabelPropsBasic<
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> extends LabelProps,
-  FieldCounterPropsInclude<FieldCounter>,
-  ProgressPropsInclude<Progress>,
-  SkeletonPropsInclude {
+> = LabelProps
+  & FieldCounterPropsInclude<FieldCounter>
+  & ProgressPropsInclude<Progress>
+  & SkeletonPropsInclude & {
   // Style
-  required?: boolean
-}
+    required?: boolean
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface FieldLabelProps extends FieldLabelPropsBasic, FieldLabelPropsToken {
-}
+export type FieldLabelProps = FieldLabelPropsBasic & FieldLabelPropsToken
 
 /**
  * Default value for property.

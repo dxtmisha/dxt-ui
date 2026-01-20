@@ -1,21 +1,19 @@
-interface ListGroupPropsToken {
+export type ListGroupPropsToken = {
     open?: boolean;
     divider?: boolean;
-}
-export interface ListGroupPropsBasic {
+};
+export type ListGroupPropsBasic = {
     divider?: boolean;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ListGroupProps extends ListGroupPropsBasic, ListGroupPropsToken {
-}
+export type ListGroupProps = ListGroupPropsBasic & ListGroupPropsToken;
 /**
  * Default value for property.
  *
  * Значение по умолчанию для свойства.
  */
 export declare const defaultsListGroup: {};
-export {};

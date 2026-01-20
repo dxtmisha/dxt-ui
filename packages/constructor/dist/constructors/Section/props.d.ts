@@ -1,16 +1,13 @@
 import { IconPropsBasic } from '../Icon';
 import { BlockPropsBasic } from '../Block';
-interface SectionPropsToken {
-}
-export interface SectionPropsBasic<Icon extends IconPropsBasic = IconPropsBasic> extends BlockPropsBasic<Icon> {
-}
+export type SectionPropsToken = {};
+export type SectionPropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = BlockPropsBasic<Icon>;
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface SectionProps extends SectionPropsBasic, SectionPropsToken {
-}
+export type SectionProps = SectionPropsBasic & SectionPropsToken;
 /**
  * Default value for property.
  *
@@ -20,4 +17,3 @@ export declare const defaultsSection: {
     tag: string;
     tagHeader: string;
 };
-export {};

@@ -3,7 +3,6 @@ import { ConstrBind, ConstrClass, DesignComponents, RefOrNormal } from '@dxtmish
 import { IconComponentInclude, IconLitePropsInclude } from './basicTypes';
 import { IconPropsBasic } from './props';
 import { ItemList } from '@dxtmisha/functional-basic';
-import { ImagePropsBasic } from '../Image';
 /**
  * Class for simplified integration of the icon-handling component
  *
@@ -42,7 +41,7 @@ export declare class IconLiteInclude<Props extends IconLitePropsInclude = IconLi
      *
      * Возвращает дополнительное свойство
      */
-    protected getExtra(): ConstrBind<IconPropsBasic< ImagePropsBasic>> | undefined;
+    protected getExtra(): ConstrBind<IconPropsBasic> | undefined;
     /**
      * Returns a list of classes
      *

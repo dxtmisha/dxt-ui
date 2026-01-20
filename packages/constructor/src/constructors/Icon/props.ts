@@ -1,9 +1,9 @@
 import type { RoleType } from '../../types/roleTypes'
 import type { ImagePropsBasic, ImageValue } from '../Image'
 import type { SkeletonPropsInclude } from '../Skeleton'
-import type { AriaLabelPropsInclude } from '../../types/ariaTypes.ts'
+import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
 
-interface IconPropsToken {
+export type IconPropsToken = {
   // :type [!] System label / Системная метка
   turn?: boolean
   disabled?: boolean
@@ -20,31 +20,30 @@ interface IconPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface IconPropsBasic<
+export type IconPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic
-> extends SkeletonPropsInclude,
-  AriaLabelPropsInclude {
+> = SkeletonPropsInclude
+  & AriaLabelPropsInclude & {
   // Status
   /** Активное состояние иконки/ Active state of the icon */
-  active?: boolean
+    active?: boolean
 
-  // Icon
-  /** Value of the main icon/ Значение основной иконки */
-  icon?: ImageValue<Image>
-  /** Value of the active icon/ Значение активной иконки */
-  iconActive?: ImageValue<Image>
+    // Icon
+    /** Value of the main icon/ Значение основной иконки */
+    icon?: ImageValue<Image>
+    /** Value of the active icon/ Значение активной иконки */
+    iconActive?: ImageValue<Image>
 
-  // ARIA
-  role?: RoleType
-}
+    // ARIA
+    role?: RoleType
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface IconProps extends IconPropsBasic, IconPropsToken {
-}
+export type IconProps = IconPropsBasic & IconPropsToken
 
 /**
  * Default value for property.

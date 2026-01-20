@@ -13,11 +13,6 @@ import { MenuProps } from './props';
 import { MenuControlBasic } from './basicTypes';
 import { ListPropsBasic } from '../List';
 import { EventClickValue } from '../../types/eventClickTypes';
-import { IconPropsBasic } from '../Icon';
-import { ImagePropsBasic } from '../Image';
-import { ListItemPropsBasic } from '../ListItem';
-import { BadgePropsBasic } from '../Badge';
-import { ProgressPropsBasic } from '../Progress';
 /**
  * Menu
  */
@@ -66,7 +61,7 @@ export declare class Menu {
      *
      * Получение данных для привязки к компоненту List.
      */
-    readonly binds: ComputedRef<ListPropsBasic< IconPropsBasic<ImagePropsBasic>, ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>>;
+    readonly binds: ComputedRef<ListPropsBasic>;
     /**
      * Getting data for binding to controls.
      *

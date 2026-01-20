@@ -1,6 +1,6 @@
 import type { ImagePicture } from './basicTypes'
 
-interface ImagePropsToken {
+export type ImagePropsToken = {
   // :type [!] System label / Системная метка
   turn?: boolean
   disabled?: boolean
@@ -10,7 +10,7 @@ interface ImagePropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface ImagePropsBasic {
+export type ImagePropsBasic = {
   // Value
   /**
    * Accepts icon name, image URL, File object or PDF link/
@@ -75,8 +75,7 @@ export interface ImagePropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ImageProps extends ImagePropsBasic, ImagePropsToken {
-}
+export type ImageProps = ImagePropsBasic & ImagePropsToken
 
 /**
  * Default value for property.

@@ -11,7 +11,7 @@ import type { FieldCounterPropsBasic } from '../FieldCounter'
 import type { FieldMessagePropsBasic, FieldMessagePropsInclude } from '../FieldMessage'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
-interface FieldPropsToken {
+export type FieldPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
   disabled?: boolean
@@ -34,47 +34,46 @@ interface FieldPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface FieldPropsBasic<
+export type FieldPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> extends IconTrailingPropsInclude<Icon>,
-  PrefixProps,
-  SuffixProps,
-  CaptionProps,
-  FieldLabelPropsInclude<FieldLabel, FieldCounter>,
-  FieldMessagePropsInclude<FieldMessage, FieldCounter>,
-  ProgressPropsInclude<Progress>,
-  EnabledProps,
-  EventClickProps,
-  SkeletonPropsInclude {
+> = IconTrailingPropsInclude<Icon>
+  & PrefixProps
+  & SuffixProps
+  & CaptionProps
+  & FieldLabelPropsInclude<FieldLabel, FieldCounter>
+  & FieldMessagePropsInclude<FieldMessage, FieldCounter>
+  & ProgressPropsInclude<Progress>
+  & EnabledProps
+  & EventClickProps
+  & SkeletonPropsInclude & {
   // Status
-  disabledPrevious?: boolean
-  disabledNext?: boolean
+    disabledPrevious?: boolean
+    disabledNext?: boolean
 
-  // Style
-  id?: string | number
+    // Style
+    id?: string | number
 
-  counterTop?: boolean
+    counterTop?: boolean
 
-  cancelShow?: boolean
+    cancelShow?: boolean
 
-  iconArrowLeft?: IconValue<Icon>
-  iconArrowRight?: IconValue<Icon>
-  iconPlus?: IconValue<Icon>
-  iconMinus?: IconValue<Icon>
-  iconClose?: IconValue<Icon>
-}
+    iconArrowLeft?: IconValue<Icon>
+    iconArrowRight?: IconValue<Icon>
+    iconPlus?: IconValue<Icon>
+    iconMinus?: IconValue<Icon>
+    iconClose?: IconValue<Icon>
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface FieldProps extends FieldPropsBasic, FieldPropsToken {
-}
+export type FieldProps = FieldPropsBasic & FieldPropsToken
 
 /**
  * Default value for property.

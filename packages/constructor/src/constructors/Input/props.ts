@@ -10,12 +10,12 @@ import type { ProgressPropsBasic } from '../Progress'
 
 import type { FieldInputProps } from '../../types/fieldTypes'
 
-interface InputPropsToken {
+export type InputPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface InputPropsBasic<
+export type InputPropsBasic<
   Mask extends MaskPropsBasic = MaskPropsBasic,
   Icon extends IconPropsBasic = IconPropsBasic,
   Field extends FieldPropsBasic = FieldPropsBasic,
@@ -23,18 +23,16 @@ export interface InputPropsBasic<
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> extends MaskPropsInclude<Mask>,
-  FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>,
-  FieldInputProps<NumberOrString> {
-}
+> = MaskPropsInclude<Mask>
+  & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>
+  & FieldInputProps<NumberOrString>
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface InputProps extends InputPropsBasic, InputPropsToken {
-}
+export type InputProps = InputPropsBasic & InputPropsToken
 
 /**
  * Default value for property.

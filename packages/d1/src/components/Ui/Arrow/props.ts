@@ -7,7 +7,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   position?: 'auto' | 'top' | 'bottom' | 'left' | 'right'
   inverse?: boolean
@@ -18,8 +18,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ArrowProps extends ArrowPropsBasic, PropsToken {
-}
+export type ArrowProps = ArrowPropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

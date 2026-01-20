@@ -8,9 +8,8 @@ import { InputPropsBasic } from '../Input';
 import { ProgressPropsBasic } from '../Progress';
 import { MenuPropsBasic, MenuPropsInclude } from '../Menu';
 import { FieldSelectProps } from '../../types/fieldTypes';
-interface SelectPropsToken {
-}
-export interface SelectPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Input extends InputPropsBasic = InputPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic, Menu extends MenuPropsBasic = MenuPropsBasic> extends FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>, FieldSelectProps, MenuPropsInclude<Menu> {
+export type SelectPropsToken = {};
+export type SelectPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Input extends InputPropsBasic = InputPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic, Menu extends MenuPropsBasic = MenuPropsBasic> = FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress> & FieldSelectProps & MenuPropsInclude<Menu> & {
     editValue?: boolean;
     hideList?: boolean;
     showSearch?: boolean;
@@ -18,18 +17,16 @@ export interface SelectPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, 
     iconArrowDown?: IconValue<Icon>;
     iconSearch?: IconValue<Icon>;
     inputSearchAttrs?: ConstrBind<Input>;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface SelectProps extends SelectPropsBasic, SelectPropsToken {
-}
+export type SelectProps = SelectPropsBasic & SelectPropsToken;
 /**
  * Default value for property.
  *
  * Значение по умолчанию для свойства.
  */
 export declare const defaultsSelect: {};
-export {};

@@ -14,7 +14,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
@@ -22,7 +22,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface SelectProps extends SelectPropsBasic<
+export type SelectProps = SelectPropsBasic<
   IconProps,
   FieldProps,
   FieldLabelProps,
@@ -31,8 +31,7 @@ export interface SelectProps extends SelectPropsBasic<
   InputProps,
   ProgressProps,
   MenuProps
->, PropsToken {
-}
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

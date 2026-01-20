@@ -5,11 +5,11 @@ import { BarsPropsBasic, BarsPropsInclude } from '../Bars';
 import { WindowPropsBasic, WindowPropsInclude } from '../Window';
 import { ModelPropsSelected } from '../../types/modelTypes';
 import { RoleType } from '../../types/roleTypes';
-interface MenuPropsToken {
+export type MenuPropsToken = {
     hideList?: boolean;
     barsAdaptive?: 'showAlways';
-}
-export interface MenuPropsBasic<List extends ListPropsBasic = ListPropsBasic, ListItem extends ListItemPropsBasic = ListItemPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Window extends WindowPropsBasic = WindowPropsBasic> extends BarsPropsInclude<Bars>, WindowPropsInclude<Window>, ModelPropsSelected {
+};
+export type MenuPropsBasic<List extends ListPropsBasic = ListPropsBasic, ListItem extends ListItemPropsBasic = ListItemPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Window extends WindowPropsBasic = WindowPropsBasic> = BarsPropsInclude<Bars> & WindowPropsInclude<Window> & ModelPropsSelected & {
     selected?: ListSelectedList;
     hideList?: boolean;
     list?: ListRecord<ListItem>;
@@ -29,14 +29,13 @@ export interface MenuPropsBasic<List extends ListPropsBasic = ListPropsBasic, Li
     itemAttrs?: ConstrBind<ListItem>;
     roleItem?: RoleType;
     isSelectedByValue?: boolean;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface MenuProps extends MenuPropsBasic, MenuPropsToken {
-}
+export type MenuProps = MenuPropsBasic & MenuPropsToken;
 /**
  * Default value for property.
  *
@@ -51,4 +50,3 @@ export declare const defaultsMenu: {
     autoClose: boolean;
     roleItem: string;
 };
-export {};

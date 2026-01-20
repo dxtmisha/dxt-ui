@@ -11,7 +11,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   selected?: boolean
   hide?: boolean
@@ -30,8 +30,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface BadgeProps extends BadgePropsBasic<IconProps>, PropsToken {
-}
+export type BadgeProps = BadgePropsBasic<IconProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

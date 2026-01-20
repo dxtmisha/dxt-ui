@@ -8,17 +8,17 @@ import type { IconPropsBasic, IconValue } from '../Icon'
 import type { RoleType } from '../../types/roleTypes'
 import type { ListItemPropsBasic } from '../ListItem'
 
-interface ListPropsToken {
+export type ListPropsToken = {
   // :type [!] System label / Системная метка
   axis?: 'x' | 'y'
   divider?: boolean
   // :type [!] System label / Системная метка
 }
 
-export interface ListPropsBasic<
+export type ListPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   ListItem extends ListItemPropsBasic = ListItemPropsBasic
-> {
+> = {
   // Status
   focus?: ListSelectedItem
   selected?: ListSelectedList
@@ -63,8 +63,7 @@ export interface ListPropsBasic<
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ListProps extends ListPropsBasic, ListPropsToken {
-}
+export type ListProps = ListPropsBasic & ListPropsToken
 
 /**
  * Default value for property.

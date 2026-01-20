@@ -12,7 +12,7 @@ import type { SuffixProps } from '../../types/suffixTypes'
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
 
-interface ListItemPropsToken {
+export type ListItemPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
   open?: boolean
@@ -27,50 +27,49 @@ interface ListItemPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface ListItemPropsBasic<
+export type ListItemPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Badge extends BadgePropsBasic = BadgePropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> extends LabelHighlightProps,
-  DescriptionProps,
-  PrefixProps,
-  CaptionProps,
-  SuffixProps,
-  IconTrailingPropsInclude<Icon>,
-  BadgePropsInclude<Badge>,
-  ProgressPropsInclude<Progress>,
-  SkeletonPropsInclude,
-  EnabledProps,
-  EventClickProps,
-  AriaRolePropsInclude {
+> = LabelHighlightProps
+  & DescriptionProps
+  & PrefixProps
+  & CaptionProps
+  & SuffixProps
+  & IconTrailingPropsInclude<Icon>
+  & BadgePropsInclude<Badge>
+  & ProgressPropsInclude<Progress>
+  & SkeletonPropsInclude
+  & EnabledProps
+  & EventClickProps
+  & AriaRolePropsInclude & {
   // Value
-  index?: any
-  href?: string
+    index?: any
+    href?: string
 
-  // Style
-  tag?: 'button' | 'a' | 'span' | 'div' | string
-  filterMode?: boolean
-  divider?: boolean
+    // Style
+    tag?: 'button' | 'a' | 'span' | 'div' | string
+    filterMode?: boolean
+    divider?: boolean
 
-  tabindex?: number | string
+    tabindex?: number | string
 
-  // Technical
-  type?: string
-  parent?: string
-  listId?: number
-  search?: string
+    // Technical
+    type?: string
+    parent?: string
+    listId?: number
+    search?: string
 
-  isMenu?: boolean
-  isItemMenu?: boolean
-}
+    isMenu?: boolean
+    isItemMenu?: boolean
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ListItemProps extends ListItemPropsBasic, ListItemPropsToken {
-}
+export type ListItemProps = ListItemPropsBasic & ListItemPropsToken
 
 /**
  * Default value for property.

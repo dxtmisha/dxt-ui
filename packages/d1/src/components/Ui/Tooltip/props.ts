@@ -6,7 +6,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   maxWidth?: 'sm' | 'md' | 'lg'
   // :type [!] System label / Системная метка
@@ -15,8 +15,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface TooltipProps extends TooltipPropsBasic, PropsToken {
-}
+export type TooltipProps = TooltipPropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

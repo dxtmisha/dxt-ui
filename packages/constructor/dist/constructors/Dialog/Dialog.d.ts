@@ -8,7 +8,6 @@ import { WindowClassesInclude } from '../Window';
 import { ModalAbstract } from '../Modal/ModalAbstract';
 import { DialogComponents, DialogEmits, DialogSlots } from './types';
 import { DialogProps } from './props';
-import { ImagePropsBasic } from '../Image';
 /**
  * Dialog
  */
@@ -43,5 +42,5 @@ export declare class Dialog extends ModalAbstract {
      *
      * Возвращает иконку для отображения.
      */
-    protected readonly iconValue: ComputedRef< IconValue<IconPropsBasic<ImagePropsBasic>> | undefined>;
+    protected readonly iconValue: ComputedRef< IconValue<IconPropsBasic> | undefined>;
 }

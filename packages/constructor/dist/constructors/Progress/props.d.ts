@@ -1,5 +1,5 @@
 import { AriaLabelPropsInclude, AriaLivePropsInclude } from '../../types/ariaTypes';
-interface ProgressPropsToken {
+export type ProgressPropsToken = {
     point?: boolean;
     linear?: boolean;
     circular?: boolean;
@@ -7,8 +7,8 @@ interface ProgressPropsToken {
     position?: 'top' | 'bottom' | 'static';
     dense?: boolean;
     inverse?: boolean;
-}
-export interface ProgressPropsBasic extends AriaLabelPropsInclude, AriaLivePropsInclude {
+};
+export type ProgressPropsBasic = AriaLabelPropsInclude & AriaLivePropsInclude & {
     visible?: boolean;
     value?: number | string;
     max?: number | string;
@@ -17,14 +17,13 @@ export interface ProgressPropsBasic extends AriaLabelPropsInclude, AriaLiveProps
     point?: boolean;
     delay?: number | string;
     delayHide?: number | string;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ProgressProps extends ProgressPropsBasic, ProgressPropsToken {
-}
+export type ProgressProps = ProgressPropsBasic & ProgressPropsToken;
 /**
  * Default value for property.
  *
@@ -39,4 +38,3 @@ export declare const defaultsProgress: {
     delayHide: number;
     ariaLive: string;
 };
-export {};

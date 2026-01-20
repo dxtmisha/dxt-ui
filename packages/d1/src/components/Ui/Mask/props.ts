@@ -7,7 +7,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   visible?: boolean
   visiblePartly?: boolean
@@ -19,8 +19,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface MaskProps extends MaskPropsBasic, PropsToken {
-}
+export type MaskProps = MaskPropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

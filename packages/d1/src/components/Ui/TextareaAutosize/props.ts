@@ -6,7 +6,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   // :type [!] System label / Системная метка
@@ -15,8 +15,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface TextareaAutosizeProps extends TextareaAutosizePropsBasic, PropsToken {
-}
+export type TextareaAutosizeProps = TextareaAutosizePropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

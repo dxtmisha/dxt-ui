@@ -5,7 +5,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
@@ -13,8 +13,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface RippleProps extends RipplePropsBasic, PropsToken {
-}
+export type RippleProps = RipplePropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

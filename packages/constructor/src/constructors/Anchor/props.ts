@@ -4,40 +4,39 @@ import type { LabelProps } from '../../types/labelTypes'
 import type { TextCopiedClipboardPropsInclude } from '../../types/textTypes'
 import type { AnchorScrollProps } from './basicTypes'
 
-interface AnchorPropsToken {
+export type AnchorPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface AnchorPropsBasic<
+export type AnchorPropsBasic<
   Tooltip extends TooltipProps = TooltipProps
-> extends LabelProps,
-  TooltipPropsInclude<Tooltip>,
-  TextCopiedClipboardPropsInclude,
-  AnchorScrollProps {
+> = LabelProps
+  & TooltipPropsInclude<Tooltip>
+  & TextCopiedClipboardPropsInclude
+  & AnchorScrollProps & {
   // Status
-  hide?: boolean
+    hide?: boolean
 
-  // Value
-  name?: string
+    // Value
+    name?: string
 
-  // Style
-  isCopy?: boolean
+    // Style
+    isCopy?: boolean
 
-  iconLink?: string
-  iconTag?: string
-  iconContentCopy?: string
+    iconLink?: string
+    iconTag?: string
+    iconContentCopy?: string
 
-  delayHide?: number
-}
+    delayHide?: number
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface AnchorProps extends AnchorPropsBasic, AnchorPropsToken {
-}
+export type AnchorProps = AnchorPropsBasic & AnchorPropsToken
 
 /**
  * Default value for property.

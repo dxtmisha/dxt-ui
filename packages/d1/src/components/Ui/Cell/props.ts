@@ -9,7 +9,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
   selected?: boolean
@@ -28,8 +28,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface CellProps extends CellPropsBasic<IconProps, ProgressProps>, PropsToken {
-}
+export type CellProps = CellPropsBasic<IconProps, ProgressProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

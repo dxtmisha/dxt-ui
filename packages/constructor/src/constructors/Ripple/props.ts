@@ -1,9 +1,9 @@
-interface RipplePropsToken {
+export type RipplePropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface RipplePropsBasic {
+export type RipplePropsBasic = {
   disabled?: boolean
 }
 
@@ -12,8 +12,7 @@ export interface RipplePropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface RippleProps extends RipplePropsBasic, RipplePropsToken {
-}
+export type RippleProps = RipplePropsBasic & RipplePropsToken
 
 /**
  * Default value for property.

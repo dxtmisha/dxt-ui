@@ -7,7 +7,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
@@ -15,8 +15,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface FieldMessageProps extends FieldMessagePropsBasic<FieldCounterProps>, PropsToken {
-}
+export type FieldMessageProps = FieldMessagePropsBasic<FieldCounterProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

@@ -12,7 +12,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   imagePosition?: 'top' | 'left'
   padding?: 'sm' | 'md' | 'lg'
@@ -24,9 +24,8 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ModalProps extends ModalPropsBasic<WindowProps, BarsProps, ActionsProps, ImageProps>,
-  PropsToken {
-}
+export type ModalProps = ModalPropsBasic<WindowProps, BarsProps, ActionsProps, ImageProps> &
+  PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

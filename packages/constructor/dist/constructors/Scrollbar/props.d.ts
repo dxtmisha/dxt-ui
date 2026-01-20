@@ -1,4 +1,4 @@
-interface ScrollbarPropsToken {
+export type ScrollbarPropsToken = {
     visible?: boolean;
     divider?: boolean;
     dividerTop?: boolean;
@@ -6,17 +6,16 @@ interface ScrollbarPropsToken {
     dividerHide?: boolean;
     inverse?: boolean;
     standard?: boolean;
-}
-export interface ScrollbarPropsBasic {
+};
+export type ScrollbarPropsBasic = {
     tag?: string;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ScrollbarProps extends ScrollbarPropsBasic, ScrollbarPropsToken {
-}
+export type ScrollbarProps = ScrollbarPropsBasic & ScrollbarPropsToken;
 /**
  * Default value for property.
  *
@@ -25,4 +24,3 @@ export interface ScrollbarProps extends ScrollbarPropsBasic, ScrollbarPropsToken
 export declare const defaultsScrollbar: {
     tag: string;
 };
-export {};

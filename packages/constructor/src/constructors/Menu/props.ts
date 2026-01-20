@@ -14,62 +14,61 @@ import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
 import type { ModelPropsSelected } from '../../types/modelTypes'
 import type { RoleType } from '../../types/roleTypes'
 
-interface MenuPropsToken {
+export type MenuPropsToken = {
   // :type [!] System label / Системная метка
   hideList?: boolean
   barsAdaptive?: 'showAlways'
   // :type [!] System label / Системная метка
 }
 
-export interface MenuPropsBasic<
+export type MenuPropsBasic<
   List extends ListPropsBasic = ListPropsBasic,
   ListItem extends ListItemPropsBasic = ListItemPropsBasic,
   Bars extends BarsPropsBasic = BarsPropsBasic,
   Window extends WindowPropsBasic = WindowPropsBasic
-> extends BarsPropsInclude<Bars>,
-  WindowPropsInclude<Window>,
-  ModelPropsSelected {
+> = BarsPropsInclude<Bars>
+  & WindowPropsInclude<Window>
+  & ModelPropsSelected & {
   // Status
-  selected?: ListSelectedList
-  hideList?: boolean
+    selected?: ListSelectedList
+    hideList?: boolean
 
-  // Value
-  list?: ListRecord<ListItem>
-  liteThreshold?: number
-  highlight?: string
-  highlightLengthStart?: number
-  filterMode?: boolean
+    // Value
+    list?: ListRecord<ListItem>
+    liteThreshold?: number
+    highlight?: string
+    highlightLengthStart?: number
+    filterMode?: boolean
 
-  ajax?: string | (() => NormalOrPromise<ListRecord<ListItem>>)
-  request?: ApiFetch
-  cache?: boolean
+    ajax?: string | (() => NormalOrPromise<ListRecord<ListItem>>)
+    request?: ApiFetch
+    cache?: boolean
 
-  keyLabel?: string
-  keyValue?: string
+    keyLabel?: string
+    keyValue?: string
 
-  max?: string | number
+    max?: string | number
 
-  // Style
-  tag?: ListItemProps['tag']
-  step?: string | number
+    // Style
+    tag?: ListItemProps['tag']
+    step?: string | number
 
-  listAttrs?: ConstrBind<List>
-  itemAttrs?: ConstrBind<ListItem>
+    listAttrs?: ConstrBind<List>
+    itemAttrs?: ConstrBind<ListItem>
 
-  // ARIA
-  roleItem?: RoleType
+    // ARIA
+    roleItem?: RoleType
 
-  // Technical
-  isSelectedByValue?: boolean
-}
+    // Technical
+    isSelectedByValue?: boolean
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface MenuProps extends MenuPropsBasic, MenuPropsToken {
-}
+export type MenuProps = MenuPropsBasic & MenuPropsToken
 
 /**
  * Default value for property.

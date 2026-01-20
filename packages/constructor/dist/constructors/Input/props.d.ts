@@ -7,17 +7,14 @@ import { FieldMessagePropsBasic } from '../FieldMessage';
 import { FieldCounterPropsBasic } from '../FieldCounter';
 import { ProgressPropsBasic } from '../Progress';
 import { FieldInputProps } from '../../types/fieldTypes';
-interface InputPropsToken {
-}
-export interface InputPropsBasic<Mask extends MaskPropsBasic = MaskPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> extends MaskPropsInclude<Mask>, FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>, FieldInputProps<NumberOrString> {
-}
+export type InputPropsToken = {};
+export type InputPropsBasic<Mask extends MaskPropsBasic = MaskPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = MaskPropsInclude<Mask> & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress> & FieldInputProps<NumberOrString>;
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface InputProps extends InputPropsBasic, InputPropsToken {
-}
+export type InputProps = InputPropsBasic & InputPropsToken;
 /**
  * Default value for property.
  *
@@ -29,4 +26,3 @@ export declare const defaultsInput: {
     arrow: string;
     maskVisible: boolean;
 };
-export {};

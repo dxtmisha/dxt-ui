@@ -1,9 +1,8 @@
 import { LabelProps } from '../../types/labelTypes';
 import { DescriptionProps } from '../../types/descriptionTypes';
 import { ArrowProps, ArrowPropsInclude } from '../Arrow';
-interface TooltipPropsToken {
-}
-export interface TooltipPropsBasic<Arrow extends ArrowProps = ArrowProps> extends LabelProps, DescriptionProps, ArrowPropsInclude<Arrow> {
+export type TooltipPropsToken = {};
+export type TooltipPropsBasic<Arrow extends ArrowProps = ArrowProps> = LabelProps & DescriptionProps & ArrowPropsInclude<Arrow> & {
     open?: boolean;
     disabled?: boolean;
     inDom?: boolean;
@@ -11,14 +10,13 @@ export interface TooltipPropsBasic<Arrow extends ArrowProps = ArrowProps> extend
     indent?: number;
     delay?: number;
     delayHide?: number;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface TooltipProps extends TooltipPropsBasic, TooltipPropsToken {
-}
+export type TooltipProps = TooltipPropsBasic & TooltipPropsToken;
 /**
  * Default value for property.
  *
@@ -29,4 +27,3 @@ export declare const defaultsTooltip: {
     delay: number;
     delayHide: number;
 };
-export {};

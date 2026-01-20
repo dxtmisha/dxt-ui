@@ -1,11 +1,11 @@
-interface ArrowPropsToken {
+export type ArrowPropsToken = {
   // :type [!] System label / Системная метка
   position?: 'auto' | 'top' | 'bottom' | 'left' | 'right'
   inverse?: boolean
   // :type [!] System label / Системная метка
 }
 
-export interface ArrowPropsBasic {
+export type ArrowPropsBasic = {
   elementTarget?: HTMLElement | string
 }
 
@@ -14,8 +14,7 @@ export interface ArrowPropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ArrowProps extends ArrowPropsBasic, ArrowPropsToken {
-}
+export type ArrowProps = ArrowPropsBasic & ArrowPropsToken
 
 /**
  * Default value for property.

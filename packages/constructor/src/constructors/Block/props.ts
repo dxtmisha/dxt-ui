@@ -4,32 +4,31 @@ import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
 import type { CaptionProps } from '../../types/captionTypes'
 
-interface BlockPropsToken {
+export type BlockPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface BlockPropsBasic<
+export type BlockPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic
-> extends LabelProps,
-  DescriptionProps,
-  CaptionProps,
-  IconPropsInclude<Icon> {
+> = LabelProps
+  & DescriptionProps
+  & CaptionProps
+  & IconPropsInclude<Icon> & {
   // Value
-  headline?: string
+    headline?: string
 
-  // Style
-  tag?: string
-  tagHeader?: string
-}
+    // Style
+    tag?: string
+    tagHeader?: string
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface BlockProps extends BlockPropsBasic, BlockPropsToken {
-}
+export type BlockProps = BlockPropsBasic & BlockPropsToken
 
 /**
  * Default value for property.

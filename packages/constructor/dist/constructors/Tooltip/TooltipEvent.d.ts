@@ -1,7 +1,7 @@
 import { TooltipOpen } from './TooltipOpen';
 import { TooltipStatus } from './TooltipStatus';
 import { TooltipClasses } from './TooltipClasses';
-import { TooltipStyle } from './TooltipStyle.ts';
+import { TooltipStyle } from './TooltipStyle';
 /**
  * Class for working with events.
  *

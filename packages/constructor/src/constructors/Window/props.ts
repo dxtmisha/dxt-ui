@@ -5,7 +5,7 @@ import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar'
 import type { TextClosePropsInclude } from '../../types/textTypes'
 
-interface WindowPropsToken {
+export type WindowPropsToken = {
   // :type [!] System label / Системная метка
   width?: string | 'auto' | 'max' | 'custom'
   height?: string | 'auto' | 'max' | 'custom'
@@ -23,60 +23,59 @@ interface WindowPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface WindowPropsBasic<
+export type WindowPropsBasic<
   Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic,
   Image extends ImagePropsBasic = ImagePropsBasic
-> extends ScrollbarPropsInclude<Scrollbar>,
-  ImagePropsInclude<Image>,
-  AriaRoleByPropsInclude,
-  AriaByPropsInclude,
-  AriaHaspopupPropsInclude,
-  TextClosePropsInclude {
+> = ScrollbarPropsInclude<Scrollbar>
+  & ImagePropsInclude<Image>
+  & AriaRoleByPropsInclude
+  & AriaByPropsInclude
+  & AriaHaspopupPropsInclude
+  & TextClosePropsInclude & {
   // Status
-  'open'?: boolean
-  'disabled'?: boolean
+    'open'?: boolean
+    'disabled'?: boolean
 
-  // Hook
-  'preparation'?(): NormalOrPromise<void>
+    // Hook
+    'preparation'?(): NormalOrPromise<void>
 
-  'beforeOpening'?(): NormalOrPromise<boolean>
+    'beforeOpening'?(): NormalOrPromise<boolean>
 
-  'opening'?(): NormalOrPromise<boolean>
+    'opening'?(): NormalOrPromise<boolean>
 
-  'beforeClosing'?(): NormalOrPromise<boolean>
+    'beforeClosing'?(): NormalOrPromise<boolean>
 
-  'closing'?(): NormalOrPromise<boolean>
+    'closing'?(): NormalOrPromise<boolean>
 
-  // Style
-  'contextmenu'?: boolean
-  'staticMode'?: boolean
-  'overElement'?: ElementOrString<HTMLElement>
+    // Style
+    'contextmenu'?: boolean
+    'staticMode'?: boolean
+    'overElement'?: ElementOrString<HTMLElement>
 
-  'autoClose'?: boolean
-  'persistent'?: boolean
+    'autoClose'?: boolean
+    'persistent'?: boolean
 
-  'flash'?: boolean
-  'inDom'?: boolean
+    'flash'?: boolean
+    'inDom'?: boolean
 
-  'indent'?: number
-  'divider'?: boolean
+    'indent'?: number
+    'divider'?: boolean
 
-  'closeButton'?: boolean
-  'iconClose'?: string
+    'closeButton'?: boolean
+    'iconClose'?: string
 
-  // Event
-  'modelOpen'?: boolean
-  'onUpdate:open'?: (value: boolean) => void
-  'onUpdate:modelOpen'?: (value: boolean) => void
-}
+    // Event
+    'modelOpen'?: boolean
+    'onUpdate:open'?: (value: boolean) => void
+    'onUpdate:modelOpen'?: (value: boolean) => void
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface WindowProps extends WindowPropsBasic, WindowPropsToken {
-}
+export type WindowProps = WindowPropsBasic & WindowPropsToken
 
 /**
  * Default value for property.

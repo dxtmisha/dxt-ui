@@ -12,9 +12,6 @@ import { BarsComponents, BarsEmits, BarsSlots } from './types';
 import { BarsProps } from './props';
 import { EventClickValue } from '../../types/eventClickTypes';
 import { ButtonPropsBasic } from '../Button';
-import { IconPropsBasic } from '../Icon';
-import { ImagePropsBasic } from '../Image';
-import { ProgressPropsBasic } from '../Progress';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * Bars
@@ -53,14 +50,14 @@ export declare class Bars {
      */
     constructor(props: BarsProps, refs: ToRefs<BarsProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<BarsComponents, BarsProps> | undefined, slots?: BarsSlots | undefined, emits?: ConstrEmit<BarsEmits> | undefined);
     /** Returns the button data/ Возвращает данные кнопки */
-    readonly backBinds: ComputedRef< ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>> | undefined>;
+    readonly backBinds: ComputedRef< ConstrBind<ButtonPropsBasic> | undefined>;
     /** Returns the list of control buttons/ Возвращает список кнопок управления */
-    readonly barsBinds: ComputedRef< ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[] | undefined>;
+    readonly barsBinds: ComputedRef< ConstrBind<ButtonPropsBasic>[] | undefined>;
     /**
      * Returns the list of active control buttons/
      * Возвращает список активных кнопок управления
      */
-    readonly actionBarsBinds: ComputedRef< ConstrBind<ButtonPropsBasic<IconPropsBasic<ImagePropsBasic>, ProgressPropsBasic>>[] | undefined>;
+    readonly actionBarsBinds: ComputedRef< ConstrBind<ButtonPropsBasic>[] | undefined>;
     /** Returns the button name/ Возвращает название кнопки */
     readonly backLabel: ComputedRef<string | number | undefined>;
     /** Binds for label text/ Привязки для текста метки */

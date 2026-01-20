@@ -7,7 +7,7 @@ import { EventClickProps } from '../../types/eventClickTypes';
 import { IconPropsBasic, IconTrailingPropsInclude } from '../Icon';
 import { ProgressPropsBasic, ProgressPropsInclude } from '../Progress';
 import { AriaRolePropsInclude } from '../../types/ariaTypes';
-interface CellPropsToken {
+export type CellPropsToken = {
     focus?: boolean;
     selected?: boolean;
     readonly?: boolean;
@@ -17,19 +17,18 @@ interface CellPropsToken {
     divider?: boolean;
     dividerLabel?: 'always' | 'none';
     iconTop?: boolean;
-}
-export interface CellPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> extends LabelProps, DescriptionProps, CaptionProps, EnabledProps, IconTrailingPropsInclude<Icon>, ProgressPropsInclude<Progress>, SkeletonPropsInclude, EventClickProps, AriaRolePropsInclude {
+};
+export type CellPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & CaptionProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & AriaRolePropsInclude & {
     tag?: string;
     divider?: boolean;
     dynamic?: boolean;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface CellProps extends CellPropsBasic, CellPropsToken {
-}
+export type CellProps = CellPropsBasic & CellPropsToken;
 /**
  * Default value for property.
  *
@@ -39,4 +38,3 @@ export declare const defaultsCell: {
     divider: boolean;
     tag: string;
 };
-export {};

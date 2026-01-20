@@ -2,7 +2,7 @@ import type { IconPropsBasic, IconPropsInclude } from '../Icon'
 import type { LabelNumberProps } from '../../types/labelTypes'
 import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
 
-interface BadgePropsToken {
+export type BadgePropsToken = {
   // :type [!] System label / Системная метка
   selected?: boolean
   hide?: boolean
@@ -13,21 +13,20 @@ interface BadgePropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface BadgePropsBasic<
+export type BadgePropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic
-> extends IconPropsInclude<Icon>,
-  LabelNumberProps,
-  AriaLabelPropsInclude {
-  dot?: boolean
-}
+> = IconPropsInclude<Icon>
+  & LabelNumberProps
+  & AriaLabelPropsInclude & {
+    dot?: boolean
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface BadgeProps extends BadgePropsBasic, BadgePropsToken {
-}
+export type BadgeProps = BadgePropsBasic & BadgePropsToken
 
 /**
  * Default value for property.

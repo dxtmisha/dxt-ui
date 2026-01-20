@@ -7,7 +7,7 @@ import type { EnabledProps } from '../../types/enabledTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
 import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
 
-interface ButtonPropsToken {
+export type ButtonPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
   disabled?: boolean
@@ -21,28 +21,27 @@ interface ButtonPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface ButtonPropsBasic<
+export type ButtonPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> extends LabelProps,
-  EnabledProps,
-  IconTrailingPropsInclude<Icon>,
-  ProgressPropsInclude<Progress>,
-  SkeletonPropsInclude,
-  EventClickProps,
-  AriaLabelPropsInclude {
+> = LabelProps
+  & EnabledProps
+  & IconTrailingPropsInclude<Icon>
+  & ProgressPropsInclude<Progress>
+  & SkeletonPropsInclude
+  & EventClickProps
+  & AriaLabelPropsInclude & {
   // Style
-  tag?: 'button' | 'a' | 'span' | string
-  type?: 'button' | 'submit' | 'reset' | string
-}
+    tag?: 'button' | 'a' | 'span' | string
+    type?: 'button' | 'submit' | 'reset' | string
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ButtonProps extends ButtonPropsBasic, ButtonPropsToken {
-}
+export type ButtonProps = ButtonPropsBasic & ButtonPropsToken
 
 /**
  * Default value for property.

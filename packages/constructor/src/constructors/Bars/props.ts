@@ -8,49 +8,48 @@ import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
 import type { TextClosePropsInclude } from '../../types/textTypes'
 
-interface BarsPropsToken {
+export type BarsPropsToken = {
   // :type [!] System label / Системная метка
   action?: boolean
   // :type [!] System label / Системная метка
 }
 
-export interface BarsPropsBasic<
+export type BarsPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Button extends ButtonPropsBasic = ButtonPropsBasic
-> extends LabelProps,
-  DescriptionProps,
-  SkeletonPropsInclude,
-  TextClosePropsInclude
-{
+> = LabelProps
+  & DescriptionProps
+  & SkeletonPropsInclude
+  & TextClosePropsInclude
+  & {
   // Value
-  'backButton'?: ConstrBind<Button>
-  'backHide'?: boolean
-  'backActionHide'?: boolean
-  'bars'?: ConstrBind<Button>[]
+    'backButton'?: ConstrBind<Button>
+    'backHide'?: boolean
+    'backActionHide'?: boolean
+    'bars'?: ConstrBind<Button>[]
 
-  'actionLabel'?: LabelProps['label']
-  'actionDescription'?: DescriptionProps['description']
-  'actionBars'?: ConstrBind<Button>[]
+    'actionLabel'?: LabelProps['label']
+    'actionDescription'?: DescriptionProps['description']
+    'actionBars'?: ConstrBind<Button>[]
 
-  // Style
-  'buttonAttrs'?: ConstrBind<Button>
+    // Style
+    'buttonAttrs'?: ConstrBind<Button>
 
-  'iconBack'?: IconValue<Icon>
-  'iconClose'?: IconValue<Icon>
+    'iconBack'?: IconValue<Icon>
+    'iconClose'?: IconValue<Icon>
 
-  // Event
-  'modelAction'?: boolean
-  'onUpdate:action'?: (value: boolean) => void
-  'onUpdate:modelAction'?: (value: boolean) => void
-}
+    // Event
+    'modelAction'?: boolean
+    'onUpdate:action'?: (value: boolean) => void
+    'onUpdate:modelAction'?: (value: boolean) => void
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface BarsProps extends BarsPropsBasic, BarsPropsToken {
-}
+export type BarsProps = BarsPropsBasic & BarsPropsToken
 
 /**
  * Default value for property.

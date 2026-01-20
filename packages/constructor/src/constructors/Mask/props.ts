@@ -7,7 +7,7 @@ import type {
   MaskTypeItem
 } from './basicTypes'
 
-interface MaskPropsToken {
+export type MaskPropsToken = {
   // :type [!] System label / Системная метка
   visible?: boolean
   visiblePartly?: boolean
@@ -16,7 +16,7 @@ interface MaskPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface MaskPropsBasic {
+export type MaskPropsBasic = {
   // Value
   name?: string
   value?: string | number
@@ -48,8 +48,7 @@ export interface MaskPropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface MaskProps extends MaskPropsBasic, MaskPropsToken {
-}
+export type MaskProps = MaskPropsBasic & MaskPropsToken
 
 /**
  * Default value for property.

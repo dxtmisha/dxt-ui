@@ -5,15 +5,15 @@ import type { ChipPropsBasic, ChipPropsInclude } from '../Chip'
 
 import type { EnabledProps } from '../../types/enabledTypes'
 
-interface SelectValuePropsToken {
+export type SelectValuePropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface SelectValuePropsBasic<
+export type SelectValuePropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Chip extends ChipPropsBasic = ChipPropsBasic
-> extends EnabledProps, ChipPropsInclude<Chip> {
+> = EnabledProps & ChipPropsInclude<Chip> & {
   // Value
   placeholder?: string
   value?: ListList
@@ -32,8 +32,7 @@ export interface SelectValuePropsBasic<
  *
  * Тип, описывающий входящие свойства.
  */
-export interface SelectValueProps extends SelectValuePropsBasic, SelectValuePropsToken {
-}
+export type SelectValueProps = SelectValuePropsBasic & SelectValuePropsToken
 
 /**
  * Default value for property.

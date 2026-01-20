@@ -5,10 +5,10 @@ import { SkeletonPropsInclude } from '../Skeleton';
 import { LabelProps } from '../../types/labelTypes';
 import { DescriptionProps } from '../../types/descriptionTypes';
 import { TextClosePropsInclude } from '../../types/textTypes';
-interface BarsPropsToken {
+export type BarsPropsToken = {
     action?: boolean;
-}
-export interface BarsPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic> extends LabelProps, DescriptionProps, SkeletonPropsInclude, TextClosePropsInclude {
+};
+export type BarsPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic> = LabelProps & DescriptionProps & SkeletonPropsInclude & TextClosePropsInclude & {
     'backButton'?: ConstrBind<Button>;
     'backHide'?: boolean;
     'backActionHide'?: boolean;
@@ -22,18 +22,16 @@ export interface BarsPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Bu
     'modelAction'?: boolean;
     'onUpdate:action'?: (value: boolean) => void;
     'onUpdate:modelAction'?: (value: boolean) => void;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface BarsProps extends BarsPropsBasic, BarsPropsToken {
-}
+export type BarsProps = BarsPropsBasic & BarsPropsToken;
 /**
  * Default value for property.
  *
  * Значение по умолчанию для свойства.
  */
 export declare const defaultsBars: {};
-export {};

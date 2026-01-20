@@ -1,4 +1,4 @@
-interface ScrollbarPropsToken {
+export type ScrollbarPropsToken = {
   // :type [!] System label / Системная метка
   visible?: boolean
   divider?: boolean
@@ -10,7 +10,7 @@ interface ScrollbarPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface ScrollbarPropsBasic {
+export type ScrollbarPropsBasic = {
   // Style
   tag?: string
 }
@@ -20,8 +20,7 @@ export interface ScrollbarPropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ScrollbarProps extends ScrollbarPropsBasic, ScrollbarPropsToken {
-}
+export type ScrollbarProps = ScrollbarPropsBasic & ScrollbarPropsToken
 
 /**
  * Default value for property.

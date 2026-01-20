@@ -11,7 +11,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   padding?: 'sm' | 'md' | 'lg'
   paddingByIndent?: boolean
@@ -22,8 +22,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ActionSheetProps extends ActionSheetPropsBasic<WindowProps, BarsProps, ActionsProps>, PropsToken {
-}
+export type ActionSheetProps = ActionSheetPropsBasic<WindowProps, BarsProps, ActionsProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

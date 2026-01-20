@@ -10,7 +10,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   hideList?: boolean
   barsAdaptive?: 'showAlways' | 'showSm' | 'showMd' | 'showLg' | 'showXl' | 'show2xl'
@@ -20,8 +20,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface MenuProps extends MenuPropsBasic<ListProps, ListItemProps, BarsProps, WindowProps>, PropsToken {
-}
+export type MenuProps = MenuPropsBasic<ListProps, ListItemProps, BarsProps, WindowProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

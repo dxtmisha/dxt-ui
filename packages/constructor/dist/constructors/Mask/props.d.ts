@@ -1,12 +1,12 @@
 import { FieldPatternItemOrFunction } from '../../types/fieldTypes';
 import { MaskFractionItem, MaskList, MaskMatchItem, MaskSpecialProp, MaskTypeItem } from './basicTypes';
-interface MaskPropsToken {
+export type MaskPropsToken = {
     visible?: boolean;
     visiblePartly?: boolean;
     align?: 'center' | 'left' | 'right';
     dir?: 'ltr' | 'rtl';
-}
-export interface MaskPropsBasic {
+};
+export type MaskPropsBasic = {
     name?: string;
     value?: string | number;
     valueDefault?: string | number;
@@ -24,14 +24,13 @@ export interface MaskPropsBasic {
     view?: string;
     inputAttrs?: Partial<HTMLInputElement>;
     language?: string;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface MaskProps extends MaskPropsBasic, MaskPropsToken {
-}
+export type MaskProps = MaskPropsBasic & MaskPropsToken;
 /**
  * Default value for property.
  *
@@ -45,4 +44,3 @@ export declare const defaultsMask: {
     groupSave: boolean;
     view: string;
 };
-export {};

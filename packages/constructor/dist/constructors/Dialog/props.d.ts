@@ -8,12 +8,12 @@ import { ActionsPropsBasic, ActionsPropsInclude } from '../Actions';
 import { LabelProps } from '../../types/labelTypes';
 import { DescriptionProps } from '../../types/descriptionTypes';
 import { TextClosePropsInclude, TextOkPropsInclude } from '../../types/textTypes';
-interface DialogPropsToken {
+export type DialogPropsToken = {
     success?: boolean;
     error?: boolean;
     imagePosition?: 'top' | 'left';
-}
-export interface DialogPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> extends WindowPropsInclude<Window>, BarsPropsInclude<Bars>, ActionsPropsInclude<Actions>, ImagePropsInclude<Image>, LabelProps, DescriptionProps, TextClosePropsInclude, TextOkPropsInclude {
+};
+export type DialogPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = WindowPropsInclude<Window> & BarsPropsInclude<Bars> & ActionsPropsInclude<Actions> & ImagePropsInclude<Image> & LabelProps & DescriptionProps & TextClosePropsInclude & TextOkPropsInclude & {
     open?: boolean;
     icon?: IconValue<Icon>;
     buttonOk?: string | ConstrBind<Button> | null;
@@ -23,14 +23,13 @@ export interface DialogPropsBasic<Window extends WindowPropsBasic = WindowPropsB
     iconSuccess?: IconValue<Icon>;
     iconError?: IconValue<Icon>;
     iconAttrs?: ConstrBind<Icon>;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface DialogProps extends DialogPropsBasic, DialogPropsToken {
-}
+export type DialogProps = DialogPropsBasic & DialogPropsToken;
 /**
  * Default value for property.
  *
@@ -42,4 +41,3 @@ export declare const defaultsDialog: {
     barsHide: boolean;
     clickOkAndClose: boolean;
 };
-export {};

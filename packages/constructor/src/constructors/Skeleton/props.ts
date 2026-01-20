@@ -1,10 +1,10 @@
-interface SkeletonPropsToken {
+export type SkeletonPropsToken = {
   // :type [!] System label / Системная метка
   active?: boolean
   // :type [!] System label / Системная метка
 }
 
-export interface SkeletonPropsBasic {
+export type SkeletonPropsBasic = {
 }
 
 /**
@@ -12,8 +12,7 @@ export interface SkeletonPropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface SkeletonProps extends SkeletonPropsBasic, SkeletonPropsToken {
-}
+export type SkeletonProps = SkeletonPropsBasic & SkeletonPropsToken
 
 /**
  * Default value for property.

@@ -5,7 +5,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   visible?: boolean
   divider?: boolean
@@ -20,8 +20,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ScrollbarProps extends ScrollbarPropsBasic, PropsToken {
-}
+export type ScrollbarProps = ScrollbarPropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

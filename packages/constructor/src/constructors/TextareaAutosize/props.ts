@@ -1,9 +1,9 @@
-interface TextareaAutosizePropsToken {
+export type TextareaAutosizePropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface TextareaAutosizePropsBasic {
+export type TextareaAutosizePropsBasic = {
   // Value
   value?: string
 
@@ -17,8 +17,7 @@ export interface TextareaAutosizePropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface TextareaAutosizeProps extends TextareaAutosizePropsBasic, TextareaAutosizePropsToken {
-}
+export type TextareaAutosizeProps = TextareaAutosizePropsBasic & TextareaAutosizePropsToken
 
 /**
  * Default value for property.

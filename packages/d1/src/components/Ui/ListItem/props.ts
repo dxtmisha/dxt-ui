@@ -12,7 +12,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
   open?: boolean
@@ -33,8 +33,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ListItemProps extends ListItemPropsBasic<IconProps, BadgeProps, ProgressProps>, PropsToken {
-}
+export type ListItemProps = ListItemPropsBasic<IconProps, BadgeProps, ProgressProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

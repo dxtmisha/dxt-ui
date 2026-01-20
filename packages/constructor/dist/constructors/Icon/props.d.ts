@@ -1,8 +1,8 @@
 import { RoleType } from '../../types/roleTypes';
 import { ImagePropsBasic, ImageValue } from '../Image';
 import { SkeletonPropsInclude } from '../Skeleton';
-import { AriaLabelPropsInclude } from '../../types/ariaTypes.ts';
-interface IconPropsToken {
+import { AriaLabelPropsInclude } from '../../types/ariaTypes';
+export type IconPropsToken = {
     turn?: boolean;
     disabled?: boolean;
     hide?: boolean;
@@ -15,8 +15,8 @@ interface IconPropsToken {
     high?: boolean;
     animationType?: 'type1' | 'type2';
     animationShow?: boolean;
-}
-export interface IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> extends SkeletonPropsInclude, AriaLabelPropsInclude {
+};
+export type IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> = SkeletonPropsInclude & AriaLabelPropsInclude & {
     /** Активное состояние иконки/ Active state of the icon */
     active?: boolean;
     /** Value of the main icon/ Значение основной иконки */
@@ -24,14 +24,13 @@ export interface IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic>
     /** Value of the active icon/ Значение активной иконки */
     iconActive?: ImageValue<Image>;
     role?: RoleType;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface IconProps extends IconPropsBasic, IconPropsToken {
-}
+export type IconProps = IconPropsBasic & IconPropsToken;
 /**
  * Default value for property.
  *
@@ -40,4 +39,3 @@ export interface IconProps extends IconPropsBasic, IconPropsToken {
 export declare const defaultsIcon: {
     animationType: string;
 };
-export {};

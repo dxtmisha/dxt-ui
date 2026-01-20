@@ -6,7 +6,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
@@ -14,8 +14,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface BlockProps extends BlockPropsBasic<IconProps>, PropsToken {
-}
+export type BlockProps = BlockPropsBasic<IconProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

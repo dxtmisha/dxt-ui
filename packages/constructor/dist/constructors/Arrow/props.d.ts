@@ -1,17 +1,16 @@
-interface ArrowPropsToken {
+export type ArrowPropsToken = {
     position?: 'auto' | 'top' | 'bottom' | 'left' | 'right';
     inverse?: boolean;
-}
-export interface ArrowPropsBasic {
+};
+export type ArrowPropsBasic = {
     elementTarget?: HTMLElement | string;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ArrowProps extends ArrowPropsBasic, ArrowPropsToken {
-}
+export type ArrowProps = ArrowPropsBasic & ArrowPropsToken;
 /**
  * Default value for property.
  *
@@ -20,4 +19,3 @@ export interface ArrowProps extends ArrowPropsBasic, ArrowPropsToken {
 export declare const defaultsArrow: {
     position: string;
 };
-export {};

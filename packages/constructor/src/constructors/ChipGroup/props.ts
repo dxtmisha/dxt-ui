@@ -4,14 +4,14 @@ import type { ChipPropsBasic } from '../Chip'
 import type { ChipGroupData } from './basicTypes'
 import type { ModelPropsSelected } from '../../types/modelTypes'
 
-interface ChipGroupPropsToken {
+export type ChipGroupPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface ChipGroupPropsBasic<
+export type ChipGroupPropsBasic<
   Chip extends ChipPropsBasic = ChipPropsBasic
-> extends ModelPropsSelected<ListSelectedList> {
+> = ModelPropsSelected<ListSelectedList> & {
   // Status
   readonly?: boolean
   selected?: ListSelectedList
@@ -33,8 +33,7 @@ export interface ChipGroupPropsBasic<
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ChipGroupProps extends ChipGroupPropsBasic, ChipGroupPropsToken {
-}
+export type ChipGroupProps = ChipGroupPropsBasic & ChipGroupPropsToken
 
 /**
  * Default value for property.

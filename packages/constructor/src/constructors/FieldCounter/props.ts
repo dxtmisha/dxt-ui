@@ -1,9 +1,9 @@
-interface FieldCounterPropsToken {
+export type FieldCounterPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface FieldCounterPropsBasic {
+export type FieldCounterPropsBasic = {
   // Style
   counter?: string | number
   maxlength?: string | number
@@ -19,8 +19,7 @@ export interface FieldCounterPropsBasic {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface FieldCounterProps extends FieldCounterPropsBasic, FieldCounterPropsToken {
-}
+export type FieldCounterProps = FieldCounterPropsBasic & FieldCounterPropsToken
 
 /**
  * Default value for property.

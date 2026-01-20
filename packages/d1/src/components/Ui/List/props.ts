@@ -8,7 +8,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   axis?: 'x' | 'y'
   divider?: boolean
@@ -18,8 +18,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ListProps extends ListPropsBasic<IconProps, ListItemProps>, PropsToken {
-}
+export type ListProps = ListPropsBasic<IconProps, ListItemProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

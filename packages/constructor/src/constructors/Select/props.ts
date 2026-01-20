@@ -11,12 +11,12 @@ import type { MenuPropsBasic, MenuPropsInclude } from '../Menu'
 
 import type { FieldSelectProps } from '../../types/fieldTypes'
 
-interface SelectPropsToken {
+export type SelectPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface SelectPropsBasic<
+export type SelectPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Field extends FieldPropsBasic = FieldPropsBasic,
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
@@ -25,30 +25,29 @@ export interface SelectPropsBasic<
   Input extends InputPropsBasic = InputPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic,
   Menu extends MenuPropsBasic = MenuPropsBasic
-> extends FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>,
-  FieldSelectProps,
-  MenuPropsInclude<Menu> {
+> = FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>
+  & FieldSelectProps
+  & MenuPropsInclude<Menu> & {
   // Value
-  editValue?: boolean
+    editValue?: boolean
 
-  // Style
-  hideList?: boolean
-  showSearch?: boolean
-  filterMode?: boolean
+    // Style
+    hideList?: boolean
+    showSearch?: boolean
+    filterMode?: boolean
 
-  iconArrowDown?: IconValue<Icon>
-  iconSearch?: IconValue<Icon>
+    iconArrowDown?: IconValue<Icon>
+    iconSearch?: IconValue<Icon>
 
-  inputSearchAttrs?: ConstrBind<Input>
-}
+    inputSearchAttrs?: ConstrBind<Input>
+  }
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface SelectProps extends SelectPropsBasic, SelectPropsToken {
-}
+export type SelectProps = SelectPropsBasic & SelectPropsToken
 
 /**
  * Default value for property.

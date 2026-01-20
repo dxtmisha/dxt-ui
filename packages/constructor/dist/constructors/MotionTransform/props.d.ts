@@ -1,10 +1,10 @@
 import { AriaRoleByPropsInclude } from '../../types/ariaTypes';
-interface MotionTransformPropsToken {
+export type MotionTransformPropsToken = {
     section?: boolean;
     animationHeadPosition?: 'top' | 'toBottom';
     adaptive?: 'planeAlways';
-}
-export interface MotionTransformPropsBasic extends AriaRoleByPropsInclude {
+};
+export type MotionTransformPropsBasic = AriaRoleByPropsInclude & {
     'open'?: boolean;
     'inDom'?: boolean;
     'ignore'?: HTMLElement | string;
@@ -16,14 +16,13 @@ export interface MotionTransformPropsBasic extends AriaRoleByPropsInclude {
     'modelOpen'?: boolean;
     'onUpdate:open'?: (value: boolean) => void;
     'onUpdate:modelOpen'?: (value: boolean) => void;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface MotionTransformProps extends MotionTransformPropsBasic, MotionTransformPropsToken {
-}
+export type MotionTransformProps = MotionTransformPropsBasic & MotionTransformPropsToken;
 /**
  * Default value for property.
  *
@@ -36,4 +35,3 @@ export declare const defaultsMotionTransform: {
     animationShow: boolean;
     tagBody: string;
 };
-export {};

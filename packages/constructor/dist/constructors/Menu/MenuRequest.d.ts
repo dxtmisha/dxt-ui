@@ -2,10 +2,6 @@ import { ListRecord, ListList, ListDataBasic } from '@dxtmisha/functional';
 import { MenuProps } from './props';
 import { Ref, ComputedRef } from 'vue';
 import { ListItemPropsBasic } from '../ListItem';
-import { IconPropsBasic } from '../Icon';
-import { ImagePropsBasic } from '../Image';
-import { BadgePropsBasic } from '../Badge';
-import { ProgressPropsBasic } from '../Progress';
 /**
  * Class for working with list data requests.
  *
@@ -25,7 +21,7 @@ export declare class MenuRequest {
      *
      * Возвращает текущие данные списка.
      */
-    readonly item: ComputedRef<Record<string, any> | ListList<ListDataBasic> | ListList<ListItemPropsBasic<IconPropsBasic<ImagePropsBasic>, BadgePropsBasic<IconPropsBasic<ImagePropsBasic>>, ProgressPropsBasic>>>;
+    readonly item: ComputedRef<Record<string, any> | ListList<ListDataBasic> | ListList<ListItemPropsBasic>>;
     /**
      * Checks whether a request is needed.
      *

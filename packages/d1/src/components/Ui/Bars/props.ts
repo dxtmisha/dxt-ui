@@ -7,7 +7,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   action?: boolean
   padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
@@ -18,8 +18,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface BarsProps extends BarsPropsBasic<ButtonProps>, PropsToken {
-}
+export type BarsProps = BarsPropsBasic<ButtonProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

@@ -2,11 +2,11 @@ import { ConstrBind, ListRecord, ListSelectedItem, ListSelectedList } from '@dxt
 import { IconPropsBasic, IconValue } from '../Icon';
 import { RoleType } from '../../types/roleTypes';
 import { ListItemPropsBasic } from '../ListItem';
-interface ListPropsToken {
+export type ListPropsToken = {
     axis?: 'x' | 'y';
     divider?: boolean;
-}
-export interface ListPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, ListItem extends ListItemPropsBasic = ListItemPropsBasic> {
+};
+export type ListPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, ListItem extends ListItemPropsBasic = ListItemPropsBasic> = {
     focus?: ListSelectedItem;
     selected?: ListSelectedList;
     disabled?: boolean;
@@ -30,14 +30,13 @@ export interface ListPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Li
     iconArrowRight?: IconValue<Icon>;
     roleItem?: RoleType;
     control?: boolean;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ListProps extends ListPropsBasic, ListPropsToken {
-}
+export type ListProps = ListPropsBasic & ListPropsToken;
 /**
  * Default value for property.
  *
@@ -49,4 +48,3 @@ export declare const defaultsList: {
     keyValue: string;
     tag: string;
 };
-export {};

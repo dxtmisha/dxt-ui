@@ -1,6 +1,6 @@
 import type { AriaRoleByPropsInclude } from '../../types/ariaTypes'
 
-interface MotionTransformPropsToken {
+export type MotionTransformPropsToken = {
   // :type [!] System label / Системная метка
   section?: boolean
   animationHeadPosition?: 'top' | 'toBottom'
@@ -8,7 +8,7 @@ interface MotionTransformPropsToken {
   // :type [!] System label / Системная метка
 }
 
-export interface MotionTransformPropsBasic extends AriaRoleByPropsInclude {
+export type MotionTransformPropsBasic = AriaRoleByPropsInclude & {
   // Status
   'open'?: boolean
   'inDom'?: boolean
@@ -35,8 +35,7 @@ export interface MotionTransformPropsBasic extends AriaRoleByPropsInclude {
  *
  * Тип, описывающий входящие свойства.
  */
-export interface MotionTransformProps extends MotionTransformPropsBasic, MotionTransformPropsToken {
-}
+export type MotionTransformProps = MotionTransformPropsBasic & MotionTransformPropsToken
 
 /**
  * Default value for property.

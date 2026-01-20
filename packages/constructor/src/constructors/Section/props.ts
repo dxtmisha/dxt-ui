@@ -1,23 +1,21 @@
 import type { IconPropsBasic } from '../Icon'
 import type { BlockPropsBasic } from '../Block'
 
-interface SectionPropsToken {
+export type SectionPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export interface SectionPropsBasic<
+export type SectionPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic
-> extends BlockPropsBasic<Icon> {
-}
+> = BlockPropsBasic<Icon>
 
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface SectionProps extends SectionPropsBasic, SectionPropsToken {
-}
+export type SectionProps = SectionPropsBasic & SectionPropsToken
 
 /**
  * Default value for property.

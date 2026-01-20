@@ -5,7 +5,7 @@ import { LabelProps } from '../../types/labelTypes';
 import { EnabledProps } from '../../types/enabledTypes';
 import { EventClickProps } from '../../types/eventClickTypes';
 import { AriaLabelPropsInclude } from '../../types/ariaTypes';
-interface ButtonPropsToken {
+export type ButtonPropsToken = {
     focus?: boolean;
     disabled?: boolean;
     selected?: boolean;
@@ -15,18 +15,17 @@ interface ButtonPropsToken {
     inverse?: boolean;
     grid?: boolean;
     textAlign?: 'left' | 'center' | 'right';
-}
-export interface ButtonPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> extends LabelProps, EnabledProps, IconTrailingPropsInclude<Icon>, ProgressPropsInclude<Progress>, SkeletonPropsInclude, EventClickProps, AriaLabelPropsInclude {
+};
+export type ButtonPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & AriaLabelPropsInclude & {
     tag?: 'button' | 'a' | 'span' | string;
     type?: 'button' | 'submit' | 'reset' | string;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ButtonProps extends ButtonPropsBasic, ButtonPropsToken {
-}
+export type ButtonProps = ButtonPropsBasic & ButtonPropsToken;
 /**
  * Default value for property.
  *
@@ -36,4 +35,3 @@ export declare const defaultsButton: {
     tag: string;
     type: string;
 };
-export {};

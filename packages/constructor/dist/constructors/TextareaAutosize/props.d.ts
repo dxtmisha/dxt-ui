@@ -1,17 +1,15 @@
-interface TextareaAutosizePropsToken {
-}
-export interface TextareaAutosizePropsBasic {
+export type TextareaAutosizePropsToken = {};
+export type TextareaAutosizePropsBasic = {
     value?: string;
     autosize?: boolean;
     inputAttrs?: Record<string, any>;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface TextareaAutosizeProps extends TextareaAutosizePropsBasic, TextareaAutosizePropsToken {
-}
+export type TextareaAutosizeProps = TextareaAutosizePropsBasic & TextareaAutosizePropsToken;
 /**
  * Default value for property.
  *
@@ -20,4 +18,3 @@ export interface TextareaAutosizeProps extends TextareaAutosizePropsBasic, Texta
 export declare const defaultsTextareaAutosize: {
     autosize: boolean;
 };
-export {};

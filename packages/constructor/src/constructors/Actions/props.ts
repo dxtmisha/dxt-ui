@@ -1,16 +1,16 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 import type { ButtonPropsBasic } from '../Button'
 
-interface ActionsPropsToken {
+export type ActionsPropsToken = {
   // :type [!] System label / Системная метка
   align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto'
   flexible?: boolean
   // :type [!] System label / Системная метка
 }
 
-export interface ActionsPropsBasic<
+export type ActionsPropsBasic<
   Button extends ButtonPropsBasic = ButtonPropsBasic
-> {
+> = {
   // Value
   list?: ConstrBind<Button>[]
   listSecondary?: ConstrBind<Button>[]
@@ -25,8 +25,7 @@ export interface ActionsPropsBasic<
  *
  * Тип, описывающий входящие свойства.
  */
-export interface ActionsProps extends ActionsPropsBasic, ActionsPropsToken {
-}
+export type ActionsProps = ActionsPropsBasic & ActionsPropsToken
 
 /**
  * Default value for property.

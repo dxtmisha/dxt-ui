@@ -9,7 +9,7 @@ import { FieldLabelPropsBasic, FieldLabelPropsInclude } from '../FieldLabel';
 import { FieldCounterPropsBasic } from '../FieldCounter';
 import { FieldMessagePropsBasic, FieldMessagePropsInclude } from '../FieldMessage';
 import { SkeletonPropsInclude } from '../Skeleton';
-interface FieldPropsToken {
+export type FieldPropsToken = {
     focus?: boolean;
     disabled?: boolean;
     selected?: boolean;
@@ -28,8 +28,8 @@ interface FieldPropsToken {
     cancel?: 'auto' | 'always' | 'none';
     align?: 'center' | 'right' | 'left';
     width?: string | 'custom';
-}
-export interface FieldPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> extends IconTrailingPropsInclude<Icon>, PrefixProps, SuffixProps, CaptionProps, FieldLabelPropsInclude<FieldLabel, FieldCounter>, FieldMessagePropsInclude<FieldMessage, FieldCounter>, ProgressPropsInclude<Progress>, EnabledProps, EventClickProps, SkeletonPropsInclude {
+};
+export type FieldPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = IconTrailingPropsInclude<Icon> & PrefixProps & SuffixProps & CaptionProps & FieldLabelPropsInclude<FieldLabel, FieldCounter> & FieldMessagePropsInclude<FieldMessage, FieldCounter> & ProgressPropsInclude<Progress> & EnabledProps & EventClickProps & SkeletonPropsInclude & {
     disabledPrevious?: boolean;
     disabledNext?: boolean;
     id?: string | number;
@@ -40,14 +40,13 @@ export interface FieldPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, F
     iconPlus?: IconValue<Icon>;
     iconMinus?: IconValue<Icon>;
     iconClose?: IconValue<Icon>;
-}
+};
 /**
  * Type describing incoming properties.
  *
  * Тип, описывающий входящие свойства.
  */
-export interface FieldProps extends FieldPropsBasic, FieldPropsToken {
-}
+export type FieldProps = FieldPropsBasic & FieldPropsToken;
 /**
  * Default value for property.
  *
@@ -57,4 +56,3 @@ export declare const defaultsField: {
     arrowAlign: string;
     cancel: string;
 };
-export {};

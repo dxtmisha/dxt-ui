@@ -9,7 +9,7 @@ export const propsValues = {
   // :values [!] System label / Системная метка
 }
 
-interface PropsToken {
+export type PropsToken = {
   // :type [!] System label / Системная метка
   align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto'
   flexible?: 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl'
@@ -21,8 +21,7 @@ interface PropsToken {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export interface ActionsProps extends ActionsPropsBasic<ButtonProps>, PropsToken {
-}
+export type ActionsProps = ActionsPropsBasic<ButtonProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
