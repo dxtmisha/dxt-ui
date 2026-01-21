@@ -5,8 +5,8 @@ export type ButtonComponentInclude = {
   button?: object
 }
 
-export interface ButtonPropsInclude<
+export type ButtonPropsInclude<
   Button extends ButtonPropsBasic = ButtonPropsBasic
-> {
+> = {
   buttonAttrs?: ConstrBind<Button>
 }

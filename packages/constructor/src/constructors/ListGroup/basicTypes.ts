@@ -4,7 +4,7 @@ export type ListGroupComponentInclude = {
   listGroup?: object
 }
 
-export interface ListGroupSlotsPropsInclude
-  extends MotionTransformControlItem {
+export type ListGroupSlotsPropsInclude
+  = MotionTransformControlItem & {
   open: boolean
 }

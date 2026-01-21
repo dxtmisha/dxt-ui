@@ -63,14 +63,14 @@ export interface FieldSlotsInclude extends Omit<FieldSlots, 'default'> {
  * Properties that can be passed to FieldInclude/
  * Свойства, которые можно передать в FieldInclude
  */
-export interface FieldPropsInclude<
+export type FieldPropsInclude<
   Icon extends IconPropsBasic = IconPropsBasic,
   Field extends FieldPropsBasic = FieldPropsBasic,
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> extends Omit<
+> = Omit<
     FieldPropsBasic<Icon, FieldLabel, FieldMessage, FieldCounter, Progress>,
     // Status
     'disabledPrevious'
@@ -91,7 +91,7 @@ export interface FieldPropsInclude<
     | 'iconPlus'
     | 'iconMinus'
     | 'iconClose'
-  > {
+  > & {
   // Status
   focus?: boolean
   selected?: boolean

@@ -5,8 +5,8 @@ export type ChipComponentInclude = {
   chip?: object
 }
 
-export interface ChipPropsInclude<
+export type ChipPropsInclude<
   Chip extends ChipPropsBasic = ChipPropsBasic
-> {
+> = {
   chipAttrs?: ConstrBind<Chip>
 }

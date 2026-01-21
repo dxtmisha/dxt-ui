@@ -6,9 +6,9 @@ export type BadgeComponentInclude = {
   badge?: object
 }
 
-export interface BadgePropsInclude<
+export type BadgePropsInclude<
   Badge extends BadgePropsBasic = BadgePropsBasic
-> {
+> = {
   // Values
   badge?: string | number | ConstrBind<Badge>
   badgeDot?: boolean

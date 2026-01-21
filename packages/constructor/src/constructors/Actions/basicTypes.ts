@@ -21,9 +21,9 @@ export type ActionsEmitsInclude = {
  * Props used to include and configure the Actions component/
  * Свойства для подключения и настройки компонента Actions
  */
-export interface ActionsPropsInclude<
+export type ActionsPropsInclude<
   Actions extends ActionsPropsBasic = ActionsPropsBasic
-> {
+> = {
   // Status
   /** Hide actions/ Скрыть действия */
   actionsHide?: boolean

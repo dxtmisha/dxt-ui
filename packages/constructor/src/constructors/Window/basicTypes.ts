@@ -178,9 +178,9 @@ export interface WindowExposeInclude {
  * Props used to include and configure the Window component/
  * Свойства для подключения и настройки компонента Window
  */
-export interface WindowPropsInclude<
+export type WindowPropsInclude<
   Window extends WindowPropsBasic = WindowPropsBasic
-> {
+> = {
   /** Disabled state/ Отключённое состояние */
   disabled?: boolean
   /** Enable auto close on outside click/ Включить авто-закрытие при клике вне */

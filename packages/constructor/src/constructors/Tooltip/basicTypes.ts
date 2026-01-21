@@ -31,9 +31,9 @@ export type TooltipComponentInclude = {
  * Props used to include and configure the Tooltip component/
  * Свойства для подключения и настройки компонента Tooltip
  */
-export interface TooltipPropsInclude<
+export type TooltipPropsInclude<
   Tooltip extends TooltipProps = TooltipProps
-> {
+> = {
   /** Additional attributes for Tooltip component/ Дополнительные атрибуты для компонента Tooltip */
   tooltipAttrs?: ConstrBind<Tooltip>
 }

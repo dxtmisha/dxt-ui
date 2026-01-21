@@ -16,16 +16,16 @@ export type IconComponentInclude = {
   icon?: object
 }
 
-export interface IconLitePropsInclude<
+export type IconLitePropsInclude<
   Icon extends IconPropsBasic = IconPropsBasic
-> {
+> = {
   // Values
   icon?: IconValue<Icon>
 }
 
-export interface IconPropsInclude<
+export type IconPropsInclude<
   Icon extends IconPropsBasic = IconPropsBasic
-> extends IconLitePropsInclude<Icon> {
+> = IconLitePropsInclude<Icon> & {
   // Status
   selected?: boolean
   iconTurn?: boolean
@@ -37,9 +37,9 @@ export interface IconPropsInclude<
   iconAttrs?: ConstrBind<Icon>
 }
 
-export interface IconTrailingPropsInclude<
+export type IconTrailingPropsInclude<
   Icon extends IconPropsBasic = IconPropsBasic
-> extends IconPropsInclude<Icon> {
+> = IconPropsInclude<Icon> & {
   // Values
   iconTrailing?: IconValue<Icon>
 

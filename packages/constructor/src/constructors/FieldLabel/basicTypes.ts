@@ -25,10 +25,10 @@ export interface FieldLabelSlotsInclude extends LabelAlternativeSlots {
  * Properties that can be passed to FieldLabelInclude/
  * Свойства, которые можно передать в FieldLabelInclude
  */
-export interface FieldLabelPropsInclude<
+export type FieldLabelPropsInclude<
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic
-> extends LabelProps, FieldCounterPropsInclude<FieldCounter> {
+> = LabelProps & FieldCounterPropsInclude<FieldCounter> & {
   required?: boolean
   fieldLabelAttrs?: ConstrBind<FieldLabel>
 }

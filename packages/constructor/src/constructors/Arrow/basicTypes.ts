@@ -34,9 +34,9 @@ export type ArrowComponentInclude = {
  * Props used to include and configure the Arrow component/
  * Свойства для подключения и настройки компонента Arrow
  */
-export interface ArrowPropsInclude<
+export type ArrowPropsInclude<
   Arrow extends ArrowProps = ArrowProps
-> {
+> = {
   // Status
   /** Show arrow/ Показать стрелку */
   arrowShow?: boolean

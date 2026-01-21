@@ -10,7 +10,7 @@ export type SkeletonClassesList = {
   classNone: string
 }
 
-export interface SkeletonPropsInclude {
+export type SkeletonPropsInclude = {
   // Style
   isSkeleton?: boolean
 }

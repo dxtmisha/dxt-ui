@@ -5,8 +5,8 @@ export type ProgressComponentInclude = {
   progress?: object
 }
 
-export interface ProgressPropsInclude<
+export type ProgressPropsInclude<
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> {
+> = {
   loading?: boolean | ConstrBind<Progress>
 }

@@ -71,6 +71,6 @@ export type ImageComponentsInclude = {
 }
 export type ImageEmitsInclude = ImageEmits
 
-export interface ImagePropsInclude<Image extends ImagePropsBasic = ImagePropsBasic> {
+export type ImagePropsInclude<Image extends ImagePropsBasic = ImagePropsBasic> = {
   image?: string | ConstrBind<Image>
 }
