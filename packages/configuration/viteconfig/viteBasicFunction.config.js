@@ -5,8 +5,8 @@ import path from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
 
-import autoprefixer from 'autoprefixer'
-import cssnanoPlugin from 'cssnano'
+import browserslist from 'browserslist'
+import { browserslistToTargets } from 'lightningcss'
 
 // https://vite.dev/config/
 
@@ -109,11 +109,10 @@ export const viteBasicFunction = (
     exclude: ['@napi-rs/canvas', 'fsevents']
   },
   css: {
-    postcss: {
-      plugins: [
-        autoprefixer(),
-        cssnanoPlugin({ preset: 'default' })
-      ]
+    transformer: 'lightningcss',
+    lightningcss: {
+      // Настройки целей браузеров (автоматически берет из browserslist если не задано)
+      targets: browserslistToTargets(browserslist('>= 0.25%'))
     }
   },
   plugins: [

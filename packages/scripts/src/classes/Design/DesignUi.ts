@@ -1,10 +1,13 @@
 // export:none
 
-import { toKebabCase } from '@dxtmisha/functional-basic'
+import { toCamelCaseFirst, toKebabCase } from '@dxtmisha/functional-basic'
+import { getPackageJson } from '../../functions/getPackageJson'
 
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
+import { PropertiesFile } from '../Properties/PropertiesFile'
+import { PropertiesCache } from '../Properties/PropertiesCache'
 import { DesignComponent } from './DesignComponent'
 import { LibraryItems } from '../Library/LibraryItems'
-import { PropertiesCache } from '../Properties/PropertiesCache'
 import { Styles } from '../Styles/Styles'
 
 import { DesignWiki } from './DesignWiki'
@@ -12,6 +15,8 @@ import { DesignWiki } from './DesignWiki'
 import { LibraryMedia } from '../Library/LibraryMedia'
 import { LibraryList } from '../Library/LibraryList'
 import { LibraryPlugin } from '../Library/LibraryPlugin'
+
+import { UI_FILE_PACKAGE } from '../../config'
 
 export class DesignUi {
   protected readonly components: LibraryItems
@@ -47,6 +52,7 @@ export class DesignUi {
     new DesignWiki().make()
 
     this.makeConstructorComponent()
+    this.makePackage()
 
     new LibraryMedia(this.components).make()
     new LibraryList(this.components).make()
@@ -73,5 +79,22 @@ export class DesignUi {
     }
 
     return this
+  }
+
+  /**
+   * Updates the package.json file by adding export paths for UI styles and saves the changes.
+   *
+   * Обновляет файл package.json, добавляя пути экспорта для стилей UI, и сохраняет изменения.
+   */
+  protected makePackage(): void {
+    const packageJson = getPackageJson()
+    const projectName = toCamelCaseFirst(PropertiesConfig.getProjectName())
+
+    if (packageJson?.exports) {
+      packageJson.exports['./style/ui.scss'] = `./src/styles/${projectName}/main.scss`
+      packageJson.exports['./style/ui-properties.scss'] = `./src/styles/${projectName}/style.scss`
+
+      PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageJson)
+    }
   }
 }
