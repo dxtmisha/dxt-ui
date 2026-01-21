@@ -158,14 +158,14 @@ export interface WindowExposeInclude {
  * Props used to include and configure the Window component/
  * Свойства для подключения и настройки компонента Window
  */
-export interface WindowPropsInclude<Window extends WindowPropsBasic = WindowPropsBasic> {
+export type WindowPropsInclude<Window extends WindowPropsBasic = WindowPropsBasic> = {
     /** Disabled state/ Отключённое состояние */
     disabled?: boolean;
     /** Enable auto close on outside click/ Включить авто-закрытие при клике вне */
     autoClose?: boolean;
     /** Additional attributes for Window component/ Дополнительные атрибуты для компонента Window */
     windowAttrs?: ConstrBind<Window>;
-}
+};
 /**
  * CSS variable name for MotionTransform body type/
  * Имя CSS‑переменной для типа тела MotionTransform

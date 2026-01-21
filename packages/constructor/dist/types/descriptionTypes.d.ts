@@ -15,7 +15,7 @@ export interface DescriptionSlots {
 /**
  * Props for description functionality/ Пропсы для функциональности описания
  */
-export interface DescriptionProps {
+export type DescriptionProps = {
     /** Description text or number/ Текст или число описания */
     description?: string | number;
-}
+};

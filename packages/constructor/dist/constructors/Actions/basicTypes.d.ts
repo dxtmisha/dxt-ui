@@ -17,7 +17,7 @@ export type ActionsEmitsInclude = {
  * Props used to include and configure the Actions component/
  * Свойства для подключения и настройки компонента Actions
  */
-export interface ActionsPropsInclude<Actions extends ActionsPropsBasic = ActionsPropsBasic> {
+export type ActionsPropsInclude<Actions extends ActionsPropsBasic = ActionsPropsBasic> = {
     /** Hide actions/ Скрыть действия */
     actionsHide?: boolean;
     /** List of action buttons/ Список кнопок действий */
@@ -26,4 +26,4 @@ export interface ActionsPropsInclude<Actions extends ActionsPropsBasic = Actions
     actionsSecondary?: ConstrBind<Actions['listSecondary']>;
     /** Additional attributes for Actions component/ Дополнительные атрибуты для компонента Actions */
     actionsAttrs?: ConstrBind<Actions>;
-}
+};

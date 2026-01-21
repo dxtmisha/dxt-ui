@@ -29,11 +29,11 @@ export type ArrowComponentInclude = {
  * Props used to include and configure the Arrow component/
  * Свойства для подключения и настройки компонента Arrow
  */
-export interface ArrowPropsInclude<Arrow extends ArrowProps = ArrowProps> {
+export type ArrowPropsInclude<Arrow extends ArrowProps = ArrowProps> = {
     /** Show arrow/ Показать стрелку */
     arrowShow?: boolean;
     /** Arrow position/ Позиция стрелки */
     arrowPosition?: ArrowProps['position'];
     /** Additional attributes for Arrow component/ Дополнительные атрибуты для компонента Arrow */
     arrowAttrs?: ConstrBind<Arrow>;
-}
+};

@@ -8,7 +8,7 @@ export interface CaptionSlots {
 /**
  * Props for caption functionality/ Пропсы для функциональности заголовка
  */
-export interface CaptionProps {
+export type CaptionProps = {
     /** Caption text or number/ Текст или число заголовка */
     caption?: string | number;
-}
+};

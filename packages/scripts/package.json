@@ -28,6 +28,7 @@
     "url": "https://github.com/dxtmisha/dxt-ui/issues"
   },
   "scripts": {
+    "build": "vue-tsc -b && vite build",
     "library": "dxt-library"
   },
   "files": [
@@ -37,25 +38,38 @@
     "package.json",
     "LICENSE"
   ],
-  "main": "./src/library.ts",
-  "module": "./src/library.ts",
+  "main": "./dist/library.js",
+  "module": "./dist/library.js",
+  "types": "./dist/library.d.ts",
   "bin": {
-    "dxt-ai-doc": "bin/ai-doc.ts",
-    "dxt-build-functional": "bin/build-functional.ts",
-    "dxt-component": "bin/design-component.ts",
-    "dxt-component-wiki": "bin/design-component-wiki.ts",
-    "dxt-constructor": "bin/design-constructor.ts",
-    "dxt-flags": "bin/design-flags.ts",
-    "dxt-library": "bin/design-library.ts",
-    "dxt-package": "bin/design-package.ts",
-    "dxt-types": "bin/design-types.ts",
-    "dxt-ui": "bin/design-ui.ts"
+    "dxt-ai-doc": "bin/ai-doc.js",
+    "dxt-build-functional": "bin/build-functional.js",
+    "dxt-component": "bin/design-component.js",
+    "dxt-component-wiki": "bin/design-component-wiki.js",
+    "dxt-constructor": "bin/design-constructor.js",
+    "dxt-flags": "bin/design-flags.js",
+    "dxt-library": "bin/design-library.js",
+    "dxt-package": "bin/design-package.js",
+    "dxt-types": "bin/design-types.js",
+    "dxt-ui": "bin/design-ui.js"
   },
   "exports": {
-    ".": "./src/library.ts",
-    "./ai": "./src/library-ai.ts",
-    "./plugin": "./src/library-plugin.ts",
-    "./config": "./src/config.ts",
+    ".": {
+      "import": "./dist/library.js",
+      "types": "./dist/library.d.ts"
+    },
+    "./ai": {
+      "import": "./dist/library-ai.js",
+      "types": "./dist/library-ai.d.ts"
+    },
+    "./plugin": {
+      "import": "./dist/library-plugin.js",
+      "types": "./dist/library-plugin.d.ts"
+    },
+    "./config": {
+      "import": "./dist/config.js",
+      "types": "./dist/config.d.ts"
+    },
     "./properties.json": "./src/media/properties.json"
   },
   "engines": {

@@ -250,58 +250,57 @@ export type AriaList = {
     'aria-valuetext'?: string;
 };
 /** Basic ARIA role props/ Базовые ARIA пропсы роли */
-export interface AriaRolePropsInclude {
+export type AriaRolePropsInclude = {
     role?: RoleType;
-}
+};
 /**
  * ARIA label prop/
  * ARIA проп label
  */
-export interface AriaLabelPropsInclude {
+export type AriaLabelPropsInclude = {
     ariaLabel?: string;
-}
+};
 /**
  * ARIA description prop/
  * ARIA проп description
  */
-export interface AriaDescriptionPropsInclude {
+export type AriaDescriptionPropsInclude = {
     ariaDescription?: string;
-}
+};
 /**
  * ARIA haspopup prop/
  * ARIA проп haspopup
  */
-export interface AriaHaspopupPropsInclude {
+export type AriaHaspopupPropsInclude = {
     ariaHaspopup?: AriaList['aria-haspopup'];
-}
+};
 /**
  * ARIA live prop/
  * ARIA проп live
  */
-export interface AriaLivePropsInclude {
+export type AriaLivePropsInclude = {
     ariaLive?: AriaList['aria-live'];
-}
+};
 /**
  * ARIA props with labelledby and describedby/
  * ARIA пропсы с labelledby и describedby
  */
-export interface AriaByPropsInclude {
+export type AriaByPropsInclude = {
     ariaLabelledby?: string;
     ariaDescribedby?: string;
-}
+};
 /**
  * ARIA role props with labelledby and describedby/
  * ARIA пропсы роли с labelledby и describedby
  */
-export interface AriaRoleByPropsInclude extends AriaRolePropsInclude, AriaByPropsInclude {
-}
+export type AriaRoleByPropsInclude = AriaRolePropsInclude & AriaByPropsInclude;
 /**
  * ARIA control role props with controls and expanded/
  * ARIA пропсы роли управления с controls и expanded
  */
-export interface AriaRoleControlPropsInclude extends AriaRolePropsInclude, AriaHaspopupPropsInclude {
+export type AriaRoleControlPropsInclude = AriaRolePropsInclude & AriaHaspopupPropsInclude & {
     id?: string;
     ariaControls?: string;
     ariaHaspopup?: AriaList['aria-haspopup'];
     ariaExpanded?: string;
-}
+};

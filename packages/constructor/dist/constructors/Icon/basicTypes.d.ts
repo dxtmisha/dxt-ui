@@ -9,20 +9,20 @@ export type IconValue<Icon extends IconPropsBasic = IconPropsBasic> = string | C
 export type IconComponentInclude = {
     icon?: object;
 };
-export interface IconLitePropsInclude<Icon extends IconPropsBasic = IconPropsBasic> {
+export type IconLitePropsInclude<Icon extends IconPropsBasic = IconPropsBasic> = {
     icon?: IconValue<Icon>;
-}
-export interface IconPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> extends IconLitePropsInclude<Icon> {
+};
+export type IconPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> = IconLitePropsInclude<Icon> & {
     selected?: boolean;
     iconTurn?: boolean;
     iconHide?: boolean;
     iconDir?: boolean;
     iconPalette?: boolean;
     iconAttrs?: ConstrBind<Icon>;
-}
-export interface IconTrailingPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> extends IconPropsInclude<Icon> {
+};
+export type IconTrailingPropsInclude<Icon extends IconPropsBasic = IconPropsBasic> = IconPropsInclude<Icon> & {
     iconTrailing?: IconValue<Icon>;
     iconTrailingTurnOnly?: boolean;
     iconTrailingDirOnly?: boolean;
     iconTrailingPalette?: boolean;
-}
+};

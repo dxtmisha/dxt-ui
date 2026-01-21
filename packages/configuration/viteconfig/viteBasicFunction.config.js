@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import { builtinModules } from 'node:module'
+import path from 'node:path'
 
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
@@ -37,6 +38,7 @@ export const viteBasicFunction = (
   external = [
     ...builtinModules,
     ...builtinModules.map(m => `node:${m}`),
+    'typescript',
     'vue',
     'vue-router',
     '@vue/runtime-core',
@@ -75,7 +77,7 @@ export const viteBasicFunction = (
     },
     rollupOptions: {
       external: (id) => {
-        if (id.includes('node_modules')) {
+        if (!id.startsWith('.') && !path.isAbsolute(id)) {
           return true
         }
 

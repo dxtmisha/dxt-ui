@@ -33,7 +33,7 @@ export type MenuSlotInclude = {
     contextBottom?(props: MenuControlItem): any;
 };
 /** Interface for menu include props/ Интерфейс для свойств включения меню */
-export interface MenuPropsInclude<Menu extends MenuPropsBasic = MenuPropsBasic> {
+export type MenuPropsInclude<Menu extends MenuPropsBasic = MenuPropsBasic> = {
     disabled?: boolean;
     menuAttrs?: ConstrBind<Menu>;
-}
+};

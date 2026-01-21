@@ -5,7 +5,7 @@ import { toCamelCaseFirst, toKebabCase } from '@dxtmisha/functional-basic'
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
-import type { LibraryData, LibraryList } from '../../types/libraryTypes'
+import type { LibraryData, LibraryAll } from '../../types/libraryTypes'
 
 import { UI_DIRS_LIBRARY, UI_DIRS_COMPONENTS } from '../../config'
 
@@ -15,7 +15,7 @@ import { UI_DIRS_LIBRARY, UI_DIRS_COMPONENTS } from '../../config'
  * Класс для работы со списком компонентов.
  */
 export class LibraryItems {
-  protected readonly items: LibraryList
+  protected readonly items: LibraryAll
 
   /**
    * Constructor
@@ -29,7 +29,7 @@ export class LibraryItems {
    *
    * Возвращает список компонентов, разделенных по группам дизайна.
    */
-  get(): LibraryList {
+  get(): LibraryAll {
     return this.items
   }
 
@@ -127,7 +127,7 @@ export class LibraryItems {
    *
    * Инициализирует данные о компоненте.
    */
-  protected initItems(): LibraryList {
+  protected initItems(): LibraryAll {
     return [
       {
         name: PropertiesConfig.getDesignName(),

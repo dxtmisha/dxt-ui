@@ -3,6 +3,6 @@ import { ProgressPropsBasic } from './props';
 export type ProgressComponentInclude = {
     progress?: object;
 };
-export interface ProgressPropsInclude<Progress extends ProgressPropsBasic = ProgressPropsBasic> {
+export type ProgressPropsInclude<Progress extends ProgressPropsBasic = ProgressPropsBasic> = {
     loading?: boolean | ConstrBind<Progress>;
-}
+};

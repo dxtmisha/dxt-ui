@@ -18,7 +18,7 @@ export type BarsEmitsInclude = {
  * Props used to include and configure the Bars component/
  * Свойства для подключения и настройки компонента Bars
  */
-export interface BarsPropsInclude<Bars extends BarsPropsBasic = BarsPropsBasic> {
+export type BarsPropsInclude<Bars extends BarsPropsBasic = BarsPropsBasic> = {
     /** Bars label/ Метка панелей */
     barsLabel?: string | number;
     /** Bars description/ Описание панелей */
@@ -31,4 +31,4 @@ export interface BarsPropsInclude<Bars extends BarsPropsBasic = BarsPropsBasic> 
     barsList?: Bars['bars'];
     /** Additional attributes for Bars component/ Дополнительные атрибуты для компонента Bars */
     barsAttrs?: ConstrBind<Bars>;
-}
+};

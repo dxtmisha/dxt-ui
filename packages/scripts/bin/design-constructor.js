@@ -1,6 +1,6 @@
 #!/usr/bin/env vite-node
 
-import { DesignConstructors } from '../src/classes/Design/DesignConstructors'
+import { DesignConstructors } from '../dist/library'
 
 const name: string = process.argv?.[2] ?? ''
 

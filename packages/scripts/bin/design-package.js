@@ -1,7 +1,7 @@
 #!/usr/bin/env vite-node
 
-import { PackageInit } from '../src/classes/Package/PackageInit'
-import { UI_DIR_PACKAGES } from '../src/config'
+import { PackageInit } from '../dist/library'
+import { UI_DIR_PACKAGES } from '../dist/config'
 
 const type: string = process.argv?.[2] ?? 'library'
 const templates: string | undefined = process.argv?.[3]

@@ -66,26 +66,26 @@ export declare class List {
      * */
     protected readonly itemBinds: ComputedRef<{
         listId: number;
+        label?: NumberOrString;
+        labelId?: string;
         highlight?: string;
         highlightLengthStart?: number;
         value?: any;
-        label?: NumberOrString;
-        labelId?: string;
         description?: string | number;
         prefix?: string | number;
         caption?: string | number;
         suffix?: string | number;
-        iconTrailing?: IconValue< IconPropsBasic> | undefined;
-        iconTrailingTurnOnly?: boolean;
-        iconTrailingDirOnly?: boolean;
-        iconTrailingPalette?: boolean;
+        icon?: IconValue< IconPropsBasic> | undefined;
         selected?: boolean;
         iconTurn?: boolean;
         iconHide?: boolean;
         iconDir?: boolean;
         iconPalette?: boolean;
         iconAttrs?: ConstrBind< IconPropsBasic> | undefined;
-        icon?: IconValue< IconPropsBasic> | undefined;
+        iconTrailing?: IconValue< IconPropsBasic> | undefined;
+        iconTrailingTurnOnly?: boolean;
+        iconTrailingDirOnly?: boolean;
+        iconTrailingPalette?: boolean;
         badge?: string | number | ConstrBind< BadgePropsBasic> | undefined;
         badgeDot?: boolean;
         loading?: boolean | ConstrBind< ProgressPropsBasic> | undefined;

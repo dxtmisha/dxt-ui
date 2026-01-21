@@ -9,6 +9,6 @@ export type SkeletonClassesList = {
     classBorderVariant: string;
     classNone: string;
 };
-export interface SkeletonPropsInclude {
+export type SkeletonPropsInclude = {
     isSkeleton?: boolean;
-}
+};

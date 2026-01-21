@@ -8,7 +8,7 @@ export interface SuffixSlots {
 /**
  * Props for suffix functionality/ Пропсы для функциональности суффикса
  */
-export interface SuffixProps {
+export type SuffixProps = {
     /** Suffix text or number/ Текст или число суффикса */
     suffix?: string | number;
-}
+};

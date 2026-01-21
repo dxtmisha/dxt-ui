@@ -30,6 +30,6 @@ export type ScrollbarEmitsInclude = {
  * Interface for describing available properties for scrollbar inclusion/
  * Интерфейс для описания доступных свойств для включения скроллбара
  */
-export interface ScrollbarPropsInclude<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic> {
+export type ScrollbarPropsInclude<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic> = {
     scrollbarAttrs?: ConstrBind<Scrollbar>;
-}
+};

@@ -23,7 +23,7 @@ export type LibraryItem = {
 }
 
 /** List of library items / Список элементов библиотеки */
-export type LibraryList = LibraryItem[]
+export type LibraryAll = LibraryItem[]
 
 /** Library files item with name, path and file list / Элемент файлов библиотеки с именем, путём и списком файлов */
 export type LibraryFilesItem = {

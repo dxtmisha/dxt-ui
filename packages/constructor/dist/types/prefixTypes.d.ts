@@ -8,7 +8,7 @@ export interface PrefixSlots {
 /**
  * Props for prefix functionality/ Пропсы для функциональности префикса
  */
-export interface PrefixProps {
+export type PrefixProps = {
     /** Prefix text or number/ Текст или число префикса */
     prefix?: string | number;
-}
+};

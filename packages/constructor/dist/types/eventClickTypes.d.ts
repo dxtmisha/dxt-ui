@@ -37,11 +37,11 @@ export interface EventClickExpose {
 /**
  * Props for click event handling/ Пропсы для обработки событий клика
  */
-export interface EventClickProps {
+export type EventClickProps = {
     /** Navigation target (string or route object)/ Цель навигации (строка или объект роута) */
     to?: string | RouteLocationRaw;
     /** Click event value/ Значение события клика */
     value?: EventClickValue['value'];
     /** Additional click event details/ Дополнительные детали события клика */
     detail?: EventClickValue['detail'];
-}
+};

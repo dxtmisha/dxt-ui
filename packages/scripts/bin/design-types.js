@@ -1,6 +1,6 @@
 #!/usr/bin/env vite-node
 
-import { DesignTypes } from '../src/classes/Design/DesignTypes'
+import { DesignTypes } from '../dist/library'
 
 const dir: string = process.argv?.[2] ?? 'dist'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env vite-node
 
-import { ComponentWiki } from '../src/classes/Component/ComponentWiki'
+import { ComponentWiki } from '../dist/library'
 
 const path: string = process.argv?.[2] ?? ''
 const prompt: string = process.argv?.[3] ?? ''
