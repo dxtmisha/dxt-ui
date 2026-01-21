@@ -1,4 +1,4 @@
-import { FieldVisibilityInclude } from '../../classes/field/FieldVisibilityInclude';
+import { FieldVisibilityInclude } from '../../classes/Field/FieldVisibilityInclude';
 import { IconProps } from '../Icon';
 import { InputProps } from './props';
 import { ComputedRef } from 'vue';

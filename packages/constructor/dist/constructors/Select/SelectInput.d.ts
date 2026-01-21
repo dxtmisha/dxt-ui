@@ -1,7 +1,7 @@
 import { ConstrBind } from '@dxtmisha/functional';
-import { FieldAttributesInclude } from '../../classes/field/FieldAttributesInclude';
-import { FieldValueInclude } from '../../classes/field/FieldValueInclude';
-import { FieldEventInclude } from '../../classes/field/FieldEventInclude';
+import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude';
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude';
+import { FieldEventInclude } from '../../classes/Field/FieldEventInclude';
 import { SelectProps } from './props';
 import { ComputedRef } from 'vue';
 /**

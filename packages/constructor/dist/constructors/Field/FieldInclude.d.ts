@@ -1,9 +1,9 @@
 import { VNode, ComputedRef } from 'vue';
 import { ConstrBind, DesignComponents, RefOrNormal } from '@dxtmisha/functional';
 import { EventClickValue } from '../../types/eventClickTypes';
-import { FieldValueInclude } from '../../classes/field/FieldValueInclude';
-import { FieldEventInclude } from '../../classes/field/FieldEventInclude';
-import { FieldArrowInclude } from '../../classes/field/FieldArrowInclude';
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude';
+import { FieldEventInclude } from '../../classes/Field/FieldEventInclude';
+import { FieldArrowInclude } from '../../classes/Field/FieldArrowInclude';
 import { FieldComponentInclude, FieldPropsInclude } from './basicTypes';
 import { FieldArrowProps } from '../../types/fieldTypes';
 import { FieldPropsBasic } from './props';

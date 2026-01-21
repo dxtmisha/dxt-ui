@@ -1,6 +1,6 @@
 import { computed, watch } from 'vue'
 
-import { FieldInputCheckInclude } from '../../classes/field/FieldInputCheckInclude'
+import { FieldInputCheckInclude } from '../../classes/Field/FieldInputCheckInclude'
 import { MaskType } from './MaskType'
 import { MaskDate } from './MaskDate'
 import { MaskFormat } from './MaskFormat'

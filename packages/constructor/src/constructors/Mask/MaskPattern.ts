@@ -4,7 +4,7 @@ import { forEach, isObjectNotArray, isString } from '@dxtmisha/functional'
 import {
   FieldInputCheckInclude,
   type FieldInputCheckListInclude
-} from '../../classes/field/FieldInputCheckInclude'
+} from '../../classes/Field/FieldInputCheckInclude'
 
 import { MaskType } from './MaskType'
 import { MaskSpecial } from './MaskSpecial'

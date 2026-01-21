@@ -2,7 +2,7 @@
 // Этот файл генерируется скриптом, не редактировать.
 
 import type { Plugin as VitePlugin } from 'vite'
-import { type DesignPluginOptions, Plugin } from '@dxtmisha/scripts/plugin'
+import { type PluginOptions, Plugin } from '@dxtmisha/constructor/plugin'
 
 import {
   componentsList,
@@ -19,7 +19,7 @@ import {
  * @param options plugin options / настройки плагина
  */
 export function uiD1VitePlugin(
-  options: DesignPluginOptions = {}
+  options: PluginOptions = {}
 ): VitePlugin {
   return new Plugin(
     designName,

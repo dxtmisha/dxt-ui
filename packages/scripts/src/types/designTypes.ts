@@ -1,4 +1,3 @@
-import type { Plugin as VitePlugin } from 'vite'
 import type { PropertyItem } from './propertyTypes'
 
 /** Item for design flags / Элемент флагов дизайна */
@@ -114,9 +113,3 @@ export type DesignTypesItem = {
 }
 
 export type DesignTypesList = DesignTypesItem[]
-
-export type DesignPluginOptions = {
-  style?: boolean
-  component?: boolean
-  viteOptions?: VitePlugin
-}

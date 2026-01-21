@@ -1,4 +1,4 @@
-import { FieldInputCheckInclude, FieldInputCheckListInclude } from '../../classes/field/FieldInputCheckInclude';
+import { FieldInputCheckInclude, FieldInputCheckListInclude } from '../../classes/Field/FieldInputCheckInclude';
 import { MaskType } from './MaskType';
 import { MaskSpecial } from './MaskSpecial';
 import { MaskDate } from './MaskDate';

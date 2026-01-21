@@ -32,7 +32,7 @@ export class LibraryPlugin {
       UI_FILE_NAME_PLUGIN,
       [
         'import type { Plugin as VitePlugin } from \'vite\'',
-        'import { type DesignPluginOptions, Plugin } from \'@dxtmisha/scripts/plugin\'',
+        'import { type PluginOptions, Plugin } from \'@dxtmisha/constructor/plugin\'',
         '',
         'import {',
         '  componentsList,',
@@ -49,7 +49,7 @@ export class LibraryPlugin {
         ' * @param options plugin options / настройки плагина',
         ' */',
         `export function ui${toCamelCaseFirst(design)}VitePlugin(`,
-        '  options: DesignPluginOptions = {}',
+        '  options: PluginOptions = {}',
         '): VitePlugin {',
         '  return new Plugin(',
         '    designName,',

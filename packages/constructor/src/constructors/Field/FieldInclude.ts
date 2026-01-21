@@ -10,9 +10,9 @@ import {
 } from '@dxtmisha/functional'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
-import type { FieldValueInclude } from '../../classes/field/FieldValueInclude'
-import type { FieldEventInclude } from '../../classes/field/FieldEventInclude'
-import type { FieldArrowInclude } from '../../classes/field/FieldArrowInclude'
+import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import type { FieldArrowInclude } from '../../classes/Field/FieldArrowInclude'
 
 import type { FieldComponentInclude, FieldPropsInclude } from './basicTypes'
 import type { FieldArrowProps } from '../../types/fieldTypes'

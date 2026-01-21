@@ -2,7 +2,7 @@ import { toCamelCase, toKebabCase } from '@dxtmisha/functional-basic'
 
 import type { PluginComponentImports, PluginComponentItem } from '../../types/pluginTypes'
 
-import { STYLE_MODIFICATION } from '../../media/properties/styleModification'
+import { STYLE_MODIFICATION } from '../../media/styleModification'
 
 /**
  * Class for storing plugin data.

@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.39.3",
+  "version": "0.39.4",
   "type": "module",
   "description": "Vue component constructors for DXT UI design system - ready-to-use constructors with TypeScript support and SCSS styling",
   "keywords": [
@@ -53,7 +53,10 @@
   "module": "./dist/library.js",
   "types": "./dist/library.d.ts",
   "exports": {
-    ".": "./dist/library.js",
+    ".": {
+      "import": "./dist/library.js",
+      "types": "./dist/library.d.ts"
+    },
     "./Accordion": {
       "import": "./dist/accordion.js",
       "types": "./dist/constructors/Accordion/index.d.ts"
@@ -211,6 +214,10 @@
       "types": "./dist/constructors/Window/index.d.ts"
     },
     "./ai-types": "./ai-types.txt",
+    "./plugin": {
+      "import": "./dist/plugin.js",
+      "types": "./dist/library/plugin.d.ts"
+    },
     "./style.scss": "./src/library/style.scss"
   },
   "buildOptions": {

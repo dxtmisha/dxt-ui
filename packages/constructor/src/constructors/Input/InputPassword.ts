@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { FieldVisibilityInclude } from '../../classes/field/FieldVisibilityInclude'
+import { FieldVisibilityInclude } from '../../classes/Field/FieldVisibilityInclude'
 
 import type { IconProps } from '../Icon'
 import type { InputProps } from './props'

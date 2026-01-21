@@ -1,7 +1,7 @@
 import { VNode, ComputedRef } from 'vue';
 import { ConstrBind, DesignComponents, RefOrNormal } from '@dxtmisha/functional';
-import { FieldValueInclude } from '../../classes/field/FieldValueInclude';
-import { FieldTypeInclude } from '../../classes/field/FieldTypeInclude';
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude';
+import { FieldTypeInclude } from '../../classes/Field/FieldTypeInclude';
 import { FieldValueProps } from '../../types/fieldTypes';
 import { MaskComponentInclude, MaskPropsInclude } from './basicTypes';
 import { MaskProps } from './props';

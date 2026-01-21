@@ -38,7 +38,7 @@ export class LibraryList {
     this.items.write(
       UI_FILE_NAME_DESIGN,
       [
-        'import type { PluginComponentImports } from \'@dxtmisha/scripts/plugin\'',
+        'import type { PluginComponentImports } from \'@dxtmisha/constructor/plugin\'',
         '',
         `// count: ${this.items.getCount()}`,
         `export const designName: string = '${PropertiesConfig.getDesignName()}'`,

@@ -1,8 +1,8 @@
 import { computed, type VNode, watch } from 'vue'
 import { type ConstrBind, type DesignComponents, getBind, getRef, type RefOrNormal, toBind } from '@dxtmisha/functional'
 
-import { FieldValueInclude } from '../../classes/field/FieldValueInclude'
-import { FieldTypeInclude } from '../../classes/field/FieldTypeInclude'
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import { FieldTypeInclude } from '../../classes/Field/FieldTypeInclude'
 
 import type { FieldValueProps } from '../../types/fieldTypes'
 import type { MaskComponentInclude, MaskPropsInclude } from './basicTypes'

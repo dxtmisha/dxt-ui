@@ -1,5 +1,3 @@
-// export:none
-
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { LibraryFiles } from '../../types/libraryTypes'

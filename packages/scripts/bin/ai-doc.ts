@@ -1,6 +1,6 @@
 #!/usr/bin/env vite-node
 
-import { AiDoc } from '../dist/library'
+import { AiDoc } from '../src/classes/Ai/AiDoc'
 
 new AiDoc()
   .make()

@@ -7,8 +7,7 @@ import { PluginImport } from './PluginImport'
 import { PluginComponents } from './PluginComponents'
 import { PluginStyle } from './PluginStyle'
 
-import type { DesignPluginOptions } from '../../types/designTypes'
-import type { PluginComponentImports } from '../../types/pluginTypes'
+import type { PluginComponentImports, PluginOptions } from '../../types/pluginTypes'
 
 /**
  * Base class for the Vite plugin.
@@ -38,7 +37,7 @@ export class Plugin {
     protected readonly styleVarsReg: RegExp,
     protected readonly componentsList: PluginComponentImports,
     protected readonly name: string = 'vite-plugin-design-ui',
-    protected readonly options: DesignPluginOptions = {}
+    protected readonly options: PluginOptions = {}
   ) {
     this.data = new PluginData(
       design,
