@@ -39,7 +39,7 @@ export interface LabelHighlightSlots extends LabelSlots {
 /**
  * Properties for label components/ Свойства для компонентов меток
  */
-export interface LabelProps {
+export type LabelProps = {
   /** Label text or number/ Текст или число метки */
   label?: NumberOrString
   /** Label element ID/ Идентификатор элемента метки */
@@ -49,7 +49,7 @@ export interface LabelProps {
 /**
  * Properties for numeric label components/ Свойства для числовых компонентов меток
  */
-export interface LabelNumberProps extends LabelProps {
+export type LabelNumberProps = LabelProps & {
   /** Maximum value for the label/ Максимальное значение для метки */
   labelMax?: NumberOrString
   /** Enable number formatting/ Включить форматирование чисел */
@@ -59,7 +59,7 @@ export interface LabelNumberProps extends LabelProps {
 /**
  * Properties for highlighted label components/ Свойства для компонентов меток с подсветкой
  */
-export interface LabelHighlightProps extends LabelProps {
+export type LabelHighlightProps = LabelProps & {
   /** Text to highlight/ Текст для подсветки */
   highlight?: string
   /** Starting length for highlight/ Начальная длина для подсветки */

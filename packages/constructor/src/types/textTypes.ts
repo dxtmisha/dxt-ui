@@ -6,28 +6,27 @@ export type TextIndex = 'close'
   | string
 export type TextList = Record<TextIndex, TextValue>
 
-export interface TextClosePropsInclude {
+export type TextClosePropsInclude = {
   /** Close text/ Текст закрытия */
   textClose?: TextValue
 }
 
-export interface TextCopiedClipboardPropsInclude {
+export type TextCopiedClipboardPropsInclude = {
   /** Copied to the clipboard text/ Текст о копировании в буфер обмена */
   textCopiedClipboard?: TextValue
 }
 
-export interface TextEntriesMatchPropsInclude {
+export type TextEntriesMatchPropsInclude = {
   /** Text entries match/ Текст о несовпадении записей */
   textEntriesMatch?: TextValue
 }
 
-export interface TextOkPropsInclude {
+export type TextOkPropsInclude = {
   /** OK text/ Текст подтверждения */
   textOk?: TextValue
 }
 
-export interface TextAllPropsInclude extends TextClosePropsInclude,
-  TextCopiedClipboardPropsInclude,
-  TextEntriesMatchPropsInclude,
-  TextOkPropsInclude {
-}
+export type TextAllPropsInclude = TextClosePropsInclude
+  & TextCopiedClipboardPropsInclude
+  & TextEntriesMatchPropsInclude
+  & TextOkPropsInclude

@@ -20,7 +20,7 @@ export type ModelEmitsSelected<Value = string> = {
  * Props for model value used with v-model/
  * Свойства для значения модели, используемого с v-model
  */
-export interface ModelProps<Value = string> {
+export type ModelProps<Value = string> = {
   /** Model value prop/ Свойство значения модели */
   'modelValue'?: Value
   /** Update value handler/ Обработчик обновления значения */
@@ -29,7 +29,7 @@ export interface ModelProps<Value = string> {
   'onUpdate:modelValue'?: (value: Value) => void
 }
 
-export interface ModelPropsSelected<Value = string> {
+export type ModelPropsSelected<Value = string> = {
   /** Model value prop/ Свойство значения модели */
   'modelSelected'?: Value
   /** Update value handler/ Обработчик обновления значения */
