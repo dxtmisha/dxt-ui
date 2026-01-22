@@ -17,6 +17,7 @@ import { LibraryList } from '../Library/LibraryList'
 import { LibraryPlugin } from '../Library/LibraryPlugin'
 
 import { UI_FILE_PACKAGE } from '../../config'
+import { LibraryAiWiki } from '../Library/LibraryAiWiki.ts'
 
 export class DesignUi {
   protected readonly components: LibraryItems
@@ -53,10 +54,26 @@ export class DesignUi {
 
     this.makeConstructorComponent()
     this.makePackage()
+    this.makeAiWikiList()
 
     new LibraryMedia(this.components).make()
     new LibraryList(this.components).make()
     new LibraryPlugin(this.components).make()
+  }
+
+  protected getListWiki(): string[] {
+    const data: LibraryAiWiki[] = []
+
+    this.components.getComponentList()
+      .forEach((component) => {
+        const aiWiki = new LibraryAiWiki(component)
+
+        if (aiWiki.isAiWiki()) {
+          data.push(aiWiki)
+        }
+      })
+
+    return data
   }
 
   /**
@@ -96,5 +113,9 @@ export class DesignUi {
 
       PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageJson)
     }
+  }
+
+  protected makeAiWikiList(): void {
+    console.log(``)
   }
 }
