@@ -12,12 +12,12 @@ import { Styles } from '../Styles/Styles'
 
 import { DesignWiki } from './DesignWiki'
 
+import { LibraryAiWiki } from '../Library/LibraryAiWiki'
 import { LibraryMedia } from '../Library/LibraryMedia'
 import { LibraryList } from '../Library/LibraryList'
 import { LibraryPlugin } from '../Library/LibraryPlugin'
 
 import { UI_FILE_PACKAGE } from '../../config'
-import { LibraryAiWiki } from '../Library/LibraryAiWiki.ts'
 
 export class DesignUi {
   protected readonly components: LibraryItems
@@ -54,26 +54,11 @@ export class DesignUi {
 
     this.makeConstructorComponent()
     this.makePackage()
-    this.makeAiWikiList()
 
     new LibraryMedia(this.components).make()
     new LibraryList(this.components).make()
     new LibraryPlugin(this.components).make()
-  }
-
-  protected getListWiki(): string[] {
-    const data: LibraryAiWiki[] = []
-
-    this.components.getComponentList()
-      .forEach((component) => {
-        const aiWiki = new LibraryAiWiki(component)
-
-        if (aiWiki.isAiWiki()) {
-          data.push(aiWiki)
-        }
-      })
-
-    return data
+    new LibraryAiWiki(this.components).make()
   }
 
   /**
@@ -108,14 +93,12 @@ export class DesignUi {
     const projectName = toCamelCaseFirst(PropertiesConfig.getProjectName())
 
     if (packageJson?.exports) {
+      packageJson.exports['./plugin'] = `./dist/plugin.js`
+      packageJson.exports['./style.css'] = `./style.css`
       packageJson.exports['./style/ui.scss'] = `./src/styles/${projectName}/main.scss`
       packageJson.exports['./style/ui-properties.scss'] = `./src/styles/${projectName}/style.scss`
 
       PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageJson)
     }
-  }
-
-  protected makeAiWikiList(): void {
-    console.log(``)
   }
 }

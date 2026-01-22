@@ -20,7 +20,6 @@ export class LibraryMedia {
    * Constructor
    * @param items object for working with the list of components/ объект для работы со списком компонентов
    */
-
   constructor(
     protected readonly items: LibraryItems
   ) {

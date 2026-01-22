@@ -7,7 +7,7 @@
 // :component-import [!] System label / Системная метка
 
 defineOptions({
-  name: 'DesignComponentWikiAi'
+  name: 'DesignComponentAiWiki'
 })
 </script>
 

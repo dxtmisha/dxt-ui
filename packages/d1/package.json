@@ -1,1 +1,29 @@
-{"name":"@dxtmisha/d1","private":false,"version":"0.1.0","type":"module","scripts":{"dev":"vite","build":"vue-tsc -b && vite build","preview":"vite preview","dxt-ui":"dxt-ui image"},"exports":{"./D1Image":{"import":"./dist/D1Image.js","types":"./dist/components/Ui/D1Image/index.d.ts"},"./style/ui.scss":"./src/styles/Ui/main.scss","./style/ui-properties.scss":"./src/styles/Ui/style.scss"},"devDependencies":{}}
+{
+  "name": "@dxtmisha/d1",
+  "private": false,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "dxt-ui": "dxt-ui image"
+  },
+  "files": [
+    "dist/",
+    "src/styles",
+    "README.md",
+    "package.json",
+    "LICENSE"
+  ],
+  "exports": {
+    "./D1Image": {
+      "import": "./dist/D1Image.js",
+      "types": "./dist/components/Ui/D1Image/index.d.ts"
+    },
+    "./style/ui.scss": "./src/styles/Ui/main.scss",
+    "./style/ui-properties.scss": "./src/styles/Ui/style.scss",
+    "./plugin": "./dist/plugin.js"
+  },
+  "devDependencies": {}
+}

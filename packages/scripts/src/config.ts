@@ -21,6 +21,7 @@ export const UI_FLAG_NOT_EXPORT = /\/\/ *export:none/
 
 /** Folder where all the code is stored/ Папка, где хранится весь код */
 export const UI_DIR_IN = 'src'
+export const UI_DIR_AI = 'ai'
 /** Components directory name/ Название директории компонентов */
 export const UI_DIR_COMPONENTS = 'components'
 /** Constructors directory name/ Название директории конструкторов */
@@ -34,6 +35,7 @@ export const UI_DIR_DIST_TEMPORARY = 'dist-temporary'
 export const UI_DIR_PROMPT = 'prompt'
 export const UI_DIR_PACKAGES = 'packages'
 
+export const UI_DIRS_AI_WIKI = [UI_DIR_IN, UI_DIR_WIKI, UI_DIR_AI]
 /** Name of the path to tokens/ Название пути к токенам */
 export const UI_DIRS_TOKENS = [UI_DIR_IN, 'media']
 /** Directory containing the list of icons/ Директория со списком иконок */

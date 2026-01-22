@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import WikiAi from './ui/WikiAi.vue'
+import AiWiki from './components/AiWiki.vue'
 import '@dxtmisha/media/style.css'
 </script>
 
 <template>
-  <WikiAi/>
+  <AiWiki/>
 </template>
 
 <style lang="scss"></style>
