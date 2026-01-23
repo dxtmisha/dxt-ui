@@ -1,8 +1,9 @@
-var l = Object.defineProperty;
-var g = (s, t, e) => t in s ? l(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var r = (s, t, e) => g(s, typeof t != "symbol" ? t + "" : t, e);
-import { toCamelCase as m, toKebabCase as d } from "@dxtmisha/functional-basic";
-class p {
+var p = Object.defineProperty;
+var l = (s, t, e) => t in s ? p(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
+var o = (s, t, e) => l(s, typeof t != "symbol" ? t + "" : t, e);
+import d from "magic-string";
+import { toCamelCase as m, toKebabCase as u } from "@dxtmisha/functional-basic";
+class g {
   /**
    * Checks if the id is a user’s file.
    *
@@ -49,7 +50,54 @@ class p {
     return t === "development";
   }
 }
-const u = [
+class f {
+  constructor(t, e) {
+    o(this, "magicString");
+    this.id = t, this.code = e, this.magicString = new d(e);
+  }
+  isVue() {
+    return this.id.endsWith(".vue");
+  }
+  get() {
+    return this.magicString.toString();
+  }
+  getId() {
+    return this.id;
+  }
+  getCode() {
+    return this.code;
+  }
+  getMaps() {
+    return this.magicString.generateMap({
+      source: this.id,
+      includeContent: !0,
+      hires: !0
+    });
+  }
+  /**
+   * Checks for the presence of code.
+   *
+   * Проверяет наличие кода.
+   * @param pattern search pattern / паттерн поиска
+   */
+  has(t) {
+    return typeof t == "string" ? this.code.includes(t) : t.test(this.code);
+  }
+  /**
+   * Adds code after the <script setup> tag.
+   * If the tag is missing, adds it to the beginning of the file.
+   *
+   * Добавляет код после тега <script setup>.
+   * Если тег отсутствует, добавляет в начало файла.
+   * @param code code to add / код для добавления
+   */
+  addAfterScript(t) {
+    const e = this.code.match(/<script[^>]*\bsetup\b[^>]*>/);
+    return (e == null ? void 0 : e.index) !== void 0 ? this.magicString.appendRight(e.index + e[0].length, t) : this.magicString.prepend(`<script setup>\r
+${t}<\/script>`), this;
+  }
+}
+const y = [
   /* Flex */
   "flex-position",
   "flex-dynamic",
@@ -121,7 +169,7 @@ const u = [
   "scale",
   "rotate"
 ];
-class f {
+class C {
   /**
    * Constructor
    * @param design design name / название дизайна
@@ -130,9 +178,9 @@ class f {
    * @param styleVarsReg regular expression for finding variables / регулярное выражение для поиска переменных
    * @param componentsList list of components / список компонентов
    */
-  constructor(t, e, i, o, n) {
-    r(this, "styleModification");
-    this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = o, this.componentsList = n, this.styleModification = this.initStyleModification();
+  constructor(t, e, i, r, n) {
+    o(this, "styleModification");
+    this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = r, this.componentsList = n, this.styleModification = this.initStyleModification();
   }
   /**
    * Returns the design name.
@@ -176,8 +224,8 @@ class f {
    */
   getComponents(t) {
     const e = t.match(this.componentsReg), i = [];
-    return e && e.forEach((o) => {
-      const n = this.findComponent(o);
+    return e && e.forEach((r) => {
+      const n = this.findComponent(r);
       n && !i.find((a) => a.name === n.name) && !t.match(`${this.getPackageName()}/${n.name}`) && i.push(n);
     }), i;
   }
@@ -215,19 +263,19 @@ class f {
    */
   initStyleModification() {
     const t = {};
-    return u.forEach((e) => {
-      t[d(e)] = m(e);
+    return y.forEach((e) => {
+      t[u(e)] = m(e);
     }), t;
   }
 }
-class y {
+class S {
   /**
    * Constructor
    * @param packageName package name / название пакета
    * @param code file content / содержимое файла
    */
   constructor(t, e) {
-    r(this, "code");
+    o(this, "code");
     this.packageName = t, this.code = e;
   }
   /**
@@ -257,47 +305,29 @@ class y {
     this.code.includes(e) || (this.code = `import '${e}';${this.code}`);
   }
 }
-class C {
+class $ {
   /**
    * Constructor
-   * @param id file identification / идентификация файла
    * @param code file content / содержимое файла
    * @param pluginData plugin data / данные плагина
    */
-  constructor(t, e, i) {
-    this.id = t, this.code = e, this.pluginData = i;
+  constructor(t, e) {
+    this.code = t, this.pluginData = e;
   }
   /**
    * Initializes the data.
    *
    * Инициализирует данные.
    */
-  init() {
-    if (this.id.endsWith(".vue") && this.pluginData.hasComponent(this.code)) {
-      const t = this.pluginData.getComponents(this.code);
-      if (console.info("list", t), t) {
-        const e = this.getCode(), i = t.map((o) => this.importComponent(o)).join(`\r
+  make() {
+    if (this.code.isVue() && this.pluginData.hasComponent(this.code.getCode())) {
+      const t = this.pluginData.getComponents(this.code.getCode());
+      if (t) {
+        const e = t.map((i) => this.importComponent(i)).join(`\r
 `);
-        return console.log("addImportCode", this.addImportCode(e, i)), this.addImportCode(e, i);
+        this.code.addAfterScript(e), console.log("this.code", this.code.getCode());
       }
     }
-    return this.code;
-  }
-  /**
-   * Checks if there is a script element.
-   *
-   * Проверяет, есть ли элемент script.
-   */
-  isScript() {
-    return !!this.code.match(/<script[^>]*setup/);
-  }
-  /**
-   * Returns the file code, adding a script if it’s not there.
-   *
-   * Возвращает код файла, добавляя script, если его нет.
-   */
-  getCode() {
-    return this.isScript() ? this.code : `<script setup><\/script>${this.code}`;
   }
   /**
    * Returns the path to the component.
@@ -309,17 +339,6 @@ class C {
     return `${this.pluginData.getPackageName()}/${t.name}`;
   }
   /**
-   * Adds import code to the script.
-   *
-   * Добавляет код импорта в скрипт.
-   * @param code file content / содержимое файла
-   * @param imports import code / код импорта
-   */
-  addImportCode(t, e) {
-    return t.replace(/(<script[^>]*setup[^>]*>)/, `$1\r
-${e}`);
-  }
-  /**
    * Generates the import string for a component.
    *
    * Генерирует строку импорта для компонента.
@@ -329,7 +348,7 @@ ${e}`);
     return `import { ${t.name} } from'${this.getPath(t)}';`;
   }
 }
-class $ {
+class b {
   /**
    * Constructor
    * @param id file identification / идентификация файла
@@ -357,7 +376,7 @@ class $ {
    * Проверяет, нужно ли преобразовывать этот файл.
    */
   is() {
-    return p.isCss(this.id) && !this.code.match(this.getCodeNone());
+    return g.isCss(this.id) && !this.code.match(this.getCodeNone());
   }
   getCodeNone() {
     return `// ${this.data.getDesign()}-none`;
@@ -425,14 +444,14 @@ ${this.code}`;
     const e = this.data.getStyleModification(), i = this.getModificationRef();
     return t.match(new RegExp(i, "i")) ? t.replace(
       i,
-      (o, n, a, c) => {
+      (r, n, a, c) => {
         const h = a.trim();
         return `@include ${e == null ? void 0 : e[n.trim()]}(${h.match(/[()]/) ? `#{${h}}` : h})${c}`;
       }
     ) : t;
   }
 }
-class S {
+class M {
   /**
    * Constructor
    * @param design design name / название дизайна
@@ -443,15 +462,15 @@ class S {
    * @param name plugin name / название плагина
    * @param options plugin options / настройки плагина
    */
-  constructor(t, e, i, o, n, a = "vite-plugin-design-ui", c = {}) {
-    r(this, "data");
-    r(this, "first", !0);
-    r(this, "mode", "production");
-    this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = o, this.componentsList = n, this.name = a, this.options = c, this.data = new f(
+  constructor(t, e, i, r, n, a = "vite-plugin-design-ui", c = {}) {
+    o(this, "data");
+    o(this, "first", !0);
+    o(this, "mode", "production");
+    this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = r, this.componentsList = n, this.name = a, this.options = c, this.data = new C(
       t,
       e,
       i,
-      o,
+      r,
       n
     );
   }
@@ -496,8 +515,11 @@ class S {
    * @param id file identification / идентификация файла
    */
   transform(t, e) {
-    return this.first && p.isJs(e) && (t = this.initMain(t), console.info("code", t), this.first = !1), t = this.initComponents(e, t), {
-      code: t
+    this.first && g.isJs(e) && (t = this.initMain(t), this.first = !1);
+    const i = new f(e, t);
+    return this.makeComponents(i), {
+      code: i.get(),
+      map: i.getMaps()
     };
   }
   /**
@@ -507,18 +529,17 @@ class S {
    * @param code file content / содержимое файла
    */
   initMain(t) {
-    const e = new y(this.packageName, t);
+    const e = new S(this.packageName, t);
     return e.importStyle(), e.get();
   }
   /**
    * Initializes components.
    *
    * Инициализирует компоненты.
-   * @param id file identification / идентификация файла
    * @param code file content / содержимое файла
    */
-  initComponents(t, e) {
-    return console.log("this.isComponents()", this.isComponents()), this.isComponents() ? new C(t, e, this.data).init() : e;
+  makeComponents(t) {
+    return this.isComponents() && new $(t, this.data).make(), this;
   }
   /**
    * Initializes styles.
@@ -528,14 +549,14 @@ class S {
    * @param code file content / содержимое файла
    */
   initStyles(t, e) {
-    return this.isStyles() ? new $(t, e, this.data).init() : e;
+    return this.isStyles() ? new b(t, e, this.data).init() : e;
   }
 }
 export {
-  S as P,
-  C as a,
-  f as b,
-  y as c,
-  $ as d,
-  p as e
+  M as P,
+  $ as a,
+  C as b,
+  S as c,
+  b as d,
+  g as e
 };

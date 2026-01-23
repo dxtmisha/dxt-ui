@@ -1,4 +1,6 @@
+import { PluginCode } from './PluginCode'
 import { PluginData } from './PluginData'
+
 import type { PluginComponentItem } from '../../types/pluginTypes'
 
 /**
@@ -9,13 +11,11 @@ import type { PluginComponentItem } from '../../types/pluginTypes'
 export class PluginComponents {
   /**
    * Constructor
-   * @param id file identification / идентификация файла
    * @param code file content / содержимое файла
    * @param pluginData plugin data / данные плагина
    */
   constructor(
-    protected readonly id: string,
-    protected readonly code: string,
+    protected readonly code: PluginCode,
     protected readonly pluginData: PluginData
   ) {
   }
@@ -25,44 +25,19 @@ export class PluginComponents {
    *
    * Инициализирует данные.
    */
-  init(): string {
+  make(): void {
     if (
-      this.id.endsWith('.vue')
-      && this.pluginData.hasComponent(this.code)
+      this.code.isVue()
+      && this.pluginData.hasComponent(this.code.getCode())
     ) {
-      const list = this.pluginData.getComponents(this.code)
+      const list = this.pluginData.getComponents(this.code.getCode())
 
       if (list) {
-        const code = this.getCode()
         const imports = list.map(item => this.importComponent(item)).join('\r\n')
 
-        return this.addImportCode(code, imports)
+        this.code.addAfterScript(imports)
       }
     }
-
-    return this.code
-  }
-
-  /**
-   * Checks if there is a script element.
-   *
-   * Проверяет, есть ли элемент script.
-   */
-  protected isScript(): boolean {
-    return Boolean(this.code.match(/<script[^>]*setup/))
-  }
-
-  /**
-   * Returns the file code, adding a script if it’s not there.
-   *
-   * Возвращает код файла, добавляя script, если его нет.
-   */
-  protected getCode(): string {
-    if (this.isScript()) {
-      return this.code
-    }
-
-    return `<script setup></script>${this.code}`
   }
 
   /**
@@ -73,20 +48,6 @@ export class PluginComponents {
    */
   protected getPath(item: PluginComponentItem): string {
     return `${this.pluginData.getPackageName()}/${item.name}`
-  }
-
-  /**
-   * Adds import code to the script.
-   *
-   * Добавляет код импорта в скрипт.
-   * @param code file content / содержимое файла
-   * @param imports import code / код импорта
-   */
-  protected addImportCode(
-    code: string,
-    imports: string
-  ): string {
-    return code.replace(/(<script[^>]*setup[^>]*>)/, `$1\r\n${imports}`)
   }
 
   /**

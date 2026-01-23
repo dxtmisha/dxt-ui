@@ -2,6 +2,7 @@ import type { TransformResult } from 'rollup'
 import type { Plugin as VitePlugin } from 'vite'
 
 import { PluginTool } from './PluginTool'
+import { PluginCode } from './PluginCode'
 import { PluginData } from './PluginData'
 import { PluginImport } from './PluginImport'
 import { PluginComponents } from './PluginComponents'
@@ -102,11 +103,14 @@ export class Plugin {
       this.first = false
     }
 
-    code = this.initComponents(id, code)
+    const magicCode = new PluginCode(id, code)
+
+    this.makeComponents(magicCode)
     // code = this.initStyles(id, code)
 
     return {
-      code
+      code: magicCode.get(),
+      map: magicCode.getMaps()
     }
   }
 
@@ -128,18 +132,16 @@ export class Plugin {
    * Initializes components.
    *
    * Инициализирует компоненты.
-   * @param id file identification / идентификация файла
    * @param code file content / содержимое файла
    */
-  protected initComponents(
-    id: string,
-    code: string
-  ): string {
+  protected makeComponents(
+    code: PluginCode
+  ): this {
     if (this.isComponents()) {
-      return new PluginComponents(id, code, this.data).init()
+      new PluginComponents(code, this.data).make()
     }
 
-    return code
+    return this
   }
 
   /**

@@ -1,5 +1,6 @@
 import { TransformResult } from 'rollup';
 import { Plugin as VitePlugin } from 'vite';
+import { PluginCode } from './PluginCode';
 import { PluginData } from './PluginData';
 import { PluginComponentImports, PluginOptions } from '../../types/pluginTypes';
 /**
@@ -66,10 +67,9 @@ export declare class Plugin {
      * Initializes components.
      *
      * Инициализирует компоненты.
-     * @param id file identification / идентификация файла
      * @param code file content / содержимое файла
      */
-    protected initComponents(id: string, code: string): string;
+    protected makeComponents(code: PluginCode): this;
     /**
      * Initializes styles.
      *
