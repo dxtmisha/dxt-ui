@@ -12,7 +12,9 @@ export const getLibraryEntries = () => {
 
   if (fs.existsSync(dir)) {
     return fs.readdirSync(dir)
-      .filter(file => file.endsWith('.ts'))
+      .filter(
+        file => file.endsWith('.ts') && !file.endsWith('.wiki.ts')
+      )
       .map(file => path.join(dir, file))
   }
 

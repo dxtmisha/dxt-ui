@@ -41,7 +41,7 @@
     "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "peerDependenciesMeta": {},
   "dependencies": {},

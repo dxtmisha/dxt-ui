@@ -227,19 +227,11 @@
     ]
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "peerDependencies": {
     "@dxtmisha/functional": "*",
     "vue": "*"
-  },
-  "peerDependenciesMeta": {
-    "@dxtmisha/functional": {
-      "optional": false
-    },
-    "vue": {
-      "optional": false
-    }
   },
   "dependencies": {},
   "sideEffects": false

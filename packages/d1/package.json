@@ -3,6 +3,25 @@
   "private": false,
   "version": "0.1.0",
   "type": "module",
+  "description": "DXT-UI component library",
+  "keywords": [
+    "vue",
+    "vue3",
+    "ui",
+    "components",
+    "dxt-ui"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/d1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/d1"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
@@ -23,7 +42,25 @@
     },
     "./style/ui.scss": "./src/styles/Ui/main.scss",
     "./style/ui-properties.scss": "./src/styles/Ui/style.scss",
-    "./plugin": "./dist/plugin.js"
+    "./plugin": "./dist/plugin.js",
+    "./style.css": "./dist/style.css"
   },
-  "devDependencies": {}
+  "buildOptions": {
+    "name": "@dxtmisha/constructor",
+    "formats": [
+      "esm-bundler"
+    ]
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@dxtmisha/configuration": "*",
+    "@dxtmisha/constructor": "*",
+    "@dxtmisha/functional": "*",
+    "@dxtmisha/styles": "*",
+    "vue": "*"
+  },
+  "dependencies": {},
+  "sideEffects": false
 }

@@ -94,7 +94,7 @@ export class DesignUi {
 
     if (packageJson?.exports) {
       packageJson.exports['./plugin'] = `./dist/plugin.js`
-      packageJson.exports['./style.css'] = `./style.css`
+      packageJson.exports['./style.css'] = `./dist/style.css`
       packageJson.exports['./style/ui.scss'] = `./src/styles/${projectName}/main.scss`
       packageJson.exports['./style/ui-properties.scss'] = `./src/styles/${projectName}/style.scss`
 

@@ -428,7 +428,7 @@ export class PropertiesFile {
 
     requireFs.writeFileSync(
       this.joinPath(path),
-      transform && typeof value === 'object' ? JSON.stringify(value) : value as any
+      transform && typeof value === 'object' ? JSON.stringify(value, undefined, 2) : value as any
     )
   }
 

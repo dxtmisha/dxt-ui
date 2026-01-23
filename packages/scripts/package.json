@@ -59,7 +59,7 @@
     "./properties.json": "./src/media/properties.json"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "peerDependencies": {
     "@dxtmisha/configuration": "*",
