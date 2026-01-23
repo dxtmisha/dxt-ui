@@ -65,6 +65,22 @@ export class Plugin {
       transform: (code: string, id: string): TransformResult => {
         return this.transform(code, id)
       },
+      config(userConfig) {
+        // Получаем текущее значение additionalData (если пользователь уже что-то настроил сам)
+        const existingData = userConfig.css?.preprocessorOptions?.scss?.additionalData || ''
+
+        return {
+          css: {
+            preprocessorOptions: {
+              scss: {
+                // Добавляем наш код ПЕРЕД пользовательским (или после, в зависимости от логики)
+                // Важно не забыть ';' если склеиваем строки
+                additionalData: `${importStatement} ${existingData}`
+              }
+            }
+          }
+        }
+      },
       ...this.options?.viteOptions
     }
   }

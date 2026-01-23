@@ -1,4 +1,5 @@
 import MagicString from 'magic-string'
+import { PluginTool } from './PluginTool'
 
 /**
  * Class for working with plugin code.
@@ -26,7 +27,11 @@ export class PluginCode {
    * Проверяет, является ли файл компонентом Vue.
    */
   isVue(): boolean {
-    return this.id.endsWith('.vue')
+    return PluginTool.isVue(this.id)
+  }
+
+  isScss(): boolean {
+    return PluginTool.isCss(this.id)
   }
 
   /**
@@ -99,6 +104,18 @@ export class PluginCode {
     } else {
       this.magicString.prepend(`<script setup>\r\n${code}</script>`)
     }
+
+    return this
+  }
+
+  /**
+   * Adds code to the beginning of the file.
+   *
+   * Добавляет код в начало файла.
+   * @param code code to add / код для добавления
+   */
+  addStart(code: string): this {
+    this.magicString.prepend(code)
 
     return this
   }

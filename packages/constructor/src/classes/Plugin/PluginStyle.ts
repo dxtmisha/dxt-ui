@@ -1,5 +1,6 @@
 import { PluginTool } from './PluginTool'
 import { PluginData } from './PluginData'
+import { PluginCode } from './PluginCode.ts'
 
 /**
  * Class for transforming into non-standard style properties.
@@ -9,14 +10,12 @@ import { PluginData } from './PluginData'
 export class PluginStyle {
   /**
    * Constructor
-   * @param id file identification / идентификация файла
    * @param code file content / содержимое файла
    * @param data plugin data / данные плагина
    */
 
   constructor(
-    protected readonly id: string,
-    protected readonly code: string,
+    protected readonly code: PluginCode,
     protected readonly data: PluginData
   ) {
   }
@@ -46,11 +45,12 @@ export class PluginStyle {
    * Проверяет, нужно ли преобразовывать этот файл.
    */
   protected is(): boolean {
-    return PluginTool.isCss(this.id) && !this.code.match(this.getCodeNone())
+    return this.code.isScss()
+      && !this.code.has(this.getIgnoreComment())
   }
 
-  protected getCodeNone(): string {
-    return `// ${this.data.getDesign()}-none`
+  protected getIgnoreComment(): string {
+    return `// ${this.data.getDesign()}-css-ignore`
   }
 
   protected getPropertiesNone() {
