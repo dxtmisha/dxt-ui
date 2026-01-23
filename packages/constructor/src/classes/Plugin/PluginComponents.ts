@@ -26,7 +26,10 @@ export class PluginComponents {
    * Инициализирует данные.
    */
   init(): string {
-    if (this.pluginData.hasComponent(this.code)) {
+    if (
+      this.id.endsWith('.vue')
+      && this.pluginData.hasComponent(this.code)
+    ) {
       const list = this.pluginData.getComponents(this.code)
 
       if (list) {
@@ -69,7 +72,7 @@ export class PluginComponents {
    * @param item component data / данные компонента
    */
   protected getPath(item: PluginComponentItem): string {
-    return `${this.pluginData.getDesign()}/${item.name}`
+    return `${this.pluginData.getPackageName()}/${item.name}`
   }
 
   /**
@@ -83,7 +86,7 @@ export class PluginComponents {
     code: string,
     imports: string
   ): string {
-    return code.replace(/(<script[^\r\n]+)/, `$1\r\n${imports}`)
+    return code.replace(/(<script[^>]*setup[^>]*>)/, `$1\r\n${imports}`)
   }
 
   /**

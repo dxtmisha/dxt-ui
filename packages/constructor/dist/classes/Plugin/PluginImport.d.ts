@@ -23,7 +23,7 @@ export declare class PluginImport {
      *
      * Возвращает код подключения стиля.
      */
-    importStyle(): void;
+    importStyle(): this;
     /**
      * Creates an import line.
      *

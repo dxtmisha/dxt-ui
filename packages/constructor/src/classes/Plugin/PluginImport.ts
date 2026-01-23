@@ -32,8 +32,9 @@ export class PluginImport {
    *
    * Возвращает код подключения стиля.
    */
-  importStyle(): void {
+  importStyle(): this {
     this.makeImport('style.css')
+    return this
   }
 
   /**
@@ -46,7 +47,7 @@ export class PluginImport {
     const path = `${this.packageName}/${name}`
 
     if (!this.code.includes(path)) {
-      this.code = `import '${path}';`
+      this.code = `import '${path}';${this.code}`
     }
   }
 }

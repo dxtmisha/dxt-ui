@@ -103,7 +103,7 @@ export class Plugin {
     }
 
     code = this.initComponents(id, code)
-    code = this.initStyles(id, code)
+    // code = this.initStyles(id, code)
 
     return {
       code

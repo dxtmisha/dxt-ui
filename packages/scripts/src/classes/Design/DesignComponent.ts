@@ -573,13 +573,12 @@ export class DesignComponent extends DesignCommand {
    */
   protected makeFilePackage(): this {
     const name = `./${this.getFullName()}`
-    const command = this.getFullName()
 
     this.updatePackage(
       `exports|${name}`,
       {
-        import: `./dist/${command}.js`,
-        types: `./dist/components/${this.getProjectName()}/${command}/index.d.ts`
+        import: `./dist/${this.getFullName()}.js`,
+        types: `./dist/components/${this.getProjectName()}/${this.getName()}/index.d.ts`
       }
     )
 

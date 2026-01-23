@@ -38,12 +38,15 @@
   "exports": {
     "./D1Image": {
       "import": "./dist/D1Image.js",
-      "types": "./dist/components/Ui/D1Image/index.d.ts"
+      "types": "./dist/components/Ui/Image/index.d.ts"
     },
-    "./style/ui.scss": "./src/styles/Ui/main.scss",
+    "./plugin": {
+      "import": "./dist/plugin.js",
+      "types": "./dist/library/plugin.d.ts"
+    },
+    "./style.css": "./dist/style.css",
     "./style/ui-properties.scss": "./src/styles/Ui/style.scss",
-    "./plugin": "./dist/plugin.js",
-    "./style.css": "./dist/style.css"
+    "./style/ui.scss": "./src/styles/Ui/main.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",
