@@ -71,14 +71,13 @@ export class PluginStyle {
    *
    * Подключает список токенов для работы со значениями.
    */
-  protected importDesign(): string {
-    const importPath = `${this.data.getPackageName()}/properties`
+  protected importDesign(): this {
+    const importPath = `${this.data.getPackageName()}/style/ui-properties`
+    const code: string = `@use '${importPath}.scss' as *;`
 
-    if (!this.code.match(importPath)) {
-      return `@use '${importPath}' as *;\r\n${this.code}`
-    }
+    this.code.addStartIfNone(code, importPath)
 
-    return this.code
+    return this
   }
 
   /**

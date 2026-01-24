@@ -30,6 +30,11 @@ export class PluginCode {
     return PluginTool.isVue(this.id)
   }
 
+  /**
+   * Checks if the file is a SCSS file.
+   *
+   * Проверяет, является ли файл SCSS.
+   */
   isScss(): boolean {
     return PluginTool.isCss(this.id)
   }
@@ -116,6 +121,24 @@ export class PluginCode {
    */
   addStart(code: string): this {
     this.magicString.prepend(code)
+
+    return this
+  }
+
+  /**
+   * Adds code to the beginning of the file if it is missing.
+   *
+   * Добавляет код в начало файла, если он отсутствует.
+   * @param code code to add / код для добавления
+   * @param pattern search pattern / паттерн поиска
+   */
+  addStartIfNone(
+    code: string,
+    pattern?: string | RegExp
+  ): this {
+    if (!this.has(pattern ?? code)) {
+      this.addStart(code)
+    }
 
     return this
   }
