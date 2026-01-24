@@ -8,6 +8,7 @@ import { PluginTool } from './PluginTool'
  */
 export class PluginCode {
   protected magicString: MagicString
+  protected newCode: string
 
   /**
    * Constructor
@@ -19,6 +20,7 @@ export class PluginCode {
     protected readonly code: string
   ) {
     this.magicString = new MagicString(code)
+    this.newCode = code
   }
 
   /**
@@ -45,7 +47,7 @@ export class PluginCode {
    * Возвращает измененный код.
    */
   get(): string {
-    return this.magicString.toString()
+    return this.newCode
   }
 
   /**
@@ -102,12 +104,13 @@ export class PluginCode {
    * @param code code to add / код для добавления
    */
   addAfterScript(code: string): this {
-    const match = this.code.match(/<script[^>]*\bsetup\b[^>]*>/)
+    const regExp = /(<script[^>]*\bsetup\b[^>]*>)/
+    const match = this.code.match(regExp)
 
-    if (match?.index !== undefined) {
-      this.magicString.appendRight(match.index + match[0].length, code)
+    if (match) {
+      this.newCode = this.newCode.replace(regExp, `$1${code}`)
     } else {
-      this.magicString.prepend(`<script setup>\r\n${code}</script>`)
+      this.newCode = `<script setup>\r\n${code}</script>${this.newCode}`
     }
 
     return this
@@ -120,7 +123,7 @@ export class PluginCode {
    * @param code code to add / код для добавления
    */
   addStart(code: string): this {
-    this.magicString.prepend(code)
+    this.newCode = `${code}${this.newCode}`
 
     return this
   }

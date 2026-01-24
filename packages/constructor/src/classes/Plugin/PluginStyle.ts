@@ -27,7 +27,7 @@ export class PluginStyle {
    */
   init(): string {
     if (this.is()) {
-      let code = this.importDesign()
+      this.importDesign()
 
       code = this.initColors(code)
       code = this.initVars(code)
