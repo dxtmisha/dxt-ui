@@ -92,7 +92,7 @@ export class PluginCode {
       return this.code.includes(pattern)
     }
 
-    return pattern.test(this.code)
+    return (new RegExp(pattern, 'i')).test(this.code)
   }
 
   /**
@@ -142,6 +142,22 @@ export class PluginCode {
     if (!this.has(pattern ?? code)) {
       this.addStart(code)
     }
+
+    return this
+  }
+
+  /**
+   * Replaces the found fragment with new code in newCode.
+   *
+   * Заменяет найденный фрагмент на новый код в newCode.
+   * @param pattern search pattern / паттерн поиска
+   * @param replacement replacement string / строка замены
+   */
+  replace(
+    pattern: string | RegExp,
+    replacement: string | ((substring: string, ...args: any[]) => string)
+  ): this {
+    this.newCode = this.newCode.replace(pattern, replacement as string)
 
     return this
   }

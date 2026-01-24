@@ -65,22 +65,6 @@ export class Plugin {
       transform: (code: string, id: string): TransformResult => {
         return this.transform(code, id)
       },
-      config(userConfig) {
-        // Получаем текущее значение additionalData (если пользователь уже что-то настроил сам)
-        const existingData = userConfig.css?.preprocessorOptions?.scss?.additionalData || ''
-
-        return {
-          css: {
-            preprocessorOptions: {
-              scss: {
-                // Добавляем наш код ПЕРЕД пользовательским (или после, в зависимости от логики)
-                // Важно не забыть ';' если склеиваем строки
-                additionalData: `${importStatement} ${existingData}`
-              }
-            }
-          }
-        }
-      },
       ...this.options?.viteOptions
     }
   }
@@ -122,11 +106,10 @@ export class Plugin {
     const magicCode = new PluginCode(id, code)
 
     this.makeComponents(magicCode)
-    // code = this.initStyles(id, code)
+    this.initStyles(magicCode)
 
     return {
-      code: magicCode.get(),
-      map: magicCode.getMaps()
+      code: magicCode.get()
     }
   }
 
@@ -164,17 +147,15 @@ export class Plugin {
    * Initializes styles.
    *
    * Инициализирует стили.
-   * @param id file identification / идентификация файла
    * @param code file content / содержимое файла
    */
   protected initStyles(
-    id: string,
-    code: string
-  ): string {
+    code: PluginCode
+  ): this {
     if (this.isStyles()) {
-      return new PluginStyle(id, code, this.data).init()
+      new PluginStyle(code, this.data).make()
     }
 
-    return code
+    return this
   }
 }

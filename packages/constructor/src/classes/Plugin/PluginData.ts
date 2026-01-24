@@ -31,24 +31,6 @@ export class PluginData {
   }
 
   /**
-   * Returns the design name.
-   *
-   * Возвращает название дизайна.
-   */
-  getDesign(): string {
-    return this.design
-  }
-
-  /**
-   * Returns the package name.
-   *
-   * Возвращает название пакета.
-   */
-  getPackageName() {
-    return this.packageName
-  }
-
-  /**
    * Checks if the code contains a component.
    *
    * Проверяет, содержит ли код компонент.
@@ -68,6 +50,24 @@ export class PluginData {
     return Boolean(
       code.match(new RegExp(this.styleVarsReg, 'i'))
     )
+  }
+
+  /**
+   * Returns the design name.
+   *
+   * Возвращает название дизайна.
+   */
+  getDesign(): string {
+    return this.design
+  }
+
+  /**
+   * Returns the package name.
+   *
+   * Возвращает название пакета.
+   */
+  getPackageName() {
+    return this.packageName
   }
 
   /**
