@@ -13,6 +13,7 @@ const ad = 'sdsd'
 
 <style lang="scss">
 .app-demo {
+  color: var(--test, #ffffff);
   /* Add your styles here */
 }
 </style>

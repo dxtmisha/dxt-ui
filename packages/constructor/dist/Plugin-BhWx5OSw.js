@@ -237,7 +237,7 @@ const f = [
   "scale",
   "rotate"
 ];
-class y {
+class C {
   /**
    * Constructor
    * @param design design name / название дизайна
@@ -336,7 +336,7 @@ class y {
     }), t;
   }
 }
-class C {
+class y {
   /**
    * Constructor
    * @param packageName package name / название пакета
@@ -431,7 +431,7 @@ class $ {
    * Инициализация преобразования всех свойств стилей.
    */
   make() {
-    return console.log("this.is()", this.code.getId(), this.is()), this.is() && this.importDesign(), this;
+    return this.is() && (this.importDesign().makeColors(), console.log("code", this.code.getId(), this.code.get())), this;
   }
   /**
    * Checks whether this file needs to be transformed.
@@ -535,7 +535,7 @@ class P {
     a(this, "data");
     a(this, "first", !0);
     a(this, "mode", "production");
-    this.design = t, this.packageName = e, this.componentsReg = s, this.styleVarsReg = n, this.componentsList = o, this.name = r, this.options = c, this.data = new y(
+    this.design = t, this.packageName = e, this.componentsReg = s, this.styleVarsReg = n, this.componentsList = o, this.name = r, this.options = c, this.data = new C(
       t,
       e,
       s,
@@ -597,7 +597,7 @@ class P {
    * @param code file content / содержимое файла
    */
   initMain(t) {
-    const e = new C(this.packageName, t);
+    const e = new y(this.packageName, t);
     return e.importStyle(), e.get();
   }
   /**
@@ -623,8 +623,8 @@ export {
   P,
   u as a,
   S as b,
-  y as c,
-  C as d,
+  C as c,
+  y as d,
   $ as e,
   h as f
 };

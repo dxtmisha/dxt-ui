@@ -25,12 +25,13 @@ export class PluginStyle {
    * Инициализация преобразования всех свойств стилей.
    */
   make(): this {
-    console.log('this.is()', this.code.getId(), this.is())
     if (this.is()) {
       this.importDesign()
-      // .makeColors()
+        .makeColors()
       // .makeVars()
       // .makeProperties()
+
+      console.log('code', this.code.getId(), this.code.get())
     }
 
     return this
@@ -99,7 +100,7 @@ export class PluginStyle {
    */
   protected makeColors(): this {
     const pattern: string = `(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgba?\\([^)]+\\))${this.getPropertiesNone()}`
-
+    console.log('pattern', pattern, this.code.has(pattern))
     if (this.code.has(pattern)) {
       this.code.replace(
         new RegExp(pattern, 'ig'),
