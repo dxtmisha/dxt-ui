@@ -4,21 +4,45 @@ import { LibraryAiWikiItem } from './LibraryAiWikiItem'
 
 import { UI_DIRS_COMPONENTS } from '../../config'
 
+/**
+ * Class for creating a list of components for AI Wiki.
+ *
+ * Класс для создания списка компонентов для AI Wiki.
+ */
 export class LibraryAiWiki {
+  /**
+   * Constructor
+   * @param items object for working with the list of components / объект для работы со списком компонентов
+   */
   constructor(
     protected readonly items: LibraryItems
   ) {
   }
 
+  /**
+   * Creates files for AI Wiki.
+   *
+   * Создает файлы для AI Wiki.
+   */
   make(): void {
     this.makeList()
     this.makeComponent()
   }
 
+  /**
+   * Returns the file name for the list.
+   *
+   * Возвращает имя файла для списка.
+   */
   protected getFileList(): string {
     return 'ai-list'
   }
 
+  /**
+   * Returns a list of components for AI Wiki.
+   *
+   * Возвращает список компонентов для AI Wiki.
+   */
   protected getList(): LibraryAiWikiItem[] {
     const data: LibraryAiWikiItem[] = []
 
@@ -34,10 +58,17 @@ export class LibraryAiWiki {
     return data
   }
 
+  /**
+   * Creates a file with a list of components.
+   *
+   * Создает файл со списком компонентов.
+   */
   protected makeList(): void {
     const data = this.getList()
     const imports: string[] = []
     const list: string[] = []
+
+    console.log('Ai wiki:', data.length, 'components')
 
     data.forEach((item) => {
       imports.push(item.getImport())
@@ -57,6 +88,11 @@ export class LibraryAiWiki {
     )
   }
 
+  /**
+   * Creates a component for displaying the list.
+   *
+   * Создает компонент для отображения списка.
+   */
   protected makeComponent() {
     PropertiesFile.writeByPath(
       [...UI_DIRS_COMPONENTS, 'AiWiki.vue'],

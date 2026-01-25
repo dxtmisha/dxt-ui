@@ -16,6 +16,7 @@ import { LibraryAiWiki } from '../Library/LibraryAiWiki'
 import { LibraryMedia } from '../Library/LibraryMedia'
 import { LibraryList } from '../Library/LibraryList'
 import { LibraryPlugin } from '../Library/LibraryPlugin'
+import { LibraryTypes } from '../Library/LibraryTypes'
 
 import { UI_FILE_PACKAGE } from '../../config'
 
@@ -59,6 +60,7 @@ export class DesignUi {
     new LibraryList(this.components).make()
     new LibraryPlugin(this.components).make()
     new LibraryAiWiki(this.components).make()
+    new LibraryTypes(this.components).make()
   }
 
   /**
@@ -100,6 +102,9 @@ export class DesignUi {
       packageJson.exports['./style.css'] = './dist/style.css'
       packageJson.exports['./style/ui.scss'] = `./src/styles/${projectName}/main.scss`
       packageJson.exports['./style/ui-properties.scss'] = `./src/styles/${projectName}/style.scss`
+      packageJson.exports['./types'] = {
+        types: './dist/library/types.d.ts'
+      }
 
       PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageJson)
     }

@@ -46,7 +46,10 @@
     },
     "./style.css": "./dist/style.css",
     "./style/ui-properties.scss": "./src/styles/Ui/style.scss",
-    "./style/ui.scss": "./src/styles/Ui/main.scss"
+    "./style/ui.scss": "./src/styles/Ui/main.scss",
+    "./types": {
+      "types": "./dist/library/types.d.ts"
+    }
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",
