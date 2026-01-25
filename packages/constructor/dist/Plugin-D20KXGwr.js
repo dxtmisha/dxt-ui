@@ -1,9 +1,9 @@
-var p = Object.defineProperty;
-var l = (s, t, e) => t in s ? p(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var o = (s, t, e) => l(s, typeof t != "symbol" ? t + "" : t, e);
-import d from "magic-string";
-import { toCamelCase as m, toKebabCase as u } from "@dxtmisha/functional-basic";
-class g {
+var g = Object.defineProperty;
+var d = (i, t, e) => t in i ? g(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
+var a = (i, t, e) => d(i, typeof t != "symbol" ? t + "" : t, e);
+import l from "magic-string";
+import { toCamelCase as p, toKebabCase as m } from "@dxtmisha/functional-basic";
+class h {
   /**
    * Checks if the id is a user’s file.
    *
@@ -50,23 +50,62 @@ class g {
     return t === "development";
   }
 }
-class f {
+class u {
+  /**
+   * Constructor
+   * @param id file ID / ID файла
+   * @param code source code / исходный код
+   */
   constructor(t, e) {
-    o(this, "magicString");
-    this.id = t, this.code = e, this.magicString = new d(e);
+    a(this, "magicString");
+    a(this, "newCode");
+    this.id = t, this.code = e, this.magicString = new l(e), this.newCode = e;
   }
+  /**
+   * Checks if the file is a Vue component.
+   *
+   * Проверяет, является ли файл компонентом Vue.
+   */
   isVue() {
-    return this.id.endsWith(".vue");
+    return h.isVue(this.id);
   }
+  /**
+   * Checks if the file is a SCSS file.
+   *
+   * Проверяет, является ли файл SCSS.
+   */
+  isScss() {
+    return h.isCss(this.id);
+  }
+  /**
+   * Returns the modified code.
+   *
+   * Возвращает измененный код.
+   */
   get() {
-    return this.magicString.toString();
+    return this.newCode;
   }
+  /**
+   * Returns the file ID.
+   *
+   * Возвращает ID файла.
+   */
   getId() {
     return this.id;
   }
+  /**
+   * Returns the original code.
+   *
+   * Возвращает оригинальный код.
+   */
   getCode() {
     return this.code;
   }
+  /**
+   * Returns the source map.
+   *
+   * Возвращает карту кода.
+   */
   getMaps() {
     return this.magicString.generateMap({
       source: this.id,
@@ -81,7 +120,7 @@ class f {
    * @param pattern search pattern / паттерн поиска
    */
   has(t) {
-    return typeof t == "string" ? this.code.includes(t) : t.test(this.code);
+    return typeof t == "string" ? this.code.includes(t) : new RegExp(t, "i").test(this.code);
   }
   /**
    * Adds code after the <script setup> tag.
@@ -92,12 +131,41 @@ class f {
    * @param code code to add / код для добавления
    */
   addAfterScript(t) {
-    const e = this.code.match(/<script[^>]*\bsetup\b[^>]*>/);
-    return (e == null ? void 0 : e.index) !== void 0 ? this.magicString.appendRight(e.index + e[0].length, t) : this.magicString.prepend(`<script setup>\r
-${t}<\/script>`), this;
+    const e = /(<script[^>]*\bsetup\b[^>]*>)/;
+    return this.code.match(e) ? this.newCode = this.newCode.replace(e, `$1${t}`) : this.newCode = `<script setup>\r
+${t}<\/script>${this.newCode}`, this;
+  }
+  /**
+   * Adds code to the beginning of the file.
+   *
+   * Добавляет код в начало файла.
+   * @param code code to add / код для добавления
+   */
+  addStart(t) {
+    return this.newCode = `${t}${this.newCode}`, this;
+  }
+  /**
+   * Adds code to the beginning of the file if it is missing.
+   *
+   * Добавляет код в начало файла, если он отсутствует.
+   * @param code code to add / код для добавления
+   * @param pattern search pattern / паттерн поиска
+   */
+  addStartIfNone(t, e) {
+    return this.has(e != null ? e : t) || this.addStart(t), this;
+  }
+  /**
+   * Replaces the found fragment with new code in newCode.
+   *
+   * Заменяет найденный фрагмент на новый код в newCode.
+   * @param pattern search pattern / паттерн поиска
+   * @param replacement replacement string / строка замены
+   */
+  replace(t, e) {
+    return this.newCode = this.newCode.replace(t, e), this;
   }
 }
-const y = [
+const f = [
   /* Flex */
   "flex-position",
   "flex-dynamic",
@@ -178,25 +246,9 @@ class C {
    * @param styleVarsReg regular expression for finding variables / регулярное выражение для поиска переменных
    * @param componentsList list of components / список компонентов
    */
-  constructor(t, e, i, r, n) {
-    o(this, "styleModification");
-    this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = r, this.componentsList = n, this.styleModification = this.initStyleModification();
-  }
-  /**
-   * Returns the design name.
-   *
-   * Возвращает название дизайна.
-   */
-  getDesign() {
-    return this.design;
-  }
-  /**
-   * Returns the package name.
-   *
-   * Возвращает название пакета.
-   */
-  getPackageName() {
-    return this.packageName;
+  constructor(t, e, s, n, o) {
+    a(this, "styleModification");
+    this.design = t, this.packageName = e, this.componentsReg = s, this.styleVarsReg = n, this.componentsList = o, this.styleModification = this.initStyleModification();
   }
   /**
    * Checks if the code contains a component.
@@ -217,17 +269,33 @@ class C {
     return !!t.match(new RegExp(this.styleVarsReg, "i"));
   }
   /**
+   * Returns the design name.
+   *
+   * Возвращает название дизайна.
+   */
+  getDesign() {
+    return this.design;
+  }
+  /**
+   * Returns the package name.
+   *
+   * Возвращает название пакета.
+   */
+  getPackageName() {
+    return this.packageName;
+  }
+  /**
    * Returns a list of all components in the code.
    *
    * Возвращает список всех компонентов в коде.
    * @param code code to check / код для проверки
    */
   getComponents(t) {
-    const e = t.match(this.componentsReg), i = [];
-    return e && e.forEach((r) => {
-      const n = this.findComponent(r);
-      n && !i.find((a) => a.name === n.name) && !t.match(`${this.getPackageName()}/${n.name}`) && i.push(n);
-    }), i;
+    const e = t.match(this.componentsReg), s = [];
+    return e && e.forEach((n) => {
+      const o = this.findComponent(n);
+      o && !s.find((r) => r.name === o.name) && !t.match(`${this.getPackageName()}/${o.name}`) && s.push(o);
+    }), s;
   }
   /**
    * Returns the regular expression for finding variables.
@@ -263,19 +331,19 @@ class C {
    */
   initStyleModification() {
     const t = {};
-    return y.forEach((e) => {
-      t[u(e)] = m(e);
+    return f.forEach((e) => {
+      t[m(e)] = p(e);
     }), t;
   }
 }
-class S {
+class y {
   /**
    * Constructor
    * @param packageName package name / название пакета
    * @param code file content / содержимое файла
    */
   constructor(t, e) {
-    o(this, "code");
+    a(this, "code");
     this.packageName = t, this.code = e;
   }
   /**
@@ -305,7 +373,7 @@ class S {
     this.code.includes(e) || (this.code = `import '${e}';${this.code}`);
   }
 }
-class $ {
+class k {
   /**
    * Constructor
    * @param code file content / содержимое файла
@@ -323,9 +391,9 @@ class $ {
     if (this.code.isVue() && this.pluginData.hasComponent(this.code.getCode())) {
       const t = this.pluginData.getComponents(this.code.getCode());
       if (t) {
-        const e = t.map((i) => this.importComponent(i)).join(`\r
+        const e = t.map((s) => this.importComponent(s)).join(`\r
 `);
-        this.code.addAfterScript(e), console.log("this.code", this.code.getCode());
+        this.code.addAfterScript(e);
       }
     }
   }
@@ -348,27 +416,22 @@ class $ {
     return `import { ${t.name} } from'${this.getPath(t)}';`;
   }
 }
-class b {
+class S {
   /**
    * Constructor
-   * @param id file identification / идентификация файла
    * @param code file content / содержимое файла
    * @param data plugin data / данные плагина
    */
-  constructor(t, e, i) {
-    this.id = t, this.code = e, this.data = i;
+  constructor(t, e) {
+    this.code = t, this.data = e;
   }
   /**
    * Initialization of the transformation of all style properties.
    *
    * Инициализация преобразования всех свойств стилей.
    */
-  init() {
-    if (this.is()) {
-      let t = this.importDesign();
-      return t = this.initColors(t), t = this.initVars(t), t = this.initProperties(t), t;
-    }
-    return this.code;
+  make() {
+    return this.is() && this.importDesign().makeColors().makeVars().makeProperties(), this;
   }
   /**
    * Checks whether this file needs to be transformed.
@@ -376,15 +439,30 @@ class b {
    * Проверяет, нужно ли преобразовывать этот файл.
    */
   is() {
-    return g.isCss(this.id) && !this.code.match(this.getCodeNone());
+    return this.code.isScss() && !this.code.has(this.getIgnoreComment());
   }
-  getCodeNone() {
-    return `// ${this.data.getDesign()}-none`;
+  /**
+   * Returns the comment for ignoring the file.
+   *
+   * Возвращает комментарий для игнорирования файла.
+   */
+  getIgnoreComment() {
+    return `// ${this.data.getDesign()}-css-ignore`;
   }
+  /**
+   * Returns a string for a negative lookahead to exclude lines with a special comment.
+   *
+   * Возвращает строку для негативного просмотра вперед, чтобы исключить строки со специальным комментарием.
+   */
   getPropertiesNone() {
     return `(?![^\r
 ]*// ${this.data.getDesign()}-mode-none)`;
   }
+  /**
+   * Returns a regular expression for finding properties that need to be replaced with mixins.
+   *
+   * Возвращает регулярное выражение для поиска свойств, которые необходимо заменить на миксины.
+   */
   getModificationRef() {
     const t = this.data.getStyleModification();
     return new RegExp(
@@ -399,59 +477,50 @@ class b {
    * Подключает список токенов для работы со значениями.
    */
   importDesign() {
-    const t = `${this.data.getPackageName()}/properties`;
-    return this.code.match(t) ? this.code : `@use '${t}' as *;\r
-${this.code}`;
+    const t = `${this.data.getPackageName()}/style/ui-properties`, e = `@use '${t}.scss' as *;`;
+    return this.code.addStartIfNone(e, t), this;
   }
   /**
    * Removes default values from colors.
    *
    * Удаляет значения по умолчанию у цветов.
-   * @param code file content / содержимое файла
    */
-  initColors(t) {
-    if (t.match(
-      new RegExp(`#[0-9abcdf]{4,6}|rgb|rgba${this.getPropertiesNone()}`, "i")
-    )) {
-      const e = `(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgba?\\([^)]+\\))${this.getPropertiesNone()}`, i = new RegExp(e, "ig");
-      return t.replace(i, () => "");
-    }
-    return t;
+  makeColors() {
+    const t = `(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgba?\\([^)]+\\))${this.getPropertiesNone()}`;
+    return this.code.has(t) && this.code.replace(
+      new RegExp(t, "ig"),
+      ""
+    ), this;
   }
   /**
    * Transforms property values under the correct name.
    *
    * Преобразовывает значения свойств под правильным именем.
-   * @param code file content / содержимое файла
    */
-  initVars(t) {
-    if (this.data.hasVars(t)) {
-      const e = this.data.getDesign();
-      return t.replace(
-        this.data.getStyleVarsReg(),
-        `${e}-$1`
-      );
-    }
-    return t;
+  makeVars() {
+    const t = this.data.getStyleVarsReg();
+    return this.code.has(t) && this.code.replace(
+      t,
+      `${this.data.getDesign()}-$1`
+    ), this;
   }
   /**
    * Transformation of all properties into non-standard ones used through mixins.
    *
    * Преобразование всех свойств в нестандартные, используемые через миксины.
-   * @param code file content / содержимое файла
    */
-  initProperties(t) {
-    const e = this.data.getStyleModification(), i = this.getModificationRef();
-    return t.match(new RegExp(i, "i")) ? t.replace(
-      i,
-      (r, n, a, c) => {
-        const h = a.trim();
-        return `@include ${e == null ? void 0 : e[n.trim()]}(${h.match(/[()]/) ? `#{${h}}` : h})${c}`;
+  makeProperties() {
+    const t = this.data.getStyleModification(), e = this.getModificationRef();
+    return this.code.has(e) && this.code.replace(
+      e,
+      (s, n, o, r) => {
+        const c = o.trim();
+        return `@include ${t == null ? void 0 : t[n.trim()]}(${c.match(/[()]/) ? `#{${c}}` : c})${r}`;
       }
-    ) : t;
+    ), this;
   }
 }
-class M {
+class P {
   /**
    * Constructor
    * @param design design name / название дизайна
@@ -462,16 +531,16 @@ class M {
    * @param name plugin name / название плагина
    * @param options plugin options / настройки плагина
    */
-  constructor(t, e, i, r, n, a = "vite-plugin-design-ui", c = {}) {
-    o(this, "data");
-    o(this, "first", !0);
-    o(this, "mode", "production");
-    this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = r, this.componentsList = n, this.name = a, this.options = c, this.data = new C(
+  constructor(t, e, s, n, o, r = "vite-plugin-design-ui", c = {}) {
+    a(this, "data");
+    a(this, "first", !0);
+    a(this, "mode", "production");
+    this.design = t, this.packageName = e, this.componentsReg = s, this.styleVarsReg = n, this.componentsList = o, this.name = r, this.options = c, this.data = new C(
       t,
       e,
-      i,
-      r,
-      n
+      s,
+      n,
+      o
     );
   }
   /**
@@ -484,8 +553,8 @@ class M {
     return {
       name: this.name,
       enforce: "pre",
-      apply: (e, i) => (this.mode = i.mode, !0),
-      transform: (e, i) => this.transform(e, i),
+      apply: (e, s) => (this.mode = s.mode, !0),
+      transform: (e, s) => this.transform(e, s),
       ...(t = this.options) == null ? void 0 : t.viteOptions
     };
   }
@@ -515,11 +584,10 @@ class M {
    * @param id file identification / идентификация файла
    */
   transform(t, e) {
-    this.first && g.isJs(e) && (t = this.initMain(t), this.first = !1);
-    const i = new f(e, t);
-    return this.makeComponents(i), {
-      code: i.get(),
-      map: i.getMaps()
+    this.first && h.isJs(e) && (t = this.initMain(t), this.first = !1);
+    const s = new u(e, t);
+    return this.makeComponents(s), this.initStyles(s), {
+      code: s.get()
     };
   }
   /**
@@ -529,7 +597,7 @@ class M {
    * @param code file content / содержимое файла
    */
   initMain(t) {
-    const e = new S(this.packageName, t);
+    const e = new y(this.packageName, t);
     return e.importStyle(), e.get();
   }
   /**
@@ -539,24 +607,24 @@ class M {
    * @param code file content / содержимое файла
    */
   makeComponents(t) {
-    return this.isComponents() && new $(t, this.data).make(), this;
+    return this.isComponents() && new k(t, this.data).make(), this;
   }
   /**
    * Initializes styles.
    *
    * Инициализирует стили.
-   * @param id file identification / идентификация файла
    * @param code file content / содержимое файла
    */
-  initStyles(t, e) {
-    return this.isStyles() ? new b(t, e, this.data).init() : e;
+  initStyles(t) {
+    return this.isStyles() && new S(t, this.data).make(), this;
   }
 }
 export {
-  M as P,
-  $ as a,
-  C as b,
-  S as c,
-  b as d,
-  g as e
+  P,
+  u as a,
+  k as b,
+  C as c,
+  y as d,
+  S as e,
+  h as f
 };

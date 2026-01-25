@@ -74,8 +74,7 @@ export declare class Plugin {
      * Initializes styles.
      *
      * Инициализирует стили.
-     * @param id file identification / идентификация файла
      * @param code file content / содержимое файла
      */
-    protected initStyles(id: string, code: string): string;
+    protected initStyles(code: PluginCode): this;
 }

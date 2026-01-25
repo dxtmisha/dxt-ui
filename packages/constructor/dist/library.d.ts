@@ -23,6 +23,7 @@ export * from './classes/LabelNumberInclude';
 export * from './classes/ModelInclude';
 export * from './classes/ModelValueInclude';
 export * from './classes/Plugin/Plugin';
+export * from './classes/Plugin/PluginCode';
 export * from './classes/Plugin/PluginComponents';
 export * from './classes/Plugin/PluginData';
 export * from './classes/Plugin/PluginImport';

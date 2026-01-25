@@ -14,7 +14,7 @@ defineOptions({
 <!-- :component.once <template> -->
 <!-- :component.once   <DxtTestWiki -->
 <!-- :component.once     design="Design" -->
-<!-- :component.once     :wiki="ImageWikiStorybook" -->
+<!-- :component.once     :wiki="ComponentWikiStorybook" -->
 <!-- :component.once     :component="DesignComponent" -->
 <!-- :component.once   > -->
     <!-- :component-render [!] System label / Системная метка -->

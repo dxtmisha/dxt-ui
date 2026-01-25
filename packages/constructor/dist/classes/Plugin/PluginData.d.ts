@@ -21,18 +21,6 @@ export declare class PluginData {
      */
     constructor(design: string, packageName: string, componentsReg: RegExp, styleVarsReg: RegExp, componentsList: PluginComponentImports);
     /**
-     * Returns the design name.
-     *
-     * Возвращает название дизайна.
-     */
-    getDesign(): string;
-    /**
-     * Returns the package name.
-     *
-     * Возвращает название пакета.
-     */
-    getPackageName(): string;
-    /**
      * Checks if the code contains a component.
      *
      * Проверяет, содержит ли код компонент.
@@ -46,6 +34,18 @@ export declare class PluginData {
      * @param code code to check / код для проверки
      */
     hasVars(code: string): boolean;
+    /**
+     * Returns the design name.
+     *
+     * Возвращает название дизайна.
+     */
+    getDesign(): string;
+    /**
+     * Returns the package name.
+     *
+     * Возвращает название пакета.
+     */
+    getPackageName(): string;
     /**
      * Returns a list of all components in the code.
      *

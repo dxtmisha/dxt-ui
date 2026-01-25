@@ -50,7 +50,7 @@ export class LibraryAiWiki {
         ...imports,
         '',
         'export const aiList: any[] = [',
-        ...list,
+        list.join(',\r\n'),
         ']'
       ],
       'wiki.ts'
