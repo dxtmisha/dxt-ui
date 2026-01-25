@@ -1,1 +1,1 @@
-export * from '../components/Ui/Actions/index';
+export { default as D1Accordion } from '../components/Ui/Accordion/D1Accordion.vue';

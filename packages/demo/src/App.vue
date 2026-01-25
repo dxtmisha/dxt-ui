@@ -1,13 +1,16 @@
 <script setup lang="ts">
+import { D1Image } from '@dxtmisha/d1/D1Image'
+
 // is Comid
 const ad = 'sdsd'
+
 </script>
 
 <template>
   <div class="app-demo">
     {{ ad }}
     Hi!
-    <D1Image value="home"/>
+    <D1Image  value="home"/>
   </div>
 </template>
 

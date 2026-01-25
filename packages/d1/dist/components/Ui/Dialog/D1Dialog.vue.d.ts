@@ -22,20 +22,20 @@ declare const __VLS_component: DefineComponent<DialogProps, {
     windowElement: Ref< ConstrBind<WindowExpose> | undefined>;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
     window: (options: WindowEmitOptions) => any;
-    actions: (event: MouseEvent, value: EventClickValue) => any;
-    bars: (event: MouseEvent, value: EventClickValue) => any;
     close: () => any;
+    bars: (event: MouseEvent, value: EventClickValue) => any;
     barsLite: (value: EventClickValue) => any;
     barsBack: (value: EventClickValue) => any;
+    actions: (event: MouseEvent, value: EventClickValue) => any;
     actionsLite: (value: EventClickValue) => any;
     ok: () => any;
 }, string, PublicProps, Readonly<DialogProps> & Readonly<{
     onWindow?: ((options: WindowEmitOptions) => any) | undefined;
-    onActions?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
-    onBars?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onClose?: (() => any) | undefined;
+    onBars?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onBarsLite?: ((value: EventClickValue) => any) | undefined;
     onBarsBack?: ((value: EventClickValue) => any) | undefined;
+    onActions?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onActionsLite?: ((value: EventClickValue) => any) | undefined;
     onOk?: (() => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;

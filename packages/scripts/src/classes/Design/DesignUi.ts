@@ -102,7 +102,7 @@ export class DesignUi {
       packageJson.exports['./style.css'] = './dist/style.css'
       packageJson.exports['./style/ui.scss'] = `./src/styles/${projectName}/main.scss`
       packageJson.exports['./style/ui-properties.scss'] = `./src/styles/${projectName}/style.scss`
-      packageJson.exports['./types'] = {
+      packageJson.exports['./types.d.ts'] = {
         types: './dist/library/types.d.ts'
       }
 

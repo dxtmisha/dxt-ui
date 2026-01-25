@@ -1,6 +1,8 @@
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { LibraryItems } from './LibraryItems'
 
+import type { LibraryData } from '../../types/libraryTypes'
+
 /**
  * Class for creating a file with type exports.
  *
@@ -24,9 +26,48 @@ export class LibraryTypes {
   make(): void {
     this.items.write(
       'types',
-      this.initList(),
-      'd.ts'
+      [
+        'import \'@vue/runtime-core\'',
+        '',
+        ...this.initImports(),
+        '',
+        // ...this.initExports(),
+        // '',
+        'declare module \'@vue/runtime-core\' {',
+        '  export interface GlobalComponents {',
+        ...this.initGlobalComponentsVue(),
+        '  }',
+        '}'
+      ]
     )
+  }
+
+  /**
+   * Returns the path to the component.
+   *
+   * Возвращает путь к компоненту.
+   * @param component component data / данные компонента
+   */
+  protected getPathComponent(component: LibraryData): string {
+    return `../components/${PropertiesConfig.getProjectName()}/${component.dir}`
+  }
+
+  /**
+   * Returns a list of imports for the file.
+   *
+   * Возвращает список импортов для файла.
+   */
+  protected initImports(): string[] {
+    const list: string[] = []
+
+    this.items.getComponentList()
+      .forEach((component) => {
+        list.push(
+          `import { ${component.codeFull} } from '${this.getPathComponent(component)}'`
+        )
+      })
+
+    return list
   }
 
   /**
@@ -34,14 +75,31 @@ export class LibraryTypes {
    *
    * Возвращает список экспортов для файла.
    */
-  protected initList(): string[] {
+  protected initExports(): string[] {
     const list: string[] = []
-    const project = PropertiesConfig.getProjectName()
 
     this.items.getComponentList()
       .forEach((component) => {
         list.push(
-          `export type * from '../components/${project}/${component.dir}/index'`
+          `export * from '${this.getPathComponent(component)}/index'`
+        )
+      })
+
+    return list
+  }
+
+  /**
+   * Returns a list of global components for Vue.
+   *
+   * Возвращает список глобальных компонентов для Vue.
+   */
+  protected initGlobalComponentsVue(): string[] {
+    const list: string[] = []
+
+    this.items.getComponentList()
+      .forEach((component) => {
+        list.push(
+          `    ${component.codeFull}: typeof ${component.codeFull}`
         )
       })
 

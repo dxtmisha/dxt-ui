@@ -47,7 +47,7 @@
     "./style.css": "./dist/style.css",
     "./style/ui-properties.scss": "./src/styles/Ui/style.scss",
     "./style/ui.scss": "./src/styles/Ui/main.scss",
-    "./types": {
+    "./types.d.ts": {
       "types": "./dist/library/types.d.ts"
     }
   },

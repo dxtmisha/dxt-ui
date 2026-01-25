@@ -1,28 +1,29 @@
-import { defineComponent as u, mergeDefaults as y, computed as o, createBlock as m, openBlock as g, unref as B } from "vue";
+import { defineComponent as c, mergeDefaults as m, computed as t, createBlock as y, openBlock as u, unref as g } from "vue";
 import { inArray as n } from "@dxtmisha/functional";
-import { defaultsActions as k, ActionsDesign as $ } from "@dxtmisha/constructor/Actions";
-import { defaultsButton as h, ButtonDesign as z } from "@dxtmisha/constructor/Button";
-import { defaultsIcon as T, IconDesign as D } from "@dxtmisha/constructor/Icon";
-import { D as A } from "./index-BWyEZpKM.js";
-import { defaultsProgress as S, ProgressDesign as w } from "@dxtmisha/constructor/Progress";
-import { defaultsRipple as L, RippleDesign as I } from "@dxtmisha/constructor/Ripple";
-const v = {
+import { defaultsAccordion as b, AccordionDesign as D } from "@dxtmisha/constructor/Accordion";
+import { defaultsCell as k, CellDesign as $ } from "@dxtmisha/constructor/Cell";
+import { defaultsIcon as h, IconDesign as w } from "@dxtmisha/constructor/Icon";
+import { D as L } from "./index-BWyEZpKM.js";
+import { defaultsProgress as P, ProgressDesign as z } from "@dxtmisha/constructor/Progress";
+import { defaultsRipple as I, RippleDesign as A } from "@dxtmisha/constructor/Ripple";
+import { defaultsMotionTransform as H, MotionTransformDesign as S } from "@dxtmisha/constructor/MotionTransform";
+const T = {
   // :values [!] System label / Системная метка
   animationType: ["type1", "type2"],
   size: ["auto", "x", "xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "6xl", "7xl", "8xl", "9xl"],
   rounded: ["auto", "sm", "md", "lg", "xl", "full"]
   // :values [!] System label / Системная метка
-}, P = {
-  ...T,
+}, M = {
+  ...h,
   // :default [!] System label / Системная метка
   animationType: "type1",
   square: !0,
   size: "auto",
   rounded: "auto"
-}, M = /* @__PURE__ */ u({
+}, O = /* @__PURE__ */ c({
   name: "D1Icon",
   __name: "D1Icon",
-  props: /* @__PURE__ */ y({
+  props: /* @__PURE__ */ m({
     isSkeleton: { type: Boolean },
     ariaLabel: {},
     active: { type: Boolean },
@@ -47,10 +48,10 @@ const v = {
     size: {},
     inverse: { type: Boolean },
     rounded: {}
-  }, P),
+  }, M),
   emits: ["load"],
-  setup(i, { expose: s, emit: a }) {
-    const l = a, e = i, r = o(() => ({
+  setup(i, { expose: a, emit: s }) {
+    const d = s, e = i, r = t(() => ({
       main: {
         // :classes-values [!] System label / Системная метка
         "d1-icon": !0,
@@ -64,51 +65,51 @@ const v = {
         "d1-icon--start": e.start,
         "d1-icon--end": e.end,
         "d1-icon--high": e.high,
-        [`d1-icon--animationType--${e.animationType}`]: n(v.animationType, e.animationType),
+        [`d1-icon--animationType--${e.animationType}`]: n(T.animationType, e.animationType),
         "d1-icon--animationShow": e.animationShow,
         "d1-icon--square": e.square && !e.circle && !e.rect,
         "d1-icon--circle": e.circle,
         "d1-icon--rect": e.rect,
-        [`d1-icon--size--${e.size}`]: n(v.size, e.size),
+        [`d1-icon--size--${e.size}`]: n(T.size, e.size),
         "d1-icon--inverse": e.inverse,
-        [`d1-icon--rounded--${e.rounded}`]: n(v.rounded, e.rounded)
+        [`d1-icon--rounded--${e.rounded}`]: n(T.rounded, e.rounded)
         // :classes-values [!] System label / Системная метка
       }
-    })), d = o(() => ({
+    })), l = t(() => ({
       // :styles-values [!] System label / Системная метка
       // :styles-values [!] System label / Системная метка
-    })), t = new D(
+    })), o = new w(
       "d1.icon",
       e,
       {
-        emits: l,
+        emits: d,
         components: {
-          image: A
+          image: L
         },
         classes: r,
-        styles: d
+        styles: l
       }
-    ), c = t.render();
-    return s(t.expose()), (x, b) => (g(), m(B(c)));
+    ), p = o.render();
+    return a(o.expose()), (B, f) => (u(), y(g(p)));
   }
-}), f = {
+}), v = {
   // :values [!] System label / Системная метка
   indeterminate: ["type1", "type2", "type3"],
   position: ["top", "bottom", "static"],
   size: ["sm", "md", "lg"],
   palette: ["red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose", "slate", "gray", "zinc", "neutral", "stone", "black", "white"]
   // :values [!] System label / Системная метка
-}, X = {
-  ...S,
+}, C = {
+  ...P,
   // :default [!] System label / Системная метка
   linear: !0,
   indeterminate: "type1",
   position: "top",
   size: "md"
-}, q = /* @__PURE__ */ u({
+}, V = /* @__PURE__ */ c({
   name: "D1Progress",
   __name: "D1Progress",
-  props: /* @__PURE__ */ y({
+  props: /* @__PURE__ */ m({
     ariaLabel: {},
     ariaLive: {},
     visible: { type: Boolean },
@@ -125,85 +126,85 @@ const v = {
     inverse: { type: Boolean },
     size: {},
     palette: {}
-  }, X),
-  setup(i, { expose: s, emit: a }) {
-    const l = a, e = i, r = o(() => ({
+  }, C),
+  setup(i, { expose: a, emit: s }) {
+    const d = s, e = i, r = t(() => ({
       main: {
         // :classes-values [!] System label / Системная метка
         "d1-progress": !0,
         "d1-progress--point": e.point,
         "d1-progress--linear": e.linear && !e.circular,
         "d1-progress--circular": e.circular,
-        [`d1-progress--indeterminate--${e.indeterminate}`]: n(f.indeterminate, e.indeterminate),
-        [`d1-progress--position--${e.position}`]: n(f.position, e.position),
+        [`d1-progress--indeterminate--${e.indeterminate}`]: n(v.indeterminate, e.indeterminate),
+        [`d1-progress--position--${e.position}`]: n(v.position, e.position),
         "d1-progress--dense": e.dense,
         "d1-progress--inverse": e.inverse,
-        [`d1-progress--size--${e.size}`]: n(f.size, e.size),
-        [`d1-palette d1-palette--${e.palette}`]: n(f.palette, e.palette)
+        [`d1-progress--size--${e.size}`]: n(v.size, e.size),
+        [`d1-palette d1-palette--${e.palette}`]: n(v.palette, e.palette)
         // :classes-values [!] System label / Системная метка
       }
-    })), d = o(() => ({
+    })), l = t(() => ({
       // :styles-values [!] System label / Системная метка
       // :styles-values [!] System label / Системная метка
-    })), t = new w(
+    })), o = new z(
       "d1.progress",
       e,
       {
-        emits: l,
+        emits: d,
         classes: r,
-        styles: d
+        styles: l
       }
-    ), c = t.render();
-    return s(t.expose()), (x, b) => (g(), m(B(c)));
+    ), p = o.render();
+    return a(o.expose()), (B, f) => (u(), y(g(p)));
   }
-}), R = {
-  ...L
-}, V = /* @__PURE__ */ u({
+}), q = {
+  ...I
+}, F = /* @__PURE__ */ c({
   name: "D1Ripple",
   __name: "D1Ripple",
-  props: /* @__PURE__ */ y({
+  props: /* @__PURE__ */ m({
     disabled: { type: Boolean }
-  }, R),
-  setup(i, { expose: s, emit: a }) {
-    const l = a, e = i, r = o(() => ({
+  }, q),
+  setup(i, { expose: a, emit: s }) {
+    const d = s, e = i, r = t(() => ({
       main: {
         // :classes-values [!] System label / Системная метка
         "d1-ripple": !0
         // :classes-values [!] System label / Системная метка
       }
-    })), d = o(() => ({
+    })), l = t(() => ({
       // :styles-values [!] System label / Системная метка
       // :styles-values [!] System label / Системная метка
-    })), t = new I(
+    })), o = new A(
       "d1.ripple",
       e,
       {
-        emits: l,
+        emits: d,
         classes: r,
-        styles: d
+        styles: l
       }
-    ), c = t.render();
-    return s(t.expose()), (x, b) => (g(), m(B(c)));
+    ), p = o.render();
+    return a(o.expose()), (B, f) => (u(), y(g(p)));
   }
-}), p = {
+}), _ = {
   // :values [!] System label / Системная метка
-  adaptive: ["iconAlways", "block", "auto", "iconSm", "iconMd", "iconLg", "iconXl", "icon2xl", "fullSm", "fullMd", "fullLg", "fullXl", "full2xl"],
-  container: ["iconSm", "iconMd", "iconLg", "iconXl", "icon2xl", "fullSm", "fullMd", "fullLg", "fullXl", "full2xl"],
-  textAlign: ["left", "center", "right"],
-  size: ["xs", "sm", "md", "lg", "xl"],
-  palette: ["red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose", "slate", "gray", "zinc", "neutral", "stone", "black", "white"]
+  dividerLabel: ["always", "none", "adaptiveSm", "adaptiveMd", "adaptiveLg", "adaptiveXl", "adaptive2xl", "containerSm", "containerMd", "containerLg", "containerXl", "container2xl"],
+  padding: ["sm", "md", "lg", "ySm", "yMd", "yLg", "none"]
   // :values [!] System label / Системная метка
-}, F = {
-  ...h,
+}, R = {
+  ...k,
   // :default [!] System label / Системная метка
-  primary: !0,
-  size: "md"
-}, O = /* @__PURE__ */ u({
-  name: "D1Button",
-  __name: "D1Button",
-  props: /* @__PURE__ */ y({
+  divider: !0,
+  padding: "none",
+  paddingByIndent: !0
+}, U = /* @__PURE__ */ c({
+  name: "D1Cell",
+  __name: "D1Cell",
+  props: /* @__PURE__ */ m({
     label: {},
     labelId: {},
+    description: {},
+    caption: {},
     readonly: { type: Boolean },
     disabled: { type: Boolean },
     icon: {},
@@ -222,124 +223,174 @@ const v = {
     to: {},
     value: {},
     detail: {},
-    ariaLabel: {},
+    role: {},
     tag: {},
-    type: {},
+    divider: { type: Boolean },
+    dynamic: { type: Boolean },
     focus: { type: Boolean },
-    adaptive: {},
-    container: {},
-    inverse: { type: Boolean },
-    grid: { type: Boolean },
-    textAlign: {},
-    primary: { type: Boolean },
-    secondary: { type: Boolean },
-    outline: { type: Boolean },
-    text: { type: Boolean },
-    size: {},
-    roundedFull: { type: Boolean },
-    palette: {}
-  }, F),
-  emits: ["click", "clickLite"],
-  setup(i, { expose: s, emit: a }) {
-    const l = a, e = i, r = o(() => ({
-      main: {
-        // :classes-values [!] System label / Системная метка
-        "d1-button": !0,
-        "d1-button--focus": e.focus,
-        "d1-button--disabled": e.disabled,
-        "d1-button--selected": e.selected,
-        "d1-button--readonly": e.readonly,
-        [`d1-button--adaptive--${e.adaptive}`]: n(p.adaptive, e.adaptive),
-        [`d1-button--container--${e.container}`]: n(p.container, e.container),
-        "d1-button--inverse": e.inverse,
-        "d1-button--grid": e.grid,
-        [`d1-button--textAlign--${e.textAlign}`]: n(p.textAlign, e.textAlign),
-        "d1-button--primary": e.primary && !e.secondary && !e.outline && !e.text,
-        "d1-button--secondary": e.secondary,
-        "d1-button--outline": e.outline,
-        "d1-button--text": e.text,
-        [`d1-button--size--${e.size}`]: n(p.size, e.size),
-        "d1-button--roundedFull": e.roundedFull,
-        [`d1-palette d1-palette--${e.palette}`]: n(p.palette, e.palette)
-        // :classes-values [!] System label / Системная метка
-      }
-    })), d = o(() => ({
-      // :styles-values [!] System label / Системная метка
-      // :styles-values [!] System label / Системная метка
-    })), t = new z(
-      "d1.button",
-      e,
-      {
-        emits: l,
-        classes: r,
-        styles: d,
-        components: {
-          icon: M,
-          progress: q,
-          ripple: V
-        }
-      }
-    ), c = t.render();
-    return s(t.expose()), (x, b) => (g(), m(B(c)));
-  }
-}), H = O, _ = {
-  // :values [!] System label / Системная метка
-  align: ["none", "center", "left", "right", "block", "auto"],
-  flexible: ["adaptiveSm", "adaptiveMd", "adaptiveLg", "adaptiveXl", "adaptive2xl", "containerSm", "containerMd", "containerLg", "containerXl", "container2xl"],
-  padding: ["sm", "md", "lg", "ySm", "yMd", "yLg", "none"]
-  // :values [!] System label / Системная метка
-}, j = {
-  ...k,
-  buttonSecondaryAttrs: {
-    text: !0,
-    inverse: !0
-  },
-  // :default [!] System label / Системная метка
-  align: "right",
-  paddingByIndent: !0
-}, C = /* @__PURE__ */ u({
-  name: "D1Actions",
-  __name: "D1Actions",
-  props: /* @__PURE__ */ y({
-    list: {},
-    listSecondary: {},
-    buttonAttrs: {},
-    buttonSecondaryAttrs: {},
-    align: {},
-    flexible: {},
+    dynamicHover: { type: Boolean },
+    dividerLabel: {},
+    iconTop: { type: Boolean },
     padding: {},
     paddingByIndent: { type: Boolean }
-  }, j),
+  }, R),
   emits: ["click", "clickLite"],
-  setup(i, { expose: s, emit: a }) {
-    const l = a, e = i, r = o(() => ({
+  setup(i, { expose: a, emit: s }) {
+    const d = s, e = i, r = t(() => ({
       main: {
         // :classes-values [!] System label / Системная метка
-        "d1-actions": !0,
-        [`d1-actions--align--${e.align}`]: n(_.align, e.align),
-        [`d1-actions--flexible--${e.flexible}`]: n(_.flexible, e.flexible),
-        [`d1-actions--padding--${e.padding}`]: n(_.padding, e.padding),
-        "d1-actions--paddingByIndent": e.paddingByIndent
+        "d1-cell": !0,
+        "d1-cell--focus": e.focus,
+        "d1-cell--selected": e.selected,
+        "d1-cell--readonly": e.readonly,
+        "d1-cell--disabled": e.disabled,
+        "d1-cell--dynamic": e.dynamic,
+        "d1-cell--dynamicHover": e.dynamicHover,
+        "d1-cell--divider": e.divider,
+        [`d1-cell--dividerLabel--${e.dividerLabel}`]: n(_.dividerLabel, e.dividerLabel),
+        "d1-cell--iconTop": e.iconTop,
+        [`d1-cell--padding--${e.padding}`]: n(_.padding, e.padding),
+        "d1-cell--paddingByIndent": e.paddingByIndent
         // :classes-values [!] System label / Системная метка
       }
-    })), d = o(() => ({
+    })), l = t(() => ({
       // :styles-values [!] System label / Системная метка
       // :styles-values [!] System label / Системная метка
-    })), t = new $(
-      "d1.actions",
+    })), o = new $(
+      "d1.cell",
       e,
       {
-        emits: l,
+        emits: d,
         classes: r,
-        styles: d,
+        styles: l,
         components: {
-          button: H
+          icon: O,
+          progress: V,
+          ripple: F
         }
       }
-    ), c = t.render();
-    return s(t.expose()), (x, b) => (g(), m(B(c)));
+    ), p = o.render();
+    return a(o.expose()), (B, f) => (u(), y(g(p)));
   }
-}), Y = C;
+}), X = U, x = {
+  // :values [!] System label / Системная метка
+  animationHeadPosition: ["top", "toBottom"],
+  adaptive: ["planeAlways", "planeSm", "planeMd", "planeLg", "planeXl", "plane2xl"]
+  // :values [!] System label / Системная метка
+}, j = {
+  ...H,
+  // :default [!] System label / Системная метка
+  animationHeadPosition: "top",
+  adaptive: "planeMd"
+}, E = /* @__PURE__ */ c({
+  name: "D1MotionTransform",
+  __name: "D1MotionTransform",
+  props: /* @__PURE__ */ m({
+    role: {},
+    ariaLabelledby: {},
+    ariaDescribedby: {},
+    open: { type: Boolean },
+    inDom: { type: Boolean },
+    ignore: {},
+    ignoreSelector: {},
+    clickOpen: { type: Boolean },
+    autoClose: { type: Boolean },
+    animationShow: { type: Boolean },
+    tagBody: {},
+    modelOpen: { type: Boolean },
+    "onUpdate:open": { type: Function },
+    "onUpdate:modelOpen": { type: Function },
+    section: { type: Boolean },
+    animationHeadPosition: {},
+    adaptive: {}
+  }, j),
+  emits: ["transform", "transformLite", "update:open", "update:modelOpen"],
+  setup(i, { expose: a, emit: s }) {
+    const d = s, e = i, r = t(() => ({
+      main: {
+        // :classes-values [!] System label / Системная метка
+        "d1-motionTransform": !0,
+        "d1-motionTransform--section": e.section,
+        [`d1-motionTransform--animationHeadPosition--${e.animationHeadPosition}`]: n(x.animationHeadPosition, e.animationHeadPosition),
+        [`d1-motionTransform--adaptive--${e.adaptive}`]: n(x.adaptive, e.adaptive)
+        // :classes-values [!] System label / Системная метка
+      }
+    })), l = t(() => ({
+      // :styles-values [!] System label / Системная метка
+      // :styles-values [!] System label / Системная метка
+    })), o = new S(
+      "d1.motionTransform",
+      e,
+      {
+        emits: d,
+        classes: r,
+        styles: l
+      }
+    ), p = o.render();
+    return a(o.expose()), (B, f) => (u(), y(g(p)));
+  }
+}), G = E, J = {
+  // :values [!] System label / Системная метка
+  padding: ["sm", "md", "lg", "ySm", "yMd", "yLg", "none"]
+  // :values [!] System label / Системная метка
+}, K = {
+  ...b,
+  iconArrowDown: "keyboard_arrow_down",
+  // :default [!] System label / Системная метка
+  divider: !0,
+  padding: "none",
+  paddingByIndent: !0
+}, ie = /* @__PURE__ */ c({
+  name: "D1Accordion",
+  __name: "D1Accordion",
+  props: /* @__PURE__ */ m({
+    label: {},
+    labelId: {},
+    description: {},
+    icon: {},
+    open: { type: Boolean },
+    clickOpen: { type: Boolean },
+    autoClose: { type: Boolean },
+    motionTransformAttrs: {},
+    cellAttrs: {},
+    iconArrowDown: {},
+    modelOpen: { type: Boolean },
+    "onUpdate:open": { type: Function },
+    "onUpdate:modelOpen": { type: Function },
+    divider: { type: Boolean },
+    padding: {},
+    paddingByIndent: { type: Boolean }
+  }, K),
+  emits: ["click", "clickLite", "transform", "transformLite", "update:open", "update:modelOpen"],
+  setup(i, { expose: a, emit: s }) {
+    const d = s, e = i, r = t(() => ({
+      main: {
+        // :classes-values [!] System label / Системная метка
+        "d1-accordion": !0,
+        "d1-accordion--divider": e.divider,
+        [`d1-accordion--padding--${e.padding}`]: n(J.padding, e.padding),
+        "d1-accordion--paddingByIndent": e.paddingByIndent
+        // :classes-values [!] System label / Системная метка
+      }
+    })), l = t(() => ({
+      // :styles-values [!] System label / Системная метка
+      // :styles-values [!] System label / Системная метка
+    })), o = new D(
+      "d1.accordion",
+      e,
+      {
+        emits: d,
+        classes: r,
+        styles: l,
+        components: {
+          cell: X,
+          motionTransform: G
+        }
+      }
+    ), p = o.render();
+    return a(o.expose()), (B, f) => (u(), y(g(p)));
+  }
+});
 export {
-  Y as D1Actions
+  ie as D1Accordion
 };
