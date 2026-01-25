@@ -86,13 +86,17 @@ export class PluginCode {
    *
    * Проверяет наличие кода.
    * @param pattern search pattern / паттерн поиска
+   * @param flags search flags / флаги поиска
    */
-  has(pattern: string | RegExp): boolean {
+  has(
+    pattern: string | RegExp,
+    flags: string = 'i'
+  ): boolean {
     if (typeof pattern === 'string') {
       return this.code.includes(pattern)
     }
 
-    return (new RegExp(pattern, 'i')).test(this.code)
+    return (new RegExp(pattern, flags)).test(this.code)
   }
 
   /**

@@ -28,10 +28,8 @@ export class PluginStyle {
     if (this.is()) {
       this.importDesign()
         .makeColors()
-      // .makeVars()
-      // .makeProperties()
-
-      console.log('code', this.code.getId(), this.code.get())
+        .makeVars()
+        .makeProperties()
     }
 
     return this
@@ -99,13 +97,10 @@ export class PluginStyle {
    * Удаляет значения по умолчанию у цветов.
    */
   protected makeColors(): this {
-    const pattern: string = `(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgba?\\([^)]+\\))${this.getPropertiesNone()}`
-    console.log('pattern', pattern, this.code.has(pattern))
-    if (this.code.has(pattern)) {
-      this.code.replace(
-        new RegExp(pattern, 'ig'),
-        ''
-      )
+    const reg: RegExp = new RegExp(`(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgba?\\([^)]+\\))${this.getPropertiesNone()}`, 'ig')
+
+    if (this.code.has(reg)) {
+      this.code.replace(reg, '')
     }
 
     return this
@@ -138,7 +133,7 @@ export class PluginStyle {
     const properties: Record<string, string> = this.data.getStyleModification()
     const reg = this.getModificationRef()
 
-    if (this.code.has(reg)) {
+    if (this.code.has(reg, 'im')) {
       this.code.replace(
         reg,
         (
@@ -148,7 +143,6 @@ export class PluginStyle {
           end: string
         ) => {
           const data = value.trim()
-
           return `@include ${properties?.[name.trim()]}(${data.match(/[()]/) ? `#{${data}}` : data})${end}`
         }
       )

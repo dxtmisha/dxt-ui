@@ -56,8 +56,9 @@ export declare class PluginCode {
      *
      * Проверяет наличие кода.
      * @param pattern search pattern / паттерн поиска
+     * @param flags search flags / флаги поиска
      */
-    has(pattern: string | RegExp): boolean;
+    has(pattern: string | RegExp, flags?: string): boolean;
     /**
      * Adds code after the <script setup> tag.
      * If the tag is missing, adds it to the beginning of the file.

@@ -285,8 +285,6 @@
   }
 }
 
-/* Palette */
-
 /// Sets base palette RGB value
 /// Устанавливает базовое RGB‑значение палитры
 /// @param {Color|String} $color input color or CSS var
@@ -349,8 +347,6 @@
   @include borderColor(#{var(--sys-palette-border)});
 }
 
-/* Color */
-
 /// Sets text color via system variables
 /// Устанавливает цвет текста через системные переменные
 /// @param {Color|String} $color color or CSS var
@@ -401,8 +397,6 @@
   }
 }
 
-/* Stroke */
-
 /// Sets stroke color via system variables
 /// Устанавливает цвет обводки (stroke) через системные переменные
 /// @param {Color|String} $color color or CSS var
@@ -427,8 +421,6 @@
 @mixin strokeInit($important: false) {
   @include colorInit($important, 'stroke');
 }
-
-/* Background */
 
 /// Sets background color via system variables
 /// Устанавливает цвет фона через системные переменные
@@ -492,8 +484,6 @@
   }
 }
 
-/* Fill */
-
 /// Sets fill color via background helpers
 /// Устанавливает цвет заливки (fill) через фоновые миксины
 /// @param {Color|String} $color color or CSS var
@@ -518,8 +508,6 @@
 @mixin fillInit($important: false) {
   @include backgroundInit($important, 'fill');
 }
-
-/* Gradient */
 
 /// Sets gradient (background-image) via system variables
 /// Устанавливает градиент (background-image) через системные переменные
@@ -567,8 +555,6 @@
     background-image: #{toGradient(#{getColorValueSys('gradient')})};
   }
 }
-
-/* Border */
 
 /// Sets border color via system variables
 /// Устанавливает цвет границы (border) через системные переменные
@@ -628,8 +614,6 @@
           drop-shadow(0 -1px 0 #{toCustomVarRgb($color)});
 }
 
-/* Outline */
-
 /// Sets outline color via system variables
 /// Устанавливает цвет границы (outline) через системные переменные
 /// @param {Color|String} $color color or CSS var
@@ -678,8 +662,6 @@
     outline-color: getColorValueSys('outline');
   }
 }
-
-/* As */
 
 /// Renders text color using palette variables
 /// Рендерит цвет текста, используя переменные палитры

@@ -1,8 +1,8 @@
 var g = Object.defineProperty;
 var d = (i, t, e) => t in i ? g(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
-var a = (i, t, e) => d(i, typeof t != "symbol" ? t + "" : t, e);
+var r = (i, t, e) => d(i, typeof t != "symbol" ? t + "" : t, e);
 import l from "magic-string";
-import { toCamelCase as p, toKebabCase as m } from "@dxtmisha/functional-basic";
+import { toCamelCase as m, toKebabCase as p } from "@dxtmisha/functional-basic";
 class h {
   /**
    * Checks if the id is a user’s file.
@@ -57,8 +57,8 @@ class u {
    * @param code source code / исходный код
    */
   constructor(t, e) {
-    a(this, "magicString");
-    a(this, "newCode");
+    r(this, "magicString");
+    r(this, "newCode");
     this.id = t, this.code = e, this.magicString = new l(e), this.newCode = e;
   }
   /**
@@ -118,9 +118,10 @@ class u {
    *
    * Проверяет наличие кода.
    * @param pattern search pattern / паттерн поиска
+   * @param flags search flags / флаги поиска
    */
-  has(t) {
-    return typeof t == "string" ? this.code.includes(t) : new RegExp(t, "i").test(this.code);
+  has(t, e = "i") {
+    return typeof t == "string" ? this.code.includes(t) : new RegExp(t, e).test(this.code);
   }
   /**
    * Adds code after the <script setup> tag.
@@ -247,7 +248,7 @@ class C {
    * @param componentsList list of components / список компонентов
    */
   constructor(t, e, s, n, o) {
-    a(this, "styleModification");
+    r(this, "styleModification");
     this.design = t, this.packageName = e, this.componentsReg = s, this.styleVarsReg = n, this.componentsList = o, this.styleModification = this.initStyleModification();
   }
   /**
@@ -294,7 +295,7 @@ class C {
     const e = t.match(this.componentsReg), s = [];
     return e && e.forEach((n) => {
       const o = this.findComponent(n);
-      o && !s.find((r) => r.name === o.name) && !t.match(`${this.getPackageName()}/${o.name}`) && s.push(o);
+      o && !s.find((c) => c.name === o.name) && !t.match(`${this.getPackageName()}/${o.name}`) && s.push(o);
     }), s;
   }
   /**
@@ -332,7 +333,7 @@ class C {
   initStyleModification() {
     const t = {};
     return f.forEach((e) => {
-      t[m(e)] = p(e);
+      t[p(e)] = m(e);
     }), t;
   }
 }
@@ -343,7 +344,7 @@ class y {
    * @param code file content / содержимое файла
    */
   constructor(t, e) {
-    a(this, "code");
+    r(this, "code");
     this.packageName = t, this.code = e;
   }
   /**
@@ -373,7 +374,7 @@ class y {
     this.code.includes(e) || (this.code = `import '${e}';${this.code}`);
   }
 }
-class S {
+class $ {
   /**
    * Constructor
    * @param code file content / содержимое файла
@@ -416,7 +417,7 @@ class S {
     return `import { ${t.name} } from'${this.getPath(t)}';`;
   }
 }
-class $ {
+class k {
   /**
    * Constructor
    * @param code file content / содержимое файла
@@ -431,7 +432,7 @@ class $ {
    * Инициализация преобразования всех свойств стилей.
    */
   make() {
-    return this.is() && (this.importDesign().makeColors(), console.log("code", this.code.getId(), this.code.get())), this;
+    return this.is() && (this.importDesign().makeColors().makeVars().makeProperties(), console.log("code", this.code.getId(), this.code.get())), this;
   }
   /**
    * Checks whether this file needs to be transformed.
@@ -486,11 +487,8 @@ class $ {
    * Удаляет значения по умолчанию у цветов.
    */
   makeColors() {
-    const t = `(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgba?\\([^)]+\\))${this.getPropertiesNone()}`;
-    return this.code.has(t) && this.code.replace(
-      new RegExp(t, "ig"),
-      ""
-    ), this;
+    const t = new RegExp(`(?<=var\\([^,]+), ?(#[0-9abcdf]{4,6}|rgba?\\([^)]+\\))${this.getPropertiesNone()}`, "ig");
+    return this.code.has(t) && this.code.replace(t, ""), this;
   }
   /**
    * Transforms property values under the correct name.
@@ -511,11 +509,17 @@ class $ {
    */
   makeProperties() {
     const t = this.data.getStyleModification(), e = this.getModificationRef();
-    return this.code.has(e) && this.code.replace(
+    return console.log("this.code.has(reg)", e, this.code.has(e)), this.code.has(e, "im") && this.code.replace(
       e,
-      (s, n, o, r) => {
-        const c = o.trim();
-        return `@include ${t == null ? void 0 : t[n.trim()]}(${c.match(/[()]/) ? `#{${c}}` : c})${r}`;
+      (s, n, o, c) => {
+        const a = o.trim();
+        return console.log(
+          "a",
+          `@include ${t == null ? void 0 : t[n.trim()]}(${a.match(/[()]/) ? `#{${a}}` : a})${c}`,
+          n,
+          o,
+          c
+        ), `@include ${t == null ? void 0 : t[n.trim()]}(${a.match(/[()]/) ? `#{${a}}` : a})${c}`;
       }
     ), this;
   }
@@ -531,11 +535,11 @@ class P {
    * @param name plugin name / название плагина
    * @param options plugin options / настройки плагина
    */
-  constructor(t, e, s, n, o, r = "vite-plugin-design-ui", c = {}) {
-    a(this, "data");
-    a(this, "first", !0);
-    a(this, "mode", "production");
-    this.design = t, this.packageName = e, this.componentsReg = s, this.styleVarsReg = n, this.componentsList = o, this.name = r, this.options = c, this.data = new C(
+  constructor(t, e, s, n, o, c = "vite-plugin-design-ui", a = {}) {
+    r(this, "data");
+    r(this, "first", !0);
+    r(this, "mode", "production");
+    this.design = t, this.packageName = e, this.componentsReg = s, this.styleVarsReg = n, this.componentsList = o, this.name = c, this.options = a, this.data = new C(
       t,
       e,
       s,
@@ -607,7 +611,7 @@ class P {
    * @param code file content / содержимое файла
    */
   makeComponents(t) {
-    return this.isComponents() && new S(t, this.data).make(), this;
+    return this.isComponents() && new $(t, this.data).make(), this;
   }
   /**
    * Initializes styles.
@@ -616,15 +620,15 @@ class P {
    * @param code file content / содержимое файла
    */
   initStyles(t) {
-    return this.isStyles() && new $(t, this.data).make(), this;
+    return this.isStyles() && new k(t, this.data).make(), this;
   }
 }
 export {
   P,
   u as a,
-  S as b,
+  $ as b,
   C as c,
   y as d,
-  $ as e,
+  k as e,
   h as f
 };
