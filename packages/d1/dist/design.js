@@ -1,0 +1,165 @@
+const e = "d1", d = "@dxtmisha/d1", a = /((d1|dd)-?(accordion|action-?sheet|actions|anchor|arrow|badge|bars|block|button|cell|chip|chip-?group|dialog|field|field-?counter|field-?label|field-?message|icon|image|input|list|list-?group|list-?item|list-?menu|mask|menu|modal|motion-?transform|page|progress|ripple|scrollbar|section|select|select-?value|skeleton|textarea-?autosize|tooltip|window))/ig, i = /(?<=var\(--)(ref-blur|ref-font-family|ref-font-size|ref-font-weight|ref-index|ref-letterSpacing|ref-lineHeight|ref-opacity|ref-palette-red|ref-palette-orange|ref-palette-amber|ref-palette-yellow|ref-palette-lime|ref-palette-green|ref-palette-emerald|ref-palette-teal|ref-palette-cyan|ref-palette-sky|ref-palette-blue|ref-palette-indigo|ref-palette-violet|ref-palette-purple|ref-palette-fuchsia|ref-palette-pink|ref-palette-rose|ref-palette-slate|ref-palette-gray|ref-palette-zinc|ref-palette-neutral|ref-palette-stone|ref-palette-black|ref-palette-white|ref-screen|ref-shade|ref-shadow|ref-shadow-dark|ref-spacing|sys-background|sys-blur|sys-font-family|sys-font-size|sys-font-weight|sys-index|sys-letterSpacing|sys-lineHeight|sys-opacity|sys-opacity-primary|sys-opacity-surface|sys-palette|sys-rounded|sys-rounded-adaptive|sys-shade|sys-shade-dark|sys-shadow|sys-spacing|sys-spacing-grid-paddingX|sys-spacing-grid|sys-spacing-grid-gapX|sys-spacing-grid-gapY|sys-spacing-block|sys-spacing-size|sys-spacing-adaptive)/ig, t = [
+  {
+    name: "D1Accordion",
+    reg: /^((d1|dd)-?(accordion))$/ig
+  },
+  {
+    name: "D1ActionSheet",
+    reg: /^((d1|dd)-?(action-?sheet))$/ig
+  },
+  {
+    name: "D1Actions",
+    reg: /^((d1|dd)-?(actions))$/ig
+  },
+  {
+    name: "D1Anchor",
+    reg: /^((d1|dd)-?(anchor))$/ig
+  },
+  {
+    name: "D1Arrow",
+    reg: /^((d1|dd)-?(arrow))$/ig
+  },
+  {
+    name: "D1Badge",
+    reg: /^((d1|dd)-?(badge))$/ig
+  },
+  {
+    name: "D1Bars",
+    reg: /^((d1|dd)-?(bars))$/ig
+  },
+  {
+    name: "D1Block",
+    reg: /^((d1|dd)-?(block))$/ig
+  },
+  {
+    name: "D1Button",
+    reg: /^((d1|dd)-?(button))$/ig
+  },
+  {
+    name: "D1Cell",
+    reg: /^((d1|dd)-?(cell))$/ig
+  },
+  {
+    name: "D1Chip",
+    reg: /^((d1|dd)-?(chip))$/ig
+  },
+  {
+    name: "D1ChipGroup",
+    reg: /^((d1|dd)-?(chip-?group))$/ig
+  },
+  {
+    name: "D1Dialog",
+    reg: /^((d1|dd)-?(dialog))$/ig
+  },
+  {
+    name: "D1Field",
+    reg: /^((d1|dd)-?(field))$/ig
+  },
+  {
+    name: "D1FieldCounter",
+    reg: /^((d1|dd)-?(field-?counter))$/ig
+  },
+  {
+    name: "D1FieldLabel",
+    reg: /^((d1|dd)-?(field-?label))$/ig
+  },
+  {
+    name: "D1FieldMessage",
+    reg: /^((d1|dd)-?(field-?message))$/ig
+  },
+  {
+    name: "D1Icon",
+    reg: /^((d1|dd)-?(icon))$/ig
+  },
+  {
+    name: "D1Image",
+    reg: /^((d1|dd)-?(image))$/ig
+  },
+  {
+    name: "D1Input",
+    reg: /^((d1|dd)-?(input))$/ig
+  },
+  {
+    name: "D1List",
+    reg: /^((d1|dd)-?(list))$/ig
+  },
+  {
+    name: "D1ListGroup",
+    reg: /^((d1|dd)-?(list-?group))$/ig
+  },
+  {
+    name: "D1ListItem",
+    reg: /^((d1|dd)-?(list-?item))$/ig
+  },
+  {
+    name: "D1ListMenu",
+    reg: /^((d1|dd)-?(list-?menu))$/ig
+  },
+  {
+    name: "D1Mask",
+    reg: /^((d1|dd)-?(mask))$/ig
+  },
+  {
+    name: "D1Menu",
+    reg: /^((d1|dd)-?(menu))$/ig
+  },
+  {
+    name: "D1Modal",
+    reg: /^((d1|dd)-?(modal))$/ig
+  },
+  {
+    name: "D1MotionTransform",
+    reg: /^((d1|dd)-?(motion-?transform))$/ig
+  },
+  {
+    name: "D1Page",
+    reg: /^((d1|dd)-?(page))$/ig
+  },
+  {
+    name: "D1Progress",
+    reg: /^((d1|dd)-?(progress))$/ig
+  },
+  {
+    name: "D1Ripple",
+    reg: /^((d1|dd)-?(ripple))$/ig
+  },
+  {
+    name: "D1Scrollbar",
+    reg: /^((d1|dd)-?(scrollbar))$/ig
+  },
+  {
+    name: "D1Section",
+    reg: /^((d1|dd)-?(section))$/ig
+  },
+  {
+    name: "D1Select",
+    reg: /^((d1|dd)-?(select))$/ig
+  },
+  {
+    name: "D1SelectValue",
+    reg: /^((d1|dd)-?(select-?value))$/ig
+  },
+  {
+    name: "D1Skeleton",
+    reg: /^((d1|dd)-?(skeleton))$/ig
+  },
+  {
+    name: "D1TextareaAutosize",
+    reg: /^((d1|dd)-?(textarea-?autosize))$/ig
+  },
+  {
+    name: "D1Tooltip",
+    reg: /^((d1|dd)-?(tooltip))$/ig
+  },
+  {
+    name: "D1Window",
+    reg: /^((d1|dd)-?(window))$/ig
+  }
+];
+export {
+  t as componentsList,
+  a as componentsReg,
+  e as designName,
+  d as packageName,
+  i as styleVarsReg
+};

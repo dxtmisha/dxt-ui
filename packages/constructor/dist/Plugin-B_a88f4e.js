@@ -237,7 +237,7 @@ const f = [
   "scale",
   "rotate"
 ];
-class C {
+class y {
   /**
    * Constructor
    * @param design design name / название дизайна
@@ -336,7 +336,7 @@ class C {
     }), t;
   }
 }
-class y {
+class C {
   /**
    * Constructor
    * @param packageName package name / название пакета
@@ -373,7 +373,7 @@ class y {
     this.code.includes(e) || (this.code = `import '${e}';${this.code}`);
   }
 }
-class k {
+class S {
   /**
    * Constructor
    * @param code file content / содержимое файла
@@ -416,7 +416,7 @@ class k {
     return `import { ${t.name} } from'${this.getPath(t)}';`;
   }
 }
-class S {
+class $ {
   /**
    * Constructor
    * @param code file content / содержимое файла
@@ -431,7 +431,7 @@ class S {
    * Инициализация преобразования всех свойств стилей.
    */
   make() {
-    return this.is() && this.importDesign().makeColors().makeVars().makeProperties(), this;
+    return console.log("this.is()", this.code.getId(), this.is()), this.is() && this.importDesign(), this;
   }
   /**
    * Checks whether this file needs to be transformed.
@@ -535,7 +535,7 @@ class P {
     a(this, "data");
     a(this, "first", !0);
     a(this, "mode", "production");
-    this.design = t, this.packageName = e, this.componentsReg = s, this.styleVarsReg = n, this.componentsList = o, this.name = r, this.options = c, this.data = new C(
+    this.design = t, this.packageName = e, this.componentsReg = s, this.styleVarsReg = n, this.componentsList = o, this.name = r, this.options = c, this.data = new y(
       t,
       e,
       s,
@@ -597,7 +597,7 @@ class P {
    * @param code file content / содержимое файла
    */
   initMain(t) {
-    const e = new y(this.packageName, t);
+    const e = new C(this.packageName, t);
     return e.importStyle(), e.get();
   }
   /**
@@ -607,7 +607,7 @@ class P {
    * @param code file content / содержимое файла
    */
   makeComponents(t) {
-    return this.isComponents() && new k(t, this.data).make(), this;
+    return this.isComponents() && new S(t, this.data).make(), this;
   }
   /**
    * Initializes styles.
@@ -616,15 +616,15 @@ class P {
    * @param code file content / содержимое файла
    */
   initStyles(t) {
-    return this.isStyles() && new S(t, this.data).make(), this;
+    return this.isStyles() && new $(t, this.data).make(), this;
   }
 }
 export {
   P,
   u as a,
-  k as b,
-  C as c,
-  y as d,
-  S as e,
+  S as b,
+  y as c,
+  C as d,
+  $ as e,
   h as f
 };

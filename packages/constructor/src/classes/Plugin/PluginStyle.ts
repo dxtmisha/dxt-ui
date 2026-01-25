@@ -25,11 +25,12 @@ export class PluginStyle {
    * Инициализация преобразования всех свойств стилей.
    */
   make(): this {
+    console.log('this.is()', this.code.getId(), this.is())
     if (this.is()) {
       this.importDesign()
-        .makeColors()
-        .makeVars()
-        .makeProperties()
+      // .makeColors()
+      // .makeVars()
+      // .makeProperties()
     }
 
     return this
