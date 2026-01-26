@@ -2,8 +2,8 @@ var g = Object.defineProperty;
 var m = (i, s, e) => s in i ? g(i, s, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[s] = e;
 var t = (i, s, e) => m(i, typeof s != "symbol" ? s + "" : s, e);
 import { computed as r } from "vue";
-import { getRef as d, isFilled as n, toBinds as h } from "@dxtmisha/functional";
-import { F as f } from "./FieldCounterInclude-BR6n8WlH.js";
+import { isFilled as d, getRef as n, toBinds as h } from "@dxtmisha/functional";
+import { F as f } from "./FieldCounterInclude-D0oojGWY.js";
 class F {
   /**
    * Constructor
@@ -23,17 +23,17 @@ class F {
     t(this, "fieldCounter");
     /** Validation message computed/ Вычисляемое сообщение валидации */
     t(this, "validation", r(
-      () => n(this.props.validationMessage) ? this.props.validationMessage : d(this.validationMessage)
+      () => d(this.props.validationMessage) ? this.props.validationMessage : n(this.validationMessage)
     ));
     /** Checks if validation message should be displayed/ Проверяет, надо ли отображать сообщение валидации */
     t(this, "isValidationMessage", r(
-      () => n(this.validation.value)
+      () => d(this.validation.value)
     ));
     /** Computed bindings for FieldMessage/ Вычисляемые привязки для FieldMessage */
     t(this, "binds", r(() => {
       var s, e, a, o;
       return h(
-        d(this.extra),
+        n(this.extra),
         (s = this.isCounter) != null && s.value ? this.fieldCounter.bindsIntermediary.value : {},
         {
           disabled: this.props.disabled,
