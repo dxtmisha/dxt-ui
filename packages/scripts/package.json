@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/scripts",
   "private": false,
-  "version": "0.7.1",
+  "version": "0.7.2",
   "type": "module",
   "description": "Development scripts and CLI tools for DXT UI projects - automated component generation, library building and project management tools",
   "keywords": [
@@ -63,11 +63,12 @@
   },
   "peerDependencies": {
     "@dxtmisha/configuration": "*",
+    "@dxtmisha/media": "*",
     "@dxtmisha/functional": "*",
-    "@dxtmisha/styles": "*",
+    "@dxtmisha/functional-basic": "*",
     "@dxtmisha/wiki": "*",
-    "typescript": "*",
-    "vue": "*"
+    "typescript": "^5.0.0",
+    "vue": "^3.0.0"
   },
   "dependencies": {}
 }

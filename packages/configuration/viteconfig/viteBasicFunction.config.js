@@ -16,7 +16,7 @@ import { browserslistToTargets } from 'lightningcss'
  * Создаёт базовую конфигурацию Vite для библиотек с функциями/композаблами/классами.
  * @param name global library name / глобальное имя библиотеки
  * @param target build target / цель сборки
- * @param entry entry points / входные точки сборки
+ * @param {string|string[]} entry entry points / входные точки сборки
  * @param include glob patterns for d.ts / паттерны для генерации d.ts
  * @param includeExtended extra patterns / дополнительные паттерны
  * @param external external dependencies / внешние зависимости

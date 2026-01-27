@@ -1,4 +1,4 @@
-import { P } from "./Plugin-DUJ0epm4.js";
+import { P } from "./Plugin-CBNCh_iN.js";
 export {
   P as Plugin
 };

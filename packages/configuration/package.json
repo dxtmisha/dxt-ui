@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/configuration",
   "private": false,
-  "version": "0.5.0",
+  "version": "0.6.0",
   "type": "module",
   "description": "Shared configuration files for DXT UI - Vite configs and TypeScript configs for building UI components",
   "keywords": [
@@ -45,6 +45,10 @@
     "./viteComponentOnly": {
       "types": "./viteconfig/viteComponentOnly.config.d.ts",
       "default": "./viteconfig/viteComponentOnly.config.js"
+    },
+    "./viteComponents": {
+      "types": "./viteconfig/viteComponents.config.d.ts",
+      "default": "./viteconfig/viteComponents.config.js"
     },
     "./viteConstructors": {
       "types": "./viteconfig/viteConstructors.config.d.ts",

@@ -1,4 +1,4 @@
-import { viteConstructors } from '@dxtmisha/configuration/viteConstructors'
+import { viteComponents } from '@dxtmisha/configuration/viteComponents'
 
 // https://vite.dev/config/
-export default viteConstructors
+export default viteComponents
