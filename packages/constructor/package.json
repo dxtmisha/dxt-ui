@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.39.4",
+  "version": "0.39.5",
   "type": "module",
   "description": "Vue component constructors for DXT UI design system - ready-to-use constructors with TypeScript support and SCSS styling",
   "keywords": [

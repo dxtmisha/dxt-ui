@@ -2,7 +2,7 @@ var u = Object.defineProperty;
 var l = (e, t, s) => t in e ? u(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
 var r = (e, t, s) => l(e, typeof t != "symbol" ? t + "" : t, s);
 import { computed as o } from "vue";
-import { isNull as c, isFilled as a, toBinds as i, getRef as d } from "@dxtmisha/functional";
+import { isFilled as c, isNull as a, toBinds as i, getRef as d } from "@dxtmisha/functional";
 class C {
   /**
    * Constructor
@@ -15,7 +15,7 @@ class C {
   constructor(t, s, n, p, h) {
     /** Checks if counter should be displayed/ Проверяет, надо ли отображать счетчик */
     r(this, "isCounter", o(
-      () => !!(this.props.counterShow && (!c(this.props.counter) || a(this.props.maxlength)))
+      () => !!(this.props.counterShow && (!a(this.props.counter) || c(this.props.maxlength)))
     ));
     /** Computed bindings for FieldCounter/ Вычисляемые привязки для FieldCounter */
     r(this, "binds", o(() => i(

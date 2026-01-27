@@ -2,7 +2,7 @@ var g = Object.defineProperty;
 var d = (i, t, e) => t in i ? g(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
 var a = (i, t, e) => d(i, typeof t != "symbol" ? t + "" : t, e);
 import l from "magic-string";
-import { toKebabCase as m, toCamelCase as p } from "@dxtmisha/functional-basic";
+import { toCamelCase as m, toKebabCase as p } from "@dxtmisha/functional-basic";
 class h {
   /**
    * Checks if the id is a user’s file.
@@ -333,7 +333,7 @@ class C {
   initStyleModification() {
     const t = {};
     return f.forEach((e) => {
-      t[m(e)] = p(e);
+      t[p(e)] = m(e);
     }), t;
   }
 }
