@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.1.4",
+  "version": "0.1.5",
   "type": "module",
   "description": "DXT-UI component library",
   "keywords": [
@@ -49,7 +49,7 @@
     },
     "./D1Image": {
       "types": "./dist/D1Image.d.ts",
-      "default": "./dist/D1Image.js"
+      "default": "./dist/components/Ui/Image/index.d.ts"
     }
   },
   "buildOptions": {
@@ -62,12 +62,14 @@
     "node": ">=20.0.0"
   },
   "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "dependencies": {
     "@dxtmisha/configuration": "*",
     "@dxtmisha/functional": "*",
     "@dxtmisha/functional-basic": "*",
     "@dxtmisha/media": "*",
-    "@dxtmisha/styles": "*",
-    "vue": "^3.0.0"
+    "@dxtmisha/styles": "*"
   },
   "sideEffects": false
 }
