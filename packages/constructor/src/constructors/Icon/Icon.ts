@@ -7,6 +7,7 @@ import {
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { EventClickInclude } from '../../classes/EventClickInclude'
 import { type ImageEventData } from '../Image'
 import { SkeletonInclude } from '../Skeleton'
 
@@ -36,6 +37,11 @@ export class Icon {
   readonly skeleton: SkeletonInclude
 
   /**
+   * Object for working with events/ Объект для работы с событиями
+   */
+  readonly event: EventClickInclude
+
+  /**
    * Constructor
    * @param props input data/ входные данные
    * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
@@ -45,6 +51,7 @@ export class Icon {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param EventClickIncludeConstructor class for working with events/ класс для работы с событиями
    * @param SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
    */
   constructor(
@@ -56,6 +63,7 @@ export class Icon {
     protected readonly components?: DesignComp<IconComponents, IconProps>,
     protected readonly slots?: IconSlots,
     protected readonly emits?: ConstrEmit<IconEmits>,
+    protected readonly EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude,
     protected readonly SkeletonIncludeConstructor: typeof SkeletonInclude = SkeletonInclude
   ) {
     this.iconBind = getBindRef(
@@ -79,6 +87,12 @@ export class Icon {
         disabled: this.props.disabled,
         hide: !this.isActive.value
       }))
+    )
+
+    this.event = new EventClickIncludeConstructor(
+      props,
+      undefined,
+      emits
     )
 
     this.skeleton = new SkeletonIncludeConstructor(
@@ -107,7 +121,9 @@ export class Icon {
    */
   readonly binds = computed<any>(() => ({
     key: 'icon',
-    tabindex: this.props.dynamic ? 0 : undefined,
+    tabindex: this.props.dynamic ? (this.props.tabindex ?? 0) : undefined,
+    onClick: this.props.dynamic ? this.event.onClick : undefined,
+    onKeydown: this.props.dynamic ? this.event.onKeydown : undefined,
     ...AriaStaticInclude.role(this.getRole()),
     ...AriaStaticInclude.label(this.props.ariaLabel),
     ...AriaStaticInclude.hidden(!this.props.dynamic)

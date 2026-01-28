@@ -76,6 +76,7 @@ export class IconDesign<
    */
   protected initExpose(): EXPOSE {
     return {
+      ...this.item.event.expose,
       isActive: this.item.isActive
     } as EXPOSE
   }

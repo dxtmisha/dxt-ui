@@ -1,5 +1,6 @@
 import { ComputedRef, Ref, ToRefs } from 'vue';
 import { ConstrClassObject, ConstrEmit, DesignComp } from '@dxtmisha/functional';
+import { EventClickInclude } from '../../classes/EventClickInclude';
 import { ImageEventData } from '../Image';
 import { SkeletonInclude } from '../Skeleton';
 import { IconComponents, IconEmits, IconSlots } from './types';
@@ -19,6 +20,7 @@ export declare class Icon {
     protected readonly components?: DesignComp<IconComponents, IconProps> | undefined;
     protected readonly slots?: IconSlots | undefined;
     protected readonly emits?: ConstrEmit<IconEmits> | undefined;
+    protected readonly EventClickIncludeConstructor: typeof EventClickInclude;
     protected readonly SkeletonIncludeConstructor: typeof SkeletonInclude;
     /**
      * Returns the property for the base icon/ Возвращает свойство для базовой иконки
@@ -33,6 +35,10 @@ export declare class Icon {
      */
     readonly skeleton: SkeletonInclude;
     /**
+     * Object for working with events/ Объект для работы с событиями
+     */
+    readonly event: EventClickInclude;
+    /**
      * Constructor
      * @param props input data/ входные данные
      * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
@@ -42,9 +48,10 @@ export declare class Icon {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param EventClickIncludeConstructor class for working with events/ класс для работы с событиями
      * @param SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
      */
-    constructor(props: IconProps, refs: ToRefs<IconProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<IconComponents, IconProps> | undefined, slots?: IconSlots | undefined, emits?: ConstrEmit<IconEmits> | undefined, SkeletonIncludeConstructor?: typeof SkeletonInclude);
+    constructor(props: IconProps, refs: ToRefs<IconProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<IconComponents, IconProps> | undefined, slots?: IconSlots | undefined, emits?: ConstrEmit<IconEmits> | undefined, EventClickIncludeConstructor?: typeof EventClickInclude, SkeletonIncludeConstructor?: typeof SkeletonInclude);
     /**
      * Checks if the additional icon is active/ Проверяет, активна ли дополнительная иконка
      */

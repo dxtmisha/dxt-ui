@@ -1,4 +1,5 @@
 import type { RoleType } from '../../types/roleTypes'
+import type { EventClickProps } from '../../types/eventClickTypes'
 import type { ImagePropsBasic, ImageValue } from '../Image'
 import type { SkeletonPropsInclude } from '../Skeleton'
 import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
@@ -23,7 +24,9 @@ export type IconPropsToken = {
 export type IconPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic
 > = SkeletonPropsInclude
-  & AriaLabelPropsInclude & {
+  & AriaLabelPropsInclude
+  & EventClickProps
+  & {
   // Status
   /** Активное состояние иконки/ Active state of the icon */
     active?: boolean
@@ -36,6 +39,7 @@ export type IconPropsBasic<
 
     // ARIA
     role?: RoleType
+    tabindex?: number | string
   }
 
 /**

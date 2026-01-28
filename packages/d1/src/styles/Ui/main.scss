@@ -2,5 +2,8 @@
 @use "@dxtmisha/styles/properties" as ui;
 @use "@dxtmisha/media/style.css";
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
+
 @include ui.initGlobal;
 @include ui.initDesignBody('d1.main');

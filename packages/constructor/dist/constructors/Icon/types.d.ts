@@ -1,5 +1,6 @@
 import { ComputedRef } from 'vue';
 import { ConstrClass } from '@dxtmisha/functional';
+import { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes';
 import { ImageComponentsInclude, ImageEmitsInclude } from '../Image';
 /**
  * Interface for describing which components need to be connected for work.
@@ -12,13 +13,13 @@ export type IconComponents = ImageComponentsInclude;
  *
  * Тип, описывающий доступные события.
  */
-export type IconEmits = ImageEmitsInclude;
+export type IconEmits = ImageEmitsInclude & EventClickEmits;
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface IconExpose {
+export interface IconExpose extends EventClickExpose {
     isActive: ComputedRef<boolean>;
 }
 /**

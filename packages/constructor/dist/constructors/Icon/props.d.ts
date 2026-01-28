@@ -1,4 +1,5 @@
 import { RoleType } from '../../types/roleTypes';
+import { EventClickProps } from '../../types/eventClickTypes';
 import { ImagePropsBasic, ImageValue } from '../Image';
 import { SkeletonPropsInclude } from '../Skeleton';
 import { AriaLabelPropsInclude } from '../../types/ariaTypes';
@@ -16,7 +17,7 @@ export type IconPropsToken = {
     animationType?: 'type1' | 'type2';
     animationShow?: boolean;
 };
-export type IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> = SkeletonPropsInclude & AriaLabelPropsInclude & {
+export type IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> = SkeletonPropsInclude & AriaLabelPropsInclude & EventClickProps & {
     /** Активное состояние иконки/ Active state of the icon */
     active?: boolean;
     /** Value of the main icon/ Значение основной иконки */
@@ -24,6 +25,7 @@ export type IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> = Sk
     /** Value of the active icon/ Значение активной иконки */
     iconActive?: ImageValue<Image>;
     role?: RoleType;
+    tabindex?: number | string;
 };
 /**
  * Type describing incoming properties.

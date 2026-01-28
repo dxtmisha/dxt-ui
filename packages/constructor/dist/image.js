@@ -1,11 +1,11 @@
-var H = Object.defineProperty;
-var E = (r, t, e) => t in r ? H(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
-var i = (r, t, e) => E(r, typeof t != "symbol" ? t + "" : t, e);
-import { computed as h, watchEffect as B, ref as I, toRefs as W, watch as k, onUnmounted as R, h as f } from "vue";
-import { isDomRuntime as j, resizeImageByMax as N, isString as p, isFilled as F, GEO_FLAG_ICON_NAME as L, Icons as A, isArray as M, EventItem as D, forEach as O, toNumber as S, getElementId as _, isNumber as U, useLazyItemByMarginRef as G, DesignConstructorAbstract as X } from "@dxtmisha/functional";
+var O = Object.defineProperty;
+var W = (r, t, e) => t in r ? O(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
+var i = (r, t, e) => W(r, typeof t != "symbol" ? t + "" : t, e);
+import { computed as h, watchEffect as B, ref as I, toRefs as R, watch as k, onUnmounted as E, h as p } from "vue";
+import { isDomRuntime as j, resizeImageByMax as D, isString as f, isFilled as F, Icons as A, isArray as M, EventItem as L, forEach as P, toNumber as S, getElementId as N, isNumber as _, useLazyItemByMarginRef as U, DesignConstructorAbstract as X } from "@dxtmisha/functional";
 import { A as z } from "./AriaStaticInclude-CFGewqpn.js";
 const K = 1280;
-class P {
+class H {
   /**
    * Checks if the file is an image.
    *
@@ -82,7 +82,7 @@ class P {
    */
   static getSRC(t, e, s = K) {
     var n;
-    return j() && (e instanceof File || e === void 0) && (t.naturalHeight > s || t.naturalWidth > s) ? (n = N(t, s)) != null ? n : "" : t.src;
+    return j() && (e instanceof File || e === void 0) && (t.naturalHeight > s || t.naturalWidth > s) ? (n = D(t, s)) != null ? n : "" : t.src;
   }
 }
 const x = "#toolbar=0&scrollbar=1";
@@ -94,7 +94,7 @@ class C {
    * @param file verified file/ проверяемый файл
    */
   static isPdf(t) {
-    return p(t) ? !!t.match(/\.pdf$/i) : j() && !!t.type.match(/\/pdf$/i);
+    return f(t) ? !!t.match(/\.pdf$/i) : j() && !!t.type.match(/\/pdf$/i);
   }
   /**
    * Applications asynchronously read the contents of files (or raw data buffers) stored on the user's computer.
@@ -103,7 +103,7 @@ class C {
    * @param file the Blob or File from which to read/ Blob или File которые следует прочитать
    */
   static async get(t) {
-    return p(t) ? `${t}${x}` : this.isPdf(t) ? `${await P.getFileReader(t)}${x}` : "";
+    return f(t) ? `${t}${x}` : this.isPdf(t) ? `${await H.getFileReader(t)}${x}` : "";
   }
 }
 var a = /* @__PURE__ */ ((r) => (r.pdf = "pdf", r.file = "file", r.image = "image", r.flag = "flag", r.flagCompressed = "flag-compressed", r.color = "color", r.public = "public", r.filled = "filled", r.outlined = "outlined", r.round = "round", r.sharp = "sharp", r.twoTone = "two-tone", r.material = "material", r.icon = "icon", r))(a || {});
@@ -127,8 +127,6 @@ class Y {
           return a.file;
         if (t.match(/\//))
           return a.image;
-        if (t.match(L))
-          return a.icon;
         if (t.match(/^#/))
           return a.color;
         if (t.match(/^@/))
@@ -146,7 +144,7 @@ class Y {
     this.props = t;
   }
 }
-const nt = {
+const ht = {
   adaptiveGroup: "basic",
   preloadOffset: "1024px"
 };
@@ -205,7 +203,7 @@ class q {
         case a.image:
         case a.file:
           try {
-            return this.props.lazy ? this.props.value : await P.createImage(t);
+            return this.props.lazy ? this.props.value : await H.createImage(t);
           } catch (e) {
             console.error("ImageData.initImage: ", t);
           }
@@ -213,13 +211,13 @@ class q {
         case a.public:
         case a.icon:
         case a.flag:
-          if (p(t))
+          if (f(t))
             return await A.get(t, this.props.url);
           break;
       }
   }
 }
-class Z {
+class G {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -298,7 +296,7 @@ class Z {
     };
   }
 }
-class J {
+class Z {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -326,7 +324,7 @@ class J {
     this.props = t, this.coordinator = e;
   }
 }
-class Q {
+class J {
   /**
    * Constructor
    * @param name group name/ название группы
@@ -502,7 +500,7 @@ class l {
    * @param name group name/ название группы
    */
   static init(t) {
-    const e = new Q(t);
+    const e = new J(t);
     return this.items.push(e), e;
   }
 }
@@ -550,7 +548,7 @@ class d {
    * Запускает процесс вычисления или отключает его, если в списке нет активных элементов.
    */
   static make() {
-    this.event && this.objects.length < 1 ? (this.event.stop(), this.event = void 0) : this.objects.length > 0 && (this.event || (this.event = new D(window, ["scroll-sync"], () => this.start()).start()), this.time || (this.time = !0, requestAnimationFrame(() => {
+    this.event && this.objects.length < 1 ? (this.event.stop(), this.event = void 0) : this.objects.length > 0 && (this.event || (this.event = new L(window, ["scroll-sync"], () => this.start()).start()), this.time || (this.time = !0, requestAnimationFrame(() => {
       this.time = !1, this.start();
     })));
   }
@@ -560,7 +558,7 @@ class d {
    * Возвращает список элементов, которые видны или постоянно вычисляются.
    */
   static getItemIdByVisible() {
-    return O(this.objectsAdaptive, (t) => t.getId());
+    return P(this.objectsAdaptive, (t) => t.getId());
   }
   /**
    * Method for starting the calculation of scaling elements in the list.
@@ -651,8 +649,8 @@ class d {
   }
 }
 i(d, "objects", []), i(d, "objectsAdaptive", []), i(d, "cache", []), i(d, "event"), i(d, "time");
-const T = "main", $ = 512;
-class V {
+const Q = "main", $ = 512;
+class T {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -681,7 +679,7 @@ class V {
      */
     i(this, "group", h(() => {
       var t;
-      return (t = this.props.adaptiveGroup) != null ? t : T;
+      return (t = this.props.adaptiveGroup) != null ? t : Q;
     }));
     /**
      * Returns the physical width of the object.
@@ -789,7 +787,7 @@ class V {
    * Возвращает идентификатор элемента.
    */
   getId() {
-    return _(this.element.value);
+    return N(this.element.value);
   }
   /**
    * Returns values for the background-size property.
@@ -843,7 +841,7 @@ class V {
     return this;
   }
 }
-class tt {
+class V {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -933,7 +931,7 @@ class tt {
     return F(t) ? t.toString().match(/%$/) ? this.getSize(t, t) : t.toString() : null;
   }
 }
-class et {
+class tt {
   constructor(t, e, s, n, c) {
     i(this, "lazyInit", I(!1));
     i(this, "lazyStatus");
@@ -968,7 +966,7 @@ class et {
      */
     i(this, "picture", h(() => {
       if (this.props.picture)
-        return M(this.props.picture) ? this.props.picture : O(
+        return M(this.props.picture) ? this.props.picture : P(
           this.props.picture,
           (t, e) => ({
             key: e,
@@ -994,7 +992,7 @@ class et {
     const {
       lazy: g,
       preloadOffset: m
-    } = W(t);
+    } = R(t);
     k(
       [g, m, e],
       () => {
@@ -1047,7 +1045,7 @@ class et {
    * @param key key/ ключ
    */
   toSrcsetKey(t) {
-    return U(t) ? `${t}w` : String(t);
+    return _(t) ? `${t}w` : String(t);
   }
   /**
    * Initializes lazy loading.
@@ -1055,13 +1053,13 @@ class et {
    * Инициализирует ленивую загрузку.
    */
   makeLazy() {
-    const t = G(this.element, `${this.props.preloadOffset} 0px`).lazyItemStatus;
+    const t = U(this.element, `${this.props.preloadOffset} 0px`).lazyItemStatus;
     this.lazyStatus = k(t, () => {
       this.lazyInit.value = t.value;
     }, { immediate: !0 });
   }
 }
-let it = class {
+let et = class {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1076,7 +1074,7 @@ let it = class {
    * @param ImageBackgroundConstructor class for working with image background/ класс для работы с фоном изображения
    * @param ImageImgConstructor class for working with image tag/ класс для работы с тегом изображения
    */
-  constructor(t, e, s, n, c = Y, g = q, m = Z, u = J, v = V, y = tt, b = et) {
+  constructor(t, e, s, n, c = Y, g = q, m = G, u = Z, v = T, y = V, b = tt) {
     i(this, "type");
     i(this, "data");
     i(this, "coordinator");
@@ -1097,13 +1095,13 @@ let it = class {
       const t = this.type.item.value;
       if (t === a.pdf) {
         const s = this.data.image.value;
-        if (p(s))
+        if (f(s))
           return s;
       }
       const e = this.props.value;
       if (t === a.flagCompressed && e)
         return String(e).replace("f-", "").toUpperCase();
-      if (t && p(e) && [
+      if (t && f(e) && [
         "filled",
         "outlined",
         "round",
@@ -1168,7 +1166,7 @@ let it = class {
           case a.public:
             return { "mask-image": this.background.image.value };
           case a.color:
-            if (p(t))
+            if (f(t))
               return { "background-color": t };
         }
       return {};
@@ -1213,10 +1211,10 @@ let it = class {
         type: this.type.item.value,
         image: w
       });
-    }), R(() => this.adaptiveItem.remove());
+    }), E(() => this.adaptiveItem.remove());
   }
 };
-class ct extends X {
+class ot extends X {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -1224,7 +1222,7 @@ class ct extends X {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor image item class/ класс элемента изображения
    */
-  constructor(e, s, n, c = it) {
+  constructor(e, s, n, c = et) {
     super(
       e,
       s,
@@ -1266,30 +1264,30 @@ class ct extends X {
     i(this, "renderPicture", () => {
       const e = this.item.img.picture.value, s = [];
       return e && e.forEach(
-        (n) => s.push(f("source", n))
-      ), s.push(this.renderImgItem()), f("picture", this.propsImage.value, s);
+        (n) => s.push(p("source", n))
+      ), s.push(this.renderImgItem()), p("picture", this.propsImage.value, s);
     });
     /**
      * Rendering the img tag.
      *
      * Рендеринг тега img.
      */
-    i(this, "renderImg", () => f("span", this.propsImage.value, this.renderImgItem()));
+    i(this, "renderImg", () => p("span", this.propsImage.value, this.renderImgItem()));
     /**
      * Rendering the img item.
      *
      * Рендеринг элемента img.
      */
-    i(this, "renderImgItem", () => f("img", this.item.img.binds.value));
+    i(this, "renderImgItem", () => p("img", this.item.img.binds.value));
     /**
      * Rendering the value for the component.
      *
      * Рендеринг значения для компонента.
      */
-    i(this, "renderValue", () => this.item.type.item.value === a.pdf ? f(
+    i(this, "renderValue", () => this.item.type.item.value === a.pdf ? p(
       "object",
       this.item.valueBinds.value
-    ) : this.item.type.item.value === a.flagCompressed ? f(
+    ) : this.item.type.item.value === a.flagCompressed ? p(
       "span",
       { class: `ui-sys-flags ui-sys-flags--${this.item.text.value}` }
     ) : this.item.text.value);
@@ -1335,7 +1333,7 @@ class ct extends X {
    * Метод для рендеринга.
    */
   initRender() {
-    return this.item.img.isPicture.value ? this.renderPicture() : this.item.img.is.value ? this.renderImg() : f(
+    return this.item.img.isPicture.value ? this.renderPicture() : this.item.img.is.value ? this.renderImg() : p(
       "span",
       this.propsMain.value,
       this.renderValue()
@@ -1343,8 +1341,8 @@ class ct extends X {
   }
 }
 export {
-  it as Image,
-  ct as ImageDesign,
+  et as Image,
+  ot as ImageDesign,
   a as ImageTypeValue,
-  nt as defaultsImage
+  ht as defaultsImage
 };

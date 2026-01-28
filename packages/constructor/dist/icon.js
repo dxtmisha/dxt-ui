@@ -1,13 +1,14 @@
-var m = Object.defineProperty;
-var v = (e, t, i) => t in e ? m(e, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : e[t] = i;
-var s = (e, t, i) => v(e, typeof t != "symbol" ? t + "" : t, i);
+var v = Object.defineProperty;
+var I = (e, t, i) => t in e ? v(e, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : e[t] = i;
+var s = (e, t, i) => I(e, typeof t != "symbol" ? t + "" : t, i);
 import { computed as n, h as A } from "vue";
-import { getBindRef as p, DesignConstructorAbstract as I } from "@dxtmisha/functional";
-import { A as a } from "./AriaStaticInclude-CFGewqpn.js";
-import { S as f } from "./SkeletonInclude-BIUzAO2s.js";
-import { I as D, a as w } from "./IconInclude-CLqwI29Q.js";
-import { I as M } from "./IconTrailingInclude-CdsOcDxv.js";
-class g {
+import { getBindRef as l, DesignConstructorAbstract as f } from "@dxtmisha/functional";
+import { A as h } from "./AriaStaticInclude-CFGewqpn.js";
+import { E as g } from "./EventClickInclude-CtY-88za.js";
+import { S as y } from "./SkeletonInclude-BIUzAO2s.js";
+import { I as E, a as K } from "./IconInclude-CLqwI29Q.js";
+import { I as O } from "./IconTrailingInclude-CdsOcDxv.js";
+class b {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -18,9 +19,10 @@ class g {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param EventClickIncludeConstructor class for working with events/ класс для работы с событиями
    * @param SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
    */
-  constructor(t, i, c, r, o, l, d, u, h = f) {
+  constructor(t, i, c, r, o, m, u, a, d = g, p = y) {
     /**
      * Returns the property for the base icon/ Возвращает свойство для базовой иконки
      */
@@ -33,6 +35,10 @@ class g {
      * An object for working with the Skeleton/ Объект для работы с Skeleton
      */
     s(this, "skeleton");
+    /**
+     * Object for working with events/ Объект для работы с событиями
+     */
+    s(this, "event");
     /**
      * Checks if the additional icon is active/ Проверяет, активна ли дополнительная иконка
      */
@@ -48,13 +54,18 @@ class g {
      *
      * Вычисляемые привязки для элемента иконки.
      */
-    s(this, "binds", n(() => ({
-      key: "icon",
-      tabindex: this.props.dynamic ? 0 : void 0,
-      ...a.role(this.getRole()),
-      ...a.label(this.props.ariaLabel),
-      ...a.hidden(!this.props.dynamic)
-    })));
+    s(this, "binds", n(() => {
+      var t;
+      return {
+        key: "icon",
+        tabindex: this.props.dynamic ? (t = this.props.tabindex) != null ? t : 0 : void 0,
+        onClick: this.props.dynamic ? this.event.onClick : void 0,
+        onKeydown: this.props.dynamic ? this.event.onKeydown : void 0,
+        ...h.role(this.getRole()),
+        ...h.label(this.props.ariaLabel),
+        ...h.hidden(!this.props.dynamic)
+      };
+    }));
     /**
      * Triggers an event when the image loading is complete.
      *
@@ -65,7 +76,7 @@ class g {
       var i;
       return (i = this.emits) == null ? void 0 : i.call(this, "load", t);
     });
-    this.props = t, this.refs = i, this.element = c, this.classDesign = r, this.className = o, this.components = l, this.slots = d, this.emits = u, this.SkeletonIncludeConstructor = h, this.iconBind = p(
+    this.props = t, this.refs = i, this.element = c, this.classDesign = r, this.className = o, this.components = m, this.slots = u, this.emits = a, this.EventClickIncludeConstructor = d, this.SkeletonIncludeConstructor = p, this.iconBind = l(
       i.icon,
       n(() => ({
         key: "mainIcon",
@@ -75,7 +86,7 @@ class g {
         hide: this.isActive.value,
         onLoad: this.onLoad
       }))
-    ), this.iconActiveBind = p(
+    ), this.iconActiveBind = l(
       i.iconActive,
       n(() => ({
         key: "activeIcon",
@@ -84,7 +95,11 @@ class g {
         disabled: this.props.disabled,
         hide: !this.isActive.value
       }))
-    ), this.skeleton = new h(
+    ), this.event = new d(
+      t,
+      void 0,
+      a
+    ), this.skeleton = new p(
       t,
       r,
       ["classBackgroundVariant"]
@@ -102,11 +117,11 @@ class g {
       return "button";
   }
 }
-const L = {
+const S = {
   // :default [!] System label / Системная метка
   animationType: "type1"
 };
-class S extends I {
+class R extends f {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -114,7 +129,7 @@ class S extends I {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor icon item class/ класс элемента иконки
    */
-  constructor(i, c, r, o = g) {
+  constructor(i, c, r, o = b) {
     super(
       i,
       c,
@@ -173,6 +188,7 @@ class S extends I {
    */
   initExpose() {
     return {
+      ...this.item.event.expose,
       isActive: this.item.isActive
     };
   }
@@ -203,10 +219,10 @@ class S extends I {
   }
 }
 export {
-  g as Icon,
-  S as IconDesign,
-  D as IconInclude,
-  w as IconLiteInclude,
-  M as IconTrailingInclude,
-  L as defaultsIcon
+  b as Icon,
+  R as IconDesign,
+  E as IconInclude,
+  K as IconLiteInclude,
+  O as IconTrailingInclude,
+  S as defaultsIcon
 };

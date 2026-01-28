@@ -79,6 +79,19 @@ export class EventClickInclude {
   }
 
   /**
+   * Event trigger function when pressing the space bar
+   *
+   * Функция вызова события при нажатии на пробел
+   * @param event event object/ объект события
+   */
+  readonly onKeydown = (event: KeyboardEvent) => {
+    if (event.code === 'Space') {
+      this.onClick(event as unknown as MouseEvent)
+      event.preventDefault()
+    }
+  }
+
+  /**
    * Parameters for the event
    *
    * Параметры для события

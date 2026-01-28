@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { GEO_FLAG_ICON_NAME, Icons, isFilled } from '@dxtmisha/functional'
+import { Icons, isFilled } from '@dxtmisha/functional'
 
 import { ImagePdf } from './ImagePdf'
 
@@ -43,10 +43,6 @@ export class ImageType {
 
       if (image.match(/\//)) {
         return ImageTypeValue.image
-      }
-
-      if (image.match(GEO_FLAG_ICON_NAME)) {
-        return ImageTypeValue.icon
       }
 
       if (image.match(/^#/)) {

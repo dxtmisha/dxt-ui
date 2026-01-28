@@ -2,8 +2,8 @@ var o = Object.defineProperty;
 var h = (s, t, e) => t in s ? o(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
 var r = (s, t, e) => h(s, typeof t != "symbol" ? t + "" : t, e);
 import { toRefs as p } from "vue";
-import { RouterItemRef as u } from "@dxtmisha/functional";
-class m {
+import { RouterItemRef as n } from "@dxtmisha/functional";
+class d {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -30,6 +30,15 @@ class m {
           (this.enabled.isEnabled.value || i.type === "icon-trailing" && !this.enabled.isDisabled.value) && this.emit(t, i);
         } else
           this.emit(t, this.getOptions(t));
+    });
+    /**
+     * Event trigger function when pressing the space bar
+     *
+     * Функция вызова события при нажатии на пробел
+     * @param event event object/ объект события
+     */
+    r(this, "onKeydown", (t) => {
+      t.code === "Space" && (this.onClick(t), t.preventDefault());
     });
     this.props = t, this.enabled = e, this.emits = i, this.refs = t ? p(t) : void 0;
   }
@@ -75,7 +84,7 @@ class m {
    */
   toRouter() {
     var t, e;
-    return (t = this.props) != null && t.to ? (u.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
+    return (t = this.props) != null && t.to ? (n.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
   }
   /**
    * Triggers the click event
@@ -89,5 +98,5 @@ class m {
   }
 }
 export {
-  m as E
+  d as E
 };

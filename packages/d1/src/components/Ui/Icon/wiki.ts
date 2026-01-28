@@ -12,14 +12,15 @@ const propsNames: StorybookProps = [
   { name: 'ariaLabel', type: 'string' },
   { name: 'asPalette', type: 'boolean' },
   { name: 'circle', type: 'boolean' },
+  { name: 'detail', type: 'Record<string, any>' },
   { name: 'dir', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
   { name: 'dynamic', type: 'boolean' },
   { name: 'end', type: 'boolean' },
   { name: 'hide', type: 'boolean' },
   { name: 'high', type: 'boolean' },
-  { name: 'icon', type: 'ImageValue<ImageProps>' },
-  { name: 'iconActive', type: 'ImageValue<ImageProps>' },
+  { name: 'icon', type: 'ImageValue<Image>' },
+  { name: 'iconActive', type: 'ImageValue<Image>' },
   { name: 'inverse', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'overlay', type: 'boolean' },
@@ -29,7 +30,10 @@ const propsNames: StorybookProps = [
   { name: 'size', type: 'string', option: ['auto', 'x', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl', '9xl'] },
   { name: 'square', type: 'boolean' },
   { name: 'start', type: 'boolean' },
-  { name: 'turn', type: 'boolean' }
+  { name: 'tabindex', type: 'string | number' },
+  { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },
+  { name: 'turn', type: 'boolean' },
+  { name: 'value', type: 'EventClickValue[\'value\']' }
   // :propsList [!] System label / Системная метка
 ]
 
