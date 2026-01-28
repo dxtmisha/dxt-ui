@@ -578,7 +578,7 @@ export class DesignComponent extends DesignCommand {
       `exports|${name}`,
       {
         types: `./dist/${this.getFullName()}.d.ts`,
-        default: `./dist/components/${PropertiesConfig.getProjectName()}/${this.getName()}/index.d.ts`
+        default: `./dist/${this.getFullName()}.js`
       }
     )
 
@@ -591,12 +591,13 @@ export class DesignComponent extends DesignCommand {
    * Генерирует файл библиотеки.
    */
   protected makeLibrary(): this {
-    const dir: string = `../${UI_DIR_COMPONENTS}/${this.getProjectName()}/${this.getName()}`
+    const dir: string = `../${UI_DIR_COMPONENTS}/${this.getProjectName()}/${this.getName()}/`
     const name = this.getFullName()
 
     PropertiesFile.writeByPath(
       [...UI_DIRS_LIBRARY, `${name}.ts`],
-      `export * from '${dir}'
+      `export { default as ${name} } from '${dir}${name}.vue'
+export type { ${this.getName()}Props as ${name}Props } from '${dir}props'
 `
     )
 

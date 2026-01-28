@@ -20,7 +20,7 @@ export const viteComponents = mergeConfig(
     undefined,
     undefined,
     undefined,
-    false
+    true
   ),
   {
     plugins: [mdx()]

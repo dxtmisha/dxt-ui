@@ -27,12 +27,10 @@ export class LibraryTypes {
     this.items.write(
       'types',
       [
-        'import \'@vue/runtime-core\'',
-        '',
         ...this.initImports(),
         '',
-        // ...this.initExports(),
-        // '',
+        ...this.initExports(),
+        '',
         'declare module \'@vue/runtime-core\' {',
         '  export interface GlobalComponents {',
         ...this.initGlobalComponentsVue(),
@@ -63,7 +61,7 @@ export class LibraryTypes {
     this.items.getComponentList()
       .forEach((component) => {
         list.push(
-          `import { ${component.codeFull} } from '${this.getPathComponent(component)}'`
+          `import _${component.codeFull} from '${this.getPathComponent(component)}/${component.codeFull}.vue'`
         )
       })
 
@@ -81,7 +79,7 @@ export class LibraryTypes {
     this.items.getComponentList()
       .forEach((component) => {
         list.push(
-          `export * from '${this.getPathComponent(component)}/index'`
+          `export const ${component.codeFull} = _${component.codeFull}`
         )
       })
 

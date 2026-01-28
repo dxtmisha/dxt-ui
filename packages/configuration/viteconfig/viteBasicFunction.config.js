@@ -136,7 +136,7 @@ export const viteBasicFunction = (
         '**/vite-env.d.ts'
       ],
       include: [
-        ...entry,
+        ...(Array.isArray(entry) ? entry : [entry]),
         ...include,
         ...includeExtended
       ],
