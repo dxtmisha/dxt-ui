@@ -1497,6 +1497,48 @@ export declare type ElementOrString<E extends ElementOrWindow> = E | string;
 export declare type ElementOrWindow = HTMLElement | Window;
 
 /**
+ * Class for taking screenshots of an element.
+ *
+ * Класс для создания скриншотов элемента.
+ *
+ * This class uses native browser APIs to capture an element by embedding its HTML into an SVG.
+ * It has limitations and may not render everything with perfect accuracy, especially:
+ * - Images, iframes, or other resources from different origins (due to CORS security policies).
+ * - CSS pseudo-elements like ::before and ::after are not rendered.
+ * - The element's context is lost, so CSS rules depending on parent elements might not apply correctly.
+ *
+ * For more robust and accurate capturing, a library like html2canvas is recommended as it reconstructs
+ * the element and its styles on a canvas from scratch.
+ */
+export declare class ElementScreenshot {
+    protected readonly element: HTMLElement;
+    /**
+     * Constructor
+     * @param element HTML element to capture/ HTML элемент для захвата
+     */
+    constructor(element: HTMLElement);
+    /**
+     * Takes a screenshot of the element.
+     *
+     * Делает скриншот элемента.
+     */
+    take(): Promise<string>;
+    /**
+     * Takes a screenshot and downloads it.
+     *
+     * Делает скриншот и скачивает его.
+     * @param filename name of the file to download/ имя файла для скачивания
+     */
+    download(filename?: string): Promise<void>;
+    /**
+     * Gathers all CSS styles from the document's stylesheets.
+     *
+     * Собирает все стили CSS из таблиц стилей документа.
+     */
+    protected getStyles(): string;
+}
+
+/**
  * Union type for all "empty" values including falsy primitives and string representations/
  * Объединенный тип для всех "пустых" значений включая ложные примитивы и строковые представления
  */
@@ -4676,75 +4718,3 @@ export declare function uniqueArray<T>(value: T[]): T[];
 export declare function writeClipboardData(text: string): Promise<void>;
 
 export { }
-
-
-
-declare module '@vue/reactivity' {
-    interface RefUnwrapBailTypes {
-        runtimeCoreBailTypes: VNode | {
-            $: ComponentInternalInstance;
-        };
-    }
-}
-
-
-// Note: this file is auto concatenated to the end of the bundled d.ts during
-// build.
-
-declare module '@vue/runtime-core' {
-  export interface GlobalComponents {
-    Teleport: DefineComponent<TeleportProps>
-    Suspense: DefineComponent<SuspenseProps>
-    KeepAlive: DefineComponent<KeepAliveProps>
-    BaseTransition: DefineComponent<BaseTransitionProps>
-  }
-}
-
-
-declare module '@vue/reactivity' {
-    interface RefUnwrapBailTypes {
-        runtimeDOMBailTypes: DomType<Node | Window>;
-    }
-}
-
-
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
-        Transition: DefineComponent<TransitionProps>;
-        TransitionGroup: DefineComponent<TransitionGroupProps>;
-    }
-    interface GlobalDirectives {
-        vShow: typeof vShow;
-        vOn: VOnDirective;
-        vBind: VModelDirective;
-        vIf: Directive<any, boolean>;
-        vOnce: Directive;
-        vSlot: Directive;
-    }
-}
-
-
-
-// CSS
-declare module '*.css' {}
-
-
-declare module '*.scss' {}
-
-
-declare module '*.sass' {}
-
-
-declare module '*.less' {}
-
-
-declare module '*.styl' {}
-
-
-declare module '*.stylus' {}
-
-
-declare module '*.pcss' {}
-
-
-declare module '*.sss' {}

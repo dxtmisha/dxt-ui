@@ -838,10 +838,16 @@ export declare const D1FieldMessage: {
 export declare const D1Icon: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< IconProps> & Readonly<{
         onLoad?: ((image: ImageEventData) => any) | undefined;
+        onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
+        onClickLite?: ((value: EventClickValue) => any) | undefined;
     }>, {
         isActive: ComputedRef<boolean>;
+        value?: Ref< EventClickValue["value"]>;
+        detail?: Ref< EventClickValue["detail"]>;
     }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
         load: (image: ImageEventData) => any;
+        click: (event: MouseEvent, value: EventClickValue) => any;
+        clickLite: (value: EventClickValue) => any;
     }, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
         P: {};
         B: {};
@@ -851,18 +857,28 @@ export declare const D1Icon: {
         Defaults: {};
     }, Readonly< IconProps> & Readonly<{
         onLoad?: ((image: ImageEventData) => any) | undefined;
+        onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
+        onClickLite?: ((value: EventClickValue) => any) | undefined;
     }>, {
         isActive: ComputedRef<boolean>;
+        value?: Ref< EventClickValue["value"]>;
+        detail?: Ref< EventClickValue["detail"]>;
     }, {}, {}, {}, {}>;
     __isFragment?: never;
     __isTeleport?: never;
     __isSuspense?: never;
 } & ComponentOptionsBase<Readonly< IconProps> & Readonly<{
     onLoad?: ((image: ImageEventData) => any) | undefined;
+    onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
+    onClickLite?: ((value: EventClickValue) => any) | undefined;
 }>, {
     isActive: ComputedRef<boolean>;
+    value?: Ref< EventClickValue["value"]>;
+    detail?: Ref< EventClickValue["detail"]>;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
     load: (image: ImageEventData) => any;
+    click: (event: MouseEvent, value: EventClickValue) => any;
+    clickLite: (value: EventClickValue) => any;
 }, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: Readonly< IconSlots> & IconSlots;
 });
@@ -1225,8 +1241,8 @@ export declare const D1Mask: {
 export declare const D1Menu: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< MenuProps> & Readonly<{
         onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
-        onWindow?: ((options: WindowEmitOptions) => any) | undefined;
         onClickLite?: ((value: EventClickValue) => any) | undefined;
+        onWindow?: ((options: WindowEmitOptions) => any) | undefined;
         onBars?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
         onBarsLite?: ((value: EventClickValue) => any) | undefined;
         onBarsBack?: ((value: EventClickValue) => any) | undefined;
@@ -1252,8 +1268,8 @@ export declare const D1Menu: {
         next(): NumberOrStringOrBoolean | undefined;
     }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
         click: (event: MouseEvent, value: EventClickValue) => any;
-        window: (options: WindowEmitOptions) => any;
         clickLite: (value: EventClickValue) => any;
+        window: (options: WindowEmitOptions) => any;
         bars: (event: MouseEvent, value: EventClickValue) => any;
         barsLite: (value: EventClickValue) => any;
         barsBack: (value: EventClickValue) => any;
@@ -1270,8 +1286,8 @@ export declare const D1Menu: {
         Defaults: {};
     }, Readonly< MenuProps> & Readonly<{
         onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
-        onWindow?: ((options: WindowEmitOptions) => any) | undefined;
         onClickLite?: ((value: EventClickValue) => any) | undefined;
+        onWindow?: ((options: WindowEmitOptions) => any) | undefined;
         onBars?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
         onBarsLite?: ((value: EventClickValue) => any) | undefined;
         onBarsBack?: ((value: EventClickValue) => any) | undefined;
@@ -1301,8 +1317,8 @@ export declare const D1Menu: {
     __isSuspense?: never;
 } & ComponentOptionsBase<Readonly< MenuProps> & Readonly<{
     onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
-    onWindow?: ((options: WindowEmitOptions) => any) | undefined;
     onClickLite?: ((value: EventClickValue) => any) | undefined;
+    onWindow?: ((options: WindowEmitOptions) => any) | undefined;
     onBars?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onBarsLite?: ((value: EventClickValue) => any) | undefined;
     onBarsBack?: ((value: EventClickValue) => any) | undefined;
@@ -1328,8 +1344,8 @@ export declare const D1Menu: {
     next(): NumberOrStringOrBoolean | undefined;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
     click: (event: MouseEvent, value: EventClickValue) => any;
-    window: (options: WindowEmitOptions) => any;
     clickLite: (value: EventClickValue) => any;
+    window: (options: WindowEmitOptions) => any;
     bars: (event: MouseEvent, value: EventClickValue) => any;
     barsLite: (value: EventClickValue) => any;
     barsBack: (value: EventClickValue) => any;

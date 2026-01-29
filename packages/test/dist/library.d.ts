@@ -27,6 +27,11 @@ export declare const DxtTestBlock: {
         default?(_: {}): any;
     };
 });
+export declare const DxtTestButton: DefineComponent<{
+    label: string;
+}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
+    label: string;
+}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLButtonElement>;
 export declare const DxtTestPage: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
         title?: string;
@@ -53,11 +58,11 @@ export declare const DxtTestPage: {
         default?(_: {}): any;
     };
 });
-export declare const UiTestButton: DefineComponent<{
-    label: string;
+export declare const DxtTestScreenshot: DefineComponent<{
+    element: HTMLElement;
 }, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
-    label: string;
-}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLButtonElement>;
+    element: HTMLElement;
+}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>;
 export declare const UiTestContainer: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
         label?: string;
@@ -265,6 +270,11 @@ export declare const DxtTestWikiDemo: {
 }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: Readonly< TestWikiSlotRender> & TestWikiSlotRender;
 });
+export declare const DxtTestWikiPossibilities: DefineComponent<{
+    possibilities: string[];
+}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
+    possibilities: string[];
+}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLUListElement>;
 export declare const DxtTestWikiPropItem: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
         item: WikiStorybookProp;
