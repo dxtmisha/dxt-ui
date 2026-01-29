@@ -98,5 +98,16 @@ export const wikiAria: StorybookArgsToList = {
         ru: 'Определяет роль элемента item для доступности'
       }
     }
+  },
+  tabindex: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.aria,
+      type: 'number',
+      description: {
+        en: 'Tab order position for keyboard navigation',
+        ru: 'Позиция порядка табуляции для навигации с клавиатуры'
+      }
+    }
   }
 }

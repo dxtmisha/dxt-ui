@@ -18,6 +18,7 @@ const props = defineProps<{
 defineSlots<TestWikiSlotRender>()
 
 const name = computed(() => props.item.getName())
+const defaultValue = computed(() => props.item.getDefaultValue())
 const description = computed(() => props.item.getDescription())
 const type = computed(() => props.item.getType())
 const options = computed(() => props.item.getOptions())
@@ -33,6 +34,12 @@ const demo = computed(() => props.item.getDemo())
       <DxtTestWikiCode :code="type"/>
     </div>
     <div class="dxt-test-wiki-prop-item__description">{{ description }}</div>
+    <div
+      v-if="defaultValue !== undefined"
+      class="dxt-test-wiki-prop-item__description"
+    >
+      default value: {{ defaultValue }}
+    </div>
     <div class="dxt-test-wiki-prop-item__demo">
       <template v-if="isDemo">
         <template v-if="options">
@@ -66,8 +73,9 @@ const demo = computed(() => props.item.getDemo())
   @include dxt.flexStretchY;
   gap: 4px;
 
-  padding: 8px 0 0;
-  border-top: 1px solid oklch(92.8% 0.006 264.531);
+  padding: 4px;
+  border: 1px solid oklch(92.8% 0.006 264.531);
+  border-radius: 8px;
 
   &__tilte {
     @include dxt.flexX;
@@ -76,7 +84,7 @@ const demo = computed(() => props.item.getDemo())
 
   &__name {
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 20px;
   }
 

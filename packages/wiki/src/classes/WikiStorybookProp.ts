@@ -46,6 +46,15 @@ export class WikiStorybookProp {
   }
 
   /**
+   * Returns the default value of the property.
+   *
+   * Возвращает значение по умолчанию для свойства.
+   */
+  getDefaultValue(): any {
+    return this.item?.table?.defaultValue?.summary
+  }
+
+  /**
    * Returns the property type.
    *
    * Возвращает тип свойства.

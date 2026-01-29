@@ -30,7 +30,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables dynamic reactions to hover and focus',
         ru: 'Включает динамическую реакцию на hover и focus'
       }
-    }
+    },
+    isDemo: true
   },
   dynamicHover: {
     type: StorybookControl.boolean,

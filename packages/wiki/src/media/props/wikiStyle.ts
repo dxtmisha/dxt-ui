@@ -406,7 +406,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Adds background overlay to the component',
         ru: 'Добавляет фоновую подложку к компоненту'
       }
-    }
+    },
+    isDemo: true
   },
   padding: {
     type: StorybookControl.select,
@@ -437,7 +438,7 @@ export const wikiStyle: StorybookArgsToList = {
       options: [],
       type: 'string',
       description: {
-        en: 'Sets color palette for the element',
+        en: 'Sets a color palette for the element',
         ru: 'Задает цветовую палитру для элемента'
       }
     }
@@ -497,7 +498,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Sets component size',
         ru: 'Задает размер компонента'
       }
-    }
+    },
+    isDemo: true
   },
   template: {
     type: StorybookControl.string,

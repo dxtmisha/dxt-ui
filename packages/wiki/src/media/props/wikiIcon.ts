@@ -14,14 +14,15 @@ export const wikiIcon: StorybookArgsToList = {
         en: 'Sets the icon to an active state',
         ru: 'Переводит иконку в активное состояние'
       }
-    }
+    },
+    isDemo: true
   },
 
   // Values
   'icon.icon': {
     type: StorybookControl.string,
     options: {
-      category: StorybookCategory.value,
+      category: StorybookCategory.icon,
       type: ['string', 'File'],
       description: {
         en: 'Value of the main icon',
@@ -33,7 +34,7 @@ export const wikiIcon: StorybookArgsToList = {
   'icon.iconActive': {
     type: StorybookControl.string,
     options: {
-      category: StorybookCategory.value,
+      category: StorybookCategory.icon,
       type: ['string', 'File'],
       description: {
         en: 'Value of the active icon',

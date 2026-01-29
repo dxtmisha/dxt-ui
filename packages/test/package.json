@@ -36,7 +36,7 @@
       "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
     },
-    "./style": "./dist/style.css",
+    "./style.css": "./dist/style.css",
     "./dist/types/*": "./dist/types/*",
     "./dist/types/**/*.d.ts": "./dist/types/**/*.d.ts"
   },

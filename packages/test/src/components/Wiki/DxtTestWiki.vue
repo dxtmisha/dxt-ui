@@ -25,7 +25,7 @@ defineSlots<{
 }>()
 
 const name = computed(() => `${props.design}${props.wiki.getName()}`)
-const propsName = computed(() => `interface ${props.wiki.getName()}Props`)
+const propsName = computed(() => `type ${props.wiki.getName()}Props`)
 const emitsName = computed(() => `type ${props.wiki.getName()}Emits`)
 const exposeName = computed(() => `interface ${props.wiki.getName()}Expose`)
 const slotsName = computed(() => `interface ${props.wiki.getName()}Slots`)
@@ -72,18 +72,21 @@ provide('values', values)
     <DxtTestWikiTitle :type="slotsName" label="Slots"/>
     <DxtTestWikiTitle :type="propsName" label="Props"/>
 
-    <DxtTestWikiPropItem
-      v-for="(item, key) of list"
-      :key="key"
-      :item="item"
-    >
-      <template v-if="item.name in $slots" #[item.name]="slotProps">
-        <slot :name="item.name" v-bind="slotProps"/>
-      </template>
-      <template v-else-if="('render' in $slots)" #render="binds">
-        <slot name="render" v-bind="binds"/>
-      </template>
-    </DxtTestWikiPropItem>
+    <div class="dxt-test-wiki__props">
+      <DxtTestWikiPropItem
+        v-for="(item, key) of list"
+        :key="key"
+        :item="item"
+        class="dxt-test-wiki__props__item"
+      >
+        <template v-if="item.name in $slots" #[item.name]="slotProps">
+          <slot :name="item.name" v-bind="slotProps"/>
+        </template>
+        <template v-else-if="('render' in $slots)" #render="binds">
+          <slot name="render" v-bind="binds"/>
+        </template>
+      </DxtTestWikiPropItem>
+    </div>
 
     <template v-if="aiRender">
       <DxtTestWikiTitle label="Render"/>
@@ -110,6 +113,17 @@ provide('values', values)
 
     font-size: 12px;
     line-height: 16px;
+  }
+
+  &__props {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    &__item {
+      flex: 1;
+      flex-basis: 44%;
+    }
   }
 }
 </style>

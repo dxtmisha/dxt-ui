@@ -3,19 +3,23 @@ import type { StorybookComponentsDescriptionItem } from '../../types/storybookTy
 export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
   name: 'Icon',
   description: {
-    en: 'Component for displaying icons',
-    ru: 'Компонент для отображения иконок'
+    en: 'A component for displaying vector icons with support for state management, automatic directionality adaptation, and design system styling.',
+    ru: 'Компонент для отображения векторных иконок с поддержкой управления состоянием, автоматической адаптацией направления и стилизацией дизайн-системы.'
   },
   possibilities: {
     en: [
-      'displaying icons by name',
-      'switching icons on active state',
-      'animation support'
+      'rendering icons by identifier',
+      'toggling between two icons based on the active state',
+      'automatic mirroring for RTL languages',
+      'integration with the color palette and inverse mode',
+      'displaying a skeleton loader placeholder'
     ],
     ru: [
-      'отображение иконок по имени',
-      'переключение иконок в активном состоянии',
-      'поддержка анимации'
+      'рендеринг иконок по идентификатору',
+      'переключение между двумя иконками в зависимости от активного состояния',
+      'автоматическое зеркалирование для RTL языков',
+      'интеграция с цветовой палитрой и инверсный режим',
+      'отображение заполнителя (скелетона) при загрузке'
     ]
   },
   import: [],
@@ -135,6 +139,40 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
+    `
+  },
+  ai: {
+    description: `
+Icon is a component for displaying vector icons, typically from the Material Symbols library.
+It supports state switching (active/inactive), directionality (RTL), and integration with the design system's palette.
+
+**Key Features:**
+1. **Icon Source:**
+   - \`icon\`: The name of the icon to display (e.g., "home", "menu", "arrow_forward").
+     Uses the project's icon set (usually Material Symbols).
+
+2. **Interactive States:**
+   - \`active\`: Boolean flag to toggle the active state.
+   - \`iconActive\`: The icon name to show when \`active\` is \`true\`.
+     Ideal for toggle buttons (e.g., "favorite_border" vs "favorite").
+
+3. **Styling:**
+   - \`size\`: Controls the dimensions of the icon (e.g., "sm", "md", "lg").
+   - \`asPalette\`: Applies the active palette color to the icon.
+   - \`inverse\`: Inverts the colors, useful for dark backgrounds or contrast.
+
+4. **Directionality (\`dir\`):**
+   - Automatically mirrors the icon for RTL (Right-to-Left) languages if the icon is directional (like arrows).
+
+5. **Loading:**
+   - \`isSkeleton\`: Renders a loading placeholder (skeleton) instead of the icon.
+
+**Usage Examples:**
+
+- **Simple Icon:** \`<Icon icon="search" />\`
+- **Toggle Icon:** \`<Icon icon="visibility_off" iconActive="visibility" :active="isVisible" />\`
+- **Directional Arrow:** \`<Icon icon="arrow_forward" dir />\`
+- **Large Palette Icon:** \`<Icon icon="star" size="xl" asPalette />\`
     `
   }
 }
