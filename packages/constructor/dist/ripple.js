@@ -69,15 +69,16 @@ class N extends p {
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor ripple item class/ класс элемента ripple
    */
-  constructor(t, i, a) {
+  constructor(t, i, a, e = f) {
     super(
       t,
       i,
       a
     );
     l(this, "item");
-    this.item = new f(
+    this.item = new e(
       this.props,
       this.refs,
       this.element,

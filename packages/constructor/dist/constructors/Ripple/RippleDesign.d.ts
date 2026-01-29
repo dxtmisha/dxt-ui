@@ -13,8 +13,9 @@ export declare class RippleDesign<COMP extends RippleComponents, EXPOSE extends 
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor ripple item class/ класс элемента ripple
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, RippleEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, RippleEmits, P>, ItemConstructor?: typeof Ripple);
     /**
      * Initialization of all the necessary properties for work<br>
      * Инициализация всех необходимых свойств для работы.

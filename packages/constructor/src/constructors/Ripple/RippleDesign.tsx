@@ -43,11 +43,13 @@ export class RippleDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor ripple item class/ класс элемента ripple
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, RippleEmits, P>
+    options?: ConstrOptions<COMP, RippleEmits, P>,
+    ItemConstructor: typeof Ripple = Ripple
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class RippleDesign<
       options
     )
 
-    this.item = new Ripple(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
