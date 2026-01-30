@@ -1467,7 +1467,7 @@ export declare class RouterItemRef {
      * @param params route parameters/ параметры маршрута
      * @param query route query/ запрос маршрута
      */
-    static getHref(name: string, params?: any, query?: any): ConstrHrefProps;
+    static getHref(name?: string, params?: any, query?: any): ConstrHrefProps;
     /**
      * Site path change.
      *
@@ -1489,6 +1489,13 @@ export declare class RouterItemRef {
      * @param router router instance/ экземпляр роутера
      */
     static setOneTime(router: Router): void;
+    /**
+     * Converts the raw route location to href properties.
+     *
+     * Преобразует необработанное местоположение маршрута в свойства href.
+     * @param to raw route location/ необработанное местоположение маршрута
+     */
+    static rawToHref(to?: string | RouteLocationRaw): ConstrHrefProps;
 }
 
 /**

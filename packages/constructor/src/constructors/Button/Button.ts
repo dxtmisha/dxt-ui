@@ -95,6 +95,19 @@ export class Button {
     )
   }
 
+  /** tag name/ название тега */
+  readonly tag = computed<string>(() => {
+    if (this.props.tag) {
+      return this.props.tag
+    }
+
+    if (this.props.href) {
+      return 'a'
+    }
+
+    return 'button'
+  })
+
   /** values for the class/ значения для класса */
   readonly classes = computed<ConstrClass>(() => ({
     [`${this.className}--icon`]: this.icon.isIcon.value,

@@ -55,7 +55,6 @@ export type ButtonProps = ButtonPropsBasic & ButtonPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsButton = {
-  tag: 'button',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

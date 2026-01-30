@@ -1,5 +1,6 @@
 import type { RouteLocationRaw, Router } from 'vue-router'
 import type { ConstrHrefProps } from '../../types/constructorTypes.ts'
+import { isObjectNotArray, isString } from '@dxtmisha/functional-basic'
 
 /**
  * Router management class.
@@ -43,14 +44,16 @@ export class RouterItemRef {
    * @param query route query/ запрос маршрута
    */
   static getHref(
-    name: string,
+    name?: string,
     params?: any,
     query?: any
   ): ConstrHrefProps {
-    const href = this.getLink(name, params, query)
+    if (name) {
+      const href = this.getLink(name, params, query)
 
-    if (href) {
-      return { href }
+      if (href) {
+        return { href }
+      }
     }
 
     return {}
@@ -88,5 +91,25 @@ export class RouterItemRef {
     if (!this.router) {
       this.set(router)
     }
+  }
+
+  /**
+   * Converts the raw route location to href properties.
+   *
+   * Преобразует необработанное местоположение маршрута в свойства href.
+   * @param to raw route location/ необработанное местоположение маршрута
+   */
+  static rawToHref(
+    to?: string | RouteLocationRaw
+  ): ConstrHrefProps {
+    if (
+      isObjectNotArray(to)
+      && 'name' in to
+      && isString(to?.name)
+    ) {
+      return this.getHref(to.name)
+    }
+
+    return {}
   }
 }

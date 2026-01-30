@@ -1,10 +1,10 @@
 var et = Object.defineProperty;
 var it = (s, t, e) => t in s ? et(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
 var l = (s, t, e) => it(s, typeof t != "symbol" ? t + "" : t, e);
-import { isArray as st, isObjectNotArray as M, forEach as k, toArray as R, isObject as z, toCamelCase as nt, toDate as W, Datetime as rt, Geo as C, EventItem as at, GeoFlag as ut, GeoIntl as lt, isSelected as D, getExp as ht, getColumn as K, ScrollbarWidth as ot, Api as ct, executeFunction as Y, BroadcastMessage as dt, Cookie as gt, Hash as A, isDomRuntime as G, getElementId as L, Loading as P, random as ft, Meta as vt, DataStorage as J, Translate as U, executePromise as mt } from "@dxtmisha/functional-basic";
+import { isArray as st, isObjectNotArray as D, forEach as k, toArray as R, isObject as z, toCamelCase as nt, toDate as W, Datetime as rt, Geo as C, EventItem as at, GeoFlag as ut, GeoIntl as lt, isSelected as x, getExp as ht, getColumn as K, isString as ct, ScrollbarWidth as ot, Api as dt, executeFunction as Y, BroadcastMessage as gt, Cookie as ft, Hash as A, isDomRuntime as G, getElementId as L, Loading as P, random as mt, Meta as vt, DataStorage as J, Translate as U, executePromise as yt } from "@dxtmisha/functional-basic";
 export * from "@dxtmisha/functional-basic";
-import { isRef as N, h as yt, computed as a, toRefs as pt, useAttrs as bt, useSlots as It, ref as f, watch as g, triggerRef as St, shallowRef as I, onUnmounted as O, inject as Lt, provide as Ct, watchEffect as Q } from "vue";
-class kt {
+import { isRef as N, h as pt, computed as a, toRefs as bt, useAttrs as It, useSlots as St, ref as f, watch as g, triggerRef as Lt, shallowRef as I, onUnmounted as T, inject as Ct, provide as kt, watchEffect as Q } from "vue";
+class wt {
   /**
    * Constructor
    * @param props base data/ базовые данные
@@ -54,7 +54,7 @@ class kt {
     return ((e = this.cache) == null ? void 0 : e[t]) !== ((i = this.props) == null ? void 0 : i[t]);
   }
 }
-class wt {
+class Dt {
   /**
    * Constructor
    * @param props base data/ базовые данные
@@ -65,7 +65,7 @@ class wt {
   constructor(t, e, i) {
     l(this, "event", {});
     l(this, "changed");
-    this.props = t, this.callback = e, this.changed = new kt(t, i);
+    this.props = t, this.callback = e, this.changed = new wt(t, i);
   }
   /**
    * Calls the callback function.
@@ -113,7 +113,7 @@ class wt {
     this.callback && this.callback(this.event);
   }
 }
-class Pt extends wt {
+class Ut extends Dt {
   /**
    * Calls the callback function.
    *
@@ -136,31 +136,31 @@ class Pt extends wt {
 function d(s) {
   return N(s) ? s.value : s;
 }
-function Dt(s) {
+function xt(s) {
   return s && "class" in s && typeof s.class == "string" ? s.class : void 0;
 }
-function xt(s, t, e) {
-  const i = Dt(t);
+function Mt(s, t, e) {
+  const i = xt(t);
   return e && i ? `${e}.${i}` : e || i || s;
 }
-function Mt(s, t, e, i) {
+function Nt(s, t, e, i) {
   let n = t;
   return (!t || "key" in t) && (n = {
-    key: xt(s, t, i),
+    key: Mt(s, t, i),
     ...t
-  }), yt(s, n, e);
+  }), pt(s, n, e);
 }
-function T(s, t) {
+function O(s, t) {
   const e = s == null ? void 0 : s.class, i = t == null ? void 0 : t.class, n = s == null ? void 0 : s.style, r = t == null ? void 0 : t.style, u = {
     ...s,
     ...t
   };
   return e && i && (u.class = [], e && u.class.push(e), i && u.class.push(i)), n && r && (u.style = [], n && u.style.push(n), r && u.style.push(r)), u;
 }
-function Nt(...s) {
+function Bt(...s) {
   let t = {};
   return s.forEach((e) => {
-    e && (t = T(t, e));
+    e && (t = O(t, e));
   }), t;
 }
 class X {
@@ -205,7 +205,7 @@ class X {
       t in this.caching || (this.caching[t] = a(() => this.computeModification(t)));
       const i = this.caching[t];
       if (i)
-        return e ? Nt(i.value, e) : i.value;
+        return e ? Bt(i.value, e) : i.value;
     }
     return e;
   }
@@ -239,7 +239,7 @@ class X {
   renderOne(t, e, i, n) {
     if (this.is(t)) {
       const r = n != null ? n : t;
-      return Mt(
+      return Nt(
         this.get(t),
         this.getModification(r, e),
         i,
@@ -270,7 +270,7 @@ class X {
   computeModification(t) {
     var i;
     const e = d((i = this.modification) == null ? void 0 : i[t]);
-    if (e && M(e)) {
+    if (e && D(e)) {
       const n = {};
       return k(e, (r, u) => {
         n[u] = d(r);
@@ -279,9 +279,9 @@ class X {
     return {};
   }
 }
-class Ut extends X {
+class qt extends X {
 }
-class qt {
+class Yt {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -301,7 +301,7 @@ class qt {
     l(this, "attrs");
     l(this, "slots");
     l(this, "dataExpose");
-    this.props = e, this.options = i, this.name = this.initName(t), this.refs = this.props ? pt(this.props) : {}, this.components = new X(i == null ? void 0 : i.components, i == null ? void 0 : i.compMod), this.emits = i == null ? void 0 : i.emits, this.classes = a(() => this.updateClasses()), this.styles = a(() => this.updateStyles()), this.attrs = bt(), this.slots = It();
+    this.props = e, this.options = i, this.name = this.initName(t), this.refs = this.props ? bt(this.props) : {}, this.components = new X(i == null ? void 0 : i.components, i == null ? void 0 : i.compMod), this.emits = i == null ? void 0 : i.emits, this.classes = a(() => this.updateClasses()), this.styles = a(() => this.updateStyles()), this.attrs = It(), this.slots = St();
   }
   init() {
     return this.classesSub = a(() => this.initClasses()), this.stylesSub = a(() => this.initStyles()), this.dataExpose = this.initExpose(), this;
@@ -399,7 +399,7 @@ class qt {
    * @param classes list of classes for transformation/ список классов для преобразования
    */
   toClass(t) {
-    return M(t) ? t : Array.isArray(t) ? { [t.filter((i) => typeof i == "string" && i.trim() !== "").join(" ")]: !0 } : typeof t == "string" ? { [t]: !0 } : {};
+    return D(t) ? t : Array.isArray(t) ? { [t.filter((i) => typeof i == "string" && i.trim() !== "").join(" ")]: !0 } : typeof t == "string" ? { [t]: !0 } : {};
   }
   /**
    * Converts the class name to standard for the current component.
@@ -462,7 +462,7 @@ class qt {
 function b(s) {
   return N(s) ? s : f(s);
 }
-class Yt {
+class Gt {
   /**
    * Constructor
    * @param date date for processing. дата для обработки
@@ -487,7 +487,7 @@ class Yt {
       this.code.value
     ), g(this.item, (n) => {
       this.date.value = W(n);
-    }), g(this.type, (n) => this.datetime.setType(n)), g(this.code, (n) => this.datetime.setCode(n)), g(this.date, (n) => this.datetime.setDate(n)), this.datetime.setWatch(() => St(this.date));
+    }), g(this.type, (n) => this.datetime.setType(n)), g(this.code, (n) => this.datetime.setCode(n)), g(this.date, (n) => this.datetime.setDate(n)), this.datetime.setWatch(() => Lt(this.date));
   }
   /**
    * Returns the basic data for the date.
@@ -607,7 +607,7 @@ class Yt {
     return a(() => this.date.value && this.datetime.standard(t));
   }
 }
-class Gt extends at {
+class Jt extends at {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -621,17 +621,17 @@ class Gt extends at {
    * значение, связанное с событием
    */
   constructor(t, e, i = ["click"], n, r, u) {
-    const h = b(t), o = b(e);
+    const h = b(t), c = b(e);
     super(
       h.value,
       i,
       n,
       r,
       u
-    ), o.value && this.setElementControl(o.value), g(h, (c) => this.setElement(c)), g(o, (c) => this.setElementControl(c));
+    ), c.value && this.setElementControl(c.value), g(h, (o) => this.setElement(o)), g(c, (o) => this.setElementControl(o));
   }
 }
-class Jt {
+class Qt {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
@@ -689,7 +689,7 @@ class Jt {
     return a(() => this.flag.getNational(t));
   }
 }
-const m = class m {
+const v = class v {
   /**
     * Information about the current country.
   *
@@ -741,9 +741,9 @@ const m = class m {
     C.set(t, !0), this.item.value = C.getItem();
   }
 };
-l(m, "item", I(C.get())), l(m, "country", a(() => m.item.value.country)), l(m, "language", a(() => m.item.value.language)), l(m, "standard", a(() => m.item.value.standard)), l(m, "firstDay", a(() => m.item.value.firstDay));
-let w = m;
-class Bt {
+l(v, "item", I(C.get())), l(v, "country", a(() => v.item.value.country)), l(v, "language", a(() => v.item.value.language)), l(v, "standard", a(() => v.item.value.standard)), l(v, "firstDay", a(() => v.item.value.firstDay));
+let w = v;
+class Rt {
   /**
    * Constructor
    * @param code country code, full form language-country or one of them/
@@ -978,7 +978,7 @@ class Z {
    * @param max Maximum number of selections / максимальное количество выделений
    * @param parent Parent identifier / идентификатор родителя
    */
-  constructor(t, e, i, n, r, u, h, o, c, v = 0, y = 9999999, S) {
+  constructor(t, e, i, n, r, u, h, c, o, m = 0, y = 9999999, S) {
     l(this, "subList", {});
     /**
      * Returns a list for forming a list.
@@ -1025,7 +1025,7 @@ class Z {
         this.data.value,
         (n) => {
           var u, h;
-          const r = D(n.index, i);
+          const r = x(n.index, i);
           return {
             ...n,
             focus: t === n.index,
@@ -1095,7 +1095,7 @@ class Z {
      */
     l(this, "isSelected", a(() => {
       const t = this.getSelected();
-      return !!t && this.mapItems.value.findIndex((e) => D(e.index, t)) !== -1;
+      return !!t && this.mapItems.value.findIndex((e) => x(e.index, t)) !== -1;
     }));
     /** Is the minimum selection reached/ Достигнуто ли минимальное выделение */
     l(this, "isSelectedMin", a(() => {
@@ -1113,7 +1113,7 @@ class Z {
      */
     l(this, "selectedList", a(() => {
       const t = this.getSelected();
-      return t && this.isSelected.value ? this.mapItems.value.filter((e) => D(e.index, t)) : [];
+      return t && this.isSelected.value ? this.mapItems.value.filter((e) => x(e.index, t)) : [];
     }));
     /**
      * Returns a list of selected items in the current group/
@@ -1121,7 +1121,7 @@ class Z {
      */
     l(this, "selectedListInGroup", a(() => {
       const t = this.getSelected();
-      return t && this.isSelected.value ? this.data.value.filter((e) => D(e.index, t)) : [];
+      return t && this.isSelected.value ? this.data.value.filter((e) => x(e.index, t)) : [];
     }));
     /**
      * Returns a list of selected items on the map.
@@ -1135,7 +1135,7 @@ class Z {
      * Возвращает список значений выделенных элементов на карте.
      */
     l(this, "selectedValues", a(() => K(this.selectedList.value, "value")));
-    this.list = t, this.focus = e, this.highlight = i, this.highlightLengthStart = n, this.filterMode = r, this.selected = u, this.keyValue = h, this.keyLabel = o, this.lite = c, this.min = v, this.max = y, this.parent = S, N(t) && g(t, () => {
+    this.list = t, this.focus = e, this.highlight = i, this.highlightLengthStart = n, this.filterMode = r, this.selected = u, this.keyValue = h, this.keyLabel = c, this.lite = o, this.min = m, this.max = y, this.parent = S, N(t) && g(t, () => {
       this.subList = {};
     });
   }
@@ -1241,17 +1241,17 @@ class Z {
    * @param step number of steps/ количество шагов
    */
   getSelectedByStep(t) {
-    var u, h, o, c, v;
+    var u, h, c, o, m;
     const e = (u = this.selectedList.value) == null ? void 0 : u[0], i = this.mapItems.value;
     if (!e)
       return (h = i[0]) == null ? void 0 : h.index;
     const r = i.findIndex((y) => y.index === e.index) + t;
     if (r in i)
-      return (o = i[r]) == null ? void 0 : o.index;
+      return (c = i[r]) == null ? void 0 : c.index;
     if (t > 0)
-      return (c = i[0]) == null ? void 0 : c.index;
+      return (o = i[0]) == null ? void 0 : o.index;
     if (t < 0)
-      return (v = i[i.length - 1]) == null ? void 0 : v.index;
+      return (m = i[i.length - 1]) == null ? void 0 : m.index;
   }
   /**
    * Returns an item by its index.
@@ -1356,21 +1356,21 @@ class Z {
    * @param item selected element/ выбранный элемент
    */
   initItem(t, e) {
-    var i, n, r, u, h, o;
-    if (M(e)) {
-      const c = e == null ? void 0 : e[(n = (i = this.keyValue) == null ? void 0 : i.value) != null ? n : "value"], v = (h = e == null ? void 0 : e[(u = (r = this.keyLabel) == null ? void 0 : r.value) != null ? u : "label"]) != null ? h : c, y = this.getIndex(
+    var i, n, r, u, h, c;
+    if (D(e)) {
+      const o = e == null ? void 0 : e[(n = (i = this.keyValue) == null ? void 0 : i.value) != null ? n : "value"], m = (h = e == null ? void 0 : e[(u = (r = this.keyLabel) == null ? void 0 : r.value) != null ? u : "label"]) != null ? h : o, y = this.getIndex(
         e == null ? void 0 : e.index,
-        c,
+        o,
         t,
-        v
+        m
       );
       return {
         ...e,
         parent: this.parent,
         index: y,
-        type: (o = e == null ? void 0 : e.type) != null ? o : "item",
-        label: v,
-        value: c
+        type: (c = e == null ? void 0 : e.type) != null ? c : "item",
+        label: m,
+        value: o
       };
     }
     return {
@@ -1382,7 +1382,7 @@ class Z {
     };
   }
 }
-class Rt {
+class At {
   /**
    * Get router instance.
    *
@@ -1412,8 +1412,12 @@ class Rt {
    * @param query route query/ запрос маршрута
    */
   static getHref(t, e, i) {
-    const n = this.getLink(t, e, i);
-    return n ? { href: n } : {};
+    if (t) {
+      const n = this.getLink(t, e, i);
+      if (n)
+        return { href: n };
+    }
+    return {};
   }
   /**
    * Site path change.
@@ -1442,9 +1446,18 @@ class Rt {
   static setOneTime(t) {
     this.router || this.set(t);
   }
+  /**
+   * Converts the raw route location to href properties.
+   *
+   * Преобразует необработанное местоположение маршрута в свойства href.
+   * @param to raw route location/ необработанное местоположение маршрута
+   */
+  static rawToHref(t) {
+    return D(t) && "name" in t && ct(t == null ? void 0 : t.name) ? this.getHref(t.name) : {};
+  }
 }
-l(Rt, "router");
-class Qt {
+l(At, "router");
+class Xt {
   /**
    * Constructor
    */
@@ -1466,80 +1479,80 @@ class Qt {
     });
   }
 }
-const At = (s) => typeof s == "string" ? { method: s } : s || {};
-let x;
-function Xt(s, t, e = !0, i, n, r) {
-  const u = f(), h = b(At(t)), o = f(!1), c = f(!1);
-  let v = !0, y = 0;
+const Ht = (s) => typeof s == "string" ? { method: s } : s || {};
+let M;
+function Zt(s, t, e = !0, i, n, r) {
+  const u = f(), h = b(Ht(t)), c = f(!1), o = f(!1);
+  let m = !0, y = 0;
   const S = async () => {
-    if (v)
+    if (m)
       return;
     const p = d(s);
     if ((!i || i.value) && p) {
-      o.value = !0, c.value = !0;
+      c.value = !0, o.value = !0;
       let B = {};
-      const V = await ct.request({
+      const V = await dt.request({
         path: p,
         ...h.value
       });
-      V && (B = V), n ? u.value = n(B) : u.value = B, o.value = !1;
+      V && (B = V), n ? u.value = n(B) : u.value = B, c.value = !1;
     } else u.value !== void 0 && (u.value = void 0);
   }, tt = () => {
     const p = [];
-    e && p.push(h), N(s) && p.push(s), i && p.push(i), x && p.push(x), p.length > 0 && g(p, async () => {
-      o.value || await S();
+    e && p.push(h), N(s) && p.push(s), i && p.push(i), M && p.push(M), p.length > 0 && g(p, async () => {
+      c.value || await S();
     });
   };
   return {
     get data() {
-      return v && (v = !1, S().then()), tt(), r && (y++, O(() => {
-        y--, y < 1 && (console.warn("useApiRef: unmounted"), u.value = void 0, v = !0, y = 0);
+      return m && (m = !1, S().then()), tt(), r && (y++, T(() => {
+        y--, y < 1 && (console.warn("useApiRef: unmounted"), u.value = void 0, m = !0, y = 0);
       })), u;
     },
     get isStarting() {
       return a(() => u.value === void 0);
     },
     get loading() {
-      return a(() => o.value);
+      return a(() => c.value);
     },
     get reading() {
-      return a(() => c.value);
+      return a(() => o.value);
     },
     reset: S
   };
 }
-const Zt = (s) => {
-  x || (x = s);
+const _t = (s) => {
+  M || (M = s);
 };
 function Et(s, t) {
   const e = `broadcast--${s}`;
-  if (e in E)
-    return E[e];
-  const i = f(Y(t)), n = new dt(
+  if (e in H)
+    return H[e];
+  const i = f(Y(t)), n = new gt(
     e,
     (r) => {
       i.value !== r.data.message && (i.value = r.data.message);
     }
   );
-  return g(i, (r) => n.post({ message: r })), E[e] = i, i;
+  return g(i, (r) => n.post({ message: r })), H[e] = i, i;
 }
-const E = {};
-function _t(s, t, e) {
-  if (s in H)
-    return H[s];
-  const i = new gt(s), n = Et(
+const H = {};
+function te(s, t, e) {
+  if (s in E)
+    return E[s];
+  const i = new ft(s), n = Et(
     `__cookie:${s}`,
     i.get(t, e)
   );
   return g(n, (r) => {
     i.set(r, e);
-  }), H[s] = n, n;
+  }), E[s] = n, n;
 }
-const H = {};
-function te() {
-  return new Bt();
+const E = {};
+function ee() {
+  return new Rt();
 }
-function ee(s, t) {
+function ie(s, t) {
   if (s in $)
     return $[s];
   const e = I(A.get(s, t));
@@ -1547,7 +1560,7 @@ function ee(s, t) {
     e.value = i;
   }), $[s] = e, e;
 }
-const $ = {}, Ht = (s = {
+const $ = {}, $t = (s = {
   rootMargin: "128px 0px"
 }) => {
   const t = {}, e = G() && "IntersectionObserver" in window ? new IntersectionObserver(
@@ -1590,10 +1603,10 @@ const $ = {}, Ht = (s = {
       const r = I(!e);
       if (e) {
         let u;
-        u = g(n, (h, o) => {
-          if (o && i(o), n.value) {
-            const c = L(n.value);
-            t[c] = {
+        u = g(n, (h, c) => {
+          if (c && i(c), n.value) {
+            const o = L(n.value);
+            t[o] = {
               status: r,
               ratio: I(0),
               entry: I(void 0),
@@ -1618,14 +1631,14 @@ const $ = {}, Ht = (s = {
      */
     disconnectLazy: () => e == null ? void 0 : e.disconnect()
   };
-}, q = [], $t = (s) => {
+}, q = [], Ft = (s) => {
   const t = q.find((i) => i.rootMargin === s);
   if (t)
     return t.item;
-  const e = Ht({ rootMargin: s });
+  const e = $t({ rootMargin: s });
   return q.push({ rootMargin: s, item: e }), e;
-}, ie = (s, t) => {
-  const e = $t(t);
+}, se = (s, t) => {
+  const e = Ft(t);
   return {
     /** Lazy item status/ Статус ленивого элемента */
     lazyItemStatus: e.addLazyItem(s),
@@ -1639,46 +1652,46 @@ const $ = {}, Ht = (s = {
     }
   };
 };
-function se() {
+function ne() {
   const s = I(P.is());
   return P.registrationEvent(({ detail: t }) => {
     s.value = t.loading;
   }), s;
 }
-const _ = [], Ft = ft(1e5, 999999);
-function jt(s, t = !0, e = !1, i = !0) {
+const _ = [], jt = mt(1e5, 999999);
+function zt(s, t = !0, e = !1, i = !0) {
   let n;
-  const r = `__execute_use${Ft}::${L()}`, u = (o) => {
-    const c = Object.freeze(s(...o));
+  const r = `__execute_use${jt}::${L()}`, u = (c) => {
+    const o = Object.freeze(s(...c));
     return Object.freeze({
-      ...c,
+      ...o,
       init() {
-        return c;
+        return o;
       }
     });
-  }, h = (...o) => {
+  }, h = (...c) => {
     if (!e && i) {
-      const c = Lt(r, void 0);
-      if (c)
-        return c;
+      const o = Ct(r, void 0);
+      if (o)
+        return o;
       {
-        let v = u(o);
-        return Ct(r, v), t && O(() => {
-          v = void 0;
-        }), v;
+        let m = u(c);
+        return kt(r, m), t && T(() => {
+          m = void 0;
+        }), m;
       }
-    } else n || (n = u(o), t && O(() => {
+    } else n || (n = u(c), t && T(() => {
       n = void 0;
     }));
     return n;
   };
   return e && _.push(h), h;
 }
-function ne() {
+function re() {
   _.forEach((s) => s());
 }
-const zt = jt(() => {
-  const s = new vt(), t = f(s.getTitle()), e = f(s.getKeywords()), i = f(s.getDescription()), n = f(s.getImage()), r = f(s.getCanonical()), u = f(s.getRobots()), h = f(s.getAuthor()), o = f(s.getSiteName()), c = () => s.html();
+const Tt = zt(() => {
+  const s = new vt(), t = f(s.getTitle()), e = f(s.getKeywords()), i = f(s.getDescription()), n = f(s.getImage()), r = f(s.getCanonical()), u = f(s.getRobots()), h = f(s.getAuthor()), c = f(s.getSiteName()), o = () => s.html();
   return g(t, () => {
     s.setTitle(t.value);
   }), g(e, () => {
@@ -1693,8 +1706,8 @@ const zt = jt(() => {
     s.setRobots(u.value);
   }), g(h, () => {
     s.setAuthor(h.value);
-  }), g(o, () => {
-    s.setSiteName(o.value);
+  }), g(c, () => {
+    s.setSiteName(c.value);
   }), {
     meta: s,
     title: t,
@@ -1704,18 +1717,18 @@ const zt = jt(() => {
     image: n,
     canonical: r,
     robots: u,
-    siteName: o,
-    getHtmlMeta: c
+    siteName: c,
+    getHtmlMeta: o
   };
-}, !1, !0), re = () => zt();
-function ae(s, t) {
+}, !1, !0), ae = () => Tt();
+function ue(s, t) {
   if (s in F)
     return F[s];
   const e = new J(s, !0), i = f(e.get(t));
   return g(i, (n) => e.set(n)), F[s] = i, i;
 }
 const F = {};
-function ue(s, t, e) {
+function le(s, t, e) {
   if (s in j)
     return j[s];
   const i = new J(s), n = f(i.get(t, e));
@@ -1736,11 +1749,11 @@ function Ot(s) {
     }
   return t;
 }
-const le = (s) => Ot(s);
-function he(s, t) {
+const he = (s) => Ot(s);
+function ce(s, t) {
   const e = f();
   return Q(async () => {
-    e.value = await mt(s);
+    e.value = await yt(s);
   }), a(() => e.value, t);
 }
 function oe(s, t = () => {
@@ -1757,14 +1770,14 @@ function oe(s, t = () => {
     i
   );
 }
-function Tt(s, t = {}, e = "value", i = !1) {
+function Vt(s, t = {}, e = "value", i = !1) {
   const n = typeof t == "string", r = n ? t : e, u = n ? {} : t;
-  return s ? s && M(s) && (r in s || i) ? T(u, s) : T(u, { [r]: s }) : n ? {} : { ...u };
+  return s ? s && D(s) && (r in s || i) ? O(u, s) : O(u, { [r]: s }) : n ? {} : { ...u };
 }
-function ce(s, t = {}, e = "value") {
-  return a(() => Tt(d(s), d(t), e));
+function de(s, t = {}, e = "value") {
+  return a(() => Vt(d(s), d(t), e));
 }
-const de = (s, t) => {
+const ge = (s, t) => {
   const e = f();
   let i = !0;
   const n = () => {
@@ -1775,56 +1788,56 @@ const de = (s, t) => {
   };
   return a(() => (n(), e.value));
 };
-function ge(s, t) {
+function fe(s, t) {
   s.value !== t && (s.value = t);
 }
-function fe(s) {
+function me(s) {
   let t;
   return a(() => (t || (t = s()), t.value));
 }
 export {
-  Yt as DatetimeRef,
-  wt as DesignAbstract,
-  Pt as DesignAsyncAbstract,
-  kt as DesignChanged,
-  Ut as DesignComp,
+  Gt as DatetimeRef,
+  Dt as DesignAbstract,
+  Ut as DesignAsyncAbstract,
+  wt as DesignChanged,
+  qt as DesignComp,
   X as DesignComponents,
-  qt as DesignConstructorAbstract,
-  Gt as EventRef,
-  Jt as GeoFlagRef,
-  Bt as GeoIntlRef,
+  Yt as DesignConstructorAbstract,
+  Jt as EventRef,
+  Qt as GeoFlagRef,
+  Rt as GeoIntlRef,
   w as GeoRef,
   Z as ListDataRef,
-  Rt as RouterItemRef,
-  Qt as ScrollbarWidthRef,
-  he as computedAsync,
+  At as RouterItemRef,
+  Xt as ScrollbarWidthRef,
+  ce as computedAsync,
   oe as computedByLanguage,
-  jt as executeUse,
-  ne as executeUseGlobalInit,
-  Tt as getBind,
-  ce as getBindRef,
-  Dt as getClassName,
-  de as getComputedAsync,
-  xt as getIndexForRender,
+  zt as executeUse,
+  re as executeUseGlobalInit,
+  Vt as getBind,
+  de as getBindRef,
+  xt as getClassName,
+  ge as getComputedAsync,
+  Mt as getIndexForRender,
   d as getRef,
-  Mt as render,
-  Zt as setApiRefGlobalConditions,
-  ge as setRef,
-  le as t,
-  T as toBind,
-  Nt as toBinds,
-  fe as toComputed,
+  Nt as render,
+  _t as setApiRefGlobalConditions,
+  fe as setRef,
+  he as t,
+  O as toBind,
+  Bt as toBinds,
+  me as toComputed,
   b as toRefItem,
-  Xt as useApiRef,
+  Zt as useApiRef,
   Et as useBroadcastValueRef,
-  _t as useCookieRef,
-  te as useGeoIntlRef,
-  ee as useHashRef,
-  ie as useLazyItemByMarginRef,
-  Ht as useLazyRef,
-  se as useLoadingRef,
-  re as useMeta,
-  ae as useSessionRef,
-  ue as useStorageRef,
+  te as useCookieRef,
+  ee as useGeoIntlRef,
+  ie as useHashRef,
+  se as useLazyItemByMarginRef,
+  $t as useLazyRef,
+  ne as useLoadingRef,
+  ae as useMeta,
+  ue as useSessionRef,
+  le as useStorageRef,
   Ot as useTranslateRef
 };

@@ -2,7 +2,7 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract, RouterItemRef
 } from '@dxtmisha/functional'
 
 import { Button } from './Button'
@@ -117,7 +117,7 @@ export class ButtonDesign<
    */
   protected initRender(): VNode {
     return h(
-      this.props.tag || 'button',
+      this.item.tag.value,
       {
         ...this.getAttrs(),
         'ref': this.element,
@@ -129,6 +129,7 @@ export class ButtonDesign<
         'data-value': this.props.value,
 
         'disabled': this.item.enabled.isDisabledOrUndefined.value,
+        ...RouterItemRef.rawToHref(this.props.to),
         ...this.item.eventList.value,
         ...this.item.aria.value
       },
