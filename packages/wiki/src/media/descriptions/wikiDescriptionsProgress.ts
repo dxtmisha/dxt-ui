@@ -196,5 +196,44 @@ export const wikiDescriptionsProgress: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Progress'} type={'delays'}/>
 <Canvas of={Component.ProgressDelays}/>
     `
+  },
+  ai: {
+    render: `
+<div
+  :class="classDemo.item"
+  style="position: relative; width: 64px; height: 40px;"
+>
+  <Progress v-bind="args"/>
+</div>
+    `,
+    description: `
+Progress is a component for indicating the status of a process.
+It supports both linear and circular styles and can represent determinate (known percentage) or indeterminate (loading) states.
+
+**Key Features:**
+1. **Type:**
+   - \`linear\`: A horizontal bar. Standard for page loading, file uploads, or headers.
+   - \`circular\`: A spinner ring. Standard for button actions, block loading, or overlays.
+
+2. **State:**
+   - **Determinate:** Set \`value\` (number) and optionally \`max\`. Used when the progress percentage is known.
+   - **Indeterminate:** Set \`indeterminate\` ('type1', 'type2', 'type3'). Used when the wait time is unknown.
+
+3. **Positioning (\`position\`):**
+   - \`static\` (default): Renders in the normal document flow.
+   - \`top\`: Absolutely positioned at the top of the parent container.
+   - \`bottom\`: Absolutely positioned at the bottom of the parent container.
+
+4. **Styling:**
+   - \`dense\`: Reduces the height/size of the indicator.
+   - \`inverse\`: Adjusts colors for dark backgrounds.
+   - \`point\`: Adds a pulsing dot at the end of the bar (linear only).
+
+**Usage Examples:**
+
+- **Linear Indeterminate (Page Load):** \`<Progress linear indeterminate="type1" position="top" visible />\`
+- **Circular Determinate (Upload):** \`<Progress circular :value="45" visible />\`
+- **Button Loading:** \`<Progress circular dense indeterminate="type2" visible />\` (inside a button)
+    `
   }
 }

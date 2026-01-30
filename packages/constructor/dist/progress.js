@@ -1,11 +1,12 @@
 var d = Object.defineProperty;
-var f = (l, e, s) => e in l ? d(l, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : l[e] = s;
-var t = (l, e, s) => f(l, typeof e != "symbol" ? e + "" : e, s);
-import { watch as g, onUnmounted as b, ref as u, computed as a, h } from "vue";
-import { toNumber as o, DesignConstructorAbstract as y } from "@dxtmisha/functional";
-import { A as c } from "./AriaStaticInclude-CFGewqpn.js";
-import { P as D } from "./ProgressInclude-UBipdctr.js";
-class x {
+var b = (a, e, s) => e in a ? d(a, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : a[e] = s;
+var t = (a, e, s) => b(a, typeof e != "symbol" ? e + "" : e, s);
+import { watch as f, onUnmounted as g, ref as p, computed as l, h as u } from "vue";
+import { toNumber as o, DesignConstructorAbstract as x } from "@dxtmisha/functional";
+import { T as y } from "./TextInclude-CodMN5BH.js";
+import { A as n } from "./AriaStaticInclude-CFGewqpn.js";
+import { P as $ } from "./ProgressInclude-UBipdctr.js";
+class P {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -17,22 +18,29 @@ class x {
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
-  constructor(e, s, i, r, n, p, m, v) {
+  constructor(e, s, i, r, h, c, m, v) {
     t(this, "timeout");
-    t(this, "hide", u(!1));
-    t(this, "visible", u(!1));
+    t(this, "hide", p(!1));
+    t(this, "visible", p(!1));
+    t(this, "text");
+    /**
+     * Checks if the component is in progress bar mode.
+     *
+     * Проверяет, находится ли компонент в режиме прогресс-бара.
+     */
+    t(this, "isProgressbar", l(() => this.isValue()));
     /**
      * Returns the tag type for the element.
      *
      * Возвращает тип тега для элемента.
      */
-    t(this, "tag", a(() => this.props.circular ? "svg" : "div"));
+    t(this, "tag", l(() => this.props.circular ? "svg" : "div"));
     /**
      * Returns values.
      *
      * Возвращает значения.
      */
-    t(this, "value", a(() => {
+    t(this, "value", l(() => {
       var e;
       return o((e = this.props.value) != null ? e : 0);
     }));
@@ -41,7 +49,7 @@ class x {
      *
      * Возвращает значения в процентах.
      */
-    t(this, "valueInPercent", a(() => {
+    t(this, "valueInPercent", l(() => {
       if (this.isValue()) {
         const e = this.value.value, s = 100 / this.getMax() * e;
         return this.props.circular ? s.toString() : `${100 - s}%`;
@@ -49,11 +57,28 @@ class x {
       return null;
     }));
     /**
+     * Returns the label text.
+     *
+     * Возвращает текст метки.
+     */
+    t(this, "label", l(() => {
+      if (this.props.ariaLabel)
+        return this.props.ariaLabel;
+      if (!this.isValue() && this.props.visible)
+        return this.text.loading.value;
+    }));
+    /**
+     * Returns the role for the component.
+     *
+     * Возвращает роль для компонента.
+     */
+    t(this, "role", l(() => this.isValue() ? "progressbar" : "status"));
+    /**
      * Values for the class.
      *
      * Значения для класса.
      */
-    t(this, "classes", a(() => ({
+    t(this, "classes", l(() => ({
       [`${this.className}--hide`]: this.hide.value,
       [`${this.className}--visible`]: this.visible.value,
       [`${this.className}--value`]: this.isValue()
@@ -63,7 +88,7 @@ class x {
      *
      * Возвращает свойство для стиля.
      */
-    t(this, "styles", a(() => ({
+    t(this, "styles", l(() => ({
       [`--${this.className}-sys-value`]: this.valueInPercent.value
     })));
     /**
@@ -87,15 +112,15 @@ class x {
       if (clearTimeout(this.timeout), this.isValue())
         this.reset();
       else if (!!this.visible.value !== e) {
-        const r = o((s = this.props.delay) != null ? s : 0), n = o((i = this.props.delayHide) != null ? i : 0);
-        e && r ? this.timeout = setTimeout(() => this.update(), r) : !e && n ? this.timeout = setTimeout(() => this.update(), n) : this.update();
+        const r = o((s = this.props.delay) != null ? s : 0), h = o((i = this.props.delayHide) != null ? i : 0);
+        e && r ? this.timeout = setTimeout(() => this.update(), r) : !e && h ? this.timeout = setTimeout(() => this.update(), h) : this.update();
       }
     });
-    this.props = e, this.refs = s, this.element = i, this.classDesign = r, this.className = n, this.components = p, this.slots = m, this.emits = v, g(
+    this.props = e, this.refs = s, this.element = i, this.classDesign = r, this.className = h, this.components = c, this.slots = m, this.emits = v, this.text = new y(this.props), f(
       [s.visible],
       this.switch,
       { immediate: !0 }
-    ), b(() => {
+    ), g(() => {
       clearTimeout(this.timeout);
     });
   }
@@ -133,24 +158,24 @@ class x {
     return this.hide.value = !1, this.visible.value = !1, this;
   }
 }
-const N = {
+const w = {
   max: 100,
   delay: 360,
   delayHide: 200,
-  ariaLive: "polite",
   // :default [!] System label / Системная метка
   linear: !0,
   indeterminate: "type1",
   position: "top"
 };
-class M extends y {
+class M extends x {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor progress item class/ класс элемента progress
    */
-  constructor(s, i, r) {
+  constructor(s, i, r, h = P) {
     super(
       s,
       i,
@@ -165,17 +190,19 @@ class M extends y {
     t(this, "renderCircle", () => {
       var s, i;
       return this.props.circular ? [
-        h("circle", {
+        u("circle", {
           class: (s = this.classes) == null ? void 0 : s.value.circleSub,
           cx: "24",
           cy: "24",
-          r: "20"
+          r: "20",
+          ...n.hidden()
         }),
-        h("circle", {
+        u("circle", {
           class: (i = this.classes) == null ? void 0 : i.value.circle,
           cx: "24",
           cy: "24",
-          r: "20"
+          r: "20",
+          ...n.hidden()
         })
       ] : [];
     });
@@ -186,31 +213,31 @@ class M extends y {
      */
     t(this, "renderPoint", () => {
       var s;
-      return this.props.linear && this.props.point && (this.props.value || this.props.indeterminate === "type1") ? [h("span", { class: (s = this.classes) == null ? void 0 : s.value.point })] : [];
+      return this.props.linear && this.props.point && (this.props.value || this.props.indeterminate === "type1") ? [u("span", { class: (s = this.classes) == null ? void 0 : s.value.point })] : [];
     });
     /**
      * Props for the main element/ Свойства для главного элемента
      */
-    t(this, "propsMain", a(() => {
+    t(this, "propsMain", l(() => {
       var i, r;
       const s = {
         ...this.getAttrs(),
         class: (i = this.classes) == null ? void 0 : i.value.main,
         style: (r = this.styles) == null ? void 0 : r.value,
-        viewBox: "0 0 48 48",
         onAnimationend: this.item.onAnimation,
-        ...c.role("progressbar")
+        ...n.role(this.item.role.value),
+        ...n.label(this.item.label.value)
       };
-      return this.props.value ? {
+      return this.props.circular && (s.viewBox = "0 0 48 48"), this.props.value ? {
         ...s,
-        ...c.valueMinMax(
+        ...n.valueMinMax(
           this.props.value,
           0,
           this.props.max
         )
       } : s;
     }));
-    this.item = new x(
+    this.item = new h(
       this.props,
       this.refs,
       this.element,
@@ -261,7 +288,7 @@ class M extends y {
       ...this.renderCircle(),
       ...this.renderPoint()
     ];
-    return h(
+    return u(
       this.item.tag.value,
       this.propsMain.value,
       s
@@ -269,8 +296,8 @@ class M extends y {
   }
 }
 export {
-  x as Progress,
+  P as Progress,
   M as ProgressDesign,
-  D as ProgressInclude,
-  N as defaultsProgress
+  $ as ProgressInclude,
+  w as defaultsProgress
 };

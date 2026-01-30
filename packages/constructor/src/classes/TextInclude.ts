@@ -21,6 +21,7 @@ export class TextInclude {
     close: 'Close',
     copiedClipboard: 'Copied to the clipboard',
     entriesMatch: 'Entries do not match',
+    loading: 'Loading',
     ok: 'OK'
   })
 
@@ -59,6 +60,11 @@ export class TextInclude {
   /** Entries match text/ Текст о несовпадении записей */
   readonly entriesMatch = computed<string | undefined>(
     () => this.getText('entriesMatch', this.props.textEntriesMatch)
+  )
+
+  /** Loading text/ Текст загрузки */
+  readonly loading = computed<string | undefined>(
+    () => this.getText('loading', this.props.textLoading)
   )
 
   /** OK text/ Текст подтверждения */

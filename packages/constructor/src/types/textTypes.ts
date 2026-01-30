@@ -2,6 +2,7 @@ export type TextValue = string | (() => string) | undefined
 
 export type TextIndex = 'close'
   | 'entriesMatch'
+  | 'loading'
   | 'ok'
   | string
 export type TextList = Record<TextIndex, TextValue>
@@ -21,6 +22,11 @@ export type TextEntriesMatchPropsInclude = {
   textEntriesMatch?: TextValue
 }
 
+export type TextLoadingPropsInclude = {
+  /** Loading text/ Текст загрузки */
+  textLoading?: TextValue
+}
+
 export type TextOkPropsInclude = {
   /** OK text/ Текст подтверждения */
   textOk?: TextValue
@@ -29,4 +35,5 @@ export type TextOkPropsInclude = {
 export type TextAllPropsInclude = TextClosePropsInclude
   & TextCopiedClipboardPropsInclude
   & TextEntriesMatchPropsInclude
+  & TextLoadingPropsInclude
   & TextOkPropsInclude

@@ -29,6 +29,8 @@ export declare class TextInclude {
     readonly copiedClipboard: ComputedRef<string | undefined>;
     /** Entries match text/ Текст о несовпадении записей */
     readonly entriesMatch: ComputedRef<string | undefined>;
+    /** Loading text/ Текст загрузки */
+    readonly loading: ComputedRef<string | undefined>;
     /** OK text/ Текст подтверждения */
     readonly ok: ComputedRef<string | undefined>;
     /**

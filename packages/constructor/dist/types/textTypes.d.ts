@@ -1,5 +1,5 @@
 export type TextValue = string | (() => string) | undefined;
-export type TextIndex = 'close' | 'entriesMatch' | 'ok' | string;
+export type TextIndex = 'close' | 'entriesMatch' | 'loading' | 'ok' | string;
 export type TextList = Record<TextIndex, TextValue>;
 export type TextClosePropsInclude = {
     /** Close text/ Текст закрытия */
@@ -13,8 +13,12 @@ export type TextEntriesMatchPropsInclude = {
     /** Text entries match/ Текст о несовпадении записей */
     textEntriesMatch?: TextValue;
 };
+export type TextLoadingPropsInclude = {
+    /** Loading text/ Текст загрузки */
+    textLoading?: TextValue;
+};
 export type TextOkPropsInclude = {
     /** OK text/ Текст подтверждения */
     textOk?: TextValue;
 };
-export type TextAllPropsInclude = TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextEntriesMatchPropsInclude & TextOkPropsInclude;
+export type TextAllPropsInclude = TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextEntriesMatchPropsInclude & TextLoadingPropsInclude & TextOkPropsInclude;

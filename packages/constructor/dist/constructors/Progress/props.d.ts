@@ -1,4 +1,5 @@
-import { AriaLabelPropsInclude, AriaLivePropsInclude } from '../../types/ariaTypes';
+import { AriaLabelPropsInclude } from '../../types/ariaTypes';
+import { TextLoadingPropsInclude } from '../../types/textTypes';
 export type ProgressPropsToken = {
     point?: boolean;
     linear?: boolean;
@@ -8,7 +9,7 @@ export type ProgressPropsToken = {
     dense?: boolean;
     inverse?: boolean;
 };
-export type ProgressPropsBasic = AriaLabelPropsInclude & AriaLivePropsInclude & {
+export type ProgressPropsBasic = AriaLabelPropsInclude & TextLoadingPropsInclude & {
     visible?: boolean;
     value?: number | string;
     max?: number | string;
@@ -36,5 +37,4 @@ export declare const defaultsProgress: {
     max: number;
     delay: number;
     delayHide: number;
-    ariaLive: string;
 };

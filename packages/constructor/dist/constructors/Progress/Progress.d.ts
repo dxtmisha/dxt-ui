@@ -1,5 +1,6 @@
 import { Ref, ToRefs, ComputedRef } from 'vue';
 import { ConstrClassObject, ConstrEmit, ConstrStyles, DesignComp } from '@dxtmisha/functional';
+import { TextInclude } from '../../classes/TextInclude';
 import { ProgressComponents, ProgressEmits, ProgressSlots } from './types';
 import { ProgressProps } from './props';
 /**
@@ -19,6 +20,7 @@ export declare class Progress {
     protected timeout?: any;
     readonly hide: Ref<boolean, boolean>;
     readonly visible: Ref<boolean, boolean>;
+    readonly text: TextInclude;
     /**
      * Constructor
      * @param props input data/ входные данные
@@ -31,6 +33,12 @@ export declare class Progress {
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      */
     constructor(props: ProgressProps, refs: ToRefs<ProgressProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ProgressComponents, ProgressProps> | undefined, slots?: ProgressSlots | undefined, emits?: ConstrEmit<ProgressEmits> | undefined);
+    /**
+     * Checks if the component is in progress bar mode.
+     *
+     * Проверяет, находится ли компонент в режиме прогресс-бара.
+     */
+    readonly isProgressbar: ComputedRef<boolean>;
     /**
      * Returns the tag type for the element.
      *
@@ -49,6 +57,18 @@ export declare class Progress {
      * Возвращает значения в процентах.
      */
     readonly valueInPercent: ComputedRef<string | null>;
+    /**
+     * Returns the label text.
+     *
+     * Возвращает текст метки.
+     */
+    readonly label: ComputedRef<string | undefined>;
+    /**
+     * Returns the role for the component.
+     *
+     * Возвращает роль для компонента.
+     */
+    readonly role: ComputedRef<"progressbar" | "status">;
     /**
      * Values for the class.
      *

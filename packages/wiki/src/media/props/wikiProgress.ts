@@ -14,7 +14,7 @@ export const wikiProgress: StorybookArgsToList = {
   'progress.delay': {
     type: StorybookControl.number,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       type: ['number', 'string'],
       description: {
         en: 'Delay before showing the progress indicator in milliseconds',
@@ -25,7 +25,7 @@ export const wikiProgress: StorybookArgsToList = {
   'progress.delayHide': {
     type: StorybookControl.number,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       type: ['number', 'string'],
       description: {
         en: 'Delay before hiding the progress indicator in milliseconds',
@@ -41,7 +41,8 @@ export const wikiProgress: StorybookArgsToList = {
         en: 'Adds a point at the end of the progress indicator',
         ru: 'Добавляет точку в конце индикатора прогресса'
       }
-    }
+    },
+    isDemo: true
   },
   'progress.linear': {
     type: StorybookControl.boolean,
@@ -61,7 +62,8 @@ export const wikiProgress: StorybookArgsToList = {
         en: 'Enables circular progress indicator display',
         ru: 'Включает отображение круглого индикатора прогресса'
       }
-    }
+    },
+    isDemo: true
   },
   'progress.indeterminate': {
     type: StorybookControl.select,
@@ -83,7 +85,8 @@ export const wikiProgress: StorybookArgsToList = {
         en: 'Position of the progress indicator',
         ru: 'Позиция индикатора прогресса'
       }
-    }
+    },
+    isDemo: true
   },
   'progress.visible': {
     type: StorybookControl.boolean,

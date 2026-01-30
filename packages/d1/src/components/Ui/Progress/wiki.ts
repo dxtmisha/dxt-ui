@@ -7,7 +7,6 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'ariaLabel', type: 'string' },
-  { name: 'ariaLive', type: 'string', option: ['off', 'polite', 'assertive'] },
   { name: 'circular', type: 'boolean' },
   { name: 'delay', type: 'string | number' },
   { name: 'delayHide', type: 'string | number' },
@@ -20,6 +19,7 @@ const propsNames: StorybookProps = [
   { name: 'point', type: 'boolean' },
   { name: 'position', type: 'string', option: ['top', 'bottom', 'static'] },
   { name: 'size', type: 'string', option: ['sm', 'md', 'lg'] },
+  { name: 'textLoading', type: 'TextValue' },
   { name: 'value', type: 'string | number' },
   { name: 'visible', type: 'boolean' }
   // :propsList [!] System label / Системная метка

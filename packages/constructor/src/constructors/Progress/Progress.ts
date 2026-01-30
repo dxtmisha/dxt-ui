@@ -7,6 +7,8 @@ import {
   toNumber
 } from '@dxtmisha/functional'
 
+import { TextInclude } from '../../classes/TextInclude'
+
 import type { ProgressComponents, ProgressEmits, ProgressSlots } from './types'
 import type { ProgressProps } from './props'
 
@@ -20,6 +22,7 @@ export class Progress {
 
   readonly hide = ref<boolean>(false)
   readonly visible = ref<boolean>(false)
+  readonly text: TextInclude
 
   /**
    * Constructor
@@ -42,6 +45,8 @@ export class Progress {
     protected readonly slots?: ProgressSlots,
     protected readonly emits?: ConstrEmit<ProgressEmits>
   ) {
+    this.text = new TextInclude(this.props)
+
     watch(
       [refs.visible],
       this.switch,
@@ -52,6 +57,13 @@ export class Progress {
       clearTimeout(this.timeout)
     })
   }
+
+  /**
+   * Checks if the component is in progress bar mode.
+   *
+   * Проверяет, находится ли компонент в режиме прогресс-бара.
+   */
+  readonly isProgressbar = computed<boolean>(() => this.isValue())
 
   /**
    * Returns the tag type for the element.
@@ -85,6 +97,39 @@ export class Progress {
     }
 
     return null
+  })
+
+  /**
+   * Returns the label text.
+   *
+   * Возвращает текст метки.
+   */
+  readonly label = computed<string | undefined>(() => {
+    if (this.props.ariaLabel) {
+      return this.props.ariaLabel
+    }
+
+    if (
+      !this.isValue()
+      && this.props.visible
+    ) {
+      return this.text.loading.value
+    }
+
+    return undefined
+  })
+
+  /**
+   * Returns the role for the component.
+   *
+   * Возвращает роль для компонента.
+   */
+  readonly role = computed(() => {
+    if (this.isValue()) {
+      return 'progressbar'
+    }
+
+    return 'status'
   })
 
   /**

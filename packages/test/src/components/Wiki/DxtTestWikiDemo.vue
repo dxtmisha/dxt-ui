@@ -75,10 +75,10 @@ ${props.join('')}
     justify-content: flex-start;
     gap: 8px;
     position: relative;
+    padding: 4px;
   }
 
   &__item {
-    padding: 4px;
     background-color: oklch(96.7% 0.003 264.542);
     border-right: 4px;
   }

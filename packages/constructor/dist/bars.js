@@ -8,7 +8,7 @@ import { L as I } from "./LabelInclude-BtZrrbCf.js";
 import { D as g } from "./DescriptionInclude-DxWNon_J.js";
 import { E as S } from "./EventClickInclude-CtY-88za.js";
 import { M as L } from "./ModelInclude-BiYm_iCQ.js";
-import { T as A } from "./TextInclude-i1OBAFTG.js";
+import { T as A } from "./TextInclude-CodMN5BH.js";
 import { S as D } from "./SkeletonInclude-BIUzAO2s.js";
 import { W as T } from "./WindowClassesInclude-B56usxgx.js";
 import { M as E } from "./MotionTransformClassesInclude-B23RIq0Q.js";

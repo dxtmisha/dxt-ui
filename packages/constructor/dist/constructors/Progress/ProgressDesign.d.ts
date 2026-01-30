@@ -1,10 +1,8 @@
 import { VNode, ComputedRef } from 'vue';
-import { ConstrOptions, ConstrStyles, DesignConstructorAbstract, ConstrClass } from '@dxtmisha/functional';
+import { ConstrOptions, ConstrStyles, DesignConstructorAbstract } from '@dxtmisha/functional';
 import { Progress } from './Progress';
 import { ProgressPropsBasic } from './props';
 import { ProgressClasses, ProgressComponents, ProgressEmits, ProgressExpose, ProgressSlots } from './types';
-import { RoleType, AriaTrueOrFalse } from '../../library';
-import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * ProgressDesign
  */
@@ -15,8 +13,9 @@ export declare class ProgressDesign<COMP extends ProgressComponents, EXPOSE exte
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor progress item class/ класс элемента progress
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ProgressEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ProgressEmits, P>, ItemConstructor?: typeof Progress);
     /**
      * Initialization of all the necessary properties for work
      *
@@ -56,60 +55,5 @@ export declare class ProgressDesign<COMP extends ProgressComponents, EXPOSE exte
     /**
      * Props for the main element/ Свойства для главного элемента
      */
-    protected readonly propsMain: ComputedRef<{
-        id?: string;
-        role?: RoleType;
-        tabindex?: NumberOrString;
-        'aria-activedescendant'?: string;
-        'aria-atomic'?: AriaTrueOrFalse;
-        'aria-autocomplete'?: "none" | "inline" | "list" | "both";
-        'aria-busy'?: AriaTrueOrFalse;
-        'aria-checked'?: AriaTrueOrFalse | "mixed";
-        'aria-colcount'?: number;
-        'aria-colindex'?: number;
-        'aria-colspan'?: number;
-        'aria-controls'?: string;
-        'aria-current'?: AriaTrueOrFalse | "page" | "step" | "location" | "date" | "time";
-        'aria-describedby'?: string;
-        'aria-details'?: string;
-        'aria-disabled'?: AriaTrueOrFalse;
-        'aria-errormessage'?: string;
-        'aria-expanded'?: AriaTrueOrFalse;
-        'aria-flowto'?: string;
-        'aria-grabbed'?: AriaTrueOrFalse;
-        'aria-haspopup'?: AriaTrueOrFalse | "dialog" | "menu" | "listbox" | "tree" | "grid";
-        'aria-hidden'?: AriaTrueOrFalse;
-        'aria-invalid'?: AriaTrueOrFalse | "grammar" | "spelling";
-        'aria-keyshortcuts'?: string;
-        'aria-label'?: string;
-        'aria-labelledby'?: string;
-        'aria-level'?: number;
-        'aria-live'?: "off" | "polite" | "assertive";
-        'aria-modal'?: AriaTrueOrFalse;
-        'aria-multiline'?: AriaTrueOrFalse;
-        'aria-multiselectable'?: AriaTrueOrFalse;
-        'aria-orientation'?: "horizontal" | "vertical" | "undefined";
-        'aria-owns'?: string;
-        'aria-placeholder'?: string;
-        'aria-posinset'?: number;
-        'aria-pressed'?: AriaTrueOrFalse | "mixed";
-        'aria-readonly'?: AriaTrueOrFalse;
-        'aria-relevant'?: "additions" | "removals" | "text" | "all" | string;
-        'aria-required'?: AriaTrueOrFalse;
-        'aria-roledescription'?: string;
-        'aria-rowcount'?: number;
-        'aria-rowindex'?: number;
-        'aria-rowspan'?: number;
-        'aria-selected'?: AriaTrueOrFalse;
-        'aria-setsize'?: number;
-        'aria-sort'?: "none" | "ascending" | "descending" | "other";
-        'aria-valuemax'?: string | number;
-        'aria-valuemin'?: string | number;
-        'aria-valuenow'?: string | number;
-        'aria-valuetext'?: string;
-        class: ConstrClass | undefined;
-        style: ConstrStyles | undefined;
-        viewBox: string;
-        onAnimationend: ({ animationName }: AnimationEvent) => void;
-    }>;
+    protected readonly propsMain: ComputedRef<Record<string, any>>;
 }

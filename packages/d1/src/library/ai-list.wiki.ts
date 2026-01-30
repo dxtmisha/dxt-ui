@@ -3,10 +3,12 @@
 
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
+import D1Progress from '../../src/components/Ui/Progress/D1ProgressAiWiki.vue'
 import D1Ripple from '../../src/components/Ui/Ripple/D1RippleAiWiki.vue'
 
 export const aiList: any[] = [
   D1Icon,
   D1Image,
+  D1Progress,
   D1Ripple
 ]

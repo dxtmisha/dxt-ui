@@ -1,4 +1,5 @@
-import type { AriaLabelPropsInclude, AriaLivePropsInclude } from '../../types/ariaTypes'
+import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
+import type { TextLoadingPropsInclude } from '../../types/textTypes'
 
 export type ProgressPropsToken = {
   // :type [!] System label / Системная метка
@@ -13,8 +14,9 @@ export type ProgressPropsToken = {
 }
 
 export type ProgressPropsBasic = AriaLabelPropsInclude
-  & AriaLivePropsInclude & {
-  // Status
+  & TextLoadingPropsInclude
+  & {
+    // Status
     visible?: boolean
 
     // Value
@@ -46,7 +48,6 @@ export const defaultsProgress = {
   max: 100,
   delay: 360,
   delayHide: 200,
-  ariaLive: 'polite',
   ...{
     // :default [!] System label / Системная метка
     linear: true,

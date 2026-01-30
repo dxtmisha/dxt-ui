@@ -43,11 +43,13 @@ export class ProgressDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor progress item class/ класс элемента progress
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ProgressEmits, P>
+    options?: ConstrOptions<COMP, ProgressEmits, P>,
+    ItemConstructor: typeof Progress = Progress
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class ProgressDesign<
       options
     )
 
-    this.item = new Progress(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -135,13 +137,15 @@ export class ProgressDesign<
           class: this.classes?.value.circleSub,
           cx: '24',
           cy: '24',
-          r: '20'
+          r: '20',
+          ...AriaStaticInclude.hidden()
         }),
         h('circle', {
           class: this.classes?.value.circle,
           cx: '24',
           cy: '24',
-          r: '20'
+          r: '20',
+          ...AriaStaticInclude.hidden()
         })
       ]
     }
@@ -172,13 +176,17 @@ export class ProgressDesign<
    * Props for the main element/ Свойства для главного элемента
    */
   protected readonly propsMain = computed(() => {
-    const props = {
+    const props: Record<string, any> = {
       ...this.getAttrs(),
       class: this.classes?.value.main,
       style: this.styles?.value,
-      viewBox: '0 0 48 48',
       onAnimationend: this.item.onAnimation,
-      ...AriaStaticInclude.role('progressbar')
+      ...AriaStaticInclude.role(this.item.role.value),
+      ...AriaStaticInclude.label(this.item.label.value)
+    }
+
+    if (this.props.circular) {
+      props.viewBox = '0 0 48 48'
     }
 
     if (this.props.value) {
