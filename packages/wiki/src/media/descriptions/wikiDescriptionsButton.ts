@@ -196,27 +196,21 @@ Button is a fundamental interactive component used for user actions, navigation,
 It supports various visual styles, states, and content configurations.
 
 **Key Features:**
-1. **Visual Variants (Mutually Exclusive):**
-   - \`primary\`: High emphasis. Use for the main action on a screen (e.g., "Save", "Submit").
-   - \`secondary\`: Medium emphasis. Use for alternative actions (e.g., "Cancel").
-   - \`outline\`: Low emphasis with a border. Good for secondary actions that need less visual weight.
-   - \`text\`: Lowest emphasis, behaves like a link but with button padding. Use for less important actions.
-
-2. **Content:**
+1. **Content:**
    - \`label\`: The text displayed inside the button.
    - \`icon\`: Name of the icon to display *before* the label (Material Symbols).
    - \`iconTrailing\`: Name of the icon to display *after* the label.
 
-3. **States:**
+2. **States:**
    - \`disabled\`: Prevents user interaction and visually grays out the button.
    - \`selected\`: Indicates an active or toggled state.
    - \`loading\`: Replaces content or adds a spinner to indicate processing.
 
-4. **Navigation:**
+3. **Navigation:**
    - \`to\`: Vue Router path. Renders as an \`<a>\` tag or uses router push.
    - \`href\`: External URL. Renders as an \`<a>\` tag.
 
-5. **Sizing & Layout:**
+4. **Sizing & Layout:**
    - \`adaptive\`: Makes the button fill the container width or adapt to specific breakpoints.
 
 **Usage Examples:**
