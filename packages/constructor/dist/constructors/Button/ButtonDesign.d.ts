@@ -13,8 +13,9 @@ export declare class ButtonDesign<COMP extends ButtonComponents, EXPOSE extends 
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor button item class/ класс элемента кнопки
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ButtonEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ButtonEmits, P>, ItemConstructor?: typeof Button);
     /**
      * Initialization of all the necessary properties for work
      *

@@ -2,8 +2,8 @@ var a = Object.defineProperty;
 var p = (i, s, r) => s in i ? a(i, s, { enumerable: !0, configurable: !0, writable: !0, value: r }) : i[s] = r;
 var t = (i, s, r) => p(i, typeof s != "symbol" ? s + "" : s, r);
 import { computed as o } from "vue";
-import { getRef as c, getBind as l } from "@dxtmisha/functional";
-import { A as d } from "./AriaStaticInclude-CFGewqpn.js";
+import { getRef as l, getBind as c } from "@dxtmisha/functional";
+import { A as d } from "./AriaStaticInclude-C1f8ebHk.js";
 class f {
   /**
    * Constructor
@@ -23,14 +23,14 @@ class f {
      * список aria свойств для компонента Progress
      */
     t(this, "aria", o(
-      () => d.busy(this.is.value)
+      () => d.disabled(this.is.value)
     ));
     /**
      * list of properties for the progress component/ список свойств для компонента Progress
      */
     t(this, "binds", o(() => {
-      const s = c(this.extra);
-      return l(
+      const s = l(this.extra);
+      return c(
         this.props.loading,
         {
           ...s,

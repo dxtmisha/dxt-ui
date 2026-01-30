@@ -1,12 +1,11 @@
 var a = Object.defineProperty;
-var d = (s, t, n) => t in s ? a(s, t, { enumerable: !0, configurable: !0, writable: !0, value: n }) : s[t] = n;
-var i = (s, t, n) => d(s, typeof t != "symbol" ? t + "" : t, n);
-import { B as v, a as y } from "./ButtonDesign-BGzj_sb8.js";
+var d = (n, t, s) => t in n ? a(n, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[t] = s;
+var i = (n, t, s) => d(n, typeof t != "symbol" ? t + "" : t, s);
+import { B as v, a as A } from "./ButtonDesign-De5q40Xf.js";
 import { computed as h } from "vue";
 import { toBinds as p, getBind as l, getRef as o } from "@dxtmisha/functional";
 const B = {
-  tag: "button",
-  type: "button"
+  tag: "button"
 };
 class f {
   /**
@@ -17,7 +16,7 @@ class f {
    * @param extra additional parameter/ дополнительный параметр
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(t, n, e, r, u) {
+  constructor(t, s, e, r, u) {
     /**
      * Computed bindings for the button/ Вычисляемые привязки для кнопки
      */
@@ -43,7 +42,7 @@ class f {
      * @param props additional properties/ дополнительные свойства
      */
     i(this, "render", (t) => {
-      var n;
+      var s;
       return this.components && ("label" in this.binds.value || "icon" in this.binds.value || "iconTrailing" in this.binds.value) ? this.components.render(
         "button",
         {
@@ -51,15 +50,15 @@ class f {
           ...o(t)
         },
         void 0,
-        (n = this.index) != null ? n : "button"
+        (s = this.index) != null ? s : "button"
       ) : [];
     });
-    this.props = t, this.className = n, this.components = e, this.extra = r, this.index = u;
+    this.props = t, this.className = s, this.components = e, this.extra = r, this.index = u;
   }
 }
 export {
   v as Button,
-  y as ButtonDesign,
+  A as ButtonDesign,
   f as ButtonInclude,
   B as defaultsButton
 };

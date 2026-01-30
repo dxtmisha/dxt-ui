@@ -3,7 +3,7 @@ var v = (n, t, e) => t in n ? g(n, t, { enumerable: !0, configurable: !0, writab
 var s = (n, t, e) => v(n, typeof t != "symbol" ? t + "" : t, e);
 import { computed as o, h as l } from "vue";
 import { DesignConstructorAbstract as f } from "@dxtmisha/functional";
-import { A as S } from "./AriaStaticInclude-CFGewqpn.js";
+import { A as S } from "./AriaStaticInclude-C1f8ebHk.js";
 import { L as y } from "./LabelInclude-BtZrrbCf.js";
 import { D as C } from "./DescriptionInclude-DxWNon_J.js";
 import { C as H } from "./CaptionInclude-AFVF4qyd.js";

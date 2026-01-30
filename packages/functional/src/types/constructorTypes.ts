@@ -147,3 +147,11 @@ export type ConstrPropItem<T = any> = ConstrPropItemOptions<T> | PropType<T>
 export type ConstrProps<P = Record<string, any>> = {
   [K in keyof P]: ConstrPropItem<P[K]>
 }
+
+/**
+ * Props for link handling/ Пропсы для обработки ссылок
+ */
+export type ConstrHrefProps = {
+  /** Hyperlink reference/ Гиперссылка */
+  href?: string
+}

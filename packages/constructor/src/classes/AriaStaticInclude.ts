@@ -88,9 +88,13 @@ export class AriaStaticInclude {
    * @param isDisabled is disabled/ является отключенным
    */
   static disabled(isDisabled: boolean = true): AriaList {
-    return {
-      'aria-disabled': this.isTrueOrFalse(isDisabled)
+    if (isDisabled) {
+      return {
+        'aria-disabled': this.isTrueOrFalse(isDisabled)
+      }
     }
+
+    return {}
   }
 
   /**

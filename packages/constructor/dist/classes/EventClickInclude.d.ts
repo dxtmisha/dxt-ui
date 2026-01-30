@@ -34,9 +34,9 @@ export declare class EventClickInclude {
      */
     readonly onClick: (event: MouseEvent, options?: EventClickValue) => void;
     /**
-     * Event trigger function when pressing the space bar
+     * Event trigger function when pressing the space bar or enter key
      *
-     * Функция вызова события при нажатии на пробел
+     * Функция вызова события при нажатии на пробел или клавишу Enter
      * @param event event object/ объект события
      */
     readonly onKeydown: (event: KeyboardEvent) => void;

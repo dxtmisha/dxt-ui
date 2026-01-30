@@ -5,7 +5,7 @@ import { computed as h, h as g } from "vue";
 import { isFilled as c, DesignConstructorAbstract as b } from "@dxtmisha/functional";
 import { L as f } from "./LabelNumberInclude-DyifvMnr.js";
 import { I as v } from "./IconInclude-CLqwI29Q.js";
-import { A as u } from "./AriaStaticInclude-CFGewqpn.js";
+import { A as u } from "./AriaStaticInclude-C1f8ebHk.js";
 class I {
   /**
    * Constructor

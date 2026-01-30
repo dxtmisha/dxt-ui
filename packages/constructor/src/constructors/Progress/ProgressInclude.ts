@@ -39,7 +39,7 @@ export class ProgressInclude {
    * список aria свойств для компонента Progress
    */
   readonly aria = computed<AriaList>(
-    () => AriaStaticInclude.busy(this.is.value)
+    () => AriaStaticInclude.disabled(this.is.value)
   )
 
   /**

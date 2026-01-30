@@ -70,9 +70,9 @@ class n {
    * @param isDisabled is disabled/ является отключенным
    */
   static disabled(a = !0) {
-    return {
+    return a ? {
       "aria-disabled": this.isTrueOrFalse(a)
-    };
+    } : {};
   }
   /**
    * Get ARIA expanded attribute.

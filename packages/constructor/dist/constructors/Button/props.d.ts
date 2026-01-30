@@ -1,3 +1,4 @@
+import { ConstrHrefProps } from '@dxtmisha/functional';
 import { IconPropsBasic, IconTrailingPropsInclude } from '../Icon';
 import { ProgressPropsBasic, ProgressPropsInclude } from '../Progress';
 import { SkeletonPropsInclude } from '../Skeleton';
@@ -16,7 +17,7 @@ export type ButtonPropsToken = {
     grid?: boolean;
     textAlign?: 'left' | 'center' | 'right';
 };
-export type ButtonPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & AriaLabelPropsInclude & {
+export type ButtonPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & ConstrHrefProps & AriaLabelPropsInclude & {
     tag?: 'button' | 'a' | 'span' | string;
     type?: 'button' | 'submit' | 'reset' | string;
 };
@@ -33,5 +34,4 @@ export type ButtonProps = ButtonPropsBasic & ButtonPropsToken;
  */
 export declare const defaultsButton: {
     tag: string;
-    type: string;
 };

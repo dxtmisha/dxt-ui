@@ -117,6 +117,14 @@ export declare type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToInter
 /** Extract emit item type from constructor item/ Извлечение типа элемента emit из элемента конструктора */
 export declare type ConstrEmitItem<T extends ConstrItem> = T[keyof T];
 
+/**
+ * Props for link handling/ Пропсы для обработки ссылок
+ */
+export declare type ConstrHrefProps = {
+    /** Hyperlink reference/ Гиперссылка */
+    href?: string;
+};
+
 /** Generic record type for constructor items/ Дженерик тип записи для элементов конструктора */
 export declare type ConstrItem = Record<string, any>;
 
@@ -1443,6 +1451,24 @@ export declare class RouterItemRef {
      */
     static get(): Router | undefined;
     /**
+     * Returns the link by name.
+     *
+     * Возвращает ссылку по имени.
+     * @param name route name/ имя маршрута
+     * @param params route parameters/ параметры маршрута
+     * @param query route query/ запрос маршрута
+     */
+    static getLink(name: string, params?: any, query?: any): string | undefined;
+    /**
+     * Returns the link property by name.
+     *
+     * Возвращает свойство ссылки по имени.
+     * @param name route name/ имя маршрута
+     * @param params route parameters/ параметры маршрута
+     * @param query route query/ запрос маршрута
+     */
+    static getHref(name: string, params?: any, query?: any): ConstrHrefProps;
+    /**
      * Site path change.
      *
      * Изменение пути сайта.
@@ -1724,227 +1750,3 @@ export declare function useTranslateRef<T extends (string | string[])[]>(names: 
 export * from "@dxtmisha/functional-basic";
 
 export { }
-
-
-
-declare module '@vue/reactivity' {
-    interface RefUnwrapBailTypes {
-        runtimeCoreBailTypes: VNode | {
-            $: ComponentInternalInstance;
-        };
-    }
-}
-
-
-// Note: this file is auto concatenated to the end of the bundled d.ts during
-// build.
-
-declare module '@vue/runtime-core' {
-  export interface GlobalComponents {
-    Teleport: DefineComponent<TeleportProps>
-    Suspense: DefineComponent<SuspenseProps>
-    KeepAlive: DefineComponent<KeepAliveProps>
-    BaseTransition: DefineComponent<BaseTransitionProps>
-  }
-}
-
-
-declare module '@vue/reactivity' {
-    interface RefUnwrapBailTypes {
-        runtimeDOMBailTypes: DomType<Node | Window>;
-    }
-}
-
-
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
-        Transition: DefineComponent<TransitionProps>;
-        TransitionGroup: DefineComponent<TransitionGroupProps>;
-    }
-    interface GlobalDirectives {
-        vShow: typeof vShow;
-        vOn: VOnDirective;
-        vBind: VModelDirective;
-        vIf: Directive<any, boolean>;
-        vOnce: Directive;
-        vSlot: Directive;
-    }
-}
-
-
-
-
-
-declare module '@vue/reactivity' {
-    interface RefUnwrapBailTypes {
-        runtimeCoreBailTypes: VNode | {
-            $: ComponentInternalInstance;
-        };
-    }
-}
-
-
-
-
-// Note: this file is auto concatenated to the end of the bundled d.ts during
-// build.
-
-declare module '@vue/runtime-core' {
-  export interface GlobalComponents {
-    Teleport: DefineComponent<TeleportProps>
-    Suspense: DefineComponent<SuspenseProps>
-    KeepAlive: DefineComponent<KeepAliveProps>
-    BaseTransition: DefineComponent<BaseTransitionProps>
-  }
-}
-
-
-
-
-declare module '@vue/reactivity' {
-    interface RefUnwrapBailTypes {
-        runtimeDOMBailTypes: DomType<Node | Window>;
-    }
-}
-
-
-
-
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
-        Transition: DefineComponent<TransitionProps>;
-        TransitionGroup: DefineComponent<TransitionGroupProps>;
-    }
-    interface GlobalDirectives {
-        vShow: typeof vShow;
-        vOn: VOnDirective;
-        vBind: VModelDirective;
-        vIf: Directive<any, boolean>;
-        vOnce: Directive;
-        vSlot: Directive;
-    }
-}
-
-
-
-
-
-// CSS
-declare module '*.css' {}
-
-
-
-
-declare module '*.scss' {}
-
-
-
-
-declare module '*.sass' {}
-
-
-
-
-declare module '*.less' {}
-
-
-
-
-declare module '*.styl' {}
-
-
-
-
-declare module '*.stylus' {}
-
-
-
-
-declare module '*.pcss' {}
-
-
-
-
-declare module '*.sss' {}
-
-
-//#endregion
-//#region src/index.d.ts
-declare module 'vue' {
-  interface ComponentCustomOptions {
-    /**
-     * Guard called when the router is navigating to the route that is rendering
-     * this component from a different route. Differently from `beforeRouteUpdate`
-     * and `beforeRouteLeave`, `beforeRouteEnter` does not have access to the
-     * component instance through `this` because it triggers before the component
-     * is even mounted.
-     *
-     * @param to - RouteLocationRaw we are navigating to
-     * @param from - RouteLocationRaw we are navigating from
-     * @param next - function to validate, cancel or modify (by redirecting) the
-     * navigation
-     */
-    beforeRouteEnter?: TypesConfig extends Record<'beforeRouteEnter', infer T> ? T : NavigationGuardWithThis<undefined>;
-    /**
-     * Guard called whenever the route that renders this component has changed, but
-     * it is reused for the new route. This allows you to guard for changes in
-     * params, the query or the hash.
-     *
-     * @param to - RouteLocationRaw we are navigating to
-     * @param from - RouteLocationRaw we are navigating from
-     * @param next - function to validate, cancel or modify (by redirecting) the
-     * navigation
-     */
-    beforeRouteUpdate?: TypesConfig extends Record<'beforeRouteUpdate', infer T> ? T : NavigationGuard;
-    /**
-     * Guard called when the router is navigating away from the current route that
-     * is rendering this component.
-     *
-     * @param to - RouteLocationRaw we are navigating to
-     * @param from - RouteLocationRaw we are navigating from
-     * @param next - function to validate, cancel or modify (by redirecting) the
-     * navigation
-     */
-    beforeRouteLeave?: TypesConfig extends Record<'beforeRouteLeave', infer T> ? T : NavigationGuard;
-  }
-  interface ComponentCustomProperties {
-    /**
-     * Normalized current location. See {@link RouteLocationNormalizedLoaded}.
-     */
-    $route: TypesConfig extends Record<'$route', infer T> ? T : RouteLocationNormalizedLoaded;
-    /**
-     * {@link Router} instance used by the application.
-     */
-    $router: TypesConfig extends Record<'$router', infer T> ? T : Router;
-  }
-  interface GlobalComponents {
-    RouterView: TypesConfig extends Record<'RouterView', infer T> ? T : typeof RouterView;
-    RouterLink: TypesConfig extends Record<'RouterLink', infer T> ? T : typeof RouterLink;
-  }
-}
-
-
-
-// CSS
-declare module '*.css' {}
-
-
-declare module '*.scss' {}
-
-
-declare module '*.sass' {}
-
-
-declare module '*.less' {}
-
-
-declare module '*.styl' {}
-
-
-declare module '*.stylus' {}
-
-
-declare module '*.pcss' {}
-
-
-declare module '*.sss' {}

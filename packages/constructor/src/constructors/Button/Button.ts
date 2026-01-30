@@ -41,6 +41,13 @@ export class Button {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param LabelConstructor class for creating a label/ класс для создания метки
+   * @param EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
+   * @param IconConstructor class for creating an icon/ класс для создания иконки
+   * @param ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
+   * @param RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
+   * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
+   * @param EventConstructor class for creating an event/ класс для создания события
    */
   constructor(
     protected readonly props: ButtonPropsBasic,
@@ -50,9 +57,16 @@ export class Button {
     protected readonly className: string,
     protected readonly components?: DesignComp<ButtonComponents, ButtonPropsBasic>,
     protected readonly slots?: ButtonSlots,
-    protected readonly emits?: ConstrEmit<ButtonEmits>
+    protected readonly emits?: ConstrEmit<ButtonEmits>,
+    LabelConstructor: typeof LabelInclude = LabelInclude,
+    EnabledConstructor: typeof EnabledInclude = EnabledInclude,
+    IconConstructor: typeof IconTrailingInclude = IconTrailingInclude,
+    ProgressConstructor: typeof ProgressInclude = ProgressInclude,
+    RippleConstructor: typeof RippleInclude = RippleInclude,
+    SkeletonConstructor: typeof SkeletonInclude = SkeletonInclude,
+    EventConstructor: typeof EventClickInclude = EventClickInclude
   ) {
-    const progress = new ProgressInclude(
+    const progress = new ProgressConstructor(
       props,
       className,
       components,
@@ -62,19 +76,19 @@ export class Button {
       }
     )
 
-    this.label = new LabelInclude(props, className, undefined, slots)
-    this.enabled = new EnabledInclude(props, progress)
+    this.label = new LabelConstructor(props, className, undefined, slots)
+    this.enabled = new EnabledConstructor(props, progress)
 
-    this.icon = new IconTrailingInclude(props, className, components)
+    this.icon = new IconConstructor(props, className, components)
     this.progress = progress
-    this.ripple = new RippleInclude(className, components, this.enabled)
-    this.skeleton = new SkeletonInclude(
+    this.ripple = new RippleConstructor(className, components, this.enabled)
+    this.skeleton = new SkeletonConstructor(
       props,
       classDesign,
       ['classBackground']
     )
 
-    this.event = new EventClickInclude(
+    this.event = new EventConstructor(
       props,
       this.enabled,
       emits
@@ -98,15 +112,44 @@ export class Button {
       ...AriaStaticInclude.label(this.props.ariaLabel)
     }
 
-    if (this.props.tag !== 'button') {
+    if (this.isTagNotButton()) {
       return {
         tabindex: '0',
         ...aria,
         ...AriaStaticInclude.role('button'),
-        ...this.enabled.aria.value
+        ...AriaStaticInclude.disabled(this.progress.is.value || !this.enabled.isEnabled.value)
       }
     }
 
     return aria
   })
+
+  /**
+   * Events for the button component.
+   *
+   * События для компонента кнопки.
+   */
+  readonly eventList = computed(() => {
+    const events: Record<string, any> = {
+      onClick: this.event.onClick
+    }
+
+    if (this.isTagNotButton()) {
+      events.onKeydown = this.event.onKeydown
+    }
+
+    return events
+  })
+
+  /**
+   * Checks if the tag is not a button or link.
+   *
+   * Проверяет, не является ли тег кнопкой или ссылкой.
+   */
+  protected isTagNotButton(): boolean {
+    return Boolean(
+      this.props.tag
+      && ['a', 'button'].indexOf(this.props.tag) === -1
+    )
+  }
 }

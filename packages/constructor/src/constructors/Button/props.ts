@@ -1,3 +1,5 @@
+import type { ConstrHrefProps } from '@dxtmisha/functional'
+
 import type { IconPropsBasic, IconTrailingPropsInclude } from '../Icon'
 import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { SkeletonPropsInclude } from '../Skeleton'
@@ -30,8 +32,12 @@ export type ButtonPropsBasic<
   & ProgressPropsInclude<Progress>
   & SkeletonPropsInclude
   & EventClickProps
-  & AriaLabelPropsInclude & {
-  // Style
+  & ConstrHrefProps
+  & AriaLabelPropsInclude
+  & {
+    // Value
+
+    // Style
     tag?: 'button' | 'a' | 'span' | string
     type?: 'button' | 'submit' | 'reset' | string
   }
@@ -50,7 +56,6 @@ export type ButtonProps = ButtonPropsBasic & ButtonPropsToken
  */
 export const defaultsButton = {
   tag: 'button',
-  type: 'button',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

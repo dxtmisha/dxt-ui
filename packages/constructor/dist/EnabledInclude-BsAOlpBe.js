@@ -2,7 +2,7 @@ var r = Object.defineProperty;
 var d = (i, s, o) => s in i ? r(i, s, { enumerable: !0, configurable: !0, writable: !0, value: o }) : i[s] = o;
 var a = (i, s, o) => d(i, typeof s != "symbol" ? s + "" : s, o);
 import { computed as e } from "vue";
-import { A as l } from "./AriaStaticInclude-CFGewqpn.js";
+import { A as l } from "./AriaStaticInclude-C1f8ebHk.js";
 class h {
   /**
    * Constructor

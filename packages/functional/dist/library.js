@@ -1,7 +1,7 @@
 var et = Object.defineProperty;
 var it = (s, t, e) => t in s ? et(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
 var l = (s, t, e) => it(s, typeof t != "symbol" ? t + "" : t, e);
-import { isArray as st, isObjectNotArray as M, forEach as k, toArray as R, isObject as z, toCamelCase as nt, Geo as C, toDate as W, Datetime as rt, EventItem as at, GeoFlag as ut, GeoIntl as lt, isSelected as D, getExp as ht, getColumn as K, ScrollbarWidth as ot, Api as ct, executeFunction as Y, BroadcastMessage as dt, Cookie as gt, Hash as A, isDomRuntime as G, getElementId as L, Loading as P, random as ft, Meta as mt, DataStorage as J, Translate as U, executePromise as vt } from "@dxtmisha/functional-basic";
+import { isArray as st, isObjectNotArray as M, forEach as k, toArray as R, isObject as z, toCamelCase as nt, toDate as W, Datetime as rt, Geo as C, EventItem as at, GeoFlag as ut, GeoIntl as lt, isSelected as D, getExp as ht, getColumn as K, ScrollbarWidth as ot, Api as ct, executeFunction as Y, BroadcastMessage as dt, Cookie as gt, Hash as A, isDomRuntime as G, getElementId as L, Loading as P, random as ft, Meta as vt, DataStorage as J, Translate as U, executePromise as mt } from "@dxtmisha/functional-basic";
 export * from "@dxtmisha/functional-basic";
 import { isRef as N, h as yt, computed as a, toRefs as pt, useAttrs as bt, useSlots as It, ref as f, watch as g, triggerRef as St, shallowRef as I, onUnmounted as O, inject as Lt, provide as Ct, watchEffect as Q } from "vue";
 class kt {
@@ -689,7 +689,7 @@ class Jt {
     return a(() => this.flag.getNational(t));
   }
 }
-const v = class v {
+const m = class m {
   /**
     * Information about the current country.
   *
@@ -741,8 +741,8 @@ const v = class v {
     C.set(t, !0), this.item.value = C.getItem();
   }
 };
-l(v, "item", I(C.get())), l(v, "country", a(() => v.item.value.country)), l(v, "language", a(() => v.item.value.language)), l(v, "standard", a(() => v.item.value.standard)), l(v, "firstDay", a(() => v.item.value.firstDay));
-let w = v;
+l(m, "item", I(C.get())), l(m, "country", a(() => m.item.value.country)), l(m, "language", a(() => m.item.value.language)), l(m, "standard", a(() => m.item.value.standard)), l(m, "firstDay", a(() => m.item.value.firstDay));
+let w = m;
 class Bt {
   /**
    * Constructor
@@ -978,7 +978,7 @@ class Z {
    * @param max Maximum number of selections / максимальное количество выделений
    * @param parent Parent identifier / идентификатор родителя
    */
-  constructor(t, e, i, n, r, u, h, o, c, m = 0, y = 9999999, S) {
+  constructor(t, e, i, n, r, u, h, o, c, v = 0, y = 9999999, S) {
     l(this, "subList", {});
     /**
      * Returns a list for forming a list.
@@ -1135,7 +1135,7 @@ class Z {
      * Возвращает список значений выделенных элементов на карте.
      */
     l(this, "selectedValues", a(() => K(this.selectedList.value, "value")));
-    this.list = t, this.focus = e, this.highlight = i, this.highlightLengthStart = n, this.filterMode = r, this.selected = u, this.keyValue = h, this.keyLabel = o, this.lite = c, this.min = m, this.max = y, this.parent = S, N(t) && g(t, () => {
+    this.list = t, this.focus = e, this.highlight = i, this.highlightLengthStart = n, this.filterMode = r, this.selected = u, this.keyValue = h, this.keyLabel = o, this.lite = c, this.min = v, this.max = y, this.parent = S, N(t) && g(t, () => {
       this.subList = {};
     });
   }
@@ -1241,7 +1241,7 @@ class Z {
    * @param step number of steps/ количество шагов
    */
   getSelectedByStep(t) {
-    var u, h, o, c, m;
+    var u, h, o, c, v;
     const e = (u = this.selectedList.value) == null ? void 0 : u[0], i = this.mapItems.value;
     if (!e)
       return (h = i[0]) == null ? void 0 : h.index;
@@ -1251,7 +1251,7 @@ class Z {
     if (t > 0)
       return (c = i[0]) == null ? void 0 : c.index;
     if (t < 0)
-      return (m = i[i.length - 1]) == null ? void 0 : m.index;
+      return (v = i[i.length - 1]) == null ? void 0 : v.index;
   }
   /**
    * Returns an item by its index.
@@ -1358,18 +1358,18 @@ class Z {
   initItem(t, e) {
     var i, n, r, u, h, o;
     if (M(e)) {
-      const c = e == null ? void 0 : e[(n = (i = this.keyValue) == null ? void 0 : i.value) != null ? n : "value"], m = (h = e == null ? void 0 : e[(u = (r = this.keyLabel) == null ? void 0 : r.value) != null ? u : "label"]) != null ? h : c, y = this.getIndex(
+      const c = e == null ? void 0 : e[(n = (i = this.keyValue) == null ? void 0 : i.value) != null ? n : "value"], v = (h = e == null ? void 0 : e[(u = (r = this.keyLabel) == null ? void 0 : r.value) != null ? u : "label"]) != null ? h : c, y = this.getIndex(
         e == null ? void 0 : e.index,
         c,
         t,
-        m
+        v
       );
       return {
         ...e,
         parent: this.parent,
         index: y,
         type: (o = e == null ? void 0 : e.type) != null ? o : "item",
-        label: m,
+        label: v,
         value: c
       };
     }
@@ -1390,6 +1390,30 @@ class Rt {
    */
   static get() {
     return this.router;
+  }
+  /**
+   * Returns the link by name.
+   *
+   * Возвращает ссылку по имени.
+   * @param name route name/ имя маршрута
+   * @param params route parameters/ параметры маршрута
+   * @param query route query/ запрос маршрута
+   */
+  static getLink(t, e, i) {
+    var n;
+    return (n = this.router) == null ? void 0 : n.resolve({ name: t, params: e, query: i }).href;
+  }
+  /**
+   * Returns the link property by name.
+   *
+   * Возвращает свойство ссылки по имени.
+   * @param name route name/ имя маршрута
+   * @param params route parameters/ параметры маршрута
+   * @param query route query/ запрос маршрута
+   */
+  static getHref(t, e, i) {
+    const n = this.getLink(t, e, i);
+    return n ? { href: n } : {};
   }
   /**
    * Site path change.
@@ -1446,9 +1470,9 @@ const At = (s) => typeof s == "string" ? { method: s } : s || {};
 let x;
 function Xt(s, t, e = !0, i, n, r) {
   const u = f(), h = b(At(t)), o = f(!1), c = f(!1);
-  let m = !0, y = 0;
+  let v = !0, y = 0;
   const S = async () => {
-    if (m)
+    if (v)
       return;
     const p = d(s);
     if ((!i || i.value) && p) {
@@ -1468,8 +1492,8 @@ function Xt(s, t, e = !0, i, n, r) {
   };
   return {
     get data() {
-      return m && (m = !1, S().then()), tt(), r && (y++, O(() => {
-        y--, y < 1 && (console.warn("useApiRef: unmounted"), u.value = void 0, m = !0, y = 0);
+      return v && (v = !1, S().then()), tt(), r && (y++, O(() => {
+        y--, y < 1 && (console.warn("useApiRef: unmounted"), u.value = void 0, v = !0, y = 0);
       })), u;
     },
     get isStarting() {
@@ -1638,10 +1662,10 @@ function jt(s, t = !0, e = !1, i = !0) {
       if (c)
         return c;
       {
-        let m = u(o);
-        return Ct(r, m), t && O(() => {
-          m = void 0;
-        }), m;
+        let v = u(o);
+        return Ct(r, v), t && O(() => {
+          v = void 0;
+        }), v;
       }
     } else n || (n = u(o), t && O(() => {
       n = void 0;
@@ -1654,7 +1678,7 @@ function ne() {
   _.forEach((s) => s());
 }
 const zt = jt(() => {
-  const s = new mt(), t = f(s.getTitle()), e = f(s.getKeywords()), i = f(s.getDescription()), n = f(s.getImage()), r = f(s.getCanonical()), u = f(s.getRobots()), h = f(s.getAuthor()), o = f(s.getSiteName()), c = () => s.html();
+  const s = new vt(), t = f(s.getTitle()), e = f(s.getKeywords()), i = f(s.getDescription()), n = f(s.getImage()), r = f(s.getCanonical()), u = f(s.getRobots()), h = f(s.getAuthor()), o = f(s.getSiteName()), c = () => s.html();
   return g(t, () => {
     s.setTitle(t.value);
   }), g(e, () => {
@@ -1716,7 +1740,7 @@ const le = (s) => Ot(s);
 function he(s, t) {
   const e = f();
   return Q(async () => {
-    e.value = await vt(s);
+    e.value = await mt(s);
   }), a(() => e.value, t);
 }
 function oe(s, t = () => {

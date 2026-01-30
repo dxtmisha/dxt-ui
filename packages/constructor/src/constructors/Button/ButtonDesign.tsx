@@ -42,11 +42,13 @@ export class ButtonDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor button item class/ класс элемента кнопки
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ButtonEmits, P>
+    options?: ConstrOptions<COMP, ButtonEmits, P>,
+    ItemConstructor: typeof Button = Button
   ) {
     super(
       name,
@@ -54,7 +56,7 @@ export class ButtonDesign<
       options
     )
 
-    this.item = new Button(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -127,7 +129,7 @@ export class ButtonDesign<
         'data-value': this.props.value,
 
         'disabled': this.item.enabled.isDisabledOrUndefined.value,
-        'onClick': this.item.event.onClick,
+        ...this.item.eventList.value,
         ...this.item.aria.value
       },
       [

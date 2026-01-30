@@ -1,4 +1,5 @@
 import type { RouteLocationRaw, Router } from 'vue-router'
+import type { ConstrHrefProps } from '../../types/constructorTypes.ts'
 
 /**
  * Router management class.
@@ -15,6 +16,44 @@ export class RouterItemRef {
    */
   static get() {
     return this.router
+  }
+
+  /**
+   * Returns the link by name.
+   *
+   * Возвращает ссылку по имени.
+   * @param name route name/ имя маршрута
+   * @param params route parameters/ параметры маршрута
+   * @param query route query/ запрос маршрута
+   */
+  static getLink(
+    name: string,
+    params?: any,
+    query?: any
+  ): string | undefined {
+    return this.router?.resolve({ name, params, query }).href
+  }
+
+  /**
+   * Returns the link property by name.
+   *
+   * Возвращает свойство ссылки по имени.
+   * @param name route name/ имя маршрута
+   * @param params route parameters/ параметры маршрута
+   * @param query route query/ запрос маршрута
+   */
+  static getHref(
+    name: string,
+    params?: any,
+    query?: any
+  ): ConstrHrefProps {
+    const href = this.getLink(name, params, query)
+
+    if (href) {
+      return { href }
+    }
+
+    return {}
   }
 
   /**
