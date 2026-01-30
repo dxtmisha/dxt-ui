@@ -109,7 +109,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Sets the element to a loading state',
         ru: 'Переводит элемент в состояние загрузки'
       }
-    }
+    },
+    isDemo: true
   },
   open: {
     type: StorybookControl.boolean,
@@ -139,7 +140,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Selected state of the element',
         ru: 'Состояние выбора элемента'
       }
-    }
+    },
+    isDemo: true
   },
   success: {
     type: StorybookControl.boolean,

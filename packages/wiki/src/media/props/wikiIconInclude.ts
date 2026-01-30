@@ -284,7 +284,8 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Turns the icon',
         ru: 'Поворачивает иконку'
       }
-    }
+    },
+    isDemo: true
   },
   iconVisibility: {
     type: StorybookControl.string,

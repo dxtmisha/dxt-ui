@@ -21,6 +21,7 @@ export const wikiStyle: StorybookArgsToList = {
         ru: 'Управляет адаптивным поведением отображения для разных размеров экрана и медиа‑запросов'
       }
     }
+
   },
   align: {
     type: StorybookControl.select,
@@ -547,7 +548,7 @@ export const wikiStyle: StorybookArgsToList = {
   type: {
     type: StorybookControl.select,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       type: 'string',
       options: [],
       description: {

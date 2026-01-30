@@ -19,7 +19,8 @@ export const wikiButton: StorybookArgsToList = {
         en: 'Outline button style',
         ru: 'Стиль кнопки с обводкой'
       }
-    }
+    },
+    isDemo: true
   },
   'button.primary': {
     type: StorybookControl.boolean,
@@ -30,7 +31,8 @@ export const wikiButton: StorybookArgsToList = {
         en: 'Primary button style',
         ru: 'Основной стиль кнопки'
       }
-    }
+    },
+    isDemo: true
   },
   'button.secondary': {
     type: StorybookControl.boolean,
@@ -41,7 +43,8 @@ export const wikiButton: StorybookArgsToList = {
         en: 'Secondary button style',
         ru: 'Вторичный стиль кнопки'
       }
-    }
+    },
+    isDemo: true
   },
   'button.text': {
     type: StorybookControl.boolean,
@@ -52,6 +55,7 @@ export const wikiButton: StorybookArgsToList = {
         en: 'Text button style',
         ru: 'Текстовый стиль кнопки'
       }
-    }
+    },
+    isDemo: true
   }
 }
