@@ -4,6 +4,7 @@ import type { AriaByPropsInclude, AriaHaspopupPropsInclude, AriaRoleByPropsInclu
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar'
 import type { TextClosePropsInclude } from '../../types/textTypes'
+import type { IconPropsBasic, IconValue } from '../Icon'
 
 export type WindowPropsToken = {
   // :type [!] System label / Системная метка
@@ -25,6 +26,7 @@ export type WindowPropsToken = {
 
 export type WindowPropsBasic<
   Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic,
+  Icon extends IconPropsBasic = IconPropsBasic,
   Image extends ImagePropsBasic = ImagePropsBasic
 > = ScrollbarPropsInclude<Scrollbar>
   & ImagePropsInclude<Image>
@@ -62,7 +64,7 @@ export type WindowPropsBasic<
     'divider'?: boolean
 
     'closeButton'?: boolean
-    'iconClose'?: string
+    'iconClose'?: IconValue<Icon>
 
     // Event
     'modelOpen'?: boolean

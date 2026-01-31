@@ -24,7 +24,7 @@ export const wikiWindow: StorybookArgsToList = {
   'window.axis': {
     type: StorybookControl.select,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Primary positioning axis relative to anchor or cursor; works only in menu mode (adaptive = "menu")',
         ru: 'Основная ось позиционирования относительно якоря или курсора; работает только в режиме меню (adaptive = "menu")'
@@ -35,7 +35,7 @@ export const wikiWindow: StorybookArgsToList = {
   'window.autoClose': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Closes window when clicking anywhere inside content',
         ru: 'Закрывает окно при клике в любом месте содержимого'
@@ -85,7 +85,7 @@ export const wikiWindow: StorybookArgsToList = {
   'window.contextmenu': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Allows opening on right‑click (context menu)',
         ru: 'Позволяет открывать по правому клику (контекстное меню)'
@@ -177,7 +177,7 @@ export const wikiWindow: StorybookArgsToList = {
   'window.overElement': {
     type: StorybookControl.object,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Sets anchor element for positioning',
         ru: 'Задает опорный элемент для позиционирования'
@@ -187,7 +187,7 @@ export const wikiWindow: StorybookArgsToList = {
   'window.overscroll': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.technical,
       description: {
         en: 'Keeps horizontal scrolling inside the window',
         ru: 'Удерживает горизонтальный скролл внутри окна'
@@ -217,7 +217,7 @@ export const wikiWindow: StorybookArgsToList = {
   'window.staticMode': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Enables static mode: displays as embedded component without modal behavior, animations, or dynamic positioning',
         ru: 'Включает статичный режим: отображает как встроенный компонент без модального поведения, анимаций и динамического позиционирования'

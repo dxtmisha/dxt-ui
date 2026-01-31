@@ -1214,7 +1214,7 @@ class Mt {
    * Метод обновляет текущее положение.
    */
   async watchPosition() {
-    this.item.value && this.element.isMain() ? (this.position.update(), this.position.updateBody(), this.origin.update(), this.styles.update(), this.watchCoordinates()) : this.reset();
+    this.item.value && this.element.isMain() ? (this.position.update(), this.position.updateBody(), this.styles.update(), this.origin.update(), this.styles.update(), this.watchCoordinates()) : this.reset();
   }
   /**
    * Changes values and triggers events.

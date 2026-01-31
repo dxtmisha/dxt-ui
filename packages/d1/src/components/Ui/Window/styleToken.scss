@@ -224,8 +224,6 @@
         
         @include ui.height(#{auto});
         
-        content: '--MENU--';
-        
         & .d1-window__body {
           top: auto;
           
@@ -258,8 +256,6 @@
       
       &--menuWindow {
         --sys-type-body: '--MENU-WINDOW--';
-        
-        content: '--MENU-WINDOW--';
       }
       
       &--modalDynamic {
@@ -308,8 +304,6 @@
       
       &--static {
         --sys-type-body: '--STATIC--';
-        
-        content: '--STATIC--';
       }
       
       &--actionSheet {
@@ -372,40 +366,30 @@
       &--autoStaticSm {
         @media screen and (min-width: 640px) {
           --sys-type-body: '--STATIC--';
-          
-          content: '--STATIC--';
         }
       }
       
       &--autoStaticMd {
         @media screen and (min-width: 768px) {
           --sys-type-body: '--STATIC--';
-          
-          content: '--STATIC--';
         }
       }
       
       &--autoStaticLg {
         @media screen and (min-width: 1024px) {
           --sys-type-body: '--STATIC--';
-          
-          content: '--STATIC--';
         }
       }
       
       &--autoStaticXl {
         @media screen and (min-width: 1280px) {
           --sys-type-body: '--STATIC--';
-          
-          content: '--STATIC--';
         }
       }
       
       &--autoStatic2xl {
         @media screen and (min-width: 1536px) {
           --sys-type-body: '--STATIC--';
-          
-          content: '--STATIC--';
         }
       }
     }

@@ -3,6 +3,7 @@ import { AriaByPropsInclude, AriaHaspopupPropsInclude, AriaRoleByPropsInclude } 
 import { ImagePropsBasic, ImagePropsInclude } from '../Image';
 import { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar';
 import { TextClosePropsInclude } from '../../types/textTypes';
+import { IconPropsBasic, IconValue } from '../Icon';
 export type WindowPropsToken = {
     width?: string | 'auto' | 'max' | 'custom';
     height?: string | 'auto' | 'max' | 'custom';
@@ -18,7 +19,7 @@ export type WindowPropsToken = {
     closeMobileHide?: boolean;
     widthMatch?: boolean;
 };
-export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = ScrollbarPropsInclude<Scrollbar> & ImagePropsInclude<Image> & AriaRoleByPropsInclude & AriaByPropsInclude & AriaHaspopupPropsInclude & TextClosePropsInclude & {
+export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = ScrollbarPropsInclude<Scrollbar> & ImagePropsInclude<Image> & AriaRoleByPropsInclude & AriaByPropsInclude & AriaHaspopupPropsInclude & TextClosePropsInclude & {
     'open'?: boolean;
     'disabled'?: boolean;
     'preparation'?(): NormalOrPromise<void>;
@@ -36,7 +37,7 @@ export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPr
     'indent'?: number;
     'divider'?: boolean;
     'closeButton'?: boolean;
-    'iconClose'?: string;
+    'iconClose'?: IconValue<Icon>;
     'modelOpen'?: boolean;
     'onUpdate:open'?: (value: boolean) => void;
     'onUpdate:modelOpen'?: (value: boolean) => void;

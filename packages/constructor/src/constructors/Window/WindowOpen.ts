@@ -228,6 +228,8 @@ export class WindowOpen {
     ) {
       this.position.update()
       this.position.updateBody()
+      this.styles.update()
+
       this.origin.update()
       this.styles.update()
 
