@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isEnter - Check for Enter or Space key press'/>
+
+# `isEnter`
+
+Checks if the pressed key is `Enter` or `Space`. This function is useful for handling keyboard events when you need to react to action confirmation or element activation, while supporting accessibility (a11y) and older browsers.
+
+**Parameters:**
+- `event: KeyboardEvent` — the keyboard event object.
+
+**Returns:**
+`boolean` — `true` if the `Enter` or `Space` key is pressed, otherwise `false`.
+
+**Supported event properties:**
+The function checks the following event properties for maximum compatibility:
+- `code`: `'Enter'`, `'Space'`
+- `key`: `'Enter'`, `' '`, `'Spacebar'`
+- `keyCode`: `13`, `32`
+
+```typescript
+import { isEnter } from '@dxtmisha/functional-basic'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isEnter(event)) {
+    console.log('Enter or Space pressed')
+    // Perform action
+  }
+}
+```

@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isEnter - Kiểm tra nhấn phím Enter hoặc Space'/>
+
+# `isEnter`
+
+Kiểm tra xem phím được nhấn có phải là `Enter` hoặc `Space` hay không. Hàm này hữu ích để xử lý các sự kiện bàn phím khi bạn cần phản ứng với việc xác nhận hành động hoặc kích hoạt phần tử, đồng thời hỗ trợ khả năng truy cập (a11y) và các trình duyệt cũ.
+
+**Tham số:**
+- `event: KeyboardEvent` — đối tượng sự kiện bàn phím.
+
+**Trả về:**
+`boolean` — `true` nếu phím `Enter` hoặc `Space` được nhấn, ngược lại là `false`.
+
+**Các thuộc tính sự kiện được hỗ trợ:**
+Hàm kiểm tra các thuộc tính sự kiện sau để đảm bảo khả năng tương thích tối đa:
+- `code`: `'Enter'`, `'Space'`
+- `key`: `'Enter'`, `' '`, `'Spacebar'`
+- `keyCode`: `13`, `32`
+
+```typescript
+import { isEnter } from '@dxtmisha/functional-basic'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isEnter(event)) {
+    console.log('Đã nhấn Enter hoặc Space')
+    // Thực hiện hành động
+  }
+}
+```

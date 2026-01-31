@@ -102,7 +102,7 @@ export type WindowClassesList = {
  * Window event click handler/
  * Обработчик события клика окна
  */
-export type WindowEventClick = (event: MouseEvent & TouchEvent) => Promise<void>
+export type WindowEventClick = (event: MouseEvent & TouchEvent | KeyboardEvent) => Promise<void>
 
 /**
  * Interface for window classes inclusion/
@@ -126,6 +126,8 @@ export type WindowControlItem
       open: Ref<boolean>
       /** Click event handler/ Обработчик события клика */
       onclick: WindowEventClick
+      /** Keydown event handler/ Обработчик события нажатия клавиши */
+      onKeydown: WindowEventClick
       /** Context menu event handler/ Обработчик события контекстного меню */
       oncontextmenu: WindowEventClick
       /** Binding properties/ Свойства привязки */
@@ -136,6 +138,8 @@ export type WindowControlItem
           class: string
           /** Click event handler for binding/ Обработчик события клика для привязки */
           onclick: WindowEventClick
+          /** Keydown event handler/ Обработчик события нажатия клавиши */
+          onKeydown: WindowEventClick
           /** Context menu event handler for binding/ Обработчик события контекстного меню для привязки */
           oncontextmenu: WindowEventClick
         }

@@ -1,5 +1,5 @@
 import { watch } from 'vue'
-import { EventItem, getMouseClientX, getMouseClientY } from '@dxtmisha/functional'
+import { EventItem, getMouseClientX, getMouseClientY, isEnter } from '@dxtmisha/functional'
 
 import { WindowStatus } from './WindowStatus'
 import { WindowClient } from './WindowClient'
@@ -58,9 +58,22 @@ export class WindowEvent {
    * События нажатия на элемент управления.
    * @param event event object/ объект события
    */
-  readonly onClick = async (event: MouseEvent & TouchEvent): Promise<void> => {
+  readonly onClick = async (event: MouseEvent & TouchEvent | KeyboardEvent): Promise<void> => {
     if (!this.props.contextmenu) {
-      await this.on(event)
+      await this.on(event as MouseEvent & TouchEvent)
+    }
+  }
+
+  /**
+   * Events of pressing a key.
+   *
+   * События нажатия на клавишу.
+   * @param event event object/ объект события
+   */
+  readonly onKeydown = async (event: MouseEvent & TouchEvent | KeyboardEvent): Promise<void> => {
+    if (isEnter(event as KeyboardEvent)) {
+      event.preventDefault()
+      await this.onClick(event as unknown as MouseEvent & TouchEvent)
     }
   }
 
@@ -70,10 +83,10 @@ export class WindowEvent {
    * События нажатия на правую кнопку мыши на элемент управления.
    * @param event event object/ объект события
    */
-  readonly onContextmenu = async (event: MouseEvent & TouchEvent): Promise<void> => {
+  readonly onContextmenu = async (event: MouseEvent & TouchEvent | KeyboardEvent): Promise<void> => {
     if (this.props.contextmenu) {
       event.preventDefault()
-      await this.on(event)
+      await this.on(event as MouseEvent & TouchEvent)
     }
   }
 

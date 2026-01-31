@@ -6,7 +6,7 @@ import { isDomRuntime as g, EventItem as _, getElementId as S, DesignConstructor
 import { C as N } from "./CaptionInclude-AFVF4qyd.js";
 import { P as x, S as B } from "./SuffixInclude-C7JNYCJK.js";
 import { E as $ } from "./EnabledInclude-BeX9VHb_.js";
-import { E as C } from "./EventClickInclude-Bi9B51Mm.js";
+import { E as C } from "./EventClickInclude-CgbuezDm.js";
 import { A as d } from "./AriaStaticInclude-CuMRRW17.js";
 import { F as L } from "./FieldLabelInclude-BSISy_cb.js";
 import { F as E } from "./FieldMessageInclude-DoyOsRK_.js";

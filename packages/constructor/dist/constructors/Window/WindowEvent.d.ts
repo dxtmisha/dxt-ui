@@ -37,14 +37,21 @@ export declare class WindowEvent {
      * События нажатия на элемент управления.
      * @param event event object/ объект события
      */
-    readonly onClick: (event: MouseEvent & TouchEvent) => Promise<void>;
+    readonly onClick: (event: (MouseEvent & TouchEvent) | KeyboardEvent) => Promise<void>;
+    /**
+     * Events of pressing a key.
+     *
+     * События нажатия на клавишу.
+     * @param event event object/ объект события
+     */
+    readonly onKeydown: (event: (MouseEvent & TouchEvent) | KeyboardEvent) => Promise<void>;
     /**
      * Events of pressing the right mouse button on a control element.
      *
      * События нажатия на правую кнопку мыши на элемент управления.
      * @param event event object/ объект события
      */
-    readonly onContextmenu: (event: MouseEvent & TouchEvent) => Promise<void>;
+    readonly onContextmenu: (event: (MouseEvent & TouchEvent) | KeyboardEvent) => Promise<void>;
     /**
      * Event of animation end when closing the window.
      *

@@ -1,9 +1,9 @@
-var a = Object.defineProperty;
-var h = (s, t, e) => t in s ? a(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
+var o = Object.defineProperty;
+var h = (s, t, e) => t in s ? o(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
 var r = (s, t, e) => h(s, typeof t != "symbol" ? t + "" : t, e);
-import { toRefs as p } from "vue";
-import { RouterItemRef as c } from "@dxtmisha/functional";
-class d {
+import { toRefs as n } from "vue";
+import { isEnter as p, RouterItemRef as u } from "@dxtmisha/functional";
+class m {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -38,9 +38,9 @@ class d {
      * @param event event object/ объект события
      */
     r(this, "onKeydown", (t) => {
-      (t.code === "Space" || t.code === "Enter") && (this.onClick(t), t.preventDefault());
+      p(t) && (this.onClick(t), t.preventDefault());
     });
-    this.props = t, this.enabled = e, this.emits = i, this.refs = t ? p(t) : void 0;
+    this.props = t, this.enabled = e, this.emits = i, this.refs = t ? n(t) : void 0;
   }
   /**
    * Exported values
@@ -73,8 +73,8 @@ class d {
    * Возвращает тип выбранного элемента
    */
   getTargetType(t) {
-    var i, l, o;
-    const e = (o = (l = (i = t.target) == null ? void 0 : i.closest("[data-event-type]")) == null ? void 0 : l.dataset) == null ? void 0 : o.eventType;
+    var i, l, a;
+    const e = (a = (l = (i = t.target) == null ? void 0 : i.closest("[data-event-type]")) == null ? void 0 : l.dataset) == null ? void 0 : a.eventType;
     return e != null ? e : "click";
   }
   /**
@@ -84,7 +84,7 @@ class d {
    */
   toRouter() {
     var t, e;
-    return (t = this.props) != null && t.to ? (c.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
+    return (t = this.props) != null && t.to ? (u.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
   }
   /**
    * Triggers the click event
@@ -98,5 +98,5 @@ class d {
   }
 }
 export {
-  d as E
+  m as E
 };

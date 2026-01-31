@@ -1,5 +1,5 @@
 import { toRefs, type ToRefs } from 'vue'
-import { type ConstrEmit, RouterItemRef } from '@dxtmisha/functional'
+import { type ConstrEmit, isEnter, RouterItemRef } from '@dxtmisha/functional'
 
 import { EnabledInclude } from './EnabledInclude'
 
@@ -85,10 +85,7 @@ export class EventClickInclude {
    * @param event event object/ объект события
    */
   readonly onKeydown = (event: KeyboardEvent) => {
-    if (
-      event.code === 'Space'
-      || event.code === 'Enter'
-    ) {
+    if (isEnter(event)) {
       this.onClick(event as unknown as MouseEvent)
       event.preventDefault()
     }

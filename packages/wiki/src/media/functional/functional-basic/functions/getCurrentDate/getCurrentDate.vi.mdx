@@ -1,0 +1,25 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getCurrentDate - Lấy ngày hiện tại'/>
+
+# `getCurrentDate`
+
+Trả về ngày hiện tại theo định dạng được chỉ định. Hàm này là một wrapper bao quanh lớp `Datetime` và cho phép bạn nhanh chóng lấy chuỗi thời gian hiện tại đã được định dạng.
+
+**Tham số:**
+- `format: GeoDate` — loại định dạng ngày đầu ra (mặc định là `'datetime'`). Hỗ trợ các giá trị: `'date'`, `'time'`, `'datetime'`, `'full'` và các giá trị khác.
+
+**Trả về:**
+Ngày hiện tại dưới dạng chuỗi.
+
+```typescript
+import { getCurrentDate } from '@dxtmisha/functional-basic'
+
+// Định dạng chuẩn (datetime)
+const now = getCurrentDate()
+// Kết quả: "2024-03-15 14:30"
+
+// Chỉ ngày
+const date = getCurrentDate('date')
+// Kết quả: "2024-03-15"
+```

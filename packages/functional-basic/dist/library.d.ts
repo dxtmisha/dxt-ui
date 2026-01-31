@@ -3013,6 +3013,14 @@ export declare function isDomData(): boolean;
 export declare function isDomRuntime(): boolean;
 
 /**
+ * Checks if the pressed key is Enter or Space.
+ *
+ * Проверяет, является ли нажатая клавиша Enter или Space.
+ * @param event event object/ объект события
+ */
+export declare const isEnter: (event: KeyboardEvent) => boolean;
+
+/**
  * Checks if the field is filled.
  *
  * Проверяет, заполнено ли поле.

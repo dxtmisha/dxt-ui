@@ -259,10 +259,12 @@ export class Window {
     class: this.classes.list.controlId,
     open: this.open.item,
     onclick: this.event.onClick,
+    onKeydown: this.event.onKeydown,
     oncontextmenu: this.event.onContextmenu,
     binds: {
       class: this.classes.list.controlId,
       onclick: this.event.onClick,
+      onKeydown: this.event.onKeydown,
       oncontextmenu: this.event.onContextmenu,
       ...AriaStaticInclude.control(
         this.classes.getControlId(),

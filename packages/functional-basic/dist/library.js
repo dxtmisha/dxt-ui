@@ -4812,7 +4812,8 @@ function Ge(i, t) {
     s !== (t == null ? void 0 : t[n]) && (e = !0);
   }), e;
 }
-function ti(i) {
+const ti = (i) => i.code === "Space" || i.code === "Enter" || i.key === " " || i.key === "Spacebar" || i.key === "Enter" || i.keyCode === 13 || i.keyCode === 32;
+function ei(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -4822,14 +4823,14 @@ function ti(i) {
       return !1;
   }
 }
-function ei(i, t) {
+function ii(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function ii(i, t) {
+function si(i, t) {
   return Array.isArray(i) ? i.every((e) => rt(e, t)) : rt(i, t);
 }
-function si(i, t) {
+function ri(i, t) {
   if (i.startsWith(t))
     return i.slice(t.length).trim();
   let e = 0;
@@ -4854,7 +4855,7 @@ function K(i, t, e = !0) {
     }
   ), s;
 }
-function ri(i, t) {
+function ni(i, t) {
   let e = i;
   return f(t, (s, n) => {
     e = e.replace(fe(`[${n}]`), I(s));
@@ -4870,7 +4871,7 @@ function be(i, t = "auto") {
       return !1;
   }
 }
-function ni(i, t, e = "auto", s) {
+function oi(i, t, e = "auto", s) {
   var o;
   const n = ge(i);
   if (n && (n.naturalWidth > t && (e === "auto" || e === "width") || n.naturalHeight > t && (e === "auto" || e === "height"))) {
@@ -4879,7 +4880,7 @@ function ni(i, t, e = "auto", s) {
       return u.canvas.width = a ? t : n.naturalWidth / n.naturalHeight * t, u.canvas.height = a ? n.naturalHeight / n.naturalWidth * t : t, u.drawImage(n, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
   }
 }
-function oi(i) {
+function ai(i) {
   const t = k(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -4887,7 +4888,7 @@ function oi(i) {
   }
   return "00:00";
 }
-function ai(i, t, {
+function ci(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
@@ -4902,7 +4903,7 @@ function ai(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function ci(i, t, e) {
+function ui(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
@@ -4918,13 +4919,13 @@ function ci(i, t, e) {
 function ve(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function ui(i) {
+function hi(i) {
   return ve(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function hi(i) {
+function li(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function li(i, t, e, s) {
+function di(i, t, e, s) {
   const n = k(i), o = k(t);
   return t && o < n ? `${Nt(o, e, s)}+` : Nt(n, e, s);
 }
@@ -4932,16 +4933,16 @@ const Nt = (i, t, e) => t ? new Q(e).number(i) : i;
 function Se(i, t) {
   return 1 / i * t;
 }
-function di(i, t) {
+function gi(i, t) {
   return Se(i, t) * 100;
 }
-function gi(i) {
+function fi(i) {
   let t = "";
   for (const e of i)
     t += String.fromCharCode(e);
   return l() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
 }
-async function fi(i) {
+async function mi(i) {
   if (l())
     try {
       await navigator.clipboard.writeText(i);
@@ -5041,40 +5042,41 @@ export {
   Ge as isDifferent,
   nt as isDomData,
   l as isDomRuntime,
+  ti as isEnter,
   L as isFilled,
-  ti as isFloat,
+  ei as isFloat,
   at as isFunction,
   Ht as isInDom,
-  ei as isIntegerBetween,
+  ii as isIntegerBetween,
   M as isNull,
   lt as isNumber,
   m as isObject,
   A as isObjectNotArray,
   rt as isSelected,
-  ii as isSelectedByList,
+  si as isSelectedByList,
   R as isString,
   It as isWindow,
   J as random,
-  si as removeCommonPrefix,
+  ri as removeCommonPrefix,
   K as replaceRecursive,
-  ri as replaceTemplate,
-  ni as resizeImageByMax,
-  oi as secondToTime,
+  ni as replaceTemplate,
+  oi as resizeImageByMax,
+  ai as secondToTime,
   Tt as setElementItem,
-  ai as setValues,
-  ci as splice,
+  ci as setValues,
+  ui as splice,
   pe as strFill,
   Z as toArray,
   ve as toCamelCase,
-  ui as toCamelCaseFirst,
+  hi as toCamelCaseFirst,
   B as toDate,
-  hi as toKebabCase,
+  li as toKebabCase,
   k as toNumber,
-  li as toNumberByMax,
+  di as toNumberByMax,
   Se as toPercent,
-  di as toPercentBy100,
+  gi as toPercentBy100,
   Bt as transformation,
-  gi as uint8ArrayToBase64,
+  fi as uint8ArrayToBase64,
   we as uniqueArray,
-  fi as writeClipboardData
+  mi as writeClipboardData
 };

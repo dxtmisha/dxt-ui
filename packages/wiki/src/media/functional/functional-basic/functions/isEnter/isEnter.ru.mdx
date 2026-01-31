@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isEnter - Проверка нажатия Enter или Space'/>
+
+# `isEnter`
+
+Проверяет, является ли нажатая клавиша `Enter` или `Space`. Функция полезна для обработки событий клавиатуры, когда необходимо реагировать на подтверждение действия или активацию элемента, поддерживая при этом доступность (a11y) и старые браузеры.
+
+**Параметры:**
+- `event: KeyboardEvent` — объект события клавиатуры.
+
+**Возвращает:**
+`boolean` — `true`, если нажата клавиша `Enter` или `Space`, иначе `false`.
+
+**Поддерживаемые свойства события:**
+Функция проверяет следующие свойства события для максимальной совместимости:
+- `code`: `'Enter'`, `'Space'`
+- `key`: `'Enter'`, `' '`, `'Spacebar'`
+- `keyCode`: `13`, `32`
+
+```typescript
+import { isEnter } from '@dxtmisha/functional-basic'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isEnter(event)) {
+    console.log('Нажат Enter или Space')
+    // Выполнить действие
+  }
+}
+```
