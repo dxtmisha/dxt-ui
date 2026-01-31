@@ -2,7 +2,7 @@
 
 import {
   forEach,
-  isObjectNotArray,
+  isObjectNotArray, replaceComponentName,
   toArray,
   toKebabCase
 } from '@dxtmisha/functional-basic'
@@ -171,24 +171,35 @@ export class DesignComponent extends DesignCommand {
     if (
       item?.ai
     ) {
-      if (item.ai.render) {
-        const render = item.ai.render
-          .replace(`<${componentName}`, `<${fullComponentName}`)
-          .trim()
+      const imports: string[] = []
 
-        sample.replaceMark('component-render', [
-          '<template #render="{ args, classDemo }">',
-          render,
-          '</template>'
-        ])
+      if (item.ai.render) {
+        let render = replaceComponentName(
+          item.ai.render,
+          componentName,
+          fullComponentName
+        )
+
+        if (item.ai.render.includes('<button')) {
+          imports.push(`import { DxtTestButton } from '@dxtmisha/test'`)
+          render = replaceComponentName(render, 'button', 'DxtTestButton')
+        }
+
+        if (render) {
+          sample.replaceMark('component-render', [
+            '<template #render="{ args, classDemo }">',
+            render,
+            '</template>'
+          ])
+        }
       }
 
       if (item.ai.import) {
-        sample.replaceMark('component-import', [
-          '<template #render="{ args, classDemo }">',
-          ...item.ai.import,
-          '</template>'
-        ])
+        imports.push(...item.ai.import)
+      }
+
+      if (imports.length > 0) {
+        sample.replaceMark('component-import', imports)
       }
     }
 

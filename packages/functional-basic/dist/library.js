@@ -4838,6 +4838,10 @@ function ri(i, t) {
     e++;
   return i.slice(e).trim();
 }
+const ni = (i, t, e) => {
+  var s, n;
+  return (n = (s = i == null ? void 0 : i.replace(`<${t}`, `<${e}`)) == null ? void 0 : s.replace(`</${t}`, `</${e}`)) == null ? void 0 : n.trim();
+};
 function we(i) {
   return [...new Set(i)];
 }
@@ -4855,7 +4859,7 @@ function K(i, t, e = !0) {
     }
   ), s;
 }
-function ni(i, t) {
+function oi(i, t) {
   let e = i;
   return f(t, (s, n) => {
     e = e.replace(fe(`[${n}]`), I(s));
@@ -4871,7 +4875,7 @@ function be(i, t = "auto") {
       return !1;
   }
 }
-function oi(i, t, e = "auto", s) {
+function ai(i, t, e = "auto", s) {
   var o;
   const n = ge(i);
   if (n && (n.naturalWidth > t && (e === "auto" || e === "width") || n.naturalHeight > t && (e === "auto" || e === "height"))) {
@@ -4880,7 +4884,7 @@ function oi(i, t, e = "auto", s) {
       return u.canvas.width = a ? t : n.naturalWidth / n.naturalHeight * t, u.canvas.height = a ? n.naturalHeight / n.naturalWidth * t : t, u.drawImage(n, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
   }
 }
-function ai(i) {
+function ci(i) {
   const t = k(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -4888,7 +4892,7 @@ function ai(i) {
   }
   return "00:00";
 }
-function ci(i, t, {
+function ui(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
@@ -4903,7 +4907,7 @@ function ci(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function ui(i, t, e) {
+function hi(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
@@ -4919,13 +4923,13 @@ function ui(i, t, e) {
 function ve(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function hi(i) {
+function li(i) {
   return ve(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function li(i) {
+function di(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function di(i, t, e, s) {
+function gi(i, t, e, s) {
   const n = k(i), o = k(t);
   return t && o < n ? `${Nt(o, e, s)}+` : Nt(n, e, s);
 }
@@ -4933,16 +4937,16 @@ const Nt = (i, t, e) => t ? new Q(e).number(i) : i;
 function Se(i, t) {
   return 1 / i * t;
 }
-function gi(i, t) {
+function fi(i, t) {
   return Se(i, t) * 100;
 }
-function fi(i) {
+function mi(i) {
   let t = "";
   for (const e of i)
     t += String.fromCharCode(e);
   return l() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
 }
-async function mi(i) {
+async function yi(i) {
   if (l())
     try {
       await navigator.clipboard.writeText(i);
@@ -5058,25 +5062,26 @@ export {
   It as isWindow,
   J as random,
   ri as removeCommonPrefix,
+  ni as replaceComponentName,
   K as replaceRecursive,
-  ni as replaceTemplate,
-  oi as resizeImageByMax,
-  ai as secondToTime,
+  oi as replaceTemplate,
+  ai as resizeImageByMax,
+  ci as secondToTime,
   Tt as setElementItem,
-  ci as setValues,
-  ui as splice,
+  ui as setValues,
+  hi as splice,
   pe as strFill,
   Z as toArray,
   ve as toCamelCase,
-  hi as toCamelCaseFirst,
+  li as toCamelCaseFirst,
   B as toDate,
-  li as toKebabCase,
+  di as toKebabCase,
   k as toNumber,
-  di as toNumberByMax,
+  gi as toNumberByMax,
   Se as toPercent,
-  gi as toPercentBy100,
+  fi as toPercentBy100,
   Bt as transformation,
-  fi as uint8ArrayToBase64,
+  mi as uint8ArrayToBase64,
   we as uniqueArray,
-  mi as writeClipboardData
+  yi as writeClipboardData
 };

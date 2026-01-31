@@ -207,5 +207,53 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
     slots: `
 <StorybookDescriptions componentName={'Window'} type={'slots'}/>
     `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item">
+  <Window v-bind="args">
+      <template #control="{ binds }">
+        <a v-bind="binds">Open Window</a>
+      </template>
+      <template #default>
+        <p>Window content goes here.</p>
+      </template>
+    </Window>
+</div>
+    `,
+    description: `
+**Note:** This is a low-level component. Use it only if specialized components like \`Modal\`, \`Dialog\`, or \`Menu\` do not fit your requirements.
+
+Window is a versatile container component used for Modals, Popups, Dropdowns, and Cards.
+It automatically handles z-index, focus management, teleportation, and scroll locking.
+
+**When to use:**
+1. **Modal/Dialog:** When a centered box overlays the page content. Use default props.
+2. **Dropdown/Popover:** When a box appears next to a button/trigger. Use \`axis="y"\` (vertical) or \`axis="x"\` (horizontal).
+3. **Select Menu:** When a list overlays the trigger exactly. Use \`axis="on"\`.
+4. **Card/Panel:** When you need the visual style of a window but embedded in the page flow. Use \`staticMode\`.
+
+**Key Features:**
+- **Structure:**
+  - \`#control\`: The trigger element (button, link). Bind \`binds\` to this element to enable automatic toggling.
+  - \`#title\`: The header area of the window.
+  - \`#default\`: The main content area (automatically wrapped in a Scrollbar).
+  - \`#footer\`: The bottom area for action buttons.
+
+- **Positioning (\`axis\`):**
+  - \`undefined\` (default): Centered modal.
+  - \`y\`: Opens vertically relative to the trigger (like a standard dropdown).
+  - \`x\`: Opens horizontally relative to the trigger (like a nested menu).
+  - \`on\`: Overlays the trigger element.
+
+- **Behavior:**
+  - \`staticMode\`: Disables teleportation and absolute positioning, rendering it as a regular block.
+  - \`persistent\`: Prevents closing when clicking outside or pressing Escape.
+  - \`closeButton\`: Automatically adds a close button in the top-right corner.
+
+**Example:**
+\`<Window axis="y">\` creates a dropdown menu.
+\`<Window :open="true">\` creates a modal dialog.
+    `
   }
 }

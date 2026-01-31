@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
+import { replaceComponentName } from '@dxtmisha/functional-basic'
 import { type WikiStorybook } from '@dxtmisha/wiki'
 
 import DxtTestBlock from '../DxtTestBlock.vue'
@@ -36,14 +37,18 @@ const list = computed(() => props.wiki.getWikiObject())
 const values = computed(() => props.wiki.getFilteredValues())
 
 const aiRender = computed(
-  () => props.wiki.getAiRender()
-    ?.replace(`<${props.wiki.getName()}`, `<${name.value}`)
-    ?.trim()
+  () => replaceComponentName(
+    props.wiki.getAiRender(),
+    props.wiki.getName(),
+    name.value
+  )
 )
 const aiDescription = computed(
-  () => props.wiki.getAiDescription()
-    ?.replace(`<${props.wiki.getName()}`, `<${name.value}`)
-    ?.trim()
+  () => replaceComponentName(
+    props.wiki.getAiDescription(),
+    props.wiki.getName(),
+    name.value
+  )
 )
 
 provide('name', name)

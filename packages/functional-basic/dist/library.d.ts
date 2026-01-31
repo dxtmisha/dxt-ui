@@ -4333,6 +4333,16 @@ export declare function random(min: number, max: number): number;
 export declare function removeCommonPrefix(mainStr: string, prefix: string): string;
 
 /**
+ * Replaces the component name in the text.
+ *
+ * Заменяет имя компонента в тексте.
+ * @param text text/ текст
+ * @param name component name/ имя компонента
+ * @param componentName new component name/ новое имя компонента
+ */
+export declare const replaceComponentName: (text: string | undefined, name: string, componentName: string) => string | undefined;
+
+/**
  * Merge one or more arrays recursively.
  *
  * Рекурсивное слияние одного или более массивов.

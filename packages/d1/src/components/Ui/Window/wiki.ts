@@ -27,7 +27,7 @@ const propsNames: StorybookProps = [
   { name: 'height', type: 'string', option: ['auto', 'max', 'sm', 'md', 'lg', 'custom'] },
   { name: 'hide', type: 'boolean' },
   { name: 'iconClose', type: 'IconValue<Icon>' },
-  { name: 'image', type: 'string | ConstrBind<ImagePropsBasic>' },
+  { name: 'image', type: 'string | ConstrBind<Image>' },
   { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
   { name: 'imageSize', type: 'string', option: ['sm', 'md', 'lg', 'quarter', 'half'] },
   { name: 'indent', type: 'number' },

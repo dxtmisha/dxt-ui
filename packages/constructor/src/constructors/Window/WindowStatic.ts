@@ -87,7 +87,6 @@ export class WindowStatic {
    */
   protected readonly listener = (): void => {
     setRef(this.item, this.isStatic())
-    console.log('this.item', this.item.value)
   }
 
   /**

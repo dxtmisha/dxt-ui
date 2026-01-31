@@ -4,12 +4,15 @@ defineOptions({
 })
 
 defineProps<{
-  label: string
+  label?: string
 }>()
 </script>
 
 <template>
-  <button class="dxt-test-button">{{ label }}</button>
+  <button class="dxt-test-button">
+    {{ label }}
+    <slot/>
+  </button>
 </template>
 
 <style lang="scss">

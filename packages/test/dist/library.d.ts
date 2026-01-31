@@ -27,11 +27,29 @@ export declare const DxtTestBlock: {
         default?(_: {}): any;
     };
 });
-export declare const DxtTestButton: DefineComponent<{
-    label: string;
-}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
-    label: string;
-}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLButtonElement>;
+export declare const DxtTestButton: {
+    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
+        label?: string;
+    }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, HTMLButtonElement, ComponentProvideOptions, {
+        P: {};
+        B: {};
+        D: {};
+        C: {};
+        M: {};
+        Defaults: {};
+    }, Readonly<{
+        label?: string;
+    }> & Readonly<{}>, {}, {}, {}, {}, {}>;
+    __isFragment?: never;
+    __isTeleport?: never;
+    __isSuspense?: never;
+} & ComponentOptionsBase<Readonly<{
+    label?: string;
+}> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
+    $slots: {
+        default?(_: {}): any;
+    };
+});
 export declare const DxtTestPage: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
         title?: string;
