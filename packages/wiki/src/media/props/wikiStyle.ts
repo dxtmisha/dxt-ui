@@ -156,10 +156,11 @@ export const wikiStyle: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Shows close button in header',
+        en: 'Shows a close button in the header',
         ru: 'Показывает кнопку закрытия в заголовке'
       }
-    }
+    },
+    isDemo: true
   },
   container: {
     type: StorybookControl.select,
@@ -295,7 +296,7 @@ export const wikiStyle: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Hides the internal List part of Menu; shows only header/toolbar and other slots.',
+        en: 'Hides the internal List part of the Menu; shows only header/toolbar and other slots.',
         ru: 'Скрывает внутреннюю часть List в Menu; отображает только заголовок/панель и другие слоты.'
       }
     }
@@ -321,6 +322,10 @@ export const wikiStyle: StorybookArgsToList = {
         ru: 'Определяет расположение изображения внутри макета окна'
       },
       options: ['left', 'top']
+    },
+    isDemo: true,
+    demoOptions: {
+      image: 'https://drscdn.500px.org/photo/294267357/q%3D90_m%3D2048/v2?sig=adb52b9add18ad21ab4a86b99695377f2a18821c609d42149b3426dfb99cf924'
     }
   },
   inputAttrs: {
@@ -530,7 +535,7 @@ export const wikiStyle: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Enables closing the component by swipe-down gesture on mobile devices',
+        en: 'Enables closing the component by a swipe-down gesture on mobile devices',
         ru: 'Включает закрытие компонента жестом свайпа вниз на мобильных устройствах'
       }
     }
@@ -579,7 +584,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Sets component width',
         ru: 'Задает ширину компонента'
       }
-    }
+    },
+    isDemo: true
   },
   windowAttrs: {
     type: StorybookControl.object,

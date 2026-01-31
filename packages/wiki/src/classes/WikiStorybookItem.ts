@@ -131,11 +131,12 @@ export class WikiStorybookItem {
    *
    * Возвращает свойство demo, если элемент является демонстрационным.
    */
-  private getDemo(): { isDemo?: boolean, demo?: any } {
+  private getDemo(): { isDemo?: boolean, demo?: any, demoOptions?: Record<string, any> } {
     if (this.isDemo()) {
       return {
         isDemo: true,
-        demo: this.getDemoValue()
+        demo: this.getDemoValue(),
+        demoOptions: this.item.demoOptions
       }
     }
 

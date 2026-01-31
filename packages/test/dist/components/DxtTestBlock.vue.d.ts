@@ -2,6 +2,7 @@ import { DefineComponent, ComponentOptionsMixin, PublicProps, ComponentProvideOp
 type __VLS_Props = {
     title?: string;
     description?: string;
+    anchor?: string;
 };
 declare function __VLS_template(): {
     attrs: Partial<{}>;

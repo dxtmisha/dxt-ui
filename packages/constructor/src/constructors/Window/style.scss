@@ -135,10 +135,12 @@
     padding: 0;
 
     background-color: transparent;
+    border-radius: 0;
 
     @include ui.subclass('body') {
       opacity: 1;
       background: transparent;
+      border-radius: 0;
       box-shadow: none;
 
       &__context {

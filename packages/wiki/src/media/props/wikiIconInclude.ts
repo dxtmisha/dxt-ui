@@ -40,7 +40,7 @@ export const wikiIconInclude: StorybookArgsToList = {
     options: {
       category: StorybookCategory.icon,
       description: {
-        en: 'Sets icon for left arrow',
+        en: 'Sets icon for the left arrow',
         ru: 'Задает иконку стрелки влево'
       }
     }
@@ -70,7 +70,7 @@ export const wikiIconInclude: StorybookArgsToList = {
     options: {
       category: StorybookCategory.icon,
       description: {
-        en: 'Sets icon for back button',
+        en: 'Sets icon for the back button',
         ru: 'Задает иконку для кнопки назад'
       }
     }
@@ -111,7 +111,7 @@ export const wikiIconInclude: StorybookArgsToList = {
       category: StorybookCategory.icon,
 
       description: {
-        en: 'Mirrors the icon depending on site direction (RTL/LTR)',
+        en: 'Mirrors the icon depending on a site direction (RTL/LTR)',
         ru: 'Зеркально отражает иконку в зависимости от направления сайта (RTL/LTR)'
       }
     }
@@ -121,7 +121,7 @@ export const wikiIconInclude: StorybookArgsToList = {
     options: {
       category: StorybookCategory.icon,
       description: {
-        en: 'Sets icon displayed in error state',
+        en: 'Sets icon displayed in the error state',
         ru: 'Задает иконку, отображаемую в состоянии ошибки'
       }
     }
@@ -142,7 +142,7 @@ export const wikiIconInclude: StorybookArgsToList = {
     options: {
       category: StorybookCategory.icon,
       description: {
-        en: 'Sets icon for link',
+        en: 'Sets icon for a link',
         ru: 'Задает иконку для ссылки'
       }
     }
@@ -205,7 +205,7 @@ export const wikiIconInclude: StorybookArgsToList = {
     options: {
       category: StorybookCategory.icon,
       description: {
-        en: 'Sets icon displayed in success state',
+        en: 'Sets icon displayed in a success state',
         ru: 'Задает иконку, отображаемую в состоянии успеха'
       }
     }
@@ -240,7 +240,9 @@ export const wikiIconInclude: StorybookArgsToList = {
         en: 'Value of the trailing icon',
         ru: 'Значение завершающей иконки'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'settings'
   },
   iconTrailingDirOnly: {
     type: StorybookControl.boolean,

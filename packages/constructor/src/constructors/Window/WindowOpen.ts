@@ -149,7 +149,10 @@ export class WindowOpen {
               requestAnimationFrame(() => {
                 this.hook.opening()
                 this.resetClicks()
-                this.tabIndex.goTo()
+
+                if (!this.props.embedded) {
+                  this.tabIndex.goTo()
+                }
               })
               this.emit.on(this.item.value)
             })

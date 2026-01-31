@@ -21,17 +21,25 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <iframe style="width: 320px; height: 240px;">
-    <D1Window v-bind="args">
-      <template #control="{ binds }">
-        <a v-bind="binds">Open Window</a>
-      </template>
-      <template #default>
-        <p>Window content goes here.</p>
-      </template>
-    </D1Window>
-  </iframe>
-</div>
+        <D1Window embedded open v-bind="args">
+            <template #control="{ binds }">
+              <DxtTestButton v-bind="binds">Open Window</DxtTestButton>
+            </template>
+            <template #title>
+              <h3>Window Title</h3>
+            </template>
+            <template #default>
+              <p>Window content goes here. This is a demonstration of the window component capabilities.</p>
+              <p>It can contain text, images, forms, or any other content.</p>
+            </template>
+            <template #footer>
+              <div>
+                <DxtTestButton>Cancel</DxtTestButton>
+                <DxtTestButton>Save</DxtTestButton>
+              </div>
+            </template>
+          </D1Window>
+      </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>

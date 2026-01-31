@@ -83,6 +83,10 @@ export const wikiIcon: StorybookArgsToList = {
         en: 'Makes the element rectangular',
         ru: 'Делает элемент прямоугольным'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      overlay: true
     }
   },
   'icon.circle': {
@@ -93,6 +97,10 @@ export const wikiIcon: StorybookArgsToList = {
         en: 'Makes the element circular',
         ru: 'Делает элемент круглым'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      overlay: true
     }
   },
   'icon.square': {
@@ -103,6 +111,10 @@ export const wikiIcon: StorybookArgsToList = {
         en: 'Makes the element square',
         ru: 'Делает элемент квадратным'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      overlay: true
     }
   },
   'icon.animationType': {

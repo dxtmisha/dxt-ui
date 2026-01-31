@@ -103,7 +103,10 @@ export class WindowEvent {
    * Стартует прослушивание глобальных событий.
    */
   start(): this {
-    this.event.start()
+    if (!this.props.embedded) {
+      this.event.start()
+    }
+
     return this
   }
 

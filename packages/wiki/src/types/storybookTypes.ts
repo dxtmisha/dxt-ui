@@ -87,6 +87,8 @@ export type StorybookArgsItem = {
   isDemo?: boolean
   /** Demo data for the item / Демонстрационные данные для элемента */
   demo?: any
+  /** Additional demo data for the item / Дополнительные демонстрационные данные для элемента */
+  demoOptions?: Record<string, any>
 }
 
 /** Record of Storybook arguments / Запись аргументов Storybook */
@@ -145,6 +147,8 @@ export type StorybookArgsToItem = {
   isDemo?: boolean
   /** Demo data for the item / Демонстрационные данные для элемента */
   demo?: any
+  /** Additional demo data for the item / Дополнительные демонстрационные данные для элемента */
+  demoOptions?: Record<string, any>
 }
 
 /** A list of Storybook controls / Список элементов управления Storybook */

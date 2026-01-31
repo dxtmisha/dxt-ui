@@ -22,6 +22,7 @@ const propsNames: StorybookProps = [
   { name: 'dense', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
   { name: 'divider', type: 'boolean' },
+  { name: 'embedded', type: 'boolean' },
   { name: 'flash', type: 'boolean' },
   { name: 'fullscreen', type: 'boolean' },
   { name: 'height', type: 'string', option: ['auto', 'max', 'sm', 'md', 'lg', 'custom'] },

@@ -7,7 +7,7 @@ import { A as w } from "./AriaStaticInclude-CuMRRW17.js";
 import { M as ot } from "./ModelInclude-BiYm_iCQ.js";
 import { T as rt } from "./TabIndexInclude-DFgnqYh5.js";
 import { T as ht } from "./TextInclude-CodMN5BH.js";
-import { a as c, _ as C, b as at } from "./WindowClassesInclude-B56usxgx.js";
+import { a as c, _ as b, b as at } from "./WindowClassesInclude-B56usxgx.js";
 import { W as Xt } from "./WindowClassesInclude-B56usxgx.js";
 import { W as lt } from "./WindowEsc-Dp9AvJt7.js";
 import { W as qt } from "./WindowInclude-Is5RhGxt.js";
@@ -913,7 +913,7 @@ class vt {
     return t < r ? r : t + n <= o - r ? t : o - n - r;
   }
 }
-class Ct {
+class bt {
   /**
    * Constructor
    * @param client object for working with mouse pointer coordinates/ объект для работы с координатами указателя мыши
@@ -950,7 +950,7 @@ class Ct {
     const t = this.element.getMain();
     if (this.client.update(), !this.client.is())
       this.x = 0, this.y = 0;
-    else if (t && getComputedStyle(t).getPropertyValue(C).includes("--MENU--")) {
+    else if (t && getComputedStyle(t).getPropertyValue(b).includes("--MENU--")) {
       const e = this.element.getBodyRect();
       e && (this.x = this.client.getShiftX(e.left), this.y = this.client.getShiftY(e.top));
     } else
@@ -966,7 +966,7 @@ class Ct {
     return this.x = null, this.y = null, this;
   }
 }
-class bt {
+class Ct {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -982,7 +982,7 @@ class bt {
      * Вызываемая функция при срабатывании события.
      */
     i(this, "listener", () => {
-      Q(this.item, this.isStatic()), console.log("this.item", this.item.value);
+      Q(this.item, this.isStatic());
     });
     /**
      * Performs status check and activates events when turned on.
@@ -1025,7 +1025,7 @@ class bt {
    */
   isStatic() {
     const t = this.element.getMain();
-    return !!(t && getComputedStyle(t).getPropertyValue(C).includes("--STATIC--"));
+    return !!(t && getComputedStyle(t).getPropertyValue(b).includes("--STATIC--"));
   }
 }
 class xt {
@@ -1114,7 +1114,7 @@ class Mt {
    * @param emit the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param styles an object for working with the styles of an element/ объект для работы со стилями элемента
    */
-  constructor(t, e, s, n, o, r, a, l, d, u, b, x) {
+  constructor(t, e, s, n, o, r, a, l, d, u, C, x) {
     i(this, "item", v(!1));
     i(this, "first", v(!1));
     i(this, "clicks", 0);
@@ -1158,7 +1158,7 @@ class Mt {
         this.status.update(), await this.hook.preparation(), await this.watchPosition(), this.styles.updateType(!0), requestAnimationFrame(async () => {
           this.position.updateScroll(), this.status.toPreparation(), requestAnimationFrame(async () => {
             this.flash.isClose() ? this.status.toFlash() : this.status.toOpen(), requestAnimationFrame(() => {
-              this.hook.opening(), this.resetClicks(), this.tabIndex.goTo();
+              this.hook.opening(), this.resetClicks(), this.props.embedded || this.tabIndex.goTo();
             }), this.emit.on(this.item.value);
           });
         });
@@ -1166,7 +1166,7 @@ class Mt {
         this.status.toHide(), this.resetClicks();
       })));
     });
-    this.props = t, this.client = e, this.hook = s, this.element = n, this.tabIndex = o, this.status = r, this.flash = a, this.coordinates = l, this.position = d, this.origin = u, this.emit = b, this.styles = x;
+    this.props = t, this.client = e, this.hook = s, this.element = n, this.tabIndex = o, this.status = r, this.flash = a, this.coordinates = l, this.position = d, this.origin = u, this.emit = C, this.styles = x;
   }
   /**
    * Checks if the window is open.
@@ -1235,7 +1235,7 @@ class Mt {
       () => {
         const t = this.element.getMain();
         if (t) {
-          const e = getComputedStyle(t).getPropertyValue(C).includes("--MENU--");
+          const e = getComputedStyle(t).getPropertyValue(b).includes("--MENU--");
           e && this.position.update() && this.styles.update(), this.styles.updateType(e);
         }
       },
@@ -1411,7 +1411,7 @@ class St {
    */
   isMenu(t = this.element.getMain()) {
     if (t) {
-      const s = getComputedStyle(t).getPropertyValue(C);
+      const s = getComputedStyle(t).getPropertyValue(b);
       return s.includes("--MENU--") || s.includes("--MENU-WINDOW--");
     }
     return !1;
@@ -1498,7 +1498,7 @@ class kt {
    * Стартует прослушивание глобальных событий.
    */
   start() {
-    return this.event.start(), this;
+    return this.props.embedded || this.event.start(), this;
   }
   /**
    * Stop the global event.
@@ -1532,15 +1532,17 @@ class kt {
 class It {
   /**
    * Constructor
+   * @param props input data / входные данные
    * @param classes an object for working with class names / объект для работы с названиями классов
+   * @param staticMode class object for working with static status / объект класса для работы со статическим статусом
    * @param open an object for working with the open state of the window / объект для работы с состоянием открытия окна
    */
-  constructor(t, e) {
+  constructor(t, e, s, n) {
     i(this, "elements", []);
-    this.classes = t, this.open = e, f(
+    this.props = t, this.classes = e, this.staticMode = s, this.open = n, f(
       this.open.item,
-      (s) => {
-        s ? this.toHidden() : this.toShow();
+      (o) => {
+        this.props.embedded || this.staticMode.item.value || (o ? this.toHidden() : this.toShow());
       },
       {
         immediate: !0
@@ -1634,7 +1636,7 @@ class Wt {
    * @param TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
    * @param TextConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(t, e, s, n, o, r, a, l, d = at, u = ut, b = wt, x = gt, k = xt, I = lt, W = kt, T = yt, O = It, H = pt, E = Mt, A = Ct, $ = ft, D = vt, P = bt, N = mt, R = Bt, L = St, Y = dt, F = ot, X = ct, _ = rt, q = ht) {
+  constructor(t, e, s, n, o, r, a, l, d = at, u = ut, C = wt, x = gt, k = xt, I = lt, W = kt, T = yt, O = It, H = pt, E = Mt, A = bt, $ = ft, D = vt, P = Ct, N = mt, R = Bt, L = St, Y = dt, F = ot, X = ct, _ = rt, q = ht) {
     /** Client instance for window management/ Экземпляр клиента для управления окном */
     i(this, "client");
     /** Hook instance for window events/ Экземпляр хука для событий окна */
@@ -1717,7 +1719,7 @@ class Wt {
     });
     this.props = t, this.refs = e, this.classDesign = n, this.className = o, this.components = r, this.slots = a, this.emits = l, this.hook = new H(t), this.classes = new d(o), this.element = new x(this.classes, s), this.client = new u(this.element), this.tabIndex = new _(
       () => this.element.getBody()
-    ), this.status = new N(this.element), this.persistent = new $(t, this.classes, this.element), this.flash = new T(t, this.classes), this.coordinates = new b(this.classes, this.element), this.position = new D(t, this.client, this.element, this.coordinates), this.origin = new A(this.client, this.element, this.position), this.staticMode = new P(t, e, this.element), this.emit = new k(this.classes, this.element, l), this.styles = new R(
+    ), this.status = new N(this.element), this.persistent = new $(t, this.classes, this.element), this.flash = new T(t, this.classes), this.coordinates = new C(this.classes, this.element), this.position = new D(t, this.client, this.element, this.coordinates), this.origin = new A(this.client, this.element, this.position), this.staticMode = new P(t, e, this.element), this.emit = new k(this.classes, this.element, l), this.styles = new R(
       this.element,
       this.coordinates,
       this.position,
@@ -1764,7 +1766,12 @@ class Wt {
       this.open.item,
       () => this.open.close(),
       () => !this.props.persistent
-    ), this.text = new q(this.props), this.hidden = new O(this.classes, this.open), new F("open", this.emits, this.open.item), G(() => {
+    ), this.text = new q(this.props), this.hidden = new O(
+      this.props,
+      this.classes,
+      this.staticMode,
+      this.open
+    ), new F("open", this.emits, this.open.item), G(() => {
       f([e.open], () => this.open.set(t.open), { immediate: !0 });
     }), K(this.stop);
   }
@@ -1986,7 +1993,7 @@ class Lt extends nt {
   initRender() {
     var s;
     const e = [];
-    return this.initSlot("control", e, this.item.slotData.value), this.item.open.inDom.value && (this.item.staticMode.item.value ? e.push(this.renderMain()) : e.push(
+    return this.initSlot("control", e, this.item.slotData.value), this.item.open.inDom.value && (this.item.staticMode.item.value || this.props.embedded ? e.push(this.renderMain()) : e.push(
       p(
         j,
         {

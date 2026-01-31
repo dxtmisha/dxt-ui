@@ -112,6 +112,16 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
+  'window.embedded': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'The window will be displayed inside the current parent element',
+        ru: 'Окно будет отображаться внутри текущего родительского элемента'
+      }
+    }
+  },
   'window.flash': {
     type: StorybookControl.boolean,
     options: {
@@ -130,7 +140,8 @@ export const wikiWindow: StorybookArgsToList = {
         en: 'Fills the screen without margins',
         ru: 'Заполняет экран без отступов'
       }
-    }
+    },
+    isDemo: true
   },
   'window.imageSize': {
     type: StorybookControl.select,
@@ -141,6 +152,11 @@ export const wikiWindow: StorybookArgsToList = {
         ru: 'Управляет относительным размером области изображения в макете без привязки к конкретным значениям'
       },
       options: ['half', 'lg', 'md', 'quarter', 'sm']
+    },
+    isDemo: true,
+    demoOptions: {
+      image: 'https://drscdn.500px.org/photo/294267357/q%3D90_m%3D2048/v2?sig=adb52b9add18ad21ab4a86b99695377f2a18821c609d42149b3426dfb99cf924',
+      imagePosition: 'left'
     }
   },
   'window.indent': {
@@ -219,9 +235,13 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.option,
       description: {
-        en: 'Enables static mode: displays as embedded component without modal behavior, animations, or dynamic positioning',
+        en: 'Enables static mode: displays as an embedded component without modal behavior, animations, or dynamic positioning',
         ru: 'Включает статичный режим: отображает как встроенный компонент без модального поведения, анимаций и динамического позиционирования'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      adaptive: 'static'
     }
   },
   'window.widthMatch': {

@@ -2345,7 +2345,7 @@ declare type TooltipProps = TooltipPropsBasic & PropsToken_38;
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type WindowProps = WindowPropsBasic<ScrollbarProps, ImageProps> & PropsToken_8;
+declare type WindowProps = WindowPropsBasic<ScrollbarProps, IconProps, ImageProps> & PropsToken_8;
 
 export { }
 

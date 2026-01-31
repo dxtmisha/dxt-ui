@@ -25,6 +25,7 @@ const options = computed(() => props.item.getOptions())
 
 const isDemo = computed(() => props.item.isDemo())
 const demo = computed(() => props.item.getDemo())
+const demoOptions = computed(() => props.item.getDemoOptions())
 </script>
 
 <template>
@@ -46,7 +47,7 @@ const demo = computed(() => props.item.getDemo())
           <DxtTestWikiDemo
             v-for="option in options"
             :key="option"
-            :args="{[name]: option}"
+            :args="{[name]: option, ...demoOptions}"
           >
             <template v-if="('render' in $slots)" #render="binds">
               <slot name="render" v-bind="binds"/>
@@ -55,7 +56,7 @@ const demo = computed(() => props.item.getDemo())
         </template>
         <DxtTestWikiDemo
           v-else-if="demo"
-          :args="{[name]: demo}"
+          :args="{[name]: demo, ...demoOptions}"
         >
           <template v-if="('render' in $slots)" #render="binds">
             <slot name="render" v-bind="binds"/>

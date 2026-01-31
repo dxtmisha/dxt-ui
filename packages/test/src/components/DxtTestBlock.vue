@@ -3,15 +3,28 @@ defineOptions({
   name: 'DxtTestBlock'
 })
 
-defineProps<{
+const props = defineProps<{
   title?: string
   description?: string
+  anchor?: string
 }>()
+
+const onClick = () => {
+  if (props.anchor) {
+    location.hash = props.anchor
+  }
+}
 </script>
 
 <template>
-  <div class="dxt-test-block">
-    <h3 class="dxt-test-block__title">{{ title }}</h3>
+  <div :id="anchor" class="dxt-test-block">
+    <h3
+      class="dxt-test-block__title"
+      :class="{ 'dxt-test-block__title--link': anchor }"
+      @click="onClick"
+    >
+      {{ title }}
+    </h3>
     <div v-if="description" class="dxt-test-block__description">{{ description }}</div>
     <slot/>
   </div>
@@ -30,6 +43,14 @@ defineProps<{
 
     font-size: 20px;
     line-height: 28px;
+
+    &--link {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   &__description {

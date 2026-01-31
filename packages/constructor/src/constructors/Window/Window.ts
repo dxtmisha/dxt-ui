@@ -236,7 +236,12 @@ export class Window {
       () => !this.props.persistent
     )
     this.text = new TextConstructor(this.props)
-    this.hidden = new WindowHiddenConstructor(this.classes, this.open)
+    this.hidden = new WindowHiddenConstructor(
+      this.props,
+      this.classes,
+      this.staticMode,
+      this.open
+    )
 
     new ModelConstructor<boolean>('open', this.emits, this.open.item)
 

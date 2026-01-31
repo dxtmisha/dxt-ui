@@ -1,4 +1,4 @@
-import { isString } from '@dxtmisha/functional-basic'
+import { isString, toKebabCase } from '@dxtmisha/functional-basic'
 import { type StorybookArgsItem, StorybookControl } from '../types/storybookTypes'
 
 /**
@@ -42,7 +42,7 @@ export class WikiStorybookProp {
    * Возвращает имя свойства.
    */
   getName(): string {
-    return this.name
+    return toKebabCase(this.name)
   }
 
   /**
@@ -96,5 +96,14 @@ export class WikiStorybookProp {
    */
   getDemo(): any {
     return this.item.demo
+  }
+
+  /**
+   * Returns the additional demo data.
+   *
+   * Возвращает дополнительные демонстрационные данные.
+   */
+  getDemoOptions(): Record<string, any> {
+    return this.item.demoOptions ?? {}
   }
 }

@@ -88,7 +88,9 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Specifies the image value for the component',
         ru: 'Указывает значение изображения для компонента'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'https://drscdn.500px.org/photo/294267357/q%3D90_m%3D2048/v2?sig=adb52b9add18ad21ab4a86b99695377f2a18821c609d42149b3426dfb99cf924'
   },
   label: {
     type: StorybookControl.string,

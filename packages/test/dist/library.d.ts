@@ -5,6 +5,7 @@ export declare const DxtTestBlock: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
         title?: string;
         description?: string;
+        anchor?: string;
     }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, HTMLDivElement, ComponentProvideOptions, {
         P: {};
         B: {};
@@ -15,6 +16,7 @@ export declare const DxtTestBlock: {
     }, Readonly<{
         title?: string;
         description?: string;
+        anchor?: string;
     }> & Readonly<{}>, {}, {}, {}, {}, {}>;
     __isFragment?: never;
     __isTeleport?: never;
@@ -22,6 +24,7 @@ export declare const DxtTestBlock: {
 } & ComponentOptionsBase<Readonly<{
     title?: string;
     description?: string;
+    anchor?: string;
 }> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: {
         default?(_: {}): any;

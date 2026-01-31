@@ -60,6 +60,7 @@ provide('values', values)
   <DxtTestBlock
     :title="name"
     :description="description"
+    :anchor="name"
     class="dxt-test-wiki"
   >
     <DxtTestWikiPossibilities :possibilities="possibilities"/>

@@ -210,16 +210,26 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
   },
   ai: {
     render: `
-<div :class="classDemo.item">
-  <Window v-bind="args">
-      <template #control="{ binds }">
-        <a v-bind="binds">Open Window</a>
-      </template>
-      <template #default>
-        <p>Window content goes here.</p>
-      </template>
-    </Window>
-</div>
+      <div :class="classDemo.item">
+        <Window embedded open v-bind="args">
+            <template #control="{ binds }">
+              <button v-bind="binds">Open Window</button>
+            </template>
+            <template #title>
+              <h3>Window Title</h3>
+            </template>
+            <template #default>
+              <p>Window content goes here. This is a demonstration of the window component capabilities.</p>
+              <p>It can contain text, images, forms, or any other content.</p>
+            </template>
+            <template #footer>
+              <div>
+                <button>Cancel</button>
+                <button>Save</button>
+              </div>
+            </template>
+          </Window>
+      </div>
     `,
     description: `
 **Note:** This is a low-level component. Use it only if specialized components like \`Modal\`, \`Dialog\`, or \`Menu\` do not fit your requirements.

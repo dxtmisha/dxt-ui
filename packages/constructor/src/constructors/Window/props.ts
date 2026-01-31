@@ -33,8 +33,9 @@ export type WindowPropsBasic<
   & AriaRoleByPropsInclude
   & AriaByPropsInclude
   & AriaHaspopupPropsInclude
-  & TextClosePropsInclude & {
-  // Status
+  & TextClosePropsInclude
+  & {
+    // Status
     'open'?: boolean
     'disabled'?: boolean
 
@@ -70,6 +71,13 @@ export type WindowPropsBasic<
     'modelOpen'?: boolean
     'onUpdate:open'?: (value: boolean) => void
     'onUpdate:modelOpen'?: (value: boolean) => void
+
+    // Technical
+    /**
+     * The window will be displayed inside the current parent element/
+     * Окно будет отображаться внутри текущего родительского элемента
+     */
+    'embedded'?: boolean
   }
 
 /**

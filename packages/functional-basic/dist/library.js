@@ -4840,7 +4840,7 @@ function ri(i, t) {
 }
 const ni = (i, t, e) => {
   var s, n;
-  return (n = (s = i == null ? void 0 : i.replace(`<${t}`, `<${e}`)) == null ? void 0 : s.replace(`</${t}`, `</${e}`)) == null ? void 0 : n.trim();
+  return (n = (s = i == null ? void 0 : i.replace(new RegExp(`<${t}`, "ig"), `<${e}`)) == null ? void 0 : s.replace(new RegExp(`</${t}`, "ig"), `</${e}`)) == null ? void 0 : n.trim();
 };
 function we(i) {
   return [...new Set(i)];

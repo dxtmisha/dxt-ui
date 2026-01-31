@@ -41,6 +41,11 @@ export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPr
     'modelOpen'?: boolean;
     'onUpdate:open'?: (value: boolean) => void;
     'onUpdate:modelOpen'?: (value: boolean) => void;
+    /**
+     * The window will be displayed inside the current parent element/
+     * Окно будет отображаться внутри текущего родительского элемента
+     */
+    'embedded'?: boolean;
 };
 /**
  * Type describing incoming properties.

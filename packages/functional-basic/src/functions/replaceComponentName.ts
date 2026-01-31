@@ -12,7 +12,7 @@ export const replaceComponentName = (
   componentName: string
 ): string | undefined => {
   return text
-    ?.replace(`<${name}`, `<${componentName}`)
-    ?.replace(`</${name}`, `</${componentName}`)
+    ?.replace(new RegExp(`<${name}`, 'ig'), `<${componentName}`)
+    ?.replace(new RegExp(`</${name}`, 'ig'), `</${componentName}`)
     ?.trim()
 }

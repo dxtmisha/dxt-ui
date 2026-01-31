@@ -130,7 +130,10 @@ export class WindowDesign<
     this.initSlot('control', main, this.item.slotData.value)
 
     if (this.item.open.inDom.value) {
-      if (this.item.staticMode.item.value) {
+      if (
+        this.item.staticMode.item.value
+        || this.props.embedded
+      ) {
         main.push(this.renderMain())
       } else {
         main.push(

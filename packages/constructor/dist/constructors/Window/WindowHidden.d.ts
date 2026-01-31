@@ -1,20 +1,26 @@
 import { WindowClasses } from './WindowClasses';
 import { WindowOpen } from './WindowOpen';
+import { WindowProps } from './props.ts';
+import { WindowStatic } from './WindowStatic.ts';
 /**
  * A class for managing the hiding of elements outside the window when it is open.
  *
  * Класс для управления скрытием элементов вне окна при его открытии.
  */
 export declare class WindowHidden {
-    protected classes: WindowClasses;
-    protected open: WindowOpen;
+    protected readonly props: WindowProps;
+    protected readonly classes: WindowClasses;
+    protected readonly staticMode: WindowStatic;
+    protected readonly open: WindowOpen;
     protected elements: HTMLElement[];
     /**
      * Constructor
+     * @param props input data / входные данные
      * @param classes an object for working with class names / объект для работы с названиями классов
+     * @param staticMode class object for working with static status / объект класса для работы со статическим статусом
      * @param open an object for working with the open state of the window / объект для работы с состоянием открытия окна
      */
-    constructor(classes: WindowClasses, open: WindowOpen);
+    constructor(props: WindowProps, classes: WindowClasses, staticMode: WindowStatic, open: WindowOpen);
     /**
      * Returns the aria attribute data for hiding elements.
      *

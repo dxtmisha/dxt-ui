@@ -5,6 +5,8 @@ import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { WindowClasses } from './WindowClasses'
 
 import type { WindowOpen } from './WindowOpen'
+import type { WindowProps } from './props.ts'
+import { WindowStatic } from './WindowStatic.ts'
 
 /**
  * A class for managing the hiding of elements outside the window when it is open.
@@ -16,16 +18,27 @@ export class WindowHidden {
 
   /**
    * Constructor
+   * @param props input data / входные данные
    * @param classes an object for working with class names / объект для работы с названиями классов
+   * @param staticMode class object for working with static status / объект класса для работы со статическим статусом
    * @param open an object for working with the open state of the window / объект для работы с состоянием открытия окна
    */
   constructor(
-    protected classes: WindowClasses,
-    protected open: WindowOpen
+    protected readonly props: WindowProps,
+    protected readonly classes: WindowClasses,
+    protected readonly staticMode: WindowStatic,
+    protected readonly open: WindowOpen
   ) {
     watch(
       this.open.item,
       (newValue: boolean) => {
+        if (
+          this.props.embedded
+          || this.staticMode.item.value
+        ) {
+          return
+        }
+
         if (newValue) {
           this.toHidden()
         } else {
