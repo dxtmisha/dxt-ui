@@ -289,7 +289,7 @@ export class WindowDesign<
     'onTransitionend': this.item.event.onTransition,
     ...AriaStaticInclude.role(this.props.role),
     ...AriaStaticInclude.modal(
-      !this.item.isMenu(),
+      true,
       this.props.ariaLabelledby,
       this.props.ariaDescribedby
     )

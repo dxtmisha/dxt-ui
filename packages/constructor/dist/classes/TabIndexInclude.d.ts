@@ -12,7 +12,7 @@ export declare class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     /** Event item for focus events/ Элемент события для событий фокуса */
     protected event?: EventItem<HTMLElement, any>;
     /**
-     * Сonstructor
+     * Constructor
      * @param element - Reference to the element/ Ссылка на элемент
      */
     constructor(element: Ref<E | undefined> | (() => E | undefined));
@@ -35,6 +35,12 @@ export declare class TabIndexInclude<E extends HTMLElement = HTMLElement> {
      * @param status Focus status/ Статус фокуса
      */
     toggle(status: boolean): this;
+    /**
+     * Save the currently focused element.
+     *
+     * Сохраняет текущий сфокусированный элемент.
+     */
+    updateOldElement(): void;
     /**
      * Check if the element is defined.
      *
@@ -81,12 +87,6 @@ export declare class TabIndexInclude<E extends HTMLElement = HTMLElement> {
      * Устанавливает фокус с временным изменением табиндекса.
      */
     protected toFocus(): this;
-    /**
-     * Save the currently focused element.
-     *
-     * Сохраняет текущий сфокусированный элемент.
-     */
-    protected updateOldElement(): void;
     /**
      * Event listener for keyboard events.
      *

@@ -1,4 +1,4 @@
-import { isString as e } from "@dxtmisha/functional";
+import { isString as s } from "@dxtmisha/functional";
 class n {
   /**
    * Get role by props.
@@ -34,13 +34,22 @@ class n {
     };
   }
   /**
+   * Get ARIA controls attribute.
+   *
+   * Получить атрибут ARIA controls.
+   * @param controls ARIA controls attribute/ Атрибут ARIA controls
+   */
+  static controls(a) {
+    return this.isDataToData("aria-controls", a);
+  }
+  /**
    * Get ARIA current attribute.
    *
    * Получить атрибут ARIA current.
    * @param value ARIA current attribute/ Атрибут ARIA current
    */
   static current(a) {
-    const t = e(a) ? a : this.isTrueOrFalse(a);
+    const t = s(a) ? a : this.isTrueOrFalse(a);
     return this.isDataToData("aria-current", t);
   }
   /**
@@ -135,7 +144,7 @@ class n {
   static control(a, t, r, i) {
     return {
       id: a,
-      "aria-controls": t,
+      ...this.controls(t),
       ...this.haspopup(r),
       ...this.expanded(i)
     };
@@ -163,6 +172,15 @@ class n {
     };
   }
   /**
+   * Get ARIA modal attribute.
+   *
+   * Получить атрибут ARIA modal.
+   * @param isModal is modal/ является модальным
+   */
+  static ariaModal(a = !0) {
+    return this.isDataToData("aria-modal", a);
+  }
+  /**
    * Get modal role.
    *
    * Получить модальную роль.
@@ -172,7 +190,7 @@ class n {
    */
   static modal(a = !0, t, r) {
     return {
-      ...this.isDataToData("aria-modal", a),
+      ...this.ariaModal(a),
       ...this.labelledby(t),
       ...this.describedby(r)
     };

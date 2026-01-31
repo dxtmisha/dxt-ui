@@ -3,7 +3,7 @@ var f = (o, i, t) => i in o ? b(o, i, { enumerable: !0, configurable: !0, writab
 var s = (o, i, t) => f(o, typeof i != "symbol" ? i + "" : i, t);
 import { watch as B, ref as k, computed as r, reactive as d, h as p } from "vue";
 import { toBind as u, getBind as C, forEach as w, DesignConstructorAbstract as x } from "@dxtmisha/functional";
-import { A as m } from "./AriaStaticInclude-C1f8ebHk.js";
+import { A as m } from "./AriaStaticInclude-CuMRRW17.js";
 import { L as I } from "./LabelInclude-BtZrrbCf.js";
 import { D as g } from "./DescriptionInclude-DxWNon_J.js";
 import { E as S } from "./EventClickInclude-Bi9B51Mm.js";

@@ -166,8 +166,6 @@ export class WindowOpen {
             this.resetClicks()
           })
         }
-
-        this.tabIndex.reset()
       }
     }
   }
@@ -293,6 +291,7 @@ export class WindowOpen {
       await this.hook.closing()
 
       this.resetClicks()
+      this.tabIndex.reset()
       this.emit.on(this.item.value)
     }, 48)
 

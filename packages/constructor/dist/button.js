@@ -1,12 +1,10 @@
 var a = Object.defineProperty;
-var d = (n, t, s) => t in n ? a(n, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[t] = s;
-var i = (n, t, s) => d(n, typeof t != "symbol" ? t + "" : t, s);
-import { B as v, a as A } from "./ButtonDesign-De5q40Xf.js";
+var d = (i, t, s) => t in i ? a(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
+var n = (i, t, s) => d(i, typeof t != "symbol" ? t + "" : t, s);
+import { B as g, a as A } from "./ButtonDesign-Ddi4X7-s.js";
 import { computed as h } from "vue";
 import { toBinds as p, getBind as l, getRef as o } from "@dxtmisha/functional";
-const B = {
-  tag: "button"
-};
+const B = {};
 class f {
   /**
    * Constructor
@@ -20,7 +18,7 @@ class f {
     /**
      * Computed bindings for the button/ Вычисляемые привязки для кнопки
      */
-    i(this, "binds", h(
+    n(this, "binds", h(
       () => p(
         this.props.buttonAttrs,
         l(
@@ -41,7 +39,7 @@ class f {
      *
      * @param props additional properties/ дополнительные свойства
      */
-    i(this, "render", (t) => {
+    n(this, "render", (t) => {
       var s;
       return this.components && ("label" in this.binds.value || "icon" in this.binds.value || "iconTrailing" in this.binds.value) ? this.components.render(
         "button",
@@ -57,7 +55,7 @@ class f {
   }
 }
 export {
-  v as Button,
+  g as Button,
   A as ButtonDesign,
   f as ButtonInclude,
   B as defaultsButton

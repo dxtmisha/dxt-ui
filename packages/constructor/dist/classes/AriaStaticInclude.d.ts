@@ -28,6 +28,13 @@ export declare class AriaStaticInclude {
      */
     static checked(isChecked?: boolean): AriaList;
     /**
+     * Get ARIA controls attribute.
+     *
+     * Получить атрибут ARIA controls.
+     * @param controls ARIA controls attribute/ Атрибут ARIA controls
+     */
+    static controls(controls?: string): AriaList;
+    /**
      * Get ARIA current attribute.
      *
      * Получить атрибут ARIA current.
@@ -114,6 +121,13 @@ export declare class AriaStaticInclude {
      * @param live ARIA live attribute/ Атрибут ARIA live
      */
     static live(live?: AriaList['aria-live']): AriaList;
+    /**
+     * Get ARIA modal attribute.
+     *
+     * Получить атрибут ARIA modal.
+     * @param isModal is modal/ является модальным
+     */
+    static ariaModal(isModal?: boolean): AriaList;
     /**
      * Get modal role.
      *

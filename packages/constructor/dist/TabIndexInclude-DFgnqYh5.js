@@ -1,11 +1,11 @@
 var l = Object.defineProperty;
 var m = (s, t, e) => t in s ? l(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
 var o = (s, t, e) => m(s, typeof t != "symbol" ? t + "" : t, e);
-import { onUnmounted as h } from "vue";
-import { isDomRuntime as r, isFunction as f, getRef as u, EventItem as d } from "@dxtmisha/functional";
+import { onUnmounted as f } from "vue";
+import { isDomRuntime as r, isFunction as h, getRef as u, EventItem as d } from "@dxtmisha/functional";
 class v {
   /**
-   * Сonstructor
+   * Constructor
    * @param element - Reference to the element/ Ссылка на элемент
    */
   constructor(t) {
@@ -26,7 +26,7 @@ class v {
       const e = document.activeElement;
       e && (this.isShift(t) ? e === this.findFirstElement() && ((n = this.findLastElement()) == null || n.focus(), t.preventDefault()) : e === this.findLastElement() && ((i = this.findFirstElement()) == null || i.focus(), t.preventDefault()));
     });
-    this.element = t, h(() => {
+    this.element = t, f(() => {
       this.stopEvent(), this.event = void 0;
     });
   }
@@ -36,7 +36,7 @@ class v {
    * Устанавливает фокус на элемент.
    */
   goTo() {
-    return this.isElement() && r() && (this.updateOldElement(), this.toFocus(), this.startEvent()), this;
+    return this.isElement() && r() && (this.toFocus(), this.startEvent()), this;
   }
   /**
    * Reset focus to the previously focused element.
@@ -54,6 +54,18 @@ class v {
    */
   toggle(t) {
     return t ? this.goTo() : this.reset(), this;
+  }
+  /**
+   * Save the currently focused element.
+   *
+   * Сохраняет текущий сфокусированный элемент.
+   */
+  updateOldElement() {
+    var t, e;
+    if (r()) {
+      const n = (e = (t = document.activeElement) == null ? void 0 : t.shadowRoot) == null ? void 0 : e.activeElement;
+      this.oldElement = n != null ? n : document.activeElement;
+    }
   }
   /**
    * Check if the element is defined.
@@ -87,7 +99,7 @@ class v {
    * Получает элемент.
    */
   getElement() {
-    return f(this.element) ? this.element() : u(this.element);
+    return h(this.element) ? this.element() : u(this.element);
   }
   /**
    * Find the first focusable element.
@@ -128,14 +140,6 @@ class v {
     return t && (t.setAttribute("tabindex", "-1"), t.focus(), requestAnimationFrame(() => {
       t.removeAttribute("tabindex");
     })), this;
-  }
-  /**
-   * Save the currently focused element.
-   *
-   * Сохраняет текущий сфокусированный элемент.
-   */
-  updateOldElement() {
-    r() && (this.oldElement = document.activeElement);
   }
   /**
    * Start the event listener.

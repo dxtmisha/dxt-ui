@@ -48,6 +48,8 @@ export declare class Button {
      * @param EventConstructor class for creating an event/ класс для создания события
      */
     constructor(props: ButtonPropsBasic, refs: ToRefs<ButtonPropsBasic>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ButtonComponents, ButtonPropsBasic> | undefined, slots?: ButtonSlots | undefined, emits?: ConstrEmit<ButtonEmits> | undefined, LabelConstructor?: typeof LabelInclude, EnabledConstructor?: typeof EnabledInclude, IconConstructor?: typeof IconTrailingInclude, ProgressConstructor?: typeof ProgressInclude, RippleConstructor?: typeof RippleInclude, SkeletonConstructor?: typeof SkeletonInclude, EventConstructor?: typeof EventClickInclude);
+    /** tag name/ название тега */
+    readonly tag: ComputedRef<string>;
     /** values for the class/ значения для класса */
     readonly classes: ComputedRef<ConstrClass>;
     /**

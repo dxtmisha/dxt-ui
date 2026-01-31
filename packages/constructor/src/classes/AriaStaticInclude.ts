@@ -46,6 +46,16 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA controls attribute.
+   *
+   * Получить атрибут ARIA controls.
+   * @param controls ARIA controls attribute/ Атрибут ARIA controls
+   */
+  static controls(controls?: string): AriaList {
+    return this.isDataToData('aria-controls', controls)
+  }
+
+  /**
    * Get ARIA current attribute.
    *
    * Получить атрибут ARIA current.
@@ -168,7 +178,7 @@ export class AriaStaticInclude {
   ): AriaList {
     return {
       id,
-      'aria-controls': controls,
+      ...this.controls(controls),
       ...this.haspopup(haspopup),
       ...this.expanded(expanded)
     }
@@ -203,6 +213,18 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA modal attribute.
+   *
+   * Получить атрибут ARIA modal.
+   * @param isModal is modal/ является модальным
+   */
+  static ariaModal(
+    isModal: boolean = true
+  ): AriaList {
+    return this.isDataToData('aria-modal', isModal)
+  }
+
+  /**
    * Get modal role.
    *
    * Получить модальную роль.
@@ -216,7 +238,7 @@ export class AriaStaticInclude {
     ariaDescribedby?: string
   ): AriaList {
     return {
-      ...this.isDataToData('aria-modal', isModal),
+      ...this.ariaModal(isModal),
       ...this.labelledby(ariaLabelledby),
       ...this.describedby(ariaDescribedby)
     }

@@ -1,17 +1,17 @@
-var k = Object.defineProperty;
-var W = (h, t, e) => t in h ? k(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
-var i = (h, t, e) => W(h, typeof t != "symbol" ? t + "" : t, e);
-import { h as p, computed as m, ref as v, watch as f, onMounted as I, onUnmounted as T, Teleport as O } from "vue";
-import { toBind as H, getBind as E, getRef as A, executePromise as y, getElement as x, isDomRuntime as b, EventItem as B, setRef as $, frame as P, getMouseClientX as D, getMouseClientY as N, DesignConstructorAbstract as R } from "@dxtmisha/functional";
-import { A as w } from "./AriaStaticInclude-C1f8ebHk.js";
-import { M as L } from "./ModelInclude-BiYm_iCQ.js";
-import { T as Y } from "./TabIndexInclude-d7A_R6KD.js";
-import { T as F } from "./TextInclude-CodMN5BH.js";
-import { a as c, _ as C, b as X } from "./WindowClassesInclude-B56usxgx.js";
-import { W as xt } from "./WindowClassesInclude-B56usxgx.js";
-import { W as _ } from "./WindowEsc-Dp9AvJt7.js";
-import { W as Mt } from "./WindowInclude-Is5RhGxt.js";
-class q {
+var U = Object.defineProperty;
+var V = (h, t, e) => t in h ? U(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
+var i = (h, t, e) => V(h, typeof t != "symbol" ? t + "" : t, e);
+import { h as p, computed as m, ref as v, watch as f, onMounted as G, onUnmounted as j, Teleport as Z } from "vue";
+import { toBind as z, getBind as K, getRef as J, executePromise as y, getElement as M, isDomRuntime as B, EventItem as I, setRef as Q, frame as tt, getMouseClientX as et, getMouseClientY as st, DesignConstructorAbstract as it } from "@dxtmisha/functional";
+import { A as w } from "./AriaStaticInclude-CuMRRW17.js";
+import { M as nt } from "./ModelInclude-BiYm_iCQ.js";
+import { T as ot } from "./TabIndexInclude-DFgnqYh5.js";
+import { T as rt } from "./TextInclude-CodMN5BH.js";
+import { a as c, _ as b, b as ht } from "./WindowClassesInclude-B56usxgx.js";
+import { W as Ft } from "./WindowClassesInclude-B56usxgx.js";
+import { W as at } from "./WindowEsc-Dp9AvJt7.js";
+import { W as _t } from "./WindowInclude-Is5RhGxt.js";
+class lt {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -19,31 +19,31 @@ class q {
    * @param components object for working with components/ объект для работы с компонентами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
-  constructor(t, e, s, n) {
-    this.props = t, this.className = e, this.components = s, this.emits = n;
+  constructor(t, e, s, o) {
+    this.props = t, this.className = e, this.components = s, this.emits = o;
   }
   /**
    * Renders scrollbar component or fallback element
    * Рендерит компонент скроллбара или элемент по умолчанию
    */
   render(t, e, s) {
-    var n;
+    var o;
     if (this.components) {
-      const o = this.components.renderOne(
+      const n = this.components.renderOne(
         "scrollbar",
-        H(
+        z(
           {
             tag: t,
             class: `${this.className}__scrollbar`,
             ...e != null ? e : {},
             ...this.getScrollbarEvents()
           },
-          (n = this.props.scrollbarAttrs) != null ? n : {}
+          (o = this.props.scrollbarAttrs) != null ? o : {}
         ),
         s
       );
-      if (o)
-        return [o];
+      if (n)
+        return [n];
     }
     return [p(t, e, s)];
   }
@@ -78,13 +78,13 @@ class q {
         return (t = this.emits) == null ? void 0 : t.call(this, "scrollbarLeaveBottom");
       },
       onEdge: (t, e, s) => {
-        var n;
-        return (n = this.emits) == null ? void 0 : n.call(this, "scrollbarEdge", t, e, s);
+        var o;
+        return (o = this.emits) == null ? void 0 : o.call(this, "scrollbarEdge", t, e, s);
       }
     };
   }
 }
-class U {
+class ct {
   /**
    * Constructor for working with images.
    *
@@ -94,7 +94,7 @@ class U {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param extra additional parameter/ дополнительный параметр
    */
-  constructor(t, e, s, n) {
+  constructor(t, e, s, o) {
     /**
      * Проверяет, есть ли изображение/ Checks if an image exists
      */
@@ -102,8 +102,8 @@ class U {
     /**
      * Возвращает данные для передачи компоненту/ Returns data to pass to the component
      */
-    i(this, "bind", m(() => E(this.props.image, A(this.extra), "value")));
-    this.props = t, this.components = e, this.emits = s, this.extra = n;
+    i(this, "bind", m(() => K(this.props.image, J(this.extra), "value")));
+    this.props = t, this.components = e, this.emits = s, this.extra = o;
   }
   render() {
     return this.components && this.isImage.value ? this.components.render("image", this.bind.value) : [];
@@ -114,7 +114,7 @@ class U {
   }
 }
 const g = -1;
-class V {
+class ut {
   constructor(t) {
     i(this, "x", g);
     i(this, "y", g);
@@ -202,7 +202,7 @@ class V {
     return this;
   }
 }
-class G {
+class dt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -269,7 +269,7 @@ class G {
     return this.props.closing ? await y(this.props.closing) : !1;
   }
 }
-class j {
+class pt {
   /**
    * Constructor
    * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
@@ -337,7 +337,7 @@ class j {
     return this.classes.findBodyContext();
   }
 }
-class Z {
+class gt {
   /**
    * Constructor
    * @param element an object of the class for working with elements/ объект класса для работы с элементами
@@ -432,7 +432,7 @@ class Z {
     }
   }
 }
-class z {
+class mt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -449,9 +449,9 @@ class z {
     i(this, "onTransitionend", () => {
       this.removeEvent(), this.disabled();
     });
-    this.props = t, this.classes = e, this.element = s, f(this.item, (n) => {
-      const o = this.element.getMain();
-      o && (n ? (this.removeEvent(), o.classList.add(this.classes.list.persistent), o.addEventListener("animationend", this.onTransitionend)) : o.classList.remove(this.classes.list.persistent));
+    this.props = t, this.classes = e, this.element = s, f(this.item, (o) => {
+      const n = this.element.getMain();
+      n && (o ? (this.removeEvent(), n.classList.add(this.classes.list.persistent), n.addEventListener("animationend", this.onTransitionend)) : n.classList.remove(this.classes.list.persistent));
     });
   }
   /**
@@ -480,7 +480,7 @@ class z {
     (t = this.element.getMain()) == null || t.removeEventListener("animationend", this.onTransitionend);
   }
 }
-class K {
+class ft {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -525,7 +525,7 @@ class K {
     return this.control = ((e = t == null ? void 0 : t.closest(`.${this.classes.list.control}`)) == null ? void 0 : e.dataset.window) === this.classes.getId(), this;
   }
 }
-class J {
+class yt {
   /**
    * Constructor
    * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
@@ -676,8 +676,8 @@ class J {
     const t = this.element.getMain();
     let e = 0;
     if (t) {
-      const s = getComputedStyle(t), n = s.paddingTop.replace(/[^0-9]+/g, ""), o = s.paddingBottom.replace(/[^0-9]+/g, "");
-      e = (parseInt(n) + parseInt(o)) / 2;
+      const s = getComputedStyle(t), o = s.paddingTop.replace(/[^0-9]+/g, ""), n = s.paddingBottom.replace(/[^0-9]+/g, "");
+      e = (parseInt(o) + parseInt(n)) / 2;
     }
     return e > 0 ? e : 16;
   }
@@ -689,11 +689,11 @@ class J {
    */
   initLocation(t) {
     var r, a;
-    const e = (a = (r = this.element.getBody()) == null ? void 0 : r.offsetHeight) != null ? a : 0, s = e / 2, n = this.innerHeight - this.padding * 2 - e, o = t - s - this.padding;
-    return o < this.padding ? "0px" : t + s >= this.innerHeight - this.padding ? `${n}px` : `${o}px`;
+    const e = (a = (r = this.element.getBody()) == null ? void 0 : r.offsetHeight) != null ? a : 0, s = e / 2, o = this.innerHeight - this.padding * 2 - e, n = t - s - this.padding;
+    return n < this.padding ? "0px" : t + s >= this.innerHeight - this.padding ? `${o}px` : `${n}px`;
   }
 }
-class Q {
+class wt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -701,10 +701,10 @@ class Q {
    * @param element an object of the class for working with elements/ объект класса для работы с элементами
    * @param coordinates object for working with coordinates/ объект для работы с координатами
    */
-  constructor(t, e, s, n) {
+  constructor(t, e, s, o) {
     i(this, "x", 0);
     i(this, "y", 0);
-    this.props = t, this.client = e, this.element = s, this.coordinates = n;
+    this.props = t, this.client = e, this.element = s, this.coordinates = o;
   }
   /**
    * Checks if the alignment type is above the element.
@@ -760,19 +760,19 @@ class Q {
    * Обновляет место скрола, если выбран элемент.
    */
   updateScroll() {
-    var e, s, n;
+    var e, s, o;
     const t = this.element.getBodyContext();
     if (this.isOver() && this.props.overElement && t && t.scrollHeight > t.offsetHeight) {
-      const o = (e = x(this.props.overElement)) == null ? void 0 : e.getBoundingClientRect(), r = (s = this.element.getBody()) == null ? void 0 : s.getBoundingClientRect(), a = t == null ? void 0 : t.getBoundingClientRect(), l = (n = this.element.getControl()) == null ? void 0 : n.getBoundingClientRect();
-      if (t && o && r && a) {
-        const u = o.height / 2, d = o.top - a.top;
+      const n = (e = M(this.props.overElement)) == null ? void 0 : e.getBoundingClientRect(), r = (s = this.element.getBody()) == null ? void 0 : s.getBoundingClientRect(), a = t == null ? void 0 : t.getBoundingClientRect(), l = (o = this.element.getControl()) == null ? void 0 : o.getBoundingClientRect();
+      if (t && n && r && a) {
+        const u = n.height / 2, d = n.top - a.top;
         if (l && this.coordinates.getMaxHeight() === r.height) {
           if (l.top + u < r.top) {
             t.scrollTop += d;
             return;
           }
           if (l.bottom - u > r.bottom) {
-            t.scrollTop += d - a.height + o.height;
+            t.scrollTop += d - a.height + n.height;
             return;
           }
           t.scrollTop += d - (l.top - a.top) - l.height / 2 + u;
@@ -788,7 +788,7 @@ class Q {
    * Обновляет статус отображения скролла у элемента.
    */
   updateBody() {
-    if (b()) {
+    if (B()) {
       const t = document.body, e = t.offsetHeight > window.innerHeight ? "scroll" : "none";
       t.dataset.scroll !== e && (t.dataset.scroll = e);
     }
@@ -820,17 +820,17 @@ class Q {
    * @param rectBottom lower control coordinates/ нижние координаты контрола
    */
   getOverHeight(t, e) {
-    var o, r;
+    var n, r;
     const s = (e - t) / 2;
     if (this.props.overElement) {
-      const a = (o = x(this.props.overElement)) == null ? void 0 : o.getBoundingClientRect(), l = (r = this.element.getBody()) == null ? void 0 : r.getBoundingClientRect();
+      const a = (n = M(this.props.overElement)) == null ? void 0 : n.getBoundingClientRect(), l = (r = this.element.getBody()) == null ? void 0 : r.getBoundingClientRect();
       if (a && l) {
         const u = a.top - l.top, d = a.height / 2;
         return e - u - d - s;
       }
     }
-    const n = this.coordinates.getHeight() / 2;
-    return e - s - n;
+    const o = this.coordinates.getHeight() / 2;
+    return e - s - o;
   }
   /**
    * Changes in position along the X coordinate.
@@ -840,10 +840,10 @@ class Q {
   setX() {
     const t = this.element.getMain();
     if (t) {
-      const e = this.getIndent("x"), s = this.props.contextmenu ? this.client.getX() : this.coordinates.getRight() + e, n = this.props.contextmenu ? this.client.getX() : this.coordinates.getLeft() - e, o = [];
-      this.getAxis() === "x" ? o.push(s, n) : o.push(n, s), this.x = this.calculationInner(
-        o[0],
-        o[1],
+      const e = this.getIndent("x"), s = this.props.contextmenu ? this.client.getX() : this.coordinates.getRight() + e, o = this.props.contextmenu ? this.client.getX() : this.coordinates.getLeft() - e, n = [];
+      this.getAxis() === "x" ? n.push(s, o) : n.push(o, s), this.x = this.calculationInner(
+        n[0],
+        n[1],
         t.offsetWidth,
         window.innerWidth,
         this.coordinates.getWidth()
@@ -859,18 +859,18 @@ class Q {
   setY() {
     const t = this.element.getMain();
     if (t) {
-      const e = this.getIndent("y"), s = this.props.contextmenu ? this.client.getY() : this.coordinates.getTop() - e, n = this.props.contextmenu ? this.client.getY() : this.coordinates.getBottom() + e, o = [];
+      const e = this.getIndent("y"), s = this.props.contextmenu ? this.client.getY() : this.coordinates.getTop() - e, o = this.props.contextmenu ? this.client.getY() : this.coordinates.getBottom() + e, n = [];
       if (this.isOver())
         return this.y = this.calculationOver(
-          this.getOverHeight(s, n),
+          this.getOverHeight(s, o),
           s,
-          n,
+          o,
           t.offsetHeight,
           window.innerHeight
         ), this;
-      this.getAxis() !== "x" ? o.push(n, s) : o.push(s, n), this.y = this.calculationInner(
-        o[0],
-        o[1],
+      this.getAxis() !== "x" ? n.push(o, s) : n.push(s, o), this.y = this.calculationInner(
+        n[0],
+        n[1],
         t.offsetHeight,
         window.innerHeight,
         this.coordinates.getHeight()
@@ -888,9 +888,9 @@ class Q {
    * @param innerLength length of the indentation/ длина отступа
    * @param maxSize maximum length/ максимальная длина
    */
-  calculationInner(t, e, s, n, o) {
+  calculationInner(t, e, s, o, n) {
     const r = this.coordinates.getPadding();
-    return t + s <= n - r ? t : e - s > r ? e - s : n / 2 - o / 2;
+    return t + s <= o - r ? t : e - s > r ? e - s : o / 2 - n / 2;
   }
   /**
    * Calculation of the element's position.
@@ -902,18 +902,18 @@ class Q {
    * @param length length of the object/ длина объекта
    * @param innerLength length of the indentation/ длина отступа
    */
-  calculationOver(t, e, s, n, o) {
+  calculationOver(t, e, s, o, n) {
     const r = this.coordinates.getPadding();
     if (s < r)
       return s;
-    if (e > o - r) {
-      const a = e - n - r;
+    if (e > n - r) {
+      const a = e - o - r;
       return a < r ? r : a;
     }
-    return t < r ? r : t + n <= o - r ? t : o - n - r;
+    return t < r ? r : t + o <= n - r ? t : n - o - r;
   }
 }
-class tt {
+class vt {
   /**
    * Constructor
    * @param client object for working with mouse pointer coordinates/ объект для работы с координатами указателя мыши
@@ -950,7 +950,7 @@ class tt {
     const t = this.element.getMain();
     if (this.client.update(), !this.client.is())
       this.x = 0, this.y = 0;
-    else if (t && getComputedStyle(t).getPropertyValue(C) !== '"--MENU--"') {
+    else if (t && getComputedStyle(t).getPropertyValue(b) !== '"--MENU--"') {
       const e = this.element.getBodyRect();
       e && (this.x = this.client.getShiftX(e.left), this.y = this.client.getShiftY(e.top));
     } else
@@ -966,7 +966,7 @@ class tt {
     return this.x = null, this.y = null, this;
   }
 }
-class et {
+class bt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -982,7 +982,7 @@ class et {
      * Вызываемая функция при срабатывании события.
      */
     i(this, "listener", () => {
-      $(this.item, this.isStatic());
+      Q(this.item, this.isStatic());
     });
     /**
      * Performs status check and activates events when turned on.
@@ -1008,7 +1008,7 @@ class et {
    * Стартует событие слежения за статусами.
    */
   start() {
-    this.event || (this.event = new B(window, ["resize"], this.listener)), this.event.start();
+    this.event || (this.event = new I(window, ["resize"], this.listener)), this.event.start();
   }
   /**
    * Restores the data to its previous state.
@@ -1025,10 +1025,10 @@ class et {
    */
   isStatic() {
     const t = this.element.getMain();
-    return !!(t && getComputedStyle(t).getPropertyValue(C) === '"--STATIC--"');
+    return !!(t && getComputedStyle(t).getPropertyValue(b) === '"--STATIC--"');
   }
 }
-class st {
+class Ct {
   /**
    * Constructor
    * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
@@ -1063,7 +1063,7 @@ class st {
     };
   }
 }
-class it {
+class xt {
   /**
    * Constructor
    * @param element an object of the class for working with elements/ объект класса для работы с элементами
@@ -1072,8 +1072,8 @@ class it {
    * @param origin the object for work is in the initial position upon opening/ объект для работы в начальной позиции при открытии
    * @param className class name/ название класса
    */
-  constructor(t, e, s, n, o) {
-    this.element = t, this.coordinates = e, this.position = s, this.origin = n, this.className = o, f(this.element.element, () => this.update());
+  constructor(t, e, s, o, n) {
+    this.element = t, this.coordinates = e, this.position = s, this.origin = o, this.className = n, f(this.element.element, () => this.update());
   }
   /**
    * Data update.
@@ -1098,7 +1098,7 @@ class it {
     }
   }
 }
-class nt {
+class Bt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1114,7 +1114,7 @@ class nt {
    * @param emit the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param styles an object for working with the styles of an element/ объект для работы со стилями элемента
    */
-  constructor(t, e, s, n, o, r, a, l, u, d, M, S) {
+  constructor(t, e, s, o, n, r, a, l, u, d, C, x) {
     i(this, "item", v(!1));
     i(this, "first", v(!1));
     i(this, "clicks", 0);
@@ -1164,9 +1164,9 @@ class nt {
         });
       })) : (this.client.reset(), this.flash.isOpen() ? this.toClose() : requestAnimationFrame(() => {
         this.status.toHide(), this.resetClicks();
-      }), this.tabIndex.reset()));
+      })));
     });
-    this.props = t, this.client = e, this.hook = s, this.element = n, this.tabIndex = o, this.status = r, this.flash = a, this.coordinates = l, this.position = u, this.origin = d, this.emit = M, this.styles = S;
+    this.props = t, this.client = e, this.hook = s, this.element = o, this.tabIndex = n, this.status = r, this.flash = a, this.coordinates = l, this.position = u, this.origin = d, this.emit = C, this.styles = x;
   }
   /**
    * Checks if the window is open.
@@ -1231,11 +1231,11 @@ class nt {
    * Изменение расположения окна меню.
    */
   watchCoordinates() {
-    return P(
+    return tt(
       () => {
         const t = this.element.getMain();
         if (t) {
-          const e = getComputedStyle(t).getPropertyValue(C) === '"--MENU--"';
+          const e = getComputedStyle(t).getPropertyValue(b) === '"--MENU--"';
           e && this.position.update() && this.styles.update(), this.styles.updateType(e);
         }
       },
@@ -1249,11 +1249,11 @@ class nt {
    */
   toClose() {
     setTimeout(async () => {
-      await this.setOpen(!1), await this.hook.closing(), this.resetClicks(), this.emit.on(this.item.value);
+      await this.setOpen(!1), await this.hook.closing(), this.resetClicks(), this.tabIndex.reset(), this.emit.on(this.item.value);
     }, 48), this.status.toClose();
   }
 }
-class ot {
+class Mt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1263,10 +1263,10 @@ class ot {
    * @param staticMode class object for working with static status/ объект класса для работы со статическим статусом
    * @param open the class object for working with the status of closing or opening the window/ объект класса для работы со статусом закрытия или открытия окна
    */
-  constructor(t, e, s, n, o, r) {
+  constructor(t, e, s, o, n, r) {
     i(this, "target");
     i(this, "focus");
-    this.props = t, this.persistent = e, this.classes = s, this.element = n, this.staticMode = o, this.open = r;
+    this.props = t, this.persistent = e, this.classes = s, this.element = o, this.staticMode = n, this.open = r;
   }
   /**
    * Updates the window opening status.
@@ -1275,7 +1275,7 @@ class ot {
    * @param target the selected window/ выбранное окно
    */
   async update(t) {
-    if (!this.open.isClicks() && (this.target = t, this.focus = this.getFocus(), !!b() && this.isTargetInBody() && !this.staticMode.item.value))
+    if (!this.open.isClicks() && (this.target = t, this.focus = this.getFocus(), !!B() && this.isTargetInBody() && !this.staticMode.item.value))
       if (this.open.pressed(), this.open.item.value) {
         if (this.isOpenOnly() || this.isBlockOther())
           return;
@@ -1411,7 +1411,7 @@ class ot {
    */
   isMenu(t = this.element.getMain()) {
     if (t) {
-      const s = getComputedStyle(t).getPropertyValue(C);
+      const s = getComputedStyle(t).getPropertyValue(b);
       return s === '"--MENU--"' || s === '"--MENU-WINDOW--"';
     }
     return !1;
@@ -1425,17 +1425,18 @@ class ot {
     return !!this.getTarget().closest(`.${this.classes.list.controlOpenOnly}`);
   }
 }
-class rt {
+class It {
   /**
    * Constructor
    * @param props input data/ входные данные
+   * @param tabIndex class object for working with tab indices/ объект класса для работы с табуляцией
    * @param status object for working with statuses/ объект для работы со статусами
    * @param client object for working with mouse pointer coordinates/ объект для работы с координатами указателя мыши
    * @param flash class object for working with fast window opening/ объект класса для работы с быстрым открытием окна
    * @param open the class object for working with the status of closing or opening the window/ объект класса для работы со статусом закрытия или открытия окна
    * @param verification an object for working with the check for changing the status of opening or closing/ объект для работы с проверкой изменения статуса открытия или закрытия
    */
-  constructor(t, e, s, n, o, r) {
+  constructor(t, e, s, o, n, r, a) {
     i(this, "event");
     /**
      * Events of pressing a control element.
@@ -1470,7 +1471,7 @@ class rt {
     i(this, "onGlobal", async (t) => {
       (!t || t.type === "click" && (!this.props.contextmenu || this.open.item.value) || t.type === "contextmenu" && this.props.contextmenu) && (this.open.item.value ? (this.flash.setControl(t == null ? void 0 : t.target), await this.verification.update(t == null ? void 0 : t.target)) : this.event.stop());
     });
-    this.props = t, this.status = e, this.client = s, this.flash = n, this.open = o, this.verification = r, this.event = new B(
+    this.props = t, this.tabIndex = e, this.status = s, this.client = o, this.flash = n, this.open = r, this.verification = a, this.event = new I(
       "body",
       ["click", "contextmenu"],
       this.onGlobal
@@ -1513,13 +1514,13 @@ class rt {
    * @param event event object/ объект события
    */
   async on(t) {
-    this.client.set(
-      D(t),
-      N(t)
+    this.tabIndex.updateOldElement(), this.client.set(
+      et(t),
+      st(t)
     ), await this.verification.update(t.target);
   }
 }
-class ht {
+class St {
   /**
    * Constructor
    * @param classes an object for working with class names / объект для работы с названиями классов
@@ -1555,7 +1556,7 @@ class ht {
    * Находит все элементы вне окна, которые нужно скрыть.
    */
   findElements() {
-    if (b()) {
+    if (B()) {
       const t = this.classes.getId();
       return document.querySelectorAll(
         `body > *:not([data-window-teleport="${t}"]):not(.${t}):not(script):not(style)`
@@ -1589,7 +1590,7 @@ class ht {
     }), this.elements = [];
   }
 }
-class at {
+class kt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1600,8 +1601,31 @@ class at {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
+   * @param WindowClientConstructor class for working with window client/ класс для работы с клиентом окна
+   * @param WindowCoordinatesConstructor class for working with coordinates/ класс для работы с координатами
+   * @param WindowElementConstructor class for working with window elements/ класс для работы с элементами окна
+   * @param WindowEmitConstructor class for working with emits/ класс для работы с событиями
+   * @param WindowEscConstructor class for working with escape key/ класс для работы с клавишей Escape
+   * @param WindowEventConstructor class for working with events/ класс для работы с событиями
+   * @param WindowFlashConstructor class for working with flash animation/ класс для работы с анимацией вспышки
+   * @param WindowHiddenConstructor class for working with hidden elements/ класс для работы со скрытыми элементами
+   * @param WindowHookConstructor class for working with window hooks/ класс для работы с хуками окна
+   * @param WindowOpenConstructor class for working with open state/ класс для работы с состоянием открытия
+   * @param WindowOriginConstructor class for working with origin/ класс для работы с точкой начала
+   * @param WindowPersistentConstructor class for working with persistent state/ класс для работы с постоянным состоянием
+   * @param WindowPositionConstructor class for working with position/ класс для работы с позицией
+   * @param WindowStaticConstructor class for working with static mode/ класс для работы со статическим режимом
+   * @param WindowStatusConstructor class for working with window status/ класс для работы со статусом окна
+   * @param WindowStylesConstructor class for working with styles/ класс для работы со стилями
+   * @param WindowVerificationConstructor class for working with verification/ класс для работы с проверкой
+   * @param ImageConstructor class for working with image/ класс для работы с изображением
+   * @param ModelConstructor class for working with model/ класс для работы с моделью
+   * @param ScrollbarConstructor class for working with scrollbar/ класс для работы со скроллбаром
+   * @param TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
+   * @param TextConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(t, e, s, n, o, r, a, l) {
+  constructor(t, e, s, o, n, r, a, l, u = ht, d = ut, C = yt, x = pt, S = Ct, k = at, W = It, T = ft, O = St, H = dt, E = Bt, A = vt, $ = mt, P = wt, D = bt, N = gt, R = xt, L = Mt, Y = ct, F = nt, X = lt, _ = ot, q = rt) {
     /** Client instance for window management/ Экземпляр клиента для управления окном */
     i(this, "client");
     /** Hook instance for window events/ Экземпляр хука для событий окна */
@@ -1680,15 +1704,15 @@ class at {
     i(this, "stop", () => {
       this.event.stop(), this.staticMode.stop();
     });
-    this.props = t, this.refs = e, this.classDesign = n, this.className = o, this.components = r, this.slots = a, this.emits = l, this.hook = new G(t), this.classes = new X(o), this.element = new j(this.classes, s), this.client = new V(this.element), this.tabIndex = new Y(
+    this.props = t, this.refs = e, this.classDesign = o, this.className = n, this.components = r, this.slots = a, this.emits = l, this.hook = new H(t), this.classes = new u(n), this.element = new x(this.classes, s), this.client = new d(this.element), this.tabIndex = new _(
       () => this.element.getBody()
-    ), this.status = new Z(this.element), this.persistent = new z(t, this.classes, this.element), this.flash = new K(t, this.classes), this.coordinates = new J(this.classes, this.element), this.position = new Q(t, this.client, this.element, this.coordinates), this.origin = new tt(this.client, this.element, this.position), this.staticMode = new et(t, e, this.element), this.emit = new st(this.classes, this.element, l), this.styles = new it(
+    ), this.status = new N(this.element), this.persistent = new $(t, this.classes, this.element), this.flash = new T(t, this.classes), this.coordinates = new C(this.classes, this.element), this.position = new P(t, this.client, this.element, this.coordinates), this.origin = new A(this.client, this.element, this.position), this.staticMode = new D(t, e, this.element), this.emit = new S(this.classes, this.element, l), this.styles = new R(
       this.element,
       this.coordinates,
       this.position,
       this.origin,
-      o
-    ), this.open = new nt(
+      n
+    ), this.open = new E(
       t,
       this.client,
       this.hook,
@@ -1701,43 +1725,44 @@ class at {
       this.origin,
       this.emit,
       this.styles
-    ), this.verification = new ot(
+    ), this.verification = new L(
       t,
       this.persistent,
       this.classes,
       this.element,
       this.staticMode,
       this.open
-    ), this.event = new rt(
+    ), this.event = new W(
       t,
+      this.tabIndex,
       this.status,
       this.client,
       this.flash,
       this.open,
       this.verification
-    ), this.scrollbar = new q(
+    ), this.scrollbar = new X(
       t,
-      o,
+      n,
       r,
       l
-    ), this.image = new U(
+    ), this.image = new Y(
       t,
       r,
       l
-    ), this.esc = new _(
+    ), this.esc = new k(
       this.open.item,
       () => this.open.close(),
       () => !this.props.persistent
-    ), this.text = new F(this.props), this.hidden = new ht(this.classes, this.open), new L("open", this.emits, this.open.item), I(() => {
+    ), this.text = new q(this.props), this.hidden = new O(this.classes, this.open), new F("open", this.emits, this.open.item), G(() => {
       f([e.open], () => this.open.set(t.open), { immediate: !0 });
-    }), T(this.stop);
+    }), j(this.stop);
   }
   /** Checks if the role is a menu/ Проверяет, является ли роль меню */
   isMenu() {
     return this.props.role === "menu" || this.props.role === "menuitemcheckbox" || this.props.role === "menuitemradio";
   }
 }
-const wt = {
+const Nt = {
   indent: 4,
   ariaHaspopup: "dialog",
   role: "dialog",
@@ -1746,18 +1771,19 @@ const wt = {
   imagePosition: "top",
   overscroll: !0
 };
-class vt extends R {
+class Rt extends it {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor window item class/ класс элемента окна
    */
-  constructor(e, s, n) {
+  constructor(e, s, o, n = kt) {
     super(
       e,
       s,
-      n
+      o
     );
     i(this, "item");
     /**
@@ -1879,13 +1905,13 @@ class vt extends R {
         onTransitionend: this.item.event.onTransition,
         ...w.role(this.props.role),
         ...w.modal(
-          !this.item.isMenu(),
+          !0,
           this.props.ariaLabelledby,
           this.props.ariaDescribedby
         )
       };
     }));
-    this.item = new at(
+    this.item = new n(
       this.props,
       this.refs,
       this.element,
@@ -1948,7 +1974,7 @@ class vt extends R {
     const e = [];
     return this.initSlot("control", e, this.item.slotData.value), this.item.open.inDom.value && (this.item.staticMode.item.value ? e.push(this.renderMain()) : e.push(
       p(
-        O,
+        Z,
         {
           key: "teleport",
           to: "body"
@@ -1966,9 +1992,9 @@ class vt extends R {
   }
 }
 export {
-  at as Window,
-  xt as WindowClassesInclude,
-  vt as WindowDesign,
-  Mt as WindowInclude,
-  wt as defaultsWindow
+  kt as Window,
+  Ft as WindowClassesInclude,
+  Rt as WindowDesign,
+  _t as WindowInclude,
+  Nt as defaultsWindow
 };

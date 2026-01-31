@@ -15,8 +15,9 @@ export declare class WindowDesign<COMP extends WindowComponents, EXPOSE extends 
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor window item class/ класс элемента окна
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, WindowEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, WindowEmits, P>, ItemConstructor?: typeof Window);
     /**
      * Initialization of all the necessary properties for work
      *

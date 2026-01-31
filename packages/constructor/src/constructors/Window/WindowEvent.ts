@@ -8,6 +8,7 @@ import { WindowOpen } from './WindowOpen'
 import { WindowVerification } from './WindowVerification'
 
 import type { WindowProps } from './props'
+import { TabIndexInclude } from '../../classes/TabIndexInclude.ts'
 
 /**
  * A class for working with events.
@@ -20,6 +21,7 @@ export class WindowEvent {
   /**
    * Constructor
    * @param props input data/ входные данные
+   * @param tabIndex class object for working with tab indices/ объект класса для работы с табуляцией
    * @param status object for working with statuses/ объект для работы со статусами
    * @param client object for working with mouse pointer coordinates/ объект для работы с координатами указателя мыши
    * @param flash class object for working with fast window opening/ объект класса для работы с быстрым открытием окна
@@ -28,6 +30,7 @@ export class WindowEvent {
    */
   constructor(
     protected readonly props: WindowProps,
+    protected readonly tabIndex: TabIndexInclude,
     protected readonly status: WindowStatus,
     protected readonly client: WindowClient,
     protected readonly flash: WindowFlash,
@@ -126,6 +129,7 @@ export class WindowEvent {
    * @param event event object/ объект события
    */
   protected async on(event: MouseEvent & TouchEvent): Promise<void> {
+    this.tabIndex.updateOldElement()
     this.client.set(
       getMouseClientX(event),
       getMouseClientY(event)

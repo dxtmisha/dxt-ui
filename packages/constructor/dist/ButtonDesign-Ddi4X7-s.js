@@ -2,17 +2,17 @@ var w = Object.defineProperty;
 var C = (i, t, s) => t in i ? w(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
 var e = (i, t, s) => C(i, typeof t != "symbol" ? t + "" : t, s);
 import { computed as o, h as S } from "vue";
-import { DesignConstructorAbstract as k } from "@dxtmisha/functional";
-import { g as B } from "./getClassTagAStatic-BnVYlXHI.js";
-import { L as x } from "./LabelInclude-BtZrrbCf.js";
-import { E as y } from "./EnabledInclude-BsAOlpBe.js";
-import { A as h } from "./AriaStaticInclude-C1f8ebHk.js";
-import { E } from "./EventClickInclude-Bi9B51Mm.js";
+import { DesignConstructorAbstract as k, RouterItemRef as B } from "@dxtmisha/functional";
+import { g as x } from "./getClassTagAStatic-BnVYlXHI.js";
+import { L as y } from "./LabelInclude-BtZrrbCf.js";
+import { E } from "./EnabledInclude-BeX9VHb_.js";
+import { A as h } from "./AriaStaticInclude-CuMRRW17.js";
+import { E as T } from "./EventClickInclude-Bi9B51Mm.js";
 import { I as A } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as D } from "./ProgressInclude-CPOdyDkM.js";
+import { P as D } from "./ProgressInclude-DJGFmt70.js";
 import { R as L } from "./RippleInclude-Du5yIzX_.js";
-import { S as T } from "./SkeletonInclude-BIUzAO2s.js";
-class R {
+import { S as R } from "./SkeletonInclude-BIUzAO2s.js";
+class K {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -31,7 +31,7 @@ class R {
    * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
    * @param EventConstructor class for creating an event/ класс для создания события
    */
-  constructor(t, s, r, a, n, l, u, c, m = x, p = y, g = A, b = D, v = L, f = T, I = E) {
+  constructor(t, s, n, a, r, l, u, p, m = y, d = E, g = A, b = D, v = L, f = R, I = T) {
     e(this, "label");
     e(this, "enabled");
     e(this, "icon");
@@ -39,10 +39,12 @@ class R {
     e(this, "ripple");
     e(this, "skeleton");
     e(this, "event");
+    /** tag name/ название тега */
+    e(this, "tag", o(() => this.props.tag ? this.props.tag : this.props.href ? "a" : "button"));
     /** values for the class/ значения для класса */
     e(this, "classes", o(() => ({
       [`${this.className}--icon`]: this.icon.isIcon.value,
-      [B(this.classDesign)]: !0,
+      [x(this.classDesign)]: !0,
       ...this.skeleton.classes.value
     })));
     /**
@@ -72,24 +74,24 @@ class R {
       };
       return this.isTagNotButton() && (t.onKeydown = this.event.onKeydown), t;
     }));
-    this.props = t, this.refs = s, this.element = r, this.classDesign = a, this.className = n, this.components = l, this.slots = u, this.emits = c;
-    const d = new b(
+    this.props = t, this.refs = s, this.element = n, this.classDesign = a, this.className = r, this.components = l, this.slots = u, this.emits = p;
+    const c = new b(
       t,
-      n,
+      r,
       l,
       {
         circular: !0,
         inverse: !0
       }
     );
-    this.label = new m(t, n, void 0, u), this.enabled = new p(t, d), this.icon = new g(t, n, l), this.progress = d, this.ripple = new v(n, l, this.enabled), this.skeleton = new f(
+    this.label = new m(t, r, void 0, u), this.enabled = new d(t, c), this.icon = new g(t, r, l), this.progress = c, this.ripple = new v(r, l, this.enabled), this.skeleton = new f(
       t,
       a,
       ["classBackground"]
     ), this.event = new I(
       t,
       this.enabled,
-      c
+      p
     );
   }
   /**
@@ -101,7 +103,7 @@ class R {
     return !!(this.props.tag && ["a", "button"].indexOf(this.props.tag) === -1);
   }
 }
-class J extends k {
+class M extends k {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -109,14 +111,14 @@ class J extends k {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor button item class/ класс элемента кнопки
    */
-  constructor(s, r, a, n = R) {
+  constructor(s, n, a, r = K) {
     super(
       s,
-      r,
+      n,
       a
     );
     e(this, "item");
-    this.item = new n(
+    this.item = new r(
       this.props,
       this.refs,
       this.element,
@@ -167,17 +169,18 @@ class J extends k {
    * Метод для рендеринга.
    */
   initRender() {
-    var s, r;
+    var s, n;
     return S(
-      this.props.tag || "button",
+      this.item.tag.value,
       {
         ...this.getAttrs(),
         ref: this.element,
         type: this.props.type,
         class: (s = this.classes) == null ? void 0 : s.value.main,
-        style: (r = this.styles) == null ? void 0 : r.value,
+        style: (n = this.styles) == null ? void 0 : n.value,
         "data-value": this.props.value,
         disabled: this.item.enabled.isDisabledOrUndefined.value,
+        ...B.rawToHref(this.props.to),
         ...this.item.eventList.value,
         ...this.item.aria.value
       },
@@ -191,6 +194,6 @@ class J extends k {
   }
 }
 export {
-  R as B,
-  J as a
+  K as B,
+  M as a
 };

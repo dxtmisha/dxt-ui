@@ -5,6 +5,7 @@ import { WindowFlash } from './WindowFlash';
 import { WindowOpen } from './WindowOpen';
 import { WindowVerification } from './WindowVerification';
 import { WindowProps } from './props';
+import { TabIndexInclude } from '../../classes/TabIndexInclude.ts';
 /**
  * A class for working with events.
  *
@@ -12,6 +13,7 @@ import { WindowProps } from './props';
  */
 export declare class WindowEvent {
     protected readonly props: WindowProps;
+    protected readonly tabIndex: TabIndexInclude;
     protected readonly status: WindowStatus;
     protected readonly client: WindowClient;
     protected readonly flash: WindowFlash;
@@ -21,13 +23,14 @@ export declare class WindowEvent {
     /**
      * Constructor
      * @param props input data/ входные данные
+     * @param tabIndex class object for working with tab indices/ объект класса для работы с табуляцией
      * @param status object for working with statuses/ объект для работы со статусами
      * @param client object for working with mouse pointer coordinates/ объект для работы с координатами указателя мыши
      * @param flash class object for working with fast window opening/ объект класса для работы с быстрым открытием окна
      * @param open the class object for working with the status of closing or opening the window/ объект класса для работы со статусом закрытия или открытия окна
      * @param verification an object for working with the check for changing the status of opening or closing/ объект для работы с проверкой изменения статуса открытия или закрытия
      */
-    constructor(props: WindowProps, status: WindowStatus, client: WindowClient, flash: WindowFlash, open: WindowOpen, verification: WindowVerification);
+    constructor(props: WindowProps, tabIndex: TabIndexInclude, status: WindowStatus, client: WindowClient, flash: WindowFlash, open: WindowOpen, verification: WindowVerification);
     /**
      * Events of pressing a control element.
      *

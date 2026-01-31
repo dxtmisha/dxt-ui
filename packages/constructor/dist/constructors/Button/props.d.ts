@@ -32,6 +32,4 @@ export type ButtonProps = ButtonPropsBasic & ButtonPropsToken;
  *
  * Значение по умолчанию для свойства.
  */
-export declare const defaultsButton: {
-    tag: string;
-};
+export declare const defaultsButton: {};

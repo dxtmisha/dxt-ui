@@ -14,7 +14,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   protected event?: EventItem<HTMLElement, any>
 
   /**
-   * Сonstructor
+   * Constructor
    * @param element - Reference to the element/ Ссылка на элемент
    */
   constructor(
@@ -36,7 +36,6 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
       this.isElement()
       && isDomRuntime()
     ) {
-      this.updateOldElement()
       this.toFocus()
       this.startEvent()
     }
@@ -76,6 +75,21 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     }
 
     return this
+  }
+
+  /**
+   * Save the currently focused element.
+   *
+   * Сохраняет текущий сфокусированный элемент.
+   */
+  updateOldElement(): void {
+    if (isDomRuntime()) {
+      const shadowRoot = document.activeElement
+        ?.shadowRoot
+        ?.activeElement
+
+      this.oldElement = shadowRoot ?? document.activeElement
+    }
   }
 
   /**
@@ -189,17 +203,6 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     }
 
     return this
-  }
-
-  /**
-   * Save the currently focused element.
-   *
-   * Сохраняет текущий сфокусированный элемент.
-   */
-  protected updateOldElement(): void {
-    if (isDomRuntime()) {
-      this.oldElement = document.activeElement
-    }
   }
 
   /**
