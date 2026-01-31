@@ -43,11 +43,13 @@ export class WindowDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor window item class/ класс элемента окна
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, WindowEmits, P>
+    options?: ConstrOptions<COMP, WindowEmits, P>,
+    ItemConstructor: typeof Window = Window
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class WindowDesign<
       options
     )
 
-    this.item = new Window(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

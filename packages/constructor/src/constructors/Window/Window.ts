@@ -104,6 +104,29 @@ export class Window {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
+   * @param WindowClientConstructor class for working with window client/ класс для работы с клиентом окна
+   * @param WindowCoordinatesConstructor class for working with coordinates/ класс для работы с координатами
+   * @param WindowElementConstructor class for working with window elements/ класс для работы с элементами окна
+   * @param WindowEmitConstructor class for working with emits/ класс для работы с событиями
+   * @param WindowEscConstructor class for working with escape key/ класс для работы с клавишей Escape
+   * @param WindowEventConstructor class for working with events/ класс для работы с событиями
+   * @param WindowFlashConstructor class for working with flash animation/ класс для работы с анимацией вспышки
+   * @param WindowHiddenConstructor class for working with hidden elements/ класс для работы со скрытыми элементами
+   * @param WindowHookConstructor class for working with window hooks/ класс для работы с хуками окна
+   * @param WindowOpenConstructor class for working with open state/ класс для работы с состоянием открытия
+   * @param WindowOriginConstructor class for working with origin/ класс для работы с точкой начала
+   * @param WindowPersistentConstructor class for working with persistent state/ класс для работы с постоянным состоянием
+   * @param WindowPositionConstructor class for working with position/ класс для работы с позицией
+   * @param WindowStaticConstructor class for working with static mode/ класс для работы со статическим режимом
+   * @param WindowStatusConstructor class for working with window status/ класс для работы со статусом окна
+   * @param WindowStylesConstructor class for working with styles/ класс для работы со стилями
+   * @param WindowVerificationConstructor class for working with verification/ класс для работы с проверкой
+   * @param ImageConstructor class for working with image/ класс для работы с изображением
+   * @param ModelConstructor class for working with model/ класс для работы с моделью
+   * @param ScrollbarConstructor class for working with scrollbar/ класс для работы со скроллбаром
+   * @param TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
+   * @param TextConstructor class for working with text/ класс для работы с текстом
    */
   constructor(
     protected readonly props: WindowPropsBasic,
@@ -113,34 +136,57 @@ export class Window {
     protected readonly className: string,
     protected readonly components?: DesignComp<WindowComponents, WindowPropsBasic>,
     protected readonly slots?: WindowSlots,
-    protected readonly emits?: ConstrEmit<WindowEmits>
+    protected readonly emits?: ConstrEmit<WindowEmits>,
+    protected readonly WindowClassesConstructor: typeof WindowClasses = WindowClasses,
+    protected readonly WindowClientConstructor: typeof WindowClient = WindowClient,
+    protected readonly WindowCoordinatesConstructor: typeof WindowCoordinates = WindowCoordinates,
+    protected readonly WindowElementConstructor: typeof WindowElement = WindowElement,
+    protected readonly WindowEmitConstructor: typeof WindowEmit = WindowEmit,
+    protected readonly WindowEscConstructor: typeof WindowEsc = WindowEsc,
+    protected readonly WindowEventConstructor: typeof WindowEvent = WindowEvent,
+    protected readonly WindowFlashConstructor: typeof WindowFlash = WindowFlash,
+    protected readonly WindowHiddenConstructor: typeof WindowHidden = WindowHidden,
+    protected readonly WindowHookConstructor: typeof WindowHook = WindowHook,
+    protected readonly WindowOpenConstructor: typeof WindowOpen = WindowOpen,
+    protected readonly WindowOriginConstructor: typeof WindowOrigin = WindowOrigin,
+    protected readonly WindowPersistentConstructor: typeof WindowPersistent = WindowPersistent,
+    protected readonly WindowPositionConstructor: typeof WindowPosition = WindowPosition,
+    protected readonly WindowStaticConstructor: typeof WindowStatic = WindowStatic,
+    protected readonly WindowStatusConstructor: typeof WindowStatus = WindowStatus,
+    protected readonly WindowStylesConstructor: typeof WindowStyles = WindowStyles,
+    protected readonly WindowVerificationConstructor: typeof WindowVerification = WindowVerification,
+    protected readonly ImageConstructor: typeof ImageInclude = ImageInclude,
+    protected readonly ModelConstructor: typeof ModelInclude = ModelInclude,
+    protected readonly ScrollbarConstructor: typeof ScrollbarInclude = ScrollbarInclude,
+    protected readonly TabIndexConstructor: typeof TabIndexInclude = TabIndexInclude,
+    protected readonly TextConstructor: typeof TextInclude = TextInclude
   ) {
-    this.hook = new WindowHook(props)
+    this.hook = new WindowHookConstructor(props)
 
-    this.classes = new WindowClasses(className)
-    this.element = new WindowElement(this.classes, element)
-    this.client = new WindowClient(this.element)
-    this.tabIndex = new TabIndexInclude(
+    this.classes = new WindowClassesConstructor(className)
+    this.element = new WindowElementConstructor(this.classes, element)
+    this.client = new WindowClientConstructor(this.element)
+    this.tabIndex = new TabIndexConstructor(
       () => this.element.getBody()
     )
 
-    this.status = new WindowStatus(this.element)
-    this.persistent = new WindowPersistent(props, this.classes, this.element)
-    this.flash = new WindowFlash(props, this.classes)
-    this.coordinates = new WindowCoordinates(this.classes, this.element)
-    this.position = new WindowPosition(props, this.client, this.element, this.coordinates)
-    this.origin = new WindowOrigin(this.client, this.element, this.position)
-    this.staticMode = new WindowStatic(props, refs, this.element)
-    this.emit = new WindowEmit(this.classes, this.element, emits)
+    this.status = new WindowStatusConstructor(this.element)
+    this.persistent = new WindowPersistentConstructor(props, this.classes, this.element)
+    this.flash = new WindowFlashConstructor(props, this.classes)
+    this.coordinates = new WindowCoordinatesConstructor(this.classes, this.element)
+    this.position = new WindowPositionConstructor(props, this.client, this.element, this.coordinates)
+    this.origin = new WindowOriginConstructor(this.client, this.element, this.position)
+    this.staticMode = new WindowStaticConstructor(props, refs, this.element)
+    this.emit = new WindowEmitConstructor(this.classes, this.element, emits)
 
-    this.styles = new WindowStyles(
+    this.styles = new WindowStylesConstructor(
       this.element,
       this.coordinates,
       this.position,
       this.origin,
       className
     )
-    this.open = new WindowOpen(
+    this.open = new WindowOpenConstructor(
       props,
       this.client,
       this.hook,
@@ -155,7 +201,7 @@ export class Window {
       this.styles
     )
 
-    this.verification = new WindowVerification(
+    this.verification = new WindowVerificationConstructor(
       props,
       this.persistent,
       this.classes,
@@ -163,7 +209,7 @@ export class Window {
       this.staticMode,
       this.open
     )
-    this.event = new WindowEvent(
+    this.event = new WindowEventConstructor(
       props,
       this.status,
       this.client,
@@ -172,26 +218,26 @@ export class Window {
       this.verification
     )
 
-    this.scrollbar = new ScrollbarInclude(
+    this.scrollbar = new ScrollbarConstructor(
       props,
       className,
       components,
       emits
     )
-    this.image = new ImageInclude(
+    this.image = new ImageConstructor(
       props,
       components,
       emits
     )
-    this.esc = new WindowEsc(
+    this.esc = new WindowEscConstructor(
       this.open.item,
       () => this.open.close(),
       () => !this.props.persistent
     )
-    this.text = new TextInclude(this.props)
-    this.hidden = new WindowHidden(this.classes, this.open)
+    this.text = new TextConstructor(this.props)
+    this.hidden = new WindowHiddenConstructor(this.classes, this.open)
 
-    new ModelInclude<boolean>('open', this.emits, this.open.item)
+    new ModelConstructor<boolean>('open', this.emits, this.open.item)
 
     onMounted(() => {
       watch([refs.open], () => this.open.set(props.open), { immediate: true })
