@@ -59,7 +59,9 @@ export class WindowOrigin {
       this.y = 0
     } else if (
       element
-      && getComputedStyle(element).getPropertyValue(__WINDOW_TYPE_BODY_NAME) !== '"--MENU--"'
+      && getComputedStyle(element)
+        .getPropertyValue(__WINDOW_TYPE_BODY_NAME)
+        .includes('--MENU--')
     ) {
       const rect = this.element.getBodyRect()
 

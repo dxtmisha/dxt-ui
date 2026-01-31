@@ -43,6 +43,17 @@ export const wikiText: StorybookArgsToList = {
       }
     }
   },
+  textLoading: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Loading text',
+        ru: 'Текст загрузки'
+      }
+    }
+  },
   textOk: {
     type: StorybookControl.text,
     options: {

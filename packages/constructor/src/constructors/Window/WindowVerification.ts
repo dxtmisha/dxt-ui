@@ -270,7 +270,8 @@ export class WindowVerification {
       const style = getComputedStyle(element)
       const value = style.getPropertyValue(__WINDOW_TYPE_BODY_NAME)
 
-      return value === '"--MENU--"' || value === '"--MENU-WINDOW--"'
+      return value.includes('--MENU--')
+        || value.includes('--MENU-WINDOW--')
     }
 
     return false

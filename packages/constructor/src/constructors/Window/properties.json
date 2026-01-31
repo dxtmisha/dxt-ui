@@ -160,7 +160,6 @@
   "~adaptive": {
     "~menu": {
       "menuSizeMultiplier": "0.5",
-      "content": "'--MENU--'",
       "=sys-type-body": "'--MENU--'",
       "position": "fixed",
       "top": "{??sys.inset.y}",
@@ -196,7 +195,6 @@
       }
     },
     "~menuWindow": {
-      "content": "'--MENU-WINDOW--'",
       "=sys-type-body": "'--MENU-WINDOW--'"
     },
     "~modal": {},
@@ -218,7 +216,6 @@
       "link|origin": "{??origin.bottomToTop}"
     },
     "~static": {
-      "content": "'--STATIC--'",
       "=sys-type-body": "'--STATIC--'"
     }
   },

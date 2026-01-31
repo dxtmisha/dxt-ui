@@ -264,7 +264,9 @@ export class WindowOpen {
         const element = this.element.getMain()
 
         if (element) {
-          const isMenu = getComputedStyle(element).getPropertyValue(__WINDOW_TYPE_BODY_NAME) === '"--MENU--"'
+          const isMenu = getComputedStyle(element)
+            .getPropertyValue(__WINDOW_TYPE_BODY_NAME)
+            .includes('--MENU--')
 
           if (isMenu && this.position.update()) {
             this.styles.update()

@@ -280,18 +280,28 @@ export class WindowDesign<
    *
    * Свойства для главного элемента.
    */
-  protected readonly propsMain = computed(() => ({
-    'key': 'main',
-    'ref': this.element,
-    'class': this.classes?.value.main,
-    'style': this.styles?.value,
-    'data-window': this.item.classes.getId(),
-    'onTransitionend': this.item.event.onTransition,
-    ...AriaStaticInclude.role(this.props.role),
-    ...AriaStaticInclude.modal(
-      true,
-      this.props.ariaLabelledby,
-      this.props.ariaDescribedby
-    )
-  }))
+  protected readonly propsMain = computed<Record<string, any>>(() => {
+    const props: Record<string, any> = {
+      'key': 'main',
+      'ref': this.element,
+      'class': this.classes?.value.main,
+      'style': this.styles?.value,
+      'data-window': this.item.classes.getId(),
+      'onTransitionend': this.item.event.onTransition
+    }
+
+    if (this.item.staticMode.isStaticMod()) {
+      return props
+    }
+
+    return {
+      ...props,
+      ...AriaStaticInclude.role(this.props.role),
+      ...AriaStaticInclude.modal(
+        true,
+        this.props.ariaLabelledby,
+        this.props.ariaDescribedby
+      )
+    }
+  })
 }

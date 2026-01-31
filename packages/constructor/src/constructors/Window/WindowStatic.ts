@@ -75,7 +75,8 @@ export class WindowStatic {
     return Boolean(
       element
       && getComputedStyle(element)
-        .getPropertyValue(__WINDOW_TYPE_BODY_NAME) === '"--STATIC--"'
+        .getPropertyValue(__WINDOW_TYPE_BODY_NAME)
+        .includes('--STATIC--')
     )
   }
 
@@ -86,6 +87,7 @@ export class WindowStatic {
    */
   protected readonly listener = (): void => {
     setRef(this.item, this.isStatic())
+    console.log('this.item', this.item.value)
   }
 
   /**

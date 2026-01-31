@@ -2,7 +2,7 @@ var U = Object.defineProperty;
 var V = (h, t, e) => t in h ? U(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
 var i = (h, t, e) => V(h, typeof t != "symbol" ? t + "" : t, e);
 import { h as p, computed as m, ref as v, watch as f, onMounted as G, onUnmounted as K, Teleport as j } from "vue";
-import { toBind as Z, getBind as z, getRef as J, executePromise as y, getElement as M, isDomRuntime as B, EventItem as k, setRef as Q, frame as tt, isEnter as et, getMouseClientX as st, getMouseClientY as it, DesignConstructorAbstract as nt } from "@dxtmisha/functional";
+import { toBind as Z, getBind as z, getRef as J, executePromise as y, getElement as M, isDomRuntime as B, EventItem as S, setRef as Q, frame as tt, isEnter as et, getMouseClientX as st, getMouseClientY as it, DesignConstructorAbstract as nt } from "@dxtmisha/functional";
 import { A as w } from "./AriaStaticInclude-CuMRRW17.js";
 import { M as ot } from "./ModelInclude-BiYm_iCQ.js";
 import { T as rt } from "./TabIndexInclude-DFgnqYh5.js";
@@ -19,17 +19,17 @@ class ct {
    * @param components object for working with components/ объект для работы с компонентами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
-  constructor(t, e, s, o) {
-    this.props = t, this.className = e, this.components = s, this.emits = o;
+  constructor(t, e, s, n) {
+    this.props = t, this.className = e, this.components = s, this.emits = n;
   }
   /**
    * Renders scrollbar component or fallback element
    * Рендерит компонент скроллбара или элемент по умолчанию
    */
   render(t, e, s) {
-    var o;
+    var n;
     if (this.components) {
-      const n = this.components.renderOne(
+      const o = this.components.renderOne(
         "scrollbar",
         Z(
           {
@@ -38,12 +38,12 @@ class ct {
             ...e != null ? e : {},
             ...this.getScrollbarEvents()
           },
-          (o = this.props.scrollbarAttrs) != null ? o : {}
+          (n = this.props.scrollbarAttrs) != null ? n : {}
         ),
         s
       );
-      if (n)
-        return [n];
+      if (o)
+        return [o];
     }
     return [p(t, e, s)];
   }
@@ -78,8 +78,8 @@ class ct {
         return (t = this.emits) == null ? void 0 : t.call(this, "scrollbarLeaveBottom");
       },
       onEdge: (t, e, s) => {
-        var o;
-        return (o = this.emits) == null ? void 0 : o.call(this, "scrollbarEdge", t, e, s);
+        var n;
+        return (n = this.emits) == null ? void 0 : n.call(this, "scrollbarEdge", t, e, s);
       }
     };
   }
@@ -94,7 +94,7 @@ class dt {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param extra additional parameter/ дополнительный параметр
    */
-  constructor(t, e, s, o) {
+  constructor(t, e, s, n) {
     /**
      * Проверяет, есть ли изображение/ Checks if an image exists
      */
@@ -103,7 +103,7 @@ class dt {
      * Возвращает данные для передачи компоненту/ Returns data to pass to the component
      */
     i(this, "bind", m(() => z(this.props.image, J(this.extra), "value")));
-    this.props = t, this.components = e, this.emits = s, this.extra = o;
+    this.props = t, this.components = e, this.emits = s, this.extra = n;
   }
   render() {
     return this.components && this.isImage.value ? this.components.render("image", this.bind.value) : [];
@@ -449,9 +449,9 @@ class ft {
     i(this, "onTransitionend", () => {
       this.removeEvent(), this.disabled();
     });
-    this.props = t, this.classes = e, this.element = s, f(this.item, (o) => {
-      const n = this.element.getMain();
-      n && (o ? (this.removeEvent(), n.classList.add(this.classes.list.persistent), n.addEventListener("animationend", this.onTransitionend)) : n.classList.remove(this.classes.list.persistent));
+    this.props = t, this.classes = e, this.element = s, f(this.item, (n) => {
+      const o = this.element.getMain();
+      o && (n ? (this.removeEvent(), o.classList.add(this.classes.list.persistent), o.addEventListener("animationend", this.onTransitionend)) : o.classList.remove(this.classes.list.persistent));
     });
   }
   /**
@@ -676,8 +676,8 @@ class wt {
     const t = this.element.getMain();
     let e = 0;
     if (t) {
-      const s = getComputedStyle(t), o = s.paddingTop.replace(/[^0-9]+/g, ""), n = s.paddingBottom.replace(/[^0-9]+/g, "");
-      e = (parseInt(o) + parseInt(n)) / 2;
+      const s = getComputedStyle(t), n = s.paddingTop.replace(/[^0-9]+/g, ""), o = s.paddingBottom.replace(/[^0-9]+/g, "");
+      e = (parseInt(n) + parseInt(o)) / 2;
     }
     return e > 0 ? e : 16;
   }
@@ -689,8 +689,8 @@ class wt {
    */
   initLocation(t) {
     var r, a;
-    const e = (a = (r = this.element.getBody()) == null ? void 0 : r.offsetHeight) != null ? a : 0, s = e / 2, o = this.innerHeight - this.padding * 2 - e, n = t - s - this.padding;
-    return n < this.padding ? "0px" : t + s >= this.innerHeight - this.padding ? `${o}px` : `${n}px`;
+    const e = (a = (r = this.element.getBody()) == null ? void 0 : r.offsetHeight) != null ? a : 0, s = e / 2, n = this.innerHeight - this.padding * 2 - e, o = t - s - this.padding;
+    return o < this.padding ? "0px" : t + s >= this.innerHeight - this.padding ? `${n}px` : `${o}px`;
   }
 }
 class vt {
@@ -701,10 +701,10 @@ class vt {
    * @param element an object of the class for working with elements/ объект класса для работы с элементами
    * @param coordinates object for working with coordinates/ объект для работы с координатами
    */
-  constructor(t, e, s, o) {
+  constructor(t, e, s, n) {
     i(this, "x", 0);
     i(this, "y", 0);
-    this.props = t, this.client = e, this.element = s, this.coordinates = o;
+    this.props = t, this.client = e, this.element = s, this.coordinates = n;
   }
   /**
    * Checks if the alignment type is above the element.
@@ -760,19 +760,19 @@ class vt {
    * Обновляет место скрола, если выбран элемент.
    */
   updateScroll() {
-    var e, s, o;
+    var e, s, n;
     const t = this.element.getBodyContext();
     if (this.isOver() && this.props.overElement && t && t.scrollHeight > t.offsetHeight) {
-      const n = (e = M(this.props.overElement)) == null ? void 0 : e.getBoundingClientRect(), r = (s = this.element.getBody()) == null ? void 0 : s.getBoundingClientRect(), a = t == null ? void 0 : t.getBoundingClientRect(), l = (o = this.element.getControl()) == null ? void 0 : o.getBoundingClientRect();
-      if (t && n && r && a) {
-        const d = n.height / 2, u = n.top - a.top;
+      const o = (e = M(this.props.overElement)) == null ? void 0 : e.getBoundingClientRect(), r = (s = this.element.getBody()) == null ? void 0 : s.getBoundingClientRect(), a = t == null ? void 0 : t.getBoundingClientRect(), l = (n = this.element.getControl()) == null ? void 0 : n.getBoundingClientRect();
+      if (t && o && r && a) {
+        const d = o.height / 2, u = o.top - a.top;
         if (l && this.coordinates.getMaxHeight() === r.height) {
           if (l.top + d < r.top) {
             t.scrollTop += u;
             return;
           }
           if (l.bottom - d > r.bottom) {
-            t.scrollTop += u - a.height + n.height;
+            t.scrollTop += u - a.height + o.height;
             return;
           }
           t.scrollTop += u - (l.top - a.top) - l.height / 2 + d;
@@ -820,17 +820,17 @@ class vt {
    * @param rectBottom lower control coordinates/ нижние координаты контрола
    */
   getOverHeight(t, e) {
-    var n, r;
+    var o, r;
     const s = (e - t) / 2;
     if (this.props.overElement) {
-      const a = (n = M(this.props.overElement)) == null ? void 0 : n.getBoundingClientRect(), l = (r = this.element.getBody()) == null ? void 0 : r.getBoundingClientRect();
+      const a = (o = M(this.props.overElement)) == null ? void 0 : o.getBoundingClientRect(), l = (r = this.element.getBody()) == null ? void 0 : r.getBoundingClientRect();
       if (a && l) {
         const d = a.top - l.top, u = a.height / 2;
         return e - d - u - s;
       }
     }
-    const o = this.coordinates.getHeight() / 2;
-    return e - s - o;
+    const n = this.coordinates.getHeight() / 2;
+    return e - s - n;
   }
   /**
    * Changes in position along the X coordinate.
@@ -840,10 +840,10 @@ class vt {
   setX() {
     const t = this.element.getMain();
     if (t) {
-      const e = this.getIndent("x"), s = this.props.contextmenu ? this.client.getX() : this.coordinates.getRight() + e, o = this.props.contextmenu ? this.client.getX() : this.coordinates.getLeft() - e, n = [];
-      this.getAxis() === "x" ? n.push(s, o) : n.push(o, s), this.x = this.calculationInner(
-        n[0],
-        n[1],
+      const e = this.getIndent("x"), s = this.props.contextmenu ? this.client.getX() : this.coordinates.getRight() + e, n = this.props.contextmenu ? this.client.getX() : this.coordinates.getLeft() - e, o = [];
+      this.getAxis() === "x" ? o.push(s, n) : o.push(n, s), this.x = this.calculationInner(
+        o[0],
+        o[1],
         t.offsetWidth,
         window.innerWidth,
         this.coordinates.getWidth()
@@ -859,18 +859,18 @@ class vt {
   setY() {
     const t = this.element.getMain();
     if (t) {
-      const e = this.getIndent("y"), s = this.props.contextmenu ? this.client.getY() : this.coordinates.getTop() - e, o = this.props.contextmenu ? this.client.getY() : this.coordinates.getBottom() + e, n = [];
+      const e = this.getIndent("y"), s = this.props.contextmenu ? this.client.getY() : this.coordinates.getTop() - e, n = this.props.contextmenu ? this.client.getY() : this.coordinates.getBottom() + e, o = [];
       if (this.isOver())
         return this.y = this.calculationOver(
-          this.getOverHeight(s, o),
+          this.getOverHeight(s, n),
           s,
-          o,
+          n,
           t.offsetHeight,
           window.innerHeight
         ), this;
-      this.getAxis() !== "x" ? n.push(o, s) : n.push(s, o), this.y = this.calculationInner(
-        n[0],
-        n[1],
+      this.getAxis() !== "x" ? o.push(n, s) : o.push(s, n), this.y = this.calculationInner(
+        o[0],
+        o[1],
         t.offsetHeight,
         window.innerHeight,
         this.coordinates.getHeight()
@@ -888,9 +888,9 @@ class vt {
    * @param innerLength length of the indentation/ длина отступа
    * @param maxSize maximum length/ максимальная длина
    */
-  calculationInner(t, e, s, o, n) {
+  calculationInner(t, e, s, n, o) {
     const r = this.coordinates.getPadding();
-    return t + s <= o - r ? t : e - s > r ? e - s : o / 2 - n / 2;
+    return t + s <= n - r ? t : e - s > r ? e - s : n / 2 - o / 2;
   }
   /**
    * Calculation of the element's position.
@@ -902,15 +902,15 @@ class vt {
    * @param length length of the object/ длина объекта
    * @param innerLength length of the indentation/ длина отступа
    */
-  calculationOver(t, e, s, o, n) {
+  calculationOver(t, e, s, n, o) {
     const r = this.coordinates.getPadding();
     if (s < r)
       return s;
-    if (e > n - r) {
-      const a = e - o - r;
+    if (e > o - r) {
+      const a = e - n - r;
       return a < r ? r : a;
     }
-    return t < r ? r : t + o <= n - r ? t : n - o - r;
+    return t < r ? r : t + n <= o - r ? t : o - n - r;
   }
 }
 class Ct {
@@ -950,7 +950,7 @@ class Ct {
     const t = this.element.getMain();
     if (this.client.update(), !this.client.is())
       this.x = 0, this.y = 0;
-    else if (t && getComputedStyle(t).getPropertyValue(C) !== '"--MENU--"') {
+    else if (t && getComputedStyle(t).getPropertyValue(C).includes("--MENU--")) {
       const e = this.element.getBodyRect();
       e && (this.x = this.client.getShiftX(e.left), this.y = this.client.getShiftY(e.top));
     } else
@@ -982,7 +982,7 @@ class bt {
      * Вызываемая функция при срабатывании события.
      */
     i(this, "listener", () => {
-      Q(this.item, this.isStatic());
+      Q(this.item, this.isStatic()), console.log("this.item", this.item.value);
     });
     /**
      * Performs status check and activates events when turned on.
@@ -1008,7 +1008,7 @@ class bt {
    * Стартует событие слежения за статусами.
    */
   start() {
-    this.event || (this.event = new k(window, ["resize"], this.listener)), this.event.start();
+    this.event || (this.event = new S(window, ["resize"], this.listener)), this.event.start();
   }
   /**
    * Restores the data to its previous state.
@@ -1025,7 +1025,7 @@ class bt {
    */
   isStatic() {
     const t = this.element.getMain();
-    return !!(t && getComputedStyle(t).getPropertyValue(C) === '"--STATIC--"');
+    return !!(t && getComputedStyle(t).getPropertyValue(C).includes("--STATIC--"));
   }
 }
 class xt {
@@ -1072,8 +1072,8 @@ class Bt {
    * @param origin the object for work is in the initial position upon opening/ объект для работы в начальной позиции при открытии
    * @param className class name/ название класса
    */
-  constructor(t, e, s, o, n) {
-    this.element = t, this.coordinates = e, this.position = s, this.origin = o, this.className = n, f(this.element.element, () => this.update());
+  constructor(t, e, s, n, o) {
+    this.element = t, this.coordinates = e, this.position = s, this.origin = n, this.className = o, f(this.element.element, () => this.update());
   }
   /**
    * Data update.
@@ -1114,7 +1114,7 @@ class Mt {
    * @param emit the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param styles an object for working with the styles of an element/ объект для работы со стилями элемента
    */
-  constructor(t, e, s, o, n, r, a, l, d, u, b, x) {
+  constructor(t, e, s, n, o, r, a, l, d, u, b, x) {
     i(this, "item", v(!1));
     i(this, "first", v(!1));
     i(this, "clicks", 0);
@@ -1166,7 +1166,7 @@ class Mt {
         this.status.toHide(), this.resetClicks();
       })));
     });
-    this.props = t, this.client = e, this.hook = s, this.element = o, this.tabIndex = n, this.status = r, this.flash = a, this.coordinates = l, this.position = d, this.origin = u, this.emit = b, this.styles = x;
+    this.props = t, this.client = e, this.hook = s, this.element = n, this.tabIndex = o, this.status = r, this.flash = a, this.coordinates = l, this.position = d, this.origin = u, this.emit = b, this.styles = x;
   }
   /**
    * Checks if the window is open.
@@ -1235,7 +1235,7 @@ class Mt {
       () => {
         const t = this.element.getMain();
         if (t) {
-          const e = getComputedStyle(t).getPropertyValue(C) === '"--MENU--"';
+          const e = getComputedStyle(t).getPropertyValue(C).includes("--MENU--");
           e && this.position.update() && this.styles.update(), this.styles.updateType(e);
         }
       },
@@ -1253,7 +1253,7 @@ class Mt {
     }, 48), this.status.toClose();
   }
 }
-class kt {
+class St {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1263,10 +1263,10 @@ class kt {
    * @param staticMode class object for working with static status/ объект класса для работы со статическим статусом
    * @param open the class object for working with the status of closing or opening the window/ объект класса для работы со статусом закрытия или открытия окна
    */
-  constructor(t, e, s, o, n, r) {
+  constructor(t, e, s, n, o, r) {
     i(this, "target");
     i(this, "focus");
-    this.props = t, this.persistent = e, this.classes = s, this.element = o, this.staticMode = n, this.open = r;
+    this.props = t, this.persistent = e, this.classes = s, this.element = n, this.staticMode = o, this.open = r;
   }
   /**
    * Updates the window opening status.
@@ -1412,7 +1412,7 @@ class kt {
   isMenu(t = this.element.getMain()) {
     if (t) {
       const s = getComputedStyle(t).getPropertyValue(C);
-      return s === '"--MENU--"' || s === '"--MENU-WINDOW--"';
+      return s.includes("--MENU--") || s.includes("--MENU-WINDOW--");
     }
     return !1;
   }
@@ -1425,7 +1425,7 @@ class kt {
     return !!this.getTarget().closest(`.${this.classes.list.controlOpenOnly}`);
   }
 }
-class It {
+class kt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1436,7 +1436,7 @@ class It {
    * @param open the class object for working with the status of closing or opening the window/ объект класса для работы со статусом закрытия или открытия окна
    * @param verification an object for working with the check for changing the status of opening or closing/ объект для работы с проверкой изменения статуса открытия или закрытия
    */
-  constructor(t, e, s, o, n, r, a) {
+  constructor(t, e, s, n, o, r, a) {
     i(this, "event");
     /**
      * Events of pressing a control element.
@@ -1480,7 +1480,7 @@ class It {
     i(this, "onGlobal", async (t) => {
       (!t || t.type === "click" && (!this.props.contextmenu || this.open.item.value) || t.type === "contextmenu" && this.props.contextmenu) && (this.open.item.value ? (this.flash.setControl(t == null ? void 0 : t.target), await this.verification.update(t == null ? void 0 : t.target)) : this.event.stop());
     });
-    this.props = t, this.tabIndex = e, this.status = s, this.client = o, this.flash = n, this.open = r, this.verification = a, this.event = new k(
+    this.props = t, this.tabIndex = e, this.status = s, this.client = n, this.flash = o, this.open = r, this.verification = a, this.event = new S(
       "body",
       ["click", "contextmenu"],
       this.onGlobal
@@ -1529,7 +1529,7 @@ class It {
     ), await this.verification.update(t.target);
   }
 }
-class St {
+class It {
   /**
    * Constructor
    * @param classes an object for working with class names / объект для работы с названиями классов
@@ -1634,7 +1634,7 @@ class Wt {
    * @param TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
    * @param TextConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(t, e, s, o, n, r, a, l, d = at, u = ut, b = wt, x = gt, I = xt, S = lt, W = It, T = yt, O = St, H = pt, E = Mt, A = Ct, $ = ft, D = vt, P = bt, N = mt, R = Bt, L = kt, Y = dt, F = ot, X = ct, _ = rt, q = ht) {
+  constructor(t, e, s, n, o, r, a, l, d = at, u = ut, b = wt, x = gt, k = xt, I = lt, W = kt, T = yt, O = It, H = pt, E = Mt, A = Ct, $ = ft, D = vt, P = bt, N = mt, R = Bt, L = St, Y = dt, F = ot, X = ct, _ = rt, q = ht) {
     /** Client instance for window management/ Экземпляр клиента для управления окном */
     i(this, "client");
     /** Hook instance for window events/ Экземпляр хука для событий окна */
@@ -1715,14 +1715,14 @@ class Wt {
     i(this, "stop", () => {
       this.event.stop(), this.staticMode.stop();
     });
-    this.props = t, this.refs = e, this.classDesign = o, this.className = n, this.components = r, this.slots = a, this.emits = l, this.hook = new H(t), this.classes = new d(n), this.element = new x(this.classes, s), this.client = new u(this.element), this.tabIndex = new _(
+    this.props = t, this.refs = e, this.classDesign = n, this.className = o, this.components = r, this.slots = a, this.emits = l, this.hook = new H(t), this.classes = new d(o), this.element = new x(this.classes, s), this.client = new u(this.element), this.tabIndex = new _(
       () => this.element.getBody()
-    ), this.status = new N(this.element), this.persistent = new $(t, this.classes, this.element), this.flash = new T(t, this.classes), this.coordinates = new b(this.classes, this.element), this.position = new D(t, this.client, this.element, this.coordinates), this.origin = new A(this.client, this.element, this.position), this.staticMode = new P(t, e, this.element), this.emit = new I(this.classes, this.element, l), this.styles = new R(
+    ), this.status = new N(this.element), this.persistent = new $(t, this.classes, this.element), this.flash = new T(t, this.classes), this.coordinates = new b(this.classes, this.element), this.position = new D(t, this.client, this.element, this.coordinates), this.origin = new A(this.client, this.element, this.position), this.staticMode = new P(t, e, this.element), this.emit = new k(this.classes, this.element, l), this.styles = new R(
       this.element,
       this.coordinates,
       this.position,
       this.origin,
-      n
+      o
     ), this.open = new E(
       t,
       this.client,
@@ -1753,14 +1753,14 @@ class Wt {
       this.verification
     ), this.scrollbar = new X(
       t,
-      n,
+      o,
       r,
       l
     ), this.image = new Y(
       t,
       r,
       l
-    ), this.esc = new S(
+    ), this.esc = new I(
       this.open.item,
       () => this.open.close(),
       () => !this.props.persistent
@@ -1790,11 +1790,11 @@ class Lt extends nt {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor window item class/ класс элемента окна
    */
-  constructor(e, s, o, n = Wt) {
+  constructor(e, s, n, o = Wt) {
     super(
       e,
       s,
-      o
+      n
     );
     i(this, "item");
     /**
@@ -1906,14 +1906,17 @@ class Lt extends nt {
      * Свойства для главного элемента.
      */
     i(this, "propsMain", m(() => {
-      var e, s;
-      return {
+      var s, n;
+      const e = {
         key: "main",
         ref: this.element,
-        class: (e = this.classes) == null ? void 0 : e.value.main,
-        style: (s = this.styles) == null ? void 0 : s.value,
+        class: (s = this.classes) == null ? void 0 : s.value.main,
+        style: (n = this.styles) == null ? void 0 : n.value,
         "data-window": this.item.classes.getId(),
-        onTransitionend: this.item.event.onTransition,
+        onTransitionend: this.item.event.onTransition
+      };
+      return this.item.staticMode.isStaticMod() ? e : {
+        ...e,
         ...w.role(this.props.role),
         ...w.modal(
           !0,
@@ -1922,7 +1925,7 @@ class Lt extends nt {
         )
       };
     }));
-    this.item = new n(
+    this.item = new o(
       this.props,
       this.refs,
       this.element,
