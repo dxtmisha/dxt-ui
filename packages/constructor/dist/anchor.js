@@ -1,7 +1,7 @@
 var b = Object.defineProperty;
-var y = (s, i, t) => i in s ? b(s, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[i] = t;
-var e = (s, i, t) => y(s, typeof i != "symbol" ? i + "" : i, t);
-import { computed as n, ref as A, onMounted as I, h as g } from "vue";
+var y = (s, e, t) => e in s ? b(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
+var i = (s, e, t) => y(s, typeof e != "symbol" ? e + "" : e, t);
+import { computed as n, ref as A, onMounted as I, h as l } from "vue";
 import { goScrollSmooth as T, toNumber as k, writeClipboardData as w, DesignConstructorAbstract as x } from "@dxtmisha/functional";
 import { L as D } from "./LabelInclude-BtZrrbCf.js";
 import { T as H } from "./TextInclude-CodMN5BH.js";
@@ -13,13 +13,13 @@ class B {
    * Constructor
    * @param props input data / входные данные
    */
-  constructor(i) {
+  constructor(e) {
     /** Computed href attribute/ Вычисляемый атрибут href */
-    e(this, "href", n(() => {
+    i(this, "href", n(() => {
       if (this.props.name)
         return `#${this.props.name}`;
     }));
-    this.props = i;
+    this.props = e;
   }
   /**
    * Check if href exists
@@ -53,8 +53,8 @@ class F {
    * @param element input element / элемент ввода
    * @param href href handler / обработчик ссылки
    */
-  constructor(i, t, r) {
-    this.props = i, this.element = t, this.href = r;
+  constructor(e, t, r) {
+    this.props = e, this.element = t, this.href = r;
   }
   /**
    * Scroll to element
@@ -81,19 +81,19 @@ class M {
    * @param href href handler / обработчик ссылки
    * @param to scroll handler / обработчик прокрутки
    */
-  constructor(i, t, r, o) {
-    e(this, "copy", A());
-    e(this, "timeout");
+  constructor(e, t, r, o) {
+    i(this, "copy", A());
+    i(this, "timeout");
     /**
      * On click handler
      *
      * Обработчик нажатия
      */
-    e(this, "onClick", (i) => {
+    i(this, "onClick", (e) => {
       var t;
-      i.preventDefault(), this.props.isCopy ? w(this.href.getLink()).then(() => this.toCopy()) : (t = this.to) == null || t.go();
+      e.preventDefault(), this.props.isCopy ? w(this.href.getLink()).then(() => this.toCopy()) : (t = this.to) == null || t.go();
     });
-    this.props = i, this.tooltip = t, this.href = r, this.to = o;
+    this.props = e, this.tooltip = t, this.href = r, this.to = o;
   }
   /**
    * Is copy state
@@ -109,10 +109,10 @@ class M {
    * Запустить состояние копирования
    */
   toCopy() {
-    var i;
+    var e;
     clearTimeout(this.timeout), this.copy.value = !0, this.tooltip.open(), this.timeout = setTimeout(() => {
       this.copy.value = !1, this.tooltip.close();
-    }, (i = this.props.delayHide) != null ? i : 1024);
+    }, (e = this.props.delayHide) != null ? e : 1024);
   }
 }
 class N {
@@ -121,19 +121,19 @@ class N {
    * @param props input data / входные данные
    * @param event event handler / обработчик событий
    */
-  constructor(i, t) {
+  constructor(e, t) {
     /** Icon to display/ Иконка для отображения */
-    e(this, "icon", n(() => {
+    i(this, "icon", n(() => {
       if (!this.props.hide)
         return this.props.isCopy ? this.props.iconTag : this.props.iconLink;
     }));
     /** Binds for the icon/ Привязки для иконки */
-    e(this, "binds", n(() => ({
+    i(this, "binds", n(() => ({
       icon: this.icon.value,
       iconActive: this.props.iconContentCopy,
       active: this.event.isCopy()
     })));
-    this.props = i, this.event = t;
+    this.props = e, this.event = t;
   }
   /**
    * Check if the icon is set
@@ -163,41 +163,41 @@ class E {
    * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
    * @param TooltipIncludeConstructor class for working with tooltip/ класс для работы с подсказкой
    */
-  constructor(i, t, r, o, h, v, p, C, l = B, a = F, c = M, u = N, m = D, d = H, f = S) {
-    e(this, "label");
-    e(this, "text");
-    e(this, "tooltip");
-    e(this, "href");
-    e(this, "to");
-    e(this, "event");
-    e(this, "icon");
+  constructor(e, t, r, o, h, a, p, c, u = B, m = F, d = M, f = N, g = D, v = H, C = S) {
+    i(this, "label");
+    i(this, "text");
+    i(this, "tooltip");
+    i(this, "href");
+    i(this, "to");
+    i(this, "event");
+    i(this, "icon");
     /** Is hide anchor/ Скрыть якорь */
-    e(this, "isHide", n(() => this.props.hide || !this.label.is.value && !this.props.isCopy));
+    i(this, "isHide", n(() => this.props.hide || !this.label.is.value && !this.props.isCopy));
     /**
      * Go if focus on anchor
      *
      * Перейти, если фокус на якоре
      */
-    e(this, "goIsFocus", () => {
+    i(this, "goIsFocus", () => {
       location.hash === this.href.get() && this.to.go();
     });
-    this.props = i, this.refs = t, this.element = r, this.classDesign = o, this.className = h, this.components = v, this.slots = p, this.emits = C, this.AnchorHrefConstructor = l, this.AnchorToConstructor = a, this.AnchorEventConstructor = c, this.AnchorIconConstructor = u, this.LabelIncludeConstructor = m, this.TextIncludeConstructor = d, this.TooltipIncludeConstructor = f, this.label = new m(i, h, void 0, p), this.text = new d(this.props), this.tooltip = new f(
+    this.props = e, this.refs = t, this.element = r, this.classDesign = o, this.className = h, this.components = a, this.slots = p, this.emits = c, this.label = new g(e, h, void 0, p), this.text = new v(this.props), this.tooltip = new C(
       this.props,
       this.className,
       this.components,
       n(() => ({
         description: this.text.copiedClipboard.value
       }))
-    ), this.href = new l(this.props), this.to = new a(
+    ), this.href = new u(this.props), this.to = new m(
       this.props,
       this.element,
       this.href
-    ), this.event = new c(
+    ), this.event = new d(
       this.props,
       this.tooltip,
       this.href,
       this.to
-    ), this.icon = new u(this.props, this.event), I(() => {
+    ), this.icon = new f(this.props, this.event), I(() => {
       requestAnimationFrame(this.goIsFocus);
     });
   }
@@ -220,13 +220,13 @@ class Q extends x {
       r,
       o
     );
-    e(this, "item");
+    i(this, "item");
     /**
      * Rendering the tooltip.
      *
      * Рендеринг подсказки.
      */
-    e(this, "renderTooltip", () => this.item.tooltip.render(
+    i(this, "renderTooltip", () => this.item.tooltip.render(
       {
         control: (t) => this.renderItem(t)
       }
@@ -237,14 +237,14 @@ class Q extends x {
      * Рендеринг основного элемента.
      * @param props additional properties/ дополнительные свойства
      */
-    e(this, "renderItem", (t) => {
+    i(this, "renderItem", (t) => {
       var o;
       const r = [
         (o = this.classes) == null ? void 0 : o.value.main,
         L(this.getDesign())
       ];
       return t && r.push(t.class), [
-        g("a", {
+        l("a", {
           ...this.getMainProps(),
           class: r
         }, this.renderChildren())
@@ -255,8 +255,8 @@ class Q extends x {
      *
      * Рендеринг скрытого элемента.
      */
-    e(this, "renderItemHide", () => [
-      g("a", {
+    i(this, "renderItemHide", () => [
+      l("a", {
         ...this.getAttrs(),
         key: "main-hide",
         name: this.props.name
@@ -267,7 +267,7 @@ class Q extends x {
      *
      * Рендеринг иконки, если она задана.
      */
-    e(this, "renderIcon", () => this.item.icon.is() ? this.components.render(
+    i(this, "renderIcon", () => this.item.icon.is() ? this.components.render(
       "icon",
       this.item.icon.binds.value
     ) : []);
@@ -276,7 +276,7 @@ class Q extends x {
      *
      * Рендеринг дочерних элементов.
      */
-    e(this, "renderChildren", () => {
+    i(this, "renderChildren", () => {
       const t = [];
       return this.props.hide || t.push(
         ...this.renderIcon(),

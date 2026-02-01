@@ -52,11 +52,11 @@ export class Arrow {
     protected readonly components?: DesignComp<ArrowComponents, ArrowProps>,
     protected readonly slots?: ArrowSlots,
     protected readonly emits?: ConstrEmit<ArrowEmits>,
-    protected readonly ArrowElementConstructor: typeof ArrowElement = ArrowElement,
-    protected readonly ArrowElementTargetConstructor: typeof ArrowElementTarget = ArrowElementTarget,
-    protected readonly ArrowParentConstructor: typeof ArrowParent = ArrowParent,
-    protected readonly ArrowPositionConstructor: typeof ArrowPosition = ArrowPosition,
-    protected readonly ArrowEventConstructor: typeof ArrowEvent = ArrowEvent
+    ArrowElementConstructor: typeof ArrowElement = ArrowElement,
+    ArrowElementTargetConstructor: typeof ArrowElementTarget = ArrowElementTarget,
+    ArrowParentConstructor: typeof ArrowParent = ArrowParent,
+    ArrowPositionConstructor: typeof ArrowPosition = ArrowPosition,
+    ArrowEventConstructor: typeof ArrowEvent = ArrowEvent
   ) {
     this.elementItem = new ArrowElementConstructor(
       this.element,

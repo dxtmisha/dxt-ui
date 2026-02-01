@@ -33,7 +33,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'General alignment depending on component semantics',
         ru: 'Общее выравнивание в зависимости от семантики компонента'
       }
-    }
+    },
+    isDemo: true
   },
   asPalette: {
     type: StorybookControl.boolean,
@@ -422,9 +423,13 @@ export const wikiStyle: StorybookArgsToList = {
       type: 'string',
       options: [],
       description: {
-        en: 'Sets internal spacing around the content',
-        ru: 'Задает внутренние отступы вокруг содержимого'
+        en: 'Sets internal spacing around the content. If `paddingByIndent` is enabled, the `padding` value is ignored.',
+        ru: 'Задает внутренние отступы вокруг содержимого. Если включен `paddingByIndent`, значение `padding` игнорируется.'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      paddingByIndent: false
     }
   },
   paddingByIndent: {
@@ -596,5 +601,17 @@ export const wikiStyle: StorybookArgsToList = {
         ru: 'Дополнительные атрибуты для корневого контейнера Window'
       }
     }
+  },
+  wrap: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      type: 'boolean',
+      description: {
+        en: 'Controls text wrapping behavior',
+        ru: 'Управляет поведением переноса текста'
+      }
+    },
+    isDemo: true
   }
 }

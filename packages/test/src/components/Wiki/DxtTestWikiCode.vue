@@ -18,7 +18,6 @@ defineProps<{
 <style lang="scss">
 .dxt-test-wiki-code {
   padding: 4px;
-
   font-size: 12px;
   line-height: 16px;
   color: oklch(21% 0.034 264.665);

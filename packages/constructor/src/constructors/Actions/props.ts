@@ -5,6 +5,7 @@ export type ActionsPropsToken = {
   // :type [!] System label / Системная метка
   align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto'
   flexible?: boolean
+  wrap?: boolean
   // :type [!] System label / Системная метка
 }
 

@@ -20,11 +20,6 @@ export declare class Arrow {
     protected readonly components?: DesignComp<ArrowComponents, ArrowProps> | undefined;
     protected readonly slots?: ArrowSlots | undefined;
     protected readonly emits?: ConstrEmit<ArrowEmits> | undefined;
-    protected readonly ArrowElementConstructor: typeof ArrowElement;
-    protected readonly ArrowElementTargetConstructor: typeof ArrowElementTarget;
-    protected readonly ArrowParentConstructor: typeof ArrowParent;
-    protected readonly ArrowPositionConstructor: typeof ArrowPosition;
-    protected readonly ArrowEventConstructor: typeof ArrowEvent;
     readonly elementItem: ArrowElement;
     readonly elementTarget: ArrowElementTarget;
     readonly parent: ArrowParent;

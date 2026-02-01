@@ -21,13 +21,6 @@ export declare class Image {
     protected readonly element: Ref<HTMLElement | undefined>;
     protected readonly className: string;
     protected readonly emits?: ConstrEmit<ImageEmits> | undefined;
-    protected readonly ImageTypeConstructor: typeof ImageType;
-    protected readonly ImageDataConstructor: typeof ImageData;
-    protected readonly ImageCoordinatorConstructor: typeof ImageCoordinator;
-    protected readonly ImagePositionConstructor: typeof ImagePosition;
-    protected readonly ImageAdaptiveItemConstructor: typeof ImageAdaptiveItem;
-    protected readonly ImageBackgroundConstructor: typeof ImageBackground;
-    protected readonly ImageImgConstructor: typeof ImageImg;
     readonly type: ImageType;
     readonly data: ImageData;
     readonly coordinator: ImageCoordinator;

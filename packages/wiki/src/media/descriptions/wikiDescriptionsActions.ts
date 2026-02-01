@@ -157,5 +157,33 @@ export const wikiDescriptionsActions: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
 <StorybookDescriptions componentName={'Slot'} type={'secondary'}/>
     `
+  },
+  ai: {
+    description: `
+Actions is a layout component for organizing groups of buttons, typically used in dialog footers, card actions, or form controls.
+It manages spacing, alignment, and the separation between primary and secondary action groups.
+
+**Key Features:**
+1. **Groups:**
+   - \`list\`: Array of props for the main group of buttons (usually right-aligned or primary).
+   - \`listSecondary\`: Array of props for the secondary group (usually left-aligned).
+
+2. **Alignment (\`align\`):**
+   - \`left\`: Aligns all buttons to the left.
+   - \`center\`: Centers the buttons.
+   - \`right\`: Aligns all buttons to the right (default for dialogs).
+   - \`block\`: Stretches buttons to fill the width.
+
+3. **Button Configuration:**
+   - Items in \`list\` and \`listSecondary\` are passed directly to the \`Button\` component.
+   - \`buttonAttrs\`: Common props applied to all buttons in the main list.
+   - \`buttonSecondaryAttrs\`: Common props applied to all buttons in the secondary list.
+
+**Usage Examples:**
+
+- **Dialog Footer:** \`<Actions align="right" :list="[{ label: 'Cancel' }, { label: 'Ok', primary: true }]" />\`
+- **Split Actions:** \`<Actions :list="[{ label: 'Save' }]" :listSecondary="[{ label: 'Delete', text: true }]" />\` (Save on right, Delete on left)
+- **Full Width:** \`<Actions align="block" :list="[{ label: 'Login', primary: true }]" />\`
+      `
   }
 }

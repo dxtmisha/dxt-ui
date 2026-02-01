@@ -24,15 +24,6 @@ export declare class Tooltip {
     protected readonly components?: DesignComp<TooltipComponents, TooltipProps> | undefined;
     protected readonly slots?: TooltipSlots | undefined;
     protected readonly emits?: ConstrEmit<TooltipEmits> | undefined;
-    protected readonly TooltipClassesConstructor: typeof TooltipClasses;
-    protected readonly TooltipStyleConstructor: typeof TooltipStyle;
-    protected readonly TooltipStatusConstructor: typeof TooltipStatus;
-    protected readonly TooltipPositionConstructor: typeof TooltipPosition;
-    protected readonly TooltipOpenConstructor: typeof TooltipOpen;
-    protected readonly TooltipEventConstructor: typeof TooltipEvent;
-    protected readonly ArrowIncludeConstructor: typeof ArrowInclude;
-    protected readonly LabelIncludeConstructor: typeof LabelInclude;
-    protected readonly DescriptionIncludeConstructor: typeof DescriptionInclude;
     readonly classes: TooltipClasses;
     readonly style: TooltipStyle;
     readonly status: TooltipStatus;

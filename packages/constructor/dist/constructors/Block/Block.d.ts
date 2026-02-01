@@ -18,10 +18,6 @@ export declare class Block {
     protected readonly components?: DesignComp<BlockComponents, BlockProps> | undefined;
     protected readonly slots?: BlockSlots | undefined;
     protected readonly emits?: ConstrEmit<BlockEmits> | undefined;
-    protected readonly LabelIncludeConstructor: typeof LabelInclude;
-    protected readonly DescriptionIncludeConstructor: typeof DescriptionInclude;
-    protected readonly CaptionIncludeConstructor: typeof CaptionInclude;
-    protected readonly IconIncludeConstructor: typeof IconInclude;
     /**
      * Object for working with label/
      * Объект для работы с меткой

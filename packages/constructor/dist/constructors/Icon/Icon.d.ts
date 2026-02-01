@@ -20,8 +20,6 @@ export declare class Icon {
     protected readonly components?: DesignComp<IconComponents, IconProps> | undefined;
     protected readonly slots?: IconSlots | undefined;
     protected readonly emits?: ConstrEmit<IconEmits> | undefined;
-    protected readonly EventClickIncludeConstructor: typeof EventClickInclude;
-    protected readonly SkeletonIncludeConstructor: typeof SkeletonInclude;
     /**
      * Returns the property for the base icon/ Возвращает свойство для базовой иконки
      */

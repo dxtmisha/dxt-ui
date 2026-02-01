@@ -38,7 +38,7 @@
     "dxt-library": "dxt-library",
     "dxt-types": "dxt-types",
     "dxt-constructor": "dxt-constructor",
-    "prepublishOnly": "npm run dxt-library && npm run build"
+    "prepublishOnly": "npm run dxt-library && npm run dxt-constructor && npm run build"
   },
   "files": [
     "dist/",

@@ -65,15 +65,15 @@ export class Tooltip {
     protected readonly components?: DesignComp<TooltipComponents, TooltipProps>,
     protected readonly slots?: TooltipSlots,
     protected readonly emits?: ConstrEmit<TooltipEmits>,
-    protected readonly TooltipClassesConstructor: typeof TooltipClasses = TooltipClasses,
-    protected readonly TooltipStyleConstructor: typeof TooltipStyle = TooltipStyle,
-    protected readonly TooltipStatusConstructor: typeof TooltipStatus = TooltipStatus,
-    protected readonly TooltipPositionConstructor: typeof TooltipPosition = TooltipPosition,
-    protected readonly TooltipOpenConstructor: typeof TooltipOpen = TooltipOpen,
-    protected readonly TooltipEventConstructor: typeof TooltipEvent = TooltipEvent,
-    protected readonly ArrowIncludeConstructor: typeof ArrowInclude = ArrowInclude,
-    protected readonly LabelIncludeConstructor: typeof LabelInclude = LabelInclude,
-    protected readonly DescriptionIncludeConstructor: typeof DescriptionInclude = DescriptionInclude
+    TooltipClassesConstructor: typeof TooltipClasses = TooltipClasses,
+    TooltipStyleConstructor: typeof TooltipStyle = TooltipStyle,
+    TooltipStatusConstructor: typeof TooltipStatus = TooltipStatus,
+    TooltipPositionConstructor: typeof TooltipPosition = TooltipPosition,
+    TooltipOpenConstructor: typeof TooltipOpen = TooltipOpen,
+    TooltipEventConstructor: typeof TooltipEvent = TooltipEvent,
+    ArrowIncludeConstructor: typeof ArrowInclude = ArrowInclude,
+    LabelIncludeConstructor: typeof LabelInclude = LabelInclude,
+    DescriptionIncludeConstructor: typeof DescriptionInclude = DescriptionInclude
   ) {
     this.classes = new TooltipClassesConstructor(this.className)
     this.style = new TooltipStyleConstructor(this.element, this.className)

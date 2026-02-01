@@ -57,13 +57,13 @@ export class Image {
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly className: string,
     protected readonly emits?: ConstrEmit<ImageEmits>,
-    protected readonly ImageTypeConstructor: typeof ImageType = ImageType,
-    protected readonly ImageDataConstructor: typeof ImageData = ImageData,
-    protected readonly ImageCoordinatorConstructor: typeof ImageCoordinator = ImageCoordinator,
-    protected readonly ImagePositionConstructor: typeof ImagePosition = ImagePosition,
-    protected readonly ImageAdaptiveItemConstructor: typeof ImageAdaptiveItem = ImageAdaptiveItem,
-    protected readonly ImageBackgroundConstructor: typeof ImageBackground = ImageBackground,
-    protected readonly ImageImgConstructor: typeof ImageImg = ImageImg
+    ImageTypeConstructor: typeof ImageType = ImageType,
+    ImageDataConstructor: typeof ImageData = ImageData,
+    ImageCoordinatorConstructor: typeof ImageCoordinator = ImageCoordinator,
+    ImagePositionConstructor: typeof ImagePosition = ImagePosition,
+    ImageAdaptiveItemConstructor: typeof ImageAdaptiveItem = ImageAdaptiveItem,
+    ImageBackgroundConstructor: typeof ImageBackground = ImageBackground,
+    ImageImgConstructor: typeof ImageImg = ImageImg
   ) {
     this.type = new ImageTypeConstructor(props)
     this.data = new ImageDataConstructor(props, this.type)

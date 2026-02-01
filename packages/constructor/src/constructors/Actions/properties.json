@@ -59,5 +59,8 @@
       "link|block": "{??align.block}",
       "_type": "container-max-group"
     }
+  },
+  "~wrap": {
+    "flex-wrap": "wrap"
   }
 }

@@ -76,7 +76,6 @@ const demoOptions = computed(() => props.item.getDemoOptions())
 
   padding: 4px;
   border: 1px solid oklch(92.8% 0.006 264.531);
-  border-radius: 8px;
 
   &__tilte {
     @include dxt.flexX;

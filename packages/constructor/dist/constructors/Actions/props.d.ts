@@ -3,6 +3,7 @@ import { ButtonPropsBasic } from '../Button';
 export type ActionsPropsToken = {
     align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto';
     flexible?: boolean;
+    wrap?: boolean;
 };
 export type ActionsPropsBasic<Button extends ButtonPropsBasic = ButtonPropsBasic> = {
     list?: ConstrBind<Button>[];

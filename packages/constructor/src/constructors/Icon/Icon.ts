@@ -63,8 +63,8 @@ export class Icon {
     protected readonly components?: DesignComp<IconComponents, IconProps>,
     protected readonly slots?: IconSlots,
     protected readonly emits?: ConstrEmit<IconEmits>,
-    protected readonly EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude,
-    protected readonly SkeletonIncludeConstructor: typeof SkeletonInclude = SkeletonInclude
+    EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude,
+    SkeletonIncludeConstructor: typeof SkeletonInclude = SkeletonInclude
   ) {
     this.iconBind = getBindRef(
       refs.icon,

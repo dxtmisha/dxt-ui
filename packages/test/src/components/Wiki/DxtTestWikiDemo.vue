@@ -33,7 +33,11 @@ const code = computed(() => {
       return `&nbsp;&nbsp;${prop}<br/>`
     }
 
-    return `&nbsp;&nbsp;${prop}="${encodeAttribute(value)}"<br/>`
+    const valueString = typeof value === 'object'
+      ? JSON.stringify(value)
+      : String(value)
+
+    return `&nbsp;&nbsp;${prop}="${encodeAttribute(valueString)}"<br/>`
   })
 
   return `
@@ -65,22 +69,19 @@ ${props.join('')}
 .dxt-test-wiki-demo {
   @include dxt.flexInlineX;
   justify-content: flex-start;
-  gap: 8px;
-  padding: 4px;
+  gap: 4px;
+  padding: 2px;
   border: 2px solid oklch(96.7% 0.003 264.542);
-  border-radius: 4px;
 
   &__content {
     @include dxt.flexX;
     justify-content: flex-start;
-    gap: 8px;
+    gap: 4px;
     position: relative;
-    padding: 4px;
   }
 
   &__item {
-    background-color: oklch(96.7% 0.003 264.542);
-    border-right: 4px;
+    background-color: oklch(92.9% 0.013 255.508);
   }
 }
 </style>

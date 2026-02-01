@@ -1,9 +1,9 @@
 var I = Object.defineProperty;
 var x = (l, t, s) => t in l ? I(l, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : l[t] = s;
 var e = (l, t, s) => x(l, typeof t != "symbol" ? t + "" : t, s);
-import { ref as c, computed as m, watch as M, nextTick as S, onUnmounted as B, h as N, Teleport as P } from "vue";
-import { getElementId as $, isDomRuntime as A, EventItem as D, DesignConstructorAbstract as L } from "@dxtmisha/functional";
-import { A as b } from "./AriaStaticInclude-CuMRRW17.js";
+import { ref as c, computed as m, watch as M, nextTick as d, onUnmounted as B, h as g, Teleport as P } from "vue";
+import { getElementId as y, isDomRuntime as A, EventItem as D, DesignConstructorAbstract as L } from "@dxtmisha/functional";
+import { A as v } from "./AriaStaticInclude-CuMRRW17.js";
 import { L as H } from "./LabelInclude-BtZrrbCf.js";
 import { D as k } from "./DescriptionInclude-DxWNon_J.js";
 import { A as q } from "./ArrowInclude-CcpT637l.js";
@@ -18,8 +18,8 @@ class E {
      * Identification of the current window. Used to search for the current component and its control/
      * Идентификация текущего окна. Используется для поиска текущего компонента и его контроля
      */
-    e(this, "id", `tooltip--${$()}`);
-    e(this, "idItem", `tooltip--${$()}-item`);
+    e(this, "id", `tooltip--${y()}`);
+    e(this, "idItem", `tooltip--${y()}-item`);
     this.className = t;
   }
   /**
@@ -292,7 +292,7 @@ class W {
      * @param flesh immediate display without delay/ мгновенное отображение без задержки
      */
     e(this, "toggle", async (t, s) => {
-      this.status.isText.value && !this.status.isMatch(t) && (clearTimeout(this.timeout), clearTimeout(this.timeoutHide), t ? (this.status.setOpen(t), this.status.setShow(!0), await S(), this.position.update(), this.status.setPreparation(!0), await S(), requestAnimationFrame(() => {
+      this.status.isText.value && !this.status.isMatch(t) && (clearTimeout(this.timeout), clearTimeout(this.timeoutHide), t ? (this.status.setOpen(t), this.status.setShow(!0), await d(), this.position.update(), this.status.setPreparation(!0), await d(), requestAnimationFrame(() => {
         this.timeout = setTimeout(() => {
           this.style.setPreparation(!0), requestAnimationFrame(() => {
             var i;
@@ -421,7 +421,7 @@ class U {
    * @param LabelIncludeConstructor class for working with label/ класс для работы с меткой
    * @param DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
    */
-  constructor(t, s, i, o, n, h, r, p, a = E, u = F, d = O, g = R, y = W, v = _, f = q, w = H, T = k) {
+  constructor(t, s, i, o, n, h, r, p, a = E, f = F, w = O, T = R, C = W, S = _, N = q, $ = H, b = k) {
     e(this, "classes");
     e(this, "style");
     e(this, "status");
@@ -433,48 +433,48 @@ class U {
     e(this, "description");
     /** Data for the control slot/ Данные для слота управления */
     e(this, "slotData");
-    this.props = t, this.refs = s, this.element = i, this.classDesign = o, this.className = n, this.components = h, this.slots = r, this.emits = p, this.TooltipClassesConstructor = a, this.TooltipStyleConstructor = u, this.TooltipStatusConstructor = d, this.TooltipPositionConstructor = g, this.TooltipOpenConstructor = y, this.TooltipEventConstructor = v, this.ArrowIncludeConstructor = f, this.LabelIncludeConstructor = w, this.DescriptionIncludeConstructor = T, this.classes = new a(this.className), this.style = new u(this.element, this.className), this.status = new d(this.props, this.slots), this.position = new g(
+    this.props = t, this.refs = s, this.element = i, this.classDesign = o, this.className = n, this.components = h, this.slots = r, this.emits = p, this.classes = new a(this.className), this.style = new f(this.element, this.className), this.status = new w(this.props, this.slots), this.position = new T(
       this.props,
       this.element,
       this.classes,
       this.style
-    ), this.open = new y(
+    ), this.open = new C(
       this.props,
       this.refs,
       this.style,
       this.status,
       this.position
-    ), this.event = new v(
+    ), this.event = new S(
       this.classes,
       this.style,
       this.status,
       this.open
-    ), this.arrow = new f(
+    ), this.arrow = new N(
       this.props,
       this.className,
       this.components,
       this.classes.getSelectorControl()
-    ), this.label = new w(
+    ), this.label = new $(
       this.props,
       this.className,
       void 0,
       this.slots
-    ), this.description = new T(
+    ), this.description = new b(
       this.props,
       this.className,
       this.slots
     );
-    const C = {
+    const u = {
       class: this.classes.getControl(),
       onclick: this.event.onClick,
       onmouseover: this.event.onMouseover,
       onmouseout: this.event.onMouseout,
-      ...b.describedby(this.classes.getIdItem())
+      ...v.describedby(this.classes.getIdItem())
     };
     this.slotData = {
-      ...C,
+      ...u,
       open: this.status.open,
-      binds: C
+      binds: u
     }, B(() => {
       this.open.eventStop();
     });
@@ -524,13 +524,13 @@ class Y extends L {
         return this.item.status.isArray.value && i.push(
           ...this.item.arrow.render()
         ), [
-          N(
+          g(
             P,
             {
               key: "teleport",
               to: "body"
             },
-            N(
+            g(
               "div",
               {
                 ref: this.element,
@@ -539,7 +539,7 @@ class Y extends L {
                 onMouseover: this.item.event.onMouseoverTooltip,
                 onMouseout: this.item.event.onMouseout,
                 onTransitionend: this.item.event.onTransitionend,
-                ...b.role("tooltip")
+                ...v.role("tooltip")
               },
               i
             )

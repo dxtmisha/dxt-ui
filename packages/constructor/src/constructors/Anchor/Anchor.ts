@@ -53,13 +53,13 @@ export class Anchor {
     protected readonly components?: DesignComp<AnchorComponents, AnchorProps>,
     protected readonly slots?: AnchorSlots,
     protected readonly emits?: ConstrEmit<AnchorEmits>,
-    protected readonly AnchorHrefConstructor: typeof AnchorHref = AnchorHref,
-    protected readonly AnchorToConstructor: typeof AnchorTo = AnchorTo,
-    protected readonly AnchorEventConstructor: typeof AnchorEvent = AnchorEvent,
-    protected readonly AnchorIconConstructor: typeof AnchorIcon = AnchorIcon,
-    protected readonly LabelIncludeConstructor: typeof LabelInclude = LabelInclude,
-    protected readonly TextIncludeConstructor: typeof TextInclude = TextInclude,
-    protected readonly TooltipIncludeConstructor: typeof TooltipInclude = TooltipInclude
+    AnchorHrefConstructor: typeof AnchorHref = AnchorHref,
+    AnchorToConstructor: typeof AnchorTo = AnchorTo,
+    AnchorEventConstructor: typeof AnchorEvent = AnchorEvent,
+    AnchorIconConstructor: typeof AnchorIcon = AnchorIcon,
+    LabelIncludeConstructor: typeof LabelInclude = LabelInclude,
+    TextIncludeConstructor: typeof TextInclude = TextInclude,
+    TooltipIncludeConstructor: typeof TooltipInclude = TooltipInclude
   ) {
     this.label = new LabelIncludeConstructor(props, className, undefined, slots)
     this.text = new TextIncludeConstructor(this.props)

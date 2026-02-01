@@ -230,6 +230,10 @@
       }
     }
     
+    &--wrap {
+      flex-wrap: wrap;
+    }
+    
     &--padding {
       &--sm {
         @include ui.paddingX(#{var(--d1-sys-spacing-sm)});

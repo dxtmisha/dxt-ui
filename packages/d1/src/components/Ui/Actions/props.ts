@@ -13,6 +13,7 @@ export type PropsToken = {
   // :type [!] System label / Системная метка
   align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto'
   flexible?: 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl'
+  wrap?: boolean
   padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
   paddingByIndent?: boolean
   // :type [!] System label / Системная метка

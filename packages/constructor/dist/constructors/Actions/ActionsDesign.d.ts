@@ -13,8 +13,9 @@ export declare class ActionsDesign<COMP extends ActionsComponents, EXPOSE extend
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor actions item class/ класс элемента действий
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ActionsEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ActionsEmits, P>, ItemConstructor?: typeof Actions);
     /**
      * Initialization of all the necessary properties for work
      *

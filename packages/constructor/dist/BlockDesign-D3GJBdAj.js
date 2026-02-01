@@ -24,7 +24,7 @@ class k {
    * @param CaptionIncludeConstructor class for working with the caption/ класс для работы с подписью
    * @param IconIncludeConstructor class for working with the icon/ класс для работы с иконкой
    */
-  constructor(t, e, i, a, r, d, h, b, c = y, u = C, p = H, m = I) {
+  constructor(t, e, i, a, r, d, h, c, u = y, p = C, m = H, b = I) {
     /**
      * Object for working with label/
      * Объект для работы с меткой
@@ -60,7 +60,7 @@ class k {
      * Название тега
      */
     s(this, "tag", o(() => this.props.tag || "div"));
-    this.props = t, this.refs = e, this.element = i, this.classDesign = a, this.className = r, this.components = d, this.slots = h, this.emits = b, this.LabelIncludeConstructor = c, this.DescriptionIncludeConstructor = u, this.CaptionIncludeConstructor = p, this.IconIncludeConstructor = m, this.label = new c(
+    this.props = t, this.refs = e, this.element = i, this.classDesign = a, this.className = r, this.components = d, this.slots = h, this.emits = c, this.label = new u(
       t,
       r,
       void 0,
@@ -70,7 +70,7 @@ class k {
       !0,
       void 0,
       o(() => this.props.tagHeader || "h3")
-    ), this.caption = new p(t, r, h), this.description = new u(t, r, h), this.icon = new m(t, r, d);
+    ), this.caption = new m(t, r, h), this.description = new p(t, r, h), this.icon = new b(t, r, d);
   }
 }
 class R extends f {

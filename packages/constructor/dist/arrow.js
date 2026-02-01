@@ -1,9 +1,9 @@
 var A = Object.defineProperty;
 var B = (n, t, e) => t in n ? A(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
 var s = (n, t, e) => B(n, typeof t != "symbol" ? t + "" : t, e);
-import { ref as u, watch as c, computed as l, onMounted as S, nextTick as R, onUnmounted as N, h as d } from "vue";
-import { isFilled as I, isDomRuntime as p, isString as E, toNumber as P, EventRef as y, EventItem as C, DesignConstructorAbstract as k } from "@dxtmisha/functional";
-import { A as $ } from "./AriaStaticInclude-CuMRRW17.js";
+import { ref as u, watch as c, computed as l, onMounted as S, nextTick as w, onUnmounted as N, h as d } from "vue";
+import { isFilled as b, isDomRuntime as p, isString as E, toNumber as P, EventRef as v, EventItem as C, DesignConstructorAbstract as k } from "@dxtmisha/functional";
+import { A as f } from "./AriaStaticInclude-CuMRRW17.js";
 import { A as Y } from "./ArrowInclude-CcpT637l.js";
 class H {
   /**
@@ -152,7 +152,7 @@ class L {
   initElement() {
     var e;
     const t = this.props.elementTarget;
-    if (this.props.position === "auto" && I(t) && p())
+    if (this.props.position === "auto" && b(t) && p())
       return E(t) ? (e = document.querySelector(t)) != null ? e : void 0 : t;
   }
 }
@@ -338,24 +338,24 @@ class O {
     const t = this.elementItem.getRectBorder(), e = this.elementItem.getRectArrowLine();
     if (t && e) {
       const i = `M0,0 L0,${t.height} L${t.width},${t.height} L${t.width},0 Z`;
-      let r, h, a, m;
+      let r, a, h, m;
       switch (this.direction.value) {
         case o.TOP:
-          r = e.left - t.left, h = 0, a = r + e.width, m = e.height;
+          r = e.left - t.left, a = 0, h = r + e.width, m = e.height;
           break;
         case o.BOTTOM:
-          r = e.left - t.left, h = t.height - e.height, a = r + e.width, m = t.height;
+          r = e.left - t.left, a = t.height - e.height, h = r + e.width, m = t.height;
           break;
         case o.LEFT:
-          r = 0, h = e.top - t.top, a = e.width, m = h + e.height;
+          r = 0, a = e.top - t.top, h = e.width, m = a + e.height;
           break;
         case o.RIGHT:
-          r = t.width - e.width, h = e.top - t.top, a = t.width, m = h + e.height;
+          r = t.width - e.width, a = e.top - t.top, h = t.width, m = a + e.height;
           break;
         default:
           return;
       }
-      const g = `M${r},${h} L${a},${h} L${a},${m} L${r},${m} Z`;
+      const g = `M${r},${a} L${h},${a} L${h},${m} L${r},${m} Z`;
       return `path('${i} ${g}')`;
     }
   }
@@ -370,7 +370,7 @@ class W {
    * @param parent parent object / объект родителя
    * @param position position object / объект позиции
    */
-  constructor(t, e, i, r, h, a) {
+  constructor(t, e, i, r, a, h) {
     s(this, "eventItem");
     s(this, "eventTarget");
     s(this, "eventBody");
@@ -392,8 +392,8 @@ class W {
     s(this, "makeEvents", () => {
       this.elementTarget.is() ? this.initEvents().startEvents() : this.stopEvents();
     });
-    this.props = t, this.refs = e, this.element = i, this.elementTarget = r, this.parent = h, this.position = a, p() && (S(async () => {
-      await R(), c(this.elementTarget.element, this.makeEvents), c([...Object.values(this.refs)], this.update, { immediate: !0 });
+    this.props = t, this.refs = e, this.element = i, this.elementTarget = r, this.parent = a, this.position = h, p() && (S(async () => {
+      await w(), c(this.elementTarget.element, this.makeEvents), c([...Object.values(this.refs)], this.update, { immediate: !0 });
     }), N(() => {
       this.stopEvents();
     }));
@@ -422,7 +422,7 @@ class W {
    * Инициализировать события.
    */
   initEvents() {
-    return this.eventItem || (this.eventItem = new y(this.element, void 0, "resize", this.update)), this.eventTarget || (this.eventTarget = new y(this.elementTarget.element, void 0, "resize", this.update)), this.eventBody || (this.eventBody = new C(window, ["scroll", "resize"], this.update)), this;
+    return this.eventItem || (this.eventItem = new v(this.element, void 0, "resize", this.update)), this.eventTarget || (this.eventTarget = new v(this.elementTarget.element, void 0, "resize", this.update)), this.eventBody || (this.eventBody = new C(window, ["scroll", "resize"], this.update)), this;
   }
 }
 class x {
@@ -442,7 +442,7 @@ class x {
    * @param ArrowPositionConstructor class for working with the position of the arrow/ класс для работы с позицией стрелки
    * @param ArrowEventConstructor class for working with arrow events/ класс для работы с событиями стрелки
    */
-  constructor(t, e, i, r, h, a, m, g, v = H, f = L, w = M, b = O, T = W) {
+  constructor(t, e, i, r, a, h, m, g, T = H, y = L, $ = M, R = O, I = W) {
     s(this, "elementItem");
     s(this, "elementTarget");
     s(this, "parent");
@@ -450,7 +450,7 @@ class x {
     s(this, "event");
     /** Direction of the arrow/ Направление стрелки */
     s(this, "direction", l(() => {
-      if (I(this.props.position)) {
+      if (b(this.props.position)) {
         const t = this.position.direction.value;
         if (t)
           return t;
@@ -471,19 +471,19 @@ class x {
       };
       return this.parent.isBorder.value && this.position.clipPath.value && (t[`--${this.className}-sys-clipPath`] = this.position.clipPath.value), this.elementTarget.is() && this.position.shift.value && (t[`--${this.className}-sys-shift`] = this.position.shift.value), t;
     }));
-    this.props = t, this.refs = e, this.element = i, this.classDesign = r, this.className = h, this.components = a, this.slots = m, this.emits = g, this.ArrowElementConstructor = v, this.ArrowElementTargetConstructor = f, this.ArrowParentConstructor = w, this.ArrowPositionConstructor = b, this.ArrowEventConstructor = T, this.elementItem = new v(
+    this.props = t, this.refs = e, this.element = i, this.classDesign = r, this.className = a, this.components = h, this.slots = m, this.emits = g, this.elementItem = new T(
       this.element,
       this.className
-    ), this.elementTarget = new f(this.props), this.parent = new w(
+    ), this.elementTarget = new y(this.props), this.parent = new $(
       this.element,
       this.className,
       this.elementItem
-    ), this.position = new b(
+    ), this.position = new R(
       this.props,
       this.elementItem,
       this.elementTarget,
       this.parent
-    ), this.event = new T(
+    ), this.event = new I(
       this.props,
       this.refs,
       this.element,
@@ -505,7 +505,7 @@ class G extends k {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor arrow item class/ класс элемента стрелки
    */
-  constructor(e, i, r, h = x) {
+  constructor(e, i, r, a = x) {
     super(
       e,
       i,
@@ -531,7 +531,7 @@ class G extends k {
           return `0, ${i} ${e / 2}, 0 ${e}, ${i}`;
       }
     });
-    this.item = new h(
+    this.item = new a(
       this.props,
       this.refs,
       this.element,
@@ -541,7 +541,7 @@ class G extends k {
       this.slots,
       this.emits
     ), this.init(), c([this.classes], () => {
-      R().then(
+      w().then(
         () => requestAnimationFrame(() => {
           this.points.value = this.getRePoints();
         })
@@ -603,7 +603,7 @@ class G extends k {
       ref: this.element,
       class: (i = this.classes) == null ? void 0 : i.value.main,
       style: (r = this.styles) == null ? void 0 : r.value,
-      ...$.hidden()
+      ...f.hidden()
     }, e);
   }
   /**
@@ -652,7 +652,7 @@ class G extends k {
       d("div", {
         key: "border",
         class: (e = this.classes) == null ? void 0 : e.value.border,
-        ...$.hidden()
+        ...f.hidden()
       })
     ];
   }

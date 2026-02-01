@@ -60,10 +60,10 @@ export class Block {
     protected readonly components?: DesignComp<BlockComponents, BlockProps>,
     protected readonly slots?: BlockSlots,
     protected readonly emits?: ConstrEmit<BlockEmits>,
-    protected readonly LabelIncludeConstructor: typeof LabelInclude = LabelInclude,
-    protected readonly DescriptionIncludeConstructor: typeof DescriptionInclude = DescriptionInclude,
-    protected readonly CaptionIncludeConstructor: typeof CaptionInclude = CaptionInclude,
-    protected readonly IconIncludeConstructor: typeof IconInclude = IconInclude
+    LabelIncludeConstructor: typeof LabelInclude = LabelInclude,
+    DescriptionIncludeConstructor: typeof DescriptionInclude = DescriptionInclude,
+    CaptionIncludeConstructor: typeof CaptionInclude = CaptionInclude,
+    IconIncludeConstructor: typeof IconInclude = IconInclude
   ) {
     this.label = new LabelIncludeConstructor(
       props,

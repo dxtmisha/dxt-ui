@@ -1,8 +1,8 @@
 var v = Object.defineProperty;
-var I = (e, t, i) => t in e ? v(e, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : e[t] = i;
-var s = (e, t, i) => I(e, typeof t != "symbol" ? t + "" : t, i);
+var I = (s, t, i) => t in s ? v(s, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : s[t] = i;
+var e = (s, t, i) => I(s, typeof t != "symbol" ? t + "" : t, i);
 import { computed as n, h as A } from "vue";
-import { getBindRef as l, DesignConstructorAbstract as f } from "@dxtmisha/functional";
+import { getBindRef as d, DesignConstructorAbstract as f } from "@dxtmisha/functional";
 import { A as h } from "./AriaStaticInclude-CuMRRW17.js";
 import { E as g } from "./EventClickInclude-CgbuezDm.js";
 import { S as y } from "./SkeletonInclude-BIUzAO2s.js";
@@ -22,31 +22,31 @@ class b {
    * @param EventClickIncludeConstructor class for working with events/ класс для работы с событиями
    * @param SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
    */
-  constructor(t, i, c, r, o, m, u, a, d = g, p = y) {
+  constructor(t, i, c, r, o, p, l, a, m = g, u = y) {
     /**
      * Returns the property for the base icon/ Возвращает свойство для базовой иконки
      */
-    s(this, "iconBind");
+    e(this, "iconBind");
     /**
      * Returns the property for the additional icon/ Возвращает свойство для дополнительной иконки
      */
-    s(this, "iconActiveBind");
+    e(this, "iconActiveBind");
     /**
      * An object for working with the Skeleton/ Объект для работы с Skeleton
      */
-    s(this, "skeleton");
+    e(this, "skeleton");
     /**
      * Object for working with events/ Объект для работы с событиями
      */
-    s(this, "event");
+    e(this, "event");
     /**
      * Checks if the additional icon is active/ Проверяет, активна ли дополнительная иконка
      */
-    s(this, "isActive", n(() => !!(this.props.active && this.props.iconActive)));
+    e(this, "isActive", n(() => !!(this.props.active && this.props.iconActive)));
     /**
      * Values for the class/ Значения для класса
      */
-    s(this, "classes", n(() => ({
+    e(this, "classes", n(() => ({
       ...this.skeleton.classes.value
     })));
     /**
@@ -54,7 +54,7 @@ class b {
      *
      * Вычисляемые привязки для элемента иконки.
      */
-    s(this, "binds", n(() => {
+    e(this, "binds", n(() => {
       var t;
       return {
         key: "icon",
@@ -72,11 +72,11 @@ class b {
      * Вызывает событие, когда завершится загрузка картинки.
      * @param event event object/ объект события
      */
-    s(this, "onLoad", (t) => {
+    e(this, "onLoad", (t) => {
       var i;
       return (i = this.emits) == null ? void 0 : i.call(this, "load", t);
     });
-    this.props = t, this.refs = i, this.element = c, this.classDesign = r, this.className = o, this.components = m, this.slots = u, this.emits = a, this.EventClickIncludeConstructor = d, this.SkeletonIncludeConstructor = p, this.iconBind = l(
+    this.props = t, this.refs = i, this.element = c, this.classDesign = r, this.className = o, this.components = p, this.slots = l, this.emits = a, this.iconBind = d(
       i.icon,
       n(() => ({
         key: "mainIcon",
@@ -86,7 +86,7 @@ class b {
         hide: this.isActive.value,
         onLoad: this.onLoad
       }))
-    ), this.iconActiveBind = l(
+    ), this.iconActiveBind = d(
       i.iconActive,
       n(() => ({
         key: "activeIcon",
@@ -95,11 +95,11 @@ class b {
         disabled: this.props.disabled,
         hide: !this.isActive.value
       }))
-    ), this.event = new d(
+    ), this.event = new m(
       t,
       void 0,
       a
-    ), this.skeleton = new p(
+    ), this.skeleton = new u(
       t,
       r,
       ["classBackgroundVariant"]
@@ -135,13 +135,13 @@ class R extends f {
       c,
       r
     );
-    s(this, "item");
+    e(this, "item");
     /**
      * Computed properties for the main element.
      *
      * Вычисляемые свойства для главного элемента.
      */
-    s(this, "propsMain", n(() => {
+    e(this, "propsMain", n(() => {
       var i;
       return {
         ...this.getAttrs(),
@@ -154,7 +154,7 @@ class R extends f {
      *
      * Рендер основной иконки.
      */
-    s(this, "renderIcon", () => this.components.renderOne(
+    e(this, "renderIcon", () => this.components.renderOne(
       "image",
       this.item.iconBind.value,
       void 0,
@@ -165,7 +165,7 @@ class R extends f {
      *
      * Рендер вторичной иконки.
      */
-    s(this, "renderIconActive", () => this.components.renderOne(
+    e(this, "renderIconActive", () => this.components.renderOne(
       "image",
       this.item.iconActiveBind.value,
       void 0,

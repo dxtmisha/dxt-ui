@@ -43,11 +43,13 @@ export class ActionsDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor actions item class/ класс элемента действий
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ActionsEmits, P>
+    options?: ConstrOptions<COMP, ActionsEmits, P>,
+    ItemConstructor: typeof Actions = Actions
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class ActionsDesign<
       options
     )
 
-    this.item = new Actions(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

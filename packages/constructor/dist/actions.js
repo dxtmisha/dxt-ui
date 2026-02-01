@@ -1,11 +1,11 @@
-var u = Object.defineProperty;
-var m = (e, t, s) => t in e ? u(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
-var i = (e, t, s) => m(e, typeof t != "symbol" ? t + "" : t, s);
+var m = Object.defineProperty;
+var v = (r, t, s) => t in r ? m(r, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : r[t] = s;
+var e = (r, t, s) => v(r, typeof t != "symbol" ? t + "" : t, s);
 import { computed as c, h } from "vue";
-import { DesignConstructorAbstract as v, toBinds as d } from "@dxtmisha/functional";
-import { E as S } from "./EventClickInclude-CgbuezDm.js";
-import { A as L } from "./ActionsInclude-H5ZWeXJj.js";
-class f {
+import { DesignConstructorAbstract as S, toBinds as d } from "@dxtmisha/functional";
+import { E as f } from "./EventClickInclude-CgbuezDm.js";
+import { A as k } from "./ActionsInclude-H5ZWeXJj.js";
+class y {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -16,53 +16,55 @@ class f {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param EventConstructor class for creating an event/ класс для создания события
    */
-  constructor(t, s, r, n, o, a, p, l) {
-    i(this, "event");
+  constructor(t, s, n, o, i, a, p, l, u = f) {
+    e(this, "event");
     /**
      * Checks if the main list needs to be displayed/
      * Проверяет, нужно ли выводить главный список
      */
-    i(this, "isList", c(() => !!(this.props.list || this.slots && "default" in this.slots)));
+    e(this, "isList", c(() => !!(this.props.list || this.slots && "default" in this.slots)));
     /**
      * Checks if the secondary list needs to be displayed/
      * Проверяет, нужно ли выводить второстепенный список
      */
-    i(this, "isSecondary", c(() => !!(this.props.listSecondary || this.slots && "secondary" in this.slots)));
-    this.props = t, this.refs = s, this.element = r, this.classDesign = n, this.className = o, this.components = a, this.slots = p, this.emits = l, this.event = new S(
+    e(this, "isSecondary", c(() => !!(this.props.listSecondary || this.slots && "secondary" in this.slots)));
+    this.props = t, this.refs = s, this.element = n, this.classDesign = o, this.className = i, this.components = a, this.slots = p, this.emits = l, this.event = new u(
       void 0,
       void 0,
       l
     );
   }
 }
-const C = {
+const E = {
   // :default [!] System label / Системная метка
   align: "right"
 };
-class E extends v {
+class x extends S {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor actions item class/ класс элемента действий
    */
-  constructor(s, r, n) {
+  constructor(s, n, o, i = y) {
     super(
       s,
-      r,
-      n
+      n,
+      o
     );
-    i(this, "item");
+    e(this, "item");
     /**
      * List rendering.
      *
      * Рендеринг списка.
      */
-    i(this, "renderList", () => {
+    e(this, "renderList", () => {
       const s = [];
-      return this.item.isList.value && (this.props.list && this.props.list.forEach((r, n) => {
-        var o, a;
+      return this.item.isList.value && (this.props.list && this.props.list.forEach((n, o) => {
+        var i, a;
         this.components.renderAdd(
           s,
           "button",
@@ -71,16 +73,16 @@ class E extends v {
               onClick: this.item.event.onClick
             },
             this.props.buttonAttrs,
-            r,
+            n,
             {
               class: [
-                (o = this.classes) == null ? void 0 : o.value.item,
+                (i = this.classes) == null ? void 0 : i.value.item,
                 (a = this.classes) == null ? void 0 : a.value.list
               ]
             }
           ),
           void 0,
-          `list-${n}`
+          `list-${o}`
         );
       }), this.initSlot("default", s)), s;
     });
@@ -89,25 +91,25 @@ class E extends v {
      *
      * Рендеринг вторичного списка.
      */
-    i(this, "renderSecondary", () => {
+    e(this, "renderSecondary", () => {
       const s = [];
-      return this.item.isSecondary.value && (this.props.listSecondary && this.props.listSecondary.forEach((r, n) => {
-        var o, a;
+      return this.item.isSecondary.value && (this.props.listSecondary && this.props.listSecondary.forEach((n, o) => {
+        var i, a;
         this.components.renderAdd(
           s,
           "button",
           d(
             this.props.buttonSecondaryAttrs,
-            r,
+            n,
             {
               class: [
-                (o = this.classes) == null ? void 0 : o.value.item,
+                (i = this.classes) == null ? void 0 : i.value.item,
                 (a = this.classes) == null ? void 0 : a.value.secondary
               ]
             }
           ),
           void 0,
-          `secondary-${n}`
+          `secondary-${o}`
         );
       }), this.initSlot("secondary", s)), s;
     });
@@ -116,11 +118,11 @@ class E extends v {
      *
      * Рендеринг разделителя.
      */
-    i(this, "renderSpacer", () => {
+    e(this, "renderSpacer", () => {
       var s;
       return [h("div", { class: (s = this.classes) == null ? void 0 : s.value.spacer })];
     });
-    this.item = new f(
+    this.item = new i(
       this.props,
       this.refs,
       this.element,
@@ -184,8 +186,8 @@ class E extends v {
   }
 }
 export {
-  f as Actions,
-  E as ActionsDesign,
-  L as ActionsInclude,
-  C as defaultsActions
+  y as Actions,
+  x as ActionsDesign,
+  k as ActionsInclude,
+  E as defaultsActions
 };

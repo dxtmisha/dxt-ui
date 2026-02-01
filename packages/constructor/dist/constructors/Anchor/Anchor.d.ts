@@ -21,13 +21,6 @@ export declare class Anchor {
     protected readonly components?: DesignComp<AnchorComponents, AnchorProps> | undefined;
     protected readonly slots?: AnchorSlots | undefined;
     protected readonly emits?: ConstrEmit<AnchorEmits> | undefined;
-    protected readonly AnchorHrefConstructor: typeof AnchorHref;
-    protected readonly AnchorToConstructor: typeof AnchorTo;
-    protected readonly AnchorEventConstructor: typeof AnchorEvent;
-    protected readonly AnchorIconConstructor: typeof AnchorIcon;
-    protected readonly LabelIncludeConstructor: typeof LabelInclude;
-    protected readonly TextIncludeConstructor: typeof TextInclude;
-    protected readonly TooltipIncludeConstructor: typeof TooltipInclude;
     readonly label: LabelInclude;
     readonly text: TextInclude;
     readonly tooltip: TooltipInclude;

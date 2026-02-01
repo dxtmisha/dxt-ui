@@ -22,6 +22,7 @@ export class Actions {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param EventConstructor class for creating an event/ класс для создания события
    */
   constructor(
     protected readonly props: ActionsProps,
@@ -31,9 +32,10 @@ export class Actions {
     protected readonly className: string,
     protected readonly components?: DesignComp<ActionsComponents, ActionsProps>,
     protected readonly slots?: ActionsSlots,
-    protected readonly emits?: ConstrEmit<ActionsEmits>
+    protected readonly emits?: ConstrEmit<ActionsEmits>,
+    EventConstructor: typeof EventClickInclude = EventClickInclude
   ) {
-    this.event = new EventClickInclude(
+    this.event = new EventConstructor(
       undefined,
       undefined,
       emits

@@ -124,7 +124,7 @@ provide('values', values)
   &__props {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    border: 1px solid oklch(92.8% 0.006 264.531);
 
     &__item {
       flex: 1;
