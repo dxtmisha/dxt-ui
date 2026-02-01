@@ -76,9 +76,7 @@ export class CellDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose,
-      ...this.item.label.expose,
-      ...this.item.description.expose
+      ...this.item.event.expose
     } as EXPOSE
   }
 

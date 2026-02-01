@@ -75,9 +75,7 @@ export class FieldLabelDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {
-      ...this.item.label.expose
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**

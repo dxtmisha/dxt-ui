@@ -1,8 +1,8 @@
 import { ConstrClass } from '@dxtmisha/functional';
 import { ButtonComponentInclude } from '../Button';
 import { EventClickEmits } from '../../types/eventClickTypes';
-import { LabelExpose, LabelSlots } from '../../types/labelTypes';
-import { DescriptionExpose, DescriptionSlots } from '../../types/descriptionTypes';
+import { LabelSlots } from '../../types/labelTypes';
+import { DescriptionSlots } from '../../types/descriptionTypes';
 /**
  * Interface for describing which components need to be connected for work.
  *
@@ -23,7 +23,7 @@ export type BarsEmits = EventClickEmits & {
  *
  * Тип, описывающий доступные свойства.
  */
-export interface BarsExpose extends LabelExpose, DescriptionExpose {
+export interface BarsExpose {
 }
 /**
  * Type describing available slots.

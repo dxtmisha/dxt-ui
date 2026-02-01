@@ -3,7 +3,7 @@ import { type ConstrClass, getElementId, getRef, isFilled, type RefOrNormal, ren
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
-import type { LabelAlternativeSlots, LabelExpose, LabelProps, LabelSlots } from '../types/labelTypes'
+import type { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/labelTypes'
 
 /**
  * Use for adding text
@@ -11,9 +11,6 @@ import type { LabelAlternativeSlots, LabelExpose, LabelProps, LabelSlots } from 
  * Использование для добавления текста
  */
 export class LabelInclude {
-  /** Unique identifier/ Уникальный идентификатор */
-  protected id = getElementId()
-
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -60,31 +57,9 @@ export class LabelInclude {
   })
 
   /** Identifier for the element/ Идентификатор для элемента */
-  readonly idElement = computed<string | undefined>(() => {
-    if (this.is.value) {
-      return this.getId()
-    }
-
-    return undefined
-  })
-
-  /**
-   * Expose helpers for Label state and actions.
-   *
-   * Вспомогательные методы expose для состояния и действий Label.
-   */
-  readonly expose: LabelExpose = {
-    labelId: this.getId()
-  }
-
-  /**
-   * Get the unique identifier.
-   *
-   * Получение уникального идентификатора.
-   */
-  getId(): string {
-    return this.props?.labelId || this.id
-  }
+  readonly id = computed<string>(
+    () => this.props?.labelId || getElementId()
+  )
 
   /**
    * Render the label
@@ -117,7 +92,7 @@ export class LabelInclude {
           render(
             getRef(this.tag),
             {
-              id: this.getId(),
+              id: this.id.value,
               class: this.getClassName()
             },
             children,

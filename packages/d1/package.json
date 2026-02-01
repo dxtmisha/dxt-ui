@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui actions",
+    "dxt-ui": "dxt-ui bars",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -74,6 +74,10 @@
     "./D1Actions": {
       "types": "./dist/D1Actions.d.ts",
       "default": "./dist/D1Actions.js"
+    },
+    "./D1Bars": {
+      "types": "./dist/D1Bars.d.ts",
+      "default": "./dist/D1Bars.js"
     }
   },
   "buildOptions": {

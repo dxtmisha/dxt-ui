@@ -13,8 +13,9 @@ export declare class BarsDesign<COMP extends BarsComponents, EXPOSE extends Bars
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor bars item class/ класс элемента bars
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, BarsEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, BarsEmits, P>, ItemConstructor?: typeof Bars);
     /**
      * Initialization of all the necessary properties for work
      *

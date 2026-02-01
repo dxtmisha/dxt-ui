@@ -77,8 +77,7 @@ export class ButtonDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ...this.item.event.expose,
-      ...this.item.label.expose
+      ...this.item.event.expose
     } as EXPOSE
   }
 

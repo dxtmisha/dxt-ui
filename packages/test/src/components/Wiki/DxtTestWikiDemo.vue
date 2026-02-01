@@ -78,6 +78,7 @@ ${props.join('')}
     justify-content: flex-start;
     gap: 4px;
     position: relative;
+    border: 1px solid oklch(86.9% 0.022 252.894);
   }
 
   &__item {

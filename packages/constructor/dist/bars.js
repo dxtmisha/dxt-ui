@@ -1,19 +1,19 @@
-var b = Object.defineProperty;
-var f = (o, i, t) => i in o ? b(o, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : o[i] = t;
-var s = (o, i, t) => f(o, typeof i != "symbol" ? i + "" : i, t);
-import { watch as B, ref as k, computed as r, reactive as d, h as p } from "vue";
-import { toBind as u, getBind as C, forEach as w, DesignConstructorAbstract as x } from "@dxtmisha/functional";
-import { A as m } from "./AriaStaticInclude-CuMRRW17.js";
-import { L as I } from "./LabelInclude-BtZrrbCf.js";
-import { D as g } from "./DescriptionInclude-DxWNon_J.js";
-import { E as S } from "./EventClickInclude-CgbuezDm.js";
-import { M as L } from "./ModelInclude-BiYm_iCQ.js";
-import { T as A } from "./TextInclude-CodMN5BH.js";
-import { S as D } from "./SkeletonInclude-BIUzAO2s.js";
-import { W as T } from "./WindowClassesInclude-B56usxgx.js";
-import { M as E } from "./MotionTransformClassesInclude-B23RIq0Q.js";
-import { B as U } from "./BarsInclude-IM3Gdslg.js";
-class M {
+var g = Object.defineProperty;
+var S = (a, i, t) => i in a ? g(a, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : a[i] = t;
+var s = (a, i, t) => S(a, typeof i != "symbol" ? i + "" : i, t);
+import { watch as A, ref as D, computed as o, reactive as d, h as u } from "vue";
+import { toBind as p, getBind as T, forEach as E, DesignConstructorAbstract as M } from "@dxtmisha/functional";
+import { A as m } from "./AriaStaticInclude-D1bSJaBp.js";
+import { L as $ } from "./LabelInclude-CEuTh1Qi.js";
+import { D as y } from "./DescriptionInclude-D4ane9aR.js";
+import { E as H } from "./EventClickInclude-CgbuezDm.js";
+import { M as P } from "./ModelInclude-BiYm_iCQ.js";
+import { T as W } from "./TextInclude-CodMN5BH.js";
+import { W as N } from "./WindowClassesInclude-B56usxgx.js";
+import { M as O } from "./MotionTransformClassesInclude-B23RIq0Q.js";
+import { S as R } from "./SkeletonInclude-BIUzAO2s.js";
+import { B as nt } from "./BarsInclude-IM3Gdslg.js";
+class V {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -21,10 +21,14 @@ class M {
    */
   constructor(i, t) {
     /** Текущее состояние action‑режима / Current action mode state */
-    s(this, "action", k(!1));
-    /** Вычисляемый флаг активности action / Computed active flag */
-    s(this, "is", r(() => this.props.action || this.action.value));
-    this.props = i, this.refs = t, t.action && B(
+    s(this, "action", D(!1));
+    /**
+     * Checks if action mode is possible.
+     *
+     * Проверяет, возможен ли режим действий.
+     */
+    s(this, "isPossible", o(() => !!(this.props.actionLabel || this.props.actionDescription || this.props.actionBars)));
+    this.props = i, this.refs = t, t.action && A(
       t.action,
       (e) => {
         this.action.value = !!e;
@@ -49,7 +53,7 @@ class M {
     this.action.value && (this.action.value = !1);
   }
 }
-class y {
+class j {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -60,12 +64,24 @@ class y {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param BarsActionConstructor class for managing action mode/ класс для управления action-режимом
+   * @param LabelConstructor class for creating a label/ класс для создания метки
+   * @param DescriptionConstructor class for creating a description/ класс для создания описания
+   * @param EventConstructor class for creating an event/ класс для создания события
+   * @param WindowClassesConstructor helper class for Window CSS classes/ вспомогательный класс для CSS-классов Window
+   * @param MotionTransformClassesConstructor helper class for MotionTransform CSS classes/ вспомогательный класс для CSS-классов MotionTransform
+   * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
+   * @param TextConstructor class for creating text/ класс для создания текста
+   * @param ModelConstructor class for working with models/ класс для работы с моделями
    */
-  constructor(i, t, e, n, a, v, c, h) {
+  constructor(i, t, e, n, r, v, c, h, b = V, B = $, f = y, k = H, C = N, w = O, x = R, L = W, I = P) {
     /** Управление action‑режимом */
     s(this, "action");
+    /** Label object/ Объект метки */
     s(this, "label");
+    /** Description object/ Объект описания */
     s(this, "description");
+    /** Event object/ Объект события */
     s(this, "event");
     /** Helper for Window CSS classes/ Вспомогательный класс для CSS‑классов Window */
     s(this, "windowClasses");
@@ -73,13 +89,14 @@ class y {
     s(this, "motionTransformClasses");
     /** Подключение скелетона для текста/описания */
     s(this, "skeleton");
+    /** Text object/ Объект текста */
     s(this, "text");
     /** Returns the button data/ Возвращает данные кнопки */
-    s(this, "backBinds", r(
+    s(this, "backBinds", o(
       () => {
         var i;
         return this.initItem(
-          u(
+          p(
             {
               icon: {
                 icon: this.props.iconBack,
@@ -101,24 +118,41 @@ class y {
       }
     ));
     /** Returns the list of control buttons/ Возвращает список кнопок управления */
-    s(this, "barsBinds", r(() => this.initList(this.props.bars)));
+    s(this, "barsBinds", o(() => this.initList(this.props.bars)));
     /**
      * Returns the list of active control buttons/
      * Возвращает список активных кнопок управления
      */
-    s(this, "actionBarsBinds", r(() => this.initList(this.props.actionBars, !0)));
+    s(this, "actionBarsBinds", o(() => this.initList(this.props.actionBars, !0)));
     /** Returns the button name/ Возвращает название кнопки */
-    s(this, "backLabel", r(() => {
+    s(this, "backLabel", o(() => {
       var i;
-      return this.action.is.value || (i = this.backBinds.value) == null ? void 0 : i.label;
+      return this.action.action.value || (i = this.backBinds.value) == null ? void 0 : i.label;
+    }));
+    /**
+     * Values for the class.
+     *
+     * Значения для класса.
+     */
+    s(this, "classes", o(() => ({
+      [`${this.className}--action`]: this.action.action.value
+    })));
+    /**
+     * Returns the value for the aria-live property.
+     *
+     * Возвращает значение для свойства aria-live.
+     */
+    s(this, "ariaLive", o(() => {
+      if (this.action.isPossible.value)
+        return "polite";
     }));
     /** Binds for label text/ Привязки для текста метки */
     s(this, "labelBinds", d({
-      label: r(() => this.action.is.value ? this.props.actionLabel : this.props.label)
+      label: o(() => this.action.action.value ? this.props.actionLabel : this.props.label)
     }));
     /** Binds for description text/ Привязки для текста описания */
     s(this, "descriptionBinds", d({
-      description: r(() => this.action.is.value ? this.props.actionDescription : this.props.description)
+      description: o(() => this.action.action.value ? this.props.actionDescription : this.props.description)
     }));
     /**
      * Click handler for the "back" button
@@ -128,18 +162,18 @@ class y {
     s(this, "onClickBack", (i, t) => {
       (t == null ? void 0 : t.value) === "back" && this.action.close(), this.event.onClick(i, t);
     });
-    this.props = i, this.refs = t, this.element = e, this.classDesign = n, this.className = a, this.components = v, this.slots = c, this.emits = h;
-    const l = new D(this.props, this.classDesign, ["classTextVariant"]);
-    this.action = new M(this.props, this.refs), this.label = new I(
+    this.props = i, this.refs = t, this.element = e, this.classDesign = n, this.className = r, this.components = v, this.slots = c, this.emits = h;
+    const l = new x(this.props, this.classDesign, ["classTextVariant"]);
+    this.action = new b(this.props, this.refs), this.label = new B(
       this.labelBinds,
-      a,
+      r,
       void 0,
       c,
       void 0,
       void 0,
       void 0,
       l
-    ), this.description = new g(this.descriptionBinds, a, c, l), this.event = new S(void 0, void 0, h), this.windowClasses = new T(n), this.motionTransformClasses = new E(n), this.skeleton = l, this.text = new A(this.props), new L("action", this.emits, this.action.action);
+    ), this.description = new f(this.descriptionBinds, r, c, l), this.event = new k(void 0, void 0, h), this.windowClasses = new C(n), this.motionTransformClasses = new w(n), this.skeleton = l, this.text = new L(this.props), new I("action", this.emits, this.action.action);
   }
   /**
    * Prepares all parameters for the button.
@@ -150,16 +184,16 @@ class y {
    * @param isAction is action button/ является ли кнопка действия
    */
   initItem(i, t, e = !1) {
-    var n, a;
+    var n, r;
     return {
       isSkeleton: this.props.isSkeleton,
       onClick: this.event.onClick,
-      ...u(
+      ...p(
         (n = this.props.buttonAttrs) != null ? n : {},
         i != null ? i : {}
       ),
-      key: `${e ? "action" : ""}Bar-${(a = i == null ? void 0 : i.value) != null ? a : t}`,
-      icon: C(i == null ? void 0 : i.icon, { animationShow: e }, "icon")
+      key: `${e ? "action" : ""}Bar-${(r = i == null ? void 0 : i.value) != null ? r : t}`,
+      icon: T(i == null ? void 0 : i.icon, { animationShow: e }, "icon")
     };
   }
   /**
@@ -171,21 +205,22 @@ class y {
    */
   initList(i, t = !1) {
     if (i)
-      return w(
+      return E(
         i,
         (e, n) => this.initItem(e, n, t)
       );
   }
 }
-const K = {};
-class N extends x {
+const tt = {};
+class it extends M {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor bars item class/ класс элемента bars
    */
-  constructor(t, e, n) {
+  constructor(t, e, n, r = j) {
     super(
       t,
       e,
@@ -197,13 +232,13 @@ class N extends x {
      *
      * Рендеринг кнопки закрытия.
      */
-    s(this, "renderBackButton", () => this.props.backHide && (!this.item.action.is.value || this.props.backActionHide) ? [] : [
+    s(this, "renderBackButton", () => this.props.backHide && (!this.item.action.action.value || this.props.backActionHide) ? [] : [
       this.components.renderOne(
         "button",
         {
+          ...this.item.backBinds.value,
           label: this.item.backLabel.value,
-          selected: this.item.action.is.value,
-          ...this.item.backBinds.value
+          selected: this.item.action.action.value
         }
       )
     ]);
@@ -215,7 +250,7 @@ class N extends x {
     s(this, "renderContext", () => {
       var t;
       return [
-        p(
+        u(
           "div",
           {
             class: (t = this.classes) == null ? void 0 : t.value.context
@@ -234,7 +269,7 @@ class N extends x {
      */
     s(this, "renderBars", () => {
       const t = [];
-      return this.item.action.is.value || (t.push(...this.renderList(this.item.barsBinds.value)), this.initSlot("bars", t)), t;
+      return this.item.action.action.value || (t.push(...this.renderList(this.item.barsBinds.value)), this.initSlot("bars", t)), t;
     });
     /**
      * Rendering the control button.
@@ -243,7 +278,7 @@ class N extends x {
      */
     s(this, "renderActionBars", () => {
       const t = [];
-      return this.item.action.is.value && (t.push(...this.renderList(this.item.actionBarsBinds.value)), this.initSlot("actionBars", t)), t;
+      return this.item.action.action.value && (t.push(...this.renderList(this.item.actionBarsBinds.value)), this.initSlot("actionBars", t)), t;
     });
     /**
      * Rendering a list of buttons from the list.
@@ -257,7 +292,7 @@ class N extends x {
         (n) => this.components.renderAdd(e, "button", n)
       ), e;
     });
-    this.item = new y(
+    this.item = new r(
       this.props,
       this.refs,
       this.element,
@@ -274,10 +309,7 @@ class N extends x {
    * Инициализация всех необходимых свойств для работы.
    */
   initExpose() {
-    return {
-      ...this.item.label.expose,
-      ...this.item.description.expose
-    };
+    return {};
   }
   /**
    * Improvement of the obtained list of classes.
@@ -286,7 +318,7 @@ class N extends x {
    */
   initClasses() {
     return {
-      main: {},
+      main: this.item.classes.value,
       // :classes [!] System label / Системная метка
       context: this.getSubClass("context"),
       label: this.getSubClass("label"),
@@ -308,12 +340,12 @@ class N extends x {
    */
   initRender() {
     var t;
-    return p(
+    return u(
       "div",
       {
         ...this.getAttrs(),
         class: (t = this.classes) == null ? void 0 : t.value.main,
-        ...m.live(this.props.action ? "polite" : "off")
+        ...m.live(this.item.ariaLive.value)
       },
       [
         ...this.renderBackButton(),
@@ -325,8 +357,8 @@ class N extends x {
   }
 }
 export {
-  y as Bars,
-  N as BarsDesign,
-  U as BarsInclude,
-  K as defaultsBars
+  j as Bars,
+  it as BarsDesign,
+  nt as BarsInclude,
+  tt as defaultsBars
 };

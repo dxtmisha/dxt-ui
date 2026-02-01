@@ -1,12 +1,12 @@
-var b = Object.defineProperty;
-var w = (o, i, t) => i in o ? b(o, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : o[i] = t;
-var r = (o, i, t) => w(o, typeof i != "symbol" ? i + "" : i, t);
-import { computed as p, h as a } from "vue";
-import { getRef as A, DesignConstructorAbstract as D, toBinds as I } from "@dxtmisha/functional";
+var m = Object.defineProperty;
+var v = (o, i, t) => i in o ? m(o, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : o[i] = t;
+var r = (o, i, t) => v(o, typeof i != "symbol" ? i + "" : i, t);
+import { computed as w, h as a } from "vue";
+import { getRef as b, DesignConstructorAbstract as p, toBinds as A } from "@dxtmisha/functional";
 import { B as S } from "./BarsInclude-IM3Gdslg.js";
 import { A as g } from "./ActionsInclude-H5ZWeXJj.js";
-import { W as x } from "./WindowInclude-Is5RhGxt.js";
-class T {
+import { W as D } from "./WindowInclude-Is5RhGxt.js";
+class F {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -21,39 +21,36 @@ class T {
    * @param extraBars additional parameters for BarsInclude/ дополнительные параметры для BarsInclude
    * @param extraActions additional parameters for ActionsInclude/ дополнительные параметры для ActionsInclude
    */
-  constructor(i, t, s, e, n, l, v, h, d, c, u) {
+  constructor(i, t, s, e, n, h, f, l, d, c, u) {
     r(this, "bars");
     r(this, "actions");
     r(this, "window");
-    this.props = i, this.refs = t, this.element = s, this.classDesign = e, this.className = n, this.components = l, this.slots = v, this.emits = h, this.extraWindow = d, this.extraBars = c, this.extraActions = u, this.bars = new S(
+    this.props = i, this.refs = t, this.element = s, this.classDesign = e, this.className = n, this.components = h, this.slots = f, this.emits = l, this.extraWindow = d, this.extraBars = c, this.extraActions = u, this.bars = new S(
       i,
       n,
-      l,
       h,
+      l,
       c
     ), this.actions = new g(
       i,
       n,
-      l,
       h,
+      l,
       u
-    ), this.window = new x(
+    ), this.window = new D(
       i,
       n,
-      l,
       h,
-      p(() => {
-        var f, m;
-        return {
-          ...A(d),
-          ariaLabelledby: (f = this.bars.element.value) == null ? void 0 : f.labelId,
-          ariaDescribedby: (m = this.bars.element.value) == null ? void 0 : m.descriptionId
-        };
-      })
+      l,
+      w(() => ({
+        ...b(d)
+        // ariaLabelledby: this.bars.element.value?.labelId,
+        // ariaDescribedby: this.bars.element.value?.descriptionId
+      }))
     );
   }
 }
-class W extends D {
+class R extends p {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -164,7 +161,7 @@ class W extends D {
         default: this.renderDefault,
         footer: this.renderFooter
       },
-      I(
+      A(
         {
           class: (t = this.classes) == null ? void 0 : t.value.main
         },
@@ -174,6 +171,6 @@ class W extends D {
   }
 }
 export {
-  T as M,
-  W as a
+  F as M,
+  R as a
 };

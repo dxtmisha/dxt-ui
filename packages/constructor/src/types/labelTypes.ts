@@ -1,14 +1,6 @@
 import type { NumberOrString } from '@dxtmisha/functional'
 
 /**
- * Exposed properties for label components/ Экспонируемые свойства для компонентов меток
- */
-export interface LabelExpose {
-  /** Label element ID/ Идентификатор элемента метки */
-  labelId: string
-}
-
-/**
  * Slot definitions for label components/ Определения слотов для компонентов меток
  */
 export interface LabelSlots {

@@ -72,6 +72,7 @@ export declare class List {
         highlightLengthStart?: number;
         value?: any;
         description?: string | number;
+        descriptionId?: string;
         prefix?: string | number;
         caption?: string | number;
         suffix?: string | number;

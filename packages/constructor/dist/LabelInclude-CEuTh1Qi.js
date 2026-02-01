@@ -1,8 +1,8 @@
-var d = Object.defineProperty;
-var b = (i, t, s) => t in i ? d(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
-var l = (i, t, s) => b(i, typeof t != "symbol" ? t + "" : t, s);
-import { computed as r } from "vue";
-import { getElementId as g, render as n, getRef as m, isFilled as h } from "@dxtmisha/functional";
+var b = Object.defineProperty;
+var g = (i, s, t) => s in i ? b(i, s, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[s] = t;
+var a = (i, s, t) => g(i, typeof s != "symbol" ? s + "" : s, t);
+import { computed as n } from "vue";
+import { getElementId as d, render as r, getRef as m, isFilled as h } from "@dxtmisha/functional";
 class x {
   /**
    * Constructor
@@ -16,37 +16,20 @@ class x {
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    * @param tag tag name/ имя тега
    */
-  constructor(t, s, e, a, o, u, p, c, f = "span") {
-    /** Unique identifier/ Уникальный идентификатор */
-    l(this, "id", g());
+  constructor(s, t, e, l, o, u, p, c, f = "span") {
     /** Label presence check/ Проверка наличия метки */
-    l(this, "is", r(() => {
-      var t;
-      return this.props.label || (t = this.labelReplacing) != null && t.value ? !0 : this.slots ? this.alternativeSlots ? "label" in this.slots : "default" in this.slots : !1;
+    a(this, "is", n(() => {
+      var s;
+      return this.props.label || (s = this.labelReplacing) != null && s.value ? !0 : this.slots ? this.alternativeSlots ? "label" in this.slots : "default" in this.slots : !1;
     }));
     /** Identifier for the element/ Идентификатор для элемента */
-    l(this, "idElement", r(() => {
-      if (this.is.value)
-        return this.getId();
-    }));
-    /**
-     * Expose helpers for Label state and actions.
-     *
-     * Вспомогательные методы expose для состояния и действий Label.
-     */
-    l(this, "expose", {
-      labelId: this.getId()
-    });
-    this.props = t, this.className = s, this.classesExtra = e, this.slots = a, this.elementsExtra = o, this.labelReplacing = u, this.alternativeSlots = p, this.skeleton = c, this.tag = f;
-  }
-  /**
-   * Get the unique identifier.
-   *
-   * Получение уникального идентификатора.
-   */
-  getId() {
-    var t;
-    return ((t = this.props) == null ? void 0 : t.labelId) || this.id;
+    a(this, "id", n(
+      () => {
+        var s;
+        return ((s = this.props) == null ? void 0 : s.labelId) || d();
+      }
+    ));
+    this.props = s, this.className = t, this.classesExtra = e, this.slots = l, this.elementsExtra = o, this.labelReplacing = u, this.alternativeSlots = p, this.skeleton = c, this.tag = f;
   }
   /**
    * Render the label
@@ -54,19 +37,19 @@ class x {
    * Рендер метки
    * @param childrenExtra additional children/ дополнительные дочерние элементы
    */
-  render(t) {
-    const s = [];
+  render(s) {
+    const t = [];
     if (this.is.value) {
       const e = [
         ...this.initLabel(),
         ...this.initLabelReplacing(),
         ...this.initSlot()
       ];
-      this.elementsExtra && e.push(...this.elementsExtra()), t && e.push(...t), e.length > 0 && s.push(
-        n(
+      this.elementsExtra && e.push(...this.elementsExtra()), s && e.push(...s), e.length > 0 && t.push(
+        r(
           m(this.tag),
           {
-            id: this.getId(),
+            id: this.id.value,
             class: this.getClassName()
           },
           e,
@@ -74,7 +57,7 @@ class x {
         )
       );
     }
-    return s;
+    return t;
   }
   /**
    * Get the class name for the label
@@ -82,8 +65,8 @@ class x {
    * Получение имени класса для метки
    */
   getClassName() {
-    const t = [`${this.className}__label`];
-    return this.classesExtra && t.push(this.classesExtra), this.skeleton && t.push(this.skeleton.classes.value), t;
+    const s = [`${this.className}__label`];
+    return this.classesExtra && s.push(this.classesExtra), this.skeleton && s.push(this.skeleton.classes.value), s;
   }
   /**
    * Adds the label text if it exists
@@ -91,8 +74,8 @@ class x {
    * Добавляет текст метки, если он есть
    */
   initLabel() {
-    var t;
-    return !((t = this.labelReplacing) != null && t.value) && h(this.props.label) ? [this.props.label] : [];
+    var s;
+    return !((s = this.labelReplacing) != null && s.value) && h(this.props.label) ? [this.props.label] : [];
   }
   /**
    * Adds alternative label text if it exists
@@ -100,9 +83,9 @@ class x {
    * Добавляет альтернативный текст метки, если он есть
    */
   initLabelReplacing() {
-    var t;
-    return h((t = this.labelReplacing) == null ? void 0 : t.value) ? [
-      n(
+    var s;
+    return h((s = this.labelReplacing) == null ? void 0 : s.value) ? [
+      r(
         "span",
         { innerHTML: this.labelReplacing.value },
         void 0,
@@ -116,13 +99,13 @@ class x {
    * Добавляет слот для метки, если он есть
    */
   initSlot() {
-    var t, s, e, a;
+    var s, t, e, l;
     if (this.slots) {
       if (this.alternativeSlots) {
         if ("label" in this.slots)
-          return [(s = (t = this.slots).label) == null ? void 0 : s.call(t, {})];
+          return [(t = (s = this.slots).label) == null ? void 0 : t.call(s, {})];
       } else if ("default" in this.slots)
-        return [(a = (e = this.slots).default) == null ? void 0 : a.call(e, {})];
+        return [(l = (e = this.slots).default) == null ? void 0 : l.call(e, {})];
     }
     return [];
   }

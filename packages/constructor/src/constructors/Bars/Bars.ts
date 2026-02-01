@@ -1,5 +1,5 @@
 import { computed, reactive, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp, forEach, getBind, toBind } from '@dxtmisha/functional'
+import { type ConstrClass, type ConstrEmit, type DesignComp, forEach, getBind, toBind } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
@@ -24,9 +24,12 @@ export class Bars {
   /** Управление action‑режимом */
   readonly action: BarsAction
 
+  /** Label object/ Объект метки */
   readonly label: LabelInclude
+  /** Description object/ Объект описания */
   readonly description: DescriptionInclude
 
+  /** Event object/ Объект события */
   readonly event: EventClickInclude
 
   /** Helper for Window CSS classes/ Вспомогательный класс для CSS‑классов Window */
@@ -36,6 +39,7 @@ export class Bars {
   /** Подключение скелетона для текста/описания */
   readonly skeleton: SkeletonInclude
 
+  /** Text object/ Объект текста */
   readonly text: TextInclude
 
   /**
@@ -48,6 +52,15 @@ export class Bars {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param BarsActionConstructor class for managing action mode/ класс для управления action-режимом
+   * @param LabelConstructor class for creating a label/ класс для создания метки
+   * @param DescriptionConstructor class for creating a description/ класс для создания описания
+   * @param EventConstructor class for creating an event/ класс для создания события
+   * @param WindowClassesConstructor helper class for Window CSS classes/ вспомогательный класс для CSS-классов Window
+   * @param MotionTransformClassesConstructor helper class for MotionTransform CSS classes/ вспомогательный класс для CSS-классов MotionTransform
+   * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
+   * @param TextConstructor class for creating text/ класс для создания текста
+   * @param ModelConstructor class for working with models/ класс для работы с моделями
    */
   constructor(
     protected readonly props: BarsProps,
@@ -57,13 +70,22 @@ export class Bars {
     protected readonly className: string,
     protected readonly components?: DesignComp<BarsComponents, BarsProps>,
     protected readonly slots?: BarsSlots,
-    protected readonly emits?: ConstrEmit<BarsEmits>
+    protected readonly emits?: ConstrEmit<BarsEmits>,
+    BarsActionConstructor: typeof BarsAction = BarsAction,
+    LabelConstructor: typeof LabelInclude = LabelInclude,
+    DescriptionConstructor: typeof DescriptionInclude = DescriptionInclude,
+    EventConstructor: typeof EventClickInclude = EventClickInclude,
+    WindowClassesConstructor: typeof WindowClassesInclude = WindowClassesInclude,
+    MotionTransformClassesConstructor: typeof MotionTransformClassesInclude = MotionTransformClassesInclude,
+    SkeletonConstructor: typeof SkeletonInclude = SkeletonInclude,
+    TextConstructor: typeof TextInclude = TextInclude,
+    ModelConstructor: typeof ModelInclude = ModelInclude
   ) {
-    const skeleton = new SkeletonInclude(this.props, this.classDesign, ['classTextVariant'])
+    const skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classTextVariant'])
 
-    this.action = new BarsAction(this.props, this.refs)
+    this.action = new BarsActionConstructor(this.props, this.refs)
 
-    this.label = new LabelInclude(this.labelBinds,
+    this.label = new LabelConstructor(this.labelBinds,
       className,
       undefined,
       slots,
@@ -72,16 +94,16 @@ export class Bars {
       undefined,
       skeleton
     )
-    this.description = new DescriptionInclude(this.descriptionBinds, className, slots, skeleton)
+    this.description = new DescriptionConstructor(this.descriptionBinds, className, slots, skeleton)
 
-    this.event = new EventClickInclude(undefined, undefined, emits)
+    this.event = new EventConstructor(undefined, undefined, emits)
 
-    this.windowClasses = new WindowClassesInclude(classDesign)
-    this.motionTransformClasses = new MotionTransformClassesInclude(classDesign)
+    this.windowClasses = new WindowClassesConstructor(classDesign)
+    this.motionTransformClasses = new MotionTransformClassesConstructor(classDesign)
     this.skeleton = skeleton
-    this.text = new TextInclude(this.props)
+    this.text = new TextConstructor(this.props)
 
-    new ModelInclude('action', this.emits, this.action.action)
+    new ModelConstructor('action', this.emits, this.action.action)
   }
 
   /** Returns the button data/ Возвращает данные кнопки */
@@ -118,16 +140,40 @@ export class Bars {
   readonly actionBarsBinds = computed<BarsProps['bars']>(() => this.initList(this.props.actionBars, true))
 
   /** Returns the button name/ Возвращает название кнопки */
-  readonly backLabel = computed<string | number | undefined>(() => this.action.is.value ? undefined : this.backBinds.value?.label)
+  readonly backLabel = computed<string | number | undefined>(() => this.action.action.value ? undefined : this.backBinds.value?.label)
+
+  /**
+   * Values for the class.
+   *
+   * Значения для класса.
+   */
+  readonly classes = computed<ConstrClass>(() => {
+    return {
+      [`${this.className}--action`]: this.action.action.value
+    }
+  })
+
+  /**
+   * Returns the value for the aria-live property.
+   *
+   * Возвращает значение для свойства aria-live.
+   */
+  readonly ariaLive = computed<'polite' | 'off' | undefined>(() => {
+    if (this.action.isPossible.value) {
+      return 'polite'
+    }
+
+    return undefined
+  })
 
   /** Binds for label text/ Привязки для текста метки */
   protected readonly labelBinds = reactive({
-    label: computed(() => this.action.is.value ? this.props.actionLabel : this.props.label)
+    label: computed(() => this.action.action.value ? this.props.actionLabel : this.props.label)
   })
 
   /** Binds for description text/ Привязки для текста описания */
   protected readonly descriptionBinds = reactive({
-    description: computed(() => this.action.is.value ? this.props.actionDescription : this.props.description)
+    description: computed(() => this.action.action.value ? this.props.actionDescription : this.props.description)
   })
 
   /**

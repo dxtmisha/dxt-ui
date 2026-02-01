@@ -1,7 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { LabelAlternativeSlots, LabelExpose } from '../../types/labelTypes'
-import type { DescriptionExpose, DescriptionSlots } from '../../types/descriptionTypes'
+import type { LabelAlternativeSlots } from '../../types/labelTypes'
+import type { DescriptionSlots } from '../../types/descriptionTypes'
 import type { CaptionSlots } from '../../types/captionTypes'
 
 import type { IconComponentInclude } from '../Icon'
@@ -25,7 +25,7 @@ export type BlockEmits = {}
  *
  * Тип, описывающий доступные свойства.
  */
-export interface BlockExpose extends LabelExpose, DescriptionExpose {
+export interface BlockExpose {
 }
 
 /**

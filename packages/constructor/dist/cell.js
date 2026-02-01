@@ -1,19 +1,19 @@
-var u = Object.defineProperty;
-var m = (s, i, t) => i in s ? u(s, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[i] = t;
+var p = Object.defineProperty;
+var m = (s, i, t) => i in s ? p(s, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[i] = t;
 var e = (s, i, t) => m(s, typeof i != "symbol" ? i + "" : i, t);
 import { computed as d, h } from "vue";
 import { DesignConstructorAbstract as g } from "@dxtmisha/functional";
 import { g as b } from "./getClassTagAStatic-BnVYlXHI.js";
-import { L as v } from "./LabelInclude-BtZrrbCf.js";
+import { L as v } from "./LabelInclude-CEuTh1Qi.js";
 import { C } from "./CaptionInclude-AFVF4qyd.js";
-import { D as f } from "./DescriptionInclude-DxWNon_J.js";
-import { E as S } from "./EnabledInclude-BeX9VHb_.js";
+import { D as f } from "./DescriptionInclude-D4ane9aR.js";
+import { E as S } from "./EnabledInclude-JzHG2GuX.js";
 import { E as x } from "./EventClickInclude-CgbuezDm.js";
 import { S as y } from "./SkeletonInclude-BIUzAO2s.js";
-import { P as I } from "./ProgressInclude-DJGFmt70.js";
+import { P as I } from "./ProgressInclude-CPQetoyp.js";
 import { I as k } from "./IconTrailingInclude-CdsOcDxv.js";
 import { R as w } from "./RippleInclude-Du5yIzX_.js";
-import { A as T } from "./AriaStaticInclude-CuMRRW17.js";
+import { A as T } from "./AriaStaticInclude-D1bSJaBp.js";
 class _ {
   /**
    * Constructor
@@ -57,7 +57,7 @@ class _ {
         return "button";
     }));
     this.props = i, this.refs = t, this.element = n, this.classDesign = o, this.className = r, this.components = l, this.slots = a, this.emits = c;
-    const p = new I(
+    const u = new I(
       i,
       r,
       l,
@@ -79,7 +79,7 @@ class _ {
       void 0,
       void 0,
       this.skeleton
-    ), this.caption = new C(i, r, a), this.description = new f(i, r, a, this.skeleton), this.enabled = new S(i, p), this.icon = new k(i, r, l), this.progress = p, this.ripple = new w(r, l, this.enabled), this.event = new x(
+    ), this.caption = new C(i, r, a), this.description = new f(i, r, a, this.skeleton), this.enabled = new S(i, u), this.icon = new k(i, r, l), this.progress = u, this.ripple = new w(r, l, this.enabled), this.event = new x(
       i,
       this.enabled,
       c
@@ -214,9 +214,7 @@ class G extends g {
    */
   initExpose() {
     return {
-      ...this.item.event.expose,
-      ...this.item.label.expose,
-      ...this.item.description.expose
+      ...this.item.event.expose
     };
   }
   /**

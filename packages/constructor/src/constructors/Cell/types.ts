@@ -5,8 +5,8 @@ import type { ProgressComponentInclude } from '../Progress'
 import type { RippleComponentsInclude } from '../Ripple'
 
 import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
-import type { LabelExpose, LabelSlots } from '../../types/labelTypes'
-import type { DescriptionExpose, DescriptionSlots } from '../../types/descriptionTypes'
+import type { LabelSlots } from '../../types/labelTypes'
+import type { DescriptionSlots } from '../../types/descriptionTypes'
 import type { CaptionSlots } from '../../types/captionTypes'
 
 import type { CellClassesSub } from './basicTypes'
@@ -33,7 +33,7 @@ export type CellEmits = EventClickEmits
  *
  * Тип, описывающий доступные свойства.
  */
-export interface CellExpose extends LabelExpose, DescriptionExpose, EventClickExpose {
+export interface CellExpose extends EventClickExpose {
 }
 
 /**

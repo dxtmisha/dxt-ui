@@ -65,9 +65,9 @@ export abstract class ModalAbstract {
       components,
       emits,
       computed(() => ({
-        ...getRef(extraWindow),
-        ariaLabelledby: this.bars.element.value?.labelId,
-        ariaDescribedby: this.bars.element.value?.descriptionId
+        ...getRef(extraWindow)
+        // ariaLabelledby: this.bars.element.value?.labelId,
+        // ariaDescribedby: this.bars.element.value?.descriptionId
       }))
     )
   }

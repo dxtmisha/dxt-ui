@@ -18,7 +18,8 @@ export const wikiBars: StorybookArgsToList = {
         en: 'Enables action mode',
         ru: 'Включает режим действия'
       }
-    }
+    },
+    isDemo: true
   },
   'bars.actionBars': {
     type: StorybookControl.object,
@@ -38,7 +39,7 @@ export const wikiBars: StorybookArgsToList = {
   'bars.actionDescription': {
     type: StorybookControl.text,
     options: {
-      category: StorybookCategory.value,
+      category: StorybookCategory.information,
       description: {
         en: 'Description for the action',
         ru: 'Описание для действия'
@@ -49,7 +50,7 @@ export const wikiBars: StorybookArgsToList = {
   'bars.actionLabel': {
     type: StorybookControl.text,
     options: {
-      category: StorybookCategory.value,
+      category: StorybookCategory.information,
       description: {
         en: 'Label for the action',
         ru: 'Метка для действия'
@@ -70,7 +71,7 @@ export const wikiBars: StorybookArgsToList = {
   'bars.backActionHide': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Hide back button in action',
         ru: 'Скрыть кнопку назад в action'
@@ -80,7 +81,7 @@ export const wikiBars: StorybookArgsToList = {
   'bars.backHide': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Hides the back button',
         ru: 'Скрывает кнопку назад'
@@ -107,7 +108,7 @@ export const wikiBars: StorybookArgsToList = {
     options: {
       category: StorybookCategory.technical,
       description: {
-        en: 'Two-way binding for action state (v-model:action)',
+        en: 'Two-way binding for the action state (v-model:action)',
         ru: 'Двусторонняя привязка состояния action (v-model:action)'
       }
     }

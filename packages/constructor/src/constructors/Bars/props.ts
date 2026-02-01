@@ -10,7 +10,6 @@ import type { TextClosePropsInclude } from '../../types/textTypes'
 
 export type BarsPropsToken = {
   // :type [!] System label / Системная метка
-  action?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -22,7 +21,10 @@ export type BarsPropsBasic<
   & SkeletonPropsInclude
   & TextClosePropsInclude
   & {
-  // Value
+    // Status
+    'action'?: boolean
+
+    // Value
     'backButton'?: ConstrBind<Button>
     'backHide'?: boolean
     'backActionHide'?: boolean

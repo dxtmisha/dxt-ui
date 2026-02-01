@@ -44,11 +44,13 @@ export class BarsDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor bars item class/ класс элемента bars
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, BarsEmits, P>
+    options?: ConstrOptions<COMP, BarsEmits, P>,
+    ItemConstructor: typeof Bars = Bars
   ) {
     super(
       name,
@@ -56,7 +58,7 @@ export class BarsDesign<
       options
     )
 
-    this.item = new Bars(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -76,10 +78,7 @@ export class BarsDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {
-      ...this.item.label.expose,
-      ...this.item.description.expose
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
@@ -89,7 +88,7 @@ export class BarsDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes.value,
       ...{
         // :classes [!] System label / Системная метка
         context: this.getSubClass('context'),
@@ -120,7 +119,7 @@ export class BarsDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
-        ...AriaStaticInclude.live(this.props.action ? 'polite' : 'off')
+        ...AriaStaticInclude.live(this.item.ariaLive.value)
       },
       [
         ...this.renderBackButton(),
@@ -140,7 +139,7 @@ export class BarsDesign<
     if (
       this.props.backHide
       && (
-        !this.item.action.is.value
+        !this.item.action.action.value
         || this.props.backActionHide
       )
     ) {
@@ -151,9 +150,9 @@ export class BarsDesign<
       this.components.renderOne(
         'button',
         {
+          ...this.item.backBinds.value,
           label: this.item.backLabel.value,
-          selected: this.item.action.is.value,
-          ...this.item.backBinds.value
+          selected: this.item.action.action.value
         }
       ) as VNode
     ]
@@ -187,7 +186,7 @@ export class BarsDesign<
   readonly renderBars = (): VNode[] => {
     const children: any[] = []
 
-    if (this.item.action.is.value) {
+    if (this.item.action.action.value) {
       return children
     }
 
@@ -205,7 +204,7 @@ export class BarsDesign<
   readonly renderActionBars = (): VNode[] => {
     const children: any[] = []
 
-    if (this.item.action.is.value) {
+    if (this.item.action.action.value) {
       children.push(...this.renderList(this.item.actionBarsBinds.value))
       this.initSlot('actionBars', children)
     }

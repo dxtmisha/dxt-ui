@@ -51,9 +51,9 @@ export class Accordion {
       computed(() => ({
         section: true,
         adaptive: 'planeAlways',
-        inDom: true,
-        ariaLabelledby: this.elementHead.value?.labelId,
-        ariaDescribedby: this.elementHead.value?.descriptionId
+        inDom: true
+        // ariaLabelledby: this.elementHead.value?.labelId,
+        // ariaDescribedby: this.elementHead.value?.descriptionId
       }))
     )
 

@@ -77,10 +77,7 @@ export class BlockDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {
-      ...this.item.label.expose,
-      ...this.item.description.expose
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
@@ -177,7 +174,7 @@ export class BlockDesign<
         h('div', {
           key: 'header',
           class: this.classes?.value.header,
-          ...AriaStaticInclude.labelledby(this.item.label.idElement.value)
+          ...AriaStaticInclude.labelledby(this.item.label.id.value)
         }, children)
       ]
     }

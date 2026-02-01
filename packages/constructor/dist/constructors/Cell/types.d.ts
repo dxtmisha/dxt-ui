@@ -3,8 +3,8 @@ import { IconComponentInclude } from '../Icon';
 import { ProgressComponentInclude } from '../Progress';
 import { RippleComponentsInclude } from '../Ripple';
 import { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes';
-import { LabelExpose, LabelSlots } from '../../types/labelTypes';
-import { DescriptionExpose, DescriptionSlots } from '../../types/descriptionTypes';
+import { LabelSlots } from '../../types/labelTypes';
+import { DescriptionSlots } from '../../types/descriptionTypes';
 import { CaptionSlots } from '../../types/captionTypes';
 import { CellClassesSub } from './basicTypes';
 /**
@@ -24,7 +24,7 @@ export type CellEmits = EventClickEmits;
  *
  * Тип, описывающий доступные свойства.
  */
-export interface CellExpose extends LabelExpose, DescriptionExpose, EventClickExpose {
+export interface CellExpose extends EventClickExpose {
 }
 /**
  * Type describing available slots.

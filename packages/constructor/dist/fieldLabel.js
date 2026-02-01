@@ -3,11 +3,11 @@ var d = (i, e, s) => e in i ? m(i, e, { enumerable: !0, configurable: !0, writab
 var t = (i, e, s) => d(i, typeof e != "symbol" ? e + "" : e, s);
 import { computed as p, h as o } from "vue";
 import { DesignConstructorAbstract as f } from "@dxtmisha/functional";
-import { L as b } from "./LabelInclude-BtZrrbCf.js";
-import { F as g } from "./FieldCounterInclude-D0oojGWY.js";
+import { L as g } from "./LabelInclude-CEuTh1Qi.js";
+import { F as b } from "./FieldCounterInclude-D0oojGWY.js";
 import { S as v } from "./SkeletonInclude-BIUzAO2s.js";
-import { P as C } from "./ProgressInclude-DJGFmt70.js";
-import { A as F } from "./AriaStaticInclude-CuMRRW17.js";
+import { P as C } from "./ProgressInclude-CPQetoyp.js";
+import { A as F } from "./AriaStaticInclude-D1bSJaBp.js";
 import { F as E } from "./FieldLabelInclude-BSISy_cb.js";
 class q {
   /**
@@ -41,7 +41,7 @@ class q {
     })));
     this.props = e, this.refs = s, this.element = r, this.classDesign = l, this.className = a, this.components = h, this.slots = u, this.emits = c;
     const n = new v(this.props, this.classDesign, ["classTextVariant"]);
-    this.label = new b(
+    this.label = new g(
       this.props,
       this.className,
       void 0,
@@ -50,7 +50,7 @@ class q {
       void 0,
       !0,
       n
-    ), this.fieldCounter = new g(
+    ), this.fieldCounter = new b(
       this.props,
       this.className,
       this.components
@@ -116,9 +116,7 @@ class R extends f {
    * Инициализация всех необходимых свойств для работы.
    */
   initExpose() {
-    return {
-      ...this.item.label.expose
-    };
+    return {};
   }
   /**
    * Improvement of the obtained list of classes.

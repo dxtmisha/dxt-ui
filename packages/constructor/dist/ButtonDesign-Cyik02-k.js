@@ -3,13 +3,13 @@ var C = (i, t, s) => t in i ? w(i, t, { enumerable: !0, configurable: !0, writab
 var e = (i, t, s) => C(i, typeof t != "symbol" ? t + "" : t, s);
 import { computed as o, h as S } from "vue";
 import { DesignConstructorAbstract as k, RouterItemRef as B } from "@dxtmisha/functional";
-import { g as x } from "./getClassTagAStatic-BnVYlXHI.js";
-import { L as y } from "./LabelInclude-BtZrrbCf.js";
-import { E } from "./EnabledInclude-BeX9VHb_.js";
-import { A as h } from "./AriaStaticInclude-CuMRRW17.js";
+import { g as y } from "./getClassTagAStatic-BnVYlXHI.js";
+import { L as x } from "./LabelInclude-CEuTh1Qi.js";
+import { E } from "./EnabledInclude-JzHG2GuX.js";
+import { A as h } from "./AriaStaticInclude-D1bSJaBp.js";
 import { E as T } from "./EventClickInclude-CgbuezDm.js";
 import { I as A } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as D } from "./ProgressInclude-DJGFmt70.js";
+import { P as D } from "./ProgressInclude-CPQetoyp.js";
 import { R as L } from "./RippleInclude-Du5yIzX_.js";
 import { S as R } from "./SkeletonInclude-BIUzAO2s.js";
 class K {
@@ -31,7 +31,7 @@ class K {
    * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
    * @param EventConstructor class for creating an event/ класс для создания события
    */
-  constructor(t, s, n, a, r, l, u, p, m = y, d = E, g = A, b = D, v = L, f = R, I = T) {
+  constructor(t, s, n, a, r, l, u, c, m = x, d = E, g = A, b = D, v = L, f = R, I = T) {
     e(this, "label");
     e(this, "enabled");
     e(this, "icon");
@@ -44,7 +44,7 @@ class K {
     /** values for the class/ значения для класса */
     e(this, "classes", o(() => ({
       [`${this.className}--icon`]: this.icon.isIcon.value,
-      [x(this.classDesign)]: !0,
+      [y(this.classDesign)]: !0,
       ...this.skeleton.classes.value
     })));
     /**
@@ -74,8 +74,8 @@ class K {
       };
       return this.isTagNotButton() && (t.onKeydown = this.event.onKeydown), t;
     }));
-    this.props = t, this.refs = s, this.element = n, this.classDesign = a, this.className = r, this.components = l, this.slots = u, this.emits = p;
-    const c = new b(
+    this.props = t, this.refs = s, this.element = n, this.classDesign = a, this.className = r, this.components = l, this.slots = u, this.emits = c;
+    const p = new b(
       t,
       r,
       l,
@@ -84,14 +84,14 @@ class K {
         inverse: !0
       }
     );
-    this.label = new m(t, r, void 0, u), this.enabled = new d(t, c), this.icon = new g(t, r, l), this.progress = c, this.ripple = new v(r, l, this.enabled), this.skeleton = new f(
+    this.label = new m(t, r, void 0, u), this.enabled = new d(t, p), this.icon = new g(t, r, l), this.progress = p, this.ripple = new v(r, l, this.enabled), this.skeleton = new f(
       t,
       a,
       ["classBackground"]
     ), this.event = new I(
       t,
       this.enabled,
-      p
+      c
     );
   }
   /**
@@ -136,8 +136,7 @@ class M extends k {
    */
   initExpose() {
     return {
-      ...this.item.event.expose,
-      ...this.item.label.expose
+      ...this.item.event.expose
     };
   }
   /**

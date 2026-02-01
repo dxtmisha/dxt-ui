@@ -2,6 +2,7 @@
 // Этот файл генерируется скриптом, не редактировать.
 
 import D1Actions from '../../src/components/Ui/Actions/D1ActionsAiWiki.vue'
+import D1Bars from '../../src/components/Ui/Bars/D1BarsAiWiki.vue'
 import D1Button from '../../src/components/Ui/Button/D1ButtonAiWiki.vue'
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
@@ -11,6 +12,7 @@ import D1Window from '../../src/components/Ui/Window/D1WindowAiWiki.vue'
 
 export const aiList: any[] = [
   D1Actions,
+  D1Bars,
   D1Button,
   D1Icon,
   D1Image,

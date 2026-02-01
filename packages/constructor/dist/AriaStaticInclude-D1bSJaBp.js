@@ -167,9 +167,7 @@ class n {
    * @param live ARIA live attribute/ Атрибут ARIA live
    */
   static live(a) {
-    return {
-      "aria-live": a
-    };
+    return this.isDataToData("aria-live", a);
   }
   /**
    * Get ARIA modal attribute.

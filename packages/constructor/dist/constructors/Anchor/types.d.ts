@@ -1,6 +1,6 @@
 import { ConstrClass } from '@dxtmisha/functional';
 import { TooltipComponentInclude } from '../Tooltip';
-import { LabelExpose, LabelSlots } from '../../types/labelTypes';
+import { LabelSlots } from '../../types/labelTypes';
 import { IconComponentInclude } from '../Icon';
 /**
  * Interface for describing which components need to be connected for work.
@@ -19,7 +19,7 @@ export type AnchorEmits = {};
  *
  * Тип, описывающий доступные свойства.
  */
-export interface AnchorExpose extends LabelExpose {
+export interface AnchorExpose {
     go(): void;
 }
 /**

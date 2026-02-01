@@ -3,7 +3,7 @@ import { getElementId, isFilled, render } from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
-import type { DescriptionExpose, DescriptionProps, DescriptionSlots } from '../types/descriptionTypes'
+import type { DescriptionProps, DescriptionSlots } from '../types/descriptionTypes'
 
 /**
  * Use for adding description text
@@ -11,9 +11,6 @@ import type { DescriptionExpose, DescriptionProps, DescriptionSlots } from '../t
  * Использование для добавления описания текста
  */
 export class DescriptionInclude {
-  /** Unique identifier/ Уникальный идентификатор */
-  protected id = getElementId()
-
   /**
    * Constructor
    * @param props input property/ входное свойство
@@ -29,26 +26,13 @@ export class DescriptionInclude {
   ) {
   }
 
-  /**
-   * Check for the presence of a description
-   *
-   * Проверка наличия описания
-   */
+  /** Check for the presence of a description/ Проверка наличия описания */
   readonly is = computed(() => Boolean(this.props.description || this.slots?.description))
 
-  /** Description expose reference/ Ссылка на expose описания */
-  readonly expose: DescriptionExpose = {
-    descriptionId: this.id
-  }
-
-  /**
-   * Get description ID
-   *
-   * Получить ID описания
-   */
-  getId(): string {
-    return this.id
-  }
+  /** Unique identifier/ Уникальный идентификатор */
+  readonly id = computed<string>(
+    () => this.props?.descriptionId || getElementId()
+  )
 
   /**
    * Render the description
@@ -71,6 +55,7 @@ export class DescriptionInclude {
         render(
           'div',
           {
+            id: this.id.value,
             class: {
               [`${this.className}__description`]: true,
               ...this.skeleton?.classes.value

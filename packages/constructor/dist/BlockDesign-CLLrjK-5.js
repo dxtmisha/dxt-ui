@@ -3,9 +3,9 @@ var v = (n, t, e) => t in n ? g(n, t, { enumerable: !0, configurable: !0, writab
 var s = (n, t, e) => v(n, typeof t != "symbol" ? t + "" : t, e);
 import { computed as o, h as l } from "vue";
 import { DesignConstructorAbstract as f } from "@dxtmisha/functional";
-import { A as S } from "./AriaStaticInclude-CuMRRW17.js";
-import { L as y } from "./LabelInclude-BtZrrbCf.js";
-import { D as C } from "./DescriptionInclude-DxWNon_J.js";
+import { A as S } from "./AriaStaticInclude-D1bSJaBp.js";
+import { L as y } from "./LabelInclude-CEuTh1Qi.js";
+import { D as C } from "./DescriptionInclude-D4ane9aR.js";
 import { C as H } from "./CaptionInclude-AFVF4qyd.js";
 import { I } from "./IconInclude-CLqwI29Q.js";
 class k {
@@ -124,7 +124,7 @@ class R extends f {
           l("div", {
             key: "header",
             class: (e = this.classes) == null ? void 0 : e.value.header,
-            ...S.labelledby(this.item.label.idElement.value)
+            ...S.labelledby(this.item.label.id.value)
           }, i)
         ];
       }
@@ -179,10 +179,7 @@ class R extends f {
    * Инициализация всех необходимых свойств для работы.
    */
   initExpose() {
-    return {
-      ...this.item.label.expose,
-      ...this.item.description.expose
-    };
+    return {};
   }
   /**
    * Improvement of the obtained list of classes.

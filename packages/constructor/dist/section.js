@@ -1,4 +1,4 @@
-import { B as n, a } from "./BlockDesign-D3GJBdAj.js";
+import { B as n, a } from "./BlockDesign-CLLrjK-5.js";
 import "@dxtmisha/functional";
 class i extends n {
 }

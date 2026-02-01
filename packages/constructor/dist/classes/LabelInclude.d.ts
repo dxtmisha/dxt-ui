@@ -1,7 +1,7 @@
 import { Ref, VNode, ComputedRef } from 'vue';
 import { ConstrClass, RefOrNormal } from '@dxtmisha/functional';
 import { SkeletonInclude } from '../constructors/Skeleton';
-import { LabelAlternativeSlots, LabelExpose, LabelProps, LabelSlots } from '../types/labelTypes';
+import { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/labelTypes';
 /**
  * Use for adding text
  *
@@ -17,8 +17,6 @@ export declare class LabelInclude {
     protected readonly alternativeSlots?: boolean | undefined;
     protected readonly skeleton?: SkeletonInclude | undefined;
     protected readonly tag: RefOrNormal<string>;
-    /** Unique identifier/ Уникальный идентификатор */
-    protected id: string;
     /**
      * Constructor
      * @param props input property/ входное свойство
@@ -35,19 +33,7 @@ export declare class LabelInclude {
     /** Label presence check/ Проверка наличия метки */
     readonly is: ComputedRef<boolean>;
     /** Identifier for the element/ Идентификатор для элемента */
-    readonly idElement: ComputedRef<string | undefined>;
-    /**
-     * Expose helpers for Label state and actions.
-     *
-     * Вспомогательные методы expose для состояния и действий Label.
-     */
-    readonly expose: LabelExpose;
-    /**
-     * Get the unique identifier.
-     *
-     * Получение уникального идентификатора.
-     */
-    getId(): string;
+    readonly id: ComputedRef<string>;
     /**
      * Render the label
      *

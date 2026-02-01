@@ -207,9 +207,7 @@ export class AriaStaticInclude {
   static live(
     live?: AriaList['aria-live']
   ): AriaList {
-    return {
-      'aria-live': live
-    }
+    return this.isDataToData('aria-live', live)
   }
 
   /**

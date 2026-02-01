@@ -10,6 +10,17 @@ import {
  * Объект wikiTechnical содержит общие технические свойства для всех компонентов
  */
 export const wikiTechnical: StorybookArgsToList = {
+  descriptionId: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Unique identifier for the description element',
+        ru: 'Уникальный идентификатор для элемента описания'
+      }
+    }
+  },
   helperId: {
     type: StorybookControl.string,
     options: {
@@ -59,7 +70,7 @@ export const wikiTechnical: StorybookArgsToList = {
     options: {
       category: StorybookCategory.technical,
       description: {
-        en: 'Two-way binding for open state (v-model:open)',
+        en: 'Two-way binding for the open state (v-model:open)',
         ru: 'Двусторонняя привязка состояния открытия (v-model:open)'
       }
     }
@@ -69,7 +80,7 @@ export const wikiTechnical: StorybookArgsToList = {
     options: {
       category: StorybookCategory.technical,
       description: {
-        en: 'Two-way binding for selected state (v-model:selected)',
+        en: 'Two-way binding for the selected state (v-model:selected)',
         ru: 'Двусторонняя привязка состояния выбора (v-model:selected)'
       }
     }

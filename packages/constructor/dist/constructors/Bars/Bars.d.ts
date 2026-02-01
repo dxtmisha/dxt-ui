@@ -1,8 +1,9 @@
 import { Ref, ToRefs, ComputedRef } from 'vue';
-import { ConstrEmit, DesignComp, ConstrBind } from '@dxtmisha/functional';
+import { ConstrClass, ConstrEmit, DesignComp, ConstrBind } from '@dxtmisha/functional';
 import { LabelInclude } from '../../classes/LabelInclude';
 import { DescriptionInclude } from '../../classes/DescriptionInclude';
 import { EventClickInclude } from '../../classes/EventClickInclude';
+import { ModelInclude } from '../../classes/ModelInclude';
 import { BarsAction } from './BarsAction';
 import { WindowClassesInclude } from '../Window';
 import { MotionTransformClassesInclude } from '../MotionTransform';
@@ -27,8 +28,11 @@ export declare class Bars {
     protected readonly emits?: ConstrEmit<BarsEmits> | undefined;
     /** Управление action‑режимом */
     readonly action: BarsAction;
+    /** Label object/ Объект метки */
     readonly label: LabelInclude;
+    /** Description object/ Объект описания */
     readonly description: DescriptionInclude;
+    /** Event object/ Объект события */
     readonly event: EventClickInclude;
     /** Helper for Window CSS classes/ Вспомогательный класс для CSS‑классов Window */
     readonly windowClasses: WindowClassesInclude;
@@ -36,6 +40,7 @@ export declare class Bars {
     readonly motionTransformClasses: MotionTransformClassesInclude;
     /** Подключение скелетона для текста/описания */
     readonly skeleton: SkeletonInclude;
+    /** Text object/ Объект текста */
     readonly text: TextInclude;
     /**
      * Constructor
@@ -47,8 +52,17 @@ export declare class Bars {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param BarsActionConstructor class for managing action mode/ класс для управления action-режимом
+     * @param LabelConstructor class for creating a label/ класс для создания метки
+     * @param DescriptionConstructor class for creating a description/ класс для создания описания
+     * @param EventConstructor class for creating an event/ класс для создания события
+     * @param WindowClassesConstructor helper class for Window CSS classes/ вспомогательный класс для CSS-классов Window
+     * @param MotionTransformClassesConstructor helper class for MotionTransform CSS classes/ вспомогательный класс для CSS-классов MotionTransform
+     * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
+     * @param TextConstructor class for creating text/ класс для создания текста
+     * @param ModelConstructor class for working with models/ класс для работы с моделями
      */
-    constructor(props: BarsProps, refs: ToRefs<BarsProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<BarsComponents, BarsProps> | undefined, slots?: BarsSlots | undefined, emits?: ConstrEmit<BarsEmits> | undefined);
+    constructor(props: BarsProps, refs: ToRefs<BarsProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<BarsComponents, BarsProps> | undefined, slots?: BarsSlots | undefined, emits?: ConstrEmit<BarsEmits> | undefined, BarsActionConstructor?: typeof BarsAction, LabelConstructor?: typeof LabelInclude, DescriptionConstructor?: typeof DescriptionInclude, EventConstructor?: typeof EventClickInclude, WindowClassesConstructor?: typeof WindowClassesInclude, MotionTransformClassesConstructor?: typeof MotionTransformClassesInclude, SkeletonConstructor?: typeof SkeletonInclude, TextConstructor?: typeof TextInclude, ModelConstructor?: typeof ModelInclude);
     /** Returns the button data/ Возвращает данные кнопки */
     readonly backBinds: ComputedRef< ConstrBind<ButtonPropsBasic> | undefined>;
     /** Returns the list of control buttons/ Возвращает список кнопок управления */
@@ -60,6 +74,18 @@ export declare class Bars {
     readonly actionBarsBinds: ComputedRef< ConstrBind<ButtonPropsBasic>[] | undefined>;
     /** Returns the button name/ Возвращает название кнопки */
     readonly backLabel: ComputedRef<string | number | undefined>;
+    /**
+     * Values for the class.
+     *
+     * Значения для класса.
+     */
+    readonly classes: ComputedRef<ConstrClass>;
+    /**
+     * Returns the value for the aria-live property.
+     *
+     * Возвращает значение для свойства aria-live.
+     */
+    readonly ariaLive: ComputedRef<"off" | "polite" | undefined>;
     /** Binds for label text/ Привязки для текста метки */
     protected readonly labelBinds: {
         label: NumberOrString | undefined;

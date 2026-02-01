@@ -30,8 +30,16 @@ export class BarsAction {
     }
   }
 
-  /** Вычисляемый флаг активности action / Computed active flag */
-  readonly is = computed<boolean>(() => this.props.action || this.action.value)
+  /**
+   * Checks if action mode is possible.
+   *
+   * Проверяет, возможен ли режим действий.
+   */
+  readonly isPossible = computed<boolean>(() => Boolean(
+    this.props.actionLabel
+    || this.props.actionDescription
+    || this.props.actionBars
+  ))
 
   /**
    * Включить action‑режим.

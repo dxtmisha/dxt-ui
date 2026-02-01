@@ -5,10 +5,9 @@ import { SkeletonPropsInclude } from '../Skeleton';
 import { LabelProps } from '../../types/labelTypes';
 import { DescriptionProps } from '../../types/descriptionTypes';
 import { TextClosePropsInclude } from '../../types/textTypes';
-export type BarsPropsToken = {
-    action?: boolean;
-};
+export type BarsPropsToken = {};
 export type BarsPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic> = LabelProps & DescriptionProps & SkeletonPropsInclude & TextClosePropsInclude & {
+    'action'?: boolean;
     'backButton'?: ConstrBind<Button>;
     'backHide'?: boolean;
     'backActionHide'?: boolean;

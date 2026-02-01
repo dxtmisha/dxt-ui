@@ -21,7 +21,8 @@
     "background-color": "{sys.palette.inverseSurface}",
     "#description": {
       "color-opacity": "{sys.opacity.primary.medium}"
-    }
+    },
+    "_prop": false
   },
   "~padding": {
     "link|padding": "{?cell.padding}"

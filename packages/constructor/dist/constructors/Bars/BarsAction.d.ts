@@ -16,8 +16,12 @@ export declare class BarsAction {
      * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
      */
     constructor(props: BarsProps, refs: ToRefs<BarsProps>);
-    /** Вычисляемый флаг активности action / Computed active flag */
-    readonly is: ComputedRef<boolean>;
+    /**
+     * Checks if action mode is possible.
+     *
+     * Проверяет, возможен ли режим действий.
+     */
+    readonly isPossible: ComputedRef<boolean>;
     /**
      * Включить action‑режим.
      *
