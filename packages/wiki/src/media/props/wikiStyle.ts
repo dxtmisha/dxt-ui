@@ -538,7 +538,7 @@ export const wikiStyle: StorybookArgsToList = {
   touchClose: {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Enables closing the component by a swipe-down gesture on mobile devices',
         ru: 'Включает закрытие компонента жестом свайпа вниз на мобильных устройствах'

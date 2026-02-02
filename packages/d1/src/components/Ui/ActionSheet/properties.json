@@ -1,5 +1,7 @@
 {
   "main": "{d.actionSheet}",
+  "paddingX": "{grid.paddingX}",
+  "paddingY": "{grid.paddingY}",
   "#footer": {
     "gap": "{sys.spacing.xs}"
   },
@@ -10,14 +12,6 @@
     "background-color": "{sys.palette.scrim}",
     "background-opacity": "{sys.opacity.scrim}",
     "border-radius": "{sys.rounded.full}"
-  },
-  "padding": {
-    "link|padding": "{?modal.padding}"
-  },
-  "~paddingByIndent": {
-    "paddingX": "{grid.paddingX}",
-    "paddingY": "{grid.paddingY}",
-    "_default": true
   },
   "width": {
     "sm": {

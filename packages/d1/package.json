@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui dialog",
+    "dxt-ui": "dxt-ui actionSheet",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -86,6 +86,10 @@
     "./D1Dialog": {
       "types": "./dist/D1Dialog.d.ts",
       "default": "./dist/D1Dialog.js"
+    },
+    "./D1ActionSheet": {
+      "types": "./dist/D1ActionSheet.d.ts",
+      "default": "./dist/D1ActionSheet.js"
     }
   },
   "buildOptions": {

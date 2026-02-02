@@ -52,9 +52,7 @@ export class ActionSheet extends ModalAbstract {
         closeMobileHide: props.touchClose
       })),
       undefined,
-      {
-        align: 'auto'
-      }
+      { align: 'auto' }
     )
 
     this.touchEvent = new TouchEventInclude(

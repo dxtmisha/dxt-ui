@@ -29,8 +29,6 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-actionSheet': true,
-    [`d1-actionSheet--padding--${props.padding}`]: inArray(propsValues.padding, props.padding),
-    'd1-actionSheet--paddingByIndent': props.paddingByIndent,
     [`d1-actionSheet--width--${props.width}`]: inArray(propsValues.width, props.width)
     // :classes-values [!] System label / Системная метка
   }

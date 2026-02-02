@@ -7123,21 +7123,15 @@
         "name": "d1-actionSheet",
         "type": "component",
         "value": {
-          "paddingByIndent": {
-            "name": "&--paddingByIndent",
-            "type": "state",
-            "value": {
-              "paddingX": {
-                "name": "--d1-actionSheet-paddingX",
-                "type": "var",
-                "value": "{grid.paddingX}"
-              },
-              "paddingY": {
-                "name": "--d1-actionSheet-paddingY",
-                "type": "var",
-                "value": "{grid.paddingY}"
-              }
-            }
+          "paddingX": {
+            "name": "--d1-actionSheet-paddingX",
+            "type": "var",
+            "value": "{grid.paddingX}"
+          },
+          "paddingY": {
+            "name": "--d1-actionSheet-paddingY",
+            "type": "var",
+            "value": "{grid.paddingY}"
           },
           "width": {
             "name": "&--width",

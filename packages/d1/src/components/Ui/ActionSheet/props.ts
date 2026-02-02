@@ -6,15 +6,12 @@ import { type ActionSheetPropsBasic, defaultsActionSheet } from '@dxtmisha/const
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  padding: ['sm', 'md', 'lg'],
   width: ['sm', 'md', 'lg', 'auto']
   // :values [!] System label / Системная метка
 }
 
 export type PropsToken = {
   // :type [!] System label / Системная метка
-  padding?: 'sm' | 'md' | 'lg'
-  paddingByIndent?: boolean
   width?: 'sm' | 'md' | 'lg' | 'auto'
   // :type [!] System label / Системная метка
 }
@@ -31,7 +28,6 @@ export const defaults: object = {
   ...defaultsActionSheet,
   ...{
     // :default [!] System label / Системная метка
-    paddingByIndent: true,
     width: 'md'
     // :default [!] System label / Системная метка
   }

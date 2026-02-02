@@ -207,5 +207,56 @@ export const wikiDescriptionsActionSheet: StorybookComponentsDescriptionItem = {
 <Canvas of={Component.ActionSheetAllSlots}/>
 <StorybookDescriptions componentName={'Window'} type={'slots'}/>
     `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item" style="min-width: 800px;">
+  <ActionSheet embedded open v-bind="args">
+    <template #control="{ binds }">
+      <button v-bind="binds">Open Menu</button>
+    </template>
+    <template #default>Content goes here...</template>
+  </ActionSheet>
+</div>
+    `,
+    description: `
+ActionSheet is a mobile-optimized modal component that slides up from the bottom of the screen (Bottom Sheet).
+It is designed to present a set of actions, choices, or secondary content, following standard mobile interface patterns (iOS/Material).
+
+**Key Features:**
+1. **Positioning & Animation:**
+   - Anchored to the bottom of the viewport.
+   - Slides up with an animation when opened.
+   - Renders a backdrop (overlay) to block background interactions.
+
+2. **Mobile Interactions:**
+   - **Touch Close:** Supports swiping down on the header to close the sheet (controlled by the \`touchClose\` prop).
+   - **Backdrop:** Clicking the overlay closes the sheet.
+   - **Scroll:** Automatically handles internal scrolling if content exceeds height.
+
+3. **Slots Structure:**
+   - \`#control\` - The trigger element (e.g., a button). Receives \`binds\` to toggle visibility.
+   - \`#title\` - The header area. Often contains the title and the drag handle (indicator).
+   - \`#default\` - The main content area.
+   - \`#footer\` - The bottom area, typically used for a "Cancel" button or primary actions.
+
+**Usage Examples:**
+
+- **With Trigger:**
+  \`<ActionSheet>
+     <template #control="{ binds }">
+       <button v-bind="binds">Open Menu</button>
+     </template>
+     <template #title>Select Option</template>
+     <template #default>
+       <p>List of options...</p>
+     </template>
+   </ActionSheet>\`
+
+- **Programmatic Control:**
+  \`<ActionSheet v-model:open="isOpen" touch-close>
+     <template #default>Content</template>
+   </ActionSheet>\`
+    `
   }
 }
