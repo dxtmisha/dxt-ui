@@ -32,16 +32,6 @@ export const wikiWindow: StorybookArgsToList = {
       options: []
     }
   },
-  'window.autoClose': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.option,
-      description: {
-        en: 'Closes window when clicking anywhere inside content',
-        ru: 'Закрывает окно при клике в любом месте содержимого'
-      }
-    }
-  },
   'window.beforeClosing': {
     type: StorybookControl.object,
     options: {

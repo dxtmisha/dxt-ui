@@ -1,11 +1,11 @@
-var m = Object.defineProperty;
-var v = (o, i, t) => i in o ? m(o, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : o[i] = t;
-var r = (o, i, t) => v(o, typeof i != "symbol" ? i + "" : i, t);
-import { computed as w, h as a } from "vue";
-import { getRef as b, DesignConstructorAbstract as p, toBinds as A } from "@dxtmisha/functional";
-import { B as S } from "./BarsInclude-IM3Gdslg.js";
+var b = Object.defineProperty;
+var p = (n, i, t) => i in n ? b(n, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[i] = t;
+var o = (n, i, t) => p(n, typeof i != "symbol" ? i + "" : i, t);
+import { h as d } from "vue";
+import { getElementId as v, DesignConstructorAbstract as I, toBinds as A } from "@dxtmisha/functional";
+import { B as S } from "./BarsInclude-BOEoY-O4.js";
 import { A as g } from "./ActionsInclude-H5ZWeXJj.js";
-import { W as D } from "./WindowInclude-Is5RhGxt.js";
+import { W as D } from "./WindowInclude-BWm4-0Gh.js";
 class F {
   /**
    * Constructor
@@ -21,66 +21,69 @@ class F {
    * @param extraBars additional parameters for BarsInclude/ дополнительные параметры для BarsInclude
    * @param extraActions additional parameters for ActionsInclude/ дополнительные параметры для ActionsInclude
    */
-  constructor(i, t, s, e, n, h, f, l, d, c, u) {
-    r(this, "bars");
-    r(this, "actions");
-    r(this, "window");
-    this.props = i, this.refs = t, this.element = s, this.classDesign = e, this.className = n, this.components = h, this.slots = f, this.emits = l, this.extraWindow = d, this.extraBars = c, this.extraActions = u, this.bars = new S(
+  constructor(i, t, s, e, r, l, w, h, a, c, u) {
+    o(this, "bars");
+    o(this, "actions");
+    o(this, "window");
+    this.props = i, this.refs = t, this.element = s, this.classDesign = e, this.className = r, this.components = l, this.slots = w, this.emits = h, this.extraWindow = a, this.extraBars = c, this.extraActions = u;
+    const f = v(), m = v();
+    this.bars = new S(
       i,
-      n,
-      h,
+      r,
       l,
-      c
+      h,
+      c,
+      f,
+      m
     ), this.actions = new g(
       i,
-      n,
-      h,
+      r,
       l,
+      h,
       u
     ), this.window = new D(
       i,
-      n,
-      h,
+      r,
       l,
-      w(() => ({
-        ...b(d)
-        // ariaLabelledby: this.bars.element.value?.labelId,
-        // ariaDescribedby: this.bars.element.value?.descriptionId
-      }))
+      h,
+      a,
+      f,
+      m
     );
   }
 }
-class R extends p {
+class T extends I {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor window item class/ класс элемента окна
    */
-  constructor(t, s, e) {
+  constructor(t, s, e, r) {
     super(
       t,
       s,
       e
     );
-    r(this, "item");
+    o(this, "item");
     /**
      * Generates data for control.<br>
      * Генерирует данные для контроля.
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
-    r(this, "renderControl", (t) => this.initSlot("control", void 0, t));
+    o(this, "renderControl", (t) => this.initSlot("control", void 0, t));
     /**
      * Generates data for the header.
      *
      * Генерирует данные для заголовка.
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
-    r(this, "renderTitle", (t) => {
+    o(this, "renderTitle", (t) => {
       var e;
       const s = [];
       return this.item.bars.is.value && s.push(...this.item.bars.render()), this.slots && "title" in this.slots && s.push(
-        a(
+        d(
           "div",
           { class: (e = this.classes) == null ? void 0 : e.value.title },
           this.initSlot("title", void 0, t)
@@ -93,19 +96,19 @@ class R extends p {
      * Генерирует тела.
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
-    r(this, "renderDefault", (t) => {
-      var e, n;
+    o(this, "renderDefault", (t) => {
+      var e, r;
       const s = [];
       return this.slots && "header" in this.slots && s.push(
-        a(
+        d(
           "div",
           { class: (e = this.classes) == null ? void 0 : e.value.header },
           this.initSlot("header", void 0, t)
         )
       ), this.slots && "default" in this.slots && s.push(
-        a(
+        d(
           "div",
-          { class: (n = this.classes) == null ? void 0 : n.value.body },
+          { class: (r = this.classes) == null ? void 0 : r.value.body },
           this.initSlot("default", void 0, t)
         )
       ), s;
@@ -116,18 +119,18 @@ class R extends p {
      * Генерирует данные для нужной части.
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
-    r(this, "renderFooter", (t) => {
+    o(this, "renderFooter", (t) => {
       var e;
       const s = [];
       return this.item.actions.is.value && s.push(...this.item.actions.render()), this.slots && "footer" in this.slots && s.push(
-        a(
+        d(
           "div",
           { class: (e = this.classes) == null ? void 0 : e.value.footer },
           this.initSlot("footer", void 0, t)
         )
       ), s;
     });
-    this.item = this.initItem(), this.init();
+    this.item = this.initItem(r), this.init();
   }
   /**
    * Initialization of all the necessary properties for work
@@ -172,5 +175,5 @@ class R extends p {
 }
 export {
   F as M,
-  R as a
+  T as a
 };

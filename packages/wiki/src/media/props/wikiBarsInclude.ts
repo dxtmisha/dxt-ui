@@ -38,7 +38,8 @@ export const wikiBarsInclude: StorybookArgsToList = {
       description: {
         en: 'Description text displayed in the bars area (subtitle/help)',
         ru: 'Текст описания, отображаемый в области бара (подзаголовок/подсказка)'
-      }
+      },
+      value: 'Welcome to the application!'
     }
   },
   barsHide: {
@@ -59,7 +60,8 @@ export const wikiBarsInclude: StorybookArgsToList = {
       description: {
         en: 'Label or numeric indicator shown in the bars header',
         ru: 'Метка или числовой индикатор, отображаемый в заголовке бара'
-      }
+      },
+      value: 'Hello friend'
     }
   },
   barsList: {

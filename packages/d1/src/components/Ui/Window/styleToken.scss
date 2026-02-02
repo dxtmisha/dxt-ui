@@ -407,6 +407,10 @@
       }
     }
     
+    &--closeButton {
+      --d1-window-sysMarginRight: var(--d1-ref-spacing-11);
+    }
+    
     &--imageSize {
       &--sm {
         --d1-window-imageSizeValue: calc(var(--d1-ref-spacing-px) * 128);

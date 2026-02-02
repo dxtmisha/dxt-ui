@@ -3,6 +3,9 @@
   "padding": {
     "_type": "var"
   },
+  "sysMarginRight": {
+    "_type": "var"
+  },
   "width": {
     "value": {
       "auto": "auto",
@@ -231,6 +234,7 @@
   "~overscroll": {
     "_default": true
   },
+  "~closeButton": {},
   "~closeMobileHide": {},
   "~widthMatch": {}
 }

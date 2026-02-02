@@ -12,7 +12,7 @@ import { T as W } from "./TextInclude-CodMN5BH.js";
 import { W as N } from "./WindowClassesInclude-B56usxgx.js";
 import { M as O } from "./MotionTransformClassesInclude-B23RIq0Q.js";
 import { S as R } from "./SkeletonInclude-BIUzAO2s.js";
-import { B as nt } from "./BarsInclude-IM3Gdslg.js";
+import { B as nt } from "./BarsInclude-BOEoY-O4.js";
 class V {
   /**
    * Constructor

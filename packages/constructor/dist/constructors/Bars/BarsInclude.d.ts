@@ -19,7 +19,10 @@ export declare class BarsInclude<Props extends BarsPropsInclude = BarsPropsInclu
     protected readonly components?: DesignComponents<BarsComponentInclude, Props> | undefined;
     protected readonly emits?: ConstrEmit<BarsEmitsInclude> | undefined;
     protected readonly extra?: RefOrNormal<PropsExtra> | undefined;
+    protected readonly labelId?: string | undefined;
+    protected readonly descriptionId?: string | undefined;
     protected readonly index?: string | undefined;
+    /** Element reference/ Ссылка на элемент */
     readonly element: Ref<BarsExpose | undefined, BarsExpose | undefined>;
     /**
      * Constructor
@@ -27,10 +30,12 @@ export declare class BarsInclude<Props extends BarsPropsInclude = BarsPropsInclu
      * @param className class name/ название класса
      * @param components object for working with components/ объект для работы с компонентами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
+     * @param extra additional parameter or property name/ дополнительный параметр или имя
+     * @param labelId identifier for the label/ идентификатор для метки
+     * @param descriptionId identifier for the description/ идентификатор для описания
      * @param index index identifier/ идентификатор индекса
      */
-    constructor(props: Readonly<Props>, className: string, components?: DesignComponents<BarsComponentInclude, Props> | undefined, emits?: ConstrEmit<BarsEmitsInclude> | undefined, extra?: RefOrNormal<PropsExtra> | undefined, index?: string | undefined);
+    constructor(props: Readonly<Props>, className: string, components?: DesignComponents<BarsComponentInclude, Props> | undefined, emits?: ConstrEmit<BarsEmitsInclude> | undefined, extra?: RefOrNormal<PropsExtra> | undefined, labelId?: string | undefined, descriptionId?: string | undefined, index?: string | undefined);
     /**
      * Checks whether bars should be displayed/
      * Проверяет, нужно ли отображать панели

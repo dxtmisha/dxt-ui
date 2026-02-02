@@ -1,9 +1,9 @@
-var d = Object.defineProperty;
-var g = (p, e, t) => e in p ? d(p, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : p[e] = t;
-var o = (p, e, t) => g(p, typeof e != "symbol" ? e + "" : e, t);
-import { ref as m, computed as l } from "vue";
-import { toBind as h, getRef as a } from "@dxtmisha/functional";
-class v {
+var g = Object.defineProperty;
+var m = (a, e, t) => e in a ? g(a, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : a[e] = t;
+var o = (a, e, t) => m(a, typeof e != "symbol" ? e + "" : e, t);
+import { ref as u, computed as l } from "vue";
+import { toBind as h, getRef as p } from "@dxtmisha/functional";
+class y {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -11,24 +11,28 @@ class v {
    * @param components object for working with components/ объект для работы с компонентами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
+   * @param ariaLabelledby identifier for the label/ идентификатор для метки
+   * @param ariaDescribedby identifier for the description/ идентификатор для описания
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(e, t, n, i, s, r) {
+  constructor(e, t, i, s, n, r, d, c) {
     /** Reference to window element expose/ Ссылка на expose элемента окна */
-    o(this, "element", m());
+    o(this, "element", u());
     /** Computed bindings for the window/ Вычисляемые привязки для окна */
     o(this, "binds", l(() => {
-      var t, n;
+      var t, i;
       return {
         ...h(
-          (t = a(this.extra)) != null ? t : {},
-          (n = this.props.windowAttrs) != null ? n : {}
+          (t = p(this.extra)) != null ? t : {},
+          (i = this.props.windowAttrs) != null ? i : {}
         ),
         disabled: this.props.disabled,
         autoClose: this.props.autoClose,
         preparation: this.getPreparation,
         opening: this.getOpening,
-        closing: this.getClosing
+        closing: this.getClosing,
+        ariaLabelledby: this.ariaLabelledby,
+        ariaDescribedby: this.ariaDescribedby
       };
     }));
     /**
@@ -87,18 +91,18 @@ class v {
     ) : []);
     /** Returns preparation result/ Возвращает результат preparation */
     o(this, "getPreparation", () => {
-      var e, t, n, i, s;
-      return (s = (t = (e = a(this.extra)) == null ? void 0 : e.preparation) == null ? void 0 : t.call(e)) != null ? s : (i = (n = this.props.windowAttrs) == null ? void 0 : n.preparation) == null ? void 0 : i.call(n);
+      var e, t, i, s, n;
+      return (n = (t = (e = p(this.extra)) == null ? void 0 : e.preparation) == null ? void 0 : t.call(e)) != null ? n : (s = (i = this.props.windowAttrs) == null ? void 0 : i.preparation) == null ? void 0 : s.call(i);
     });
     /** Returns opening result/ Возвращает результат opening */
     o(this, "getOpening", () => {
-      var e, t, n, i, s, r;
-      return (r = (s = (t = (e = a(this.extra)) == null ? void 0 : e.opening) == null ? void 0 : t.call(e)) != null ? s : (i = (n = this.props.windowAttrs) == null ? void 0 : n.opening) == null ? void 0 : i.call(n)) != null ? r : !0;
+      var e, t, i, s, n, r;
+      return (r = (n = (t = (e = p(this.extra)) == null ? void 0 : e.opening) == null ? void 0 : t.call(e)) != null ? n : (s = (i = this.props.windowAttrs) == null ? void 0 : i.opening) == null ? void 0 : s.call(i)) != null ? r : !0;
     });
     /** Returns closing result/ Возвращает результат closing */
     o(this, "getClosing", () => {
-      var e, t, n, i, s, r;
-      return (r = (s = (t = (e = a(this.extra)) == null ? void 0 : e.closing) == null ? void 0 : t.call(e)) != null ? s : (i = (n = this.props.windowAttrs) == null ? void 0 : n.closing) == null ? void 0 : i.call(n)) != null ? r : !0;
+      var e, t, i, s, n, r;
+      return (r = (n = (t = (e = p(this.extra)) == null ? void 0 : e.closing) == null ? void 0 : t.call(e)) != null ? n : (s = (i = this.props.windowAttrs) == null ? void 0 : i.closing) == null ? void 0 : s.call(i)) != null ? r : !0;
     });
     /**
      * Emits 'window' event upward/
@@ -109,9 +113,9 @@ class v {
       var t;
       (t = this.emits) == null || t.call(this, "window", e);
     });
-    this.props = e, this.className = t, this.components = n, this.emits = i, this.extra = s, this.index = r;
+    this.props = e, this.className = t, this.components = i, this.emits = s, this.extra = n, this.ariaLabelledby = r, this.ariaDescribedby = d, this.index = c;
   }
 }
 export {
-  v as W
+  y as W
 };

@@ -1,26 +1,9 @@
 {
   "main": "{d.modal}",
+  "paddingX": "{grid.paddingX}",
+  "paddingY": "{grid.paddingY}",
   "#footer": {
     "gap": "{sys.spacing.xs}"
-  },
-  "~padding": {
-    "sm": {
-      "paddingX": "{sys.spacing.sm}",
-      "paddingY": "{sys.spacing.xs}"
-    },
-    "md": {
-      "paddingX": "{sys.spacing.md}",
-      "paddingY": "{sys.spacing.sm}"
-    },
-    "lg": {
-      "paddingX": "{sys.spacing.lg}",
-      "paddingY": "{sys.spacing.md}"
-    }
-  },
-  "~paddingByIndent": {
-    "paddingX": "{grid.paddingX}",
-    "paddingY": "{grid.paddingY}",
-    "_default": true
   },
   "width": {
     "sm": {

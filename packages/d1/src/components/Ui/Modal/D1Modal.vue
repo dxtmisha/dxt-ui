@@ -30,8 +30,6 @@ const classesToken = computed<ConstrClasses>(() => ({
     // :classes-values [!] System label / Системная метка
     'd1-modal': true,
     [`d1-modal--imagePosition--${props.imagePosition}`]: inArray(propsValues.imagePosition, props.imagePosition),
-    [`d1-modal--padding--${props.padding}`]: inArray(propsValues.padding, props.padding),
-    'd1-modal--paddingByIndent': props.paddingByIndent,
     [`d1-modal--width--${props.width}`]: inArray(propsValues.width, props.width)
     // :classes-values [!] System label / Системная метка
   }

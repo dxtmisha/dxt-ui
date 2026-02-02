@@ -1,11 +1,11 @@
 import { EventItem } from '@dxtmisha/functional';
+import { TabIndexInclude } from '../../classes/TabIndexInclude';
 import { WindowStatus } from './WindowStatus';
 import { WindowClient } from './WindowClient';
 import { WindowFlash } from './WindowFlash';
 import { WindowOpen } from './WindowOpen';
 import { WindowVerification } from './WindowVerification';
 import { WindowProps } from './props';
-import { TabIndexInclude } from '../../classes/TabIndexInclude.ts';
 /**
  * A class for working with events.
  *

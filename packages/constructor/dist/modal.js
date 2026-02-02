@@ -1,12 +1,12 @@
 import { computed as l } from "vue";
 import "@dxtmisha/functional";
-import { M as m, a as d } from "./ModalDesignAbstract-CPwmNJPc.js";
+import { M as d, a as g } from "./ModalDesignAbstract-D4A_a_rC.js";
 const f = {
   barsBackHide: !0,
   // :default [!] System label / Системная метка
   imagePosition: "top"
 };
-class g extends m {
+class m extends d {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -18,12 +18,12 @@ class g extends m {
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
-  constructor(t, s, e, i, a, o, h, n) {
+  constructor(t, s, i, e, a, o, h, n) {
     super(
       t,
       s,
-      e,
       i,
+      e,
       a,
       o,
       h,
@@ -35,12 +35,12 @@ class g extends m {
         imagePosition: t.imagePosition,
         closeButton: t.barsBackHide
       }))
-    ), this.props = t, this.refs = s, this.element = e, this.classDesign = i, this.className = a, this.components = o, this.slots = h, this.emits = n;
+    ), this.props = t, this.refs = s, this.element = i, this.classDesign = e, this.className = a, this.components = o, this.slots = h, this.emits = n;
   }
 }
-class M extends d {
-  initItem() {
-    return new g(
+class M extends g {
+  initItem(t) {
+    return new (t != null ? t : m)(
       this.props,
       this.refs,
       this.element,
@@ -68,7 +68,7 @@ class M extends d {
   }
 }
 export {
-  g as Modal,
+  m as Modal,
   M as ModalDesign,
   f as defaultsModal
 };

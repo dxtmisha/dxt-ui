@@ -7,7 +7,6 @@ import type { ImageProps } from '../Image'
 export const propsValues = {
   // :values [!] System label / Системная метка
   imagePosition: ['top', 'left'],
-  padding: ['sm', 'md', 'lg'],
   width: ['sm', 'md', 'lg', 'auto']
   // :values [!] System label / Системная метка
 }
@@ -15,8 +14,6 @@ export const propsValues = {
 export type PropsToken = {
   // :type [!] System label / Системная метка
   imagePosition?: 'top' | 'left'
-  padding?: 'sm' | 'md' | 'lg'
-  paddingByIndent?: boolean
   width?: 'sm' | 'md' | 'lg' | 'auto'
   // :type [!] System label / Системная метка
 }
@@ -35,7 +32,6 @@ export const defaults: object = {
   ...{
     // :default [!] System label / Системная метка
     imagePosition: 'top',
-    paddingByIndent: true,
     width: 'md'
     // :default [!] System label / Системная метка
   }

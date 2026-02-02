@@ -27,6 +27,7 @@ export class BarsInclude<
   Props extends BarsPropsInclude = BarsPropsInclude,
   PropsExtra extends ConstrBind<BarsProps> = ConstrBind<BarsProps>
 > {
+  /** Element reference/ Ссылка на элемент */
   readonly element = ref<BarsExpose>()
 
   /**
@@ -35,7 +36,9 @@ export class BarsInclude<
    * @param className class name/ название класса
    * @param components object for working with components/ объект для работы с компонентами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
+   * @param extra additional parameter or property name/ дополнительный параметр или имя
+   * @param labelId identifier for the label/ идентификатор для метки
+   * @param descriptionId identifier for the description/ идентификатор для описания
    * @param index index identifier/ идентификатор индекса
    */
   constructor(
@@ -44,6 +47,8 @@ export class BarsInclude<
     protected readonly components?: DesignComponents<BarsComponentInclude, Props>,
     protected readonly emits?: ConstrEmit<BarsEmitsInclude>,
     protected readonly extra?: RefOrNormal<PropsExtra>,
+    protected readonly labelId?: string,
+    protected readonly descriptionId?: string,
     protected readonly index?: string
   ) {
   }
@@ -69,7 +74,9 @@ export class BarsInclude<
     return {
       ...props,
 
+      labelId: this.labelId,
       label: this.props.barsLabel,
+      descriptionId: this.descriptionId,
       description: this.props.barsDescription,
       backHide: this.props.barsBackHide,
       bars: this.props.barsList

@@ -61,7 +61,7 @@ export const wikiStyle: StorybookArgsToList = {
   autoClose: {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
 
       description: {
         en: 'Closes the window/menu when clicking inside the content area',

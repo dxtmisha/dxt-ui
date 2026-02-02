@@ -32,6 +32,8 @@ export class WindowInclude<
    * @param components object for working with components/ объект для работы с компонентами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
+   * @param ariaLabelledby identifier for the label/ идентификатор для метки
+   * @param ariaDescribedby identifier for the description/ идентификатор для описания
    * @param index index identifier/ идентификатор индекса
    */
   constructor(
@@ -40,6 +42,8 @@ export class WindowInclude<
     protected readonly components?: DesignComponents<WindowComponentInclude, Props>,
     protected readonly emits?: ConstrEmit<WindowEmitsInclude>,
     protected readonly extra?: RefOrNormal<PropsExtra>,
+    protected readonly ariaLabelledby?: string,
+    protected readonly ariaDescribedby?: string,
     protected readonly index?: string
   ) {
   }
@@ -62,7 +66,10 @@ export class WindowInclude<
 
       preparation: this.getPreparation,
       opening: this.getOpening,
-      closing: this.getClosing
+      closing: this.getClosing,
+
+      ariaLabelledby: this.ariaLabelledby,
+      ariaDescribedby: this.ariaDescribedby
     }
   })
 

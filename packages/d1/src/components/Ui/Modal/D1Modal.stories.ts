@@ -47,7 +47,7 @@ export const Modal: Story = {
           <p>Use modals sparingly and only for content that genuinely requires immediate attention. Ensure modals have clear actions (confirm/cancel), provide easy ways to dismiss them, and avoid nesting modals within modals. The component should be large enough to display content comfortably but not so large that it overwhelms the screen.</p>
 
           <h4>Relationship with Window</h4>
-          <p>Modal is essentially Window with <code>adaptive="modal"</code> preset, simplifying the usage for standard dialog scenarios. All Window properties, slots, and events are available in Modal component.</p>
+          <p>Modal is essentially Window with <code>adaptive="modal"</code> preset, simplifying the usage for standard dialog scenarios. All Window properties, slots, and events are available in a Modal component.</p>
         </template>
       </D1Modal>
     `
@@ -90,7 +90,7 @@ export const ModalAllSlots: Story = {
 
           <template #default>
             <h4>Default Slot Content</h4>
-            <p>This is the main content area of the modal. You can place any content here including text, forms, images, or other components.</p>
+            <p>This is the main content area of the modal. You can place any content here, including text, forms, images, or other components.</p>
 
             <div class="wiki-storybook-info">
               <strong>Available slots:</strong>

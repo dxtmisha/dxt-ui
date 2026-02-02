@@ -6,7 +6,7 @@ import { getBind as b, toBinds as w } from "@dxtmisha/functional";
 import { L as v } from "./LabelInclude-CEuTh1Qi.js";
 import { D as k } from "./DescriptionInclude-D4ane9aR.js";
 import { T as I } from "./TextInclude-CodMN5BH.js";
-import { M as S, a as x } from "./ModalDesignAbstract-CPwmNJPc.js";
+import { M as S, a as x } from "./ModalDesignAbstract-D4A_a_rC.js";
 import { I as D } from "./IconInclude-CLqwI29Q.js";
 import { W as A } from "./WindowClassesInclude-B56usxgx.js";
 class B extends S {

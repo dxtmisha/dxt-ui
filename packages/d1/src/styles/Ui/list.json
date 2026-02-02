@@ -7113,60 +7113,6 @@
         "name": "d1-actionSheet",
         "type": "component",
         "value": {
-          "padding": {
-            "name": "&--padding",
-            "type": "state",
-            "value": {
-              "sm": {
-                "name": "&--sm",
-                "type": "state",
-                "value": {
-                  "paddingX": {
-                    "name": "--d1-actionSheet-paddingX",
-                    "type": "var",
-                    "value": "{sys.spacing.sm}"
-                  },
-                  "paddingY": {
-                    "name": "--d1-actionSheet-paddingY",
-                    "type": "var",
-                    "value": "{sys.spacing.xs}"
-                  }
-                }
-              },
-              "md": {
-                "name": "&--md",
-                "type": "state",
-                "value": {
-                  "paddingX": {
-                    "name": "--d1-actionSheet-paddingX",
-                    "type": "var",
-                    "value": "{sys.spacing.md}"
-                  },
-                  "paddingY": {
-                    "name": "--d1-actionSheet-paddingY",
-                    "type": "var",
-                    "value": "{sys.spacing.sm}"
-                  }
-                }
-              },
-              "lg": {
-                "name": "&--lg",
-                "type": "state",
-                "value": {
-                  "paddingX": {
-                    "name": "--d1-actionSheet-paddingX",
-                    "type": "var",
-                    "value": "{sys.spacing.lg}"
-                  },
-                  "paddingY": {
-                    "name": "--d1-actionSheet-paddingY",
-                    "type": "var",
-                    "value": "{sys.spacing.md}"
-                  }
-                }
-              }
-            }
-          },
           "paddingByIndent": {
             "name": "&--paddingByIndent",
             "type": "state",
@@ -8396,60 +8342,6 @@
         "name": "d1-dialog",
         "type": "component",
         "value": {
-          "padding": {
-            "name": "&--padding",
-            "type": "state",
-            "value": {
-              "sm": {
-                "name": "&--sm",
-                "type": "state",
-                "value": {
-                  "paddingX": {
-                    "name": "--d1-dialog-paddingX",
-                    "type": "var",
-                    "value": "{sys.spacing.sm}"
-                  },
-                  "paddingY": {
-                    "name": "--d1-dialog-paddingY",
-                    "type": "var",
-                    "value": "{sys.spacing.xs}"
-                  }
-                }
-              },
-              "md": {
-                "name": "&--md",
-                "type": "state",
-                "value": {
-                  "paddingX": {
-                    "name": "--d1-dialog-paddingX",
-                    "type": "var",
-                    "value": "{sys.spacing.md}"
-                  },
-                  "paddingY": {
-                    "name": "--d1-dialog-paddingY",
-                    "type": "var",
-                    "value": "{sys.spacing.sm}"
-                  }
-                }
-              },
-              "lg": {
-                "name": "&--lg",
-                "type": "state",
-                "value": {
-                  "paddingX": {
-                    "name": "--d1-dialog-paddingX",
-                    "type": "var",
-                    "value": "{sys.spacing.lg}"
-                  },
-                  "paddingY": {
-                    "name": "--d1-dialog-paddingY",
-                    "type": "var",
-                    "value": "{sys.spacing.md}"
-                  }
-                }
-              }
-            }
-          },
           "paddingByIndent": {
             "name": "&--paddingByIndent",
             "type": "state",
@@ -9178,75 +9070,15 @@
         "name": "d1-modal",
         "type": "component",
         "value": {
-          "padding": {
-            "name": "&--padding",
-            "type": "state",
-            "value": {
-              "sm": {
-                "name": "&--sm",
-                "type": "state",
-                "value": {
-                  "paddingX": {
-                    "name": "--d1-modal-paddingX",
-                    "type": "var",
-                    "value": "{sys.spacing.sm}"
-                  },
-                  "paddingY": {
-                    "name": "--d1-modal-paddingY",
-                    "type": "var",
-                    "value": "{sys.spacing.xs}"
-                  }
-                }
-              },
-              "md": {
-                "name": "&--md",
-                "type": "state",
-                "value": {
-                  "paddingX": {
-                    "name": "--d1-modal-paddingX",
-                    "type": "var",
-                    "value": "{sys.spacing.md}"
-                  },
-                  "paddingY": {
-                    "name": "--d1-modal-paddingY",
-                    "type": "var",
-                    "value": "{sys.spacing.sm}"
-                  }
-                }
-              },
-              "lg": {
-                "name": "&--lg",
-                "type": "state",
-                "value": {
-                  "paddingX": {
-                    "name": "--d1-modal-paddingX",
-                    "type": "var",
-                    "value": "{sys.spacing.lg}"
-                  },
-                  "paddingY": {
-                    "name": "--d1-modal-paddingY",
-                    "type": "var",
-                    "value": "{sys.spacing.md}"
-                  }
-                }
-              }
-            }
+          "paddingX": {
+            "name": "--d1-modal-paddingX",
+            "type": "var",
+            "value": "{grid.paddingX}"
           },
-          "paddingByIndent": {
-            "name": "&--paddingByIndent",
-            "type": "state",
-            "value": {
-              "paddingX": {
-                "name": "--d1-modal-paddingX",
-                "type": "var",
-                "value": "{grid.paddingX}"
-              },
-              "paddingY": {
-                "name": "--d1-modal-paddingY",
-                "type": "var",
-                "value": "{grid.paddingY}"
-              }
-            }
+          "paddingY": {
+            "name": "--d1-modal-paddingY",
+            "type": "var",
+            "value": "{grid.paddingY}"
           },
           "width": {
             "name": "&--width",
@@ -10218,6 +10050,17 @@
                     }
                   }
                 }
+              }
+            }
+          },
+          "closeButton": {
+            "name": "&--closeButton",
+            "type": "state",
+            "value": {
+              "sysMarginRight": {
+                "name": "--d1-window-sysMarginRight",
+                "type": "var",
+                "value": "{ref.spacing.11}"
               }
             }
           },

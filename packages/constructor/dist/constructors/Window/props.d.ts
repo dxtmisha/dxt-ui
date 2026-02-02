@@ -16,6 +16,7 @@ export type WindowPropsToken = {
     adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static';
     fullscreen?: boolean;
     overscroll?: boolean;
+    closeButton?: boolean;
     closeMobileHide?: boolean;
     widthMatch?: boolean;
 };

@@ -79,5 +79,8 @@
       "imageSizeValue": "50%"
     },
     "_default": "md"
+  },
+  "~closeButton": {
+    "sysMarginRight": "{ref.spacing.11}"
   }
 }

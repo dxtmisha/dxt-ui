@@ -64,7 +64,7 @@
     height: ui.v('??imageSizeValue');
   }
 
-  & &__close {
+  &__close {
     position: absolute;
     top: ui.v('??iconPaddingY', 0);
     @include ui.right(ui.v('??iconPaddingX', 0));

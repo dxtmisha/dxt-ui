@@ -3,10 +3,10 @@ import { isDomRuntime } from '@dxtmisha/functional'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 import { WindowClasses } from './WindowClasses'
+import { WindowStatic } from './WindowStatic'
 
 import type { WindowOpen } from './WindowOpen'
-import type { WindowProps } from './props.ts'
-import { WindowStatic } from './WindowStatic.ts'
+import type { WindowProps } from './props'
 
 /**
  * A class for managing the hiding of elements outside the window when it is open.

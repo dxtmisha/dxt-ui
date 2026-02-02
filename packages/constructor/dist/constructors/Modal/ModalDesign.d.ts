@@ -6,7 +6,7 @@ import { ModalClasses, ModalComponents, ModalEmits, ModalExpose, ModalSlots } fr
  * ModalDesign
  */
 export declare class ModalDesign<COMP extends ModalComponents, EXPOSE extends ModalExpose, CLASSES extends ModalClasses, P extends ModalPropsBasic> extends ModalDesignAbstract<COMP, ModalEmits, EXPOSE, ModalSlots, CLASSES, P, Modal> {
-    protected initItem(): Modal;
+    protected initItem(Item?: typeof Modal): Modal;
     /**
      * Improvement of the obtained list of classes.
      *

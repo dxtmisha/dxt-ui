@@ -6,6 +6,7 @@ import D1Bars from '../../src/components/Ui/Bars/D1BarsAiWiki.vue'
 import D1Button from '../../src/components/Ui/Button/D1ButtonAiWiki.vue'
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
+import D1Modal from '../../src/components/Ui/Modal/D1ModalAiWiki.vue'
 import D1Progress from '../../src/components/Ui/Progress/D1ProgressAiWiki.vue'
 import D1Ripple from '../../src/components/Ui/Ripple/D1RippleAiWiki.vue'
 import D1Window from '../../src/components/Ui/Window/D1WindowAiWiki.vue'
@@ -16,6 +17,7 @@ export const aiList: any[] = [
   D1Button,
   D1Icon,
   D1Image,
+  D1Modal,
   D1Progress,
   D1Ripple,
   D1Window

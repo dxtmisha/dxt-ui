@@ -29,8 +29,8 @@ export class ModalDesign<
     P,
     Modal
   > {
-  protected initItem(): Modal {
-    return new Modal(
+  protected initItem(Item?: typeof Modal): Modal {
+    return new (Item ?? Modal)(
       this.props,
       this.refs,
       this.element,

@@ -1,7 +1,7 @@
 import { WindowClasses } from './WindowClasses';
+import { WindowStatic } from './WindowStatic';
 import { WindowOpen } from './WindowOpen';
-import { WindowProps } from './props.ts';
-import { WindowStatic } from './WindowStatic.ts';
+import { WindowProps } from './props';
 /**
  * A class for managing the hiding of elements outside the window when it is open.
  *

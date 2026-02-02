@@ -3,6 +3,8 @@
 @mixin mixinBars {
   display: flex;
 
+  margin-right: ui.v('?window.sysMarginRight', 0);
+
   transition: background-color ui.v('d.sys.transitionDuration.sm') linear;
 
   @include ui.mediaPrefersReducedMotion {

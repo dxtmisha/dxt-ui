@@ -11,30 +11,11 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    --d1-modal-paddingX: var(--d1-grid-paddingX);
+    --d1-modal-paddingY: var(--d1-grid-paddingY);
+    
     &__footer {
       gap: var(--d1-sys-spacing-xs);
-    }
-    
-    &--padding {
-      &--sm {
-        --d1-modal-paddingX: var(--d1-sys-spacing-sm);
-        --d1-modal-paddingY: var(--d1-sys-spacing-xs);
-      }
-      
-      &--md {
-        --d1-modal-paddingX: var(--d1-sys-spacing-md);
-        --d1-modal-paddingY: var(--d1-sys-spacing-sm);
-      }
-      
-      &--lg {
-        --d1-modal-paddingX: var(--d1-sys-spacing-lg);
-        --d1-modal-paddingY: var(--d1-sys-spacing-md);
-      }
-    }
-    
-    &--paddingByIndent {
-      --d1-modal-paddingX: var(--d1-grid-paddingX);
-      --d1-modal-paddingY: var(--d1-grid-paddingY);
     }
     
     &--width {

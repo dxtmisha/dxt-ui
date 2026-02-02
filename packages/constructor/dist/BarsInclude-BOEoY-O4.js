@@ -1,20 +1,23 @@
-var h = Object.defineProperty;
-var b = (i, s, t) => s in i ? h(i, s, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[s] = t;
-var r = (i, s, t) => b(i, typeof s != "symbol" ? s + "" : s, t);
-import { ref as c, computed as a } from "vue";
-import { toBinds as m, getRef as d } from "@dxtmisha/functional";
-class B {
+var c = Object.defineProperty;
+var d = (t, s, i) => s in t ? c(t, s, { enumerable: !0, configurable: !0, writable: !0, value: i }) : t[s] = i;
+var r = (t, s, i) => d(t, typeof s != "symbol" ? s + "" : s, i);
+import { ref as l, computed as a } from "vue";
+import { toBinds as m, getRef as k } from "@dxtmisha/functional";
+class u {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
    * @param className class name/ название класса
    * @param components object for working with components/ объект для работы с компонентами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
+   * @param extra additional parameter or property name/ дополнительный параметр или имя
+   * @param labelId identifier for the label/ идентификатор для метки
+   * @param descriptionId identifier for the description/ идентификатор для описания
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(s, t, e, o, p, n) {
-    r(this, "element", c());
+  constructor(s, i, e, o, p, n, h, b) {
+    /** Element reference/ Ссылка на элемент */
+    r(this, "element", l());
     /**
      * Checks whether bars should be displayed/
      * Проверяет, нужно ли отображать панели
@@ -23,11 +26,13 @@ class B {
     /** Computed bindings for the bars/ Вычисляемые привязки для панелей */
     r(this, "binds", a(() => ({
       ...m(
-        d(this.extra),
+        k(this.extra),
         this.props.barsAttrs,
         { class: `${this.className}__bars` }
       ),
+      labelId: this.labelId,
       label: this.props.barsLabel,
+      descriptionId: this.descriptionId,
       description: this.props.barsDescription,
       backHide: this.props.barsBackHide,
       bars: this.props.barsList
@@ -57,13 +62,13 @@ class B {
      * @param event native mouse event/ native событие мыши
      * @param value payload with { type, value, detail }/ данные события с { type, value, detail }
      */
-    r(this, "onClick", (s, t) => {
+    r(this, "onClick", (s, i) => {
       var e, o, p;
-      (e = this.emits) == null || e.call(this, "bars", s, t), (o = this.emits) == null || o.call(this, "barsLite", t), t.type === "back" && ((p = this.emits) == null || p.call(this, "barsBack", t));
+      (e = this.emits) == null || e.call(this, "bars", s, i), (o = this.emits) == null || o.call(this, "barsLite", i), i.type === "back" && ((p = this.emits) == null || p.call(this, "barsBack", i));
     });
-    this.props = s, this.className = t, this.components = e, this.emits = o, this.extra = p, this.index = n;
+    this.props = s, this.className = i, this.components = e, this.emits = o, this.extra = p, this.labelId = n, this.descriptionId = h, this.index = b;
   }
 }
 export {
-  B
+  u as B
 };

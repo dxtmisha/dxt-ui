@@ -15,6 +15,8 @@ export declare class WindowInclude<Props extends WindowPropsInclude = WindowProp
     protected readonly components?: DesignComponents<WindowComponentInclude, Props> | undefined;
     protected readonly emits?: ConstrEmit<WindowEmitsInclude> | undefined;
     protected readonly extra?: RefOrNormal<PropsExtra> | undefined;
+    protected readonly ariaLabelledby?: string | undefined;
+    protected readonly ariaDescribedby?: string | undefined;
     protected readonly index?: string | undefined;
     /**
      * Constructor
@@ -23,9 +25,11 @@ export declare class WindowInclude<Props extends WindowPropsInclude = WindowProp
      * @param components object for working with components/ объект для работы с компонентами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
+     * @param ariaLabelledby identifier for the label/ идентификатор для метки
+     * @param ariaDescribedby identifier for the description/ идентификатор для описания
      * @param index index identifier/ идентификатор индекса
      */
-    constructor(props: Readonly<Props>, className: string, components?: DesignComponents<WindowComponentInclude, Props> | undefined, emits?: ConstrEmit<WindowEmitsInclude> | undefined, extra?: RefOrNormal<PropsExtra> | undefined, index?: string | undefined);
+    constructor(props: Readonly<Props>, className: string, components?: DesignComponents<WindowComponentInclude, Props> | undefined, emits?: ConstrEmit<WindowEmitsInclude> | undefined, extra?: RefOrNormal<PropsExtra> | undefined, ariaLabelledby?: string | undefined, ariaDescribedby?: string | undefined, index?: string | undefined);
     /** Reference to window element expose/ Ссылка на expose элемента окна */
     readonly element: Ref<ConstrBind<WindowExpose> | undefined, ConstrBind<WindowExpose> | undefined>;
     /** Computed bindings for the window/ Вычисляемые привязки для окна */

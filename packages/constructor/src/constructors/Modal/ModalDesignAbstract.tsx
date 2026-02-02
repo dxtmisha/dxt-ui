@@ -46,11 +46,13 @@ export abstract class ModalDesignAbstract<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor window item class/ класс элемента окна
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, EMITS, P>
+    options?: ConstrOptions<COMP, EMITS, P>,
+    ItemConstructor?: typeof ModalAbstract
   ) {
     super(
       name,
@@ -58,7 +60,7 @@ export abstract class ModalDesignAbstract<
       options
     )
 
-    this.item = this.initItem()
+    this.item = this.initItem(ItemConstructor)
     this.init()
   }
 
@@ -67,7 +69,7 @@ export abstract class ModalDesignAbstract<
    *
    * Инициализация основного элемента
    */
-  protected abstract initItem(): ITEM
+  protected abstract initItem(ItemConstructor?: typeof ModalAbstract): ITEM
 
   /**
    * Initialization of all the necessary properties for work

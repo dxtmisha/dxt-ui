@@ -29,6 +29,7 @@ export type PropsToken = {
   adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static' | 'actionSheet' | 'actionSheetToModal' | 'autoStaticSm' | 'autoStaticMd' | 'autoStaticLg' | 'autoStaticXl' | 'autoStatic2xl'
   fullscreen?: boolean
   overscroll?: boolean
+  closeButton?: boolean
   closeMobileHide?: boolean
   widthMatch?: boolean
   imageSize?: 'sm' | 'md' | 'lg' | 'quarter' | 'half'

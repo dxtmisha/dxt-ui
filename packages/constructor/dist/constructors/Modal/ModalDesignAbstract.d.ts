@@ -14,14 +14,15 @@ export declare abstract class ModalDesignAbstract<COMP extends ModalComponents, 
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor window item class/ класс элемента окна
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, EMITS, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, EMITS, P>, ItemConstructor?: typeof ModalAbstract);
     /**
      * Initialization of the main item
      *
      * Инициализация основного элемента
      */
-    protected abstract initItem(): ITEM;
+    protected abstract initItem(ItemConstructor?: typeof ModalAbstract): ITEM;
     /**
      * Initialization of all the necessary properties for work
      *
