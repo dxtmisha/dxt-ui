@@ -3023,11 +3023,23 @@
                 type: 'var',
                 value: 'calc(var(--d1-ref-spacing-1)*256)',
               ),
+              '320':(
+                index: '320',
+                name: '--d1-ref-spacing-320',
+                type: 'var',
+                value: 'calc(var(--d1-ref-spacing-1)*320)',
+              ),
               '384':(
                 index: '384',
                 name: '--d1-ref-spacing-384',
                 type: 'var',
                 value: 'calc(var(--d1-ref-spacing-1)*384)',
+              ),
+              '448':(
+                index: '448',
+                name: '--d1-ref-spacing-448',
+                type: 'var',
+                value: 'calc(var(--d1-ref-spacing-1)*448)',
               ),
               '512':(
                 index: '512',

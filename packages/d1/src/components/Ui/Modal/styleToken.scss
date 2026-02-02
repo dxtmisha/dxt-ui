@@ -24,11 +24,15 @@
       }
       
       &--md {
-        --d1-window-width: var(--d1-ref-spacing-256);
+        --d1-window-width: var(--d1-ref-spacing-192);
       }
       
       &--lg {
-        --d1-window-width: var(--d1-ref-spacing-384);
+        --d1-window-width: var(--d1-ref-spacing-256);
+      }
+      
+      &--xl {
+        --d1-window-width: var(--d1-ref-spacing-320);
       }
     }
   }

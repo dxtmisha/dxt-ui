@@ -21,7 +21,7 @@ const propsNames: StorybookProps = [
   { name: 'image', type: 'string | ConstrBind<Image>' },
   { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
   { name: 'open', type: 'boolean' },
-  { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'auto'] },
+  { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'xl', 'auto'] },
   { name: 'windowAttrs', type: 'ConstrBind<Window>' }
   // :propsList [!] System label / Системная метка
 ]

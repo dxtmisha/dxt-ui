@@ -128,7 +128,7 @@ provide('values', values)
 
     &__item {
       flex: 1;
-      flex-basis: 44%;
+      flex-basis: 72%;
     }
   }
 }

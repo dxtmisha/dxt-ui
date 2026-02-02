@@ -2443,10 +2443,20 @@
                 "type": "var",
                 "value": "{ref.spacing.1}*256"
               },
+              "320": {
+                "name": "--d1-ref-spacing-320",
+                "type": "var",
+                "value": "{ref.spacing.1}*320"
+              },
               "384": {
                 "name": "--d1-ref-spacing-384",
                 "type": "var",
                 "value": "{ref.spacing.1}*384"
+              },
+              "448": {
+                "name": "--d1-ref-spacing-448",
+                "type": "var",
+                "value": "{ref.spacing.1}*448"
               },
               "512": {
                 "name": "--d1-ref-spacing-512",
@@ -9102,7 +9112,7 @@
                   "windowWidth": {
                     "name": "--d1-window-width",
                     "type": "var",
-                    "value": "{ref.spacing.256}"
+                    "value": "{ref.spacing.192}"
                   }
                 }
               },
@@ -9113,7 +9123,18 @@
                   "windowWidth": {
                     "name": "--d1-window-width",
                     "type": "var",
-                    "value": "{ref.spacing.384}"
+                    "value": "{ref.spacing.256}"
+                  }
+                }
+              },
+              "xl": {
+                "name": "&--xl",
+                "type": "state",
+                "value": {
+                  "windowWidth": {
+                    "name": "--d1-window-width",
+                    "type": "var",
+                    "value": "{ref.spacing.320}"
                   }
                 }
               }

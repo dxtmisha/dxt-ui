@@ -7,14 +7,14 @@ import type { ImageProps } from '../Image'
 export const propsValues = {
   // :values [!] System label / Системная метка
   imagePosition: ['top', 'left'],
-  width: ['sm', 'md', 'lg', 'auto']
+  width: ['sm', 'md', 'lg', 'xl', 'auto']
   // :values [!] System label / Системная метка
 }
 
 export type PropsToken = {
   // :type [!] System label / Системная метка
   imagePosition?: 'top' | 'left'
-  width?: 'sm' | 'md' | 'lg' | 'auto'
+  width?: 'sm' | 'md' | 'lg' | 'xl' | 'auto'
   // :type [!] System label / Системная метка
 }
 

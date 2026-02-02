@@ -10,10 +10,13 @@
       "=?window-width": "{ref.spacing.128}"
     },
     "md": {
-      "=?window-width": "{ref.spacing.256}"
+      "=?window-width": "{ref.spacing.192}"
     },
     "lg": {
-      "=?window-width": "{ref.spacing.384}"
+      "=?window-width": "{ref.spacing.256}"
+    },
+    "xl": {
+      "=?window-width": "{ref.spacing.320}"
     },
     "auto": {},
     "_default": "md"
