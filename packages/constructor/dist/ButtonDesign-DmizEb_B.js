@@ -4,7 +4,7 @@ var e = (i, t, s) => C(i, typeof t != "symbol" ? t + "" : t, s);
 import { computed as o, h as S } from "vue";
 import { DesignConstructorAbstract as k, RouterItemRef as B } from "@dxtmisha/functional";
 import { g as y } from "./getClassTagAStatic-BnVYlXHI.js";
-import { L as x } from "./LabelInclude-CEuTh1Qi.js";
+import { L as x } from "./LabelInclude-C9Dk-o4t.js";
 import { E } from "./EnabledInclude-JzHG2GuX.js";
 import { A as h } from "./AriaStaticInclude-D1bSJaBp.js";
 import { E as T } from "./EventClickInclude-CgbuezDm.js";

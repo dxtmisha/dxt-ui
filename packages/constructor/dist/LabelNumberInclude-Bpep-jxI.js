@@ -1,6 +1,6 @@
 import { computed as a } from "vue";
 import { isNumber as l, toNumberByMax as u, GeoRef as m } from "@dxtmisha/functional";
-import { L as b } from "./LabelInclude-CEuTh1Qi.js";
+import { L as b } from "./LabelInclude-C9Dk-o4t.js";
 class g extends b {
   /**
    * Constructor for working with text that has maximum values.

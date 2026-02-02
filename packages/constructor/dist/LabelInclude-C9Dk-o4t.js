@@ -24,10 +24,7 @@ class x {
     }));
     /** Identifier for the element/ Идентификатор для элемента */
     a(this, "id", n(
-      () => {
-        var s;
-        return ((s = this.props) == null ? void 0 : s.labelId) || d();
-      }
+      () => this.props.labelId || d()
     ));
     this.props = s, this.className = t, this.classesExtra = e, this.slots = l, this.elementsExtra = o, this.labelReplacing = u, this.alternativeSlots = p, this.skeleton = c, this.tag = f;
   }

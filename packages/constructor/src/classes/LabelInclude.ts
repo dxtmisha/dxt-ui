@@ -58,7 +58,7 @@ export class LabelInclude {
 
   /** Identifier for the element/ Идентификатор для элемента */
   readonly id = computed<string>(
-    () => this.props?.labelId || getElementId()
+    () => this.props.labelId || getElementId()
   )
 
   /**

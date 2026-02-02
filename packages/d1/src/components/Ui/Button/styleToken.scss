@@ -22,6 +22,10 @@
     transition-duration: var(--d-sys-transitionDuration-fade-enter);
     transition-property: grid-template-columns, background-color, background-image, border, box-shadow;
     
+    &__label {
+      min-width: var(--d1-ref-spacing-20);
+    }
+    
     @include ui.focus {
       @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.gradient('init');
       @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});

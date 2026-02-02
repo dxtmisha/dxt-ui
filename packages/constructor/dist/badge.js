@@ -3,7 +3,7 @@ var p = (e, t, s) => t in e ? d(e, t, { enumerable: !0, configurable: !0, writab
 var r = (e, t, s) => p(e, typeof t != "symbol" ? t + "" : t, s);
 import { computed as h, h as g } from "vue";
 import { isFilled as c, DesignConstructorAbstract as b } from "@dxtmisha/functional";
-import { L as f } from "./LabelNumberInclude-BfaS35cf.js";
+import { L as f } from "./LabelNumberInclude-Bpep-jxI.js";
 import { I as v } from "./IconInclude-CLqwI29Q.js";
 import { A as u } from "./AriaStaticInclude-D1bSJaBp.js";
 class I {

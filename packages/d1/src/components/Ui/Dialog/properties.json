@@ -1,18 +1,12 @@
 {
   "main": "{d.dialog}",
+  "paddingX": "{grid.paddingX}",
+  "paddingY": "{grid.paddingY}",
   "#information": {
     "gap": "{sys.spacing.sm}"
   },
   "#label": {
     "link|font": "{font.titleLarge}"
-  },
-  "padding": {
-    "link|padding": "{?modal.padding}"
-  },
-  "~paddingByIndent": {
-    "paddingX": "{grid.paddingX}",
-    "paddingY": "{grid.paddingY}",
-    "_default": true
   },
   "width": {
     "sm": {

@@ -33,8 +33,6 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-dialog--success': props.success,
     'd1-dialog--error': props.error,
     [`d1-dialog--imagePosition--${props.imagePosition}`]: inArray(propsValues.imagePosition, props.imagePosition),
-    [`d1-dialog--padding--${props.padding}`]: inArray(propsValues.padding, props.padding),
-    'd1-dialog--paddingByIndent': props.paddingByIndent,
     [`d1-dialog--width--${props.width}`]: inArray(propsValues.width, props.width)
     // :classes-values [!] System label / Системная метка
   }

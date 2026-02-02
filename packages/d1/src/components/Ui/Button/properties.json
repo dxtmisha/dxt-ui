@@ -18,6 +18,9 @@
     "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.disabled}"
   },
+  "#label": {
+    "min-width": "{ref.spacing.20}"
+  },
   "~primary": {
     "color": "{sys.palette.onPrimary}",
     "color-opacity": "{sys.opacity.primary.high}",

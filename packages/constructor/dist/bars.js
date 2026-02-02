@@ -1,10 +1,10 @@
 var g = Object.defineProperty;
 var S = (a, i, t) => i in a ? g(a, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : a[i] = t;
 var s = (a, i, t) => S(a, typeof i != "symbol" ? i + "" : i, t);
-import { watch as A, ref as D, computed as o, reactive as d, h as u } from "vue";
-import { toBind as p, getBind as T, forEach as E, DesignConstructorAbstract as M } from "@dxtmisha/functional";
+import { watch as A, ref as D, computed as o, reactive as d, h as p } from "vue";
+import { toBind as u, getBind as T, forEach as E, DesignConstructorAbstract as M } from "@dxtmisha/functional";
 import { A as m } from "./AriaStaticInclude-D1bSJaBp.js";
-import { L as $ } from "./LabelInclude-CEuTh1Qi.js";
+import { L as $ } from "./LabelInclude-C9Dk-o4t.js";
 import { D as y } from "./DescriptionInclude-D4ane9aR.js";
 import { E as H } from "./EventClickInclude-CgbuezDm.js";
 import { M as P } from "./ModelInclude-BiYm_iCQ.js";
@@ -74,7 +74,7 @@ class j {
    * @param TextConstructor class for creating text/ класс для создания текста
    * @param ModelConstructor class for working with models/ класс для работы с моделями
    */
-  constructor(i, t, e, n, r, v, c, h, b = V, B = $, f = y, k = H, C = N, w = O, x = R, L = W, I = P) {
+  constructor(i, t, e, n, r, v, c, h, b = V, B = $, f = y, k = H, C = N, w = O, I = R, x = W, L = P) {
     /** Управление action‑режимом */
     s(this, "action");
     /** Label object/ Объект метки */
@@ -96,7 +96,7 @@ class j {
       () => {
         var i;
         return this.initItem(
-          p(
+          u(
             {
               icon: {
                 icon: this.props.iconBack,
@@ -148,11 +148,13 @@ class j {
     }));
     /** Binds for label text/ Привязки для текста метки */
     s(this, "labelBinds", d({
-      label: o(() => this.action.action.value ? this.props.actionLabel : this.props.label)
+      label: o(() => this.action.action.value ? this.props.actionLabel : this.props.label),
+      labelId: o(() => this.props.labelId)
     }));
     /** Binds for description text/ Привязки для текста описания */
     s(this, "descriptionBinds", d({
-      description: o(() => this.action.action.value ? this.props.actionDescription : this.props.description)
+      description: o(() => this.action.action.value ? this.props.actionDescription : this.props.description),
+      descriptionId: o(() => this.props.descriptionId)
     }));
     /**
      * Click handler for the "back" button
@@ -163,7 +165,7 @@ class j {
       (t == null ? void 0 : t.value) === "back" && this.action.close(), this.event.onClick(i, t);
     });
     this.props = i, this.refs = t, this.element = e, this.classDesign = n, this.className = r, this.components = v, this.slots = c, this.emits = h;
-    const l = new x(this.props, this.classDesign, ["classTextVariant"]);
+    const l = new I(this.props, this.classDesign, ["classTextVariant"]);
     this.action = new b(this.props, this.refs), this.label = new B(
       this.labelBinds,
       r,
@@ -173,7 +175,7 @@ class j {
       void 0,
       void 0,
       l
-    ), this.description = new f(this.descriptionBinds, r, c, l), this.event = new k(void 0, void 0, h), this.windowClasses = new C(n), this.motionTransformClasses = new w(n), this.skeleton = l, this.text = new L(this.props), new I("action", this.emits, this.action.action);
+    ), this.description = new f(this.descriptionBinds, r, c, l), this.event = new k(void 0, void 0, h), this.windowClasses = new C(n), this.motionTransformClasses = new w(n), this.skeleton = l, this.text = new x(this.props), new L("action", this.emits, this.action.action);
   }
   /**
    * Prepares all parameters for the button.
@@ -188,7 +190,7 @@ class j {
     return {
       isSkeleton: this.props.isSkeleton,
       onClick: this.event.onClick,
-      ...p(
+      ...u(
         (n = this.props.buttonAttrs) != null ? n : {},
         i != null ? i : {}
       ),
@@ -250,7 +252,7 @@ class it extends M {
     s(this, "renderContext", () => {
       var t;
       return [
-        u(
+        p(
           "div",
           {
             class: (t = this.classes) == null ? void 0 : t.value.context
@@ -340,7 +342,7 @@ class it extends M {
    */
   initRender() {
     var t;
-    return u(
+    return p(
       "div",
       {
         ...this.getAttrs(),

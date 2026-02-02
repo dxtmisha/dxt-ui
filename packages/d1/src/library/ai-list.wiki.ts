@@ -4,6 +4,7 @@
 import D1Actions from '../../src/components/Ui/Actions/D1ActionsAiWiki.vue'
 import D1Bars from '../../src/components/Ui/Bars/D1BarsAiWiki.vue'
 import D1Button from '../../src/components/Ui/Button/D1ButtonAiWiki.vue'
+import D1Dialog from '../../src/components/Ui/Dialog/D1DialogAiWiki.vue'
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
 import D1Modal from '../../src/components/Ui/Modal/D1ModalAiWiki.vue'
@@ -15,6 +16,7 @@ export const aiList: any[] = [
   D1Actions,
   D1Bars,
   D1Button,
+  D1Dialog,
   D1Icon,
   D1Image,
   D1Modal,

@@ -168,12 +168,14 @@ export class Bars {
 
   /** Binds for label text/ Привязки для текста метки */
   protected readonly labelBinds = reactive({
-    label: computed(() => this.action.action.value ? this.props.actionLabel : this.props.label)
+    label: computed(() => this.action.action.value ? this.props.actionLabel : this.props.label),
+    labelId: computed(() => this.props.labelId)
   })
 
   /** Binds for description text/ Привязки для текста описания */
   protected readonly descriptionBinds = reactive({
-    description: computed(() => this.action.action.value ? this.props.actionDescription : this.props.description)
+    description: computed(() => this.action.action.value ? this.props.actionDescription : this.props.description),
+    descriptionId: computed(() => this.props.descriptionId)
   })
 
   /**

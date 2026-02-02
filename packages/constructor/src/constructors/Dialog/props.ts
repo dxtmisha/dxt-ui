@@ -1,7 +1,6 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { WindowPropsBasic, WindowPropsInclude } from '../Window'
-import type { BarsPropsBasic, BarsPropsInclude } from '../Bars'
 import type { IconPropsBasic, IconValue } from '../Icon'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ButtonPropsBasic } from '../Button'
@@ -20,13 +19,11 @@ export type DialogPropsToken = {
 
 export type DialogPropsBasic<
   Window extends WindowPropsBasic = WindowPropsBasic,
-  Bars extends BarsPropsBasic = BarsPropsBasic,
   Icon extends IconPropsBasic = IconPropsBasic,
   Image extends ImagePropsBasic = ImagePropsBasic,
   Button extends ButtonPropsBasic = ButtonPropsBasic,
   Actions extends ActionsPropsBasic = ActionsPropsBasic
 > = WindowPropsInclude<Window>
-  & BarsPropsInclude<Bars>
   & ActionsPropsInclude<Actions>
   & ImagePropsInclude<Image>
   & LabelProps

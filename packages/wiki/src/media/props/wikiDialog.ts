@@ -23,8 +23,7 @@ export const wikiDialog: StorybookArgsToList = {
   'dialog.clickOkAndClose': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
-
+      category: StorybookCategory.option,
       description: {
         en: 'Automatically closes the dialog when the OK button is clicked',
         ru: 'Автоматически закрывает диалог при клике на кнопку OK'

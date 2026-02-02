@@ -89,10 +89,12 @@ export declare class Bars {
     /** Binds for label text/ Привязки для текста метки */
     protected readonly labelBinds: {
         label: NumberOrString | undefined;
+        labelId: string | undefined;
     };
     /** Binds for description text/ Привязки для текста описания */
     protected readonly descriptionBinds: {
         description: string | number | undefined;
+        descriptionId: string | undefined;
     };
     /**
      * Prepares all parameters for the button.

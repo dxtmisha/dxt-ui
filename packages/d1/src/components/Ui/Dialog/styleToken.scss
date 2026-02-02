@@ -11,6 +11,9 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    --d1-dialog-paddingX: var(--d1-grid-paddingX);
+    --d1-dialog-paddingY: var(--d1-grid-paddingY);
+    
     &__information {
       gap: var(--d1-sys-spacing-sm);
     }
@@ -33,28 +36,6 @@
       & .d1-dialog__icon {
         @include ui.color(#{var(--d1-sys-palette-error)});
       }
-    }
-    
-    &--padding {
-      &--sm {
-        --d1-dialog-paddingX: var(--d1-sys-spacing-sm);
-        --d1-dialog-paddingY: var(--d1-sys-spacing-xs);
-      }
-      
-      &--md {
-        --d1-dialog-paddingX: var(--d1-sys-spacing-md);
-        --d1-dialog-paddingY: var(--d1-sys-spacing-sm);
-      }
-      
-      &--lg {
-        --d1-dialog-paddingX: var(--d1-sys-spacing-lg);
-        --d1-dialog-paddingY: var(--d1-sys-spacing-md);
-      }
-    }
-    
-    &--paddingByIndent {
-      --d1-dialog-paddingX: var(--d1-grid-paddingX);
-      --d1-dialog-paddingY: var(--d1-grid-paddingY);
     }
     
     &--width {

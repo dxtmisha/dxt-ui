@@ -6,7 +6,7 @@ import { getBind as v, toBind as x, getRef as C, DesignConstructorAbstract as S 
 import { g as I } from "./getClassTagAStatic-BnVYlXHI.js";
 import { E as w } from "./EventClickInclude-CgbuezDm.js";
 import { A as p } from "./AriaStaticInclude-D1bSJaBp.js";
-import { L as y } from "./LabelHighlightInclude-7TH42C12.js";
+import { L as y } from "./LabelHighlightInclude-D2UHU9vj.js";
 import { P as B, S as D } from "./SuffixInclude-C7JNYCJK.js";
 import { C as k } from "./CaptionInclude-AFVF4qyd.js";
 import { D as A } from "./DescriptionInclude-D4ane9aR.js";
