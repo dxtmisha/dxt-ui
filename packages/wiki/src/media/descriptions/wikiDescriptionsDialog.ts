@@ -178,5 +178,47 @@ export const wikiDescriptionsDialog: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
 <StorybookDescriptions componentName={'Window'} type={'slots'}/>
     `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item">
+  <Dialog embedded open label="Dialog Title" description="This is a description text." v-bind="args"/>
+</div>
+    `,
+    description: `
+Dialog is a specialized modal component designed for standard user interactions such as alerts, confirmations, and status messages.
+It extends the functionality of the Modal component by providing a pre-defined layout for icons, titles, descriptions, and action buttons.
+
+**Key Features:**
+1. **Standardized Layout:**
+   - Automatically arranges elements: Icon -> Title (\`label\`) -> Description (\`description\`) -> Content (\`default\`) -> Actions (\`footer\`).
+   - Supports positioning the image/icon via \`imagePosition\` (e.g., top or left).
+
+2. **State Presets:**
+   - **Success:** Setting the \`success\` prop automatically displays a success icon and applies relevant styling.
+   - **Error:** Setting the \`error\` prop automatically displays an error icon and applies relevant styling.
+   - **Custom:** You can provide a custom icon via the \`icon\` prop.
+
+3. **Content Props:**
+   - \`label\`: The main heading or title of the dialog.
+   - \`description\`: Subtitle or explanatory text.
+   - \`open\`: Controls visibility (v-model).
+
+4. **Slots:**
+   - \`#control\`: Trigger element.
+   - \`#default\`: Custom content area.
+   - \`#footer\`: Area for action buttons (Cancel, OK).
+
+**Usage Examples:**
+
+- **Simple Confirmation:**
+  \`<Dialog v-model:open="isOpen" label="Confirm Action" description="Are you sure you want to proceed?" />\`
+
+- **Success Alert:**
+  \`<Dialog success label="Operation Successful" description="Your data has been saved." />\`
+
+- **Error Alert:**
+  \`<Dialog error label="Error" description="Failed to connect to the server." />\`
+    `
   }
 }

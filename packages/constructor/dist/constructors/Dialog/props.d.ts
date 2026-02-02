@@ -1,5 +1,6 @@
 import { ConstrBind } from '@dxtmisha/functional';
 import { WindowPropsBasic, WindowPropsInclude } from '../Window';
+import { BarsPropsBasic, BarsPropsInclude } from '../Bars';
 import { IconPropsBasic, IconValue } from '../Icon';
 import { ImagePropsBasic, ImagePropsInclude } from '../Image';
 import { ButtonPropsBasic } from '../Button';
@@ -12,7 +13,7 @@ export type DialogPropsToken = {
     error?: boolean;
     imagePosition?: 'top' | 'left';
 };
-export type DialogPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = WindowPropsInclude<Window> & ActionsPropsInclude<Actions> & ImagePropsInclude<Image> & LabelProps & DescriptionProps & TextClosePropsInclude & TextOkPropsInclude & {
+export type DialogPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic, Bars extends BarsPropsBasic = BarsPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = WindowPropsInclude<Window> & BarsPropsInclude<Bars> & ActionsPropsInclude<Actions> & ImagePropsInclude<Image> & LabelProps & DescriptionProps & TextClosePropsInclude & TextOkPropsInclude & {
     open?: boolean;
     icon?: IconValue<Icon>;
     buttonOk?: string | ConstrBind<Button> | null;

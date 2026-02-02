@@ -59,7 +59,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Sets the element to an error state',
         ru: 'Переводит элемент в состояние ошибки'
       }
-    }
+    },
+    isDemo: true
   },
   focus: {
     type: StorybookControl.boolean,
@@ -151,7 +152,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Sets the element to a success state',
         ru: 'Переводит элемент в состояние успеха'
       }
-    }
+    },
+    isDemo: true
   },
   turn: {
     type: StorybookControl.boolean,
