@@ -28,7 +28,9 @@ export class MotionTransformGo {
    *
    * Закрывает.
    */
-  readonly close = () => this.state.set(false)
+  readonly close = () => {
+    this.state.set(false)
+  }
 
   /**
    * Switching.

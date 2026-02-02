@@ -1,21 +1,21 @@
-var f = Object.defineProperty;
-var v = (n, e, t) => e in n ? f(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t;
-var s = (n, e, t) => v(n, typeof e != "symbol" ? e + "" : e, t);
-import { watch as m, ref as d, computed as a, onUnmounted as w, h as l, Teleport as x } from "vue";
-import { EventItem as S, DesignConstructorAbstract as b } from "@dxtmisha/functional";
+var H = Object.defineProperty;
+var T = (n, t, e) => t in n ? H(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
+var s = (n, t, e) => T(n, typeof t != "symbol" ? t + "" : t, e);
+import { watch as m, ref as d, computed as a, onUnmounted as M, h as l, Teleport as P } from "vue";
+import { EventItem as B, isEnter as E, DesignConstructorAbstract as O } from "@dxtmisha/functional";
 import { A as p } from "./AriaStaticInclude-D1bSJaBp.js";
-import { M as k } from "./ModelInclude-BiYm_iCQ.js";
-import { T as C } from "./TabIndexInclude-DFgnqYh5.js";
+import { M as W } from "./ModelInclude-BiYm_iCQ.js";
+import { T as z } from "./TabIndexInclude-DFgnqYh5.js";
 import { a as u } from "./MotionTransformClassesInclude-B23RIq0Q.js";
-import { M as L, _ as G } from "./MotionTransformClassesInclude-B23RIq0Q.js";
-import { W as H } from "./WindowEsc-Dp9AvJt7.js";
-import { M as U } from "./MotionTransformInclude-P_oRs3JZ.js";
-class T {
+import { M as X, _ as Z } from "./MotionTransformClassesInclude-B23RIq0Q.js";
+import { W as I } from "./WindowEsc-Dp9AvJt7.js";
+import { M as et } from "./MotionTransformInclude-P_oRs3JZ.js";
+class D {
   /**
    * Constructor
    * @param element class object for managing an element/ объект класса для управления элементом
    */
-  constructor(e) {
+  constructor(t) {
     /** Top offset for transform/ Верхнее смещение для трансформации */
     s(this, "top", null);
     /** Left offset for transform/ Левое смещение для трансформации */
@@ -36,7 +36,7 @@ class T {
     s(this, "headScale", null);
     /** Body height value/ Высота тела */
     s(this, "bodyHeight", null);
-    this.element = e;
+    this.element = t;
   }
   /**
    * Update all sizes.
@@ -44,11 +44,11 @@ class T {
    * Обновить все размеры.
    */
   update() {
-    var t;
-    const e = this.element.getRect();
-    if (e) {
-      const i = this.element.getElementHead(), o = this.element.getElementBody(), h = 1 / window.innerWidth * e.width, r = 1 / e.width * window.innerWidth;
-      this.top = `${e.top - h * e.top / (h - 1)}px`, this.left = `${e.left - h * e.left / (h - 1)}px`, this.height = `${100 / window.innerHeight * e.height * r}%`, this.scale = h.toString(), this.contextWidth = `${e.width}px`, this.contextHeight = `${e.height}px`, i && (this.headWidth = `${e.width}px`, this.headHeight = `${(t = i.offsetHeight) != null ? t : "0"}px`, this.headScale = r.toString(), o && (this.bodyHeight = `${o.offsetHeight + (this.element.isSection() ? i.offsetHeight : 0)}px`));
+    var e;
+    const t = this.element.getRect();
+    if (t) {
+      const i = this.element.getElementHead(), o = this.element.getElementBody(), h = 1 / window.innerWidth * t.width, r = 1 / t.width * window.innerWidth;
+      this.top = `${t.top - h * t.top / (h - 1)}px`, this.left = `${t.left - h * t.left / (h - 1)}px`, this.height = `${100 / window.innerHeight * t.height * r}%`, this.scale = h.toString(), this.contextWidth = `${t.width}px`, this.contextHeight = `${t.height}px`, i && (this.headWidth = `${t.width}px`, this.headHeight = `${(e = i.offsetHeight) != null ? e : "0"}px`, this.headScale = r.toString(), o && (this.bodyHeight = `${o.offsetHeight + (this.element.isSection() ? i.offsetHeight : 0)}px`));
     }
   }
   /**
@@ -60,7 +60,7 @@ class T {
     this.top = null, this.left = null, this.height = null, this.scale = null, this.contextWidth = null, this.contextHeight = null, this.headWidth = null, this.headHeight = null, this.headScale = null, this.bodyHeight = null;
   }
 }
-class M {
+class A {
   /**
    * Constructor.
    *
@@ -70,7 +70,7 @@ class M {
    * @param tabIndex class object for managing tab indices/ объект класса для управления табуляцией
    * @param size class object for managing sizes/ объект класса для управления размерами
    */
-  constructor(e, t, i, o) {
+  constructor(t, e, i, o) {
     /** Open state flag/ Флаг состояния открытия */
     s(this, "open", d(!1));
     /** Temporary show state for animation/ Временный флаг показа для анимации */
@@ -87,8 +87,8 @@ class M {
      * Обновление класса показа.
      */
     s(this, "makeShow", () => {
-      const e = this.element.getElement();
-      e && (e.dataset.show = this.show.value ? "show" : "none");
+      const t = this.element.getElement();
+      t && (t.dataset.show = this.show.value ? "show" : "none");
     });
     /**
      * Update of the opening class.
@@ -96,8 +96,8 @@ class M {
      * Обновление класса открытия.
      */
     s(this, "makeOpen", () => {
-      const e = this.element.getElement();
-      e && (e.dataset.open = this.open.value ? "open" : "none");
+      const t = this.element.getElement();
+      t && (t.dataset.open = this.open.value ? "open" : "none");
     });
     /**
      * Update of the teleport class.
@@ -105,11 +105,11 @@ class M {
      * Обновление класса телепорта.
      */
     s(this, "makeTeleport", () => {
-      const e = this.element.getElement();
-      e && (e.dataset.teleport = this.teleport.value ? "teleport" : "none");
+      const t = this.element.getElement();
+      t && (t.dataset.teleport = this.teleport.value ? "teleport" : "none");
     });
-    this.element = t, this.tabIndex = i, this.size = o, m([this.element.element, this.show], this.makeShow), m([this.element.element, this.open], this.makeOpen), m([this.element.element, this.teleport], this.makeTeleport), e.open && requestAnimationFrame(() => {
-      this.open.value = !!e.open, this.calculations();
+    this.element = e, this.tabIndex = i, this.size = o, m([this.element.element, this.show], this.makeShow), m([this.element.element, this.open], this.makeOpen), m([this.element.element, this.teleport], this.makeTeleport), t.open && requestAnimationFrame(() => {
+      this.open.value = !!t.open, this.calculations();
     });
   }
   /**
@@ -127,12 +127,12 @@ class M {
    * @param open opening status/ статус открытия
    * @param animation opening with animation/ открытие с анимацией
    */
-  set(e, t = !0) {
-    this.open.value !== e && (t && this.element.isAnimation() ? (this.show.value = !0, requestAnimationFrame(() => {
+  set(t, e = !0) {
+    this.open.value !== t && (t && this.tabIndex.updateOldElement(), e && this.element.isAnimation() ? (this.show.value = !0, requestAnimationFrame(() => {
       this.calculations(), this.make(), requestAnimationFrame(() => {
-        this.open.value = e;
+        this.open.value = t;
       });
-    })) : (this.open.value = e, this.calculations()), setTimeout(() => this.reset(), 480));
+    })) : (this.open.value = t, this.calculations()), setTimeout(() => this.reset(), 480));
   }
   /**
    * Status switching.
@@ -180,10 +180,10 @@ class M {
    * Обновляет список стилей для главного элемента.
    */
   makeMain() {
-    const e = this.element.getElement();
-    if (e) {
-      const t = this.element.style;
-      this.show.value ? (e.style.setProperty(t.top, this.size.top), e.style.setProperty(t.left, this.size.left), e.style.setProperty(t.height, this.size.height), e.style.setProperty(t.scale, this.size.scale), e.style.setProperty(t.headWidth, this.size.headWidth), e.style.setProperty(t.headHeight, this.size.headHeight), e.style.setProperty(t.headScale, this.size.headScale), e.style.setProperty(t.bodyHeight, this.size.bodyHeight)) : (e.style.removeProperty(t.top), e.style.removeProperty(t.left), e.style.removeProperty(t.height), e.style.removeProperty(t.scale), e.style.removeProperty(t.headWidth), e.style.removeProperty(t.headHeight), e.style.removeProperty(t.headScale), e.style.removeProperty(t.bodyHeight));
+    const t = this.element.getElement();
+    if (t) {
+      const e = this.element.style;
+      this.show.value ? (t.style.setProperty(e.top, this.size.top), t.style.setProperty(e.left, this.size.left), t.style.setProperty(e.height, this.size.height), t.style.setProperty(e.scale, this.size.scale), t.style.setProperty(e.headWidth, this.size.headWidth), t.style.setProperty(e.headHeight, this.size.headHeight), t.style.setProperty(e.headScale, this.size.headScale), t.style.setProperty(e.bodyHeight, this.size.bodyHeight)) : (t.style.removeProperty(e.top), t.style.removeProperty(e.left), t.style.removeProperty(e.height), t.style.removeProperty(e.scale), t.style.removeProperty(e.headWidth), t.style.removeProperty(e.headHeight), t.style.removeProperty(e.headScale), t.style.removeProperty(e.bodyHeight));
     }
   }
   /**
@@ -192,14 +192,14 @@ class M {
    * Обновляет список стилей для элемента контекста.
    */
   makeContext() {
-    const e = this.element.getElementContext();
-    if (e) {
-      const t = this.element.style;
-      this.element.isWindow() && this.isShow.value ? (e.style.setProperty(t.contextWidth, this.size.contextWidth), e.style.setProperty(t.contextHeight, this.size.contextHeight)) : (e.style.removeProperty(t.contextWidth), e.style.removeProperty(t.contextHeight));
+    const t = this.element.getElementContext();
+    if (t) {
+      const e = this.element.style;
+      this.element.isWindow() && this.isShow.value ? (t.style.setProperty(e.contextWidth, this.size.contextWidth), t.style.setProperty(e.contextHeight, this.size.contextHeight)) : (t.style.removeProperty(e.contextWidth), t.style.removeProperty(e.contextHeight));
     }
   }
 }
-class P {
+class N {
   /**
    * Constructor.
    *
@@ -209,7 +209,7 @@ class P {
    * @param state class object for status management/ объект класса для управления статусом
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
-  constructor(e, t, i, o) {
+  constructor(t, e, i, o) {
     s(this, "item");
     /**
      * Click event on the title.
@@ -217,8 +217,17 @@ class P {
      * Событие клика на заголовок.
      * @param event event object/ объект события
      */
-    s(this, "onClick", (e) => {
-      this.props.clickOpen && this.element.isClick(e.target) && (this.emit(e, "head"), this.state.toggle());
+    s(this, "onClick", (t) => {
+      this.isTrigger(t.target) && (this.emit(t, "head"), this.state.toggle());
+    });
+    /**
+     * Events of pressing a key.
+     *
+     * События нажатия на клавишу.
+     * @param event event object/ объект события
+     */
+    s(this, "onKeydown", async (t) => {
+      E(t) && this.isTrigger(t.target) && (t.preventDefault(), this.emit(t, "head"), this.state.toggle());
     });
     /**
      * End of animation event.
@@ -226,14 +235,14 @@ class P {
      * Событие окончания анимации.
      * @param event event object/ объект события
      */
-    s(this, "onTransitionend", (e) => {
-      this.element.getElement() === e.target && e.propertyName === "height" && this.state.reset();
+    s(this, "onTransitionend", (t) => {
+      this.element.getElement() === t.target && t.propertyName === "height" && this.state.reset();
     });
-    s(this, "listener", (e) => {
-      const t = e.target;
-      this.state.open.value && this.element.isClickGlobal(t) && (this.element.isClose(t) || this.props.autoClose && this.element.isOutside(t) && this.element.isIgnore(t)) && (this.emit(e, "body"), this.state.set(!1));
+    s(this, "listener", (t) => {
+      const e = t.target;
+      this.state.open.value && this.element.isClickGlobal(e) && (this.element.isClose(e) || this.props.autoClose && this.element.isOutside(e) && this.element.isIgnore(e)) && (this.emit(t, "body"), this.state.set(!1));
     });
-    this.props = e, this.element = t, this.state = i, this.emits = o, this.item = new S(document.body, "click", this.listener), m(this.state.open, () => this.item.toggle(this.state.open.value));
+    this.props = t, this.element = e, this.state = i, this.emits = o, this.item = new B(document.body, "click", this.listener), m(this.state.open, () => this.item.toggle(this.state.open.value));
   }
   /**
    * Stopping event listening.
@@ -250,23 +259,32 @@ class P {
    * @param event event object/ объект события
    * @param type event type/ тип события
    */
-  emit(e, t) {
+  emit(t, e) {
     var o, h;
     const i = {
-      type: t,
+      type: e,
       open: !this.state.open.value
     };
-    (o = this.emits) == null || o.call(this, "transform", e, i), (h = this.emits) == null || h.call(this, "transformLite", i);
+    (o = this.emits) == null || o.call(this, "transform", t, i), (h = this.emits) == null || h.call(this, "transformLite", i);
+  }
+  /**
+   * Checks if the event target is a trigger for opening.
+   *
+   * Проверяет, является ли цель события триггером для открытия.
+   * @param target event target/ цель события
+   */
+  isTrigger(t) {
+    return !!(this.props.clickOpen && this.element.isClick(t));
   }
 }
-class W {
+class $ {
   /**
    * Constructor.
    *
    * Конструктор.
    * @param state class object for status management/ объект класса для управления статусом
    */
-  constructor(e) {
+  constructor(t) {
     /**
      * Opens.
      *
@@ -278,7 +296,9 @@ class W {
      *
      * Закрывает.
      */
-    s(this, "close", () => this.state.set(!1));
+    s(this, "close", () => {
+      this.state.set(!1);
+    });
     /**
      * Switching.
      *
@@ -291,11 +311,11 @@ class W {
      * Изменение состояния.
      * @param open opening status/ статус открытия
      */
-    s(this, "to", (e) => this.state.set(e));
-    this.state = e;
+    s(this, "to", (t) => this.state.set(t));
+    this.state = t;
   }
 }
-class z {
+class _ {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -307,8 +327,16 @@ class z {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param MotionTransformElementConstructor class for working with elements/ класс для работы с элементами
+   * @param MotionTransformSizeConstructor class for working with size/ класс для работы с размером
+   * @param MotionTransformStateConstructor class for working with state/ класс для работы с состоянием
+   * @param MotionTransformEventConstructor class for working with events/ класс для работы с событиями
+   * @param MotionTransformGoConstructor class for working with go/ класс для работы с переходом
+   * @param TabIndexIncludeConstructor class for working with tab index/ класс для работы с индексом табуляции
+   * @param WindowEscConstructor class for working with esc/ класс для работы с esc
+   * @param ModelIncludeConstructor class for working with model/ класс для работы с моделью
    */
-  constructor(e, t, i, o, h, r, g, y, c) {
+  constructor(t, e, i, o, h, r, g, y, c, f = u, v = D, w = A, x = N, S = $, b = z, k = I, C = W) {
     /** Reference helper for element interactions/ Вспомогательный класс для работы с элементами */
     s(this, "element");
     s(this, "tabIndex");
@@ -339,23 +367,23 @@ class z {
         this.state.isOpen.value
       )
     })));
-    this.props = e, this.refs = t, this.classDesign = h, this.className = r, this.components = g, this.slots = y, this.emits = c, this.element = new u(
-      e,
+    this.props = t, this.refs = e, this.classDesign = h, this.className = r, this.components = g, this.slots = y, this.emits = c, this.element = new f(
+      t,
       i,
       o,
       r
-    ), this.tabIndex = new C(
+    ), this.tabIndex = new b(
       () => this.element.getElementBody()
-    ), this.size = new T(this.element), this.state = new M(
-      e,
+    ), this.size = new v(this.element), this.state = new w(
+      t,
       this.element,
       this.tabIndex,
       this.size
-    ), this.event = new P(e, this.element, this.state, c), this.go = new W(this.state), this.esc = new H(
+    ), this.event = new x(t, this.element, this.state, c), this.go = new S(this.state), this.esc = new k(
       this.state.open,
       () => this.go.close(),
-      () => this.element.isWindow()
-    ), new k("open", this.emits, this.state.open), m([t.open], () => this.state.set(!!e.open)), w(() => this.event.stop());
+      () => !!this.props.clickOpen
+    ), new C("open", this.emits, this.state.open), m([e.open], () => this.state.set(!!t.open)), M(() => this.event.stop());
   }
   /**
    * Returns data for managing slot data.
@@ -365,16 +393,8 @@ class z {
   getSlotData() {
     return this.slotData.value;
   }
-  /**
-   * Get the ARIA role.
-   *
-   * Получить ARIA роль.
-   */
-  getRole() {
-    return this.element.isWindow() ? "dialog" : "region";
-  }
 }
-const _ = {
+const j = {
   clickOpen: !0,
   autoClose: !0,
   animationShow: !0,
@@ -382,16 +402,16 @@ const _ = {
   // :default [!] System label / Системная метка
   animationHeadPosition: "top"
 };
-class R extends b {
+class J extends O {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
    */
-  constructor(t, i, o) {
+  constructor(e, i, o) {
     super(
-      t,
+      e,
       i,
       o
     );
@@ -434,10 +454,10 @@ class R extends b {
      * Рендеринг содержимого.
      */
     s(this, "renderBody", () => {
-      var t;
+      var e;
       return this.props.inDom || this.item.state.isShow.value ? [
         l(
-          (t = this.props.tagBody) != null ? t : "div",
+          (e = this.props.tagBody) != null ? e : "div",
           this.propsBody.value,
           this.initSlot(
             "body",
@@ -453,13 +473,13 @@ class R extends b {
      * Рендеринг задника.
      */
     s(this, "renderScrim", () => {
-      var t;
+      var e;
       return this.item.state.teleport.value ? [
         l(
           "div",
           {
             key: "scrim",
-            class: (t = this.classes) == null ? void 0 : t.value.scrim
+            class: (e = this.classes) == null ? void 0 : e.value.scrim
           }
         )
       ] : [];
@@ -470,12 +490,12 @@ class R extends b {
      * Свойства для главного элемента.
      */
     s(this, "propsMain", a(() => {
-      var t;
+      var e;
       return {
         ...this.getAttrs(),
         ref: this.element,
         key: "main",
-        class: (t = this.classes) == null ? void 0 : t.value.main,
+        class: (e = this.classes) == null ? void 0 : e.value.main,
         onTransitionend: this.item.event.onTransitionend
       };
     }));
@@ -485,12 +505,18 @@ class R extends b {
      * Свойства для элемента заголовка.
      */
     s(this, "propsHead", a(() => {
-      var t;
-      return {
+      var i;
+      const e = {
         key: "head",
-        class: (t = this.classes) == null ? void 0 : t.value.head,
+        class: (i = this.classes) == null ? void 0 : i.value.head,
         onClick: this.item.event.onClick
       };
+      return this.props.clickOpen ? {
+        ...e,
+        tabindex: 0,
+        onKeydown: this.item.event.onKeydown,
+        ...this.item.slotData.value.binds
+      } : e;
     }));
     /**
      * Props for the body element.
@@ -498,20 +524,20 @@ class R extends b {
      * Свойства для элемента тела.
      */
     s(this, "propsBody", a(() => {
-      var t;
+      var e;
       return {
         key: "body",
         id: this.item.element.idBody,
-        class: (t = this.classes) == null ? void 0 : t.value.body,
-        ...p.role(this.item.getRole()),
+        class: (e = this.classes) == null ? void 0 : e.value.body,
+        ...p.role("region"),
         ...p.modal(
-          this.item.element.isWindow(),
+          !1,
           this.props.ariaLabelledby,
           this.props.ariaDescribedby
         )
       };
     }));
-    this.item = new z(
+    this.item = new _(
       this.props,
       this.refs,
       this.element,
@@ -570,7 +596,7 @@ class R extends b {
    */
   initRender() {
     var i;
-    const t = [
+    const e = [
       ...this.renderMain(),
       ...this.renderScrim()
     ];
@@ -581,22 +607,22 @@ class R extends b {
         class: (i = this.classes) == null ? void 0 : i.value.context
       },
       l(
-        x,
+        P,
         {
           key: "teleport",
           disabled: !this.item.state.teleport.value,
           to: "body"
         },
-        t
+        e
       )
     );
   }
 }
 export {
-  z as MotionTransform,
-  L as MotionTransformClassesInclude,
-  R as MotionTransformDesign,
-  U as MotionTransformInclude,
-  G as __MOTION_TRANSFORM_TYPE_BODY_NAME,
-  _ as defaultsMotionTransform
+  _ as MotionTransform,
+  X as MotionTransformClassesInclude,
+  J as MotionTransformDesign,
+  et as MotionTransformInclude,
+  Z as __MOTION_TRANSFORM_TYPE_BODY_NAME,
+  j as defaultsMotionTransform
 };

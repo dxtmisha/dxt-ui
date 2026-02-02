@@ -156,6 +156,8 @@ export const wikiDescriptionsModal: StorybookComponentsDescriptionItem = {
 Modal is a simplified wrapper over the Window component for creating centered modal dialogs.
 It is designed to handle standard use cases for pop-ups, alerts, and forms with minimal configuration.
 
+**Note:** The \`embedded\` prop is used only for documentation examples to render the component inline. Do not use it in production code.
+
 **Key Features:**
 1. **Positioning & Overlay:**
    - Always centered on the screen.

@@ -1,4 +1,4 @@
-import type { AriaRoleByPropsInclude } from '../../types/ariaTypes'
+import type { AriaByPropsInclude } from '../../types/ariaTypes'
 
 export type MotionTransformPropsToken = {
   // :type [!] System label / Системная метка
@@ -8,7 +8,7 @@ export type MotionTransformPropsToken = {
   // :type [!] System label / Системная метка
 }
 
-export type MotionTransformPropsBasic = AriaRoleByPropsInclude & {
+export type MotionTransformPropsBasic = AriaByPropsInclude & {
   // Status
   'open'?: boolean
   'inDom'?: boolean

@@ -189,6 +189,8 @@ export const wikiDescriptionsDialog: StorybookComponentsDescriptionItem = {
 Dialog is a specialized modal component designed for standard user interactions such as alerts, confirmations, and status messages.
 It extends the functionality of the Modal component by providing a pre-defined layout for icons, titles, descriptions, and action buttons.
 
+**Note:** The \`embedded\` prop is used only for documentation examples to render the component inline. Do not use it in production code.
+
 **Key Features:**
 1. **Standardized Layout:**
    - Automatically arranges elements: Icon -> Title (\`label\`) -> Description (\`description\`) -> Content (\`default\`) -> Actions (\`footer\`).

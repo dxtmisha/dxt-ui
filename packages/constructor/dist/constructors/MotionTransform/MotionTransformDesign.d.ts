@@ -3,7 +3,7 @@ import { ConstrOptions, ConstrStyles, DesignConstructorAbstract, ConstrClass } f
 import { MotionTransform } from './MotionTransform';
 import { MotionTransformPropsBasic } from './props';
 import { MotionTransformClasses, MotionTransformComponents, MotionTransformEmits, MotionTransformExpose, MotionTransformSlots } from './types';
-import { RoleType, AriaTrueOrFalse } from '../../library';
+import { RoleType, AriaList, AriaTrueOrFalse } from '../../library';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * MotionTransformDesign
@@ -87,6 +87,17 @@ export declare class MotionTransformDesign<COMP extends MotionTransformComponent
      * Свойства для элемента заголовка.
      */
     protected readonly propsHead: ComputedRef<{
+        key: string;
+        class: string | undefined;
+        onClick: (event: Event) => void;
+    } | {
+        role?: RoleType;
+        ariaHaspopup?: AriaList["aria-haspopup"];
+        id?: string;
+        ariaControls?: string;
+        ariaExpanded?: string;
+        tabindex: number;
+        onKeydown: (event: KeyboardEvent) => Promise<void>;
         key: string;
         class: string | undefined;
         onClick: (event: Event) => void;

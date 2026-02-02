@@ -237,6 +237,8 @@ export const wikiDescriptionsWindow: StorybookComponentsDescriptionItem = {
 Window is a versatile container component used for Modals, Popups, Dropdowns, and Cards.
 It automatically handles z-index, focus management, teleportation, and scroll locking.
 
+**Note:** The \`embedded\` prop is used only for documentation examples to render the component inline. Do not use it in production code.
+
 **When to use:**
 1. **Modal/Dialog:** When a centered box overlays the page content. Use default props.
 2. **Dropdown/Popover:** When a box appears next to a button/trigger. Use \`axis="y"\` (vertical) or \`axis="x"\` (horizontal).

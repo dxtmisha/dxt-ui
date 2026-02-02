@@ -20,7 +20,6 @@ const propsNames: StorybookProps = [
   { name: 'onUpdate:modelOpen', type: '(value: boolean) => void' },
   { name: 'onUpdate:open', type: '(value: boolean) => void' },
   { name: 'open', type: 'boolean' },
-  { name: 'role', type: 'string' },
   { name: 'section', type: 'boolean' },
   { name: 'tagBody', type: 'string' }
   // :propsList [!] System label / Системная метка

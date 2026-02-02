@@ -10,13 +10,34 @@ import {
  * Свойства для компонента Wiki в Storybook
  */
 export const wikiOption: StorybookArgsToList = {
+  autoClose: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+
+      description: {
+        en: 'Closes the window/menu when clicking inside the content area',
+        ru: 'Закрывает окно/меню при клике внутри области содержимого'
+      }
+    }
+  },
+  clickOpen: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enable opening on click',
+        ru: 'Включение открытия по клику'
+      }
+    }
+  },
   dir: {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.option,
 
       description: {
-        en: 'Mirrors the component depending on site direction (RTL/LTR)',
+        en: 'Mirrors the component depending on a site direction (RTL/LTR)',
         ru: 'Зеркально отражает компонент в зависимости от направления сайта (RTL/LTR)'
       }
     }
@@ -108,6 +129,28 @@ export const wikiOption: StorybookArgsToList = {
       description: {
         en: 'Sets HTML tag for the header container element',
         ru: 'Задает HTML‑тег для элемента контейнера шапки'
+      }
+    }
+  },
+  touchClose: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables closing the component by a swipe-down gesture on mobile devices',
+        ru: 'Включает закрытие компонента жестом свайпа вниз на мобильных устройствах'
+      }
+    }
+  },
+  type: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Selects the visual type/variant of the component',
+        ru: 'Выбирает визуальный тип/вариант компонента'
       }
     }
   }

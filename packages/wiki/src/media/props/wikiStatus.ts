@@ -30,16 +30,6 @@ export const wikiStatus: StorybookArgsToList = {
       }
     }
   },
-  clickOpen: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Enable opening on click',
-        ru: 'Включение открытия по клику'
-      }
-    }
-  },
   disabled: {
     type: StorybookControl.boolean,
     options: {
@@ -121,7 +111,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Sets the element to an open state',
         ru: 'Переводит элемент в открытое состояние'
       }
-    }
+    },
+    isDemo: true
   },
   readonly: {
     type: StorybookControl.boolean,

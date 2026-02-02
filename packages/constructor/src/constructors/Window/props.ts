@@ -1,6 +1,6 @@
 import type { ElementOrString, NormalOrPromise } from '@dxtmisha/functional'
 
-import type { AriaByPropsInclude, AriaHaspopupPropsInclude, AriaRoleByPropsInclude } from '../../types/ariaTypes'
+import type { AriaHaspopupPropsInclude, AriaRoleByPropsInclude } from '../../types/ariaTypes'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar'
 import type { TextClosePropsInclude } from '../../types/textTypes'
@@ -32,7 +32,6 @@ export type WindowPropsBasic<
 > = ScrollbarPropsInclude<Scrollbar>
   & ImagePropsInclude<Image>
   & AriaRoleByPropsInclude
-  & AriaByPropsInclude
   & AriaHaspopupPropsInclude
   & TextClosePropsInclude
   & {

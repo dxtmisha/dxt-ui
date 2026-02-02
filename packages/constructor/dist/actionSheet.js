@@ -34,9 +34,7 @@ class _ extends C {
         closeMobileHide: t.touchClose
       })),
       void 0,
-      {
-        align: "auto"
-      }
+      { align: "auto" }
     );
     r(this, "touchEvent");
     this.props = t, this.refs = i, this.element = o, this.classDesign = h, this.className = n, this.components = a, this.slots = l, this.emits = u, this.touchEvent = new T(

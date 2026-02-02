@@ -73,6 +73,10 @@ export class MotionTransformState {
     animation = true
   ) {
     if (this.open.value !== open) {
+      if (open) {
+        this.tabIndex.updateOldElement()
+      }
+
       if (
         animation
         && this.element.isAnimation()

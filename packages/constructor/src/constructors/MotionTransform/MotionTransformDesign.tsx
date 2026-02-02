@@ -44,11 +44,13 @@ export class MotionTransformDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, MotionTransformEmits, P>
+    options?: ConstrOptions<COMP, MotionTransformEmits, P>,
+    ItemConstructor: typeof MotionTransform = MotionTransform
   ) {
     super(
       name,
@@ -56,7 +58,7 @@ export class MotionTransformDesign<
       options
     )
 
-    this.item = new MotionTransform(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -249,11 +251,24 @@ export class MotionTransformDesign<
    *
    * Свойства для элемента заголовка.
    */
-  protected readonly propsHead = computed(() => ({
-    key: 'head',
-    class: this.classes?.value.head,
-    onClick: this.item.event.onClick
-  }))
+  protected readonly propsHead = computed(() => {
+    const props = {
+      key: 'head',
+      class: this.classes?.value.head,
+      onClick: this.item.event.onClick
+    }
+
+    if (this.props.clickOpen) {
+      return {
+        ...props,
+        tabindex: 0,
+        onKeydown: this.item.event.onKeydown,
+        ...this.item.slotData.value.binds
+      }
+    }
+
+    return props
+  })
 
   /**
    * Props for the body element.
@@ -265,9 +280,9 @@ export class MotionTransformDesign<
       key: 'body',
       id: this.item.element.idBody,
       class: this.classes?.value.body,
-      ...AriaStaticInclude.role(this.item.getRole()),
+      ...AriaStaticInclude.role('region'),
       ...AriaStaticInclude.modal(
-        this.item.element.isWindow(),
+        false,
         this.props.ariaLabelledby,
         this.props.ariaDescribedby
       )

@@ -58,17 +58,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  autoClose: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.option,
-
-      description: {
-        en: 'Closes the window/menu when clicking inside the content area',
-        ru: 'Закрывает окно/меню при клике внутри области содержимого'
-      }
-    }
-  },
   axis: {
     type: StorybookControl.select,
     options: {
@@ -121,6 +110,17 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  cancel: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      options: ['auto', 'always'],
+      description: {
+        en: 'Cancel button mode: auto (show only if cancelShow + active, no arrows) or always (force unless disabled/readonly or arrows).',
+        ru: 'Режим кнопки очистки: auto (показывать если cancelShow и активен, без стрелок) или always (всегда, кроме disabled/readonly или стрелок).'
+      }
+    }
+  },
   cellAttrs: {
     type: StorybookControl.object,
     options: {
@@ -138,17 +138,6 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Additional attributes for the Chip component',
         ru: 'Дополнительные атрибуты для компонента Chip'
-      }
-    }
-  },
-  cancel: {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.style,
-      options: ['auto', 'always'],
-      description: {
-        en: 'Cancel button mode: auto (show only if cancelShow + active, no arrows) or always (force unless disabled/readonly or arrows).',
-        ru: 'Режим кнопки очистки: auto (показывать если cancelShow и активен, без стрелок) или always (всегда, кроме disabled/readonly или стрелок).'
       }
     }
   },
@@ -535,16 +524,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  touchClose: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.option,
-      description: {
-        en: 'Enables closing the component by a swipe-down gesture on mobile devices',
-        ru: 'Включает закрытие компонента жестом свайпа вниз на мобильных устройствах'
-      }
-    }
-  },
   tooltipAttrs: {
     type: StorybookControl.object,
     options: {
@@ -552,18 +531,6 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Additional attributes for the Tooltip component',
         ru: 'Дополнительные атрибуты для компонента Tooltip'
-      }
-    }
-  },
-  type: {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.option,
-      type: 'string',
-      options: [],
-      description: {
-        en: 'Selects the visual type/variant of the component',
-        ru: 'Выбирает визуальный тип/вариант компонента'
       }
     }
   },

@@ -39,6 +39,13 @@ export declare class MotionTransformEvent {
      */
     readonly onClick: (event: Event) => void;
     /**
+     * Events of pressing a key.
+     *
+     * События нажатия на клавишу.
+     * @param event event object/ объект события
+     */
+    readonly onKeydown: (event: KeyboardEvent) => Promise<void>;
+    /**
      * End of animation event.
      *
      * Событие окончания анимации.
@@ -54,4 +61,11 @@ export declare class MotionTransformEvent {
      */
     emit(event: Event | undefined, type: MotionTransformEmitOptions['type']): void;
     protected listener: (event: PointerEvent) => void;
+    /**
+     * Checks if the event target is a trigger for opening.
+     *
+     * Проверяет, является ли цель события триггером для открытия.
+     * @param target event target/ цель события
+     */
+    protected isTrigger(target: HTMLElement): boolean;
 }

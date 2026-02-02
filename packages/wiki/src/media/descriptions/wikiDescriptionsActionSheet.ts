@@ -223,6 +223,8 @@ export const wikiDescriptionsActionSheet: StorybookComponentsDescriptionItem = {
 ActionSheet is a mobile-optimized modal component that slides up from the bottom of the screen (Bottom Sheet).
 It is designed to present a set of actions, choices, or secondary content, following standard mobile interface patterns (iOS/Material).
 
+**Note:** The \`embedded\` prop is used only for documentation examples to render the component inline. Do not use it in production code.
+
 **Key Features:**
 1. **Positioning & Animation:**
    - Anchored to the bottom of the viewport.

@@ -1,5 +1,5 @@
 import { watch } from 'vue'
-import { type ConstrEmit, EventItem } from '@dxtmisha/functional'
+import { type ConstrEmit, EventItem, isEnter } from '@dxtmisha/functional'
 
 import { MotionTransformElement } from './MotionTransformElement'
 import { MotionTransformState } from './MotionTransformState'
@@ -53,10 +53,25 @@ export class MotionTransformEvent {
    * @param event event object/ объект события
    */
   readonly onClick = (event: Event) => {
+    if (this.isTrigger(event.target as HTMLElement)) {
+      this.emit(event, 'head')
+      this.state.toggle()
+    }
+  }
+
+  /**
+   * Events of pressing a key.
+   *
+   * События нажатия на клавишу.
+   * @param event event object/ объект события
+   */
+  readonly onKeydown = async (event: KeyboardEvent): Promise<void> => {
     if (
-      this.props.clickOpen
-      && this.element.isClick(event.target as HTMLElement)
+      isEnter(event as KeyboardEvent)
+      && this.isTrigger(event.target as HTMLElement)
     ) {
+      event.preventDefault()
+
       this.emit(event, 'head')
       this.state.toggle()
     }
@@ -114,5 +129,15 @@ export class MotionTransformEvent {
       this.emit(event, 'body')
       this.state.set(false)
     }
+  }
+
+  /**
+   * Checks if the event target is a trigger for opening.
+   *
+   * Проверяет, является ли цель события триггером для открытия.
+   * @param target event target/ цель события
+   */
+  protected isTrigger(target: HTMLElement): boolean {
+    return Boolean(this.props.clickOpen && this.element.isClick(target))
   }
 }

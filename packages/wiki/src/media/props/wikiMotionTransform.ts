@@ -35,9 +35,9 @@ export const wikiMotionTransform: StorybookArgsToList = {
   'motionTransform.autoClose': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
-        en: 'Automatically close on outside click',
+        en: 'Automatically close on the outside click',
         ru: 'Автоматическое закрытие при клике снаружи'
       }
     }
@@ -65,11 +65,15 @@ export const wikiMotionTransform: StorybookArgsToList = {
   'motionTransform.section': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Enable section styling mode',
         ru: 'Включение режима стилизации секции'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      open: true
     }
   }
 }
