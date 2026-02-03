@@ -8,6 +8,8 @@ import type { MotionTransformEmitOptions } from './basicTypes'
 import type { MotionTransformEmits } from './types'
 import type { MotionTransformProps } from './props'
 
+let allOpenForAutoClose: number = 0
+
 /**
  * Class for event management.
  *
@@ -33,7 +35,22 @@ export class MotionTransformEvent {
   ) {
     this.item = new EventItem(document.body, 'click', this.listener)
 
-    watch(this.state.open, () => this.item.toggle(this.state.open.value))
+    watch(
+      this.state.open,
+      () => {
+        if (
+          this.props.autoClose
+        ) {
+          if (this.state.open.value) {
+            allOpenForAutoClose++
+          } else {
+            allOpenForAutoClose--
+          }
+        }
+
+        this.item.toggle(this.state.open.value)
+      }
+    )
   }
 
   /**
@@ -117,7 +134,8 @@ export class MotionTransformEvent {
 
     if (
       this.state.open.value
-      && this.element.isClickGlobal(target) && (
+      && this.element.isClickGlobal(target)
+      && (
         this.element.isClose(target)
         || (
           this.props.autoClose

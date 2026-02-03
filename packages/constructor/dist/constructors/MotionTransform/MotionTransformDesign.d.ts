@@ -97,7 +97,6 @@ export declare class MotionTransformDesign<COMP extends MotionTransformComponent
         id?: string;
         ariaControls?: string;
         ariaExpanded?: string;
-        tabindex: number;
         onKeydown: (event: KeyboardEvent) => Promise<void>;
         key: string;
         class: string | undefined;

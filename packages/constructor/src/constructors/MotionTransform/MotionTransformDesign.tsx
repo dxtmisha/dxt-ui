@@ -261,7 +261,6 @@ export class MotionTransformDesign<
     if (this.props.clickOpen) {
       return {
         ...props,
-        tabindex: 0,
         onKeydown: this.item.event.onKeydown,
         ...this.item.slotData.value.binds
       }

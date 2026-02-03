@@ -7,6 +7,7 @@ import { EventItem } from '@dxtmisha/functional';
  */
 export declare class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     protected readonly element: Ref<E | undefined> | (() => E | undefined);
+    protected readonly active: () => boolean;
     /** Previously focused element/ Ранее сфокусированный элемент */
     protected oldElement?: HTMLElement | Element | null;
     /** Event item for focus events/ Элемент события для событий фокуса */
@@ -14,8 +15,9 @@ export declare class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     /**
      * Constructor
      * @param element - Reference to the element/ Ссылка на элемент
+     * @param active - Return focus to the previous element/ Возвращать фокус на предыдущий элемент
      */
-    constructor(element: Ref<E | undefined> | (() => E | undefined));
+    constructor(element: Ref<E | undefined> | (() => E | undefined), active?: () => boolean);
     /**
      * Set focus to the element.
      *

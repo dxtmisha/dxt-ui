@@ -36,7 +36,7 @@ export class WindowEsc {
   }
 
   /**
-   * Start listening for Escape key press.
+   * Start listening for the Escape key press.
    *
    * Начать прослушивание нажатия клавиши Escape.
    */
@@ -48,7 +48,7 @@ export class WindowEsc {
   }
 
   /**
-   * Stop listening for Escape key press.
+   * Stop listening for the Escape key press.
    *
    * Остановить прослушивание нажатия клавиши Escape.
    */

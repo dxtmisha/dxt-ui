@@ -88,7 +88,8 @@ export class MotionTransform {
       className
     )
     this.tabIndex = new TabIndexIncludeConstructor(
-      () => this.element.getElementBody()
+      () => this.element.getElementBody(),
+      () => this.element.isWindow()
     )
 
     this.size = new MotionTransformSizeConstructor(this.element)

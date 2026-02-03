@@ -1,4 +1,4 @@
-import { Ref, ToRefs } from 'vue';
+import { Ref, ToRefs, ComputedRef } from 'vue';
 import { ConstrEmit, DesignComp } from '@dxtmisha/functional';
 import { EventClickInclude } from '../../classes/EventClickInclude';
 import { MotionTransformInclude } from '../MotionTransform';
@@ -6,6 +6,9 @@ import { ModelInclude } from '../../classes/ModelInclude';
 import { CellExpose } from '../Cell';
 import { AccordionComponents, AccordionEmits, AccordionSlots } from './types';
 import { AccordionProps } from './props';
+import { IconValue, IconPropsBasic } from '../Icon';
+import { NumberOrString } from '@dxtmisha/functional-basic';
+import { EventClickValue } from '../../library';
 /**
  * Accordion
  */
@@ -35,4 +38,14 @@ export declare class Accordion {
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      */
     constructor(props: AccordionProps, refs: ToRefs<AccordionProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<AccordionComponents, AccordionProps> | undefined, slots?: AccordionSlots | undefined, emits?: ConstrEmit<AccordionEmits> | undefined);
+    readonly bindsCell: ComputedRef<{
+        ref: Ref<CellExpose | undefined, CellExpose | undefined>;
+        icon: IconValue<IconPropsBasic> | undefined;
+        iconTrailing: IconValue<IconPropsBasic> | undefined;
+        label: NumberOrString | undefined;
+        description: string | number | undefined;
+        dynamic: boolean;
+        onClick: (event: MouseEvent, options?: EventClickValue) => void;
+        onKeydown: (event: KeyboardEvent) => void;
+    }>;
 }

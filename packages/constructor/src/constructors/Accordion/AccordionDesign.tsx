@@ -159,19 +159,14 @@ export class AccordionDesign<
     return this.components.renderOne(
       'cell',
       toBinds(
+        this.item.bindsCell.value,
+        binds,
+        this.props.cellAttrs,
         {
           ref: this.item.elementHead,
-          icon: this.props.icon,
-          iconTrailing: this.props.iconArrowDown,
           iconTurn: isOpen.value,
-          label: this.props.label,
-          description: this.props.description,
-          class: this.classes?.value.head,
-          dynamic: true,
-          onClick: this.item.event.onClick,
-          ...binds
-        },
-        this.props.cellAttrs
+          class: this.classes?.value.head
+        }
       ),
       slots
     )

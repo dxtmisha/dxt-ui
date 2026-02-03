@@ -154,5 +154,51 @@ export const wikiDescriptionsAccordion: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
 <StorybookDescriptions componentName={'Cell'} type={'slots'}/>
     `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item">
+  <Accordion :open="true" v-bind="args">
+    <div class="wiki-storybook-item--padding">
+      Hidden content
+    </div>
+  </Accordion>
+</div>
+    `,
+    description: `
+Accordion is a vertically stacking interactive component that allows users to reveal or hide content sections.
+It consists of a header (trigger) and a body (content) that expands/collapses with a smooth animation.
+
+**Key Features:**
+1. **Header (Trigger):**
+   - Uses the \`Cell\` component structure.
+   - Supports \`label\` (title), \`description\` (subtitle), and \`icon\` (leading icon).
+   - Includes a rotating arrow indicator (\`iconArrowDown\`) to show state.
+
+2. **Animation:**
+   - Uses \`MotionTransform\` for smooth height transitions.
+   - Content is unmounted or hidden when collapsed (depending on configuration).
+
+3. **Interaction:**
+   - Toggles on click or keyboard interaction (Enter/Space).
+   - Controlled via \`v-model:open\`.
+
+**Usage Examples:**
+
+- **Basic:**
+  \`<Accordion label="Settings">
+     <p>Settings content...</p>
+   </Accordion>\`
+
+- **With Description and Icon:**
+  \`<Accordion label="Profile" description="Manage your account" icon="person">
+     <ProfileForm />
+   </Accordion>\`
+
+- **Controlled:**
+  \`<Accordion v-model:open="isOpen" label="Controlled">
+     Content
+   </Accordion>\`
+    `
   }
 }

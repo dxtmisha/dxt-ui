@@ -19,13 +19,13 @@ export declare class WindowEsc {
      */
     constructor(open: Ref<boolean>, on?: (() => void) | undefined, active?: RefOrNormal<boolean | (() => boolean)>);
     /**
-     * Start listening for Escape key press.
+     * Start listening for the Escape key press.
      *
      * Начать прослушивание нажатия клавиши Escape.
      */
     start(): this;
     /**
-     * Stop listening for Escape key press.
+     * Stop listening for the Escape key press.
      *
      * Остановить прослушивание нажатия клавиши Escape.
      */

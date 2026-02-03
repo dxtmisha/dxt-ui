@@ -17,7 +17,8 @@
   "~dynamic": {
     "focus": {
       "gradient": "var(--sys-color)",
-      "gradient-opacity": "{sys.opacity.focus}"
+      "gradient-opacity": "{sys.opacity.focus}",
+      "outline": "{outline.md}"
     },
     "hover": {
       "gradient": "var(--sys-color)",

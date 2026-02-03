@@ -65,4 +65,17 @@ export class Accordion {
 
     this.model = new ModelInclude('open', this.emits, this.open)
   }
+
+  readonly bindsCell = computed(() => {
+    return {
+      ref: this.elementHead,
+      icon: this.props.icon,
+      iconTrailing: this.props.iconArrowDown,
+      label: this.props.label,
+      description: this.props.description,
+      dynamic: true,
+      onClick: this.event.onClick,
+      onKeydown: this.event.onKeydown
+    }
+  })
 }

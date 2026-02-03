@@ -1,14 +1,15 @@
 var l = Object.defineProperty;
 var m = (s, t, e) => t in s ? l(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
 var o = (s, t, e) => m(s, typeof t != "symbol" ? t + "" : t, e);
-import { onUnmounted as f } from "vue";
-import { isDomRuntime as r, isFunction as h, getRef as u, EventItem as d } from "@dxtmisha/functional";
+import { onUnmounted as h } from "vue";
+import { isDomRuntime as r, isFunction as f, getRef as u, EventItem as c } from "@dxtmisha/functional";
 class v {
   /**
    * Constructor
    * @param element - Reference to the element/ Ссылка на элемент
+   * @param active - Return focus to the previous element/ Возвращать фокус на предыдущий элемент
    */
-  constructor(t) {
+  constructor(t, e = () => !0) {
     /** Previously focused element/ Ранее сфокусированный элемент */
     o(this, "oldElement");
     /** Event item for focus events/ Элемент события для событий фокуса */
@@ -20,13 +21,13 @@ class v {
      * @param event Keyboard event/ Событие клавиатуры
      */
     o(this, "listenEvent", (t) => {
-      var n, i;
+      var i, n;
       if (!this.isTab(t))
         return;
       const e = document.activeElement;
-      e && (this.isShift(t) ? e === this.findFirstElement() && ((n = this.findLastElement()) == null || n.focus(), t.preventDefault()) : e === this.findLastElement() && ((i = this.findFirstElement()) == null || i.focus(), t.preventDefault()));
+      e && (this.isShift(t) ? e === this.findFirstElement() && ((i = this.findLastElement()) == null || i.focus(), t.preventDefault()) : e === this.findLastElement() && ((n = this.findFirstElement()) == null || n.focus(), t.preventDefault()));
     });
-    this.element = t, f(() => {
+    this.element = t, this.active = e, h(() => {
       this.stopEvent(), this.event = void 0;
     });
   }
@@ -36,7 +37,7 @@ class v {
    * Устанавливает фокус на элемент.
    */
   goTo() {
-    return this.isElement() && r() && (this.toFocus(), this.startEvent()), this;
+    return this.isElement() && this.active() && r() && (this.toFocus(), this.startEvent()), this;
   }
   /**
    * Reset focus to the previously focused element.
@@ -44,7 +45,7 @@ class v {
    * Сбрасывает фокус на ранее сфокусированный элемент.
    */
   reset() {
-    return this.oldElement && "focus" in this.oldElement && this.oldElement.focus(), this.stopEvent(), this;
+    return this.active() && (this.oldElement && "focus" in this.oldElement && this.oldElement.focus(), this.stopEvent()), this;
   }
   /**
    * Toggle focus based on status.
@@ -63,8 +64,8 @@ class v {
   updateOldElement() {
     var t, e;
     if (r()) {
-      const n = (e = (t = document.activeElement) == null ? void 0 : t.shadowRoot) == null ? void 0 : e.activeElement;
-      this.oldElement = n != null ? n : document.activeElement;
+      const i = (e = (t = document.activeElement) == null ? void 0 : t.shadowRoot) == null ? void 0 : e.activeElement;
+      this.oldElement = i != null ? i : document.activeElement;
     }
   }
   /**
@@ -99,7 +100,7 @@ class v {
    * Получает элемент.
    */
   getElement() {
-    return h(this.element) ? this.element() : u(this.element);
+    return f(this.element) ? this.element() : u(this.element);
   }
   /**
    * Find the first focusable element.
@@ -110,9 +111,9 @@ class v {
     var e;
     const t = (e = this.getElement()) == null ? void 0 : e.querySelectorAll("*");
     if (t) {
-      for (const n of t)
-        if ("tabIndex" in n && n.tabIndex >= 0)
-          return n;
+      for (const i of t)
+        if ("tabIndex" in i && i.tabIndex >= 0)
+          return i;
     }
   }
   /**
@@ -124,10 +125,10 @@ class v {
     var e;
     const t = (e = this.getElement()) == null ? void 0 : e.querySelectorAll("*");
     if (t)
-      for (let n = t.length - 1; n >= 0; n--) {
-        const i = t[n];
-        if (i && "tabIndex" in i && i.tabIndex >= 0)
-          return i;
+      for (let i = t.length - 1; i >= 0; i--) {
+        const n = t[i];
+        if (n && "tabIndex" in n && n.tabIndex >= 0)
+          return n;
       }
   }
   /**
@@ -151,7 +152,7 @@ class v {
       this.event.start();
       return;
     }
-    this.event = new d(
+    this.event = new c(
       document.body,
       "keydown",
       this.listenEvent

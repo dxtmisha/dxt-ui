@@ -2,13 +2,13 @@ var H = Object.defineProperty;
 var T = (h, t, e) => t in h ? H(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
 var s = (h, t, e) => T(h, typeof t != "symbol" ? t + "" : t, e);
 import { watch as m, ref as d, computed as a, onUnmounted as M, h as l, Teleport as P } from "vue";
-import { EventItem as B, isEnter as E, DesignConstructorAbstract as O } from "@dxtmisha/functional";
+import { EventItem as W, isEnter as B, DesignConstructorAbstract as E } from "@dxtmisha/functional";
 import { A as p } from "./AriaStaticInclude-D1bSJaBp.js";
-import { M as W } from "./ModelInclude-BiYm_iCQ.js";
-import { T as z } from "./TabIndexInclude-DFgnqYh5.js";
+import { M as O } from "./ModelInclude-BiYm_iCQ.js";
+import { T as z } from "./TabIndexInclude-D8IAq5y9.js";
 import { a as u } from "./MotionTransformClassesInclude-B23RIq0Q.js";
 import { M as X, _ as Z } from "./MotionTransformClassesInclude-B23RIq0Q.js";
-import { W as I } from "./WindowEsc-Dp9AvJt7.js";
+import { W as I } from "./WindowEsc-DTwn4Vsz.js";
 import { M as et } from "./MotionTransformInclude-P_oRs3JZ.js";
 class D {
   /**
@@ -227,7 +227,7 @@ class N {
      * @param event event object/ объект события
      */
     s(this, "onKeydown", async (t) => {
-      E(t) && this.isTrigger(t.target) && (t.preventDefault(), this.emit(t, "head"), this.state.toggle());
+      B(t) && this.isTrigger(t.target) && (t.preventDefault(), this.emit(t, "head"), this.state.toggle());
     });
     /**
      * End of animation event.
@@ -242,7 +242,12 @@ class N {
       const e = t.target;
       this.state.open.value && this.element.isClickGlobal(e) && (this.element.isClose(e) || this.props.autoClose && this.element.isOutside(e) && this.element.isIgnore(e)) && (this.emit(t, "body"), this.state.set(!1));
     });
-    this.props = t, this.element = e, this.state = i, this.emits = o, this.item = new B(document.body, "click", this.listener), m(this.state.open, () => this.item.toggle(this.state.open.value));
+    this.props = t, this.element = e, this.state = i, this.emits = o, this.item = new W(document.body, "click", this.listener), m(
+      this.state.open,
+      () => {
+        this.props.autoClose && this.state.open.value, this.item.toggle(this.state.open.value);
+      }
+    );
   }
   /**
    * Stopping event listening.
@@ -336,7 +341,7 @@ class _ {
    * @param WindowEscConstructor class for working with esc/ класс для работы с esc
    * @param ModelIncludeConstructor class for working with model/ класс для работы с моделью
    */
-  constructor(t, e, i, o, n, r, g, y, c, f = u, v = D, w = A, x = N, S = $, b = z, k = I, C = W) {
+  constructor(t, e, i, o, n, r, g, y, c, f = u, v = D, w = A, x = N, S = $, b = z, k = I, C = O) {
     /** Reference helper for element interactions/ Вспомогательный класс для работы с элементами */
     s(this, "element");
     s(this, "tabIndex");
@@ -373,7 +378,8 @@ class _ {
       o,
       r
     ), this.tabIndex = new b(
-      () => this.element.getElementBody()
+      () => this.element.getElementBody(),
+      () => this.element.isWindow()
     ), this.size = new v(this.element), this.state = new w(
       t,
       this.element,
@@ -402,7 +408,7 @@ const j = {
   // :default [!] System label / Системная метка
   animationHeadPosition: "top"
 };
-class J extends O {
+class J extends E {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -514,7 +520,6 @@ class J extends O {
       };
       return this.props.clickOpen ? {
         ...e,
-        tabindex: 0,
         onKeydown: this.item.event.onKeydown,
         ...this.item.slotData.value.binds
       } : e;

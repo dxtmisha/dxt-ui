@@ -29,7 +29,7 @@ class E {
     );
   }
   /**
-   * Start listening for Escape key press.
+   * Start listening for the Escape key press.
    *
    * Начать прослушивание нажатия клавиши Escape.
    */
@@ -38,7 +38,7 @@ class E {
     return this.make(), (t = this.event) == null || t.start(), this;
   }
   /**
-   * Stop listening for Escape key press.
+   * Stop listening for the Escape key press.
    *
    * Остановить прослушивание нажатия клавиши Escape.
    */

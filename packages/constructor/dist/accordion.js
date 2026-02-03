@@ -1,12 +1,12 @@
-var c = Object.defineProperty;
-var m = (r, s, i) => s in r ? c(r, s, { enumerable: !0, configurable: !0, writable: !0, value: i }) : r[s] = i;
-var o = (r, s, i) => m(r, typeof s != "symbol" ? s + "" : s, i);
-import { computed as p, ref as h, h as u } from "vue";
-import { DesignConstructorAbstract as f, toBinds as v } from "@dxtmisha/functional";
+var m = Object.defineProperty;
+var p = (r, s, i) => s in r ? m(r, s, { enumerable: !0, configurable: !0, writable: !0, value: i }) : r[s] = i;
+var o = (r, s, i) => p(r, typeof s != "symbol" ? s + "" : s, i);
+import { computed as h, ref as a, h as u } from "vue";
+import { DesignConstructorAbstract as v, toBinds as f } from "@dxtmisha/functional";
 import { E as b } from "./EventClickInclude-CgbuezDm.js";
 import { M as g } from "./ModelInclude-BiYm_iCQ.js";
 import { M as y } from "./MotionTransformInclude-P_oRs3JZ.js";
-class S {
+class C {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -18,18 +18,28 @@ class S {
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
-  constructor(s, i, n, e, l, t, a, d) {
+  constructor(s, i, n, e, l, t, c, d) {
     o(this, "motionTransform");
     o(this, "event");
-    o(this, "open", h(!1));
+    o(this, "open", a(!1));
     o(this, "model");
-    o(this, "elementHead", h());
-    this.props = s, this.refs = i, this.element = n, this.classDesign = e, this.className = l, this.components = t, this.slots = a, this.emits = d, this.motionTransform = new y(
+    o(this, "elementHead", a());
+    o(this, "bindsCell", h(() => ({
+      ref: this.elementHead,
+      icon: this.props.icon,
+      iconTrailing: this.props.iconArrowDown,
+      label: this.props.label,
+      description: this.props.description,
+      dynamic: !0,
+      onClick: this.event.onClick,
+      onKeydown: this.event.onKeydown
+    })));
+    this.props = s, this.refs = i, this.element = n, this.classDesign = e, this.className = l, this.components = t, this.slots = c, this.emits = d, this.motionTransform = new y(
       this.props,
       this.className,
       this.components,
       this.emits,
-      p(() => ({
+      h(() => ({
         section: !0,
         adaptive: "planeAlways",
         inDom: !0
@@ -43,13 +53,13 @@ class S {
     ), this.model = new g("open", this.emits, this.open);
   }
 }
-const x = {
+const k = {
   clickOpen: !0,
   autoClose: !0,
   // :default [!] System label / Системная метка
   divider: !0
 };
-class B extends f {
+class x extends v {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -74,20 +84,15 @@ class B extends f {
       const e = {};
       return this.slots && ("label" in this.slots && (e.label = (t) => this.initSlot("label", void 0, t)), "description" in this.slots && (e.description = (t) => this.initSlot("description", void 0, t)), "caption" in this.slots && (e.caption = (t) => this.initSlot("caption", void 0, t)), "trailing" in this.slots && (e.trailing = (t) => this.initSlot("trailing", void 0, t)), "body" in this.slots && (e.body = (t) => this.initSlot("body", void 0, t))), this.components.renderOne(
         "cell",
-        v(
+        f(
+          this.item.bindsCell.value,
+          n,
+          this.props.cellAttrs,
           {
             ref: this.item.elementHead,
-            icon: this.props.icon,
-            iconTrailing: this.props.iconArrowDown,
             iconTurn: i.value,
-            label: this.props.label,
-            description: this.props.description,
-            class: (l = this.classes) == null ? void 0 : l.value.head,
-            dynamic: !0,
-            onClick: this.item.event.onClick,
-            ...n
-          },
-          this.props.cellAttrs
+            class: (l = this.classes) == null ? void 0 : l.value.head
+          }
         ),
         e
       );
@@ -105,7 +110,7 @@ class B extends f {
         this.initSlot("default", void 0, i)
       );
     });
-    this.item = new S(
+    this.item = new C(
       this.props,
       this.refs,
       this.element,
@@ -169,7 +174,7 @@ class B extends f {
   }
 }
 export {
-  S as Accordion,
-  B as AccordionDesign,
-  x as defaultsAccordion
+  C as Accordion,
+  x as AccordionDesign,
+  k as defaultsAccordion
 };
