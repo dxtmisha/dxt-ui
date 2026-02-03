@@ -1,10 +1,10 @@
-import { AriaRoleByPropsInclude } from '../../types/ariaTypes';
+import { AriaByPropsInclude } from '../../types/ariaTypes';
 export type MotionTransformPropsToken = {
     section?: boolean;
     animationHeadPosition?: 'top' | 'toBottom';
     adaptive?: 'planeAlways';
 };
-export type MotionTransformPropsBasic = AriaRoleByPropsInclude & {
+export type MotionTransformPropsBasic = AriaByPropsInclude & {
     'open'?: boolean;
     'inDom'?: boolean;
     'ignore'?: HTMLElement | string;

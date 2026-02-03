@@ -43,11 +43,13 @@ export class CellDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor cell item class/ класс элемента ячейки
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, CellEmits, P>
+    options?: ConstrOptions<COMP, CellEmits, P>,
+    ItemConstructor: typeof Cell = Cell
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class CellDesign<
       options
     )
 
-    this.item = new Cell(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

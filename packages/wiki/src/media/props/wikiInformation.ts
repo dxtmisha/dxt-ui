@@ -32,7 +32,9 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Caption text for additional information',
         ru: 'Текст подписи для дополнительной информации'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'Caption text'
   },
   description: {
     type: StorybookControl.string,

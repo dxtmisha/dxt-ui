@@ -49,6 +49,15 @@ export class Cell {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param LabelConstructor class for creating a label/ класс для создания метки
+   * @param CaptionConstructor class for creating a caption/ класс для создания подписи
+   * @param DescriptionConstructor class for creating a description/ класс для создания описания
+   * @param EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
+   * @param IconConstructor class for creating an icon/ класс для создания иконки
+   * @param ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
+   * @param RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
+   * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
+   * @param EventConstructor class for creating an event/ класс для создания события
    */
   constructor(
     protected readonly props: CellProps,
@@ -58,25 +67,33 @@ export class Cell {
     protected readonly className: string,
     protected readonly components?: DesignComp<CellComponents, CellProps>,
     protected readonly slots?: CellSlots,
-    protected readonly emits?: ConstrEmit<CellEmits>
+    protected readonly emits?: ConstrEmit<CellEmits>,
+    LabelConstructor: typeof LabelInclude = LabelInclude,
+    CaptionConstructor: typeof CaptionInclude = CaptionInclude,
+    DescriptionConstructor: typeof DescriptionInclude = DescriptionInclude,
+    EnabledConstructor: typeof EnabledInclude = EnabledInclude,
+    IconConstructor: typeof IconTrailingInclude = IconTrailingInclude,
+    ProgressConstructor: typeof ProgressInclude = ProgressInclude,
+    RippleConstructor: typeof RippleInclude = RippleInclude,
+    SkeletonConstructor: typeof SkeletonInclude = SkeletonInclude,
+    EventConstructor: typeof EventClickInclude = EventClickInclude
   ) {
-    const progress = new ProgressInclude(
+    const progress = new ProgressConstructor(
       props,
       className,
       components,
       {
-        inverse: true,
         position: 'bottom'
       }
     )
 
-    this.skeleton = new SkeletonInclude(
+    this.skeleton = new SkeletonConstructor(
       props,
       classDesign,
       ['classTextVariant']
     )
 
-    this.label = new LabelInclude(
+    this.label = new LabelConstructor(
       props,
       className,
       undefined,
@@ -86,15 +103,15 @@ export class Cell {
       undefined,
       this.skeleton
     )
-    this.caption = new CaptionInclude(props, className, slots)
-    this.description = new DescriptionInclude(props, className, slots, this.skeleton)
-    this.enabled = new EnabledInclude(props, progress)
+    this.caption = new CaptionConstructor(props, className, slots)
+    this.description = new DescriptionConstructor(props, className, slots, this.skeleton)
+    this.enabled = new EnabledConstructor(props, progress)
 
-    this.icon = new IconTrailingInclude(props, className, components)
+    this.icon = new IconConstructor(props, className, components)
     this.progress = progress
-    this.ripple = new RippleInclude(className, components, this.enabled)
+    this.ripple = new RippleConstructor(className, components, this.enabled)
 
-    this.event = new EventClickInclude(
+    this.event = new EventConstructor(
       props,
       this.enabled,
       emits

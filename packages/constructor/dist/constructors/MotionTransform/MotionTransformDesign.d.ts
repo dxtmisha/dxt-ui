@@ -16,8 +16,9 @@ export declare class MotionTransformDesign<COMP extends MotionTransformComponent
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor class for working with the item/ класс для работы с элементом
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, MotionTransformEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, MotionTransformEmits, P>, ItemConstructor?: typeof MotionTransform);
     /**
      * Initialization of all the necessary properties for work
      *

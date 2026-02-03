@@ -15,8 +15,9 @@ export declare class CellDesign<COMP extends CellComponents, EXPOSE extends Cell
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor cell item class/ класс элемента ячейки
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, CellEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, CellEmits, P>, ItemConstructor?: typeof Cell);
     /**
      * Initialization of all the necessary properties for work
      *

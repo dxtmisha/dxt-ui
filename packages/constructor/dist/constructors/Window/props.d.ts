@@ -1,5 +1,5 @@
 import { ElementOrString, NormalOrPromise } from '@dxtmisha/functional';
-import { AriaByPropsInclude, AriaHaspopupPropsInclude, AriaRoleByPropsInclude } from '../../types/ariaTypes';
+import { AriaHaspopupPropsInclude, AriaRoleByPropsInclude } from '../../types/ariaTypes';
 import { ImagePropsBasic, ImagePropsInclude } from '../Image';
 import { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar';
 import { TextClosePropsInclude } from '../../types/textTypes';
@@ -20,7 +20,7 @@ export type WindowPropsToken = {
     closeMobileHide?: boolean;
     widthMatch?: boolean;
 };
-export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = ScrollbarPropsInclude<Scrollbar> & ImagePropsInclude<Image> & AriaRoleByPropsInclude & AriaByPropsInclude & AriaHaspopupPropsInclude & TextClosePropsInclude & {
+export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = ScrollbarPropsInclude<Scrollbar> & ImagePropsInclude<Image> & AriaRoleByPropsInclude & AriaHaspopupPropsInclude & TextClosePropsInclude & {
     'open'?: boolean;
     'disabled'?: boolean;
     'preparation'?(): NormalOrPromise<void>;

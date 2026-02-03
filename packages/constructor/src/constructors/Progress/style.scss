@@ -70,6 +70,8 @@
   }
 
   &--linear {
+    left: 0;
+    right: 0;
     @include ui.paddingX(0);
 
     width: 100%;

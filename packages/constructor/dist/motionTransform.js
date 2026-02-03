@@ -1,6 +1,6 @@
 var H = Object.defineProperty;
-var T = (n, t, e) => t in n ? H(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var s = (n, t, e) => T(n, typeof t != "symbol" ? t + "" : t, e);
+var T = (h, t, e) => t in h ? H(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
+var s = (h, t, e) => T(h, typeof t != "symbol" ? t + "" : t, e);
 import { watch as m, ref as d, computed as a, onUnmounted as M, h as l, Teleport as P } from "vue";
 import { EventItem as B, isEnter as E, DesignConstructorAbstract as O } from "@dxtmisha/functional";
 import { A as p } from "./AriaStaticInclude-D1bSJaBp.js";
@@ -47,8 +47,8 @@ class D {
     var e;
     const t = this.element.getRect();
     if (t) {
-      const i = this.element.getElementHead(), o = this.element.getElementBody(), h = 1 / window.innerWidth * t.width, r = 1 / t.width * window.innerWidth;
-      this.top = `${t.top - h * t.top / (h - 1)}px`, this.left = `${t.left - h * t.left / (h - 1)}px`, this.height = `${100 / window.innerHeight * t.height * r}%`, this.scale = h.toString(), this.contextWidth = `${t.width}px`, this.contextHeight = `${t.height}px`, i && (this.headWidth = `${t.width}px`, this.headHeight = `${(e = i.offsetHeight) != null ? e : "0"}px`, this.headScale = r.toString(), o && (this.bodyHeight = `${o.offsetHeight + (this.element.isSection() ? i.offsetHeight : 0)}px`));
+      const i = this.element.getElementHead(), o = this.element.getElementBody(), n = 1 / window.innerWidth * t.width, r = 1 / t.width * window.innerWidth;
+      this.top = `${t.top - n * t.top / (n - 1)}px`, this.left = `${t.left - n * t.left / (n - 1)}px`, this.height = `${100 / window.innerHeight * t.height * r}%`, this.scale = n.toString(), this.contextWidth = `${t.width}px`, this.contextHeight = `${t.height}px`, i && (this.headWidth = `${t.width}px`, this.headHeight = `${(e = i.offsetHeight) != null ? e : "0"}px`, this.headScale = r.toString(), o && (this.bodyHeight = `${o.offsetHeight + (this.element.isSection() ? i.offsetHeight : 0)}px`));
     }
   }
   /**
@@ -260,12 +260,12 @@ class N {
    * @param type event type/ тип события
    */
   emit(t, e) {
-    var o, h;
+    var o, n;
     const i = {
       type: e,
       open: !this.state.open.value
     };
-    (o = this.emits) == null || o.call(this, "transform", t, i), (h = this.emits) == null || h.call(this, "transformLite", i);
+    (o = this.emits) == null || o.call(this, "transform", t, i), (n = this.emits) == null || n.call(this, "transformLite", i);
   }
   /**
    * Checks if the event target is a trigger for opening.
@@ -336,7 +336,7 @@ class _ {
    * @param WindowEscConstructor class for working with esc/ класс для работы с esc
    * @param ModelIncludeConstructor class for working with model/ класс для работы с моделью
    */
-  constructor(t, e, i, o, h, r, g, y, c, f = u, v = D, w = A, x = N, S = $, b = z, k = I, C = W) {
+  constructor(t, e, i, o, n, r, g, y, c, f = u, v = D, w = A, x = N, S = $, b = z, k = I, C = W) {
     /** Reference helper for element interactions/ Вспомогательный класс для работы с элементами */
     s(this, "element");
     s(this, "tabIndex");
@@ -367,7 +367,7 @@ class _ {
         this.state.isOpen.value
       )
     })));
-    this.props = t, this.refs = e, this.classDesign = h, this.className = r, this.components = g, this.slots = y, this.emits = c, this.element = new f(
+    this.props = t, this.refs = e, this.classDesign = n, this.className = r, this.components = g, this.slots = y, this.emits = c, this.element = new f(
       t,
       i,
       o,
@@ -408,8 +408,9 @@ class J extends O {
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(e, i, o) {
+  constructor(e, i, o, n = _) {
     super(
       e,
       i,
@@ -537,7 +538,7 @@ class J extends O {
         )
       };
     }));
-    this.item = new _(
+    this.item = new n(
       this.props,
       this.refs,
       this.element,
