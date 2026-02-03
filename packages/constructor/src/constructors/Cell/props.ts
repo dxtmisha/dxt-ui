@@ -35,8 +35,9 @@ export type CellPropsBasic<
   & ProgressPropsInclude<Progress>
   & SkeletonPropsInclude
   & EventClickProps
-  & AriaRolePropsInclude & {
-  // Style
+  & AriaRolePropsInclude
+  & {
+    // Style
     tag?: string
     divider?: boolean
     dynamic?: boolean
