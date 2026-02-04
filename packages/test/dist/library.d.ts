@@ -247,6 +247,15 @@ export declare const DxtTestWiki: {
         [x: string]: ((args: Record<string, any>, classDemo: TestWikiDemoClasses) => any) | undefined;
     };
 });
+export declare const DxtTestWikiAnchor: DefineComponent<{
+    list: ({
+        name: string;
+    })[];
+}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{
+    list: ({
+        name: string;
+    })[];
+}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>;
 export declare const DxtTestWikiCode: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly<{
         code?: string;

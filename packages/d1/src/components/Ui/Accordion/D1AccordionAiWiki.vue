@@ -20,7 +20,7 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <D1Accordion :open="true" v-bind="args">
+  <D1Accordion :open="true" :auto-close="false" v-bind="args">
     <div class="wiki-storybook-item--padding">
       Hidden content
     </div>

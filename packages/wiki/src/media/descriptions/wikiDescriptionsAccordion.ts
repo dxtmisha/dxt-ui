@@ -158,7 +158,7 @@ export const wikiDescriptionsAccordion: StorybookComponentsDescriptionItem = {
   ai: {
     render: `
 <div :class="classDemo.item">
-  <Accordion :open="true" v-bind="args">
+  <Accordion :open="true" :auto-close="false" v-bind="args">
     <div class="wiki-storybook-item--padding">
       Hidden content
     </div>

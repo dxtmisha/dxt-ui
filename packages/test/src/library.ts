@@ -9,6 +9,7 @@ import _UiTestItemSquared from './components/UiTestItemSquared.vue'
 import _UiTestLabel from './components/UiTestLabel.vue'
 import _UiTestTitle from './components/UiTestTitle.vue'
 import _DxtTestWiki from './components/Wiki/DxtTestWiki.vue'
+import _DxtTestWikiAnchor from './components/Wiki/DxtTestWikiAnchor.vue'
 import _DxtTestWikiCode from './components/Wiki/DxtTestWikiCode.vue'
 import _DxtTestWikiDemo from './components/Wiki/DxtTestWikiDemo.vue'
 import _DxtTestWikiPossibilities from './components/Wiki/DxtTestWikiPossibilities.vue'
@@ -27,6 +28,7 @@ export const UiTestItemSquared = _UiTestItemSquared
 export const UiTestLabel = _UiTestLabel
 export const UiTestTitle = _UiTestTitle
 export const DxtTestWiki = _DxtTestWiki
+export const DxtTestWikiAnchor = _DxtTestWikiAnchor
 export const DxtTestWikiCode = _DxtTestWikiCode
 export const DxtTestWikiDemo = _DxtTestWikiDemo
 export const DxtTestWikiPossibilities = _DxtTestWikiPossibilities
