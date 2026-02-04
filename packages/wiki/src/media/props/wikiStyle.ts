@@ -360,7 +360,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Sets the maximum width of the component',
         ru: 'Задает максимальную ширину компонента'
       }
-    }
+    },
+    isDemo: true
   },
   menuAttrs: {
     type: StorybookControl.object,

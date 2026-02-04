@@ -2,6 +2,7 @@ import { TooltipOpen } from './TooltipOpen'
 import { TooltipStatus } from './TooltipStatus'
 import { TooltipClasses } from './TooltipClasses'
 import { TooltipStyle } from './TooltipStyle'
+import type { TooltipProps } from './props.ts'
 
 /**
  * Class for working with events.
@@ -14,12 +15,14 @@ export class TooltipEvent {
 
   /**
    * Constructor
+   * @param props input data/ входные данные
    * @param classes object for working with the class/ объект для работы с классом
    * @param style object for working with styles/ объект для работы со стилями
    * @param status object for working with statuses/ объект для работы со статусами
    * @param open data opening management/ управление открытием данных
    */
   constructor(
+    protected readonly props: Readonly<TooltipProps>,
     protected readonly classes: TooltipClasses,
     protected readonly style: TooltipStyle,
     protected readonly status: TooltipStatus,
@@ -33,13 +36,15 @@ export class TooltipEvent {
    * События при клике на элементе в мобильном приложении.
    */
   readonly onClick = () => {
-    requestAnimationFrame(async () => {
-      if (!this.next) {
-        clearTimeout(this.timeout)
-        await this.open.toggle(!this.status.open.value, true)
-        this.next = false
-      }
-    })
+    if (this.isNotEmbedded()) {
+      requestAnimationFrame(async () => {
+        if (!this.next) {
+          clearTimeout(this.timeout)
+          await this.open.toggle(!this.status.open.value, true)
+          this.next = false
+        }
+      })
+    }
   }
 
   /**
@@ -49,18 +54,20 @@ export class TooltipEvent {
    * @param target selected element/ выбранный элемент
    */
   readonly onMouseover = ({ target }: MouseEvent): void => {
-    clearTimeout(this.timeout)
-    this.next = true
+    if (this.isNotEmbedded()) {
+      clearTimeout(this.timeout)
+      this.next = true
 
-    requestAnimationFrame(async () => {
-      await this.open.toggle(
-        Boolean(this.classes.findControlByTarget(target as HTMLDivElement))
-      )
+      requestAnimationFrame(async () => {
+        await this.open.toggle(
+          Boolean(this.classes.findControlByTarget(target as HTMLDivElement))
+        )
 
-      this.timeout = setTimeout(() => {
-        this.next = false
-      }, 640)
-    })
+        this.timeout = setTimeout(() => {
+          this.next = false
+        }, 640)
+      })
+    }
   }
 
   /**
@@ -79,7 +86,10 @@ export class TooltipEvent {
    * @param relatedTarget selected element/ выбранный элемент
    */
   readonly onMouseout = ({ relatedTarget }: MouseEvent): void => {
-    if (relatedTarget) {
+    if (
+      this.isNotEmbedded()
+      && relatedTarget
+    ) {
       this.open.toggle(
         Boolean(this.classes.findControlByTarget(relatedTarget as HTMLDivElement))
       ).then()
@@ -99,5 +109,9 @@ export class TooltipEvent {
     ) {
       this.style.setMove(true)
     }
+  }
+
+  protected isNotEmbedded(): boolean {
+    return Boolean(!this.props.embedded)
   }
 }

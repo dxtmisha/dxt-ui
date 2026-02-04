@@ -76,7 +76,7 @@ export class TooltipOpen {
             this.style.setPreparation(true)
             requestAnimationFrame(() => {
               this.style.setShow(true)
-              this.event.start()
+              this.eventStart()
               this.emits?.('tooltip', true)
 
               if (this.props.delayHide) {
@@ -89,7 +89,7 @@ export class TooltipOpen {
         this.timeoutTo = setTimeout(() => {
           this.status.setOpen(open)
           this.style.resetShow()
-          this.event.stop()
+          this.eventStop()
 
           this.timeout = setTimeout(() => {
             this.status.setShow(false)
@@ -114,6 +114,17 @@ export class TooltipOpen {
    * Start listening to scroll events.
    *
    * Запуск прослушивания событий скролла.
+   */
+  eventStart() {
+    if (!this.props.embedded) {
+      this.event.start()
+    }
+  }
+
+  /**
+   * Stop listening to scroll events.
+   *
+   * Остановка прослушивания событий скролла.
    */
   eventStop() {
     this.event.stop()

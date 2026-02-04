@@ -85,6 +85,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  interactive: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables interactive mode for the component',
+        ru: 'Включает интерактивный режим для компонента'
+      }
+    }
+  },
   isSkeleton: {
     type: StorybookControl.boolean,
     options: {

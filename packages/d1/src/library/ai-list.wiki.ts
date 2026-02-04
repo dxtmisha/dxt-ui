@@ -15,6 +15,7 @@ import D1Modal from '../../src/components/Ui/Modal/D1ModalAiWiki.vue'
 import D1MotionTransform from '../../src/components/Ui/MotionTransform/D1MotionTransformAiWiki.vue'
 import D1Progress from '../../src/components/Ui/Progress/D1ProgressAiWiki.vue'
 import D1Ripple from '../../src/components/Ui/Ripple/D1RippleAiWiki.vue'
+import D1Tooltip from '../../src/components/Ui/Tooltip/D1TooltipAiWiki.vue'
 import D1Window from '../../src/components/Ui/Window/D1WindowAiWiki.vue'
 
 export const aiList: any[] = [
@@ -32,5 +33,6 @@ export const aiList: any[] = [
   D1MotionTransform,
   D1Progress,
   D1Ripple,
+  D1Tooltip,
   D1Window
 ]

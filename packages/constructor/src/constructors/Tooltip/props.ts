@@ -5,6 +5,8 @@ import type { ArrowProps, ArrowPropsInclude } from '../Arrow'
 
 export type TooltipPropsToken = {
   // :type [!] System label / Системная метка
+  interactive?: boolean
+  embedded?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -12,8 +14,9 @@ export type TooltipPropsBasic<
   Arrow extends ArrowProps = ArrowProps
 > = LabelProps
   & DescriptionProps
-  & ArrowPropsInclude<Arrow> & {
-  // Status
+  & ArrowPropsInclude<Arrow>
+  & {
+    // Status
     open?: boolean
     disabled?: boolean
 
@@ -23,6 +26,13 @@ export type TooltipPropsBasic<
     indent?: number
     delay?: number
     delayHide?: number
+
+    // Technical
+    /**
+     * The window will be displayed inside the current parent element/
+     * Окно будет отображаться внутри текущего родительского элемента
+     */
+    embedded?: boolean
   }
 
 /**
@@ -43,6 +53,7 @@ export const defaultsTooltip = {
   delayHide: 0,
   ...{
     // :default [!] System label / Системная метка
+    interactive: true
     // :default [!] System label / Системная метка
   }
 }

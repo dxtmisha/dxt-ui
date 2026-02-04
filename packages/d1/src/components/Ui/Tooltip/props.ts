@@ -8,6 +8,8 @@ export const propsValues = {
 
 export type PropsToken = {
   // :type [!] System label / Системная метка
+  interactive?: boolean
+  embedded?: boolean
   maxWidth?: 'sm' | 'md' | 'lg'
   // :type [!] System label / Системная метка
 }
@@ -24,6 +26,7 @@ export const defaults: object = {
   ...defaultsTooltip,
   ...{
     // :default [!] System label / Системная метка
+    interactive: true,
     maxWidth: 'md'
     // :default [!] System label / Системная метка
   }

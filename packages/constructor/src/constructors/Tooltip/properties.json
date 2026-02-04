@@ -10,5 +10,9 @@
   },
   "#label": {},
   "#description": {},
-  "#body": {}
+  "#body": {},
+  "~interactive": {
+    "_default": true
+  },
+  "~embedded": {}
 }

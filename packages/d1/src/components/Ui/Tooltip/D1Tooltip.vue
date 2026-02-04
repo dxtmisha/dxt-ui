@@ -27,6 +27,8 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-tooltip': true,
+    'd1-tooltip--interactive': props.interactive,
+    'd1-tooltip--embedded': props.embedded,
     [`d1-tooltip--maxWidth--${props.maxWidth}`]: inArray(propsValues.maxWidth, props.maxWidth)
     // :classes-values [!] System label / Системная метка
   }

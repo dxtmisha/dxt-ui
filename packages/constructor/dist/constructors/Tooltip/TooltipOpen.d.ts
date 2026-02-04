@@ -49,6 +49,12 @@ export declare class TooltipOpen {
      *
      * Запуск прослушивания событий скролла.
      */
+    eventStart(): void;
+    /**
+     * Stop listening to scroll events.
+     *
+     * Остановка прослушивания событий скролла.
+     */
     eventStop(): void;
     /**
      * Scroll event management.

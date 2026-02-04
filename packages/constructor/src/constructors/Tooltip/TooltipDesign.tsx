@@ -5,7 +5,6 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Tooltip } from './Tooltip'
 
 import {
@@ -128,7 +127,7 @@ export class TooltipDesign<
    */
   protected readonly renderControl = (): VNode[] => {
     return [
-      this.initSlot('control', undefined, this.item.slotData) as VNode
+      this.initSlot('control', undefined, this.item.slotData.value) as VNode
     ]
   }
 
@@ -151,6 +150,20 @@ export class TooltipDesign<
         )
       }
 
+      const element = h(
+        'div',
+        {
+          ref: this.element,
+          class: this.classes?.value.main,
+          ...this.item.binds.value
+        },
+        children
+      )
+
+      if (this.props.embedded) {
+        return [element]
+      }
+
       return [
         h(
           Teleport,
@@ -158,19 +171,7 @@ export class TooltipDesign<
             key: 'teleport',
             to: 'body'
           },
-          h(
-            'div',
-            {
-              ref: this.element,
-              id: this.item.classes.getIdItem(),
-              class: this.classes?.value.main,
-              onMouseover: this.item.event.onMouseoverTooltip,
-              onMouseout: this.item.event.onMouseout,
-              onTransitionend: this.item.event.onTransitionend,
-              ...AriaStaticInclude.role('tooltip')
-            },
-            children
-          )
+          element
         )
       ]
     }

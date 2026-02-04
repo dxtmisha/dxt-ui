@@ -1,6 +1,6 @@
-var b = Object.defineProperty;
-var y = (s, e, t) => e in s ? b(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
-var i = (s, e, t) => y(s, typeof e != "symbol" ? e + "" : e, t);
+var y = Object.defineProperty;
+var b = (s, e, t) => e in s ? y(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
+var i = (s, e, t) => b(s, typeof e != "symbol" ? e + "" : e, t);
 import { computed as n, ref as A, onMounted as I, h as l } from "vue";
 import { goScrollSmooth as T, toNumber as k, writeClipboardData as w, DesignConstructorAbstract as x } from "@dxtmisha/functional";
 import { L as D } from "./LabelInclude-C9Dk-o4t.js";
@@ -202,7 +202,7 @@ class E {
     });
   }
 }
-const K = {
+const O = {
   shift: 64,
   delayHide: 3072
 };
@@ -345,14 +345,15 @@ class Q extends x {
       onClick: this.item.event.onClick,
       tabindex: 0
     };
-    return this.props.isCopy || Object.assign(t, {
+    return this.props.isCopy ? t : {
+      ...t,
       href: this.item.href.get(),
       ...$.current("page")
-    }), t;
+    };
   }
 }
 export {
   E as Anchor,
   Q as AnchorDesign,
-  K as defaultsAnchor
+  O as defaultsAnchor
 };

@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui arrow",
+    "dxt-ui": "dxt-ui tooltip",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -106,6 +106,10 @@
     "./D1Arrow": {
       "types": "./dist/D1Arrow.d.ts",
       "default": "./dist/D1Arrow.js"
+    },
+    "./D1Tooltip": {
+      "types": "./dist/D1Tooltip.d.ts",
+      "default": "./dist/D1Tooltip.js"
     }
   },
   "buildOptions": {

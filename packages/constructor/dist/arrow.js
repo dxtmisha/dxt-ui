@@ -1,9 +1,9 @@
-var A = Object.defineProperty;
-var B = (n, t, e) => t in n ? A(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var s = (n, t, e) => B(n, typeof t != "symbol" ? t + "" : t, e);
-import { ref as u, watch as c, computed as l, onMounted as S, nextTick as w, onUnmounted as N, h as d } from "vue";
-import { isFilled as b, isDomRuntime as p, isString as E, toNumber as P, EventRef as v, EventItem as C, DesignConstructorAbstract as k } from "@dxtmisha/functional";
-import { A as f } from "./AriaStaticInclude-D1bSJaBp.js";
+var I = Object.defineProperty;
+var A = (n, t, e) => t in n ? I(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
+var s = (n, t, e) => A(n, typeof t != "symbol" ? t + "" : t, e);
+import { ref as u, watch as c, computed as l, onMounted as B, nextTick as f, onUnmounted as S, h as d } from "vue";
+import { isFilled as w, isDomRuntime as p, isString as N, toNumber as E, EventRef as v, EventItem as P, DesignConstructorAbstract as C } from "@dxtmisha/functional";
+import { A as k } from "./AriaStaticInclude-D1bSJaBp.js";
 import { A as Y } from "./ArrowInclude-CcpT637l.js";
 class H {
   /**
@@ -152,8 +152,8 @@ class L {
   initElement() {
     var e;
     const t = this.props.elementTarget;
-    if (this.props.position === "auto" && b(t) && p())
-      return E(t) ? (e = document.querySelector(t)) != null ? e : void 0 : t;
+    if (this.props.position === "auto" && w(t) && p())
+      return N(t) ? (e = document.querySelector(t)) != null ? e : void 0 : t;
   }
 }
 class M {
@@ -222,7 +222,7 @@ class M {
    * Получить ширину границы в виде числа.
    */
   getBorderRadius() {
-    return P(this.borderRadius.value);
+    return E(this.borderRadius.value);
   }
   /**
    * Get computed styles of the parent element.
@@ -392,9 +392,9 @@ class W {
     s(this, "makeEvents", () => {
       this.elementTarget.is() ? this.initEvents().startEvents() : this.stopEvents();
     });
-    this.props = t, this.refs = e, this.element = i, this.elementTarget = r, this.parent = a, this.position = h, p() && (S(async () => {
-      await w(), c(this.elementTarget.element, this.makeEvents), c([...Object.values(this.refs)], this.update, { immediate: !0 });
-    }), N(() => {
+    this.props = t, this.refs = e, this.element = i, this.elementTarget = r, this.parent = a, this.position = h, p() && (B(async () => {
+      await f(), c(this.elementTarget.element, this.makeEvents), c([...Object.values(this.refs)], this.update, { immediate: !0 });
+    }), S(() => {
       this.stopEvents();
     }));
   }
@@ -422,7 +422,7 @@ class W {
    * Инициализировать события.
    */
   initEvents() {
-    return this.eventItem || (this.eventItem = new v(this.element, void 0, "resize", this.update)), this.eventTarget || (this.eventTarget = new v(this.elementTarget.element, void 0, "resize", this.update)), this.eventBody || (this.eventBody = new C(window, ["scroll", "resize"], this.update)), this;
+    return this.eventItem || (this.eventItem = new v(this.element, void 0, "resize", this.update)), this.eventTarget || (this.eventTarget = new v(this.elementTarget.element, void 0, "resize", this.update)), this.eventBody || (this.eventBody = new P(window, ["scroll", "resize"], this.update)), this;
   }
 }
 class x {
@@ -442,7 +442,7 @@ class x {
    * @param ArrowPositionConstructor class for working with the position of the arrow/ класс для работы с позицией стрелки
    * @param ArrowEventConstructor class for working with arrow events/ класс для работы с событиями стрелки
    */
-  constructor(t, e, i, r, a, h, m, g, T = H, y = L, $ = M, R = O, I = W) {
+  constructor(t, e, i, r, a, h, m, g, b = H, T = L, y = M, $ = O, R = W) {
     s(this, "elementItem");
     s(this, "elementTarget");
     s(this, "parent");
@@ -450,7 +450,7 @@ class x {
     s(this, "event");
     /** Direction of the arrow/ Направление стрелки */
     s(this, "direction", l(() => {
-      if (b(this.props.position)) {
+      if (w(this.props.position)) {
         const t = this.position.direction.value;
         if (t)
           return t;
@@ -471,19 +471,19 @@ class x {
       };
       return this.parent.isBorder.value && this.position.clipPath.value && (t[`--${this.className}-sys-clipPath`] = this.position.clipPath.value), this.elementTarget.is() && this.position.shift.value && (t[`--${this.className}-sys-shift`] = this.position.shift.value), t;
     }));
-    this.props = t, this.refs = e, this.element = i, this.classDesign = r, this.className = a, this.components = h, this.slots = m, this.emits = g, this.elementItem = new T(
+    this.props = t, this.refs = e, this.element = i, this.classDesign = r, this.className = a, this.components = h, this.slots = m, this.emits = g, this.elementItem = new b(
       this.element,
       this.className
-    ), this.elementTarget = new y(this.props), this.parent = new $(
+    ), this.elementTarget = new T(this.props), this.parent = new y(
       this.element,
       this.className,
       this.elementItem
-    ), this.position = new R(
+    ), this.position = new $(
       this.props,
       this.elementItem,
       this.elementTarget,
       this.parent
-    ), this.event = new I(
+    ), this.event = new R(
       this.props,
       this.refs,
       this.element,
@@ -497,7 +497,7 @@ const D = {
   // :default [!] System label / Системная метка
   position: "auto"
 };
-class G extends k {
+class G extends C {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -541,7 +541,7 @@ class G extends k {
       this.slots,
       this.emits
     ), this.init(), c([this.classes], () => {
-      w().then(
+      f().then(
         () => requestAnimationFrame(() => {
           this.points.value = this.getRePoints();
         })
@@ -603,7 +603,7 @@ class G extends k {
       ref: this.element,
       class: (i = this.classes) == null ? void 0 : i.value.main,
       style: (r = this.styles) == null ? void 0 : r.value,
-      ...f.hidden()
+      ...k.hidden()
     }, e);
   }
   /**
@@ -651,8 +651,7 @@ class G extends k {
     return [
       d("div", {
         key: "border",
-        class: (e = this.classes) == null ? void 0 : e.value.border,
-        ...f.hidden()
+        class: (e = this.classes) == null ? void 0 : e.value.border
       })
     ];
   }

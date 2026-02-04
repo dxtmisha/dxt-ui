@@ -1,4 +1,4 @@
-import { onUnmounted, type Ref, type ToRefs } from 'vue'
+import { computed, onUnmounted, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -14,6 +14,7 @@ import { TooltipPosition } from './TooltipPosition'
 import { TooltipOpen } from './TooltipOpen'
 import { TooltipEvent } from './TooltipEvent'
 
+import type { RoleType } from '../../types/roleTypes'
 import type { TooltipControl } from './basicTypes'
 import type { TooltipComponents, TooltipEmits, TooltipSlots } from './types'
 import type { TooltipProps } from './props'
@@ -22,19 +23,25 @@ import type { TooltipProps } from './props'
  * Tooltip
  */
 export class Tooltip {
+  /** Class manager for tooltip classes/ Менеджер классов для подсказки */
   readonly classes: TooltipClasses
+  /** Style manager for tooltip styles/ Менеджер стилей для подсказки */
   readonly style: TooltipStyle
+  /** Status manager for tooltip state/ Менеджер статуса для состояния подсказки */
   readonly status: TooltipStatus
+  /** Position manager for tooltip placement/ Менеджер позиции для размещения подсказки */
   readonly position: TooltipPosition
+  /** Open manager for tooltip visibility/ Менеджер открытия для видимости подсказки */
   readonly open: TooltipOpen
+  /** Event manager for tooltip interactions/ Менеджер событий для взаимодействий с подсказкой */
   readonly event: TooltipEvent
 
+  /** Arrow manager/ Менеджер стрелки */
   readonly arrow: ArrowInclude
+  /** Label manager/ Менеджер метки */
   readonly label: LabelInclude
+  /** Description manager/ Менеджер описания */
   readonly description: DescriptionInclude
-
-  /** Data for the control slot/ Данные для слота управления */
-  readonly slotData: TooltipControl
 
   /**
    * Constructor
@@ -92,6 +99,7 @@ export class Tooltip {
       this.position
     )
     this.event = new TooltipEventConstructor(
+      this.props,
       this.classes,
       this.style,
       this.status,
@@ -117,22 +125,68 @@ export class Tooltip {
       this.slots
     )
 
-    const binds = {
-      class: this.classes.getControl(),
-      onclick: this.event.onClick,
-      onmouseover: this.event.onMouseover,
-      onmouseout: this.event.onMouseout,
-      ...AriaStaticInclude.describedby(this.classes.getIdItem())
-    }
-
-    this.slotData = {
-      ...binds,
-      open: this.status.open,
-      binds
-    }
-
     onUnmounted(() => {
       this.open.eventStop()
     })
   }
+
+  /**
+   * Computed bindings for the tooltip element/
+   * Вычисляемые привязки для элемента подсказки
+   */
+  readonly binds = computed(() => {
+    return {
+      id: this.classes.getIdItem(),
+      onMouseover: this.event.onMouseoverTooltip,
+      onMouseout: this.event.onMouseout,
+      onTransitionend: this.event.onTransitionend,
+      ...AriaStaticInclude.role(this.role.value),
+      ...AriaStaticInclude.labelledby(this.label.id.value),
+      ...AriaStaticInclude.describedby(this.description.id.value)
+    }
+  })
+
+  /**
+   * Computed bindings for the control element/
+   * Вычисляемые привязки для элемента управления
+   */
+  readonly bindsControl = computed<TooltipControl['binds']>(() => {
+    const data = {
+      class: this.classes.getControl(),
+      onclick: this.event.onClick,
+      onmouseover: this.event.onMouseover,
+      onmouseout: this.event.onMouseout
+    }
+
+    if (this.props.interactive) {
+      return {
+        ...data,
+        ...AriaStaticInclude.expanded(this.status.open.value),
+        ...AriaStaticInclude.controls(this.classes.getIdItem())
+      }
+    }
+
+    return {
+      ...data,
+      ...AriaStaticInclude.describedby(this.classes.getIdItem())
+    }
+  })
+
+  /** Data for the control slot/ Данные для слота управления */
+  readonly slotData = computed<TooltipControl>(() => {
+    return {
+      ...this.bindsControl.value,
+      open: this.status.open,
+      binds: this.bindsControl.value
+    }
+  })
+
+  /** Computed role for the tooltip/ Вычисляемая роль для подсказки */
+  readonly role = computed<RoleType>(() => {
+    if (this.props.interactive) {
+      return 'region'
+    }
+
+    return 'tooltip'
+  })
 }

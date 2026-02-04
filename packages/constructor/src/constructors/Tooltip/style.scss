@@ -25,6 +25,12 @@
     @include ui.initByCustom('origin', 150%);
   }
 
+  &--interactive {
+    @include ui.state('move') {
+      pointer-events: unset;
+    }
+  }
+
   &--preparation {
     transform: scale(0.4);
   }
@@ -37,7 +43,9 @@
     transform ui.v('d.sys.transitionDuration.sm') ui.v('d.sys.transitionFunction.deceleration');
   }
 
-  &--move {
-    pointer-events: unset;
+  &--embedded {
+    position: static;
+    top: auto;
+    left: auto;
   }
 }

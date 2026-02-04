@@ -2,12 +2,14 @@ import { TooltipOpen } from './TooltipOpen';
 import { TooltipStatus } from './TooltipStatus';
 import { TooltipClasses } from './TooltipClasses';
 import { TooltipStyle } from './TooltipStyle';
+import { TooltipProps } from './props.ts';
 /**
  * Class for working with events.
  *
  * Класс для работы с событиями.
  */
 export declare class TooltipEvent {
+    protected readonly props: Readonly<TooltipProps>;
     protected readonly classes: TooltipClasses;
     protected readonly style: TooltipStyle;
     protected readonly status: TooltipStatus;
@@ -16,12 +18,13 @@ export declare class TooltipEvent {
     protected timeout?: any;
     /**
      * Constructor
+     * @param props input data/ входные данные
      * @param classes object for working with the class/ объект для работы с классом
      * @param style object for working with styles/ объект для работы со стилями
      * @param status object for working with statuses/ объект для работы со статусами
      * @param open data opening management/ управление открытием данных
      */
-    constructor(classes: TooltipClasses, style: TooltipStyle, status: TooltipStatus, open: TooltipOpen);
+    constructor(props: Readonly<TooltipProps>, classes: TooltipClasses, style: TooltipStyle, status: TooltipStatus, open: TooltipOpen);
     /**
      * Events on clicking an element in a mobile application.
      *
@@ -55,4 +58,5 @@ export declare class TooltipEvent {
      * @param event event data/ данные события
      */
     readonly onTransitionend: (event: TransitionEvent) => void;
+    protected isNotEmbedded(): boolean;
 }

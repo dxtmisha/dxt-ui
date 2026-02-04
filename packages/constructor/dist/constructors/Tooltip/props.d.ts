@@ -1,7 +1,10 @@
 import { LabelProps } from '../../types/labelTypes';
 import { DescriptionProps } from '../../types/descriptionTypes';
 import { ArrowProps, ArrowPropsInclude } from '../Arrow';
-export type TooltipPropsToken = {};
+export type TooltipPropsToken = {
+    interactive?: boolean;
+    embedded?: boolean;
+};
 export type TooltipPropsBasic<Arrow extends ArrowProps = ArrowProps> = LabelProps & DescriptionProps & ArrowPropsInclude<Arrow> & {
     open?: boolean;
     disabled?: boolean;
@@ -10,6 +13,11 @@ export type TooltipPropsBasic<Arrow extends ArrowProps = ArrowProps> = LabelProp
     indent?: number;
     delay?: number;
     delayHide?: number;
+    /**
+     * The window will be displayed inside the current parent element/
+     * Окно будет отображаться внутри текущего родительского элемента
+     */
+    embedded?: boolean;
 };
 /**
  * Type describing incoming properties.
@@ -23,6 +31,7 @@ export type TooltipProps = TooltipPropsBasic & TooltipPropsToken;
  * Значение по умолчанию для свойства.
  */
 export declare const defaultsTooltip: {
+    interactive: boolean;
     indent: number;
     delay: number;
     delayHide: number;
