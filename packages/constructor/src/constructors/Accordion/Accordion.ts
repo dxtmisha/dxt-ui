@@ -1,5 +1,5 @@
 import { computed, ref, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, getElementId } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { MotionTransformInclude } from '../MotionTransform'
@@ -13,14 +13,22 @@ import type { AccordionProps } from './props'
  * Accordion
  */
 export class Accordion {
+  /** Motion transform manager/ Менеджер анимации перехода */
   readonly motionTransform: MotionTransformInclude
 
+  /** Event manager/ Менеджер событий */
   readonly event: EventClickInclude
 
+  /** Open state/ Состояние открытия */
   readonly open = ref<boolean>(false)
+  /** Model manager/ Менеджер модели */
   readonly model: ModelInclude<boolean>
 
+  /** Head element reference/ Ссылка на элемент заголовка */
   readonly elementHead = ref<CellExpose>()
+
+  protected readonly labelId: string = getElementId()
+  protected readonly descriptionId: string = getElementId()
 
   /**
    * Constructor
@@ -51,9 +59,9 @@ export class Accordion {
       computed(() => ({
         section: true,
         adaptive: 'planeAlways',
-        inDom: true
-        // ariaLabelledby: this.elementHead.value?.labelId,
-        // ariaDescribedby: this.elementHead.value?.descriptionId
+        inDom: true,
+        ariaLabelledby: this.labelId,
+        ariaDescribedby: this.descriptionId
       }))
     )
 
@@ -66,6 +74,11 @@ export class Accordion {
     this.model = new ModelInclude('open', this.emits, this.open)
   }
 
+  /**
+   * Computed bindings for the cell.
+   *
+   * Вычисляемые привязки для ячейки.
+   */
   readonly bindsCell = computed(() => {
     return {
       ref: this.elementHead,
@@ -74,6 +87,8 @@ export class Accordion {
       label: this.props.label,
       description: this.props.description,
       dynamic: true,
+      labelId: this.labelId,
+      descriptionId: this.descriptionId,
       onClick: this.event.onClick,
       onKeydown: this.event.onKeydown
     }

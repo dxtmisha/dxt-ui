@@ -3,48 +3,8 @@
   "border-width": "{sys.spacing.outline}",
   "border-color": "{sys.palette.outline}",
   "border-opacity": "{sys.opacity.outline}",
-  "~padding": {
-    "sm": {
-      "#body": {
-        "paddingX": "{sys.spacing.sm}",
-        "paddingY": "{sys.spacing.xs}"
-      }
-    },
-    "md": {
-      "#body": {
-        "paddingX": "{sys.spacing.md}",
-        "paddingY": "{sys.spacing.sm}"
-      }
-    },
-    "lg": {
-      "#body": {
-        "paddingX": "{sys.spacing.lg}",
-        "paddingY": "{sys.spacing.md}"
-      }
-    },
-    "ySm": {
-      "#body": {
-        "paddingY": "{sys.spacing.xs}"
-      }
-    },
-    "yMd": {
-      "#body": {
-        "paddingY": "{sys.spacing.sm}"
-      }
-    },
-    "yLg": {
-      "#body": {
-        "paddingY": "{sys.spacing.md}"
-      }
-    },
-    "none": {},
-    "_default": "none"
-  },
-  "~paddingByIndent": {
-    "#body": {
-      "paddingX": "{grid.paddingX}",
-      "paddingY": "{grid.paddingY}"
-    },
-    "_default": true
+  "#body": {
+    "paddingX": "{grid.paddingX}",
+    "paddingY": "{grid.paddingY}"
   }
 }

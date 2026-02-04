@@ -5,15 +5,12 @@ import type { MotionTransformProps } from '../MotionTransform'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  padding: ['sm', 'md', 'lg', 'ySm', 'yMd', 'yLg', 'none']
   // :values [!] System label / Системная метка
 }
 
 export type PropsToken = {
   // :type [!] System label / Системная метка
   divider?: boolean
-  padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'
-  paddingByIndent?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -30,9 +27,7 @@ export const defaults: object = {
   iconArrowDown: 'keyboard_arrow_down',
   ...{
     // :default [!] System label / Системная метка
-    divider: true,
-    padding: 'none',
-    paddingByIndent: true
+    divider: true
     // :default [!] System label / Системная метка
   }
 }

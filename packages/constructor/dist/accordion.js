@@ -1,11 +1,11 @@
-var m = Object.defineProperty;
-var p = (r, s, i) => s in r ? m(r, s, { enumerable: !0, configurable: !0, writable: !0, value: i }) : r[s] = i;
-var o = (r, s, i) => p(r, typeof s != "symbol" ? s + "" : s, i);
-import { computed as h, ref as a, h as u } from "vue";
-import { DesignConstructorAbstract as v, toBinds as f } from "@dxtmisha/functional";
-import { E as b } from "./EventClickInclude-CgbuezDm.js";
+var p = Object.defineProperty;
+var u = (r, e, i) => e in r ? p(r, e, { enumerable: !0, configurable: !0, writable: !0, value: i }) : r[e] = i;
+var t = (r, e, i) => u(r, typeof e != "symbol" ? e + "" : e, i);
+import { computed as a, ref as h, h as b } from "vue";
+import { getElementId as c, DesignConstructorAbstract as v, toBinds as f } from "@dxtmisha/functional";
+import { E as y } from "./EventClickInclude-CgbuezDm.js";
 import { M as g } from "./ModelInclude-BiYm_iCQ.js";
-import { M as y } from "./MotionTransformInclude-P_oRs3JZ.js";
+import { M as I } from "./MotionTransformInclude-P_oRs3JZ.js";
 class C {
   /**
    * Constructor
@@ -18,35 +18,49 @@ class C {
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
-  constructor(s, i, n, e, l, t, c, d) {
-    o(this, "motionTransform");
-    o(this, "event");
-    o(this, "open", a(!1));
-    o(this, "model");
-    o(this, "elementHead", a());
-    o(this, "bindsCell", h(() => ({
+  constructor(e, i, n, o, l, s, m, d) {
+    /** Motion transform manager/ Менеджер анимации перехода */
+    t(this, "motionTransform");
+    /** Event manager/ Менеджер событий */
+    t(this, "event");
+    /** Open state/ Состояние открытия */
+    t(this, "open", h(!1));
+    /** Model manager/ Менеджер модели */
+    t(this, "model");
+    /** Head element reference/ Ссылка на элемент заголовка */
+    t(this, "elementHead", h());
+    t(this, "labelId", c());
+    t(this, "descriptionId", c());
+    /**
+     * Computed bindings for the cell.
+     *
+     * Вычисляемые привязки для ячейки.
+     */
+    t(this, "bindsCell", a(() => ({
       ref: this.elementHead,
       icon: this.props.icon,
       iconTrailing: this.props.iconArrowDown,
       label: this.props.label,
       description: this.props.description,
       dynamic: !0,
+      labelId: this.labelId,
+      descriptionId: this.descriptionId,
       onClick: this.event.onClick,
       onKeydown: this.event.onKeydown
     })));
-    this.props = s, this.refs = i, this.element = n, this.classDesign = e, this.className = l, this.components = t, this.slots = c, this.emits = d, this.motionTransform = new y(
+    this.props = e, this.refs = i, this.element = n, this.classDesign = o, this.className = l, this.components = s, this.slots = m, this.emits = d, this.motionTransform = new I(
       this.props,
       this.className,
       this.components,
       this.emits,
-      h(() => ({
+      a(() => ({
         section: !0,
         adaptive: "planeAlways",
-        inDom: !0
-        // ariaLabelledby: this.elementHead.value?.labelId,
-        // ariaDescribedby: this.elementHead.value?.descriptionId
+        inDom: !0,
+        ariaLabelledby: this.labelId,
+        ariaDescribedby: this.descriptionId
       }))
-    ), this.event = new b(
+    ), this.event = new y(
       void 0,
       void 0,
       d
@@ -66,23 +80,23 @@ class x extends v {
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
    */
-  constructor(i, n, e) {
+  constructor(i, n, o) {
     super(
       i,
       n,
-      e
+      o
     );
-    o(this, "item");
+    t(this, "item");
     /**
      * Generates data for the header.
      *
      * Генерирует данные для заголовка.
      * @param open open status/ статус открытия
      */
-    o(this, "renderHead", ({ isOpen: i, binds: n }) => {
+    t(this, "renderHead", ({ isOpen: i, binds: n }) => {
       var l;
-      const e = {};
-      return this.slots && ("label" in this.slots && (e.label = (t) => this.initSlot("label", void 0, t)), "description" in this.slots && (e.description = (t) => this.initSlot("description", void 0, t)), "caption" in this.slots && (e.caption = (t) => this.initSlot("caption", void 0, t)), "trailing" in this.slots && (e.trailing = (t) => this.initSlot("trailing", void 0, t)), "body" in this.slots && (e.body = (t) => this.initSlot("body", void 0, t))), this.components.renderOne(
+      const o = {};
+      return this.slots && ("label" in this.slots && (o.label = (s) => this.initSlot("label", void 0, s)), "description" in this.slots && (o.description = (s) => this.initSlot("description", void 0, s)), "caption" in this.slots && (o.caption = (s) => this.initSlot("caption", void 0, s)), "trailing" in this.slots && (o.trailing = (s) => this.initSlot("trailing", void 0, s)), "body" in this.slots && (o.body = (s) => this.initSlot("body", void 0, s))), this.components.renderOne(
         "cell",
         f(
           this.item.bindsCell.value,
@@ -94,7 +108,7 @@ class x extends v {
             class: (l = this.classes) == null ? void 0 : l.value.head
           }
         ),
-        e
+        o
       );
     });
     /**
@@ -102,9 +116,9 @@ class x extends v {
      *
      * Генерирует данные для тела.
      */
-    o(this, "renderBody", (i) => {
+    t(this, "renderBody", (i) => {
       var n;
-      return u(
+      return b(
         "div",
         { class: (n = this.classes) == null ? void 0 : n.value.body },
         this.initSlot("default", void 0, i)

@@ -28,9 +28,7 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-accordion': true,
-    'd1-accordion--divider': props.divider,
-    [`d1-accordion--padding--${props.padding}`]: inArray(propsValues.padding, props.padding),
-    'd1-accordion--paddingByIndent': props.paddingByIndent
+    'd1-accordion--divider': props.divider
     // :classes-values [!] System label / Системная метка
   }
 }))

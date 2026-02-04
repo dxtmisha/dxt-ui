@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui cell",
+    "dxt-ui": "dxt-ui accordion",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -98,6 +98,10 @@
     "./D1Cell": {
       "types": "./dist/D1Cell.d.ts",
       "default": "./dist/D1Cell.js"
+    },
+    "./D1Accordion": {
+      "types": "./dist/D1Accordion.d.ts",
+      "default": "./dist/D1Accordion.js"
     }
   },
   "buildOptions": {

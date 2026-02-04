@@ -15,52 +15,9 @@
     --d1-accordion-borderColor: var(--d1-sys-palette-outline);
     --d1-accordion-borderOpacity: var(--d1-sys-opacity-outline);
     
-    &--padding {
-      &--sm {
-        & .d1-accordion__body {
-          @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
-          @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
-        }
-      }
-      
-      &--md {
-        & .d1-accordion__body {
-          @include ui.paddingX(#{var(--d1-sys-spacing-md)});
-          @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
-        }
-      }
-      
-      &--lg {
-        & .d1-accordion__body {
-          @include ui.paddingX(#{var(--d1-sys-spacing-lg)});
-          @include ui.paddingY(#{var(--d1-sys-spacing-md)});
-        }
-      }
-      
-      &--ySm {
-        & .d1-accordion__body {
-          @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
-        }
-      }
-      
-      &--yMd {
-        & .d1-accordion__body {
-          @include ui.paddingY(#{var(--d1-sys-spacing-sm)});
-        }
-      }
-      
-      &--yLg {
-        & .d1-accordion__body {
-          @include ui.paddingY(#{var(--d1-sys-spacing-md)});
-        }
-      }
-    }
-    
-    &--paddingByIndent {
-      & .d1-accordion__body {
-        @include ui.paddingX(#{var(--d1-grid-paddingX)});
-        @include ui.paddingY(#{var(--d1-grid-paddingY)});
-      }
+    &__body {
+      @include ui.paddingX(#{var(--d1-grid-paddingX)});
+      @include ui.paddingY(#{var(--d1-grid-paddingY)});
     }
   }
   // :style [!] System label / Системная метка

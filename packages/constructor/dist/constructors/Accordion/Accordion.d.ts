@@ -21,11 +21,18 @@ export declare class Accordion {
     protected readonly components?: DesignComp<AccordionComponents, AccordionProps> | undefined;
     protected readonly slots?: AccordionSlots | undefined;
     protected readonly emits?: ConstrEmit<AccordionEmits> | undefined;
+    /** Motion transform manager/ Менеджер анимации перехода */
     readonly motionTransform: MotionTransformInclude;
+    /** Event manager/ Менеджер событий */
     readonly event: EventClickInclude;
+    /** Open state/ Состояние открытия */
     readonly open: Ref<boolean, boolean>;
+    /** Model manager/ Менеджер модели */
     readonly model: ModelInclude<boolean>;
+    /** Head element reference/ Ссылка на элемент заголовка */
     readonly elementHead: Ref<CellExpose | undefined, CellExpose | undefined>;
+    protected readonly labelId: string;
+    protected readonly descriptionId: string;
     /**
      * Constructor
      * @param props input data/ входные данные
@@ -38,6 +45,11 @@ export declare class Accordion {
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      */
     constructor(props: AccordionProps, refs: ToRefs<AccordionProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<AccordionComponents, AccordionProps> | undefined, slots?: AccordionSlots | undefined, emits?: ConstrEmit<AccordionEmits> | undefined);
+    /**
+     * Computed bindings for the cell.
+     *
+     * Вычисляемые привязки для ячейки.
+     */
     readonly bindsCell: ComputedRef<{
         ref: Ref<CellExpose | undefined, CellExpose | undefined>;
         icon: IconValue<IconPropsBasic> | undefined;
@@ -45,6 +57,8 @@ export declare class Accordion {
         label: NumberOrString | undefined;
         description: string | number | undefined;
         dynamic: boolean;
+        labelId: string;
+        descriptionId: string;
         onClick: (event: MouseEvent, options?: EventClickValue) => void;
         onKeydown: (event: KeyboardEvent) => void;
     }>;
