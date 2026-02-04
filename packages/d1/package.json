@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui accordion",
+    "dxt-ui": "dxt-ui arrow",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -102,6 +102,10 @@
     "./D1Accordion": {
       "types": "./dist/D1Accordion.d.ts",
       "default": "./dist/D1Accordion.js"
+    },
+    "./D1Arrow": {
+      "types": "./dist/D1Arrow.d.ts",
+      "default": "./dist/D1Arrow.js"
     }
   },
   "buildOptions": {

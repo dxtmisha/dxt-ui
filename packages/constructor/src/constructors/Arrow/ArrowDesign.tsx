@@ -197,8 +197,7 @@ export class ArrowDesign<
     return [
       h('div', {
         key: 'border',
-        class: this.classes?.value.border,
-        ...AriaStaticInclude.hidden()
+        class: this.classes?.value.border
       })
     ]
   }

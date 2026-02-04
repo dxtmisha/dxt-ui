@@ -232,10 +232,11 @@ export class AnchorDesign<
     }
 
     if (!this.props.isCopy) {
-      Object.assign(props, {
+      return {
+        ...props,
         href: this.item.href.get(),
         ...AriaStaticInclude.current('page')
-      })
+      }
     }
 
     return props
