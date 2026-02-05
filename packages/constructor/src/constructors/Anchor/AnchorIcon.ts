@@ -1,9 +1,10 @@
 import { computed } from 'vue'
+import type { ConstrBind } from '@dxtmisha/functional'
+
 import { AnchorEvent } from './AnchorEvent'
 
+import type { IconProps, IconValue } from '../Icon'
 import type { AnchorProps } from './props'
-import type { ConstrBind } from '@dxtmisha/functional'
-import type { IconProps } from '../Icon'
 
 /**
  * Class for working with the anchor icon
@@ -23,7 +24,7 @@ export class AnchorIcon {
   }
 
   /** Icon to display/ Иконка для отображения */
-  readonly icon = computed<string | undefined>(() => {
+  readonly icon = computed<IconValue | undefined>(() => {
     if (this.props.hide) {
       return undefined
     }
@@ -39,7 +40,7 @@ export class AnchorIcon {
   readonly binds = computed<ConstrBind<IconProps>>(() => {
     return {
       icon: this.icon.value,
-      iconActive: this.props.iconContentCopy,
+      iconActive: this.props.isCopy ? this.props.iconContentCopy : undefined,
       active: this.event.isCopy()
     }
   })

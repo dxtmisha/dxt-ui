@@ -1,3 +1,4 @@
+import type { IconPropsBasic, IconValue } from '../Icon'
 import type { TooltipProps, TooltipPropsInclude } from '../Tooltip'
 
 import type { LabelProps } from '../../types/labelTypes'
@@ -10,6 +11,7 @@ export type AnchorPropsToken = {
 }
 
 export type AnchorPropsBasic<
+  Icon extends IconPropsBasic = IconPropsBasic,
   Tooltip extends TooltipProps = TooltipProps
 > = LabelProps
   & TooltipPropsInclude<Tooltip>
@@ -24,9 +26,9 @@ export type AnchorPropsBasic<
     // Style
     isCopy?: boolean
 
-    iconLink?: string
-    iconTag?: string
-    iconContentCopy?: string
+    iconLink?: IconValue<Icon>
+    iconTag?: IconValue<Icon>
+    iconContentCopy?: IconValue<Icon>
 
     delayHide?: number
   }

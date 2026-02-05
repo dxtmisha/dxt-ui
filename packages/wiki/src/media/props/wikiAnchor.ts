@@ -55,10 +55,11 @@ export const wikiAnchor: StorybookArgsToList = {
     options: {
       category: StorybookCategory.option,
       description: {
-        en: 'Enables copy to clipboard functionality',
+        en: 'Enables copy-to-clipboard functionality',
         ru: 'Включает функцию копирования в буфер обмена'
       }
-    }
+    },
+    isDemo: true
   },
   'anchor.name': {
     type: StorybookControl.text,

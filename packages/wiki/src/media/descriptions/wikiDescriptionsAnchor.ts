@@ -38,5 +38,41 @@ export const wikiDescriptionsAnchor: StorybookComponentsDescriptionItem = {
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
 `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item">
+  <Anchor href="#" v-bind="args"/>
+</div>
+    `,
+    description: `
+Anchor is a fundamental navigation component used to create hyperlinks and anchor points.
+It wraps the standard HTML \`<a>\` tag functionality with additional utilities for smooth scrolling and clipboard interactions.
+
+**Key Features:**
+1. **Navigation:**
+   - Handles standard navigation via \`href\`.
+   - Can be used for both internal (router) and external links.
+
+2. **Smooth Scrolling:**
+   - The \`scroll\` prop enables smooth scrolling animation when navigating to an element ID (e.g., \`href="#section"\`).
+
+3. **Clipboard Interaction:**
+   - The \`isCopy\` prop turns the component into a trigger that copies the link or value to the clipboard.
+
+4. **Slots:**
+   - \`#default\`: The content of the link (text, icons, or other elements).
+
+**Usage Examples:**
+
+- **Basic Link:**
+  \`<Anchor href="/about">About Us</Anchor>\`
+
+- **Scroll to Anchor:**
+  \`<Anchor href="#contact" scroll>Contact</Anchor>\`
+
+- **Copy Link:**
+  \`<Anchor href="https://example.com" is-copy>Copy URL</Anchor>\`
+    `
   }
 }

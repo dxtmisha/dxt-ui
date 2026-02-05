@@ -1,56 +1,53 @@
+import { ActionSheetPropsBasic } from '@dxtmisha/constructor/ActionSheet';
+import { ActionSheetSlots } from '@dxtmisha/constructor/ActionSheet';
+import { ActionsPropsBasic } from '@dxtmisha/constructor/Actions';
+import { BarsPropsBasic } from '@dxtmisha/constructor/Bars';
+import { ButtonPropsBasic } from '@dxtmisha/constructor/Button';
 import { ComponentOptionsMixin } from 'vue';
 import { ComponentProvideOptions } from 'vue';
 import { ComputedRef } from 'vue';
+import { ConstrBind } from '@dxtmisha/functional';
 import { DefineComponent } from 'vue';
+import { EventClickValue } from '@dxtmisha/constructor';
 import { IconPropsBasic } from '@dxtmisha/constructor/Icon';
-import { ImageEventData } from '@dxtmisha/constructor/Image';
 import { ImagePropsBasic } from '@dxtmisha/constructor/Image';
+import { ProgressPropsBasic } from '@dxtmisha/constructor/Progress';
 import { PublicProps } from 'vue';
 import { Ref } from 'vue';
-import { ScrollbarEdgeType } from '@dxtmisha/constructor/Scrollbar';
 import { ScrollbarPropsBasic } from '@dxtmisha/constructor/Scrollbar';
 import { WindowControlItem } from '@dxtmisha/constructor/Window';
 import { WindowEmitOptions } from '@dxtmisha/constructor/Window';
+import { WindowExpose } from '@dxtmisha/constructor/Window';
 import { WindowPropsBasic } from '@dxtmisha/constructor/Window';
-import { WindowSlots } from '@dxtmisha/constructor/Window';
 
-declare const __VLS_component: DefineComponent<D1WindowProps, {
-    id: string;
-    open: Ref<boolean>;
-    control: ComputedRef<WindowControlItem>;
-    setOpen(open: boolean): Promise<void>;
-    toOpen(): Promise<void>;
-    toClose(): Promise<void>;
-    toggle(): Promise<void>;
+declare const __VLS_component: DefineComponent<D1ActionSheetProps, {
+    id: ComputedRef<string | undefined>;
+    open: ComputedRef<boolean>;
+    control: ComputedRef< WindowControlItem | undefined>;
+    setOpen: WindowExpose["setOpen"];
+    toOpen: WindowExpose["toOpen"];
+    toClose: WindowExpose["toClose"];
+    toggle: WindowExpose["toggle"];
+    windowElement: Ref< ConstrBind<WindowExpose> | undefined>;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
-    load: (image: ImageEventData) => any;
     window: (options: WindowEmitOptions) => any;
-    "update:open": (value: boolean) => any;
-    "update:modelOpen": (value: boolean) => any;
-    scrollbarTop: (isTop: boolean) => any;
-    scrollbarReachTop: () => any;
-    scrollbarLeaveTop: () => any;
-    scrollbarBottom: (isBottom: boolean) => any;
-    scrollbarReachBottom: () => any;
-    scrollbarLeaveBottom: () => any;
-    scrollbarEdge: (isTop: boolean, isBottom: boolean, edge: ScrollbarEdgeType) => any;
-}, string, PublicProps, Readonly<D1WindowProps> & Readonly<{
-    onLoad?: ((image: ImageEventData) => any) | undefined;
+    bars: (event: MouseEvent, value: EventClickValue) => any;
+    barsLite: (value: EventClickValue) => any;
+    barsBack: (value: EventClickValue) => any;
+    actions: (event: MouseEvent, value: EventClickValue) => any;
+    actionsLite: (value: EventClickValue) => any;
+}, string, PublicProps, Readonly<D1ActionSheetProps> & Readonly<{
     onWindow?: ((options: WindowEmitOptions) => any) | undefined;
-    "onUpdate:open"?: ((value: boolean) => any) | undefined;
-    "onUpdate:modelOpen"?: ((value: boolean) => any) | undefined;
-    onScrollbarTop?: ((isTop: boolean) => any) | undefined;
-    onScrollbarReachTop?: (() => any) | undefined;
-    onScrollbarLeaveTop?: (() => any) | undefined;
-    onScrollbarBottom?: ((isBottom: boolean) => any) | undefined;
-    onScrollbarReachBottom?: (() => any) | undefined;
-    onScrollbarLeaveBottom?: (() => any) | undefined;
-    onScrollbarEdge?: ((isTop: boolean, isBottom: boolean, edge: ScrollbarEdgeType) => any) | undefined;
+    onBars?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
+    onBarsLite?: ((value: EventClickValue) => any) | undefined;
+    onBarsBack?: ((value: EventClickValue) => any) | undefined;
+    onActions?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
+    onActionsLite?: ((value: EventClickValue) => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
 
 declare function __VLS_template(): {
     attrs: Partial<{}>;
-    slots: Readonly<WindowSlots> & WindowSlots;
+    slots: Readonly<ActionSheetSlots> & ActionSheetSlots;
     refs: {};
     rootEl: any;
 };
@@ -63,12 +60,27 @@ declare type __VLS_WithTemplateSlots<T, S> = T & {
     };
 };
 
-export declare const D1Window: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+/**
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
+ */
+declare type ActionsProps = ActionsPropsBasic<ButtonProps> & PropsToken_8;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export declare type D1WindowProps = WindowPropsBasic<ScrollbarProps, IconProps, ImageProps> & PropsToken_4;
+declare type BarsProps = BarsPropsBasic<ButtonProps> & PropsToken_7;
+
+/**
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
+ */
+declare type ButtonProps = ButtonPropsBasic<IconProps, ProgressProps> & PropsToken_6;
+
+export declare const D1ActionSheet: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+
+/**
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
+ */
+export declare type D1ActionSheetProps = ActionSheetPropsBasic<WindowProps, BarsProps, ActionsProps> & PropsToken_9;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
@@ -79,6 +91,11 @@ declare type IconProps = IconPropsBasic<ImageProps> & PropsToken_3;
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
 declare type ImageProps = ImagePropsBasic & PropsToken_2;
+
+/**
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
+ */
+declare type ProgressProps = ProgressPropsBasic & PropsToken_5;
 
 declare type PropsToken = {
     visible?: boolean;
@@ -137,10 +154,63 @@ declare type PropsToken_4 = {
     imageSize?: 'sm' | 'md' | 'lg' | 'quarter' | 'half';
 };
 
+declare type PropsToken_5 = {
+    point?: boolean;
+    linear?: boolean;
+    circular?: boolean;
+    indeterminate?: 'type1' | 'type2' | 'type3';
+    position?: 'top' | 'bottom' | 'static';
+    dense?: boolean;
+    inverse?: boolean;
+    size?: 'sm' | 'md' | 'lg';
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
+};
+
+declare type PropsToken_6 = {
+    focus?: boolean;
+    disabled?: boolean;
+    selected?: boolean;
+    readonly?: boolean;
+    adaptive?: 'iconAlways' | 'block' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
+    container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
+    inverse?: boolean;
+    grid?: boolean;
+    textAlign?: 'left' | 'center' | 'right';
+    primary?: boolean;
+    secondary?: boolean;
+    outline?: boolean;
+    text?: boolean;
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+    roundedFull?: boolean;
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
+};
+
+declare type PropsToken_7 = {
+    padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
+    paddingByIndent?: boolean;
+};
+
+declare type PropsToken_8 = {
+    align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto';
+    flexible?: 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl';
+    wrap?: boolean;
+    padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
+    paddingByIndent?: boolean;
+};
+
+declare type PropsToken_9 = {
+    width?: 'sm' | 'md' | 'lg' | 'auto';
+};
+
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
 declare type ScrollbarProps = ScrollbarPropsBasic & PropsToken;
+
+/**
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
+ */
+declare type WindowProps = WindowPropsBasic<ScrollbarProps, IconProps, ImageProps> & PropsToken_4;
 
 export { }
 

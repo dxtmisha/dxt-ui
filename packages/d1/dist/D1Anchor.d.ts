@@ -1,29 +1,20 @@
-import { ButtonPropsBasic } from '@dxtmisha/constructor/Button';
-import { ButtonSlots } from '@dxtmisha/constructor/Button';
+import { AnchorPropsBasic } from '@dxtmisha/constructor/Anchor';
+import { AnchorSlots } from '@dxtmisha/constructor/Anchor';
 import { ComponentOptionsMixin } from 'vue';
 import { ComponentProvideOptions } from 'vue';
 import { DefineComponent } from 'vue';
-import { EventClickValue } from '@dxtmisha/constructor';
 import { IconPropsBasic } from '@dxtmisha/constructor/Icon';
 import { ImagePropsBasic } from '@dxtmisha/constructor/Image';
-import { ProgressPropsBasic } from '@dxtmisha/constructor/Progress';
 import { PublicProps } from 'vue';
-import { Ref } from 'vue';
+import { TooltipPropsBasic } from '@dxtmisha/constructor/Tooltip';
 
-declare const __VLS_component: DefineComponent<D1ButtonProps, {
-    value?: Ref< EventClickValue["value"]>;
-    detail?: Ref< EventClickValue["detail"]>;
-}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
-    click: (event: MouseEvent, value: EventClickValue) => any;
-    clickLite: (value: EventClickValue) => any;
-}, string, PublicProps, Readonly<D1ButtonProps> & Readonly<{
-    onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
-    onClickLite?: ((value: EventClickValue) => any) | undefined;
-}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
+declare const __VLS_component: DefineComponent<D1AnchorProps, {
+    go(): void;
+}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<D1AnchorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
 
 declare function __VLS_template(): {
     attrs: Partial<{}>;
-    slots: Readonly<ButtonSlots> & ButtonSlots;
+    slots: Readonly<AnchorSlots> & AnchorSlots;
     refs: {};
     rootEl: any;
 };
@@ -36,12 +27,12 @@ declare type __VLS_WithTemplateSlots<T, S> = T & {
     };
 };
 
-export declare const D1Button: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+export declare const D1Anchor: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export declare type D1ButtonProps = ButtonPropsBasic<IconProps, ProgressProps> & PropsToken_4;
+export declare type D1AnchorProps = AnchorPropsBasic<IconProps, TooltipProps> & PropsToken_4;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
@@ -52,11 +43,6 @@ declare type IconProps = IconPropsBasic<ImageProps> & PropsToken_2;
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
 declare type ImageProps = ImagePropsBasic & PropsToken;
-
-/**
- * Type describing incoming properties/ Тип, описывающий входящие свойства
- */
-declare type ProgressProps = ProgressPropsBasic & PropsToken_3;
 
 declare type PropsToken = {
     turn?: boolean;
@@ -88,35 +74,17 @@ declare type PropsToken_2 = {
 };
 
 declare type PropsToken_3 = {
-    point?: boolean;
-    linear?: boolean;
-    circular?: boolean;
-    indeterminate?: 'type1' | 'type2' | 'type3';
-    position?: 'top' | 'bottom' | 'static';
-    dense?: boolean;
-    inverse?: boolean;
-    size?: 'sm' | 'md' | 'lg';
-    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
+    interactive?: boolean;
+    embedded?: boolean;
+    maxWidth?: 'sm' | 'md' | 'lg';
 };
 
-declare type PropsToken_4 = {
-    focus?: boolean;
-    disabled?: boolean;
-    selected?: boolean;
-    readonly?: boolean;
-    adaptive?: 'iconAlways' | 'block' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
-    container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
-    inverse?: boolean;
-    grid?: boolean;
-    textAlign?: 'left' | 'center' | 'right';
-    primary?: boolean;
-    secondary?: boolean;
-    outline?: boolean;
-    text?: boolean;
-    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-    roundedFull?: boolean;
-    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
-};
+declare type PropsToken_4 = {};
+
+/**
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
+ */
+declare type TooltipProps = TooltipPropsBasic & PropsToken_3;
 
 export { }
 

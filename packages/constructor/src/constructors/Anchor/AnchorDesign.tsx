@@ -177,7 +177,8 @@ export class AnchorDesign<
       h('a', {
         ...this.getAttrs(),
         key: 'main-hide',
-        name: this.props.name
+        name: this.props.name,
+        ...AriaStaticInclude.hidden()
       })
     ]
   }

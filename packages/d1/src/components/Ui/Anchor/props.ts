@@ -1,5 +1,8 @@
 import { type AnchorPropsBasic, defaultsAnchor } from '@dxtmisha/constructor/Anchor'
 
+import type { IconProps } from '../Icon'
+import type { TooltipProps } from '../Tooltip'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   // :values [!] System label / Системная метка
@@ -13,7 +16,7 @@ export type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type AnchorProps = AnchorPropsBasic & PropsToken
+export type AnchorProps = AnchorPropsBasic<IconProps, TooltipProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

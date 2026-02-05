@@ -1,15 +1,16 @@
+import { IconPropsBasic, IconValue } from '../Icon';
 import { TooltipProps, TooltipPropsInclude } from '../Tooltip';
 import { LabelProps } from '../../types/labelTypes';
 import { TextCopiedClipboardPropsInclude } from '../../types/textTypes';
 import { AnchorScrollProps } from './basicTypes';
 export type AnchorPropsToken = {};
-export type AnchorPropsBasic<Tooltip extends TooltipProps = TooltipProps> = LabelProps & TooltipPropsInclude<Tooltip> & TextCopiedClipboardPropsInclude & AnchorScrollProps & {
+export type AnchorPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Tooltip extends TooltipProps = TooltipProps> = LabelProps & TooltipPropsInclude<Tooltip> & TextCopiedClipboardPropsInclude & AnchorScrollProps & {
     hide?: boolean;
     name?: string;
     isCopy?: boolean;
-    iconLink?: string;
-    iconTag?: string;
-    iconContentCopy?: string;
+    iconLink?: IconValue<Icon>;
+    iconTag?: IconValue<Icon>;
+    iconContentCopy?: IconValue<Icon>;
     delayHide?: number;
 };
 /**

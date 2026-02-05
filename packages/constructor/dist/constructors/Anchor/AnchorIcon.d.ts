@@ -1,7 +1,7 @@
-import { AnchorEvent } from './AnchorEvent';
-import { AnchorProps } from './props';
 import { ConstrBind } from '@dxtmisha/functional';
-import { IconProps } from '../Icon';
+import { AnchorEvent } from './AnchorEvent';
+import { IconProps, IconValue } from '../Icon';
+import { AnchorProps } from './props';
 import { ComputedRef } from 'vue';
 /**
  * Class for working with the anchor icon
@@ -18,7 +18,7 @@ export declare class AnchorIcon {
      */
     constructor(props: AnchorProps, event: AnchorEvent);
     /** Icon to display/ Иконка для отображения */
-    readonly icon: ComputedRef<string | undefined>;
+    readonly icon: ComputedRef<IconValue | undefined>;
     /** Binds for the icon/ Привязки для иконки */
     readonly binds: ComputedRef<ConstrBind<IconProps>>;
     /**

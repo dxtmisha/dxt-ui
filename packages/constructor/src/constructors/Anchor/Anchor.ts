@@ -68,7 +68,8 @@ export class Anchor {
       this.className,
       this.components,
       computed(() => ({
-        description: this.text.copiedClipboard.value
+        description: this.text.copiedClipboard.value,
+        interactive: false
       }))
     )
 

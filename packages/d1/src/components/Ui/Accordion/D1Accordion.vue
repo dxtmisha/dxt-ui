@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  inArray,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -14,7 +13,7 @@ import {
 import { D1Cell } from '../Cell'
 import { D1MotionTransform } from '../MotionTransform'
 
-import { defaults, type AccordionProps, propsValues } from './props'
+import { defaults, type AccordionProps } from './props'
 import './styleToken.scss'
 
 defineOptions({

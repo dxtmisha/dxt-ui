@@ -1,13 +1,13 @@
-var y = Object.defineProperty;
-var b = (s, e, t) => e in s ? y(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
-var i = (s, e, t) => b(s, typeof e != "symbol" ? e + "" : e, t);
-import { computed as n, ref as A, onMounted as I, h as l } from "vue";
-import { goScrollSmooth as T, toNumber as k, writeClipboardData as w, DesignConstructorAbstract as x } from "@dxtmisha/functional";
-import { L as D } from "./LabelInclude-C9Dk-o4t.js";
-import { T as H } from "./TextInclude-CodMN5BH.js";
-import { T as S } from "./TooltipInclude--QRSE83v.js";
-import { g as L } from "./getClassTagAStatic-BnVYlXHI.js";
-import { A as $ } from "./AriaStaticInclude-D1bSJaBp.js";
+var b = Object.defineProperty;
+var A = (s, e, t) => e in s ? b(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
+var i = (s, e, t) => A(s, typeof e != "symbol" ? e + "" : e, t);
+import { computed as n, ref as I, onMounted as T, h as l } from "vue";
+import { goScrollSmooth as k, toNumber as w, writeClipboardData as x, DesignConstructorAbstract as D } from "@dxtmisha/functional";
+import { L as H } from "./LabelInclude-C9Dk-o4t.js";
+import { T as S } from "./TextInclude-CodMN5BH.js";
+import { T as L } from "./TooltipInclude--QRSE83v.js";
+import { g as $ } from "./getClassTagAStatic-BnVYlXHI.js";
+import { A as a } from "./AriaStaticInclude-D1bSJaBp.js";
 class B {
   /**
    * Constructor
@@ -62,14 +62,14 @@ class F {
    * Прокрутить к элементу
    */
   go() {
-    this.element.value && (T(
+    this.element.value && (k(
       this.element.value,
       {
         behavior: this.props.behavior,
         block: this.props.block,
         inline: this.props.inline
       },
-      k(this.props.shift)
+      w(this.props.shift)
     ), history.replaceState({}, "", this.href.get()));
   }
 }
@@ -82,7 +82,7 @@ class M {
    * @param to scroll handler / обработчик прокрутки
    */
   constructor(e, t, r, o) {
-    i(this, "copy", A());
+    i(this, "copy", I());
     i(this, "timeout");
     /**
      * On click handler
@@ -91,7 +91,7 @@ class M {
      */
     i(this, "onClick", (e) => {
       var t;
-      e.preventDefault(), this.props.isCopy ? w(this.href.getLink()).then(() => this.toCopy()) : (t = this.to) == null || t.go();
+      e.preventDefault(), this.props.isCopy ? x(this.href.getLink()).then(() => this.toCopy()) : (t = this.to) == null || t.go();
     });
     this.props = e, this.tooltip = t, this.href = r, this.to = o;
   }
@@ -130,7 +130,7 @@ class N {
     /** Binds for the icon/ Привязки для иконки */
     i(this, "binds", n(() => ({
       icon: this.icon.value,
-      iconActive: this.props.iconContentCopy,
+      iconActive: this.props.isCopy ? this.props.iconContentCopy : void 0,
       active: this.event.isCopy()
     })));
     this.props = e, this.event = t;
@@ -163,7 +163,7 @@ class E {
    * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
    * @param TooltipIncludeConstructor class for working with tooltip/ класс для работы с подсказкой
    */
-  constructor(e, t, r, o, h, a, p, c, u = B, m = F, d = M, f = N, g = D, v = H, C = S) {
+  constructor(e, t, r, o, h, c, p, u, m = B, d = F, f = M, v = N, g = H, C = S, y = L) {
     i(this, "label");
     i(this, "text");
     i(this, "tooltip");
@@ -181,23 +181,24 @@ class E {
     i(this, "goIsFocus", () => {
       location.hash === this.href.get() && this.to.go();
     });
-    this.props = e, this.refs = t, this.element = r, this.classDesign = o, this.className = h, this.components = a, this.slots = p, this.emits = c, this.label = new g(e, h, void 0, p), this.text = new v(this.props), this.tooltip = new C(
+    this.props = e, this.refs = t, this.element = r, this.classDesign = o, this.className = h, this.components = c, this.slots = p, this.emits = u, this.label = new g(e, h, void 0, p), this.text = new C(this.props), this.tooltip = new y(
       this.props,
       this.className,
       this.components,
       n(() => ({
-        description: this.text.copiedClipboard.value
+        description: this.text.copiedClipboard.value,
+        interactive: !1
       }))
-    ), this.href = new u(this.props), this.to = new m(
+    ), this.href = new m(this.props), this.to = new d(
       this.props,
       this.element,
       this.href
-    ), this.event = new d(
+    ), this.event = new f(
       this.props,
       this.tooltip,
       this.href,
       this.to
-    ), this.icon = new f(this.props, this.event), I(() => {
+    ), this.icon = new v(this.props, this.event), T(() => {
       requestAnimationFrame(this.goIsFocus);
     });
   }
@@ -206,7 +207,7 @@ const O = {
   shift: 64,
   delayHide: 3072
 };
-class Q extends x {
+class Q extends D {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -241,7 +242,7 @@ class Q extends x {
       var o;
       const r = [
         (o = this.classes) == null ? void 0 : o.value.main,
-        L(this.getDesign())
+        $(this.getDesign())
       ];
       return t && r.push(t.class), [
         l("a", {
@@ -259,7 +260,8 @@ class Q extends x {
       l("a", {
         ...this.getAttrs(),
         key: "main-hide",
-        name: this.props.name
+        name: this.props.name,
+        ...a.hidden()
       })
     ]);
     /**
@@ -348,7 +350,7 @@ class Q extends x {
     return this.props.isCopy ? t : {
       ...t,
       href: this.item.href.get(),
-      ...$.current("page")
+      ...a.current("page")
     };
   }
 }

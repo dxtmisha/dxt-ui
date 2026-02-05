@@ -1,12 +1,12 @@
-import { defineComponent as w, computed as l, openBlock as u, createBlock as y, unref as b, mergeDefaults as B } from "vue";
-import { inArray as o, isFilled as h } from "@dxtmisha/functional";
+import { defineComponent as h, computed as l, openBlock as u, createBlock as y, unref as b, mergeDefaults as B } from "vue";
+import { inArray as o, isFilled as g } from "@dxtmisha/functional";
 import { defaultsWindow as v, WindowDesign as f } from "@dxtmisha/constructor/Window";
 import { defaultsScrollbar as S, ScrollbarDesign as x } from "@dxtmisha/constructor/Scrollbar";
 import { _ } from "./D1Button.vue_vue_type_script_setup_true_lang-D41llYta.js";
 import { _ as T } from "./D1Image.vue_vue_type_script_setup_true_lang-DNSEm9t1.js";
 const F = {
   ...S
-}, $ = /* @__PURE__ */ w({
+}, $ = /* @__PURE__ */ h({
   name: "D1Scrollbar",
   __name: "D1Scrollbar",
   props: /* @__PURE__ */ B({
@@ -45,8 +45,8 @@ const F = {
         classes: p,
         styles: m
       }
-    ), g = i.render();
-    return s(i.expose()), (n, a) => (u(), y(b(g)));
+    ), w = i.render();
+    return s(i.expose()), (n, a) => (u(), y(b(w)));
   }
 }), t = {
   // :values [!] System label / Системная метка
@@ -68,7 +68,7 @@ const F = {
   imagePosition: "top",
   overscroll: !0,
   imageSize: "md"
-}, C = /* @__PURE__ */ w({
+}, C = /* @__PURE__ */ h({
   name: "D1Window",
   __name: "D1Window",
   props: /* @__PURE__ */ B({
@@ -122,9 +122,9 @@ const F = {
       main: {
         // :classes-values [!] System label / Системная метка
         "d1-window": !0,
-        "d1-window--width--custom": h(e.width) && !o(t.width, e.width),
+        "d1-window--width--custom": g(e.width) && !o(t.width, e.width),
         [`d1-window--width--${e.width}`]: o(t.width, e.width),
-        "d1-window--height--custom": h(e.height) && !o(t.height, e.height),
+        "d1-window--height--custom": g(e.height) && !o(t.height, e.height),
         [`d1-window--height--${e.height}`]: o(t.height, e.height),
         "d1-window--hide": e.hide,
         [`d1-window--axis--${e.axis}`]: o(t.axis, e.axis),
@@ -135,6 +135,7 @@ const F = {
         [`d1-window--adaptive--${e.adaptive}`]: o(t.adaptive, e.adaptive),
         "d1-window--fullscreen": e.fullscreen,
         "d1-window--overscroll": e.overscroll,
+        "d1-window--closeButton": e.closeButton,
         "d1-window--closeMobileHide": e.closeMobileHide,
         "d1-window--widthMatch": e.widthMatch,
         [`d1-window--imageSize--${e.imageSize}`]: o(t.imageSize, e.imageSize)
@@ -169,8 +170,8 @@ const F = {
           }
         }
       }
-    ), g = i.render();
-    return s(i.expose()), (n, a) => (u(), y(b(g)));
+    ), w = i.render();
+    return s(i.expose()), (n, a) => (u(), y(b(w)));
   }
 });
 export {

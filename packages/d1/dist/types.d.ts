@@ -125,17 +125,17 @@ declare type ActionsProps = ActionsPropsBasic<ButtonProps> & PropsToken_11;
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type AnchorProps = AnchorPropsBasic & PropsToken_13;
+declare type AnchorProps = AnchorPropsBasic<IconProps, TooltipProps> & PropsToken_14;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type ArrowProps = ArrowPropsBasic & PropsToken_14;
+declare type ArrowProps = ArrowPropsBasic & PropsToken_15;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type BadgeProps = BadgePropsBasic<IconProps> & PropsToken_15;
+declare type BadgeProps = BadgePropsBasic<IconProps> & PropsToken_16;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
@@ -145,7 +145,7 @@ declare type BarsProps = BarsPropsBasic<ButtonProps> & PropsToken_10;
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type BlockProps = BlockPropsBasic<IconProps> & PropsToken_16;
+declare type BlockProps = BlockPropsBasic<IconProps> & PropsToken_17;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
@@ -160,12 +160,12 @@ declare type CellProps = CellPropsBasic<IconProps, ProgressProps> & PropsToken_4
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type ChipGroupProps = ChipGroupPropsBasic<ChipProps> & PropsToken_18;
+declare type ChipGroupProps = ChipGroupPropsBasic<ChipProps> & PropsToken_19;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type ChipProps = ChipPropsBasic<IconProps, ProgressProps> & PropsToken_17;
+declare type ChipProps = ChipPropsBasic<IconProps, ProgressProps> & PropsToken_18;
 
 export declare const D1Accordion: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< AccordionProps> & Readonly<{
@@ -354,7 +354,6 @@ export declare const D1ActionSheet: {
 export declare const D1Anchor: {
     new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< AnchorProps> & Readonly<{}>, {
         go(): void;
-        labelId: string;
     }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
         P: {};
         B: {};
@@ -364,14 +363,12 @@ export declare const D1Anchor: {
         Defaults: {};
     }, Readonly< AnchorProps> & Readonly<{}>, {
         go(): void;
-        labelId: string;
     }, {}, {}, {}, {}>;
     __isFragment?: never;
     __isTeleport?: never;
     __isSuspense?: never;
 } & ComponentOptionsBase<Readonly< AnchorProps> & Readonly<{}>, {
     go(): void;
-    labelId: string;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: Readonly< AnchorSlots> & AnchorSlots;
 });
@@ -420,10 +417,7 @@ export declare const D1Bars: {
         onClickLite?: ((value: EventClickValue) => any) | undefined;
         "onUpdate:action"?: ((value: boolean) => any) | undefined;
         "onUpdate:modelAction"?: ((value: boolean) => any) | undefined;
-    }>, {
-        labelId: string;
-        descriptionId: string;
-    }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+    }>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
         click: (event: MouseEvent, value: EventClickValue) => any;
         clickLite: (value: EventClickValue) => any;
         "update:action": (value: boolean) => any;
@@ -440,10 +434,7 @@ export declare const D1Bars: {
         onClickLite?: ((value: EventClickValue) => any) | undefined;
         "onUpdate:action"?: ((value: boolean) => any) | undefined;
         "onUpdate:modelAction"?: ((value: boolean) => any) | undefined;
-    }>, {
-        labelId: string;
-        descriptionId: string;
-    }, {}, {}, {}, {}>;
+    }>, {}, {}, {}, {}, {}>;
     __isFragment?: never;
     __isTeleport?: never;
     __isSuspense?: never;
@@ -452,10 +443,7 @@ export declare const D1Bars: {
     onClickLite?: ((value: EventClickValue) => any) | undefined;
     "onUpdate:action"?: ((value: boolean) => any) | undefined;
     "onUpdate:modelAction"?: ((value: boolean) => any) | undefined;
-}>, {
-    labelId: string;
-    descriptionId: string;
-}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
     click: (event: MouseEvent, value: EventClickValue) => any;
     clickLite: (value: EventClickValue) => any;
     "update:action": (value: boolean) => any;
@@ -465,27 +453,18 @@ export declare const D1Bars: {
 });
 
 export declare const D1Block: {
-    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< BlockProps> & Readonly<{}>, {
-        labelId: string;
-        descriptionId: string;
-    }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
+    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< BlockProps> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
         P: {};
         B: {};
         D: {};
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly< BlockProps> & Readonly<{}>, {
-        labelId: string;
-        descriptionId: string;
-    }, {}, {}, {}, {}>;
+    }, Readonly< BlockProps> & Readonly<{}>, {}, {}, {}, {}, {}>;
     __isFragment?: never;
     __isTeleport?: never;
     __isSuspense?: never;
-} & ComponentOptionsBase<Readonly< BlockProps> & Readonly<{}>, {
-    labelId: string;
-    descriptionId: string;
-}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
+} & ComponentOptionsBase<Readonly< BlockProps> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: Readonly< BlockSlots> & BlockSlots;
 });
 
@@ -494,7 +473,6 @@ export declare const D1Button: {
         onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
         onClickLite?: ((value: EventClickValue) => any) | undefined;
     }>, {
-        labelId: string;
         value?: Ref< EventClickValue["value"]>;
         detail?: Ref< EventClickValue["detail"]>;
     }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
@@ -511,7 +489,6 @@ export declare const D1Button: {
         onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
         onClickLite?: ((value: EventClickValue) => any) | undefined;
     }>, {
-        labelId: string;
         value?: Ref< EventClickValue["value"]>;
         detail?: Ref< EventClickValue["detail"]>;
     }, {}, {}, {}, {}>;
@@ -522,7 +499,6 @@ export declare const D1Button: {
     onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onClickLite?: ((value: EventClickValue) => any) | undefined;
 }>, {
-    labelId: string;
     value?: Ref< EventClickValue["value"]>;
     detail?: Ref< EventClickValue["detail"]>;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
@@ -537,8 +513,6 @@ export declare const D1Cell: {
         onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
         onClickLite?: ((value: EventClickValue) => any) | undefined;
     }>, {
-        labelId: string;
-        descriptionId: string;
         value?: Ref< EventClickValue["value"]>;
         detail?: Ref< EventClickValue["detail"]>;
     }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
@@ -555,8 +529,6 @@ export declare const D1Cell: {
         onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
         onClickLite?: ((value: EventClickValue) => any) | undefined;
     }>, {
-        labelId: string;
-        descriptionId: string;
         value?: Ref< EventClickValue["value"]>;
         detail?: Ref< EventClickValue["detail"]>;
     }, {}, {}, {}, {}>;
@@ -567,8 +539,6 @@ export declare const D1Cell: {
     onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onClickLite?: ((value: EventClickValue) => any) | undefined;
 }>, {
-    labelId: string;
-    descriptionId: string;
     value?: Ref< EventClickValue["value"]>;
     detail?: Ref< EventClickValue["detail"]>;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
@@ -583,7 +553,6 @@ export declare const D1Chip: {
         onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
         onClickLite?: ((value: EventClickValue) => any) | undefined;
     }>, {
-        labelId: string;
         value?: Ref< EventClickValue["value"]>;
         detail?: Ref< EventClickValue["detail"]>;
     }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
@@ -600,7 +569,6 @@ export declare const D1Chip: {
         onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
         onClickLite?: ((value: EventClickValue) => any) | undefined;
     }>, {
-        labelId: string;
         value?: Ref< EventClickValue["value"]>;
         detail?: Ref< EventClickValue["detail"]>;
     }, {}, {}, {}, {}>;
@@ -611,7 +579,6 @@ export declare const D1Chip: {
     onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onClickLite?: ((value: EventClickValue) => any) | undefined;
 }>, {
-    labelId: string;
     value?: Ref< EventClickValue["value"]>;
     detail?: Ref< EventClickValue["detail"]>;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
@@ -798,24 +765,18 @@ export declare const D1FieldCounter: {
 });
 
 export declare const D1FieldLabel: {
-    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< FieldLabelProps> & Readonly<{}>, {
-        labelId: string;
-    }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
+    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< FieldLabelProps> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
         P: {};
         B: {};
         D: {};
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly< FieldLabelProps> & Readonly<{}>, {
-        labelId: string;
-    }, {}, {}, {}, {}>;
+    }, Readonly< FieldLabelProps> & Readonly<{}>, {}, {}, {}, {}, {}>;
     __isFragment?: never;
     __isTeleport?: never;
     __isSuspense?: never;
-} & ComponentOptionsBase<Readonly< FieldLabelProps> & Readonly<{}>, {
-    labelId: string;
-}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
+} & ComponentOptionsBase<Readonly< FieldLabelProps> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: Readonly< FieldLabelSlots> & FieldLabelSlots;
 });
 
@@ -1502,27 +1463,18 @@ export declare const D1MotionTransform: {
 });
 
 export declare const D1Page: {
-    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< PageProps> & Readonly<{}>, {
-        labelId: string;
-        descriptionId: string;
-    }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
+    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< PageProps> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
         P: {};
         B: {};
         D: {};
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly< PageProps> & Readonly<{}>, {
-        labelId: string;
-        descriptionId: string;
-    }, {}, {}, {}, {}>;
+    }, Readonly< PageProps> & Readonly<{}>, {}, {}, {}, {}, {}>;
     __isFragment?: never;
     __isTeleport?: never;
     __isSuspense?: never;
-} & ComponentOptionsBase<Readonly< PageProps> & Readonly<{}>, {
-    labelId: string;
-    descriptionId: string;
-}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
+} & ComponentOptionsBase<Readonly< PageProps> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: Readonly< PageSlots> & PageSlots;
 });
 
@@ -1615,27 +1567,18 @@ export declare const D1Scrollbar: {
 });
 
 export declare const D1Section: {
-    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< SectionProps> & Readonly<{}>, {
-        labelId: string;
-        descriptionId: string;
-    }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
+    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< SectionProps> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
         P: {};
         B: {};
         D: {};
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly< SectionProps> & Readonly<{}>, {
-        labelId: string;
-        descriptionId: string;
-    }, {}, {}, {}, {}>;
+    }, Readonly< SectionProps> & Readonly<{}>, {}, {}, {}, {}, {}>;
     __isFragment?: never;
     __isTeleport?: never;
     __isSuspense?: never;
-} & ComponentOptionsBase<Readonly< SectionProps> & Readonly<{}>, {
-    labelId: string;
-    descriptionId: string;
-}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
+} & ComponentOptionsBase<Readonly< SectionProps> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: Readonly< SectionSlots> & SectionSlots;
 });
 
@@ -1752,7 +1695,7 @@ export declare const D1SelectValue: {
 });
 
 export declare const D1Skeleton: {
-    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< PropsToken_36> & Readonly<{}>, {
+    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< PropsToken_37> & Readonly<{}>, {
         isActive: ComputedRef<boolean>;
     }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
         P: {};
@@ -1761,13 +1704,13 @@ export declare const D1Skeleton: {
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly< PropsToken_36> & Readonly<{}>, {
+    }, Readonly< PropsToken_37> & Readonly<{}>, {
         isActive: ComputedRef<boolean>;
     }, {}, {}, {}, {}>;
     __isFragment?: never;
     __isTeleport?: never;
     __isSuspense?: never;
-} & ComponentOptionsBase<Readonly< PropsToken_36> & Readonly<{}>, {
+} & ComponentOptionsBase<Readonly< PropsToken_37> & Readonly<{}>, {
     isActive: ComputedRef<boolean>;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: Readonly< SkeletonSlots> & SkeletonSlots;
@@ -1940,27 +1883,27 @@ export declare const D1Window: {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type DialogProps = DialogPropsBasic<WindowProps, BarsProps, IconProps, ImageProps, ButtonProps, ActionsProps> & PropsToken_19;
+declare type DialogProps = DialogPropsBasic<WindowProps, BarsProps, IconProps, ImageProps, ButtonProps, ActionsProps> & PropsToken_20;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type FieldCounterProps = FieldCounterPropsBasic & PropsToken_20;
+declare type FieldCounterProps = FieldCounterPropsBasic & PropsToken_21;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type FieldLabelProps = FieldLabelPropsBasic<FieldCounterProps, ProgressProps> & PropsToken_21;
+declare type FieldLabelProps = FieldLabelPropsBasic<FieldCounterProps, ProgressProps> & PropsToken_22;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type FieldMessageProps = FieldMessagePropsBasic<FieldCounterProps> & PropsToken_22;
+declare type FieldMessageProps = FieldMessagePropsBasic<FieldCounterProps> & PropsToken_23;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type FieldProps = FieldPropsBasic<IconProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps> & PropsToken_23;
+declare type FieldProps = FieldPropsBasic<IconProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps> & PropsToken_24;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
@@ -1975,42 +1918,42 @@ declare type ImageProps = ImagePropsBasic & PropsToken;
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type InputProps = InputPropsBasic<MaskProps, IconProps, FieldProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps> & PropsToken_25;
+declare type InputProps = InputPropsBasic<MaskProps, IconProps, FieldProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps> & PropsToken_26;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type ListGroupProps = ListGroupPropsBasic & PropsToken_28;
+declare type ListGroupProps = ListGroupPropsBasic & PropsToken_29;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type ListItemProps = ListItemPropsBasic<IconProps, BadgeProps, ProgressProps> & PropsToken_26;
+declare type ListItemProps = ListItemPropsBasic<IconProps, BadgeProps, ProgressProps> & PropsToken_27;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type ListMenuProps = ListMenuPropsBasic<WindowProps> & PropsToken_29;
+declare type ListMenuProps = ListMenuPropsBasic<WindowProps> & PropsToken_30;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type ListProps = ListPropsBasic<IconProps, ListItemProps> & PropsToken_27;
+declare type ListProps = ListPropsBasic<IconProps, ListItemProps> & PropsToken_28;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type MaskProps = MaskPropsBasic & PropsToken_24;
+declare type MaskProps = MaskPropsBasic & PropsToken_25;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type MenuProps = MenuPropsBasic<ListProps, ListItemProps, BarsProps, WindowProps> & PropsToken_30;
+declare type MenuProps = MenuPropsBasic<ListProps, ListItemProps, BarsProps, WindowProps> & PropsToken_31;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type ModalProps = ModalPropsBasic<WindowProps, BarsProps, ActionsProps, ImageProps> & PropsToken_31;
+declare type ModalProps = ModalPropsBasic<WindowProps, BarsProps, ActionsProps, ImageProps> & PropsToken_32;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
@@ -2020,7 +1963,7 @@ declare type MotionTransformProps = MotionTransformPropsBasic & PropsToken_5;
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type PageProps = PagePropsBasic & PropsToken_32;
+declare type PageProps = PagePropsBasic & PropsToken_33;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
@@ -2036,7 +1979,6 @@ declare type PropsToken = {
 };
 
 declare type PropsToken_10 = {
-    action?: boolean;
     padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
     paddingByIndent?: boolean;
 };
@@ -2044,25 +1986,30 @@ declare type PropsToken_10 = {
 declare type PropsToken_11 = {
     align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto';
     flexible?: 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl';
+    wrap?: boolean;
     padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
     paddingByIndent?: boolean;
 };
 
 declare type PropsToken_12 = {
-    padding?: 'sm' | 'md' | 'lg';
-    paddingByIndent?: boolean;
     width?: 'sm' | 'md' | 'lg' | 'auto';
 };
 
-declare type PropsToken_13 = {};
+declare type PropsToken_13 = {
+    interactive?: boolean;
+    embedded?: boolean;
+    maxWidth?: 'sm' | 'md' | 'lg';
+};
 
-declare type PropsToken_14 = {
+declare type PropsToken_14 = {};
+
+declare type PropsToken_15 = {
     position?: 'auto' | 'top' | 'bottom' | 'left' | 'right';
     inverse?: boolean;
     size?: 'sm' | 'md' | 'lg';
 };
 
-declare type PropsToken_15 = {
+declare type PropsToken_16 = {
     selected?: boolean;
     hide?: boolean;
     dot?: boolean;
@@ -2076,9 +2023,9 @@ declare type PropsToken_15 = {
     palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
 };
 
-declare type PropsToken_16 = {};
+declare type PropsToken_17 = {};
 
-declare type PropsToken_17 = {
+declare type PropsToken_18 = {
     focus?: boolean;
     disabled?: boolean;
     selected?: boolean;
@@ -2095,16 +2042,7 @@ declare type PropsToken_17 = {
     palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
 };
 
-declare type PropsToken_18 = {};
-
-declare type PropsToken_19 = {
-    success?: boolean;
-    error?: boolean;
-    imagePosition?: 'top' | 'left';
-    padding?: 'sm' | 'md' | 'lg';
-    paddingByIndent?: boolean;
-    width?: 'sm' | 'md' | 'lg' | 'auto';
-};
+declare type PropsToken_19 = {};
 
 declare type PropsToken_2 = {
     turn?: boolean;
@@ -2127,13 +2065,20 @@ declare type PropsToken_2 = {
     rounded?: 'auto' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
 };
 
-declare type PropsToken_20 = {};
+declare type PropsToken_20 = {
+    success?: boolean;
+    error?: boolean;
+    imagePosition?: 'top' | 'left';
+    width?: 'sm' | 'md' | 'lg' | 'auto';
+};
 
 declare type PropsToken_21 = {};
 
 declare type PropsToken_22 = {};
 
-declare type PropsToken_23 = {
+declare type PropsToken_23 = {};
+
+declare type PropsToken_24 = {
     focus?: boolean;
     disabled?: boolean;
     selected?: boolean;
@@ -2155,16 +2100,16 @@ declare type PropsToken_23 = {
     size?: 'sm' | 'md' | 'lg' | 'display';
 };
 
-declare type PropsToken_24 = {
+declare type PropsToken_25 = {
     visible?: boolean;
     visiblePartly?: boolean;
     align?: 'center' | 'left' | 'right';
     dir?: 'ltr' | 'rtl';
 };
 
-declare type PropsToken_25 = {};
+declare type PropsToken_26 = {};
 
-declare type PropsToken_26 = {
+declare type PropsToken_27 = {
     focus?: boolean;
     open?: boolean;
     selected?: boolean;
@@ -2180,19 +2125,13 @@ declare type PropsToken_26 = {
     palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
 };
 
-declare type PropsToken_27 = {
-    axis?: 'x' | 'y';
-    divider?: boolean;
-};
-
 declare type PropsToken_28 = {
-    open?: boolean;
+    axis?: 'x' | 'y';
     divider?: boolean;
 };
 
 declare type PropsToken_29 = {
     open?: boolean;
-    axis?: 'x' | 'y';
     divider?: boolean;
 };
 
@@ -2209,18 +2148,20 @@ declare type PropsToken_3 = {
 };
 
 declare type PropsToken_30 = {
+    open?: boolean;
+    axis?: 'x' | 'y';
+    divider?: boolean;
+};
+
+declare type PropsToken_31 = {
     hideList?: boolean;
     barsAdaptive?: 'showAlways' | 'showSm' | 'showMd' | 'showLg' | 'showXl' | 'show2xl';
 };
 
-declare type PropsToken_31 = {
+declare type PropsToken_32 = {
     imagePosition?: 'top' | 'left';
-    padding?: 'sm' | 'md' | 'lg';
-    paddingByIndent?: boolean;
-    width?: 'sm' | 'md' | 'lg' | 'auto';
+    width?: 'sm' | 'md' | 'lg' | 'xl' | 'auto';
 };
-
-declare type PropsToken_32 = {};
 
 declare type PropsToken_33 = {};
 
@@ -2228,16 +2169,14 @@ declare type PropsToken_34 = {};
 
 declare type PropsToken_35 = {};
 
-declare type PropsToken_36 = {
+declare type PropsToken_36 = {};
+
+declare type PropsToken_37 = {
     active?: boolean;
 };
 
-declare type PropsToken_37 = {
-    height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-};
-
 declare type PropsToken_38 = {
-    maxWidth?: 'sm' | 'md' | 'lg';
+    height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 };
 
 declare type PropsToken_4 = {
@@ -2262,8 +2201,6 @@ declare type PropsToken_5 = {
 
 declare type PropsToken_6 = {
     divider?: boolean;
-    padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
-    paddingByIndent?: boolean;
 };
 
 declare type PropsToken_7 = {
@@ -2288,6 +2225,7 @@ declare type PropsToken_8 = {
     adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static' | 'actionSheet' | 'actionSheetToModal' | 'autoStaticSm' | 'autoStaticMd' | 'autoStaticLg' | 'autoStaticXl' | 'autoStatic2xl';
     fullscreen?: boolean;
     overscroll?: boolean;
+    closeButton?: boolean;
     closeMobileHide?: boolean;
     widthMatch?: boolean;
     imageSize?: 'sm' | 'md' | 'lg' | 'quarter' | 'half';
@@ -2320,27 +2258,27 @@ declare type ScrollbarProps = ScrollbarPropsBasic & PropsToken_7;
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type SectionProps = SectionPropsBasic & PropsToken_33;
+declare type SectionProps = SectionPropsBasic & PropsToken_34;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type SelectProps = SelectPropsBasic<IconProps, FieldProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, InputProps, ProgressProps, MenuProps> & PropsToken_34;
+declare type SelectProps = SelectPropsBasic<IconProps, FieldProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, InputProps, ProgressProps, MenuProps> & PropsToken_35;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type SelectValueProps = SelectValuePropsBasic<IconProps, ChipProps> & PropsToken_35;
+declare type SelectValueProps = SelectValuePropsBasic<IconProps, ChipProps> & PropsToken_36;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type TextareaAutosizeProps = TextareaAutosizePropsBasic & PropsToken_37;
+declare type TextareaAutosizeProps = TextareaAutosizePropsBasic & PropsToken_38;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-declare type TooltipProps = TooltipPropsBasic & PropsToken_38;
+declare type TooltipProps = TooltipPropsBasic & PropsToken_13;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

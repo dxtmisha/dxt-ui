@@ -1,48 +1,29 @@
-import { AccordionPropsBasic } from '@dxtmisha/constructor/Accordion';
-import { AccordionSlots } from '@dxtmisha/constructor/Accordion';
 import { CellPropsBasic } from '@dxtmisha/constructor/Cell';
+import { CellSlots } from '@dxtmisha/constructor/Cell';
 import { ComponentOptionsMixin } from 'vue';
 import { ComponentProvideOptions } from 'vue';
-import { ComputedRef } from 'vue';
-import { ConstrBind } from '@dxtmisha/functional';
 import { DefineComponent } from 'vue';
 import { EventClickValue } from '@dxtmisha/constructor';
 import { IconPropsBasic } from '@dxtmisha/constructor/Icon';
 import { ImagePropsBasic } from '@dxtmisha/constructor/Image';
-import { MotionTransformEmitOptions } from '@dxtmisha/constructor/MotionTransform';
-import { MotionTransformExpose } from '@dxtmisha/constructor/MotionTransform';
-import { MotionTransformPropsBasic } from '@dxtmisha/constructor/MotionTransform';
 import { ProgressPropsBasic } from '@dxtmisha/constructor/Progress';
 import { PublicProps } from 'vue';
 import { Ref } from 'vue';
 
-declare const __VLS_component: DefineComponent<D1AccordionProps, {
-    motionTransformElement: Ref< ConstrBind<MotionTransformExpose> | undefined>;
-    open: Ref<boolean>;
-    isShow: ComputedRef<boolean>;
-    setOpen(open: boolean): void;
-    toOpen(): void;
-    toClose(): void;
-    toggle(): void;
+declare const __VLS_component: DefineComponent<D1CellProps, {
+    value?: Ref< EventClickValue["value"]>;
+    detail?: Ref< EventClickValue["detail"]>;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
     click: (event: MouseEvent, value: EventClickValue) => any;
     clickLite: (value: EventClickValue) => any;
-    transform: (event: Event | undefined, options: MotionTransformEmitOptions) => any;
-    transformLite: (options: MotionTransformEmitOptions) => any;
-    "update:open": (value: boolean) => any;
-    "update:modelOpen": (value: boolean) => any;
-}, string, PublicProps, Readonly<D1AccordionProps> & Readonly<{
+}, string, PublicProps, Readonly<D1CellProps> & Readonly<{
     onClick?: ((event: MouseEvent, value: EventClickValue) => any) | undefined;
     onClickLite?: ((value: EventClickValue) => any) | undefined;
-    onTransform?: ((event: Event | undefined, options: MotionTransformEmitOptions) => any) | undefined;
-    onTransformLite?: ((options: MotionTransformEmitOptions) => any) | undefined;
-    "onUpdate:open"?: ((value: boolean) => any) | undefined;
-    "onUpdate:modelOpen"?: ((value: boolean) => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
 
 declare function __VLS_template(): {
     attrs: Partial<{}>;
-    slots: Readonly<AccordionSlots> & AccordionSlots;
+    slots: Readonly<CellSlots> & CellSlots;
     refs: {};
     rootEl: any;
 };
@@ -55,17 +36,12 @@ declare type __VLS_WithTemplateSlots<T, S> = T & {
     };
 };
 
-/**
- * Type describing incoming properties/ Тип, описывающий входящие свойства
- */
-declare type CellProps = CellPropsBasic<IconProps, ProgressProps> & PropsToken_4;
-
-export declare const D1Accordion: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
+export declare const D1Cell: __VLS_WithTemplateSlots<typeof __VLS_component, __VLS_TemplateResult["slots"]>;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export declare type D1AccordionProps = AccordionPropsBasic<IconProps, CellProps, MotionTransformProps> & PropsToken_6;
+export declare type D1CellProps = CellPropsBasic<IconProps, ProgressProps> & PropsToken_4;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
@@ -76,11 +52,6 @@ declare type IconProps = IconPropsBasic<ImageProps> & PropsToken_2;
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
 declare type ImageProps = ImagePropsBasic & PropsToken;
-
-/**
- * Type describing incoming properties/ Тип, описывающий входящие свойства
- */
-declare type MotionTransformProps = MotionTransformPropsBasic & PropsToken_5;
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
@@ -140,16 +111,6 @@ declare type PropsToken_4 = {
     iconTop?: boolean;
     padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
     paddingByIndent?: boolean;
-};
-
-declare type PropsToken_5 = {
-    section?: boolean;
-    animationHeadPosition?: 'top' | 'toBottom';
-    adaptive?: 'planeAlways' | 'planeSm' | 'planeMd' | 'planeLg' | 'planeXl' | 'plane2xl';
-};
-
-declare type PropsToken_6 = {
-    divider?: boolean;
 };
 
 export { }
