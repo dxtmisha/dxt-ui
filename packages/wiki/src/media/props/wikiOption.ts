@@ -65,6 +65,20 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  formatting: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to format values before displaying',
+        ru: 'Нужно ли форматировать значения перед отображением'
+      }
+    },
+    isDemo: true,
+    demoOptions: {
+      label: 1234567
+    }
+  },
   grid: {
     type: StorybookControl.boolean,
     options: {
@@ -73,6 +87,22 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Enables grid layout mode',
         ru: 'Включает режим сетки'
       }
+    }
+  },
+  horizontal: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets horizontal alignment of elements',
+        ru: 'Задает горизонтальное выравнивание элементов'
+      }
+    },
+    isDemo: true,
+    demoOptions: {
+      overlap: 'rectangular'
     }
   },
   inDom: {
@@ -105,6 +135,35 @@ export const wikiOption: StorybookArgsToList = {
         ru: 'Отображает компонент в режиме скелетона'
       }
     }
+  },
+  labelMax: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.option,
+      type: 'number',
+      description: {
+        en: 'Maximum length of the label text before truncation',
+        ru: 'Максимальная длина текста метки перед обрезкой'
+      }
+    },
+    isDemo: true,
+    demo: 1000,
+    demoOptions: {
+      label: 1234567
+    }
+  },
+  overlap: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Defines element positioning relative to other elements',
+        ru: 'Определяет расположение элемента относительно других элементов'
+      }
+    },
+    isDemo: true
   },
   tag: {
     type: StorybookControl.select,
@@ -162,6 +221,22 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Selects the visual type/variant of the component',
         ru: 'Выбирает визуальный тип/вариант компонента'
       }
+    }
+  },
+  vertical: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets vertical alignment of elements',
+        ru: 'Задает вертикальное выравнивание элементов'
+      }
+    },
+    isDemo: true,
+    demoOptions: {
+      overlap: 'rectangular'
     }
   }
 }

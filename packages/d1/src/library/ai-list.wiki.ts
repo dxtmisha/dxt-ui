@@ -6,6 +6,7 @@ import D1ActionSheet from '../../src/components/Ui/ActionSheet/D1ActionSheetAiWi
 import D1Actions from '../../src/components/Ui/Actions/D1ActionsAiWiki.vue'
 import D1Anchor from '../../src/components/Ui/Anchor/D1AnchorAiWiki.vue'
 import D1Arrow from '../../src/components/Ui/Arrow/D1ArrowAiWiki.vue'
+import D1Badge from '../../src/components/Ui/Badge/D1BadgeAiWiki.vue'
 import D1Bars from '../../src/components/Ui/Bars/D1BarsAiWiki.vue'
 import D1Button from '../../src/components/Ui/Button/D1ButtonAiWiki.vue'
 import D1Cell from '../../src/components/Ui/Cell/D1CellAiWiki.vue'
@@ -25,6 +26,7 @@ export const aiList: any[] = [
   D1Actions,
   D1Anchor,
   D1Arrow,
+  D1Badge,
   D1Bars,
   D1Button,
   D1Cell,

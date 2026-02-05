@@ -39,8 +39,9 @@ export declare class LabelInclude {
      *
      * Рендер метки
      * @param childrenExtra additional children/ дополнительные дочерние элементы
+     * @param props additional properties/ дополнительные свойства
      */
-    render(childrenExtra?: any[]): VNode[];
+    render(childrenExtra?: any[], props?: Record<string, any>): VNode[];
     /**
      * Get the class name for the label
      *

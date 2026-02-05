@@ -1,6 +1,6 @@
 var b = Object.defineProperty;
-var g = (i, s, t) => s in i ? b(i, s, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[s] = t;
-var a = (i, s, t) => g(i, typeof s != "symbol" ? s + "" : s, t);
+var g = (l, s, t) => s in l ? b(l, s, { enumerable: !0, configurable: !0, writable: !0, value: t }) : l[s] = t;
+var a = (l, s, t) => g(l, typeof s != "symbol" ? s + "" : s, t);
 import { computed as n } from "vue";
 import { getElementId as d, render as r, getRef as m, isFilled as h } from "@dxtmisha/functional";
 class x {
@@ -16,7 +16,7 @@ class x {
    * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
    * @param tag tag name/ имя тега
    */
-  constructor(s, t, e, l, o, u, p, c, f = "span") {
+  constructor(s, t, i, e, o, u, p, c, f = "span") {
     /** Label presence check/ Проверка наличия метки */
     a(this, "is", n(() => {
       var s;
@@ -26,35 +26,37 @@ class x {
     a(this, "id", n(
       () => this.props.labelId || d()
     ));
-    this.props = s, this.className = t, this.classesExtra = e, this.slots = l, this.elementsExtra = o, this.labelReplacing = u, this.alternativeSlots = p, this.skeleton = c, this.tag = f;
+    this.props = s, this.className = t, this.classesExtra = i, this.slots = e, this.elementsExtra = o, this.labelReplacing = u, this.alternativeSlots = p, this.skeleton = c, this.tag = f;
   }
   /**
    * Render the label
    *
    * Рендер метки
    * @param childrenExtra additional children/ дополнительные дочерние элементы
+   * @param props additional properties/ дополнительные свойства
    */
-  render(s) {
-    const t = [];
+  render(s, t = {}) {
+    const i = [];
     if (this.is.value) {
       const e = [
         ...this.initLabel(),
         ...this.initLabelReplacing(),
         ...this.initSlot()
       ];
-      this.elementsExtra && e.push(...this.elementsExtra()), s && e.push(...s), e.length > 0 && t.push(
+      this.elementsExtra && e.push(...this.elementsExtra()), s && e.push(...s), e.length > 0 && i.push(
         r(
           m(this.tag),
           {
             id: this.id.value,
-            class: this.getClassName()
+            class: this.getClassName(),
+            ...t
           },
           e,
           "label"
         )
       );
     }
-    return t;
+    return i;
   }
   /**
    * Get the class name for the label
@@ -96,13 +98,13 @@ class x {
    * Добавляет слот для метки, если он есть
    */
   initSlot() {
-    var s, t, e, l;
+    var s, t, i, e;
     if (this.slots) {
       if (this.alternativeSlots) {
         if ("label" in this.slots)
           return [(t = (s = this.slots).label) == null ? void 0 : t.call(s, {})];
       } else if ("default" in this.slots)
-        return [(l = (e = this.slots).default) == null ? void 0 : l.call(e, {})];
+        return [(e = (i = this.slots).default) == null ? void 0 : e.call(i, {})];
     }
     return [];
   }

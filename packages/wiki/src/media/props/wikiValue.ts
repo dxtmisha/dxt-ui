@@ -74,16 +74,6 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  formatting: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.value,
-      description: {
-        en: 'Whether to format values before displaying',
-        ru: 'Нужно ли форматировать значения перед отображением'
-      }
-    }
-  },
   fraction: {
     type: StorybookControl.string,
     options: {

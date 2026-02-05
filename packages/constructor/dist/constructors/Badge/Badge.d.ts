@@ -2,6 +2,7 @@ import { Ref, ToRefs, ComputedRef } from 'vue';
 import { ConstrEmit, DesignComp } from '@dxtmisha/functional';
 import { LabelNumberInclude } from '../../classes/LabelNumberInclude';
 import { IconInclude } from '../Icon';
+import { AriaList } from '../../types/ariaTypes';
 import { BadgeComponents, BadgeEmits, BadgeSlots } from './types';
 import { BadgeProps } from './props';
 /**
@@ -30,8 +31,10 @@ export declare class Badge {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param LabelNumberIncludeConstructor class for working with label/ класс для работы с меткой
+     * @param IconIncludeConstructor class for working with icon/ класс для работы с иконкой
      */
-    constructor(props: BadgeProps, refs: ToRefs<BadgeProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<BadgeComponents, BadgeProps> | undefined, slots?: BadgeSlots | undefined, emits?: ConstrEmit<BadgeEmits> | undefined);
+    constructor(props: BadgeProps, refs: ToRefs<BadgeProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<BadgeComponents, BadgeProps> | undefined, slots?: BadgeSlots | undefined, emits?: ConstrEmit<BadgeEmits> | undefined, LabelNumberIncludeConstructor?: typeof LabelNumberInclude, IconIncludeConstructor?: typeof IconInclude);
     /**
      * Computes if the badge should auto-hide when there is no dot, icon, or label.
      *
@@ -46,4 +49,5 @@ export declare class Badge {
     readonly classes: ComputedRef<{
         [x: string]: boolean;
     }>;
+    readonly aria: ComputedRef<AriaList>;
 }

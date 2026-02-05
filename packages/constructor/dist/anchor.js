@@ -3,7 +3,7 @@ var A = (s, e, t) => e in s ? b(s, e, { enumerable: !0, configurable: !0, writab
 var i = (s, e, t) => A(s, typeof e != "symbol" ? e + "" : e, t);
 import { computed as n, ref as I, onMounted as T, h as l } from "vue";
 import { goScrollSmooth as k, toNumber as w, writeClipboardData as x, DesignConstructorAbstract as D } from "@dxtmisha/functional";
-import { L as H } from "./LabelInclude-C9Dk-o4t.js";
+import { L as H } from "./LabelInclude-D-mLvjK5.js";
 import { T as S } from "./TextInclude-CodMN5BH.js";
 import { T as L } from "./TooltipInclude--QRSE83v.js";
 import { g as $ } from "./getClassTagAStatic-BnVYlXHI.js";

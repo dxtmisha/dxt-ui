@@ -134,5 +134,48 @@ export const wikiDescriptionsBadge: StorybookComponentsDescriptionItem = {
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
     `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item" style="min-width: 48px; min-height: 48px;">
+  <Badge overlap="static" v-bind="args"/>
+</div>
+    `,
+    description: `
+Badge is a small visual indicator used to display status, counts, or short labels (tags).
+It is typically positioned over the corner of another element (like an icon or avatar) or used inline.
+
+**Key Features:**
+1. **Content Handling:**
+   - **Numeric:** Displays numbers via \`label\`. Use \`labelMax\` to cap the value (e.g., "99+").
+   - **Text:** Displays short text strings.
+   - **Icon:** Can display an icon via the \`icon\` prop.
+   - **Dot:** If \`dot\` is true, renders as a small circle without text (status indicator).
+
+2. **Positioning (\`overlap\`):**
+   - \`static\`: Renders inline (default flow).
+   - \`rectangular\`: Positioned absolutely over a rectangular parent.
+   - \`circular\`: Positioned absolutely over a circular parent (adjusts coordinates).
+   - **Alignment:** Controlled by \`vertical\` (top/bottom) and \`horizontal\` (right/left).
+
+3. **Styling:**
+   - Supports variants: \`primary\`, \`secondary\`, \`outline\`.
+   - \`hide\`: Toggles visibility.
+   - \`dot\`: Switches to dot mode.
+
+**Usage Examples:**
+
+- **Notification Count:**
+  \`<div class="relative-container">
+     <Icon name="notifications" />
+     <Badge label="5" overlap="circular" vertical="top" horizontal="right" />
+   </div>\`
+
+- **Status Dot:**
+  \`<Badge dot primary />\`
+
+- **Inline Tag:**
+  \`<Badge label="New" overlap="static" />\`
+    `
   }
 }

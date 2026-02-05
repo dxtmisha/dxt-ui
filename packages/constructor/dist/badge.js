@@ -1,12 +1,12 @@
-var d = Object.defineProperty;
-var p = (e, t, s) => t in e ? d(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
-var r = (e, t, s) => p(e, typeof t != "symbol" ? t + "" : t, s);
-import { computed as h, h as g } from "vue";
-import { isFilled as c, DesignConstructorAbstract as b } from "@dxtmisha/functional";
-import { L as f } from "./LabelNumberInclude-Bpep-jxI.js";
-import { I as v } from "./IconInclude-CLqwI29Q.js";
+var b = Object.defineProperty;
+var g = (i, t, s) => t in i ? b(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
+var e = (i, t, s) => g(i, typeof t != "symbol" ? t + "" : t, s);
+import { computed as l, h as f } from "vue";
+import { isFilled as c, DesignConstructorAbstract as v } from "@dxtmisha/functional";
 import { A as u } from "./AriaStaticInclude-D1bSJaBp.js";
-class I {
+import { L as I } from "./LabelNumberInclude-Cn0qDEgX.js";
+import { I as A } from "./IconInclude-CLqwI29Q.js";
+class C {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -17,16 +17,18 @@ class I {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param LabelNumberIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param IconIncludeConstructor class for working with icon/ класс для работы с иконкой
    */
-  constructor(t, s, i, a, l, n, o, m) {
-    r(this, "label");
-    r(this, "icon");
+  constructor(t, s, r, n, a, o, h, m, d = I, p = A) {
+    e(this, "label");
+    e(this, "icon");
     /**
      * Computes if the badge should auto-hide when there is no dot, icon, or label.
      *
      * Вычисляет, должен ли бейдж автоматически скрываться, если нет точки, иконки и текста.
      */
-    r(this, "autoHide", h(
+    e(this, "autoHide", l(
       () => !this.props.dot && !c(this.icon.isIcon.value) && !c(this.label.is.value)
     ));
     /**
@@ -34,42 +36,46 @@ class I {
      *
      * Классы для управления видимостью бейджа.
      */
-    r(this, "classes", h(() => ({
+    e(this, "classes", l(() => ({
       [`${this.className}--hideAuto`]: this.autoHide.value
     })));
-    this.props = t, this.refs = s, this.element = i, this.classDesign = a, this.className = l, this.components = n, this.slots = o, this.emits = m, this.label = new f(
+    e(this, "aria", l(() => this.props.ariaLabel ? {
+      ...u.hidden()
+    } : {}));
+    this.props = t, this.refs = s, this.element = r, this.classDesign = n, this.className = a, this.components = o, this.slots = h, this.emits = m, this.label = new d(
       t,
-      l,
+      a,
       void 0,
-      o
-    ), this.icon = new v(
+      h
+    ), this.icon = new p(
       t,
-      l,
-      n
+      a,
+      o
     );
   }
 }
-const B = {
+const H = {
   // :default [!] System label / Системная метка
   overlap: "rectangular",
   vertical: "top",
   horizontal: "right"
 };
-class L extends b {
+class N extends v {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(s, i, a) {
+  constructor(s, r, n, a = C) {
     super(
       s,
-      i,
-      a
+      r,
+      n
     );
-    r(this, "item");
-    this.item = new I(
+    e(this, "item");
+    this.item = new a(
       this.props,
       this.refs,
       this.element,
@@ -115,22 +121,21 @@ class L extends b {
    * Метод для рендеринга.
    */
   initRender() {
-    var i;
+    var r;
     const s = [];
     return this.props.dot || s.push(
-      ...this.item.label.render(),
+      ...this.item.label.render(void 0, this.item.aria.value),
       ...this.item.icon.renderIcon()
-    ), g("span", {
+    ), f("span", {
       ...this.getAttrs(),
       ref: this.element,
-      class: (i = this.classes) == null ? void 0 : i.value.main,
-      ...u.role("status"),
+      class: (r = this.classes) == null ? void 0 : r.value.main,
       ...u.label(this.props.ariaLabel)
     }, s);
   }
 }
 export {
-  I as Badge,
-  L as BadgeDesign,
-  B as defaultsBadge
+  C as Badge,
+  N as BadgeDesign,
+  H as defaultsBadge
 };

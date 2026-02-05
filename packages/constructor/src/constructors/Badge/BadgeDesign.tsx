@@ -43,11 +43,13 @@ export class BadgeDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, BadgeEmits, P>
+    options?: ConstrOptions<COMP, BadgeEmits, P>,
+    ItemConstructor: typeof Badge = Badge
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class BadgeDesign<
       options
     )
 
-    this.item = new Badge(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -114,7 +116,7 @@ export class BadgeDesign<
 
     if (!this.props.dot) {
       children.push(
-        ...this.item.label.render(),
+        ...this.item.label.render(undefined, this.item.aria.value),
         ...this.item.icon.renderIcon()
       )
     }
@@ -123,7 +125,6 @@ export class BadgeDesign<
       ...this.getAttrs(),
       ref: this.element,
       class: this.classes?.value.main,
-      ...AriaStaticInclude.role('status'),
       ...AriaStaticInclude.label(this.props.ariaLabel)
     }, children)
   }

@@ -106,17 +106,6 @@ export const wikiInformation: StorybookArgsToList = {
       value: 'Label'
     }
   },
-  labelMax: {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.information,
-      type: 'number',
-      description: {
-        en: 'Maximum length of the label text before truncation',
-        ru: 'Максимальная длина текста метки перед обрезкой'
-      }
-    }
-  },
   placeholder: {
     type: StorybookControl.string,
     options: {

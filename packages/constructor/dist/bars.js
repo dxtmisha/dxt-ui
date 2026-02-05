@@ -4,7 +4,7 @@ var s = (a, i, t) => S(a, typeof i != "symbol" ? i + "" : i, t);
 import { watch as A, ref as D, computed as o, reactive as d, h as p } from "vue";
 import { toBind as u, getBind as T, forEach as E, DesignConstructorAbstract as M } from "@dxtmisha/functional";
 import { A as m } from "./AriaStaticInclude-D1bSJaBp.js";
-import { L as $ } from "./LabelInclude-C9Dk-o4t.js";
+import { L as $ } from "./LabelInclude-D-mLvjK5.js";
 import { D as y } from "./DescriptionInclude-D4ane9aR.js";
 import { E as H } from "./EventClickInclude-CgbuezDm.js";
 import { M as P } from "./ModelInclude-BiYm_iCQ.js";

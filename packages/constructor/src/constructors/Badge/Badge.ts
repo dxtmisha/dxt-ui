@@ -1,9 +1,11 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, isFilled } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { LabelNumberInclude } from '../../classes/LabelNumberInclude'
 import { IconInclude } from '../Icon'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { BadgeComponents, BadgeEmits, BadgeSlots } from './types'
 import type { BadgeProps } from './props'
 
@@ -26,6 +28,8 @@ export class Badge {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param LabelNumberIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param IconIncludeConstructor class for working with icon/ класс для работы с иконкой
    */
   constructor(
     protected readonly props: BadgeProps,
@@ -35,16 +39,18 @@ export class Badge {
     protected readonly className: string,
     protected readonly components?: DesignComp<BadgeComponents, BadgeProps>,
     protected readonly slots?: BadgeSlots,
-    protected readonly emits?: ConstrEmit<BadgeEmits>
+    protected readonly emits?: ConstrEmit<BadgeEmits>,
+    LabelNumberIncludeConstructor: typeof LabelNumberInclude = LabelNumberInclude,
+    IconIncludeConstructor: typeof IconInclude = IconInclude
   ) {
-    this.label = new LabelNumberInclude(
+    this.label = new LabelNumberIncludeConstructor(
       props,
       className,
       undefined,
       slots
     )
 
-    this.icon = new IconInclude(
+    this.icon = new IconIncludeConstructor(
       props,
       className,
       components
@@ -70,4 +76,14 @@ export class Badge {
   readonly classes = computed(() => ({
     [`${this.className}--hideAuto`]: this.autoHide.value
   }))
+
+  readonly aria = computed<AriaList>(() => {
+    if (this.props.ariaLabel) {
+      return {
+        ...AriaStaticInclude.hidden()
+      }
+    }
+
+    return {}
+  })
 }

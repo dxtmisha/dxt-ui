@@ -206,7 +206,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Displays the component as a dot indicator',
         ru: 'Отображает компонент как точечный индикатор'
       }
-    }
+    },
+    isDemo: true
   },
   fieldAttrs: {
     type: StorybookControl.object,
@@ -291,18 +292,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  horizontal: {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.style,
-      type: 'string',
-      options: [],
-      description: {
-        en: 'Sets horizontal alignment of elements',
-        ru: 'Задает горизонтальное выравнивание элементов'
-      }
-    }
-  },
   imagePosition: {
     type: StorybookControl.select,
     options: {
@@ -380,18 +369,6 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Additional attributes for the MotionTransform component',
         ru: 'Дополнительные атрибуты для компонента MotionTransform'
-      }
-    }
-  },
-  overlap: {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.style,
-      type: 'string',
-      options: [],
-      description: {
-        en: 'Defines element positioning relative to other elements',
-        ru: 'Определяет расположение элемента относительно других элементов'
       }
     }
   },
@@ -533,18 +510,6 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Additional attributes for the Tooltip component',
         ru: 'Дополнительные атрибуты для компонента Tooltip'
-      }
-    }
-  },
-  vertical: {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.style,
-      type: 'string',
-      options: [],
-      description: {
-        en: 'Sets vertical alignment of elements',
-        ru: 'Задает вертикальное выравнивание элементов'
       }
     }
   },

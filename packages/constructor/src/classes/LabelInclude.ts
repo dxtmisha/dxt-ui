@@ -66,9 +66,11 @@ export class LabelInclude {
    *
    * Рендер метки
    * @param childrenExtra additional children/ дополнительные дочерние элементы
+   * @param props additional properties/ дополнительные свойства
    */
   render(
-    childrenExtra?: any[]
+    childrenExtra?: any[],
+    props: Record<string, any> = {}
   ): VNode[] {
     const elements: any[] = []
 
@@ -93,7 +95,8 @@ export class LabelInclude {
             getRef(this.tag),
             {
               id: this.id.value,
-              class: this.getClassName()
+              class: this.getClassName(),
+              ...props
             },
             children,
             'label'

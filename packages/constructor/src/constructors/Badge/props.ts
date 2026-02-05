@@ -17,7 +17,8 @@ export type BadgePropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic
 > = IconPropsInclude<Icon>
   & LabelNumberProps
-  & AriaLabelPropsInclude & {
+  & AriaLabelPropsInclude
+  & {
     dot?: boolean
   }
 

@@ -4,7 +4,7 @@ var e = (r, i, t) => I(r, typeof i != "symbol" ? i + "" : i, t);
 import { computed as d, h } from "vue";
 import { DesignConstructorAbstract as k } from "@dxtmisha/functional";
 import { g as w } from "./getClassTagAStatic-BnVYlXHI.js";
-import { L as T } from "./LabelInclude-C9Dk-o4t.js";
+import { L as T } from "./LabelInclude-D-mLvjK5.js";
 import { C as _ } from "./CaptionInclude-AFVF4qyd.js";
 import { D } from "./DescriptionInclude-D4ane9aR.js";
 import { E as A } from "./EnabledInclude-JzHG2GuX.js";

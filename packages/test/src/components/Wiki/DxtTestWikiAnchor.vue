@@ -16,8 +16,6 @@ const anchorList = computed(() => {
     item => item.name.replace(/AiWiki$/, '')
   ).sort()
 })
-
-console.log('props', props.list)
 </script>
 
 <template>
