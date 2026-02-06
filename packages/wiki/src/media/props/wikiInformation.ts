@@ -53,7 +53,7 @@ export const wikiInformation: StorybookArgsToList = {
     options: {
       category: StorybookCategory.information,
       description: {
-        en: 'Forces display of helper / validation message ignoring usual visibility rules',
+        en: 'Forces display of a helper / validation message ignoring usual visibility rules',
         ru: 'Принудительно показывает сообщение (helper / validation), игнорируя обычные условия видимости'
       }
     }
@@ -126,7 +126,9 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Prefix text displayed before the main content',
         ru: 'Текст префикса, отображаемый перед основным содержимым'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'Prefix text'
   },
   suffix: {
     type: StorybookControl.string,
@@ -137,7 +139,9 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Suffix text displayed after the main content',
         ru: 'Текст суффикса, отображаемый после основного содержимого'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'Suffix text'
   },
   validationMessage: {
     type: StorybookControl.string,

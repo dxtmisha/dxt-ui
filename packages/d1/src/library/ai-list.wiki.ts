@@ -11,9 +11,14 @@ import D1Bars from '../../src/components/Ui/Bars/D1BarsAiWiki.vue'
 import D1Block from '../../src/components/Ui/Block/D1BlockAiWiki.vue'
 import D1Button from '../../src/components/Ui/Button/D1ButtonAiWiki.vue'
 import D1Cell from '../../src/components/Ui/Cell/D1CellAiWiki.vue'
+import D1Chip from '../../src/components/Ui/Chip/D1ChipAiWiki.vue'
+import D1ChipGroup from '../../src/components/Ui/ChipGroup/D1ChipGroupAiWiki.vue'
 import D1Dialog from '../../src/components/Ui/Dialog/D1DialogAiWiki.vue'
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
+import D1ListGroup from '../../src/components/Ui/ListGroup/D1ListGroupAiWiki.vue'
+import D1ListItem from '../../src/components/Ui/ListItem/D1ListItemAiWiki.vue'
+import D1ListMenu from '../../src/components/Ui/ListMenu/D1ListMenuAiWiki.vue'
 import D1Modal from '../../src/components/Ui/Modal/D1ModalAiWiki.vue'
 import D1MotionTransform from '../../src/components/Ui/MotionTransform/D1MotionTransformAiWiki.vue'
 import D1Page from '../../src/components/Ui/Page/D1PageAiWiki.vue'
@@ -34,9 +39,14 @@ export const aiList: any[] = [
   D1Block,
   D1Button,
   D1Cell,
+  D1Chip,
+  D1ChipGroup,
   D1Dialog,
   D1Icon,
   D1Image,
+  D1ListGroup,
+  D1ListItem,
+  D1ListMenu,
   D1Modal,
   D1MotionTransform,
   D1Page,

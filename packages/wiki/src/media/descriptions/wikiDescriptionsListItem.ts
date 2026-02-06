@@ -144,5 +144,47 @@ export const wikiDescriptionsListItem: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
 <StorybookDescriptions componentName={'ListItem'} type={'slots'}/>
     `
+  },
+  ai: {
+    description: `
+ListItem is a versatile structural component used to render items within lists, menus, or navigation bars.
+It provides a standardized layout with slots for leading (prefix) and trailing (suffix) elements, along with a central content area.
+
+**Key Features:**
+1. **Layout Structure:**
+   - **Prefix:** Left-most area (e.g., for avatars, checkboxes, or icons).
+   - **Content:** Central area containing:
+     - \`label\`: Main title.
+     - \`caption\`: Meta text (above or next to label).
+     - \`description\`: Subtitle text (below label).
+   - **Suffix:** Right-side meta content (e.g., timestamp, status).
+   - **Trailing:** Far-right action area (e.g., arrow icon, badge).
+
+2. **Interaction:**
+   - **Navigation:** Renders as an \`<a>\` tag if \`href\` is provided.
+   - **Selection:** Supports \`selected\` state (useful for menus).
+   - **Feedback:** Includes ripple effect and hover/active states.
+   - **Disabled:** \`disabled\` prop prevents interaction.
+
+3. **Styling:**
+   - \`divider\` adds a bottom border.
+   - Supports \`badge\` integration via props.
+
+**Usage Examples:**
+
+- **Navigation Link:**
+  \`<ListItem href="/home" label="Home" icon="chevron_right">
+     <template #prefix>prefix</template>
+   </ListItem>\`
+
+- **User List Item:**
+  \`<ListItem label="John Doe" description="Online" divider>
+     <template #prefix><Avatar src="..."/></template>
+     <template #suffix>12:30 PM</template>
+   </ListItem>\`
+
+- **Menu Item:**
+  \`<ListItem label="Settings" icon="settings" selected />\`
+    `
   }
 }

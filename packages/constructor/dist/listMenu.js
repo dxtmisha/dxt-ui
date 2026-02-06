@@ -17,10 +17,10 @@ class g {
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
-  constructor(t, s, e, o, h, r, p, a) {
+  constructor(t, s, e, o, r, h, p, a) {
     n(this, "open");
     n(this, "window");
-    this.props = t, this.refs = s, this.element = e, this.classDesign = o, this.className = h, this.components = r, this.slots = p, this.emits = a, this.open = new d(this.props), this.window = new w(
+    this.props = t, this.refs = s, this.element = e, this.classDesign = o, this.className = r, this.components = h, this.slots = p, this.emits = a, this.open = new d(this.props), this.window = new w(
       this.props,
       this.className,
       this.components,
@@ -29,7 +29,8 @@ class g {
         adaptive: "menu",
         axis: this.props.axis,
         onWindow: this.open.onOpen,
-        role: "menu"
+        role: "menu",
+        ariaHaspopup: "menu"
       }))
     );
   }

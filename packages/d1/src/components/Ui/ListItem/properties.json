@@ -74,6 +74,9 @@
       "color-opacity": "{sys.opacity.surface.disabled}"
     }
   },
+  "&:has(.??__loading) > *:not(.??__loading)": {
+    "opacity": "{sys.opacity.surface.medium}"
+  },
   "~size": {
     "sm": {
       "height": "{ref.spacing.8}"

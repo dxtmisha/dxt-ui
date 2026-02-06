@@ -53,6 +53,17 @@ export const wikiTechnical: StorybookArgsToList = {
       }
     }
   },
+  index: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'number',
+      description: {
+        en: 'Index value for the component',
+        ru: 'Значение индекса для компонента'
+      }
+    }
+  },
   labelId: {
     type: StorybookControl.string,
     options: {

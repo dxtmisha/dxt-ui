@@ -1,5 +1,5 @@
-import { isString as s } from "@dxtmisha/functional";
-class n {
+import { isString as e } from "@dxtmisha/functional";
+class c {
   /**
    * Get role by props.
    *
@@ -49,7 +49,7 @@ class n {
    * @param value ARIA current attribute/ Атрибут ARIA current
    */
   static current(a) {
-    const t = s(a) ? a : this.isTrueOrFalse(a);
+    const t = e(a) ? a : this.isTrueOrFalse(a);
     return this.isDataToData("aria-current", t);
   }
   /**
@@ -194,6 +194,17 @@ class n {
     };
   }
   /**
+   * Get ARIA selected attribute.
+   *
+   * Получить атрибут ARIA selected.
+   * @param isSelected is selected/ является выбранным
+   */
+  static selected(a) {
+    return {
+      "aria-selected": this.isTrueOrFalse(a)
+    };
+  }
+  /**
    * Returns ARIA value now, min and max.
    *
    * Возвращает ARIA value now, min и max.
@@ -231,5 +242,5 @@ class n {
   }
 }
 export {
-  n as A
+  c as A
 };

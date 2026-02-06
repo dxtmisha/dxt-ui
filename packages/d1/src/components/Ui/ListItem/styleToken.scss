@@ -168,6 +168,10 @@
       border-radius: 0;
     }
     
+    &:has(.d1-listItem__loading) > *:not(.d1-listItem__loading) {
+      opacity: var(--d1-sys-opacity-surface-medium);
+    }
+    
     @media screen and (min-width: 768px) {
       --d1-listItem-paddingY: var(--d1-sys-spacing-x);
     }

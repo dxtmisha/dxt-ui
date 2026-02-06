@@ -1,11 +1,11 @@
-var d = Object.defineProperty;
-var c = (i, e, t) => e in i ? d(i, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[e] = t;
-var r = (i, e, t) => c(i, typeof e != "symbol" ? e + "" : e, t);
-import { h as m } from "vue";
-import { ListDataRef as u, DesignConstructorAbstract as p, forEach as f, toBinds as v } from "@dxtmisha/functional";
-import { E as g } from "./EventClickInclude-CgbuezDm.js";
-import { M as C } from "./ModelValueInclude-CJmm5go9.js";
-class D {
+var u = Object.defineProperty;
+var p = (i, e, t) => e in i ? u(i, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[e] = t;
+var r = (i, e, t) => p(i, typeof e != "symbol" ? e + "" : e, t);
+import { h as f } from "vue";
+import { ListDataRef as v, DesignConstructorAbstract as g, forEach as C, toBinds as D } from "@dxtmisha/functional";
+import { E as L } from "./EventClickInclude-CgbuezDm.js";
+import { M as k } from "./ModelValueInclude-CJmm5go9.js";
+class y {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -16,18 +16,21 @@ class D {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param ModelValueIncludeConstructor class for working with model value/ класс для работы со значением модели
+   * @param ListDataRefConstructor class for working with list data/ класс для работы с данными списка
    */
-  constructor(e, t, s, n, o, h, l, a) {
+  constructor(e, t, s, n, o, h, l, a, d = L, c = k, m = v) {
     r(this, "data");
     r(this, "event");
     r(this, "model");
-    this.props = e, this.refs = t, this.element = s, this.classDesign = n, this.className = o, this.components = h, this.slots = l, this.emits = a, this.event = new g(void 0, void 0, this.emits), this.model = new C(
+    this.props = e, this.refs = t, this.element = s, this.classDesign = n, this.className = o, this.components = h, this.slots = l, this.emits = a, this.event = new d(void 0, void 0, this.emits), this.model = new c(
       "selected",
       this.emits,
       this.event,
       this.refs.selected,
       this.refs.readonly
-    ), this.data = new u(
+    ), this.data = new m(
       this.refs.list,
       void 0,
       void 0,
@@ -47,17 +50,18 @@ class D {
     return this.data.fullData.value;
   }
 }
-const E = {
+const b = {
   readonly: !0
 };
-class I extends p {
+class A extends g {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, s, n) {
+  constructor(t, s, n, o = y) {
     super(
       t,
       s,
@@ -69,7 +73,7 @@ class I extends p {
      *
      * Рендеринг списка.
      */
-    r(this, "renderList", () => f(
+    r(this, "renderList", () => C(
       this.item.getList(),
       (t) => this.renderItem(t)
     ));
@@ -83,7 +87,7 @@ class I extends p {
       var s;
       return this.components.renderOne(
         "chip",
-        v(
+        D(
           {
             class: (s = this.classes) == null ? void 0 : s.value.item,
             iconHide: this.props.iconWhenSelected && !t.selected,
@@ -96,7 +100,7 @@ class I extends p {
         t.index
       );
     });
-    this.item = new D(
+    this.item = new o(
       this.props,
       this.refs,
       this.element,
@@ -143,7 +147,7 @@ class I extends p {
   initRender() {
     var s;
     const t = this.renderList();
-    return this.initSlot("default", t), m(
+    return this.initSlot("default", t), f(
       "div",
       {
         ...this.getAttrs(),
@@ -154,7 +158,7 @@ class I extends p {
   }
 }
 export {
-  D as ChipGroup,
-  I as ChipGroupDesign,
-  E as defaultsChipGroup
+  y as ChipGroup,
+  A as ChipGroupDesign,
+  b as defaultsChipGroup
 };

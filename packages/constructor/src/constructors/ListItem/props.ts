@@ -42,13 +42,14 @@ export type ListItemPropsBasic<
   & SkeletonPropsInclude
   & EnabledProps
   & EventClickProps
-  & AriaRolePropsInclude & {
-  // Value
+  & AriaRolePropsInclude
+  & {
+    // Value
     index?: any
     href?: string
 
     // Style
-    tag?: 'button' | 'a' | 'span' | 'div' | string
+    tag?: 'button' | 'a' | 'span' | 'li' | 'div' | string
     filterMode?: boolean
     divider?: boolean
 

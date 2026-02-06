@@ -98,7 +98,7 @@ export declare class List {
         role?: RoleType;
         index?: any;
         href?: string;
-        tag: "button" | "a" | "span" | "div" | string;
+        tag: "button" | "a" | "span" | "li" | "div" | string;
         filterMode?: boolean;
         divider: boolean;
         tabindex?: number | string;

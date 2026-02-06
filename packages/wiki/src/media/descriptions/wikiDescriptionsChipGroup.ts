@@ -8,25 +8,23 @@ import type { StorybookComponentsDescriptionItem } from '../../types/storybookTy
 export const wikiDescriptionsChipGroup: StorybookComponentsDescriptionItem = {
   name: 'ChipGroup',
   description: {
-    en: 'Container for managing a collection of chips with selection functionality',
-    ru: 'Контейнер для управления коллекцией чипов с функциональностью выбора'
+    en: 'Component for managing a group of interactive chips with support for selection and data binding',
+    ru: 'Компонент для управления группой интерактивных чипов с поддержкой выбора и привязки данных'
   },
   possibilities: {
     en: [
-      'single or multiple chip selection',
-      'dynamic list rendering from data',
-      'customizable chip appearance through chipAttrs',
-      'conditional icon display based on selection state',
-      'flexible data binding with keyLabel and keyValue',
-      'event handling for user interactions'
+      'rendering a list of chips from a data array',
+      'managing selection state (single or multiple)',
+      'customizing the appearance of all chips in the group via chipAttrs',
+      'handling click events and value updates',
+      'controlling icon visibility based on selection'
     ],
     ru: [
-      'одиночный или множественный выбор чипов',
-      'динамический рендеринг списка из данных',
-      'настраиваемый внешний вид чипов через chipAttrs',
-      'условное отображение иконок в зависимости от состояния выбора',
-      'гибкое связывание данных через keyLabel и keyValue',
-      'обработка событий для взаимодействия пользователя'
+      'рендеринг списка чипов из массива данных',
+      'управление состоянием выбора (одиночный или множественный)',
+      'настройка внешнего вида всех чипов в группе через chipAttrs',
+      'обработка событий клика и обновлений значений',
+      'управление видимостью иконки в зависимости от выбора'
     ]
   },
   import: [
@@ -163,6 +161,39 @@ export const wikiDescriptionsChipGroup: StorybookComponentsDescriptionItem = {
     `,
     slots: `
     <StorybookDescriptions componentName={'Slot'} type={'default'}/>
+    `
+  },
+  ai: {
+    description: `
+ChipGroup is a wrapper component that manages a collection of Chip elements based on a data list.
+It streamlines the creation of filter sets, choice groups, and tag lists by handling data iteration and selection logic.
+
+**Key Features:**
+1. **Data Binding:**
+   - \`list\`: Array of objects defining the chips (e.g., \`[{ label: 'A', value: 'a' }]\`).
+   - \`v-model:selected\`: Tracks the selected value(s).
+
+2. **Selection Modes:**
+   - Supports single and multiple selection (depending on configuration, typically inferred from the initial value type or explicit props).
+
+3. **Styling & Customization:**
+   - \`chipAttrs\`: Object containing props to be passed to every child Chip (e.g., \`{ outline: true, icon: 'check' }\`).
+   - \`iconWhenSelected\`: If true, displays the icon only when the chip is selected.
+
+**Usage Examples:**
+
+- **Basic Selection:**
+  \`<ChipGroup
+      :list="items"
+      v-model:selected="selectedItem"
+   />\`
+
+- **Filter Group (Multiple):**
+  \`<ChipGroup
+      :list="filters"
+      v-model:selected="activeFilters"
+      :chip-attrs="{ outline: true }"
+   />\`
     `
   }
 }

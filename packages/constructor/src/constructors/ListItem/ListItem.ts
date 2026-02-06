@@ -51,6 +51,18 @@ export class ListItem {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param LabelHighlightIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
+   * @param CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
+   * @param SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
+   * @param DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
+   * @param BadgeIncludeConstructor class for working with badge/ класс для работы с бейджем
+   * @param RippleIncludeConstructor class for working with ripple/ класс для работы с ripple
+   * @param ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
+   * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+   * @param EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
+   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
    */
   constructor(
     protected readonly props: ListItemProps,
@@ -60,26 +72,37 @@ export class ListItem {
     protected readonly className: string,
     protected readonly components?: DesignComp<ListItemComponents, ListItemProps>,
     protected readonly slots?: ListItemSlots,
-    protected readonly emits?: ConstrEmit<ListItemEmits>
+    protected readonly emits?: ConstrEmit<ListItemEmits>,
+    IconTrailingIncludeConstructor: typeof IconTrailingInclude = IconTrailingInclude,
+    LabelHighlightIncludeConstructor: typeof LabelHighlightInclude = LabelHighlightInclude,
+    PrefixIncludeConstructor: typeof PrefixInclude = PrefixInclude,
+    CaptionIncludeConstructor: typeof CaptionInclude = CaptionInclude,
+    SuffixIncludeConstructor: typeof SuffixInclude = SuffixInclude,
+    DescriptionIncludeConstructor: typeof DescriptionInclude = DescriptionInclude,
+    BadgeIncludeConstructor: typeof BadgeInclude = BadgeInclude,
+    RippleIncludeConstructor: typeof RippleInclude = RippleInclude,
+    ProgressIncludeConstructor: typeof ProgressInclude = ProgressInclude,
+    SkeletonIncludeConstructor: typeof SkeletonInclude = SkeletonInclude,
+    EnabledIncludeConstructor: typeof EnabledInclude = EnabledInclude,
+    EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude
   ) {
-    const progress = new ProgressInclude(
+    const progress = new ProgressIncludeConstructor(
       props,
       className,
       components,
       {
-        circular: true,
-        inverse: true
+        circular: true
       }
     )
-    const skeleton = new SkeletonInclude(
+    const skeleton = new SkeletonIncludeConstructor(
       props,
       classDesign,
       ['classTextVariant']
     )
-    const enabled = new EnabledInclude(props, progress)
+    const enabled = new EnabledIncludeConstructor(props, progress)
 
-    this.icon = new IconTrailingInclude(props, className, components)
-    this.label = new LabelHighlightInclude(
+    this.icon = new IconTrailingIncludeConstructor(props, className, components)
+    this.label = new LabelHighlightIncludeConstructor(
       props,
       className,
       undefined,
@@ -87,11 +110,11 @@ export class ListItem {
       undefined,
       skeleton
     )
-    this.prefix = new PrefixInclude(props, className, slots, skeleton)
-    this.caption = new CaptionInclude(props, className, slots)
-    this.suffix = new SuffixInclude(props, className, slots)
-    this.description = new DescriptionInclude(props, className, slots, skeleton)
-    this.badge = new BadgeInclude(
+    this.prefix = new PrefixIncludeConstructor(props, className, slots, skeleton)
+    this.caption = new CaptionIncludeConstructor(props, className, slots)
+    this.suffix = new SuffixIncludeConstructor(props, className, slots)
+    this.description = new DescriptionIncludeConstructor(props, className, slots, skeleton)
+    this.badge = new BadgeIncludeConstructor(
       props,
       className,
       components,
@@ -100,12 +123,12 @@ export class ListItem {
       }
     )
 
-    this.ripple = new RippleInclude(className, components, enabled)
+    this.ripple = new RippleIncludeConstructor(className, components, enabled)
     this.progress = progress
     this.skeleton = skeleton
 
     this.enabled = enabled
-    this.event = new EventClickInclude(props, enabled, emits)
+    this.event = new EventClickIncludeConstructor(props, enabled, emits)
   }
 
   /** tag type/ тип тега */
@@ -129,47 +152,37 @@ export class ListItem {
 
   /** values for attributes/ значения для атрибутов */
   readonly binds = computed(() => {
-    const data = {
+    return {
       'data-value': this.props.index ?? this.props.value,
       'data-divider': this.props.divider ? 'active' : undefined,
       'data-parent': this.props.parent,
       'data-list-id': this.props.listId,
-      'tabindex': this.props.tabindex,
-      'role': this.props.role,
-      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
       'onClick': this.event.onClick
     }
-
-    if (this.props.isMenu) {
-      Object.assign(
-        data,
-        AriaStaticInclude.haspopup('menu')
-      )
-    }
-
-    return data
   })
 
-  /** values for attributes with open state/ значения для атрибутов с состоянием open */
-  readonly bindsAndOpen = computed(() => {
-    const data = {
-      ...this.binds.value
+  /** values for aria attributes/ значения для атрибутов aria */
+  readonly aria = computed(() => {
+    const aria = {
+      tabindex: this.props.tabindex,
+      ...AriaStaticInclude.role(this.props.role),
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled))
     }
 
-    if (this.props.isMenu) {
-      Object.assign(
-        data,
-        AriaStaticInclude.expanded(Boolean(this.props.open))
-      )
+    switch (this.props.role) {
+      case 'menuitemradio':
+      case 'menuitemcheckbox':
+        return {
+          ...aria,
+          ...AriaStaticInclude.checked(Boolean(this.props.selected))
+        }
+      case 'menuitem':
+        return {
+          ...aria,
+          ...AriaStaticInclude.selected(Boolean(this.props.selected))
+        }
     }
 
-    if (this.props.isItemMenu) {
-      Object.assign(
-        data,
-        AriaStaticInclude.checked(Boolean(this.props.selected))
-      )
-    }
-
-    return data
+    return aria
   })
 }

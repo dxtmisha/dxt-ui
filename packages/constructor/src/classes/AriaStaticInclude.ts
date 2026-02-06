@@ -243,6 +243,18 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA selected attribute.
+   *
+   * Получить атрибут ARIA selected.
+   * @param isSelected is selected/ является выбранным
+   */
+  static selected(isSelected?: boolean): AriaList {
+    return {
+      'aria-selected': this.isTrueOrFalse(isSelected)
+    }
+  }
+
+  /**
    * Returns ARIA value now, min and max.
    *
    * Возвращает ARIA value now, min и max.

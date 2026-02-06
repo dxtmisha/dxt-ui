@@ -19,7 +19,9 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Badge text or value to display',
         ru: 'Текст или значение значка для отображения'
       }
-    }
+    },
+    isDemo: true,
+    demo: '123'
   },
   badgeDot: {
     type: StorybookControl.boolean,
@@ -29,7 +31,8 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Display badge as a dot indicator',
         ru: 'Отображать значок как точечный индикатор'
       }
-    }
+    },
+    isDemo: true
   },
   currency: {
     type: StorybookControl.string,
@@ -49,17 +52,6 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Hide the currency symbol in the formatted value',
         ru: 'Скрывать символ валюты в форматированном значении'
-      }
-    }
-  },
-  language: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Language/locale code (BCP 47) used for formatting values (e.g., en-US, ru-RU)',
-        ru: 'Код языка/локали (BCP 47) для форматирования значений (например, ru-RU, en-US)'
       }
     }
   },
@@ -94,6 +86,19 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Text to highlight within the component content',
         ru: 'Текст для выделения в содержимом компонента'
       }
+    },
+    isDemo: true,
+    demo: 'abe'
+  },
+  highlightLengthStart: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      type: 'number',
+      description: {
+        en: 'Minimum length of highlight value to start highlighting',
+        ru: 'Минимальная длина значения highlight для начала выделения'
+      }
     }
   },
   href: {
@@ -107,47 +112,14 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  highlightLengthStart: {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.value,
-      type: 'number',
-      description: {
-        en: 'Minimum length of highlight value to start highlighting',
-        ru: 'Минимальная длина значения highlight для начала выделения'
-      }
-    }
-  },
-  keyLabel: {
+  language: {
     type: StorybookControl.string,
     options: {
       category: StorybookCategory.value,
       type: 'string',
       description: {
-        en: 'Object key to use as label text',
-        ru: 'Ключ объекта для использования в качестве текста метки'
-      }
-    }
-  },
-  keyValue: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Object key to use as value text',
-        ru: 'Ключ объекта для использования в качестве текста значения'
-      }
-    }
-  },
-  index: {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.value,
-      type: 'number',
-      description: {
-        en: 'Index value for the component',
-        ru: 'Значение индекса для компонента'
+        en: 'Language/locale code (BCP 47) used for formatting values (e.g., en-US, ru-RU)',
+        ru: 'Код языка/локали (BCP 47) для форматирования значений (например, ru-RU, en-US)'
       }
     }
   },
@@ -173,17 +145,6 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
-  valueDefault: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: ['string', 'number'],
-      description: {
-        en: 'Default value for the input field',
-        ru: 'Значение по умолчанию для поля ввода'
-      }
-    }
-  },
   value: {
     type: StorybookControl.string,
     options: {
@@ -192,6 +153,17 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Current value',
         ru: 'Текущее значение'
+      }
+    }
+  },
+  valueDefault: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: ['string', 'number'],
+      description: {
+        en: 'Default value for the input field',
+        ru: 'Значение по умолчанию для поля ввода'
       }
     }
   }

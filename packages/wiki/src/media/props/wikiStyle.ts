@@ -168,12 +168,12 @@ export const wikiStyle: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.style,
-
       description: {
         en: 'Enables compact display variant',
         ru: 'Включает компактный вариант отображения'
       }
-    }
+    },
+    isDemo: true
   },
   divider: {
     type: StorybookControl.boolean,
@@ -248,17 +248,9 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Sets fill color for the component',
         ru: 'Задает цвет заливки компонента'
       }
-    }
-  },
-  filterMode: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Enables filter mode for search (hides non-matching items)',
-        ru: 'Включает режим фильтрации для поиска (скрывает несовпадающие элементы)'
-      }
-    }
+    },
+    isDemo: true,
+    demo: 'oklch(53.2% 0.157 131.589)'
   },
   flexible: {
     type: StorybookControl.select,
@@ -455,7 +447,8 @@ export const wikiStyle: StorybookArgsToList = {
         en: 'Makes the component fully rounded (circular)',
         ru: 'Делает компонент полностью скругленным (круглым)'
       }
-    }
+    },
+    isDemo: true
   },
   scrollbarAttrs: {
     type: StorybookControl.object,

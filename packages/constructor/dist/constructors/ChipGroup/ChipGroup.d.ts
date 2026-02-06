@@ -29,8 +29,11 @@ export declare class ChipGroup {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+     * @param ModelValueIncludeConstructor class for working with model value/ класс для работы со значением модели
+     * @param ListDataRefConstructor class for working with list data/ класс для работы с данными списка
      */
-    constructor(props: ChipGroupProps, refs: ToRefs<ChipGroupProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ChipGroupComponents, ChipGroupProps> | undefined, slots?: ChipGroupSlots | undefined, emits?: ConstrEmit<ChipGroupEmits> | undefined);
+    constructor(props: ChipGroupProps, refs: ToRefs<ChipGroupProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ChipGroupComponents, ChipGroupProps> | undefined, slots?: ChipGroupSlots | undefined, emits?: ConstrEmit<ChipGroupEmits> | undefined, EventClickIncludeConstructor?: typeof EventClickInclude, ModelValueIncludeConstructor?: typeof ModelValueInclude, ListDataRefConstructor?: typeof ListDataRef);
     /**
      * Get list of items.
      *

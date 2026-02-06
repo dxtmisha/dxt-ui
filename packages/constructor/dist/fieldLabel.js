@@ -6,8 +6,8 @@ import { DesignConstructorAbstract as f } from "@dxtmisha/functional";
 import { L as g } from "./LabelInclude-D-mLvjK5.js";
 import { F as b } from "./FieldCounterInclude-D0oojGWY.js";
 import { S as v } from "./SkeletonInclude-BIUzAO2s.js";
-import { P as C } from "./ProgressInclude-CPQetoyp.js";
-import { A as F } from "./AriaStaticInclude-D1bSJaBp.js";
+import { P as C } from "./ProgressInclude-NyOp5bMZ.js";
+import { A as F } from "./AriaStaticInclude-BVCgDZbU.js";
 import { F as E } from "./FieldLabelInclude-BSISy_cb.js";
 class q {
   /**

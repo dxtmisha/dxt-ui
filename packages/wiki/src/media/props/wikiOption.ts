@@ -65,6 +65,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  filterMode: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables filter mode for search (hides non-matching items)',
+        ru: 'Включает режим фильтрации для поиска (скрывает несовпадающие элементы)'
+      }
+    }
+  },
   formatting: {
     type: StorybookControl.boolean,
     options: {
@@ -133,6 +143,28 @@ export const wikiOption: StorybookArgsToList = {
       description: {
         en: 'Displays the component in skeleton mode',
         ru: 'Отображает компонент в режиме скелетона'
+      }
+    }
+  },
+  keyLabel: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      description: {
+        en: 'Object key to use as label text',
+        ru: 'Ключ объекта для использования в качестве текста метки'
+      }
+    }
+  },
+  keyValue: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      description: {
+        en: 'Object key to use as value text',
+        ru: 'Ключ объекта для использования в качестве текста значения'
       }
     }
   },

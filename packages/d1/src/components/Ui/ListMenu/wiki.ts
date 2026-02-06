@@ -11,7 +11,7 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean' },
   { name: 'divider', type: 'boolean' },
   { name: 'open', type: 'boolean' },
-  { name: 'windowAttrs', type: 'ConstrBind<WindowProps>' }
+  { name: 'windowAttrs', type: 'ConstrBind<Window>' }
   // :propsList [!] System label / Системная метка
 ]
 

@@ -1,4 +1,4 @@
-import { B as r, a as c } from "./BlockDesign-C4TiLOMW.js";
+import { B as r, a as c } from "./BlockDesign-DYe0bCwn.js";
 import "@dxtmisha/functional";
 class g extends r {
 }

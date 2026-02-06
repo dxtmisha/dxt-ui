@@ -146,7 +146,8 @@ export class ListItemDesign<
         ref: this.element,
         class: this.classes?.value.main,
         style: this.styles?.value,
-        ...this.item.bindsAndOpen.value
+        ...this.item.binds.value,
+        ...this.item.aria.value
       },
       children
     )

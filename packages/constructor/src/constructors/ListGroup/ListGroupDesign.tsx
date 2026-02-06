@@ -44,11 +44,13 @@ export class ListGroupDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ListGroupEmits, P>
+    options?: ConstrOptions<COMP, ListGroupEmits, P>,
+    ItemConstructor: typeof ListGroup = ListGroup
   ) {
     super(
       name,
@@ -56,7 +58,7 @@ export class ListGroupDesign<
       options
     )
 
-    this.item = new ListGroup(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

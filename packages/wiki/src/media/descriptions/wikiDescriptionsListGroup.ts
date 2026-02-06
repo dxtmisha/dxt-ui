@@ -75,5 +75,62 @@ export const wikiDescriptionsListGroup: StorybookComponentsDescriptionItem = {
     slots: `
 <StorybookDescriptions componentName={'ListGroup'} type={'slots'}/>
     `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item">
+  <ListGroup v-bind="args">
+    <template #head="{ binds }">
+      <span v-bind="binds">head</span>
+    </template>
+    <template #list>
+      list
+    </template>
+  </ListGroup>
+</div>
+    `,
+    description: `
+ListGroup is a structural component designed to group related list items, often providing collapsible/expandable functionality.
+It serves as a container that manages the visibility of nested items, creating a hierarchical structure within lists or menus.
+
+**Key Features:**
+1. **Collapsible Logic:**
+   - Wraps content in a \`MotionTransform\` component for smooth height animations.
+   - Can be controlled programmatically via the \`open\` prop or interactively via the header.
+
+2. **Slots Structure:**
+   - \`#head\`: The header area acting as the trigger. It receives \`binds\` (click handlers, ARIA attributes) that **must** be applied to the interactive element (e.g., \`ListItem\`) to enable toggling.
+   - \`#list\`: The content area where nested \`ListItem\` or other components are placed.
+
+3. **Styling:**
+   - \`divider\`: Adds a visual separator if enabled.
+   - Automatically handles ARIA roles (\`role="group"\`).
+
+**When to use:**
+- **Navigation Menus:** To create submenus or grouped links (e.g., "Settings" -> "Profile", "Security").
+- **Categorized Lists:** To group items under a common heading.
+- **Accordions within Lists:** When list items need to expand to show details.
+
+**Usage Examples:**
+
+- **Basic Group:**
+  \`<ListGroup>
+     <template #head="{ binds }">
+       <ListItem v-bind="binds" label="My Group" icon="folder" />
+     </template>
+     <template #list>
+       <ListItem label="File 1" />
+       <ListItem label="File 2" />
+     </template>
+   </ListGroup>\`
+
+- **Open by Default:**
+  \`<ListGroup open>
+     <template #head="{ binds }">
+       <ListItem v-bind="binds" label="Always Open" />
+     </template>
+     <template #list>...</template>
+   </ListGroup>\`
+    `
   }
 }

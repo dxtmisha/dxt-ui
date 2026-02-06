@@ -45,11 +45,13 @@ export class ChipGroupDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ChipGroupEmits, P>
+    options?: ConstrOptions<COMP, ChipGroupEmits, P>,
+    ItemConstructor: typeof ChipGroup = ChipGroup
   ) {
     super(
       name,
@@ -57,7 +59,7 @@ export class ChipGroupDesign<
       options
     )
 
-    this.item = new ChipGroup(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

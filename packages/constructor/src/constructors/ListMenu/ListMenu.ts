@@ -24,6 +24,8 @@ export class ListMenu {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
+   * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
    */
   constructor(
     protected readonly props: ListMenuProps,
@@ -33,11 +35,13 @@ export class ListMenu {
     protected readonly className: string,
     protected readonly components?: DesignComp<ListMenuComponents, ListMenuProps>,
     protected readonly slots?: ListMenuSlots,
-    protected readonly emits?: ConstrEmit<ListMenuEmits>
+    protected readonly emits?: ConstrEmit<ListMenuEmits>,
+    ListGroupOpenConstructor: typeof ListGroupOpen = ListGroupOpen,
+    WindowIncludeConstructor: typeof WindowInclude = WindowInclude
   ) {
-    this.open = new ListGroupOpen(this.props)
+    this.open = new ListGroupOpenConstructor(this.props)
 
-    this.window = new WindowInclude(
+    this.window = new WindowIncludeConstructor(
       this.props,
       this.className,
       this.components,
@@ -46,7 +50,8 @@ export class ListMenu {
         adaptive: 'menu',
         axis: this.props.axis,
         onWindow: this.open.onOpen,
-        role: 'menu'
+        role: 'menu',
+        ariaHaspopup: 'menu'
       }))
     )
   }

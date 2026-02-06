@@ -1,21 +1,21 @@
-var m = Object.defineProperty;
-var f = (o, t, e) => t in o ? m(o, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : o[t] = e;
-var i = (o, t, e) => f(o, typeof t != "symbol" ? t + "" : t, e);
+var A = Object.defineProperty;
+var E = (a, t, i) => t in a ? A(a, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : a[t] = i;
+var e = (a, t, i) => E(a, typeof t != "symbol" ? t + "" : t, i);
 import { computed as h, h as u } from "vue";
-import { getBind as v, toBind as x, getRef as C, DesignConstructorAbstract as S } from "@dxtmisha/functional";
-import { g as I } from "./getClassTagAStatic-BnVYlXHI.js";
-import { E as w } from "./EventClickInclude-CgbuezDm.js";
-import { A as p } from "./AriaStaticInclude-D1bSJaBp.js";
-import { L as y } from "./LabelHighlightInclude-CLmTvW_6.js";
-import { P as B, S as D } from "./SuffixInclude-C7JNYCJK.js";
-import { C as k } from "./CaptionInclude-VhkGstz9.js";
-import { D as A } from "./DescriptionInclude-D4ane9aR.js";
-import { E } from "./EnabledInclude-JzHG2GuX.js";
-import { S as L } from "./SkeletonInclude-BIUzAO2s.js";
-import { I as O } from "./IconTrailingInclude-CdsOcDxv.js";
-import { R as M } from "./RippleInclude-Du5yIzX_.js";
-import { P } from "./ProgressInclude-CPQetoyp.js";
-class R {
+import { getBind as L, toBind as P, getRef as R, DesignConstructorAbstract as T } from "@dxtmisha/functional";
+import { g as H } from "./getClassTagAStatic-BnVYlXHI.js";
+import { E as _ } from "./EventClickInclude-CgbuezDm.js";
+import { A as c } from "./AriaStaticInclude-BVCgDZbU.js";
+import { L as $ } from "./LabelHighlightInclude-CLmTvW_6.js";
+import { P as M, S as V } from "./SuffixInclude-C7JNYCJK.js";
+import { C as j } from "./CaptionInclude-VhkGstz9.js";
+import { D as q } from "./DescriptionInclude-D4ane9aR.js";
+import { E as z } from "./EnabledInclude-IdZAnr6u.js";
+import { I as F } from "./IconTrailingInclude-CdsOcDxv.js";
+import { R as G } from "./RippleInclude-Du5yIzX_.js";
+import { P as J } from "./ProgressInclude-NyOp5bMZ.js";
+import { S as K } from "./SkeletonInclude-BIUzAO2s.js";
+class O {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -23,23 +23,23 @@ class R {
    * @param components object for working with components/ объект для работы с компонентами
    * @param extra additional parameter/ дополнительный параметр
    */
-  constructor(t, e, s, r) {
+  constructor(t, i, s, n) {
     /**
      * Checks whether a badge is specified for rendering the component/
      * Проверяет, указан ли бейдж для отображения компонента
      */
-    i(this, "is", h(() => !!(this.props.badge || this.props.badgeDot)));
+    e(this, "is", h(() => !!(this.props.badge || this.props.badgeDot)));
     /**
      * list of properties for the badge component/ список свойств для компонента бейджа
      */
-    i(this, "binds", h(() => {
+    e(this, "binds", h(() => {
       var t;
-      return v(
+      return L(
         this.props.badgeDot ? {} : this.props.badge,
         {
           dot: this.props.badgeDot,
-          ...x(
-            (t = C(this.extra)) != null ? t : {},
+          ...P(
+            (t = R(this.extra)) != null ? t : {},
             {
               class: `${this.className}__badge`
             }
@@ -54,16 +54,16 @@ class R {
      *
      * Рендер компонента бейджа
      */
-    i(this, "render", () => this.components && this.is.value ? this.components.render(
+    e(this, "render", () => this.components && this.is.value ? this.components.render(
       "badge",
       this.binds.value,
       void 0,
       "badge"
     ) : []);
-    this.props = t, this.className = e, this.components = s, this.extra = r;
+    this.props = t, this.className = i, this.components = s, this.extra = n;
   }
 }
-class j {
+class Q {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -74,124 +74,137 @@ class j {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param LabelHighlightIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
+   * @param CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
+   * @param SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
+   * @param DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
+   * @param BadgeIncludeConstructor class for working with badge/ класс для работы с бейджем
+   * @param RippleIncludeConstructor class for working with ripple/ класс для работы с ripple
+   * @param ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
+   * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+   * @param EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
+   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
    */
-  constructor(t, e, s, r, n, l, a, g) {
-    i(this, "icon");
-    i(this, "label");
-    i(this, "prefix");
-    i(this, "caption");
-    i(this, "suffix");
-    i(this, "description");
-    i(this, "badge");
-    i(this, "ripple");
-    i(this, "progress");
-    i(this, "skeleton");
-    i(this, "enabled");
-    i(this, "event");
+  constructor(t, i, s, n, r, l, o, g, b = F, f = $, v = M, x = j, C = V, S = q, I = O, w = G, k = J, y = K, B = z, D = _) {
+    e(this, "icon");
+    e(this, "label");
+    e(this, "prefix");
+    e(this, "caption");
+    e(this, "suffix");
+    e(this, "description");
+    e(this, "badge");
+    e(this, "ripple");
+    e(this, "progress");
+    e(this, "skeleton");
+    e(this, "enabled");
+    e(this, "event");
     /** tag type/ тип тега */
-    i(this, "tag", h(() => this.props.tag ? this.props.tag : this.props.href ? "a" : "div"));
+    e(this, "tag", h(() => this.props.tag ? this.props.tag : this.props.href ? "a" : "div"));
     /** values for the class/ значения для класса */
-    i(this, "classes", h(() => ({
+    e(this, "classes", h(() => ({
       [`${this.className}--description`]: this.description.is.value,
-      [I(this.classDesign)]: !0
+      [H(this.classDesign)]: !0
     })));
     /** values for attributes/ значения для атрибутов */
-    i(this, "binds", h(() => {
-      var e;
-      const t = {
-        "data-value": (e = this.props.index) != null ? e : this.props.value,
+    e(this, "binds", h(() => {
+      var t;
+      return {
+        "data-value": (t = this.props.index) != null ? t : this.props.value,
         "data-divider": this.props.divider ? "active" : void 0,
         "data-parent": this.props.parent,
         "data-list-id": this.props.listId,
-        tabindex: this.props.tabindex,
-        role: this.props.role,
-        ...p.disabled(!!this.props.disabled),
         onClick: this.event.onClick
       };
-      return this.props.isMenu && Object.assign(
-        t,
-        p.haspopup("menu")
-      ), t;
     }));
-    /** values for attributes with open state/ значения для атрибутов с состоянием open */
-    i(this, "bindsAndOpen", h(() => {
+    /** values for aria attributes/ значения для атрибутов aria */
+    e(this, "aria", h(() => {
       const t = {
-        ...this.binds.value
+        tabindex: this.props.tabindex,
+        ...c.role(this.props.role),
+        ...c.disabled(!!this.props.disabled)
       };
-      return this.props.isMenu && Object.assign(
-        t,
-        p.expanded(!!this.props.open)
-      ), this.props.isItemMenu && Object.assign(
-        t,
-        p.checked(!!this.props.selected)
-      ), t;
-    }));
-    this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = n, this.components = l, this.slots = a, this.emits = g;
-    const b = new P(
-      t,
-      n,
-      l,
-      {
-        circular: !0,
-        inverse: !0
+      switch (this.props.role) {
+        case "menuitemradio":
+        case "menuitemcheckbox":
+          return {
+            ...t,
+            ...c.checked(!!this.props.selected)
+          };
+        case "menuitem":
+          return {
+            ...t,
+            ...c.selected(!!this.props.selected)
+          };
       }
-    ), d = new L(
+      return t;
+    }));
+    this.props = t, this.refs = i, this.element = s, this.classDesign = n, this.className = r, this.components = l, this.slots = o, this.emits = g;
+    const m = new k(
       t,
       r,
-      ["classTextVariant"]
-    ), c = new E(t, b);
-    this.icon = new O(t, n, l), this.label = new y(
+      l,
+      {
+        circular: !0
+      }
+    ), d = new y(
       t,
       n,
+      ["classTextVariant"]
+    ), p = new B(t, m);
+    this.icon = new b(t, r, l), this.label = new f(
+      t,
+      r,
       void 0,
-      a,
+      o,
       void 0,
       d
-    ), this.prefix = new B(t, n, a, d), this.caption = new k(t, n, a), this.suffix = new D(t, n, a), this.description = new A(t, n, a, d), this.badge = new R(
+    ), this.prefix = new v(t, r, o, d), this.caption = new x(t, r, o), this.suffix = new C(t, r, o), this.description = new S(t, r, o, d), this.badge = new I(
       t,
-      n,
+      r,
       l,
       {
         overlap: "static"
       }
-    ), this.ripple = new M(n, l, c), this.progress = b, this.skeleton = d, this.enabled = c, this.event = new w(t, c, g);
+    ), this.ripple = new w(r, l, p), this.progress = m, this.skeleton = d, this.enabled = p, this.event = new D(t, p, g);
   }
 }
-const Y = {
+const lt = {
   tabindex: "-1",
   // :default [!] System label / Системная метка
   iconAlign: "center"
 };
-class Z extends S {
+class dt extends T {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
    */
-  constructor(e, s, r) {
+  constructor(i, s, n) {
     super(
-      e,
+      i,
       s,
-      r
+      n
     );
-    i(this, "item");
+    e(this, "item");
     /**
      * Method for rendering the main part of the component.
      *
      * Метод для рендеринга основной части компонента.
      */
-    i(this, "renderBody", () => {
+    e(this, "renderBody", () => {
       var s;
-      const e = [
+      const i = [
         ...this.renderContext(),
         ...this.item.description.render()
       ];
-      return this.initSlot("body", e), [
+      return this.initSlot("body", i), [
         u(
           "div",
           { class: (s = this.classes) == null ? void 0 : s.value.body },
-          e
+          i
         )
       ];
     });
@@ -202,12 +215,12 @@ class Z extends S {
      * Метод для рендеринга контекстной части компонента.
      * Включает в себя префикс, подпись, суффикс, значок и метку.
      */
-    i(this, "renderContext", () => {
-      var e;
+    e(this, "renderContext", () => {
+      var i;
       return [
         u(
           "div",
-          { class: (e = this.classes) == null ? void 0 : e.value.context },
+          { class: (i = this.classes) == null ? void 0 : i.value.context },
           [
             ...this.item.prefix.render(),
             ...this.item.caption.render(),
@@ -218,7 +231,7 @@ class Z extends S {
         )
       ];
     });
-    this.item = new j(
+    this.item = new Q(
       this.props,
       this.refs,
       this.element,
@@ -275,11 +288,11 @@ class Z extends S {
    * Метод для рендеринга.
    */
   initRender() {
-    var s, r;
+    var s, n;
     if (this.props.filterMode && !this.item.label.isHighlight())
       return;
-    const e = [];
-    return this.initSlot("leading", e), e.push(...this.renderBody()), this.initSlot("trailing", e), e.push(
+    const i = [];
+    return this.initSlot("leading", i), i.push(...this.renderBody()), this.initSlot("trailing", i), i.push(
       ...this.item.icon.render(),
       ...this.item.progress.render(),
       ...this.item.ripple.render()
@@ -289,15 +302,16 @@ class Z extends S {
         ...this.getAttrs(),
         ref: this.element,
         class: (s = this.classes) == null ? void 0 : s.value.main,
-        style: (r = this.styles) == null ? void 0 : r.value,
-        ...this.item.bindsAndOpen.value
+        style: (n = this.styles) == null ? void 0 : n.value,
+        ...this.item.binds.value,
+        ...this.item.aria.value
       },
-      e
+      i
     );
   }
 }
 export {
-  j as ListItem,
-  Z as ListItemDesign,
-  Y as defaultsListItem
+  Q as ListItem,
+  dt as ListItemDesign,
+  lt as defaultsListItem
 };

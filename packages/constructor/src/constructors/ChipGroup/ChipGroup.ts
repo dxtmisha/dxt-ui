@@ -31,6 +31,9 @@ export class ChipGroup {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param ModelValueIncludeConstructor class for working with model value/ класс для работы со значением модели
+   * @param ListDataRefConstructor class for working with list data/ класс для работы с данными списка
    */
   constructor(
     protected readonly props: ChipGroupProps,
@@ -40,10 +43,13 @@ export class ChipGroup {
     protected readonly className: string,
     protected readonly components?: DesignComp<ChipGroupComponents, ChipGroupProps>,
     protected readonly slots?: ChipGroupSlots,
-    protected readonly emits?: ConstrEmit<ChipGroupEmits>
+    protected readonly emits?: ConstrEmit<ChipGroupEmits>,
+    EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude,
+    ModelValueIncludeConstructor: typeof ModelValueInclude = ModelValueInclude,
+    ListDataRefConstructor: typeof ListDataRef = ListDataRef
   ) {
-    this.event = new EventClickInclude(undefined, undefined, this.emits)
-    this.model = new ModelValueInclude<ListSelectedList>(
+    this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)
+    this.model = new ModelValueIncludeConstructor<ListSelectedList>(
       'selected',
       this.emits,
       this.event,
@@ -51,7 +57,7 @@ export class ChipGroup {
       this.refs.readonly
     )
 
-    this.data = new ListDataRef(
+    this.data = new ListDataRefConstructor(
       this.refs.list,
       undefined,
       undefined,

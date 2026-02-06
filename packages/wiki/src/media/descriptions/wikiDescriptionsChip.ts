@@ -217,5 +217,47 @@ export const wikiDescriptionsChip: StorybookComponentsDescriptionItem = {
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
     `
+  },
+  ai: {
+    description: `
+Chip is a compact interactive element used for inputs, attributes, or actions.
+It allows users to enter information, make selections, filter content, or trigger actions.
+
+**Key Features:**
+1. **Variants:**
+   - **Action (Default):** Triggers an action or displays a read-only tag.
+   - **Input (\`input\`):** Represents a complex piece of information, such as an entity (person, place, or thing) or text, often used in input fields.
+   - **Assistive (\`assistive\`):** Provides suggestions or smart replies to the user.
+   - **Filter (via \`selected\`):** Allows users to select multiple options from a set.
+
+2. **Content & Styling:**
+   - **Label:** Main text content (prop \`label\` or default slot).
+   - **Icon:** Leading icon (prop \`icon\`).
+   - **State:** Supports \`selected\` (active/checked) and \`disabled\` states.
+
+3. **Interaction:**
+   - Emits \`click\` events with \`value\` and \`detail\` data.
+   - Can be used as a toggle button.
+
+**When to use:**
+- **Filters:** To allow users to refine search results.
+- **Choice:** To select one or multiple options (like radio buttons or checkboxes but more compact).
+- **Action:** To trigger immediate actions (e.g., "Play", "Save").
+- **Input:** To display tags or contacts in a form.
+
+**Usage Examples:**
+
+- **Basic Action:**
+  \`<Chip icon="settings">Settings</Chip>\`
+
+- **Filter Chip (Selected):**
+  \`<Chip icon="check" selected>Completed</Chip>\`
+
+- **Input Tag:**
+  \`<Chip input>Vue.js</Chip>\`
+
+- **Assistive Suggestion:**
+  \`<Chip assistive icon="lightbulb">Did you mean...?</Chip>\`
+    `
   }
 }

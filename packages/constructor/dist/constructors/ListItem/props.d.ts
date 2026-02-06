@@ -25,7 +25,7 @@ export type ListItemPropsToken = {
 export type ListItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Badge extends BadgePropsBasic = BadgePropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelHighlightProps & DescriptionProps & PrefixProps & CaptionProps & SuffixProps & IconTrailingPropsInclude<Icon> & BadgePropsInclude<Badge> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EnabledProps & EventClickProps & AriaRolePropsInclude & {
     index?: any;
     href?: string;
-    tag?: 'button' | 'a' | 'span' | 'div' | string;
+    tag?: 'button' | 'a' | 'span' | 'li' | 'div' | string;
     filterMode?: boolean;
     divider?: boolean;
     tabindex?: number | string;

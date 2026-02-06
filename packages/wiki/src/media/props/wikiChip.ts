@@ -19,7 +19,8 @@ export const wikiChip: StorybookArgsToList = {
         en: 'Alternative visual appearance style',
         ru: 'Альтернативный стиль внешнего вида'
       }
-    }
+    },
+    isDemo: true
   },
   'chip.input': {
     type: StorybookControl.boolean,
@@ -30,6 +31,7 @@ export const wikiChip: StorybookArgsToList = {
         en: 'Input-style visual appearance',
         ru: 'Внешний вид в стиле поля ввода'
       }
-    }
+    },
+    isDemo: true
   }
 }

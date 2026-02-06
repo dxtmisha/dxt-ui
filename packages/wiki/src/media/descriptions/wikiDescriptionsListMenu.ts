@@ -73,5 +73,46 @@ export const wikiDescriptionsListMenu: StorybookComponentsDescriptionItem = {
     slots: `
 <StorybookDescriptions componentName={'ListGroup'} type={'slots'}/>
     `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item">
+  <ListMenu v-bind="args">
+    <template #head="{ binds }">
+      <span v-bind="binds">head</span>
+    </template>
+    <template #list>
+      list
+    </template>
+  </ListMenu>
+</div>
+    `,
+    description: `
+ListMenu is a specialized wrapper component designed to create dropdown menus or nested navigation lists.
+It utilizes the \`Window\` component logic with a menu preset to manage the visibility and positioning of a list of items relative to a trigger.
+
+**Key Features:**
+1. **Structure:**
+   - \`#head\`: The trigger area (Control). It exposes \`binds\` which **must** be applied to the interactive element (e.g., \`ListItem\`, \`Button\`) to toggle the menu.
+   - \`#list\`: The content area containing the menu items.
+
+2. **Behavior:**
+   - **Popup/Dropdown:** By default, it behaves like a dropdown menu (\`adaptive="menu"\`).
+   - **Interaction:** Manages click/hover events via \`binds\` to open/close the list.
+   - **Accessibility:** Automatically applies \`role="menu"\` and \`aria-haspopup\`.
+
+**Usage Examples:**
+
+- **List Item with Submenu:**
+  \`<ListMenu>
+     <template #head="{ binds }">
+       <ListItem v-bind="binds" label="Settings" icon="settings" />
+     </template>
+     <template #list>
+       <ListItem label="Profile" />
+       <ListItem label="Account" />
+     </template>
+   </ListMenu>\`
+    `
   }
 }
