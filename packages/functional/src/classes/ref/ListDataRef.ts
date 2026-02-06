@@ -468,7 +468,7 @@ export class ListDataRef {
    * Возвращает первый элемент с указанным родителем.
    * @param parent parent identifier to search for / идентификатор родителя для поиска
    */
-  getFirstItemByParent(parent: string): ListDataItem | undefined {
+  getFirstItemByParent(parent: string | undefined): ListDataItem | undefined {
     return this.map.value
       .find(item => this.isInParent(parent, item))
   }
@@ -479,7 +479,7 @@ export class ListDataRef {
    * Возвращает последний элемент с указанным родителем.
    * @param parent parent identifier to search for / идентификатор родителя для поиска
    */
-  getLastItemByParent(parent: string): ListDataItem | undefined {
+  getLastItemByParent(parent: string | undefined): ListDataItem | undefined {
     return this.map.value
       .filter(item => this.isInParent(parent, item))
       .pop()
@@ -531,8 +531,7 @@ export class ListDataRef {
    * @param parent parent identifier to search for / идентификатор родителя для поиска
    * @param item List item data/ данные элемента списка
    */
-
-  protected isInParent(parent: string, item: ListDataItem): boolean {
+  protected isInParent(parent: string | undefined, item: ListDataItem): boolean {
     return item.parent === parent && this.isItem(item)
   }
 

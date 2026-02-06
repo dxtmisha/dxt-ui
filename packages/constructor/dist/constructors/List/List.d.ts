@@ -6,10 +6,10 @@ import { ListSearch } from './ListSearch';
 import { ListFocus } from './ListFocus';
 import { ListGo } from './ListGo';
 import { ListControl } from './ListControl';
-import { ListComponents, ListEmits, ListSlots } from './types';
-import { ListProps } from './props';
 import { IconValue, IconPropsBasic } from '../Icon';
 import { ListGroupSlotsPropsInclude } from '../ListGroup';
+import { ListComponents, ListEmits, ListSlots } from './types';
+import { ListProps } from './props';
 import { NumberOrString, ItemList } from '@dxtmisha/functional-basic';
 import { BadgePropsBasic } from '../Badge';
 import { ProgressPropsBasic } from '../Progress';
@@ -46,8 +46,15 @@ export declare class List {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param ListSearchConstructor class for working with search/ класс для работы с поиском
+     * @param ListFocusConstructor class for working with focus/ класс для работы с фокусом
+     * @param ListDataRefConstructor class for working with data list/ класс для работы со списком данных
+     * @param ListGoConstructor class for working with navigation/ класс для работы с навигацией
+     * @param ListControlConstructor class for working with control/ класс для работы с управлением
+     * @param EventClickIncludeConstructor class for working with click event/ класс для работы с событием клика
+     * @param WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
      */
-    constructor(props: ListProps, refs: ToRefs<ListProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ListComponents, ListProps> | undefined, slots?: ListSlots | undefined, emits?: ConstrEmit<ListEmits> | undefined);
+    constructor(props: ListProps, refs: ToRefs<ListProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ListComponents, ListProps> | undefined, slots?: ListSlots | undefined, emits?: ConstrEmit<ListEmits> | undefined, ListSearchConstructor?: typeof ListSearch, ListFocusConstructor?: typeof ListFocus, ListDataRefConstructor?: typeof ListDataRef, ListGoConstructor?: typeof ListGo, ListControlConstructor?: typeof ListControl, EventClickIncludeConstructor?: typeof EventClickInclude, WindowClassesIncludeConstructor?: typeof WindowClassesInclude);
     /**
      * Computed list data
      *

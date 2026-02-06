@@ -4,8 +4,11 @@ import type {
   ListSelectedItem,
   ListSelectedList
 } from '@dxtmisha/functional'
-import type { IconPropsBasic, IconValue } from '../Icon'
+
 import type { RoleType } from '../../types/roleTypes'
+import type { AriaRolePropsInclude } from '../../types/ariaTypes'
+
+import type { IconPropsBasic, IconValue } from '../Icon'
 import type { ListItemPropsBasic } from '../ListItem'
 
 export type ListPropsToken = {
@@ -18,7 +21,7 @@ export type ListPropsToken = {
 export type ListPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   ListItem extends ListItemPropsBasic = ListItemPropsBasic
-> = {
+> = AriaRolePropsInclude & {
   // Status
   focus?: ListSelectedItem
   selected?: ListSelectedList
@@ -74,6 +77,7 @@ export const defaultsList = {
   keyLabel: 'label',
   keyValue: 'value',
   tag: 'div',
+  roleItem: 'menuitem',
   ...{
     // :default [!] System label / Системная метка
     axis: 'y'

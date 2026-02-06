@@ -120,6 +120,36 @@ export class ListGo {
   }
 
   /**
+   * Moves to the first element.
+   *
+   * Перемещает к первому элементу.
+   */
+  first() {
+    const parent = this.getParentId()
+    const item = this.data.getFirstItemByParent(parent)
+
+    if (item) {
+      this.preparation(item.index)
+      this.focus.set(item)
+    }
+  }
+
+  /**
+   * Moves to the last element.
+   *
+   * Перемещает к последнему элементу.
+   */
+  last() {
+    const parent = this.getParentId()
+    const item = this.data.getLastItemByParent(parent)
+
+    if (item) {
+      this.preparation(item.index)
+      this.focus.set(item)
+    }
+  }
+
+  /**
    * Reset all records to the initial state.
    *
    * Сброс всех записей до начального состояния.
@@ -178,12 +208,12 @@ export class ListGo {
   }
 
   /**
-   * Checks if the next element is in the same window.
+   * Checks if the current element is the first in the parent group.
    *
-   * Проверяет, находится ли следующий элемент в том же окне.
+   * Проверяет, является ли текущий элемент первым в родительской группе.
    */
   protected isFirstByParent(): boolean {
-    const parent = this.focus.item.value?.parent
+    const parent = this.getParentId()
 
     if (
       parent
@@ -196,12 +226,12 @@ export class ListGo {
   }
 
   /**
-   * Checks if the next element is in the same window.
+   * Checks if the current element is the last in the parent group.
    *
-   * Проверяет, находится ли следующий элемент в том же окне.
+   * Проверяет, является ли текущий элемент последним в родительской группе.
    */
   protected isLastByParent(): boolean {
-    const parent = this.focus.item.value?.parent
+    const parent = this.getParentId()
 
     if (
       parent
@@ -219,7 +249,7 @@ export class ListGo {
    * Проверяет, находится ли элемент в окне.
    */
   protected getMainItem(): HTMLDivElement | undefined {
-    const parent = this.focus.item.value?.parent
+    const parent = this.getParentId()
 
     if (
       parent
@@ -229,6 +259,15 @@ export class ListGo {
     }
 
     return undefined
+  }
+
+  /**
+   * Returns the parent identifier.
+   *
+   * Возвращает идентификатор родителя.
+   */
+  protected getParentId(): string | undefined {
+    return this.focus.item.value?.parent
   }
 
   /**

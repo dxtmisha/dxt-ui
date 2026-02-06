@@ -233,7 +233,7 @@ export class Window {
     this.esc = new WindowEscConstructor(
       this.open.item,
       () => this.open.close(),
-      () => !this.props.persistent
+      () => !this.props.persistent && (this.props.closeOnEsc ?? true)
     )
     this.text = new TextConstructor(this.props)
     this.hidden = new WindowHiddenConstructor(

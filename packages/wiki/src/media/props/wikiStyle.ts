@@ -58,18 +58,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  axis: {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.style,
-      type: 'string',
-      options: [],
-      description: {
-        en: 'Sets the axis direction for component layout or scrolling',
-        ru: 'Задает направление оси для раскладки или прокрутки компонента'
-      }
-    }
-  },
   barsAdaptive: {
     type: StorybookControl.select,
     options: {

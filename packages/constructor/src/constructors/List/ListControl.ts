@@ -176,9 +176,22 @@ export class ListControl {
             this.go.open()
             break
           case 'ArrowLeft':
+          case 'Escape':
+          case 'Esc':
+          case 27:
           case 37:
             event.preventDefault()
             this.go.close()
+            break
+          case 'Home':
+          case 36:
+            event.preventDefault()
+            this.go.first()
+            break
+          case 'End':
+          case 35:
+            event.preventDefault()
+            this.go.last()
             break
           case 'Space':
           case 32:

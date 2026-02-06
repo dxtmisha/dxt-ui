@@ -21,6 +21,18 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  axis: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Sets the axis direction for component layout or scrolling',
+        ru: 'Задает направление оси для раскладки или прокрутки компонента'
+      }
+    }
+  },
   clickOpen: {
     type: StorybookControl.boolean,
     options: {

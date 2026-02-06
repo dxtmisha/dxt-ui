@@ -88,6 +88,10 @@
     
     &--focus {
       @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.gradient('init');
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
     }
     
     &--open {

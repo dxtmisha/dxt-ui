@@ -1,14 +1,14 @@
-var c = Object.defineProperty;
-var d = (r, e, t) => e in r ? c(r, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[e] = t;
-var s = (r, e, t) => d(r, typeof e != "symbol" ? e + "" : e, t);
-import { ref as a, computed as l, watch as m, h as v } from "vue";
-import { isFunction as g, executePromise as f, Api as w, isFilled as b, isObject as x, ListDataRef as S, DesignConstructorAbstract as C, toBinds as y } from "@dxtmisha/functional";
-import { E as B } from "./EventClickInclude-CgbuezDm.js";
-import { M as k } from "./ModelInclude-BiYm_iCQ.js";
-import { B as V } from "./BarsInclude-BOEoY-O4.js";
-import { W as M } from "./WindowInclude-BWm4-0Gh.js";
-import { M as $ } from "./MenuInclude-DfGCfr_I.js";
-class q {
+var S = Object.defineProperty;
+var C = (r, e, t) => e in r ? S(r, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[e] = t;
+var s = (r, e, t) => C(r, typeof e != "symbol" ? e + "" : e, t);
+import { ref as a, computed as l, watch as y, h as B } from "vue";
+import { isFunction as k, executePromise as V, Api as M, isFilled as q, isObject as L, ListDataRef as N, DesignConstructorAbstract as j, toBinds as A } from "@dxtmisha/functional";
+import { E as D } from "./EventClickInclude-CgbuezDm.js";
+import { M as I } from "./ModelInclude-BiYm_iCQ.js";
+import { B as T } from "./BarsInclude-BOEoY-O4.js";
+import { W } from "./WindowInclude-BWm4-0Gh.js";
+import { M as tt } from "./MenuInclude-DfGCfr_I.js";
+class E {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -57,7 +57,7 @@ class q {
    * Возвращает данные из AJAX или функции запроса.
    */
   async getAjax() {
-    return g(this.props.ajax) ? f(this.props.ajax) : await w.request({
+    return k(this.props.ajax) ? V(this.props.ajax) : await M.request({
       path: this.props.ajax,
       ...this.props.request
     });
@@ -71,7 +71,7 @@ class q {
     this.is() && (this.props.cache && this.buffer.value !== void 0 && e(this.buffer.value), this.progress.value = !0, e(await this.getAjax()), this.progress.value = !1);
   }
 }
-class L {
+class F {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -107,11 +107,11 @@ class L {
    * @param value source value/ исходное значение
    */
   getValue(e) {
-    if (b(e))
+    if (q(e))
       return e.trim();
   }
 }
-class N {
+class O {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -164,7 +164,7 @@ class N {
     };
   }
 }
-class j {
+class R {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -179,7 +179,7 @@ class j {
      * Вычисляемое выбранное значение
      */
     s(this, "selected", l(() => this.props.isSelectedByValue ? this.value.value : this.props.selected));
-    this.props = e, this.refs = t, this.emits = i, this.props.isSelectedByValue && (new k("selected", this.emits, this.value), t.selected && m(
+    this.props = e, this.refs = t, this.emits = i, this.props.isSelectedByValue && (new I("selected", this.emits, this.value), t.selected && y(
       t.selected,
       (o) => {
         this.value.value = o;
@@ -196,10 +196,10 @@ class j {
    */
   setValue(e, t = !1) {
     var i;
-    return this.props.isSelectedByValue && !x(e) && this.value.value !== e && (this.value.value = e, t && ((i = this.emits) == null || i.call(this, "updateValue", e))), this;
+    return this.props.isSelectedByValue && !L(e) && this.value.value !== e && (this.value.value = e, t && ((i = this.emits) == null || i.call(this, "updateValue", e))), this;
   }
 }
-class A {
+class H {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -244,7 +244,7 @@ class A {
     return t && this.value.setValue(t, !0), t;
   }
 }
-class D {
+class _ {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -255,8 +255,17 @@ class D {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param MenuRequestConstructor class for working with request/ класс для работы с запросом
+   * @param MenuSearchConstructor class for working with search/ класс для работы с поиском
+   * @param MenuValueConstructor class for working with value/ класс для работы со значением
+   * @param ListDataRefConstructor class for working with list data/ класс для работы с данными списка
+   * @param MenuGoConstructor class for working with navigation/ класс для работы с навигацией
+   * @param BarsIncludeConstructor class for working with bars/ класс для работы с барами
+   * @param MenuWindowConstructor class for working with menu window/ класс для работы с окном меню
+   * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
+   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
    */
-  constructor(e, t, i, o, h, n, u, p) {
+  constructor(e, t, i, o, h, n, u, p, c = E, d = F, m = R, v = N, g = H, f = T, w = O, b = W, x = D) {
     /** Request handler for list data/ Обработчик запросов данных списка */
     s(this, "request");
     /** Search helper for menu filtering/ Вспомогательный класс поиска для фильтрации меню */
@@ -314,7 +323,7 @@ class D {
       const t = e.target, i = t.closest("*[data-value]");
       i && !t.closest(`.${this.className}__list`) && ((o = this.emits) == null || o.call(this, "clickSlot", i.dataset.value));
     });
-    this.props = e, this.refs = t, this.element = i, this.classDesign = o, this.className = h, this.components = n, this.slots = u, this.emits = p, this.request = new q(this.props), this.search = new L(this.props), this.value = new j(this.props, this.refs, this.emits), this.data = new S(
+    this.props = e, this.refs = t, this.element = i, this.classDesign = o, this.className = h, this.components = n, this.slots = u, this.emits = p, this.request = new c(this.props), this.search = new d(this.props), this.value = new m(this.props, this.refs, this.emits), this.data = new v(
       this.request.item,
       void 0,
       void 0,
@@ -323,18 +332,18 @@ class D {
       this.value.selected,
       this.refs.keyValue,
       this.refs.keyLabel
-    ), this.go = new A(this.props, this.value, this.data), this.bars = new V(
+    ), this.go = new g(this.props, this.value, this.data), this.bars = new f(
       this.props,
       this.className,
       this.components,
       this.emits
-    ), this.menuWindow = new N(this.props, this.request), this.window = new M(
+    ), this.menuWindow = new w(this.props, this.request), this.window = new b(
       this.props,
       this.className,
       this.components,
       this.emits,
       this.menuWindow.getExtra()
-    ), this.event = new B(void 0, void 0, this.emits), this.slotData = {
+    ), this.event = new x(void 0, void 0, this.emits), this.slotData = {
       loading: this.request.progress,
       isSelected: this.data.isSelected,
       selectedList: this.data.selectedList,
@@ -354,7 +363,7 @@ class D {
     return this.slotData;
   }
 }
-const O = {
+const U = {
   liteThreshold: 40,
   barsHide: !0,
   barsBackHide: !0,
@@ -363,14 +372,15 @@ const O = {
   autoClose: !0,
   roleItem: "menuitem"
 };
-class _ extends C {
+class X extends j {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, i, o) {
+  constructor(t, i, o, h = _) {
     super(
       t,
       i,
@@ -408,7 +418,7 @@ class _ extends C {
         return this.initSlot("contextTop", h, this.getBinds(t)), this.props.hideList || h.push(
           this.components.render(
             "list",
-            y(
+            A(
               {
                 ...this.item.binds.value,
                 class: (o = this.classes) == null ? void 0 : o.value.list,
@@ -422,7 +432,7 @@ class _ extends C {
             ),
             this.slots
           )
-        ), this.initSlot("contextBottom", h, this.getBinds(t)), v(
+        ), this.initSlot("contextBottom", h, this.getBinds(t)), B(
           "div",
           {
             ...this.getAttrs(),
@@ -440,7 +450,7 @@ class _ extends C {
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
     s(this, "renderFooter", (t) => this.initSlot("footer", void 0, this.getBinds(t)));
-    this.item = new D(
+    this.item = new h(
       this.props,
       this.refs,
       this.element,
@@ -498,7 +508,8 @@ class _ extends C {
         footer: this.renderFooter
       },
       {
-        class: (t = this.classes) == null ? void 0 : t.value.main
+        class: (t = this.classes) == null ? void 0 : t.value.main,
+        closeOnEsc: !1
       }
     );
   }
@@ -516,8 +527,8 @@ class _ extends C {
   }
 }
 export {
-  D as Menu,
-  _ as MenuDesign,
-  $ as MenuInclude,
-  O as defaultsMenu
+  _ as Menu,
+  X as MenuDesign,
+  tt as MenuInclude,
+  U as defaultsMenu
 };

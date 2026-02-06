@@ -46,11 +46,13 @@ export class MenuDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, MenuEmits, P>
+    options?: ConstrOptions<COMP, MenuEmits, P>,
+    ItemConstructor: typeof Menu = Menu
   ) {
     super(
       name,
@@ -58,7 +60,7 @@ export class MenuDesign<
       options
     )
 
-    this.item = new Menu(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -124,7 +126,8 @@ export class MenuDesign<
         footer: this.renderFooter
       },
       {
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        closeOnEsc: false
       }
     )
   }

@@ -1303,14 +1303,14 @@ export declare class ListDataRef {
      * Возвращает первый элемент с указанным родителем.
      * @param parent parent identifier to search for / идентификатор родителя для поиска
      */
-    getFirstItemByParent(parent: string): ListDataItem | undefined;
+    getFirstItemByParent(parent: string | undefined): ListDataItem | undefined;
     /**
      * Returns the last item with the specified parent.
      *
      * Возвращает последний элемент с указанным родителем.
      * @param parent parent identifier to search for / идентификатор родителя для поиска
      */
-    getLastItemByParent(parent: string): ListDataItem | undefined;
+    getLastItemByParent(parent: string | undefined): ListDataItem | undefined;
     /**
      * Returns a sublist object for a group item.
      *
@@ -1332,7 +1332,7 @@ export declare class ListDataRef {
      * @param parent parent identifier to search for / идентификатор родителя для поиска
      * @param item List item data/ данные элемента списка
      */
-    protected isInParent(parent: string, item: ListDataItem): boolean;
+    protected isInParent(parent: string | undefined, item: ListDataItem): boolean;
     /**
      * Returns the index for the list item.
      *

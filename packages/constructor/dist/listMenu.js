@@ -1,11 +1,11 @@
-var m = Object.defineProperty;
-var l = (i, t, s) => t in i ? m(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
-var n = (i, t, s) => l(i, typeof t != "symbol" ? t + "" : t, s);
-import { computed as u } from "vue";
-import { DesignConstructorAbstract as c } from "@dxtmisha/functional";
-import { L as d } from "./ListGroupOpen-Bl_HIQoV.js";
-import { W as w } from "./WindowInclude-BWm4-0Gh.js";
-class g {
+var u = Object.defineProperty;
+var c = (i, t, s) => t in i ? u(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
+var n = (i, t, s) => c(i, typeof t != "symbol" ? t + "" : t, s);
+import { computed as d } from "vue";
+import { DesignConstructorAbstract as w } from "@dxtmisha/functional";
+import { L as f } from "./ListGroupOpen-Bl_HIQoV.js";
+import { W as g } from "./WindowInclude-BWm4-0Gh.js";
+class x {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -16,16 +16,18 @@ class g {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
+   * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
    */
-  constructor(t, s, e, o, r, h, p, a) {
+  constructor(t, s, e, o, r, h, p, a, m = f, l = g) {
     n(this, "open");
     n(this, "window");
-    this.props = t, this.refs = s, this.element = e, this.classDesign = o, this.className = r, this.components = h, this.slots = p, this.emits = a, this.open = new d(this.props), this.window = new w(
+    this.props = t, this.refs = s, this.element = e, this.classDesign = o, this.className = r, this.components = h, this.slots = p, this.emits = a, this.open = new m(this.props), this.window = new l(
       this.props,
       this.className,
       this.components,
       this.emits,
-      u(() => ({
+      d(() => ({
         adaptive: "menu",
         axis: this.props.axis,
         onWindow: this.open.onOpen,
@@ -35,22 +37,23 @@ class g {
     );
   }
 }
-const C = {};
-class D extends c {
+const b = {};
+class M extends w {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(s, e, o) {
+  constructor(s, e, o, r = x) {
     super(
       s,
       e,
       o
     );
     n(this, "item");
-    this.item = new g(
+    this.item = new r(
       this.props,
       this.refs,
       this.element,
@@ -107,13 +110,14 @@ class D extends c {
       {
         ...this.getAttrs(),
         open: this.item.open.is.value,
-        class: (s = this.classes) == null ? void 0 : s.value.main
+        class: (s = this.classes) == null ? void 0 : s.value.main,
+        closeOnEsc: !1
       }
     );
   }
 }
 export {
-  g as ListMenu,
-  D as ListMenuDesign,
-  C as defaultsListMenu
+  x as ListMenu,
+  M as ListMenuDesign,
+  b as defaultsListMenu
 };

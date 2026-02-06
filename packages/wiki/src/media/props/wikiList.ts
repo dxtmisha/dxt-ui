@@ -80,7 +80,7 @@ export const wikiList: StorybookArgsToList = {
       },
       value: [
         {
-          label: 'Запустить проект',
+          label: 'Запустить проект (Label)',
           value: 'launch-project',
           icon: 'play_arrow'
         },
@@ -256,6 +256,10 @@ export const wikiList: StorybookArgsToList = {
         en: 'Enable lightweight display mode. Reduces visual complexity by showing simplified item styling with minimal decorative elements.',
         ru: 'Включить упрощенный режим отображения. Уменьшает визуальную сложность, показывая упрощенную стилизацию элементов с минимальными декоративными элементами.'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      liteThreshold: 4
     }
   },
   'list.liteThreshold': {
@@ -264,7 +268,7 @@ export const wikiList: StorybookArgsToList = {
       category: StorybookCategory.style,
       description: {
         en: 'Threshold value that works when lite mode is enabled (lite: true). Defines the maximum number of items before additional optimizations are applied in lite mode.',
-        ru: 'Пороговое значение, которое работает когда включен lite режим (lite: true). Определяет максимальное количество элементов перед применением дополнительных оптимизаций в lite режиме.'
+        ru: 'Пороговое значение, которое работает, когда включен lite режим (lite: true). Определяет максимальное количество элементов перед применением дополнительных оптимизаций в lite режиме.'
       }
     }
   },
@@ -276,6 +280,8 @@ export const wikiList: StorybookArgsToList = {
         en: 'List of selected items. Contains all currently selected items in the list for multi-selection scenarios.',
         ru: 'Список выбранных элементов. Содержит все текущие выбранные элементы списка для сценариев множественного выбора.'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'task-management'
   }
 }

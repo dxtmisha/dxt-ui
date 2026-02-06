@@ -11,6 +11,7 @@ export declare class ListFocus {
     protected readonly props: ListProps;
     protected readonly element: Ref<HTMLElement | undefined>;
     protected readonly listId: number;
+    /** Active item/ Активный элемент */
     readonly item: Ref<ListDataItem | undefined, ListDataItem | undefined>;
     /**
      * Constructor
@@ -22,9 +23,9 @@ export declare class ListFocus {
     /** Returns the value of the selected element/ Возвращает значение выбранного элемента */
     readonly focus: ComputedRef< NumberOrStringOrBoolean | undefined>;
     /**
-     * Returns the selected element.
+     * Checks if the element exists.
      *
-     * Возвращает выбранный элемент.
+     * Проверяет, существует ли элемент.
      * @param index element index/ индекс элемента
      */
     isElement(index?: string): boolean;
@@ -111,4 +112,11 @@ export declare class ListFocus {
      * @param element the element to scroll to/ элемент, до которого надо проскроллить
      */
     protected toElement(element?: HTMLElement): void;
+    /**
+     * Sets focus to the element.
+     *
+     * Устанавливает фокус на элемент.
+     * @param max maximum number of attempts/ максимальное количество попыток
+     */
+    protected toFocus(max?: number): void;
 }

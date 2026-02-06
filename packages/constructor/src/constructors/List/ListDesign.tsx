@@ -10,6 +10,7 @@ import {
   toBinds
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { List } from './List'
 
 import {
@@ -49,11 +50,13 @@ export class ListDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ListEmits, P>
+    options?: ConstrOptions<COMP, ListEmits, P>,
+    ItemConstructor: typeof List = List
   ) {
     super(
       name,
@@ -61,7 +64,7 @@ export class ListDesign<
       options
     )
 
-    this.item = new List(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -132,7 +135,8 @@ export class ListDesign<
       {
         ...this.getAttrs(),
         ref: this.element,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        ...AriaStaticInclude.role(this.props.role)
       },
       this.renderData()
     )
@@ -210,7 +214,8 @@ export class ListDesign<
       class: [
         this.classes?.value.space,
         this.item.windowClasses.get().static
-      ]
+      ],
+      ...AriaStaticInclude.role('separator')
     })
   }
 
@@ -226,7 +231,8 @@ export class ListDesign<
       class: [
         this.classes?.value.line,
         this.item.windowClasses.get().static
-      ]
+      ],
+      ...AriaStaticInclude.role('separator')
     })
   }
 
@@ -242,7 +248,8 @@ export class ListDesign<
       class: [
         this.classes?.value.subtitle,
         this.item.windowClasses.get().static
-      ]
+      ],
+      ...AriaStaticInclude.role('separator')
     }, item.label)
   }
 

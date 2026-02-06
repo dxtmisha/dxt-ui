@@ -54,8 +54,17 @@ export declare class Menu {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param MenuRequestConstructor class for working with request/ класс для работы с запросом
+     * @param MenuSearchConstructor class for working with search/ класс для работы с поиском
+     * @param MenuValueConstructor class for working with value/ класс для работы со значением
+     * @param ListDataRefConstructor class for working with list data/ класс для работы с данными списка
+     * @param MenuGoConstructor class for working with navigation/ класс для работы с навигацией
+     * @param BarsIncludeConstructor class for working with bars/ класс для работы с барами
+     * @param MenuWindowConstructor class for working with menu window/ класс для работы с окном меню
+     * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
+     * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
      */
-    constructor(props: MenuProps, refs: ToRefs<MenuProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<MenuComponents, MenuProps> | undefined, slots?: MenuSlots | undefined, emits?: ConstrEmit<MenuEmits> | undefined);
+    constructor(props: MenuProps, refs: ToRefs<MenuProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<MenuComponents, MenuProps> | undefined, slots?: MenuSlots | undefined, emits?: ConstrEmit<MenuEmits> | undefined, MenuRequestConstructor?: typeof MenuRequest, MenuSearchConstructor?: typeof MenuSearch, MenuValueConstructor?: typeof MenuValue, ListDataRefConstructor?: typeof ListDataRef, MenuGoConstructor?: typeof MenuGo, BarsIncludeConstructor?: typeof BarsInclude, MenuWindowConstructor?: typeof MenuWindow, WindowIncludeConstructor?: typeof WindowInclude, EventClickIncludeConstructor?: typeof EventClickInclude);
     /**
      * Getting data for binding to the List component.
      *

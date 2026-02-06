@@ -116,5 +116,36 @@ export const wikiDescriptionsList: StorybookComponentsDescriptionItem = {
     slots: `
 <StorybookDescriptions componentName={'List'} type={'slot.html'}/>
     `
+  },
+  ai: {
+    description: `
+List is a core structural component for rendering interactive lists.
+It is the engine behind Dropdowns, Selects, and Navigation Menus.
+
+**Key Features:**
+1. **Data Structure:**
+   - \`list\`: Array of objects. Supports types: \`item\` (default), \`group\`, \`menu\`, \`line\` (separator), \`space\`, \`subtitle\`, \`html\`.
+   - Items properties: \`label\`, \`value\`, \`icon\`, \`description\`, \`disabled\`, \`to\` (link).
+
+2. **Interaction:**
+   - **Selection:** \`v-model:selected\` (single or array).
+   - **Keyboard:** Full arrow key navigation, Enter to select.
+   - **Focus:** Manages internal focus.
+
+3. **Search & Filtering:**
+   - \`highlight\`: Text to highlight.
+   - \`filterMode\`: Hides non-matching items.
+
+**Usage Examples:**
+
+- **Basic List:**
+  \`<List :list="[{ label: 'Home', icon: 'home' }, { label: 'Settings', icon: 'settings' }]" />\`
+
+- **With Selection:**
+  \`<List v-model:selected="current" :list="options" />\`
+
+- **Filtered List:**
+  \`<List :list="data" :highlight="searchText" filter-mode />\`
+    `
   }
 }

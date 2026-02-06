@@ -122,7 +122,8 @@ export class ListMenuDesign<
       {
         ...this.getAttrs(),
         open: this.item.open.is.value,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        closeOnEsc: false
       }
     )
   }

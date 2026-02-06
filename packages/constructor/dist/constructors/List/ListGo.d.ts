@@ -54,6 +54,18 @@ export declare class ListGo {
      */
     next(): void;
     /**
+     * Moves to the first element.
+     *
+     * Перемещает к первому элементу.
+     */
+    first(): void;
+    /**
+     * Moves to the last element.
+     *
+     * Перемещает к последнему элементу.
+     */
+    last(): void;
+    /**
      * Reset all records to the initial state.
      *
      * Сброс всех записей до начального состояния.
@@ -78,15 +90,15 @@ export declare class ListGo {
      */
     stop(): void;
     /**
-     * Checks if the next element is in the same window.
+     * Checks if the current element is the first in the parent group.
      *
-     * Проверяет, находится ли следующий элемент в том же окне.
+     * Проверяет, является ли текущий элемент первым в родительской группе.
      */
     protected isFirstByParent(): boolean;
     /**
-     * Checks if the next element is in the same window.
+     * Checks if the current element is the last in the parent group.
      *
-     * Проверяет, находится ли следующий элемент в том же окне.
+     * Проверяет, является ли текущий элемент последним в родительской группе.
      */
     protected isLastByParent(): boolean;
     /**
@@ -95,6 +107,12 @@ export declare class ListGo {
      * Проверяет, находится ли элемент в окне.
      */
     protected getMainItem(): HTMLDivElement | undefined;
+    /**
+     * Returns the parent identifier.
+     *
+     * Возвращает идентификатор родителя.
+     */
+    protected getParentId(): string | undefined;
     /**
      * Changing the index in focus by the number in the array.
      *

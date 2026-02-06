@@ -62,6 +62,16 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
+  'window.closeOnEsc': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Closes the window when the ESC key is pressed',
+        ru: 'Закрывает окно при нажатии клавиши ESC'
+      }
+    }
+  },
   'window.closing': {
     type: StorybookControl.object,
     options: {

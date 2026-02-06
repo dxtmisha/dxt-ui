@@ -61,7 +61,7 @@ export const wikiValue: StorybookArgsToList = {
       category: StorybookCategory.value,
       type: 'Record<string, any>',
       description: {
-        en: 'Additional data passed by the component when events are triggered',
+        en: 'Additional data is passed by the component when events are triggered',
         ru: 'Дополнительные данные, передаваемые компонентом при срабатывании событий'
       }
     }
@@ -84,7 +84,7 @@ export const wikiValue: StorybookArgsToList = {
       type: 'string',
       description: {
         en: 'Text to highlight within the component content',
-        ru: 'Текст для выделения в содержимом компонента'
+        ru: 'Текст для выделения в содержимом компоненте'
       }
     },
     isDemo: true,

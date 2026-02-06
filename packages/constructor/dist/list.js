@@ -1,17 +1,18 @@
-var g = Object.defineProperty;
-var f = (h, t, e) => t in h ? g(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
-var i = (h, t, e) => f(h, typeof t != "symbol" ? t + "" : t, e);
-import { ref as m, computed as u, watch as v, onUnmounted as y, toRef as I, h as o } from "vue";
-import { isFilled as b, goScroll as k, isSelected as w, isDomRuntime as d, EventItem as x, ListDataRef as S, toBinds as l, DesignConstructorAbstract as B, isObject as M } from "@dxtmisha/functional";
-import { E } from "./EventClickInclude-CgbuezDm.js";
-import { W as L } from "./WindowClassesInclude-B56usxgx.js";
-class C {
+var x = Object.defineProperty;
+var E = (h, t, e) => t in h ? x(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
+var i = (h, t, e) => E(h, typeof t != "symbol" ? t + "" : t, e);
+import { ref as p, computed as u, watch as S, onUnmounted as B, toRef as M, h as o } from "vue";
+import { isFilled as A, goScroll as L, isSelected as C, isDomRuntime as m, EventItem as D, ListDataRef as F, toBinds as l, DesignConstructorAbstract as G, isObject as T } from "@dxtmisha/functional";
+import { E as P } from "./EventClickInclude-CgbuezDm.js";
+import { W as O } from "./WindowClassesInclude-B56usxgx.js";
+import { A as c } from "./AriaStaticInclude-BVCgDZbU.js";
+class N {
   /**
    * Constructor
    * @param props input data/ входные данные
    */
   constructor(t) {
-    i(this, "item", m());
+    i(this, "item", p());
     i(this, "timeout");
     /** Current search string/ Текущая строка поиска */
     i(this, "highlight", u(() => {
@@ -54,7 +55,7 @@ class C {
    * @param value source value/ исходное значение
    */
   getValue(t) {
-    if (b(t))
+    if (A(t))
       return t.trim();
   }
   /**
@@ -78,7 +79,8 @@ class C {
     ), this;
   }
 }
-class A {
+const H = 24;
+class R {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -86,7 +88,8 @@ class A {
    * @param listId unique list identifier/ уникальный идентификатор списка
    */
   constructor(t, e, s) {
-    i(this, "item", m());
+    /** Active item/ Активный элемент */
+    i(this, "item", p());
     /** Returns the value of the selected element/ Возвращает значение выбранного элемента */
     i(this, "focus", u(() => {
       var t, e;
@@ -95,9 +98,9 @@ class A {
     this.props = t, this.element = e, this.listId = s;
   }
   /**
-   * Returns the selected element.
+   * Checks if the element exists.
    *
-   * Возвращает выбранный элемент.
+   * Проверяет, существует ли элемент.
    * @param index element index/ индекс элемента
    */
   isElement(t) {
@@ -174,7 +177,7 @@ class A {
    * @param item new value/ новое значение
    */
   set(t) {
-    return this.item.value !== t && (this.item.value = t), this;
+    return this.item.value !== t && (this.item.value = t, this.toFocus()), this;
   }
   /**
    * Resets the selected element.
@@ -223,10 +226,25 @@ class A {
    */
   toElement(t) {
     const e = "*[data-window-body]";
-    t && t.closest(e) && k(e, t);
+    t && t.closest(e) && L(e, t);
+  }
+  /**
+   * Sets focus to the element.
+   *
+   * Устанавливает фокус на элемент.
+   * @param max maximum number of attempts/ максимальное количество попыток
+   */
+  toFocus(t = H) {
+    var e;
+    if (t > 0) {
+      const s = this.getElement();
+      s ? s.focus() : ((e = document.activeElement) == null || e.blur(), setTimeout(() => {
+        this.toFocus(t - 1);
+      }, 128));
+    }
   }
 }
-class D {
+class _ {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -254,7 +272,7 @@ class D {
    * @param value new value/ новое значение
    */
   preparation(t) {
-    const e = this.data.map.value, s = e.findIndex((r) => w(r.index, t));
+    const e = this.data.map.value, s = e.findIndex((r) => C(r.index, t));
     this.reset(), s && (this.index = s, e != null && e[s] && this.focus.toElementSelected(e[s].index));
   }
   /**
@@ -280,6 +298,24 @@ class D {
    */
   next() {
     this.isLastByParent() || (this.setByIndex(this.index + 1), this.focus.toElementFocus() || this.next());
+  }
+  /**
+   * Moves to the first element.
+   *
+   * Перемещает к первому элементу.
+   */
+  first() {
+    const t = this.getParentId(), e = this.data.getFirstItemByParent(t);
+    e && (this.preparation(e.index), this.focus.set(e));
+  }
+  /**
+   * Moves to the last element.
+   *
+   * Перемещает к последнему элементу.
+   */
+  last() {
+    const t = this.getParentId(), e = this.data.getLastItemByParent(t);
+    e && (this.preparation(e.index), this.focus.set(e));
   }
   /**
    * Reset all records to the initial state.
@@ -321,24 +357,24 @@ class D {
     this.focus.reset();
   }
   /**
-   * Checks if the next element is in the same window.
+   * Checks if the current element is the first in the parent group.
    *
-   * Проверяет, находится ли следующий элемент в том же окне.
+   * Проверяет, является ли текущий элемент первым в родительской группе.
    */
   isFirstByParent() {
-    var e, s, r;
-    const t = (e = this.focus.item.value) == null ? void 0 : e.parent;
-    return t && this.focus.isElement() ? ((s = this.data.getFirstItemByParent(t)) == null ? void 0 : s.index) === ((r = this.focus.item.value) == null ? void 0 : r.index) : !1;
+    var e, s;
+    const t = this.getParentId();
+    return t && this.focus.isElement() ? ((e = this.data.getFirstItemByParent(t)) == null ? void 0 : e.index) === ((s = this.focus.item.value) == null ? void 0 : s.index) : !1;
   }
   /**
-   * Checks if the next element is in the same window.
+   * Checks if the current element is the last in the parent group.
    *
-   * Проверяет, находится ли следующий элемент в том же окне.
+   * Проверяет, является ли текущий элемент последним в родительской группе.
    */
   isLastByParent() {
-    var e, s, r;
-    const t = (e = this.focus.item.value) == null ? void 0 : e.parent;
-    return t && this.focus.isElement() ? ((s = this.data.getLastItemByParent(t)) == null ? void 0 : s.index) === ((r = this.focus.item.value) == null ? void 0 : r.index) : !1;
+    var e, s;
+    const t = this.getParentId();
+    return t && this.focus.isElement() ? ((e = this.data.getLastItemByParent(t)) == null ? void 0 : e.index) === ((s = this.focus.item.value) == null ? void 0 : s.index) : !1;
   }
   /**
    * Checks if the element is in a window.
@@ -346,10 +382,18 @@ class D {
    * Проверяет, находится ли элемент в окне.
    */
   getMainItem() {
-    var e;
-    const t = (e = this.focus.item.value) == null ? void 0 : e.parent;
+    const t = this.getParentId();
     if (t && !this.focus.isOpen())
       return this.focus.getElement(t);
+  }
+  /**
+   * Returns the parent identifier.
+   *
+   * Возвращает идентификатор родителя.
+   */
+  getParentId() {
+    var t;
+    return (t = this.focus.item.value) == null ? void 0 : t.parent;
   }
   /**
    * Changing the index in focus by the number in the array.
@@ -372,7 +416,7 @@ class D {
     this.setByIndex(this.index + 1), !(this.focus.isItem() || this.focus.isGroup() || this.focus.isMenu()) && this.nextByType();
   }
 }
-class G {
+class V {
   /**
    * Creates an instance of ListControl for managing keyboard navigation and events.
    *
@@ -422,8 +466,19 @@ class G {
               t.preventDefault(), this.go.open();
               break;
             case "ArrowLeft":
+            case "Escape":
+            case "Esc":
+            case 27:
             case 37:
               t.preventDefault(), this.go.close();
+              break;
+            case "Home":
+            case 36:
+              t.preventDefault(), this.go.first();
+              break;
+            case "End":
+            case 35:
+              t.preventDefault(), this.go.last();
               break;
             case "Space":
             case 32:
@@ -431,13 +486,13 @@ class G {
               break;
           }
     });
-    this.props = t, this.search = e, this.data = s, this.go = r, v(
+    this.props = t, this.search = e, this.data = s, this.go = r, S(
       this.isActive,
-      (n) => {
-        n ? this.start() : this.stop();
+      (a) => {
+        a ? this.start() : this.stop();
       },
       { immediate: !0 }
-    ), y(() => this.stop());
+    ), B(() => this.stop());
   }
   /**
    * Checks if the event target is not an input.
@@ -456,7 +511,7 @@ class G {
    */
   getActiveElement() {
     var t;
-    if (d()) {
+    if (m()) {
       const e = document.activeElement;
       if (e && ((t = e.dataset) == null ? void 0 : t.menuControl) === "1")
         return e;
@@ -468,7 +523,7 @@ class G {
    * Запускает событие.
    */
   start() {
-    d() && (this.event || (this.event = new x(
+    m() && (this.event || (this.event = new D(
       document.body,
       ["keydown", "keypress"],
       this.on
@@ -493,8 +548,8 @@ class G {
     e ? requestAnimationFrame(() => this.search.set(e.value)) : this.search.add(t.key);
   }
 }
-let F = 1;
-class T {
+let $ = 1;
+class U {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -505,8 +560,15 @@ class T {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param ListSearchConstructor class for working with search/ класс для работы с поиском
+   * @param ListFocusConstructor class for working with focus/ класс для работы с фокусом
+   * @param ListDataRefConstructor class for working with data list/ класс для работы со списком данных
+   * @param ListGoConstructor class for working with navigation/ класс для работы с навигацией
+   * @param ListControlConstructor class for working with control/ класс для работы с управлением
+   * @param EventClickIncludeConstructor class for working with click event/ класс для работы с событием клика
+   * @param WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
    */
-  constructor(t, e, s, r, n, a, p, c) {
+  constructor(t, e, s, r, a, n, g, d, f = N, v = R, I = F, y = _, b = V, k = P, w = O) {
     i(this, "search");
     i(this, "focus");
     i(this, "data");
@@ -515,7 +577,7 @@ class T {
     i(this, "control");
     i(this, "windowClasses");
     /** Unique list identifier/ Уникальный идентификатор списка */
-    i(this, "id", ++F);
+    i(this, "id", ++$);
     /**
      * Computed list data
      *
@@ -544,8 +606,8 @@ class T {
         listId: this.id
       };
     }));
-    this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = n, this.components = a, this.slots = p, this.emits = c, this.search = new C(this.props), this.focus = new A(this.props, this.element, this.id), this.data = new S(
-      I(this.props, "list"),
+    this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = a, this.components = n, this.slots = g, this.emits = d, this.search = new f(this.props), this.focus = new v(this.props, this.element, this.id), this.data = new I(
+      M(this.props, "list"),
       this.focus.focus,
       this.search.highlight,
       this.refs.highlightLengthStart,
@@ -556,7 +618,7 @@ class T {
       this.refs.liteThreshold,
       void 0,
       this.refs.max
-    ), this.go = new D(this.props, this.focus, this.data, this.emits), this.control = new G(this.props, this.search, this.data, this.go), this.event = new E(void 0, void 0, c), this.windowClasses = new L(r);
+    ), this.go = new y(this.props, this.focus, this.data, this.emits), this.control = new b(this.props, this.search, this.data, this.go), this.event = new k(void 0, void 0, d), this.windowClasses = new w(r);
   }
   /**
    * Returns information about the opening status of a group item.
@@ -692,21 +754,23 @@ class T {
     );
   }
 }
-const V = {
+const K = {
   keyLabel: "label",
   keyValue: "value",
   tag: "div",
+  roleItem: "menuitem",
   // :default [!] System label / Системная метка
   axis: "y"
 };
-class _ extends B {
+class Q extends G {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(e, s, r) {
+  constructor(e, s, r, a = U) {
     super(
       e,
       s,
@@ -768,7 +832,8 @@ class _ extends B {
         class: [
           (s = this.classes) == null ? void 0 : s.value.space,
           this.item.windowClasses.get().static
-        ]
+        ],
+        ...c.role("separator")
       });
     });
     /**
@@ -784,7 +849,8 @@ class _ extends B {
         class: [
           (s = this.classes) == null ? void 0 : s.value.line,
           this.item.windowClasses.get().static
-        ]
+        ],
+        ...c.role("separator")
       });
     });
     /**
@@ -800,7 +866,8 @@ class _ extends B {
         class: [
           (s = this.classes) == null ? void 0 : s.value.subtitle,
           this.item.windowClasses.get().static
-        ]
+        ],
+        ...c.role("separator")
       }, e.label);
     });
     /**
@@ -812,7 +879,7 @@ class _ extends B {
     i(this, "renderHtml", (e) => {
       var r;
       const s = {
-        key: e.label && M(e.value) ? e.label : e.value,
+        key: e.label && T(e.value) ? e.label : e.value,
         class: [
           (r = this.classes) == null ? void 0 : r.value.html,
           this.item.windowClasses.get().static
@@ -860,7 +927,7 @@ class _ extends B {
         list: () => this.renderDataByItem("menu", this.item.getList(e))
       }
     ));
-    this.item = new T(
+    this.item = new a(
       this.props,
       this.refs,
       this.element,
@@ -923,7 +990,8 @@ class _ extends B {
       {
         ...this.getAttrs(),
         ref: this.element,
-        class: (e = this.classes) == null ? void 0 : e.value.main
+        class: (e = this.classes) == null ? void 0 : e.value.main,
+        ...c.role(this.props.role)
       },
       this.renderData()
     );
@@ -937,32 +1005,32 @@ class _ extends B {
    * @param first is the first element/ является ли первым элементом
    */
   renderDataByItem(e, s, r = !1) {
-    const n = [];
-    return s.forEach((a) => {
-      switch (a.type) {
+    const a = [];
+    return s.forEach((n) => {
+      switch (n.type) {
         case "space":
-          n.push(this.renderSpace(a));
+          a.push(this.renderSpace(n));
           break;
         case "line":
-          n.push(this.renderLine(a));
+          a.push(this.renderLine(n));
           break;
         case "subtitle":
-          n.push(this.renderSubtitle(a));
+          a.push(this.renderSubtitle(n));
           break;
         case "html":
-          n.push(this.renderHtml(a));
+          a.push(this.renderHtml(n));
           break;
         case "group":
-          this.isHighlight(a) && n.push(this.renderGroup(a));
+          this.isHighlight(n) && a.push(this.renderGroup(n));
           break;
         case "menu":
-          this.isHighlight(a) && n.push(this.renderMenu(a, r));
+          this.isHighlight(n) && a.push(this.renderMenu(n, r));
           break;
         default:
-          n.push(this.renderItem(e, a));
+          a.push(this.renderItem(e, n));
           break;
       }
-    }), n.push(o("div")), n;
+    }), a.push(o("div")), a;
   }
   /**
    * Determines if highlighting is required.
@@ -992,7 +1060,7 @@ class _ extends B {
   }
 }
 export {
-  T as List,
-  _ as ListDesign,
-  V as defaultsList
+  U as List,
+  Q as ListDesign,
+  K as defaultsList
 };

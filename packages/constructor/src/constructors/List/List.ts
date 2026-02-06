@@ -19,10 +19,10 @@ import { ListFocus } from './ListFocus'
 import { ListGo } from './ListGo'
 import { ListControl } from './ListControl'
 
-import type { ListComponents, ListEmits, ListSlots } from './types'
-import type { ListProps } from './props'
 import type { IconValue } from '../Icon'
 import type { ListGroupSlotsPropsInclude } from '../ListGroup'
+import type { ListComponents, ListEmits, ListSlots } from './types'
+import type { ListProps } from './props'
 
 /** Maximum number of lists/ Максимальное количество списков */
 let listIdMax = 1
@@ -55,6 +55,13 @@ export class List {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param ListSearchConstructor class for working with search/ класс для работы с поиском
+   * @param ListFocusConstructor class for working with focus/ класс для работы с фокусом
+   * @param ListDataRefConstructor class for working with data list/ класс для работы со списком данных
+   * @param ListGoConstructor class for working with navigation/ класс для работы с навигацией
+   * @param ListControlConstructor class for working with control/ класс для работы с управлением
+   * @param EventClickIncludeConstructor class for working with click event/ класс для работы с событием клика
+   * @param WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
    */
   constructor(
     protected readonly props: ListProps,
@@ -64,12 +71,19 @@ export class List {
     protected readonly className: string,
     protected readonly components?: DesignComp<ListComponents, ListProps>,
     protected readonly slots?: ListSlots,
-    protected readonly emits?: ConstrEmit<ListEmits>
+    protected readonly emits?: ConstrEmit<ListEmits>,
+    ListSearchConstructor: typeof ListSearch = ListSearch,
+    ListFocusConstructor: typeof ListFocus = ListFocus,
+    ListDataRefConstructor: typeof ListDataRef = ListDataRef,
+    ListGoConstructor: typeof ListGo = ListGo,
+    ListControlConstructor: typeof ListControl = ListControl,
+    EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude,
+    WindowClassesIncludeConstructor: typeof WindowClassesInclude = WindowClassesInclude
   ) {
-    this.search = new ListSearch(this.props)
-    this.focus = new ListFocus(this.props, this.element, this.id)
+    this.search = new ListSearchConstructor(this.props)
+    this.focus = new ListFocusConstructor(this.props, this.element, this.id)
 
-    this.data = new ListDataRef(
+    this.data = new ListDataRefConstructor(
       toRef(this.props, 'list'),
       this.focus.focus,
       this.search.highlight,
@@ -83,11 +97,11 @@ export class List {
       this.refs.max
     )
 
-    this.go = new ListGo(this.props, this.focus, this.data, this.emits)
-    this.control = new ListControl(this.props, this.search, this.data, this.go)
+    this.go = new ListGoConstructor(this.props, this.focus, this.data, this.emits)
+    this.control = new ListControlConstructor(this.props, this.search, this.data, this.go)
 
-    this.event = new EventClickInclude(undefined, undefined, emits)
-    this.windowClasses = new WindowClassesInclude(classDesign)
+    this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
+    this.windowClasses = new WindowClassesIncludeConstructor(classDesign)
   }
 
   /**

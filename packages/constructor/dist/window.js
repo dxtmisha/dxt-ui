@@ -1,17 +1,17 @@
-var U = Object.defineProperty;
-var V = (h, t, e) => t in h ? U(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
-var i = (h, t, e) => V(h, typeof t != "symbol" ? t + "" : t, e);
-import { h as p, computed as m, ref as v, watch as f, onMounted as G, onUnmounted as K, Teleport as j } from "vue";
-import { toBind as Z, getBind as z, getRef as J, executePromise as y, getElement as M, isDomRuntime as B, EventItem as S, setRef as Q, frame as tt, isEnter as et, getMouseClientX as st, getMouseClientY as it, DesignConstructorAbstract as nt } from "@dxtmisha/functional";
+var V = Object.defineProperty;
+var G = (h, t, e) => t in h ? V(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
+var i = (h, t, e) => G(h, typeof t != "symbol" ? t + "" : t, e);
+import { h as p, computed as m, ref as v, watch as f, onMounted as K, onUnmounted as j, Teleport as Z } from "vue";
+import { toBind as z, getBind as J, getRef as Q, executePromise as y, getElement as S, isDomRuntime as B, EventItem as k, setRef as tt, frame as et, isEnter as st, getMouseClientX as it, getMouseClientY as nt, DesignConstructorAbstract as ot } from "@dxtmisha/functional";
 import { A as w } from "./AriaStaticInclude-BVCgDZbU.js";
-import { M as ot } from "./ModelInclude-BiYm_iCQ.js";
-import { T as rt } from "./TabIndexInclude-D8IAq5y9.js";
-import { T as ht } from "./TextInclude-CodMN5BH.js";
-import { a as c, _ as b, b as at } from "./WindowClassesInclude-B56usxgx.js";
-import { W as Xt } from "./WindowClassesInclude-B56usxgx.js";
-import { W as lt } from "./WindowEsc-DTwn4Vsz.js";
-import { W as qt } from "./WindowInclude-BWm4-0Gh.js";
-class ct {
+import { M as rt } from "./ModelInclude-BiYm_iCQ.js";
+import { T as ht } from "./TabIndexInclude-D8IAq5y9.js";
+import { T as at } from "./TextInclude-CodMN5BH.js";
+import { a as c, _ as b, b as lt } from "./WindowClassesInclude-B56usxgx.js";
+import { W as _t } from "./WindowClassesInclude-B56usxgx.js";
+import { W as ct } from "./WindowEsc-DTwn4Vsz.js";
+import { W as Ut } from "./WindowInclude-BWm4-0Gh.js";
+class dt {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -31,7 +31,7 @@ class ct {
     if (this.components) {
       const o = this.components.renderOne(
         "scrollbar",
-        Z(
+        z(
           {
             tag: t,
             class: `${this.className}__scrollbar`,
@@ -84,7 +84,7 @@ class ct {
     };
   }
 }
-class dt {
+class ut {
   /**
    * Constructor for working with images.
    *
@@ -102,7 +102,7 @@ class dt {
     /**
      * Возвращает данные для передачи компоненту/ Returns data to pass to the component
      */
-    i(this, "bind", m(() => z(this.props.image, J(this.extra), "value")));
+    i(this, "bind", m(() => J(this.props.image, Q(this.extra), "value")));
     this.props = t, this.components = e, this.emits = s, this.extra = n;
   }
   render() {
@@ -114,7 +114,7 @@ class dt {
   }
 }
 const g = -1;
-class ut {
+class pt {
   constructor(t) {
     i(this, "x", g);
     i(this, "y", g);
@@ -202,7 +202,7 @@ class ut {
     return this;
   }
 }
-class pt {
+class gt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -269,7 +269,7 @@ class pt {
     return this.props.closing ? await y(this.props.closing) : !1;
   }
 }
-class gt {
+class mt {
   /**
    * Constructor
    * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
@@ -337,7 +337,7 @@ class gt {
     return this.classes.findBodyContext();
   }
 }
-class mt {
+class ft {
   /**
    * Constructor
    * @param element an object of the class for working with elements/ объект класса для работы с элементами
@@ -432,7 +432,7 @@ class mt {
     }
   }
 }
-class ft {
+class yt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -480,7 +480,7 @@ class ft {
     (t = this.element.getMain()) == null || t.removeEventListener("animationend", this.onTransitionend);
   }
 }
-class yt {
+class wt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -525,7 +525,7 @@ class yt {
     return this.control = ((e = t == null ? void 0 : t.closest(`.${this.classes.list.control}`)) == null ? void 0 : e.dataset.window) === this.classes.getId(), this;
   }
 }
-class wt {
+class vt {
   /**
    * Constructor
    * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
@@ -693,7 +693,7 @@ class wt {
     return o < this.padding ? "0px" : t + s >= this.innerHeight - this.padding ? `${n}px` : `${o}px`;
   }
 }
-class vt {
+class bt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -763,7 +763,7 @@ class vt {
     var e, s, n;
     const t = this.element.getBodyContext();
     if (this.isOver() && this.props.overElement && t && t.scrollHeight > t.offsetHeight) {
-      const o = (e = M(this.props.overElement)) == null ? void 0 : e.getBoundingClientRect(), r = (s = this.element.getBody()) == null ? void 0 : s.getBoundingClientRect(), a = t == null ? void 0 : t.getBoundingClientRect(), l = (n = this.element.getControl()) == null ? void 0 : n.getBoundingClientRect();
+      const o = (e = S(this.props.overElement)) == null ? void 0 : e.getBoundingClientRect(), r = (s = this.element.getBody()) == null ? void 0 : s.getBoundingClientRect(), a = t == null ? void 0 : t.getBoundingClientRect(), l = (n = this.element.getControl()) == null ? void 0 : n.getBoundingClientRect();
       if (t && o && r && a) {
         const d = o.height / 2, u = o.top - a.top;
         if (l && this.coordinates.getMaxHeight() === r.height) {
@@ -823,7 +823,7 @@ class vt {
     var o, r;
     const s = (e - t) / 2;
     if (this.props.overElement) {
-      const a = (o = M(this.props.overElement)) == null ? void 0 : o.getBoundingClientRect(), l = (r = this.element.getBody()) == null ? void 0 : r.getBoundingClientRect();
+      const a = (o = S(this.props.overElement)) == null ? void 0 : o.getBoundingClientRect(), l = (r = this.element.getBody()) == null ? void 0 : r.getBoundingClientRect();
       if (a && l) {
         const d = a.top - l.top, u = a.height / 2;
         return e - d - u - s;
@@ -913,7 +913,7 @@ class vt {
     return t < r ? r : t + n <= o - r ? t : o - n - r;
   }
 }
-class bt {
+class Ct {
   /**
    * Constructor
    * @param client object for working with mouse pointer coordinates/ объект для работы с координатами указателя мыши
@@ -966,7 +966,7 @@ class bt {
     return this.x = null, this.y = null, this;
   }
 }
-class Ct {
+class xt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -982,7 +982,7 @@ class Ct {
      * Вызываемая функция при срабатывании события.
      */
     i(this, "listener", () => {
-      Q(this.item, this.isStatic());
+      tt(this.item, this.isStatic());
     });
     /**
      * Performs status check and activates events when turned on.
@@ -1008,7 +1008,7 @@ class Ct {
    * Стартует событие слежения за статусами.
    */
   start() {
-    this.event || (this.event = new S(window, ["resize"], this.listener)), this.event.start();
+    this.event || (this.event = new k(window, ["resize"], this.listener)), this.event.start();
   }
   /**
    * Restores the data to its previous state.
@@ -1028,7 +1028,7 @@ class Ct {
     return !!(t && getComputedStyle(t).getPropertyValue(b).includes("--STATIC--"));
   }
 }
-class xt {
+class Bt {
   /**
    * Constructor
    * @param classes an object for working with classes and searching for elements/ объект для работы с классами и поиском элементов
@@ -1063,7 +1063,7 @@ class xt {
     };
   }
 }
-class Bt {
+class Mt {
   /**
    * Constructor
    * @param element an object of the class for working with elements/ объект класса для работы с элементами
@@ -1098,7 +1098,7 @@ class Bt {
     }
   }
 }
-class Mt {
+class St {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1231,7 +1231,7 @@ class Mt {
    * Изменение расположения окна меню.
    */
   watchCoordinates() {
-    return tt(
+    return et(
       () => {
         const t = this.element.getMain();
         if (t) {
@@ -1253,7 +1253,7 @@ class Mt {
     }, 48), this.status.toClose();
   }
 }
-class St {
+class kt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1425,7 +1425,7 @@ class St {
     return !!this.getTarget().closest(`.${this.classes.list.controlOpenOnly}`);
   }
 }
-class kt {
+class It {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1454,7 +1454,7 @@ class kt {
      * @param event event object/ объект события
      */
     i(this, "onKeydown", async (t) => {
-      et(t) && (t.preventDefault(), await this.onClick(t));
+      st(t) && (t.preventDefault(), await this.onClick(t));
     });
     /**
      * Events of pressing the right mouse button on a control element.
@@ -1480,7 +1480,7 @@ class kt {
     i(this, "onGlobal", async (t) => {
       (!t || t.type === "click" && (!this.props.contextmenu || this.open.item.value) || t.type === "contextmenu" && this.props.contextmenu) && (this.open.item.value ? (this.flash.setControl(t == null ? void 0 : t.target), await this.verification.update(t == null ? void 0 : t.target)) : this.event.stop());
     });
-    this.props = t, this.tabIndex = e, this.status = s, this.client = n, this.flash = o, this.open = r, this.verification = a, this.event = new S(
+    this.props = t, this.tabIndex = e, this.status = s, this.client = n, this.flash = o, this.open = r, this.verification = a, this.event = new k(
       "body",
       ["click", "contextmenu"],
       this.onGlobal
@@ -1524,12 +1524,12 @@ class kt {
    */
   async on(t) {
     this.tabIndex.updateOldElement(), this.client.set(
-      st(t),
-      it(t)
+      it(t),
+      nt(t)
     ), await this.verification.update(t.target);
   }
 }
-class It {
+class Wt {
   /**
    * Constructor
    * @param props input data / входные данные
@@ -1601,7 +1601,7 @@ class It {
     }), this.elements = [];
   }
 }
-class Wt {
+class Tt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1636,7 +1636,7 @@ class Wt {
    * @param TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
    * @param TextConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(t, e, s, n, o, r, a, l, d = at, u = ut, C = wt, x = gt, k = xt, I = lt, W = kt, T = yt, O = It, H = pt, E = Mt, A = bt, $ = ft, D = vt, P = Ct, N = mt, R = Bt, L = St, Y = dt, F = ot, X = ct, _ = rt, q = ht) {
+  constructor(t, e, s, n, o, r, a, l, d = lt, u = pt, C = vt, x = mt, I = Bt, W = ct, T = It, O = wt, E = Wt, H = gt, A = St, $ = Ct, D = yt, P = bt, N = xt, R = ft, L = Mt, Y = kt, F = ut, X = rt, _ = dt, q = ht, U = at) {
     /** Client instance for window management/ Экземпляр клиента для управления окном */
     i(this, "client");
     /** Hook instance for window events/ Экземпляр хука для событий окна */
@@ -1717,15 +1717,15 @@ class Wt {
     i(this, "stop", () => {
       this.event.stop(), this.staticMode.stop();
     });
-    this.props = t, this.refs = e, this.classDesign = n, this.className = o, this.components = r, this.slots = a, this.emits = l, this.hook = new H(t), this.classes = new d(o), this.element = new x(this.classes, s), this.client = new u(this.element), this.tabIndex = new _(
+    this.props = t, this.refs = e, this.classDesign = n, this.className = o, this.components = r, this.slots = a, this.emits = l, this.hook = new H(t), this.classes = new d(o), this.element = new x(this.classes, s), this.client = new u(this.element), this.tabIndex = new q(
       () => this.element.getBody()
-    ), this.status = new N(this.element), this.persistent = new $(t, this.classes, this.element), this.flash = new T(t, this.classes), this.coordinates = new C(this.classes, this.element), this.position = new D(t, this.client, this.element, this.coordinates), this.origin = new A(this.client, this.element, this.position), this.staticMode = new P(t, e, this.element), this.emit = new k(this.classes, this.element, l), this.styles = new R(
+    ), this.status = new R(this.element), this.persistent = new D(t, this.classes, this.element), this.flash = new O(t, this.classes), this.coordinates = new C(this.classes, this.element), this.position = new P(t, this.client, this.element, this.coordinates), this.origin = new $(this.client, this.element, this.position), this.staticMode = new N(t, e, this.element), this.emit = new I(this.classes, this.element, l), this.styles = new L(
       this.element,
       this.coordinates,
       this.position,
       this.origin,
       o
-    ), this.open = new E(
+    ), this.open = new A(
       t,
       this.client,
       this.hook,
@@ -1738,14 +1738,14 @@ class Wt {
       this.origin,
       this.emit,
       this.styles
-    ), this.verification = new L(
+    ), this.verification = new Y(
       t,
       this.persistent,
       this.classes,
       this.element,
       this.staticMode,
       this.open
-    ), this.event = new W(
+    ), this.event = new T(
       t,
       this.tabIndex,
       this.status,
@@ -1753,43 +1753,47 @@ class Wt {
       this.flash,
       this.open,
       this.verification
-    ), this.scrollbar = new X(
+    ), this.scrollbar = new _(
       t,
       o,
       r,
       l
-    ), this.image = new Y(
+    ), this.image = new F(
       t,
       r,
       l
-    ), this.esc = new I(
+    ), this.esc = new W(
       this.open.item,
       () => this.open.close(),
-      () => !this.props.persistent
-    ), this.text = new q(this.props), this.hidden = new O(
+      () => {
+        var M;
+        return !this.props.persistent && ((M = this.props.closeOnEsc) != null ? M : !0);
+      }
+    ), this.text = new U(this.props), this.hidden = new E(
       this.props,
       this.classes,
       this.staticMode,
       this.open
-    ), new F("open", this.emits, this.open.item), G(() => {
+    ), new X("open", this.emits, this.open.item), K(() => {
       f([e.open], () => this.open.set(t.open), { immediate: !0 });
-    }), K(this.stop);
+    }), j(this.stop);
   }
   /** Checks if the role is a menu/ Проверяет, является ли роль меню */
   isMenu() {
     return this.props.role === "menu" || this.props.role === "menuitemcheckbox" || this.props.role === "menuitemradio";
   }
 }
-const Rt = {
+const Lt = {
   indent: 4,
   ariaHaspopup: "dialog",
   role: "dialog",
+  closeOnEsc: !0,
   // :default [!] System label / Системная метка
   axis: "y",
   imagePosition: "top",
   overscroll: !0
 };
-class Lt extends nt {
+class Yt extends ot {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -1797,7 +1801,7 @@ class Lt extends nt {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor window item class/ класс элемента окна
    */
-  constructor(e, s, n, o = Wt) {
+  constructor(e, s, n, o = Tt) {
     super(
       e,
       s,
@@ -1995,7 +1999,7 @@ class Lt extends nt {
     const e = [];
     return this.initSlot("control", e, this.item.slotData.value), this.item.open.inDom.value && (this.item.staticMode.item.value || this.props.embedded ? e.push(this.renderMain()) : e.push(
       p(
-        j,
+        Z,
         {
           key: "teleport",
           to: "body"
@@ -2013,9 +2017,9 @@ class Lt extends nt {
   }
 }
 export {
-  Wt as Window,
-  Xt as WindowClassesInclude,
-  Lt as WindowDesign,
-  qt as WindowInclude,
-  Rt as defaultsWindow
+  Tt as Window,
+  _t as WindowClassesInclude,
+  Yt as WindowDesign,
+  Ut as WindowInclude,
+  Lt as defaultsWindow
 };

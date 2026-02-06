@@ -16,8 +16,9 @@ export declare class ListDesign<COMP extends ListComponents, EXPOSE extends List
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor class for working with the item/ класс для работы с элементом
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ListEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, ListEmits, P>, ItemConstructor?: typeof List);
     /**
      * Initialization of all the necessary properties for work
      *

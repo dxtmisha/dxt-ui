@@ -73,6 +73,7 @@ export type WindowPropsBasic<
     'onUpdate:modelOpen'?: (value: boolean) => void
 
     // Technical
+    'closeOnEsc'?: boolean
     /**
      * The window will be displayed inside the current parent element/
      * Окно будет отображаться внутри текущего родительского элемента
@@ -96,6 +97,7 @@ export const defaultsWindow = {
   indent: 4,
   ariaHaspopup: 'dialog',
   role: 'dialog',
+  closeOnEsc: true,
   ...{
     // :default [!] System label / Системная метка
     axis: 'y',

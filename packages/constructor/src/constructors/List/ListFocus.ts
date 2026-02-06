@@ -6,12 +6,16 @@ import {
 } from '@dxtmisha/functional'
 import type { ListProps } from './props'
 
+/** Maximum number of attempts to set focus/ Максимальное количество попыток установки фокуса */
+const LIST_MAX_EXPECTATIONS_FOCUS = 24
+
 /**
  * Class for working with element focus.
  *
  * Класс для работы с фокусировкой элемента.
  */
 export class ListFocus {
+  /** Active item/ Активный элемент */
   readonly item = ref<ListDataItem>()
 
   /**
@@ -31,9 +35,9 @@ export class ListFocus {
   readonly focus = computed<ListSelectedItem | undefined>(() => this.item.value?.index ?? this.props.focus)
 
   /**
-   * Returns the selected element.
+   * Checks if the element exists.
    *
-   * Возвращает выбранный элемент.
+   * Проверяет, существует ли элемент.
    * @param index element index/ индекс элемента
    */
   isElement(index?: string): boolean {
@@ -123,6 +127,7 @@ export class ListFocus {
   set(item: ListDataItem | undefined): this {
     if (this.item.value !== item) {
       this.item.value = item
+      this.toFocus()
     }
 
     return this
@@ -191,6 +196,27 @@ export class ListFocus {
       && element.closest(selector)
     ) {
       goScroll(selector, element)
+    }
+  }
+
+  /**
+   * Sets focus to the element.
+   *
+   * Устанавливает фокус на элемент.
+   * @param max maximum number of attempts/ максимальное количество попыток
+   */
+  protected toFocus(max: number = LIST_MAX_EXPECTATIONS_FOCUS): void {
+    if (max > 0) {
+      const element = this.getElement()
+
+      if (element) {
+        element.focus()
+      } else {
+        (document.activeElement as HTMLElement)?.blur()
+        setTimeout(() => {
+          this.toFocus(max - 1)
+        }, 128)
+      }
     }
   }
 }
