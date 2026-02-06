@@ -102,5 +102,58 @@ export const wikiDescriptionsBlock: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Expose'} type={'labelId'}/>
 <StorybookDescriptions componentName={'Expose'} type={'descriptionId'}/>
 `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item">
+  <Block v-bind="args">
+      Main content goes here.
+  </Block>
+</div>
+    `,
+    description: `
+Block is a versatile structural component used to organize content with a standardized layout.
+It acts as a container that automatically arranges headers, labels, descriptions, icons, and body content.
+
+**Key Features:**
+1. **Layout Structure:**
+   - **Headline:** Top-most text area (prop \`headline\` or slot \`#headline\`).
+   - **Header Area:** Contains the icon, label, caption, and trailing actions.
+   - **Description:** Text block below the header.
+   - **Content:** The \`#default\` slot allows placing custom content inside the block.
+
+2. **Content Props:**
+   - \`label\`: Main title.
+   - \`caption\`: Auxiliary text next to or below the label.
+   - \`description\`: Detailed text description.
+   - \`icon\`: Visual indicator (icon name).
+   - \`headline\`: Section heading above the main header.
+
+3. **Customization:**
+   - \`tag\`: Changes the root HTML element (e.g., \`section\`, \`article\`, \`div\`).
+   - \`#trailing\`: Slot for actions or content on the right side of the header.
+
+**When to use:**
+- **Cards:** To structure the header and content of a card.
+- **List Items:** For complex list items with icons and text.
+- **Sections:** To define titled sections within a page or modal.
+
+**Usage Examples:**
+
+- **Simple Card Header:**
+  \`<Block label="Card Title" description="Subtitle text" icon="info" />\`
+
+- **Section with Content:**
+  \`<Block headline="Section 1" label="Details">
+     <p>Custom content...</p>
+   </Block>\`
+
+- **List Item with Action:**
+  \`<Block label="Item Name" caption="Status: Active">
+     <template #trailing>
+       <button>Edit</button>
+     </template>
+   </Block>\`
+    `
   }
 }

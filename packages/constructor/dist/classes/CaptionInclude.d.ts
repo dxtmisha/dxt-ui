@@ -20,7 +20,7 @@ export declare class CaptionInclude {
      */
     constructor(props: Readonly<CaptionProps>, className: string, slots?: CaptionSlots | undefined, skeleton?: SkeletonInclude | undefined);
     /**
-     * Returns true if caption is filled
+     * Returns true if the caption is filled
      *
      * Возвращает true, если caption заполнен
      */

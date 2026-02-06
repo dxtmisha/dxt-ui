@@ -1,12 +1,12 @@
-var g = Object.defineProperty;
-var v = (n, t, e) => t in n ? g(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var s = (n, t, e) => v(n, typeof t != "symbol" ? t + "" : t, e);
+var v = Object.defineProperty;
+var f = (r, s, e) => s in r ? v(r, s, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[s] = e;
+var t = (r, s, e) => f(r, typeof s != "symbol" ? s + "" : s, e);
 import { computed as o, h as l } from "vue";
-import { DesignConstructorAbstract as f } from "@dxtmisha/functional";
-import { A as S } from "./AriaStaticInclude-D1bSJaBp.js";
-import { L as y } from "./LabelInclude-D-mLvjK5.js";
+import { DesignConstructorAbstract as y } from "@dxtmisha/functional";
+import { A as c } from "./AriaStaticInclude-D1bSJaBp.js";
+import { L as S } from "./LabelInclude-D-mLvjK5.js";
 import { D as C } from "./DescriptionInclude-D4ane9aR.js";
-import { C as H } from "./CaptionInclude-AFVF4qyd.js";
+import { C as H } from "./CaptionInclude-VhkGstz9.js";
 import { I } from "./IconInclude-CLqwI29Q.js";
 class k {
   /**
@@ -24,45 +24,45 @@ class k {
    * @param CaptionIncludeConstructor class for working with the caption/ класс для работы с подписью
    * @param IconIncludeConstructor class for working with the icon/ класс для работы с иконкой
    */
-  constructor(t, e, i, a, r, d, h, c, u = y, p = C, m = H, b = I) {
+  constructor(s, e, i, a, n, d, h, u, p = S, m = C, b = H, g = I) {
     /**
      * Object for working with label/
      * Объект для работы с меткой
      */
-    s(this, "label");
+    t(this, "label");
     /**
      * Object for working with description/
      * Объект для работы с описанием
      */
-    s(this, "description");
+    t(this, "description");
     /**
      * Object for working with caption/
      * Объект для работы с подписью
      */
-    s(this, "caption");
+    t(this, "caption");
     /**
      * Object for working with icon/
      * Объект для работы с иконкой
      */
-    s(this, "icon");
+    t(this, "icon");
     /**
      * Checks if the headline exists/
      * Проверяет, существует ли заголовок
      */
-    s(this, "isHeadline", o(() => !!(this.props.headline || this.slots && "headline" in this.slots)));
+    t(this, "isHeadline", o(() => !!(this.props.headline || this.slots && "headline" in this.slots)));
     /**
      * Checks if the header exists/
      * Проверяет, существует ли шапка
      */
-    s(this, "isHeader", o(() => this.label.is.value || this.caption.is.value || this.description.is.value));
+    t(this, "isHeader", o(() => this.label.is.value || this.caption.is.value || this.description.is.value));
     /**
      * Tag name/
      * Название тега
      */
-    s(this, "tag", o(() => this.props.tag || "div"));
-    this.props = t, this.refs = e, this.element = i, this.classDesign = a, this.className = r, this.components = d, this.slots = h, this.emits = c, this.label = new u(
-      t,
-      r,
+    t(this, "tag", o(() => this.props.tag || "div"));
+    this.props = s, this.refs = e, this.element = i, this.classDesign = a, this.className = n, this.components = d, this.slots = h, this.emits = u, this.label = new p(
+      s,
+      n,
       void 0,
       h,
       void 0,
@@ -70,10 +70,10 @@ class k {
       !0,
       void 0,
       o(() => this.props.tagHeader || "h3")
-    ), this.caption = new m(t, r, h), this.description = new p(t, r, h), this.icon = new b(t, r, d);
+    ), this.caption = new b(s, n, h), this.description = new m(s, n, h), this.icon = new g(s, n, d);
   }
 }
-class R extends f {
+class P extends y {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -81,19 +81,19 @@ class R extends f {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor block item class/ класс элемента блока
    */
-  constructor(e, i, a, r = k) {
+  constructor(e, i, a, n = k) {
     super(
       e,
       i,
       a
     );
-    s(this, "item");
+    t(this, "item");
     /**
      * Headline rendering.
      *
      * Рендеринг заголовка.
      */
-    s(this, "renderHeadline", () => {
+    t(this, "renderHeadline", () => {
       var e;
       if (this.item.isHeadline.value) {
         const i = [];
@@ -111,7 +111,7 @@ class R extends f {
      *
      * Рендеринг заголовка.
      */
-    s(this, "renderHeader", () => {
+    t(this, "renderHeader", () => {
       var e;
       if (this.item.isHeader.value) {
         const i = [
@@ -123,8 +123,7 @@ class R extends f {
         return [
           l("div", {
             key: "header",
-            class: (e = this.classes) == null ? void 0 : e.value.header,
-            ...S.labelledby(this.item.label.id.value)
+            class: (e = this.classes) == null ? void 0 : e.value.header
           }, i)
         ];
       }
@@ -135,7 +134,7 @@ class R extends f {
      *
      * Рендеринг правого контента.
      */
-    s(this, "renderTrailing", () => {
+    t(this, "renderTrailing", () => {
       var i, a;
       const e = [];
       return (i = this.slots) != null && i.trailing && (e.push(l("div", {
@@ -148,7 +147,7 @@ class R extends f {
      *
      * Рендеринг тела.
      */
-    s(this, "renderBody", () => {
+    t(this, "renderBody", () => {
       var i;
       const e = [
         ...this.renderHeadline(),
@@ -162,7 +161,7 @@ class R extends f {
         }, e)
       ];
     });
-    this.item = new r(
+    this.item = new n(
       this.props,
       this.refs,
       this.element,
@@ -214,17 +213,32 @@ class R extends f {
    * Метод для рендеринга.
    */
   initRender() {
-    var i;
     const e = [
       ...this.renderBody()
     ];
-    return this.initSlot("default", e), l(this.item.tag.value, {
+    return this.initSlot("default", e), l(this.item.tag.value, this.getProps(), e);
+  }
+  /**
+   * Returns properties for the main element.
+   *
+   * Возвращает свойства для главного элемента.
+   */
+  getProps() {
+    var i;
+    const e = {
       ...this.getAttrs(),
       class: (i = this.classes) == null ? void 0 : i.value.main
-    }, e);
+    };
+    return this.item.label.is.value && Object.assign(
+      e,
+      c.labelledby(this.item.label.id.value)
+    ), this.item.description.is.value && Object.assign(
+      e,
+      c.describedby(this.item.description.id.value)
+    ), e;
   }
 }
 export {
   k as B,
-  R as a
+  P as a
 };

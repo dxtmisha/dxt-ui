@@ -102,16 +102,6 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
-  'window.embedded': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.technical,
-      description: {
-        en: 'The window will be displayed inside the current parent element',
-        ru: 'Окно будет отображаться внутри текущего родительского элемента'
-      }
-    }
-  },
   'window.flash': {
     type: StorybookControl.boolean,
     options: {

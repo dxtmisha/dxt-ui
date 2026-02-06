@@ -1,5 +1,5 @@
 import { VNode } from 'vue';
-import { ConstrOptions, ConstrStyles, DesignConstructorAbstract } from '@dxtmisha/functional';
+import { ConstrOptions, ConstrStyles, DesignConstructorAbstract, ConstrClass } from '@dxtmisha/functional';
 import { Block } from './Block';
 import { BlockPropsBasic } from './props';
 import { BlockClasses, BlockComponents, BlockEmits, BlockExpose, BlockSlots } from './types';
@@ -64,4 +64,12 @@ export declare class BlockDesign<COMP extends BlockComponents, EXPOSE extends Bl
      * Рендеринг тела.
      */
     protected readonly renderBody: () => VNode[];
+    /**
+     * Returns properties for the main element.
+     *
+     * Возвращает свойства для главного элемента.
+     */
+    protected getProps(): {
+        class: ConstrClass | undefined;
+    };
 }

@@ -124,10 +124,7 @@ export class BlockDesign<
 
     this.initSlot('default', children)
 
-    return h(this.item.tag.value, {
-      ...this.getAttrs(),
-      class: this.classes?.value.main
-    }, children)
+    return h(this.item.tag.value, this.getProps(), children)
   }
 
   /**
@@ -173,8 +170,7 @@ export class BlockDesign<
       return [
         h('div', {
           key: 'header',
-          class: this.classes?.value.header,
-          ...AriaStaticInclude.labelledby(this.item.label.id.value)
+          class: this.classes?.value.header
         }, children)
       ]
     }
@@ -220,5 +216,33 @@ export class BlockDesign<
         class: this.classes?.value.body
       }, children)
     ]
+  }
+
+  /**
+   * Returns properties for the main element.
+   *
+   * Возвращает свойства для главного элемента.
+   */
+  protected getProps() {
+    const props = {
+      ...this.getAttrs(),
+      class: this.classes?.value.main
+    }
+
+    if (this.item.label.is.value) {
+      Object.assign(
+        props,
+        AriaStaticInclude.labelledby(this.item.label.id.value)
+      )
+    }
+
+    if (this.item.description.is.value) {
+      Object.assign(
+        props,
+        AriaStaticInclude.describedby(this.item.description.id.value)
+      )
+    }
+
+    return props
   }
 }

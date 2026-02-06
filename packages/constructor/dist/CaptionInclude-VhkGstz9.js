@@ -13,7 +13,7 @@ class f {
    */
   constructor(s, t, o, e) {
     /**
-     * Returns true if caption is filled
+     * Returns true if the caption is filled
      *
      * Возвращает true, если caption заполнен
      */

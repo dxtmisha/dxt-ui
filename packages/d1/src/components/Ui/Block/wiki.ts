@@ -8,9 +8,10 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'caption', type: 'string | number' },
   { name: 'description', type: 'string | number' },
+  { name: 'descriptionId', type: 'string' },
   { name: 'headline', type: 'string' },
-  { name: 'icon', type: 'IconValue<IconProps>' },
-  { name: 'iconAttrs', type: 'ConstrBind<IconProps>' },
+  { name: 'icon', type: 'IconValue<Icon>' },
+  { name: 'iconAttrs', type: 'ConstrBind<Icon>' },
   { name: 'iconDir', type: 'boolean' },
   { name: 'iconHide', type: 'boolean' },
   { name: 'iconPalette', type: 'boolean' },

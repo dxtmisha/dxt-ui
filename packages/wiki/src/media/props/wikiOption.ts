@@ -166,11 +166,10 @@ export const wikiOption: StorybookArgsToList = {
     isDemo: true
   },
   tag: {
-    type: StorybookControl.select,
+    type: StorybookControl.string,
     options: {
       category: StorybookCategory.option,
       type: 'string',
-      options: [],
       description: {
         en: 'Sets HTML tag for the component element',
         ru: 'Задает HTML‑тег для элемента компонента'
@@ -178,11 +177,10 @@ export const wikiOption: StorybookArgsToList = {
     }
   },
   tagBody: {
-    type: StorybookControl.select,
+    type: StorybookControl.string,
     options: {
       category: StorybookCategory.option,
       type: 'string',
-      options: [],
       description: {
         en: 'Sets HTML tag for the body/content container element',
         ru: 'Задает HTML‑тег для элемента контейнера тела/содержимого'
@@ -190,11 +188,10 @@ export const wikiOption: StorybookArgsToList = {
     }
   },
   tagHeader: {
-    type: StorybookControl.select,
+    type: StorybookControl.string,
     options: {
       category: StorybookCategory.option,
       type: 'string',
-      options: [],
       description: {
         en: 'Sets HTML tag for the header container element',
         ru: 'Задает HTML‑тег для элемента контейнера шапки'

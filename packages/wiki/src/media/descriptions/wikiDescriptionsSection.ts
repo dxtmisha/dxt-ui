@@ -105,5 +105,48 @@ export const wikiDescriptionsSection: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Expose'} type={'labelId'}/>
 <StorybookDescriptions componentName={'Expose'} type={'descriptionId'}/>
 `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item">
+  <Section v-bind="args">
+      Content of the section.
+  </Section>
+</div>
+    `,
+    description: `
+Section is a structural component used to divide a page into distinct thematic areas.
+It is a semantic alias for the \`Block\` component, inheriting all its layout and styling capabilities.
+
+**Key Features:**
+1. **Structure:**
+   - **Headline:** Top-level category text (\`headline\`).
+   - **Header:** Contains Icon, Label (Title), Caption, and Trailing actions.
+   - **Description:** Subtitle or explanatory text.
+   - **Content:** The main body of the section.
+
+2. **Usage:**
+   - Use \`Section\` to group related content within a Page.
+   - It provides a consistent header structure for page blocks.
+
+3. **Props & Slots:**
+   - Inherits all props from \`Block\` (\`label\`, \`icon\`, \`tag\`, etc.).
+   - Supports slots: \`#headline\`, \`#trailing\`, \`#default\`.
+
+**Usage Examples:**
+
+- **Standard Section:**
+  \`<Section headline="Account" label="Profile Settings">
+     <ProfileForm />
+   </Section>\`
+
+- **Section with Actions:**
+  \`<Section label="Recent Activity">
+     <template #trailing>
+       <button>View All</button>
+     </template>
+     <ActivityList />
+   </Section>\`
+    `
   }
 }

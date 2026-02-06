@@ -102,5 +102,54 @@ export const wikiDescriptionsPage: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Expose'} type={'labelId'}/>
 <StorybookDescriptions componentName={'Expose'} type={'descriptionId'}/>
 `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item">
+  <Page v-bind="args">
+      Main page content.
+  </Page>
+</div>
+    `,
+    description: `
+Page is a top-level structural component designed to wrap the main content of a view or document.
+It acts as a semantic container (typically rendering a \`<main>\` tag) and provides a standardized header structure.
+It inherits all functionality from the \`Block\` component.
+
+**Key Features:**
+1. **Semantic Structure:**
+   - Represents the main content area of the application.
+   - Provides a consistent layout for page headers.
+
+2. **Header Layout:**
+   - **Headline:** High-level category or breadcrumb-like text.
+   - **Label:** The primary page title.
+   - **Description:** Subtitle or page summary.
+   - **Icon:** Page icon.
+   - **Trailing:** Area for page-level actions (e.g., "Save", "Edit").
+
+3. **Customization:**
+   - Supports all \`Block\` props.
+   - Flexible content slot (\`#default\`).
+
+**When to use:**
+- As the root container for a route or view.
+- To provide a consistent title and action bar for a page.
+
+**Usage Examples:**
+
+- **Standard Page:**
+  \`<Page label="Home" description="Welcome back">
+     <DashboardWidgets />
+   </Page>\`
+
+- **Page with Actions:**
+  \`<Page headline="Settings" label="Profile">
+     <template #trailing>
+       <button>Save Changes</button>
+     </template>
+     <ProfileForm />
+   </Page>\`
+    `
   }
 }

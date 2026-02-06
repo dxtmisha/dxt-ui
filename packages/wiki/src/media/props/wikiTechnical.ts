@@ -21,6 +21,16 @@ export const wikiTechnical: StorybookArgsToList = {
       }
     }
   },
+  embedded: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'The window will be displayed inside the current parent element',
+        ru: 'Окно будет отображаться внутри текущего родительского элемента'
+      }
+    }
+  },
   helperId: {
     type: StorybookControl.string,
     options: {

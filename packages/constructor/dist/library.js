@@ -1,5 +1,5 @@
 import { A as a } from "./AriaStaticInclude-D1bSJaBp.js";
-import { C as o } from "./CaptionInclude-AFVF4qyd.js";
+import { C as o } from "./CaptionInclude-VhkGstz9.js";
 import { D as r } from "./DescriptionInclude-D4ane9aR.js";
 import { E as u } from "./EnabledInclude-JzHG2GuX.js";
 import { E as c } from "./EventClickInclude-CgbuezDm.js";
