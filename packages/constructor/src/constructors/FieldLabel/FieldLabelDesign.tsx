@@ -43,11 +43,13 @@ export class FieldLabelDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor field label item class/ класс элемента метки поля
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, FieldLabelEmits, P>
+    options?: ConstrOptions<COMP, FieldLabelEmits, P>,
+    ItemConstructor: typeof FieldLabel = FieldLabel
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class FieldLabelDesign<
       options
     )
 
-    this.item = new FieldLabel(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

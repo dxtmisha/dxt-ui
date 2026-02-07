@@ -35,6 +35,10 @@ export class FieldLabel {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param LabelConstructor class for creating a label/ класс для создания метки
+   * @param FieldCounterConstructor class for working with field counter/ класс для работы со счетчиком поля
+   * @param ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
+   * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
    */
   constructor(
     protected readonly props: FieldLabelProps,
@@ -44,11 +48,15 @@ export class FieldLabel {
     protected readonly className: string,
     protected readonly components?: DesignComp<FieldLabelComponents, FieldLabelProps>,
     protected readonly slots?: FieldLabelSlots,
-    protected readonly emits?: ConstrEmit<FieldLabelEmits>
+    protected readonly emits?: ConstrEmit<FieldLabelEmits>,
+    LabelConstructor: typeof LabelInclude = LabelInclude,
+    FieldCounterConstructor: typeof FieldCounterInclude = FieldCounterInclude,
+    ProgressConstructor: typeof ProgressInclude = ProgressInclude,
+    SkeletonConstructor: typeof SkeletonInclude = SkeletonInclude
   ) {
-    const skeleton = new SkeletonInclude(this.props, this.classDesign, ['classTextVariant'])
+    const skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classTextVariant'])
 
-    this.label = new LabelInclude(
+    this.label = new LabelConstructor(
       this.props,
       this.className,
       undefined,
@@ -59,13 +67,13 @@ export class FieldLabel {
       skeleton
     )
 
-    this.fieldCounter = new FieldCounterInclude(
+    this.fieldCounter = new FieldCounterConstructor(
       this.props,
       this.className,
       this.components
     )
 
-    this.progress = new ProgressInclude(
+    this.progress = new ProgressConstructor(
       this.props,
       this.className,
       this.components,
