@@ -154,7 +154,7 @@ export class Menu {
 
       itemAttrs: this.props.itemAttrs,
 
-      control: true
+      control: !this.props.embedded
     }
   })
 

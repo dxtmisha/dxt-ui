@@ -61,6 +61,7 @@ export type MenuPropsBasic<
 
     // Technical
     isSelectedByValue?: boolean
+    embedded?: boolean
   }
 
 /**

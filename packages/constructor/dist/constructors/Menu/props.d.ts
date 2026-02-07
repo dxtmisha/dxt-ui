@@ -29,6 +29,7 @@ export type MenuPropsBasic<List extends ListPropsBasic = ListPropsBasic, ListIte
     itemAttrs?: ConstrBind<ListItem>;
     roleItem?: RoleType;
     isSelectedByValue?: boolean;
+    embedded?: boolean;
 };
 /**
  * Type describing incoming properties.

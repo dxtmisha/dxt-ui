@@ -26,7 +26,7 @@ export const wikiMenu: StorybookArgsToList = {
   'menu.cache': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.status,
+      category: StorybookCategory.option,
       description: {
         en: 'Enables caching of loaded menu data to reduce network requests.',
         ru: 'Включает кэширование загруженных данных меню для уменьшения сетевых запросов.'

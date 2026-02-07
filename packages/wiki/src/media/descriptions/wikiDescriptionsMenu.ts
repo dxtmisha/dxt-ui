@@ -206,5 +206,61 @@ export const wikiDescriptionsMenu: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Menu'} type={'slotsControl'}/>
 <StorybookDescriptions componentName={'Menu'} type={'slots'}/>
     `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item">
+  <Menu embedded :window-attrs="{open: true}" v-bind="args">
+    <template #control="{ binds }">
+      <button class="wiki-storybook-button" v-bind="binds">
+        Open Menu
+      </button>
+    </template>
+  </Menu>
+</div>
+    `,
+    description: `
+Menu is a comprehensive dropdown component used for navigation, actions, and selection.
+It combines a trigger (Control), a popup container (Window), and a structured list (List).
+
+**Key Features:**
+1. **Structure:**
+   - **Control Slot (\`#control\`):** The trigger element (e.g., Button, Avatar). Receives \`binds\` (click/keydown handlers) which **must** be applied.
+   - **Popup:** Opens a floating window positioned relative to the trigger.
+   - **Content:** Renders a list of items defined in the \`list\` prop.
+
+2. **Data Model (\`list\` prop):**
+   - Array of objects: \`{ label, value, icon, disabled, to, ... }\`.
+   - Supports special types: \`line\` (separator), \`group\` (headers), \`menu\` (nested submenus).
+
+3. **Interaction:**
+   - **Selection:** Tracks selected values via \`v-model:selected\`.
+   - **Navigation:** Supports keyboard navigation (Arrows, Enter, Esc).
+   - **Async:** Can load data dynamically using the \`ajax\` prop.
+
+**When to use:**
+- **Dropdown Menus:** For user profile menus, settings, or navigation.
+- **Context Menus:** For right-click actions.
+- **Select-like UI:** When a standard select is not enough (needs icons, groups, custom rendering).
+
+**Usage Examples:**
+
+- **Basic Menu:**
+  \`<Menu :list="[{ label: 'Item 1' }, { label: 'Item 2' }]">
+     <template #control="{ binds }">
+       <button v-bind="binds">Options</button>
+     </template>
+   </Menu>\`
+
+- **With Selection:**
+  \`<Menu
+     v-model:selected="currentValue"
+     :list="options"
+   >
+     <template #control="{ binds }">
+       <button v-bind="binds">Select: {{ currentValue }}</button>
+     </template>
+   </Menu>\`
+    `
   }
 }

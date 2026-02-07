@@ -111,6 +111,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  hideList: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Hides the internal List part of the Menu; shows only header/toolbar and other slots.',
+        ru: 'Скрывает внутреннюю часть List в Menu; отображает только заголовок/панель и другие слоты.'
+      }
+    }
+  },
   horizontal: {
     type: StorybookControl.select,
     options: {

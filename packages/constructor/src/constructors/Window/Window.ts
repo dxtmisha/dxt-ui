@@ -287,7 +287,8 @@ export class Window {
    */
   readonly classesList = computed<ConstrClassObject>(() => ({
     [this.classes.getId()]: true,
-    [`${this.className}--staticMode`]: this.staticMode.item.value
+    [`${this.className}--staticMode`]: this.staticMode.item.value,
+    [`${this.className}--embedded`]: Boolean(this.props.embedded)
   }))
 
   /**

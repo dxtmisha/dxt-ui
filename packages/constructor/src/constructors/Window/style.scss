@@ -193,6 +193,10 @@
     }
   }
 
+  &--embedded {
+    position: static !important;
+  }
+
   &[data-status="display"] {
     display: flex;
     @include ui.contentVisibility(visible);

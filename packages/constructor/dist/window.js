@@ -1636,7 +1636,7 @@ class Tt {
    * @param TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
    * @param TextConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(t, e, s, n, o, r, a, l, d = lt, u = pt, C = vt, x = mt, I = Bt, W = ct, T = It, O = wt, E = Wt, H = gt, A = St, $ = Ct, D = yt, P = bt, N = xt, R = ft, L = Mt, Y = kt, F = ut, X = rt, _ = dt, q = ht, U = at) {
+  constructor(t, e, s, n, o, r, a, l, d = lt, u = pt, C = vt, x = mt, I = Bt, W = ct, T = It, O = wt, E = Wt, H = gt, $ = St, A = Ct, D = yt, N = bt, P = xt, R = ft, L = Mt, Y = kt, F = ut, X = rt, _ = dt, q = ht, U = at) {
     /** Client instance for window management/ Экземпляр клиента для управления окном */
     i(this, "client");
     /** Hook instance for window events/ Экземпляр хука для событий окна */
@@ -1707,7 +1707,8 @@ class Tt {
      */
     i(this, "classesList", m(() => ({
       [this.classes.getId()]: !0,
-      [`${this.className}--staticMode`]: this.staticMode.item.value
+      [`${this.className}--staticMode`]: this.staticMode.item.value,
+      [`${this.className}--embedded`]: !!this.props.embedded
     })));
     /**
      * Restores the data to its previous state.
@@ -1719,13 +1720,13 @@ class Tt {
     });
     this.props = t, this.refs = e, this.classDesign = n, this.className = o, this.components = r, this.slots = a, this.emits = l, this.hook = new H(t), this.classes = new d(o), this.element = new x(this.classes, s), this.client = new u(this.element), this.tabIndex = new q(
       () => this.element.getBody()
-    ), this.status = new R(this.element), this.persistent = new D(t, this.classes, this.element), this.flash = new O(t, this.classes), this.coordinates = new C(this.classes, this.element), this.position = new P(t, this.client, this.element, this.coordinates), this.origin = new $(this.client, this.element, this.position), this.staticMode = new N(t, e, this.element), this.emit = new I(this.classes, this.element, l), this.styles = new L(
+    ), this.status = new R(this.element), this.persistent = new D(t, this.classes, this.element), this.flash = new O(t, this.classes), this.coordinates = new C(this.classes, this.element), this.position = new N(t, this.client, this.element, this.coordinates), this.origin = new A(this.client, this.element, this.position), this.staticMode = new P(t, e, this.element), this.emit = new I(this.classes, this.element, l), this.styles = new L(
       this.element,
       this.coordinates,
       this.position,
       this.origin,
       o
-    ), this.open = new A(
+    ), this.open = new $(
       t,
       this.client,
       this.hook,

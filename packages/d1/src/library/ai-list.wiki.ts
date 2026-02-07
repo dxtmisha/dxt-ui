@@ -20,6 +20,7 @@ import D1List from '../../src/components/Ui/List/D1ListAiWiki.vue'
 import D1ListGroup from '../../src/components/Ui/ListGroup/D1ListGroupAiWiki.vue'
 import D1ListItem from '../../src/components/Ui/ListItem/D1ListItemAiWiki.vue'
 import D1ListMenu from '../../src/components/Ui/ListMenu/D1ListMenuAiWiki.vue'
+import D1Menu from '../../src/components/Ui/Menu/D1MenuAiWiki.vue'
 import D1Modal from '../../src/components/Ui/Modal/D1ModalAiWiki.vue'
 import D1MotionTransform from '../../src/components/Ui/MotionTransform/D1MotionTransformAiWiki.vue'
 import D1Page from '../../src/components/Ui/Page/D1PageAiWiki.vue'
@@ -49,6 +50,7 @@ export const aiList: any[] = [
   D1ListGroup,
   D1ListItem,
   D1ListMenu,
+  D1Menu,
   D1Modal,
   D1MotionTransform,
   D1Page,

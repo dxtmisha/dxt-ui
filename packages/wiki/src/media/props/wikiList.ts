@@ -265,7 +265,7 @@ export const wikiList: StorybookArgsToList = {
   'list.liteThreshold': {
     type: StorybookControl.number,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Threshold value that works when lite mode is enabled (lite: true). Defines the maximum number of items before additional optimizations are applied in lite mode.',
         ru: 'Пороговое значение, которое работает, когда включен lite режим (lite: true). Определяет максимальное количество элементов перед применением дополнительных оптимизаций в lite режиме.'

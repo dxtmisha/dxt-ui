@@ -127,7 +127,8 @@ export class MenuDesign<
       },
       {
         class: this.classes?.value.main,
-        closeOnEsc: false
+        closeOnEsc: false,
+        embedded: this.props.embedded
       }
     )
   }

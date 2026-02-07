@@ -265,7 +265,7 @@ class _ {
    * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
    * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
    */
-  constructor(e, t, i, o, h, n, u, p, c = E, d = F, m = R, v = N, g = H, f = T, w = O, b = W, x = D) {
+  constructor(e, t, i, o, h, n, u, p, d = E, c = F, m = R, v = N, g = H, f = T, w = O, b = W, x = D) {
     /** Request handler for list data/ Обработчик запросов данных списка */
     s(this, "request");
     /** Search helper for menu filtering/ Вспомогательный класс поиска для фильтрации меню */
@@ -300,7 +300,7 @@ class _ {
       onClick: this.onClick,
       onClose: this.window.expose.toClose,
       itemAttrs: this.props.itemAttrs,
-      control: !0
+      control: !this.props.embedded
     })));
     /**
      * Click handler.
@@ -323,7 +323,7 @@ class _ {
       const t = e.target, i = t.closest("*[data-value]");
       i && !t.closest(`.${this.className}__list`) && ((o = this.emits) == null || o.call(this, "clickSlot", i.dataset.value));
     });
-    this.props = e, this.refs = t, this.element = i, this.classDesign = o, this.className = h, this.components = n, this.slots = u, this.emits = p, this.request = new c(this.props), this.search = new d(this.props), this.value = new m(this.props, this.refs, this.emits), this.data = new v(
+    this.props = e, this.refs = t, this.element = i, this.classDesign = o, this.className = h, this.components = n, this.slots = u, this.emits = p, this.request = new d(this.props), this.search = new c(this.props), this.value = new m(this.props, this.refs, this.emits), this.data = new v(
       this.request.item,
       void 0,
       void 0,
@@ -509,7 +509,8 @@ class X extends j {
       },
       {
         class: (t = this.classes) == null ? void 0 : t.value.main,
-        closeOnEsc: !1
+        closeOnEsc: !1,
+        embedded: this.props.embedded
       }
     );
   }
