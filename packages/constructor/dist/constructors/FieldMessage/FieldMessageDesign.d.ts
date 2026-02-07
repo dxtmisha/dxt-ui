@@ -13,8 +13,9 @@ export declare class FieldMessageDesign<COMP extends FieldMessageComponents, EXP
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor class for working with the element/ класс для работы с элементом
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, FieldMessageEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, FieldMessageEmits, P>, ItemConstructor?: typeof FieldMessage);
     /**
      * Initialization of all the necessary properties for work
      *

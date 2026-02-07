@@ -152,6 +152,8 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Error or validation message text',
         ru: 'Текст сообщения об ошибке или валидации'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'Validation message'
   }
 }

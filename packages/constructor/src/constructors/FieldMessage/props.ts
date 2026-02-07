@@ -9,8 +9,9 @@ export type FieldMessagePropsToken = {
 export type FieldMessagePropsBasic<
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic
 > = FieldCounterPropsInclude<FieldCounter>
-  & SkeletonPropsInclude & {
-  // Status
+  & SkeletonPropsInclude
+  & {
+    // Status
     forceShow?: boolean
     disabled?: boolean
 

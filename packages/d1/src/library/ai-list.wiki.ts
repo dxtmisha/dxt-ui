@@ -15,6 +15,7 @@ import D1Chip from '../../src/components/Ui/Chip/D1ChipAiWiki.vue'
 import D1ChipGroup from '../../src/components/Ui/ChipGroup/D1ChipGroupAiWiki.vue'
 import D1Dialog from '../../src/components/Ui/Dialog/D1DialogAiWiki.vue'
 import D1FieldCounter from '../../src/components/Ui/FieldCounter/D1FieldCounterAiWiki.vue'
+import D1FieldMessage from '../../src/components/Ui/FieldMessage/D1FieldMessageAiWiki.vue'
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
 import D1List from '../../src/components/Ui/List/D1ListAiWiki.vue'
@@ -47,6 +48,7 @@ export const aiList: any[] = [
   D1ChipGroup,
   D1Dialog,
   D1FieldCounter,
+  D1FieldMessage,
   D1Icon,
   D1Image,
   D1List,

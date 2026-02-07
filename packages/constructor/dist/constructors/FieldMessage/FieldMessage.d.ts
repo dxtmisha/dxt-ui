@@ -34,12 +34,27 @@ export declare class FieldMessage {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param FieldCounterIncludeConstructor class for working with field counter/ класс для работы со счетчиком поля
+     * @param FieldMessageMessageConstructor class for working with messages/ класс для работы с сообщениями
+     * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
      */
-    constructor(props: FieldMessageProps, refs: ToRefs<FieldMessageProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldMessageComponents, FieldMessageProps> | undefined, slots?: FieldMessageSlots | undefined, emits?: ConstrEmit<FieldMessageEmits> | undefined);
+    constructor(props: FieldMessageProps, refs: ToRefs<FieldMessageProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldMessageComponents, FieldMessageProps> | undefined, slots?: FieldMessageSlots | undefined, emits?: ConstrEmit<FieldMessageEmits> | undefined, FieldCounterIncludeConstructor?: typeof FieldCounterInclude, FieldMessageMessageConstructor?: typeof FieldMessageMessage, SkeletonIncludeConstructor?: typeof SkeletonInclude);
     /**
      * Checks if there are values for outputting the element/ Проверяет, есть ли значения для вывода элемента
      */
     readonly is: ComputedRef<boolean>;
+    /**
+     * Checks if there is a helper message.
+     *
+     * Проверяет, есть ли вспомогательное сообщение.
+     */
+    readonly isHelper: ComputedRef<boolean>;
+    /**
+     * Checks if there is a validation message.
+     *
+     * Проверяет, есть ли сообщение о валидации.
+     */
+    readonly isValidation: ComputedRef<boolean>;
     /**
      * Returns data for the main style class/ Возвращает данные для главного класса стиля
      */

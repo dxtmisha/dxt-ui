@@ -11,7 +11,7 @@ const propsNames: StorybookProps = [
   { name: 'counterShow', type: 'boolean' },
   { name: 'counterTemplate', type: 'string' },
   { name: 'disabled', type: 'boolean' },
-  { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounterProps>' },
+  { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounter>' },
   { name: 'forceShow', type: 'boolean' },
   { name: 'helperId', type: 'string' },
   { name: 'helperMessage', type: 'string' },

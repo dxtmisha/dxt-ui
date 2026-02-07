@@ -5,6 +5,7 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { FieldCounter } from './FieldCounter'
 
 import {
@@ -17,7 +18,6 @@ import {
   type FieldCounterExpose,
   type FieldCounterSlots
 } from './types'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * FieldCounterDesign

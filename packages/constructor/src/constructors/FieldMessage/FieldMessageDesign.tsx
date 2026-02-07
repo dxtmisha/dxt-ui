@@ -5,6 +5,7 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { FieldMessage } from './FieldMessage'
 
 import {
@@ -17,7 +18,6 @@ import {
   type FieldMessageExpose,
   type FieldMessageSlots
 } from './types'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 /**
  * FieldMessageDesign
@@ -43,11 +43,13 @@ export class FieldMessageDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the element/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, FieldMessageEmits, P>
+    options?: ConstrOptions<COMP, FieldMessageEmits, P>,
+    ItemConstructor: typeof FieldMessage = FieldMessage
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class FieldMessageDesign<
       options
     )
 
-    this.item = new FieldMessage(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -135,29 +137,33 @@ export class FieldMessageDesign<
    * Рендеринг текста.
    */
   protected renderInfo = (): VNode[] => {
-    const children: VNode[] = []
-    const props: Record<string, any> = {
-      key: 'message',
-      id: this.props.helperId,
-      class: [
-        this.classes?.value.info,
-        this.item.skeleton.classes.value
+    if (this.item.isHelper.value) {
+      const children: VNode[] = []
+      const props: Record<string, any> = {
+        key: 'message',
+        id: this.props.helperId,
+        class: [
+          this.classes?.value.info,
+          this.item.skeleton.classes.value
+        ]
+      }
+
+      this.initSlot('helper', children, this.item.slotHelperData.value)
+
+      if (children.length < 1) {
+        props.innerHTML = this.props.helperMessage
+      }
+
+      return [
+        h(
+          'div',
+          props,
+          children
+        )
       ]
     }
 
-    this.initSlot('helper', children, this.item.slotHelperData.value)
-
-    if (children.length < 1) {
-      props.innerHTML = this.props.helperMessage
-    }
-
-    return [
-      h(
-        'div',
-        props,
-        children
-      )
-    ]
+    return []
   }
 
   /**
@@ -166,26 +172,30 @@ export class FieldMessageDesign<
    * Рендеринг ошибки.
    */
   protected renderError = (): VNode[] => {
-    const children: VNode[] = []
-    const props: Record<string, any> = {
-      key: 'message',
-      id: this.props.validationId,
-      class: this.classes?.value.error,
-      ...AriaStaticInclude.role('alert')
+    if (this.item.isValidation.value) {
+      const children: VNode[] = []
+      const props: Record<string, any> = {
+        key: 'message',
+        id: this.props.validationId,
+        class: this.classes?.value.error,
+        ...AriaStaticInclude.role('alert')
+      }
+
+      this.initSlot('validation', children, this.item.slotValidationData.value)
+
+      if (children.length < 1) {
+        props.innerHTML = this.props.validationMessage
+      }
+
+      return [
+        h(
+          'div',
+          props,
+          children
+        )
+      ]
     }
 
-    this.initSlot('validation', children, this.item.slotValidationData.value)
-
-    if (children.length < 1) {
-      props.innerHTML = this.props.validationMessage
-    }
-
-    return [
-      h(
-        'div',
-        props,
-        children
-      )
-    ]
+    return []
   }
 }

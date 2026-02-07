@@ -26,12 +26,12 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
     type: StorybookControl.boolean,
     options: {
       category: StorybookCategory.counter,
-
       description: {
         en: 'Shows the counter-element',
         ru: 'Показывает элемент счетчика'
       }
-    }
+    },
+    isDemo: true
   },
   counterId: {
     type: StorybookControl.string,
@@ -53,6 +53,11 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
         en: 'Custom display template for the counter-component',
         ru: 'Пользовательский шаблон отображения для компонента счетчика'
       }
+    },
+    isDemo: true,
+    demo: 'counter: [c], max: [m]',
+    demoOptions: {
+      counterShow: true
     }
   },
   counterTop: {

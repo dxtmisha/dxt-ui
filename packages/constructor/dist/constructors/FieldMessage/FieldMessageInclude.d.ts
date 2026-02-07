@@ -13,11 +13,11 @@ export declare class FieldMessageInclude<Props extends FieldMessagePropsInclude 
     protected readonly components?: DesignComponents<FieldMessageComponentInclude, Props> | undefined;
     protected readonly validationMessage?: RefOrNormal<string> | undefined;
     protected readonly isCounter?: RefType<boolean | undefined> | undefined;
-    protected readonly helperId?: RefOrNormal<string> | undefined;
-    protected readonly validationId?: RefOrNormal<string> | undefined;
-    protected readonly counterId?: RefOrNormal<string> | undefined;
     protected readonly extra?: RefOrNormal<PropsExtra> | undefined;
     protected readonly index?: string | undefined;
+    readonly helperId: string;
+    readonly validationId: string;
+    readonly counterId: string;
     /** Field counter include/ Подключение счетчика поля */
     private readonly fieldCounter;
     /**
@@ -27,17 +27,20 @@ export declare class FieldMessageInclude<Props extends FieldMessagePropsInclude 
      * @param components object for working with components/ объект для работы с компонентами
      * @param validationMessage error line/ строка ошибки
      * @param isCounter whether to display the counter/ отображать ли счетчик
-     * @param helperId helper message identifier/ идентификатор сообщения помощника
-     * @param validationId validation message identifier/ идентификатор сообщения проверки
-     * @param counterId counter identifier/ идентификатор счетчика
      * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
      * @param index index identifier/ идентификатор индекса
      */
-    constructor(props: Readonly<Props>, className: string, components?: DesignComponents<FieldMessageComponentInclude, Props> | undefined, validationMessage?: RefOrNormal<string> | undefined, isCounter?: RefType<boolean | undefined> | undefined, helperId?: RefOrNormal<string> | undefined, validationId?: RefOrNormal<string> | undefined, counterId?: RefOrNormal<string> | undefined, extra?: RefOrNormal<PropsExtra> | undefined, index?: string | undefined);
-    /** Validation message computed/ Вычисляемое сообщение валидации */
-    readonly validation: ComputedRef<string | undefined>;
+    constructor(props: Readonly<Props>, className: string, components?: DesignComponents<FieldMessageComponentInclude, Props> | undefined, validationMessage?: RefOrNormal<string> | undefined, isCounter?: RefType<boolean | undefined> | undefined, extra?: RefOrNormal<PropsExtra> | undefined, index?: string | undefined);
     /** Checks if validation message should be displayed/ Проверяет, надо ли отображать сообщение валидации */
     readonly isValidationMessage: ComputedRef<boolean>;
+    /**
+     * Returns the identifier.
+     *
+     * Возвращает идентификатор.
+     */
+    readonly id: ComputedRef<string>;
+    /** Validation message computed/ Вычисляемое сообщение валидации */
+    readonly validation: ComputedRef<string | undefined>;
     /** Computed bindings for FieldMessage/ Вычисляемые привязки для FieldMessage */
     readonly binds: ComputedRef<PropsExtra>;
     /**

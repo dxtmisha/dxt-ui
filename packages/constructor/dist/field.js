@@ -2,14 +2,14 @@ var u = Object.defineProperty;
 var m = (n, e, s) => e in n ? u(n, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[e] = s;
 var t = (n, e, s) => m(n, typeof e != "symbol" ? e + "" : e, s);
 import { computed as a, watch as b, onUnmounted as f, onMounted as y, onUpdated as v, h as r } from "vue";
-import { isDomRuntime as g, EventItem as _, getElementId as S, DesignConstructorAbstract as I, isString as w } from "@dxtmisha/functional";
+import { isDomRuntime as g, EventItem as _, getElementId as S, DesignConstructorAbstract as w, isString as I } from "@dxtmisha/functional";
 import { C as N } from "./CaptionInclude-VhkGstz9.js";
 import { P as x, S as B } from "./SuffixInclude-C7JNYCJK.js";
 import { E as $ } from "./EnabledInclude-IdZAnr6u.js";
 import { E as C } from "./EventClickInclude-CgbuezDm.js";
 import { A as d } from "./AriaStaticInclude-BVCgDZbU.js";
 import { F as L } from "./FieldLabelInclude-BSISy_cb.js";
-import { F as E } from "./FieldMessageInclude-DoyOsRK_.js";
+import { F as E } from "./FieldMessageInclude-AalYJ_IH.js";
 import { S as k } from "./SkeletonInclude-BIUzAO2s.js";
 import { I as A } from "./IconTrailingInclude-CdsOcDxv.js";
 import { P as F } from "./ProgressInclude-NyOp5bMZ.js";
@@ -204,9 +204,6 @@ class P {
       this.components,
       void 0,
       a(() => !this.props.counterTop),
-      this.helperId,
-      this.validationId,
-      this.counterId,
       this.skeleton.binds
     ), this.progress = new F(
       this.props,
@@ -234,7 +231,7 @@ const Q = {
   arrowAlign: "right",
   cancel: "auto"
 };
-class X extends I {
+class X extends w {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -407,7 +404,7 @@ class X extends I {
      *
      * Значение для фокуса.
      */
-    t(this, "focusValue", () => !this.lengthElement.value && w(this.props.value) ? this.props.value : "");
+    t(this, "focusValue", () => !this.lengthElement.value && I(this.props.value) ? this.props.value : "");
     /**
      * Length value.
      *

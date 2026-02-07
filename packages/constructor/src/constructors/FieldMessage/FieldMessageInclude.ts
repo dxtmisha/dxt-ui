@@ -2,6 +2,7 @@ import { computed, type VNode } from 'vue'
 import {
   type ConstrBind,
   type DesignComponents,
+  getElementId,
   getRef,
   isFilled,
   type RefOrNormal,
@@ -26,6 +27,10 @@ export class FieldMessageInclude<
   Props extends FieldMessagePropsInclude = FieldMessagePropsInclude,
   PropsExtra extends ConstrBind<FieldMessagePropsBasic> = ConstrBind<FieldMessagePropsBasic>
 > {
+  readonly helperId: string = getElementId()
+  readonly validationId: string = getElementId()
+  readonly counterId: string = getElementId()
+
   /** Field counter include/ Подключение счетчика поля */
   private readonly fieldCounter: FieldCounterInclude
 
@@ -36,9 +41,6 @@ export class FieldMessageInclude<
    * @param components object for working with components/ объект для работы с компонентами
    * @param validationMessage error line/ строка ошибки
    * @param isCounter whether to display the counter/ отображать ли счетчик
-   * @param helperId helper message identifier/ идентификатор сообщения помощника
-   * @param validationId validation message identifier/ идентификатор сообщения проверки
-   * @param counterId counter identifier/ идентификатор счетчика
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
@@ -48,25 +50,31 @@ export class FieldMessageInclude<
     protected readonly components?: DesignComponents<FieldMessageComponentInclude, Props>,
     protected readonly validationMessage?: RefOrNormal<string>,
     protected readonly isCounter?: RefType<boolean | undefined>,
-    protected readonly helperId?: RefOrNormal<string>,
-    protected readonly validationId?: RefOrNormal<string>,
-    protected readonly counterId?: RefOrNormal<string>,
     protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly index?: string
   ) {
     this.fieldCounter = new FieldCounterInclude(this.props, this.className)
   }
 
+  /** Checks if validation message should be displayed/ Проверяет, надо ли отображать сообщение валидации */
+  readonly isValidationMessage = computed<boolean>(
+    () => isFilled(this.validation.value)
+  )
+
+  /**
+   * Returns the identifier.
+   *
+   * Возвращает идентификатор.
+   */
+  readonly id = computed<string>(
+    () => `${this.helperId} ${this.validationId} ${this.counterId}`
+  )
+
   /** Validation message computed/ Вычисляемое сообщение валидации */
   readonly validation = computed<string | undefined>(() =>
     isFilled(this.props.validationMessage)
       ? this.props.validationMessage
       : getRef(this.validationMessage)
-  )
-
-  /** Checks if validation message should be displayed/ Проверяет, надо ли отображать сообщение валидации */
-  readonly isValidationMessage = computed<boolean>(() =>
-    isFilled(this.validation.value)
   )
 
   /** Computed bindings for FieldMessage/ Вычисляемые привязки для FieldMessage */
@@ -82,9 +90,9 @@ export class FieldMessageInclude<
         helperMessage: this.props.helperMessage,
         validationMessage: this.validation.value,
 
-        helperId: this.props.helperId ?? this.helperId,
-        validationId: this.props.validationId ?? this.validationId,
-        counterId: this.props.counterId ?? this.counterId
+        helperId: this.helperId,
+        validationId: this.validationId,
+        counterId: this.counterId
       },
       this.props.fieldMessageAttrs
     )
