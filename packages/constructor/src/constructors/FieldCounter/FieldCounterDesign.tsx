@@ -17,6 +17,7 @@ import {
   type FieldCounterExpose,
   type FieldCounterSlots
 } from './types'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * FieldCounterDesign
@@ -42,11 +43,13 @@ export class FieldCounterDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, FieldCounterEmits, P>
+    options?: ConstrOptions<COMP, FieldCounterEmits, P>,
+    ItemConstructor: typeof FieldCounter = FieldCounter
   ) {
     super(
       name,
@@ -54,7 +57,7 @@ export class FieldCounterDesign<
       options
     )
 
-    this.item = new FieldCounter(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -87,6 +90,7 @@ export class FieldCounterDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        aria: this.getSubClass('aria')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -106,18 +110,51 @@ export class FieldCounterDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode | undefined {
+  protected initRender(): VNode[] | undefined {
     if (this.item.is.value) {
-      return h(
-        'div', {
-          ...this.getAttrs(),
-          id: this.props.id,
-          class: this.classes?.value.main,
-          innerHTML: this.item.item.value
-        }
-      )
+      return [
+        h(
+          'span', {
+            ...this.getAttrs(),
+            id: this.props.id,
+            class: this.classes?.value.main,
+            innerHTML: this.item.item.value
+          }
+        ),
+        ...this.renderAria()
+      ]
     }
 
     return undefined
+  }
+
+  /**
+   * Render hidden element for screen reader.
+   *
+   * Рендер скрытого элемента для скринридера.
+   */
+  readonly renderAria = (): VNode[] => {
+    if (this.item.ariaText.value) {
+      return [
+        h(
+          'div',
+          {
+            class: this.classes?.value.aria,
+            ...AriaStaticInclude.live('polite')
+          },
+          [
+            h(
+              'span',
+              {
+                ...AriaStaticInclude.role('img'),
+                ...AriaStaticInclude.label(this.item.ariaText.value)
+              }
+            )
+          ]
+        )
+      ]
+    }
+
+    return []
   }
 }

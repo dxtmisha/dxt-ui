@@ -42,11 +42,13 @@ export class ScrollbarDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ScrollbarEmits, P>
+    options?: ConstrOptions<COMP, ScrollbarEmits, P>,
+    ItemConstructor: typeof Scrollbar = Scrollbar
   ) {
     super(
       name,
@@ -54,7 +56,7 @@ export class ScrollbarDesign<
       options
     )
 
-    this.item = new Scrollbar(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

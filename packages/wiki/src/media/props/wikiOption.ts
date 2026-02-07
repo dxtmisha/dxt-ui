@@ -252,6 +252,17 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  template: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      description: {
+        en: 'Custom display template used by the component',
+        ru: 'Пользовательский шаблон отображения, используемый компонентом'
+      }
+    }
+  },
   touchClose: {
     type: StorybookControl.boolean,
     options: {

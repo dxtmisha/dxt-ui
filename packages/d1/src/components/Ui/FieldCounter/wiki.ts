@@ -9,7 +9,10 @@ const propsNames: StorybookProps = [
   { name: 'counter', type: 'string | number' },
   { name: 'id', type: 'string' },
   { name: 'maxlength', type: 'string | number' },
-  { name: 'template', type: 'string' }
+  { name: 'maxlengthOnce', type: 'string | number' },
+  { name: 'template', type: 'string' },
+  { name: 'textCharacterLimit', type: 'TextValue' },
+  { name: 'textCharacterRemaining', type: 'TextValue' }
   // :propsList [!] System label / Системная метка
 ]
 

@@ -27,7 +27,7 @@ export const wikiScrollbar: StorybookArgsToList = {
       category: StorybookCategory.style,
 
       description: {
-        en: 'Show divider line at the bottom',
+        en: 'Show the divider line at the bottom',
         ru: 'Показывать разделительную линию снизу'
       }
     }
@@ -49,7 +49,7 @@ export const wikiScrollbar: StorybookArgsToList = {
       category: StorybookCategory.style,
 
       description: {
-        en: 'Show divider line at the top',
+        en: 'Show the divider line at the top',
         ru: 'Показывать разделительную линию сверху'
       }
     }
@@ -60,15 +60,15 @@ export const wikiScrollbar: StorybookArgsToList = {
       category: StorybookCategory.style,
 
       description: {
-        en: 'Invert divider line behavior - show lines when scroll is at beginning/end',
-        ru: 'Инвертировать поведение разделительных линий - показывать линии когда скролл в начале/конце'
+        en: 'Invert divider line behavior - show lines when the scroll is at beginning/end',
+        ru: 'Инвертировать поведение разделительных линий - показывать линии, когда скролл в начале/конце'
       }
     }
   },
   'scrollbar.standard': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
 
       description: {
         en: 'Use standard browser scrollbar',
@@ -79,7 +79,7 @@ export const wikiScrollbar: StorybookArgsToList = {
   'scrollbar.visible': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Controls element visibility and scrolling behavior (overflow: visible)',
         ru: 'Управляет видимостью элемента и поведением прокрутки (overflow: visible)'

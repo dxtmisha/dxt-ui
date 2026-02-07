@@ -32,4 +32,5 @@ export interface FieldCounterSlots {
  */
 export type FieldCounterClasses = {
     main: ConstrClass;
+    aria: string;
 };

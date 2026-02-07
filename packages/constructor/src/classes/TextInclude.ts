@@ -18,6 +18,8 @@ export class TextInclude {
    * Global list of texts for all components/ Глобальный список текстов для всех компонентов
    */
   static readonly list = shallowRef<TextList>({
+    characterLimit: 'Character limit exceeded',
+    characterRemaining: 'Remaining [left] characters',
     close: 'Close',
     copiedClipboard: 'Copied to the clipboard',
     entriesMatch: 'Entries do not match',
@@ -46,6 +48,16 @@ export class TextInclude {
     protected readonly props: TextAllPropsInclude
   ) {
   }
+
+  /** Character limit exceeded text/ Текст о превышении лимита символов */
+  readonly characterLimit = computed<string | undefined>(
+    () => this.getText('characterLimit', this.props.textCharacterLimit)
+  )
+
+  /** Remaining characters text/ Текст об оставшихся символах */
+  readonly characterRemaining = computed<string | undefined>(
+    () => this.getText('characterRemaining', this.props.textCharacterRemaining)
+  )
 
   /** Close text/ Текст закрытия */
   readonly close = computed<string | undefined>(

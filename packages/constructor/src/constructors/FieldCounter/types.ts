@@ -38,5 +38,6 @@ export interface FieldCounterSlots {
 export type FieldCounterClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  aria: string
   // :classes [!] System label / Системная метка
 }

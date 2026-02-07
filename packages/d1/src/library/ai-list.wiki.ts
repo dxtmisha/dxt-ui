@@ -14,6 +14,7 @@ import D1Cell from '../../src/components/Ui/Cell/D1CellAiWiki.vue'
 import D1Chip from '../../src/components/Ui/Chip/D1ChipAiWiki.vue'
 import D1ChipGroup from '../../src/components/Ui/ChipGroup/D1ChipGroupAiWiki.vue'
 import D1Dialog from '../../src/components/Ui/Dialog/D1DialogAiWiki.vue'
+import D1FieldCounter from '../../src/components/Ui/FieldCounter/D1FieldCounterAiWiki.vue'
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
 import D1List from '../../src/components/Ui/List/D1ListAiWiki.vue'
@@ -26,6 +27,7 @@ import D1MotionTransform from '../../src/components/Ui/MotionTransform/D1MotionT
 import D1Page from '../../src/components/Ui/Page/D1PageAiWiki.vue'
 import D1Progress from '../../src/components/Ui/Progress/D1ProgressAiWiki.vue'
 import D1Ripple from '../../src/components/Ui/Ripple/D1RippleAiWiki.vue'
+import D1Scrollbar from '../../src/components/Ui/Scrollbar/D1ScrollbarAiWiki.vue'
 import D1Section from '../../src/components/Ui/Section/D1SectionAiWiki.vue'
 import D1Tooltip from '../../src/components/Ui/Tooltip/D1TooltipAiWiki.vue'
 import D1Window from '../../src/components/Ui/Window/D1WindowAiWiki.vue'
@@ -44,6 +46,7 @@ export const aiList: any[] = [
   D1Chip,
   D1ChipGroup,
   D1Dialog,
+  D1FieldCounter,
   D1Icon,
   D1Image,
   D1List,
@@ -56,6 +59,7 @@ export const aiList: any[] = [
   D1Page,
   D1Progress,
   D1Ripple,
+  D1Scrollbar,
   D1Section,
   D1Tooltip,
   D1Window

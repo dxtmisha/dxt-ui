@@ -23,6 +23,10 @@ export declare class TextInclude {
      * @param props Component properties/ Свойства компонента
      */
     constructor(props: TextAllPropsInclude);
+    /** Character limit exceeded text/ Текст о превышении лимита символов */
+    readonly characterLimit: ComputedRef<string | undefined>;
+    /** Remaining characters text/ Текст об оставшихся символах */
+    readonly characterRemaining: ComputedRef<string | undefined>;
     /** Close text/ Текст закрытия */
     readonly close: ComputedRef<string | undefined>;
     /** Copied to the clipboard text/ Текст о копировании в буфер обмена */

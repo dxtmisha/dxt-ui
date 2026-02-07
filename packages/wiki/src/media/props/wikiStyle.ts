@@ -451,17 +451,6 @@ export const wikiStyle: StorybookArgsToList = {
     },
     isDemo: true
   },
-  template: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.style,
-      type: 'string',
-      description: {
-        en: 'Custom display template used by the component',
-        ru: 'Пользовательский шаблон отображения, используемый компонентом'
-      }
-    }
-  },
   textAlign: {
     type: StorybookControl.select,
     options: {

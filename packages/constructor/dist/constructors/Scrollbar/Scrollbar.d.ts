@@ -33,8 +33,10 @@ export declare class Scrollbar {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param ScrollbarWidthRefConstructor class for working with scrollbar width/ класс для работы с шириной скролла
+     * @param ScrollbarBorderConstructor class for working with scrollbar border/ класс для работы с границей скролла
      */
-    constructor(props: ScrollbarPropsBasic, refs: ToRefs<ScrollbarPropsBasic>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ScrollbarComponents, ScrollbarPropsBasic> | undefined, slots?: ScrollbarSlots | undefined, emits?: ConstrEmit<ScrollbarEmits> | undefined);
+    constructor(props: ScrollbarPropsBasic, refs: ToRefs<ScrollbarPropsBasic>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ScrollbarComponents, ScrollbarPropsBasic> | undefined, slots?: ScrollbarSlots | undefined, emits?: ConstrEmit<ScrollbarEmits> | undefined, ScrollbarWidthRefConstructor?: typeof ScrollbarWidthRef, ScrollbarBorderConstructor?: typeof ScrollbarBorder);
     /**
      * Returns values for the class.
      *

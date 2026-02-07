@@ -28,7 +28,7 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
       category: StorybookCategory.counter,
 
       description: {
-        en: 'Shows the counter element',
+        en: 'Shows the counter-element',
         ru: 'Показывает элемент счетчика'
       }
     }
@@ -50,7 +50,7 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
       category: StorybookCategory.counter,
       type: 'string',
       description: {
-        en: 'Custom display template for the counter component',
+        en: 'Custom display template for the counter-component',
         ru: 'Пользовательский шаблон отображения для компонента счетчика'
       }
     }

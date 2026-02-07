@@ -13,8 +13,9 @@ export declare class FieldCounterDesign<COMP extends FieldCounterComponents, EXP
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor class for working with the item/ класс для работы с элементом
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, FieldCounterEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, FieldCounterEmits, P>, ItemConstructor?: typeof FieldCounter);
     /**
      * Initialization of all the necessary properties for work
      *
@@ -38,5 +39,11 @@ export declare class FieldCounterDesign<COMP extends FieldCounterComponents, EXP
      *
      * Метод для рендеринга.
      */
-    protected initRender(): VNode | undefined;
+    protected initRender(): VNode[] | undefined;
+    /**
+     * Render hidden element for screen reader.
+     *
+     * Рендер скрытого элемента для скринридера.
+     */
+    readonly renderAria: () => VNode[];
 }

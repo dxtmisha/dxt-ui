@@ -1,4 +1,9 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinFieldCounter {
+  &__aria {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
 }
