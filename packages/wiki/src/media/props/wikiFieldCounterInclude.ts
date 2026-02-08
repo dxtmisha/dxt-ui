@@ -68,6 +68,10 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
         en: 'Displays the counter above the field',
         ru: 'Отображает счетчик над полем'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      counterShow: true
     }
   },
   fieldCounterAttrs: {

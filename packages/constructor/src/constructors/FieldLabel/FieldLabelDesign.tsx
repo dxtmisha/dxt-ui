@@ -124,10 +124,11 @@ export class FieldLabelDesign<
       || this.item.fieldCounter.isCounter.value
     ) {
       return h(
-        'div',
+        'label',
         {
           ...this.getAttrs(),
-          class: this.classes?.value.main
+          class: this.classes?.value.main,
+          for: this.props.for
         },
         children
       )

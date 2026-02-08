@@ -1,6 +1,7 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, getElementId } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { CaptionInclude } from '../../classes/CaptionInclude'
 import { PrefixInclude } from '../../classes/PrefixInclude'
 import { SuffixInclude } from '../../classes/SuffixInclude'
@@ -19,33 +20,38 @@ import { FieldSize } from './FieldSize'
 import type { FieldComponents, FieldEmits, FieldSlots } from './types'
 import type { FieldProps } from './props'
 import type { FieldControl } from './basicTypes'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 /**
  * Field
  */
 export class Field {
-  readonly id: string = getElementId()
-  readonly labelId: string = `${this.id}-label`
-  readonly helperId: string = `${this.id}-helper`
-  readonly validationId: string = `${this.id}-validation`
-  readonly counterId: string = `${this.id}-counter`
-
+  /** Icon trailing include/ Подключение иконки в конце */
   readonly icon: IconTrailingInclude
 
+  /** Caption include/ Подключение подписи */
   readonly caption: CaptionInclude
+  /** Prefix include/ Подключение префикса */
   readonly prefix: PrefixInclude
+  /** Suffix include/ Подключение суффикса */
   readonly suffix: SuffixInclude
 
+  /** Field label include/ Подключение метки поля */
   readonly fieldLabel: FieldLabelInclude
+  /** Field message include/ Подключение сообщения поля */
   readonly fieldMessage: FieldMessageInclude
 
+  /** Progress include/ Подключение прогресса */
   readonly progress: ProgressInclude
+  /** Enabled include/ Подключение активности */
   readonly enabled: EnabledInclude
+  /** Event click include/ Подключение события клика */
   readonly event: EventClickInclude
+  /** Skeleton include/ Подключение скелетона */
   readonly skeleton: SkeletonInclude
 
+  /** Field icons/ Иконки поля */
   readonly icons: FieldIcons
+  /** Field size/ Размер поля */
   readonly size: FieldSize
 
   /**
@@ -58,6 +64,18 @@ export class Field {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+   * @param IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
+   * @param PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
+   * @param SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
+   * @param FieldLabelIncludeConstructor class for working with field label/ класс для работы с меткой поля
+   * @param FieldMessageIncludeConstructor class for working with field message/ класс для работы с сообщением поля
+   * @param ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
+   * @param EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
+   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
+   * @param FieldSizeConstructor class for working with field size/ класс для работы с размером поля
    */
   constructor(
     protected readonly props: FieldProps,
@@ -67,30 +85,41 @@ export class Field {
     protected readonly className: string,
     protected readonly components?: DesignComp<FieldComponents, FieldProps>,
     protected readonly slots?: FieldSlots,
-    protected readonly emits?: ConstrEmit<FieldEmits>
+    protected readonly emits?: ConstrEmit<FieldEmits>,
+    SkeletonIncludeConstructor: typeof SkeletonInclude = SkeletonInclude,
+    IconTrailingIncludeConstructor: typeof IconTrailingInclude = IconTrailingInclude,
+    CaptionIncludeConstructor: typeof CaptionInclude = CaptionInclude,
+    PrefixIncludeConstructor: typeof PrefixInclude = PrefixInclude,
+    SuffixIncludeConstructor: typeof SuffixInclude = SuffixInclude,
+    FieldLabelIncludeConstructor: typeof FieldLabelInclude = FieldLabelInclude,
+    FieldMessageIncludeConstructor: typeof FieldMessageInclude = FieldMessageInclude,
+    ProgressIncludeConstructor: typeof ProgressInclude = ProgressInclude,
+    EnabledIncludeConstructor: typeof EnabledInclude = EnabledInclude,
+    EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude,
+    FieldIconsConstructor: typeof FieldIcons = FieldIcons,
+    FieldSizeConstructor: typeof FieldSize = FieldSize
   ) {
-    this.skeleton = new SkeletonInclude(
+    this.skeleton = new SkeletonIncludeConstructor(
       this.props,
       this.classDesign,
       ['classBackground']
     )
-    this.icon = new IconTrailingInclude(this.props, this.className, this.components)
+    this.icon = new IconTrailingIncludeConstructor(this.props, this.className, this.components)
 
-    this.caption = new CaptionInclude(this.props, this.className, this.slots)
-    this.prefix = new PrefixInclude(this.props, this.className, this.slots)
-    this.suffix = new SuffixInclude(this.props, this.className, this.slots)
+    this.caption = new CaptionIncludeConstructor(this.props, this.className, this.slots)
+    this.prefix = new PrefixIncludeConstructor(this.props, this.className, this.slots)
+    this.suffix = new SuffixIncludeConstructor(this.props, this.className, this.slots)
 
-    this.fieldLabel = new FieldLabelInclude(
+    this.fieldLabel = new FieldLabelIncludeConstructor(
       this.props,
       this.className,
       this.components,
       this.slots,
+      this.id,
       this.refs.counterTop,
-      this.labelId,
-      this.counterId,
       this.skeleton.binds
     )
-    this.fieldMessage = new FieldMessageInclude(
+    this.fieldMessage = new FieldMessageIncludeConstructor(
       this.props,
       this.className,
       this.components,
@@ -99,7 +128,7 @@ export class Field {
       this.skeleton.binds
     )
 
-    this.progress = new ProgressInclude(
+    this.progress = new ProgressIncludeConstructor(
       this.props,
       this.className,
       this.components,
@@ -110,12 +139,24 @@ export class Field {
       }
     )
 
-    this.enabled = new EnabledInclude(this.props, this.progress)
-    this.event = new EventClickInclude(this.props, this.enabled, this.emits)
+    this.enabled = new EnabledIncludeConstructor(this.props, this.progress)
+    this.event = new EventClickIncludeConstructor(this.props, this.enabled, this.emits)
 
-    this.icons = new FieldIcons(this.props, this.className)
-    this.size = new FieldSize(this.element, this.className)
+    this.icons = new FieldIconsConstructor(this.props, this.className)
+    this.size = new FieldSizeConstructor(this.element, this.className)
   }
+
+  /** Checks if the field is classic/ Проверяет, является ли поле классическим */
+  readonly isClassic = computed<boolean>(
+    () => Boolean(
+      (this.props as any).classic
+      && !(this.props as any).basic
+      && !(this.props as any).boxed
+      && !(this.props as any).filled
+      && !(this.props as any).outlined
+      && !(this.props as any).tonal
+    )
+  )
 
   /** Checks if an error needs to be displayed/ Проверяет, надо ли выводить ошибку */
   readonly isValidation = computed<boolean>(() => Boolean(
@@ -129,6 +170,9 @@ export class Field {
     )
   ))
 
+  /** Field identifier/ Идентификатор поля */
+  readonly id = computed<string>(() => String(this.props.id || getElementId()))
+
   /** Values for the class/ Значения для класса */
   readonly classes = computed(() => ({
     [`${this.className}--cancel`]: this.icons.isCancel.value,
@@ -140,20 +184,18 @@ export class Field {
    * Returns data for the slot/ Возвращает данные для слота
    */
   readonly control = computed<FieldControl>(() => {
-    const id = String(this.props.id || this.id)
     const className = `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`
 
     return {
-      id,
+      id: this.id.value,
       className,
       classHidden: `${this.className}__body__hidden`,
       classForFocus: `${this.className}__body__focus`,
       binds: {
-        id,
+        id: this.id.value,
         className,
-        ...AriaStaticInclude.labelledby(this.labelId),
-        ...AriaStaticInclude.describedby(this.getDescribedby()),
-        ...AriaStaticInclude.invalid(this.isValidation.value)
+        ...AriaStaticInclude.invalid(this.isValidation.value),
+        ...AriaStaticInclude.describedby(this.getDescribedby())
       }
     }
   })
@@ -164,20 +206,6 @@ export class Field {
    * Получить атрибут ARIA describedby.
    */
   protected getDescribedby(): string {
-    const describedby = []
-
-    if (this.props.helperMessage) {
-      describedby.push(this.helperId)
-    }
-
-    if (this.isValidation.value) {
-      describedby.push(this.validationId)
-    }
-
-    if (this.props.counterShow) {
-      describedby.push(this.counterId)
-    }
-
-    return describedby.join(' ')
+    return `${this.fieldLabel.id.value} ${this.fieldMessage.id.value}`.trim()
   }
 }

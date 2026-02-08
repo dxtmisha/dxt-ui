@@ -61,14 +61,27 @@ export class FieldMessageInclude<
     () => isFilled(this.validation.value)
   )
 
-  /**
-   * Returns the identifier.
-   *
-   * Возвращает идентификатор.
-   */
-  readonly id = computed<string>(
-    () => `${this.helperId} ${this.validationId} ${this.counterId}`
-  )
+  /** Returns the identifier/ Возвращает идентификатор */
+  readonly id = computed<string>(() => {
+    const ids: string[] = []
+
+    if (this.props.helperMessage) {
+      ids.push(this.helperId)
+    }
+
+    if (this.props.validationMessage) {
+      ids.push(this.validationId)
+    }
+
+    if (
+      this.isCounter?.value
+      && this.props.counterShow
+    ) {
+      ids.push(this.counterId)
+    }
+
+    return ids.join(' ')
+  })
 
   /** Validation message computed/ Вычисляемое сообщение валидации */
   readonly validation = computed<string | undefined>(() =>

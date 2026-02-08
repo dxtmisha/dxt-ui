@@ -34,8 +34,8 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
   import: [],
   render: `
       <DesignComponent v-bind="args">
-        <template v-slot:default="{id, className}">
-          <input :value="args.value" :id="id" :class="className" readonly/>
+        <template v-slot:default="{binds}">
+          <input :value="args.value" readonly v-bind="binds"/>
         </template>
       </DesignComponent>
     `,
@@ -233,6 +233,59 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Slot'} type={'leading'} />
 <StorybookDescriptions componentName={'Slot'} type={'trailing'} />
 <StorybookDescriptions componentName={'Field'} type={'slots'} />
+    `
+  },
+  ai: {
+    render: `
+<div :class="classDemo.item">
+  <Field label="Field Label" helper-message="Helper text" v-bind="args">
+    <template v-slot:default="{binds}">
+      <input :value="args.value" readonly v-bind="binds"/>
+    </template>
+  </Field>
+</div>
+    `,
+    description: `
+Field is the foundational wrapper component for all form inputs.
+It provides the structural layout, styling, and state management for labels, messages, icons, and the input container.
+
+**Key Features:**
+1. **Layout Structure:**
+   - **Label:** Displays the field label (\`label\`).
+   - **Body:** The main container for the input.
+     - **Prefix/Suffix:** Content before/after the input (\`prefix\`, \`suffix\`).
+     - **Icons:** Leading (\`icon\`) and trailing (\`iconTrailing\`) icons.
+     - **Input Slot:** The \`#default\` slot for the actual form control (input, select, etc.).
+   - **Footer:** Displays helper text (\`helperMessage\`), validation errors (\`validationMessage\`), and character counter.
+
+2. **Input Integration:**
+   - The \`#default\` slot exposes \`binds\` (id, class, aria-attributes).
+   - These \`binds\` **must** be applied to the native \`<input>\` or the focusable element within the slot to ensure proper styling and accessibility.
+
+3. **States & Validation:**
+   - **Loading:** \`loading\` prop shows a progress bar.
+   - **Validation:** \`validationMessage\` turns the field red and displays the error.
+   - **Disabled/Readonly:** \`disabled\`, \`readonly\` props style the wrapper accordingly.
+
+**When to use:**
+- When creating a custom form component (e.g., DatePicker, ColorPicker) that needs to match the design system's input style.
+- Do not use for standard text inputs; use \`Input\` instead.
+
+**Usage Examples:**
+
+- **Custom Input Wrapper:**
+  \`<Field label="Username" icon="person">
+     <template #default="{ binds }">
+       <input v-bind="binds" type="text" />
+     </template>
+   </Field>\`
+
+- **With Validation:**
+  \`<Field label="Email" validation-message="Invalid email">
+     <template #default="{ binds }">
+       <input v-bind="binds" type="email" />
+     </template>
+   </Field>\`
     `
   }
 }

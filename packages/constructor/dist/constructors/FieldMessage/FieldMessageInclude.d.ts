@@ -33,11 +33,7 @@ export declare class FieldMessageInclude<Props extends FieldMessagePropsInclude 
     constructor(props: Readonly<Props>, className: string, components?: DesignComponents<FieldMessageComponentInclude, Props> | undefined, validationMessage?: RefOrNormal<string> | undefined, isCounter?: RefType<boolean | undefined> | undefined, extra?: RefOrNormal<PropsExtra> | undefined, index?: string | undefined);
     /** Checks if validation message should be displayed/ Проверяет, надо ли отображать сообщение валидации */
     readonly isValidationMessage: ComputedRef<boolean>;
-    /**
-     * Returns the identifier.
-     *
-     * Возвращает идентификатор.
-     */
+    /** Returns the identifier/ Возвращает идентификатор */
     readonly id: ComputedRef<string>;
     /** Validation message computed/ Вычисляемое сообщение валидации */
     readonly validation: ComputedRef<string | undefined>;

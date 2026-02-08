@@ -206,6 +206,17 @@ export const wikiOption: StorybookArgsToList = {
       label: 1234567
     }
   },
+  maxlengthOnce: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.option,
+      type: 'number',
+      description: {
+        en: 'The number of characters remaining at which the screen reader starts announcing',
+        ru: 'Количество оставшихся символов, при котором скринридер начинает произносить'
+      }
+    }
+  },
   overlap: {
     type: StorybookControl.select,
     options: {

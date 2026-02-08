@@ -1,8 +1,8 @@
-var c = Object.defineProperty;
-var b = (t, s, e) => s in t ? c(t, s, { enumerable: !0, configurable: !0, writable: !0, value: e }) : t[s] = e;
-var i = (t, s, e) => b(t, typeof s != "symbol" ? s + "" : s, e);
-import { computed as l } from "vue";
-import { isFilled as m, toBinds as o, getRef as f } from "@dxtmisha/functional";
+var f = Object.defineProperty;
+var b = (i, s, e) => s in i ? f(i, s, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[s] = e;
+var t = (i, s, e) => b(i, typeof s != "symbol" ? s + "" : s, e);
+import { computed as r } from "vue";
+import { getElementId as o, isFilled as m, toBinds as l, getRef as n } from "@dxtmisha/functional";
 import { F as I } from "./FieldCounterInclude-D0oojGWY.js";
 class L {
   /**
@@ -11,32 +11,40 @@ class L {
    * @param className class name/ название класса
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
+   * @param forId element ID/ идентификатор элемента
    * @param isCounter whether to display the counter/ отображать ли счетчик
-   * @param labelId label identifier/ идентификатор метки
-   * @param counterId counter identifier/ идентификатор счетчика
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(s, e, r, n, d, h, a, p, u) {
+  constructor(s, e, h, d, a, u, p, c) {
+    t(this, "labelId", o());
+    t(this, "counterId", o());
     /** Field counter include/ Подключение счетчика поля */
-    i(this, "fieldCounter");
+    t(this, "fieldCounter");
     /** Checks if label should be displayed/ Проверяет, надо ли отображать метку */
-    i(this, "is", l(() => {
+    t(this, "is", r(() => {
       var s;
       return m(this.props.label) || !!((s = this.isCounter) != null && s.value);
     }));
+    /** Returns the identifier/ Возвращает идентификатор */
+    t(this, "id", r(() => {
+      var e;
+      const s = [];
+      return this.props.label && s.push(this.labelId), (e = this.isCounter) != null && e.value && this.props.counterShow && s.push(this.counterId), s.join(" ");
+    }));
     /** Computed bindings for FieldLabel/ Вычисляемые привязки для FieldLabel */
-    i(this, "binds", l(
+    t(this, "binds", r(
       () => {
-        var s, e, r;
-        return o(
-          f(this.extra),
+        var s;
+        return l(
+          n(this.extra),
           (s = this.isCounter) != null && s.value ? this.fieldCounter.bindsIntermediary.value : {},
           {
+            for: n(this.forId),
             label: this.props.label,
             required: this.props.required,
-            labelId: (e = this.props.labelId) != null ? e : this.labelId,
-            counterId: (r = this.props.counterId) != null ? r : this.counterId
+            labelId: this.labelId,
+            counterId: this.counterId
           },
           this.props.fieldLabelAttrs
         );
@@ -45,10 +53,10 @@ class L {
     /**
      * Render the FieldLabel component/ Рендер компонента FieldLabel
      */
-    i(this, "render", () => this.components && this.is.value ? this.components.render(
+    t(this, "render", () => this.components && this.is.value ? this.components.render(
       "fieldLabel",
       {
-        ...o(
+        ...l(
           this.binds.value,
           { class: `${this.className}__fieldLabel` }
         )
@@ -56,7 +64,7 @@ class L {
       this.slots,
       this.index
     ) : []);
-    this.props = s, this.className = e, this.components = r, this.slots = n, this.isCounter = d, this.labelId = h, this.counterId = a, this.extra = p, this.index = u, this.fieldCounter = new I(this.props, this.className);
+    this.props = s, this.className = e, this.components = h, this.slots = d, this.forId = a, this.isCounter = u, this.extra = p, this.index = c, this.fieldCounter = new I(this.props, this.className);
   }
 }
 export {

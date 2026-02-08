@@ -11,7 +11,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Arrow controls type for numeric input (auto, carousel, stepper, none)',
         ru: 'Тип стрелочных элементов управления для числового ввода (auto, carousel, stepper, none)'
       }
-    }
+    },
+    isDemo: true
   },
   arrowAlign: {
     type: StorybookControl.select,
@@ -23,6 +24,11 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Sets alignment position of arrow buttons within the field',
         ru: 'Задает позицию выравнивания кнопок-стрелок внутри поля'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      arrow: 'carousel',
+      arrowCarousel: true
     }
   },
   arrowStep: {
@@ -89,6 +95,17 @@ export const wikiForm: StorybookArgsToList = {
       description: {
         en: 'Hint for the enter key label on virtual keyboards',
         ru: 'Подсказка для метки клавиши Enter на виртуальных клавиатурах'
+      }
+    }
+  },
+  for: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.form,
+      type: 'string',
+      description: {
+        en: 'ID of the element the label is bound to',
+        ru: 'ID элемента, к которому привязана метка'
       }
     }
   },
@@ -200,7 +217,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Marks the field as required and shows the required indicator',
         ru: 'Помечает поле как обязательное и показывает индикатор обязательности'
       }
-    }
+    },
+    isDemo: true
   },
   spellcheck: {
     type: StorybookControl.boolean,

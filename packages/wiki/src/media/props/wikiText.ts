@@ -10,6 +10,28 @@ import {
  * Объект wikiText содержит описание всех текстовых свойств
  */
 export const wikiText: StorybookArgsToList = {
+  textCharacterLimit: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Character limit exceeded text',
+        ru: 'Текст о превышении лимита символов'
+      }
+    }
+  },
+  textCharacterRemaining: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Remaining characters text',
+        ru: 'Текст об оставшихся символах'
+      }
+    }
+  },
   textClose: {
     type: StorybookControl.text,
     options: {

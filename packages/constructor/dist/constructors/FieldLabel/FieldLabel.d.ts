@@ -36,8 +36,12 @@ export declare class FieldLabel {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param LabelConstructor class for creating a label/ класс для создания метки
+     * @param FieldCounterConstructor class for working with field counter/ класс для работы со счетчиком поля
+     * @param ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
+     * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
      */
-    constructor(props: FieldLabelProps, refs: ToRefs<FieldLabelProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldLabelComponents, FieldLabelProps> | undefined, slots?: FieldLabelSlots | undefined, emits?: ConstrEmit<FieldLabelEmits> | undefined);
+    constructor(props: FieldLabelProps, refs: ToRefs<FieldLabelProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldLabelComponents, FieldLabelProps> | undefined, slots?: FieldLabelSlots | undefined, emits?: ConstrEmit<FieldLabelEmits> | undefined, LabelConstructor?: typeof LabelInclude, FieldCounterConstructor?: typeof FieldCounterInclude, ProgressConstructor?: typeof ProgressInclude, SkeletonConstructor?: typeof SkeletonInclude);
     /**
      * Values for the class.
      *

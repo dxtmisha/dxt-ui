@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui fieldMessage",
+    "dxt-ui": "dxt-ui field",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -170,6 +170,14 @@
     "./D1FieldMessage": {
       "types": "./dist/D1FieldMessage.d.ts",
       "default": "./dist/D1FieldMessage.js"
+    },
+    "./D1FieldLabel": {
+      "types": "./dist/D1FieldLabel.d.ts",
+      "default": "./dist/D1FieldLabel.js"
+    },
+    "./D1Field": {
+      "types": "./dist/D1Field.d.ts",
+      "default": "./dist/D1Field.js"
     }
   },
   "buildOptions": {

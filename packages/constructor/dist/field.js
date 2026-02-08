@@ -1,31 +1,31 @@
-var u = Object.defineProperty;
-var m = (n, e, s) => e in n ? u(n, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[e] = s;
-var t = (n, e, s) => m(n, typeof e != "symbol" ? e + "" : e, s);
-import { computed as a, watch as b, onUnmounted as f, onMounted as y, onUpdated as v, h as r } from "vue";
-import { isDomRuntime as g, EventItem as _, getElementId as S, DesignConstructorAbstract as w, isString as I } from "@dxtmisha/functional";
-import { C as N } from "./CaptionInclude-VhkGstz9.js";
-import { P as x, S as B } from "./SuffixInclude-C7JNYCJK.js";
-import { E as $ } from "./EnabledInclude-IdZAnr6u.js";
-import { E as C } from "./EventClickInclude-CgbuezDm.js";
+var x = Object.defineProperty;
+var B = (n, t, s) => t in n ? x(n, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[t] = s;
+var e = (n, t, s) => B(n, typeof t != "symbol" ? t + "" : t, s);
+import { computed as r, watch as $, onUnmounted as I, onMounted as L, onUpdated as E, h as l } from "vue";
+import { isDomRuntime as k, EventItem as A, getElementId as F, DesignConstructorAbstract as T, isString as q } from "@dxtmisha/functional";
 import { A as d } from "./AriaStaticInclude-BVCgDZbU.js";
-import { F as L } from "./FieldLabelInclude-BSISy_cb.js";
-import { F as E } from "./FieldMessageInclude-AalYJ_IH.js";
-import { S as k } from "./SkeletonInclude-BIUzAO2s.js";
-import { I as A } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as F } from "./ProgressInclude-NyOp5bMZ.js";
-class T {
+import { C as P } from "./CaptionInclude-VhkGstz9.js";
+import { P as M, S as D } from "./SuffixInclude-C7JNYCJK.js";
+import { E as V } from "./EnabledInclude-IdZAnr6u.js";
+import { E as R } from "./EventClickInclude-CgbuezDm.js";
+import { F as z } from "./FieldLabelInclude-Dv2NB98l.js";
+import { F as W } from "./FieldMessageInclude-BJDnir34.js";
+import { S as U } from "./SkeletonInclude-BIUzAO2s.js";
+import { I as H } from "./IconTrailingInclude-CdsOcDxv.js";
+import { P as j } from "./ProgressInclude-NyOp5bMZ.js";
+class G {
   /**
    * Constructor
    * @param props input data/ входные данные
    * @param className class name/ название класса
    */
-  constructor(e, s) {
+  constructor(t, s) {
     /**
      * Determines whether to display arrows.
      *
      * Определяет, требуется ли отображение стрелок.
      */
-    t(this, "isArrow", a(
+    e(this, "isArrow", r(
       () => !!((this.props.arrowCarousel || this.props.arrowStepper) && !this.props.disabled)
     ));
     /**
@@ -33,13 +33,13 @@ class T {
      *
      * Определяет, требуется ли отображение кнопки "Удалить".
      */
-    t(this, "isCancel", a(() => !!(this.props.cancel && !this.props.readonly && !this.props.disabled && !this.props.arrowCarousel && !this.props.arrowStepper && (this.props.cancel === "auto" && this.props.cancelShow || this.props.cancel === "always"))));
+    e(this, "isCancel", r(() => !!(this.props.cancel && !this.props.readonly && !this.props.disabled && !this.props.arrowCarousel && !this.props.arrowStepper && (this.props.cancel === "auto" && this.props.cancelShow || this.props.cancel === "always"))));
     /**
      * Returns data for the data deletion button.
      *
      * Возвращает данные для кнопки удаления данных.
      */
-    t(this, "cancelBind", a(() => ({
+    e(this, "cancelBind", r(() => ({
       class: `${this.className}__cancel`,
       icon: this.props.iconClose,
       dynamic: !0,
@@ -50,7 +50,7 @@ class T {
      *
      * Возвращает данные для стрелки слева.
      */
-    t(this, "previousBind", a(() => ({
+    e(this, "previousBind", r(() => ({
       class: `${this.className}__previous`,
       icon: this.props.arrowCarousel ? this.props.iconArrowLeft : this.props.iconMinus,
       disabled: this.props.disabled || this.props.disabledPrevious,
@@ -62,43 +62,43 @@ class T {
      *
      * Возвращает данные для стрелки справа.
      */
-    t(this, "nextBind", a(() => ({
+    e(this, "nextBind", r(() => ({
       class: `${this.className}__next`,
       icon: this.props.arrowCarousel ? this.props.iconArrowRight : this.props.iconPlus,
       disabled: this.props.disabled || this.props.disabledNext,
       dynamic: !0,
       "data-event-type": "next"
     })));
-    this.props = e, this.className = s;
+    this.props = t, this.className = s;
   }
 }
-class q {
+class J {
   /**
    * Constructor
    * @param element main element/ главный элемент
    * @param className class name/ название класса
    */
-  constructor(e, s) {
-    t(this, "left", 0);
-    t(this, "right", 0);
-    t(this, "title", 0);
-    t(this, "event");
+  constructor(t, s) {
+    e(this, "left", 0);
+    e(this, "right", 0);
+    e(this, "title", 0);
+    e(this, "event");
     /**
      * Update margins.
      *
      * Обновление отступов.
      */
-    t(this, "update", () => {
+    e(this, "update", () => {
       requestAnimationFrame(() => {
-        var i, o, l, h;
-        const e = this.getElementSpace(), s = this.getElementPrefix();
-        e && (this.left = e.offsetLeft, this.right = ((o = (i = e.parentElement) == null ? void 0 : i.offsetWidth) != null ? o : 0) - this.left - e.offsetWidth), this.title = (h = (l = s == null ? void 0 : s.offsetLeft) != null ? l : e == null ? void 0 : e.offsetLeft) != null ? h : 0, this.make();
+        var i, o, a, h;
+        const t = this.getElementSpace(), s = this.getElementPrefix();
+        t && (this.left = t.offsetLeft, this.right = ((o = (i = t.parentElement) == null ? void 0 : i.offsetWidth) != null ? o : 0) - this.left - t.offsetWidth), this.title = (h = (a = s == null ? void 0 : s.offsetLeft) != null ? a : t == null ? void 0 : t.offsetLeft) != null ? h : 0, this.make();
       });
     });
-    this.element = e, this.className = s, b(e, () => this.update, { immediate: !0 }), g() && (this.event = new _(window, "resize", this.update), f(() => {
+    this.element = t, this.className = s, $(t, () => this.update, { immediate: !0 }), k() && (this.event = new A(window, "resize", this.update), I(() => {
       var i;
       return (i = this.event) == null ? void 0 : i.stop();
-    })), y(this.update), v(this.update);
+    })), L(this.update), E(this.update);
   }
   /**
    * Returns separator elements.
@@ -106,8 +106,8 @@ class q {
    * Возвращает элементы-разделители.
    */
   getElementSpace() {
-    var e, s;
-    return (s = (e = this.element.value) == null ? void 0 : e.querySelector(`.${this.className}__body__scoreboard__space`)) != null ? s : void 0;
+    var t, s;
+    return (s = (t = this.element.value) == null ? void 0 : t.querySelector(`.${this.className}__body__scoreboard__space`)) != null ? s : void 0;
   }
   /**
    * Returns element with prefix.
@@ -115,8 +115,8 @@ class q {
    * Возвращает элемент с префиксом.
    */
   getElementPrefix() {
-    var e, s;
-    return (s = (e = this.element.value) == null ? void 0 : e.querySelector(`.${this.className}__prefix`)) != null ? s : void 0;
+    var t, s;
+    return (s = (t = this.element.value) == null ? void 0 : t.querySelector(`.${this.className}__prefix`)) != null ? s : void 0;
   }
   /**
    * Update input field margins.
@@ -124,11 +124,11 @@ class q {
    * Обновление отступов для поля ввода.
    */
   make() {
-    const e = this.element.value;
-    e && (e.style.setProperty(`--${this.className}-sys-left`, `${this.left}px`), e.style.setProperty(`--${this.className}-sys-right`, `${this.right}px`), e.style.setProperty(`--${this.className}-sys-title`, `${this.title}px`), e.classList.contains(`${this.className}--show`) || requestAnimationFrame(() => e.classList.add(`${this.className}--show`)));
+    const t = this.element.value;
+    t && (t.style.setProperty(`--${this.className}-sys-left`, `${this.left}px`), t.style.setProperty(`--${this.className}-sys-right`, `${this.right}px`), t.style.setProperty(`--${this.className}-sys-title`, `${this.title}px`), t.classList.contains(`${this.className}--show`) || requestAnimationFrame(() => t.classList.add(`${this.className}--show`)));
   }
 }
-class P {
+class K {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -139,29 +139,54 @@ class P {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+   * @param IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
+   * @param PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
+   * @param SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
+   * @param FieldLabelIncludeConstructor class for working with field label/ класс для работы с меткой поля
+   * @param FieldMessageIncludeConstructor class for working with field message/ класс для работы с сообщением поля
+   * @param ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
+   * @param EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
+   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
+   * @param FieldSizeConstructor class for working with field size/ класс для работы с размером поля
    */
-  constructor(e, s, i, o, l, h, c, p) {
-    t(this, "id", S());
-    t(this, "labelId", `${this.id}-label`);
-    t(this, "helperId", `${this.id}-helper`);
-    t(this, "validationId", `${this.id}-validation`);
-    t(this, "counterId", `${this.id}-counter`);
-    t(this, "icon");
-    t(this, "caption");
-    t(this, "prefix");
-    t(this, "suffix");
-    t(this, "fieldLabel");
-    t(this, "fieldMessage");
-    t(this, "progress");
-    t(this, "enabled");
-    t(this, "event");
-    t(this, "skeleton");
-    t(this, "icons");
-    t(this, "size");
+  constructor(t, s, i, o, a, h, c, p, u = U, m = H, b = P, f = M, y = D, v = z, g = W, _ = j, S = V, w = R, C = G, N = J) {
+    /** Icon trailing include/ Подключение иконки в конце */
+    e(this, "icon");
+    /** Caption include/ Подключение подписи */
+    e(this, "caption");
+    /** Prefix include/ Подключение префикса */
+    e(this, "prefix");
+    /** Suffix include/ Подключение суффикса */
+    e(this, "suffix");
+    /** Field label include/ Подключение метки поля */
+    e(this, "fieldLabel");
+    /** Field message include/ Подключение сообщения поля */
+    e(this, "fieldMessage");
+    /** Progress include/ Подключение прогресса */
+    e(this, "progress");
+    /** Enabled include/ Подключение активности */
+    e(this, "enabled");
+    /** Event click include/ Подключение события клика */
+    e(this, "event");
+    /** Skeleton include/ Подключение скелетона */
+    e(this, "skeleton");
+    /** Field icons/ Иконки поля */
+    e(this, "icons");
+    /** Field size/ Размер поля */
+    e(this, "size");
+    /** Checks if the field is classic/ Проверяет, является ли поле классическим */
+    e(this, "isClassic", r(
+      () => !!(this.props.classic && !this.props.basic && !this.props.boxed && !this.props.filled && !this.props.outlined && !this.props.tonal)
+    ));
     /** Checks if an error needs to be displayed/ Проверяет, надо ли выводить ошибку */
-    t(this, "isValidation", a(() => !!(this.props.validationMessage && (this.props.forceShowMessage || !this.props.readonly && !this.props.disabled))));
+    e(this, "isValidation", r(() => !!(this.props.validationMessage && (this.props.forceShowMessage || !this.props.readonly && !this.props.disabled))));
+    /** Field identifier/ Идентификатор поля */
+    e(this, "id", r(() => String(this.props.id || F())));
     /** Values for the class/ Значения для класса */
-    t(this, "classes", a(() => ({
+    e(this, "classes", r(() => ({
       [`${this.className}--cancel`]: this.icons.isCancel.value,
       [`${this.className}--suffix`]: this.props.suffix,
       [`${this.className}--validation`]: this.isValidation.value
@@ -169,43 +194,41 @@ class P {
     /**
      * Returns data for the slot/ Возвращает данные для слота
      */
-    t(this, "control", a(() => {
-      const e = String(this.props.id || this.id), s = `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`;
+    e(this, "control", r(() => {
+      const t = `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`;
       return {
-        id: e,
-        className: s,
+        id: this.id.value,
+        className: t,
         classHidden: `${this.className}__body__hidden`,
         classForFocus: `${this.className}__body__focus`,
         binds: {
-          id: e,
-          className: s,
-          ...d.labelledby(this.labelId),
-          ...d.describedby(this.getDescribedby()),
-          ...d.invalid(this.isValidation.value)
+          id: this.id.value,
+          className: t,
+          ...d.invalid(this.isValidation.value),
+          ...d.describedby(this.getDescribedby())
         }
       };
     }));
-    this.props = e, this.refs = s, this.element = i, this.classDesign = o, this.className = l, this.components = h, this.slots = c, this.emits = p, this.skeleton = new k(
+    this.props = t, this.refs = s, this.element = i, this.classDesign = o, this.className = a, this.components = h, this.slots = c, this.emits = p, this.skeleton = new u(
       this.props,
       this.classDesign,
       ["classBackground"]
-    ), this.icon = new A(this.props, this.className, this.components), this.caption = new N(this.props, this.className, this.slots), this.prefix = new x(this.props, this.className, this.slots), this.suffix = new B(this.props, this.className, this.slots), this.fieldLabel = new L(
+    ), this.icon = new m(this.props, this.className, this.components), this.caption = new b(this.props, this.className, this.slots), this.prefix = new f(this.props, this.className, this.slots), this.suffix = new y(this.props, this.className, this.slots), this.fieldLabel = new v(
       this.props,
       this.className,
       this.components,
       this.slots,
+      this.id,
       this.refs.counterTop,
-      this.labelId,
-      this.counterId,
       this.skeleton.binds
-    ), this.fieldMessage = new E(
+    ), this.fieldMessage = new g(
       this.props,
       this.className,
       this.components,
       void 0,
-      a(() => !this.props.counterTop),
+      r(() => !this.props.counterTop),
       this.skeleton.binds
-    ), this.progress = new F(
+    ), this.progress = new _(
       this.props,
       this.className,
       this.components,
@@ -214,7 +237,7 @@ class P {
         position: "static",
         dense: !0
       }
-    ), this.enabled = new $(this.props, this.progress), this.event = new C(this.props, this.enabled, this.emits), this.icons = new T(this.props, this.className), this.size = new q(this.element, this.className);
+    ), this.enabled = new S(this.props, this.progress), this.event = new w(this.props, this.enabled, this.emits), this.icons = new C(this.props, this.className), this.size = new N(this.element, this.className);
   }
   /**
    * Get ARIA describedby attribute.
@@ -222,35 +245,35 @@ class P {
    * Получить атрибут ARIA describedby.
    */
   getDescribedby() {
-    const e = [];
-    return this.props.helperMessage && e.push(this.helperId), this.isValidation.value && e.push(this.validationId), this.props.counterShow && e.push(this.counterId), e.join(" ");
+    return `${this.fieldLabel.id.value} ${this.fieldMessage.id.value}`.trim();
   }
 }
-const Q = {
+const ns = {
   // :default [!] System label / Системная метка
   arrowAlign: "right",
   cancel: "auto"
 };
-class X extends w {
+class hs extends T {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(s, i, o) {
+  constructor(s, i, o, a = K) {
     super(
       s,
       i,
       o
     );
-    t(this, "item");
+    e(this, "item");
     /**
      * Generates body.
      *
      * Генерирует тело.
      */
-    t(this, "renderBody", () => {
+    e(this, "renderBody", () => {
       var i;
       const s = [
         this.initSlot("default", void 0, this.item.control.value),
@@ -259,7 +282,7 @@ class X extends w {
         this.renderBodyBorder()
       ];
       return [
-        r(
+        l(
           "span",
           {
             class: [
@@ -277,21 +300,21 @@ class X extends w {
      *
      * Генерирует данные для заголовка.
      */
-    t(this, "renderBodyLabel", () => {
-      var i, o, l, h;
+    e(this, "renderBodyLabel", () => {
+      var i, o, a, h;
       const s = [
         this.props.label
       ];
-      return this.props.required && s.push(r(
+      return this.props.required && s.push(l(
         "span",
         { class: (i = this.classes) == null ? void 0 : i.value.required }
-      )), r(
+      )), l(
         "span",
         { class: (o = this.classes) == null ? void 0 : o.value.bodyTitle },
-        r(
+        l(
           "span",
-          { class: (l = this.classes) == null ? void 0 : l.value.bodyTitleLabel },
-          r(
+          { class: (a = this.classes) == null ? void 0 : a.value.bodyTitleLabel },
+          l(
             "span",
             { class: (h = this.classes) == null ? void 0 : h.value.bodyTitleLabelText },
             s
@@ -304,7 +327,7 @@ class X extends w {
      *
      * Генерирует данные для дополнительных управлений.
      */
-    t(this, "renderBodyScoreboard", () => {
+    e(this, "renderBodyScoreboard", () => {
       var i;
       const s = [
         ...this.renderBodyScoreboardSlot(),
@@ -314,7 +337,7 @@ class X extends w {
         ...this.item.progress.render(),
         ...this.renderBodyScoreboardSpace()
       ];
-      return r("span", {
+      return l("span", {
         class: (i = this.classes) == null ? void 0 : i.value.bodyScoreboard,
         "data-element": "scoreboard"
       }, s);
@@ -324,14 +347,14 @@ class X extends w {
      *
      * Генерирует данные для слота.
      */
-    t(this, "renderBodyScoreboardSlot", () => {
+    e(this, "renderBodyScoreboardSlot", () => {
       var i, o;
       const s = [];
-      return this.slots && ("leading" in this.slots && s.push(r(
+      return this.slots && ("leading" in this.slots && s.push(l(
         "span",
         { class: (i = this.classes) == null ? void 0 : i.value.bodyScoreboardLeft },
         this.initSlot("leading")
-      )), "trailing" in this.slots && s.push(r(
+      )), "trailing" in this.slots && s.push(l(
         "span",
         { class: (o = this.classes) == null ? void 0 : o.value.bodyScoreboardRight },
         this.initSlot("trailing")
@@ -342,7 +365,7 @@ class X extends w {
      *
      * Генерирует все доступные иконки.
      */
-    t(this, "renderBodyScoreboardIcon", () => {
+    e(this, "renderBodyScoreboardIcon", () => {
       const s = [...this.item.icon.render()];
       return this.item.icons.isCancel.value && this.components.renderAdd(
         s,
@@ -369,11 +392,11 @@ class X extends w {
      *
      * Генерирует разделители и дополнительные описания.
      */
-    t(this, "renderBodyScoreboardSpace", () => {
+    e(this, "renderBodyScoreboardSpace", () => {
       var i, o;
       const s = [];
       return this.item.caption.is.value && s.push(
-        r(
+        l(
           "span",
           {
             class: (i = this.classes) == null ? void 0 : i.value.bodyScoreboardInput,
@@ -383,7 +406,7 @@ class X extends w {
         ),
         ...this.item.caption.render()
       ), [
-        r(
+        l(
           "span",
           { class: (o = this.classes) == null ? void 0 : o.value.bodyScoreboardSpace },
           s
@@ -395,22 +418,22 @@ class X extends w {
      *
      * Генерирует border.
      */
-    t(this, "renderBodyBorder", () => {
+    e(this, "renderBodyBorder", () => {
       var s;
-      return r("span", { class: (s = this.classes) == null ? void 0 : s.value.bodyBorder });
+      return l("span", { class: (s = this.classes) == null ? void 0 : s.value.bodyBorder });
     });
     /**
      * Value for focus.
      *
      * Значение для фокуса.
      */
-    t(this, "focusValue", () => !this.lengthElement.value && I(this.props.value) ? this.props.value : "");
+    e(this, "focusValue", () => !this.lengthElement.value && q(this.props.value) ? this.props.value : "");
     /**
      * Length value.
      *
      * Значение длины.
      */
-    t(this, "lengthValue", () => {
+    e(this, "lengthValue", () => {
       if (this.lengthElement.value)
         return `${this.lengthElement.value.offsetWidth}px`;
     });
@@ -419,7 +442,7 @@ class X extends w {
      *
      * Элемент для подсчёта символов.
      */
-    t(this, "lengthElement", a(() => {
+    e(this, "lengthElement", r(() => {
       var s, i;
       return (i = (s = this.element.value) == null ? void 0 : s.querySelector("*[data-length]")) != null ? i : void 0;
     }));
@@ -428,11 +451,11 @@ class X extends w {
      *
      * Элемент ввода.
      */
-    t(this, "inputElement", a(() => {
-      var s, i, o, l;
-      return (l = (o = this.element.value) == null ? void 0 : o.querySelector(`input.${(s = this.classes) == null ? void 0 : s.value.bodyInput}, .${(i = this.classes) == null ? void 0 : i.value.bodyInput} input`)) != null ? l : void 0;
+    e(this, "inputElement", r(() => {
+      var s, i, o, a;
+      return (a = (o = this.element.value) == null ? void 0 : o.querySelector(`input.${(s = this.classes) == null ? void 0 : s.value.bodyInput}, .${(i = this.classes) == null ? void 0 : i.value.bodyInput} input`)) != null ? a : void 0;
     }));
-    this.item = new P(
+    this.item = new a(
       this.props,
       this.refs,
       this.element,
@@ -490,23 +513,24 @@ class X extends w {
   initRender() {
     var i, o;
     const s = [];
-    return this.props.classic && !this.props.basic && !this.props.boxed && !this.props.filled && !this.props.outlined && !this.props.tonal && s.push(...this.item.fieldLabel.render()), s.push(
+    return this.item.isClassic.value && s.push(...this.item.fieldLabel.render()), s.push(
       ...this.renderBody(),
       ...this.item.fieldMessage.render()
-    ), r(
-      "label",
+    ), l(
+      this.item.isClassic.value ? "div" : "label",
       {
         ...this.getAttrs(),
         ref: this.element,
         class: (i = this.classes) == null ? void 0 : i.value.main,
-        style: (o = this.styles) == null ? void 0 : o.value
+        style: (o = this.styles) == null ? void 0 : o.value,
+        for: this.item.isClassic.value ? void 0 : this.item.id.value
       },
       s
     );
   }
 }
 export {
-  P as Field,
-  X as FieldDesign,
-  Q as defaultsField
+  K as Field,
+  hs as FieldDesign,
+  ns as defaultsField
 };

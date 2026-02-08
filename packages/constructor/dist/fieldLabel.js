@@ -1,15 +1,15 @@
-var m = Object.defineProperty;
-var d = (i, e, s) => e in i ? m(i, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[e] = s;
-var t = (i, e, s) => d(i, typeof e != "symbol" ? e + "" : e, s);
-import { computed as p, h as o } from "vue";
-import { DesignConstructorAbstract as f } from "@dxtmisha/functional";
-import { L as g } from "./LabelInclude-D-mLvjK5.js";
-import { F as b } from "./FieldCounterInclude-D0oojGWY.js";
-import { S as v } from "./SkeletonInclude-BIUzAO2s.js";
-import { P as C } from "./ProgressInclude-NyOp5bMZ.js";
-import { A as F } from "./AriaStaticInclude-BVCgDZbU.js";
-import { F as E } from "./FieldLabelInclude-BSISy_cb.js";
-class q {
+var b = Object.defineProperty;
+var g = (i, e, s) => e in i ? b(i, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[e] = s;
+var t = (i, e, s) => g(i, typeof e != "symbol" ? e + "" : e, s);
+import { computed as v, h as a } from "vue";
+import { DesignConstructorAbstract as C } from "@dxtmisha/functional";
+import { L as F } from "./LabelInclude-D-mLvjK5.js";
+import { F as q } from "./FieldCounterInclude-D0oojGWY.js";
+import { P as I } from "./ProgressInclude-NyOp5bMZ.js";
+import { S as L } from "./SkeletonInclude-BIUzAO2s.js";
+import { A as S } from "./AriaStaticInclude-BVCgDZbU.js";
+import { F as z } from "./FieldLabelInclude-Dv2NB98l.js";
+class k {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -20,8 +20,12 @@ class q {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param LabelConstructor class for creating a label/ класс для создания метки
+   * @param FieldCounterConstructor class for working with field counter/ класс для работы со счетчиком поля
+   * @param ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
+   * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
    */
-  constructor(e, s, r, l, a, h, u, c) {
+  constructor(e, s, r, l, n, h, u, c, m = F, d = q, p = I, f = L) {
     /** Label include/ Подключение метки */
     t(this, "label");
     /** Field counter include/ Подключение счетчика поля */
@@ -36,12 +40,12 @@ class q {
      * Значения для класса.
      * Возвращает объект классов, включающий классы скелетона, если он активен.
      */
-    t(this, "classes", p(() => ({
+    t(this, "classes", v(() => ({
       ...this.skeleton.classes.value
     })));
-    this.props = e, this.refs = s, this.element = r, this.classDesign = l, this.className = a, this.components = h, this.slots = u, this.emits = c;
-    const n = new v(this.props, this.classDesign, ["classTextVariant"]);
-    this.label = new g(
+    this.props = e, this.refs = s, this.element = r, this.classDesign = l, this.className = n, this.components = h, this.slots = u, this.emits = c;
+    const o = new f(this.props, this.classDesign, ["classTextVariant"]);
+    this.label = new m(
       this.props,
       this.className,
       void 0,
@@ -49,12 +53,12 @@ class q {
       void 0,
       void 0,
       !0,
-      n
-    ), this.fieldCounter = new b(
+      o
+    ), this.fieldCounter = new d(
       this.props,
       this.className,
       this.components
-    ), this.progress = new C(
+    ), this.progress = new p(
       this.props,
       this.className,
       this.components,
@@ -63,18 +67,19 @@ class q {
         position: "static",
         dense: !0
       }
-    ), this.skeleton = n;
+    ), this.skeleton = o;
   }
 }
-const A = {};
-class R extends f {
+const E = {};
+class T extends C {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor field label item class/ класс элемента метки поля
    */
-  constructor(s, r, l) {
+  constructor(s, r, l, n = k) {
     super(
       s,
       r,
@@ -89,17 +94,17 @@ class R extends f {
     t(this, "renderRequired", () => {
       var s;
       return this.props.required ? [
-        o(
+        a(
           "span",
           {
             class: (s = this.classes) == null ? void 0 : s.value.required,
-            ...F.hidden()
+            ...S.hidden()
           },
           "*"
         )
       ] : [];
     });
-    this.item = new q(
+    this.item = new n(
       this.props,
       this.refs,
       this.element,
@@ -152,19 +157,20 @@ class R extends f {
       ...this.item.fieldCounter.render()
     ];
     if (this.item.label.is.value || this.item.progress.is.value || this.item.fieldCounter.isCounter.value)
-      return o(
-        "div",
+      return a(
+        "label",
         {
           ...this.getAttrs(),
-          class: (r = this.classes) == null ? void 0 : r.value.main
+          class: (r = this.classes) == null ? void 0 : r.value.main,
+          for: this.props.for
         },
         s
       );
   }
 }
 export {
-  q as FieldLabel,
-  R as FieldLabelDesign,
-  E as FieldLabelInclude,
-  A as defaultsFieldLabel
+  k as FieldLabel,
+  T as FieldLabelDesign,
+  z as FieldLabelInclude,
+  E as defaultsFieldLabel
 };

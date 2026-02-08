@@ -4,6 +4,7 @@ import { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounte
 import { SkeletonPropsInclude } from '../Skeleton';
 export type FieldLabelPropsToken = {};
 export type FieldLabelPropsBasic<FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & FieldCounterPropsInclude<FieldCounter> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & {
+    for?: string;
     required?: boolean;
 };
 /**

@@ -13,8 +13,9 @@ export declare class FieldDesign<COMP extends FieldComponents, EXPOSE extends Fi
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor class for working with the item/ класс для работы с элементом
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, FieldEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, FieldEmits, P>, ItemConstructor?: typeof Field);
     /**
      * Initialization of all the necessary properties for work
      *

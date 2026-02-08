@@ -91,6 +91,18 @@ export const wikiImage: StorybookArgsToList = {
       }
     }
   },
+  'image.fetchPriority': {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      options: ['auto', 'high', 'low'],
+      description: {
+        en: 'Sets the priority for fetching the image',
+        ru: 'Устанавливает приоритет загрузки изображения'
+      }
+    }
+  },
   'image.lazy': {
     type: StorybookControl.boolean,
     options: {
@@ -129,6 +141,17 @@ export const wikiImage: StorybookArgsToList = {
       description: {
         en: 'Sources for different display conditions using the picture tag with media queries',
         ru: 'Источники для разных условий отображения с использованием тега picture и медиа-запросов'
+      }
+    }
+  },
+  'image.preloadOffset': {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      description: {
+        en: 'Distance from the viewport to start preloading the image',
+        ru: 'Расстояние от области просмотра для начала предзагрузки изображения'
       }
     }
   },

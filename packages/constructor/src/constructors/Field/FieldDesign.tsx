@@ -43,11 +43,13 @@ export class FieldDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, FieldEmits, P>
+    options?: ConstrOptions<COMP, FieldEmits, P>,
+    ItemConstructor: typeof Field = Field
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class FieldDesign<
       options
     )
 
-    this.item = new Field(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -122,14 +124,7 @@ export class FieldDesign<
   protected initRender(): VNode {
     const children: any[] = []
 
-    if (
-      (this.props as any).classic
-      && !(this.props as any).basic
-      && !(this.props as any).boxed
-      && !(this.props as any).filled
-      && !(this.props as any).outlined
-      && !(this.props as any).tonal
-    ) {
+    if (this.item.isClassic.value) {
       children.push(...this.item.fieldLabel.render())
     }
 
@@ -139,12 +134,13 @@ export class FieldDesign<
     )
 
     return h(
-      'label',
+      this.item.isClassic.value ? 'div' : 'label',
       {
         ...this.getAttrs(),
         ref: this.element,
         class: this.classes?.value.main,
-        style: this.styles?.value
+        style: this.styles?.value,
+        for: this.item.isClassic.value ? undefined : this.item.id.value
       },
       children
     )

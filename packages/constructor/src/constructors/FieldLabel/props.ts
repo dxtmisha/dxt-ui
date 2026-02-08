@@ -14,8 +14,12 @@ export type FieldLabelPropsBasic<
 > = LabelProps
   & FieldCounterPropsInclude<FieldCounter>
   & ProgressPropsInclude<Progress>
-  & SkeletonPropsInclude & {
-  // Style
+  & SkeletonPropsInclude
+  & {
+    // Information
+    for?: string
+
+    // Style
     required?: boolean
   }
 

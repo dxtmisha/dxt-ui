@@ -18,7 +18,8 @@ export const wikiField: StorybookArgsToList = {
         en: 'Shows horizontal navigation arrows (carousel left/right)',
         ru: 'Отображает горизонтальные стрелки навигации (карусель влево/вправо)'
       }
-    }
+    },
+    isDemo: true
   },
   'field.arrowStepper': {
     type: StorybookControl.boolean,
@@ -28,7 +29,8 @@ export const wikiField: StorybookArgsToList = {
         en: 'Shows numeric step controls (+ / -) for increment / decrement',
         ru: 'Отображает числовые степперы (+ / -) для инкремента / декремента'
       }
-    }
+    },
+    isDemo: true
   },
   'field.basic': {
     type: StorybookControl.boolean,
@@ -38,7 +40,8 @@ export const wikiField: StorybookArgsToList = {
         en: 'Basic variant for Field without fill and border',
         ru: 'Базовый вариант Field без заливки и рамки'
       }
-    }
+    },
+    isDemo: true
   },
   'field.boxed': {
     type: StorybookControl.boolean,
@@ -48,7 +51,8 @@ export const wikiField: StorybookArgsToList = {
         en: 'Boxed variant for Field with both fill and border',
         ru: 'Вариант Field с заливкой и рамкой (boxed)'
       }
-    }
+    },
+    isDemo: true
   },
   'field.classic': {
     type: StorybookControl.boolean,
@@ -58,7 +62,8 @@ export const wikiField: StorybookArgsToList = {
         en: 'Classic variant for Field with standard border and no fill',
         ru: 'Классический вариант Field со стандартной рамкой без заливки'
       }
-    }
+    },
+    isDemo: true
   },
   'field.disabledNext': {
     type: StorybookControl.boolean,
@@ -88,7 +93,8 @@ export const wikiField: StorybookArgsToList = {
         en: 'Filled variant for Field with background fill',
         ru: 'Залитый вариант Field с фоновым заполнением'
       }
-    }
+    },
+    isDemo: true
   },
   'field.outlined': {
     type: StorybookControl.boolean,
@@ -98,7 +104,8 @@ export const wikiField: StorybookArgsToList = {
         en: 'Outline variant for Field with bordered style',
         ru: 'Контурный вариант Field с акцентной рамкой'
       }
-    }
+    },
+    isDemo: true
   },
   'field.tonal': {
     type: StorybookControl.boolean,
@@ -108,6 +115,7 @@ export const wikiField: StorybookArgsToList = {
         en: 'Tonal variant for Field with toned background and softer contrast',
         ru: 'Тональный вариант Field с приглушенной заливкой и мягким контрастом'
       }
-    }
+    },
+    isDemo: true
   }
 }

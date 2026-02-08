@@ -33,8 +33,8 @@ export const Field: Story = {
     setup: () => ({ args }),
     template: `
       <D1Field v-bind="args">
-        <template v-slot:default="{id, className}">
-          <input :value="args.value" :id="id" :class="className" readonly/>
+        <template v-slot:default="{binds}">
+          <input :value="args.value" readonly v-bind="binds"/>
         </template>
       </D1Field>
     `
