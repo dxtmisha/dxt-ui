@@ -13,8 +13,9 @@ export declare class MaskDesign<COMP extends MaskComponents, EXPOSE extends Mask
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor mask item class/ класс элемента маски
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, MaskEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, MaskEmits, P>, ItemConstructor?: typeof Mask);
     /**
      * Initialization of all the necessary properties for work
      *

@@ -227,5 +227,35 @@ export const wikiDescriptionsMask: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Mask'} type={'expose'}/>
 <StorybookDescriptions componentName={'Expose'} type={'clear'}/>
     `
+  },
+  ai: {
+    description: `
+**Note:** This component is already integrated into the \`Input\` component and should not be used directly.
+
+Mask is an advanced input component that enforces a specific format for user entry.
+It is used for structured data like phone numbers, dates, credit card numbers, and formatted currency.
+
+**When to use:**
+1. **Phone Numbers:** When the input must follow a specific country format (e.g., \`+1 (555) 000-0000\`).
+2. **Dates & Times:** When users need to enter dates in a specific order (DD.MM.YYYY) or times (HH:MM).
+3. **Currency & Numbers:** For financial inputs requiring thousands separators, decimal precision, or currency symbols.
+4. **Codes & IDs:** For license plates, social security numbers, or product codes with fixed structures.
+
+**Key Features:**
+- **Masking (\`mask\`):** Defines the structure using special characters (default \`*\`). Literals (like \`-\`, \`(\`, \`)\`) are automatically skipped.
+  - Example: \`mask="+1 (***) ***-****"\`
+- **Multiple Masks:** Can accept an array of masks to automatically switch formats based on input length.
+- **Types (\`type\`):** Built-in presets for common formats:
+  - \`currency\`: Formats money with separators and symbols.
+  - \`number\`: Formats numbers with thousands separators.
+  - \`date\`, \`time\`, \`datetime\`: Enforces valid date/time entry.
+- **Validation (\`pattern\`):** Allows regex validation for specific parts of the mask.
+- **Allowed Characters (\`match\`):** Restricts input to specific characters (e.g., only numbers \`[0-9]\` or hex \`[A-F0-9]\`).
+
+**How to identify in a design:**
+- Look for inputs with placeholders showing specific formatting (e.g., \`DD.MM.YYYY\`).
+- Inputs that automatically format text as you type (adding spaces, dashes).
+- Numeric inputs with specific decimal places or currency symbols.
+    `
   }
 }

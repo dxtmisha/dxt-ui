@@ -96,8 +96,31 @@ export declare class Mask {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param MaskTypeConstructor class for working with mask type/ класс для работы с типом маски
+     * @param MaskBufferConstructor class for working with mask buffer/ класс для работы с буфером маски
+     * @param MaskFocusConstructor class for working with mask focus/ класс для работы с фокусом маски
+     * @param MaskCharacterLengthConstructor class for working with mask character length/ класс для работы с длиной символов маски
+     * @param MaskRubberItemConstructor class for working with mask rubber item/ класс для работы с резиновым элементом маски
+     * @param MaskRubberTransitionConstructor class for working with mask rubber transition/ класс для работы с переходом резины маски
+     * @param MaskDateConstructor class for working with mask date/ класс для работы с датой маски
+     * @param MaskFormatConstructor class for working with mask format/ класс для работы с форматом маски
+     * @param MaskSpecialConstructor class for working with mask special/ класс для работы со специальными символами маски
+     * @param MaskMatchConstructor class for working with mask match/ класс для работы с совпадением маски
+     * @param MaskPatternConstructor class for working with mask pattern/ класс для работы с шаблоном маски
+     * @param MaskRightConstructor class for working with mask right/ класс для работы с выравниванием справа маски
+     * @param MaskRubberConstructor class for working with mask rubber/ класс для работы с резиной маски
+     * @param MaskItemConstructor class for working with mask item/ класс для работы с элементом маски
+     * @param MaskSelectionConstructor class for working with mask selection/ класс для работы с выделением маски
+     * @param MaskCharacterConstructor class for working with mask character/ класс для работы с символом маски
+     * @param MaskValueBasicConstructor class for working with mask value basic/ класс для работы с базовым значением маски
+     * @param MaskValueConstructor class for working with mask value/ класс для работы со значением маски
+     * @param MaskValidationConstructor class for working with mask validation/ класс для работы с валидацией маски
+     * @param MaskViewConstructor class for working with mask view/ класс для работы с отображением маски
+     * @param MaskEmitConstructor class for working with mask emit/ класс для работы с событиями маски
+     * @param MaskDataConstructor class for working with mask data/ класс для работы с данными маски
+     * @param MaskEventConstructor class for working with mask event/ класс для работы с событием маски
      */
-    constructor(props: MaskProps, refs: ToRefs<MaskProps>, element: Ref<MaskElementInput>, classDesign: string, className: string, components?: DesignComp<MaskComponents, MaskProps> | undefined, slots?: MaskSlots | undefined, emits?: ConstrEmit<MaskEmits> | undefined);
+    constructor(props: MaskProps, refs: ToRefs<MaskProps>, element: Ref<MaskElementInput>, classDesign: string, className: string, components?: DesignComp<MaskComponents, MaskProps> | undefined, slots?: MaskSlots | undefined, emits?: ConstrEmit<MaskEmits> | undefined, MaskTypeConstructor?: typeof MaskType, MaskBufferConstructor?: typeof MaskBuffer, MaskFocusConstructor?: typeof MaskFocus, MaskCharacterLengthConstructor?: typeof MaskCharacterLength, MaskRubberItemConstructor?: typeof MaskRubberItem, MaskRubberTransitionConstructor?: typeof MaskRubberTransition, MaskDateConstructor?: typeof MaskDate, MaskFormatConstructor?: typeof MaskFormat, MaskSpecialConstructor?: typeof MaskSpecial, MaskMatchConstructor?: typeof MaskMatch, MaskPatternConstructor?: typeof MaskPattern, MaskRightConstructor?: typeof MaskRight, MaskRubberConstructor?: typeof MaskRubber, MaskItemConstructor?: typeof MaskItem, MaskSelectionConstructor?: typeof MaskSelection, MaskCharacterConstructor?: typeof MaskCharacter, MaskValueBasicConstructor?: typeof MaskValueBasic, MaskValueConstructor?: typeof MaskValue, MaskValidationConstructor?: typeof MaskValidation, MaskViewConstructor?: typeof MaskView, MaskEmitConstructor?: typeof MaskEmit, MaskDataConstructor?: typeof MaskData, MaskEventConstructor?: typeof MaskEvent);
     /** Receiving basic standard values/ Получение базовых стандартных значений */
     readonly basic: ComputedRef<string>;
     /** Values for CSS class/ Значения для CSS-класса */

@@ -44,11 +44,13 @@ export class MaskDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor mask item class/ класс элемента маски
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, MaskEmits, P>
+    options?: ConstrOptions<COMP, MaskEmits, P>,
+    ItemConstructor: typeof Mask = Mask
   ) {
     super(
       name,
@@ -56,7 +58,7 @@ export class MaskDesign<
       options
     )
 
-    this.item = new Mask(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
