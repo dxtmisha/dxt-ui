@@ -5,7 +5,7 @@ import { computed as d, h } from "vue";
 import { DesignConstructorAbstract as k } from "@dxtmisha/functional";
 import { g as w } from "./getClassTagAStatic-BnVYlXHI.js";
 import { L as T } from "./LabelInclude-D-mLvjK5.js";
-import { C as _ } from "./CaptionInclude-VhkGstz9.js";
+import { C as _ } from "./CaptionInclude-gERJdKfG.js";
 import { D } from "./DescriptionInclude-D4ane9aR.js";
 import { E as A } from "./EnabledInclude-IdZAnr6u.js";
 import { E } from "./EventClickInclude-CgbuezDm.js";

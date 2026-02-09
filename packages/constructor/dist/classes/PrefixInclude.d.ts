@@ -20,11 +20,19 @@ export declare class PrefixInclude {
      */
     constructor(props: Readonly<PrefixProps>, className: string, slots?: PrefixSlots | undefined, skeleton?: SkeletonInclude | undefined);
     /**
-     * Returns true if prefix is filled
+     * Returns true if the prefix is filled
      *
      * Возвращает true, если prefix заполнен
      */
     readonly is: ComputedRef<boolean>;
+    /** Unique identifier/ Уникальный идентификатор */
+    readonly id: ComputedRef<string>;
+    /**
+     * Returns the identifier if the element exists.
+     *
+     * Возвращает идентификатор, если элемент существует.
+     */
+    readonly describedby: ComputedRef<string>;
     /**
      * Renders prefix element with content from props or slots.
      *

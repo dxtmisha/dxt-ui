@@ -11,4 +11,6 @@ export interface PrefixSlots {
 export type PrefixProps = {
     /** Prefix text or number/ Текст или число префикса */
     prefix?: string | number;
+    /** Unique identifier for the prefix element/ Уникальный идентификатор для элемента префикса */
+    prefixId?: string;
 };

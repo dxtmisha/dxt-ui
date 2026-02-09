@@ -81,8 +81,11 @@ export declare class List {
         description?: string | number;
         descriptionId?: string;
         prefix?: string | number;
+        prefixId?: string;
         caption?: string | number;
+        captionDecorative?: boolean;
         suffix?: string | number;
+        suffixId?: string;
         icon?: IconValue< IconPropsBasic> | undefined;
         selected?: boolean;
         iconTurn?: boolean;

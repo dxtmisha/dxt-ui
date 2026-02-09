@@ -11,4 +11,6 @@ export interface SuffixSlots {
 export type SuffixProps = {
     /** Suffix text or number/ Текст или число суффикса */
     suffix?: string | number;
+    /** Unique identifier for the suffix element/ Уникальный идентификатор для элемента суффикса */
+    suffixId?: string;
 };

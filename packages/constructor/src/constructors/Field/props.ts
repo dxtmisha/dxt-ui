@@ -2,6 +2,7 @@ import type { PrefixProps } from '../../types/prefixTypes'
 import type { SuffixProps } from '../../types/suffixTypes'
 import type { CaptionProps } from '../../types/captionTypes'
 import type { EnabledProps } from '../../types/enabledTypes'
+import type { TextCancelPropsInclude } from '../../types/textTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
 
 import type { IconPropsBasic, IconTrailingPropsInclude, IconValue } from '../Icon'
@@ -49,8 +50,10 @@ export type FieldPropsBasic<
   & ProgressPropsInclude<Progress>
   & EnabledProps
   & EventClickProps
-  & SkeletonPropsInclude & {
-  // Status
+  & SkeletonPropsInclude
+  & TextCancelPropsInclude
+  & {
+    // Status
     disabledPrevious?: boolean
     disabledNext?: boolean
 

@@ -36,7 +36,7 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
   counterId: {
     type: StorybookControl.string,
     options: {
-      category: StorybookCategory.counter,
+      category: StorybookCategory.technical,
       type: 'string',
       description: {
         en: 'Unique identifier for the counter element',

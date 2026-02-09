@@ -5,6 +5,7 @@ import { PrefixInclude } from '../../classes/PrefixInclude';
 import { SuffixInclude } from '../../classes/SuffixInclude';
 import { EnabledInclude } from '../../classes/EnabledInclude';
 import { EventClickInclude } from '../../classes/EventClickInclude';
+import { TextInclude } from '../../classes/TextInclude';
 import { IconTrailingInclude } from '../Icon';
 import { FieldLabelInclude } from '../FieldLabel';
 import { FieldMessageInclude } from '../FieldMessage';
@@ -27,6 +28,8 @@ export declare class Field {
     protected readonly components?: DesignComp<FieldComponents, FieldProps> | undefined;
     protected readonly slots?: FieldSlots | undefined;
     protected readonly emits?: ConstrEmit<FieldEmits> | undefined;
+    /** Text include/ Подключение текста */
+    readonly text: TextInclude;
     /** Icon trailing include/ Подключение иконки в конце */
     readonly icon: IconTrailingInclude;
     /** Caption include/ Подключение подписи */
@@ -73,8 +76,9 @@ export declare class Field {
      * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
      * @param FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
      * @param FieldSizeConstructor class for working with field size/ класс для работы с размером поля
+     * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
      */
-    constructor(props: FieldProps, refs: ToRefs<FieldProps>, element: Ref<HTMLLabelElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldComponents, FieldProps> | undefined, slots?: FieldSlots | undefined, emits?: ConstrEmit<FieldEmits> | undefined, SkeletonIncludeConstructor?: typeof SkeletonInclude, IconTrailingIncludeConstructor?: typeof IconTrailingInclude, CaptionIncludeConstructor?: typeof CaptionInclude, PrefixIncludeConstructor?: typeof PrefixInclude, SuffixIncludeConstructor?: typeof SuffixInclude, FieldLabelIncludeConstructor?: typeof FieldLabelInclude, FieldMessageIncludeConstructor?: typeof FieldMessageInclude, ProgressIncludeConstructor?: typeof ProgressInclude, EnabledIncludeConstructor?: typeof EnabledInclude, EventClickIncludeConstructor?: typeof EventClickInclude, FieldIconsConstructor?: typeof FieldIcons, FieldSizeConstructor?: typeof FieldSize);
+    constructor(props: FieldProps, refs: ToRefs<FieldProps>, element: Ref<HTMLLabelElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldComponents, FieldProps> | undefined, slots?: FieldSlots | undefined, emits?: ConstrEmit<FieldEmits> | undefined, SkeletonIncludeConstructor?: typeof SkeletonInclude, IconTrailingIncludeConstructor?: typeof IconTrailingInclude, CaptionIncludeConstructor?: typeof CaptionInclude, PrefixIncludeConstructor?: typeof PrefixInclude, SuffixIncludeConstructor?: typeof SuffixInclude, FieldLabelIncludeConstructor?: typeof FieldLabelInclude, FieldMessageIncludeConstructor?: typeof FieldMessageInclude, ProgressIncludeConstructor?: typeof ProgressInclude, EnabledIncludeConstructor?: typeof EnabledInclude, EventClickIncludeConstructor?: typeof EventClickInclude, FieldIconsConstructor?: typeof FieldIcons, FieldSizeConstructor?: typeof FieldSize, TextIncludeConstructor?: typeof TextInclude);
     /** Checks if the field is classic/ Проверяет, является ли поле классическим */
     readonly isClassic: ComputedRef<boolean>;
     /** Checks if an error needs to be displayed/ Проверяет, надо ли выводить ошибку */

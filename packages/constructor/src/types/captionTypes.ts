@@ -12,4 +12,7 @@ export interface CaptionSlots {
 export type CaptionProps = {
   /** Caption text or number/ Текст или число заголовка */
   caption?: string | number
+
+  /** Whether the caption is decorative/ Является ли подпись декоративной */
+  captionDecorative?: boolean
 }

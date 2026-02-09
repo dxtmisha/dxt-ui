@@ -13,7 +13,7 @@ export const wikiField: StorybookArgsToList = {
   'field.arrowCarousel': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Shows horizontal navigation arrows (carousel left/right)',
         ru: 'Отображает горизонтальные стрелки навигации (карусель влево/вправо)'
@@ -24,7 +24,7 @@ export const wikiField: StorybookArgsToList = {
   'field.arrowStepper': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Shows numeric step controls (+ / -) for increment / decrement',
         ru: 'Отображает числовые степперы (+ / -) для инкремента / декремента'

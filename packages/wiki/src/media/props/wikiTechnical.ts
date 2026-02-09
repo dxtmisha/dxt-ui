@@ -127,6 +127,28 @@ export const wikiTechnical: StorybookArgsToList = {
       }
     }
   },
+  prefixId: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Unique identifier for the prefix element',
+        ru: 'Уникальный идентификатор для элемента префикса'
+      }
+    }
+  },
+  suffixId: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Unique identifier for the suffix element',
+        ru: 'Уникальный идентификатор для элемента суффикса'
+      }
+    }
+  },
   validationId: {
     type: StorybookControl.string,
     options: {

@@ -1,8 +1,8 @@
 var f = Object.defineProperty;
-var b = (i, s, e) => s in i ? f(i, s, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[s] = e;
-var t = (i, s, e) => b(i, typeof s != "symbol" ? s + "" : s, e);
+var m = (t, e, i) => e in t ? f(t, e, { enumerable: !0, configurable: !0, writable: !0, value: i }) : t[e] = i;
+var s = (t, e, i) => m(t, typeof e != "symbol" ? e + "" : e, i);
 import { computed as r } from "vue";
-import { getElementId as o, isFilled as m, toBinds as l, getRef as n } from "@dxtmisha/functional";
+import { getElementId as o, isFilled as b, toBinds as l, getRef as n } from "@dxtmisha/functional";
 import { F as I } from "./FieldCounterInclude-D0oojGWY.js";
 class L {
   /**
@@ -16,29 +16,28 @@ class L {
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(s, e, h, d, a, u, p, c) {
-    t(this, "labelId", o());
-    t(this, "counterId", o());
+  constructor(e, i, d, h, a, u, p, c) {
+    s(this, "labelId", o());
+    s(this, "counterId", o());
     /** Field counter include/ Подключение счетчика поля */
-    t(this, "fieldCounter");
+    s(this, "fieldCounter");
     /** Checks if label should be displayed/ Проверяет, надо ли отображать метку */
-    t(this, "is", r(() => {
-      var s;
-      return m(this.props.label) || !!((s = this.isCounter) != null && s.value);
+    s(this, "is", r(() => {
+      var e;
+      return b(this.props.label) || !!((e = this.isCounter) != null && e.value);
     }));
     /** Returns the identifier/ Возвращает идентификатор */
-    t(this, "id", r(() => {
+    s(this, "id", r(() => {
       var e;
-      const s = [];
-      return this.props.label && s.push(this.labelId), (e = this.isCounter) != null && e.value && this.props.counterShow && s.push(this.counterId), s.join(" ");
+      return (e = this.isCounter) != null && e.value && this.props.counterShow ? this.counterId : "";
     }));
     /** Computed bindings for FieldLabel/ Вычисляемые привязки для FieldLabel */
-    t(this, "binds", r(
+    s(this, "binds", r(
       () => {
-        var s;
+        var e;
         return l(
           n(this.extra),
-          (s = this.isCounter) != null && s.value ? this.fieldCounter.bindsIntermediary.value : {},
+          (e = this.isCounter) != null && e.value ? this.fieldCounter.bindsIntermediary.value : {},
           {
             for: n(this.forId),
             label: this.props.label,
@@ -53,7 +52,7 @@ class L {
     /**
      * Render the FieldLabel component/ Рендер компонента FieldLabel
      */
-    t(this, "render", () => this.components && this.is.value ? this.components.render(
+    s(this, "render", () => this.components && this.is.value ? this.components.render(
       "fieldLabel",
       {
         ...l(
@@ -64,7 +63,7 @@ class L {
       this.slots,
       this.index
     ) : []);
-    this.props = s, this.className = e, this.components = h, this.slots = d, this.forId = a, this.isCounter = u, this.extra = p, this.index = c, this.fieldCounter = new I(this.props, this.className);
+    this.props = e, this.className = i, this.components = d, this.slots = h, this.forId = a, this.isCounter = u, this.extra = p, this.index = c, this.fieldCounter = new I(this.props, this.className);
   }
 }
 export {

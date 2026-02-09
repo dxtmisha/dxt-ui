@@ -1,12 +1,12 @@
-var f = Object.defineProperty;
-var y = (e, s, t) => s in e ? f(e, s, { enumerable: !0, configurable: !0, writable: !0, value: t }) : e[s] = t;
-var i = (e, s, t) => y(e, typeof s != "symbol" ? s + "" : s, t);
-import { computed as a, watch as g, h as I } from "vue";
-import { toBind as c, getRef as m, getBind as b, DesignConstructorAbstract as w, toBinds as v } from "@dxtmisha/functional";
-import { a as F, F as k, c as x, f as M, b as V, e as A, d as B } from "./FieldEventInclude-zg02dtQi.js";
-import { e as D, d as C, c as N, a as E, F as S, b as T } from "./FieldMatchInclude-Vl2gJUaM.js";
-import { F as H } from "./FieldInclude-c6DSD0-y.js";
-class O {
+var E = Object.defineProperty;
+var S = (e, s, t) => s in e ? E(e, s, { enumerable: !0, configurable: !0, writable: !0, value: t }) : e[s] = t;
+var i = (e, s, t) => S(e, typeof s != "symbol" ? s + "" : s, t);
+import { computed as a, watch as T, h as H } from "vue";
+import { toBind as m, getRef as v, getBind as O, DesignConstructorAbstract as P, toBinds as f } from "@dxtmisha/functional";
+import { a as R, F as j, c as q, f as z, b as G, e as J, d as K } from "./FieldEventInclude-zg02dtQi.js";
+import { e as L, d as Q, c as U, a as W, F as X, b as Y } from "./FieldMatchInclude-Vl2gJUaM.js";
+import { F as Z } from "./FieldInclude-c6DSD0-y.js";
+class _ {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -37,7 +37,7 @@ class O {
     this.is.value && this.visibility.toggle();
   }
 }
-class P {
+class $ {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -49,7 +49,7 @@ class P {
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(s, t, n, r, o, l, p, u) {
+  constructor(s, t, n, r, h, o, l, p) {
     /**
      * Checks if the mask is active.
      *
@@ -76,19 +76,19 @@ class P {
      */
     i(this, "bindsStatic", a(() => {
       var t, n, r;
-      const s = c(
-        (t = m(this.extra)) != null ? t : {},
+      const s = m(
+        (t = v(this.extra)) != null ? t : {},
         (n = this.props.maskAttrs) != null ? n : {}
       );
       return {
         name: this.props.name,
-        valueDefault: m(this.valueDefault),
+        valueDefault: v(this.valueDefault),
         currency: this.props.currency,
         currencyHide: this.props.currencyHide,
         fraction: this.props.fraction,
         type: (r = this.type) == null ? void 0 : r.get(),
         visible: this.props.maskVisible,
-        ...b(this.props.mask, s, "mask")
+        ...O(this.props.mask, s, "mask")
       };
     }));
     /**
@@ -112,7 +112,7 @@ class P {
     i(this, "render", (s) => this.components ? this.components.render(
       "mask",
       {
-        ...c(
+        ...m(
           s != null ? s : {},
           this.binds.value
         )
@@ -120,8 +120,8 @@ class P {
       void 0,
       this.index
     ) : []);
-    this.props = s, this.className = t, this.value = n, this.valueDefault = r, this.components = o, this.type = l, this.extra = p, this.index = u, this.value && g(this.is, (h) => {
-      h || this.value.setFull(!0);
+    this.props = s, this.className = t, this.value = n, this.valueDefault = r, this.components = h, this.type = o, this.extra = l, this.index = p, this.value && T(this.is, (u) => {
+      u || this.value.setFull(!0);
     });
   }
   /**
@@ -133,7 +133,7 @@ class P {
     return this.is.value;
   }
 }
-class R {
+class tt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -144,8 +144,24 @@ class R {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
+   * @param FieldVisibilityIncludeConstructor class for working with field visibility/ класс для работы с видимостью поля
+   * @param FieldTypeIncludeConstructor class for working with field type/ класс для работы с типом поля
+   * @param FieldPatternIncludeConstructor class for working with field pattern/ класс для работы с шаблоном поля
+   * @param FieldInputModeIncludeConstructor class for working with field input mode/ класс для работы с режимом ввода поля
+   * @param FieldAttributesIncludeConstructor class for working with field attributes/ класс для работы с атрибутами поля
+   * @param FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
+   * @param FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
+   * @param FieldArrowIncludeConstructor class for working with field arrow/ класс для работы со стрелкой поля
+   * @param InputPasswordConstructor class for working with input password/ класс для работы с паролем ввода
+   * @param FieldMatchIncludeConstructor class for working with field match/ класс для работы с совпадением поля
+   * @param FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
+   * @param FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
+   * @param FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
+   * @param FieldIncludeConstructor class for working with field/ класс для работы с полем
+   * @param MaskIncludeConstructor class for working with mask/ класс для работы с маской
    */
-  constructor(s, t, n, r, o, l, p, u) {
+  constructor(s, t, n, r, h, o, l, p, u = R, y = L, g = Q, I = U, b = W, w = j, F = q, k = z, x = X, M = _, V = Y, A = G, B = J, D = K, C = Z, N = $) {
     i(this, "visibility");
     i(this, "type");
     i(this, "pattern");
@@ -162,36 +178,36 @@ class R {
     i(this, "event");
     i(this, "field");
     i(this, "mask");
-    this.props = s, this.refs = t, this.element = n, this.classDesign = r, this.className = o, this.components = l, this.slots = p, this.emits = u, this.change = new F(this.props), this.visibility = new D(), this.type = new C(this.props, this.visibility), this.pattern = new N(this.props, this.type), this.inputMode = new E(this.props, this.type), this.attributes = new k(
+    this.props = s, this.refs = t, this.element = n, this.classDesign = r, this.className = h, this.components = o, this.slots = l, this.emits = p, this.change = new u(this.props), this.visibility = new y(), this.type = new g(this.props, this.visibility), this.pattern = new I(this.props, this.type), this.inputMode = new b(this.props, this.type), this.attributes = new w(
       this.props,
       this.type,
       this.pattern,
       this.inputMode
-    ), this.elementItem = new x(
+    ), this.elementItem = new F(
       this.props,
       this.element
-    ), this.value = new M(
+    ), this.value = new k(
       this.props,
       this.refs,
       this.elementItem
-    ), this.arrow = new S(this.props, this.value, this.type), this.password = new O(this.props, this.visibility), this.match = new T(
+    ), this.arrow = new x(this.props, this.value, this.type), this.password = new M(this.props, this.visibility), this.match = new V(
       this.props,
       this.elementItem,
       this.value
-    ), this.code = new V(this.props), this.validation = new A(
+    ), this.code = new A(this.props), this.validation = new B(
       this.props,
       this.attributes,
       this.value,
       this.change,
       this.code,
       this.match
-    ), this.event = new B(
+    ), this.event = new D(
       this.props,
       this.change,
       this.value,
       this.validation,
       this.emits
-    ), this.field = new H(
+    ), this.field = new C(
       this.props,
       this.value,
       this.components,
@@ -202,13 +218,13 @@ class R {
       void 0,
       void 0,
       a(() => {
-        var h, d;
+        var d, c;
         return {
-          iconTrailing: (h = this.password.icon.value) != null ? h : this.props.iconTrailing,
-          maxlength: (d = this.props.maxlength) != null ? d : this.props.max
+          iconTrailing: (d = this.password.icon.value) != null ? d : this.props.iconTrailing,
+          maxlength: (c = this.props.maxlength) != null ? c : this.props.max
         };
       })
-    ), this.mask = new P(
+    ), this.mask = new N(
       this.props,
       this.className,
       this.value,
@@ -218,20 +234,21 @@ class R {
     );
   }
 }
-const L = {
+const ht = {
   type: "text",
   autocomplete: "off",
   arrow: "auto",
   maskVisible: !0
 };
-class Q extends w {
+class ot extends P {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, n, r) {
+  constructor(t, n, r, h = tt) {
     super(
       t,
       n,
@@ -244,9 +261,9 @@ class Q extends w {
      * Рендер элемент input.
      * @param input data for the input element/ данные для элемента ввода
      */
-    i(this, "renderInput", (t) => this.item.mask.isActive() ? this.renderMask(t) : [I(
+    i(this, "renderInput", (t) => this.item.mask.isActive() ? this.renderMask(t) : [H(
       "input",
-      v(
+      f(
         this.item.attributes.listForInput.value,
         t.binds,
         {
@@ -268,14 +285,14 @@ class Q extends w {
       ref: this.element,
       class: t.className,
       align: this.props.align,
-      inputAttrs: v(
+      inputAttrs: f(
         this.item.attributes.listForInput.value,
         t.binds
       ),
       onBlur: this.item.event.onBlur,
       onInput: this.item.event.onInput
     }));
-    this.item = new R(
+    this.item = new h(
       this.props,
       this.refs,
       this.element,
@@ -336,7 +353,7 @@ class Q extends w {
   }
 }
 export {
-  R as Input,
-  Q as InputDesign,
-  L as defaultsInput
+  tt as Input,
+  ot as InputDesign,
+  ht as defaultsInput
 };

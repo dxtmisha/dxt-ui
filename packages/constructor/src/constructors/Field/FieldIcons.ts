@@ -1,6 +1,8 @@
 import { computed } from 'vue'
 import type { ConstrBind } from '@dxtmisha/functional'
 
+import { type TextInclude } from '../../classes/TextInclude'
+
 import type { IconProps } from '../Icon'
 import type { FieldProps } from './props'
 
@@ -14,10 +16,12 @@ export class FieldIcons {
    * Constructor
    * @param props input data/ входные данные
    * @param className class name/ название класса
+   * @param text text include/ Подключение текста
    */
   constructor(
     protected readonly props: FieldProps,
-    protected readonly className: string
+    protected readonly className: string,
+    protected readonly text: TextInclude
   ) {
   }
 
@@ -63,7 +67,8 @@ export class FieldIcons {
       'class': `${this.className}__cancel`,
       'icon': this.props.iconClose,
       'dynamic': true,
-      'data-event-type': 'cancel'
+      'data-event-type': 'cancel',
+      'ariaLabel': this.text.cancel.value
     }
   })
 
@@ -78,7 +83,8 @@ export class FieldIcons {
       'icon': this.props.arrowCarousel ? this.props.iconArrowLeft : this.props.iconMinus,
       'disabled': this.props.disabled || this.props.disabledPrevious,
       'dynamic': true,
-      'data-event-type': 'previous'
+      'data-event-type': 'previous',
+      'ariaLabel': this.props.arrowCarousel ? this.text.previous.value : this.text.decrement.value
     }
   })
 
@@ -93,7 +99,8 @@ export class FieldIcons {
       'icon': this.props.arrowCarousel ? this.props.iconArrowRight : this.props.iconPlus,
       'disabled': this.props.disabled || this.props.disabledNext,
       'dynamic': true,
-      'data-event-type': 'next'
+      'data-event-type': 'next',
+      'ariaLabel': this.props.arrowCarousel ? this.text.next.value : this.text.increment.value
     }
   })
 }

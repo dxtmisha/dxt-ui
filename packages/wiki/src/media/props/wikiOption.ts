@@ -43,6 +43,21 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  currencyHide: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Hide the currency symbol in the formatted value',
+        ru: 'Скрывать символ валюты в форматированном значении'
+      }
+    },
+    isDemo: true,
+    demoOptions: {
+      currency: 'USD',
+      type: 'currency'
+    }
+  },
   dir: {
     type: StorybookControl.boolean,
     options: {

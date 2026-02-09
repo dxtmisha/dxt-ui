@@ -7,6 +7,7 @@ import { PrefixInclude } from '../../classes/PrefixInclude'
 import { SuffixInclude } from '../../classes/SuffixInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { TextInclude } from '../../classes/TextInclude'
 
 import { IconTrailingInclude } from '../Icon'
 import { FieldLabelInclude } from '../FieldLabel'
@@ -25,6 +26,9 @@ import type { FieldControl } from './basicTypes'
  * Field
  */
 export class Field {
+  /** Text include/ Подключение текста */
+  readonly text: TextInclude
+
   /** Icon trailing include/ Подключение иконки в конце */
   readonly icon: IconTrailingInclude
 
@@ -76,6 +80,7 @@ export class Field {
    * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
    * @param FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
    * @param FieldSizeConstructor class for working with field size/ класс для работы с размером поля
+   * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
    */
   constructor(
     protected readonly props: FieldProps,
@@ -97,7 +102,8 @@ export class Field {
     EnabledIncludeConstructor: typeof EnabledInclude = EnabledInclude,
     EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude,
     FieldIconsConstructor: typeof FieldIcons = FieldIcons,
-    FieldSizeConstructor: typeof FieldSize = FieldSize
+    FieldSizeConstructor: typeof FieldSize = FieldSize,
+    TextIncludeConstructor: typeof TextInclude = TextInclude
   ) {
     this.skeleton = new SkeletonIncludeConstructor(
       this.props,
@@ -105,6 +111,8 @@ export class Field {
       ['classBackground']
     )
     this.icon = new IconTrailingIncludeConstructor(this.props, this.className, this.components)
+
+    this.text = new TextIncludeConstructor(this.props)
 
     this.caption = new CaptionIncludeConstructor(this.props, this.className, this.slots)
     this.prefix = new PrefixIncludeConstructor(this.props, this.className, this.slots)
@@ -142,7 +150,7 @@ export class Field {
     this.enabled = new EnabledIncludeConstructor(this.props, this.progress)
     this.event = new EventClickIncludeConstructor(this.props, this.enabled, this.emits)
 
-    this.icons = new FieldIconsConstructor(this.props, this.className)
+    this.icons = new FieldIconsConstructor(this.props, this.className, this.text)
     this.size = new FieldSizeConstructor(this.element, this.className)
   }
 
@@ -206,6 +214,13 @@ export class Field {
    * Получить атрибут ARIA describedby.
    */
   protected getDescribedby(): string {
-    return `${this.fieldLabel.id.value} ${this.fieldMessage.id.value}`.trim()
+    const list: string[] = [
+      this.prefix.describedby.value,
+      this.suffix.describedby.value,
+      this.fieldLabel.id.value,
+      this.fieldMessage.id.value
+    ]
+
+    return list.join(' ').trim()
   }
 }

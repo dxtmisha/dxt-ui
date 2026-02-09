@@ -1,5 +1,5 @@
+import { ComputedRef, ShallowRef } from 'vue';
 import { TextAllPropsInclude, TextIndex, TextList, TextValue } from '../types/textTypes';
-import { ShallowRef, ComputedRef } from 'vue';
 /**
  * TextInclude class for managing text-related properties.
  *
@@ -11,6 +11,7 @@ export declare class TextInclude {
      * Global list of texts for all components/ Глобальный список текстов для всех компонентов
      */
     static readonly list: ShallowRef<TextList, TextList>;
+    readonly texts: Record<string, ComputedRef<string | undefined>>;
     /**
      * Initialize global texts.
      *
@@ -23,20 +24,37 @@ export declare class TextInclude {
      * @param props Component properties/ Свойства компонента
      */
     constructor(props: TextAllPropsInclude);
+    /** Cancel text/ Текст отмены */
+    get cancel(): ComputedRef<string | undefined>;
     /** Character limit exceeded text/ Текст о превышении лимита символов */
-    readonly characterLimit: ComputedRef<string | undefined>;
+    get characterLimit(): ComputedRef<string | undefined>;
     /** Remaining characters text/ Текст об оставшихся символах */
-    readonly characterRemaining: ComputedRef<string | undefined>;
+    get characterRemaining(): ComputedRef<string | undefined>;
     /** Close text/ Текст закрытия */
-    readonly close: ComputedRef<string | undefined>;
+    get close(): ComputedRef<string | undefined>;
     /** Copied to the clipboard text/ Текст о копировании в буфер обмена */
-    readonly copiedClipboard: ComputedRef<string | undefined>;
+    get copiedClipboard(): ComputedRef<string | undefined>;
+    /** Text for decreasing value/ Текст для уменьшения значения */
+    get decrement(): ComputedRef<string | undefined>;
     /** Entries match text/ Текст о несовпадении записей */
-    readonly entriesMatch: ComputedRef<string | undefined>;
+    get entriesMatch(): ComputedRef<string | undefined>;
+    /** Text for increasing value/ Текст для увеличения значения */
+    get increment(): ComputedRef<string | undefined>;
     /** Loading text/ Текст загрузки */
-    readonly loading: ComputedRef<string | undefined>;
+    get loading(): ComputedRef<string | undefined>;
+    /** Next text/ Текст следующего */
+    get next(): ComputedRef<string | undefined>;
     /** OK text/ Текст подтверждения */
-    readonly ok: ComputedRef<string | undefined>;
+    get ok(): ComputedRef<string | undefined>;
+    /** Previous text/ Текст предыдущего */
+    get previous(): ComputedRef<string | undefined>;
+    /**
+     * Get the text by its name.
+     *
+     * Получить текст по его названию.
+     * @param name property name/ название свойства
+     */
+    get(name: keyof TextAllPropsInclude): ComputedRef<string | undefined>;
     /**
      * Get text by index, with priority to local value.
      *

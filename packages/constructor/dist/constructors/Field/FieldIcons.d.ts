@@ -1,4 +1,5 @@
 import { ConstrBind } from '@dxtmisha/functional';
+import { TextInclude } from '../../classes/TextInclude';
 import { IconProps } from '../Icon';
 import { FieldProps } from './props';
 import { ComputedRef } from 'vue';
@@ -10,12 +11,14 @@ import { ComputedRef } from 'vue';
 export declare class FieldIcons {
     protected readonly props: FieldProps;
     protected readonly className: string;
+    protected readonly text: TextInclude;
     /**
      * Constructor
      * @param props input data/ входные данные
      * @param className class name/ название класса
+     * @param text text include/ Подключение текста
      */
-    constructor(props: FieldProps, className: string);
+    constructor(props: FieldProps, className: string, text: TextInclude);
     /**
      * Determines whether to display arrows.
      *

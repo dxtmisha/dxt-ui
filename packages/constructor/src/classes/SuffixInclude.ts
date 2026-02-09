@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { isFilled, render } from '@dxtmisha/functional'
+import { getElementId, isFilled, render } from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
@@ -27,11 +27,32 @@ export class SuffixInclude {
   }
 
   /**
-   * Returns true if suffix is filled
+   * Returns true if the suffix is filled
    *
    * Возвращает true, если suffix заполнен
    */
   readonly is = computed(() => Boolean(this.props.suffix || this.slots?.suffix))
+
+  /** Unique identifier/ Уникальный идентификатор */
+  readonly id = computed<string>(
+    () => this.props.suffixId || getElementId()
+  )
+
+  /**
+   * Returns the identifier if the element exists.
+   *
+   * Возвращает идентификатор, если элемент существует.
+   */
+  readonly describedby = computed<string>(() => {
+    if (
+      isFilled(this.props.suffix)
+      || this.slots?.suffix
+    ) {
+      return this.id.value
+    }
+
+    return ''
+  })
 
   /**
    * Renders suffix element with content from props or slots.
@@ -54,6 +75,7 @@ export class SuffixInclude {
         render(
           'div',
           {
+            'id': this.id.value,
             'class': {
               [`${this.className}__suffix`]: true,
               ...this.skeleton?.classes.value

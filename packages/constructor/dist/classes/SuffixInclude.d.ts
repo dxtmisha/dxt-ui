@@ -20,11 +20,19 @@ export declare class SuffixInclude {
      */
     constructor(props: Readonly<SuffixProps>, className: string, slots?: SuffixSlots | undefined, skeleton?: SkeletonInclude | undefined);
     /**
-     * Returns true if suffix is filled
+     * Returns true if the suffix is filled
      *
      * Возвращает true, если suffix заполнен
      */
     readonly is: ComputedRef<boolean>;
+    /** Unique identifier/ Уникальный идентификатор */
+    readonly id: ComputedRef<string>;
+    /**
+     * Returns the identifier if the element exists.
+     *
+     * Возвращает идентификатор, если элемент существует.
+     */
+    readonly describedby: ComputedRef<string>;
     /**
      * Renders suffix element with content from props or slots.
      *

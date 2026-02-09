@@ -14,8 +14,9 @@ export declare class InputDesign<COMP extends InputComponents, EXPOSE extends In
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor class for working with the item/ класс для работы с элементом
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, InputEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, InputEmits, P>, ItemConstructor?: typeof Input);
     /**
      * Initialization of all the necessary properties for work
      *

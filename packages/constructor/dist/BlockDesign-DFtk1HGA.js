@@ -6,7 +6,7 @@ import { DesignConstructorAbstract as y } from "@dxtmisha/functional";
 import { A as c } from "./AriaStaticInclude-BVCgDZbU.js";
 import { L as S } from "./LabelInclude-D-mLvjK5.js";
 import { D as C } from "./DescriptionInclude-D4ane9aR.js";
-import { C as H } from "./CaptionInclude-VhkGstz9.js";
+import { C as H } from "./CaptionInclude-gERJdKfG.js";
 import { I } from "./IconInclude-CLqwI29Q.js";
 class k {
   /**

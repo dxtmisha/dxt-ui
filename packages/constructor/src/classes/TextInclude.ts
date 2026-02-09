@@ -1,5 +1,5 @@
-import { computed, shallowRef } from 'vue'
-import { executeFunction } from '@dxtmisha/functional'
+import { computed, type ComputedRef, shallowRef } from 'vue'
+import { executeFunction, toCamelCase } from '@dxtmisha/functional'
 
 import type {
   TextAllPropsInclude,
@@ -18,14 +18,21 @@ export class TextInclude {
    * Global list of texts for all components/ Глобальный список текстов для всех компонентов
    */
   static readonly list = shallowRef<TextList>({
+    cancel: 'Cancel',
     characterLimit: 'Character limit exceeded',
     characterRemaining: 'Remaining [left] characters',
     close: 'Close',
     copiedClipboard: 'Copied to the clipboard',
+    decrement: 'Decrease',
     entriesMatch: 'Entries do not match',
+    increment: 'Increase',
     loading: 'Loading',
-    ok: 'OK'
+    next: 'Next',
+    ok: 'OK',
+    previous: 'Previous'
   })
+
+  readonly texts: Record<string, ComputedRef<string | undefined>> = {}
 
   /**
    * Initialize global texts.
@@ -49,40 +56,87 @@ export class TextInclude {
   ) {
   }
 
+  /** Cancel text/ Текст отмены */
+  get cancel() {
+    return this.get('textCancel')
+  }
+
   /** Character limit exceeded text/ Текст о превышении лимита символов */
-  readonly characterLimit = computed<string | undefined>(
-    () => this.getText('characterLimit', this.props.textCharacterLimit)
-  )
+  get characterLimit() {
+    return this.get('textCharacterLimit')
+  }
 
   /** Remaining characters text/ Текст об оставшихся символах */
-  readonly characterRemaining = computed<string | undefined>(
-    () => this.getText('characterRemaining', this.props.textCharacterRemaining)
-  )
+  get characterRemaining() {
+    return this.get('textCharacterRemaining')
+  }
 
   /** Close text/ Текст закрытия */
-  readonly close = computed<string | undefined>(
-    () => this.getText('close', this.props.textClose)
-  )
+  get close() {
+    return this.get('textClose')
+  }
 
   /** Copied to the clipboard text/ Текст о копировании в буфер обмена */
-  readonly copiedClipboard = computed<string | undefined>(
-    () => this.getText('copiedClipboard', this.props.textCopiedClipboard)
-  )
+  get copiedClipboard() {
+    return this.get('textCopiedClipboard')
+  }
+
+  /** Text for decreasing value/ Текст для уменьшения значения */
+  get decrement() {
+    return this.get('textDecrement')
+  }
 
   /** Entries match text/ Текст о несовпадении записей */
-  readonly entriesMatch = computed<string | undefined>(
-    () => this.getText('entriesMatch', this.props.textEntriesMatch)
-  )
+  get entriesMatch() {
+    return this.get('textEntriesMatch')
+  }
+
+  /** Text for increasing value/ Текст для увеличения значения */
+  get increment() {
+    return this.get('textIncrement')
+  }
 
   /** Loading text/ Текст загрузки */
-  readonly loading = computed<string | undefined>(
-    () => this.getText('loading', this.props.textLoading)
-  )
+  get loading() {
+    return this.get('textLoading')
+  }
+
+  /** Next text/ Текст следующего */
+  get next() {
+    return this.get('textNext')
+  }
 
   /** OK text/ Текст подтверждения */
-  readonly ok = computed<string | undefined>(
-    () => this.getText('ok', this.props.textOk)
-  )
+  get ok() {
+    return this.get('textOk')
+  }
+
+  /** Previous text/ Текст предыдущего */
+  get previous() {
+    return this.get('textPrevious')
+  }
+
+  /**
+   * Get the text by its name.
+   *
+   * Получить текст по его названию.
+   * @param name property name/ название свойства
+   */
+  get(name: keyof TextAllPropsInclude): ComputedRef<string | undefined> {
+    if (name in this.texts) {
+      return this.texts[name] as ComputedRef<string | undefined>
+    }
+
+    const code = toCamelCase(
+      String(name).replace('text', '')
+    )
+
+    const text = computed<string | undefined>(
+      () => this.getText(code, this.props?.[name])
+    )
+
+    return this.texts[name] = text
+  }
 
   /**
    * Get text by index, with priority to local value.

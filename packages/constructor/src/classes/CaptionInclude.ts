@@ -1,6 +1,7 @@
 import { computed, type VNode } from 'vue'
 import { isFilled, render } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from './AriaStaticInclude'
 import { SkeletonInclude } from '../constructors/Skeleton'
 
 import type { CaptionProps, CaptionSlots } from '../types/captionTypes'
@@ -31,7 +32,35 @@ export class CaptionInclude {
    *
    * Возвращает true, если caption заполнен
    */
-  readonly is = computed(() => Boolean(this.props.caption || this.slots?.caption))
+  readonly is = computed<boolean>(() => Boolean(this.props.caption || this.slots?.caption))
+
+  /**
+   * Returns bindings for the caption element.
+   *
+   * Возвращает привязки для элемента подписи.
+   */
+  readonly binds = computed(() => {
+    const binds = {
+      'class': {
+        [`${this.className}__caption`]: true,
+        ...this.skeleton?.classes.value
+      },
+      'data-event-type': 'caption'
+    }
+
+    if (this.props.captionDecorative) {
+      return {
+        ...binds,
+        ...AriaStaticInclude.hidden()
+      }
+    }
+
+    return {
+      ...binds,
+      ...AriaStaticInclude.live('polite'),
+      ...AriaStaticInclude.atomic(true)
+    }
+  })
 
   /**
    * Renders caption element with content from props or slots.
@@ -53,13 +82,7 @@ export class CaptionInclude {
       return [
         render(
           'div',
-          {
-            'class': {
-              [`${this.className}__caption`]: true,
-              ...this.skeleton?.classes.value
-            },
-            'data-event-type': 'caption'
-          },
+          this.binds.value,
           children,
           'caption'
         )

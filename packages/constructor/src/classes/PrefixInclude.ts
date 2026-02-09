@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { isFilled, render } from '@dxtmisha/functional'
+import { getElementId, isFilled, render } from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
@@ -27,11 +27,32 @@ export class PrefixInclude {
   }
 
   /**
-   * Returns true if prefix is filled
+   * Returns true if the prefix is filled
    *
    * Возвращает true, если prefix заполнен
    */
   readonly is = computed(() => Boolean(this.props.prefix || this.slots?.prefix))
+
+  /** Unique identifier/ Уникальный идентификатор */
+  readonly id = computed<string>(
+    () => this.props.prefixId || getElementId()
+  )
+
+  /**
+   * Returns the identifier if the element exists.
+   *
+   * Возвращает идентификатор, если элемент существует.
+   */
+  readonly describedby = computed<string>(() => {
+    if (
+      isFilled(this.props.prefix)
+      || this.slots?.prefix
+    ) {
+      return this.id.value
+    }
+
+    return ''
+  })
 
   /**
    * Renders prefix element with content from props or slots.
@@ -54,6 +75,7 @@ export class PrefixInclude {
         render(
           'div',
           {
+            'id': this.id.value,
             'class': {
               [`${this.className}__prefix`]: true,
               ...this.skeleton?.classes.value

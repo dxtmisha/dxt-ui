@@ -60,20 +60,14 @@ export class FieldLabelInclude<
 
   /** Returns the identifier/ Возвращает идентификатор */
   readonly id = computed<string>(() => {
-    const ids: string[] = []
-
-    if (this.props.label) {
-      ids.push(this.labelId)
-    }
-
     if (
       this.isCounter?.value
       && this.props.counterShow
     ) {
-      ids.push(this.counterId)
+      return this.counterId
     }
 
-    return ids.join(' ')
+    return ''
   })
 
   /** Computed bindings for FieldLabel/ Вычисляемые привязки для FieldLabel */

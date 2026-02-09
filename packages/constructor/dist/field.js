@@ -1,25 +1,27 @@
-var x = Object.defineProperty;
-var B = (n, t, s) => t in n ? x(n, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[t] = s;
-var e = (n, t, s) => B(n, typeof t != "symbol" ? t + "" : t, s);
-import { computed as r, watch as $, onUnmounted as I, onMounted as L, onUpdated as E, h as l } from "vue";
-import { isDomRuntime as k, EventItem as A, getElementId as F, DesignConstructorAbstract as T, isString as q } from "@dxtmisha/functional";
+var B = Object.defineProperty;
+var I = (n, t, s) => t in n ? B(n, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[t] = s;
+var e = (n, t, s) => I(n, typeof t != "symbol" ? t + "" : t, s);
+import { computed as r, watch as $, onUnmounted as L, onMounted as E, onUpdated as k, h as l } from "vue";
+import { isDomRuntime as A, EventItem as T, getElementId as F, DesignConstructorAbstract as q, isString as P } from "@dxtmisha/functional";
 import { A as d } from "./AriaStaticInclude-BVCgDZbU.js";
-import { C as P } from "./CaptionInclude-VhkGstz9.js";
-import { P as M, S as D } from "./SuffixInclude-C7JNYCJK.js";
-import { E as V } from "./EnabledInclude-IdZAnr6u.js";
-import { E as R } from "./EventClickInclude-CgbuezDm.js";
-import { F as z } from "./FieldLabelInclude-Dv2NB98l.js";
-import { F as W } from "./FieldMessageInclude-BJDnir34.js";
-import { S as U } from "./SkeletonInclude-BIUzAO2s.js";
-import { I as H } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as j } from "./ProgressInclude-NyOp5bMZ.js";
-class G {
+import { C as M } from "./CaptionInclude-gERJdKfG.js";
+import { P as D, S as V } from "./SuffixInclude-maZ7235l.js";
+import { E as R } from "./EnabledInclude-IdZAnr6u.js";
+import { E as z } from "./EventClickInclude-CgbuezDm.js";
+import { T as W } from "./TextInclude-DyFukbT2.js";
+import { F as U } from "./FieldLabelInclude-Bkxf6rRw.js";
+import { F as j } from "./FieldMessageInclude-BJDnir34.js";
+import { S as H } from "./SkeletonInclude-BIUzAO2s.js";
+import { I as G } from "./IconTrailingInclude-CdsOcDxv.js";
+import { P as J } from "./ProgressInclude-NyOp5bMZ.js";
+class K {
   /**
    * Constructor
    * @param props input data/ входные данные
    * @param className class name/ название класса
+   * @param text text include/ Подключение текста
    */
-  constructor(t, s) {
+  constructor(t, s, i) {
     /**
      * Determines whether to display arrows.
      *
@@ -43,7 +45,8 @@ class G {
       class: `${this.className}__cancel`,
       icon: this.props.iconClose,
       dynamic: !0,
-      "data-event-type": "cancel"
+      "data-event-type": "cancel",
+      ariaLabel: this.text.cancel.value
     })));
     /**
      * Returns data for the left arrow.
@@ -55,7 +58,8 @@ class G {
       icon: this.props.arrowCarousel ? this.props.iconArrowLeft : this.props.iconMinus,
       disabled: this.props.disabled || this.props.disabledPrevious,
       dynamic: !0,
-      "data-event-type": "previous"
+      "data-event-type": "previous",
+      ariaLabel: this.props.arrowCarousel ? this.text.previous.value : this.text.decrement.value
     })));
     /**
      * Returns data for the right arrow.
@@ -67,12 +71,13 @@ class G {
       icon: this.props.arrowCarousel ? this.props.iconArrowRight : this.props.iconPlus,
       disabled: this.props.disabled || this.props.disabledNext,
       dynamic: !0,
-      "data-event-type": "next"
+      "data-event-type": "next",
+      ariaLabel: this.props.arrowCarousel ? this.text.next.value : this.text.increment.value
     })));
-    this.props = t, this.className = s;
+    this.props = t, this.className = s, this.text = i;
   }
 }
-class J {
+class O {
   /**
    * Constructor
    * @param element main element/ главный элемент
@@ -95,10 +100,10 @@ class J {
         t && (this.left = t.offsetLeft, this.right = ((o = (i = t.parentElement) == null ? void 0 : i.offsetWidth) != null ? o : 0) - this.left - t.offsetWidth), this.title = (h = (a = s == null ? void 0 : s.offsetLeft) != null ? a : t == null ? void 0 : t.offsetLeft) != null ? h : 0, this.make();
       });
     });
-    this.element = t, this.className = s, $(t, () => this.update, { immediate: !0 }), k() && (this.event = new A(window, "resize", this.update), I(() => {
+    this.element = t, this.className = s, $(t, () => this.update, { immediate: !0 }), A() && (this.event = new T(window, "resize", this.update), L(() => {
       var i;
       return (i = this.event) == null ? void 0 : i.stop();
-    })), L(this.update), E(this.update);
+    })), E(this.update), k(this.update);
   }
   /**
    * Returns separator elements.
@@ -128,7 +133,7 @@ class J {
     t && (t.style.setProperty(`--${this.className}-sys-left`, `${this.left}px`), t.style.setProperty(`--${this.className}-sys-right`, `${this.right}px`), t.style.setProperty(`--${this.className}-sys-title`, `${this.title}px`), t.classList.contains(`${this.className}--show`) || requestAnimationFrame(() => t.classList.add(`${this.className}--show`)));
   }
 }
-class K {
+class Q {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -151,8 +156,11 @@ class K {
    * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
    * @param FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
    * @param FieldSizeConstructor class for working with field size/ класс для работы с размером поля
+   * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(t, s, i, o, a, h, c, p, u = U, m = H, b = P, f = M, y = D, v = z, g = W, _ = j, S = V, w = R, C = G, N = J) {
+  constructor(t, s, i, o, a, h, c, p, u = H, m = G, b = M, f = D, v = V, y = U, g = j, _ = J, S = R, x = z, w = K, C = O, N = W) {
+    /** Text include/ Подключение текста */
+    e(this, "text");
     /** Icon trailing include/ Подключение иконки в конце */
     e(this, "icon");
     /** Caption include/ Подключение подписи */
@@ -213,7 +221,7 @@ class K {
       this.props,
       this.classDesign,
       ["classBackground"]
-    ), this.icon = new m(this.props, this.className, this.components), this.caption = new b(this.props, this.className, this.slots), this.prefix = new f(this.props, this.className, this.slots), this.suffix = new y(this.props, this.className, this.slots), this.fieldLabel = new v(
+    ), this.icon = new m(this.props, this.className, this.components), this.text = new N(this.props), this.caption = new b(this.props, this.className, this.slots), this.prefix = new f(this.props, this.className, this.slots), this.suffix = new v(this.props, this.className, this.slots), this.fieldLabel = new y(
       this.props,
       this.className,
       this.components,
@@ -237,7 +245,7 @@ class K {
         position: "static",
         dense: !0
       }
-    ), this.enabled = new S(this.props, this.progress), this.event = new w(this.props, this.enabled, this.emits), this.icons = new C(this.props, this.className), this.size = new N(this.element, this.className);
+    ), this.enabled = new S(this.props, this.progress), this.event = new x(this.props, this.enabled, this.emits), this.icons = new w(this.props, this.className, this.text), this.size = new C(this.element, this.className);
   }
   /**
    * Get ARIA describedby attribute.
@@ -245,15 +253,20 @@ class K {
    * Получить атрибут ARIA describedby.
    */
   getDescribedby() {
-    return `${this.fieldLabel.id.value} ${this.fieldMessage.id.value}`.trim();
+    return [
+      this.prefix.describedby.value,
+      this.suffix.describedby.value,
+      this.fieldLabel.id.value,
+      this.fieldMessage.id.value
+    ].join(" ").trim();
   }
 }
-const ns = {
+const cs = {
   // :default [!] System label / Системная метка
   arrowAlign: "right",
   cancel: "auto"
 };
-class hs extends T {
+class ps extends q {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -261,7 +274,7 @@ class hs extends T {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(s, i, o, a = K) {
+  constructor(s, i, o, a = Q) {
     super(
       s,
       i,
@@ -427,7 +440,7 @@ class hs extends T {
      *
      * Значение для фокуса.
      */
-    e(this, "focusValue", () => !this.lengthElement.value && q(this.props.value) ? this.props.value : "");
+    e(this, "focusValue", () => !this.lengthElement.value && P(this.props.value) ? this.props.value : "");
     /**
      * Length value.
      *
@@ -530,7 +543,7 @@ class hs extends T {
   }
 }
 export {
-  K as Field,
-  hs as FieldDesign,
-  ns as defaultsField
+  Q as Field,
+  ps as FieldDesign,
+  cs as defaultsField
 };

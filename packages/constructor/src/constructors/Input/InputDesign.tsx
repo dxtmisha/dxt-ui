@@ -44,11 +44,13 @@ export class InputDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, InputEmits, P>
+    options?: ConstrOptions<COMP, InputEmits, P>,
+    ItemConstructor: typeof Input = Input
   ) {
     super(
       name,
@@ -56,7 +58,7 @@ export class InputDesign<
       options
     )
 
-    this.item = new Input(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
