@@ -10,6 +10,16 @@ import {
  * Объект wikiTechnical содержит общие технические свойства для всех компонентов
  */
 export const wikiTechnical: StorybookArgsToList = {
+  captionDecorative: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Specifies whether the caption is purely decorative',
+        ru: 'Указывает, является ли подпись чисто декоративной'
+      }
+    }
+  },
   descriptionId: {
     type: StorybookControl.string,
     options: {

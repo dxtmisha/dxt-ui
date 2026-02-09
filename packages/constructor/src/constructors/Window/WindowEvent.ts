@@ -71,7 +71,10 @@ export class WindowEvent {
    * @param event event object/ объект события
    */
   readonly onKeydown = async (event: MouseEvent & TouchEvent | KeyboardEvent): Promise<void> => {
-    if (isEnter(event as KeyboardEvent)) {
+    if (
+      isEnter(event as KeyboardEvent)
+      || this.isArrowDown(event as KeyboardEvent)
+    ) {
       event.preventDefault()
       await this.onClick(event as unknown as MouseEvent & TouchEvent)
     }
@@ -136,6 +139,24 @@ export class WindowEvent {
     }
 
     return this
+  }
+
+  /**
+   * Checks if the down arrow key is pressed.
+   *
+   * Проверяет, нажата ли стрелка вниз.
+   * @param event event object/ объект события
+   */
+  protected isArrowDown(event: KeyboardEvent): boolean {
+    return Boolean(
+      this.props.openOnArrowDown
+      && (
+        event.code === 'ArrowDown'
+        || event.key === 'ArrowDown'
+        || event.key === 'Down'
+        || event.keyCode === 40
+      )
+    )
   }
 
   /**

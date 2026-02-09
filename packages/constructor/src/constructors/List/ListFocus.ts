@@ -206,7 +206,10 @@ export class ListFocus {
    * @param max maximum number of attempts/ максимальное количество попыток
    */
   protected toFocus(max: number = LIST_MAX_EXPECTATIONS_FOCUS): void {
-    if (max > 0) {
+    if (
+      max > 0
+      && this.element.value
+    ) {
       const element = this.getElement()
 
       if (element) {

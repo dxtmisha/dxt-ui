@@ -43,6 +43,7 @@ export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPr
     'onUpdate:open'?: (value: boolean) => void;
     'onUpdate:modelOpen'?: (value: boolean) => void;
     'closeOnEsc'?: boolean;
+    'openOnArrowDown'?: boolean;
     /**
      * The window will be displayed inside the current parent element/
      * Окно будет отображаться внутри текущего родительского элемента

@@ -144,6 +144,11 @@ export class FieldAttributesInclude {
               value = this.inputMode.item.value
             }
             break
+          case 'autocomplete':
+            if (this.inputMode) {
+              value = this.inputMode.autocomplete.value
+            }
+            break
           default:
             value = this.props[index]
         }

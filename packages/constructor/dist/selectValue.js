@@ -1,12 +1,12 @@
-var d = Object.defineProperty;
-var u = (r, e, s) => e in r ? d(r, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : r[e] = s;
-var t = (r, e, s) => u(r, typeof e != "symbol" ? e + "" : e, s);
-import { computed as o, h as m } from "vue";
-import { isFilled as v, DesignConstructorAbstract as b, toBinds as a, getRef as g, toBind as f } from "@dxtmisha/functional";
-import { E as w } from "./EnabledInclude-IdZAnr6u.js";
-import { E as C } from "./EventClickInclude-CgbuezDm.js";
-import { W as S } from "./WindowClassesInclude-B56usxgx.js";
-class x {
+var v = Object.defineProperty;
+var b = (r, e, s) => e in r ? v(r, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : r[e] = s;
+var t = (r, e, s) => b(r, typeof e != "symbol" ? e + "" : e, s);
+import { computed as o, h as g } from "vue";
+import { isFilled as f, DesignConstructorAbstract as w, toBinds as a, getRef as C, toBind as S } from "@dxtmisha/functional";
+import { E as x } from "./EnabledInclude-IdZAnr6u.js";
+import { E } from "./EventClickInclude-CgbuezDm.js";
+import { W as N } from "./WindowClassesInclude-B56usxgx.js";
+class D {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -17,14 +17,17 @@ class x {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
+   * @param EventConstructor class for creating an event/ класс для создания события
+   * @param WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
    */
-  constructor(e, s, i, l, n, h, c, p) {
+  constructor(e, s, i, l, n, h, c, p, d = x, u = E, m = N) {
     t(this, "enabled");
     t(this, "event");
     t(this, "window");
     /** Is placeholder/ Является ли плейсхолдером */
     t(this, "isPlaceholder", o(
-      () => !v(this.props.value) && !!this.props.placeholder
+      () => !f(this.props.value) && !!this.props.placeholder
     ));
     /** Icon for canceling selection/ Иконка для отмены выбора */
     t(this, "iconTrailing", o(() => {
@@ -53,22 +56,23 @@ class x {
     t(this, "onClick", (e, s) => {
       e.preventDefault(), e.stopPropagation(), this.event.onClick(e, s);
     });
-    this.props = e, this.refs = s, this.element = i, this.classDesign = l, this.className = n, this.components = h, this.slots = c, this.emits = p, this.enabled = new w(this.props), this.event = new C(
+    this.props = e, this.refs = s, this.element = i, this.classDesign = l, this.className = n, this.components = h, this.slots = c, this.emits = p, this.enabled = new d(this.props), this.event = new u(
       this.props,
       this.enabled,
       this.emits
-    ), this.window = new S(l);
+    ), this.window = new m(l);
   }
 }
-const B = {};
-class A extends b {
+const _ = {};
+class $ extends w {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor select value item class/ класс элемента значения выбора
    */
-  constructor(s, i, l) {
+  constructor(s, i, l, n = D) {
     super(
       s,
       i,
@@ -135,7 +139,7 @@ class A extends b {
         s.index
       );
     });
-    this.item = new x(
+    this.item = new n(
       this.props,
       this.refs,
       this.element,
@@ -182,7 +186,7 @@ class A extends b {
    */
   initRender() {
     var s;
-    return m(
+    return g(
       "div",
       {
         ...this.getAttrs(),
@@ -192,7 +196,7 @@ class A extends b {
     );
   }
 }
-class P {
+class y {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -210,7 +214,7 @@ class P {
     /** Computed bindings for the selectValue/ Вычисляемые привязки для selectValue */
     t(this, "binds", o(() => ({
       ...a(
-        g(this.extra),
+        C(this.extra),
         this.props.selectValueAttrs,
         {
           class: `${this.className}__select-value`
@@ -227,7 +231,7 @@ class P {
      */
     t(this, "render", (e) => this.components && this.is.value ? this.components.render(
       "selectValue",
-      f(
+      S(
         e != null ? e : {},
         this.binds.value
       ),
@@ -237,8 +241,8 @@ class P {
   }
 }
 export {
-  x as SelectValue,
-  A as SelectValueDesign,
-  P as SelectValueInclude,
-  B as defaultsSelectValue
+  D as SelectValue,
+  $ as SelectValueDesign,
+  y as SelectValueInclude,
+  _ as defaultsSelectValue
 };

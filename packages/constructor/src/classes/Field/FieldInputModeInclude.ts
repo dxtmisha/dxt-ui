@@ -45,4 +45,25 @@ export class FieldInputModeInclude {
         return undefined
     }
   })
+
+  readonly autocomplete = computed<string | undefined>(() => {
+    if (this.props.autocomplete) {
+      return this.props.autocomplete
+    }
+
+    switch (this.type.item.value) {
+      case 'search':
+        return 'off'
+      case 'email':
+        return 'email'
+      case 'password':
+        return 'new-password'
+      case 'tel':
+        return 'tel'
+      case 'url':
+        return 'url'
+    }
+
+    return undefined
+  })
 }

@@ -253,5 +253,61 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Slot'} type={'leading'} />
 <StorybookDescriptions componentName={'Slot'} type={'trailing'} />
     `
+  },
+  ai: {
+    description: `
+Input is the primary component for getting user data. It wraps the native \`<input>\` element and adds support for floating labels, validation, masking, and formatting.
+
+**When to use:**
+1. **Text Fields:** Names, emails, addresses, search queries.
+2. **Numeric Data:** Quantities, prices (use \`type="number"\` or \`type="currency"\`).
+3. **Formatted Inputs:** Phone numbers, credit cards (use \`mask\`).
+4. **Passwords:** Secure entry with visibility toggle (use \`type="password"\`).
+5. **Date/Time:** Date selection (use \`type="date"\`, \`type="time"\`).
+
+**Key Properties & Logic:**
+
+1. **Input Types (\`type\`):**
+   - **Standard:** \`text\`, \`email\`, \`search\`, \`url\`, \`tel\`.
+   - **Password:** \`password\`. Automatically adds a "show/hide" eye icon.
+   - **Native Number:** \`number\`. Uses browser's native number input.
+   - **Formatted Number:** \`number-format\`. A text input that formats numbers with thousands separators (e.g., "1,234.56") based on \`language\`.
+   - **Currency:** \`currency\`. Formats input as money. Requires \`currency\` prop (e.g., "USD").
+   - **Date/Time:** \`date\`, \`datetime\`, \`time\`, \`year-month\`.
+
+2. **Masking (\`mask\`):**
+   - Applies a strict pattern to the input.
+   - Example: \`mask="+1 (###) ###-####"\` for phones.
+   - The component automatically handles placeholder characters and cursor movement.
+   - Use \`match\` to restrict allowed characters (e.g., \`match="[0-9]"\`).
+
+3. **Validation:**
+   - **Error State:** Set \`validationMessage\` to show an error text and turn the field red.
+   - **Regex Pattern:** Use \`pattern\` to validate the final value.
+   - **Input Filter:** Use \`match\` to prevent typing invalid characters.
+
+4. **Field Structure (Visuals):**
+   - **Label:** \`label\` prop. Can be floating or static.
+   - **Placeholder:** \`placeholder\` prop. Shown when empty.
+   - **Helper Text:** \`helperMessage\` prop. Shown below the input.
+   - **Icons:** \`icon\` (left/leading) and \`iconTrailing\` (right/trailing).
+   - **Affixes:** \`prefix\` (text before value, e.g., "$") and \`suffix\` (text after value, e.g., "kg").
+   - **Counter:** \`counter\` prop. Shows character count (requires \`maxlength\`).
+
+5. **Behavior:**
+   - **Loading:** \`loading\` prop shows a spinner/skeleton.
+   - **Clearable:** \`cancel\` prop adds a clear (X) button.
+   - **Read-only/Disabled:** \`readonly\` and \`disabled\` props.
+
+**Design Identification:**
+- **Standard Input:** A box or underline with text.
+- **With Icon:** Input with a symbol on the left or right.
+- **With Prefix/Suffix:** Input containing fixed text like "$" or "items".
+- **Error State:** Input with red border/text and a message below.
+- **Password:** Input with dots and an eye icon.
+
+**Example:**
+\`<Input label="Email" type="email" icon="mail" />\`
+    `
   }
 }

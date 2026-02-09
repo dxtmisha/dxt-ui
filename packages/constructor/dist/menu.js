@@ -2,8 +2,8 @@ var S = Object.defineProperty;
 var C = (r, e, t) => e in r ? S(r, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[e] = t;
 var s = (r, e, t) => C(r, typeof e != "symbol" ? e + "" : e, t);
 import { ref as a, computed as l, watch as y, h as B } from "vue";
-import { isFunction as k, executePromise as V, Api as M, isFilled as q, isObject as L, ListDataRef as N, DesignConstructorAbstract as j, toBinds as A } from "@dxtmisha/functional";
-import { E as D } from "./EventClickInclude-CgbuezDm.js";
+import { isFunction as k, executePromise as V, Api as M, isFilled as q, isObject as A, ListDataRef as D, DesignConstructorAbstract as L, toBinds as N } from "@dxtmisha/functional";
+import { E as j } from "./EventClickInclude-CgbuezDm.js";
 import { M as I } from "./ModelInclude-BiYm_iCQ.js";
 import { B as T } from "./BarsInclude-BOEoY-O4.js";
 import { W } from "./WindowInclude-BWm4-0Gh.js";
@@ -160,7 +160,8 @@ class O {
       preparation: this.preparation,
       opening: this.opening,
       closing: this.closing,
-      role: "menu"
+      role: "menu",
+      openOnArrowDown: !0
     };
   }
 }
@@ -196,7 +197,7 @@ class R {
    */
   setValue(e, t = !1) {
     var i;
-    return this.props.isSelectedByValue && !L(e) && this.value.value !== e && (this.value.value = e, t && ((i = this.emits) == null || i.call(this, "updateValue", e))), this;
+    return this.props.isSelectedByValue && !A(e) && this.value.value !== e && (this.value.value = e, t && ((i = this.emits) == null || i.call(this, "updateValue", e))), this;
   }
 }
 class H {
@@ -265,7 +266,7 @@ class _ {
    * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
    * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
    */
-  constructor(e, t, i, o, h, n, u, p, d = E, c = F, m = R, v = N, g = H, f = T, w = O, b = W, x = D) {
+  constructor(e, t, i, o, h, n, u, p, d = E, c = F, m = R, v = D, g = H, f = T, w = O, b = W, x = j) {
     /** Request handler for list data/ Обработчик запросов данных списка */
     s(this, "request");
     /** Search helper for menu filtering/ Вспомогательный класс поиска для фильтрации меню */
@@ -372,7 +373,7 @@ const U = {
   autoClose: !0,
   roleItem: "menuitem"
 };
-class X extends j {
+class X extends L {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -418,7 +419,7 @@ class X extends j {
         return this.initSlot("contextTop", h, this.getBinds(t)), this.props.hideList || h.push(
           this.components.render(
             "list",
-            A(
+            N(
               {
                 ...this.item.binds.value,
                 class: (o = this.classes) == null ? void 0 : o.value.list,

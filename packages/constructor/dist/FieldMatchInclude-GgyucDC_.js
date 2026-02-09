@@ -1,12 +1,12 @@
-var l = Object.defineProperty;
-var p = (s, t, e) => t in s ? l(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var i = (s, t, e) => p(s, typeof t != "symbol" ? t + "" : t, e);
+var h = Object.defineProperty;
+var p = (i, t, e) => t in i ? h(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
+var s = (i, t, e) => p(i, typeof t != "symbol" ? t + "" : t, e);
 import { ref as c, computed as r } from "vue";
 import { toNumber as u, isObject as n, anyToString as m } from "@dxtmisha/functional";
 import { F as v } from "./FieldInputCheckInclude-CjNYyGTb.js";
 class b {
   constructor() {
-    i(this, "item", c(!1));
+    s(this, "item", c(!1));
   }
   /**
    * Toggles the values.
@@ -25,7 +25,7 @@ class y {
    */
   constructor(t, e) {
     /** Returns the input type/ Возвращает тип ввода */
-    i(this, "item", r(() => {
+    s(this, "item", r(() => {
       var e;
       const t = this.props.type;
       return t === "password" && ((e = this.visibility) != null && e.item.value) ? "text" : t != null ? t : "text";
@@ -45,7 +45,7 @@ const o = {
   email: "[\\S]+@[\\S]{2,}\\.[\\w]{2,}",
   password: "[0-9a-zA-Z\\-!@#$%^&*]+"
 };
-class M {
+class w {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -53,7 +53,7 @@ class M {
    */
   constructor(t, e) {
     /** Returns regular expressions/ Возвращает регулярные выражения */
-    i(this, "item", r(() => {
+    s(this, "item", r(() => {
       if (this.props.pattern)
         return this.props.pattern;
       if (this.type)
@@ -62,7 +62,7 @@ class M {
     this.props = t, this.type = e;
   }
 }
-class w {
+class M {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -70,7 +70,7 @@ class w {
    */
   constructor(t, e) {
     /** Returns the keyboard name/ Возвращает название клавиатуры */
-    i(this, "item", r(() => {
+    s(this, "item", r(() => {
       if (this.props.inputMode)
         return this.props.inputMode;
       switch (this.type.item.value) {
@@ -92,6 +92,22 @@ class w {
           return;
       }
     }));
+    s(this, "autocomplete", r(() => {
+      if (this.props.autocomplete)
+        return this.props.autocomplete;
+      switch (this.type.item.value) {
+        case "search":
+          return "off";
+        case "email":
+          return "email";
+        case "password":
+          return "new-password";
+        case "tel":
+          return "tel";
+        case "url":
+          return "url";
+      }
+    }));
     this.props = t, this.type = e;
   }
 }
@@ -108,23 +124,23 @@ class S {
      *
      * @return true if arrows are enabled/ true, если стрелки включены
      */
-    i(this, "is", r(() => !!(this.props.arrow && this.props.arrow !== "none")));
+    s(this, "is", r(() => !!(this.props.arrow && this.props.arrow !== "none")));
     /** Indicates if the previous button is disabled/ Указывает, отключена ли кнопка предыдущего */
-    i(this, "disabledPrevious", r(() => !this.isPrevious(this.value.number.value)));
+    s(this, "disabledPrevious", r(() => !this.isPrevious(this.value.number.value)));
     /** Indicates if the next button is disabled/ Указывает, отключена ли кнопка следующего */
-    i(this, "disabledNext", r(() => !this.isNext(this.value.number.value)));
+    s(this, "disabledNext", r(() => !this.isNext(this.value.number.value)));
     /** Returns the change step/ Возвращает шаг изменения */
-    i(this, "step", r(() => {
+    s(this, "step", r(() => {
       var t, e;
       return u((e = (t = this.props.arrowStep) != null ? t : this.props.step) != null ? e : 1);
     }));
     /** Returns the minimum value/ Возвращает минимальное значение */
-    i(this, "min", r(() => {
+    s(this, "min", r(() => {
       var t;
       return (t = u(this.props.min)) != null ? t : void 0;
     }));
     /** Returns the maximum value/ Возвращает максимальное значение */
-    i(this, "max", r(() => u(this.props.max) || void 0));
+    s(this, "max", r(() => u(this.props.max) || void 0));
     this.props = t, this.value = e, this.type = a;
   }
   /**
@@ -237,8 +253,8 @@ class F {
    * @param value object for working with value/ объект для работы со значениями
    * @param text object for working with texts/ объект для работы с текстами
    */
-  constructor(t, e, a, h) {
-    this.props = t, this.element = e, this.value = a, this.text = h;
+  constructor(t, e, a, l) {
+    this.props = t, this.element = e, this.value = a, this.text = l;
   }
   /**
    * Checks whether matching verification is enabled
@@ -294,9 +310,9 @@ class F {
 }
 export {
   S as F,
-  w as a,
+  M as a,
   F as b,
-  M as c,
+  w as c,
   y as d,
   b as e
 };

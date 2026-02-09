@@ -14,8 +14,9 @@ export declare class SelectValueDesign<COMP extends SelectValueComponents, EXPOS
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor select value item class/ класс элемента значения выбора
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, SelectValueEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, SelectValueEmits, P>, ItemConstructor?: typeof SelectValue);
     /**
      * Initialization of all the necessary properties for work
      *

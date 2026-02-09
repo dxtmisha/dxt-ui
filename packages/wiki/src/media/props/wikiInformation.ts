@@ -115,7 +115,9 @@ export const wikiInformation: StorybookArgsToList = {
         en: 'Placeholder text shown when the input is empty',
         ru: 'Текст подсказки, отображаемый при пустом вводе'
       }
-    }
+    },
+    isDemo: true,
+    demo: 'Placeholder text'
   },
   prefix: {
     type: StorybookControl.string,
@@ -141,7 +143,10 @@ export const wikiInformation: StorybookArgsToList = {
       }
     },
     isDemo: true,
-    demo: 'Suffix text'
+    demo: 'Suffix text',
+    demoOptions: {
+      value: 'Value'
+    }
   },
   validationMessage: {
     type: StorybookControl.string,

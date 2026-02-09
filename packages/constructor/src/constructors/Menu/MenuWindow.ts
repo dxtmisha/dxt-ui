@@ -37,7 +37,8 @@ export class MenuWindow {
       preparation: this.preparation,
       opening: this.opening,
       closing: this.closing,
-      role: 'menu'
+      role: 'menu',
+      openOnArrowDown: true
     }
   }
 

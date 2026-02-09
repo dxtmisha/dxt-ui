@@ -1,8 +1,8 @@
 var v = Object.defineProperty;
-var g = (n, t, e) => t in n ? v(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var a = (n, t, e) => g(n, typeof t != "symbol" ? t + "" : t, e);
-import { ref as u, computed as r, watch as m } from "vue";
-import { toBinds as f, toNumber as c, anyToString as h, isFilled as b, isArray as y, isObject as E, toArray as k, setValues as F, getRef as d } from "@dxtmisha/functional";
+var m = (n, t, e) => t in n ? v(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
+var a = (n, t, e) => m(n, typeof t != "symbol" ? t + "" : t, e);
+import { ref as u, computed as r, watch as g } from "vue";
+import { toBinds as f, toNumber as c, anyToString as h, isFilled as b, isArray as y, isObject as k, toArray as E, setValues as F, getRef as d } from "@dxtmisha/functional";
 import { F as o } from "./FieldInputCheckInclude-CjNYyGTb.js";
 import { M as I } from "./ModelInclude-BiYm_iCQ.js";
 class D {
@@ -133,6 +133,9 @@ class O {
           case "inputMode":
             this.inputMode && (s = this.inputMode.item.value);
             break;
+          case "autocomplete":
+            this.inputMode && (s = this.inputMode.autocomplete.value);
+            break;
           default:
             s = this.props[i];
         }
@@ -232,7 +235,7 @@ class V {
     a(this, "length", r(() => {
       var e;
       const t = this.item.value;
-      return y(t) ? t.length : E(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
+      return y(t) ? t.length : k(t) ? Object.keys(t).length : (e = this.string.value.length) != null ? e : 0;
     }));
     /**
      * Changes the values to the original ones.
@@ -242,7 +245,7 @@ class V {
     a(this, "update", () => {
       (this.isEdit(this.props.value) || this.isEdit(this.props.modelValue)) && this.setToOriginal();
     });
-    this.props = t, this.refs = e, this.element = i, this.original = s, this.item.value = this.getOriginal(), m([
+    this.props = t, this.refs = e, this.element = i, this.original = s, this.item.value = this.getOriginal(), g([
       e.value,
       e.modelValue
     ], this.update);
@@ -261,7 +264,7 @@ class V {
    * Возвращает текущее значение в виде массива.
    */
   getToArray() {
-    return k(this.item.value);
+    return E(this.item.value);
   }
   /**
    * Changes the value.
@@ -286,7 +289,7 @@ class V {
     return this;
   }
   setByEvent(t) {
-    return console.log("setByEvent"), typeof t === "object" ? t && ("value" in t && t.value !== void 0 ? this.set(t.value) : "target" in t && this.setByTarget(t.target), "hasEdit" in t && this.setHasEdit(t.hasEdit), "isFull" in t && this.setFull(t.isFull)) : this.set(t), this;
+    return typeof t === "object" ? t && ("value" in t && t.value !== void 0 ? this.set(t.value) : "target" in t && this.setByTarget(t.target), "hasEdit" in t && this.setHasEdit(t.hasEdit), "isFull" in t && this.setFull(t.isFull)) : this.set(t), this;
   }
   /**
    * Changes the values by the selected element.

@@ -33,6 +33,21 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  cancel: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      options: ['auto', 'always'],
+      description: {
+        en: 'Cancel button mode: auto (show only if cancelShow + active, no arrows) or always (force unless disabled/readonly or arrows).',
+        ru: 'Режим кнопки очистки: auto (показывать если cancelShow и активен, без стрелок) или always (всегда, кроме disabled/readonly или стрелок).'
+      }
+    },
+    isDemo: true,
+    demoOptions: {
+      value: 'Value'
+    }
+  },
   clickOpen: {
     type: StorybookControl.boolean,
     options: {

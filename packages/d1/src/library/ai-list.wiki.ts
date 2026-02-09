@@ -20,6 +20,7 @@ import D1FieldLabel from '../../src/components/Ui/FieldLabel/D1FieldLabelAiWiki.
 import D1FieldMessage from '../../src/components/Ui/FieldMessage/D1FieldMessageAiWiki.vue'
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
+import D1Input from '../../src/components/Ui/Input/D1InputAiWiki.vue'
 import D1List from '../../src/components/Ui/List/D1ListAiWiki.vue'
 import D1ListGroup from '../../src/components/Ui/ListGroup/D1ListGroupAiWiki.vue'
 import D1ListItem from '../../src/components/Ui/ListItem/D1ListItemAiWiki.vue'
@@ -56,6 +57,7 @@ export const aiList: any[] = [
   D1FieldMessage,
   D1Icon,
   D1Image,
+  D1Input,
   D1List,
   D1ListGroup,
   D1ListItem,

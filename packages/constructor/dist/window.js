@@ -2,7 +2,7 @@ var V = Object.defineProperty;
 var G = (h, t, e) => t in h ? V(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
 var i = (h, t, e) => G(h, typeof t != "symbol" ? t + "" : t, e);
 import { h as p, computed as m, ref as v, watch as f, onMounted as K, onUnmounted as j, Teleport as Z } from "vue";
-import { toBind as z, getBind as J, getRef as Q, executePromise as y, getElement as S, isDomRuntime as B, EventItem as k, setRef as tt, frame as et, isEnter as st, getMouseClientX as it, getMouseClientY as nt, DesignConstructorAbstract as ot } from "@dxtmisha/functional";
+import { toBind as z, getBind as J, getRef as Q, executePromise as y, getElement as k, isDomRuntime as B, EventItem as S, setRef as tt, frame as et, isEnter as st, getMouseClientX as it, getMouseClientY as nt, DesignConstructorAbstract as ot } from "@dxtmisha/functional";
 import { A as w } from "./AriaStaticInclude-BVCgDZbU.js";
 import { M as rt } from "./ModelInclude-BiYm_iCQ.js";
 import { T as ht } from "./TabIndexInclude-D8IAq5y9.js";
@@ -763,7 +763,7 @@ class bt {
     var e, s, n;
     const t = this.element.getBodyContext();
     if (this.isOver() && this.props.overElement && t && t.scrollHeight > t.offsetHeight) {
-      const o = (e = S(this.props.overElement)) == null ? void 0 : e.getBoundingClientRect(), r = (s = this.element.getBody()) == null ? void 0 : s.getBoundingClientRect(), a = t == null ? void 0 : t.getBoundingClientRect(), l = (n = this.element.getControl()) == null ? void 0 : n.getBoundingClientRect();
+      const o = (e = k(this.props.overElement)) == null ? void 0 : e.getBoundingClientRect(), r = (s = this.element.getBody()) == null ? void 0 : s.getBoundingClientRect(), a = t == null ? void 0 : t.getBoundingClientRect(), l = (n = this.element.getControl()) == null ? void 0 : n.getBoundingClientRect();
       if (t && o && r && a) {
         const d = o.height / 2, u = o.top - a.top;
         if (l && this.coordinates.getMaxHeight() === r.height) {
@@ -823,7 +823,7 @@ class bt {
     var o, r;
     const s = (e - t) / 2;
     if (this.props.overElement) {
-      const a = (o = S(this.props.overElement)) == null ? void 0 : o.getBoundingClientRect(), l = (r = this.element.getBody()) == null ? void 0 : r.getBoundingClientRect();
+      const a = (o = k(this.props.overElement)) == null ? void 0 : o.getBoundingClientRect(), l = (r = this.element.getBody()) == null ? void 0 : r.getBoundingClientRect();
       if (a && l) {
         const d = a.top - l.top, u = a.height / 2;
         return e - d - u - s;
@@ -1008,7 +1008,7 @@ class xt {
    * Стартует событие слежения за статусами.
    */
   start() {
-    this.event || (this.event = new k(window, ["resize"], this.listener)), this.event.start();
+    this.event || (this.event = new S(window, ["resize"], this.listener)), this.event.start();
   }
   /**
    * Restores the data to its previous state.
@@ -1098,7 +1098,7 @@ class Mt {
     }
   }
 }
-class St {
+class kt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1253,7 +1253,7 @@ class St {
     }, 48), this.status.toClose();
   }
 }
-class kt {
+class St {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1454,7 +1454,7 @@ class It {
      * @param event event object/ объект события
      */
     i(this, "onKeydown", async (t) => {
-      st(t) && (t.preventDefault(), await this.onClick(t));
+      (st(t) || this.isArrowDown(t)) && (t.preventDefault(), await this.onClick(t));
     });
     /**
      * Events of pressing the right mouse button on a control element.
@@ -1480,7 +1480,7 @@ class It {
     i(this, "onGlobal", async (t) => {
       (!t || t.type === "click" && (!this.props.contextmenu || this.open.item.value) || t.type === "contextmenu" && this.props.contextmenu) && (this.open.item.value ? (this.flash.setControl(t == null ? void 0 : t.target), await this.verification.update(t == null ? void 0 : t.target)) : this.event.stop());
     });
-    this.props = t, this.tabIndex = e, this.status = s, this.client = n, this.flash = o, this.open = r, this.verification = a, this.event = new k(
+    this.props = t, this.tabIndex = e, this.status = s, this.client = n, this.flash = o, this.open = r, this.verification = a, this.event = new S(
       "body",
       ["click", "contextmenu"],
       this.onGlobal
@@ -1515,6 +1515,15 @@ class It {
    */
   toggle() {
     return this.open.item.value && this.status.isOpen() ? this.start() : this.stop(), this;
+  }
+  /**
+   * Checks if the down arrow key is pressed.
+   *
+   * Проверяет, нажата ли стрелка вниз.
+   * @param event event object/ объект события
+   */
+  isArrowDown(t) {
+    return !!(this.props.openOnArrowDown && (t.code === "ArrowDown" || t.key === "ArrowDown" || t.key === "Down" || t.keyCode === 40));
   }
   /**
    * Event activation.
@@ -1601,7 +1610,7 @@ class Wt {
     }), this.elements = [];
   }
 }
-class Tt {
+class Ot {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1636,7 +1645,7 @@ class Tt {
    * @param TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
    * @param TextConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(t, e, s, n, o, r, a, l, d = lt, u = pt, C = vt, x = mt, I = Bt, W = ct, T = It, O = wt, E = Wt, H = gt, $ = St, A = Ct, D = yt, N = bt, P = xt, R = ft, L = Mt, Y = kt, F = ut, X = rt, _ = dt, q = ht, U = at) {
+  constructor(t, e, s, n, o, r, a, l, d = lt, u = pt, C = vt, x = mt, I = Bt, W = ct, O = It, T = wt, E = Wt, H = gt, A = kt, D = Ct, $ = yt, N = bt, P = xt, R = ft, L = Mt, Y = St, F = ut, X = rt, _ = dt, q = ht, U = at) {
     /** Client instance for window management/ Экземпляр клиента для управления окном */
     i(this, "client");
     /** Hook instance for window events/ Экземпляр хука для событий окна */
@@ -1720,13 +1729,13 @@ class Tt {
     });
     this.props = t, this.refs = e, this.classDesign = n, this.className = o, this.components = r, this.slots = a, this.emits = l, this.hook = new H(t), this.classes = new d(o), this.element = new x(this.classes, s), this.client = new u(this.element), this.tabIndex = new q(
       () => this.element.getBody()
-    ), this.status = new R(this.element), this.persistent = new D(t, this.classes, this.element), this.flash = new O(t, this.classes), this.coordinates = new C(this.classes, this.element), this.position = new N(t, this.client, this.element, this.coordinates), this.origin = new A(this.client, this.element, this.position), this.staticMode = new P(t, e, this.element), this.emit = new I(this.classes, this.element, l), this.styles = new L(
+    ), this.status = new R(this.element), this.persistent = new $(t, this.classes, this.element), this.flash = new T(t, this.classes), this.coordinates = new C(this.classes, this.element), this.position = new N(t, this.client, this.element, this.coordinates), this.origin = new D(this.client, this.element, this.position), this.staticMode = new P(t, e, this.element), this.emit = new I(this.classes, this.element, l), this.styles = new L(
       this.element,
       this.coordinates,
       this.position,
       this.origin,
       o
-    ), this.open = new $(
+    ), this.open = new A(
       t,
       this.client,
       this.hook,
@@ -1746,7 +1755,7 @@ class Tt {
       this.element,
       this.staticMode,
       this.open
-    ), this.event = new T(
+    ), this.event = new O(
       t,
       this.tabIndex,
       this.status,
@@ -1802,7 +1811,7 @@ class Yt extends ot {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor window item class/ класс элемента окна
    */
-  constructor(e, s, n, o = Tt) {
+  constructor(e, s, n, o = Ot) {
     super(
       e,
       s,
@@ -2018,7 +2027,7 @@ class Yt extends ot {
   }
 }
 export {
-  Tt as Window,
+  Ot as Window,
   _t as WindowClassesInclude,
   Yt as WindowDesign,
   Ut as WindowInclude,

@@ -17,4 +17,5 @@ export declare class FieldInputModeInclude {
     constructor(props: FieldAllProps, type: FieldTypeInclude);
     /** Returns the keyboard name/ Возвращает название клавиатуры */
     readonly item: ComputedRef<string | undefined>;
+    readonly autocomplete: ComputedRef<string | undefined>;
 }

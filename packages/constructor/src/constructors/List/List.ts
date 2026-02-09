@@ -1,4 +1,4 @@
-import { toRef, type Ref, type ToRefs, computed } from 'vue'
+import { toRef, type Ref, type ToRefs, computed, onMounted, nextTick } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
@@ -102,6 +102,11 @@ export class List {
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
     this.windowClasses = new WindowClassesIncludeConstructor(classDesign)
+
+    onMounted(async () => {
+      await nextTick()
+      this.go.preparationBySelected()
+    })
   }
 
   /**

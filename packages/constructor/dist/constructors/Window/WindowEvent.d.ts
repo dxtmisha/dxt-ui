@@ -77,6 +77,13 @@ export declare class WindowEvent {
      */
     toggle(): this;
     /**
+     * Checks if the down arrow key is pressed.
+     *
+     * Проверяет, нажата ли стрелка вниз.
+     * @param event event object/ объект события
+     */
+    protected isArrowDown(event: KeyboardEvent): boolean;
+    /**
      * Event activation.
      *
      * Активация события.

@@ -1,12 +1,12 @@
 var x = Object.defineProperty;
-var E = (h, t, e) => t in h ? x(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
-var i = (h, t, e) => E(h, typeof t != "symbol" ? t + "" : t, e);
-import { ref as p, computed as u, watch as S, onUnmounted as B, toRef as M, h as o } from "vue";
-import { isFilled as A, goScroll as L, isSelected as C, isDomRuntime as m, EventItem as D, ListDataRef as F, toBinds as l, DesignConstructorAbstract as G, isObject as T } from "@dxtmisha/functional";
-import { E as P } from "./EventClickInclude-CgbuezDm.js";
-import { W as O } from "./WindowClassesInclude-B56usxgx.js";
+var S = (h, t, e) => t in h ? x(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
+var i = (h, t, e) => S(h, typeof t != "symbol" ? t + "" : t, e);
+import { ref as p, computed as l, watch as E, onUnmounted as B, toRef as M, onMounted as A, nextTick as L, h as o } from "vue";
+import { isFilled as C, goScroll as D, isSelected as F, isDomRuntime as m, EventItem as G, ListDataRef as T, toBinds as u, DesignConstructorAbstract as P, isObject as O } from "@dxtmisha/functional";
+import { E as N } from "./EventClickInclude-CgbuezDm.js";
+import { W as H } from "./WindowClassesInclude-B56usxgx.js";
 import { A as c } from "./AriaStaticInclude-BVCgDZbU.js";
-class N {
+class R {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -15,7 +15,7 @@ class N {
     i(this, "item", p());
     i(this, "timeout");
     /** Current search string/ Текущая строка поиска */
-    i(this, "highlight", u(() => {
+    i(this, "highlight", l(() => {
       var t;
       return (t = this.item.value) != null ? t : this.props.highlight;
     }));
@@ -55,7 +55,7 @@ class N {
    * @param value source value/ исходное значение
    */
   getValue(t) {
-    if (A(t))
+    if (C(t))
       return t.trim();
   }
   /**
@@ -79,8 +79,8 @@ class N {
     ), this;
   }
 }
-const H = 24;
-class R {
+const _ = 24;
+class V {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -91,7 +91,7 @@ class R {
     /** Active item/ Активный элемент */
     i(this, "item", p());
     /** Returns the value of the selected element/ Возвращает значение выбранного элемента */
-    i(this, "focus", u(() => {
+    i(this, "focus", l(() => {
       var t, e;
       return (e = (t = this.item.value) == null ? void 0 : t.index) != null ? e : this.props.focus;
     }));
@@ -226,7 +226,7 @@ class R {
    */
   toElement(t) {
     const e = "*[data-window-body]";
-    t && t.closest(e) && L(e, t);
+    t && t.closest(e) && (console.log("goScroll", e, t), D(e, t));
   }
   /**
    * Sets focus to the element.
@@ -234,9 +234,9 @@ class R {
    * Устанавливает фокус на элемент.
    * @param max maximum number of attempts/ максимальное количество попыток
    */
-  toFocus(t = H) {
+  toFocus(t = _) {
     var e;
-    if (t > 0) {
+    if (t > 0 && this.element.value) {
       const s = this.getElement();
       s ? s.focus() : ((e = document.activeElement) == null || e.blur(), setTimeout(() => {
         this.toFocus(t - 1);
@@ -244,7 +244,7 @@ class R {
     }
   }
 }
-class _ {
+class $ {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -272,7 +272,7 @@ class _ {
    * @param value new value/ новое значение
    */
   preparation(t) {
-    const e = this.data.map.value, s = e.findIndex((r) => C(r.index, t));
+    const e = this.data.map.value, s = e.findIndex((r) => F(r.index, t));
     this.reset(), s && (this.index = s, e != null && e[s] && this.focus.toElementSelected(e[s].index));
   }
   /**
@@ -416,7 +416,7 @@ class _ {
     this.setByIndex(this.index + 1), !(this.focus.isItem() || this.focus.isGroup() || this.focus.isMenu()) && this.nextByType();
   }
 }
-class V {
+class U {
   /**
    * Creates an instance of ListControl for managing keyboard navigation and events.
    *
@@ -433,7 +433,7 @@ class V {
      *
      * Проверяет, активное ли меню.
      */
-    i(this, "isActive", u(() => !!this.props.control));
+    i(this, "isActive", l(() => !!this.props.control));
     /**
      * Method for tracking keys when a window is open.
      *
@@ -486,7 +486,7 @@ class V {
               break;
           }
     });
-    this.props = t, this.search = e, this.data = s, this.go = r, S(
+    this.props = t, this.search = e, this.data = s, this.go = r, E(
       this.isActive,
       (a) => {
         a ? this.start() : this.stop();
@@ -523,7 +523,7 @@ class V {
    * Запускает событие.
    */
   start() {
-    m() && (this.event || (this.event = new D(
+    m() && (this.event || (this.event = new G(
       document.body,
       ["keydown", "keypress"],
       this.on
@@ -548,8 +548,8 @@ class V {
     e ? requestAnimationFrame(() => this.search.set(e.value)) : this.search.add(t.key);
   }
 }
-let $ = 1;
-class U {
+let q = 1;
+class X {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -568,7 +568,7 @@ class U {
    * @param EventClickIncludeConstructor class for working with click event/ класс для работы с событием клика
    * @param WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
    */
-  constructor(t, e, s, r, a, n, g, d, f = N, v = R, I = F, y = _, b = V, k = P, w = O) {
+  constructor(t, e, s, r, a, n, g, d, f = R, v = V, I = T, y = $, b = U, k = N, w = H) {
     i(this, "search");
     i(this, "focus");
     i(this, "data");
@@ -577,26 +577,26 @@ class U {
     i(this, "control");
     i(this, "windowClasses");
     /** Unique list identifier/ Уникальный идентификатор списка */
-    i(this, "id", ++$);
+    i(this, "id", ++q);
     /**
      * Computed list data
      *
      * Вычисляемые данные списка
      * */
-    i(this, "list", u(() => this.props.lite ? this.data.liteData.value : this.data.fullData.value));
+    i(this, "list", l(() => this.props.lite ? this.data.liteData.value : this.data.fullData.value));
     /**
      * Computed CSS classes for the cell component.
      *
      * Вычисляемые CSS классы для компонента ячейки.
      */
-    i(this, "classes", u(() => ({
+    i(this, "classes", l(() => ({
       [`${this.className}--highlightActive`]: !!this.props.filterMode && this.data.isHighlight()
     })));
     /**
      * Computed binding properties for list items/
      * Вычисляемые привязочные свойства для элементов списка
      * */
-    i(this, "itemBinds", u(() => {
+    i(this, "itemBinds", l(() => {
       var t;
       return {
         tag: this.props.tag,
@@ -618,7 +618,9 @@ class U {
       this.refs.liteThreshold,
       void 0,
       this.refs.max
-    ), this.go = new y(this.props, this.focus, this.data, this.emits), this.control = new b(this.props, this.search, this.data, this.go), this.event = new k(void 0, void 0, d), this.windowClasses = new w(r);
+    ), this.go = new y(this.props, this.focus, this.data, this.emits), this.control = new b(this.props, this.search, this.data, this.go), this.event = new k(void 0, void 0, d), this.windowClasses = new w(r), A(async () => {
+      await L(), this.go.preparationBySelected();
+    });
   }
   /**
    * Returns information about the opening status of a group item.
@@ -637,7 +639,7 @@ class U {
    * @param item List item data/ данные элемента списка
    */
   getItem(t) {
-    return l(
+    return u(
       this.itemBinds.value,
       t,
       {
@@ -653,7 +655,7 @@ class U {
    * @param item List item data/ данные элемента списка
    */
   getItemGroup(t) {
-    return l(
+    return u(
       this.itemBinds.value,
       this.props.itemGroupAttrs,
       t,
@@ -670,7 +672,7 @@ class U {
    * @param item List item data/ данные элемента списка
    */
   getItemMenu(t) {
-    return l(
+    return u(
       this.itemBinds.value,
       this.props.itemMenuAttrs,
       t,
@@ -734,7 +736,7 @@ class U {
    * @param icon Icon to display/ иконка для отображения
    */
   getItemManagement(t, e, s) {
-    return l(
+    return u(
       this.itemBinds.value,
       this.props.itemManagementAttrs,
       t,
@@ -754,7 +756,7 @@ class U {
     );
   }
 }
-const K = {
+const Y = {
   keyLabel: "label",
   keyValue: "value",
   tag: "div",
@@ -762,7 +764,7 @@ const K = {
   // :default [!] System label / Системная метка
   axis: "y"
 };
-class Q extends G {
+class Z extends P {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -770,7 +772,7 @@ class Q extends G {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(e, s, r, a = U) {
+  constructor(e, s, r, a = X) {
     super(
       e,
       s,
@@ -814,7 +816,7 @@ class Q extends G {
      */
     i(this, "renderItemMenu", (e, s) => this.components.renderOne(
       "listItem",
-      l(
+      u(
         this.item.getItemManagementFormMenu(e, !!s.open.value),
         s.binds
       )
@@ -879,7 +881,7 @@ class Q extends G {
     i(this, "renderHtml", (e) => {
       var r;
       const s = {
-        key: e.label && T(e.value) ? e.label : e.value,
+        key: e.label && O(e.value) ? e.label : e.value,
         class: [
           (r = this.classes) == null ? void 0 : r.value.html,
           this.item.windowClasses.get().static
@@ -1060,7 +1062,7 @@ class Q extends G {
   }
 }
 export {
-  U as List,
-  Q as ListDesign,
-  K as defaultsList
+  X as List,
+  Z as ListDesign,
+  Y as defaultsList
 };

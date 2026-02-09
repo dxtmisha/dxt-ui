@@ -43,11 +43,13 @@ export class SelectValueDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor select value item class/ класс элемента значения выбора
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, SelectValueEmits, P>
+    options?: ConstrOptions<COMP, SelectValueEmits, P>,
+    ItemConstructor: typeof SelectValue = SelectValue
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class SelectValueDesign<
       options
     )
 
-    this.item = new SelectValue(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

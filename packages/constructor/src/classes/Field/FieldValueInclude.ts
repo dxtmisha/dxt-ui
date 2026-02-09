@@ -156,7 +156,6 @@ export class FieldValueInclude<Value = any> {
   setByEvent(value: Record<string, any>): this
   setByEvent(value: any): this
   setByEvent(eventValue: Event | Record<string, any> | any): this {
-    console.log('setByEvent')
     switch (typeof eventValue) {
       case 'object':
         if (eventValue) {

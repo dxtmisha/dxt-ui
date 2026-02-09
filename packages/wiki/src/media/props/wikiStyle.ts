@@ -78,17 +78,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  cancel: {
-    type: StorybookControl.select,
-    options: {
-      category: StorybookCategory.style,
-      options: ['auto', 'always'],
-      description: {
-        en: 'Cancel button mode: auto (show only if cancelShow + active, no arrows) or always (force unless disabled/readonly or arrows).',
-        ru: 'Режим кнопки очистки: auto (показывать если cancelShow и активен, без стрелок) или always (всегда, кроме disabled/readonly или стрелок).'
-      }
-    }
-  },
   closeButton: {
     type: StorybookControl.boolean,
     options: {

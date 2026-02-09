@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui field",
+    "dxt-ui": "dxt-ui input",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -182,6 +182,10 @@
     "./D1Mask": {
       "types": "./dist/D1Mask.d.ts",
       "default": "./dist/D1Mask.js"
+    },
+    "./D1Input": {
+      "types": "./dist/D1Input.d.ts",
+      "default": "./dist/D1Input.js"
     }
   },
   "buildOptions": {

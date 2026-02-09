@@ -60,7 +60,8 @@ export const wikiStatus: StorybookArgsToList = {
         en: 'Visual focus state',
         ru: 'Визуальное состояние фокуса'
       }
-    }
+    },
+    isDemo: true
   },
   forceShow: {
     type: StorybookControl.boolean,
