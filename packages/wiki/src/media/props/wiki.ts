@@ -1,6 +1,7 @@
 import type { StorybookArgsToList } from '../../types/storybookTypes'
 
 import { wikiAria } from './wikiAria'
+import { wikiAttributes } from './wikiAttributes'
 import { wikiForm } from './wikiForm'
 import { wikiStatus } from './wikiStatus'
 import { wikiInformation } from './wikiInformation'
@@ -45,6 +46,7 @@ import { wikiWindow } from './wikiWindow'
 
 export const wiki: StorybookArgsToList = {
   ...wikiAria,
+  ...wikiAttributes,
   ...wikiForm,
   ...wikiStatus,
   ...wikiInformation,

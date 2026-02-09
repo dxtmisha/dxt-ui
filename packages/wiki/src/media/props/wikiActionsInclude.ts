@@ -13,7 +13,7 @@ export const wikiActionsInclude: StorybookArgsToList = {
   actionsAttrs: {
     type: StorybookControl.object,
     options: {
-      category: StorybookCategory.actions,
+      category: StorybookCategory.attributes,
       description: {
         en: 'Additional attributes for the Actions component container',
         ru: 'Дополнительные атрибуты для контейнера компонента Actions'

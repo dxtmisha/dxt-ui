@@ -35,7 +35,7 @@ export const wikiMask: StorybookArgsToList = {
   'mask.fullOnly': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.value,
+      category: StorybookCategory.option,
       description: {
         en: 'Treat input as valid only when the mask is fully completed',
         ru: 'Считать ввод валидным только при полном заполнении маски'
@@ -45,7 +45,7 @@ export const wikiMask: StorybookArgsToList = {
   'mask.groupSave': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Controls cursor behavior when moving between different special character groups in the mask',
         ru: 'Управляет поведением курсора при переходе между разными группами специальных символов в маске'

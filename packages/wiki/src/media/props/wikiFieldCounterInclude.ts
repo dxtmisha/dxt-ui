@@ -77,7 +77,7 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
   fieldCounterAttrs: {
     type: StorybookControl.object,
     options: {
-      category: StorybookCategory.counter,
+      category: StorybookCategory.attributes,
       description: {
         en: 'Additional attributes for the field counter component',
         ru: 'Дополнительные атрибуты для компонента счетчика поля'

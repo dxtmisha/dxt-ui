@@ -58,7 +58,7 @@ export const wikiIconInclude: StorybookArgsToList = {
   iconAttrs: {
     type: StorybookControl.object,
     options: {
-      category: StorybookCategory.icon,
+      category: StorybookCategory.attributes,
       description: {
         en: 'Sets additional attributes for the icon element',
         ru: 'Задает дополнительные атрибуты для элемента иконки'

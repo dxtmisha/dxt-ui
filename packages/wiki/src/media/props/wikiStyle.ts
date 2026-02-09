@@ -78,26 +78,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  buttonAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for button elements',
-        ru: 'Дополнительные атрибуты для элементов кнопок'
-      }
-    }
-  },
-  buttonSecondaryAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for secondary button elements',
-        ru: 'Дополнительные атрибуты для элементов вторичных кнопок'
-      }
-    }
-  },
   cancel: {
     type: StorybookControl.select,
     options: {
@@ -106,26 +86,6 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Cancel button mode: auto (show only if cancelShow + active, no arrows) or always (force unless disabled/readonly or arrows).',
         ru: 'Режим кнопки очистки: auto (показывать если cancelShow и активен, без стрелок) или always (всегда, кроме disabled/readonly или стрелок).'
-      }
-    }
-  },
-  cellAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the Cell component',
-        ru: 'Дополнительные атрибуты для компонента Cell'
-      }
-    }
-  },
-  chipAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the Chip component',
-        ru: 'Дополнительные атрибуты для компонента Chip'
       }
     }
   },
@@ -197,36 +157,6 @@ export const wikiStyle: StorybookArgsToList = {
     },
     isDemo: true
   },
-  fieldAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the Field component',
-        ru: 'Дополнительные атрибуты для компонента Field'
-      }
-    }
-  },
-  fieldLabelAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the FieldLabel element',
-        ru: 'Дополнительные атрибуты для элемента FieldLabel'
-      }
-    }
-  },
-  fieldMessageAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the FieldMessage element',
-        ru: 'Дополнительные атрибуты для элемента FieldMessage'
-      }
-    }
-  },
   fill: {
     type: StorybookControl.string,
     options: {
@@ -277,16 +207,6 @@ export const wikiStyle: StorybookArgsToList = {
       image: 'https://drscdn.500px.org/photo/294267357/q%3D90_m%3D2048/v2?sig=adb52b9add18ad21ab4a86b99695377f2a18821c609d42149b3426dfb99cf924'
     }
   },
-  inputAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the native input element',
-        ru: 'Дополнительные атрибуты для нативного элемента input'
-      }
-    }
-  },
   inverse: {
     type: StorybookControl.boolean,
     options: {
@@ -321,26 +241,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     },
     isDemo: true
-  },
-  menuAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the Menu root container',
-        ru: 'Дополнительные атрибуты для корневого контейнера Menu'
-      }
-    }
-  },
-  motionTransformAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the MotionTransform component',
-        ru: 'Дополнительные атрибуты для компонента MotionTransform'
-      }
-    }
   },
   overlay: {
     type: StorybookControl.boolean,
@@ -428,16 +328,6 @@ export const wikiStyle: StorybookArgsToList = {
     },
     isDemo: true
   },
-  scrollbarAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Sets attributes for the internal scrollbar',
-        ru: 'Задает атрибуты встроенного скроллбара'
-      }
-    }
-  },
   size: {
     type: StorybookControl.select,
     options: {
@@ -463,16 +353,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
-  tooltipAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the Tooltip component',
-        ru: 'Дополнительные атрибуты для компонента Tooltip'
-      }
-    }
-  },
   width: {
     type: StorybookControl.select,
     options: {
@@ -485,16 +365,6 @@ export const wikiStyle: StorybookArgsToList = {
       }
     },
     isDemo: true
-  },
-  windowAttrs: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Additional attributes for the Window root container',
-        ru: 'Дополнительные атрибуты для корневого контейнера Window'
-      }
-    }
   },
   wrap: {
     type: StorybookControl.boolean,

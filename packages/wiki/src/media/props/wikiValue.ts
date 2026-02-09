@@ -43,6 +43,11 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Currency code for formatting monetary values',
         ru: 'Код валюты для форматирования денежных значений'
       }
+    },
+    isDemo: true,
+    demo: 'USD',
+    demoOptions: {
+      type: 'currency'
     }
   },
   currencyHide: {
@@ -53,6 +58,11 @@ export const wikiValue: StorybookArgsToList = {
         en: 'Hide the currency symbol in the formatted value',
         ru: 'Скрывать символ валюты в форматированном значении'
       }
+    },
+    isDemo: true,
+    demoOptions: {
+      currency: 'USD',
+      type: 'currency'
     }
   },
   detail: {
@@ -109,28 +119,6 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'URL or link destination',
         ru: 'URL или адрес ссылки'
-      }
-    }
-  },
-  language: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Language/locale code (BCP 47) used for formatting values (e.g., en-US, ru-RU)',
-        ru: 'Код языка/локали (BCP 47) для форматирования значений (например, ru-RU, en-US)'
-      }
-    }
-  },
-  name: {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'string',
-      description: {
-        en: 'Name attribute for the input field',
-        ru: 'Атрибут name для поля ввода'
       }
     }
   },

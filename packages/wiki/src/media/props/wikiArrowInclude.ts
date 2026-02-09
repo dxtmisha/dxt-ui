@@ -13,7 +13,7 @@ export const wikiArrowInclude: StorybookArgsToList = {
   arrowAttrs: {
     type: StorybookControl.object,
     options: {
-      category: StorybookCategory.arrow,
+      category: StorybookCategory.attributes,
       description: {
         en: 'Additional attributes for the Arrow component',
         ru: 'Дополнительные атрибуты для компонента Arrow'

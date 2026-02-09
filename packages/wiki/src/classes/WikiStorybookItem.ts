@@ -95,6 +95,8 @@ export class WikiStorybookItem {
         return 9000
       case StorybookCategory.option:
         return 9100
+      case StorybookCategory.attributes:
+        return 9700
       case StorybookCategory.text:
         return 9800
       case StorybookCategory.aria:

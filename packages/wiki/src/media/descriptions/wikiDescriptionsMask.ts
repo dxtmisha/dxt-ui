@@ -230,32 +230,44 @@ export const wikiDescriptionsMask: StorybookComponentsDescriptionItem = {
   },
   ai: {
     description: `
-**Note:** This component is already integrated into the \`Input\` component and should not be used directly.
+ **Note:** This component is already integrated into the \`Input\` component and should not be used directly.
 
-Mask is an advanced input component that enforces a specific format for user entry.
-It is used for structured data like phone numbers, dates, credit card numbers, and formatted currency.
+ Mask is a low-level utility component responsible for controlling and formatting user input. It ensures that the data entered matches a predefined structure (mask) or data type (date, number, currency).
 
-**When to use:**
-1. **Phone Numbers:** When the input must follow a specific country format (e.g., \`+1 (555) 000-0000\`).
-2. **Dates & Times:** When users need to enter dates in a specific order (DD.MM.YYYY) or times (HH:MM).
-3. **Currency & Numbers:** For financial inputs requiring thousands separators, decimal precision, or currency symbols.
-4. **Codes & IDs:** For license plates, social security numbers, or product codes with fixed structures.
+ **How it works:**
+ The component intercepts input events (\`beforeinput\`, \`input\`) and validates each character against allowed patterns (\`match\`). It automatically inserts static characters defined in the \`mask\` (like parentheses, dashes) and skips over them during navigation. For complex types like \`date\` or \`number\`, it uses internal logic to validate ranges (e.g., month 1-12) and format values (e.g., adding thousands separators).
 
-**Key Features:**
-- **Masking (\`mask\`):** Defines the structure using special characters (default \`*\`). Literals (like \`-\`, \`(\`, \`)\`) are automatically skipped.
-  - Example: \`mask="+1 (***) ***-****"\`
-- **Multiple Masks:** Can accept an array of masks to automatically switch formats based on input length.
-- **Types (\`type\`):** Built-in presets for common formats:
-  - \`currency\`: Formats money with separators and symbols.
-  - \`number\`: Formats numbers with thousands separators.
-  - \`date\`, \`time\`, \`datetime\`: Enforces valid date/time entry.
-- **Validation (\`pattern\`):** Allows regex validation for specific parts of the mask.
-- **Allowed Characters (\`match\`):** Restricts input to specific characters (e.g., only numbers \`[0-9]\` or hex \`[A-F0-9]\`).
+ **Key Properties & Usage:**
 
-**How to identify in a design:**
-- Look for inputs with placeholders showing specific formatting (e.g., \`DD.MM.YYYY\`).
-- Inputs that automatically format text as you type (adding spaces, dashes).
-- Numeric inputs with specific decimal places or currency symbols.
-    `
+ 1. **Masking (\`mask\`):**
+    - **String:** A single pattern (e.g., \`+1 (***) ***-****\`). The \`*\` character (or value of \`special\`) represents an input slot. All other characters are treated as static literals and are automatically inserted/skipped.
+    - **Array:** A list of patterns (e.g., \`['(***) ***-****', '+1 (***) ***-****']\`). The component automatically selects the most appropriate mask based on the input length.
+
+ 2. **Input Types (\`type\`):**
+    - \`text\` (default): Uses the \`mask\` pattern directly.
+    - \`number\`: Formats input as a number. Automatically adds thousands separators based on \`language\`.
+    - \`currency\`: Formats as currency. Requires \`currency\` prop (e.g., 'USD'). Uses \`fraction\` for decimal places.
+    - \`date\` / \`datetime\` / \`time\`: Enforces valid date/time entry. The format (e.g., DD.MM.YYYY vs MM/DD/YYYY) is determined by the \`language\` prop.
+
+ 3. **Validation & Constraints:**
+    - \`match\`: A Regular Expression string (e.g., \`[0-9a-fA-F]\`). Only characters matching this pattern are accepted. Useful for Hex codes, alphanumeric IDs, etc.
+    - \`pattern\`: A Regex for validating the *completed* value.
+    - \`min\`, \`max\`: For number/currency types, restricts the value range.
+
+ 4. **Customization:**
+    - \`special\`: Defines the placeholder character in the \`mask\`. Default is \`*\`. Change this if your mask needs to contain literal asterisks.
+    - \`language\`: Determines locale-specific formatting for dates and numbers (separators, date order).
+    - \`fraction\`: Specifies the number of decimal places for numbers/currency.
+
+ **When to use (Design Identification):**
+ - **Formatted Text:** Inputs that require specific formatting like Phone Numbers \`+1 (555) ...\`, Credit Cards \`0000 0000 ...\`, or License Plates.
+ - **Financial Data:** Inputs for amounts that need thousands separators or currency symbols.
+ - **Dates:** Inputs requiring strict date structure (DD.MM.YYYY).
+
+ **Example Scenarios:**
+ - **Phone:** \`<Mask mask="+1 (***) ***-****" match="[0-9]"/>\`
+ - **Price:** \`<Mask type="currency" currency="USD" fraction="2"/>\`
+ - **Date:** \`<Mask type="date" language="en-GB"/>\` (DD/MM/YYYY)
+     `
   }
 }

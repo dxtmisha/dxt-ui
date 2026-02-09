@@ -198,6 +198,17 @@ export const wikiForm: StorybookArgsToList = {
       }
     }
   },
+  name: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.form,
+      type: 'string',
+      description: {
+        en: 'Name attribute for the input field',
+        ru: 'Атрибут name для поля ввода'
+      }
+    }
+  },
   pattern: {
     type: StorybookControl.string,
     options: {

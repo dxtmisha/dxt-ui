@@ -24,7 +24,7 @@ export const wikiMaskInclude: StorybookArgsToList = {
   maskAttrs: {
     type: StorybookControl.object,
     options: {
-      category: StorybookCategory.mask,
+      category: StorybookCategory.attributes,
       description: {
         en: 'Additional attributes for the mask component',
         ru: 'Дополнительные атрибуты для компонента маски'

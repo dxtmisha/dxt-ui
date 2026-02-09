@@ -13,7 +13,7 @@ export const wikiBarsInclude: StorybookArgsToList = {
   barsAttrs: {
     type: StorybookControl.object,
     options: {
-      category: StorybookCategory.bars,
+      category: StorybookCategory.attributes,
       description: {
         en: 'Additional attributes for the bars (header toolbar) container',
         ru: 'Дополнительные атрибуты для контейнера бара (верхней панели)'
