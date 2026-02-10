@@ -70,5 +70,5 @@ export declare class FieldInclude<Props extends FieldPropsInclude & FieldArrowPr
      * @param event event object/ объект события
      * @param options data object/ объект с данными
      */
-    protected readonly onKeydown: (event: KeyboardEvent, options: EventClickValue) => void;
+    protected readonly onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void;
 }

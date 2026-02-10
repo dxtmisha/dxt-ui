@@ -1703,7 +1703,7 @@ class Tt {
         oncontextmenu: this.event.onContextmenu,
         ...w.control(
           this.classes.getControlId(),
-          this.classes.getId(),
+          this.open.inDom.value ? this.classes.getId() : void 0,
           this.props.ariaHaspopup,
           this.open.item.value
         )

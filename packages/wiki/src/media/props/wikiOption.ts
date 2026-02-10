@@ -21,6 +21,17 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  autosize: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+
+      description: {
+        en: 'Automatically adjusts the component size based on content',
+        ru: 'Автоматически подстраивает размер компонента под содержимое'
+      }
+    }
+  },
   axis: {
     type: StorybookControl.select,
     options: {

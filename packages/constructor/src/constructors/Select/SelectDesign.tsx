@@ -20,6 +20,7 @@ import {
   type SelectExpose,
   type SelectSlots
 } from './types'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * SelectDesign
@@ -205,7 +206,8 @@ export class SelectDesign<
           class: [
             props.classesWindow.controlOpenOnly,
             className
-          ]
+          ],
+          ...AriaStaticInclude.role('combobox')
         },
         isEdit ? undefined : menuControl
       )
@@ -233,7 +235,8 @@ export class SelectDesign<
           value: props.selectedList.value,
           multiple: this.props.multiple,
           placeholder: this.props.placeholder,
-          onClick: this.item.event.onSelect
+          onClick: this.item.event.onSelect,
+          ...AriaStaticInclude.role('combobox')
         }
       )
     ) as VNode

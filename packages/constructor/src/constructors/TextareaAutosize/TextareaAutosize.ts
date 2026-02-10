@@ -24,6 +24,8 @@ export class TextareaAutosize {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param TextareaAutosizeValueConstructor class for working with value/ класс для работы со значением
+   * @param TextareaAutosizeResizeConstructor class for working with resize/ класс для работы с изменением размера
    */
   constructor(
     protected readonly props: TextareaAutosizeProps,
@@ -33,9 +35,11 @@ export class TextareaAutosize {
     protected readonly className: string,
     protected readonly components?: DesignComp<TextareaAutosizeComponents, TextareaAutosizeProps>,
     protected readonly slots?: TextareaAutosizeSlots,
-    protected readonly emits?: ConstrEmit<TextareaAutosizeEmits>
+    protected readonly emits?: ConstrEmit<TextareaAutosizeEmits>,
+    TextareaAutosizeValueConstructor: typeof TextareaAutosizeValue = TextareaAutosizeValue,
+    TextareaAutosizeResizeConstructor: typeof TextareaAutosizeResize = TextareaAutosizeResize
   ) {
-    this.value = new TextareaAutosizeValue(props, refs, emits)
-    this.resize = new TextareaAutosizeResize(props, element, this.value)
+    this.value = new TextareaAutosizeValueConstructor(props, refs, emits)
+    this.resize = new TextareaAutosizeResizeConstructor(props, element, this.value)
   }
 }

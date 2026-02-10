@@ -42,11 +42,13 @@ export class TextareaAutosizeDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, TextareaAutosizeEmits, P>
+    options?: ConstrOptions<COMP, TextareaAutosizeEmits, P>,
+    ItemConstructor: typeof TextareaAutosize = TextareaAutosize
   ) {
     super(
       name,
@@ -54,7 +56,7 @@ export class TextareaAutosizeDesign<
       options
     )
 
-    this.item = new TextareaAutosize(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

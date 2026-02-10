@@ -2,7 +2,7 @@ var f = Object.defineProperty;
 var w = (n, i, s) => i in n ? f(n, i, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[i] = s;
 var a = (n, i, s) => w(n, typeof i != "symbol" ? i + "" : i, s);
 import { computed as g } from "vue";
-import { toBinds as b, getRef as v, toBind as x, eventStopPropagation as p, isEnter as T } from "@dxtmisha/functional";
+import { toBinds as b, getRef as v, toBind as x, eventStopPropagation as l, isEnter as T } from "@dxtmisha/functional";
 class y {
   /**
    * Constructor
@@ -18,10 +18,10 @@ class y {
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(i, s, e, o, r, t, l, h, c, d, u) {
+  constructor(i, s, e, r, o, t, p, h, c, d, u) {
     /** Returns properties for the field framework/ Возвращает свойства для каркаса поля */
     a(this, "binds", g(() => {
-      var i, s, e, o, r, t;
+      var i, s, e, r, o, t;
       return b(
         {
           // Status
@@ -54,8 +54,8 @@ class y {
           iconAttrs: this.props.iconAttrs,
           align: this.props.align,
           arrowCarousel: (s = (i = this.arrow) == null ? void 0 : i.isCarousel()) != null ? s : this.props.arrow === "carousel",
-          arrowStepper: (o = (e = this.arrow) == null ? void 0 : e.isStepper()) != null ? o : this.props.arrow === "stepper",
-          arrowAlign: (t = (r = this.arrow) == null ? void 0 : r.align()) != null ? t : this.props.arrowAlign,
+          arrowStepper: (r = (e = this.arrow) == null ? void 0 : e.isStepper()) != null ? r : this.props.arrow === "stepper",
+          arrowAlign: (t = (o = this.arrow) == null ? void 0 : o.align()) != null ? t : this.props.arrowAlign,
           isSkeleton: this.props.isSkeleton,
           fieldLabelAttrs: this.props.fieldLabelAttrs,
           fieldMessageAttrs: this.props.fieldMessageAttrs,
@@ -107,23 +107,23 @@ class y {
      * @param type type of the object that was clicked/ тип объекта, который был нажат
      */
     a(this, "on", (i, { type: s }) => {
-      var e, o, r, t, l, h, c, d, u;
+      var e, r, o, t, p, h, c, d, u;
       if (i.target.closest('[data-element="scoreboard"]'))
         switch (s) {
           case "icon":
-            (e = this.onIcon) == null || e.call(this), p(i);
+            (e = this.onIcon) == null || e.call(this), l(i);
             break;
           case "icon-trailing":
-            (o = this.onTrailing) == null || o.call(this), p(i);
+            (r = this.onTrailing) == null || r.call(this), l(i);
             break;
           case "cancel":
-            (r = this.event) == null || r.onClear(i), p(i);
+            (o = this.event) == null || o.onClear(i), l(i);
             break;
           case "next":
-            (t = this.onNext) == null || t.call(this), (l = this.arrow) == null || l.next(), (h = this.event) == null || h.on(i), p(i);
+            (t = this.onNext) == null || t.call(this), (p = this.arrow) == null || p.next(), (h = this.event) == null || h.on(i), l(i);
             break;
           case "previous":
-            (c = this.onPrevious) == null || c.call(this), (d = this.arrow) == null || d.previous(), (u = this.event) == null || u.on(i), p(i);
+            (c = this.onPrevious) == null || c.call(this), (d = this.arrow) == null || d.previous(), (u = this.event) == null || u.on(i), l(i);
             break;
         }
     });
@@ -135,9 +135,9 @@ class y {
      * @param options data object/ объект с данными
      */
     a(this, "onKeydown", (i, s) => {
-      T(i) && (this.on(i, s), i.preventDefault());
+      T(i) && (this.on(i, s != null ? s : {}), i.preventDefault());
     });
-    this.props = i, this.value = s, this.components = e, this.event = o, this.arrow = r, this.onIcon = t, this.onTrailing = l, this.onNext = h, this.onPrevious = c, this.extra = d, this.index = u;
+    this.props = i, this.value = s, this.components = e, this.event = r, this.arrow = o, this.onIcon = t, this.onTrailing = p, this.onNext = h, this.onPrevious = c, this.extra = d, this.index = u;
   }
 }
 export {

@@ -1,12 +1,13 @@
-var M = Object.defineProperty;
-var E = (l, i, t) => i in l ? M(l, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : l[i] = t;
+var A = Object.defineProperty;
+var E = (l, i, t) => i in l ? A(l, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : l[i] = t;
 var s = (l, i, t) => E(l, typeof i != "symbol" ? i + "" : i, t);
 import { computed as r, ref as V, h as p } from "vue";
-import { toBinds as a, executeFunction as A, isFilled as T, DesignConstructorAbstract as y } from "@dxtmisha/functional";
-import { F as k, a as B, c as D, f as N, b as L, e as O, d as q } from "./FieldEventInclude-DBRqmzpF.js";
-import { F as W } from "./FieldInclude-Rec9lh44.js";
-import { M as K } from "./MenuInclude-DfGCfr_I.js";
-class R {
+import { toBinds as a, executeFunction as T, isFilled as y, DesignConstructorAbstract as k } from "@dxtmisha/functional";
+import { F as B, a as D, c as N, f as L, b as O, e as q, d as W } from "./FieldEventInclude-DBRqmzpF.js";
+import { F as K } from "./FieldInclude-BKoBWZdj.js";
+import { M as R } from "./MenuInclude-DfGCfr_I.js";
+import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
+class U {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -49,7 +50,7 @@ class R {
     this.props = i, this.attributes = t, this.value = e, this.event = n;
   }
 }
-class U {
+class j {
   constructor() {
     /** Reactive filter value/ Реактивное значение фильтра */
     s(this, "value", V(""));
@@ -82,7 +83,7 @@ class U {
     this.value.value = i;
   }
 }
-class j {
+class z {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -105,7 +106,7 @@ class j {
    * @param SelectInputConstructor class for working with select input/ класс для работы с вводом выбора
    * @param SelectFilterConstructor class for working with select filter/ класс для работы с фильтром выбора
    */
-  constructor(i, t, e, n, h, u, c, d, m = k, v = B, g = D, f = N, w = L, b = O, I = q, S = W, x = K, C = R, F = U) {
+  constructor(i, t, e, n, h, u, d, m, v = B, g = D, f = N, b = L, w = O, I = q, S = W, x = K, C = R, F = U, M = j) {
     s(this, "attributes");
     s(this, "elementItem");
     s(this, "change");
@@ -132,26 +133,26 @@ class j {
     s(this, "onClick", (i) => {
       i && this.value.set(i);
     });
-    this.props = i, this.refs = t, this.element = e, this.classDesign = n, this.className = h, this.components = u, this.slots = c, this.emits = d, this.attributes = new m(this.props), this.change = new v(this.props), this.elementItem = new g(
+    this.props = i, this.refs = t, this.element = e, this.classDesign = n, this.className = h, this.components = u, this.slots = d, this.emits = m, this.attributes = new v(this.props), this.change = new g(this.props), this.elementItem = new f(
       this.props,
       this.element
-    ), this.value = new f(
+    ), this.value = new b(
       this.props,
       this.refs,
       this.elementItem
-    ), this.code = new w(this.props), this.validation = new b(
+    ), this.code = new w(this.props), this.validation = new I(
       this.props,
       this.attributes,
       this.value,
       this.change,
       this.code
-    ), this.event = new I(
+    ), this.event = new S(
       this.props,
       this.change,
       this.value,
       this.validation,
       this.emits
-    ), this.field = new S(
+    ), this.field = new x(
       this.props,
       this.value,
       this.components,
@@ -178,13 +179,13 @@ class j {
           cancel: (o = this.props.cancel) != null ? o : this.props.multiple ? "auto" : "none"
         };
       })
-    ), this.menu = new x(
+    ), this.menu = new C(
       this.props,
       this.className,
       this.components,
       r(() => ({
         windowAttrs: {
-          hide: !T(this.props.option) && !this.isSlot.value,
+          hide: !y(this.props.option) && !this.isSlot.value,
           widthMatch: !0
         },
         tag: "span",
@@ -192,7 +193,7 @@ class j {
         barsDescription: this.props.helperMessage,
         disabled: this.props.disabled || this.props.readonly,
         autoClose: !this.props.multiple,
-        list: A(this.props.option),
+        list: T(this.props.option),
         max: this.props.max,
         filterMode: this.props.filterMode,
         hideList: this.props.hideList,
@@ -202,7 +203,7 @@ class j {
         isSelectedByValue: !0,
         ariaMultiselectable: this.props.multiple
       }))
-    ), this.input = new C(this.props, this.attributes, this.value, this.event), this.filter = new F();
+    ), this.input = new F(this.props, this.attributes, this.value, this.event), this.filter = new M();
   }
   /**
    * Checks whether arrow is set.
@@ -213,8 +214,8 @@ class j {
     return !!this.props.arrow && this.props.arrow !== "none";
   }
 }
-const X = {};
-class Y extends y {
+const Z = {};
+class _ extends k {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -222,7 +223,7 @@ class Y extends y {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, e, n, h = j) {
+  constructor(t, e, n, h = z) {
     super(
       t,
       e,
@@ -282,7 +283,8 @@ class Y extends y {
             class: [
               e.classesWindow.controlOpenOnly,
               h
-            ]
+            ],
+            ...c.role("combobox")
           },
           n ? void 0 : u
         )
@@ -305,7 +307,8 @@ class Y extends y {
           value: e.selectedList.value,
           multiple: this.props.multiple,
           placeholder: this.props.placeholder,
-          onClick: this.item.event.onSelect
+          onClick: this.item.event.onSelect,
+          ...c.role("combobox")
         }
       )
     ));
@@ -415,7 +418,7 @@ class Y extends y {
   }
 }
 export {
-  j as Select,
-  Y as SelectDesign,
-  X as defaultsSelect
+  z as Select,
+  _ as SelectDesign,
+  Z as defaultsSelect
 };

@@ -211,10 +211,10 @@ export class FieldInclude<
    */
   protected readonly onKeydown = (
     event: KeyboardEvent,
-    options: EventClickValue
+    options?: EventClickValue
   ) => {
     if (isEnter(event)) {
-      this.on(event as unknown as MouseEvent, options)
+      this.on(event as unknown as MouseEvent, options ?? {} as EventClickValue)
       event.preventDefault()
     }
   }

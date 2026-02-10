@@ -275,7 +275,7 @@ export class Window {
       oncontextmenu: this.event.onContextmenu,
       ...AriaStaticInclude.control(
         this.classes.getControlId(),
-        this.classes.getId(),
+        this.open.inDom.value ? this.classes.getId() : undefined,
         this.props.ariaHaspopup,
         this.open.item.value
       )

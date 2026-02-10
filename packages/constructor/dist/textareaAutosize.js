@@ -1,9 +1,9 @@
-var c = Object.defineProperty;
-var d = (i, e, t) => e in i ? c(i, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[e] = t;
-var s = (i, e, t) => d(i, typeof e != "symbol" ? e + "" : e, t);
-import { DesignConstructorAbstract as g } from "@dxtmisha/functional";
-import { watch as l, ref as u, nextTick as f, h as r } from "vue";
-class v {
+var g = Object.defineProperty;
+var f = (i, e, t) => e in i ? g(i, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[e] = t;
+var s = (i, e, t) => f(i, typeof e != "symbol" ? e + "" : e, t);
+import { DesignConstructorAbstract as v } from "@dxtmisha/functional";
+import { watch as u, ref as o, nextTick as z, h as l } from "vue";
+class x {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -11,8 +11,8 @@ class v {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(e, t, n) {
-    s(this, "item", u(""));
-    this.props = e, this.refs = t, this.emits = n, l(
+    s(this, "item", o(""));
+    this.props = e, this.refs = t, this.emits = n, u(
       [t.value],
       () => this.set(e.value),
       { immediate: !0 }
@@ -47,7 +47,7 @@ class v {
     return this.item.value !== e;
   }
 }
-class z {
+class T {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -55,7 +55,7 @@ class z {
    * @param value object for working with values/ объект для работы со значениями
    */
   constructor(e, t, n) {
-    s(this, "clone", u());
+    s(this, "clone", o());
     /**
      * Changes the size of the field.
      *
@@ -92,7 +92,7 @@ class z {
     s(this, "updateHeight", () => {
       this.isElements() && (this.element.value.style.height = `${this.clone.value.offsetHeight}px`);
     });
-    this.props = e, this.element = t, this.value = n, l(this.value.item, this.on), f().then(() => requestAnimationFrame(this.on));
+    this.props = e, this.element = t, this.value = n, u(this.value.item, this.on), z().then(() => requestAnimationFrame(this.on));
   }
   /**
    * Checks if all elements are present.
@@ -111,7 +111,7 @@ class z {
     this.isElements() && (this.clone.value.innerText = `${this.value.item.value} --`, requestAnimationFrame(this.updateHeight));
   }
 }
-class x {
+class A {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -122,24 +122,27 @@ class x {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param TextareaAutosizeValueConstructor class for working with value/ класс для работы со значением
+   * @param TextareaAutosizeResizeConstructor class for working with resize/ класс для работы с изменением размера
    */
-  constructor(e, t, n, a, o, m, p, h) {
+  constructor(e, t, n, a, h, m, p, r, c = x, d = T) {
     s(this, "value");
     s(this, "resize");
-    this.props = e, this.refs = t, this.element = n, this.classDesign = a, this.className = o, this.components = m, this.slots = p, this.emits = h, this.value = new v(e, t, h), this.resize = new z(e, n, this.value);
+    this.props = e, this.refs = t, this.element = n, this.classDesign = a, this.className = h, this.components = m, this.slots = p, this.emits = r, this.value = new c(e, t, r), this.resize = new d(e, n, this.value);
   }
 }
-const C = {
+const D = {
   autosize: !0
 };
-class S extends g {
+class E extends v {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, n, a) {
+  constructor(t, n, a, h = A) {
     super(
       t,
       n,
@@ -153,7 +156,7 @@ class S extends g {
      */
     s(this, "renderTextarea", () => {
       var t;
-      return r("textarea", {
+      return l("textarea", {
         ...this.getAttrs(),
         ...this.props.inputAttrs,
         ref: this.element,
@@ -170,12 +173,12 @@ class S extends g {
      */
     s(this, "renderClone", () => {
       var t;
-      return r("div", {
+      return l("div", {
         ref: this.item.resize.clone,
         class: (t = this.classes) == null ? void 0 : t.value.clone
       });
     });
-    this.item = new x(
+    this.item = new h(
       this.props,
       this.refs,
       this.element,
@@ -229,7 +232,7 @@ class S extends g {
   }
 }
 export {
-  x as TextareaAutosize,
-  S as TextareaAutosizeDesign,
-  C as defaultsTextareaAutosize
+  A as TextareaAutosize,
+  E as TextareaAutosizeDesign,
+  D as defaultsTextareaAutosize
 };
