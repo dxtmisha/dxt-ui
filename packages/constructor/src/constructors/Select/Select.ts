@@ -50,6 +50,17 @@ export class Select {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param FieldAttributesIncludeConstructor class for working with field attributes/ класс для работы с атрибутами поля
+   * @param FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
+   * @param FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
+   * @param FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
+   * @param FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
+   * @param FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
+   * @param FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
+   * @param FieldIncludeConstructor class for working with field/ класс для работы с полем
+   * @param MenuIncludeConstructor class for working with menu/ класс для работы с меню
+   * @param SelectInputConstructor class for working with select input/ класс для работы с вводом выбора
+   * @param SelectFilterConstructor class for working with select filter/ класс для работы с фильтром выбора
    */
   constructor(
     protected readonly props: SelectProps,
@@ -59,31 +70,42 @@ export class Select {
     protected readonly className: string,
     protected readonly components?: DesignComp<SelectComponents, SelectProps>,
     protected readonly slots?: SelectSlots,
-    protected readonly emits?: ConstrEmit<SelectEmits>
+    protected readonly emits?: ConstrEmit<SelectEmits>,
+    FieldAttributesIncludeConstructor: typeof FieldAttributesInclude = FieldAttributesInclude,
+    FieldChangeIncludeConstructor: typeof FieldChangeInclude = FieldChangeInclude,
+    FieldElementIncludeConstructor: typeof FieldElementInclude = FieldElementInclude,
+    FieldValueIncludeConstructor: typeof FieldValueInclude = FieldValueInclude,
+    FieldCodeIncludeConstructor: typeof FieldCodeInclude = FieldCodeInclude,
+    FieldValidationIncludeConstructor: typeof FieldValidationInclude = FieldValidationInclude,
+    FieldEventIncludeConstructor: typeof FieldEventInclude = FieldEventInclude,
+    FieldIncludeConstructor: typeof FieldInclude = FieldInclude,
+    MenuIncludeConstructor: typeof MenuInclude = MenuInclude,
+    SelectInputConstructor: typeof SelectInput = SelectInput,
+    SelectFilterConstructor: typeof SelectFilter = SelectFilter
   ) {
-    this.attributes = new FieldAttributesInclude(this.props)
+    this.attributes = new FieldAttributesIncludeConstructor(this.props)
 
-    this.change = new FieldChangeInclude(this.props)
-    this.elementItem = new FieldElementInclude(
+    this.change = new FieldChangeIncludeConstructor(this.props)
+    this.elementItem = new FieldElementIncludeConstructor(
       this.props,
       this.element
     )
 
-    this.value = new FieldValueInclude(
+    this.value = new FieldValueIncludeConstructor(
       this.props,
       this.refs,
       this.elementItem
     )
 
-    this.code = new FieldCodeInclude(this.props)
-    this.validation = new FieldValidationInclude(
+    this.code = new FieldCodeIncludeConstructor(this.props)
+    this.validation = new FieldValidationIncludeConstructor(
       this.props,
       this.attributes,
       this.value,
       this.change,
       this.code
     )
-    this.event = new FieldEventInclude(
+    this.event = new FieldEventIncludeConstructor(
       this.props,
       this.change,
       this.value,
@@ -91,7 +113,7 @@ export class Select {
       this.emits
     )
 
-    this.field = new FieldInclude(
+    this.field = new FieldIncludeConstructor(
       this.props,
       this.value,
       this.components,
@@ -107,24 +129,24 @@ export class Select {
         cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
       }))
     )
-    this.menu = new MenuInclude(
+    this.menu = new MenuIncludeConstructor(
       this.props,
       this.className,
       this.components,
       computed(() => ({
         windowAttrs: {
-          hide: !isFilled(props.option) && !this.isSlot.value,
+          hide: !isFilled(this.props.option) && !this.isSlot.value,
           widthMatch: true
         },
         tag: 'span',
-        barsLabel: props.label,
-        barsDescription: props.helperMessage,
-        disabled: props.disabled || props.readonly,
-        autoClose: !props.multiple,
-        list: executeFunction(props.option),
+        barsLabel: this.props.label,
+        barsDescription: this.props.helperMessage,
+        disabled: this.props.disabled || this.props.readonly,
+        autoClose: !this.props.multiple,
+        list: executeFunction(this.props.option),
         max: this.props.max,
         filterMode: this.props.filterMode,
-        hideList: props.hideList,
+        hideList: this.props.hideList,
         onClick: this.event.onSelect,
         onClickSlot: this.onClick,
         onUpdateValue: this.isArrow() ? this.event.onValue : undefined,
@@ -132,9 +154,9 @@ export class Select {
         ariaMultiselectable: this.props.multiple
       }))
     )
-    this.input = new SelectInput(this.props, this.attributes, this.value, this.event)
+    this.input = new SelectInputConstructor(this.props, this.attributes, this.value, this.event)
 
-    this.filter = new SelectFilter()
+    this.filter = new SelectFilterConstructor()
   }
 
   /** Checks whether there are slots for context areas/ Проверяет, есть ли слоты для контекстных областей */

@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui input",
+    "dxt-ui": "dxt-ui select",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -186,6 +186,14 @@
     "./D1Input": {
       "types": "./dist/D1Input.d.ts",
       "default": "./dist/D1Input.js"
+    },
+    "./D1SelectValue": {
+      "types": "./dist/D1SelectValue.d.ts",
+      "default": "./dist/D1SelectValue.js"
+    },
+    "./D1Select": {
+      "types": "./dist/D1Select.d.ts",
+      "default": "./dist/D1Select.js"
     }
   },
   "buildOptions": {

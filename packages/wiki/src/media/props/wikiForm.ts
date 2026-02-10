@@ -196,7 +196,8 @@ export const wikiForm: StorybookArgsToList = {
         en: 'Enables multiple selection mode',
         ru: 'Включает режим множественного выбора'
       }
-    }
+    },
+    isDemo: true
   },
   name: {
     type: StorybookControl.string,

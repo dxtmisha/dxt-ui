@@ -1,18 +1,18 @@
 var w = Object.defineProperty;
 var S = (h, t, e) => t in h ? w(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
 var i = (h, t, e) => S(h, typeof t != "symbol" ? t + "" : t, e);
-import { ref as p, computed as l, watch as B, onUnmounted as E, toRef as M, onMounted as A, nextTick as L, h as o } from "vue";
-import { isFilled as C, goScroll as D, isSelected as F, isDomRuntime as m, EventItem as G, ListDataRef as T, toBinds as u, DesignConstructorAbstract as P, isObject as O } from "@dxtmisha/functional";
+import { ref as m, computed as l, watch as B, onUnmounted as E, toRef as M, onMounted as A, nextTick as L, h as o } from "vue";
+import { isFilled as C, goScroll as D, isSelected as F, isDomRuntime as p, EventItem as G, ListDataRef as T, toBinds as u, DesignConstructorAbstract as P, isObject as O } from "@dxtmisha/functional";
 import { E as N } from "./EventClickInclude-CgbuezDm.js";
-import { W as H } from "./WindowClassesInclude-B56usxgx.js";
 import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
+import { W as H } from "./WindowClassesInclude-B56usxgx.js";
 class R {
   /**
    * Constructor
    * @param props input data/ входные данные
    */
   constructor(t) {
-    i(this, "item", p());
+    i(this, "item", m());
     i(this, "timeout");
     /** Current search string/ Текущая строка поиска */
     i(this, "highlight", l(() => {
@@ -89,7 +89,7 @@ class V {
    */
   constructor(t, e, s) {
     /** Active item/ Активный элемент */
-    i(this, "item", p());
+    i(this, "item", m());
     /** Returns the value of the selected element/ Возвращает значение выбранного элемента */
     i(this, "focus", l(() => {
       var t, e;
@@ -506,7 +506,7 @@ class U {
    */
   getActiveElement() {
     var t;
-    if (m()) {
+    if (p()) {
       const e = document.activeElement;
       if (e && ((t = e.dataset) == null ? void 0 : t.menuControl) === "1")
         return e;
@@ -518,7 +518,7 @@ class U {
    * Запускает событие.
    */
   start() {
-    m() && (this.event || (this.event = new G(
+    p() && (this.event || (this.event = new G(
       document.body,
       ["keydown", "keypress"],
       this.on
@@ -689,7 +689,8 @@ class X {
       {
         ...t,
         ...e,
-        filterMode: !1
+        filterMode: !1,
+        ...c.haspopup("listbox")
       },
       e.open,
       this.props.iconArrowDown

@@ -11,10 +11,10 @@ import { ListGroupSlotsPropsInclude } from '../ListGroup';
 import { ListComponents, ListEmits, ListSlots } from './types';
 import { ListProps } from './props';
 import { NumberOrString, ItemList } from '@dxtmisha/functional-basic';
-import { BadgePropsBasic } from '../Badge';
-import { ProgressPropsBasic } from '../Progress';
+import { BadgePropsBasic } from '../Badge/props.ts';
+import { ProgressPropsBasic } from '../Progress/props.ts';
 import { RouteLocationRaw } from 'vue-router';
-import { EventClickValue, RoleType } from '../../library';
+import { EventClickValue, RoleType } from '../../library.ts';
 /**
  * List
  */

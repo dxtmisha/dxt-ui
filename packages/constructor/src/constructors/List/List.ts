@@ -23,6 +23,7 @@ import type { IconValue } from '../Icon'
 import type { ListGroupSlotsPropsInclude } from '../ListGroup'
 import type { ListComponents, ListEmits, ListSlots } from './types'
 import type { ListProps } from './props'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /** Maximum number of lists/ Максимальное количество списков */
 let listIdMax = 1
@@ -235,7 +236,8 @@ export class List {
       {
         ...item,
         ...props,
-        filterMode: false
+        filterMode: false,
+        ...AriaStaticInclude.haspopup('listbox')
       },
       props.open,
       this.props.iconArrowDown

@@ -10,6 +10,27 @@ import {
  * Объект wikiSelect содержит свойства для компонента Select
  */
 export const wikiSelect: StorybookArgsToList = {
+  'select.editValue': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.form,
+      description: {
+        en: 'Allows editing the selected value directly inside the input when not in multiple mode',
+        ru: 'Позволяет редактировать выбранное значение прямо в input при одиночном выборе'
+      }
+    }
+  },
+  'select.inputSearchAttrs': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      type: ['object', 'function'],
+      description: {
+        en: 'Additional bindings or attributes for the search input inside the dropdown',
+        ru: 'Дополнительные привязки или атрибуты для поля поиска внутри выпадающего меню'
+      }
+    }
+  },
   'select.option': {
     type: StorybookControl.object,
     options: {
@@ -34,34 +55,13 @@ export const wikiSelect: StorybookArgsToList = {
       ]
     }
   },
-  'select.editValue': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.form,
-      description: {
-        en: 'Allows editing the selected value directly inside the input when not in multiple mode',
-        ru: 'Позволяет редактировать выбранное значение прямо в input при одиночном выборе'
-      }
-    }
-  },
   'select.showSearch': {
     type: StorybookControl.boolean,
     options: {
-      category: StorybookCategory.style,
+      category: StorybookCategory.option,
       description: {
         en: 'Shows a search/filter field inside the dropdown menu',
         ru: 'Отображает поле поиска/фильтра внутри выпадающего меню'
-      }
-    }
-  },
-  'select.inputSearchAttrs': {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.style,
-      type: ['object', 'function'],
-      description: {
-        en: 'Additional bindings or attributes for the search input inside the dropdown',
-        ru: 'Дополнительные привязки или атрибуты для поля поиска внутри выпадающего меню'
       }
     }
   }
