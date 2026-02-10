@@ -1,10 +1,10 @@
 var u = Object.defineProperty;
-var p = (n, t, e) => t in n ? u(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var h = (n, t, e) => p(n, typeof t != "symbol" ? t + "" : t, e);
-import { watch as b, onUnmounted as f, computed as g, h as S } from "vue";
-import { EventItem as r, ScrollbarWidthRef as w, DesignConstructorAbstract as B } from "@dxtmisha/functional";
-const a = 8;
-class T {
+var b = (l, t, e) => t in l ? u(l, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : l[t] = e;
+var h = (l, t, e) => b(l, typeof t != "symbol" ? t + "" : t, e);
+import { watch as f, onUnmounted as g, computed as S, h as w } from "vue";
+import { EventItem as a, ScrollbarWidthRef as B, DesignConstructorAbstract as T } from "@dxtmisha/functional";
+const m = 8;
+class D {
   /**
    * Constructor for ScrollbarBorder class.
    *
@@ -60,17 +60,17 @@ class T {
     h(this, "on", () => {
       const t = this.element.value;
       t && this.setData(
-        t.scrollTop > a,
-        t.scrollTop < t.scrollHeight - t.clientHeight - a
+        t.scrollTop > m,
+        t.scrollTop < t.scrollHeight - t.clientHeight - m
       );
     });
-    this.props = t, this.element = s, this.className = i, this.emits = o, b([
+    this.props = t, this.element = s, this.className = i, this.emits = o, f([
       this.element,
       e.divider,
       e.dividerTop,
       e.dividerBottom,
       e.inverse
-    ], this.reset, { immediate: !0 }), f(() => this.stop());
+    ], this.reset, { immediate: !0 }), g(() => this.stop());
   }
   /**
    * Start monitoring the scroll.
@@ -79,7 +79,7 @@ class T {
    */
   start() {
     var t, e;
-    this.event ? this.event.start() : this.event = new r(this.element.value, ["scroll-sync"], this.on).start(), this.eventSub ? this.eventSub.start() : (e = (t = this.element.value) == null ? void 0 : t.children) != null && e[0] && (this.eventSub = new r(this.element.value.children[0], ["resize"], this.on).start()), this.on();
+    this.event ? this.event.start() : this.event = new a(this.element.value, ["scroll-sync"], this.on).start(), this.eventSub ? this.eventSub.start() : (e = (t = this.element.value) == null ? void 0 : t.children) != null && e[0] && (this.eventSub = new a(this.element.value.children[0], ["resize"], this.on).start()), this.on();
   }
   /**
    * Stopping the monitoring of scroll changes.
@@ -120,7 +120,7 @@ class T {
     return this.bottom !== t && (this.bottom = t, (e = this.emits) == null || e.call(this, "bottom", t), (s = this.emits) == null || s.call(this, "edge", this.top, t, "bottom"), t ? (i = this.emits) == null || i.call(this, "reachBottom") : (o = this.emits) == null || o.call(this, "leaveBottom")), this;
   }
 }
-class D {
+class C {
   /**
    * Constructor for Scrollbar class.
    *
@@ -133,10 +133,11 @@ class D {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param ScrollbarWidthRefConstructor class for working with scrollbar width/ класс для работы с шириной скролла
-   * @param ScrollbarBorderConstructor class for working with scrollbar border/ класс для работы с границей скролла
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ScrollbarBorderConstructor class for working with scrollbar border/ класс для работы с границей скролла
+   * @param constructors.ScrollbarWidthRefConstructor class for working with scrollbar width/ класс для работы с шириной скролла
    */
-  constructor(t, e, s, i, o, m, d, l, c = w, v = T) {
+  constructor(t, e, s, i, o, d, v, r, n) {
     h(this, "width");
     h(this, "border");
     /**
@@ -144,22 +145,27 @@ class D {
      *
      * Возвращает значения для класса.
      */
-    h(this, "classes", g(() => ({
+    h(this, "classes", S(() => ({
       [`${this.className}--disabled`]: !!this.width.item.value
     })));
-    this.props = t, this.refs = e, this.element = s, this.classDesign = i, this.className = o, this.components = m, this.slots = d, this.emits = l, this.width = new c(), this.border = new v(
+    this.props = t, this.refs = e, this.element = s, this.classDesign = i, this.className = o, this.components = d, this.slots = v, this.emits = r;
+    const {
+      ScrollbarBorderConstructor: c = D,
+      ScrollbarWidthRefConstructor: p = B
+    } = n != null ? n : {};
+    this.width = new p(), this.border = new c(
       t,
       e,
       s,
       o,
-      l
+      r
     );
   }
 }
-const R = {
+const L = {
   tag: "div"
 };
-class x extends B {
+class x extends T {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -167,7 +173,7 @@ class x extends B {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(e, s, i, o = D) {
+  constructor(e, s, i, o = C) {
     super(
       e,
       s,
@@ -220,7 +226,7 @@ class x extends B {
     var s, i;
     const e = [this.initSlot("default")];
     if (this.item.width.is.value)
-      return S(
+      return w(
         (s = this.props.tag) != null ? s : "div",
         {
           ...this.getAttrs(),
@@ -232,7 +238,7 @@ class x extends B {
   }
 }
 export {
-  D as Scrollbar,
+  C as Scrollbar,
   x as ScrollbarDesign,
-  R as defaultsScrollbar
+  L as defaultsScrollbar
 };

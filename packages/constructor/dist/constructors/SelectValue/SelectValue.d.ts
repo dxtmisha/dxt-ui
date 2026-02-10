@@ -32,11 +32,16 @@ export declare class SelectValue {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
-     * @param EventConstructor class for creating an event/ класс для создания события
-     * @param WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
+     * @param constructors.EventConstructor class for creating an event/ класс для создания события
+     * @param constructors.WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
      */
-    constructor(props: SelectValueProps, refs: ToRefs<SelectValueProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<SelectValueComponents, SelectValueProps> | undefined, slots?: SelectValueSlots | undefined, emits?: ConstrEmit<SelectValueEmits> | undefined, EnabledConstructor?: typeof EnabledInclude, EventConstructor?: typeof EventClickInclude, WindowClassesConstructor?: typeof WindowClassesInclude);
+    constructor(props: SelectValueProps, refs: ToRefs<SelectValueProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<SelectValueComponents, SelectValueProps> | undefined, slots?: SelectValueSlots | undefined, emits?: ConstrEmit<SelectValueEmits> | undefined, constructors?: {
+        EnabledConstructor?: typeof EnabledInclude;
+        EventConstructor?: typeof EventClickInclude;
+        WindowClassesConstructor?: typeof WindowClassesInclude;
+    });
     /** Is placeholder/ Является ли плейсхолдером */
     readonly isPlaceholder: ComputedRef<boolean>;
     /** Icon for canceling selection/ Иконка для отмены выбора */

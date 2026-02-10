@@ -26,9 +26,12 @@ export declare class Actions {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param EventConstructor class for creating an event/ класс для создания события
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.EventConstructor class for creating an event/ класс для создания события
      */
-    constructor(props: ActionsProps, refs: ToRefs<ActionsProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ActionsComponents, ActionsProps> | undefined, slots?: ActionsSlots | undefined, emits?: ConstrEmit<ActionsEmits> | undefined, EventConstructor?: typeof EventClickInclude);
+    constructor(props: ActionsProps, refs: ToRefs<ActionsProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ActionsComponents, ActionsProps> | undefined, slots?: ActionsSlots | undefined, emits?: ConstrEmit<ActionsEmits> | undefined, constructors?: {
+        EventConstructor?: typeof EventClickInclude;
+    });
     /**
      * Checks if the main list needs to be displayed/
      * Проверяет, нужно ли выводить главный список

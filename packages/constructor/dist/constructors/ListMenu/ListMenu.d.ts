@@ -28,8 +28,12 @@ export declare class ListMenu {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
-     * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
+     * @param constructors.WindowIncludeConstructor class for working with window/ класс для работы с окном
      */
-    constructor(props: ListMenuProps, refs: ToRefs<ListMenuProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ListMenuComponents, ListMenuProps> | undefined, slots?: ListMenuSlots | undefined, emits?: ConstrEmit<ListMenuEmits> | undefined, ListGroupOpenConstructor?: typeof ListGroupOpen, WindowIncludeConstructor?: typeof WindowInclude);
+    constructor(props: ListMenuProps, refs: ToRefs<ListMenuProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ListMenuComponents, ListMenuProps> | undefined, slots?: ListMenuSlots | undefined, emits?: ConstrEmit<ListMenuEmits> | undefined, constructors?: {
+        ListGroupOpenConstructor?: typeof ListGroupOpen;
+        WindowIncludeConstructor?: typeof WindowInclude;
+    });
 }

@@ -1,11 +1,11 @@
 var I = Object.defineProperty;
-var A = (n, t, e) => t in n ? I(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var s = (n, t, e) => A(n, typeof t != "symbol" ? t + "" : t, e);
-import { ref as u, watch as c, computed as l, onMounted as B, nextTick as f, onUnmounted as S, h as d } from "vue";
-import { isFilled as w, isDomRuntime as p, isString as N, toNumber as E, EventRef as v, EventItem as P, DesignConstructorAbstract as C } from "@dxtmisha/functional";
-import { A as k } from "./AriaStaticInclude-CAURwJMb.js";
-import { A as Y } from "./ArrowInclude-CcpT637l.js";
-class H {
+var B = (n, t, e) => t in n ? I(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
+var s = (n, t, e) => B(n, typeof t != "symbol" ? t + "" : t, e);
+import { ref as u, watch as c, computed as l, onMounted as S, nextTick as w, onUnmounted as C, h as d } from "vue";
+import { isFilled as b, isDomRuntime as p, isString as E, toNumber as N, EventRef as f, EventItem as P, DesignConstructorAbstract as k } from "@dxtmisha/functional";
+import { A as H } from "./AriaStaticInclude-CAURwJMb.js";
+import { A as Z } from "./ArrowInclude-CcpT637l.js";
+class L {
   /**
    * Constructor
    * @param element input element/ элемент ввода
@@ -110,7 +110,7 @@ class H {
       );
   }
 }
-class L {
+class M {
   /**
    * Constructor
    * @param props input properties/ входящие свойства
@@ -152,11 +152,11 @@ class L {
   initElement() {
     var e;
     const t = this.props.elementTarget;
-    if (this.props.position === "auto" && w(t) && p())
-      return N(t) ? (e = document.querySelector(t)) != null ? e : void 0 : t;
+    if (this.props.position === "auto" && b(t) && p())
+      return E(t) ? (e = document.querySelector(t)) != null ? e : void 0 : t;
   }
 }
-class M {
+class O {
   /**
    * Constructor
    * @param element input element/ элемент ввода
@@ -222,7 +222,7 @@ class M {
    * Получить ширину границы в виде числа.
    */
   getBorderRadius() {
-    return E(this.borderRadius.value);
+    return N(this.borderRadius.value);
   }
   /**
    * Get computed styles of the parent element.
@@ -236,7 +236,7 @@ class M {
   }
 }
 var o = /* @__PURE__ */ ((n) => (n.TOP = "top", n.BOTTOM = "bottom", n.LEFT = "left", n.RIGHT = "right", n.HIDE = "hide", n))(o || {});
-class O {
+class W {
   /**
    * Constructor
    * @param props input properties / входные свойства
@@ -360,7 +360,7 @@ class O {
     }
   }
 }
-class W {
+class x {
   /**
    * Constructor
    * @param props input properties / входные свойства
@@ -392,9 +392,9 @@ class W {
     s(this, "makeEvents", () => {
       this.elementTarget.is() ? this.initEvents().startEvents() : this.stopEvents();
     });
-    this.props = t, this.refs = e, this.element = i, this.elementTarget = r, this.parent = a, this.position = h, p() && (B(async () => {
-      await f(), c(this.elementTarget.element, this.makeEvents), c([...Object.values(this.refs)], this.update, { immediate: !0 });
-    }), S(() => {
+    this.props = t, this.refs = e, this.element = i, this.elementTarget = r, this.parent = a, this.position = h, p() && (S(async () => {
+      await w(), c(this.elementTarget.element, this.makeEvents), c([...Object.values(this.refs)], this.update, { immediate: !0 });
+    }), C(() => {
       this.stopEvents();
     }));
   }
@@ -422,10 +422,10 @@ class W {
    * Инициализировать события.
    */
   initEvents() {
-    return this.eventItem || (this.eventItem = new v(this.element, void 0, "resize", this.update)), this.eventTarget || (this.eventTarget = new v(this.elementTarget.element, void 0, "resize", this.update)), this.eventBody || (this.eventBody = new P(window, ["scroll", "resize"], this.update)), this;
+    return this.eventItem || (this.eventItem = new f(this.element, void 0, "resize", this.update)), this.eventTarget || (this.eventTarget = new f(this.elementTarget.element, void 0, "resize", this.update)), this.eventBody || (this.eventBody = new P(window, ["scroll", "resize"], this.update)), this;
   }
 }
-class x {
+class F {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -436,13 +436,14 @@ class x {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param ArrowElementConstructor class for working with the arrow element/ класс для работы с элементом стрелки
-   * @param ArrowElementTargetConstructor class for working with the target element of the arrow/ класс для работы с целевым элементом стрелки
-   * @param ArrowParentConstructor class for working with the parent element of the arrow/ класс для работы с родительским элементом стрелки
-   * @param ArrowPositionConstructor class for working with the position of the arrow/ класс для работы с позицией стрелки
-   * @param ArrowEventConstructor class for working with arrow events/ класс для работы с событиями стрелки
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ArrowElementConstructor class for working with the arrow element/ класс для работы с элементом стрелки
+   * @param constructors.ArrowElementTargetConstructor class for working with the target element of the arrow/ класс для работы с целевым элементом стрелки
+   * @param constructors.ArrowEventConstructor class for working with arrow events/ класс для работы с событиями стрелки
+   * @param constructors.ArrowParentConstructor class for working with the parent element of the arrow/ класс для работы с родительским элементом стрелки
+   * @param constructors.ArrowPositionConstructor class for working with the position of the arrow/ класс для работы с позицией стрелки
    */
-  constructor(t, e, i, r, a, h, m, g, b = H, T = L, y = M, $ = O, R = W) {
+  constructor(t, e, i, r, a, h, m, g, v) {
     s(this, "elementItem");
     s(this, "elementTarget");
     s(this, "parent");
@@ -450,7 +451,7 @@ class x {
     s(this, "event");
     /** Direction of the arrow/ Направление стрелки */
     s(this, "direction", l(() => {
-      if (w(this.props.position)) {
+      if (b(this.props.position)) {
         const t = this.position.direction.value;
         if (t)
           return t;
@@ -471,19 +472,27 @@ class x {
       };
       return this.parent.isBorder.value && this.position.clipPath.value && (t[`--${this.className}-sys-clipPath`] = this.position.clipPath.value), this.elementTarget.is() && this.position.shift.value && (t[`--${this.className}-sys-shift`] = this.position.shift.value), t;
     }));
-    this.props = t, this.refs = e, this.element = i, this.classDesign = r, this.className = a, this.components = h, this.slots = m, this.emits = g, this.elementItem = new b(
+    this.props = t, this.refs = e, this.element = i, this.classDesign = r, this.className = a, this.components = h, this.slots = m, this.emits = g;
+    const {
+      ArrowElementConstructor: T = L,
+      ArrowElementTargetConstructor: y = M,
+      ArrowEventConstructor: $ = x,
+      ArrowParentConstructor: R = O,
+      ArrowPositionConstructor: A = W
+    } = v != null ? v : {};
+    this.elementItem = new T(
       this.element,
       this.className
-    ), this.elementTarget = new T(this.props), this.parent = new y(
+    ), this.elementTarget = new y(this.props), this.parent = new R(
       this.element,
       this.className,
       this.elementItem
-    ), this.position = new $(
+    ), this.position = new A(
       this.props,
       this.elementItem,
       this.elementTarget,
       this.parent
-    ), this.event = new R(
+    ), this.event = new $(
       this.props,
       this.refs,
       this.element,
@@ -493,11 +502,11 @@ class x {
     );
   }
 }
-const D = {
+const G = {
   // :default [!] System label / Системная метка
   position: "auto"
 };
-class G extends C {
+class V extends k {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -505,7 +514,7 @@ class G extends C {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor arrow item class/ класс элемента стрелки
    */
-  constructor(e, i, r, a = x) {
+  constructor(e, i, r, a = F) {
     super(
       e,
       i,
@@ -541,7 +550,7 @@ class G extends C {
       this.slots,
       this.emits
     ), this.init(), c([this.classes], () => {
-      f().then(
+      w().then(
         () => requestAnimationFrame(() => {
           this.points.value = this.getRePoints();
         })
@@ -603,7 +612,7 @@ class G extends C {
       ref: this.element,
       class: (i = this.classes) == null ? void 0 : i.value.main,
       style: (r = this.styles) == null ? void 0 : r.value,
-      ...k.hidden()
+      ...H.hidden()
     }, e);
   }
   /**
@@ -657,9 +666,9 @@ class G extends C {
   }
 }
 export {
-  x as Arrow,
-  G as ArrowDesign,
+  F as Arrow,
+  V as ArrowDesign,
   o as ArrowDirection,
-  Y as ArrowInclude,
-  D as defaultsArrow
+  Z as ArrowInclude,
+  G as defaultsArrow
 };

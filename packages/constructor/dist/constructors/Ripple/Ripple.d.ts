@@ -26,8 +26,12 @@ export declare class Ripple {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.RippleItemConstructor class for working with ripple item/ класс для работы с элементом волны
      */
-    constructor(props: RippleProps, refs: ToRefs<RippleProps>, element: Ref<HTMLSpanElement | undefined>, className: string, components?: DesignComp<RippleComponents, RippleProps> | undefined, slots?: RippleSlots | undefined, emits?: ConstrEmit<RippleEmits> | undefined);
+    constructor(props: RippleProps, refs: ToRefs<RippleProps>, element: Ref<HTMLSpanElement | undefined>, className: string, components?: DesignComp<RippleComponents, RippleProps> | undefined, slots?: RippleSlots | undefined, emits?: ConstrEmit<RippleEmits> | undefined, constructors?: {
+        RippleItemConstructor?: typeof RippleItem;
+    });
     /**
      * The click event adds a wave effect element.
      *

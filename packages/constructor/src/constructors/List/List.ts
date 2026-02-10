@@ -56,13 +56,14 @@ export class List {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param ListSearchConstructor class for working with search/ класс для работы с поиском
-   * @param ListFocusConstructor class for working with focus/ класс для работы с фокусом
-   * @param ListDataRefConstructor class for working with data list/ класс для работы со списком данных
-   * @param ListGoConstructor class for working with navigation/ класс для работы с навигацией
-   * @param ListControlConstructor class for working with control/ класс для работы с управлением
-   * @param EventClickIncludeConstructor class for working with click event/ класс для работы с событием клика
-   * @param WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.EventClickIncludeConstructor class for working with click event/ класс для работы с событием клика
+   * @param constructors.ListControlConstructor class for working with control/ класс для работы с управлением
+   * @param constructors.ListDataRefConstructor class for working with data list/ класс для работы со списком данных
+   * @param constructors.ListFocusConstructor class for working with focus/ класс для работы с фокусом
+   * @param constructors.ListGoConstructor class for working with navigation/ класс для работы с навигацией
+   * @param constructors.ListSearchConstructor class for working with search/ класс для работы с поиском
+   * @param constructors.WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
    */
   constructor(
     protected readonly props: ListProps,
@@ -73,14 +74,26 @@ export class List {
     protected readonly components?: DesignComp<ListComponents, ListProps>,
     protected readonly slots?: ListSlots,
     protected readonly emits?: ConstrEmit<ListEmits>,
-    ListSearchConstructor: typeof ListSearch = ListSearch,
-    ListFocusConstructor: typeof ListFocus = ListFocus,
-    ListDataRefConstructor: typeof ListDataRef = ListDataRef,
-    ListGoConstructor: typeof ListGo = ListGo,
-    ListControlConstructor: typeof ListControl = ListControl,
-    EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude,
-    WindowClassesIncludeConstructor: typeof WindowClassesInclude = WindowClassesInclude
+    constructors?: {
+      EventClickIncludeConstructor?: typeof EventClickInclude
+      ListControlConstructor?: typeof ListControl
+      ListDataRefConstructor?: typeof ListDataRef
+      ListFocusConstructor?: typeof ListFocus
+      ListGoConstructor?: typeof ListGo
+      ListSearchConstructor?: typeof ListSearch
+      WindowClassesIncludeConstructor?: typeof WindowClassesInclude
+    }
   ) {
+    const {
+      EventClickIncludeConstructor = EventClickInclude,
+      ListControlConstructor = ListControl,
+      ListDataRefConstructor = ListDataRef,
+      ListFocusConstructor = ListFocus,
+      ListGoConstructor = ListGo,
+      ListSearchConstructor = ListSearch,
+      WindowClassesIncludeConstructor = WindowClassesInclude
+    } = constructors ?? {}
+
     this.search = new ListSearchConstructor(this.props)
     this.focus = new ListFocusConstructor(this.props, this.element, this.id)
 

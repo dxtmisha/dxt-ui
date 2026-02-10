@@ -2,7 +2,7 @@ import { TooltipOpen } from './TooltipOpen';
 import { TooltipStatus } from './TooltipStatus';
 import { TooltipClasses } from './TooltipClasses';
 import { TooltipStyle } from './TooltipStyle';
-import { TooltipProps } from './props.ts';
+import { TooltipProps } from './props';
 /**
  * Class for working with events.
  *

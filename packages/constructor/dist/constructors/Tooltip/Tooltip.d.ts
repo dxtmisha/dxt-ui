@@ -55,17 +55,28 @@ export declare class Tooltip {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param TooltipClassesConstructor class for working with classes/ класс для работы с классами
-     * @param TooltipStyleConstructor class for working with styles/ класс для работы со стилями
-     * @param TooltipStatusConstructor class for working with status/ класс для работы со статусом
-     * @param TooltipPositionConstructor class for working with position/ класс для работы с позицией
-     * @param TooltipOpenConstructor class for working with open state/ класс для работы с состоянием открытия
-     * @param TooltipEventConstructor class for working with events/ класс для работы с событиями
-     * @param ArrowIncludeConstructor class for working with arrow/ класс для работы со стрелкой
-     * @param LabelIncludeConstructor class for working with label/ класс для работы с меткой
-     * @param DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.ArrowIncludeConstructor class for working with arrow/ класс для работы со стрелкой
+     * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
+     * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
+     * @param constructors.TooltipClassesConstructor class for working with classes/ класс для работы с классами
+     * @param constructors.TooltipEventConstructor class for working with events/ класс для работы с событиями
+     * @param constructors.TooltipOpenConstructor class for working with open state/ класс для работы с состоянием открытия
+     * @param constructors.TooltipPositionConstructor class for working with position/ класс для работы с позицией
+     * @param constructors.TooltipStatusConstructor class for working with status/ класс для работы со статусом
+     * @param constructors.TooltipStyleConstructor class for working with styles/ класс для работы со стилями
      */
-    constructor(props: TooltipProps, refs: ToRefs<TooltipProps>, element: Ref<HTMLDivElement | undefined>, classDesign: string, className: string, components?: DesignComp<TooltipComponents, TooltipProps> | undefined, slots?: TooltipSlots | undefined, emits?: ConstrEmit<TooltipEmits> | undefined, TooltipClassesConstructor?: typeof TooltipClasses, TooltipStyleConstructor?: typeof TooltipStyle, TooltipStatusConstructor?: typeof TooltipStatus, TooltipPositionConstructor?: typeof TooltipPosition, TooltipOpenConstructor?: typeof TooltipOpen, TooltipEventConstructor?: typeof TooltipEvent, ArrowIncludeConstructor?: typeof ArrowInclude, LabelIncludeConstructor?: typeof LabelInclude, DescriptionIncludeConstructor?: typeof DescriptionInclude);
+    constructor(props: TooltipProps, refs: ToRefs<TooltipProps>, element: Ref<HTMLDivElement | undefined>, classDesign: string, className: string, components?: DesignComp<TooltipComponents, TooltipProps> | undefined, slots?: TooltipSlots | undefined, emits?: ConstrEmit<TooltipEmits> | undefined, constructors?: {
+        ArrowIncludeConstructor?: typeof ArrowInclude;
+        DescriptionIncludeConstructor?: typeof DescriptionInclude;
+        LabelIncludeConstructor?: typeof LabelInclude;
+        TooltipClassesConstructor?: typeof TooltipClasses;
+        TooltipEventConstructor?: typeof TooltipEvent;
+        TooltipOpenConstructor?: typeof TooltipOpen;
+        TooltipPositionConstructor?: typeof TooltipPosition;
+        TooltipStatusConstructor?: typeof TooltipStatus;
+        TooltipStyleConstructor?: typeof TooltipStyle;
+    });
     /**
      * Computed bindings for the tooltip element/
      * Вычисляемые привязки для элемента подсказки

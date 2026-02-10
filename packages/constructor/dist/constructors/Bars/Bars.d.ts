@@ -52,17 +52,28 @@ export declare class Bars {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param BarsActionConstructor class for managing action mode/ класс для управления action-режимом
-     * @param LabelConstructor class for creating a label/ класс для создания метки
-     * @param DescriptionConstructor class for creating a description/ класс для создания описания
-     * @param EventConstructor class for creating an event/ класс для создания события
-     * @param WindowClassesConstructor helper class for Window CSS classes/ вспомогательный класс для CSS-классов Window
-     * @param MotionTransformClassesConstructor helper class for MotionTransform CSS classes/ вспомогательный класс для CSS-классов MotionTransform
-     * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
-     * @param TextConstructor class for creating text/ класс для создания текста
-     * @param ModelConstructor class for working with models/ класс для работы с моделями
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.BarsActionConstructor class for managing action mode/ класс для управления action-режимом
+     * @param constructors.DescriptionConstructor class for creating a description/ класс для создания описания
+     * @param constructors.EventConstructor class for creating an event/ класс для создания события
+     * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
+     * @param constructors.ModelConstructor class for working with models/ класс для работы с моделями
+     * @param constructors.MotionTransformClassesConstructor helper class for MotionTransform CSS classes/ вспомогательный класс для CSS-классов MotionTransform
+     * @param constructors.SkeletonConstructor class for creating a skeleton/ класс для создания скелета
+     * @param constructors.TextConstructor class for creating text/ класс для создания текста
+     * @param constructors.WindowClassesConstructor helper class for Window CSS classes/ вспомогательный класс для CSS-классов Window
      */
-    constructor(props: BarsProps, refs: ToRefs<BarsProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<BarsComponents, BarsProps> | undefined, slots?: BarsSlots | undefined, emits?: ConstrEmit<BarsEmits> | undefined, BarsActionConstructor?: typeof BarsAction, LabelConstructor?: typeof LabelInclude, DescriptionConstructor?: typeof DescriptionInclude, EventConstructor?: typeof EventClickInclude, WindowClassesConstructor?: typeof WindowClassesInclude, MotionTransformClassesConstructor?: typeof MotionTransformClassesInclude, SkeletonConstructor?: typeof SkeletonInclude, TextConstructor?: typeof TextInclude, ModelConstructor?: typeof ModelInclude);
+    constructor(props: BarsProps, refs: ToRefs<BarsProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<BarsComponents, BarsProps> | undefined, slots?: BarsSlots | undefined, emits?: ConstrEmit<BarsEmits> | undefined, constructors?: {
+        BarsActionConstructor?: typeof BarsAction;
+        DescriptionConstructor?: typeof DescriptionInclude;
+        EventConstructor?: typeof EventClickInclude;
+        LabelConstructor?: typeof LabelInclude;
+        ModelConstructor?: typeof ModelInclude;
+        MotionTransformClassesConstructor?: typeof MotionTransformClassesInclude;
+        SkeletonConstructor?: typeof SkeletonInclude;
+        TextConstructor?: typeof TextInclude;
+        WindowClassesConstructor?: typeof WindowClassesInclude;
+    });
     /** Returns the button data/ Возвращает данные кнопки */
     readonly backBinds: ComputedRef< ConstrBind<ButtonPropsBasic> | undefined>;
     /** Returns the list of control buttons/ Возвращает список кнопок управления */

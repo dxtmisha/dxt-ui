@@ -1,11 +1,11 @@
-var h = Object.defineProperty;
-var c = (n, s, t) => s in n ? h(n, s, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[s] = t;
+var m = Object.defineProperty;
+var c = (n, s, t) => s in n ? m(n, s, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[s] = t;
 var l = (n, s, t) => c(n, typeof s != "symbol" ? s + "" : s, t);
-import { createElement as m, DesignConstructorAbstract as p } from "@dxtmisha/functional";
-import { h as d } from "vue";
+import { createElement as d, DesignConstructorAbstract as y } from "@dxtmisha/functional";
+import { h as f } from "vue";
 import { A as u } from "./AriaStaticInclude-CAURwJMb.js";
-import { R as X } from "./RippleInclude-Du5yIzX_.js";
-class y {
+import { R as b } from "./RippleInclude-Du5yIzX_.js";
+class R {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -31,15 +31,15 @@ class y {
     if ((a = this.props) != null && a.disabled)
       return;
     const i = this.element.value;
-    i && m(i, "span", (e) => {
+    i && d(i, "span", (e) => {
       e.onanimationend = () => e.classList.add(this.classEnd), e.ontransitionend = () => {
-        var r;
-        return (r = e.parentElement) == null ? void 0 : r.removeChild(e);
+        var h;
+        return (h = e.parentElement) == null ? void 0 : h.removeChild(e);
       }, e.style.setProperty(this.styleX, `${s}px`), e.style.setProperty(this.styleY, `${t}px`), e.classList.add(this.classItem);
     });
   }
 }
-class f {
+class x {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -49,8 +49,10 @@ class f {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.RippleItemConstructor class for working with ripple item/ класс для работы с элементом волны
    */
-  constructor(s, t, i, a, e, r, o) {
+  constructor(s, t, i, a, e, h, o, r) {
     l(this, "item");
     /**
      * The click event adds a wave effect element.
@@ -59,11 +61,15 @@ class f {
      * @param event click event/ событие клика
      */
     l(this, "onClick", (s) => this.item.add(s.offsetX, s.offsetY));
-    this.props = s, this.refs = t, this.element = i, this.className = a, this.components = e, this.slots = r, this.emits = o, this.item = new y(s, i, a);
+    this.props = s, this.refs = t, this.element = i, this.className = a, this.components = e, this.slots = h, this.emits = o;
+    const {
+      RippleItemConstructor: p = R
+    } = r != null ? r : {};
+    this.item = new p(s, i, a);
   }
 }
-const I = {};
-class N extends p {
+const $ = {};
+class g extends y {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -71,7 +77,7 @@ class N extends p {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor ripple item class/ класс элемента ripple
    */
-  constructor(t, i, a, e = f) {
+  constructor(t, i, a, e = x) {
     super(
       t,
       i,
@@ -119,7 +125,7 @@ class N extends p {
    */
   initRender() {
     var t;
-    return d("span", {
+    return f("span", {
       ref: this.element,
       key: "ripple",
       class: (t = this.classes) == null ? void 0 : t.value.main,
@@ -129,8 +135,8 @@ class N extends p {
   }
 }
 export {
-  f as Ripple,
-  N as RippleDesign,
-  X as RippleInclude,
-  I as defaultsRipple
+  x as Ripple,
+  g as RippleDesign,
+  b as RippleInclude,
+  $ as defaultsRipple
 };

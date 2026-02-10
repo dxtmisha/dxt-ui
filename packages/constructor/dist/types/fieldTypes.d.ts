@@ -92,24 +92,24 @@ export type FieldValidationItem<Value = any> = FieldCheckMain & {
  */
 export type FieldBasicEmits<T = string> = ModelEmits & {
     /**
- * Emitted on input events (every change while typing)/
- * Эмит при вводе (каждое изменение): [event, value]
- */
+     * Emitted on input events (every change while typing)/
+     * Эмит при вводе (каждое изменение): [event, value]
+     */
     input: [event: InputEvent | Event, value: FieldValidationItem<T>];
     /**
- * Lightweight input emit without DOM event/
- * Лёгкий эмит ввода без DOM-события: [value]
- */
+     * Lightweight input emit without DOM event/
+     * Лёгкий эмит ввода без DOM-события: [value]
+     */
     inputLite: [value: FieldValidationItem<T>];
     /**
- * Emitted when value is committed (blur/confirm)/
- * Эмит при подтверждении значения (blur/confirm): [event, value]
- */
+     * Emitted when value is committed (blur/confirm)/
+     * Эмит при подтверждении значения (blur/confirm): [event, value]
+     */
     change: [event: InputEvent | Event, value: FieldValidationItem<T>];
     /**
- * Lightweight change emit without DOM event/
- * Лёгкий эмит подтверждения без события: [value]
- */
+     * Lightweight change emit without DOM event/
+     * Лёгкий эмит подтверждения без события: [value]
+     */
     changeLite: [value: FieldValidationItem<T>];
 };
 export type FieldBasicExpose<T = string> = {
@@ -162,9 +162,9 @@ export type FieldBasicProps<Value = any> = Omit<FieldValueProps<Value>, 'multipl
     /** Validation error text or map of texts/ Текст ошибки валидации или карта текстов */
     validationCode?: FieldValidityCode;
     /**
-   * Standard validation message (overrides default)/
-   * Стандартное сообщение валидации (перекрывает дефолтное)
-   */
+     * Standard validation message (overrides default)/
+     * Стандартное сообщение валидации (перекрывает дефолтное)
+     */
     validationMessage?: string;
     /** Match config to compare with another field/ Конфигурация сравнения со вторым полем */
     match?: FieldMatch;

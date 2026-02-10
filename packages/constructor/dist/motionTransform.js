@@ -1,16 +1,16 @@
 var H = Object.defineProperty;
-var T = (h, t, e) => t in h ? H(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
-var s = (h, t, e) => T(h, typeof t != "symbol" ? t + "" : t, e);
-import { watch as m, ref as d, computed as a, onUnmounted as M, h as l, Teleport as P } from "vue";
-import { EventItem as W, isEnter as B, DesignConstructorAbstract as E } from "@dxtmisha/functional";
-import { A as p } from "./AriaStaticInclude-CAURwJMb.js";
+var M = (h, t, e) => t in h ? H(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
+var s = (h, t, e) => M(h, typeof t != "symbol" ? t + "" : t, e);
+import { watch as m, ref as d, computed as a, onUnmounted as P, h as l, Teleport as E } from "vue";
+import { EventItem as W, isEnter as B, DesignConstructorAbstract as I } from "@dxtmisha/functional";
+import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
 import { M as O } from "./ModelInclude-BiYm_iCQ.js";
 import { T as z } from "./TabIndexInclude-xcSFV8yP.js";
-import { a as u } from "./MotionTransformClassesInclude-B23RIq0Q.js";
-import { M as X, _ as Z } from "./MotionTransformClassesInclude-B23RIq0Q.js";
-import { W as I } from "./WindowEsc-DTwn4Vsz.js";
-import { M as et } from "./MotionTransformInclude-P_oRs3JZ.js";
-class D {
+import { a as g } from "./MotionTransformClassesInclude-B23RIq0Q.js";
+import { M as Z, _ as tt } from "./MotionTransformClassesInclude-B23RIq0Q.js";
+import { W as D } from "./WindowEsc-DTwn4Vsz.js";
+import { M as st } from "./MotionTransformInclude-P_oRs3JZ.js";
+class A {
   /**
    * Constructor
    * @param element class object for managing an element/ объект класса для управления элементом
@@ -60,7 +60,7 @@ class D {
     this.top = null, this.left = null, this.height = null, this.scale = null, this.contextWidth = null, this.contextHeight = null, this.headWidth = null, this.headHeight = null, this.headScale = null, this.bodyHeight = null;
   }
 }
-class A {
+class N {
   /**
    * Constructor.
    *
@@ -199,7 +199,7 @@ class A {
     }
   }
 }
-class N {
+class $ {
   /**
    * Constructor.
    *
@@ -282,7 +282,7 @@ class N {
     return !!(this.props.clickOpen && this.element.isClick(t));
   }
 }
-class $ {
+class _ {
   /**
    * Constructor.
    *
@@ -320,7 +320,7 @@ class $ {
     this.state = t;
   }
 }
-class _ {
+class F {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -332,16 +332,17 @@ class _ {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param MotionTransformElementConstructor class for working with elements/ класс для работы с элементами
-   * @param MotionTransformSizeConstructor class for working with size/ класс для работы с размером
-   * @param MotionTransformStateConstructor class for working with state/ класс для работы с состоянием
-   * @param MotionTransformEventConstructor class for working with events/ класс для работы с событиями
-   * @param MotionTransformGoConstructor class for working with go/ класс для работы с переходом
-   * @param TabIndexIncludeConstructor class for working with tab index/ класс для работы с индексом табуляции
-   * @param WindowEscConstructor class for working with esc/ класс для работы с esc
-   * @param ModelIncludeConstructor class for working with model/ класс для работы с моделью
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
+   * @param constructors.MotionTransformElementConstructor class for working with elements/ класс для работы с элементами
+   * @param constructors.MotionTransformEventConstructor class for working with events/ класс для работы с событиями
+   * @param constructors.MotionTransformGoConstructor class for working with go/ класс для работы с переходом
+   * @param constructors.MotionTransformSizeConstructor class for working with size/ класс для работы с размером
+   * @param constructors.MotionTransformStateConstructor class for working with state/ класс для работы с состоянием
+   * @param constructors.TabIndexIncludeConstructor class for working with tab index/ класс для работы с индексом табуляции
+   * @param constructors.WindowEscConstructor class for working with esc/ класс для работы с esc
    */
-  constructor(t, e, i, o, n, r, g, y, c, f = u, v = D, w = A, x = N, S = $, b = z, k = I, C = O) {
+  constructor(t, e, i, o, n, r, y, f, u, p) {
     /** Reference helper for element interactions/ Вспомогательный класс для работы с элементами */
     s(this, "element");
     s(this, "tabIndex");
@@ -362,34 +363,45 @@ class _ {
     s(this, "slotData", a(() => ({
       isOpen: this.state.isOpen,
       isShow: this.state.isShow,
-      classes: u.getClassesList(this.className),
+      classes: g.getClassesList(this.className),
       idControl: this.element.idControl,
       idBody: this.element.idBody,
-      binds: p.control(
+      binds: c.control(
         this.element.idControl,
         this.element.idBody,
         void 0,
         this.state.isOpen.value
       )
     })));
-    this.props = t, this.refs = e, this.classDesign = n, this.className = r, this.components = g, this.slots = y, this.emits = c, this.element = new f(
+    this.props = t, this.refs = e, this.classDesign = n, this.className = r, this.components = y, this.slots = f, this.emits = u;
+    const {
+      ModelIncludeConstructor: v = O,
+      MotionTransformElementConstructor: w = g,
+      MotionTransformEventConstructor: x = $,
+      MotionTransformGoConstructor: S = _,
+      MotionTransformSizeConstructor: b = A,
+      MotionTransformStateConstructor: C = N,
+      TabIndexIncludeConstructor: T = z,
+      WindowEscConstructor: k = D
+    } = p != null ? p : {};
+    this.element = new w(
       t,
       i,
       o,
       r
-    ), this.tabIndex = new b(
+    ), this.tabIndex = new T(
       () => this.element.getElementBody(),
       () => this.element.isWindow()
-    ), this.size = new v(this.element), this.state = new w(
+    ), this.size = new b(this.element), this.state = new C(
       t,
       this.element,
       this.tabIndex,
       this.size
-    ), this.event = new x(t, this.element, this.state, c), this.go = new S(this.state), this.esc = new k(
+    ), this.event = new x(t, this.element, this.state, u), this.go = new S(this.state), this.esc = new k(
       this.state.open,
       () => this.go.close(),
       () => !!this.props.clickOpen
-    ), new C("open", this.emits, this.state.open), m([e.open], () => this.state.set(!!t.open)), M(() => this.event.stop());
+    ), new v("open", this.emits, this.state.open), m([e.open], () => this.state.set(!!t.open)), P(() => this.event.stop());
   }
   /**
    * Returns data for managing slot data.
@@ -400,7 +412,7 @@ class _ {
     return this.slotData.value;
   }
 }
-const j = {
+const J = {
   clickOpen: !0,
   autoClose: !0,
   animationShow: !0,
@@ -408,7 +420,7 @@ const j = {
   // :default [!] System label / Системная метка
   animationHeadPosition: "top"
 };
-class J extends E {
+class Q extends I {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -416,7 +428,7 @@ class J extends E {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(e, i, o, n = _) {
+  constructor(e, i, o, n = F) {
     super(
       e,
       i,
@@ -535,8 +547,8 @@ class J extends E {
         key: "body",
         id: this.item.element.idBody,
         class: (e = this.classes) == null ? void 0 : e.value.body,
-        ...p.role("region"),
-        ...p.modal(
+        ...c.role("region"),
+        ...c.modal(
           !1,
           this.props.ariaLabelledby,
           this.props.ariaDescribedby
@@ -613,7 +625,7 @@ class J extends E {
         class: (i = this.classes) == null ? void 0 : i.value.context
       },
       l(
-        P,
+        E,
         {
           key: "teleport",
           disabled: !this.item.state.teleport.value,
@@ -625,10 +637,10 @@ class J extends E {
   }
 }
 export {
-  _ as MotionTransform,
-  X as MotionTransformClassesInclude,
-  J as MotionTransformDesign,
-  et as MotionTransformInclude,
-  Z as __MOTION_TRANSFORM_TYPE_BODY_NAME,
-  j as defaultsMotionTransform
+  F as MotionTransform,
+  Z as MotionTransformClassesInclude,
+  Q as MotionTransformDesign,
+  st as MotionTransformInclude,
+  tt as __MOTION_TRANSFORM_TYPE_BODY_NAME,
+  J as defaultsMotionTransform
 };

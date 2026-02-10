@@ -1,11 +1,11 @@
-var m = Object.defineProperty;
-var u = (e, t, s) => t in e ? m(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
-var i = (e, t, s) => u(e, typeof t != "symbol" ? t + "" : t, s);
-import { h as a } from "vue";
-import { DesignConstructorAbstract as c } from "@dxtmisha/functional";
-import { L as v } from "./ListGroupOpen-Bl_HIQoV.js";
-import { A as f } from "./AriaStaticInclude-CAURwJMb.js";
-class g {
+var u = Object.defineProperty;
+var c = (e, t, s) => t in e ? u(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
+var i = (e, t, s) => c(e, typeof t != "symbol" ? t + "" : t, s);
+import { h } from "vue";
+import { DesignConstructorAbstract as v } from "@dxtmisha/functional";
+import { L as f } from "./ListGroupOpen-Bl_HIQoV.js";
+import { A as g } from "./AriaStaticInclude-CAURwJMb.js";
+class L {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -16,9 +16,10 @@ class g {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
    */
-  constructor(t, s, r, n, o, h, p, l, d = v) {
+  constructor(t, s, r, n, o, p, l, d, a) {
     i(this, "open");
     /**
      * Returns the property for the transformation component.
@@ -31,11 +32,15 @@ class g {
       adaptive: "planeAlways",
       onTransformLite: this.open.onOpen
     }));
-    this.props = t, this.refs = s, this.element = r, this.classDesign = n, this.className = o, this.components = h, this.slots = p, this.emits = l, this.open = new d(this.props);
+    this.props = t, this.refs = s, this.element = r, this.classDesign = n, this.className = o, this.components = p, this.slots = l, this.emits = d;
+    const {
+      ListGroupOpenConstructor: m = f
+    } = a != null ? a : {};
+    this.open = new m(this.props);
   }
 }
 const D = {};
-class G extends c {
+class T extends v {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -43,7 +48,7 @@ class G extends c {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(s, r, n, o = g) {
+  constructor(s, r, n, o = L) {
     super(
       s,
       r,
@@ -74,7 +79,7 @@ class G extends c {
      */
     i(this, "renderHead", (s) => {
       var r;
-      return a(
+      return h(
         "div",
         {
           class: (r = this.classes) == null ? void 0 : r.value.head
@@ -96,7 +101,7 @@ class G extends c {
      */
     i(this, "renderList", () => {
       var s;
-      return a(
+      return h(
         "div",
         {
           class: (s = this.classes) == null ? void 0 : s.value.list
@@ -153,21 +158,21 @@ class G extends c {
    */
   initRender() {
     var s;
-    return a(
+    return h(
       "div",
       {
         ...this.getAttrs(),
         class: (s = this.classes) == null ? void 0 : s.value.main,
         "data-open": this.item.open.is.value ? "open" : "close",
         "data-divider": this.props.divider ? "divider" : void 0,
-        ...f.role("group")
+        ...g.role("group")
       },
       this.renderTransform()
     );
   }
 }
 export {
-  g as ListGroup,
-  G as ListGroupDesign,
+  L as ListGroup,
+  T as ListGroupDesign,
   D as defaultsListGroup
 };

@@ -1,21 +1,21 @@
 var A = Object.defineProperty;
-var E = (o, t, i) => t in o ? A(o, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : o[t] = i;
-var e = (o, t, i) => E(o, typeof t != "symbol" ? t + "" : t, i);
-import { computed as h, h as u } from "vue";
-import { getBind as L, toBind as P, getRef as R, DesignConstructorAbstract as T } from "@dxtmisha/functional";
-import { g as H } from "./getClassTagAStatic-BnVYlXHI.js";
-import { E as _ } from "./EventClickInclude-WHJqxZ1b.js";
+var L = (o, t, i) => t in o ? A(o, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : o[t] = i;
+var e = (o, t, i) => L(o, typeof t != "symbol" ? t + "" : t, i);
+import { computed as l, h as g } from "vue";
+import { getBind as P, toBind as R, getRef as T, DesignConstructorAbstract as H } from "@dxtmisha/functional";
+import { g as _ } from "./getClassTagAStatic-BnVYlXHI.js";
+import { E as $ } from "./EventClickInclude-WHJqxZ1b.js";
 import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
-import { L as $ } from "./LabelHighlightInclude-CLmTvW_6.js";
-import { P as M, S as V } from "./SuffixInclude-maZ7235l.js";
-import { C as j } from "./CaptionInclude-NzS6EYYj.js";
-import { D as q } from "./DescriptionInclude-D4ane9aR.js";
-import { E as z } from "./EnabledInclude-Dk-rP4jp.js";
-import { I as F } from "./IconTrailingInclude-CdsOcDxv.js";
-import { R as G } from "./RippleInclude-Du5yIzX_.js";
+import { L as M } from "./LabelHighlightInclude-CLmTvW_6.js";
+import { S as V, P as j } from "./SuffixInclude-maZ7235l.js";
+import { C as q } from "./CaptionInclude-NzS6EYYj.js";
+import { D as z } from "./DescriptionInclude-D4ane9aR.js";
+import { E as F } from "./EnabledInclude-Dk-rP4jp.js";
+import { I as G } from "./IconTrailingInclude-CdsOcDxv.js";
 import { P as J } from "./ProgressInclude-9MfZWtGP.js";
-import { S as K } from "./SkeletonInclude-BIUzAO2s.js";
-class O {
+import { R as K } from "./RippleInclude-Du5yIzX_.js";
+import { S as O } from "./SkeletonInclude-BIUzAO2s.js";
+class Q {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -28,18 +28,18 @@ class O {
      * Checks whether a badge is specified for rendering the component/
      * Проверяет, указан ли бейдж для отображения компонента
      */
-    e(this, "is", h(() => !!(this.props.badge || this.props.badgeDot)));
+    e(this, "is", l(() => !!(this.props.badge || this.props.badgeDot)));
     /**
      * list of properties for the badge component/ список свойств для компонента бейджа
      */
-    e(this, "binds", h(() => {
+    e(this, "binds", l(() => {
       var t;
-      return L(
+      return P(
         this.props.badgeDot ? {} : this.props.badge,
         {
           dot: this.props.badgeDot,
-          ...P(
-            (t = R(this.extra)) != null ? t : {},
+          ...R(
+            (t = T(this.extra)) != null ? t : {},
             {
               class: `${this.className}__badge`
             }
@@ -63,7 +63,7 @@ class O {
     this.props = t, this.className = i, this.components = s, this.extra = n;
   }
 }
-class Q {
+class U {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -74,20 +74,21 @@ class Q {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
-   * @param LabelHighlightIncludeConstructor class for working with label/ класс для работы с меткой
-   * @param PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
-   * @param CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
-   * @param SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
-   * @param DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
-   * @param BadgeIncludeConstructor class for working with badge/ класс для работы с бейджем
-   * @param RippleIncludeConstructor class for working with ripple/ класс для работы с ripple
-   * @param ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
-   * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
-   * @param EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
-   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.BadgeIncludeConstructor class for working with badge/ класс для работы с бейджем
+   * @param constructors.CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
+   * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
+   * @param constructors.EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
+   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors.IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param constructors.LabelHighlightIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param constructors.PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
+   * @param constructors.ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
+   * @param constructors.RippleIncludeConstructor class for working with ripple/ класс для работы с ripple
+   * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+   * @param constructors.SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
    */
-  constructor(t, i, s, n, r, l, a, g, b = F, f = $, v = M, x = j, C = V, S = q, I = O, w = G, k = J, y = K, B = z, D = _) {
+  constructor(t, i, s, n, r, h, a, m, u) {
     e(this, "icon");
     e(this, "label");
     e(this, "prefix");
@@ -101,14 +102,14 @@ class Q {
     e(this, "enabled");
     e(this, "event");
     /** tag type/ тип тега */
-    e(this, "tag", h(() => this.props.tag ? this.props.tag : this.props.href ? "a" : "div"));
+    e(this, "tag", l(() => this.props.tag ? this.props.tag : this.props.href ? "a" : "div"));
     /** values for the class/ значения для класса */
-    e(this, "classes", h(() => ({
+    e(this, "classes", l(() => ({
       [`${this.className}--description`]: this.description.is.value,
-      [H(this.classDesign)]: !0
+      [_(this.classDesign)]: !0
     })));
     /** values for attributes/ значения для атрибутов */
-    e(this, "binds", h(() => {
+    e(this, "binds", l(() => {
       var t;
       return {
         "data-value": (t = this.props.index) != null ? t : this.props.value,
@@ -119,7 +120,7 @@ class Q {
       };
     }));
     /** values for aria attributes/ значения для атрибутов aria */
-    e(this, "aria", h(() => {
+    e(this, "aria", l(() => {
       const t = {
         tabindex: this.props.tabindex,
         ...c.role(this.props.role),
@@ -141,11 +142,24 @@ class Q {
       }
       return t;
     }));
-    this.props = t, this.refs = i, this.element = s, this.classDesign = n, this.className = r, this.components = l, this.slots = a, this.emits = g;
-    const m = new k(
+    this.props = t, this.refs = i, this.element = s, this.classDesign = n, this.className = r, this.components = h, this.slots = a, this.emits = m;
+    const {
+      BadgeIncludeConstructor: f = Q,
+      CaptionIncludeConstructor: C = q,
+      DescriptionIncludeConstructor: I = z,
+      EnabledIncludeConstructor: v = F,
+      EventClickIncludeConstructor: x = $,
+      IconTrailingIncludeConstructor: S = G,
+      LabelHighlightIncludeConstructor: w = M,
+      PrefixIncludeConstructor: k = j,
+      ProgressIncludeConstructor: B = J,
+      RippleIncludeConstructor: D = K,
+      SkeletonIncludeConstructor: y = O,
+      SuffixIncludeConstructor: E = V
+    } = u != null ? u : {}, b = new B(
       t,
       r,
-      l,
+      h,
       {
         circular: !0
       }
@@ -153,31 +167,31 @@ class Q {
       t,
       n,
       ["classTextVariant"]
-    ), p = new B(t, m);
-    this.icon = new b(t, r, l), this.label = new f(
+    ), p = new v(t, b);
+    this.icon = new S(t, r, h), this.label = new w(
       t,
       r,
       void 0,
       a,
       void 0,
       d
-    ), this.prefix = new v(t, r, a, d), this.caption = new x(t, r, a), this.suffix = new C(t, r, a), this.description = new S(t, r, a, d), this.badge = new I(
+    ), this.prefix = new k(t, r, a, d), this.caption = new C(t, r, a), this.suffix = new E(t, r, a), this.description = new I(t, r, a, d), this.badge = new f(
       t,
       r,
-      l,
+      h,
       {
         overlap: "static"
       }
-    ), this.ripple = new w(r, l, p), this.progress = m, this.skeleton = d, this.enabled = p, this.event = new D(t, p, g);
+    ), this.ripple = new D(r, h, p), this.progress = b, this.skeleton = d, this.enabled = p, this.event = new x(t, p, m);
   }
 }
-const lt = {
+const dt = {
   tabindex: "-1",
   role: "option",
   // :default [!] System label / Системная метка
   iconAlign: "center"
 };
-class dt extends T {
+class ct extends H {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -203,7 +217,7 @@ class dt extends T {
         ...this.item.description.render()
       ];
       return this.initSlot("body", i), [
-        u(
+        g(
           "div",
           { class: (s = this.classes) == null ? void 0 : s.value.body },
           i
@@ -220,7 +234,7 @@ class dt extends T {
     e(this, "renderContext", () => {
       var i;
       return [
-        u(
+        g(
           "div",
           { class: (i = this.classes) == null ? void 0 : i.value.context },
           [
@@ -233,7 +247,7 @@ class dt extends T {
         )
       ];
     });
-    this.item = new Q(
+    this.item = new U(
       this.props,
       this.refs,
       this.element,
@@ -298,7 +312,7 @@ class dt extends T {
       ...this.item.icon.render(),
       ...this.item.progress.render(),
       ...this.item.ripple.render()
-    ), u(
+    ), g(
       this.item.tag.value,
       {
         ...this.getAttrs(),
@@ -313,7 +327,7 @@ class dt extends T {
   }
 }
 export {
-  Q as ListItem,
-  dt as ListItemDesign,
-  lt as defaultsListItem
+  U as ListItem,
+  ct as ListItemDesign,
+  dt as defaultsListItem
 };

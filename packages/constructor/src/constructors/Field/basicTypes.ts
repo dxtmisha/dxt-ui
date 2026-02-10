@@ -40,7 +40,7 @@ export type FieldControl = {
     AriaList
     & {
       id: string
-      className: string
+      class: string
     }
 }
 

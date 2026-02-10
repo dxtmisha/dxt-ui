@@ -59,23 +59,42 @@ export declare class Input {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
-     * @param FieldVisibilityIncludeConstructor class for working with field visibility/ класс для работы с видимостью поля
-     * @param FieldTypeIncludeConstructor class for working with field type/ класс для работы с типом поля
-     * @param FieldPatternIncludeConstructor class for working with field pattern/ класс для работы с шаблоном поля
-     * @param FieldInputModeIncludeConstructor class for working with field input mode/ класс для работы с режимом ввода поля
-     * @param FieldAttributesIncludeConstructor class for working with field attributes/ класс для работы с атрибутами поля
-     * @param FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
-     * @param FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
-     * @param FieldArrowIncludeConstructor class for working with field arrow/ класс для работы со стрелкой поля
-     * @param InputPasswordConstructor class for working with input password/ класс для работы с паролем ввода
-     * @param FieldMatchIncludeConstructor class for working with field match/ класс для работы с совпадением поля
-     * @param FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
-     * @param FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
-     * @param FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
-     * @param FieldIncludeConstructor class for working with field/ класс для работы с полем
-     * @param MaskIncludeConstructor class for working with mask/ класс для работы с маской
-     * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.FieldArrowIncludeConstructor class for working with field arrow/ класс для работы со стрелкой поля
+     * @param constructors.FieldAttributesIncludeConstructor class for working with field attributes/ класс для работы с атрибутами поля
+     * @param constructors.FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
+     * @param constructors.FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
+     * @param constructors.FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
+     * @param constructors.FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
+     * @param constructors.FieldIncludeConstructor class for working with field/ класс для работы с полем
+     * @param constructors.FieldInputModeIncludeConstructor class for working with field input mode/ класс для работы с режимом ввода поля
+     * @param constructors.FieldMatchIncludeConstructor class for working with field match/ класс для работы с совпадением поля
+     * @param constructors.FieldPatternIncludeConstructor class for working with field pattern/ класс для работы с шаблоном поля
+     * @param constructors.FieldTypeIncludeConstructor class for working with field type/ класс для работы с типом поля
+     * @param constructors.FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
+     * @param constructors.FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
+     * @param constructors.FieldVisibilityIncludeConstructor class for working with field visibility/ класс для работы с видимостью поля
+     * @param constructors.InputPasswordConstructor class for working with input password/ класс для работы с паролем ввода
+     * @param constructors.MaskIncludeConstructor class for working with mask/ класс для работы с маской
+     * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
      */
-    constructor(props: InputProps, refs: ToRefs<InputProps>, element: Ref<FieldElementInput>, classDesign: string, className: string, components?: DesignComp<InputComponents, InputProps> | undefined, slots?: InputSlots | undefined, emits?: ConstrEmit<InputEmits> | undefined, FieldChangeIncludeConstructor?: typeof FieldChangeInclude, FieldVisibilityIncludeConstructor?: typeof FieldVisibilityInclude, FieldTypeIncludeConstructor?: typeof FieldTypeInclude, FieldPatternIncludeConstructor?: typeof FieldPatternInclude, FieldInputModeIncludeConstructor?: typeof FieldInputModeInclude, FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude, FieldElementIncludeConstructor?: typeof FieldElementInclude, FieldValueIncludeConstructor?: typeof FieldValueInclude, FieldArrowIncludeConstructor?: typeof FieldArrowInclude, InputPasswordConstructor?: typeof InputPassword, FieldMatchIncludeConstructor?: typeof FieldMatchInclude, FieldCodeIncludeConstructor?: typeof FieldCodeInclude, FieldValidationIncludeConstructor?: typeof FieldValidationInclude, FieldEventIncludeConstructor?: typeof FieldEventInclude, FieldIncludeConstructor?: typeof FieldInclude, MaskIncludeConstructor?: typeof MaskInclude, TextIncludeConstructor?: typeof TextInclude);
+    constructor(props: InputProps, refs: ToRefs<InputProps>, element: Ref<FieldElementInput>, classDesign: string, className: string, components?: DesignComp<InputComponents, InputProps> | undefined, slots?: InputSlots | undefined, emits?: ConstrEmit<InputEmits> | undefined, constructors?: {
+        FieldArrowIncludeConstructor?: typeof FieldArrowInclude;
+        FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude;
+        FieldChangeIncludeConstructor?: typeof FieldChangeInclude;
+        FieldCodeIncludeConstructor?: typeof FieldCodeInclude;
+        FieldElementIncludeConstructor?: typeof FieldElementInclude;
+        FieldEventIncludeConstructor?: typeof FieldEventInclude;
+        FieldIncludeConstructor?: typeof FieldInclude;
+        FieldInputModeIncludeConstructor?: typeof FieldInputModeInclude;
+        FieldMatchIncludeConstructor?: typeof FieldMatchInclude;
+        FieldPatternIncludeConstructor?: typeof FieldPatternInclude;
+        FieldTypeIncludeConstructor?: typeof FieldTypeInclude;
+        FieldValidationIncludeConstructor?: typeof FieldValidationInclude;
+        FieldValueIncludeConstructor?: typeof FieldValueInclude;
+        FieldVisibilityIncludeConstructor?: typeof FieldVisibilityInclude;
+        InputPasswordConstructor?: typeof InputPassword;
+        MaskIncludeConstructor?: typeof MaskInclude;
+        TextIncludeConstructor?: typeof TextInclude;
+    });
 }

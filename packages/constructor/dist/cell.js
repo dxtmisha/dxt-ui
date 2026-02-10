@@ -1,20 +1,20 @@
-var y = Object.defineProperty;
-var I = (r, i, t) => i in r ? y(r, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[i] = t;
-var e = (r, i, t) => I(r, typeof i != "symbol" ? i + "" : i, t);
+var I = Object.defineProperty;
+var k = (r, i, t) => i in r ? I(r, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[i] = t;
+var e = (r, i, t) => k(r, typeof i != "symbol" ? i + "" : i, t);
 import { computed as d, h } from "vue";
-import { DesignConstructorAbstract as k } from "@dxtmisha/functional";
-import { g as w } from "./getClassTagAStatic-BnVYlXHI.js";
-import { L as T } from "./LabelInclude-D-mLvjK5.js";
-import { C as _ } from "./CaptionInclude-NzS6EYYj.js";
-import { D } from "./DescriptionInclude-D4ane9aR.js";
+import { DesignConstructorAbstract as w } from "@dxtmisha/functional";
+import { g as T } from "./getClassTagAStatic-BnVYlXHI.js";
+import { L as _ } from "./LabelInclude-D-mLvjK5.js";
+import { C as D } from "./CaptionInclude-NzS6EYYj.js";
+import { D as E } from "./DescriptionInclude-D4ane9aR.js";
 import { E as A } from "./EnabledInclude-Dk-rP4jp.js";
-import { E } from "./EventClickInclude-WHJqxZ1b.js";
-import { I as $ } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as R } from "./ProgressInclude-9MfZWtGP.js";
+import { E as $ } from "./EventClickInclude-WHJqxZ1b.js";
+import { S as R } from "./SkeletonInclude-BIUzAO2s.js";
+import { I as L } from "./IconTrailingInclude-CdsOcDxv.js";
+import { P } from "./ProgressInclude-9MfZWtGP.js";
 import { R as B } from "./RippleInclude-Du5yIzX_.js";
-import { S as L } from "./SkeletonInclude-BIUzAO2s.js";
 import { A as M } from "./AriaStaticInclude-CAURwJMb.js";
-class P {
+class N {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -25,17 +25,18 @@ class P {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param LabelConstructor class for creating a label/ класс для создания метки
-   * @param CaptionConstructor class for creating a caption/ класс для создания подписи
-   * @param DescriptionConstructor class for creating a description/ класс для создания описания
-   * @param EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
-   * @param IconConstructor class for creating an icon/ класс для создания иконки
-   * @param ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
-   * @param RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
-   * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
-   * @param EventConstructor class for creating an event/ класс для создания события
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.CaptionConstructor class for creating a caption/ класс для создания подписи
+   * @param constructors.DescriptionConstructor class for creating a description/ класс для создания описания
+   * @param constructors.EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
+   * @param constructors.EventConstructor class for creating an event/ класс для создания события
+   * @param constructors.IconConstructor class for creating an icon/ класс для создания иконки
+   * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
+   * @param constructors.ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
+   * @param constructors.RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
+   * @param constructors.SkeletonConstructor class for creating a skeleton/ класс для создания скелета
    */
-  constructor(i, t, n, o, s, l, a, c, u = T, m = _, g = D, b = A, v = $, C = R, f = B, S = L, x = E) {
+  constructor(i, t, n, o, s, l, a, u, c) {
     e(this, "progress");
     e(this, "skeleton");
     e(this, "label");
@@ -52,7 +53,7 @@ class P {
      */
     e(this, "classes", d(() => ({
       [`${this.className}--description`]: this.description.is.value,
-      [w(this.classDesign)]: !0
+      [T(this.classDesign)]: !0
     })));
     /**
      * Computed role for the cell component.
@@ -65,8 +66,18 @@ class P {
       if (this.props.dynamic)
         return "button";
     }));
-    this.props = i, this.refs = t, this.element = n, this.classDesign = o, this.className = s, this.components = l, this.slots = a, this.emits = c;
-    const p = new C(
+    this.props = i, this.refs = t, this.element = n, this.classDesign = o, this.className = s, this.components = l, this.slots = a, this.emits = u;
+    const {
+      CaptionConstructor: m = D,
+      DescriptionConstructor: g = E,
+      EnabledConstructor: b = A,
+      EventConstructor: C = $,
+      IconConstructor: v = L,
+      LabelConstructor: f = _,
+      ProgressConstructor: S = P,
+      RippleConstructor: x = B,
+      SkeletonConstructor: y = R
+    } = c != null ? c : {}, p = new S(
       i,
       s,
       l,
@@ -74,11 +85,11 @@ class P {
         position: "bottom"
       }
     );
-    this.skeleton = new S(
+    this.skeleton = new y(
       i,
       o,
       ["classTextVariant"]
-    ), this.label = new u(
+    ), this.label = new f(
       i,
       s,
       void 0,
@@ -87,10 +98,10 @@ class P {
       void 0,
       void 0,
       this.skeleton
-    ), this.caption = new m(i, s, a), this.description = new g(i, s, a, this.skeleton), this.enabled = new b(i, p), this.icon = new v(i, s, l), this.progress = p, this.ripple = new f(s, l, this.enabled), this.event = new x(
+    ), this.caption = new m(i, s, a), this.description = new g(i, s, a, this.skeleton), this.enabled = new b(i, p), this.icon = new v(i, s, l), this.progress = p, this.ripple = new x(s, l, this.enabled), this.event = new C(
       i,
       this.enabled,
-      c
+      u
     );
   }
   /**
@@ -107,12 +118,12 @@ class P {
     };
   }
 }
-const X = {
+const Y = {
   tag: "div",
   // :default [!] System label / Системная метка
   divider: !0
 };
-class Y extends k {
+class Z extends w {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -120,7 +131,7 @@ class Y extends k {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor cell item class/ класс элемента ячейки
    */
-  constructor(t, n, o, s = P) {
+  constructor(t, n, o, s = N) {
     super(
       t,
       n,
@@ -276,7 +287,7 @@ class Y extends k {
   }
 }
 export {
-  P as Cell,
-  Y as CellDesign,
-  X as defaultsCell
+  N as Cell,
+  Z as CellDesign,
+  Y as defaultsCell
 };

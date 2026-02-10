@@ -1,10 +1,10 @@
-var u = Object.defineProperty;
-var p = (i, e, t) => e in i ? u(i, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[e] = t;
-var r = (i, e, t) => p(i, typeof e != "symbol" ? e + "" : e, t);
-import { h as f } from "vue";
-import { ListDataRef as v, DesignConstructorAbstract as g, forEach as C, toBinds as D } from "@dxtmisha/functional";
-import { E as L } from "./EventClickInclude-WHJqxZ1b.js";
-import { M as k } from "./ModelValueInclude-CJmm5go9.js";
+var p = Object.defineProperty;
+var f = (i, e, t) => e in i ? p(i, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[e] = t;
+var n = (i, e, t) => f(i, typeof e != "symbol" ? e + "" : e, t);
+import { h as v } from "vue";
+import { ListDataRef as C, DesignConstructorAbstract as g, forEach as D, toBinds as L } from "@dxtmisha/functional";
+import { E as k } from "./EventClickInclude-WHJqxZ1b.js";
+import { M as I } from "./ModelValueInclude-CJmm5go9.js";
 class y {
   /**
    * Constructor
@@ -16,15 +16,22 @@ class y {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param ModelValueIncludeConstructor class for working with model value/ класс для работы со значением модели
-   * @param ListDataRefConstructor class for working with list data/ класс для работы с данными списка
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors.ListDataRefConstructor class for working with list data/ класс для работы с данными списка
+   * @param constructors.ModelValueIncludeConstructor class for working with model value/ класс для работы со значением модели
    */
-  constructor(e, t, s, n, o, h, l, a, d = L, c = k, m = v) {
-    r(this, "data");
-    r(this, "event");
-    r(this, "model");
-    this.props = e, this.refs = t, this.element = s, this.classDesign = n, this.className = o, this.components = h, this.slots = l, this.emits = a, this.event = new d(void 0, void 0, this.emits), this.model = new c(
+  constructor(e, t, s, r, o, l, a, d, h) {
+    n(this, "data");
+    n(this, "event");
+    n(this, "model");
+    this.props = e, this.refs = t, this.element = s, this.classDesign = r, this.className = o, this.components = l, this.slots = a, this.emits = d;
+    const {
+      EventClickIncludeConstructor: c = k,
+      ListDataRefConstructor: m = C,
+      ModelValueIncludeConstructor: u = I
+    } = h != null ? h : {};
+    this.event = new c(void 0, void 0, this.emits), this.model = new u(
       "selected",
       this.emits,
       this.event,
@@ -50,10 +57,10 @@ class y {
     return this.data.fullData.value;
   }
 }
-const b = {
+const A = {
   readonly: !0
 };
-class A extends g {
+class G extends g {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -61,19 +68,19 @@ class A extends g {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, s, n, o = y) {
+  constructor(t, s, r, o = y) {
     super(
       t,
       s,
-      n
+      r
     );
-    r(this, "item");
+    n(this, "item");
     /**
      * List rendering.
      *
      * Рендеринг списка.
      */
-    r(this, "renderList", () => C(
+    n(this, "renderList", () => D(
       this.item.getList(),
       (t) => this.renderItem(t)
     ));
@@ -83,11 +90,11 @@ class A extends g {
      * Рендеринг элемента.
      * @param item selected element/ выбранный элемент
      */
-    r(this, "renderItem", (t) => {
+    n(this, "renderItem", (t) => {
       var s;
       return this.components.renderOne(
         "chip",
-        D(
+        L(
           {
             class: (s = this.classes) == null ? void 0 : s.value.item,
             iconHide: this.props.iconWhenSelected && !t.selected,
@@ -147,7 +154,7 @@ class A extends g {
   initRender() {
     var s;
     const t = this.renderList();
-    return this.initSlot("default", t), f(
+    return this.initSlot("default", t), v(
       "div",
       {
         ...this.getAttrs(),
@@ -159,6 +166,6 @@ class A extends g {
 }
 export {
   y as ChipGroup,
-  A as ChipGroupDesign,
-  b as defaultsChipGroup
+  G as ChipGroupDesign,
+  A as defaultsChipGroup
 };

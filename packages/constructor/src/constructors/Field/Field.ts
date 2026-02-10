@@ -68,19 +68,20 @@ export class Field {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
-   * @param IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
-   * @param CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
-   * @param PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
-   * @param SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
-   * @param FieldLabelIncludeConstructor class for working with field label/ класс для работы с меткой поля
-   * @param FieldMessageIncludeConstructor class for working with field message/ класс для работы с сообщением поля
-   * @param ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
-   * @param EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
-   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
-   * @param FieldSizeConstructor class for working with field size/ класс для работы с размером поля
-   * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
+   * @param constructors.EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
+   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors.FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
+   * @param constructors.FieldLabelIncludeConstructor class for working with field label/ класс для работы с меткой поля
+   * @param constructors.FieldMessageIncludeConstructor class for working with field message/ класс для работы с сообщением поля
+   * @param constructors.FieldSizeConstructor class for working with field size/ класс для работы с размером поля
+   * @param constructors.IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param constructors.PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
+   * @param constructors.ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
+   * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+   * @param constructors.SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
+   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
    */
   constructor(
     protected readonly props: FieldProps,
@@ -91,20 +92,38 @@ export class Field {
     protected readonly components?: DesignComp<FieldComponents, FieldProps>,
     protected readonly slots?: FieldSlots,
     protected readonly emits?: ConstrEmit<FieldEmits>,
-    SkeletonIncludeConstructor: typeof SkeletonInclude = SkeletonInclude,
-    IconTrailingIncludeConstructor: typeof IconTrailingInclude = IconTrailingInclude,
-    CaptionIncludeConstructor: typeof CaptionInclude = CaptionInclude,
-    PrefixIncludeConstructor: typeof PrefixInclude = PrefixInclude,
-    SuffixIncludeConstructor: typeof SuffixInclude = SuffixInclude,
-    FieldLabelIncludeConstructor: typeof FieldLabelInclude = FieldLabelInclude,
-    FieldMessageIncludeConstructor: typeof FieldMessageInclude = FieldMessageInclude,
-    ProgressIncludeConstructor: typeof ProgressInclude = ProgressInclude,
-    EnabledIncludeConstructor: typeof EnabledInclude = EnabledInclude,
-    EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude,
-    FieldIconsConstructor: typeof FieldIcons = FieldIcons,
-    FieldSizeConstructor: typeof FieldSize = FieldSize,
-    TextIncludeConstructor: typeof TextInclude = TextInclude
+    constructors?: {
+      CaptionIncludeConstructor?: typeof CaptionInclude
+      EnabledIncludeConstructor?: typeof EnabledInclude
+      EventClickIncludeConstructor?: typeof EventClickInclude
+      FieldIconsConstructor?: typeof FieldIcons
+      FieldLabelIncludeConstructor?: typeof FieldLabelInclude
+      FieldMessageIncludeConstructor?: typeof FieldMessageInclude
+      FieldSizeConstructor?: typeof FieldSize
+      IconTrailingIncludeConstructor?: typeof IconTrailingInclude
+      PrefixIncludeConstructor?: typeof PrefixInclude
+      ProgressIncludeConstructor?: typeof ProgressInclude
+      SkeletonIncludeConstructor?: typeof SkeletonInclude
+      SuffixIncludeConstructor?: typeof SuffixInclude
+      TextIncludeConstructor?: typeof TextInclude
+    }
   ) {
+    const {
+      CaptionIncludeConstructor = CaptionInclude,
+      EnabledIncludeConstructor = EnabledInclude,
+      EventClickIncludeConstructor = EventClickInclude,
+      FieldIconsConstructor = FieldIcons,
+      FieldLabelIncludeConstructor = FieldLabelInclude,
+      FieldMessageIncludeConstructor = FieldMessageInclude,
+      FieldSizeConstructor = FieldSize,
+      IconTrailingIncludeConstructor = IconTrailingInclude,
+      PrefixIncludeConstructor = PrefixInclude,
+      ProgressIncludeConstructor = ProgressInclude,
+      SkeletonIncludeConstructor = SkeletonInclude,
+      SuffixIncludeConstructor = SuffixInclude,
+      TextIncludeConstructor = TextInclude
+    } = constructors ?? {}
+
     this.skeleton = new SkeletonIncludeConstructor(
       this.props,
       this.classDesign,
@@ -201,7 +220,7 @@ export class Field {
       classForFocus: `${this.className}__body__focus`,
       binds: {
         id: this.id.value,
-        className,
+        class: className,
         ...AriaStaticInclude.invalid(this.isValidation.value),
         ...AriaStaticInclude.describedby(this.getDescribedby())
       }

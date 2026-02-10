@@ -1,17 +1,17 @@
 var w = Object.defineProperty;
-var C = (i, t, s) => t in i ? w(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
-var e = (i, t, s) => C(i, typeof t != "symbol" ? t + "" : t, s);
-import { computed as o, h as S } from "vue";
-import { DesignConstructorAbstract as k, RouterItemRef as B } from "@dxtmisha/functional";
+var S = (i, t, s) => t in i ? w(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
+var e = (i, t, s) => S(i, typeof t != "symbol" ? t + "" : t, s);
+import { computed as l, h as k } from "vue";
+import { DesignConstructorAbstract as B, RouterItemRef as E } from "@dxtmisha/functional";
 import { g as y } from "./getClassTagAStatic-BnVYlXHI.js";
 import { L as x } from "./LabelInclude-D-mLvjK5.js";
-import { E } from "./EnabledInclude-Dk-rP4jp.js";
-import { A as h } from "./AriaStaticInclude-CAURwJMb.js";
-import { E as T } from "./EventClickInclude-WHJqxZ1b.js";
-import { I as A } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as D } from "./ProgressInclude-9MfZWtGP.js";
-import { R as L } from "./RippleInclude-Du5yIzX_.js";
-import { S as R } from "./SkeletonInclude-BIUzAO2s.js";
+import { E as L } from "./EnabledInclude-Dk-rP4jp.js";
+import { A as u } from "./AriaStaticInclude-CAURwJMb.js";
+import { E as R } from "./EventClickInclude-WHJqxZ1b.js";
+import { I as T } from "./IconTrailingInclude-CdsOcDxv.js";
+import { P as A } from "./ProgressInclude-9MfZWtGP.js";
+import { R as D } from "./RippleInclude-Du5yIzX_.js";
+import { S as P } from "./SkeletonInclude-BIUzAO2s.js";
 class K {
   /**
    * Constructor
@@ -23,15 +23,16 @@ class K {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param LabelConstructor class for creating a label/ класс для создания метки
-   * @param EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
-   * @param IconConstructor class for creating an icon/ класс для создания иконки
-   * @param ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
-   * @param RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
-   * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
-   * @param EventConstructor class for creating an event/ класс для создания события
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
+   * @param constructors.EventConstructor class for creating an event/ класс для создания события
+   * @param constructors.IconConstructor class for creating an icon/ класс для создания иконки
+   * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
+   * @param constructors.ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
+   * @param constructors.RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
+   * @param constructors.SkeletonConstructor class for creating a skeleton/ класс для создания скелета
    */
-  constructor(t, s, n, a, r, l, u, c, m = x, d = E, g = A, b = D, v = L, f = R, I = T) {
+  constructor(t, s, n, a, r, o, p, c, h) {
     e(this, "label");
     e(this, "enabled");
     e(this, "icon");
@@ -40,9 +41,9 @@ class K {
     e(this, "skeleton");
     e(this, "event");
     /** tag name/ название тега */
-    e(this, "tag", o(() => this.props.tag ? this.props.tag : this.props.href ? "a" : "button"));
+    e(this, "tag", l(() => this.props.tag ? this.props.tag : this.props.href ? "a" : "button"));
     /** values for the class/ значения для класса */
-    e(this, "classes", o(() => ({
+    e(this, "classes", l(() => ({
       [`${this.className}--icon`]: this.icon.isIcon.value,
       [y(this.classDesign)]: !0,
       ...this.skeleton.classes.value
@@ -51,16 +52,16 @@ class K {
      * list of aria properties for the button component/
      * список aria свойств для компонента Button
      */
-    e(this, "aria", o(() => {
+    e(this, "aria", l(() => {
       const t = {
         ...this.progress.aria.value,
-        ...h.label(this.props.ariaLabel)
+        ...u.label(this.props.ariaLabel)
       };
       return this.isTagNotButton() ? {
         tabindex: "0",
         ...t,
-        ...h.role("button"),
-        ...h.disabled(this.progress.is.value || !this.enabled.isEnabled.value)
+        ...u.role("button"),
+        ...u.disabled(this.progress.is.value || !this.enabled.isEnabled.value)
       } : t;
     }));
     /**
@@ -68,27 +69,35 @@ class K {
      *
      * События для компонента кнопки.
      */
-    e(this, "eventList", o(() => {
+    e(this, "eventList", l(() => {
       const t = {
         onClick: this.event.onClick
       };
       return this.isTagNotButton() && (t.onKeydown = this.event.onKeydown), t;
     }));
-    this.props = t, this.refs = s, this.element = n, this.classDesign = a, this.className = r, this.components = l, this.slots = u, this.emits = c;
-    const p = new b(
+    this.props = t, this.refs = s, this.element = n, this.classDesign = a, this.className = r, this.components = o, this.slots = p, this.emits = c;
+    const {
+      EnabledConstructor: m = L,
+      EventConstructor: g = R,
+      IconConstructor: b = T,
+      LabelConstructor: v = x,
+      ProgressConstructor: f = A,
+      RippleConstructor: C = D,
+      SkeletonConstructor: I = P
+    } = h != null ? h : {}, d = new f(
       t,
       r,
-      l,
+      o,
       {
         circular: !0,
         inverse: !0
       }
     );
-    this.label = new m(t, r, void 0, u), this.enabled = new d(t, p), this.icon = new g(t, r, l), this.progress = p, this.ripple = new v(r, l, this.enabled), this.skeleton = new f(
+    this.label = new v(t, r, void 0, p), this.enabled = new m(t, d), this.icon = new b(t, r, o), this.progress = d, this.ripple = new C(r, o, this.enabled), this.skeleton = new I(
       t,
       a,
       ["classBackground"]
-    ), this.event = new I(
+    ), this.event = new g(
       t,
       this.enabled,
       c
@@ -103,7 +112,7 @@ class K {
     return !!(this.props.tag && ["a", "button"].indexOf(this.props.tag) === -1);
   }
 }
-class M extends k {
+class Q extends B {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -169,7 +178,7 @@ class M extends k {
    */
   initRender() {
     var s, n;
-    return S(
+    return k(
       this.item.tag.value,
       {
         ...this.getAttrs(),
@@ -179,7 +188,7 @@ class M extends k {
         style: (n = this.styles) == null ? void 0 : n.value,
         "data-value": this.props.value,
         disabled: this.item.enabled.isDisabledOrUndefined.value,
-        ...B.rawToHref(this.props.to),
+        ...E.rawToHref(this.props.to),
         ...this.item.eventList.value,
         ...this.item.aria.value
       },
@@ -194,5 +203,5 @@ class M extends k {
 }
 export {
   K as B,
-  M as a
+  Q as a
 };

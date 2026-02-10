@@ -58,15 +58,16 @@ export class Menu {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param MenuRequestConstructor class for working with request/ класс для работы с запросом
-   * @param MenuSearchConstructor class for working with search/ класс для работы с поиском
-   * @param MenuValueConstructor class for working with value/ класс для работы со значением
-   * @param ListDataRefConstructor class for working with list data/ класс для работы с данными списка
-   * @param MenuGoConstructor class for working with navigation/ класс для работы с навигацией
-   * @param BarsIncludeConstructor class for working with bars/ класс для работы с барами
-   * @param MenuWindowConstructor class for working with menu window/ класс для работы с окном меню
-   * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
-   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.BarsIncludeConstructor class for working with bars/ класс для работы с барами
+   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors.ListDataRefConstructor class for working with list data/ класс для работы с данными списка
+   * @param constructors.MenuGoConstructor class for working with navigation/ класс для работы с навигацией
+   * @param constructors.MenuRequestConstructor class for working with request/ класс для работы с запросом
+   * @param constructors.MenuSearchConstructor class for working with search/ класс для работы с поиском
+   * @param constructors.MenuValueConstructor class for working with value/ класс для работы со значением
+   * @param constructors.MenuWindowConstructor class for working with menu window/ класс для работы с окном меню
+   * @param constructors.WindowIncludeConstructor class for working with window/ класс для работы с окном
    */
   constructor(
     protected readonly props: MenuProps,
@@ -77,16 +78,30 @@ export class Menu {
     protected readonly components?: DesignComp<MenuComponents, MenuProps>,
     protected readonly slots?: MenuSlots,
     protected readonly emits?: ConstrEmit<MenuEmits>,
-    MenuRequestConstructor: typeof MenuRequest = MenuRequest,
-    MenuSearchConstructor: typeof MenuSearch = MenuSearch,
-    MenuValueConstructor: typeof MenuValue = MenuValue,
-    ListDataRefConstructor: typeof ListDataRef = ListDataRef,
-    MenuGoConstructor: typeof MenuGo = MenuGo,
-    BarsIncludeConstructor: typeof BarsInclude = BarsInclude,
-    MenuWindowConstructor: typeof MenuWindow = MenuWindow,
-    WindowIncludeConstructor: typeof WindowInclude = WindowInclude,
-    EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude
+    constructors?: {
+      BarsIncludeConstructor?: typeof BarsInclude
+      EventClickIncludeConstructor?: typeof EventClickInclude
+      ListDataRefConstructor?: typeof ListDataRef
+      MenuGoConstructor?: typeof MenuGo
+      MenuRequestConstructor?: typeof MenuRequest
+      MenuSearchConstructor?: typeof MenuSearch
+      MenuValueConstructor?: typeof MenuValue
+      MenuWindowConstructor?: typeof MenuWindow
+      WindowIncludeConstructor?: typeof WindowInclude
+    }
   ) {
+    const {
+      BarsIncludeConstructor = BarsInclude,
+      EventClickIncludeConstructor = EventClickInclude,
+      ListDataRefConstructor = ListDataRef,
+      MenuGoConstructor = MenuGo,
+      MenuRequestConstructor = MenuRequest,
+      MenuSearchConstructor = MenuSearch,
+      MenuValueConstructor = MenuValue,
+      MenuWindowConstructor = MenuWindow,
+      WindowIncludeConstructor = WindowInclude
+    } = constructors ?? {}
+
     this.request = new MenuRequestConstructor(this.props)
     this.search = new MenuSearchConstructor(this.props)
     this.value = new MenuValueConstructor(this.props, this.refs, this.emits)

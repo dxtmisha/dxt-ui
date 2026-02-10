@@ -1,9 +1,9 @@
-var g = Object.defineProperty;
-var f = (i, e, t) => e in i ? g(i, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[e] = t;
-var s = (i, e, t) => f(i, typeof e != "symbol" ? e + "" : e, t);
-import { DesignConstructorAbstract as v } from "@dxtmisha/functional";
-import { watch as u, ref as o, nextTick as z, h as l } from "vue";
-class x {
+var f = Object.defineProperty;
+var v = (s, e, t) => e in s ? f(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
+var i = (s, e, t) => v(s, typeof e != "symbol" ? e + "" : e, t);
+import { DesignConstructorAbstract as z } from "@dxtmisha/functional";
+import { watch as o, ref as m, nextTick as x, h as u } from "vue";
+class T {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -11,8 +11,8 @@ class x {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(e, t, n) {
-    s(this, "item", o(""));
-    this.props = e, this.refs = t, this.emits = n, u(
+    i(this, "item", m(""));
+    this.props = e, this.refs = t, this.emits = n, o(
       [t.value],
       () => this.set(e.value),
       { immediate: !0 }
@@ -47,7 +47,7 @@ class x {
     return this.item.value !== e;
   }
 }
-class T {
+class A {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -55,13 +55,13 @@ class T {
    * @param value object for working with values/ объект для работы со значениями
    */
   constructor(e, t, n) {
-    s(this, "clone", o());
+    i(this, "clone", m());
     /**
      * Changes the size of the field.
      *
      * Изменяет размер поля.
      */
-    s(this, "updateSize", () => {
+    i(this, "updateSize", () => {
       if (this.isElements()) {
         const e = getComputedStyle(this.element.value), t = this.clone.value.style;
         t.paddingTop = e.paddingTop, t.paddingRight = e.paddingRight, t.paddingBottom = e.paddingBottom, t.paddingLeft = e.paddingLeft, t.width = `${this.element.value.offsetWidth}px`;
@@ -72,7 +72,7 @@ class T {
      *
      * Событие для обновления размера и значения.
      */
-    s(this, "on", () => {
+    i(this, "on", () => {
       this.updateSize(), this.updateValue();
     });
     /**
@@ -81,7 +81,7 @@ class T {
      * Событие для изменения значения.
      * @param event invoked event/ вызываемое событие
      */
-    s(this, "onInput", (e) => {
+    i(this, "onInput", (e) => {
       this.value.on(e), this.updateSize(), this.updateValue();
     });
     /**
@@ -89,10 +89,10 @@ class T {
      *
      * Обновляет высоту поля.
      */
-    s(this, "updateHeight", () => {
+    i(this, "updateHeight", () => {
       this.isElements() && (this.element.value.style.height = `${this.clone.value.offsetHeight}px`);
     });
-    this.props = e, this.element = t, this.value = n, u(this.value.item, this.on), z().then(() => requestAnimationFrame(this.on));
+    this.props = e, this.element = t, this.value = n, o(this.value.item, this.on), x().then(() => requestAnimationFrame(this.on));
   }
   /**
    * Checks if all elements are present.
@@ -111,7 +111,7 @@ class T {
     this.isElements() && (this.clone.value.innerText = `${this.value.item.value} --`, requestAnimationFrame(this.updateHeight));
   }
 }
-class A {
+class C {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -122,19 +122,25 @@ class A {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param TextareaAutosizeValueConstructor class for working with value/ класс для работы со значением
-   * @param TextareaAutosizeResizeConstructor class for working with resize/ класс для работы с изменением размера
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.TextareaAutosizeResizeConstructor class for working with resize/ класс для работы с изменением размера
+   * @param constructors.TextareaAutosizeValueConstructor class for working with value/ класс для работы со значением
    */
-  constructor(e, t, n, a, h, m, p, r, c = x, d = T) {
-    s(this, "value");
-    s(this, "resize");
-    this.props = e, this.refs = t, this.element = n, this.classDesign = a, this.className = h, this.components = m, this.slots = p, this.emits = r, this.value = new c(e, t, r), this.resize = new d(e, n, this.value);
+  constructor(e, t, n, a, h, p, d, r, l) {
+    i(this, "value");
+    i(this, "resize");
+    this.props = e, this.refs = t, this.element = n, this.classDesign = a, this.className = h, this.components = p, this.slots = d, this.emits = r;
+    const {
+      TextareaAutosizeResizeConstructor: c = A,
+      TextareaAutosizeValueConstructor: g = T
+    } = l != null ? l : {};
+    this.value = new g(e, t, r), this.resize = new c(e, n, this.value);
   }
 }
-const D = {
+const E = {
   autosize: !0
 };
-class E extends v {
+class V extends z {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -142,21 +148,21 @@ class E extends v {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, n, a, h = A) {
+  constructor(t, n, a, h = C) {
     super(
       t,
       n,
       a
     );
-    s(this, "item");
+    i(this, "item");
     /**
      * Renders a textarea element.
      *
      * Рендерит элемент textarea.
      */
-    s(this, "renderTextarea", () => {
+    i(this, "renderTextarea", () => {
       var t;
-      return l("textarea", {
+      return u("textarea", {
         ...this.getAttrs(),
         ...this.props.inputAttrs,
         ref: this.element,
@@ -171,9 +177,9 @@ class E extends v {
      *
      * Рендерит элемент-клон.
      */
-    s(this, "renderClone", () => {
+    i(this, "renderClone", () => {
       var t;
-      return l("div", {
+      return u("div", {
         ref: this.item.resize.clone,
         class: (t = this.classes) == null ? void 0 : t.value.clone
       });
@@ -232,7 +238,7 @@ class E extends v {
   }
 }
 export {
-  A as TextareaAutosize,
-  E as TextareaAutosizeDesign,
-  D as defaultsTextareaAutosize
+  C as TextareaAutosize,
+  V as TextareaAutosizeDesign,
+  E as defaultsTextareaAutosize
 };

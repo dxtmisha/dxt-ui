@@ -43,8 +43,16 @@ export declare class Accordion {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+     * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
+     * @param constructors.MotionTransformIncludeConstructor class for working with motion transform/ класс для работы с анимацией перехода
      */
-    constructor(props: AccordionProps, refs: ToRefs<AccordionProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<AccordionComponents, AccordionProps> | undefined, slots?: AccordionSlots | undefined, emits?: ConstrEmit<AccordionEmits> | undefined);
+    constructor(props: AccordionProps, refs: ToRefs<AccordionProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<AccordionComponents, AccordionProps> | undefined, slots?: AccordionSlots | undefined, emits?: ConstrEmit<AccordionEmits> | undefined, constructors?: {
+        EventClickIncludeConstructor?: typeof EventClickInclude;
+        ModelIncludeConstructor?: typeof ModelInclude;
+        MotionTransformIncludeConstructor?: typeof MotionTransformInclude;
+    });
     /**
      * Computed bindings for the cell.
      *

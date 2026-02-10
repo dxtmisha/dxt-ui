@@ -1,0 +1,39 @@
+Multi-line text input component with support for auto-sizing, validation, and advanced styling.
+
+Textarea provides a convenient interface for entering large amounts of text. The component automatically adjusts its height to fit the content, supports character limits, icons, labels, and helper messages. Integrates with the form validation system.
+
+**Key Features:**
+
+- Automatic height adjustment (autosize)
+- Validation support and error display
+- Built-in character counter
+- Support for icons, prefixes, and suffixes
+- Floating or static label
+- States: active, disabled, read-only, loading
+- Theme and size customization
+
+**Typical Use Cases:**
+
+- Comment and feedback fields
+- Contact forms
+- Description or biography editors
+- Address or note input
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const comment = ref('')
+</script>
+
+<template>
+  <Textarea
+    v-model="comment"
+    label="Your comment"
+    placeholder="Enter text..."
+    autosize
+    counter
+    :maxlength="500"
+  />
+</template>
+```

@@ -1,13 +1,13 @@
-var v = Object.defineProperty;
-var I = (s, t, i) => t in s ? v(s, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : s[t] = i;
-var e = (s, t, i) => I(s, typeof t != "symbol" ? t + "" : t, i);
-import { computed as n, h as A } from "vue";
-import { getBindRef as d, DesignConstructorAbstract as f } from "@dxtmisha/functional";
-import { A as h } from "./AriaStaticInclude-CAURwJMb.js";
-import { E as g } from "./EventClickInclude-WHJqxZ1b.js";
+var I = Object.defineProperty;
+var A = (s, t, i) => t in s ? I(s, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : s[t] = i;
+var e = (s, t, i) => A(s, typeof t != "symbol" ? t + "" : t, i);
+import { computed as n, h as f } from "vue";
+import { getBindRef as l, DesignConstructorAbstract as g } from "@dxtmisha/functional";
+import { A as a } from "./AriaStaticInclude-CAURwJMb.js";
+import { E as k } from "./EventClickInclude-WHJqxZ1b.js";
 import { S as y } from "./SkeletonInclude-BIUzAO2s.js";
-import { I as E, a as K } from "./IconInclude-CLqwI29Q.js";
-import { I as O } from "./IconTrailingInclude-CdsOcDxv.js";
+import { I as K, a as M } from "./IconInclude-CLqwI29Q.js";
+import { I as T } from "./IconTrailingInclude-CdsOcDxv.js";
 class b {
   /**
    * Constructor
@@ -19,10 +19,11 @@ class b {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param EventClickIncludeConstructor class for working with events/ класс для работы с событиями
-   * @param SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.EventClickIncludeConstructor class for working with events/ класс для работы с событиями
+   * @param constructors.SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
    */
-  constructor(t, i, c, r, o, p, l, a, m = g, u = y) {
+  constructor(t, i, c, r, o, p, m, d, h) {
     /**
      * Returns the property for the base icon/ Возвращает свойство для базовой иконки
      */
@@ -61,9 +62,9 @@ class b {
         tabindex: this.props.dynamic ? (t = this.props.tabindex) != null ? t : 0 : void 0,
         onClick: this.props.dynamic ? this.event.onClick : void 0,
         onKeydown: this.props.dynamic ? this.event.onKeydown : void 0,
-        ...h.role(this.getRole()),
-        ...h.label(this.props.ariaLabel),
-        ...h.hidden(!this.props.dynamic)
+        ...a.role(this.getRole()),
+        ...a.label(this.props.ariaLabel),
+        ...a.hidden(!this.props.dynamic)
       };
     }));
     /**
@@ -76,7 +77,12 @@ class b {
       var i;
       return (i = this.emits) == null ? void 0 : i.call(this, "load", t);
     });
-    this.props = t, this.refs = i, this.element = c, this.classDesign = r, this.className = o, this.components = p, this.slots = l, this.emits = a, this.iconBind = d(
+    this.props = t, this.refs = i, this.element = c, this.classDesign = r, this.className = o, this.components = p, this.slots = m, this.emits = d;
+    const {
+      EventClickIncludeConstructor: v = k,
+      SkeletonIncludeConstructor: u = y
+    } = h != null ? h : {};
+    this.iconBind = l(
       i.icon,
       n(() => ({
         key: "mainIcon",
@@ -86,7 +92,7 @@ class b {
         hide: this.isActive.value,
         onLoad: this.onLoad
       }))
-    ), this.iconActiveBind = d(
+    ), this.iconActiveBind = l(
       i.iconActive,
       n(() => ({
         key: "activeIcon",
@@ -95,10 +101,10 @@ class b {
         disabled: this.props.disabled,
         hide: !this.isActive.value
       }))
-    ), this.event = new m(
+    ), this.event = new v(
       t,
       void 0,
-      a
+      d
     ), this.skeleton = new u(
       t,
       r,
@@ -117,11 +123,11 @@ class b {
       return "button";
   }
 }
-const S = {
+const E = {
   // :default [!] System label / Системная метка
   animationType: "type1"
 };
-class R extends f {
+class R extends g {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -215,14 +221,14 @@ class R extends f {
    */
   initRender() {
     const i = [];
-    return this.initSlot("default", i), this.props.icon && i.push(this.renderIcon()), this.props.iconActive && i.push(this.renderIconActive()), A("span", this.propsMain.value, i);
+    return this.initSlot("default", i), this.props.icon && i.push(this.renderIcon()), this.props.iconActive && i.push(this.renderIconActive()), f("span", this.propsMain.value, i);
   }
 }
 export {
   b as Icon,
   R as IconDesign,
-  E as IconInclude,
-  K as IconLiteInclude,
-  O as IconTrailingInclude,
-  S as defaultsIcon
+  K as IconInclude,
+  M as IconLiteInclude,
+  T as IconTrailingInclude,
+  E as defaultsIcon
 };

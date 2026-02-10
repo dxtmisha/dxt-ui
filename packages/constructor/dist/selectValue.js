@@ -1,12 +1,12 @@
-var v = Object.defineProperty;
-var b = (r, e, s) => e in r ? v(r, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : r[e] = s;
-var t = (r, e, s) => b(r, typeof e != "symbol" ? e + "" : e, s);
-import { computed as o, h as g } from "vue";
-import { isFilled as f, DesignConstructorAbstract as w, toBinds as a, getRef as C, toBind as S } from "@dxtmisha/functional";
-import { E as x } from "./EnabledInclude-Dk-rP4jp.js";
-import { E } from "./EventClickInclude-WHJqxZ1b.js";
-import { W as N } from "./WindowClassesInclude-B56usxgx.js";
-class D {
+var b = Object.defineProperty;
+var g = (r, e, s) => e in r ? b(r, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : r[e] = s;
+var t = (r, e, s) => g(r, typeof e != "symbol" ? e + "" : e, s);
+import { computed as a, h as f } from "vue";
+import { isFilled as C, DesignConstructorAbstract as w, toBinds as h, getRef as S, toBind as x } from "@dxtmisha/functional";
+import { E } from "./EnabledInclude-Dk-rP4jp.js";
+import { E as N } from "./EventClickInclude-WHJqxZ1b.js";
+import { W as D } from "./WindowClassesInclude-B56usxgx.js";
+class I {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -17,20 +17,21 @@ class D {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
-   * @param EventConstructor class for creating an event/ класс для создания события
-   * @param WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
+   * @param constructors.EventConstructor class for creating an event/ класс для создания события
+   * @param constructors.WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
    */
-  constructor(e, s, i, l, n, h, c, p, d = x, u = E, m = N) {
+  constructor(e, s, i, l, n, p, c, d, o) {
     t(this, "enabled");
     t(this, "event");
     t(this, "window");
     /** Is placeholder/ Является ли плейсхолдером */
-    t(this, "isPlaceholder", o(
-      () => !f(this.props.value) && !!this.props.placeholder
+    t(this, "isPlaceholder", a(
+      () => !C(this.props.value) && !!this.props.placeholder
     ));
     /** Icon for canceling selection/ Иконка для отмены выбора */
-    t(this, "iconTrailing", o(() => {
+    t(this, "iconTrailing", a(() => {
       if (this.enabled.isEnabled.value)
         return {
           icon: this.props.iconCancel,
@@ -42,7 +43,7 @@ class D {
         };
     }));
     /** Returns data for the main style class/ Возвращает данные для главного класса стиля */
-    t(this, "classes", o(() => ({
+    t(this, "classes", a(() => ({
       [`${this.className}--placeholder`]: this.isPlaceholder.value,
       [`${this.className}--multiple`]: !!this.props.multiple
     })));
@@ -56,15 +57,21 @@ class D {
     t(this, "onClick", (e, s) => {
       e.preventDefault(), e.stopPropagation(), this.event.onClick(e, s);
     });
-    this.props = e, this.refs = s, this.element = i, this.classDesign = l, this.className = n, this.components = h, this.slots = c, this.emits = p, this.enabled = new d(this.props), this.event = new u(
+    this.props = e, this.refs = s, this.element = i, this.classDesign = l, this.className = n, this.components = p, this.slots = c, this.emits = d;
+    const {
+      EnabledConstructor: u = E,
+      EventConstructor: m = N,
+      WindowClassesConstructor: v = D
+    } = o != null ? o : {};
+    this.enabled = new u(this.props), this.event = new m(
       this.props,
       this.enabled,
       this.emits
-    ), this.window = new m(l);
+    ), this.window = new v(l);
   }
 }
-const _ = {};
-class $ extends w {
+const $ = {};
+class y extends w {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -72,7 +79,7 @@ class $ extends w {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor select value item class/ класс элемента значения выбора
    */
-  constructor(s, i, l, n = D) {
+  constructor(s, i, l, n = I) {
     super(
       s,
       i,
@@ -120,7 +127,7 @@ class $ extends w {
       var i;
       return this.components.renderOne(
         "chip",
-        a(
+        h(
           this.props.chipAttrs,
           {
             class: (i = this.classes) == null ? void 0 : i.value.item,
@@ -186,7 +193,7 @@ class $ extends w {
    */
   initRender() {
     var s;
-    return g(
+    return f(
       "div",
       {
         ...this.getAttrs(),
@@ -196,7 +203,7 @@ class $ extends w {
     );
   }
 }
-class y {
+class T {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -210,11 +217,11 @@ class y {
      * Checks whether selectValue should be displayed/
      * Проверяет, нужно ли отображать selectValue
      */
-    t(this, "is", o(() => !!(!this.props.disabled && this.components)));
+    t(this, "is", a(() => !!(!this.props.disabled && this.components)));
     /** Computed bindings for the selectValue/ Вычисляемые привязки для selectValue */
-    t(this, "binds", o(() => ({
-      ...a(
-        C(this.extra),
+    t(this, "binds", a(() => ({
+      ...h(
+        S(this.extra),
         this.props.selectValueAttrs,
         {
           class: `${this.className}__select-value`
@@ -231,7 +238,7 @@ class y {
      */
     t(this, "render", (e) => this.components && this.is.value ? this.components.render(
       "selectValue",
-      S(
+      x(
         e != null ? e : {},
         this.binds.value
       ),
@@ -241,8 +248,8 @@ class y {
   }
 }
 export {
-  D as SelectValue,
-  $ as SelectValueDesign,
-  y as SelectValueInclude,
-  _ as defaultsSelectValue
+  I as SelectValue,
+  y as SelectValueDesign,
+  T as SelectValueInclude,
+  $ as defaultsSelectValue
 };

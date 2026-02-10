@@ -104,29 +104,30 @@ export class Window {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
-   * @param WindowClientConstructor class for working with window client/ класс для работы с клиентом окна
-   * @param WindowCoordinatesConstructor class for working with coordinates/ класс для работы с координатами
-   * @param WindowElementConstructor class for working with window elements/ класс для работы с элементами окна
-   * @param WindowEmitConstructor class for working with emits/ класс для работы с событиями
-   * @param WindowEscConstructor class for working with escape key/ класс для работы с клавишей Escape
-   * @param WindowEventConstructor class for working with events/ класс для работы с событиями
-   * @param WindowFlashConstructor class for working with flash animation/ класс для работы с анимацией вспышки
-   * @param WindowHiddenConstructor class for working with hidden elements/ класс для работы со скрытыми элементами
-   * @param WindowHookConstructor class for working with window hooks/ класс для работы с хуками окна
-   * @param WindowOpenConstructor class for working with open state/ класс для работы с состоянием открытия
-   * @param WindowOriginConstructor class for working with origin/ класс для работы с точкой начала
-   * @param WindowPersistentConstructor class for working with persistent state/ класс для работы с постоянным состоянием
-   * @param WindowPositionConstructor class for working with position/ класс для работы с позицией
-   * @param WindowStaticConstructor class for working with static mode/ класс для работы со статическим режимом
-   * @param WindowStatusConstructor class for working with window status/ класс для работы со статусом окна
-   * @param WindowStylesConstructor class for working with styles/ класс для работы со стилями
-   * @param WindowVerificationConstructor class for working with verification/ класс для работы с проверкой
-   * @param ImageConstructor class for working with image/ класс для работы с изображением
-   * @param ModelConstructor class for working with model/ класс для работы с моделью
-   * @param ScrollbarConstructor class for working with scrollbar/ класс для работы со скроллбаром
-   * @param TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
-   * @param TextConstructor class for working with text/ класс для работы с текстом
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ImageConstructor class for working with image/ класс для работы с изображением
+   * @param constructors.ModelConstructor class for working with model/ класс для работы с моделью
+   * @param constructors.ScrollbarConstructor class for working with scrollbar/ класс для работы со скроллбаром
+   * @param constructors.TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
+   * @param constructors.TextConstructor class for working with text/ класс для работы с текстом
+   * @param constructors.WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
+   * @param constructors.WindowClientConstructor class for working with window client/ класс для работы с клиентом окна
+   * @param constructors.WindowCoordinatesConstructor class for working with coordinates/ класс для работы с координатами
+   * @param constructors.WindowElementConstructor class for working with window elements/ класс для работы с элементами окна
+   * @param constructors.WindowEmitConstructor class for working with emits/ класс для работы с событиями
+   * @param constructors.WindowEscConstructor class for working with escape key/ класс для работы с клавишей Escape
+   * @param constructors.WindowEventConstructor class for working with events/ класс для работы с событиями
+   * @param constructors.WindowFlashConstructor class for working with flash animation/ класс для работы с анимацией вспышки
+   * @param constructors.WindowHiddenConstructor class for working with hidden elements/ класс для работы со скрытыми элементами
+   * @param constructors.WindowHookConstructor class for working with window hooks/ класс для работы с хуками окна
+   * @param constructors.WindowOpenConstructor class for working with open state/ класс для работы с состоянием открытия
+   * @param constructors.WindowOriginConstructor class for working with origin/ класс для работы с точкой начала
+   * @param constructors.WindowPersistentConstructor class for working with persistent state/ класс для работы с постоянным состоянием
+   * @param constructors.WindowPositionConstructor class for working with position/ класс для работы с позицией
+   * @param constructors.WindowStaticConstructor class for working with static mode/ класс для работы со статическим режимом
+   * @param constructors.WindowStatusConstructor class for working with window status/ класс для работы со статусом окна
+   * @param constructors.WindowStylesConstructor class for working with styles/ класс для работы со стилями
+   * @param constructors.WindowVerificationConstructor class for working with verification/ класс для работы с проверкой
    */
   constructor(
     protected readonly props: WindowPropsBasic,
@@ -137,30 +138,58 @@ export class Window {
     protected readonly components?: DesignComp<WindowComponents, WindowPropsBasic>,
     protected readonly slots?: WindowSlots,
     protected readonly emits?: ConstrEmit<WindowEmits>,
-    WindowClassesConstructor: typeof WindowClasses = WindowClasses,
-    WindowClientConstructor: typeof WindowClient = WindowClient,
-    WindowCoordinatesConstructor: typeof WindowCoordinates = WindowCoordinates,
-    WindowElementConstructor: typeof WindowElement = WindowElement,
-    WindowEmitConstructor: typeof WindowEmit = WindowEmit,
-    WindowEscConstructor: typeof WindowEsc = WindowEsc,
-    WindowEventConstructor: typeof WindowEvent = WindowEvent,
-    WindowFlashConstructor: typeof WindowFlash = WindowFlash,
-    WindowHiddenConstructor: typeof WindowHidden = WindowHidden,
-    WindowHookConstructor: typeof WindowHook = WindowHook,
-    WindowOpenConstructor: typeof WindowOpen = WindowOpen,
-    WindowOriginConstructor: typeof WindowOrigin = WindowOrigin,
-    WindowPersistentConstructor: typeof WindowPersistent = WindowPersistent,
-    WindowPositionConstructor: typeof WindowPosition = WindowPosition,
-    WindowStaticConstructor: typeof WindowStatic = WindowStatic,
-    WindowStatusConstructor: typeof WindowStatus = WindowStatus,
-    WindowStylesConstructor: typeof WindowStyles = WindowStyles,
-    WindowVerificationConstructor: typeof WindowVerification = WindowVerification,
-    ImageConstructor: typeof ImageInclude = ImageInclude,
-    ModelConstructor: typeof ModelInclude = ModelInclude,
-    ScrollbarConstructor: typeof ScrollbarInclude = ScrollbarInclude,
-    TabIndexConstructor: typeof TabIndexInclude = TabIndexInclude,
-    TextConstructor: typeof TextInclude = TextInclude
+    constructors?: {
+      ImageConstructor?: typeof ImageInclude
+      ModelConstructor?: typeof ModelInclude
+      ScrollbarConstructor?: typeof ScrollbarInclude
+      TabIndexConstructor?: typeof TabIndexInclude
+      TextConstructor?: typeof TextInclude
+      WindowClassesConstructor?: typeof WindowClasses
+      WindowClientConstructor?: typeof WindowClient
+      WindowCoordinatesConstructor?: typeof WindowCoordinates
+      WindowElementConstructor?: typeof WindowElement
+      WindowEmitConstructor?: typeof WindowEmit
+      WindowEscConstructor?: typeof WindowEsc
+      WindowEventConstructor?: typeof WindowEvent
+      WindowFlashConstructor?: typeof WindowFlash
+      WindowHiddenConstructor?: typeof WindowHidden
+      WindowHookConstructor?: typeof WindowHook
+      WindowOpenConstructor?: typeof WindowOpen
+      WindowOriginConstructor?: typeof WindowOrigin
+      WindowPersistentConstructor?: typeof WindowPersistent
+      WindowPositionConstructor?: typeof WindowPosition
+      WindowStaticConstructor?: typeof WindowStatic
+      WindowStatusConstructor?: typeof WindowStatus
+      WindowStylesConstructor?: typeof WindowStyles
+      WindowVerificationConstructor?: typeof WindowVerification
+    }
   ) {
+    const {
+      ImageConstructor = ImageInclude,
+      ModelConstructor = ModelInclude,
+      ScrollbarConstructor = ScrollbarInclude,
+      TabIndexConstructor = TabIndexInclude,
+      TextConstructor = TextInclude,
+      WindowClassesConstructor = WindowClasses,
+      WindowClientConstructor = WindowClient,
+      WindowCoordinatesConstructor = WindowCoordinates,
+      WindowElementConstructor = WindowElement,
+      WindowEmitConstructor = WindowEmit,
+      WindowEscConstructor = WindowEsc,
+      WindowEventConstructor = WindowEvent,
+      WindowFlashConstructor = WindowFlash,
+      WindowHiddenConstructor = WindowHidden,
+      WindowHookConstructor = WindowHook,
+      WindowOpenConstructor = WindowOpen,
+      WindowOriginConstructor = WindowOrigin,
+      WindowPersistentConstructor = WindowPersistent,
+      WindowPositionConstructor = WindowPosition,
+      WindowStaticConstructor = WindowStatic,
+      WindowStatusConstructor = WindowStatus,
+      WindowStylesConstructor = WindowStyles,
+      WindowVerificationConstructor = WindowVerification
+    } = constructors ?? {}
+
     this.hook = new WindowHookConstructor(props)
 
     this.classes = new WindowClassesConstructor(className)

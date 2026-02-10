@@ -27,9 +27,12 @@ export declare class ListGroup {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
      */
-    constructor(props: ListGroupProps, refs: ToRefs<ListGroupProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ListGroupComponents, ListGroupProps> | undefined, slots?: ListGroupSlots | undefined, emits?: ConstrEmit<ListGroupEmits> | undefined, ListGroupOpenConstructor?: typeof ListGroupOpen);
+    constructor(props: ListGroupProps, refs: ToRefs<ListGroupProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ListGroupComponents, ListGroupProps> | undefined, slots?: ListGroupSlots | undefined, emits?: ConstrEmit<ListGroupEmits> | undefined, constructors?: {
+        ListGroupOpenConstructor?: typeof ListGroupOpen;
+    });
     /**
      * Returns the property for the transformation component.
      *

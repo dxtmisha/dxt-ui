@@ -51,8 +51,9 @@ export class Icon {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param EventClickIncludeConstructor class for working with events/ класс для работы с событиями
-   * @param SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.EventClickIncludeConstructor class for working with events/ класс для работы с событиями
+   * @param constructors.SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
    */
   constructor(
     protected readonly props: IconProps,
@@ -63,9 +64,16 @@ export class Icon {
     protected readonly components?: DesignComp<IconComponents, IconProps>,
     protected readonly slots?: IconSlots,
     protected readonly emits?: ConstrEmit<IconEmits>,
-    EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude,
-    SkeletonIncludeConstructor: typeof SkeletonInclude = SkeletonInclude
+    constructors?: {
+      EventClickIncludeConstructor?: typeof EventClickInclude
+      SkeletonIncludeConstructor?: typeof SkeletonInclude
+    }
   ) {
+    const {
+      EventClickIncludeConstructor = EventClickInclude,
+      SkeletonIncludeConstructor = SkeletonInclude
+    } = constructors ?? {}
+
     this.iconBind = getBindRef(
       refs.icon,
       computed(() => ({

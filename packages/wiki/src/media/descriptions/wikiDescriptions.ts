@@ -36,6 +36,7 @@ import { wikiDescriptionsSection } from './wikiDescriptionsSection'
 import { wikiDescriptionsSelect } from './wikiDescriptionsSelect'
 import { wikiDescriptionsSelectValue } from './wikiDescriptionsSelectValue'
 import { wikiDescriptionsSkeleton } from './wikiDescriptionsSkeleton'
+import { wikiDescriptionsTextarea } from './wikiDescriptionsTextarea'
 import { wikiDescriptionsTextareaAutosize } from './wikiDescriptionsTextareaAutosize'
 import { wikiDescriptionsTooltip } from './wikiDescriptionsTooltip'
 import { wikiDescriptionsWindow } from './wikiDescriptionsWindow'
@@ -77,6 +78,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsSelect,
   wikiDescriptionsSelectValue,
   wikiDescriptionsSkeleton,
+  wikiDescriptionsTextarea,
   wikiDescriptionsTextareaAutosize,
   wikiDescriptionsTooltip,
   wikiDescriptionsWindow

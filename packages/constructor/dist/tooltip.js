@@ -1,14 +1,14 @@
 var $ = Object.defineProperty;
-var I = (r, t, s) => t in r ? $(r, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : r[t] = s;
-var e = (r, t, s) => I(r, typeof t != "symbol" ? t + "" : t, s);
-import { ref as m, computed as h, watch as x, nextTick as d, onUnmounted as B, h as v, Teleport as M } from "vue";
-import { getElementId as g, isDomRuntime as P, EventItem as A, DesignConstructorAbstract as L } from "@dxtmisha/functional";
-import { A as p } from "./AriaStaticInclude-CAURwJMb.js";
-import { L as D } from "./LabelInclude-D-mLvjK5.js";
+var x = (r, t, s) => t in r ? $(r, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : r[t] = s;
+var e = (r, t, s) => x(r, typeof t != "symbol" ? t + "" : t, s);
+import { ref as m, computed as a, watch as B, nextTick as d, onUnmounted as M, h as v, Teleport as P } from "vue";
+import { getElementId as g, isDomRuntime as A, EventItem as L, DesignConstructorAbstract as D } from "@dxtmisha/functional";
+import { A as u } from "./AriaStaticInclude-CAURwJMb.js";
+import { L as E } from "./LabelInclude-D-mLvjK5.js";
 import { D as H } from "./DescriptionInclude-D4ane9aR.js";
-import { A as E } from "./ArrowInclude-CcpT637l.js";
-import { T as tt } from "./TooltipInclude--QRSE83v.js";
-class k {
+import { A as k } from "./ArrowInclude-CcpT637l.js";
+import { T as st } from "./TooltipInclude--QRSE83v.js";
+class q {
   /**
    * Constructor
    * @param className class name/ название класса
@@ -69,7 +69,7 @@ class k {
    */
   findControl() {
     var t;
-    if (P())
+    if (A())
       return (t = document.querySelector(this.getSelectorControl())) != null ? t : void 0;
   }
   /**
@@ -83,7 +83,7 @@ class k {
     return (s = t.closest(this.getSelectorControl())) != null ? s : void 0;
   }
 }
-class q {
+class O {
   /**
    * Constructor
    * @param element instance of the element itself/ экземпляр самого элемента
@@ -169,15 +169,15 @@ class F {
      *
      * Проверяет, есть ли текст для отображения.
      */
-    e(this, "isText", h(
+    e(this, "isText", a(
       () => !this.props.disabled && !!(this.props.label || this.props.description || this.slots && ("default" in this.slots || "description" in this.slots || "body" in this.slots))
     ));
     /** Checks if the element needs to be displayed/ Проверяет, нужно ли отображать элемент */
-    e(this, "isShow", h(
+    e(this, "isShow", a(
       () => !!(this.show.value || this.open.value || this.props.inDom) && this.isText.value
     ));
     /** Checks if the content is an array/ Проверяет, является ли содержимое массивом */
-    e(this, "isArray", h(
+    e(this, "isArray", a(
       () => !!(this.props.arrowShow && this.preparation.value)
     ));
     this.props = t, this.slots = s;
@@ -219,7 +219,7 @@ class F {
     this.preparation.value = t;
   }
 }
-class O {
+class R {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -238,13 +238,13 @@ class O {
   update() {
     const t = this.element.value, s = this.classes.findControl();
     if (t && s) {
-      const i = s.getBoundingClientRect(), o = t.getBoundingClientRect(), n = this.getIndent(), a = this.isTop(i, o), l = i.left + i.width / 2 - o.width / 2, c = a ? i.top - o.height - n : i.bottom + n;
-      let u = 0;
-      l < 0 ? u = 0 - l : l + o.width > window.innerWidth && (u = window.innerWidth - (l + o.width)), this.style.set(
-        a,
+      const i = s.getBoundingClientRect(), o = t.getBoundingClientRect(), n = this.getIndent(), p = this.isTop(i, o), l = i.left + i.width / 2 - o.width / 2, c = p ? i.top - o.height - n : i.bottom + n;
+      let h = 0;
+      l < 0 ? h = 0 - l : l + o.width > window.innerWidth && (h = window.innerWidth - (l + o.width)), this.style.set(
+        p,
         l,
         c,
-        u
+        h
       );
     }
   }
@@ -269,7 +269,7 @@ class O {
     return (t = this.props.indent) != null ? t : 0;
   }
 }
-class R {
+class W {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -279,7 +279,7 @@ class R {
    * @param position object for working with the position of the element/ объект для работы с положением элемента
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
-  constructor(t, s, i, o, n, a) {
+  constructor(t, s, i, o, n, p) {
     e(this, "timeout");
     e(this, "timeoutHide");
     e(this, "timeoutTo");
@@ -312,7 +312,7 @@ class R {
      * Управление событиями скролла.
      */
     e(this, "onScroll", () => this.toggle(!1, !0));
-    this.props = t, this.style = i, this.status = o, this.position = n, this.emits = a, this.event = new A(window, ["scroll-sync"], this.onScroll), x([s.open], () => {
+    this.props = t, this.style = i, this.status = o, this.position = n, this.emits = p, this.event = new L(window, ["scroll-sync"], this.onScroll), B([s.open], () => {
       this.toggle(!!this.props.open).then();
     }, { immediate: this.props.open });
   }
@@ -341,7 +341,7 @@ class R {
     this.event.stop();
   }
 }
-class W {
+class _ {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -412,7 +412,7 @@ class W {
     return !this.props.embedded;
   }
 }
-class _ {
+class U {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -423,17 +423,18 @@ class _ {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param TooltipClassesConstructor class for working with classes/ класс для работы с классами
-   * @param TooltipStyleConstructor class for working with styles/ класс для работы со стилями
-   * @param TooltipStatusConstructor class for working with status/ класс для работы со статусом
-   * @param TooltipPositionConstructor class for working with position/ класс для работы с позицией
-   * @param TooltipOpenConstructor class for working with open state/ класс для работы с состоянием открытия
-   * @param TooltipEventConstructor class for working with events/ класс для работы с событиями
-   * @param ArrowIncludeConstructor class for working with arrow/ класс для работы со стрелкой
-   * @param LabelIncludeConstructor class for working with label/ класс для работы с меткой
-   * @param DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ArrowIncludeConstructor class for working with arrow/ класс для работы со стрелкой
+   * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
+   * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param constructors.TooltipClassesConstructor class for working with classes/ класс для работы с классами
+   * @param constructors.TooltipEventConstructor class for working with events/ класс для работы с событиями
+   * @param constructors.TooltipOpenConstructor class for working with open state/ класс для работы с состоянием открытия
+   * @param constructors.TooltipPositionConstructor class for working with position/ класс для работы с позицией
+   * @param constructors.TooltipStatusConstructor class for working with status/ класс для работы со статусом
+   * @param constructors.TooltipStyleConstructor class for working with styles/ класс для работы со стилями
    */
-  constructor(t, s, i, o, n, a, l, c, u = k, y = q, f = F, w = O, b = R, T = W, C = E, N = D, S = H) {
+  constructor(t, s, i, o, n, p, l, c, h) {
     /** Class manager for tooltip classes/ Менеджер классов для подсказки */
     e(this, "classes");
     /** Style manager for tooltip styles/ Менеджер стилей для подсказки */
@@ -456,20 +457,20 @@ class _ {
      * Computed bindings for the tooltip element/
      * Вычисляемые привязки для элемента подсказки
      */
-    e(this, "binds", h(() => ({
+    e(this, "binds", a(() => ({
       id: this.classes.getIdItem(),
       onMouseover: this.event.onMouseoverTooltip,
       onMouseout: this.event.onMouseout,
       onTransitionend: this.event.onTransitionend,
-      ...p.role(this.role.value),
-      ...p.labelledby(this.label.id.value),
-      ...p.describedby(this.description.id.value)
+      ...u.role(this.role.value),
+      ...u.labelledby(this.label.id.value),
+      ...u.describedby(this.description.id.value)
     })));
     /**
      * Computed bindings for the control element/
      * Вычисляемые привязки для элемента управления
      */
-    e(this, "bindsControl", h(() => {
+    e(this, "bindsControl", a(() => {
       const t = {
         class: this.classes.getControl(),
         onclick: this.event.onClick,
@@ -478,65 +479,77 @@ class _ {
       };
       return this.props.interactive ? {
         ...t,
-        ...p.expanded(this.status.open.value),
-        ...p.controls(this.classes.getIdItem())
+        ...u.expanded(this.status.open.value),
+        ...u.controls(this.classes.getIdItem())
       } : {
         ...t,
-        ...p.describedby(this.classes.getIdItem())
+        ...u.describedby(this.classes.getIdItem())
       };
     }));
     /** Data for the control slot/ Данные для слота управления */
-    e(this, "slotData", h(() => ({
+    e(this, "slotData", a(() => ({
       ...this.bindsControl.value,
       open: this.status.open,
       binds: this.bindsControl.value
     })));
     /** Computed role for the tooltip/ Вычисляемая роль для подсказки */
-    e(this, "role", h(() => this.props.interactive ? "region" : "tooltip"));
-    this.props = t, this.refs = s, this.element = i, this.classDesign = o, this.className = n, this.components = a, this.slots = l, this.emits = c, this.classes = new u(this.className), this.style = new y(this.element, this.className), this.status = new f(this.props, this.slots), this.position = new w(
+    e(this, "role", a(() => this.props.interactive ? "region" : "tooltip"));
+    this.props = t, this.refs = s, this.element = i, this.classDesign = o, this.className = n, this.components = p, this.slots = l, this.emits = c;
+    const {
+      ArrowIncludeConstructor: y = k,
+      DescriptionIncludeConstructor: f = H,
+      LabelIncludeConstructor: w = E,
+      TooltipClassesConstructor: T = q,
+      TooltipEventConstructor: b = _,
+      TooltipOpenConstructor: C = W,
+      TooltipPositionConstructor: S = R,
+      TooltipStatusConstructor: N = F,
+      TooltipStyleConstructor: I = O
+    } = h != null ? h : {};
+    this.classes = new T(this.className), this.style = new I(this.element, this.className), this.status = new N(this.props, this.slots), this.position = new S(
       this.props,
       this.element,
       this.classes,
       this.style
-    ), this.open = new b(
+    ), this.open = new C(
       this.props,
       this.refs,
       this.style,
       this.status,
       this.position
-    ), this.event = new T(
+    ), this.event = new b(
       this.props,
       this.classes,
       this.style,
       this.status,
       this.open
-    ), this.arrow = new C(
+    ), this.arrow = new y(
       this.props,
       this.className,
       this.components,
       this.classes.getSelectorControl()
-    ), this.label = new N(
+    ), this.label = new w(
       this.props,
       this.className,
       void 0,
       this.slots
-    ), this.description = new S(
+    ), this.description = new f(
       this.props,
       this.className,
       this.slots
-    ), B(() => {
+    ), M(() => {
       this.open.eventStop();
     });
   }
 }
-const V = {
+const X = {
   indent: 4,
   delay: 64,
   delayHide: 0,
   // :default [!] System label / Системная метка
   interactive: !0
 };
-class X extends L {
+class Y extends D {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -544,7 +557,7 @@ class X extends L {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor tooltip item class/ класс элемента тултипа
    */
-  constructor(s, i, o, n = _) {
+  constructor(s, i, o, n = U) {
     super(
       s,
       i,
@@ -586,7 +599,7 @@ class X extends L {
         );
         return this.props.embedded ? [o] : [
           v(
-            M,
+            P,
             {
               key: "teleport",
               to: "body"
@@ -661,8 +674,8 @@ class X extends L {
   }
 }
 export {
-  _ as Tooltip,
-  X as TooltipDesign,
-  tt as TooltipInclude,
-  V as defaultsTooltip
+  U as Tooltip,
+  Y as TooltipDesign,
+  st as TooltipInclude,
+  X as defaultsTooltip
 };

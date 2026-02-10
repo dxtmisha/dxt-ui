@@ -9450,6 +9450,17 @@
           }
         }
       },
+      "textarea": {
+        "name": "d1-textarea",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-textarea-main",
+            "type": "var",
+            "value": "{d.textarea}"
+          }
+        }
+      },
       "textareaAutosize": {
         "name": "d1-textareaAutosize",
         "type": "component",

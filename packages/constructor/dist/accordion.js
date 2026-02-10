@@ -1,12 +1,12 @@
-var p = Object.defineProperty;
-var u = (r, e, i) => e in r ? p(r, e, { enumerable: !0, configurable: !0, writable: !0, value: i }) : r[e] = i;
-var t = (r, e, i) => u(r, typeof e != "symbol" ? e + "" : e, i);
-import { computed as a, ref as h, h as b } from "vue";
-import { getElementId as c, DesignConstructorAbstract as v, toBinds as f } from "@dxtmisha/functional";
-import { E as y } from "./EventClickInclude-WHJqxZ1b.js";
-import { M as g } from "./ModelInclude-BiYm_iCQ.js";
-import { M as I } from "./MotionTransformInclude-P_oRs3JZ.js";
-class C {
+var f = Object.defineProperty;
+var y = (r, e, i) => e in r ? f(r, e, { enumerable: !0, configurable: !0, writable: !0, value: i }) : r[e] = i;
+var t = (r, e, i) => y(r, typeof e != "symbol" ? e + "" : e, i);
+import { computed as h, ref as c, h as g } from "vue";
+import { getElementId as m, DesignConstructorAbstract as I, toBinds as C } from "@dxtmisha/functional";
+import { E as w } from "./EventClickInclude-WHJqxZ1b.js";
+import { M as S } from "./ModelInclude-BiYm_iCQ.js";
+import { M as A } from "./MotionTransformInclude-P_oRs3JZ.js";
+class T {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -17,26 +17,30 @@ class C {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
+   * @param constructors.MotionTransformIncludeConstructor class for working with motion transform/ класс для работы с анимацией перехода
    */
-  constructor(e, i, n, o, l, s, m, d) {
+  constructor(e, i, n, o, l, s, p, a, d) {
     /** Motion transform manager/ Менеджер анимации перехода */
     t(this, "motionTransform");
     /** Event manager/ Менеджер событий */
     t(this, "event");
     /** Open state/ Состояние открытия */
-    t(this, "open", h(!1));
+    t(this, "open", c(!1));
     /** Model manager/ Менеджер модели */
     t(this, "model");
     /** Head element reference/ Ссылка на элемент заголовка */
-    t(this, "elementHead", h());
-    t(this, "labelId", c());
-    t(this, "descriptionId", c());
+    t(this, "elementHead", c());
+    t(this, "labelId", m());
+    t(this, "descriptionId", m());
     /**
      * Computed bindings for the cell.
      *
      * Вычисляемые привязки для ячейки.
      */
-    t(this, "bindsCell", a(() => ({
+    t(this, "bindsCell", h(() => ({
       ref: this.elementHead,
       icon: this.props.icon,
       iconTrailing: this.props.iconArrowDown,
@@ -48,32 +52,38 @@ class C {
       onClick: this.event.onClick,
       onKeydown: this.event.onKeydown
     })));
-    this.props = e, this.refs = i, this.element = n, this.classDesign = o, this.className = l, this.components = s, this.slots = m, this.emits = d, this.motionTransform = new I(
+    this.props = e, this.refs = i, this.element = n, this.classDesign = o, this.className = l, this.components = s, this.slots = p, this.emits = a;
+    const {
+      EventClickIncludeConstructor: u = w,
+      ModelIncludeConstructor: v = S,
+      MotionTransformIncludeConstructor: b = A
+    } = d != null ? d : {};
+    this.motionTransform = new b(
       this.props,
       this.className,
       this.components,
       this.emits,
-      a(() => ({
+      h(() => ({
         section: !0,
         adaptive: "planeAlways",
         inDom: !0,
         ariaLabelledby: this.labelId,
         ariaDescribedby: this.descriptionId
       }))
-    ), this.event = new y(
+    ), this.event = new u(
       void 0,
       void 0,
-      d
-    ), this.model = new g("open", this.emits, this.open);
+      a
+    ), this.model = new v("open", this.emits, this.open);
   }
 }
-const k = {
+const B = {
   clickOpen: !0,
   autoClose: !0,
   // :default [!] System label / Системная метка
   divider: !0
 };
-class x extends v {
+class N extends I {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -98,7 +108,7 @@ class x extends v {
       const o = {};
       return this.slots && ("label" in this.slots && (o.label = (s) => this.initSlot("label", void 0, s)), "description" in this.slots && (o.description = (s) => this.initSlot("description", void 0, s)), "caption" in this.slots && (o.caption = (s) => this.initSlot("caption", void 0, s)), "trailing" in this.slots && (o.trailing = (s) => this.initSlot("trailing", void 0, s)), "body" in this.slots && (o.body = (s) => this.initSlot("body", void 0, s))), this.components.renderOne(
         "cell",
-        f(
+        C(
           this.item.bindsCell.value,
           n,
           this.props.cellAttrs,
@@ -118,13 +128,13 @@ class x extends v {
      */
     t(this, "renderBody", (i) => {
       var n;
-      return b(
+      return g(
         "div",
         { class: (n = this.classes) == null ? void 0 : n.value.body },
         this.initSlot("default", void 0, i)
       );
     });
-    this.item = new C(
+    this.item = new T(
       this.props,
       this.refs,
       this.element,
@@ -188,7 +198,7 @@ class x extends v {
   }
 }
 export {
-  C as Accordion,
-  x as AccordionDesign,
-  k as defaultsAccordion
+  T as Accordion,
+  N as AccordionDesign,
+  B as defaultsAccordion
 };

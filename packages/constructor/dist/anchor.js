@@ -1,14 +1,14 @@
-var b = Object.defineProperty;
-var A = (s, e, t) => e in s ? b(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
-var i = (s, e, t) => A(s, typeof e != "symbol" ? e + "" : e, t);
-import { computed as n, ref as I, onMounted as T, h as l } from "vue";
-import { goScrollSmooth as k, toNumber as w, writeClipboardData as x, DesignConstructorAbstract as D } from "@dxtmisha/functional";
-import { L as H } from "./LabelInclude-D-mLvjK5.js";
-import { T as S } from "./TextInclude--GERRCGj.js";
-import { T as L } from "./TooltipInclude--QRSE83v.js";
-import { g as $ } from "./getClassTagAStatic-BnVYlXHI.js";
+var A = Object.defineProperty;
+var I = (s, e, t) => e in s ? A(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
+var i = (s, e, t) => I(s, typeof e != "symbol" ? e + "" : e, t);
+import { computed as n, ref as T, onMounted as k, h as c } from "vue";
+import { goScrollSmooth as w, toNumber as x, writeClipboardData as H, DesignConstructorAbstract as D } from "@dxtmisha/functional";
+import { L as S } from "./LabelInclude-D-mLvjK5.js";
+import { T as L } from "./TextInclude--GERRCGj.js";
+import { T as $ } from "./TooltipInclude--QRSE83v.js";
+import { g as B } from "./getClassTagAStatic-BnVYlXHI.js";
 import { A as a } from "./AriaStaticInclude-CAURwJMb.js";
-class B {
+class E {
   /**
    * Constructor
    * @param props input data / входные данные
@@ -53,8 +53,8 @@ class F {
    * @param element input element / элемент ввода
    * @param href href handler / обработчик ссылки
    */
-  constructor(e, t, r) {
-    this.props = e, this.element = t, this.href = r;
+  constructor(e, t, o) {
+    this.props = e, this.element = t, this.href = o;
   }
   /**
    * Scroll to element
@@ -62,14 +62,14 @@ class F {
    * Прокрутить к элементу
    */
   go() {
-    this.element.value && (k(
+    this.element.value && (w(
       this.element.value,
       {
         behavior: this.props.behavior,
         block: this.props.block,
         inline: this.props.inline
       },
-      w(this.props.shift)
+      x(this.props.shift)
     ), history.replaceState({}, "", this.href.get()));
   }
 }
@@ -81,8 +81,8 @@ class M {
    * @param href href handler / обработчик ссылки
    * @param to scroll handler / обработчик прокрутки
    */
-  constructor(e, t, r, o) {
-    i(this, "copy", I());
+  constructor(e, t, o, r) {
+    i(this, "copy", T());
     i(this, "timeout");
     /**
      * On click handler
@@ -91,9 +91,9 @@ class M {
      */
     i(this, "onClick", (e) => {
       var t;
-      e.preventDefault(), this.props.isCopy ? x(this.href.getLink()).then(() => this.toCopy()) : (t = this.to) == null || t.go();
+      e.preventDefault(), this.props.isCopy ? H(this.href.getLink()).then(() => this.toCopy()) : (t = this.to) == null || t.go();
     });
-    this.props = e, this.tooltip = t, this.href = r, this.to = o;
+    this.props = e, this.tooltip = t, this.href = o, this.to = r;
   }
   /**
    * Is copy state
@@ -144,7 +144,7 @@ class N {
     return !!this.icon.value;
   }
 }
-class E {
+class P {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -155,15 +155,16 @@ class E {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param AnchorHrefConstructor class for working with href/ класс для работы с ссылкой
-   * @param AnchorToConstructor class for working with scroll/ класс для работы с прокруткой
-   * @param AnchorEventConstructor class for working with events/ класс для работы с событиями
-   * @param AnchorIconConstructor class for working with icons/ класс для работы с иконками
-   * @param LabelIncludeConstructor class for working with label/ класс для работы с меткой
-   * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
-   * @param TooltipIncludeConstructor class for working with tooltip/ класс для работы с подсказкой
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.AnchorEventConstructor class for working with events/ класс для работы с событиями
+   * @param constructors.AnchorHrefConstructor class for working with href/ класс для работы с ссылкой
+   * @param constructors.AnchorIconConstructor class for working with icons/ класс для работы с иконками
+   * @param constructors.AnchorToConstructor class for working with scroll/ класс для работы с прокруткой
+   * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
+   * @param constructors.TooltipIncludeConstructor class for working with tooltip/ класс для работы с подсказкой
    */
-  constructor(e, t, r, o, h, c, p, u, m = B, d = F, f = M, v = N, g = H, C = S, y = L) {
+  constructor(e, t, o, r, h, u, l, m, p) {
     i(this, "label");
     i(this, "text");
     i(this, "tooltip");
@@ -181,7 +182,17 @@ class E {
     i(this, "goIsFocus", () => {
       location.hash === this.href.get() && this.to.go();
     });
-    this.props = e, this.refs = t, this.element = r, this.classDesign = o, this.className = h, this.components = c, this.slots = p, this.emits = u, this.label = new g(e, h, void 0, p), this.text = new C(this.props), this.tooltip = new y(
+    this.props = e, this.refs = t, this.element = o, this.classDesign = r, this.className = h, this.components = u, this.slots = l, this.emits = m;
+    const {
+      AnchorEventConstructor: d = M,
+      AnchorHrefConstructor: f = E,
+      AnchorIconConstructor: v = N,
+      AnchorToConstructor: g = F,
+      LabelIncludeConstructor: C = S,
+      TextIncludeConstructor: y = L,
+      TooltipIncludeConstructor: b = $
+    } = p != null ? p : {};
+    this.label = new C(e, h, void 0, l), this.text = new y(this.props), this.tooltip = new b(
       this.props,
       this.className,
       this.components,
@@ -189,25 +200,25 @@ class E {
         description: this.text.copiedClipboard.value,
         interactive: !1
       }))
-    ), this.href = new m(this.props), this.to = new d(
+    ), this.href = new f(this.props), this.to = new g(
       this.props,
       this.element,
       this.href
-    ), this.event = new f(
+    ), this.event = new d(
       this.props,
       this.tooltip,
       this.href,
       this.to
-    ), this.icon = new v(this.props, this.event), T(() => {
+    ), this.icon = new v(this.props, this.event), k(() => {
       requestAnimationFrame(this.goIsFocus);
     });
   }
 }
-const O = {
+const Q = {
   shift: 64,
   delayHide: 3072
 };
-class Q extends D {
+class U extends D {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -215,11 +226,11 @@ class Q extends D {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the anchor/ класс для работы с якорем
    */
-  constructor(t, r, o, h = E) {
+  constructor(t, o, r, h = P) {
     super(
       t,
-      r,
-      o
+      o,
+      r
     );
     i(this, "item");
     /**
@@ -239,15 +250,15 @@ class Q extends D {
      * @param props additional properties/ дополнительные свойства
      */
     i(this, "renderItem", (t) => {
-      var o;
-      const r = [
-        (o = this.classes) == null ? void 0 : o.value.main,
-        $(this.getDesign())
+      var r;
+      const o = [
+        (r = this.classes) == null ? void 0 : r.value.main,
+        B(this.getDesign())
       ];
-      return t && r.push(t.class), [
-        l("a", {
+      return t && o.push(t.class), [
+        c("a", {
           ...this.getMainProps(),
-          class: r
+          class: o
         }, this.renderChildren())
       ];
     });
@@ -257,7 +268,7 @@ class Q extends D {
      * Рендеринг скрытого элемента.
      */
     i(this, "renderItemHide", () => [
-      l("a", {
+      c("a", {
         ...this.getAttrs(),
         key: "main-hide",
         name: this.props.name,
@@ -355,7 +366,7 @@ class Q extends D {
   }
 }
 export {
-  E as Anchor,
-  Q as AnchorDesign,
-  O as defaultsAnchor
+  P as Anchor,
+  U as AnchorDesign,
+  Q as defaultsAnchor
 };

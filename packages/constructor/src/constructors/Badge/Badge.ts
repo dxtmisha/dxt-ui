@@ -28,8 +28,9 @@ export class Badge {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param LabelNumberIncludeConstructor class for working with label/ класс для работы с меткой
-   * @param IconIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.IconIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param constructors.LabelNumberIncludeConstructor class for working with label/ класс для работы с меткой
    */
   constructor(
     protected readonly props: BadgeProps,
@@ -40,9 +41,16 @@ export class Badge {
     protected readonly components?: DesignComp<BadgeComponents, BadgeProps>,
     protected readonly slots?: BadgeSlots,
     protected readonly emits?: ConstrEmit<BadgeEmits>,
-    LabelNumberIncludeConstructor: typeof LabelNumberInclude = LabelNumberInclude,
-    IconIncludeConstructor: typeof IconInclude = IconInclude
+    constructors?: {
+      IconIncludeConstructor?: typeof IconInclude
+      LabelNumberIncludeConstructor?: typeof LabelNumberInclude
+    }
   ) {
+    const {
+      IconIncludeConstructor = IconInclude,
+      LabelNumberIncludeConstructor = LabelNumberInclude
+    } = constructors ?? {}
+
     this.label = new LabelNumberIncludeConstructor(
       props,
       className,

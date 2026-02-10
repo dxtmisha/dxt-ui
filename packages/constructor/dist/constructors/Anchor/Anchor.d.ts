@@ -38,15 +38,24 @@ export declare class Anchor {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param AnchorHrefConstructor class for working with href/ класс для работы с ссылкой
-     * @param AnchorToConstructor class for working with scroll/ класс для работы с прокруткой
-     * @param AnchorEventConstructor class for working with events/ класс для работы с событиями
-     * @param AnchorIconConstructor class for working with icons/ класс для работы с иконками
-     * @param LabelIncludeConstructor class for working with label/ класс для работы с меткой
-     * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
-     * @param TooltipIncludeConstructor class for working with tooltip/ класс для работы с подсказкой
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.AnchorEventConstructor class for working with events/ класс для работы с событиями
+     * @param constructors.AnchorHrefConstructor class for working with href/ класс для работы с ссылкой
+     * @param constructors.AnchorIconConstructor class for working with icons/ класс для работы с иконками
+     * @param constructors.AnchorToConstructor class for working with scroll/ класс для работы с прокруткой
+     * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
+     * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
+     * @param constructors.TooltipIncludeConstructor class for working with tooltip/ класс для работы с подсказкой
      */
-    constructor(props: AnchorProps, refs: ToRefs<AnchorProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<AnchorComponents, AnchorProps> | undefined, slots?: AnchorSlots | undefined, emits?: ConstrEmit<AnchorEmits> | undefined, AnchorHrefConstructor?: typeof AnchorHref, AnchorToConstructor?: typeof AnchorTo, AnchorEventConstructor?: typeof AnchorEvent, AnchorIconConstructor?: typeof AnchorIcon, LabelIncludeConstructor?: typeof LabelInclude, TextIncludeConstructor?: typeof TextInclude, TooltipIncludeConstructor?: typeof TooltipInclude);
+    constructor(props: AnchorProps, refs: ToRefs<AnchorProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<AnchorComponents, AnchorProps> | undefined, slots?: AnchorSlots | undefined, emits?: ConstrEmit<AnchorEmits> | undefined, constructors?: {
+        AnchorEventConstructor?: typeof AnchorEvent;
+        AnchorHrefConstructor?: typeof AnchorHref;
+        AnchorIconConstructor?: typeof AnchorIcon;
+        AnchorToConstructor?: typeof AnchorTo;
+        LabelIncludeConstructor?: typeof LabelInclude;
+        TextIncludeConstructor?: typeof TextInclude;
+        TooltipIncludeConstructor?: typeof TooltipInclude;
+    });
     /** Is hide anchor/ Скрыть якорь */
     readonly isHide: ComputedRef<boolean>;
     /**

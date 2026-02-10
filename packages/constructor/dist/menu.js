@@ -1,21 +1,21 @@
 var S = Object.defineProperty;
-var C = (r, e, t) => e in r ? S(r, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[e] = t;
-var s = (r, e, t) => C(r, typeof e != "symbol" ? e + "" : e, t);
-import { ref as h, computed as l, watch as y, h as B } from "vue";
-import { isFunction as k, executePromise as V, Api as M, isFilled as q, isObject as L, ListDataRef as A, DesignConstructorAbstract as D, toBinds as N } from "@dxtmisha/functional";
+var B = (r, e, t) => e in r ? S(r, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[e] = t;
+var s = (r, e, t) => B(r, typeof e != "symbol" ? e + "" : e, t);
+import { ref as a, computed as l, watch as y, h as M } from "vue";
+import { isFunction as k, executePromise as V, Api as q, isFilled as I, isObject as L, ListDataRef as D, DesignConstructorAbstract as A, toBinds as N } from "@dxtmisha/functional";
 import { E as T } from "./EventClickInclude-WHJqxZ1b.js";
-import { M as j } from "./ModelInclude-BiYm_iCQ.js";
-import { B as I } from "./BarsInclude-BOEoY-O4.js";
-import { W } from "./WindowInclude-BWm4-0Gh.js";
-import { M as tt } from "./MenuInclude-DfGCfr_I.js";
-class E {
+import { M as W } from "./ModelInclude-BiYm_iCQ.js";
+import { W as j } from "./WindowInclude-BWm4-0Gh.js";
+import { B as E } from "./BarsInclude-BOEoY-O4.js";
+import { M as et } from "./MenuInclude-DfGCfr_I.js";
+class R {
   /**
    * Constructor
    * @param props input data/ входные данные
    */
   constructor(e) {
-    s(this, "progress", h(!1));
-    s(this, "buffer", h());
+    s(this, "progress", a(!1));
+    s(this, "buffer", a());
     /**
      * Returns current list data.
      *
@@ -57,7 +57,7 @@ class E {
    * Возвращает данные из AJAX или функции запроса.
    */
   async getAjax() {
-    return k(this.props.ajax) ? V(this.props.ajax) : await M.request({
+    return k(this.props.ajax) ? V(this.props.ajax) : await q.request({
       path: this.props.ajax,
       ...this.props.request
     });
@@ -77,7 +77,7 @@ class F {
    * @param props input data/ входные данные
    */
   constructor(e) {
-    s(this, "item", h());
+    s(this, "item", a());
     /** Returns the search string/ Возвращает строку поиска */
     s(this, "value", l(() => this.props.highlight ? this.props.highlight : this.item.value));
     this.props = e;
@@ -107,7 +107,7 @@ class F {
    * @param value source value/ исходное значение
    */
   getValue(e) {
-    if (q(e))
+    if (I(e))
       return e.trim();
   }
 }
@@ -118,8 +118,8 @@ class O {
    * @param request menu request handler/ обработчик запросов меню
    */
   constructor(e, t) {
-    s(this, "lite", h());
-    s(this, "control", h());
+    s(this, "lite", a());
+    s(this, "control", a());
     /**
      * Preparing data before opening the menu
      *
@@ -174,14 +174,14 @@ class H {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(e, t, i) {
-    s(this, "value", h());
+    s(this, "value", a());
     /**
      * Computed selected value
      *
      * Вычисляемое выбранное значение
      */
     s(this, "selected", l(() => this.props.isSelectedByValue ? this.value.value : this.props.selected));
-    this.props = e, this.refs = t, this.emits = i, this.props.isSelectedByValue && (new j("selected", this.emits, this.value), t.selected && y(
+    this.props = e, this.refs = t, this.emits = i, this.props.isSelectedByValue && (new W("selected", this.emits, this.value), t.selected && y(
       t.selected,
       (o) => {
         this.value.value = o;
@@ -201,7 +201,7 @@ class H {
     return this.props.isSelectedByValue && !L(e) && this.value.value !== e && (this.value.value = e, t && ((i = this.emits) == null || i.call(this, "updateValue", e))), this;
   }
 }
-class R {
+class G {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -257,17 +257,18 @@ class _ {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param MenuRequestConstructor class for working with request/ класс для работы с запросом
-   * @param MenuSearchConstructor class for working with search/ класс для работы с поиском
-   * @param MenuValueConstructor class for working with value/ класс для работы со значением
-   * @param ListDataRefConstructor class for working with list data/ класс для работы с данными списка
-   * @param MenuGoConstructor class for working with navigation/ класс для работы с навигацией
-   * @param BarsIncludeConstructor class for working with bars/ класс для работы с барами
-   * @param MenuWindowConstructor class for working with menu window/ класс для работы с окном меню
-   * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
-   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.BarsIncludeConstructor class for working with bars/ класс для работы с барами
+   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors.ListDataRefConstructor class for working with list data/ класс для работы с данными списка
+   * @param constructors.MenuGoConstructor class for working with navigation/ класс для работы с навигацией
+   * @param constructors.MenuRequestConstructor class for working with request/ класс для работы с запросом
+   * @param constructors.MenuSearchConstructor class for working with search/ класс для работы с поиском
+   * @param constructors.MenuValueConstructor class for working with value/ класс для работы со значением
+   * @param constructors.MenuWindowConstructor class for working with menu window/ класс для работы с окном меню
+   * @param constructors.WindowIncludeConstructor class for working with window/ класс для работы с окном
    */
-  constructor(e, t, i, o, a, n, u, p, d = E, c = F, m = H, v = A, f = R, g = I, w = O, b = W, x = T) {
+  constructor(e, t, i, o, n, u, p, d, h) {
     /** Request handler for list data/ Обработчик запросов данных списка */
     s(this, "request");
     /** Search helper for menu filtering/ Вспомогательный класс поиска для фильтрации меню */
@@ -325,7 +326,19 @@ class _ {
       const t = e.target, i = t.closest("*[data-value]");
       i && !t.closest(`.${this.className}__list`) && ((o = this.emits) == null || o.call(this, "clickSlot", i.dataset.value));
     });
-    this.props = e, this.refs = t, this.element = i, this.classDesign = o, this.className = a, this.components = n, this.slots = u, this.emits = p, this.request = new d(this.props), this.search = new c(this.props), this.value = new m(this.props, this.refs, this.emits), this.data = new v(
+    this.props = e, this.refs = t, this.element = i, this.classDesign = o, this.className = n, this.components = u, this.slots = p, this.emits = d;
+    const {
+      BarsIncludeConstructor: c = E,
+      EventClickIncludeConstructor: m = T,
+      ListDataRefConstructor: v = D,
+      MenuGoConstructor: f = G,
+      MenuRequestConstructor: g = R,
+      MenuSearchConstructor: w = F,
+      MenuValueConstructor: C = H,
+      MenuWindowConstructor: b = O,
+      WindowIncludeConstructor: x = j
+    } = h != null ? h : {};
+    this.request = new g(this.props), this.search = new w(this.props), this.value = new C(this.props, this.refs, this.emits), this.data = new v(
       this.request.item,
       void 0,
       void 0,
@@ -334,18 +347,18 @@ class _ {
       this.value.selected,
       this.refs.keyValue,
       this.refs.keyLabel
-    ), this.go = new f(this.props, this.value, this.data), this.bars = new g(
+    ), this.go = new f(this.props, this.value, this.data), this.bars = new c(
       this.props,
       this.className,
       this.components,
       this.emits
-    ), this.menuWindow = new w(this.props, this.request), this.window = new b(
+    ), this.menuWindow = new b(this.props, this.request), this.window = new x(
       this.props,
       this.className,
       this.components,
       this.emits,
       this.menuWindow.getExtra()
-    ), this.event = new x(void 0, void 0, this.emits), this.slotData = {
+    ), this.event = new m(void 0, void 0, this.emits), this.slotData = {
       loading: this.request.progress,
       isSelected: this.data.isSelected,
       selectedList: this.data.selectedList,
@@ -365,7 +378,7 @@ class _ {
     return this.slotData;
   }
 }
-const U = {
+const X = {
   liteThreshold: 40,
   barsHide: !0,
   barsBackHide: !0,
@@ -373,7 +386,7 @@ const U = {
   step: 1,
   autoClose: !0
 };
-class X extends D {
+class Y extends A {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -381,7 +394,7 @@ class X extends D {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, i, o, a = _) {
+  constructor(t, i, o, n = _) {
     super(
       t,
       i,
@@ -415,8 +428,8 @@ class X extends D {
       var o;
       const i = this.item.request.item.value;
       if (i) {
-        const a = [];
-        return this.initSlot("contextTop", a, this.getBinds(t)), this.props.hideList || a.push(
+        const n = [];
+        return this.initSlot("contextTop", n, this.getBinds(t)), this.props.hideList || n.push(
           this.components.render(
             "list",
             N(
@@ -434,14 +447,14 @@ class X extends D {
             ),
             this.slots
           )
-        ), this.initSlot("contextBottom", a, this.getBinds(t)), B(
+        ), this.initSlot("contextBottom", n, this.getBinds(t)), M(
           "div",
           {
             ...this.getAttrs(),
             ref: this.element,
             onClick: this.item.onClickSlot
           },
-          a
+          n
         );
       }
     });
@@ -452,7 +465,7 @@ class X extends D {
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
     s(this, "renderFooter", (t) => this.initSlot("footer", void 0, this.getBinds(t)));
-    this.item = new a(
+    this.item = new n(
       this.props,
       this.refs,
       this.element,
@@ -532,7 +545,7 @@ class X extends D {
 }
 export {
   _ as Menu,
-  X as MenuDesign,
-  tt as MenuInclude,
-  U as defaultsMenu
+  Y as MenuDesign,
+  et as MenuInclude,
+  X as defaultsMenu
 };

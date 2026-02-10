@@ -1,13 +1,13 @@
 var A = Object.defineProperty;
-var E = (l, i, t) => i in l ? A(l, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : l[i] = t;
-var s = (l, i, t) => E(l, typeof i != "symbol" ? i + "" : i, t);
-import { computed as r, ref as V, h as p } from "vue";
-import { toBinds as a, executeFunction as T, isFilled as y, DesignConstructorAbstract as k } from "@dxtmisha/functional";
-import { F as B, a as D, c as N, f as L, b as O, e as q, d as W } from "./FieldEventInclude-DBRqmzpF.js";
-import { F as K } from "./FieldInclude-BKoBWZdj.js";
-import { M as R } from "./MenuInclude-DfGCfr_I.js";
-import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
-class U {
+var V = (l, i, t) => i in l ? A(l, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : l[i] = t;
+var s = (l, i, t) => V(l, typeof i != "symbol" ? i + "" : i, t);
+import { computed as r, ref as T, h as c } from "vue";
+import { toBinds as h, executeFunction as y, isFilled as k, DesignConstructorAbstract as B } from "@dxtmisha/functional";
+import { F as D, a as N, b as L, c as O, d as q, e as W, f as K } from "./FieldEventInclude-DBRqmzpF.js";
+import { F as R } from "./FieldInclude-BKoBWZdj.js";
+import { M as U } from "./MenuInclude-DfGCfr_I.js";
+import { A as d } from "./AriaStaticInclude-CAURwJMb.js";
+class j {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -25,7 +25,7 @@ class U {
      *
      * Возвращает данные для поля input.
      */
-    s(this, "binds", r(() => a(
+    s(this, "binds", r(() => h(
       this.attributes.listForInput.value,
       {
         name: this.props.name,
@@ -50,10 +50,10 @@ class U {
     this.props = i, this.attributes = t, this.value = e, this.event = n;
   }
 }
-class j {
+class z {
   constructor() {
     /** Reactive filter value/ Реактивное значение фильтра */
-    s(this, "value", V(""));
+    s(this, "value", T(""));
     /**
      * Input event handler.
      *
@@ -83,7 +83,7 @@ class j {
     this.value.value = i;
   }
 }
-class z {
+class G {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -94,19 +94,20 @@ class z {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param FieldAttributesIncludeConstructor class for working with field attributes/ класс для работы с атрибутами поля
-   * @param FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
-   * @param FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
-   * @param FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
-   * @param FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
-   * @param FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
-   * @param FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
-   * @param FieldIncludeConstructor class for working with field/ класс для работы с полем
-   * @param MenuIncludeConstructor class for working with menu/ класс для работы с меню
-   * @param SelectInputConstructor class for working with select input/ класс для работы с вводом выбора
-   * @param SelectFilterConstructor class for working with select filter/ класс для работы с фильтром выбора
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.FieldAttributesIncludeConstructor class for working with field attributes/ класс для работы с атрибутами поля
+   * @param constructors.FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
+   * @param constructors.FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
+   * @param constructors.FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
+   * @param constructors.FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
+   * @param constructors.FieldIncludeConstructor class for working with field/ класс для работы с полем
+   * @param constructors.FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
+   * @param constructors.FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
+   * @param constructors.MenuIncludeConstructor class for working with menu/ класс для работы с меню
+   * @param constructors.SelectFilterConstructor class for working with select filter/ класс для работы с фильтром выбора
+   * @param constructors.SelectInputConstructor class for working with select input/ класс для работы с вводом выбора
    */
-  constructor(i, t, e, n, h, u, d, m, v = B, g = D, f = N, b = L, w = O, I = q, S = W, x = K, C = R, F = U, M = j) {
+  constructor(i, t, e, n, a, u, m, v, p) {
     s(this, "attributes");
     s(this, "elementItem");
     s(this, "change");
@@ -133,26 +134,40 @@ class z {
     s(this, "onClick", (i) => {
       i && this.value.set(i);
     });
-    this.props = i, this.refs = t, this.element = e, this.classDesign = n, this.className = h, this.components = u, this.slots = d, this.emits = m, this.attributes = new v(this.props), this.change = new g(this.props), this.elementItem = new f(
+    this.props = i, this.refs = t, this.element = e, this.classDesign = n, this.className = a, this.components = u, this.slots = m, this.emits = v;
+    const {
+      FieldAttributesIncludeConstructor: g = D,
+      FieldChangeIncludeConstructor: I = N,
+      FieldCodeIncludeConstructor: C = L,
+      FieldElementIncludeConstructor: f = O,
+      FieldEventIncludeConstructor: b = q,
+      FieldIncludeConstructor: F = R,
+      FieldValidationIncludeConstructor: w = W,
+      FieldValueIncludeConstructor: S = K,
+      MenuIncludeConstructor: x = U,
+      SelectFilterConstructor: M = z,
+      SelectInputConstructor: E = j
+    } = p != null ? p : {};
+    this.attributes = new g(this.props), this.change = new I(this.props), this.elementItem = new f(
       this.props,
       this.element
-    ), this.value = new b(
+    ), this.value = new S(
       this.props,
       this.refs,
       this.elementItem
-    ), this.code = new w(this.props), this.validation = new I(
+    ), this.code = new C(this.props), this.validation = new w(
       this.props,
       this.attributes,
       this.value,
       this.change,
       this.code
-    ), this.event = new S(
+    ), this.event = new b(
       this.props,
       this.change,
       this.value,
       this.validation,
       this.emits
-    ), this.field = new x(
+    ), this.field = new F(
       this.props,
       this.value,
       this.components,
@@ -179,13 +194,13 @@ class z {
           cancel: (o = this.props.cancel) != null ? o : this.props.multiple ? "auto" : "none"
         };
       })
-    ), this.menu = new C(
+    ), this.menu = new x(
       this.props,
       this.className,
       this.components,
       r(() => ({
         windowAttrs: {
-          hide: !y(this.props.option) && !this.isSlot.value,
+          hide: !k(this.props.option) && !this.isSlot.value,
           widthMatch: !0
         },
         tag: "span",
@@ -193,7 +208,7 @@ class z {
         barsDescription: this.props.helperMessage,
         disabled: this.props.disabled || this.props.readonly,
         autoClose: !this.props.multiple,
-        list: T(this.props.option),
+        list: y(this.props.option),
         max: this.props.max,
         filterMode: this.props.filterMode,
         hideList: this.props.hideList,
@@ -203,7 +218,7 @@ class z {
         isSelectedByValue: !0,
         ariaMultiselectable: this.props.multiple
       }))
-    ), this.input = new F(this.props, this.attributes, this.value, this.event), this.filter = new M();
+    ), this.input = new E(this.props, this.attributes, this.value, this.event), this.filter = new M();
   }
   /**
    * Checks whether arrow is set.
@@ -214,8 +229,8 @@ class z {
     return !!this.props.arrow && this.props.arrow !== "none";
   }
 }
-const Z = {};
-class _ extends k {
+const _ = {};
+class $ extends B {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -223,7 +238,7 @@ class _ extends k {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, e, n, h = z) {
+  constructor(t, e, n, a = G) {
     super(
       t,
       e,
@@ -270,10 +285,10 @@ class _ extends k {
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
     s(this, "renderMenuControlInput", (t, e) => {
-      const n = this.item.input.isEdit.value, h = n ? t.className : t.classForFocus, u = {};
-      return p(
+      const n = this.item.input.isEdit.value, a = n ? t.className : t.classForFocus, u = {};
+      return c(
         "input",
-        a(
+        h(
           this.item.input.binds.value,
           e.binds,
           {
@@ -282,9 +297,9 @@ class _ extends k {
             value: this.item.value.get(),
             class: [
               e.classesWindow.controlOpenOnly,
-              h
+              a
             ],
-            ...c.role("combobox")
+            ...d.role("combobox")
           },
           n ? void 0 : u
         )
@@ -299,7 +314,7 @@ class _ extends k {
      */
     s(this, "renderMenuControlValue", (t, e) => this.components.renderOne(
       "selectValue",
-      a(
+      h(
         e.binds,
         {
           class: t.className,
@@ -308,7 +323,7 @@ class _ extends k {
           multiple: this.props.multiple,
           placeholder: this.props.placeholder,
           onClick: this.item.event.onSelect,
-          ...c.role("combobox")
+          ...d.role("combobox")
         }
       )
     ));
@@ -330,7 +345,7 @@ class _ extends k {
      */
     s(this, "renderFilterInput", (t) => {
       var e;
-      return p(
+      return c(
         "div",
         {
           class: [
@@ -340,7 +355,7 @@ class _ extends k {
         },
         this.components.renderOne(
           "input",
-          a(
+          h(
             {
               icon: this.props.iconSearch,
               onInputLite: this.item.filter.onInput,
@@ -353,7 +368,7 @@ class _ extends k {
         )
       );
     });
-    this.item = new h(
+    this.item = new a(
       this.props,
       this.refs,
       this.element,
@@ -418,7 +433,7 @@ class _ extends k {
   }
 }
 export {
-  z as Select,
-  _ as SelectDesign,
-  Z as defaultsSelect
+  G as Select,
+  $ as SelectDesign,
+  _ as defaultsSelect
 };

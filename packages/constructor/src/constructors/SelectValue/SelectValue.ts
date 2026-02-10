@@ -35,9 +35,10 @@ export class SelectValue {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
-   * @param EventConstructor class for creating an event/ класс для создания события
-   * @param WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
+   * @param constructors.EventConstructor class for creating an event/ класс для создания события
+   * @param constructors.WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
    */
   constructor(
     protected readonly props: SelectValueProps,
@@ -48,10 +49,18 @@ export class SelectValue {
     protected readonly components?: DesignComp<SelectValueComponents, SelectValueProps>,
     protected readonly slots?: SelectValueSlots,
     protected readonly emits?: ConstrEmit<SelectValueEmits>,
-    EnabledConstructor: typeof EnabledInclude = EnabledInclude,
-    EventConstructor: typeof EventClickInclude = EventClickInclude,
-    WindowClassesConstructor: typeof WindowClassesInclude = WindowClassesInclude
+    constructors?: {
+      EnabledConstructor?: typeof EnabledInclude
+      EventConstructor?: typeof EventClickInclude
+      WindowClassesConstructor?: typeof WindowClassesInclude
+    }
   ) {
+    const {
+      EnabledConstructor = EnabledInclude,
+      EventConstructor = EventClickInclude,
+      WindowClassesConstructor = WindowClassesInclude
+    } = constructors ?? {}
+
     this.enabled = new EnabledConstructor(this.props)
     this.event = new EventConstructor(
       this.props,

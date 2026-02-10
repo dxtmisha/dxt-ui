@@ -64,21 +64,36 @@ export declare class Field {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
-     * @param IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
-     * @param CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
-     * @param PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
-     * @param SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
-     * @param FieldLabelIncludeConstructor class for working with field label/ класс для работы с меткой поля
-     * @param FieldMessageIncludeConstructor class for working with field message/ класс для работы с сообщением поля
-     * @param ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
-     * @param EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
-     * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-     * @param FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
-     * @param FieldSizeConstructor class for working with field size/ класс для работы с размером поля
-     * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
+     * @param constructors.EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
+     * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+     * @param constructors.FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
+     * @param constructors.FieldLabelIncludeConstructor class for working with field label/ класс для работы с меткой поля
+     * @param constructors.FieldMessageIncludeConstructor class for working with field message/ класс для работы с сообщением поля
+     * @param constructors.FieldSizeConstructor class for working with field size/ класс для работы с размером поля
+     * @param constructors.IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
+     * @param constructors.PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
+     * @param constructors.ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
+     * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+     * @param constructors.SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
+     * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
      */
-    constructor(props: FieldProps, refs: ToRefs<FieldProps>, element: Ref<HTMLLabelElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldComponents, FieldProps> | undefined, slots?: FieldSlots | undefined, emits?: ConstrEmit<FieldEmits> | undefined, SkeletonIncludeConstructor?: typeof SkeletonInclude, IconTrailingIncludeConstructor?: typeof IconTrailingInclude, CaptionIncludeConstructor?: typeof CaptionInclude, PrefixIncludeConstructor?: typeof PrefixInclude, SuffixIncludeConstructor?: typeof SuffixInclude, FieldLabelIncludeConstructor?: typeof FieldLabelInclude, FieldMessageIncludeConstructor?: typeof FieldMessageInclude, ProgressIncludeConstructor?: typeof ProgressInclude, EnabledIncludeConstructor?: typeof EnabledInclude, EventClickIncludeConstructor?: typeof EventClickInclude, FieldIconsConstructor?: typeof FieldIcons, FieldSizeConstructor?: typeof FieldSize, TextIncludeConstructor?: typeof TextInclude);
+    constructor(props: FieldProps, refs: ToRefs<FieldProps>, element: Ref<HTMLLabelElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldComponents, FieldProps> | undefined, slots?: FieldSlots | undefined, emits?: ConstrEmit<FieldEmits> | undefined, constructors?: {
+        CaptionIncludeConstructor?: typeof CaptionInclude;
+        EnabledIncludeConstructor?: typeof EnabledInclude;
+        EventClickIncludeConstructor?: typeof EventClickInclude;
+        FieldIconsConstructor?: typeof FieldIcons;
+        FieldLabelIncludeConstructor?: typeof FieldLabelInclude;
+        FieldMessageIncludeConstructor?: typeof FieldMessageInclude;
+        FieldSizeConstructor?: typeof FieldSize;
+        IconTrailingIncludeConstructor?: typeof IconTrailingInclude;
+        PrefixIncludeConstructor?: typeof PrefixInclude;
+        ProgressIncludeConstructor?: typeof ProgressInclude;
+        SkeletonIncludeConstructor?: typeof SkeletonInclude;
+        SuffixIncludeConstructor?: typeof SuffixInclude;
+        TextIncludeConstructor?: typeof TextInclude;
+    });
     /** Checks if the field is classic/ Проверяет, является ли поле классическим */
     readonly isClassic: ComputedRef<boolean>;
     /** Checks if an error needs to be displayed/ Проверяет, надо ли выводить ошибку */

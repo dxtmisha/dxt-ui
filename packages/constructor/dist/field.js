@@ -1,20 +1,20 @@
 var B = Object.defineProperty;
-var I = (n, t, s) => t in n ? B(n, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[t] = s;
-var e = (n, t, s) => I(n, typeof t != "symbol" ? t + "" : t, s);
-import { computed as r, watch as $, onUnmounted as L, onMounted as E, onUpdated as k, h as l } from "vue";
-import { isDomRuntime as A, EventItem as T, getElementId as F, DesignConstructorAbstract as q, isString as P } from "@dxtmisha/functional";
-import { A as d } from "./AriaStaticInclude-CAURwJMb.js";
-import { C as M } from "./CaptionInclude-NzS6EYYj.js";
-import { P as D, S as V } from "./SuffixInclude-maZ7235l.js";
+var $ = (n, t, s) => t in n ? B(n, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[t] = s;
+var e = (n, t, s) => $(n, typeof t != "symbol" ? t + "" : t, s);
+import { computed as r, watch as L, onUnmounted as E, onMounted as F, onUpdated as k, h as l } from "vue";
+import { isDomRuntime as T, EventItem as A, getElementId as P, DesignConstructorAbstract as q, isString as M } from "@dxtmisha/functional";
+import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
+import { C as D } from "./CaptionInclude-NzS6EYYj.js";
+import { P as V, S as z } from "./SuffixInclude-maZ7235l.js";
 import { E as R } from "./EnabledInclude-Dk-rP4jp.js";
-import { E as z } from "./EventClickInclude-WHJqxZ1b.js";
-import { T as W } from "./TextInclude--GERRCGj.js";
-import { F as K } from "./FieldLabelInclude-Bkxf6rRw.js";
-import { F as U } from "./FieldMessageInclude-BJDnir34.js";
-import { S as j } from "./SkeletonInclude-BIUzAO2s.js";
+import { E as W } from "./EventClickInclude-WHJqxZ1b.js";
+import { T as K } from "./TextInclude--GERRCGj.js";
+import { F as U } from "./FieldLabelInclude-Bkxf6rRw.js";
+import { F as j } from "./FieldMessageInclude-BJDnir34.js";
 import { I as H } from "./IconTrailingInclude-CdsOcDxv.js";
 import { P as G } from "./ProgressInclude-9MfZWtGP.js";
-class J {
+import { S as J } from "./SkeletonInclude-BIUzAO2s.js";
+class O {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -77,7 +77,7 @@ class J {
     this.props = t, this.className = s, this.text = i;
   }
 }
-class O {
+class Q {
   /**
    * Constructor
    * @param element main element/ главный элемент
@@ -100,10 +100,10 @@ class O {
         t && (this.left = t.offsetLeft, this.right = ((o = (i = t.parentElement) == null ? void 0 : i.offsetWidth) != null ? o : 0) - this.left - t.offsetWidth), this.title = (h = (a = s == null ? void 0 : s.offsetLeft) != null ? a : t == null ? void 0 : t.offsetLeft) != null ? h : 0, this.make();
       });
     });
-    this.element = t, this.className = s, $(t, () => this.update, { immediate: !0 }), A() && (this.event = new T(window, "resize", this.update), L(() => {
+    this.element = t, this.className = s, L(t, () => this.update, { immediate: !0 }), T() && (this.event = new A(window, "resize", this.update), E(() => {
       var i;
       return (i = this.event) == null ? void 0 : i.stop();
-    })), E(this.update), k(this.update);
+    })), F(this.update), k(this.update);
   }
   /**
    * Returns separator elements.
@@ -133,7 +133,7 @@ class O {
     t && (t.style.setProperty(`--${this.className}-sys-left`, `${this.left}px`), t.style.setProperty(`--${this.className}-sys-right`, `${this.right}px`), t.style.setProperty(`--${this.className}-sys-title`, `${this.title}px`), t.classList.contains(`${this.className}--show`) || requestAnimationFrame(() => t.classList.add(`${this.className}--show`)));
   }
 }
-class Q {
+class X {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -144,21 +144,22 @@ class Q {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
-   * @param IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
-   * @param CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
-   * @param PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
-   * @param SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
-   * @param FieldLabelIncludeConstructor class for working with field label/ класс для работы с меткой поля
-   * @param FieldMessageIncludeConstructor class for working with field message/ класс для работы с сообщением поля
-   * @param ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
-   * @param EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
-   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
-   * @param FieldSizeConstructor class for working with field size/ класс для работы с размером поля
-   * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
+   * @param constructors.EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
+   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors.FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
+   * @param constructors.FieldLabelIncludeConstructor class for working with field label/ класс для работы с меткой поля
+   * @param constructors.FieldMessageIncludeConstructor class for working with field message/ класс для работы с сообщением поля
+   * @param constructors.FieldSizeConstructor class for working with field size/ класс для работы с размером поля
+   * @param constructors.IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param constructors.PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
+   * @param constructors.ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
+   * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+   * @param constructors.SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
+   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(t, s, i, o, a, h, c, p, u = j, m = H, b = M, f = D, v = V, y = K, g = U, _ = G, S = R, x = z, w = J, C = O, N = W) {
+  constructor(t, s, i, o, a, h, p, u, d) {
     /** Text include/ Подключение текста */
     e(this, "text");
     /** Icon trailing include/ Подключение иконки в конце */
@@ -192,7 +193,7 @@ class Q {
     /** Checks if an error needs to be displayed/ Проверяет, надо ли выводить ошибку */
     e(this, "isValidation", r(() => !!(this.props.validationMessage && (this.props.forceShowMessage || !this.props.readonly && !this.props.disabled))));
     /** Field identifier/ Идентификатор поля */
-    e(this, "id", r(() => String(this.props.id || F())));
+    e(this, "id", r(() => String(this.props.id || P())));
     /** Values for the class/ Значения для класса */
     e(this, "classes", r(() => ({
       [`${this.className}--cancel`]: this.icons.isCancel.value,
@@ -211,17 +212,33 @@ class Q {
         classForFocus: `${this.className}__body__focus`,
         binds: {
           id: this.id.value,
-          className: t,
-          ...d.invalid(this.isValidation.value),
-          ...d.describedby(this.getDescribedby())
+          class: t,
+          ...c.invalid(this.isValidation.value),
+          ...c.describedby(this.getDescribedby())
         }
       };
     }));
-    this.props = t, this.refs = s, this.element = i, this.classDesign = o, this.className = a, this.components = h, this.slots = c, this.emits = p, this.skeleton = new u(
+    this.props = t, this.refs = s, this.element = i, this.classDesign = o, this.className = a, this.components = h, this.slots = p, this.emits = u;
+    const {
+      CaptionIncludeConstructor: m = D,
+      EnabledIncludeConstructor: b = R,
+      EventClickIncludeConstructor: f = W,
+      FieldIconsConstructor: v = O,
+      FieldLabelIncludeConstructor: y = U,
+      FieldMessageIncludeConstructor: g = j,
+      FieldSizeConstructor: S = Q,
+      IconTrailingIncludeConstructor: _ = H,
+      PrefixIncludeConstructor: C = V,
+      ProgressIncludeConstructor: x = G,
+      SkeletonIncludeConstructor: w = J,
+      SuffixIncludeConstructor: I = z,
+      TextIncludeConstructor: N = K
+    } = d != null ? d : {};
+    this.skeleton = new w(
       this.props,
       this.classDesign,
       ["classBackground"]
-    ), this.icon = new m(this.props, this.className, this.components), this.text = new N(this.props), this.caption = new b(this.props, this.className, this.slots), this.prefix = new f(this.props, this.className, this.slots), this.suffix = new v(this.props, this.className, this.slots), this.fieldLabel = new y(
+    ), this.icon = new _(this.props, this.className, this.components), this.text = new N(this.props), this.caption = new m(this.props, this.className, this.slots), this.prefix = new C(this.props, this.className, this.slots), this.suffix = new I(this.props, this.className, this.slots), this.fieldLabel = new y(
       this.props,
       this.className,
       this.components,
@@ -236,7 +253,7 @@ class Q {
       void 0,
       r(() => !this.props.counterTop),
       this.skeleton.binds
-    ), this.progress = new _(
+    ), this.progress = new x(
       this.props,
       this.className,
       this.components,
@@ -245,7 +262,7 @@ class Q {
         position: "static",
         dense: !0
       }
-    ), this.enabled = new S(this.props, this.progress), this.event = new x(this.props, this.enabled, this.emits), this.icons = new w(this.props, this.className, this.text), this.size = new C(this.element, this.className);
+    ), this.enabled = new b(this.props, this.progress), this.event = new f(this.props, this.enabled, this.emits), this.icons = new v(this.props, this.className, this.text), this.size = new S(this.element, this.className);
   }
   /**
    * Get ARIA describedby attribute.
@@ -261,12 +278,12 @@ class Q {
     ].join(" ").trim();
   }
 }
-const cs = {
+const ps = {
   // :default [!] System label / Системная метка
   arrowAlign: "right",
   cancel: "auto"
 };
-class ps extends q {
+class us extends q {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -274,7 +291,7 @@ class ps extends q {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(s, i, o, a = Q) {
+  constructor(s, i, o, a = X) {
     super(
       s,
       i,
@@ -441,7 +458,7 @@ class ps extends q {
      *
      * Значение для фокуса.
      */
-    e(this, "focusValue", () => !this.lengthElement.value && P(this.props.value) ? this.props.value : "");
+    e(this, "focusValue", () => !this.lengthElement.value && M(this.props.value) ? this.props.value : "");
     /**
      * Length value.
      *
@@ -544,7 +561,7 @@ class ps extends q {
   }
 }
 export {
-  Q as Field,
-  ps as FieldDesign,
-  cs as defaultsField
+  X as Field,
+  us as FieldDesign,
+  ps as defaultsField
 };

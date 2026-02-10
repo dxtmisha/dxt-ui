@@ -34,7 +34,7 @@ export type FieldControl = {
     classForFocus: string;
     binds: AriaList & {
         id: string;
-        className: string;
+        class: string;
     };
 };
 /**

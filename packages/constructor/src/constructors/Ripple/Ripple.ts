@@ -23,6 +23,8 @@ export class Ripple {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.RippleItemConstructor class for working with ripple item/ класс для работы с элементом волны
    */
   constructor(
     protected readonly props: RippleProps,
@@ -31,9 +33,16 @@ export class Ripple {
     protected readonly className: string,
     protected readonly components?: DesignComp<RippleComponents, RippleProps>,
     protected readonly slots?: RippleSlots,
-    protected readonly emits?: ConstrEmit<RippleEmits>
+    protected readonly emits?: ConstrEmit<RippleEmits>,
+    constructors?: {
+      RippleItemConstructor?: typeof RippleItem
+    }
   ) {
-    this.item = new RippleItem(props, element, className)
+    const {
+      RippleItemConstructor = RippleItem
+    } = constructors ?? {}
+
+    this.item = new RippleItemConstructor(props, element, className)
   }
 
   /**

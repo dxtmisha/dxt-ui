@@ -50,20 +50,34 @@ export declare class ListItem {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
-     * @param LabelHighlightIncludeConstructor class for working with label/ класс для работы с меткой
-     * @param PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
-     * @param CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
-     * @param SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
-     * @param DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
-     * @param BadgeIncludeConstructor class for working with badge/ класс для работы с бейджем
-     * @param RippleIncludeConstructor class for working with ripple/ класс для работы с ripple
-     * @param ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
-     * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
-     * @param EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
-     * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.BadgeIncludeConstructor class for working with badge/ класс для работы с бейджем
+     * @param constructors.CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
+     * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
+     * @param constructors.EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
+     * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+     * @param constructors.IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
+     * @param constructors.LabelHighlightIncludeConstructor class for working with label/ класс для работы с меткой
+     * @param constructors.PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
+     * @param constructors.ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
+     * @param constructors.RippleIncludeConstructor class for working with ripple/ класс для работы с ripple
+     * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+     * @param constructors.SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
      */
-    constructor(props: ListItemProps, refs: ToRefs<ListItemProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ListItemComponents, ListItemProps> | undefined, slots?: ListItemSlots | undefined, emits?: ConstrEmit<ListItemEmits> | undefined, IconTrailingIncludeConstructor?: typeof IconTrailingInclude, LabelHighlightIncludeConstructor?: typeof LabelHighlightInclude, PrefixIncludeConstructor?: typeof PrefixInclude, CaptionIncludeConstructor?: typeof CaptionInclude, SuffixIncludeConstructor?: typeof SuffixInclude, DescriptionIncludeConstructor?: typeof DescriptionInclude, BadgeIncludeConstructor?: typeof BadgeInclude, RippleIncludeConstructor?: typeof RippleInclude, ProgressIncludeConstructor?: typeof ProgressInclude, SkeletonIncludeConstructor?: typeof SkeletonInclude, EnabledIncludeConstructor?: typeof EnabledInclude, EventClickIncludeConstructor?: typeof EventClickInclude);
+    constructor(props: ListItemProps, refs: ToRefs<ListItemProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ListItemComponents, ListItemProps> | undefined, slots?: ListItemSlots | undefined, emits?: ConstrEmit<ListItemEmits> | undefined, constructors?: {
+        BadgeIncludeConstructor?: typeof BadgeInclude;
+        CaptionIncludeConstructor?: typeof CaptionInclude;
+        DescriptionIncludeConstructor?: typeof DescriptionInclude;
+        EnabledIncludeConstructor?: typeof EnabledInclude;
+        EventClickIncludeConstructor?: typeof EventClickInclude;
+        IconTrailingIncludeConstructor?: typeof IconTrailingInclude;
+        LabelHighlightIncludeConstructor?: typeof LabelHighlightInclude;
+        PrefixIncludeConstructor?: typeof PrefixInclude;
+        ProgressIncludeConstructor?: typeof ProgressInclude;
+        RippleIncludeConstructor?: typeof RippleInclude;
+        SkeletonIncludeConstructor?: typeof SkeletonInclude;
+        SuffixIncludeConstructor?: typeof SuffixInclude;
+    });
     /** tag type/ тип тега */
     readonly tag: ComputedRef<string>;
     /** values for the class/ значения для класса */

@@ -1,0 +1,35 @@
+## Automatic Resizing
+
+The `autosize` property controls the automatic resizing of the textarea height based on its content.
+
+**Properties:**
+
+- `autosize` — enables automatic resizing mode (default is `true`).
+- `rows` — number of visible rows (HTML attribute).
+
+When `autosize` is enabled, the `Textarea` will dynamically adjust its height to fit all entered text.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const text = ref('')
+</script>
+
+<template>
+  <!-- Default automatic resizing -->
+  <Textarea
+    v-model="text"
+    label="Comment"
+    placeholder="Enter text..."
+  />
+
+  <!-- Disabled auto-resizing -->
+  <Textarea
+    v-model="text"
+    label="Fixed size"
+    :autosize="false"
+    rows="5"
+  />
+</template>
+```

@@ -34,6 +34,8 @@ export class Progress {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
    */
   constructor(
     protected readonly props: ProgressProps,
@@ -43,9 +45,16 @@ export class Progress {
     protected readonly className: string,
     protected readonly components?: DesignComp<ProgressComponents, ProgressProps>,
     protected readonly slots?: ProgressSlots,
-    protected readonly emits?: ConstrEmit<ProgressEmits>
+    protected readonly emits?: ConstrEmit<ProgressEmits>,
+    constructors?: {
+      TextIncludeConstructor?: typeof TextInclude
+    }
   ) {
-    this.text = new TextInclude(this.props)
+    const {
+      TextIncludeConstructor = TextInclude
+    } = constructors ?? {}
+
+    this.text = new TextIncludeConstructor(this.props)
 
     watch(
       [refs.visible],

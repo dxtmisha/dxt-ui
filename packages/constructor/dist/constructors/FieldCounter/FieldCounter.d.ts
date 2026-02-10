@@ -26,9 +26,12 @@ export declare class FieldCounter {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
      */
-    constructor(props: FieldCounterProps, refs: ToRefs<FieldCounterProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldCounterComponents, FieldCounterProps> | undefined, slots?: FieldCounterSlots | undefined, emits?: ConstrEmit<FieldCounterEmits> | undefined, TextIncludeConstructor?: typeof TextInclude);
+    constructor(props: FieldCounterProps, refs: ToRefs<FieldCounterProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldCounterComponents, FieldCounterProps> | undefined, slots?: FieldCounterSlots | undefined, emits?: ConstrEmit<FieldCounterEmits> | undefined, constructors?: {
+        TextIncludeConstructor?: typeof TextInclude;
+    });
     /** Checks if it is necessary to display the number of input characters/ Проверяет, надо ли выводить количество вводимых символов */
     readonly is: ComputedRef<boolean>;
     /** Checks if it is necessary to display the maximum available number of characters/ Проверяет, надо ли выводить максимальное доступное количество символов */

@@ -1,0 +1,51 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Textarea from './D1Textarea.stories'
+import {TextareaWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Textarea}/>
+<StorybookMain
+    name={TextareaWikiStorybook.getName()}
+    description={TextareaWikiStorybook.getDescription()}
+    story={Textarea.Textarea}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Textarea'} type={'textarea'}/>
+<Canvas of={Textarea.TextareaBasic}/>
+
+<StorybookDescriptions componentName={'Textarea'} type={'autosize'}/>
+<Canvas of={Textarea.TextareaAutosize}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
+<StorybookDescriptions componentName={'Event'} type={'change'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Slot'} type={'label'} />
+<StorybookDescriptions componentName={'Slot'} type={'prefix'} />
+<StorybookDescriptions componentName={'Slot'} type={'suffix'} />
+<StorybookDescriptions componentName={'Slot'} type={'caption'} />
+<StorybookDescriptions componentName={'Slot'} type={'leading'} />
+<StorybookDescriptions componentName={'Slot'} type={'trailing'} />
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

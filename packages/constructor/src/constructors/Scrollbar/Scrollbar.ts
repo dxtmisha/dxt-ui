@@ -34,8 +34,9 @@ export class Scrollbar {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param ScrollbarWidthRefConstructor class for working with scrollbar width/ класс для работы с шириной скролла
-   * @param ScrollbarBorderConstructor class for working with scrollbar border/ класс для работы с границей скролла
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ScrollbarBorderConstructor class for working with scrollbar border/ класс для работы с границей скролла
+   * @param constructors.ScrollbarWidthRefConstructor class for working with scrollbar width/ класс для работы с шириной скролла
    */
   constructor(
     protected readonly props: ScrollbarPropsBasic,
@@ -46,9 +47,16 @@ export class Scrollbar {
     protected readonly components?: DesignComp<ScrollbarComponents, ScrollbarPropsBasic>,
     protected readonly slots?: ScrollbarSlots,
     protected readonly emits?: ConstrEmit<ScrollbarEmits>,
-    ScrollbarWidthRefConstructor: typeof ScrollbarWidthRef = ScrollbarWidthRef,
-    ScrollbarBorderConstructor: typeof ScrollbarBorder = ScrollbarBorder
+    constructors?: {
+      ScrollbarBorderConstructor?: typeof ScrollbarBorder
+      ScrollbarWidthRefConstructor?: typeof ScrollbarWidthRef
+    }
   ) {
+    const {
+      ScrollbarBorderConstructor = ScrollbarBorder,
+      ScrollbarWidthRefConstructor = ScrollbarWidthRef
+    } = constructors ?? {}
+
     this.width = new ScrollbarWidthRefConstructor()
     this.border = new ScrollbarBorderConstructor(
       props,

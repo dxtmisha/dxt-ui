@@ -35,8 +35,20 @@ export declare class Dialog extends ModalAbstract {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
+     * @param constructors.IconIncludeConstructor class for working with icon/ класс для работы с иконкой
+     * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
+     * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
+     * @param constructors.WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
      */
-    constructor(props: DialogProps, refs: ToRefs<DialogProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<DialogComponents, DialogProps> | undefined, slots?: DialogSlots | undefined, emits?: ConstrEmit<DialogEmits> | undefined);
+    constructor(props: DialogProps, refs: ToRefs<DialogProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<DialogComponents, DialogProps> | undefined, slots?: DialogSlots | undefined, emits?: ConstrEmit<DialogEmits> | undefined, constructors?: {
+        DescriptionIncludeConstructor?: typeof DescriptionInclude;
+        IconIncludeConstructor?: typeof IconInclude;
+        LabelIncludeConstructor?: typeof LabelInclude;
+        TextIncludeConstructor?: typeof TextInclude;
+        WindowClassesIncludeConstructor?: typeof WindowClassesInclude;
+    });
     /**
      * Returns the icon for display.
      *

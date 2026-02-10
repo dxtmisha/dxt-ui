@@ -40,6 +40,10 @@ export class Accordion {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
+   * @param constructors.MotionTransformIncludeConstructor class for working with motion transform/ класс для работы с анимацией перехода
    */
   constructor(
     protected readonly props: AccordionProps,
@@ -49,9 +53,20 @@ export class Accordion {
     protected readonly className: string,
     protected readonly components?: DesignComp<AccordionComponents, AccordionProps>,
     protected readonly slots?: AccordionSlots,
-    protected readonly emits?: ConstrEmit<AccordionEmits>
+    protected readonly emits?: ConstrEmit<AccordionEmits>,
+    constructors?: {
+      EventClickIncludeConstructor?: typeof EventClickInclude
+      ModelIncludeConstructor?: typeof ModelInclude
+      MotionTransformIncludeConstructor?: typeof MotionTransformInclude
+    }
   ) {
-    this.motionTransform = new MotionTransformInclude(
+    const {
+      EventClickIncludeConstructor = EventClickInclude,
+      ModelIncludeConstructor = ModelInclude,
+      MotionTransformIncludeConstructor = MotionTransformInclude
+    } = constructors ?? {}
+
+    this.motionTransform = new MotionTransformIncludeConstructor(
       this.props,
       this.className,
       this.components,
@@ -65,13 +80,13 @@ export class Accordion {
       }))
     )
 
-    this.event = new EventClickInclude(
+    this.event = new EventClickIncludeConstructor(
       undefined,
       undefined,
       emits
     )
 
-    this.model = new ModelInclude('open', this.emits, this.open)
+    this.model = new ModelIncludeConstructor('open', this.emits, this.open)
   }
 
   /**

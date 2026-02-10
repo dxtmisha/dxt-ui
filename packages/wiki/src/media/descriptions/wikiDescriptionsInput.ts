@@ -22,7 +22,7 @@ export const wikiDescriptionsInput: StorybookComponentsDescriptionItem = {
       'counter for character limits',
       'navigation arrows for numeric and selection inputs',
       'autocomplete, spellcheck and autocorrect support',
-      'integrated with Field component for consistent styling'
+      'integrated with a Field component for consistent styling'
     ],
     ru: [
       'множественные типы ввода: text, number, email, password, tel, url, date, time и другие',

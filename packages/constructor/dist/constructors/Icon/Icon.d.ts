@@ -46,10 +46,14 @@ export declare class Icon {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param EventClickIncludeConstructor class for working with events/ класс для работы с событиями
-     * @param SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.EventClickIncludeConstructor class for working with events/ класс для работы с событиями
+     * @param constructors.SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
      */
-    constructor(props: IconProps, refs: ToRefs<IconProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<IconComponents, IconProps> | undefined, slots?: IconSlots | undefined, emits?: ConstrEmit<IconEmits> | undefined, EventClickIncludeConstructor?: typeof EventClickInclude, SkeletonIncludeConstructor?: typeof SkeletonInclude);
+    constructor(props: IconProps, refs: ToRefs<IconProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<IconComponents, IconProps> | undefined, slots?: IconSlots | undefined, emits?: ConstrEmit<IconEmits> | undefined, constructors?: {
+        EventClickIncludeConstructor?: typeof EventClickInclude;
+        SkeletonIncludeConstructor?: typeof SkeletonInclude;
+    });
     /**
      * Checks if the additional icon is active/ Проверяет, активна ли дополнительная иконка
      */

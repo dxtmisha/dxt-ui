@@ -31,10 +31,14 @@ export declare class Badge {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param LabelNumberIncludeConstructor class for working with label/ класс для работы с меткой
-     * @param IconIncludeConstructor class for working with icon/ класс для работы с иконкой
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.IconIncludeConstructor class for working with icon/ класс для работы с иконкой
+     * @param constructors.LabelNumberIncludeConstructor class for working with label/ класс для работы с меткой
      */
-    constructor(props: BadgeProps, refs: ToRefs<BadgeProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<BadgeComponents, BadgeProps> | undefined, slots?: BadgeSlots | undefined, emits?: ConstrEmit<BadgeEmits> | undefined, LabelNumberIncludeConstructor?: typeof LabelNumberInclude, IconIncludeConstructor?: typeof IconInclude);
+    constructor(props: BadgeProps, refs: ToRefs<BadgeProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<BadgeComponents, BadgeProps> | undefined, slots?: BadgeSlots | undefined, emits?: ConstrEmit<BadgeEmits> | undefined, constructors?: {
+        IconIncludeConstructor?: typeof IconInclude;
+        LabelNumberIncludeConstructor?: typeof LabelNumberInclude;
+    });
     /**
      * Computes if the badge should auto-hide when there is no dot, icon, or label.
      *

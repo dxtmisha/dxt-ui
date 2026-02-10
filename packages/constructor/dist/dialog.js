@@ -1,15 +1,15 @@
-var g = Object.defineProperty;
-var f = (s, e, t) => e in s ? g(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
-var i = (s, e, t) => f(s, typeof e != "symbol" ? e + "" : e, t);
-import { computed as d, readonly as p, h as C } from "vue";
-import { getBind as b, toBinds as w } from "@dxtmisha/functional";
-import { L as v } from "./LabelInclude-D-mLvjK5.js";
-import { D as k } from "./DescriptionInclude-D4ane9aR.js";
-import { T as I } from "./TextInclude--GERRCGj.js";
-import { M as S, a as x } from "./ModalDesignAbstract-D4A_a_rC.js";
-import { I as D } from "./IconInclude-CLqwI29Q.js";
-import { W as A } from "./WindowClassesInclude-B56usxgx.js";
-class B extends S {
+var v = Object.defineProperty;
+var k = (s, e, t) => e in s ? v(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
+var i = (s, e, t) => k(s, typeof e != "symbol" ? e + "" : e, t);
+import { computed as u, readonly as x, h as D } from "vue";
+import { getBind as C, toBinds as S } from "@dxtmisha/functional";
+import { L as A } from "./LabelInclude-D-mLvjK5.js";
+import { D as B } from "./DescriptionInclude-D4ane9aR.js";
+import { T as O } from "./TextInclude--GERRCGj.js";
+import { M as T, a as y } from "./ModalDesignAbstract-D4A_a_rC.js";
+import { W as L } from "./WindowClassesInclude-B56usxgx.js";
+import { I as M } from "./IconInclude-CLqwI29Q.js";
+class P extends T {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -20,18 +20,31 @@ class B extends S {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
+   * @param constructors.IconIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
+   * @param constructors.WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
    */
-  constructor(t, l, u, a, o, h, r, m) {
+  constructor(t, l, m, a, o, h, r, b, c) {
+    const {
+      DescriptionIncludeConstructor: g = B,
+      IconIncludeConstructor: p = M,
+      LabelIncludeConstructor: f = A,
+      TextIncludeConstructor: w = O,
+      WindowClassesIncludeConstructor: I = L
+    } = c != null ? c : {};
     super(
       t,
       l,
-      u,
+      m,
       a,
       o,
       h,
       r,
-      m,
-      d(() => ({
+      b,
+      u(() => ({
         open: t.open,
         image: t.image,
         adaptive: "modal",
@@ -39,10 +52,10 @@ class B extends S {
         closeButton: this.props.closeButton
       })),
       void 0,
-      d(() => {
-        const c = [];
-        return t.buttonClose !== null && c.push(
-          b(
+      u(() => {
+        const d = [];
+        return t.buttonClose !== null && d.push(
+          C(
             t.buttonClose,
             {
               label: this.text.close.value,
@@ -56,8 +69,8 @@ class B extends S {
             "label",
             !0
           )
-        ), t.buttonOk !== null && c.push(
-          b(
+        ), t.buttonOk !== null && d.push(
+          C(
             t.buttonOk,
             {
               label: this.text.ok.value,
@@ -72,7 +85,7 @@ class B extends S {
             !0
           )
         ), {
-          list: c,
+          list: d,
           align: "center"
         };
       })
@@ -87,13 +100,13 @@ class B extends S {
      *
      * Возвращает иконку для отображения.
      */
-    i(this, "iconValue", d(() => this.props.success ? this.props.iconSuccess : this.props.error ? this.props.iconError : this.props.icon));
-    this.props = t, this.refs = l, this.element = u, this.classDesign = a, this.className = o, this.components = h, this.slots = r, this.emits = m, this.icon = new D(
-      p({ icon: this.iconValue }),
+    i(this, "iconValue", u(() => this.props.success ? this.props.iconSuccess : this.props.error ? this.props.iconError : this.props.icon));
+    this.props = t, this.refs = l, this.element = m, this.classDesign = a, this.className = o, this.components = h, this.slots = r, this.emits = b, this.icon = new p(
+      x({ icon: this.iconValue }),
       o,
       h,
       l.iconAttrs
-    ), this.label = new v(
+    ), this.label = new f(
       t,
       o,
       void 0,
@@ -101,17 +114,17 @@ class B extends S {
       void 0,
       void 0,
       !0
-    ), this.description = new k(t, o, r), this.windowClasses = new A(a), this.text = new I(this.props);
+    ), this.description = new g(t, o, r), this.windowClasses = new I(a), this.text = new w(this.props);
   }
 }
-const E = {
+const G = {
   barsBackHide: !0,
   barsHide: !0,
   clickOkAndClose: !0,
   // :default [!] System label / Системная метка
   imagePosition: "top"
 };
-class F extends x {
+class J extends y {
   constructor() {
     super(...arguments);
     /**
@@ -132,7 +145,7 @@ class F extends x {
     i(this, "renderInformation", () => {
       var t;
       return [
-        C(
+        D(
           "div",
           { class: (t = this.classes) == null ? void 0 : t.value.information },
           [
@@ -150,7 +163,7 @@ class F extends x {
    * Метод для создания экземпляра класса.
    */
   initItem() {
-    return new B(
+    return new P(
       this.props,
       this.refs,
       this.element,
@@ -194,7 +207,7 @@ class F extends x {
         default: this.renderContent,
         footer: this.renderFooter
       },
-      w(
+      S(
         {
           class: (t = this.classes) == null ? void 0 : t.value.main,
           "data-touch": "touch"
@@ -205,7 +218,7 @@ class F extends x {
   }
 }
 export {
-  B as Dialog,
-  F as DialogDesign,
-  E as defaultsDialog
+  P as Dialog,
+  J as DialogDesign,
+  G as defaultsDialog
 };

@@ -37,11 +37,12 @@ export class Arrow {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param ArrowElementConstructor class for working with the arrow element/ класс для работы с элементом стрелки
-   * @param ArrowElementTargetConstructor class for working with the target element of the arrow/ класс для работы с целевым элементом стрелки
-   * @param ArrowParentConstructor class for working with the parent element of the arrow/ класс для работы с родительским элементом стрелки
-   * @param ArrowPositionConstructor class for working with the position of the arrow/ класс для работы с позицией стрелки
-   * @param ArrowEventConstructor class for working with arrow events/ класс для работы с событиями стрелки
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ArrowElementConstructor class for working with the arrow element/ класс для работы с элементом стрелки
+   * @param constructors.ArrowElementTargetConstructor class for working with the target element of the arrow/ класс для работы с целевым элементом стрелки
+   * @param constructors.ArrowEventConstructor class for working with arrow events/ класс для работы с событиями стрелки
+   * @param constructors.ArrowParentConstructor class for working with the parent element of the arrow/ класс для работы с родительским элементом стрелки
+   * @param constructors.ArrowPositionConstructor class for working with the position of the arrow/ класс для работы с позицией стрелки
    */
   constructor(
     protected readonly props: ArrowProps,
@@ -52,12 +53,22 @@ export class Arrow {
     protected readonly components?: DesignComp<ArrowComponents, ArrowProps>,
     protected readonly slots?: ArrowSlots,
     protected readonly emits?: ConstrEmit<ArrowEmits>,
-    ArrowElementConstructor: typeof ArrowElement = ArrowElement,
-    ArrowElementTargetConstructor: typeof ArrowElementTarget = ArrowElementTarget,
-    ArrowParentConstructor: typeof ArrowParent = ArrowParent,
-    ArrowPositionConstructor: typeof ArrowPosition = ArrowPosition,
-    ArrowEventConstructor: typeof ArrowEvent = ArrowEvent
+    constructors?: {
+      ArrowElementConstructor?: typeof ArrowElement
+      ArrowElementTargetConstructor?: typeof ArrowElementTarget
+      ArrowEventConstructor?: typeof ArrowEvent
+      ArrowParentConstructor?: typeof ArrowParent
+      ArrowPositionConstructor?: typeof ArrowPosition
+    }
   ) {
+    const {
+      ArrowElementConstructor = ArrowElement,
+      ArrowElementTargetConstructor = ArrowElementTarget,
+      ArrowEventConstructor = ArrowEvent,
+      ArrowParentConstructor = ArrowParent,
+      ArrowPositionConstructor = ArrowPosition
+    } = constructors ?? {}
+
     this.elementItem = new ArrowElementConstructor(
       this.element,
       this.className

@@ -27,6 +27,10 @@ export declare class ActionSheet extends ModalAbstract {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.TouchEventIncludeConstructor class for working with touch event/ класс для работы с событием касания
      */
-    constructor(props: ActionSheetProps, refs: ToRefs<ActionSheetProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ActionSheetComponents, ActionSheetProps> | undefined, slots?: ActionSheetSlots | undefined, emits?: ConstrEmit<ActionSheetEmits> | undefined);
+    constructor(props: ActionSheetProps, refs: ToRefs<ActionSheetProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ActionSheetComponents, ActionSheetProps> | undefined, slots?: ActionSheetSlots | undefined, emits?: ConstrEmit<ActionSheetEmits> | undefined, constructors?: {
+        TouchEventIncludeConstructor?: typeof TouchEventInclude;
+    });
 }

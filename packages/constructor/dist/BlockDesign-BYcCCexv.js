@@ -1,13 +1,13 @@
-var v = Object.defineProperty;
-var f = (r, s, e) => s in r ? v(r, s, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[s] = e;
-var t = (r, s, e) => f(r, typeof s != "symbol" ? s + "" : s, e);
+var C = Object.defineProperty;
+var f = (n, t, e) => t in n ? C(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
+var s = (n, t, e) => f(n, typeof t != "symbol" ? t + "" : t, e);
 import { computed as o, h as l } from "vue";
 import { DesignConstructorAbstract as y } from "@dxtmisha/functional";
-import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
-import { L as S } from "./LabelInclude-D-mLvjK5.js";
-import { D as C } from "./DescriptionInclude-D4ane9aR.js";
+import { A as u } from "./AriaStaticInclude-CAURwJMb.js";
+import { L as I } from "./LabelInclude-D-mLvjK5.js";
+import { D as S } from "./DescriptionInclude-D4ane9aR.js";
 import { C as H } from "./CaptionInclude-NzS6EYYj.js";
-import { I } from "./IconInclude-CLqwI29Q.js";
+import { I as D } from "./IconInclude-CLqwI29Q.js";
 class k {
   /**
    * Constructor
@@ -19,50 +19,58 @@ class k {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param LabelIncludeConstructor class for working with the label/ класс для работы с меткой
-   * @param DescriptionIncludeConstructor class for working with the description/ класс для работы с описанием
-   * @param CaptionIncludeConstructor class for working with the caption/ класс для работы с подписью
-   * @param IconIncludeConstructor class for working with the icon/ класс для работы с иконкой
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.CaptionIncludeConstructor class for working with the caption/ класс для работы с подписью
+   * @param constructors.DescriptionIncludeConstructor class for working with the description/ класс для работы с описанием
+   * @param constructors.IconIncludeConstructor class for working with the icon/ класс для работы с иконкой
+   * @param constructors.LabelIncludeConstructor class for working with the label/ класс для работы с меткой
    */
-  constructor(s, e, i, a, n, d, h, u, p = S, m = C, b = H, g = I) {
+  constructor(t, e, i, a, r, c, h, p, d) {
     /**
      * Object for working with label/
      * Объект для работы с меткой
      */
-    t(this, "label");
+    s(this, "label");
     /**
      * Object for working with description/
      * Объект для работы с описанием
      */
-    t(this, "description");
+    s(this, "description");
     /**
      * Object for working with caption/
      * Объект для работы с подписью
      */
-    t(this, "caption");
+    s(this, "caption");
     /**
      * Object for working with icon/
      * Объект для работы с иконкой
      */
-    t(this, "icon");
+    s(this, "icon");
     /**
      * Checks if the headline exists/
      * Проверяет, существует ли заголовок
      */
-    t(this, "isHeadline", o(() => !!(this.props.headline || this.slots && "headline" in this.slots)));
+    s(this, "isHeadline", o(() => !!(this.props.headline || this.slots && "headline" in this.slots)));
     /**
      * Checks if the header exists/
      * Проверяет, существует ли шапка
      */
-    t(this, "isHeader", o(() => this.label.is.value || this.caption.is.value || this.description.is.value));
+    s(this, "isHeader", o(() => this.label.is.value || this.caption.is.value || this.description.is.value));
     /**
      * Tag name/
      * Название тега
      */
-    t(this, "tag", o(() => this.props.tag || "div"));
-    this.props = s, this.refs = e, this.element = i, this.classDesign = a, this.className = n, this.components = d, this.slots = h, this.emits = u, this.label = new p(
-      s,
-      n,
+    s(this, "tag", o(() => this.props.tag || "div"));
+    this.props = t, this.refs = e, this.element = i, this.classDesign = a, this.className = r, this.components = c, this.slots = h, this.emits = p;
+    const {
+      CaptionIncludeConstructor: m = H,
+      DescriptionIncludeConstructor: b = S,
+      IconIncludeConstructor: g = D,
+      LabelIncludeConstructor: v = I
+    } = d != null ? d : {};
+    this.label = new v(
+      t,
+      r,
       void 0,
       h,
       void 0,
@@ -70,10 +78,10 @@ class k {
       !0,
       void 0,
       o(() => this.props.tagHeader || "h3")
-    ), this.caption = new b(s, n, h), this.description = new m(s, n, h), this.icon = new g(s, n, d);
+    ), this.caption = new m(t, r, h), this.description = new b(t, r, h), this.icon = new g(t, r, c);
   }
 }
-class P extends y {
+class T extends y {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -81,19 +89,19 @@ class P extends y {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor block item class/ класс элемента блока
    */
-  constructor(e, i, a, n = k) {
+  constructor(e, i, a, r = k) {
     super(
       e,
       i,
       a
     );
-    t(this, "item");
+    s(this, "item");
     /**
      * Headline rendering.
      *
      * Рендеринг заголовка.
      */
-    t(this, "renderHeadline", () => {
+    s(this, "renderHeadline", () => {
       var e;
       if (this.item.isHeadline.value) {
         const i = [];
@@ -111,7 +119,7 @@ class P extends y {
      *
      * Рендеринг заголовка.
      */
-    t(this, "renderHeader", () => {
+    s(this, "renderHeader", () => {
       var e;
       if (this.item.isHeader.value) {
         const i = [
@@ -134,7 +142,7 @@ class P extends y {
      *
      * Рендеринг правого контента.
      */
-    t(this, "renderTrailing", () => {
+    s(this, "renderTrailing", () => {
       var i, a;
       const e = [];
       return (i = this.slots) != null && i.trailing && (e.push(l("div", {
@@ -147,7 +155,7 @@ class P extends y {
      *
      * Рендеринг тела.
      */
-    t(this, "renderBody", () => {
+    s(this, "renderBody", () => {
       var i;
       const e = [
         ...this.renderHeadline(),
@@ -161,7 +169,7 @@ class P extends y {
         }, e)
       ];
     });
-    this.item = new n(
+    this.item = new r(
       this.props,
       this.refs,
       this.element,
@@ -231,14 +239,14 @@ class P extends y {
     };
     return this.item.label.is.value && Object.assign(
       e,
-      c.labelledby(this.item.label.id.value)
+      u.labelledby(this.item.label.id.value)
     ), this.item.description.is.value && Object.assign(
       e,
-      c.describedby(this.item.description.id.value)
+      u.describedby(this.item.description.id.value)
     ), e;
   }
 }
 export {
   k as B,
-  P as a
+  T as a
 };

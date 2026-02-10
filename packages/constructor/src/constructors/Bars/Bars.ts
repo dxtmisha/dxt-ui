@@ -52,15 +52,16 @@ export class Bars {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param BarsActionConstructor class for managing action mode/ класс для управления action-режимом
-   * @param LabelConstructor class for creating a label/ класс для создания метки
-   * @param DescriptionConstructor class for creating a description/ класс для создания описания
-   * @param EventConstructor class for creating an event/ класс для создания события
-   * @param WindowClassesConstructor helper class for Window CSS classes/ вспомогательный класс для CSS-классов Window
-   * @param MotionTransformClassesConstructor helper class for MotionTransform CSS classes/ вспомогательный класс для CSS-классов MotionTransform
-   * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
-   * @param TextConstructor class for creating text/ класс для создания текста
-   * @param ModelConstructor class for working with models/ класс для работы с моделями
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.BarsActionConstructor class for managing action mode/ класс для управления action-режимом
+   * @param constructors.DescriptionConstructor class for creating a description/ класс для создания описания
+   * @param constructors.EventConstructor class for creating an event/ класс для создания события
+   * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
+   * @param constructors.ModelConstructor class for working with models/ класс для работы с моделями
+   * @param constructors.MotionTransformClassesConstructor helper class for MotionTransform CSS classes/ вспомогательный класс для CSS-классов MotionTransform
+   * @param constructors.SkeletonConstructor class for creating a skeleton/ класс для создания скелета
+   * @param constructors.TextConstructor class for creating text/ класс для создания текста
+   * @param constructors.WindowClassesConstructor helper class for Window CSS classes/ вспомогательный класс для CSS-классов Window
    */
   constructor(
     protected readonly props: BarsProps,
@@ -71,16 +72,30 @@ export class Bars {
     protected readonly components?: DesignComp<BarsComponents, BarsProps>,
     protected readonly slots?: BarsSlots,
     protected readonly emits?: ConstrEmit<BarsEmits>,
-    BarsActionConstructor: typeof BarsAction = BarsAction,
-    LabelConstructor: typeof LabelInclude = LabelInclude,
-    DescriptionConstructor: typeof DescriptionInclude = DescriptionInclude,
-    EventConstructor: typeof EventClickInclude = EventClickInclude,
-    WindowClassesConstructor: typeof WindowClassesInclude = WindowClassesInclude,
-    MotionTransformClassesConstructor: typeof MotionTransformClassesInclude = MotionTransformClassesInclude,
-    SkeletonConstructor: typeof SkeletonInclude = SkeletonInclude,
-    TextConstructor: typeof TextInclude = TextInclude,
-    ModelConstructor: typeof ModelInclude = ModelInclude
+    constructors?: {
+      BarsActionConstructor?: typeof BarsAction
+      DescriptionConstructor?: typeof DescriptionInclude
+      EventConstructor?: typeof EventClickInclude
+      LabelConstructor?: typeof LabelInclude
+      ModelConstructor?: typeof ModelInclude
+      MotionTransformClassesConstructor?: typeof MotionTransformClassesInclude
+      SkeletonConstructor?: typeof SkeletonInclude
+      TextConstructor?: typeof TextInclude
+      WindowClassesConstructor?: typeof WindowClassesInclude
+    }
   ) {
+    const {
+      BarsActionConstructor = BarsAction,
+      DescriptionConstructor = DescriptionInclude,
+      EventConstructor = EventClickInclude,
+      LabelConstructor = LabelInclude,
+      ModelConstructor = ModelInclude,
+      MotionTransformClassesConstructor = MotionTransformClassesInclude,
+      SkeletonConstructor = SkeletonInclude,
+      TextConstructor = TextInclude,
+      WindowClassesConstructor = WindowClassesInclude
+    } = constructors ?? {}
+
     const skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classTextVariant'])
 
     this.action = new BarsActionConstructor(this.props, this.refs)

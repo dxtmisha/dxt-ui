@@ -35,10 +35,11 @@ export class FieldLabel {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param LabelConstructor class for creating a label/ класс для создания метки
-   * @param FieldCounterConstructor class for working with field counter/ класс для работы со счетчиком поля
-   * @param ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
-   * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.FieldCounterConstructor class for working with field counter/ класс для работы со счетчиком поля
+   * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
+   * @param constructors.ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
+   * @param constructors.SkeletonConstructor class for creating a skeleton/ класс для создания скелета
    */
   constructor(
     protected readonly props: FieldLabelProps,
@@ -49,11 +50,20 @@ export class FieldLabel {
     protected readonly components?: DesignComp<FieldLabelComponents, FieldLabelProps>,
     protected readonly slots?: FieldLabelSlots,
     protected readonly emits?: ConstrEmit<FieldLabelEmits>,
-    LabelConstructor: typeof LabelInclude = LabelInclude,
-    FieldCounterConstructor: typeof FieldCounterInclude = FieldCounterInclude,
-    ProgressConstructor: typeof ProgressInclude = ProgressInclude,
-    SkeletonConstructor: typeof SkeletonInclude = SkeletonInclude
+    constructors?: {
+      FieldCounterConstructor?: typeof FieldCounterInclude
+      LabelConstructor?: typeof LabelInclude
+      ProgressConstructor?: typeof ProgressInclude
+      SkeletonConstructor?: typeof SkeletonInclude
+    }
   ) {
+    const {
+      FieldCounterConstructor = FieldCounterInclude,
+      LabelConstructor = LabelInclude,
+      ProgressConstructor = ProgressInclude,
+      SkeletonConstructor = SkeletonInclude
+    } = constructors ?? {}
+
     const skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classTextVariant'])
 
     this.label = new LabelConstructor(

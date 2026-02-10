@@ -12119,6 +12119,11 @@
         name: 'd1-skeleton',
         type: 'component',
       ),
+      'textarea':(
+        index: 'textarea',
+        name: 'd1-textarea',
+        type: 'component',
+      ),
       'textareaAutosize':(
         index: 'textareaAutosize',
         name: 'd1-textareaAutosize',
@@ -12575,6 +12580,11 @@
       'skeleton':(
         index: 'skeleton',
         name: 'd-skeleton',
+        type: 'component',
+      ),
+      'textarea':(
+        index: 'textarea',
+        name: 'd-textarea',
         type: 'component',
       ),
       'textareaAutosize':(

@@ -34,15 +34,24 @@ export declare class Image {
      * @param element input element/ элемент ввода
      * @param className class name/ название класса
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param ImageTypeConstructor class for working with image type/ класс для работы с типом изображения
-     * @param ImageDataConstructor class for working with image data/ класс для работы с данными изображения
-     * @param ImageCoordinatorConstructor class for working with image coordinates/ класс для работы с координатами изображения
-     * @param ImagePositionConstructor class for working with image position/ класс для работы с позицией изображения
-     * @param ImageAdaptiveItemConstructor class for working with adaptive image item/ класс для работы с адаптивным элементом изображения
-     * @param ImageBackgroundConstructor class for working with image background/ класс для работы с фоном изображения
-     * @param ImageImgConstructor class for working with image tag/ класс для работы с тегом изображения
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.ImageAdaptiveItemConstructor class for working with adaptive image item/ класс для работы с адаптивным элементом изображения
+     * @param constructors.ImageBackgroundConstructor class for working with image background/ класс для работы с фоном изображения
+     * @param constructors.ImageCoordinatorConstructor class for working with image coordinates/ класс для работы с координатами изображения
+     * @param constructors.ImageDataConstructor class for working with image data/ класс для работы с данными изображения
+     * @param constructors.ImageImgConstructor class for working with image tag/ класс для работы с тегом изображения
+     * @param constructors.ImagePositionConstructor class for working with image position/ класс для работы с позицией изображения
+     * @param constructors.ImageTypeConstructor class for working with image type/ класс для работы с типом изображения
      */
-    constructor(props: ImageProps, element: Ref<HTMLElement | undefined>, className: string, emits?: ConstrEmit<ImageEmits> | undefined, ImageTypeConstructor?: typeof ImageType, ImageDataConstructor?: typeof ImageData, ImageCoordinatorConstructor?: typeof ImageCoordinator, ImagePositionConstructor?: typeof ImagePosition, ImageAdaptiveItemConstructor?: typeof ImageAdaptiveItem, ImageBackgroundConstructor?: typeof ImageBackground, ImageImgConstructor?: typeof ImageImg);
+    constructor(props: ImageProps, element: Ref<HTMLElement | undefined>, className: string, emits?: ConstrEmit<ImageEmits> | undefined, constructors?: {
+        ImageAdaptiveItemConstructor?: typeof ImageAdaptiveItem;
+        ImageBackgroundConstructor?: typeof ImageBackground;
+        ImageCoordinatorConstructor?: typeof ImageCoordinator;
+        ImageDataConstructor?: typeof ImageData;
+        ImageImgConstructor?: typeof ImageImg;
+        ImagePositionConstructor?: typeof ImagePosition;
+        ImageTypeConstructor?: typeof ImageType;
+    });
     /**
      * Determines the tag to use/ Определяет используемый тег
      */

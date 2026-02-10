@@ -1,11 +1,11 @@
-var Q = Object.defineProperty;
-var z = (h, t, e) => t in h ? Q(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
-var a = (h, t, e) => z(h, typeof t != "symbol" ? t + "" : t, e);
-import { computed as u, ref as C, watch as y, h as d } from "vue";
-import { forEach as D, getExp as J, strFill as B, Datetime as F, GeoIntl as W, isArray as k, isObject as X, isObjectNotArray as S, isString as M, isSelected as Z, replaceRecursive as tt, getColumn as et, getMaxLengthAllArray as it, toArray as st, isFilled as rt, writeClipboardData as at, eventStopPropagation as ht, getClipboardData as nt, GeoRef as ut, anyToString as L, isFloat as lt, DesignConstructorAbstract as ct, toBinds as ot } from "@dxtmisha/functional";
+var z = Object.defineProperty;
+var J = (h, t, e) => t in h ? z(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
+var a = (h, t, e) => J(h, typeof t != "symbol" ? t + "" : t, e);
+import { computed as u, ref as S, watch as y, h as d } from "vue";
+import { forEach as x, getExp as W, strFill as B, Datetime as L, GeoIntl as X, isArray as k, isObject as Z, isObjectNotArray as C, isString as D, isSelected as tt, replaceRecursive as et, getColumn as it, getMaxLengthAllArray as st, toArray as rt, isFilled as at, writeClipboardData as ht, eventStopPropagation as nt, getClipboardData as ut, GeoRef as lt, anyToString as T, isFloat as ct, DesignConstructorAbstract as ot, toBinds as pt } from "@dxtmisha/functional";
 import { F as v } from "./FieldInputCheckInclude-CjNYyGTb.js";
-import { A as pt } from "./AriaStaticInclude-CAURwJMb.js";
-class mt {
+import { A as mt } from "./AriaStaticInclude-CAURwJMb.js";
+class ft {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -90,7 +90,7 @@ class mt {
     return this.isDate() ? this.item.value : "date";
   }
 }
-class ft {
+class gt {
   constructor() {
     /** Stored characters/ Сохранённые символы */
     a(this, "chars", []);
@@ -157,7 +157,7 @@ class ft {
     return this.chars = [], this;
   }
 }
-class gt {
+class dt {
   /**
    * Constructor
    * @param buffer buffer helper object/ объект помощник буфера
@@ -192,10 +192,10 @@ class gt {
     this.value = !1, this.buffer.reset();
   }
 }
-class dt {
+class vt {
   constructor() {
     /** Current length value/ Текущее значение длины */
-    a(this, "length", C(0));
+    a(this, "length", S(0));
   }
   /**
    * Checks if there is at least one entered character.
@@ -223,10 +223,10 @@ class dt {
     return this.length.value = t, this;
   }
 }
-class vt {
+class bt {
   constructor() {
     /** Map: group name -> entered length/ Карта: имя группы -> введённая длина */
-    a(this, "item", C({}));
+    a(this, "item", S({}));
   }
   /**
    * Checks whether group has a non‑zero stored length.
@@ -289,18 +289,18 @@ class vt {
    */
   expandMask(t) {
     let e = t;
-    return D(this.item.value, (i, s) => {
+    return x(this.item.value, (i, s) => {
       e = e.replace(
-        J(s, "g", "([:value]+)"),
+        W(s, "g", "([:value]+)"),
         (r) => `${r}${B(s, i)}`
       );
     }), e;
   }
 }
-class bt {
+class yt {
   constructor() {
     /** Transition symbol value/ Значение символа перехода */
-    a(this, "item", C(""));
+    a(this, "item", S(""));
   }
   /**
    * Checks if a transition symbol is set.
@@ -337,7 +337,7 @@ class bt {
     return this.set("");
   }
 }
-const yt = {
+const kt = {
   Y: "[0-9]{4}",
   M: {
     type: "number",
@@ -349,7 +349,7 @@ const yt = {
     return {
       type: "number",
       min: "1",
-      max: new F(`${(i = (e = h == null ? void 0 : h.Y) == null ? void 0 : e.value) != null ? i : "2000"}-${(r = (s = h == null ? void 0 : h.M) == null ? void 0 : s.value) != null ? r : "01"}-01`).getMaxDay().toString()
+      max: new L(`${(i = (e = h == null ? void 0 : h.Y) == null ? void 0 : e.value) != null ? i : "2000"}-${(r = (s = h == null ? void 0 : h.M) == null ? void 0 : s.value) != null ? r : "01"}-01`).getMaxDay().toString()
     };
   },
   h: {
@@ -367,7 +367,7 @@ const yt = {
     min: "0",
     max: "59"
   }
-}, x = {
+}, w = {
   Y: "y",
   M: "m",
   D: "d",
@@ -375,7 +375,7 @@ const yt = {
   m: "m",
   s: "s"
 };
-class kt {
+class Ct {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -393,7 +393,7 @@ class kt {
    * @param date filled date string/ заполненная строка даты
    */
   getDatetime(t) {
-    return new F(t != null ? t : "1987-12-18T10:20:30", this.type.getByDate(), this.props.language);
+    return new L(t != null ? t : "1987-12-18T10:20:30", this.type.getByDate(), this.props.language);
   }
   /**
    * Returns localized formatted date/time value.
@@ -431,7 +431,7 @@ class kt {
    * Возвращает объект паттернов валидации для частей даты/времени.
    */
   getPattern() {
-    return yt;
+    return kt;
   }
   /** Returns list of date-only group symbols/ Возвращает список символов для даты */
   getSpecialDate() {
@@ -448,7 +448,7 @@ class kt {
    * @param groupName group name/ название группы
    */
   getView(t) {
-    return x == null ? void 0 : x[t];
+    return w == null ? void 0 : w[t];
   }
 }
 class St {
@@ -561,7 +561,7 @@ class St {
    * Возвращает экземпляр помощника GeoIntl.
    */
   getIntl() {
-    return new W(this.props.language);
+    return new X(this.props.language);
   }
   /**
    * Builds base numeric pattern string (with optional fraction & currency).
@@ -581,7 +581,7 @@ class St {
     return t.replace(/9/ig, "n").replace(/3/ig, "f").split("");
   }
 }
-class Ct {
+class Mt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -603,7 +603,7 @@ class Ct {
       if (this.type.isDate())
         return this.date.getSpecialDate();
       const t = this.special.value;
-      return k(t) ? t : X(t) ? Object.keys(t) : [t];
+      return k(t) ? t : Z(t) ? Object.keys(t) : [t];
     }));
     /**
      * Returns map of only rubber-enabled groups.
@@ -612,7 +612,7 @@ class Ct {
      */
     a(this, "rubberList", u(() => {
       const t = {};
-      return S(this.special.value) && D(this.special.value, (e, i) => {
+      return C(this.special.value) && x(this.special.value, (e, i) => {
         e != null && e.rubber && (t[i] = e);
       }), t;
     }));
@@ -693,11 +693,11 @@ class Ct {
    */
   getSpecialItem(t) {
     const e = this.special.value;
-    if (S(e) && t in e)
+    if (C(e) && t in e)
       return e[t];
   }
 }
-const T = /[0-9]/;
+const F = /[0-9]/;
 class It {
   /**
    * Constructor
@@ -716,7 +716,7 @@ class It {
    */
   is(t, e) {
     const i = this.get(e);
-    return i instanceof RegExp ? !!t.match(i) : M(i) ? !!t.match(new RegExp(i)) : !!t.match(T);
+    return i instanceof RegExp ? !!t.match(i) : D(i) ? !!t.match(new RegExp(i)) : !!t.match(F);
   }
   /**
    * Returns match definition (regexp or string) for group or global.
@@ -726,7 +726,7 @@ class It {
    */
   get(t) {
     var e, i;
-    return (i = (e = t && this.special.getMatch(t)) != null ? e : this.props.match) != null ? i : T;
+    return (i = (e = t && this.special.getMatch(t)) != null ? e : this.props.match) != null ? i : F;
   }
   /**
    * Filters text returning only allowed characters (any group).
@@ -751,7 +751,7 @@ class wt {
     /** Validation input objects by group / Объекты проверки по названию группы */
     a(this, "item", u(() => {
       const t = {};
-      return D(this.list.value, (e, i) => {
+      return x(this.list.value, (e, i) => {
         t[i] = new v(e, i);
       }), this.props.check && (t.check = new v(this.props.check)), t;
     }));
@@ -760,7 +760,7 @@ class wt {
       const t = this.getByType();
       for (const e in t) {
         const i = this.getPattern(e);
-        t[e] && (M(i) ? Object.assign(t[e], { pattern: i }) : S(i) && S(t[e]) && Object.assign(t[e], i));
+        t[e] && (D(i) ? Object.assign(t[e], { pattern: i }) : C(i) && C(t[e]) && Object.assign(t[e], i));
       }
       return t;
     }));
@@ -808,7 +808,7 @@ class wt {
     return (e = t && this.special.getPattern(t)) != null ? e : this.props.pattern;
   }
 }
-const Ht = {
+const Gt = {
   special: "*",
   match: /[0-9]/,
   type: "text",
@@ -817,7 +817,7 @@ const Ht = {
   // :default [!] System label / Системная метка
   visible: !0
 };
-class xt {
+class Bt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -843,7 +843,7 @@ class xt {
     return this.props.align === "right" || this.isEnd();
   }
 }
-class Bt {
+class xt {
   /**
    * Constructor
    * @param props base data/ базовые данные
@@ -858,15 +858,15 @@ class Bt {
     /** List of rubber groups/ Список резиновых групп */
     a(this, "list", u(() => {
       const t = this.special.rubberList.value;
-      return this.type.isCurrencyOrNumber() ? tt(
+      return this.type.isCurrencyOrNumber() ? et(
         this.format.rubber.value,
         t
       ) : t;
     }));
     /** List of transition symbols/ Список символов перехода */
-    a(this, "transition", u(() => et(
+    a(this, "transition", u(() => it(
       Object.values(this.list.value).filter(
-        (t) => "transitionChar" in t && (M(t.transitionChar) || k(t.transitionChar))
+        (t) => "transitionChar" in t && (D(t.transitionChar) || k(t.transitionChar))
       ),
       "transitionChar"
     ).flat()));
@@ -901,7 +901,7 @@ class Bt {
    */
   update(t, e, i) {
     const s = this.get(e), r = t == null ? void 0 : t[e];
-    return s && r ? Z(i, s == null ? void 0 : s.transitionChar) || s != null && s.maxLength && (s == null ? void 0 : s.maxLength) <= (r == null ? void 0 : r.chars.length) ? (this.rubberTransition.set(e), !1) : (r.end && this.match.is(i, e) && !this.rubberTransition.isChar(e) && (this.rubberItem.add(e), this.rubberTransition.reset()), !0) : !1;
+    return s && r ? tt(i, s == null ? void 0 : s.transitionChar) || s != null && s.maxLength && (s == null ? void 0 : s.maxLength) <= (r == null ? void 0 : r.chars.length) ? (this.rubberTransition.set(e), !1) : (r.end && this.match.is(i, e) && !this.rubberTransition.isChar(e) && (this.rubberItem.add(e), this.rubberTransition.reset()), !0) : !1;
   }
   /**
    * Reduces the length of the entered symbol by its group.
@@ -962,7 +962,7 @@ class Dt {
      */
     a(this, "maxLength", u(() => {
       const t = this.getMask();
-      return k(t) ? it(t) : this.item.value.length;
+      return k(t) ? st(t) : this.item.value.length;
     }));
     /**
      * Returns the active mask.
@@ -1054,7 +1054,7 @@ class Dt {
     return t.split("").filter((e) => this.special.isSpecial(e)).length;
   }
 }
-class Mt {
+class Tt {
   /**
    * Constructor
    * @param special object for working with special characters/ объект для работы со специальными символами
@@ -1206,8 +1206,8 @@ class Mt {
     return this.mask.getLength();
   }
 }
-const b = "~", Lt = "_";
-class Tt {
+const b = "~", Ft = "_";
+class Lt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1219,7 +1219,7 @@ class Tt {
    */
   constructor(t, e, i, s, r, n) {
     /** Entered characters list/ Список введённых символов */
-    a(this, "item", C([]));
+    a(this, "item", S([]));
     this.props = t, this.rubberItem = e, this.characterLength = i, this.special = s, this.mask = r, this.selection = n;
   }
   /**
@@ -1328,7 +1328,7 @@ class Tt {
     return this.characterLength.set(this.item.value.length), this;
   }
 }
-class Ft {
+class Vt {
   /**
    * Constructor
    * @param rubberTransition object for managing the transition character/ объект для управления символом перехода
@@ -1439,8 +1439,8 @@ class Et {
         }
       return i;
     }));
-    this.props = t, this.type = e, this.date = i, this.format = s, this.mask = r, this.special = n, this.valueBasic = l, y(this.info, (c, m) => {
-      this.type.isDate() && (this.infoCache = m);
+    this.props = t, this.type = e, this.date = i, this.format = s, this.mask = r, this.special = n, this.valueBasic = l, y(this.info, (c, o) => {
+      this.type.isDate() && (this.infoCache = o);
     });
   }
   /**
@@ -1513,7 +1513,7 @@ class Et {
     }), t[e];
   }
 }
-class Vt {
+class Nt {
   /**
    * Constructor
    * @param pattern object for working with input data validation/ объект для работы с проверкой введённых данных
@@ -1583,7 +1583,7 @@ class Vt {
     };
   }
 }
-class Nt {
+class At {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1597,7 +1597,7 @@ class Nt {
    * @param validation object for working with validation/ объект для работы с валидацией
    * @param className define class names for each symbol/ определить название класса для каждого символа
    */
-  constructor(t, e, i, s, r, n, l, c, m, o) {
+  constructor(t, e, i, s, r, n, l, c, o, p) {
     /** Class name prefix for item/ Класс для элемента */
     a(this, "classNameItem");
     /** View items list/ Список данных для отображения */
@@ -1621,7 +1621,7 @@ class Nt {
         ) : t.push(i);
       }), t.join("");
     }));
-    this.props = t, this.type = e, this.date = i, this.format = s, this.special = r, this.rubber = n, this.mask = l, this.valueBasic = c, this.validation = m, this.classNameItem = `${o}__character__item`;
+    this.props = t, this.type = e, this.date = i, this.format = s, this.special = r, this.rubber = n, this.mask = l, this.valueBasic = c, this.validation = o, this.classNameItem = `${p}__character__item`;
   }
   /**
    * Checks if the value is filled in.
@@ -1660,7 +1660,7 @@ class Nt {
    */
   getSpecialToView(t) {
     var e, i, s;
-    return this.special.isSpecial(t) ? (s = (i = (e = this.getViewChar(t)) != null ? e : this.special.getView(t)) != null ? i : this.props.view) != null ? s : Lt : t;
+    return this.special.isSpecial(t) ? (s = (i = (e = this.getViewChar(t)) != null ? e : this.special.getView(t)) != null ? i : this.props.view) != null ? s : Ft : t;
   }
   /**
    * Returns special character for view by its group name.
@@ -1675,7 +1675,7 @@ class Nt {
       return this.format.view.value;
   }
 }
-class At {
+class Ot {
   /**
    * Constructor
    * @param validation object for working with validation/ объект для работы с валидацией
@@ -1771,7 +1771,7 @@ class At {
     return this.event = void 0, this;
   }
 }
-class Ot {
+class $t {
   /**
    * Constructor
    * @param type object for working with the mask type/ объект для работы с типом маски
@@ -1790,8 +1790,8 @@ class Ot {
    * @param emit object for handling callback events/ объект для работы с событиями
    * @param element input element ref/ ссылка на элемент ввода
    */
-  constructor(t, e, i, s, r, n, l, c, m, o, p, f, g, I, w) {
-    this.type = t, this.buffer = e, this.focus = i, this.rubberTransition = s, this.date = r, this.special = n, this.match = l, this.rubber = c, this.mask = m, this.selection = o, this.character = p, this.valueBasic = f, this.value = g, this.emit = I, this.element = w;
+  constructor(t, e, i, s, r, n, l, c, o, p, m, f, g, M, I) {
+    this.type = t, this.buffer = e, this.focus = i, this.rubberTransition = s, this.date = r, this.special = n, this.match = l, this.rubber = c, this.mask = o, this.selection = p, this.character = m, this.valueBasic = f, this.value = g, this.emit = M, this.element = I;
   }
   /**
    * Adds new characters entered by user
@@ -1804,7 +1804,7 @@ class Ot {
    */
   add(t, e, i = !0) {
     let s = !1;
-    return this.selection.setByMask(t, i), this.rubberTransition.reset(), st(e).forEach((r) => {
+    return this.selection.setByMask(t, i), this.rubberTransition.reset(), rt(e).forEach((r) => {
       const n = this.character.getFocus(), l = this.character.getImmediate();
       this.selection.setShift(
         this.rubber.update(this.value.info.value, l, r)
@@ -1843,7 +1843,7 @@ class Ot {
    * @param value new raw value to apply/ новое значение для применения
    */
   reset(t = "") {
-    if (this.character.reset(), this.rubber.reset(), rt(t)) {
+    if (this.character.reset(), this.rubber.reset(), at(t)) {
       const e = this.type.isDate() ? this.date.getValue(t) : t;
       this.add(0, this.extra(e.split("")));
     }
@@ -1862,23 +1862,23 @@ class Ot {
     const e = this.mask.item.value, i = [...t];
     let s = this.match.get((l = (n = this.mask.info.value) == null ? void 0 : n[0]) == null ? void 0 : l.char), r = 0;
     if (s)
-      for (const m in e) {
-        const o = e[m];
-        if (o) {
-          if (this.special.isSpecial(o)) {
-            for (let p = r; p < i.length && (r++, !((c = i == null ? void 0 : i[p]) != null && c.match(s))); p++)
+      for (const o in e) {
+        const p = e[o];
+        if (p) {
+          if (this.special.isSpecial(p)) {
+            for (let m = r; m < i.length && (r++, !((c = i == null ? void 0 : i[m]) != null && c.match(s))); m++)
               ;
-            s = this.match.get(o);
-          } else if (o.match(s)) {
-            let p = !1;
+            s = this.match.get(p);
+          } else if (p.match(s)) {
+            let m = !1;
             for (let f = r; f < i.length; f++) {
               const g = i[f];
               if (r++, g != null && g.match(s)) {
-                o === g ? (i.splice(f, 1), r--) : p = !0;
+                p === g ? (i.splice(f, 1), r--) : m = !0;
                 break;
               }
             }
-            if (p)
+            if (m)
               break;
           }
         }
@@ -1909,7 +1909,7 @@ class Ot {
     return this.buffer.is() ? (this.add(this.selection.getShift(), this.buffer.get()), this.buffer.resetChars(), !0) : (this.buffer.reset(), this.emit.go(), !1);
   }
 }
-class $t {
+class Rt {
   /**
    * Constructor
    * @param buffer object for managing cached input data/ объект управления кешированными вводимыми данными
@@ -1952,7 +1952,7 @@ class $t {
      */
     a(this, "onKeydown", (t) => {
       const e = this.getSelectionInfo(t), { start: i, end: s } = e;
-      this.emit.set("keydown", t).go(), this.isCut(t) && this.isSelection(e) && (this.data.pop(i, s), at(
+      this.emit.set("keydown", t).go(), this.isCut(t) && this.isSelection(e) && (this.data.pop(i, s), ht(
         t.target.value.slice(i, s)
       ).then()), !this.isMetaKey(t) && (this.isKey(t) ? t.key === "Backspace" ? (i > 0 || i !== s) && this.data.pop(i, s) : t.key.length <= 1 && (i === s ? this.buffer.go(t.key) && this.data.add(i, t.key) : (this.buffer.goStart(), this.data.pop(i, s).add(this.selection.getShift(), t.key))) : this.unidentified = e);
     });
@@ -1977,7 +1977,7 @@ class $t {
      * @param event invoked event/ вызываемое событие
      */
     a(this, "onBeforeinput", (t) => {
-      this.emit.set("beforeinput", t).go(), this.unidentified || (this.makeChange(t), ht(t));
+      this.emit.set("beforeinput", t).go(), this.unidentified || (this.makeChange(t), nt(t));
     });
     /**
      * Intercepting the event during data modification.
@@ -1999,7 +1999,7 @@ class $t {
      */
     a(this, "onPaste", (t) => {
       const { start: e, end: i } = this.getSelectionInfo(t);
-      nt(t).then((s) => {
+      ut(t).then((s) => {
         const r = s.split("");
         e === i ? this.data.add(e, this.data.extra(r)) : this.data.pop(e, i).add(this.selection.getShift(), this.data.extra(r)), this.change = !0, this.emit.set("paste", t).go();
       }).catch((s) => console.error("getClipboardData", s));
@@ -2121,31 +2121,32 @@ class Kt {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param MaskTypeConstructor class for working with mask type/ класс для работы с типом маски
-   * @param MaskBufferConstructor class for working with mask buffer/ класс для работы с буфером маски
-   * @param MaskFocusConstructor class for working with mask focus/ класс для работы с фокусом маски
-   * @param MaskCharacterLengthConstructor class for working with mask character length/ класс для работы с длиной символов маски
-   * @param MaskRubberItemConstructor class for working with mask rubber item/ класс для работы с резиновым элементом маски
-   * @param MaskRubberTransitionConstructor class for working with mask rubber transition/ класс для работы с переходом резины маски
-   * @param MaskDateConstructor class for working with mask date/ класс для работы с датой маски
-   * @param MaskFormatConstructor class for working with mask format/ класс для работы с форматом маски
-   * @param MaskSpecialConstructor class for working with mask special/ класс для работы со специальными символами маски
-   * @param MaskMatchConstructor class for working with mask match/ класс для работы с совпадением маски
-   * @param MaskPatternConstructor class for working with mask pattern/ класс для работы с шаблоном маски
-   * @param MaskRightConstructor class for working with mask right/ класс для работы с выравниванием справа маски
-   * @param MaskRubberConstructor class for working with mask rubber/ класс для работы с резиной маски
-   * @param MaskItemConstructor class for working with mask item/ класс для работы с элементом маски
-   * @param MaskSelectionConstructor class for working with mask selection/ класс для работы с выделением маски
-   * @param MaskCharacterConstructor class for working with mask character/ класс для работы с символом маски
-   * @param MaskValueBasicConstructor class for working with mask value basic/ класс для работы с базовым значением маски
-   * @param MaskValueConstructor class for working with mask value/ класс для работы со значением маски
-   * @param MaskValidationConstructor class for working with mask validation/ класс для работы с валидацией маски
-   * @param MaskViewConstructor class for working with mask view/ класс для работы с отображением маски
-   * @param MaskEmitConstructor class for working with mask emit/ класс для работы с событиями маски
-   * @param MaskDataConstructor class for working with mask data/ класс для работы с данными маски
-   * @param MaskEventConstructor class for working with mask event/ класс для работы с событием маски
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.MaskBufferConstructor class for working with mask buffer/ класс для работы с буфером маски
+   * @param constructors.MaskCharacterConstructor class for working with mask character/ класс для работы с символом маски
+   * @param constructors.MaskCharacterLengthConstructor class for working with mask character length/ класс для работы с длиной символов маски
+   * @param constructors.MaskDataConstructor class for working with mask data/ класс для работы с данными маски
+   * @param constructors.MaskDateConstructor class for working with mask date/ класс для работы с датой маски
+   * @param constructors.MaskEmitConstructor class for working with mask emit/ класс для работы с событиями маски
+   * @param constructors.MaskEventConstructor class for working with mask event/ класс для работы с событием маски
+   * @param constructors.MaskFocusConstructor class for working with mask focus/ класс для работы с фокусом маски
+   * @param constructors.MaskFormatConstructor class for working with mask format/ класс для работы с форматом маски
+   * @param constructors.MaskItemConstructor class for working with mask item/ класс для работы с элементом маски
+   * @param constructors.MaskMatchConstructor class for working with mask match/ класс для работы с совпадением маски
+   * @param constructors.MaskPatternConstructor class for working with mask pattern/ класс для работы с шаблоном маски
+   * @param constructors.MaskRightConstructor class for working with mask right/ класс для работы с выравниванием справа маски
+   * @param constructors.MaskRubberConstructor class for working with mask rubber/ класс для работы с резиной маски
+   * @param constructors.MaskRubberItemConstructor class for working with mask rubber item/ класс для работы с резиновым элементом маски
+   * @param constructors.MaskRubberTransitionConstructor class for working with mask rubber transition/ класс для работы с переходом резины маски
+   * @param constructors.MaskSelectionConstructor class for working with mask selection/ класс для работы с выделением маски
+   * @param constructors.MaskSpecialConstructor class for working with mask special/ класс для работы со специальными символами маски
+   * @param constructors.MaskTypeConstructor class for working with mask type/ класс для работы с типом маски
+   * @param constructors.MaskValidationConstructor class for working with mask validation/ класс для работы с валидацией маски
+   * @param constructors.MaskValueBasicConstructor class for working with mask value basic/ класс для работы с базовым значением маски
+   * @param constructors.MaskValueConstructor class for working with mask value/ класс для работы со значением маски
+   * @param constructors.MaskViewConstructor class for working with mask view/ класс для работы с отображением маски
    */
-  constructor(t, e, i, s, r, n, l, c, m = mt, o = ft, p = gt, f = dt, g = vt, I = bt, w = kt, E = St, V = Ct, N = It, A = wt, O = xt, $ = Bt, K = Dt, R = Mt, _ = Tt, j = Ft, P = Et, Y = Vt, H = Nt, G = At, U = Ot, q = $t) {
+  constructor(t, e, i, s, r, n, l, c, o) {
     /** Type helper/ Объект для работы с типом */
     a(this, "type");
     /** Buffer helper/ Объект для буферизации ввода */
@@ -2223,17 +2224,43 @@ class Kt {
       var t, e;
       this.data.reset(((t = this.props.valueDefault) != null ? t : "").toString()), this.emit.set("reset", {}).go(), (e = this.element.value) == null || e.focus();
     });
-    this.props = t, this.refs = e, this.element = i, this.classDesign = s, this.className = r, this.components = n, this.slots = l, this.emits = c, this.type = new m(this.props), this.buffer = new o(), this.focus = new p(this.buffer), this.characterLength = new f(), this.rubberItem = new g(), this.rubberTransition = new I(), this.date = new w(this.props, this.type), this.format = new E(this.props, this.type, this.rubberItem), this.special = new V(
+    this.props = t, this.refs = e, this.element = i, this.classDesign = s, this.className = r, this.components = n, this.slots = l, this.emits = c;
+    const {
+      MaskBufferConstructor: p = gt,
+      MaskCharacterConstructor: m = Lt,
+      MaskCharacterLengthConstructor: f = vt,
+      MaskDataConstructor: g = $t,
+      MaskDateConstructor: M = Ct,
+      MaskEmitConstructor: I = Ot,
+      MaskEventConstructor: V = Rt,
+      MaskFocusConstructor: E = dt,
+      MaskFormatConstructor: N = St,
+      MaskItemConstructor: A = Dt,
+      MaskMatchConstructor: O = It,
+      MaskPatternConstructor: $ = wt,
+      MaskRightConstructor: R = Bt,
+      MaskRubberConstructor: K = xt,
+      MaskRubberItemConstructor: _ = bt,
+      MaskRubberTransitionConstructor: P = yt,
+      MaskSelectionConstructor: j = Tt,
+      MaskSpecialConstructor: Y = Mt,
+      MaskTypeConstructor: H = ft,
+      MaskValidationConstructor: G = Nt,
+      MaskValueBasicConstructor: U = Vt,
+      MaskValueConstructor: q = Et,
+      MaskViewConstructor: Q = At
+    } = o != null ? o : {};
+    this.type = new H(this.props), this.buffer = new p(), this.focus = new E(this.buffer), this.characterLength = new f(), this.rubberItem = new _(), this.rubberTransition = new P(), this.date = new M(this.props, this.type), this.format = new N(this.props, this.type, this.rubberItem), this.special = new Y(
       this.props,
       this.type,
       this.date,
       this.format
-    ), this.match = new N(this.props, this.special), this.pattern = new A(
+    ), this.match = new O(this.props, this.special), this.pattern = new $(
       this.props,
       this.type,
       this.date,
       this.special
-    ), this.right = new O(this.props, this.type), this.rubber = new $(
+    ), this.right = new R(this.props, this.type), this.rubber = new K(
       this.props,
       this.type,
       this.rubberItem,
@@ -2241,7 +2268,7 @@ class Kt {
       this.special,
       this.match,
       this.format
-    ), this.item = new K(
+    ), this.item = new A(
       this.props,
       this.type,
       this.rubberItem,
@@ -2249,22 +2276,22 @@ class Kt {
       this.date,
       this.format,
       this.special
-    ), this.selection = new R(
+    ), this.selection = new j(
       this.special,
       this.item
-    ), this.character = new _(
+    ), this.character = new m(
       this.props,
       this.rubberItem,
       this.characterLength,
       this.special,
       this.item,
       this.selection
-    ), this.valueBasic = new j(
+    ), this.valueBasic = new U(
       this.rubberTransition,
       this.item,
       this.special,
       this.character
-    ), this.value = new P(
+    ), this.value = new q(
       this.props,
       this.type,
       this.date,
@@ -2272,10 +2299,10 @@ class Kt {
       this.item,
       this.special,
       this.valueBasic
-    ), this.validation = new Y(
+    ), this.validation = new G(
       this.pattern,
       this.value
-    ), this.view = new H(
+    ), this.view = new Q(
       this.props,
       this.type,
       this.date,
@@ -2286,10 +2313,10 @@ class Kt {
       this.valueBasic,
       this.validation,
       this.className
-    ), this.emit = new G(
+    ), this.emit = new I(
       this.validation,
       this.emits
-    ), this.data = new U(
+    ), this.data = new g(
       this.type,
       this.buffer,
       this.focus,
@@ -2305,7 +2332,7 @@ class Kt {
       this.value,
       this.emit,
       this.element
-    ), this.event = new q(
+    ), this.event = new V(
       this.buffer,
       this.focus,
       this.characterLength,
@@ -2314,7 +2341,7 @@ class Kt {
       this.valueBasic,
       this.emit,
       this.data
-    ), y([e.value], () => this.reset(t.value)), y(this.basic, () => this.data.goSelection(!1)), y([ut.getStandard(), e.language], () => this.reset(this.value.getValueCache())), t.value && this.data.reset(L(t.value));
+    ), y([e.value], () => this.reset(t.value)), y(this.basic, () => this.data.goSelection(!1)), y([lt.getStandard(), e.language], () => this.reset(this.value.getValueCache())), t.value && this.data.reset(T(t.value));
   }
   /**
    * Resets all values or updates to the new one.
@@ -2323,11 +2350,11 @@ class Kt {
    * @param value new values/ новые значения
    */
   reset(t) {
-    const e = L(t);
-    return e !== this.props.valueDefault && (this.value.item.value !== e || this.valueBasic.item.value !== e && !lt(e)) ? (this.data.reset(e), this.emit.set("reset", {}).go(), !0) : !1;
+    const e = T(t);
+    return e !== this.props.valueDefault && (this.value.item.value !== e || this.valueBasic.item.value !== e && !ct(e)) ? (this.data.reset(e), this.emit.set("reset", {}).go(), !0) : !1;
   }
 }
-class Gt extends ct {
+class Ut extends ot {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -2364,7 +2391,7 @@ class Gt extends ct {
       return [
         d(
           "input",
-          ot(
+          pt(
             this.props.inputAttrs,
             {
               ref: this.element,
@@ -2409,7 +2436,7 @@ class Gt extends ct {
           {
             class: (r = this.classes) == null ? void 0 : r.value.character,
             "data-length": "1",
-            ...pt.hidden(),
+            ...mt.hidden(),
             innerHTML: s
           },
           i
@@ -2482,8 +2509,8 @@ class Gt extends ct {
 }
 export {
   b as MASK_CHAR_DELETE,
-  Lt as MASK_VIEW_DEFAULT,
+  Ft as MASK_VIEW_DEFAULT,
   Kt as Mask,
-  Gt as MaskDesign,
-  Ht as defaultsMask
+  Ut as MaskDesign,
+  Gt as defaultsMask
 };

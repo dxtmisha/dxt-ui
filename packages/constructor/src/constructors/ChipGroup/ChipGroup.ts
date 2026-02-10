@@ -31,9 +31,10 @@ export class ChipGroup {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param ModelValueIncludeConstructor class for working with model value/ класс для работы со значением модели
-   * @param ListDataRefConstructor class for working with list data/ класс для работы с данными списка
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
+   * @param constructors.ListDataRefConstructor class for working with list data/ класс для работы с данными списка
+   * @param constructors.ModelValueIncludeConstructor class for working with model value/ класс для работы со значением модели
    */
   constructor(
     protected readonly props: ChipGroupProps,
@@ -44,10 +45,18 @@ export class ChipGroup {
     protected readonly components?: DesignComp<ChipGroupComponents, ChipGroupProps>,
     protected readonly slots?: ChipGroupSlots,
     protected readonly emits?: ConstrEmit<ChipGroupEmits>,
-    EventClickIncludeConstructor: typeof EventClickInclude = EventClickInclude,
-    ModelValueIncludeConstructor: typeof ModelValueInclude = ModelValueInclude,
-    ListDataRefConstructor: typeof ListDataRef = ListDataRef
+    constructors?: {
+      EventClickIncludeConstructor?: typeof EventClickInclude
+      ListDataRefConstructor?: typeof ListDataRef
+      ModelValueIncludeConstructor?: typeof ModelValueInclude
+    }
   ) {
+    const {
+      EventClickIncludeConstructor = EventClickInclude,
+      ListDataRefConstructor = ListDataRef,
+      ModelValueIncludeConstructor = ModelValueInclude
+    } = constructors ?? {}
+
     this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)
     this.model = new ModelValueIncludeConstructor<ListSelectedList>(
       'selected',

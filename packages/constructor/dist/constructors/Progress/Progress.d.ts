@@ -31,8 +31,12 @@ export declare class Progress {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
      */
-    constructor(props: ProgressProps, refs: ToRefs<ProgressProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ProgressComponents, ProgressProps> | undefined, slots?: ProgressSlots | undefined, emits?: ConstrEmit<ProgressEmits> | undefined);
+    constructor(props: ProgressProps, refs: ToRefs<ProgressProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ProgressComponents, ProgressProps> | undefined, slots?: ProgressSlots | undefined, emits?: ConstrEmit<ProgressEmits> | undefined, constructors?: {
+        TextIncludeConstructor?: typeof TextInclude;
+    });
     /**
      * Checks if the component is in progress bar mode.
      *

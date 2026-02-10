@@ -1,11 +1,11 @@
 var O = Object.defineProperty;
-var W = (r, t, e) => t in r ? O(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
-var i = (r, t, e) => W(r, typeof t != "symbol" ? t + "" : t, e);
-import { computed as n, watchEffect as B, ref as I, toRefs as R, watch as k, onUnmounted as E, h as g } from "vue";
-import { isDomRuntime as j, resizeImageByMax as D, isString as f, isFilled as F, Icons as A, isArray as M, EventItem as L, forEach as P, toNumber as S, getElementId as N, isNumber as _, useLazyItemByMarginRef as U, DesignConstructorAbstract as X } from "@dxtmisha/functional";
+var W = (a, t, e) => t in a ? O(a, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : a[t] = e;
+var i = (a, t, e) => W(a, typeof t != "symbol" ? t + "" : t, e);
+import { computed as o, watchEffect as B, ref as k, toRefs as R, watch as I, onUnmounted as E, h as g } from "vue";
+import { isDomRuntime as j, resizeImageByMax as D, isString as f, isFilled as C, Icons as F, isArray as A, EventItem as L, forEach as P, toNumber as S, getElementId as N, isNumber as _, useLazyItemByMarginRef as U, DesignConstructorAbstract as X } from "@dxtmisha/functional";
 import { A as z } from "./AriaStaticInclude-CAURwJMb.js";
 const K = 1280;
-class H {
+class M {
   /**
    * Checks if the file is an image.
    *
@@ -81,12 +81,12 @@ class H {
    * @param maxSize maximum allowable image size/ максимальный допустимый размер изображения
    */
   static getSRC(t, e, s = K) {
-    var h;
-    return j() && (e instanceof File || e === void 0) && (t.naturalHeight > s || t.naturalWidth > s) ? (h = D(t, s)) != null ? h : "" : t.src;
+    var n;
+    return j() && (e instanceof File || e === void 0) && (t.naturalHeight > s || t.naturalWidth > s) ? (n = D(t, s)) != null ? n : "" : t.src;
   }
 }
 const x = "#toolbar=0&scrollbar=1";
-class C {
+class H {
   /**
    * Checks if the file is an image.
    *
@@ -103,10 +103,10 @@ class C {
    * @param file the Blob or File from which to read/ Blob или File которые следует прочитать
    */
   static async get(t) {
-    return f(t) ? `${t}${x}` : this.isPdf(t) ? `${await H.getFileReader(t)}${x}` : "";
+    return f(t) ? `${t}${x}` : this.isPdf(t) ? `${await M.getFileReader(t)}${x}` : "";
   }
 }
-var a = /* @__PURE__ */ ((r) => (r.pdf = "pdf", r.file = "file", r.image = "image", r.flag = "flag", r.flagCompressed = "flag-compressed", r.color = "color", r.public = "public", r.filled = "filled", r.outlined = "outlined", r.round = "round", r.sharp = "sharp", r.twoTone = "two-tone", r.material = "material", r.icon = "icon", r))(a || {});
+var r = /* @__PURE__ */ ((a) => (a.pdf = "pdf", a.file = "file", a.image = "image", a.flag = "flag", a.flagCompressed = "flag-compressed", a.color = "color", a.public = "public", a.filled = "filled", a.outlined = "outlined", a.round = "round", a.sharp = "sharp", a.twoTone = "two-tone", a.material = "material", a.icon = "icon", a))(r || {});
 class Y {
   /**
    * Constructor
@@ -118,33 +118,33 @@ class Y {
      *
      * Получения тип изображения.
      */
-    i(this, "item", n(() => {
+    i(this, "item", o(() => {
       const t = this.props.value;
-      if (t instanceof File || F(t)) {
-        if (C.isPdf(t))
-          return a.pdf;
+      if (t instanceof File || C(t)) {
+        if (H.isPdf(t))
+          return r.pdf;
         if (t instanceof File)
-          return a.file;
+          return r.file;
         if (t.match(/\//))
-          return a.image;
+          return r.image;
         if (t.match(/^#/))
-          return a.color;
+          return r.color;
         if (t.match(/^@/))
-          return a.public;
+          return r.public;
         if (t.match(/^\$/))
-          return a.material;
+          return r.material;
         if (t.match(/^flag-[a-z]{2}$/))
-          return a.flag;
+          return r.flag;
         if (t.match(/^f-[a-z]{2}$/))
-          return a.flagCompressed;
+          return r.flagCompressed;
         const e = t.match(/^(outlined|round|sharp|material)-/);
-        return e ? e[1] : A.is(t) ? a.public : a.outlined;
+        return e ? e[1] : F.is(t) ? r.public : r.outlined;
       }
     }));
     this.props = t;
   }
 }
-const nt = {
+const ot = {
   adaptiveGroup: "basic",
   preloadOffset: "1024px"
 };
@@ -160,7 +160,7 @@ class q {
      *
      * Возвращает изображения.
      */
-    i(this, "image", I());
+    i(this, "image", k());
     this.props = t, this.type = e, B(async () => {
       this.image.value = await this.init();
     });
@@ -198,21 +198,21 @@ class q {
     const t = this.props.value;
     if (t)
       switch (this.type.item.value) {
-        case a.pdf:
-          return await C.get(t);
-        case a.image:
-        case a.file:
+        case r.pdf:
+          return await H.get(t);
+        case r.image:
+        case r.file:
           try {
-            return this.props.lazy ? this.props.value : await H.createImage(t);
+            return this.props.lazy ? this.props.value : await M.createImage(t);
           } catch (e) {
             console.error("ImageData.initImage: ", t);
           }
           break;
-        case a.public:
-        case a.icon:
-        case a.flag:
+        case r.public:
+        case r.icon:
+        case r.flag:
           if (f(t))
-            return await A.get(t, this.props.url);
+            return await F.get(t, this.props.url);
           break;
       }
   }
@@ -228,34 +228,34 @@ class G {
      *
      * Возвращает координаты.
      */
-    i(this, "coordinator", n(() => {
-      var t, e, s, h, c, m, p, d, v, y, b, w;
+    i(this, "coordinator", o(() => {
+      var t, e, s, n, u, m, p, d, v, y, b, w;
       if (this.is()) {
-        const o = this.props.coordinator;
-        switch (o.length) {
+        const h = this.props.coordinator;
+        switch (h.length) {
           case 1:
             return [
-              (t = o[0]) != null ? t : 0,
-              (e = o[0]) != null ? e : 0,
-              (s = o[0]) != null ? s : 0,
-              (h = o[0]) != null ? h : 0
+              (t = h[0]) != null ? t : 0,
+              (e = h[0]) != null ? e : 0,
+              (s = h[0]) != null ? s : 0,
+              (n = h[0]) != null ? n : 0
             ];
           case 2:
             return [
-              (c = o[0]) != null ? c : 0,
-              (m = o[1]) != null ? m : 0,
-              (p = o[0]) != null ? p : 0,
-              (d = o[1]) != null ? d : 0
+              (u = h[0]) != null ? u : 0,
+              (m = h[1]) != null ? m : 0,
+              (p = h[0]) != null ? p : 0,
+              (d = h[1]) != null ? d : 0
             ];
           case 3:
             return [
-              (v = o[0]) != null ? v : 0,
-              (y = o[1]) != null ? y : 0,
-              (b = o[2]) != null ? b : 0,
-              (w = o[1]) != null ? w : 0
+              (v = h[0]) != null ? v : 0,
+              (y = h[1]) != null ? y : 0,
+              (b = h[2]) != null ? b : 0,
+              (w = h[1]) != null ? w : 0
             ];
           case 4:
-            return o;
+            return h;
         }
       }
       return [0, 0, 0, 0];
@@ -265,7 +265,7 @@ class G {
      *
      * Возвращает размеры для свойства background-position по координатам.
      */
-    i(this, "size", n(() => {
+    i(this, "size", o(() => {
       const t = this.coordinator.value;
       return {
         width: 100 - t[1] - t[3],
@@ -281,7 +281,7 @@ class G {
    */
   is() {
     const t = this.props.coordinator;
-    return M(t) && t.length > 0 && t.length < 5;
+    return A(t) && t.length > 0 && t.length < 5;
   }
   /**
    * Returns the values for the background property.
@@ -308,7 +308,7 @@ class Z {
      *
      * Возвращает позицию слева.
      */
-    i(this, "x", n(() => {
+    i(this, "x", o(() => {
       var t;
       return this.coordinator.is() ? `${this.coordinator.coordinator.value[3] + this.coordinator.size.value.width / 2}%` : ((t = this.props.x) == null ? void 0 : t.toString()) || "center";
     }));
@@ -317,7 +317,7 @@ class Z {
      *
      * Возвращает позицию сверху.
      */
-    i(this, "y", n(() => {
+    i(this, "y", o(() => {
       var t;
       return this.coordinator.is() ? `${this.coordinator.coordinator.value[0] + this.coordinator.size.value.height / 2}%` : ((t = this.props.y) == null ? void 0 : t.toString()) || "center";
     }));
@@ -458,7 +458,7 @@ class J {
     }, this;
   }
 }
-class u {
+class c {
   /**
    * Checks if the group has elements with sizes. It is used to check if there is data for work.
    *
@@ -504,7 +504,7 @@ class u {
     return this.items.push(e), e;
   }
 }
-i(u, "items", []);
+i(c, "items", []);
 class l {
   /**
    * Checks if an element is present in the list.
@@ -594,9 +594,9 @@ class l {
    * размера элемента и его физического расположения на изображении.
    */
   static makeSize() {
-    u.reset(), this.objectsAdaptive.forEach((t) => {
+    c.reset(), this.objectsAdaptive.forEach((t) => {
       const e = t.element.value;
-      e && u.get(t.group.value).makeWidth(t.width.value).makeHeight(t.height.value).makeOffsetWidth(e.offsetWidth).makeOffsetHeight(e.offsetHeight);
+      e && c.get(t.group.value).makeWidth(t.width.value).makeHeight(t.height.value).makeOffsetWidth(e.offsetWidth).makeOffsetHeight(e.offsetHeight);
     });
   }
   /**
@@ -605,13 +605,13 @@ class l {
    * Вычисление базового масштабирования элемента без учета других элементов.
    */
   static makePercent() {
-    u.isSize() && this.objectsAdaptive.forEach((t) => {
-      const e = t.element.value, s = u.get(t.group.value);
+    c.isSize() && this.objectsAdaptive.forEach((t) => {
+      const e = t.element.value, s = c.get(t.group.value);
       if (e) {
-        const h = s.getWidth(), c = s.getHeight();
+        const n = s.getWidth(), u = s.getHeight();
         t.setPercent(
-          t.width.value * (h ? 1 / h : 0) * (s.getOffsetWidth() / e.offsetWidth),
-          t.height.value * (c ? 1 / c : 0) * (s.getOffsetHeight() / e.offsetHeight)
+          t.width.value * (n ? 1 / n : 0) * (s.getOffsetWidth() / e.offsetWidth),
+          t.height.value * (u ? 1 / u : 0) * (s.getOffsetHeight() / e.offsetHeight)
         );
       }
     });
@@ -626,8 +626,8 @@ class l {
    * уменьшая их до нужной пропорции.
    */
   static makeFactorMax() {
-    u.isSize() && this.objectsAdaptive.forEach((t) => {
-      u.get(t.group.value).makeFactorMax(t.factor.value);
+    c.isSize() && this.objectsAdaptive.forEach((t) => {
+      c.get(t.group.value).makeFactorMax(t.factor.value);
     });
   }
   /**
@@ -658,7 +658,7 @@ class T {
    * @param data image data/ данные изображения
    */
   constructor(t, e, s) {
-    i(this, "percent", I({
+    i(this, "percent", k({
       width: 0,
       height: 0
     }));
@@ -669,7 +669,7 @@ class T {
      *
      * Активен ли элемент для выравнивания размера.
      */
-    i(this, "active", n(
+    i(this, "active", o(
       () => !!(this.props.adaptive && (this.width.value || this.height.value)) && this.data.isImage()
     ));
     /**
@@ -677,7 +677,7 @@ class T {
      *
      * Возвращает название группы.
      */
-    i(this, "group", n(() => {
+    i(this, "group", o(() => {
       var t;
       return (t = this.props.adaptiveGroup) != null ? t : Q;
     }));
@@ -686,7 +686,7 @@ class T {
      *
      * Возвращает физическую ширину объекта.
      */
-    i(this, "width", n(() => {
+    i(this, "width", o(() => {
       var t;
       return S((t = this.props.objectWidth) != null ? t : 0);
     }));
@@ -695,7 +695,7 @@ class T {
      *
      * Возвращает физическую высоту объекта.
      */
-    i(this, "height", n(() => {
+    i(this, "height", o(() => {
       var t, e;
       return S((e = (t = this.props) == null ? void 0 : t.objectHeight) != null ? e : 0);
     }));
@@ -704,7 +704,7 @@ class T {
      *
      * Возвращает ось для масштабирования.
      */
-    i(this, "type", n(() => {
+    i(this, "type", o(() => {
       if (this.width.value && this.percent.value.width > 0)
         return "x";
       if (this.height.value && this.percent.value.height > 0)
@@ -715,7 +715,7 @@ class T {
      *
      * Вычисление базового размера изображения, чтобы определить, как надо масштабировать изображение.
      */
-    i(this, "size", n(() => {
+    i(this, "size", o(() => {
       if (this.element.value && this.data.isImage()) {
         const t = this.data.image.value;
         switch (this.type.value) {
@@ -732,7 +732,7 @@ class T {
      *
      * Множитель для определения уровня масштабирования изображения относительно других элементов.
      */
-    i(this, "factor", n(() => {
+    i(this, "factor", o(() => {
       const t = this.element.value;
       if (t) {
         const e = this.size.value;
@@ -795,7 +795,7 @@ class T {
    * Возвращает значения для свойства background-size.
    */
   getBackgroundSize() {
-    const t = u.get(this.group.value).getFactorMax();
+    const t = c.get(this.group.value).getFactorMax();
     switch (this.type.value) {
       case "x":
         return `${100 * this.percent.value.width * t}% auto`;
@@ -849,20 +849,20 @@ class V {
    * @param coordinator object for working with coordinates/ объект для работы с координатами
    * @param adaptive an object for working with adapted scaling/ объект для работы с адаптированным масштабированием
    */
-  constructor(t, e, s, h) {
+  constructor(t, e, s, n) {
     /**
      * Returns values for the background-image property.
      *
      * Возвращает значения для свойства background-image.
      */
-    i(this, "image", n(() => {
+    i(this, "image", o(() => {
       const t = this.imageSrc.value;
       return t ? `url("${t}")` : null;
     }));
     /**
      * Returns the image source/ Возвращает источник изображения
      */
-    i(this, "imageSrc", n(() => {
+    i(this, "imageSrc", o(() => {
       const t = this.data.image.value;
       switch (typeof t) {
         case "string":
@@ -878,7 +878,7 @@ class V {
      *
      * Возвращает значения для свойства background.
      */
-    i(this, "size", n(() => {
+    i(this, "size", o(() => {
       if (this.coordinator.is())
         return this.getSizeByCoordinator();
       if (this.adaptive.is()) {
@@ -888,7 +888,7 @@ class V {
       }
       return this.getSizeForItem();
     }));
-    this.props = t, this.data = e, this.coordinator = s, this.adaptive = h;
+    this.props = t, this.data = e, this.coordinator = s, this.adaptive = n;
   }
   /**
    * Checks if the object is an image.
@@ -928,30 +928,30 @@ class V {
    */
   getSizeForItem() {
     const t = this.props.size;
-    return F(t) ? t.toString().match(/%$/) ? this.getSize(t, t) : t.toString() : null;
+    return C(t) ? t.toString().match(/%$/) ? this.getSize(t, t) : t.toString() : null;
   }
 }
 class tt {
-  constructor(t, e, s, h, c) {
-    i(this, "lazyInit", I(!1));
+  constructor(t, e, s, n, u) {
+    i(this, "lazyInit", k(!1));
     i(this, "lazyStatus");
     /**
      * Determines whether to use the img tag/ Определяет, использовать ли тег img
      */
-    i(this, "is", n(() => !!this.props.tagImg && this.isType()));
+    i(this, "is", o(() => !!this.props.tagImg && this.isType()));
     /**
      * Determines whether lazy loading is enabled/ Определяет, включена ли ленивя загрузка
      */
-    i(this, "isLazy", n(() => !!this.props.lazy && !this.lazyInit.value));
+    i(this, "isLazy", o(() => !!this.props.lazy && !this.lazyInit.value));
     /**
      * Determines whether to use the picture tag/ Определяет, использовать ли тег picture
      */
-    i(this, "isPicture", n(() => this.is.value && !!this.props.picture));
+    i(this, "isPicture", o(() => this.is.value && !!this.props.picture));
     /**
      * Calculates all properties for binding to the element/
      * Вычисляет все свойства для привязки к элементу
      */
-    i(this, "binds", n(
+    i(this, "binds", o(
       () => {
         var e;
         const t = {
@@ -964,9 +964,9 @@ class tt {
      * Calculates the picture sources for different resolutions/
      * Вычисляет источники picture для разных разрешений
      */
-    i(this, "picture", n(() => {
+    i(this, "picture", o(() => {
       if (this.props.picture)
-        return M(this.props.picture) ? this.props.picture : P(
+        return A(this.props.picture) ? this.props.picture : P(
           this.props.picture,
           (t, e) => ({
             key: e,
@@ -980,7 +980,7 @@ class tt {
      *
      * Вычисляет стили для привязки к элементу.
      */
-    i(this, "styles", n(() => {
+    i(this, "styles", o(() => {
       const t = {
         "object-position": `${this.position.x.value} ${this.position.y.value}`,
         "--sys-transform-originX": this.position.x.value,
@@ -988,12 +988,12 @@ class tt {
       };
       return this.isSize() && (t["--sys-transform-scale"] = this.getSize()), t;
     }));
-    this.props = t, this.element = e, this.type = s, this.position = h, this.background = c;
+    this.props = t, this.element = e, this.type = s, this.position = n, this.background = u;
     const {
       lazy: m,
       preloadOffset: p
     } = R(t);
-    k(
+    I(
       [m, p, e],
       () => {
         var d;
@@ -1009,7 +1009,7 @@ class tt {
    */
   isType() {
     const t = this.type.item.value;
-    return t === a.file || t === a.image;
+    return t === r.file || t === r.image;
   }
   /**
    * Checks if the size is contained or cover.
@@ -1054,7 +1054,7 @@ class tt {
    */
   makeLazy() {
     const t = U(this.element, `${this.props.preloadOffset} 0px`).lazyItemStatus;
-    this.lazyStatus = k(t, () => {
+    this.lazyStatus = I(t, () => {
       this.lazyInit.value = t.value;
     }, { immediate: !0 });
   }
@@ -1066,15 +1066,16 @@ let et = class {
    * @param element input element/ элемент ввода
    * @param className class name/ название класса
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param ImageTypeConstructor class for working with image type/ класс для работы с типом изображения
-   * @param ImageDataConstructor class for working with image data/ класс для работы с данными изображения
-   * @param ImageCoordinatorConstructor class for working with image coordinates/ класс для работы с координатами изображения
-   * @param ImagePositionConstructor class for working with image position/ класс для работы с позицией изображения
-   * @param ImageAdaptiveItemConstructor class for working with adaptive image item/ класс для работы с адаптивным элементом изображения
-   * @param ImageBackgroundConstructor class for working with image background/ класс для работы с фоном изображения
-   * @param ImageImgConstructor class for working with image tag/ класс для работы с тегом изображения
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ImageAdaptiveItemConstructor class for working with adaptive image item/ класс для работы с адаптивным элементом изображения
+   * @param constructors.ImageBackgroundConstructor class for working with image background/ класс для работы с фоном изображения
+   * @param constructors.ImageCoordinatorConstructor class for working with image coordinates/ класс для работы с координатами изображения
+   * @param constructors.ImageDataConstructor class for working with image data/ класс для работы с данными изображения
+   * @param constructors.ImageImgConstructor class for working with image tag/ класс для работы с тегом изображения
+   * @param constructors.ImagePositionConstructor class for working with image position/ класс для работы с позицией изображения
+   * @param constructors.ImageTypeConstructor class for working with image type/ класс для работы с типом изображения
    */
-  constructor(t, e, s, h, c = Y, m = q, p = G, d = Z, v = T, y = V, b = tt) {
+  constructor(t, e, s, n, u) {
     i(this, "type");
     i(this, "data");
     i(this, "coordinator");
@@ -1085,21 +1086,21 @@ let et = class {
     /**
      * Determines the tag to use/ Определяет используемый тег
      */
-    i(this, "tag", n(() => this.img.is.value ? "img" : "span"));
+    i(this, "tag", o(() => this.img.is.value ? "img" : "span"));
     /**
      * Values for the text. Text is used for the type of icon that works as a background.
      *
      * Значения для текста. Текст используется для типа иконки, который работает как фон.
      */
-    i(this, "text", n(() => {
+    i(this, "text", o(() => {
       const t = this.type.item.value;
-      if (t === a.pdf) {
+      if (t === r.pdf) {
         const s = this.data.image.value;
         if (f(s))
           return s;
       }
       const e = this.props.value;
-      if (t === a.flagCompressed && e)
+      if (t === r.flagCompressed && e)
         return String(e).replace("f-", "").toUpperCase();
       if (t && f(e) && [
         "filled",
@@ -1116,7 +1117,7 @@ let et = class {
      *
      * Значения для класса.
      */
-    i(this, "classes", n(() => {
+    i(this, "classes", o(() => {
       const t = this.type.item.value, e = {
         [`${this.className}--type--${t}`]: t !== void 0,
         [`${this.className}--background`]: this.background.isImage(),
@@ -1142,30 +1143,30 @@ let et = class {
      * Calculates all properties for the style of the element/
      * Вычисляет все свойства для стиля элемента
      */
-    i(this, "styles", n(() => {
+    i(this, "styles", o(() => {
       const t = this.props.value;
       if (t)
         switch (this.type.item.value) {
-          case a.file:
-          case a.image:
+          case r.file:
+          case r.image:
             return {
               "background-image": this.background.image.value,
               "background-size": this.background.size.value,
               "background-position-x": this.position.x.value,
               "background-position-y": this.position.y.value
             };
-          case a.icon:
+          case r.icon:
             return {
               "background-image": this.background.image.value
             };
-          case a.flag:
+          case r.flag:
             return {
               "background-image": this.background.image.value,
               "background-size": "contain"
             };
-          case a.public:
+          case r.public:
             return { "mask-image": this.background.image.value };
-          case a.color:
+          case r.color:
             if (f(t))
               return { "background-color": t };
         }
@@ -1176,7 +1177,7 @@ let et = class {
      *
      * Вычисляемые привязки для элемента изображения.
      */
-    i(this, "binds", n(() => ({
+    i(this, "binds", o(() => ({
       translate: "no",
       ...z.role("img"),
       ...z.label(this.props.alt),
@@ -1187,34 +1188,44 @@ let et = class {
      *
      * Привязки для значения изображения.
      */
-    i(this, "valueBinds", n(() => ({
+    i(this, "valueBinds", o(() => ({
       key: "value",
       data: this.data.image.value
     })));
-    this.props = t, this.element = e, this.className = s, this.emits = h, this.type = new c(t), this.data = new m(t, this.type), this.coordinator = new p(t), this.position = new d(t, this.coordinator), this.adaptiveItem = new v(
+    this.props = t, this.element = e, this.className = s, this.emits = n;
+    const {
+      ImageAdaptiveItemConstructor: m = T,
+      ImageBackgroundConstructor: p = V,
+      ImageCoordinatorConstructor: d = G,
+      ImageDataConstructor: v = q,
+      ImageImgConstructor: y = tt,
+      ImagePositionConstructor: b = Z,
+      ImageTypeConstructor: w = Y
+    } = u != null ? u : {};
+    this.type = new w(t), this.data = new v(t, this.type), this.coordinator = new d(t), this.position = new b(t, this.coordinator), this.adaptiveItem = new m(
       t,
       this.data,
       e
-    ), this.background = new y(
+    ), this.background = new p(
       t,
       this.data,
       this.coordinator,
       this.adaptiveItem
-    ), this.img = new b(
+    ), this.img = new y(
       this.props,
       e,
       this.type,
       this.position,
       this.background
-    ), h && k(this.data.image, (w) => {
-      h("load", {
+    ), n && I(this.data.image, (h) => {
+      n("load", {
         type: this.type.item.value,
-        image: w
+        image: h
       });
     }), E(() => this.adaptiveItem.remove());
   }
 };
-class ot extends X {
+class ht extends X {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -1222,11 +1233,11 @@ class ot extends X {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor image item class/ класс элемента изображения
    */
-  constructor(e, s, h, c = et) {
+  constructor(e, s, n, u = et) {
     super(
       e,
       s,
-      h
+      n
     );
     i(this, "item");
     /**
@@ -1234,7 +1245,7 @@ class ot extends X {
      *
      * Свойства для тега image.
      */
-    i(this, "propsImage", n(() => {
+    i(this, "propsImage", o(() => {
       var e;
       return {
         ...this.getAttrs(),
@@ -1248,7 +1259,7 @@ class ot extends X {
      *
      * Основные свойства.
      */
-    i(this, "propsMain", n(() => {
+    i(this, "propsMain", o(() => {
       var e;
       return {
         ...this.propsImage.value,
@@ -1264,7 +1275,7 @@ class ot extends X {
     i(this, "renderPicture", () => {
       const e = this.item.img.picture.value, s = [];
       return e && e.forEach(
-        (h) => s.push(g("source", h))
+        (n) => s.push(g("source", n))
       ), s.push(this.renderImgItem()), g("picture", this.propsImage.value, s);
     });
     /**
@@ -1284,14 +1295,14 @@ class ot extends X {
      *
      * Рендеринг значения для компонента.
      */
-    i(this, "renderValue", () => this.item.type.item.value === a.pdf ? g(
+    i(this, "renderValue", () => this.item.type.item.value === r.pdf ? g(
       "object",
       this.item.valueBinds.value
-    ) : this.item.type.item.value === a.flagCompressed ? g(
+    ) : this.item.type.item.value === r.flagCompressed ? g(
       "span",
       { class: `ui-sys-flags ui-sys-flags--${this.item.text.value}` }
     ) : this.item.text.value);
-    this.item = new c(
+    this.item = new u(
       this.props,
       this.element,
       this.getName(),
@@ -1342,7 +1353,7 @@ class ot extends X {
 }
 export {
   et as Image,
-  ot as ImageDesign,
-  a as ImageTypeValue,
-  nt as defaultsImage
+  ht as ImageDesign,
+  r as ImageTypeValue,
+  ot as defaultsImage
 };

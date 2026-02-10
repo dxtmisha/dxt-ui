@@ -34,6 +34,12 @@ export class Dialog extends ModalAbstract {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
+   * @param constructors.IconIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
+   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
+   * @param constructors.WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
    */
   constructor(
     protected readonly props: DialogProps,
@@ -43,8 +49,23 @@ export class Dialog extends ModalAbstract {
     protected readonly className: string,
     protected readonly components?: DesignComp<DialogComponents, DialogProps>,
     protected readonly slots?: DialogSlots,
-    protected readonly emits?: ConstrEmit<DialogEmits>
+    protected readonly emits?: ConstrEmit<DialogEmits>,
+    constructors?: {
+      DescriptionIncludeConstructor?: typeof DescriptionInclude
+      IconIncludeConstructor?: typeof IconInclude
+      LabelIncludeConstructor?: typeof LabelInclude
+      TextIncludeConstructor?: typeof TextInclude
+      WindowClassesIncludeConstructor?: typeof WindowClassesInclude
+    }
   ) {
+    const {
+      DescriptionIncludeConstructor = DescriptionInclude,
+      IconIncludeConstructor = IconInclude,
+      LabelIncludeConstructor = LabelInclude,
+      TextIncludeConstructor = TextInclude,
+      WindowClassesIncludeConstructor = WindowClassesInclude
+    } = constructors ?? {}
+
     super(
       props,
       refs,
@@ -105,13 +126,13 @@ export class Dialog extends ModalAbstract {
       })
     )
 
-    this.icon = new IconInclude(
+    this.icon = new IconIncludeConstructor(
       readonly<any>({ icon: this.iconValue }),
       className,
       components,
       refs.iconAttrs
     )
-    this.label = new LabelInclude(
+    this.label = new LabelIncludeConstructor(
       props,
       className,
       undefined,
@@ -120,10 +141,10 @@ export class Dialog extends ModalAbstract {
       undefined,
       true
     )
-    this.description = new DescriptionInclude(props, className, slots)
+    this.description = new DescriptionIncludeConstructor(props, className, slots)
 
-    this.windowClasses = new WindowClassesInclude(classDesign)
-    this.text = new TextInclude(this.props)
+    this.windowClasses = new WindowClassesIncludeConstructor(classDesign)
+    this.text = new TextIncludeConstructor(this.props)
   }
 
   /**

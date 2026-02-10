@@ -23,7 +23,8 @@ export class ListGroup {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
    */
   constructor(
     protected readonly props: ListGroupProps,
@@ -34,8 +35,14 @@ export class ListGroup {
     protected readonly components?: DesignComp<ListGroupComponents, ListGroupProps>,
     protected readonly slots?: ListGroupSlots,
     protected readonly emits?: ConstrEmit<ListGroupEmits>,
-    ListGroupOpenConstructor: typeof ListGroupOpen = ListGroupOpen
+    constructors?: {
+      ListGroupOpenConstructor?: typeof ListGroupOpen
+    }
   ) {
+    const {
+      ListGroupOpenConstructor = ListGroupOpen
+    } = constructors ?? {}
+
     this.open = new ListGroupOpenConstructor(this.props)
   }
 

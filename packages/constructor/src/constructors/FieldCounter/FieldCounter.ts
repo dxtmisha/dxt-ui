@@ -28,7 +28,8 @@ export class FieldCounter {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
    */
   constructor(
     protected readonly props: FieldCounterProps,
@@ -39,8 +40,14 @@ export class FieldCounter {
     protected readonly components?: DesignComp<FieldCounterComponents, FieldCounterProps>,
     protected readonly slots?: FieldCounterSlots,
     protected readonly emits?: ConstrEmit<FieldCounterEmits>,
-    TextIncludeConstructor: typeof TextInclude = TextInclude
+    constructors?: {
+      TextIncludeConstructor?: typeof TextInclude
+    }
   ) {
+    const {
+      TextIncludeConstructor = TextInclude
+    } = constructors ?? {}
+
     this.text = new TextIncludeConstructor(this.props)
   }
 

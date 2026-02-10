@@ -53,14 +53,15 @@ export class MotionTransform {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param MotionTransformElementConstructor class for working with elements/ класс для работы с элементами
-   * @param MotionTransformSizeConstructor class for working with size/ класс для работы с размером
-   * @param MotionTransformStateConstructor class for working with state/ класс для работы с состоянием
-   * @param MotionTransformEventConstructor class for working with events/ класс для работы с событиями
-   * @param MotionTransformGoConstructor class for working with go/ класс для работы с переходом
-   * @param TabIndexIncludeConstructor class for working with tab index/ класс для работы с индексом табуляции
-   * @param WindowEscConstructor class for working with esc/ класс для работы с esc
-   * @param ModelIncludeConstructor class for working with model/ класс для работы с моделью
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
+   * @param constructors.MotionTransformElementConstructor class for working with elements/ класс для работы с элементами
+   * @param constructors.MotionTransformEventConstructor class for working with events/ класс для работы с событиями
+   * @param constructors.MotionTransformGoConstructor class for working with go/ класс для работы с переходом
+   * @param constructors.MotionTransformSizeConstructor class for working with size/ класс для работы с размером
+   * @param constructors.MotionTransformStateConstructor class for working with state/ класс для работы с состоянием
+   * @param constructors.TabIndexIncludeConstructor class for working with tab index/ класс для работы с индексом табуляции
+   * @param constructors.WindowEscConstructor class for working with esc/ класс для работы с esc
    */
   constructor(
     protected readonly props: MotionTransformProps,
@@ -72,15 +73,28 @@ export class MotionTransform {
     protected readonly components?: DesignComp<MotionTransformComponents, MotionTransformProps>,
     protected readonly slots?: MotionTransformSlots,
     protected readonly emits?: ConstrEmit<MotionTransformEmits>,
-    MotionTransformElementConstructor: typeof MotionTransformElement = MotionTransformElement,
-    MotionTransformSizeConstructor: typeof MotionTransformSize = MotionTransformSize,
-    MotionTransformStateConstructor: typeof MotionTransformState = MotionTransformState,
-    MotionTransformEventConstructor: typeof MotionTransformEvent = MotionTransformEvent,
-    MotionTransformGoConstructor: typeof MotionTransformGo = MotionTransformGo,
-    TabIndexIncludeConstructor: typeof TabIndexInclude = TabIndexInclude,
-    WindowEscConstructor: typeof WindowEsc = WindowEsc,
-    ModelIncludeConstructor: typeof ModelInclude = ModelInclude
+    constructors?: {
+      ModelIncludeConstructor?: typeof ModelInclude
+      MotionTransformElementConstructor?: typeof MotionTransformElement
+      MotionTransformEventConstructor?: typeof MotionTransformEvent
+      MotionTransformGoConstructor?: typeof MotionTransformGo
+      MotionTransformSizeConstructor?: typeof MotionTransformSize
+      MotionTransformStateConstructor?: typeof MotionTransformState
+      TabIndexIncludeConstructor?: typeof TabIndexInclude
+      WindowEscConstructor?: typeof WindowEsc
+    }
   ) {
+    const {
+      ModelIncludeConstructor = ModelInclude,
+      MotionTransformElementConstructor = MotionTransformElement,
+      MotionTransformEventConstructor = MotionTransformEvent,
+      MotionTransformGoConstructor = MotionTransformGo,
+      MotionTransformSizeConstructor = MotionTransformSize,
+      MotionTransformStateConstructor = MotionTransformState,
+      TabIndexIncludeConstructor = TabIndexInclude,
+      WindowEscConstructor = WindowEsc
+    } = constructors ?? {}
+
     this.element = new MotionTransformElementConstructor(
       props,
       element,

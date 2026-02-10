@@ -102,29 +102,30 @@ export class Mask {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param MaskTypeConstructor class for working with mask type/ класс для работы с типом маски
-   * @param MaskBufferConstructor class for working with mask buffer/ класс для работы с буфером маски
-   * @param MaskFocusConstructor class for working with mask focus/ класс для работы с фокусом маски
-   * @param MaskCharacterLengthConstructor class for working with mask character length/ класс для работы с длиной символов маски
-   * @param MaskRubberItemConstructor class for working with mask rubber item/ класс для работы с резиновым элементом маски
-   * @param MaskRubberTransitionConstructor class for working with mask rubber transition/ класс для работы с переходом резины маски
-   * @param MaskDateConstructor class for working with mask date/ класс для работы с датой маски
-   * @param MaskFormatConstructor class for working with mask format/ класс для работы с форматом маски
-   * @param MaskSpecialConstructor class for working with mask special/ класс для работы со специальными символами маски
-   * @param MaskMatchConstructor class for working with mask match/ класс для работы с совпадением маски
-   * @param MaskPatternConstructor class for working with mask pattern/ класс для работы с шаблоном маски
-   * @param MaskRightConstructor class for working with mask right/ класс для работы с выравниванием справа маски
-   * @param MaskRubberConstructor class for working with mask rubber/ класс для работы с резиной маски
-   * @param MaskItemConstructor class for working with mask item/ класс для работы с элементом маски
-   * @param MaskSelectionConstructor class for working with mask selection/ класс для работы с выделением маски
-   * @param MaskCharacterConstructor class for working with mask character/ класс для работы с символом маски
-   * @param MaskValueBasicConstructor class for working with mask value basic/ класс для работы с базовым значением маски
-   * @param MaskValueConstructor class for working with mask value/ класс для работы со значением маски
-   * @param MaskValidationConstructor class for working with mask validation/ класс для работы с валидацией маски
-   * @param MaskViewConstructor class for working with mask view/ класс для работы с отображением маски
-   * @param MaskEmitConstructor class for working with mask emit/ класс для работы с событиями маски
-   * @param MaskDataConstructor class for working with mask data/ класс для работы с данными маски
-   * @param MaskEventConstructor class for working with mask event/ класс для работы с событием маски
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.MaskBufferConstructor class for working with mask buffer/ класс для работы с буфером маски
+   * @param constructors.MaskCharacterConstructor class for working with mask character/ класс для работы с символом маски
+   * @param constructors.MaskCharacterLengthConstructor class for working with mask character length/ класс для работы с длиной символов маски
+   * @param constructors.MaskDataConstructor class for working with mask data/ класс для работы с данными маски
+   * @param constructors.MaskDateConstructor class for working with mask date/ класс для работы с датой маски
+   * @param constructors.MaskEmitConstructor class for working with mask emit/ класс для работы с событиями маски
+   * @param constructors.MaskEventConstructor class for working with mask event/ класс для работы с событием маски
+   * @param constructors.MaskFocusConstructor class for working with mask focus/ класс для работы с фокусом маски
+   * @param constructors.MaskFormatConstructor class for working with mask format/ класс для работы с форматом маски
+   * @param constructors.MaskItemConstructor class for working with mask item/ класс для работы с элементом маски
+   * @param constructors.MaskMatchConstructor class for working with mask match/ класс для работы с совпадением маски
+   * @param constructors.MaskPatternConstructor class for working with mask pattern/ класс для работы с шаблоном маски
+   * @param constructors.MaskRightConstructor class for working with mask right/ класс для работы с выравниванием справа маски
+   * @param constructors.MaskRubberConstructor class for working with mask rubber/ класс для работы с резиной маски
+   * @param constructors.MaskRubberItemConstructor class for working with mask rubber item/ класс для работы с резиновым элементом маски
+   * @param constructors.MaskRubberTransitionConstructor class for working with mask rubber transition/ класс для работы с переходом резины маски
+   * @param constructors.MaskSelectionConstructor class for working with mask selection/ класс для работы с выделением маски
+   * @param constructors.MaskSpecialConstructor class for working with mask special/ класс для работы со специальными символами маски
+   * @param constructors.MaskTypeConstructor class for working with mask type/ класс для работы с типом маски
+   * @param constructors.MaskValidationConstructor class for working with mask validation/ класс для работы с валидацией маски
+   * @param constructors.MaskValueBasicConstructor class for working with mask value basic/ класс для работы с базовым значением маски
+   * @param constructors.MaskValueConstructor class for working with mask value/ класс для работы со значением маски
+   * @param constructors.MaskViewConstructor class for working with mask view/ класс для работы с отображением маски
    */
   constructor(
     protected readonly props: MaskProps,
@@ -135,30 +136,58 @@ export class Mask {
     protected readonly components?: DesignComp<MaskComponents, MaskProps>,
     protected readonly slots?: MaskSlots,
     protected readonly emits?: ConstrEmit<MaskEmits>,
-    MaskTypeConstructor: typeof MaskType = MaskType,
-    MaskBufferConstructor: typeof MaskBuffer = MaskBuffer,
-    MaskFocusConstructor: typeof MaskFocus = MaskFocus,
-    MaskCharacterLengthConstructor: typeof MaskCharacterLength = MaskCharacterLength,
-    MaskRubberItemConstructor: typeof MaskRubberItem = MaskRubberItem,
-    MaskRubberTransitionConstructor: typeof MaskRubberTransition = MaskRubberTransition,
-    MaskDateConstructor: typeof MaskDate = MaskDate,
-    MaskFormatConstructor: typeof MaskFormat = MaskFormat,
-    MaskSpecialConstructor: typeof MaskSpecial = MaskSpecial,
-    MaskMatchConstructor: typeof MaskMatch = MaskMatch,
-    MaskPatternConstructor: typeof MaskPattern = MaskPattern,
-    MaskRightConstructor: typeof MaskRight = MaskRight,
-    MaskRubberConstructor: typeof MaskRubber = MaskRubber,
-    MaskItemConstructor: typeof MaskItem = MaskItem,
-    MaskSelectionConstructor: typeof MaskSelection = MaskSelection,
-    MaskCharacterConstructor: typeof MaskCharacter = MaskCharacter,
-    MaskValueBasicConstructor: typeof MaskValueBasic = MaskValueBasic,
-    MaskValueConstructor: typeof MaskValue = MaskValue,
-    MaskValidationConstructor: typeof MaskValidation = MaskValidation,
-    MaskViewConstructor: typeof MaskView = MaskView,
-    MaskEmitConstructor: typeof MaskEmit = MaskEmit,
-    MaskDataConstructor: typeof MaskData = MaskData,
-    MaskEventConstructor: typeof MaskEvent = MaskEvent
+    constructors?: {
+      MaskBufferConstructor?: typeof MaskBuffer
+      MaskCharacterConstructor?: typeof MaskCharacter
+      MaskCharacterLengthConstructor?: typeof MaskCharacterLength
+      MaskDataConstructor?: typeof MaskData
+      MaskDateConstructor?: typeof MaskDate
+      MaskEmitConstructor?: typeof MaskEmit
+      MaskEventConstructor?: typeof MaskEvent
+      MaskFocusConstructor?: typeof MaskFocus
+      MaskFormatConstructor?: typeof MaskFormat
+      MaskItemConstructor?: typeof MaskItem
+      MaskMatchConstructor?: typeof MaskMatch
+      MaskPatternConstructor?: typeof MaskPattern
+      MaskRightConstructor?: typeof MaskRight
+      MaskRubberConstructor?: typeof MaskRubber
+      MaskRubberItemConstructor?: typeof MaskRubberItem
+      MaskRubberTransitionConstructor?: typeof MaskRubberTransition
+      MaskSelectionConstructor?: typeof MaskSelection
+      MaskSpecialConstructor?: typeof MaskSpecial
+      MaskTypeConstructor?: typeof MaskType
+      MaskValidationConstructor?: typeof MaskValidation
+      MaskValueBasicConstructor?: typeof MaskValueBasic
+      MaskValueConstructor?: typeof MaskValue
+      MaskViewConstructor?: typeof MaskView
+    }
   ) {
+    const {
+      MaskBufferConstructor = MaskBuffer,
+      MaskCharacterConstructor = MaskCharacter,
+      MaskCharacterLengthConstructor = MaskCharacterLength,
+      MaskDataConstructor = MaskData,
+      MaskDateConstructor = MaskDate,
+      MaskEmitConstructor = MaskEmit,
+      MaskEventConstructor = MaskEvent,
+      MaskFocusConstructor = MaskFocus,
+      MaskFormatConstructor = MaskFormat,
+      MaskItemConstructor = MaskItem,
+      MaskMatchConstructor = MaskMatch,
+      MaskPatternConstructor = MaskPattern,
+      MaskRightConstructor = MaskRight,
+      MaskRubberConstructor = MaskRubber,
+      MaskRubberItemConstructor = MaskRubberItem,
+      MaskRubberTransitionConstructor = MaskRubberTransition,
+      MaskSelectionConstructor = MaskSelection,
+      MaskSpecialConstructor = MaskSpecial,
+      MaskTypeConstructor = MaskType,
+      MaskValidationConstructor = MaskValidation,
+      MaskValueBasicConstructor = MaskValueBasic,
+      MaskValueConstructor = MaskValue,
+      MaskViewConstructor = MaskView
+    } = constructors ?? {}
+
     this.type = new MaskTypeConstructor(this.props)
     this.buffer = new MaskBufferConstructor()
     this.focus = new MaskFocusConstructor(this.buffer)

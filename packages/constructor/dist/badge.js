@@ -1,12 +1,12 @@
-var b = Object.defineProperty;
-var g = (i, t, s) => t in i ? b(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
-var e = (i, t, s) => g(i, typeof t != "symbol" ? t + "" : t, s);
-import { computed as l, h as f } from "vue";
-import { isFilled as c, DesignConstructorAbstract as v } from "@dxtmisha/functional";
-import { A as u } from "./AriaStaticInclude-CAURwJMb.js";
-import { L as I } from "./LabelNumberInclude-Cn0qDEgX.js";
+var g = Object.defineProperty;
+var f = (i, t, e) => t in i ? g(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
+var s = (i, t, e) => f(i, typeof t != "symbol" ? t + "" : t, e);
+import { computed as o, h as v } from "vue";
+import { isFilled as u, DesignConstructorAbstract as I } from "@dxtmisha/functional";
+import { A as m } from "./AriaStaticInclude-CAURwJMb.js";
+import { L as C } from "./LabelNumberInclude-Cn0qDEgX.js";
 import { I as A } from "./IconInclude-CLqwI29Q.js";
-class C {
+class L {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -17,40 +17,46 @@ class C {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param LabelNumberIncludeConstructor class for working with label/ класс для работы с меткой
-   * @param IconIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.IconIncludeConstructor class for working with icon/ класс для работы с иконкой
+   * @param constructors.LabelNumberIncludeConstructor class for working with label/ класс для работы с меткой
    */
-  constructor(t, s, r, n, a, o, h, m, d = I, p = A) {
-    e(this, "label");
-    e(this, "icon");
+  constructor(t, e, a, n, r, h, c, d, l) {
+    s(this, "label");
+    s(this, "icon");
     /**
      * Computes if the badge should auto-hide when there is no dot, icon, or label.
      *
      * Вычисляет, должен ли бейдж автоматически скрываться, если нет точки, иконки и текста.
      */
-    e(this, "autoHide", l(
-      () => !this.props.dot && !c(this.icon.isIcon.value) && !c(this.label.is.value)
+    s(this, "autoHide", o(
+      () => !this.props.dot && !u(this.icon.isIcon.value) && !u(this.label.is.value)
     ));
     /**
      * Classes for controlling badge visibility.
      *
      * Классы для управления видимостью бейджа.
      */
-    e(this, "classes", l(() => ({
+    s(this, "classes", o(() => ({
       [`${this.className}--hideAuto`]: this.autoHide.value
     })));
-    e(this, "aria", l(() => this.props.ariaLabel ? {
-      ...u.hidden()
+    s(this, "aria", o(() => this.props.ariaLabel ? {
+      ...m.hidden()
     } : {}));
-    this.props = t, this.refs = s, this.element = r, this.classDesign = n, this.className = a, this.components = o, this.slots = h, this.emits = m, this.label = new d(
+    this.props = t, this.refs = e, this.element = a, this.classDesign = n, this.className = r, this.components = h, this.slots = c, this.emits = d;
+    const {
+      IconIncludeConstructor: p = A,
+      LabelNumberIncludeConstructor: b = C
+    } = l != null ? l : {};
+    this.label = new b(
       t,
-      a,
+      r,
       void 0,
-      h
+      c
     ), this.icon = new p(
       t,
-      a,
-      o
+      r,
+      h
     );
   }
 }
@@ -60,7 +66,7 @@ const H = {
   vertical: "top",
   horizontal: "right"
 };
-class N extends v {
+class y extends I {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -68,14 +74,14 @@ class N extends v {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(s, r, n, a = C) {
+  constructor(e, a, n, r = L) {
     super(
-      s,
-      r,
+      e,
+      a,
       n
     );
-    e(this, "item");
-    this.item = new a(
+    s(this, "item");
+    this.item = new r(
       this.props,
       this.refs,
       this.element,
@@ -121,21 +127,21 @@ class N extends v {
    * Метод для рендеринга.
    */
   initRender() {
-    var r;
-    const s = [];
-    return this.props.dot || s.push(
+    var a;
+    const e = [];
+    return this.props.dot || e.push(
       ...this.item.label.render(void 0, this.item.aria.value),
       ...this.item.icon.renderIcon()
-    ), f("span", {
+    ), v("span", {
       ...this.getAttrs(),
       ref: this.element,
-      class: (r = this.classes) == null ? void 0 : r.value.main,
-      ...u.label(this.props.ariaLabel)
-    }, s);
+      class: (a = this.classes) == null ? void 0 : a.value.main,
+      ...m.label(this.props.ariaLabel)
+    }, e);
   }
 }
 export {
-  C as Badge,
-  N as BadgeDesign,
+  L as Badge,
+  y as BadgeDesign,
   H as defaultsBadge
 };

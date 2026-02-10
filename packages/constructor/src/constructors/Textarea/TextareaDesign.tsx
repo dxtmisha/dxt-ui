@@ -2,11 +2,12 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract, toBinds
 } from '@dxtmisha/functional'
 
 import { Textarea } from './Textarea'
 
+import type { FieldControl } from '../Field'
 import {
   type TextareaPropsBasic
 } from './props'
@@ -67,9 +68,6 @@ export class TextareaDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -80,8 +78,9 @@ export class TextareaDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      value: this.item.value.item,
+      checkValidity: this.item.validation.checkValidity,
+      validationMessage: this.item.validation.message
     } as EXPOSE
   }
 
@@ -106,10 +105,7 @@ export class TextareaDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -117,13 +113,54 @@ export class TextareaDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
-    // const children: any[] = []
+  protected initRender(): VNode[] {
+    return this.item.field.render(
+      {
+        default: this.renderInput
+      },
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main,
+        validationMessage: this.item.validation.message.value
+      }
+    )
+  }
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+  /**
+   * Rendering the input element.
+   *
+   * Рендер элемент input.
+   * @param input data for the input element/ данные для элемента ввода
+   */
+  protected readonly renderInput = (input: FieldControl): VNode[] => {
+    const props = toBinds(
+      input.binds,
+      {
+        ref: this.element,
+        autosize: this.props.autosize,
+        value: this.item.value.item.value,
+        onBlur: this.item.event.onBlur,
+        onInput: this.item.event.onInput,
+        onChange: this.item.event.onChange
+      }
+    )
+    const propsInput = toBinds(
+      this.item.attributes.listForInput.value,
+      this.props.textareaAttrs
+    )
+
+    console.log('props', props, propsInput)
+
+    if (this.components.is('textareaAutosize')) {
+      return [this.components.renderOne('textareaAutosize', {
+        ...props,
+        inputAttrs: propsInput
+      }) as VNode]
+    }
+
+    return [h('textarea', {
+      ...props,
+      ...propsInput
+    })]
   }
 }

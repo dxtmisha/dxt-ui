@@ -49,15 +49,16 @@ export class Cell {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param LabelConstructor class for creating a label/ класс для создания метки
-   * @param CaptionConstructor class for creating a caption/ класс для создания подписи
-   * @param DescriptionConstructor class for creating a description/ класс для создания описания
-   * @param EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
-   * @param IconConstructor class for creating an icon/ класс для создания иконки
-   * @param ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
-   * @param RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
-   * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
-   * @param EventConstructor class for creating an event/ класс для создания события
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.CaptionConstructor class for creating a caption/ класс для создания подписи
+   * @param constructors.DescriptionConstructor class for creating a description/ класс для создания описания
+   * @param constructors.EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
+   * @param constructors.EventConstructor class for creating an event/ класс для создания события
+   * @param constructors.IconConstructor class for creating an icon/ класс для создания иконки
+   * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
+   * @param constructors.ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
+   * @param constructors.RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
+   * @param constructors.SkeletonConstructor class for creating a skeleton/ класс для создания скелета
    */
   constructor(
     protected readonly props: CellProps,
@@ -68,16 +69,30 @@ export class Cell {
     protected readonly components?: DesignComp<CellComponents, CellProps>,
     protected readonly slots?: CellSlots,
     protected readonly emits?: ConstrEmit<CellEmits>,
-    LabelConstructor: typeof LabelInclude = LabelInclude,
-    CaptionConstructor: typeof CaptionInclude = CaptionInclude,
-    DescriptionConstructor: typeof DescriptionInclude = DescriptionInclude,
-    EnabledConstructor: typeof EnabledInclude = EnabledInclude,
-    IconConstructor: typeof IconTrailingInclude = IconTrailingInclude,
-    ProgressConstructor: typeof ProgressInclude = ProgressInclude,
-    RippleConstructor: typeof RippleInclude = RippleInclude,
-    SkeletonConstructor: typeof SkeletonInclude = SkeletonInclude,
-    EventConstructor: typeof EventClickInclude = EventClickInclude
+    constructors?: {
+      CaptionConstructor?: typeof CaptionInclude
+      DescriptionConstructor?: typeof DescriptionInclude
+      EnabledConstructor?: typeof EnabledInclude
+      EventConstructor?: typeof EventClickInclude
+      IconConstructor?: typeof IconTrailingInclude
+      LabelConstructor?: typeof LabelInclude
+      ProgressConstructor?: typeof ProgressInclude
+      RippleConstructor?: typeof RippleInclude
+      SkeletonConstructor?: typeof SkeletonInclude
+    }
   ) {
+    const {
+      CaptionConstructor = CaptionInclude,
+      DescriptionConstructor = DescriptionInclude,
+      EnabledConstructor = EnabledInclude,
+      EventConstructor = EventClickInclude,
+      IconConstructor = IconTrailingInclude,
+      LabelConstructor = LabelInclude,
+      ProgressConstructor = ProgressInclude,
+      RippleConstructor = RippleInclude,
+      SkeletonConstructor = SkeletonInclude
+    } = constructors ?? {}
+
     const progress = new ProgressConstructor(
       props,
       className,

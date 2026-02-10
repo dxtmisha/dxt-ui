@@ -1,11 +1,11 @@
-var f = Object.defineProperty;
-var g = (s, e, t) => e in s ? f(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
-var r = (s, e, t) => g(s, typeof e != "symbol" ? e + "" : e, t);
-import { computed as v, h as d } from "vue";
-import { toBinds as p } from "@dxtmisha/functional";
-import { M as C, a as S } from "./ModalDesignAbstract-D4A_a_rC.js";
-import { T } from "./TouchEventInclude-DctYCjt8.js";
-class _ extends C {
+var v = Object.defineProperty;
+var C = (s, e, t) => e in s ? v(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
+var r = (s, e, t) => C(s, typeof e != "symbol" ? e + "" : e, t);
+import { computed as p, h as m } from "vue";
+import { toBinds as S } from "@dxtmisha/functional";
+import { M as T, a as _ } from "./ModalDesignAbstract-D4A_a_rC.js";
+import { T as w } from "./TouchEventInclude-DctYCjt8.js";
+class A extends T {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -16,18 +16,23 @@ class _ extends C {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.TouchEventIncludeConstructor class for working with touch event/ класс для работы с событием касания
    */
-  constructor(t, i, o, h, n, a, l, u) {
+  constructor(t, i, o, h, a, l, u, c, n) {
+    const {
+      TouchEventIncludeConstructor: b = w
+    } = n != null ? n : {};
     super(
       t,
       i,
       o,
       h,
-      n,
       a,
       l,
       u,
-      v(() => ({
+      c,
+      p(() => ({
         open: t.open,
         adaptive: "actionSheet",
         closeButton: t.barsBackHide,
@@ -37,18 +42,18 @@ class _ extends C {
       { align: "auto" }
     );
     r(this, "touchEvent");
-    this.props = t, this.refs = i, this.element = o, this.classDesign = h, this.className = n, this.components = a, this.slots = l, this.emits = u, this.touchEvent = new T(
+    this.props = t, this.refs = i, this.element = o, this.classDesign = h, this.className = a, this.components = l, this.slots = u, this.emits = c, this.touchEvent = new b(
       void 0,
-      (m, c, w, b) => b >= 0,
-      (m, c) => c === "bottom" ? (this.window.expose.setOpen(!1).then(), !1) : !0
+      (f, d, E, g) => g >= 0,
+      (f, d) => d === "bottom" ? (this.window.expose.setOpen(!1).then(), !1) : !0
     );
   }
 }
-const M = {
+const I = {
   barsBackHide: !0,
   touchClose: !0
 };
-class H extends S {
+class k extends _ {
   constructor() {
     super(...arguments);
     /**
@@ -60,14 +65,14 @@ class H extends S {
     r(this, "renderTitleTouch", (t) => {
       var o, h;
       const i = this.renderTitle(t);
-      return this.props.touchClose ? [d(
+      return this.props.touchClose ? [m(
         "div",
         {
           class: (o = this.classes) == null ? void 0 : o.value.touch,
           ...this.item.touchEvent.onTouch
         },
         [
-          d("div", { class: (h = this.classes) == null ? void 0 : h.value.tab }),
+          m("div", { class: (h = this.classes) == null ? void 0 : h.value.tab }),
           ...i
         ]
       )] : i;
@@ -79,7 +84,7 @@ class H extends S {
    * Создает экземпляр класса элемента.
    */
   initItem() {
-    return new _(
+    return new A(
       this.props,
       this.refs,
       this.element,
@@ -121,7 +126,7 @@ class H extends S {
         default: this.renderDefault,
         footer: this.renderFooter
       },
-      p(
+      S(
         {
           class: (t = this.classes) == null ? void 0 : t.value.main,
           "data-touch": "touch"
@@ -132,7 +137,7 @@ class H extends S {
   }
 }
 export {
-  _ as ActionSheet,
-  H as ActionSheetDesign,
-  M as defaultsActionSheet
+  A as ActionSheet,
+  k as ActionSheetDesign,
+  I as defaultsActionSheet
 };

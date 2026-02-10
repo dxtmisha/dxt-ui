@@ -39,15 +39,24 @@ export declare class Button {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param LabelConstructor class for creating a label/ класс для создания метки
-     * @param EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
-     * @param IconConstructor class for creating an icon/ класс для создания иконки
-     * @param ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
-     * @param RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
-     * @param SkeletonConstructor class for creating a skeleton/ класс для создания скелета
-     * @param EventConstructor class for creating an event/ класс для создания события
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
+     * @param constructors.EventConstructor class for creating an event/ класс для создания события
+     * @param constructors.IconConstructor class for creating an icon/ класс для создания иконки
+     * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
+     * @param constructors.ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
+     * @param constructors.RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
+     * @param constructors.SkeletonConstructor class for creating a skeleton/ класс для создания скелета
      */
-    constructor(props: ButtonPropsBasic, refs: ToRefs<ButtonPropsBasic>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ButtonComponents, ButtonPropsBasic> | undefined, slots?: ButtonSlots | undefined, emits?: ConstrEmit<ButtonEmits> | undefined, LabelConstructor?: typeof LabelInclude, EnabledConstructor?: typeof EnabledInclude, IconConstructor?: typeof IconTrailingInclude, ProgressConstructor?: typeof ProgressInclude, RippleConstructor?: typeof RippleInclude, SkeletonConstructor?: typeof SkeletonInclude, EventConstructor?: typeof EventClickInclude);
+    constructor(props: ButtonPropsBasic, refs: ToRefs<ButtonPropsBasic>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<ButtonComponents, ButtonPropsBasic> | undefined, slots?: ButtonSlots | undefined, emits?: ConstrEmit<ButtonEmits> | undefined, constructors?: {
+        EnabledConstructor?: typeof EnabledInclude;
+        EventConstructor?: typeof EventClickInclude;
+        IconConstructor?: typeof IconTrailingInclude;
+        LabelConstructor?: typeof LabelInclude;
+        ProgressConstructor?: typeof ProgressInclude;
+        RippleConstructor?: typeof RippleInclude;
+        SkeletonConstructor?: typeof SkeletonInclude;
+    });
     /** tag name/ название тега */
     readonly tag: ComputedRef<string>;
     /** values for the class/ значения для класса */

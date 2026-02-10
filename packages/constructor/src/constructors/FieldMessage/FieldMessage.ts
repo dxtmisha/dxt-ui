@@ -32,9 +32,10 @@ export class FieldMessage {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param FieldCounterIncludeConstructor class for working with field counter/ класс для работы со счетчиком поля
-   * @param FieldMessageMessageConstructor class for working with messages/ класс для работы с сообщениями
-   * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.FieldCounterIncludeConstructor class for working with field counter/ класс для работы со счетчиком поля
+   * @param constructors.FieldMessageMessageConstructor class for working with messages/ класс для работы с сообщениями
+   * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
    */
   constructor(
     protected readonly props: FieldMessageProps,
@@ -45,10 +46,18 @@ export class FieldMessage {
     protected readonly components?: DesignComp<FieldMessageComponents, FieldMessageProps>,
     protected readonly slots?: FieldMessageSlots,
     protected readonly emits?: ConstrEmit<FieldMessageEmits>,
-    FieldCounterIncludeConstructor: typeof FieldCounterInclude = FieldCounterInclude,
-    FieldMessageMessageConstructor: typeof FieldMessageMessage = FieldMessageMessage,
-    SkeletonIncludeConstructor: typeof SkeletonInclude = SkeletonInclude
+    constructors?: {
+      FieldCounterIncludeConstructor?: typeof FieldCounterInclude
+      FieldMessageMessageConstructor?: typeof FieldMessageMessage
+      SkeletonIncludeConstructor?: typeof SkeletonInclude
+    }
   ) {
+    const {
+      FieldCounterIncludeConstructor = FieldCounterInclude,
+      FieldMessageMessageConstructor = FieldMessageMessage,
+      SkeletonIncludeConstructor = SkeletonInclude
+    } = constructors ?? {}
+
     this.fieldCounter = new FieldCounterIncludeConstructor(
       this.props,
       this.className,

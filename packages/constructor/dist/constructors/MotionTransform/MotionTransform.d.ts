@@ -46,16 +46,26 @@ export declare class MotionTransform {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param MotionTransformElementConstructor class for working with elements/ класс для работы с элементами
-     * @param MotionTransformSizeConstructor class for working with size/ класс для работы с размером
-     * @param MotionTransformStateConstructor class for working with state/ класс для работы с состоянием
-     * @param MotionTransformEventConstructor class for working with events/ класс для работы с событиями
-     * @param MotionTransformGoConstructor class for working with go/ класс для работы с переходом
-     * @param TabIndexIncludeConstructor class for working with tab index/ класс для работы с индексом табуляции
-     * @param WindowEscConstructor class for working with esc/ класс для работы с esc
-     * @param ModelIncludeConstructor class for working with model/ класс для работы с моделью
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
+     * @param constructors.MotionTransformElementConstructor class for working with elements/ класс для работы с элементами
+     * @param constructors.MotionTransformEventConstructor class for working with events/ класс для работы с событиями
+     * @param constructors.MotionTransformGoConstructor class for working with go/ класс для работы с переходом
+     * @param constructors.MotionTransformSizeConstructor class for working with size/ класс для работы с размером
+     * @param constructors.MotionTransformStateConstructor class for working with state/ класс для работы с состоянием
+     * @param constructors.TabIndexIncludeConstructor class for working with tab index/ класс для работы с индексом табуляции
+     * @param constructors.WindowEscConstructor class for working with esc/ класс для работы с esc
      */
-    constructor(props: MotionTransformProps, refs: ToRefs<MotionTransformProps>, element: Ref<HTMLDivElement | undefined>, elementContext: Ref<HTMLDivElement | undefined>, classDesign: string, className: string, components?: DesignComp<MotionTransformComponents, MotionTransformProps> | undefined, slots?: MotionTransformSlots | undefined, emits?: ConstrEmit<MotionTransformEmits> | undefined, MotionTransformElementConstructor?: typeof MotionTransformElement, MotionTransformSizeConstructor?: typeof MotionTransformSize, MotionTransformStateConstructor?: typeof MotionTransformState, MotionTransformEventConstructor?: typeof MotionTransformEvent, MotionTransformGoConstructor?: typeof MotionTransformGo, TabIndexIncludeConstructor?: typeof TabIndexInclude, WindowEscConstructor?: typeof WindowEsc, ModelIncludeConstructor?: typeof ModelInclude);
+    constructor(props: MotionTransformProps, refs: ToRefs<MotionTransformProps>, element: Ref<HTMLDivElement | undefined>, elementContext: Ref<HTMLDivElement | undefined>, classDesign: string, className: string, components?: DesignComp<MotionTransformComponents, MotionTransformProps> | undefined, slots?: MotionTransformSlots | undefined, emits?: ConstrEmit<MotionTransformEmits> | undefined, constructors?: {
+        ModelIncludeConstructor?: typeof ModelInclude;
+        MotionTransformElementConstructor?: typeof MotionTransformElement;
+        MotionTransformEventConstructor?: typeof MotionTransformEvent;
+        MotionTransformGoConstructor?: typeof MotionTransformGo;
+        MotionTransformSizeConstructor?: typeof MotionTransformSize;
+        MotionTransformStateConstructor?: typeof MotionTransformState;
+        TabIndexIncludeConstructor?: typeof TabIndexInclude;
+        WindowEscConstructor?: typeof WindowEsc;
+    });
     /**
      * Computed slot data for managing slots/
      * Вычисляемые данные слотов для управления слотами

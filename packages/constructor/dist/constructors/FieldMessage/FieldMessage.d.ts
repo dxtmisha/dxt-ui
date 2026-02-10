@@ -34,11 +34,16 @@ export declare class FieldMessage {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-     * @param FieldCounterIncludeConstructor class for working with field counter/ класс для работы со счетчиком поля
-     * @param FieldMessageMessageConstructor class for working with messages/ класс для работы с сообщениями
-     * @param SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.FieldCounterIncludeConstructor class for working with field counter/ класс для работы со счетчиком поля
+     * @param constructors.FieldMessageMessageConstructor class for working with messages/ класс для работы с сообщениями
+     * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
      */
-    constructor(props: FieldMessageProps, refs: ToRefs<FieldMessageProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldMessageComponents, FieldMessageProps> | undefined, slots?: FieldMessageSlots | undefined, emits?: ConstrEmit<FieldMessageEmits> | undefined, FieldCounterIncludeConstructor?: typeof FieldCounterInclude, FieldMessageMessageConstructor?: typeof FieldMessageMessage, SkeletonIncludeConstructor?: typeof SkeletonInclude);
+    constructor(props: FieldMessageProps, refs: ToRefs<FieldMessageProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<FieldMessageComponents, FieldMessageProps> | undefined, slots?: FieldMessageSlots | undefined, emits?: ConstrEmit<FieldMessageEmits> | undefined, constructors?: {
+        FieldCounterIncludeConstructor?: typeof FieldCounterInclude;
+        FieldMessageMessageConstructor?: typeof FieldMessageMessage;
+        SkeletonIncludeConstructor?: typeof SkeletonInclude;
+    });
     /**
      * Checks if there are values for outputting the element/ Проверяет, есть ли значения для вывода элемента
      */
