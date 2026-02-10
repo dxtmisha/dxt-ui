@@ -47,8 +47,19 @@ export declare class Select {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param FieldAttributesIncludeConstructor class for working with field attributes/ класс для работы с атрибутами поля
+     * @param FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
+     * @param FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
+     * @param FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
+     * @param FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
+     * @param FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
+     * @param FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
+     * @param FieldIncludeConstructor class for working with field/ класс для работы с полем
+     * @param MenuIncludeConstructor class for working with menu/ класс для работы с меню
+     * @param SelectInputConstructor class for working with select input/ класс для работы с вводом выбора
+     * @param SelectFilterConstructor class for working with select filter/ класс для работы с фильтром выбора
      */
-    constructor(props: SelectProps, refs: ToRefs<SelectProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<SelectComponents, SelectProps> | undefined, slots?: SelectSlots | undefined, emits?: ConstrEmit<SelectEmits> | undefined);
+    constructor(props: SelectProps, refs: ToRefs<SelectProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<SelectComponents, SelectProps> | undefined, slots?: SelectSlots | undefined, emits?: ConstrEmit<SelectEmits> | undefined, FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude, FieldChangeIncludeConstructor?: typeof FieldChangeInclude, FieldElementIncludeConstructor?: typeof FieldElementInclude, FieldValueIncludeConstructor?: typeof FieldValueInclude, FieldCodeIncludeConstructor?: typeof FieldCodeInclude, FieldValidationIncludeConstructor?: typeof FieldValidationInclude, FieldEventIncludeConstructor?: typeof FieldEventInclude, FieldIncludeConstructor?: typeof FieldInclude, MenuIncludeConstructor?: typeof MenuInclude, SelectInputConstructor?: typeof SelectInput, SelectFilterConstructor?: typeof SelectFilter);
     /** Checks whether there are slots for context areas/ Проверяет, есть ли слоты для контекстных областей */
     protected readonly isSlot: ComputedRef<boolean>;
     /** Computes the trailing icon value/ Вычисляет значение иконки трейлинга */

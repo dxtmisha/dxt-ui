@@ -6,7 +6,8 @@ import {
   type RefOrNormal,
   toBind,
   toBinds,
-  getRef
+  getRef,
+  isEnter
 } from '@dxtmisha/functional'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
@@ -108,7 +109,8 @@ export class FieldInclude<
         fieldMessageAttrs: this.props.fieldMessageAttrs,
         fieldCounterAttrs: this.props.fieldCounterAttrs,
 
-        onClick: this.on
+        onClick: this.on,
+        onKeydown: this.onKeydown
       },
       getRef(this.extra),
       this.props.fieldAttrs
@@ -197,6 +199,23 @@ export class FieldInclude<
           eventStopPropagation(event)
           break
       }
+    }
+  }
+
+  /**
+   * Event trigger function when pressing the space bar or enter key.
+   *
+   * Функция вызова события при нажатии на пробел или клавишу Enter.
+   * @param event event object/ объект события
+   * @param options data object/ объект с данными
+   */
+  protected readonly onKeydown = (
+    event: KeyboardEvent,
+    options: EventClickValue
+  ) => {
+    if (isEnter(event)) {
+      this.on(event as unknown as MouseEvent, options)
+      event.preventDefault()
     }
   }
 }

@@ -8,7 +8,7 @@ import { L as T } from "./LabelInclude-D-mLvjK5.js";
 import { C as _ } from "./CaptionInclude-NzS6EYYj.js";
 import { D } from "./DescriptionInclude-D4ane9aR.js";
 import { E as A } from "./EnabledInclude-Dk-rP4jp.js";
-import { E } from "./EventClickInclude-CgbuezDm.js";
+import { E } from "./EventClickInclude-WHJqxZ1b.js";
 import { I as $ } from "./IconTrailingInclude-CdsOcDxv.js";
 import { P as R } from "./ProgressInclude-9MfZWtGP.js";
 import { R as B } from "./RippleInclude-Du5yIzX_.js";

@@ -10,7 +10,7 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
     en: [
       'animated loading placeholders for content',
       'control visibility with `active` property',
-      'child elements react to skeleton state via `isSkeleton` property or special classes',
+      'child elements react to the skeleton state via `isSkeleton` property or special classes',
       'customizable appearance and animation'
     ],
     ru: [
@@ -128,6 +128,47 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
     `,
     expose: `
 <StorybookDescriptions componentName={'Skeleton'} type={'expose.isActive'}/>
+    `
+  },
+  ai: {
+    description: `
+Skeleton is a structural component used to display a loading state (placeholder) for content.
+It creates an animated "ghost" version of the UI to improve perceived performance and prevent layout shifts (CLS).
+
+**Key Features:**
+1. **Activation (\`active\`):**
+   - The \`active\` prop controls the visibility of the skeleton effect.
+   - When \`true\`, the component applies loading styles and accessibility attributes.
+
+2. **Context & Inheritance:**
+   - Uses Vue's \`provide\`/\`inject\` mechanism.
+   - Child components (like \`Image\`, \`Field\`, \`Chip\`) automatically detect if they are inside an active \`Skeleton\` and switch to their own skeleton view without needing individual props.
+
+3. **Styling Classes (Slot Props):**
+   - The component exposes CSS classes via the default slot to style raw HTML elements.
+   - **Text:** \`classText\` (lines), \`classTextVariant\` (headings).
+   - **Background:** \`classBackground\` (blocks, images), \`classBackgroundVariant\`.
+   - **Border:** \`classBorder\` (outlines).
+
+4. **Accessibility:**
+   - Automatically applies \`aria-busy="true"\` and \`aria-live="polite"\` to the wrapper.
+
+**Usage Examples:**
+
+- **Wrapping Smart Components:**
+  \`<Skeleton :active="isLoading">
+     <div class="profile">
+       <Image :value="user.avatar" /> <!-- Auto-skeleton -->
+       <Field :value="user.name" readonly /> <!-- Auto-skeleton -->
+     </div>
+   </Skeleton>\`
+
+- **Manual Structure (using slot classes):**
+  \`<Skeleton :active="isLoading" v-slot="{ classes }">
+     <div :class="classes.classBackground" style="height: 200px"></div>
+     <h3 :class="classes.classTextVariant"></h3>
+     <p :class="classes.classText"></p>
+   </Skeleton>\`
     `
   }
 }

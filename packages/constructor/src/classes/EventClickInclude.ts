@@ -83,10 +83,14 @@ export class EventClickInclude {
    *
    * Функция вызова события при нажатии на пробел или клавишу Enter
    * @param event event object/ объект события
+   * @param options data object/ объект с данными
    */
-  readonly onKeydown = (event: KeyboardEvent) => {
+  readonly onKeydown = (
+    event: KeyboardEvent,
+    options?: EventClickValue
+  ) => {
     if (isEnter(event)) {
-      this.onClick(event as unknown as MouseEvent)
+      this.onClick(event as unknown as MouseEvent, options)
       event.preventDefault()
     }
   }

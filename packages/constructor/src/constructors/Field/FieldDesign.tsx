@@ -167,7 +167,8 @@ export class FieldDesign<
             this.classes?.value.body,
             this.item.skeleton.classes.value
           ],
-          onClick: this.item.event.onClick
+          onClick: this.item.event.onClick,
+          onKeydown: this.item.event.onKeydown
         },
         children
       )

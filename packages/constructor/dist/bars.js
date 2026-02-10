@@ -6,7 +6,7 @@ import { toBind as u, getBind as T, forEach as E, DesignConstructorAbstract as M
 import { A as m } from "./AriaStaticInclude-CAURwJMb.js";
 import { L as $ } from "./LabelInclude-D-mLvjK5.js";
 import { D as y } from "./DescriptionInclude-D4ane9aR.js";
-import { E as H } from "./EventClickInclude-CgbuezDm.js";
+import { E as H } from "./EventClickInclude-WHJqxZ1b.js";
 import { M as P } from "./ModelInclude-BiYm_iCQ.js";
 import { T as W } from "./TextInclude-DyFukbT2.js";
 import { W as N } from "./WindowClassesInclude-B56usxgx.js";

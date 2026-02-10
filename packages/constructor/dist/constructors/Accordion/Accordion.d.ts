@@ -60,6 +60,6 @@ export declare class Accordion {
         labelId: string;
         descriptionId: string;
         onClick: (event: MouseEvent, options?: EventClickValue) => void;
-        onKeydown: (event: KeyboardEvent) => void;
+        onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void;
     }>;
 }

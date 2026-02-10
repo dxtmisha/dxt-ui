@@ -1,27 +1,28 @@
-var l = Object.defineProperty;
-var m = (i, e, t) => e in i ? l(i, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[e] = t;
-var r = (i, e, t) => m(i, typeof e != "symbol" ? e + "" : e, t);
-import { a } from "./SkeletonInclude-BIUzAO2s.js";
-import { S as x } from "./SkeletonInclude-BIUzAO2s.js";
+var m = Object.defineProperty;
+var a = (s, e, t) => e in s ? m(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
+var n = (s, e, t) => a(s, typeof e != "symbol" ? e + "" : e, t);
+import { a as c } from "./SkeletonInclude-BIUzAO2s.js";
+import { S as b } from "./SkeletonInclude-BIUzAO2s.js";
 import { h } from "vue";
-import { DesignConstructorAbstract as c } from "@dxtmisha/functional";
-import { A as n } from "./AriaStaticInclude-CAURwJMb.js";
+import { DesignConstructorAbstract as u } from "@dxtmisha/functional";
+import { A as r } from "./AriaStaticInclude-CAURwJMb.js";
 const A = {};
-class S extends c {
+class g extends u {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, s, o) {
+  constructor(t, i, o, l = c) {
     super(
       t,
-      s,
+      i,
       o
     );
-    r(this, "item");
-    this.item = new a(
+    n(this, "item");
+    this.item = new l(
       this.props,
       this.refs,
       this.element,
@@ -61,23 +62,20 @@ class S extends c {
    * Метод для рендеринга.
    */
   initRender() {
-    var s;
+    var i;
     const t = [];
     return this.initSlot("default", t, this.item.classes), h("div", {
       ...this.getAttrs(),
       ref: this.element,
-      class: (s = this.classes) == null ? void 0 : s.value.main,
-      ...n.busy(this.item.isActive.value),
-      ...n.hidden(this.item.isActive.value),
-      ...n.live(
-        this.item.isActive.value ? "polite" : "off"
-      )
+      class: (i = this.classes) == null ? void 0 : i.value.main,
+      ...r.busy(this.item.isActive.value),
+      ...r.live("polite")
     }, t);
   }
 }
 export {
-  a as Skeleton,
-  S as SkeletonDesign,
-  x as SkeletonInclude,
+  c as Skeleton,
+  g as SkeletonDesign,
+  b as SkeletonInclude,
   A as defaultsSkeleton
 };

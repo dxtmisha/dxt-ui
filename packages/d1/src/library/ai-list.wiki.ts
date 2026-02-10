@@ -36,6 +36,7 @@ import D1Scrollbar from '../../src/components/Ui/Scrollbar/D1ScrollbarAiWiki.vue
 import D1Section from '../../src/components/Ui/Section/D1SectionAiWiki.vue'
 import D1Select from '../../src/components/Ui/Select/D1SelectAiWiki.vue'
 import D1SelectValue from '../../src/components/Ui/SelectValue/D1SelectValueAiWiki.vue'
+import D1Skeleton from '../../src/components/Ui/Skeleton/D1SkeletonAiWiki.vue'
 import D1Tooltip from '../../src/components/Ui/Tooltip/D1TooltipAiWiki.vue'
 import D1Window from '../../src/components/Ui/Window/D1WindowAiWiki.vue'
 
@@ -75,6 +76,7 @@ export const aiList: any[] = [
   D1Section,
   D1Select,
   D1SelectValue,
+  D1Skeleton,
   D1Tooltip,
   D1Window
 ]

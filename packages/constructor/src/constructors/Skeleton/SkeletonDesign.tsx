@@ -43,11 +43,13 @@ export class SkeletonDesign<
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, SkeletonEmits, P>
+    options?: ConstrOptions<COMP, SkeletonEmits, P>,
+    ItemConstructor: typeof Skeleton = Skeleton
   ) {
     super(
       name,
@@ -55,7 +57,7 @@ export class SkeletonDesign<
       options
     )
 
-    this.item = new Skeleton(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,
@@ -114,10 +116,7 @@ export class SkeletonDesign<
       ref: this.element,
       class: this.classes?.value.main,
       ...AriaStaticInclude.busy(this.item.isActive.value),
-      ...AriaStaticInclude.hidden(this.item.isActive.value),
-      ...AriaStaticInclude.live(
-        this.item.isActive.value ? 'polite' : 'off'
-      )
+      ...AriaStaticInclude.live('polite')
     }, children)
   }
 }

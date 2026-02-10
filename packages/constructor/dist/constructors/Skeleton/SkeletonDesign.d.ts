@@ -13,8 +13,9 @@ export declare class SkeletonDesign<COMP extends SkeletonComponents, EXPOSE exte
      * @param name class name/ название класса
      * @param props properties/ свойства
      * @param options list of additional parameters/ список дополнительных параметров
+     * @param ItemConstructor class for working with the item/ класс для работы с элементом
      */
-    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, SkeletonEmits, P>);
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, SkeletonEmits, P>, ItemConstructor?: typeof Skeleton);
     /**
      * Initialization of all the necessary properties for work<br>
      * Инициализация всех необходимых свойств для работы.

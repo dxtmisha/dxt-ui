@@ -63,4 +63,12 @@ export declare class FieldInclude<Props extends FieldPropsInclude & FieldArrowPr
      * @param type type of the object that was clicked/ тип объекта, который был нажат
      */
     protected readonly on: (event: MouseEvent, { type }: EventClickValue) => void;
+    /**
+     * Event trigger function when pressing the space bar or enter key.
+     *
+     * Функция вызова события при нажатии на пробел или клавишу Enter.
+     * @param event event object/ объект события
+     * @param options data object/ объект с данными
+     */
+    protected readonly onKeydown: (event: KeyboardEvent, options: EventClickValue) => void;
 }

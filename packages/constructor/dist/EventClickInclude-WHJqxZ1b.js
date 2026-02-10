@@ -36,9 +36,10 @@ class m {
      *
      * Функция вызова события при нажатии на пробел или клавишу Enter
      * @param event event object/ объект события
+     * @param options data object/ объект с данными
      */
-    r(this, "onKeydown", (t) => {
-      p(t) && (this.onClick(t), t.preventDefault());
+    r(this, "onKeydown", (t, e) => {
+      p(t) && (this.onClick(t, e), t.preventDefault());
     });
     this.props = t, this.enabled = e, this.emits = i, this.refs = t ? n(t) : void 0;
   }

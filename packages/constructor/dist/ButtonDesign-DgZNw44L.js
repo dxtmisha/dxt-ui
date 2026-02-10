@@ -7,7 +7,7 @@ import { g as y } from "./getClassTagAStatic-BnVYlXHI.js";
 import { L as x } from "./LabelInclude-D-mLvjK5.js";
 import { E } from "./EnabledInclude-Dk-rP4jp.js";
 import { A as h } from "./AriaStaticInclude-CAURwJMb.js";
-import { E as T } from "./EventClickInclude-CgbuezDm.js";
+import { E as T } from "./EventClickInclude-WHJqxZ1b.js";
 import { I as A } from "./IconTrailingInclude-CdsOcDxv.js";
 import { P as D } from "./ProgressInclude-9MfZWtGP.js";
 import { R as L } from "./RippleInclude-Du5yIzX_.js";

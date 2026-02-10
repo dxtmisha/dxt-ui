@@ -1,12 +1,12 @@
-var m = Object.defineProperty;
-var v = (o, t, e) => t in o ? m(o, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : o[t] = e;
-var s = (o, t, e) => v(o, typeof t != "symbol" ? t + "" : t, e);
-import { computed as r, ref as g, h as c } from "vue";
-import { toBinds as a, executeFunction as f, isFilled as w, DesignConstructorAbstract as b } from "@dxtmisha/functional";
-import { F as I, a as S, c as x, f as C, b as F, e as M, d as E } from "./FieldEventInclude-DBRqmzpF.js";
-import { F as V } from "./FieldInclude-c6DSD0-y.js";
-import { M as A } from "./MenuInclude-DfGCfr_I.js";
-class T {
+var M = Object.defineProperty;
+var E = (l, i, t) => i in l ? M(l, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : l[i] = t;
+var s = (l, i, t) => E(l, typeof i != "symbol" ? i + "" : i, t);
+import { computed as r, ref as V, h as p } from "vue";
+import { toBinds as a, executeFunction as A, isFilled as T, DesignConstructorAbstract as y } from "@dxtmisha/functional";
+import { F as k, a as B, c as D, f as N, b as L, e as O, d as q } from "./FieldEventInclude-DBRqmzpF.js";
+import { F as W } from "./FieldInclude-Rec9lh44.js";
+import { M as K } from "./MenuInclude-DfGCfr_I.js";
+class R {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -14,7 +14,7 @@ class T {
    * @param value object for working with values/ объект для работы со значениями
    * @param event object for working with events/ объект для работы с событиями
    */
-  constructor(t, e, i, n) {
+  constructor(i, t, e, n) {
     /** Indicates if it is in edit mode/ Указывает, находится ли в режиме редактирования */
     s(this, "isEdit", r(
       () => !!(this.props.editValue && !this.props.multiple)
@@ -43,25 +43,25 @@ class T {
      * Обрабатывает событие нажатия клавиши для имитации клика по элементу ввода.
      * @param event The keydown event object/ Объект события нажатия клавиши
      */
-    s(this, "onKeydown", (t) => {
-      t.target.click(), t.preventDefault();
+    s(this, "onKeydown", (i) => {
+      i.target.click(), i.preventDefault();
     });
-    this.props = t, this.attributes = e, this.value = i, this.event = n;
+    this.props = i, this.attributes = t, this.value = e, this.event = n;
   }
 }
-class y {
+class U {
   constructor() {
     /** Reactive filter value/ Реактивное значение фильтра */
-    s(this, "value", g(""));
+    s(this, "value", V(""));
     /**
      * Input event handler.
      *
      * Обработчик события ввода.
      * @param value validation item with input value/ элемент валидации со значением ввода
      */
-    s(this, "onInput", (t) => {
-      var e;
-      this.value.value = String((e = t.value) != null ? e : "");
+    s(this, "onInput", (i) => {
+      var t;
+      this.value.value = String((t = i.value) != null ? t : "");
     });
   }
   /**
@@ -78,11 +78,11 @@ class y {
    * Установить значение фильтра.
    * @param value filter string/ строка фильтра
    */
-  set(t) {
-    this.value.value = t;
+  set(i) {
+    this.value.value = i;
   }
 }
-class k {
+class j {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -93,8 +93,19 @@ class k {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param FieldAttributesIncludeConstructor class for working with field attributes/ класс для работы с атрибутами поля
+   * @param FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
+   * @param FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
+   * @param FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
+   * @param FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
+   * @param FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
+   * @param FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
+   * @param FieldIncludeConstructor class for working with field/ класс для работы с полем
+   * @param MenuIncludeConstructor class for working with menu/ класс для работы с меню
+   * @param SelectInputConstructor class for working with select input/ класс для работы с вводом выбора
+   * @param SelectFilterConstructor class for working with select filter/ класс для работы с фильтром выбора
    */
-  constructor(t, e, i, n, h, u, d, p) {
+  constructor(i, t, e, n, h, u, c, d, m = k, v = B, g = D, f = N, w = L, b = O, I = q, S = W, x = K, C = R, F = U) {
     s(this, "attributes");
     s(this, "elementItem");
     s(this, "change");
@@ -108,39 +119,39 @@ class k {
     s(this, "filter");
     /** Checks whether there are slots for context areas/ Проверяет, есть ли слоты для контекстных областей */
     s(this, "isSlot", r(() => {
-      var t, e;
-      return !!((t = this.slots) != null && t.contextTop || (e = this.slots) != null && e.contextBottom);
+      var i, t;
+      return !!((i = this.slots) != null && i.contextTop || (t = this.slots) != null && t.contextBottom);
     }));
     /** Computes the trailing icon value/ Вычисляет значение иконки трейлинга */
     s(this, "iconTrailing", r(() => {
-      var t;
+      var i;
       if (!this.props.disabled && !this.isArrow())
-        return (t = this.props.iconTrailing) != null ? t : this.props.iconArrowDown;
+        return (i = this.props.iconTrailing) != null ? i : this.props.iconArrowDown;
     }));
     /** Handles click on option in slot/ Обрабатывает клик по опции в слоте */
-    s(this, "onClick", (t) => {
-      t && this.value.set(t);
+    s(this, "onClick", (i) => {
+      i && this.value.set(i);
     });
-    this.props = t, this.refs = e, this.element = i, this.classDesign = n, this.className = h, this.components = u, this.slots = d, this.emits = p, this.attributes = new I(this.props), this.change = new S(this.props), this.elementItem = new x(
+    this.props = i, this.refs = t, this.element = e, this.classDesign = n, this.className = h, this.components = u, this.slots = c, this.emits = d, this.attributes = new m(this.props), this.change = new v(this.props), this.elementItem = new g(
       this.props,
       this.element
-    ), this.value = new C(
+    ), this.value = new f(
       this.props,
       this.refs,
       this.elementItem
-    ), this.code = new F(this.props), this.validation = new M(
+    ), this.code = new w(this.props), this.validation = new b(
       this.props,
       this.attributes,
       this.value,
       this.change,
       this.code
-    ), this.event = new E(
+    ), this.event = new I(
       this.props,
       this.change,
       this.value,
       this.validation,
       this.emits
-    ), this.field = new V(
+    ), this.field = new S(
       this.props,
       this.value,
       this.components,
@@ -148,50 +159,50 @@ class k {
       void 0,
       void 0,
       () => {
-        var l;
-        return (l = this.menu.getElement()) == null ? void 0 : l.toggle;
+        var o;
+        return (o = this.menu.getElement()) == null ? void 0 : o.toggle;
       },
       () => {
-        var l;
-        return (l = this.menu.getElement()) == null ? void 0 : l.next();
+        var o;
+        return (o = this.menu.getElement()) == null ? void 0 : o.next();
       },
       () => {
-        var l;
-        return (l = this.menu.getElement()) == null ? void 0 : l.previous();
+        var o;
+        return (o = this.menu.getElement()) == null ? void 0 : o.previous();
       },
       r(() => {
-        var l;
+        var o;
         return {
           iconTrailing: this.iconTrailing.value,
           maxlength: this.props.max,
-          cancel: (l = this.props.cancel) != null ? l : this.props.multiple ? "auto" : "none"
+          cancel: (o = this.props.cancel) != null ? o : this.props.multiple ? "auto" : "none"
         };
       })
-    ), this.menu = new A(
+    ), this.menu = new x(
       this.props,
       this.className,
       this.components,
       r(() => ({
         windowAttrs: {
-          hide: !w(t.option) && !this.isSlot.value,
+          hide: !T(this.props.option) && !this.isSlot.value,
           widthMatch: !0
         },
         tag: "span",
-        barsLabel: t.label,
-        barsDescription: t.helperMessage,
-        disabled: t.disabled || t.readonly,
-        autoClose: !t.multiple,
-        list: f(t.option),
+        barsLabel: this.props.label,
+        barsDescription: this.props.helperMessage,
+        disabled: this.props.disabled || this.props.readonly,
+        autoClose: !this.props.multiple,
+        list: A(this.props.option),
         max: this.props.max,
         filterMode: this.props.filterMode,
-        hideList: t.hideList,
+        hideList: this.props.hideList,
         onClick: this.event.onSelect,
         onClickSlot: this.onClick,
         onUpdateValue: this.isArrow() ? this.event.onValue : void 0,
         isSelectedByValue: !0,
         ariaMultiselectable: this.props.multiple
       }))
-    ), this.input = new T(this.props, this.attributes, this.value, this.event), this.filter = new y();
+    ), this.input = new C(this.props, this.attributes, this.value, this.event), this.filter = new F();
   }
   /**
    * Checks whether arrow is set.
@@ -202,18 +213,19 @@ class k {
     return !!this.props.arrow && this.props.arrow !== "none";
   }
 }
-const W = {};
-class K extends b {
+const X = {};
+class Y extends y {
   /**
    * Constructor
    * @param name class name/ название класса
    * @param props properties/ свойства
    * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(e, i, n) {
+  constructor(t, e, n, h = j) {
     super(
+      t,
       e,
-      i,
       n
     );
     s(this, "item");
@@ -223,13 +235,13 @@ class K extends b {
      * Рендер элемента меню.
      * @param input data for the input element/ данные для элемента ввода
      */
-    s(this, "renderMenu", (e) => this.item.menu.render(
+    s(this, "renderMenu", (t) => this.item.menu.render(
       {
-        control: (i) => this.renderMenuControl(e, i),
-        title: (i) => this.renderTitle(i),
-        footer: (i) => this.initSlot("footer", void 0, i),
-        contextTop: (i) => this.initSlot("contextTop", void 0, i),
-        contextBottom: (i) => this.initSlot("contextBottom", void 0, i)
+        control: (e) => this.renderMenuControl(t, e),
+        title: (e) => this.renderTitle(e),
+        footer: (e) => this.initSlot("footer", void 0, e),
+        contextTop: (e) => this.initSlot("contextTop", void 0, e),
+        contextBottom: (e) => this.initSlot("contextBottom", void 0, e)
       },
       {
         selected: this.item.value.item.value,
@@ -243,10 +255,10 @@ class K extends b {
      * @param input data for the input element/ данные для элемента ввода
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
-    s(this, "renderMenuControl", (e, i) => {
+    s(this, "renderMenuControl", (t, e) => {
       const n = [];
-      return this.item.input.isEdit.value || n.push(this.renderMenuControlValue(e, i)), n.push(
-        this.renderMenuControlInput(e, i)
+      return this.item.input.isEdit.value || n.push(this.renderMenuControlValue(t, e)), n.push(
+        this.renderMenuControlInput(t, e)
       ), n;
     });
     /**
@@ -256,19 +268,19 @@ class K extends b {
      * @param input data for the input element/ данные для элемента ввода
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
-    s(this, "renderMenuControlInput", (e, i) => {
-      const n = this.item.input.isEdit.value, h = n ? e.className : e.classForFocus, u = {};
-      return c(
+    s(this, "renderMenuControlInput", (t, e) => {
+      const n = this.item.input.isEdit.value, h = n ? t.className : t.classForFocus, u = {};
+      return p(
         "input",
         a(
           this.item.input.binds.value,
-          i.binds,
+          e.binds,
           {
             ref: this.element,
-            id: e.id,
+            id: t.id,
             value: this.item.value.get(),
             class: [
-              i.classesWindow.controlOpenOnly,
+              e.classesWindow.controlOpenOnly,
               h
             ]
           },
@@ -283,14 +295,14 @@ class K extends b {
      * @param input data for the input element/ данные для элемента ввода
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
-    s(this, "renderMenuControlValue", (e, i) => this.components.renderOne(
+    s(this, "renderMenuControlValue", (t, e) => this.components.renderOne(
       "selectValue",
       a(
-        i.binds,
+        e.binds,
         {
-          class: e.className,
+          class: t.className,
           disabled: this.props.disabled,
-          value: i.selectedList.value,
+          value: e.selectedList.value,
           multiple: this.props.multiple,
           placeholder: this.props.placeholder,
           onClick: this.item.event.onSelect
@@ -303,9 +315,9 @@ class K extends b {
      * Рендер элемента заголовка.
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
-    s(this, "renderTitle", (e) => {
-      const i = [];
-      return this.props.showSearch && i.push(this.renderFilterInput(e)), this.initSlot("title", i, e), i;
+    s(this, "renderTitle", (t) => {
+      const e = [];
+      return this.props.showSearch && e.push(this.renderFilterInput(t)), this.initSlot("title", e, t), e;
     });
     /**
      * Render filter input.
@@ -313,14 +325,14 @@ class K extends b {
      * Рендер фильтра ввода.
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
-    s(this, "renderFilterInput", (e) => {
-      var i;
-      return c(
+    s(this, "renderFilterInput", (t) => {
+      var e;
+      return p(
         "div",
         {
           class: [
-            (i = this.classes) == null ? void 0 : i.value.input,
-            e.classesWindow.static
+            (e = this.classes) == null ? void 0 : e.value.input,
+            t.classesWindow.static
           ]
         },
         this.components.renderOne(
@@ -338,7 +350,7 @@ class K extends b {
         )
       );
     });
-    this.item = new k(
+    this.item = new h(
       this.props,
       this.refs,
       this.element,
@@ -388,7 +400,7 @@ class K extends b {
    * Метод для рендеринга.
    */
   initRender() {
-    var e;
+    var t;
     return this.item.field.render(
       {
         default: this.renderMenu
@@ -396,14 +408,14 @@ class K extends b {
       {
         ...this.getAttrs(),
         iconTurn: this.item.menu.expose.open.value,
-        class: (e = this.classes) == null ? void 0 : e.value.main,
+        class: (t = this.classes) == null ? void 0 : t.value.main,
         validationMessage: this.item.validation.message.value
       }
     );
   }
 }
 export {
-  k as Select,
-  K as SelectDesign,
-  W as defaultsSelect
+  j as Select,
+  Y as SelectDesign,
+  X as defaultsSelect
 };

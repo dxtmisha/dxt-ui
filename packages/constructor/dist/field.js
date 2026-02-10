@@ -7,14 +7,14 @@ import { A as d } from "./AriaStaticInclude-CAURwJMb.js";
 import { C as M } from "./CaptionInclude-NzS6EYYj.js";
 import { P as D, S as V } from "./SuffixInclude-maZ7235l.js";
 import { E as R } from "./EnabledInclude-Dk-rP4jp.js";
-import { E as z } from "./EventClickInclude-CgbuezDm.js";
+import { E as z } from "./EventClickInclude-WHJqxZ1b.js";
 import { T as W } from "./TextInclude-DyFukbT2.js";
-import { F as U } from "./FieldLabelInclude-Bkxf6rRw.js";
-import { F as j } from "./FieldMessageInclude-BJDnir34.js";
-import { S as H } from "./SkeletonInclude-BIUzAO2s.js";
-import { I as G } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as J } from "./ProgressInclude-9MfZWtGP.js";
-class K {
+import { F as K } from "./FieldLabelInclude-Bkxf6rRw.js";
+import { F as U } from "./FieldMessageInclude-BJDnir34.js";
+import { S as j } from "./SkeletonInclude-BIUzAO2s.js";
+import { I as H } from "./IconTrailingInclude-CdsOcDxv.js";
+import { P as G } from "./ProgressInclude-9MfZWtGP.js";
+class J {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -158,7 +158,7 @@ class Q {
    * @param FieldSizeConstructor class for working with field size/ класс для работы с размером поля
    * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(t, s, i, o, a, h, c, p, u = H, m = G, b = M, f = D, v = V, y = U, g = j, _ = J, S = R, x = z, w = K, C = O, N = W) {
+  constructor(t, s, i, o, a, h, c, p, u = j, m = H, b = M, f = D, v = V, y = K, g = U, _ = G, S = R, x = z, w = J, C = O, N = W) {
     /** Text include/ Подключение текста */
     e(this, "text");
     /** Icon trailing include/ Подключение иконки в конце */
@@ -302,7 +302,8 @@ class ps extends q {
               (i = this.classes) == null ? void 0 : i.value.body,
               this.item.skeleton.classes.value
             ],
-            onClick: this.item.event.onClick
+            onClick: this.item.event.onClick,
+            onKeydown: this.item.event.onKeydown
           },
           s
         )
