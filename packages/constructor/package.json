@@ -37,7 +37,7 @@
     "preview": "vite preview",
     "dxt-library": "dxt-library",
     "dxt-types": "dxt-types",
-    "dxt-constructor": "dxt-constructor",
+    "dxt-constructor": "dxt-constructor textarea",
     "prepublishOnly": "npm run dxt-library && npm run dxt-constructor && npm run build"
   },
   "files": [
@@ -218,7 +218,11 @@
       "types": "./dist/library/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
-    "./style.scss": "./src/library/style.scss"
+    "./style.scss": "./src/library/style.scss",
+    "./Textarea": {
+      "types": "./dist/constructors/Textarea/index.d.ts",
+      "default": "./dist/textarea.js"
+    }
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

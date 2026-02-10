@@ -126,24 +126,24 @@ export type FieldBasicEmits<T = string>
   = ModelEmits
     & {
       /**
-   * Emitted on input events (every change while typing)/
-   * Эмит при вводе (каждое изменение): [event, value]
-   */
+       * Emitted on input events (every change while typing)/
+       * Эмит при вводе (каждое изменение): [event, value]
+       */
       input: [event: InputEvent | Event, value: FieldValidationItem<T>]
       /**
-   * Lightweight input emit without DOM event/
-   * Лёгкий эмит ввода без DOM-события: [value]
-   */
+       * Lightweight input emit without DOM event/
+       * Лёгкий эмит ввода без DOM-события: [value]
+       */
       inputLite: [value: FieldValidationItem<T>]
       /**
-   * Emitted when value is committed (blur/confirm)/
-   * Эмит при подтверждении значения (blur/confirm): [event, value]
-   */
+       * Emitted when value is committed (blur/confirm)/
+       * Эмит при подтверждении значения (blur/confirm): [event, value]
+       */
       change: [event: InputEvent | Event, value: FieldValidationItem<T>]
       /**
-   * Lightweight change emit without DOM event/
-   * Лёгкий эмит подтверждения без события: [value]
-   */
+       * Lightweight change emit without DOM event/
+       * Лёгкий эмит подтверждения без события: [value]
+       */
       changeLite: [value: FieldValidationItem<T>]
     }
 
@@ -180,7 +180,7 @@ export type FieldValueProps<Value = any> = ModelProps<Value> & {
  */
 export type FieldBasicProps<Value = any>
   = Omit<FieldValueProps<Value>, 'multiple' | 'maxlength'> & {
-  /** Input type/ Тип инпута */
+    /** Input type/ Тип инпута */
     type?: 'text'
       | 'search'
       | 'number'
@@ -221,9 +221,9 @@ export type FieldBasicProps<Value = any>
     /** Validation error text or map of texts/ Текст ошибки валидации или карта текстов */
     validationCode?: FieldValidityCode
     /**
-   * Standard validation message (overrides default)/
-   * Стандартное сообщение валидации (перекрывает дефолтное)
-   */
+     * Standard validation message (overrides default)/
+     * Стандартное сообщение валидации (перекрывает дефолтное)
+     */
     validationMessage?: string
 
     /** Match config to compare with another field/ Конфигурация сравнения со вторым полем */
@@ -323,7 +323,7 @@ export type FieldInputProps<Value = any>
  */
 export type FieldInputFileProps<Value = any>
   = Omit<FieldBasicProps<Value>, 'type'> & FieldLengthProps & FieldUxProps & {
-  /** Multiple files selection flag/ Флаг выбора нескольких файлов */
+    /** Multiple files selection flag/ Флаг выбора нескольких файлов */
     multiple?: boolean
     /** Accept file types list (MIME, extensions)/ Список допустимых типов (MIME, расширения) */
     accept?: string
@@ -337,7 +337,7 @@ export type FieldInputFileProps<Value = any>
  */
 export type FieldInputCheckProps<Value = any>
   = Omit<FieldBasicProps<Value>, 'type'> & FieldUxProps & {
-  /** Checked state/ Состояние выбора */
+    /** Checked state/ Состояние выбора */
     checked?: boolean
     /** Indeterminate visual state (checkbox only)/ Промежуточное визуальное состояние (только для checkbox) */
     indeterminate?: boolean
@@ -349,7 +349,7 @@ export type FieldInputCheckProps<Value = any>
  */
 export type FieldTextareaProps<Value = any>
   = Omit<FieldBasicProps<Value>, 'type'> & FieldLengthProps & FieldUxProps & {
-  /** Number of visible text lines/ Количество видимых строк */
+    /** Number of visible text lines/ Количество видимых строк */
     rows?: NumberOrString
     /** Number of visible columns/ Количество видимых колонок */
     cols?: NumberOrString
@@ -365,7 +365,7 @@ export type FieldTextareaProps<Value = any>
  */
 export type FieldSelectProps<Value = any>
   = Omit<FieldBasicProps<Value>, 'type'> & Omit<FieldStepProps, 'min' | 'step'> & FieldArrowProps & FieldUxProps & {
-  // Value
+    // Value
     option?: ListRecord
 
     // Style

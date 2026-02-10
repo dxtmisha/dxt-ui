@@ -10,6 +10,7 @@ import {
   type ConstrClass
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
 import { WindowClassesInclude } from '../Window'
@@ -23,7 +24,6 @@ import type { IconValue } from '../Icon'
 import type { ListGroupSlotsPropsInclude } from '../ListGroup'
 import type { ListComponents, ListEmits, ListSlots } from './types'
 import type { ListProps } from './props'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /** Maximum number of lists/ Максимальное количество списков */
 let listIdMax = 1

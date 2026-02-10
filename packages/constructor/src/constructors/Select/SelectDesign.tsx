@@ -6,6 +6,7 @@ import {
   toBinds
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Select } from './Select'
 
 import type { MenuControlItem } from '../Menu'
@@ -20,7 +21,6 @@ import {
   type SelectExpose,
   type SelectSlots
 } from './types'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * SelectDesign
