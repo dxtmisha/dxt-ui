@@ -33,8 +33,6 @@ export type ListItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Bad
     parent?: string;
     listId?: number;
     search?: string;
-    isMenu?: boolean;
-    isItemMenu?: boolean;
 };
 /**
  * Type describing incoming properties.
@@ -50,4 +48,5 @@ export type ListItemProps = ListItemPropsBasic & ListItemPropsToken;
 export declare const defaultsListItem: {
     iconAlign: string;
     tabindex: string;
+    role: string;
 };

@@ -17,10 +17,14 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * Constructor
    * @param element - Reference to the element/ Ссылка на элемент
    * @param active - Return focus to the previous element/ Возвращать фокус на предыдущий элемент
+   * @param activeOpen - Is active when opening/ Активен при открытии
+   * @param activeClose - Is active when closing/ Активен при закрытии
    */
   constructor(
     protected readonly element: Ref<E | undefined> | (() => E | undefined),
-    protected readonly active: () => boolean = () => true
+    protected readonly active: () => boolean = () => true,
+    protected readonly activeOpen: () => boolean = () => true,
+    protected readonly activeClose: () => boolean = () => true
   ) {
     onUnmounted(() => {
       this.stopEvent()
@@ -37,6 +41,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
     if (
       this.isElement()
       && this.active()
+      && this.activeOpen()
       && isDomRuntime()
     ) {
       this.toFocus()
@@ -52,7 +57,10 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * Сбрасывает фокус на ранее сфокусированный элемент.
    */
   reset(): this {
-    if (this.active()) {
+    if (
+      this.active()
+      && this.activeClose()
+    ) {
       if (
         this.oldElement
         && ('focus' in this.oldElement)

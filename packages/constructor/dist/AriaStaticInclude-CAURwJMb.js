@@ -1,5 +1,5 @@
 import { isString as e } from "@dxtmisha/functional";
-class c {
+class l {
   /**
    * Get role by props.
    *
@@ -194,6 +194,17 @@ class c {
     };
   }
   /**
+   * Get ARIA multiselectable attribute.
+   *
+   * Получить атрибут ARIA multiselectable.
+   * @param isMultiselectable is multiselectable/ является множественным выбором
+   */
+  static multiselectable(a) {
+    return {
+      "aria-multiselectable": this.isTrueOrFalse(a)
+    };
+  }
+  /**
    * Get ARIA selected attribute.
    *
    * Получить атрибут ARIA selected.
@@ -242,5 +253,5 @@ class c {
   }
 }
 export {
-  c as A
+  l as A
 };

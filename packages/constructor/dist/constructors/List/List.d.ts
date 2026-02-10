@@ -115,8 +115,6 @@ export declare class List {
         type?: string;
         parent?: string;
         search?: string;
-        isMenu?: boolean;
-        isItemMenu?: boolean;
         key?: string;
         class?: ConstrClass;
         style?: ConstrStyles;

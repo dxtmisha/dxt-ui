@@ -1,19 +1,19 @@
 var A = Object.defineProperty;
-var E = (a, t, i) => t in a ? A(a, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : a[t] = i;
-var e = (a, t, i) => E(a, typeof t != "symbol" ? t + "" : t, i);
+var E = (o, t, i) => t in o ? A(o, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : o[t] = i;
+var e = (o, t, i) => E(o, typeof t != "symbol" ? t + "" : t, i);
 import { computed as h, h as u } from "vue";
 import { getBind as L, toBind as P, getRef as R, DesignConstructorAbstract as T } from "@dxtmisha/functional";
 import { g as H } from "./getClassTagAStatic-BnVYlXHI.js";
 import { E as _ } from "./EventClickInclude-CgbuezDm.js";
-import { A as c } from "./AriaStaticInclude-BVCgDZbU.js";
+import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
 import { L as $ } from "./LabelHighlightInclude-CLmTvW_6.js";
 import { P as M, S as V } from "./SuffixInclude-maZ7235l.js";
-import { C as j } from "./CaptionInclude-gERJdKfG.js";
+import { C as j } from "./CaptionInclude-NzS6EYYj.js";
 import { D as q } from "./DescriptionInclude-D4ane9aR.js";
-import { E as z } from "./EnabledInclude-IdZAnr6u.js";
+import { E as z } from "./EnabledInclude-Dk-rP4jp.js";
 import { I as F } from "./IconTrailingInclude-CdsOcDxv.js";
 import { R as G } from "./RippleInclude-Du5yIzX_.js";
-import { P as J } from "./ProgressInclude-NyOp5bMZ.js";
+import { P as J } from "./ProgressInclude-9MfZWtGP.js";
 import { S as K } from "./SkeletonInclude-BIUzAO2s.js";
 class O {
   /**
@@ -87,7 +87,7 @@ class Q {
    * @param EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
    * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
    */
-  constructor(t, i, s, n, r, l, o, g, b = F, f = $, v = M, x = j, C = V, S = q, I = O, w = G, k = J, y = K, B = z, D = _) {
+  constructor(t, i, s, n, r, l, a, g, b = F, f = $, v = M, x = j, C = V, S = q, I = O, w = G, k = J, y = K, B = z, D = _) {
     e(this, "icon");
     e(this, "label");
     e(this, "prefix");
@@ -133,6 +133,7 @@ class Q {
             ...c.checked(!!this.props.selected)
           };
         case "menuitem":
+        case "option":
           return {
             ...t,
             ...c.selected(!!this.props.selected)
@@ -140,7 +141,7 @@ class Q {
       }
       return t;
     }));
-    this.props = t, this.refs = i, this.element = s, this.classDesign = n, this.className = r, this.components = l, this.slots = o, this.emits = g;
+    this.props = t, this.refs = i, this.element = s, this.classDesign = n, this.className = r, this.components = l, this.slots = a, this.emits = g;
     const m = new k(
       t,
       r,
@@ -157,10 +158,10 @@ class Q {
       t,
       r,
       void 0,
-      o,
+      a,
       void 0,
       d
-    ), this.prefix = new v(t, r, o, d), this.caption = new x(t, r, o), this.suffix = new C(t, r, o), this.description = new S(t, r, o, d), this.badge = new I(
+    ), this.prefix = new v(t, r, a, d), this.caption = new x(t, r, a), this.suffix = new C(t, r, a), this.description = new S(t, r, a, d), this.badge = new I(
       t,
       r,
       l,
@@ -172,6 +173,7 @@ class Q {
 }
 const lt = {
   tabindex: "-1",
+  role: "option",
   // :default [!] System label / Системная метка
   iconAlign: "center"
 };

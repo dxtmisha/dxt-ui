@@ -57,6 +57,7 @@ export type MenuPropsBasic<
     itemAttrs?: ConstrBind<ListItem>
 
     // ARIA
+    roleList?: RoleType
     roleItem?: RoleType
 
     // Technical
@@ -83,7 +84,6 @@ export const defaultsMenu = {
   tag: 'a',
   step: 1,
   autoClose: true,
-  roleItem: 'menuitem',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

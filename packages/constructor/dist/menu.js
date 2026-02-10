@@ -1,11 +1,11 @@
 var S = Object.defineProperty;
 var C = (r, e, t) => e in r ? S(r, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[e] = t;
 var s = (r, e, t) => C(r, typeof e != "symbol" ? e + "" : e, t);
-import { ref as a, computed as l, watch as y, h as B } from "vue";
-import { isFunction as k, executePromise as V, Api as M, isFilled as q, isObject as A, ListDataRef as D, DesignConstructorAbstract as I, toBinds as L } from "@dxtmisha/functional";
-import { E as N } from "./EventClickInclude-CgbuezDm.js";
-import { M as T } from "./ModelInclude-BiYm_iCQ.js";
-import { B as j } from "./BarsInclude-BOEoY-O4.js";
+import { ref as h, computed as l, watch as y, h as B } from "vue";
+import { isFunction as k, executePromise as V, Api as M, isFilled as q, isObject as L, ListDataRef as A, DesignConstructorAbstract as D, toBinds as N } from "@dxtmisha/functional";
+import { E as T } from "./EventClickInclude-CgbuezDm.js";
+import { M as j } from "./ModelInclude-BiYm_iCQ.js";
+import { B as I } from "./BarsInclude-BOEoY-O4.js";
 import { W } from "./WindowInclude-BWm4-0Gh.js";
 import { M as tt } from "./MenuInclude-DfGCfr_I.js";
 class E {
@@ -14,8 +14,8 @@ class E {
    * @param props input data/ входные данные
    */
   constructor(e) {
-    s(this, "progress", a(!1));
-    s(this, "buffer", a());
+    s(this, "progress", h(!1));
+    s(this, "buffer", h());
     /**
      * Returns current list data.
      *
@@ -77,7 +77,7 @@ class F {
    * @param props input data/ входные данные
    */
   constructor(e) {
-    s(this, "item", a());
+    s(this, "item", h());
     /** Returns the search string/ Возвращает строку поиска */
     s(this, "value", l(() => this.props.highlight ? this.props.highlight : this.item.value));
     this.props = e;
@@ -118,8 +118,8 @@ class O {
    * @param request menu request handler/ обработчик запросов меню
    */
   constructor(e, t) {
-    s(this, "lite", a());
-    s(this, "control", a());
+    s(this, "lite", h());
+    s(this, "control", h());
     /**
      * Preparing data before opening the menu
      *
@@ -166,7 +166,7 @@ class O {
     };
   }
 }
-class R {
+class H {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -174,14 +174,14 @@ class R {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(e, t, i) {
-    s(this, "value", a());
+    s(this, "value", h());
     /**
      * Computed selected value
      *
      * Вычисляемое выбранное значение
      */
     s(this, "selected", l(() => this.props.isSelectedByValue ? this.value.value : this.props.selected));
-    this.props = e, this.refs = t, this.emits = i, this.props.isSelectedByValue && (new T("selected", this.emits, this.value), t.selected && y(
+    this.props = e, this.refs = t, this.emits = i, this.props.isSelectedByValue && (new j("selected", this.emits, this.value), t.selected && y(
       t.selected,
       (o) => {
         this.value.value = o;
@@ -198,10 +198,10 @@ class R {
    */
   setValue(e, t = !1) {
     var i;
-    return this.props.isSelectedByValue && !A(e) && this.value.value !== e && (this.value.value = e, t && ((i = this.emits) == null || i.call(this, "updateValue", e))), this;
+    return this.props.isSelectedByValue && !L(e) && this.value.value !== e && (this.value.value = e, t && ((i = this.emits) == null || i.call(this, "updateValue", e))), this;
   }
 }
-class H {
+class R {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -267,7 +267,7 @@ class _ {
    * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
    * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
    */
-  constructor(e, t, i, o, h, n, u, p, d = E, c = F, m = R, v = D, f = H, g = j, w = O, b = W, x = N) {
+  constructor(e, t, i, o, a, n, u, p, d = E, c = F, m = H, v = A, f = R, g = I, w = O, b = W, x = T) {
     /** Request handler for list data/ Обработчик запросов данных списка */
     s(this, "request");
     /** Search helper for menu filtering/ Вспомогательный класс поиска для фильтрации меню */
@@ -325,7 +325,7 @@ class _ {
       const t = e.target, i = t.closest("*[data-value]");
       i && !t.closest(`.${this.className}__list`) && ((o = this.emits) == null || o.call(this, "clickSlot", i.dataset.value));
     });
-    this.props = e, this.refs = t, this.element = i, this.classDesign = o, this.className = h, this.components = n, this.slots = u, this.emits = p, this.request = new d(this.props), this.search = new c(this.props), this.value = new m(this.props, this.refs, this.emits), this.data = new v(
+    this.props = e, this.refs = t, this.element = i, this.classDesign = o, this.className = a, this.components = n, this.slots = u, this.emits = p, this.request = new d(this.props), this.search = new c(this.props), this.value = new m(this.props, this.refs, this.emits), this.data = new v(
       this.request.item,
       void 0,
       void 0,
@@ -371,10 +371,9 @@ const U = {
   barsBackHide: !0,
   tag: "a",
   step: 1,
-  autoClose: !0,
-  roleItem: "menuitem"
+  autoClose: !0
 };
-class X extends I {
+class X extends D {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -382,7 +381,7 @@ class X extends I {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, i, o, h = _) {
+  constructor(t, i, o, a = _) {
     super(
       t,
       i,
@@ -416,11 +415,11 @@ class X extends I {
       var o;
       const i = this.item.request.item.value;
       if (i) {
-        const h = [];
-        return this.initSlot("contextTop", h, this.getBinds(t)), this.props.hideList || h.push(
+        const a = [];
+        return this.initSlot("contextTop", a, this.getBinds(t)), this.props.hideList || a.push(
           this.components.render(
             "list",
-            L(
+            N(
               {
                 ...this.item.binds.value,
                 class: (o = this.classes) == null ? void 0 : o.value.list,
@@ -428,20 +427,21 @@ class X extends I {
                 highlight: this.item.search.value.value,
                 list: i,
                 lite: this.item.menuWindow.lite.value,
+                role: this.props.roleList,
                 roleItem: this.props.roleItem
               },
               this.props.listAttrs
             ),
             this.slots
           )
-        ), this.initSlot("contextBottom", h, this.getBinds(t)), B(
+        ), this.initSlot("contextBottom", a, this.getBinds(t)), B(
           "div",
           {
             ...this.getAttrs(),
             ref: this.element,
             onClick: this.item.onClickSlot
           },
-          h
+          a
         );
       }
     });
@@ -452,7 +452,7 @@ class X extends I {
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
     s(this, "renderFooter", (t) => this.initSlot("footer", void 0, this.getBinds(t)));
-    this.item = new h(
+    this.item = new a(
       this.props,
       this.refs,
       this.element,
@@ -512,6 +512,7 @@ class X extends I {
       {
         class: (t = this.classes) == null ? void 0 : t.value.main,
         closeOnEsc: !1,
+        ariaHaspopup: "listbox",
         embedded: this.props.embedded
       }
     );

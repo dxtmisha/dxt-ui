@@ -3,10 +3,10 @@ var f = (r, s, e) => s in r ? v(r, s, { enumerable: !0, configurable: !0, writab
 var t = (r, s, e) => f(r, typeof s != "symbol" ? s + "" : s, e);
 import { computed as o, h as l } from "vue";
 import { DesignConstructorAbstract as y } from "@dxtmisha/functional";
-import { A as c } from "./AriaStaticInclude-BVCgDZbU.js";
+import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
 import { L as S } from "./LabelInclude-D-mLvjK5.js";
 import { D as C } from "./DescriptionInclude-D4ane9aR.js";
-import { C as H } from "./CaptionInclude-gERJdKfG.js";
+import { C as H } from "./CaptionInclude-NzS6EYYj.js";
 import { I } from "./IconInclude-CLqwI29Q.js";
 class k {
   /**

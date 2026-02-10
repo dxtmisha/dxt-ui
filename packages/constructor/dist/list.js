@@ -1,11 +1,11 @@
-var x = Object.defineProperty;
-var S = (h, t, e) => t in h ? x(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
+var w = Object.defineProperty;
+var S = (h, t, e) => t in h ? w(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
 var i = (h, t, e) => S(h, typeof t != "symbol" ? t + "" : t, e);
-import { ref as p, computed as u, watch as B, onUnmounted as E, toRef as M, onMounted as A, nextTick as L, h as o } from "vue";
-import { isFilled as C, goScroll as D, isSelected as F, isDomRuntime as m, EventItem as G, ListDataRef as T, toBinds as l, DesignConstructorAbstract as P, isObject as O } from "@dxtmisha/functional";
+import { ref as p, computed as l, watch as B, onUnmounted as E, toRef as M, onMounted as A, nextTick as L, h as o } from "vue";
+import { isFilled as C, goScroll as D, isSelected as F, isDomRuntime as m, EventItem as G, ListDataRef as T, toBinds as u, DesignConstructorAbstract as P, isObject as O } from "@dxtmisha/functional";
 import { E as N } from "./EventClickInclude-CgbuezDm.js";
 import { W as H } from "./WindowClassesInclude-B56usxgx.js";
-import { A as c } from "./AriaStaticInclude-BVCgDZbU.js";
+import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
 class R {
   /**
    * Constructor
@@ -15,7 +15,7 @@ class R {
     i(this, "item", p());
     i(this, "timeout");
     /** Current search string/ Текущая строка поиска */
-    i(this, "highlight", u(() => {
+    i(this, "highlight", l(() => {
       var t;
       return (t = this.item.value) != null ? t : this.props.highlight;
     }));
@@ -91,7 +91,7 @@ class V {
     /** Active item/ Активный элемент */
     i(this, "item", p());
     /** Returns the value of the selected element/ Возвращает значение выбранного элемента */
-    i(this, "focus", u(() => {
+    i(this, "focus", l(() => {
       var t, e;
       return (e = (t = this.item.value) == null ? void 0 : t.index) != null ? e : this.props.focus;
     }));
@@ -428,7 +428,7 @@ class U {
      *
      * Проверяет, активное ли меню.
      */
-    i(this, "isActive", u(() => !!this.props.control));
+    i(this, "isActive", l(() => !!this.props.control));
     /**
      * Method for tracking keys when a window is open.
      *
@@ -563,7 +563,7 @@ class X {
    * @param EventClickIncludeConstructor class for working with click event/ класс для работы с событием клика
    * @param WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
    */
-  constructor(t, e, s, r, a, n, g, d, f = R, v = V, I = T, y = $, b = U, k = N, w = H) {
+  constructor(t, e, s, r, a, n, g, d, f = R, v = V, I = T, y = $, b = U, k = N, x = H) {
     i(this, "search");
     i(this, "focus");
     i(this, "data");
@@ -578,20 +578,20 @@ class X {
      *
      * Вычисляемые данные списка
      * */
-    i(this, "list", u(() => this.props.lite ? this.data.liteData.value : this.data.fullData.value));
+    i(this, "list", l(() => this.props.lite ? this.data.liteData.value : this.data.fullData.value));
     /**
      * Computed CSS classes for the cell component.
      *
      * Вычисляемые CSS классы для компонента ячейки.
      */
-    i(this, "classes", u(() => ({
+    i(this, "classes", l(() => ({
       [`${this.className}--highlightActive`]: !!this.props.filterMode && this.data.isHighlight()
     })));
     /**
      * Computed binding properties for list items/
      * Вычисляемые привязочные свойства для элементов списка
      * */
-    i(this, "itemBinds", u(() => {
+    i(this, "itemBinds", l(() => {
       var t;
       return {
         tag: this.props.tag,
@@ -613,7 +613,7 @@ class X {
       this.refs.liteThreshold,
       void 0,
       this.refs.max
-    ), this.go = new y(this.props, this.focus, this.data, this.emits), this.control = new b(this.props, this.search, this.data, this.go), this.event = new k(void 0, void 0, d), this.windowClasses = new w(r), A(async () => {
+    ), this.go = new y(this.props, this.focus, this.data, this.emits), this.control = new b(this.props, this.search, this.data, this.go), this.event = new k(void 0, void 0, d), this.windowClasses = new x(r), A(async () => {
       await L(), this.go.preparationBySelected();
     });
   }
@@ -634,7 +634,7 @@ class X {
    * @param item List item data/ данные элемента списка
    */
   getItem(t) {
-    return l(
+    return u(
       this.itemBinds.value,
       t,
       {
@@ -650,7 +650,7 @@ class X {
    * @param item List item data/ данные элемента списка
    */
   getItemGroup(t) {
-    return l(
+    return u(
       this.itemBinds.value,
       this.props.itemGroupAttrs,
       t,
@@ -667,7 +667,7 @@ class X {
    * @param item List item data/ данные элемента списка
    */
   getItemMenu(t) {
-    return l(
+    return u(
       this.itemBinds.value,
       this.props.itemMenuAttrs,
       t,
@@ -706,8 +706,7 @@ class X {
     return this.getItemManagement(
       {
         ...t,
-        filterMode: !1,
-        isMenu: !0
+        filterMode: !1
       },
       e,
       this.props.iconArrowRight
@@ -731,7 +730,7 @@ class X {
    * @param icon Icon to display/ иконка для отображения
    */
   getItemManagement(t, e, s) {
-    return l(
+    return u(
       this.itemBinds.value,
       this.props.itemManagementAttrs,
       t,
@@ -755,7 +754,7 @@ const Y = {
   keyLabel: "label",
   keyValue: "value",
   tag: "div",
-  roleItem: "menuitem",
+  role: "listbox",
   // :default [!] System label / Системная метка
   axis: "y"
 };
@@ -811,7 +810,7 @@ class Z extends P {
      */
     i(this, "renderItemMenu", (e, s) => this.components.renderOne(
       "listItem",
-      l(
+      u(
         this.item.getItemManagementFormMenu(e, !!s.open.value),
         s.binds
       )

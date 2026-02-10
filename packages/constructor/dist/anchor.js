@@ -7,7 +7,7 @@ import { L as H } from "./LabelInclude-D-mLvjK5.js";
 import { T as S } from "./TextInclude-DyFukbT2.js";
 import { T as L } from "./TooltipInclude--QRSE83v.js";
 import { g as $ } from "./getClassTagAStatic-BnVYlXHI.js";
-import { A as a } from "./AriaStaticInclude-BVCgDZbU.js";
+import { A as a } from "./AriaStaticInclude-CAURwJMb.js";
 class B {
   /**
    * Constructor

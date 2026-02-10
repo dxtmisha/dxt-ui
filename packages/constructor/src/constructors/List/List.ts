@@ -256,8 +256,7 @@ export class List {
     return this.getItemManagement(
       {
         ...item,
-        filterMode: false,
-        isMenu: true
+        filterMode: false
       },
       open,
       this.props.iconArrowRight

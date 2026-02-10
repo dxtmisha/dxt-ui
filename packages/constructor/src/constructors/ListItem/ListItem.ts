@@ -177,6 +177,7 @@ export class ListItem {
           ...AriaStaticInclude.checked(Boolean(this.props.selected))
         }
       case 'menuitem':
+      case 'option':
         return {
           ...aria,
           ...AriaStaticInclude.selected(Boolean(this.props.selected))

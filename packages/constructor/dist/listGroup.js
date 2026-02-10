@@ -4,7 +4,7 @@ var i = (e, t, s) => u(e, typeof t != "symbol" ? t + "" : t, s);
 import { h as a } from "vue";
 import { DesignConstructorAbstract as c } from "@dxtmisha/functional";
 import { L as v } from "./ListGroupOpen-Bl_HIQoV.js";
-import { A as f } from "./AriaStaticInclude-BVCgDZbU.js";
+import { A as f } from "./AriaStaticInclude-CAURwJMb.js";
 class g {
   /**
    * Constructor

@@ -3,9 +3,9 @@ var G = (h, t, e) => t in h ? V(h, t, { enumerable: !0, configurable: !0, writab
 var i = (h, t, e) => G(h, typeof t != "symbol" ? t + "" : t, e);
 import { h as p, computed as m, ref as v, watch as f, onMounted as K, onUnmounted as j, Teleport as Z } from "vue";
 import { toBind as z, getBind as J, getRef as Q, executePromise as y, getElement as k, isDomRuntime as B, EventItem as I, setRef as tt, frame as et, isEnter as st, getMouseClientX as it, getMouseClientY as nt, DesignConstructorAbstract as ot } from "@dxtmisha/functional";
-import { A as w } from "./AriaStaticInclude-BVCgDZbU.js";
+import { A as w } from "./AriaStaticInclude-CAURwJMb.js";
 import { M as rt } from "./ModelInclude-BiYm_iCQ.js";
-import { T as ht } from "./TabIndexInclude-DlfVr9yK.js";
+import { T as ht } from "./TabIndexInclude-xcSFV8yP.js";
 import { T as at } from "./TextInclude-DyFukbT2.js";
 import { a as c, _ as b, b as lt } from "./WindowClassesInclude-B56usxgx.js";
 import { W as _t } from "./WindowClassesInclude-B56usxgx.js";
@@ -1729,6 +1729,7 @@ class Tt {
     });
     this.props = t, this.refs = e, this.classDesign = n, this.className = o, this.components = r, this.slots = a, this.emits = l, this.hook = new H(t), this.classes = new d(o), this.element = new x(this.classes, s), this.client = new u(this.element), this.tabIndex = new q(
       () => this.element.getBody(),
+      void 0,
       () => !!this.props.autoTabIndex
     ), this.status = new R(this.element), this.persistent = new $(t, this.classes, this.element), this.flash = new O(t, this.classes), this.coordinates = new C(this.classes, this.element), this.position = new N(t, this.client, this.element, this.coordinates), this.origin = new D(this.client, this.element, this.position), this.staticMode = new P(t, e, this.element), this.emit = new S(this.classes, this.element, l), this.styles = new L(
       this.element,

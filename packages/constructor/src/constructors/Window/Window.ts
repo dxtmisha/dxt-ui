@@ -168,6 +168,7 @@ export class Window {
     this.client = new WindowClientConstructor(this.element)
     this.tabIndex = new TabIndexConstructor(
       () => this.element.getBody(),
+      undefined,
       () => Boolean(this.props.autoTabIndex)
     )
 

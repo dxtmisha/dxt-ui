@@ -128,6 +128,7 @@ export class MenuDesign<
       {
         class: this.classes?.value.main,
         closeOnEsc: false,
+        ariaHaspopup: 'listbox',
         embedded: this.props.embedded
       }
     )
@@ -194,6 +195,7 @@ export class MenuDesign<
 
                 list,
                 lite: this.item.menuWindow.lite.value,
+                role: this.props.roleList,
                 roleItem: this.props.roleItem
               },
               this.props.listAttrs

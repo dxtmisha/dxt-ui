@@ -66,6 +66,16 @@ export const wikiAria: StorybookArgsToList = {
       }
     }
   },
+  ariaMultiselectable: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Indicates that the user may select more than one item',
+        ru: 'Указывает, что пользователь может выбрать более одного элемента'
+      }
+    }
+  },
   polite: {
     type: StorybookControl.boolean,
     options: {

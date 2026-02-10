@@ -60,9 +60,6 @@ export type ListItemPropsBasic<
     parent?: string
     listId?: number
     search?: string
-
-    isMenu?: boolean
-    isItemMenu?: boolean
   }
 
 /**
@@ -79,6 +76,7 @@ export type ListItemProps = ListItemPropsBasic & ListItemPropsToken
  */
 export const defaultsListItem = {
   tabindex: '-1',
+  role: 'option',
   ...{
     // :default [!] System label / Системная метка
     iconAlign: 'center'

@@ -331,6 +331,14 @@ export type AriaHaspopupPropsInclude = {
 }
 
 /**
+ * ARIA multiselectable prop/
+ * ARIA проп multiselectable
+ */
+export type AriaMultiselectablePropsInclude = {
+  ariaMultiselectable?: boolean
+}
+
+/**
  * ARIA live prop/
  * ARIA проп live
  */

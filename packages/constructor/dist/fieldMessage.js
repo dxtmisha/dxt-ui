@@ -5,7 +5,7 @@ import { computed as r, h as n } from "vue";
 import { isFilled as h, DesignConstructorAbstract as f } from "@dxtmisha/functional";
 import { F as C } from "./FieldCounterInclude-D0oojGWY.js";
 import { S as D } from "./SkeletonInclude-BIUzAO2s.js";
-import { A as F } from "./AriaStaticInclude-BVCgDZbU.js";
+import { A as F } from "./AriaStaticInclude-CAURwJMb.js";
 import { F as E } from "./FieldMessageInclude-BJDnir34.js";
 class S {
   /**

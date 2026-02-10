@@ -1,15 +1,17 @@
 var l = Object.defineProperty;
-var m = (s, t, e) => t in s ? l(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var r = (s, t, e) => m(s, typeof t != "symbol" ? t + "" : t, e);
-import { onUnmounted as f } from "vue";
-import { isDomRuntime as o, isFunction as h, getRef as u, EventItem as c } from "@dxtmisha/functional";
+var h = (s, t, e) => t in s ? l(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
+var r = (s, t, e) => h(s, typeof t != "symbol" ? t + "" : t, e);
+import { onUnmounted as m } from "vue";
+import { isDomRuntime as o, isFunction as f, getRef as u, EventItem as c } from "@dxtmisha/functional";
 class v {
   /**
    * Constructor
    * @param element - Reference to the element/ Ссылка на элемент
    * @param active - Return focus to the previous element/ Возвращать фокус на предыдущий элемент
+   * @param activeOpen - Is active when opening/ Активен при открытии
+   * @param activeClose - Is active when closing/ Активен при закрытии
    */
-  constructor(t, e = () => !0) {
+  constructor(t, e = () => !0, i = () => !0, n = () => !0) {
     /** Previously focused element/ Ранее сфокусированный элемент */
     r(this, "oldElement");
     /** Event item for focus events/ Элемент события для событий фокуса */
@@ -27,7 +29,7 @@ class v {
       const e = document.activeElement;
       e && (this.isShift(t) ? e === this.findFirstElement() && ((i = this.findLastElement()) == null || i.focus(), t.preventDefault()) : e === this.findLastElement() && ((n = this.findFirstElement()) == null || n.focus(), t.preventDefault()));
     });
-    this.element = t, this.active = e, f(() => {
+    this.element = t, this.active = e, this.activeOpen = i, this.activeClose = n, m(() => {
       this.stopEvent(), this.event = void 0;
     });
   }
@@ -37,7 +39,7 @@ class v {
    * Устанавливает фокус на элемент.
    */
   goTo() {
-    return this.isElement() && this.active() && o() && (this.toFocus(), this.startEvent()), this;
+    return this.isElement() && this.active() && this.activeOpen() && o() && (this.toFocus(), this.startEvent()), this;
   }
   /**
    * Reset focus to the previously focused element.
@@ -45,7 +47,7 @@ class v {
    * Сбрасывает фокус на ранее сфокусированный элемент.
    */
   reset() {
-    return this.active() && (this.oldElement && "focus" in this.oldElement && this.oldElement.focus(), this.stopEvent()), this;
+    return this.active() && this.activeClose() && (this.oldElement && "focus" in this.oldElement && this.oldElement.focus(), this.stopEvent()), this;
   }
   /**
    * Toggle focus based on status.
@@ -100,7 +102,7 @@ class v {
    * Получает элемент.
    */
   getElement() {
-    return h(this.element) ? this.element() : u(this.element);
+    return f(this.element) ? this.element() : u(this.element);
   }
   /**
    * Find the first focusable element.

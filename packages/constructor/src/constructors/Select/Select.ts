@@ -129,7 +129,7 @@ export class Select {
         onClickSlot: this.onClick,
         onUpdateValue: this.isArrow() ? this.event.onValue : undefined,
         isSelectedByValue: true,
-        roleItem: this.props.multiple ? 'menuitemcheckbox' : 'menuitemradio'
+        ariaMultiselectable: this.props.multiple
       }))
     )
     this.input = new SelectInput(this.props, this.attributes, this.value, this.event)

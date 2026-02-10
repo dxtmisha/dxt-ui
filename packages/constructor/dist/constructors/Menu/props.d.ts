@@ -27,6 +27,7 @@ export type MenuPropsBasic<List extends ListPropsBasic = ListPropsBasic, ListIte
     step?: string | number;
     listAttrs?: ConstrBind<List>;
     itemAttrs?: ConstrBind<ListItem>;
+    roleList?: RoleType;
     roleItem?: RoleType;
     isSelectedByValue?: boolean;
     embedded?: boolean;
@@ -49,5 +50,4 @@ export declare const defaultsMenu: {
     tag: string;
     step: number;
     autoClose: boolean;
-    roleItem: string;
 };

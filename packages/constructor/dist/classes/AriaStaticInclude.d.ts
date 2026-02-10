@@ -138,6 +138,13 @@ export declare class AriaStaticInclude {
      */
     static modal(isModal?: boolean, ariaLabelledby?: string, ariaDescribedby?: string): AriaList;
     /**
+     * Get ARIA multiselectable attribute.
+     *
+     * Получить атрибут ARIA multiselectable.
+     * @param isMultiselectable is multiselectable/ является множественным выбором
+     */
+    static multiselectable(isMultiselectable?: boolean): AriaList;
+    /**
      * Get ARIA selected attribute.
      *
      * Получить атрибут ARIA selected.

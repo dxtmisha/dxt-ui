@@ -6,7 +6,7 @@ import type {
 } from '@dxtmisha/functional'
 
 import type { RoleType } from '../../types/roleTypes'
-import type { AriaRolePropsInclude } from '../../types/ariaTypes'
+import type { AriaMultiselectablePropsInclude, AriaRolePropsInclude } from '../../types/ariaTypes'
 
 import type { IconPropsBasic, IconValue } from '../Icon'
 import type { ListItemPropsBasic } from '../ListItem'
@@ -21,45 +21,47 @@ export type ListPropsToken = {
 export type ListPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   ListItem extends ListItemPropsBasic = ListItemPropsBasic
-> = AriaRolePropsInclude & {
-  // Status
-  focus?: ListSelectedItem
-  selected?: ListSelectedList
-  disabled?: boolean
-  lite?: boolean
+> = AriaRolePropsInclude
+  & AriaMultiselectablePropsInclude
+  & {
+    // Status
+    focus?: ListSelectedItem
+    selected?: ListSelectedList
+    disabled?: boolean
+    lite?: boolean
 
-  // Value
-  list?: ListRecord<ListItem>
-  liteThreshold?: number
-  highlight?: string
-  highlightLengthStart?: number
-  filterMode?: boolean
+    // Value
+    list?: ListRecord<ListItem>
+    liteThreshold?: number
+    highlight?: string
+    highlightLengthStart?: number
+    filterMode?: boolean
 
-  keyLabel?: string
-  keyValue?: string
+    keyLabel?: string
+    keyValue?: string
 
-  max?: string | number
+    max?: string | number
 
-  // Style
-  tag?: 'div' | 'button' | 'a' | 'span' | string
+    // Style
+    tag?: 'div' | 'button' | 'a' | 'span' | string
 
-  axis?: 'x' | 'y'
-  divider?: boolean
+    axis?: 'x' | 'y'
+    divider?: boolean
 
-  itemAttrs?: ConstrBind<ListItem>
-  itemManagementAttrs?: ConstrBind<ListItem>
-  itemGroupAttrs?: ConstrBind<ListItem>
-  itemMenuAttrs?: ConstrBind<ListItem>
+    itemAttrs?: ConstrBind<ListItem>
+    itemManagementAttrs?: ConstrBind<ListItem>
+    itemGroupAttrs?: ConstrBind<ListItem>
+    itemMenuAttrs?: ConstrBind<ListItem>
 
-  iconArrowDown?: IconValue<Icon>
-  iconArrowRight?: IconValue<Icon>
+    iconArrowDown?: IconValue<Icon>
+    iconArrowRight?: IconValue<Icon>
 
-  // ARIA
-  roleItem?: RoleType
+    // ARIA
+    roleItem?: RoleType
 
-  // Technical
-  control?: boolean
-}
+    // Technical
+    control?: boolean
+  }
 
 /**
  * Type describing incoming properties.
@@ -77,7 +79,7 @@ export const defaultsList = {
   keyLabel: 'label',
   keyValue: 'value',
   tag: 'div',
-  roleItem: 'menuitem',
+  role: 'listbox',
   ...{
     // :default [!] System label / Системная метка
     axis: 'y'

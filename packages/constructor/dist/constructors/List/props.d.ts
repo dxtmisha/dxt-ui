@@ -1,13 +1,13 @@
 import { ConstrBind, ListRecord, ListSelectedItem, ListSelectedList } from '@dxtmisha/functional';
 import { RoleType } from '../../types/roleTypes';
-import { AriaRolePropsInclude } from '../../types/ariaTypes';
+import { AriaMultiselectablePropsInclude, AriaRolePropsInclude } from '../../types/ariaTypes';
 import { IconPropsBasic, IconValue } from '../Icon';
 import { ListItemPropsBasic } from '../ListItem';
 export type ListPropsToken = {
     axis?: 'x' | 'y';
     divider?: boolean;
 };
-export type ListPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, ListItem extends ListItemPropsBasic = ListItemPropsBasic> = AriaRolePropsInclude & {
+export type ListPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, ListItem extends ListItemPropsBasic = ListItemPropsBasic> = AriaRolePropsInclude & AriaMultiselectablePropsInclude & {
     focus?: ListSelectedItem;
     selected?: ListSelectedList;
     disabled?: boolean;
@@ -48,5 +48,5 @@ export declare const defaultsList: {
     keyLabel: string;
     keyValue: string;
     tag: string;
-    roleItem: string;
+    role: string;
 };

@@ -49,7 +49,7 @@ class T {
     this.props = t, this.attributes = e, this.value = i, this.event = n;
   }
 }
-class k {
+class y {
   constructor() {
     /** Reactive filter value/ Реактивное значение фильтра */
     s(this, "value", g(""));
@@ -82,7 +82,7 @@ class k {
     this.value.value = t;
   }
 }
-class y {
+class k {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -189,9 +189,9 @@ class y {
         onClickSlot: this.onClick,
         onUpdateValue: this.isArrow() ? this.event.onValue : void 0,
         isSelectedByValue: !0,
-        roleItem: this.props.multiple ? "menuitemcheckbox" : "menuitemradio"
+        ariaMultiselectable: this.props.multiple
       }))
-    ), this.input = new T(this.props, this.attributes, this.value, this.event), this.filter = new k();
+    ), this.input = new T(this.props, this.attributes, this.value, this.event), this.filter = new y();
   }
   /**
    * Checks whether arrow is set.
@@ -338,7 +338,7 @@ class K extends b {
         )
       );
     });
-    this.item = new y(
+    this.item = new k(
       this.props,
       this.refs,
       this.element,
@@ -403,7 +403,7 @@ class K extends b {
   }
 }
 export {
-  y as Select,
+  k as Select,
   K as SelectDesign,
   W as defaultsSelect
 };
