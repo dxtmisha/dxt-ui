@@ -1,5 +1,5 @@
 export type TextValue = string | (() => string) | undefined;
-export type TextIndex = 'cancel' | 'characterLimit' | 'characterRemaining' | 'close' | 'copiedClipboard' | 'decrement' | 'entriesMatch' | 'increment' | 'loading' | 'next' | 'ok' | 'previous' | string;
+export type TextIndex = 'cancel' | 'characterLimit' | 'characterRemaining' | 'close' | 'copiedClipboard' | 'decrement' | 'entriesMatch' | 'hide' | 'increment' | 'loading' | 'next' | 'ok' | 'previous' | 'show' | string;
 export type TextList = Record<TextIndex, TextValue>;
 export type TextCancelPropsInclude = {
     /** Cancel text/ Текст отмены */
@@ -29,6 +29,10 @@ export type TextEntriesMatchPropsInclude = {
     /** Text entries match/ Текст о несовпадении записей */
     textEntriesMatch?: TextValue;
 };
+export type TextHidePropsInclude = {
+    /** Hide text/ Текст скрытия */
+    textHide?: TextValue;
+};
 export type TextIncrementPropsInclude = {
     /** Text for increasing value/ Текст для увеличения значения */
     textIncrement?: TextValue;
@@ -49,4 +53,8 @@ export type TextPreviousPropsInclude = {
     /** Previous text/ Текст предыдущего */
     textPrevious?: TextValue;
 };
-export type TextAllPropsInclude = TextCancelPropsInclude & TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextDecrementPropsInclude & TextEntriesMatchPropsInclude & TextIncrementPropsInclude & TextLoadingPropsInclude & TextNextPropsInclude & TextOkPropsInclude & TextPreviousPropsInclude;
+export type TextShowPropsInclude = {
+    /** Show text/ Текст показа */
+    textShow?: TextValue;
+};
+export type TextAllPropsInclude = TextCancelPropsInclude & TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextDecrementPropsInclude & TextEntriesMatchPropsInclude & TextHidePropsInclude & TextIncrementPropsInclude & TextLoadingPropsInclude & TextNextPropsInclude & TextOkPropsInclude & TextPreviousPropsInclude & TextShowPropsInclude;

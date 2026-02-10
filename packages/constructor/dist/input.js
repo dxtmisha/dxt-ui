@@ -1,32 +1,35 @@
 var E = Object.defineProperty;
-var S = (e, s, t) => s in e ? E(e, s, { enumerable: !0, configurable: !0, writable: !0, value: t }) : e[s] = t;
-var i = (e, s, t) => S(e, typeof s != "symbol" ? s + "" : s, t);
-import { computed as a, watch as T, h as H } from "vue";
-import { toBind as m, getRef as v, getBind as O, DesignConstructorAbstract as P, toBinds as f } from "@dxtmisha/functional";
-import { a as R, F as j, c as q, f as z, b as G, e as J, d as K } from "./FieldEventInclude-DBRqmzpF.js";
-import { e as L, d as Q, c as U, a as W, F as X, b as Y } from "./FieldMatchInclude-GgyucDC_.js";
-import { F as Z } from "./FieldInclude-Rec9lh44.js";
-class _ {
+var S = (n, s, i) => s in n ? E(n, s, { enumerable: !0, configurable: !0, writable: !0, value: i }) : n[s] = i;
+var t = (n, s, i) => S(n, typeof s != "symbol" ? s + "" : s, i);
+import { computed as a, watch as H, h as O } from "vue";
+import { toBind as c, getRef as v, getBind as P, DesignConstructorAbstract as R, toBinds as f } from "@dxtmisha/functional";
+import { a as L, F as j, c as q, f as z, b as G, e as J, d as K } from "./FieldEventInclude-DBRqmzpF.js";
+import { e as Q, d as U, c as W, a as X, F as Y, b as Z } from "./FieldMatchInclude-GgyucDC_.js";
+import { T as _ } from "./TextInclude--GERRCGj.js";
+import { F as $ } from "./FieldInclude-Rec9lh44.js";
+class tt {
   /**
    * Constructor
    * @param props input data/ входные данные
    * @param visibility object for working with visualization/ объект для работы с визуализацией
+   * @param text object for working with text/ объект для работы с текстом
    */
-  constructor(s, t) {
-    i(this, "visible", !1);
+  constructor(s, i, e) {
+    t(this, "visible", !1);
     /** Checks if the type is a password/ Проверяет, является ли тип паролем. */
-    i(this, "is", a(() => this.props.type === "password"));
+    t(this, "is", a(() => this.props.type === "password"));
     /** Returns the icon value/ Возвращает значение иконки */
-    i(this, "icon", a(() => {
+    t(this, "icon", a(() => {
       if (this.is.value)
         return {
           active: this.visibility.item.value,
           icon: this.props.iconVisibilityOff,
           iconActive: this.props.iconVisibility,
-          dynamic: !0
+          dynamic: !0,
+          ariaLabel: this.visibility.item.value ? this.text.hide.value : this.text.show.value
         };
     }));
-    this.props = s, this.visibility = t;
+    this.props = s, this.visibility = i, this.text = e;
   }
   /**
    * Toggle value.
@@ -37,7 +40,7 @@ class _ {
     this.is.value && this.visibility.toggle();
   }
 }
-class $ {
+class it {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -49,15 +52,15 @@ class $ {
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(s, t, n, r, h, o, l, p) {
+  constructor(s, i, e, h, r, o, l, p) {
     /**
      * Checks if the mask is active.
      *
      * Проверяет, активна ли маска.
      */
-    i(this, "is", a(() => {
-      var t;
-      const s = (t = this.type) == null ? void 0 : t.get();
+    t(this, "is", a(() => {
+      var i;
+      const s = (i = this.type) == null ? void 0 : i.get();
       return this.props.maskNone !== !0 && !!(this.props.mask || s && [
         "number",
         "number-format",
@@ -74,11 +77,11 @@ class $ {
      *
      * Возвращает базовые свойства для работы с маской.
      */
-    i(this, "bindsStatic", a(() => {
-      var t, n, r;
-      const s = m(
-        (t = v(this.extra)) != null ? t : {},
-        (n = this.props.maskAttrs) != null ? n : {}
+    t(this, "bindsStatic", a(() => {
+      var i, e, h;
+      const s = c(
+        (i = v(this.extra)) != null ? i : {},
+        (e = this.props.maskAttrs) != null ? e : {}
       );
       return {
         name: this.props.name,
@@ -86,9 +89,9 @@ class $ {
         currency: this.props.currency,
         currencyHide: this.props.currencyHide,
         fraction: this.props.fraction,
-        type: (r = this.type) == null ? void 0 : r.get(),
+        type: (h = this.type) == null ? void 0 : h.get(),
         visible: this.props.maskVisible,
-        ...O(this.props.mask, s, "mask")
+        ...P(this.props.mask, s, "mask")
       };
     }));
     /**
@@ -96,7 +99,7 @@ class $ {
      *
      * Возвращает все свойства для работы с маской.
      */
-    i(this, "binds", a(() => {
+    t(this, "binds", a(() => {
       var s;
       return {
         ...this.bindsStatic.value,
@@ -109,10 +112,10 @@ class $ {
      * Возвращает отрендеренный компонент маски.
      * @param attrs additional attributes/ дополнительные атрибуты
      */
-    i(this, "render", (s) => this.components ? this.components.render(
+    t(this, "render", (s) => this.components ? this.components.render(
       "mask",
       {
-        ...m(
+        ...c(
           s != null ? s : {},
           this.binds.value
         )
@@ -120,7 +123,7 @@ class $ {
       void 0,
       this.index
     ) : []);
-    this.props = s, this.className = t, this.value = n, this.valueDefault = r, this.components = h, this.type = o, this.extra = l, this.index = p, this.value && T(this.is, (u) => {
+    this.props = s, this.className = i, this.value = e, this.valueDefault = h, this.components = r, this.type = o, this.extra = l, this.index = p, this.value && H(this.is, (u) => {
       u || this.value.setFull(!0);
     });
   }
@@ -133,7 +136,7 @@ class $ {
     return this.is.value;
   }
 }
-class tt {
+class st {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -160,25 +163,27 @@ class tt {
    * @param FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
    * @param FieldIncludeConstructor class for working with field/ класс для работы с полем
    * @param MaskIncludeConstructor class for working with mask/ класс для работы с маской
+   * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(s, t, n, r, h, o, l, p, u = R, y = L, g = Q, I = U, b = W, w = j, F = q, k = z, x = X, M = _, V = Y, A = G, B = J, D = K, C = Z, N = $) {
-    i(this, "visibility");
-    i(this, "type");
-    i(this, "pattern");
-    i(this, "inputMode");
-    i(this, "attributes");
-    i(this, "elementItem");
-    i(this, "change");
-    i(this, "value");
-    i(this, "arrow");
-    i(this, "password");
-    i(this, "match");
-    i(this, "code");
-    i(this, "validation");
-    i(this, "event");
-    i(this, "field");
-    i(this, "mask");
-    this.props = s, this.refs = t, this.element = n, this.classDesign = r, this.className = h, this.components = o, this.slots = l, this.emits = p, this.change = new u(this.props), this.visibility = new y(), this.type = new g(this.props, this.visibility), this.pattern = new I(this.props, this.type), this.inputMode = new b(this.props, this.type), this.attributes = new w(
+  constructor(s, i, e, h, r, o, l, p, u = L, y = Q, g = U, b = W, I = X, w = j, F = q, x = z, k = Y, M = tt, V = Z, A = G, B = J, D = K, C = $, N = it, T = _) {
+    t(this, "text");
+    t(this, "visibility");
+    t(this, "type");
+    t(this, "pattern");
+    t(this, "inputMode");
+    t(this, "attributes");
+    t(this, "elementItem");
+    t(this, "change");
+    t(this, "value");
+    t(this, "arrow");
+    t(this, "password");
+    t(this, "match");
+    t(this, "code");
+    t(this, "validation");
+    t(this, "event");
+    t(this, "field");
+    t(this, "mask");
+    this.props = s, this.refs = i, this.element = e, this.classDesign = h, this.className = r, this.components = o, this.slots = l, this.emits = p, this.text = new T(this.props), this.change = new u(this.props), this.visibility = new y(), this.type = new g(this.props, this.visibility), this.pattern = new b(this.props, this.type), this.inputMode = new I(this.props, this.type), this.attributes = new w(
       this.props,
       this.type,
       this.pattern,
@@ -186,11 +191,11 @@ class tt {
     ), this.elementItem = new F(
       this.props,
       this.element
-    ), this.value = new k(
+    ), this.value = new x(
       this.props,
       this.refs,
       this.elementItem
-    ), this.arrow = new x(this.props, this.value, this.type), this.password = new M(this.props, this.visibility), this.match = new V(
+    ), this.arrow = new k(this.props, this.value, this.type), this.password = new M(this.props, this.visibility, this.text), this.match = new V(
       this.props,
       this.elementItem,
       this.value
@@ -218,10 +223,10 @@ class tt {
       void 0,
       void 0,
       a(() => {
-        var d, c;
+        var d, m;
         return {
           iconTrailing: (d = this.password.icon.value) != null ? d : this.props.iconTrailing,
-          maxlength: (c = this.props.maxlength) != null ? c : this.props.max
+          maxlength: (m = this.props.maxlength) != null ? m : this.props.max
         };
       })
     ), this.mask = new N(
@@ -234,13 +239,13 @@ class tt {
     );
   }
 }
-const ht = {
+const pt = {
   type: "text",
   autocomplete: "off",
   arrow: "auto",
   maskVisible: !0
 };
-class ot extends P {
+class ut extends R {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -248,24 +253,24 @@ class ot extends P {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(t, n, r, h = tt) {
+  constructor(i, e, h, r = st) {
     super(
-      t,
-      n,
-      r
+      i,
+      e,
+      h
     );
-    i(this, "item");
+    t(this, "item");
     /**
      * Rendering the input element.
      *
      * Рендер элемент input.
      * @param input data for the input element/ данные для элемента ввода
      */
-    i(this, "renderInput", (t) => this.item.mask.isActive() ? this.renderMask(t) : [H(
+    t(this, "renderInput", (i) => this.item.mask.isActive() ? this.renderMask(i) : [O(
       "input",
       f(
         this.item.attributes.listForInput.value,
-        t.binds,
+        i.binds,
         {
           ref: this.element,
           value: this.item.value.item.value,
@@ -281,18 +286,18 @@ class ot extends P {
      * Рендеринг элемента маски.
      * @param input data for the input element/ данные для элемента ввода
      */
-    i(this, "renderMask", (t) => this.item.mask.render({
+    t(this, "renderMask", (i) => this.item.mask.render({
       ref: this.element,
-      class: t.className,
+      class: i.className,
       align: this.props.align,
       inputAttrs: f(
         this.item.attributes.listForInput.value,
-        t.binds
+        i.binds
       ),
       onBlur: this.item.event.onBlur,
       onInput: this.item.event.onInput
     }));
-    this.item = new h(
+    this.item = new r(
       this.props,
       this.refs,
       this.element,
@@ -339,21 +344,21 @@ class ot extends P {
    * Метод для рендеринга.
    */
   initRender() {
-    var t;
+    var i;
     return this.item.field.render(
       {
         default: this.renderInput
       },
       {
         ...this.getAttrs(),
-        class: (t = this.classes) == null ? void 0 : t.value.main,
+        class: (i = this.classes) == null ? void 0 : i.value.main,
         validationMessage: this.item.validation.message.value
       }
     );
   }
 }
 export {
-  tt as Input,
-  ot as InputDesign,
-  ht as defaultsInput
+  st as Input,
+  ut as InputDesign,
+  pt as defaultsInput
 };

@@ -1,5 +1,6 @@
 import { computed } from 'vue'
 import { FieldVisibilityInclude } from '../../classes/Field/FieldVisibilityInclude'
+import { TextInclude } from '../../classes/TextInclude'
 
 import type { IconProps } from '../Icon'
 import type { InputProps } from './props'
@@ -16,11 +17,13 @@ export class InputPassword {
    * Constructor
    * @param props input data/ входные данные
    * @param visibility object for working with visualization/ объект для работы с визуализацией
+   * @param text object for working with text/ объект для работы с текстом
    */
 
   constructor(
     protected readonly props: InputProps,
-    protected readonly visibility: FieldVisibilityInclude
+    protected readonly visibility: FieldVisibilityInclude,
+    protected readonly text: TextInclude
   ) {
   }
 
@@ -34,7 +37,8 @@ export class InputPassword {
         active: this.visibility.item.value,
         icon: this.props.iconVisibilityOff,
         iconActive: this.props.iconVisibility,
-        dynamic: true
+        dynamic: true,
+        ariaLabel: this.visibility.item.value ? this.text.hide.value : this.text.show.value
       }
     }
 

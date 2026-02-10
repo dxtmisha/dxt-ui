@@ -18,6 +18,7 @@ import { FieldInputModeInclude } from '../../classes/Field/FieldInputModeInclude
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { TextInclude } from '../../classes/TextInclude'
 
 import { FieldInclude } from '../Field/FieldInclude'
 import { MaskInclude } from '../Mask/MaskInclude'
@@ -30,6 +31,7 @@ import type { InputProps } from './props'
  * Input
  */
 export class Input {
+  readonly text: TextInclude
   readonly visibility: FieldVisibilityInclude
   readonly type: FieldTypeInclude
   readonly pattern: FieldPatternInclude
@@ -77,6 +79,7 @@ export class Input {
    * @param FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
    * @param FieldIncludeConstructor class for working with field/ класс для работы с полем
    * @param MaskIncludeConstructor class for working with mask/ класс для работы с маской
+   * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
    */
   constructor(
     protected readonly props: InputProps,
@@ -102,8 +105,10 @@ export class Input {
     FieldValidationIncludeConstructor: typeof FieldValidationInclude = FieldValidationInclude,
     FieldEventIncludeConstructor: typeof FieldEventInclude = FieldEventInclude,
     FieldIncludeConstructor: typeof FieldInclude = FieldInclude,
-    MaskIncludeConstructor: typeof MaskInclude = MaskInclude
+    MaskIncludeConstructor: typeof MaskInclude = MaskInclude,
+    TextIncludeConstructor: typeof TextInclude = TextInclude
   ) {
+    this.text = new TextIncludeConstructor(this.props)
     this.change = new FieldChangeIncludeConstructor(this.props)
     this.visibility = new FieldVisibilityIncludeConstructor()
     this.type = new FieldTypeIncludeConstructor(this.props, this.visibility)
@@ -127,7 +132,7 @@ export class Input {
       this.elementItem
     )
     this.arrow = new FieldArrowIncludeConstructor(this.props, this.value, this.type)
-    this.password = new InputPasswordConstructor(this.props, this.visibility)
+    this.password = new InputPasswordConstructor(this.props, this.visibility, this.text)
     this.match = new FieldMatchIncludeConstructor(
       this.props,
       this.elementItem,

@@ -87,6 +87,17 @@ export const wikiText: StorybookArgsToList = {
       }
     }
   },
+  textHide: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Hide text',
+        ru: 'Текст скрытия'
+      }
+    }
+  },
   textIncrement: {
     type: StorybookControl.text,
     options: {
@@ -139,6 +150,17 @@ export const wikiText: StorybookArgsToList = {
       description: {
         en: 'Previous text',
         ru: 'Текст предыдущего'
+      }
+    }
+  },
+  textShow: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Show text',
+        ru: 'Текст показа'
       }
     }
   }

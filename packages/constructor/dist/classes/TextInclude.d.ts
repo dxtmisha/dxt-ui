@@ -38,6 +38,8 @@ export declare class TextInclude {
     get decrement(): ComputedRef<string | undefined>;
     /** Entries match text/ Текст о несовпадении записей */
     get entriesMatch(): ComputedRef<string | undefined>;
+    /** Hide text/ Текст скрытия */
+    get hide(): ComputedRef<string | undefined>;
     /** Text for increasing value/ Текст для увеличения значения */
     get increment(): ComputedRef<string | undefined>;
     /** Loading text/ Текст загрузки */
@@ -48,6 +50,8 @@ export declare class TextInclude {
     get ok(): ComputedRef<string | undefined>;
     /** Previous text/ Текст предыдущего */
     get previous(): ComputedRef<string | undefined>;
+    /** Show text/ Текст показа */
+    get show(): ComputedRef<string | undefined>;
     /**
      * Get the text by its name.
      *

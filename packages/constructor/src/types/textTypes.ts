@@ -7,11 +7,13 @@ export type TextIndex = 'cancel'
   | 'copiedClipboard'
   | 'decrement'
   | 'entriesMatch'
+  | 'hide'
   | 'increment'
   | 'loading'
   | 'next'
   | 'ok'
   | 'previous'
+  | 'show'
   | string
 export type TextList = Record<TextIndex, TextValue>
 
@@ -50,6 +52,11 @@ export type TextEntriesMatchPropsInclude = {
   textEntriesMatch?: TextValue
 }
 
+export type TextHidePropsInclude = {
+  /** Hide text/ Текст скрытия */
+  textHide?: TextValue
+}
+
 export type TextIncrementPropsInclude = {
   /** Text for increasing value/ Текст для увеличения значения */
   textIncrement?: TextValue
@@ -75,6 +82,11 @@ export type TextPreviousPropsInclude = {
   textPrevious?: TextValue
 }
 
+export type TextShowPropsInclude = {
+  /** Show text/ Текст показа */
+  textShow?: TextValue
+}
+
 export type TextAllPropsInclude = TextCancelPropsInclude
   & TextCharacterLimitPropsInclude
   & TextCharacterRemainingPropsInclude
@@ -82,8 +94,10 @@ export type TextAllPropsInclude = TextCancelPropsInclude
   & TextCopiedClipboardPropsInclude
   & TextDecrementPropsInclude
   & TextEntriesMatchPropsInclude
+  & TextHidePropsInclude
   & TextIncrementPropsInclude
   & TextLoadingPropsInclude
   & TextNextPropsInclude
   & TextOkPropsInclude
   & TextPreviousPropsInclude
+  & TextShowPropsInclude

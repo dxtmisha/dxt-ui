@@ -4,7 +4,7 @@ var i = (s, e, t) => A(s, typeof e != "symbol" ? e + "" : e, t);
 import { computed as n, ref as I, onMounted as T, h as l } from "vue";
 import { goScrollSmooth as k, toNumber as w, writeClipboardData as x, DesignConstructorAbstract as D } from "@dxtmisha/functional";
 import { L as H } from "./LabelInclude-D-mLvjK5.js";
-import { T as S } from "./TextInclude-DyFukbT2.js";
+import { T as S } from "./TextInclude--GERRCGj.js";
 import { T as L } from "./TooltipInclude--QRSE83v.js";
 import { g as $ } from "./getClassTagAStatic-BnVYlXHI.js";
 import { A as a } from "./AriaStaticInclude-CAURwJMb.js";

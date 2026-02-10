@@ -5,7 +5,7 @@ import { computed as d, readonly as p, h as C } from "vue";
 import { getBind as b, toBinds as w } from "@dxtmisha/functional";
 import { L as v } from "./LabelInclude-D-mLvjK5.js";
 import { D as k } from "./DescriptionInclude-D4ane9aR.js";
-import { T as I } from "./TextInclude-DyFukbT2.js";
+import { T as I } from "./TextInclude--GERRCGj.js";
 import { M as S, a as x } from "./ModalDesignAbstract-D4A_a_rC.js";
 import { I as D } from "./IconInclude-CLqwI29Q.js";
 import { W as A } from "./WindowClassesInclude-B56usxgx.js";

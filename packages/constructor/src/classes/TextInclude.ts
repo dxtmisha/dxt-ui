@@ -25,11 +25,13 @@ export class TextInclude {
     copiedClipboard: 'Copied to the clipboard',
     decrement: 'Decrease',
     entriesMatch: 'Entries do not match',
+    hide: 'Hide',
     increment: 'Increase',
     loading: 'Loading',
     next: 'Next',
     ok: 'OK',
-    previous: 'Previous'
+    previous: 'Previous',
+    show: 'Show'
   })
 
   readonly texts: Record<string, ComputedRef<string | undefined>> = {}
@@ -91,6 +93,11 @@ export class TextInclude {
     return this.get('textEntriesMatch')
   }
 
+  /** Hide text/ Текст скрытия */
+  get hide() {
+    return this.get('textHide')
+  }
+
   /** Text for increasing value/ Текст для увеличения значения */
   get increment() {
     return this.get('textIncrement')
@@ -114,6 +121,11 @@ export class TextInclude {
   /** Previous text/ Текст предыдущего */
   get previous() {
     return this.get('textPrevious')
+  }
+
+  /** Show text/ Текст показа */
+  get show() {
+    return this.get('textShow')
   }
 
   /**

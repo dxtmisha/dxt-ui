@@ -1,4 +1,5 @@
 import { FieldVisibilityInclude } from '../../classes/Field/FieldVisibilityInclude';
+import { TextInclude } from '../../classes/TextInclude';
 import { IconProps } from '../Icon';
 import { InputProps } from './props';
 import { ComputedRef } from 'vue';
@@ -10,13 +11,15 @@ import { ComputedRef } from 'vue';
 export declare class InputPassword {
     protected readonly props: InputProps;
     protected readonly visibility: FieldVisibilityInclude;
+    protected readonly text: TextInclude;
     protected visible: boolean;
     /**
      * Constructor
      * @param props input data/ входные данные
      * @param visibility object for working with visualization/ объект для работы с визуализацией
+     * @param text object for working with text/ объект для работы с текстом
      */
-    constructor(props: InputProps, visibility: FieldVisibilityInclude);
+    constructor(props: InputProps, visibility: FieldVisibilityInclude, text: TextInclude);
     /** Checks if the type is a password/ Проверяет, является ли тип паролем. */
     readonly is: ComputedRef<boolean>;
     /** Returns the icon value/ Возвращает значение иконки */

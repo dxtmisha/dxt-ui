@@ -1,8 +1,8 @@
-var g = Object.defineProperty;
-var h = (r, t, e) => t in r ? g(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
-var s = (r, t, e) => h(r, typeof t != "symbol" ? t + "" : t, e);
+var h = Object.defineProperty;
+var g = (r, t, e) => t in r ? h(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
+var s = (r, t, e) => g(r, typeof t != "symbol" ? t + "" : t, e);
 import { shallowRef as l, computed as u } from "vue";
-import { toCamelCase as x, executeFunction as a } from "@dxtmisha/functional";
+import { toCamelCase as x, executeFunction as o } from "@dxtmisha/functional";
 const i = class i {
   /**
    * Constructor
@@ -52,6 +52,10 @@ const i = class i {
   get entriesMatch() {
     return this.get("textEntriesMatch");
   }
+  /** Hide text/ Текст скрытия */
+  get hide() {
+    return this.get("textHide");
+  }
   /** Text for increasing value/ Текст для увеличения значения */
   get increment() {
     return this.get("textIncrement");
@@ -72,6 +76,10 @@ const i = class i {
   get previous() {
     return this.get("textPrevious");
   }
+  /** Show text/ Текст показа */
+  get show() {
+    return this.get("textShow");
+  }
   /**
    * Get the text by its name.
    *
@@ -83,13 +91,13 @@ const i = class i {
       return this.texts[t];
     const e = x(
       String(t).replace("text", "")
-    ), o = u(
+    ), c = u(
       () => {
         var n;
         return this.getText(e, (n = this.props) == null ? void 0 : n[t]);
       }
     );
-    return this.texts[t] = o;
+    return this.texts[t] = c;
   }
   /**
    * Get text by index, with priority to local value.
@@ -99,7 +107,7 @@ const i = class i {
    * @param value Local text value/ Локальное значение текста
    */
   getText(t, e) {
-    return e ? a(e) : this.getGlobalText(t);
+    return e ? o(e) : this.getGlobalText(t);
   }
   /**
    * Get text from global list.
@@ -110,7 +118,7 @@ const i = class i {
   getGlobalText(t) {
     var e;
     if ((e = i.list.value) != null && e[t])
-      return a(i.list.value[t]);
+      return o(i.list.value[t]);
   }
 };
 /**
@@ -124,13 +132,15 @@ s(i, "list", l({
   copiedClipboard: "Copied to the clipboard",
   decrement: "Decrease",
   entriesMatch: "Entries do not match",
+  hide: "Hide",
   increment: "Increase",
   loading: "Loading",
   next: "Next",
   ok: "OK",
-  previous: "Previous"
+  previous: "Previous",
+  show: "Show"
 }));
-let c = i;
+let a = i;
 export {
-  c as T
+  a as T
 };

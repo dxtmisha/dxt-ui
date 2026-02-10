@@ -14,6 +14,7 @@ import { FieldInputModeInclude } from '../../classes/Field/FieldInputModeInclude
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude';
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude';
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude';
+import { TextInclude } from '../../classes/TextInclude';
 import { FieldInclude } from '../Field/FieldInclude';
 import { MaskInclude } from '../Mask/MaskInclude';
 import { FieldElementInput } from '../../types/fieldTypes';
@@ -31,6 +32,7 @@ export declare class Input {
     protected readonly components?: DesignComp<InputComponents, InputProps> | undefined;
     protected readonly slots?: InputSlots | undefined;
     protected readonly emits?: ConstrEmit<InputEmits> | undefined;
+    readonly text: TextInclude;
     readonly visibility: FieldVisibilityInclude;
     readonly type: FieldTypeInclude;
     readonly pattern: FieldPatternInclude;
@@ -73,6 +75,7 @@ export declare class Input {
      * @param FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
      * @param FieldIncludeConstructor class for working with field/ класс для работы с полем
      * @param MaskIncludeConstructor class for working with mask/ класс для работы с маской
+     * @param TextIncludeConstructor class for working with text/ класс для работы с текстом
      */
-    constructor(props: InputProps, refs: ToRefs<InputProps>, element: Ref<FieldElementInput>, classDesign: string, className: string, components?: DesignComp<InputComponents, InputProps> | undefined, slots?: InputSlots | undefined, emits?: ConstrEmit<InputEmits> | undefined, FieldChangeIncludeConstructor?: typeof FieldChangeInclude, FieldVisibilityIncludeConstructor?: typeof FieldVisibilityInclude, FieldTypeIncludeConstructor?: typeof FieldTypeInclude, FieldPatternIncludeConstructor?: typeof FieldPatternInclude, FieldInputModeIncludeConstructor?: typeof FieldInputModeInclude, FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude, FieldElementIncludeConstructor?: typeof FieldElementInclude, FieldValueIncludeConstructor?: typeof FieldValueInclude, FieldArrowIncludeConstructor?: typeof FieldArrowInclude, InputPasswordConstructor?: typeof InputPassword, FieldMatchIncludeConstructor?: typeof FieldMatchInclude, FieldCodeIncludeConstructor?: typeof FieldCodeInclude, FieldValidationIncludeConstructor?: typeof FieldValidationInclude, FieldEventIncludeConstructor?: typeof FieldEventInclude, FieldIncludeConstructor?: typeof FieldInclude, MaskIncludeConstructor?: typeof MaskInclude);
+    constructor(props: InputProps, refs: ToRefs<InputProps>, element: Ref<FieldElementInput>, classDesign: string, className: string, components?: DesignComp<InputComponents, InputProps> | undefined, slots?: InputSlots | undefined, emits?: ConstrEmit<InputEmits> | undefined, FieldChangeIncludeConstructor?: typeof FieldChangeInclude, FieldVisibilityIncludeConstructor?: typeof FieldVisibilityInclude, FieldTypeIncludeConstructor?: typeof FieldTypeInclude, FieldPatternIncludeConstructor?: typeof FieldPatternInclude, FieldInputModeIncludeConstructor?: typeof FieldInputModeInclude, FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude, FieldElementIncludeConstructor?: typeof FieldElementInclude, FieldValueIncludeConstructor?: typeof FieldValueInclude, FieldArrowIncludeConstructor?: typeof FieldArrowInclude, InputPasswordConstructor?: typeof InputPassword, FieldMatchIncludeConstructor?: typeof FieldMatchInclude, FieldCodeIncludeConstructor?: typeof FieldCodeInclude, FieldValidationIncludeConstructor?: typeof FieldValidationInclude, FieldEventIncludeConstructor?: typeof FieldEventInclude, FieldIncludeConstructor?: typeof FieldInclude, MaskIncludeConstructor?: typeof MaskInclude, TextIncludeConstructor?: typeof TextInclude);
 }
