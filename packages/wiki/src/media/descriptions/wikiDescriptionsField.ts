@@ -240,7 +240,7 @@ export const wikiDescriptionsField: StorybookComponentsDescriptionItem = {
 <div :class="classDemo.item">
   <Field label="Field Label" helper-message="Helper text" v-bind="args">
     <template v-slot:default="{binds}">
-      <input :value="args.value" readonly v-bind="binds"/>
+      <input :value="args.value" readonly v-bind="binds as any"/>
     </template>
   </Field>
 </div>

@@ -24,6 +24,7 @@ const l = {
     description: {},
     descriptionId: {},
     caption: {},
+    captionDecorative: { type: Boolean },
     readonly: { type: Boolean },
     disabled: { type: Boolean },
     icon: {},
@@ -54,8 +55,8 @@ const l = {
     paddingByIndent: { type: Boolean }
   }, L),
   emits: ["click", "clickLite"],
-  setup(d, { expose: a, emit: t }) {
-    const c = t, e = d, r = o(() => ({
+  setup(a, { expose: d, emit: t }) {
+    const c = t, e = a, r = o(() => ({
       main: {
         // :classes-values [!] System label / Системная метка
         "d1-cell": !0,
@@ -89,7 +90,7 @@ const l = {
         }
       }
     ), s = n.render();
-    return a(n.expose()), (k, x) => (m(), g(B(s)));
+    return d(n.expose()), (k, D) => (m(), g(B(s)));
   }
 });
 export {

@@ -6,6 +6,7 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'ariaMultiselectable', type: 'boolean' },
   { name: 'axis', type: 'string', option: ['x', 'y'] },
   { name: 'control', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },

@@ -749,18 +749,18 @@ export declare const D1Field: {
 });
 
 export declare const D1FieldCounter: {
-    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< FieldCounterPropsBasic> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
+    new (...args: any[]): CreateComponentPublicInstanceWithMixins<Readonly< FieldCounterProps> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {}, false, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
         P: {};
         B: {};
         D: {};
         C: {};
         M: {};
         Defaults: {};
-    }, Readonly< FieldCounterPropsBasic> & Readonly<{}>, {}, {}, {}, {}, {}>;
+    }, Readonly< FieldCounterProps> & Readonly<{}>, {}, {}, {}, {}, {}>;
     __isFragment?: never;
     __isTeleport?: never;
     __isSuspense?: never;
-} & ComponentOptionsBase<Readonly< FieldCounterPropsBasic> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
+} & ComponentOptionsBase<Readonly< FieldCounterProps> & Readonly<{}>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, GlobalComponents, GlobalDirectives, string, ComponentProvideOptions> & VNodeProps & AllowedComponentProps & ComponentCustomProps & (new () => {
     $slots: Readonly< FieldCounterSlots> & FieldCounterSlots;
 });
 

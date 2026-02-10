@@ -22,7 +22,7 @@ defineOptions({
     <div :class="classDemo.item">
   <D1Field label="Field Label" helper-message="Helper text" v-bind="args">
     <template v-slot:default="{binds}">
-      <input :value="args.value" readonly v-bind="binds"/>
+      <input :value="args.value" readonly v-bind="binds as any"/>
     </template>
   </D1Field>
 </div>

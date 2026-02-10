@@ -7,6 +7,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'caption', type: 'string | number' },
+  { name: 'captionDecorative', type: 'boolean' },
   { name: 'description', type: 'string | number' },
   { name: 'descriptionId', type: 'string' },
   { name: 'detail', type: 'Record<string, any>' },

@@ -1,8 +1,10 @@
 import { defineComponent as p, computed as o, openBlock as m, createBlock as l, unref as w, mergeDefaults as h } from "vue";
 import { inArray as u } from "@dxtmisha/functional";
-import { defaultsActionSheet as b, ActionSheetDesign as B } from "@dxtmisha/constructor/ActionSheet";
-import { D as y, a as f, b as A } from "./index-CN2q2jvV.js";
-const D = {
+import { defaultsActionSheet as b, ActionSheetDesign as f } from "@dxtmisha/constructor/ActionSheet";
+import { D as B } from "./index-Dike0osZ.js";
+import { D as y } from "./index-RVXlLQ5Y.js";
+import { D } from "./index-BS9sgqvG.js";
+const A = {
   // :values [!] System label / Системная метка
   width: ["sm", "md", "lg", "auto"]
   // :values [!] System label / Системная метка
@@ -10,7 +12,7 @@ const D = {
   ...b,
   // :default [!] System label / Системная метка
   width: "md"
-}, H = /* @__PURE__ */ p({
+}, v = /* @__PURE__ */ p({
   name: "D1ActionSheet",
   __name: "D1ActionSheet",
   props: /* @__PURE__ */ h({
@@ -32,28 +34,28 @@ const D = {
     width: {}
   }, S),
   emits: ["window", "bars", "barsLite", "barsBack", "actions", "actionsLite"],
-  setup(s, { expose: n, emit: a }) {
-    const i = a, e = s, r = o(() => ({
+  setup(s, { expose: n, emit: i }) {
+    const a = i, e = s, r = o(() => ({
       main: {
         // :classes-values [!] System label / Системная метка
         "d1-actionSheet": !0,
-        [`d1-actionSheet--width--${e.width}`]: u(D.width, e.width)
+        [`d1-actionSheet--width--${e.width}`]: u(A.width, e.width)
         // :classes-values [!] System label / Системная метка
       }
     })), c = o(() => ({
       // :styles-values [!] System label / Системная метка
       // :styles-values [!] System label / Системная метка
-    })), t = new B(
+    })), t = new f(
       "d1.actionSheet",
       e,
       {
-        emits: i,
+        emits: a,
         classes: r,
         styles: c,
         components: {
-          window: A,
-          bars: f,
-          actions: y
+          window: B,
+          bars: y,
+          actions: D
         },
         compMod: {
           window: {
@@ -66,5 +68,5 @@ const D = {
   }
 });
 export {
-  H as _
+  v as _
 };

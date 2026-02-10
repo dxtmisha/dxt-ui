@@ -35,6 +35,7 @@ const propsNames: StorybookProps = [
   { name: 'onUpdate:selected', type: '(value: string) => void' },
   { name: 'request', type: 'ApiFetch' },
   { name: 'roleItem', type: 'string' },
+  { name: 'roleList', type: 'string' },
   { name: 'selected', type: 'ListSelectedList' },
   { name: 'step', type: 'string | number' },
   { name: 'tag', type: 'string' },

@@ -22,7 +22,7 @@ defineOptions({
     <div :class="classDemo.item">
   <D1ListMenu v-bind="args">
     <template #head="{ binds }">
-      <span v-bind="binds">head</span>
+      <span v-bind="binds as any">head</span>
     </template>
     <template #list>
       list

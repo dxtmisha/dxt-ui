@@ -1,54 +1,10 @@
-import { defineComponent as h, computed as l, openBlock as u, createBlock as y, unref as b, mergeDefaults as B } from "vue";
-import { inArray as o, isFilled as g } from "@dxtmisha/functional";
-import { defaultsWindow as v, WindowDesign as f } from "@dxtmisha/constructor/Window";
-import { defaultsScrollbar as S, ScrollbarDesign as x } from "@dxtmisha/constructor/Scrollbar";
+import { defineComponent as g, computed as l, openBlock as u, createBlock as y, unref as B, mergeDefaults as f } from "vue";
+import { inArray as o, isFilled as d } from "@dxtmisha/functional";
+import { defaultsWindow as b, WindowDesign as x } from "@dxtmisha/constructor/Window";
+import { _ as S } from "./D1Scrollbar.vue_vue_type_script_setup_true_lang-C4sfvVou.js";
 import { _ } from "./D1Button.vue_vue_type_script_setup_true_lang-D41llYta.js";
-import { _ as T } from "./D1Image.vue_vue_type_script_setup_true_lang-DNSEm9t1.js";
-const F = {
-  ...S
-}, $ = /* @__PURE__ */ h({
-  name: "D1Scrollbar",
-  __name: "D1Scrollbar",
-  props: /* @__PURE__ */ B({
-    tag: {},
-    visible: { type: Boolean },
-    divider: { type: Boolean },
-    dividerTop: { type: Boolean },
-    dividerBottom: { type: Boolean },
-    dividerHide: { type: Boolean },
-    inverse: { type: Boolean },
-    standard: { type: Boolean }
-  }, F),
-  emits: ["top", "reachTop", "leaveTop", "bottom", "reachBottom", "leaveBottom", "edge"],
-  setup(d, { expose: s, emit: r }) {
-    const c = r, e = d, p = l(() => ({
-      main: {
-        // :classes-values [!] System label / Системная метка
-        "d1-scrollbar": !0,
-        "d1-scrollbar--visible": e.visible,
-        "d1-scrollbar--divider": e.divider,
-        "d1-scrollbar--dividerTop": e.dividerTop,
-        "d1-scrollbar--dividerBottom": e.dividerBottom,
-        "d1-scrollbar--dividerHide": e.dividerHide,
-        "d1-scrollbar--inverse": e.inverse,
-        "d1-scrollbar--standard": e.standard
-        // :classes-values [!] System label / Системная метка
-      }
-    })), m = l(() => ({
-      // :styles-values [!] System label / Системная метка
-      // :styles-values [!] System label / Системная метка
-    })), i = new x(
-      "d1.scrollbar",
-      e,
-      {
-        emits: c,
-        classes: p,
-        styles: m
-      }
-    ), w = i.render();
-    return s(i.expose()), (n, a) => (u(), y(b(w)));
-  }
-}), t = {
+import { _ as v } from "./D1Image.vue_vue_type_script_setup_true_lang-DNSEm9t1.js";
+const t = {
   // :values [!] System label / Системная метка
   width: ["auto", "max", "sm", "md", "lg"],
   height: ["auto", "max", "sm", "md", "lg"],
@@ -59,8 +15,8 @@ const F = {
   adaptive: ["menu", "menuWindow", "modal", "modalDynamic", "actionSheetRight", "actionSheetBottom", "static", "actionSheet", "actionSheetToModal", "autoStaticSm", "autoStaticMd", "autoStaticLg", "autoStaticXl", "autoStatic2xl"],
   imageSize: ["sm", "md", "lg", "quarter", "half"]
   // :values [!] System label / Системная метка
-}, D = {
-  ...v,
+}, F = {
+  ...b,
   iconClose: "close",
   // :default [!] System label / Системная метка
   width: "md",
@@ -68,10 +24,10 @@ const F = {
   imagePosition: "top",
   overscroll: !0,
   imageSize: "md"
-}, C = /* @__PURE__ */ h({
+}, P = /* @__PURE__ */ g({
   name: "D1Window",
   __name: "D1Window",
-  props: /* @__PURE__ */ B({
+  props: /* @__PURE__ */ f({
     scrollbarAttrs: {},
     image: {},
     role: {},
@@ -100,6 +56,9 @@ const F = {
     modelOpen: { type: Boolean },
     "onUpdate:open": { type: Function },
     "onUpdate:modelOpen": { type: Function },
+    autoTabIndex: { type: Boolean },
+    closeOnEsc: { type: Boolean },
+    openOnArrowDown: { type: Boolean },
     embedded: { type: Boolean },
     width: {},
     height: {},
@@ -115,16 +74,16 @@ const F = {
     closeMobileHide: { type: Boolean },
     widthMatch: { type: Boolean },
     imageSize: {}
-  }, D),
+  }, F),
   emits: ["scrollbarTop", "scrollbarReachTop", "scrollbarLeaveTop", "scrollbarBottom", "scrollbarReachBottom", "scrollbarLeaveBottom", "scrollbarEdge", "load", "window", "update:open", "update:modelOpen"],
-  setup(d, { expose: s, emit: r }) {
-    const c = r, e = d, p = l(() => ({
+  setup(s, { expose: r, emit: p }) {
+    const m = p, e = s, c = l(() => ({
       main: {
         // :classes-values [!] System label / Системная метка
         "d1-window": !0,
-        "d1-window--width--custom": g(e.width) && !o(t.width, e.width),
+        "d1-window--width--custom": d(e.width) && !o(t.width, e.width),
         [`d1-window--width--${e.width}`]: o(t.width, e.width),
-        "d1-window--height--custom": g(e.height) && !o(t.height, e.height),
+        "d1-window--height--custom": d(e.height) && !o(t.height, e.height),
         [`d1-window--height--${e.height}`]: o(t.height, e.height),
         "d1-window--hide": e.hide,
         [`d1-window--axis--${e.axis}`]: o(t.axis, e.axis),
@@ -141,25 +100,25 @@ const F = {
         [`d1-window--imageSize--${e.imageSize}`]: o(t.imageSize, e.imageSize)
         // :classes-values [!] System label / Системная метка
       }
-    })), m = l(() => {
-      var n, a;
+    })), w = l(() => {
+      var i, n;
       return {
         // :styles-values [!] System label / Системная метка
-        "--d1-window-sys-width": (n = e.width) != null ? n : null,
-        "--d1-window-sys-height": (a = e.height) != null ? a : null
+        "--d1-window-sys-width": (i = e.width) != null ? i : null,
+        "--d1-window-sys-height": (n = e.height) != null ? n : null
         // :styles-values [!] System label / Системная метка
       };
-    }), i = new f(
+    }), a = new x(
       "d1.window",
       e,
       {
-        emits: c,
-        classes: p,
-        styles: m,
+        emits: m,
+        classes: c,
+        styles: w,
         components: {
-          scrollbar: $,
+          scrollbar: S,
           button: _,
-          image: T
+          image: v
         },
         compMod: {
           button: {
@@ -170,11 +129,10 @@ const F = {
           }
         }
       }
-    ), w = i.render();
-    return s(i.expose()), (n, a) => (u(), y(b(w)));
+    ), h = a.render();
+    return r(a.expose()), (i, n) => (u(), y(B(h)));
   }
 });
 export {
-  C as _,
-  $ as a
+  P as _
 };

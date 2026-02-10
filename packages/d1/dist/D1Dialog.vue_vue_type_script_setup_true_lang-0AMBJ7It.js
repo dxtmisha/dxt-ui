@@ -1,7 +1,9 @@
-import { defineComponent as m, computed as t, openBlock as u, createBlock as g, unref as b, mergeDefaults as y } from "vue";
+import { defineComponent as m, computed as t, openBlock as u, createBlock as g, unref as b, mergeDefaults as D } from "vue";
 import { inArray as s } from "@dxtmisha/functional";
-import { defaultsDialog as B, DialogDesign as w } from "@dxtmisha/constructor/Dialog";
-import { D, a as f, b as k } from "./index-CN2q2jvV.js";
+import { defaultsDialog as y, DialogDesign as B } from "@dxtmisha/constructor/Dialog";
+import { D as w } from "./index-Dike0osZ.js";
+import { D as f } from "./index-RVXlLQ5Y.js";
+import { D as k } from "./index-BS9sgqvG.js";
 import { D as h } from "./index-CItcax-E.js";
 const i = {
   // :values [!] System label / Системная метка
@@ -9,7 +11,7 @@ const i = {
   width: ["sm", "md", "lg", "auto"]
   // :values [!] System label / Системная метка
 }, A = {
-  ...B,
+  ...y,
   buttonClose: {
     outline: !0
   },
@@ -21,10 +23,10 @@ const i = {
   // :default [!] System label / Системная метка
   imagePosition: "top",
   width: "md"
-}, I = /* @__PURE__ */ m({
+}, E = /* @__PURE__ */ m({
   name: "D1Dialog",
   __name: "D1Dialog",
-  props: /* @__PURE__ */ y({
+  props: /* @__PURE__ */ D({
     disabled: { type: Boolean },
     autoClose: { type: Boolean },
     windowAttrs: {},
@@ -60,8 +62,8 @@ const i = {
     width: {}
   }, A),
   emits: ["window", "bars", "barsLite", "barsBack", "actions", "actionsLite", "ok", "close"],
-  setup(n, { expose: a, emit: r }) {
-    const c = r, o = n, l = t(() => ({
+  setup(n, { expose: r, emit: a }) {
+    const c = a, o = n, l = t(() => ({
       main: {
         // :classes-values [!] System label / Системная метка
         "d1-dialog": !0,
@@ -74,7 +76,7 @@ const i = {
     })), d = t(() => ({
       // :styles-values [!] System label / Системная метка
       // :styles-values [!] System label / Системная метка
-    })), e = new w(
+    })), e = new B(
       "d1.dialog",
       o,
       {
@@ -82,16 +84,16 @@ const i = {
         classes: l,
         styles: d,
         components: {
-          window: k,
+          window: w,
           bars: f,
-          actions: D,
+          actions: k,
           icon: h
         }
       }
     ), p = e.render();
-    return a(e.expose()), (_, x) => (u(), g(b(p)));
+    return r(e.expose()), (_, x) => (u(), g(b(p)));
   }
 });
 export {
-  I as _
+  E as _
 };

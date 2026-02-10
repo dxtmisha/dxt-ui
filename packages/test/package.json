@@ -20,7 +20,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "library": "dxt-library",
-    "wiki": "dxt-ai-doc src/storybook"
+    "wiki": "dxt-ai-doc src/storybook",
+    "prepublishOnly": "dxt-library && npm run build"
   },
   "files": [
     "dist",
