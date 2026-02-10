@@ -2,10 +2,10 @@ var S = Object.defineProperty;
 var C = (r, e, t) => e in r ? S(r, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[e] = t;
 var s = (r, e, t) => C(r, typeof e != "symbol" ? e + "" : e, t);
 import { ref as a, computed as l, watch as y, h as B } from "vue";
-import { isFunction as k, executePromise as V, Api as M, isFilled as q, isObject as A, ListDataRef as D, DesignConstructorAbstract as L, toBinds as N } from "@dxtmisha/functional";
-import { E as j } from "./EventClickInclude-CgbuezDm.js";
-import { M as I } from "./ModelInclude-BiYm_iCQ.js";
-import { B as T } from "./BarsInclude-BOEoY-O4.js";
+import { isFunction as k, executePromise as V, Api as M, isFilled as q, isObject as A, ListDataRef as D, DesignConstructorAbstract as I, toBinds as L } from "@dxtmisha/functional";
+import { E as N } from "./EventClickInclude-CgbuezDm.js";
+import { M as T } from "./ModelInclude-BiYm_iCQ.js";
+import { B as j } from "./BarsInclude-BOEoY-O4.js";
 import { W } from "./WindowInclude-BWm4-0Gh.js";
 import { M as tt } from "./MenuInclude-DfGCfr_I.js";
 class E {
@@ -161,6 +161,7 @@ class O {
       opening: this.opening,
       closing: this.closing,
       role: "menu",
+      autoTabIndex: !1,
       openOnArrowDown: !0
     };
   }
@@ -180,7 +181,7 @@ class R {
      * Вычисляемое выбранное значение
      */
     s(this, "selected", l(() => this.props.isSelectedByValue ? this.value.value : this.props.selected));
-    this.props = e, this.refs = t, this.emits = i, this.props.isSelectedByValue && (new I("selected", this.emits, this.value), t.selected && y(
+    this.props = e, this.refs = t, this.emits = i, this.props.isSelectedByValue && (new T("selected", this.emits, this.value), t.selected && y(
       t.selected,
       (o) => {
         this.value.value = o;
@@ -266,7 +267,7 @@ class _ {
    * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
    * @param EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
    */
-  constructor(e, t, i, o, h, n, u, p, d = E, c = F, m = R, v = D, g = H, f = T, w = O, b = W, x = j) {
+  constructor(e, t, i, o, h, n, u, p, d = E, c = F, m = R, v = D, f = H, g = j, w = O, b = W, x = N) {
     /** Request handler for list data/ Обработчик запросов данных списка */
     s(this, "request");
     /** Search helper for menu filtering/ Вспомогательный класс поиска для фильтрации меню */
@@ -333,7 +334,7 @@ class _ {
       this.value.selected,
       this.refs.keyValue,
       this.refs.keyLabel
-    ), this.go = new g(this.props, this.value, this.data), this.bars = new f(
+    ), this.go = new f(this.props, this.value, this.data), this.bars = new g(
       this.props,
       this.className,
       this.components,
@@ -373,7 +374,7 @@ const U = {
   autoClose: !0,
   roleItem: "menuitem"
 };
-class X extends L {
+class X extends I {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -419,7 +420,7 @@ class X extends L {
         return this.initSlot("contextTop", h, this.getBinds(t)), this.props.hideList || h.push(
           this.components.render(
             "list",
-            N(
+            L(
               {
                 ...this.item.binds.value,
                 class: (o = this.classes) == null ? void 0 : o.value.list,

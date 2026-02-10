@@ -1,8 +1,8 @@
 var x = Object.defineProperty;
 var S = (h, t, e) => t in h ? x(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
 var i = (h, t, e) => S(h, typeof t != "symbol" ? t + "" : t, e);
-import { ref as p, computed as l, watch as E, onUnmounted as B, toRef as M, onMounted as A, nextTick as L, h as o } from "vue";
-import { isFilled as C, goScroll as D, isSelected as F, isDomRuntime as m, EventItem as G, ListDataRef as T, toBinds as u, DesignConstructorAbstract as P, isObject as O } from "@dxtmisha/functional";
+import { ref as p, computed as u, watch as B, onUnmounted as E, toRef as M, onMounted as A, nextTick as L, h as o } from "vue";
+import { isFilled as C, goScroll as D, isSelected as F, isDomRuntime as m, EventItem as G, ListDataRef as T, toBinds as l, DesignConstructorAbstract as P, isObject as O } from "@dxtmisha/functional";
 import { E as N } from "./EventClickInclude-CgbuezDm.js";
 import { W as H } from "./WindowClassesInclude-B56usxgx.js";
 import { A as c } from "./AriaStaticInclude-BVCgDZbU.js";
@@ -15,7 +15,7 @@ class R {
     i(this, "item", p());
     i(this, "timeout");
     /** Current search string/ Текущая строка поиска */
-    i(this, "highlight", l(() => {
+    i(this, "highlight", u(() => {
       var t;
       return (t = this.item.value) != null ? t : this.props.highlight;
     }));
@@ -91,7 +91,7 @@ class V {
     /** Active item/ Активный элемент */
     i(this, "item", p());
     /** Returns the value of the selected element/ Возвращает значение выбранного элемента */
-    i(this, "focus", l(() => {
+    i(this, "focus", u(() => {
       var t, e;
       return (e = (t = this.item.value) == null ? void 0 : t.index) != null ? e : this.props.focus;
     }));
@@ -202,12 +202,7 @@ class V {
    * Перемещает к значению в фокусе.
    */
   toElementFocus() {
-    if (this.item.value) {
-      const t = this.getElement();
-      if (t)
-        return this.toElement(t), !0;
-    }
-    return !1;
+    return !!(this.item.value && this.getElement());
   }
   /**
    * Scrolls to the desired element by its index.
@@ -226,7 +221,7 @@ class V {
    */
   toElement(t) {
     const e = "*[data-window-body]";
-    t && t.closest(e) && (console.log("goScroll", e, t), D(e, t));
+    t && t.closest(e) && (D(e, t), this.toFocus());
   }
   /**
    * Sets focus to the element.
@@ -263,7 +258,7 @@ class $ {
    * @param index number in the array/ номер в массиве
    */
   set(t) {
-    return this.index !== t ? (t < 0 ? this.reset() : this.setByIndex(t), this.focus.toElementFocus(), !0) : !1;
+    return this.index !== t ? (t < 0 ? this.reset() : this.setByIndex(t), !0) : !1;
   }
   /**
    * Changes the selected element.
@@ -273,7 +268,7 @@ class $ {
    */
   preparation(t) {
     const e = this.data.map.value, s = e.findIndex((r) => F(r.index, t));
-    this.reset(), s && (this.index = s, e != null && e[s] && this.focus.toElementSelected(e[s].index));
+    this.reset(), s >= 0 && (this.index = s, e != null && e[s] && this.focus.toElementSelected(e[s].index));
   }
   /**
    * Scrolls the element to the selected element
@@ -433,7 +428,7 @@ class U {
      *
      * Проверяет, активное ли меню.
      */
-    i(this, "isActive", l(() => !!this.props.control));
+    i(this, "isActive", u(() => !!this.props.control));
     /**
      * Method for tracking keys when a window is open.
      *
@@ -486,13 +481,13 @@ class U {
               break;
           }
     });
-    this.props = t, this.search = e, this.data = s, this.go = r, E(
+    this.props = t, this.search = e, this.data = s, this.go = r, B(
       this.isActive,
       (a) => {
         a ? this.start() : this.stop();
       },
       { immediate: !0 }
-    ), B(() => this.stop());
+    ), E(() => this.stop());
   }
   /**
    * Checks if the event target is not an input.
@@ -583,20 +578,20 @@ class X {
      *
      * Вычисляемые данные списка
      * */
-    i(this, "list", l(() => this.props.lite ? this.data.liteData.value : this.data.fullData.value));
+    i(this, "list", u(() => this.props.lite ? this.data.liteData.value : this.data.fullData.value));
     /**
      * Computed CSS classes for the cell component.
      *
      * Вычисляемые CSS классы для компонента ячейки.
      */
-    i(this, "classes", l(() => ({
+    i(this, "classes", u(() => ({
       [`${this.className}--highlightActive`]: !!this.props.filterMode && this.data.isHighlight()
     })));
     /**
      * Computed binding properties for list items/
      * Вычисляемые привязочные свойства для элементов списка
      * */
-    i(this, "itemBinds", l(() => {
+    i(this, "itemBinds", u(() => {
       var t;
       return {
         tag: this.props.tag,
@@ -639,7 +634,7 @@ class X {
    * @param item List item data/ данные элемента списка
    */
   getItem(t) {
-    return u(
+    return l(
       this.itemBinds.value,
       t,
       {
@@ -655,7 +650,7 @@ class X {
    * @param item List item data/ данные элемента списка
    */
   getItemGroup(t) {
-    return u(
+    return l(
       this.itemBinds.value,
       this.props.itemGroupAttrs,
       t,
@@ -672,7 +667,7 @@ class X {
    * @param item List item data/ данные элемента списка
    */
   getItemMenu(t) {
-    return u(
+    return l(
       this.itemBinds.value,
       this.props.itemMenuAttrs,
       t,
@@ -736,7 +731,7 @@ class X {
    * @param icon Icon to display/ иконка для отображения
    */
   getItemManagement(t, e, s) {
-    return u(
+    return l(
       this.itemBinds.value,
       this.props.itemManagementAttrs,
       t,
@@ -816,7 +811,7 @@ class Z extends P {
      */
     i(this, "renderItemMenu", (e, s) => this.components.renderOne(
       "listItem",
-      u(
+      l(
         this.item.getItemManagementFormMenu(e, !!s.open.value),
         s.binds
       )

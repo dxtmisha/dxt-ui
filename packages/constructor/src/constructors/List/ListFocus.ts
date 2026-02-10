@@ -158,17 +158,7 @@ export class ListFocus {
    * Перемещает к значению в фокусе.
    */
   toElementFocus(): boolean {
-    if (this.item.value) {
-      const element = this.getElement()
-
-      if (element) {
-        this.toElement(element)
-
-        return true
-      }
-    }
-
-    return false
+    return Boolean(this.item.value && this.getElement())
   }
 
   /**
@@ -196,6 +186,7 @@ export class ListFocus {
       && element.closest(selector)
     ) {
       goScroll(selector, element)
+      this.toFocus()
     }
   }
 

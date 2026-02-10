@@ -196,6 +196,13 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * Устанавливает фокус с временным изменением табиндекса.
    */
   protected toFocus(): this {
+    const firstElement = this.findFirstElement()
+
+    if (firstElement) {
+      firstElement.focus()
+      return this
+    }
+
     const element = this.getElement()
 
     if (element) {

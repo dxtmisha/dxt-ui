@@ -2,10 +2,10 @@ var V = Object.defineProperty;
 var G = (h, t, e) => t in h ? V(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
 var i = (h, t, e) => G(h, typeof t != "symbol" ? t + "" : t, e);
 import { h as p, computed as m, ref as v, watch as f, onMounted as K, onUnmounted as j, Teleport as Z } from "vue";
-import { toBind as z, getBind as J, getRef as Q, executePromise as y, getElement as k, isDomRuntime as B, EventItem as S, setRef as tt, frame as et, isEnter as st, getMouseClientX as it, getMouseClientY as nt, DesignConstructorAbstract as ot } from "@dxtmisha/functional";
+import { toBind as z, getBind as J, getRef as Q, executePromise as y, getElement as k, isDomRuntime as B, EventItem as I, setRef as tt, frame as et, isEnter as st, getMouseClientX as it, getMouseClientY as nt, DesignConstructorAbstract as ot } from "@dxtmisha/functional";
 import { A as w } from "./AriaStaticInclude-BVCgDZbU.js";
 import { M as rt } from "./ModelInclude-BiYm_iCQ.js";
-import { T as ht } from "./TabIndexInclude-D8IAq5y9.js";
+import { T as ht } from "./TabIndexInclude-DlfVr9yK.js";
 import { T as at } from "./TextInclude-DyFukbT2.js";
 import { a as c, _ as b, b as lt } from "./WindowClassesInclude-B56usxgx.js";
 import { W as _t } from "./WindowClassesInclude-B56usxgx.js";
@@ -1008,7 +1008,7 @@ class xt {
    * Стартует событие слежения за статусами.
    */
   start() {
-    this.event || (this.event = new S(window, ["resize"], this.listener)), this.event.start();
+    this.event || (this.event = new I(window, ["resize"], this.listener)), this.event.start();
   }
   /**
    * Restores the data to its previous state.
@@ -1253,7 +1253,7 @@ class kt {
     }, 48), this.status.toClose();
   }
 }
-class St {
+class It {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1425,7 +1425,7 @@ class St {
     return !!this.getTarget().closest(`.${this.classes.list.controlOpenOnly}`);
   }
 }
-class It {
+class St {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1480,7 +1480,7 @@ class It {
     i(this, "onGlobal", async (t) => {
       (!t || t.type === "click" && (!this.props.contextmenu || this.open.item.value) || t.type === "contextmenu" && this.props.contextmenu) && (this.open.item.value ? (this.flash.setControl(t == null ? void 0 : t.target), await this.verification.update(t == null ? void 0 : t.target)) : this.event.stop());
     });
-    this.props = t, this.tabIndex = e, this.status = s, this.client = n, this.flash = o, this.open = r, this.verification = a, this.event = new S(
+    this.props = t, this.tabIndex = e, this.status = s, this.client = n, this.flash = o, this.open = r, this.verification = a, this.event = new I(
       "body",
       ["click", "contextmenu"],
       this.onGlobal
@@ -1610,7 +1610,7 @@ class Wt {
     }), this.elements = [];
   }
 }
-class Ot {
+class Tt {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -1645,7 +1645,7 @@ class Ot {
    * @param TabIndexConstructor class for working with tab index/ класс для работы с индексом табуляции
    * @param TextConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(t, e, s, n, o, r, a, l, d = lt, u = pt, C = vt, x = mt, I = Bt, W = ct, O = It, T = wt, E = Wt, H = gt, A = kt, D = Ct, $ = yt, N = bt, P = xt, R = ft, L = Mt, Y = St, F = ut, X = rt, _ = dt, q = ht, U = at) {
+  constructor(t, e, s, n, o, r, a, l, d = lt, u = pt, C = vt, x = mt, S = Bt, W = ct, T = St, O = wt, E = Wt, H = gt, A = kt, D = Ct, $ = yt, N = bt, P = xt, R = ft, L = Mt, Y = It, F = ut, X = rt, _ = dt, q = ht, U = at) {
     /** Client instance for window management/ Экземпляр клиента для управления окном */
     i(this, "client");
     /** Hook instance for window events/ Экземпляр хука для событий окна */
@@ -1728,8 +1728,9 @@ class Ot {
       this.event.stop(), this.staticMode.stop();
     });
     this.props = t, this.refs = e, this.classDesign = n, this.className = o, this.components = r, this.slots = a, this.emits = l, this.hook = new H(t), this.classes = new d(o), this.element = new x(this.classes, s), this.client = new u(this.element), this.tabIndex = new q(
-      () => this.element.getBody()
-    ), this.status = new R(this.element), this.persistent = new $(t, this.classes, this.element), this.flash = new T(t, this.classes), this.coordinates = new C(this.classes, this.element), this.position = new N(t, this.client, this.element, this.coordinates), this.origin = new D(this.client, this.element, this.position), this.staticMode = new P(t, e, this.element), this.emit = new I(this.classes, this.element, l), this.styles = new L(
+      () => this.element.getBody(),
+      () => !!this.props.autoTabIndex
+    ), this.status = new R(this.element), this.persistent = new $(t, this.classes, this.element), this.flash = new O(t, this.classes), this.coordinates = new C(this.classes, this.element), this.position = new N(t, this.client, this.element, this.coordinates), this.origin = new D(this.client, this.element, this.position), this.staticMode = new P(t, e, this.element), this.emit = new S(this.classes, this.element, l), this.styles = new L(
       this.element,
       this.coordinates,
       this.position,
@@ -1755,7 +1756,7 @@ class Ot {
       this.element,
       this.staticMode,
       this.open
-    ), this.event = new O(
+    ), this.event = new T(
       t,
       this.tabIndex,
       this.status,
@@ -1797,6 +1798,7 @@ const Lt = {
   indent: 4,
   ariaHaspopup: "dialog",
   role: "dialog",
+  autoTabIndex: !0,
   closeOnEsc: !0,
   // :default [!] System label / Системная метка
   axis: "y",
@@ -1811,7 +1813,7 @@ class Yt extends ot {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor window item class/ класс элемента окна
    */
-  constructor(e, s, n, o = Ot) {
+  constructor(e, s, n, o = Tt) {
     super(
       e,
       s,
@@ -2027,7 +2029,7 @@ class Yt extends ot {
   }
 }
 export {
-  Ot as Window,
+  Tt as Window,
   _t as WindowClassesInclude,
   Yt as WindowDesign,
   Ut as WindowInclude,

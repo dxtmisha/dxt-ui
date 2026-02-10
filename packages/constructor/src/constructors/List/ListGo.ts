@@ -46,7 +46,6 @@ export class ListGo {
         this.setByIndex(index)
       }
 
-      this.focus.toElementFocus()
       return true
     }
 
@@ -65,7 +64,7 @@ export class ListGo {
 
     this.reset()
 
-    if (index) {
+    if (index >= 0) {
       this.index = index
 
       if (map?.[index]) {

@@ -19,10 +19,10 @@ class x {
    * @param ListGroupOpenConstructor class for working with list group open/ класс для работы с открытием группы списка
    * @param WindowIncludeConstructor class for working with window/ класс для работы с окном
    */
-  constructor(t, s, e, o, r, h, p, a, m = f, l = g) {
+  constructor(t, s, e, o, r, h, a, p, l = f, m = g) {
     n(this, "open");
     n(this, "window");
-    this.props = t, this.refs = s, this.element = e, this.classDesign = o, this.className = r, this.components = h, this.slots = p, this.emits = a, this.open = new m(this.props), this.window = new l(
+    this.props = t, this.refs = s, this.element = e, this.classDesign = o, this.className = r, this.components = h, this.slots = a, this.emits = p, this.open = new l(this.props), this.window = new m(
       this.props,
       this.className,
       this.components,
@@ -37,7 +37,7 @@ class x {
     );
   }
 }
-const b = {};
+const D = {};
 class M extends w {
   /**
    * Constructor
@@ -111,6 +111,7 @@ class M extends w {
         ...this.getAttrs(),
         open: this.item.open.is.value,
         class: (s = this.classes) == null ? void 0 : s.value.main,
+        autoTabIndex: !1,
         closeOnEsc: !1
       }
     );
@@ -119,5 +120,5 @@ class M extends w {
 export {
   x as ListMenu,
   M as ListMenuDesign,
-  b as defaultsListMenu
+  D as defaultsListMenu
 };

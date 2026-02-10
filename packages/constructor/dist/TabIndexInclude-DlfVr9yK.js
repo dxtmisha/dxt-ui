@@ -1,8 +1,8 @@
 var l = Object.defineProperty;
 var m = (s, t, e) => t in s ? l(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var o = (s, t, e) => m(s, typeof t != "symbol" ? t + "" : t, e);
-import { onUnmounted as h } from "vue";
-import { isDomRuntime as r, isFunction as f, getRef as u, EventItem as c } from "@dxtmisha/functional";
+var r = (s, t, e) => m(s, typeof t != "symbol" ? t + "" : t, e);
+import { onUnmounted as f } from "vue";
+import { isDomRuntime as o, isFunction as h, getRef as u, EventItem as c } from "@dxtmisha/functional";
 class v {
   /**
    * Constructor
@@ -11,23 +11,23 @@ class v {
    */
   constructor(t, e = () => !0) {
     /** Previously focused element/ Ранее сфокусированный элемент */
-    o(this, "oldElement");
+    r(this, "oldElement");
     /** Event item for focus events/ Элемент события для событий фокуса */
-    o(this, "event");
+    r(this, "event");
     /**
      * Event listener for keyboard events.
      *
      * Слушатель событий для событий клавиатуры.
      * @param event Keyboard event/ Событие клавиатуры
      */
-    o(this, "listenEvent", (t) => {
+    r(this, "listenEvent", (t) => {
       var i, n;
       if (!this.isTab(t))
         return;
       const e = document.activeElement;
       e && (this.isShift(t) ? e === this.findFirstElement() && ((i = this.findLastElement()) == null || i.focus(), t.preventDefault()) : e === this.findLastElement() && ((n = this.findFirstElement()) == null || n.focus(), t.preventDefault()));
     });
-    this.element = t, this.active = e, h(() => {
+    this.element = t, this.active = e, f(() => {
       this.stopEvent(), this.event = void 0;
     });
   }
@@ -37,7 +37,7 @@ class v {
    * Устанавливает фокус на элемент.
    */
   goTo() {
-    return this.isElement() && this.active() && r() && (this.toFocus(), this.startEvent()), this;
+    return this.isElement() && this.active() && o() && (this.toFocus(), this.startEvent()), this;
   }
   /**
    * Reset focus to the previously focused element.
@@ -63,7 +63,7 @@ class v {
    */
   updateOldElement() {
     var t, e;
-    if (r()) {
+    if (o()) {
       const i = (e = (t = document.activeElement) == null ? void 0 : t.shadowRoot) == null ? void 0 : e.activeElement;
       this.oldElement = i != null ? i : document.activeElement;
     }
@@ -100,7 +100,7 @@ class v {
    * Получает элемент.
    */
   getElement() {
-    return f(this.element) ? this.element() : u(this.element);
+    return h(this.element) ? this.element() : u(this.element);
   }
   /**
    * Find the first focusable element.
@@ -137,9 +137,12 @@ class v {
    * Устанавливает фокус с временным изменением табиндекса.
    */
   toFocus() {
-    const t = this.getElement();
-    return t && (t.setAttribute("tabindex", "-1"), t.focus(), requestAnimationFrame(() => {
-      t.removeAttribute("tabindex");
+    const t = this.findFirstElement();
+    if (t)
+      return t.focus(), this;
+    const e = this.getElement();
+    return e && (e.setAttribute("tabindex", "-1"), e.focus(), requestAnimationFrame(() => {
+      e.removeAttribute("tabindex");
     })), this;
   }
   /**

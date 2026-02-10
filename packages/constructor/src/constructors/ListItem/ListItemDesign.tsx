@@ -189,9 +189,9 @@ export class ListItemDesign<
         { class: this.classes?.value.context },
         [
           ...this.item.prefix.render(),
+          ...this.item.label.render(),
           ...this.item.caption.render(),
           ...this.item.suffix.render(),
-          ...this.item.label.render(),
           ...this.item.badge.render()
         ]
       )

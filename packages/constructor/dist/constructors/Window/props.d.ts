@@ -42,6 +42,7 @@ export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPr
     'modelOpen'?: boolean;
     'onUpdate:open'?: (value: boolean) => void;
     'onUpdate:modelOpen'?: (value: boolean) => void;
+    'autoTabIndex'?: boolean;
     'closeOnEsc'?: boolean;
     'openOnArrowDown'?: boolean;
     /**
@@ -68,5 +69,6 @@ export declare const defaultsWindow: {
     indent: number;
     ariaHaspopup: string;
     role: string;
+    autoTabIndex: boolean;
     closeOnEsc: boolean;
 };

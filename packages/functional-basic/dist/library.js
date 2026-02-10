@@ -4765,11 +4765,13 @@ function Me(i, t) {
 const At = 0;
 function Qe(i, t, e) {
   const s = t == null ? void 0 : t.closest(i);
-  if (t && s && s.scrollHeight !== s.offsetHeight)
+  if (t && s && s.scrollHeight !== s.offsetHeight) {
+    const n = s.getBoundingClientRect(), o = t.getBoundingClientRect();
     if (e) {
-      const n = e.getBoundingClientRect(), o = s.getBoundingClientRect(), a = t.getBoundingClientRect();
-      s.scrollTop = t.offsetTop - (n.top - o.top) - (n.height / 2 - a.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
-    } else s.scrollTop > t.offsetTop ? s.scrollTop = t.offsetTop - At : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight + At);
+      const a = e.getBoundingClientRect();
+      s.scrollTop = t.offsetTop - (a.top - n.top) - (a.height / 2 - o.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
+    } else s.scrollTop > t.offsetTop ? s.scrollTop = o.top - n.top - At : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = o.top - n.top + o.height - n.height + At);
+  }
 }
 function Xe(i, t, e = 0) {
   if (!l())

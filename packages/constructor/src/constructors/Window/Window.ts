@@ -167,7 +167,8 @@ export class Window {
     this.element = new WindowElementConstructor(this.classes, element)
     this.client = new WindowClientConstructor(this.element)
     this.tabIndex = new TabIndexConstructor(
-      () => this.element.getBody()
+      () => this.element.getBody(),
+      () => Boolean(this.props.autoTabIndex)
     )
 
     this.status = new WindowStatusConstructor(this.element)

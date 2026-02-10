@@ -73,6 +73,7 @@ export type WindowPropsBasic<
     'onUpdate:modelOpen'?: (value: boolean) => void
 
     // Technical
+    'autoTabIndex'?: boolean
     'closeOnEsc'?: boolean
     'openOnArrowDown'?: boolean
     /**
@@ -98,6 +99,7 @@ export const defaultsWindow = {
   indent: 4,
   ariaHaspopup: 'dialog',
   role: 'dialog',
+  autoTabIndex: true,
   closeOnEsc: true,
   ...{
     // :default [!] System label / Системная метка

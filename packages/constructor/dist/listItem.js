@@ -223,9 +223,9 @@ class dt extends T {
           { class: (i = this.classes) == null ? void 0 : i.value.context },
           [
             ...this.item.prefix.render(),
+            ...this.item.label.render(),
             ...this.item.caption.render(),
             ...this.item.suffix.render(),
-            ...this.item.label.render(),
             ...this.item.badge.render()
           ]
         )
