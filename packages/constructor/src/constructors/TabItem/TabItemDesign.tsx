@@ -67,9 +67,6 @@ export class TabItemDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -80,8 +77,7 @@ export class TabItemDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      ...this.item.event.expose
     } as EXPOSE
   }
 
@@ -106,10 +102,7 @@ export class TabItemDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -118,12 +111,16 @@ export class TabItemDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    const children: any[] = [
+      ...this.item.icon.render(),
+      ...this.item.label.render(),
+      ...this.item.badge.render(),
+      ...this.item.ripple.render()
+    ]
 
     return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
+      ...this.getAttrs(),
       class: this.classes?.value.main
-    })
+    }, children)
   }
 }
