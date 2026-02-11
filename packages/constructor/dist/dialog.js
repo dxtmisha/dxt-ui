@@ -6,7 +6,7 @@ import { getBind as C, toBinds as S } from "@dxtmisha/functional";
 import { L as A } from "./LabelInclude-D-mLvjK5.js";
 import { D as B } from "./DescriptionInclude-D4ane9aR.js";
 import { T as O } from "./TextInclude--GERRCGj.js";
-import { M as T, a as y } from "./ModalDesignAbstract-D4A_a_rC.js";
+import { M as T, a as y } from "./ModalDesignAbstract-CBmtR0oy.js";
 import { W as L } from "./WindowClassesInclude-B56usxgx.js";
 import { I as M } from "./IconInclude-CLqwI29Q.js";
 class P extends T {

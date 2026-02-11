@@ -79,8 +79,8 @@ export class WindowInclude<
    */
   readonly expose: WindowExposeInclude = {
     id: computed(() => String(this.element.value?.id)),
-    open: computed(() => Boolean(this.element.value?.open.value)),
-    control: computed(() => this.element.value?.control.value),
+    open: computed(() => Boolean(this.element.value?.open)),
+    control: computed(() => this.element.value?.control as any),
     setOpen: async (open: boolean) => this.element.value?.setOpen(open),
     toOpen: async () => this.element.value?.toOpen(),
     toClose: async () => this.element.value?.toClose(),

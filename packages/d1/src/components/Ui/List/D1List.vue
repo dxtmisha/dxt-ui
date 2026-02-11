@@ -29,6 +29,7 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-list': true,
+    'd1-list--focus': props.focus,
     [`d1-list--axis--${props.axis}`]: inArray(propsValues.axis, props.axis),
     'd1-list--divider': props.divider
     // :classes-values [!] System label / Системная метка

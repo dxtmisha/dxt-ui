@@ -17,5 +17,8 @@
     "link|font": "{font.labelMedium}",
     "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "focus": {
+    "outline": "{outline.md}"
   }
 }

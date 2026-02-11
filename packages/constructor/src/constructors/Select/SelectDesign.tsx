@@ -119,13 +119,16 @@ export class SelectDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode[] {
+    const open = this.item.menu.expose.open.value
+
     return this.item.field.render(
       {
         default: this.renderMenu
       },
       {
         ...this.getAttrs(),
-        iconTurn: this.item.menu.expose.open.value,
+        focus: open,
+        iconTurn: open,
         class: this.classes?.value.main,
         validationMessage: this.item.validation.message.value
       }

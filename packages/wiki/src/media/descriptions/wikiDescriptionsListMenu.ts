@@ -77,7 +77,7 @@ export const wikiDescriptionsListMenu: StorybookComponentsDescriptionItem = {
   ai: {
     render: `
 <div :class="classDemo.item">
-  <ListMenu v-bind="args">
+  <ListMenu embedded :window-attrs="{open: true}" v-bind="args">
     <template #head="{ binds }">
       <span v-bind="binds as any">head</span>
     </template>

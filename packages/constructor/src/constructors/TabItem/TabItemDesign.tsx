@@ -91,6 +91,9 @@ export class TabItemDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        label: this.getSubClass('label'),
+        icon: this.getSubClass('icon'),
+        badge: this.getSubClass('badge')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

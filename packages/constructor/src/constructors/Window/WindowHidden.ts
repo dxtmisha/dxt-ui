@@ -8,6 +8,8 @@ import { WindowStatic } from './WindowStatic'
 import type { WindowOpen } from './WindowOpen'
 import type { WindowProps } from './props'
 
+let windowOpenCounter: number = 0
+
 /**
  * A class for managing the hiding of elements outside the window when it is open.
  *
@@ -33,7 +35,8 @@ export class WindowHidden {
       this.open.item,
       (newValue: boolean) => {
         if (
-          this.props.embedded
+          !this.props.inert
+          || this.props.embedded
           || this.staticMode.item.value
         ) {
           return
@@ -89,6 +92,8 @@ export class WindowHidden {
    * Скрывает элементы вне окна, добавляя атрибут aria-hidden.
    */
   protected toHidden(): void {
+    windowOpenCounter++
+
     const elements = this.findElements()
 
     if (elements) {
@@ -122,6 +127,10 @@ export class WindowHidden {
    * Показывает ранее скрытые элементы, удаляя атрибут aria-hidden.
    */
   protected toShow(): void {
+    if (--windowOpenCounter > 0) {
+      return
+    }
+
     const aria = this.getAriaData()
     this.elements
       .forEach((element: HTMLElement) => {

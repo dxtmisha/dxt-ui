@@ -34,6 +34,7 @@ export declare class MenuInclude<Props extends MenuPropsInclude = MenuPropsInclu
      * Проверяет, нужно ли отображать меню
      */
     readonly is: ComputedRef<boolean>;
+    readonly isOpen: ComputedRef<boolean>;
     /** Computed bindings for the menu/ Вычисляемые привязки для меню */
     readonly binds: ComputedRef<PropsExtra>;
     /** Menu expose functionality/ Функциональность экспорта меню */

@@ -1,6 +1,6 @@
 import { computed as l } from "vue";
 import "@dxtmisha/functional";
-import { M as d, a as g } from "./ModalDesignAbstract-D4A_a_rC.js";
+import { M as d, a as g } from "./ModalDesignAbstract-CBmtR0oy.js";
 const f = {
   barsBackHide: !0,
   // :default [!] System label / Системная метка

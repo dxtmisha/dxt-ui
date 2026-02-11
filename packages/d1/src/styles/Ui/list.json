@@ -9450,6 +9450,33 @@
           }
         }
       },
+      "tabItem": {
+        "name": "d1-tabItem",
+        "type": "component",
+        "value": {
+          "paddingX": {
+            "name": "--d1-tabItem-paddingX",
+            "type": "var",
+            "value": "{grid.paddingX}"
+          },
+          "paddingY": {
+            "name": "--d1-tabItem-paddingY",
+            "type": "var",
+            "value": "{sys.spacing.xs}"
+          },
+          "indicator": {
+            "name": "indicator",
+            "type": "var",
+            "value": {
+              "height": {
+                "name": "--d1-tabItem-indicator-height",
+                "type": "var",
+                "value": "{sys.spacing.xs}"
+              }
+            }
+          }
+        }
+      },
       "textarea": {
         "name": "d1-textarea",
         "type": "component",

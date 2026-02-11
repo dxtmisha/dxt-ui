@@ -37,6 +37,7 @@ import _D1Section from '../components/Ui/Section/D1Section.vue'
 import _D1Select from '../components/Ui/Select/D1Select.vue'
 import _D1SelectValue from '../components/Ui/SelectValue/D1SelectValue.vue'
 import _D1Skeleton from '../components/Ui/Skeleton/D1Skeleton.vue'
+import _D1TabItem from '../components/Ui/TabItem/D1TabItem.vue'
 import _D1Textarea from '../components/Ui/Textarea/D1Textarea.vue'
 import _D1TextareaAutosize from '../components/Ui/TextareaAutosize/D1TextareaAutosize.vue'
 import _D1Tooltip from '../components/Ui/Tooltip/D1Tooltip.vue'
@@ -78,6 +79,7 @@ export const D1Section = _D1Section
 export const D1Select = _D1Select
 export const D1SelectValue = _D1SelectValue
 export const D1Skeleton = _D1Skeleton
+export const D1TabItem = _D1TabItem
 export const D1Textarea = _D1Textarea
 export const D1TextareaAutosize = _D1TextareaAutosize
 export const D1Tooltip = _D1Tooltip
@@ -121,6 +123,7 @@ declare module '@vue/runtime-core' {
     D1Select: typeof D1Select
     D1SelectValue: typeof D1SelectValue
     D1Skeleton: typeof D1Skeleton
+    D1TabItem: typeof D1TabItem
     D1Textarea: typeof D1Textarea
     D1TextareaAutosize: typeof D1TextareaAutosize
     D1Tooltip: typeof D1Tooltip

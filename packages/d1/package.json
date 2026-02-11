@@ -206,6 +206,10 @@
     "./D1Textarea": {
       "types": "./dist/D1Textarea.d.ts",
       "default": "./dist/D1Textarea.js"
+    },
+    "./D1TabItem": {
+      "types": "./dist/D1TabItem.d.ts",
+      "default": "./dist/D1TabItem.js"
     }
   },
   "buildOptions": {

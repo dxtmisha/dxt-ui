@@ -15,10 +15,20 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.style,
       description: {
-        en: 'Places window in viewport: center, edges or corners',
+        en: 'Places a window in viewport: center, edges or corners',
         ru: 'Позиционирует окно во вьюпорте: центр, края или углы'
       },
       options: []
+    }
+  },
+  'window.autoTabIndex': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Automatically manages the tab index for the window',
+        ru: 'Автоматически управляет индексом табуляции для окна'
+      }
     }
   },
   'window.axis': {
@@ -49,6 +59,16 @@ export const wikiWindow: StorybookArgsToList = {
       description: {
         en: 'Hook called before opening; return false to prevent opening',
         ru: 'Хук вызывается перед открытием; возврат false предотвращает открытие'
+      }
+    }
+  },
+  'window.inert': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Blocks interaction with external elements',
+        ru: 'Блокирует управление внешними элементами'
       }
     }
   },
@@ -169,6 +189,16 @@ export const wikiWindow: StorybookArgsToList = {
       }
     }
   },
+  'window.openOnArrowDown': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Opens the window when the arrow down key is pressed',
+        ru: 'Открывает окно при нажатии клавиши стрелка вниз'
+      }
+    }
+  },
   'window.origin': {
     type: StorybookControl.select,
     options: {
@@ -185,7 +215,7 @@ export const wikiWindow: StorybookArgsToList = {
     options: {
       category: StorybookCategory.option,
       description: {
-        en: 'Sets anchor element for positioning',
+        en: 'Sets an anchor element for positioning',
         ru: 'Задает опорный элемент для позиционирования'
       }
     }

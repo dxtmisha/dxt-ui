@@ -72,7 +72,7 @@ export class WindowEvent {
    */
   readonly onKeydown = async (event: MouseEvent & TouchEvent | KeyboardEvent): Promise<void> => {
     if (
-      isEnter(event as KeyboardEvent)
+      isEnter(event as KeyboardEvent, false)
       || this.isArrowDown(event as KeyboardEvent)
     ) {
       event.preventDefault()

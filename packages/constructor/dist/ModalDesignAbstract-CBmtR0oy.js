@@ -5,7 +5,7 @@ import { h as d } from "vue";
 import { getElementId as v, DesignConstructorAbstract as I, toBinds as A } from "@dxtmisha/functional";
 import { B as S } from "./BarsInclude-BOEoY-O4.js";
 import { A as g } from "./ActionsInclude-H5ZWeXJj.js";
-import { W as D } from "./WindowInclude-BWm4-0Gh.js";
+import { W as D } from "./WindowInclude-D6g9qiAt.js";
 class F {
   /**
    * Constructor

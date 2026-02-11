@@ -39,6 +39,13 @@
       @include ui.color(#{var(--d1-sys-palette-onSurface)});
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
     }
+    
+    @include ui.focus {
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+    }
   }
   // :style [!] System label / Системная метка
 

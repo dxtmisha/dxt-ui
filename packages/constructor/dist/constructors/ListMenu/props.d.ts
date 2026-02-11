@@ -4,7 +4,9 @@ export type ListMenuPropsToken = {
     axis?: 'x' | 'y';
     divider?: boolean;
 };
-export type ListMenuPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic> = WindowPropsInclude<Window>;
+export type ListMenuPropsBasic<Window extends WindowPropsBasic = WindowPropsBasic> = WindowPropsInclude<Window> & {
+    control?: boolean;
+};
 /**
  * Type describing incoming properties.
  *

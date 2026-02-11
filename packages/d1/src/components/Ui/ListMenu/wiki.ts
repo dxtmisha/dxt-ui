@@ -8,6 +8,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'autoClose', type: 'boolean' },
   { name: 'axis', type: 'string', option: ['x', 'y'] },
+  { name: 'control', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
   { name: 'divider', type: 'boolean' },
   { name: 'open', type: 'boolean' },

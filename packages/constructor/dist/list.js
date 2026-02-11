@@ -1,8 +1,8 @@
-var S = Object.defineProperty;
-var C = (h, t, e) => t in h ? S(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
-var i = (h, t, e) => C(h, typeof t != "symbol" ? t + "" : t, e);
-import { ref as g, computed as l, watch as E, onUnmounted as B, toRef as L, onMounted as M, nextTick as A, h as o } from "vue";
-import { isFilled as D, goScroll as F, isSelected as G, isDomRuntime as m, EventItem as T, ListDataRef as P, toBinds as u, DesignConstructorAbstract as O, isObject as N } from "@dxtmisha/functional";
+var B = Object.defineProperty;
+var S = (o, t, e) => t in o ? B(o, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : o[t] = e;
+var i = (o, t, e) => S(o, typeof t != "symbol" ? t + "" : t, e);
+import { ref as g, computed as l, watch as C, onUnmounted as E, toRef as L, onMounted as M, nextTick as A, h } from "vue";
+import { isFilled as F, goScroll as D, isSelected as G, isDomRuntime as m, EventItem as T, ListDataRef as P, toBinds as u, DesignConstructorAbstract as O, isObject as N } from "@dxtmisha/functional";
 import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
 import { E as H } from "./EventClickInclude-WHJqxZ1b.js";
 import { W as R } from "./WindowClassesInclude-B56usxgx.js";
@@ -55,7 +55,7 @@ class _ {
    * @param value source value/ исходное значение
    */
   getValue(t) {
-    if (D(t))
+    if (F(t))
       return t.trim();
   }
   /**
@@ -221,7 +221,7 @@ class $ {
    */
   toElement(t) {
     const e = "*[data-window-body]";
-    t && t.closest(e) && (F(e, t), this.toFocus());
+    t && t.closest(e) && (D(e, t), this.toFocus());
   }
   /**
    * Sets focus to the element.
@@ -231,7 +231,7 @@ class $ {
    */
   toFocus(t = V) {
     var e;
-    if (t > 0 && this.element.value) {
+    if (t > 0 && this.element.value && this.props.control) {
       const s = this.getElement();
       s ? s.focus() : ((e = document.activeElement) == null || e.blur(), setTimeout(() => {
         this.toFocus(t - 1);
@@ -430,6 +430,22 @@ class q {
      */
     i(this, "isActive", l(() => !!this.props.control));
     /**
+     * Handler for the focus event.
+     *
+     * Обработчик события фокуса.
+     */
+    i(this, "onFocus", () => {
+      this.props.control || this.start();
+    });
+    /**
+     * Handler for the blur event.
+     *
+     * Обработчик события потери фокуса.
+     */
+    i(this, "onBlur", () => {
+      this.props.control || this.stop();
+    });
+    /**
      * Method for tracking keys when a window is open.
      *
      * Метод для отслеживания нажатий при открытом окне.
@@ -481,13 +497,13 @@ class q {
               break;
           }
     });
-    this.props = t, this.search = e, this.data = s, this.go = r, E(
+    this.props = t, this.search = e, this.data = s, this.go = r, C(
       this.isActive,
       (a) => {
         a ? this.start() : this.stop();
       },
       { immediate: !0 }
-    ), B(() => this.stop());
+    ), E(() => this.stop());
   }
   /**
    * Checks if the event target is not an input.
@@ -624,7 +640,7 @@ class X {
       this.refs.liteThreshold,
       void 0,
       this.refs.max
-    ), this.go = new k(this.props, this.focus, this.data, this.emits), this.control = new I(this.props, this.search, this.data, this.go), this.event = new v(void 0, void 0, p), this.windowClasses = new w(r), M(async () => {
+    ), this.go = new k(this.props, this.focus, this.data, this.emits), this.control = new I(this.props, this.search, this.data, this.go), this.event = new v(void 0, void 0, p), this.windowClasses = new w(r), this.props.control && M(async () => {
       await A(), this.go.preparationBySelected();
     });
   }
@@ -767,6 +783,7 @@ const Z = {
   keyValue: "value",
   tag: "div",
   role: "listbox",
+  tabindex: 0,
   // :default [!] System label / Системная метка
   axis: "y"
 };
@@ -835,7 +852,7 @@ class tt extends O {
      */
     i(this, "renderSpace", (e) => {
       var s;
-      return o("div", {
+      return h("div", {
         key: e.value,
         class: [
           (s = this.classes) == null ? void 0 : s.value.space,
@@ -852,7 +869,7 @@ class tt extends O {
      */
     i(this, "renderLine", (e) => {
       var s;
-      return o("div", {
+      return h("div", {
         key: e.value,
         class: [
           (s = this.classes) == null ? void 0 : s.value.line,
@@ -869,7 +886,7 @@ class tt extends O {
      */
     i(this, "renderSubtitle", (e) => {
       var s;
-      return o("div", {
+      return h("div", {
         key: e.value,
         class: [
           (s = this.classes) == null ? void 0 : s.value.subtitle,
@@ -893,7 +910,7 @@ class tt extends O {
           this.item.windowClasses.get().static
         ]
       };
-      return this.slots && e.value in this.slots ? o("div", s, this.initSlot(e.value)) : o("div", {
+      return this.slots && e.value in this.slots ? h("div", s, this.initSlot(e.value)) : h("div", {
         ...s,
         innerHTML: e.label
       });
@@ -993,13 +1010,16 @@ class tt extends O {
    */
   initRender() {
     var e;
-    return o(
+    return h(
       "div",
       {
         ...this.getAttrs(),
         ref: this.element,
         class: (e = this.classes) == null ? void 0 : e.value.main,
-        ...c.role(this.props.role)
+        ...c.role(this.props.role),
+        tabindex: this.props.control ? void 0 : this.props.tabindex,
+        onFocus: this.item.control.onFocus,
+        onBlur: this.item.control.onBlur
       },
       this.renderData()
     );
@@ -1038,7 +1058,7 @@ class tt extends O {
           a.push(this.renderItem(e, n));
           break;
       }
-    }), a.push(o("div")), a;
+    }), a.push(h("div")), a;
   }
   /**
    * Determines if highlighting is required.

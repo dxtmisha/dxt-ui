@@ -5,9 +5,9 @@
   "paddingY": {
     "_type": "var"
   },
-  "transition-property": "background-color, background-image, border, box-shadow",
-  "transition-duration": "{d.sys.transitionDuration.fade.enter}",
-  "transition-function": "{d.sys.transitionFunction.standard}",
+  "indicator": {
+    "_type": "var"
+  },
   "#label": {},
   "#icon": {},
   "#badge": {},

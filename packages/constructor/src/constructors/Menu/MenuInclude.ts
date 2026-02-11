@@ -52,6 +52,8 @@ export class MenuInclude<
    */
   readonly is = computed(() => Boolean(!this.props.disabled && this.components))
 
+  readonly isOpen = computed<boolean>(() => Boolean(this.element.value?.open))
+
   /** Computed bindings for the menu/ Вычисляемые привязки для меню */
   readonly binds = computed<PropsExtra>(() => {
     const props = toBinds<PropsExtra>(

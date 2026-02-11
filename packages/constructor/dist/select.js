@@ -5,7 +5,7 @@ import { computed as r, ref as T, h as c } from "vue";
 import { toBinds as h, executeFunction as y, isFilled as k, DesignConstructorAbstract as B } from "@dxtmisha/functional";
 import { F as D, a as N, b as L, c as O, d as q, e as W, f as K } from "./FieldEventInclude-DBRqmzpF.js";
 import { F as R } from "./FieldInclude-BKoBWZdj.js";
-import { M as U } from "./MenuInclude-DfGCfr_I.js";
+import { M as U } from "./MenuInclude-CiSj2UK3.js";
 import { A as d } from "./AriaStaticInclude-CAURwJMb.js";
 class j {
   /**
@@ -138,8 +138,8 @@ class G {
     const {
       FieldAttributesIncludeConstructor: g = D,
       FieldChangeIncludeConstructor: I = N,
-      FieldCodeIncludeConstructor: C = L,
-      FieldElementIncludeConstructor: f = O,
+      FieldCodeIncludeConstructor: f = L,
+      FieldElementIncludeConstructor: C = O,
       FieldEventIncludeConstructor: b = q,
       FieldIncludeConstructor: F = R,
       FieldValidationIncludeConstructor: w = W,
@@ -148,14 +148,14 @@ class G {
       SelectFilterConstructor: M = z,
       SelectInputConstructor: E = j
     } = p != null ? p : {};
-    this.attributes = new g(this.props), this.change = new I(this.props), this.elementItem = new f(
+    this.attributes = new g(this.props), this.change = new I(this.props), this.elementItem = new C(
       this.props,
       this.element
     ), this.value = new S(
       this.props,
       this.refs,
       this.elementItem
-    ), this.code = new C(this.props), this.validation = new w(
+    ), this.code = new f(this.props), this.validation = new w(
       this.props,
       this.attributes,
       this.value,
@@ -418,15 +418,17 @@ class $ extends B {
    * Метод для рендеринга.
    */
   initRender() {
-    var t;
+    var e;
+    const t = this.item.menu.expose.open.value;
     return this.item.field.render(
       {
         default: this.renderMenu
       },
       {
         ...this.getAttrs(),
-        iconTurn: this.item.menu.expose.open.value,
-        class: (t = this.classes) == null ? void 0 : t.value.main,
+        focus: t,
+        iconTurn: t,
+        class: (e = this.classes) == null ? void 0 : e.value.main,
         validationMessage: this.item.validation.message.value
       }
     );

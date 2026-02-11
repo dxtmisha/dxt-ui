@@ -9,6 +9,10 @@ import type { AriaRolePropsInclude } from '../../types/ariaTypes'
 
 type TabItemPropsToken = {
   // :type [!] System label / Системная метка
+  focus?: boolean
+  open?: boolean
+  selected?: boolean
+  disabled?: boolean
   // :type [!] System label / Системная метка
 }
 

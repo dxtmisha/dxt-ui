@@ -431,15 +431,15 @@ class Yt {
    * Обновление данных об классе.
    */
   updateClasses() {
-    var i, n, r, u;
+    var i, n, r;
     const t = (i = this.classesSub) == null ? void 0 : i.value, e = (r = (n = this.options) == null ? void 0 : n.classes) == null ? void 0 : r.value;
     return t && e ? {
       ...t,
       ...e,
       main: {
         ...this.toClass(t == null ? void 0 : t.main),
-        ...this.toClass(e == null ? void 0 : e.main),
-        ...this.toClass((u = this.attrs) == null ? void 0 : u.class)
+        ...this.toClass(e == null ? void 0 : e.main)
+        // ...this.toClass(this.attrs?.class)
       }
     } : e != null ? e : {
       main: {}

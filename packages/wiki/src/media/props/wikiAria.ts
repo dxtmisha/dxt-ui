@@ -109,6 +109,17 @@ export const wikiAria: StorybookArgsToList = {
       }
     }
   },
+  roleList: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.aria,
+      type: 'string',
+      description: {
+        en: 'Defines the role of the list element for accessibility',
+        ru: 'Определяет роль элемента list для доступности'
+      }
+    }
+  },
   tabindex: {
     type: StorybookControl.number,
     options: {

@@ -20,7 +20,7 @@ defineOptions({
     <!-- :component-render [!] System label / Системная метка -->
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
-  <D1ListMenu v-bind="args">
+  <D1ListMenu embedded :window-attrs="{open: true}" v-bind="args">
     <template #head="{ binds }">
       <span v-bind="binds as any">head</span>
     </template>

@@ -10,6 +10,7 @@ export const propsValues = {
 
 export type PropsToken = {
   // :type [!] System label / Системная метка
+  focus?: boolean
   axis?: 'x' | 'y'
   divider?: boolean
   // :type [!] System label / Системная метка

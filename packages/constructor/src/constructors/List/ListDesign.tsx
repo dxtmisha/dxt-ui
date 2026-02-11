@@ -136,7 +136,10 @@ export class ListDesign<
         ...this.getAttrs(),
         ref: this.element,
         class: this.classes?.value.main,
-        ...AriaStaticInclude.role(this.props.role)
+        ...AriaStaticInclude.role(this.props.role),
+        tabindex: this.props.control ? undefined : this.props.tabindex,
+        onFocus: this.item.control.onFocus,
+        onBlur: this.item.control.onBlur
       },
       this.renderData()
     )

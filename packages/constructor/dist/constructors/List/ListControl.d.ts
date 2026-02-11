@@ -33,6 +33,18 @@ export declare class ListControl {
      */
     readonly isActive: ComputedRef<boolean>;
     /**
+     * Handler for the focus event.
+     *
+     * Обработчик события фокуса.
+     */
+    readonly onFocus: () => void;
+    /**
+     * Handler for the blur event.
+     *
+     * Обработчик события потери фокуса.
+     */
+    readonly onBlur: () => void;
+    /**
      * Checks if the event target is not an input.
      *
      * Проверяет, не является ли цель события input.

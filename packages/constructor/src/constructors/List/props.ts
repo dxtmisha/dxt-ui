@@ -58,6 +58,7 @@ export type ListPropsBasic<
 
     // ARIA
     roleItem?: RoleType
+    tabindex?: string | number
 
     // Technical
     control?: boolean
@@ -80,6 +81,7 @@ export const defaultsList = {
   keyValue: 'value',
   tag: 'div',
   role: 'listbox',
+  tabindex: 0,
   ...{
     // :default [!] System label / Системная метка
     axis: 'y'

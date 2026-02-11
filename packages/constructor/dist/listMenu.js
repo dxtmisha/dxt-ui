@@ -4,7 +4,7 @@ var n = (i, t, s) => c(i, typeof t != "symbol" ? t + "" : t, s);
 import { computed as w } from "vue";
 import { DesignConstructorAbstract as f } from "@dxtmisha/functional";
 import { L as g } from "./ListGroupOpen-Bl_HIQoV.js";
-import { W as x } from "./WindowInclude-BWm4-0Gh.js";
+import { W as x } from "./WindowInclude-D6g9qiAt.js";
 class C {
   /**
    * Constructor
@@ -117,6 +117,7 @@ class W extends f {
         ...this.getAttrs(),
         open: this.item.open.is.value,
         class: (s = this.classes) == null ? void 0 : s.value.main,
+        inert: !1,
         autoTabIndex: !1,
         closeOnEsc: !1
       }

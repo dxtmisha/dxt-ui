@@ -35,6 +35,7 @@ const propsNames: StorybookProps = [
   { name: 'imageSize', type: 'string', option: ['sm', 'md', 'lg', 'quarter', 'half'] },
   { name: 'indent', type: 'number' },
   { name: 'inDom', type: 'boolean' },
+  { name: 'inert', type: 'boolean' },
   { name: 'modelOpen', type: 'boolean' },
   { name: 'onUpdate:modelOpen', type: '(value: boolean) => void' },
   { name: 'onUpdate:open', type: '(value: boolean) => void' },

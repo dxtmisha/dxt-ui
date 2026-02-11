@@ -1,18 +1,41 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinTabItem {
+  flex-grow: 1;
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  justify-content: center;
   position: relative;
 
   padding: 0;
 
+  text-wrap: nowrap;
+  white-space: nowrap;
+
   cursor: pointer;
 
-  &__icon {
-    order: 8;
-    z-index: 4;
+  scroll-snap-align: start;
+
+  &::before {
+    position: absolute;
+    top: ui.v('??indicator.top', auto);
+    bottom: 0;
+    left: calc(#{ui.v('??paddingX', 0px)} + #{ui.v('??sys.left')});
+    pointer-events: none;
+
+    width: calc(#{ui.v('??sys.width')} - (2 * #{ui.v('??paddingX', 0px)}));
+    height: ui.v('??indicator.height', auto);
+
+    content: " ";
+
+    transition-duration: ui.v('d.sys.transitionDuration.axis');
+    transition-property: none;
+    transition-timing-function: ui.v('d.ref.transitionFunction.e40i80');
+  }
+
+  &__label {
+    order: 4;
   }
 
   &__ripple {
@@ -23,5 +46,13 @@
   &--disabled,
   &--loading {
     cursor: default;
+  }
+
+  &--selected {
+    &::before {
+      left: ui.v('??padding', 0px);
+      transition-property: left, width;
+      width: calc(100% - (2 * #{ui.v('??paddingX', 0px)}));
+    }
   }
 }

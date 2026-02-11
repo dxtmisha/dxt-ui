@@ -30,6 +30,7 @@ export type ListPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, ListIte
     iconArrowDown?: IconValue<Icon>;
     iconArrowRight?: IconValue<Icon>;
     roleItem?: RoleType;
+    tabindex?: string | number;
     control?: boolean;
 };
 /**
@@ -49,4 +50,5 @@ export declare const defaultsList: {
     keyValue: string;
     tag: string;
     role: string;
+    tabindex: number;
 };

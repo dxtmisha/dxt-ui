@@ -49,5 +49,8 @@ export interface TabItemSlots extends LabelSlots {
 export type TabItemClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  label: string
+  icon: string
+  badge: string
   // :classes [!] System label / Системная метка
 }

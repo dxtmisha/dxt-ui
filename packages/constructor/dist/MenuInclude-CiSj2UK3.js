@@ -1,6 +1,6 @@
 var p = Object.defineProperty;
-var r = (s, e, t) => e in s ? p(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
-var n = (s, e, t) => r(s, typeof e != "symbol" ? e + "" : e, t);
+var r = (n, e, t) => e in n ? p(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t;
+var s = (n, e, t) => r(n, typeof e != "symbol" ? e + "" : e, t);
 import { ref as h, computed as o } from "vue";
 import { toBinds as a, getRef as u, toBind as c } from "@dxtmisha/functional";
 class g {
@@ -14,14 +14,18 @@ class g {
    */
   constructor(e, t, i, l, m) {
     /** Reference to menu element/ Ссылка на элемент меню */
-    n(this, "element", h());
+    s(this, "element", h());
     /**
      * Checks whether menu should be displayed/
      * Проверяет, нужно ли отображать меню
      */
-    n(this, "is", o(() => !!(!this.props.disabled && this.components)));
+    s(this, "is", o(() => !!(!this.props.disabled && this.components)));
+    s(this, "isOpen", o(() => {
+      var e;
+      return !!((e = this.element.value) != null && e.open);
+    }));
     /** Computed bindings for the menu/ Вычисляемые привязки для меню */
-    n(this, "binds", o(() => {
+    s(this, "binds", o(() => {
       const e = a(
         u(this.extra),
         this.props.menuAttrs,
@@ -35,7 +39,7 @@ class g {
       };
     }));
     /** Menu expose functionality/ Функциональность экспорта меню */
-    n(this, "expose", {
+    s(this, "expose", {
       open: o(() => {
         var e;
         return !!((e = this.element.value) != null && e.open);
@@ -66,7 +70,7 @@ class g {
      * @param attrs additional attributes/ дополнительные атрибуты
      * @returns VNode array/ массив VNode
      */
-    n(this, "render", (e, t) => this.components ? this.components.render(
+    s(this, "render", (e, t) => this.components ? this.components.render(
       "menu",
       {
         ref: this.element,

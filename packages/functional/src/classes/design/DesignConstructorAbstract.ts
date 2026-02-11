@@ -317,8 +317,8 @@ export abstract class DesignConstructorAbstract<
         ...classesProps,
         main: {
           ...this.toClass(classes?.main),
-          ...this.toClass(classesProps?.main),
-          ...this.toClass(this.attrs?.class)
+          ...this.toClass(classesProps?.main)
+          // ...this.toClass(this.attrs?.class)
         }
       } as CLASSES
     }

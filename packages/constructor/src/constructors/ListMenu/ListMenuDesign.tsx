@@ -123,6 +123,7 @@ export class ListMenuDesign<
         ...this.getAttrs(),
         open: this.item.open.is.value,
         class: this.classes?.value.main,
+        inert: false,
         autoTabIndex: false,
         closeOnEsc: false
       }

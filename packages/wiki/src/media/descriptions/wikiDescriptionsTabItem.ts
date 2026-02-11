@@ -27,7 +27,9 @@ export const wikiDescriptionsTabItem: StorybookComponentsDescriptionItem = {
     ]
   },
   render: `
-      <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm">
+      <div class="wiki-storybook-flex">
+        <DesignComponent v-bind="args"/>
+        <DesignComponent v-bind="args"/>
         <DesignComponent v-bind="args"/>
       </div>
     `,

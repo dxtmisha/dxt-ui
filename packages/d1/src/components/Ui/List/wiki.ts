@@ -12,7 +12,7 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean' },
   { name: 'divider', type: 'boolean' },
   { name: 'filterMode', type: 'boolean' },
-  { name: 'focus', type: 'NumberOrStringOrBoolean' },
+  { name: 'focus', type: 'boolean' },
   { name: 'highlight', type: 'string' },
   { name: 'highlightLengthStart', type: 'number' },
   { name: 'iconArrowDown', type: 'IconValue<Icon>' },
@@ -30,6 +30,7 @@ const propsNames: StorybookProps = [
   { name: 'role', type: 'string' },
   { name: 'roleItem', type: 'string' },
   { name: 'selected', type: 'ListSelectedList' },
+  { name: 'tabindex', type: 'string | number' },
   { name: 'tag', type: 'string', option: ['div', 'button', 'a', 'span'] }
   // :propsList [!] System label / Системная метка
 ]

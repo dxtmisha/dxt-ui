@@ -200,6 +200,7 @@ export class ListFocus {
     if (
       max > 0
       && this.element.value
+      && this.props.control
     ) {
       const element = this.getElement()
 

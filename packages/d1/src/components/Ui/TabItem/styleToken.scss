@@ -1,0 +1,45 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as TabItem;
+
+@include ui.initDesignBasic('d1.tabItem') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include TabItem.mixinTabItem;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-tabItem-paddingX: var(--d1-grid-paddingX);
+    --d1-tabItem-paddingY: var(--d1-sys-spacing-xs);
+    --d1-tabItem-indicator-height: var(--d1-sys-spacing-xs);
+    
+    @include ui.gradientOpacity(#{0}); @include ui.gradient('init');
+    @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
+    
+    &::before {
+      content: ' ';
+    }
+    
+    @include ui.hover {
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
+    }
+    
+    @include ui.active {
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.gradient('init');
+    }
+    
+    &--focus {
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.gradient('init');
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

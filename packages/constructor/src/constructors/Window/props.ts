@@ -73,6 +73,7 @@ export type WindowPropsBasic<
     'onUpdate:modelOpen'?: (value: boolean) => void
 
     // Technical
+    'inert'?: boolean
     'autoTabIndex'?: boolean
     'closeOnEsc'?: boolean
     'openOnArrowDown'?: boolean
@@ -99,6 +100,7 @@ export const defaultsWindow = {
   indent: 4,
   ariaHaspopup: 'dialog',
   role: 'dialog',
+  inert: true,
   autoTabIndex: true,
   closeOnEsc: true,
   ...{

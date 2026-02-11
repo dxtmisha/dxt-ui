@@ -56,6 +56,28 @@ export class ListControl {
   })
 
   /**
+   * Handler for the focus event.
+   *
+   * Обработчик события фокуса.
+   */
+  readonly onFocus = () => {
+    if (!this.props.control) {
+      this.start()
+    }
+  }
+
+  /**
+   * Handler for the blur event.
+   *
+   * Обработчик события потери фокуса.
+   */
+  readonly onBlur = () => {
+    if (!this.props.control) {
+      this.stop()
+    }
+  }
+
+  /**
    * Checks if the event target is not an input.
    *
    * Проверяет, не является ли цель события input.

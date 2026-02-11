@@ -117,10 +117,12 @@ export class List {
     this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
     this.windowClasses = new WindowClassesIncludeConstructor(classDesign)
 
-    onMounted(async () => {
-      await nextTick()
-      this.go.preparationBySelected()
-    })
+    if (this.props.control) {
+      onMounted(async () => {
+        await nextTick()
+        this.go.preparationBySelected()
+      })
+    }
   }
 
   /**

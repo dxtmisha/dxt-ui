@@ -1,9 +1,9 @@
 var g = Object.defineProperty;
 var m = (a, e, t) => e in a ? g(a, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : a[e] = t;
 var o = (a, e, t) => m(a, typeof e != "symbol" ? e + "" : e, t);
-import { ref as u, computed as l } from "vue";
-import { toBind as h, getRef as p } from "@dxtmisha/functional";
-class y {
+import { ref as u, computed as p } from "vue";
+import { toBind as h, getRef as l } from "@dxtmisha/functional";
+class x {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -19,11 +19,11 @@ class y {
     /** Reference to window element expose/ Ссылка на expose элемента окна */
     o(this, "element", u());
     /** Computed bindings for the window/ Вычисляемые привязки для окна */
-    o(this, "binds", l(() => {
+    o(this, "binds", p(() => {
       var t, i;
       return {
         ...h(
-          (t = p(this.extra)) != null ? t : {},
+          (t = l(this.extra)) != null ? t : {},
           (i = this.props.windowAttrs) != null ? i : {}
         ),
         disabled: this.props.disabled,
@@ -40,17 +40,17 @@ class y {
      * Вспомогательные методы expose для состояния и действий окна
      */
     o(this, "expose", {
-      id: l(() => {
+      id: p(() => {
         var e;
         return String((e = this.element.value) == null ? void 0 : e.id);
       }),
-      open: l(() => {
+      open: p(() => {
         var e;
-        return !!((e = this.element.value) != null && e.open.value);
+        return !!((e = this.element.value) != null && e.open);
       }),
-      control: l(() => {
+      control: p(() => {
         var e;
-        return (e = this.element.value) == null ? void 0 : e.control.value;
+        return (e = this.element.value) == null ? void 0 : e.control;
       }),
       setOpen: async (e) => {
         var t;
@@ -92,17 +92,17 @@ class y {
     /** Returns preparation result/ Возвращает результат preparation */
     o(this, "getPreparation", () => {
       var e, t, i, s, n;
-      return (n = (t = (e = p(this.extra)) == null ? void 0 : e.preparation) == null ? void 0 : t.call(e)) != null ? n : (s = (i = this.props.windowAttrs) == null ? void 0 : i.preparation) == null ? void 0 : s.call(i);
+      return (n = (t = (e = l(this.extra)) == null ? void 0 : e.preparation) == null ? void 0 : t.call(e)) != null ? n : (s = (i = this.props.windowAttrs) == null ? void 0 : i.preparation) == null ? void 0 : s.call(i);
     });
     /** Returns opening result/ Возвращает результат opening */
     o(this, "getOpening", () => {
       var e, t, i, s, n, r;
-      return (r = (n = (t = (e = p(this.extra)) == null ? void 0 : e.opening) == null ? void 0 : t.call(e)) != null ? n : (s = (i = this.props.windowAttrs) == null ? void 0 : i.opening) == null ? void 0 : s.call(i)) != null ? r : !0;
+      return (r = (n = (t = (e = l(this.extra)) == null ? void 0 : e.opening) == null ? void 0 : t.call(e)) != null ? n : (s = (i = this.props.windowAttrs) == null ? void 0 : i.opening) == null ? void 0 : s.call(i)) != null ? r : !0;
     });
     /** Returns closing result/ Возвращает результат closing */
     o(this, "getClosing", () => {
       var e, t, i, s, n, r;
-      return (r = (n = (t = (e = p(this.extra)) == null ? void 0 : e.closing) == null ? void 0 : t.call(e)) != null ? n : (s = (i = this.props.windowAttrs) == null ? void 0 : i.closing) == null ? void 0 : s.call(i)) != null ? r : !0;
+      return (r = (n = (t = (e = l(this.extra)) == null ? void 0 : e.closing) == null ? void 0 : t.call(e)) != null ? n : (s = (i = this.props.windowAttrs) == null ? void 0 : i.closing) == null ? void 0 : s.call(i)) != null ? r : !0;
     });
     /**
      * Emits 'window' event upward/
@@ -117,5 +117,5 @@ class y {
   }
 }
 export {
-  y as W
+  x as W
 };
