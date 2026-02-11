@@ -1,0 +1,23 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isInput - Проверка на элемент ввода'/>
+
+# `isInput`
+
+Проверяет, является ли элемент полем ввода (`input`, `textarea`, `select`) или элементом с атрибутом `contenteditable`.
+
+**Параметры:**
+- `element: HTMLElement | EventTarget | null` — проверяемый элемент.
+
+**Возвращает:**
+`boolean` — `true`, если элемент является полем ввода или редактируемым, иначе `false`.
+
+```typescript
+import { isInput } from '@dxtmisha/functional-basic'
+
+const input = document.createElement('input')
+isInput(input) // true
+
+const div = document.createElement('div')
+isInput(div) // false
+```

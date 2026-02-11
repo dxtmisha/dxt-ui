@@ -1,11 +1,11 @@
-var C = Object.defineProperty;
-var x = (s, i, e) => i in s ? C(s, i, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[i] = e;
-var t = (s, i, e) => x(s, typeof i != "symbol" ? i + "" : i, e);
-import { computed as b, h as w } from "vue";
-import { DesignConstructorAbstract as A, toBinds as r } from "@dxtmisha/functional";
-import { f as V, F as z, a as E, b as D, c as y, d as B, e as T } from "./FieldEventInclude-DBRqmzpF.js";
-import { F as k } from "./FieldInclude-BKoBWZdj.js";
-class M {
+var b = Object.defineProperty;
+var x = (s, i, t) => i in s ? b(s, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[i] = t;
+var e = (s, i, t) => x(s, typeof i != "symbol" ? i + "" : i, t);
+import { computed as r, h as w } from "vue";
+import { toBinds as h, DesignConstructorAbstract as A } from "@dxtmisha/functional";
+import { f as z, F as V, a as E, b as D, c as y, d as B, e as S } from "./FieldEventInclude-DBRqmzpF.js";
+import { F as T } from "./FieldInclude-BKoBWZdj.js";
+class k {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -26,46 +26,73 @@ class M {
    * @param constructors.FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
    * @param constructors.FieldIncludeConstructor class for working with field/ класс для работы с полем
    */
-  constructor(i, e, n, a, o, h, d, u, l) {
-    t(this, "attributes");
-    t(this, "elementItem");
-    t(this, "change");
-    t(this, "value");
-    t(this, "code");
-    t(this, "validation");
-    t(this, "event");
-    t(this, "field");
-    this.props = i, this.refs = e, this.element = n, this.classDesign = a, this.className = o, this.components = h, this.slots = d, this.emits = u;
+  constructor(i, t, n, a, l, d, u, p, o) {
+    e(this, "attributes");
+    e(this, "elementItem");
+    e(this, "change");
+    e(this, "value");
+    e(this, "code");
+    e(this, "validation");
+    e(this, "event");
+    e(this, "field");
+    /**
+     * Returns bindings for the textarea element.
+     *
+     * Возвращает привязки для элемента textarea.
+     */
+    e(this, "binds", r(() => ({
+      ref: this.element,
+      autosize: this.props.autosize,
+      value: this.value.item.value,
+      onBlur: this.event.onBlur,
+      onInput: this.event.onInput,
+      onChange: this.event.onChange
+    })));
+    /**
+     * Returns properties for the input element.
+     *
+     * Возвращает свойства для элемента ввода.
+     */
+    e(this, "bindsInput", r(() => h(
+      this.attributes.listForInput.value,
+      this.props.textareaAttrs,
+      {
+        cols: this.props.cols,
+        rows: this.props.rows,
+        fieldSizing: this.props.fieldSizing
+      }
+    )));
+    this.props = i, this.refs = t, this.element = n, this.classDesign = a, this.className = l, this.components = d, this.slots = u, this.emits = p;
     const {
-      FieldAttributesIncludeConstructor: c = z,
-      FieldChangeIncludeConstructor: p = E,
-      FieldCodeIncludeConstructor: m = D,
-      FieldElementIncludeConstructor: v = y,
-      FieldEventIncludeConstructor: I = B,
-      FieldIncludeConstructor: g = k,
-      FieldValidationIncludeConstructor: F = T,
-      FieldValueIncludeConstructor: f = V
-    } = l != null ? l : {};
-    this.change = new p(this.props), this.attributes = new c(this.props), this.elementItem = new v(
+      FieldAttributesIncludeConstructor: c = V,
+      FieldChangeIncludeConstructor: m = E,
+      FieldCodeIncludeConstructor: v = D,
+      FieldElementIncludeConstructor: I = y,
+      FieldEventIncludeConstructor: g = B,
+      FieldIncludeConstructor: F = T,
+      FieldValidationIncludeConstructor: f = S,
+      FieldValueIncludeConstructor: C = z
+    } = o != null ? o : {};
+    this.change = new m(this.props), this.attributes = new c(this.props), this.elementItem = new I(
       this.props,
       this.element
-    ), this.value = new f(
+    ), this.value = new C(
       this.props,
       this.refs,
       this.elementItem
-    ), this.code = new m(this.props), this.validation = new F(
+    ), this.code = new v(this.props), this.validation = new f(
       this.props,
       this.attributes,
       this.value,
       this.change,
       this.code
-    ), this.event = new I(
+    ), this.event = new g(
       this.props,
       this.change,
       this.value,
       this.validation,
       this.emits
-    ), this.field = new g(
+    ), this.field = new F(
       this.props,
       this.value,
       this.components,
@@ -75,14 +102,14 @@ class M {
       void 0,
       void 0,
       void 0,
-      b(() => ({
+      r(() => ({
         maxlength: this.props.maxlength
       }))
     );
   }
 }
 const q = {
-  cancel: !1,
+  cancel: "none",
   autosize: !0
 };
 class G extends A {
@@ -93,43 +120,33 @@ class G extends A {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
-  constructor(e, n, a, o = M) {
+  constructor(t, n, a, l = k) {
     super(
-      e,
+      t,
       n,
       a
     );
-    t(this, "item");
+    e(this, "item");
     /**
      * Rendering the input element.
      *
      * Рендер элемент input.
      * @param input data for the input element/ данные для элемента ввода
      */
-    t(this, "renderInput", (e) => {
-      const n = r(
-        e.binds,
-        {
-          ref: this.element,
-          autosize: this.props.autosize,
-          value: this.item.value.item.value,
-          onBlur: this.item.event.onBlur,
-          onInput: this.item.event.onInput,
-          onChange: this.item.event.onChange
-        }
-      ), a = r(
-        this.item.attributes.listForInput.value,
-        this.props.textareaAttrs
+    e(this, "renderInput", (t) => {
+      const n = h(
+        t.binds,
+        this.item.binds.value
       );
-      return console.log("props", n, a), this.components.is("textareaAutosize") ? [this.components.renderOne("textareaAutosize", {
+      return this.components.is("textareaAutosize") ? [this.components.renderOne("textareaAutosize", {
         ...n,
-        inputAttrs: a
+        inputAttrs: this.item.bindsInput.value
       })] : [w("textarea", {
         ...n,
-        ...a
+        ...this.item.bindsInput.value
       })];
     });
-    this.item = new o(
+    this.item = new l(
       this.props,
       this.refs,
       this.element,
@@ -176,21 +193,21 @@ class G extends A {
    * Метод для рендеринга.
    */
   initRender() {
-    var e;
+    var t;
     return this.item.field.render(
       {
         default: this.renderInput
       },
       {
         ...this.getAttrs(),
-        class: (e = this.classes) == null ? void 0 : e.value.main,
+        class: (t = this.classes) == null ? void 0 : t.value.main,
         validationMessage: this.item.validation.message.value
       }
     );
   }
 }
 export {
-  M as Textarea,
+  k as Textarea,
   G as TextareaDesign,
   q as defaultsTextarea
 };

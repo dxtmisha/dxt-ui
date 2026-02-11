@@ -2,41 +2,40 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract, toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { Textarea } from './Textarea'
+import { TabItem } from './TabItem'
 
-import type { FieldControl } from '../Field'
 import {
-  type TextareaPropsBasic
+  type TabItemPropsBasic
 } from './props'
 import {
-  type TextareaClasses,
-  type TextareaComponents,
-  type TextareaEmits,
-  type TextareaExpose,
-  type TextareaSlots
+  type TabItemClasses,
+  type TabItemComponents,
+  type TabItemEmits,
+  type TabItemExpose,
+  type TabItemSlots
 } from './types'
 
 /**
- * TextareaDesign
+ * TabItemDesign
  */
-export class TextareaDesign<
-  COMP extends TextareaComponents,
-  EXPOSE extends TextareaExpose,
-  CLASSES extends TextareaClasses,
-  P extends TextareaPropsBasic
+export class TabItemDesign<
+  COMP extends TabItemComponents,
+  EXPOSE extends TabItemExpose,
+  CLASSES extends TabItemClasses,
+  P extends TabItemPropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
-    TextareaEmits,
+    TabItemEmits,
     EXPOSE,
-    TextareaSlots,
+    TabItemSlots,
     CLASSES,
     P
   > {
-  protected readonly item: Textarea
+  protected readonly item: TabItem
 
   /**
    * Constructor
@@ -48,8 +47,8 @@ export class TextareaDesign<
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, TextareaEmits, P>,
-    ItemConstructor: typeof Textarea = Textarea
+    options?: ConstrOptions<COMP, TabItemEmits, P>,
+    ItemConstructor: typeof TabItem = TabItem
   ) {
     super(
       name,
@@ -68,6 +67,9 @@ export class TextareaDesign<
       this.emits
     )
 
+    // TODO: Method for initializing base objects
+    // TODO: Метод для инициализации базовых объектов
+
     this.init()
   }
 
@@ -78,9 +80,8 @@ export class TextareaDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      value: this.item.value.item,
-      checkValidity: this.item.validation.checkValidity,
-      validationMessage: this.item.validation.message
+      // TODO: list of properties for export
+      // TODO: список свойств для экспорта
     } as EXPOSE
   }
 
@@ -105,7 +106,10 @@ export class TextareaDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {}
+    return {
+      // TODO: list of user styles
+      // TODO: список пользовательских стилей
+    }
   }
 
   /**
@@ -113,41 +117,13 @@ export class TextareaDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode[] {
-    return this.item.field.render(
-      {
-        default: this.renderInput
-      },
-      {
-        ...this.getAttrs(),
-        class: this.classes?.value.main,
-        validationMessage: this.item.validation.message.value
-      }
-    )
-  }
+  protected initRender(): VNode {
+    // const children: any[] = []
 
-  /**
-   * Rendering the input element.
-   *
-   * Рендер элемент input.
-   * @param input data for the input element/ данные для элемента ввода
-   */
-  protected readonly renderInput = (input: FieldControl): VNode[] => {
-    const props = toBinds(
-      input.binds,
-      this.item.binds.value
-    )
-
-    if (this.components.is('textareaAutosize')) {
-      return [this.components.renderOne('textareaAutosize', {
-        ...props,
-        inputAttrs: this.item.bindsInput.value
-      }) as VNode]
-    }
-
-    return [h('textarea', {
-      ...props,
-      ...this.item.bindsInput.value
-    })]
+    return h('div', {
+      // ...this.getAttrs(),
+      ref: this.element,
+      class: this.classes?.value.main
+    })
   }
 }

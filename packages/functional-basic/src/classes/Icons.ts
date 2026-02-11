@@ -1,8 +1,8 @@
 import { forEach } from '../functions/forEach'
 import { isDomRuntime } from '../functions/isDomRuntime'
+import { isFunction } from '../functions/isFunction'
 
 import { Api } from './Api'
-import { isFunction } from '../functions/isFunction.ts'
 
 export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>)
 

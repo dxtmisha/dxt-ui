@@ -8,6 +8,7 @@ export const propsValues = {
 
 export type PropsToken = {
   // :type [!] System label / Системная метка
+  autosize?: boolean
   height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   // :type [!] System label / Системная метка
 }
@@ -24,6 +25,7 @@ export const defaults: object = {
   ...defaultsTextareaAutosize,
   ...{
     // :default [!] System label / Системная метка
+    autosize: true,
     height: 'md'
     // :default [!] System label / Системная метка
   }

@@ -2,5 +2,8 @@
   "min-height": {
     "_type": "var"
   },
-  "#clone": {}
+  "#clone": {},
+  "~autosize": {
+    "_default": true
+  }
 }

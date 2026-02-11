@@ -37,7 +37,7 @@
     "preview": "vite preview",
     "dxt-library": "dxt-library",
     "dxt-types": "dxt-types",
-    "dxt-constructor": "dxt-constructor textarea",
+    "dxt-constructor": "dxt-constructor tabItem",
     "prepublishOnly": "npm run dxt-library && npm run dxt-constructor && npm run build"
   },
   "files": [
@@ -222,6 +222,10 @@
     "./Textarea": {
       "types": "./dist/constructors/Textarea/index.d.ts",
       "default": "./dist/textarea.js"
+    },
+    "./TabItem": {
+      "types": "./dist/constructors/TabItem/index.d.ts",
+      "default": "./dist/tabItem.js"
     }
   },
   "buildOptions": {

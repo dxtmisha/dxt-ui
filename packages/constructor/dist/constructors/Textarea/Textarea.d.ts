@@ -1,5 +1,5 @@
-import { Ref, ToRefs } from 'vue';
-import { ConstrEmit, DesignComp } from '@dxtmisha/functional';
+import { Ref, ToRefs, ComputedRef } from 'vue';
+import { ConstrEmit, DesignComp, ConstrBind } from '@dxtmisha/functional';
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude';
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude';
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude';
@@ -10,6 +10,7 @@ import { FieldInclude } from '../Field/FieldInclude';
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude';
 import { TextareaComponents, TextareaEmits, TextareaSlots } from './types';
 import { TextareaProps } from './props';
+import { ItemList } from '@dxtmisha/functional-basic';
 /**
  * Textarea
  */
@@ -60,4 +61,23 @@ export declare class Textarea {
         FieldValidationIncludeConstructor?: typeof FieldValidationInclude;
         FieldValueIncludeConstructor?: typeof FieldValueInclude;
     });
+    /**
+     * Returns bindings for the textarea element.
+     *
+     * Возвращает привязки для элемента textarea.
+     */
+    readonly binds: ComputedRef<{
+        ref: Ref<HTMLElement | undefined, HTMLElement | undefined>;
+        autosize: boolean | undefined;
+        value: any;
+        onBlur: () => void;
+        onInput: (event: InputEvent, data?: Record<string, any>) => void;
+        onChange: (event?: InputEvent | Event) => void;
+    }>;
+    /**
+     * Returns properties for the input element.
+     *
+     * Возвращает свойства для элемента ввода.
+     */
+    readonly bindsInput: ComputedRef<ConstrBind<ItemList>>;
 }

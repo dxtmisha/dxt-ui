@@ -25,6 +25,7 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-textareaAutosize': true,
+    'd1-textareaAutosize--autosize': props.autosize,
     [`d1-textareaAutosize--height--${props.height}`]: inArray(propsValues.height, props.height)
     // :classes-values [!] System label / Системная метка
   }

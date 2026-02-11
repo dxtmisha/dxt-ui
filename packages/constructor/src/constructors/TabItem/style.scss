@@ -1,0 +1,27 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinTabItem {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  padding: 0;
+
+  cursor: pointer;
+
+  &__icon {
+    order: 8;
+    z-index: 4;
+  }
+
+  &__ripple {
+    order: 32;
+  }
+
+  &--readonly,
+  &--disabled,
+  &--loading {
+    cursor: default;
+  }
+}

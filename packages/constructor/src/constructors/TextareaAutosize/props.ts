@@ -1,5 +1,6 @@
 export type TextareaAutosizePropsToken = {
   // :type [!] System label / Системная метка
+  autosize?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -8,7 +9,6 @@ export type TextareaAutosizePropsBasic = {
   value?: string
 
   // Style
-  autosize?: boolean
   inputAttrs?: Record<string, any>
 }
 
@@ -25,9 +25,9 @@ export type TextareaAutosizeProps = TextareaAutosizePropsBasic & TextareaAutosiz
  * Значение по умолчанию для свойства.
  */
 export const defaultsTextareaAutosize = {
-  autosize: true,
   ...{
     // :default [!] System label / Системная метка
+    autosize: true
     // :default [!] System label / Системная метка
   }
 }

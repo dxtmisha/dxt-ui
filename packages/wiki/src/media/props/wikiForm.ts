@@ -86,6 +86,17 @@ export const wikiForm: StorybookArgsToList = {
       }
     }
   },
+  cols: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.form,
+      type: ['number', 'string'],
+      description: {
+        en: 'Specifies the visible width of the text area',
+        ru: 'Указывает видимую ширину текстовой области'
+      }
+    }
+  },
   enterKeyHint: {
     type: StorybookControl.select,
     options: {
@@ -95,6 +106,18 @@ export const wikiForm: StorybookArgsToList = {
       description: {
         en: 'Hint for the enter key label on virtual keyboards',
         ru: 'Подсказка для метки клавиши Enter на виртуальных клавиатурах'
+      }
+    }
+  },
+  fieldSizing: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: ['content', 'fixed'],
+      description: {
+        en: 'CSS property that enables automatic sizing of the element based on its content',
+        ru: 'CSS свойство, которое включает автоматическое изменение размера элемента в зависимости от его содержимого'
       }
     }
   },
@@ -207,7 +230,8 @@ export const wikiForm: StorybookArgsToList = {
       description: {
         en: 'Name attribute for the input field',
         ru: 'Атрибут name для поля ввода'
-      }
+      },
+      value: 'name'
     }
   },
   pattern: {
@@ -231,6 +255,17 @@ export const wikiForm: StorybookArgsToList = {
       }
     },
     isDemo: true
+  },
+  rows: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.form,
+      type: ['number', 'string'],
+      description: {
+        en: 'Specifies the visible height of the text area',
+        ru: 'Указывает видимую высоту текстовой области'
+      }
+    }
   },
   spellcheck: {
     type: StorybookControl.boolean,

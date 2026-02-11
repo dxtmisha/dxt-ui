@@ -38,7 +38,7 @@ export type TextareaProps = TextareaPropsBasic & TextareaPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsTextarea = {
-  cancel: false,
+  cancel: 'none',
   autosize: true,
   ...{
     // :default [!] System label / Системная метка

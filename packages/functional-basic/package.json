@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional-basic",
   "private": false,
-  "version": "0.7.1",
+  "version": "0.7.2",
   "type": "module",
   "description": "Core functional utility library for modern web development without framework dependencies",
   "keywords": [
@@ -37,7 +37,7 @@
     "test": "vitest",
     "library": "dxt-library",
     "dxt-types": "dxt-types",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run library && npm run build"
   },
   "files": [
     "dist",

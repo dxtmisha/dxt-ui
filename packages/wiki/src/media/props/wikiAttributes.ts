@@ -120,6 +120,16 @@ export const wikiAttributes: StorybookArgsToList = {
       }
     }
   },
+  textareaAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the native textarea element',
+        ru: 'Дополнительные атрибуты для нативного элемента textarea'
+      }
+    }
+  },
   tooltipAttrs: {
     type: StorybookControl.object,
     options: {

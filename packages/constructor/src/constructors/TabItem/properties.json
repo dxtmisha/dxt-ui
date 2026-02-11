@@ -1,0 +1,18 @@
+{
+  "paddingX": {
+    "_type": "var"
+  },
+  "paddingY": {
+    "_type": "var"
+  },
+  "transition-property": "background-color, background-image, border, box-shadow",
+  "transition-duration": "{d.sys.transitionDuration.fade.enter}",
+  "transition-function": "{d.sys.transitionFunction.standard}",
+  "#label": {},
+  "#icon": {},
+  "#badge": {},
+  "~focus": {},
+  "~open": {},
+  "~selected": {},
+  "~disabled": {}
+}

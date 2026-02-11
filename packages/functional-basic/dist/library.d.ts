@@ -3017,8 +3017,9 @@ export declare function isDomRuntime(): boolean;
  *
  * Проверяет, является ли нажатая клавиша Enter или Space.
  * @param event event object/ объект события
+ * @param isInputElement whether the element is an input element/ является ли элемент полем ввода
  */
-export declare const isEnter: (event: KeyboardEvent) => boolean;
+export declare const isEnter: (event: KeyboardEvent, isInputElement?: boolean) => boolean;
 
 /**
  * Checks if the field is filled.
@@ -3052,6 +3053,14 @@ export declare function isFunction<T>(callback: T): callback is Extract<T, Funct
  * @param element selectors for matching or an Element/ селекторов для сопоставления или Element
  */
 export declare function isInDom<E extends ElementOrWindow>(element?: ElementOrString<E>): boolean;
+
+/**
+ * Checks if the element is an input field or editable.
+ *
+ * Проверяет, является ли элемент полем ввода или редактируемым.
+ * @param element element to check/ проверяемый элемент
+ */
+export declare const isInput: (element: HTMLElement | EventTarget | null) => boolean;
 
 /**
  * Checks if the value is between integers.

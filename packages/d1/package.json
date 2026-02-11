@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui textarea",
+    "dxt-ui": "dxt-ui",
     "prepublishOnly": "npm run dxt-ui && npm run build"
   },
   "files": [

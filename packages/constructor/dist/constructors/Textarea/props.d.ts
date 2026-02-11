@@ -20,7 +20,7 @@ export type TextareaProps = TextareaPropsBasic & TextareaPropsToken;
  * Значение по умолчанию для свойства.
  */
 export declare const defaultsTextarea: {
-    cancel: boolean;
+    cancel: string;
     autosize: boolean;
 };
 export {};

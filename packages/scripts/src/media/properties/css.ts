@@ -159,7 +159,9 @@ export const cssSizing: string[] = [
   'min-inline-size',
   'max-inline-size',
 
-  'tab-size' // используется для настройки ширины символа табуляции
+  'tab-size', // используется для настройки ширины символа табуляции
+
+  'field-sizing'
 ]
 
 export const cssContent: string[] = [

@@ -1,0 +1,23 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isInput - Kiểm tra phần tử đầu vào'/>
+
+# `isInput`
+
+Kiểm tra xem phần tử có phải là trường nhập liệu (`input`, `textarea`, `select`) hoặc phần tử có thuộc tính `contenteditable` hay không.
+
+**Tham số:**
+- `element: HTMLElement | EventTarget | null` — phần tử cần kiểm tra.
+
+**Trả về:**
+`boolean` — `true` nếu phần tử là trường nhập liệu hoặc có thể chỉnh sửa, ngược lại là `false`.
+
+```typescript
+import { isInput } from '@dxtmisha/functional-basic'
+
+const input = document.createElement('input')
+isInput(input) // true
+
+const div = document.createElement('div')
+isInput(div) // false
+```

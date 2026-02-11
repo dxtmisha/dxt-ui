@@ -1440,7 +1440,7 @@ const b = class b {
 };
 c(b, "url", "/api/"), c(b, "headers", new zt()), c(b, "requestDefault", new Zt()), c(b, "status", new Vt()), c(b, "response", new Yt(b.requestDefault)), c(b, "preparation", new qt());
 let z = b;
-class Ce {
+class ke {
   /**
    * Constructor
    * @param name channel name/ название канала
@@ -2918,7 +2918,7 @@ class ct {
     ), this;
   }
 }
-class ke {
+class Ae {
   /**
    * Constructor
    * @param element HTML element to capture/ HTML элемент для захвата
@@ -3528,7 +3528,7 @@ const j = class j {
 };
 c(j, "list", []), c(j, "map", {}), j.makeList(), j.makeMap();
 let bt = j, W;
-class Ae {
+class Ne {
   /**
    * Returns the value by its name.
    *
@@ -4158,7 +4158,7 @@ class ce extends ut {
     return this.set($.image, t), this;
   }
 }
-class Ne extends ut {
+class Ee extends ut {
   /**
    * Creates an instance of Meta with integrated Open Graph and Twitter Card support.
    *
@@ -4636,29 +4636,29 @@ let Ct = E;
 function xt(i) {
   return Array.isArray(i);
 }
-function Ee(i) {
+function Ie(i) {
   var t;
   return R(i) ? i.trim() : xt(i) && i.findIndex((e) => m(e)) === -1 ? i.join(",") : m(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
 }
 function le(i, t) {
   return Array(t).fill(i);
 }
-function Ie(i) {
+function Be(i) {
   return new Promise((t, e) => {
     const s = new FileReader();
     s.onloadend = () => t(s.result), s.onerror = e, s.readAsDataURL(i);
   });
 }
-function Be(i) {
+function Fe(i) {
   var t;
   if (l())
     return (t = document.querySelector(i)) != null ? t : void 0;
 }
-function Fe(i) {
+function xe(i) {
   if (l())
     return document.querySelectorAll(i);
 }
-function xe(i) {
+function Re(i) {
   i.preventDefault(), i.stopPropagation();
 }
 function de(i, t, e) {
@@ -4667,7 +4667,7 @@ function de(i, t, e) {
   };
   l() ? requestAnimationFrame(s) : s();
 }
-function Re(i) {
+function Pe(i) {
   var s;
   const t = {}, e = N(i);
   if (e)
@@ -4675,15 +4675,15 @@ function Re(i) {
       t[n.name] = (s = (n == null ? void 0 : n.value) || (n == null ? void 0 : n.textContent)) != null ? s : void 0;
   return t;
 }
-async function Pe(i) {
+async function We(i) {
   var t, e;
   return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
-function We(i = "datetime") {
+function Ue(i = "datetime") {
   return new ct(void 0, i).standard();
 }
 let kt = J(1e5, 9e5);
-function Ue(i, t) {
+function je(i, t) {
   const e = N(i);
   return e ? (L(e.id) || e.setAttribute("id", `id-${kt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${kt++}`;
 }
@@ -4703,17 +4703,17 @@ function me(i, t) {
   const e = t.split(".", 2), s = e[0];
   return s && (i != null && i[s]) && A(i[s]) && (e != null && e[1]) ? me(i[s], e[1]) : (n = s && (i == null ? void 0 : i[s])) != null ? n : "";
 }
-function je(i) {
+function He(i) {
   var t, e, s;
   return (s = (t = i == null ? void 0 : i.key) != null ? t : i == null ? void 0 : i.code) != null ? s : (e = i == null ? void 0 : i.keyCode) == null ? void 0 : e.toString();
 }
 function Rt(i) {
   return f(i, (t) => t.length);
 }
-function He(i) {
+function ze(i) {
   return Math.max(...Rt(i));
 }
-function ze(i) {
+function Ze(i) {
   return Math.min(...Rt(i));
 }
 function ye(i) {
@@ -4724,46 +4724,46 @@ function $e(i) {
   var t, e, s, n;
   return (i == null ? void 0 : i.clientY) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((n = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : n.clientY) || 0;
 }
-function Ze(i) {
+function Ve(i) {
   return {
     x: ye(i),
     y: $e(i)
   };
 }
-function Ve(i, t) {
+function Ke(i, t) {
   const e = {};
   return t.forEach((s) => {
     s in i && i[s] !== void 0 && (e[s] = i[s]);
   }), e;
 }
-function Ke(i, t = void 0) {
+function Ye(i, t = void 0) {
   const e = {};
   return f(i, (s, n) => {
     s !== t && (e[n] = s);
   }), e;
 }
-function Ye(i) {
+function qe(i) {
   return A(i) ? i : {};
 }
 function pe(i, t) {
   return le(i, t).join("");
 }
-function qe(i, t, e = "#", s = 2, n = 12) {
+function Je(i, t, e = "#", s = 2, n = 12) {
   const o = J(i, t), a = [];
   for (let u = 0; u < o; u++)
     a.push(pe(e, J(s, n)));
   return a.join(" ");
 }
-function Je(i, t) {
+function Me(i, t) {
   const e = i != null ? i : 0;
   return t > e ? 100 / (t - e) : 0;
 }
-function Me(i, t) {
+function Qe(i, t) {
   const e = i != null ? i : 0;
   return t > e ? (t - e) / 100 : 0;
 }
 const At = 0;
-function Qe(i, t, e) {
+function Xe(i, t, e) {
   const s = t == null ? void 0 : t.closest(i);
   if (t && s && s.scrollHeight !== s.offsetHeight) {
     const n = s.getBoundingClientRect(), o = t.getBoundingClientRect();
@@ -4773,7 +4773,7 @@ function Qe(i, t, e) {
     } else s.scrollTop > t.offsetTop ? s.scrollTop = o.top - n.top - At : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = o.top - n.top + o.height - n.height + At);
   }
 }
-function Xe(i, t, e = 0) {
+function _e(i, t, e = 0) {
   if (!l())
     return;
   const s = (t == null ? void 0 : t.behavior) || "smooth";
@@ -4793,29 +4793,35 @@ function Xe(i, t, e = 0) {
     });
   }
 }
-function _e(i, t) {
+function Oe(i, t) {
   return i.indexOf(t) !== -1;
 }
-async function Oe() {
+async function Te() {
   if (l()) {
     const i = await ot.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function Te(i, t) {
+function Ge(i, t) {
   const e = {};
   return m(i) && m(t) && f(i, (s, n) => {
     n in t && (e[n] = s);
   }), e;
 }
-function Ge(i, t) {
+function ti(i, t) {
   let e = Object.keys(i).length !== Object.keys(t).length;
   return e || f(i, (s, n) => {
     s !== (t == null ? void 0 : t[n]) && (e = !0);
   }), e;
 }
-const ti = (i) => i.code === "Space" || i.code === "Enter" || i.key === " " || i.key === "Spacebar" || i.key === "Enter" || i.keyCode === 13 || i.keyCode === 32;
-function ei(i) {
+const we = (i) => {
+  if (i instanceof HTMLElement) {
+    const t = i.tagName.toLowerCase();
+    return !!(t === "input" || t === "textarea" || t === "select" || i.isContentEditable || i.getAttribute("contenteditable") === "true");
+  }
+  return !1;
+}, ei = (i, t) => i.code === "Space" || i.code === "Enter" || i.key === " " || i.key === "Spacebar" || i.key === "Enter" || i.keyCode === 13 || i.keyCode === 32 ? t !== void 0 ? !t : !we(i.target) : !1;
+function ii(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -4825,14 +4831,14 @@ function ei(i) {
       return !1;
   }
 }
-function ii(i, t) {
+function si(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function si(i, t) {
+function ri(i, t) {
   return Array.isArray(i) ? i.every((e) => rt(e, t)) : rt(i, t);
 }
-function ri(i, t) {
+function ni(i, t) {
   if (i.startsWith(t))
     return i.slice(t.length).trim();
   let e = 0;
@@ -4840,11 +4846,11 @@ function ri(i, t) {
     e++;
   return i.slice(e).trim();
 }
-const ni = (i, t, e) => {
+const oi = (i, t, e) => {
   var s, n;
   return (n = (s = i == null ? void 0 : i.replace(new RegExp(`<${t}`, "ig"), `<${e}`)) == null ? void 0 : s.replace(new RegExp(`</${t}`, "ig"), `</${e}`)) == null ? void 0 : n.trim();
 };
-function we(i) {
+function be(i) {
   return [...new Set(i)];
 }
 function K(i, t, e = !0) {
@@ -4853,7 +4859,7 @@ function K(i, t, e = !0) {
     t,
     (n, o) => {
       const a = i == null ? void 0 : i[o];
-      m(a) && m(n) ? e && Array.isArray(a) && Array.isArray(n) ? s[o] = H(we([...a, ...n])) : s[o] = K(
+      m(a) && m(n) ? e && Array.isArray(a) && Array.isArray(n) ? s[o] = H(be([...a, ...n])) : s[o] = K(
         Array.isArray(a) ? { ...a } : a,
         n,
         e
@@ -4861,13 +4867,13 @@ function K(i, t, e = !0) {
     }
   ), s;
 }
-function oi(i, t) {
+function ai(i, t) {
   let e = i;
   return f(t, (s, n) => {
     e = e.replace(fe(`[${n}]`), I(s));
   }), e;
 }
-function be(i, t = "auto") {
+function ve(i, t = "auto") {
   switch (t) {
     case "auto":
       return i.naturalWidth >= i.naturalHeight;
@@ -4877,16 +4883,16 @@ function be(i, t = "auto") {
       return !1;
   }
 }
-function ai(i, t, e = "auto", s) {
+function ci(i, t, e = "auto", s) {
   var o;
   const n = ge(i);
   if (n && (n.naturalWidth > t && (e === "auto" || e === "width") || n.naturalHeight > t && (e === "auto" || e === "height"))) {
-    const a = be(n, e), u = (o = document.createElement("canvas")) == null ? void 0 : o.getContext("2d");
+    const a = ve(n, e), u = (o = document.createElement("canvas")) == null ? void 0 : o.getContext("2d");
     if (u)
       return u.canvas.width = a ? t : n.naturalWidth / n.naturalHeight * t, u.canvas.height = a ? n.naturalHeight / n.naturalWidth * t : t, u.drawImage(n, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
   }
 }
-function ci(i) {
+function ui(i) {
   const t = k(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -4894,7 +4900,7 @@ function ci(i) {
   }
   return "00:00";
 }
-function ui(i, t, {
+function hi(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
@@ -4909,7 +4915,7 @@ function ui(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function hi(i, t, e) {
+function li(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
@@ -4922,33 +4928,33 @@ function hi(i, t, e) {
   }
   return H(i);
 }
-function ve(i) {
+function Se(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function li(i) {
-  return ve(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
-}
 function di(i) {
+  return Se(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+}
+function gi(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function gi(i, t, e, s) {
+function fi(i, t, e, s) {
   const n = k(i), o = k(t);
   return t && o < n ? `${Nt(o, e, s)}+` : Nt(n, e, s);
 }
 const Nt = (i, t, e) => t ? new Q(e).number(i) : i;
-function Se(i, t) {
+function De(i, t) {
   return 1 / i * t;
 }
-function fi(i, t) {
-  return Se(i, t) * 100;
+function mi(i, t) {
+  return De(i, t) * 100;
 }
-function mi(i) {
+function yi(i) {
   let t = "";
   for (const e of i)
     t += String.fromCharCode(e);
   return l() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
 }
-async function yi(i) {
+async function $i(i) {
   if (l())
     try {
       await navigator.clipboard.writeText(i);
@@ -4964,7 +4970,7 @@ export {
   qt as ApiPreparation,
   Yt as ApiResponse,
   Vt as ApiStatus,
-  Ce as BroadcastMessage,
+  ke as BroadcastMessage,
   Qt as Cache,
   Mt as CacheItem,
   $t as CacheStatic,
@@ -4972,18 +4978,18 @@ export {
   Ft as CookieBlock,
   T as DataStorage,
   ct as Datetime,
-  ke as ElementScreenshot,
+  Ae as ElementScreenshot,
   ft as EventItem,
   r as GEO_FLAG_ICON_NAME,
   w as Geo,
   wt as GeoFlag,
   Q as GeoIntl,
   bt as GeoPhone,
-  Ae as Global,
+  Ne as Global,
   vt as Hash,
   Lt as Icons,
   x as Loading,
-  Ne as Meta,
+  Ee as Meta,
   ut as MetaManager,
   ae as MetaOg,
   re as MetaOpenGraphAge,
@@ -4999,91 +5005,92 @@ export {
   $ as MetaTwitterTag,
   ot as ScrollbarWidth,
   Ct as Translate,
-  Ee as anyToString,
+  Ie as anyToString,
   he as applyTemplate,
   le as arrFill,
-  Ie as blobToBase64,
+  Be as blobToBase64,
   H as copyObject,
   C as copyObjectLite,
   _ as createElement,
-  Be as domQuerySelector,
-  Fe as domQuerySelectorAll,
+  Fe as domQuerySelector,
+  xe as domQuerySelectorAll,
   Gt as encodeAttribute,
-  xe as eventStopPropagation,
+  Re as eventStopPropagation,
   I as executeFunction,
   Kt as executePromise,
   f as forEach,
   de as frame,
-  Re as getAttributes,
-  Pe as getClipboardData,
+  Pe as getAttributes,
+  We as getClipboardData,
   _t as getColumn,
-  We as getCurrentDate,
+  Ue as getCurrentDate,
   N as getElement,
-  Ue as getElementId,
+  je as getElementId,
   ge as getElementImage,
   Ot as getElementItem,
   gt as getElementOrWindow,
   fe as getExp,
   me as getItemByPath,
-  je as getKey,
+  He as getKey,
   Rt as getLengthOfAllArray,
-  He as getMaxLengthAllArray,
-  ze as getMinLengthAllArray,
-  Ze as getMouseClient,
+  ze as getMaxLengthAllArray,
+  Ze as getMinLengthAllArray,
+  Ve as getMouseClient,
   ye as getMouseClientX,
   $e as getMouseClientY,
-  Ve as getObjectByKeys,
-  Ke as getObjectNoUndefined,
-  Ye as getObjectOrNone,
-  qe as getRandomText,
+  Ke as getObjectByKeys,
+  Ye as getObjectNoUndefined,
+  qe as getObjectOrNone,
+  Je as getRandomText,
   Et as getRequestString,
-  Je as getStepPercent,
-  Me as getStepValue,
-  Qe as goScroll,
-  Xe as goScrollSmooth,
-  _e as inArray,
-  Oe as initScrollbarOffset,
-  Te as intersectKey,
+  Me as getStepPercent,
+  Qe as getStepValue,
+  Xe as goScroll,
+  _e as goScrollSmooth,
+  Oe as inArray,
+  Te as initScrollbarOffset,
+  Ge as intersectKey,
   xt as isArray,
-  Ge as isDifferent,
+  ti as isDifferent,
   nt as isDomData,
   l as isDomRuntime,
-  ti as isEnter,
+  ei as isEnter,
   L as isFilled,
-  ei as isFloat,
+  ii as isFloat,
   at as isFunction,
   Ht as isInDom,
-  ii as isIntegerBetween,
+  we as isInput,
+  si as isIntegerBetween,
   M as isNull,
   lt as isNumber,
   m as isObject,
   A as isObjectNotArray,
   rt as isSelected,
-  si as isSelectedByList,
+  ri as isSelectedByList,
   R as isString,
   It as isWindow,
   J as random,
-  ri as removeCommonPrefix,
-  ni as replaceComponentName,
+  ni as removeCommonPrefix,
+  oi as replaceComponentName,
   K as replaceRecursive,
-  oi as replaceTemplate,
-  ai as resizeImageByMax,
-  ci as secondToTime,
+  ai as replaceTemplate,
+  ci as resizeImageByMax,
+  ui as secondToTime,
   Tt as setElementItem,
-  ui as setValues,
-  hi as splice,
+  hi as setValues,
+  li as splice,
   pe as strFill,
   Z as toArray,
-  ve as toCamelCase,
-  li as toCamelCaseFirst,
+  Se as toCamelCase,
+  di as toCamelCaseFirst,
   B as toDate,
-  di as toKebabCase,
+  gi as toKebabCase,
   k as toNumber,
-  gi as toNumberByMax,
-  Se as toPercent,
-  fi as toPercentBy100,
+  fi as toNumberByMax,
+  De as toPercent,
+  mi as toPercentBy100,
   Bt as transformation,
-  mi as uint8ArrayToBase64,
-  we as uniqueArray,
-  yi as writeClipboardData
+  yi as uint8ArrayToBase64,
+  be as uniqueArray,
+  $i as writeClipboardData
 };

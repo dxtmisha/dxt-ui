@@ -1,5 +1,5 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, toBinds } from '@dxtmisha/functional'
 
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -122,4 +122,33 @@ export class Textarea {
       }))
     )
   }
+
+  /**
+   * Returns bindings for the textarea element.
+   *
+   * Возвращает привязки для элемента textarea.
+   */
+  readonly binds = computed(() => ({
+    ref: this.element,
+    autosize: this.props.autosize,
+    value: this.value.item.value,
+    onBlur: this.event.onBlur,
+    onInput: this.event.onInput,
+    onChange: this.event.onChange
+  }))
+
+  /**
+   * Returns properties for the input element.
+   *
+   * Возвращает свойства для элемента ввода.
+   */
+  readonly bindsInput = computed(() => toBinds(
+    this.attributes.listForInput.value,
+    this.props.textareaAttrs,
+    {
+      cols: this.props.cols,
+      rows: this.props.rows,
+      fieldSizing: this.props.fieldSizing
+    }
+  ))
 }

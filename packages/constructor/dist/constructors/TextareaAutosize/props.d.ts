@@ -1,7 +1,8 @@
-export type TextareaAutosizePropsToken = {};
+export type TextareaAutosizePropsToken = {
+    autosize?: boolean;
+};
 export type TextareaAutosizePropsBasic = {
     value?: string;
-    autosize?: boolean;
     inputAttrs?: Record<string, any>;
 };
 /**

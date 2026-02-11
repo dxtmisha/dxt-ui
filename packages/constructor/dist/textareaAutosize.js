@@ -138,6 +138,7 @@ class C {
   }
 }
 const E = {
+  // :default [!] System label / Системная метка
   autosize: !0
 };
 class V extends z {
