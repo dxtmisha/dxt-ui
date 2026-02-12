@@ -5,7 +5,7 @@ import { a as c } from "./SkeletonInclude-BIUzAO2s.js";
 import { S as b } from "./SkeletonInclude-BIUzAO2s.js";
 import { h } from "vue";
 import { DesignConstructorAbstract as u } from "@dxtmisha/functional";
-import { A as r } from "./AriaStaticInclude-CAURwJMb.js";
+import { A as r } from "./AriaStaticInclude-ZrgMZ2ja.js";
 const A = {};
 class g extends u {
   /**

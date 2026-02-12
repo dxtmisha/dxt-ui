@@ -4,6 +4,7 @@ import D1TabItem from './D1TabItem.vue'
 import { TabItemWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -32,10 +33,10 @@ export const TabItem: Story = {
     setup: () => ({ args }),
     template: `
       <div class="wiki-storybook-flex">
-        <D1TabItem v-bind="args"/>
-        <D1TabItem v-bind="args"/>
-        <D1TabItem v-bind="args"/>
-      </div>
+      <D1TabItem v-bind="args" />
+      <D1TabItem v-bind="args" />
+      <D1TabItem v-bind="args" />
+    </div>
     `
   })
   // :story-main [!] System label / Системная метка
@@ -47,60 +48,25 @@ export const TabItemBasic: Story = {
   render: () => ({
     components: { D1TabItem },
     template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Default</div>
-            <D1TabItem label="Tab 1"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Active</div>
-            <D1TabItem label="Tab 2" active/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Disabled</div>
-            <D1TabItem label="Tab 3" disabled/>
-          </div>
+        <div class="wiki-storybook-flex-column">
+            <D1TabItem label="Tab Item" />
+            <D1TabItem label="Tab Item" icon="home" />
+            <D1TabItem label="Messages" badge="5" />
+            <D1TabItem label="Updates" badge-dot />
+            <D1TabItem label="Selected Tab" selected />
+            <D1TabItem label="Disabled Tab" disabled />
         </div>
     `
   })
 }
-export const TabItemIcons: Story = {
-  name: 'С иконками',
+export const TabItemSkeleton: Story = {
+  name: 'Скелетон',
   render: () => ({
-    components: { D1TabItem },
+    components: { D1TabItem, D1Skeleton },
     template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Icon</div>
-            <D1TabItem label="Home" icon="home"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Trailing Icon</div>
-            <D1TabItem label="Settings" icon-trailing="settings"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Both Icons</div>
-            <D1TabItem label="Profile" icon="person" icon-trailing="arrow_drop_down"/>
-          </div>
-        </div>
-    `
-  })
-}
-export const TabItemBadge: Story = {
-  name: 'С бейджем',
-  render: () => ({
-    components: { D1TabItem },
-    template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Badge</div>
-            <D1TabItem label="Messages" badge="5"/>
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <div class="wiki-storybook-item__label">Dot Badge</div>
-            <D1TabItem label="Updates" badge dot/>
-          </div>
-        </div>
+        <D1Skeleton :active="true">
+          <D1TabItem isSkeleton>Tab item</D1TabItem>
+        </D1Skeleton>
     `
   })
 }

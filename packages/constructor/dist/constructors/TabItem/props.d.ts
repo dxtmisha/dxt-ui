@@ -10,6 +10,8 @@ type TabItemPropsToken = {
     open?: boolean;
     selected?: boolean;
     disabled?: boolean;
+    adaptive?: 'iconAlways' | 'auto';
+    container?: boolean;
 };
 export type TabItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Badge extends BadgePropsBasic = BadgePropsBasic> = LabelProps & IconPropsInclude<Icon> & BadgePropsInclude<Badge> & SkeletonPropsInclude & EnabledProps & EventClickProps & AriaRolePropsInclude & {
     index?: any;
@@ -28,7 +30,6 @@ export type TabItemProps = TabItemPropsBasic & TabItemPropsToken;
  * Значение по умолчанию для свойства.
  */
 export declare const defaultsTabItem: {
-    tag: string;
     role: string;
 };
 export {};

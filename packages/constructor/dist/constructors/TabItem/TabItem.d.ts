@@ -1,4 +1,4 @@
-import { Ref, ToRefs } from 'vue';
+import { Ref, ToRefs, ComputedRef } from 'vue';
 import { ConstrEmit, DesignComp } from '@dxtmisha/functional';
 import { BadgeInclude } from '../Badge/BadgeInclude';
 import { RippleInclude } from '../Ripple';
@@ -9,6 +9,8 @@ import { EnabledInclude } from '../../classes/EnabledInclude';
 import { EventClickInclude } from '../../classes/EventClickInclude';
 import { TabItemComponents, TabItemEmits, TabItemSlots } from './types';
 import { TabItemProps } from './props';
+import { RoleType, AriaTrueOrFalse, EventClickValue } from '../../library';
+import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * TabItem
  */
@@ -56,4 +58,62 @@ export declare class TabItem {
         RippleIncludeConstructor?: typeof RippleInclude;
         SkeletonIncludeConstructor?: typeof SkeletonInclude;
     });
+    /** tag type/ тип тега */
+    readonly tag: ComputedRef<string>;
+    /** values for attributes/ значения для атрибутов */
+    readonly binds: ComputedRef<{
+        id?: string;
+        role?: RoleType;
+        tabindex: NumberOrString;
+        'aria-activedescendant'?: string;
+        'aria-atomic'?: AriaTrueOrFalse;
+        'aria-autocomplete'?: "none" | "inline" | "list" | "both";
+        'aria-busy'?: AriaTrueOrFalse;
+        'aria-checked'?: AriaTrueOrFalse | "mixed";
+        'aria-colcount'?: number;
+        'aria-colindex'?: number;
+        'aria-colspan'?: number;
+        'aria-controls'?: string;
+        'aria-current'?: AriaTrueOrFalse | "page" | "step" | "location" | "date" | "time";
+        'aria-describedby'?: string;
+        'aria-details'?: string;
+        'aria-disabled'?: AriaTrueOrFalse;
+        'aria-errormessage'?: string;
+        'aria-expanded'?: AriaTrueOrFalse;
+        'aria-flowto'?: string;
+        'aria-grabbed'?: AriaTrueOrFalse;
+        'aria-haspopup'?: AriaTrueOrFalse | "dialog" | "menu" | "listbox" | "tree" | "grid";
+        'aria-hidden'?: AriaTrueOrFalse;
+        'aria-invalid'?: AriaTrueOrFalse | "grammar" | "spelling";
+        'aria-keyshortcuts'?: string;
+        'aria-label'?: string;
+        'aria-labelledby'?: string;
+        'aria-level'?: number;
+        'aria-live'?: "off" | "polite" | "assertive";
+        'aria-modal'?: AriaTrueOrFalse;
+        'aria-multiline'?: AriaTrueOrFalse;
+        'aria-multiselectable'?: AriaTrueOrFalse;
+        'aria-orientation'?: "horizontal" | "vertical" | "undefined";
+        'aria-owns'?: string;
+        'aria-placeholder'?: string;
+        'aria-posinset'?: number;
+        'aria-pressed'?: AriaTrueOrFalse | "mixed";
+        'aria-readonly'?: AriaTrueOrFalse;
+        'aria-relevant'?: "additions" | "removals" | "text" | "all" | string;
+        'aria-required'?: AriaTrueOrFalse;
+        'aria-roledescription'?: string;
+        'aria-rowcount'?: number;
+        'aria-rowindex'?: number;
+        'aria-rowspan'?: number;
+        'aria-selected'?: AriaTrueOrFalse;
+        'aria-setsize'?: number;
+        'aria-sort'?: "none" | "ascending" | "descending" | "other";
+        'aria-valuemax'?: string | number;
+        'aria-valuemin'?: string | number;
+        'aria-valuenow'?: string | number;
+        'aria-valuetext'?: string;
+        href: string | undefined;
+        'data-value': any;
+        onClick: (event: MouseEvent, options?: EventClickValue) => void;
+    }>;
 }

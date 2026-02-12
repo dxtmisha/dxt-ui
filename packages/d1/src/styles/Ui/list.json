@@ -9471,9 +9471,14 @@
               "height": {
                 "name": "--d1-tabItem-indicator-height",
                 "type": "var",
-                "value": "{sys.spacing.xs}"
+                "value": "{sys.spacing.x}"
               }
             }
+          },
+          "transitionFunction": {
+            "name": "--d1-tabItem-transitionFunction",
+            "type": "var",
+            "value": "{d.sys.transitionFunction.standard}"
           }
         }
       },
@@ -10566,6 +10571,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "tabItem": {
+        "name": "d-tabItem",
+        "type": "component",
+        "value": {
+          "transitionFunction": {
+            "name": "--d-tabItem-transitionFunction",
+            "type": "var",
+            "value": "{d.sys.transitionFunction.standard}"
           }
         }
       },

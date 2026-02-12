@@ -5,15 +5,15 @@ import { computed as d, h as g } from "vue";
 import { DesignConstructorAbstract as P } from "@dxtmisha/functional";
 import { g as R } from "./getClassTagAStatic-BnVYlXHI.js";
 import { E as T } from "./EventClickInclude-WHJqxZ1b.js";
-import { A as c } from "./AriaStaticInclude-CAURwJMb.js";
+import { A as c } from "./AriaStaticInclude-ZrgMZ2ja.js";
 import { L as H } from "./LabelHighlightInclude-CLmTvW_6.js";
 import { S as M, P as V } from "./SuffixInclude-maZ7235l.js";
-import { C as $ } from "./CaptionInclude-NzS6EYYj.js";
+import { C as $ } from "./CaptionInclude-DkMvAqPU.js";
 import { D as j } from "./DescriptionInclude-D4ane9aR.js";
 import { B as q } from "./BadgeInclude-BwCIBVyK.js";
-import { E as z } from "./EnabledInclude-Dk-rP4jp.js";
+import { E as z } from "./EnabledInclude-DIc_ZLNR.js";
 import { I as F } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as G } from "./ProgressInclude-9MfZWtGP.js";
+import { P as G } from "./ProgressInclude-hQsbbhvF.js";
 import { R as J } from "./RippleInclude-Du5yIzX_.js";
 import { S as K } from "./SkeletonInclude-BIUzAO2s.js";
 class O {
@@ -65,6 +65,7 @@ class O {
     i(this, "binds", d(() => {
       var t;
       return {
+        href: this.props.href,
         "data-value": (t = this.props.index) != null ? t : this.props.value,
         "data-divider": this.props.divider ? "active" : void 0,
         "data-parent": this.props.parent,
@@ -97,7 +98,7 @@ class O {
     }));
     this.props = t, this.refs = e, this.element = r, this.classDesign = o, this.className = s, this.components = a, this.slots = l, this.emits = m;
     const {
-      BadgeIncludeConstructor: f = q,
+      BadgeIncludeConstructor: b = q,
       CaptionIncludeConstructor: C = $,
       DescriptionIncludeConstructor: I = j,
       EnabledIncludeConstructor: v = z,
@@ -109,7 +110,7 @@ class O {
       RippleIncludeConstructor: B = J,
       SkeletonIncludeConstructor: D = K,
       SuffixIncludeConstructor: E = M
-    } = u != null ? u : {}, b = new y(
+    } = u != null ? u : {}, f = new y(
       t,
       s,
       a,
@@ -120,7 +121,7 @@ class O {
       t,
       o,
       ["classTextVariant"]
-    ), p = new v(t, b);
+    ), p = new v(t, f);
     this.icon = new S(t, s, a), this.label = new w(
       t,
       s,
@@ -128,14 +129,14 @@ class O {
       l,
       void 0,
       h
-    ), this.prefix = new k(t, s, l, h), this.caption = new C(t, s, l), this.suffix = new E(t, s, l), this.description = new I(t, s, l, h), this.badge = new f(
+    ), this.prefix = new k(t, s, l, h), this.caption = new C(t, s, l), this.suffix = new E(t, s, l), this.description = new I(t, s, l, h), this.badge = new b(
       t,
       s,
       a,
       {
         overlap: "static"
       }
-    ), this.ripple = new B(s, a, p), this.progress = b, this.skeleton = h, this.enabled = p, this.event = new x(t, p, m);
+    ), this.ripple = new B(s, a, p), this.progress = f, this.skeleton = h, this.enabled = p, this.event = new x(t, p, m);
   }
 }
 const at = {

@@ -20,6 +20,16 @@ export const wikiTechnical: StorybookArgsToList = {
       }
     }
   },
+  control: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Control object for managing list state and behavior. Provides programmatic access to list operations like navigation, selection, and focus management.',
+        ru: 'Объект управления для контроля состояния и поведения списка. Предоставляет программный доступ к операциям списка, таким как навигация, выбор и управление фокусом.'
+      }
+    }
+  },
   descriptionId: {
     type: StorybookControl.string,
     options: {

@@ -3,12 +3,20 @@
   "paddingX": "{grid.paddingX}",
   "paddingY": "{sys.spacing.xs}",
   "indicator": {
-    "height": "{sys.spacing.xs}"
+    "height": "{sys.spacing.x}"
   },
+  "gap": "{sys.spacing.xs}",
+  "height": "{ref.spacing.12}",
   "palette-gradient": "{sys.palette.primary}",
   "gradient-opacity": "0",
+  "border-radius": "var(--sys-height) * {sys.rounded.adaptive.sm}",
   "before": {
-
+    "background-color": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.surface.high}",
+    "border-radius": "{sys.rounded.full}"
+  },
+  "#label": {
+    "link|font": "{font.labelLarge}"
   },
   "focus": {
     "gradient-opacity": "{sys.opacity.focus}",
@@ -19,5 +27,9 @@
   },
   "active": {
     "gradient-opacity": "{sys.opacity.pressed}"
+  },
+  "open": {
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.pressed}"
   }
 }

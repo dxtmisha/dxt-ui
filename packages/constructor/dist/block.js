@@ -1,4 +1,4 @@
-import { B as t, a as s } from "./BlockDesign-BYcCCexv.js";
+import { B as t, a as s } from "./BlockDesign-DzOvS8cH.js";
 const a = {
   tag: "div",
   tagHeader: "h3"

@@ -84,6 +84,7 @@ export declare class ListItem {
     readonly classes: ComputedRef<ConstrClassObject>;
     /** values for attributes/ значения для атрибутов */
     readonly binds: ComputedRef<{
+        href: string | undefined;
         'data-value': any;
         'data-divider': string | undefined;
         'data-parent': string | undefined;

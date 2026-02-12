@@ -1,6 +1,7 @@
-import type { Ref, ToRefs } from 'vue'
+import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { BadgeInclude } from '../Badge/BadgeInclude'
 import { RippleInclude } from '../Ripple'
 import { SkeletonInclude } from '../Skeleton'
@@ -89,7 +90,10 @@ export class TabItem {
     this.badge = new BadgeIncludeConstructor(
       this.props,
       this.className,
-      this.components
+      this.components,
+      {
+        overlap: 'static'
+      }
     )
 
     this.ripple = new RippleIncludeConstructor(this.className, this.components, this.enabled)
@@ -99,4 +103,30 @@ export class TabItem {
       this.emits
     )
   }
+
+  /** tag type/ тип тега */
+  readonly tag = computed<string>(() => {
+    if (this.props.tag) {
+      return this.props.tag
+    }
+
+    if (this.props.href) {
+      return 'a'
+    }
+
+    return 'button'
+  })
+
+  /** values for attributes/ значения для атрибутов */
+  readonly binds = computed(() => {
+    return {
+      'href': this.props.href,
+      'data-value': this.props.index ?? this.props.value,
+      'onClick': this.event.onClick,
+      'tabindex': 0,
+      ...AriaStaticInclude.role(this.props.role),
+      ...AriaStaticInclude.selected(Boolean(this.props.selected)),
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled))
+    }
+  })
 }

@@ -13,6 +13,8 @@ type TabItemPropsToken = {
   open?: boolean
   selected?: boolean
   disabled?: boolean
+  adaptive?: 'iconAlways' | 'auto'
+  container?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -48,7 +50,6 @@ export type TabItemProps = TabItemPropsBasic & TabItemPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsTabItem = {
-  tag: 'button',
   role: 'tab',
   ...{
     // :default [!] System label / Системная метка

@@ -3,7 +3,7 @@ var x = (r, t, s) => t in r ? $(r, t, { enumerable: !0, configurable: !0, writab
 var e = (r, t, s) => x(r, typeof t != "symbol" ? t + "" : t, s);
 import { ref as m, computed as a, watch as B, nextTick as d, onUnmounted as M, h as v, Teleport as P } from "vue";
 import { getElementId as g, isDomRuntime as A, EventItem as L, DesignConstructorAbstract as D } from "@dxtmisha/functional";
-import { A as u } from "./AriaStaticInclude-CAURwJMb.js";
+import { A as u } from "./AriaStaticInclude-ZrgMZ2ja.js";
 import { L as E } from "./LabelInclude-D-mLvjK5.js";
 import { D as H } from "./DescriptionInclude-D4ane9aR.js";
 import { A as k } from "./ArrowInclude-CcpT637l.js";

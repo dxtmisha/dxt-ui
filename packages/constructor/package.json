@@ -44,6 +44,7 @@
     "dist/",
     "src/library/style.scss",
     "src/constructors/**/*.scss",
+    "src/constructors/**/*.json",
     "ai-types.txt",
     "README.md",
     "package.json",

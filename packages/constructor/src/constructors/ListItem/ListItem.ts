@@ -171,6 +171,7 @@ export class ListItem {
   /** values for attributes/ значения для атрибутов */
   readonly binds = computed(() => {
     return {
+      'href': this.props.href,
       'data-value': this.props.index ?? this.props.value,
       'data-divider': this.props.divider ? 'active' : undefined,
       'data-parent': this.props.parent,

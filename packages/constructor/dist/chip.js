@@ -2,7 +2,7 @@ var l = Object.defineProperty;
 var d = (t, s, i) => s in t ? l(t, s, { enumerable: !0, configurable: !0, writable: !0, value: i }) : t[s] = i;
 var h = (t, s, i) => d(t, typeof s != "symbol" ? s + "" : s, i);
 import { toBinds as m, getBind as u, getRef as r } from "@dxtmisha/functional";
-import { a as b } from "./ButtonDesign-DSlF_ntA.js";
+import { a as b } from "./ButtonDesign-D2FFTD2Z.js";
 import { computed as f } from "vue";
 class B {
   /**

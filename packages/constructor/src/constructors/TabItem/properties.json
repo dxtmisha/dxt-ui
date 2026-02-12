@@ -8,11 +8,42 @@
   "indicator": {
     "_type": "var"
   },
+  "transition-property": "background-color, background-image, border, box-shadow",
+  "transition-duration": "{d.sys.transitionDuration.fade.enter}",
+  "transition-function": "{d.sys.transitionFunction.standard}",
   "#label": {},
   "#icon": {},
   "#badge": {},
   "~focus": {},
   "~open": {},
   "~selected": {},
-  "~disabled": {}
+  "~disabled": {},
+  "~adaptive": {
+    "~iconAlways": {
+      "& > *:not(.??__icon)": {
+        "display": "none"
+      }
+    },
+    "~auto": {
+      "width": "fit-content"
+    },
+    "group|icon": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "media-group"
+    },
+    "group|full": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "media-max-group"
+    }
+  },
+  "container": {
+    "group|icon": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "container-group"
+    },
+    "group|full": {
+      "link|adaptive-icon": "{??adaptive.iconAlways}",
+      "_type": "container-max-group"
+    }
+  }
 }

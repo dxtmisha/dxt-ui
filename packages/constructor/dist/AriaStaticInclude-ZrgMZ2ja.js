@@ -211,9 +211,9 @@ class l {
    * @param isSelected is selected/ является выбранным
    */
   static selected(a) {
-    return {
+    return a !== void 0 ? {
       "aria-selected": this.isTrueOrFalse(a)
-    };
+    } : {};
   }
   /**
    * Returns ARIA value now, min and max.

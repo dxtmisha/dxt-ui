@@ -11,6 +11,8 @@
   --sys-height: #{ui.v('??height', 0)};
   min-height: ui.v('??height', 0);
 
+  border: none;
+  background-color: transparent;
   cursor: pointer;
 
   &__icon,

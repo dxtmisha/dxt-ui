@@ -2,6 +2,8 @@ import { type TabItemPropsBasic, defaultsTabItem } from '@dxtmisha/constructor/T
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  adaptive: ['iconAlways', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'],
+  container: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl']
   // :values [!] System label / Системная метка
 }
 
@@ -11,6 +13,8 @@ type PropsToken = {
   open?: boolean
   selected?: boolean
   disabled?: boolean
+  adaptive?: 'iconAlways' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl'
+  container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl'
   // :type [!] System label / Системная метка
 }
 

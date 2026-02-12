@@ -261,9 +261,13 @@ export class AriaStaticInclude {
    * @param isSelected is selected/ является выбранным
    */
   static selected(isSelected?: boolean): AriaList {
-    return {
-      'aria-selected': this.isTrueOrFalse(isSelected)
+    if (isSelected !== undefined) {
+      return {
+        'aria-selected': this.isTrueOrFalse(isSelected)
+      }
     }
+
+    return {}
   }
 
   /**

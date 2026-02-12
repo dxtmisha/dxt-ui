@@ -121,9 +121,14 @@ export class TabItemDesign<
       ...this.item.ripple.render()
     ]
 
-    return h('div', {
-      ...this.getAttrs(),
-      class: this.classes?.value.main
-    }, children)
+    return h(
+      this.item.tag.value,
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main,
+        ...this.item.binds.value
+      },
+      children
+    )
   }
 }

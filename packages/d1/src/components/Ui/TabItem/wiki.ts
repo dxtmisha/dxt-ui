@@ -6,8 +6,10 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'adaptive', type: 'string', option: ['iconAlways', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
   { name: 'badge', type: 'string | number | ConstrBind<BadgePropsBasic>' },
   { name: 'badgeDot', type: 'boolean' },
+  { name: 'container', type: 'string', option: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
   { name: 'detail', type: 'Record<string, any>' },
   { name: 'disabled', type: 'boolean' },
   { name: 'focus', type: 'boolean' },

@@ -1,15 +1,16 @@
 var C = Object.defineProperty;
-var f = (i, e, s) => e in i ? C(i, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[e] = s;
-var t = (i, e, s) => f(i, typeof e != "symbol" ? e + "" : e, s);
-import { DesignConstructorAbstract as v } from "@dxtmisha/functional";
-import { B as w } from "./BadgeInclude-BwCIBVyK.js";
-import { L as k } from "./LabelInclude-D-mLvjK5.js";
-import { E } from "./EnabledInclude-Dk-rP4jp.js";
-import { E as S } from "./EventClickInclude-WHJqxZ1b.js";
-import { S as N } from "./SkeletonInclude-BIUzAO2s.js";
-import { I as T } from "./IconTrailingInclude-CdsOcDxv.js";
-import { R as x } from "./RippleInclude-Du5yIzX_.js";
-import { h as D } from "vue";
+var k = (i, e, s) => e in i ? C(i, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[e] = s;
+var t = (i, e, s) => k(i, typeof e != "symbol" ? e + "" : e, s);
+import { computed as h, h as w } from "vue";
+import { DesignConstructorAbstract as S } from "@dxtmisha/functional";
+import { A as a } from "./AriaStaticInclude-ZrgMZ2ja.js";
+import { B as x } from "./BadgeInclude-BwCIBVyK.js";
+import { L as E } from "./LabelInclude-D-mLvjK5.js";
+import { E as N } from "./EnabledInclude-DIc_ZLNR.js";
+import { E as T } from "./EventClickInclude-WHJqxZ1b.js";
+import { S as B } from "./SkeletonInclude-BIUzAO2s.js";
+import { I as D } from "./IconTrailingInclude-CdsOcDxv.js";
+import { R as A } from "./RippleInclude-Du5yIzX_.js";
 class R {
   /**
    * Constructor
@@ -30,7 +31,7 @@ class R {
    * @param constructors.RippleIncludeConstructor class for working with ripple/ класс для работы с ripple
    * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
    */
-  constructor(e, s, n, o, l, a, h, c, r) {
+  constructor(e, s, n, o, r, p, c, d, l) {
     t(this, "icon");
     t(this, "label");
     t(this, "badge");
@@ -38,17 +39,32 @@ class R {
     t(this, "enabled");
     t(this, "ripple");
     t(this, "event");
-    this.props = e, this.refs = s, this.element = n, this.classDesign = o, this.className = l, this.components = a, this.slots = h, this.emits = c;
+    /** tag type/ тип тега */
+    t(this, "tag", h(() => this.props.tag ? this.props.tag : this.props.href ? "a" : "button"));
+    /** values for attributes/ значения для атрибутов */
+    t(this, "binds", h(() => {
+      var e;
+      return {
+        href: this.props.href,
+        "data-value": (e = this.props.index) != null ? e : this.props.value,
+        onClick: this.event.onClick,
+        tabindex: 0,
+        ...a.role(this.props.role),
+        ...a.selected(!!this.props.selected),
+        ...a.disabled(!!this.props.disabled)
+      };
+    }));
+    this.props = e, this.refs = s, this.element = n, this.classDesign = o, this.className = r, this.components = p, this.slots = c, this.emits = d;
     const {
-      BadgeIncludeConstructor: m = w,
-      EnabledIncludeConstructor: p = E,
-      EventClickIncludeConstructor: d = S,
-      IconTrailingIncludeConstructor: u = T,
-      LabelIncludeConstructor: b = k,
-      RippleIncludeConstructor: g = x,
-      SkeletonIncludeConstructor: I = N
-    } = r != null ? r : {};
-    this.skeleton = new I(this.props, this.classDesign, ["classTextVariant"]), this.enabled = new p(this.props), this.icon = new u(this.props, this.className, this.components), this.label = new b(
+      BadgeIncludeConstructor: m = x,
+      EnabledIncludeConstructor: u = N,
+      EventClickIncludeConstructor: b = T,
+      IconTrailingIncludeConstructor: g = D,
+      LabelIncludeConstructor: I = E,
+      RippleIncludeConstructor: f = A,
+      SkeletonIncludeConstructor: v = B
+    } = l != null ? l : {};
+    this.skeleton = new v(this.props, this.classDesign, ["classTextVariant"]), this.enabled = new u(this.props), this.icon = new g(this.props, this.className, this.components), this.label = new I(
       this.props,
       this.className,
       void 0,
@@ -60,19 +76,21 @@ class R {
     ), this.badge = new m(
       this.props,
       this.className,
-      this.components
-    ), this.ripple = new g(this.className, this.components, this.enabled), this.event = new d(
+      this.components,
+      {
+        overlap: "static"
+      }
+    ), this.ripple = new f(this.className, this.components, this.enabled), this.event = new b(
       this.props,
       this.enabled,
       this.emits
     );
   }
 }
-const H = {
-  tag: "button",
+const M = {
   role: "tab"
 };
-class J extends v {
+class O extends S {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -80,14 +98,14 @@ class J extends v {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
-  constructor(s, n, o, l = R) {
+  constructor(s, n, o, r = R) {
     super(
       s,
       n,
       o
     );
     t(this, "item");
-    this.item = new l(
+    this.item = new r(
       this.props,
       this.refs,
       this.element,
@@ -143,14 +161,19 @@ class J extends v {
       ...this.item.badge.render(),
       ...this.item.ripple.render()
     ];
-    return D("div", {
-      ...this.getAttrs(),
-      class: (n = this.classes) == null ? void 0 : n.value.main
-    }, s);
+    return w(
+      this.item.tag.value,
+      {
+        ...this.getAttrs(),
+        class: (n = this.classes) == null ? void 0 : n.value.main,
+        ...this.item.binds.value
+      },
+      s
+    );
   }
 }
 export {
   R as TabItem,
-  J as TabItemDesign,
-  H as defaultsTabItem
+  O as TabItemDesign,
+  M as defaultsTabItem
 };

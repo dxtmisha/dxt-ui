@@ -13,13 +13,35 @@
   & {
     --d1-tabItem-paddingX: var(--d1-grid-paddingX);
     --d1-tabItem-paddingY: var(--d1-sys-spacing-xs);
-    --d1-tabItem-indicator-height: var(--d1-sys-spacing-xs);
+    --d1-tabItem-indicator-height: var(--d1-sys-spacing-x);
+    --d1-tabItem-transitionFunction: var(--d-sys-transitionFunction-standard);
+    
+    gap: var(--d1-sys-spacing-xs);
+    
+    @include ui.height(#{var(--d1-ref-spacing-12)});
     
     @include ui.gradientOpacity(#{0}); @include ui.gradient('init');
     @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
     
+    border-radius: calc(var(--sys-height) * var(--d1-sys-rounded-adaptive-sm));
+    
+    transition-duration: var(--d-sys-transitionDuration-fade-enter);
+    transition-property: background-color, background-image, border, box-shadow;
+    
     &::before {
       content: ' ';
+      @include ui.backgroundColor(#{var(--d1-sys-palette-primary)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-surface-high)});
+      
+      border-radius: var(--d1-sys-rounded-full);
+    }
+    
+    &__label {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-medium);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-xs);
     }
     
     @include ui.hover {
@@ -36,6 +58,185 @@
       
       outline-width: var(--d1-ref-spacing-1);
       @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &--open {
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &--adaptive {
+      &--iconAlways {
+        & > *:not(.d1-tabItem__icon) {
+          display: none;
+        }
+      }
+      
+      &--auto {
+        @include ui.width(#{fit-content});
+      }
+      
+      &--iconSm {
+        @media screen and (min-width: 640px) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconMd {
+        @media screen and (min-width: 768px) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconLg {
+        @media screen and (min-width: 1024px) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconXl {
+        @media screen and (min-width: 1280px) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--icon2xl {
+        @media screen and (min-width: 1536px) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullSm {
+        @media screen and (max-width: calc(640px - 1px)) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullMd {
+        @media screen and (max-width: calc(768px - 1px)) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullLg {
+        @media screen and (max-width: calc(1024px - 1px)) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullXl {
+        @media screen and (max-width: calc(1280px - 1px)) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--full2xl {
+        @media screen and (max-width: calc(1536px - 1px)) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+    }
+    
+    &--container {
+      &--iconSm {
+        @container (min-width: 640px) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconMd {
+        @container (min-width: 768px) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconLg {
+        @container (min-width: 1024px) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--iconXl {
+        @container (min-width: 1280px) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--icon2xl {
+        @container (min-width: 1536px) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullSm {
+        @container (max-width: calc(640px - 1px)) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullMd {
+        @container (max-width: calc(768px - 1px)) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullLg {
+        @container (max-width: calc(1024px - 1px)) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--fullXl {
+        @container (max-width: calc(1280px - 1px)) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
+      
+      &--full2xl {
+        @container (max-width: calc(1536px - 1px)) {
+          & > *:not(.d1-tabItem__icon) {
+            display: none;
+          }
+        }
+      }
     }
   }
   // :style [!] System label / Системная метка

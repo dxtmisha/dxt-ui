@@ -1,0 +1,52 @@
+A versatile component for creating tabs, menu items, and navigation links with icon and badge support.
+
+TabItem combines the functionality of a button, link, and list item. It supports various states (active, disabled), can display icons to the left and right of the text, and integrates with the Badge component to show notifications or counters. The component automatically manages ARIA attributes to ensure accessibility.
+
+**Key Features:**
+
+- Displaying a label and icons (icon, iconTrailing)
+- Built-in badge support for counters
+- Managing selection state (selected) and activity
+- Navigation support via href (link) or to (router-link)
+- Customizable root tag (button, a, div, li)
+- Ripple effect on click
+- Skeleton support for loading state
+
+**Typical Use Cases:**
+
+- Tabs in navigation bars
+- Dropdown menu items
+- Selection lists (select options)
+- Sidebar navigation menus
+- Links with icons and counters
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const activeTab = ref('home')
+</script>
+
+<template>
+  <div class="tabs">
+    <TabItem
+      label="Home"
+      icon="home"
+      :selected="activeTab === 'home'"
+      @click="activeTab = 'home'"
+    />
+    <TabItem
+      label="Messages"
+      icon="mail"
+      badge="5"
+      :selected="activeTab === 'messages'"
+      @click="activeTab = 'messages'"
+    />
+    <TabItem
+      label="Settings"
+      icon="settings"
+      disabled
+    />
+  </div>
+</template>
+```

@@ -8,11 +8,13 @@
   justify-content: center;
   position: relative;
 
-  padding: 0;
+  padding: #{ui.v('??paddingY', 0px)} #{ui.v('??paddingX', 0px)};
 
   text-wrap: nowrap;
   white-space: nowrap;
 
+  border: none;
+  background-color: transparent;
   cursor: pointer;
 
   scroll-snap-align: start;
@@ -38,6 +40,10 @@
     order: 4;
   }
 
+  &__badge {
+    order: 12;
+  }
+
   &__ripple {
     order: 32;
   }
@@ -50,7 +56,7 @@
 
   &--selected {
     &::before {
-      left: ui.v('??padding', 0px);
+      left: ui.v('??paddingX', 0px);
       transition-property: left, width;
       width: calc(100% - (2 * #{ui.v('??paddingX', 0px)}));
     }
