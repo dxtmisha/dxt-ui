@@ -18,6 +18,7 @@ import _D1Field from '../components/Ui/Field/D1Field.vue'
 import _D1FieldCounter from '../components/Ui/FieldCounter/D1FieldCounter.vue'
 import _D1FieldLabel from '../components/Ui/FieldLabel/D1FieldLabel.vue'
 import _D1FieldMessage from '../components/Ui/FieldMessage/D1FieldMessage.vue'
+import _D1HorizontalScroll from '../components/Ui/HorizontalScroll/D1HorizontalScroll.vue'
 import _D1Icon from '../components/Ui/Icon/D1Icon.vue'
 import _D1Image from '../components/Ui/Image/D1Image.vue'
 import _D1Input from '../components/Ui/Input/D1Input.vue'
@@ -60,6 +61,7 @@ export const D1Field = _D1Field
 export const D1FieldCounter = _D1FieldCounter
 export const D1FieldLabel = _D1FieldLabel
 export const D1FieldMessage = _D1FieldMessage
+export const D1HorizontalScroll = _D1HorizontalScroll
 export const D1Icon = _D1Icon
 export const D1Image = _D1Image
 export const D1Input = _D1Input
@@ -104,6 +106,7 @@ declare module '@vue/runtime-core' {
     D1FieldCounter: typeof D1FieldCounter
     D1FieldLabel: typeof D1FieldLabel
     D1FieldMessage: typeof D1FieldMessage
+    D1HorizontalScroll: typeof D1HorizontalScroll
     D1Icon: typeof D1Icon
     D1Image: typeof D1Image
     D1Input: typeof D1Input

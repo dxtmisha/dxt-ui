@@ -1,0 +1,38 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as HorizontalScroll from './D1HorizontalScroll.stories'
+import {HorizontalScrollWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={HorizontalScroll}/>
+<StorybookMain
+    name={HorizontalScrollWikiStorybook.getName()}
+    description={HorizontalScrollWikiStorybook.getDescription()}
+    story={HorizontalScroll.HorizontalScroll}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'HorizontalScroll'} type={'basic'}/>
+<Canvas of={HorizontalScroll.HorizontalScrollBasic}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'HorizontalScroll'} type={'expose'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+[//]: # (:documentation-slots [!] System label / Системная метка)

@@ -37,7 +37,7 @@
     "preview": "vite preview",
     "dxt-library": "dxt-library",
     "dxt-types": "dxt-types",
-    "dxt-constructor": "dxt-constructor tabItem",
+    "dxt-constructor": "dxt-constructor horizontalScroll",
     "prepublishOnly": "npm run dxt-library && npm run dxt-constructor && npm run build"
   },
   "files": [
@@ -227,6 +227,14 @@
     "./TabItem": {
       "types": "./dist/constructors/TabItem/index.d.ts",
       "default": "./dist/tabItem.js"
+    },
+    "./TabsNavigation": {
+      "types": "./dist/constructors/TabsNavigation/index.d.ts",
+      "default": "./dist/tabsNavigation.js"
+    },
+    "./HorizontalScroll": {
+      "types": "./dist/constructors/HorizontalScroll/index.d.ts",
+      "default": "./dist/horizontalScroll.js"
     }
   },
   "buildOptions": {

@@ -18,6 +18,7 @@ import D1Field from '../../src/components/Ui/Field/D1FieldAiWiki.vue'
 import D1FieldCounter from '../../src/components/Ui/FieldCounter/D1FieldCounterAiWiki.vue'
 import D1FieldLabel from '../../src/components/Ui/FieldLabel/D1FieldLabelAiWiki.vue'
 import D1FieldMessage from '../../src/components/Ui/FieldMessage/D1FieldMessageAiWiki.vue'
+import D1HorizontalScroll from '../../src/components/Ui/HorizontalScroll/D1HorizontalScrollAiWiki.vue'
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
 import D1Input from '../../src/components/Ui/Input/D1InputAiWiki.vue'
@@ -61,6 +62,7 @@ export const aiList: any[] = [
   D1FieldCounter,
   D1FieldLabel,
   D1FieldMessage,
+  D1HorizontalScroll,
   D1Icon,
   D1Image,
   D1Input,

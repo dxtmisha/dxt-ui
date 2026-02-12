@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui tabItem",
+    "dxt-ui": "dxt-ui horizontalScroll",
     "prepublishOnly": "npm run dxt-ui && npm run build"
   },
   "files": [
@@ -210,6 +210,10 @@
     "./D1TabItem": {
       "types": "./dist/D1TabItem.d.ts",
       "default": "./dist/D1TabItem.js"
+    },
+    "./D1HorizontalScroll": {
+      "types": "./dist/D1HorizontalScroll.d.ts",
+      "default": "./dist/D1HorizontalScroll.js"
     }
   },
   "buildOptions": {

@@ -17,6 +17,7 @@ import { wikiDescriptionsField } from './wikiDescriptionsField'
 import { wikiDescriptionsFieldCounter } from './wikiDescriptionsFieldCounter'
 import { wikiDescriptionsFieldLabel } from './wikiDescriptionsFieldLabel'
 import { wikiDescriptionsFieldMessage } from './wikiDescriptionsFieldMessage'
+import { wikiDescriptionsHorizontalScroll } from './wikiDescriptionsHorizontalScroll'
 import { wikiDescriptionsIcon } from './wikiDescriptionsIcon'
 import { wikiDescriptionsImage } from './wikiDescriptionsImage'
 import { wikiDescriptionsInput } from './wikiDescriptionsInput'
@@ -60,6 +61,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsFieldCounter,
   wikiDescriptionsFieldLabel,
   wikiDescriptionsFieldMessage,
+  wikiDescriptionsHorizontalScroll,
   wikiDescriptionsIcon,
   wikiDescriptionsInput,
   wikiDescriptionsImage,

@@ -1,0 +1,38 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as HorizontalScroll;
+
+@include ui.initDesignBasic('d1.horizontalScroll') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include HorizontalScroll.mixinHorizontalScroll;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &--align {
+      &--left {
+        & .d1-horizontalScroll__item {
+          scroll-snap-align: start;
+        }
+      }
+      
+      &--center {
+        & .d1-horizontalScroll__item {
+          scroll-snap-align: center;
+        }
+      }
+      
+      &--end {
+        & .d1-horizontalScroll__item {
+          scroll-snap-align: end;
+        }
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}
