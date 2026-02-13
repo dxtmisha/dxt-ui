@@ -45,7 +45,7 @@
   },
   "media|lg": {
     "=?grid-marginX": {
-      "value": "0",
+      "value": "0px",
       "_type": "var"
     }
   }

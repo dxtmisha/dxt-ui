@@ -15,7 +15,9 @@ import type { HorizontalScrollPropsBasic } from './props'
  *
  * @template Props - Properties interface extending HorizontalScrollPropsInclude
  */
-export class HorizontalScrollInclude<Props extends HorizontalScrollPropsInclude = HorizontalScrollPropsInclude> {
+export class HorizontalScrollInclude<
+  Props extends HorizontalScrollPropsInclude = HorizontalScrollPropsInclude
+> {
   /**
    * Element of the component.
    *

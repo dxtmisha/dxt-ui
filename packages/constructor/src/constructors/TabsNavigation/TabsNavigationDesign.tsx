@@ -2,7 +2,7 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract, type NumberOrString, toBinds
 } from '@dxtmisha/functional'
 
 import { TabsNavigation } from './TabsNavigation'
@@ -67,9 +67,6 @@ export class TabsNavigationDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -80,8 +77,6 @@ export class TabsNavigationDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
     } as EXPOSE
   }
 
@@ -106,10 +101,7 @@ export class TabsNavigationDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -118,12 +110,43 @@ export class TabsNavigationDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    const children: any[] = []
 
     return h('div', {
-      // ...this.getAttrs(),
+      ...this.getAttrs(),
       ref: this.element,
       class: this.classes?.value.main
     })
+  }
+
+  /**
+   * Generates an element.
+   *
+   * Генерирует элемент.
+   * @param item selected element / выбранный элемент
+   */
+  protected readonly renderItem = (
+    item: ListItem
+  ): VNode => {
+    const isSelected = this.item.selected.item.value === item.index
+
+    return this.components.renderOne('tabItem', toBinds(
+      {
+        tag: this.props.tag
+      },
+      this.props.itemAttrs,
+      item,
+      {
+        key: item.index,
+        onClick: this.item.,
+        class: {
+          [setup.classes.value.item]: true,
+          [`${setup.classes.value.item}--selected`]: isSelected,
+          ...this.toClass(this.props.itemAttrs?.class),
+          ...this.toClass(item.class)
+        },
+        isSelected
+      }
+    )) as VNode
   }
 }
