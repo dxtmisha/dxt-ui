@@ -25,6 +25,7 @@
     bottom: 0;
     left: calc(#{ui.v('??paddingX', 0px)} + #{ui.v('??sys.left')});
     pointer-events: none;
+    opacity: 0;
 
     width: calc(#{ui.v('??sys.width')} - (2 * #{ui.v('??paddingX', 0px)}));
     height: ui.v('??indicator.height', auto);
@@ -57,8 +58,9 @@
   &--selected {
     &::before {
       left: ui.v('??paddingX', 0px);
-      transition-property: left, width;
+      opacity: 1;
       width: calc(100% - (2 * #{ui.v('??paddingX', 0px)}));
+      transition-property: left, width;
     }
   }
 }

@@ -4,6 +4,8 @@ import type { HorizontalScrollPropsInclude } from '../HorizontalScroll'
 
 type TabsNavigationPropsToken = {
   // :type [!] System label / Системная метка
+  scrollable?: boolean
+  divider?: boolean
   // :type [!] System label / Системная метка
 }
 

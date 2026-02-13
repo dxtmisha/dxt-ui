@@ -2,6 +2,7 @@ import { toRef, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
 
 import { HorizontalScrollInclude } from '../HorizontalScroll/HorizontalScrollInclude'
+import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 
 import { TabsNavigationSelected } from './TabsNavigationSelected'
@@ -9,15 +10,19 @@ import { TabsNavigationIndicator } from './TabsNavigationIndicator'
 
 import type { TabsNavigationComponents, TabsNavigationEmits, TabsNavigationSlots } from './types'
 import type { TabsNavigationProps } from './props'
+import type { EventClickValue } from '../../types/eventClickTypes.ts'
 
 /**
  * TabsNavigation
  */
 export class TabsNavigation {
+  readonly scroll: HorizontalScrollInclude
+
   readonly data: ListDataRef
   readonly selected: TabsNavigationSelected
   readonly indicator: TabsNavigationIndicator
-  readonly scroll: HorizontalScrollInclude
+
+  readonly event: EventClickInclude
   readonly model: ModelInclude<ListSelectedList | undefined>
 
   /**
@@ -32,6 +37,7 @@ export class TabsNavigation {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param constructors object with classes/ объект с классами
    * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
+   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
    * @param constructors.HorizontalScrollIncludeConstructor class for working with horizontal scroll/ класс для работы с горизонтальной прокруткой
    * @param constructors.ListDataRefConstructor class for working with data list/ класс для работы со списком данных
    * @param constructors.TabsNavigationIndicatorConstructor class for working with indicator/ класс для работы с индикатором
@@ -47,6 +53,7 @@ export class TabsNavigation {
     protected readonly slots?: TabsNavigationSlots,
     protected readonly emits?: ConstrEmit<TabsNavigationEmits>,
     constructors?: {
+      EventClickIncludeConstructor?: typeof EventClickInclude
       HorizontalScrollIncludeConstructor?: typeof HorizontalScrollInclude
       ListDataRefConstructor?: typeof ListDataRef
       ModelIncludeConstructor?: typeof ModelInclude<ListSelectedList | undefined>
@@ -55,6 +62,7 @@ export class TabsNavigation {
     }
   ) {
     const {
+      EventClickIncludeConstructor = EventClickInclude,
       HorizontalScrollIncludeConstructor = HorizontalScrollInclude,
       ListDataRefConstructor = ListDataRef,
       ModelIncludeConstructor = ModelInclude,
@@ -62,11 +70,18 @@ export class TabsNavigation {
       TabsNavigationSelectedConstructor = TabsNavigationSelected
     } = constructors ?? {}
 
+    this.scroll = new HorizontalScrollIncludeConstructor(
+      this.props,
+      this.className,
+      this.components
+    )
+
     this.selected = new TabsNavigationSelectedConstructor(this.props)
     this.indicator = new TabsNavigationIndicatorConstructor(
       this.props,
       this.refs,
-      this.element,
+      this.scroll.elementHtml,
+      this.classDesign,
       this.className,
       this.selected
     )
@@ -82,10 +97,10 @@ export class TabsNavigation {
       this.refs.keyLabel
     )
 
-    this.scroll = new HorizontalScrollIncludeConstructor(
-      this.props,
-      this.className,
-      this.components
+    this.event = new EventClickIncludeConstructor(
+      undefined,
+      undefined,
+      this.emits
     )
 
     this.model = new ModelIncludeConstructor(
@@ -93,5 +108,13 @@ export class TabsNavigation {
       this.emits,
       this.selected.item
     )
+  }
+
+  readonly onClick = (
+    event: MouseEvent,
+    options?: EventClickValue
+  ) => {
+    this.selected.set(options?.value)
+    this.event.onClick(event, options)
   }
 }

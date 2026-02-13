@@ -117,6 +117,10 @@ export declare type ConstrEmit<T extends ConstrItem = ConstrItem> = UnionToInter
 /** Extract emit item type from constructor item/ Извлечение типа элемента emit из элемента конструктора */
 export declare type ConstrEmitItem<T extends ConstrItem> = T[keyof T];
 
+export declare type ConstrExpose<E extends Element, EXPOSE extends ConstrItem> = EXPOSE & {
+    elementHtml?: ComputedRef<E | undefined>;
+};
+
 /**
  * Props for link handling/ Пропсы для обработки ссылок
  */
@@ -604,7 +608,7 @@ export declare abstract class DesignConstructorAbstract<E extends Element, COMP 
      *
      * Список доступных переменных извне.
      */
-    expose(): EXPOSE;
+    expose(): ConstrExpose<E, EXPOSE>;
     /**
      * The rendering method for the setup method.
      *

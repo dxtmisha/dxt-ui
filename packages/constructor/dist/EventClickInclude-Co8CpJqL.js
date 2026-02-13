@@ -1,8 +1,8 @@
-var o = Object.defineProperty;
-var h = (s, t, e) => t in s ? o(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var r = (s, t, e) => h(s, typeof t != "symbol" ? t + "" : t, e);
-import { toRefs as n } from "vue";
-import { isEnter as p, RouterItemRef as u } from "@dxtmisha/functional";
+var a = Object.defineProperty;
+var n = (s, t, e) => t in s ? a(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
+var r = (s, t, e) => n(s, typeof t != "symbol" ? t + "" : t, e);
+import { toRefs as h } from "vue";
+import { isEnter as u, RouterItemRef as p } from "@dxtmisha/functional";
 class m {
   /**
    * Constructor
@@ -39,9 +39,20 @@ class m {
      * @param options data object/ объект с данными
      */
     r(this, "onKeydown", (t, e) => {
-      p(t) && (this.onClick(t, e), t.preventDefault());
+      u(t) && (this.onClick(t, e), t.preventDefault());
     });
-    this.props = t, this.enabled = e, this.emits = i, this.refs = t ? n(t) : void 0;
+    this.props = t, this.enabled = e, this.emits = i, this.refs = t ? h(t) : void 0;
+  }
+  /**
+   * Returns bindings for the element.
+   *
+   * Возвращает привязки для элемента.
+   */
+  get binds() {
+    return {
+      onClick: this.onClick,
+      onKeydown: this.onKeydown
+    };
   }
   /**
    * Exported values
@@ -74,8 +85,8 @@ class m {
    * Возвращает тип выбранного элемента
    */
   getTargetType(t) {
-    var i, l, a;
-    const e = (a = (l = (i = t.target) == null ? void 0 : i.closest("[data-event-type]")) == null ? void 0 : l.dataset) == null ? void 0 : a.eventType;
+    var i, o, l;
+    const e = (l = (o = (i = t.target) == null ? void 0 : i.closest("[data-event-type]")) == null ? void 0 : o.dataset) == null ? void 0 : l.eventType;
     return e != null ? e : "click";
   }
   /**
@@ -85,7 +96,7 @@ class m {
    */
   toRouter() {
     var t, e;
-    return (t = this.props) != null && t.to ? (u.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
+    return (t = this.props) != null && t.to ? (p.push((e = this.props) == null ? void 0 : e.to), !0) : !1;
   }
   /**
    * Triggers the click event

@@ -172,6 +172,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  horizontalScrollFlush: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Removes borders and rounded corners to render the horizontal scroll component flush with its container',
+        ru: 'Убирает границы и скругления для отображения компонента горизонтальной прокрутки вплотную к контейнеру'
+      }
+    }
+  },
   horizontal: {
     type: StorybookControl.select,
     options: {

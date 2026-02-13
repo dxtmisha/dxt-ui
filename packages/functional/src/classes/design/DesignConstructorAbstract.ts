@@ -24,6 +24,7 @@ import type {
   ConstrClassObject,
   ConstrComponent,
   ConstrEmit,
+  ConstrExpose,
   ConstrItem,
   ConstrOptions,
   ConstrStyles
@@ -165,8 +166,11 @@ export abstract class DesignConstructorAbstract<
    *
    * Список доступных переменных извне.
    */
-  expose(): EXPOSE {
-    return this.dataExpose ?? {} as EXPOSE
+  expose(): ConstrExpose<E, EXPOSE> {
+    return {
+      ...(this.dataExpose ?? {}),
+      elementHtml: this.element
+    } as ConstrExpose<E, EXPOSE>
   }
 
   /**

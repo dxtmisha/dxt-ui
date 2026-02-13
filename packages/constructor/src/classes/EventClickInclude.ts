@@ -33,6 +33,18 @@ export class EventClickInclude {
   }
 
   /**
+   * Returns bindings for the element.
+   *
+   * Возвращает привязки для элемента.
+   */
+  get binds() {
+    return {
+      onClick: this.onClick,
+      onKeydown: this.onKeydown
+    }
+  }
+
+  /**
    * Exported values
    *
    * Экспортируемые значения

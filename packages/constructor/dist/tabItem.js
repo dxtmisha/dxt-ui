@@ -1,13 +1,13 @@
 var C = Object.defineProperty;
-var k = (i, e, s) => e in i ? C(i, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[e] = s;
-var t = (i, e, s) => k(i, typeof e != "symbol" ? e + "" : e, s);
-import { computed as h, h as w } from "vue";
-import { DesignConstructorAbstract as S } from "@dxtmisha/functional";
+var w = (i, e, s) => e in i ? C(i, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[e] = s;
+var t = (i, e, s) => w(i, typeof e != "symbol" ? e + "" : e, s);
+import { computed as h, h as S } from "vue";
+import { DesignConstructorAbstract as k } from "@dxtmisha/functional";
 import { A as a } from "./AriaStaticInclude-ZrgMZ2ja.js";
 import { B as x } from "./BadgeInclude-BwCIBVyK.js";
 import { L as E } from "./LabelInclude-D-mLvjK5.js";
 import { E as N } from "./EnabledInclude-DIc_ZLNR.js";
-import { E as T } from "./EventClickInclude-WHJqxZ1b.js";
+import { E as T } from "./EventClickInclude-Co8CpJqL.js";
 import { S as B } from "./SkeletonInclude-BIUzAO2s.js";
 import { I as D } from "./IconTrailingInclude-CdsOcDxv.js";
 import { R as A } from "./RippleInclude-Du5yIzX_.js";
@@ -31,7 +31,7 @@ class R {
    * @param constructors.RippleIncludeConstructor class for working with ripple/ класс для работы с ripple
    * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
    */
-  constructor(e, s, n, o, r, p, c, d, l) {
+  constructor(e, s, n, r, o, p, c, d, l) {
     t(this, "icon");
     t(this, "label");
     t(this, "badge");
@@ -47,14 +47,14 @@ class R {
       return {
         href: this.props.href,
         "data-value": (e = this.props.index) != null ? e : this.props.value,
-        onClick: this.event.onClick,
         tabindex: 0,
+        ...this.event.binds,
         ...a.role(this.props.role),
         ...a.selected(!!this.props.selected),
         ...a.disabled(!!this.props.disabled)
       };
     }));
-    this.props = e, this.refs = s, this.element = n, this.classDesign = o, this.className = r, this.components = p, this.slots = c, this.emits = d;
+    this.props = e, this.refs = s, this.element = n, this.classDesign = r, this.className = o, this.components = p, this.slots = c, this.emits = d;
     const {
       BadgeIncludeConstructor: m = x,
       EnabledIncludeConstructor: u = N,
@@ -90,7 +90,7 @@ class R {
 const M = {
   role: "tab"
 };
-class O extends S {
+class O extends k {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -98,14 +98,14 @@ class O extends S {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
-  constructor(s, n, o, r = R) {
+  constructor(s, n, r, o = R) {
     super(
       s,
       n,
-      o
+      r
     );
     t(this, "item");
-    this.item = new r(
+    this.item = new o(
       this.props,
       this.refs,
       this.element,
@@ -161,7 +161,7 @@ class O extends S {
       ...this.item.badge.render(),
       ...this.item.ripple.render()
     ];
-    return w(
+    return S(
       this.item.tag.value,
       {
         ...this.getAttrs(),

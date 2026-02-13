@@ -80,6 +80,16 @@ export const wikiAttributes: StorybookArgsToList = {
       }
     }
   },
+  horizontalScrollAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the HorizontalScroll component',
+        ru: 'Дополнительные атрибуты для компонента HorizontalScroll'
+      }
+    }
+  },
   inputAttrs: {
     type: StorybookControl.object,
     options: {

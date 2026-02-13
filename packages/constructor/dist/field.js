@@ -7,7 +7,7 @@ import { A as c } from "./AriaStaticInclude-ZrgMZ2ja.js";
 import { C as D } from "./CaptionInclude-DkMvAqPU.js";
 import { P as V, S as z } from "./SuffixInclude-maZ7235l.js";
 import { E as R } from "./EnabledInclude-DIc_ZLNR.js";
-import { E as W } from "./EventClickInclude-WHJqxZ1b.js";
+import { E as W } from "./EventClickInclude-Co8CpJqL.js";
 import { T as K } from "./TextInclude--GERRCGj.js";
 import { F as U } from "./FieldLabelInclude-Bkxf6rRw.js";
 import { F as j } from "./FieldMessageInclude-BJDnir34.js";

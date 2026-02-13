@@ -122,8 +122,8 @@ export class TabItem {
     return {
       'href': this.props.href,
       'data-value': this.props.index ?? this.props.value,
-      'onClick': this.event.onClick,
       'tabindex': 0,
+      ...this.event.binds,
       ...AriaStaticInclude.role(this.props.role),
       ...AriaStaticInclude.selected(Boolean(this.props.selected)),
       ...AriaStaticInclude.disabled(Boolean(this.props.disabled))

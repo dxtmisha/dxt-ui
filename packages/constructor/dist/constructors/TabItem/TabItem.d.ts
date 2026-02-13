@@ -112,8 +112,9 @@ export declare class TabItem {
         'aria-valuemin'?: string | number;
         'aria-valuenow'?: string | number;
         'aria-valuetext'?: string;
+        onClick: (event: MouseEvent, options?: EventClickValue) => void;
+        onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void;
         href: string | undefined;
         'data-value': any;
-        onClick: (event: MouseEvent, options?: EventClickValue) => void;
     }>;
 }

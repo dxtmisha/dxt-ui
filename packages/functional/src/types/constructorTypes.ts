@@ -1,4 +1,4 @@
-import type { Ref, PropType } from 'vue'
+import type { Ref, PropType, ComputedRef } from 'vue'
 import type { Undefined } from '@dxtmisha/functional-basic'
 
 import type {
@@ -24,6 +24,10 @@ export type ConstrComponent = Record<string, any>
  */
 export type ConstrComponentMod<P extends ConstrItem> = ConstrItem | {
   [K in keyof P]?: RefOrNormal<P[K]>
+}
+
+export type ConstrExpose<E extends Element, EXPOSE extends ConstrItem> = EXPOSE & {
+  elementHtml?: ComputedRef<E | undefined>
 }
 
 /** Utility type to convert union types to intersection types/ Утилитарный тип для преобразования объединенных типов в пересеченные */

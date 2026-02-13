@@ -20,6 +20,15 @@ export declare class EventClickInclude {
      */
     constructor(props?: EventClickProps | undefined, enabled?: EnabledInclude | undefined, emits?: ConstrEmit<EventClickEmits> | undefined);
     /**
+     * Returns bindings for the element.
+     *
+     * Возвращает привязки для элемента.
+     */
+    get binds(): {
+        onClick: (event: MouseEvent, options?: EventClickValue) => void;
+        onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void;
+    };
+    /**
      * Exported values
      *
      * Экспортируемые значения

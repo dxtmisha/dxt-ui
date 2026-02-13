@@ -1,5 +1,7 @@
 import { VNode } from 'vue';
-import { ConstrOptions, ConstrStyles, DesignConstructorAbstract } from '@dxtmisha/functional';
+import { ConstrOptions, ConstrStyles, DesignConstructorAbstract, ListDataFullItem } from '@dxtmisha/functional';
+import { HorizontalScrollControlItem } from '../HorizontalScroll';
+import { TabItemPropsBasic } from '../TabItem';
 import { TabsNavigation } from './TabsNavigation';
 import { TabsNavigationPropsBasic } from './props';
 import { TabsNavigationClasses, TabsNavigationComponents, TabsNavigationEmits, TabsNavigationExpose, TabsNavigationSlots } from './types';
@@ -39,5 +41,14 @@ export declare class TabsNavigationDesign<COMP extends TabsNavigationComponents,
      *
      * Метод для рендеринга.
      */
-    protected initRender(): VNode;
+    protected initRender(): VNode[];
+    protected readonly renderList: (props: HorizontalScrollControlItem) => any[];
+    /**
+     * Generates an element.
+     *
+     * Генерирует элемент.
+     * @param props data for the transferable property/ данные для передаваемого свойства
+     * @param item selected element / выбранный элемент
+     */
+    protected readonly renderItem: (props: HorizontalScrollControlItem, item: ListDataFullItem<TabItemPropsBasic>) => VNode;
 }

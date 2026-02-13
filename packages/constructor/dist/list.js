@@ -4,7 +4,7 @@ var i = (o, t, e) => S(o, typeof t != "symbol" ? t + "" : t, e);
 import { ref as g, computed as l, watch as C, onUnmounted as E, toRef as L, onMounted as M, nextTick as A, h } from "vue";
 import { isFilled as F, goScroll as D, isSelected as G, isDomRuntime as m, EventItem as T, ListDataRef as P, toBinds as u, DesignConstructorAbstract as O, isObject as N } from "@dxtmisha/functional";
 import { A as c } from "./AriaStaticInclude-ZrgMZ2ja.js";
-import { E as H } from "./EventClickInclude-WHJqxZ1b.js";
+import { E as H } from "./EventClickInclude-Co8CpJqL.js";
 import { W as R } from "./WindowClassesInclude-B56usxgx.js";
 class _ {
   /**

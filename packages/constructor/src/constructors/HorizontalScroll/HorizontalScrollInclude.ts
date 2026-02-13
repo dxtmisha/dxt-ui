@@ -43,16 +43,23 @@ export class HorizontalScrollInclude<
   }
 
   /**
+   * HTML element of the component.
+   *
+   * HTML элемент компонента.
+   */
+  readonly elementHtml = computed<HTMLDivElement | undefined>(() => this.element.value?.elementHtml)
+
+  /**
    * Computed bindings for the horizontal scroll/ Вычисляемые привязки для горизонтальной прокрутки
    */
   readonly binds = computed(
     () => toBinds(
-      this.props.horizontalScrollAttrs,
       getRef(this.extra),
       {
         ref: this.element,
         flush: this.props.horizontalScrollFlush
-      }
+      },
+      this.props.horizontalScrollAttrs
     )
   )
 
@@ -74,12 +81,12 @@ export class HorizontalScrollInclude<
    * Возвращает массив VNode элементов, представляющих отрисованную горизонтальную прокрутку, или пустой
    * массив, если компонент не может быть отрисованы.
    *
-   * @param props additional properties/ дополнительные свойства
    * @param children content for the default slot/ контент для слота по умолчанию
+   * @param props additional properties/ дополнительные свойства
    */
   readonly render = (
-    props?: RefOrNormal<ConstrBind<HorizontalScrollPropsBasic>>,
-    children?: any
+    children?: any,
+    props?: RefOrNormal<ConstrBind<HorizontalScrollPropsBasic>>
   ): VNode[] => {
     if (this.components) {
       return this.components.render(

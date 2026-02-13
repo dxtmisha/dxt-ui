@@ -366,7 +366,10 @@ class Yt {
    */
   expose() {
     var t;
-    return (t = this.dataExpose) != null ? t : {};
+    return {
+      ...(t = this.dataExpose) != null ? t : {},
+      elementHtml: this.element
+    };
   }
   /**
    * The rendering method for the setup method.

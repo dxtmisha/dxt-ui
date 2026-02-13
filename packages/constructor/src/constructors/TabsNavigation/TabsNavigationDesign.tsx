@@ -1,10 +1,14 @@
-import { h, type VNode } from 'vue'
+import { type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract, type NumberOrString, toBinds
+  DesignConstructorAbstract,
+  type ListDataFullItem,
+  toBinds
 } from '@dxtmisha/functional'
 
+import type { HorizontalScrollControlItem } from '../HorizontalScroll'
+import type { TabItemPropsBasic } from '../TabItem'
 import { TabsNavigation } from './TabsNavigation'
 
 import {
@@ -109,44 +113,58 @@ export class TabsNavigationDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
+  protected initRender(): VNode[] {
+    return this.item.scroll.render(
+      { default: this.renderList },
+      { class: this.classes?.value.main }
+    )
+  }
+
+  protected readonly renderList = (
+    props: HorizontalScrollControlItem
+  ) => {
     const children: any[] = []
 
-    return h('div', {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+    this.item.data.fullData.value.forEach(
+      item => children.push(
+        this.renderItem(props, item)
+      )
+    )
+
+    return children
   }
 
   /**
    * Generates an element.
    *
    * Генерирует элемент.
+   * @param props data for the transferable property/ данные для передаваемого свойства
    * @param item selected element / выбранный элемент
    */
   protected readonly renderItem = (
-    item: ListItem
+    props: HorizontalScrollControlItem,
+    item: ListDataFullItem<TabItemPropsBasic>
   ): VNode => {
-    const isSelected = this.item.selected.item.value === item.index
+    const isSelected = this.item.selected.isSelected(item.index)
 
-    return this.components.renderOne('tabItem', toBinds(
-      {
-        tag: this.props.tag
-      },
-      this.props.itemAttrs,
-      item,
-      {
-        key: item.index,
-        onClick: this.item.,
-        class: {
-          [setup.classes.value.item]: true,
-          [`${setup.classes.value.item}--selected`]: isSelected,
-          ...this.toClass(this.props.itemAttrs?.class),
-          ...this.toClass(item.class)
+    return this.components.renderOne(
+      'tabItem',
+      toBinds(
+        {
+          tag: this.props.tag,
+          key: item.index
         },
-        isSelected
-      }
-    )) as VNode
+        this.props.itemAttrs,
+        item,
+        props.binds,
+        {
+          onClick: this.item.onClick,
+          class: {
+            [props.classItemSelected]: isSelected
+          },
+          selected: isSelected
+        }
+      )
+    ) as VNode
   }
 }

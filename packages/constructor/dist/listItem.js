@@ -4,7 +4,7 @@ var i = (n, t, e) => L(n, typeof t != "symbol" ? t + "" : t, e);
 import { computed as d, h as g } from "vue";
 import { DesignConstructorAbstract as P } from "@dxtmisha/functional";
 import { g as R } from "./getClassTagAStatic-BnVYlXHI.js";
-import { E as T } from "./EventClickInclude-WHJqxZ1b.js";
+import { E as T } from "./EventClickInclude-Co8CpJqL.js";
 import { A as c } from "./AriaStaticInclude-ZrgMZ2ja.js";
 import { L as H } from "./LabelHighlightInclude-CLmTvW_6.js";
 import { S as M, P as V } from "./SuffixInclude-maZ7235l.js";
