@@ -17,6 +17,7 @@ export type HorizontalScrollEmits = {};
  * Тип, описывающий доступные свойства.
  */
 export interface HorizontalScrollExpose {
+    toSelected(): void;
 }
 /**
  * Type describing available slots.

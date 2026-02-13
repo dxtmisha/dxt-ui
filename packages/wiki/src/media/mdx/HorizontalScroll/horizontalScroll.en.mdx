@@ -1,0 +1,62 @@
+Component for creating a horizontally scrollable container with support for smooth scrolling and automatic positioning.
+
+HorizontalScroll provides a convenient way to display content that exceeds the screen width, such as image galleries, card lists, or navigation menus. The component supports automatic scrolling to the selected element upon initialization and provides methods for programmatic scroll control.
+
+**Key Features:**
+
+- Horizontal content scrolling
+- Smooth scrolling
+- Automatic scrolling to the active element on load
+- Support for custom container tags
+- Slot with bindings (binds) for child elements
+- Scrollbar visibility control (flush mode)
+
+**Typical Use Cases:**
+
+- Image and media galleries
+- Horizontal product card lists
+- Scrollable navigation menus (tabs)
+- Tag or category lists
+- Timelines and step sequences
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const items = ref([
+  { id: 1, title: 'Item 1' },
+  { id: 2, title: 'Item 2' },
+  { id: 3, title: 'Item 3' },
+  { id: 4, title: 'Item 4' },
+  { id: 5, title: 'Item 5' }
+])
+</script>
+
+<template>
+  <HorizontalScroll>
+    <template #default="{ binds }">
+      <div
+        v-for="item in items"
+        :key="item.id"
+        v-bind="binds"
+        class="scroll-item"
+      >
+        {{ item.title }}
+      </div>
+    </template>
+  </HorizontalScroll>
+</template>
+
+<style scoped>
+.scroll-item {
+  min-width: 150px;
+  height: 100px;
+  margin-right: 16px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
+```

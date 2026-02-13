@@ -1,11 +1,15 @@
-import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { computed, nextTick, onMounted, type Ref, type ToRefs } from 'vue'
+import { type ConstrEmit, type DesignComp, goScrollTo } from '@dxtmisha/functional'
 
 import { ScrollToXInclude } from '../../classes/ScrollToXInclude'
 
-import type { HorizontalScrollComponents, HorizontalScrollEmits, HorizontalScrollSlots } from './types'
+import type { HorizontalScrollControlItem } from './basicTypes'
+import type {
+  HorizontalScrollComponents,
+  HorizontalScrollEmits,
+  HorizontalScrollSlots
+} from './types'
 import type { HorizontalScrollProps } from './props'
-import type { HorizontalScrollControlItem } from './basicTypes.ts'
 
 /**
  * HorizontalScroll
@@ -44,14 +48,33 @@ export class HorizontalScroll {
     } = constructors ?? {}
 
     this.scroll = new ScrollToXIncludeConstructor(element)
+
+    onMounted(async () => {
+      await nextTick()
+      requestAnimationFrame(() => this.toSelected())
+    })
   }
 
+  /**
+   * Returns bindings for the element.
+   *
+   * Возвращает привязки для элемента.
+   */
   readonly binds = computed(() => {
     return {
       ref: this.element,
       ...this.scroll.binds.value
     }
   })
+
+  /**
+   * Exposed properties and methods.
+   *
+   * Открытые свойства и методы.
+   */
+  readonly expose = {
+    toSelected: () => this.toSelected()
+  }
 
   /** Returns data for managing slot data/ Возвращает данные для управления данными слотами */
   readonly slotData = computed<HorizontalScrollControlItem>(() => {
@@ -63,4 +86,34 @@ export class HorizontalScroll {
       }
     }
   })
+
+  /**
+   * Returns the selected element.
+   *
+   * Возвращает выбранный элемент.
+   */
+  protected getItemSelected(): HTMLElement | undefined {
+    return this.element.value?.querySelector<HTMLElement>(
+      `.${this.slotData.value.classItemSelected}`
+    ) ?? undefined
+  }
+
+  /**
+   * Scrolls to the selected element.
+   *
+   * Прокручивает к выбранному элементу.
+   */
+  protected toSelected = () => {
+    const item = this.getItemSelected()
+
+    if (
+      this.element.value
+      && item
+    ) {
+      goScrollTo(
+        this.element.value,
+        item
+      )
+    }
+  }
 }

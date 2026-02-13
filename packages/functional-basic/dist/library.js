@@ -2,7 +2,7 @@ var Pt = Object.defineProperty;
 var Wt = (i, t, e) => t in i ? Pt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
 var c = (i, t, e) => Wt(i, typeof t != "symbol" ? t + "" : t, e);
 import { geo as Ut } from "@dxtmisha/media";
-function C(i, t) {
+function L(i, t) {
   return t ? Object.assign({}, i, t) : Object.assign({}, i);
 }
 function m(i) {
@@ -26,7 +26,7 @@ function Et(i, t = "=", e = "&") {
 function M(i) {
   return i == null;
 }
-function L(i, t) {
+function C(i, t) {
   if (i) {
     if (t && i === "0")
       return !0;
@@ -54,7 +54,7 @@ function L(i, t) {
 function A(i) {
   return m(i) && !Array.isArray(i);
 }
-function R(i) {
+function x(i) {
   return typeof i == "string";
 }
 function H(i) {
@@ -271,7 +271,7 @@ const jt = "geo-code", p = class p {
    * Получение обработанных данных.
    */
   static getItem() {
-    return C(this.item, {
+    return L(this.item, {
       language: this.language
     });
   }
@@ -432,7 +432,7 @@ const jt = "geo-code", p = class p {
    * объект с данными об текущей стране
    */
   static toFull(t) {
-    return C(t, {
+    return L(t, {
       standard: this.toStandard(t),
       firstDay: (t == null ? void 0 : t.firstDay) || "Mo"
     });
@@ -446,7 +446,7 @@ function It(i) {
 function N(i) {
   var t;
   if (l())
-    return It(i) ? document.body : R(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
+    return It(i) ? document.body : x(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
 }
 function gt(i) {
   return It(i) ? i : N(i);
@@ -742,7 +742,7 @@ const mt = "ui-loading", Y = class Y {
   }
 };
 c(Y, "value", 0), c(Y, "event"), l() && (Y.event = new ft(window, mt));
-let x = Y;
+let R = Y;
 class zt {
   constructor() {
     /** Default headers/ Заголовки по умолчанию */
@@ -757,11 +757,11 @@ class zt {
    */
   get(t, e = "application/json;charset=UTF-8") {
     if (t !== null) {
-      const s = C(
+      const s = L(
         this.headers,
         t
       );
-      return L(e) && (s["Content-Type"] = e), s;
+      return C(e) && (s["Content-Type"] = e), s;
     }
   }
   /**
@@ -807,7 +807,7 @@ class Zt {
       if (t instanceof FormData)
         this.addByFormData(t, e);
       else if (A(t))
-        return C(e, t);
+        return L(e, t);
     }
     return t;
   }
@@ -1076,7 +1076,7 @@ class Yt {
    */
   isResponse(t, e) {
     const s = this.requestDefault.request(t == null ? void 0 : t.request);
-    return e === s || s === "*any" || L(e) && L(s) && A(e) && A(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
+    return e === s || s === "*any" || C(e) && C(s) && A(e) && A(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
       (n, [o, a]) => n && (a === (e == null ? void 0 : e[o]) || a === "*any"),
       !0
     );
@@ -1093,8 +1093,8 @@ class Yt {
       Kt(
         at(t.response) ? t.response(e) : t.response
       ).then((n) => {
-        t != null && t.lag ? (x.show(), setTimeout(() => {
-          this.stopResponseLoading(), s(n), x.hide();
+        t != null && t.lag ? (R.show(), setTimeout(() => {
+          this.stopResponseLoading(), s(n), R.hide();
         }, J(0, 2e3))) : (this.stopResponseLoading(), s(n));
       });
     });
@@ -1234,8 +1234,8 @@ const b = class b {
   static getBody(t = {}, e = D.get) {
     if (t instanceof FormData)
       return t;
-    if (e !== D.get && L(t))
-      return R(t) ? t : JSON.stringify(t);
+    if (e !== D.get && C(t))
+      return x(t) ? t : JSON.stringify(t);
   }
   /**
    * Getting data for the body of the get method.
@@ -1248,7 +1248,7 @@ const b = class b {
   static getBodyForGet(t, e = "", s = D.get) {
     if (s === D.get) {
       const n = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? Et(t) : t;
-      if (L(o))
+      if (C(o))
         return `${n}${o}`;
     }
     return "";
@@ -1303,7 +1303,7 @@ const b = class b {
    * @param pathRequest query string or list of parameters/ строка запроса или список параметров
    */
   static async request(t) {
-    return R(t) ? await this.fetch({
+    return x(t) ? await this.fetch({
       path: t
     }) : await this.fetch(t);
   }
@@ -1314,7 +1314,7 @@ const b = class b {
    * @param request list of parameters/ список параметров
    */
   static get(t) {
-    return this.request(C(t, {
+    return this.request(L(t, {
       method: D.get
     }));
   }
@@ -1325,7 +1325,7 @@ const b = class b {
    * @param request list of parameters/ список параметров
    */
   static post(t) {
-    return this.request(C(t, {
+    return this.request(L(t, {
       method: D.post
     }));
   }
@@ -1336,7 +1336,7 @@ const b = class b {
    * @param request list of parameters/ список параметров
    */
   static put(t) {
-    return this.request(C(t, {
+    return this.request(L(t, {
       method: D.put
     }));
   }
@@ -1347,7 +1347,7 @@ const b = class b {
    * @param request list of parameters/ список параметров
    */
   static delete(t) {
-    return this.request(C(t, {
+    return this.request(L(t, {
       method: D.delete
     }));
   }
@@ -1368,7 +1368,7 @@ const b = class b {
     if (u)
       return u;
     let h = {};
-    x.show();
+    R.show();
     try {
       await this.preparation.make(o);
       const g = await this.makeQuery(t), d = await this.preparation.makeEnd(a, g);
@@ -1376,7 +1376,7 @@ const b = class b {
         g.status,
         g.statusText
       ), d != null && d.reset)
-        return x.hide(), await this.fetch(t);
+        return R.hide(), await this.fetch(t);
       h = await this.readData(
         g,
         n,
@@ -1385,7 +1385,7 @@ const b = class b {
     } catch (g) {
       s || console.error("Api: ", g), this.status.setError(String(g));
     }
-    return x.hide(), this.makeData(h, e);
+    return R.hide(), this.makeData(h, e);
   }
   /**
    * Reading data from the response.
@@ -1414,7 +1414,7 @@ const b = class b {
       headers: u = {},
       type: h = "application/json;charset=UTF-8",
       init: g = {}
-    } = t, d = o != null ? o : this.getUrl(n, s), v = `${d}${this.getBodyForGet(e, d, a)}`, V = this.headers.get(u, h), P = C(g, {
+    } = t, d = o != null ? o : this.getUrl(n, s), v = `${d}${this.getBodyForGet(e, d, a)}`, V = this.headers.get(u, h), P = L(g, {
       method: a,
       body: this.getBody(e, a)
     });
@@ -1430,7 +1430,7 @@ const b = class b {
   static makeData(t, e) {
     if (this.status.setLastResponse(t), t && e && A(t) && "data" in t) {
       if (A(t.data)) {
-        const s = C(t.data);
+        const s = L(t.data);
         return "success" in t && (s.success = t.success), s;
       }
       return t.data;
@@ -1724,7 +1724,7 @@ const X = {}, ht = class ht {
   static updateData() {
     for (const t of document.cookie.split(";")) {
       const [e, s] = t.trim().split("=");
-      e && L(s) && (X[e] = Bt(s));
+      e && C(s) && (X[e] = Bt(s));
     }
   }
 };
@@ -1960,7 +1960,7 @@ class Q {
    */
   sizeFile(t, e = "byte") {
     const s = k(t);
-    if (s > 1024 && R(e))
+    if (s > 1024 && x(e))
       switch (e) {
         case "byte":
           return this.sizeFile(s / 1024, "kilobyte");
@@ -3409,7 +3409,7 @@ const j = class j {
    * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toMask(t, e) {
-    if (L(t) && Array.isArray(e) && e.length > 0) {
+    if (C(t) && Array.isArray(e) && e.length > 0) {
       const s = this.removeZero(t), n = s.length;
       for (const o of e)
         if (this.getUnnecessaryLength(o) === n)
@@ -3545,7 +3545,7 @@ class Ne {
    * @param data global data/ глобальные данные
    */
   static add(t) {
-    W === void 0 && (W = C(t));
+    W === void 0 && (W = L(t));
   }
 }
 const F = class F {
@@ -3737,7 +3737,7 @@ const st = "__UI_ICON", St = 320, Dt = "--LOAD--", q = class q {
   }
 };
 c(q, "icons", {}), c(q, "url", "/icons/"), l() && (st in window || (window[st] = {}), q.icons = window[st]);
-let Lt = q;
+let Ct = q;
 function Ot(i, t, e) {
   var s, n;
   return (n = (s = N(i)) == null ? void 0 : s[t]) != null ? n : e;
@@ -4267,7 +4267,7 @@ class Ee extends ut {
    */
   setTitle(e) {
     if (l()) {
-      const s = L(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
+      const s = C(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
       document.title = s, this.og.setTitle(s), this.twitter.setTitle(s);
     }
     return this;
@@ -4367,7 +4367,7 @@ class Ee extends ut {
    * Получает отформатированный суффикс с разделителем.
    */
   getSuffix() {
-    return L(this.suffix) ? ` - ${this.suffix}` : "";
+    return C(this.suffix) ? ` - ${this.suffix}` : "";
   }
 }
 class ot {
@@ -4540,7 +4540,7 @@ const ue = [
    */
   static addSync(t) {
     f(t, (e, s) => {
-      R(e) && L(e) && (this.data[this.getName(s)] = e);
+      x(e) && C(e) && (this.data[this.getName(s)] = e);
     });
   }
   /**
@@ -4550,7 +4550,7 @@ const ue = [
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static async addNormalOrSync(t) {
-    if (L(t))
+    if (C(t))
       if (z.isLocalhost())
         this.addSync(t);
       else {
@@ -4632,13 +4632,13 @@ const ue = [
   }
 };
 c(E, "url", "/api/translate"), c(E, "propsName", "list"), c(E, "data", {}), c(E, "cache", []), c(E, "resolveList", []), c(E, "timeout");
-let Ct = E;
-function xt(i) {
+let Lt = E;
+function Rt(i) {
   return Array.isArray(i);
 }
 function Ie(i) {
   var t;
-  return R(i) ? i.trim() : xt(i) && i.findIndex((e) => m(e)) === -1 ? i.join(",") : m(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
+  return x(i) ? i.trim() : Rt(i) && i.findIndex((e) => m(e)) === -1 ? i.join(",") : m(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
 }
 function le(i, t) {
   return Array(t).fill(i);
@@ -4654,11 +4654,11 @@ function Fe(i) {
   if (l())
     return (t = document.querySelector(i)) != null ? t : void 0;
 }
-function xe(i) {
+function Re(i) {
   if (l())
     return document.querySelectorAll(i);
 }
-function Re(i) {
+function xe(i) {
   i.preventDefault(), i.stopPropagation();
 }
 function de(i, t, e) {
@@ -4685,10 +4685,10 @@ function Ue(i = "datetime") {
 let kt = J(1e5, 9e5);
 function je(i, t) {
   const e = N(i);
-  return e ? (L(e.id) || e.setAttribute("id", `id-${kt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${kt++}`;
+  return e ? (C(e.id) || e.setAttribute("id", `id-${kt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${kt++}`;
 }
 function ge(i) {
-  return R(i) ? _(
+  return x(i) ? _(
     void 0,
     "img",
     { src: i }
@@ -4707,14 +4707,14 @@ function He(i) {
   var t, e, s;
   return (s = (t = i == null ? void 0 : i.key) != null ? t : i == null ? void 0 : i.code) != null ? s : (e = i == null ? void 0 : i.keyCode) == null ? void 0 : e.toString();
 }
-function Rt(i) {
+function xt(i) {
   return f(i, (t) => t.length);
 }
 function ze(i) {
-  return Math.max(...Rt(i));
+  return Math.max(...xt(i));
 }
 function Ze(i) {
-  return Math.min(...Rt(i));
+  return Math.min(...xt(i));
 }
 function ye(i) {
   var t, e, s, n;
@@ -4793,22 +4793,32 @@ function _e(i, t, e = 0) {
     });
   }
 }
-function Oe(i, t) {
+function Oe(i, t, e = "smooth") {
+  if (!l() || !i || !t)
+    return;
+  const s = i.getBoundingClientRect(), n = t.getBoundingClientRect();
+  i.scrollBy({
+    top: n.top - s.top,
+    left: n.left - s.left,
+    behavior: e
+  });
+}
+function Te(i, t) {
   return i.indexOf(t) !== -1;
 }
-async function Te() {
+async function Ge() {
   if (l()) {
     const i = await ot.get();
     document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
   }
 }
-function Ge(i, t) {
+function ti(i, t) {
   const e = {};
   return m(i) && m(t) && f(i, (s, n) => {
     n in t && (e[n] = s);
   }), e;
 }
-function ti(i, t) {
+function ei(i, t) {
   let e = Object.keys(i).length !== Object.keys(t).length;
   return e || f(i, (s, n) => {
     s !== (t == null ? void 0 : t[n]) && (e = !0);
@@ -4820,8 +4830,8 @@ const we = (i) => {
     return !!(t === "input" || t === "textarea" || t === "select" || i.isContentEditable || i.getAttribute("contenteditable") === "true");
   }
   return !1;
-}, ei = (i, t) => i.code === "Space" || i.code === "Enter" || i.key === " " || i.key === "Spacebar" || i.key === "Enter" || i.keyCode === 13 || i.keyCode === 32 ? t !== void 0 ? !t : !we(i.target) : !1;
-function ii(i) {
+}, ii = (i, t) => i.code === "Space" || i.code === "Enter" || i.key === " " || i.key === "Spacebar" || i.key === "Enter" || i.keyCode === 13 || i.keyCode === 32 ? t !== void 0 ? !t : !we(i.target) : !1;
+function si(i) {
   switch (typeof i) {
     case "number":
       return !0;
@@ -4831,14 +4841,14 @@ function ii(i) {
       return !1;
   }
 }
-function si(i, t) {
+function ri(i, t) {
   const e = Math.floor(t);
   return i >= e && i < e + 1;
 }
-function ri(i, t) {
+function ni(i, t) {
   return Array.isArray(i) ? i.every((e) => rt(e, t)) : rt(i, t);
 }
-function ni(i, t) {
+function oi(i, t) {
   if (i.startsWith(t))
     return i.slice(t.length).trim();
   let e = 0;
@@ -4846,7 +4856,7 @@ function ni(i, t) {
     e++;
   return i.slice(e).trim();
 }
-const oi = (i, t, e) => {
+const ai = (i, t, e) => {
   var s, n;
   return (n = (s = i == null ? void 0 : i.replace(new RegExp(`<${t}`, "ig"), `<${e}`)) == null ? void 0 : s.replace(new RegExp(`</${t}`, "ig"), `</${e}`)) == null ? void 0 : n.trim();
 };
@@ -4867,7 +4877,7 @@ function K(i, t, e = !0) {
     }
   ), s;
 }
-function ai(i, t) {
+function ci(i, t) {
   let e = i;
   return f(t, (s, n) => {
     e = e.replace(fe(`[${n}]`), I(s));
@@ -4883,7 +4893,7 @@ function ve(i, t = "auto") {
       return !1;
   }
 }
-function ci(i, t, e = "auto", s) {
+function ui(i, t, e = "auto", s) {
   var o;
   const n = ge(i);
   if (n && (n.naturalWidth > t && (e === "auto" || e === "width") || n.naturalHeight > t && (e === "auto" || e === "height"))) {
@@ -4892,7 +4902,7 @@ function ci(i, t, e = "auto", s) {
       return u.canvas.width = a ? t : n.naturalWidth / n.naturalHeight * t, u.canvas.height = a ? n.naturalHeight / n.naturalWidth * t : t, u.drawImage(n, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
   }
 }
-function ui(i) {
+function hi(i) {
   const t = k(i);
   if (t > 0) {
     const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
@@ -4900,14 +4910,14 @@ function ui(i) {
   }
   return "00:00";
 }
-function hi(i, t, {
+function li(i, t, {
   multiple: e = !1,
   maxlength: s = 0,
   alwaysChange: n = !0,
   notEmpty: o = !1
 }) {
   if (e) {
-    if (xt(i)) {
+    if (Rt(i)) {
       const a = i.indexOf(t), u = [...i];
       return a !== -1 ? (!o || u.length > 1) && u.splice(a, 1) : (!s || i.length < s) && u.push(t), u;
     }
@@ -4915,7 +4925,7 @@ function hi(i, t, {
   }
   return n || i !== t ? t : i;
 }
-function li(i, t, e) {
+function di(i, t, e) {
   if (m(i) && m(t)) {
     if (e) {
       let s = {}, n = !1;
@@ -4931,13 +4941,13 @@ function li(i, t, e) {
 function Se(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function di(i) {
+function gi(i) {
   return Se(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function gi(i) {
+function fi(i) {
   return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function fi(i, t, e, s) {
+function mi(i, t, e, s) {
   const n = k(i), o = k(t);
   return t && o < n ? `${Nt(o, e, s)}+` : Nt(n, e, s);
 }
@@ -4945,16 +4955,16 @@ const Nt = (i, t, e) => t ? new Q(e).number(i) : i;
 function De(i, t) {
   return 1 / i * t;
 }
-function mi(i, t) {
+function yi(i, t) {
   return De(i, t) * 100;
 }
-function yi(i) {
+function $i(i) {
   let t = "";
   for (const e of i)
     t += String.fromCharCode(e);
   return l() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
 }
-async function $i(i) {
+async function pi(i) {
   if (l())
     try {
       await navigator.clipboard.writeText(i);
@@ -4987,8 +4997,8 @@ export {
   bt as GeoPhone,
   Ne as Global,
   vt as Hash,
-  Lt as Icons,
-  x as Loading,
+  Ct as Icons,
+  R as Loading,
   Ee as Meta,
   ut as MetaManager,
   ae as MetaOg,
@@ -5004,18 +5014,18 @@ export {
   oe as MetaTwitterCard,
   $ as MetaTwitterTag,
   ot as ScrollbarWidth,
-  Ct as Translate,
+  Lt as Translate,
   Ie as anyToString,
   he as applyTemplate,
   le as arrFill,
   Be as blobToBase64,
   H as copyObject,
-  C as copyObjectLite,
+  L as copyObjectLite,
   _ as createElement,
   Fe as domQuerySelector,
-  xe as domQuerySelectorAll,
+  Re as domQuerySelectorAll,
   Gt as encodeAttribute,
-  Re as eventStopPropagation,
+  xe as eventStopPropagation,
   I as executeFunction,
   Kt as executePromise,
   f as forEach,
@@ -5032,7 +5042,7 @@ export {
   fe as getExp,
   me as getItemByPath,
   He as getKey,
-  Rt as getLengthOfAllArray,
+  xt as getLengthOfAllArray,
   ze as getMaxLengthAllArray,
   Ze as getMinLengthAllArray,
   Ve as getMouseClient,
@@ -5047,50 +5057,51 @@ export {
   Qe as getStepValue,
   Xe as goScroll,
   _e as goScrollSmooth,
-  Oe as inArray,
-  Te as initScrollbarOffset,
-  Ge as intersectKey,
-  xt as isArray,
-  ti as isDifferent,
+  Oe as goScrollTo,
+  Te as inArray,
+  Ge as initScrollbarOffset,
+  ti as intersectKey,
+  Rt as isArray,
+  ei as isDifferent,
   nt as isDomData,
   l as isDomRuntime,
-  ei as isEnter,
-  L as isFilled,
-  ii as isFloat,
+  ii as isEnter,
+  C as isFilled,
+  si as isFloat,
   at as isFunction,
   Ht as isInDom,
   we as isInput,
-  si as isIntegerBetween,
+  ri as isIntegerBetween,
   M as isNull,
   lt as isNumber,
   m as isObject,
   A as isObjectNotArray,
   rt as isSelected,
-  ri as isSelectedByList,
-  R as isString,
+  ni as isSelectedByList,
+  x as isString,
   It as isWindow,
   J as random,
-  ni as removeCommonPrefix,
-  oi as replaceComponentName,
+  oi as removeCommonPrefix,
+  ai as replaceComponentName,
   K as replaceRecursive,
-  ai as replaceTemplate,
-  ci as resizeImageByMax,
-  ui as secondToTime,
+  ci as replaceTemplate,
+  ui as resizeImageByMax,
+  hi as secondToTime,
   Tt as setElementItem,
-  hi as setValues,
-  li as splice,
+  li as setValues,
+  di as splice,
   pe as strFill,
   Z as toArray,
   Se as toCamelCase,
-  di as toCamelCaseFirst,
+  gi as toCamelCaseFirst,
   B as toDate,
-  gi as toKebabCase,
+  fi as toKebabCase,
   k as toNumber,
-  fi as toNumberByMax,
+  mi as toNumberByMax,
   De as toPercent,
-  mi as toPercentBy100,
+  yi as toPercentBy100,
   Bt as transformation,
-  yi as uint8ArrayToBase64,
+  $i as uint8ArrayToBase64,
   be as uniqueArray,
-  $i as writeClipboardData
+  pi as writeClipboardData
 };

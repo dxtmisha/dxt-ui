@@ -2793,6 +2793,16 @@ export declare function goScroll(selector: string, elementTo: HTMLElement | unde
 export declare function goScrollSmooth<E extends HTMLElement>(element: E, options?: ScrollIntoViewOptions, shift?: number): void;
 
 /**
+ * Scrolls the container to make the target element visible.
+ *
+ * Прокручивает контейнер, чтобы целевой элемент стал видимым.
+ * @param element container element/ элемент контейнера
+ * @param elementTo target element/ целевой элемент
+ * @param behavior scroll behavior/ режим прокрутки
+ */
+export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElement, behavior?: ScrollBehavior): void;
+
+/**
  * Working with data stored in hash.
  *
  * Работа с данными сохраненными в хеш.

@@ -1,0 +1,44 @@
+### `toSelected`
+
+A method for programmatically scrolling the container to the selected element.
+
+**Type:** `() => void`
+
+**Purpose:** Allows you to forcibly scroll the container to an element that has the selected class (usually `--selected`). This is useful if the selection state has changed programmatically and you need to update the scroll position.
+
+```html
+<template>
+  <HorizontalScroll ref="scrollRef">
+    <template #default="{ binds }">
+      <div
+        v-for="item in items"
+        :key="item.id"
+        v-bind="binds"
+        :class="{ 'is-selected': item.id === selectedId }"
+        @click="selectItem(item.id)"
+      >
+        {{ item.title }}
+      </div>
+    </template>
+  </HorizontalScroll>
+
+  <button @click="scrollToActive">Scroll to active</button>
+</template>
+
+<script setup>
+import { ref, nextTick } from 'vue'
+
+const scrollRef = ref()
+const selectedId = ref(1)
+const items = ref([/* ... */])
+
+const selectItem = (id) => {
+  selectedId.value = id
+}
+
+const scrollToActive = async () => {
+  await nextTick()
+  scrollRef.value?.toSelected()
+}
+</script>
+```

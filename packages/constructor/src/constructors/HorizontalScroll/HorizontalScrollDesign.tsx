@@ -77,8 +77,7 @@ export class HorizontalScrollDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      ...this.item.expose
     } as EXPOSE
   }
 
@@ -103,10 +102,7 @@ export class HorizontalScrollDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**

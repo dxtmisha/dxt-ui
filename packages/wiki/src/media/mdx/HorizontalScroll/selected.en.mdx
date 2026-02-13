@@ -1,0 +1,33 @@
+## Selected Element
+
+The `selected` property allows you to control the visual state of the component, indicating that it is in a selected or active state.
+
+**Properties:**
+
+- `selected` — a boolean value determining whether the element is selected
+
+When the `selected` property is set to `true`, a special class (usually `--selected`) is added to the component, which changes its appearance (e.g., background color, border, or text) to highlight it among other elements. This is useful for implementing selection lists, active input fields, or other interactive elements where it is necessary to visually indicate the user's current choice.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const isSelected = ref(true)
+</script>
+
+<template>
+  <!-- Selected state -->
+  <Textarea
+    v-model="value"
+    :selected="isSelected"
+    label="Active field"
+  />
+
+  <!-- Normal state -->
+  <Textarea
+    v-model="value2"
+    :selected="false"
+    label="Normal field"
+  />
+</template>
+```

@@ -62,17 +62,16 @@ export const HorizontalScrollBasic: Story = {
   render: () => ({
     components: { D1HorizontalScroll },
     template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--md">
-            <D1HorizontalScroll>
-              <template #default="{ classItem }">
-                <div v-for="i in 10" :key="i" :class="classItem" style="width: 80px; height: 80px; background: var(--sys-color-primary-container); color: var(--sys-color-on-primary-container); display: flex; align-items: center; justify-content: center; border-radius: 8px; margin-right: 8px;">
-                  {{ i }}
-                </div>
-              </template>
-            </D1HorizontalScroll>
-          </div>
-        </div>
+        <D1HorizontalScroll>
+          <template #default="{ classItem, classItemSelected }">
+            <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.94 0.06 25);">Item 1</div>
+            <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.95 0.06 50);">Item 2</div>
+            <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.96 0.07 70);">Item 3</div>
+            <div class="wiki-storybook-flex-center" :class="[classItem, classItemSelected]" style="width: 256px; height: 128px; background: oklch(0.97 0.08 85);">Item 4</div>
+            <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.96 0.08 110);">Item 5</div>
+            <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.95 0.07 140);">Item 6</div>
+          </template>
+        </D1HorizontalScroll>
     `
   })
 }

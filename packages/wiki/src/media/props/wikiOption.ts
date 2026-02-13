@@ -128,6 +128,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  flush: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Removes borders and rounded corners to render the component flush with its container',
+        ru: 'Убирает границы и скругления для отображения компонента вплотную к контейнеру'
+      }
+    }
+  },
   formatting: {
     type: StorybookControl.boolean,
     options: {

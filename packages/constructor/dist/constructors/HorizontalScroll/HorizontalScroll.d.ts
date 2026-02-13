@@ -1,9 +1,9 @@
 import { Ref, ToRefs, ComputedRef } from 'vue';
 import { ConstrEmit, DesignComp } from '@dxtmisha/functional';
 import { ScrollToXInclude } from '../../classes/ScrollToXInclude';
+import { HorizontalScrollControlItem } from './basicTypes';
 import { HorizontalScrollComponents, HorizontalScrollEmits, HorizontalScrollSlots } from './types';
 import { HorizontalScrollProps } from './props';
-import { HorizontalScrollControlItem } from './basicTypes.ts';
 /**
  * HorizontalScroll
  */
@@ -33,10 +33,35 @@ export declare class HorizontalScroll {
     constructor(props: HorizontalScrollProps, refs: ToRefs<HorizontalScrollProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<HorizontalScrollComponents, HorizontalScrollProps> | undefined, slots?: HorizontalScrollSlots | undefined, emits?: ConstrEmit<HorizontalScrollEmits> | undefined, constructors?: {
         ScrollToXIncludeConstructor?: typeof ScrollToXInclude;
     });
+    /**
+     * Returns bindings for the element.
+     *
+     * Возвращает привязки для элемента.
+     */
     readonly binds: ComputedRef<{
         onWheelPassive: (event: WheelEvent) => void;
         ref: Ref<HTMLElement | undefined, HTMLElement | undefined>;
     }>;
+    /**
+     * Exposed properties and methods.
+     *
+     * Открытые свойства и методы.
+     */
+    readonly expose: {
+        toSelected: () => void;
+    };
     /** Returns data for managing slot data/ Возвращает данные для управления данными слотами */
     readonly slotData: ComputedRef<HorizontalScrollControlItem>;
+    /**
+     * Returns the selected element.
+     *
+     * Возвращает выбранный элемент.
+     */
+    protected getItemSelected(): HTMLElement | undefined;
+    /**
+     * Scrolls to the selected element.
+     *
+     * Прокручивает к выбранному элементу.
+     */
+    protected toSelected: () => void;
 }

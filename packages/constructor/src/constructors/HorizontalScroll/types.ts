@@ -5,8 +5,7 @@ import type { ConstrClass } from '@dxtmisha/functional'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type HorizontalScrollComponents = {
-}
+export type HorizontalScrollComponents = {}
 
 /**
  * Type describing available events.
@@ -23,6 +22,7 @@ export type HorizontalScrollEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface HorizontalScrollExpose {
+  toSelected(): void
 }
 
 /**
@@ -31,7 +31,7 @@ export interface HorizontalScrollExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface HorizontalScrollSlots {
-  default? (props: any): any
+  default?(props: any): any
 }
 
 /**

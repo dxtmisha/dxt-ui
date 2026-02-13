@@ -23,6 +23,7 @@ import { wikiMdxField } from './Field/wikiMdxField'
 import { wikiMdxFieldCounter } from './FieldCounter/wikiMdxFieldCounter'
 import { wikiMdxFieldLabel } from './FieldLabel/wikiMdxFieldLabel'
 import { wikiMdxFieldMessage } from './FieldMessage/wikiMdxFieldMessage'
+import { wikiMdxHorizontalScroll } from './HorizontalScroll/wikiMdxHorizontalScroll'
 import { wikiMdxIcon } from './Icon/wikiMdxIcon'
 import { wikiMdxImage } from './Image/wikiMdxImage'
 import { wikiMdxInput } from './Input/wikiMdxInput'
@@ -72,6 +73,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxFieldCounter,
   wikiMdxFieldLabel,
   wikiMdxFieldMessage,
+  wikiMdxHorizontalScroll,
   wikiMdxIcon,
   wikiMdxImage,
   wikiMdxInput,

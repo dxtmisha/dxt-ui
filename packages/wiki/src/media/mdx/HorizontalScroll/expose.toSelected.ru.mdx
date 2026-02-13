@@ -1,0 +1,44 @@
+### `toSelected`
+
+Метод для программной прокрутки контейнера к выбранному элементу.
+
+**Тип:** `() => void`
+
+**Назначение:** Позволяет принудительно прокрутить контейнер к элементу, который имеет класс выбранного элемента (обычно `--selected`). Это полезно, если состояние выбора изменилось программно, и нужно обновить позицию прокрутки.
+
+```html
+<template>
+  <HorizontalScroll ref="scrollRef">
+    <template #default="{ binds }">
+      <div
+        v-for="item in items"
+        :key="item.id"
+        v-bind="binds"
+        :class="{ 'is-selected': item.id === selectedId }"
+        @click="selectItem(item.id)"
+      >
+        {{ item.title }}
+      </div>
+    </template>
+  </HorizontalScroll>
+
+  <button @click="scrollToActive">Прокрутить к активному</button>
+</template>
+
+<script setup>
+import { ref, nextTick } from 'vue'
+
+const scrollRef = ref()
+const selectedId = ref(1)
+const items = ref([/* ... */])
+
+const selectItem = (id) => {
+  selectedId.value = id
+}
+
+const scrollToActive = async () => {
+  await nextTick()
+  scrollRef.value?.toSelected()
+}
+</script>
+```
