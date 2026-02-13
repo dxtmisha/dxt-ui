@@ -1,3 +1,4 @@
 {
-  "main": "{d.horizontalScroll}"
+  "main": "{d.horizontalScroll}",
+  "marginLeft": "{ref.spacing.8}"
 }

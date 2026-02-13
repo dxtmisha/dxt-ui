@@ -10,10 +10,18 @@
   overflow-x: auto;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
-  scroll-margin-inline-start: ui.v('??marginLeft');
+  scroll-padding-inline-start: ui.v('??marginLeft');
   overscroll-behavior-x: contain;
 
   &__item {
     scroll-snap-align: start;
+  }
+
+  &--flush {
+    @include ui.initByCustom('sys.flush', ui.v('??marginFlushX', ui.v('?grid.marginX')));
+
+    scroll-padding-inline-start: calc(#{ui.v('??marginLeft')} + #{ui.v('??sys.flush')});
+    @include ui.marginX(calc(#{ui.v('??sys.flush')} * -1));
+    @include ui.paddingX(ui.v('??sys.flush'));
   }
 }

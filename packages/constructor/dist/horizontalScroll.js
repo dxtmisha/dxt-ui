@@ -1,9 +1,10 @@
-var c = Object.defineProperty;
-var m = (i, s, t) => s in i ? c(i, s, { enumerable: !0, configurable: !0, writable: !0, value: t }) : i[s] = t;
-var l = (i, s, t) => m(i, typeof s != "symbol" ? s + "" : s, t);
-import { computed as p, h as u } from "vue";
+var d = Object.defineProperty;
+var p = (i, t, s) => t in i ? d(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
+var r = (i, t, s) => p(i, typeof t != "symbol" ? t + "" : t, s);
+import { computed as a, h as f } from "vue";
 import { DesignConstructorAbstract as g } from "@dxtmisha/functional";
-class d {
+import { S } from "./ScrollToXInclude-DvJzmTtW.js";
+class v {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -14,24 +15,36 @@ class d {
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param constructors object with classes/ объект с классами
+   * @param constructors.ScrollToXIncludeConstructor class for working with scroll/ класс для работы со скроллом
    */
-  constructor(s, t, e, n, r, o, a, h) {
+  constructor(t, s, e, l, n, h, c, m, o) {
+    r(this, "scroll");
+    r(this, "binds", a(() => ({
+      ref: this.element,
+      ...this.scroll.binds.value
+    })));
     /** Returns data for managing slot data/ Возвращает данные для управления данными слотами */
-    l(this, "slotData", p(() => ({
+    r(this, "slotData", a(() => ({
       classItem: `${this.className}__item`,
+      classItemSelected: `${this.className}__item--selected`,
       binds: {
         class: `${this.className}__item`
       }
     })));
-    this.props = s, this.refs = t, this.element = e, this.classDesign = n, this.className = r, this.components = o, this.slots = a, this.emits = h;
+    this.props = t, this.refs = s, this.element = e, this.classDesign = l, this.className = n, this.components = h, this.slots = c, this.emits = m;
+    const {
+      ScrollToXIncludeConstructor: u = S
+    } = o != null ? o : {};
+    this.scroll = new u(e);
   }
 }
-const v = {
+const I = {
   tag: "div",
   // :default [!] System label / Системная метка
-  align: "left"
+  flush: !0
 };
-class N extends g {
+class x extends g {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -39,14 +52,14 @@ class N extends g {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
-  constructor(t, e, n, r = d) {
+  constructor(s, e, l, n = v) {
     super(
-      t,
+      s,
       e,
-      n
+      l
     );
-    l(this, "item");
-    this.item = new r(
+    r(this, "item");
+    this.item = new n(
       this.props,
       this.refs,
       this.element,
@@ -95,21 +108,21 @@ class N extends g {
    * Метод для рендеринга.
    */
   initRender() {
-    var e, n;
-    const t = [];
-    return this.initSlot("default", t, this.item.slotData.value), u(
+    var e, l;
+    const s = [];
+    return this.initSlot("default", s, this.item.slotData.value), f(
       (e = this.props.tag) != null ? e : "div",
       {
         ...this.getAttrs(),
-        ref: this.element,
-        class: (n = this.classes) == null ? void 0 : n.value.main
+        class: (l = this.classes) == null ? void 0 : l.value.main,
+        ...this.item.binds.value
       },
-      t
+      s
     );
   }
 }
 export {
-  d as HorizontalScroll,
-  N as HorizontalScrollDesign,
-  v as defaultsHorizontalScroll
+  v as HorizontalScroll,
+  x as HorizontalScrollDesign,
+  I as defaultsHorizontalScroll
 };

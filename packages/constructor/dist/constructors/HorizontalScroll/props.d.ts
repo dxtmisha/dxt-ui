@@ -1,7 +1,8 @@
 type HorizontalScrollPropsToken = {
-    align?: 'left' | 'center' | 'end';
+    flush?: boolean;
 };
 export type HorizontalScrollPropsBasic = {
+    flush?: boolean;
     tag?: string;
 };
 /**
@@ -16,7 +17,7 @@ export type HorizontalScrollProps = HorizontalScrollPropsBasic & HorizontalScrol
  * Значение по умолчанию для свойства.
  */
 export declare const defaultsHorizontalScroll: {
-    align: string;
+    flush: boolean;
     tag: string;
 };
 export {};

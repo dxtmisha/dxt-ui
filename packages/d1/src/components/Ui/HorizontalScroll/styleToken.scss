@@ -11,25 +11,7 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    &--align {
-      &--left {
-        & .d1-horizontalScroll__item {
-          scroll-snap-align: start;
-        }
-      }
-      
-      &--center {
-        & .d1-horizontalScroll__item {
-          scroll-snap-align: center;
-        }
-      }
-      
-      &--end {
-        & .d1-horizontalScroll__item {
-          scroll-snap-align: end;
-        }
-      }
-    }
+    --d1-horizontalScroll-marginLeft: var(--d1-ref-spacing-8);
   }
   // :style [!] System label / Системная метка
 

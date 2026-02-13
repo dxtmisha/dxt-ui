@@ -1,3 +1,11 @@
 {
-
+  "marginLeft": {
+    "_type": "var"
+  },
+  "marginFlushX": {
+    "_type": "var"
+  },
+  "~flush": {
+    "_default": true
+  }
 }

@@ -1,5 +1,6 @@
 import { Ref, ToRefs, ComputedRef } from 'vue';
 import { ConstrEmit, DesignComp } from '@dxtmisha/functional';
+import { ScrollToXInclude } from '../../classes/ScrollToXInclude';
 import { HorizontalScrollComponents, HorizontalScrollEmits, HorizontalScrollSlots } from './types';
 import { HorizontalScrollProps } from './props';
 import { HorizontalScrollControlItem } from './basicTypes.ts';
@@ -15,6 +16,7 @@ export declare class HorizontalScroll {
     protected readonly components?: DesignComp<HorizontalScrollComponents, HorizontalScrollProps> | undefined;
     protected readonly slots?: HorizontalScrollSlots | undefined;
     protected readonly emits?: ConstrEmit<HorizontalScrollEmits> | undefined;
+    readonly scroll: ScrollToXInclude;
     /**
      * Constructor
      * @param props input data/ входные данные
@@ -25,8 +27,16 @@ export declare class HorizontalScroll {
      * @param components object for working with components/ объект для работы с компонентами
      * @param slots object for working with slots/ объект для работы со слотами
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+     * @param constructors object with classes/ объект с классами
+     * @param constructors.ScrollToXIncludeConstructor class for working with scroll/ класс для работы со скроллом
      */
-    constructor(props: HorizontalScrollProps, refs: ToRefs<HorizontalScrollProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<HorizontalScrollComponents, HorizontalScrollProps> | undefined, slots?: HorizontalScrollSlots | undefined, emits?: ConstrEmit<HorizontalScrollEmits> | undefined);
+    constructor(props: HorizontalScrollProps, refs: ToRefs<HorizontalScrollProps>, element: Ref<HTMLElement | undefined>, classDesign: string, className: string, components?: DesignComp<HorizontalScrollComponents, HorizontalScrollProps> | undefined, slots?: HorizontalScrollSlots | undefined, emits?: ConstrEmit<HorizontalScrollEmits> | undefined, constructors?: {
+        ScrollToXIncludeConstructor?: typeof ScrollToXInclude;
+    });
+    readonly binds: ComputedRef<{
+        onWheelPassive: (event: WheelEvent) => void;
+        ref: Ref<HTMLElement | undefined, HTMLElement | undefined>;
+    }>;
     /** Returns data for managing slot data/ Возвращает данные для управления данными слотами */
     readonly slotData: ComputedRef<HorizontalScrollControlItem>;
 }

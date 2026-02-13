@@ -2,13 +2,12 @@ import { type HorizontalScrollPropsBasic, defaultsHorizontalScroll } from '@dxtm
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  align: ['left', 'center', 'end']
   // :values [!] System label / Системная метка
 }
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  align?: 'left' | 'center' | 'end'
+  flush?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -24,7 +23,7 @@ export const defaults: object = {
   ...defaultsHorizontalScroll,
   ...{
     // :default [!] System label / Системная метка
-    align: 'left'
+    flush: true
     // :default [!] System label / Системная метка
   }
 }

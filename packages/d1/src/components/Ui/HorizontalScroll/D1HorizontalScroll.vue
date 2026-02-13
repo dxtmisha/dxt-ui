@@ -26,7 +26,7 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-horizontalScroll': true,
-    [`d1-horizontalScroll--align--${props.align}`]: inArray(propsValues.align, props.align)
+    'd1-horizontalScroll--flush': props.flush
     // :classes-values [!] System label / Системная метка
   }
 }))

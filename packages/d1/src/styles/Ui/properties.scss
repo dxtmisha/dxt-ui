@@ -4167,13 +4167,13 @@
                         index: 'md',
                         name: '--d1-sys-spacing-grid-paddingX-md',
                         type: 'var',
-                        value: 'var(--d1-ref-spacing-2)',
+                        value: 'var(--d1-ref-spacing-3)',
                       ),
                       'lg':(
                         index: 'lg',
                         name: '--d1-sys-spacing-grid-paddingX-lg',
                         type: 'var',
-                        value: 'var(--d1-ref-spacing-3)',
+                        value: 'var(--d1-ref-spacing-4)',
                       ),
                     ),
                   ),
@@ -6485,6 +6485,18 @@
         name: 'd1-system',
         type: 'component',
         value: (
+          'gridMarginX':(
+            index: 'gridMarginX',
+            name: '--d1-grid-marginX',
+            type: 'var',
+            value: 'var(--d1-grid-paddingX)',
+          ),
+          'gridMarginY':(
+            index: 'gridMarginY',
+            name: '--d1-grid-marginY',
+            type: 'var',
+            value: 'var(--d1-grid-paddingY)',
+          ),
           'fontFamily':(
             index: 'fontFamily',
             name: 'font-family',
@@ -6589,6 +6601,19 @@
               ),
             ),
           ),
+          'mediaLg':(
+            index: 'mediaLg',
+            name: '(min-width: 1024px)',
+            type: 'media',
+            value: (
+              'gridMarginX':(
+                index: 'gridMarginX',
+                name: '--d1-grid-marginX',
+                type: 'var',
+                value: 0,
+              ),
+            ),
+          ),
         ),
       ),
       'main':(
@@ -6596,6 +6621,18 @@
         name: 'd1-main',
         type: 'component',
         value: (
+          'gridMarginX':(
+            index: 'gridMarginX',
+            name: '--d1-grid-marginX',
+            type: 'var',
+            value: 'var(--d1-grid-paddingX)',
+          ),
+          'gridMarginY':(
+            index: 'gridMarginY',
+            name: '--d1-grid-marginY',
+            type: 'var',
+            value: 'var(--d1-grid-paddingY)',
+          ),
           'fontFamily':(
             index: 'fontFamily',
             name: 'font-family',
@@ -6703,6 +6740,19 @@
                 name: '--d1-grid-gapY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapY-lg)',
+              ),
+            ),
+          ),
+          'mediaLg':(
+            index: 'mediaLg',
+            name: '(min-width: 1024px)',
+            type: 'media',
+            value: (
+              'gridMarginX':(
+                index: 'gridMarginX',
+                name: '--d1-grid-marginX',
+                type: 'var',
+                value: 0,
               ),
             ),
           ),
@@ -9094,6 +9144,18 @@
         name: 'd1-grid',
         type: 'component',
         value: (
+          'gridMarginX':(
+            index: 'gridMarginX',
+            name: '--d1-grid-marginX',
+            type: 'var',
+            value: 'var(--d1-grid-paddingX)',
+          ),
+          'gridMarginY':(
+            index: 'gridMarginY',
+            name: '--d1-grid-marginY',
+            type: 'var',
+            value: 'var(--d1-grid-paddingY)',
+          ),
           'mediaMaxMd':(
             index: 'mediaMaxMd',
             name: '(max-width: calc(768px - 1px))',
@@ -9153,6 +9215,19 @@
                 name: '--d1-grid-gapY',
                 type: 'var',
                 value: 'var(--d1-sys-spacing-grid-gapY-lg)',
+              ),
+            ),
+          ),
+          'mediaLg':(
+            index: 'mediaLg',
+            name: '(min-width: 1024px)',
+            type: 'media',
+            value: (
+              'gridMarginX':(
+                index: 'gridMarginX',
+                name: '--d1-grid-marginX',
+                type: 'var',
+                value: 0,
               ),
             ),
           ),

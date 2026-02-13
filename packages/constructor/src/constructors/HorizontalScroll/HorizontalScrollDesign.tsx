@@ -123,8 +123,8 @@ export class HorizontalScrollDesign<
       this.props.tag ?? 'div',
       {
         ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        ...this.item.binds.value
       },
       children
     )

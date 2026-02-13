@@ -1,4 +1,12 @@
 {
+  "=?grid-marginX": {
+    "value": "{?grid.paddingX}",
+    "_type": "var"
+  },
+  "=?grid-marginY": {
+    "value": "{?grid.paddingY}",
+    "_type": "var"
+  },
   "media-max|md": {
     "=?grid-paddingX": {
       "value": "{sys.spacing.grid.paddingX.md}",
@@ -32,6 +40,12 @@
     },
     "=?grid-gapY": {
       "value": "{sys.spacing.grid.gapY.lg}",
+      "_type": "var"
+    }
+  },
+  "media|lg": {
+    "=?grid-marginX": {
+      "value": "0",
       "_type": "var"
     }
   }

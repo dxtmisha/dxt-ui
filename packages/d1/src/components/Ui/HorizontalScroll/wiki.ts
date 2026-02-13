@@ -6,7 +6,7 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'align', type: 'string', option: ['left', 'center', 'end'] },
+  { name: 'flush', type: 'boolean' },
   { name: 'tag', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]

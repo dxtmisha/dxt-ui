@@ -8,8 +8,8 @@
   "outline": "{ref.spacing.px}",
   "grid": {
     "paddingX": {
-      "md": "{ref.spacing.2}",
-      "lg": "{ref.spacing.3}"
+      "md": "{ref.spacing.3}",
+      "lg": "{ref.spacing.4}"
     },
     "paddingY": "{ref.spacing.2}",
     "gapX": {

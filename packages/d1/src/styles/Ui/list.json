@@ -3399,12 +3399,12 @@
                       "md": {
                         "name": "--d1-sys-spacing-grid-paddingX-md",
                         "type": "var",
-                        "value": "{ref.spacing.2}"
+                        "value": "{ref.spacing.3}"
                       },
                       "lg": {
                         "name": "--d1-sys-spacing-grid-paddingX-lg",
                         "type": "var",
-                        "value": "{ref.spacing.3}"
+                        "value": "{ref.spacing.4}"
                       }
                     }
                   },
@@ -5338,6 +5338,16 @@
         "name": "d1-system",
         "type": "component",
         "value": {
+          "gridMarginX": {
+            "name": "--d1-grid-marginX",
+            "type": "var",
+            "value": "{?grid.paddingX}"
+          },
+          "gridMarginY": {
+            "name": "--d1-grid-marginY",
+            "type": "var",
+            "value": "{?grid.paddingY}"
+          },
           "mediaMaxMd": {
             "name": "(max-width: calc(768px - 1px))",
             "type": "media-max",
@@ -5396,6 +5406,16 @@
         "name": "d1-main",
         "type": "component",
         "value": {
+          "gridMarginX": {
+            "name": "--d1-grid-marginX",
+            "type": "var",
+            "value": "{?grid.paddingX}"
+          },
+          "gridMarginY": {
+            "name": "--d1-grid-marginY",
+            "type": "var",
+            "value": "{?grid.paddingY}"
+          },
           "mediaMaxMd": {
             "name": "(max-width: calc(768px - 1px))",
             "type": "media-max",
@@ -5454,6 +5474,16 @@
         "name": "d1-grid",
         "type": "component",
         "value": {
+          "gridMarginX": {
+            "name": "--d1-grid-marginX",
+            "type": "var",
+            "value": "{?grid.paddingX}"
+          },
+          "gridMarginY": {
+            "name": "--d1-grid-marginY",
+            "type": "var",
+            "value": "{?grid.paddingY}"
+          },
           "mediaMaxMd": {
             "name": "(max-width: calc(768px - 1px))",
             "type": "media-max",
@@ -8597,6 +8627,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "horizontalScroll": {
+        "name": "d1-horizontalScroll",
+        "type": "component",
+        "value": {
+          "marginLeft": {
+            "name": "--d1-horizontalScroll-marginLeft",
+            "type": "var",
+            "value": "{ref.spacing.8}"
           }
         }
       },

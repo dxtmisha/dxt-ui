@@ -1,6 +1,9 @@
 @use "@dxtmisha/styles" as ui;
 
 .d1-grid {
+  --d1-grid-marginX: var(--d1-grid-paddingX);
+  --d1-grid-marginY: var(--d1-grid-paddingY);
+  
   @media screen and (max-width: calc(768px - 1px)) {
     --d1-grid-paddingX: var(--d1-sys-spacing-grid-paddingX-md);
     --d1-grid-paddingY: var(--d1-sys-spacing-grid-paddingY);
@@ -13,5 +16,9 @@
     --d1-grid-paddingY: var(--d1-sys-spacing-grid-paddingY);
     --d1-grid-gapX: var(--d1-sys-spacing-grid-gapX-lg);
     --d1-grid-gapY: var(--d1-sys-spacing-grid-gapY-lg);
+  }
+  
+  @media screen and (min-width: 1024px) {
+    --d1-grid-marginX: 0;
   }
 }
