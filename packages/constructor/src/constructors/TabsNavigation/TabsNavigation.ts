@@ -1,4 +1,4 @@
-import { toRef, type Ref, type ToRefs } from 'vue'
+import { toRef, type Ref, type ToRefs, computed } from 'vue'
 import { type ConstrEmit, type DesignComp, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
 
 import { HorizontalScrollInclude } from '../HorizontalScroll/HorizontalScrollInclude'
@@ -109,6 +109,12 @@ export class TabsNavigation {
       this.selected.item
     )
   }
+
+  readonly binds = computed(() => {
+    return {
+      tabindex: 0
+    }
+  })
 
   readonly onClick = (
     event: MouseEvent,

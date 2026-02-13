@@ -116,7 +116,10 @@ export class TabsNavigationDesign<
   protected initRender(): VNode[] {
     return this.item.scroll.render(
       { default: this.renderList },
-      { class: this.classes?.value.main }
+      {
+        ...this.item.binds.value,
+        class: this.classes?.value.main
+      }
     )
   }
 
