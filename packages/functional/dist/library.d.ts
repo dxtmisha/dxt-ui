@@ -1285,6 +1285,62 @@ export declare class ListDataRef {
      */
     getSelectedByStep(step: number): ListSelectedItem | undefined;
     /**
+     * Returns the next item from the selected one.
+     *
+     * Возвращает следующий элемент от выбранного.
+     */
+    getSelectedNext(): ListSelectedItem | undefined;
+    /**
+     * Returns the previous item from the selected one.
+     *
+     * Возвращает предыдущий элемент от выбранного.
+     */
+    getSelectedPrev(): ListSelectedItem | undefined;
+    /**
+     * Returns an item by moving a certain number of steps from the specified item.
+     *
+     * Возвращает элемент, перемещаясь на определенное количество шагов от указанного элемента.
+     * @param item item/ элемент
+     * @param step number of steps/ количество шагов
+     */
+    getItemByStep(item: ListDataItem, step: number): ListDataItem | undefined;
+    /**
+     * Returns the next item from the specified one.
+     *
+     * Возвращает следующий элемент от указанного.
+     * @param item item/ элемент
+     */
+    getItemNext(item: ListDataItem): ListDataItem | undefined;
+    /**
+     * Returns the previous item from the specified one.
+     *
+     * Возвращает предыдущий элемент от указанного.
+     * @param item item/ элемент
+     */
+    getItemPrev(item: ListDataItem): ListDataItem | undefined;
+    /**
+     * Returns an item by moving a certain number of steps from the specified index.
+     *
+     * Возвращает элемент, перемещаясь на определенное количество шагов от указанного индекса.
+     * @param index item index/ индекс элемента
+     * @param step number of steps/ количество шагов
+     */
+    getIndexByStep(index: string, step: number): ListDataItem | undefined;
+    /**
+     * Returns the next item from the specified index.
+     *
+     * Возвращает следующий элемент от указанного индекса.
+     * @param index item index/ индекс элемента
+     */
+    getIndexNext(index: string): ListDataItem | undefined;
+    /**
+     * Returns the previous item from the specified index.
+     *
+     * Возвращает предыдущий элемент от указанного индекса.
+     * @param index item index/ индекс элемента
+     */
+    getIndexPrev(index: string): ListDataItem | undefined;
+    /**
      * Returns an item by its index.
      *
      * Возвращает элемент по его индексу.

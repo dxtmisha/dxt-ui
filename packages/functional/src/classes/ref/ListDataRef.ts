@@ -409,28 +409,117 @@ export class ListDataRef {
    */
   getSelectedByStep(step: number): ListSelectedItem | undefined {
     const selected = this.selectedList.value?.[0]
-    const mapItems = this.mapItems.value
 
-    if (!selected) {
-      return mapItems[0]?.index
+    if (selected) {
+      return this.getItemByStep(selected, step)?.index
     }
 
-    const key = mapItems.findIndex(item => item.index === selected.index)
-    const keyByStep = key + step
+    return this.mapItems.value[0]?.index
+  }
 
-    if (keyByStep in mapItems) {
-      return mapItems[keyByStep]?.index
+  /**
+   * Returns the next item from the selected one.
+   *
+   * Возвращает следующий элемент от выбранного.
+   */
+  getSelectedNext(): ListSelectedItem | undefined {
+    return this.getSelectedByStep(1)
+  }
+
+  /**
+   * Returns the previous item from the selected one.
+   *
+   * Возвращает предыдущий элемент от выбранного.
+   */
+  getSelectedPrev(): ListSelectedItem | undefined {
+    return this.getSelectedByStep(-1)
+  }
+
+  /**
+   * Returns an item by moving a certain number of steps from the specified item.
+   *
+   * Возвращает элемент, перемещаясь на определенное количество шагов от указанного элемента.
+   * @param item item/ элемент
+   * @param step number of steps/ количество шагов
+   */
+  getItemByStep(item: ListDataItem, step: number): ListDataItem | undefined {
+    const mapItems = this.mapItems.value
+    const key = mapItems.findIndex(i => i.index === item.index)
+
+    if (key !== -1) {
+      const keyByStep = key + step
+
+      if (keyByStep in mapItems) {
+        return mapItems[keyByStep]
+      }
     }
 
     if (step > 0) {
-      return mapItems[0]?.index
+      return mapItems[0]
     }
 
     if (step < 0) {
-      return mapItems[mapItems.length - 1]?.index
+      return mapItems[mapItems.length - 1]
     }
 
     return undefined
+  }
+
+  /**
+   * Returns the next item from the specified one.
+   *
+   * Возвращает следующий элемент от указанного.
+   * @param item item/ элемент
+   */
+  getItemNext(item: ListDataItem): ListDataItem | undefined {
+    return this.getItemByStep(item, 1)
+  }
+
+  /**
+   * Returns the previous item from the specified one.
+   *
+   * Возвращает предыдущий элемент от указанного.
+   * @param item item/ элемент
+   */
+  getItemPrev(item: ListDataItem): ListDataItem | undefined {
+    return this.getItemByStep(item, -1)
+  }
+
+  /**
+   * Returns an item by moving a certain number of steps from the specified index.
+   *
+   * Возвращает элемент, перемещаясь на определенное количество шагов от указанного индекса.
+   * @param index item index/ индекс элемента
+   * @param step number of steps/ количество шагов
+   */
+  getIndexByStep(index: string, step: number): ListDataItem | undefined {
+    const item = this.getItemByIndex(index)
+
+    if (item) {
+      return this.getItemByStep(item.item, step)
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns the next item from the specified index.
+   *
+   * Возвращает следующий элемент от указанного индекса.
+   * @param index item index/ индекс элемента
+   */
+  getIndexNext(index: string): ListDataItem | undefined {
+    return this.getIndexByStep(index, 1)
+  }
+
+  /**
+   * Returns the previous item from the specified index.
+   *
+   * Возвращает предыдущий элемент от указанного индекса.
+   * @param index item index/ индекс элемента
+   */
+  getIndexPrev(index: string): ListDataItem | undefined {
+    return this.getIndexByStep(index, -1)
   }
 
   /**

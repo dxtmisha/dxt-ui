@@ -73,11 +73,14 @@ export class TabsNavigationIndicator {
 
       newItem.style.setProperty(`--${itemClassName}-sys-left`, leftVar)
       newItem.style.setProperty(`--${itemClassName}-sys-width`, rectOld.width + 'px')
+      newItem.focus()
 
-      // this.reset(newItem)
+      this.reset(newItem)
     }
 
-    requestAnimationFrame(() => this.selected.setActual(newSelected))
+    requestAnimationFrame(() => {
+      this.selected.setActual(newSelected)
+    })
   }
 
   /**
