@@ -18,7 +18,6 @@ const propsNames: StorybookProps = [
   { name: 'modelSelected', type: 'boolean' },
   { name: 'onUpdate:modelSelected', type: '(value: boolean) => void' },
   { name: 'onUpdate:selected', type: '(value: boolean) => void' },
-  { name: 'scrollable', type: 'boolean' },
   { name: 'selected', type: 'ListSelectedList' },
   { name: 'tag', type: 'string' }
   // :propsList [!] System label / Системная метка

@@ -2,7 +2,6 @@ import { ConstrBind, ListRecord, ListSelectedList } from '@dxtmisha/functional';
 import { TabItemPropsBasic } from '../TabItem';
 import { HorizontalScrollPropsInclude } from '../HorizontalScroll';
 type TabsNavigationPropsToken = {
-    scrollable?: boolean;
     divider?: boolean;
 };
 export type TabsNavigationPropsBasic<TabItem extends TabItemPropsBasic = TabItemPropsBasic> = HorizontalScrollPropsInclude & {

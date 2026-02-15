@@ -1,5 +1,5 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinTabsNavigation {
-
+  position: relative;
 }

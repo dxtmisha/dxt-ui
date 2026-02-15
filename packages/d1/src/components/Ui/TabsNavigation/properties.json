@@ -3,5 +3,13 @@
   "paddingY": "{sys.spacing.x}",
   "focus": {
     "outline": "{outline.md}"
+  },
+  "~divider": {
+    "after": {
+      "border-bottom-style": "solid",
+      "border-bottom-width": "{sys.spacing.outline}",
+      "border-color": "{sys.palette.outline}",
+      "border-opacity": "{sys.opacity.outline}"
+    }
   }
 }
