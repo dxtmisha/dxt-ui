@@ -1,12 +1,12 @@
-var x = Object.defineProperty;
-var w = (n, t, e) => t in n ? x(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var s = (n, t, e) => w(n, typeof t != "symbol" ? t + "" : t, e);
-import { ref as u, computed as d, watch as k, nextTick as m, toRef as F } from "vue";
-import { toBinds as f, getRef as v, isSelected as A, toArray as D, isDomRuntime as T, EventItem as $, ListDataRef as L, DesignConstructorAbstract as R } from "@dxtmisha/functional";
-import { E as z } from "./EventClickInclude-Co8CpJqL.js";
-import { M as E } from "./ModelInclude-BiYm_iCQ.js";
-import { A as B } from "./AriaStaticInclude-ZrgMZ2ja.js";
-class P {
+var w = Object.defineProperty;
+var k = (n, t, e) => t in n ? w(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
+var i = (n, t, e) => k(n, typeof t != "symbol" ? t + "" : t, e);
+import { ref as u, computed as d, watch as f, nextTick as m, toRef as F, onMounted as A } from "vue";
+import { toBinds as g, getRef as v, isSelected as D, toArray as T, isDomRuntime as $, EventItem as L, ListDataRef as R, DesignConstructorAbstract as z } from "@dxtmisha/functional";
+import { E } from "./EventClickInclude-Co8CpJqL.js";
+import { M as B } from "./ModelInclude-BiYm_iCQ.js";
+import { A as P } from "./AriaStaticInclude-ZrgMZ2ja.js";
+class H {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -15,27 +15,27 @@ class P {
    * @param extra additional parameter/ дополнительный параметр
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(t, e, i, r, o) {
+  constructor(t, e, s, r, o) {
     /**
      * Element of the component.
      *
      * Элемент компонента.
      */
-    s(this, "element", u());
+    i(this, "element", u());
     /**
      * HTML element of the component.
      *
      * HTML элемент компонента.
      */
-    s(this, "elementHtml", d(() => {
+    i(this, "elementHtml", d(() => {
       var t;
       return (t = this.element.value) == null ? void 0 : t.elementHtml;
     }));
     /**
      * Computed bindings for the horizontal scroll/ Вычисляемые привязки для горизонтальной прокрутки
      */
-    s(this, "binds", d(
-      () => f(
+    i(this, "binds", d(
+      () => g(
         v(this.extra),
         {
           ref: this.element,
@@ -50,7 +50,7 @@ class P {
      *
      * Прокручивает к выбранному элементу.
      */
-    s(this, "toSelected", () => {
+    i(this, "toSelected", () => {
       var t, e;
       (e = (t = this.element.value) == null ? void 0 : t.toSelected) == null || e.call(t);
     });
@@ -66,8 +66,8 @@ class P {
      * @param children content for the default slot/ контент для слота по умолчанию
      * @param props additional properties/ дополнительные свойства
      */
-    s(this, "render", (t, e) => {
-      var i;
+    i(this, "render", (t, e) => {
+      var s;
       return this.components ? this.components.render(
         "horizontalScroll",
         {
@@ -75,20 +75,20 @@ class P {
           ...v(e)
         },
         t,
-        (i = this.index) != null ? i : "horizontalScroll"
+        (s = this.index) != null ? s : "horizontalScroll"
       ) : [];
     });
-    this.props = t, this.className = e, this.components = i, this.extra = r, this.index = o;
+    this.props = t, this.className = e, this.components = s, this.extra = r, this.index = o;
   }
 }
-class H {
+class q {
   /**
    * Constructor
    * @param props input data / входные данные
    */
   constructor(t) {
-    s(this, "item", u());
-    s(this, "actualItem", u());
+    i(this, "item", u());
+    i(this, "actualItem", u());
     this.props = t, this.item.value = t.selected, this.actualItem.value = t.selected;
   }
   /**
@@ -98,7 +98,7 @@ class H {
    * @param selected value to check/ значение для проверки
    */
   isSelected(t) {
-    return A(t, this.actualItem.value);
+    return D(t, this.actualItem.value);
   }
   /**
    * Sets the selected value.
@@ -119,7 +119,7 @@ class H {
     return this.actualItem.value = t, this;
   }
 }
-class q {
+class M {
   /**
    * Constructor
    * @param element main element/ главный элемент
@@ -131,7 +131,7 @@ class q {
      *
      * Текущее значение фокуса.
      */
-    s(this, "item", u());
+    i(this, "item", u());
     this.element = t, this.selected = e;
   }
   /**
@@ -168,7 +168,7 @@ class q {
    */
   position() {
     var t;
-    return this.item.value = (t = D(this.selected.actualItem.value)) == null ? void 0 : t[0], this;
+    return this.item.value = (t = T(this.selected.actualItem.value)) == null ? void 0 : t[0], this;
   }
   /**
    * Resets the focus.
@@ -189,7 +189,7 @@ class q {
       return ((t = this.element.value) == null ? void 0 : t.querySelector(`[data-value="${this.item.value}"]`)) || void 0;
   }
 }
-class M {
+class O {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -199,7 +199,7 @@ class M {
    * @param className class name/ название класса
    * @param selected selection value object/ объект значения выделения
    */
-  constructor(t, e, i, r, o, c) {
+  constructor(t, e, s, r, o, c) {
     /**
      * Changes the selection state.
      *
@@ -207,12 +207,12 @@ class M {
      * @param newSelected new selection/ новое выделение
      * @param oldSelected old selection/ старое выделение
      */
-    s(this, "go", async (t, e) => {
+    i(this, "go", async (t, e) => {
       await m();
-      const i = this.getItem(t), r = this.getItem(e);
-      if (i && r) {
-        const o = `${this.classDesign}-${this.getItemClassName()}`, c = i.getBoundingClientRect(), a = r.getBoundingClientRect(), l = a.left - c.left, h = `${l}px ${l >= 0 ? "-" : "+"} var(--${o}-gap, 0px)`;
-        i.style.setProperty(`--${o}-sys-left`, h), i.style.setProperty(`--${o}-sys-width`, a.width + "px"), this.reset(i);
+      const s = this.getItem(t), r = this.getItem(e);
+      if (s && r) {
+        const o = `${this.classDesign}-${this.getItemClassName()}`, c = s.getBoundingClientRect(), a = r.getBoundingClientRect(), l = a.left - c.left, h = `${l}px ${l >= 0 ? "-" : "+"} var(--${o}-gap, 0px)`;
+        s.style.setProperty(`--${o}-sys-left`, h), s.style.setProperty(`--${o}-sys-width`, a.width + "px"), this.reset(s);
       }
       requestAnimationFrame(() => {
         this.selected.setActual(t);
@@ -224,19 +224,19 @@ class M {
      * Сбрасывает данные стили.
      * @param item element/ элемент
      */
-    s(this, "reset", (t) => {
+    i(this, "reset", (t) => {
       setTimeout(() => {
         t.style.removeProperty(`--${this.className}-sys-left`), t.style.removeProperty(`--${this.className}-sys-width`);
       }, 384);
     });
-    this.props = t, this.refs = e, this.element = i, this.classDesign = r, this.className = o, this.selected = c, k(
+    this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = o, this.selected = c, f(
       this.selected.item,
       (a, l) => this.go(a, l)
     ), m().then(
       () => requestAnimationFrame(
         () => {
           var a, l;
-          i.value && (i.value.scrollLeft = (l = (a = this.getItem(this.selected.item.value)) == null ? void 0 : a.offsetLeft) != null ? l : 0);
+          s.value && (s.value.scrollLeft = (l = (a = this.getItem(this.selected.item.value)) == null ? void 0 : a.offsetLeft) != null ? l : 0);
         }
       )
     );
@@ -260,21 +260,21 @@ class M {
     return ((e = this.element.value) == null ? void 0 : e.querySelector(`[data-value="${t != null ? t : ""}"]`)) || void 0;
   }
 }
-class O {
+class V {
   /**
    * Constructor
    * @param selected selection management object/ объект управления выделением
    * @param focus focus management object/ объект управления фокусом
    * @param data data list object/ объект списка данных
    */
-  constructor(t, e, i) {
-    s(this, "event");
+  constructor(t, e, s) {
+    i(this, "event");
     /**
      * Handler for the focus event.
      *
      * Обработчик события фокуса.
      */
-    s(this, "onFocus", () => {
+    i(this, "onFocus", () => {
       this.start();
     });
     /**
@@ -282,7 +282,7 @@ class O {
      *
      * Обработчик события потери фокуса.
      */
-    s(this, "onBlur", () => {
+    i(this, "onBlur", () => {
       this.stop();
     });
     /**
@@ -291,7 +291,7 @@ class O {
      * Метод для отслеживания нажатий при открытом окне.
      * @param event event object/ объект события
      */
-    s(this, "on", (t) => {
+    i(this, "on", (t) => {
       if (this.data.getLength())
         switch (t.code || t.key || t.keyCode) {
           case "ArrowLeft":
@@ -314,7 +314,7 @@ class O {
             break;
         }
     });
-    this.selected = t, this.focus = e, this.data = i;
+    this.selected = t, this.focus = e, this.data = s;
   }
   /**
    * Returns bindings for the element.
@@ -350,7 +350,7 @@ class O {
    * Запускает событие.
    */
   start() {
-    T() && (this.event || (this.event = new $(
+    $() && (this.event || (this.event = new L(
       document.body,
       ["keydown"],
       this.on
@@ -389,7 +389,7 @@ class O {
     ), this;
   }
 }
-class V {
+class j {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -410,24 +410,23 @@ class V {
    * @param constructors.TabsNavigationIndicatorConstructor class for working with indicator/ класс для работы с индикатором
    * @param constructors.TabsNavigationSelectedConstructor class for working with selected/ класс для работы с выбранным
    */
-  constructor(t, e, i, r, o, c, a, l, h) {
-    s(this, "scroll");
-    s(this, "selected");
-    s(this, "focus");
-    s(this, "data");
-    s(this, "indicator");
-    s(this, "control");
-    s(this, "event");
-    s(this, "model");
+  constructor(t, e, s, r, o, c, a, l, h) {
+    i(this, "scroll");
+    i(this, "selected");
+    i(this, "focus");
+    i(this, "data");
+    i(this, "indicator");
+    i(this, "control");
+    i(this, "event");
     /**
      * Returns bindings for the element.
      *
      * Возвращает привязки для элемента.
      */
-    s(this, "binds", d(() => ({
+    i(this, "binds", d(() => ({
       tabindex: 0,
       ...this.control.binds,
-      ...B.role("tablist")
+      ...P.role("tablist")
     })));
     /**
      * Handler for the click event.
@@ -436,28 +435,28 @@ class V {
      * @param event event object/ объект события
      * @param options additional event options/ дополнительные опции события
      */
-    s(this, "onClick", (t, e) => {
+    i(this, "onClick", (t, e) => {
       this.selected.set(e == null ? void 0 : e.value), this.event.onClick(t, e);
     });
-    this.props = t, this.refs = e, this.element = i, this.classDesign = r, this.className = o, this.components = c, this.slots = a, this.emits = l;
+    this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = o, this.components = c, this.slots = a, this.emits = l;
     const {
-      EventClickIncludeConstructor: g = z,
-      HorizontalScrollIncludeConstructor: p = P,
-      ListDataRefConstructor: I = L,
-      ModelIncludeConstructor: b = E,
-      TabsNavigationControlConstructor: y = O,
-      TabsNavigationFocusConstructor: S = q,
-      TabsNavigationIndicatorConstructor: C = M,
-      TabsNavigationSelectedConstructor: N = H
+      EventClickIncludeConstructor: p = E,
+      HorizontalScrollIncludeConstructor: I = H,
+      ListDataRefConstructor: b = R,
+      ModelIncludeConstructor: y = B,
+      TabsNavigationControlConstructor: S = V,
+      TabsNavigationFocusConstructor: C = M,
+      TabsNavigationIndicatorConstructor: N = O,
+      TabsNavigationSelectedConstructor: x = q
     } = h != null ? h : {};
-    this.scroll = new p(
+    this.scroll = new I(
       this.props,
       this.className,
       this.components
-    ), this.selected = new N(this.props), this.focus = new S(
+    ), this.selected = new x(this.props), this.focus = new C(
       this.element,
       this.selected
-    ), this.data = new I(
+    ), this.data = new b(
       F(this.props, "list"),
       this.focus.item,
       void 0,
@@ -466,26 +465,32 @@ class V {
       this.selected.actualItem,
       this.refs.keyValue,
       this.refs.keyLabel
-    ), this.indicator = new C(
+    ), this.indicator = new N(
       this.props,
       this.refs,
       this.scroll.elementHtml,
       this.classDesign,
       this.className,
       this.selected
-    ), this.control = new y(
+    ), this.control = new S(
       this.selected,
       this.focus,
       this.data
-    ), this.event = new g(
+    ), this.event = new p(
       void 0,
       void 0,
       this.emits
-    ), this.model = new b(
+    ), new y(
       "selected",
       this.emits,
       this.selected.item
-    ), this.initSelected();
+    ), this.initSelected(), A(() => {
+      f(
+        [e.selected],
+        () => this.selected.set(t.selected),
+        { immediate: !0 }
+      );
+    });
   }
   /**
    * Initializes the selected element.
@@ -496,11 +501,11 @@ class V {
     this.props.selected || this.selected.set(this.control.getFirstItem());
   }
 }
-const W = {
+const X = {
   horizontalScrollFlush: !0,
   horizontalScrollAlign: "left"
 };
-class X extends R {
+class Y extends z {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -508,26 +513,26 @@ class X extends R {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
-  constructor(e, i, r, o = V) {
+  constructor(e, s, r, o = j) {
     super(
       e,
-      i,
+      s,
       r
     );
-    s(this, "item");
+    i(this, "item");
     /**
      * Generates a list of elements.
      *
      * Генерирует список элементов.
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
-    s(this, "renderList", (e) => {
-      const i = [];
+    i(this, "renderList", (e) => {
+      const s = [];
       return this.item.data.fullData.value.forEach(
-        (r) => i.push(
+        (r) => s.push(
           this.renderItem(e, r)
         )
-      ), i;
+      ), s;
     });
     /**
      * Generates an element.
@@ -536,17 +541,17 @@ class X extends R {
      * @param props data for the transferable property/ данные для передаваемого свойства
      * @param item selected element / выбранный элемент
      */
-    s(this, "renderItem", (e, i) => {
-      const r = this.item.selected.isSelected(i.index);
+    i(this, "renderItem", (e, s) => {
+      const r = this.item.selected.isSelected(s.index);
       return this.components.renderOne(
         "tabItem",
-        f(
+        g(
           {
             tag: this.props.tag,
-            key: i.index
+            key: s.index
           },
           this.props.itemAttrs,
-          i,
+          s,
           e.binds,
           {
             onClick: this.item.onClick,
@@ -611,7 +616,7 @@ class X extends R {
   }
 }
 export {
-  V as TabsNavigation,
-  X as TabsNavigationDesign,
-  W as defaultsTabsNavigation
+  j as TabsNavigation,
+  Y as TabsNavigationDesign,
+  X as defaultsTabsNavigation
 };

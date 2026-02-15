@@ -48,7 +48,7 @@ export declare class TabsNavigationDesign<COMP extends TabsNavigationComponents,
      * Генерирует список элементов.
      * @param props data for the transferable property/ данные для передаваемого свойства
      */
-    protected readonly renderList: (props: HorizontalScrollControlItem) => any[];
+    protected readonly renderList: (props: HorizontalScrollControlItem) => VNode[];
     /**
      * Generates an element.
      *

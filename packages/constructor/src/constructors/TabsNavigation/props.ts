@@ -29,9 +29,9 @@ export type TabsNavigationPropsBasic<
     'itemAttrs'?: ConstrBind<TabItem>
 
     // Event
-    'modelSelected'?: boolean
-    'onUpdate:selected'?: (value: boolean) => void
-    'onUpdate:modelSelected'?: (value: boolean) => void
+    'modelSelected'?: ListSelectedList
+    'onUpdate:selected'?: (value: ListSelectedList) => void
+    'onUpdate:modelSelected'?: (value: ListSelectedList) => void
   }
 
 /**

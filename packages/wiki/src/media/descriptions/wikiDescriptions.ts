@@ -38,6 +38,7 @@ import { wikiDescriptionsSelect } from './wikiDescriptionsSelect'
 import { wikiDescriptionsSelectValue } from './wikiDescriptionsSelectValue'
 import { wikiDescriptionsSkeleton } from './wikiDescriptionsSkeleton'
 import { wikiDescriptionsTabItem } from './wikiDescriptionsTabItem'
+import { wikiDescriptionsTabsNavigation } from './wikiDescriptionsTabsNavigation'
 import { wikiDescriptionsTextarea } from './wikiDescriptionsTextarea'
 import { wikiDescriptionsTextareaAutosize } from './wikiDescriptionsTextareaAutosize'
 import { wikiDescriptionsTooltip } from './wikiDescriptionsTooltip'
@@ -82,6 +83,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsSelectValue,
   wikiDescriptionsSkeleton,
   wikiDescriptionsTabItem,
+  wikiDescriptionsTabsNavigation,
   wikiDescriptionsTextarea,
   wikiDescriptionsTextareaAutosize,
   wikiDescriptionsTooltip,

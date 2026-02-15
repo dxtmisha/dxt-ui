@@ -131,7 +131,7 @@ export class TabsNavigationDesign<
    */
   protected readonly renderList = (
     props: HorizontalScrollControlItem
-  ) => {
+  ): VNode[] => {
     const children: any[] = []
 
     this.item.data.fullData.value.forEach(

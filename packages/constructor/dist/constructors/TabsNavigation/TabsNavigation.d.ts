@@ -31,7 +31,6 @@ export declare class TabsNavigation {
     readonly indicator: TabsNavigationIndicator;
     readonly control: TabsNavigationControl;
     readonly event: EventClickInclude;
-    readonly model: ModelInclude<ListSelectedList | undefined>;
     /**
      * Constructor
      * @param props input data/ входные данные

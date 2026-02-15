@@ -1,4 +1,4 @@
-import { computed, toRef, type Ref, type ToRefs } from 'vue'
+import { computed, toRef, type Ref, type ToRefs, onMounted, watch } from 'vue'
 import { type ConstrEmit, type DesignComp, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
 
 import { HorizontalScrollInclude } from '../HorizontalScroll/HorizontalScrollInclude'
@@ -29,7 +29,6 @@ export class TabsNavigation {
   readonly control: TabsNavigationControl
 
   readonly event: EventClickInclude
-  readonly model: ModelInclude<ListSelectedList | undefined>
 
   /**
    * Constructor
@@ -124,13 +123,21 @@ export class TabsNavigation {
       this.emits
     )
 
-    this.model = new ModelIncludeConstructor(
+    new ModelIncludeConstructor(
       'selected',
       this.emits,
       this.selected.item
     )
 
     this.initSelected()
+
+    onMounted(() => {
+      watch(
+        [refs.selected],
+        () => this.selected.set(props.selected),
+        { immediate: true }
+      )
+    })
   }
 
   /**

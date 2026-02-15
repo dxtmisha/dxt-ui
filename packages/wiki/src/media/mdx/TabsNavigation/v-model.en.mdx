@@ -1,0 +1,27 @@
+## State Management via v-model
+
+Two-way binding of the selected tab via `v-model:selected`.
+
+**Parameters:**
+- `selected: string | number | array` — value of the selected tab (or tabs)
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selectedTab = ref('home')
+const tabs = [
+  { label: 'Home', value: 'home' },
+  { label: 'Profile', value: 'profile' }
+]
+</script>
+
+<template>
+  <p>Selected: {{ selectedTab }}</p>
+
+  <TabsNavigation
+    v-model:selected="selectedTab"
+    :list="tabs"
+  />
+</template>
+```

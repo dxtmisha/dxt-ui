@@ -11,9 +11,9 @@ export type TabsNavigationPropsBasic<TabItem extends TabItemPropsBasic = TabItem
     'keyLabel'?: string;
     'keyValue'?: string;
     'itemAttrs'?: ConstrBind<TabItem>;
-    'modelSelected'?: boolean;
-    'onUpdate:selected'?: (value: boolean) => void;
-    'onUpdate:modelSelected'?: (value: boolean) => void;
+    'modelSelected'?: ListSelectedList;
+    'onUpdate:selected'?: (value: ListSelectedList) => void;
+    'onUpdate:modelSelected'?: (value: ListSelectedList) => void;
 };
 /**
  * Type describing incoming properties.

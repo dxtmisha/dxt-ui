@@ -1,0 +1,40 @@
+Component for creating horizontal navigation with tabs.
+
+TabsNavigation manages a list of tabs, their selection, and scrolling. It supports various display styles, keyboard control, and responsiveness.
+
+**Key Features:**
+
+- Horizontal scrolling of tabs
+- Management of the selected tab via `v-model:selected`
+- Support for various data types (array of objects or object)
+- Customization of appearance (tags, attributes, dividers)
+- Keyboard navigation support (arrows, Enter, Space)
+- Animation of the active tab indicator
+
+**Typical Usage Scenarios:**
+
+- Navigation between page sections
+- Switching data display views
+- Content filtering by categories
+- Main application menu (tab style)
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selectedTab = ref('home')
+const tabs = [
+  { label: 'Home', value: 'home', icon: 'home' },
+  { label: 'Profile', value: 'profile', icon: 'person' },
+  { label: 'Settings', value: 'settings', icon: 'settings' }
+]
+</script>
+
+<template>
+  <TabsNavigation
+    v-model:selected="selectedTab"
+    :list="tabs"
+    horizontal-scroll-align="center"
+  />
+</template>
+```

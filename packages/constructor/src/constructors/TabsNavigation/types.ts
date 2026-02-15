@@ -1,4 +1,4 @@
-import type { ConstrClass } from '@dxtmisha/functional'
+import type { ConstrClass, ListSelectedList } from '@dxtmisha/functional'
 
 import type { HorizontalScrollComponentInclude } from '../HorizontalScroll'
 import type { TabItemComponentInclude } from '../TabItem'
@@ -22,8 +22,8 @@ export type TabsNavigationComponents
 export type TabsNavigationEmits
   = EventClickEmits
     & {
-      'update:selected': [value: boolean]
-      'update:modelSelected': [value: boolean]
+      'update:selected': [value: ListSelectedList]
+      'update:modelSelected': [value: ListSelectedList]
     }
 
 /**
