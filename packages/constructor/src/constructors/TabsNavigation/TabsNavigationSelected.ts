@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { isSelected, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
+import { isSelected, type ListSelectedList } from '@dxtmisha/functional'
 
 import type { TabsNavigationProps } from './props'
 
@@ -15,11 +15,9 @@ export class TabsNavigationSelected {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param data list data manager / менеджер данных списка
    */
   constructor(
-    protected readonly props: TabsNavigationProps,
-    protected readonly data: ListDataRef
+    protected readonly props: TabsNavigationProps
   ) {
     this.item.value = props.selected
     this.actualItem.value = props.selected
@@ -54,46 +52,6 @@ export class TabsNavigationSelected {
    */
   setActual(selected?: ListSelectedList): this {
     this.actualItem.value = selected
-    return this
-  }
-
-  /**
-   * Selects the previous item.
-   *
-   * Выбирает предыдущий элемент.
-   */
-  prev(): this {
-    const selected = this.data.getSelectedPrev()
-
-    if (selected) {
-      this.set(selected)
-    }
-
-    return this
-  }
-
-  /**
-   * Selects the next item.
-   *
-   * Выбирает следующий элемент.
-   */
-  next(): this {
-    const selected = this.data.getSelectedNext()
-
-    if (selected) {
-      this.set(selected)
-    }
-
-    return this
-  }
-
-  /**
-   * Selects the current item.
-   *
-   * Выбирает текущий элемент.
-   */
-  enter(): this {
-    this.set(this.item.value)
     return this
   }
 }

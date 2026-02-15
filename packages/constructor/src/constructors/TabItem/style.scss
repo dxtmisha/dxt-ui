@@ -17,8 +17,6 @@
   background-color: transparent;
   cursor: pointer;
 
-  scroll-snap-align: start;
-
   &::before {
     position: absolute;
     top: ui.v('??indicator.top', auto);

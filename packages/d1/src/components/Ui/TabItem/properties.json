@@ -6,7 +6,7 @@
     "height": "{sys.spacing.x}"
   },
   "gap": "{sys.spacing.xs}",
-  "height": "{ref.spacing.12}",
+  "height": "{ref.spacing.10}",
   "palette-gradient": "{sys.palette.primary}",
   "gradient-opacity": "0",
   "border-radius": "var(--sys-height) * {sys.rounded.adaptive.sm}",
@@ -19,8 +19,7 @@
     "link|font": "{font.labelLarge}"
   },
   "focus": {
-    "gradient-opacity": "{sys.opacity.focus}",
-    "outline": "{outline.md}"
+    "gradient-opacity": "{sys.opacity.focus}"
   },
   "hover": {
     "gradient-opacity": "{sys.opacity.hover}"

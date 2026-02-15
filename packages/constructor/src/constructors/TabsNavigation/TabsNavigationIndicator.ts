@@ -36,7 +36,6 @@ export class TabsNavigationIndicator {
     nextTick().then(
       () => requestAnimationFrame(
         () => {
-          console.log('element.value', element.value)
           if (element.value) {
             element.value.scrollLeft = this.getItem(this.selected.item.value)?.offsetLeft ?? 0
           }
@@ -73,7 +72,6 @@ export class TabsNavigationIndicator {
 
       newItem.style.setProperty(`--${itemClassName}-sys-left`, leftVar)
       newItem.style.setProperty(`--${itemClassName}-sys-width`, rectOld.width + 'px')
-      newItem.focus()
 
       this.reset(newItem)
     }

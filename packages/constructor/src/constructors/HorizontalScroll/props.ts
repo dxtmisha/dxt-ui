@@ -1,6 +1,7 @@
 type HorizontalScrollPropsToken = {
   // :type [!] System label / Системная метка
   flush?: boolean
+  align?: 'block' | 'center' | 'left' | 'right'
   // :type [!] System label / Системная метка
 }
 
@@ -28,7 +29,8 @@ export const defaultsHorizontalScroll = {
   tag: 'div',
   ...{
     // :default [!] System label / Системная метка
-    flush: true
+    flush: true,
+    align: 'stretch'
     // :default [!] System label / Системная метка
   }
 }

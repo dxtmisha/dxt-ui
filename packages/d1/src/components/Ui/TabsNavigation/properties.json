@@ -1,3 +1,7 @@
 {
-  "main": "{d.tabsNavigation}"
+  "main": "{d.tabsNavigation}",
+  "paddingY": "{sys.spacing.x}",
+  "focus": {
+    "outline": "{outline.md}"
+  }
 }

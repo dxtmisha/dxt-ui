@@ -47,7 +47,7 @@ class R {
       return {
         href: this.props.href,
         "data-value": (e = this.props.index) != null ? e : this.props.value,
-        tabindex: 0,
+        tabindex: -1,
         ...this.event.binds,
         ...a.role(this.props.role),
         ...a.selected(!!this.props.selected),

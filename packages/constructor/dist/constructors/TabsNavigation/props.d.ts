@@ -27,5 +27,8 @@ export type TabsNavigationProps = TabsNavigationPropsBasic & TabsNavigationProps
  *
  * Значение по умолчанию для свойства.
  */
-export declare const defaultsTabsNavigation: {};
+export declare const defaultsTabsNavigation: {
+    horizontalScrollFlush: boolean;
+    horizontalScrollAlign: string;
+};
 export {};

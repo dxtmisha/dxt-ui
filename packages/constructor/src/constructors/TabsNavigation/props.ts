@@ -48,6 +48,8 @@ export type TabsNavigationProps = TabsNavigationPropsBasic & TabsNavigationProps
  * Значение по умолчанию для свойства.
  */
 export const defaultsTabsNavigation = {
+  horizontalScrollFlush: true,
+  horizontalScrollAlign: 'left',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -12204,6 +12204,11 @@
         name: 'd1-tabItem',
         type: 'component',
       ),
+      'tabsNavigation':(
+        index: 'tabsNavigation',
+        name: 'd1-tabsNavigation',
+        type: 'component',
+      ),
       'textarea':(
         index: 'textarea',
         name: 'd1-textarea',
@@ -12675,6 +12680,11 @@
       'tabItem':(
         index: 'tabItem',
         name: 'd-tabItem',
+        type: 'component',
+      ),
+      'tabsNavigation':(
+        index: 'tabsNavigation',
+        name: 'd-tabsNavigation',
         type: 'component',
       ),
       'textarea':(

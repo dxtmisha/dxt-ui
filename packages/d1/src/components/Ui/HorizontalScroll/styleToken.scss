@@ -12,6 +12,24 @@
   // :style [!] System label / Системная метка
   & {
     --d1-horizontalScroll-marginLeft: var(--d1-ref-spacing-8);
+    
+    &--align {
+      &--block {
+        @include ui.justifyContent(#{stretch});
+      }
+      
+      &--center {
+        @include ui.justifyContent(#{center});
+      }
+      
+      &--left {
+        @include ui.justifyContent(#{flex-start});
+      }
+      
+      &--right {
+        @include ui.justifyContent(#{flex-end});
+      }
+    }
   }
   // :style [!] System label / Системная метка
 

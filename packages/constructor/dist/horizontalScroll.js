@@ -80,7 +80,8 @@ class x {
 const $ = {
   tag: "div",
   // :default [!] System label / Системная метка
-  flush: !0
+  flush: !0,
+  align: "stretch"
 };
 class w extends D {
   /**

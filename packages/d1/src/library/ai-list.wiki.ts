@@ -39,6 +39,7 @@ import D1Select from '../../src/components/Ui/Select/D1SelectAiWiki.vue'
 import D1SelectValue from '../../src/components/Ui/SelectValue/D1SelectValueAiWiki.vue'
 import D1Skeleton from '../../src/components/Ui/Skeleton/D1SkeletonAiWiki.vue'
 import D1TabItem from '../../src/components/Ui/TabItem/D1TabItemAiWiki.vue'
+import D1TabsNavigation from '../../src/components/Ui/TabsNavigation/D1TabsNavigationAiWiki.vue'
 import D1Textarea from '../../src/components/Ui/Textarea/D1TextareaAiWiki.vue'
 import D1TextareaAutosize from '../../src/components/Ui/TextareaAutosize/D1TextareaAutosizeAiWiki.vue'
 import D1Tooltip from '../../src/components/Ui/Tooltip/D1TooltipAiWiki.vue'
@@ -83,6 +84,7 @@ export const aiList: any[] = [
   D1SelectValue,
   D1Skeleton,
   D1TabItem,
+  D1TabsNavigation,
   D1Textarea,
   D1TextareaAutosize,
   D1Tooltip,

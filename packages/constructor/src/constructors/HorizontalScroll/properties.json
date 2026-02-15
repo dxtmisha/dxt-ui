@@ -7,5 +7,20 @@
   },
   "~flush": {
     "_default": true
+  },
+  "~align": {
+    "block": {
+      "justify-content": "stretch"
+    },
+    "center": {
+      "justify-content": "center"
+    },
+    "left": {
+      "justify-content": "flex-start"
+    },
+    "right": {
+      "justify-content": "flex-end"
+    },
+    "_default": "stretch"
   }
 }

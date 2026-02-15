@@ -1,13 +1,17 @@
-import { Ref, ToRefs } from 'vue';
+import { Ref, ToRefs, ComputedRef } from 'vue';
 import { ConstrEmit, DesignComp, ListDataRef, ListSelectedList } from '@dxtmisha/functional';
 import { HorizontalScrollInclude } from '../HorizontalScroll/HorizontalScrollInclude';
 import { EventClickInclude } from '../../classes/EventClickInclude';
 import { ModelInclude } from '../../classes/ModelInclude';
 import { TabsNavigationSelected } from './TabsNavigationSelected';
+import { TabsNavigationFocus } from './TabsNavigationFocus';
 import { TabsNavigationIndicator } from './TabsNavigationIndicator';
+import { TabsNavigationControl } from './TabsNavigationControl';
+import { EventClickValue } from '../../types/eventClickTypes';
 import { TabsNavigationComponents, TabsNavigationEmits, TabsNavigationSlots } from './types';
 import { TabsNavigationProps } from './props';
-import { EventClickValue } from '../../types/eventClickTypes.ts';
+import { RoleType, AriaTrueOrFalse } from '../../library.ts';
+import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * TabsNavigation
  */
@@ -21,9 +25,11 @@ export declare class TabsNavigation {
     protected readonly slots?: TabsNavigationSlots | undefined;
     protected readonly emits?: ConstrEmit<TabsNavigationEmits> | undefined;
     readonly scroll: HorizontalScrollInclude;
-    readonly data: ListDataRef;
     readonly selected: TabsNavigationSelected;
+    readonly focus: TabsNavigationFocus;
+    readonly data: ListDataRef;
     readonly indicator: TabsNavigationIndicator;
+    readonly control: TabsNavigationControl;
     readonly event: EventClickInclude;
     readonly model: ModelInclude<ListSelectedList | undefined>;
     /**
@@ -38,9 +44,11 @@ export declare class TabsNavigation {
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      * @param constructors object with classes/ объект с классами
      * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
+     * @param constructors.TabsNavigationFocusConstructor class for working with focus/ класс для работы с фокусом
      * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
      * @param constructors.HorizontalScrollIncludeConstructor class for working with horizontal scroll/ класс для работы с горизонтальной прокруткой
      * @param constructors.ListDataRefConstructor class for working with data list/ класс для работы со списком данных
+     * @param constructors.TabsNavigationControlConstructor class for working with control/ класс для работы с управлением
      * @param constructors.TabsNavigationIndicatorConstructor class for working with indicator/ класс для работы с индикатором
      * @param constructors.TabsNavigationSelectedConstructor class for working with selected/ класс для работы с выбранным
      */
@@ -49,8 +57,82 @@ export declare class TabsNavigation {
         HorizontalScrollIncludeConstructor?: typeof HorizontalScrollInclude;
         ListDataRefConstructor?: typeof ListDataRef;
         ModelIncludeConstructor?: typeof ModelInclude<ListSelectedList | undefined>;
+        TabsNavigationControlConstructor?: typeof TabsNavigationControl;
+        TabsNavigationFocusConstructor?: typeof TabsNavigationFocus;
         TabsNavigationIndicatorConstructor?: typeof TabsNavigationIndicator;
         TabsNavigationSelectedConstructor?: typeof TabsNavigationSelected;
     });
+    /**
+     * Returns bindings for the element.
+     *
+     * Возвращает привязки для элемента.
+     */
+    readonly binds: ComputedRef<{
+        id?: string;
+        role?: RoleType;
+        tabindex: NumberOrString;
+        'aria-activedescendant'?: string;
+        'aria-atomic'?: AriaTrueOrFalse;
+        'aria-autocomplete'?: "none" | "inline" | "list" | "both";
+        'aria-busy'?: AriaTrueOrFalse;
+        'aria-checked'?: AriaTrueOrFalse | "mixed";
+        'aria-colcount'?: number;
+        'aria-colindex'?: number;
+        'aria-colspan'?: number;
+        'aria-controls'?: string;
+        'aria-current'?: AriaTrueOrFalse | "page" | "step" | "location" | "date" | "time";
+        'aria-describedby'?: string;
+        'aria-details'?: string;
+        'aria-disabled'?: AriaTrueOrFalse;
+        'aria-errormessage'?: string;
+        'aria-expanded'?: AriaTrueOrFalse;
+        'aria-flowto'?: string;
+        'aria-grabbed'?: AriaTrueOrFalse;
+        'aria-haspopup'?: AriaTrueOrFalse | "dialog" | "menu" | "listbox" | "tree" | "grid";
+        'aria-hidden'?: AriaTrueOrFalse;
+        'aria-invalid'?: AriaTrueOrFalse | "grammar" | "spelling";
+        'aria-keyshortcuts'?: string;
+        'aria-label'?: string;
+        'aria-labelledby'?: string;
+        'aria-level'?: number;
+        'aria-live'?: "off" | "polite" | "assertive";
+        'aria-modal'?: AriaTrueOrFalse;
+        'aria-multiline'?: AriaTrueOrFalse;
+        'aria-multiselectable'?: AriaTrueOrFalse;
+        'aria-orientation'?: "horizontal" | "vertical" | "undefined";
+        'aria-owns'?: string;
+        'aria-placeholder'?: string;
+        'aria-posinset'?: number;
+        'aria-pressed'?: AriaTrueOrFalse | "mixed";
+        'aria-readonly'?: AriaTrueOrFalse;
+        'aria-relevant'?: "additions" | "removals" | "text" | "all" | string;
+        'aria-required'?: AriaTrueOrFalse;
+        'aria-roledescription'?: string;
+        'aria-rowcount'?: number;
+        'aria-rowindex'?: number;
+        'aria-rowspan'?: number;
+        'aria-selected'?: AriaTrueOrFalse;
+        'aria-setsize'?: number;
+        'aria-sort'?: "none" | "ascending" | "descending" | "other";
+        'aria-valuemax'?: string | number;
+        'aria-valuemin'?: string | number;
+        'aria-valuenow'?: string | number;
+        'aria-valuetext'?: string;
+        onFocus: () => void;
+        onBlur: () => void;
+    }>;
+    /**
+     * Handler for the click event.
+     *
+     * Обработчик события клика.
+     * @param event event object/ объект события
+     * @param options additional event options/ дополнительные опции события
+     */
     readonly onClick: (event: MouseEvent, options?: EventClickValue) => void;
+    /**
+     * Initializes the selected element.
+     *
+     * Инициализирует выбранный элемент.
+     */
+    protected initSelected(): undefined;
 }

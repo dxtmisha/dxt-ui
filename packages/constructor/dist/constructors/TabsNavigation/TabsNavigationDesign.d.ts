@@ -42,6 +42,12 @@ export declare class TabsNavigationDesign<COMP extends TabsNavigationComponents,
      * Метод для рендеринга.
      */
     protected initRender(): VNode[];
+    /**
+     * Generates a list of elements.
+     *
+     * Генерирует список элементов.
+     * @param props data for the transferable property/ данные для передаваемого свойства
+     */
     protected readonly renderList: (props: HorizontalScrollControlItem) => any[];
     /**
      * Generates an element.

@@ -27,5 +27,6 @@ export type HorizontalScrollComponentInclude = {
  */
 export type HorizontalScrollPropsInclude<HorizontalScroll extends HorizontalScrollPropsBasic = HorizontalScrollPropsBasic> = {
     horizontalScrollFlush?: boolean;
+    horizontalScrollAlign?: 'block' | 'left';
     horizontalScrollAttrs?: ConstrBind<HorizontalScroll>;
 };

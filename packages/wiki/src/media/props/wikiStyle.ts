@@ -170,6 +170,18 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  horizontalScrollAlign: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: ['block', 'center', 'left', 'right'],
+      description: {
+        en: 'Sets the alignment of elements within the horizontal scroll container',
+        ru: 'Задает выравнивание элементов внутри контейнера горизонтальной прокрутки'
+      }
+    }
+  },
   imagePosition: {
     type: StorybookControl.select,
     options: {
