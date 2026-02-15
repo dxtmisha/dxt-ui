@@ -1,0 +1,15 @@
+{
+  "#slide": {},
+  "~axis": {
+    "x": {},
+    "y": {},
+    "z": {},
+    "_default": "x"
+  },
+  "~direction": {
+    "next": {},
+    "back": {},
+    "auto": {},
+    "_default": "auto"
+  }
+}

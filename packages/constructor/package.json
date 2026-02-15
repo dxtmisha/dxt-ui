@@ -37,7 +37,7 @@
     "preview": "vite preview",
     "dxt-library": "dxt-library",
     "dxt-types": "dxt-types",
-    "dxt-constructor": "dxt-constructor",
+    "dxt-constructor": "dxt-constructor motionAxis",
     "prepublishOnly": "npm run dxt-library && npm run dxt-constructor && npm run build"
   },
   "files": [
@@ -235,6 +235,10 @@
     "./HorizontalScroll": {
       "types": "./dist/constructors/HorizontalScroll/index.d.ts",
       "default": "./dist/horizontalScroll.js"
+    },
+    "./MotionAxis": {
+      "types": "./dist/constructors/MotionAxis/index.d.ts",
+      "default": "./dist/motionAxis.js"
     }
   },
   "buildOptions": {
