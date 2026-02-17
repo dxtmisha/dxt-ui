@@ -1,5 +1,110 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinMotionAxis {
+  @include ui.initByCustom('transition-function', ui.v('d.ref.transitionFunction.e40i80'));
+  @include ui.initByCustom('transition-duration', ui.v('d.sys.transitionDuration.axis'));
 
+  position: relative;
+
+  &__slide {
+    @include ui.initByCustom('transform', calc(ui.v('??dimension', 128px) * ui.v('??direction', 0) * ui.v('??previous', +1)));
+    display: none;
+    position: relative;
+    opacity: 0;
+
+    &--previous,
+    &--preparation,
+    &--active {
+      display: block;
+    }
+
+    &--previous {
+      @include ui.initByCustom('scale', ui.v('??scalePrevious', 1));
+      @include ui.initByCustom('previous', -1);
+
+      position: absolute;
+      top: ui.v('??sys.top');
+      @include ui.left(ui.v('??sys.left'));
+
+      width: ui.v('??sys.width');
+      height: ui.v('??sys.height');
+      transition: opacity 90ms ui.v('d.ref.transitionFunction.e40i0'),
+      transform ui.v('??transition-duration') ui.v('??transition-function'),
+      translate ui.v('??transition-duration') ui.v('??transition-function'),
+      scale ui.v('??transition-duration') ui.v('??transition-function');
+    }
+
+    &--preparation {
+      @include ui.initByCustom('scale', ui.v('??scalePreparation', 1));
+    }
+
+    &--active {
+      @include ui.initByCustom('transform', 0px);
+      @include ui.initByCustom('scale', none);
+
+      z-index: 1;
+
+      opacity: 1;
+
+      transition: opacity 210ms ui.v('d.ref.transitionFunction.e0i80') 90ms,
+      transform ui.v('??transition-duration') ui.v('??transition-function'),
+      translate ui.v('??transition-duration') ui.v('??transition-function'),
+      scale ui.v('??transition-duration') ui.v('??transition-function');
+    }
+  }
+
+  &__scroll {
+    &--hidden {
+      overflow: hidden;
+    }
+  }
+
+  &--start {
+    height: var(--c2-motionAxis-sys-height, auto);
+  }
+
+  &--move {
+    height: var(--c2-motionAxis-sys-next-height, auto);
+    transition: height ui.v('??transition-duration') ui.v('??transition-function');
+  }
+
+  &--axis {
+    &--x {
+      > {
+        @include ui.subclass('slide') {
+          @include ui.translateX(ui.v('??transform'));
+        }
+      }
+    }
+
+    &--y {
+      > {
+        @include ui.subclass('slide') {
+          @include ui.translateY(ui.v('??transform'));
+        }
+      }
+    }
+
+    &--z {
+      > {
+        @include ui.subclass('slide') {
+          @include ui.scale(ui.v('??scale'));
+        }
+      }
+    }
+  }
+
+  &--direction {
+    &--next {
+      @include ui.initByCustom('direction', var(--d-dir));
+      @include ui.initByCustom('scalePreparation', .8);
+      @include ui.initByCustom('scalePrevious', 1.1);
+    }
+
+    &--back {
+      @include ui.initByCustom('direction', calc(var(--d-dir) * -1));
+      @include ui.initByCustom('scalePreparation', 1.1);
+      @include ui.initByCustom('scalePrevious', .8);
+    }
+  }
 }

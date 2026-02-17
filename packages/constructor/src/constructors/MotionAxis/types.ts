@@ -1,6 +1,6 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { MotionAxisSelected } from './basicTypes'
+import type { MotionAxisSelectedValue } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -17,11 +17,11 @@ export type MotionAxisComponents = {
  * Тип, описывающий доступные события.
  */
 export type MotionAxisEmits = {
-  'update:selected': [value: MotionAxisSelected]
-  'update:modelSelected': [value: MotionAxisSelected]
+  'update:selected': [value: MotionAxisSelectedValue]
+  'update:modelSelected': [value: MotionAxisSelectedValue]
 
-  'start': [selected: MotionAxisSelected]
-  'end': [selected: MotionAxisSelected]
+  'start': [selected: MotionAxisSelectedValue]
+  'end': [selected: MotionAxisSelectedValue]
 }
 
 /**
@@ -34,19 +34,19 @@ export interface MotionAxisExpose {
 
   next(): void
 
-  to(selected: MotionAxisSelected): void
+  to(selected: MotionAxisSelectedValue): void
 
-  top(selected: MotionAxisSelected): void
+  top(selected: MotionAxisSelectedValue): void
 
-  right(selected: MotionAxisSelected): void
+  right(selected: MotionAxisSelectedValue): void
 
-  bottom(selected: MotionAxisSelected): void
+  bottom(selected: MotionAxisSelectedValue): void
 
-  left(selected: MotionAxisSelected): void
+  left(selected: MotionAxisSelectedValue): void
 
-  down(selected: MotionAxisSelected): void
+  down(selected: MotionAxisSelectedValue): void
 
-  up(selected: MotionAxisSelected): void
+  up(selected: MotionAxisSelectedValue): void
 }
 
 /**

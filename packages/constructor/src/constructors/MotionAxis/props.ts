@@ -1,4 +1,4 @@
-import type { MotionAxisSelected } from './basicTypes'
+import type { MotionAxisSelectedValue } from './basicTypes'
 
 type MotionAxisPropsToken = {
   // :type [!] System label / Системная метка
@@ -7,7 +7,7 @@ type MotionAxisPropsToken = {
 
 export type MotionAxisPropsBasic = {
   // Status
-  'selected'?: MotionAxisSelected
+  'selected'?: MotionAxisSelectedValue
 
   // Style
   'animationHeight'?: boolean
@@ -17,9 +17,9 @@ export type MotionAxisPropsBasic = {
   'inDomSlide'?: string[]
 
   // Event
-  'modelSelected'?: MotionAxisSelected
-  'onUpdate:selected'?: (value: MotionAxisSelected) => void
-  'onUpdate:modelSelected'?: (value: MotionAxisSelected) => void
+  'modelSelected'?: MotionAxisSelectedValue
+  'onUpdate:selected'?: (value: MotionAxisSelectedValue) => void
+  'onUpdate:modelSelected'?: (value: MotionAxisSelectedValue) => void
 }
 
 /**
