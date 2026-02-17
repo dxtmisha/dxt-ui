@@ -66,5 +66,6 @@ export type MotionAxisSlots = {
 export type MotionAxisClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  slide: string
   // :classes [!] System label / Системная метка
 }

@@ -2,6 +2,8 @@ import type { MotionAxisSelectedValue } from './basicTypes'
 
 type MotionAxisPropsToken = {
   // :type [!] System label / Системная метка
+  axis?: 'x' | 'y' | 'z'
+  direction?: 'next' | 'back' | 'auto'
   // :type [!] System label / Системная метка
 }
 
@@ -38,6 +40,8 @@ export const defaultsMotionAxis = {
   // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
+    axis: 'x',
+    direction: 'auto'
     // :default [!] System label / Системная метка
   }
 }
