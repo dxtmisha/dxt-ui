@@ -16,7 +16,7 @@ import type { MotionAxisProps } from './props'
  * Класс для управления статусами.
  */
 export class MotionAxisStatus {
-  /** Element preparation status / Статус подготовки элемента */
+  /** Element preparation status/ Статус подготовки элемента */
   readonly preparation = ref<MotionAxisSelectedValue>()
 
   /** Active element status/ Статус активного элемента */
@@ -24,12 +24,12 @@ export class MotionAxisStatus {
 
   /**
    * Constructor
-   * @param props input data / входные данные
-   * @param element class object for managing an element / объект класса для управления элементом
-   * @param selected class object for managing the active element / объект класса для управления активным элементом
-   * @param previous object for managing the outgoing slide / объект управления уходящим слайдом
-   * @param styles class object for managing styles / объект класса для управления стилями
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param props input data/ входные данные
+   * @param element class object for managing an element/ объект класса для управления элементом
+   * @param selected class object for managing the active element/ объект класса для управления активным элементом
+   * @param previous object for managing the outgoing slide/ объект управления уходящим слайдом
+   * @param styles class object for managing styles/ объект класса для управления стилями
+   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
     props: MotionAxisProps,
@@ -40,6 +40,26 @@ export class MotionAxisStatus {
     protected readonly emits?: ConstrEmit<MotionAxisEmits>
   ) {
     this.active.value = props.selected
+  }
+
+  /**
+   * Checks if the element is in preparation status.
+   *
+   * Проверяет, находится ли элемент в статусе подготовки.
+   * @param key element key/ ключ элемента
+   */
+  isPreparation(key: string): boolean {
+    return this.preparation.value === key
+  }
+
+  /**
+   * Checks if the element is active.
+   *
+   * Проверяет, активен ли элемент.
+   * @param key element key/ ключ элемента
+   */
+  isActive(key: string): boolean {
+    return this.active.value === key
   }
 
   /**
@@ -55,7 +75,7 @@ export class MotionAxisStatus {
    * Changes the active slide.
    *
    * Изменяет активный слайд.
-   * @param selected selected slide / выбранный слайд
+   * @param selected selected slide/ выбранный слайд
    */
   set(selected: MotionAxisProps['selected']): this {
     if (

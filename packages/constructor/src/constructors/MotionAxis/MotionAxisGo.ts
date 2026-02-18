@@ -1,6 +1,9 @@
-import { ref, type ToRefs, watch } from 'vue'
+import { type Ref, ref, type ToRefs, watch } from 'vue'
+
+import { MotionAxisSlides } from './MotionAxisSlides'
 import { MotionAxisStatus } from './MotionAxisStatus'
 
+import type { MotionAxisSelectedValue } from './basicTypes'
 import type { MotionAxisProps } from './props'
 
 /**
@@ -21,11 +24,11 @@ export class MotionAxisGo {
    * @param status class object for managing the active element / объект класса для управления активным элементом
    */
   constructor(
-    props: Readonly<MotionAxisProps>,
-    refs: ToRefs<MotionAxisProps>,
-    protected element: ConstrValue<HTMLDivElement>,
-    protected slides: ConstrValue<string[]>,
-    protected status: MotionAxisStatus
+    protected readonly props: Readonly<MotionAxisProps>,
+    protected readonly refs: ToRefs<MotionAxisProps>,
+    protected readonly element: Ref<HTMLDivElement | undefined>,
+    protected readonly slides: MotionAxisSlides,
+    protected readonly status: MotionAxisStatus
   ) {
     this.axis.value = props.axis
     this.direction.value = props.direction
@@ -41,7 +44,7 @@ export class MotionAxisGo {
    */
   readonly back = () => {
     this.direction.value = 'back'
-    this.status.set(this.getSlideByIndex(-1))
+    this.status.set(this.slides.getByIndex(-1))
   }
 
   /**
@@ -51,7 +54,7 @@ export class MotionAxisGo {
    */
   readonly next = () => {
     this.direction.value = 'next'
-    this.status.set(this.getSlideByIndex(+1))
+    this.status.set(this.slides.getByIndex(+1))
   }
 
   /**
@@ -60,10 +63,9 @@ export class MotionAxisGo {
    * Перемещение слайда на выбранный слайд с автоматическим выбором направления анимации.
    * @param selected selected item / выбранный элемент
    */
-  readonly to = (selected: MotionAxisProps['selected']) => {
-    const slides = this.slides.value ?? []
-    const active = slides.findIndex(item => item === this.status.get())
-    const to = slides.findIndex(item => item === selected)
+  readonly to = (selected: MotionAxisSelectedValue) => {
+    const active = this.slides.findIndex(this.status.get())
+    const to = this.slides.findIndex(selected)
 
     if (
       active !== -1
@@ -170,32 +172,5 @@ export class MotionAxisGo {
    */
   readonly setDirection = (direction: MotionAxisProps['direction']) => {
     this.direction.value = direction
-  }
-
-  /**
-   * Returns the selected slide.
-   *
-   * Возвращает выбранный слайд.
-   * @param step change step number / номер шага изменения
-   */
-  protected getSlideByIndex(step: number): string {
-    const slides = this.slides.value ?? []
-    const selected = slides.findIndex(item => item === this.status.get())
-
-    if (selected === -1) {
-      return slides?.[0]
-    }
-
-    const focus = selected + step
-
-    if (focus >= slides.length) {
-      return slides?.[0]
-    }
-
-    if (focus <= -1) {
-      return slides?.[slides.length - 1]
-    }
-
-    return slides?.[focus]
   }
 }

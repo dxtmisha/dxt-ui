@@ -2,7 +2,8 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  forEach
 } from '@dxtmisha/functional'
 
 import { MotionAxis } from './MotionAxis'
@@ -67,9 +68,6 @@ export class MotionAxisDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -80,8 +78,16 @@ export class MotionAxisDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      next: this.item.go.next,
+      back: this.item.go.back,
+      to: this.item.go.to,
+
+      top: this.item.go.top,
+      right: this.item.go.right,
+      bottom: this.item.go.bottom,
+      left: this.item.go.left,
+      down: this.item.go.down,
+      up: this.item.go.up
     } as EXPOSE
   }
 
@@ -107,10 +113,7 @@ export class MotionAxisDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -119,12 +122,52 @@ export class MotionAxisDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    return h(
+      'div',
+      {
+        ...this.getAttrs(),
+        ref: this.element,
+        class: this.classes?.value.main
+      },
+      this.renderSlides
+    )
+  }
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+  /**
+   * Rendering the slide.
+   *
+   * Рендеринг слайда.
+   */
+  readonly renderSlides = (): VNode[] => {
+    const children: VNode[] = []
+
+    this.item.slides.reset()
+
+    if (this.slots) {
+      forEach(this.slots, (slot, key) => {
+        this.item.slides.add(key)
+
+        if (this.item.isInDom(key)) {
+          const classStatus = this.item.elementItem.getClassStatus()
+
+          children.push(h(
+            'div',
+            {
+              key,
+              'class': {
+                [classStatus.main]: true,
+                [classStatus.previous]: this.item.previous.is(key),
+                [classStatus.preparation]: this.item.status.isPreparation(key),
+                [classStatus.active]: this.item.status.isActive(key)
+              },
+              'data-key': key
+            },
+            slot?.({})
+          ))
+        }
+      })
+    }
+
+    return children
   }
 }

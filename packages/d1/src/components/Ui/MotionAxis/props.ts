@@ -1,4 +1,4 @@
-// :component.once import { type ComponentPropsBasic, defaultsComponent } from '@dxtmisha/constructor/Component'
+import { type MotionAxisPropsBasic, defaultsMotionAxis } from '@dxtmisha/constructor/MotionAxis'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -13,13 +13,13 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ComponentProps = /* :component.once ComponentPropsBasic & */ PropsToken
+export type MotionAxisProps = MotionAxisPropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export const defaults: object = {
-  /* :component.once ...defaultsComponent, */
+  ...defaultsMotionAxis,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка
