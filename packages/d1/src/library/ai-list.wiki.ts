@@ -29,6 +29,7 @@ import D1ListMenu from '../../src/components/Ui/ListMenu/D1ListMenuAiWiki.vue'
 import D1Mask from '../../src/components/Ui/Mask/D1MaskAiWiki.vue'
 import D1Menu from '../../src/components/Ui/Menu/D1MenuAiWiki.vue'
 import D1Modal from '../../src/components/Ui/Modal/D1ModalAiWiki.vue'
+import D1MotionAxis from '../../src/components/Ui/MotionAxis/D1MotionAxisAiWiki.vue'
 import D1MotionTransform from '../../src/components/Ui/MotionTransform/D1MotionTransformAiWiki.vue'
 import D1Page from '../../src/components/Ui/Page/D1PageAiWiki.vue'
 import D1Progress from '../../src/components/Ui/Progress/D1ProgressAiWiki.vue'
@@ -74,6 +75,7 @@ export const aiList: any[] = [
   D1Mask,
   D1Menu,
   D1Modal,
+  D1MotionAxis,
   D1MotionTransform,
   D1Page,
   D1Progress,

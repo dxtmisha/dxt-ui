@@ -28,6 +28,7 @@ import { wikiDescriptionsListMenu } from './wikiDescriptionsListMenu'
 import { wikiDescriptionsMask } from './wikiDescriptionsMask'
 import { wikiDescriptionsMenu } from './wikiDescriptionsMenu'
 import { wikiDescriptionsModal } from './wikiDescriptionsModal'
+import { wikiDescriptionsMotionAxis } from './wikiDescriptionsMotionAxis'
 import { wikiDescriptionsMotionTransform } from './wikiDescriptionsMotionTransform'
 import { wikiDescriptionsPage } from './wikiDescriptionsPage'
 import { wikiDescriptionsProgress } from './wikiDescriptionsProgress'
@@ -73,6 +74,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsMask,
   wikiDescriptionsMenu,
   wikiDescriptionsModal,
+  wikiDescriptionsMotionAxis,
   wikiDescriptionsMotionTransform,
   wikiDescriptionsPage,
   wikiDescriptionsProgress,

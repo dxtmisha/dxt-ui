@@ -29,6 +29,7 @@ import _D1ListMenu from '../components/Ui/ListMenu/D1ListMenu.vue'
 import _D1Mask from '../components/Ui/Mask/D1Mask.vue'
 import _D1Menu from '../components/Ui/Menu/D1Menu.vue'
 import _D1Modal from '../components/Ui/Modal/D1Modal.vue'
+import _D1MotionAxis from '../components/Ui/MotionAxis/D1MotionAxis.vue'
 import _D1MotionTransform from '../components/Ui/MotionTransform/D1MotionTransform.vue'
 import _D1Page from '../components/Ui/Page/D1Page.vue'
 import _D1Progress from '../components/Ui/Progress/D1Progress.vue'
@@ -73,6 +74,7 @@ export const D1ListMenu = _D1ListMenu
 export const D1Mask = _D1Mask
 export const D1Menu = _D1Menu
 export const D1Modal = _D1Modal
+export const D1MotionAxis = _D1MotionAxis
 export const D1MotionTransform = _D1MotionTransform
 export const D1Page = _D1Page
 export const D1Progress = _D1Progress
@@ -119,6 +121,7 @@ declare module '@vue/runtime-core' {
     D1Mask: typeof D1Mask
     D1Menu: typeof D1Menu
     D1Modal: typeof D1Modal
+    D1MotionAxis: typeof D1MotionAxis
     D1MotionTransform: typeof D1MotionTransform
     D1Page: typeof D1Page
     D1Progress: typeof D1Progress

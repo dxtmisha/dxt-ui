@@ -161,7 +161,7 @@ export class MotionAxis {
     const selected = this.props.selected
 
     if (
-      this.selected.is(selected)
+      !this.selected.is(selected)
     ) {
       if (this.props.direction === 'auto') {
         this.go.to(selected)

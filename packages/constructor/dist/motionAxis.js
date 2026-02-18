@@ -565,7 +565,7 @@ class L {
      */
     s(this, "updateSelected", () => {
       const t = this.props.selected;
-      if (this.selected.is(t)) {
+      if (!this.selected.is(t)) {
         if (this.props.direction === "auto") {
           this.go.to(t);
           return;
@@ -733,7 +733,7 @@ class O extends M {
         ref: this.element,
         class: (e = this.classes) == null ? void 0 : e.value.main
       },
-      this.renderSlides
+      this.renderSlides()
     );
   }
 }

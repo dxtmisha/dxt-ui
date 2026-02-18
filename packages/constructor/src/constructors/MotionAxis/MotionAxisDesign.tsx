@@ -129,7 +129,7 @@ export class MotionAxisDesign<
         ref: this.element,
         class: this.classes?.value.main
       },
-      this.renderSlides
+      this.renderSlides()
     )
   }
 

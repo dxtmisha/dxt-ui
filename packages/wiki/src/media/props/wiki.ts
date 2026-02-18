@@ -36,6 +36,7 @@ import { wikiList } from './wikiList'
 import { wikiListItem } from './wikiListItem'
 import { wikiMask } from './wikiMask'
 import { wikiMenu } from './wikiMenu'
+import { wikiMotionAxis } from './wikiMotionAxis'
 import { wikiMotionTransform } from './wikiMotionTransform'
 import { wikiProgress } from './wikiProgress'
 import { wikiScrollbar } from './wikiScrollbar'
@@ -82,6 +83,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiListItem,
   ...wikiMask,
   ...wikiMenu,
+  ...wikiMotionAxis,
   ...wikiMotionTransform,
   ...wikiProgress,
   ...wikiScrollbar,

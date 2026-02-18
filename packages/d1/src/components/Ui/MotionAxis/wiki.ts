@@ -7,6 +7,8 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'animationHeight', type: 'boolean' },
+  { name: 'axis', type: 'string', option: ['x', 'y', 'z'] },
+  { name: 'direction', type: 'string', option: ['next', 'back', 'auto'] },
   { name: 'inDom', type: 'boolean' },
   { name: 'inDomSlide', type: 'string[]' },
   { name: 'modelSelected', type: 'string' },

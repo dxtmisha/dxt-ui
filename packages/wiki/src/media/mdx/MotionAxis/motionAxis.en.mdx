@@ -1,0 +1,43 @@
+Component for organizing transitions between elements (slides).
+
+MotionAxis allows animating content changes along X, Y, Z axes with slide effects. Supports automatic animation direction detection, container height management, and lazy loading (DOM).
+
+**Key Features:**
+
+- Slide transition animation along X, Y, Z axes
+- Automatic or manual direction control (next/back)
+- Smooth container height animation to fit content
+- Slide lifecycle management in DOM (inDom, inDomSlide)
+- Slot support for each slide
+
+**Typical Use Cases:**
+
+- Sliders and carousels
+- Step-by-step forms (wizards)
+- Tab switching with animation
+- Image galleries
+- Onboarding screens
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref('slide1')
+</script>
+
+<template>
+  <div class="buttons">
+    <button @click="selected = 'slide1'">Slide 1</button>
+    <button @click="selected = 'slide2'">Slide 2</button>
+  </div>
+
+  <MotionAxis :selected="selected">
+    <template #slide1>
+      <div class="slide">Slide 1 Content</div>
+    </template>
+    <template #slide2>
+      <div class="slide">Slide 2 Content</div>
+    </template>
+  </MotionAxis>
+</template>
+```

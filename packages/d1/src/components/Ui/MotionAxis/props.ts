@@ -2,11 +2,15 @@ import { type MotionAxisPropsBasic, defaultsMotionAxis } from '@dxtmisha/constru
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  axis: ['x', 'y', 'z'],
+  direction: ['next', 'back', 'auto']
   // :values [!] System label / Системная метка
 }
 
 type PropsToken = {
   // :type [!] System label / Системная метка
+  axis?: 'x' | 'y' | 'z'
+  direction?: 'next' | 'back' | 'auto'
   // :type [!] System label / Системная метка
 }
 
@@ -22,6 +26,8 @@ export const defaults: object = {
   ...defaultsMotionAxis,
   ...{
     // :default [!] System label / Системная метка
+    axis: 'x',
+    direction: 'auto'
     // :default [!] System label / Системная метка
   }
 }

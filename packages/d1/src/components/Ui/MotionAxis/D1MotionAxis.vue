@@ -25,7 +25,9 @@ const props = withDefaults(defineProps<MotionAxisProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-motionAxis': true
+    'd1-motionAxis': true,
+    [`d1-motionAxis--axis--${props.axis}`]: inArray(propsValues.axis, props.axis),
+    [`d1-motionAxis--direction--${props.direction}`]: inArray(propsValues.direction, props.direction)
     // :classes-values [!] System label / Системная метка
   }
 }))
