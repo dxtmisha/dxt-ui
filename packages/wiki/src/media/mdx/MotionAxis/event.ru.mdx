@@ -12,6 +12,18 @@
 **Параметры:**
 - `selected: string | number` — идентификатор слайда, на котором завершился переход
 
+### `motionAxis`
+
+Событие срабатывает в начале и в конце анимации перехода.
+
+**Параметры:**
+- `options: MotionAxisEmitOptions` — объект с параметрами события
+  - `type: 'start' | 'end'` — тип события
+  - `selected: string | number` — идентификатор выбранного слайда
+  - `previous: string | number` — идентификатор предыдущего слайда
+  - `preparation: string | number` — идентификатор подготавливаемого слайда
+  - `active: string | number` — идентификатор активного слайда
+
 ```html
 <script setup>
 const handleStart = (selected) => {
@@ -21,12 +33,17 @@ const handleStart = (selected) => {
 const handleEnd = (selected) => {
   console.log('Завершение анимации на слайде:', selected)
 }
+
+const handleMotionAxis = (options) => {
+  console.log('Событие MotionAxis:', options)
+}
 </script>
 
 <template>
   <MotionAxis
     @start="handleStart"
     @end="handleEnd"
+    @motionAxis="handleMotionAxis"
   >
     <!-- Слайды -->
   </MotionAxis>

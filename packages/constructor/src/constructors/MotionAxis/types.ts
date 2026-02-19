@@ -1,6 +1,6 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { MotionAxisSelectedValue } from './basicTypes'
+import type { MotionAxisEmitOptions, MotionAxisSelectedValue } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -18,6 +18,7 @@ export type MotionAxisEmits = {
   'update:selected': [value: MotionAxisSelectedValue]
   'update:modelSelected': [value: MotionAxisSelectedValue]
 
+  'motionAxis': [options: MotionAxisEmitOptions]
   'start': [selected: MotionAxisSelectedValue]
   'end': [selected: MotionAxisSelectedValue]
 }

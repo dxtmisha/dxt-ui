@@ -6,7 +6,7 @@ import { MotionAxisPrevious } from './MotionAxisPrevious'
 import { MotionAxisSelected } from './MotionAxisSelected'
 import { MotionAxisStyles } from './MotionAxisStyles'
 
-import type { MotionAxisSelectedValue } from './basicTypes'
+import type { MotionAxisEmitType, MotionAxisSelectedValue } from './basicTypes'
 import type { MotionAxisEmits } from './types'
 import type { MotionAxisProps } from './props'
 
@@ -99,7 +99,6 @@ export class MotionAxisStatus {
     this.previous.set(this.active.value)
     this.preparation.value = this.selected.item.value
 
-    this.emits?.('start', this.preparation.value)
     this.element.blockScroll()
     this.expectation()
   }
@@ -125,6 +124,7 @@ export class MotionAxisStatus {
 
           this.element.initEvent(this.end)
           this.active.value = this.selected.item.value
+          this.emit('start')
         })
       } else {
         this.expectation()
@@ -141,7 +141,28 @@ export class MotionAxisStatus {
     this.previous.set(undefined)
     this.preparation.value = undefined
 
-    this.emits?.('end', this.active.value)
+    this.emit('end')
     this.element.returnScroll()
+  }
+
+  protected emit(type: MotionAxisEmitType): void {
+    if (
+      this.emits
+      && this.selected.item.value !== undefined
+    ) {
+      if (type === 'start') {
+        this.emits('start', this.selected.item.value)
+      } else {
+        this.emits('end', this.selected.item.value)
+      }
+
+      this.emits('motionAxis', {
+        type,
+        selected: this.selected.item.value,
+        previous: this.previous.get(),
+        preparation: this.preparation.value,
+        active: this.active.value
+      })
+    }
   }
 }

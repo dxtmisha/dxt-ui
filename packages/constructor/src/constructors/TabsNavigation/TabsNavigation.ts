@@ -1,6 +1,7 @@
 import { computed, toRef, type Ref, type ToRefs, onMounted, watch } from 'vue'
 import { type ConstrEmit, type DesignComp, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { HorizontalScrollInclude } from '../HorizontalScroll/HorizontalScrollInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -13,7 +14,6 @@ import { TabsNavigationControl } from './TabsNavigationControl'
 import type { EventClickValue } from '../../types/eventClickTypes'
 import type { TabsNavigationComponents, TabsNavigationEmits, TabsNavigationSlots } from './types'
 import type { TabsNavigationProps } from './props'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * TabsNavigation

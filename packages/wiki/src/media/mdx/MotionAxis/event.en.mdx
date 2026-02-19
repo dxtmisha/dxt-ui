@@ -12,6 +12,18 @@ Event triggered after the transition animation completes.
 **Parameters:**
 - `selected: string | number` — identifier of the slide on which the transition ended
 
+### `motionAxis`
+
+Event triggered at the beginning and end of the transition animation.
+
+**Parameters:**
+- `options: MotionAxisEmitOptions` — object with event parameters
+  - `type: 'start' | 'end'` — event type
+  - `selected: string | number` — identifier of the selected slide
+  - `previous: string | number` — identifier of the previous slide
+  - `preparation: string | number` — identifier of the slide being prepared
+  - `active: string | number` — identifier of the active slide
+
 ```html
 <script setup>
 const handleStart = (selected) => {
@@ -21,12 +33,17 @@ const handleStart = (selected) => {
 const handleEnd = (selected) => {
   console.log('Animation ended on slide:', selected)
 }
+
+const handleMotionAxis = (options) => {
+  console.log('MotionAxis event:', options)
+}
 </script>
 
 <template>
   <MotionAxis
     @start="handleStart"
     @end="handleEnd"
+    @motionAxis="handleMotionAxis"
   >
     <!-- Slides -->
   </MotionAxis>
