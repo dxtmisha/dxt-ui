@@ -37,7 +37,6 @@ export type MotionAxisProps = MotionAxisPropsBasic & MotionAxisPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsMotionAxis = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     axis: 'x',

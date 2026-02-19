@@ -1,0 +1,34 @@
+### `start`
+
+Event triggered at the beginning of the transition animation.
+
+**Parameters:**
+- `selected: string | number` — identifier of the slide to which the transition starts
+
+### `end`
+
+Event triggered after the transition animation completes.
+
+**Parameters:**
+- `selected: string | number` — identifier of the slide on which the transition ended
+
+```html
+<script setup>
+const handleStart = (selected) => {
+  console.log('Animation started to slide:', selected)
+}
+
+const handleEnd = (selected) => {
+  console.log('Animation ended on slide:', selected)
+}
+</script>
+
+<template>
+  <MotionAxis
+    @start="handleStart"
+    @end="handleEnd"
+  >
+    <!-- Slides -->
+  </MotionAxis>
+</template>
+```

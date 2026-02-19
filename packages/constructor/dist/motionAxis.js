@@ -441,7 +441,7 @@ class q {
      * @param selected selected item / выбранный элемент
      */
     s(this, "to", (t) => {
-      const e = this.slides.findIndex(this.status.get()), a = this.slides.findIndex(t);
+      const e = this.slides.findIndex(), a = this.slides.findIndex(t);
       e !== -1 && a !== -1 && a !== e && (e > a ? this.direction.value = "back" : this.direction.value = "next", this.status.set(t));
     });
     /**
@@ -706,7 +706,7 @@ class O extends M {
    */
   initClasses() {
     return {
-      main: {},
+      main: this.item.classes.value,
       // :classes [!] System label / Системная метка
       slide: this.getSubClass("slide")
     };

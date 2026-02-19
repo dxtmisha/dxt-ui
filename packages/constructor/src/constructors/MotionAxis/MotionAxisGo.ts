@@ -64,7 +64,7 @@ export class MotionAxisGo {
    * @param selected selected item / выбранный элемент
    */
   readonly to = (selected: MotionAxisSelectedValue) => {
-    const active = this.slides.findIndex(this.status.get())
+    const active = this.slides.findIndex()
     const to = this.slides.findIndex(selected)
 
     if (

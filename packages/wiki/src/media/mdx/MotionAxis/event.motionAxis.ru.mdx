@@ -1,0 +1,34 @@
+### `start`
+
+Событие срабатывает в начале анимации перехода.
+
+**Параметры:**
+- `selected: string | number` — идентификатор слайда, к которому начинается переход
+
+### `end`
+
+Событие срабатывает после завершения анимации перехода.
+
+**Параметры:**
+- `selected: string | number` — идентификатор слайда, на котором завершился переход
+
+```html
+<script setup>
+const handleStart = (selected) => {
+  console.log('Начало анимации к слайду:', selected)
+}
+
+const handleEnd = (selected) => {
+  console.log('Завершение анимации на слайде:', selected)
+}
+</script>
+
+<template>
+  <MotionAxis
+    @start="handleStart"
+    @end="handleEnd"
+  >
+    <!-- Слайды -->
+  </MotionAxis>
+</template>
+```
