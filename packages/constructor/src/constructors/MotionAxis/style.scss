@@ -60,11 +60,11 @@
   }
 
   &--start {
-    height: var(--c2-motionAxis-sys-height, auto);
+    height: ui.v('??sys.height', auto);
   }
 
   &--move {
-    height: var(--c2-motionAxis-sys-next-height, auto);
+    height: ui.v('??sys.next.height', auto);
     transition: height ui.v('??transition-duration') ui.v('??transition-function');
   }
 

@@ -1,0 +1,17 @@
+### `[name]`
+
+Slot for slide content. The slot name corresponds to the value passed to the `selected` property.
+
+**Parameters:**
+- `props: any` — slot parameters (currently not used)
+
+```html
+<MotionAxis selected="slide1">
+  <template #slide1>
+    <div>Slide 1 Content</div>
+  </template>
+  <template #slide2>
+    <div>Slide 2 Content</div>
+  </template>
+</MotionAxis>
+```

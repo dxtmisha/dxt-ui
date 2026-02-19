@@ -7,9 +7,7 @@ import type { MotionAxisSelectedValue } from './basicTypes'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type MotionAxisComponents = {
-  // componentName: object
-}
+export type MotionAxisComponents = {}
 
 /**
  * Type describing available events.

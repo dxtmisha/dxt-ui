@@ -1,0 +1,30 @@
+## State Management via v-model
+
+Two-way binding of the selected slide via `v-model:selected`.
+
+**Parameters:**
+- `selected: string | number` — identifier of the selected slide
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref('slide1')
+</script>
+
+<template>
+  <div class="buttons">
+    <button @click="selected = 'slide1'">Slide 1</button>
+    <button @click="selected = 'slide2'">Slide 2</button>
+  </div>
+
+  <MotionAxis v-model:selected="selected">
+    <template #slide1>
+      <div>Slide 1 Content</div>
+    </template>
+    <template #slide2>
+      <div>Slide 2 Content</div>
+    </template>
+  </MotionAxis>
+</template>
+```

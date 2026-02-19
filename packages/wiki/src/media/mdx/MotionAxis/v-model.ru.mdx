@@ -1,0 +1,30 @@
+## Управление состоянием через v-model
+
+Двусторонняя привязка выбранного слайда через `v-model:selected`.
+
+**Параметры:**
+- `selected: string | number` — идентификатор выбранного слайда
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref('slide1')
+</script>
+
+<template>
+  <div class="buttons">
+    <button @click="selected = 'slide1'">Слайд 1</button>
+    <button @click="selected = 'slide2'">Слайд 2</button>
+  </div>
+
+  <MotionAxis v-model:selected="selected">
+    <template #slide1>
+      <div>Контент слайда 1</div>
+    </template>
+    <template #slide2>
+      <div>Контент слайда 2</div>
+    </template>
+  </MotionAxis>
+</template>
+```

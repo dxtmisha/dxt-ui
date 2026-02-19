@@ -28,8 +28,7 @@ export const wikiMotionAxis: StorybookArgsToList = {
       description: {
         en: 'Enables height animation',
         ru: 'Включает анимацию высоты'
-      },
-      value: true
+      }
     }
   },
   'motionAxis.direction': {
