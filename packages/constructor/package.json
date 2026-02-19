@@ -37,7 +37,7 @@
     "preview": "vite preview",
     "dxt-library": "dxt-library",
     "dxt-types": "dxt-types",
-    "dxt-constructor": "dxt-constructor motionAxis",
+    "dxt-constructor": "dxt-constructor tabs",
     "prepublishOnly": "npm run dxt-library && npm run dxt-constructor && npm run build"
   },
   "files": [
@@ -239,6 +239,10 @@
     "./MotionAxis": {
       "types": "./dist/constructors/MotionAxis/index.d.ts",
       "default": "./dist/motionAxis.js"
+    },
+    "./Tabs": {
+      "types": "./dist/constructors/Tabs/index.d.ts",
+      "default": "./dist/tabs.js"
     }
   },
   "buildOptions": {

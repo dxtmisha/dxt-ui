@@ -134,11 +134,15 @@ export class TabsNavigationDesign<
   ): VNode[] => {
     const children: any[] = []
 
+    this.initSlot('leading', children)
+
     this.item.data.fullData.value.forEach(
       item => children.push(
         this.renderItem(props, item)
       )
     )
+
+    this.initSlot('trailing', children)
 
     return children
   }

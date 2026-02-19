@@ -5,7 +5,7 @@ import {
   type DesignComponents,
   getRef,
   type RefOrNormal,
-  toBind, toBinds
+  toBinds
 } from '@dxtmisha/functional'
 
 import type {
@@ -53,7 +53,7 @@ export class MotionAxisInclude<
     return toBinds<PropsExtra>(
       getRef(this.extra),
       {
-        selected: this.props.selected
+        class: `${this.className}__motionAxis`
       },
       this.props.motionAxisAttrs
     )
@@ -73,9 +73,10 @@ export class MotionAxisInclude<
       return this.components.render(
         'motionAxis',
         {
-          ...toBind(
-            attrs ?? {},
-            this.binds.value
+          ...toBinds(
+            attrs,
+            this.binds.value,
+            { selected: this.props.selected }
           ),
           ref: this.element,
           onMotionAxis: this.onMotionAxis

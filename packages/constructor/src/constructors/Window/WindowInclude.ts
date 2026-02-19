@@ -1,10 +1,12 @@
 import { computed, ref, type VNode } from 'vue'
 import {
-  type ConstrBind, type ConstrEmit,
+  type ConstrBind,
+  type ConstrEmit,
   type DesignComponents,
   getRef,
   type RefOrNormal,
-  toBind
+  toBind,
+  toBinds
 } from '@dxtmisha/functional'
 
 import type { WindowProps } from './props'
@@ -12,7 +14,8 @@ import type { WindowExpose, WindowSlots } from './types'
 import type {
   WindowComponentInclude,
   WindowEmitOptions,
-  WindowEmitsInclude, WindowExposeInclude,
+  WindowEmitsInclude,
+  WindowExposeInclude,
   WindowPropsInclude
 } from './basicTypes'
 
@@ -53,24 +56,23 @@ export class WindowInclude<
 
   /** Computed bindings for the window/ Вычисляемые привязки для окна */
   readonly binds = computed<PropsExtra>(() => {
-    const props = toBind<PropsExtra>(
-      getRef(this.extra) ?? {},
-      this.props.windowAttrs ?? {}
+    return toBinds<PropsExtra>(
+      getRef(this.extra),
+      {
+        class: `${this.className}__window`,
+
+        disabled: this.props.disabled,
+        autoClose: this.props.autoClose,
+
+        preparation: this.getPreparation,
+        opening: this.getOpening,
+        closing: this.getClosing,
+
+        ariaLabelledby: this.ariaLabelledby,
+        ariaDescribedby: this.ariaDescribedby
+      },
+      this.props.windowAttrs
     )
-
-    return {
-      ...props,
-
-      disabled: this.props.disabled,
-      autoClose: this.props.autoClose,
-
-      preparation: this.getPreparation,
-      opening: this.getOpening,
-      closing: this.getClosing,
-
-      ariaLabelledby: this.ariaLabelledby,
-      ariaDescribedby: this.ariaDescribedby
-    }
   })
 
   /**
