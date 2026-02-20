@@ -1,5 +1,6 @@
 import { ComputedRef, Ref } from 'vue';
 import { ConstrClass } from '@dxtmisha/functional';
+import { ModelEmitsOpen } from '../../types/modelTypes';
 import { MotionTransformControlItem, MotionTransformEmitOptions } from './basicTypes';
 /**
  * Interface for describing which components need to be connected for work.
@@ -12,16 +13,14 @@ export type MotionTransformComponents = {};
  *
  * Тип, описывающий доступные события.
  */
-export type MotionTransformEmits = {
-    'transform': [
+export type MotionTransformEmits = ModelEmitsOpen & {
+    transform: [
         event: Event | undefined,
         options: MotionTransformEmitOptions
     ];
-    'transformLite': [
+    transformLite: [
         options: MotionTransformEmitOptions
     ];
-    'update:open': [value: boolean];
-    'update:modelOpen': [value: boolean];
 };
 /**
  * Type describing available properties.

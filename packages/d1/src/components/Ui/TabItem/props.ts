@@ -1,5 +1,8 @@
 import { type TabItemPropsBasic, defaultsTabItem } from '@dxtmisha/constructor/TabItem'
 
+import type { IconProps } from '../Icon'
+import type { BadgeProps } from '../Badge'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   adaptive: ['iconAlways', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'],
@@ -21,7 +24,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TabItemProps =  TabItemPropsBasic & PropsToken
+export type TabItemProps = TabItemPropsBasic<IconProps, BadgeProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

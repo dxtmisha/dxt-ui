@@ -7,6 +7,8 @@ import type { IconLitePropsInclude, IconPropsBasic, IconValue } from '../Icon'
 import type { CellPropsBasic } from '../Cell'
 import type { MotionTransformPropsBasic, MotionTransformPropsInclude } from '../MotionTransform'
 
+import type { ModelPropsOpen } from '../../types/modelTypes'
+
 export type AccordionPropsToken = {
   // :type [!] System label / Системная метка
   divider?: boolean
@@ -20,15 +22,12 @@ export type AccordionPropsBasic<
 > = LabelProps
   & DescriptionProps
   & IconLitePropsInclude<Icon>
-  & MotionTransformPropsInclude<MotionTransform> & {
-  // Style
-    'cellAttrs'?: ConstrBind<Cell>
-    'iconArrowDown'?: IconValue<Icon>
-
-    // Event
-    'modelOpen'?: boolean
-    'onUpdate:open'?: (value: boolean) => void
-    'onUpdate:modelOpen'?: (value: boolean) => void
+  & MotionTransformPropsInclude<MotionTransform>
+  & ModelPropsOpen
+  & {
+    // Style
+    cellAttrs?: ConstrBind<Cell>
+    iconArrowDown?: IconValue<Icon>
   }
 
 /**

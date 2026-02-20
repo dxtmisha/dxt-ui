@@ -68,10 +68,14 @@ export class MotionAxisGo {
     const to = this.slides.findIndex(selected)
 
     if (
-      active !== -1
-      && to !== -1
+      to !== -1
       && to !== active
     ) {
+      if (active === -1) {
+        this.status.setFlash(selected)
+        return
+      }
+
       if (active > to) {
         this.direction.value = 'back'
       } else {

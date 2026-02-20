@@ -110,6 +110,16 @@ export const wikiAttributes: StorybookArgsToList = {
       }
     }
   },
+  motionAxisAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the MotionAxis component',
+        ru: 'Дополнительные атрибуты для компонента MotionAxis'
+      }
+    }
+  },
   motionTransformAttrs: {
     type: StorybookControl.object,
     options: {
@@ -127,6 +137,26 @@ export const wikiAttributes: StorybookArgsToList = {
       description: {
         en: 'Sets attributes for the internal scrollbar',
         ru: 'Задает атрибуты встроенного скроллбара'
+      }
+    }
+  },
+  tabItemAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the TabItem component',
+        ru: 'Дополнительные атрибуты для компонента TabItem'
+      }
+    }
+  },
+  tabsNavigationAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the TabsNavigation component',
+        ru: 'Дополнительные атрибуты для компонента TabsNavigation'
       }
     }
   },

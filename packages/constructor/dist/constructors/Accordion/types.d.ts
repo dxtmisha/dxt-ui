@@ -2,6 +2,7 @@ import { ConstrClass } from '@dxtmisha/functional';
 import { EventClickEmits } from '../../types/eventClickTypes';
 import { CellComponentInclude, CellSlotsInclude } from '../Cell';
 import { MotionTransformComponentInclude, MotionTransformControlItem, MotionTransformEmitsInclude, MotionTransformExposeInclude } from '../MotionTransform';
+import { ModelEmitsOpen } from '../../types/modelTypes';
 /**
  * Interface for describing which components need to be connected for work.
  *
@@ -13,10 +14,7 @@ export type AccordionComponents = CellComponentInclude & MotionTransformComponen
  *
  * Тип, описывающий доступные события.
  */
-export type AccordionEmits = EventClickEmits & MotionTransformEmitsInclude & {
-    'update:open': [value: boolean];
-    'update:modelOpen': [value: boolean];
-};
+export type AccordionEmits = EventClickEmits & MotionTransformEmitsInclude & ModelEmitsOpen;
 /**
  * Type describing available properties.
  *

@@ -53,11 +53,7 @@ export const TabsNavigationBasic: Story = {
       return { list, selected }
     },
     template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <D1TabsNavigation :list="list" v-model:selected="selected"/>
-          </div>
-        </div>
+        <D1TabsNavigation :list="list" v-model:selected="selected"/>
     `
   })
 }

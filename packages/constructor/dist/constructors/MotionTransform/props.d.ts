@@ -1,21 +1,19 @@
 import { AriaByPropsInclude } from '../../types/ariaTypes';
+import { ModelPropsOpen } from '../../types/modelTypes';
 export type MotionTransformPropsToken = {
     section?: boolean;
     animationHeadPosition?: 'top' | 'toBottom';
     adaptive?: 'planeAlways';
 };
-export type MotionTransformPropsBasic = AriaByPropsInclude & {
-    'open'?: boolean;
-    'inDom'?: boolean;
-    'ignore'?: HTMLElement | string;
-    'ignoreSelector'?: string;
-    'clickOpen'?: boolean;
-    'autoClose'?: boolean;
-    'animationShow'?: boolean;
-    'tagBody'?: string;
-    'modelOpen'?: boolean;
-    'onUpdate:open'?: (value: boolean) => void;
-    'onUpdate:modelOpen'?: (value: boolean) => void;
+export type MotionTransformPropsBasic = AriaByPropsInclude & ModelPropsOpen & {
+    open?: boolean;
+    inDom?: boolean;
+    ignore?: HTMLElement | string;
+    ignoreSelector?: string;
+    clickOpen?: boolean;
+    autoClose?: boolean;
+    animationShow?: boolean;
+    tagBody?: string;
 };
 /**
  * Type describing incoming properties.

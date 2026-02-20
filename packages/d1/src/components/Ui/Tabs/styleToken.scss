@@ -1,0 +1,22 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Tabs;
+
+@include ui.initDesignBasic('d1.tabs') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Tabs.mixinTabs;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &__slide {
+      @include ui.paddingY(#{var(--d1-grid-paddingY)});
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

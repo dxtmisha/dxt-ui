@@ -3,7 +3,7 @@ import { MotionAxisElement } from './MotionAxisElement';
 import { MotionAxisPrevious } from './MotionAxisPrevious';
 import { MotionAxisSelected } from './MotionAxisSelected';
 import { MotionAxisStyles } from './MotionAxisStyles';
-import { MotionAxisSelectedValue } from './basicTypes';
+import { MotionAxisEmitType, MotionAxisSelectedValue } from './basicTypes';
 import { MotionAxisEmits } from './types';
 import { MotionAxisProps } from './props';
 import { Ref } from 'vue';
@@ -60,6 +60,13 @@ export declare class MotionAxisStatus {
      */
     set(selected: MotionAxisProps['selected']): this;
     /**
+     * Instantly changes the active slide without animation.
+     *
+     * Мгновенно изменяет активный слайд без анимации.
+     * @param selected selected slide/ выбранный слайд
+     */
+    setFlash(selected: MotionAxisProps['selected']): this;
+    /**
      * Beginning of activation.
      *
      * Начало активации.
@@ -77,4 +84,5 @@ export declare class MotionAxisStatus {
      * Остановка и удаление всех данных.
      */
     protected readonly end: () => void;
+    protected emit(type: MotionAxisEmitType): void;
 }

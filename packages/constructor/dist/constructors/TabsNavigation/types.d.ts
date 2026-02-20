@@ -2,6 +2,7 @@ import { ConstrClass, ListSelectedList } from '@dxtmisha/functional';
 import { HorizontalScrollComponentInclude } from '../HorizontalScroll';
 import { TabItemComponentInclude } from '../TabItem';
 import { EventClickEmits } from '../../types/eventClickTypes';
+import { ModelEmitsSelected } from '../../types/modelTypes';
 /**
  * Interface for describing which components need to be connected for work.
  *
@@ -13,10 +14,7 @@ export type TabsNavigationComponents = HorizontalScrollComponentInclude & TabIte
  *
  * Тип, описывающий доступные события.
  */
-export type TabsNavigationEmits = EventClickEmits & {
-    'update:selected': [value: ListSelectedList];
-    'update:modelSelected': [value: ListSelectedList];
-};
+export type TabsNavigationEmits = EventClickEmits & ModelEmitsSelected<ListSelectedList>;
 /**
  * Type describing available properties.
  *

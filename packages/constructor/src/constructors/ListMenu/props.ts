@@ -11,10 +11,6 @@ export type ListMenuPropsToken = {
 export type ListMenuPropsBasic<
   Window extends WindowPropsBasic = WindowPropsBasic
 > = WindowPropsInclude<Window>
-  & {
-    // Technical
-    control?: boolean
-  }
 
 /**
  * Type describing incoming properties.

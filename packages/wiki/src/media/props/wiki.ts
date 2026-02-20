@@ -39,9 +39,11 @@ import { wikiMenu } from './wikiMenu'
 import { wikiMotionAxis } from './wikiMotionAxis'
 import { wikiMotionTransform } from './wikiMotionTransform'
 import { wikiProgress } from './wikiProgress'
+import { wikiPropsTextarea } from './wikiPropsTextarea'
 import { wikiScrollbar } from './wikiScrollbar'
 import { wikiSelect } from './wikiSelect'
 import { wikiSelectValue } from './wikiSelectValue'
+import { wikiTabs } from './wikiTabs'
 import { wikiTabsNavigation } from './wikiTabsNavigation'
 import { wikiTooltip } from './wikiTooltip'
 import { wikiWindow } from './wikiWindow'
@@ -86,9 +88,11 @@ export const wiki: StorybookArgsToList = {
   ...wikiMotionAxis,
   ...wikiMotionTransform,
   ...wikiProgress,
+  ...wikiPropsTextarea,
   ...wikiScrollbar,
   ...wikiSelect,
   ...wikiSelectValue,
+  ...wikiTabs,
   ...wikiTabsNavigation,
   ...wikiTooltip,
   ...wikiWindow

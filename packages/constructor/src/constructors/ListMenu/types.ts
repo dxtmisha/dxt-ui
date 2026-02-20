@@ -37,6 +37,7 @@ export interface ListMenuExpose extends WindowExposeInclude {
  */
 export interface ListMenuSlots {
   head?(props: WindowControlItem): any
+
   list?(props: any): any
 }
 

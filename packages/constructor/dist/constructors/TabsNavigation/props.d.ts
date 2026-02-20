@@ -1,19 +1,17 @@
 import { ConstrBind, ListRecord, ListSelectedList } from '@dxtmisha/functional';
 import { TabItemPropsBasic } from '../TabItem';
 import { HorizontalScrollPropsInclude } from '../HorizontalScroll';
+import { ModelPropsSelected } from '../../types/modelTypes';
 type TabsNavigationPropsToken = {
     divider?: boolean;
 };
-export type TabsNavigationPropsBasic<TabItem extends TabItemPropsBasic = TabItemPropsBasic> = HorizontalScrollPropsInclude & {
-    'selected'?: ListSelectedList;
-    'list'?: ListRecord<TabItem>;
-    'tag'?: TabItem['tag'];
-    'keyLabel'?: string;
-    'keyValue'?: string;
-    'itemAttrs'?: ConstrBind<TabItem>;
-    'modelSelected'?: ListSelectedList;
-    'onUpdate:selected'?: (value: ListSelectedList) => void;
-    'onUpdate:modelSelected'?: (value: ListSelectedList) => void;
+export type TabsNavigationPropsBasic<TabItem extends TabItemPropsBasic = TabItemPropsBasic> = HorizontalScrollPropsInclude & ModelPropsSelected<ListSelectedList> & {
+    selected?: ListSelectedList;
+    list?: ListRecord<TabItem>;
+    tag?: TabItem['tag'];
+    keyLabel?: string;
+    keyValue?: string;
+    itemAttrs?: ConstrBind<TabItem>;
 };
 /**
  * Type describing incoming properties.

@@ -48,7 +48,6 @@ export const wikiTabsNavigation: StorybookArgsToList = {
         ru: 'Выбранное значение'
       },
       value: 'home'
-    },
-    isDemo: true
+    }
   }
 }

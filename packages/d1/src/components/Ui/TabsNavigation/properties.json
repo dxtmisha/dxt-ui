@@ -1,5 +1,6 @@
 {
   "main": "{d.tabsNavigation}",
+  "gap": "{sys.spacing.x}",
   "paddingY": "{sys.spacing.x}",
   "focus": {
     "outline": "{outline.md}"

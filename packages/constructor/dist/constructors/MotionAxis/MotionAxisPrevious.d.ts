@@ -16,21 +16,27 @@ export declare class MotionAxisPrevious {
     readonly item: Ref<MotionAxisSelectedValue, MotionAxisSelectedValue>;
     /**
      * Constructor
-     * @param styles style management object/ объект управления стилями
+     * @param styles style management object / объект управления стилями
      */
     constructor(styles: MotionAxisStyles);
     /**
      * Checks if the value matches the previous slide.
      *
      * Проверяет, совпадает ли значение с предыдущим слайдом.
-     * @param value value to check/ значение для проверки
+     * @param value value to check / значение для проверки
      */
     is(value: string): boolean;
+    /**
+     * Returns the previous slide.
+     *
+     * Возвращает предыдущий слайд.
+     */
+    get(): MotionAxisSelectedValue | undefined;
     /**
      * Changing the display status.
      *
      * Изменение статуса отображения.
-     * @param value values for change/ значения для изменения
+     * @param value values for change / значения для изменения
      */
     set(value?: string): this;
 }

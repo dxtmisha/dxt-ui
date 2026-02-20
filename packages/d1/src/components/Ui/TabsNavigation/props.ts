@@ -1,4 +1,5 @@
 import { type TabsNavigationPropsBasic, defaultsTabsNavigation } from '@dxtmisha/constructor/TabsNavigation'
+import type { TabItemProps } from '../TabItem'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -15,13 +16,14 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TabsNavigationProps =  TabsNavigationPropsBasic & PropsToken
+export type TabsNavigationProps = TabsNavigationPropsBasic<TabItemProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export const defaults: object = {
   ...defaultsTabsNavigation,
+  divider: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

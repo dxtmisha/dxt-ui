@@ -1,9 +1,10 @@
 import { ElementOrString, NormalOrPromise } from '@dxtmisha/functional';
-import { AriaHaspopupPropsInclude, AriaRoleByPropsInclude } from '../../types/ariaTypes';
 import { ImagePropsBasic, ImagePropsInclude } from '../Image';
 import { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar';
 import { TextClosePropsInclude } from '../../types/textTypes';
 import { IconPropsBasic, IconValue } from '../Icon';
+import { AriaHaspopupPropsInclude, AriaRoleByPropsInclude } from '../../types/ariaTypes';
+import { ModelPropsOpen } from '../../types/modelTypes';
 export type WindowPropsToken = {
     width?: string | 'auto' | 'max' | 'custom';
     height?: string | 'auto' | 'max' | 'custom';
@@ -20,37 +21,34 @@ export type WindowPropsToken = {
     closeMobileHide?: boolean;
     widthMatch?: boolean;
 };
-export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = ScrollbarPropsInclude<Scrollbar> & ImagePropsInclude<Image> & AriaRoleByPropsInclude & AriaHaspopupPropsInclude & TextClosePropsInclude & {
-    'open'?: boolean;
-    'disabled'?: boolean;
-    'preparation'?(): NormalOrPromise<void>;
-    'beforeOpening'?(): NormalOrPromise<boolean>;
-    'opening'?(): NormalOrPromise<boolean>;
-    'beforeClosing'?(): NormalOrPromise<boolean>;
-    'closing'?(): NormalOrPromise<boolean>;
-    'contextmenu'?: boolean;
-    'staticMode'?: boolean;
-    'overElement'?: ElementOrString<HTMLElement>;
-    'autoClose'?: boolean;
-    'persistent'?: boolean;
-    'flash'?: boolean;
-    'inDom'?: boolean;
-    'indent'?: number;
-    'divider'?: boolean;
-    'closeButton'?: boolean;
-    'iconClose'?: IconValue<Icon>;
-    'modelOpen'?: boolean;
-    'onUpdate:open'?: (value: boolean) => void;
-    'onUpdate:modelOpen'?: (value: boolean) => void;
-    'inert'?: boolean;
-    'autoTabIndex'?: boolean;
-    'closeOnEsc'?: boolean;
-    'openOnArrowDown'?: boolean;
+export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = ScrollbarPropsInclude<Scrollbar> & ImagePropsInclude<Image> & AriaRoleByPropsInclude & AriaHaspopupPropsInclude & TextClosePropsInclude & ModelPropsOpen & {
+    open?: boolean;
+    disabled?: boolean;
+    preparation?(): NormalOrPromise<void>;
+    beforeOpening?(): NormalOrPromise<boolean>;
+    opening?(): NormalOrPromise<boolean>;
+    beforeClosing?(): NormalOrPromise<boolean>;
+    closing?(): NormalOrPromise<boolean>;
+    contextmenu?: boolean;
+    staticMode?: boolean;
+    overElement?: ElementOrString<HTMLElement>;
+    autoClose?: boolean;
+    persistent?: boolean;
+    flash?: boolean;
+    inDom?: boolean;
+    indent?: number;
+    divider?: boolean;
+    closeButton?: boolean;
+    iconClose?: IconValue<Icon>;
+    inert?: boolean;
+    autoTabIndex?: boolean;
+    closeOnEsc?: boolean;
+    openOnArrowDown?: boolean;
     /**
      * The window will be displayed inside the current parent element/
      * Окно будет отображаться внутри текущего родительского элемента
      */
-    'embedded'?: boolean;
+    embedded?: boolean;
 };
 /**
  * Type describing incoming properties.

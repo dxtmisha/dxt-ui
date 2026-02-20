@@ -3,9 +3,9 @@ var k = (n, t, e) => t in n ? w(n, t, { enumerable: !0, configurable: !0, writab
 var i = (n, t, e) => k(n, typeof t != "symbol" ? t + "" : t, e);
 import { ref as u, computed as d, watch as f, nextTick as m, toRef as F, onMounted as A } from "vue";
 import { toBinds as g, getRef as v, isSelected as D, toArray as T, isDomRuntime as $, EventItem as L, ListDataRef as R, DesignConstructorAbstract as z } from "@dxtmisha/functional";
-import { E } from "./EventClickInclude-Co8CpJqL.js";
-import { M as B } from "./ModelInclude-BiYm_iCQ.js";
-import { A as P } from "./AriaStaticInclude-ZrgMZ2ja.js";
+import { A as E } from "./AriaStaticInclude-ZrgMZ2ja.js";
+import { E as B } from "./EventClickInclude-Co8CpJqL.js";
+import { M as P } from "./ModelInclude-BiYm_iCQ.js";
 class H {
   /**
    * Constructor
@@ -426,7 +426,7 @@ class j {
     i(this, "binds", d(() => ({
       tabindex: 0,
       ...this.control.binds,
-      ...P.role("tablist")
+      ...E.role("tablist")
     })));
     /**
      * Handler for the click event.
@@ -440,10 +440,10 @@ class j {
     });
     this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = o, this.components = c, this.slots = a, this.emits = l;
     const {
-      EventClickIncludeConstructor: p = E,
+      EventClickIncludeConstructor: p = B,
       HorizontalScrollIncludeConstructor: I = H,
       ListDataRefConstructor: b = R,
-      ModelIncludeConstructor: y = B,
+      ModelIncludeConstructor: y = P,
       TabsNavigationControlConstructor: S = V,
       TabsNavigationFocusConstructor: C = M,
       TabsNavigationIndicatorConstructor: N = O,
@@ -528,11 +528,11 @@ class Y extends z {
      */
     i(this, "renderList", (e) => {
       const s = [];
-      return this.item.data.fullData.value.forEach(
+      return this.initSlot("leading", s), this.item.data.fullData.value.forEach(
         (r) => s.push(
           this.renderItem(e, r)
         )
-      ), s;
+      ), this.initSlot("trailing", s), s;
     });
     /**
      * Generates an element.

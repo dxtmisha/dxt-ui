@@ -40,6 +40,7 @@ import _D1Select from '../components/Ui/Select/D1Select.vue'
 import _D1SelectValue from '../components/Ui/SelectValue/D1SelectValue.vue'
 import _D1Skeleton from '../components/Ui/Skeleton/D1Skeleton.vue'
 import _D1TabItem from '../components/Ui/TabItem/D1TabItem.vue'
+import _D1Tabs from '../components/Ui/Tabs/D1Tabs.vue'
 import _D1TabsNavigation from '../components/Ui/TabsNavigation/D1TabsNavigation.vue'
 import _D1Textarea from '../components/Ui/Textarea/D1Textarea.vue'
 import _D1TextareaAutosize from '../components/Ui/TextareaAutosize/D1TextareaAutosize.vue'
@@ -85,6 +86,7 @@ export const D1Select = _D1Select
 export const D1SelectValue = _D1SelectValue
 export const D1Skeleton = _D1Skeleton
 export const D1TabItem = _D1TabItem
+export const D1Tabs = _D1Tabs
 export const D1TabsNavigation = _D1TabsNavigation
 export const D1Textarea = _D1Textarea
 export const D1TextareaAutosize = _D1TextareaAutosize
@@ -132,6 +134,7 @@ declare module '@vue/runtime-core' {
     D1SelectValue: typeof D1SelectValue
     D1Skeleton: typeof D1Skeleton
     D1TabItem: typeof D1TabItem
+    D1Tabs: typeof D1Tabs
     D1TabsNavigation: typeof D1TabsNavigation
     D1Textarea: typeof D1Textarea
     D1TextareaAutosize: typeof D1TextareaAutosize

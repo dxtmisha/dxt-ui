@@ -10,6 +10,8 @@ import type {
   MotionTransformExposeInclude
 } from '../MotionTransform'
 
+import type { ModelEmitsOpen } from '../../types/modelTypes'
+
 /**
  * Interface for describing which components need to be connected for work.
  *
@@ -27,10 +29,7 @@ export type AccordionComponents
 export type AccordionEmits
   = EventClickEmits
     & MotionTransformEmitsInclude
-    & {
-      'update:open': [value: boolean]
-      'update:modelOpen': [value: boolean]
-    }
+    & ModelEmitsOpen
 
 /**
  * Type describing available properties.

@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.42.0",
+  "version": "0.45.0",
   "type": "module",
   "description": "Vue component constructors for DXT UI design system - ready-to-use constructors with TypeScript support and SCSS styling",
   "keywords": [
@@ -37,7 +37,7 @@
     "preview": "vite preview",
     "dxt-library": "dxt-library",
     "dxt-types": "dxt-types",
-    "dxt-constructor": "dxt-constructor tabs",
+    "dxt-constructor": "dxt-constructor",
     "prepublishOnly": "npm run dxt-library && npm run dxt-constructor && npm run build"
   },
   "files": [

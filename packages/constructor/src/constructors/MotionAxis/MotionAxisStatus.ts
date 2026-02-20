@@ -89,6 +89,17 @@ export class MotionAxisStatus {
   }
 
   /**
+   * Instantly changes the active slide without animation.
+   *
+   * Мгновенно изменяет активный слайд без анимации.
+   * @param selected selected slide/ выбранный слайд
+   */
+  setFlash(selected: MotionAxisProps['selected']): this {
+    this.selected.set(selected)
+    return this
+  }
+
+  /**
    * Beginning of activation.
    *
    * Начало активации.

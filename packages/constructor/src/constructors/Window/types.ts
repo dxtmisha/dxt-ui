@@ -5,6 +5,7 @@ import type { ScrollbarComponentsInclude, ScrollbarEmitsInclude } from '../Scrol
 import type { ButtonComponentInclude } from '../Button'
 import type { ImageComponentsInclude, ImageEmitsInclude } from '../Image'
 
+import type { ModelEmitsOpen } from '../../types/modelTypes'
 import type { WindowControlItem, WindowEmitOptions } from './basicTypes'
 
 /**
@@ -25,11 +26,9 @@ export type WindowComponents
 export type WindowEmits
   = ScrollbarEmitsInclude
     & ImageEmitsInclude
+    & ModelEmitsOpen
     & {
-      'window': [options: WindowEmitOptions]
-
-      'update:open': [value: boolean]
-      'update:modelOpen': [value: boolean]
+      window: [options: WindowEmitOptions]
     }
 
 /**

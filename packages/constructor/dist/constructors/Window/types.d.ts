@@ -3,6 +3,7 @@ import { ConstrClass } from '@dxtmisha/functional';
 import { ScrollbarComponentsInclude, ScrollbarEmitsInclude } from '../Scrollbar';
 import { ButtonComponentInclude } from '../Button';
 import { ImageComponentsInclude, ImageEmitsInclude } from '../Image';
+import { ModelEmitsOpen } from '../../types/modelTypes';
 import { WindowControlItem, WindowEmitOptions } from './basicTypes';
 /**
  * Interface for describing which components need to be connected for work.
@@ -15,10 +16,8 @@ export type WindowComponents = ScrollbarComponentsInclude & ButtonComponentInclu
  *
  * Тип, описывающий доступные события.
  */
-export type WindowEmits = ScrollbarEmitsInclude & ImageEmitsInclude & {
-    'window': [options: WindowEmitOptions];
-    'update:open': [value: boolean];
-    'update:modelOpen': [value: boolean];
+export type WindowEmits = ScrollbarEmitsInclude & ImageEmitsInclude & ModelEmitsOpen & {
+    window: [options: WindowEmitOptions];
 };
 /**
  * Type describing available properties.

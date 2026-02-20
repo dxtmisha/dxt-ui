@@ -1,6 +1,9 @@
-import type { ConstrClass } from '@dxtmisha/functional'
-import type { TabsNavigationComponentInclude, TabsNavigationEmits, TabsNavigationSlots } from '../TabsNavigation'
+import type { ConstrClass, ListSelectedList } from '@dxtmisha/functional'
+import type { TabsNavigationComponentInclude, TabsNavigationEmits } from '../TabsNavigation'
 import type { MotionAxisComponentInclude, MotionAxisEmitsInclude, MotionAxisSlots } from '../MotionAxis'
+
+import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
+import type { ModelEmitsSelected } from '../../types/modelTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -19,13 +22,15 @@ export type TabsComponents
 export type TabsEmits
   = TabsNavigationEmits
     & MotionAxisEmitsInclude
+    & EventClickEmits
+    & ModelEmitsSelected<ListSelectedList>
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface TabsExpose {
+export interface TabsExpose extends EventClickExpose {
 }
 
 /**
@@ -33,8 +38,7 @@ export interface TabsExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface TabsSlots extends TabsNavigationSlots, MotionAxisSlots {
-}
+export type TabsSlots = MotionAxisSlots
 
 /**
  * Type describing subclasses.
@@ -44,5 +48,6 @@ export interface TabsSlots extends TabsNavigationSlots, MotionAxisSlots {
 export type TabsClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  slide: string
   // :classes [!] System label / Системная метка
 }

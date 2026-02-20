@@ -1,0 +1,44 @@
+Component for creating tabs with navigation and animated content switching.
+
+Tabs combines a navigation bar (TabsNavigation) and a content area (MotionAxis), ensuring synchronized switching between tabs. The component supports horizontal scrolling of headers, various display styles, and content transition animations.
+
+**Key Features:**
+
+- Automatic synchronization of the selected tab and content
+- Horizontal scrolling support for a large number of tabs
+- Animated transitions between content panels
+- Flexible customization of tab appearance (icons, labels)
+- State management via v-model:selected
+
+**Typical Use Cases:**
+
+- Organizing page content by categories
+- Switching between different data views
+- Navigation within modal windows or cards
+- Creating step-by-step wizards
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref('tab1')
+const tabs = [
+  { text: 'Tab 1', value: 'tab1' },
+  { text: 'Tab 2', value: 'tab2' },
+  { text: 'Tab 3', value: 'tab3' }
+]
+</script>
+
+<template>
+  <Tabs
+    v-model:selected="selected"
+    :list="tabs"
+  >
+    <template #default="{ item }">
+      <div class="p-4">
+        Content for {{ item.text }}
+      </div>
+    </template>
+  </Tabs>
+</template>
+```

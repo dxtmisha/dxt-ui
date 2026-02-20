@@ -1,6 +1,9 @@
 import type { ConstrBind, ListRecord, ListSelectedList } from '@dxtmisha/functional'
+
 import type { TabItemPropsBasic } from '../TabItem'
 import type { HorizontalScrollPropsInclude } from '../HorizontalScroll'
+
+import type { ModelPropsSelected } from '../../types/modelTypes'
 
 type TabsNavigationPropsToken = {
   // :type [!] System label / Системная метка
@@ -11,27 +14,23 @@ type TabsNavigationPropsToken = {
 export type TabsNavigationPropsBasic<
   TabItem extends TabItemPropsBasic = TabItemPropsBasic
 > = HorizontalScrollPropsInclude
+  & ModelPropsSelected<ListSelectedList>
   & {
-    // Status
-    'selected'?: ListSelectedList
+  // Status
+    selected?: ListSelectedList
 
     // Value
-    'list'?: ListRecord<TabItem>
+    list?: ListRecord<TabItem>
 
     // Style
-    'tag'?: TabItem['tag']
+    tag?: TabItem['tag']
 
     // Options
-    'keyLabel'?: string
-    'keyValue'?: string
+    keyLabel?: string
+    keyValue?: string
 
     // Attributes
-    'itemAttrs'?: ConstrBind<TabItem>
-
-    // Event
-    'modelSelected'?: ListSelectedList
-    'onUpdate:selected'?: (value: ListSelectedList) => void
-    'onUpdate:modelSelected'?: (value: ListSelectedList) => void
+    itemAttrs?: ConstrBind<TabItem>
   }
 
 /**

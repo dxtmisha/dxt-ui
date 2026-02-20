@@ -94,6 +94,40 @@ export const MotionAxisBasic: Story = {
     `
   })
 }
+export const MotionAxisScroll: Story = {
+  name: 'Управление скроллом',
+  render: () => ({
+    components: { D1MotionAxis },
+    setup() {
+      const selected = ref('short')
+      return { selected }
+    },
+    template: `
+        <div class="wiki-storybook-flex-column d1-motionAxis__scroll">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="selected = 'short'">short</button>
+            <button class="wiki-storybook-button" @click="selected = 'long'">long</button>
+          </div>
+
+          <D1MotionAxis :selected="selected">
+            <template #short>
+              <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
+                Short content
+              </div>
+            </template>
+            <template #long>
+              <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
+                Long content that causes scrolling.<br>
+                Scroll down to see more.<br>
+                ...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>
+                End of content.
+              </div>
+            </template>
+          </D1MotionAxis>
+        </div>
+    `
+  })
+}
 export const MotionAxisVModel: Story = {
   name: 'Двусторонняя привязка (v-model)',
   render: () => ({

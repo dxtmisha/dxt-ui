@@ -1,18 +1,18 @@
-## CSS Classes for Behavior Control
+## Scroll Management during Animation
 
-- `*--axis--x` — animation along the X axis
-- `*--axis--y` — animation along the Y axis
-- `*--axis--z` — animation along the Z axis
-- `*--direction--next` — forward animation
-- `*--direction--back` — backward animation
-- `*--start` — animation start state (when `animationHeight` is enabled)
-- `*--move` — moving state (when `animationHeight` is enabled)
+The component automatically manages scroll visibility during transition animations to prevent content jumps.
 
-### Slide Classes
+### Usage
 
-- `*__slide` — base slide class
-- `*__slide--previous` — previously active slide
-- `*__slide--preparation` — slide in preparation state for animation
-- `*__slide--active` — currently active slide
+To enable this feature, add the `*__scroll` class to the parent container that has scrolling.
 
-Where `*` is the component class name (e.g., `d1-motionAxis`, `m3-motionAxis`).
+1.  Wrap the component in a scrollable container.
+2.  Add the `*__scroll` class to this container (where `*` is the component class name, e.g., `d1-tabs__scroll`).
+
+```html
+<div class="d1-tabs__scroll">
+  <Tabs ... />
+</div>
+```
+
+During the animation, the component will automatically add the `*__scroll--hidden` class (which applies `overflow: hidden`) to this container, and remove it after the animation ends.

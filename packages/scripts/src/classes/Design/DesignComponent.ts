@@ -2,9 +2,10 @@
 
 import {
   forEach,
-  isObjectNotArray, replaceComponentName,
+  isObjectNotArray,
+  replaceComponentName,
   toArray,
-  toKebabCase
+  toCamelCase
 } from '@dxtmisha/functional-basic'
 import { wikiDescriptions } from '@dxtmisha/wiki/media'
 import type { StorybookComponentsDescriptionItem } from '@dxtmisha/wiki'
@@ -404,11 +405,12 @@ export class DesignComponent extends DesignCommand {
    */
   private toComponentName(code: string): string {
     const design = this.getStructure().getDesignFirst()
-    const name = this.getStructure().getFullComponentName()
+    const name = this.getStructure().getComponentName()
+    const fullName = this.getStructure().getFullComponentName()
 
     return code
-      .replace(/DesignComponent/g, name).trim()
-      .replace(/design-component/g, toKebabCase(name)).trim()
+      .replace(/DesignComponent/g, fullName).trim()
+      .replace(/design-component/g, `${toCamelCase(design)}-${toCamelCase(name)}`).trim()
       .replace(/<(\/?)Design/g, `<$1${design}`)
   }
 

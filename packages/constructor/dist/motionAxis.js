@@ -1,7 +1,7 @@
 var A = Object.defineProperty;
-var C = (o, t, e) => t in o ? A(o, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : o[t] = e;
-var s = (o, t, e) => C(o, typeof t != "symbol" ? t + "" : t, e);
-import { ref as l, watch as r, onMounted as N, computed as I, h as u } from "vue";
+var C = (n, t, e) => t in n ? A(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
+var s = (n, t, e) => C(n, typeof t != "symbol" ? t + "" : t, e);
+import { ref as o, watch as r, onMounted as N, computed as I, h as u } from "vue";
 import { DesignConstructorAbstract as M, forEach as E } from "@dxtmisha/functional";
 import { M as P } from "./ModelInclude-BiYm_iCQ.js";
 class w {
@@ -12,8 +12,8 @@ class w {
    */
   constructor(t, e) {
     s(this, "classStatus");
-    s(this, "start", l(!1));
-    s(this, "move", l(!1));
+    s(this, "start", o(!1));
+    s(this, "move", o(!1));
     this.element = t, this.className = e, this.classStatus = {
       main: this.getClassStatusItem(),
       previous: this.getClassStatusItem("previous"),
@@ -186,7 +186,7 @@ class b {
    * @param props input data/ входные данные
    */
   constructor(t) {
-    s(this, "item", l());
+    s(this, "item", o());
     this.props = t, this.item.value = t.selected;
   }
   /**
@@ -228,8 +228,8 @@ class D {
     var a;
     const e = this.element.value;
     if (t && e) {
-      const i = e.getBoundingClientRect(), n = (a = e.querySelector(`[data-key="${t}"]`)) == null ? void 0 : a.getBoundingClientRect();
-      i && n && (e.style.setProperty(`--${this.className}-sys-top`, `${n.top - i.top}px`), e.style.setProperty(`--${this.className}-sys-left`, `${n.left - i.left}px`), e.style.setProperty(`--${this.className}-sys-width`, `${n.width}px`), e.style.setProperty(`--${this.className}-sys-height`, `${n.height}px`));
+      const i = e.getBoundingClientRect(), l = (a = e.querySelector(`[data-key="${t}"]`)) == null ? void 0 : a.getBoundingClientRect();
+      i && l && (e.style.setProperty(`--${this.className}-sys-top`, `${l.top - i.top}px`), e.style.setProperty(`--${this.className}-sys-left`, `${l.left - i.left}px`), e.style.setProperty(`--${this.className}-sys-width`, `${l.width}px`), e.style.setProperty(`--${this.className}-sys-height`, `${l.height}px`));
     }
   }
   /**
@@ -258,7 +258,7 @@ class D {
 class B {
   /**
    * Constructor
-   * @param styles style management object/ объект управления стилями
+   * @param styles style management object / объект управления стилями
    */
   constructor(t) {
     /**
@@ -266,7 +266,7 @@ class B {
      *
      * Идентификатор предыдущего слайда.
      */
-    s(this, "item", l());
+    s(this, "item", o());
     this.styles = t, r(this.item, (e) => {
       e ? this.styles.add(e) : this.styles.remove();
     });
@@ -275,16 +275,24 @@ class B {
    * Checks if the value matches the previous slide.
    *
    * Проверяет, совпадает ли значение с предыдущим слайдом.
-   * @param value value to check/ значение для проверки
+   * @param value value to check / значение для проверки
    */
   is(t) {
     return this.item.value === t;
   }
   /**
+   * Returns the previous slide.
+   *
+   * Возвращает предыдущий слайд.
+   */
+  get() {
+    return this.item.value;
+  }
+  /**
    * Changing the display status.
    *
    * Изменение статуса отображения.
-   * @param value values for change/ значения для изменения
+   * @param value values for change / значения для изменения
    */
   set(t) {
     return this.item.value = t, this;
@@ -300,21 +308,20 @@ class H {
    * @param styles class object for managing styles/ объект класса для управления стилями
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
-  constructor(t, e, a, i, n, h) {
+  constructor(t, e, a, i, l, h) {
     /** Element preparation status/ Статус подготовки элемента */
-    s(this, "preparation", l());
+    s(this, "preparation", o());
     /** Active element status/ Статус активного элемента */
-    s(this, "active", l());
+    s(this, "active", o());
     /**
      * Stopping and deleting all data.
      *
      * Остановка и удаление всех данных.
      */
     s(this, "end", () => {
-      var t;
-      this.previous.set(void 0), this.preparation.value = void 0, (t = this.emits) == null || t.call(this, "end", this.active.value), this.element.returnScroll();
+      this.previous.set(void 0), this.preparation.value = void 0, this.emit("end"), this.element.returnScroll();
     });
-    this.element = e, this.selected = a, this.previous = i, this.styles = n, this.emits = h, this.active.value = t.selected;
+    this.element = e, this.selected = a, this.previous = i, this.styles = l, this.emits = h, this.active.value = t.selected;
   }
   /**
    * Checks if the element is in preparation status.
@@ -352,13 +359,21 @@ class H {
     return this.selected.is(t) || (this.selected.set(t), this.start()), this;
   }
   /**
+   * Instantly changes the active slide without animation.
+   *
+   * Мгновенно изменяет активный слайд без анимации.
+   * @param selected selected slide/ выбранный слайд
+   */
+  setFlash(t) {
+    return this.selected.set(t), this;
+  }
+  /**
    * Beginning of activation.
    *
    * Начало активации.
    */
   start() {
-    var t;
-    this.element.toStart(), this.previous.set(this.active.value), this.preparation.value = this.selected.item.value, (t = this.emits) == null || t.call(this, "start", this.preparation.value), this.element.blockScroll(), this.expectation();
+    this.element.toStart(), this.previous.set(this.active.value), this.preparation.value = this.selected.item.value, this.element.blockScroll(), this.expectation();
   }
   /**
    * Waiting for element preparation.
@@ -369,14 +384,23 @@ class H {
     requestAnimationFrame(() => {
       const t = this.element.getElementPreparation();
       t && t.offsetHeight > 0 ? (this.styles.addNext(), requestAnimationFrame(() => {
-        this.element.toEnd(), this.element.toMove(), this.element.initEvent(this.end), this.active.value = this.selected.item.value;
+        this.element.toEnd(), this.element.toMove(), this.element.initEvent(this.end), this.active.value = this.selected.item.value, this.emit("start");
       })) : this.expectation();
     });
+  }
+  emit(t) {
+    this.emits && this.selected.item.value !== void 0 && (t === "start" ? this.emits("start", this.selected.item.value) : this.emits("end", this.selected.item.value), this.emits("motionAxis", {
+      type: t,
+      selected: this.selected.item.value,
+      previous: this.previous.get(),
+      preparation: this.preparation.value,
+      active: this.active.value
+    }));
   }
 }
 class _ {
   constructor(t) {
-    s(this, "item", l([]));
+    s(this, "item", o([]));
     this.status = t;
   }
   get() {
@@ -389,8 +413,8 @@ class _ {
    * @param step change step number / номер шага изменения
    */
   getByIndex(t) {
-    var n;
-    const e = (n = this.item.value) != null ? n : [], a = this.findIndex();
+    var l;
+    const e = (l = this.item.value) != null ? l : [], a = this.findIndex();
     if (a === -1)
       return e == null ? void 0 : e[0];
     const i = a + t;
@@ -415,9 +439,9 @@ class q {
    * @param slides list of slides / список слайдов
    * @param status class object for managing the active element / объект класса для управления активным элементом
    */
-  constructor(t, e, a, i, n) {
-    s(this, "axis", l());
-    s(this, "direction", l());
+  constructor(t, e, a, i, l) {
+    s(this, "axis", o());
+    s(this, "direction", o());
     /**
      * Previous slide.
      *
@@ -442,7 +466,13 @@ class q {
      */
     s(this, "to", (t) => {
       const e = this.slides.findIndex(), a = this.slides.findIndex(t);
-      e !== -1 && a !== -1 && a !== e && (e > a ? this.direction.value = "back" : this.direction.value = "next", this.status.set(t));
+      if (a !== -1 && a !== e) {
+        if (e === -1) {
+          this.status.setFlash(t);
+          return;
+        }
+        e > a ? this.direction.value = "back" : this.direction.value = "next", this.status.set(t);
+      }
     });
     /**
      * Move to the upper slide.
@@ -516,7 +546,7 @@ class q {
     s(this, "setDirection", (t) => {
       this.direction.value = t;
     });
-    this.props = t, this.refs = e, this.element = a, this.slides = i, this.status = n, this.axis.value = t.axis, this.direction.value = t.direction, r([e.axis], () => this.setAxis(t.axis)), r([e.direction], () => this.setDirection(t.direction));
+    this.props = t, this.refs = e, this.element = a, this.slides = i, this.status = l, this.axis.value = t.axis, this.direction.value = t.direction, r([e.axis], () => this.setAxis(t.axis)), r([e.direction], () => this.setDirection(t.direction));
   }
 }
 class L {
@@ -540,7 +570,7 @@ class L {
    * @param constructors.MotionAxisStatusConstructor class for working with status/ класс для работы со статусом
    * @param constructors.MotionAxisStylesConstructor class for working with styles/ класс для работы со стилями
    */
-  constructor(t, e, a, i, n, h, m, d, c) {
+  constructor(t, e, a, i, l, h, m, d, c) {
     s(this, "elementItem");
     s(this, "go");
     s(this, "previous");
@@ -573,18 +603,18 @@ class L {
         this.status.set(t);
       }
     });
-    this.props = t, this.refs = e, this.element = a, this.classDesign = i, this.className = n, this.components = h, this.slots = m, this.emits = d;
+    this.props = t, this.refs = e, this.element = a, this.classDesign = i, this.className = l, this.components = h, this.slots = m, this.emits = d;
     const {
       ModelIncludeConstructor: v = P,
       MotionAxisElementConstructor: p = w,
       MotionAxisGoConstructor: g = q,
       MotionAxisPreviousConstructor: x = B,
-      MotionAxisSelectedConstructor: S = b,
-      MotionAxisSlidesConstructor: f = _,
+      MotionAxisSelectedConstructor: f = b,
+      MotionAxisSlidesConstructor: S = _,
       MotionAxisStatusConstructor: y = H,
       MotionAxisStylesConstructor: $ = D
     } = c != null ? c : {};
-    this.selected = new S(this.props), this.elementItem = new p(
+    this.selected = new f(this.props), this.elementItem = new p(
       this.element,
       this.className
     ), this.styles = new $(
@@ -598,7 +628,7 @@ class L {
       this.previous,
       this.styles,
       this.emits
-    ), this.slides = new f(this.status), this.go = new g(
+    ), this.slides = new S(this.status), this.go = new g(
       this.props,
       this.refs,
       this.element,
@@ -636,7 +666,7 @@ class O extends M {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
-  constructor(e, a, i, n = L) {
+  constructor(e, a, i, l = L) {
     super(
       e,
       a,
@@ -652,16 +682,16 @@ class O extends M {
       const e = [];
       return this.item.slides.reset(), this.slots && E(this.slots, (a, i) => {
         if (this.item.slides.add(i), this.item.isInDom(i)) {
-          const n = this.item.elementItem.getClassStatus();
+          const l = this.item.elementItem.getClassStatus();
           e.push(u(
             "div",
             {
               key: i,
               class: {
-                [n.main]: !0,
-                [n.previous]: this.item.previous.is(i),
-                [n.preparation]: this.item.status.isPreparation(i),
-                [n.active]: this.item.status.isActive(i)
+                [l.main]: !0,
+                [l.previous]: this.item.previous.is(i),
+                [l.preparation]: this.item.status.isPreparation(i),
+                [l.active]: this.item.status.isActive(i)
               },
               "data-key": i
             },
@@ -670,7 +700,7 @@ class O extends M {
         }
       }), e;
     });
-    this.item = new n(
+    this.item = new l(
       this.props,
       this.refs,
       this.element,

@@ -3,6 +3,7 @@ import {
   StorybookCategory,
   StorybookControl
 } from '../../types/storybookTypes'
+import { wikiTabsNavigation } from './wikiTabsNavigation.ts'
 
 /**
  * The wikiValue object contains common properties for all components in the value category
@@ -105,6 +106,17 @@ export const wikiValue: StorybookArgsToList = {
         en: 'URL or link destination',
         ru: 'URL или адрес ссылки'
       }
+    }
+  },
+  tabs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Tabs list or TabsNavigation properties',
+        ru: 'Список вкладок или свойства TabsNavigation'
+      },
+      value: wikiTabsNavigation?.['tabsNavigation.list']?.options?.value
     }
   },
   to: {

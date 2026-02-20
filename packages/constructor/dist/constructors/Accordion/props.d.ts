@@ -4,15 +4,13 @@ import { DescriptionProps } from '../../types/descriptionTypes';
 import { IconLitePropsInclude, IconPropsBasic, IconValue } from '../Icon';
 import { CellPropsBasic } from '../Cell';
 import { MotionTransformPropsBasic, MotionTransformPropsInclude } from '../MotionTransform';
+import { ModelPropsOpen } from '../../types/modelTypes';
 export type AccordionPropsToken = {
     divider?: boolean;
 };
-export type AccordionPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Cell extends CellPropsBasic = CellPropsBasic, MotionTransform extends MotionTransformPropsBasic = MotionTransformPropsBasic> = LabelProps & DescriptionProps & IconLitePropsInclude<Icon> & MotionTransformPropsInclude<MotionTransform> & {
-    'cellAttrs'?: ConstrBind<Cell>;
-    'iconArrowDown'?: IconValue<Icon>;
-    'modelOpen'?: boolean;
-    'onUpdate:open'?: (value: boolean) => void;
-    'onUpdate:modelOpen'?: (value: boolean) => void;
+export type AccordionPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Cell extends CellPropsBasic = CellPropsBasic, MotionTransform extends MotionTransformPropsBasic = MotionTransformPropsBasic> = LabelProps & DescriptionProps & IconLitePropsInclude<Icon> & MotionTransformPropsInclude<MotionTransform> & ModelPropsOpen & {
+    cellAttrs?: ConstrBind<Cell>;
+    iconArrowDown?: IconValue<Icon>;
 };
 /**
  * Type describing incoming properties.

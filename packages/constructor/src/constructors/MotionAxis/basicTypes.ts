@@ -1,5 +1,5 @@
 import type { ConstrBind } from '@dxtmisha/functional'
-import type { MotionAxisPropsBasic} from './props'
+import type { MotionAxisPropsBasic } from './props'
 
 export type MotionAxisSelectedValue = string | undefined
 
@@ -46,7 +46,7 @@ export type MotionAxisEmitsInclude = {
 }
 
 export type MotionAxisPropsInclude<
-  MotionAxis extends  MotionAxisPropsBasic = MotionAxisPropsBasic
+  MotionAxis extends MotionAxisPropsBasic = MotionAxisPropsBasic
 > = {
   /** Selected element/Выбранный элемент */
   selected?: MotionAxisSelectedValue

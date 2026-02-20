@@ -1,0 +1,6 @@
+{
+  "main": "{d.tabs}",
+  "#slide": {
+    "paddingY": "{grid.paddingY}"
+  }
+}

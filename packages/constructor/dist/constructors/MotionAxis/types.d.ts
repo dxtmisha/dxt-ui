@@ -1,5 +1,6 @@
 import { ConstrClass } from '@dxtmisha/functional';
-import { MotionAxisSelectedValue } from './basicTypes';
+import { ModelEmitsSelected } from '../../types/modelTypes';
+import { MotionAxisEmitOptions, MotionAxisSelectedValue } from './basicTypes';
 /**
  * Interface for describing which components need to be connected for work.
  *
@@ -11,11 +12,10 @@ export type MotionAxisComponents = {};
  *
  * Тип, описывающий доступные события.
  */
-export type MotionAxisEmits = {
-    'update:selected': [value: MotionAxisSelectedValue];
-    'update:modelSelected': [value: MotionAxisSelectedValue];
-    'start': [selected: MotionAxisSelectedValue];
-    'end': [selected: MotionAxisSelectedValue];
+export type MotionAxisEmits = ModelEmitsSelected<MotionAxisSelectedValue> & {
+    motionAxis: [options: MotionAxisEmitOptions];
+    start: [selected: MotionAxisSelectedValue];
+    end: [selected: MotionAxisSelectedValue];
 };
 /**
  * Type describing available properties.

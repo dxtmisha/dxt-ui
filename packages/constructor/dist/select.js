@@ -176,7 +176,7 @@ class G {
       void 0,
       () => {
         var o;
-        return (o = this.menu.getElement()) == null ? void 0 : o.toggle;
+        return (o = this.menu.getElement()) == null ? void 0 : o.toggle();
       },
       () => {
         var o;

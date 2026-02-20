@@ -10,7 +10,7 @@ import { TabsNavigationControl } from './TabsNavigationControl';
 import { EventClickValue } from '../../types/eventClickTypes';
 import { TabsNavigationComponents, TabsNavigationEmits, TabsNavigationSlots } from './types';
 import { TabsNavigationProps } from './props';
-import { RoleType, AriaTrueOrFalse } from '../../library.ts';
+import { RoleType, AriaTrueOrFalse } from '../../library';
 import { NumberOrString } from '@dxtmisha/functional-basic';
 /**
  * TabsNavigation

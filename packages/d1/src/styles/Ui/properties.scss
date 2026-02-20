@@ -12209,6 +12209,11 @@
         name: 'd1-tabItem',
         type: 'component',
       ),
+      'tabs':(
+        index: 'tabs',
+        name: 'd1-tabs',
+        type: 'component',
+      ),
       'tabsNavigation':(
         index: 'tabsNavigation',
         name: 'd1-tabsNavigation',
@@ -12690,6 +12695,11 @@
       'tabItem':(
         index: 'tabItem',
         name: 'd-tabItem',
+        type: 'component',
+      ),
+      'tabs':(
+        index: 'tabs',
+        name: 'd-tabs',
         type: 'component',
       ),
       'tabsNavigation':(

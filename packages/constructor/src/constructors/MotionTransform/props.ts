@@ -1,4 +1,5 @@
 import type { AriaByPropsInclude } from '../../types/ariaTypes'
+import type { ModelPropsOpen } from '../../types/modelTypes'
 
 export type MotionTransformPropsToken = {
   // :type [!] System label / Системная метка
@@ -8,27 +9,25 @@ export type MotionTransformPropsToken = {
   // :type [!] System label / Системная метка
 }
 
-export type MotionTransformPropsBasic = AriaByPropsInclude & {
-  // Status
-  'open'?: boolean
-  'inDom'?: boolean
+export type MotionTransformPropsBasic
+  = AriaByPropsInclude
+    & ModelPropsOpen
+    & {
+      // Status
+      open?: boolean
+      inDom?: boolean
 
-  // Value
-  'ignore'?: HTMLElement | string
-  'ignoreSelector'?: string
+      // Value
+      ignore?: HTMLElement | string
+      ignoreSelector?: string
 
-  // Style
-  'clickOpen'?: boolean
-  'autoClose'?: boolean
-  'animationShow'?: boolean
+      // Style
+      clickOpen?: boolean
+      autoClose?: boolean
+      animationShow?: boolean
 
-  'tagBody'?: string
-
-  // Event
-  'modelOpen'?: boolean
-  'onUpdate:open'?: (value: boolean) => void
-  'onUpdate:modelOpen'?: (value: boolean) => void
-}
+      tagBody?: string
+    }
 
 /**
  * Type describing incoming properties.

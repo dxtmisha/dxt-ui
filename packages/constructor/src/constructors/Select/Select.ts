@@ -137,16 +137,14 @@ export class Select {
       this.event,
       undefined,
       undefined,
-      () => this.menu.getElement()?.toggle,
+      () => this.menu.getElement()?.toggle(),
       () => this.menu.getElement()?.next(),
       () => this.menu.getElement()?.previous(),
-      computed(() => {
-        return {
-          iconTrailing: this.iconTrailing.value,
-          maxlength: this.props.max,
-          cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
-        }
-      })
+      computed(() => ({
+        iconTrailing: this.iconTrailing.value,
+        maxlength: this.props.max,
+        cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
+      }))
     )
     this.menu = new MenuIncludeConstructor(
       this.props,

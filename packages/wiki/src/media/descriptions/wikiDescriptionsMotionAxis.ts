@@ -91,6 +91,41 @@ export const wikiDescriptionsMotionAxis: StorybookComponentsDescriptionItem = {
       `
     },
     {
+      id: 'MotionAxisScroll',
+      name: {
+        en: 'Scroll Management',
+        ru: 'Управление скроллом'
+      },
+      setup: `
+      const selected = ref('short')
+      return { selected }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column design-component__scroll">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="selected = 'short'">short</button>
+            <button class="wiki-storybook-button" @click="selected = 'long'">long</button>
+          </div>
+
+          <DesignComponent :selected="selected">
+            <template #short>
+              <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
+                Short content
+              </div>
+            </template>
+            <template #long>
+              <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
+                Long content that causes scrolling.<br>
+                Scroll down to see more.<br>
+                ...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>
+                End of content.
+              </div>
+            </template>
+          </DesignComponent>
+        </div>
+      `
+    },
+    {
       id: 'MotionAxisVModel',
       name: {
         en: 'Two-way binding (v-model)',
@@ -136,6 +171,9 @@ export const wikiDescriptionsMotionAxis: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'MotionAxis'} type={'motionAxis'}/>
 <Canvas of={Component.MotionAxisBasic}/>
+
+<StorybookDescriptions componentName={'MotionAxis'} type={'classes'}/>
+<Canvas of={Component.MotionAxisScroll}/>
 
 <StorybookDescriptions componentName={'MotionAxis'} type={'v-model'}/>
 <Canvas of={Component.MotionAxisVModel}/>

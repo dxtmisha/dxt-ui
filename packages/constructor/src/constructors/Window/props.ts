@@ -1,10 +1,12 @@
 import type { ElementOrString, NormalOrPromise } from '@dxtmisha/functional'
 
-import type { AriaHaspopupPropsInclude, AriaRoleByPropsInclude } from '../../types/ariaTypes'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ScrollbarPropsBasic, ScrollbarPropsInclude } from '../Scrollbar'
 import type { TextClosePropsInclude } from '../../types/textTypes'
 import type { IconPropsBasic, IconValue } from '../Icon'
+
+import type { AriaHaspopupPropsInclude, AriaRoleByPropsInclude } from '../../types/ariaTypes'
+import type { ModelPropsOpen } from '../../types/modelTypes'
 
 export type WindowPropsToken = {
   // :type [!] System label / Системная метка
@@ -34,55 +36,51 @@ export type WindowPropsBasic<
   & AriaRoleByPropsInclude
   & AriaHaspopupPropsInclude
   & TextClosePropsInclude
+  & ModelPropsOpen
   & {
     // Status
-    'open'?: boolean
-    'disabled'?: boolean
+    open?: boolean
+    disabled?: boolean
 
     // Hook
-    'preparation'?(): NormalOrPromise<void>
+    preparation?(): NormalOrPromise<void>
 
-    'beforeOpening'?(): NormalOrPromise<boolean>
+    beforeOpening?(): NormalOrPromise<boolean>
 
-    'opening'?(): NormalOrPromise<boolean>
+    opening?(): NormalOrPromise<boolean>
 
-    'beforeClosing'?(): NormalOrPromise<boolean>
+    beforeClosing?(): NormalOrPromise<boolean>
 
-    'closing'?(): NormalOrPromise<boolean>
+    closing?(): NormalOrPromise<boolean>
 
     // Style
-    'contextmenu'?: boolean
-    'staticMode'?: boolean
-    'overElement'?: ElementOrString<HTMLElement>
+    contextmenu?: boolean
+    staticMode?: boolean
+    overElement?: ElementOrString<HTMLElement>
 
-    'autoClose'?: boolean
-    'persistent'?: boolean
+    autoClose?: boolean
+    persistent?: boolean
 
-    'flash'?: boolean
-    'inDom'?: boolean
+    flash?: boolean
+    inDom?: boolean
 
-    'indent'?: number
-    'divider'?: boolean
+    indent?: number
+    divider?: boolean
 
-    'closeButton'?: boolean
-    'iconClose'?: IconValue<Icon>
-
-    // Event
-    'modelOpen'?: boolean
-    'onUpdate:open'?: (value: boolean) => void
-    'onUpdate:modelOpen'?: (value: boolean) => void
+    closeButton?: boolean
+    iconClose?: IconValue<Icon>
 
     // Technical
-    'inert'?: boolean
-    'autoTabIndex'?: boolean
-    'closeOnEsc'?: boolean
-    'openOnArrowDown'?: boolean
+    inert?: boolean
+    autoTabIndex?: boolean
+    closeOnEsc?: boolean
+    openOnArrowDown?: boolean
 
     /**
      * The window will be displayed inside the current parent element/
      * Окно будет отображаться внутри текущего родительского элемента
      */
-    'embedded'?: boolean
+    embedded?: boolean
   }
 
 /**

@@ -7,15 +7,15 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'adaptive', type: 'string', option: ['iconAlways', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
-  { name: 'badge', type: 'string | number | ConstrBind<BadgePropsBasic>' },
+  { name: 'badge', type: 'string | number | ConstrBind<Badge>' },
   { name: 'badgeDot', type: 'boolean' },
   { name: 'container', type: 'string', option: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
   { name: 'detail', type: 'Record<string, any>' },
   { name: 'disabled', type: 'boolean' },
   { name: 'focus', type: 'boolean' },
   { name: 'href', type: 'string' },
-  { name: 'icon', type: 'IconValue<IconPropsBasic>' },
-  { name: 'iconAttrs', type: 'ConstrBind<IconPropsBasic>' },
+  { name: 'icon', type: 'IconValue<Icon>' },
+  { name: 'iconAttrs', type: 'ConstrBind<Icon>' },
   { name: 'iconDir', type: 'boolean' },
   { name: 'iconHide', type: 'boolean' },
   { name: 'iconPalette', type: 'boolean' },

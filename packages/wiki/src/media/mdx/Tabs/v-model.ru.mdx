@@ -1,0 +1,27 @@
+## Управление состоянием через v-model
+
+Двусторонняя привязка выбранной вкладки через `v-model:selected`.
+
+**Параметры:**
+- `selected: any` — значение выбранной вкладки
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const selectedTab = ref('home')
+</script>
+
+<template>
+  <Tabs
+    v-model:selected="selectedTab"
+    :tabs="[
+      { label: 'Home', value: 'home' },
+      { label: 'Profile', value: 'profile' }
+    ]"
+  >
+    <template #home>Home Content</template>
+    <template #profile>Profile Content</template>
+  </Tabs>
+</template>
+```

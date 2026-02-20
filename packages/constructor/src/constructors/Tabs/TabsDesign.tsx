@@ -89,6 +89,7 @@ export class TabsDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        slide: this.getSubClass('slide')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -109,16 +110,32 @@ export class TabsDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode[] {
-    const children: any[] = []
-    this.components.render('tabsNavigation', {
-
-    }, children)
     return [
-      h('div', {
-        ...this.getAttrs(),
-        ref: this.element,
-        class: this.classes?.value.main
-      })
+      ...this.item.tabsNavigation.render(),
+      ...this.item.motionAxis.render(this.slidesRender())
     ]
+  }
+
+  /**
+   * Rendering of slides.
+   *
+   * Рендеринг слайдов.
+   */
+  readonly slidesRender = (): Record<string, () => any> | undefined => {
+    if (this.slots) {
+      const slots: Record<string, () => VNode> = {}
+
+      for (const key in this.slots) {
+        slots[key] = () => h(
+          'div',
+          { class: this.classes?.value.slide },
+          this.initSlot(key)
+        )
+      }
+
+      return slots
+    }
+
+    return undefined
   }
 }

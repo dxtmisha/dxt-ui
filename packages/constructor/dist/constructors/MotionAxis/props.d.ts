@@ -1,16 +1,14 @@
+import { ModelPropsSelected } from '../../types/modelTypes';
 import { MotionAxisSelectedValue } from './basicTypes';
 type MotionAxisPropsToken = {
     axis?: 'x' | 'y' | 'z';
     direction?: 'next' | 'back' | 'auto';
 };
-export type MotionAxisPropsBasic = {
-    'selected'?: MotionAxisSelectedValue;
-    'animationHeight'?: boolean;
-    'inDom'?: boolean;
-    'inDomSlide'?: string[];
-    'modelSelected'?: MotionAxisSelectedValue;
-    'onUpdate:selected'?: (value: MotionAxisSelectedValue) => void;
-    'onUpdate:modelSelected'?: (value: MotionAxisSelectedValue) => void;
+export type MotionAxisPropsBasic = ModelPropsSelected<MotionAxisSelectedValue> & {
+    selected?: MotionAxisSelectedValue;
+    animationHeight?: boolean;
+    inDom?: boolean;
+    inDomSlide?: string[];
 };
 /**
  * Type describing incoming properties.

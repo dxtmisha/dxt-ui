@@ -4,6 +4,7 @@ import type { HorizontalScrollComponentInclude } from '../HorizontalScroll'
 import type { TabItemComponentInclude } from '../TabItem'
 
 import type { EventClickEmits } from '../../types/eventClickTypes'
+import type { ModelEmitsSelected } from '../../types/modelTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -21,10 +22,7 @@ export type TabsNavigationComponents
  */
 export type TabsNavigationEmits
   = EventClickEmits
-    & {
-      'update:selected': [value: ListSelectedList]
-      'update:modelSelected': [value: ListSelectedList]
-    }
+    & ModelEmitsSelected<ListSelectedList>
 
 /**
  * Type describing available properties.

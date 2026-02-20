@@ -1,6 +1,10 @@
-import type {TabItemPropsBasic} from '../TabItem'
-import {defaultsTabsNavigation, type TabsNavigationPropsBasic} from '../TabsNavigation'
-import type {MotionAxisPropsBasic, MotionAxisPropsInclude} from '../MotionAxis'
+import type { ListSelectedList } from '@dxtmisha/functional'
+
+import type { TabItemPropsBasic } from '../TabItem'
+import { type TabsNavigationPropsBasic, type TabsNavigationPropsInclude } from '../TabsNavigation'
+import type { MotionAxisPropsBasic, MotionAxisPropsInclude } from '../MotionAxis'
+
+import type { ModelPropsSelected } from '../../types/modelTypes'
 
 type TabsPropsToken = {
   // :type [!] System label / Системная метка
@@ -9,9 +13,11 @@ type TabsPropsToken = {
 
 export type TabsPropsBasic<
   TabItem extends TabItemPropsBasic = TabItemPropsBasic,
+  TabsNavigation extends TabsNavigationPropsBasic = TabsNavigationPropsBasic,
   MotionAxis extends MotionAxisPropsBasic = MotionAxisPropsBasic
-> = TabsNavigationPropsBasic<TabItem>
+> = TabsNavigationPropsInclude<TabItem, TabsNavigation>
   & MotionAxisPropsInclude<MotionAxis>
+  & ModelPropsSelected<ListSelectedList>
 
 /**
  * Type describing incoming properties.
@@ -26,7 +32,6 @@ export type TabsProps = TabsPropsBasic & TabsPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsTabs = {
-  ...defaultsTabsNavigation,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка
