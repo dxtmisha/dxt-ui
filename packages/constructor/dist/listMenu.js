@@ -43,7 +43,9 @@ class C {
     );
   }
 }
-const O = {};
+const O = {
+  autoClose: !0
+};
 class W extends f {
   /**
    * Constructor

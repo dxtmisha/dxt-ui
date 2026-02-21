@@ -25,6 +25,7 @@ export type ListMenuProps = ListMenuPropsBasic & ListMenuPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsListMenu = {
+  autoClose: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

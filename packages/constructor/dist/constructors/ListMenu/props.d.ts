@@ -16,4 +16,6 @@ export type ListMenuProps = ListMenuPropsBasic & ListMenuPropsToken;
  *
  * Значение по умолчанию для свойства.
  */
-export declare const defaultsListMenu: {};
+export declare const defaultsListMenu: {
+    autoClose: boolean;
+};
