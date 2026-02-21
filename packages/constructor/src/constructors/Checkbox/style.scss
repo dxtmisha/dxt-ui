@@ -1,0 +1,97 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinCheckbox {
+  @include ui.initByCustom('iconOpacity', 0);
+  @include ui.initByCustom('iconClip', #{inset(0 100% 0 0)});
+  @include ui.initByCustom('iconScale', 1);
+
+  display: inline-flex;
+  position: relative;
+
+  &__input {
+    position: absolute;
+    visibility: hidden;
+
+    &:not(:disabled) ~ * {
+      cursor: pointer;
+    }
+  }
+
+  &__body {
+    display: flex;
+    align-items: flex-start;
+
+    transition-timing-function: linear;
+    transition-duration: ui.v('d.sys.transitionDuration.sm');
+    transition-property: background-color, border-color, opacity;
+  }
+
+  &__item {
+    @include ui.flexCenter;
+    position: relative;
+
+    transition: inherit;
+
+    border-radius: 100%;
+
+    &__icon {
+      box-sizing: border-box;
+      @include ui.flexCenter;
+      position: relative;
+
+      transition: inherit;
+
+      > * {
+        opacity: ui.v('??iconOpacity');
+        clip-path: ui.v('??iconClip');
+        @include ui.scale(ui.v('??iconScale'));
+        transition: inherit;
+      }
+    }
+  }
+
+  &__info {
+    @include ui.flexDynamic;
+
+    &__label {
+      display: block;
+    }
+  }
+
+  &__loading#{'.'}#{ui.n('?progress--visible')} ~ &__item__icon > * {
+    opacity: ui.v('??colorOpacity', 0);
+  }
+
+  @include ui.active() {
+    transition-duration: ui.v('d.sys.transitionDuration.sm');
+  }
+
+  input:checked ~ * {
+    @include ui.initByCustom('iconOpacity', 1);
+    @include ui.initByCustom('iconClip', #{inset(0 0 0 0)});
+    @include ui.initByCustom('iconScale', 1);
+    transition-property: background-color, border-color, clip-path;
+  }
+
+  &--required {
+    @include ui.subclass('info') {
+      &__label {
+        &:after {
+          content: "*";
+          @include ui.color(ui.v('??comp.required.color'));
+        }
+      }
+    }
+  }
+
+  &--itemCenter {
+    @include ui.subclass('body') {
+      align-items: center;
+
+      & > * {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+    }
+  }
+}

@@ -37,7 +37,7 @@
     "preview": "vite preview",
     "dxt-library": "dxt-library",
     "dxt-types": "dxt-types",
-    "dxt-constructor": "dxt-constructor",
+    "dxt-constructor": "dxt-constructor checkbox",
     "prepublishOnly": "npm run dxt-library && npm run dxt-constructor && npm run build"
   },
   "files": [
@@ -243,6 +243,10 @@
     "./Tabs": {
       "types": "./dist/constructors/Tabs/index.d.ts",
       "default": "./dist/tabs.js"
+    },
+    "./Checkbox": {
+      "types": "./dist/constructors/Checkbox/index.d.ts",
+      "default": "./dist/checkbox.js"
     }
   },
   "buildOptions": {

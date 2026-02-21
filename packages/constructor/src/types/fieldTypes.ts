@@ -1,5 +1,5 @@
 import type { ComputedRef, ShallowRef } from 'vue'
-import type { ListRecord, NumberOrString } from '@dxtmisha/functional'
+import type { ListRecord, NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 import type { ModelEmits, ModelProps } from './modelTypes'
 
 /** Supported field types/ Поддерживаемые типы полей */
@@ -335,10 +335,10 @@ export type FieldInputFileProps<Value = any>
  * Props for checkbox & radio inputs (excluding type field)/
  * Свойства для инпутов checkbox и radio (без поля type)
  */
-export type FieldInputCheckProps<Value = any>
+export type FieldInputCheckProps<Value = boolean>
   = Omit<FieldBasicProps<Value>, 'type'> & FieldUxProps & {
-    /** Checked state/ Состояние выбора */
-    checked?: boolean
+    type?: 'checkbox' | 'radio'
+    valueVariant?: NumberOrStringOrBoolean
     /** Indeterminate visual state (checkbox only)/ Промежуточное визуальное состояние (только для checkbox) */
     indeterminate?: boolean
   }

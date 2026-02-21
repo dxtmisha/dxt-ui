@@ -1,0 +1,55 @@
+{
+  "comp": {
+    "required": {
+      "color": {
+        "_type": "var"
+      }
+    },
+    "_type": "var"
+  },
+  "#input": {},
+  "#body": {},
+  "#item": {
+    "#icon": {}
+  },
+  "#loading": {},
+  "#info": {
+    "#label": {}
+  },
+  "focus": {
+    "_type": "none"
+  },
+  "checked": {
+    "_type": "none"
+  },
+  "disabled": {
+    "_type": "none"
+  },
+  "~required": {},
+  "~block": {
+    "display": "block"
+  },
+  "~itemCenter": {
+    "_default": true
+  },
+  "~right": {
+    "#track": {
+      "order": "4"
+    },
+    "#item": {
+      "order": "4"
+    },
+    "#info": {
+      "order": "2"
+    }
+  },
+  "&__input:focus ~ *": {
+    "link:focus": "{??focus}"
+  },
+  "&__input:checked ~ *": {
+    "link:checked": "{??checked}"
+  },
+  "&__input:disabled ~ *": {
+    "link:disabled": "{??disabled}"
+  }
+}
