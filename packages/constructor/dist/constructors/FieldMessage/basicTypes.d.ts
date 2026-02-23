@@ -14,7 +14,7 @@ export type FieldMessageSlot = {
  * Интерфейс для описания, какие компоненты надо подключить для работы FieldMessage
  */
 export type FieldMessageComponentInclude = {
-    fieldMessage: object;
+    fieldMessage?: object;
 };
 /**
  * Properties that can be passed to FieldMessageInclude/

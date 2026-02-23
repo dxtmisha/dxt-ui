@@ -337,8 +337,8 @@ export type FieldInputFileProps<Value = any>
  */
 export type FieldInputCheckProps<Value = boolean>
   = Omit<FieldBasicProps<Value>, 'type'> & FieldUxProps & {
-    type?: 'checkbox' | 'radio'
     valueVariant?: NumberOrStringOrBoolean
+    valueVariantHide?: NumberOrStringOrBoolean
     /** Indeterminate visual state (checkbox only)/ Промежуточное визуальное состояние (только для checkbox) */
     indeterminate?: boolean
   }

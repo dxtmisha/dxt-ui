@@ -33,32 +33,32 @@
     transition: inherit;
 
     border-radius: 100%;
+  }
 
-    &__icon {
-      box-sizing: border-box;
-      @include ui.flexCenter;
-      position: relative;
+  &__icon {
+    box-sizing: border-box;
+    @include ui.flexCenter;
+    position: relative;
 
+    transition: inherit;
+
+    > * {
+      opacity: ui.v('??iconOpacity');
+      clip-path: ui.v('??iconClip');
+      @include ui.scale(ui.v('??iconScale'));
       transition: inherit;
-
-      > * {
-        opacity: ui.v('??iconOpacity');
-        clip-path: ui.v('??iconClip');
-        @include ui.scale(ui.v('??iconScale'));
-        transition: inherit;
-      }
     }
   }
 
   &__info {
     @include ui.flexDynamic;
-
-    &__label {
-      display: block;
-    }
   }
 
-  &__loading#{'.'}#{ui.n('?progress--visible')} ~ &__item__icon > * {
+  &__label {
+    display: block;
+  }
+
+  &__loading#{'.'}#{ui.n('?progress--visible')} ~ &__item &__icon > * {
     opacity: ui.v('??colorOpacity', 0);
   }
 
@@ -74,12 +74,10 @@
   }
 
   &--required {
-    @include ui.subclass('info') {
-      &__label {
-        &:after {
-          content: "*";
-          @include ui.color(ui.v('??comp.required.color'));
-        }
+    @include ui.subclass('label') {
+      &:after {
+        content: "*";
+        @include ui.color(ui.v('??comp.required.color'));
       }
     }
   }

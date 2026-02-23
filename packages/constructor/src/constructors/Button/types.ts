@@ -2,7 +2,7 @@ import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { IconComponentInclude } from '../Icon'
 import type { ProgressComponentInclude } from '../Progress'
-import type { RippleComponentsInclude } from '../Ripple'
+import type { RippleComponentInclude } from '../Ripple'
 
 import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
 import type { LabelSlots } from '../../types/labelTypes'
@@ -15,7 +15,7 @@ import type { LabelSlots } from '../../types/labelTypes'
 export type ButtonComponents
   = IconComponentInclude
     & ProgressComponentInclude
-    & RippleComponentsInclude
+    & RippleComponentInclude
 
 /**
  * Type describing available events.

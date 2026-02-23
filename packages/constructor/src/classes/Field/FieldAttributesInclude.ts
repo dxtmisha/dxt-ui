@@ -57,6 +57,14 @@ export class FieldAttributesInclude {
     return this.getData(this.getInputAttributes())
   })
 
+  /** Returns data for the checkbox element/ Возвращает данные для элемента checkbox */
+  readonly listForCheckbox = computed<Record<string, any>>(() => {
+    return {
+      ...this.getData(this.getInputAttributes()),
+      value: this.props.valueVariant
+    }
+  })
+
   /**
    * Returns the list of attributes to be set on the input element.
    *

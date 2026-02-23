@@ -1,47 +1,11 @@
 var v = Object.defineProperty;
-var m = (n, t, e) => t in n ? v(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var a = (n, t, e) => m(n, typeof t != "symbol" ? t + "" : t, e);
-import { ref as u, computed as r, watch as g } from "vue";
+var g = (n, t, e) => t in n ? v(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
+var a = (n, t, e) => g(n, typeof t != "symbol" ? t + "" : t, e);
+import { computed as r, ref as u, watch as m } from "vue";
 import { toBinds as f, toNumber as c, anyToString as h, isFilled as b, isArray as y, isObject as k, toArray as E, setValues as F, getRef as d } from "@dxtmisha/functional";
 import { F as o } from "./FieldInputCheckInclude-CjNYyGTb.js";
 import { M as I } from "./ModelInclude-BiYm_iCQ.js";
 class D {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   */
-  constructor(t) {
-    /** Change state flag/ Флаг состояния изменения */
-    a(this, "item", u(!1));
-    (t.value || t.modelValue) && (this.item.value = !0);
-  }
-  /**
-   * Returns whether value was changed
-   *
-   * Возвращает, было ли значение изменено
-   */
-  is() {
-    return !!this.item.value;
-  }
-  /**
-   * Sets change state
-   *
-   * Устанавливает состояние изменения
-   * @param change new state value/ новое значение состояния
-   */
-  set(t) {
-    this.item.value = t;
-  }
-  /**
-   * Force mark as changed
-   *
-   * Принудительно помечает как изменённое
-   */
-  to() {
-    this.item.value || this.set(!0);
-  }
-}
-class O {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -63,6 +27,11 @@ class O {
     }));
     /** Returns data for the input element/ Возвращает данные для элемента ввода */
     a(this, "listForInput", r(() => this.getData(this.getInputAttributes())));
+    /** Returns data for the checkbox element/ Возвращает данные для элемента checkbox */
+    a(this, "listForCheckbox", r(() => ({
+      ...this.getData(this.getInputAttributes()),
+      value: this.props.valueVariant
+    })));
     this.props = t, this.type = e, this.pattern = i, this.inputMode = s;
   }
   /**
@@ -143,7 +112,82 @@ class O {
     }), f(e, this.props.inputAttrs);
   }
 }
+class O {
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   */
+  constructor(t) {
+    /** Change state flag/ Флаг состояния изменения */
+    a(this, "item", u(!1));
+    (t.value || t.modelValue) && (this.item.value = !0);
+  }
+  /**
+   * Returns whether value was changed
+   *
+   * Возвращает, было ли значение изменено
+   */
+  is() {
+    return !!this.item.value;
+  }
+  /**
+   * Sets change state
+   *
+   * Устанавливает состояние изменения
+   * @param change new state value/ новое значение состояния
+   */
+  set(t) {
+    this.item.value = t;
+  }
+  /**
+   * Force mark as changed
+   *
+   * Принудительно помечает как изменённое
+   */
+  to() {
+    this.item.value || this.set(!0);
+  }
+}
 class T {
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   */
+  constructor(t) {
+    this.props = t;
+  }
+  /**
+   * Returns error text
+   *
+   * Возвращает текст ошибки
+   * @param state object with validity state/ объект с данными валидности
+   */
+  get(t) {
+    const e = this.props.validationCode;
+    if (t && e && !t.valid) {
+      if (typeof e == "string")
+        return e;
+      {
+        const i = this.getIndex(t);
+        if (i && i in e)
+          return e[i];
+      }
+    }
+  }
+  /**
+   * Returns error key (first matched)
+   *
+   * Возвращает ключ ошибки (первый найденный)
+   * @param state object with validity state/ объект с данными валидности
+   */
+  getIndex(t) {
+    const e = Object.entries(t);
+    for (const [i, s] of e)
+      if (i !== "valid" && s)
+        return i;
+  }
+}
+class V {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -201,7 +245,7 @@ class T {
     return t && "clear" in t && ((e = t.clear) == null || e.call(t)), this;
   }
 }
-class V {
+class w {
   /**
    * Constructor
    * @param props input data /<br>входные данные
@@ -245,7 +289,7 @@ class V {
     a(this, "update", () => {
       (this.isEdit(this.props.value) || this.isEdit(this.props.modelValue)) && this.setToOriginal();
     });
-    this.props = t, this.refs = e, this.element = i, this.original = s, this.item.value = this.getOriginal(), g([
+    this.props = t, this.refs = e, this.element = i, this.original = s, this.item.value = this.getOriginal(), m([
       e.value,
       e.modelValue
     ], this.update);
@@ -391,45 +435,6 @@ class V {
    */
   isEdit(t) {
     return t !== void 0 && h(t) !== this.string.value;
-  }
-}
-class w {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   */
-  constructor(t) {
-    this.props = t;
-  }
-  /**
-   * Returns error text
-   *
-   * Возвращает текст ошибки
-   * @param state object with validity state/ объект с данными валидности
-   */
-  get(t) {
-    const e = this.props.validationCode;
-    if (t && e && !t.valid) {
-      if (typeof e == "string")
-        return e;
-      {
-        const i = this.getIndex(t);
-        if (i && i in e)
-          return e[i];
-      }
-    }
-  }
-  /**
-   * Returns error key (first matched)
-   *
-   * Возвращает ключ ошибки (первый найденный)
-   * @param state object with validity state/ объект с данными валидности
-   */
-  getIndex(t) {
-    const e = Object.entries(t);
-    for (const [i, s] of e)
-      if (i !== "valid" && s)
-        return i;
   }
 }
 class H {
@@ -708,11 +713,11 @@ class N {
   }
 }
 export {
-  O as F,
-  D as a,
-  w as b,
-  T as c,
+  D as F,
+  O as a,
+  T as b,
+  V as c,
   N as d,
   H as e,
-  V as f
+  w as f
 };

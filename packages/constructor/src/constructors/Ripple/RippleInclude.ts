@@ -3,13 +3,13 @@ import { type DesignComponents } from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
 
-import type { RippleComponentsInclude } from './basicTypes'
+import type { RippleComponentInclude } from './basicTypes'
 import type { RipplePropsBasic } from './props'
 
 export class RippleInclude {
   constructor(
     protected readonly className: string,
-    protected readonly components?: DesignComponents<RippleComponentsInclude, RipplePropsBasic>,
+    protected readonly components?: DesignComponents<RippleComponentInclude, RipplePropsBasic>,
     protected readonly enabled?: EnabledInclude
   ) {
   }

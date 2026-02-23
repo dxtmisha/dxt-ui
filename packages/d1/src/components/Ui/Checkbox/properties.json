@@ -1,0 +1,8 @@
+{
+  "main": "{d.checkbox}",
+  "comp": {
+    "size": "{ref.spacing.4}",
+    "color": "{sys.palette.primary}",
+    "color-opacity": "{sys.opacity.primary.high}"
+  }
+}

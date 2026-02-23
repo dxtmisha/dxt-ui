@@ -1,7 +1,7 @@
 import { computed, type VNode } from 'vue'
 import { type ConstrEmit, type DesignComponents, getBind, getRef, type RefOrNormal } from '@dxtmisha/functional'
 
-import type { ImageEventData, ImageComponentsInclude, ImageEmitsInclude, ImagePropsInclude } from './basicTypes'
+import type { ImageEventData, ImageComponentInclude, ImageEmitsInclude, ImagePropsInclude } from './basicTypes'
 
 /**
  * Класс для подключения и работы с компонентом изображения.
@@ -20,7 +20,7 @@ export class ImageInclude {
    */
   constructor(
     protected readonly props: ImagePropsInclude,
-    protected readonly components?: DesignComponents<ImageComponentsInclude, ImagePropsInclude>,
+    protected readonly components?: DesignComponents<ImageComponentInclude, ImagePropsInclude>,
     protected readonly emits?: ConstrEmit<ImageEmitsInclude>,
     protected readonly extra?: RefOrNormal<Record<string, any>>
   ) {

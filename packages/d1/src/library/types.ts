@@ -11,6 +11,7 @@ import _D1Bars from '../components/Ui/Bars/D1Bars.vue'
 import _D1Block from '../components/Ui/Block/D1Block.vue'
 import _D1Button from '../components/Ui/Button/D1Button.vue'
 import _D1Cell from '../components/Ui/Cell/D1Cell.vue'
+import _D1Checkbox from '../components/Ui/Checkbox/D1Checkbox.vue'
 import _D1Chip from '../components/Ui/Chip/D1Chip.vue'
 import _D1ChipGroup from '../components/Ui/ChipGroup/D1ChipGroup.vue'
 import _D1Dialog from '../components/Ui/Dialog/D1Dialog.vue'
@@ -57,6 +58,7 @@ export const D1Bars = _D1Bars
 export const D1Block = _D1Block
 export const D1Button = _D1Button
 export const D1Cell = _D1Cell
+export const D1Checkbox = _D1Checkbox
 export const D1Chip = _D1Chip
 export const D1ChipGroup = _D1ChipGroup
 export const D1Dialog = _D1Dialog
@@ -105,6 +107,7 @@ declare module '@vue/runtime-core' {
     D1Block: typeof D1Block
     D1Button: typeof D1Button
     D1Cell: typeof D1Cell
+    D1Checkbox: typeof D1Checkbox
     D1Chip: typeof D1Chip
     D1ChipGroup: typeof D1ChipGroup
     D1Dialog: typeof D1Dialog

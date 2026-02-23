@@ -49,7 +49,7 @@ export type FieldControl = {
  * Интерфейс для описания, какие компоненты надо подключить для работы Field
  */
 export type FieldComponentInclude = {
-  field: object
+  field?: object
 }
 
 /**

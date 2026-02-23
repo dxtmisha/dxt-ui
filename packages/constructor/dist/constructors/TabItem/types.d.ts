@@ -2,7 +2,7 @@ import { ConstrClass } from '@dxtmisha/functional';
 import { IconComponentInclude } from '../Icon';
 import { BadgeComponentInclude } from '../Badge';
 import { ProgressComponentInclude } from '../Progress';
-import { RippleComponentsInclude } from '../Ripple';
+import { RippleComponentInclude } from '../Ripple';
 import { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes';
 import { LabelSlots } from '../../types/labelTypes';
 /**
@@ -10,7 +10,7 @@ import { LabelSlots } from '../../types/labelTypes';
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type TabItemComponents = IconComponentInclude & BadgeComponentInclude & ProgressComponentInclude & RippleComponentsInclude;
+export type TabItemComponents = IconComponentInclude & BadgeComponentInclude & ProgressComponentInclude & RippleComponentInclude;
 /**
  * Type describing available events.
  *

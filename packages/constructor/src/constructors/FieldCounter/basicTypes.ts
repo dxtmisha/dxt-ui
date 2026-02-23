@@ -7,7 +7,7 @@ import type { FieldCounterPropsBasic } from './props'
  * Интерфейс для описания, какие компоненты надо подключить для работы FieldCounter
  */
 export type FieldCounterComponentInclude = {
-  fieldCounter: object
+  fieldCounter?: object
 }
 
 /**

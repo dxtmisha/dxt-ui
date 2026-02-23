@@ -7900,6 +7900,66 @@
           }
         }
       },
+      "checkbox": {
+        "name": "d1-checkbox",
+        "type": "component",
+        "value": {
+          "comp": {
+            "name": "comp",
+            "type": "var",
+            "value": {
+              "size": {
+                "name": "--d1-checkbox-comp-size",
+                "type": "var",
+                "value": "{ref.spacing.4}"
+              },
+              "color": {
+                "name": "--d1-checkbox-comp-color",
+                "type": "var",
+                "value": "{sys.palette.primary}"
+              },
+              "colorOpacity": {
+                "name": "--d1-checkbox-comp-colorOpacity",
+                "type": "var",
+                "value": "{sys.opacity.primary.high}"
+              }
+            }
+          },
+          "&__input:focus ~ *": {
+            "name": "&__input:focus ~ *",
+            "type": "scss",
+            "value": {
+              "linkfocus": {
+                "name": "--d1-checkbox-linkfocus",
+                "type": "var",
+                "value": "{??focus}"
+              }
+            }
+          },
+          "&__input:checked ~ *": {
+            "name": "&__input:checked ~ *",
+            "type": "scss",
+            "value": {
+              "linkchecked": {
+                "name": "--d1-checkbox-linkchecked",
+                "type": "var",
+                "value": "{??checked}"
+              }
+            }
+          },
+          "&__input:disabled ~ *": {
+            "name": "&__input:disabled ~ *",
+            "type": "scss",
+            "value": {
+              "linkdisabled": {
+                "name": "--d1-checkbox-linkdisabled",
+                "type": "var",
+                "value": "{??disabled}"
+              }
+            }
+          }
+        }
+      },
       "chip": {
         "name": "d1-chip",
         "type": "component",
@@ -10537,6 +10597,45 @@
             "name": "--d-cell-transitionFunction",
             "type": "var",
             "value": "{d.sys.transitionFunction.standard}"
+          }
+        }
+      },
+      "checkbox": {
+        "name": "d-checkbox",
+        "type": "component",
+        "value": {
+          "&__input:focus ~ *": {
+            "name": "&__input:focus ~ *",
+            "type": "scss",
+            "value": {
+              "linkfocus": {
+                "name": "--d-checkbox-linkfocus",
+                "type": "var",
+                "value": "{??focus}"
+              }
+            }
+          },
+          "&__input:checked ~ *": {
+            "name": "&__input:checked ~ *",
+            "type": "scss",
+            "value": {
+              "linkchecked": {
+                "name": "--d-checkbox-linkchecked",
+                "type": "var",
+                "value": "{??checked}"
+              }
+            }
+          },
+          "&__input:disabled ~ *": {
+            "name": "&__input:disabled ~ *",
+            "type": "scss",
+            "value": {
+              "linkdisabled": {
+                "name": "--d-checkbox-linkdisabled",
+                "type": "var",
+                "value": "{??disabled}"
+              }
+            }
           }
         }
       },

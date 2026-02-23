@@ -3,7 +3,7 @@ import type { ConstrClass } from '@dxtmisha/functional'
 import type { IconComponentInclude } from '../Icon'
 import type { BadgeComponentInclude } from '../Badge'
 import type { ProgressComponentInclude } from '../Progress'
-import type { RippleComponentsInclude } from '../Ripple'
+import type { RippleComponentInclude } from '../Ripple'
 
 import type { LabelHighlightSlots } from '../../types/labelTypes'
 import type { DescriptionSlots } from '../../types/descriptionTypes'
@@ -21,7 +21,7 @@ export type ListItemComponents
   = IconComponentInclude
     & BadgeComponentInclude
     & ProgressComponentInclude
-    & RippleComponentsInclude
+    & RippleComponentInclude
 
 /**
  * Type describing available events.

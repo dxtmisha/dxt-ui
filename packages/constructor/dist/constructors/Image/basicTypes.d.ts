@@ -45,8 +45,8 @@ export type ImageEventData = ImageEventType & {
     image: ImageEventItem;
 };
 export type ImageValue<Image extends ImagePropsBasic = ImagePropsBasic> = string | ConstrBind<Image> | null;
-export type ImageComponentsInclude = {
-    image: object;
+export type ImageComponentInclude = {
+    image?: object;
 };
 export type ImageEmitsInclude = ImageEmits;
 export type ImagePropsInclude<Image extends ImagePropsBasic = ImagePropsBasic> = {

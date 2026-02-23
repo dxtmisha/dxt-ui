@@ -1,0 +1,52 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Checkbox;
+
+@include ui.initDesignBasic('d1.checkbox') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Checkbox.mixinCheckbox;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-checkbox-comp-size: var(--d1-ref-spacing-4);
+    --d1-checkbox-comp-color: var(--d1-sys-palette-primary);
+    --d1-checkbox-comp-colorOpacity: var(--d1-sys-opacity-primary-high);
+    
+    &--block {
+      display: block;
+    }
+    
+    &--right {
+      & .d1-checkbox__track {
+        order: 4;
+      }
+      
+      & .d1-checkbox__item {
+        order: 4;
+      }
+      
+      & .d1-checkbox__info {
+        order: 2;
+      }
+    }
+    
+    &__input:focus ~ * {
+      --d1-checkbox-linkfocus: var(--d1-checkbox-focus);
+    }
+    
+    &__input:checked ~ * {
+      --d1-checkbox-linkchecked: var(--d1-checkbox-checked);
+    }
+    
+    &__input:disabled ~ * {
+      --d1-checkbox-linkdisabled: var(--d1-checkbox-disabled);
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

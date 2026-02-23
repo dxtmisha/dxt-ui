@@ -10,7 +10,7 @@ export type ScrollbarEdgeType = 'top' | 'bottom';
  * Interface for describing which components need to be connected for work/
  * Интерфейс для описания, какие компоненты надо подключить для работы
  */
-export type ScrollbarComponentsInclude = {
+export type ScrollbarComponentInclude = {
     scrollbar?: object;
 };
 /**

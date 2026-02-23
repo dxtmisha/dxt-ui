@@ -52,6 +52,7 @@
   '--d1-sys-palette-shadow': ('--d1-palette-basic950', '--d1-palette-dark700'),
   '--d1-accordion-borderColor': ('--d1-palette-basic800'),
   '--d1-cell-borderColor': ('--d1-palette-basic800'),
+  '--d1-checkbox-comp-color': ('--d1-palette-basic600'),
   '--d1-field-borderColor': ('--d1-palette-basic800', '--d1-palette-basic800'),
   '--d1-field-focusWithin-color': ('--d1-palette-basic600'),
   '--d1-field-focusWithin-borderColor': ('--d1-palette-basic600'),
@@ -12064,6 +12065,11 @@
         name: 'd1-cell',
         type: 'component',
       ),
+      'checkbox':(
+        index: 'checkbox',
+        name: 'd1-checkbox',
+        type: 'component',
+      ),
       'chip':(
         index: 'chip',
         name: 'd1-chip',
@@ -12550,6 +12556,11 @@
       'cell':(
         index: 'cell',
         name: 'd-cell',
+        type: 'component',
+      ),
+      'checkbox':(
+        index: 'checkbox',
+        name: 'd-checkbox',
         type: 'component',
       ),
       'chip':(

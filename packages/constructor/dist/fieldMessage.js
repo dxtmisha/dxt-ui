@@ -3,8 +3,8 @@ var f = (o, i, s) => i in o ? M(o, i, { enumerable: !0, configurable: !0, writab
 var e = (o, i, s) => f(o, typeof i != "symbol" ? i + "" : i, s);
 import { computed as r, h } from "vue";
 import { isFilled as p, DesignConstructorAbstract as C } from "@dxtmisha/functional";
-import { S as F } from "./SkeletonInclude-BIUzAO2s.js";
-import { F as I } from "./FieldCounterInclude-D0oojGWY.js";
+import { F } from "./FieldCounterInclude-D0oojGWY.js";
+import { S as I } from "./SkeletonInclude-BIUzAO2s.js";
 import { A as S } from "./AriaStaticInclude-ZrgMZ2ja.js";
 import { F as T } from "./FieldMessageInclude-BJDnir34.js";
 class D {
@@ -90,9 +90,9 @@ class k {
     })));
     this.props = i, this.refs = s, this.element = t, this.classDesign = a, this.className = l, this.components = d, this.slots = u, this.emits = g;
     const {
-      FieldCounterIncludeConstructor: m = I,
+      FieldCounterIncludeConstructor: m = F,
       FieldMessageMessageConstructor: c = D,
-      SkeletonIncludeConstructor: v = F
+      SkeletonIncludeConstructor: v = I
     } = n != null ? n : {};
     this.fieldCounter = new m(
       this.props,

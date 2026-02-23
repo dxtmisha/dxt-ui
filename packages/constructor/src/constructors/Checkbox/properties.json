@@ -9,13 +9,11 @@
   },
   "#input": {},
   "#body": {},
-  "#item": {
-    "#icon": {}
-  },
+  "#item": {},
+  "#icon": {},
   "#loading": {},
-  "#info": {
-    "#label": {}
-  },
+  "#info": {},
+  "#label": {},
   "focus": {
     "_type": "none"
   },

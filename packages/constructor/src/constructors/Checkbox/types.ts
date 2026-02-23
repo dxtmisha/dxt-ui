@@ -1,9 +1,9 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { ImageComponentsInclude } from '../Image'
+import type { ImageComponentInclude } from '../Image'
 import type { FieldMessageComponentInclude } from '../FieldMessage'
 import type { ProgressComponentInclude } from '../Progress'
-import type { RippleComponentsInclude } from '../Ripple'
+import type { RippleComponentInclude } from '../Ripple'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
 import type { LabelSlots } from '../../types/labelTypes'
@@ -15,10 +15,10 @@ import type { DescriptionSlots } from '../../types/descriptionTypes'
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
 export type CheckboxComponents
-  = ImageComponentsInclude
+  = ImageComponentInclude
     & FieldMessageComponentInclude
     & ProgressComponentInclude
-    & RippleComponentsInclude
+    & RippleComponentInclude
 
 /**
  * Type describing available events.
@@ -51,5 +51,12 @@ export interface CheckboxSlots extends LabelSlots, DescriptionSlots {
 export type CheckboxClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  input: string
+  body: string
+  item: string
+  icon: string
+  loading: string
+  info: string
+  label: string
   // :classes [!] System label / Системная метка
 }

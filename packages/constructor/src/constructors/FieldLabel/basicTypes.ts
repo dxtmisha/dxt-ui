@@ -8,7 +8,7 @@ import type { FieldLabelPropsBasic } from './props'
  * Интерфейс для описания, какие компоненты надо подключить для работы FieldLabel
  */
 export type FieldLabelComponentInclude = {
-  fieldLabel: object
+  fieldLabel?: object
 }
 
 /**

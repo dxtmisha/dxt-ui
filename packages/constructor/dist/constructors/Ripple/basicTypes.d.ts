@@ -1,3 +1,3 @@
-export type RippleComponentsInclude = {
+export type RippleComponentInclude = {
     ripple?: object;
 };

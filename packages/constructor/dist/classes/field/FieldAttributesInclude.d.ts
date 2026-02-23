@@ -28,6 +28,8 @@ export declare class FieldAttributesInclude {
     readonly listForCheck: ComputedRef<Record<string, any>>;
     /** Returns data for the input element/ Возвращает данные для элемента ввода */
     readonly listForInput: ComputedRef<Record<string, any>>;
+    /** Returns data for the checkbox element/ Возвращает данные для элемента checkbox */
+    readonly listForCheckbox: ComputedRef<Record<string, any>>;
     /**
      * Returns the list of attributes to be set on the input element.
      *

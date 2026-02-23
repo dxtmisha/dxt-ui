@@ -1,9 +1,9 @@
 import type { ComputedRef, Ref } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { ScrollbarComponentsInclude, ScrollbarEmitsInclude } from '../Scrollbar'
+import type { ScrollbarComponentInclude, ScrollbarEmitsInclude } from '../Scrollbar'
 import type { ButtonComponentInclude } from '../Button'
-import type { ImageComponentsInclude, ImageEmitsInclude } from '../Image'
+import type { ImageComponentInclude, ImageEmitsInclude } from '../Image'
 
 import type { ModelEmitsOpen } from '../../types/modelTypes'
 import type { WindowControlItem, WindowEmitOptions } from './basicTypes'
@@ -14,9 +14,9 @@ import type { WindowControlItem, WindowEmitOptions } from './basicTypes'
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
 export type WindowComponents
-  = ScrollbarComponentsInclude
+  = ScrollbarComponentInclude
     & ButtonComponentInclude
-    & ImageComponentsInclude
+    & ImageComponentInclude
 
 /**
  * Type describing available events.

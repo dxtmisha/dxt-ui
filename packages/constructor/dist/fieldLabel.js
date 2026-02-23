@@ -4,8 +4,8 @@ var t = (i, s, e) => C(i, typeof s != "symbol" ? s + "" : s, e);
 import { computed as v, h } from "vue";
 import { DesignConstructorAbstract as F } from "@dxtmisha/functional";
 import { L } from "./LabelInclude-D-mLvjK5.js";
-import { F as S } from "./FieldCounterInclude-D0oojGWY.js";
-import { S as k } from "./SkeletonInclude-BIUzAO2s.js";
+import { S } from "./SkeletonInclude-BIUzAO2s.js";
+import { F as k } from "./FieldCounterInclude-D0oojGWY.js";
 import { P as q } from "./ProgressInclude-hQsbbhvF.js";
 import { A as I } from "./AriaStaticInclude-ZrgMZ2ja.js";
 import { F as B } from "./FieldLabelInclude-Bkxf6rRw.js";
@@ -46,10 +46,10 @@ class w {
     })));
     this.props = s, this.refs = e, this.element = r, this.classDesign = l, this.className = o, this.components = u, this.slots = m, this.emits = d;
     const {
-      FieldCounterConstructor: c = S,
+      FieldCounterConstructor: c = k,
       LabelConstructor: p = L,
       ProgressConstructor: f = q,
-      SkeletonConstructor: b = k
+      SkeletonConstructor: b = S
     } = n != null ? n : {}, a = new b(this.props, this.classDesign, ["classTextVariant"]);
     this.label = new p(
       this.props,

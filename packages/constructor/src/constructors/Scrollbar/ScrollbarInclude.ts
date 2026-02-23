@@ -1,7 +1,7 @@
 import { h, type VNode } from 'vue'
 import { type ConstrEmit, type DesignComponents, toBind } from '@dxtmisha/functional'
 
-import type { ScrollbarComponentsInclude, ScrollbarEmitsInclude, ScrollbarPropsInclude, ScrollbarEdgeType } from './basicTypes'
+import type { ScrollbarComponentInclude, ScrollbarEmitsInclude, ScrollbarPropsInclude, ScrollbarEdgeType } from './basicTypes'
 
 /**
  * ScrollbarInclude class provides functionality for conditionally rendering scrollbar components
@@ -25,7 +25,7 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
   constructor(
     protected readonly props: Readonly<Props>,
     protected readonly className: string,
-    protected readonly components?: DesignComponents<ScrollbarComponentsInclude, Props>,
+    protected readonly components?: DesignComponents<ScrollbarComponentInclude, Props>,
     protected readonly emits?: ConstrEmit<ScrollbarEmitsInclude>
   ) {
   }

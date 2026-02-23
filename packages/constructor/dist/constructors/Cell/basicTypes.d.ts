@@ -21,7 +21,7 @@ export type CellClassesSub = {
  */
 export type CellComponentInclude = {
     /** Cell component key/ Ключ компонента Cell */
-    cell: object;
+    cell?: object;
 };
 /**
  * Type describing available slots/

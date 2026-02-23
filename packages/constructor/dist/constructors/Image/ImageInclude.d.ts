@@ -1,6 +1,6 @@
 import { VNode, ComputedRef } from 'vue';
 import { ConstrEmit, DesignComponents, RefOrNormal, ConstrBind } from '@dxtmisha/functional';
-import { ImageEventData, ImageComponentsInclude, ImageEmitsInclude, ImagePropsInclude } from './basicTypes';
+import { ImageEventData, ImageComponentInclude, ImageEmitsInclude, ImagePropsInclude } from './basicTypes';
 import { ItemList } from '@dxtmisha/functional-basic';
 /**
  * Класс для подключения и работы с компонентом изображения.
@@ -9,7 +9,7 @@ import { ItemList } from '@dxtmisha/functional-basic';
  */
 export declare class ImageInclude {
     protected readonly props: ImagePropsInclude;
-    protected readonly components?: DesignComponents<ImageComponentsInclude, ImagePropsInclude> | undefined;
+    protected readonly components?: DesignComponents<ImageComponentInclude, ImagePropsInclude> | undefined;
     protected readonly emits?: ConstrEmit<ImageEmitsInclude> | undefined;
     protected readonly extra?: RefOrNormal<Record<string, any>> | undefined;
     /**
@@ -21,7 +21,7 @@ export declare class ImageInclude {
      * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
      * @param extra additional parameter/ дополнительный параметр
      */
-    constructor(props: ImagePropsInclude, components?: DesignComponents<ImageComponentsInclude, ImagePropsInclude> | undefined, emits?: ConstrEmit<ImageEmitsInclude> | undefined, extra?: RefOrNormal<Record<string, any>> | undefined);
+    constructor(props: ImagePropsInclude, components?: DesignComponents<ImageComponentInclude, ImagePropsInclude> | undefined, emits?: ConstrEmit<ImageEmitsInclude> | undefined, extra?: RefOrNormal<Record<string, any>> | undefined);
     /**
      * Проверяет, есть ли изображение/ Checks if an image exists
      */
