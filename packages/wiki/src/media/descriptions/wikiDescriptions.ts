@@ -10,6 +10,7 @@ import { wikiDescriptionsBars } from './wikiDescriptionsBars'
 import { wikiDescriptionsBlock } from './wikiDescriptionsBlock'
 import { wikiDescriptionsButton } from './wikiDescriptionsButton'
 import { wikiDescriptionsCell } from './wikiDescriptionsCell'
+import { wikiDescriptionsCheckbox } from './wikiDescriptionsCheckbox'
 import { wikiDescriptionsChip } from './wikiDescriptionsChip'
 import { wikiDescriptionsChipGroup } from './wikiDescriptionsChipGroup'
 import { wikiDescriptionsDialog } from './wikiDescriptionsDialog'
@@ -57,6 +58,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsBlock,
   wikiDescriptionsButton,
   wikiDescriptionsCell,
+  wikiDescriptionsCheckbox,
   wikiDescriptionsChip,
   wikiDescriptionsChipGroup,
   wikiDescriptionsDialog,

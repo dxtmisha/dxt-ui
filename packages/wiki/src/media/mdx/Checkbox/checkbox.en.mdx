@@ -1,0 +1,57 @@
+Component for creating interactive checkboxes with support for multiple selection, validation, and state customization.
+
+Checkbox manages the selection state of elements (checked, unchecked, indeterminate state), supports validation, form integration, customizable icons, and transition animations. The component automatically handles state changes, focus management, and event generation during user interaction.
+
+**Key features:**
+
+- Three states: checked, unchecked, indeterminate
+- Built-in validation with custom error messages
+- Support for labels and descriptions
+- Customizable icons for different states
+- Form integration via name and value attributes
+- Disabled, loading, and skeleton states
+- Ripple effect on interaction
+- Adaptive layout and styling
+
+**Common use cases:**
+
+- Agreement with terms and policies
+- Multiple item selection from lists
+- Settings and feature toggles
+- Forms with checkboxes for confirmation
+- Group selection with parent indeterminate state
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const agreed = ref(false)
+const notifications = ref(true)
+
+const handleChange = (value) => {
+  console.log('New value:', value)
+}
+</script>
+
+<template>
+  <Checkbox
+    v-model="agreed"
+    label="I agree to the terms"
+    description="Required to continue"
+    required
+    @change="handleChange"
+  />
+
+  <Checkbox
+    v-model="notifications"
+    label="Receive notifications"
+    description="Subscribe to news and updates"
+  />
+
+  <Checkbox
+    label="Select all"
+    indeterminate
+    @change="selectAll"
+  />
+</template>
+```

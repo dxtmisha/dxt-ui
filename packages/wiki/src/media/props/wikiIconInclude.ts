@@ -85,6 +85,16 @@ export const wikiIconInclude: StorybookArgsToList = {
       }
     }
   },
+  iconCheckbox: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for checkbox',
+        ru: 'Задает иконку для чекбокса'
+      }
+    }
+  },
   iconClose: {
     type: StorybookControl.string,
     options: {
@@ -134,6 +144,16 @@ export const wikiIconInclude: StorybookArgsToList = {
       description: {
         en: 'Hides the icon',
         ru: 'Скрывает иконку'
+      }
+    }
+  },
+  iconIndeterminate: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for indeterminate state',
+        ru: 'Задает иконку для неопределенного состояния'
       }
     }
   },

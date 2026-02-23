@@ -108,6 +108,20 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  indeterminate: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Sets the indeterminate state',
+        ru: 'Устанавливает неопределенное состояние'
+      }
+    },
+    isDemo: true,
+    demo: {
+      value: true
+    }
+  },
   tabs: {
     type: StorybookControl.object,
     options: {
@@ -149,6 +163,27 @@ export const wikiValue: StorybookArgsToList = {
       description: {
         en: 'Default value for the input field',
         ru: 'Значение по умолчанию для поля ввода'
+      }
+    }
+  },
+  valueVariant: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Variant of the value',
+        ru: 'Вариант значения'
+      }
+    }
+  },
+  valueVariantHide: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Hides the value variant',
+        ru: 'Скрывает вариант значения'
       }
     }
   }

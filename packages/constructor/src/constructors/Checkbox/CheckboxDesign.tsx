@@ -199,7 +199,7 @@ export class CheckboxDesign<
             {
               class: [
                 this.classes?.value.icon,
-                this.item.skeleton.classes.value
+                this.item.skeleton.classesSkeleton.classBackground
               ]
             },
             [

@@ -1,7 +1,7 @@
 var D = Object.defineProperty;
 var E = (n, s, e) => s in n ? D(n, s, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[s] = e;
 var t = (n, s, e) => E(n, typeof s != "symbol" ? s + "" : s, e);
-import { getBind as V, DesignConstructorAbstract as A, toBinds as B } from "@dxtmisha/functional";
+import { getBind as V, DesignConstructorAbstract as B, toBinds as A } from "@dxtmisha/functional";
 import { D as H } from "./DescriptionInclude-D4ane9aR.js";
 import { E as R } from "./EnabledInclude-DIc_ZLNR.js";
 import { L } from "./LabelInclude-D-mLvjK5.js";
@@ -87,8 +87,8 @@ class W {
       DescriptionConstructor: p = H,
       EnabledConstructor: m = R,
       FieldAttributesIncludeConstructor: v = M,
-      FieldChangeIncludeConstructor: b = P,
-      FieldCodeIncludeConstructor: g = N,
+      FieldChangeIncludeConstructor: g = P,
+      FieldCodeIncludeConstructor: b = N,
       FieldElementIncludeConstructor: C = O,
       FieldEventIncludeConstructor: I = T,
       FieldMessageConstructor: f = G,
@@ -107,11 +107,11 @@ class W {
         circular: !0,
         inverse: !0
       }
-    ), this.change = new b(this.props), this.elementItem = new C(this.props, this.element), this.attributes = new v(this.props), this.value = new F(
+    ), this.change = new g(this.props), this.elementItem = new C(this.props, this.element), this.attributes = new v(this.props), this.value = new F(
       this.props,
       this.refs,
       this.elementItem
-    ), this.code = new g(this.props), this.validation = new k(
+    ), this.code = new b(this.props), this.validation = new k(
       this.props,
       this.attributes,
       this.value,
@@ -151,7 +151,7 @@ const oe = {
   block: !0,
   itemCenter: !0
 };
-class le extends A {
+class le extends B {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -188,7 +188,7 @@ class le extends A {
      */
     t(this, "renderInput", () => {
       var e;
-      return r("input", B(
+      return r("input", A(
         this.item.attributes.listForCheckbox.value,
         {
           class: (e = this.classes) == null ? void 0 : e.value.input,
@@ -226,7 +226,7 @@ class le extends A {
               {
                 class: [
                   (i = this.classes) == null ? void 0 : i.value.icon,
-                  this.item.skeleton.classes.value
+                  this.item.skeleton.classesSkeleton.classBackground
                 ]
               },
               [

@@ -229,6 +229,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  itemCenter: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Centers items inside the component',
+        ru: 'Центрирует элементы внутри компонента'
+      }
+    }
+  },
   keyLabel: {
     type: StorybookControl.string,
     options: {

@@ -25,6 +25,7 @@ import { wikiArrow } from './wikiArrow'
 import { wikiBadge } from './wikiBadge'
 import { wikiBars } from './wikiBars'
 import { wikiButton } from './wikiButton'
+import { wikiCheckbox } from './wikiCheckbox'
 import { wikiChip } from './wikiChip'
 import { wikiChipGroup } from './wikiChipGroup'
 import { wikiDialog } from './wikiDialog'
@@ -74,6 +75,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiBadge,
   ...wikiBars,
   ...wikiButton,
+  ...wikiCheckbox,
   ...wikiChip,
   ...wikiChipGroup,
   ...wikiDialog,
