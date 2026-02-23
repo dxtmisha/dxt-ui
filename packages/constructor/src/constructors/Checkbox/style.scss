@@ -77,7 +77,7 @@
     @include ui.subclass('label') {
       &:after {
         content: "*";
-        @include ui.color(ui.v('??comp.required.color'));
+        @include ui.color(ui.v('??required.color'));
       }
     }
   }

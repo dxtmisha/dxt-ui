@@ -1,12 +1,4 @@
 {
-  "comp": {
-    "required": {
-      "color": {
-        "_type": "var"
-      }
-    },
-    "_type": "var"
-  },
   "#input": {},
   "#body": {},
   "#item": {},
@@ -23,7 +15,11 @@
   "disabled": {
     "_type": "none"
   },
-  "~required": {},
+  "~required": {
+    "color": {
+      "_type": "var"
+    }
+  },
   "~block": {
     "display": "block"
   },

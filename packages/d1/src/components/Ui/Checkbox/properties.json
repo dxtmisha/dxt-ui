@@ -1,8 +1,22 @@
 {
   "main": "{d.checkbox}",
   "comp": {
-    "size": "{ref.spacing.4}",
+    "size": "{ref.spacing.4}"
+  },
+  "#item": {
     "color": "{sys.palette.primary}",
     "color-opacity": "{sys.opacity.primary.high}"
+  },
+  "#icon": {
+    "circle": "{??comp.size}",
+    "background-color": "{st.interaction.background.color.ghost.normal}",
+    "border-radius": "{st.selectable.borderRadius.size.sm}",
+    "border-width": "{ot.dimension.12}",
+    "border-color": "{??comp.color}",
+    "border-style": "solid",
+    "hover": {
+      "background-color": "{st.interaction.background.color.ghost.hover}",
+      "border-color": "{st.interaction.border.color.neutral.hover}"
+    }
   }
 }
