@@ -17,6 +17,7 @@ import {
   type TabsExpose,
   type TabsSlots
 } from './types'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * TabsDesign
@@ -128,7 +129,11 @@ export class TabsDesign<
       for (const key in this.slots) {
         slots[key] = () => h(
           'div',
-          { class: this.classes?.value.slide },
+          {
+            class: this.classes?.value.slide,
+            ...AriaStaticInclude.role('tabpanel'),
+            ...AriaStaticInclude.labelledby('')
+          },
           this.initSlot(key)
         )
       }
