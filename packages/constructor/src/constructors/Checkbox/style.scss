@@ -10,7 +10,8 @@
 
   &__input {
     position: absolute;
-    visibility: hidden;
+    opacity: 0;
+    cursor: default;
 
     &:not(:disabled) ~ * {
       cursor: pointer;
@@ -31,8 +32,6 @@
     position: relative;
 
     transition: inherit;
-
-    border-radius: 100%;
   }
 
   &__icon {

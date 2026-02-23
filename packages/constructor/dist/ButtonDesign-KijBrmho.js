@@ -9,7 +9,7 @@ import { E as L } from "./EnabledInclude-DIc_ZLNR.js";
 import { A as u } from "./AriaStaticInclude-ZrgMZ2ja.js";
 import { E as R } from "./EventClickInclude-Co8CpJqL.js";
 import { I as T } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as A } from "./ProgressInclude-hQsbbhvF.js";
+import { P as A } from "./ProgressInclude-CezBrQhM.js";
 import { R as D } from "./RippleInclude-Du5yIzX_.js";
 import { S as P } from "./SkeletonInclude-BIUzAO2s.js";
 class K {

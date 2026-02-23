@@ -11,25 +11,266 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-checkbox-comp-size: var(--d1-ref-spacing-4);
     --d1-checkbox-comp-color: var(--d1-sys-palette-primary);
-    --d1-checkbox-comp-colorOpacity: var(--d1-sys-opacity-primary-high);
+    --d1-checkbox-comp-colorOpacity: var(--d1-sys-opacity-surface-high);
+    --d1-checkbox-comp-backgroundColor: var(--d1-sys-palette-primary);
+    --d1-checkbox-comp-backgroundOpacity: 0;
+    --d1-checkbox-comp-borderColor: var(--d1-checkbox-comp-backgroundColor);
+    --d1-checkbox-comp-borderOpacity: var(--d1-sys-opacity-primary-high);
+    --d1-checkbox-comp-checked-color: var(--d1-sys-palette-onPrimary);
+    --d1-checkbox-comp-checked-colorOpacity: var(--d1-sys-opacity-primary-high);
+    --d1-checkbox-comp-checked-backgroundOpacity: var(--d1-sys-opacity-primary-high);
+    --d1-checkbox-comp-checked-borderOpacity: 0;
     
-    &--block {
-      display: block;
+    &__body {
+      gap: var(--d1-sys-spacing-md);
     }
     
-    &--right {
-      & .d1-checkbox__track {
-        order: 4;
+    &__item {
+      @include ui.circle(#{var(--d1-ref-spacing-10)});
+      
+      @include ui.color(#{var(--d1-checkbox-comp-color)});
+      @include ui.colorOpacity(#{var(--d1-checkbox-comp-colorOpacity)});
+      
+      @include ui.backgroundColor(#{var(--d1-checkbox-comp-backgroundColor)});
+      @include ui.backgroundOpacity(#{0});
+      @include ui.gradient(#{var(--sys-color)});
+      @include ui.gradientOpacity(#{0});
+      
+      @include ui.hover('.d1-checkbox') {
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
       }
       
+      @include ui.active('.d1-checkbox') {
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.gradient('init');
+      }
+    }
+    
+    &__icon {
+      @include ui.squared(#{var(--d1-ref-spacing-6)});
+      
+      @include ui.backgroundColor(#{var(--d1-checkbox-comp-backgroundColor)});
+      @include ui.backgroundOpacity(#{var(--d1-checkbox-comp-backgroundOpacity)});
+      
+      border-radius: calc(var(--sys-width) * var(--d1-sys-rounded-adaptive-md));
+      border-width: var(--d1-ref-spacing-2px);
+      border-style: solid;
+      @include ui.borderColor(#{var(--d1-checkbox-comp-borderColor)});
+      @include ui.borderOpacity(#{var(--d1-checkbox-comp-borderOpacity)});
+    }
+    
+    &__loading {
+      padding: var(--d1-ref-spacing-2);
+    }
+    
+    &__info {
+      padding-top: var(--d1-ref-spacing-2);
+    }
+    
+    &__description {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-md);
+      
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+    
+    &:focus-within {
       & .d1-checkbox__item {
-        order: 4;
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.backgroundColor('init');
+        @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+        
+        outline-width: var(--d1-ref-spacing-1);
+        outline-style: solid;
+        @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+      }
+    }
+    
+    &--block {
+      display: flex;
+      
+      & .d1-checkbox__body {
+        flex-grow: 1;
+      }
+    }
+    
+    &--adaptive {
+      &--rightAlways {
+        & .d1-checkbox__track {
+          order: 4;
+        }
+        
+        & .d1-checkbox__item {
+          order: 4;
+        }
+        
+        & .d1-checkbox__info {
+          order: 2;
+        }
       }
       
-      & .d1-checkbox__info {
-        order: 2;
+      &--rightSm {
+        @media screen and (max-width: calc(640px - 1px)) {
+          & .d1-checkbox__track {
+            order: 4;
+          }
+          
+          & .d1-checkbox__item {
+            order: 4;
+          }
+          
+          & .d1-checkbox__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightMd {
+        @media screen and (max-width: calc(768px - 1px)) {
+          & .d1-checkbox__track {
+            order: 4;
+          }
+          
+          & .d1-checkbox__item {
+            order: 4;
+          }
+          
+          & .d1-checkbox__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightLg {
+        @media screen and (max-width: calc(1024px - 1px)) {
+          & .d1-checkbox__track {
+            order: 4;
+          }
+          
+          & .d1-checkbox__item {
+            order: 4;
+          }
+          
+          & .d1-checkbox__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightXl {
+        @media screen and (max-width: calc(1280px - 1px)) {
+          & .d1-checkbox__track {
+            order: 4;
+          }
+          
+          & .d1-checkbox__item {
+            order: 4;
+          }
+          
+          & .d1-checkbox__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--right2xl {
+        @media screen and (max-width: calc(1536px - 1px)) {
+          & .d1-checkbox__track {
+            order: 4;
+          }
+          
+          & .d1-checkbox__item {
+            order: 4;
+          }
+          
+          & .d1-checkbox__info {
+            order: 2;
+          }
+        }
+      }
+    }
+    
+    &--container {
+      &--rightSm {
+        @container (max-width: calc(640px - 1px)) {
+          & .d1-checkbox__track {
+            order: 4;
+          }
+          
+          & .d1-checkbox__item {
+            order: 4;
+          }
+          
+          & .d1-checkbox__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightMd {
+        @container (max-width: calc(768px - 1px)) {
+          & .d1-checkbox__track {
+            order: 4;
+          }
+          
+          & .d1-checkbox__item {
+            order: 4;
+          }
+          
+          & .d1-checkbox__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightLg {
+        @container (max-width: calc(1024px - 1px)) {
+          & .d1-checkbox__track {
+            order: 4;
+          }
+          
+          & .d1-checkbox__item {
+            order: 4;
+          }
+          
+          & .d1-checkbox__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--rightXl {
+        @container (max-width: calc(1280px - 1px)) {
+          & .d1-checkbox__track {
+            order: 4;
+          }
+          
+          & .d1-checkbox__item {
+            order: 4;
+          }
+          
+          & .d1-checkbox__info {
+            order: 2;
+          }
+        }
+      }
+      
+      &--right2xl {
+        @container (max-width: calc(1536px - 1px)) {
+          & .d1-checkbox__track {
+            order: 4;
+          }
+          
+          & .d1-checkbox__item {
+            order: 4;
+          }
+          
+          & .d1-checkbox__info {
+            order: 2;
+          }
+        }
       }
     }
     
@@ -38,11 +279,25 @@
     }
     
     &__input:checked ~ * {
-      --d1-checkbox-linkchecked: var(--d1-checkbox-checked);
+      & .d1-checkbox__item {
+        @include ui.color(#{var(--d1-checkbox-comp-checked-color)});
+        @include ui.colorOpacity(#{var(--d1-checkbox-comp-checked-colorOpacity)});
+      }
+      
+      & .d1-checkbox__icon {
+        @include ui.backgroundOpacity(#{var(--d1-checkbox-comp-checked-backgroundOpacity)}); @include ui.backgroundColor('init');
+        
+        @include ui.borderOpacity(#{var(--d1-checkbox-comp-checked-borderOpacity)}); @include ui.borderColor('init');
+      }
     }
     
     &__input:disabled ~ * {
-      --d1-checkbox-linkdisabled: var(--d1-checkbox-disabled);
+      --d1-checkbox-comp-colorOpacity: var(--d1-sys-opacity-surface-disabled);
+      --d1-checkbox-comp-backgroundColor: var(--d1-sys-palette-onSurface);
+      --d1-checkbox-comp-borderColor: var(--d1-checkbox-comp-backgroundColor);
+      --d1-checkbox-comp-borderOpacity: var(--d1-sys-opacity-primary-disabled);
+      --d1-checkbox-comp-checked-colorOpacity: var(--d1-sys-opacity-primary-disabled);
+      --d1-checkbox-comp-checked-backgroundOpacity: var(--d1-sys-opacity-primary-disabled);
     }
   }
   // :style [!] System label / Системная метка

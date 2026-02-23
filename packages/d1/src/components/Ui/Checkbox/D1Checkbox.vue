@@ -31,10 +31,11 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-checkbox': true,
-    'd1-checkbox--required': props.required,
     'd1-checkbox--block': props.block,
+    [`d1-checkbox--adaptive--${props.adaptive}`]: inArray(propsValues.adaptive, props.adaptive),
+    [`d1-checkbox--container--${props.container}`]: inArray(propsValues.container, props.container),
+    'd1-checkbox--required': props.required,
     'd1-checkbox--itemCenter': props.itemCenter,
-    'd1-checkbox--right': props.right,
     'd1-checkbox--focus': props.focus,
     'd1-checkbox--disabled': props.disabled
     // :classes-values [!] System label / Системная метка
@@ -55,7 +56,7 @@ const design = new CheckboxDesign(
     components: {
       image: D1Image,
       fieldMessage: D1FieldMessage,
-      process: D1Progress,
+      progress: D1Progress,
       ripple: D1Ripple
     }
   }

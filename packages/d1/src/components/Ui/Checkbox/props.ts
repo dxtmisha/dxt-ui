@@ -7,15 +7,18 @@ import type { ProgressProps } from '../Progress'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  adaptive: ['rightAlways', 'rightSm', 'rightMd', 'rightLg', 'rightXl', 'right2xl'],
+  container: ['rightSm', 'rightMd', 'rightLg', 'rightXl', 'right2xl']
   // :values [!] System label / Системная метка
 }
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  required?: boolean
   block?: boolean
+  adaptive?: 'rightAlways' | 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl'
+  container?: 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl'
+  required?: boolean
   itemCenter?: boolean
-  right?: boolean
   focus?: boolean
   disabled?: boolean
   // :type [!] System label / Системная метка
@@ -33,10 +36,11 @@ export type CheckboxProps
  */
 export const defaults: object = {
   ...defaultsCheckbox,
-  iconCheckbox: 'check_small',
-  iconIndeterminate: 'check_indeterminate_small',
+  iconCheckbox: 'check',
+  iconIndeterminate: 'remove',
   ...{
     // :default [!] System label / Системная метка
+    block: true,
     itemCenter: true
     // :default [!] System label / Системная метка
   }

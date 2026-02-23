@@ -13,7 +13,7 @@ import { D as j } from "./DescriptionInclude-D4ane9aR.js";
 import { B as q } from "./BadgeInclude-BwCIBVyK.js";
 import { E as z } from "./EnabledInclude-DIc_ZLNR.js";
 import { I as F } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as G } from "./ProgressInclude-hQsbbhvF.js";
+import { P as G } from "./ProgressInclude-CezBrQhM.js";
 import { R as J } from "./RippleInclude-Du5yIzX_.js";
 import { S as K } from "./SkeletonInclude-BIUzAO2s.js";
 class O {

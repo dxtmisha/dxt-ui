@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrBind, type DesignComponents, getBind, getRef, type RefOrNormal } from '@dxtmisha/functional'
+import { type ConstrBind, type DesignComponents, getBind, getRef, type RefOrNormal, toBinds } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
@@ -50,10 +50,10 @@ export class ProgressInclude {
 
     return getBind(
       this.props.loading,
-      {
-        ...extra,
-        class: [extra?.class, `${this.className}__loading`]
-      },
+      toBinds(
+        extra,
+        { class: `${this.className}__loading` }
+      ),
       'visible'
     )
   })

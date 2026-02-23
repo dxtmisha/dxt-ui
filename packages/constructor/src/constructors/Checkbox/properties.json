@@ -15,27 +15,43 @@
   "disabled": {
     "_type": "none"
   },
+  "~block": {
+    "display": "flex",
+    "#body": {
+      "flex-grow": "1"
+    },
+    "_default": true
+  },
+  "~adaptive": {
+    "~rightAlways": {
+      "#track": {
+        "order": "4"
+      },
+      "#item": {
+        "order": "4"
+      },
+      "#info": {
+        "order": "2"
+      }
+    },
+    "group|right": {
+      "link|adaptive-icon": "{??adaptive.rightAlways}",
+      "_type": "media-max-group"
+    }
+  },
+  "container": {
+    "group|right": {
+      "link|adaptive-icon": "{??adaptive.rightAlways}",
+      "_type": "container-max-group"
+    }
+  },
   "~required": {
     "color": {
       "_type": "var"
     }
   },
-  "~block": {
-    "display": "block"
-  },
   "~itemCenter": {
     "_default": true
-  },
-  "~right": {
-    "#track": {
-      "order": "4"
-    },
-    "#item": {
-      "order": "4"
-    },
-    "#info": {
-      "order": "2"
-    }
   },
   "&__input:focus ~ *": {
     "link:focus": "{??focus}"

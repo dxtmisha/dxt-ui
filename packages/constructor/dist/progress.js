@@ -5,7 +5,7 @@ import { watch as x, onUnmounted as y, ref as c, computed as l, h as u } from "v
 import { toNumber as o, DesignConstructorAbstract as P } from "@dxtmisha/functional";
 import { T as S } from "./TextInclude--GERRCGj.js";
 import { A as n } from "./AriaStaticInclude-ZrgMZ2ja.js";
-import { P as B } from "./ProgressInclude-hQsbbhvF.js";
+import { P as B } from "./ProgressInclude-CezBrQhM.js";
 class C {
   /**
    * Constructor

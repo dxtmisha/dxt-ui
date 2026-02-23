@@ -163,7 +163,7 @@ export class CheckboxDesign<
       {
         class: this.classes?.value.input,
         type: this.item.type,
-        value: this.item.value.item.value,
+        checked: this.item.value.item.value,
         onInput: this.item.event.onChecked
       }
     ))

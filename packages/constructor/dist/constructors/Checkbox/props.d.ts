@@ -1,24 +1,26 @@
+import { ConstrBind } from '@dxtmisha/functional';
 import { LabelProps } from '../../types/labelTypes';
 import { DescriptionProps } from '../../types/descriptionTypes';
 import { FieldInputCheckProps } from '../../types/fieldTypes';
 import { EnabledProps } from '../../types/enabledTypes';
 import { ModelProps } from '../../types/modelTypes';
-import { IconPropsBasic, IconValue } from '../Icon';
+import { ImagePropsBasic } from '../Image';
 import { FieldMessagePropsBasic, FieldMessagePropsInclude } from '../FieldMessage';
 import { FieldCounterPropsBasic } from '../FieldCounter';
 import { ProgressPropsBasic, ProgressPropsInclude } from '../Progress';
 import { SkeletonPropsInclude } from '../Skeleton';
 type CheckboxPropsToken = {
-    required?: boolean;
     block?: boolean;
+    adaptive?: 'rightAlways';
+    container?: boolean;
+    required?: boolean;
     itemCenter?: boolean;
-    right?: boolean;
     focus?: boolean;
     disabled?: boolean;
 };
-export type CheckboxPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & FieldMessagePropsInclude<FieldMessage, FieldCounter> & FieldInputCheckProps & ProgressPropsInclude<Progress> & EnabledProps & ModelProps & SkeletonPropsInclude & {
-    iconCheckbox?: IconValue<Icon>;
-    iconIndeterminate?: IconValue<Icon>;
+export type CheckboxPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & FieldMessagePropsInclude<FieldMessage, FieldCounter> & FieldInputCheckProps & ProgressPropsInclude<Progress> & EnabledProps & ModelProps & SkeletonPropsInclude & {
+    iconCheckbox?: string | ConstrBind<Image> | null;
+    iconIndeterminate?: string | ConstrBind<Image> | null;
 };
 /**
  * Type describing incoming properties.
@@ -32,6 +34,7 @@ export type CheckboxProps = CheckboxPropsBasic & CheckboxPropsToken;
  * Значение по умолчанию для свойства.
  */
 export declare const defaultsCheckbox: {
+    block: boolean;
     itemCenter: boolean;
     valueVariantHide: string;
 };

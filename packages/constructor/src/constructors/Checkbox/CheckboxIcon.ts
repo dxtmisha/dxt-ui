@@ -29,7 +29,7 @@ export class CheckboxIcon {
    * Возвращает данные для иконки.
    */
   readonly item = computed(
-    () => getBind(this.getIcon(), 'icon')
+    () => getBind(this.getIcon(), 'value')
   )
 
   /**
@@ -38,7 +38,10 @@ export class CheckboxIcon {
    * Возвращает название иконки.
    */
   protected getIcon(): IconValue | undefined {
-    if (this.value.boolean.value) {
+    if (
+      this.value.boolean.value
+      && !this.props.loading
+    ) {
       if (this.props.indeterminate) {
         return this.props.iconIndeterminate
       }

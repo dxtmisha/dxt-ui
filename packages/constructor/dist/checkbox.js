@@ -1,17 +1,17 @@
-var E = Object.defineProperty;
-var V = (n, s, e) => s in n ? E(n, s, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[s] = e;
-var t = (n, s, e) => V(n, typeof s != "symbol" ? s + "" : s, e);
-import { getBind as D, DesignConstructorAbstract as A, toBinds as B } from "@dxtmisha/functional";
+var D = Object.defineProperty;
+var E = (n, s, e) => s in n ? D(n, s, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[s] = e;
+var t = (n, s, e) => E(n, typeof s != "symbol" ? s + "" : s, e);
+import { getBind as V, DesignConstructorAbstract as A, toBinds as B } from "@dxtmisha/functional";
 import { D as H } from "./DescriptionInclude-D4ane9aR.js";
 import { E as R } from "./EnabledInclude-DIc_ZLNR.js";
 import { L } from "./LabelInclude-D-mLvjK5.js";
-import { F as M, a as P, b as O, c as T, d as j, e as q, f as z } from "./FieldEventInclude-Ccqwkr8z.js";
-import { computed as G, h as l } from "vue";
-import { F as J } from "./FieldMessageInclude-BJDnir34.js";
-import { S as K } from "./SkeletonInclude-BIUzAO2s.js";
-import { P as Q } from "./ProgressInclude-hQsbbhvF.js";
-import { R as U } from "./RippleInclude-Du5yIzX_.js";
-class W {
+import { F as M, a as P, b as N, c as O, d as T, e as j, f as q } from "./FieldEventInclude-Ccqwkr8z.js";
+import { computed as z, h as r } from "vue";
+import { F as G } from "./FieldMessageInclude-BJDnir34.js";
+import { S as J } from "./SkeletonInclude-BIUzAO2s.js";
+import { P as K } from "./ProgressInclude-CezBrQhM.js";
+import { R as Q } from "./RippleInclude-Du5yIzX_.js";
+class U {
   /**
    * Constructor
    * @param props input data /<br>входные данные
@@ -23,8 +23,8 @@ class W {
      *
      * Возвращает данные для иконки.
      */
-    t(this, "item", G(
-      () => D(this.getIcon(), "icon")
+    t(this, "item", z(
+      () => V(this.getIcon(), "value")
     ));
     this.props = s, this.value = e;
   }
@@ -34,11 +34,11 @@ class W {
    * Возвращает название иконки.
    */
   getIcon() {
-    if (this.value.boolean.value)
+    if (this.value.boolean.value && !this.props.loading)
       return this.props.indeterminate ? this.props.iconIndeterminate : this.props.iconCheckbox;
   }
 }
-class X {
+class W {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -64,7 +64,7 @@ class X {
    * @param constructors.FieldValidationIncludeConstructor class for creating field validation/ класс для создания валидации поля
    * @param constructors.FieldValueIncludeConstructor class for creating field value attributes/ класс для создания атрибутов значения поля
    */
-  constructor(s, e, i, o, r, a, h, u, d) {
+  constructor(s, e, i, l, o, d, a, c, h) {
     t(this, "type", "checkbox");
     t(this, "attributes");
     t(this, "change");
@@ -81,25 +81,33 @@ class X {
     t(this, "skeleton");
     t(this, "validation");
     t(this, "value");
-    this.props = s, this.refs = e, this.element = i, this.classDesign = o, this.className = r, this.components = a, this.slots = h, this.emits = u;
+    this.props = s, this.refs = e, this.element = i, this.classDesign = l, this.className = o, this.components = d, this.slots = a, this.emits = c;
     const {
-      CheckboxIconConstructor: c = W,
+      CheckboxIconConstructor: u = U,
       DescriptionConstructor: p = H,
       EnabledConstructor: m = R,
       FieldAttributesIncludeConstructor: v = M,
       FieldChangeIncludeConstructor: b = P,
-      FieldCodeIncludeConstructor: g = O,
-      FieldElementIncludeConstructor: C = T,
-      FieldEventIncludeConstructor: I = j,
-      FieldMessageConstructor: f = J,
-      FieldValidationIncludeConstructor: k = q,
-      FieldValueIncludeConstructor: F = z,
+      FieldCodeIncludeConstructor: g = N,
+      FieldElementIncludeConstructor: C = O,
+      FieldEventIncludeConstructor: I = T,
+      FieldMessageConstructor: f = G,
+      FieldValidationIncludeConstructor: k = j,
+      FieldValueIncludeConstructor: F = q,
       LabelConstructor: w = L,
-      ProgressConstructor: x = Q,
-      RippleConstructor: y = U,
-      SkeletonConstructor: S = K
-    } = d != null ? d : {};
-    this.skeleton = new S(s, o, ["classText"]), this.progress = new x(s, r, a), this.change = new b(this.props), this.elementItem = new C(this.props, this.element), this.attributes = new v(this.props), this.value = new F(
+      ProgressConstructor: x = K,
+      RippleConstructor: y = Q,
+      SkeletonConstructor: S = J
+    } = h != null ? h : {};
+    this.skeleton = new S(this.props, this.classDesign, ["classText"]), this.progress = new x(
+      this.props,
+      this.className,
+      this.components,
+      {
+        circular: !0,
+        inverse: !0
+      }
+    ), this.change = new b(this.props), this.elementItem = new C(this.props, this.element), this.attributes = new v(this.props), this.value = new F(
       this.props,
       this.refs,
       this.elementItem
@@ -120,29 +128,30 @@ class X {
       this.className,
       this.components,
       this.validation.message
-    ), this.icon = new c(this.props, this.value), this.label = new w(
+    ), this.icon = new u(this.props, this.value), this.label = new w(
       s,
-      r,
+      o,
       void 0,
-      h,
+      a,
       void 0,
       void 0,
       void 0,
       this.skeleton
     ), this.description = new p(
       s,
-      r,
-      h,
+      o,
+      a,
       this.skeleton
-    ), this.enabled = new m(s, this.progress), this.ripple = new y(r, a, this.enabled);
+    ), this.enabled = new m(s, this.progress), this.ripple = new y(o, d, this.enabled);
   }
 }
-const le = {
+const oe = {
   valueVariantHide: "0",
   // :default [!] System label / Системная метка
+  block: !0,
   itemCenter: !0
 };
-class oe extends A {
+class le extends A {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -150,11 +159,11 @@ class oe extends A {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
-  constructor(e, i, o, r = X) {
+  constructor(e, i, l, o = W) {
     super(
       e,
       i,
-      o
+      l
     );
     t(this, "item");
     /**
@@ -168,7 +177,7 @@ class oe extends A {
         ...this.renderChecked(),
         ...this.renderInfo()
       ];
-      return l("span", {
+      return r("span", {
         class: (i = this.classes) == null ? void 0 : i.value.body
       }, e);
     });
@@ -179,12 +188,12 @@ class oe extends A {
      */
     t(this, "renderInput", () => {
       var e;
-      return l("input", B(
+      return r("input", B(
         this.item.attributes.listForCheckbox.value,
         {
           class: (e = this.classes) == null ? void 0 : e.value.input,
           type: this.item.type,
-          value: this.item.value.item.value,
+          checked: this.item.value.item.value,
           onInput: this.item.event.onChecked
         }
       ));
@@ -194,7 +203,7 @@ class oe extends A {
      *
      * Рендеринг скрытого input.
      */
-    t(this, "renderInputHidden", () => l("input", {
+    t(this, "renderInputHidden", () => r("input", {
       name: this.props.name,
       type: "hidden",
       value: this.props.valueVariantHide
@@ -207,12 +216,12 @@ class oe extends A {
     t(this, "renderChecked", () => {
       var e, i;
       return [
-        l(
+        r(
           "span",
           { class: (e = this.classes) == null ? void 0 : e.value.item },
           [
             ...this.item.progress.render(),
-            l(
+            r(
               "span",
               {
                 class: [
@@ -239,7 +248,7 @@ class oe extends A {
      */
     t(this, "renderInfo", () => {
       var e;
-      return this.item.label.is.value || this.item.description.is.value ? [l(
+      return this.item.label.is.value || this.item.description.is.value ? [r(
         "span",
         { class: (e = this.classes) == null ? void 0 : e.value.info },
         [
@@ -249,7 +258,7 @@ class oe extends A {
         ]
       )] : [];
     });
-    this.item = new r(
+    this.item = new o(
       this.props,
       this.refs,
       this.element,
@@ -305,7 +314,7 @@ class oe extends A {
    */
   initRender() {
     var e;
-    return l(
+    return r(
       "label",
       {
         ...this.getAttrs(),
@@ -321,7 +330,7 @@ class oe extends A {
   }
 }
 export {
-  X as Checkbox,
-  oe as CheckboxDesign,
-  le as defaultsCheckbox
+  W as Checkbox,
+  le as CheckboxDesign,
+  oe as defaultsCheckbox
 };

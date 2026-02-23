@@ -1,11 +1,12 @@
-var A = Object.defineProperty;
-var N = (i, t, s) => t in i ? A(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
-var e = (i, t, s) => N(i, typeof t != "symbol" ? t + "" : t, s);
-import { ref as p, computed as h, watch as C, h as I } from "vue";
-import { getRef as m, toBinds as l, getBind as M, isSelected as w, DesignConstructorAbstract as S } from "@dxtmisha/functional";
-import { E as T } from "./EventClickInclude-Co8CpJqL.js";
-import { M as k } from "./ModelInclude-BiYm_iCQ.js";
-class D {
+var N = Object.defineProperty;
+var C = (i, t, s) => t in i ? N(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
+var e = (i, t, s) => C(i, typeof t != "symbol" ? t + "" : t, s);
+import { ref as u, computed as h, watch as I, h as M } from "vue";
+import { getRef as m, toBinds as l, getBind as S, isSelected as w, DesignConstructorAbstract as T } from "@dxtmisha/functional";
+import { E as k } from "./EventClickInclude-Co8CpJqL.js";
+import { M as D } from "./ModelInclude-BiYm_iCQ.js";
+import { A as p } from "./AriaStaticInclude-ZrgMZ2ja.js";
+class E {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -18,7 +19,7 @@ class D {
    */
   constructor(t, s, n, o, r, a, c) {
     /** Reference to motionAxis element expose/ Ссылка на expose элемента motionAxis */
-    e(this, "element", p());
+    e(this, "element", u());
     /** Computed selected element/ Вычисляемый выбранный элемент */
     e(this, "selectedItem", h(() => this.selected ? m(this.selected) : this.props.selected));
     /** Computed bindings for the motionAxis/ Вычисляемые привязки для motionAxis */
@@ -61,7 +62,7 @@ class D {
     this.props = t, this.className = s, this.components = n, this.emits = o, this.extra = r, this.selected = a, this.index = c;
   }
 }
-class E {
+class R {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -78,7 +79,7 @@ class E {
         class: `${this.className}__tabsNavigation`,
         itemAttrs: this.props.tabItemAttrs
       },
-      M(this.props.tabs, "list"),
+      S(this.props.tabs, "list"),
       this.props.tabsNavigationAttrs
     )));
     /**
@@ -101,14 +102,14 @@ class E {
     this.props = t, this.className = s, this.components = n, this.extra = o, this.index = r;
   }
 }
-class R {
+class _ {
   /**
    * Constructor
    * @param props input data/ входные данные
    * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    */
   constructor(t, s) {
-    e(this, "item", p());
+    e(this, "item", u());
     /**
      * Sets the selected value.
      *
@@ -126,7 +127,7 @@ class R {
     e(this, "update", () => {
       this.is(this.props.selected) || this.set(this.props.selected);
     });
-    this.props = t, this.refs = s, this.item.value = t.selected, C([this.refs.selected], this.update);
+    this.props = t, this.refs = s, this.item.value = t.selected, I([this.refs.selected], this.update);
   }
   /**
    * Checks if the value is selected.
@@ -138,7 +139,7 @@ class R {
     return w(t, this.item.value);
   }
 }
-class _ {
+class y {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -156,20 +157,20 @@ class _ {
    * @param constructors.TabsNavigationIncludeConstructor class for working with tabs navigation/ класс для работы с навигацией вкладок
    * @param constructors.TabsSelectedConstructor class for working with selected/ класс для работы с выбранным
    */
-  constructor(t, s, n, o, r, a, c, u, d) {
+  constructor(t, s, n, o, r, a, c, v, d) {
     e(this, "event");
     e(this, "motionAxis");
     e(this, "tabsNavigation");
     e(this, "selected");
-    this.props = t, this.refs = s, this.element = n, this.classDesign = o, this.className = r, this.components = a, this.slots = c, this.emits = u;
+    this.props = t, this.refs = s, this.element = n, this.classDesign = o, this.className = r, this.components = a, this.slots = c, this.emits = v;
     const {
-      EventClickIncludeConstructor: v = T,
-      ModelIncludeConstructor: x = k,
-      MotionAxisIncludeConstructor: b = D,
-      TabsNavigationIncludeConstructor: f = E,
-      TabsSelectedConstructor: g = R
+      EventClickIncludeConstructor: b = k,
+      ModelIncludeConstructor: x = D,
+      MotionAxisIncludeConstructor: f = E,
+      TabsNavigationIncludeConstructor: A = R,
+      TabsSelectedConstructor: g = _
     } = d != null ? d : {};
-    this.selected = new g(this.props, this.refs), this.event = new v(void 0, void 0, this.emits), this.tabsNavigation = new f(
+    this.selected = new g(this.props, this.refs), this.event = new b(void 0, void 0, this.emits), this.tabsNavigation = new A(
       this.props,
       this.className,
       this.components,
@@ -178,7 +179,7 @@ class _ {
         onClick: this.event.onClick,
         "onUpdate:selected": this.selected.set
       }))
-    ), this.motionAxis = new b(
+    ), this.motionAxis = new f(
       this.props,
       this.className,
       this.components,
@@ -188,8 +189,8 @@ class _ {
     ), new x("selected", this.emits, this.selected.item);
   }
 }
-const q = {};
-class z extends S {
+const F = {};
+class G extends T {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -197,7 +198,7 @@ class z extends S {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
-  constructor(s, n, o, r = _) {
+  constructor(s, n, o, r = y) {
     super(
       s,
       n,
@@ -215,9 +216,13 @@ class z extends S {
         for (const n in this.slots)
           s[n] = () => {
             var o;
-            return I(
+            return M(
               "div",
-              { class: (o = this.classes) == null ? void 0 : o.value.slide },
+              {
+                class: (o = this.classes) == null ? void 0 : o.value.slide,
+                ...p.role("tabpanel"),
+                ...p.labelledby("")
+              },
               this.initSlot(n)
             );
           };
@@ -276,7 +281,7 @@ class z extends S {
   }
 }
 export {
-  _ as Tabs,
-  z as TabsDesign,
-  q as defaultsTabs
+  y as Tabs,
+  G as TabsDesign,
+  F as defaultsTabs
 };

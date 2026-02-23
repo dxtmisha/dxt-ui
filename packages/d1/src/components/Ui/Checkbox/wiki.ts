@@ -6,11 +6,13 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'adaptive', type: 'string', option: ['rightAlways', 'rightSm', 'rightMd', 'rightLg', 'rightXl', 'right2xl'] },
   { name: 'autocapitalize', type: 'string', option: ['off', 'none', 'sentences', 'words', 'characters'] },
   { name: 'autocomplete', type: 'string' },
   { name: 'autocorrect', type: 'string', option: ['on', 'off'] },
   { name: 'autofocus', type: 'boolean' },
   { name: 'block', type: 'boolean' },
+  { name: 'container', type: 'string', option: ['rightSm', 'rightMd', 'rightLg', 'rightXl', 'right2xl'] },
   { name: 'counter', type: 'string | number' },
   { name: 'counterId', type: 'string' },
   { name: 'counterShow', type: 'boolean' },
@@ -27,8 +29,8 @@ const propsNames: StorybookProps = [
   { name: 'form', type: 'string' },
   { name: 'helperId', type: 'string' },
   { name: 'helperMessage', type: 'string' },
-  { name: 'iconCheckbox', type: 'IconValue<Icon>' },
-  { name: 'iconIndeterminate', type: 'IconValue<Icon>' },
+  { name: 'iconCheckbox', type: 'string | ConstrBind<Image> | null' },
+  { name: 'iconIndeterminate', type: 'string | ConstrBind<Image> | null' },
   { name: 'id', type: 'string | number' },
   { name: 'indeterminate', type: 'boolean' },
   { name: 'inputAttrs', type: 'Record<string, any>' },
@@ -47,7 +49,6 @@ const propsNames: StorybookProps = [
   { name: 'placeholder', type: 'string' },
   { name: 'readonly', type: 'boolean' },
   { name: 'required', type: 'boolean' },
-  { name: 'right', type: 'boolean' },
   { name: 'spellcheck', type: 'string', option: ['true', 'false'] },
   { name: 'tabindex', type: 'number' },
   { name: 'validationCode', type: 'FieldValidityCode' },

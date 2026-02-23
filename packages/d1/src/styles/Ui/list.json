@@ -7908,11 +7908,6 @@
             "name": "comp",
             "type": "var",
             "value": {
-              "size": {
-                "name": "--d1-checkbox-comp-size",
-                "type": "var",
-                "value": "{ref.spacing.4}"
-              },
               "color": {
                 "name": "--d1-checkbox-comp-color",
                 "type": "var",
@@ -7921,7 +7916,43 @@
               "colorOpacity": {
                 "name": "--d1-checkbox-comp-colorOpacity",
                 "type": "var",
+                "value": "{sys.opacity.surface.high}"
+              },
+              "backgroundColor": {
+                "name": "--d1-checkbox-comp-backgroundColor",
+                "type": "var",
+                "value": "{sys.palette.primary}"
+              },
+              "borderColor": {
+                "name": "--d1-checkbox-comp-borderColor",
+                "type": "var",
+                "value": "{??comp.backgroundColor}"
+              },
+              "borderOpacity": {
+                "name": "--d1-checkbox-comp-borderOpacity",
+                "type": "var",
                 "value": "{sys.opacity.primary.high}"
+              },
+              "checked": {
+                "name": "checked",
+                "type": "var",
+                "value": {
+                  "color": {
+                    "name": "--d1-checkbox-comp-checked-color",
+                    "type": "var",
+                    "value": "{sys.palette.onPrimary}"
+                  },
+                  "colorOpacity": {
+                    "name": "--d1-checkbox-comp-checked-colorOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.primary.high}"
+                  },
+                  "backgroundOpacity": {
+                    "name": "--d1-checkbox-comp-checked-backgroundOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.primary.high}"
+                  }
+                }
               }
             }
           },
@@ -7936,25 +7967,99 @@
               }
             }
           },
-          "&__input:checked ~ *": {
-            "name": "&__input:checked ~ *",
-            "type": "scss",
-            "value": {
-              "linkchecked": {
-                "name": "--d1-checkbox-linkchecked",
-                "type": "var",
-                "value": "{??checked}"
-              }
-            }
-          },
           "&__input:disabled ~ *": {
             "name": "&__input:disabled ~ *",
             "type": "scss",
             "value": {
-              "linkdisabled": {
-                "name": "--d1-checkbox-linkdisabled",
+              "comp": {
+                "name": "comp",
                 "type": "var",
-                "value": "{??disabled}"
+                "value": {
+                  "colorOpacity": {
+                    "name": "--d1-checkbox-comp-colorOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.surface.disabled}"
+                  },
+                  "backgroundColor": {
+                    "name": "--d1-checkbox-comp-backgroundColor",
+                    "type": "var",
+                    "value": "{sys.palette.onSurface}"
+                  },
+                  "borderColor": {
+                    "name": "--d1-checkbox-comp-borderColor",
+                    "type": "var",
+                    "value": "{??comp.backgroundColor}"
+                  },
+                  "borderOpacity": {
+                    "name": "--d1-checkbox-comp-borderOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.primary.disabled}"
+                  },
+                  "checked": {
+                    "name": "checked",
+                    "type": "var",
+                    "value": {
+                      "colorOpacity": {
+                        "name": "--d1-checkbox-comp-checked-colorOpacity",
+                        "type": "var",
+                        "value": "{sys.opacity.primary.disabled}"
+                      },
+                      "backgroundOpacity": {
+                        "name": "--d1-checkbox-comp-checked-backgroundOpacity",
+                        "type": "var",
+                        "value": "{sys.opacity.primary.disabled}"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "disabled": {
+            "name": "disabled",
+            "type": "none",
+            "value": {
+              "comp": {
+                "name": "comp",
+                "type": "var",
+                "value": {
+                  "colorOpacity": {
+                    "name": "--d1-checkbox-comp-colorOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.surface.disabled}"
+                  },
+                  "backgroundColor": {
+                    "name": "--d1-checkbox-comp-backgroundColor",
+                    "type": "var",
+                    "value": "{sys.palette.onSurface}"
+                  },
+                  "borderColor": {
+                    "name": "--d1-checkbox-comp-borderColor",
+                    "type": "var",
+                    "value": "{??comp.backgroundColor}"
+                  },
+                  "borderOpacity": {
+                    "name": "--d1-checkbox-comp-borderOpacity",
+                    "type": "var",
+                    "value": "{sys.opacity.primary.disabled}"
+                  },
+                  "checked": {
+                    "name": "checked",
+                    "type": "var",
+                    "value": {
+                      "colorOpacity": {
+                        "name": "--d1-checkbox-comp-checked-colorOpacity",
+                        "type": "var",
+                        "value": "{sys.opacity.primary.disabled}"
+                      },
+                      "backgroundOpacity": {
+                        "name": "--d1-checkbox-comp-checked-backgroundOpacity",
+                        "type": "var",
+                        "value": "{sys.opacity.primary.disabled}"
+                      }
+                    }
+                  }
+                }
               }
             }
           }

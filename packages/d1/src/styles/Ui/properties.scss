@@ -53,6 +53,9 @@
   '--d1-accordion-borderColor': ('--d1-palette-basic800'),
   '--d1-cell-borderColor': ('--d1-palette-basic800'),
   '--d1-checkbox-comp-color': ('--d1-palette-basic600'),
+  '--d1-checkbox-comp-backgroundColor': ('--d1-palette-basic600', '--d1-palette-basic950', '--d1-palette-basic950'),
+  '--d1-checkbox-comp-borderColor': ('--d1-palette-basic600', '--d1-palette-basic600', '--d1-palette-basic600'),
+  '--d1-checkbox-comp-checked-color': ('--d1-palette-basic50'),
   '--d1-field-borderColor': ('--d1-palette-basic800', '--d1-palette-basic800'),
   '--d1-field-focusWithin-color': ('--d1-palette-basic600'),
   '--d1-field-focusWithin-borderColor': ('--d1-palette-basic600'),
@@ -10052,6 +10055,12 @@
                 type: 'property',
                 value: 'var(--d1-ref-spacing-2px)',
               ),
+              'outlineStyle':(
+                index: 'outlineStyle',
+                name: 'outline-style',
+                type: 'property',
+                value: 'solid',
+              ),
               'outlineColor':(
                 index: 'outlineColor',
                 name: 'outline-color',
@@ -10077,6 +10086,12 @@
                 type: 'property',
                 value: 'var(--d1-ref-spacing-1)',
               ),
+              'outlineStyle':(
+                index: 'outlineStyle',
+                name: 'outline-style',
+                type: 'property',
+                value: 'solid',
+              ),
               'outlineColor':(
                 index: 'outlineColor',
                 name: 'outline-color',
@@ -10101,6 +10116,12 @@
                 name: 'outline-width',
                 type: 'property',
                 value: 'var(--d1-ref-spacing-2)',
+              ),
+              'outlineStyle':(
+                index: 'outlineStyle',
+                name: 'outline-style',
+                type: 'property',
+                value: 'solid',
               ),
               'outlineColor':(
                 index: 'outlineColor',

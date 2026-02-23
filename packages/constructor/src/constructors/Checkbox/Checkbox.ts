@@ -115,8 +115,16 @@ export class Checkbox {
       SkeletonConstructor = SkeletonInclude
     } = constructors ?? {}
 
-    this.skeleton = new SkeletonConstructor(props, classDesign, ['classText'])
-    this.progress = new ProgressConstructor(props, className, components)
+    this.skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classText'])
+    this.progress = new ProgressConstructor(
+      this.props,
+      this.className,
+      this.components,
+      {
+        circular: true,
+        inverse: true
+      }
+    )
     this.change = new FieldChangeIncludeConstructor(this.props)
 
     this.elementItem = new FieldElementIncludeConstructor(this.props, this.element)

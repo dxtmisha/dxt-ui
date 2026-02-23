@@ -5,6 +5,7 @@
     @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
     
     outline-width: var(--d1-ref-spacing-2px);
+    outline-style: solid;
     @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
   }
   
@@ -12,6 +13,7 @@
     @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
     
     outline-width: var(--d1-ref-spacing-1);
+    outline-style: solid;
     @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
   }
   
@@ -19,6 +21,7 @@
     @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
     
     outline-width: var(--d1-ref-spacing-2);
+    outline-style: solid;
     @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
   }
 }

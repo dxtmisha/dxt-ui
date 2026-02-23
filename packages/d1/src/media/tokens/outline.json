@@ -1,15 +1,18 @@
 {
   "sm": {
+    "outline-style": "solid",
     "outline-width": "{ref.spacing.2px}",
     "outline-color": "{sys.palette.primary}",
     "outline-opacity": "{sys.opacity.outline}"
   },
   "md": {
+    "outline-style": "solid",
     "outline-width": "{ref.spacing.1}",
     "outline-color": "{sys.palette.primary}",
     "outline-opacity": "{sys.opacity.outline}"
   },
   "lg": {
+    "outline-style": "solid",
     "outline-width": "{ref.spacing.2}",
     "outline-color": "{sys.palette.primary}",
     "outline-opacity": "{sys.opacity.outline}"
