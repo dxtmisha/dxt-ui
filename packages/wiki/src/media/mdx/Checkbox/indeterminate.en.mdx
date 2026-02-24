@@ -1,0 +1,61 @@
+## Indeterminate state
+
+The `indeterminate` property controls the third checkbox state — indeterminate (partially selected). This state is visually displayed as a horizontal line instead of a checkmark.
+
+**Properties:**
+
+- `indeterminate` — enables the indeterminate state of the checkbox
+- `iconIndeterminate` — custom icon for the indeterminate state
+- `value` — remains `null` or a special value in the indeterminate state
+
+The indeterminate state is typically used for parent checkboxes in a group when only some child elements are selected.
+
+```html
+<script setup>
+import { ref, computed } from 'vue'
+
+const items = ref([
+  { id: 1, label: 'Item 1', checked: true },
+  { id: 2, label: 'Item 2', checked: false },
+  { id: 3, label: 'Item 3', checked: true }
+])
+
+const allChecked = computed({
+  get: () => items.value.every(item => item.checked),
+  set: (value) => {
+    items.value.forEach(item => item.checked = value)
+  }
+})
+
+const indeterminate = computed(() => {
+  const checkedCount = items.value.filter(item => item.checked).length
+  return checkedCount > 0 && checkedCount < items.value.length
+})
+</script>
+
+<template>
+  <!-- Parent checkbox with partial selection indicator -->
+  <Checkbox
+    v-model="allChecked"
+    :indeterminate="indeterminate"
+    label="Select all"
+  />
+
+  <!-- Child checkboxes -->
+  <div style="margin-left: 24px">
+    <Checkbox
+      v-for="item in items"
+      :key="item.id"
+      v-model="item.checked"
+      :label="item.label"
+    />
+  </div>
+
+  <!-- Using with custom icon -->
+  <Checkbox
+    indeterminate
+    iconIndeterminate="remove"
+    label="Partially selected"
+  />
+</template>
+```

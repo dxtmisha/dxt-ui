@@ -1,0 +1,64 @@
+## Управление значениями
+
+Свойства `value`, `valueVariant` и `valueVariantHide` предназначены для управления значениями чекбокса при отправке форм и работе с двусторонней привязкой данных.
+
+**Свойства:**
+
+- `value` — текущее состояние чекбокса (true/false или пользовательские значения)
+- `valueVariant` — значение, которое передаётся при отмеченном чекбоксе
+- `valueVariantHide` — значение, которое передаётся при неотмеченном чекбоксе (по умолчанию: "0")
+
+Свойства работают совместно: `value` определяет текущее состояние чекбокса и работает с `v-model` для двусторонней привязки. `valueVariant` позволяет установить пользовательское значение для отмеченного состояния (например, "yes", "1", "active"), которое будет передано при отправке формы. `valueVariantHide` автоматически создаёт скрытое поле input с указанным значением, которое отправляется, когда чекбокс не отмечен, обеспечивая наличие данных в форме даже при неактивном чекбоксе.
+
+```html
+<script setup>
+import { ref } from 'vue'
+
+const agreed = ref(false)
+const formData = ref({})
+
+const handleSubmit = () => {
+  console.log('Form data:', formData.value)
+}
+</script>
+
+<template>
+  <!-- Стандартное использование с boolean -->
+  <Checkbox
+    v-model="agreed"
+    name="terms"
+    label="Согласен с условиями"
+  />
+  <!-- value: true/false -->
+
+  <!-- Пользовательские значения для формы -->
+  <Checkbox
+    name="subscribe"
+    label="Подписаться на рассылку"
+    valueVariant="yes"
+    valueVariantHide="no"
+  />
+  <!-- При отметке отправит: subscribe=yes -->
+  <!-- Без отметки отправит: subscribe=no -->
+
+  <!-- Числовые значения -->
+  <Checkbox
+    name="notification"
+    label="Включить уведомления"
+    valueVariant="1"
+    valueVariantHide="0"
+  />
+  <!-- При отметке отправит: notification=1 -->
+  <!-- Без отметки отправит: notification=0 -->
+
+  <!-- Без скрытого значения -->
+  <Checkbox
+    name="optional"
+    label="Опциональная настройка"
+    valueVariant="enabled"
+    :valueVariantHide="null"
+  />
+  <!-- Отправляется только при отметке: optional=enabled -->
+  <!-- Без отметки поле не отправляется -->
+</template>
+```

@@ -52,7 +52,7 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
         <div class="wiki-storybook-flex-column">
           <DesignComponent label="Unchecked" />
           <DesignComponent label="Checked" :value="true" />
-          <DesignComponent label="Indeterminate" indeterminate />
+          <DesignComponent label="Indeterminate" indeterminate :value="true" />
           <DesignComponent label="Disabled" disabled />
           <DesignComponent label="Disabled & Checked" :value="true" disabled />
         </div>
@@ -162,6 +162,14 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Checkbox'} type={'checkbox'}/>
 <Canvas of={Component.CheckboxBasic}/>
 
+<StorybookDescriptions componentName={'Checkbox'} type={'value'}/>
+<StorybookDescriptions componentName={'Checkbox'} type={'indeterminate'}/>
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Component.CheckboxVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Component.CheckboxSkeleton}/>
+
 <StorybookDescriptions componentName={'Checkbox'} type={'label'}/>
 <StorybookDescriptions componentName={'Checkbox'} type={'description'}/>
 <Canvas of={Component.CheckboxWithDescription}/>
@@ -172,12 +180,6 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Checkbox'} type={'states'}/>
 <Canvas of={Component.CheckboxStates}/>
 
-<StorybookDescriptions componentName={'Value'} type={'value'}/>
-<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
-<Canvas of={Component.CheckboxVModel}/>
-
-<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
-<Canvas of={Component.CheckboxSkeleton}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'input'}/>
