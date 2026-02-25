@@ -128,9 +128,9 @@ class l {
    * @param isInvalid is invalid/ является недействительным
    */
   static invalid(a = !0) {
-    return {
+    return a ? {
       "aria-invalid": this.isTrueOrFalse(a)
-    };
+    } : {};
   }
   /**
    * Get control role.

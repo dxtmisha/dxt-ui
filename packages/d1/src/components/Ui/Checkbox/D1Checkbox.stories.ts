@@ -55,45 +55,6 @@ export const CheckboxBasic: Story = {
     `
   })
 }
-export const CheckboxWithDescription: Story = {
-  name: 'С описанием',
-  render: () => ({
-    components: { D1Checkbox },
-    template: `
-        <div class="wiki-storybook-flex-column">
-          <D1Checkbox
-            label="Accept terms"
-            description="I agree to the terms and conditions"
-          />
-          <D1Checkbox
-            label="Subscribe"
-            description="Get updates and newsletters"
-            :value="true"
-          />
-        </div>
-    `
-  })
-}
-export const CheckboxValidation: Story = {
-  name: 'Валидация',
-  render: () => ({
-    components: { D1Checkbox },
-    template: `
-        <div class="wiki-storybook-flex-column">
-          <D1Checkbox
-            label="Required field"
-            required
-            validationMessage="This field is required"
-          />
-          <D1Checkbox
-            label="Valid checkbox"
-            :value="true"
-            required
-          />
-        </div>
-    `
-  })
-}
 export const CheckboxStates: Story = {
   name: 'Состояния',
   render: () => ({
@@ -104,6 +65,7 @@ export const CheckboxStates: Story = {
           <D1Checkbox label="Focus" focus />
           <D1Checkbox label="Disabled" disabled />
           <D1Checkbox label="Loading" loading />
+          <D1Checkbox label="Readonly" readonly />
         </div>
     `
   })
@@ -124,11 +86,11 @@ export const CheckboxVModel: Story = {
             <button class="wiki-storybook-button" @click="checkboxValue = true">Check</button>
             <button class="wiki-storybook-button" @click="checkboxValue = false">Uncheck</button>
           </div>
+          <div>Value: {{ checkboxValue }}</div>
           <D1Checkbox
             v-model="checkboxValue"
             label="Checkbox with v-model"
           />
-          <div>Value: {{ checkboxValue }}</div>
         </div>
     `
   })

@@ -156,9 +156,13 @@ export class AriaStaticInclude {
    * @param isInvalid is invalid/ является недействительным
    */
   static invalid(isInvalid: boolean = true): AriaList {
-    return {
-      'aria-invalid': this.isTrueOrFalse(isInvalid)
+    if (isInvalid) {
+      return {
+        'aria-invalid': this.isTrueOrFalse(isInvalid)
+      }
     }
+
+    return {}
   }
 
   /**

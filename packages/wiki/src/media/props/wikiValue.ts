@@ -118,7 +118,7 @@ export const wikiValue: StorybookArgsToList = {
       }
     },
     isDemo: true,
-    demo: {
+    demoOptions: {
       value: true
     }
   },

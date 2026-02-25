@@ -676,7 +676,7 @@ class N {
    * Проверяет, возможно ли изменение значения.
    */
   isEnabled() {
-    return this.props.disabled !== !0;
+    return this.props.disabled !== !0 && this.props.readonly !== !0;
   }
   /**
    * Returns input data.

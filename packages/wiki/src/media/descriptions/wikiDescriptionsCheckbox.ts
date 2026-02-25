@@ -38,9 +38,6 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
   import: [
     'import { ref } from \'vue\''
   ],
-  render: `
-      <DesignComponent v-bind="args" />
-    `,
   stories: [
     {
       id: 'CheckboxBasic',
@@ -59,47 +56,6 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
       `
     },
     {
-      id: 'CheckboxWithDescription',
-      name: {
-        en: 'With description',
-        ru: 'С описанием'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            label="Accept terms"
-            description="I agree to the terms and conditions"
-          />
-          <DesignComponent
-            label="Subscribe"
-            description="Get updates and newsletters"
-            :value="true"
-          />
-        </div>
-      `
-    },
-    {
-      id: 'CheckboxValidation',
-      name: {
-        en: 'Validation',
-        ru: 'Валидация'
-      },
-      template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            label="Required field"
-            required
-            validationMessage="This field is required"
-          />
-          <DesignComponent
-            label="Valid checkbox"
-            :value="true"
-            required
-          />
-        </div>
-      `
-    },
-    {
       id: 'CheckboxStates',
       name: {
         en: 'States',
@@ -111,6 +67,7 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
           <DesignComponent label="Focus" focus />
           <DesignComponent label="Disabled" disabled />
           <DesignComponent label="Loading" loading />
+          <DesignComponent label="Readonly" readonly />
         </div>
       `
     },
@@ -132,11 +89,11 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
             <button class="wiki-storybook-button" @click="checkboxValue = true">Check</button>
             <button class="wiki-storybook-button" @click="checkboxValue = false">Uncheck</button>
           </div>
+          <div>Value: {{ checkboxValue }}</div>
           <DesignComponent
             v-model="checkboxValue"
             label="Checkbox with v-model"
           />
-          <div>Value: {{ checkboxValue }}</div>
         </div>
       `
     },
@@ -161,6 +118,7 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'Checkbox'} type={'checkbox'}/>
 <Canvas of={Component.CheckboxBasic}/>
+<Canvas of={Component.CheckboxStates}/>
 
 <StorybookDescriptions componentName={'Checkbox'} type={'value'}/>
 <StorybookDescriptions componentName={'Checkbox'} type={'indeterminate'}/>
@@ -169,17 +127,6 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
 
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={Component.CheckboxSkeleton}/>
-
-<StorybookDescriptions componentName={'Checkbox'} type={'label'}/>
-<StorybookDescriptions componentName={'Checkbox'} type={'description'}/>
-<Canvas of={Component.CheckboxWithDescription}/>
-
-<StorybookDescriptions componentName={'Checkbox'} type={'validation'}/>
-<Canvas of={Component.CheckboxValidation}/>
-
-<StorybookDescriptions componentName={'Checkbox'} type={'states'}/>
-<Canvas of={Component.CheckboxStates}/>
-
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'input'}/>

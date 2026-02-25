@@ -3,7 +3,7 @@ var k = (n, t, e) => t in n ? w(n, t, { enumerable: !0, configurable: !0, writab
 var i = (n, t, e) => k(n, typeof t != "symbol" ? t + "" : t, e);
 import { ref as u, computed as d, watch as f, nextTick as m, toRef as F, onMounted as A } from "vue";
 import { toBinds as g, getRef as v, isSelected as D, toArray as T, isDomRuntime as $, EventItem as L, ListDataRef as R, DesignConstructorAbstract as z } from "@dxtmisha/functional";
-import { A as E } from "./AriaStaticInclude-ZrgMZ2ja.js";
+import { A as E } from "./AriaStaticInclude-DRHG8ILX.js";
 import { E as B } from "./EventClickInclude-Co8CpJqL.js";
 import { M as P } from "./ModelInclude-BiYm_iCQ.js";
 class H {

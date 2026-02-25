@@ -200,6 +200,7 @@ export class FieldEventInclude {
    */
   protected isEnabled(): boolean {
     return this.props.disabled !== true
+      && this.props.readonly !== true
   }
 
   /**

@@ -18,6 +18,7 @@ import {
   type CheckboxExpose,
   type CheckboxSlots
 } from './types'
+import { AriaStaticInclude } from '../../library'
 
 /**
  * CheckboxDesign
@@ -28,14 +29,14 @@ export class CheckboxDesign<
   CLASSES extends CheckboxClasses,
   P extends CheckboxPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    CheckboxEmits,
-    EXPOSE,
-    CheckboxSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  CheckboxEmits,
+  EXPOSE,
+  CheckboxSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Checkbox
 
   /**
@@ -164,7 +165,8 @@ export class CheckboxDesign<
         class: this.classes?.value.input,
         type: this.item.type,
         checked: this.item.value.item.value,
-        onInput: this.item.event.onChecked
+        onInput: this.item.event.onChecked,
+        ...AriaStaticInclude.invalid(this.item.validation.isError())
       }
     ))
   }
@@ -191,7 +193,10 @@ export class CheckboxDesign<
     return [
       h(
         'span',
-        { class: this.classes?.value.item },
+        {
+          class: this.classes?.value.item,
+          ...AriaStaticInclude.hidden()
+        },
         [
           ...this.item.progress.render(),
           h(

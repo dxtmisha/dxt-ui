@@ -9,11 +9,11 @@
   position: relative;
 
   &__input {
-    position: absolute;
+    @include ui.absolute;
     opacity: 0;
     cursor: default;
 
-    &:not(:disabled) ~ * {
+    &:not(:disabled)~* {
       cursor: pointer;
     }
   }
@@ -41,7 +41,7 @@
 
     transition: inherit;
 
-    > * {
+    >* {
       opacity: ui.v('??iconOpacity');
       clip-path: ui.v('??iconClip');
       @include ui.scale(ui.v('??iconScale'));
@@ -57,7 +57,7 @@
     display: block;
   }
 
-  &__loading#{'.'}#{ui.n('?progress--visible')} ~ &__item &__icon > * {
+  &__loading#{'.'}#{ui.n('?progress--visible')}~&__item &__icon>* {
     opacity: ui.v('??colorOpacity', 0);
   }
 
@@ -65,11 +65,16 @@
     transition-duration: ui.v('d.sys.transitionDuration.sm');
   }
 
-  input:checked ~ * {
+  input:checked~* {
     @include ui.initByCustom('iconOpacity', 1);
     @include ui.initByCustom('iconClip', #{inset(0 0 0 0)});
     @include ui.initByCustom('iconScale', 1);
     transition-property: background-color, border-color, clip-path;
+  }
+
+  &:has(input[readonly]) {
+    cursor: default;
+    pointer-events: none;
   }
 
   &--required {
@@ -85,7 +90,7 @@
     @include ui.subclass('body') {
       align-items: center;
 
-      & > * {
+      &>* {
         padding-top: 0 !important;
         padding-bottom: 0 !important;
       }

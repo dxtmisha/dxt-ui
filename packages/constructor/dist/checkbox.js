@@ -1,17 +1,18 @@
 var D = Object.defineProperty;
-var E = (n, s, e) => s in n ? D(n, s, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[s] = e;
-var t = (n, s, e) => E(n, typeof s != "symbol" ? s + "" : s, e);
-import { getBind as V, DesignConstructorAbstract as B, toBinds as A } from "@dxtmisha/functional";
-import { D as H } from "./DescriptionInclude-D4ane9aR.js";
-import { E as R } from "./EnabledInclude-DIc_ZLNR.js";
-import { L } from "./LabelInclude-D-mLvjK5.js";
-import { F as M, a as P, b as N, c as O, d as T, e as j, f as q } from "./FieldEventInclude-Ccqwkr8z.js";
-import { computed as z, h as r } from "vue";
-import { F as G } from "./FieldMessageInclude-BJDnir34.js";
-import { S as J } from "./SkeletonInclude-BIUzAO2s.js";
-import { P as K } from "./ProgressInclude-CezBrQhM.js";
-import { R as Q } from "./RippleInclude-Du5yIzX_.js";
-class U {
+var V = (n, s, e) => s in n ? D(n, s, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[s] = e;
+var t = (n, s, e) => V(n, typeof s != "symbol" ? s + "" : s, e);
+import { getBind as A, DesignConstructorAbstract as B, toBinds as H } from "@dxtmisha/functional";
+import { D as R } from "./DescriptionInclude-D4ane9aR.js";
+import { E as L } from "./EnabledInclude-B9oXYBtR.js";
+import { L as M } from "./LabelInclude-D-mLvjK5.js";
+import { F as P, a as N, b as O, c as T, d as j, e as q, f as z } from "./FieldEventInclude-h5Fg7306.js";
+import { computed as G, h as r } from "vue";
+import { F as J } from "./FieldMessageInclude-BJDnir34.js";
+import { S as K } from "./SkeletonInclude-BIUzAO2s.js";
+import { P as Q } from "./ProgressInclude-DlEbC7XP.js";
+import { R as U } from "./RippleInclude-Du5yIzX_.js";
+import { A as c } from "./AriaStaticInclude-DRHG8ILX.js";
+class W {
   /**
    * Constructor
    * @param props input data /<br>входные данные
@@ -23,8 +24,8 @@ class U {
      *
      * Возвращает данные для иконки.
      */
-    t(this, "item", z(
-      () => V(this.getIcon(), "value")
+    t(this, "item", G(
+      () => A(this.getIcon(), "value")
     ));
     this.props = s, this.value = e;
   }
@@ -38,7 +39,7 @@ class U {
       return this.props.indeterminate ? this.props.iconIndeterminate : this.props.iconCheckbox;
   }
 }
-class W {
+class X {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -64,7 +65,7 @@ class W {
    * @param constructors.FieldValidationIncludeConstructor class for creating field validation/ класс для создания валидации поля
    * @param constructors.FieldValueIncludeConstructor class for creating field value attributes/ класс для создания атрибутов значения поля
    */
-  constructor(s, e, i, l, o, d, a, c, h) {
+  constructor(s, e, i, l, o, d, a, u, h) {
     t(this, "type", "checkbox");
     t(this, "attributes");
     t(this, "change");
@@ -81,25 +82,25 @@ class W {
     t(this, "skeleton");
     t(this, "validation");
     t(this, "value");
-    this.props = s, this.refs = e, this.element = i, this.classDesign = l, this.className = o, this.components = d, this.slots = a, this.emits = c;
+    this.props = s, this.refs = e, this.element = i, this.classDesign = l, this.className = o, this.components = d, this.slots = a, this.emits = u;
     const {
-      CheckboxIconConstructor: u = U,
-      DescriptionConstructor: p = H,
-      EnabledConstructor: m = R,
-      FieldAttributesIncludeConstructor: v = M,
-      FieldChangeIncludeConstructor: g = P,
-      FieldCodeIncludeConstructor: b = N,
-      FieldElementIncludeConstructor: C = O,
-      FieldEventIncludeConstructor: I = T,
-      FieldMessageConstructor: f = G,
-      FieldValidationIncludeConstructor: k = j,
-      FieldValueIncludeConstructor: F = q,
-      LabelConstructor: w = L,
-      ProgressConstructor: x = K,
-      RippleConstructor: y = Q,
-      SkeletonConstructor: S = J
+      CheckboxIconConstructor: p = W,
+      DescriptionConstructor: m = R,
+      EnabledConstructor: v = L,
+      FieldAttributesIncludeConstructor: g = P,
+      FieldChangeIncludeConstructor: b = N,
+      FieldCodeIncludeConstructor: C = O,
+      FieldElementIncludeConstructor: I = T,
+      FieldEventIncludeConstructor: f = j,
+      FieldMessageConstructor: k = J,
+      FieldValidationIncludeConstructor: F = q,
+      FieldValueIncludeConstructor: w = z,
+      LabelConstructor: S = M,
+      ProgressConstructor: x = Q,
+      RippleConstructor: y = U,
+      SkeletonConstructor: E = K
     } = h != null ? h : {};
-    this.skeleton = new S(this.props, this.classDesign, ["classText"]), this.progress = new x(
+    this.skeleton = new E(this.props, this.classDesign, ["classText"]), this.progress = new x(
       this.props,
       this.className,
       this.components,
@@ -107,28 +108,28 @@ class W {
         circular: !0,
         inverse: !0
       }
-    ), this.change = new g(this.props), this.elementItem = new C(this.props, this.element), this.attributes = new v(this.props), this.value = new F(
+    ), this.change = new b(this.props), this.elementItem = new I(this.props, this.element), this.attributes = new g(this.props), this.value = new w(
       this.props,
       this.refs,
       this.elementItem
-    ), this.code = new b(this.props), this.validation = new k(
+    ), this.code = new C(this.props), this.validation = new F(
       this.props,
       this.attributes,
       this.value,
       this.change,
       this.code
-    ), this.event = new I(
+    ), this.event = new f(
       this.props,
       this.change,
       this.value,
       this.validation,
       this.emits
-    ), this.message = new f(
+    ), this.message = new k(
       this.props,
       this.className,
       this.components,
       this.validation.message
-    ), this.icon = new u(this.props, this.value), this.label = new w(
+    ), this.icon = new p(this.props, this.value), this.label = new S(
       s,
       o,
       void 0,
@@ -137,21 +138,21 @@ class W {
       void 0,
       void 0,
       this.skeleton
-    ), this.description = new p(
+    ), this.description = new m(
       s,
       o,
       a,
       this.skeleton
-    ), this.enabled = new m(s, this.progress), this.ripple = new y(o, d, this.enabled);
+    ), this.enabled = new v(s, this.progress), this.ripple = new y(o, d, this.enabled);
   }
 }
-const oe = {
+const ae = {
   valueVariantHide: "0",
   // :default [!] System label / Системная метка
   block: !0,
   itemCenter: !0
 };
-class le extends B {
+class he extends B {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -159,7 +160,7 @@ class le extends B {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
-  constructor(e, i, l, o = W) {
+  constructor(e, i, l, o = X) {
     super(
       e,
       i,
@@ -188,13 +189,14 @@ class le extends B {
      */
     t(this, "renderInput", () => {
       var e;
-      return r("input", A(
+      return r("input", H(
         this.item.attributes.listForCheckbox.value,
         {
           class: (e = this.classes) == null ? void 0 : e.value.input,
           type: this.item.type,
           checked: this.item.value.item.value,
-          onInput: this.item.event.onChecked
+          onInput: this.item.event.onChecked,
+          ...c.invalid(this.item.validation.isError())
         }
       ));
     });
@@ -218,7 +220,10 @@ class le extends B {
       return [
         r(
           "span",
-          { class: (e = this.classes) == null ? void 0 : e.value.item },
+          {
+            class: (e = this.classes) == null ? void 0 : e.value.item,
+            ...c.hidden()
+          },
           [
             ...this.item.progress.render(),
             r(
@@ -330,7 +335,7 @@ class le extends B {
   }
 }
 export {
-  W as Checkbox,
-  le as CheckboxDesign,
-  oe as defaultsCheckbox
+  X as Checkbox,
+  he as CheckboxDesign,
+  ae as defaultsCheckbox
 };

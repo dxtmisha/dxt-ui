@@ -5,7 +5,7 @@ import { ref as u, computed as h, watch as I, h as M } from "vue";
 import { getRef as m, toBinds as l, getBind as S, isSelected as w, DesignConstructorAbstract as T } from "@dxtmisha/functional";
 import { E as k } from "./EventClickInclude-Co8CpJqL.js";
 import { M as D } from "./ModelInclude-BiYm_iCQ.js";
-import { A as p } from "./AriaStaticInclude-ZrgMZ2ja.js";
+import { A as p } from "./AriaStaticInclude-DRHG8ILX.js";
 class E {
   /**
    * Constructor
