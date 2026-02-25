@@ -33,6 +33,7 @@
     "preview": "vite preview",
     "package-library": "dxt-package library",
     "package-project": "dxt-package project",
+    "package-figma": "dxt-package figma",
     "build-functional": "dxt-build-functional",
     "prepublishOnly": "npm run build"
   },
