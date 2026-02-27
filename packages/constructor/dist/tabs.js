@@ -1,11 +1,11 @@
 var N = Object.defineProperty;
-var C = (i, t, s) => t in i ? N(i, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : i[t] = s;
-var e = (i, t, s) => C(i, typeof t != "symbol" ? t + "" : t, s);
-import { ref as u, computed as h, watch as I, h as M } from "vue";
+var C = (n, t, s) => t in n ? N(n, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[t] = s;
+var e = (n, t, s) => C(n, typeof t != "symbol" ? t + "" : t, s);
+import { ref as p, computed as a, watch as I, h as M } from "vue";
 import { getRef as m, toBinds as l, getBind as S, isSelected as w, DesignConstructorAbstract as T } from "@dxtmisha/functional";
-import { E as k } from "./EventClickInclude-Co8CpJqL.js";
+import { E as k } from "./EventClickInclude-DMbEP-nH.js";
 import { M as D } from "./ModelInclude-BiYm_iCQ.js";
-import { A as p } from "./AriaStaticInclude-DRHG8ILX.js";
+import { A as u } from "./AriaStaticInclude-DRHG8ILX.js";
 class E {
   /**
    * Constructor
@@ -17,13 +17,13 @@ class E {
    * @param selected selected element/ выбранный элемент
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(t, s, n, o, r, a, c) {
+  constructor(t, s, o, i, r, h, c) {
     /** Reference to motionAxis element expose/ Ссылка на expose элемента motionAxis */
-    e(this, "element", u());
+    e(this, "element", p());
     /** Computed selected element/ Вычисляемый выбранный элемент */
-    e(this, "selectedItem", h(() => this.selected ? m(this.selected) : this.props.selected));
+    e(this, "selectedItem", a(() => this.selected ? m(this.selected) : this.props.selected));
     /** Computed bindings for the motionAxis/ Вычисляемые привязки для motionAxis */
-    e(this, "binds", h(() => l(
+    e(this, "binds", a(() => l(
       m(this.extra),
       {
         class: `${this.className}__motionAxis`
@@ -59,7 +59,7 @@ class E {
       var s;
       (s = this.emits) == null || s.call(this, "motionAxis", t);
     });
-    this.props = t, this.className = s, this.components = n, this.emits = o, this.extra = r, this.selected = a, this.index = c;
+    this.props = t, this.className = s, this.components = o, this.emits = i, this.extra = r, this.selected = h, this.index = c;
   }
 }
 class R {
@@ -71,9 +71,11 @@ class R {
    * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(t, s, n, o, r) {
+  constructor(t, s, o, i, r) {
+    /** Reference to tabsNavigation element expose/ Ссылка на expose элемента tabsNavigation */
+    e(this, "element", p());
     /** Computed bindings for the tabsNavigation/ Вычисляемые привязки для tabsNavigation */
-    e(this, "binds", h(() => l(
+    e(this, "binds", a(() => l(
       m(this.extra),
       {
         class: `${this.className}__tabsNavigation`,
@@ -83,6 +85,15 @@ class R {
       this.props.tabsNavigationAttrs
     )));
     /**
+     * List of generated IDs.
+     *
+     * Список сгенерированных идентификаторов.
+     */
+    e(this, "ids", a(() => {
+      var t;
+      return (t = this.element.value) == null ? void 0 : t.ids;
+    }));
+    /**
      * Render the TabsNavigation component with slots/
      * Рендер компонента TabsNavigation со слотами
      * @param slotsChildren slots passed to the tabsNavigation/ слоты, передаваемые tabsNavigation
@@ -90,16 +101,15 @@ class R {
      */
     e(this, "render", (t, s) => this.components ? this.components.render(
       "tabsNavigation",
-      {
-        ...l(
-          s,
-          this.binds.value
-        )
-      },
+      l(
+        s,
+        this.binds.value,
+        { ref: this.element }
+      ),
       t,
       this.index
     ) : []);
-    this.props = t, this.className = s, this.components = n, this.extra = o, this.index = r;
+    this.props = t, this.className = s, this.components = o, this.extra = i, this.index = r;
   }
 }
 class _ {
@@ -109,7 +119,7 @@ class _ {
    * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    */
   constructor(t, s) {
-    e(this, "item", u());
+    e(this, "item", p());
     /**
      * Sets the selected value.
      *
@@ -157,24 +167,24 @@ class y {
    * @param constructors.TabsNavigationIncludeConstructor class for working with tabs navigation/ класс для работы с навигацией вкладок
    * @param constructors.TabsSelectedConstructor class for working with selected/ класс для работы с выбранным
    */
-  constructor(t, s, n, o, r, a, c, v, d) {
+  constructor(t, s, o, i, r, h, c, v, d) {
     e(this, "event");
     e(this, "motionAxis");
     e(this, "tabsNavigation");
     e(this, "selected");
-    this.props = t, this.refs = s, this.element = n, this.classDesign = o, this.className = r, this.components = a, this.slots = c, this.emits = v;
+    this.props = t, this.refs = s, this.element = o, this.classDesign = i, this.className = r, this.components = h, this.slots = c, this.emits = v;
     const {
       EventClickIncludeConstructor: b = k,
       ModelIncludeConstructor: x = D,
       MotionAxisIncludeConstructor: f = E,
-      TabsNavigationIncludeConstructor: A = R,
-      TabsSelectedConstructor: g = _
+      TabsNavigationIncludeConstructor: g = R,
+      TabsSelectedConstructor: A = _
     } = d != null ? d : {};
-    this.selected = new g(this.props, this.refs), this.event = new b(void 0, void 0, this.emits), this.tabsNavigation = new A(
+    this.selected = new A(this.props, this.refs), this.event = new b(void 0, void 0, this.emits), this.tabsNavigation = new g(
       this.props,
       this.className,
       this.components,
-      h(() => ({
+      a(() => ({
         selected: this.selected.item.value,
         onClick: this.event.onClick,
         "onUpdate:selected": this.selected.set
@@ -185,7 +195,7 @@ class y {
       this.components,
       this.emits,
       void 0,
-      h(() => String(this.selected.item.value))
+      a(() => String(this.selected.item.value))
     ), new x("selected", this.emits, this.selected.item);
   }
 }
@@ -198,11 +208,11 @@ class G extends T {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
-  constructor(s, n, o, r = y) {
+  constructor(s, o, i, r = y) {
     super(
       s,
-      n,
-      o
+      o,
+      i
     );
     e(this, "item");
     /**
@@ -211,22 +221,25 @@ class G extends T {
      * Рендеринг слайдов.
      */
     e(this, "slidesRender", () => {
+      var s;
       if (this.slots) {
-        const s = {};
-        for (const n in this.slots)
-          s[n] = () => {
-            var o;
+        const o = {};
+        for (const i in this.slots) {
+          const r = (s = this.item.tabsNavigation.ids.value) == null ? void 0 : s[i];
+          o[i] = () => {
+            var h;
             return M(
               "div",
               {
-                class: (o = this.classes) == null ? void 0 : o.value.slide,
-                ...p.role("tabpanel"),
-                ...p.labelledby("")
+                class: (h = this.classes) == null ? void 0 : h.value.slide,
+                ...u.role("tabpanel"),
+                ...u.labelledby(r)
               },
-              this.initSlot(n)
+              this.initSlot(i)
             );
           };
-        return s;
+        }
+        return o;
       }
     });
     this.item = new r(
@@ -274,10 +287,10 @@ class G extends T {
    * Метод для рендеринга.
    */
   initRender() {
-    return [
+    return this.item.tabsNavigation.ids.value ? [
       ...this.item.tabsNavigation.render(),
       ...this.item.motionAxis.render(this.slidesRender())
-    ];
+    ] : this.item.tabsNavigation.render();
   }
 }
 export {

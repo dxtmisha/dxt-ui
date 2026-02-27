@@ -1,5 +1,5 @@
 import { ToRefs } from 'vue';
-import { ConstrEmit } from '@dxtmisha/functional';
+import { ConstrEmit, ConstrHrefProps } from '@dxtmisha/functional';
 import { EnabledInclude } from './EnabledInclude';
 import { EventClickEmits, EventClickExpose, EventClickProps, EventClickValue } from '../types/eventClickTypes';
 /**
@@ -27,6 +27,7 @@ export declare class EventClickInclude {
     get binds(): {
         onClick: (event: MouseEvent, options?: EventClickValue) => void;
         onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void;
+        href?: string;
     };
     /**
      * Exported values
@@ -34,6 +35,12 @@ export declare class EventClickInclude {
      * Экспортируемые значения
      */
     get expose(): EventClickExpose;
+    /**
+     * Returns the link value
+     *
+     * Возвращает значение ссылки
+     */
+    getHref(): ConstrHrefProps;
     /**
      * Event trigger function
      *

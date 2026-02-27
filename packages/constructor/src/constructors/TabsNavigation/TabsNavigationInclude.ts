@@ -1,4 +1,4 @@
-import { computed, type VNode } from 'vue'
+import { computed, ref, type VNode } from 'vue'
 import {
   type ConstrBind,
   type DesignComponents,
@@ -10,9 +10,10 @@ import {
 
 import type {
   TabsNavigationComponentInclude,
+  TabsNavigationIdsList,
   TabsNavigationPropsInclude
 } from './basicTypes'
-import type { TabsNavigationSlots } from './types'
+import type { TabsNavigationExpose, TabsNavigationSlots } from './types'
 import type { TabsNavigationProps } from './props'
 
 /**
@@ -41,6 +42,9 @@ export class TabsNavigationInclude<
   ) {
   }
 
+  /** Reference to tabsNavigation element expose/ Ссылка на expose элемента tabsNavigation */
+  readonly element = ref<ConstrBind<TabsNavigationExpose> | undefined>()
+
   /** Computed bindings for the tabsNavigation/ Вычисляемые привязки для tabsNavigation */
   readonly binds = computed<PropsExtra>(() => {
     return toBinds<PropsExtra>(
@@ -52,6 +56,15 @@ export class TabsNavigationInclude<
       getBind(this.props.tabs, 'list'),
       this.props.tabsNavigationAttrs
     )
+  })
+
+  /**
+   * List of generated IDs.
+   *
+   * Список сгенерированных идентификаторов.
+   */
+  readonly ids = computed<TabsNavigationIdsList>(() => {
+    return this.element.value?.ids as any
   })
 
   /**
@@ -67,12 +80,11 @@ export class TabsNavigationInclude<
     if (this.components) {
       return this.components.render(
         'tabsNavigation',
-        {
-          ...toBinds(
-            attrs,
-            this.binds.value
-          )
-        },
+        toBinds(
+          attrs,
+          this.binds.value,
+          { ref: this.element }
+        ),
         slotsChildren as unknown as Record<string, any>,
         this.index
       )

@@ -127,15 +127,26 @@ export class Icon {
    *
    * Вычисляемые привязки для элемента иконки.
    */
-  readonly binds = computed<any>(() => ({
-    key: 'icon',
-    tabindex: this.props.dynamic ? (this.props.tabindex ?? 0) : undefined,
-    onClick: this.props.dynamic ? this.event.onClick : undefined,
-    onKeydown: this.props.dynamic ? this.event.onKeydown : undefined,
-    ...AriaStaticInclude.role(this.getRole()),
-    ...AriaStaticInclude.label(this.props.ariaLabel),
-    ...AriaStaticInclude.hidden(!this.props.dynamic)
-  }))
+  readonly binds = computed<any>(() => {
+    const props = {
+      key: 'icon',
+      ...AriaStaticInclude.role(this.getRole()),
+      ...AriaStaticInclude.label(this.props.ariaLabel)
+    }
+
+    if (this.props.dynamic) {
+      return {
+        ...props,
+        tabindex: this.props.tabindex ?? 0,
+        ...this.event.binds
+      }
+    }
+
+    return {
+      ...props,
+      ...AriaStaticInclude.hidden()
+    }
+  })
 
   /**
    * Get the ARIA role for the icon element.

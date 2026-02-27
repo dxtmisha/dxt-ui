@@ -23,6 +23,7 @@ import { browserslistToTargets } from 'lightningcss'
  * @param externalExtended extra dependencies / дополнительные зависимости
  * @param fileCssName name of the output CSS file / имя выходного CSS файла
  * @param rollupTypes whether to use rollupTypes in dts plugin / использовать ли rollupTypes в плагине dts
+ * @param bundledPackages packages to bundle types for / пакеты, типы которых нужно собрать
  * @returns Vite config / конфигурация Vite
  */
 export const viteBasicFunction = (
@@ -32,7 +33,8 @@ export const viteBasicFunction = (
   include = [
     'src/**/*.ts',
     'src/**/*.tsx',
-    'src/**/*.vue'
+    'src/**/*.vue',
+    '@dxtmisha/constructor'
   ],
   includeExtended = [],
   external = [
@@ -49,7 +51,6 @@ export const viteBasicFunction = (
     '@storybook',
     '@storybook/addon-docs',
     '@dxtmisha/configuration',
-    '@dxtmisha/constructor',
     '@dxtmisha/d1',
     '@dxtmisha/figma',
     '@dxtmisha/functional',
@@ -65,7 +66,8 @@ export const viteBasicFunction = (
   ],
   externalExtended = [],
   fileCssName = 'style.css',
-  rollupTypes = false
+  rollupTypes = false,
+  bundledPackages = undefined
 ) => defineConfig({
   build: {
     target,
@@ -78,7 +80,7 @@ export const viteBasicFunction = (
     rollupOptions: {
       external: (id) => {
         if (!id.startsWith('.') && !path.isAbsolute(id)) {
-          return true
+          // return true
         }
 
         const externalsList = [
@@ -141,6 +143,7 @@ export const viteBasicFunction = (
         ...includeExtended
       ],
       outDir: 'dist',
+      bundledPackages,
       rollupTypes,
       staticImport: true,
       tsconfigPath: './tsconfig.app.json'

@@ -1,19 +1,19 @@
 var B = Object.defineProperty;
-var $ = (n, t, s) => t in n ? B(n, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[t] = s;
-var e = (n, t, s) => $(n, typeof t != "symbol" ? t + "" : t, s);
-import { computed as r, watch as L, onUnmounted as E, onMounted as F, onUpdated as k, h as l } from "vue";
-import { isDomRuntime as T, EventItem as A, getElementId as P, DesignConstructorAbstract as q, isString as M } from "@dxtmisha/functional";
-import { A as c } from "./AriaStaticInclude-DRHG8ILX.js";
+var $ = (n, i, s) => i in n ? B(n, i, { enumerable: !0, configurable: !0, writable: !0, value: s }) : n[i] = s;
+var e = (n, i, s) => $(n, typeof i != "symbol" ? i + "" : i, s);
+import { computed as r, watch as L, onUnmounted as E, onMounted as F, onUpdated as T, h as l } from "vue";
+import { isDomRuntime as k, EventItem as A, getElementId as P, DesignConstructorAbstract as q, isString as M } from "@dxtmisha/functional";
+import { A as p } from "./AriaStaticInclude-DRHG8ILX.js";
 import { C as D } from "./CaptionInclude-CohAZRI2.js";
 import { P as V, S as z } from "./SuffixInclude-maZ7235l.js";
 import { E as R } from "./EnabledInclude-B9oXYBtR.js";
-import { E as W } from "./EventClickInclude-Co8CpJqL.js";
-import { T as K } from "./TextInclude--GERRCGj.js";
-import { F as U } from "./FieldLabelInclude-Bkxf6rRw.js";
-import { F as j } from "./FieldMessageInclude-BJDnir34.js";
-import { I as H } from "./IconTrailingInclude-CdsOcDxv.js";
-import { P as G } from "./ProgressInclude-DlEbC7XP.js";
-import { S as J } from "./SkeletonInclude-BIUzAO2s.js";
+import { E as W } from "./EventClickInclude-DMbEP-nH.js";
+import { T as U } from "./TextInclude--GERRCGj.js";
+import { F as j } from "./FieldLabelInclude-Bkxf6rRw.js";
+import { F as H } from "./FieldMessageInclude-BJDnir34.js";
+import { I as G } from "./IconTrailingInclude-CdsOcDxv.js";
+import { P as J } from "./ProgressInclude-DlEbC7XP.js";
+import { S as K } from "./SkeletonInclude-BIUzAO2s.js";
 class O {
   /**
    * Constructor
@@ -21,7 +21,7 @@ class O {
    * @param className class name/ название класса
    * @param text text include/ Подключение текста
    */
-  constructor(t, s, i) {
+  constructor(i, s, t) {
     /**
      * Determines whether to display arrows.
      *
@@ -74,7 +74,7 @@ class O {
       "data-event-type": "next",
       ariaLabel: this.props.arrowCarousel ? this.text.next.value : this.text.increment.value
     })));
-    this.props = t, this.className = s, this.text = i;
+    this.props = i, this.className = s, this.text = t;
   }
 }
 class Q {
@@ -83,7 +83,7 @@ class Q {
    * @param element main element/ главный элемент
    * @param className class name/ название класса
    */
-  constructor(t, s) {
+  constructor(i, s) {
     e(this, "left", 0);
     e(this, "right", 0);
     e(this, "title", 0);
@@ -92,18 +92,19 @@ class Q {
      * Update margins.
      *
      * Обновление отступов.
+     * @param limit recursion limit/ лимит рекурсии
      */
-    e(this, "update", () => {
+    e(this, "update", (i = 128) => {
       requestAnimationFrame(() => {
-        var i, o, a, h;
-        const t = this.getElementSpace(), s = this.getElementPrefix();
-        t && (this.left = t.offsetLeft, this.right = ((o = (i = t.parentElement) == null ? void 0 : i.offsetWidth) != null ? o : 0) - this.left - t.offsetWidth), this.title = (h = (a = s == null ? void 0 : s.offsetLeft) != null ? a : t == null ? void 0 : t.offsetLeft) != null ? h : 0, this.make();
+        var o, a, h, d;
+        const s = this.getElementSpace(), t = this.getElementPrefix();
+        s && (this.left = s.offsetLeft, this.right = ((a = (o = s.parentElement) == null ? void 0 : o.offsetWidth) != null ? a : 0) - this.left - s.offsetWidth), this.title = (d = (h = t == null ? void 0 : t.offsetLeft) != null ? h : s == null ? void 0 : s.offsetLeft) != null ? d : 0, this.left < 0 ? this.update(i - 1) : this.make();
       });
     });
-    this.element = t, this.className = s, L(t, () => this.update, { immediate: !0 }), T() && (this.event = new A(window, "resize", this.update), E(() => {
-      var i;
-      return (i = this.event) == null ? void 0 : i.stop();
-    })), F(this.update), k(this.update);
+    this.element = i, this.className = s, L(i, () => this.update, { immediate: !0 }), k() && (this.event = new A(window, "resize", () => this.update()), E(() => {
+      var t;
+      return (t = this.event) == null ? void 0 : t.stop();
+    })), F(this.update), T(this.update);
   }
   /**
    * Returns separator elements.
@@ -111,8 +112,8 @@ class Q {
    * Возвращает элементы-разделители.
    */
   getElementSpace() {
-    var t, s;
-    return (s = (t = this.element.value) == null ? void 0 : t.querySelector(`.${this.className}__body__scoreboard__space`)) != null ? s : void 0;
+    var i, s;
+    return (s = (i = this.element.value) == null ? void 0 : i.querySelector(`.${this.className}__body__scoreboard__space`)) != null ? s : void 0;
   }
   /**
    * Returns element with prefix.
@@ -120,8 +121,8 @@ class Q {
    * Возвращает элемент с префиксом.
    */
   getElementPrefix() {
-    var t, s;
-    return (s = (t = this.element.value) == null ? void 0 : t.querySelector(`.${this.className}__prefix`)) != null ? s : void 0;
+    var i, s;
+    return (s = (i = this.element.value) == null ? void 0 : i.querySelector(`.${this.className}__prefix`)) != null ? s : void 0;
   }
   /**
    * Update input field margins.
@@ -129,8 +130,8 @@ class Q {
    * Обновление отступов для поля ввода.
    */
   make() {
-    const t = this.element.value;
-    t && (t.style.setProperty(`--${this.className}-sys-left`, `${this.left}px`), t.style.setProperty(`--${this.className}-sys-right`, `${this.right}px`), t.style.setProperty(`--${this.className}-sys-title`, `${this.title}px`), t.classList.contains(`${this.className}--show`) || requestAnimationFrame(() => t.classList.add(`${this.className}--show`)));
+    const i = this.element.value;
+    i && (i.style.setProperty(`--${this.className}-sys-left`, `${this.left}px`), i.style.setProperty(`--${this.className}-sys-right`, `${this.right}px`), i.style.setProperty(`--${this.className}-sys-title`, `${this.title}px`), i.classList.contains(`${this.className}--show`) || requestAnimationFrame(() => i.classList.add(`${this.className}--show`)));
   }
 }
 class X {
@@ -159,7 +160,7 @@ class X {
    * @param constructors.SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
    * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
    */
-  constructor(t, s, i, o, a, h, p, u, d) {
+  constructor(i, s, t, o, a, h, d, u, c) {
     /** Text include/ Подключение текста */
     e(this, "text");
     /** Icon trailing include/ Подключение иконки в конце */
@@ -204,41 +205,41 @@ class X {
      * Returns data for the slot/ Возвращает данные для слота
      */
     e(this, "control", r(() => {
-      const t = `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`;
+      const i = `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`;
       return {
         id: this.id.value,
-        className: t,
+        className: i,
         classHidden: `${this.className}__body__hidden`,
         classForFocus: `${this.className}__body__focus`,
         binds: {
           id: this.id.value,
-          class: t,
-          ...c.invalid(this.isValidation.value),
-          ...c.describedby(this.getDescribedby())
+          class: i,
+          ...p.invalid(this.isValidation.value),
+          ...p.describedby(this.getDescribedby())
         }
       };
     }));
-    this.props = t, this.refs = s, this.element = i, this.classDesign = o, this.className = a, this.components = h, this.slots = p, this.emits = u;
+    this.props = i, this.refs = s, this.element = t, this.classDesign = o, this.className = a, this.components = h, this.slots = d, this.emits = u;
     const {
       CaptionIncludeConstructor: m = D,
       EnabledIncludeConstructor: b = R,
       EventClickIncludeConstructor: f = W,
       FieldIconsConstructor: v = O,
-      FieldLabelIncludeConstructor: y = U,
-      FieldMessageIncludeConstructor: g = j,
+      FieldLabelIncludeConstructor: y = j,
+      FieldMessageIncludeConstructor: g = H,
       FieldSizeConstructor: S = Q,
-      IconTrailingIncludeConstructor: _ = H,
-      PrefixIncludeConstructor: C = V,
-      ProgressIncludeConstructor: x = G,
-      SkeletonIncludeConstructor: w = J,
+      IconTrailingIncludeConstructor: _ = G,
+      PrefixIncludeConstructor: x = V,
+      ProgressIncludeConstructor: C = J,
+      SkeletonIncludeConstructor: w = K,
       SuffixIncludeConstructor: I = z,
-      TextIncludeConstructor: N = K
-    } = d != null ? d : {};
+      TextIncludeConstructor: N = U
+    } = c != null ? c : {};
     this.skeleton = new w(
       this.props,
       this.classDesign,
       ["classBackground"]
-    ), this.icon = new _(this.props, this.className, this.components), this.text = new N(this.props), this.caption = new m(this.props, this.className, this.slots), this.prefix = new C(this.props, this.className, this.slots), this.suffix = new I(this.props, this.className, this.slots), this.fieldLabel = new y(
+    ), this.icon = new _(this.props, this.className, this.components), this.text = new N(this.props), this.caption = new m(this.props, this.className, this.slots), this.prefix = new x(this.props, this.className, this.slots), this.suffix = new I(this.props, this.className, this.slots), this.fieldLabel = new y(
       this.props,
       this.className,
       this.components,
@@ -253,7 +254,7 @@ class X {
       void 0,
       r(() => !this.props.counterTop),
       this.skeleton.binds
-    ), this.progress = new x(
+    ), this.progress = new C(
       this.props,
       this.className,
       this.components,
@@ -291,10 +292,10 @@ class us extends q {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor class for working with the item/ класс для работы с элементом
    */
-  constructor(s, i, o, a = X) {
+  constructor(s, t, o, a = X) {
     super(
       s,
-      i,
+      t,
       o
     );
     e(this, "item");
@@ -304,7 +305,7 @@ class us extends q {
      * Генерирует тело.
      */
     e(this, "renderBody", () => {
-      var i;
+      var t;
       const s = [
         this.initSlot("default", void 0, this.item.control.value),
         this.renderBodyLabel(),
@@ -316,11 +317,10 @@ class us extends q {
           "span",
           {
             class: [
-              (i = this.classes) == null ? void 0 : i.value.body,
+              (t = this.classes) == null ? void 0 : t.value.body,
               this.item.skeleton.classes.value
             ],
-            onClick: this.item.event.onClick,
-            onKeydown: this.item.event.onKeydown
+            ...this.item.event.binds
           },
           s
         )
@@ -332,13 +332,13 @@ class us extends q {
      * Генерирует данные для заголовка.
      */
     e(this, "renderBodyLabel", () => {
-      var i, o, a, h;
+      var t, o, a, h;
       const s = [
         this.props.label
       ];
       return this.props.required && s.push(l(
         "span",
-        { class: (i = this.classes) == null ? void 0 : i.value.required }
+        { class: (t = this.classes) == null ? void 0 : t.value.required }
       )), l(
         "span",
         { class: (o = this.classes) == null ? void 0 : o.value.bodyTitle },
@@ -359,7 +359,7 @@ class us extends q {
      * Генерирует данные для дополнительных управлений.
      */
     e(this, "renderBodyScoreboard", () => {
-      var i;
+      var t;
       const s = [
         ...this.renderBodyScoreboardSlot(),
         ...this.renderBodyScoreboardIcon(),
@@ -369,7 +369,7 @@ class us extends q {
         ...this.renderBodyScoreboardSpace()
       ];
       return l("span", {
-        class: (i = this.classes) == null ? void 0 : i.value.bodyScoreboard,
+        class: (t = this.classes) == null ? void 0 : t.value.bodyScoreboard,
         "data-element": "scoreboard"
       }, s);
     });
@@ -379,11 +379,11 @@ class us extends q {
      * Генерирует данные для слота.
      */
     e(this, "renderBodyScoreboardSlot", () => {
-      var i, o;
+      var t, o;
       const s = [];
       return this.slots && ("leading" in this.slots && s.push(l(
         "span",
-        { class: (i = this.classes) == null ? void 0 : i.value.bodyScoreboardLeft },
+        { class: (t = this.classes) == null ? void 0 : t.value.bodyScoreboardLeft },
         this.initSlot("leading")
       )), "trailing" in this.slots && s.push(l(
         "span",
@@ -424,13 +424,13 @@ class us extends q {
      * Генерирует разделители и дополнительные описания.
      */
     e(this, "renderBodyScoreboardSpace", () => {
-      var i, o;
+      var t, o;
       const s = [];
       return this.item.caption.is.value && s.push(
         l(
           "span",
           {
-            class: (i = this.classes) == null ? void 0 : i.value.bodyScoreboardInput,
+            class: (t = this.classes) == null ? void 0 : t.value.bodyScoreboardInput,
             style: `min-width: ${this.lengthValue()};`
           },
           this.focusValue()
@@ -474,8 +474,8 @@ class us extends q {
      * Элемент для подсчёта символов.
      */
     e(this, "lengthElement", r(() => {
-      var s, i;
-      return (i = (s = this.element.value) == null ? void 0 : s.querySelector("*[data-length]")) != null ? i : void 0;
+      var s, t;
+      return (t = (s = this.element.value) == null ? void 0 : s.querySelector("*[data-length]")) != null ? t : void 0;
     }));
     /**
      * Input element.
@@ -483,8 +483,8 @@ class us extends q {
      * Элемент ввода.
      */
     e(this, "inputElement", r(() => {
-      var s, i, o, a;
-      return (a = (o = this.element.value) == null ? void 0 : o.querySelector(`input.${(s = this.classes) == null ? void 0 : s.value.bodyInput}, .${(i = this.classes) == null ? void 0 : i.value.bodyInput} input`)) != null ? a : void 0;
+      var s, t, o, a;
+      return (a = (o = this.element.value) == null ? void 0 : o.querySelector(`input.${(s = this.classes) == null ? void 0 : s.value.bodyInput}, .${(t = this.classes) == null ? void 0 : t.value.bodyInput} input`)) != null ? a : void 0;
     }));
     this.item = new a(
       this.props,
@@ -542,7 +542,7 @@ class us extends q {
    * Метод для рендеринга.
    */
   initRender() {
-    var i, o;
+    var t, o;
     const s = [];
     return this.item.isClassic.value && s.push(...this.item.fieldLabel.render()), s.push(
       ...this.renderBody(),
@@ -552,7 +552,7 @@ class us extends q {
       {
         ...this.getAttrs(),
         ref: this.element,
-        class: (i = this.classes) == null ? void 0 : i.value.main,
+        class: (t = this.classes) == null ? void 0 : t.value.main,
         style: (o = this.styles) == null ? void 0 : o.value,
         for: this.item.isClassic.value ? void 0 : this.item.id.value
       },

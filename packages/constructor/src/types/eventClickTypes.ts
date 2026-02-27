@@ -44,6 +44,8 @@ export interface EventClickExpose {
 export type EventClickProps = {
   /** Navigation target (string or route object)/ Цель навигации (строка или объект роута) */
   to?: string | RouteLocationRaw
+  /** Click event href/ Ссылка события клика */
+  href?: string
   /** Click event value/ Значение события клика */
   value?: EventClickValue['value']
   /** Additional click event details/ Дополнительные детали события клика */

@@ -1,14 +1,14 @@
 var I = Object.defineProperty;
 var k = (r, i, t) => i in r ? I(r, i, { enumerable: !0, configurable: !0, writable: !0, value: t }) : r[i] = t;
 var e = (r, i, t) => k(r, typeof i != "symbol" ? i + "" : i, t);
-import { computed as d, h } from "vue";
+import { computed as c, h } from "vue";
 import { DesignConstructorAbstract as w } from "@dxtmisha/functional";
 import { g as T } from "./getClassTagAStatic-BnVYlXHI.js";
 import { L as _ } from "./LabelInclude-D-mLvjK5.js";
 import { C as D } from "./CaptionInclude-CohAZRI2.js";
 import { D as E } from "./DescriptionInclude-D4ane9aR.js";
 import { E as A } from "./EnabledInclude-B9oXYBtR.js";
-import { E as $ } from "./EventClickInclude-Co8CpJqL.js";
+import { E as $ } from "./EventClickInclude-DMbEP-nH.js";
 import { S as R } from "./SkeletonInclude-BIUzAO2s.js";
 import { I as L } from "./IconTrailingInclude-CdsOcDxv.js";
 import { P } from "./ProgressInclude-DlEbC7XP.js";
@@ -36,7 +36,7 @@ class N {
    * @param constructors.RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
    * @param constructors.SkeletonConstructor class for creating a skeleton/ класс для создания скелета
    */
-  constructor(i, t, n, o, s, l, a, u, c) {
+  constructor(i, t, n, o, s, l, a, u, d) {
     e(this, "progress");
     e(this, "skeleton");
     e(this, "label");
@@ -51,7 +51,7 @@ class N {
      *
      * Вычисляемые CSS классы для компонента ячейки.
      */
-    e(this, "classes", d(() => ({
+    e(this, "classes", c(() => ({
       [`${this.className}--description`]: this.description.is.value,
       [T(this.classDesign)]: !0
     })));
@@ -60,7 +60,7 @@ class N {
      *
      * Вычисляемая роль для компонента ячейки.
      */
-    e(this, "role", d(() => {
+    e(this, "role", c(() => {
       if (this.props.role)
         return this.props.role;
       if (this.props.dynamic)
@@ -71,13 +71,13 @@ class N {
       CaptionConstructor: m = D,
       DescriptionConstructor: g = E,
       EnabledConstructor: b = A,
-      EventConstructor: C = $,
-      IconConstructor: v = L,
+      EventConstructor: v = $,
+      IconConstructor: C = L,
       LabelConstructor: f = _,
       ProgressConstructor: S = P,
       RippleConstructor: x = B,
       SkeletonConstructor: y = R
-    } = c != null ? c : {}, p = new S(
+    } = d != null ? d : {}, p = new S(
       i,
       s,
       l,
@@ -98,7 +98,7 @@ class N {
       void 0,
       void 0,
       this.skeleton
-    ), this.caption = new m(i, s, a), this.description = new g(i, s, a, this.skeleton), this.enabled = new b(i, p), this.icon = new v(i, s, l), this.progress = p, this.ripple = new x(s, l, this.enabled), this.event = new C(
+    ), this.caption = new m(i, s, a), this.description = new g(i, s, a, this.skeleton), this.enabled = new b(i, p), this.icon = new C(i, s, l), this.progress = p, this.ripple = new x(s, l, this.enabled), this.event = new v(
       i,
       this.enabled,
       u
@@ -201,14 +201,14 @@ class Z extends w {
      *
      * Свойства для главного элемента.
      */
-    e(this, "propsMain", d(() => {
+    e(this, "propsMain", c(() => {
       var n;
       const t = {
         ...this.getAttrs(),
         class: (n = this.classes) == null ? void 0 : n.value.main,
         "data-value": this.props.value,
         "data-divider": this.props.divider ? "active" : void 0,
-        onClick: this.item.event.onClick,
+        ...this.item.event.binds,
         ...M.role(this.item.role.value)
       };
       return this.props.dynamic ? {

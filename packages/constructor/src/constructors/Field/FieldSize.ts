@@ -25,7 +25,7 @@ export class FieldSize {
     watch(element, () => this.update, { immediate: true })
 
     if (isDomRuntime()) {
-      this.event = new EventItem(window, 'resize', this.update)
+      this.event = new EventItem(window, 'resize', () => this.update())
       onUnmounted(() => this.event?.stop())
     }
 
@@ -37,8 +37,9 @@ export class FieldSize {
    * Update margins.
    *
    * Обновление отступов.
+   * @param limit recursion limit/ лимит рекурсии
    */
-  readonly update = () => {
+  readonly update = (limit: number = 128) => {
     requestAnimationFrame(() => {
       const elementSpace = this.getElementSpace()
       const elementPrefix = this.getElementPrefix()
@@ -50,7 +51,11 @@ export class FieldSize {
 
       this.title = elementPrefix?.offsetLeft ?? elementSpace?.offsetLeft ?? 0
 
-      this.make()
+      if (this.left < 0) {
+        this.update(limit - 1)
+      } else {
+        this.make()
+      }
     })
   }
 

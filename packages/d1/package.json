@@ -37,6 +37,10 @@
     "LICENSE"
   ],
   "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "default": "./dist/types.js"
+    },
     "./D1Accordion": {
       "types": "./dist/D1Accordion.d.ts",
       "default": "./dist/D1Accordion.js"
@@ -77,13 +81,41 @@
       "types": "./dist/D1Cell.d.ts",
       "default": "./dist/D1Cell.js"
     },
+    "./D1Checkbox": {
+      "types": "./dist/D1Checkbox.d.ts",
+      "default": "./dist/D1Checkbox.js"
+    },
     "./D1Chip": {
       "types": "./dist/D1Chip.d.ts",
       "default": "./dist/D1Chip.js"
     },
+    "./D1ChipGroup": {
+      "types": "./dist/D1ChipGroup.d.ts",
+      "default": "./dist/D1ChipGroup.js"
+    },
     "./D1Dialog": {
       "types": "./dist/D1Dialog.d.ts",
       "default": "./dist/D1Dialog.js"
+    },
+    "./D1Field": {
+      "types": "./dist/D1Field.d.ts",
+      "default": "./dist/D1Field.js"
+    },
+    "./D1FieldCounter": {
+      "types": "./dist/D1FieldCounter.d.ts",
+      "default": "./dist/D1FieldCounter.js"
+    },
+    "./D1FieldLabel": {
+      "types": "./dist/D1FieldLabel.d.ts",
+      "default": "./dist/D1FieldLabel.js"
+    },
+    "./D1FieldMessage": {
+      "types": "./dist/D1FieldMessage.d.ts",
+      "default": "./dist/D1FieldMessage.js"
+    },
+    "./D1HorizontalScroll": {
+      "types": "./dist/D1HorizontalScroll.d.ts",
+      "default": "./dist/D1HorizontalScroll.js"
     },
     "./D1Icon": {
       "types": "./dist/D1Icon.d.ts",
@@ -93,9 +125,41 @@
       "types": "./dist/D1Image.d.ts",
       "default": "./dist/D1Image.js"
     },
+    "./D1Input": {
+      "types": "./dist/D1Input.d.ts",
+      "default": "./dist/D1Input.js"
+    },
+    "./D1List": {
+      "types": "./dist/D1List.d.ts",
+      "default": "./dist/D1List.js"
+    },
+    "./D1ListGroup": {
+      "types": "./dist/D1ListGroup.d.ts",
+      "default": "./dist/D1ListGroup.js"
+    },
+    "./D1ListItem": {
+      "types": "./dist/D1ListItem.d.ts",
+      "default": "./dist/D1ListItem.js"
+    },
+    "./D1ListMenu": {
+      "types": "./dist/D1ListMenu.d.ts",
+      "default": "./dist/D1ListMenu.js"
+    },
+    "./D1Mask": {
+      "types": "./dist/D1Mask.d.ts",
+      "default": "./dist/D1Mask.js"
+    },
+    "./D1Menu": {
+      "types": "./dist/D1Menu.d.ts",
+      "default": "./dist/D1Menu.js"
+    },
     "./D1Modal": {
       "types": "./dist/D1Modal.d.ts",
       "default": "./dist/D1Modal.js"
+    },
+    "./D1MotionAxis": {
+      "types": "./dist/D1MotionAxis.d.ts",
+      "default": "./dist/D1MotionAxis.js"
     },
     "./D1MotionTransform": {
       "types": "./dist/D1MotionTransform.d.ts",
@@ -113,9 +177,45 @@
       "types": "./dist/D1Ripple.d.ts",
       "default": "./dist/D1Ripple.js"
     },
+    "./D1Scrollbar": {
+      "types": "./dist/D1Scrollbar.d.ts",
+      "default": "./dist/D1Scrollbar.js"
+    },
     "./D1Section": {
       "types": "./dist/D1Section.d.ts",
       "default": "./dist/D1Section.js"
+    },
+    "./D1Select": {
+      "types": "./dist/D1Select.d.ts",
+      "default": "./dist/D1Select.js"
+    },
+    "./D1SelectValue": {
+      "types": "./dist/D1SelectValue.d.ts",
+      "default": "./dist/D1SelectValue.js"
+    },
+    "./D1Skeleton": {
+      "types": "./dist/D1Skeleton.d.ts",
+      "default": "./dist/D1Skeleton.js"
+    },
+    "./D1TabItem": {
+      "types": "./dist/D1TabItem.d.ts",
+      "default": "./dist/D1TabItem.js"
+    },
+    "./D1Tabs": {
+      "types": "./dist/D1Tabs.d.ts",
+      "default": "./dist/D1Tabs.js"
+    },
+    "./D1TabsNavigation": {
+      "types": "./dist/D1TabsNavigation.d.ts",
+      "default": "./dist/D1TabsNavigation.js"
+    },
+    "./D1Textarea": {
+      "types": "./dist/D1Textarea.d.ts",
+      "default": "./dist/D1Textarea.js"
+    },
+    "./D1TextareaAutosize": {
+      "types": "./dist/D1TextareaAutosize.d.ts",
+      "default": "./dist/D1TextareaAutosize.js"
     },
     "./D1Tooltip": {
       "types": "./dist/D1Tooltip.d.ts",
@@ -134,102 +234,6 @@
     "./style/ui.scss": "./src/styles/Ui/main.scss",
     "./types.d.ts": {
       "types": "./dist/library/types.d.ts"
-    },
-    "./D1ChipGroup": {
-      "types": "./dist/D1ChipGroup.d.ts",
-      "default": "./dist/D1ChipGroup.js"
-    },
-    "./D1ListItem": {
-      "types": "./dist/D1ListItem.d.ts",
-      "default": "./dist/D1ListItem.js"
-    },
-    "./D1ListMenu": {
-      "types": "./dist/D1ListMenu.d.ts",
-      "default": "./dist/D1ListMenu.js"
-    },
-    "./D1ListGroup": {
-      "types": "./dist/D1ListGroup.d.ts",
-      "default": "./dist/D1ListGroup.js"
-    },
-    "./D1List": {
-      "types": "./dist/D1List.d.ts",
-      "default": "./dist/D1List.js"
-    },
-    "./D1Menu": {
-      "types": "./dist/D1Menu.d.ts",
-      "default": "./dist/D1Menu.js"
-    },
-    "./D1Scrollbar": {
-      "types": "./dist/D1Scrollbar.d.ts",
-      "default": "./dist/D1Scrollbar.js"
-    },
-    "./D1FieldCounter": {
-      "types": "./dist/D1FieldCounter.d.ts",
-      "default": "./dist/D1FieldCounter.js"
-    },
-    "./D1FieldMessage": {
-      "types": "./dist/D1FieldMessage.d.ts",
-      "default": "./dist/D1FieldMessage.js"
-    },
-    "./D1FieldLabel": {
-      "types": "./dist/D1FieldLabel.d.ts",
-      "default": "./dist/D1FieldLabel.js"
-    },
-    "./D1Field": {
-      "types": "./dist/D1Field.d.ts",
-      "default": "./dist/D1Field.js"
-    },
-    "./D1Mask": {
-      "types": "./dist/D1Mask.d.ts",
-      "default": "./dist/D1Mask.js"
-    },
-    "./D1Input": {
-      "types": "./dist/D1Input.d.ts",
-      "default": "./dist/D1Input.js"
-    },
-    "./D1SelectValue": {
-      "types": "./dist/D1SelectValue.d.ts",
-      "default": "./dist/D1SelectValue.js"
-    },
-    "./D1Select": {
-      "types": "./dist/D1Select.d.ts",
-      "default": "./dist/D1Select.js"
-    },
-    "./D1Skeleton": {
-      "types": "./dist/D1Skeleton.d.ts",
-      "default": "./dist/D1Skeleton.js"
-    },
-    "./D1TextareaAutosize": {
-      "types": "./dist/D1TextareaAutosize.d.ts",
-      "default": "./dist/D1TextareaAutosize.js"
-    },
-    "./D1Textarea": {
-      "types": "./dist/D1Textarea.d.ts",
-      "default": "./dist/D1Textarea.js"
-    },
-    "./D1TabItem": {
-      "types": "./dist/D1TabItem.d.ts",
-      "default": "./dist/D1TabItem.js"
-    },
-    "./D1HorizontalScroll": {
-      "types": "./dist/D1HorizontalScroll.d.ts",
-      "default": "./dist/D1HorizontalScroll.js"
-    },
-    "./D1TabsNavigation": {
-      "types": "./dist/D1TabsNavigation.d.ts",
-      "default": "./dist/D1TabsNavigation.js"
-    },
-    "./D1MotionAxis": {
-      "types": "./dist/D1MotionAxis.d.ts",
-      "default": "./dist/D1MotionAxis.js"
-    },
-    "./D1Tabs": {
-      "types": "./dist/D1Tabs.d.ts",
-      "default": "./dist/D1Tabs.js"
-    },
-    "./D1Checkbox": {
-      "types": "./dist/D1Checkbox.d.ts",
-      "default": "./dist/D1Checkbox.js"
     }
   },
   "buildOptions": {

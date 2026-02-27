@@ -2,13 +2,13 @@ var I = Object.defineProperty;
 var A = (s, t, i) => t in s ? I(s, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : s[t] = i;
 var e = (s, t, i) => A(s, typeof t != "symbol" ? t + "" : t, i);
 import { computed as n, h as f } from "vue";
-import { getBindRef as l, DesignConstructorAbstract as g } from "@dxtmisha/functional";
-import { A as a } from "./AriaStaticInclude-DRHG8ILX.js";
-import { E as k } from "./EventClickInclude-Co8CpJqL.js";
-import { S as y } from "./SkeletonInclude-BIUzAO2s.js";
-import { I as K, a as M } from "./IconInclude-CLqwI29Q.js";
-import { I as T } from "./IconTrailingInclude-CdsOcDxv.js";
-class b {
+import { getBindRef as d, DesignConstructorAbstract as b } from "@dxtmisha/functional";
+import { A as h } from "./AriaStaticInclude-DRHG8ILX.js";
+import { E as g } from "./EventClickInclude-DMbEP-nH.js";
+import { S as k } from "./SkeletonInclude-BIUzAO2s.js";
+import { I as M, a as O } from "./IconInclude-CLqwI29Q.js";
+import { I as $ } from "./IconTrailingInclude-CdsOcDxv.js";
+class B {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -23,7 +23,7 @@ class b {
    * @param constructors.EventClickIncludeConstructor class for working with events/ класс для работы с событиями
    * @param constructors.SkeletonIncludeConstructor class for working with Skeleton/ класс для работы с Skeleton
    */
-  constructor(t, i, c, r, o, p, m, d, h) {
+  constructor(t, i, c, r, o, p, u, l, a) {
     /**
      * Returns the property for the base icon/ Возвращает свойство для базовой иконки
      */
@@ -56,15 +56,19 @@ class b {
      * Вычисляемые привязки для элемента иконки.
      */
     e(this, "binds", n(() => {
-      var t;
-      return {
+      var i;
+      const t = {
         key: "icon",
-        tabindex: this.props.dynamic ? (t = this.props.tabindex) != null ? t : 0 : void 0,
-        onClick: this.props.dynamic ? this.event.onClick : void 0,
-        onKeydown: this.props.dynamic ? this.event.onKeydown : void 0,
-        ...a.role(this.getRole()),
-        ...a.label(this.props.ariaLabel),
-        ...a.hidden(!this.props.dynamic)
+        ...h.role(this.getRole()),
+        ...h.label(this.props.ariaLabel)
+      };
+      return this.props.dynamic ? {
+        ...t,
+        tabindex: (i = this.props.tabindex) != null ? i : 0,
+        ...this.event.binds
+      } : {
+        ...t,
+        ...h.hidden()
       };
     }));
     /**
@@ -77,12 +81,12 @@ class b {
       var i;
       return (i = this.emits) == null ? void 0 : i.call(this, "load", t);
     });
-    this.props = t, this.refs = i, this.element = c, this.classDesign = r, this.className = o, this.components = p, this.slots = m, this.emits = d;
+    this.props = t, this.refs = i, this.element = c, this.classDesign = r, this.className = o, this.components = p, this.slots = u, this.emits = l;
     const {
-      EventClickIncludeConstructor: v = k,
-      SkeletonIncludeConstructor: u = y
-    } = h != null ? h : {};
-    this.iconBind = l(
+      EventClickIncludeConstructor: m = g,
+      SkeletonIncludeConstructor: v = k
+    } = a != null ? a : {};
+    this.iconBind = d(
       i.icon,
       n(() => ({
         key: "mainIcon",
@@ -92,7 +96,7 @@ class b {
         hide: this.isActive.value,
         onLoad: this.onLoad
       }))
-    ), this.iconActiveBind = l(
+    ), this.iconActiveBind = d(
       i.iconActive,
       n(() => ({
         key: "activeIcon",
@@ -101,11 +105,11 @@ class b {
         disabled: this.props.disabled,
         hide: !this.isActive.value
       }))
-    ), this.event = new v(
+    ), this.event = new m(
       t,
       void 0,
-      d
-    ), this.skeleton = new u(
+      l
+    ), this.skeleton = new v(
       t,
       r,
       ["classBackgroundVariant"]
@@ -123,11 +127,11 @@ class b {
       return "button";
   }
 }
-const E = {
+const R = {
   // :default [!] System label / Системная метка
   animationType: "type1"
 };
-class R extends g {
+class _ extends b {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -135,7 +139,7 @@ class R extends g {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor icon item class/ класс элемента иконки
    */
-  constructor(i, c, r, o = b) {
+  constructor(i, c, r, o = B) {
     super(
       i,
       c,
@@ -225,10 +229,10 @@ class R extends g {
   }
 }
 export {
-  b as Icon,
-  R as IconDesign,
-  K as IconInclude,
-  M as IconLiteInclude,
-  T as IconTrailingInclude,
-  E as defaultsIcon
+  B as Icon,
+  _ as IconDesign,
+  M as IconInclude,
+  O as IconLiteInclude,
+  $ as IconTrailingInclude,
+  R as defaultsIcon
 };

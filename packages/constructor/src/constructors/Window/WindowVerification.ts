@@ -233,7 +233,24 @@ export class WindowVerification {
    * Проверяет, есть ли блокирующий элемент от других окон.
    */
   protected isBlockOther(): boolean {
-    return Boolean(this.classes.findBodyOther(`.${this.classes.list.blockOther}`))
+    if (this.target) {
+      const window = this.classes.findMain(this.target)
+
+      if (
+        window
+        && (
+          window === this.element.getMain()
+          || this.classes.findControl()
+            ?.closest(`[data-window="${window.dataset.window}"]`)
+        )
+      ) {
+        return false
+      }
+    }
+
+    return Boolean(
+      this.classes.findBodyOther(`.${this.classes.list.blockOther}`)
+    )
   }
 
   /**

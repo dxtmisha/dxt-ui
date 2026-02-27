@@ -1,7 +1,14 @@
-import { viteFigma } from '@dxtmisha/configuration/viteFigma'
+import { viteBasicFunction } from '@dxtmisha/configuration/viteBasicFunction'
 
 // https://vite.dev/config/
-export default viteFigma(
-  process.argv.includes('--watch'),
-  __dirname
+export default viteBasicFunction(
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  true
 )

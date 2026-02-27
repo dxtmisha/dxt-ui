@@ -15,6 +15,8 @@ function getAbsolutePath(value: string): any {
 
 const config: StorybookConfig = {
   stories: [
+    '../../figma-translate/src/**/*.mdx',
+    '../../figma-translate/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../d1/src/**/*.mdx',
     '../../d1/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 

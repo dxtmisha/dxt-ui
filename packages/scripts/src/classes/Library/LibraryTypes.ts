@@ -29,7 +29,9 @@ export class LibraryTypes {
       [
         ...this.initImports(),
         '',
-        ...this.initExports(),
+        'export const components = {',
+        this.initExports(),
+        '}',
         '',
         'declare module \'@vue/runtime-core\' {',
         '  export interface GlobalComponents {',
@@ -73,17 +75,17 @@ export class LibraryTypes {
    *
    * Возвращает список экспортов для файла.
    */
-  protected initExports(): string[] {
+  protected initExports(): string {
     const list: string[] = []
 
     this.items.getComponentList()
       .forEach((component) => {
         list.push(
-          `export const ${component.codeFull} = _${component.codeFull}`
+          `  ${component.codeFull}: _${component.codeFull}`
         )
       })
 
-    return list
+    return list.join(',\r\n')
   }
 
   /**
@@ -97,7 +99,7 @@ export class LibraryTypes {
     this.items.getComponentList()
       .forEach((component) => {
         list.push(
-          `    ${component.codeFull}: typeof ${component.codeFull}`
+          `    ${component.codeFull}: typeof components.${component.codeFull}`
         )
       })
 

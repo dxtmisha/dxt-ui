@@ -157,6 +157,7 @@ export class Button {
    */
   readonly eventList = computed(() => {
     const events: Record<string, any> = {
+      ...this.event.getHref(),
       onClick: this.event.onClick
     }
 

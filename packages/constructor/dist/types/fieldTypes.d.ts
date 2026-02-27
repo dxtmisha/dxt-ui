@@ -90,7 +90,7 @@ export type FieldValidationItem<Value = any> = FieldCheckMain & {
  * Emitted events for field components/
  * Эмитируемые события для компонентов поля
  */
-export type FieldBasicEmits<T = string> = ModelEmits & {
+export type FieldBasicEmits<T = any> = ModelEmits<T> & {
     /**
      * Emitted on input events (every change while typing)/
      * Эмит при вводе (каждое изменение): [event, value]

@@ -176,7 +176,7 @@ export class ListItem {
       'data-divider': this.props.divider ? 'active' : undefined,
       'data-parent': this.props.parent,
       'data-list-id': this.props.listId,
-      'onClick': this.event.onClick
+      ...this.event.binds
     }
   })
 

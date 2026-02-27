@@ -25,14 +25,14 @@ export type CheckboxComponents
  *
  * Тип, описывающий доступные события.
  */
-export type CheckboxEmits = FieldBasicEmits
+export type CheckboxEmits = FieldBasicEmits<boolean>
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface CheckboxExpose extends FieldBasicExpose {
+export interface CheckboxExpose extends FieldBasicExpose<boolean> {
 }
 
 /**

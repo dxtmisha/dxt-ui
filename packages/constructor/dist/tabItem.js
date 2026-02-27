@@ -7,7 +7,7 @@ import { A as a } from "./AriaStaticInclude-DRHG8ILX.js";
 import { B as x } from "./BadgeInclude-BwCIBVyK.js";
 import { L as E } from "./LabelInclude-D-mLvjK5.js";
 import { E as N } from "./EnabledInclude-B9oXYBtR.js";
-import { E as T } from "./EventClickInclude-Co8CpJqL.js";
+import { E as T } from "./EventClickInclude-DMbEP-nH.js";
 import { S as B } from "./SkeletonInclude-BIUzAO2s.js";
 import { I as D } from "./IconTrailingInclude-CdsOcDxv.js";
 import { R as A } from "./RippleInclude-Du5yIzX_.js";

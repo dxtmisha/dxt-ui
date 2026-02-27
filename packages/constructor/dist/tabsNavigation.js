@@ -1,12 +1,12 @@
-var w = Object.defineProperty;
-var k = (n, t, e) => t in n ? w(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
-var i = (n, t, e) => k(n, typeof t != "symbol" ? t + "" : t, e);
-import { ref as u, computed as d, watch as f, nextTick as m, toRef as F, onMounted as A } from "vue";
-import { toBinds as g, getRef as v, isSelected as D, toArray as T, isDomRuntime as $, EventItem as L, ListDataRef as R, DesignConstructorAbstract as z } from "@dxtmisha/functional";
-import { A as E } from "./AriaStaticInclude-DRHG8ILX.js";
-import { E as B } from "./EventClickInclude-Co8CpJqL.js";
-import { M as P } from "./ModelInclude-BiYm_iCQ.js";
-class H {
+var k = Object.defineProperty;
+var F = (n, t, e) => t in n ? k(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
+var i = (n, t, e) => F(n, typeof t != "symbol" ? t + "" : t, e);
+import { ref as u, computed as d, watch as g, nextTick as m, toRef as D, onMounted as T } from "vue";
+import { toBinds as f, getRef as v, isSelected as A, toArray as E, getElementId as $, isDomRuntime as L, EventItem as R, ListDataRef as z, DesignConstructorAbstract as B } from "@dxtmisha/functional";
+import { A as P } from "./AriaStaticInclude-DRHG8ILX.js";
+import { E as H } from "./EventClickInclude-DMbEP-nH.js";
+import { M as q } from "./ModelInclude-BiYm_iCQ.js";
+class M {
   /**
    * Constructor
    * @param props input parameter/ входной параметр
@@ -15,7 +15,7 @@ class H {
    * @param extra additional parameter/ дополнительный параметр
    * @param index index identifier/ идентификатор индекса
    */
-  constructor(t, e, s, r, o) {
+  constructor(t, e, s, r, a) {
     /**
      * Element of the component.
      *
@@ -35,7 +35,7 @@ class H {
      * Computed bindings for the horizontal scroll/ Вычисляемые привязки для горизонтальной прокрутки
      */
     i(this, "binds", d(
-      () => g(
+      () => f(
         v(this.extra),
         {
           ref: this.element,
@@ -78,10 +78,10 @@ class H {
         (s = this.index) != null ? s : "horizontalScroll"
       ) : [];
     });
-    this.props = t, this.className = e, this.components = s, this.extra = r, this.index = o;
+    this.props = t, this.className = e, this.components = s, this.extra = r, this.index = a;
   }
 }
-class q {
+class V {
   /**
    * Constructor
    * @param props input data / входные данные
@@ -98,7 +98,7 @@ class q {
    * @param selected value to check/ значение для проверки
    */
   isSelected(t) {
-    return D(t, this.actualItem.value);
+    return A(t, this.actualItem.value);
   }
   /**
    * Sets the selected value.
@@ -119,7 +119,7 @@ class q {
     return this.actualItem.value = t, this;
   }
 }
-class M {
+class O {
   /**
    * Constructor
    * @param element main element/ главный элемент
@@ -168,7 +168,7 @@ class M {
    */
   position() {
     var t;
-    return this.item.value = (t = T(this.selected.actualItem.value)) == null ? void 0 : t[0], this;
+    return this.item.value = (t = E(this.selected.actualItem.value)) == null ? void 0 : t[0], this;
   }
   /**
    * Resets the focus.
@@ -189,7 +189,38 @@ class M {
       return ((t = this.element.value) == null ? void 0 : t.querySelector(`[data-value="${this.item.value}"]`)) || void 0;
   }
 }
-class O {
+class j {
+  /**
+   * Constructor
+   * @param props input data/ входные данные
+   * @param data object for working with data/ объект для работы с данными
+   */
+  constructor(t, e) {
+    /**
+     * List of generated IDs.
+     *
+     * Список сгенерированных идентификаторов.
+     */
+    i(this, "ids", d(() => {
+      const t = {};
+      return this.data.fullData.value.forEach((e) => {
+        t[e.value] = $();
+      }), t;
+    }));
+    this.props = t, this.data = e;
+  }
+  /**
+   * Returns the ID by value.
+   *
+   * Возвращает идентификатор по значению.
+   * @param value value/ значение
+   */
+  getIdByValue(t) {
+    var e;
+    return (e = this.ids.value[t != null ? t : ""]) != null ? e : String(t);
+  }
+}
+class G {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -199,7 +230,7 @@ class O {
    * @param className class name/ название класса
    * @param selected selection value object/ объект значения выделения
    */
-  constructor(t, e, s, r, o, c) {
+  constructor(t, e, s, r, a, h) {
     /**
      * Changes the selection state.
      *
@@ -211,8 +242,8 @@ class O {
       await m();
       const s = this.getItem(t), r = this.getItem(e);
       if (s && r) {
-        const o = `${this.classDesign}-${this.getItemClassName()}`, c = s.getBoundingClientRect(), a = r.getBoundingClientRect(), l = a.left - c.left, h = `${l}px ${l >= 0 ? "-" : "+"} var(--${o}-gap, 0px)`;
-        s.style.setProperty(`--${o}-sys-left`, h), s.style.setProperty(`--${o}-sys-width`, a.width + "px"), this.reset(s);
+        const a = `${this.classDesign}-${this.getItemClassName()}`, h = s.getBoundingClientRect(), o = r.getBoundingClientRect(), l = o.left - h.left, c = `${l}px ${l >= 0 ? "-" : "+"} var(--${a}-gap, 0px)`;
+        s.style.setProperty(`--${a}-sys-left`, c), s.style.setProperty(`--${a}-sys-width`, o.width + "px"), this.reset(s);
       }
       requestAnimationFrame(() => {
         this.selected.setActual(t);
@@ -229,14 +260,14 @@ class O {
         t.style.removeProperty(`--${this.className}-sys-left`), t.style.removeProperty(`--${this.className}-sys-width`);
       }, 384);
     });
-    this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = o, this.selected = c, f(
+    this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = a, this.selected = h, g(
       this.selected.item,
-      (a, l) => this.go(a, l)
+      (o, l) => this.go(o, l)
     ), m().then(
       () => requestAnimationFrame(
         () => {
-          var a, l;
-          s.value && (s.value.scrollLeft = (l = (a = this.getItem(this.selected.item.value)) == null ? void 0 : a.offsetLeft) != null ? l : 0);
+          var o, l;
+          s.value && (s.value.scrollLeft = (l = (o = this.getItem(this.selected.item.value)) == null ? void 0 : o.offsetLeft) != null ? l : 0);
         }
       )
     );
@@ -260,7 +291,7 @@ class O {
     return ((e = this.element.value) == null ? void 0 : e.querySelector(`[data-value="${t != null ? t : ""}"]`)) || void 0;
   }
 }
-class V {
+class J {
   /**
    * Constructor
    * @param selected selection management object/ объект управления выделением
@@ -350,7 +381,7 @@ class V {
    * Запускает событие.
    */
   start() {
-    $() && (this.event || (this.event = new L(
+    L() && (this.event || (this.event = new R(
       document.body,
       ["keydown"],
       this.on
@@ -389,7 +420,7 @@ class V {
     ), this;
   }
 }
-class j {
+class K {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -407,14 +438,16 @@ class j {
    * @param constructors.HorizontalScrollIncludeConstructor class for working with horizontal scroll/ класс для работы с горизонтальной прокруткой
    * @param constructors.ListDataRefConstructor class for working with data list/ класс для работы со списком данных
    * @param constructors.TabsNavigationControlConstructor class for working with control/ класс для работы с управлением
+   * @param constructors.TabsNavigationIdsConstructor class for working with ids/ класс для работы с идентификаторами
    * @param constructors.TabsNavigationIndicatorConstructor class for working with indicator/ класс для работы с индикатором
    * @param constructors.TabsNavigationSelectedConstructor class for working with selected/ класс для работы с выбранным
    */
-  constructor(t, e, s, r, o, c, a, l, h) {
+  constructor(t, e, s, r, a, h, o, l, c) {
     i(this, "scroll");
     i(this, "selected");
     i(this, "focus");
     i(this, "data");
+    i(this, "ids");
     i(this, "indicator");
     i(this, "control");
     i(this, "event");
@@ -426,7 +459,7 @@ class j {
     i(this, "binds", d(() => ({
       tabindex: 0,
       ...this.control.binds,
-      ...E.role("tablist")
+      ...P.role("tablist")
     })));
     /**
      * Handler for the click event.
@@ -438,26 +471,27 @@ class j {
     i(this, "onClick", (t, e) => {
       this.selected.set(e == null ? void 0 : e.value), this.event.onClick(t, e);
     });
-    this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = o, this.components = c, this.slots = a, this.emits = l;
+    this.props = t, this.refs = e, this.element = s, this.classDesign = r, this.className = a, this.components = h, this.slots = o, this.emits = l;
     const {
-      EventClickIncludeConstructor: p = B,
-      HorizontalScrollIncludeConstructor: I = H,
-      ListDataRefConstructor: b = R,
-      ModelIncludeConstructor: y = P,
-      TabsNavigationControlConstructor: S = V,
-      TabsNavigationFocusConstructor: C = M,
-      TabsNavigationIndicatorConstructor: N = O,
-      TabsNavigationSelectedConstructor: x = q
-    } = h != null ? h : {};
+      EventClickIncludeConstructor: p = H,
+      HorizontalScrollIncludeConstructor: I = M,
+      ListDataRefConstructor: b = z,
+      ModelIncludeConstructor: y = q,
+      TabsNavigationControlConstructor: S = J,
+      TabsNavigationIdsConstructor: N = j,
+      TabsNavigationFocusConstructor: C = O,
+      TabsNavigationIndicatorConstructor: x = G,
+      TabsNavigationSelectedConstructor: w = V
+    } = c != null ? c : {};
     this.scroll = new I(
       this.props,
       this.className,
       this.components
-    ), this.selected = new x(this.props), this.focus = new C(
+    ), this.selected = new w(this.props), this.focus = new C(
       this.element,
       this.selected
     ), this.data = new b(
-      F(this.props, "list"),
+      D(this.props, "list"),
       this.focus.item,
       void 0,
       void 0,
@@ -465,7 +499,10 @@ class j {
       this.selected.actualItem,
       this.refs.keyValue,
       this.refs.keyLabel
-    ), this.indicator = new N(
+    ), this.ids = new N(
+      this.props,
+      this.data
+    ), this.indicator = new x(
       this.props,
       this.refs,
       this.scroll.elementHtml,
@@ -484,8 +521,8 @@ class j {
       "selected",
       this.emits,
       this.selected.item
-    ), this.initSelected(), A(() => {
-      f(
+    ), this.initSelected(), T(() => {
+      g(
         [e.selected],
         () => this.selected.set(t.selected),
         { immediate: !0 }
@@ -501,11 +538,11 @@ class j {
     this.props.selected || this.selected.set(this.control.getFirstItem());
   }
 }
-const X = {
+const _ = {
   horizontalScrollFlush: !0,
   horizontalScrollAlign: "left"
 };
-class Y extends z {
+class tt extends B {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -513,7 +550,7 @@ class Y extends z {
    * @param options list of additional parameters/ список дополнительных параметров
    * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
-  constructor(e, s, r, o = j) {
+  constructor(e, s, r, a = K) {
     super(
       e,
       s,
@@ -545,7 +582,7 @@ class Y extends z {
       const r = this.item.selected.isSelected(s.index);
       return this.components.renderOne(
         "tabItem",
-        g(
+        f(
           {
             tag: this.props.tag,
             key: s.index
@@ -554,6 +591,7 @@ class Y extends z {
           s,
           e.binds,
           {
+            id: this.item.ids.getIdByValue(s.value),
             onClick: this.item.onClick,
             class: {
               [e.classItemSelected]: r
@@ -562,7 +600,7 @@ class Y extends z {
         )
       );
     });
-    this.item = new o(
+    this.item = new a(
       this.props,
       this.refs,
       this.element,
@@ -579,7 +617,9 @@ class Y extends z {
    * Инициализация всех необходимых свойств для работы.
    */
   initExpose() {
-    return {};
+    return {
+      ids: this.item.ids.ids
+    };
   }
   /**
    * Improvement of the obtained list of classes.
@@ -616,7 +656,7 @@ class Y extends z {
   }
 }
 export {
-  j as TabsNavigation,
-  Y as TabsNavigationDesign,
-  X as defaultsTabsNavigation
+  K as TabsNavigation,
+  tt as TabsNavigationDesign,
+  _ as defaultsTabsNavigation
 };

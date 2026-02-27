@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { D1Image } from '@dxtmisha/d1/D1Image'
+import { } from '@dxtmisha/d1/D1Tabs'
 
 // is Comid
 const ad = 'sdsd'

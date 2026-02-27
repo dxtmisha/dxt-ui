@@ -84,12 +84,13 @@ export declare class ListItem {
     readonly classes: ComputedRef<ConstrClassObject>;
     /** values for attributes/ значения для атрибутов */
     readonly binds: ComputedRef<{
-        href: string | undefined;
+        onClick: (event: MouseEvent, options?: EventClickValue) => void;
+        onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void;
+        href: string;
         'data-value': any;
         'data-divider': string | undefined;
         'data-parent': string | undefined;
         'data-list-id': number | undefined;
-        onClick: (event: MouseEvent, options?: EventClickValue) => void;
     }>;
     /** values for aria attributes/ значения для атрибутов aria */
     readonly aria: ComputedRef<{

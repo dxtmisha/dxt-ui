@@ -5,6 +5,7 @@ import { EventClickInclude } from '../../classes/EventClickInclude';
 import { ModelInclude } from '../../classes/ModelInclude';
 import { TabsNavigationSelected } from './TabsNavigationSelected';
 import { TabsNavigationFocus } from './TabsNavigationFocus';
+import { TabsNavigationIds } from './TabsNavigationIds';
 import { TabsNavigationIndicator } from './TabsNavigationIndicator';
 import { TabsNavigationControl } from './TabsNavigationControl';
 import { EventClickValue } from '../../types/eventClickTypes';
@@ -28,6 +29,7 @@ export declare class TabsNavigation {
     readonly selected: TabsNavigationSelected;
     readonly focus: TabsNavigationFocus;
     readonly data: ListDataRef;
+    readonly ids: TabsNavigationIds;
     readonly indicator: TabsNavigationIndicator;
     readonly control: TabsNavigationControl;
     readonly event: EventClickInclude;
@@ -48,6 +50,7 @@ export declare class TabsNavigation {
      * @param constructors.HorizontalScrollIncludeConstructor class for working with horizontal scroll/ класс для работы с горизонтальной прокруткой
      * @param constructors.ListDataRefConstructor class for working with data list/ класс для работы со списком данных
      * @param constructors.TabsNavigationControlConstructor class for working with control/ класс для работы с управлением
+     * @param constructors.TabsNavigationIdsConstructor class for working with ids/ класс для работы с идентификаторами
      * @param constructors.TabsNavigationIndicatorConstructor class for working with indicator/ класс для работы с индикатором
      * @param constructors.TabsNavigationSelectedConstructor class for working with selected/ класс для работы с выбранным
      */
@@ -57,6 +60,7 @@ export declare class TabsNavigation {
         ListDataRefConstructor?: typeof ListDataRef;
         ModelIncludeConstructor?: typeof ModelInclude<ListSelectedList | undefined>;
         TabsNavigationControlConstructor?: typeof TabsNavigationControl;
+        TabsNavigationIdsConstructor?: typeof TabsNavigationIds;
         TabsNavigationFocusConstructor?: typeof TabsNavigationFocus;
         TabsNavigationIndicatorConstructor?: typeof TabsNavigationIndicator;
         TabsNavigationSelectedConstructor?: typeof TabsNavigationSelected;

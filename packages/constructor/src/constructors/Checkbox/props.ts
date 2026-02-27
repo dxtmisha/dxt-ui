@@ -36,7 +36,7 @@ export type CheckboxPropsBasic<
   & FieldInputCheckProps
   & ProgressPropsInclude<Progress>
   & EnabledProps
-  & ModelProps
+  & ModelProps<boolean>
   & SkeletonPropsInclude
   & {
     // Icon

@@ -4,7 +4,7 @@ var i = (n, t, e) => L(n, typeof t != "symbol" ? t + "" : t, e);
 import { computed as d, h as g } from "vue";
 import { DesignConstructorAbstract as P } from "@dxtmisha/functional";
 import { g as R } from "./getClassTagAStatic-BnVYlXHI.js";
-import { E as T } from "./EventClickInclude-Co8CpJqL.js";
+import { E as T } from "./EventClickInclude-DMbEP-nH.js";
 import { A as c } from "./AriaStaticInclude-DRHG8ILX.js";
 import { L as H } from "./LabelHighlightInclude-CLmTvW_6.js";
 import { S as M, P as V } from "./SuffixInclude-maZ7235l.js";
@@ -70,7 +70,7 @@ class O {
         "data-divider": this.props.divider ? "active" : void 0,
         "data-parent": this.props.parent,
         "data-list-id": this.props.listId,
-        onClick: this.event.onClick
+        ...this.event.binds
       };
     }));
     /** values for aria attributes/ значения для атрибутов aria */
@@ -98,7 +98,7 @@ class O {
     }));
     this.props = t, this.refs = e, this.element = r, this.classDesign = o, this.className = s, this.components = a, this.slots = l, this.emits = m;
     const {
-      BadgeIncludeConstructor: b = q,
+      BadgeIncludeConstructor: f = q,
       CaptionIncludeConstructor: C = $,
       DescriptionIncludeConstructor: I = j,
       EnabledIncludeConstructor: v = z,
@@ -110,7 +110,7 @@ class O {
       RippleIncludeConstructor: B = J,
       SkeletonIncludeConstructor: D = K,
       SuffixIncludeConstructor: E = M
-    } = u != null ? u : {}, f = new y(
+    } = u != null ? u : {}, b = new y(
       t,
       s,
       a,
@@ -121,7 +121,7 @@ class O {
       t,
       o,
       ["classTextVariant"]
-    ), p = new v(t, f);
+    ), p = new v(t, b);
     this.icon = new S(t, s, a), this.label = new w(
       t,
       s,
@@ -129,14 +129,14 @@ class O {
       l,
       void 0,
       h
-    ), this.prefix = new k(t, s, l, h), this.caption = new C(t, s, l), this.suffix = new E(t, s, l), this.description = new I(t, s, l, h), this.badge = new b(
+    ), this.prefix = new k(t, s, l, h), this.caption = new C(t, s, l), this.suffix = new E(t, s, l), this.description = new I(t, s, l, h), this.badge = new f(
       t,
       s,
       a,
       {
         overlap: "static"
       }
-    ), this.ripple = new B(s, a, p), this.progress = f, this.skeleton = h, this.enabled = p, this.event = new x(t, p, m);
+    ), this.ripple = new B(s, a, p), this.progress = b, this.skeleton = h, this.enabled = p, this.event = new x(t, p, m);
   }
 }
 const at = {

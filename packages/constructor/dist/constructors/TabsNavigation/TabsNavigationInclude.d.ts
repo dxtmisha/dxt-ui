@@ -1,7 +1,7 @@
-import { VNode, ComputedRef } from 'vue';
+import { VNode, Ref, ComputedRef } from 'vue';
 import { ConstrBind, DesignComponents, RefOrNormal } from '@dxtmisha/functional';
-import { TabsNavigationComponentInclude, TabsNavigationPropsInclude } from './basicTypes';
-import { TabsNavigationSlots } from './types';
+import { TabsNavigationComponentInclude, TabsNavigationIdsList, TabsNavigationPropsInclude } from './basicTypes';
+import { TabsNavigationExpose, TabsNavigationSlots } from './types';
 import { TabsNavigationProps } from './props';
 /**
  * The class returns data for working with the TabsNavigation component
@@ -23,8 +23,16 @@ export declare class TabsNavigationInclude<Props extends TabsNavigationPropsIncl
      * @param index index identifier/ идентификатор индекса
      */
     constructor(props: Readonly<Props>, className: string, components?: DesignComponents<TabsNavigationComponentInclude, Props> | undefined, extra?: RefOrNormal<PropsExtra> | undefined, index?: string | undefined);
+    /** Reference to tabsNavigation element expose/ Ссылка на expose элемента tabsNavigation */
+    readonly element: Ref<ConstrBind<TabsNavigationExpose> | undefined, ConstrBind<TabsNavigationExpose> | undefined>;
     /** Computed bindings for the tabsNavigation/ Вычисляемые привязки для tabsNavigation */
     readonly binds: ComputedRef<PropsExtra>;
+    /**
+     * List of generated IDs.
+     *
+     * Список сгенерированных идентификаторов.
+     */
+    readonly ids: ComputedRef<TabsNavigationIdsList>;
     /**
      * Render the TabsNavigation component with slots/
      * Рендер компонента TabsNavigation со слотами

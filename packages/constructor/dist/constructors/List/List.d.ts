@@ -113,10 +113,10 @@ export declare class List {
         readonly?: boolean;
         disabled?: boolean;
         to?: string | RouteLocationRaw;
+        href?: string;
         detail?: EventClickValue["detail"];
         role?: RoleType;
         index?: any;
-        href?: string;
         tag: "button" | "a" | "span" | "li" | "div" | string;
         filterMode?: boolean;
         divider: boolean;

@@ -218,7 +218,7 @@ export class CellDesign<
       'class': this.classes?.value.main,
       'data-value': this.props.value,
       'data-divider': this.props.divider ? 'active' : undefined,
-      'onClick': this.item.event.onClick,
+      ...this.item.event.binds,
       ...AriaStaticInclude.role(this.item.role.value)
     }
 

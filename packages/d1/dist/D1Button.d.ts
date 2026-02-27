@@ -2,8 +2,8 @@ import { ButtonPropsBasic } from '@dxtmisha/constructor/Button';
 import { ButtonSlots } from '@dxtmisha/constructor/Button';
 import { ComponentOptionsMixin } from 'vue';
 import { ComponentProvideOptions } from 'vue';
+import { ComputedRef } from 'vue';
 import { DefineComponent } from 'vue';
-import { EventClickValue } from '@dxtmisha/constructor';
 import { IconPropsBasic } from '@dxtmisha/constructor/Icon';
 import { ImagePropsBasic } from '@dxtmisha/constructor/Image';
 import { ProgressPropsBasic } from '@dxtmisha/constructor/Progress';
@@ -13,6 +13,7 @@ import { Ref } from 'vue';
 declare const __VLS_component: DefineComponent<D1ButtonProps, {
     value?: Ref< EventClickValue["value"]>;
     detail?: Ref< EventClickValue["detail"]>;
+    elementHtml?: ComputedRef<HTMLDivElement | undefined> | undefined;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
     click: (event: MouseEvent, value: EventClickValue) => any;
     clickLite: (value: EventClickValue) => any;
@@ -42,6 +43,18 @@ export declare const D1Button: __VLS_WithTemplateSlots<typeof __VLS_component, _
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
 export declare type D1ButtonProps = ButtonPropsBasic<IconProps, ProgressProps> & PropsToken_4;
+
+/**
+ * Value object for click events/ Объект значения для событий клика
+ */
+declare type EventClickValue = {
+    /** Event type/ Тип события */
+    type: string;
+    /** Event value/ Значение события */
+    value: any;
+    /** Additional event details/ Дополнительные детали события */
+    detail: Record<string, any> | undefined;
+};
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
@@ -123,44 +136,51 @@ export { }
 
 declare module '@vue/runtime-core' {
     interface GlobalComponents {
-        D1Accordion: typeof D1Accordion;
-        D1ActionSheet: typeof D1ActionSheet;
-        D1Actions: typeof D1Actions;
-        D1Anchor: typeof D1Anchor;
-        D1Arrow: typeof D1Arrow;
-        D1Badge: typeof D1Badge;
-        D1Bars: typeof D1Bars;
-        D1Block: typeof D1Block;
-        D1Button: typeof D1Button;
-        D1Cell: typeof D1Cell;
-        D1Chip: typeof D1Chip;
-        D1ChipGroup: typeof D1ChipGroup;
-        D1Dialog: typeof D1Dialog;
-        D1Field: typeof D1Field;
-        D1FieldCounter: typeof D1FieldCounter;
-        D1FieldLabel: typeof D1FieldLabel;
-        D1FieldMessage: typeof D1FieldMessage;
-        D1Icon: typeof D1Icon;
-        D1Image: typeof D1Image;
-        D1Input: typeof D1Input;
-        D1List: typeof D1List;
-        D1ListGroup: typeof D1ListGroup;
-        D1ListItem: typeof D1ListItem;
-        D1ListMenu: typeof D1ListMenu;
-        D1Mask: typeof D1Mask;
-        D1Menu: typeof D1Menu;
-        D1Modal: typeof D1Modal;
-        D1MotionTransform: typeof D1MotionTransform;
-        D1Page: typeof D1Page;
-        D1Progress: typeof D1Progress;
-        D1Ripple: typeof D1Ripple;
-        D1Scrollbar: typeof D1Scrollbar;
-        D1Section: typeof D1Section;
-        D1Select: typeof D1Select;
-        D1SelectValue: typeof D1SelectValue;
-        D1Skeleton: typeof D1Skeleton;
-        D1TextareaAutosize: typeof D1TextareaAutosize;
-        D1Tooltip: typeof D1Tooltip;
-        D1Window: typeof D1Window;
+        D1Accordion: typeof components.D1Accordion;
+        D1ActionSheet: typeof components.D1ActionSheet;
+        D1Actions: typeof components.D1Actions;
+        D1Anchor: typeof components.D1Anchor;
+        D1Arrow: typeof components.D1Arrow;
+        D1Badge: typeof components.D1Badge;
+        D1Bars: typeof components.D1Bars;
+        D1Block: typeof components.D1Block;
+        D1Button: typeof components.D1Button;
+        D1Cell: typeof components.D1Cell;
+        D1Checkbox: typeof components.D1Checkbox;
+        D1Chip: typeof components.D1Chip;
+        D1ChipGroup: typeof components.D1ChipGroup;
+        D1Dialog: typeof components.D1Dialog;
+        D1Field: typeof components.D1Field;
+        D1FieldCounter: typeof components.D1FieldCounter;
+        D1FieldLabel: typeof components.D1FieldLabel;
+        D1FieldMessage: typeof components.D1FieldMessage;
+        D1HorizontalScroll: typeof components.D1HorizontalScroll;
+        D1Icon: typeof components.D1Icon;
+        D1Image: typeof components.D1Image;
+        D1Input: typeof components.D1Input;
+        D1List: typeof components.D1List;
+        D1ListGroup: typeof components.D1ListGroup;
+        D1ListItem: typeof components.D1ListItem;
+        D1ListMenu: typeof components.D1ListMenu;
+        D1Mask: typeof components.D1Mask;
+        D1Menu: typeof components.D1Menu;
+        D1Modal: typeof components.D1Modal;
+        D1MotionAxis: typeof components.D1MotionAxis;
+        D1MotionTransform: typeof components.D1MotionTransform;
+        D1Page: typeof components.D1Page;
+        D1Progress: typeof components.D1Progress;
+        D1Ripple: typeof components.D1Ripple;
+        D1Scrollbar: typeof components.D1Scrollbar;
+        D1Section: typeof components.D1Section;
+        D1Select: typeof components.D1Select;
+        D1SelectValue: typeof components.D1SelectValue;
+        D1Skeleton: typeof components.D1Skeleton;
+        D1TabItem: typeof components.D1TabItem;
+        D1Tabs: typeof components.D1Tabs;
+        D1TabsNavigation: typeof components.D1TabsNavigation;
+        D1Textarea: typeof components.D1Textarea;
+        D1TextareaAutosize: typeof components.D1TextareaAutosize;
+        D1Tooltip: typeof components.D1Tooltip;
+        D1Window: typeof components.D1Window;
     }
 }

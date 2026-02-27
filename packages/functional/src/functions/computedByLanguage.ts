@@ -15,7 +15,7 @@ import { GeoRef } from '../classes/ref/GeoRef'
  * @param debugOptions Используется для отладки реактивных вычислений.
  * Поддерживается библиотекой Vue.js
  */
-export function computedByLanguage<T, R extends (T | undefined)>(
+export function computedByLanguage<T, R extends (T | undefined) = T | undefined>(
   getter: ComputedGetter<R>,
   getterNone: R | (() => R) = () => undefined as R,
   conditions?: () => boolean,

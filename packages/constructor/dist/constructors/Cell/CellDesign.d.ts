@@ -116,9 +116,11 @@ export declare class CellDesign<COMP extends CellComponents, EXPOSE extends Cell
         'aria-valuemin'?: string | number;
         'aria-valuenow'?: string | number;
         'aria-valuetext'?: string;
+        onClick: (event: MouseEvent, options?: EventClickValue) => void;
+        onKeydown: (event: KeyboardEvent, options?: EventClickValue) => void;
+        href?: string;
         class: ConstrClass | undefined;
         'data-value': P["value"] | undefined;
         'data-divider': string | undefined;
-        onClick: (event: MouseEvent, options?: EventClickValue) => void;
     }>;
 }

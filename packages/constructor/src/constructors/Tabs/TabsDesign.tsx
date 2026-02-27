@@ -111,10 +111,14 @@ export class TabsDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode[] {
-    return [
-      ...this.item.tabsNavigation.render(),
-      ...this.item.motionAxis.render(this.slidesRender())
-    ]
+    if (this.item.tabsNavigation.ids.value) {
+      return [
+        ...this.item.tabsNavigation.render(),
+        ...this.item.motionAxis.render(this.slidesRender())
+      ]
+    }
+
+    return this.item.tabsNavigation.render()
   }
 
   /**
@@ -127,12 +131,13 @@ export class TabsDesign<
       const slots: Record<string, () => VNode> = {}
 
       for (const key in this.slots) {
+        const id = this.item.tabsNavigation.ids.value?.[key]
         slots[key] = () => h(
           'div',
           {
             class: this.classes?.value.slide,
             ...AriaStaticInclude.role('tabpanel'),
-            ...AriaStaticInclude.labelledby('')
+            ...AriaStaticInclude.labelledby(id)
           },
           this.initSlot(key)
         )

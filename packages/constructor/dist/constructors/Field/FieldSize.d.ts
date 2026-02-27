@@ -22,8 +22,9 @@ export declare class FieldSize {
      * Update margins.
      *
      * Обновление отступов.
+     * @param limit recursion limit/ лимит рекурсии
      */
-    readonly update: () => void;
+    readonly update: (limit?: number) => void;
     /**
      * Returns separator elements.
      *

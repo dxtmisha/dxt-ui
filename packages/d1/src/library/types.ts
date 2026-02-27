@@ -48,100 +48,102 @@ import _D1TextareaAutosize from '../components/Ui/TextareaAutosize/D1TextareaAut
 import _D1Tooltip from '../components/Ui/Tooltip/D1Tooltip.vue'
 import _D1Window from '../components/Ui/Window/D1Window.vue'
 
-export const D1Accordion = _D1Accordion
-export const D1ActionSheet = _D1ActionSheet
-export const D1Actions = _D1Actions
-export const D1Anchor = _D1Anchor
-export const D1Arrow = _D1Arrow
-export const D1Badge = _D1Badge
-export const D1Bars = _D1Bars
-export const D1Block = _D1Block
-export const D1Button = _D1Button
-export const D1Cell = _D1Cell
-export const D1Checkbox = _D1Checkbox
-export const D1Chip = _D1Chip
-export const D1ChipGroup = _D1ChipGroup
-export const D1Dialog = _D1Dialog
-export const D1Field = _D1Field
-export const D1FieldCounter = _D1FieldCounter
-export const D1FieldLabel = _D1FieldLabel
-export const D1FieldMessage = _D1FieldMessage
-export const D1HorizontalScroll = _D1HorizontalScroll
-export const D1Icon = _D1Icon
-export const D1Image = _D1Image
-export const D1Input = _D1Input
-export const D1List = _D1List
-export const D1ListGroup = _D1ListGroup
-export const D1ListItem = _D1ListItem
-export const D1ListMenu = _D1ListMenu
-export const D1Mask = _D1Mask
-export const D1Menu = _D1Menu
-export const D1Modal = _D1Modal
-export const D1MotionAxis = _D1MotionAxis
-export const D1MotionTransform = _D1MotionTransform
-export const D1Page = _D1Page
-export const D1Progress = _D1Progress
-export const D1Ripple = _D1Ripple
-export const D1Scrollbar = _D1Scrollbar
-export const D1Section = _D1Section
-export const D1Select = _D1Select
-export const D1SelectValue = _D1SelectValue
-export const D1Skeleton = _D1Skeleton
-export const D1TabItem = _D1TabItem
-export const D1Tabs = _D1Tabs
-export const D1TabsNavigation = _D1TabsNavigation
-export const D1Textarea = _D1Textarea
-export const D1TextareaAutosize = _D1TextareaAutosize
-export const D1Tooltip = _D1Tooltip
-export const D1Window = _D1Window
+export const components = {
+  D1Accordion: _D1Accordion,
+  D1ActionSheet: _D1ActionSheet,
+  D1Actions: _D1Actions,
+  D1Anchor: _D1Anchor,
+  D1Arrow: _D1Arrow,
+  D1Badge: _D1Badge,
+  D1Bars: _D1Bars,
+  D1Block: _D1Block,
+  D1Button: _D1Button,
+  D1Cell: _D1Cell,
+  D1Checkbox: _D1Checkbox,
+  D1Chip: _D1Chip,
+  D1ChipGroup: _D1ChipGroup,
+  D1Dialog: _D1Dialog,
+  D1Field: _D1Field,
+  D1FieldCounter: _D1FieldCounter,
+  D1FieldLabel: _D1FieldLabel,
+  D1FieldMessage: _D1FieldMessage,
+  D1HorizontalScroll: _D1HorizontalScroll,
+  D1Icon: _D1Icon,
+  D1Image: _D1Image,
+  D1Input: _D1Input,
+  D1List: _D1List,
+  D1ListGroup: _D1ListGroup,
+  D1ListItem: _D1ListItem,
+  D1ListMenu: _D1ListMenu,
+  D1Mask: _D1Mask,
+  D1Menu: _D1Menu,
+  D1Modal: _D1Modal,
+  D1MotionAxis: _D1MotionAxis,
+  D1MotionTransform: _D1MotionTransform,
+  D1Page: _D1Page,
+  D1Progress: _D1Progress,
+  D1Ripple: _D1Ripple,
+  D1Scrollbar: _D1Scrollbar,
+  D1Section: _D1Section,
+  D1Select: _D1Select,
+  D1SelectValue: _D1SelectValue,
+  D1Skeleton: _D1Skeleton,
+  D1TabItem: _D1TabItem,
+  D1Tabs: _D1Tabs,
+  D1TabsNavigation: _D1TabsNavigation,
+  D1Textarea: _D1Textarea,
+  D1TextareaAutosize: _D1TextareaAutosize,
+  D1Tooltip: _D1Tooltip,
+  D1Window: _D1Window
+}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    D1Accordion: typeof D1Accordion
-    D1ActionSheet: typeof D1ActionSheet
-    D1Actions: typeof D1Actions
-    D1Anchor: typeof D1Anchor
-    D1Arrow: typeof D1Arrow
-    D1Badge: typeof D1Badge
-    D1Bars: typeof D1Bars
-    D1Block: typeof D1Block
-    D1Button: typeof D1Button
-    D1Cell: typeof D1Cell
-    D1Checkbox: typeof D1Checkbox
-    D1Chip: typeof D1Chip
-    D1ChipGroup: typeof D1ChipGroup
-    D1Dialog: typeof D1Dialog
-    D1Field: typeof D1Field
-    D1FieldCounter: typeof D1FieldCounter
-    D1FieldLabel: typeof D1FieldLabel
-    D1FieldMessage: typeof D1FieldMessage
-    D1HorizontalScroll: typeof D1HorizontalScroll
-    D1Icon: typeof D1Icon
-    D1Image: typeof D1Image
-    D1Input: typeof D1Input
-    D1List: typeof D1List
-    D1ListGroup: typeof D1ListGroup
-    D1ListItem: typeof D1ListItem
-    D1ListMenu: typeof D1ListMenu
-    D1Mask: typeof D1Mask
-    D1Menu: typeof D1Menu
-    D1Modal: typeof D1Modal
-    D1MotionAxis: typeof D1MotionAxis
-    D1MotionTransform: typeof D1MotionTransform
-    D1Page: typeof D1Page
-    D1Progress: typeof D1Progress
-    D1Ripple: typeof D1Ripple
-    D1Scrollbar: typeof D1Scrollbar
-    D1Section: typeof D1Section
-    D1Select: typeof D1Select
-    D1SelectValue: typeof D1SelectValue
-    D1Skeleton: typeof D1Skeleton
-    D1TabItem: typeof D1TabItem
-    D1Tabs: typeof D1Tabs
-    D1TabsNavigation: typeof D1TabsNavigation
-    D1Textarea: typeof D1Textarea
-    D1TextareaAutosize: typeof D1TextareaAutosize
-    D1Tooltip: typeof D1Tooltip
-    D1Window: typeof D1Window
+    D1Accordion: typeof components.D1Accordion
+    D1ActionSheet: typeof components.D1ActionSheet
+    D1Actions: typeof components.D1Actions
+    D1Anchor: typeof components.D1Anchor
+    D1Arrow: typeof components.D1Arrow
+    D1Badge: typeof components.D1Badge
+    D1Bars: typeof components.D1Bars
+    D1Block: typeof components.D1Block
+    D1Button: typeof components.D1Button
+    D1Cell: typeof components.D1Cell
+    D1Checkbox: typeof components.D1Checkbox
+    D1Chip: typeof components.D1Chip
+    D1ChipGroup: typeof components.D1ChipGroup
+    D1Dialog: typeof components.D1Dialog
+    D1Field: typeof components.D1Field
+    D1FieldCounter: typeof components.D1FieldCounter
+    D1FieldLabel: typeof components.D1FieldLabel
+    D1FieldMessage: typeof components.D1FieldMessage
+    D1HorizontalScroll: typeof components.D1HorizontalScroll
+    D1Icon: typeof components.D1Icon
+    D1Image: typeof components.D1Image
+    D1Input: typeof components.D1Input
+    D1List: typeof components.D1List
+    D1ListGroup: typeof components.D1ListGroup
+    D1ListItem: typeof components.D1ListItem
+    D1ListMenu: typeof components.D1ListMenu
+    D1Mask: typeof components.D1Mask
+    D1Menu: typeof components.D1Menu
+    D1Modal: typeof components.D1Modal
+    D1MotionAxis: typeof components.D1MotionAxis
+    D1MotionTransform: typeof components.D1MotionTransform
+    D1Page: typeof components.D1Page
+    D1Progress: typeof components.D1Progress
+    D1Ripple: typeof components.D1Ripple
+    D1Scrollbar: typeof components.D1Scrollbar
+    D1Section: typeof components.D1Section
+    D1Select: typeof components.D1Select
+    D1SelectValue: typeof components.D1SelectValue
+    D1Skeleton: typeof components.D1Skeleton
+    D1TabItem: typeof components.D1TabItem
+    D1Tabs: typeof components.D1Tabs
+    D1TabsNavigation: typeof components.D1TabsNavigation
+    D1Textarea: typeof components.D1Textarea
+    D1TextareaAutosize: typeof components.D1TextareaAutosize
+    D1Tooltip: typeof components.D1Tooltip
+    D1Window: typeof components.D1Window
   }
 }

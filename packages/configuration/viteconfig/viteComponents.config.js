@@ -20,7 +20,10 @@ export const viteComponents = mergeConfig(
     undefined,
     undefined,
     undefined,
-    true
+    true,
+    [
+      '@dxtmisha/constructor'
+    ]
   ),
   {
     plugins: [mdx()]

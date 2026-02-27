@@ -1386,6 +1386,12 @@ class It {
    * Проверяет, есть ли блокирующий элемент от других окон.
    */
   isBlockOther() {
+    var t;
+    if (this.target) {
+      const e = this.classes.findMain(this.target);
+      if (e && (e === this.element.getMain() || (t = this.classes.findControl()) != null && t.closest(`[data-window="${e.dataset.window}"]`)))
+        return !1;
+    }
     return !!this.classes.findBodyOther(`.${this.classes.list.blockOther}`);
   }
   /**

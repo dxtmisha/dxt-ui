@@ -81,6 +81,7 @@ export class TabsNavigationDesign<
    */
   protected initExpose(): EXPOSE {
     return {
+      ids: this.item.ids.ids
     } as EXPOSE
   }
 
@@ -171,6 +172,7 @@ export class TabsNavigationDesign<
         item,
         props.binds,
         {
+          id: this.item.ids.getIdByValue(item.value),
           onClick: this.item.onClick,
           class: {
             [props.classItemSelected]: isSelected

@@ -11,6 +11,7 @@
  * @param externalExtended extra dependencies / дополнительные зависимости
  * @param fileCssName name of the output CSS file / имя выходного CSS файла
  * @param rollupTypes whether to use rollupTypes in dts plugin / использовать ли rollupTypes в плагине dts
+ * @param bundledPackages packages to bundle types for / пакеты, типы которых нужно собрать
  * @returns Vite config / конфигурация Vite
  */
 export declare const viteBasicFunction: (
@@ -22,5 +23,6 @@ export declare const viteBasicFunction: (
   external?: string[],
   externalExtended?: string[],
   fileCssName?: string,
-  rollupTypes?: boolean
+  rollupTypes?: boolean,
+  bundledPackages?: string[]
 ) => import('vite').UserConfigExport

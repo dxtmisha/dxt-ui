@@ -1,8 +1,10 @@
+import { ComputedRef } from 'vue';
 import { ConstrClass, ListSelectedList } from '@dxtmisha/functional';
 import { HorizontalScrollComponentInclude } from '../HorizontalScroll';
 import { TabItemComponentInclude } from '../TabItem';
 import { EventClickEmits } from '../../types/eventClickTypes';
 import { ModelEmitsSelected } from '../../types/modelTypes';
+import { TabsNavigationIdsList } from './basicTypes';
 /**
  * Interface for describing which components need to be connected for work.
  *
@@ -21,6 +23,7 @@ export type TabsNavigationEmits = EventClickEmits & ModelEmitsSelected<ListSelec
  * Тип, описывающий доступные свойства.
  */
 export interface TabsNavigationExpose {
+    ids: ComputedRef<TabsNavigationIdsList>;
 }
 /**
  * Type describing available slots.

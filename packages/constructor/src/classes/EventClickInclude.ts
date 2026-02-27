@@ -1,5 +1,5 @@
 import { toRefs, type ToRefs } from 'vue'
-import { type ConstrEmit, isEnter, RouterItemRef } from '@dxtmisha/functional'
+import { type ConstrEmit, type ConstrHrefProps, isEnter, isObjectNotArray, RouterItemRef } from '@dxtmisha/functional'
 
 import { EnabledInclude } from './EnabledInclude'
 
@@ -39,6 +39,7 @@ export class EventClickInclude {
    */
   get binds() {
     return {
+      ...this.getHref(),
       onClick: this.onClick,
       onKeydown: this.onKeydown
     }
@@ -53,6 +54,27 @@ export class EventClickInclude {
     return {
       value: this.refs?.value,
       detail: this.refs?.detail
+    }
+  }
+
+  /**
+   * Returns the link value
+   *
+   * Возвращает значение ссылки
+   */
+  getHref(): ConstrHrefProps {
+    const to = this.props?.to
+
+    if (
+      this.props?.to
+      && isObjectNotArray(to)
+      && 'name' in to
+    ) {
+      return RouterItemRef.rawToHref(to)
+    }
+
+    return {
+      href: this.props?.href
     }
   }
 

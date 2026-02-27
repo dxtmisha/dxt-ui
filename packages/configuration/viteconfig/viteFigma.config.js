@@ -4,14 +4,15 @@ import vue from '@vitejs/plugin-vue'
 import { viteSingleFile } from 'vite-plugin-singlefile'
 
 // https://vite.dev/config/
-export default (
+export const viteFigma = (
   isWatch,
-  dirname
+  dirname,
+  plugins = []
 ) => defineConfig(({ mode }) => {
   switch (mode) {
     case 'ui':
       return {
-        plugins: [vue(), viteSingleFile()],
+        plugins: [vue(), ...plugins, viteSingleFile()],
         build: {
           target: 'es2018',
           emptyOutDir: !isWatch

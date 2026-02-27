@@ -1,6 +1,7 @@
-import { ConstrBind, ListRecord } from '@dxtmisha/functional';
+import { ConstrBind, ListRecord, NumberOrString } from '@dxtmisha/functional';
 import { TabItemPropsBasic } from '../TabItem';
 import { TabsNavigationPropsBasic } from './props';
+export type TabsNavigationIdsList = Record<NumberOrString, string>;
 /**
  * Type for including the TabsNavigation component.
  *
