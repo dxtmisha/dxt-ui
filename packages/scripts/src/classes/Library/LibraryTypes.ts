@@ -27,10 +27,17 @@ export class LibraryTypes {
     this.items.write(
       'types',
       [
+        'import { type App } from \'vue\'',
         ...this.initImports(),
         '',
         'export const components = {',
         this.initExports(),
+        '}',
+        '',
+        'export const useVueComponentsPlugin = {',
+        '  install: async (app: App) => {',
+        ...this.initIncludeVueComponents(),
+        '  }',
         '}',
         '',
         'declare module \'@vue/runtime-core\' {',
@@ -86,6 +93,19 @@ export class LibraryTypes {
       })
 
     return list.join(',\r\n')
+  }
+
+  protected initIncludeVueComponents(): string[] {
+    const list: string[] = []
+
+    this.items.getComponentList()
+      .forEach((component) => {
+        list.push(
+          `    app.component('${component.codeFull}', _${component.codeFull})`
+        )
+      })
+
+    return list
   }
 
   /**

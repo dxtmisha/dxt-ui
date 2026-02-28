@@ -7,6 +7,7 @@ import { ActionsSlots } from '@dxtmisha/constructor/Actions';
 import { AllowedComponentProps } from 'vue';
 import { AnchorPropsBasic } from '@dxtmisha/constructor/Anchor';
 import { AnchorSlots } from '@dxtmisha/constructor/Anchor';
+import { App } from 'vue';
 import { ArrowPropsBasic } from '@dxtmisha/constructor/Arrow';
 import { ArrowSlots } from '@dxtmisha/constructor/Arrow';
 import { BadgePropsBasic } from '@dxtmisha/constructor/Badge';
@@ -104,6 +105,7 @@ import { ShallowRef } from 'vue';
 import { SkeletonSlots } from '@dxtmisha/constructor/Skeleton';
 import { TabItemPropsBasic } from '@dxtmisha/constructor/TabItem';
 import { TabItemSlots } from '@dxtmisha/constructor/TabItem';
+import { TabsNavigationIdsList } from '@dxtmisha/constructor/TabsNavigation';
 import { TabsNavigationPropsBasic } from '@dxtmisha/constructor/TabsNavigation';
 import { TabsNavigationSlots } from '@dxtmisha/constructor/TabsNavigation';
 import { TabsPropsBasic } from '@dxtmisha/constructor/Tabs';
@@ -2125,6 +2127,7 @@ export declare const components: {
             "onUpdate:selected"?: ((value: ListSelectedList) => any) | undefined;
             "onUpdate:modelSelected"?: ((value: ListSelectedList) => any) | undefined;
         }>, {
+            ids: ComputedRef<TabsNavigationIdsList>;
             elementHtml?: ComputedRef<HTMLDivElement | undefined> | undefined;
         }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
             click: (event: MouseEvent, value: EventClickValue) => any;
@@ -2144,6 +2147,7 @@ export declare const components: {
             "onUpdate:selected"?: ((value: ListSelectedList) => any) | undefined;
             "onUpdate:modelSelected"?: ((value: ListSelectedList) => any) | undefined;
         }>, {
+            ids: ComputedRef<TabsNavigationIdsList>;
             elementHtml?: ComputedRef<HTMLDivElement | undefined> | undefined;
         }, {}, {}, {}, {}>;
         __isFragment?: never;
@@ -2155,6 +2159,7 @@ export declare const components: {
         "onUpdate:selected"?: ((value: ListSelectedList) => any) | undefined;
         "onUpdate:modelSelected"?: ((value: ListSelectedList) => any) | undefined;
     }>, {
+        ids: ComputedRef<TabsNavigationIdsList>;
         elementHtml?: ComputedRef<HTMLDivElement | undefined> | undefined;
     }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
         click: (event: MouseEvent, value: EventClickValue) => any;
@@ -2947,6 +2952,10 @@ declare type TextareaProps = TextareaPropsBasic<TextareaAutosizeProps, IconProps
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
 declare type TooltipProps = TooltipPropsBasic & PropsToken_13;
+
+export declare const useVueComponentsPlugin: {
+    install: (app: App) => Promise<void>;
+};
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства

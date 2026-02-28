@@ -8,10 +8,12 @@ import { ImagePropsBasic } from '@dxtmisha/constructor/Image';
 import { ListSelectedList } from '@dxtmisha/functional';
 import { PublicProps } from 'vue';
 import { TabItemPropsBasic } from '@dxtmisha/constructor/TabItem';
+import { TabsNavigationIdsList } from '@dxtmisha/constructor/TabsNavigation';
 import { TabsNavigationPropsBasic } from '@dxtmisha/constructor/TabsNavigation';
 import { TabsNavigationSlots } from '@dxtmisha/constructor/TabsNavigation';
 
 declare const __VLS_component: DefineComponent<D1TabsNavigationProps, {
+    ids: ComputedRef<TabsNavigationIdsList>;
     elementHtml?: ComputedRef<HTMLDivElement | undefined> | undefined;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
     click: (event: MouseEvent, value: EventClickValue) => any;
