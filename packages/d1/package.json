@@ -27,6 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "dxt-ui": "dxt-ui",
+    "dxt-wiki-storm": "dxt-wiki-storm",
     "prepublishOnly": "npm run dxt-ui && npm run build"
   },
   "files": [
