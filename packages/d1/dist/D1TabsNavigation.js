@@ -1,4 +1,4 @@
-import { _ as i } from "./D1TabsNavigation.vue_vue_type_script_setup_true_lang-BRFKqp0o.js";
+import { D as i } from "./index-CrPo9kEE.js";
 export {
   i as D1TabsNavigation
 };

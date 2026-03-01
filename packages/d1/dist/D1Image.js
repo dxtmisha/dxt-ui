@@ -1,4 +1,4 @@
-import { _ as m } from "./D1Image.vue_vue_type_script_setup_true_lang-CD2--_oV.js";
+import { D as m } from "./index-CoclgqEF.js";
 export {
   m as D1Image
 };

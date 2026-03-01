@@ -17,6 +17,7 @@ const propsNames: StorybookProps = [
   { name: 'dynamic', type: 'boolean' },
   { name: 'dynamicHover', type: 'boolean' },
   { name: 'focus', type: 'boolean' },
+  { name: 'href', type: 'string' },
   { name: 'icon', type: 'IconValue<Icon>' },
   { name: 'iconAttrs', type: 'ConstrBind<Icon>' },
   { name: 'iconDir', type: 'boolean' },

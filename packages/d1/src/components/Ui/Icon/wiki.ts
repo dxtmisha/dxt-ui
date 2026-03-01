@@ -19,6 +19,7 @@ const propsNames: StorybookProps = [
   { name: 'end', type: 'boolean' },
   { name: 'hide', type: 'boolean' },
   { name: 'high', type: 'boolean' },
+  { name: 'href', type: 'string' },
   { name: 'icon', type: 'ImageValue<Image>' },
   { name: 'iconActive', type: 'ImageValue<Image>' },
   { name: 'inverse', type: 'boolean' },

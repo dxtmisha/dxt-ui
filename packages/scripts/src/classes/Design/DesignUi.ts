@@ -95,16 +95,18 @@ export class DesignUi {
     const projectName = toCamelCaseFirst(PropertiesConfig.getProjectName())
 
     if (packageJson?.exports) {
+      packageJson.exports['.'] = {
+        types: './dist/library/types.d.ts',
+        default: './dist/types.js'
+      }
       packageJson.exports['./plugin'] = {
-        import: './dist/plugin.js',
-        types: './dist/library/plugin.d.ts'
+        types: './dist/library/plugin.d.ts',
+        default: './dist/plugin.js'
       }
       packageJson.exports['./style.css'] = './dist/style.css'
       packageJson.exports['./style/ui.scss'] = `./src/styles/${projectName}/main.scss`
       packageJson.exports['./style/ui-properties.scss'] = `./src/styles/${projectName}/style.scss`
-      packageJson.exports['./types.d.ts'] = {
-        types: './dist/library/types.d.ts'
-      }
+      packageJson.exports['./types.d.ts'] = './dist/library/types.d.ts'
 
       PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageJson)
     }

@@ -1,4 +1,4 @@
-import { _ as s } from "./D1Actions.vue_vue_type_script_setup_true_lang-DbRUf-ay.js";
+import { D as s } from "./index-D3YDqNji.js";
 export {
   s as D1Actions
 };

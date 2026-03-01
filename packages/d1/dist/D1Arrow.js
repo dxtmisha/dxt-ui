@@ -1,4 +1,4 @@
-import { _ as a } from "./D1Arrow.vue_vue_type_script_setup_true_lang-7jq-R33W.js";
+import { D } from "./index-Dp_TskRA.js";
 export {
-  a as D1Arrow
+  D as D1Arrow
 };

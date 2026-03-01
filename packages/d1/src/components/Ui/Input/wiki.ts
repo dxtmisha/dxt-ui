@@ -34,6 +34,7 @@ const propsNames: StorybookProps = [
   { name: 'fraction', type: 'MaskFractionItem' },
   { name: 'helperId', type: 'string' },
   { name: 'helperMessage', type: 'string' },
+  { name: 'href', type: 'string' },
   { name: 'icon', type: 'IconValue<Icon>' },
   { name: 'iconAttrs', type: 'ConstrBind<Icon>' },
   { name: 'iconDir', type: 'boolean' },

@@ -34,6 +34,7 @@ const propsNames: StorybookProps = [
   { name: 'helperId', type: 'string' },
   { name: 'helperMessage', type: 'string' },
   { name: 'hideList', type: 'boolean' },
+  { name: 'href', type: 'string' },
   { name: 'icon', type: 'IconValue<Icon>' },
   { name: 'iconArrowDown', type: 'IconValue<Icon>' },
   { name: 'iconAttrs', type: 'ConstrBind<Icon>' },

@@ -1,4 +1,4 @@
-import { _ as a } from "./D1Window.vue_vue_type_script_setup_true_lang-VCnCqu4t.js";
+import { D } from "./index-Bx1lEFLI.js";
 export {
-  a as D1Window
+  D as D1Window
 };

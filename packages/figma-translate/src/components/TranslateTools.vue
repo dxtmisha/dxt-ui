@@ -3,7 +3,6 @@
 
 <template>
   <div class="translate-tools">
-    <D1Button size="lg" />
   </div>
 </template>
 

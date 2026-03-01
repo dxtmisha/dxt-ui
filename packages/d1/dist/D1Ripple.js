@@ -1,4 +1,4 @@
-import { _ as o } from "./D1Ripple.vue_vue_type_script_setup_true_lang-CX94jwSw.js";
+import { D as o } from "./index-uisGNUv8.js";
 export {
   o as D1Ripple
 };

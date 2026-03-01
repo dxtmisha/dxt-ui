@@ -35,6 +35,7 @@ const propsNames: StorybookProps = [
   { name: 'forceShowMessage', type: 'boolean' },
   { name: 'helperId', type: 'string' },
   { name: 'helperMessage', type: 'string' },
+  { name: 'href', type: 'string' },
   { name: 'icon', type: 'IconValue<Icon>' },
   { name: 'iconArrowLeft', type: 'IconValue<Icon>' },
   { name: 'iconArrowRight', type: 'IconValue<Icon>' },

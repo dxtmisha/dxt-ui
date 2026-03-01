@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "dxt-ui": "dxt-ui Checkbox",
+    "dxt-ui": "dxt-ui",
     "prepublishOnly": "npm run dxt-ui && npm run build"
   },
   "files": [
@@ -37,204 +37,202 @@
     "LICENSE"
   ],
   "exports": {
-    ".": {
-      "types": "./dist/types.d.ts",
-      "default": "./dist/types.js"
-    },
     "./D1Accordion": {
-      "types": "./dist/D1Accordion.d.ts",
+      "types": "./dist/library/D1Accordion.d.ts",
       "default": "./dist/D1Accordion.js"
     },
     "./D1ActionSheet": {
-      "types": "./dist/D1ActionSheet.d.ts",
+      "types": "./dist/library/D1ActionSheet.d.ts",
       "default": "./dist/D1ActionSheet.js"
     },
     "./D1Actions": {
-      "types": "./dist/D1Actions.d.ts",
+      "types": "./dist/library/D1Actions.d.ts",
       "default": "./dist/D1Actions.js"
     },
     "./D1Anchor": {
-      "types": "./dist/D1Anchor.d.ts",
+      "types": "./dist/library/D1Anchor.d.ts",
       "default": "./dist/D1Anchor.js"
     },
     "./D1Arrow": {
-      "types": "./dist/D1Arrow.d.ts",
+      "types": "./dist/library/D1Arrow.d.ts",
       "default": "./dist/D1Arrow.js"
     },
     "./D1Badge": {
-      "types": "./dist/D1Badge.d.ts",
+      "types": "./dist/library/D1Badge.d.ts",
       "default": "./dist/D1Badge.js"
     },
     "./D1Bars": {
-      "types": "./dist/D1Bars.d.ts",
+      "types": "./dist/library/D1Bars.d.ts",
       "default": "./dist/D1Bars.js"
     },
     "./D1Block": {
-      "types": "./dist/D1Block.d.ts",
+      "types": "./dist/library/D1Block.d.ts",
       "default": "./dist/D1Block.js"
     },
     "./D1Button": {
-      "types": "./dist/D1Button.d.ts",
+      "types": "./dist/library/D1Button.d.ts",
       "default": "./dist/D1Button.js"
     },
     "./D1Cell": {
-      "types": "./dist/D1Cell.d.ts",
+      "types": "./dist/library/D1Cell.d.ts",
       "default": "./dist/D1Cell.js"
     },
     "./D1Checkbox": {
-      "types": "./dist/D1Checkbox.d.ts",
+      "types": "./dist/library/D1Checkbox.d.ts",
       "default": "./dist/D1Checkbox.js"
     },
     "./D1Chip": {
-      "types": "./dist/D1Chip.d.ts",
+      "types": "./dist/library/D1Chip.d.ts",
       "default": "./dist/D1Chip.js"
     },
     "./D1ChipGroup": {
-      "types": "./dist/D1ChipGroup.d.ts",
+      "types": "./dist/library/D1ChipGroup.d.ts",
       "default": "./dist/D1ChipGroup.js"
     },
     "./D1Dialog": {
-      "types": "./dist/D1Dialog.d.ts",
+      "types": "./dist/library/D1Dialog.d.ts",
       "default": "./dist/D1Dialog.js"
     },
     "./D1Field": {
-      "types": "./dist/D1Field.d.ts",
+      "types": "./dist/library/D1Field.d.ts",
       "default": "./dist/D1Field.js"
     },
     "./D1FieldCounter": {
-      "types": "./dist/D1FieldCounter.d.ts",
+      "types": "./dist/library/D1FieldCounter.d.ts",
       "default": "./dist/D1FieldCounter.js"
     },
     "./D1FieldLabel": {
-      "types": "./dist/D1FieldLabel.d.ts",
+      "types": "./dist/library/D1FieldLabel.d.ts",
       "default": "./dist/D1FieldLabel.js"
     },
     "./D1FieldMessage": {
-      "types": "./dist/D1FieldMessage.d.ts",
+      "types": "./dist/library/D1FieldMessage.d.ts",
       "default": "./dist/D1FieldMessage.js"
     },
     "./D1HorizontalScroll": {
-      "types": "./dist/D1HorizontalScroll.d.ts",
+      "types": "./dist/library/D1HorizontalScroll.d.ts",
       "default": "./dist/D1HorizontalScroll.js"
     },
     "./D1Icon": {
-      "types": "./dist/D1Icon.d.ts",
+      "types": "./dist/library/D1Icon.d.ts",
       "default": "./dist/D1Icon.js"
     },
     "./D1Image": {
-      "types": "./dist/D1Image.d.ts",
+      "types": "./dist/library/D1Image.d.ts",
       "default": "./dist/D1Image.js"
     },
     "./D1Input": {
-      "types": "./dist/D1Input.d.ts",
+      "types": "./dist/library/D1Input.d.ts",
       "default": "./dist/D1Input.js"
     },
     "./D1List": {
-      "types": "./dist/D1List.d.ts",
+      "types": "./dist/library/D1List.d.ts",
       "default": "./dist/D1List.js"
     },
     "./D1ListGroup": {
-      "types": "./dist/D1ListGroup.d.ts",
+      "types": "./dist/library/D1ListGroup.d.ts",
       "default": "./dist/D1ListGroup.js"
     },
     "./D1ListItem": {
-      "types": "./dist/D1ListItem.d.ts",
+      "types": "./dist/library/D1ListItem.d.ts",
       "default": "./dist/D1ListItem.js"
     },
     "./D1ListMenu": {
-      "types": "./dist/D1ListMenu.d.ts",
+      "types": "./dist/library/D1ListMenu.d.ts",
       "default": "./dist/D1ListMenu.js"
     },
     "./D1Mask": {
-      "types": "./dist/D1Mask.d.ts",
+      "types": "./dist/library/D1Mask.d.ts",
       "default": "./dist/D1Mask.js"
     },
     "./D1Menu": {
-      "types": "./dist/D1Menu.d.ts",
+      "types": "./dist/library/D1Menu.d.ts",
       "default": "./dist/D1Menu.js"
     },
     "./D1Modal": {
-      "types": "./dist/D1Modal.d.ts",
+      "types": "./dist/library/D1Modal.d.ts",
       "default": "./dist/D1Modal.js"
     },
     "./D1MotionAxis": {
-      "types": "./dist/D1MotionAxis.d.ts",
+      "types": "./dist/library/D1MotionAxis.d.ts",
       "default": "./dist/D1MotionAxis.js"
     },
     "./D1MotionTransform": {
-      "types": "./dist/D1MotionTransform.d.ts",
+      "types": "./dist/library/D1MotionTransform.d.ts",
       "default": "./dist/D1MotionTransform.js"
     },
     "./D1Page": {
-      "types": "./dist/D1Page.d.ts",
+      "types": "./dist/library/D1Page.d.ts",
       "default": "./dist/D1Page.js"
     },
     "./D1Progress": {
-      "types": "./dist/D1Progress.d.ts",
+      "types": "./dist/library/D1Progress.d.ts",
       "default": "./dist/D1Progress.js"
     },
     "./D1Ripple": {
-      "types": "./dist/D1Ripple.d.ts",
+      "types": "./dist/library/D1Ripple.d.ts",
       "default": "./dist/D1Ripple.js"
     },
     "./D1Scrollbar": {
-      "types": "./dist/D1Scrollbar.d.ts",
+      "types": "./dist/library/D1Scrollbar.d.ts",
       "default": "./dist/D1Scrollbar.js"
     },
     "./D1Section": {
-      "types": "./dist/D1Section.d.ts",
+      "types": "./dist/library/D1Section.d.ts",
       "default": "./dist/D1Section.js"
     },
     "./D1Select": {
-      "types": "./dist/D1Select.d.ts",
+      "types": "./dist/library/D1Select.d.ts",
       "default": "./dist/D1Select.js"
     },
     "./D1SelectValue": {
-      "types": "./dist/D1SelectValue.d.ts",
+      "types": "./dist/library/D1SelectValue.d.ts",
       "default": "./dist/D1SelectValue.js"
     },
     "./D1Skeleton": {
-      "types": "./dist/D1Skeleton.d.ts",
+      "types": "./dist/library/D1Skeleton.d.ts",
       "default": "./dist/D1Skeleton.js"
     },
     "./D1TabItem": {
-      "types": "./dist/D1TabItem.d.ts",
+      "types": "./dist/library/D1TabItem.d.ts",
       "default": "./dist/D1TabItem.js"
     },
     "./D1Tabs": {
-      "types": "./dist/D1Tabs.d.ts",
+      "types": "./dist/library/D1Tabs.d.ts",
       "default": "./dist/D1Tabs.js"
     },
     "./D1TabsNavigation": {
-      "types": "./dist/D1TabsNavigation.d.ts",
+      "types": "./dist/library/D1TabsNavigation.d.ts",
       "default": "./dist/D1TabsNavigation.js"
     },
     "./D1Textarea": {
-      "types": "./dist/D1Textarea.d.ts",
+      "types": "./dist/library/D1Textarea.d.ts",
       "default": "./dist/D1Textarea.js"
     },
     "./D1TextareaAutosize": {
-      "types": "./dist/D1TextareaAutosize.d.ts",
+      "types": "./dist/library/D1TextareaAutosize.d.ts",
       "default": "./dist/D1TextareaAutosize.js"
     },
     "./D1Tooltip": {
-      "types": "./dist/D1Tooltip.d.ts",
+      "types": "./dist/library/D1Tooltip.d.ts",
       "default": "./dist/D1Tooltip.js"
     },
     "./D1Window": {
-      "types": "./dist/D1Window.d.ts",
+      "types": "./dist/library/D1Window.d.ts",
       "default": "./dist/D1Window.js"
     },
+    ".": {
+      "types": "./dist/library/types.d.ts",
+      "default": "./dist/types.js"
+    },
     "./plugin": {
-      "import": "./dist/plugin.js",
-      "types": "./dist/library/plugin.d.ts"
+      "types": "./dist/library/plugin.d.ts",
+      "default": "./dist/plugin.js"
     },
     "./style.css": "./dist/style.css",
-    "./style/ui-properties.scss": "./src/styles/Ui/style.scss",
     "./style/ui.scss": "./src/styles/Ui/main.scss",
-    "./types.d.ts": {
-      "types": "./dist/library/types.d.ts"
-    }
+    "./style/ui-properties.scss": "./src/styles/Ui/style.scss",
+    "./types.d.ts": "./dist/library/types.d.ts"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",
