@@ -1,5 +1,10 @@
-import { ref } from 'vue'
-import { computedByLanguage, executeUse, type ListDataBasic, useTranslateRef } from '@dxtmisha/functional'
+import {
+  computedByLanguage,
+  executeUse,
+  type ListDataBasic,
+  useRouterList,
+  useTranslateRef
+} from '@dxtmisha/functional'
 
 const item = executeUse(() => {
   const translate = useTranslateRef([
@@ -7,24 +12,23 @@ const item = executeUse(() => {
     'translate-localization'
   ] as const)
 
-  const selected = ref<string>('genKey')
-  const list = computedByLanguage<ListDataBasic>(() => {
-    return [
-      {
-        label: translate.value['translate-key_creation'],
-        value: 'genKey'
-      },
-      {
-        label: translate.value['translate-localization'],
-        value: 'genKey'
-      }
-    ]
-  })
+  const list = computedByLanguage<ListDataBasic[]>(
+    () => {
+      return [
+        {
+          label: translate.value['translate-key_creation'],
+          value: 'key-creation'
+        },
+        {
+          label: translate.value['translate-localization'],
+          value: 'localization'
+        }
+      ]
+    },
+    () => []
+  )
 
-  return {
-    pageSelected: selected,
-    pageList: list
-  }
+  return useRouterList(list)
 })
 
 export const usePage = () => item()

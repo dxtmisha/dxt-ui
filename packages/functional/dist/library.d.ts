@@ -63,7 +63,7 @@ export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) 
  * @param debugOptions Используется для отладки реактивных вычислений.
  * Поддерживается библиотекой Vue.js
  */
-export declare function computedByLanguage<T, R extends (T | undefined)>(getter: ComputedGetter<R>, getterNone?: R | (() => R), conditions?: () => boolean, debugOptions?: DebuggerOptions): ComputedRef<R>;
+export declare function computedByLanguage<T, R extends (T | undefined) = T | undefined>(getter: ComputedGetter<R>, getterNone?: R | (() => R), conditions?: () => boolean, debugOptions?: DebuggerOptions): ComputedRef<R>;
 
 /**
  * Constructor bind type for component binding with class and style support/
@@ -1785,6 +1785,37 @@ export declare const useMeta: () => Readonly<Readonly<{
         getHtmlMeta: () => string;
     }>;
 }>;
+
+/**
+ * Managing a list of links for the router.
+ *
+ * Управление списком ссылок для роутера.
+ * @param list list of items / список элементов
+ * @param selected selected item / выбранный элемент
+ */
+export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string) => {
+    /** Current element/ Текущий элемент */
+    item: ComputedRef<ConstrBind<T> | undefined>;
+    /** Selected element / Выбранный элемент */
+    selected: Ref<string, string>;
+    /** Label / Метка */
+    label: ComputedRef<NumberOrString>;
+    /** List of elements / Список элементов */
+    list: ComputedRef<ConstrBind<T>[]>;
+    /**
+     * Transition to the element.
+     *
+     * Переход к элементу.
+     * @param name element name / имя элемента
+     */
+    to(name: string): void;
+    /**
+     * Transition to the main element.
+     *
+     * Переход к главному элементу.
+     */
+    toMain(): void;
+};
 
 /**
  * Creates a reactive variable to manage session storage.

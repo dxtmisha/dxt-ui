@@ -1,9 +1,10 @@
 var et = Object.defineProperty;
 var it = (s, t, e) => t in s ? et(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
 var l = (s, t, e) => it(s, typeof t != "symbol" ? t + "" : t, e);
-import { isArray as st, isObjectNotArray as x, forEach as k, toArray as R, isObject as z, toCamelCase as nt, toDate as P, Datetime as rt, Geo as C, EventItem as at, GeoFlag as ut, GeoIntl as lt, isSelected as D, getExp as ht, getColumn as W, isString as ct, ScrollbarWidth as ot, Api as gt, executeFunction as Y, BroadcastMessage as dt, Cookie as ft, Hash as A, isDomRuntime as G, getElementId as L, Loading as K, random as mt, Meta as vt, DataStorage as J, Translate as U, executePromise as pt } from "@dxtmisha/functional-basic";
+import { isArray as st, isObjectNotArray as w, forEach as b, toArray as R, isObject as z, toCamelCase as nt, toDate as P, Datetime as rt, Geo as k, EventItem as at, GeoFlag as ut, GeoIntl as lt, isSelected as B, getExp as ht, getColumn as W, isString as ot, ScrollbarWidth as ct, Api as gt, executeFunction as Y, BroadcastMessage as dt, Cookie as ft, Hash as A, isDomRuntime as G, getElementId as C, Loading as K, random as mt, Meta as vt, DataStorage as J, Translate as U, executePromise as pt } from "@dxtmisha/functional-basic";
 export * from "@dxtmisha/functional-basic";
-import { isRef as N, h as yt, computed as a, toRefs as It, useAttrs as St, useSlots as bt, ref as f, watch as g, triggerRef as Lt, shallowRef as S, onUnmounted as T, inject as Ct, provide as kt, watchEffect as Q } from "vue";
+import { isRef as D, h as yt, computed as a, toRefs as It, useAttrs as St, useSlots as bt, ref as f, watch as d, triggerRef as Lt, shallowRef as S, onUnmounted as T, inject as Ct, provide as kt, watchEffect as Q } from "vue";
+import { useRouter as xt } from "vue-router";
 class wt {
   /**
    * Constructor
@@ -54,7 +55,7 @@ class wt {
     return ((e = this.cache) == null ? void 0 : e[t]) !== ((i = this.props) == null ? void 0 : i[t]);
   }
 }
-class xt {
+class Dt {
   /**
    * Constructor
    * @param props base data/ базовые данные
@@ -113,7 +114,7 @@ class xt {
     this.callback && this.callback(this.event);
   }
 }
-class Ut extends xt {
+class Yt extends Dt {
   /**
    * Calls the callback function.
    *
@@ -133,20 +134,20 @@ class Ut extends xt {
     (t || this.changed.isChanged()) && (await this.initEvent(), this.makeCallbackItem(), this.changed.update());
   }
 }
-function o(s) {
-  return N(s) ? s.value : s;
+function g(s) {
+  return D(s) ? s.value : s;
 }
-function Dt(s) {
+function Bt(s) {
   return s && "class" in s && typeof s.class == "string" ? s.class : void 0;
 }
-function Bt(s, t, e) {
-  const i = Dt(t);
+function Nt(s, t, e) {
+  const i = Bt(t);
   return e && i ? `${e}.${i}` : e || i || s;
 }
-function Nt(s, t, e, i) {
+function Mt(s, t, e, i) {
   let n = t;
   return (!t || "key" in t) && (n = {
-    key: Bt(s, t, i),
+    key: Nt(s, t, i),
     ...t
   }), yt(s, n, e);
 }
@@ -157,7 +158,7 @@ function O(s, t) {
   };
   return e && i && (u.class = [], e && u.class.push(e), i && u.class.push(i)), n && r && (u.style = [], n && u.style.push(n), r && u.style.push(r)), u;
 }
-function Mt(...s) {
+function Rt(...s) {
   let t = {};
   return s.forEach((e) => {
     e && (t = O(t, e));
@@ -205,7 +206,7 @@ class X {
       t in this.caching || (this.caching[t] = a(() => this.computeModification(t)));
       const i = this.caching[t];
       if (i)
-        return e ? Mt(i.value, e) : i.value;
+        return e ? Rt(i.value, e) : i.value;
     }
     return e;
   }
@@ -239,7 +240,7 @@ class X {
   renderOne(t, e, i, n) {
     if (this.is(t)) {
       const r = n != null ? n : t;
-      return Nt(
+      return Mt(
         this.get(t),
         this.getModification(r, e),
         i,
@@ -269,19 +270,19 @@ class X {
    */
   computeModification(t) {
     var i;
-    const e = o((i = this.modification) == null ? void 0 : i[t]);
-    if (e && x(e)) {
+    const e = g((i = this.modification) == null ? void 0 : i[t]);
+    if (e && w(e)) {
       const n = {};
-      return k(e, (r, u) => {
-        n[u] = o(r);
+      return b(e, (r, u) => {
+        n[u] = g(r);
       }), n;
     }
     return {};
   }
 }
-class qt extends X {
+class Gt extends X {
 }
-class Yt {
+class Jt {
   /**
    * Constructor
    * @param name class name/ название класса
@@ -402,7 +403,7 @@ class Yt {
    * @param classes list of classes for transformation/ список классов для преобразования
    */
   toClass(t) {
-    return x(t) ? t : Array.isArray(t) ? { [t.filter((i) => typeof i == "string" && i.trim() !== "").join(" ")]: !0 } : typeof t == "string" ? { [t]: !0 } : {};
+    return w(t) ? t : Array.isArray(t) ? { [t.filter((i) => typeof i == "string" && i.trim() !== "").join(" ")]: !0 } : typeof t == "string" ? { [t]: !0 } : {};
   }
   /**
    * Converts the class name to standard for the current component.
@@ -413,7 +414,7 @@ class Yt {
   toClassName(t) {
     if (z(t)) {
       const e = {};
-      return k(t, (i, n) => {
+      return b(t, (i, n) => {
         n.match(/\?\?/) ? e[n.replace(/\?\?/, this.getName())] = i : n.match(/\?/) ? e[n.replace(/\?/, this.getDesign())] = i : e[n] = i;
       }), e;
     }
@@ -426,7 +427,7 @@ class Yt {
    * @param name component name for transformation/ название компонента для преобразования
    */
   initName(t) {
-    return k(t.split(".", 2), (e) => nt(e));
+    return b(t.split(".", 2), (e) => nt(e));
   }
   /**
    * Updating data about the class.
@@ -463,16 +464,16 @@ class Yt {
   }
 }
 function I(s) {
-  return N(s) ? s : f(s);
+  return D(s) ? s : f(s);
 }
-class Gt {
+class Qt {
   /**
    * Constructor
    * @param date date for processing. дата для обработки
    * @param type type of date format for output. тип формата даты вывода
    * @param code country and language code. код страны и языка
    */
-  constructor(t, e = "date", i = C.getLocation()) {
+  constructor(t, e = "date", i = k.getLocation()) {
     l(this, "item");
     l(this, "type");
     l(this, "code");
@@ -488,9 +489,9 @@ class Gt {
       this.date.value,
       this.type.value,
       this.code.value
-    ), g(this.item, (n) => {
+    ), d(this.item, (n) => {
       this.date.value = P(n);
-    }), g(this.type, (n) => this.datetime.setType(n)), g(this.code, (n) => this.datetime.setCode(n)), g(this.date, (n) => this.datetime.setDate(n)), this.datetime.setWatch(() => Lt(this.date));
+    }), d(this.type, (n) => this.datetime.setType(n)), d(this.code, (n) => this.datetime.setCode(n)), d(this.date, (n) => this.datetime.setDate(n)), this.datetime.setWatch(() => Lt(this.date));
   }
   /**
    * Returns the basic data for the date.
@@ -610,7 +611,7 @@ class Gt {
     return a(() => this.date.value && this.datetime.standard(t));
   }
 }
-class Jt extends at {
+class Xt extends at {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -624,25 +625,25 @@ class Jt extends at {
    * значение, связанное с событием
    */
   constructor(t, e, i = ["click"], n, r, u) {
-    const h = I(t), c = I(e);
+    const h = I(t), o = I(e);
     super(
       h.value,
       i,
       n,
       r,
       u
-    ), c.value && this.setElementControl(c.value), g(h, (d) => this.setElement(d)), g(c, (d) => this.setElementControl(d));
+    ), o.value && this.setElementControl(o.value), d(h, (c) => this.setElement(c)), d(o, (c) => this.setElementControl(c));
   }
 }
-class Qt {
+class Zt {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
    */
-  constructor(t = C.getLocation()) {
+  constructor(t = k.getLocation()) {
     l(this, "code");
     l(this, "flag");
-    this.code = I(t), this.flag = new ut(this.code.value), g(this.code, (e) => this.flag.setCode(e));
+    this.code = I(t), this.flag = new ut(this.code.value), d(this.code, (e) => this.flag.setCode(e));
   }
   /**
    * Obtaining a reactive object with the country code.
@@ -741,12 +742,12 @@ const v = class v {
     * код страны, полный вид язык-страна или один из них
     */
   static set(t) {
-    C.set(t, !0), this.item.value = C.getItem();
+    k.set(t, !0), this.item.value = k.getItem();
   }
 };
-l(v, "item", S(C.get())), l(v, "country", a(() => v.item.value.country)), l(v, "language", a(() => v.item.value.language)), l(v, "standard", a(() => v.item.value.standard)), l(v, "firstDay", a(() => v.item.value.firstDay));
-let w = v;
-class Rt {
+l(v, "item", S(k.get())), l(v, "country", a(() => v.item.value.country)), l(v, "language", a(() => v.item.value.language)), l(v, "standard", a(() => v.item.value.standard)), l(v, "firstDay", a(() => v.item.value.firstDay));
+let x = v;
+class At {
   /**
    * Constructor
    * @param code country code, full form language-country or one of them/
@@ -757,7 +758,7 @@ class Rt {
     l(this, "intl");
     this.location = I(t), this.intl = a(() => {
       var e;
-      return new lt((e = this.location.value) != null ? e : w.getLanguage().value);
+      return new lt((e = this.location.value) != null ? e : x.getLanguage().value);
     });
   }
   /**
@@ -769,7 +770,7 @@ class Rt {
    * объект с некоторыми или всеми из следующих свойств
    */
   display(t, e) {
-    return a(() => this.intl.value.display(o(t), e));
+    return a(() => this.intl.value.display(g(t), e));
   }
   /**
    * Get display names of language.
@@ -779,7 +780,7 @@ class Rt {
    * @param style the formatting style to use/ используемый стиль форматирования
    */
   languageName(t, e) {
-    return a(() => this.intl.value.languageName(o(t), e));
+    return a(() => this.intl.value.languageName(g(t), e));
   }
   /**
    * Get display names of region.
@@ -789,7 +790,7 @@ class Rt {
    * @param style the formatting style to use/ используемый стиль форматирования
    */
   countryName(t, e) {
-    return a(() => this.intl.value.countryName(o(t), e));
+    return a(() => this.intl.value.countryName(g(t), e));
   }
   /**
    * In basic use without specifying a locale, a formatted string.
@@ -801,7 +802,7 @@ class Rt {
    * или всеми свойствами
    */
   number(t, e) {
-    return a(() => this.intl.value.number(o(t), e));
+    return a(() => this.intl.value.number(g(t), e));
   }
   /**
    * Decimal point symbol.
@@ -823,8 +824,8 @@ class Rt {
   currency(t, e, i = !1) {
     return a(
       () => this.intl.value.currency(
-        o(t),
-        o(e),
+        g(t),
+        g(e),
         i
       )
     );
@@ -839,7 +840,7 @@ class Rt {
    * в форматировании блока
    */
   unit(t, e) {
-    return a(() => this.intl.value.unit(o(t), e));
+    return a(() => this.intl.value.unit(g(t), e));
   }
   /**
    * Number as a percentage.
@@ -849,7 +850,7 @@ class Rt {
    * @param options an object with some or all properties/ объект с некоторыми или всеми свойствами
    */
   percent(t, e) {
-    return a(() => this.intl.value.percent(o(t), e));
+    return a(() => this.intl.value.percent(g(t), e));
   }
   /**
    * Number as a percentage (unit).
@@ -860,7 +861,7 @@ class Rt {
    * объект с некоторыми или всеми свойствами
    */
   percentBy100(t, e) {
-    return a(() => this.intl.value.percentBy100(o(t), e));
+    return a(() => this.intl.value.percentBy100(g(t), e));
   }
   /**
    * Enables language-sensitive date and time formatting.
@@ -872,7 +873,7 @@ class Rt {
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
   date(t, e, i, n) {
-    return a(() => this.intl.value.date(o(t), e, i, n));
+    return a(() => this.intl.value.date(g(t), e, i, n));
   }
   /**
    * Enables language-sensitive relative time formatting.
@@ -884,7 +885,7 @@ class Rt {
    * @param todayValue current day/ текущий день
    */
   relative(t, e, i) {
-    return a(() => this.intl.value.relative(o(t), e, i));
+    return a(() => this.intl.value.relative(g(t), e, i));
   }
   /**
    * Enables language-sensitive relative time formatting
@@ -906,7 +907,7 @@ class Rt {
    */
   relativeLimit(t, e, i, n, r, u, h) {
     return a(() => this.intl.value.relativeLimit(
-      o(t),
+      g(t),
       e,
       i,
       n,
@@ -923,7 +924,7 @@ class Rt {
    * @param style the representation of the month/ представление месяца
    */
   month(t, e) {
-    return a(() => this.intl.value.month(o(t), e));
+    return a(() => this.intl.value.month(g(t), e));
   }
   /**
    * Array to list of months.
@@ -942,7 +943,7 @@ class Rt {
    * @param style the representation of the weekday/ представление о дне недели
    */
   weekday(t, e) {
-    return a(() => this.intl.value.weekday(o(t), e));
+    return a(() => this.intl.value.weekday(g(t), e));
   }
   /**
    * An array of the list of names of the days of the week.
@@ -960,7 +961,7 @@ class Rt {
    * @param value the date to format/ дата для форматирования
    */
   time(t) {
-    return a(() => this.intl.value.time(o(t)));
+    return a(() => this.intl.value.time(g(t)));
   }
 }
 class Z {
@@ -981,7 +982,7 @@ class Z {
    * @param max Maximum number of selections / максимальное количество выделений
    * @param parent Parent identifier / идентификатор родителя
    */
-  constructor(t, e, i, n, r, u, h, c, d, m = 0, y = 9999999, b) {
+  constructor(t, e, i, n, r, u, h, o, c, m = 0, y = 9999999, L) {
     l(this, "subList", {});
     /**
      * Returns a list for forming a list.
@@ -989,8 +990,8 @@ class Z {
      * Возвращает список для формирования списка.
      */
     l(this, "data", a(
-      () => k(
-        o(this.list) || [],
+      () => b(
+        g(this.list) || [],
         (t, e) => this.initItem(e, t)
       )
     ));
@@ -1024,11 +1025,11 @@ class Z {
      */
     l(this, "fullData", a(() => {
       const t = this.getFocus(), e = this.getHighlight(), i = this.getSelected();
-      return k(
+      return b(
         this.data.value,
         (n) => {
           var u, h;
-          const r = D(n.index, i);
+          const r = B(n.index, i);
           return {
             ...n,
             focus: t === n.index,
@@ -1098,16 +1099,16 @@ class Z {
      */
     l(this, "isSelected", a(() => {
       const t = this.getSelected();
-      return !!t && this.mapItems.value.findIndex((e) => D(e.index, t)) !== -1;
+      return !!t && this.mapItems.value.findIndex((e) => B(e.index, t)) !== -1;
     }));
     /** Is the minimum selection reached/ Достигнуто ли минимальное выделение */
     l(this, "isSelectedMin", a(() => {
-      const t = Number(o(this.min) || 0);
+      const t = Number(g(this.min) || 0);
       return t > 0 ? t >= this.selectedListInGroup.value.length : !1;
     }));
     /** Is the maximum selection reached/ Достигнуто ли максимальное выделение */
     l(this, "isSelectedMax", a(() => {
-      const t = Number(o(this.max) || 9999999);
+      const t = Number(g(this.max) || 9999999);
       return t > 0 ? t <= this.selectedListInGroup.value.length : !1;
     }));
     /**
@@ -1116,7 +1117,7 @@ class Z {
      */
     l(this, "selectedList", a(() => {
       const t = this.getSelected();
-      return t && this.isSelected.value ? this.mapItems.value.filter((e) => D(e.index, t)) : [];
+      return t && this.isSelected.value ? this.mapItems.value.filter((e) => B(e.index, t)) : [];
     }));
     /**
      * Returns a list of selected items in the current group/
@@ -1124,7 +1125,7 @@ class Z {
      */
     l(this, "selectedListInGroup", a(() => {
       const t = this.getSelected();
-      return t && this.isSelected.value ? this.data.value.filter((e) => D(e.index, t)) : [];
+      return t && this.isSelected.value ? this.data.value.filter((e) => B(e.index, t)) : [];
     }));
     /**
      * Returns a list of selected items on the map.
@@ -1138,7 +1139,7 @@ class Z {
      * Возвращает список значений выделенных элементов на карте.
      */
     l(this, "selectedValues", a(() => W(this.selectedList.value, "value")));
-    this.list = t, this.focus = e, this.highlight = i, this.highlightLengthStart = n, this.filterMode = r, this.selected = u, this.keyValue = h, this.keyLabel = c, this.lite = d, this.min = m, this.max = y, this.parent = b, N(t) && g(t, () => {
+    this.list = t, this.focus = e, this.highlight = i, this.highlightLengthStart = n, this.filterMode = r, this.selected = u, this.keyValue = h, this.keyLabel = o, this.lite = c, this.min = m, this.max = y, this.parent = L, D(t) && d(t, () => {
       this.subList = {};
     });
   }
@@ -1434,11 +1435,11 @@ class Z {
    * @param item selected element/ выбранный элемент
    */
   initItem(t, e) {
-    var i, n, r, u, h, c;
-    if (x(e)) {
-      const d = e == null ? void 0 : e[(n = (i = this.keyValue) == null ? void 0 : i.value) != null ? n : "value"], m = (h = e == null ? void 0 : e[(u = (r = this.keyLabel) == null ? void 0 : r.value) != null ? u : "label"]) != null ? h : d, y = this.getIndex(
+    var i, n, r, u, h, o;
+    if (w(e)) {
+      const c = e == null ? void 0 : e[(n = (i = this.keyValue) == null ? void 0 : i.value) != null ? n : "value"], m = (h = e == null ? void 0 : e[(u = (r = this.keyLabel) == null ? void 0 : r.value) != null ? u : "label"]) != null ? h : c, y = this.getIndex(
         e == null ? void 0 : e.index,
-        d,
+        c,
         t,
         m
       );
@@ -1446,9 +1447,9 @@ class Z {
         ...e,
         parent: this.parent,
         index: y,
-        type: (c = e == null ? void 0 : e.type) != null ? c : "item",
+        type: (o = e == null ? void 0 : e.type) != null ? o : "item",
         label: m,
-        value: d
+        value: c
       };
     }
     return {
@@ -1460,7 +1461,7 @@ class Z {
     };
   }
 }
-class At {
+class Ht {
   /**
    * Get router instance.
    *
@@ -1531,11 +1532,11 @@ class At {
    * @param to raw route location/ необработанное местоположение маршрута
    */
   static rawToHref(t) {
-    return x(t) && "name" in t && ct(t == null ? void 0 : t.name) ? this.getHref(t.name) : {};
+    return w(t) && "name" in t && ot(t == null ? void 0 : t.name) ? this.getHref(t.name) : {};
   }
 }
-l(At, "router");
-class Xt {
+l(Ht, "router");
+class _t {
   /**
    * Constructor
    */
@@ -1552,38 +1553,38 @@ class Xt {
      * Проверяет, определена ли ширина скролла.
      */
     l(this, "is", a(() => this.item.value !== void 0));
-    ot.is().then((t) => {
+    ct.is().then((t) => {
       this.item.value = t;
     });
   }
 }
-const Ht = (s) => typeof s == "string" ? { method: s } : s || {};
-let B;
-function Zt(s, t, e = !0, i, n, r) {
-  const u = f(), h = I(Ht(t)), c = f(!1), d = f(!1);
+const Et = (s) => typeof s == "string" ? { method: s } : s || {};
+let N;
+function te(s, t, e = !0, i, n, r) {
+  const u = f(), h = I(Et(t)), o = f(!1), c = f(!1);
   let m = !0, y = 0;
-  const b = async () => {
+  const L = async () => {
     if (m)
       return;
-    const p = o(s);
+    const p = g(s);
     if ((!i || i.value) && p) {
-      c.value = !0, d.value = !0;
+      o.value = !0, c.value = !0;
       let M = {};
       const V = await gt.request({
         path: p,
         ...h.value
       });
-      V && (M = V), n ? u.value = n(M) : u.value = M, c.value = !1;
+      V && (M = V), n ? u.value = n(M) : u.value = M, o.value = !1;
     } else u.value !== void 0 && (u.value = void 0);
   }, tt = () => {
     const p = [];
-    e && p.push(h), N(s) && p.push(s), i && p.push(i), B && p.push(B), p.length > 0 && g(p, async () => {
-      c.value || await b();
+    e && p.push(h), D(s) && p.push(s), i && p.push(i), N && p.push(N), p.length > 0 && d(p, async () => {
+      o.value || await L();
     });
   };
   return {
     get data() {
-      return m && (m = !1, b().then()), tt(), r && (y++, T(() => {
+      return m && (m = !1, L().then()), tt(), r && (y++, T(() => {
         y--, y < 1 && (console.warn("useApiRef: unmounted"), u.value = void 0, m = !0, y = 0);
       })), u;
     },
@@ -1591,18 +1592,18 @@ function Zt(s, t, e = !0, i, n, r) {
       return a(() => u.value === void 0);
     },
     get loading() {
-      return a(() => c.value);
+      return a(() => o.value);
     },
     get reading() {
-      return a(() => d.value);
+      return a(() => c.value);
     },
-    reset: b
+    reset: L
   };
 }
-const _t = (s) => {
-  B || (B = s);
+const ee = (s) => {
+  N || (N = s);
 };
-function Et(s, t) {
+function $t(s, t) {
   const e = `broadcast--${s}`;
   if (e in H)
     return H[e];
@@ -1612,39 +1613,39 @@ function Et(s, t) {
       i.value !== r.data.message && (i.value = r.data.message);
     }
   );
-  return g(i, (r) => n.post({ message: r })), H[e] = i, i;
+  return d(i, (r) => n.post({ message: r })), H[e] = i, i;
 }
 const H = {};
-function te(s, t, e) {
+function ie(s, t, e) {
   if (s in E)
     return E[s];
-  const i = new ft(s), n = Et(
+  const i = new ft(s), n = $t(
     `__cookie:${s}`,
     i.get(t, e)
   );
-  return g(n, (r) => {
+  return d(n, (r) => {
     i.set(r, e);
   }), E[s] = n, n;
 }
 const E = {};
-function ee() {
-  return new Rt();
+function se() {
+  return new At();
 }
-function ie(s, t) {
+function ne(s, t) {
   if (s in $)
     return $[s];
   const e = S(A.get(s, t));
-  return g(e, (i) => A.set(s, i)), A.addWatch(s, (i) => {
+  return d(e, (i) => A.set(s, i)), A.addWatch(s, (i) => {
     e.value = i;
   }), $[s] = e, e;
 }
-const $ = {}, $t = (s = {
+const $ = {}, Ft = (s = {
   rootMargin: "128px 0px"
 }) => {
   const t = {}, e = G() && "IntersectionObserver" in window ? new IntersectionObserver(
     (n) => {
       n.forEach((r) => {
-        const u = L(r.target);
+        const u = C(r.target);
         if (u in t) {
           const h = t[u];
           h.status.value = r.isIntersecting, h.ratio.value = r.intersectionRatio, h.entry.value = r;
@@ -1655,7 +1656,7 @@ const $ = {}, $t = (s = {
   ) : void 0, i = (n) => {
     var r;
     if (n) {
-      const u = L(n);
+      const u = C(n);
       u in t && (e == null || e.unobserve(n), (r = t[u]) == null || r.stopWatch(), delete t[u]);
     }
   };
@@ -1668,7 +1669,7 @@ const $ = {}, $t = (s = {
      * @param element tracked element/ отслеживаемый элемент
      */
     getItem(n) {
-      const r = L(n);
+      const r = C(n);
       return t[r];
     },
     /**
@@ -1681,10 +1682,10 @@ const $ = {}, $t = (s = {
       const r = S(!e);
       if (e) {
         let u;
-        u = g(n, (h, c) => {
-          if (c && i(c), n.value) {
-            const d = L(n.value);
-            t[d] = {
+        u = d(n, (h, o) => {
+          if (o && i(o), n.value) {
+            const c = C(n.value);
+            t[c] = {
               status: r,
               ratio: S(0),
               entry: S(void 0),
@@ -1709,14 +1710,14 @@ const $ = {}, $t = (s = {
      */
     disconnectLazy: () => e == null ? void 0 : e.disconnect()
   };
-}, q = [], Ft = (s) => {
+}, q = [], jt = (s) => {
   const t = q.find((i) => i.rootMargin === s);
   if (t)
     return t.item;
-  const e = $t({ rootMargin: s });
+  const e = Ft({ rootMargin: s });
   return q.push({ rootMargin: s, item: e }), e;
-}, se = (s, t) => {
-  const e = Ft(t);
+}, re = (s, t) => {
+  const e = jt(t);
   return {
     /** Lazy item status/ Статус ленивого элемента */
     lazyItemStatus: e.addLazyItem(s),
@@ -1730,62 +1731,62 @@ const $ = {}, $t = (s = {
     }
   };
 };
-function ne() {
+function ae() {
   const s = S(K.is());
   return K.registrationEvent(({ detail: t }) => {
     s.value = t.loading;
   }), s;
 }
-const _ = [], jt = mt(1e5, 999999);
-function zt(s, t = !0, e = !1, i = !0) {
+const _ = [], zt = mt(1e5, 999999);
+function Tt(s, t = !0, e = !1, i = !0) {
   let n;
-  const r = `__execute_use${jt}::${L()}`, u = (c) => {
-    const d = Object.freeze(s(...c));
+  const r = `__execute_use${zt}::${C()}`, u = (o) => {
+    const c = Object.freeze(s(...o));
     return Object.freeze({
-      ...d,
+      ...c,
       init() {
-        return d;
+        return c;
       }
     });
-  }, h = (...c) => {
+  }, h = (...o) => {
     if (!e && i) {
-      const d = Ct(r, void 0);
-      if (d)
-        return d;
+      const c = Ct(r, void 0);
+      if (c)
+        return c;
       {
-        let m = u(c);
+        let m = u(o);
         return kt(r, m), t && T(() => {
           m = void 0;
         }), m;
       }
-    } else n || (n = u(c), t && T(() => {
+    } else n || (n = u(o), t && T(() => {
       n = void 0;
     }));
     return n;
   };
   return e && _.push(h), h;
 }
-function re() {
+function ue() {
   _.forEach((s) => s());
 }
-const Tt = zt(() => {
-  const s = new vt(), t = f(s.getTitle()), e = f(s.getKeywords()), i = f(s.getDescription()), n = f(s.getImage()), r = f(s.getCanonical()), u = f(s.getRobots()), h = f(s.getAuthor()), c = f(s.getSiteName()), d = () => s.html();
-  return g(t, () => {
+const Ot = Tt(() => {
+  const s = new vt(), t = f(s.getTitle()), e = f(s.getKeywords()), i = f(s.getDescription()), n = f(s.getImage()), r = f(s.getCanonical()), u = f(s.getRobots()), h = f(s.getAuthor()), o = f(s.getSiteName()), c = () => s.html();
+  return d(t, () => {
     s.setTitle(t.value);
-  }), g(e, () => {
+  }), d(e, () => {
     s.setKeywords(e.value);
-  }), g(i, () => {
+  }), d(i, () => {
     s.setDescription(i.value);
-  }), g(n, () => {
+  }), d(n, () => {
     s.setImage(n.value);
-  }), g(r, () => {
+  }), d(r, () => {
     s.setCanonical(r.value);
-  }), g(u, () => {
+  }), d(u, () => {
     s.setRobots(u.value);
-  }), g(h, () => {
+  }), d(h, () => {
     s.setAuthor(h.value);
-  }), g(c, () => {
-    s.setSiteName(c.value);
+  }), d(o, () => {
+    s.setSiteName(o.value);
   }), {
     meta: s,
     title: t,
@@ -1795,31 +1796,77 @@ const Tt = zt(() => {
     image: n,
     canonical: r,
     robots: u,
-    siteName: c,
-    getHtmlMeta: d
+    siteName: o,
+    getHtmlMeta: c
   };
-}, !1, !0), ae = () => Tt();
-function ue(s, t) {
+}, !1, !0), le = () => Ot(), he = (s, t) => {
+  var r, u;
+  const e = xt(), i = D(t) ? t : f(t || ((u = (r = s.value) == null ? void 0 : r[0]) == null ? void 0 : u.value) || ""), n = a(
+    () => {
+      var h;
+      return (h = s.value) == null ? void 0 : h.find((o) => o.value === i.value);
+    }
+  );
+  return {
+    /** Current element/ Текущий элемент */
+    item: n,
+    /** Selected element / Выбранный элемент */
+    selected: i,
+    /** Label / Метка */
+    label: a(() => {
+      var h;
+      return ((h = n.value) == null ? void 0 : h.label) || "";
+    }),
+    /** List of elements / Список элементов */
+    list: a(() => s.value ? b(
+      s.value,
+      (h) => h.to ? h : {
+        ...h,
+        to: { name: h.value }
+      }
+    ) : []),
+    /**
+     * Transition to the element.
+     *
+     * Переход к элементу.
+     * @param name element name / имя элемента
+     */
+    to(h) {
+      i.value = h, e.push({ name: h }).then();
+    },
+    /**
+     * Transition to the main element.
+     *
+     * Переход к главному элементу.
+     */
+    toMain() {
+      var o, c;
+      const h = (c = (o = s.value) == null ? void 0 : o[0]) == null ? void 0 : c.value;
+      h && e.push({ name: h }).then();
+    }
+  };
+};
+function oe(s, t) {
   if (s in F)
     return F[s];
   const e = new J(s, !0), i = f(e.get(t));
-  return g(i, (n) => e.set(n)), F[s] = i, i;
+  return d(i, (n) => e.set(n)), F[s] = i, i;
 }
 const F = {};
-function le(s, t, e) {
+function ce(s, t, e) {
   if (s in j)
     return j[s];
   const i = new J(s), n = f(i.get(t, e));
-  return g(n, (r) => i.set(r)), G() && window.addEventListener("storage", () => {
+  return d(n, (r) => i.set(r)), G() && window.addEventListener("storage", () => {
     i.update(), n.value = i.get();
   }), j[s] = n, n;
 }
 const j = {};
-function Ot(s) {
+function Vt(s) {
   const t = S(U.getListSync(s, !0)), e = async () => {
     t.value = { ...await U.getList(s) };
   };
-  g(w.getLanguage(), e);
+  d(x.getLanguage(), e);
   for (const i in t.value)
     if (t.value[i] === i || t.value[i] === " ") {
       e().then();
@@ -1827,18 +1874,18 @@ function Ot(s) {
     }
   return t;
 }
-const he = (s) => Ot(s);
-function ce(s, t) {
+const ge = (s) => Vt(s);
+function de(s, t) {
   const e = f();
   return Q(async () => {
     e.value = await pt(s);
   }), a(() => e.value, t);
 }
-function oe(s, t = () => {
+function fe(s, t = () => {
 }, e, i) {
   return a(
     () => {
-      if (w.get().value && (e === void 0 || e())) {
+      if (x.get().value && (e === void 0 || e())) {
         const n = s();
         if (n !== void 0)
           return n;
@@ -1848,74 +1895,75 @@ function oe(s, t = () => {
     i
   );
 }
-function Vt(s, t = {}, e = "value", i = !1) {
+function Pt(s, t = {}, e = "value", i = !1) {
   const n = typeof t == "string", r = n ? t : e, u = n ? {} : t;
-  return s ? s && x(s) && (r in s || i) ? O(u, s) : O(u, { [r]: s }) : n ? {} : { ...u };
+  return s ? s && w(s) && (r in s || i) ? O(u, s) : O(u, { [r]: s }) : n ? {} : { ...u };
 }
-function ge(s, t = {}, e = "value") {
-  return a(() => Vt(o(s), o(t), e));
+function me(s, t = {}, e = "value") {
+  return a(() => Pt(g(s), g(t), e));
 }
-const de = (s, t) => {
+const ve = (s, t) => {
   const e = f();
   let i = !0;
   const n = () => {
     i && (Q(async () => {
-      const r = o(await s());
+      const r = g(await s());
       r !== t && (e.value = r);
     }), i = !1);
   };
   return a(() => (n(), e.value));
 };
-function fe(s, t) {
+function pe(s, t) {
   s.value !== t && (s.value = t);
 }
-function me(s) {
+function ye(s) {
   let t;
   return a(() => (t || (t = s()), t.value));
 }
 export {
-  Gt as DatetimeRef,
-  xt as DesignAbstract,
-  Ut as DesignAsyncAbstract,
+  Qt as DatetimeRef,
+  Dt as DesignAbstract,
+  Yt as DesignAsyncAbstract,
   wt as DesignChanged,
-  qt as DesignComp,
+  Gt as DesignComp,
   X as DesignComponents,
-  Yt as DesignConstructorAbstract,
-  Jt as EventRef,
-  Qt as GeoFlagRef,
-  Rt as GeoIntlRef,
-  w as GeoRef,
+  Jt as DesignConstructorAbstract,
+  Xt as EventRef,
+  Zt as GeoFlagRef,
+  At as GeoIntlRef,
+  x as GeoRef,
   Z as ListDataRef,
-  At as RouterItemRef,
-  Xt as ScrollbarWidthRef,
-  ce as computedAsync,
-  oe as computedByLanguage,
-  zt as executeUse,
-  re as executeUseGlobalInit,
-  Vt as getBind,
-  ge as getBindRef,
-  Dt as getClassName,
-  de as getComputedAsync,
-  Bt as getIndexForRender,
-  o as getRef,
-  Nt as render,
-  _t as setApiRefGlobalConditions,
-  fe as setRef,
-  he as t,
+  Ht as RouterItemRef,
+  _t as ScrollbarWidthRef,
+  de as computedAsync,
+  fe as computedByLanguage,
+  Tt as executeUse,
+  ue as executeUseGlobalInit,
+  Pt as getBind,
+  me as getBindRef,
+  Bt as getClassName,
+  ve as getComputedAsync,
+  Nt as getIndexForRender,
+  g as getRef,
+  Mt as render,
+  ee as setApiRefGlobalConditions,
+  pe as setRef,
+  ge as t,
   O as toBind,
-  Mt as toBinds,
-  me as toComputed,
+  Rt as toBinds,
+  ye as toComputed,
   I as toRefItem,
-  Zt as useApiRef,
-  Et as useBroadcastValueRef,
-  te as useCookieRef,
-  ee as useGeoIntlRef,
-  ie as useHashRef,
-  se as useLazyItemByMarginRef,
-  $t as useLazyRef,
-  ne as useLoadingRef,
-  ae as useMeta,
-  ue as useSessionRef,
-  le as useStorageRef,
-  Ot as useTranslateRef
+  te as useApiRef,
+  $t as useBroadcastValueRef,
+  ie as useCookieRef,
+  se as useGeoIntlRef,
+  ne as useHashRef,
+  re as useLazyItemByMarginRef,
+  Ft as useLazyRef,
+  ae as useLoadingRef,
+  le as useMeta,
+  he as useRouterList,
+  oe as useSessionRef,
+  ce as useStorageRef,
+  Vt as useTranslateRef
 };

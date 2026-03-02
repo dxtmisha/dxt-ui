@@ -1,0 +1,39 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useRouterList - Управление списком ссылок'/>
+
+# `useRouterList`
+
+Управление списком ссылок для роутера. Позволяет создавать навигационные меню на основе списка данных, автоматически обрабатывая активное состояние и переходы.
+
+**Параметры:**
+- `list: RefType<ConstrBind<T>[]>` — список элементов навигации. Каждый элемент должен содержать `value` и `label`.
+- `selected?: Ref<string> | string` — изначально выбранный элемент или его значение. Если не указан, выбирается первый элемент списка.
+
+**Возвращает:**
+Объект с реактивными свойствами и методами управления:
+- `item` — текущий активный элемент (вычисляемое свойство).
+- `selected` — ссылка (`ref`) на значение выбранного элемента.
+- `label` — метка (`label`) текущего элемента.
+- `list` — список элементов, дополненный свойством `to` для использования с `router-link` или аналогичными компонентами.
+- `to(name: string)` — метод для перехода к элементу по его значению (`value`).
+- `toMain()` — метод для перехода к первому элементу списка.
+
+```typescript
+import { ref } from 'vue'
+import { useRouterList } from '@dxtmisha/functional'
+
+const menuItems = ref([
+  { value: 'dashboard', label: 'Дашборд' },
+  { value: 'settings', label: 'Настройки' }
+])
+
+// Инициализация с выбором 'dashboard'
+const { list, selected, to } = useRouterList(menuItems, 'dashboard')
+
+// Список будет содержать объекты с полем 'to', например:
+// { value: 'dashboard', label: 'Дашборд', to: { name: 'dashboard' } }
+
+// Программный переход
+to('settings')
+```
