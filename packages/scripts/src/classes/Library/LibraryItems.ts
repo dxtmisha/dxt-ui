@@ -56,6 +56,15 @@ export class LibraryItems {
   }
 
   /**
+   * Returns the path to the design system components directory
+   *
+   * Возвращает путь к директории компонентов дизайн-системы
+   */
+  getComponentsPath(): string[] {
+    return [...UI_DIRS_COMPONENTS, PropertiesConfig.getProjectName()]
+  }
+
+  /**
    * Writes data in the file.
    *
    * Записывает данные в файле.
@@ -111,15 +120,6 @@ export class LibraryItems {
     })
 
     return list
-  }
-
-  /**
-   * Returns the path to the design system components directory
-   *
-   * Возвращает путь к директории компонентов дизайн-системы
-   */
-  protected getComponentsPath(): string[] {
-    return [...UI_DIRS_COMPONENTS, PropertiesConfig.getProjectName()]
   }
 
   /**

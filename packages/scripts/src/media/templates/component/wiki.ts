@@ -1,19 +1,13 @@
-// :component.once import { type StorybookProps, WikiStorybook } from '@dxtmisha/wiki'
+// :component.once import { WikiStorybook } from '@dxtmisha/wiki'
 // :component.once import { wiki, wikiDescriptions } from '@dxtmisha/wiki/media'
 
-// :component.once import { wiki[Design] } from '../../../wiki/wiki'
-// :component.once import { defaults } from './props'
-
-// :component.once const propsNames: StorybookProps = [
-// :component.once   // :propsList [!] System label / Системная метка
-// :component.once   // :propsList [!] System label / Системная метка
-// :component.once ]
+// :component.once import { ComponentWikiData } from './wikiData'
 
 // :component.once export const ComponentWikiStorybook = new WikiStorybook(
-// :component.once   'Component',
-// :component.once   propsNames,
-// :component.once   defaults,
-// :component.once   wiki[Design],
+// :component.once   ComponentWikiData.component,
+// :component.once   ComponentWikiData.props,
+// :component.once   ComponentWikiData.defaults,
+// :component.once   ComponentWikiData.wikiDesign,
 // :component.once   wiki,
 // :component.once   wikiDescriptions
 // :component.once )

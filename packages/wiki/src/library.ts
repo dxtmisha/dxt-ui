@@ -6,3 +6,4 @@ export * from './classes/WikiStorybookProp'
 
 // Types
 export * from './types/storybookTypes'
+export * from './types/wikiTypes'

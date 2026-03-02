@@ -1,0 +1,17 @@
+import { type StorybookProps, type WikiDataItem } from '@dxtmisha/wiki'
+
+import { wikiD1 } from '../../../wiki/wiki'
+import { defaults } from './props'
+
+const propsNames: StorybookProps = [
+  // :propsList [!] System label / Системная метка
+  { name: 'active', type: 'boolean' }
+  // :propsList [!] System label / Системная метка
+]
+
+export const SkeletonWikiData: WikiDataItem = {
+  component: 'Skeleton',
+  props: propsNames,
+  defaults,
+  wikiDesign: wikiD1
+}

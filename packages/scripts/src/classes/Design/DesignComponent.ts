@@ -35,6 +35,7 @@ const FILE_CLASS = 'DesignComponent.vue'
 const FILE_CLASS_AI = 'DesignComponentAiWiki.vue'
 const FILE_INDEX = 'index.ts'
 const FILE_WIKI = 'wiki.ts'
+const FILE_WIKI_DATA = 'wikiData.ts'
 const FILE_STORIES = 'DesignComponent.stories.ts'
 const FILE_STORIES_DOCUMENTATION = 'DesignComponent.mdx'
 
@@ -83,6 +84,7 @@ export class DesignComponent extends DesignCommand {
       .makeMainAi()
       .makeIndex()
       .makeWiki()
+      .makeWikiData()
       .makeStories()
       .makeStoriesDocumentation()
       .makeFilePackage()
@@ -233,6 +235,19 @@ export class DesignComponent extends DesignCommand {
    */
   protected makeWiki(): this {
     const file = FILE_WIKI
+    const sample = this.readDefinable(file)
+
+    this.write(file, sample.get())
+    return this
+  }
+
+  /**
+   * This code generates the wikiData.ts.
+   *
+   * Генерация файла wikiData.ts.
+   */
+  protected makeWikiData(): this {
+    const file = FILE_WIKI_DATA
     const typeInfo = this.getPropsList()
     const sample = this.readDefinable(file)
     const props: string[] = []
