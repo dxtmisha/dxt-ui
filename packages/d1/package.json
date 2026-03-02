@@ -28,7 +28,7 @@
     "preview": "vite preview",
     "dxt-ui": "dxt-ui",
     "dxt-wiki-storm": "dxt-wiki-storm",
-    "prepublishOnly": "npm run dxt-ui && npm run build"
+    "prepublishOnly": "npm run dxt-ui && npm run build && npm run dxt-wiki-storm"
   },
   "files": [
     "dist/",
@@ -255,5 +255,6 @@
     "@dxtmisha/media": "*",
     "@dxtmisha/styles": "*"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "web-types": "./dist/web-types.json"
 }

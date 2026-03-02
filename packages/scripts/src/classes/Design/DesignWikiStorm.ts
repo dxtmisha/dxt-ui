@@ -1,28 +1,48 @@
-import { LibraryItems } from '../Library/LibraryItems'
-import { WikiStorybook } from '@dxtmisha/wiki'
-import { DesignWikiStormItem } from './DesignWikiStormItem.ts'
-import { getPackageJson } from '../../functions/getPackageJson.ts'
-import type { WebTypesTags, WebTypesVueJson } from '../../types/webTypes.ts'
-import { PropertiesFile } from '../Properties/PropertiesFile.ts'
+import { toCamelCaseFirst } from '@dxtmisha/functional-basic'
+import { getPackageJson } from '../../functions/getPackageJson'
 
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
+import { PropertiesFile } from '../Properties/PropertiesFile'
+import { LibraryItems } from '../Library/LibraryItems'
+import { DesignWikiStormItem } from './DesignWikiStormItem'
+
+import type { WebTypesTags, WebTypesVueJson } from '../../types/webTypes'
+
+/**
+ * Class for generating web-types.json.
+ *
+ * Класс для генерации web-types.json.
+ */
 export class DesignWikiStorm {
   protected readonly components: LibraryItems
 
+  /**
+   * Constructor.
+   *
+   * Конструктор.
+   * @param dir directory for saving the file / директория для сохранения файла
+   */
   constructor(
     protected dir: string = 'dist'
   ) {
     this.components = new LibraryItems()
   }
 
+  /**
+   * Generates the web-types.json file.
+   *
+   * Генерирует файл web-types.json.
+   */
   async make(): Promise<void> {
     const packageFile = getPackageJson()
-    console.log('')
+
+    console.log('[DesignWikiStorm] make')
 
     if (packageFile) {
       const data: WebTypesVueJson = {
         $schema: 'https://json.schemastore.org/web-types',
         framework: 'vue',
-        name: packageFile.version,
+        name: toCamelCaseFirst(PropertiesConfig.getDesignName()),
         version: packageFile.version,
         contributions: {
           html: {

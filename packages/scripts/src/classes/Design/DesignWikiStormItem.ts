@@ -8,9 +8,22 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 import type { LibraryData } from '../../types/libraryTypes'
 import type { WebTypesAttributeItem, WebTypesAttributes, WebTypesTagItem } from '../../types/webTypes'
 
+/**
+ * Class for generating web-types for a specific component.
+ *
+ * Класс для генерации web-types для конкретного компонента.
+ */
 export class DesignWikiStormItem {
   protected wiki?: WikiStorybook
 
+  /**
+   * Constructor.
+   *
+   * Конструктор.
+   * @param project project name / имя проекта
+   * @param path path to the component / путь к компоненту
+   * @param data component data / данные компонента
+   */
   constructor(
     protected readonly project: string,
     protected readonly path: string[],
@@ -18,6 +31,11 @@ export class DesignWikiStormItem {
   ) {
   }
 
+  /**
+   * Returns the tag definition for web-types.
+   *
+   * Возвращает определение тега для web-types.
+   */
   get(): WebTypesTagItem | undefined {
     if (this.wiki) {
       const name = `${toCamelCaseFirst(PropertiesConfig.getDesignName())}${this.wiki.getName()}`
@@ -36,6 +54,12 @@ export class DesignWikiStormItem {
     return undefined
   }
 
+  /**
+   * Returns the attribute definition.
+   *
+   * Возвращает определение атрибута.
+   * @param item prop item / элемент свойства
+   */
   getAttribute(item: WikiStorybookProp): WebTypesAttributeItem {
     return {
       name: item.getName(),
@@ -48,6 +72,11 @@ export class DesignWikiStormItem {
     }
   }
 
+  /**
+   * Returns a list of attributes.
+   *
+   * Возвращает список атрибутов.
+   */
   getAttributes(): WebTypesAttributes {
     const attributes: WebTypesAttributes = []
 
@@ -61,15 +90,30 @@ export class DesignWikiStormItem {
     return attributes
   }
 
+  /**
+   * Returns the directory name.
+   *
+   * Возвращает имя директории.
+   */
   getDirName() {
     return this.data.dir
   }
 
+  /**
+   * Initializes the class.
+   *
+   * Инициализирует класс.
+   */
   async init(): Promise<this> {
     this.wiki = await this.initWiki()
     return this
   }
 
+  /**
+   * Gets data from wikiData.ts.
+   *
+   * Получает данные из wikiData.ts.
+   */
   protected async getData(): Promise<WikiDataItem | undefined> {
     const filePath = this.getPaths(['wikiData.ts'])
 
@@ -85,6 +129,11 @@ export class DesignWikiStormItem {
     return undefined
   }
 
+  /**
+   * Returns the list of directories.
+   *
+   * Возвращает список директорий.
+   */
   protected getDirs(): string[] {
     return [
       '.',
@@ -93,6 +142,12 @@ export class DesignWikiStormItem {
     ]
   }
 
+  /**
+   * Returns the full path to the file.
+   *
+   * Возвращает полный путь к файлу.
+   * @param paths path segments / сегменты пути
+   */
   protected getPaths(paths: string[]): string[] {
     return [
       ...this.getDirs(),
@@ -100,6 +155,11 @@ export class DesignWikiStormItem {
     ]
   }
 
+  /**
+   * Initializes the wiki object.
+   *
+   * Инициализирует объект wiki.
+   */
   protected async initWiki(): Promise<WikiStorybook | undefined> {
     const data = await this.getData()
 
