@@ -1,21 +1,13 @@
-import { type StorybookProps, WikiStorybook } from '@dxtmisha/wiki'
+import { WikiStorybook } from '@dxtmisha/wiki'
 import { wiki, wikiDescriptions } from '@dxtmisha/wiki/media'
 
-import { wikiD1 } from '../../../wiki/wiki'
-import { defaults } from './props'
-
-const propsNames: StorybookProps = [
-  // :propsList [!] System label / Системная метка
-  { name: 'divider', type: 'boolean' },
-  { name: 'open', type: 'boolean' }
-  // :propsList [!] System label / Системная метка
-]
+import { ListGroupWikiData } from './wikiData'
 
 export const ListGroupWikiStorybook = new WikiStorybook(
-  'ListGroup',
-  propsNames,
-  defaults,
-  wikiD1,
+  ListGroupWikiData.component,
+  ListGroupWikiData.props,
+  ListGroupWikiData.defaults,
+  ListGroupWikiData.wikiDesign,
   wiki,
   wikiDescriptions
 )

@@ -1,22 +1,13 @@
-import { type StorybookProps, WikiStorybook } from '@dxtmisha/wiki'
+import { WikiStorybook } from '@dxtmisha/wiki'
 import { wiki, wikiDescriptions } from '@dxtmisha/wiki/media'
 
-import { wikiD1 } from '../../../wiki/wiki'
-import { defaults } from './props'
-
-const propsNames: StorybookProps = [
-  // :propsList [!] System label / Системная метка
-  { name: 'align', type: 'string', option: ['block', 'center', 'left', 'right'] },
-  { name: 'flush', type: 'boolean' },
-  { name: 'tag', type: 'string' }
-  // :propsList [!] System label / Системная метка
-]
+import { HorizontalScrollWikiData } from './wikiData'
 
 export const HorizontalScrollWikiStorybook = new WikiStorybook(
-  'HorizontalScroll',
-  propsNames,
-  defaults,
-  wikiD1,
+  HorizontalScrollWikiData.component,
+  HorizontalScrollWikiData.props,
+  HorizontalScrollWikiData.defaults,
+  HorizontalScrollWikiData.wikiDesign,
   wiki,
   wikiDescriptions
 )

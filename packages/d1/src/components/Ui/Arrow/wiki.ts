@@ -1,23 +1,13 @@
-import { type StorybookProps, WikiStorybook } from '@dxtmisha/wiki'
+import { WikiStorybook } from '@dxtmisha/wiki'
 import { wiki, wikiDescriptions } from '@dxtmisha/wiki/media'
 
-import { wikiD1 } from '../../../wiki/wiki'
-import { defaults } from './props'
-
-const propsNames: StorybookProps = [
-  // :propsList [!] System label / Системная метка
-  { name: 'elementTarget', type: 'string | HTMLElement' },
-  { name: 'inverse', type: 'boolean' },
-  { name: 'position', type: 'string', option: ['auto', 'top', 'bottom', 'left', 'right'] },
-  { name: 'size', type: 'string', option: ['sm', 'md', 'lg'] }
-  // :propsList [!] System label / Системная метка
-]
+import { ArrowWikiData } from './wikiData'
 
 export const ArrowWikiStorybook = new WikiStorybook(
-  'Arrow',
-  propsNames,
-  defaults,
-  wikiD1,
+  ArrowWikiData.component,
+  ArrowWikiData.props,
+  ArrowWikiData.defaults,
+  ArrowWikiData.wikiDesign,
   wiki,
   wikiDescriptions
 )

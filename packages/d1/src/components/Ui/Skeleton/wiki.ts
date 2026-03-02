@@ -1,20 +1,13 @@
-import { type StorybookProps, WikiStorybook } from '@dxtmisha/wiki'
+import { WikiStorybook } from '@dxtmisha/wiki'
 import { wiki, wikiDescriptions } from '@dxtmisha/wiki/media'
 
-import { wikiD1 } from '../../../wiki/wiki'
-import { defaults } from './props'
-
-const propsNames: StorybookProps = [
-  // :propsList [!] System label / Системная метка
-  { name: 'active', type: 'boolean' }
-  // :propsList [!] System label / Системная метка
-]
+import { SkeletonWikiData } from './wikiData'
 
 export const SkeletonWikiStorybook = new WikiStorybook(
-  'Skeleton',
-  propsNames,
-  defaults,
-  wikiD1,
+  SkeletonWikiData.component,
+  SkeletonWikiData.props,
+  SkeletonWikiData.defaults,
+  SkeletonWikiData.wikiDesign,
   wiki,
   wikiDescriptions
 )

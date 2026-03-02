@@ -1,20 +1,13 @@
-import { type StorybookProps, WikiStorybook } from '@dxtmisha/wiki'
+import { WikiStorybook } from '@dxtmisha/wiki'
 import { wiki, wikiDescriptions } from '@dxtmisha/wiki/media'
 
-import { wikiD1 } from '../../../wiki/wiki'
-import { defaults } from './props'
-
-const propsNames: StorybookProps = [
-  // :propsList [!] System label / Системная метка
-  { name: 'disabled', type: 'boolean' }
-  // :propsList [!] System label / Системная метка
-]
+import { RippleWikiData } from './wikiData'
 
 export const RippleWikiStorybook = new WikiStorybook(
-  'Ripple',
-  propsNames,
-  defaults,
-  wikiD1,
+  RippleWikiData.component,
+  RippleWikiData.props,
+  RippleWikiData.defaults,
+  RippleWikiData.wikiDesign,
   wiki,
   wikiDescriptions
 )

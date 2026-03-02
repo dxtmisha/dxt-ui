@@ -1,44 +1,13 @@
-import { type StorybookProps, WikiStorybook } from '@dxtmisha/wiki'
+import { WikiStorybook } from '@dxtmisha/wiki'
 import { wiki, wikiDescriptions } from '@dxtmisha/wiki/media'
 
-import { wikiD1 } from '../../../wiki/wiki'
-import { defaults } from './props'
-
-const propsNames: StorybookProps = [
-  // :propsList [!] System label / Системная метка
-  { name: 'adaptive', type: 'string', option: ['iconAlways', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
-  { name: 'badge', type: 'string | number | ConstrBind<Badge>' },
-  { name: 'badgeDot', type: 'boolean' },
-  { name: 'container', type: 'string', option: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
-  { name: 'detail', type: 'Record<string, any>' },
-  { name: 'disabled', type: 'boolean' },
-  { name: 'focus', type: 'boolean' },
-  { name: 'href', type: 'string' },
-  { name: 'icon', type: 'IconValue<Icon>' },
-  { name: 'iconAttrs', type: 'ConstrBind<Icon>' },
-  { name: 'iconDir', type: 'boolean' },
-  { name: 'iconHide', type: 'boolean' },
-  { name: 'iconPalette', type: 'boolean' },
-  { name: 'iconTurn', type: 'boolean' },
-  { name: 'index', type: 'any' },
-  { name: 'isSkeleton', type: 'boolean' },
-  { name: 'label', type: 'NumberOrString' },
-  { name: 'labelId', type: 'string' },
-  { name: 'open', type: 'boolean' },
-  { name: 'readonly', type: 'boolean' },
-  { name: 'role', type: 'string' },
-  { name: 'selected', type: 'boolean' },
-  { name: 'tag', type: 'string', option: ['button', 'a', 'span', 'li', 'div'] },
-  { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },
-  { name: 'value', type: 'EventClickValue[\'value\']' }
-  // :propsList [!] System label / Системная метка
-]
+import { TabItemWikiData } from './wikiData'
 
 export const TabItemWikiStorybook = new WikiStorybook(
-  'TabItem',
-  propsNames,
-  defaults,
-  wikiD1,
+  TabItemWikiData.component,
+  TabItemWikiData.props,
+  TabItemWikiData.defaults,
+  TabItemWikiData.wikiDesign,
   wiki,
   wikiDescriptions
 )
