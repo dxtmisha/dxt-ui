@@ -4675,6 +4675,13 @@ export declare class Translate {
      */
     static addNormalOrSync(data: Record<string, string>): Promise<void>;
     /**
+     * Adds texts synchronously by location.
+     *
+     * Добавляет тексты синхронно по местоположению.
+     * @param data list of texts by location/ список текстов по местоположению
+     */
+    static addSyncByLocation(data: Record<string, Record<string, string>>): void;
+    /**
      * Change the path to the script for obtaining the translation.
      *
      * Изменить путь к скрипту для получения перевода.
@@ -4683,12 +4690,40 @@ export declare class Translate {
     static setUrl(url: string): Translate;
     static setPropsName(name: string): Translate;
     /**
+     * Checks for translation by code, taking into account fallback options.
+     *
+     * Проверяет наличие перевода по коду с учетом запасных вариантов.
+     * @param name code name/ название кода
+     */
+    protected static hasName(name: string): boolean;
+    /**
+     * Retrieves translation text by code, returning the first matching fallback.
+     *
+     * Получает текст перевода по коду, возвращая первое совпадение из запасных вариантов.
+     * @param name code name/ название кода
+     */
+    protected static getText(name: string): string | undefined;
+    /**
      * Getting the full title for translation.
      *
      * Получение полного названия для перевода.
      * @param name code name/ название кода
      */
     protected static getName(name: string): string;
+    /**
+     * Getting the title for translation by language.
+     *
+     * Получение названия для перевода по языку.
+     * @param name code name/ название кода
+     */
+    protected static getNameByLanguage(name: string): string;
+    /**
+     * Getting the title for translation globally.
+     *
+     * Получение названия для перевода глобально.
+     * @param name code name/ название кода
+     */
+    protected static getNameByGlobal(name: string): string;
     /**
      * Returns a list of names that are not yet in the list.
      *
@@ -4717,6 +4752,8 @@ export declare class Translate {
      */
     protected static make(): Promise<void>;
 }
+
+export declare const TRANSLATE_GLOBAL_PREFIX = "global";
 
 export declare type TranslateCode = string | string[];
 

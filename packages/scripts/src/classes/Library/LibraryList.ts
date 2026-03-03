@@ -121,6 +121,8 @@ export class LibraryList {
 
     if (only) {
       code = `^${code}$`
+    } else {
+      code = `${code}(?![\\w-])`
     }
 
     return `/${code}/ig`

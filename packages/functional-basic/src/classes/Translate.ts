@@ -9,9 +9,11 @@ import { Geo } from './Geo'
 
 export type TranslateCode = string | string[]
 export type TranslateList<T extends TranslateCode[]> = {
-  [K in T[number] as K extends readonly string[] ? K[0] : K]: string
+  [K in T[number]as K extends readonly string[] ? K[0] : K]: string
 }
 export type TranslateItemOrList<T extends TranslateCode> = T extends string[] ? TranslateList<T> : string
+
+export const TRANSLATE_GLOBAL_PREFIX = 'global'
 
 /**
  * Class for getting the translated text.
@@ -38,17 +40,17 @@ export class Translate {
     name: string,
     replacement?: string[] | Record<string, string | number>
   ): Promise<string> {
-    const fullName = this.getName(name)
+    const text = this.getText(name)
 
-    if (fullName in this.data) {
-      return this.replacement(this.data[fullName] as string, replacement)
+    if (text) {
+      return this.replacement(text, replacement)
     }
 
     if (!Api.isLocalhost()) {
       await this.add(name)
     }
 
-    return this.replacement(this.data?.[fullName] ?? name)
+    return this.replacement(this.getText(name) ?? name)
   }
 
   /**
@@ -66,10 +68,10 @@ export class Translate {
     first: boolean = false,
     replacement?: string[] | Record<string, string | number>
   ): string {
-    const fullName = this.getName(name)
+    const text = this.getText(name)
 
-    if (fullName in this.data) {
-      return this.replacement(String(this.data[fullName]), replacement)
+    if (text) {
+      return this.replacement(text, replacement)
     }
 
     return first ? ' ' : name
@@ -192,6 +194,28 @@ export class Translate {
   }
 
   /**
+   * Adds texts synchronously by location.
+   *
+   * Добавляет тексты синхронно по местоположению.
+   * @param data list of texts by location/ список текстов по местоположению
+   */
+  static addSyncByLocation(data: Record<string, Record<string, string>>): void {
+    forEach(
+      data,
+      (
+        list,
+        location
+      ) => forEach(list, (text, key) => {
+        const index = `${location}-${key}`
+
+        if (!(index in this.data)) {
+          this.data[index] = text
+        }
+      })
+    )
+  }
+
+  /**
    * Change the path to the script for obtaining the translation.
    *
    * Изменить путь к скрипту для получения перевода.
@@ -208,6 +232,46 @@ export class Translate {
   }
 
   /**
+   * Checks for translation by code, taking into account fallback options.
+   *
+   * Проверяет наличие перевода по коду с учетом запасных вариантов.
+   * @param name code name/ название кода
+   */
+  protected static hasName(name: string): boolean {
+    return (this.getName(name) in this.data)
+      || (this.getNameByLanguage(name) in this.data)
+      || (this.getNameByGlobal(name) in this.data)
+  }
+
+  /**
+   * Retrieves translation text by code, returning the first matching fallback.
+   *
+   * Получает текст перевода по коду, возвращая первое совпадение из запасных вариантов.
+   * @param name code name/ название кода
+   */
+  protected static getText(name: string): string | undefined {
+    const fullName = this.getName(name)
+
+    if (fullName in this.data) {
+      return this.data[fullName]
+    }
+
+    const nameByLanguage = this.getNameByLanguage(name)
+
+    if (nameByLanguage in this.data) {
+      return this.data[nameByLanguage]
+    }
+
+    const nameByGlobal = this.getNameByGlobal(name)
+
+    if (nameByGlobal in this.data) {
+      return this.data[nameByGlobal]
+    }
+
+    return undefined
+  }
+
+  /**
    * Getting the full title for translation.
    *
    * Получение полного названия для перевода.
@@ -215,6 +279,26 @@ export class Translate {
    */
   protected static getName(name: string): string {
     return `${Geo.getLocation()}-${name}`
+  }
+
+  /**
+   * Getting the title for translation by language.
+   *
+   * Получение названия для перевода по языку.
+   * @param name code name/ название кода
+   */
+  protected static getNameByLanguage(name: string): string {
+    return `${Geo.getLanguage()}-${name}`
+  }
+
+  /**
+   * Getting the title for translation globally.
+   *
+   * Получение названия для перевода глобально.
+   * @param name code name/ название кода
+   */
+  protected static getNameByGlobal(name: string): string {
+    return `${TRANSLATE_GLOBAL_PREFIX}-${name}`
   }
 
   /**

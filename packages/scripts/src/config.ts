@@ -79,6 +79,7 @@ export const UI_FILE_NAME_MEDIA = 'media'
 /** File name for the list of component descriptions/ Название файла для список описаний компонентов */
 export const UI_FILE_NAME_DESIGN = 'design'
 export const UI_FILE_NAME_PLUGIN = 'plugin'
+export const UI_FILE_NAME_STYLE = 'style'
 
 /** File name for the list of component descriptions for the wiki/ Название файла для список описаний компонентов для wiki */
 export const UI_FILE_NAME_WIKI = 'wiki'

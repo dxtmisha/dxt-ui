@@ -11,7 +11,7 @@ describe('replaceComponentName', () => {
     expect(replaceComponentName(text, name, componentName)).toBe(expected)
   })
 
-  it('should replace component name only in opening tag', () => {
+  it('should replace the component name only in the opening tag', () => {
     const text = '<MyComponent />'
     const name = 'MyComponent'
     const componentName = 'NewComponent'
@@ -33,7 +33,7 @@ describe('replaceComponentName', () => {
     expect(replaceComponentName(text, name, componentName)).toBe(expected)
   })
 
-  it('should not replace if component name not found', () => {
+  it('should not replace it if the component name is not found', () => {
     const text = '<div><span>Content</span></div>'
     const name = 'MyComponent'
     const componentName = 'NewComponent'

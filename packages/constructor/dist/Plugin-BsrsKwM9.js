@@ -1019,7 +1019,7 @@ class H {
    * Возвращает код подключения стиля.
    */
   importStyle() {
-    return this.makeImport("style.css"), this;
+    return this.makeImport("style.css"), this.makeImport("style/ui.scss"), this;
   }
   /**
    * Creates an import line.

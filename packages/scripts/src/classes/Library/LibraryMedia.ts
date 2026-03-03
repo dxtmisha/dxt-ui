@@ -1,13 +1,13 @@
 // export:none
 
-import { toCamelCase } from '@dxtmisha/functional-basic'
+import { toCamelCase, toCamelCaseFirst } from '@dxtmisha/functional-basic'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { LibraryItems } from './LibraryItems'
 
-import { UI_DIRS_ICONS, UI_FILE_NAME_MEDIA } from '../../config'
+import { UI_DIRS_ICONS, UI_FILE_NAME_MEDIA, UI_FILE_NAME_STYLE } from '../../config'
 import type { LibraryIconItem } from '../../types/libraryTypes'
 
 /**
@@ -26,6 +26,7 @@ export class LibraryMedia {
   }
 
   make(): void {
+    const projectName = toCamelCaseFirst(PropertiesConfig.getProjectName())
     const name = toCamelCase(PropertiesConfig.getDesignName())
     const isIcons = this.getIconImport().length > 0
 
@@ -43,6 +44,13 @@ export class LibraryMedia {
         ]
       )
     }
+
+    this.items.write(
+      UI_FILE_NAME_STYLE,
+      [
+        `import '../styles/${projectName}/main.scss'`
+      ]
+    )
   }
 
   /**

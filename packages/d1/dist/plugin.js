@@ -1,6 +1,6 @@
 import { toKebabCase as k, toCamelCase as E } from "@dxtmisha/functional-basic";
 import { designName as R, packageName as L, componentsReg as $, styleVarsReg as N, componentsList as _ } from "./design.js";
-var O = Object.defineProperty, M = (a, t, e) => t in a ? O(a, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : a[t] = e, c = (a, t, e) => M(a, typeof t != "symbol" ? t + "" : t, e);
+var O = Object.defineProperty, I = (a, t, e) => t in a ? O(a, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : a[t] = e, c = (a, t, e) => I(a, typeof t != "symbol" ? t + "" : t, e);
 class w {
   /**
    * Checks if the id is a user’s file.
@@ -48,7 +48,7 @@ class w {
     return t === "development";
   }
 }
-var I = 44, j = 59, y = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", v = new Uint8Array(64), D = new Uint8Array(128);
+var M = 44, j = 59, y = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", v = new Uint8Array(64), D = new Uint8Array(128);
 for (let a = 0; a < y.length; a++) {
   const t = y.charCodeAt(a);
   v[a] = t, D[t] = a;
@@ -95,7 +95,7 @@ function A(a) {
     let o = 0;
     for (let l = 0; l < h.length; l++) {
       const u = h[l];
-      l > 0 && t.write(I), o = g(t, u[0], o), u.length !== 1 && (e = g(t, u[1], e), i = g(t, u[2], i), n = g(t, u[3], n), u.length !== 4 && (s = g(t, u[4], s)));
+      l > 0 && t.write(M), o = g(t, u[0], o), u.length !== 1 && (e = g(t, u[1], e), i = g(t, u[2], i), n = g(t, u[3], n), u.length !== 4 && (s = g(t, u[4], s)));
     }
   }
   return t.flush();
@@ -1014,7 +1014,7 @@ class G {
    * Возвращает код подключения стиля.
    */
   importStyle() {
-    return this.makeImport("style.css"), this;
+    return this.makeImport("style.css"), this.makeImport("style/ui.scss"), this;
   }
   /**
    * Creates an import line.

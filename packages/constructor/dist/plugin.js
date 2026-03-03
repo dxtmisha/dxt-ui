@@ -1,4 +1,4 @@
-import { P } from "./Plugin-C91rDFDF.js";
+import { P } from "./Plugin-BsrsKwM9.js";
 export {
   P as Plugin
 };

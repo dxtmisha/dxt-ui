@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/functional/en/Classes/Translate'/>
+<Meta title='@dxtmisha/en/functional-basic/Classes/Translate - Translation and Text Management'/>
 
 # Translate Class
 
@@ -11,10 +11,10 @@ Static class for managing translations and localized text. Provides methods for 
 - **Translation fetching** — retrieves translations from server API
 - **Text caching** — intelligent caching system with batch requests
 - **Template replacement** — supports placeholder replacement in translations
-- **Locale awareness** — automatically uses current geographic locale
+- **Locale awareness** — automatically uses the current geographic locale
 - **Batch processing** — groups multiple translation requests for efficiency
 - **Sync and async modes** — both synchronous and asynchronous text retrieval
-- **List operations** — fetch multiple translations in single call
+- **List operations** — fetch multiple translations in a single call
 - **Dynamic loading** — loads translations on demand
 
 ## Basic Usage
@@ -61,7 +61,7 @@ Synchronously retrieves translation text (returns from cache or fallback).
 const text = Translate.getSync('button.save')
 // Returns: "Save" (from cache) or "button.save" (fallback)
 
-// Return empty string if not found
+// Return an empty string if not found
 const empty = Translate.getSync('missing.key', false)
 // Returns: "" if not in cache
 
@@ -97,7 +97,7 @@ const messages = await Translate.getList([
 
 ### `getListSync`
 
-Synchronously retrieves multiple translations from cache.
+Synchronously retrieves multiple translations from a cache.
 
 **Parameters:**
 - `names: TranslateCode[]` — array of translation codes
@@ -119,7 +119,7 @@ const empty = Translate.getListSync(['missing.key'], false)
 
 ### `add`
 
-Adds translation codes to loading queue for batch fetching.
+Adds translation codes to the loading queue for batch fetching.
 
 **Parameters:**
 - `names: string | string[]` — translation code(s) to load
@@ -127,7 +127,7 @@ Adds translation codes to loading queue for batch fetching.
 **Returns:** `Promise<void>` — resolves when translations are loaded
 
 ```javascript
-// Add single translation
+// Add a single translation
 await Translate.add('new.message')
 
 // Add multiple translations
@@ -136,12 +136,12 @@ await Translate.add(['header.title', 'footer.copyright', 'menu.items'])
 // Automatic batching (requests are grouped within 160ms)
 Translate.add('text1') // Queued
 Translate.add('text2') // Queued
-Translate.add('text3') // All sent in single request
+Translate.add('text3') // All sent in a single request
 ```
 
 ### `addSync`
 
-Directly adds translations to cache (for development/testing).
+Directly adds translations to the cache (for development/testing).
 
 **Parameters:**
 - `data: Record<string, string>` — key-value pairs of translations
@@ -160,7 +160,7 @@ const text = Translate.getSync('welcome.message') // "Welcome to our app"
 
 ### `addNormalOrSync`
 
-Intelligently adds translations based on environment (API call vs direct).
+Intelligently adds translations based on the environment (API call vs. direct).
 
 **Parameters:**
 - `data: Record<string, string>` — translation data
@@ -168,7 +168,7 @@ Intelligently adds translations based on environment (API call vs direct).
 **Returns:** `Promise<void>` — resolves when added
 
 ```javascript
-// Automatically chooses method based on Api.isLocalhost()
+// Automatically chooses a method based on Api.isLocalhost()
 await Translate.addNormalOrSync({
   'app.title': 'My Application',
   'nav.home': 'Home',
@@ -176,6 +176,27 @@ await Translate.addNormalOrSync({
 })
 // Development: adds directly to cache
 // Production: queues for API request
+```
+
+### `addSyncByLocation`
+
+Synchronously adds translations grouped by location (locale) directly to the cache.
+
+**Parameters:**
+- `data: Record<string, Record<string, string>>` — list of texts by location
+
+```javascript
+// Add translations for different locations
+Translate.addSyncByLocation({
+  'en-US': {
+    'app.title': 'My Application',
+    'button.save': 'Save'
+  },
+  'ru-RU': {
+    'app.title': 'Мое Приложение',
+    'button.save': 'Сохранить'
+  }
+})
 ```
 
 ## Configuration
@@ -258,7 +279,7 @@ if (password.length < 8) {
 // Component initialization
 class MyComponent {
   async loadTexts() {
-    // Add needed translations to queue
+    // Add necessary translations to the queue
     await Translate.add([
       'component.title',
       'component.description',
