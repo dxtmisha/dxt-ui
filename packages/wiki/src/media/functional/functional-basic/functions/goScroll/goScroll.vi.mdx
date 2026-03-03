@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/goScroll - Thay đổi cuộn nhanh'/>
+
+# `goScroll`
+
+Thay đổi nhanh vị trí cuộn tại phần tử đến phần tử yêu cầu.
+
+**Tham số:**
+- `selector: string` — phần tử được chọn, vị trí cuộn của nó cần được thay đổi.
+- `elementTo: HTMLElement | undefined` — phần tử mà bạn cần cuộn đến.
+- `elementCenter: HTMLElement` — phần tử cần được căn giữa.
+
+```typescript
+import { goScroll } from '@dxtmisha/functional-basic'
+
+const container = document.querySelector('.container')
+const target = document.querySelector('.target')
+
+goScroll('.container', target)
+```

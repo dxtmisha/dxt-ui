@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isArray - Check if value is an array'/>
+
+# `isArray`
+
+Checks if the values are arrays.
+
+**Parameters:**
+- `value: T` — input value.
+
+**Returns:**
+`boolean` — `true` if the value is an array, otherwise `false`.
+
+```typescript
+import { isArray } from '@dxtmisha/functional-basic'
+
+console.log(isArray([1, 2, 3])) // true
+console.log(isArray({})) // false
+```

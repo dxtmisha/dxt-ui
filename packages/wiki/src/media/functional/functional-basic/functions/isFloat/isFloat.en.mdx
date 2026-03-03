@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isFloat - Check if value is a number or float'/>
+
+# `isFloat`
+
+Checks if the value is an integer or a floating-point number.
+
+**Parameters:**
+- `value: any` — values for checking.
+
+**Returns:**
+`boolean` — `true` if the value is a number or a string representation of a number, otherwise `false`.
+
+```typescript
+import { isFloat } from '@dxtmisha/functional-basic'
+
+console.log(isFloat(123)) // true
+console.log(isFloat('123.45')) // true
+console.log(isFloat('abc')) // false
+```

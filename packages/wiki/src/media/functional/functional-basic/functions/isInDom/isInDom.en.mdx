@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isInDom - Check if element is in DOM'/>
+
+# `isInDom`
+
+Checks if an element is still in the DOM tree.
+
+**Parameters:**
+- `element: ElementOrString<E>` — selectors for matching or an Element.
+
+**Returns:**
+`boolean` — `true` if the element is in the DOM, otherwise `false`.
+
+```typescript
+import { isInDom } from '@dxtmisha/functional-basic'
+
+const div = document.createElement('div')
+document.body.appendChild(div)
+console.log(isInDom(div)) // true
+```

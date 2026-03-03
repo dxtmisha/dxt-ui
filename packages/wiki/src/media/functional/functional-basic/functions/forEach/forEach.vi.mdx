@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/forEach - Lặp qua đối tượng hoặc mảng'/>
+
+# `forEach`
+
+Hàm thực hiện chức năng được chỉ định một lần cho mỗi phần tử trong đối tượng. Và trả về một mảng với kết quả thực thi hàm.
+
+**Tham số:**
+- `data: D` — đối tượng để lặp.
+- `callback: (item: T, key: K, dataMain: typeof data) => R` — một hàm để thực thi cho mỗi phần tử trong mảng.
+
+**Trả về:**
+`R[]` — một mảng với kết quả thực thi hàm.
+
+```typescript
+import { forEach } from '@dxtmisha/functional-basic'
+
+const data = [1, 2, 3]
+const result = forEach(data, (item) => item * 2)
+console.log(result) // [2, 4, 6]
+```

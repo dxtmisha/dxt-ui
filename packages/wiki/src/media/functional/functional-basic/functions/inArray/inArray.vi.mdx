@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/inArray - Kiểm tra giá trị có trong mảng'/>
+
+# `inArray`
+
+Kiểm tra xem giá trị có trong mảng hiện tại hay không.
+
+**Tham số:**
+- `array: T[]` — mảng để kiểm tra.
+- `value: T` — giá trị cần kiểm tra.
+
+**Trả về:**
+`boolean` — `true` nếu giá trị có trong mảng, ngược lại là `false`.
+
+```typescript
+import { inArray } from '@dxtmisha/functional-basic'
+
+const array = [1, 2, 3]
+console.log(inArray(array, 2)) // true
+console.log(inArray(array, 4)) // false
+```

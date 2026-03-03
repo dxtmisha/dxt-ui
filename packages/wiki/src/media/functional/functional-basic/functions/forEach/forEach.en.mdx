@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/forEach - Iterate over an object or array'/>
+
+# `forEach`
+
+The function performs the specified function once for each element in the object. And returns an array with the results of executing the function.
+
+**Parameters:**
+- `data: D` — object for iteration.
+- `callback: (item: T, key: K, dataMain: typeof data) => R` — a function to execute for each element in the array.
+
+**Returns:**
+`R[]` — an array with the results of executing the function.
+
+```typescript
+import { forEach } from '@dxtmisha/functional-basic'
+
+const data = [1, 2, 3]
+const result = forEach(data, (item) => item * 2)
+console.log(result) // [2, 4, 6]
+```

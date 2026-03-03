@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/strFill - Create a string filled with a value'/>
+
+# `strFill`
+
+The method creates a string of length count, consisting of the characters value.
+
+**Parameters:**
+- `value: string` — character for filling.
+- `count: number` — length of the string.
+
+**Returns:**
+`string` — a string filled with the specified value.
+
+```typescript
+import { strFill } from '@dxtmisha/functional-basic'
+
+const string = strFill('a', 3)
+console.log(string) // 'aaa'
+```

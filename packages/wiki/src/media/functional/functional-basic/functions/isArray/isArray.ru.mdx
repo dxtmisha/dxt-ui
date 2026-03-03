@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isArray - Проверка на массив'/>
+
+# `isArray`
+
+Проверяет, являются ли значения массивами.
+
+**Параметры:**
+- `value: T` — входное значение.
+
+**Возвращает:**
+`boolean` — `true`, если значение является массивом, иначе `false`.
+
+```typescript
+import { isArray } from '@dxtmisha/functional-basic'
+
+console.log(isArray([1, 2, 3])) // true
+console.log(isArray({})) // false
+```

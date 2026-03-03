@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toArray - Chuyển đổi giá trị thành mảng'/>
+
+# `toArray`
+
+Chuyển đổi một giá trị thành một mảng. Nếu giá trị đã là một mảng, nó sẽ trả về chính nó. Ngược lại, nó sẽ bọc giá trị trong một mảng.
+
+**Tham số:**
+- `value: T` — Giá trị cần chuyển đổi thành mảng.
+
+**Trả về:**
+`T[]` — Một mảng chứa giá trị được cung cấp.
+
+```typescript
+import { toArray } from '@dxtmisha/functional-basic'
+
+console.log(toArray([1, 2, 3])) // [1, 2, 3]
+console.log(toArray(1)) // [1]
+```

@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isInDom - Kiểm tra xem phần tử có trong DOM không'/>
+
+# `isInDom`
+
+Kiểm tra xem một phần tử có còn trong cây DOM hay không.
+
+**Tham số:**
+- `element: ElementOrString<E>` — bộ chọn để khớp hoặc một Element.
+
+**Trả về:**
+`boolean` — `true` nếu phần tử có trong DOM, ngược lại là `false`.
+
+```typescript
+import { isInDom } from '@dxtmisha/functional-basic'
+
+const div = document.createElement('div')
+document.body.appendChild(div)
+console.log(isInDom(div)) // true
+```

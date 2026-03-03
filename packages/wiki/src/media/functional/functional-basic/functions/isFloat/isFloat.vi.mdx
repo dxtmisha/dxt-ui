@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isFloat - Kiểm tra xem giá trị có phải là số hoặc số thực không'/>
+
+# `isFloat`
+
+Kiểm tra xem giá trị có phải là số nguyên hoặc số thực hay không.
+
+**Tham số:**
+- `value: any` — giá trị cần kiểm tra.
+
+**Trả về:**
+`boolean` — `true` nếu giá trị là số hoặc chuỗi biểu diễn số, ngược lại là `false`.
+
+```typescript
+import { isFloat } from '@dxtmisha/functional-basic'
+
+console.log(isFloat(123)) // true
+console.log(isFloat('123.45')) // true
+console.log(isFloat('abc')) // false
+```

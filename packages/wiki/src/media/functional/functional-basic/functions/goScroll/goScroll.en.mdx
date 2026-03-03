@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/goScroll - Quick scroll change'/>
+
+# `goScroll`
+
+Quick change of scroll at the element to the required element.
+
+**Parameters:**
+- `selector: string` — the selected an element, the scroll position of which needs to be changed.
+- `elementTo: HTMLElement | undefined` — the element to which you need to scroll.
+- `elementCenter: HTMLElement` — the element that needs to be centered.
+
+```typescript
+import { goScroll } from '@dxtmisha/functional-basic'
+
+const container = document.querySelector('.container')
+const target = document.querySelector('.target')
+
+goScroll('.container', target)
+```

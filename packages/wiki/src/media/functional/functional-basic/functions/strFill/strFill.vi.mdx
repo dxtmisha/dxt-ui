@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/strFill - Tạo chuỗi được điền giá trị'/>
+
+# `strFill`
+
+Phương thức tạo một chuỗi có độ dài count, bao gồm các ký tự value.
+
+**Tham số:**
+- `value: string` — ký tự để điền.
+- `count: number` — độ dài của chuỗi.
+
+**Trả về:**
+`string` — một chuỗi được điền với giá trị đã chỉ định.
+
+```typescript
+import { strFill } from '@dxtmisha/functional-basic'
+
+const string = strFill('a', 3)
+console.log(string) // 'aaa'
+```

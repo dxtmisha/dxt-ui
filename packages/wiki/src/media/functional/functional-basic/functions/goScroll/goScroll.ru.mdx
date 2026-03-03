@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/goScroll - Быстрое изменение скролла'/>
+
+# `goScroll`
+
+Быстрое изменение скролла у элемента к нужному элементу.
+
+**Параметры:**
+- `selector: string` — выбранный элемент, положение скролла которого надо изменить.
+- `elementTo: HTMLElement | undefined` — элемент, до которого надо проскроллить.
+- `elementCenter: HTMLElement` — элемент, который надо центрировать.
+
+```typescript
+import { goScroll } from '@dxtmisha/functional-basic'
+
+const container = document.querySelector('.container')
+const target = document.querySelector('.target')
+
+goScroll('.container', target)
+```

@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toArray - Convert value to array'/>
+
+# `toArray`
+
+Converts a value to an array. If the value is already an array, it returns it as is. Otherwise, it wraps the value in an array.
+
+**Parameters:**
+- `value: T` — The value to be converted into an array.
+
+**Returns:**
+`T[]` — An array containing the provided value.
+
+```typescript
+import { toArray } from '@dxtmisha/functional-basic'
+
+console.log(toArray([1, 2, 3])) // [1, 2, 3]
+console.log(toArray(1)) // [1]
+```

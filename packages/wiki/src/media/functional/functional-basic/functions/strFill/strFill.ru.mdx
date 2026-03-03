@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/strFill - Создание строки, заполненной значением'/>
+
+# `strFill`
+
+Метод создает строку длиной count, состоящую из символов value.
+
+**Параметры:**
+- `value: string` — символ для заполнения.
+- `count: number` — длина строки.
+
+**Возвращает:**
+`string` — строка, заполненная указанным значением.
+
+```typescript
+import { strFill } from '@dxtmisha/functional-basic'
+
+const string = strFill('a', 3)
+console.log(string) // 'aaa'
+```

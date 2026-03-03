@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/arrFill - Создание массива, заполненного значением'/>
+
+# `arrFill`
+
+Метод создает массив из "count" элементов со значениями равными `value`.
+
+**Параметры:**
+- `value: T` — значение, заполняющее массив.
+- `count: number` — число элементов этого массива.
+
+**Возвращает:**
+`T[]` — массив, заполненный указанным значением.
+
+```typescript
+import { arrFill } from '@dxtmisha/functional-basic'
+
+const array = arrFill('a', 3)
+console.log(array) // ['a', 'a', 'a']
+```

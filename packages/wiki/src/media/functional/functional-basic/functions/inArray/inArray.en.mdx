@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/inArray - Check if value is in array'/>
+
+# `inArray`
+
+Checks if the value is in the current array.
+
+**Parameters:**
+- `array: T[]` — array for checking.
+- `value: T` — value to be checked.
+
+**Returns:**
+`boolean` — `true` if the value is in the array, otherwise `false`.
+
+```typescript
+import { inArray } from '@dxtmisha/functional-basic'
+
+const array = [1, 2, 3]
+console.log(inArray(array, 2)) // true
+console.log(inArray(array, 4)) // false
+```

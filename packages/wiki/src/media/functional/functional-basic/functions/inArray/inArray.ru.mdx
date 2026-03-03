@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/inArray - Проверка наличия значения в массиве'/>
+
+# `inArray`
+
+Проверяет, есть ли значение в текущем массиве.
+
+**Параметры:**
+- `array: T[]` — массив для проверки.
+- `value: T` — проверяемое значение.
+
+**Возвращает:**
+`boolean` — `true`, если значение есть в массиве, иначе `false`.
+
+```typescript
+import { inArray } from '@dxtmisha/functional-basic'
+
+const array = [1, 2, 3]
+console.log(inArray(array, 2)) // true
+console.log(inArray(array, 4)) // false
+```

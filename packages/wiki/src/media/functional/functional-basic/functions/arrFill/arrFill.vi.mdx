@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/arrFill - Tạo mảng được điền giá trị'/>
+
+# `arrFill`
+
+Phương thức tạo một mảng gồm "count" phần tử với các giá trị bằng `value`.
+
+**Tham số:**
+- `value: T` — giá trị để điền vào mảng.
+- `count: number` — số lượng phần tử trong mảng đó.
+
+**Trả về:**
+`T[]` — một mảng được điền với giá trị đã chỉ định.
+
+```typescript
+import { arrFill } from '@dxtmisha/functional-basic'
+
+const array = arrFill('a', 3)
+console.log(array) // ['a', 'a', 'a']
+```

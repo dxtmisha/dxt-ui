@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isArray - Kiểm tra xem giá trị có phải là mảng không'/>
+
+# `isArray`
+
+Kiểm tra xem các giá trị có phải là mảng hay không.
+
+**Tham số:**
+- `value: T` — giá trị đầu vào.
+
+**Trả về:**
+`boolean` — `true` nếu giá trị là mảng, ngược lại là `false`.
+
+```typescript
+import { isArray } from '@dxtmisha/functional-basic'
+
+console.log(isArray([1, 2, 3])) // true
+console.log(isArray({})) // false
+```

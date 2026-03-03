@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/arrFill - Create an array filled with a value'/>
+
+# `arrFill`
+
+The method creates an array of "count" elements with values equal to `value`.
+
+**Parameters:**
+- `value: T` — value to fill the array with.
+- `count: number` — the number of elements in that array.
+
+**Returns:**
+`T[]` — an array filled with the specified value.
+
+```typescript
+import { arrFill } from '@dxtmisha/functional-basic'
+
+const array = arrFill('a', 3)
+console.log(array) // ['a', 'a', 'a']
+```

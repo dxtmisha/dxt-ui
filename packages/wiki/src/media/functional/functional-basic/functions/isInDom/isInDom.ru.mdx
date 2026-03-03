@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isInDom - Проверка наличия элемента в DOM'/>
+
+# `isInDom`
+
+Проверяет, находится ли еще элемент в дереве DOM.
+
+**Параметры:**
+- `element: ElementOrString<E>` — селекторов для сопоставления или Element.
+
+**Возвращает:**
+`boolean` — `true`, если элемент находится в DOM, иначе `false`.
+
+```typescript
+import { isInDom } from '@dxtmisha/functional-basic'
+
+const div = document.createElement('div')
+document.body.appendChild(div)
+console.log(isInDom(div)) // true
+```

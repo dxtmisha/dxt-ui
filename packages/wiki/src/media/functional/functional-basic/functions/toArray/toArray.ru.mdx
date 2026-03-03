@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toArray - Преобразование значения в массив'/>
+
+# `toArray`
+
+Преобразует значение в массив. Если переданное значение уже является массивом, возвращается оно само. В противном случае значение оборачивается в массив.
+
+**Параметры:**
+- `value: T` — Значение, которое необходимо преобразовать в массив.
+
+**Возвращает:**
+`T[]` — Массив, содержащий переданное значение.
+
+```typescript
+import { toArray } from '@dxtmisha/functional-basic'
+
+console.log(toArray([1, 2, 3])) // [1, 2, 3]
+console.log(toArray(1)) // [1]
+```
