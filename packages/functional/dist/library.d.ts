@@ -1792,23 +1792,18 @@ export declare const useMeta: () => Readonly<Readonly<{
  * Управление списком ссылок для роутера.
  * @param list list of items / список элементов
  * @param selected selected item / выбранный элемент
+ * @param hasTo has to / имеет to
  */
-export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string) => {
+export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => {
     /** Current element/ Текущий элемент */
-    item: ComputedRef<ConstrBind<T> | undefined>;
+    item: ComputedRef<T | undefined>;
     /** Selected element / Выбранный элемент */
     selected: Ref<string, string>;
     /** Label / Метка */
     label: ComputedRef<NumberOrString>;
     /** List of elements / Список элементов */
     list: ComputedRef<ConstrBind<T>[]>;
-    /**
-     * Transition to the element.
-     *
-     * Переход к элементу.
-     * @param name element name / имя элемента
-     */
-    to(name: string): void;
+    to: (name?: string) => void;
     /**
      * Transition to the main element.
      *

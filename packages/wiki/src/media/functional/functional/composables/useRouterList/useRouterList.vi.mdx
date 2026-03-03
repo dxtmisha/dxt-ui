@@ -7,15 +7,16 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Quản lý danh sách liên kết cho router. Cho phép tạo menu điều hướng dựa trên danh sách dữ liệu, tự động xử lý trạng thái hoạt động và chuyển đổi.
 
 **Tham số:**
-- `list: RefType<ConstrBind<T>[]>` — danh sách các mục điều hướng. Mỗi mục phải chứa `value` và `label`.
+- `list: RefType<ConstrBind<T>[] | undefined>` — danh sách các mục điều hướng. Mỗi mục phải chứa `value` và `label`.
 - `selected?: Ref<string> | string` — mục được chọn ban đầu hoặc giá trị của nó. Nếu không được chỉ định, mục đầu tiên trong danh sách sẽ được chọn.
+- `hasTo?: boolean` — tự động thêm thuộc tính `to` vào các mục danh sách để điều hướng (mặc định là `false`).
 
 **Trả về:**
 Một đối tượng với các thuộc tính phản ứng và phương thức điều khiển:
 - `item` — mục hiện tại đang hoạt động (thuộc tính được tính toán).
 - `selected` — tham chiếu (`ref`) đến giá trị của mục được chọn.
 - `label` — nhãn của mục hiện tại.
-- `list` — danh sách các mục, được bổ sung thuộc tính `to` để sử dụng với `router-link` hoặc các thành phần tương tự.
+- `list` — danh sách các mục. Nếu `hasTo` là `true`, các mục được bổ sung thuộc tính `to` để sử dụng với `router-link` hoặc các thành phần tương tự.
 - `to(name: string)` — phương thức để chuyển đến một mục theo giá trị của nó.
 - `toMain()` — phương thức để chuyển đến mục đầu tiên trong danh sách.
 
@@ -28,8 +29,8 @@ const menuItems = ref([
   { value: 'settings', label: 'Cài đặt' }
 ])
 
-// Khởi tạo với 'dashboard' được chọn
-const { list, selected, to } = useRouterList(menuItems, 'dashboard')
+// Khởi tạo với 'dashboard' được chọn và tự động tạo thuộc tính 'to'
+const { list, selected, to } = useRouterList(menuItems, 'dashboard', true)
 
 // Danh sách sẽ chứa các đối tượng có trường 'to', ví dụ:
 // { value: 'dashboard', label: 'Bảng điều khiển', to: { name: 'dashboard' } }

@@ -1,6 +1,6 @@
 import { defineComponent as l, computed as c, openBlock as d, createBlock as m, unref as g, mergeDefaults as u } from "vue";
 import "@dxtmisha/functional";
-import { T as y, k as B } from "./BlockDesign-B_QkwFRg-bwDWjacW.js";
+import { T as y, k as B } from "./BlockDesign-DHCkcwP1-lQKCPRWd.js";
 class f extends B {
 }
 const x = {

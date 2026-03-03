@@ -7,15 +7,16 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Managing a list of links for the router. Allows creating navigation menus based on data lists, automatically handling active states and transitions.
 
 **Parameters:**
-- `list: RefType<ConstrBind<T>[]>` — list of navigation items. Each item must contain `value` and `label`.
+- `list: RefType<ConstrBind<T>[] | undefined>` — list of navigation items. Each item must contain `value` and `label`.
 - `selected?: Ref<string> | string` — initially selected item or its value. If not specified, the first item in the list is selected.
+- `hasTo?: boolean` — automatically adds the `to` property to list items for navigation (default is `false`).
 
 **Returns:**
 An object with reactive properties and control methods:
 - `item` — current active item (computed property).
 - `selected` — reference (`ref`) to the selected item's value.
 - `label` — label of the current item.
-- `list` — list of items, augmented with a `to` property for use with `router-link` or similar components.
+- `list` — list of items. If `hasTo` is `true`, items are augmented with a `to` property for use with `router-link` or similar components.
 - `to(name: string)` — method to navigate to an item by its value.
 - `toMain()` — method to navigate to the first item in the list.
 
@@ -28,8 +29,8 @@ const menuItems = ref([
   { value: 'settings', label: 'Settings' }
 ])
 
-// Initialize with 'dashboard' selected
-const { list, selected, to } = useRouterList(menuItems, 'dashboard')
+// Initialize with 'dashboard' selected and automatic 'to' property creation
+const { list, selected, to } = useRouterList(menuItems, 'dashboard', true)
 
 // The list will contain objects with a 'to' field, for example:
 // { value: 'dashboard', label: 'Dashboard', to: { name: 'dashboard' } }

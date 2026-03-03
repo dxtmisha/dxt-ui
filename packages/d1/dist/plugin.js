@@ -1,6 +1,7 @@
 import { toKebabCase as k, toCamelCase as E } from "@dxtmisha/functional-basic";
-import { designName as R, packageName as L, componentsReg as $, styleVarsReg as N, componentsList as _ } from "./design.js";
-var O = Object.defineProperty, I = (a, t, e) => t in a ? O(a, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : a[t] = e, c = (a, t, e) => I(a, typeof t != "symbol" ? t + "" : t, e);
+import { isFilled as R } from "@dxtmisha/functional";
+import { designName as L, packageName as $, componentsReg as N, styleVarsReg as _, componentsList as O } from "./design.js";
+var M = Object.defineProperty, I = (a, t, e) => t in a ? M(a, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : a[t] = e, c = (a, t, e) => I(a, typeof t != "symbol" ? t + "" : t, e);
 class w {
   /**
    * Checks if the id is a user’s file.
@@ -48,10 +49,10 @@ class w {
     return t === "development";
   }
 }
-var M = 44, j = 59, y = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", v = new Uint8Array(64), D = new Uint8Array(128);
+var j = 44, D = 59, y = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", v = new Uint8Array(64), P = new Uint8Array(128);
 for (let a = 0; a < y.length; a++) {
   const t = y.charCodeAt(a);
-  v[a] = t, D[t] = a;
+  v[a] = t, P[t] = a;
 }
 function g(a, t, e) {
   let i = t - e;
@@ -73,7 +74,7 @@ var C = 1024 * 16, S = typeof TextDecoder != "undefined" ? /* @__PURE__ */ new T
       t += String.fromCharCode(a[e]);
     return t;
   }
-}, P = class {
+}, A = class {
   constructor() {
     this.pos = 0, this.out = "", this.buffer = new Uint8Array(C);
   }
@@ -86,16 +87,16 @@ var C = 1024 * 16, S = typeof TextDecoder != "undefined" ? /* @__PURE__ */ new T
     return e > 0 ? t + S.decode(a.subarray(0, e)) : t;
   }
 };
-function A(a) {
-  const t = new P();
+function V(a) {
+  const t = new A();
   let e = 0, i = 0, n = 0, s = 0;
   for (let r = 0; r < a.length; r++) {
     const h = a[r];
-    if (r > 0 && t.write(j), h.length === 0) continue;
+    if (r > 0 && t.write(D), h.length === 0) continue;
     let o = 0;
     for (let l = 0; l < h.length; l++) {
       const u = h[l];
-      l > 0 && t.write(M), o = g(t, u[0], o), u.length !== 1 && (e = g(t, u[1], e), i = g(t, u[2], i), n = g(t, u[3], n), u.length !== 4 && (s = g(t, u[4], s)));
+      l > 0 && t.write(j), o = g(t, u[0], o), u.length !== 1 && (e = g(t, u[1], e), i = g(t, u[2], i), n = g(t, u[3], n), u.length !== 4 && (s = g(t, u[4], s)));
     }
   }
   return t.flush();
@@ -178,24 +179,24 @@ class p {
     } else if (this.edit("", void 0, !0), this.outro = this.outro.replace(t, ""), this.outro.length) return !0;
   }
 }
-function V() {
+function T() {
   return typeof globalThis != "undefined" && typeof globalThis.btoa == "function" ? (a) => globalThis.btoa(unescape(encodeURIComponent(a))) : typeof Buffer == "function" ? (a) => Buffer.from(a, "utf-8").toString("base64") : () => {
     throw new Error("Unsupported environment: `window.btoa` or `Buffer` should be supported.");
   };
 }
-const T = /* @__PURE__ */ V();
-class U {
+const U = /* @__PURE__ */ T();
+class B {
   constructor(t) {
-    this.version = 3, this.file = t.file, this.sources = t.sources, this.sourcesContent = t.sourcesContent, this.names = t.names, this.mappings = A(t.mappings), typeof t.x_google_ignoreList != "undefined" && (this.x_google_ignoreList = t.x_google_ignoreList), typeof t.debugId != "undefined" && (this.debugId = t.debugId);
+    this.version = 3, this.file = t.file, this.sources = t.sources, this.sourcesContent = t.sourcesContent, this.names = t.names, this.mappings = V(t.mappings), typeof t.x_google_ignoreList != "undefined" && (this.x_google_ignoreList = t.x_google_ignoreList), typeof t.debugId != "undefined" && (this.debugId = t.debugId);
   }
   toString() {
     return JSON.stringify(this);
   }
   toUrl() {
-    return "data:application/json;charset=utf-8;base64," + T(this.toString());
+    return "data:application/json;charset=utf-8;base64," + U(this.toString());
   }
 }
-function B(a) {
+function z(a) {
   const t = a.split(`
 `), e = t.filter((s) => /^\t+/.test(s)), i = t.filter((s) => /^ {2,}/.test(s));
   if (e.length === 0 && i.length === 0)
@@ -208,7 +209,7 @@ function B(a) {
   }, 1 / 0);
   return new Array(n + 1).join(" ");
 }
-function z(a, t) {
+function J(a, t) {
   const e = a.split(/[/\\]/), i = t.split(/[/\\]/);
   for (e.pop(); e[0] === i[0]; )
     e.shift(), i.shift();
@@ -218,9 +219,9 @@ function z(a, t) {
   }
   return e.concat(i).join("/");
 }
-const J = Object.prototype.toString;
-function q(a) {
-  return J.call(a) === "[object Object]";
+const q = Object.prototype.toString;
+function F(a) {
+  return q.call(a) === "[object Object]";
 }
 function x(a) {
   const t = a.split(`
@@ -238,7 +239,7 @@ function x(a) {
   };
 }
 const K = /\w/;
-class F {
+class H {
   constructor(t) {
     this.hires = t, this.generatedCodeLine = 0, this.generatedCodeColumn = 0, this.raw = [], this.rawSegments = this.raw[this.generatedCodeLine] = [], this.pending = null;
   }
@@ -344,7 +345,7 @@ class b {
   }
   generateDecodedMap(t) {
     t = t || {};
-    const e = 0, i = Object.keys(this.storedNames), n = new F(t.hires), s = x(this.original);
+    const e = 0, i = Object.keys(this.storedNames), n = new H(t.hires), s = x(this.original);
     return this.intro && n.advance(this.intro), this.firstChunk.eachNext((r) => {
       const h = s(r.start);
       r.intro.length && n.advance(r.intro), r.edited ? n.addEdit(
@@ -356,7 +357,7 @@ class b {
     }), this.outro && n.advance(this.outro), {
       file: t.file ? t.file.split(/[/\\]/).pop() : void 0,
       sources: [
-        t.source ? z(t.file || "", t.source) : t.file || ""
+        t.source ? J(t.file || "", t.source) : t.file || ""
       ],
       sourcesContent: t.includeContent ? [this.original] : void 0,
       names: i,
@@ -365,10 +366,10 @@ class b {
     };
   }
   generateMap(t) {
-    return new U(this.generateDecodedMap(t));
+    return new B(this.generateDecodedMap(t));
   }
   _ensureindentStr() {
-    this.indentStr === void 0 && (this.indentStr = B(this.original));
+    this.indentStr === void 0 && (this.indentStr = z(this.original));
   }
   _getRawIndentString() {
     return this._ensureindentStr(), this.indentStr;
@@ -378,7 +379,7 @@ class b {
   }
   indent(t, e) {
     const i = /^[^\r\n]/gm;
-    if (q(t) && (e = t, t = void 0), t === void 0 && (this._ensureindentStr(), t = this.indentStr || "	"), t === "") return this;
+    if (F(t) && (e = t, t = void 0), t === void 0 && (this._ensureindentStr(), t = this.indentStr || "	"), t === "") return this;
     e = e || {};
     const n = {};
     e.exclude && (typeof e.exclude[0] == "number" ? [e.exclude] : e.exclude).forEach((l) => {
@@ -707,7 +708,7 @@ class b {
     return this._replaceRegexp(t, e);
   }
 }
-class H {
+class W {
   /**
    * Constructor
    * @param id file ID / ID файла
@@ -821,7 +822,7 @@ ${t}<\/script>${this.newCode}`, this;
     return this.newCode = this.newCode.replace(t, e), this;
   }
 }
-const Q = [
+const Y = [
   /* Flex */
   "flex-position",
   "flex-dynamic",
@@ -893,7 +894,7 @@ const Q = [
   "scale",
   "rotate"
 ];
-class W {
+class Z {
   /**
    * Constructor
    * @param design design name / название дизайна
@@ -948,7 +949,7 @@ class W {
   getComponents(t) {
     const e = t.match(this.componentsReg), i = [];
     return e && e.forEach((n) => {
-      const s = this.findComponent(n);
+      const s = this.findComponent(n.trim());
       s && !i.find((r) => r.name === s.name) && !t.match(`${this.getPackageName()}/${s.name}`) && i.push(s);
     }), i;
   }
@@ -976,7 +977,7 @@ class W {
    */
   findComponent(t) {
     return this.componentsList.find(
-      (e) => e.reg.test(t)
+      (e) => e.name === t || !!t.match(new RegExp(e.reg, "i"))
     );
   }
   /**
@@ -986,7 +987,7 @@ class W {
    */
   initStyleModification() {
     const t = {};
-    return Q.forEach((e) => {
+    return Y.forEach((e) => {
       t[k(e)] = E(e);
     }), t;
   }
@@ -1014,7 +1015,7 @@ class G {
    * Возвращает код подключения стиля.
    */
   importStyle() {
-    return this.makeImport("style.css"), this.makeImport("style/ui.scss"), this;
+    return this.makeImport("style.css"), this;
   }
   /**
    * Creates an import line.
@@ -1027,7 +1028,7 @@ class G {
     this.code.includes(e) || (this.code = `import '${e}';${this.code}`);
   }
 }
-class X {
+class Q {
   /**
    * Constructor
    * @param code file content / содержимое файла
@@ -1044,7 +1045,7 @@ class X {
   make() {
     if (this.code.isVue() && this.pluginData.hasComponent(this.code.getCode())) {
       const t = this.pluginData.getComponents(this.code.getCode());
-      if (t) {
+      if (t && t.length > 0) {
         const e = t.map((i) => this.importComponent(i)).join(`\r
 `);
         this.code.addAfterScript(e);
@@ -1070,7 +1071,7 @@ class X {
     return `import { ${t.name} } from'${this.getPath(t)}';`;
   }
 }
-class Y {
+class X {
   /**
    * Constructor
    * @param code file content / содержимое файла
@@ -1093,7 +1094,7 @@ class Y {
    * Проверяет, нужно ли преобразовывать этот файл.
    */
   is() {
-    return this.code.isScss() && !this.code.has(this.getIgnoreComment());
+    return this.code.isScss() && R(this.code.getCode()) && !this.code.has(this.getIgnoreComment());
   }
   /**
    * Returns the comment for ignoring the file.
@@ -1171,7 +1172,7 @@ class Y {
     ), this;
   }
 }
-class Z {
+class tt {
   /**
    * Constructor
    * @param design design name / название дизайна
@@ -1183,7 +1184,7 @@ class Z {
    * @param options plugin options / настройки плагина
    */
   constructor(t, e, i, n, s, r = "vite-plugin-design-ui", h = {}) {
-    c(this, "data"), c(this, "first", !0), c(this, "mode", "production"), this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = n, this.componentsList = s, this.name = r, this.options = h, this.data = new W(
+    c(this, "data"), c(this, "first", !0), c(this, "mode", "production"), this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = n, this.componentsList = s, this.name = r, this.options = h, this.data = new Z(
       t,
       e,
       i,
@@ -1233,7 +1234,7 @@ class Z {
    */
   transform(t, e) {
     this.first && w.isJs(e) && (t = this.initMain(t), this.first = !1);
-    const i = new H(e, t);
+    const i = new W(e, t);
     return this.makeComponents(i), this.initStyles(i), {
       code: i.get()
     };
@@ -1255,7 +1256,7 @@ class Z {
    * @param code file content / содержимое файла
    */
   makeComponents(t) {
-    return this.isComponents() && new X(t, this.data).make(), this;
+    return this.isComponents() && new Q(t, this.data).make(), this;
   }
   /**
    * Initializes styles.
@@ -1264,20 +1265,20 @@ class Z {
    * @param code file content / содержимое файла
    */
   initStyles(t) {
-    return this.isStyles() && new Y(t, this.data).make(), this;
+    return this.isStyles() && new X(t, this.data).make(), this;
   }
 }
-function it(a = {}) {
-  return new Z(
-    R,
+function st(a = {}) {
+  return new tt(
     L,
     $,
     N,
     _,
+    O,
     "vite-plugin-d1-ui",
     a
   ).init();
 }
 export {
-  it as uiD1VitePlugin
+  st as uiD1VitePlugin
 };

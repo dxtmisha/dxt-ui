@@ -1,6 +1,7 @@
 import { computed, isRef, type Ref, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { forEach, type NumberOrString } from '@dxtmisha/functional-basic'
+
+import { RouterItemRef } from '../../classes/ref/RouterItemRef'
 
 import type { ConstrBind } from '../../types/constructorTypes'
 import type { ListDataBasic } from '../../types/listTypes'
@@ -12,20 +13,47 @@ import type { RefType } from '../../types/refTypes'
  * Управление списком ссылок для роутера.
  * @param list list of items / список элементов
  * @param selected selected item / выбранный элемент
+ * @param hasTo has to / имеет to
  */
 export const useRouterList = <T extends ListDataBasic>(
   list: RefType<ConstrBind<T>[] | undefined>,
-  selected?: Ref<string> | string
+  selected?: Ref<string> | string,
+  hasTo: boolean = true
 ) => {
-  const router = useRouter()
-
+  /** Selected index / Выбранный индекс */
   const index = isRef(selected)
     ? selected
     : ref<string>(selected || list.value?.[0]?.value || '')
 
-  const item = computed(
-    () => list.value?.find(item => item.value === index.value)
-  )
+  /** Selected item / Выбранный элемент */
+  const item = computed(() => find(index.value))
+
+  /**
+   * Find item by index.
+   *
+   * Поиск элемента по индексу.
+   * @param index index / индекс
+   */
+  const find = (index: string): T | undefined => {
+    return list.value?.find(item => item.value === index)
+  }
+
+  /**
+   * Transition to the element.
+   *
+   * Переход к элементу.
+   * @param name element name / имя элемента
+   */
+  const to = (name?: string): void => {
+    if (
+      name
+      && name !== index.value
+      && find(name)
+    ) {
+      index.value = name
+      RouterItemRef.push({ name })
+    }
+  }
 
   return {
     /** Current element/ Текущий элемент */
@@ -43,7 +71,10 @@ export const useRouterList = <T extends ListDataBasic>(
         return forEach(
           list.value,
           (item) => {
-            if (!item.to) {
+            if (
+              hasTo
+              && !('to' in item)
+            ) {
               return {
                 ...item,
                 to: { name: item.value }
@@ -58,16 +89,7 @@ export const useRouterList = <T extends ListDataBasic>(
       return []
     }),
 
-    /**
-     * Transition to the element.
-     *
-     * Переход к элементу.
-     * @param name element name / имя элемента
-     */
-    to(name: string) {
-      index.value = name
-      router.push({ name }).then()
-    },
+    to,
 
     /**
      * Transition to the main element.
@@ -75,11 +97,7 @@ export const useRouterList = <T extends ListDataBasic>(
      * Переход к главному элементу.
      */
     toMain() {
-      const name = list.value?.[0]?.value
-
-      if (name) {
-        router.push({ name }).then()
-      }
+      to(list.value?.[0]?.value)
     }
   }
 }

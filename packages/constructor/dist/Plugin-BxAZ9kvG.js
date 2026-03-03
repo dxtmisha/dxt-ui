@@ -2,6 +2,7 @@ var E = Object.defineProperty;
 var L = (a, t, e) => t in a ? E(a, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : a[t] = e;
 var c = (a, t, e) => L(a, typeof t != "symbol" ? t + "" : t, e);
 import { toKebabCase as R, toCamelCase as $ } from "@dxtmisha/functional-basic";
+import { isFilled as _ } from "@dxtmisha/functional";
 class C {
   /**
    * Checks if the id is a user’s file.
@@ -49,10 +50,10 @@ class C {
     return t === "development";
   }
 }
-var _ = 44, N = 59, y = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", x = new Uint8Array(64), I = new Uint8Array(128);
+var N = 44, I = 59, y = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", x = new Uint8Array(64), O = new Uint8Array(128);
 for (let a = 0; a < y.length; a++) {
   const t = y.charCodeAt(a);
-  x[a] = t, I[t] = a;
+  x[a] = t, O[t] = a;
 }
 function d(a, t, e) {
   let i = t - e;
@@ -74,7 +75,7 @@ var S = 1024 * 16, k = typeof TextDecoder != "undefined" ? /* @__PURE__ */ new T
       t += String.fromCharCode(a[e]);
     return t;
   }
-}, O = class {
+}, P = class {
   constructor() {
     this.pos = 0, this.out = "", this.buffer = new Uint8Array(S);
   }
@@ -87,16 +88,16 @@ var S = 1024 * 16, k = typeof TextDecoder != "undefined" ? /* @__PURE__ */ new T
     return e > 0 ? t + k.decode(a.subarray(0, e)) : t;
   }
 };
-function P(a) {
-  const t = new O();
+function M(a) {
+  const t = new P();
   let e = 0, i = 0, n = 0, s = 0;
   for (let r = 0; r < a.length; r++) {
     const o = a[r];
-    if (r > 0 && t.write(N), o.length === 0) continue;
+    if (r > 0 && t.write(I), o.length === 0) continue;
     let h = 0;
     for (let l = 0; l < o.length; l++) {
       const u = o[l];
-      l > 0 && t.write(_), h = d(t, u[0], h), u.length !== 1 && (e = d(t, u[1], e), i = d(t, u[2], i), n = d(t, u[3], n), u.length !== 4 && (s = d(t, u[4], s)));
+      l > 0 && t.write(N), h = d(t, u[0], h), u.length !== 1 && (e = d(t, u[1], e), i = d(t, u[2], i), n = d(t, u[3], n), u.length !== 4 && (s = d(t, u[4], s)));
     }
   }
   return t.flush();
@@ -179,24 +180,24 @@ class p {
     } else if (this.edit("", void 0, !0), this.outro = this.outro.replace(t, ""), this.outro.length) return !0;
   }
 }
-function M() {
+function A() {
   return typeof globalThis != "undefined" && typeof globalThis.btoa == "function" ? (a) => globalThis.btoa(unescape(encodeURIComponent(a))) : typeof Buffer == "function" ? (a) => Buffer.from(a, "utf-8").toString("base64") : () => {
     throw new Error("Unsupported environment: `window.btoa` or `Buffer` should be supported.");
   };
 }
-const A = /* @__PURE__ */ M();
-class j {
+const j = /* @__PURE__ */ A();
+class T {
   constructor(t) {
-    this.version = 3, this.file = t.file, this.sources = t.sources, this.sourcesContent = t.sourcesContent, this.names = t.names, this.mappings = P(t.mappings), typeof t.x_google_ignoreList != "undefined" && (this.x_google_ignoreList = t.x_google_ignoreList), typeof t.debugId != "undefined" && (this.debugId = t.debugId);
+    this.version = 3, this.file = t.file, this.sources = t.sources, this.sourcesContent = t.sourcesContent, this.names = t.names, this.mappings = M(t.mappings), typeof t.x_google_ignoreList != "undefined" && (this.x_google_ignoreList = t.x_google_ignoreList), typeof t.debugId != "undefined" && (this.debugId = t.debugId);
   }
   toString() {
     return JSON.stringify(this);
   }
   toUrl() {
-    return "data:application/json;charset=utf-8;base64," + A(this.toString());
+    return "data:application/json;charset=utf-8;base64," + j(this.toString());
   }
 }
-function T(a) {
+function B(a) {
   const t = a.split(`
 `), e = t.filter((s) => /^\t+/.test(s)), i = t.filter((s) => /^ {2,}/.test(s));
   if (e.length === 0 && i.length === 0)
@@ -219,9 +220,9 @@ function D(a, t) {
   }
   return e.concat(i).join("/");
 }
-const B = Object.prototype.toString;
-function U(a) {
-  return B.call(a) === "[object Object]";
+const U = Object.prototype.toString;
+function V(a) {
+  return U.call(a) === "[object Object]";
 }
 function v(a) {
   const t = a.split(`
@@ -238,8 +239,8 @@ function v(a) {
     return { line: o, column: h };
   };
 }
-const V = /\w/;
-class z {
+const z = /\w/;
+class F {
   constructor(t) {
     this.hires = t, this.generatedCodeLine = 0, this.generatedCodeColumn = 0, this.raw = [], this.rawSegments = this.raw[this.generatedCodeLine] = [], this.pending = null;
   }
@@ -267,7 +268,7 @@ class z {
       else {
         if (this.hires || o || s.has(r)) {
           const l = [this.generatedCodeColumn, t, n.line, n.column];
-          this.hires === "boundary" ? V.test(i[r]) ? h || (this.rawSegments.push(l), h = !0) : (this.rawSegments.push(l), h = !1) : this.rawSegments.push(l);
+          this.hires === "boundary" ? z.test(i[r]) ? h || (this.rawSegments.push(l), h = !0) : (this.rawSegments.push(l), h = !1) : this.rawSegments.push(l);
         }
         n.column += 1, this.generatedCodeColumn += 1, o = !1;
       }
@@ -345,7 +346,7 @@ class b {
   }
   generateDecodedMap(t) {
     t = t || {};
-    const e = 0, i = Object.keys(this.storedNames), n = new z(t.hires), s = v(this.original);
+    const e = 0, i = Object.keys(this.storedNames), n = new F(t.hires), s = v(this.original);
     return this.intro && n.advance(this.intro), this.firstChunk.eachNext((r) => {
       const o = s(r.start);
       r.intro.length && n.advance(r.intro), r.edited ? n.addEdit(
@@ -366,10 +367,10 @@ class b {
     };
   }
   generateMap(t) {
-    return new j(this.generateDecodedMap(t));
+    return new T(this.generateDecodedMap(t));
   }
   _ensureindentStr() {
-    this.indentStr === void 0 && (this.indentStr = T(this.original));
+    this.indentStr === void 0 && (this.indentStr = B(this.original));
   }
   _getRawIndentString() {
     return this._ensureindentStr(), this.indentStr;
@@ -379,7 +380,7 @@ class b {
   }
   indent(t, e) {
     const i = /^[^\r\n]/gm;
-    if (U(t) && (e = t, t = void 0), t === void 0 && (this._ensureindentStr(), t = this.indentStr || "	"), t === "") return this;
+    if (V(t) && (e = t, t = void 0), t === void 0 && (this._ensureindentStr(), t = this.indentStr || "	"), t === "") return this;
     e = e || {};
     const n = {};
     e.exclude && (typeof e.exclude[0] == "number" ? [e.exclude] : e.exclude).forEach((u) => {
@@ -824,7 +825,7 @@ ${t}<\/script>${this.newCode}`, this;
     return this.newCode = this.newCode.replace(t, e), this;
   }
 }
-const F = [
+const q = [
   /* Flex */
   "flex-position",
   "flex-dynamic",
@@ -896,7 +897,7 @@ const F = [
   "scale",
   "rotate"
 ];
-class q {
+class H {
   /**
    * Constructor
    * @param design design name / название дизайна
@@ -952,7 +953,7 @@ class q {
   getComponents(t) {
     const e = t.match(this.componentsReg), i = [];
     return e && e.forEach((n) => {
-      const s = this.findComponent(n);
+      const s = this.findComponent(n.trim());
       s && !i.find((r) => r.name === s.name) && !t.match(`${this.getPackageName()}/${s.name}`) && i.push(s);
     }), i;
   }
@@ -980,7 +981,7 @@ class q {
    */
   findComponent(t) {
     return this.componentsList.find(
-      (e) => e.reg.test(t)
+      (e) => e.name === t || !!t.match(new RegExp(e.reg, "i"))
     );
   }
   /**
@@ -990,12 +991,12 @@ class q {
    */
   initStyleModification() {
     const t = {};
-    return F.forEach((e) => {
+    return q.forEach((e) => {
       t[R(e)] = $(e);
     }), t;
   }
 }
-class H {
+class K {
   /**
    * Constructor
    * @param packageName package name / название пакета
@@ -1019,7 +1020,7 @@ class H {
    * Возвращает код подключения стиля.
    */
   importStyle() {
-    return this.makeImport("style.css"), this.makeImport("style/ui.scss"), this;
+    return this.makeImport("style.css"), this;
   }
   /**
    * Creates an import line.
@@ -1032,7 +1033,7 @@ class H {
     this.code.includes(e) || (this.code = `import '${e}';${this.code}`);
   }
 }
-class K {
+class W {
   /**
    * Constructor
    * @param code file content / содержимое файла
@@ -1049,7 +1050,7 @@ class K {
   make() {
     if (this.code.isVue() && this.pluginData.hasComponent(this.code.getCode())) {
       const t = this.pluginData.getComponents(this.code.getCode());
-      if (t) {
+      if (t && t.length > 0) {
         const e = t.map((i) => this.importComponent(i)).join(`\r
 `);
         this.code.addAfterScript(e);
@@ -1075,7 +1076,7 @@ class K {
     return `import { ${t.name} } from'${this.getPath(t)}';`;
   }
 }
-class W {
+class Y {
   /**
    * Constructor
    * @param code file content / содержимое файла
@@ -1098,7 +1099,7 @@ class W {
    * Проверяет, нужно ли преобразовывать этот файл.
    */
   is() {
-    return this.code.isScss() && !this.code.has(this.getIgnoreComment());
+    return this.code.isScss() && _(this.code.getCode()) && !this.code.has(this.getIgnoreComment());
   }
   /**
    * Returns the comment for ignoring the file.
@@ -1176,7 +1177,7 @@ class W {
     ), this;
   }
 }
-class Q {
+class Z {
   /**
    * Constructor
    * @param design design name / название дизайна
@@ -1191,7 +1192,7 @@ class Q {
     c(this, "data");
     c(this, "first", !0);
     c(this, "mode", "production");
-    this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = n, this.componentsList = s, this.name = r, this.options = o, this.data = new q(
+    this.design = t, this.packageName = e, this.componentsReg = i, this.styleVarsReg = n, this.componentsList = s, this.name = r, this.options = o, this.data = new H(
       t,
       e,
       i,
@@ -1253,7 +1254,7 @@ class Q {
    * @param code file content / содержимое файла
    */
   initMain(t) {
-    const e = new H(this.packageName, t);
+    const e = new K(this.packageName, t);
     return e.importStyle(), e.get();
   }
   /**
@@ -1263,7 +1264,7 @@ class Q {
    * @param code file content / содержимое файла
    */
   makeComponents(t) {
-    return this.isComponents() && new K(t, this.data).make(), this;
+    return this.isComponents() && new W(t, this.data).make(), this;
   }
   /**
    * Initializes styles.
@@ -1272,15 +1273,15 @@ class Q {
    * @param code file content / содержимое файла
    */
   initStyles(t) {
-    return this.isStyles() && new W(t, this.data).make(), this;
+    return this.isStyles() && new Y(t, this.data).make(), this;
   }
 }
 export {
-  Q as P,
+  Z as P,
   J as a,
-  K as b,
-  q as c,
-  H as d,
-  W as e,
+  W as b,
+  H as c,
+  K as d,
+  Y as e,
   C as f
 };

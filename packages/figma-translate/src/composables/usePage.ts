@@ -28,7 +28,7 @@ const item = executeUse(() => {
     () => []
   )
 
-  return useRouterList(list)
+  return useRouterList(list, undefined, false)
 })
 
 export const usePage = () => item()

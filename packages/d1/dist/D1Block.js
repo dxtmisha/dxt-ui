@@ -1,6 +1,6 @@
 import { defineComponent as p, computed as o, openBlock as d, createBlock as m, unref as B, mergeDefaults as k } from "vue";
 import "@dxtmisha/functional";
-import { T as u } from "./BlockDesign-B_QkwFRg-bwDWjacW.js";
+import { T as u } from "./BlockDesign-DHCkcwP1-lQKCPRWd.js";
 import { D as f } from "./index-DyLnu_cH.js";
 const y = {
   tag: "div",

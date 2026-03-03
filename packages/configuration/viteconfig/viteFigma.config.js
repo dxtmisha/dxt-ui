@@ -9,6 +9,12 @@ export const viteFigma = (
   dirname,
   plugins = []
 ) => defineConfig(({ mode }) => {
+  if (mode === 'development') {
+    return {
+      plugins: [vue(), ...plugins]
+    }
+  }
+
   switch (mode) {
     case 'ui':
       return {

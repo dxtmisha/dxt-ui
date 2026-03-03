@@ -2,19 +2,15 @@
 import { usePage } from '../composables/usePage'
 
 const {
+  selected,
   list
 } = usePage()
 </script>
 
 <template>
   <div class="translate-tools">
-    {{ list }}
-    <D1TabsNavigation :list="list"/>
+    <D1TabsNavigation :list="list" v-model:selected="selected"/>
   </div>
 </template>
 
-<style lang="scss">
-.translate-tools {
-
-}
-</style>
+<style lang="scss"></style>

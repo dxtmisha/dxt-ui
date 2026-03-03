@@ -1,0 +1,22 @@
+<script setup lang="ts">
+
+</script>
+
+<template>
+  <D1Section class="translate-page">
+    <slot/>
+  </D1Section>
+</template>
+
+<style lang="scss">
+@use '@dxtmisha/d1/style/ui-properties.scss' as ui;
+
+.translate-page {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--d1-grid-gapY);
+
+  @include ui.marginX(var(--d1-grid-paddingX));
+  @include ui.marginY(var(--d1-grid-paddingY));
+}
+</style>

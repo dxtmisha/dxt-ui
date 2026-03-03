@@ -1,5 +1,6 @@
 import { PluginData } from './PluginData'
 import { PluginCode } from './PluginCode'
+import { isFilled } from '@dxtmisha/functional'
 
 /**
  * Class for transforming into non-standard style properties.
@@ -42,6 +43,7 @@ export class PluginStyle {
    */
   protected is(): boolean {
     return this.code.isScss()
+      && isFilled(this.code.getCode())
       && !this.code.has(this.getIgnoreComment())
   }
 

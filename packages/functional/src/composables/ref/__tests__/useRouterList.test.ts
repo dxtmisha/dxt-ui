@@ -1,17 +1,15 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
 
 import { useRouterList } from '../useRouterList'
+import { RouterItemRef } from '../../../classes/ref/RouterItemRef'
 
-const push = vi.fn(() => Promise.resolve())
-
-vi.mock('vue-router', () => ({
-  useRouter: () => ({
-    push
-  })
-}))
+const push = vi.spyOn(RouterItemRef, 'push').mockImplementation(() => Promise.resolve() as any)
 
 describe('useRouterList', () => {
+  beforeEach(() => {
+    push.mockClear()
+  })
   const items = [
     { value: 'home', label: 'Home' },
     { value: 'about', label: 'About' }
@@ -55,7 +53,7 @@ describe('useRouterList', () => {
 
   it('should return a list with "to" property', () => {
     const list = ref(items)
-    const { list: computedList } = useRouterList(list)
+    const { list: computedList } = useRouterList(list, undefined, true)
 
     expect(computedList.value[0]).toHaveProperty('to')
     expect(computedList.value[0]?.to).toEqual({ name: 'home' })

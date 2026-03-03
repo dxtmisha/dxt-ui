@@ -210,12 +210,16 @@ export class BlockDesign<
       ...this.item.description.render()
     ]
 
-    return [
-      h('div', {
-        key: 'body',
-        class: this.classes?.value.body
-      }, children)
-    ]
+    if (children.length > 0) {
+      return [
+        h('div', {
+          key: 'body',
+          class: this.classes?.value.body
+        }, children)
+      ]
+    }
+
+    return []
   }
 
   /**

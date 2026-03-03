@@ -32,7 +32,10 @@ export class PluginComponents {
     ) {
       const list = this.pluginData.getComponents(this.code.getCode())
 
-      if (list) {
+      if (
+        list
+        && list.length > 0
+      ) {
         const imports = list.map(item => this.importComponent(item)).join('\r\n')
 
         this.code.addAfterScript(imports)

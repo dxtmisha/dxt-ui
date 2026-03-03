@@ -82,7 +82,7 @@ export class PluginData {
 
     if (components) {
       components.forEach((component) => {
-        const info = this.findComponent(component)
+        const info = this.findComponent(component.trim())
 
         if (
           info
@@ -123,7 +123,10 @@ export class PluginData {
    */
   protected findComponent(component: string): PluginComponentItem | undefined {
     return this.componentsList.find(
-      item => item.reg.test(component)
+      item => item.name === component
+        || Boolean(
+          component.match(new RegExp(item.reg, 'i'))
+        )
     )
   }
 
