@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/getOptions - Get request options'/>
+
+# `getOptions`
+
+Returns the request options. If the provided option is a string, it returns an object with the `method` field equal to that string. If an object is passed, it returns the object itself. If no parameter is provided, it returns an empty object.
+
+**Parameters:**
+- `options?: ApiOptions` — The request options or a string specifying the method.
+
+**Returns:**
+`RefOrNormal<ApiFetch>` — Options for the `ApiFetch` request.
+
+```typescript
+import { getOptions } from '@dxtmisha/functional'
+
+console.log(getOptions('POST')) // { method: 'POST' }
+console.log(getOptions({ method: 'GET', cache: true })) // { method: 'GET', cache: true }
+console.log(getOptions()) // {}
+```

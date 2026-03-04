@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/getOptions - Получение опций запроса'/>
+
+# `getOptions`
+
+Возвращает опции запроса. Если переданная опция является строкой, возвращается объект с полем `method`, равным этой строке. Если передан объект, возвращается он сам. Если параметр не передан, возвращается пустой объект.
+
+**Параметры:**
+- `options?: ApiOptions` — Опции запроса или строка с методом.
+
+**Возвращает:**
+`RefOrNormal<ApiFetch>` — Опции для запроса `ApiFetch`.
+
+```typescript
+import { getOptions } from '@dxtmisha/functional'
+
+console.log(getOptions('POST')) // { method: 'POST' }
+console.log(getOptions({ method: 'GET', cache: true })) // { method: 'GET', cache: true }
+console.log(getOptions()) // {}
+```

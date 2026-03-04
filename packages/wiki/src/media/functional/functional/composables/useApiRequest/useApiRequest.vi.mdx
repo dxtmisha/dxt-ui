@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useApiRequest - Thực hiện các yêu cầu'/>
+
+# `useApiRequest`
+
+Trả về một đối tượng với trạng thái tải và phương thức `send` để thực hiện các yêu cầu API.
+
+**Tham số:**
+- `path?: RefOrNormal<string | undefined>` — Đường dẫn đến endpoint API (có thể phản ứng).
+- `method: ApiMethodItem = ApiMethodItem.post` — Phương thức HTTP cho yêu cầu.
+- `action?: (data: Return | undefined) => Promise<void> | void` — Hành động (callback) thực hiện sau khi yêu cầu hoàn tất thành công.
+- `transformation?: (data: T) => Return` — Hàm chuyển đổi dữ liệu phản hồi từ máy chủ trước khi trả về hoặc truyền vào `action`.
+- `toData: boolean = true` — Việc trích xuất trường `data` từ phản hồi hay không.
+- `options?: ApiOptions` — Các tùy chọn bổ sung cho yêu cầu (đối tượng tham số `ApiFetch`).
+
+**Giá trị trả về:**
+Một đối tượng với các thuộc tính sau:
+- `loading` — Trạng thái tải phản ứng (`true` trong khi chờ phản hồi).
+- `send(request?: Request): Promise<Return | undefined>` — Phương thức bất đồng bộ để gửi yêu cầu. Nó quản lý trạng thái tải, áp dụng biến đổi hàm, thực thi callback `action` và bắt lỗi an toàn.
+
+```typescript
+import { useApiRequest } from '@dxtmisha/functional'
+import { ApiMethodItem } from '@dxtmisha/functional-basic'
+
+const { loading, send } = useApiRequest(
+  '/api/submit',
+  ApiMethodItem.post,
+  (data) => console.log('Hành động hoàn tất:', data),
+  (raw) => ({ ...raw, processed: true }),
+  true,
+  { cache: false }
+)
+
+const handleSubmit = async () => {
+  const result = await send({ name: 'User' })
+  console.log('Kết quả cuối cùng:', result)
+}
+```

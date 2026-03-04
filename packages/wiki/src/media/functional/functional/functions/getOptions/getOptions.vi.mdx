@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/getOptions - Lấy tùy chọn yêu cầu'/>
+
+# `getOptions`
+
+Trả về các tùy chọn yêu cầu. Nếu tùy chọn được cung cấp là một chuỗi, nó trả về một đối tượng với trường `method` bằng với chuỗi đó. Nếu một đối tượng được truyền vào, nó sẽ trả về chính đối tượng đó. Nếu không có tham số nào được truyền, nó trả về một đối tượng rỗng.
+
+**Tham số:**
+- `options?: ApiOptions` — Tùy chọn yêu cầu hoặc một chuỗi xác định phương thức.
+
+**Trả về:**
+`RefOrNormal<ApiFetch>` — Tùy chọn cho yêu cầu `ApiFetch`.
+
+```typescript
+import { getOptions } from '@dxtmisha/functional'
+
+console.log(getOptions('POST')) // { method: 'POST' }
+console.log(getOptions({ method: 'GET', cache: true })) // { method: 'GET', cache: true }
+console.log(getOptions()) // {}
+```

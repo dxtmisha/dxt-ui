@@ -8,37 +8,14 @@ import {
   watch,
   type WatchHandle
 } from 'vue'
-import { Api, type ApiData, type ApiFetch, ApiMethodItem } from '@dxtmisha/functional-basic'
+import { Api, type ApiData } from '@dxtmisha/functional-basic'
 
 import { getRef } from '../../functions/ref/getRef'
+import { getOptions } from '../../functions/getOptions'
 import { toRefItem } from '../../functions/ref/toRefItem'
 
+import type { ApiOptions } from '../../types/apiTypes'
 import type { RefOrNormal, RefType } from '../../types/refTypes'
-
-/**
- * Options for api requests.
- *
- * Опции для запросов api.
- */
-type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>
-
-/**
- * Get request options.
- *
- * Возвращает опции запроса.
- * @param options options / параметры
- */
-const getOptions = (options?: ApiOptions): RefOrNormal<ApiFetch> => {
-  if (typeof options === 'string') {
-    return { method: options }
-  }
-
-  if (options) {
-    return options
-  }
-
-  return {} as ApiFetch
-}
 
 /**
  * Use api ref return type.
@@ -149,7 +126,7 @@ export function useApiRef<R, T = any>(
           }
         }
       } catch (error) {
-        console.error('useApiRef: error', error)
+        console.error('useApiRef: error', pathValue, error)
         item.value = undefined
       }
 

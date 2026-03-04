@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useApiRequest - Выполнение запросов'/>
+
+# `useApiRequest`
+
+Возвращает объект с состоянием загрузки и методом `send` для выполнения запросов к API.
+
+**Параметры:**
+- `path?: RefOrNormal<string | undefined>` — Путь к endpoint API (может быть реактивным).
+- `method: ApiMethodItem = ApiMethodItem.post` — HTTP метод для запроса.
+- `action?: (data: Return | undefined) => Promise<void> | void` — Действие (коллбэк), выполняемое после успешного завершения запроса.
+- `transformation?: (data: T) => Return` — Функция трансформации ответа от сервера перед возвращением или передачей в `action`.
+- `toData: boolean = true` — Извлекать ли поле `data` из ответа.
+- `options?: ApiOptions` — Дополнительные опции запроса (объект параметров `ApiFetch`).
+
+**Возвращает:**
+Объект со следующими свойствами:
+- `loading` — Реактивное состояние загрузки (`true` пока идет ожидание ответа).
+- `send(request?: Request): Promise<Return | undefined>` — Асинхронный метод для отправки запроса. Он управляет состоянием загрузки, применяет трансформацию, выполняет коллбэк `action` и безопасно перехватывает ошибки.
+
+```typescript
+import { useApiRequest } from '@dxtmisha/functional'
+import { ApiMethodItem } from '@dxtmisha/functional-basic'
+
+const { loading, send } = useApiRequest(
+  '/api/submit',
+  ApiMethodItem.post,
+  (data) => console.log('Действие завершено:', data),
+  (raw) => ({ ...raw, processed: true }),
+  true,
+  { cache: false }
+)
+
+const handleSubmit = async () => {
+  const result = await send({ name: 'User' })
+  console.log('Итоговый результат:', result)
+}
+```
