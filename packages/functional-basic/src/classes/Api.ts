@@ -1,5 +1,6 @@
 import { copyObjectLite } from '../functions/copyObjectLite'
 import { getRequestString } from '../functions/getRequestString'
+import { isArray } from '../functions/isArray'
 import { isFilled } from '../functions/isFilled'
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { isString } from '../functions/isString'
@@ -98,7 +99,11 @@ export class Api {
         return request
       }
 
-      return JSON.stringify(request)
+      try {
+        return JSON.stringify(request)
+      } catch (e) {
+        throw e
+      }
     }
 
     return undefined
@@ -166,7 +171,7 @@ export class Api {
    * Изменить функцию перед запросом.
    * @param callback function for call/ функция для вызова
    */
-  static setPreparation(callback: () => Promise<void>): Api {
+  static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): Api {
     this.preparation.set(callback)
     return Api
   }
@@ -177,7 +182,7 @@ export class Api {
    * Изменить функцию после запроса.
    * @param callback function for call/ функция для вызова
    */
-  static setEnd(callback: (query: Response) => Promise<ApiPreparationEnd>): Api {
+  static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): Api {
     this.preparation.setEnd(callback)
     return Api
   }
@@ -267,20 +272,19 @@ export class Api {
       return emulator
     }
 
+    const status = new ApiStatus()
     let data: ApiData<T> = {} as ApiData<T>
 
     Loading.show()
 
     try {
-      await this.preparation.make(globalPreparation)
+      await this.preparation.make(globalPreparation, apiFetch)
 
       const query = await this.makeQuery(apiFetch)
-      const end = await this.preparation.makeEnd(globalEnd, query)
+      const end = await this.preparation.makeEnd(globalEnd, query, apiFetch)
 
-      this.status.setStatus(
-        query.status,
-        query.statusText
-      )
+      status.setStatus(query.status, query.statusText)
+      this.status.setStatus(query.status, query.statusText)
 
       if (end?.reset) {
         Loading.hide()
@@ -297,12 +301,22 @@ export class Api {
         console.error('Api: ', e)
       }
 
+      status.setError(String(e))
       this.status.setError(String(e))
+
+      Loading.hide()
+      throw e
     }
 
     Loading.hide()
 
-    return this.makeData(data, toData)
+    status.setLastResponse(data)
+    this.status.setLastResponse(data)
+
+    return this.makeStatus(
+      this.makeData(data, toData),
+      status
+    )
   }
 
   /**
@@ -317,7 +331,7 @@ export class Api {
     query: Response,
     queryReturn: ApiFetch['queryReturn'],
     end: ApiPreparationEnd
-  ) {
+  ): Promise<ApiData> {
     if (queryReturn) {
       return await queryReturn(query)
     }
@@ -330,7 +344,7 @@ export class Api {
       return await query.json()
     }
 
-    return { data: await query.text() } as any
+    return { data: await query.text() }
   }
 
   /**
@@ -348,7 +362,8 @@ export class Api {
       method = ApiMethodItem.get,
       headers = {},
       type = 'application/json;charset=UTF-8',
-      init = {}
+      init = {},
+      controller = undefined
     } = apiFetch
 
     const pathFinal = pathFull ?? this.getUrl(path, api)
@@ -361,6 +376,10 @@ export class Api {
 
     if (fetchHeaders) {
       fetchInit.headers = fetchHeaders
+    }
+
+    if (controller) {
+      fetchInit.signal = controller.signal
     }
 
     return await fetch(url, fetchInit)
@@ -376,26 +395,65 @@ export class Api {
   protected static makeData<T>(
     data: ApiData<T>,
     toData: boolean
-  ): T {
-    this.status.setLastResponse(data)
+  ): ApiData<T> {
+    if (
+      !toData
+      || !data
+      || !isObjectNotArray(data)
+      || !('data' in data)
+    ) {
+      return data
+    }
+
+    if (isArray(data.data)) {
+      return data.data
+    }
+
+    const item: ApiData<T> = copyObjectLite(data.data)
 
     if (
-      data
-      && toData
-      && isObjectNotArray(data)
-      && 'data' in data
+      'success' in data
+      && !('success' in item)
     ) {
-      if (isObjectNotArray(data.data)) {
-        const item: ApiData<T> = copyObjectLite(data.data)
+      item.success = data.success
+    }
 
-        if ('success' in data) {
-          item.success = data.success
-        }
+    if (
+      'status' in data
+      && !('status' in item)
+    ) {
+      item.status = data.status
+    }
 
-        return item
+    if (
+      'message' in data
+      && !('message' in item)
+    ) {
+      item.message = data.message
+    }
+
+    return item
+  }
+
+  /**
+   * Appends the status object to the response data if possible.
+   *
+   * Добавляет объект статуса к данным ответа, если это возможно.
+   * @param data response data/ данные ответа
+   * @param status status object/ объект статуса
+   */
+  protected static makeStatus<T>(
+    data: ApiData<T>,
+    status: ApiStatus
+  ): ApiData<T> {
+    if (
+      data
+      && isObjectNotArray(data)
+    ) {
+      return {
+        ...data,
+        statusObject: status.get()
       }
-
-      return data.data as T
     }
 
     return data

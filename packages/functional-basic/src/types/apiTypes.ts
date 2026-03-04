@@ -34,6 +34,9 @@ export enum ApiMethodItem {
  */
 export type ApiMethod = string & ApiMethodItem
 
+/** API status type/ Тип статуса API */
+export type ApiStatusType = 'success' | 'error' | 'warning' | 'info'
+
 /**
  * Options for making API requests/ Опции для выполнения API-запросов
  */
@@ -85,6 +88,9 @@ export type ApiFetch = {
 
   /** Additional fetch() options/ Дополнительные опции fetch() */
   init?: RequestInit
+
+  /** AbortController for canceling the request/ AbortController для отмены запроса */
+  controller?: AbortController
 }
 
 /**
@@ -110,14 +116,20 @@ export type ApiResponseItem = {
 /**
  * Shape of API response data wrapper/ Структура обёртки данных ответа API
  */
-export type ApiData<T>
+export type ApiData<T = any>
   = T
-    & {
-      /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
-      data?: T
-      /** Success flag/ Флаг успешности */
-      success?: boolean
-    }
+  & {
+    /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
+    data?: T
+    /** Success flag/ Флаг успешности */
+    success?: boolean
+    /** Status/ Статус */
+    status?: ApiStatusType
+    /** Message/ Сообщение */
+    message?: string
+    /** Status object/ Объект статуса */
+    statusObject?: ApiStatusItem
+  }
 
 /**
  * Result of global preparation/end hooks/ Результат глобальных хуков
@@ -135,9 +147,16 @@ export type ApiPreparationEnd = {
 export type ApiDefaultValue = Record<string, any>
 
 export type ApiStatusItem = {
+  /** HTTP status code/ Код статуса HTTP */
   status?: number
+  /** HTTP status text/ Текст статуса HTTP */
   statusText?: string
+  /** Error message/ Сообщение об ошибке */
   error?: string
+  /** Last response/ Последний ответ */
   lastResponse?: any
+  /** Last status/ Последний статус */
+  lastStatus?: ApiStatusType
+  /** Last message/ Последнее сообщение */
   lastMessage?: string
 }

@@ -1,0 +1,55 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useApiRef - Làm việc với các yêu cầu API'/>
+
+# `useApiRef`
+
+Trả về dữ liệu và các phương thức để thuận tiện làm việc với các yêu cầu API. Cung cấp các trạng thái tải phản ứng, bộ nhớ đệm và khả năng khởi động lại.
+
+**Tham số:**
+- `path?: RefOrNormal<string | undefined>` — đường dẫn đến yêu cầu (có thể mang tính phản ứng).
+- `options?: ApiOptions` — dữ liệu cho yêu cầu (một đối tượng `ApiFetch` hoặc một chuỗi chứa tên phương thức).
+- `reactivity?: boolean` — có cho phép tính phản ứng hay không: tự động khởi động lại yêu cầu khi `path`, `options` hoặc các `conditions` toàn cục thay đổi (mặc định là `true`).
+- `conditions?: RefType<boolean>` — các điều kiện cục bộ để thực thi yêu cầu (nếu `false`, yêu cầu sẽ không được thực thi).
+- `transformation?: (data: T) => R` — một hàm để chuyển đổi phản hồi từ máy chủ trước khi ghi vào `data`.
+- `unmounted?: boolean` — có xóa dữ liệu khỏi bộ nhớ đệm hay không (gán `data` thành null) khi thành phần bị hủy (unmounted).
+
+**Trả về (`UseApiRef<R>`):**
+Một đối tượng với các thuộc tính phản ứng và phương thức điều khiển:
+- `data` — tham chiếu (`ref`) đến dữ liệu đã tải hoặc `undefined` nếu việc tải chưa hoàn tất.
+- `isStarting` — cờ báo bắt đầu yêu cầu (`true` nếu chưa có dữ liệu).
+- `loading` — trạng thái tải hiện tại của yêu cầu (`true` trong khi chờ phản hồi).
+- `reading` — cờ báo đang đọc chủ động.
+- `reset()` — phương thức để tải lại dữ liệu.
+- `stop()` — phương thức để dừng yêu cầu.
+
+**Cài đặt toàn cục:**
+Bạn có thể xác định các điều kiện toàn cục cho tất cả các `useApiRef` bằng cách sử dụng hàm `setApiRefGlobalConditions(conditions)`.
+
+```typescript
+import { ref } from 'vue'
+import { useApiRef } from '@dxtmisha/functional'
+
+const userId = ref('123')
+
+const {
+  data: user,
+  loading,
+  reset,
+  stop
+} = useApiRef(
+  () => `/api/users/${userId.value}`,
+  { method: 'GET' },
+  true // Phản ứng và cập nhật dữ liệu khi userId thay đổi
+)
+
+// Bắt buộc tải lại
+const refreshData = async () => {
+  await reset()
+}
+
+// Dừng yêu cầu (ví dụ: khi rời khỏi trang)
+const abortRequest = () => {
+  stop()
+}
+```

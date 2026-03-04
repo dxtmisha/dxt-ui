@@ -1,5 +1,5 @@
 import { isObjectNotArray } from '../functions/isObjectNotArray'
-import type { ApiStatusItem } from '../types/apiTypes'
+import type { ApiStatusItem, ApiStatusType } from '../types/apiTypes'
 
 /**
  * API status class
@@ -34,6 +34,15 @@ export class ApiStatus {
    */
   getStatusText(): string | undefined {
     return this.get()?.statusText
+  }
+
+  /**
+   * Returns the last status type.
+   *
+   * Возвращает последний тип статуса.
+   */
+  getStatusType(): ApiStatusType | undefined {
+    return this.get()?.lastStatus
   }
 
   /**
@@ -133,12 +142,28 @@ export class ApiStatus {
     if (
       response
       && isObjectNotArray(response)
-      && ('message' in response)
     ) {
-      this.setLastMessage(String(response.message))
+      if ('message' in response) {
+        this.setLastMessage(String(response.message))
+      }
+
+      if ('status' in response) {
+        this.setLastStatus(String(response.status) as ApiStatusType)
+      }
     }
 
     this.set({ lastResponse: response })
+    return this
+  }
+
+  /**
+   * Sets the last status.
+   *
+   * Устанавливает последний статус.
+   * @param status status/ статус
+   */
+  setLastStatus(status?: ApiStatusType): this {
+    this.set({ lastStatus: status })
     return this
   }
 

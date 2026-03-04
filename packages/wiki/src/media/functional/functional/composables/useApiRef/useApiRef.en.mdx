@@ -1,0 +1,55 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useApiRef - Working with requests'/>
+
+# `useApiRef`
+
+Returns data and methods for convenient work with API requests. Provides reactive loading states, caching, and resetting.
+
+**Parameters:**
+- `path?: RefOrNormal<string | undefined>` — path to the request (can be reactive).
+- `options?: ApiOptions` — data for the request (an `ApiFetch` object or a string with the method name).
+- `reactivity?: boolean` — whether to enable reactivity: automatically restart the request when `path`, `options`, or global `conditions` change (default is `true`).
+- `conditions?: RefType<boolean>` — local conditions for executing the request (if `false`, the request is not executed).
+- `transformation?: (data: T) => R` — a function to transform the response from the server before writing it to `data`.
+- `unmounted?: boolean` — whether to clear data from the cache (nullify `data`) when the component is unmounted.
+
+**Returns (`UseApiRef<R>`):**
+An object with reactive properties and control methods:
+- `data` — reference (`ref`) to the loaded data or `undefined` if loading is not yet complete.
+- `isStarting` — request start flag (`true` if there is no data yet).
+- `loading` — current loading state of the request (`true` while waiting for the response).
+- `reading` — active reading flag.
+- `reset()` — method for reloading data.
+- `stop()` — method for stopping the request.
+
+**Global conditions:**
+You can define global conditions for all `useApiRef` using the `setApiRefGlobalConditions(conditions)` function.
+
+```typescript
+import { ref } from 'vue'
+import { useApiRef } from '@dxtmisha/functional'
+
+const userId = ref('123')
+
+const {
+  data: user,
+  loading,
+  reset,
+  stop
+} = useApiRef(
+  () => `/api/users/${userId.value}`,
+  { method: 'GET' },
+  true // Reactively update data when userId changes
+)
+
+// Force reload
+const refreshData = async () => {
+  await reset()
+}
+
+// Stop the request (e.g., when leaving the page)
+const abortRequest = () => {
+  stop()
+}
+```

@@ -1,0 +1,55 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Composables/useApiRef - Работа с запросами'/>
+
+# `useApiRef`
+
+Возвращает данные и методы для удобной работы с API запросами. Предоставляет реактивные состояния загрузки, кэширования и перезапуска.
+
+**Параметры:**
+- `path?: RefOrNormal<string | undefined>` — путь к запросу (может быть реактивным).
+- `options?: ApiOptions` — данные для запроса (объект `ApiFetch` или строка с именем метода).
+- `reactivity?: boolean` — включить ли реактивность: автоматический перезапуск запроса при изменении `path`, `options` или глобальных `conditions` (по умолчанию `true`).
+- `conditions?: RefType<boolean>` — локальные условия выполнения запроса (если `false`, запрос не выполняется).
+- `transformation?: (data: T) => R` — функция преобразования ответа от сервера перед записью в `data`.
+- `unmounted?: boolean` — очищать ли данные из кэша (обнулять `data`) при размонтировании компонента.
+
+**Возвращает (`UseApiRef<R>`):**
+Объект с реактивными свойствами и методами управления:
+- `data` — ссылка (`ref`) на загруженные данные или `undefined`, если загрузка еще не завершена.
+- `isStarting` — флаг начала запроса (`true` если еще нет данных).
+- `loading` — текущее состояние загрузки запроса (`true` пока идет ожидание ответа).
+- `reading` — флаг активного чтения.
+- `reset()` — метод для перезагрузки данных.
+- `stop()` — метод для остановки запроса.
+
+**Глобальные настройки:**
+Вы можете определить глобальные условия для всех `useApiRef` с помощью функции `setApiRefGlobalConditions(conditions)`.
+
+```typescript
+import { ref } from 'vue'
+import { useApiRef } from '@dxtmisha/functional'
+
+const userId = ref('123')
+
+const {
+  data: user,
+  loading,
+  reset,
+  stop
+} = useApiRef(
+  () => `/api/users/${userId.value}`,
+  { method: 'GET' },
+  true // Реактивно обновлять данные при изменении userId
+)
+
+// Принудительная перезагрузка
+const refreshData = async () => {
+  await reset()
+}
+
+// Остановка запроса (например, при уходе со страницы)
+const abortRequest = () => {
+  stop()
+}
+```

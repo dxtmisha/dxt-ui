@@ -1,0 +1,326 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/Translate - Quản lý bản dịch và văn bản'/>
+
+# Lớp Translate
+
+Một lớp tĩnh (static class) để quản lý các bản dịch và văn bản được bản địa hóa. Nó cung cấp các phương thức để lấy, lưu vào bộ nhớ đệm (cache) và hiển thị nội dung đã được dịch với sự hỗ trợ thay thế mẫu (template replacement) và tự động nhận diện khu vực (locale).
+
+## Các tính năng chính
+
+- **Lấy thông tin bản dịch** — lấy các bản dịch từ máy chủ API
+- **Lưu bộ nhớ đệm (Cache)** — hệ thống bộ nhớ đệm thông minh với các yêu cầu hàng loạt (batch requests)
+- **Thay thế mẫu (Template Replacement)** — hỗ trợ thay thế các biến giữ chỗ (placeholders) trong bản dịch
+- **Hỗ trợ định vị khu vực** — tự động nhận diện phần dữ liệu khu vực địa lý hiện tại để thay thế nội dung
+- **Xử lý hàng loạt** — nhóm nhiều yêu cầu dịch thuật lại với nhau để tối ưu hiệu suất
+- **Chế độ đồng bộ & bất đồng bộ** — lấy văn bản theo cả hai cách đồng bộ (sync) hoặc bất đồng bộ (async)
+- **Thao tác danh sách** — lấy nhiều bản dịch cùng một lúc nhanh chóng thông qua mảng đối tượng
+- **Tải động (Dynamic Loading)** — nạp thông tin các mô-đun dịch theo yêu cầu tiến trình tự động
+
+## Cách sử dụng cơ bản
+
+### `get`
+
+Lấy văn bản dịch theo mã một cách bất đồng bộ với tính năng thay thế mẫu tùy chọn.
+
+**Tham số:**
+- `name: string` — mã bản dịch
+- `replacement?: string[] | Record<string, string | number>` — các giá trị cốt lõi để thay thế trong mẫu (tùy chọn)
+
+**Trả về:** `Promise<string>` — văn bản đã được dịch
+
+```javascript
+import { Translate } from '@dxtmisha/functional'
+
+// Bản dịch cơ bản
+const text = await Translate.get('welcome.message')
+// Trả về: "Chào mừng đến với ứng dụng của chúng tôi"
+
+// Thay thế bằng cấu trúc mảng
+const greeting = await Translate.get('hello.user', ['John'])
+// Mẫu: "Xin chào, [0]!" → Trả về: "Xin chào, John!"
+
+// Thay thế bằng cấu trúc đối tượng (object)
+const message = await Translate.get('items.count', { count: 5, type: 'products' })
+// Mẫu: "Bạn có [count] [type]" → Trả về: "Bạn có 5 products"
+```
+
+### `getSync`
+
+Lấy văn bản dịch một cách đồng bộ (trả về giá trị trong bộ nhớ đệm hoặc thông báo dự phòng).
+
+**Tham số:**
+- `name: string` — mã bản dịch
+- `first?: boolean` — nếu `false`, hàm sẽ trả về chuỗi rỗng khi văn bản không được tìm thấy (mặc định: `false`)
+- `replacement?: string[] | Record<string, string | number>` — các mảng hoặc biến object thế chỗ giá trị khuyết (tùy chọn)
+
+**Trả về:** `string` — văn bản đã được dịch lấy từ Cache hoặc chuỗi tên mã dự phòng
+
+```javascript
+// Lấy bản dịch đã lưu trong bộ nhớ đệm
+const text = Translate.getSync('button.save')
+// Trả về: "Lưu" (từ bộ nhớ đệm) hoặc "button.save" (giá trị dự phòng fallback)
+
+// Trả về chuỗi rỗng nếu không tìm thấy
+const empty = Translate.getSync('missing.key', false)
+// Trả về: "" nếu không có trong bộ nhớ đệm
+
+// Kèm thay thế dữ liệu thay đổi trên runtime
+const message = Translate.getSync('welcome.user', true, ['Alice'])
+// Trả về: "Chào mừng bạn, Alice!" hoặc fallback
+```
+
+## Các thao tác hàng loạt
+
+### `getList`
+
+Lấy nhiều bản dịch trả về dưới dạng một đối tượng object (bất đồng bộ/async).
+
+**Tham số:**
+- `names: TranslateCode[]` — mảng danh sách bản mã dịch thuật hoặc mảng tổ hợp cấu trúc thay thế `[mã, ...kết-cấu-thay-thế]`
+
+**Trả về:** `Promise<TranslateList<T>>` — đối tượng (object) bao gồm các cặp mã và giá trị văn bản đã phân tích lại hoàn chỉnh.
+
+```javascript
+// Danh sách đơn giản
+const texts = await Translate.getList(['save', 'cancel', 'submit'])
+// Trả về: { save: "Lưu", cancel: "Hủy", submit: "Gửi" }
+
+// Yêu cầu nhóm các giá trị thay thế đa luồng
+const messages = await Translate.getList([
+  'welcome.user',
+  ['items.count', '5', 'books'],
+  'goodbye.message'
+])
+// Trả về đối tượng cùng mẫu đã được duyệt nạp chuỗi biến số đầy đủ.
+```
+
+### `getListSync`
+
+Lấy nhiều dữ liệu bản dịch đã lưu trên Cache hệ thống nội bộ theo phương pháp đồng bộ.
+
+**Tham số:**
+- `names: TranslateCode[]` — danh sách mảng dữ liệu khóa có chứa mã dịch
+- `first?: boolean` — hành vi trả fallback tùy vào trường hợp thiếu văn bản trong cache (mặc định xử lý: `false`)
+
+**Trả về:** `TranslateList<T>` — đối tượng (object) bao gồm các cặp định dạng mã-văn bản
+
+```javascript
+// Lấy những bản dịch trích nạp ở bộ nhớ cache (thay thế trạng thái Fetch Call)
+const texts = Translate.getListSync(['save', 'cancel', 'delete'])
+// Trả về: { save: "Lưu", cancel: "Hủy", delete: "Xóa" }
+
+// Hành vi ứng biến với dữ liệu thiếu (fallback empty config)
+const empty = Translate.getListSync(['missing.key'], false)
+// Trả về: { 'missing.key': '' }
+```
+
+## Quản lý thông tin định tuyến (Load & Pipeline)
+
+### `add`
+
+Thêm các mã dịch thuật vào hàng đợi nội hệ thống, tối ưu số lần Fetch thành các truy vấn đóng gói chùm.
+
+**Tham số:**
+- `names: string | string[]` — các mã sẽ được đưa vào hàng đợi nạp dịch (fetch parameter)
+
+**Trả về:** `Promise<void>` — hoàn thành trả mốc sau khi call batch đã truy xuống mạng xong
+
+```javascript
+// Nạp nối tiếp chỉ một mục bản dịch
+await Translate.add('new.message')
+
+// Nạp đồng thời mảng các khóa cần phân bản dịch
+await Translate.add(['header.title', 'footer.copyright', 'menu.items'])
+
+// Tính năng tải hàng loạt trễ thông minh (Tất cả tự gom tạo bó Call API trong độ tối trễ 160 mili giây)
+Translate.add('text1') // Đang đợi lấy gộp
+Translate.add('text2') // Đang đợi lấy gộp
+Translate.add('text3') // 3 khóa này truyền gộp với nhau trong duy nhất 1 Request Object cuối.
+```
+
+### `addSync`
+
+Nạp bản dịch lưu thẳng lên trên kho cache để hệ thống nhận diện tức thì (phù hợp trong khi dev UI/Test logic hoặc dùng JSON cứng).
+
+**Tham số:**
+- `data: Record<string, string>` — cặp dữ liệu có key-dữ liệu bản dịch (key-value text pairs)
+
+```javascript
+// Đưa dữ liệu nạp thô vào thư mục System tĩnh
+Translate.addSync({
+  'welcome.message': 'Chào mừng',
+  'button.save': 'Lưu lại',
+  'error.required': 'Vui lòng nhập trường này'
+})
+
+// Chế độ nhận luôn dữ liệu cache ngay sau dòng khai báo addSync
+const text = Translate.getSync('welcome.message') // Trả về "Chào mừng"
+```
+
+### `addNormalOrSync`
+
+Quản lý luồng nạp thông minh tự nhận biết Local Mode. Nó dùng hàm `isLocalhost()` để tính toán logic, tải cache tĩnh trong lúc Dev làm phần Front-End hoặc chạy `add()` fetch bó trên nền Product.
+
+**Tham số:**
+- `data: Record<string, string>` — khối dữ liệu đối tượng từ khóa-giá trị dịch thuật
+
+**Trả về:** `Promise<void>` — cờ báo sau ghi nhận thực thể hoàn chỉnh
+
+```javascript
+// Phương án hoạt động tùy ý qua kết nối phân tích của tính năng Api.isLocalhost()
+await Translate.addNormalOrSync({
+  'app.title': 'My App',
+  'nav.home': 'Trang chủ',
+  'nav.about': 'Giới thiệu'
+})
+// Trên Localhost (Dev Mode): Gọi thẳng bản ghi tĩnh đồng bộ vào hệ thống Cache cho nhanh
+// Production Mode: Tự đưa nhóm vào hàng danh sách chuẩn bị call API phân tích
+```
+
+### `addSyncByLocation`
+
+Nạp đồng bộ các dữ liệu phân văn bản bằng kho định vị vị trí đặc trưng vùng (locale map string) trực tiếp vào cache.
+
+**Tham số:**
+- `data: Record<string, Record<string, string>>` — Danh sách các khu vực chứa bên trong khối danh sách các mã key
+
+```javascript
+// Nhúng bản dịch thủ công ứng với cấu hình khu vực chỉ định trực tiếp
+Translate.addSyncByLocation({
+  'vi-VN': {
+    'app.title': 'Ứng dụng Của Tôi',
+    'button.save': 'Lưu thông tin'
+  },
+  'en-US': {
+    'app.title': 'My Application',
+    'button.save': 'Save profile'
+  }
+})
+```
+
+## Cấu hình
+
+### `setUrl`
+
+Thay đổi giao thức Endpoint API để kết nối trực tiếp đến Controller cấp phát dữ liệu của hệ thống máy chủ.
+
+**Tham số:**
+- `url: string` — đường kết nối từ cấu trúc chuẩn đến mục tiêu Backend API
+
+**Trả về:** `Translate` — một đối tượng trỏ nối cho những thao tác gọi chèn (chaining capability)
+
+```javascript
+// Trỏ đổi thông số URL End-Point
+Translate.setUrl('/api/v2/translations')
+
+// Gọi phương pháp chuỗi gắn (Method Chaining)
+Translate.setUrl('/custom/translate').setPropsName('translations')
+```
+
+### `setPropsName`
+
+Điều chỉnh tham số yêu cầu (Payload Field Key) gửi trên body hay query cho cụm mã danh sách khóa lấy dịch trên End Point.
+
+**Tham số:**
+- `name: string` — tên mạc định tùy chỉnh truyền trên Request Payload
+
+**Trả về:** `Translate` — thể dạng chuỗi tham chiếu móc lệnh (chain link)
+
+```javascript
+// Tùy biến mã cấu trúc Parameter lên server thay thế gốc
+Translate.setPropsName('codes')
+
+// Server API Endpoint thay vì phải đọc mã mảng { list: [...] } thì sẽ chuyển thành chuẩn mới nhận
+// Request Payload: { codes: ['text1', 'text2'] }
+```
+
+## Các ví dụ điển hình
+
+### Thiết đặt môi trường cơ bản hệ ứng dụng
+
+```javascript
+import { Translate } from '@dxtmisha/functional'
+
+// Khai báo End-Point cần móc
+Translate.setUrl('/api/translations')
+
+// Nạp đồng quy các biến toàn trang trên App Root Layer
+await Translate.add(['app.title', 'nav.menu', 'footer.copyright'])
+
+// Truy vấn các bản thu bản dịch tức thì
+const title = await Translate.get('app.title')
+document.title = title
+```
+
+### Quản lý tập hợp thông báo xác thực lỗi Form
+
+```javascript
+// Truy suất bó thông dụng từ Database
+const validationTexts = await Translate.getList([
+  'validation.required',
+  'validation.email',
+  ['validation.minLength', '8'], // Kèm thay thế Regex Variables String
+  'validation.password'
+])
+
+// Validation xử lí thông minh
+if (!email) {
+  showError(validationTexts['validation.required'])
+}
+if (password.length < 8) {
+  showError(validationTexts['validation.minLength']) // Hệ sẽ kết xuất "Ít nhất 8 ký tự"
+}
+```
+
+### Khung chuẩn bị (Loader) và tái đồng bộ hóa trong các Framework Code (Vue, React)
+
+```javascript
+class MyComponent {
+  async loadTexts() {
+    // Thu dồn bó các key cần xả trên Page hiển thị vào Queue nạp API
+    await Translate.add([
+      'component.title',
+      'component.description',
+      'button.action'
+    ])
+
+    // Truy nhận cập nhật UI sau Load Success
+    this.updateTexts()
+  }
+
+  updateTexts() {
+    // Sử dụng getSync để ghim các giá trị xuống State Object thay vì tạo cơ chế Await rườm rà
+    this.title = Translate.getSync('component.title')
+    this.description = Translate.getSync('component.description')
+    this.buttonText = Translate.getSync('button.action')
+  }
+}
+```
+
+### Các ví dụ chuyển tiếp biến đối số vào thay thế mẫu văn bản
+
+```javascript
+// Vòng thay đổi tùy dựa từ cấp Array (Chỉ mục Index)
+const welcome = await Translate.get('welcome.user', ['John', 'Doe'])
+// Khuôn lệnh nguyên mẫu System: "Welcome, [0] [1]!" 
+// Kết quả gộp: "Welcome, John Doe!"
+
+// Vòng thay đổi thông qua chuỗi truy định đối tượng (Object Attributes replacement)
+const notification = await Translate.get('notification.message', {
+  user: 'Alice',
+  count: 3,
+  item: 'messages'
+})
+// Khuôn lệnh nguyên mẫu System: "Hi [user], you have [count] new [item]"
+// Kết quả trả về: "Hi Alice, you have 3 new messages"
+
+// Thông số hóa các khối mẫu String khó ghép
+const status = await Translate.get('order.status', {
+  id: '#12345',
+  status: 'shipped',
+  date: '2024-01-15'
+})
+// Mẫu String: "Order [id] is [status] on [date]"
+// Render Web: "Order #12345 is shipped on 2024-01-15"
+```

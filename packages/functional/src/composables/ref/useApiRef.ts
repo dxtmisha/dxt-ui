@@ -5,7 +5,8 @@ import {
   onUnmounted,
   type Ref,
   ref,
-  watch
+  watch,
+  type WatchHandle
 } from 'vue'
 import { Api, type ApiFetch, ApiMethodItem } from '@dxtmisha/functional-basic'
 
@@ -14,8 +15,19 @@ import { toRefItem } from '../../functions/ref/toRefItem'
 
 import type { RefOrNormal, RefType } from '../../types/refTypes'
 
+/**
+ * Options for api requests.
+ *
+ * Опции для запросов api.
+ */
 type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>
 
+/**
+ * Get request options.
+ *
+ * Возвращает опции запроса.
+ * @param options options / параметры
+ */
 const getOptions = (options?: ApiOptions): RefOrNormal<ApiFetch> => {
   if (typeof options === 'string') {
     return { method: options }
@@ -28,15 +40,32 @@ const getOptions = (options?: ApiOptions): RefOrNormal<ApiFetch> => {
   return {} as ApiFetch
 }
 
+/**
+ * Use api ref return type.
+ *
+ * Тип возвращаемого значения для useApiRef.
+ */
 export interface UseApiRef<R> {
+  /** Loaded data / Загруженные данные */
   data: Ref<R | undefined>
+
+  /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */
   isStarting: ComputedRef<boolean>
+
+  /** Request load flag / Флаг загрузки запроса */
   loading: ComputedRef<boolean>
+
+  /** Active reading flag / Флаг активного чтения */
   reading: ComputedRef<boolean>
 
+  /** Default reset / Сброс по умолчанию */
   reset(): Promise<void>
+
+  /** Stop request / Остановка запроса */
+  stop(): void
 }
 
+/** Global conditions / Глобальные условия */
 let globalConditions: RefType<any>
 
 /**
@@ -58,14 +87,29 @@ export function useApiRef<R, T = any>(
   transformation?: (data: T) => R,
   unmounted?: boolean
 ): UseApiRef<R> {
+  /** Value item / Элемент-значение */
   const item = ref<R | undefined>()
+
+  /** Ref item options / Опции ссылочного элемента */
   const request = toRefItem(getOptions(options))
+
+  /** Loading state flag / Флаг состояния загрузки */
   const loading = ref<boolean>(false)
+
+  /** Reading state flag / Флаг состояния чтения */
   const reading = ref<boolean>(false)
 
-  let first = true
-  let stop = 0
+  /** Initial flag / Флаг инициализации */
+  let first: boolean = true
 
+  /** Watch end handler / Обработчик окончания наблюдения */
+  let watchEnd: WatchHandle | undefined = undefined
+
+  /**
+   * Data reload.
+   *
+   * Перезагрузка данных.
+   */
   const reset = async () => {
     if (first) {
       return
@@ -99,6 +143,24 @@ export function useApiRef<R, T = any>(
     }
   }
 
+  /**
+   * Stop request.
+   *
+   * Остановка запроса.
+   */
+  const stop = () => {
+    console.warn('useApiRef: stop', getRef(path))
+
+    watchEnd?.()
+    item.value = undefined
+    first = true
+  }
+
+  /**
+   * Watch initialization.
+   *
+   * Инициализация наблюдения.
+   */
   const initWatch = () => {
     const reactivityList: any[] = []
 
@@ -119,7 +181,7 @@ export function useApiRef<R, T = any>(
     }
 
     if (reactivityList.length > 0) {
-      watch(reactivityList, async () => {
+      watchEnd = watch(reactivityList, async () => {
         if (!loading.value) {
           await reset()
         }
@@ -127,27 +189,20 @@ export function useApiRef<R, T = any>(
     }
   }
 
+  if (!unmounted) {
+    initWatch()
+  }
+
   return {
     get data() {
       if (first) {
         first = false
         reset().then()
-      }
 
-      initWatch()
-
-      if (unmounted) {
-        stop++
-        onUnmounted(() => {
-          stop--
-
-          if (stop < 1) {
-            console.warn('useApiRef: unmounted')
-            item.value = undefined
-            first = true
-            stop = 0
-          }
-        })
+        if (unmounted) {
+          initWatch()
+          onUnmounted(() => stop())
+        }
       }
 
       return item
@@ -161,10 +216,18 @@ export function useApiRef<R, T = any>(
     get reading() {
       return computed<boolean>(() => reading.value)
     },
-    reset
+
+    reset,
+    stop
   }
 }
 
+/**
+ * Defines global conditions for the API request.
+ *
+ * Определяет глобальные условия для API запроса.
+ * @param conditions conditions for executing the request/ условия выполнения запроса
+ */
 export const setApiRefGlobalConditions = (conditions: RefType<any>) => {
   if (!globalConditions) {
     globalConditions = conditions

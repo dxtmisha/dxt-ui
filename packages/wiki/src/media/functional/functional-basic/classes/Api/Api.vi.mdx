@@ -1,0 +1,286 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/Api - Quản lý yêu cầu (Request)'/>
+
+# Lớp Api
+
+Một lớp wrapper tĩnh (static class) bọc API Fetch để thao tác hiệu quả với các yêu cầu mạng. Nó cung cấp khả năng cấu hình nâng cao, xử lý trạng thái toàn cục, giả lập phản hồi (mocking), cấu hình các hook chuẩn bị, và tự động phân tích dữ liệu (parsing).
+
+Nó kết hợp chặt chẽ với các lớp phụ thuộc: `ApiStatus`, `ApiResponse`, `ApiPreparation`, `ApiDefault`, và `ApiHeaders`.
+
+## Các tính năng chính
+
+- **Các phương thức CRUD** — các bí danh (alias) tiện lợi `get`, `post`, `put`, `delete` để thao tác với các yêu cầu HTTP
+- **Cấu hình toàn cục (Global Configuration)** — thiết lập URL cơ sở (base URL), header và tham số mặc định cho tất cả yêu cầu
+- **Các Hook vòng đời (Lifecycle Hooks)** — khả năng xác định các hàm callback được thực thi trước (`setPreparation`) và sau (`setEnd`) mỗi yêu cầu
+- **Theo dõi trạng thái** — truy cập trạng thái và lỗi của yêu cầu cuối cùng thông qua `ApiStatus`
+- **Bộ nhớ đệm & Giả lập dữ liệu (Caching & Emulation)** — quản lý các phản hồi mẫu (mock responses) thông qua `ApiResponse`
+- **Tự động phân tích dữ liệu** — tự động chuyển đổi định dạng body thành JSON/FormData và trích xuất dữ liệu từ các phản hồi JSON
+- **Định vị khu vực (Geolocation)** — tự động thay thế các tham số `{locale}`, `{country}`, `{language}` trong đường dẫn yêu cầu
+
+## Giả lập phản hồi (ApiResponse)
+
+Trình quản lý giả lập `ApiResponse` (có thể truy cập thông qua `Api.getResponse()`) cho phép cấu hình các phản hồi mẫu (mock) cho những đường dẫn cụ thể. Hệ thống này vô cùng hữu ích khi phát triển giao diện (UI frontend) trước khi có API backend hoàn chỉnh hoặc khi cần viết test.
+
+### Đăng ký các phản hồi giả lập (Mocking)
+
+Phương thức `add` nhận một đối tượng dạng `ApiResponseItem` hoặc một mảng các đối tượng đó.
+
+**Các trường quan trọng trong `ApiResponseItem`:**
+- `path` — Dạng chuỗi (String - khớp chính xác) hoặc Biểu thức chính quy (`RegExp`) dùng để chặn đường dẫn (URL) cụ thể.
+- `method` — Phương thức HTTP (`ApiMethodItem.get`, `post`, v.v...).
+- `request` — (Tùy chọn) Bộ lọc theo tải trọng body. Bạn có thể dùng chuỗi đánh dấu đặc biệt `'*any'` để vô hiệu hoá bộ kiểm tra nội dung và bắt mọi yêu cầu gửi đến đường dẫn này.
+- `response` — Một đối tượng dữ liệu tĩnh _hoặc_ một hàm khởi tạo (factory function) `(request) => any` dùng để tạo câu trả lời tự động dựa trên tải trọng yêu cầu gửi đến.
+- `lag` — (Tùy chọn) Giả lập độ trễ mạng (`boolean`), tự tạo một ngẫu nhiên Timeout từ 0 tới 2000ms.
+
+```javascript
+const responseManager = Api.getResponse()
+
+// Bật chế độ nhà phát triển (in ra bảng điều khiển các thông tin log khi chặn các mock request)
+responseManager.setDevMode(true)
+
+// Ví dụ 1: Câu lệnh phản hồi tĩnh đối với GET request
+responseManager.add({
+  path: 'users/profile', // có thể dùng String hoặc RegExp
+  method: 'GET',
+  response: { id: 1, name: 'Admin', role: 'superuser' },
+  lag: true // Tạo rào cản thời gian để giả lập ping mạng thực tế
+})
+
+// Ví dụ 2: Phản hồi động bằng một hàm tuỳ chỉnh (rất tốt khi dựng thanh phân trang hay thanh tìm kiếm)
+responseManager.add({
+  path: /users\/search/, // theo dõi bằng RegExp
+  method: 'GET',
+  // Hàm này trực tiếp nhận một đối tượng body được truyền vào tham số ban đầu
+  response: (request) => {
+    return [
+        { id: 1, name: \`Kết quả tìm kiếm cho: \${request.query}\` }
+    ]
+  }
+})
+
+// Ví dụ 3: Đón chặn một POST request không cần kiểm duyệt nội dung body truyền lên
+responseManager.add({
+  path: 'users/create',
+  method: 'POST',
+  request: '*any', // đánh dấu `*any` chặn sự xác thực body
+  response: { success: true, message: 'Tạo tài khoản thành công (MOCK)' }
+})
+
+// Sử dụng trong code (chương trình sẽ không kết nối mạng thực mà xuất hiện ngay mock)
+const profile = await Api.get({ path: 'users/profile' })
+```
+
+### Ưu tiên và chuyển đổi Mock
+
+- Trình chặn giả lập sẽ xử lý yêu cầu **trước lúc** lệnh `fetch` diễn ra thực sự.
+- Nếu bộ giả lập không tìm được mock tương ứng nào khớp (bởi vì khác `path`, `method`, hoặc `request`), Lớp `Api` sẽ tự động chuyển hướng gọi thẳng yêu cầu tới máy chủ vật lý ở điểm xa.
+- Bạn hoàn toàn có thể vô hiệu hóa mock tạm thời nào đó bằng cách gọi lệnh `disable: () => true` bên trong object. Hàm hệ thống `add` sẽ thẳng thừng phủ quyết lệnh này.
+
+## Các phương thức khởi tạo Interface
+
+### `isLocalhost`
+
+Kiểm tra xem mã có đang thực thi trên một máy chủ phát triển localhost không (trả về `true` nếu `location.hostname === 'localhost'`).
+
+**Trả về:** `boolean`
+
+### `getStatus`
+
+Trả về trình quản lý trạng thái `ApiStatus` để theo dõi các tác vụ, trạng thái, lỗi, và các đối tượng mã hóa gói đầy đủ phản hồi từ máy chủ cuối cùng.
+
+**Trả về:** `ApiStatus`
+
+### `getResponse`
+
+Trả về trình quản lý bộ giả lập và phản hồi `ApiResponse` phục vụ cấu hình Mock data (khi đang phát triển offline hoặc giao diện đang làm chưa có API đi kèm).
+
+**Trả về:** `ApiResponse`
+
+## Form gửi thông tin (Request Preparation)
+
+### `getUrl`
+
+Tạo ra đường dẫn API đầy đủ, tích hợp và xử lý với các biến đo lường địa lý được cấu hình: `{locale}`, `{country}`, `{language}`.
+
+**Tham số:**
+- `path: string` — đường dẫn chỏ đến hệ thống.
+- `api?: boolean` — (Mặc định: `true`) Cho biết có thêm phần cơ sở vào API không.
+
+**Trả về:** `string` — chuỗi URL đích trọn vẹn.
+
+### `getBody`
+
+Hoán đổi tài liệu để nạp theo yêu cầu (nguồn gốc) thực thể (không dùng được trong hàm `GET`). Có khả năng kết xuất và xử lý dữ liệu ở cả lớp biến chuỗi JSON nguyên gốc tĩnh để có kết cấu `FormData`.
+
+**Tham số:**
+- `request?: ApiFetch['request']` — bộ tham chiếu yêu cầu của thao tác (fetch).
+- `method?: string` — phương thức lệnh HTTP hiện tại (đây là cài đặt mặc định để thành `ApiMethodItem.get`).
+
+**Trả về:** `string | FormData | undefined`
+
+### `getBodyForGet`
+
+Hoàn trả dữ liệu query, thường được sử dụng và tạo dựng parameter khi cài một thao tác kiểu `GET`.
+
+**Tham số:**
+- `request: ApiFetch['request']` — khối query object.
+- `path?: string` — một lộ trình dẫn ban đầu.
+- `method?: string` — biểu thức HTTP tương ứng.
+
+**Trả về:** `string` — hệ nội dung tìm kiếm đã được chuyển đổi phù hợp để nối vào URL (`?key=value&key2=val2`).
+
+## Các phương thức cấu hình (Configuration Methods)
+
+Toàn bộ sửa đổi hoặc cấu hình hệ thống hiện có thể sử dụng phương pháp nối chuỗi (chaining methods) ngay tức thì trên cùng một bản thể (instances mapping).
+
+### `setHeaders`
+
+Áp dụng một thư mục Header chuẩn cho toàn hệ thống (như Token nhận diện định danh) nhúng vào hệ thống mỗi khi gửi yêu cầu chuyển qua lại.
+
+**Tham số:**
+- `headers: Record<string, string>` — Khung biểu đồ dạng key:value nguyên thể.
+
+**Trả về:** `Api`
+
+### `setRequestDefault`
+
+Đưa toàn bộ thông số tham số truyền thông vào khung chuyển tín đồ lưu thông trên máy chủ từ xa.
+
+**Tham số:**
+- `request: Record<string, any>` — Các phép lệnh chèn nội dung quy ước mặc định.
+
+**Trả về:** `Api`
+
+### `setUrl`
+
+Ghi đè định danh URL trên nền tảng (cài đặt mặc định đánh giá ở nhánh \`/api/\`).
+
+**Tham số:**
+- `url: string` — Tiền tố môi trường kết nối bao trùm chuỗi kết nối schema.
+
+**Trả về:** `Api`
+
+### `setPreparation`
+
+Tạo mới hook tùy chỉnh cài đặt hoạt động chạy liên tục _ngay trước_ thời khắc thao tác bắt đầu; chức năng hữu hiệu lớn nằm trong tiền xử lý xuất màn hình mờ/loader chung hoặc sửa đổi tham số gốc.
+
+**Tham số:**
+- `callback: (apiFetch: ApiFetch) => Promise<void>` — khối trigger đồng bộ. Nó nhận tham chiếu trực tiếp đến file tùy chọn cài đặt của phiên yêu cầu hiện tại (request config).
+
+**Trả về:** `Api`
+
+### `setEnd`
+
+Tạo mới hook cài đặt _ngay sau_ một pha trao đổi mạng. Phản hồi kèm `{ reset: true }` cho phép ngắt các tiến trình phiên mã rồi tự tái bắt vòng chu trình.
+
+**Tham số:**
+- `callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — vòng xử lý sự kiện phía bên kia server phản hồi lại. Hàm sẽ nhận nguyên mẫu cả dữ liệu phản hồi lẫn bộ thông số cài đặt đầu vào.
+
+**Trả về:** `Api`
+
+## Hủy yêu cầu gọi dữ liệu trực tiếp (AbortController)
+
+API này hỗ trợ nền tảng chặn luồng gọi API tức thì. Bạn chỉ cần áp dụng thẻ phiên mã `AbortController` vào dữ liệu trường `controller` trong chuỗi khai báo thuộc `ApiFetch`.
+
+```javascript
+const controller = new AbortController()
+
+// Tung khối lệnh phân luồng đi
+Api.get({ path: 'users', controller }).catch(e => {
+  if (e.name === 'AbortError') {
+    console.log('Yêu cầu bị chặn đứng bởi người dùng')
+  }
+})
+
+// Thao tác ngừng (như khi unmount file chẳng hạn)
+controller.abort()
+```
+
+## Phương thức điều hành tín hiệu (API Calling Methods)
+
+### `request`
+
+Thuật toán kích hoạt thực hiện tác vụ chính trên fetch thuần mạng vật lý. Nếu cung cấp trong ngữ cảnh string cô đơn mà không phải Object, nó kích hoạt hệ phân tán luồng định sẵn cài cắm theo kiểu `GET`.
+Khi hệ thống bối rối hoặc gọi trượt giao thức mạng (như lỗi nội bộ 500 status), chương trình chủ lực sẽ trực xuất luôn mã lỗi (`throw e`), qua đó giúp lập trình viên dùng `try/catch` thu hồi lệnh dễ dàng. Khi máy chủ trả lại tệp Object thuộc chuẩn JSON, gói nhận dạng trạng thái lệnh (`statusObject`) sẽ đắp kèm thành khối liền mạch trước khi đẩy về UI.
+
+**Tham số:**
+- `pathRequest: string | ApiFetch` — định dạng kết xuất dữ liệu hay đường dẫn kết cấu hệ thống.
+
+**Trả về:** `Promise<ApiData<T>>` — giao diện format hoàn thiện của phản hồi mã hóa (decoded). Bao gồm các thông số biến (`data`, `statusObject`...) đi kèm nếu server nhả form dữ liệu có bọc.
+
+### `get`
+
+Bật một khối yêu cầu API bằng giao thức `GET` theo cơ chế gỡ rối và ép đầu cung dữ liệu thông số search URL lên cấu trúc HTTP tự động.
+
+**Tham số:**
+- `request: ApiFetch` — Các thông số truy xuất của lệnh.
+
+**Trả về:** `Promise<T>`
+
+### `post`
+
+Giao chuyển chùm truy vấn truyền động REST/GraphQL bằng luồng định tuyến tuân thủ HTTP `POST`.
+
+**Tham số:**
+- `request: ApiFetch` — Cơ sở cấu hình bao bọc giao diện, kèm tham số URL hiện chỉ định.
+
+**Trả về:** `Promise<T>`
+
+### `put`
+
+Trình bày khả năng hiệu chỉnh một khối dữ liệu thông qua cấu hình thao tác tiêu chuẩn ở hệ phương án `PUT`.
+
+**Tham số:**
+- `request: ApiFetch` — Các lựa chọn query dẫn đường backend map.
+
+**Trả về:** `Promise<T>`
+
+### `delete`
+
+Phát tín hiệu dọn dẹp theo phân hóa truyền thống ở nhát kích HTTP `DELETE`.
+
+**Tham số:**
+- `request: ApiFetch` — Bọc thông số liên kết arguments format.
+
+**Trả về:** `Promise<T>`
+
+## Ví dụ sử dụng cơ bản
+
+```javascript
+import { Api } from '@dxtmisha/functional'
+
+// Cấu hình API toàn cục
+Api.setUrl('https://api.example.com/v1/')
+   .setHeaders({ 'Authorization': 'Bearer token123' })
+   .setRequestDefault({ source: 'webapp' })
+
+// Móc chằng interceptor giám thị thông luồng
+Api.setPreparation(async (apiFetch) => {
+    console.log('Sửa soạn chạy phiên fetch đến nhánh:', apiFetch.path)
+})
+
+// Chạy GET truyền thông bọc bằng chuẩn cản rào
+try {
+  const data = await Api.get({ path: 'users' })
+  // Rút chuỗi tín hiệu an toàn từ khối object:
+  // console.log(data.statusObject.getStatus())
+} catch (e) {
+  console.error('Máy lỏng chân tín hiệu trong lúc lôi users về quy mô:', e)
+}
+
+// Bơm POST trang bị kíp nổ chặn luồng (Abort Feature)
+const abortCtrl = new AbortController()
+try {
+  const newUser = await Api.post({
+    path: 'users/create',
+    request: { name: 'John Doe', age: 30 },
+    controller: abortCtrl
+  })
+} catch (e) {
+  if (e.name === 'AbortError') console.log('Cuộc tiến quân rút lại an toàn!')
+}
+
+// Hủy bất kỳ khi nào cần nhổ neo
+// abortCtrl.abort()
+```

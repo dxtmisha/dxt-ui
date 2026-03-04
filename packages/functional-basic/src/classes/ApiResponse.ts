@@ -19,6 +19,11 @@ import {
 
 const CLASS_RESPONSE_LOADING = 'd-response-loading'
 
+/**
+ * Class for working with API responses.
+ *
+ * Класс для работы с ответами API.
+ */
 export class ApiResponse {
   /** List of first-time API requests/ Список первичных API запросов */
   protected readonly first: ApiResponseItem[] = []

@@ -1,4 +1,4 @@
-import type { ApiPreparationEnd } from '../types/apiTypes'
+import type { ApiFetch, ApiPreparationEnd } from '../types/apiTypes'
 
 /**
  * Class for preparing requests.
@@ -7,10 +7,10 @@ import type { ApiPreparationEnd } from '../types/apiTypes'
  */
 export class ApiPreparation {
   /** Function for call before the request/ Функция для вызова перед запросом */
-  protected callback?: () => Promise<void>
+  protected callback?: (apiFetch: ApiFetch) => Promise<void>
 
   /** Function for call after the request/ Функция для вызова после запроса */
-  protected callbackEnd?: (query: Response) => Promise<ApiPreparationEnd>
+  protected callbackEnd?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>
 
   /** Is the preparation in progress/ Идет ли подготовка */
   protected loading = false
@@ -20,13 +20,14 @@ export class ApiPreparation {
    *
    * Подготовка перед выполнением запроса.
    * @param active is preparation active/ активна ли подготовка
+   * @param apiFetch request options/ опции запроса
    */
-  async make(active: boolean) {
+  async make(active: boolean, apiFetch: ApiFetch) {
     if (
       active
       && this.callback
     ) {
-      return this.go()
+      return this.go(apiFetch)
     }
   }
 
@@ -36,10 +37,12 @@ export class ApiPreparation {
    * Анализ запроса после выполнения.
    * @param active is preparation active/ активна ли подготовка
    * @param query data received in the request/ данные, полученные в запросе
+   * @param apiFetch request options/ опции запроса
    */
   async makeEnd(
     active: boolean,
-    query: Response
+    query: Response,
+    apiFetch: ApiFetch
   ): Promise<ApiPreparationEnd> {
     let data: ApiPreparationEnd = {}
 
@@ -47,7 +50,7 @@ export class ApiPreparation {
       active
       && this.callbackEnd
     ) {
-      data = await this.callbackEnd(query)
+      data = await this.callbackEnd(query, apiFetch)
     }
 
     return data
@@ -59,7 +62,7 @@ export class ApiPreparation {
    * Изменить функцию перед запросом.
    * @param callback function for call/ функция для вызова
    */
-  set(callback: () => Promise<void>): this {
+  set(callback: (apiFetch: ApiFetch) => Promise<void>): this {
     this.callback = callback
     return this
   }
@@ -70,7 +73,7 @@ export class ApiPreparation {
    * Изменить функцию после запроса.
    * @param callback function for call/ функция для вызова
    */
-  setEnd(callback: (query: Response) => Promise<ApiPreparationEnd>): this {
+  setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this {
     this.callbackEnd = callback
     return this
   }
@@ -79,14 +82,15 @@ export class ApiPreparation {
    * To execute preparation.
    *
    * Выполнить подготовку.
+   * @param apiFetch request options/ опции запроса
    */
-  protected async go() {
+  protected async go(apiFetch: ApiFetch) {
     return new Promise<void>((resolve) => {
       if (this.loading) {
-        setTimeout(() => this.go().then(resolve), 160)
+        setTimeout(() => this.go(apiFetch).then(resolve), 160)
       } else if (this.callback) {
         this.loading = true
-        this.callback().then(() => {
+        this.callback(apiFetch).then(() => {
           this.loading = false
           resolve()
         })
@@ -101,12 +105,13 @@ export class ApiPreparation {
    *
    * Анализ запроса после выполнения.
    * @param query data received in the request/ данные, полученные в запросе
+   * @param apiFetch request options/ опции запроса
    */
-  protected async end(query: Response) {
+  protected async end(query: Response, apiFetch: ApiFetch) {
     let data: ApiPreparationEnd = {}
 
     if (this.callbackEnd) {
-      data = await this.callbackEnd(query)
+      data = await this.callbackEnd(query, apiFetch)
     }
 
     return data
