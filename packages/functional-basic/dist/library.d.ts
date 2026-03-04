@@ -86,14 +86,14 @@ export declare class Api {
      * Изменить функцию перед запросом.
      * @param callback function for call/ функция для вызова
      */
-    static setPreparation(callback: () => Promise<void>): Api;
+    static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): Api;
     /**
      * Modify the function after the request.
      *
      * Изменить функцию после запроса.
      * @param callback function for call/ функция для вызова
      */
-    static setEnd(callback: (query: Response) => Promise<ApiPreparationEnd>): Api;
+    static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): Api;
     /**
      * To execute a request.
      *
@@ -144,7 +144,7 @@ export declare class Api {
      * @param queryReturn custom function for reading data/ кастомная функция для чтения данных
      * @param end finalization data/ данные финализации
      */
-    protected static readData(query: Response, queryReturn: ApiFetch['queryReturn'], end: ApiPreparationEnd): Promise<any>;
+    protected static readData<T>(query: Response, queryReturn: ApiFetch['queryReturn'], end: ApiPreparationEnd): Promise<ApiData<T>>;
     /**
      * Executing the request.
      *
@@ -159,17 +159,31 @@ export declare class Api {
      * @param data data for transformation/ данные для преобразования
      * @param toData is it necessary to process the data/ нужно ли обрабатывать данные
      */
-    protected static makeData<T>(data: ApiData<T>, toData: boolean): T;
+    protected static makeData<T>(data: ApiData<T>, toData: boolean): ApiData<T>;
+    /**
+     * Appends the status object to the response data if possible.
+     *
+     * Добавляет объект статуса к данным ответа, если это возможно.
+     * @param data response data/ данные ответа
+     * @param status status object/ объект статуса
+     */
+    protected static makeStatus<T>(data: ApiData<T>, status: ApiStatus): ApiData<T>;
 }
 
 /**
  * Shape of API response data wrapper/ Структура обёртки данных ответа API
  */
-export declare type ApiData<T> = T & {
+export declare type ApiData<T = any> = T & {
     /** Primary payload (optional)/ Основная полезная нагрузка (опционально) */
     data?: T;
     /** Success flag/ Флаг успешности */
     success?: boolean;
+    /** Status/ Статус */
+    status?: ApiStatusType;
+    /** Message/ Сообщение */
+    message?: string;
+    /** Status object/ Объект статуса */
+    statusObject?: ApiStatusItem;
 };
 
 /**
@@ -256,6 +270,8 @@ export declare type ApiFetch = {
     globalEnd?: boolean;
     /** Additional fetch() options/ Дополнительные опции fetch() */
     init?: RequestInit;
+    /** AbortController for canceling the request/ AbortController для отмены запроса */
+    controller?: AbortController;
 };
 
 /**
@@ -322,9 +338,9 @@ export declare enum ApiMethodItem {
  */
 export declare class ApiPreparation {
     /** Function for call before the request/ Функция для вызова перед запросом */
-    protected callback?: () => Promise<void>;
+    protected callback?: (apiFetch: ApiFetch) => Promise<void>;
     /** Function for call after the request/ Функция для вызова после запроса */
-    protected callbackEnd?: (query: Response) => Promise<ApiPreparationEnd>;
+    protected callbackEnd?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>;
     /** Is the preparation in progress/ Идет ли подготовка */
     protected loading: boolean;
     /**
@@ -332,43 +348,47 @@ export declare class ApiPreparation {
      *
      * Подготовка перед выполнением запроса.
      * @param active is preparation active/ активна ли подготовка
+     * @param apiFetch request options/ опции запроса
      */
-    make(active: boolean): Promise<void>;
+    make(active: boolean, apiFetch: ApiFetch): Promise<void>;
     /**
      * Analysis of the request after execution.
      *
      * Анализ запроса после выполнения.
      * @param active is preparation active/ активна ли подготовка
      * @param query data received in the request/ данные, полученные в запросе
+     * @param apiFetch request options/ опции запроса
      */
-    makeEnd(active: boolean, query: Response): Promise<ApiPreparationEnd>;
+    makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>;
     /**
      * The function is modified for a call before the request.
      *
      * Изменить функцию перед запросом.
      * @param callback function for call/ функция для вызова
      */
-    set(callback: () => Promise<void>): this;
+    set(callback: (apiFetch: ApiFetch) => Promise<void>): this;
     /**
      * Modify the function after the request.
      *
      * Изменить функцию после запроса.
      * @param callback function for call/ функция для вызова
      */
-    setEnd(callback: (query: Response) => Promise<ApiPreparationEnd>): this;
+    setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
     /**
      * To execute preparation.
      *
      * Выполнить подготовку.
+     * @param apiFetch request options/ опции запроса
      */
-    protected go(): Promise<void>;
+    protected go(apiFetch: ApiFetch): Promise<void>;
     /**
      * Analysis of the request after execution.
      *
      * Анализ запроса после выполнения.
      * @param query data received in the request/ данные, полученные в запросе
+     * @param apiFetch request options/ опции запроса
      */
-    protected end(query: Response): Promise<ApiPreparationEnd>;
+    protected end(query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>;
 }
 
 /**
@@ -381,6 +401,11 @@ export declare type ApiPreparationEnd = {
     data?: any;
 };
 
+/**
+ * Class for working with API responses.
+ *
+ * Класс для работы с ответами API.
+ */
 export declare class ApiResponse {
     protected readonly requestDefault: ApiDefault;
     /** List of first-time API requests/ Список первичных API запросов */
@@ -537,6 +562,12 @@ export declare class ApiStatus {
      */
     getStatusText(): string | undefined;
     /**
+     * Returns the last status type.
+     *
+     * Возвращает последний тип статуса.
+     */
+    getStatusType(): ApiStatusType | undefined;
+    /**
      * Returns the script execution error.
      *
      * Возвращает ошибку выполнения скрипта.
@@ -584,6 +615,13 @@ export declare class ApiStatus {
      */
     setLastResponse(response?: any): this;
     /**
+     * Sets the last status.
+     *
+     * Устанавливает последний статус.
+     * @param status status/ статус
+     */
+    setLastStatus(status?: ApiStatusType): this;
+    /**
      * Sets messages from the last request.
      *
      * Устанавливает сообщения от последнего запроса.
@@ -601,12 +639,22 @@ export declare class ApiStatus {
 }
 
 export declare type ApiStatusItem = {
+    /** HTTP status code/ Код статуса HTTP */
     status?: number;
+    /** HTTP status text/ Текст статуса HTTP */
     statusText?: string;
+    /** Error message/ Сообщение об ошибке */
     error?: string;
+    /** Last response/ Последний ответ */
     lastResponse?: any;
+    /** Last status/ Последний статус */
+    lastStatus?: ApiStatusType;
+    /** Last message/ Последнее сообщение */
     lastMessage?: string;
 };
+
+/** API status type/ Тип статуса API */
+export declare type ApiStatusType = 'success' | 'error' | 'warning' | 'info';
 
 /**
  * Applies a template to the text, replacing keys with values from the replacement object

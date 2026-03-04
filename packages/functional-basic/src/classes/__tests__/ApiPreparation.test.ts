@@ -14,13 +14,13 @@ describe('ApiPreparation', () => {
       const callback = vi.fn().mockResolvedValue(undefined)
       apiPreparation.set(callback)
 
-      await apiPreparation.make(false)
+      await apiPreparation.make(false, {} as any)
 
       expect(callback).not.toHaveBeenCalled()
     })
 
     it('should not call callback when callback is not set', async () => {
-      const result = await apiPreparation.make(true)
+      const result = await apiPreparation.make(true, {} as any)
 
       expect(result).toBeUndefined()
     })
@@ -29,7 +29,7 @@ describe('ApiPreparation', () => {
       const callback = vi.fn().mockResolvedValue(undefined)
       apiPreparation.set(callback)
 
-      await apiPreparation.make(true)
+      await apiPreparation.make(true, {} as any)
 
       expect(callback).toHaveBeenCalledTimes(1)
     })
@@ -42,7 +42,7 @@ describe('ApiPreparation', () => {
       })
       apiPreparation.set(callback)
 
-      await apiPreparation.make(true)
+      await apiPreparation.make(true, {} as any)
 
       expect(callbackCompleted).toBe(true)
     })
@@ -58,9 +58,9 @@ describe('ApiPreparation', () => {
 
       // Start multiple concurrent calls
       const promises = [
-        apiPreparation.make(true),
-        apiPreparation.make(true),
-        apiPreparation.make(true)
+        apiPreparation.make(true, {} as any),
+        apiPreparation.make(true, {} as any),
+        apiPreparation.make(true, {} as any)
       ]
 
       await Promise.all(promises)
@@ -77,7 +77,7 @@ describe('ApiPreparation', () => {
       const mockResponse = new Response('{}', { status: 200 })
       apiPreparation.setEnd(callback)
 
-      const result = await apiPreparation.makeEnd(false, mockResponse)
+      const result = await apiPreparation.makeEnd(false, mockResponse, {} as any)
 
       expect(result).toEqual({})
       expect(callback).not.toHaveBeenCalled()
@@ -86,7 +86,7 @@ describe('ApiPreparation', () => {
     it('should return empty object when callback is not set', async () => {
       const mockResponse = new Response('{}', { status: 200 })
 
-      const result = await apiPreparation.makeEnd(true, mockResponse)
+      const result = await apiPreparation.makeEnd(true, mockResponse, {} as any)
 
       expect(result).toEqual({})
     })
@@ -98,11 +98,12 @@ describe('ApiPreparation', () => {
       }
       const callback = vi.fn().mockResolvedValue(expectedResult)
       const mockResponse = new Response('{}', { status: 200 })
+      const mockApiFetch: any = { path: 'test' }
       apiPreparation.setEnd(callback)
 
-      const result = await apiPreparation.makeEnd(true, mockResponse)
+      const result = await apiPreparation.makeEnd(true, mockResponse, mockApiFetch)
 
-      expect(callback).toHaveBeenCalledWith(mockResponse)
+      expect(callback).toHaveBeenCalledWith(mockResponse, mockApiFetch)
       expect(result).toEqual(expectedResult)
     })
 
@@ -112,11 +113,12 @@ describe('ApiPreparation', () => {
         status: 201,
         statusText: 'Created'
       })
+      const mockApiFetch: any = { path: 'test' }
       apiPreparation.setEnd(callback)
 
-      await apiPreparation.makeEnd(true, mockResponse)
+      await apiPreparation.makeEnd(true, mockResponse, mockApiFetch)
 
-      expect(callback).toHaveBeenCalledWith(mockResponse)
+      expect(callback).toHaveBeenCalledWith(mockResponse, mockApiFetch)
     })
 
     it('should handle callback returning reset flag', async () => {
@@ -124,7 +126,7 @@ describe('ApiPreparation', () => {
       const mockResponse = new Response('{}', { status: 200 })
       apiPreparation.setEnd(callback)
 
-      const result = await apiPreparation.makeEnd(true, mockResponse)
+      const result = await apiPreparation.makeEnd(true, mockResponse, {} as any)
 
       expect(result.reset).toBe(true)
     })
@@ -135,7 +137,7 @@ describe('ApiPreparation', () => {
       const mockResponse = new Response('{}', { status: 200 })
       apiPreparation.setEnd(callback)
 
-      const result = await apiPreparation.makeEnd(true, mockResponse)
+      const result = await apiPreparation.makeEnd(true, mockResponse, {} as any)
 
       expect(result.data).toEqual(testData)
     })
@@ -148,7 +150,7 @@ describe('ApiPreparation', () => {
       const returnedInstance = apiPreparation.set(callback)
 
       expect(returnedInstance).toBe(apiPreparation)
-      await apiPreparation.make(true)
+      await apiPreparation.make(true, {} as any)
       expect(callback).toHaveBeenCalled()
     })
 
@@ -167,7 +169,7 @@ describe('ApiPreparation', () => {
       apiPreparation.set(callback1)
       apiPreparation.set(callback2)
 
-      await apiPreparation.make(true)
+      await apiPreparation.make(true, {} as any)
 
       expect(callback1).not.toHaveBeenCalled()
       expect(callback2).toHaveBeenCalled()
@@ -182,7 +184,7 @@ describe('ApiPreparation', () => {
       const returnedInstance = apiPreparation.setEnd(callback)
 
       expect(returnedInstance).toBe(apiPreparation)
-      await apiPreparation.makeEnd(true, mockResponse)
+      await apiPreparation.makeEnd(true, mockResponse, {} as any)
       expect(callback).toHaveBeenCalled()
     })
 
@@ -203,8 +205,8 @@ describe('ApiPreparation', () => {
         .set(callback)
         .setEnd(callbackEnd)
 
-      await apiPreparation.make(true)
-      await apiPreparation.makeEnd(true, mockResponse)
+      await apiPreparation.make(true, {} as any)
+      await apiPreparation.makeEnd(true, mockResponse, {} as any)
 
       expect(callback).toHaveBeenCalled()
       expect(callbackEnd).toHaveBeenCalled()
@@ -218,7 +220,7 @@ describe('ApiPreparation', () => {
       apiPreparation.setEnd(callback1)
       apiPreparation.setEnd(callback2)
 
-      await apiPreparation.makeEnd(true, mockResponse)
+      await apiPreparation.makeEnd(true, mockResponse, {} as any)
 
       expect(callback1).not.toHaveBeenCalled()
       expect(callback2).toHaveBeenCalled()
@@ -236,8 +238,8 @@ describe('ApiPreparation', () => {
 
       apiPreparation.set(callback).setEnd(callbackEnd)
 
-      await apiPreparation.make(true)
-      const result = await apiPreparation.makeEnd(true, mockResponse)
+      await apiPreparation.make(true, {} as any)
+      const result = await apiPreparation.makeEnd(true, mockResponse, {} as any)
 
       expect(preparationDone).toBe(true)
       expect(callback).toHaveBeenCalled()
@@ -251,7 +253,7 @@ describe('ApiPreparation', () => {
       const mockResponse = new Response('{}', { status: 200 })
       apiPreparation.setEnd(callbackEnd)
 
-      await expect(apiPreparation.makeEnd(true, mockResponse)).rejects.toThrow('End processing failed')
+      await expect(apiPreparation.makeEnd(true, mockResponse, {} as any)).rejects.toThrow('End processing failed')
     })
   })
 })

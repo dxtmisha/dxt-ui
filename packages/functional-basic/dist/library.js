@@ -1,101 +1,104 @@
-var Pt = Object.defineProperty;
-var Wt = (i, t, e) => t in i ? Pt(i, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : i[t] = e;
-var c = (i, t, e) => Wt(i, typeof t != "symbol" ? t + "" : t, e);
-import { geo as Ut } from "@dxtmisha/media";
-function C(i, t) {
-  return t ? Object.assign({}, i, t) : Object.assign({}, i);
+var Wt = Object.defineProperty;
+var Ut = (s, t, e) => t in s ? Wt(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
+var c = (s, t, e) => Ut(s, typeof t != "symbol" ? t + "" : t, e);
+import { geo as jt } from "@dxtmisha/media";
+function C(s, t) {
+  return t ? Object.assign({}, s, t) : Object.assign({}, s);
 }
-function m(i) {
-  return !!(i && typeof i == "object");
+function y(s) {
+  return !!(s && typeof s == "object");
 }
-function g(i, t) {
-  if (m(i)) {
+function g(s, t) {
+  if (y(s)) {
     const e = [];
-    return i instanceof Map ? i.forEach((s, r) => e.push(t(s, r, i))) : Array.isArray(i) ? i.forEach((s, r) => e.push(t(s, r, i))) : Object.entries(i).forEach(
-      ([s, r]) => e.push(t(r, s, i))
-    ), e.filter((s) => s !== void 0);
+    return s instanceof Map ? s.forEach((i, r) => e.push(t(i, r, s))) : Array.isArray(s) ? s.forEach((i, r) => e.push(t(i, r, s))) : Object.entries(s).forEach(
+      ([i, r]) => e.push(t(r, i, s))
+    ), e.filter((i) => i !== void 0);
   }
   return [];
 }
-function Et(i, t = "=", e = "&") {
+function It(s, t = "=", e = "&") {
   return g(
-    i,
-    (s, r) => `${r}${t}${encodeURIComponent(String(s).trim())}`
+    s,
+    (i, r) => `${r}${t}${encodeURIComponent(String(i).trim())}`
   ).sort().join(e);
 }
-function M(i) {
-  return i == null;
+function at(s) {
+  return Array.isArray(s);
 }
-function L(i, t) {
-  if (i) {
-    if (t && i === "0")
+function M(s) {
+  return s == null;
+}
+function L(s, t) {
+  if (s) {
+    if (t && s === "0")
       return !0;
-    switch (typeof i) {
+    switch (typeof s) {
       case "bigint":
       case "number":
-        return i !== 0;
+        return s !== 0;
       case "boolean":
-        return i;
+        return s;
       case "function":
       case "symbol":
         return !0;
       case "object":
-        return Array.isArray(i) ? i.length > 0 : Object.values(i).some((e) => !M(e));
+        return Array.isArray(s) ? s.length > 0 : Object.values(s).some((e) => !M(e));
       case "string":
-        return !["", "undefined", "null", "0", "false", "[]"].includes(i);
+        return !["", "undefined", "null", "0", "false", "[]"].includes(s);
       case "undefined":
         return !1;
       default:
-        return !!i;
+        return !!s;
     }
   }
   return !1;
 }
-function A(i) {
-  return m(i) && !Array.isArray(i);
+function A(s) {
+  return y(s) && !Array.isArray(s);
 }
-function R(i) {
-  return typeof i == "string";
+function P(s) {
+  return typeof s == "string";
 }
-function H(i) {
-  return JSON.parse(JSON.stringify(i));
+function z(s) {
+  return JSON.parse(JSON.stringify(s));
 }
 function l() {
   return typeof window != "undefined" && !!window.document;
 }
-function lt(i) {
-  switch (typeof i) {
+function dt(s) {
+  switch (typeof s) {
     case "number":
       return !0;
     case "string":
-      return !!i.match(/^[0-9]+$/);
+      return !!s.match(/^[0-9]+$/);
     default:
       return !1;
   }
 }
-function k(i) {
-  if (typeof i == "number")
-    return i;
-  if (!i)
+function k(s) {
+  if (typeof s == "number")
+    return s;
+  if (!s)
     return 0;
-  let t = i.replace(/[^\d., ]+/ig, "");
+  let t = s.replace(/[^\d., ]+/ig, "");
   return t.match(/( [0-9]{3}[ ,.]|[0-9] [0-9])/ig) ? t = t.replace(/ /ig, "").replace(/,/ig, ".") : t.match(/,[0-9]{3}[,.]/ig) ? t = t.replace(/,/ig, "") : t.match(/[.][0-9]{3}[,.]/ig) ? t = t.replace(/[.]/ig, "").replace(/,/ig, ".") : t = t.replace(/,/ig, "."), parseFloat(t);
 }
-function rt(i, t) {
-  return M(i) ? !1 : Array.isArray(t) ? t.includes(i) : lt(i) && lt(t) ? k(i) === k(t) : i === t;
+function rt(s, t) {
+  return M(s) ? !1 : Array.isArray(t) ? t.includes(s) : dt(s) && dt(t) ? k(s) === k(t) : s === t;
 }
-function at(i) {
-  return i instanceof Function || typeof i == "function";
+function ct(s) {
+  return s instanceof Function || typeof s == "function";
 }
-function B(i) {
-  return at(i) ? i() : i;
+function B(s) {
+  return ct(s) ? s() : s;
 }
 function nt() {
   return location.href.startsWith("data:");
 }
 const tt = {};
-let dt = "ui-storage";
-class T {
+let gt = "ui-storage";
+class G {
   /**
    * Constructor
    * @param name value name/ название значения
@@ -105,10 +108,10 @@ class T {
     c(this, "value");
     c(this, "age");
     this.name = t, this.isSession = e;
-    const s = `${e ? "session" : "storage"}#${t}`;
-    if (s in tt)
-      return tt[s];
-    this.make(), tt[s] = this;
+    const i = `${e ? "session" : "storage"}#${t}`;
+    if (i in tt)
+      return tt[i];
+    this.make(), tt[i] = this;
   }
   /**
    * Changing the prefix in key names. Should be called at the beginning of the code.
@@ -117,7 +120,7 @@ class T {
    * @param newPrefix new prefix/ новый префикс
    */
   static setPrefix(t) {
-    dt = t;
+    gt = t;
   }
   /**
    * Getting data from local storage.
@@ -189,7 +192,7 @@ class T {
    * Получение имени ключа в хранилище.
    */
   getIndex() {
-    return `${dt}__${this.name}`;
+    return `${gt}__${this.name}`;
   }
   /**
    * Getting data from storage.
@@ -202,8 +205,8 @@ class T {
     if (t)
       try {
         return JSON.parse(t);
-      } catch (s) {
-        console.error("DataStorage", s);
+      } catch (i) {
+        console.error("DataStorage", i);
       }
   }
   /**
@@ -216,7 +219,7 @@ class T {
     return t ? (this.value = t.value, this.age = t.age) : (this.value = void 0, this.age = void 0), this;
   }
 }
-const jt = "geo-code", w = class w {
+const Ht = "geo-code", b = class b {
   /**
    * Information about the current country.
    *
@@ -281,7 +284,7 @@ const jt = "geo-code", w = class w {
    * Возвращает полный список стран.
    */
   static getList() {
-    return Ut;
+    return jt;
   }
   /**
    * Returns the data about the country by its full code.
@@ -292,7 +295,7 @@ const jt = "geo-code", w = class w {
    */
   static getByCode(t) {
     let e;
-    return t && (t.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (e = this.getByCodeFull(t)), !e && t.match(/[A-Z]{2}/) && (e = this.getByCountry(this.toCountry(t))), !e && t.match(/[a-z]{2}/) && (e = this.getByLanguage(this.toLanguage(t)))), this.toFull(H(e != null ? e : this.getList()[0]));
+    return t && (t.match(/([A-Z]{2}-[a-z]{2})|([a-z]{2}-[A-Z]{2})/) && (e = this.getByCodeFull(t)), !e && t.match(/[A-Z]{2}/) && (e = this.getByCountry(this.toCountry(t))), !e && t.match(/[a-z]{2}/) && (e = this.getByLanguage(this.toLanguage(t)))), this.toFull(z(e != null ? e : this.getList()[0]));
   }
   /**
    * Returns the full data by language and country.
@@ -316,8 +319,8 @@ const jt = "geo-code", w = class w {
    */
   static getByCountry(t) {
     return this.getList().find((e) => {
-      var s;
-      return e.country === t || ((s = e == null ? void 0 : e.countryAlternative) == null ? void 0 : s.find((r) => r === t));
+      var i;
+      return e.country === t || ((i = e == null ? void 0 : e.countryAlternative) == null ? void 0 : i.find((r) => r === t));
     });
   }
   /**
@@ -328,8 +331,8 @@ const jt = "geo-code", w = class w {
    */
   static getByLanguage(t) {
     return this.getList().find((e) => {
-      var s;
-      return e.language === t || ((s = e == null ? void 0 : e.languageAlternative) == null ? void 0 : s.find((r) => r === t));
+      var i;
+      return e.language === t || ((i = e == null ? void 0 : e.languageAlternative) == null ? void 0 : i.find((r) => r === t));
     });
   }
   /**
@@ -438,27 +441,27 @@ const jt = "geo-code", w = class w {
     });
   }
 };
-c(w, "storage", new T(jt)), c(w, "location"), c(w, "item"), c(w, "language"), c(w, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), w.location = w.findLocation(), w.language = w.findLanguage(w.location), w.item = w.getByCode(w.location);
-let p = w;
-function Bt(i) {
-  return l() && i === window;
+c(b, "storage", new G(Ht)), c(b, "location"), c(b, "item"), c(b, "language"), c(b, "timezone", (/* @__PURE__ */ new Date()).getTimezoneOffset()), b.location = b.findLocation(), b.language = b.findLanguage(b.location), b.item = b.getByCode(b.location);
+let w = b;
+function xt(s) {
+  return l() && s === window;
 }
-function N(i) {
+function N(s) {
   var t;
   if (l())
-    return Bt(i) ? document.body : R(i) ? (t = document.querySelector(i)) != null ? t : void 0 : i;
+    return xt(s) ? document.body : P(s) ? (t = document.querySelector(s)) != null ? t : void 0 : s;
 }
-function gt(i) {
-  return Bt(i) ? i : N(i);
+function ft(s) {
+  return xt(s) ? s : N(s);
 }
-function Ht(i) {
+function zt(s) {
   var t;
-  return !!((t = N(i)) != null && t.closest("html"));
+  return !!((t = N(s)) != null && t.closest("html"));
 }
-function Z(i) {
-  return Array.isArray(i) ? i : [i];
+function V(s) {
+  return Array.isArray(s) ? s : [s];
 }
-class ft {
+class mt {
   /**
    * Classes Constructor
    * @param elementSelector element/ элемент
@@ -470,7 +473,7 @@ class ft {
    * @param detail an event-dependent value associated with the event/ зависимое от события
    * значение, связанное с событием
    */
-  constructor(t, e = ["click"], s, r, o) {
+  constructor(t, e = ["click"], i, r, o) {
     /**
      * Element.
      *
@@ -499,8 +502,8 @@ class ft {
      * Это должен быть объект, реализующий интерфейс EventListener или просто функция JavaScript.
      */
     c(this, "listenerRecent", (t) => {
-      var e, s;
-      Ht(this.elementControl) ? ((e = this.listener) == null || e.call(this.element, t, this.detail), m(this.options) && ((s = this.options) != null && s.once) && this.stop()) : this.stop();
+      var e, i;
+      zt(this.elementControl) ? ((e = this.listener) == null || e.call(this.element, t, this.detail), y(this.options) && ((i = this.options) != null && i.once) && this.stop()) : this.stop();
     });
     /**
      * Event states.
@@ -509,7 +512,7 @@ class ft {
      */
     c(this, "activity", !1);
     c(this, "activityItems", []);
-    this.listener = s, this.options = r, this.detail = o, this.element = gt(t), this.elementControl = N(t), this.type = Z(e);
+    this.listener = i, this.options = r, this.detail = o, this.element = ft(t), this.elementControl = N(t), this.type = V(e);
   }
   /**
    * Checks whether event listening is currently enabled.
@@ -529,7 +532,7 @@ class ft {
    * @param elementSelector element/ элемент
    */
   setElement(t) {
-    const e = gt(t);
+    const e = ft(t);
     return this.elementControlEdit || (this.elementControl = N(t)), this.element = e, this.reset(), this;
   }
   /**
@@ -548,7 +551,7 @@ class ft {
    * @param type type/ тип
    */
   setType(t) {
-    return this.type = Z(t), this.reset(), this;
+    return this.type = V(t), this.reset(), this;
   }
   /**
    * Modifies the object that receives the notification.
@@ -589,8 +592,8 @@ class ft {
   dispatch(t = this.detail) {
     return this.type.forEach(
       (e) => {
-        var s;
-        return (s = this.element) == null ? void 0 : s.dispatchEvent(new CustomEvent(e, { detail: t }));
+        var i;
+        return (i = this.element) == null ? void 0 : i.dispatchEvent(new CustomEvent(e, { detail: t }));
       }
     ), this;
   }
@@ -616,10 +619,10 @@ class ft {
     return this.activity && (this.activity = !1, this.activityItems.forEach(({
       element: t,
       type: e,
-      listener: s,
+      listener: i,
       observer: r
     }) => {
-      r ? r.disconnect() : s ? t == null || t.removeEventListener(e, s) : t == null || t.removeEventListener(e, this.listenerRecent);
+      r ? r.disconnect() : i ? t == null || t.removeEventListener(e, i) : t == null || t.removeEventListener(e, this.listenerRecent);
     })), this;
   }
   /**
@@ -673,9 +676,9 @@ class ft {
   makeScroll() {
     if (this.element) {
       let t = !1;
-      const e = (s) => {
+      const e = (i) => {
         t || (t = !0, requestAnimationFrame(() => {
-          this.listenerRecent(s), t = !1;
+          this.listenerRecent(i), t = !1;
         }));
       };
       return this.element.addEventListener("scroll", e, this.options), this.element.addEventListener("resize", e, this.options), this.activityItems.push(
@@ -694,7 +697,7 @@ class ft {
     return !1;
   }
 }
-const mt = "ui-loading", Y = class Y {
+const yt = "ui-loading", Y = class Y {
   /**
    * Check if the loader is active now.
    *
@@ -729,7 +732,7 @@ const mt = "ui-loading", Y = class Y {
    * @param element element/ элемент
    */
   static registrationEvent(t, e) {
-    l() && new ft(window, mt, t).setElementControl(e).start();
+    l() && new mt(window, yt, t).setElementControl(e).start();
   }
   /**
    * Calls the event listener.
@@ -741,9 +744,9 @@ const mt = "ui-loading", Y = class Y {
     (t = this.event) == null || t.dispatch({ loading: this.is() });
   }
 };
-c(Y, "value", 0), c(Y, "event"), l() && (Y.event = new ft(window, mt));
-let x = Y;
-class zt {
+c(Y, "value", 0), c(Y, "event"), l() && (Y.event = new mt(window, yt));
+let I = Y;
+class Zt {
   constructor() {
     /** Default headers/ Заголовки по умолчанию */
     c(this, "headers", {});
@@ -757,11 +760,11 @@ class zt {
    */
   get(t, e = "application/json;charset=UTF-8") {
     if (t !== null) {
-      const s = C(
+      const i = C(
         this.headers,
         t
       );
-      return L(e) && (s["Content-Type"] = e), s;
+      return L(e) && (i["Content-Type"] = e), i;
     }
   }
   /**
@@ -773,8 +776,8 @@ class zt {
     return A(t) && (this.headers = t), this;
   }
 }
-var D = /* @__PURE__ */ ((i) => (i.get = "GET", i.post = "POST", i.put = "PUT", i.delete = "DELETE", i))(D || {});
-class Zt {
+var D = /* @__PURE__ */ ((s) => (s.get = "GET", s.post = "POST", s.put = "PUT", s.delete = "DELETE", s))(D || {});
+class Vt {
   constructor() {
     /** Default request data/ Данные запроса по умолчанию */
     c(this, "value");
@@ -827,11 +830,11 @@ class Zt {
    * @param value default values/ значения по умолчанию
    */
   addByFormData(t, e) {
-    for (const s in e)
-      t.has(s) || t.set(s, e[s]);
+    for (const i in e)
+      t.has(i) || t.set(i, e[i]);
   }
 }
-class Vt {
+class $t {
   constructor() {
     c(this, "value");
   }
@@ -860,6 +863,15 @@ class Vt {
   getStatusText() {
     var t;
     return (t = this.get()) == null ? void 0 : t.statusText;
+  }
+  /**
+   * Returns the last status type.
+   *
+   * Возвращает последний тип статуса.
+   */
+  getStatusType() {
+    var t;
+    return (t = this.get()) == null ? void 0 : t.lastStatus;
   }
   /**
    * Returns the script execution error.
@@ -926,7 +938,16 @@ class Vt {
    * @param response response data/ данные ответа
    */
   setLastResponse(t) {
-    return t && A(t) && "message" in t && this.setLastMessage(String(t.message)), this.set({ lastResponse: t }), this;
+    return t && A(t) && ("message" in t && this.setLastMessage(String(t.message)), "status" in t && this.setLastStatus(String(t.status))), this.set({ lastResponse: t }), this;
+  }
+  /**
+   * Sets the last status.
+   *
+   * Устанавливает последний статус.
+   * @param status status/ статус
+   */
+  setLastStatus(t) {
+    return this.set({ lastStatus: t }), this;
   }
   /**
    * Sets messages from the last request.
@@ -948,14 +969,14 @@ class Vt {
     this.value || (this.value = {}), this.value[t] = e;
   }
 }
-async function Kt(i) {
-  const t = B(i);
+async function Kt(s) {
+  const t = B(s);
   return t instanceof Promise ? await t : t;
 }
-function J(i, t) {
-  return Math.floor(Math.random() * (t - i + 1) + i);
+function J(s, t) {
+  return Math.floor(Math.random() * (t - s + 1) + s);
 }
-const yt = "d-response-loading";
+const pt = "d-response-loading";
 class Yt {
   /**
    * Constructor
@@ -981,8 +1002,8 @@ class Yt {
    * @param request data for the request/ данные для запроса
    * @param devMode is it developer mode/ является ли режим разработчика
    */
-  get(t = "", e, s, r) {
-    return this.response.find((o) => !this.isDisable(o) && this.isPath(o, t) && e === o.method && this.isFirst(o, r) && this.isResponse(o, s) ? (this.isDevMode(r) && console.warn(`Response type: ${o.path}`), this.first.push(o), !0) : !1);
+  get(t = "", e, i, r) {
+    return this.response.find((o) => !this.isDisable(o) && this.isPath(o, t) && e === o.method && this.isFirst(o, r) && this.isResponse(o, i) ? (this.isDevMode(r) && console.warn(`Response type: ${o.path}`), this.first.push(o), !0) : !1);
   }
   /**
    * Returns a list of data about the emulator.
@@ -999,7 +1020,7 @@ class Yt {
    * @param response data for caching/ данные для кеширования
    */
   add(t) {
-    return this.response.push(...Z(t)), this;
+    return this.response.push(...V(t)), this;
   }
   /**
    * Sets developer mode.
@@ -1017,12 +1038,12 @@ class Yt {
   async emulator(t) {
     const {
       path: e = "",
-      method: s = D.get,
-      global: r = s === D.get,
+      method: i = D.get,
+      global: r = i === D.get,
       devMode: o = !1
     } = t;
     if (r || this.isDevMode(o)) {
-      const a = this.requestDefault.request(t.request), u = this.get(e, s, a, o);
+      const a = this.requestDefault.request(t.request), u = this.get(e, i, a, o);
       if (u) {
         const h = await this.fetch(u, a);
         return this.isDevMode(o) && console.warn("Response data:", e, a, h), h;
@@ -1075,8 +1096,8 @@ class Yt {
    * @param request request data/ данные запроса
    */
   isResponse(t, e) {
-    const s = this.requestDefault.request(t == null ? void 0 : t.request);
-    return e === s || s === "*any" || L(e) && L(s) && A(e) && A(s) && !(e instanceof FormData) && !(s instanceof FormData) && Object.values(e).length === Object.values(s).length && Object.entries(s).reduce(
+    const i = this.requestDefault.request(t == null ? void 0 : t.request);
+    return e === i || i === "*any" || L(e) && L(i) && A(e) && A(i) && !(e instanceof FormData) && !(i instanceof FormData) && Object.values(e).length === Object.values(i).length && Object.entries(i).reduce(
       (r, [o, a]) => r && (a === (e == null ? void 0 : e[o]) || a === "*any"),
       !0
     );
@@ -1089,13 +1110,13 @@ class Yt {
    * @param request data for the request/ данные для запроса
    */
   fetch(t, e) {
-    return this.startResponseLoading(), new Promise((s) => {
+    return this.startResponseLoading(), new Promise((i) => {
       Kt(
-        at(t.response) ? t.response(e) : t.response
+        ct(t.response) ? t.response(e) : t.response
       ).then((r) => {
-        t != null && t.lag ? (x.show(), setTimeout(() => {
-          this.stopResponseLoading(), s(r), x.hide();
-        }, J(0, 2e3))) : (this.stopResponseLoading(), s(r));
+        t != null && t.lag ? (I.show(), setTimeout(() => {
+          this.stopResponseLoading(), i(r), I.hide();
+        }, J(0, 2e3))) : (this.stopResponseLoading(), i(r));
       });
     });
   }
@@ -1105,7 +1126,7 @@ class Yt {
    * Включить загрузку для эмуляции запроса.
    */
   startResponseLoading() {
-    this.loading && clearTimeout(this.loading), l() && document.body.classList.add(yt);
+    this.loading && clearTimeout(this.loading), l() && document.body.classList.add(pt);
   }
   /**
    * Disable loading for request emulation.
@@ -1114,7 +1135,7 @@ class Yt {
    */
   stopResponseLoading() {
     this.loading = setTimeout(() => {
-      this.loading = void 0, l() && document.body.classList.remove(yt);
+      this.loading = void 0, l() && document.body.classList.remove(pt);
     }, 1200);
   }
 }
@@ -1132,10 +1153,11 @@ class qt {
    *
    * Подготовка перед выполнением запроса.
    * @param active is preparation active/ активна ли подготовка
+   * @param apiFetch request options/ опции запроса
    */
-  async make(t) {
+  async make(t, e) {
     if (t && this.callback)
-      return this.go();
+      return this.go(e);
   }
   /**
    * Analysis of the request after execution.
@@ -1143,10 +1165,11 @@ class qt {
    * Анализ запроса после выполнения.
    * @param active is preparation active/ активна ли подготовка
    * @param query data received in the request/ данные, полученные в запросе
+   * @param apiFetch request options/ опции запроса
    */
-  async makeEnd(t, e) {
-    let s = {};
-    return t && this.callbackEnd && (s = await this.callbackEnd(e)), s;
+  async makeEnd(t, e, i) {
+    let r = {};
+    return t && this.callbackEnd && (r = await this.callbackEnd(e, i)), r;
   }
   /**
    * The function is modified for a call before the request.
@@ -1170,12 +1193,13 @@ class qt {
    * To execute preparation.
    *
    * Выполнить подготовку.
+   * @param apiFetch request options/ опции запроса
    */
-  async go() {
-    return new Promise((t) => {
-      this.loading ? setTimeout(() => this.go().then(t), 160) : this.callback ? (this.loading = !0, this.callback().then(() => {
-        this.loading = !1, t();
-      })) : t();
+  async go(t) {
+    return new Promise((e) => {
+      this.loading ? setTimeout(() => this.go(t).then(e), 160) : this.callback ? (this.loading = !0, this.callback(t).then(() => {
+        this.loading = !1, e();
+      })) : e();
     });
   }
   /**
@@ -1183,13 +1207,14 @@ class qt {
    *
    * Анализ запроса после выполнения.
    * @param query data received in the request/ данные, полученные в запросе
+   * @param apiFetch request options/ опции запроса
    */
-  async end(t) {
-    let e = {};
-    return this.callbackEnd && (e = await this.callbackEnd(t)), e;
+  async end(t, e) {
+    let i = {};
+    return this.callbackEnd && (i = await this.callbackEnd(t, e)), i;
   }
 }
-const b = class b {
+const v = class v {
   /**
    * Is the server local.
    *
@@ -1222,7 +1247,7 @@ const b = class b {
    * @param api adding a path to the site’s API/ добавление пути к API сайта
    */
   static getUrl(t, e = !0) {
-    return `${e ? this.url : ""}${t}`.replace("{locale}", p.getLocation()).replace("{country}", p.getCountry()).replace("{language}", p.getLanguage());
+    return `${e ? this.url : ""}${t}`.replace("{locale}", w.getLocation()).replace("{country}", w.getCountry()).replace("{language}", w.getLanguage());
   }
   /**
    * Getting data for the body.
@@ -1235,7 +1260,7 @@ const b = class b {
     if (t instanceof FormData)
       return t;
     if (e !== D.get && L(t))
-      return R(t) ? t : JSON.stringify(t);
+      return P(t) ? t : JSON.stringify(t);
   }
   /**
    * Getting data for the body of the get method.
@@ -1245,9 +1270,9 @@ const b = class b {
    * @param path path to request/ путь к запрос
    * @param method method for request/ метод запрос
    */
-  static getBodyForGet(t, e = "", s = D.get) {
-    if (s === D.get) {
-      const r = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? Et(t) : t;
+  static getBodyForGet(t, e = "", i = D.get) {
+    if (i === D.get) {
+      const r = e.match(/\?/) ? "&" : "?", o = typeof t == "object" ? It(t) : t;
       if (L(o))
         return `${r}${o}`;
     }
@@ -1259,7 +1284,7 @@ const b = class b {
    * Изменяет данные заголовка по умолчанию.
    */
   static setHeaders(t) {
-    return this.headers.set(t), b;
+    return this.headers.set(t), v;
   }
   /**
    * Modifies the default request data.
@@ -1267,7 +1292,7 @@ const b = class b {
    * Изменяет данные запроса по умолчанию.
    */
   static setRequestDefault(t) {
-    return this.requestDefault.set(t), b;
+    return this.requestDefault.set(t), v;
   }
   /**
    * Change the base path to the script.
@@ -1276,7 +1301,7 @@ const b = class b {
    * @param url path to the script/ путь к скрипту
    */
   static setUrl(t) {
-    return this.url = t, b;
+    return this.url = t, v;
   }
   /**
    * The function is modified for a call before the request.
@@ -1285,7 +1310,7 @@ const b = class b {
    * @param callback function for call/ функция для вызова
    */
   static setPreparation(t) {
-    return this.preparation.set(t), b;
+    return this.preparation.set(t), v;
   }
   /**
    * Modify the function after the request.
@@ -1294,7 +1319,7 @@ const b = class b {
    * @param callback function for call/ функция для вызова
    */
   static setEnd(t) {
-    return this.preparation.setEnd(t), b;
+    return this.preparation.setEnd(t), v;
   }
   /**
    * To execute a request.
@@ -1303,7 +1328,7 @@ const b = class b {
    * @param pathRequest query string or list of parameters/ строка запроса или список параметров
    */
   static async request(t) {
-    return R(t) ? await this.fetch({
+    return P(t) ? await this.fetch({
       path: t
     }) : await this.fetch(t);
   }
@@ -1360,32 +1385,33 @@ const b = class b {
   static async fetch(t) {
     const {
       toData: e = !0,
-      hideError: s = !1,
+      hideError: i = !1,
       queryReturn: r = void 0,
       globalPreparation: o = !0,
       globalEnd: a = !0
     } = t, u = await this.response.emulator(t);
     if (u)
       return u;
-    let h = {};
-    x.show();
+    const h = new $t();
+    let f;
+    I.show();
     try {
-      await this.preparation.make(o);
-      const f = await this.makeQuery(t), d = await this.preparation.makeEnd(a, f);
-      if (this.status.setStatus(
-        f.status,
-        f.statusText
-      ), d != null && d.reset)
-        return x.hide(), await this.fetch(t);
-      h = await this.readData(
-        f,
+      await this.preparation.make(o, t);
+      const d = await this.makeQuery(t), m = await this.preparation.makeEnd(a, d, t);
+      if (h.setStatus(d.status, d.statusText), this.status.setStatus(d.status, d.statusText), m != null && m.reset)
+        return I.hide(), await this.fetch(t);
+      f = await this.readData(
+        d,
         r,
-        d
+        m
       );
-    } catch (f) {
-      s || console.error("Api: ", f), this.status.setError(String(f));
+    } catch (d) {
+      throw i || console.error("Api: ", d), h.setError(String(d)), this.status.setError(String(d)), I.hide(), d;
     }
-    return x.hide(), this.makeData(h, e);
+    return I.hide(), h.setLastResponse(f), this.status.setLastResponse(f), this.makeStatus(
+      this.makeData(f, e),
+      h
+    );
   }
   /**
    * Reading data from the response.
@@ -1395,9 +1421,9 @@ const b = class b {
    * @param queryReturn custom function for reading data/ кастомная функция для чтения данных
    * @param end finalization data/ данные финализации
    */
-  static async readData(t, e, s) {
+  static async readData(t, e, i) {
     var r;
-    return e ? await e(t) : "data" in s ? s.data : ((r = t.headers.get("Content-Type")) != null ? r : "").match("application/json") ? await t.json() : { data: await t.text() };
+    return e ? await e(t) : "data" in i ? i.data : ((r = t.headers.get("Content-Type")) != null ? r : "").match("application/json") ? await t.json() : { data: await t.text() };
   }
   /**
    * Executing the request.
@@ -1407,18 +1433,19 @@ const b = class b {
    */
   static async makeQuery(t) {
     const e = this.requestDefault.request(t.request), {
-      api: s = !0,
+      api: i = !0,
       path: r = "",
       pathFull: o = void 0,
       method: a = D.get,
       headers: u = {},
       type: h = "application/json;charset=UTF-8",
-      init: f = {}
-    } = t, d = o != null ? o : this.getUrl(r, s), v = `${d}${this.getBodyForGet(e, d, a)}`, V = this.headers.get(u, h), P = C(f, {
+      init: f = {},
+      controller: d = void 0
+    } = t, m = o != null ? o : this.getUrl(r, i), X = `${m}${this.getBodyForGet(e, m, a)}`, W = this.headers.get(u, h), x = C(f, {
       method: a,
       body: this.getBody(e, a)
     });
-    return V && (P.headers = V), await fetch(v, P);
+    return W && (x.headers = W), d && (x.signal = d.signal), await fetch(X, x);
   }
   /**
    * Transforms data if needed.
@@ -1428,18 +1455,29 @@ const b = class b {
    * @param toData is it necessary to process the data/ нужно ли обрабатывать данные
    */
   static makeData(t, e) {
-    if (this.status.setLastResponse(t), t && e && A(t) && "data" in t) {
-      if (A(t.data)) {
-        const s = C(t.data);
-        return "success" in t && (s.success = t.success), s;
-      }
+    if (!e || !t || !A(t) || !("data" in t))
+      return t;
+    if (t.data !== null && typeof t.data != "object" || at(t.data))
       return t.data;
-    }
-    return t;
+    const i = C(t.data);
+    return "success" in t && !("success" in i) && (i.success = t.success), "status" in t && !("status" in i) && (i.status = t.status), "message" in t && !("message" in i) && (i.message = t.message), i;
+  }
+  /**
+   * Appends the status object to the response data if possible.
+   *
+   * Добавляет объект статуса к данным ответа, если это возможно.
+   * @param data response data/ данные ответа
+   * @param status status object/ объект статуса
+   */
+  static makeStatus(t, e) {
+    return t && A(t) ? {
+      ...t,
+      statusObject: e.get()
+    } : t;
   }
 };
-c(b, "url", "/api/"), c(b, "headers", new zt()), c(b, "requestDefault", new Zt()), c(b, "status", new Vt()), c(b, "response", new Yt(b.requestDefault)), c(b, "preparation", new qt());
-let z = b;
+c(v, "url", "/api/"), c(v, "headers", new Zt()), c(v, "requestDefault", new Vt()), c(v, "status", new $t()), c(v, "response", new Yt(v.requestDefault)), c(v, "preparation", new qt());
+let Z = v;
 class Ae {
   /**
    * Constructor
@@ -1461,8 +1499,8 @@ class Ae {
     if (this.callback = e, l())
       try {
         this.channel = new BroadcastChannel(`${Jt()}__${t}`), this.channel.onmessage = this.update;
-      } catch (s) {
-        console.error(`BroadcastMessage ${t}:`, s);
+      } catch (i) {
+        console.error(`BroadcastMessage ${t}:`, i);
       }
   }
   /**
@@ -1485,7 +1523,7 @@ class Ae {
     return this.callback = t, this;
   }
 }
-const Jt = () => new T("__broadcast-name").get(() => `name_${J(1e6, 9999999)}`);
+const Jt = () => new G("__broadcast-name").get(() => `name_${J(1e6, 9999999)}`);
 class Mt {
   /**
    * Constructor
@@ -1546,7 +1584,7 @@ class Mt {
    * @param comparison additional data for comparison/ дополнительные данные для сравнения
    */
   isUpdate(t) {
-    return this.cache === void 0 || this.comparisons.length !== t.length || this.comparisons.findIndex((e, s) => e !== t[s]) >= 0 ? (this.comparisons = [...t], !0) : !1;
+    return this.cache === void 0 || this.comparisons.length !== t.length || this.comparisons.findIndex((e, i) => e !== t[i]) >= 0 ? (this.comparisons = [...t], !0) : !1;
   }
 }
 class Qt {
@@ -1561,8 +1599,8 @@ class Qt {
    * @param callback function for the cache/ функция для кэша
    * @param comparison additional data for comparison/ дополнительные данные для сравнения
    */
-  get(t, e, s) {
-    return this.getCacheItem(t, e).getCache(s != null ? s : []);
+  get(t, e, i) {
+    return this.getCacheItem(t, e).getCache(i != null ? i : []);
   }
   /**
    * Getting data for the cache, and if there is no cache, it performs a function to save the cache (Async).
@@ -1572,8 +1610,8 @@ class Qt {
    * @param callback function for the cache/ функция для кэша
    * @param comparison additional data for comparison/ дополнительные данные для сравнения
    */
-  async getAsync(t, e, s) {
-    return await this.getCacheItem(t, e).getCacheAsync(s != null ? s : []);
+  async getAsync(t, e, i) {
+    return await this.getCacheItem(t, e).getCacheAsync(i != null ? i : []);
   }
   /**
    * Returns an instance of the object for working with the cache element.
@@ -1586,7 +1624,7 @@ class Qt {
     return t in this.cache || (this.cache[t] = new Mt(e)), this.cache[t];
   }
 }
-const O = class O {
+const T = class T {
   /**
    * Getting data for the cache, and if there is no cache, it performs a function to save the cache.
    *
@@ -1595,15 +1633,15 @@ const O = class O {
    * @param callback function for the cache/ функция для кэша
    * @param comparison additional data for comparison/ дополнительные данные для сравнения
    */
-  static get(t, e, s) {
-    return this.cache.get(t, e, s);
+  static get(t, e, i) {
+    return this.cache.get(t, e, i);
   }
 };
-c(O, "cache"), O.cache = new Qt();
-let $t = O;
-function It(i, t = !1) {
-  if (typeof i == "string") {
-    const e = i.trim();
+c(T, "cache"), T.cache = new Qt();
+let wt = T;
+function Ft(s, t = !1) {
+  if (typeof s == "string") {
+    const e = s.trim();
     switch (e) {
       case "undefined":
         return;
@@ -1617,8 +1655,8 @@ function It(i, t = !1) {
         if (/^[{[]/.exec(e))
           try {
             return JSON.parse(e);
-          } catch (s) {
-            console.error("transformation: JSON error", s);
+          } catch (i) {
+            console.error("transformation: JSON error", i);
           }
         else {
           if (/^[0-9]+\.[0-9.]+$/.exec(e))
@@ -1630,10 +1668,10 @@ function It(i, t = !1) {
         }
     }
   }
-  return i;
+  return s;
 }
 const Xt = "cookie-block";
-class Ft {
+class Rt {
   /**
    * Obtaining status.
    *
@@ -1653,14 +1691,14 @@ class Ft {
     this.storage.set(t);
   }
 }
-c(Ft, "storage", new T(Xt));
-const X = {}, ht = class ht {
+c(Rt, "storage", new G(Xt));
+const _ = {}, lt = class lt {
   constructor(t) {
     c(this, "value");
     c(this, "options", {});
     if (this.name = t, t in et)
       return et[t];
-    this.value = X == null ? void 0 : X[t], et[t] = this;
+    this.value = _ == null ? void 0 : _[t], et[t] = this;
   }
   /**
    * Get data or update if none.
@@ -1705,13 +1743,13 @@ const X = {}, ht = class ht {
    * Обновление данных cookie.
    */
   update() {
-    var t, e, s, r, o;
-    if (l() && !nt() && !Ft.get()) {
+    var t, e, i, r, o;
+    if (l() && !nt() && !Rt.get()) {
       const a = String((t = this.value) != null ? t : "");
       document.cookie = [
         `${encodeURIComponent(this.name)}=${encodeURIComponent(a)}`,
         `max-age=${a === "" ? "-1" : this.getAge()}`,
-        `SameSite=${(s = (e = this.options) == null ? void 0 : e.sameSite) != null ? s : "strict"}`,
+        `SameSite=${(i = (e = this.options) == null ? void 0 : e.sameSite) != null ? i : "strict"}`,
         ...(o = (r = this.options) == null ? void 0 : r.arguments) != null ? o : []
       ].join("; ");
     }
@@ -1723,29 +1761,29 @@ const X = {}, ht = class ht {
    */
   static updateData() {
     for (const t of document.cookie.split(";")) {
-      const [e, s] = t.trim().split("=");
-      e && L(s) && (X[e] = It(s));
+      const [e, i] = t.trim().split("=");
+      e && L(i) && (_[e] = Ft(i));
     }
   }
 };
-l() && !nt() && ht.updateData();
-let pt = ht;
+l() && !nt() && lt.updateData();
+let bt = lt;
 const et = {};
-function I(i) {
-  var r, o, a, u, h, f, d, v;
-  if (i instanceof Date)
-    return i;
-  if (M(i))
+function F(s) {
+  var r, o, a, u, h, f, d, m;
+  if (s instanceof Date)
+    return s;
+  if (M(s))
     return /* @__PURE__ */ new Date();
-  if (typeof i == "number")
-    return new Date(i);
-  let t = i, e = p.getTimezoneFormat().trim();
-  i.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (V, P, G) => (t = P, e = G.trim(), V));
-  const s = (v = (d = (f = (h = (u = (a = (o = (r = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? r : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? f : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? d : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? v : t.replace(" ", "T");
-  return /* @__PURE__ */ new Date(`${s.trim()}${e}`);
+  if (typeof s == "number")
+    return new Date(s);
+  let t = s, e = w.getTimezoneFormat().trim();
+  s.replace(/^([\s\S]+)([-+]\d{2}:?\d{2})$/, (X, W, x) => (t = W, e = x.trim(), X));
+  const i = (m = (d = (f = (h = (u = (a = (o = (r = /^\d{4}\d{2}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3")}T00:00:00`) != null ? r : /^\d{4}\d{2}$/.exec(t) && `${t.replace(/^(\d{4})(\d{2})$/, "$1-$2")}-01T00:00:00`) != null ? o : /^\d{4}\d{2}\d{2} \d{2}:\d{2}:\d{2}$/.exec(t) && t.replace(/^(\d{4})(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})$/, "$1-$2-$3T$4:$5:$6")) != null ? a : /^\d{4}-\d{2}-\d{2}$/.exec(t) && `${t}T00:00:00`) != null ? u : /^\d{4}-\d{2}$/.exec(t) && `${t}-01T00:00:00`) != null ? h : /^\d{4}$/.exec(t) && `${t}-01-01T00:00:00`) != null ? f : /^\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}:00`) != null ? d : /^\d{2}:\d{2}:\d{2}$/.exec(t) && `2000-01-01T${t}`) != null ? m : t.replace(" ", "T");
+  return /* @__PURE__ */ new Date(`${i.trim()}${e}`);
 }
-function _t(i, t) {
-  return g(i, (e) => e == null ? void 0 : e[t]);
+function _t(s, t) {
+  return g(s, (e) => e == null ? void 0 : e[t]);
 }
 class Q {
   /**
@@ -1753,13 +1791,13 @@ class Q {
    * @param code country code, full form language-country or one of them/
    * код страны, полный вид язык-страна или один из них
    */
-  constructor(t = p.getLocation()) {
+  constructor(t = w.getLocation()) {
     c(this, "geo");
-    this.geo = p.find(t);
+    this.geo = w.find(t);
     const e = this.getLocation();
-    if (e in it)
-      return it[e];
-    it[e] = this;
+    if (e in st)
+      return st[e];
+    st[e] = this;
   }
   /**
    * Returns an instance of the class according to the specified country code.
@@ -1768,7 +1806,7 @@ class Q {
    * @param code country code, full form language-country or one of them/
    * код страны, полный вид язык-страна или один из них
    */
-  static getInstance(t = p.getLocation()) {
+  static getInstance(t = w.getLocation()) {
     return new Q(t);
   }
   /**
@@ -1797,13 +1835,13 @@ class Q {
    */
   display(t, e) {
     var o;
-    let s = { type: "language" }, r;
-    e && (typeof e == "string" ? s.type = e : s = {
-      ...s,
+    let i = { type: "language" }, r;
+    e && (typeof e == "string" ? i.type = e : i = {
+      ...i,
       ...e
     });
     try {
-      l() && (t ? r = new Intl.DisplayNames(this.getLocation(), s).of(t) : s.type === "language" ? r = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.language) : s.type === "region" && (r = new Intl.DisplayNames(this.getLocation(), s).of(this.geo.country)));
+      l() && (t ? r = new Intl.DisplayNames(this.getLocation(), i).of(t) : i.type === "language" ? r = new Intl.DisplayNames(this.getLocation(), i).of(this.geo.language) : i.type === "region" && (r = new Intl.DisplayNames(this.getLocation(), i).of(this.geo.country)));
     } catch (a) {
       console.error("display: ", a);
     }
@@ -1817,11 +1855,11 @@ class Q {
    * @param style the formatting style to use/ используемый стиль форматирования
    */
   languageName(t, e) {
-    const s = {
+    const i = {
       type: "language",
       style: e
     };
-    return this.display(p.getByCode(t).language, s);
+    return this.display(w.getByCode(t).language, i);
   }
   /**
    * Get display names of region.
@@ -1831,11 +1869,11 @@ class Q {
    * @param style the formatting style to use/ используемый стиль форматирования
    */
   countryName(t, e) {
-    const s = {
+    const i = {
       type: "region",
       style: e
     };
-    return this.display(t, s);
+    return this.display(t, i);
   }
   /**
    * The method returns a string containing the full name in a specific format.
@@ -1846,19 +1884,19 @@ class Q {
    * @param surname surname middle name (optional)/ отчество
    * @param short shorten the names/ сократить названия
    */
-  fullName(t, e, s, r) {
+  fullName(t, e, i, r) {
     var u, h;
     const o = (h = (u = this.geo) == null ? void 0 : u.nameFormat) != null ? h : "fl";
     let a;
     switch (o) {
       case "fsl":
-        a = `${e}${s ? ` ${s}` : ""} ${t}`;
+        a = `${e}${i ? ` ${i}` : ""} ${t}`;
         break;
       case "lf":
         a = `${t} ${e}`;
         break;
       case "lsf":
-        a = `${t}${s ? ` ${s}` : ""} ${e}`;
+        a = `${t}${i ? ` ${i}` : ""} ${e}`;
         break;
       default:
         a = `${e} ${t}`;
@@ -1875,8 +1913,8 @@ class Q {
    * или всеми свойствами
    */
   number(t, e) {
-    var s, r;
-    return ((r = (s = this.numberObject(e)) == null ? void 0 : s.format) == null ? void 0 : r.call(s, k(t))) || t.toString();
+    var i, r;
+    return ((r = (i = this.numberObject(e)) == null ? void 0 : i.format) == null ? void 0 : r.call(i, k(t))) || t.toString();
   }
   /**
    * Decimal point symbol.
@@ -1884,8 +1922,8 @@ class Q {
    * Символ десятичной точки.
    */
   decimal() {
-    var t, e, s, r, o;
-    return ((o = (r = (s = (e = (t = this.numberObject()) == null ? void 0 : t.formatToParts) == null ? void 0 : e.call(t, 1.2)) == null ? void 0 : s.find) == null ? void 0 : r.call(s, (a) => a.type === "decimal")) == null ? void 0 : o.value) || ".";
+    var t, e, i, r, o;
+    return ((o = (r = (i = (e = (t = this.numberObject()) == null ? void 0 : t.formatToParts) == null ? void 0 : e.call(t, 1.2)) == null ? void 0 : i.find) == null ? void 0 : r.call(i, (a) => a.type === "decimal")) == null ? void 0 : o.value) || ".";
   }
   /**
    * Currency formatting.
@@ -1896,13 +1934,13 @@ class Q {
    * валюта для использования в форматировании валюты
    * @param numberOnly do not display the currency symbol/ не выводить значок валюты
    */
-  currency(t, e, s = !1) {
+  currency(t, e, i = !1) {
     const r = {
       style: "currency",
       currencyDisplay: "symbol",
       ...typeof e == "string" ? { currency: e } : e || {}
     }, o = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]{3})$/i, (...a) => (r.currency = String(a[2]).toUpperCase(), String(a[1])));
-    if (s) {
+    if (i) {
       const a = this.numberObject(r);
       return a ? _t(
         a.formatToParts(k(t)).filter((u) => ["literal", "currency"].indexOf(u.type) === -1),
@@ -1929,12 +1967,12 @@ class Q {
    * как отобразить валюту в формате валюты
    */
   currencySymbol(t, e = "symbol") {
-    var s, r, o, a, u;
-    return ((u = (a = (o = (r = (s = this.numberObject({
+    var i, r, o, a, u;
+    return ((u = (a = (o = (r = (i = this.numberObject({
       style: "currency",
       currencyDisplay: e,
       currency: t
-    })) == null ? void 0 : s.formatToParts) == null ? void 0 : r.call(s, 100)) == null ? void 0 : o.find) == null ? void 0 : a.call(o, (h) => h.type === "currency")) == null ? void 0 : u.value) || t;
+    })) == null ? void 0 : i.formatToParts) == null ? void 0 : r.call(i, 100)) == null ? void 0 : o.find) == null ? void 0 : a.call(o, (h) => h.type === "currency")) == null ? void 0 : u.value) || t;
   }
   /**
    * Unit formatting.
@@ -1946,11 +1984,11 @@ class Q {
    * в форматировании блока
    */
   unit(t, e) {
-    const s = {
+    const i = {
       style: "unit",
       ...typeof e == "string" ? { unit: e } : e || {}
-    }, r = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]+)$/i, (...o) => (s.unit = String(o[2]).toLowerCase(), String(o[1])));
-    return this.number(r, s);
+    }, r = t.toString().replace(/^([\S\s]+[\d ])([a-zA-Z]+)$/i, (...o) => (i.unit = String(o[2]).toLowerCase(), String(o[1])));
+    return this.number(r, i);
   }
   /**
    * Возвращает отформатированный размер файла
@@ -1959,19 +1997,19 @@ class Q {
    * в форматировании блока
    */
   sizeFile(t, e = "byte") {
-    const s = k(t);
-    if (s > 1024 && R(e))
+    const i = k(t);
+    if (i > 1024 && P(e))
       switch (e) {
         case "byte":
-          return this.sizeFile(s / 1024, "kilobyte");
+          return this.sizeFile(i / 1024, "kilobyte");
         case "kilobyte":
-          return this.sizeFile(s / 1024, "megabyte");
+          return this.sizeFile(i / 1024, "megabyte");
         case "megabyte":
-          return this.sizeFile(s / 1024, "gigabyte");
+          return this.sizeFile(i / 1024, "gigabyte");
         case "gigabyte":
-          return this.sizeFile(s / 1024, "terabyte");
+          return this.sizeFile(i / 1024, "terabyte");
         case "terabyte":
-          return this.sizeFile(s / 1024, "petabyte");
+          return this.sizeFile(i / 1024, "petabyte");
       }
     return this.unit(t, e);
   }
@@ -2007,13 +2045,13 @@ class Q {
    * @param options Property for PluralRules/ свойство для PluralRules
    * @param optionsNumber an object with some or all properties/ объект с некоторыми или всеми свойствами
    */
-  plural(t, e, s, r) {
+  plural(t, e, i, r) {
     var u;
     const o = k(t), a = e.split("|");
     if (a.length > 1)
       try {
         if (l()) {
-          const f = new Intl.PluralRules(this.getLocation(), s).select(o);
+          const f = new Intl.PluralRules(this.getLocation(), i).select(o);
           let d;
           switch (f) {
             case "zero":
@@ -2051,9 +2089,9 @@ class Q {
    * @param styleOptions the representation of the month/ представление месяца
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
-  date(t, e, s, r) {
-    const o = I(t), a = typeof s == "string", u = this.dateOptions(e, a ? s : "short");
-    return r && (u.hour12 = !1), a || Object.assign(u, s), o.toLocaleString(this.getLocation(), u);
+  date(t, e, i, r) {
+    const o = F(t), a = typeof i == "string", u = this.dateOptions(e, a ? i : "short");
+    return r && (u.hour12 = !1), a || Object.assign(u, i), o.toLocaleString(this.getLocation(), u);
   }
   /**
    * Enables language-sensitive relative time formatting.
@@ -2064,8 +2102,8 @@ class Q {
    * длина интернационализированного сообщения
    * @param todayValue current day/ текущий день
    */
-  relative(t, e, s) {
-    const r = I(t), o = s || /* @__PURE__ */ new Date(), a = {
+  relative(t, e, i) {
+    const r = F(t), o = i || /* @__PURE__ */ new Date(), a = {
       numeric: "auto",
       ...typeof e == "string" ? { style: e } : e || {}
     };
@@ -2090,9 +2128,9 @@ class Q {
    * @param type type of data format/ тип формата data
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
    */
-  relativeLimit(t, e, s, r, o, a, u) {
-    const h = I(t), f = s || /* @__PURE__ */ new Date(), d = new Date(f), v = new Date(f);
-    return d.setDate(f.getDate() - e), v.setDate(f.getDate() + e), h >= d && h <= v ? this.relative(
+  relativeLimit(t, e, i, r, o, a, u) {
+    const h = F(t), f = i || /* @__PURE__ */ new Date(), d = new Date(f), m = new Date(f);
+    return d.setDate(f.getDate() - e), m.setDate(f.getDate() + e), h >= d && h <= m ? this.relative(
       h,
       r,
       f
@@ -2109,10 +2147,10 @@ class Q {
    * @param unit time unit/ единица времени
    * @param styleOptions additional option or formatting style/ дополнительная опция или стиль форматирования
    */
-  relativeByValue(t, e, s) {
+  relativeByValue(t, e, i) {
     const r = {
       numeric: "auto",
-      ...typeof s == "string" ? { style: s } : s || {}
+      ...typeof i == "string" ? { style: i } : i || {}
     };
     try {
       if (l())
@@ -2131,9 +2169,9 @@ class Q {
   month(t, e) {
     try {
       if (l())
-        return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(I(t));
-    } catch (s) {
-      console.error("month: ", s);
+        return Intl.DateTimeFormat(this.getLocation(), { month: e || "long" }).format(F(t));
+    } catch (i) {
+      console.error("month: ", i);
     }
     return "";
   }
@@ -2150,15 +2188,15 @@ class Q {
     }];
     try {
       if (l()) {
-        const s = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { month: t || "long" });
+        const i = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { month: t || "long" });
         for (let o = 0; o < 12; o++)
-          s.setMonth(o), e.push({
-            label: r.format(s).replace(/^./, (a) => a.toUpperCase()),
+          i.setMonth(o), e.push({
+            label: r.format(i).replace(/^./, (a) => a.toUpperCase()),
             value: o + 1
           });
       }
-    } catch (s) {
-      console.error("months: ", s);
+    } catch (i) {
+      console.error("months: ", i);
     }
     return e;
   }
@@ -2172,9 +2210,9 @@ class Q {
   weekday(t, e) {
     try {
       if (l())
-        return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(I(t));
-    } catch (s) {
-      console.error("weekday: ", s);
+        return Intl.DateTimeFormat(this.getLocation(), { weekday: e || "long" }).format(F(t));
+    } catch (i) {
+      console.error("weekday: ", i);
     }
     return "";
   }
@@ -2191,16 +2229,16 @@ class Q {
     }];
     try {
       if (l()) {
-        const s = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }), o = s.getDay() + (this.geo.firstDay === "Mo" ? -1 : 1);
-        s.setDate(s.getDate() - o);
+        const i = /* @__PURE__ */ new Date(), r = Intl.DateTimeFormat(this.getLocation(), { weekday: t || "long" }), o = i.getDay() + (this.geo.firstDay === "Mo" ? -1 : 1);
+        i.setDate(i.getDate() - o);
         for (let a = 0; a < 7; a++)
           e.push({
-            label: r.format(s).replace(/^./, (u) => u.toUpperCase()),
-            value: s.getDay()
-          }), s.setDate(s.getDate() + 1);
+            label: r.format(i).replace(/^./, (u) => u.toUpperCase()),
+            value: i.getDay()
+          }), i.setDate(i.getDate() + 1);
       }
-    } catch (s) {
-      console.error("weekdays: ", s);
+    } catch (i) {
+      console.error("weekdays: ", i);
     }
     return e;
   }
@@ -2220,10 +2258,10 @@ class Q {
    * @param data an array with data/ массив с данными
    * @param compareFn a function for sorting/ функция для сортировки
    */
-  sort(t, e = (s, r) => [s, r]) {
+  sort(t, e = (i, r) => [i, r]) {
     if (l()) {
-      const s = new Intl.Collator(this.getLocation());
-      return t.sort((r, o) => s.compare(...e(r, o)));
+      const i = new Intl.Collator(this.getLocation());
+      return t.sort((r, o) => i.compare(...e(r, o)));
     }
     return t;
   }
@@ -2250,23 +2288,23 @@ class Q {
    * @param display the representation of the month/ представление месяца
    */
   dateOptions(t, e = "short") {
-    const s = {};
-    return ["full", "datetime", "date", void 0, "year-month", "year"].indexOf(t) !== -1 && (s.year = "numeric"), ["full", "datetime", "date", void 0, "year-month", "month", "day-month"].indexOf(t) !== -1 && (s.month = e), ["full", "datetime", "date", void 0, "day", "day-month"].indexOf(t) !== -1 && (s.day = "2-digit"), t !== void 0 && (["full", "datetime", "time", "hour-minute", "hour"].indexOf(t) !== -1 && (s.hour = "2-digit"), ["full", "datetime", "time", "hour-minute", "minute"].indexOf(t) !== -1 && (s.minute = "2-digit"), ["full", "time", "second"].indexOf(t) !== -1 && (s.second = "2-digit")), s;
+    const i = {};
+    return ["full", "datetime", "date", void 0, "year-month", "year"].indexOf(t) !== -1 && (i.year = "numeric"), ["full", "datetime", "date", void 0, "year-month", "month", "day-month"].indexOf(t) !== -1 && (i.month = e), ["full", "datetime", "date", void 0, "day", "day-month"].indexOf(t) !== -1 && (i.day = "2-digit"), t !== void 0 && (["full", "datetime", "time", "hour-minute", "hour"].indexOf(t) !== -1 && (i.hour = "2-digit"), ["full", "datetime", "time", "hour-minute", "minute"].indexOf(t) !== -1 && (i.minute = "2-digit"), ["full", "time", "second"].indexOf(t) !== -1 && (i.second = "2-digit")), i;
   }
 }
-const it = {};
-class ct {
+const st = {};
+class ut {
   /**
    * Constructor
    * @param date date for processing/ дата для обработки
    * @param type type of date format for output/ тип формата даты вывода
    * @param code country and language code/ код страны и языка
    */
-  constructor(t, e = "date", s = p.getLocation()) {
+  constructor(t, e = "date", i = w.getLocation()) {
     c(this, "date");
     c(this, "hour24", !1);
     c(this, "watch");
-    this.type = e, this.code = s, this.date = I(t);
+    this.type = e, this.code = i, this.date = F(t);
   }
   /**
    * Returns an object for working with formatting.
@@ -2330,10 +2368,10 @@ class ct {
     const e = this.getTimeZoneOffset();
     if (t === "minute")
       return e.toString();
-    const s = e / 60 * -1;
+    const i = e / 60 * -1;
     if (t === "hour")
-      return this.getIntl().number(Math.trunc(s), { signDisplay: "always" });
-    const r = this.toTimeZoneHourFormat(s), o = s.toString().match(/.\d+/) ? "30" : "00";
+      return this.getIntl().number(Math.trunc(i), { signDisplay: "always" });
+    const r = this.toTimeZoneHourFormat(i), o = i.toString().match(/.\d+/) ? "30" : "00";
     return t === "RFC" ? `${r}${o}` : `${r}:${o}`;
   }
   /**
@@ -2479,13 +2517,13 @@ class ct {
    * @param timeZone add time zone/ добавить временную зону
    */
   standard(t = !0) {
-    const e = new ct(this.date, this.type, "en-GB"), s = [];
+    const e = new ut(this.date, this.type, "en-GB"), i = [];
     let r;
     return e.setHour24(!0), this.type === "hour-minute" ? r = e.locale(this.type, {
       year: "numeric",
       month: "2-digit",
       hour12: !1
-    }) : (["full", "datetime", "date", "year-month", "year", "month", "day"].indexOf(this.type) !== -1 && (s.push(e.localeYear()), s.push(e.localeMonth("2-digit"))), ["full", "datetime", "date", "year", "month", "day"].indexOf(this.type) !== -1 && s.push(e.localeDay("2-digit")), ["full", "datetime", "time", "hour", "minute", "second"].indexOf(this.type) !== -1 && (r = e.locale("time"))), `${s.join("-")}${r ? `T${r}${t ? e.getTimeZone() : ""}` : ""}`;
+    }) : (["full", "datetime", "date", "year-month", "year", "month", "day"].indexOf(this.type) !== -1 && (i.push(e.localeYear()), i.push(e.localeMonth("2-digit"))), ["full", "datetime", "date", "year", "month", "day"].indexOf(this.type) !== -1 && i.push(e.localeDay("2-digit")), ["full", "datetime", "time", "hour", "minute", "second"].indexOf(this.type) !== -1 && (r = e.locale("time"))), `${i.join("-")}${r ? `T${r}${t ? e.getTimeZone() : ""}` : ""}`;
   }
   /**
    * Change the date completely.
@@ -2495,7 +2533,7 @@ class ct {
    * целочисленное значение, представляющее число
    */
   setDate(t) {
-    return this.date = I(t), this.update(), this;
+    return this.date = F(t), this.update(), this;
   }
   /**
    * Change the type of data output.
@@ -2934,32 +2972,32 @@ class Ne {
   take() {
     return new Promise((t, e) => {
       const {
-        width: s,
+        width: i,
         height: r
       } = this.element.getBoundingClientRect();
-      if (s === 0 || r === 0)
+      if (i === 0 || r === 0)
         return e(new Error("Element has no dimensions"));
       const o = document.createElement("canvas"), a = o.getContext("2d");
       if (!a)
         return e(new Error("Could not get canvas context"));
       const u = window.devicePixelRatio || 1;
-      o.width = s * u, o.height = r * u, o.style.width = `${s}px`, o.style.height = `${r}px`, a.scale(u, u);
+      o.width = i * u, o.height = r * u, o.style.width = `${i}px`, o.style.height = `${r}px`, a.scale(u, u);
       const h = this.getStyles(), f = this.element.outerHTML, d = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${r}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="${i}" height="${r}">
           <foreignObject x="0" y="0" width="100%" height="100%">
             <style>${h}</style>
             <div xmlns="http://www.w3.org/1999/xhtml">${f}</div>
           </foreignObject>
         </svg>
-      `, v = new Image(), P = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(d)));
-      v.onload = () => {
-        a.drawImage(v, 0, 0, s, r), t(o.toDataURL("image/png"));
-      }, v.onerror = (G) => {
+      `, m = new Image(), W = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(d)));
+      m.onload = () => {
+        a.drawImage(m, 0, 0, i, r), t(o.toDataURL("image/png"));
+      }, m.onerror = (x) => {
         console.error("Screenshot failed", {
-          error: G,
+          error: x,
           svg: d
         }), e(new Error("Failed to load SVG image for screenshot. See console for details."));
-      }, v.src = P;
+      }, m.src = W;
     });
   }
   /**
@@ -2969,8 +3007,8 @@ class Ne {
    * @param filename name of the file to download/ имя файла для скачивания
    */
   async download(t = "screenshot.png") {
-    const e = await this.take(), s = document.createElement("a");
-    s.href = e, s.download = t, document.body.appendChild(s), s.click(), document.body.removeChild(s);
+    const e = await this.take(), i = document.createElement("a");
+    i.href = e, i.download = t, document.body.appendChild(i), i.click(), document.body.removeChild(i);
   }
   /**
    * Gathers all CSS styles from the document's stylesheets.
@@ -2982,10 +3020,10 @@ class Ne {
     try {
       for (const e of Array.from(document.styleSheets))
         try {
-          for (const s of Array.from(e.cssRules))
-            t += s.cssText;
-        } catch (s) {
-          console.warn("Could not read CSS rules from a stylesheet due to CORS.", s);
+          for (const i of Array.from(e.cssRules))
+            t += i.cssText;
+        } catch (i) {
+          console.warn("Could not read CSS rules from a stylesheet due to CORS.", i);
         }
     } catch (e) {
       console.error("Could not access stylesheets.", e);
@@ -2993,12 +3031,12 @@ class Ne {
     return t;
   }
 }
-const n = "f", U = class U {
+const n = "f", j = class j {
   /**
    * Constructor
    * @param code country and language code/ код страны и языка
    */
-  constructor(t = p.getLocation()) {
+  constructor(t = w.getLocation()) {
     this.code = t;
   }
   /**
@@ -3008,15 +3046,15 @@ const n = "f", U = class U {
    * @param code country code/ код страны
    */
   get(t = this.code) {
-    var s;
-    const e = p.find(t);
+    var i;
+    const e = w.find(t);
     if (e) {
       const r = this.getCountry(e);
       return {
         language: this.getLanguage(e),
         country: r,
         standard: e.standard,
-        icon: (s = U.flags) == null ? void 0 : s[e.country],
+        icon: (i = j.flags) == null ? void 0 : i[e.country],
         label: r,
         value: e.country
       };
@@ -3049,12 +3087,12 @@ const n = "f", U = class U {
    */
   getNational(t) {
     return g(this.getList(t), (e) => {
-      const s = new U(e.standard).get(e.standard);
+      const i = new j(e.standard).get(e.standard);
       return {
         ...e,
-        description: s == null ? void 0 : s.country,
-        nationalLanguage: s == null ? void 0 : s.language,
-        nationalCountry: s == null ? void 0 : s.country
+        description: i == null ? void 0 : i.country,
+        nationalLanguage: i == null ? void 0 : i.language,
+        nationalCountry: i == null ? void 0 : i.country
       };
     });
   }
@@ -3082,7 +3120,7 @@ const n = "f", U = class U {
    * @param codes country code/ код страны
    */
   getCodes(t) {
-    return t != null ? t : Object.keys(U.flags);
+    return t != null ? t : Object.keys(j.flags);
   }
   /**
    * Getting the name of the language.
@@ -3103,7 +3141,7 @@ const n = "f", U = class U {
     return this.getLocation().countryName(t.country);
   }
 };
-c(U, "flags", {
+c(j, "flags", {
   AD: `${n}-ad`,
   AE: `${n}-ae`,
   AF: `${n}-af`,
@@ -3346,8 +3384,8 @@ c(U, "flags", {
   ZM: `${n}-zm`,
   ZW: `${n}-zw`
 });
-let wt = U;
-const j = class j {
+let vt = j;
+const H = class H {
   /**
    * Getting an object with information about the phone code and country.
    *
@@ -3364,12 +3402,12 @@ const j = class j {
    * @param phone phone number/ номер телефон
    */
   static getByPhone(t) {
-    let e = this.map, s, r = "";
+    let e = this.map, i, r = "";
     return this.toNumber(t).forEach((o) => {
       var a;
-      r === "" && o in e ? (s = e[o], e = (a = s == null ? void 0 : s.next) != null ? a : {}) : r += o;
+      r === "" && o in e ? (i = e[o], e = (a = i == null ? void 0 : i.next) != null ? a : {}) : r += o;
     }), {
-      item: s,
+      item: i,
       phone: r
     };
   }
@@ -3380,10 +3418,10 @@ const j = class j {
    * @param code country and language code/ код страны и языка
    */
   static getByCode(t) {
-    var s;
+    var i;
     const e = this.get(t);
     if (e)
-      return (s = this.getByPhone(e.phone.toString())) == null ? void 0 : s.item;
+      return (i = this.getByPhone(e.phone.toString())) == null ? void 0 : i.item;
   }
   /**
    * We get an array from a list of all phone numbers.
@@ -3410,10 +3448,10 @@ const j = class j {
    */
   static toMask(t, e) {
     if (L(t) && Array.isArray(e) && e.length > 0) {
-      const s = this.removeZero(t), r = s.length;
+      const i = this.removeZero(t), r = i.length;
       for (const o of e)
         if (this.getUnnecessaryLength(o) === r)
-          return this.toStandard(s, o);
+          return this.toStandard(i, o);
     }
   }
   /**
@@ -3457,16 +3495,16 @@ const j = class j {
    * Формирование списка для карты.
    */
   static makeList() {
-    const t = g(p.getList(), (e) => {
+    const t = g(w.getList(), (e) => {
       if (e != null && e.phoneMask)
         return {
           phone: (e == null ? void 0 : e.phoneCode) && Number(e.phoneCode.replace(/[^0-9]+/, "")) || void 0,
           within: (e == null ? void 0 : e.phoneWithin) || 0,
-          mask: Z(e.phoneMask),
+          mask: V(e.phoneMask),
           value: e.country
         };
     });
-    this.list = t.sort((e, s) => e.phone - s.phone);
+    this.list = t.sort((e, i) => e.phone - i.phone);
   }
   /**
    * Creating a map for search.
@@ -3476,17 +3514,17 @@ const j = class j {
   static makeMap() {
     this.list.forEach((t) => {
       t.mask.forEach((e) => {
-        let s = this.map, r;
+        let i = this.map, r;
         if (this.toNumber(e).forEach((o) => {
           var a;
-          o in s || (s[o] = {
+          o in i || (i[o] = {
             items: [],
             info: void 0,
             value: void 0,
             mask: [],
             maskFull: [],
             next: {}
-          }), r = s[o], s = (a = r == null ? void 0 : r.next) != null ? a : {};
+          }), r = i[o], i = (a = r == null ? void 0 : r.next) != null ? a : {};
         }), r) {
           r.value === void 0 && (r.info = t, r.value = t.value);
           const o = this.toWithin(e, t.within);
@@ -3512,8 +3550,8 @@ const j = class j {
    * @param mask a mask to transform a phone number/ маска для преобразования номер телефон
    */
   static toStandard(t, e) {
-    let s = 0;
-    return e.replace(/\*/ig, () => String(t[s++]));
+    let i = 0;
+    return e.replace(/\*/ig, () => String(t[i++]));
   }
   /**
    * Replaces the first character with the internal country code
@@ -3526,8 +3564,8 @@ const j = class j {
     return t.replace(/\*/, this.getWithinSymbol(e));
   }
 };
-c(j, "list", []), c(j, "map", {}), j.makeList(), j.makeMap();
-let bt = j, W;
+c(H, "list", []), c(H, "map", {}), H.makeList(), H.makeMap();
+let St = H, U;
 class Ee {
   /**
    * Returns the value by its name.
@@ -3536,7 +3574,7 @@ class Ee {
    * @param name property name/ название свойства
    */
   static get(t) {
-    return W && (W == null ? void 0 : W[t]);
+    return U && (U == null ? void 0 : U[t]);
   }
   /**
    * Adds data, this method works only once.
@@ -3545,10 +3583,10 @@ class Ee {
    * @param data global data/ глобальные данные
    */
   static add(t) {
-    W === void 0 && (W = C(t));
+    U === void 0 && (U = C(t));
   }
 }
-const F = class F {
+const R = class R {
   /**
    * Get data from hash.
    *
@@ -3568,8 +3606,8 @@ const F = class F {
    */
   static set(t, e) {
     var r;
-    const s = B(e);
-    s !== ((r = this.hash) == null ? void 0 : r[t]) && (this.hash[t] = s, this.update());
+    const i = B(e);
+    i !== ((r = this.hash) == null ? void 0 : r[t]) && (this.hash[t] = i, this.update());
   }
   /**
    * Adding an event when data is changed.
@@ -3579,8 +3617,8 @@ const F = class F {
    * @param callback the function is called when the data is changed/ функция вызывается при изменении данных
    */
   static addWatch(t, e) {
-    var s;
-    t in this.watch ? (s = this.watch[t]) == null || s.push(e) : this.watch[t] = [e];
+    var i;
+    t in this.watch ? (i = this.watch[t]) == null || i.push(e) : this.watch[t] = [e];
   }
   /**
    * Update hash variable from URL string.
@@ -3602,7 +3640,7 @@ const F = class F {
     const t = {};
     return location.hash.replace(
       /([\w-]+)[:=]([^;]+)/ig,
-      (...e) => (t[String(e[1])] = It(e[2]), "")
+      (...e) => (t[String(e[1])] = Ft(e[2]), "")
     ), t;
   }
   /**
@@ -3611,7 +3649,7 @@ const F = class F {
    * Обновление строки хэша в URL.
    */
   static update() {
-    this.block = !0, history.replaceState(null, "", `#${Et(this.hash, "=", ";")}`), requestAnimationFrame(() => {
+    this.block = !0, history.replaceState(null, "", `#${It(this.hash, "=", ";")}`), requestAnimationFrame(() => {
       this.block = !1;
     });
   }
@@ -3622,15 +3660,15 @@ const F = class F {
    * @param location fresh data/ свежий данные
    */
   static makeWatch(t) {
-    g(this.watch, (e, s) => {
+    g(this.watch, (e, i) => {
       var r;
-      ((r = this.hash) == null ? void 0 : r[s]) !== (t == null ? void 0 : t[s]) && e.forEach((o) => o(t[s]));
+      ((r = this.hash) == null ? void 0 : r[i]) !== (t == null ? void 0 : t[i]) && e.forEach((o) => o(t[i]));
     });
   }
 };
-c(F, "hash", {}), c(F, "watch", {}), c(F, "block", !1), l() && (F.reload(), addEventListener("hashchange", () => F.reload()));
-let vt = F;
-const st = "__UI_ICON", St = 320, Dt = "--LOAD--", q = class q {
+c(R, "hash", {}), c(R, "watch", {}), c(R, "block", !1), l() && (R.reload(), addEventListener("hashchange", () => R.reload()));
+let Dt = R;
+const it = "__UI_ICON", Lt = 320, Ct = "--LOAD--", q = class q {
   /**
    * Checks if the given icon is in the list of connected icons.
    *
@@ -3650,10 +3688,10 @@ const st = "__UI_ICON", St = 320, Dt = "--LOAD--", q = class q {
    * @param wait waiting time for picture loading/
    * время ожидания загрузки картинки
    */
-  static async get(t, e = "", s = 1e3 * 60 * 3) {
+  static async get(t, e = "", i = 1e3 * 60 * 3) {
     var o, a, u, h;
     const r = (h = (u = (o = this.icons) == null ? void 0 : o[this.getName(t)]) != null ? u : (a = this.icons) == null ? void 0 : a[t]) != null ? h : `${t.replace(/^@/, e != null ? e : this.url)}.svg`;
-    return typeof r == "string" ? r === Dt && s > 0 ? (await this.wait(), this.get(t, e, s - St)) : r : at(r) ? await r() : await r;
+    return typeof r == "string" ? r === Ct && i > 0 ? (await this.wait(), this.get(t, e, i - Lt)) : r : ct(r) ? await r() : await r;
   }
   /**
    * Returns a list of names of all registered icons.
@@ -3669,7 +3707,7 @@ const st = "__UI_ICON", St = 320, Dt = "--LOAD--", q = class q {
    * Возвращает глобальную ссылку.
    */
   static getUrlGlobal() {
-    return `${z.isLocalhost(), ""}${this.url}`;
+    return `${Z.isLocalhost(), ""}${this.url}`;
   }
   /**
    * Adding custom icons.
@@ -3688,7 +3726,7 @@ const st = "__UI_ICON", St = 320, Dt = "--LOAD--", q = class q {
    * @param index icon name/ название иконки
    */
   static addLoad(t) {
-    this.icons[this.getName(t)] = Dt;
+    this.icons[this.getName(t)] = Ct;
   }
   /**
    * Adding custom global icons.
@@ -3707,7 +3745,7 @@ const st = "__UI_ICON", St = 320, Dt = "--LOAD--", q = class q {
    * @param list list of icons/ список иконки
    */
   static addByList(t) {
-    g(t, (e, s) => this.add(s, e));
+    g(t, (e, i) => this.add(i, e));
   }
   /**
    * Changes the file path.
@@ -3733,42 +3771,42 @@ const st = "__UI_ICON", St = 320, Dt = "--LOAD--", q = class q {
    * Задержка выполнения скрипта.
    */
   static wait() {
-    return new Promise((t) => setTimeout(() => t(), St));
+    return new Promise((t) => setTimeout(() => t(), Lt));
   }
 };
-c(q, "icons", {}), c(q, "url", "/icons/"), l() && (st in window || (window[st] = {}), q.icons = window[st]);
-let Lt = q;
-function Ot(i, t, e) {
-  var s, r;
-  return (r = (s = N(i)) == null ? void 0 : s[t]) != null ? r : e;
+c(q, "icons", {}), c(q, "url", "/icons/"), l() && (it in window || (window[it] = {}), q.icons = window[it]);
+let kt = q;
+function Ot(s, t, e) {
+  var i, r;
+  return (r = (i = N(s)) == null ? void 0 : i[t]) != null ? r : e;
 }
-function Tt(i, t, e) {
-  const s = N(i);
-  if (s) {
-    const r = Ot(s, t);
-    if (m(r) && m(e))
+function Tt(s, t, e) {
+  const i = N(s);
+  if (i) {
+    const r = Ot(i, t);
+    if (y(r) && y(e))
       g(e, (o, a) => {
         r[a] = B(o);
       });
     else {
       const o = B(e);
-      !(t in s) && typeof o == "string" ? s.setAttribute(t.toString(), o) : s[t] = B(e);
+      !(t in i) && typeof o == "string" ? i.setAttribute(t.toString(), o) : i[t] = B(e);
     }
   }
-  return s;
+  return i;
 }
-function _(i, t = "div", e, s) {
+function O(s, t = "div", e, i) {
   if (!l())
     return;
   const r = document.createElement(t);
   return typeof e == "function" ? e(r) : A(e) && g(e, (o, a) => {
     Tt(r, a, o);
-  }), i == null || i.insertBefore(r, s != null ? s : null), r;
+  }), s == null || s.insertBefore(r, i != null ? i : null), r;
 }
-function Gt(i) {
-  return i.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").trim();
+function Gt(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").trim();
 }
-class ut {
+class ht {
   /**
    * Creates an instance of MetaManager.
    *
@@ -3836,7 +3874,7 @@ class ut {
   setByList(t) {
     return g(
       t,
-      (e, s) => this.set(s, String(e))
+      (e, i) => this.set(i, String(e))
     ), this;
   }
   /**
@@ -3877,12 +3915,12 @@ class ut {
    */
   setMeta(t) {
     var r;
-    const e = this.findMetaElement(t), s = (r = this.items[t]) != null ? r : "";
+    const e = this.findMetaElement(t), i = (r = this.items[t]) != null ? r : "";
     if (e)
-      e.content = s;
+      e.content = i;
     else if (l()) {
-      const o = { content: s };
-      this.isProperty ? o.property = t : o.name = t, _(document.head, "meta", o);
+      const o = { content: i };
+      this.isProperty ? o.property = t : o.name = t, O(document.head, "meta", o);
     }
     return this;
   }
@@ -3893,8 +3931,8 @@ class ut {
    * @param name meta tag name / имя мета-тега
    */
   toHtmlString(t) {
-    var s;
-    const e = Gt((s = this.items[t]) != null ? s : "");
+    var i;
+    const e = Gt((i = this.items[t]) != null ? i : "");
     return e ? `<meta ${this.getAttributeName()}="${t}" content="${e}">` : "";
   }
   /**
@@ -3904,15 +3942,15 @@ class ut {
    */
   update() {
     return this.listMeta.forEach((t) => {
-      var e, s;
-      this.items[t] = (s = (e = this.findMetaElement(t)) == null ? void 0 : e.content) != null ? s : "";
+      var e, i;
+      this.items[t] = (i = (e = this.findMetaElement(t)) == null ? void 0 : e.content) != null ? i : "";
     }), this;
   }
 }
-var S = /* @__PURE__ */ ((i) => (i.description = "description", i.keywords = "keywords", i.canonical = "canonical", i.robots = "robots", i.author = "author", i))(S || {}), te = /* @__PURE__ */ ((i) => (i.indexFollow = "index, follow", i.noIndexFollow = "noindex, follow", i.indexNoFollow = "index, nofollow", i.noIndexNoFollow = "noindex, nofollow", i.noArchive = "noarchive", i.noSnippet = "nosnippet", i.noImageIndex = "noimageindex", i.images = "images", i.noTranslate = "notranslate", i.noPreview = "nopreview", i.textOnly = "textonly", i.noIndexSubpages = "noindex, noarchive", i.none = "none", i))(te || {}), y = /* @__PURE__ */ ((i) => (i.title = "og:title", i.type = "og:type", i.url = "og:url", i.image = "og:image", i.description = "og:description", i.locale = "og:locale", i.siteName = "og:site_name", i.localeAlternate = "og:locale:alternate", i.imageUrl = "og:image:url", i.imageSecureUrl = "og:image:secure_url", i.imageType = "og:image:type", i.imageWidth = "og:image:width", i.imageHeight = "og:image:height", i.imageAlt = "og:image:alt", i.video = "og:video", i.videoUrl = "og:video:url", i.videoSecureUrl = "og:video:secure_url", i.videoType = "og:video:type", i.videoWidth = "og:video:width", i.videoHeight = "og:video:height", i.audio = "og:audio", i.audioSecureUrl = "og:audio:secure_url", i.audioType = "og:audio:type", i.articlePublishedTime = "article:published_time", i.articleModifiedTime = "article:modified_time", i.articleExpirationTime = "article:expiration_time", i.articleAuthor = "article:author", i.articleSection = "article:section", i.articleTag = "article:tag", i.bookAuthor = "book:author", i.bookIsbn = "book:isbn", i.bookReleaseDate = "book:release_date", i.bookTag = "book:tag", i.musicDuration = "music:duration", i.musicAlbum = "music:album", i.musicAlbumDisc = "music:album:disc", i.musicAlbumTrack = "music:album:track", i.musicMusician = "music:musician", i.musicSong = "music:song", i.musicSongDisc = "music:song:disc", i.musicSongTrack = "music:song:track", i.musicReleaseDate = "music:release_date", i.musicCreator = "music:creator", i.videoActor = "video:actor", i.videoActorRole = "video:actor:role", i.videoDirector = "video:director", i.videoWriter = "video:writer", i.videoDuration = "video:duration", i.videoReleaseDate = "video:release_date", i.videoTag = "video:tag", i.videoSeries = "video:series", i.profileFirstName = "profile:first_name", i.profileLastName = "profile:last_name", i.profileUsername = "profile:username", i.profileGender = "profile:gender", i.productBrand = "product:brand", i.productAvailability = "product:availability", i.productCondition = "product:condition", i.productPriceAmount = "product:price:amount", i.productPriceCurrency = "product:price:currency", i.productRetailerItemId = "product:retailer_item_id", i.productCategory = "product:category", i.productEan = "product:ean", i.productIsbn = "product:isbn", i.productMfrPartNo = "product:mfr_part_no", i.productUpc = "product:upc", i.productWeightValue = "product:weight:value", i.productWeightUnits = "product:weight:units", i.productColor = "product:color", i.productMaterial = "product:material", i.productPattern = "product:pattern", i.productAgeGroup = "product:age_group", i.productGender = "product:gender", i))(y || {}), ee = /* @__PURE__ */ ((i) => (i.website = "website", i.article = "article", i.video = "video.other", i.videoTvShow = "video.tv_show", i.videoEpisode = "video.episode", i.videoMovie = "video.movie", i.musicAlbum = "music.album", i.musicPlaylist = "music.playlist", i.musicSong = "music.song", i.musicRadioStation = "music.radio_station", i.app = "app", i.product = "product", i.business = "business.business", i.place = "place", i.event = "event", i.profile = "profile", i.book = "book", i))(ee || {}), ie = /* @__PURE__ */ ((i) => (i.inStock = "in stock", i.outOfStock = "out of stock", i.preorder = "preorder", i.backorder = "backorder", i.discontinued = "discontinued", i.pending = "pending", i))(ie || {}), se = /* @__PURE__ */ ((i) => (i.new = "new", i.used = "used", i.refurbished = "refurbished", i))(se || {}), re = /* @__PURE__ */ ((i) => (i.newborn = "newborn", i.infant = "infant", i.toddler = "toddler", i.kids = "kids", i.adult = "adult", i))(re || {}), ne = /* @__PURE__ */ ((i) => (i.female = "female", i.male = "male", i.unisex = "unisex", i))(ne || {}), $ = /* @__PURE__ */ ((i) => (i.card = "twitter:card", i.site = "twitter:site", i.creator = "twitter:creator", i.url = "twitter:url", i.title = "twitter:title", i.description = "twitter:description", i.image = "twitter:image", i.imageAlt = "twitter:image:alt", i.imageSrc = "twitter:image:src", i.imageWidth = "twitter:image:width", i.imageHeight = "twitter:image:height", i.label1 = "twitter:label1", i.data1 = "twitter:data1", i.label2 = "twitter:label2", i.data2 = "twitter:data2", i.appNameIphone = "twitter:app:name:iphone", i.appIdIphone = "twitter:app:id:iphone", i.appUrlIphone = "twitter:app:url:iphone", i.appNameIpad = "twitter:app:name:ipad", i.appIdIpad = "twitter:app:id:ipad", i.appUrlIpad = "twitter:app:url:ipad", i.appNameGooglePlay = "twitter:app:name:googleplay", i.appIdGooglePlay = "twitter:app:id:googleplay", i.appUrlGooglePlay = "twitter:app:url:googleplay", i.player = "twitter:player", i.playerWidth = "twitter:player:width", i.playerHeight = "twitter:player:height", i.playerStream = "twitter:player:stream", i.playerStreamContentType = "twitter:player:stream:content_type", i))($ || {}), oe = /* @__PURE__ */ ((i) => (i.summary = "summary", i.summaryLargeImage = "summary_large_image", i.app = "app", i.player = "player", i.product = "product", i.gallery = "gallery", i.photo = "photo", i.leadGeneration = "lead_generation", i.audio = "audio", i.poll = "poll", i))(oe || {});
-class ae extends ut {
+var S = /* @__PURE__ */ ((s) => (s.description = "description", s.keywords = "keywords", s.canonical = "canonical", s.robots = "robots", s.author = "author", s))(S || {}), te = /* @__PURE__ */ ((s) => (s.indexFollow = "index, follow", s.noIndexFollow = "noindex, follow", s.indexNoFollow = "index, nofollow", s.noIndexNoFollow = "noindex, nofollow", s.noArchive = "noarchive", s.noSnippet = "nosnippet", s.noImageIndex = "noimageindex", s.images = "images", s.noTranslate = "notranslate", s.noPreview = "nopreview", s.textOnly = "textonly", s.noIndexSubpages = "noindex, noarchive", s.none = "none", s))(te || {}), $ = /* @__PURE__ */ ((s) => (s.title = "og:title", s.type = "og:type", s.url = "og:url", s.image = "og:image", s.description = "og:description", s.locale = "og:locale", s.siteName = "og:site_name", s.localeAlternate = "og:locale:alternate", s.imageUrl = "og:image:url", s.imageSecureUrl = "og:image:secure_url", s.imageType = "og:image:type", s.imageWidth = "og:image:width", s.imageHeight = "og:image:height", s.imageAlt = "og:image:alt", s.video = "og:video", s.videoUrl = "og:video:url", s.videoSecureUrl = "og:video:secure_url", s.videoType = "og:video:type", s.videoWidth = "og:video:width", s.videoHeight = "og:video:height", s.audio = "og:audio", s.audioSecureUrl = "og:audio:secure_url", s.audioType = "og:audio:type", s.articlePublishedTime = "article:published_time", s.articleModifiedTime = "article:modified_time", s.articleExpirationTime = "article:expiration_time", s.articleAuthor = "article:author", s.articleSection = "article:section", s.articleTag = "article:tag", s.bookAuthor = "book:author", s.bookIsbn = "book:isbn", s.bookReleaseDate = "book:release_date", s.bookTag = "book:tag", s.musicDuration = "music:duration", s.musicAlbum = "music:album", s.musicAlbumDisc = "music:album:disc", s.musicAlbumTrack = "music:album:track", s.musicMusician = "music:musician", s.musicSong = "music:song", s.musicSongDisc = "music:song:disc", s.musicSongTrack = "music:song:track", s.musicReleaseDate = "music:release_date", s.musicCreator = "music:creator", s.videoActor = "video:actor", s.videoActorRole = "video:actor:role", s.videoDirector = "video:director", s.videoWriter = "video:writer", s.videoDuration = "video:duration", s.videoReleaseDate = "video:release_date", s.videoTag = "video:tag", s.videoSeries = "video:series", s.profileFirstName = "profile:first_name", s.profileLastName = "profile:last_name", s.profileUsername = "profile:username", s.profileGender = "profile:gender", s.productBrand = "product:brand", s.productAvailability = "product:availability", s.productCondition = "product:condition", s.productPriceAmount = "product:price:amount", s.productPriceCurrency = "product:price:currency", s.productRetailerItemId = "product:retailer_item_id", s.productCategory = "product:category", s.productEan = "product:ean", s.productIsbn = "product:isbn", s.productMfrPartNo = "product:mfr_part_no", s.productUpc = "product:upc", s.productWeightValue = "product:weight:value", s.productWeightUnits = "product:weight:units", s.productColor = "product:color", s.productMaterial = "product:material", s.productPattern = "product:pattern", s.productAgeGroup = "product:age_group", s.productGender = "product:gender", s))($ || {}), ee = /* @__PURE__ */ ((s) => (s.website = "website", s.article = "article", s.video = "video.other", s.videoTvShow = "video.tv_show", s.videoEpisode = "video.episode", s.videoMovie = "video.movie", s.musicAlbum = "music.album", s.musicPlaylist = "music.playlist", s.musicSong = "music.song", s.musicRadioStation = "music.radio_station", s.app = "app", s.product = "product", s.business = "business.business", s.place = "place", s.event = "event", s.profile = "profile", s.book = "book", s))(ee || {}), se = /* @__PURE__ */ ((s) => (s.inStock = "in stock", s.outOfStock = "out of stock", s.preorder = "preorder", s.backorder = "backorder", s.discontinued = "discontinued", s.pending = "pending", s))(se || {}), ie = /* @__PURE__ */ ((s) => (s.new = "new", s.used = "used", s.refurbished = "refurbished", s))(ie || {}), re = /* @__PURE__ */ ((s) => (s.newborn = "newborn", s.infant = "infant", s.toddler = "toddler", s.kids = "kids", s.adult = "adult", s))(re || {}), ne = /* @__PURE__ */ ((s) => (s.female = "female", s.male = "male", s.unisex = "unisex", s))(ne || {}), p = /* @__PURE__ */ ((s) => (s.card = "twitter:card", s.site = "twitter:site", s.creator = "twitter:creator", s.url = "twitter:url", s.title = "twitter:title", s.description = "twitter:description", s.image = "twitter:image", s.imageAlt = "twitter:image:alt", s.imageSrc = "twitter:image:src", s.imageWidth = "twitter:image:width", s.imageHeight = "twitter:image:height", s.label1 = "twitter:label1", s.data1 = "twitter:data1", s.label2 = "twitter:label2", s.data2 = "twitter:data2", s.appNameIphone = "twitter:app:name:iphone", s.appIdIphone = "twitter:app:id:iphone", s.appUrlIphone = "twitter:app:url:iphone", s.appNameIpad = "twitter:app:name:ipad", s.appIdIpad = "twitter:app:id:ipad", s.appUrlIpad = "twitter:app:url:ipad", s.appNameGooglePlay = "twitter:app:name:googleplay", s.appIdGooglePlay = "twitter:app:id:googleplay", s.appUrlGooglePlay = "twitter:app:url:googleplay", s.player = "twitter:player", s.playerWidth = "twitter:player:width", s.playerHeight = "twitter:player:height", s.playerStream = "twitter:player:stream", s.playerStreamContentType = "twitter:player:stream:content_type", s))(p || {}), oe = /* @__PURE__ */ ((s) => (s.summary = "summary", s.summaryLargeImage = "summary_large_image", s.app = "app", s.player = "player", s.product = "product", s.gallery = "gallery", s.photo = "photo", s.leadGeneration = "lead_generation", s.audio = "audio", s.poll = "poll", s))(oe || {});
+class ae extends ht {
   constructor() {
-    super(Object.values(y), !0);
+    super(Object.values($), !0);
   }
   /**
    * Gets the Open Graph title.
@@ -3920,7 +3958,7 @@ class ae extends ut {
    * Получает заголовок Open Graph.
    */
   getTitle() {
-    return this.get(y.title);
+    return this.get($.title);
   }
   /**
    * Gets the Open Graph type.
@@ -3928,7 +3966,7 @@ class ae extends ut {
    * Получает тип Open Graph.
    */
   getType() {
-    return this.get(y.type);
+    return this.get($.type);
   }
   /**
    * Gets the Open Graph URL.
@@ -3936,7 +3974,7 @@ class ae extends ut {
    * Получает URL Open Graph.
    */
   getUrl() {
-    return this.get(y.url);
+    return this.get($.url);
   }
   /**
    * Gets the Open Graph image URL.
@@ -3944,7 +3982,7 @@ class ae extends ut {
    * Получает URL изображения Open Graph.
    */
   getImage() {
-    return this.get(y.image);
+    return this.get($.image);
   }
   /**
    * Gets the Open Graph description.
@@ -3952,7 +3990,7 @@ class ae extends ut {
    * Получает описание Open Graph.
    */
   getDescription() {
-    return this.get(y.description);
+    return this.get($.description);
   }
   /**
    * Gets the Open Graph locale.
@@ -3960,7 +3998,7 @@ class ae extends ut {
    * Получает локаль Open Graph.
    */
   getLocale() {
-    return this.get(y.locale);
+    return this.get($.locale);
   }
   /**
    * Gets the Open Graph site name.
@@ -3968,7 +4006,7 @@ class ae extends ut {
    * Получает название сайта Open Graph.
    */
   getSiteName() {
-    return this.get(y.siteName);
+    return this.get($.siteName);
   }
   /**
    * Sets the Open Graph title.
@@ -3977,7 +4015,7 @@ class ae extends ut {
    * @param title title / заголовок
    */
   setTitle(t) {
-    return this.set(y.title, t);
+    return this.set($.title, t);
   }
   /**
    * Sets the Open Graph type.
@@ -3986,7 +4024,7 @@ class ae extends ut {
    * @param type type / тип
    */
   setType(t) {
-    return this.set(y.type, t);
+    return this.set($.type, t);
   }
   /**
    * Sets the Open Graph URL.
@@ -3995,7 +4033,7 @@ class ae extends ut {
    * @param url URL / URL
    */
   setUrl(t) {
-    return this.set(y.url, t);
+    return this.set($.url, t);
   }
   /**
    * Sets the Open Graph image URL.
@@ -4004,7 +4042,7 @@ class ae extends ut {
    * @param url image URL / URL изображения
    */
   setImage(t) {
-    return this.set(y.image, t);
+    return this.set($.image, t);
   }
   /**
    * Sets the Open Graph description.
@@ -4013,7 +4051,7 @@ class ae extends ut {
    * @param description description / описание
    */
   setDescription(t) {
-    return this.set(y.description, t);
+    return this.set($.description, t);
   }
   /**
    * Sets the Open Graph locale.
@@ -4022,7 +4060,7 @@ class ae extends ut {
    * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
    */
   setLocale(t) {
-    return this.set(y.locale, t);
+    return this.set($.locale, t);
   }
   /**
    * Sets the Open Graph site name.
@@ -4031,12 +4069,12 @@ class ae extends ut {
    * @param siteName site name / название сайта
    */
   setSiteName(t) {
-    return this.set(y.siteName, t);
+    return this.set($.siteName, t);
   }
 }
-class ce extends ut {
+class ce extends ht {
   constructor() {
-    super(Object.values($));
+    super(Object.values(p));
   }
   /**
    * Gets the Twitter Card type.
@@ -4044,7 +4082,7 @@ class ce extends ut {
    * Получает тип Twitter Card.
    */
   getCard() {
-    return this.get($.card);
+    return this.get(p.card);
   }
   /**
    * Gets the website or brand @username.
@@ -4052,7 +4090,7 @@ class ce extends ut {
    * Получает аккаунт сайта или бренда (@username).
    */
   getSite() {
-    return this.get($.site);
+    return this.get(p.site);
   }
   /**
    * Gets the content creator @username.
@@ -4060,7 +4098,7 @@ class ce extends ut {
    * Получает автора контента (@username).
    */
   getCreator() {
-    return this.get($.creator);
+    return this.get(p.creator);
   }
   /**
    * Gets the page URL.
@@ -4068,7 +4106,7 @@ class ce extends ut {
    * Получает URL страницы.
    */
   getUrl() {
-    return this.get($.url);
+    return this.get(p.url);
   }
   /**
    * Gets the card title.
@@ -4076,7 +4114,7 @@ class ce extends ut {
    * Получает заголовок карточки.
    */
   getTitle() {
-    return this.get($.title);
+    return this.get(p.title);
   }
   /**
    * Gets the card description.
@@ -4084,7 +4122,7 @@ class ce extends ut {
    * Получает описание карточки.
    */
   getDescription() {
-    return this.get($.description);
+    return this.get(p.description);
   }
   /**
    * Gets the card image URL.
@@ -4092,7 +4130,7 @@ class ce extends ut {
    * Получает URL изображения карточки.
    */
   getImage() {
-    return this.get($.image);
+    return this.get(p.image);
   }
   /**
    * Sets the Twitter Card type.
@@ -4101,7 +4139,7 @@ class ce extends ut {
    * @param card card type / тип карточки
    */
   setCard(t) {
-    return this.set($.card, t), this;
+    return this.set(p.card, t), this;
   }
   /**
    * Sets the website or brand @username.
@@ -4110,7 +4148,7 @@ class ce extends ut {
    * @param site @username / аккаунт
    */
   setSite(t) {
-    return this.set($.site, t), this;
+    return this.set(p.site, t), this;
   }
   /**
    * Sets the content creator @username.
@@ -4119,7 +4157,7 @@ class ce extends ut {
    * @param creator @username / аккаунт автора
    */
   setCreator(t) {
-    return this.set($.creator, t), this;
+    return this.set(p.creator, t), this;
   }
   /**
    * Sets the page URL.
@@ -4128,7 +4166,7 @@ class ce extends ut {
    * @param url URL / URL
    */
   setUrl(t) {
-    return this.set($.url, t), this;
+    return this.set(p.url, t), this;
   }
   /**
    * Sets the card title.
@@ -4137,7 +4175,7 @@ class ce extends ut {
    * @param title title / заголовок
    */
   setTitle(t) {
-    return this.set($.title, t), this;
+    return this.set(p.title, t), this;
   }
   /**
    * Sets the card description.
@@ -4146,7 +4184,7 @@ class ce extends ut {
    * @param description description / описание
    */
   setDescription(t) {
-    return this.set($.description, t), this;
+    return this.set(p.description, t), this;
   }
   /**
    * Sets the card image URL.
@@ -4155,10 +4193,10 @@ class ce extends ut {
    * @param image image URL / URL изображения
    */
   setImage(t) {
-    return this.set($.image, t), this;
+    return this.set(p.image, t), this;
   }
 }
-class Be extends ut {
+class Be extends ht {
   /**
    * Creates an instance of Meta with integrated Open Graph and Twitter Card support.
    *
@@ -4267,8 +4305,8 @@ class Be extends ut {
    */
   setTitle(e) {
     if (l()) {
-      const s = L(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
-      document.title = s, this.og.setTitle(s), this.twitter.setTitle(s);
+      const i = L(e) ? `${e}${this.getSuffix()}` : this.suffix ? this.suffix : "";
+      document.title = i, this.og.setTitle(i), this.twitter.setTitle(i);
     }
     return this;
   }
@@ -4279,7 +4317,7 @@ class Be extends ut {
    * @param keywords keywords as string or array / ключевые слова в виде строки или массива
    */
   setKeywords(e) {
-    return this.set(S.keywords, Z(e).join(", ")), this;
+    return this.set(S.keywords, V(e).join(", ")), this;
   }
   /**
    * Sets the description meta tag.
@@ -4389,8 +4427,8 @@ class ot {
     var e;
     const t = (e = this.storage.get()) != null ? e : -1;
     if (!this.calculate && t === -1) {
-      const s = await this.init();
-      return this.storage.set(s), s;
+      const i = await this.init();
+      return this.storage.set(i), i;
     }
     return t;
   }
@@ -4400,8 +4438,8 @@ class ot {
    * Создает элементы для проверки ширины скролла.
    */
   static createElement() {
-    return _(document.body, "div", (t) => {
-      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", _(t, "div", (e) => {
+    return O(document.body, "div", (t) => {
+      t.style.height = "24px", t.style.overflowY = "scroll", t.style.position = "fixed", t.style.width = "100%", O(t, "div", (e) => {
         e.style.height = "100px";
       });
     });
@@ -4421,7 +4459,7 @@ class ot {
     });
   }
 }
-c(ot, "storage", new T("scrollbar", !0)), c(ot, "calculate", !1);
+c(ot, "storage", new G("scrollbar", !0)), c(ot, "calculate", !1);
 const ue = [
   "d",
   "e",
@@ -4442,19 +4480,19 @@ const ue = [
   "t",
   "u",
   "v"
-], he = (i, t = {}) => {
-  let e = String(i);
-  if (i.match(/%[a-z]/)) {
-    let s = 0;
+], he = (s, t = {}) => {
+  let e = String(s);
+  if (s.match(/%[a-z]/)) {
+    let i = 0;
     g(t, (r) => {
-      e = e.replace(new RegExp(`%${ue[s++]}`, "g"), String(r));
+      e = e.replace(new RegExp(`%${ue[i++]}`, "g"), String(r));
     });
   }
-  return A(t) && g(t, (s, r) => {
+  return A(t) && g(t, (i, r) => {
     e = e.replace(
       new RegExp(`\\[${r}\\](.*?)\\[/${r}\\]`, "g"),
-      (o, a) => String(s).replace(/\[content]/g, a)
-    ).replace(new RegExp(`\\[${r}\\]`, "g"), String(s));
+      (o, a) => String(i).replace(/\[content]/g, a)
+    ).replace(new RegExp(`\\[${r}\\]`, "g"), String(i));
   }), e;
 }, le = "global", E = class E {
   /**
@@ -4466,8 +4504,8 @@ const ue = [
    */
   static async get(t, e) {
     var r;
-    const s = this.getText(t);
-    return s ? this.replacement(s, e) : (z.isLocalhost() || await this.add(t), this.replacement((r = this.getText(t)) != null ? r : t));
+    const i = this.getText(t);
+    return i ? this.replacement(i, e) : (Z.isLocalhost() || await this.add(t), this.replacement((r = this.getText(t)) != null ? r : t));
   }
   /**
    * Getting the translation text by its code (Sync).
@@ -4479,9 +4517,9 @@ const ue = [
    * @param replacement If set, replaces the text with the specified values/
    * если установлено, заменяет текст на указанные значения
    */
-  static getSync(t, e = !1, s) {
+  static getSync(t, e = !1, i) {
     const r = this.getText(t);
-    return r ? this.replacement(r, s) : e ? " " : t;
+    return r ? this.replacement(r, i) : e ? " " : t;
   }
   /**
    * Getting a list of translations by an array of text codes.
@@ -4491,12 +4529,12 @@ const ue = [
    */
   static getList(t) {
     return new Promise((e) => {
-      const s = {};
+      const i = {};
       let r = 0;
       for (const o of t) {
         const a = Array.isArray(o) ? o[0] : o, u = Array.isArray(o) ? o.slice(1) : void 0;
         this.get(a, u).then((h) => {
-          s[a] = h, ++r >= t.length && e(s);
+          i[a] = h, ++r >= t.length && e(i);
         });
       }
     });
@@ -4510,12 +4548,12 @@ const ue = [
    * если установлено false, возвращает пустую строку, если нет текста
    */
   static getListSync(t, e = !1) {
-    const s = {};
+    const i = {};
     for (const r of t) {
       const o = Array.isArray(r) ? r[0] : r, a = Array.isArray(r) ? r.slice(1) : void 0;
-      s[o] = this.getSync(o, e, a);
+      i[o] = this.getSync(o, e, a);
     }
-    return s;
+    return i;
   }
   /**
    * Added a list of translated texts.
@@ -4539,8 +4577,8 @@ const ue = [
    * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
    */
   static addSync(t) {
-    g(t, (e, s) => {
-      R(e) && L(e) && (this.data[this.getName(s)] = e);
+    g(t, (e, i) => {
+      P(e) && L(e) && (this.data[this.getName(i)] = e);
     });
   }
   /**
@@ -4551,7 +4589,7 @@ const ue = [
    */
   static async addNormalOrSync(t) {
     if (L(t))
-      if (z.isLocalhost())
+      if (Z.isLocalhost())
         this.addSync(t);
       else {
         const e = Object.keys(t);
@@ -4567,8 +4605,8 @@ const ue = [
   static addSyncByLocation(t) {
     g(
       t,
-      (e, s) => g(e, (r, o) => {
-        const a = `${s}-${o}`;
+      (e, i) => g(e, (r, o) => {
+        const a = `${i}-${o}`;
         a in this.data || (this.data[a] = r);
       })
     );
@@ -4604,9 +4642,9 @@ const ue = [
     const e = this.getName(t);
     if (e in this.data)
       return this.data[e];
-    const s = this.getNameByLanguage(t);
-    if (s in this.data)
-      return this.data[s];
+    const i = this.getNameByLanguage(t);
+    if (i in this.data)
+      return this.data[i];
     const r = this.getNameByGlobal(t);
     if (r in this.data)
       return this.data[r];
@@ -4618,7 +4656,7 @@ const ue = [
    * @param name code name/ название кода
    */
   static getName(t) {
-    return `${p.getLocation()}-${t}`;
+    return `${w.getLocation()}-${t}`;
   }
   /**
    * Getting the title for translation by language.
@@ -4627,7 +4665,7 @@ const ue = [
    * @param name code name/ название кода
    */
   static getNameByLanguage(t) {
-    return `${p.getLanguage()}-${t}`;
+    return `${w.getLanguage()}-${t}`;
   }
   /**
    * Getting the title for translation globally.
@@ -4646,8 +4684,8 @@ const ue = [
    */
   static getNamesNone(t) {
     const e = [];
-    return Z(t).forEach((s) => {
-      s !== "__TRANSLATE_START__" && s !== "__TRANSLATE_END__" && !(this.getName(s) in this.data) && e.push(s);
+    return V(t).forEach((i) => {
+      i !== "__TRANSLATE_START__" && i !== "__TRANSLATE_END__" && !(this.getName(i) in this.data) && e.push(i);
     }), e;
   }
   /**
@@ -4656,7 +4694,7 @@ const ue = [
    * Получение списка переводов с сервера.
    */
   static async getResponse() {
-    const t = await z.get({
+    const t = await Z.get({
       api: !1,
       path: this.url,
       request: {
@@ -4685,404 +4723,401 @@ const ue = [
   static async make() {
     const t = await this.getResponse();
     this.cache.forEach((e) => {
-      var s;
-      this.data[this.getName(e)] = (s = t == null ? void 0 : t[e]) != null ? s : "";
+      var i;
+      this.data[this.getName(e)] = (i = t == null ? void 0 : t[e]) != null ? i : "";
     }), this.cache = [];
   }
 };
 c(E, "url", "/api/translate"), c(E, "propsName", "list"), c(E, "data", {}), c(E, "cache", []), c(E, "resolveList", []), c(E, "timeout");
-let Ct = E;
-function xt(i) {
-  return Array.isArray(i);
-}
-function Ie(i) {
+let At = E;
+function Ie(s) {
   var t;
-  return R(i) ? i.trim() : xt(i) && i.findIndex((e) => m(e)) === -1 ? i.join(",") : m(i) ? JSON.stringify(i) : i === !0 ? "1" : i === !1 ? "0" : (t = i == null ? void 0 : i.toString()) != null ? t : "";
+  return P(s) ? s.trim() : at(s) && s.findIndex((e) => y(e)) === -1 ? s.join(",") : y(s) ? JSON.stringify(s) : s === !0 ? "1" : s === !1 ? "0" : (t = s == null ? void 0 : s.toString()) != null ? t : "";
 }
-function de(i, t) {
-  return Array(t).fill(i);
+function de(s, t) {
+  return Array(t).fill(s);
 }
-function Fe(i) {
+function xe(s) {
   return new Promise((t, e) => {
-    const s = new FileReader();
-    s.onloadend = () => t(s.result), s.onerror = e, s.readAsDataURL(i);
+    const i = new FileReader();
+    i.onloadend = () => t(i.result), i.onerror = e, i.readAsDataURL(s);
   });
 }
-function xe(i) {
+function Fe(s) {
   var t;
   if (l())
-    return (t = document.querySelector(i)) != null ? t : void 0;
+    return (t = document.querySelector(s)) != null ? t : void 0;
 }
-function Re(i) {
+function Re(s) {
   if (l())
-    return document.querySelectorAll(i);
+    return document.querySelectorAll(s);
 }
-function Pe(i) {
-  i.preventDefault(), i.stopPropagation();
+function Pe(s) {
+  s.preventDefault(), s.stopPropagation();
 }
-function ge(i, t, e) {
-  const s = () => {
-    i(), t != null && t() ? ge(i, t, e) : e == null || e();
+function ge(s, t, e) {
+  const i = () => {
+    s(), t != null && t() ? ge(s, t, e) : e == null || e();
   };
-  l() ? requestAnimationFrame(s) : s();
+  l() ? requestAnimationFrame(i) : i();
 }
-function We(i) {
-  var s;
-  const t = {}, e = N(i);
+function We(s) {
+  var i;
+  const t = {}, e = N(s);
   if (e)
     for (const r of e.attributes)
-      t[r.name] = (s = (r == null ? void 0 : r.value) || (r == null ? void 0 : r.textContent)) != null ? s : void 0;
+      t[r.name] = (i = (r == null ? void 0 : r.value) || (r == null ? void 0 : r.textContent)) != null ? i : void 0;
   return t;
 }
-async function Ue(i) {
+async function Ue(s) {
   var t, e;
-  return (e = (t = i == null ? void 0 : i.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
+  return (e = (t = s == null ? void 0 : s.clipboardData) == null ? void 0 : t.getData("text")) != null ? e : await navigator.clipboard.readText() || "";
 }
-function je(i = "datetime") {
-  return new ct(void 0, i).standard();
+function je(s = "datetime") {
+  return new ut(void 0, s).standard();
 }
-let kt = J(1e5, 9e5);
-function He(i, t) {
-  const e = N(i);
-  return e ? (L(e.id) || e.setAttribute("id", `id-${kt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${kt++}`;
+let Nt = J(1e5, 9e5);
+function He(s, t) {
+  const e = N(s);
+  return e ? (L(e.id) || e.setAttribute("id", `id-${Nt++}`), t ? `#${e.id}${t}`.trim() : e.id) : `id-${Nt++}`;
 }
-function fe(i) {
-  return R(i) ? _(
+function fe(s) {
+  return P(s) ? O(
     void 0,
     "img",
-    { src: i }
-  ) : i;
+    { src: s }
+  ) : s;
 }
-function me(i, t = "ig", e = ":value") {
-  const s = i.replace(/([[\]\\^$.?*+()/])/g, "\\$1");
-  return new RegExp(e.replace(/:value/g, s), t);
+function me(s, t = "ig", e = ":value") {
+  const i = s.replace(/([[\]\\^$.?*+()/])/g, "\\$1");
+  return new RegExp(e.replace(/:value/g, i), t);
 }
-function ye(i, t) {
+function ye(s, t) {
   var r;
-  const e = t.split(".", 2), s = e[0];
-  return s && (i != null && i[s]) && A(i[s]) && (e != null && e[1]) ? ye(i[s], e[1]) : (r = s && (i == null ? void 0 : i[s])) != null ? r : "";
+  const e = t.split(".", 2), i = e[0];
+  return i && (s != null && s[i]) && A(s[i]) && (e != null && e[1]) ? ye(s[i], e[1]) : (r = i && (s == null ? void 0 : s[i])) != null ? r : "";
 }
-function ze(i) {
-  var t, e, s;
-  return (s = (t = i == null ? void 0 : i.key) != null ? t : i == null ? void 0 : i.code) != null ? s : (e = i == null ? void 0 : i.keyCode) == null ? void 0 : e.toString();
+function ze(s) {
+  var t, e, i;
+  return (i = (t = s == null ? void 0 : s.key) != null ? t : s == null ? void 0 : s.code) != null ? i : (e = s == null ? void 0 : s.keyCode) == null ? void 0 : e.toString();
 }
-function Rt(i) {
-  return g(i, (t) => t.length);
+function Pt(s) {
+  return g(s, (t) => t.length);
 }
-function Ze(i) {
-  return Math.max(...Rt(i));
+function Ze(s) {
+  return Math.max(...Pt(s));
 }
-function Ve(i) {
-  return Math.min(...Rt(i));
+function Ve(s) {
+  return Math.min(...Pt(s));
 }
-function $e(i) {
-  var t, e, s, r;
-  return (i == null ? void 0 : i.clientX) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientX) || ((r = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : r.clientX) || 0;
+function $e(s) {
+  var t, e, i, r;
+  return (s == null ? void 0 : s.clientX) || ((e = (t = s == null ? void 0 : s.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientX) || ((r = (i = s == null ? void 0 : s.touches) == null ? void 0 : i[0]) == null ? void 0 : r.clientX) || 0;
 }
-function pe(i) {
-  var t, e, s, r;
-  return (i == null ? void 0 : i.clientY) || ((e = (t = i == null ? void 0 : i.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((r = (s = i == null ? void 0 : i.touches) == null ? void 0 : s[0]) == null ? void 0 : r.clientY) || 0;
+function pe(s) {
+  var t, e, i, r;
+  return (s == null ? void 0 : s.clientY) || ((e = (t = s == null ? void 0 : s.targetTouches) == null ? void 0 : t[0]) == null ? void 0 : e.clientY) || ((r = (i = s == null ? void 0 : s.touches) == null ? void 0 : i[0]) == null ? void 0 : r.clientY) || 0;
 }
-function Ke(i) {
+function Ke(s) {
   return {
-    x: $e(i),
-    y: pe(i)
+    x: $e(s),
+    y: pe(s)
   };
 }
-function Ye(i, t) {
+function Ye(s, t) {
   const e = {};
-  return t.forEach((s) => {
-    s in i && i[s] !== void 0 && (e[s] = i[s]);
+  return t.forEach((i) => {
+    i in s && s[i] !== void 0 && (e[i] = s[i]);
   }), e;
 }
-function qe(i, t = void 0) {
+function qe(s, t = void 0) {
   const e = {};
-  return g(i, (s, r) => {
-    s !== t && (e[r] = s);
+  return g(s, (i, r) => {
+    i !== t && (e[r] = i);
   }), e;
 }
-function Je(i) {
-  return A(i) ? i : {};
+function Je(s) {
+  return A(s) ? s : {};
 }
-function we(i, t) {
-  return de(i, t).join("");
+function we(s, t) {
+  return de(s, t).join("");
 }
-function Me(i, t, e = "#", s = 2, r = 12) {
-  const o = J(i, t), a = [];
+function Me(s, t, e = "#", i = 2, r = 12) {
+  const o = J(s, t), a = [];
   for (let u = 0; u < o; u++)
-    a.push(we(e, J(s, r)));
+    a.push(we(e, J(i, r)));
   return a.join(" ");
 }
-function Qe(i, t) {
-  const e = i != null ? i : 0;
+function Qe(s, t) {
+  const e = s != null ? s : 0;
   return t > e ? 100 / (t - e) : 0;
 }
-function Xe(i, t) {
-  const e = i != null ? i : 0;
+function Xe(s, t) {
+  const e = s != null ? s : 0;
   return t > e ? (t - e) / 100 : 0;
 }
-const At = 0;
-function _e(i, t, e) {
-  const s = t == null ? void 0 : t.closest(i);
-  if (t && s && s.scrollHeight !== s.offsetHeight) {
-    const r = s.getBoundingClientRect(), o = t.getBoundingClientRect();
+const Et = 0;
+function _e(s, t, e) {
+  const i = t == null ? void 0 : t.closest(s);
+  if (t && i && i.scrollHeight !== i.offsetHeight) {
+    const r = i.getBoundingClientRect(), o = t.getBoundingClientRect();
     if (e) {
       const a = e.getBoundingClientRect();
-      s.scrollTop = t.offsetTop - (a.top - r.top) - (a.height / 2 - o.height / 2), s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = t.offsetTop + t.offsetHeight - s.offsetHeight);
-    } else s.scrollTop > t.offsetTop ? s.scrollTop = o.top - r.top - At : s.scrollTop + s.offsetHeight < t.offsetTop + t.offsetHeight && (s.scrollTop = o.top - r.top + o.height - r.height + At);
+      i.scrollTop = t.offsetTop - (a.top - r.top) - (a.height / 2 - o.height / 2), i.scrollTop + i.offsetHeight < t.offsetTop + t.offsetHeight && (i.scrollTop = t.offsetTop + t.offsetHeight - i.offsetHeight);
+    } else i.scrollTop > t.offsetTop ? i.scrollTop = o.top - r.top - Et : i.scrollTop + i.offsetHeight < t.offsetTop + t.offsetHeight && (i.scrollTop = o.top - r.top + o.height - r.height + Et);
   }
 }
-function Oe(i, t, e = 0) {
+function Oe(s, t, e = 0) {
   if (!l())
     return;
-  const s = (t == null ? void 0 : t.behavior) || "smooth";
-  if ("scrollIntoView" in i && !e) {
-    i.scrollIntoView({
-      behavior: s,
+  const i = (t == null ? void 0 : t.behavior) || "smooth";
+  if ("scrollIntoView" in s && !e) {
+    s.scrollIntoView({
+      behavior: i,
       block: (t == null ? void 0 : t.block) || "start",
       inline: (t == null ? void 0 : t.inline) || "start"
     });
     return;
   }
-  if ("getBoundingClientRect" in i && "scrollTo" in window) {
-    const r = ((window == null ? void 0 : window.scrollY) || window.pageYOffset) + i.getBoundingClientRect().top - e;
+  if ("getBoundingClientRect" in s && "scrollTo" in window) {
+    const r = ((window == null ? void 0 : window.scrollY) || window.pageYOffset) + s.getBoundingClientRect().top - e;
     window.scrollTo({
       top: r,
-      behavior: s
+      behavior: i
     });
   }
 }
-function Te(i, t, e = "smooth") {
-  if (!l() || !i || !t)
+function Te(s, t, e = "smooth") {
+  if (!l() || !s || !t)
     return;
-  const s = i.getBoundingClientRect(), r = t.getBoundingClientRect();
-  i.scrollBy({
-    top: r.top - s.top,
-    left: r.left - s.left,
+  const i = s.getBoundingClientRect(), r = t.getBoundingClientRect();
+  s.scrollBy({
+    top: r.top - i.top,
+    left: r.left - i.left,
     behavior: e
   });
 }
-function Ge(i, t) {
-  return i.indexOf(t) !== -1;
+function Ge(s, t) {
+  return s.indexOf(t) !== -1;
 }
-async function ti() {
+async function ts() {
   if (l()) {
-    const i = await ot.get();
-    document.body.style.setProperty("--sys-scrollbar-offset", `${i}px`);
+    const s = await ot.get();
+    document.body.style.setProperty("--sys-scrollbar-offset", `${s}px`);
   }
 }
-function ei(i, t) {
+function es(s, t) {
   const e = {};
-  return m(i) && m(t) && g(i, (s, r) => {
-    r in t && (e[r] = s);
+  return y(s) && y(t) && g(s, (i, r) => {
+    r in t && (e[r] = i);
   }), e;
 }
-function ii(i, t) {
-  let e = Object.keys(i).length !== Object.keys(t).length;
-  return e || g(i, (s, r) => {
-    s !== (t == null ? void 0 : t[r]) && (e = !0);
+function ss(s, t) {
+  let e = Object.keys(s).length !== Object.keys(t).length;
+  return e || g(s, (i, r) => {
+    i !== (t == null ? void 0 : t[r]) && (e = !0);
   }), e;
 }
-const be = (i) => {
-  if (i instanceof HTMLElement) {
-    const t = i.tagName.toLowerCase();
-    return !!(t === "input" || t === "textarea" || t === "select" || i.isContentEditable || i.getAttribute("contenteditable") === "true");
+const be = (s) => {
+  if (s instanceof HTMLElement) {
+    const t = s.tagName.toLowerCase();
+    return !!(t === "input" || t === "textarea" || t === "select" || s.isContentEditable || s.getAttribute("contenteditable") === "true");
   }
   return !1;
-}, si = (i, t) => i.code === "Space" || i.code === "Enter" || i.key === " " || i.key === "Spacebar" || i.key === "Enter" || i.keyCode === 13 || i.keyCode === 32 ? t !== void 0 ? !t : !be(i.target) : !1;
-function ri(i) {
-  switch (typeof i) {
+}, is = (s, t) => s.code === "Space" || s.code === "Enter" || s.key === " " || s.key === "Spacebar" || s.key === "Enter" || s.keyCode === 13 || s.keyCode === 32 ? t !== void 0 ? !t : !be(s.target) : !1;
+function rs(s) {
+  switch (typeof s) {
     case "number":
       return !0;
     case "string":
-      return !!i.match(/^([0-9]+|[0-9]+\.[0-9]+)$/);
+      return !!s.match(/^([0-9]+|[0-9]+\.[0-9]+)$/);
     default:
       return !1;
   }
 }
-function ni(i, t) {
+function ns(s, t) {
   const e = Math.floor(t);
-  return i >= e && i < e + 1;
+  return s >= e && s < e + 1;
 }
-function oi(i, t) {
-  return Array.isArray(i) ? i.every((e) => rt(e, t)) : rt(i, t);
+function os(s, t) {
+  return Array.isArray(s) ? s.every((e) => rt(e, t)) : rt(s, t);
 }
-function ai(i, t) {
-  if (i.startsWith(t))
-    return i.slice(t.length).trim();
+function as(s, t) {
+  if (s.startsWith(t))
+    return s.slice(t.length).trim();
   let e = 0;
-  for (; i[e] === t[e] && e < i.length && e < t.length; )
+  for (; s[e] === t[e] && e < s.length && e < t.length; )
     e++;
-  return i.slice(e).trim();
+  return s.slice(e).trim();
 }
-const ci = (i, t, e) => {
-  var s, r;
-  return (r = (s = i == null ? void 0 : i.replace(new RegExp(`<${t}`, "ig"), `<${e}`)) == null ? void 0 : s.replace(new RegExp(`</${t}`, "ig"), `</${e}`)) == null ? void 0 : r.trim();
+const cs = (s, t, e) => {
+  var i, r;
+  return (r = (i = s == null ? void 0 : s.replace(new RegExp(`<${t}`, "ig"), `<${e}`)) == null ? void 0 : i.replace(new RegExp(`</${t}`, "ig"), `</${e}`)) == null ? void 0 : r.trim();
 };
-function ve(i) {
-  return [...new Set(i)];
+function ve(s) {
+  return [...new Set(s)];
 }
-function K(i, t, e = !0) {
-  const s = H(i);
-  return m(i) && m(t) && g(
+function K(s, t, e = !0) {
+  const i = z(s);
+  return y(s) && y(t) && g(
     t,
     (r, o) => {
-      const a = i == null ? void 0 : i[o];
-      m(a) && m(r) ? e && Array.isArray(a) && Array.isArray(r) ? s[o] = H(ve([...a, ...r])) : s[o] = K(
+      const a = s == null ? void 0 : s[o];
+      y(a) && y(r) ? e && Array.isArray(a) && Array.isArray(r) ? i[o] = z(ve([...a, ...r])) : i[o] = K(
         Array.isArray(a) ? { ...a } : a,
         r,
         e
-      ) : s[o] = m(r) ? H(r) : r;
+      ) : i[o] = y(r) ? z(r) : r;
     }
-  ), s;
+  ), i;
 }
-function ui(i, t) {
-  let e = i;
-  return g(t, (s, r) => {
-    e = e.replace(me(`[${r}]`), B(s));
+function us(s, t) {
+  let e = s;
+  return g(t, (i, r) => {
+    e = e.replace(me(`[${r}]`), B(i));
   }), e;
 }
-function Se(i, t = "auto") {
+function Se(s, t = "auto") {
   switch (t) {
     case "auto":
-      return i.naturalWidth >= i.naturalHeight;
+      return s.naturalWidth >= s.naturalHeight;
     case "width":
       return !0;
     case "height":
       return !1;
   }
 }
-function hi(i, t, e = "auto", s) {
+function hs(s, t, e = "auto", i) {
   var o;
-  const r = fe(i);
+  const r = fe(s);
   if (r && (r.naturalWidth > t && (e === "auto" || e === "width") || r.naturalHeight > t && (e === "auto" || e === "height"))) {
     const a = Se(r, e), u = (o = document.createElement("canvas")) == null ? void 0 : o.getContext("2d");
     if (u)
-      return u.canvas.width = a ? t : r.naturalWidth / r.naturalHeight * t, u.canvas.height = a ? r.naturalHeight / r.naturalWidth * t : t, u.drawImage(r, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(s);
+      return u.canvas.width = a ? t : r.naturalWidth / r.naturalHeight * t, u.canvas.height = a ? r.naturalHeight / r.naturalWidth * t : t, u.drawImage(r, 0, 0, u.canvas.width, u.canvas.height), u.canvas.toDataURL(i);
   }
 }
-function li(i) {
-  const t = k(i);
+function ls(s) {
+  const t = k(s);
   if (t > 0) {
-    const e = String(Math.floor(t / 60)).padStart(2, "0"), s = String(t % 60).padStart(2, "0");
-    return `${e}:${s}`;
+    const e = String(Math.floor(t / 60)).padStart(2, "0"), i = String(t % 60).padStart(2, "0");
+    return `${e}:${i}`;
   }
   return "00:00";
 }
-function di(i, t, {
+function ds(s, t, {
   multiple: e = !1,
-  maxlength: s = 0,
+  maxlength: i = 0,
   alwaysChange: r = !0,
   notEmpty: o = !1
 }) {
   if (e) {
-    if (xt(i)) {
-      const a = i.indexOf(t), u = [...i];
-      return a !== -1 ? (!o || u.length > 1) && u.splice(a, 1) : (!s || i.length < s) && u.push(t), u;
+    if (at(s)) {
+      const a = s.indexOf(t), u = [...s];
+      return a !== -1 ? (!o || u.length > 1) && u.splice(a, 1) : (!i || s.length < i) && u.push(t), u;
     }
-    return i === t ? [] : i ? [i, t] : [t];
+    return s === t ? [] : s ? [s, t] : [t];
   }
-  return r || i !== t ? t : i;
+  return r || s !== t ? t : s;
 }
-function gi(i, t, e) {
-  if (m(i) && m(t)) {
+function gs(s, t, e) {
+  if (y(s) && y(t)) {
     if (e) {
-      let s = {}, r = !1;
-      return g(i, (o, a) => {
-        !r && (e === a || e === o) ? (r = !0, s = K(s, t)) : r ? s = K(s, { [a]: o }) : s[a] = m(o) ? H(o) : o;
-      }), r ? s : K(i, t);
+      let i = {}, r = !1;
+      return g(s, (o, a) => {
+        !r && (e === a || e === o) ? (r = !0, i = K(i, t)) : r ? i = K(i, { [a]: o }) : i[a] = y(o) ? z(o) : o;
+      }), r ? i : K(s, t);
     }
-    if (m(t))
-      return K(i, t);
+    if (y(t))
+      return K(s, t);
   }
-  return H(i);
+  return z(s);
 }
-function De(i) {
-  return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
+function De(s) {
+  return s.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/-+([a-zA-Z0-9])/g, (...t) => `${String(t[1]).toUpperCase()}`).replace(/^([A-Z])/, (t) => `${t.toLowerCase()}`);
 }
-function fi(i) {
-  return De(i).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
+function fs(s) {
+  return De(s).replace(/^([a-z])/, (t) => `${t.toUpperCase()}`);
 }
-function mi(i) {
-  return i.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
+function ms(s) {
+  return s.toString().trim().replace(/[^\w- ]+/g, "").replace(/ +/g, "-").replace(/(?<=[A-Z])([A-Z])/g, (t) => `${t.toLowerCase()}`).replace(/^[A-Z]/, (t) => t.toLowerCase()).replace(/(?<=[\w ])[A-Z]/g, (t) => `-${t.toLowerCase()}`).replace(/[A-Z]/g, (t) => t.toLowerCase());
 }
-function yi(i, t, e, s) {
-  const r = k(i), o = k(t);
-  return t && o < r ? `${Nt(o, e, s)}+` : Nt(r, e, s);
+function ys(s, t, e, i) {
+  const r = k(s), o = k(t);
+  return t && o < r ? `${Bt(o, e, i)}+` : Bt(r, e, i);
 }
-const Nt = (i, t, e) => t ? new Q(e).number(i) : i;
-function Le(i, t) {
-  return 1 / i * t;
+const Bt = (s, t, e) => t ? new Q(e).number(s) : s;
+function Le(s, t) {
+  return 1 / s * t;
 }
-function $i(i, t) {
-  return Le(i, t) * 100;
+function $s(s, t) {
+  return Le(s, t) * 100;
 }
-function pi(i) {
+function ps(s) {
   let t = "";
-  for (const e of i)
+  for (const e of s)
     t += String.fromCharCode(e);
-  return l() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(i).toString("base64") : "";
+  return l() ? window.btoa(t) : globalThis && globalThis.Buffer ? globalThis == null ? void 0 : globalThis.Buffer.from(s).toString("base64") : "";
 }
-async function wi(i) {
+async function ws(s) {
   if (l())
     try {
-      await navigator.clipboard.writeText(i);
+      await navigator.clipboard.writeText(s);
     } catch (t) {
-      document == null || document.execCommand(i);
+      document == null || document.execCommand(s);
     }
 }
 export {
-  z as Api,
-  Zt as ApiDefault,
-  zt as ApiHeaders,
+  Z as Api,
+  Vt as ApiDefault,
+  Zt as ApiHeaders,
   D as ApiMethodItem,
   qt as ApiPreparation,
   Yt as ApiResponse,
-  Vt as ApiStatus,
+  $t as ApiStatus,
   Ae as BroadcastMessage,
   Qt as Cache,
   Mt as CacheItem,
-  $t as CacheStatic,
-  pt as Cookie,
-  Ft as CookieBlock,
-  T as DataStorage,
-  ct as Datetime,
+  wt as CacheStatic,
+  bt as Cookie,
+  Rt as CookieBlock,
+  G as DataStorage,
+  ut as Datetime,
   Ne as ElementScreenshot,
-  ft as EventItem,
+  mt as EventItem,
   n as GEO_FLAG_ICON_NAME,
-  p as Geo,
-  wt as GeoFlag,
+  w as Geo,
+  vt as GeoFlag,
   Q as GeoIntl,
-  bt as GeoPhone,
+  St as GeoPhone,
   Ee as Global,
-  vt as Hash,
-  Lt as Icons,
-  x as Loading,
+  Dt as Hash,
+  kt as Icons,
+  I as Loading,
   Be as Meta,
-  ut as MetaManager,
+  ht as MetaManager,
   ae as MetaOg,
   re as MetaOpenGraphAge,
-  ie as MetaOpenGraphAvailability,
-  se as MetaOpenGraphCondition,
+  se as MetaOpenGraphAvailability,
+  ie as MetaOpenGraphCondition,
   ne as MetaOpenGraphGender,
-  y as MetaOpenGraphTag,
+  $ as MetaOpenGraphTag,
   ee as MetaOpenGraphType,
   te as MetaRobots,
   S as MetaTag,
   ce as MetaTwitter,
   oe as MetaTwitterCard,
-  $ as MetaTwitterTag,
+  p as MetaTwitterTag,
   ot as ScrollbarWidth,
   le as TRANSLATE_GLOBAL_PREFIX,
-  Ct as Translate,
+  At as Translate,
   Ie as anyToString,
   he as applyTemplate,
   de as arrFill,
-  Fe as blobToBase64,
-  H as copyObject,
+  xe as blobToBase64,
+  z as copyObject,
   C as copyObjectLite,
-  _ as createElement,
-  xe as domQuerySelector,
+  O as createElement,
+  Fe as domQuerySelector,
   Re as domQuerySelectorAll,
   Gt as encodeAttribute,
   Pe as eventStopPropagation,
@@ -5098,11 +5133,11 @@ export {
   He as getElementId,
   fe as getElementImage,
   Ot as getElementItem,
-  gt as getElementOrWindow,
+  ft as getElementOrWindow,
   me as getExp,
   ye as getItemByPath,
   ze as getKey,
-  Rt as getLengthOfAllArray,
+  Pt as getLengthOfAllArray,
   Ze as getMaxLengthAllArray,
   Ve as getMinLengthAllArray,
   Ke as getMouseClient,
@@ -5112,56 +5147,56 @@ export {
   qe as getObjectNoUndefined,
   Je as getObjectOrNone,
   Me as getRandomText,
-  Et as getRequestString,
+  It as getRequestString,
   Qe as getStepPercent,
   Xe as getStepValue,
   _e as goScroll,
   Oe as goScrollSmooth,
   Te as goScrollTo,
   Ge as inArray,
-  ti as initScrollbarOffset,
-  ei as intersectKey,
-  xt as isArray,
-  ii as isDifferent,
+  ts as initScrollbarOffset,
+  es as intersectKey,
+  at as isArray,
+  ss as isDifferent,
   nt as isDomData,
   l as isDomRuntime,
-  si as isEnter,
+  is as isEnter,
   L as isFilled,
-  ri as isFloat,
-  at as isFunction,
-  Ht as isInDom,
+  rs as isFloat,
+  ct as isFunction,
+  zt as isInDom,
   be as isInput,
-  ni as isIntegerBetween,
+  ns as isIntegerBetween,
   M as isNull,
-  lt as isNumber,
-  m as isObject,
+  dt as isNumber,
+  y as isObject,
   A as isObjectNotArray,
   rt as isSelected,
-  oi as isSelectedByList,
-  R as isString,
-  Bt as isWindow,
+  os as isSelectedByList,
+  P as isString,
+  xt as isWindow,
   J as random,
-  ai as removeCommonPrefix,
-  ci as replaceComponentName,
+  as as removeCommonPrefix,
+  cs as replaceComponentName,
   K as replaceRecursive,
-  ui as replaceTemplate,
-  hi as resizeImageByMax,
-  li as secondToTime,
+  us as replaceTemplate,
+  hs as resizeImageByMax,
+  ls as secondToTime,
   Tt as setElementItem,
-  di as setValues,
-  gi as splice,
+  ds as setValues,
+  gs as splice,
   we as strFill,
-  Z as toArray,
+  V as toArray,
   De as toCamelCase,
-  fi as toCamelCaseFirst,
-  I as toDate,
-  mi as toKebabCase,
+  fs as toCamelCaseFirst,
+  F as toDate,
+  ms as toKebabCase,
   k as toNumber,
-  yi as toNumberByMax,
+  ys as toNumberByMax,
   Le as toPercent,
-  $i as toPercentBy100,
-  It as transformation,
-  pi as uint8ArrayToBase64,
+  $s as toPercentBy100,
+  Ft as transformation,
+  ps as uint8ArrayToBase64,
   ve as uniqueArray,
-  wi as writeClipboardData
+  ws as writeClipboardData
 };

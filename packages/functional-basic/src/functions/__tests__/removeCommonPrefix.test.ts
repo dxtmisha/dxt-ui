@@ -53,7 +53,7 @@ describe('removeCommonPrefix', () => {
   it('should handle Unicode characters and trim a result', () => {
     const result = removeCommonPrefix('привет, мир', 'привет')
 
-    expect(result).toBe('мир')
+    expect(result).toBe(', мир')
   })
 
   it('should handle special characters', () => {

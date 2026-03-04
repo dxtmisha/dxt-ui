@@ -78,6 +78,7 @@ let globalConditions: RefType<any>
  * @param conditions conditions for executing the request/ условия выполнения запроса
  * @param transformation transforms the received request/ преобразовывает полученный запрос
  * @param unmounted delete data from the cache/ удалить ли данные из кеша
+ * @param controller controller for aborting the request/ контроллер для отмены запроса
  */
 export function useApiRef<R, T = any>(
   path?: RefOrNormal<string | undefined>,
@@ -85,7 +86,8 @@ export function useApiRef<R, T = any>(
   reactivity: boolean = true,
   conditions?: RefType<boolean>,
   transformation?: (data: T) => R,
-  unmounted?: boolean
+  unmounted?: boolean,
+  controller?: AbortController
 ): UseApiRef<R> {
   /** Value item / Элемент-значение */
   const item = ref<R | undefined>()
@@ -98,6 +100,9 @@ export function useApiRef<R, T = any>(
 
   /** Reading state flag / Флаг состояния чтения */
   const reading = ref<boolean>(false)
+
+  /** Abort controller / Контроллер отмены */
+  const abortController = controller || new AbortController()
 
   /** Initial flag / Флаг инициализации */
   let first: boolean = true
@@ -124,6 +129,7 @@ export function useApiRef<R, T = any>(
       let responseData: R | T | undefined = {} as R
       const response = await Api.request<Record<string, any>>({
         path: pathValue,
+        controller: abortController,
         ...request.value
       })
 

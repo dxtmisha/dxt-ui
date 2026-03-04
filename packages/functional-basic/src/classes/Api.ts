@@ -99,11 +99,7 @@ export class Api {
         return request
       }
 
-      try {
-        return JSON.stringify(request)
-      } catch (e) {
-        throw e
-      }
+      return JSON.stringify(request)
     }
 
     return undefined
@@ -273,7 +269,7 @@ export class Api {
     }
 
     const status = new ApiStatus()
-    let data: ApiData<T> = {} as ApiData<T>
+    let data: ApiData<T>
 
     Loading.show()
 
@@ -291,7 +287,7 @@ export class Api {
         return await this.fetch(apiFetch)
       }
 
-      data = await this.readData(
+      data = await this.readData<T>(
         query,
         queryReturn,
         end
@@ -327,11 +323,11 @@ export class Api {
    * @param queryReturn custom function for reading data/ кастомная функция для чтения данных
    * @param end finalization data/ данные финализации
    */
-  protected static async readData(
+  protected static async readData<T>(
     query: Response,
     queryReturn: ApiFetch['queryReturn'],
     end: ApiPreparationEnd
-  ): Promise<ApiData> {
+  ): Promise<ApiData<T>> {
     if (queryReturn) {
       return await queryReturn(query)
     }
@@ -344,7 +340,7 @@ export class Api {
       return await query.json()
     }
 
-    return { data: await query.text() }
+    return { data: await query.text() } as ApiData<T>
   }
 
   /**
@@ -403,6 +399,10 @@ export class Api {
       || !('data' in data)
     ) {
       return data
+    }
+
+    if (data.data !== null && typeof data.data !== 'object') {
+      return data.data as any
     }
 
     if (isArray(data.data)) {

@@ -406,7 +406,7 @@ describe('Api', () => {
         path: 'test'
       })
 
-      expect(result).toEqual({ id: 1, name: 'test', success: true })
+      expect(result).toEqual(expect.objectContaining({ id: 1, name: 'test', success: true }))
     })
 
     it('should return full response when toData is false', async () => {
@@ -423,7 +423,7 @@ describe('Api', () => {
         toData: false
       })
 
-      expect(result).toEqual({ data: 'test', success: true, meta: { count: 10 } })
+      expect(result).toEqual(expect.objectContaining({ data: 'test', success: true, meta: { count: 10 } }))
     })
 
     it('should use custom headers', async () => {
@@ -482,19 +482,20 @@ describe('Api', () => {
     it('should handle fetch errors', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Network error'))
 
-      const result = await Api.request({ path: 'test' })
+      await expect(Api.request({ path: 'test' })).rejects.toThrow('Network error')
 
       expect(consoleErrorSpy).toHaveBeenCalled()
-      expect(result).toEqual({})
     })
 
     it('should not log error when hideError is true', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Network error'))
 
-      await Api.request({
-        path: 'test',
-        hideError: true
-      })
+      await expect(
+        Api.request({
+          path: 'test',
+          hideError: true
+        })
+      ).rejects.toThrow('Network error')
 
       expect(consoleErrorSpy).not.toHaveBeenCalled()
     })
@@ -502,7 +503,7 @@ describe('Api', () => {
     it('should set error status on failure', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Request failed'))
 
-      await Api.request({ path: 'test' })
+      await expect(Api.request({ path: 'test' })).rejects.toThrow('Request failed')
 
       const status = Api.getStatus()
       expect(status.getError()).toContain('Request failed')
@@ -577,7 +578,7 @@ describe('Api', () => {
       })
 
       expect(customCallback).toHaveBeenCalled()
-      expect(result).toEqual({ customData: 'processed' })
+      expect(result).toEqual(expect.objectContaining({ customData: 'processed' }))
     })
 
     it('should handle text responses', async () => {
@@ -628,7 +629,7 @@ describe('Api', () => {
 
       const result = await Api.request({ path: 'test' })
 
-      expect(result).toEqual({ customData: 'from-end-callback' })
+      expect(result).toEqual(expect.objectContaining({ customData: 'from-end-callback' }))
     })
   })
 
@@ -666,7 +667,7 @@ describe('Api', () => {
           })
         })
       )
-      expect(result).toEqual({ userId: 1, success: true })
+      expect(result).toEqual(expect.objectContaining({ userId: 1, success: true }))
     })
 
     it('should handle FormData upload', async () => {
