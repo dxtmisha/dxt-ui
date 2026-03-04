@@ -11,20 +11,26 @@ Trả về dữ liệu và các phương thức để thuận tiện làm việc
 - `options?: ApiOptions` — dữ liệu cho yêu cầu (một đối tượng `ApiFetch` hoặc một chuỗi chứa tên phương thức).
 - `reactivity?: boolean` — có cho phép tính phản ứng hay không: tự động khởi động lại yêu cầu khi `path`, `options` hoặc các `conditions` toàn cục thay đổi (mặc định là `true`).
 - `conditions?: RefType<boolean>` — các điều kiện cục bộ để thực thi yêu cầu (nếu `false`, yêu cầu sẽ không được thực thi).
-- `transformation?: (data: T) => R` — một hàm để chuyển đổi phản hồi từ máy chủ trước khi ghi vào `data`.
+- `transformation?: (data: T) => ApiData<R>` — một hàm để chuyển đổi phản hồi từ máy chủ trước khi ghi vào `data`.
 - `unmounted?: boolean` — có xóa dữ liệu khỏi bộ nhớ đệm hay không (gán `data` thành null) khi thành phần bị hủy (unmounted).
 
 **Trả về (`UseApiRef<R>`):**
 Một đối tượng với các thuộc tính phản ứng và phương thức điều khiển:
-- `data` — tham chiếu (`ref`) đến dữ liệu đã tải hoặc `undefined` nếu việc tải chưa hoàn tất.
+- `data` — tham chiếu (`ref`) đến dữ liệu đã tải (một đối tượng `ApiData<R>`) hoặc `undefined` nếu việc tải chưa hoàn tất.
 - `isStarting` — cờ báo bắt đầu yêu cầu (`true` nếu chưa có dữ liệu).
 - `loading` — trạng thái tải hiện tại của yêu cầu (`true` trong khi chờ phản hồi).
 - `reading` — cờ báo đang đọc chủ động.
 - `reset()` — phương thức để tải lại dữ liệu.
-- `stop()` — phương thức để dừng yêu cầu.
+- `stop()` — phương thức để dừng theo dõi yêu cầu.
+- `abort()` — phương thức để hủy bỏ yêu cầu mạng hiện tại (sử dụng `AbortController`).
 
 **Cài đặt toàn cục:**
 Bạn có thể xác định các điều kiện toàn cục cho tất cả các `useApiRef` bằng cách sử dụng hàm `setApiRefGlobalConditions(conditions)`.
+
+### Khi nào yêu cầu được thực thi? (Tải lười biếng / Lazy Loading)
+Một tính năng chính của `useApiRef` là tải lười biếng (Lazy Loading). Khi gọi hàm, yêu cầu mạng sẽ **không được gửi ngay lập tức**.
+
+Yêu cầu sẽ chỉ được kích hoạt vào thời điểm bạn **truy cập thuộc tính `data` lần đầu tiên** (ví dụ: yêu cầu `data.value` hoặc hiển thị nó trong Vue template). Điều này cho phép bạn định nghĩa component ở cấp cao nhất của setup mà không tạo ra các yêu cầu mạng không cần thiết cho đến khi dữ liệu thực sự cần cho việc hiển thị.
 
 ```typescript
 import { ref } from 'vue'
@@ -48,8 +54,12 @@ const refreshData = async () => {
   await reset()
 }
 
-// Dừng yêu cầu (ví dụ: khi rời khỏi trang)
+const cancelRequest = () => {
+  abort() // Hủy nhanh yêu cầu mạng đang diễn ra
+}
+
+// Dừng theo dõi (ví dụ: khi rời khỏi trang)
 const abortRequest = () => {
-  stop()
+  stop() // Dừng watcher và xóa dữ liệu
 }
 ```

@@ -8,7 +8,7 @@ import {
   watch,
   type WatchHandle
 } from 'vue'
-import { Api, type ApiFetch, ApiMethodItem } from '@dxtmisha/functional-basic'
+import { Api, type ApiData, type ApiFetch, ApiMethodItem } from '@dxtmisha/functional-basic'
 
 import { getRef } from '../../functions/ref/getRef'
 import { toRefItem } from '../../functions/ref/toRefItem'
@@ -47,7 +47,7 @@ const getOptions = (options?: ApiOptions): RefOrNormal<ApiFetch> => {
  */
 export interface UseApiRef<R> {
   /** Loaded data / Загруженные данные */
-  data: Ref<R | undefined>
+  data: Ref<ApiData<R> | undefined>
 
   /** Start request flag (true if no data yet) / Флаг начала запроса (true если еще нет данных) */
   isStarting: ComputedRef<boolean>
@@ -63,6 +63,9 @@ export interface UseApiRef<R> {
 
   /** Stop request / Остановка запроса */
   stop(): void
+
+  /** Abort request / Отмена запроса */
+  abort(): void
 }
 
 /** Global conditions / Глобальные условия */
@@ -78,19 +81,17 @@ let globalConditions: RefType<any>
  * @param conditions conditions for executing the request/ условия выполнения запроса
  * @param transformation transforms the received request/ преобразовывает полученный запрос
  * @param unmounted delete data from the cache/ удалить ли данные из кеша
- * @param controller controller for aborting the request/ контроллер для отмены запроса
  */
 export function useApiRef<R, T = any>(
   path?: RefOrNormal<string | undefined>,
   options?: ApiOptions,
   reactivity: boolean = true,
   conditions?: RefType<boolean>,
-  transformation?: (data: T) => R,
-  unmounted?: boolean,
-  controller?: AbortController
+  transformation?: (data: T) => ApiData<R>,
+  unmounted?: boolean
 ): UseApiRef<R> {
   /** Value item / Элемент-значение */
-  const item = ref<R | undefined>()
+  const item = ref<ApiData<R> | undefined>()
 
   /** Ref item options / Опции ссылочного элемента */
   const request = toRefItem(getOptions(options))
@@ -102,7 +103,7 @@ export function useApiRef<R, T = any>(
   const reading = ref<boolean>(false)
 
   /** Abort controller / Контроллер отмены */
-  const abortController = controller || new AbortController()
+  let abortController: AbortController | undefined = undefined
 
   /** Initial flag / Флаг инициализации */
   let first: boolean = true
@@ -120,27 +121,36 @@ export function useApiRef<R, T = any>(
       return
     }
 
+    if (abortController) {
+      abortController.abort()
+    }
+
+    abortController = request.value.controller
+      || new AbortController()
+
     const pathValue = getRef(path)
 
     if ((!conditions || conditions.value) && pathValue) {
       loading.value = true
       reading.value = true
 
-      let responseData: R | T | undefined = {} as R
-      const response = await Api.request<Record<string, any>>({
-        path: pathValue,
-        controller: abortController,
-        ...request.value
-      })
+      try {
+        const response = await Api.request<Record<string, any>>({
+          path: pathValue,
+          controller: abortController,
+          ...request.value
+        })
 
-      if (response) {
-        responseData = response as T
-      }
-
-      if (transformation) {
-        item.value = transformation(responseData as T)
-      } else {
-        item.value = responseData as R
+        if (response) {
+          if (transformation) {
+            item.value = transformation(response as T)
+          } else {
+            item.value = response as ApiData<R>
+          }
+        }
+      } catch (error) {
+        console.error('useApiRef: error', error)
+        item.value = undefined
       }
 
       loading.value = false
@@ -224,7 +234,8 @@ export function useApiRef<R, T = any>(
     },
 
     reset,
-    stop
+    stop,
+    abort: () => abortController?.abort()
   }
 }
 

@@ -11,20 +11,26 @@ Returns data and methods for convenient work with API requests. Provides reactiv
 - `options?: ApiOptions` — data for the request (an `ApiFetch` object or a string with the method name).
 - `reactivity?: boolean` — whether to enable reactivity: automatically restart the request when `path`, `options`, or global `conditions` change (default is `true`).
 - `conditions?: RefType<boolean>` — local conditions for executing the request (if `false`, the request is not executed).
-- `transformation?: (data: T) => R` — a function to transform the response from the server before writing it to `data`.
+- `transformation?: (data: T) => ApiData<R>` — a function to transform the response from the server before writing it to `data`.
 - `unmounted?: boolean` — whether to clear data from the cache (nullify `data`) when the component is unmounted.
 
 **Returns (`UseApiRef<R>`):**
 An object with reactive properties and control methods:
-- `data` — reference (`ref`) to the loaded data or `undefined` if loading is not yet complete.
+- `data` — reference (`ref`) to the loaded data (an `ApiData<R>` object) or `undefined` if loading is not yet complete.
 - `isStarting` — request start flag (`true` if there is no data yet).
 - `loading` — current loading state of the request (`true` while waiting for the response).
 - `reading` — active reading flag.
 - `reset()` — method for reloading data.
-- `stop()` — method for stopping the request.
+- `stop()` — method for stopping the request watcher.
+- `abort()` — method for aborting the current network request using `AbortController`.
 
 **Global conditions:**
 You can define global conditions for all `useApiRef` using the `setApiRefGlobalConditions(conditions)` function.
+
+### When is the request executed? (Lazy Loading)
+A key feature of `useApiRef` is **Lazy Loading**. When you call the function, the network request is **not sent immediately**.
+
+The request will only be fired the moment you **access the `data` property for the first time** (for example, by calling `data.value` or rendering it in a Vue template). This allows you to use the composable at the top level of your setup function without making unnecessary network calls until the data is actually needed for rendering.
 
 ```typescript
 import { ref } from 'vue'
@@ -48,8 +54,12 @@ const refreshData = async () => {
   await reset()
 }
 
-// Stop the request (e.g., when leaving the page)
+const cancelRequest = () => {
+  abort() // Quickly network-aborts the ongoing request
+}
+
+// Stop the watcher (e.g., when leaving the page)
 const abortRequest = () => {
-  stop()
+  stop() // Stops the watcher and clears data
 }
 ```
